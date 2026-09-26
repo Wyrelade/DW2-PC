@@ -1435,7 +1435,11 @@ def _sm_srckey(body):
         v = int(m.group(2), 0)
         if not (-0x8000 <= v <= 0xFFFF):
             return ("lui", norm_reg(m.group(1)), (v >> 16) & 0xFFFF)
-    return _sm_key(body, False)
+    k = _sm_key(body, False)
+    # `la $r,D_X+k` names the same address as the target's `D_(X+k)`
+    if isinstance(k, tuple) and k and k[0] == "la":
+        k = tuple(_sm_sym(x) if isinstance(x, str) else x for x in k)
+    return k
 
 
 def _sm_dep_body(body):
@@ -1759,10 +1763,11 @@ def block_iso_pass(stext, tgt):
                 anchors.append((u[0], qs[0] - wpos[u[0]]))
     edits = []
     for blk0 in blocks:
-        # the whole block, else with up to 3 units trimmed at either end (a
+        # the whole block, else with up to 7 units trimmed at the head or 3 at the
+        # tail (a block boundary the target has and we lack, or a
         # unit the target moved into a delay slot leaves the window)
         n0 = len(blk0)
-        subs = sorted({(i, j) for i in range(min(4, n0)) for j in range(max(i + 3, n0 - 3), n0 + 1)},
+        subs = sorted({(i, j) for i in range(min(8, n0)) for j in range(max(i + 3, n0 - 3), n0 + 1)},
                       key=lambda ij: (ij[0] - ij[1], ij[0]))
         for i, j in subs:
             blk = blk0[i:j]
