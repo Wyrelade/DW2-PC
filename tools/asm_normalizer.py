@@ -7264,6 +7264,15 @@ def defs_uses(disasm):
             if r2:
                 uses.add(r2)
 
+    if op in ("lwl", "lwr") and ops:
+        # an unaligned half load merges into its destination: it reads it too
+        d = _reg(ops[0])
+        if d:
+            defs.add(d)
+            uses.add(d)
+        for t in ops[1:]:
+            use(t)
+        return defs, uses
     if op in ("jal", "bal", "jalr", "bltzal", "bgezal"):
         defs |= set(_CALL_CLOBBER)
         uses |= {"a0", "a1", "a2", "a3"}
