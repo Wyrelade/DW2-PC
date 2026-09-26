@@ -7155,6 +7155,123 @@ def thread_steal_rebuild(lines, edits, newlab):
     return "\n".join(lines)
 
 
+# --------------------------------------------------------------------------
+# slot_sink: our cc1 filled a conditional branch's slot with the first insn X
+# of its fall-through; retail left the slot empty and X sits a few insns down
+# the fall-through (often in the load-delay spot after two loads). Target-guided
+# by conditional-branch ordinal: the target slot is a nop and X's key follows
+# after d non-nop insns. X moves there (replacing an explicit nop right there,
+# if any) and the slot gets a nop. Sound when X is a plain ALU insn, its
+# destination is dead at the branch target (it no longer runs on that path),
+# and the d insns it passes neither read nor write its registers. Count-
+# preserving.
+# --------------------------------------------------------------------------
+def slot_sink_pass(stext, tgt):
+    if not tgt:
+        return stext
+    tb = _tgt_cond_branches(tgt, stext)
+    lines = stext.split("\n")
+    nr = _noreorder_lines(lines)
+    ours = [i for i, l in enumerate(lines)
+            if _s_is_insn(l) and l.split(None, 1)[0].lower() in _COND_BR_MN]
+    if len(ours) != len(tb):
+        return stext
+    ins = [(i, l) for i, l in enumerate(lines) if _s_is_insn(l)]
+    edits = []
+    for bi, tk in zip(ours, tb):
+        if bi not in nr or tk + 1 >= len(tgt) or tgt[tk + 1][1].strip() != "nop":
+            continue
+        si = _tf_next_insn(lines, bi)
+        if si is None or si not in nr:
+            continue
+        xb = lines[si].split("#", 1)[0].strip()
+        if xb == "nop" or xb.split(None, 1)[0].lower() not in _TS_ALU:
+            continue
+        xk = _ts_key(xb)
+        d = None
+        n = 0
+        for q in range(tk + 2, min(tk + 10, len(tgt))):
+            td = tgt[q][1].strip()
+            if _ts_key(td) == xk:
+                d = n
+                break
+            if is_branch(td) or re.match(r"\s*j", td):
+                break
+            if td != "nop":
+                n += 1
+        if not d:
+            continue
+        xd, xu = defs_uses(xb)
+        tl = _lc_label(lines[bi].split("#", 1)[0].strip())
+        if len(xd) != 1 or tl is None or not all(_ff_dead_on(lines, ins, tl, r) for r in xd):
+            continue
+        end = next((y for y in range(si + 1, len(lines))
+                    if lines[y].strip().startswith(".set") and lines[y].split()[-1] == "reorder"), None)
+        if end is None:
+            continue
+        seen, at, ok = 0, None, True
+        for y in range(end + 1, len(lines)):
+            l = lines[y]
+            if _s_is_label(l) and not l.strip().startswith("LM"):
+                ok = False
+                break
+            if not _s_is_insn(l) or l.strip().startswith("."):
+                continue
+            body = l.split("#", 1)[0].strip()
+            if body == "nop":
+                continue
+            if y in nr or _src_is_branch(l) or re.match(r"\s*jalr?\b", l):
+                ok = False
+                break
+            dd, uu = defs_uses(_sm_dep_body(body))
+            if (dd | uu) & (xd | xu):
+                ok = False
+                break
+            seen += 1
+            if seen == d:
+                at = y
+                break
+        if not ok or at is None:
+            continue
+        edits.append((si, at, xb))
+    if not edits:
+        return stext
+    for si, at, xb in sorted(edits, key=lambda e: -e[1]):
+        ind = lines[at][:len(lines[at]) - len(lines[at].lstrip())]
+        nx = _tf_next_insn(lines, at)
+        if nx is not None and lines[nx].split("#", 1)[0].strip() == "nop" and \
+                not any(_s_is_label(lines[y]) for y in range(at + 1, nx)):
+            lines[nx] = ind + xb
+        else:
+            lines.insert(at + 1, ind + xb)
+        sind = lines[si][:len(lines[si]) - len(lines[si].lstrip())]
+        lines[si] = sind + "nop"
+    return "\n".join(lines)
+
+
+# --------------------------------------------------------------------------
+# selfmove_drop: a register rename (web_realloc) can leave `move R,R`, a no-op
+# the target does not have (e.g. an epilogue `move v0,v1` once v1 became v0).
+# Drop it when the target has no self-move at all (a no-op either way).
+# Count-changing (-1 each).
+# --------------------------------------------------------------------------
+def selfmove_drop_pass(stext, tgt):
+    if not tgt:
+        return stext
+    if any(re.match(r"(move|addu|or)\s+(\$\w+)\s*,\s*\2\s*(,\s*\$(zero|0))?\s*$", d.strip())
+           for _w, d in tgt):
+        return stext
+    lines = stext.split("\n")
+    nr = _noreorder_lines(lines)
+    out = []
+    for i, l in enumerate(lines):
+        m = re.match(r"^\s*move\s+(\$\w+)\s*,\s*(\$\w+)\s*$", l.split("#", 1)[0])
+        if m and i not in nr and norm_reg(m.group(1)) == norm_reg(m.group(2)):
+            continue
+        out.append(l)
+    return "\n".join(out)
+
+
 PASSES = {
     # reg_realloc is applied specially (it needs sigma from words); the ordered
     # list in the manifest still names it so the recipe is explicit and auditable.
@@ -7211,6 +7328,8 @@ PASSES = {
     "ior_add": ior_add_pass,
     "la_copy": la_copy_pass,
     "thread_steal": thread_steal_pass,
+    "slot_sink": slot_sink_pass,
+    "selfmove_drop": selfmove_drop_pass,
 }
 
 # Passes that CHANGE the instruction count and so must run BEFORE sigma is derived
