@@ -3597,5 +3597,15 @@
       "epilogue_unfill",
       "padnop"
     ]
+  },
+  "func_80030258": {
+    "passes": [
+      "nosplit",
+      "reg_realloc",
+      "save_slot",
+      "block_iso",
+      "delay_fill",
+      "padnop"
+    ]
   }
 }

@@ -11645,7 +11645,32 @@ void func_8003024C(s32 a0) {
     D_8004E970 = a0;
 }
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80030258);
+void func_80030258(void) {
+    u8 save = *D_8004E98C & 3;
+    s32 st;
+    void (*cb)(u8, u8 *);
+    volatile u8 *p1 = &D_8004E9A4.field_1;
+    volatile u8 *p0 = &D_8004E9A4.field_0;
+
+loop:
+    st = func_8002EDB4();
+    if (st != 0) {
+        if (st & 4) {
+            cb = (void (*)(u8, u8 *))D_8004E6CC;
+            if (cb != 0) {
+                cb(*p1, D_80061B70);
+            }
+        }
+        if (st & 2) {
+            cb = (void (*)(u8, u8 *))D_8004E6C8;
+            if (cb != 0) {
+                cb(*p0, D_80061B68);
+            }
+        }
+        goto loop;
+    }
+    *D_8004E98C = save;
+}
 
 void func_80030334(s8 *s) {
     s8 c;
