@@ -1854,6 +1854,15 @@ def _us_dead_ft(lines, ins, j, reg):
                 if reg in d:
                     return True
             return _ff_dead_on(lines, ins, mj.group(1), reg)
+        mc = re.match(r"jal\s+([A-Za-z_]\w*)\s*$", body)
+        if mc and reg in ("v0", "v1") or mc and re.match(r"t\d$", reg or ""):
+            # a direct call clobbers the caller-saved non-argument registers;
+            # only its delay slot (noreorder) can still read the old value
+            sl = _tf_next_insn(lines, k)
+            if sl is not None and sl in _noreorder_lines(lines) and \
+                    reg in defs_uses(lines[sl].split("#", 1)[0].strip())[1]:
+                return False
+            return True
         if _src_is_branch(lines[k]) or re.match(r"\s*jalr?\b", lines[k]):
             return False
         d, u = defs_uses(_sm_dep_body(body))
