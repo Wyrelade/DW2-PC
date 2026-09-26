@@ -3566,5 +3566,17 @@
       "delay_fill",
       "padnop"
     ]
+  },
+  "func_800320E4": {
+    "passes": [
+      "nosplit_nodb",
+      "sched_match",
+      "web_resched",
+      "thread_steal",
+      "taken_fill",
+      "fallthrough_fill",
+      "delay_fill",
+      "padnop"
+    ]
   }
 }

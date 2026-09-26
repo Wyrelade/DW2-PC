@@ -12302,7 +12302,84 @@ void func_80031EA0(s16 a0, s16 a1) {
 }
 
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_800320E4);
+s32 func_800320E4(s16 a0, s16 a1) {
+    Elm354F4 **pp = &D_80061C50[a0];
+    Elm354F4 *e = &(*pp)[a1];
+    u8 st = *e->field_0++;
+    s32 c;
+    s32 d;
+    s32 n;
+    s32 ev;
+    s32 ret = 0;
+
+    if (((*pp)[a1].field_98 & 0x401) == 0x401 && e->field_0 == (u8 *)e->field_10 + 1) {
+        ((void (*)(s16, s16, s32))func_80031EA0)(a0, a1, ((u8 *)e->field_10)[1]);
+        return -1;
+    }
+    if (st & 0x80) {
+        e->field_17 = st & 0xF;
+        ev = st & 0xF0;
+        switch (ev) {
+        case 0x90:
+            e->field_16 = ev;
+            n = *e->field_0++;
+            d = *e->field_0++;
+            e->field_90 = func_80032494(a0, a1);
+            D_80061BB0[0](a0, a1, n, d);
+            break;
+        case 0xB0:
+            e->field_16 = ev;
+            D_80061BB0[4](a0, a1, *e->field_0++);
+            break;
+        case 0xC0:
+            e->field_16 = ev;
+            D_80061BB0[1](a0, a1, *e->field_0++);
+            break;
+        case 0xE0:
+            e->field_16 = ev;
+            e->field_0++;
+            D_80061BB0[2](a0, a1);
+            break;
+        case 0xF0:
+            e->field_16 = 0xFF;
+            st = *e->field_0++; c = st;
+            if (c == 0x2F) {
+                goto end_track;
+            }
+            goto meta;
+        }
+    } else {
+        switch (e->field_16) {
+        case 0x90:
+            d = *e->field_0++;
+            e->field_90 = func_80032494(a0, a1);
+            D_80061BB0[0](a0, a1, st, d);
+            break;
+        case 0xB0:
+            D_80061BB0[4](a0, a1, st);
+            break;
+        case 0xC0:
+            D_80061BB0[1](a0, a1, st);
+            break;
+        case 0xE0:
+            D_80061BB0[2](a0, a1);
+            break;
+        case 0xFF:
+            c = (u8)st;
+            if (c == 0x2F) {
+end_track:
+                ret = 1;
+                ((void (*)(s16, s16, s32))func_80031EA0)(a0, a1, 0x2F);
+            } else {
+meta:
+                D_80061BB0[3](a0, a1, c);
+            }
+            break;
+        }
+    }
+    return ret;
+}
+
 
 s32 func_80032494(s16 a0, s16 a1) {
     Elm354F4 *e = &D_80061C50[a0][a1];
