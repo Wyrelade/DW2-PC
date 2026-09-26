@@ -3645,5 +3645,11 @@
       "gp8",
       "web_realloc"
     ]
+  },
+  "func_800169DC": {
+    "passes": [
+      "gp8",
+      "padnop"
+    ]
   }
 }

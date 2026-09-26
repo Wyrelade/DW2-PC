@@ -802,6 +802,7 @@ extern s32 D_80050730;
 extern s32 D_80050738;
 extern void func_80023484(void);
 extern void func_8003D4A4(void);
+extern Pair61900 D_80040EFC[];
 s16 func_800388A4(s16, s16, s16, s16, u16);
 void func_80021DC8(void);
 
@@ -3378,7 +3379,190 @@ void func_800169D0(Actor *arg0, s16 arg1) {
     arg0->work->field_64 = arg1;
 }
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_800169DC);
+void func_800169DC(Actor *a0) {
+    Obj16198 *w = (Obj16198 *)a0->work;
+    s32 *slot;
+    s32 r;
+    s32 id;
+    Src16198 st;
+
+    switch (a0->field_10) {
+    case 0:
+    default:
+        w->field_58 = *(Box16198 *)func_800239A0(0x5130017);
+        func_800226AC();
+        w->field_6E = 0;
+        w->field_54[1] = 0;
+        w->field_54[0] = 0;
+        func_80015F68(w);
+        func_8001C088(w->field_0, 0x15);
+        func_80011544(a0);
+        break;
+    case 1:
+        switch (a0->field_14) {
+        case 0:
+        default:
+            if (func_800136E4((s32)a0, &w->field_68) != 0) {
+                break;
+            }
+            func_80013558(&w->field_4C, (Key13558 *)func_80013AB0(0x5130018, w->field_64 - 1), 2);
+            func_80015F68(w);
+            func_80016198(w, 1);
+            func_80011564(a0);
+            break;
+        case 1:
+            switch (w->field_64) {
+            default:
+                func_800168F0(a0, (Obj166FC *)w);
+                break;
+            case 5:
+                if (w->field_6C == 0) {
+                    id = 0x1FD0151;
+                    goto msg;
+                }
+                func_800168F0(a0, (Obj166FC *)w);
+                func_80011564(a0);
+                return;
+            case 3:
+            case 4:
+                if (w->field_64 == 4) {
+                    if (w->field_6C == 0) {
+                        goto full;
+                    }
+                }
+                func_800134F8(&w->field_40, (s32)func_800239A0(((s32)((u16)w->field_64 << 16) >> 16) + 0x1FD011D), 0x80, D_80050704);
+                break;
+            }
+            func_80011564(a0);
+            break;
+        case 2:
+            if (func_80013A10((s32)w->field_54, (s32)w->field_58.field_0) != 0) {
+                func_8001A68C(0xD, 0);
+                if (w->field_54[0] - w->field_6E >= 2) {
+                    w->field_6E = w->field_54[0] - 1;
+                    func_80016198(w, 0);
+                } else if (w->field_54[0] < w->field_6E) {
+                    w->field_6E = w->field_54[0];
+                    func_80016198(w, 0);
+                }
+                func_800115DC(a0, 1);
+            } else if (D_8005F6F0[0].field_1C > 0) {
+                func_8001A68C(0xB, 0);
+                func_800115C0(a0, 2);
+            } else if (D_8005F6F0[0].field_14 > 0) {
+                switch (w->field_64) {
+                case 1:
+                    func_800166FC(a0, (Obj166FC *)w);
+                    break;
+                case 2:
+                    func_80016834(a0, (GridMenu *)w);
+                    break;
+                case 3:
+                    func_80016394(a0, w);
+                    break;
+                case 4:
+                    func_800164AC(a0, w);
+                    break;
+                }
+            }
+            break;
+        case 3:
+            slot = (s32 *)a0->u34.field_34;
+            switch (a0->field_18) {
+            case 0:
+            default:
+                func_8001C0B0(w->field_0, 0x15);
+                func_80011580(a0);
+                break;
+            case 1:
+                if (func_80013714((s32)a0, &w->field_68) != 0) {
+                    break;
+                }
+                func_8001107C(D_80040EFC[w->field_66].field_0, slot, D_80040EFC[w->field_66].field_2);
+                func_80011580(a0);
+                break;
+            case 2:
+                if (*slot == 0) {
+                    func_800115DC(a0, 0);
+                }
+                break;
+            }
+            break;
+        case 4:
+            st.field_C.lo = 0x10;
+            st.field_C.hi = 0xBA;
+            st.field_10 = 0x81;
+            st.field_11 = 0;
+            st.field_4 = func_8001E048(D_80050768->field_108);
+            switch (a0->field_18) {
+            case 0:
+            default:
+                st.field_0 = (s32)func_800239A0(0x1FD00B9);
+                func_80013470(&w->field_44, (Src13470 *)&st);
+                func_80011580(a0);
+                break;
+            case 1:
+                r = func_800136A4(w->field_44);
+                switch (r) {
+                case 1:
+                    func_800227F0(D_80050768->field_10A);
+                    st.field_0 = (s32)func_800239A0(0x1FD00BA);
+                    func_80013470(&w->field_44, (Src13470 *)&st);
+                    func_80015F68(w);
+                    func_80016198(w, 0);
+                    func_800115DC(a0, 2);
+                    break;
+                case -1:
+                    func_800115DC(a0, 1);
+                    break;
+                }
+                break;
+            }
+            break;
+        case 5:
+            switch (a0->field_18) {
+            case 0:
+                if (func_8001BE08(w->field_40) != 0) {
+                    func_80011580(a0);
+                }
+                break;
+            case 1:
+                if (D_8005F6F0[0].field_1C > 0 || D_8005F6F0[0].field_14 > 0 || a0->field_20++ >= 0x1F) {
+                    func_800115C0(a0, 2);
+                }
+                break;
+            }
+            break;
+        case 6:
+            if (func_8001BE08(w->field_40) == 0) {
+                break;
+            }
+        full:
+            id = 0x1FD0127;
+        msg:
+            func_800134F8(&w->field_40, (s32)func_800239A0(id), 0x81, D_80050704);
+            func_800115DC(a0, 5);
+            break;
+        }
+        break;
+    case 2:
+        switch (a0->field_14) {
+        case 0:
+        default:
+            func_800226AC();
+            func_8001C0B0(w->field_0, 0x15);
+            func_80011564(a0);
+            break;
+        case 1:
+            if (func_80013714((s32)a0, &w->field_68) == 0) {
+                func_800115C0(a0, 3);
+            }
+            break;
+        }
+        break;
+    }
+}
+
 
 void func_80016FDC(Actor *actor) {
     ActorWork *w = actor->work;
