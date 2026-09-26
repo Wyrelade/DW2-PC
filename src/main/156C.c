@@ -803,6 +803,10 @@ extern s32 D_80050738;
 extern void func_80023484(void);
 extern void func_8003D4A4(void);
 extern Pair61900 D_80040EFC[];
+extern ObjC0E4 D_80061A08;
+extern ObjC0E4 D_80061A48;
+extern ObjC0E4 D_800619E8;
+extern void func_8002C834(s32 *, Mat1F668 *);
 s16 func_800388A4(s16, s16, s16, s16, u16);
 void func_80021DC8(void);
 
@@ -4242,7 +4246,7 @@ typedef struct {
     /* 0x1C */ s32 *field_1C;
 } Ctx19214;
 
-extern void func_8002C164(Ctx19214 *);
+extern s32 func_8002C164(Ctx19214 *);
 
 void func_80019214(Actor *actor) {
     Wk19214 *work;
@@ -10967,7 +10971,96 @@ void func_8002C0E4(ObjC0E4 *a0, ArgC0E4 *a1) {
     a0->field_1C = tmp[2] + a0->field_1C;
 }
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002C164);
+s32 func_8002C164(Ctx19214 *c) {
+    Mat1F668 m0;
+    Mat1F668 m;
+    ObjC0E4 o;
+    ObjC0E4 o0;
+    s32 v[3];
+    u32 d;
+    u32 x;
+    s32 dx;
+    s32 dy;
+    s32 dz;
+    s32 e;
+    s16 a;
+    s16 b;
+    s32 ret;
+
+    D_80061A08 = D_80061A48;
+    func_8002C774(&D_80061A08, -c->field_18);
+    dx = c->field_C - c->field_0;
+    dy = c->field_10 - c->field_4;
+    dz = c->field_14 - c->field_8;
+    d = dx * dx + dy * dy + dz * dz;
+    ret = 1;
+    if (d != 0) {
+        dy = c->field_4 - c->field_10;
+        x = dy * dy;
+        e = 12 - func_8002DBB4(x);
+        if (e < 0) {
+            a = -((c->field_4 - c->field_10) << 12) / func_8002CEE4(d);
+        } else if (c->field_4 - c->field_10 >= 0) {
+            a = -func_8002CDB8((x << (12 - e)) / (d >> e));
+        } else {
+            a = func_8002CDB8((x << (12 - e)) / (d >> e));
+        }
+        dx = c->field_C - c->field_0;
+        dz = c->field_14 - c->field_8;
+        x = dx * dx + dz * dz;
+        e = 12 - func_8002DBB4(x);
+        if (e < 0) {
+            b = (func_8002CEE4(x) << 12) / func_8002CEE4(d);
+        } else {
+            b = func_8002CDB8((x << (12 - e)) / (d >> e));
+        }
+        func_8002BCC4(&m, a, b, 0x78);
+        func_8002D224(&D_80061A08, (ArgC0E4 *)&m);
+        if (x != 0) {
+            d = x;
+            dx = c->field_C - c->field_0;
+            x = dx * dx;
+            e = 12 - func_8002DBB4(x);
+            if (e < 0) {
+                a = -((c->field_C - c->field_0) << 12) / func_8002CEE4(d);
+            } else if (c->field_C - c->field_0 >= 0) {
+                a = -func_8002CDB8((x << (12 - e)) / (d >> e));
+            } else {
+                a = func_8002CDB8((x << (12 - e)) / (d >> e));
+            }
+            dz = c->field_14 - c->field_8;
+            x = dz * dz;
+            e = 12 - func_8002DBB4(x);
+            if (e < 0) {
+                b = ((c->field_14 - c->field_8) << 12) / func_8002CEE4(d);
+            } else if (c->field_14 - c->field_8 >= 0) {
+                b = func_8002CDB8((x << (12 - e)) / (d >> e));
+            } else {
+                b = -func_8002CDB8((x << (12 - e)) / (d >> e));
+            }
+            func_8002BCC4(&m, a, b, 0x79);
+            func_8002D224(&D_80061A08, (ArgC0E4 *)&m);
+        }
+        v[0] = -c->field_0;
+        v[1] = -c->field_4;
+        v[2] = -c->field_8;
+        func_8002CF74(&D_80061A08, v, &D_80061A08.field_14);
+        if (c->field_1C != NULL) {
+            func_8002C834(c->field_1C, &m);
+            func_8002D704((Obj2D704 *)&m, (Obj2D704 *)&o);
+            func_8002CF74(&o, &m.t[0], v);
+            o.field_14 = -v[0];
+            o.field_18 = -v[1];
+            o.field_1C = -v[2];
+            func_8002C064(&D_80061A08, (ArgC0E4 *)&o);
+            D_80061A08 = o;
+        }
+        D_800619E8 = D_80061A08;
+        ret = 0;
+    }
+    return ret;
+}
+
 
 extern s32 func_8002CBC4(s32);
 extern s32 func_8002CAF4(s32);

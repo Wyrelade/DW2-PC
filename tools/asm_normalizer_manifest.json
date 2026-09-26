@@ -3651,5 +3651,17 @@
       "gp8",
       "padnop"
     ]
+  },
+  "func_8002C164": {
+    "passes": [
+      "nosplit",
+      "sched_pre",
+      "web_realloc",
+      "web_resched",
+      "block_iso",
+      "slot_sink",
+      "selfmove_drop",
+      "padnop"
+    ]
   }
 }
