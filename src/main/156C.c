@@ -769,6 +769,15 @@ extern Mat1F668 D_800619A8;
 extern s32 func_8002CEE4(s32);
 extern void func_8003B074(void);
 extern s8 D_80010A64[];
+extern char *D_80061B88;
+extern char D_800108E0[];
+extern char D_80010850[];
+extern char D_80010860[];
+extern u8 D_80061B78[];
+extern u8 D_80061B70[];
+extern u8 D_80061B68[];
+extern s32 func_8002EDB4(void);
+extern void func_80030334(s8 *s);
 s16 func_800388A4(s16, s16, s16, s16, u16);
 void func_80021DC8(void);
 
@@ -11156,7 +11165,84 @@ s32 func_8002F318(a0, a1)
 }
 
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002F598);
+static __inline__ s32 func_8002F598_timeout(s8 **com, char **intr) {
+    if (D_80061B80 < func_80030AB4(-1) || D_80061B84++ > 0x3C0000) {
+        func_80030334(D_80010850);
+        {
+        char **p = &intr[D_8004E9A4.field_0];
+        func_8002A014(D_80010860, D_80061B88, com[D_8004E6E5], *p, intr[D_8004E9A4.field_1]);
+        }
+        func_8002FCF4();
+        return -1;
+    }
+    return 0;
+}
+
+s32 func_8002F598(mode, result)
+s32 mode;
+u8 *result;
+{
+    s32 r;
+    s8 **com;
+    char **intr;
+    s32 ie;
+    s32 st;
+    s32 v;
+    s32 n;
+    u8 *src;
+    u8 *dst;
+
+    D_80061B80 = func_80030AB4(-1) + 0x3C0;
+    D_80061B84 = 0;
+    D_80061B88 = D_800108E0;
+    com = D_8004E6EC;
+    intr = D_8004E76C;
+    do {
+        if (func_8002F598_timeout(com, intr) != 0) {
+            return -1;
+        }
+        if (func_80030E28() != 0) {
+            st = *D_8004E98C & 3;
+            while ((ie = func_8002EDB4()) != 0) {
+                if (ie & 4) {
+                    if (D_8004E6CC != 0) {
+                        ((void (*)(s32, u8 *))D_8004E6CC)(D_8004E9A4.field_1, D_80061B70);
+                    }
+                }
+                if (ie & 2) {
+                    if (D_8004E6C8 != 0) {
+                        ((void (*)(s32, u8 *))D_8004E6C8)(D_8004E9A4.field_0, D_80061B68);
+                    }
+                }
+            }
+            *D_8004E98C = st;
+        }
+        if ((v = D_8004E9A4.field_2) != 0) {
+            ((volatile Cd4E9A4 *)(Cd4E9A4 *)&D_8004E9A4)->field_2 = 0;
+            src = D_80061B78;
+            if (result != 0) {
+                dst = result;
+                for (n = 7; n != -1; n--) {
+                    *dst++ = *src++;
+                }
+            }
+            return v;
+        }
+        if ((v = D_8004E9A4.field_1) != 0) {
+            ((volatile Cd4E9A4 *)(Cd4E9A4 *)&D_8004E9A4)->field_1 = 0;
+            dst = result;
+            src = D_80061B70;
+            if (dst != 0) {
+                for (n = 7; n != -1; n--) {
+                    *dst++ = *src++;
+                }
+            }
+            return v;
+        }
+    } while (mode == 0);
+    return 0;
+}
+
 
 s32 func_8002F860(com, param, result, async)
     u8 com;

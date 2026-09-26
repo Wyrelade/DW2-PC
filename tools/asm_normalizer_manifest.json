@@ -3540,5 +3540,16 @@
       "delay_fill",
       "padnop"
     ]
+  },
+  "func_8002F598": {
+    "passes": [
+      "nosplit",
+      "sreg_perm",
+      "save_slot",
+      "block_iso",
+      "taken_fill",
+      "delay_fill",
+      "padnop"
+    ]
   }
 }
