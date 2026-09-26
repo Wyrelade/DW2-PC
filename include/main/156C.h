@@ -3049,4 +3049,16 @@ typedef struct {
     /* 0x26 */ u16 pad2;
 } Ft4_11854;
 
+/* memory card directory frame entry (0x20) written by func_800401E4 */
+typedef struct {
+    /* 0x00 */ s32 field_0;
+    /* 0x04 */ s32 field_4;
+    /* 0x08 */ u16 field_8;
+    u8 _pad0A[0x16];
+} McDir401E4;
+
+/* byte-aligned views used for the frame copies in func_800401E4 */
+typedef struct { u8 b[0x20]; } McBlk20;
+typedef struct { u8 b[0x4]; } McBlk4;
+
 #endif /* MAIN_156C_H */
