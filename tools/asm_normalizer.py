@@ -6999,6 +6999,24 @@ def la_copy_pass(stext, tgt):
         return stext
     lines = stext.split("\n")
     nr = _noreorder_lines(lines)
+    # the split flavor builds it as `lui $T,%hi(S); addiu $sN,$T,%lo(S)` with T
+    # dead after: treat that as `la $sN,S` (restored below when not edited)
+    conv = {}
+    ins0 = [(y, l) for y, l in enumerate(lines) if _s_is_insn(l)]
+    for p in range(len(ins0) - 1):
+        h, hl = ins0[p]
+        j, jl = ins0[p + 1]
+        mh = re.match(r"^(\s*)lui\s+(\$\w+)\s*,\s*%hi\(([A-Za-z_]\w*)\)\s*$", hl.split("#", 1)[0])
+        mj = re.match(r"^\s*addiu\s+(\$\w+)\s*,\s*(\$\w+)\s*,\s*%lo\(([A-Za-z_]\w*)\)\s*$",
+                      jl.split("#", 1)[0])
+        if not (mh and mj and mh.group(3) == mj.group(3) and mh.group(3) in cps
+                and mj.group(2) == mh.group(2) and mj.group(1) != mh.group(2)
+                and norm_reg(mj.group(1)) in _LC_SREG and h not in nr and j not in nr
+                and _us_dead_ft(lines, ins0, j, norm_reg(mh.group(2)))):
+            continue
+        conv[j] = (h, hl, jl)
+        lines[h] = "#lc_hi"
+        lines[j] = "%sla\t%s,%s" % (mh.group(1), mj.group(1), mh.group(3))
     ours = {}
     for i, l in enumerate(lines):
         m = _LC_LA.match(l.split("#", 1)[0])
@@ -7016,13 +7034,13 @@ def la_copy_pass(stext, tgt):
             for y in range(i + 1, len(lines)):
                 l = lines[y]
                 if _s_is_label(l) and not l.strip().startswith("LM"):
-                    ok = False
+                    ok = nbr == 0
                     break
                 if not _s_is_insn(l):
                     continue
                 body = l.split("#", 1)[0].strip()
                 if y in nr or re.match(r"(jalr?|j|jr|b)\b", body):
-                    ok = False
+                    ok = nbr == 0
                     break
                 d, u = defs_uses(body)
                 if sn in d or v in d or v in u:
@@ -7030,6 +7048,8 @@ def la_copy_pass(stext, tgt):
                     break
                 if sn in u:
                     reads.append(y)
+                if body.split(None, 1)[0].lower() in _COND_BR_MN and nbr == 0:
+                    break
                 if body.split(None, 1)[0].lower() in _COND_BR_MN:
                     lab = _lc_label(body)
                     if lab is None or not _ff_dead_on(lines, ins, lab, sn) or \
@@ -7040,13 +7060,19 @@ def la_copy_pass(stext, tgt):
                     if seen == nbr:
                         at = y
                         break
+            if nbr == 0 and ok and reads:
+                # no branch between la and the target's move: copy after the
+                # last straight-line read (sched passes place it)
+                at = reads[-1]
             if not ok or at is None or not _us_dead_ft(lines, ins, at, v):
-                continue
-            if nbr == 0:
                 continue
             edits.append((i, at, m, sn, v, reads))
     if not edits:
         return stext
+    done = set(e[0] for e in edits)
+    for j, (h, hl, jl) in conv.items():
+        if j not in done:
+            lines[h], lines[j] = hl, jl
     for i, at, m, sn, v, reads in sorted(edits, key=lambda e: -e[0]):
         vr, sr = "$%d" % ABI2NUM[v], m.group(2)
         lines.insert(at + 1, "%smove\t%s,%s" % (m.group(1), sr, vr))
@@ -7402,6 +7428,137 @@ def la_split_pass(stext, tgt):
     return "\n".join(out)
 
 
+# --------------------------------------------------------------------------
+# const_sink: our loop.c hoisted a constant (`li $sK,C`) out of a loop into a
+# callee-saved register; retail left it in the loop body in a caller-saved temp
+# (`lui $aX,C>>16` a few insns before its uses) and so saved one s-register
+# less. Target-guided: the target saves one s-register fewer than ours, builds
+# C in a non-s register, and never holds C in an s-register. Ours: sK is
+# written once (the li), every read of it sits in one basic block with no call
+# between the first and the last, and the frame size is unchanged by dropping
+# one save slot. The li moves to just before the first read into a register
+# the function never touches, sK's save/restore go, the s-registers above sK
+# slide down one number and the save slots are re-laid out in cc1's order.
+# Count-changing: pre-sigma.
+# --------------------------------------------------------------------------
+_CS_LI = re.compile(r"^(\s*)li\s+\$(1[6-9]|2[0-3])\s*,\s*(-?\d+)")
+_CS_FRAME = re.compile(r"\.frame\s+\$sp,(\d+),\$31\s*#\s*vars=\s*(\d+),\s*regs=\s*(\d+)/(\d+),"
+                       r"\s*args=\s*(\d+),\s*extra=\s*(\d+)")
+_CS_SAVE = re.compile(r"^(\s*)(sw|lw)(\s+)\$(\d+)\s*,\s*(\d+)\(\$sp\)\s*$")
+_CS_FREE = (3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 24, 25, 4)
+
+
+def _cs_tgt(tgt):
+    """({const: [regs holding it]}, number of s-registers the target saves)."""
+    held, nsave = {}, 0
+    for i, (w, d) in enumerate(tgt):
+        m = re.match(r"\s*sw\s+\$(s[0-7])\s*,\s*0x[0-9A-Fa-f]+\(\$sp\)", d)
+        if m and i < 16:
+            nsave += 1
+        m = re.match(r"\s*lui\s+\$(\w+)\s*,\s*\((0x[0-9A-Fa-f]+|\d+)\s*>>\s*16\)\s*$", d)
+        if m:
+            held.setdefault(int(m.group(2), 0) & 0xFFFFFFFF, []).append(norm_reg(m.group(1)))
+            continue
+        m = re.match(r"\s*addiu\s+\$(\w+)\s*,\s*\$zero\s*,\s*(-?0x[0-9A-Fa-f]+|-?\d+)\s*$", d)
+        if m:
+            held.setdefault(int(m.group(2), 0) & 0xFFFFFFFF, []).append(norm_reg(m.group(1)))
+    return held, nsave
+
+
+def const_sink_pass(stext, tgt):
+    if not tgt:
+        return stext
+    held, tsave = _cs_tgt(tgt)
+    lines = stext.split("\n")
+    fr = next(((i, _CS_FRAME.search(l)) for i, l in enumerate(lines) if _CS_FRAME.search(l)), None)
+    if fr is None:
+        return stext
+    fsz, vars_, nregs, nf, args, extra = (int(fr[1].group(k)) for k in range(1, 7))
+    newsz = (vars_ + (nregs - 1) * 4 + nf * 8 + args + extra + 7) & ~7
+    if newsz != fsz:
+        return stext
+    ins = [(i, l) for i, l in enumerate(lines) if _s_is_insn(l)]
+    saves = {}
+    for i, l in ins[:24]:
+        m = _CS_SAVE.match(l)
+        if m and m.group(2) == "sw" and (16 <= int(m.group(4)) <= 23 or int(m.group(4)) in (30, 31)):
+            saves[int(m.group(4))] = int(m.group(5))
+    sregs = sorted(r for r in saves if 16 <= r <= 23)
+    if not sregs or sregs != list(range(16, 16 + len(sregs))) or len(sregs) - 1 != tsave:
+        return stext
+    used = set(int(x) for x in re.findall(r"\$(\d+)\b", "\n".join(l.split("#", 1)[0] for _, l in ins)))
+    for i, l in ins:
+        m = _CS_LI.match(l.split("#", 1)[0])
+        if not m:
+            continue
+        k, c = int(m.group(2)), int(m.group(3)) & 0xFFFFFFFF
+        rk = "$%d" % k
+        if k not in saves or c not in held or any(r.startswith("s") or r == "fp" for r in held[c]):
+            continue
+        pat = re.compile(re.escape(rk) + r"\b")
+        refs = [(j, x) for j, x in ins if j != i and pat.search(x.split("#", 1)[0])
+                and not _CS_SAVE.match(x)]
+        if not refs or any(norm_reg("$%d" % k) in defs_uses(x.split("#", 1)[0].strip())[0]
+                           for _, x in refs):
+            continue
+        a, b = refs[0][0], refs[-1][0]
+        mid = [x for j, x in ins if a <= j <= b]
+        if any(_src_is_branch(x) or re.match(r"\s*jalr?\b", x) for x in mid) or any(
+                re.match(r"\s*[$\w.]+:\s*$", lines[y]) and not lines[y].strip().startswith("LM")
+                for y in range(a, b)):
+            continue
+        if any(y in _noreorder_lines(lines) for y in (i, a)):
+            continue
+        # a temp the span [a, b] does not mention and that is dead at a
+        # (the target's register for C first)
+        span = set(int(x) for x in re.findall(r"\$(\d+)\b", "\n".join(
+            x.split("#", 1)[0] for j, x in ins if a <= j <= b)))
+        l2 = lines[:a] + ["$Lcs_probe:"] + lines[a:]
+        ins2 = [(q, x) for q, x in enumerate(l2) if _s_is_insn(x)]
+        pref = [ABI2NUM[r] for r in held[c] if r in ABI2NUM]
+        t = next((r for r in pref + list(_CS_FREE) if r not in span and r in _CS_FREE
+                  and _ff_dead_on(l2, ins2, "$Lcs_probe", norm_reg("$%d" % r))), None)
+        if t is None:
+            continue
+        ind = m.group(1)
+        out = []
+        for y, l in enumerate(lines):
+            if y == i:
+                continue
+            if y == a:
+                out.append("%sli\t$%d,%s" % (ind, t, m.group(3)))
+            if a <= y <= b and _s_is_insn(l):
+                l = pat.sub("$%d" % t, l)
+            ms = _CS_SAVE.match(l)
+            if ms and int(ms.group(4)) == k and int(ms.group(5)) == saves[k]:
+                continue
+            out.append(l)
+        order = sorted(saves, key=lambda r: saves[r])
+        offs = [saves[r] for r in order]
+        new = [r for r in order if r != k]
+        ren = {r: (r - 1 if 16 <= r <= 23 and r > k else r) for r in new}
+        slot = {ren[r]: offs[x] for x, r in enumerate(new)}
+        oldslot = {ren[r]: saves[r] for r in new}
+
+        def rn(mm):
+            r = int(mm.group(1))
+            return "$%d" % (r - 1 if k < r <= max(sregs) else r)
+        res = []
+        for l in out:
+            if _s_is_insn(l):
+                body, sep, cm = l.partition("#")
+                body = re.sub(r"\$(\d+)\b", rn, body)
+                ms = _CS_SAVE.match(body)
+                if ms and int(ms.group(4)) in slot and int(ms.group(5)) == oldslot[int(ms.group(4))]:
+                    body = "%s%s%s$%d,%d($sp)" % (ms.group(1), ms.group(2), ms.group(3),
+                                                  int(ms.group(4)), slot[int(ms.group(4))])
+                l = body + (sep + cm if sep else "")
+            res.append(l)
+        return "\n".join(res)
+    return stext
+
+
+
 PASSES = {
     # reg_realloc is applied specially (it needs sigma from words); the ordered
     # list in the manifest still names it so the recipe is explicit and auditable.
@@ -7461,6 +7618,7 @@ PASSES = {
     "slot_sink": slot_sink_pass,
     "selfmove_drop": selfmove_drop_pass,
     "la_split": la_split_pass,
+    "const_sink": const_sink_pass,
 }
 
 # Passes that CHANGE the instruction count and so must run BEFORE sigma is derived
@@ -7470,7 +7628,7 @@ PASSES = {
 PRE_SIGMA_PASSES = ("la_unfold_st", "un_hi_cse", "un_hi_cse_store", "exit_merge", "base_cse_collapse",
                     "shift_const_fold", "zero_remat", "load_remat", "nodiv",
                     "offset_unfold", "zext_keep", "zero_cmp", "param_copy",
-                    "undo_drop", "la_unfold", "arg_unprop", "sched_pre", "la_copy", "la_split")
+                    "undo_drop", "la_unfold", "arg_unprop", "sched_pre", "la_copy", "la_split", "const_sink")
 
 # --------------------------------------------------------------------------
 # WORD-LEVEL passes. The original PSY-Q assembler (aspsx) scheduled branch and
