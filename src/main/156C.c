@@ -9027,7 +9027,144 @@ s32 func_8002689C(Ent266D0 *a0) {
     return r;
 }
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_800269B8);
+static inline s32 inl_w(s32 arg0) {
+    volatile Regs48E8C *q = D_80048E8C;
+    Stat48E90 *st = D_80048E90;
+    D_80060050 = arg0;
+    D_8006004C = *(volatile u16 *)0x1F801120;
+    q->field_0 = -0x81;
+    if (st->field_4 & 0x80) {
+        do {
+            if (func_80026630() != 0) {
+                return 0;
+            }
+        } while (D_80048E90->field_4 & 0x80);
+    }
+    D_80048E90->field_A |= 0x10;
+    return 1;
+}
+
+static inline s32 inl_h(s32 arg0, volatile u16 *hw) {
+    volatile Regs48E8C *q = D_80048E8C;
+    Stat48E90 *st = D_80048E90;
+    D_80060050 = arg0;
+    D_8006004C = *hw;
+    q->field_0 = -0x81;
+    if (st->field_4 & 0x80) {
+        do {
+            if (func_80026630() != 0) {
+                return 0;
+            }
+        } while (D_80048E90->field_4 & 0x80);
+    }
+    D_80048E90->field_A |= 0x10;
+    return 1;
+}
+
+s32 func_800269B8(Ent266D0 *a0) {
+    s32 f;
+    s32 i;
+    s32 r;
+    s32 t;
+    s32 ok;
+    s32 idx;
+    Obj25FBC *e;
+    Slot267F0 *s;
+    s32 *slot;
+    s32 c;
+
+    if (D_80048E9C != 0 && a0->field_37 == 0 && a0->field_38 == 0
+        && (a0 == a0->field_10 || a0->field_39 == 0) && *a0->field_30 == 0) {
+        D_80048E24(a0);
+    }
+    f = D_80048E9C;
+    if (f != 0) {
+        for (i = -1; i < 4; i++) {
+            if (--D_80048E94 <= 0) {
+                break;
+            }
+            if (i >= 0) {
+                s = &a0->field_C[i];
+                if (s->e.field_37 == 0 && s->e.field_38 == 0
+                    && (&s->e == s->e.field_10 || s->e.field_39 == 0) && *s->e.field_30 == 0) {
+                    D_80048E24(&s->e);
+                }
+            }
+            r = func_80025984(a0, (u8)D_80048E20(a0, 1));
+            if (r < 0) {
+                return r;
+            }
+            if (inl_w(0x3C) == 0) {
+                return -3;
+            }
+        }
+    }
+    e = 0;
+    idx = D_80048E58 == 0;
+    while (D_80048E94 >= 2) {
+        slot = &D_80048E70[idx];
+        t = 0x3C;
+        c = 3;
+            if (*slot < 0) {
+                break;
+            }
+            if (*slot > 0) {
+                e = D_80048E4C[idx].field_C + *slot - 1;
+                D_80048E38(e);
+            }
+            switch (*slot) {
+            case 4:
+                *slot = c;
+                break;
+            case 3:
+                D_80048E38(e - 1);
+                *slot = 1;
+                break;
+            case 0:
+            case 1:
+                e = &D_80048E4C[idx];
+                D_80048E38(e);
+                D_80048E3C((Actor *)e);
+                *slot = -1;
+                break;
+            }
+            r = func_80025760(a0, (u8)D_80048E20(a0, f));
+            if (r < 0) {
+                return r;
+            }
+            if (inl_w(t) == 0) {
+                return -3;
+            }
+        D_80048E94--;
+    }
+    while (--D_80048E94 > 0) {
+        s32 u = 0x22;
+        volatile u16 *hw = (volatile u16 *)0x1F801120;
+        t = 0x3C;
+        r = func_80025760(a0, (u8)D_80048E20(a0, f));
+        if (r < 0) {
+            return r;
+        }
+        if (D_80048E90->field_E != u) {
+            if (inl_h(t, hw) == 0) {
+                return -3;
+            }
+        }
+    }
+    {
+        Stat48E90 *st = D_80048E90;
+        while (!(st->field_4 & 2)) {
+        }
+    }
+    {
+        s32 k = a0->field_44;
+        a0->field_44 = k + 1;
+        a0->field_3C[k] = D_80048E90->field_0;
+    }
+    D_80048E18(0);
+    return 0;
+}
+
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80026FB4);
 
