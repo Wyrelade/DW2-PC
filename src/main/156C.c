@@ -17306,7 +17306,19 @@ s32 func_8003FFAC(void) {
     return r >> 1;
 }
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80040084);
+s32 func_80040084(void) {
+    s32 v;
+
+    do {
+        v = D_80063090 + D_80063094 * 2 + D_80063098 * 4 + D_8006309C * 8;
+    } while (v == 0);
+    func_8003C8B4(D_80063060);
+    func_8003C8B4(D_80063064);
+    func_8003C8B4(D_80063068);
+    func_8003C8B4(D_8006306C);
+    D_80063090 = D_80063094 = D_80063098 = D_8006309C = 0;
+    return v >> 1;
+}
 
 s32 func_8004015C(void) {
     return D_80063080 + D_80063084 * 2 + D_80063088 * 4 + D_8006308C * 8;

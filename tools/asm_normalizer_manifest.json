@@ -3578,5 +3578,11 @@
       "delay_fill",
       "padnop"
     ]
+  },
+  "func_80040084": {
+    "passes": [
+      "nosplit",
+      "sched_match"
+    ]
   }
 }
