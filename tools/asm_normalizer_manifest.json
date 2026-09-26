@@ -3623,5 +3623,21 @@
       "delay_fill",
       "padnop"
     ]
+  },
+  "func_80036784": {
+    "passes": [
+      "nosplit_nodb",
+      "zero_remat",
+      "la_copy",
+      "sreg_perm",
+      "web_realloc",
+      "save_slot",
+      "sched_match",
+      "block_iso",
+      "taken_fill",
+      "fallthrough_fill",
+      "delay_fill",
+      "padnop"
+    ]
   }
 }

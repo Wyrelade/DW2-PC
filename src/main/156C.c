@@ -784,6 +784,19 @@ extern void func_8003139C(void);
 extern s32 D_80062BD0[];
 extern u16 D_80062A4E[];
 extern u16 D_80062A50[];
+extern s32 D_80062BCC;
+extern s32 D_80062BD0[];
+extern void (*D_80062BC8)(s32);
+extern void (*D_80062A40)(s32);
+extern void func_8003C554(s32 on_off, u32 voice_bit);
+extern void func_8003D104(s32 a0, u16 *a1);
+extern void func_8003B3F4(s32, s32);
+extern void func_8003C344(s32, s32);
+extern void func_8003B6E4(void);
+extern void func_8003C374(void);
+extern u16 D_80062A4E[];
+extern u16 D_80062A50[];
+extern u16 D_80062A52[];
 s16 func_800388A4(s16, s16, s16, s16, u16);
 void func_80021DC8(void);
 
@@ -13889,7 +13902,122 @@ void func_80036774(void) {
     D_80062CB0 = 2;
 }
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80036784);
+void func_80036784(void) {
+    VAttr36C54 attr;
+    s32 i;
+    s32 m;
+    s32 x;
+    s32 *masks;
+    s32 *q;
+    u8 *fl;
+    Rec62A48 *r;
+    s32 two;
+    s32 k;
+    Stride16 *p0, *p1, *p2, *p3, *p4, *p5;
+
+    D_80062BCC = (D_80062BCC + 1) & 0xF;
+    D_80062BD0[D_80062BCC] = 0;
+    masks = D_80062BD0;
+    for (i = 0; i < D_80062D0C; i++) {
+        func_8003D104(i, (u16 *)&D_800624E8[i].field_6);
+        if (D_800624E8[i].field_6 == 0) {
+            masks[D_80062BCC] |= 1 << i;
+        }
+    }
+    if (*(s8 *)&D_80062D48 == 0) {
+        m = -1;
+        q = D_80062BD0;
+        for (i = 0; i < 15; i++) {
+            m &= q[i];
+        }
+        for (i = 0; i < D_80062D0C; i++) {
+            s32 bit;
+            two = 2;
+            bit = 1 << i;
+            if (m & bit) {
+                if (D_800624E8[i].field_1D == two) {
+                    s16 lo;
+                    u8 hi;
+                    if (i < 16) {
+                        hi = 0;
+                        lo = bit;
+                    } else {
+                        lo = 0;
+                        hi = 1 << (i - 16);
+                    }
+                    func_8003B3F4(0, (hi << 16) | lo);
+                }
+                D_800624E8[i].field_1D = 0;
+            }
+        }
+    }
+    D_800624D8 &= ~D_80062C10;
+    D_800624DA &= ~D_80062C12;
+    for (i = 0; i < 24; i++) {
+        if (D_800624E8[i].field_1E != 0) {
+            D_80062BC8(i);
+        }
+        if (D_800624E8[i].field_2A != 0) {
+            D_80062A40(i);
+        }
+    }
+    i = 0;
+    fl = D_80062A28;
+    r = (Rec62A48 *)D_80062A48;
+    p5 = (Stride16 *)&r->field_A;
+    p4 = (Stride16 *)&r->field_8;
+    p3 = (Stride16 *)&r->field_6;
+    p2 = (Stride16 *)&r->field_4;
+    p1 = (Stride16 *)&r->field_2;
+    p0 = (Stride16 *)&r->field_0;
+    for (; i < 24; i++) {
+        attr.mask = 0;
+        attr.voice = 1 << i;
+        if (*fl & 1) {
+            attr.mask = 3;
+            attr.vol_l = p0->v;
+            attr.vol_r = p1->v;
+        }
+        if (*fl & 4) {
+            attr.mask |= 0x10;
+            attr.pitch = p2->v;
+        }
+        if (*fl & 8) {
+            attr.mask |= 0x80;
+            attr.addr = p3->v << 3;
+        }
+        if (*fl & 0x10) {
+            attr.mask |= 0x60000;
+            attr.adsr1 = p4->v;
+            attr.adsr2 = p5->v;
+        }
+        if (attr.mask != 0) {
+            func_8003C904(&attr);
+        }
+        *fl = 0;
+        fl++;
+        p5++;
+        p4++;
+        p3++;
+        p2++;
+        p1++;
+        p0++;
+    }
+    func_8003C554(0, ((D_80062C12 & 0xFF) << 16) | D_80062C10);
+    func_8003C554(1, ((D_800624DA & 0xFF) << 16) | D_800624D8);
+    k = 0xFFFFFF >> (24 - D_80062D0C);
+    x = ((D_800624DE << 16) | D_800624DC) & k;
+    func_8003C344(8, x | (((s32 (*)(void))func_8003C374)() & ~k));
+    x = ((D_800624E2 << 16) | D_800624E0) & k;
+    func_8003B3F4(8, x | (((s32 (*)(void))func_8003B6E4)() & ~k));
+    D_80062C10 = 0;
+    D_80062C12 = 0;
+    D_800624D8 = 0;
+    D_800624DA = 0;
+    D_800624E0 = 0;
+    D_800624E2 = 0;
+}
+
 
 void func_80036C54(s32 arg) {
     VAttr36C54 attr;

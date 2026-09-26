@@ -2976,4 +2976,22 @@ typedef struct {
     /* 0x00 */ s32 field_0;
     /* 0x04 */ s32 field_4;
 } Pair62F70;
+
+/* Pending voice attribute values at D_80062A48 (stride 0x10). */
+typedef struct {
+    /* 0x00 */ u16 field_0;
+    /* 0x02 */ u16 field_2;
+    /* 0x04 */ u16 field_4;
+    /* 0x06 */ u16 field_6;
+    /* 0x08 */ u16 field_8;
+    /* 0x0A */ u16 field_A;
+    u8 _pad0C[0x4];
+} Rec62A48;
+
+/* One u16 field of a 16-byte record, for per-field stride pointers. */
+typedef struct {
+    u16 v;
+    u8 _pad02[0xE];
+} Stride16;
+
 #endif /* MAIN_156C_H */
