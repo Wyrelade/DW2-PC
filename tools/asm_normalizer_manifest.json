@@ -3639,5 +3639,11 @@
       "delay_fill",
       "padnop"
     ]
+  },
+  "func_80023550": {
+    "passes": [
+      "gp8",
+      "web_realloc"
+    ]
   }
 }
