@@ -3082,4 +3082,6 @@ typedef struct {
     /* 0x4 */ u16 intr;
 } Res2E2C4;
 
+#define VA_ARG(ap, T) (((T *)((ap) += sizeof(T)))[-1])
+
 #endif /* MAIN_156C_H */

@@ -3715,5 +3715,17 @@
       "epilogue_unfill",
       "padnop"
     ]
+  },
+  "func_8002A054": {
+    "passes": [
+      "nosplit",
+      "zero_remat",
+      "zext_drop",
+      "web_realloc",
+      "sched_match",
+      "taken_fill",
+      "delay_fill",
+      "padnop"
+    ]
   }
 }

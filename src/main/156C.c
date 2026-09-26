@@ -815,6 +815,9 @@ extern s32 D_80063280[20];
 extern Rev3B994 D_800503E8[];
 extern void func_8002EBE0(s32 *dst, s32 *src, u32 count);
 extern void func_8002EC0C(s32 ch, u32 madr, s32 hi, s32 lo, u32 chcr, u8 mode);
+extern char D_80010404[];
+extern char D_80010418[];
+extern char D_80010420[];
 s16 func_800388A4(s16, s16, s16, s16, u16);
 void func_80021DC8(void);
 
@@ -10491,7 +10494,250 @@ void func_8002A014(fmt, a1, a2, a3) char *fmt; s32 a1; s32 a2; s32 a3; {
 }
 
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002A054);
+s32 func_8002A054(s32 fd, char *fmt0, char *ap) {
+    s32 ret;
+    s32 dprec;
+    s32 fpprec;
+    s32 width;
+    char *xdigs;
+    u8 *fmt;
+    s32 ch;
+    s32 n;
+    char *cp;
+    s32 flags;
+    s32 prec;
+    s32 sign;
+    u32 _ulong;
+    s32 base;
+    s32 fieldsz;
+    s32 realsz;
+    s32 size;
+    char *p;
+    char buf[40];
+
+    if (fmt0 == 0) {
+        return 0;
+    }
+    fmt = (u8 *)fmt0;
+    xdigs = D_80010404;
+    ret = 0;
+    for (;; fmt++) {
+        ch = *fmt;
+        if (ch == 0) {
+            goto done;
+        }
+        if (ch != '%') {
+            goto put;
+        }
+        flags = 0;
+        prec = -1;
+        sign = 0;
+        dprec = 0;
+        fpprec = 0;
+        width = 0;
+    rflag:
+        ch = *++fmt;
+        switch (ch) {
+        case ' ':
+            if (!sign) {
+                sign = ' ';
+            }
+            goto rflag;
+        case '#':
+            flags |= 8;
+            goto rflag;
+        case '*':
+            if ((width = VA_ARG(ap, s32)) >= 0) {
+                goto rflag;
+            }
+            width = -width;
+        case '-':
+            flags |= 0x10;
+            goto rflag;
+        case '+':
+            sign = '+';
+            goto rflag;
+        case '.':
+            if ((ch = *++fmt) == '*') {
+                n = VA_ARG(ap, s32);
+                prec = n < 0 ? -1 : n;
+                goto rflag;
+            }
+            n = 0;
+            while ((u32)ch < 0x80 && (D_80049071[*fmt] & 4)) {
+                n = n * 10 + (s32)(*fmt++ - '0');
+                ch = *fmt;
+            }
+            fmt--;
+            prec = n < 0 ? -1 : n;
+            goto rflag;
+        case '0':
+            flags |= 0x20;
+            goto rflag;
+        case '1': case '2': case '3': case '4':
+        case '5': case '6': case '7': case '8': case '9':
+            n = 0;
+            do {
+                n = n * 10 + (s32)(*fmt++ - '0');
+            } while ((u32)(ch = *fmt) < 0x80 && (D_80049071[*(volatile u8 *)fmt] & 4));
+            width = n;
+            fmt--;
+            goto rflag;
+        case 'L':
+            flags |= 2;
+            goto rflag;
+        case 'h':
+            flags |= 4;
+            goto rflag;
+        case 'l':
+            flags |= 1;
+            goto rflag;
+        case 'c':
+            *(cp = buf) = VA_ARG(ap, s32);
+            size = 1;
+            sign = 0;
+            break;
+        case 'D':
+            flags |= 1;
+        case 'd':
+        case 'i':
+            _ulong = (flags & 1) ? VA_ARG(ap, s32) : (flags & 4) ? (s16)VA_ARG(ap, s32) : VA_ARG(ap, s32);
+            if ((s32)_ulong < 0) {
+                _ulong = -_ulong;
+                sign = '-';
+            }
+            base = 10;
+            goto number;
+        case 'n':
+            if (flags & 1) {
+                *VA_ARG(ap, s32 *) = ret;
+            } else if (flags & 4) {
+                *VA_ARG(ap, s16 *) = ret;
+            } else {
+                *VA_ARG(ap, s32 *) = ret;
+            }
+            continue;
+        case 'O':
+            flags |= 1;
+        case 'o':
+            _ulong = (flags & 1) ? VA_ARG(ap, s32) : (flags & 4) ? (s16)VA_ARG(ap, s32) : VA_ARG(ap, s32);
+            base = 8;
+            goto nosign;
+        case 'p':
+            _ulong = VA_ARG(ap, s32);
+            base = 16;
+            goto nosign;
+        case 's':
+            if ((cp = VA_ARG(ap, char *)) == 0) {
+                cp = D_80010418;
+            }
+            if (prec >= 0) {
+                p = (char *)func_8002A6F4((u8 *)cp, 0, prec);
+                if (p != 0) {
+                    size = p - cp;
+                    if (size > prec) {
+                        size = prec;
+                    }
+                } else {
+                    size = prec;
+                }
+            } else {
+                size = func_8002A9B4((s8 *)cp);
+            }
+            sign = 0;
+            break;
+        case 'U':
+            flags |= 1;
+        case 'u':
+            _ulong = (flags & 1) ? VA_ARG(ap, s32) : (flags & 4) ? (s16)VA_ARG(ap, s32) : VA_ARG(ap, s32);
+            base = 10;
+            goto nosign;
+        case 'X':
+            xdigs = D_80010420;
+        case 'x':
+            _ulong = (flags & 1) ? VA_ARG(ap, s32) : (flags & 4) ? (s16)VA_ARG(ap, s32) : VA_ARG(ap, s32);
+            base = 16;
+            if ((flags & 8) && _ulong != 0) {
+                flags |= 0x40;
+            }
+        nosign:
+            sign = 0;
+        number:
+            if ((dprec = prec) >= 0) {
+                flags &= ~0x20;
+            }
+            cp = buf + 40;
+            if (_ulong != 0 || dprec != 0) {
+                do {
+                    *--cp = xdigs[_ulong % base];
+                    _ulong /= base;
+                } while (_ulong);
+                xdigs = D_80010404;
+                if ((flags & 8) && base == 8 && *(s8 *)cp != '0') {
+                    *--cp = '0';
+                }
+            }
+            size = buf + 40 - cp;
+            break;
+        case '\0':
+            goto done;
+        default:
+            goto put_s;
+        }
+        fieldsz = size + fpprec;
+        if (sign) {
+            fieldsz++;
+        }
+        if (flags & 0x40) {
+            fieldsz += 2;
+        }
+        realsz = fieldsz > dprec ? fieldsz : dprec;
+        if ((flags & 0x30) == 0 && width) {
+            for (n = realsz; n < width; n++) {
+                func_8002A744(' ');
+            }
+        }
+        ch = sign;
+        if (ch) {
+            ((void (*)(s32))func_8002A744)(ch);
+        }
+        if (flags & 0x40) {
+            func_8002A744('0');
+            func_8002A744(*fmt);
+        }
+        if ((flags & 0x30) == 0x20) {
+            for (n = realsz; n < width; n++) {
+                func_8002A744('0');
+            }
+        }
+        for (n = fieldsz; n < dprec; n++) {
+            func_8002A744('0');
+        }
+        for (n = size; --n >= 0;) {
+            func_8002A744(*cp++);
+        }
+        while (--fpprec >= 0) {
+            func_8002A744('0');
+        }
+        if (flags & 0x10) {
+            for (n = realsz; n < width; n++) {
+                func_8002A744(' ');
+            }
+        }
+        ret += realsz > width ? realsz : width;
+        continue;
+    done:
+        func_8002A840();
+        return ret;
+    put_s:
+        ret++;
+        func_8002A744(*fmt);
+        continue;
+    put:
+        ((void (*)(s32))func_8002A744)(ch);
+    }
+}
+
 
 u8 *func_8002A6F4(u8 *p, s32 c, s32 n) {
     u8 *r = 0;
