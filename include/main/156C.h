@@ -1025,7 +1025,7 @@ typedef struct {
     /* 0x10 */ s32 field_10;
 } Cmd62C18; /* size 0x14 */
 
-void func_8003B994(Cmd62C18 *cmd);
+s32 func_8003B994(Cmd62C18 *cmd);
 
 /* By-value argument block of the func_80032954 handler table entries
  * (void handler(s16, s16, s16, HandlerArg)). It starts in $a3 and continues on

@@ -812,6 +812,7 @@ extern Pair54 D_80040D70[][3];
 extern u8 D_800632E0[0x80];
 extern McDir401E4 D_800630A0[15];
 extern s32 D_80063280[20];
+extern Rev3B994 D_800503E8[];
 s16 func_800388A4(s16, s16, s16, s16, u16);
 void func_80021DC8(void);
 
@@ -16032,7 +16033,136 @@ zero:
 }
 
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8003B994);
+#define REVCPY(d, s) { u8 *_d = (u8 *)(d); u8 *_s = (u8 *)(s); s32 _n; for (_n = 0x43; _n != -1; _n--) { *_d++ = *_s++; } }
+s32 func_8003B994(Cmd62C18 *attr) {
+    Rev3B994 p;
+    s32 mask;
+    u32 mode;
+    s32 all;
+    volatile s32 clear;
+    s32 modeSet;
+    s32 delaySet;
+    s32 fbSet;
+    s32 wasOn;
+    s32 t;
+    s32 m;
+    s32 *tbl;
+    s32 d;
+
+    wasOn = 0;
+    modeSet = 0;
+    delaySet = 0;
+    clear = 0;
+    mask = ((volatile Cmd62C18 *)attr)->field_0;
+    fbSet = 0;
+    all = mask == 0;
+    p.field_0 = 0;
+    if (all || (mask & 1)) {
+        mode = attr->field_4;
+        if (mode & 0x100) {
+            mode &= ~0x100;
+            clear = 1;
+        }
+        if (mode >= 10 || (tbl = D_800503B8, func_8003B904(D_800503B8[mode]))) {
+            return -1;
+        }
+        modeSet = 1;
+        D_8004FDCC.field_0 = mode;
+        m = ((volatile Blk4FDCC *)&D_8004FDCC)->field_0;
+        tbl += m;
+        D_8004FDC4 = *tbl;
+        REVCPY(&p, &D_800503E8[m]);
+        switch (D_8004FDCC.field_0) {
+        case 7:
+            D_8004FDCC.field_C = 0x7F;
+            D_8004FDCC.field_8 = 0x7F;
+            break;
+        case 8:
+            D_8004FDCC.field_C = 0;
+            D_8004FDCC.field_8 = 0x7F;
+            break;
+        default:
+            D_8004FDCC.field_C = 0;
+            D_8004FDCC.field_8 = 0;
+            break;
+        }
+    }
+    if (all || (mask & 8)) {
+        s32 mm = D_8004FDCC.field_0;
+        if (mm < 9) {
+            if (mm >= 7) {
+                delaySet = 1;
+                if (!modeSet) {
+                    REVCPY(&p, &D_800503E8[((volatile Blk4FDCC *)&D_8004FDCC)->field_0]);
+                    p.field_0 = 0xC011C00;
+                }
+                d = attr->field_C;
+                D_8004FDCC.field_8 = d;
+                t = (d << 12) / 127;
+                p.field_18 = (d << 13) / 127 - p.field_4;
+                p.field_1A = t - p.field_6;
+                p.field_1C = p.field_1E + t;
+                p.field_24 = p.field_26 + t;
+                p.field_38 = p.field_3C + t;
+                p.field_3A = p.field_3E + t;
+            }
+        }
+    }
+    if (all || (mask & 0x10)) {
+        s32 mm = D_8004FDCC.field_0;
+        if (mm < 9) {
+            if (mm >= 7) {
+                fbSet = 1;
+                if (!modeSet) {
+                    if (!delaySet) {
+                        REVCPY(&p, &D_800503E8[((volatile Blk4FDCC *)&D_8004FDCC)->field_0]);
+                        p.field_0 = 0x80;
+                    } else {
+                        p.field_0 |= 0x80;
+                    }
+                }
+                d = attr->field_10;
+                D_8004FDCC.field_C = d;
+                p.field_12 = (d * 0x8100) / 127;
+            }
+        }
+    }
+    if (modeSet) {
+        wasOn = (((volatile u16 *)D_8004FE28)[0xD5] >> 7) & 1;
+        if (wasOn) {
+            ((volatile u16 *)D_8004FE28)[0xD5] &= ~0x80;
+        }
+    } else {
+        if (all || (mask & 2)) {
+            D_8004FE28[0xC2] = attr->field_8;
+            D_8004FDCC.field_4 = attr->field_8;
+        }
+        if (all || (mask & 4)) {
+            D_8004FE28[0xC3] = attr->field_A;
+            D_8004FDCC.field_6 = attr->field_A;
+        }
+        goto done;
+    }
+    D_8004FE28[0xC2] = 0;
+    D_8004FE28[0xC3] = 0;
+    D_8004FDCC.field_4 = 0;
+    D_8004FDCC.field_6 = 0;
+done:
+    if (modeSet || delaySet || fbSet) {
+        func_8003BE74(&p);
+    }
+    if (clear) {
+        func_8003C3A4(D_8004FDCC.field_0);
+    }
+    if (modeSet) {
+        func_8003AAE0(0xD1, D_8004FDC4, 0);
+        if (wasOn) {
+            D_8004FE28[0xD5] |= 0x80;
+        }
+    }
+    return 0;
+}
+
 
 void func_8003BE74(Rev3B994 *p) {
     u32 mask;
