@@ -3613,5 +3613,15 @@
       "nosplit",
       "web_realloc"
     ]
+  },
+  "func_800379B4": {
+    "passes": [
+      "nosplit",
+      "reg_realloc_inj",
+      "web_realloc",
+      "block_iso",
+      "delay_fill",
+      "padnop"
+    ]
   }
 }

@@ -781,6 +781,9 @@ extern void func_80030334(s8 *s);
 extern s32 setjmp(s32 *env);
 extern void func_800313D4(s32 *env);
 extern void func_8003139C(void);
+extern s32 D_80062BD0[];
+extern u16 D_80062A4E[];
+extern u16 D_80062A50[];
 s16 func_800388A4(s16, s16, s16, s16, u16);
 void func_80021DC8(void);
 
@@ -14165,7 +14168,47 @@ u8 func_80037744(s32 arg0) {
     return res;
 }
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_800379B4);
+void func_800379B4(void) {
+    s32 i;
+    s16 vi;
+    s16 v;
+    u16 w;
+    u16 x;
+    u16 m;
+    u16 *d;
+    Rec62D08 *r;
+    s32 *p;
+    s16 *q;
+
+    i = 0;
+    x = D_80062D18.field_18;
+    vi = x * 8;
+    D_800624E8[(s16)x].field_6 = 0x7FFF;
+    for (; i < 16; i++) {
+        D_80062BD0[i] &= ~(1 << D_80062D18.field_18);
+    }
+    q = &D_80062D18.field_16;
+    x = *q;
+    if (((s16)x & 1) > 0) {
+        D_80062A4E[vi] = D_80062CFC[((s16)x - 1) / 2].field_C;
+        D_80062A28[q[1]] |= 8;
+    } else {
+        D_80062A4E[vi] = D_80062CFC[((s16)x - 1) / 2].field_E;
+        D_80062A28[q[1]] |= 8;
+    }
+    d = D_80062A50;
+    D_80062A50[vi] = (r = &D_80062D08[D_80062D18.field_7 * 16 + (s8)D_80062D18.field_C])->field_10;
+    w = r->field_12;
+    v = D_80062CB0 + (w & 0x1F);
+    m = w & 0xFFE0;
+    if (v >= 0x20) {
+        v = 0x1F;
+    }
+    d += vi;
+    d[1] = v | m;
+    D_80062A28[D_80062D18.field_18] |= 0x30;
+}
+
 
 u16 func_80037B84(void) {
     u32 v = D_80062D18.field_11;
