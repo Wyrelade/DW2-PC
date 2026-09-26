@@ -2995,4 +2995,58 @@ typedef struct {
     u8 _pad02[0xE];
 } Stride16;
 
+/* 0x28-stride part record in resource 0x3120002 (zero field_0 ends the list). */
+typedef struct {
+    /* 0x00 */ s32 field_0;
+    u8 _pad04[0x8];
+    /* 0x0C */ u8 field_C;
+    u8 _pad0D[0x1];
+    /* 0x0E */ u8 field_E;
+    /* 0x0F */ u8 field_F;
+    /* 0x10 */ s32 field_10;
+    u8 _pad14[0x8];
+    /* 0x1C */ s32 field_1C;
+    u8 _pad20[0x8];
+} Part11854;
+
+/* libgpu primitive tag: next-packet address and word count. */
+typedef struct {
+    u32 addr : 24;
+    u32 len : 8;
+} PTag11854;
+
+/* Textured quad packet (libgpu POLY_FT4 layout). */
+typedef struct {
+    /* 0x00 */ PTag11854 tag;
+    /* 0x04 */ union {
+        Halves rgb;
+        struct {
+            u8 r0;
+            u8 g0;
+            u8 b0;
+            u8 code;
+        } b;
+    } c;
+    /* 0x08 */ s16 x0;
+    /* 0x0A */ s16 y0;
+    /* 0x0C */ u8 u0;
+    /* 0x0D */ u8 v0;
+    /* 0x0E */ u16 clut;
+    /* 0x10 */ s16 x1;
+    /* 0x12 */ s16 y1;
+    /* 0x14 */ u8 u1;
+    /* 0x15 */ u8 v1;
+    /* 0x16 */ u16 tpage;
+    /* 0x18 */ s16 x2;
+    /* 0x1A */ s16 y2;
+    /* 0x1C */ u8 u2;
+    /* 0x1D */ u8 v2;
+    /* 0x1E */ u16 pad1;
+    /* 0x20 */ s16 x3;
+    /* 0x22 */ s16 y3;
+    /* 0x24 */ u8 u3;
+    /* 0x25 */ u8 v3;
+    /* 0x26 */ u16 pad2;
+} Ft4_11854;
+
 #endif /* MAIN_156C_H */

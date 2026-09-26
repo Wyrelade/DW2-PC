@@ -3663,5 +3663,16 @@
       "selfmove_drop",
       "padnop"
     ]
+  },
+  "func_80011854": {
+    "passes": [
+      "la_copy",
+      "const_sink",
+      "sreg_perm",
+      "web_realloc",
+      "save_slot",
+      "sched_match",
+      "padnop"
+    ]
   }
 }

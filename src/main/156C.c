@@ -807,6 +807,8 @@ extern ObjC0E4 D_80061A08;
 extern ObjC0E4 D_80061A48;
 extern ObjC0E4 D_800619E8;
 extern void func_8002C834(s32 *, Mat1F668 *);
+extern Halves D_8005074C;
+extern Pair54 D_80040D70[][3];
 s16 func_800388A4(s16, s16, s16, s16, u16);
 void func_80021DC8(void);
 
@@ -1165,7 +1167,73 @@ void func_800116CC(Actor *a0) {
     }
 }
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80011854);
+void func_80011854(Actor *a0) {
+    ActorWork *w = a0->work;
+    Part11854 *e;
+    Part11854 *q;
+    Pt11BEC pos;
+    Pt11BEC clut;
+    Tex11BEC tex;
+    s32 s;
+    s32 i;
+    s32 j;
+    u8 u;
+    u8 v;
+    Actor *g;
+    Ft4_11854 *p;
+
+    e = (Part11854 *)func_800239A0(0x3120002);
+    for (q = e; q->field_0 != 0; q++) {
+        if (q->field_1C & w->field_C) {
+            q->field_F = 0;
+        } else {
+            q->field_F = 1;
+            q->field_C = w->field_14;
+            if (w->field_4 != 0) {
+                q->field_10 = -0x1000;
+                q->field_E = 0;
+            } else {
+                q->field_10 = 0x1000;
+                q->field_E = 1;
+            }
+        }
+    }
+    func_8001D884((s32)e);
+    func_80011BEC(w->field_0, &tex, &pos, &clut);
+    s = 1;
+    if (w->field_4 != 0) {
+        s = -1;
+    }
+    g = &D_8005F770;
+    p = (Ft4_11854 *)g->work;
+    for (j = 0; j < 2; j++) {
+        for (i = 0; i < 2; i++) {
+            p->c.rgb = D_8005074C;
+            p->tag.len = 9;
+            p->c.b.code = 0x2C;
+            p->x0 = D_80040D70[j][i].field_0 * s;
+            p->x1 = D_80040D70[j][i + 1].field_0 * s;
+            p->x2 = D_80040D70[j + 1][i].field_0 * s;
+            p->x3 = D_80040D70[j + 1][i + 1].field_0 * s;
+            p->y0 = D_80040D70[j][i].field_2;
+            p->y1 = D_80040D70[j][i + 1].field_2;
+            p->y2 = D_80040D70[j + 1][i].field_2;
+            p->y3 = D_80040D70[j + 1][i + 1].field_2;
+            u = pos.x + (tex.field_C + i * 20);
+            p->u0 = p->u2 = u;
+            p->u1 = p->u3 = u + 20;
+            v = pos.y + j * 20;
+            p->v0 = p->v1 = v;
+            p->v2 = p->v3 = v + 20;
+            p->tpage = tex.field_10;
+            p->clut = ((tex.field_1C + clut.y) << 6) | (((tex.field_18 + clut.x) >> 4) & 0x3F);
+            p->tag.addr = ((PTag11854 *)g->field_138[0])->addr;
+            ((PTag11854 *)g->field_138[0])->addr = (u32)p;
+            p++;
+        }
+    }
+    D_8005F79C = (s32)p;
+}
 
 void func_80011B58(Actor *arg0, s32 arg1) {
     arg0->work->field_0 = arg1;
