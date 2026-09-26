@@ -7276,7 +7276,8 @@ def defs_uses(disasm):
     if op in ("jal", "bal", "jalr", "bltzal", "bgezal"):
         defs |= set(_CALL_CLOBBER)
         uses |= {"a0", "a1", "a2", "a3"}
-        if op == "jalr" and ops:
+        # cc1 spells an indirect call `jal $reg`: the register is read too
+        if ops and (op == "jalr" or _reg(ops[-1])):
             use(ops[-1])
         return defs, uses
     if op in ("mult", "multu", "div", "divu"):
@@ -7592,7 +7593,7 @@ def delay_fill_src(span, tgt, our_words):
                 mn = ld.split(None, 1)[0].lower() if ld else ""
                 if mn in ("lb", "lbu", "lh", "lhu", "lw", "lwl", "lwr") and \
                         (defs_uses(ld)[0] & (defs_uses(pl.split("#", 1)[0].strip())[1] | bu)):
-                    keep_nop.add(i)
+                    keep_nop.add(ins[p - 2][0])
             # if the source already materialized a nop right after the branch, drop it
             if p + 1 < len(ins) and _src_is_nop(ins[p + 1][1]):
                 drop.add(ins[p + 1][0])
@@ -7602,14 +7603,18 @@ def delay_fill_src(span, tgt, our_words):
     for idx, l in enumerate(lines):
         if idx in drop:
             continue
+        if idx in keep_nop:
+            # the load-delay nop aspsx left stays right after the load, ahead
+            # of any label between the load and the branch
+            out.append(l)
+            out.append(_src_indent(l) + "nop")
+            continue
         if idx in move:
             indent = _src_indent(l)
             out.append(indent + ".set\tnoreorder")
             if idx in pre_fill:
                 out.append(indent + ".set\tnoat")
                 out.extend(indent + w for w in pre_fill[idx])
-            if idx in keep_nop:
-                out.append(indent + "nop")      # the load-delay nop aspsx left
             out.append(l)                       # the branch
             out.append(indent + move[idx])      # preceding insn -> delay slot
             if idx in pre_fill:
