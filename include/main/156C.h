@@ -1504,7 +1504,9 @@ typedef struct {
     /* 0x30 */ u16 field_30;
     /* 0x32 */ u16 field_32;
     /* 0x34 */ s32 field_34;
-    /* 0x38 */ u8 field_38[4];
+    /* 0x38 */ s32 field_38[12];
+    /* 0x68 */ s32 stack[0x3EC];
+    /* 0x1018 */ s32 stack_top[0x14];
 } Obj4EAF8;
 
 /* Work block (Actor.work) of the actor state machine func_800116CC:

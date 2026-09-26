@@ -778,6 +778,9 @@ extern u8 D_80061B70[];
 extern u8 D_80061B68[];
 extern s32 func_8002EDB4(void);
 extern void func_80030334(s8 *s);
+extern s32 setjmp(s32 *env);
+extern void func_800313D4(s32 *env);
+extern void func_8003139C(void);
 s16 func_800388A4(s16, s16, s16, s16, u16);
 void func_80021DC8(void);
 
@@ -11908,7 +11911,31 @@ int func_80030E50(int a0) {
     return old;
 }
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80030E68);
+Obj4EAF8 *func_80030E68(void) {
+    u16 *r;
+    volatile u16 *q;
+
+    if (D_8004EAF8.field_0 != 0) {
+        return 0;
+    }
+    r = D_8004FB84;
+    q = D_8004FB88;
+    *q = 0;
+    *r = *q;
+    *D_8004FB8C = 0x33333333;
+    func_80031370((s32 *)&D_8004EAF8, 0x41A);
+    if (setjmp(D_8004EAF8.field_38) != 0) {
+        func_80030F40();
+    }
+    D_8004EAF8.field_38[1] = (s32)D_8004EAF8.stack_top;
+    func_800313D4(D_8004EAF8.field_38);
+    D_8004EAF8.field_0 = 1;
+    D_8004FB80->fn_14 = (void (*)())func_80031464();
+    D_8004FB80->fn_4 = (void (*)())func_80031584();
+    func_8003139C();
+    func_80026FD4();
+    return &D_8004EAF8;
+}
 
 void func_80030F40(void) {
     s32 i;
