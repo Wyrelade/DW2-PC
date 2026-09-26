@@ -7559,6 +7559,172 @@ def const_sink_pass(stext, tgt):
 
 
 
+# --------------------------------------------------------------------------
+# ulcopy_rename: an unaligned word copy (movstr of a 4-byte struct) is
+# `lwl R,a+3(B); lwr R,a(B); [..] swl R,c+3(D); swr R,c(D)`. Our reload took R
+# from the high temporaries; retail's took the lowest free register. Target-
+# guided: the target has one copy with the same four offsets and the same base
+# registers, through register T. Rename R -> T over the copy when T is not
+# mentioned between the lwl and the swr and is dead at the lwl and after the
+# swr, and R is dead after the swr (a call reads only the arguments cc1 set
+# up). Count-preserving.
+# --------------------------------------------------------------------------
+_ULC = re.compile(r"^\s*(lwl|lwr|swl|swr)\s+(\$\w+)\s*,\s*(-?(?:0x[0-9A-Fa-f]+|\d+))\((\$\w+)\)\s*$")
+
+
+def _ulc_quads(items):
+    """[(first, last, reg, key)] for items = [(idx, text)] in order."""
+    out = []
+    for p in range(len(items)):
+        m0 = _ULC.match(items[p][1].split("#", 1)[0].strip())
+        if not m0 or m0.group(1) != "lwl":
+            continue
+        r = norm_reg(m0.group(2))
+        seq, q = [m0], p + 1
+        while q < len(items) and q <= p + 8 and len(seq) < 4:
+            m = _ULC.match(items[q][1].split("#", 1)[0].strip())
+            if m and norm_reg(m.group(2)) == r and m.group(1) == ("lwr", "swl", "swr")[len(seq) - 1]:
+                seq.append(m)
+                if len(seq) == 4:
+                    break
+            q += 1
+        if len(seq) != 4:
+            continue
+        key = tuple((m.group(1), int(m.group(3), 0), norm_reg(m.group(4))) for m in seq)
+        out.append((items[p][0], items[q][0], r, key))
+    return out
+
+
+def ulcopy_rename_pass(stext, tgt):
+    if not tgt:
+        return stext
+    tq = _ulc_quads([(i, d) for i, (w, d) in enumerate(tgt)])
+    if not tq:
+        return stext
+    lines = stext.split("\n")
+    nr = _noreorder_lines(lines)
+    ins = [(i, l) for i, l in enumerate(lines) if _s_is_insn(l)]
+    changed = False
+    for a, b, r, key in _ulc_quads(ins):
+        hit = [t for _, _, t, k in tq if k == key]
+        if len(hit) != 1 or hit[0] == r or hit[0] not in ABI2NUM or a in nr or b in nr:
+            continue
+        t = hit[0]
+        span = [x for y, x in ins if a <= y <= b]
+        if any(t in set().union(*defs_uses(x.split("#", 1)[0].strip())) for x in span):
+            continue
+        if any(y in nr for y, _ in ins if a <= y <= b):
+            continue
+        l2 = lines[:a] + ["$Lulc_a:"] + lines[a:b + 1] + ["$Lulc_b:"] + lines[b + 1:]
+        ins2 = [(q, x) for q, x in enumerate(l2) if _s_is_insn(x)]
+        if not (_ff_dead_on(l2, ins2, "$Lulc_a", t, callee_args=False)
+                and _ff_dead_on(l2, ins2, "$Lulc_b", t, callee_args=False)
+                and _ff_dead_on(l2, ins2, "$Lulc_b", r, callee_args=False)):
+            continue
+        rn = "$%d" % ABI2NUM[r]
+        rr = re.compile(r"(?<![\w$])(" + re.escape(rn) + "|" + re.escape("$" + r) + r")(?![\w])")
+        for y in range(a, b + 1):
+            if _s_is_insn(lines[y]):
+                body, sep, cm = lines[y].partition("#")
+                lines[y] = rr.sub("$%d" % ABI2NUM[t], body) + (sep + cm if sep else "")
+        changed = True
+    return "\n".join(lines) if changed else stext
+
+
+# --------------------------------------------------------------------------
+# movstr_rename: a block move (movstrsi) is groups of word loads into scratch
+# registers, then stores of them in the same order. Our reload took the high
+# temporaries (t1..t5); retail's took the lowest free registers (v0/v1/a0/a1).
+# Target-guided: the target has exactly one run with the same load/store
+# offsets and base registers; our scratch at each slot is renamed to the
+# target's when all target scratches are unmentioned in the run (other than
+# as our scratches), dead at its start and after it, and ours are dead after
+# it. Count-preserving; runs late (after block_iso) when bases agree.
+# --------------------------------------------------------------------------
+_MVR_LW = re.compile(r"^\s*lw\s+(\$\w+)\s*,\s*(-?\d+|-?0x[0-9A-Fa-f]+)\((\$\w+)\)\s*$")
+_MVR_SW = re.compile(r"^\s*sw\s+(\$\w+)\s*,\s*(-?\d+|-?0x[0-9A-Fa-f]+)\((\$\w+)\)\s*$")
+
+
+def _mvr_runs(items):
+    """[(first_idx, last_idx, [scratch per slot], key)] over items [(idx, text)]."""
+    runs, p = [], 0
+    while p < len(items):
+        loads = []
+        while p + len(loads) < len(items):
+            m = _MVR_LW.match(items[p + len(loads)][1].split("#", 1)[0].strip())
+            if not m or norm_reg(m.group(1)) in [x[0] for x in loads] or \
+                    norm_reg(m.group(1)) == norm_reg(m.group(3)):
+                break
+            loads.append((norm_reg(m.group(1)), int(m.group(2), 0), norm_reg(m.group(3))))
+        k = len(loads)
+        stores = []
+        for x in range(k):
+            if p + k + x >= len(items):
+                break
+            m = _MVR_SW.match(items[p + k + x][1].split("#", 1)[0].strip())
+            if not m or norm_reg(m.group(1)) != loads[x][0]:
+                break
+            stores.append((int(m.group(2), 0), norm_reg(m.group(3))))
+        if k < 2 or len(stores) != k:
+            p += 1
+            continue
+        regs = [x[0] for x in loads]
+        key = tuple((l[1], l[2], st[0], st[1]) for l, st in zip(loads, stores))
+        last = items[p + 2 * k - 1][0]
+        if runs and runs[-1][4] == p - 1:
+            a, _, rr, kk, _ = runs[-1]
+            if len(rr) == len(regs):
+                runs[-1] = (a, last, rr, kk + key, p + 2 * k - 1)
+                p += 2 * k
+                continue
+        runs.append((items[p][0], last, regs, key, p + 2 * k - 1))
+        p += 2 * k
+    return [(a, b, r, k) for a, b, r, k, _ in runs]
+
+
+def movstr_rename_pass(stext, tgt):
+    if not tgt:
+        return stext
+    truns = _mvr_runs([(i, d) for i, (w, d) in enumerate(tgt)])
+    if not truns:
+        return stext
+    lines = stext.split("\n")
+    nr = _noreorder_lines(lines)
+    ins = [(i, l) for i, l in enumerate(lines) if _s_is_insn(l)]
+    changed = False
+    for a, b, regs, key in _mvr_runs(ins):
+        hit = [r for _, _, r, k in truns if k == key]
+        if len(hit) != 1 or hit[0] == regs:
+            continue
+        tr = hit[0]
+        if any(t not in ABI2NUM for t in tr) or any(y in nr for y, _ in ins if a <= y <= b):
+            continue
+        span = [x for y, x in ins if a <= y <= b]
+        ment = set()
+        for x in span:
+            d, u = defs_uses(x.split("#", 1)[0].strip())
+            ment |= d | u
+        if any(t in ment and t not in regs for t in tr):
+            continue
+        l2 = lines[:a] + ["$Lmvr_a:"] + lines[a:b + 1] + ["$Lmvr_b:"] + lines[b + 1:]
+        ins2 = [(q, x) for q, x in enumerate(l2) if _s_is_insn(x)]
+        if not all(_ff_dead_on(l2, ins2, "$Lmvr_b", r, callee_args=False) for r in set(regs) | set(tr)):
+            continue
+        if not all(t in regs or _ff_dead_on(l2, ins2, "$Lmvr_a", t, callee_args=False) for t in tr):
+            continue
+        mp = {"$%d" % ABI2NUM[r]: "$%d" % ABI2NUM[t] for r, t in zip(regs, tr)}
+        for r, t in zip(regs, tr):
+            mp["$" + r] = "$%d" % ABI2NUM[t]
+        pat = re.compile(r"(?<![\w$])(\$\w+)(?![\w])")
+        for y in range(a, b + 1):
+            if _s_is_insn(lines[y]):
+                body, sep, cm = lines[y].partition("#")
+                lines[y] = pat.sub(lambda mm: mp.get(mm.group(1), mm.group(1)), body) + \
+                    (sep + cm if sep else "")
+        changed = True
+    return "\n".join(lines) if changed else stext
+
+
 PASSES = {
     # reg_realloc is applied specially (it needs sigma from words); the ordered
     # list in the manifest still names it so the recipe is explicit and auditable.
@@ -7619,6 +7785,8 @@ PASSES = {
     "selfmove_drop": selfmove_drop_pass,
     "la_split": la_split_pass,
     "const_sink": const_sink_pass,
+    "ulcopy_rename": ulcopy_rename_pass,
+    "movstr_rename": movstr_rename_pass,
 }
 
 # Passes that CHANGE the instruction count and so must run BEFORE sigma is derived
