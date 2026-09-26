@@ -17020,7 +17020,30 @@ s32 func_8003F418(s32 a0) {
     return r;
 }
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8003F46C);
+void func_8003F46C(void) {
+    State62F80 *s;
+    Pair62F70 *d;
+    volatile State62F80 *v;
+
+    if (func_8003FB0C() == 0) {
+        func_8003FAA0();
+        if (func_8003FB0C() != 0) {
+            s = &D_80062F80;
+            ((volatile State62F80 *)s)->field_8 = 1;
+            d = (Pair62F70 *)&D_80062F70;
+            ((volatile Pair62F70 *)d)->field_0 = ((volatile State62F80 *)s)->field_0;
+            ((volatile Pair62F70 *)d)->field_4 = ((volatile State62F80 *)s)->field_4;
+            ((volatile State62F80 *)s)->field_0 = 0;
+            ((volatile State62F80 *)s)->field_4 = 0;
+            if (s->field_44 != 0) {
+                ((void (*)(s32, s32))s->field_44)(((volatile Pair62F70 *)d)->field_0, ((volatile Pair62F70 *)d)->field_4);
+            }
+        }
+    }
+    v = &D_80062F80;
+    v->field_50[0]++;
+    v->field_50[1]++;
+}
 
 void func_8003F518(s32 n, u8 *out) {
     *(Str3F518 *)out = D_80010D38;

@@ -3589,5 +3589,13 @@
     "passes": [
       "epilogue_unfill"
     ]
+  },
+  "func_8003F46C": {
+    "passes": [
+      "nosplit",
+      "delay_fill",
+      "epilogue_unfill",
+      "padnop"
+    ]
   }
 }

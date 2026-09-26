@@ -2967,4 +2967,9 @@ typedef struct {
 /* GTE color / light matrix (func_8002BA80 reads, func_8002BA1C sets the color one). */
 typedef Mat1F668 S32;
 
+/* Latched copy of State62F80.field_0/4 handed to its field_44 callback. */
+typedef struct {
+    /* 0x00 */ s32 field_0;
+    /* 0x04 */ s32 field_4;
+} Pair62F70;
 #endif /* MAIN_156C_H */
