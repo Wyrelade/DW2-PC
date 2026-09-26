@@ -25,7 +25,7 @@ glabel func_80030E68
     /* 216BC 80030EBC 000045AC */  sw         $a1, 0x0($v0)
     /* 216C0 80030EC0 DCC4000C */  jal        func_80031370
     /* 216C4 80030EC4 1A040524 */   addiu     $a1, $zero, 0x41A
-    /* 216C8 80030EC8 F9C4000C */  jal        func_800313E4
+    /* 216C8 80030EC8 F9C4000C */  jal        setjmp
     /* 216CC 80030ECC 38000426 */   addiu     $a0, $s0, 0x38
     /* 216D0 80030ED0 03004010 */  beqz       $v0, .L80030EE0
     /* 216D4 80030ED4 00000000 */   nop

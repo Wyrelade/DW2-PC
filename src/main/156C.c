@@ -12042,7 +12042,7 @@ INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_800313C4);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_800313D4);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_800313E4);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", setjmp);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80031420);
 

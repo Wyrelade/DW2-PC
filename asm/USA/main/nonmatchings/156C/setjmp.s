@@ -1,6 +1,6 @@
-nonmatching func_800313E4, 0x3C
+nonmatching setjmp, 0x3C
 
-glabel func_800313E4
+glabel setjmp
     /* 21BE4 800313E4 00009FAC */  sw         $ra, 0x0($a0)
     /* 21BE8 800313E8 2C009CAC */  sw         $gp, 0x2C($a0)
     /* 21BEC 800313EC 04009DAC */  sw         $sp, 0x4($a0)
@@ -16,4 +16,4 @@ glabel func_800313E4
     /* 21C14 80031414 21100000 */  addu       $v0, $zero, $zero
     /* 21C18 80031418 0800E003 */  jr         $ra
     /* 21C1C 8003141C 00000000 */   nop
-endlabel func_800313E4
+endlabel setjmp
