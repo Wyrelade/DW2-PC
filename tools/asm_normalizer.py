@@ -7272,6 +7272,136 @@ def selfmove_drop_pass(stext, tgt):
     return "\n".join(out)
 
 
+# --------------------------------------------------------------------------
+# la_split: our cc1 cse kept a global's address in a register (`la R,S`) and
+# shared it between several accesses of the same address (a store and a reload,
+# or a range test and a later read across branches); retail's cc1 emitted each
+# access as its own symbolic macro (`lui X,%hi(S+k); op Y,%lo(S+k)(X)`, loads
+# through their destination, stores through $at). Target-guided: the target has
+# as many `la` pairs of that address as ours minus the splittable ones, and a
+# %lo access at every address a split use touches. A `la` is splittable when
+# every read of R it reaches is the base of a plain load/store (none in a
+# noreorder slot, R not the stored value), no branch label sits between the la
+# and its last use, and R is dead at every branch target on the way and after
+# the last use (a call reads only the arguments cc1 set up on that path). Count-changing: pre-sigma.
+# --------------------------------------------------------------------------
+_LSP_LA = re.compile(r"^(\s*)la\s+(\$\w+)\s*,\s*([A-Za-z_]\w*)(?:\+(\d+))?\s*$")
+_LSP_MEM = re.compile(r"^(\s*)(lw|lh|lhu|lb|lbu|sw|sh|sb)(\s+)(\$\w+)\s*,\s*(-?\d+)\((\$\w+)\)\s*$")
+_LSP_SYM = re.compile(r"^D_([0-9A-Fa-f]{8})(?:\s*\+\s*(0x[0-9A-Fa-f]+|\d+))?$")
+
+
+def _lsp_key(sym, k=0):
+    m = _LSP_SYM.match(sym.strip())
+    if not m:
+        return (sym.strip(), k)
+    return int(m.group(1), 16) + (int(m.group(2), 0) if m.group(2) else 0) + k
+
+
+def _lsp_uses(lines, ins, nr, i, r):
+    """Use lines of the `la` at line i (dest r) when it is splittable, else None."""
+    uses = []
+    pos = next(p for p, (x, _) in enumerate(ins) if x == i)
+    for p in range(pos + 1, len(ins)):
+        li, l = ins[p]
+        # a referenced label between la and here: another path joins
+        for y in range(ins[p - 1][0] + 1, li):
+            t = lines[y].strip()
+            if t.endswith(":") and not t.startswith("LM") and _label_referenced(lines, t[:-1]):
+                return None
+        body = l.split("#", 1)[0].strip()
+        d, u = defs_uses(body)
+        mn = body.split(None, 1)[0].lower()
+        if r in u:
+            m = _LSP_MEM.match(body)
+            if li in nr or not m or norm_reg(m.group(6)) != r or \
+                    (mn[0] == "s" and norm_reg(m.group(4)) == r):
+                return None
+            uses.append(li)
+            if r in d:
+                return uses
+            continue
+        if r in d:
+            return uses
+        if mn in _COND_BR_MN:
+            lab = _lc_label(body)
+            if lab is None or not _ff_dead_on(lines, ins, lab, r, callee_args=False):
+                return None
+            continue
+        if _src_is_branch(l) or _src_is_ret(l) or re.match(r"\s*jalr?\b", l):
+            probe = "$Lls_probe"
+            l2 = lines[:li] + [probe + ":"] + lines[li:]
+            ins2 = [(k, x) for k, x in enumerate(l2) if _s_is_insn(x)]
+            return uses if _ff_dead_on(l2, ins2, probe, r, callee_args=False) else None
+    return uses
+
+
+def la_split_pass(stext, tgt):
+    if not tgt:
+        return stext
+    lui_re = re.compile(r"lui\s+(\$?\w+)\s*,\s*%hi\(([^)]+)\)")
+    add_re = re.compile(r"addiu\s+(\$?\w+)\s*,\s*(\$?\w+)\s*,\s*%lo\(([^)]+)\)")
+    tla, tmem = {}, set()
+    for i in range(len(tgt)):
+        d = tgt[i][1]
+        m = re.search(r"%lo\(([^)]+)\)\(", d)
+        if m:
+            tmem.add(_lsp_key(m.group(1)))
+        a = lui_re.search(d)
+        b = add_re.search(tgt[i + 1][1]) if a and i + 1 < len(tgt) else None
+        if a and b and b.group(3) == a.group(2) and \
+                norm_reg(a.group(1)) == norm_reg(b.group(1)) == norm_reg(b.group(2)):
+            k = _lsp_key(a.group(2))
+            tla[k] = tla.get(k, 0) + 1
+    if not tmem:
+        return stext
+    lines = stext.split("\n")
+    nr = _noreorder_lines(lines)
+    ins = [(i, l) for i, l in enumerate(lines) if _s_is_insn(l)]
+    groups = {}
+    for i, l in ins:
+        m = _LSP_LA.match(l.split("#", 1)[0])
+        if not m or i in nr:
+            continue
+        groups.setdefault(_lsp_key(m.group(3), int(m.group(4) or 0)), []).append((i, m))
+    edits = []
+    for key, las in groups.items():
+        if not isinstance(key, int):
+            continue
+        cand = []
+        for i, m in las:
+            r = norm_reg(m.group(2))
+            us = _lsp_uses(lines, ins, nr, i, r)
+            if not us:
+                continue
+            k0 = int(m.group(4) or 0)
+            if all(key + int(_LSP_MEM.match(lines[u].split("#", 1)[0].strip()).group(5))
+                   in tmem for u in us):
+                cand.append((i, m, us, k0))
+        if cand and len(las) - len(cand) == tla.get(key, 0):
+            edits += cand
+    if not edits:
+        return stext
+    rep = {}
+    for i, m, us, k0 in edits:
+        rep[i] = []
+        sym = m.group(3)
+        for u in us:
+            mm = _LSP_MEM.match(lines[u].split("#", 1)[0].rstrip())
+            ind, op, sp, x, off = mm.group(1), mm.group(2), mm.group(3), mm.group(4), int(mm.group(5))
+            tot = k0 + off
+            e = sym if tot == 0 else ("%s+%d" % (sym, tot) if tot > 0 else "%s%d" % (sym, tot))
+            t = "$1" if op[0] == "s" else x
+            rep[u] = ["%slui\t%s,%%hi(%s)" % (ind, t, e),
+                      "%s%s%s%s,%%lo(%s)(%s)" % (ind, op, sp, x, e, t)]
+    out = []
+    for i, l in enumerate(lines):
+        if i in rep:
+            out.extend(rep[i])
+        else:
+            out.append(l)
+    return "\n".join(out)
+
+
 PASSES = {
     # reg_realloc is applied specially (it needs sigma from words); the ordered
     # list in the manifest still names it so the recipe is explicit and auditable.
@@ -7330,6 +7460,7 @@ PASSES = {
     "thread_steal": thread_steal_pass,
     "slot_sink": slot_sink_pass,
     "selfmove_drop": selfmove_drop_pass,
+    "la_split": la_split_pass,
 }
 
 # Passes that CHANGE the instruction count and so must run BEFORE sigma is derived
@@ -7339,7 +7470,7 @@ PASSES = {
 PRE_SIGMA_PASSES = ("la_unfold_st", "un_hi_cse", "un_hi_cse_store", "exit_merge", "base_cse_collapse",
                     "shift_const_fold", "zero_remat", "load_remat", "nodiv",
                     "offset_unfold", "zext_keep", "zero_cmp", "param_copy",
-                    "undo_drop", "la_unfold", "arg_unprop", "sched_pre", "la_copy")
+                    "undo_drop", "la_unfold", "arg_unprop", "sched_pre", "la_copy", "la_split")
 
 # --------------------------------------------------------------------------
 # WORD-LEVEL passes. The original PSY-Q assembler (aspsx) scheduled branch and
