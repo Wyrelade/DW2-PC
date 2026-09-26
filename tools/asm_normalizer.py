@@ -7725,6 +7725,48 @@ def movstr_rename_pass(stext, tgt):
     return "\n".join(lines) if changed else stext
 
 
+# --------------------------------------------------------------------------
+# zext_drop: a volatile byte/halfword read makes our cc1 re-zero-extend the
+# loaded value (`lbu R,..; andi R,R,0xff`, or lhu + 0xffff), which is a no-op:
+# lbu/lhu already zero-extend. Retail's has no such andi. Target-guided: the
+# target has no `andi X,X,M` right after a zero-extending load of X, ours has
+# some; each is deleted. Always sound. Count-changing (-1 each): pre-sigma.
+# --------------------------------------------------------------------------
+_ZXD_LD = re.compile(r"^\s*(lbu|lhu)\s+(\$\w+)\s*,")
+_ZXD_AND = re.compile(r"^\s*andi\s+(\$\w+)\s*,\s*(\$\w+)\s*,\s*(0x[0-9A-Fa-f]+|\d+)\s*$")
+
+
+def _zxd_pairs(items):
+    """Indexes (into items) of `andi X,X,M` directly after `lbu/lhu X` with M the
+    load's full width mask."""
+    out = []
+    for p in range(len(items) - 1):
+        m = _ZXD_LD.match(items[p][1].split("#", 1)[0])
+        a = _ZXD_AND.match(items[p + 1][1].split("#", 1)[0].strip())
+        if not m or not a:
+            continue
+        r = norm_reg(m.group(2))
+        mask = 0xFF if m.group(1) == "lbu" else 0xFFFF
+        if norm_reg(a.group(1)) == norm_reg(a.group(2)) == r and int(a.group(3), 0) == mask:
+            out.append(p + 1)
+    return out
+
+
+def zext_drop_pass(stext, tgt):
+    if not tgt:
+        return stext
+    titems = [(i, d) for i, (w, d) in enumerate(tgt) if d.strip() != "nop"]
+    if _zxd_pairs(titems):
+        return stext
+    lines = stext.split("\n")
+    nr = _noreorder_lines(lines)
+    ins = [(i, l) for i, l in enumerate(lines) if _s_is_insn(l)]
+    drop = [ins[p][0] for p in _zxd_pairs(ins) if ins[p][0] not in nr]
+    if not drop:
+        return stext
+    return "\n".join(l for i, l in enumerate(lines) if i not in set(drop))
+
+
 PASSES = {
     # reg_realloc is applied specially (it needs sigma from words); the ordered
     # list in the manifest still names it so the recipe is explicit and auditable.
@@ -7787,6 +7829,7 @@ PASSES = {
     "const_sink": const_sink_pass,
     "ulcopy_rename": ulcopy_rename_pass,
     "movstr_rename": movstr_rename_pass,
+    "zext_drop": zext_drop_pass,
 }
 
 # Passes that CHANGE the instruction count and so must run BEFORE sigma is derived
@@ -7796,7 +7839,7 @@ PASSES = {
 PRE_SIGMA_PASSES = ("la_unfold_st", "un_hi_cse", "un_hi_cse_store", "exit_merge", "base_cse_collapse",
                     "shift_const_fold", "zero_remat", "load_remat", "nodiv",
                     "offset_unfold", "zext_keep", "zero_cmp", "param_copy",
-                    "undo_drop", "la_unfold", "arg_unprop", "sched_pre", "la_copy", "la_split", "const_sink")
+                    "undo_drop", "la_unfold", "arg_unprop", "sched_pre", "la_copy", "la_split", "const_sink", "zext_drop")
 
 # --------------------------------------------------------------------------
 # WORD-LEVEL passes. The original PSY-Q assembler (aspsx) scheduled branch and
