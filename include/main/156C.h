@@ -3061,4 +3061,25 @@ typedef struct {
 typedef struct { u8 b[0x20]; } McBlk20;
 typedef struct { u8 b[0x4]; } McBlk4;
 
+typedef struct {
+    /* 0x0 */ u8 b[4];
+} Hdr2E2C4;
+
+/* 0x20-byte stream sector header (StHEADER-like) in the D_80061B38 ring. */
+typedef struct {
+    /* 0x00 */ volatile u16 field_0;
+    /* 0x02 */ u16 field_2;
+    /* 0x04 */ u16 field_4;
+    /* 0x06 */ u16 field_6;
+    /* 0x08 */ u16 field_8;
+    u8 _pad0A[0x12];
+    /* 0x1C */ Hdr2E2C4 field_1C;
+} Sect2E2C4;
+
+typedef struct {
+    /* 0x0 */ u16 field_0;
+    /* 0x2 */ u16 stat;
+    /* 0x4 */ u16 intr;
+} Res2E2C4;
+
 #endif /* MAIN_156C_H */

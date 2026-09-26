@@ -3702,5 +3702,18 @@
       "delay_fill",
       "padnop"
     ]
+  },
+  "func_8002E2C4": {
+    "passes": [
+      "nosplit",
+      "shift_const_fold",
+      "zero_remat",
+      "sched_match",
+      "block_iso",
+      "ulcopy_rename",
+      "delay_fill",
+      "epilogue_unfill",
+      "padnop"
+    ]
   }
 }
