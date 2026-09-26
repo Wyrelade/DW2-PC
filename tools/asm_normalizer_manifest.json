@@ -3516,5 +3516,19 @@
       "web_resched",
       "fallthrough_fill"
     ]
+  },
+  "func_8002533C": {
+    "passes": [
+      "nosplit",
+      "la_copy",
+      "sreg_perm",
+      "web_realloc",
+      "save_slot",
+      "sched_match",
+      "block_iso",
+      "taken_fill",
+      "delay_fill",
+      "padnop"
+    ]
   }
 }

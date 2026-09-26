@@ -8402,7 +8402,87 @@ s32 func_800251AC(void) {
     return 0;
 }
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002533C);
+s32 func_8002533C(Obj25FBC *a0) {
+    Stat48E90 *st;
+    s32 *tbl;
+    s32 *q;
+    s32 *p;
+    s32 n;
+
+    st = D_80048E90;
+    *(volatile u16 *)&st->field_A = 0x40;
+    *(volatile u16 *)&st->field_A = 0;
+    *(volatile u16 *)&st->field_8 = 0xD;
+    *(volatile u16 *)&st->field_E = 0x88;
+    func_80026610(a0->field_E8 == 8 ? 0x50 : 0x91);
+    D_80048E90->field_A = D_80048E58 ? 0x3003 : 0x1003;
+    n = D_80048E70[D_80048E58];
+    tbl = D_80048E70;
+    if (n >= 0) {
+        if (n > 0) {
+            do {
+                p = tbl;
+                D_80048E38(&a0->field_C[--p[D_80048E58]]);
+            } while (p[D_80048E58] > 0);
+        }
+        q = &D_80048E70[D_80048E58];
+        if (*q == 0) {
+            void (*fp)(Obj25FBC *);
+            fp = D_80048E38;
+            *q = -1;
+            fp(a0);
+            D_80048E3C((Actor *)a0);
+        }
+    }
+    st = D_80048E90;
+    if (st->field_4 & 0x200) {
+        *(volatile u16 *)&st->field_A |= 0x10;
+        if (st->field_4 & 0x200) {
+            do {
+            } while (func_80026630() == 0);
+            D_80048E90->field_0 = 1;
+            func_80026610(0x7D0);
+            if (func_80025C00() == 0) {
+                return 0;
+            }
+            func_80025C90();
+            D_80048E90->field_0;
+            func_80026610(0x1AE);
+            while (!(D_80048E8C->field_0 & 0x80)) {
+                if (func_80026630() != 0) {
+                    return 0;
+                }
+            }
+            D_80048E90->field_0 = 0x42;
+            func_80026610(0x3C);
+            if (func_80025C00() == 0) {
+                return 0;
+            }
+            func_80025C90();
+            D_80048E90->field_0;
+            func_80026610(0x1AE);
+            while (!(D_80048E8C->field_0 & 0x80)) {
+                if (func_80026630() != 0) {
+                    return 0;
+                }
+            }
+            D_80048E90->field_0 = 1;
+            func_80026610(0x3C);
+            if (func_80025C00() == 0) {
+                return 0;
+            }
+            func_80025C90();
+            D_80048E90->field_0;
+            return 0;
+        }
+        D_80048E8C->field_0 = -0x81;
+    }
+    if (a0->field_50 != 0 && a0->field_37 != 0) {
+        return 0;
+    }
+    return 1;
+}
+
 
 void func_80025670(Obj25FBC *a0) {
     s32 r;

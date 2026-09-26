@@ -1129,7 +1129,8 @@ typedef struct {
     /* 0x00 */ volatile u8 field_0;
     u8 _pad01[0x3];
     /* 0x04 */ volatile u16 field_4;
-    u8 _pad06[0x4];
+    u8 _pad06[0x2];
+    /* 0x08 */ u16 field_8;
     /* 0x0A */ u16 field_A;
     u8 _pad0C[0x2];
     /* 0x0E */ u16 field_E;
