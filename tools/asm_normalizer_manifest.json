@@ -3530,5 +3530,15 @@
       "delay_fill",
       "padnop"
     ]
+  },
+  "func_80034A24": {
+    "passes": [
+      "nosplit",
+      "zero_remat",
+      "load_remat",
+      "web_resched",
+      "delay_fill",
+      "padnop"
+    ]
   }
 }

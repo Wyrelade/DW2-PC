@@ -1054,7 +1054,7 @@ typedef struct {
     u8 *volatile field_4; /* 0x04 */
     s32 field_8;        /* 0x08 */
     u8 *volatile field_C; /* 0x0C */
-    u8  _p10[0x4];      /* 0x10 */
+    s32 field_10;       /* 0x10 */
     u8  field_14;       /* 0x14 */
     u8  field_15;       /* 0x15 */
     u8  field_16;       /* 0x16 */
@@ -1071,7 +1071,8 @@ typedef struct {
     u8  field_21;       /* 0x21 */
     s8  field_22;       /* 0x22 */
     u8  field_23;       /* 0x23 */
-    u8  _p24[0x2];      /* 0x24 */
+    u8  field_24;       /* 0x24 */
+    u8  field_25;       /* 0x25 */
     s8  field_26;       /* 0x26 */
     u8  field_27[0x10]; /* 0x27 */
     u8  field_37[0x10]; /* 0x37 */

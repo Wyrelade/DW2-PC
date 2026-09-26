@@ -768,6 +768,7 @@ extern CdTbl4E80C D_8004E80C;
 extern Mat1F668 D_800619A8;
 extern s32 func_8002CEE4(s32);
 extern void func_8003B074(void);
+extern s8 D_80010A64[];
 s16 func_800388A4(s16, s16, s16, s16, u16);
 void func_80021DC8(void);
 
@@ -12721,7 +12722,118 @@ void func_800349B4(s16 arg0, s16 arg1, s16 arg2) {
     e->field_90 = func_80032494(arg0, arg1);
 }
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80034A24);
+s32 func_80034A24(s16 a0, s16 a1, s16 a2, s32 a3) {
+    Elm354F4 *e;
+    s32 n;
+    s32 i;
+    s32 b0;
+    s32 b1;
+    s32 b2;
+    s32 t;
+    s32 len;
+    s32 r;
+    u32 x;
+    u32 q;
+    u8 *pC;
+    u8 *p8;
+    u8 *p4;
+
+    n = 0;
+    e = &D_80061C50[a0][a1];
+    e->field_20 = 1;
+    e->field_15 = 0;
+    e->field_16 = 0;
+    e->field_17 = 0;
+    e->field_18 = 0;
+    e->field_19 = 0;
+    e->field_1A = 0;
+    e->field_1B = 0;
+    e->field_1C = 0;
+    e->field_1D = 0;
+    e->field_1E = 0;
+    e->field_1F = 0;
+    e->field_14 = 0;
+    e->field_21 = 0;
+    e->field_52 = 1;
+    e->field_50 = 0;
+    e->field_26 = a2;
+    e->field_56 = 0;
+    e->field_84 = 0;
+    e->field_88 = 0;
+    e->field_8C = 0;
+    e->field_90 = 0;
+    e->field_80 = 0;
+    e->field_24 = 0;
+    e->field_25 = 0;
+    for (i = 0; i < 0x10; i++) {
+        e->field_27[i] = 0x40;
+        e->field_37[i] = i;
+        e->field_60[i] = 0x7F;
+    }
+    e->field_0 = (u8 *)a3;
+    if (a1 == 0) {
+        if (*e->field_0 == 'S' || *e->field_0 == 'p') {
+            e->field_0 += 5;
+            if (*e->field_0++ != 0) {
+                func_8002A014(D_80010A64);
+                return -1;
+            }
+            e->field_0 += 2;
+            n += 8;
+        }
+    } else {
+        e->field_0 += 2;
+        n += 2;
+    }
+    b0 = *e->field_0++;
+    b1 = *e->field_0++;
+    e->field_50 = b1 | (b0 << 8);
+    {
+        s32 c0 = *e->field_0++;
+        s32 c1 = *e->field_0++;
+        s32 c2 = *e->field_0++;
+        e->field_8C = c2 | ((c0 << 16) | (c1 << 8));
+    }
+    n += 5;
+    if ((s32)((u32)e->field_8C >> 1) < 0x3938700 % e->field_8C) {
+        e->field_8C = 0x3938700 / e->field_8C + 1;
+    } else {
+        e->field_8C = 0x3938700 / e->field_8C;
+    }
+    e->field_94 = e->field_8C;
+    e->field_24 = *e->field_0++;
+    e->field_25 = *e->field_0++;
+    b0 = *e->field_0++;
+    b1 = *e->field_0++;
+    b2 = *e->field_0++;
+    t = *e->field_0++;
+    len = t | ((b0 << 24) + (b1 << 16) + (b2 << 8));
+    n += 6;
+    r = func_80032494(a0, a1);
+    x = e->field_50 * e->field_8C;
+    pC = *(u8 *volatile *)&e->field_0;
+    p8 = *(u8 *volatile *)&e->field_0;
+    p4 = *(u8 *volatile *)&e->field_0;
+    e->field_C = pC;
+    e->field_84 = r;
+    e->field_90 = r;
+    e->field_10 = 0;
+    e->field_8 = (s32)p8;
+    e->field_4 = p4;
+    if (x * 10 < (u32)(D_80061C4C * 60)) {
+        e->field_54 = e->field_52 = (u32)(D_80061C4C * 600) / x;
+    } else {
+        e->field_52 = -1;
+        q = (u32)(e->field_50 * e->field_8C * 10) / (u32)(D_80061C4C * 60);
+        e->field_54 = q;
+        if ((u32)(D_80061C4C * 30) < (u32)(e->field_50 * e->field_8C * 10) % (u32)(D_80061C4C * 60)) {
+            e->field_54 = q + 1;
+        }
+    }
+    e->field_56 = e->field_54;
+    return n + len;
+}
+
 
 void func_80034E44(s16 a0, s16 a1, s8 a2, s16 a3);
 
