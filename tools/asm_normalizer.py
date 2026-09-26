@@ -123,6 +123,49 @@ def derive_sigma(our, tgt):
     return sigma, conflicts
 
 
+# reg_realloc_inj: reg_realloc's sigma keeps the first pairing it sees for each of
+# our registers, so two of our registers can land on one target register while
+# both are live (`addu a0,a0,a0`). This variant counts every aligned pairing,
+# assigns pairs by vote (most first) so no two of our registers share an image,
+# and completes the map to a permutation of the registers we use: a register
+# that is the image of another keeps its value by moving to a register that
+# was freed. Fixed registers stay put. reg_realloc itself is unchanged.
+_INJ_FIXED = {"zero", "sp", "gp", "at", "k0", "k1"}
+
+
+def derive_sigma_inj(our, tgt):
+    votes = {}
+    used = set()
+    for (gw, gd), (tw, td) in zip(our, tgt):
+        gm, gr, gs = insn_parts(gd)
+        used.update(r for r in gr if r in ABI2NUM)
+        tm, tr, ts = insn_parts(td)
+        if gm != tm or len(gr) != len(tr):
+            continue
+        for a, b in zip(gr, tr):
+            if a in _INJ_FIXED or b in _INJ_FIXED or a not in ABI2NUM or b not in ABI2NUM:
+                continue
+            votes[(a, b)] = votes.get((a, b), 0) + 1
+    for gw, gd in our[len(tgt):]:
+        used.update(r for r in insn_parts(gd)[1] if r in ABI2NUM)
+    sigma, img = {}, set()
+    for (a, b), n in sorted(votes.items(), key=lambda x: (-x[1], ABI2NUM[x[0][0]], ABI2NUM[x[0][1]])):
+        if a in sigma or b in img:
+            continue
+        sigma[a] = b
+        img.add(b)
+    # complete to a permutation over the registers we use
+    free = sorted((a for a in sigma if a not in img), key=lambda r: ABI2NUM[r])
+    for r in sorted(used - _INJ_FIXED, key=lambda r: ABI2NUM[r]):
+        if r in sigma or r not in img:
+            continue
+        if not free:
+            return {}
+        sigma[r] = free.pop(0)
+        img.add(sigma[r])
+    return {a: b for a, b in sigma.items() if a != b}
+
+
 def apply_sigma_to_s(stext, sigma):
     """Rename $N registers in cc1 gas assembly simultaneously per sigma (ABI->ABI)."""
     num = {}
@@ -7000,10 +7043,109 @@ def la_copy_pass(stext, tgt):
     return "\n".join(lines)
 
 
+# --------------------------------------------------------------------------
+# thread_steal: retail's reorg fills a conditional branch's empty slot from its
+# fall-through thread when that thread is just `j L`: it copies L's first insn X
+# into the slot and retargets the jump past X (`beq a,b,T; X; j L+; nop`). Ours
+# keeps `beq a,b,T; nop; j L; nop`. Target-guided by conditional-branch ordinal:
+# the target's slot holds X's key and the target's next insn is a jump. Sound
+# when X is a plain ALU/constant insn (no memory, no branch), X's destination is
+# dead at T (the slot runs on the taken path too), and nothing sits between the
+# branch and the jump. L gets a label after X when it has none. Count-preserving.
+# --------------------------------------------------------------------------
+_TS_ALU = {"move", "addu", "addiu", "subu", "li", "lui", "or", "ori", "and", "andi", "xor", "xori",
+           "sll", "srl", "sra", "slt", "sltu", "slti", "sltiu", "nor", "la"}
+
+
+def _ts_key(body):
+    k = _sm_key(body, True)
+    if isinstance(k, tuple) and len(k) == 4 and k[0] in ("addu", "or") and k[3] == "zero":
+        return ("move", k[1], k[2])
+    return k
+
+
+def thread_steal_pass(stext, tgt):
+    if not tgt:
+        return stext
+    tb = _tgt_cond_branches(tgt, stext)
+    lines = stext.split("\n")
+    nr = _noreorder_lines(lines)
+    ours = [i for i, l in enumerate(lines)
+            if _s_is_insn(l) and l.split(None, 1)[0].lower() in _COND_BR_MN]
+    if len(ours) != len(tb):
+        return stext
+    ins = [(i, l) for i, l in enumerate(lines) if _s_is_insn(l)]
+    edits = []
+    for bi, tk in zip(ours, tb):
+        if bi in nr or tk + 2 >= len(tgt):
+            continue
+        tn = tgt[tk + 2][1].split(None, 1)[0].lower()
+        if tn not in ("j", "b"):
+            continue
+        ji = _tf_next_insn(lines, bi)
+        if ji is None or ji in nr or any(_s_is_label(lines[y]) for y in range(bi + 1, ji)):
+            continue
+        mj = re.match(r"\s*j\s+(\$L\w+)\s*$", lines[ji].split("#", 1)[0])
+        if not mj:
+            continue
+        lab = mj.group(1)
+        at = next((k for k, l in enumerate(lines) if l.strip() == lab + ":"), None)
+        xi = _tf_next_insn(lines, at) if at is not None else None
+        if xi is None or xi in nr:
+            continue
+        xb = lines[xi].split("#", 1)[0].strip()
+        if xb.split(None, 1)[0].lower() not in _TS_ALU:
+            continue
+        if _ts_key(xb) != _ts_key(tgt[tk + 1][1].strip()):
+            continue
+        d, _u = defs_uses(xb)
+        tl = _lc_label(lines[bi].split("#", 1)[0].strip())
+        if len(d) != 1 or tl is None or not all(_ff_dead_on(lines, ins, tl, r) for r in d):
+            continue
+        # the label after X (any label line before the next insn), or a new one
+        after = None
+        for y in range(xi + 1, len(lines)):
+            if _s_is_insn(lines[y]):
+                break
+            m = re.match(r"^\s*(\$L\w+):\s*$", lines[y])
+            if m:
+                after = m.group(1)
+                break
+        edits.append((bi, ji, xi, xb, after, lab))
+    if not edits:
+        return stext
+    newlab = {}
+    for bi, ji, xi, xb, after, lab in edits:
+        if after is None:
+            newlab[xi] = lab + "_ts"
+    edits = [e[:5] for e in edits]
+    return thread_steal_rebuild(lines, edits, newlab)
+
+
+def thread_steal_rebuild(lines, edits, newlab):
+    """Apply edits with new labels: insert labels after X first (highest line first
+    so earlier indices stay valid), then rewrite branches/jumps."""
+    marks = sorted(set([e[0] for e in edits] + [e[1] for e in edits] + list(newlab)), reverse=True)
+    for y in marks:
+        if y in newlab:
+            lines.insert(y + 1, newlab[y] + ":")
+        for bi, ji, xi, xb, after in edits:
+            if ji == y:
+                ind = lines[ji][:len(lines[ji]) - len(lines[ji].lstrip())]
+                lines[ji] = "%sj\t%s" % (ind, after or newlab[xi])
+            if bi == y:
+                ind = lines[bi][:len(lines[bi]) - len(lines[bi].lstrip())]
+                br = lines[bi]
+                lines[bi:bi + 1] = [ind + ".set\tnoreorder", ind + ".set\tnomacro", br, ind + xb,
+                                    ind + ".set\tmacro", ind + ".set\treorder"]
+    return "\n".join(lines)
+
+
 PASSES = {
     # reg_realloc is applied specially (it needs sigma from words); the ordered
     # list in the manifest still names it so the recipe is explicit and auditable.
     "reg_realloc": None,
+    "reg_realloc_inj": None,
     "un_hi_cse": un_hi_cse_pass,
     "un_hi_cse_store": un_hi_cse_store_pass,
     "exit_merge": exit_merge_pass,
@@ -7054,6 +7196,7 @@ PASSES = {
     "giv_rebase": giv_rebase_pass,
     "ior_add": ior_add_pass,
     "la_copy": la_copy_pass,
+    "thread_steal": thread_steal_pass,
 }
 
 # Passes that CHANGE the instruction count and so must run BEFORE sigma is derived
@@ -7439,7 +7582,7 @@ def delay_fill_src(span, tgt, our_words):
                 ld = ins[p - 2][1].split("#", 1)[0].strip()
                 mn = ld.split(None, 1)[0].lower() if ld else ""
                 if mn in ("lb", "lbu", "lh", "lhu", "lw", "lwl", "lwr") and \
-                        (defs_uses(ld)[0] & defs_uses(pl.split("#", 1)[0].strip())[1]):
+                        (defs_uses(ld)[0] & (defs_uses(pl.split("#", 1)[0].strip())[1] | bu)):
                     keep_nop.add(i)
             # if the source already materialized a nop right after the branch, drop it
             if p + 1 < len(ins) and _src_is_nop(ins[p + 1][1]):
@@ -8231,6 +8374,8 @@ def normalize_span_text(span, tgt, sigma, passes):
     for name in passes:
         if name == "reg_realloc":
             txt = apply_sigma_to_s(txt, sigma)
+        elif name == "reg_realloc_inj":
+            txt = apply_sigma_to_s(txt, _SPAN_INFO.get("sigma_inj") or {})
         else:
             fn = PASSES.get(name)
             if fn is None:
@@ -8594,6 +8739,8 @@ def normalize_s(s_file, ctx, manifest=None):
             raise RuntimeError("assemble %s:\n%s" % (name, err))
         our = _strip_trailing_pad(our)
         sigma, _conf = derive_sigma(our, tgt)
+        if "reg_realloc_inj" in rest:
+            _SPAN_INFO["sigma_inj"] = derive_sigma_inj(our, tgt)
         norm = normalize_span_text(span, tgt, sigma, rest)
         out = out[:start] + norm + out[end:]
         if pre:                             # keep disk in sync for the next span
