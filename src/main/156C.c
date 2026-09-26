@@ -5639,7 +5639,23 @@ void func_8001D8A4(s32 arg0) {
     func_8001D6B4(arg0, 0);
 }
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8001D8C4);
+EntD8C4 *func_8001D8C4(id) s32 id; {
+    EntD8C4 *p = (EntD8C4 *)func_80023A08(0xC6C);
+    s16 v;
+
+loop:
+    v = p->field_0;
+    if (v == 0) {
+        goto fail;
+    }
+    if (v == id) {
+        return p;
+    }
+    p++;
+    goto loop;
+fail:
+    return 0;
+}
 
 u8 func_8001D910(void) {
     return func_8001D8C4()->field_3;

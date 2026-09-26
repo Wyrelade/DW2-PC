@@ -3584,5 +3584,10 @@
       "nosplit",
       "sched_match"
     ]
+  },
+  "func_8001D8C4": {
+    "passes": [
+      "epilogue_unfill"
+    ]
   }
 }
