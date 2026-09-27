@@ -78,8 +78,28 @@ def split_ops(opstr):
     return out
 
 
+# GTE (coprocessor 2) register operands look like GPRs (`mtc2 $4,$12`, `lwc2 $1,4($2)`) but
+# name GTE data/control registers: register maps, liveness and renaming must skip them.
+_COP2_MOVE = ("mtc2", "mfc2", "ctc2", "cfc2")
+_COP2_MEM = ("lwc2", "swc2")
+
+
+def _cop2_strip(disasm):
+    """`disasm` with its cop2 register operand spelled `c2rN` (not a register token)."""
+    p = disasm.split(None, 1)
+    if len(p) < 2 or p[0].lower() not in _COP2_MOVE + _COP2_MEM:
+        return disasm
+    ops = split_ops(p[1])
+    k = 1 if p[0].lower() in _COP2_MOVE else 0
+    if len(ops) <= k:
+        return disasm
+    ops[k] = "c2r" + ops[k].strip().lstrip("$")
+    return p[0] + " " + ",".join(o.strip() for o in ops)
+
+
 def insn_parts(disasm):
     """'lw v1,0(a3)' -> ('lw', [regs in order], [non-reg operand skeletons])."""
+    disasm = _cop2_strip(disasm)
     p = disasm.split(None, 1)
     mnem = p[0].lower()
     ops = split_ops(p[1]) if len(p) > 1 else []
@@ -178,7 +198,20 @@ def apply_sigma_to_s(stext, sigma):
         n = int(m.group(1))
         return "$%d" % num.get(n, n)
 
-    return re.sub(r"\$(\d+)\b", repl, stext)
+    def line(l):
+        return ";".join(seg(x) for x in l.split(";"))
+
+    def seg(l):
+        # keep a GTE register operand out of the GPR renaming
+        m = re.match(r"(\s*(?:mtc2|mfc2|ctc2|cfc2)\s+\$\w+\s*,\s*)(\$\d+)(.*)$", l) or \
+            re.match(r"(\s*(?:lwc2|swc2)\s+)(\$\d+)(.*)$", l)
+        if not m:
+            return re.sub(r"\$(\d+)\b", repl, l)
+        if m.group(1).lstrip().startswith(("lwc2", "swc2")):
+            return m.group(1) + m.group(2) + re.sub(r"\$(\d+)\b", repl, m.group(3))
+        return re.sub(r"\$(\d+)\b", repl, m.group(1)) + m.group(2) + m.group(3)
+
+    return "\n".join(line(l) for l in stext.split("\n"))
 
 
 # --------------------------------------------------------------------------
@@ -9360,12 +9393,23 @@ def defs_uses(disasm):
     """(defs, uses) register sets for one instruction's disassembly. Conservative:
     only what delay_fill needs (does the moved insn write a register the branch
     reads). Base register of a `off($b)` memory operand counts as a use."""
+    disasm = _cop2_strip(disasm)
     p = disasm.split(None, 1)
     if not p:
         return set(), set()
     op = p[0].lower()
     ops = split_ops(p[1]) if len(p) > 1 else []
     defs, uses = set(), set()
+    if op in ("mtc2", "ctc2") and ops:
+        r = _reg(ops[0])
+        return set(), ({r} if r else set())
+    if op in ("mfc2", "cfc2") and ops:
+        r = _reg(ops[0])
+        return ({r} if r else set()), set()
+    if op in ("lwc2", "swc2") and len(ops) > 1:
+        mm = re.fullmatch(r"(.*)\((\$?\w+)\)", ops[1].strip())
+        r = _reg(mm.group(2)) if mm else None
+        return set(), ({r} if r else set())
 
     def use(tok):
         r = _reg(tok)
