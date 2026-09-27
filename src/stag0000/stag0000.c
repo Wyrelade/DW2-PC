@@ -228,7 +228,14 @@ void func_8006551C(s32 arg0, s32 arg1) {
     func_80065150(arg0 + D_8005F770.centerX.s, arg1 + D_8005F770.centerY.s, D_8006935C);
 }
 
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80065558);
+void func_80065558(Actor *arg0) {
+    if (arg0->stateLevel0 == 0) {
+        Actor_InitTransform(arg0, D_80043704, 0);
+        Gfx_AttachModel(arg0, 0x78)->otIndex = 5;
+        Gfx_ResetModelBones(arg0);
+        Task_NextState0(arg0);
+    }
+}
 
 void func_800655B8(Actor *arg0) {
     Gfx_AttachModel(arg0, 0x78);
