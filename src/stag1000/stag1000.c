@@ -123,7 +123,20 @@ u32 *func_8006400C(StrDecEnv *dec) {
     return addr;
 }
 
-INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80064110);
+s32 func_80064110(StrDecEnv *dec) {
+    s32 cnt = 2000;
+    u32 *next;
+
+    while ((next = func_8006400C(dec)) == 0) {
+        if (--cnt == 0) {
+            return -1;
+        }
+    }
+    dec->vlcid = dec->vlcid == 0;
+    func_80064D80(next, dec->vlcbuf[dec->vlcid], D_80066240);
+    StFreeRing(next);
+    return 0;
+}
 
 INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80064198);
 
