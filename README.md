@@ -1,3 +1,11 @@
+<p align="center">
+  <a href="https://nyen.cc/"><img src="https://nyen.cc/favicon.svg" alt="NYEN logo" width="56" height="56"></a>
+  <br>
+  <sub>Powered by</sub>
+  <br>
+  <a href="https://nyen.cc/"><b>NYEN</b></a>
+</p>
+
 # Digimon World 2 Decompilation
 
 <!-- PROGRESS:BADGE -->
