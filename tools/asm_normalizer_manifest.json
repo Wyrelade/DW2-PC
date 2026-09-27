@@ -3999,5 +3999,11 @@
       "nosplit",
       "epilogue_unfill"
     ]
+  },
+  "stag1000:func_800648F0": {
+    "passes": [
+      "nosplit",
+      "epilogue_unfill"
+    ]
   }
 }

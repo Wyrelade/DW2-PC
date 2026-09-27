@@ -496,7 +496,12 @@ s32 func_800648B4(s32 arg0) {
     return func_80064B8C();
 }
 
-INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_800648F0);
+s32 func_800648F0(s32 arg0) {
+    if (arg0 != 0) {
+        return (*D_8006537C >> 24) & 1;
+    }
+    return func_80064C20();
+}
 
 void func_80064938(void (*func)()) {
     DMACallback(0, func);
