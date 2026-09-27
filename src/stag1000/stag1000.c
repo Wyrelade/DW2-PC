@@ -244,8 +244,8 @@ s32 func_80064CB4(void) {
 
 INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80064CCC);
 
-INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80064D50);
+ASM_SOURCE("src/stag1000/asm/libpress", func_80064D50);
 
-INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80064D80);
+ASM_SOURCE("src/stag1000/asm/libpress", func_80064D80);
 
 INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_800650D0);
