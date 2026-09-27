@@ -3821,5 +3821,15 @@
       "hi_interleave",
       "padnop"
     ]
+  },
+  "func_800294AC": {
+    "passes": [
+      "nosplit",
+      "at_dest",
+      "block_iso_wide",
+      "taken_fill",
+      "delay_fill",
+      "padnop"
+    ]
   }
 }

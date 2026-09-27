@@ -96,7 +96,7 @@ extern void func_8001F1A8(Actor *, s32);
 extern s32 D_8004E6D0;
 extern s32 D_8004E6CC;
 extern void *D_8004E6C8;
-extern void func_800294AC();
+extern s32 func_800294AC();
 extern void func_80030D34();
 extern Cmd62C18 D_80062C18;
 extern void func_80036514(s16);
@@ -830,6 +830,7 @@ extern s8 D_800632D0[16];
 extern char D_80010D64[];
 extern s32 func_80040CE4(s32, s32, u8 *);
 extern void func_80017214(Actor *);
+extern s32 D_80049044;
 s16 func_800388A4(s16, s16, s16, s16, u16);
 void func_80021DC8(void);
 
@@ -10564,7 +10565,37 @@ s32 func_800291FC(void (*func)(s32 *, s32), s32 *param, s32 n, s32 x) {
 }
 
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_800294AC);
+s32 func_800294AC(void) {
+    void (*cb)(void);
+    volatile s32 *g;
+    s32 k1;
+    s32 k2;
+
+    if (*D_80049024 & 0x1000000) {
+        return 1;
+    }
+    D_80049044 = func_80030E50(0);
+    while (D_80049038 != D_8004903C && (k2 = 0x1000000, !(*D_80049024 & k2))) {
+        if (((D_8004903C + 1) & 0x3F) == D_80049038 && D_80048F10.field_C == 0) {
+            func_80030D34(2, 0);
+        }
+        g = (volatile s32 *)D_80049018;
+        while (k1 = 0x4000000, !(*g & k1)) {
+        }
+        D_800600B0[D_8004903C].func(D_800600B0[D_8004903C].ptr, D_800600B0[D_8004903C].x);
+        D_8004903C = (D_8004903C + 1) & 0x3F;
+    }
+    func_80030E50(D_80049044);
+    if (D_80049038 == D_8004903C && !(*D_80049024 & 0x1000000) && D_80048F10.field_8 != 0) {
+        cb = (void (*)(void))D_80048F10.field_C;
+        if (cb != 0) {
+            ((volatile Gpu48F10 *)&D_80048F10)->field_8 = 0;
+            cb();
+        }
+    }
+    return (D_80049038 - D_8004903C) & 0x3F;
+}
+
 
 s32 func_8002970C(s32 mode) {
     D_80049048 = func_80030E50(0);
