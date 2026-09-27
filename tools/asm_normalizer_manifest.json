@@ -3749,5 +3749,14 @@
       "delay_fill",
       "padnop"
     ]
+  },
+  "func_80014F78": {
+    "passes": [
+      "gp8_nosplit",
+      "sched_match",
+      "block_iso",
+      "delay_fill",
+      "padnop"
+    ]
   }
 }
