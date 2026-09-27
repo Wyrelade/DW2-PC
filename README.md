@@ -19,7 +19,7 @@ tree.
 | Disc (USA) | `SLUS-01193` |
 | Exe SHA-1 | `e55ed5bf354def07f0cbf4e1fb7fb5f99204f220` (651264 bytes) |
 | Compiler | GCC 2.8.1 (PSX `cc1`) + maspsx |
-| Structure | single main exe, no overlays |
+| Structure | main exe + 7 stage overlays (`AAA/3.PRO/STAG*.PRO`) |
 | License (project code) | CC0 1.0 |
 
 > **You must own the game.** This repository contains no ROMs, disc images, or copyrighted
@@ -43,8 +43,14 @@ match alone is never enough.
 | &nbsp;&nbsp;└ hand-written assembly, restored as source | | 77 | |
 <!-- /PROGRESS:TABLE -->
 
-DW2 is a single main executable with no overlays, so the main exe is the whole target for
-now. As the text unit is split into per-file units, this table grows a row per unit.
+The main executable is fully matched. It is not the whole game: DW2 also has 7 stage
+overlays on the disc, `AAA/3.PRO/STAG0000.PRO` to `STAG4000.PRO`. The main exe loads one at a
+time to `0x80063360` (`func_80013308`, indexed by the game mode), so they share one address
+range. They are the next target and get their own rows here once they are split.
+
+The `AAA` directory is left out of the disc's root directory record, so a plain ISO extract
+only shows `SLUS_011.93` and `SYSTEM.CNF`. `dumpsxiso -pt` (path table walk) extracts the full
+tree.
 
 Some functions cannot yet be reproduced byte-for-byte by the current toolchain (gp-relative
 accesses under `-G0`, `$at` high-scratch stores, BIOS syscall thunks, and a handful of GCC
@@ -89,4 +95,5 @@ auto-detected hardware and kernel symbols, then checks the SHA-1 against your di
 ## Credits
 
 Workflow and toolchain derived from the Parasite Eve 2 decomp. DW2 file-format
-documentation by RmBeastbow.
+documentation by RmBeastbow. Thanks to ThirstyWraith for pointing out the stage overlays
+(issue #3).
