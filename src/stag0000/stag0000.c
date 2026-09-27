@@ -93,7 +93,13 @@ s32 func_80064084(u32 *arg0) {
     return n;
 }
 
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80064190);
+void func_80064190(Actor *arg0, Stg00SelWork *arg1, s32 arg2) {
+    u32 *f = (u32 *)Cd_GetFileOrNull(arg2);
+
+    arg1->field_6 = func_80064084(f);
+    arg1->field_C = f;
+    arg1->field_10 = f[0];
+}
 
 INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_800641E0);
 
