@@ -34,7 +34,7 @@ FUNC_DEF = re.compile(r"^[A-Za-z_][\w \t\*]*?\b\w+\s*\([^;{}]*\)\s*\{", re.M)
 
 def overlay_counts():
     """[(unit, total, matched)] for src/stagXXXX/*.c: an INCLUDE_ASM stub is an
-    unmatched function, a C definition is a matched one."""
+    unmatched function, a C definition or a restored ASM_SOURCE is a matched one."""
     rows = []
     src = os.path.join(ROOT, "src")
     for unit in sorted(os.listdir(src)) if os.path.isdir(src) else []:
@@ -48,6 +48,7 @@ def overlay_counts():
                     text = f.read()
                 asm += len(re.findall(r"^INCLUDE_ASM\(", text, re.M))
                 c += len(FUNC_DEF.findall(text))
+                c += len(re.findall(r"^ASM_SOURCE\(", text, re.M))
         rows.append((unit, asm + c, c))
     return rows
 
