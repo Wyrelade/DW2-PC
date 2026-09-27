@@ -3987,5 +3987,11 @@
     "passes": [
       "nosplit"
     ]
+  },
+  "stag1000:func_80064818": {
+    "passes": [
+      "nosplit",
+      "epilogue_unfill"
+    ]
   }
 }

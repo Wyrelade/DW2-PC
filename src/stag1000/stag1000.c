@@ -471,7 +471,19 @@ DecDCTEnv *func_80064780(DecDCTEnv *env) {
     return env;
 }
 
-INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80064818);
+void func_80064818(u32 *arg0, s32 arg1) {
+    if (arg1 & 1) {
+        *arg0 &= ~0x08000000;
+    } else {
+        *arg0 |= 0x08000000;
+    }
+    if (arg1 & 2) {
+        *arg0 |= 0x02000000;
+    } else {
+        *arg0 &= ~0x02000000;
+    }
+    func_80064A70(arg0, *arg0 & 0xFFFF);
+}
 
 void func_80064894(u32 *buf, s32 size) {
     func_80064B00(buf, size);
