@@ -163,7 +163,7 @@ extern s32 (*D_80063050[4])(s32 *);
 extern char D_80010D44[];
 extern void func_8002A014();
 extern s32 func_8003B794(s32);
-extern void func_80030554(s32, u8 *, s32);
+extern s32 func_80030554(s32, u8 *, u8 *);
 extern void func_8002DF74(void);
 extern void func_8002CE5C(void);
 extern void func_8002D684(s32, s32, s32);
@@ -12833,7 +12833,35 @@ void *func_80030514(void *a0) { void *old = D_8004E6C8; D_8004E6C8 = a0; return 
 
 s32 func_80030534(s32 a0) { s32 old = D_8004E6CC; D_8004E6CC = a0; return old; }
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80030554);
+s32 func_80030554(s32 arg0, u8 *arg1, u8 *arg2) {
+    u8 *param = arg1;
+    u8 *result = arg2;
+    s32 com = arg0;
+    void *old = D_8004E6C8;
+    s32 cnt;
+    s32 *tbl = D_8004E9E0;
+    s32 ret;
+
+    for (cnt = 3; cnt != -1; cnt--) {
+        s32 c = com & 0xFF;
+        s32 *len = &tbl[c];
+        ret = 0;
+        D_8004E6C8 = 0;
+        if (c != 1 && (*(u8 *)&D_8004E6D4 & 0x10)) {
+            func_8002F860(1, 0, 0, 0);
+        }
+        if (param == 0 || *len == 0 || func_8002F860(2, param, result, 0) == 0) {
+            D_8004E6C8 = old;
+            if (func_8002F860((u8)com, param, result, 0) == 0) {
+                goto end;
+            }
+        }
+    }
+    D_8004E6C8 = old;
+    ret = -1;
+end:
+    return ret + 1;
+}
 
 s32 func_80030690(s32 arg0, s32 arg1) {
     s32 param = arg1;

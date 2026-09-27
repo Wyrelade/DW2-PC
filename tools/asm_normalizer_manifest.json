@@ -3764,5 +3764,14 @@
       "sched_match",
       "padnop"
     ]
+  },
+  "func_80030554": {
+    "passes": [
+      "nosplit_hf",
+      "zero_remat",
+      "sched_match",
+      "delay_fill",
+      "padnop"
+    ]
   }
 }
