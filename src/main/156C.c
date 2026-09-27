@@ -8357,7 +8357,74 @@ void Gfx_CalcNormalColors(Vert6Pmv *v, Obj21ABC *o) {
     }
 }
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80020FD0);
+void func_80020FD0(TriGT3_20FD0 *t, s32 n, ActorModel *s, s32 mode) {
+    s32 sxy[3];
+    s32 opz;
+    s32 *xy;
+    s32 *sz;
+    Col21ABC *col;
+    GfxTexSlot *tex;
+    s32 idx;
+    u8 code;
+    PolyGT3_20FD0 *p;
+    s32 i;
+    s32 z;
+    SysState *g;
+
+    xy = s->screenXY;
+    col = (Col21ABC *)s->vertColors;
+    sz = s->vertOtz;
+    tex = (GfxTexSlot *)s->field_44;
+    idx = s->otIndex;
+    code = 0x36;
+    if (mode == 1) {
+        code = 0x34;
+    }
+    g = &D_8005F770;
+    p = (PolyGT3_20FD0 *)g->packet.work;
+    for (i = 0; i < n; i++, t++) {
+        sxy[0] = xy[t->v[0]];
+        sxy[1] = xy[t->v[1]];
+        sxy[2] = xy[t->v[2]];
+        gte_ldsxy3(sxy[0], sxy[1], sxy[2]);
+        gte_nclip();
+        if (sxy[0] == sxy[1] || sxy[0] == sxy[2] || sxy[1] == sxy[2]) {
+            continue;
+        }
+        gte_stopz(&opz);
+        if (opz <= 0) {
+            continue;
+        }
+        p->tag.len = 9;
+        p->c0.code = 0x34;
+        p->xy0 = sxy[0];
+        p->xy1 = sxy[1];
+        p->xy2 = sxy[2];
+        p->c0 = col[t->c[0]];
+        p->c1 = col[t->c[1]];
+        p->c2 = col[t->c[2]];
+        p->c0.code = code;
+        z = (sz[t->v[0]] + sz[t->v[1]] + sz[t->v[2]]) / 3;
+        if (mode == 2) {
+            p->tpage = tex->tpage | s->field_36;
+        } else {
+            p->tpage = tex->tpage | t->tpage;
+        }
+        p->clut = t->clut + (((tex->vramY + s->field_34) << 6) | ((tex->vramX >> 4) & 0x3F));
+        p->u0 = t->u0 + tex->field_C;
+        p->u1 = t->u1 + tex->field_C;
+        p->u2 = t->u2 + tex->field_C;
+        p->v0 = t->v0;
+        p->v1 = t->v1;
+        p->v2 = t->v2;
+        p->tag.addr = ((Tag21ABC *)&g->otLayers.s[idx][z])->addr;
+        ((Tag21ABC *)&g->otLayers.s[idx][z])->addr = (u32)p;
+        p++;
+        z = t->v[2];
+    }
+    D_8005F79C = (s32)p;
+}
+
 
 void Gfx_AddQuadsGT4(QuadGT4_2130C *t, s32 n, ActorModel *s, s32 mode) {
     s32 sxy[4];
