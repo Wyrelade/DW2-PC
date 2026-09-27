@@ -3333,4 +3333,61 @@ typedef struct SpNode200D0 {
     /* 0x40 */ struct SpNode200D0 *parent;
 } SpNode200D0; /* size 0x44 */
 
+
+/* Textured triangle record func_80020FD0 walks: vertex, colour, uv indices, clut, tpage. */
+typedef struct {
+    /* 0x00 */ u8 v[3];
+    /* 0x03 */ u8 c[3];
+    /* 0x06 */ u8 u0, v0, u1, v1, u2, v2;
+    /* 0x0C */ u16 clut;
+    /* 0x0E */ u16 tpage;
+} TriGT3_20FD0; /* size 0x10 */
+
+/* Textured quad record func_8002130C walks. */
+typedef struct {
+    /* 0x00 */ u8 v[4];
+    /* 0x04 */ u8 c[4];
+    /* 0x08 */ u8 u0, v0, u1, v1, u2, v2, u3, v3;
+    /* 0x10 */ u16 clut;
+    /* 0x12 */ u16 tpage;
+} QuadGT4_2130C; /* size 0x14 */
+
+/* PsyQ POLY_GT3 packet. */
+typedef struct {
+    /* 0x00 */ Tag21ABC tag;
+    /* 0x04 */ Col21ABC c0;
+    /* 0x08 */ s32 xy0;
+    /* 0x0C */ u8 u0, v0;
+    /* 0x0E */ u16 clut;
+    /* 0x10 */ Col21ABC c1;
+    /* 0x14 */ s32 xy1;
+    /* 0x18 */ u8 u1, v1;
+    /* 0x1A */ u16 tpage;
+    /* 0x1C */ Col21ABC c2;
+    /* 0x20 */ s32 xy2;
+    /* 0x24 */ u8 u2, v2;
+    /* 0x26 */ u16 pad2;
+} PolyGT3_20FD0; /* size 0x28 */
+
+/* PsyQ POLY_GT4 packet. */
+typedef struct {
+    /* 0x00 */ Tag21ABC tag;
+    /* 0x04 */ Col21ABC c0;
+    /* 0x08 */ s32 xy0;
+    /* 0x0C */ u8 u0, v0;
+    /* 0x0E */ u16 clut;
+    /* 0x10 */ Col21ABC c1;
+    /* 0x14 */ s32 xy1;
+    /* 0x18 */ u8 u1, v1;
+    /* 0x1A */ u16 tpage;
+    /* 0x1C */ Col21ABC c2;
+    /* 0x20 */ s32 xy2;
+    /* 0x24 */ u8 u2, v2;
+    /* 0x26 */ u16 pad2;
+    /* 0x28 */ Col21ABC c3;
+    /* 0x2C */ s32 xy3;
+    /* 0x30 */ u8 u3, v3;
+    /* 0x32 */ u16 pad3;
+} PolyGT4_2130C; /* size 0x34 */
+
 #endif /* MAIN_156C_H */

@@ -844,6 +844,9 @@ extern void (*D_80061BF4[])(s16, s16, s16, Rec62D08, s32, s32);
 extern SVec1F668 D_80050744;
 extern s32 Gfx_IsOriginOffscreen(void);
 extern s32 Gfx_ProjectModelVerts(Vert6Pmv *, Obj21ABC *, s32);
+extern void Gfx_CalcNormalColors(Vert6Pmv *, Obj21ABC *);
+extern void func_8002130C(QuadGT4_2130C *, s32, Sub3C *, s32);
+extern void func_80020FD0(TriGT3_20FD0 *, s32, Sub3C *, s32);
 s16 func_800388A4(s16, s16, s16, s16, u16);
 void func_80021DC8(void);
 
@@ -8027,7 +8030,63 @@ void func_800200D0(Actor *a0) {
 }
 
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80020510);
+void func_80020510(Actor *a0, s32 mode) {
+    Sub3C *s;
+    DstElem *e;
+    Sec1FDBC20 *p;
+    QuadGT4_2130C *q;
+    TriGT3_20FD0 *r;
+    s32 i;
+    s32 j;
+    s32 n;
+
+    s = a0->field_3C;
+    i = 0;
+    e = s->field_78;
+    s->field_44 = (struct Pos1F9AC *)Gfx_FindOrLoadTexSlot(s->field_0 << 16);
+    s->field_40 = D_8005F770.field_118[s->field_3C] - 2;
+    for (; i < s->field_8; i++, e++) {
+        p = s->field_14[i];
+        gte_SetRotMatrix(&e->field_0);
+        gte_SetTransMatrix(&e->field_0);
+        if (mode == 0 && Gfx_IsOriginOffscreen() != 0) {
+            continue;
+        }
+        if (Gfx_ProjectModelVerts((Vert6Pmv *)s->field_C[i], (Obj21ABC *)s, mode) != 0) {
+            continue;
+        }
+        gte_SetLightMatrix(&e->field_40);
+        Gfx_CalcNormalColors((Vert6Pmv *)s->field_10[i], (Obj21ABC *)s);
+        for (j = 0; j < 2; j++) {
+            n = p->n;
+            q = (QuadGT4_2130C *)p->e;
+            if (n != 0) {
+                if (s->field_34 == 1) {
+                    func_8002130C(q, n, s, 2);
+                } else {
+                    func_8002130C(q, n, s, j);
+                }
+                q += n;
+            }
+            p = (Sec1FDBC20 *)q;
+        }
+        for (j = 0; j < 2; j++) {
+            n = p->n;
+            r = (TriGT3_20FD0 *)((Sec1FDBC16 *)p)->e;
+            if (n != 0) {
+                if (s->field_34 == 1) {
+                    func_80020FD0(r, n, s, 2);
+                } else {
+                    func_80020FD0(r, n, s, j);
+                }
+                r += n;
+            }
+            p = (Sec1FDBC20 *)r;
+        }
+    }
+    func_8001F9AC(a0);
+}
+
 
 void func_80020768(Actor *a0, s32 mode, Col21ABC *col) {
     Sub3C *s;
