@@ -708,7 +708,50 @@ void func_80067F64(Actor *arg0, s32 arg1) {
 void func_80068050(void) {
 }
 
-INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80068058);
+void func_80068058(Actor *arg0) {
+    Stg11SaveWork *w = (Stg11SaveWork *)arg0->work;
+
+    switch (arg0->stateLevel0) {
+    case 0:
+    default:
+        D_800685D0 = arg0;
+        D_800685D4 = arg0->work;
+        Task_NextState0(arg0);
+        break;
+    case 1:
+        switch (arg0->stateLevel1) {
+        case 4:
+            func_80067F64(arg0, 2);
+            break;
+        case 2:
+            func_80067F64(arg0, 1);
+            break;
+        case 7:
+            func_80067F64(arg0, 6);
+            break;
+        case 5:
+            func_80067F64(arg0, 7);
+            break;
+        case 6:
+            func_80067F64(arg0, 8);
+            break;
+        case 8:
+            func_80067F64(arg0, 3);
+            break;
+        case 9:
+            func_80067F64(arg0, 4);
+            break;
+        case 0:
+        case 1:
+        case 3:
+            break;
+        }
+        break;
+    case 2:
+        break;
+    }
+    w->field_22034 = arg0->stateLevel1;
+}
 
 void func_80068160(Actor *arg0) {
     Task_DefaultDestroy(arg0);
