@@ -3087,4 +3087,54 @@ typedef struct {
 
 extern Mat1F668 D_800619C8;
 
+/* Primitive tag: next-pointer (24 bits) + word count (8 bits), PsyQ P_TAG shape. */
+typedef struct {
+    u32 addr : 24;
+    u32 len : 8;
+} Tag21ABC;
+
+/* Byte colour + GPU code, copied as a 4-byte unaligned struct. */
+typedef struct {
+    u8 r;
+    u8 g;
+    u8 b;
+    u8 code;
+} Col21ABC;
+
+/* Four-point poly line packet (code 0x4E) closed by the 0x55555555 terminator. */
+typedef struct {
+    /* 0x00 */ Tag21ABC tag;
+    /* 0x04 */ Col21ABC c;
+    /* 0x08 */ s32 xy[4];
+    /* 0x18 */ s32 end;
+} LineF4_21ABC; /* size 0x1C */
+
+/* Two-point line packet (code 0x42). */
+typedef struct {
+    /* 0x00 */ Tag21ABC tag;
+    /* 0x04 */ Col21ABC c;
+    /* 0x08 */ s32 xy[2];
+} LineF2_21ABC; /* size 0x10 */
+
+/* One-word draw-mode packet. */
+typedef struct {
+    /* 0x00 */ Tag21ABC tag;
+    /* 0x04 */ u32 code;
+} Tpage21ABC; /* size 0x8 */
+
+/* Quad record func_80021ABC walks: four vertex indices, stride 0x14. */
+typedef struct {
+    /* 0x00 */ u8 v[4];
+    u8 _pad04[0x10];
+} Quad21ABC; /* size 0x14 */
+
+/* Model view func_80021ABC reads: OT slot at 0x3C, projected xy / z tables at 0x6C / 0x70. */
+typedef struct {
+    u8 _pad00[0x3C];
+    /* 0x3C */ s32 field_3C;
+    u8 _pad40[0x2C];
+    /* 0x6C */ s32 *field_6C;
+    /* 0x70 */ s32 *field_70;
+} Obj21ABC;
+
 #endif /* MAIN_156C_H */

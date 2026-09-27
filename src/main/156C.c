@@ -7177,7 +7177,66 @@ INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80021838);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_800218CC);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80021ABC);
+void func_80021ABC(Quad21ABC *q, s32 n, Obj21ABC *o, Col21ABC *col) {
+    s32 i;
+    s32 z;
+    u32 *ot;
+    s32 xy[4];
+    s32 *sxy;
+    s32 *sz;
+    Tag21ABC *pk;
+    LineF4_21ABC *l4;
+    LineF2_21ABC *l2;
+    Tpage21ABC *tp;
+    s32 idx;
+
+    pk = (Tag21ABC *)D_8005F770.work;
+    sxy = o->field_6C;
+    sz = o->field_70;
+    idx = o->field_3C;
+    for (i = 0; i < n; i++, q++) {
+        do {
+            z = (sz[q->v[0]] + sz[q->v[1]] + sz[q->v[2]] + sz[q->v[3]]) / 4;
+            ot = (u32 *)D_8005F770.field_138[idx];
+            xy[0] = sxy[q->v[0]];
+            xy[1] = sxy[q->v[1]];
+            xy[2] = sxy[q->v[2]];
+            xy[3] = sxy[q->v[3]];
+            l4 = (LineF4_21ABC *)pk;
+            l4->c = *col;
+            l4->tag.len = 6;
+            l4->c.code = 0x4E;
+            l4->end = 0x55555555;
+            l4->xy[0] = xy[0];
+            l4->xy[1] = xy[1];
+            l4->xy[2] = xy[3];
+            l4->xy[3] = xy[2];
+            do {
+            } while (0);
+            ot += z;
+            pk->addr = ((Tag21ABC *)ot)->addr;
+            ((Tag21ABC *)ot)->addr = (u32)pk;
+            pk = (Tag21ABC *)((LineF4_21ABC *)pk + 1);
+            l2 = (LineF2_21ABC *)pk;
+            l2->c = *col;
+            l2->tag.len = 3;
+            l2->c.code = 0x42;
+            l2->xy[0] = xy[2];
+            l2->xy[1] = xy[0];
+            pk->addr = ((Tag21ABC *)ot)->addr;
+            ((Tag21ABC *)ot)->addr = (u32)pk;
+            pk = (Tag21ABC *)((LineF2_21ABC *)pk + 1);
+            tp = (Tpage21ABC *)pk;
+            tp->tag.len = 1;
+            tp->code = 0xE1000620;
+            pk->addr = ((Tag21ABC *)ot)->addr;
+            ((Tag21ABC *)ot)->addr = (u32)pk;
+            pk = (Tag21ABC *)((Tpage21ABC *)pk + 1);
+        } while (0);
+    }
+    D_8005F79C = (s32)pk;
+}
+
 
 void func_80021D50(void) {
 }
