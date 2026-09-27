@@ -509,7 +509,24 @@ void func_80068050(Actor *arg0) {
     Task_DefaultDestroy(arg0);
 }
 
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80068084);
+u8 *func_80068084(s32 arg0, s32 arg1) {
+    u8 *s = D_8006925C[arg0][arg1];
+    s32 i = 0;
+    s32 row = (arg1 != 0);
+
+    for (; s[i] != 0; i++) {
+        u8 c = s[i];
+        if (c < 0x3A) {
+            D_80069364[row][i] = c - 0x30;
+        } else if (c == 0x5F) {
+            D_80069364[row][i] = 0x24;
+        } else {
+            D_80069364[row][i] = c + 0xC9;
+        }
+    }
+    D_80069364[row][i] = 0xFF;
+    return D_80069364[row];
+}
 
 void func_80068150(s32 arg0) {
     func_80068084(arg0, 0);
