@@ -125,7 +125,35 @@ INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80063D28);
 
 INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80064000);
 
-INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80064304);
+void func_80064304(Actor *arg0, Stg11MenuWork *arg1) {
+    Halves *pos = (Halves *)Cd_GetFileEntry(0xD28000C);
+    Stg11MenuRow *row = arg1->field_98;
+    TextDescHalves st;
+    s32 i;
+
+    Text_CloseArray(arg1->field_38, 11);
+    st.strArg0 = 0;
+    st.packedStyle = 0;
+    st.color = 0;
+    for (i = 0; i < 5; i++, row++) {
+        st.pos = *pos++;
+        st.text = row->field_0 == 0 ? (s32)Cd_GetFileEntry(0x1FD0098)
+                                    : (s32)Digi_GetDefaultName(row->field_0);
+        Text_OpenDesc(&arg1->field_38[i * 2], (TextDesc *)&st);
+        st.pos = *pos++;
+        if (row->field_0 != 0 && row->field_2 != 0) {
+            if (row->field_2 == 1) {
+                st.text = (s32)Cd_GetFileEntry(0x1FD01B2);
+            } else {
+                st.text = (s32)Cd_GetFileEntry(0x1FD01B7);
+            }
+            Text_OpenDesc(&arg1->field_38[i * 2 + 1], (TextDesc *)&st);
+        }
+    }
+    st.pos = D_800681DC;
+    st.text = (s32)Cd_GetFileEntry(arg1->field_138 + 0x1FD01BD);
+    Text_OpenDesc(&arg1->field_C, (TextDesc *)&st);
+}
 
 INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_8006448C);
 
