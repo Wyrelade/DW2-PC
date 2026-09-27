@@ -3958,5 +3958,10 @@
       "block_iso_wide",
       "padnop"
     ]
+  },
+  "func_80064894": {
+    "passes": [
+      "nodb"
+    ]
   }
 }
