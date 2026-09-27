@@ -35,7 +35,10 @@ INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_8006448C);
 
 INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_800646C0);
 
-INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_800648B4);
+void func_800648B4(Actor *arg0, Stg11MenuWork *arg1) {
+    Text_CloseArray(arg1->field_10, 9);
+    arg1->field_86 = 0;
+}
 
 INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_800648E4);
 
