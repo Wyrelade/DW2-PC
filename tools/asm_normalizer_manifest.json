@@ -4022,5 +4022,12 @@
     "passes": [
       "nosplit"
     ]
+  },
+  "stag1000:func_80064B8C": {
+    "passes": [
+      "nosplit",
+      "delay_fill",
+      "epilogue_unfill"
+    ]
   }
 }

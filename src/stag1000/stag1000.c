@@ -552,7 +552,17 @@ void func_80064B00(u32 *arg0, u32 arg1) {
     *D_8006537C = 0x01000200;
 }
 
-INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80064B8C);
+s32 func_80064B8C(void) {
+    volatile s32 cnt = 0x100000;
+
+    while (*D_8006539C & 0x20000000) {
+        if (--cnt == -1) {
+            func_80064CCC(D_8006337C);
+            return -1;
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80064C20);
 
