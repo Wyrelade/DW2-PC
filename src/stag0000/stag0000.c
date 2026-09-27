@@ -155,7 +155,13 @@ void func_80068170(s32 arg0, s32 arg1) {
     func_80068084(arg0, arg1 + 1);
 }
 
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80068190);
+s32 func_80068190(void) {
+    s32 i;
+
+    for (i = 0; D_8006925C[i] != NULL; i++) {
+    }
+    return i;
+}
 
 INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_800681C4);
 
