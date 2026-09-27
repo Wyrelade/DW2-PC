@@ -1502,6 +1502,7 @@ _BI_ALU = {"addu", "addiu", "subu", "and", "andi", "or", "ori", "xor", "xori", "
            "mult", "multu", "mfhi", "mflo"}
 _BI_COMM = {"addu", "and", "or", "xor", "nor", "mult", "multu"}
 _BI_WIDE = [False]      # set while block_iso_wide runs
+_BI_TARGS = [set()]     # argument registers the target's block writes
 _BI_HL = "hilo"         # the HI/LO pair as one value: mult/multu write it, mfhi/mflo read it
 _BI_REGS = set(NUM2ABI) - {"zero"}
 
@@ -1555,6 +1556,16 @@ def _bi_live_after(lines, last, reg):
         if not _s_is_insn(l):
             continue
         body = l.split("#", 1)[0].strip()
+        mi = re.match(r"jal\s+\$\w+\s*,\s*(\$\w+)$|jalr\s+(\$\w+)$", body)
+        if _BI_WIDE[0] and mi and reg != "at":
+            # (block_iso_wide) an indirect call reads its target register and
+            # only the argument registers the target's block sets up; it
+            # clobbers the other caller-saved registers
+            if reg == norm_reg(mi.group(1) or mi.group(2)):
+                return True
+            if reg in ("a0", "a1", "a2", "a3"):
+                return reg in _BI_TARGS[0]
+            return reg not in ("v0", "v1") and not re.match(r"t\d$", reg)
         if re.match(r"\s*jal\s+\w+\s*$", body):
             if reg in ("a0", "a1", "a2", "a3"):
                 return True
@@ -1609,6 +1620,18 @@ def _bi_tgt_units(tgt, a, n):
             if ma and m3:
                 out.append((k, 3, (m3.group(1).lower(), norm_reg(m3.group(2)), m3.group(3),
                                    norm_reg(ma.group(1)))))
+                k += 3
+                continue
+            # (block_iso_wide) the same load expanded through its own destination
+            mh = re.match(r"lui\s+(\$\w+)\s*,\s*%hi\(([\w.$]+)\)$", d)
+            ma = re.match(r"addu\s+(\$\w+)\s*,\s*(\$\w+)\s*,\s*(\$\w+)$", tgt[k + 1][1].strip())
+            m3 = re.match(r"(lw|lh|lhu|lb|lbu)\s+(\$\w+)\s*,\s*%lo\(([\w.$]+)\)\((\$\w+)\)$",
+                          tgt[k + 2][1].strip())
+            if (_BI_WIDE[0] and mh and ma and m3 and m3.group(3) == mh.group(2)
+                    and norm_reg(mh.group(1)) == norm_reg(ma.group(1)) == norm_reg(ma.group(2))
+                    == norm_reg(m3.group(2)) == norm_reg(m3.group(4))):
+                out.append((k, 3, (m3.group(1).lower(), norm_reg(m3.group(2)), m3.group(3),
+                                   norm_reg(ma.group(3)))))
                 k += 3
                 continue
         if key == "skip":
@@ -1742,6 +1765,7 @@ def _bi_try(lines, blk, tkeys, tgt, wpos, anchors=()):
             continue
         last = blk[-1][1]
         bad = False
+        _BI_TARGS[0] = {r for r in tfin if r in ("a0", "a1", "a2", "a3")}
         for r in set(ofin) | set(tfin):
             if not _bi_live_after(lines, last, r):
                 continue
@@ -1766,6 +1790,16 @@ def _bi_try(lines, blk, tkeys, tgt, wpos, anchors=()):
         haz = sum(1 for p, q in zip(order, order[1:])
                   if ou[p][0][0] in ("lw", "lh", "lhu", "lb", "lbu") and ou[p][1]
                   and ou[p][1] in ou[q][2])
+        if _BI_WIDE[0]:
+            # (block_iso_wide) count by dataflow: the emitted registers are the
+            # target's, so q reads p exactly when p produces one of q's inputs
+            cur, prod = {}, []
+            for u in ou:
+                prod.append({cur[r] for r in u[2] if r in cur})
+                if u[1]:
+                    cur[u[1]] = len(prod) - 1
+            haz = sum(1 for p, q in zip(order, order[1:])
+                      if ou[p][0][0] in ("lw", "lh", "lhu", "lb", "lbu") and p in prod[q])
         tnops = tw[-1][0] + tw[-1][1] - st - span
         if haz != tnops:
             continue
@@ -7977,6 +8011,79 @@ def hi_interleave_pass(stext, tgt):
     return "\n".join(lines) if changed else stext
 
 
+# --------------------------------------------------------------------------
+# at_dest: cc1 expanded an indexed symbolic load through $at because the index
+# register is also the destination (`.set noat; lui $1,%hi(S); addu $1,$1,$X;
+# lw $X,%lo(S)($1)`); retail's index lived in another register, so its assembler
+# expanded the load through the destination. Rename the index chain (the
+# consecutive self-updating defs of X that feed the load) to a temp R that the
+# span does not mention and that is dead at the chain start, then write the
+# destination form `lui $X,%hi(S); addu $X,$X,$R; lw $X,%lo(S)($X)`.
+# Count-preserving; runs before sigma.
+# --------------------------------------------------------------------------
+_ATD_LUI = re.compile(r"^\s*lui\s+\$(?:1|at)\s*,\s*%hi\(([\w.$+]+)\)\s*$")
+_ATD_ADD = re.compile(r"^\s*addu\s+\$(?:1|at)\s*,\s*\$(?:1|at)\s*,\s*(\$\w+)\s*$")
+_ATD_LD = re.compile(r"^(\s*)(lw|lh|lhu|lb|lbu)\s+(\$\w+)\s*,\s*%lo\(([\w.$+]+)\)\(\$(?:1|at)\)\s*$")
+_ATD_FREE = (3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 24, 25, 2)
+
+
+def at_dest_pass(stext, tgt):
+    lines = stext.split("\n")
+    ins = [(i, l) for i, l in enumerate(lines) if _s_is_insn(l)]
+    changed = False
+    for p in range(len(ins) - 2):
+        a, b, c = (ins[p + k][1].split("#", 1)[0].strip() for k in range(3))
+        mh, ma, ml = _ATD_LUI.match(a), _ATD_ADD.match(b), _ATD_LD.match(ins[p + 2][1].split("#", 1)[0])
+        if not (mh and ma and ml) or mh.group(1) != ml.group(4):
+            continue
+        x = norm_reg(ma.group(1))
+        if norm_reg(ml.group(3)) != x:
+            continue
+        # chain of defs of x ending before the lui
+        q = p - 1
+        chain = []
+        while q >= 0:
+            body = ins[q][1].split("#", 1)[0].strip()
+            if _src_is_branch(ins[q][1]) or re.match(r"\s*jalr?\b", ins[q][1]):
+                break
+            d, u = defs_uses(body)
+            if x in d:
+                chain.append(q)
+                if x not in u:
+                    break
+            elif x in u:
+                chain = []
+                break
+            q -= 1
+        if not chain or q < 0:
+            continue
+        start = chain[-1]
+        span = [ins[k][1].split("#", 1)[0] for k in range(start, p + 3)]
+        ment = set(int(v) for v in re.findall(r"\$(\d+)\b", "\n".join(span)))
+        l2 = lines[:ins[start][0]] + ["$Latd_a:"] + lines[ins[start][0]:]
+        i2 = [(k, v) for k, v in enumerate(l2) if _s_is_insn(v)]
+        r = next((f for f in _ATD_FREE if f not in ment and _ff_dead_on(l2, i2, "$Latd_a", NUM2ABI[f], callee_args=False)), None)
+        if r is None:
+            continue
+        xr = "$%d" % ABI2NUM[x]
+        pat = re.compile(re.escape(xr) + r"\b")
+        for k in range(start, p):
+            li = ins[k][0]
+            bd, sep, cm = lines[li].partition("#")
+            lines[li] = pat.sub("$%d" % r, bd) + (sep + cm if sep else "")
+        ind = ml.group(1)
+        lines[ins[p][0]] = "%slui\t%s,%%hi(%s)" % (ind, xr, mh.group(1))
+        lines[ins[p + 1][0]] = "%saddu\t%s,%s,$%d" % (ind, xr, xr, r)
+        lines[ins[p + 2][0]] = "%s%s\t%s,%%lo(%s)(%s)" % (ind, ml.group(2), xr, mh.group(1), xr)
+        # the $at bracket is no longer needed (it would split the block)
+        for y in list(range(ins[p][0] - 1, max(-1, ins[p][0] - 4), -1)) + \
+                list(range(ins[p + 2][0] + 1, min(len(lines), ins[p + 2][0] + 4))):
+            if re.match(r"\s*\.set\s+(noat|at)\s*$", lines[y]):
+                lines[y] = ""
+        changed = True
+    return "\n".join(lines) if changed else stext
+
+
 PASSES = {
     # reg_realloc is applied specially (it needs sigma from words); the ordered
     # list in the manifest still names it so the recipe is explicit and auditable.
@@ -8043,6 +8150,7 @@ PASSES = {
     "zext_drop": zext_drop_pass,
     "call_slot_swap": call_slot_swap_pass,
     "hi_interleave": hi_interleave_pass,
+    "at_dest": at_dest_pass,
 }
 
 # Passes that CHANGE the instruction count and so must run BEFORE sigma is derived
@@ -8052,7 +8160,7 @@ PASSES = {
 PRE_SIGMA_PASSES = ("la_unfold_st", "un_hi_cse", "un_hi_cse_store", "exit_merge", "base_cse_collapse",
                     "shift_const_fold", "zero_remat", "load_remat", "nodiv",
                     "offset_unfold", "zext_keep", "zero_cmp", "param_copy",
-                    "undo_drop", "la_unfold", "arg_unprop", "sched_pre", "la_copy", "la_split", "const_sink", "zext_drop")
+                    "undo_drop", "la_unfold", "arg_unprop", "sched_pre", "la_copy", "la_split", "const_sink", "zext_drop", "at_dest")
 
 # --------------------------------------------------------------------------
 # WORD-LEVEL passes. The original PSY-Q assembler (aspsx) scheduled branch and
