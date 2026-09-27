@@ -3918,5 +3918,8 @@
     "passes": [
       "padnop"
     ]
+  },
+  "Gfx_ProjectModelVerts": {
+    "passes": []
   }
 }

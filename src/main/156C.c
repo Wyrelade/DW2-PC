@@ -8064,7 +8064,55 @@ INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80020FD0);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002130C);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Gfx_ProjectModelVerts);
+s32 Gfx_ProjectModelVerts(Vert6Pmv *v, Obj21ABC *o, s32 noCheck) {
+    s32 otz;
+    s32 flag;
+    s32 n;
+    SxyPmv *sxy;
+    s32 *z;
+    s32 zs;
+    s32 xs;
+    s32 ys;
+    s32 i;
+    ScrPmv *scr;
+
+    n = v->vx;
+    v++;
+    scr = (ScrPmv *)&D_8005F770;
+    sxy = (SxyPmv *)o->field_6C;
+    z = o->field_70;
+    zs = o->field_40;
+    xs = scr->w != 320;
+    ys = scr->h != 240;
+    gte_ldv0u(v);
+    gte_rtps();
+    gte_stsxy(sxy);
+    gte_stszotz(&otz);
+    v++;
+    for (i = 1; i < n; ) {
+        gte_ldv0u(v);
+        gte_rtps();
+        v++;
+        i++;
+        *z = otz >> zs;
+        z++;
+        sxy->vx >>= xs;
+        sxy->vy >>= ys;
+        sxy++;
+        gte_stsxy(sxy);
+        gte_stszotz(&otz);
+        if (!noCheck) {
+            gte_stflg(&flag);
+            if (flag < 0) {
+                return 1;
+            }
+        }
+    }
+    *z = otz >> zs;
+    sxy->vx >>= xs;
+    sxy->vy >>= ys;
+    return 0;
+}
 
 s32 Gfx_IsOriginOffscreen(void) {
     SxyIso sxy;

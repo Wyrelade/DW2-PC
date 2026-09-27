@@ -3132,7 +3132,8 @@ typedef struct {
 typedef struct {
     u8 _pad00[0x3C];
     /* 0x3C */ s32 field_3C;
-    u8 _pad40[0x2C];
+    /* 0x40 */ s32 field_40;
+    u8 _pad44[0x28];
     /* 0x6C */ s32 *field_6C;
     /* 0x70 */ s32 *field_70;
 } Obj21ABC;
@@ -3268,5 +3269,34 @@ typedef struct {
     s16 vx;
     s16 vy;
 } SxyIso;
+
+#include "gte.h"
+/* Packed model vertex (6 bytes, PsyQ SVECTOR without pad). */
+typedef struct {
+    s16 vx;
+    s16 vy;
+    s16 vz;
+} Vert6Pmv; /* size 0x6 */
+
+/* Vertex list Gfx_ProjectModelVerts walks: count, then packed vertices at 0x6. */
+typedef struct {
+    /* 0x00 */ s16 count;
+    /* 0x02 */ s16 unk2;
+    /* 0x04 */ s16 unk4;
+    /* 0x06 */ Vert6Pmv v[1];
+} VertListPmv;
+
+/* Projected screen xy (PsyQ DVECTOR shape). */
+typedef struct {
+    s16 vx;
+    s16 vy;
+} SxyPmv; /* size 0x4 */
+
+/* Word view of the screen size fields of D_8005F770. */
+typedef struct {
+    u8 _pad00[0x110];
+    /* 0x110 */ s32 w;
+    /* 0x114 */ s32 h;
+} ScrPmv;
 
 #endif /* MAIN_156C_H */
