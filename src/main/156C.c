@@ -842,6 +842,8 @@ extern Coord1F668 *D_80061A68[];
 extern Coord1F668 *D_80061A64[];
 extern void (*D_80061BF4[])(s16, s16, s16, Rec62D08, s32, s32);
 extern SVec1F668 D_80050744;
+extern s32 Gfx_IsOriginOffscreen(void);
+extern s32 Gfx_ProjectModelVerts(Vert6Pmv *, Obj21ABC *, s32);
 s16 func_800388A4(s16, s16, s16, s16, u16);
 void func_80021DC8(void);
 
@@ -8027,7 +8029,51 @@ void func_800200D0(Actor *a0) {
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80020510);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80020768);
+void func_80020768(Actor *a0, s32 mode, Col21ABC *col) {
+    Sub3C *s;
+    DstElem *e;
+    Sec1FDBC20 *p;
+    Ent1FDBC20 *q;
+    Ent1FDBC16 *r;
+    s32 i;
+    s32 j;
+    s32 n;
+
+    i = 0;
+    s = a0->field_3C;
+    e = s->field_78;
+    s->field_40 = D_8005F770.field_118[s->field_3C] - 2;
+    for (; i < s->field_8; i++, e++) {
+        p = s->field_14[i];
+        gte_SetRotMatrix(&e->field_0);
+        gte_SetTransMatrix(&e->field_0);
+        if (mode == 0 && Gfx_IsOriginOffscreen() != 0) {
+            continue;
+        }
+        if (Gfx_ProjectModelVerts((Vert6Pmv *)s->field_C[i], (Obj21ABC *)s, mode) != 0) {
+            continue;
+        }
+        for (j = 0; j < 2; j++) {
+            n = p->n;
+            q = p->e;
+            if (n != 0) {
+                Gfx_DrawWireQuads((Quad21ABC *)q, n, (Obj21ABC *)s, col);
+                q += n;
+            }
+            p = (Sec1FDBC20 *)q;
+        }
+        for (j = 0; j < 2; j++) {
+            n = p->n;
+            r = ((Sec1FDBC16 *)p)->e;
+            if (n != 0) {
+                Gfx_DrawWireTris((Tri218CC *)r, n, (Obj21ABC *)s, col);
+                r += n;
+            }
+            p = (Sec1FDBC20 *)r;
+        }
+    }
+}
+
 
 extern void func_8002D744(void *, Obj209 *);
 extern void ScaleMatrix(Obj209 *, s32 *);

@@ -270,9 +270,11 @@ typedef struct {
     /* 0x28 */ s32 field_28;
     /* 0x2C */ s32 field_2C;
     /* 0x30 */ s32 field_30;
-    u8 _pad34[0x08];
+    /* 0x34 */ s16 field_34;
+    /* 0x36 */ s16 field_36;
+    u8 _pad38[0x04];
     /* 0x3C */ s32 field_3C;
-    u8 _pad40[0x04];
+    /* 0x40 */ s32 field_40;
     /* 0x44 */ struct Pos1F9AC *field_44;
     /* 0x48 */ s32 field_48;
     /* 0x4C */ s32 field_4C;
