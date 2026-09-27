@@ -480,7 +480,43 @@ INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_800660F0);
 
 INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_8006637C);
 
-INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80066748);
+void func_80066748(Stg11Work66C04 *arg0) {
+    Stg11Slot *s = arg0->field_6C;
+    Stg11Party *pt = &D_800684A8;
+    DigiRosterEntry *e;
+    s32 i;
+    s32 n;
+
+    for (i = 0; i < 0x26; i++) {
+        s[i].field_2 = 0;
+        s[i].field_0 = 0;
+    }
+    arg0->field_54[0] = 1;
+    arg0->field_54[1] = 0;
+    n = arg0->field_60 < 3 ? 3 : 0x24;
+    if (arg0->field_60 < 3) {
+        e = pt->field_4;
+    } else {
+        e = pt->field_0->elems;
+    }
+    for (i = 0; i < n; i++, e++) {
+        if (e->state == 0) {
+            break;
+        }
+        s->field_0 = 1;
+        s->field_4 = e;
+        s->field_2 = arg0->field_60 < 3 ? i + 3 : 2;
+        s++;
+        arg0->field_54[1]++;
+    }
+    arg0->field_6A = 0;
+    e = pt->field_0->elems;
+    for (i = 0; i < 0x24; i++, e++) {
+        if (e->state != 0) {
+            arg0->field_6A++;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80066860);
 
