@@ -10,7 +10,40 @@ INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_800635A4);
 
 INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_800638D4);
 
-INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80063D34);
+void func_80063D34(Actor *arg0) {
+    StgWork *w = (StgWork *)arg0->work;
+
+    switch (arg0->stateLevel0) {
+    case 0:
+        Task_NextState0(arg0);
+        break;
+    case 1:
+        switch (arg0->stateLevel1) {
+        case 0:
+        default:
+            if (++w->count != 7) {
+                break;
+            }
+            Task_NextState1(arg0);
+        case 1:
+            if (D_8005F6F0[0].cross > 0 || D_8005F6F0[0].start > 0) {
+                Task_NextState1(arg0);
+            }
+            break;
+        case 2:
+            if (--w->count == 0) {
+                D_8005F78C = 0x407;
+                Task_NextState1(arg0);
+            }
+            break;
+        case 3:
+            break;
+        }
+        break;
+    case 2:
+        break;
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80063E24);
 
