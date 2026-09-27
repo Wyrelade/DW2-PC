@@ -418,7 +418,15 @@ void func_80066D50(Actor *arg0) {
     Gfx_DrawParts(e);
 }
 
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80066DB0);
+void func_80066DB0(Actor *arg0, Stg00ModelArg *arg1) {
+    Stg00ModelWork *w;
+
+    arg0->digiId = arg1->field_0;
+    w = (Stg00ModelWork *)arg0->work;
+    w->field_14 = Digi_GetModelFile(arg1->field_0);
+    w->field_4 = arg1->field_4;
+    w->field_10 = arg1->field_10;
+}
 
 INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80066E1C);
 
