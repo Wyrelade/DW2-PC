@@ -73,7 +73,12 @@ void func_8006551C(s32 arg0, s32 arg1) {
 
 INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80065558);
 
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_800655B8);
+void func_800655B8(Actor *arg0) {
+    Gfx_AttachModel(arg0, 0x78);
+    Actor_UpdateTransform(arg0);
+    Gfx_CalcModelBoneMatrices(arg0);
+    Gfx_DrawTexModel(arg0, 1);
+}
 
 INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_800655FC);
 
