@@ -57,7 +57,128 @@ void func_8006359C(void) {
 
 INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_800635A4);
 
-INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_800638D4);
+void func_800638D4(Actor *a0) {
+    Stag1000Menu *w = (Stag1000Menu *)a0->work;
+    Stag1000Part *list = (Stag1000Part *)Cd_GetFileEntry(0x1840000);
+    Stag1000Part *p = list;
+
+    if (p->fileId != 0) {
+        do {
+            if (p->partMask & 0x2) {
+                p->field_6 = p->field_6 < -0x1D9 ? 0 : p->field_6 - 1;
+            }
+            if (p->partMask & 0x100) {
+                p->field_6 = p->field_6 < -0x1C9 ? 0 : p->field_6 - 2;
+            }
+            if (p->partMask & 0x200) {
+                p->field_6 = p->field_6 < 3 ? 0x1CC : p->field_6 - 2;
+            }
+            if (p->partMask & 0x400) {
+                p->field_6 = p->field_6 < 0x1CF ? 0x398 : p->field_6 - 2;
+            }
+            if (D_8005F770.frameCount & 1) {
+                if (p->partMask & 0x800) {
+                    p->field_6 = p->field_6 < -0x2CE ? 0 : p->field_6 - 1;
+                }
+                if (p->partMask & 0x1000) {
+                    p->field_6 = p->field_6 < 2 ? 0x2D0 : p->field_6 - 1;
+                }
+                if (p->partMask & 0x2000) {
+                    p->field_6 = p->field_6 < 0x2D2 ? 0x5A0 : p->field_6 - 1;
+                }
+            }
+            if (p->partMask & 0x3F00) {
+                p->palette = Math_CycleRange(a0->elapsed, 6, 0, 0xF);
+            }
+            switch (w->field_8) {
+            case 0:
+            default:
+                if (p->partMask & 0x10) {
+                    p->palette = Math_CycleRange(a0->elapsed, 6, 0, 4);
+                }
+                if (p->partMask & 0xEC) {
+                    p->visible = 0;
+                } else {
+                    p->visible = 1;
+                }
+                break;
+            case 1:
+                if (w->field_10 == 0) {
+                switch (w->field_C) {
+                case 0:
+                default:
+                    if (p->partMask & 0x20) {
+                        p->palette = Math_CycleRange(a0->elapsed, 6, 0, 4);
+                    }
+                    if (p->partMask & 0x40) {
+                        p->palette = 5;
+                    }
+                    if (p->partMask & 0x80) {
+                        p->palette = 5;
+                    }
+                    if (p->partMask & 0x4) {
+                        p->palette = 5;
+                    }
+                    break;
+                case 1:
+                    if (p->partMask & 0x40) {
+                        p->palette = Math_CycleRange(a0->elapsed, 6, 0, 4);
+                    }
+                    if (p->partMask & 0x20) {
+                        p->palette = 5;
+                    }
+                    if (p->partMask & 0x80) {
+                        p->palette = 5;
+                    }
+                    if (p->partMask & 0x4) {
+                        p->palette = 5;
+                    }
+                    break;
+                case 2:
+                    if (p->partMask & 0x20) {
+                        p->palette = 5;
+                    }
+                    if (p->partMask & 0x40) {
+                        p->palette = 5;
+                    }
+                    if (p->partMask & 0x80) {
+                        p->palette = Math_CycleRange(a0->elapsed, 6, 0, 4);
+                    }
+                    if (p->partMask & 0x4) {
+                        p->palette = 5;
+                    }
+                    break;
+                case 3:
+                    if (p->partMask & 0x20) {
+                        p->palette = 5;
+                    }
+                    if (p->partMask & 0x40) {
+                        p->palette = 5;
+                    }
+                    if (p->partMask & 0x80) {
+                        p->palette = 5;
+                    }
+                    if (p->partMask & 0x4) {
+                        p->palette = Math_CycleRange(a0->elapsed, 6, 0, 4);
+                    }
+                    break;
+                }
+                if (p->partMask & 0x18) {
+                    p->visible = 0;
+                } else {
+                    p->visible = 1;
+                }
+                } else {
+                    Gfx_HidePartsByMask((GfxPartMaskView *)list, 0xF4);
+                }
+                break;
+            }
+            p->unscaled = 1;
+            p++;
+        } while (p->fileId != 0);
+    }
+    func_8001D8A4((s32)list);
+}
 
 void func_80063D34(Actor *arg0) {
     StgWork *w = (StgWork *)arg0->work;
