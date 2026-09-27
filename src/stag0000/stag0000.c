@@ -193,7 +193,15 @@ TaskEntry *func_80068930(void) {
     return Task_FindFirst(0x109, -1, -1);
 }
 
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80068958);
+void func_80068958(Actor *arg0, s32 arg1, s32 arg2, s32 arg3) {
+    if (arg0 != NULL) {
+        Stg00ObjWork *w = (Stg00ObjWork *)arg0->work;
+        w->field_84 = 1;
+        w->field_0 += arg1;
+        w->field_4 += arg2;
+        w->field_8 += arg3;
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_8006899C);
 
