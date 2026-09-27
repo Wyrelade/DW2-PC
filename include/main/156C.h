@@ -56,10 +56,10 @@ typedef struct {
 
 /* Global struct Gfx_FadeState; only field_0 and field_8 are known so far. */
 typedef struct {
-    /* 0x00 */ s32 field_0;
-    /* 0x04 */ s32 field_4;
-    /* 0x08 */ s32 field_8;
-} Obj80041564;
+    /* 0x00 */ s32 mode;
+    /* 0x04 */ s32 speed;
+    /* 0x08 */ s32 additive;
+} FadeState;
 
 /* Global object pointer D_80048F08 with method pointers at 0x38 / 0x3C. */
 typedef struct {

@@ -29,7 +29,7 @@ extern s32 Cd_FileLba[];
 extern Actor D_8005F770;
 extern ActorWork *D_80041670[];
 extern Elem20 Gfx_TexSlots[];
-extern Obj80041564 Gfx_FadeState;
+extern FadeState Gfx_FadeState;
 extern u16 D_80041704[];
 extern s32 Cd_FileLba[];
 extern u16 Cd_FileSectors[];
@@ -6307,39 +6307,39 @@ void Gpu_InitDoubleBuffer(s32 w, s32 h, s32 mode, s32 inter) {
 }
 
 void Gfx_FadeInFromBlack(s32 arg0) {
-    Gfx_FadeState.field_8 = 0;
-    Gfx_FadeState.field_0 = 2;
-    Gfx_FadeState.field_4 = arg0;
+    Gfx_FadeState.additive = 0;
+    Gfx_FadeState.mode = 2;
+    Gfx_FadeState.speed = arg0;
     D_8005F780 = arg0 + 0xFF;
 }
 
 void Gfx_FadeOutToBlack(s32 arg0) {
-    Gfx_FadeState.field_8 = 0;
-    Gfx_FadeState.field_0 = 3;
-    Gfx_FadeState.field_4 = arg0;
+    Gfx_FadeState.additive = 0;
+    Gfx_FadeState.mode = 3;
+    Gfx_FadeState.speed = arg0;
 }
 
 void Gfx_FadeInFromWhite(s32 arg0) {
-    Gfx_FadeState.field_8 = 1;
-    Gfx_FadeState.field_0 = 2;
-    Gfx_FadeState.field_4 = arg0;
+    Gfx_FadeState.additive = 1;
+    Gfx_FadeState.mode = 2;
+    Gfx_FadeState.speed = arg0;
     D_8005F780 = arg0 + 0xFF;
 }
 
 void Gfx_FadeOutToWhite(s32 arg0) {
-    Gfx_FadeState.field_8 = 1;
-    Gfx_FadeState.field_0 = 3;
-    Gfx_FadeState.field_4 = arg0;
+    Gfx_FadeState.additive = 1;
+    Gfx_FadeState.mode = 3;
+    Gfx_FadeState.speed = arg0;
 }
 
 void Gfx_FadeClear(void) {
-    Gfx_FadeState.field_8 = 0;
-    Gfx_FadeState.field_0 = 0;
+    Gfx_FadeState.additive = 0;
+    Gfx_FadeState.mode = 0;
 }
 
 void Gfx_FadeSetBlack(void) {
-    Gfx_FadeState.field_8 = 0;
-    Gfx_FadeState.field_0 = 1;
+    Gfx_FadeState.additive = 0;
+    Gfx_FadeState.mode = 1;
 }
 
 void Gfx_DrawFade(void) {
@@ -6355,7 +6355,7 @@ void Gfx_DrawFade(void) {
         return;
     }
     for (;;) {
-        switch (Gfx_FadeState.field_0) {
+        switch (Gfx_FadeState.mode) {
         default:
         case 0:
             D_8005F770.field_10 = 0;
@@ -6364,20 +6364,20 @@ void Gfx_DrawFade(void) {
             D_8005F770.field_10 = 0xFF;
             goto check;
         case 2:
-            D_8005F770.field_10 -= Gfx_FadeState.field_4;
+            D_8005F770.field_10 -= Gfx_FadeState.speed;
             if (D_8005F770.field_10 > 0) {
                 goto draw;
             }
             D_8005F770.field_10 = 0;
-            Gfx_FadeState.field_0 = 0;
+            Gfx_FadeState.mode = 0;
             continue;
         case 3:
-            D_8005F770.field_10 += Gfx_FadeState.field_4;
+            D_8005F770.field_10 += Gfx_FadeState.speed;
             if (D_8005F770.field_10 < 0xFF) {
                 goto check;
             }
             D_8005F770.field_10 = 0xFF;
-            Gfx_FadeState.field_0 = 1;
+            Gfx_FadeState.mode = 1;
             continue;
         }
     }
@@ -6405,7 +6405,7 @@ draw:
     p->t.addr = ot->addr;
     ot->addr = (u32)p;
     q = &p->m;
-    if (Gfx_FadeState.field_8 != 0) {
+    if (Gfx_FadeState.additive != 0) {
         abr = 1;
     }
     q->t.len = 1;
