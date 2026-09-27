@@ -226,7 +226,9 @@ void func_80068050(void) {
 
 INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80068058);
 
-INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80068160);
+void func_80068160(Actor *arg0) {
+    Task_DefaultDestroy(arg0);
+}
 
 void func_80068180(void) {
 }
