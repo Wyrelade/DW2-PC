@@ -2099,25 +2099,45 @@ typedef struct {
     u8 b[6];
 } Tbl50724;
 
-/* View of D_8005F770 as the frame/display state (Sys_VSyncHandler, Sys_Main). */
+/* D_8005F770: the global frame/display state (Sys_Main, Sys_VSyncHandler,
+ * Gpu_InitDoubleBuffer, Gpu_SetLayerOtPtrs, Gfx_DrawFade). Double-buffered draw and
+ * display environments, frame counters, the game-mode request, the primitive packet
+ * cursor (D_80041670[bufIndex]) and the eight ordering-table layers of the current
+ * buffer. Unions keep each access at the C type the code reads it with. */
 typedef struct {
-    /* 0x00 */ s32 frameCount;
-    /* 0x04 */ s32 vsyncWait;
-    /* 0x08 */ s32 frameDelta;
-    /* 0x0C */ s32 field_C;
-    u8 _pad10[0x04];
-    /* 0x14 */ s32 drawPass;
-    /* 0x18 */ s32 gameMode;
-    /* 0x1C */ s32 nextGameMode;
-    /* 0x20 */ s32 prevGameMode;
-    /* 0x24 */ s32 field_24;
-    /* 0x28 */ s32 bufIndex;
-    u8 _pad2C[0x04];
-    /* 0x30 */ DrawEnv draw[2];
-    /* 0xE8 */ DispEnv disp[2];
-    /* 0x110 */ s32 centerX;
-    /* 0x114 */ s32 centerY;
-} Db5F770;
+    /* 0x000 */ s32 frameCount;
+    /* 0x004 */ s32 vsyncWait;
+    /* 0x008 */ s32 frameDelta;           /* vsyncs since the last frame, capped at 6 */
+    /* 0x00C */ s32 field_C;
+    /* 0x010 */ s32 fadeLevel;            /* Gfx_DrawFade quad intensity 0..0xFF */
+    /* 0x014 */ s32 drawPass;             /* 0/1: which Task_TryRun pass of the frame */
+    /* 0x018 */ s32 gameMode;
+    /* 0x01C */ s32 nextGameMode;
+    /* 0x020 */ s32 prevGameMode;
+    /* 0x024 */ s32 field_24;
+    /* 0x028 */ s32 bufIndex;             /* double-buffer index (0/1) */
+    /* 0x02C */ union {
+        ActorWork *work;
+        s32 addr;
+        DrMove2AB54 *drMove;
+    } packet;                            /* primitive packet cursor */
+    /* 0x030 */ DrawEnv draw[2];          /* isbg/r0/g0/b0 set by func_8001C194 */
+    /* 0x0E8 */ DispEnv disp[2];
+    /* 0x110 */ union {
+        s32 s;
+        u16 lo;
+    } centerX;                           /* half screen width */
+    /* 0x114 */ union {
+        s32 s;
+        u16 lo;
+    } centerY;                           /* half screen height */
+    /* 0x118 */ s32 otLayerLen[8];        /* D_80041570[mode][i] */
+    /* 0x138 */ union {
+        s32 *s[8];
+        u32 *u[8];
+        s32 addr[8];
+    } otLayers;                          /* &Gpu_OtBufs[bufIndex] + D_800415F0[mode][i] */
+} SysState; /* size 0x158 */
 /* Load header filled by GsGetTimInfo (Sys_Main reads field_C). */
 typedef struct {
     s32 mode;
@@ -2606,17 +2626,7 @@ typedef struct {
 } Ent19E50;
 
 
-/* Gpu_ClearScreens reads two 0x14-stride display areas out of D_8005F770 at 0xE8
- * (a Rect2AB54 at the head of each). */
-typedef struct {
-    /* 0x00 */ Rect2AB54 rect;
-    u8 _pad8[0xC];
-} Area1C104;
 
-typedef struct {
-    u8 _pad0[0xE8];
-    /* 0xE8 */ Area1C104 area[2];
-} View1C104;
 
 
 /* BIOS device control block (0x50 bytes), table at 0x150 / byte size at 0x154, scanned by func_8003F760. */
@@ -2861,7 +2871,7 @@ typedef struct {
     /* 0x12 */ s8 b2;
 } Cd4FC48;
 
-/* Screen fade packet Gfx_DrawFade writes at D_8005F770.work: a flat
+/* Screen fade packet Gfx_DrawFade writes at D_8005F770.packet: a flat
  * semi-transparent quad (POLY_F4 layout) followed by a draw-mode word pair. */
 typedef struct {
     /* 0x00 */ Tag1CE9C t;
@@ -2928,14 +2938,6 @@ typedef struct Pos1F9AC {
     /* 0x1C */ s32 vramY;
 } Pos1F9AC;
 
-typedef struct {
-    u8 _pad00[0x8];
-    /* 0x008 */ s32 frameDelta;
-    u8 _pad0C[0x2C - 0xC];
-    /* 0x02C */ DrMove2AB54 *primBuf;
-    u8 _pad30[0x150 - 0x30];
-    /* 0x150 */ unsigned int *otLayer6;
-} Wk1F9AC;
 
 
 /* func_80026170 5-byte directory entry (field_4 table). */
@@ -3219,22 +3221,6 @@ typedef struct {
     /* 0xA30 */ s32 waitTimer;
 } Wk1A9C8;
 
-typedef struct {
-    u8 _pad0[8];
-    /* 0x08 */ s32 frameDelta;
-    u8 _padC[0xC];
-    /* 0x18 */ s32 gameMode;
-    /* 0x1C */ s32 nextGameMode;
-    u8 _pad20[4];
-    /* 0x24 */ s32 field_24;
-    u8 _pad28[4];
-    /* 0x2C */ s32 primPtr;
-    u8 _pad30[0xE0];
-    /* 0x110 */ s32 centerX;
-    /* 0x114 */ s32 centerY;
-    u8 _pad118[0x20];
-    /* 0x138 */ u32 *layerOt[8];
-} Gl1A9C8;
 
 typedef struct {
     u8 r;
@@ -3314,12 +3300,6 @@ typedef struct {
     s16 vy;
 } SxyPmv; /* size 0x4 */
 
-/* Word view of the screen size fields of D_8005F770. */
-typedef struct {
-    u8 _pad00[0x110];
-    /* 0x110 */ s32 w;
-    /* 0x114 */ s32 h;
-} ScrPmv;
 
 #include "gte.h"
 /* Scratchpad bone node (0x1F800000, stride 0x44): local matrix, world matrix

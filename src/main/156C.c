@@ -26,7 +26,7 @@ extern u8 D_80048F20[];
 extern u8 D_80048F7C[];
 extern TaskFindFilter Task_FindFilter;
 extern s32 Cd_FileLba[];
-extern Actor D_8005F770;
+extern SysState D_8005F770;
 extern ActorWork *D_80041670[];
 extern GfxTexSlot Gfx_TexSlots[];
 extern FadeState Gfx_FadeState;
@@ -1267,7 +1267,7 @@ void func_80011854(Actor *a0) {
     s32 j;
     u8 u;
     u8 v;
-    Actor *g;
+    SysState *g;
     Ft4_11854 *p;
 
     e = (Part11854 *)Cd_GetFileEntry(0x3120002);
@@ -1293,7 +1293,7 @@ void func_80011854(Actor *a0) {
         s = -1;
     }
     g = &D_8005F770;
-    p = (Ft4_11854 *)g->work;
+    p = (Ft4_11854 *)g->packet.work;
     for (j = 0; j < 2; j++) {
         for (i = 0; i < 2; i++) {
             p->c.rgb = D_8005074C;
@@ -1315,8 +1315,8 @@ void func_80011854(Actor *a0) {
             p->v2 = p->v3 = v + 20;
             p->tpage = tex.tpage;
             p->clut = ((tex.vramY + clut.y) << 6) | (((tex.vramX + clut.x) >> 4) & 0x3F);
-            p->tag.addr = ((PTag11854 *)g->field_138[0])->addr;
-            ((PTag11854 *)g->field_138[0])->addr = (u32)p;
+            p->tag.addr = ((PTag11854 *)g->otLayers.s[0])->addr;
+            ((PTag11854 *)g->otLayers.s[0])->addr = (u32)p;
             p++;
         }
     }
@@ -2030,7 +2030,7 @@ void Menu_NameEntryDrawParts(Actor *a) {
     s32 v;
     s32 x;
 
-    w->field_28 += D_8005F770.field_8;
+    w->field_28 += D_8005F770.frameDelta;
     for (p = base; p->field_0 != 0; p++) {
         if (p->groupMask & 0x20) {
             v = w->field_24;
@@ -2133,8 +2133,8 @@ void func_80013384(Actor *a0) {
     switch (st) {
     case 0:
     default:
-        func_80013308((D_8005F770.field_18 >> 8) - 1);
-        Task_Create(D_8005F770.field_18 & 0xFF00, t, 0);
+        func_80013308((D_8005F770.gameMode >> 8) - 1);
+        Task_Create(D_8005F770.gameMode & 0xFF00, t, 0);
         Task_NextState0(a0);
         break;
     case 1:
@@ -5512,7 +5512,7 @@ void Text_UpdateAllBoxes(Actor *a0) {
     PadState *e;
     PadState *tb;
 
-    pkt = (Ft4_1A9C8 *)((Gl1A9C8 *)&D_8005F770)->primPtr;
+    pkt = (Ft4_1A9C8 *)D_8005F770.packet.addr;
     slots = (Actor **)a0->u34.field_34;
     wk = (Wk1A9C8 *)a0->work;
     tb = D_8005F6F0;
@@ -5532,12 +5532,12 @@ void Text_UpdateAllBoxes(Actor *a0) {
             nF4c = 0;
             pos = *(Pair54 *)&r->x;
             nF4d = 0;
-            ot = ((Gl1A9C8 *)&D_8005F770)->layerOt[r->otIndex];
+            ot = D_8005F770.otLayers.u[r->otIndex];
             line = 0;
             page = 0;
             r->color = r->baseColor;
             if (r->field_27 == 0 && r->field_6 != 0) {
-                r->field_21 += ((Gl1A9C8 *)&D_8005F770)->frameDelta;
+                r->field_21 += D_8005F770.frameDelta;
                 if (r->field_21 >= r->field_6) {
                     r->field_22++;
                     r->field_21 -= r->field_6;
@@ -5608,7 +5608,7 @@ void Text_UpdateAllBoxes(Actor *a0) {
                             r->field_27 = 0;
                             Snd_PlayById(0x13, 0);
                         } else {
-                            wk->blinkTimer += ((Gl1A9C8 *)&D_8005F770)->frameDelta;
+                            wk->blinkTimer += D_8005F770.frameDelta;
                             if (wk->blinkTimer >= 0x18) {
                                 wk->blinkTimer -= 0x18;
                             }
@@ -5759,7 +5759,7 @@ void Text_UpdateAllBoxes(Actor *a0) {
                 case 0xF6:
                 case 0xF7:
                     isF6 = *s == 0xF6;
-                    mode2 = ((Gl1A9C8 *)&D_8005F770)->gameMode / 256 == 2;
+                    mode2 = D_8005F770.gameMode / 256 == 2;
                     s++;
                     if (r->field_2A == nF6) {
                         switch (a0->field_14) {
@@ -5908,18 +5908,18 @@ void Text_UpdateAllBoxes(Actor *a0) {
                     }
                     if (++a0->field_18 >= 0x19) {
                         if (*s == 0xFC) {
-                            ((Gl1A9C8 *)&D_8005F770)->nextGameMode = 0x605;
+                            D_8005F770.nextGameMode = 0x605;
                         } else if (*s == 0xFD) {
-                            ((Gl1A9C8 *)&D_8005F770)->nextGameMode = 0x500;
+                            D_8005F770.nextGameMode = 0x500;
                         } else if (*s == 0xFE) {
-                            ((Gl1A9C8 *)&D_8005F770)->nextGameMode = 0x404;
+                            D_8005F770.nextGameMode = 0x404;
                         } else if (*s == 0xFF) {
-                            ((Gl1A9C8 *)&D_8005F770)->nextGameMode = 0x405;
+                            D_8005F770.nextGameMode = 0x405;
                         } else {
-                            ((Gl1A9C8 *)&D_8005F770)->nextGameMode = *s + 0x300;
+                            D_8005F770.nextGameMode = *s + 0x300;
                         }
                         s++;
-                        ((Gl1A9C8 *)&D_8005F770)->field_24 = *s;
+                        D_8005F770.field_24 = *s;
                     }
                     break;
                 case 0xF2:
@@ -6002,13 +6002,13 @@ void Text_UpdateAllBoxes(Actor *a0) {
                     pkt->v2 = pkt->v3 = pkt->v0 + glyph.field_2;
                     pkt->clut = ((font[page]->vramY + (r->color + 0xF8)) << 6) | ((font[page]->vramX >> 4) & 0x3F);
                     pkt->tpage = font[page]->tpage;
-                    if (((Gl1A9C8 *)&D_8005F770)->centerX == 0x140) {
+                    if (D_8005F770.centerX.s == 0x140) {
                         pkt->x0 *= 2;
                         pkt->x1 *= 2;
                         pkt->x2 *= 2;
                         pkt->x3 *= 2;
                     }
-                    if (((Gl1A9C8 *)&D_8005F770)->centerY == 0xF0) {
+                    if (D_8005F770.centerY.s == 0xF0) {
                         pkt->y0 *= 2;
                         pkt->y1 *= 2;
                         pkt->y2 *= 2;
@@ -6217,7 +6217,7 @@ void Gpu_ClearScreens(void) {
     s32 i;
 
     for (i = 0; i < 2; i++) {
-        r = ((View1C104 *)&D_8005F770)->area[i].rect;
+        r = D_8005F770.disp[i].disp;
         ResetGraph(1);
         ClearImage2((s32)&r, 0, 0, 0);
         DrawSync(0);
@@ -6228,26 +6228,26 @@ void Gpu_ClearScreens(void) {
 void func_8001C194(s32 a0, s32 a1, s32 a2) {
     s32 i;
     for (i = 0; i < 2; i++) {
-        D_8005F770.field_48[i].isbg = 1;
-        D_8005F770.field_48[i].r0 = a0;
-        D_8005F770.field_48[i].g0 = a1;
-        D_8005F770.field_48[i].b0 = a2;
+        D_8005F770.draw[i].isbg = 1;
+        D_8005F770.draw[i].r0 = a0;
+        D_8005F770.draw[i].g0 = a1;
+        D_8005F770.draw[i].b0 = a2;
     }
 }
 
 void func_8001C1CC(void) {
-    D_8005F770.field_48[0].isbg = 0;
-    D_8005F770.field_48[1].isbg = 0;
+    D_8005F770.draw[0].isbg = 0;
+    D_8005F770.draw[1].isbg = 0;
 }
 
 void Gpu_InitDoubleBuffer(s32 w, s32 h, s32 mode, s32 inter) {
-    Db5F770 *g = (Db5F770 *)&D_8005F770;
+    SysState *g = &D_8005F770;
     s32 n = 0;
     s32 hw = w / 2;
     s32 hh = h / 2;
 
-    g->centerX = hw;
-    g->centerY = hh;
+    g->centerX.s = hw;
+    g->centerY.s = hh;
     switch (mode) {
     default:
     case 0:
@@ -6351,32 +6351,32 @@ void Gfx_DrawFade(void) {
     u8 c;
     s32 abr;
 
-    if (D_8005F770.work == 0) {
+    if (D_8005F770.packet.work == 0) {
         return;
     }
     for (;;) {
         switch (Gfx_FadeState.mode) {
         default:
         case 0:
-            D_8005F770.field_10 = 0;
+            D_8005F770.fadeLevel = 0;
             return;
         case 1:
-            D_8005F770.field_10 = 0xFF;
+            D_8005F770.fadeLevel = 0xFF;
             goto check;
         case 2:
-            D_8005F770.field_10 -= Gfx_FadeState.speed;
-            if (D_8005F770.field_10 > 0) {
+            D_8005F770.fadeLevel -= Gfx_FadeState.speed;
+            if (D_8005F770.fadeLevel > 0) {
                 goto draw;
             }
-            D_8005F770.field_10 = 0;
+            D_8005F770.fadeLevel = 0;
             Gfx_FadeState.mode = 0;
             continue;
         case 3:
-            D_8005F770.field_10 += Gfx_FadeState.speed;
-            if (D_8005F770.field_10 < 0xFF) {
+            D_8005F770.fadeLevel += Gfx_FadeState.speed;
+            if (D_8005F770.fadeLevel < 0xFF) {
                 goto check;
             }
-            D_8005F770.field_10 = 0xFF;
+            D_8005F770.fadeLevel = 0xFF;
             Gfx_FadeState.mode = 1;
             continue;
         }
@@ -6387,19 +6387,19 @@ check:
     }
 draw:
     abr = 2;
-    q = (Fade1C584Mode *)D_8005F770.work;
+    q = (Fade1C584Mode *)D_8005F770.packet.work;
     p = (Fade1C584 *)q;
-    ot = (Tag1CE9C *)D_8005F770.field_138[0];
+    ot = (Tag1CE9C *)D_8005F770.otLayers.s[0];
     p->t.len = 5;
     p->code = 0x2A;
-    c = D_8005F770.field_10;
+    c = D_8005F770.fadeLevel;
     p->g = c;
     p->b = c;
     p->r = c;
-    w = D_8005F770.field_110;
+    w = D_8005F770.centerX.lo;
     p->x0 = p->x2 = -w;
     p->x1 = p->x3 = w;
-    h = D_8005F770.field_114;
+    h = D_8005F770.centerY.lo;
     p->y0 = p->y1 = -h;
     p->y2 = p->y3 = h;
     p->t.addr = ot->addr;
@@ -6413,15 +6413,15 @@ draw:
     p->m.t.addr = ot->addr;
     ot->addr = (u32)q;
     q = (Fade1C584Mode *)(p + 1);
-    D_8005F770.work = (ActorWork *)q;
+    D_8005F770.packet.work = (ActorWork *)q;
 }
 
 void Gpu_SetLayerOtPtrs(void) {
     s32 i;
 
     for (i = 0; i < 8; i++) {
-        D_8005F770.field_118[i] = D_80041570[D_8005CCF8.field_60][i];
-        D_8005F770.field_138[i] = &Gpu_OtBufs[D_8005F770.field_28].field_0[D_800415F0[D_8005CCF8.field_60][i]];
+        D_8005F770.otLayerLen[i] = D_80041570[D_8005CCF8.field_60][i];
+        D_8005F770.otLayers.s[i] = &Gpu_OtBufs[D_8005F770.bufIndex].field_0[D_800415F0[D_8005CCF8.field_60][i]];
     }
 }
 
@@ -6477,7 +6477,7 @@ void Gpu_FreePrimBufs(void) {
 }
 
 void Gpu_ResetPrimBuf(void) {
-    D_8005F770.work = D_80041670[D_8005F770.field_28];
+    D_8005F770.packet.work = D_80041670[D_8005F770.bufIndex];
 }
 
 extern s32 Mem_Alloc(s32, s32);
@@ -6486,7 +6486,7 @@ void Gpu_AllocPacketBufs(s32 a0) {
     D_80041670[2] = (ActorWork *)a0;
     D_80041670[0] = (ActorWork *)Mem_Alloc(a0, 2);
     D_80041670[1] = (ActorWork *)Mem_Alloc(a0, 2);
-    D_8005F770.work = D_80041670[D_8005F770.field_28];
+    D_8005F770.packet.work = D_80041670[D_8005F770.bufIndex];
 }
 
 GfxTexSlot *Gfx_GetTexSlot(s32 arg0) {
@@ -6557,7 +6557,7 @@ GfxTexSlot *Gfx_FindOrLoadTexSlot(s32 id) {
             continue;
         }
         if (p->fileId == id) {
-            p->lastUsed = D_8005F770.field_0;
+            p->lastUsed = D_8005F770.frameCount;
             return p;
         }
     }
@@ -6589,7 +6589,7 @@ GfxTexSlot *Gfx_FindOrLoadTexSlot(s32 id) {
     }
     e = &Gfx_TexSlots[idx];
     e->fileId = id;
-    e->lastUsed = D_8005F770.field_0;
+    e->lastUsed = D_8005F770.frameCount;
     e->field_8 = tp;
     t = e->index & 2;
     e->field_C = t == 0;
@@ -6636,7 +6636,7 @@ s32 Gfx_ReserveTexSlot(void) {
     }
     p = &Gfx_TexSlots[best];
     p->fileId = -2;
-    p->lastUsed = D_8005F770.field_0;
+    p->lastUsed = D_8005F770.frameCount;
     p->field_8 = 0;
     p->field_C = ((p->index & 2) == 0) << 7;
     p->tpage = ((p->vramY & 0x100) >> 4) | ((p->vramX & 0x3FF) >> 6) | ((p->vramY & 0x200) << 2);
@@ -6871,14 +6871,6 @@ typedef struct {
     /* 0x26 */ s16 field_26;
 } Rec1D6B4; /* 0x28 */
 
-/* View of D_8005F770 (=Actor) fields func_8001D6B4 reads. */
-typedef struct {
-    u8 _pad00[0x110];
-    /* 0x110 */ s32 field_110;
-    /* 0x114 */ s32 field_114;
-    u8 _pad118[0x138 - 0x118];
-    /* 0x138 */ s32 field_138[1];
-} Wk1D6B4;
 
 typedef struct {
     /* 0x00 */ s32 field_0;
@@ -6907,9 +6899,9 @@ void func_8001D6B4(void *arg0, s32 arg1) {
     s32 s4;
 
     if (arg1 != 0) {
-        s32 f114 = ((Wk1D6B4 *)&D_8005F770)->field_114;
+        s32 f114 = D_8005F770.centerY.s;
         s3 = 0;
-        s3 = (((Wk1D6B4 *)&D_8005F770)->field_110 ^ 0x140) == s3;
+        s3 = (D_8005F770.centerX.s ^ 0x140) == s3;
         if (f114 == 0xF0) {
             s3 |= 2;
         }
@@ -6918,7 +6910,7 @@ void func_8001D6B4(void *arg0, s32 arg1) {
         return;
     }
     do {
-        s4 = ((Wk1D6B4 *)&D_8005F770)->field_138[s2->field_B];
+        s4 = D_8005F770.otLayers.addr[s2->field_B];
         if (s2->field_F != 0) {
             if (s2->field_E != 0) {
                 if (s3 != 0) {
@@ -7705,7 +7697,7 @@ void Anim_StepModelAnim(Actor *a) {
             s->bonePoseTables[k] += (s32)data;
         }
     }
-    s->animTimer += D_8005F770.field_8;
+    s->animTimer += D_8005F770.frameDelta;
     while (s->animTimer >= 2) {
         s->animTimer -= 2;
         e = s->bones;
@@ -7764,14 +7756,14 @@ void Gfx_AddFlatQuad3D(Col1F668 *col, SVec1F668 *v, s32 flags, s32 idx) {
     PolyF4_1F668 *q;
     DrMode1F668 *dm;
     s32 *ot;
-    Actor *g;
+    SysState *g;
 
     GsInitCoordinate2(0, &coord);
     GsGetLs(&coord, &m);
     GsSetLsMatrix(&m);
     g = &D_8005F770;
-    p = (PolyF4_1F668 *)g->work;
-    ot = g->field_138[idx];
+    p = (PolyF4_1F668 *)g->packet.work;
+    ot = g->otLayers.s[idx];
     p->c = *col;
     SetPolyF4((u8 *)p);
     q = p;
@@ -7798,7 +7790,7 @@ void Gfx_AddFlatQuad3D(Col1F668 *col, SVec1F668 *v, s32 flags, s32 idx) {
     dm->tag.addr = ((Tag1F668 *)ot)->addr;
     ((Tag1F668 *)ot)->addr = (u32)p;
     p = (PolyF4_1F668 *)(dm + 1);
-    g->work = (ActorWork *)p;
+    g->packet.work = (ActorWork *)p;
 }
 
 
@@ -7853,7 +7845,7 @@ void Gfx_AnimateModelTex(Actor *a0) {
                 k = 4;
                 break;
             }
-            if ((w->field_2C -= D_8005F770.field_8) < 0) {
+            if ((w->field_2C -= D_8005F770.frameDelta) < 0) {
                 w->field_2C = 0;
             }
         } else {
@@ -7861,13 +7853,13 @@ void Gfx_AnimateModelTex(Actor *a0) {
             w->field_2C = 0;
         }
     }
-    w->field_30 += D_8005F770.field_8;
+    w->field_30 += D_8005F770.frameDelta;
     while (1) {
         if (w->field_30 < 0x18) break;
         w->field_30 -= 0x18;
     }
     j = (w->field_30 / 8) * 2;
-    prim = ((Wk1F9AC *)&D_8005F770)->primBuf;
+    prim = D_8005F770.packet.drMove;
     for (i = 0; i < 10; i++, r++) {
         if (i < 2) {
             if (r->dstX == 0xFF) continue;
@@ -7885,14 +7877,14 @@ void Gfx_AnimateModelTex(Actor *a0) {
         rc.w = r->w;
         rc.h = r->h;
         SetDrawMove(prim, &rc, r->dstX + pos->vramX, r->dstY + pos->vramY);
-        AddPrim(((Wk1F9AC *)&D_8005F770)->otLayer6, (unsigned int *)prim);
+        AddPrim(D_8005F770.otLayers.u[6], (unsigned int *)prim);
         prim++;
     }
     if (r->dstX == 0xFE) {
         q = (Anim1F9AC *)&r->dstY;
         for (i = 0; i < 10; i++, q++) {
             if (q->dstX == 0xFF) break;
-            if (D_8005F770.field_8 == 1) {
+            if (D_8005F770.frameDelta == 1) {
                 q->timer += 1;
             } else {
                 q->timer += 2;
@@ -7908,14 +7900,14 @@ void Gfx_AnimateModelTex(Actor *a0) {
             rc2.w = q->w;
             rc2.h = q->h;
             SetDrawMove(prim, &rc2, q->dstX + pos->vramX, q->dstY + pos->vramY);
-            AddPrim(((Wk1F9AC *)&D_8005F770)->otLayer6, (unsigned int *)prim);
+            AddPrim(D_8005F770.otLayers.u[6], (unsigned int *)prim);
             prim++;
             rc2.x = q->uv[m + 2] + pos->vramX;
             rc2.y = q->uv[m + 3] + pos->vramY;
             rc2.w = q->w2;
             rc2.h = q->h2;
             SetDrawMove(prim, &rc2, q->dstX2 + pos->vramX, q->dstY2 + pos->vramY);
-            AddPrim(((Wk1F9AC *)&D_8005F770)->otLayer6, (unsigned int *)prim);
+            AddPrim(D_8005F770.otLayers.u[6], (unsigned int *)prim);
             prim++;
         }
     }
@@ -8094,7 +8086,7 @@ void Gfx_DrawTexModel(Actor *a0, s32 mode) {
     i = 0;
     e = s->bones;
     s->field_44 = (struct Pos1F9AC *)Gfx_FindOrLoadTexSlot(s->fileId << 16);
-    s->field_40 = D_8005F770.field_118[s->field_3C] - 2;
+    s->field_40 = D_8005F770.otLayerLen[s->field_3C] - 2;
     for (; i < s->boneCount; i++, e++) {
         p = s->field_14[i];
         gte_SetRotMatrix(&e->viewMat);
@@ -8151,7 +8143,7 @@ void Gfx_DrawWireModel(Actor *a0, s32 mode, Col21ABC *col) {
     i = 0;
     s = a0->field_3C;
     e = s->bones;
-    s->field_40 = D_8005F770.field_118[s->field_3C] - 2;
+    s->field_40 = D_8005F770.otLayerLen[s->field_3C] - 2;
     for (; i < s->boneCount; i++, e++) {
         p = s->field_14[i];
         gte_SetRotMatrix(&e->viewMat);
@@ -8379,7 +8371,7 @@ void Gfx_AddQuadsGT4(QuadGT4_2130C *t, s32 n, Sub3C *s, s32 mode) {
     PolyGT4_2130C *p;
     s32 i;
     s32 z;
-    Actor *g;
+    SysState *g;
 
     tex = (GfxTexSlot *)s->field_44;
     xy = s->field_6C;
@@ -8391,7 +8383,7 @@ void Gfx_AddQuadsGT4(QuadGT4_2130C *t, s32 n, Sub3C *s, s32 mode) {
         code = 0x3C;
     }
     g = &D_8005F770;
-    p = (PolyGT4_2130C *)g->work;
+    p = (PolyGT4_2130C *)g->packet.work;
     for (i = 0; i < n; i++, t++) {
         sxy[0] = xy[t->v[0]];
         sxy[1] = xy[t->v[1]];
@@ -8433,8 +8425,8 @@ void Gfx_AddQuadsGT4(QuadGT4_2130C *t, s32 n, Sub3C *s, s32 mode) {
         p->v1 = t->v1;
         p->v2 = t->v2;
         p->v3 = t->v3;
-        p->tag.addr = ((Tag21ABC *)&g->field_138[idx][z])->addr;
-        ((Tag21ABC *)&g->field_138[idx][z])->addr = (u32)p;
+        p->tag.addr = ((Tag21ABC *)&g->otLayers.s[idx][z])->addr;
+        ((Tag21ABC *)&g->otLayers.s[idx][z])->addr = (u32)p;
         p++;
     }
     D_8005F79C = (s32)p;
@@ -8451,16 +8443,16 @@ s32 Gfx_ProjectModelVerts(Vert6Pmv *v, Obj21ABC *o, s32 noCheck) {
     s32 xs;
     s32 ys;
     s32 i;
-    ScrPmv *scr;
+    SysState *scr;
 
     n = v->vx;
     v++;
-    scr = (ScrPmv *)&D_8005F770;
+    scr = &D_8005F770;
     sxy = (SxyPmv *)o->screenXY;
     z = o->vertOtz;
     zs = o->otzShift;
-    xs = scr->w != 320;
-    ys = scr->h != 240;
+    xs = scr->centerX.s != 320;
+    ys = scr->centerY.s != 240;
     gte_ldv0u(v);
     gte_rtps();
     gte_stsxy(sxy);
@@ -8525,14 +8517,14 @@ void Gfx_DrawWireTris(Tri218CC *t, s32 n, Obj21ABC *o, Col21ABC *col) {
     Tpage21ABC *tp;
     s32 idx;
 
-    pk = (Tag21ABC *)D_8005F770.work;
+    pk = (Tag21ABC *)D_8005F770.packet.work;
     sxy = o->screenXY;
     sz = o->vertOtz;
     idx = o->otIndex;
     for (i = 0; i < n; i++, t++) {
         do {
             z = (sz[t->v[0]] + sz[t->v[1]] + sz[t->v[2]]) / 3;
-            ot = (u32 *)D_8005F770.field_138[idx];
+            ot = (u32 *)D_8005F770.otLayers.s[idx];
             l = (LineF4_21ABC *)pk;
             l->c = *col;
             l->tag.len = 6;
@@ -8569,14 +8561,14 @@ void Gfx_DrawWireQuads(Quad21ABC *q, s32 n, Obj21ABC *o, Col21ABC *col) {
     Tpage21ABC *tp;
     s32 idx;
 
-    pk = (Tag21ABC *)D_8005F770.work;
+    pk = (Tag21ABC *)D_8005F770.packet.work;
     sxy = o->screenXY;
     sz = o->vertOtz;
     idx = o->otIndex;
     for (i = 0; i < n; i++, q++) {
         do {
             z = (sz[q->v[0]] + sz[q->v[1]] + sz[q->v[2]] + sz[q->v[3]]) / 4;
-            ot = (u32 *)D_8005F770.field_138[idx];
+            ot = (u32 *)D_8005F770.otLayers.s[idx];
             xy[0] = sxy[q->v[0]];
             xy[1] = sxy[q->v[1]];
             xy[2] = sxy[q->v[2]];
@@ -9387,13 +9379,13 @@ void Pad_Update(void) {
 }
 
 void Sys_VSyncHandler(void) {
-    s32 t = ((Db5F770 *)&D_8005F770)->vsyncWait - (((Db5F770 *)&D_8005F770)->vsyncWait != 0);
+    s32 t = D_8005F770.vsyncWait - (D_8005F770.vsyncWait != 0);
 
     if (D_8005078C != 0 && D_8005072C >= t) {
-        ((Db5F770 *)&D_8005F770)->bufIndex = (((Db5F770 *)&D_8005F770)->bufIndex == 0);
-        PutDispEnv(&((Db5F770 *)&D_8005F770)->disp[((Db5F770 *)&D_8005F770)->bufIndex]);
-        PutDrawEnv(&((Db5F770 *)&D_8005F770)->draw[((Db5F770 *)&D_8005F770)->bufIndex]);
-        Gpu_DrawOt(((Db5F770 *)&D_8005F770)->bufIndex ^ 1);
+        D_8005F770.bufIndex = (D_8005F770.bufIndex == 0);
+        PutDispEnv(&D_8005F770.disp[D_8005F770.bufIndex]);
+        PutDrawEnv(&D_8005F770.draw[D_8005F770.bufIndex]);
+        Gpu_DrawOt(D_8005F770.bufIndex ^ 1);
         D_8005078C = 0;
         D_8005072C = 0;
     } else {
@@ -9430,8 +9422,8 @@ void Sys_Main(void) {
     SsInit();
     func_8002CE5C();
     Gpu_InitDoubleBuffer(0x140, 0x280, 1, 0);
-    PutDrawEnv(&((Db5F770 *)&D_8005F770)->draw[0]);
-    PutDispEnv(&((Db5F770 *)&D_8005F770)->disp[0]);
+    PutDrawEnv(&D_8005F770.draw[0]);
+    PutDispEnv(&D_8005F770.disp[0]);
     VSync(0);
     GsGetTimInfo((u32 *)(D_80010000[0] + 4), &tim);
     VSync(0);
@@ -9445,9 +9437,9 @@ void Sys_Main(void) {
     Mem_InitHeap(D_800506F8[0], 0x801FF000 - (s32)D_800506F8[0]);
     Cd_ClearFileCache();
     Snd_Init();
-    D_8005F770.field_0 = 0;
-    ((Db5F770 *)&D_8005F770)->vsyncWait = 0;
-    D_8005F770.field_28 = 1;
+    D_8005F770.frameCount = 0;
+    D_8005F770.vsyncWait = 0;
+    D_8005F770.bufIndex = 1;
     Gpu_FreePrimBufs();
     func_8001C800(0);
     Gpu_SetLayerOtPtrs();
@@ -9464,10 +9456,10 @@ void Sys_Main(void) {
     Gfx_InitTexSlots();
     Gpu_ClearOt(0);
     Gpu_ClearOt(1);
-    D_8005F770.field_0 = 1;
-    D_8005F770.field_18 = 0x402;
-    D_8005F770.field_1C = 0x402;
-    ((Db5F770 *)&D_8005F770)->field_24 = 0;
+    D_8005F770.frameCount = 1;
+    D_8005F770.gameMode = 0x402;
+    D_8005F770.nextGameMode = 0x402;
+    D_8005F770.field_24 = 0;
     D_8005F770.field_C = 0;
     func_80022468();
     D_8005071C->field_0 = 0;
@@ -9481,39 +9473,39 @@ void Sys_Main(void) {
             Mem_FreeTag(2);
             Gpu_ClearOt(0);
             Gpu_ClearOt(1);
-            t = D_8005F770.field_18;
-            u = D_8005F770.field_1C;
-            D_8005F770.field_1C = 0;
-            D_8005F770.field_20 = t;
-            D_8005F770.field_18 = u;
+            t = D_8005F770.gameMode;
+            u = D_8005F770.nextGameMode;
+            D_8005F770.nextGameMode = 0;
+            D_8005F770.prevGameMode = t;
+            D_8005F770.gameMode = u;
             for (i = 0; i < 0x11; i++) {
                 Flag_Set(i, 0);
             }
             Task_Create(1, &slot, 0);
         }
         Gfx_DrawFade();
-        D_8005F770.field_14 = 0;
+        D_8005F770.drawPass = 0;
         slot = Task_TryRun((void *)slot);
-        D_8005F770.field_14 = 1;
+        D_8005F770.drawPass = 1;
         slot = Task_TryRun((void *)slot);
-        Gpu_SkipEmptyOtEntries(D_8005F770.field_28);
+        Gpu_SkipEmptyOtEntries(D_8005F770.bufIndex);
         DrawSync(0);
         D_8005078C = 1;
         while (*(volatile s32 *)&D_8005078C != 0) {
         }
         Gpu_ResetPrimBuf();
         Gpu_SetLayerOtPtrs();
-        Gpu_ClearOt(D_8005F770.field_28);
+        Gpu_ClearOt(D_8005F770.bufIndex);
         t = VSync(-1);
         u = D_80050738;
         D_80050738 = t;
         d = t - u;
-        D_8005F770.field_8 = d;
+        D_8005F770.frameDelta = d;
         D_8005E620.playTime += d;
         if (d > 6) {
-            D_8005F770.field_8 = 6;
+            D_8005F770.frameDelta = 6;
         }
-        D_8005F770.field_0++;
+        D_8005F770.frameCount++;
         Pad_Update();
         Rand_Step();
         Cd_ServiceQueue();
@@ -9616,7 +9608,7 @@ CdCacheEntry *Cd_FindFreeCacheSlot(void) {
 }
 
 Ent23AE8 *Cd_FindLruCachedFile(void) {
-    s32 min = D_8005F770.field_0;
+    s32 min = D_8005F770.frameCount;
     CdCacheEntry *p = D_8005F8C8;
     CdCacheEntry *best = 0;
     s32 i;
@@ -9635,7 +9627,7 @@ s32 Cd_GetFileState(s32 arg0) {
     CdCacheEntry *e = Cd_FindCachedFile(arg0);
 
     if (e != 0) {
-        e->lastUsed = D_8005F770.field_0;
+        e->lastUsed = D_8005F770.frameCount;
         return e->state;
     }
     return 0;
@@ -9655,7 +9647,7 @@ void Cd_QueueFile(s32 id) {
     CdCacheEntry *p = Cd_FindCachedFile(id);
 
     if (p != NULL) {
-        p->lastUsed = D_8005F770.field_0;
+        p->lastUsed = D_8005F770.frameCount;
         return;
     }
     p = Cd_FindFreeCacheSlot();
@@ -9689,7 +9681,7 @@ void Cd_ServiceQueue(void) {
         if (p->state != 1) {
             if (p->state == 2) {
                 p->state = 3;
-                p->lastUsed = D_8005F770.field_0;
+                p->lastUsed = D_8005F770.frameCount;
                 busy = 1;
             }
         } else {
@@ -9697,7 +9689,7 @@ void Cd_ServiceQueue(void) {
             if (started == 0) {
                 Cd_ReadFileAsync(p->fileId, p->data);
                 p->state = 2;
-                p->lastUsed = D_8005F770.field_0;
+                p->lastUsed = D_8005F770.frameCount;
                 started = busy;
             }
         }
@@ -9718,7 +9710,7 @@ void Cd_LoadFileSync(s32 arg0) {
 s32 Cd_GetFileSync(s32 arg0) {
     CdCacheEntry *p = Cd_FindCachedFile(arg0);
     if (p != 0 && p->state == 3) {
-        p->lastUsed = D_8005F770.field_0;
+        p->lastUsed = D_8005F770.frameCount;
     } else {
         while (Cd_PollRead() != 0) {
         }
