@@ -175,7 +175,15 @@ loop:
     }
 }
 
-INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_800677AC);
+void func_800677AC(u8 arg0, s32 arg1) {
+    Stg11SaveWork *w = (Stg11SaveWork *)D_800685D0->work;
+    Task_SetState1(D_800685D0, arg0);
+    w->field_0 = arg1;
+    w->field_24[arg1][0] = -1;
+    w->field_4 = -1;
+    w->field_22038 = -1;
+    w->field_22040 = 0;
+}
 
 INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80067818);
 
