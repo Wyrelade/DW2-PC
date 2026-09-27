@@ -20,6 +20,7 @@ Names never change bytes; run `python tools/build_dw2.py` afterwards.
 import argparse
 import os
 import re
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -62,13 +63,16 @@ def struct_span(text, name):
 def compile_errors(extra):
     import build_dw2 as B
     d = tempfile.mkdtemp()
-    i = os.path.join(d, "x.i")
-    flags = [x for x in B.CPP_FLAGS if x != "-P"]  # keep line markers to map errors back
-    r = subprocess.run([B.cpp_bin()] + flags + extra + ["-o", i, SRC], capture_output=True, text=True)
-    if r.returncode:
-        sys.exit("cpp failed:\n" + r.stderr[-2000:])
-    r = subprocess.run([B.cc1_bin()] + B.CC1_FLAGS + ["-o", os.path.join(d, "x.s"), i],
-                       capture_output=True, text=True)
+    try:
+        i = os.path.join(d, "x.i")
+        flags = [x for x in B.CPP_FLAGS if x != "-P"]  # keep line markers to map errors back
+        r = subprocess.run([B.cpp_bin()] + flags + extra + ["-o", i, SRC], capture_output=True, text=True)
+        if r.returncode:
+            sys.exit("cpp failed:\n" + r.stderr[-2000:])
+        r = subprocess.run([B.cc1_bin()] + B.CC1_FLAGS + ["-o", os.path.join(d, "x.s"), i],
+                           capture_output=True, text=True)
+    finally:
+        shutil.rmtree(d, ignore_errors=True)
     # cc1 reports source file:line through cpp's line markers
     errs = []
     for l in r.stderr.split("\n"):
@@ -118,17 +122,48 @@ def main():
                 break
             src = read(SRC).split("\n")
             done = False
+            ambiguous = []
             for f, n, e in miss:
                 m = re.search(r"named `(\w+)'", e)
                 if not m or m.group(1) not in ren or not re.sub(r"[\\/]+", "/", f).endswith("src/main/156C.c"):
                     sys.exit("unexpected: %s:%d: %s" % (f, n, e))
                 old = m.group(1)
-                l = src[n - 1]
-                l2 = re.sub(r"(->|\.)(\s*)%s\b" % re.escape(old), lambda q: q.group(1) + q.group(2) + ren[old], l)
-                if l2 != l:
-                    src[n - 1] = l2
+                occ = list(re.finditer(r"(->|\.)(\s*)%s\b" % re.escape(old), src[n - 1]))
+                if len(occ) == 1:
+                    q = occ[0]
+                    src[n - 1] = src[n - 1][:q.start()] + q.group(1) + q.group(2) + ren[old] + src[n - 1][q.end():]
                     done = True
                     fixed += 1
+                elif len(occ) > 1 and (n, old) not in ambiguous:
+                    ambiguous.append((n, old))
+            write(SRC, "\n".join(src))
+            for n, old in ambiguous:
+                # several accesses of `old` on one line, of different structs: rename one
+                # occurrence at a time and keep the choice that clears the line
+                base = read(SRC).split("\n")
+                occ = list(re.finditer(r"(->|\.)(\s*)%s\b" % re.escape(old), base[n - 1]))
+                ok = False
+                pat_o = r"(->|\.)(\s*)%s\b" % re.escape(old)
+                cands = [re.sub(pat_o, lambda z: z.group(1) + z.group(2) + ren[old], base[n - 1])]
+                cands += [base[n - 1][:q.start()] + q.group(1) + q.group(2) + ren[old] + base[n - 1][q.end():]
+                          for q in occ]
+                for cand in cands:
+                    trial = list(base)
+                    trial[n - 1] = cand
+                    write(SRC, "\n".join(trial))
+                    _rc, errs2 = compile_errors(flags)
+                    bad = [x for x in errs2 if x[1] == n and "has no member named" in x[2]
+                           and re.search(r"named `(%s|%s)'" % (re.escape(old), re.escape(ren[old])), x[2])]
+                    wrong = [x for x in errs2 if x[1] == n and ren[old] in x[2]]
+                    if not wrong and len(bad) < len([x for x in miss if x[1] == n]):
+                        ok = True
+                        done = True
+                        fixed += 1
+                        break
+                if not ok:
+                    write(SRC, "\n".join(base))
+                    sys.exit("could not resolve line %d (%s)" % (n, old))
+            src = read(SRC).split("\n")
             if not done:
                 sys.exit("could not fix: " + "; ".join("%s:%d: %s" % x for x in miss[:5]))
             write(SRC, "\n".join(src))
