@@ -7936,7 +7936,94 @@ Sub3C *func_8001FDBC(Actor *a0, s32 id) {
     return s;
 }
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_800200D0);
+void func_800200D0(Actor *a0) {
+    ObjC0E4 cam;
+    Mat1F668 light;
+    Sub3C *s;
+    ObjEC10 *o;
+    DstElem *d;
+    SpNode200D0 *sp;
+    SpNode200D0 *e;
+    Blk20 *r;
+    Blk20 *in;
+    Blk20 *out;
+    s32 i;
+    s32 j;
+    s32 k;
+    s32 n;
+
+    s = a0->field_3C;
+    o = a0->u38.ptr38;
+    d = s->field_78;
+    cam = D_80061A08;
+    light = D_800619A8;
+    sp = (SpNode200D0 *)0x1F800000;
+    sp[0].parent = 0;
+    sp[0].local = o->field_0;
+    sp[0].local.t[0] = o->field_30;
+    sp[0].local.t[1] = o->field_34;
+    sp[0].local.t[2] = o->field_38;
+    sp[0].world.m = sp[0].local;
+    for (i = 1; i < 9; i++) {
+        sp[i].parent = &sp[i - 1];
+    }
+    n = s->field_8;
+    for (j = 0; j < n; j++, d++) {
+        e = &sp[s->field_18[j] + 1];
+        e->local = d->field_60;
+        for (k = 0; k < 3; k++) {
+            switch (k) {
+            default:
+            case 0:
+                r = &e->parent->world.m;
+                in = &e->local;
+                out = &e->world.m;
+                break;
+            case 1:
+                r = (Blk20 *)&cam;
+                in = &e->world.m;
+                out = &d->field_0;
+                break;
+            case 2:
+                r = (Blk20 *)&light;
+                in = &e->world.m;
+                out = &d->field_40;
+                break;
+            }
+            gte_SetRotMatrix(r);
+            gte_ldclmv(&in->m.m[0][0]);
+            gte_rtir();
+            if (k == 1) {
+                d->field_20 = e->world.w[0];
+                d->field_24 = e->world.w[1];
+            }
+            gte_stclmv(&out->m.m[0][0]);
+            gte_ldclmv(&in->m.m[0][1]);
+            gte_rtir();
+            if (k == 1) {
+                d->field_28 = e->world.w[2];
+                d->field_2C = e->world.w[3];
+            }
+            gte_stclmv(&out->m.m[0][1]);
+            gte_ldclmv(&in->m.m[0][2]);
+            gte_rtir();
+            if (k == 1) {
+                d->field_30 = e->world.w[4];
+                d->field_34 = e->world.w[5];
+            }
+            gte_stclmv(&out->m.m[0][2]);
+            gte_SetTransMatrix(r);
+            gte_ldlv0(in->t);
+            gte_rtv0tr();
+            if (k == 1) {
+                d->field_38 = e->world.w[6];
+                d->field_3C = e->world.w[7];
+            }
+            gte_stlvnl(out->t);
+        }
+    }
+}
+
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80020510);
 

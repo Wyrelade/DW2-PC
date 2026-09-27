@@ -203,11 +203,16 @@ typedef struct {
 /* Stride-0x84 destination element func_8001F5E8 fills; the copied block lands
  * at offset 0x60. */
 typedef struct {
-    u8 _pad00[0x34];
+    /* 0x00 */ Blk20 field_0;
+    /* 0x20 */ s32 field_20;
+    /* 0x24 */ s32 field_24;
+    /* 0x28 */ s32 field_28;
+    /* 0x2C */ s32 field_2C;
+    /* 0x30 */ s32 field_30;
     /* 0x34 */ s32 field_34;
-    u8 _pad38[0x04];
+    /* 0x38 */ s32 field_38;
     /* 0x3C */ s32 field_3C;
-    u8 _pad40[0x20];
+    /* 0x40 */ Blk20 field_40;
     /* 0x60 */ Blk20 field_60;
     /* 0x80 */ s32 field_80;
 } DstElem; /* size 0x84 */
@@ -215,7 +220,8 @@ typedef struct {
 /* Object reached through Actor at 0x38 (overlaps the u8 field_38); func_8001EC10
  * writes three words at 0x30/0x34/0x38. */
 typedef struct {
-    u8 _pad00[0x30];
+    /* 0x00 */ Blk20 field_0;
+    u8 _pad20[0x10];
     /* 0x30 */ s32 field_30;
     /* 0x34 */ s32 field_34;
     /* 0x38 */ s32 field_38;
@@ -3312,5 +3318,17 @@ typedef struct {
     /* 0x110 */ s32 w;
     /* 0x114 */ s32 h;
 } ScrPmv;
+
+#include "gte.h"
+/* Scratchpad bone node (0x1F800000, stride 0x44): local matrix, world matrix
+ * (parent world * local, also copied out as words) and the parent node. */
+typedef struct SpNode200D0 {
+    /* 0x00 */ Blk20 local;
+    /* 0x20 */ union {
+        Blk20 m;
+        s32 w[8];
+    } world;
+    /* 0x40 */ struct SpNode200D0 *parent;
+} SpNode200D0; /* size 0x44 */
 
 #endif /* MAIN_156C_H */
