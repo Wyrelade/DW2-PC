@@ -1,7 +1,7 @@
 # Digimon World 2 Decompilation
 
 <!-- PROGRESS:BADGE -->
-![matched](https://img.shields.io/badge/matched-902%2F907%20(99.45%25)-1f6feb)
+![matched](https://img.shields.io/badge/matched-904%2F907%20(99.67%25)-1f6feb)
 <!-- /PROGRESS:BADGE -->
 ![build](https://img.shields.io/badge/build-byte--identical-2ea043)
 ![platform](https://img.shields.io/badge/platform-PS1%20(SLUS--01193)-8957e5)
@@ -38,8 +38,8 @@ match alone is never enough.
 <!-- PROGRESS:TABLE -->
 | Component | Functions | Matched | Progress |
 |---|---:|---:|---|
-| **Main executable** (`SLUS_011.93`) | 907 | 902 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 99.45% |
-| &nbsp;&nbsp;└ decompiled to C | | 826 | |
+| **Main executable** (`SLUS_011.93`) | 907 | 904 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 99.67% |
+| &nbsp;&nbsp;└ decompiled to C | | 828 | |
 | &nbsp;&nbsp;└ hand-written assembly, restored as source | | 76 | |
 <!-- /PROGRESS:TABLE -->
 
