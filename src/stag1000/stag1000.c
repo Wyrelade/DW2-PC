@@ -180,7 +180,22 @@ void func_800642E8(StrDecEnv *dec) {
     dec->isdone = 0;
 }
 
-INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_8006437C);
+void func_8006437C(Actor *arg0) {
+    CdControlB(9, 0, 0);
+    func_8006495C(0);
+    StUnSetRing();
+    Mem_Free(D_800661E8);
+    Mem_Free(D_800661EC);
+    Mem_Free(D_800661F0);
+    Mem_Free(D_800661F4);
+    Mem_Free(D_800661F8);
+    Mem_Free(D_80066240);
+    D_80050741 = 0;
+    Task_DefaultDestroy(arg0);
+    ResetGraph(1);
+    ClearImage2(&D_80065228, 0, 0, 0);
+    DrawSync(0);
+}
 
 INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80064454);
 
