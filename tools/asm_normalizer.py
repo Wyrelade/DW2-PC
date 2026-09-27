@@ -2238,6 +2238,27 @@ def _ff_word_form(body):
 
 
 _ASM_ROOT = None          # set by normalize_s from ctx["asm_root"]
+_FN_ADDR = {}
+
+
+def _fn_addr(name):
+    """Start address of function `name`: the hex suffix of a placeholder name
+    (the splat placeholder form, hex address after `_`), else the first instruction's address in its retail .s
+    (a renamed function), else None."""
+    m = re.search(r"_([0-9A-Fa-f]{8})$", name)
+    if m:
+        return int(m.group(1), 16)
+    if name not in _FN_ADDR:
+        a = None
+        p = find_target_s(_ASM_ROOT, name) if _ASM_ROOT else None
+        if p:
+            for line in open(p, encoding="utf-8", errors="replace"):
+                mm = re.search(r"/\*\s*[0-9A-Fa-f]+\s+([0-9A-Fa-f]{8})\s+[0-9A-Fa-f]{8}\s*\*/", line)
+                if mm:
+                    a = int(mm.group(1), 16)
+                    break
+        _FN_ADDR[name] = a
+    return _FN_ADDR[name]
 _CALLEE_S = {}
 _CALLEE_RD = {}
 
@@ -3304,7 +3325,7 @@ def _taken_fill_core(stext, tgt):
     # our label from above (a transfer precedes it), S's destination dead on the
     # fall-through, X's destination dead on the taken path and not read by S.
     mfn = re.search(r"^\s*\.ent\s+(\w+)", stext, re.M)
-    fna = re.search(r"_([0-9A-Fa-f]{8})$", mfn.group(1)) if mfn else None
+    fna = _fn_addr(mfn.group(1)) if mfn else None
     ours = _tf_branches(lines)
     for k in range(len(ours)):
         if fna is None:
@@ -3319,7 +3340,7 @@ def _taken_fill_core(stext, tgt):
         mt = re.search(r"\.L([0-9A-Fa-f]{8})\s*$", tgt[tk][1])
         if not mt:
             continue
-        ti = (int(mt.group(1), 16) - int(fna.group(1), 16)) // 4
+        ti = (int(mt.group(1), 16) - fna) // 4
         if not 0 <= ti < len(tgt):
             continue
         slot = _tf_next_insn(lines, bi)
@@ -5000,10 +5021,10 @@ def save_slot_pass(stext, tgt):
 # --------------------------------------------------------------------------
 def label_nop_pass(stext, tgt):
     m = re.search(r"^\s*\.ent\s+(\w+)", stext, re.M)
-    fa = re.search(r"_([0-9A-Fa-f]{8})$", m.group(1)) if m else None
-    if not fa or not tgt:
+    fa = _fn_addr(m.group(1)) if m else None
+    if fa is None or not tgt:
         return stext
-    base = int(fa.group(1), 16)
+    base = fa
     targets = set()
     for _w, d in tgt:
         mt = re.search(r"\.L([0-9A-Fa-f]{8})\s*$", d)
