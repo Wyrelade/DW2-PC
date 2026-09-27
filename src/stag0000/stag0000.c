@@ -43,7 +43,18 @@ void func_80063D04(Actor *arg0) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80063E34);
+void func_80063E34(Stg00Sprt *arg0, GfxPartTexSlot *arg1, s16 arg2, s16 arg3) {
+    arg0->c = *(Col1A9C8 *)&D_8005074C;
+    arg0->tag.len = 4;
+    arg0->c.code = 0x64;
+    arg0->x0 = arg2;
+    arg0->u0 = arg1->u;
+    arg0->w = 0x40;
+    arg0->y0 = arg3;
+    arg0->v0 = 0;
+    arg0->h = 0x100;
+    arg0->clut = (arg1->index + 0x1E0) << 6;
+}
 
 INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80063E9C);
 
