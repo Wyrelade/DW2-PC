@@ -197,7 +197,23 @@ void func_80067838(u8 *arg0, u8 arg1) {
 
 INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80067880);
 
-INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_800678F0);
+u16 func_800678F0(Stg11SaveWork *arg0) {
+    u16 *p = arg0->u34.sum;
+    u16 sum = 0;
+    s32 n = 0x1FFF;
+
+    while (1) {
+        if (--n == -1) {
+            break;
+        }
+        sum ^= *p++;
+        if (--n == -1) {
+            break;
+        }
+        sum += *p++;
+    }
+    return sum;
+}
 
 INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80067938);
 
