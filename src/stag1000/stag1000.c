@@ -62,7 +62,23 @@ void func_80063E88(s32 arg0, s32 *arg1) {
     D_80066204 = arg1[1];
 }
 
-INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80063EB0);
+void func_80063EB0(StrDecEnv *dec, s16 x0, s16 y0, s16 x1, s16 y1) {
+    dec->vlcbuf[0] = D_800661EC;
+    dec->vlcbuf[1] = D_800661F0;
+    dec->vlcid = D_8005F770.bufIndex ^ 1;
+    dec->imgbuf[0] = D_800661F4;
+    dec->imgbuf[1] = D_800661F8;
+    dec->imgid = D_8005F770.bufIndex ^ 1;
+    dec->rect[0].x = x0;
+    dec->rect[0].y = y0;
+    dec->rect[1].x = x1;
+    dec->rect[1].y = y1;
+    dec->rectid = D_8005F770.bufIndex ^ 1;
+    dec->slice.x = x0;
+    dec->slice.y = y0;
+    dec->slice.w = 0x18;
+    dec->isdone = 0;
+}
 
 INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80063F38);
 
