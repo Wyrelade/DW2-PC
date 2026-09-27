@@ -953,6 +953,10 @@ def _zero_reach(lines, ins, p, reg, nr, depth=0):
             if (q > 0 and qi in nr and re.match(r"\s*(j|b)\s+\$L", prev)
                     and ins[q - 1][0] in nr):
                 return True     # ql is the slot of a `j`: no fall-through entrant
+        if re.match(r"\s*jal\s+[A-Za-z_]\w*\s*$", ql.split("#", 1)[0]) and \
+                re.match(r"s[0-7]$|fp$|s8$", reg or ""):
+            li = qi             # a call preserves the callee-saved registers
+            continue
         if _src_is_branch(ql):
             # the fall-through of a conditional branch: it was not taken and
             # writes no register (its slot was scanned already): keep walking
