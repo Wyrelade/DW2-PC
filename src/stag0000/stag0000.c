@@ -3,7 +3,45 @@
 
 INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80063A74);
 
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80063D04);
+void func_80063D04(Actor *arg0) {
+    Stg00ScrollWork *w = (Stg00ScrollWork *)arg0->work;
+
+    switch (arg0->stateLevel0) {
+    case 0:
+        w->field_0 = 0;
+        w->field_4 = 0;
+        Task_NextState0(arg0);
+        break;
+    case 1:
+        if (D_8005F6F0[0].up) {
+            w->field_4 += 4;
+        }
+        if (D_8005F6F0[0].down) {
+            w->field_4 -= 4;
+        }
+        if (D_8005F6F0[0].right) {
+            w->field_0 -= 4;
+        }
+        if (D_8005F6F0[0].left) {
+            w->field_0 += 4;
+        }
+        if (w->field_0 > 0) {
+            w->field_0 = 0;
+        }
+        if (w->field_0 < -0x3C0) {
+            w->field_0 = -0x3C0;
+        }
+        if (w->field_4 > 0) {
+            w->field_4 = 0;
+        }
+        if (w->field_4 < -0x300) {
+            w->field_4 = -0x300;
+        }
+        break;
+    case 2:
+        break;
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80063E34);
 
