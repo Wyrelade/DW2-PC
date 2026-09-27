@@ -6,7 +6,7 @@
 glabel func_8003DA04
     lui        $at, %hi(D_80062F30)
     sw         $ra, %lo(D_80062F30)($at)
-    addiu      $t1, $zero, 0x57
+    addiu      $t1, $zero, 0x57          # B0(0x57)
     addiu      $t2, $zero, 0xB0
     jalr       $t2
      nop

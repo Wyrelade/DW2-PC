@@ -8,12 +8,12 @@ glabel func_8003D8EC
     sw         $ra, %lo(D_80062F10)($at)
     jal        EnterCriticalSection
      nop
-    addiu      $t1, $zero, 0x57
+    addiu      $t1, $zero, 0x57          # B0(0x57)
     addiu      $t2, $zero, 0xB0
     jalr       $t2
      nop
     lw         $v0, 0x16C($v0)
-    addiu      $t1, $zero, 0xB           # B0(0x0B)
+    addiu      $t1, $zero, 0xB
     addi       $v1, $v0, 0x884
     lui        $at, %hi(jtbl_80062F18)
     sw         $v1, %lo(jtbl_80062F18)($at)

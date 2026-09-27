@@ -8,7 +8,7 @@ glabel func_8003D964
     sw         $ra, %lo(D_80062F20)($at)
     jal        EnterCriticalSection
      nop
-    addiu      $t1, $zero, 0x57
+    addiu      $t1, $zero, 0x57          # B0(0x57)
     addiu      $t2, $zero, 0xB0
     jalr       $t2
      nop
