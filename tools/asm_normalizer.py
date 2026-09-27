@@ -1494,8 +1494,11 @@ def _sm_mask_s(k):
 # --------------------------------------------------------------------------
 _BI_ALU = {"addu", "addiu", "subu", "and", "andi", "or", "ori", "xor", "xori", "nor",
            "sll", "srl", "sra", "sllv", "srlv", "srav", "slt", "slti", "sltu", "sltiu",
-           "lui", "lw", "lh", "lhu", "lb", "lbu", "sw", "sh", "sb", "la"}
-_BI_COMM = {"addu", "and", "or", "xor", "nor"}
+           "lui", "lw", "lh", "lhu", "lb", "lbu", "sw", "sh", "sb", "la",
+           "mult", "multu", "mfhi", "mflo"}
+_BI_COMM = {"addu", "and", "or", "xor", "nor", "mult", "multu"}
+_BI_WIDE = [False]      # set while block_iso_wide runs
+_BI_HL = "hilo"         # the HI/LO pair as one value: mult/multu write it, mfhi/mflo read it
 _BI_REGS = set(NUM2ABI) - {"zero"}
 
 
@@ -1512,6 +1515,12 @@ def _bi_unit(key):
         return None                         # the frame/global pointer is never rewritten
     shape = tuple("#" if (k and isinstance(x, str) and x in _BI_REGS) else x
                   for k, x in enumerate(key))
+    if mn in ("mult", "multu", "mfhi", "mflo") and not _BI_WIDE[0]:
+        return None
+    if mn in ("mult", "multu"):
+        return (shape, _BI_HL, [r for _k, r in regs]) if len(regs) == 2 else None
+    if mn in ("mfhi", "mflo"):
+        return (shape, regs[0][1], [_BI_HL]) if len(regs) == 1 else None
     if mn in _STORE_MN:
         return shape, None, [r for _k, r in regs]
     if not regs or regs[0][0] != 1:
@@ -1521,6 +1530,20 @@ def _bi_unit(key):
 
 def _bi_live_after(lines, last, reg):
     """Conservative: may `reg` be read after line `last`?"""
+    if reg == _BI_HL:
+        # HI/LO: read by a later mfhi/mflo before the next multiply/divide
+        for j in range(last + 1, len(lines)):
+            l = lines[j]
+            if not _s_is_insn(l):
+                continue
+            mn = l.split("#", 1)[0].split(None, 1)[0].lower()
+            if mn in ("mfhi", "mflo"):
+                return True
+            if mn in ("mult", "multu", "div", "divu", "mthi", "mtlo"):
+                return False
+            if _src_is_branch(l) or _src_is_ret(l) or re.match(r"\s*jalr?\b", l):
+                return True
+        return True
     for j in range(last + 1, len(lines)):
         l = lines[j]
         if _s_is_label(l):
@@ -1667,6 +1690,10 @@ def _bi_try(lines, blk, tkeys, tgt, wpos, anchors=()):
             break
         dd, uu = defs_uses(_sm_dep_body(b))
         dd, uu = set(dd) - {"at"}, set(uu) - {"at"}
+        if dd & {"hi", "lo"}:
+            dd = (dd - {"hi", "lo"}) | {_BI_HL}
+        if uu & {"hi", "lo"}:
+            uu = (uu - {"hi", "lo"}) | {_BI_HL}
         if dd != ({u[1]} if u[1] else set()) or uu != set(u[2]):
             break                       # the key does not carry every register
         ou.append(u)
@@ -1742,7 +1769,18 @@ def _bi_try(lines, blk, tkeys, tgt, wpos, anchors=()):
     return None
 
 
-def block_iso_pass(stext, tgt):
+def block_iso_wide_pass(stext, tgt):
+    """block_iso that also pairs mult/multu/mfhi/mflo units (HI/LO as one value)
+    and tries every sub-window of a block of at least 3 units, not only up to 7
+    head / 3 tail units trimmed (a block move ahead of the reordered part)."""
+    _BI_WIDE[0] = True
+    try:
+        return block_iso_pass(stext, tgt, wide=True)
+    finally:
+        _BI_WIDE[0] = False
+
+
+def block_iso_pass(stext, tgt, wide=False):
     if not tgt:
         return stext
     tkeys = [_sm_key(d.strip(), True) for _w, d in tgt]
@@ -1767,7 +1805,8 @@ def block_iso_pass(stext, tgt):
         # tail (a block boundary the target has and we lack, or a
         # unit the target moved into a delay slot leaves the window)
         n0 = len(blk0)
-        subs = sorted({(i, j) for i in range(min(8, n0)) for j in range(max(i + 3, n0 - 3), n0 + 1)},
+        subs = sorted({(i, j) for i in range(max(1, n0 - 2) if wide else min(8, n0))
+                       for j in range(i + 3 if wide else max(i + 3, n0 - 3), n0 + 1)},
                       key=lambda ij: (ij[0] - ij[1], ij[0]))
         for i, j in subs:
             blk = blk0[i:j]
@@ -7796,6 +7835,7 @@ PASSES = {
     "licm_li": licm_li_pass,
     "la_unfold_st": la_unfold_st_pass,
     "block_iso": block_iso_pass,
+    "block_iso_wide": block_iso_wide_pass,
     "slot_unsteal": slot_unsteal_pass,
     "arg_unprop": arg_unprop_pass,
     "const_fold": const_fold_pass,
@@ -8742,7 +8782,9 @@ def _src_nwords(line):
             v = int(split_ops(p[1])[-1], 0)
         except ValueError:
             return 1
-        return 1 if (-0x8000 <= v <= 0xFFFF) else 2
+        # lui alone when the low half is zero (counted so only by block_iso_wide:
+        # the older passes' matched recipes were tuned on the 2-word count)
+        return 1 if (-0x8000 <= v <= 0xFFFF) or (_BI_WIDE[0] and (v & 0xFFFF) == 0) else 2
     return 1
 
 
