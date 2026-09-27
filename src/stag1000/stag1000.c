@@ -63,7 +63,9 @@ void func_80064938(void (*func)()) {
     DMACallback(0, func);
 }
 
-INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_8006495C);
+void func_8006495C(void (*func)()) {
+    DMACallback(1, func);
+}
 
 INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80064980);
 
