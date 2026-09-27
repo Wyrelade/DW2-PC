@@ -47,7 +47,7 @@ void func_800648E4(Stg11MenuWork *arg0, s32 arg1) {
         Text_Close(&arg0->field_8);
     } else {
         st.pos = D_800681D8;
-        st.field_10 = 0x80;
+        st.packedStyle = 0x80;
         st.color = 0;
         st.text = (s32)Cd_GetFileEntry(arg1 + 0x1FD0000);
         Text_OpenDesc(&arg0->field_8, (TextDesc *)&st);
@@ -61,7 +61,7 @@ void func_8006495C(Stg11MenuWork *arg0, s32 arg1, s32 arg2) {
         Text_Close(&arg0->field_4);
     } else {
         st.pos = D_800681D4;
-        st.field_10 = arg2 - 0x80;
+        st.packedStyle = arg2 - 0x80;
         st.color = 0;
         st.text = (s32)Cd_GetFileEntry(arg1 + 0x1FD0000);
         Text_OpenDesc(&arg0->field_4, (TextDesc *)&st);

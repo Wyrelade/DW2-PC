@@ -145,7 +145,7 @@ typedef struct {
     /* 0x00 */ s32 fileId;
     /* 0x04 */ s32 lastUsed;
     /* 0x08 */ s32 colorMode;
-    /* 0x0C */ s32 field_C;
+    /* 0x0C */ s32 uOffset;
     /* 0x10 */ s16 tpage;
     u8 _pad12[2];
     /* 0x14 */ s32 index;
@@ -274,26 +274,26 @@ typedef struct {
     /* 0x0C */ s16 **boneVerts;
     /* 0x10 */ s16 **boneNormals;
     /* 0x14 */ struct ModelQuadSection **bonePolys;
-    /* 0x18 */ s32 *field_18;
-    /* 0x1C */ s32 *field_1C;
+    /* 0x18 */ s32 *boneDepths;
+    /* 0x1C */ s32 *texAnimParts;
     /* 0x20 */ s32 maxVerts;
     /* 0x24 */ s32 maxNormals;
     /* 0x28 */ s32 field_28;
-    /* 0x2C */ s32 field_2C;
-    /* 0x30 */ s32 field_30;
+    /* 0x2C */ s32 blinkTimer;
+    /* 0x30 */ s32 texAnimTimer;
     /* 0x34 */ s16 field_34;
     /* 0x36 */ s16 field_36;
     u8 _pad38[0x04];
     /* 0x3C */ s32 otIndex;
     /* 0x40 */ s32 otzShift;
-    /* 0x44 */ struct GfxModelTexSlot *field_44;
+    /* 0x44 */ struct GfxModelTexSlot *texSlot;
     /* 0x48 */ s32 animFileId;
     /* 0x4C */ s32 animIndex;
     /* 0x50 */ s32 *animData;
-    /* 0x54 */ s32 field_54;
+    /* 0x54 */ s32 animId;
     /* 0x58 */ s32 animPos;
     /* 0x5C */ s32 animTimer;
-    /* 0x60 */ s32 field_60;
+    /* 0x60 */ s32 animDone;
     /* 0x64 */ s32 *animTable;
     /* 0x68 */ s32 *bonePoseTables;
     /* 0x6C */ s32 *screenXY;
@@ -306,9 +306,9 @@ typedef struct {
    the four owned pointers at 0x6C..0x78. */
 typedef struct {
     u8 _pad00[0x6C];
-    /* 0x6C */ ActorWork *field_6C;
-    /* 0x70 */ ActorWork *field_70;
-    /* 0x74 */ ActorWork *field_74;
+    /* 0x6C */ ActorWork *screenXY;
+    /* 0x70 */ ActorWork *vertOtz;
+    /* 0x74 */ ActorWork *vertColors;
     /* 0x78 */ ActorWork *bones;
 } ActorModelFreeView;
 
@@ -319,7 +319,7 @@ typedef struct {
     /* 0x2C */ ActorWork *work;
     /* 0x30 */ s32 childCount;
     /* 0x34 */ s32 *children;
-    /* 0x38 */ ActorWork *field_38;
+    /* 0x38 */ ActorWork *transform;
     /* 0x3C */ ActorModelFreeView *model;
 } TaskFreeView;
 
@@ -340,7 +340,7 @@ typedef struct {
     /* 0x00 */ s32 id;
     u8 _pad04[0x04];
     /* 0x08 */ s32 field_8;
-    /* 0x0C */ s32 field_C;
+    /* 0x0C */ s32 digiId;
     /* 0x10 */ s32 stateLevel0;
     /* 0x14 */ s32 stateLevel1;
     /* 0x18 */ s32 stateLevel2;
@@ -456,10 +456,10 @@ Ent1DB18 *func_8001DB18();
 typedef struct {
     /* 0x00 */ s32 nameOffset;
     union {
-        /* 0x04 */ u32 field_4;
+        /* 0x04 */ u32 packedId;
         struct {
             u8 _b4[2];
-            /* 0x06 */ s16 field_6;
+            /* 0x06 */ s16 modelFile;
         } h4;
     } u4;
     /* 0x08 */ s16 animFiles[11];
@@ -543,7 +543,7 @@ ItemTableEntry *Item_FindById();
 /* Base record returned by the Cd_GetFileEntry lookup. Stride 0x28 when indexed. */
 typedef struct {
     u8 _pad00[0x04];
-    /* 0x04 */ u32 field_4;
+    /* 0x04 */ u32 packedId;
     u8 _pad08[0x20];
 } EntA0;
 
@@ -616,11 +616,11 @@ typedef struct {
 /* Source record read by Text_OpenDesc to fill an TextOpenArgs. */
 typedef struct {
     /* 0x00 */ s32 text;
-    /* 0x04 */ s32 field_4;
-    /* 0x08 */ s32 field_8;
+    /* 0x04 */ s32 strArg0;
+    /* 0x08 */ s32 strArg1;
     /* 0x0C */ u16 x;
     /* 0x0E */ u16 y;
-    /* 0x10 */ u8 field_10;
+    /* 0x10 */ u8 packedStyle;
     /* 0x11 */ u8 color;
 } TextDesc;
 
@@ -640,9 +640,9 @@ typedef struct {
     /* 0x0C */ s32 charAdvance;
     /* 0x10 */ s32 lineAdvance;
     /* 0x14 */ s32 text;
-    /* 0x18 */ s32 field_18;
-    /* 0x1C */ s32 field_1C;
-    /* 0x20 */ s32 field_20;
+    /* 0x18 */ s32 charDelay;
+    /* 0x1C */ s32 strArg0;
+    /* 0x20 */ s32 strArg1;
     u8 _pad24[0x8];
 } TextOpenArgs;
 
@@ -656,11 +656,11 @@ typedef struct {
     /* 0x0C */ s32 charAdvance;
     /* 0x10 */ s32 lineAdvance;
     /* 0x14 */ s32 text;
-    /* 0x18 */ s32 field_18;
-    /* 0x1C */ s32 field_1C;
-    /* 0x20 */ s32 field_20;
-    /* 0x24 */ s32 field_24;
-    /* 0x28 */ s32 field_28;
+    /* 0x18 */ s32 charDelay;
+    /* 0x1C */ s32 strArg0;
+    /* 0x20 */ s32 strArg1;
+    /* 0x24 */ s32 strArg2;
+    /* 0x28 */ s32 strArg3;
 } TextOpenSrc;
 
 /* Stride-0x34 record built by Text_Open into the Task_FindFirst array. */
@@ -683,18 +683,18 @@ typedef struct {
     /* 0x21 */ u8 delayTimer;
     /* 0x22 */ u8 visibleChars;
     /* 0x23 */ u8 finished;
-    /* 0x24 */ u8 field_24;
-    /* 0x25 */ u8 field_25;
-    /* 0x26 */ u8 field_26;
+    /* 0x24 */ u8 cmdFADone;
+    /* 0x25 */ u8 cmdFBDone;
+    /* 0x26 */ u8 cmdF9Done;
     /* 0x27 */ u8 waitingInput;
-    /* 0x28 */ u8 field_28;
+    /* 0x28 */ u8 choicesDone;
     /* 0x29 */ u8 choiceCursor;
-    /* 0x2A */ u8 field_2A;
-    /* 0x2B */ u8 field_2B;
-    /* 0x2C */ u8 field_2C;
-    /* 0x2D */ u8 field_2D;
-    /* 0x2E */ u8 field_2E;
-    /* 0x2F */ u8 field_2F;
+    /* 0x2A */ u8 cmdF6Done;
+    /* 0x2B */ u8 pausesDone;
+    /* 0x2C */ u8 cmdF4TurnDone;
+    /* 0x2D */ u8 cmdF4ObjDone;
+    /* 0x2E */ u8 cmdF4TaskDone;
+    /* 0x2F */ u8 soundsDone;
     /* 0x30 */ u8 padIndex;
     /* 0x31 */ u8 otIndex;
     u8 _pad32[2];
@@ -762,7 +762,7 @@ typedef struct {
     /* 0x00 */ s32 textBoxes[18];
     /* 0x48 */ s32 descText;
     /* 0x4C */ s32 numberText;
-    /* 0x50 */ s32 field_50;
+    /* 0x50 */ s32 nameText;
     /* 0x54 */ Slot4 slot54[4];
     /* 0x64 */ Blk12 block64[4]; /* the channel count is re-stored at +2 */
     /* 0x94 */ s32 scrollTop[4];
@@ -789,7 +789,7 @@ typedef struct {
 
 /* Fixed-stride block indexed by Gpu_ClearOt (element size 0x4030). */
 typedef struct {
-    /* 0x0000 */ s32 field_0[0x100C];
+    /* 0x0000 */ s32 entries[0x100C];
 } GpuOtBuf;
 
 /* Element of the D_8005E620.elems[] array (stride 0x5C); only the leading
@@ -800,7 +800,7 @@ typedef struct {
     u8 _pad02[0xB];
     /* 0x0D */ u8 level;
     u8 _pad0E[0x1];
-    /* 0x0F */ u8 field_F;
+    /* 0x0F */ u8 maxLevel;
     /* 0x10 */ s32 exp;
     /* 0x14 */ u16 maxHp;
     /* 0x16 */ u16 hp;
@@ -893,7 +893,7 @@ typedef struct {
     /* 0x34 */ s32 posY;
     /* 0x38 */ s32 posZ;
     u8 _pad3C[0x06];
-    /* 0x42 */ s16 field_42;
+    /* 0x42 */ s16 rotY;
     u8 _pad44[0x04];
     /* 0x48 */ s32 moveDelta[3];
     u8 _pad54[0x04];
@@ -969,23 +969,23 @@ typedef struct PadPort {
     /* 0x47 */ u8 infoIndex;
     u8 _pad48[0x1];
     /* 0x49 */ u8 state;
-    /* 0x4A */ u8 field_4A;
+    /* 0x4A */ u8 retryCount;
     u8 _pad4B[0x1];
-    /* 0x4C */ s32 field_4C;
+    /* 0x4C */ s32 errorCount;
     /* 0x50 */ u8 field_50;
     u8 _pad51[0x6];
     /* 0x57 */ u8 actEnabled[6];
     /* 0x5D */ u8 actAlign[6];
     /* 0x63 */ u8 infoBuf[0x80];
     /* 0xE3 */ u8 modeCount;
-    /* 0xE4 */ u8 field_E4;
+    /* 0xE4 */ u8 curModeIndex;
     u8 _padE5[0x1];
     /* 0xE6 */ u16 field_E6;
     /* 0xE8 */ u8 padType;
     /* 0xE9 */ u8 actCount;
     /* 0xEA */ u8 combCount;
     /* 0xEB */ u8 field_EB;
-    /* 0xEC */ u16 field_EC;
+    /* 0xEC */ u16 combInfoSize;
     /* 0xEE */ u16 field_EE;
 } PadPort;
 
@@ -1085,14 +1085,14 @@ typedef struct {
     u8 *volatile field_C; /* 0x0C */
     s32 field_10;       /* 0x10 */
     u8  playMode;       /* 0x14 */
-    u8  field_15;       /* 0x15 */
+    u8  inLoop;       /* 0x15 */
     u8  runningStatus;       /* 0x16 */
     u8  channel;       /* 0x17 */
     u8  rpn1;       /* 0x18 */
     u8  rpn2;       /* 0x19 */
     u8  nrpn1;       /* 0x1A */
     u8  nrpn2;       /* 0x1B */
-    u8  field_1C;       /* 0x1C */
+    u8  loopCountPending;       /* 0x1C */
     u8  nrpnLoopCount;       /* 0x1D */
     u8  rpnCount;       /* 0x1E */
     u8  nrpnCount;       /* 0x1F */
@@ -1109,19 +1109,19 @@ typedef struct {
     s16 fadeVol;       /* 0x48 */
     s16 fadeVolDone;       /* 0x4A */
     s16 field_4C;       /* 0x4C */
-    s16 field_4E;       /* 0x4E */
+    s16 tempoStep;       /* 0x4E */
     s16 resolution;       /* 0x50 */
     s16 field_52;       /* 0x52 */
     s16 field_54;       /* 0x54 */
     s16 field_56;       /* 0x56 */
     u16 volL;       /* 0x58 */
     u16 volR;       /* 0x5A */
-    s16 field_5C;       /* 0x5C */
-    s16 field_5E;       /* 0x5E */
+    s16 curVolL;       /* 0x5C */
+    s16 curVolR;       /* 0x5E */
     s16 channelVol[0x10]; /* 0x60 */
     s16 muteMask;       /* 0x80 */
     u8  _p82[0x2];      /* 0x82 */
-    s32 field_84;       /* 0x84 */
+    s32 startDelta;       /* 0x84 */
     s32 elapsedTicks;       /* 0x88 */
     s32 tempo;       /* 0x8C */
     s32 deltaValue;       /* 0x90 */
@@ -1130,7 +1130,7 @@ typedef struct {
     s32 fadeFrames;       /* 0x9C */
     s32 fadeFrame;       /* 0xA0 */
     s32 field_A4;       /* 0xA4 */
-    s32 field_A8;       /* 0xA8 */
+    s32 tempoFrames;       /* 0xA8 */
     s32 tempoTarget;       /* 0xAC -> size 0xB0 */
 } SndSeqScore;
 
@@ -1177,13 +1177,13 @@ typedef struct {
     /* 0x110 */ u8 *selRecord;
     /* 0x114 */ u8 *pickedRecords[3];
     /* 0x120 */ s16 pickCount;
-    /* 0x122 */ s16 field_122;
+    /* 0x122 */ s16 pickConfirmed;
     /* 0x124 */ s16 field_124;
     /* 0x126 */ s16 field_126;
     /* 0x128 */ s32 field_128;
     u8 _pad12C[0x230];
-    /* 0x35C */ s16 field_35C;
-    /* 0x35E */ s16 field_35E;
+    /* 0x35C */ s16 pickResult;
+    /* 0x35E */ s16 confirmed;
     /* 0x360 */ s16 field_360;
 } MenuCtx;
 
@@ -1366,7 +1366,7 @@ typedef struct {
     /* 0x24 */ u8 path[0x20];
     /* 0x44 */ s32 callback;
     /* 0x48 */ s32 field_48[2];
-    /* 0x50 */ s32 field_50[2];
+    /* 0x50 */ s32 vsyncCount[2];
 } CardState;
 
 /* Stack command block passed to SpuSetCommonAttr (built by SsSetSerialAttr /
@@ -1523,7 +1523,7 @@ typedef struct {
     /* 0x58 */ s16 gridSize[2];
     u8 _pad5C[0x8];
     /* 0x64 */ s16 menuMode;
-    /* 0x66 */ s16 field_66;
+    /* 0x66 */ s16 nextTaskIdx;
     u8 _pad68[0xA];
     /* 0x72 */ MenuItemPickCell cells[1];
 } MenuItemPickWork;
@@ -1546,9 +1546,9 @@ typedef struct {
 typedef struct {
     u8 _pad00[0x8];
     /* 0x08 */ s32 step;
-    /* 0x0C */ s32 field_C;
+    /* 0x0C */ s32 hideMask;
     /* 0x10 */ s32 delay;
-    /* 0x14 */ s32 field_14;
+    /* 0x14 */ s32 palette;
 } Wk116CC;
 
 /* Three status bytes at D_8004E9A4 reset by CD_flush (field_0 = 2,
@@ -1574,7 +1574,7 @@ typedef struct {
 
 /* One selectable entry of the MenuDigiPickWork menu (8 bytes). */
 typedef struct {
-    /* 0x0 */ u8 field_0;
+    /* 0x0 */ u8 kind;
     u8 _pad1[0x1];
     /* 0x2 */ u8 pickState;
     u8 _pad3[0x1];
@@ -1586,15 +1586,15 @@ typedef struct {
 typedef struct {
     u8 _pad00[0x40];
     /* 0x40 */ u8 field_40[0x10];
-    /* 0x50 */ s16 field_50[2];
-    /* 0x54 */ s16 field_54[2];
+    /* 0x50 */ s16 cursor[2];
+    /* 0x54 */ s16 gridSize[2];
     u8 _pad58[0x0A];
     /* 0x62 */ s16 field_62;
     u8 _pad64[0x08];
-    /* 0x6C */ MenuDigiPickRow field_6C[38];
-    /* 0x19C */ s16 field_19C;
-    /* 0x19E */ s16 field_19E;
-    /* 0x1A0 */ s16 field_1A0[1];
+    /* 0x6C */ MenuDigiPickRow rows[38];
+    /* 0x19C */ s16 pickMax;
+    /* 0x19E */ s16 pickedCount;
+    /* 0x1A0 */ s16 pickedIndices[1];
 } MenuDigiPickWork;
 
 /* 0x10-byte state block at D_8004FDCC cleared by _SpuInit. */
@@ -1615,18 +1615,18 @@ typedef struct {
 
 /* 0x28-byte model part record; lists end at field_0 == 0 (Menu_SetPartsGridPos, Gfx_SetPartsPalette). */
 typedef struct {
-    /* 0x00 */ s32 field_0;
+    /* 0x00 */ s32 fileId;
     /* 0x04 */ s16 x;
     /* 0x06 */ s16 y;
     u8 _pad8[4];
     /* 0x0C */ u8 palette;
-    /* 0x0D */ u8 field_D;
+    /* 0x0D */ u8 frame;
     u8 _padE[0x1];
-    /* 0x0F */ u8 field_F;
+    /* 0x0F */ u8 visible;
     u8 _pad10[0xC];
     /* 0x1C */ s32 groupMask;
     u8 _pad20[8];
-} Part28;
+} GfxPart;
 
 /* Static GPU packets at D_80048F9C; the VRAM-to-VRAM move packet (tag, GP0
  * 0x80 command, source xy, destination xy, size) starts at 0xC. */
@@ -1704,7 +1704,7 @@ typedef struct {
     /* 0x84 */ u8 *digimon;
     u8 _pad88[0x28];
     /* 0xB0 */ s32 pos[3];
-    /* 0xBC */ u16 field_BC;
+    /* 0xBC */ u16 initRotY;
     u8 _padBE[0x2];
     /* 0xC0 */ s32 modelFile;
     /* 0xC4 */ s32 animFile;
@@ -1766,12 +1766,12 @@ typedef struct {
     /* 0x040 */ s32 msgTextSlot;
     /* 0x044 */ s32 descText;
     u8 _pad48[0x4];
-    /* 0x04C */ s32 field_4C;
+    /* 0x04C */ s32 labelTexts;
     u8 _pad50[0x4];
     /* 0x054 */ s16 cursor[2];
     /* 0x058 */ MenuGridLayout gridLayout;
     /* 0x064 */ s16 menuMode;
-    /* 0x066 */ s16 field_66;
+    /* 0x066 */ s16 nextTaskIdx;
     /* 0x068 */ s32 fade;
     /* 0x06C */ s16 itemCount;
     /* 0x06E */ s16 scrollRow;
@@ -1783,10 +1783,10 @@ typedef struct {
 /* TextDesc view with the position pair stored as one Halves. */
 typedef struct {
     /* 0x00 */ s32 text;
-    /* 0x04 */ s32 field_4;
-    /* 0x08 */ u8 *field_8;
+    /* 0x04 */ s32 strArg0;
+    /* 0x08 */ u8 *strArg1;
     /* 0x0C */ Halves pos;
-    /* 0x10 */ u8 field_10;
+    /* 0x10 */ u8 packedStyle;
     /* 0x11 */ u8 color;
 } TextDescHalves;
 
@@ -1799,8 +1799,8 @@ typedef struct {
 
 /* Status word pair behind the D_800506C0 pointer (func_8003D850). */
 typedef struct {
-    /* 0x00 */ s32 field_0;
-    /* 0x04 */ s32 field_4;
+    /* 0x00 */ s32 stat;
+    /* 0x04 */ s32 mask;
 } Flags506C0;
 
 /* Record listed in Wk14CBC.field_A0 (func_80014CBC). */
@@ -1825,9 +1825,9 @@ typedef struct {
 
 /* Actor work block read by func_80014CBC. */
 typedef struct {
-    /* 0x00 */ s32 field_0[7];
-    /* 0x1C */ Trip14984 field_1C[3];
-    /* 0x40 */ s32 field_40[6];
+    /* 0x00 */ s32 labelTexts[7];
+    /* 0x1C */ Trip14984 digiTexts[3];
+    /* 0x40 */ s32 listTexts[6];
     /* 0x58 */ s32 field_58[4];
     u8 _pad68[0x08];
     /* 0x70 */ s32 scale;
@@ -1846,14 +1846,14 @@ typedef struct {
     /* 0x12 */ u8 field_12;
     u8 _pad13[0x01];
     /* 0x14 */ u8 field_14[0x10];
-    /* 0x24 */ s16 field_24;
-    /* 0x26 */ s16 field_26;
-    /* 0x28 */ s16 field_28;
-    /* 0x2A */ s16 field_2A;
-    /* 0x2C */ u16 field_2C[4];
-    /* 0x34 */ u16 field_34;
+    /* 0x24 */ s16 hp;
+    /* 0x26 */ s16 maxHp;
+    /* 0x28 */ s16 mp;
+    /* 0x2A */ s16 maxMp;
+    /* 0x2C */ u16 slotItems[4];
+    /* 0x34 */ u16 slot4Item;
     u8 _pad36[0x1C];
-    /* 0x52 */ u8 field_52[0x14];
+    /* 0x52 */ u8 slotStatus[0x14];
     /* 0x66 */ u16 bagItems[0x30];
     u8 _padC6[0x0B];
     /* 0xD1 */ u8 field_D1[0x13];
@@ -2167,20 +2167,20 @@ typedef struct {
 
 /* Menu work block behind Actor.work for the item-use menu (Menu_UseItemDirect..func_80015914). */
 typedef struct {
-    /* 0x00 */ s32 field_0[20];
-    /* 0x50 */ s32 field_50;
+    /* 0x00 */ s32 itemTexts[20];
+    /* 0x50 */ s32 msgText;
     /* 0x54 */ s32 field_54;
     /* 0x58 */ s32 field_58;
-    /* 0x5C */ s32 field_5C;
+    /* 0x5C */ s32 itemNameText;
     u8 _pad60[0x10];
     /* 0x70 */ s32 field_70;
     u8 _pad74[0x14];
-    /* 0x88 */ s16 field_88[2];
-    /* 0x8C */ s16 field_8C[2];
+    /* 0x88 */ s16 cursor[2];
+    /* 0x8C */ s16 gridSize[2];
     u8 _pad90[0x8];
-    /* 0x98 */ s16 field_98;
+    /* 0x98 */ s16 useMode;
     u8 _pad9A[0x2];
-    /* 0x9C */ s32 field_9C;
+    /* 0x9C */ s32 ramp;
 } MenuItemUseWork;
 
 /* 12-byte menu layout record (Cd_GetFileEntry(0x5130010)) copied over MenuItemUseWork 0x8C..0x97. */
@@ -2196,13 +2196,13 @@ typedef struct {
 
 /* Title/main menu work block behind Actor.work (Menu_TopMenuTask). */
 typedef struct {
-    /* 0x00 */ s32 field_0;
-    /* 0x04 */ s32 field_4;
-    /* 0x08 */ s32 field_8;
-    /* 0x0C */ s32 field_C;
-    /* 0x10 */ s32 field_10;
-    /* 0x14 */ s32 field_14;
-    /* 0x18 */ s32 field_18;
+    /* 0x00 */ s32 option0Text;
+    /* 0x04 */ s32 option1Text;
+    /* 0x08 */ s32 option2Text;
+    /* 0x0C */ s32 option3Text;
+    /* 0x10 */ s32 option4Text;
+    /* 0x14 */ s32 option5Text;
+    /* 0x18 */ s32 option6Text;
     u8 _pad1C[0x4];
     /* 0x20 */ s16 cursor[2];
     /* 0x24 */ s16 gridSize[2];
@@ -2212,7 +2212,7 @@ typedef struct {
 } MenuTopWork;
 
 typedef struct {
-    /* 0x00 */ u8 field_0;
+    /* 0x00 */ u8 useType;
     /* 0x01 */ u8 effectType;
     /* 0x02 */ s16 amount;
 } ItemStatEffect;
@@ -2373,7 +2373,7 @@ typedef struct {
  * pair heads the 12-byte block), selection state at 0x38..0x40. */
 typedef struct {
     u8 _pad00[0x04];
-    /* 0x04 */ u8 field_4[0x24];
+    /* 0x04 */ u8 optionTexts[0x24];
     /* 0x28 */ s16 cursor[2];
     union {
         /* 0x2C */ s16 gridSize[2];
@@ -2381,7 +2381,7 @@ typedef struct {
     } u2C;
     /* 0x38 */ s16 menuId;
     /* 0x3A */ s16 selection;
-    /* 0x3C */ s16 field_3C;
+    /* 0x3C */ s16 optionsHidden;
     u8 _pad3E[0x02];
     /* 0x40 */ s32 ramp;
 } MenuSubMenuWork;
@@ -2406,7 +2406,7 @@ typedef struct {
 typedef struct {
     u8 _pad00[0x50];
     /* 0x50 */ s32 nameText;
-    /* 0x54 */ s32 field_54;
+    /* 0x54 */ s32 infoTexts;
     u8 _pad58[0x18];
     /* 0x70 */ MenuDigiStatusLayout blk;
     u8 _pad7C[0x4];
@@ -2523,11 +2523,11 @@ typedef struct {
     u8 _pad62[0x2];
     /* 0x064 */ s32 scale;
     /* 0x068 */ s16 scrollTop;
-    /* 0x06A */ s16 field_6A;
+    /* 0x06A */ s16 showCursor;
     /* 0x06C */ MenuDigiListDrawRow rows[0x26];
     u8 _pad19C[0xA];
     /* 0x1A6 */ s16 parity;
-} Wk188BC;
+} MenuDigiListDrawView;
 
 /* Record a func_800188BC row points at; four stat halfwords at 0x14. */
 typedef struct {
@@ -2618,7 +2618,7 @@ typedef struct {
 /* 0x28-stride zero-terminated list Gfx_HidePartsByMask walks (Menu_SubMenuDraw passes it
  * the Cd_GetFileEntry lookups); field_F is set to 0 or 1 from field_1C & mask. */
 typedef struct {
-    /* 0x00 */ s32 field_0;
+    /* 0x00 */ s32 fileId;
     u8 _pad04[0xB];
     /* 0x0F */ u8 visible;
     u8 _pad10[0xC];
@@ -2665,7 +2665,7 @@ typedef struct {
     u8 b[4];
 } StRingLocBytes;
 typedef struct {
-    /* 0x00 */ s16 field_0;
+    /* 0x00 */ s16 id;
     u8 _pad02[0x4];
     /* 0x06 */ u16 nSectors;
     /* 0x08 */ s32 frameCount;
@@ -2690,7 +2690,7 @@ typedef struct PadSioSlot {
 
 /* Stat-regen config returned by Item_GetEffectRec, read by Item_UseRecoverAll. */
 typedef struct {
-    /* 0x00 */ u8 field_0;
+    /* 0x00 */ u8 useType;
     /* 0x01 */ u8 effectType;
     /* 0x02 */ s16 amount;
 } ItemRecoverEffect;
@@ -2834,7 +2834,7 @@ typedef struct {
 
 /* 4-byte record returned (as s32 *) by the Item_GetEffectRec id lookup. */
 typedef struct {
-    /* 0x00 */ u8 field_0;
+    /* 0x00 */ u8 useType;
     /* 0x01 */ u8 effectType;
     /* 0x02 */ s16 amount;
 } ItemEffect;
@@ -3182,7 +3182,7 @@ typedef struct {
 
 /* 0x5C-byte record swapped between the menu slots and Menu_Ctx->field_128 (func_80017214). */
 typedef struct {
-    /* 0x00 */ u8 field_0;
+    /* 0x00 */ u8 state;
     u8 _pad1[0x3];
     s32 _pad4[0x16];
 } DigiRosterSwapRec;
@@ -3210,7 +3210,7 @@ typedef struct {
     /* 0x062 */ s16 field_62;
     /* 0x064 */ s32 scale;
     /* 0x068 */ s16 scrollTop;
-    /* 0x06A */ s16 field_6A;
+    /* 0x06A */ s16 showCursor;
     u8 _pad6C[0x132];
     /* 0x19E */ s16 pickCount;
     u8 _pad1A0[0x6];
@@ -3274,12 +3274,12 @@ typedef struct {
 
 typedef struct {
     u8 _pad0[0x42];
-    /* 0x42 */ s16 field_42;
+    /* 0x42 */ s16 rotY;
 } Sub6A8C0;
 
 typedef struct {
     u8 _pad0[0x38];
-    /* 0x38 */ Sub6A8C0 *field_38;
+    /* 0x38 */ Sub6A8C0 *transform;
 } Obj6A8C0;
 
 #include "gte.h"

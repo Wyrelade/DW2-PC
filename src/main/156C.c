@@ -88,7 +88,7 @@ extern void Gfx_SetPartsScale(GfxPartScaleView *, s32, s32);
 extern void Gfx_DrawParts(s32);
 extern void Text_Open(void *, TextOpenArgs *);
 extern void Flag_Set(s32, s32);
-extern void Gfx_SetPartsNumber(Part28 *, s32, s32, s32);
+extern void Gfx_SetPartsNumber(GfxPart *, s32, s32, s32);
 extern s32 Digi_GetExpToNextLevel(s32, s32, s32);
 extern void RotMatrixYXZ(void *, Obj209 *);
 extern void GsSetProjection(s32);
@@ -435,7 +435,7 @@ extern s16 D_800624D0;
 extern s16 D_800624D2;
 extern s32 D_80061C48;
 extern s32 D_80060054;
-extern s32 Menu_BlinkOrHideParts(Part28 *, s32, s32);
+extern s32 Menu_BlinkOrHideParts(GfxPart *, s32, s32);
 extern u16 D_80040F98[];
 extern void (*D_80061BC8)(s16, s16, s32);
 extern void (*D_80061BCC)(s16, s16, s32);
@@ -1018,21 +1018,21 @@ TaskFreeView *arg0;
     if (arg0->work != 0) {
         Mem_Free(arg0->work);
     }
-    if (arg0->field_38 != 0) {
-        Mem_Free(arg0->field_38);
+    if (arg0->transform != 0) {
+        Mem_Free(arg0->transform);
     }
 
     sub = arg0->model;
     if (sub != 0) {
-        if (sub->field_6C != 0) {
-            Mem_Free(sub->field_6C);
+        if (sub->screenXY != 0) {
+            Mem_Free(sub->screenXY);
         }
-        if (sub->field_70 != 0) {
-            Mem_Free(sub->field_70);
+        if (sub->vertOtz != 0) {
+            Mem_Free(sub->vertOtz);
         }
-        i = sub->field_74 != 0;
+        i = sub->vertColors != 0;
         if (i) {
-            Mem_Free(sub->field_74);
+            Mem_Free(sub->vertColors);
         }
         if (sub->bones != 0) {
             Mem_Free(sub->bones);
@@ -1211,14 +1211,14 @@ void func_800116CC(Actor *a0) {
             case 2:
                 v = 0xB;
             set:
-                w->field_C = v;
-                w->field_14 = 0;
+                w->hideMask = v;
+                w->palette = 0;
                 w->delay = 0;
                 break;
             default:
-                w->field_C = 7;
+                w->hideMask = 7;
                 w->delay = 2;
-                w->field_14 = w->step - 3;
+                w->palette = w->step - 3;
                 break;
             }
             w->step++;
@@ -1232,19 +1232,19 @@ void func_800116CC(Actor *a0) {
     case 2:
         switch (a0->stateLevel1) {
         case 1:
-            w->field_C = 0xD;
-            w->field_14 = 0;
+            w->hideMask = 0xD;
+            w->palette = 0;
             a0->stateLevel1++;
             break;
         case 2:
-            w->field_C = 0xE;
-            w->field_14 = 0;
+            w->hideMask = 0xE;
+            w->palette = 0;
             a0->stateLevel1++;
             break;
         case 0:
         default:
-            w->field_C = 0xB;
-            w->field_14 = 0;
+            w->hideMask = 0xB;
+            w->palette = 0;
             a0->stateLevel1++;
             break;
         case 3:
@@ -1490,11 +1490,11 @@ s32 func_8001204C(s32 a0, s32 a1, s32 a2, s32 a3) {
     case 0xA:
     default:
         if (rec->effectType == 0) {
-            p = &D_80050720->field_24;
-            q = &D_80050720->field_26;
+            p = &D_80050720->hp;
+            q = &D_80050720->maxHp;
         } else {
-            p = &D_80050720->field_28;
-            q = &D_80050720->field_2A;
+            p = &D_80050720->mp;
+            q = &D_80050720->maxMp;
         }
         if (*p >= *q) {
             return r;
@@ -1579,7 +1579,7 @@ s32 Item_ApplyToDigi(s32 a0, s32 a1, s32 a2, s32 a3) {
     s16 *lim;
     s16 step;
 
-    if (r->field_0 == 3 && r->amount != ((s32 (*)(s32))func_8001D934)(o->digiId)) {
+    if (r->useType == 3 && r->amount != ((s32 (*)(s32))func_8001D934)(o->digiId)) {
         return 0;
     }
     if (r->effectType == 3) {
@@ -1602,7 +1602,7 @@ s32 Item_ApplyToDigi(s32 a0, s32 a1, s32 a2, s32 a3) {
     if (*cur == *lim) {
         return 0;
     }
-    if (r->field_0 == 3) {
+    if (r->useType == 3) {
         step = *lim - *cur;
     } else {
         step = r->amount;
@@ -1884,7 +1884,7 @@ void Menu_NameEntryTask(Actor *a0) {
             arg.bigFont = 1;
             arg.color = 0;
             arg.lineAdvance = 0x12;
-            arg.field_18 = 0;
+            arg.charDelay = 0;
             Text_Open(&w->field_10, &arg);
             arg.text = (s32)Cd_GetFileEntry(w->field_C + 0x1FD00D5);
             arg.x += 0x65;
@@ -1897,7 +1897,7 @@ void Menu_NameEntryTask(Actor *a0) {
             arg.y = 0x20;
             arg.charAdvance = 0;
             arg.lineAdvance = 0;
-            arg.field_18 = 0;
+            arg.charDelay = 0;
             Text_Open(&w->field_20, &arg);
             switch (w->field_0) {
             default:
@@ -1925,7 +1925,7 @@ void Menu_NameEntryTask(Actor *a0) {
             arg2.y = 0x13;
             arg2.charAdvance = 0;
             arg2.lineAdvance = 0;
-            arg2.field_18 = 0;
+            arg2.charDelay = 0;
             Text_Open(&w->field_1C, &arg2);
             Task_NextState1(a0);
         case 1:
@@ -2024,22 +2024,22 @@ void Menu_NameEntryTask(Actor *a0) {
 
 void Menu_NameEntryDrawParts(Actor *a) {
     ActorWork *w = a->work;
-    Part28 *base = (Part28 *)Cd_GetFileEntry(0x1A10018);
-    Part28 *p;
+    GfxPart *base = (GfxPart *)Cd_GetFileEntry(0x1A10018);
+    GfxPart *p;
     s32 k;
     s32 v;
     s32 x;
 
     w->field_28 += D_8005F770.frameDelta;
-    for (p = base; p->field_0 != 0; p++) {
+    for (p = base; p->fileId != 0; p++) {
         if (p->groupMask & 0x20) {
             v = w->field_24;
             p->y = -0x48;
             p->x = v * 9 - 0x71;
             if (w->field_24 == w->field_8) {
-                p->field_F = 0;
+                p->visible = 0;
             } else {
-                p->field_F = 1;
+                p->visible = 1;
             }
         } else if (p->groupMask & 0x40) {
             v = w->field_2C;
@@ -2058,45 +2058,45 @@ void Menu_NameEntryDrawParts(Actor *a) {
             k = w->field_2E - 3;
         }
         if (p->groupMask & 0x7DC) {
-            p->field_F = 0;
+            p->visible = 0;
         }
         if (!(w->field_28 & 0x10)) {
             switch (k) {
             case 0:
                 if (p->groupMask & 0x40) {
-                    p->field_F = 1;
+                    p->visible = 1;
                 }
                 break;
             case 1:
                 if (p->groupMask & 0x80) {
-                    p->field_F = 1;
+                    p->visible = 1;
                 }
                 break;
             case 2:
                 if (p->groupMask & 0x100) {
-                    p->field_F = 1;
+                    p->visible = 1;
                 }
                 break;
             case 3:
                 if (p->groupMask & 0x200) {
-                    p->field_F = 1;
+                    p->visible = 1;
                 }
                 break;
             case 4:
                 if (p->groupMask & 0x400) {
-                    p->field_F = 1;
+                    p->visible = 1;
                 }
                 break;
             }
         }
         if (w->field_0 == 0 && (p->groupMask & 4)) {
-            p->field_F = 1;
+            p->visible = 1;
         }
         if (w->field_0 == 1 && (p->groupMask & 8)) {
-            p->field_F = 1;
+            p->visible = 1;
         }
         if (w->field_0 == 2 && (p->groupMask & 0x10)) {
-            p->field_F = 1;
+            p->visible = 1;
         }
     }
     Gfx_DrawParts((s32)base);
@@ -2160,15 +2160,15 @@ void Task_DefaultDestroy2(void) {
 void Text_OpenDesc(void *arg0, TextDesc *arg1) {
     TextOpenArgs local;
     local.text = arg1->text;
-    local.bigFont = arg1->field_10 >> 7;
+    local.bigFont = arg1->packedStyle >> 7;
     local.color = arg1->color;
     local.x = arg1->x;
     local.y = arg1->y;
     local.charAdvance = 0;
     local.lineAdvance = 0;
-    local.field_18 = arg1->field_10 & 0x7F;
-    local.field_1C = arg1->field_4;
-    local.field_20 = arg1->field_8;
+    local.charDelay = arg1->packedStyle & 0x7F;
+    local.strArg0 = arg1->strArg0;
+    local.strArg1 = arg1->strArg1;
     Text_Open(arg0, &local);
 }
 
@@ -2181,7 +2181,7 @@ void Text_OpenPacked(void *arg0, s32 arg1, u32 arg2, Halves arg3) {
     local.y = arg3.hi;
     local.charAdvance = 0;
     local.lineAdvance = 0;
-    local.field_18 = arg2 & 3;
+    local.charDelay = arg2 & 3;
     Text_Open(arg0, &local);
 }
 
@@ -2236,12 +2236,12 @@ s32 Math_RampToZero(s32 arg0, s32 *arg1) {
 }
 
 void Menu_SetPartsGridPos(void *arg0, s32 mask, s32 *arg2, s16 *arg3) {
-    Part28 *p = arg0;
-    Part28 *q = p;
+    GfxPart *p = arg0;
+    GfxPart *q = p;
     s32 x = arg3[2] + ((s16 *)arg2)[0] * arg3[4];
     s32 y = arg3[3] + ((s16 *)arg2)[1] * arg3[5];
 
-    if (p->field_0 != 0) {
+    if (p->fileId != 0) {
         do {
             if (q->groupMask & mask) {
                 q->x = x;
@@ -2249,29 +2249,29 @@ void Menu_SetPartsGridPos(void *arg0, s32 mask, s32 *arg2, s16 *arg3) {
             }
             p++;
             q++;
-        } while (p->field_0 != 0);
+        } while (p->fileId != 0);
     }
 }
 
 
-void Gfx_SetPartsPalette(Part28 *p, s32 mask, s32 v) {
-    Part28 *q = p;
+void Gfx_SetPartsPalette(GfxPart *p, s32 mask, s32 v) {
+    GfxPart *q = p;
 
-    if (p->field_0 != 0) {
+    if (p->fileId != 0) {
         do {
             if (q->groupMask & mask) {
                 q->palette = v;
             }
             p++;
             q++;
-        } while (p->field_0 != 0);
+        } while (p->fileId != 0);
     }
 }
 
-void Menu_SetPartsPos(Part28 *p, s32 mask, u16 *xy) {
-    Part28 *q = p;
+void Menu_SetPartsPos(GfxPart *p, s32 mask, u16 *xy) {
+    GfxPart *q = p;
 
-    if (p->field_0 != 0) {
+    if (p->fileId != 0) {
         do {
             if (q->groupMask & mask) {
                 q->x = xy[0];
@@ -2279,26 +2279,26 @@ void Menu_SetPartsPos(Part28 *p, s32 mask, u16 *xy) {
             }
             p++;
             q++;
-        } while (p->field_0 != 0);
+        } while (p->fileId != 0);
     }
 }
 
-s32 Menu_BlinkOrHideParts(Part28 *p, s32 mask, s32 n) {
-    Part28 *q;
+s32 Menu_BlinkOrHideParts(GfxPart *p, s32 mask, s32 n) {
+    GfxPart *q;
     s32 r = 0;
 
     if (n <= 0) {
         r = mask;
     } else {
         q = p;
-        if (p->field_0 != 0) {
+        if (p->fileId != 0) {
             do {
                 if (q->groupMask & mask) {
                     q->palette = (Menu_Ctx->elapsed >> 2) & 3;
                 }
                 p++;
                 q++;
-            } while (p->field_0 != 0);
+            } while (p->fileId != 0);
         }
     }
     return r;
@@ -2465,7 +2465,7 @@ void Menu_TopMenuTask(Actor *a0) {
             Menu_Ctx->flags = (Menu_Ctx->flags | 0x10) & ~2;
         }
         Menu_Ctx->elapsed = 0;
-        Mem_FillWordsNeg1(&w->field_0, 8);
+        Mem_FillWordsNeg1(&w->option0Text, 8);
         Task_NextState0(a0);
         Gfx_FadeInFromBlack(0x20);
         break;
@@ -2477,14 +2477,14 @@ void Menu_TopMenuTask(Actor *a0) {
             if (Math_RampToOne((s32)a0, &w->ramp) != 0) {
                 break;
             }
-            Text_PrintIdList(&w->field_0, (TextIdListEntry *)Cd_GetFileEntry(0x5130003), 2);
-            Text_Close((Menu_Ctx->flags & 1) ? &w->field_14 : &w->field_18);
-            Text_SetColor(w->field_4, (Menu_Ctx->flags >> 4) & 1);
-            Text_SetColor(w->field_8, (Menu_Ctx->flags >> 4) & 1);
-            Text_SetColor(w->field_C, (Menu_Ctx->flags >> 4) & 1);
-            Text_SetColor(w->field_10, !(Menu_Ctx->flags & 2));
-            Text_SetColor(w->field_14, !(Menu_Ctx->flags & 4));
-            Text_SetColor(w->field_18, !(Menu_Ctx->flags & 8));
+            Text_PrintIdList(&w->option0Text, (TextIdListEntry *)Cd_GetFileEntry(0x5130003), 2);
+            Text_Close((Menu_Ctx->flags & 1) ? &w->option5Text : &w->option6Text);
+            Text_SetColor(w->option1Text, (Menu_Ctx->flags >> 4) & 1);
+            Text_SetColor(w->option2Text, (Menu_Ctx->flags >> 4) & 1);
+            Text_SetColor(w->option3Text, (Menu_Ctx->flags >> 4) & 1);
+            Text_SetColor(w->option4Text, !(Menu_Ctx->flags & 2));
+            Text_SetColor(w->option5Text, !(Menu_Ctx->flags & 4));
+            Text_SetColor(w->option6Text, !(Menu_Ctx->flags & 8));
             Task_NextState1(a0);
             break;
         case 1:
@@ -2525,7 +2525,7 @@ void Menu_TopMenuTask(Actor *a0) {
             switch (a0->stateLevel2) {
             case 0:
             default:
-                Text_CloseArray(&w->field_0, 8);
+                Text_CloseArray(&w->option0Text, 8);
                 Task_NextState2(a0);
                 break;
             case 1:
@@ -2559,7 +2559,7 @@ void Menu_TopMenuTask(Actor *a0) {
         switch (a0->stateLevel1) {
         case 0:
         default:
-            Text_CloseArray(&w->field_0, 8);
+            Text_CloseArray(&w->option0Text, 8);
             D_80050764 = Menu_Ctx->field_360;
             Task_NextState1(a0);
             Gfx_FadeOutToBlack(0x20);
@@ -2585,9 +2585,9 @@ void Menu_TopMenuDraw(Actor *actor) {
     s32 *list;
     void *obj;
     s32 i;
-    Part28 *base;
-    Part28 *q;
-    Part28 *r;
+    GfxPart *base;
+    GfxPart *q;
+    GfxPart *r;
 
     if (w->ramp != 0) {
         p = (s32 *)Cd_GetFileEntry(0x5130004);
@@ -2613,8 +2613,8 @@ void Menu_TopMenuDraw(Actor *actor) {
             } while (*list != 0);
         }
     }
-    base = (Part28 *)Cd_GetFileEntry(0x459000C);
-    for (q = base; q->field_0 != 0; q++) {
+    base = (GfxPart *)Cd_GetFileEntry(0x459000C);
+    for (q = base; q->fileId != 0; q++) {
         switch (q->groupMask) {
         case 2:
             q->palette = Math_CycleRange(actor->elapsed, 0xA, 0, 7);
@@ -2647,7 +2647,7 @@ void func_800143CC(Actor *arg0, s16 arg1) {
 
     w->field_38 = arg1;
     if (arg1 == 3) {
-        Menu_Ctx->field_35C = 0;
+        Menu_Ctx->pickResult = 0;
         w->field_3C = 0;
     }
 }
@@ -2724,18 +2724,18 @@ void Menu_SubMenuTask(Actor *a) {
                 break;
             case 1:
                 if (w->menuId == 3) {
-                    switch (Menu_Ctx->field_35C) {
+                    switch (Menu_Ctx->pickResult) {
                     case 1:
-                        Text_CloseArray(w->field_4, 9);
-                        w->field_3C = 1;
+                        Text_CloseArray(w->optionTexts, 9);
+                        w->optionsHidden = 1;
                         break;
                     case 2:
                         Text_CloseArray(w, 0xA);
                         Text_PrintIdList((s32 *)w, (TextIdListEntry *)Cd_GetFileEntrySubPtr(0x5130008, w->menuId - 1), 0);
-                        w->field_3C = 0;
+                        w->optionsHidden = 0;
                         break;
                     }
-                    Menu_Ctx->field_35C = 0;
+                    Menu_Ctx->pickResult = 0;
                 }
                 if (*p == 0) {
                     switch (w->menuId) {
@@ -2798,7 +2798,7 @@ void Menu_SubMenuTask(Actor *a) {
 
 
 extern void Menu_SetPartsGridPos(void *, s32, s32 *, s16 *);
-extern void Gfx_SetPartsPalette(Part28 *, s32, s32);
+extern void Gfx_SetPartsPalette(GfxPart *, s32, s32);
 extern void Gfx_HidePartsByMask(GfxPartMaskView *, s32);
 
 void Menu_SubMenuDraw(Actor *actor) {
@@ -2857,7 +2857,7 @@ void func_80014984(Actor *a0) {
             if (Math_RampToOne((s32)a0, &w->scale) != 0) {
                 break;
             }
-            Text_PrintIdList(w->field_0, (TextIdListEntry *)Cd_GetFileEntry(0x513000B), 2);
+            Text_PrintIdList(w->labelTexts, (TextIdListEntry *)Cd_GetFileEntry(0x513000B), 2);
             w->textArgs[0] = (s32)D_80050720->field_14;
             tbl = (s16 *)Cd_GetFileEntry(0x513000F);
             w->textArgs[1] = (s32)Cd_GetFileEntry(tbl[D_80050720->field_11 * 11 + D_80050720->field_12] + 0x1FD0000);
@@ -2867,7 +2867,7 @@ void func_80014984(Actor *a0) {
                 *p++ = (s32)w->digiList[i]->name;
             }
             *p = 0;
-            Text_PrintList(w->field_40, (Halves *)Cd_GetFileEntry(0x513000C), w->textArgs, 2);
+            Text_PrintList(w->listTexts, (Halves *)Cd_GetFileEntry(0x513000C), w->textArgs, 2);
             if (Menu_Ctx->flags & 1) {
                 h = (Halves *)Cd_GetFileEntry(0x513000D);
                 for (i = 0; i < 4; i++) {
@@ -2879,9 +2879,9 @@ void func_80014984(Actor *a0) {
                 }
             }
             for (i = w->digiCount; i < 3; i++) {
-                Text_Close(&w->field_0[i * 3 + 7]);
-                Text_Close(&w->field_0[i * 3 + 8]);
-                Text_Close(&w->field_0[i * 3 + 9]);
+                Text_Close(&w->labelTexts[i * 3 + 7]);
+                Text_Close(&w->labelTexts[i * 3 + 8]);
+                Text_Close(&w->labelTexts[i * 3 + 9]);
             }
             Task_NextState1(a0);
             break;
@@ -2915,7 +2915,7 @@ void func_80014CBC(Actor *actor) {
     s32 *p;
     s32 *list;
     s32 i;
-    Part28 *obj;
+    GfxPart *obj;
     DigiRosterHudView *rec;
 
     if (w->scale == 0) {
@@ -2928,13 +2928,13 @@ void func_80014CBC(Actor *actor) {
     i = 0;
     list = p;
     do {
-        obj = (Part28 *)Cd_GetFileEntry(*list);
+        obj = (GfxPart *)Cd_GetFileEntry(*list);
         if (i == 0) {
             Gfx_SetPartsNumber(obj, 2, 8, D_80050720->field_8);
-            Gfx_SetPartsNumber(obj, 4, 4, D_80050720->field_26);
-            Gfx_SetPartsNumber(obj, 8, 4, D_80050720->field_24);
-            Gfx_SetPartsNumber(obj, 0x10, 4, D_80050720->field_2A);
-            Gfx_SetPartsNumber(obj, 0x20, 4, D_80050720->field_28);
+            Gfx_SetPartsNumber(obj, 4, 4, D_80050720->maxHp);
+            Gfx_SetPartsNumber(obj, 8, 4, D_80050720->hp);
+            Gfx_SetPartsNumber(obj, 0x10, 4, D_80050720->maxMp);
+            Gfx_SetPartsNumber(obj, 0x20, 4, D_80050720->mp);
         } else if (i - 1 < w->digiCount) {
             rec = w->digiList[i - 1];
             Gfx_SetPartsNumber(obj, 2, 3, rec->maxHp);
@@ -2960,13 +2960,13 @@ void Menu_UseItemDirect(Actor *a0) {
     if (Item_Use(Menu_Ctx->itemId, Menu_Ctx->bagSlot, 0, 0) != 0) {
         st.pos = D_80050700;
         st.color = 0;
-        st.field_10 = 0x81;
+        st.packedStyle = 0x81;
         st.text = (s32)Cd_GetFileEntry(0x1FD00FD);
-        st.field_4 = Item_GetNameText(Menu_Ctx->itemId);
-        Text_OpenDesc(&w->field_50, (TextDesc *)&st);
+        st.strArg0 = Item_GetNameText(Menu_Ctx->itemId);
+        Text_OpenDesc(&w->msgText, (TextDesc *)&st);
         Snd_PlayById(0x1D, 0);
     } else {
-        Text_OpenPacked(&w->field_50, (s32)Cd_GetFileEntry(0x1FD00A0), 0x81, D_80050700);
+        Text_OpenPacked(&w->msgText, (s32)Cd_GetFileEntry(0x1FD00A0), 0x81, D_80050700);
     }
 }
 
@@ -2986,64 +2986,64 @@ void func_80014F78(Actor *a0) {
     m = D_8005071C->field_BA5[n];
     st.pos = *pos;
     st.color = 0;
-    st.field_10 = 0x81;
+    st.packedStyle = 0x81;
     switch (rec->digiId) {
     case 0xC:
     case 0xD:
     case 0xE:
         r = Item_Use(Menu_Ctx->itemId, Menu_Ctx->bagSlot, 0, 0);
         if (r == 0) {
-            Text_OpenPacked(&w->field_50, (s32)Cd_GetFileEntry(0x1FD00A0), 0x81, *pos);
+            Text_OpenPacked(&w->msgText, (s32)Cd_GetFileEntry(0x1FD00A0), 0x81, *pos);
             goto end;
         }
         if (r == 1) {
             st.text = (s32)Cd_GetFileEntry(0x1FD00B3);
             r = m + 0x1FD00EC;
-            st.field_4 = (s32)Cd_GetFileEntry(n * 3 + r);
+            st.strArg0 = (s32)Cd_GetFileEntry(n * 3 + r);
         } else {
             st.text = (s32)Cd_GetFileEntry(0x1FD00B4);
-            st.field_4 = Item_GetNameText(Menu_Ctx->itemId);
+            st.strArg0 = Item_GetNameText(Menu_Ctx->itemId);
         }
-        Text_OpenDesc(&w->field_50, (TextDesc *)&st);
+        Text_OpenDesc(&w->msgText, (TextDesc *)&st);
         break;
     case 0xF:
     default:
         r = Item_Use(Menu_Ctx->itemId, Menu_Ctx->bagSlot, 0, 0);
         if (r == 0) {
-            Text_OpenPacked(&w->field_50, (s32)Cd_GetFileEntry(0x1FD00A0), 0x81, D_80050700);
+            Text_OpenPacked(&w->msgText, (s32)Cd_GetFileEntry(0x1FD00A0), 0x81, D_80050700);
             goto end;
         }
         if (r == 2) {
             st.text = (s32)Cd_GetFileEntry(0x1FD00B4);
-            st.field_4 = Item_GetNameText(Menu_Ctx->itemId);
+            st.strArg0 = Item_GetNameText(Menu_Ctx->itemId);
         } else if (D_8005071C->field_BA8 != 0) {
             st.text = (s32)Cd_GetFileEntry(0x1FD00B5);
-            st.field_4 = 0;
+            st.strArg0 = 0;
         } else {
             st.text = (s32)Cd_GetFileEntry(0x1FD00B3);
             r = 0x1FD00EC;
-            st.field_4 = (s32)Cd_GetFileEntry(n * 3 + (D_80050760 + r));
+            st.strArg0 = (s32)Cd_GetFileEntry(n * 3 + (D_80050760 + r));
         }
-        Text_OpenDesc(&w->field_50, (TextDesc *)&st);
+        Text_OpenDesc(&w->msgText, (TextDesc *)&st);
         break;
     case 0x10:
         r = Item_Use(Menu_Ctx->itemId, Menu_Ctx->bagSlot, 0, 0);
         if (r == 0) {
-            Text_OpenPacked(&w->field_50, (s32)Cd_GetFileEntry(0x1FD00A0), 0x81, *pos);
+            Text_OpenPacked(&w->msgText, (s32)Cd_GetFileEntry(0x1FD00A0), 0x81, *pos);
             goto end;
         }
         if (r == 2) {
             st.text = (s32)Cd_GetFileEntry(0x1FD00B4);
-            st.field_4 = Item_GetNameText(Menu_Ctx->itemId);
+            st.strArg0 = Item_GetNameText(Menu_Ctx->itemId);
         } else {
-            st.field_4 = 0;
+            st.strArg0 = 0;
             if (D_8005071C->field_BA5[0] + D_8005071C->field_BA5[1] + D_8005071C->field_BA5[2] + D_8005071C->field_BA8 != 0) {
                 st.text = (s32)Cd_GetFileEntry(0x1FD00B7);
             } else {
                 st.text = (s32)Cd_GetFileEntry(0x1FD00B6);
             }
         }
-        Text_OpenDesc(&w->field_50, (TextDesc *)&st);
+        Text_OpenDesc(&w->msgText, (TextDesc *)&st);
         break;
     }
 end:
@@ -3063,16 +3063,16 @@ void Menu_OpenItemNameTexts(Actor *a0, s32 a1) {
         img = (s32)Cd_GetFileEntry(0x1FD0098);
         id = D_8005076C[i];
         k = 0;
-        if (id != 0xFF && D_80050720->field_2C[id] != 0) {
-            img = Item_GetNameText(D_80050720->field_2C[id]);
-            if (D_80050720->field_52[id] != 0) {
+        if (id != 0xFF && D_80050720->slotItems[id] != 0) {
+            img = Item_GetNameText(D_80050720->slotItems[id]);
+            if (D_80050720->slotStatus[id] != 0) {
                 k = 3;
             }
         }
-        h.lo = (i / w->field_8C[1]) * 98 + 0x88;
-        h.hi = (i % w->field_8C[1]) * 12 + 0x32;
-        Text_OpenPacked(&w->field_0[i], img, a1, h);
-        Text_SetColor(w->field_0[i], k);
+        h.lo = (i / w->gridSize[1]) * 98 + 0x88;
+        h.hi = (i % w->gridSize[1]) * 12 + 0x32;
+        Text_OpenPacked(&w->itemTexts[i], img, a1, h);
+        Text_SetColor(w->itemTexts[i], k);
     }
 }
 
@@ -3108,8 +3108,8 @@ void func_800154F0(Actor *a0) {
     s32 id;
     Halves h;
 
-    i = Menu_GridIndexColMajor(w->field_88, w->field_8C);
-    Text_Close(&w->field_50);
+    i = Menu_GridIndexColMajor(w->cursor, w->gridSize);
+    Text_Close(&w->msgText);
     Text_Close(&w->field_54);
     Text_Close(&w->field_58);
     id = D_8005076C[i];
@@ -3117,9 +3117,9 @@ void func_800154F0(Actor *a0) {
         h.lo = 0xF;
         h.hi = 0x32;
         Text_OpenPacked(&w->field_58, (s32)Cd_GetFileEntry(D_80050770[i] | 0x1FD0000), 0, h);
-        if (D_80050720->field_2C[id] != 0) {
-            Text_OpenPacked(&w->field_50, Item_GetDescText(D_80050720->field_2C[id]), 0x80, D_80050700);
-            if (D_80050720->field_52[id] != 0) {
+        if (D_80050720->slotItems[id] != 0) {
+            Text_OpenPacked(&w->msgText, Item_GetDescText(D_80050720->slotItems[id]), 0x80, D_80050700);
+            if (D_80050720->slotStatus[id] != 0) {
                 h.lo = 0x10;
                 h.hi = 0xCA;
                 Text_OpenPacked(&w->field_54, (s32)Cd_GetFileEntry(0x1FD0097), 0x80, h);
@@ -3134,15 +3134,15 @@ void func_80015668(Actor *a0) {
     Halves h;
 
     Text_Close(&w->field_58);
-    Text_Close(&w->field_5C);
+    Text_Close(&w->itemNameText);
     h.lo = 0xF;
     h.hi = 0x32;
     Text_OpenPacked(&w->field_58, (s32)Cd_GetFileEntry(0x1FD009B), 0, h);
     h.lo = 0xF;
     h.hi = 0x47;
-    Text_OpenPacked(&w->field_5C, Item_GetNameText(Menu_Ctx->itemId), 0, h);
-    if (w->field_98 == 3) {
-        Text_OpenPacked(&w->field_50, (s32)Cd_GetFileEntry(0x1FD00FB), 0x80, D_80050700);
+    Text_OpenPacked(&w->itemNameText, Item_GetNameText(Menu_Ctx->itemId), 0, h);
+    if (w->useMode == 3) {
+        Text_OpenPacked(&w->msgText, (s32)Cd_GetFileEntry(0x1FD00FB), 0x80, D_80050700);
     }
 }
 
@@ -3153,14 +3153,14 @@ void Menu_UseItemOnTarget(Actor *a0) {
     TextDescHalves st;
 
     if (D_8005F704 > 0) {
-        id = D_8005076C[Menu_GridIndexColMajor(w->field_88, w->field_8C)];
+        id = D_8005076C[Menu_GridIndexColMajor(w->cursor, w->gridSize)];
         if (id != 0xFF && Item_Use(Menu_Ctx->itemId, Menu_Ctx->bagSlot, id, 0) != 0) {
             st.pos = D_80050700;
             st.color = 0;
-            st.field_10 = 0x81;
+            st.packedStyle = 0x81;
             st.text = (s32)Cd_GetFileEntry(0x1FD00FC);
-            st.field_4 = Item_GetNameText(D_80050720->field_2C[id]);
-            Text_OpenDesc(&w->field_50, (TextDesc *)&st);
+            st.strArg0 = Item_GetNameText(D_80050720->slotItems[id]);
+            Text_OpenDesc(&w->msgText, (TextDesc *)&st);
             Menu_OpenItemNameTexts(a0, 0);
             Snd_PlayById(0x1D, 0);
             Task_SetState1(a0, 3);
@@ -3209,15 +3209,15 @@ void Menu_ItemUseTask(Actor *a0) {
     switch (a0->stateLevel0) {
     case 0:
     default:
-        *(Layout8C *)w->field_8C = *(Layout8C *)Cd_GetFileEntry(0x5130010);
-        Mem_FillWordsNeg1(w->field_0, 0x22);
+        *(Layout8C *)w->gridSize = *(Layout8C *)Cd_GetFileEntry(0x5130010);
+        Mem_FillWordsNeg1(w->itemTexts, 0x22);
         Task_NextState0(a0);
         break;
     case 1:
         switch (a0->stateLevel1) {
         case 0:
         default:
-            if (Math_RampToOne((s32)a0, &w->field_9C) != 0) {
+            if (Math_RampToOne((s32)a0, &w->ramp) != 0) {
                 break;
             }
             Text_PrintIdList(&w->field_70, (TextIdListEntry *)Cd_GetFileEntry(0x5130011), 2);
@@ -3228,7 +3228,7 @@ void Menu_ItemUseTask(Actor *a0) {
             Task_NextState1(a0);
             break;
         case 1:
-            switch (w->field_98) {
+            switch (w->useMode) {
             case 1:
                 func_800154F0(a0);
                 Task_NextState1(a0);
@@ -3262,17 +3262,17 @@ id = 0x152;
  next = 4;
 break;
 }
-                Text_OpenPacked(&w->field_50, (s32)Cd_GetFileEntry(id | 0x1FD0000), 0x82, D_80050700);
+                Text_OpenPacked(&w->msgText, (s32)Cd_GetFileEntry(id | 0x1FD0000), 0x82, D_80050700);
                 Task_SetState1(a0, next);
                 break;
             }
             break;
         case 2:
-            if (Menu_MoveGridCursorP1((s32)w->field_88, (s32)w->field_8C) == 0) {
+            if (Menu_MoveGridCursorP1((s32)w->cursor, (s32)w->gridSize) == 0) {
                 if (D_8005F6F0[0].triangle > 0) {
                     Snd_PlayById(0xB, 0);
                     Task_SetState0(a0, 2);
-                } else if (w->field_98 == 3) {
+                } else if (w->useMode == 3) {
                     Menu_UseItemOnTarget(a0);
                 }
             } else {
@@ -3283,7 +3283,7 @@ break;
         case 3:
             switch (a0->stateLevel2) {
             case 0:
-                if (Text_IsFinished(w->field_50) != 0) {
+                if (Text_IsFinished(w->msgText) != 0) {
                     Task_NextState2(a0);
                 }
                 break;
@@ -3295,7 +3295,7 @@ break;
             }
             break;
         case 4:
-            r = func_800136A4(w->field_50);
+            r = func_800136A4(w->msgText);
             switch (r) {
             case 1:
                 Gfx_FadeOutToBlack(0x20);
@@ -3313,11 +3313,11 @@ break;
         switch (a0->stateLevel1) {
         case 0:
         default:
-            Text_CloseArray(w->field_0, 0x22);
+            Text_CloseArray(w->itemTexts, 0x22);
             Task_NextState1(a0);
             break;
         case 1:
-            if (Math_RampToZero((s32)a0, &w->field_9C) == 0) {
+            if (Math_RampToZero((s32)a0, &w->ramp) == 0) {
                 Task_SetState0(a0, 3);
             }
             break;
@@ -3358,10 +3358,10 @@ void Menu_ItemUseDraw(Actor *actor) {
             } else {
                 Gfx_HidePartsByMask(obj, 2);
             }
-            Gfx_SetPartsNumber(obj, 4, 4, D_80050720->field_26);
-            Gfx_SetPartsNumber(obj, 8, 4, D_80050720->field_24);
-            Gfx_SetPartsNumber(obj, 0x10, 4, D_80050720->field_2A);
-            Gfx_SetPartsNumber(obj, 0x20, 4, D_80050720->field_28);
+            Gfx_SetPartsNumber(obj, 4, 4, D_80050720->maxHp);
+            Gfx_SetPartsNumber(obj, 8, 4, D_80050720->hp);
+            Gfx_SetPartsNumber(obj, 0x10, 4, D_80050720->maxMp);
+            Gfx_SetPartsNumber(obj, 0x20, 4, D_80050720->mp);
                 break;
             case 1:
             case 3:
@@ -3464,11 +3464,11 @@ void Menu_DrawItemGrid(MenuItemWork *a0, s32 a1) {
         }
         if (a0->cells[base + i].itemId != 0 && a0->cells[base + i].count != 0) {
             st.pos = h;
-            st.field_10 = a1;
+            st.packedStyle = a1;
             st.color = 0;
             st.text = (s32)Cd_GetFileEntry(0x1FD0125);
-            st.field_4 = img;
-            st.field_8 = a0->countText[i];
+            st.strArg0 = img;
+            st.strArg1 = a0->countText[i];
             Text_FormatNumber(a0->countText[i], a0->cells[base + i].count, -2);
             Text_OpenDesc(&a0->cellTextSlots[i], (TextDesc *)&st);
         } else {
@@ -3491,9 +3491,9 @@ void Item_MoveToStorage(Actor *a0, MenuItemWork *w) {
         D_80050720->storageCounts[id] += (D_80050720->storageCounts[id] + 1 < 100);
         Item_RemoveFromBag(c->bagSlot);
         st.pos = D_80050704;
-        st.field_10 = 0x81;
+        st.packedStyle = 0x81;
         st.color = 0;
-        st.field_4 = Item_GetNameText(id);
+        st.strArg0 = Item_GetNameText(id);
         st.text = (s32)Cd_GetFileEntry(0x1FD0122);
         Text_OpenDesc(&w->msgTextSlot, (TextDesc *)&st);
         Item_BuildMenuList(w);
@@ -3531,9 +3531,9 @@ void Item_TakeFromStorage(Actor *a0, MenuItemWork *w) {
             D_80050720->bagItems[i] = c->itemId;
             D_80050720->storageCounts[c->itemId]--;
             st.pos = D_80050704;
-            st.field_10 = 0x81;
+            st.packedStyle = 0x81;
             st.color = 0;
-            st.field_4 = Item_GetNameText(c->itemId);
+            st.strArg0 = Item_GetNameText(c->itemId);
             st.text = (s32)Cd_GetFileEntry(0x1FD0123);
             Text_OpenDesc(&w->msgTextSlot, (TextDesc *)&st);
             Item_BuildMenuList(w);
@@ -3582,7 +3582,7 @@ void Menu_PickItemToUse(Actor *a0, MenuItemPickWork *o) {
 found:
     Menu_Ctx->itemId = id;
     Menu_Ctx->bagSlot = o->cells[Menu_GridIndexColMajor(pos, size)].bagSlot;
-    o->field_66 = r == 1;
+    o->nextTaskIdx = r == 1;
     Snd_PlayById(0xE, 0);
     Task_NextState1(a0);
 }
@@ -3646,7 +3646,7 @@ void Menu_ItemTask(Actor *a0) {
             if (Math_RampToOne((s32)a0, &w->fade) != 0) {
                 break;
             }
-            Text_PrintIdList(&w->field_4C, (TextIdListEntry *)Cd_GetFileEntrySubPtr(0x5130018, w->menuMode - 1), 2);
+            Text_PrintIdList(&w->labelTexts, (TextIdListEntry *)Cd_GetFileEntrySubPtr(0x5130018, w->menuMode - 1), 2);
             Item_BuildMenuList(w);
             Menu_DrawItemGrid(w, 1);
             Task_NextState1(a0);
@@ -3719,7 +3719,7 @@ void Menu_ItemTask(Actor *a0) {
                 if (Math_RampToZero((s32)a0, &w->fade) != 0) {
                     break;
                 }
-                Task_Create(D_80040EFC[w->field_66].field_0, slot, D_80040EFC[w->field_66].field_2);
+                Task_Create(D_80040EFC[w->nextTaskIdx].field_0, slot, D_80040EFC[w->nextTaskIdx].field_2);
                 Task_NextState2(a0);
                 break;
             case 2:
@@ -3732,9 +3732,9 @@ void Menu_ItemTask(Actor *a0) {
         case 4:
             st.pos.lo = 0x10;
             st.pos.hi = 0xBA;
-            st.field_10 = 0x81;
+            st.packedStyle = 0x81;
             st.color = 0;
-            st.field_4 = Item_GetNameText(Menu_Ctx->itemId);
+            st.strArg0 = Item_GetNameText(Menu_Ctx->itemId);
             switch (a0->stateLevel2) {
             case 0:
             default:
@@ -3880,33 +3880,33 @@ void func_80017214(Actor *a0) {
     s32 n;
     MenuCtx *p;
 
-    e = &w->field_6C[Menu_GridIndexColMajor(w->field_50, w->field_54)];
+    e = &w->rows[Menu_GridIndexColMajor(w->cursor, w->gridSize)];
     p = Menu_Ctx;
     do {} while (0);
     n = D_8005F704;
     g = (DigiRosterSwapRec *)p->field_128;
     if (n > 0) {
-        switch (e->field_0) {
+        switch (e->kind) {
         case 0:
         default:
-            if (g->field_0 >= 3) {
+            if (g->state >= 3) {
                 id = 0x1FD0111;
             icon:
                 Text_OpenPacked(w->field_40, Cd_GetFileEntry(id), 0x81, D_8005070C);
                 break;
             }
-            g->field_0 = w->field_1A0[3] != 0 ? 1 : 2;
-            d = &w->field_6C[w->field_50[1]];
-            d->field_0 = 1;
+            g->state = w->pickedIndices[3] != 0 ? 1 : 2;
+            d = &w->rows[w->cursor[1]];
+            d->kind = 1;
             d->record = (s32)g;
-            d->pickState = g->field_0;
+            d->pickState = g->state;
             id = 0x1FD0110;
             goto swap;
         case 1:
-            k = g->field_0;
+            k = g->state;
             tmp = *(DigiRosterSwapRec *)e->record;
-            g->field_0 = tmp.field_0;
-            tmp.field_0 = k;
+            g->state = tmp.state;
+            tmp.state = k;
             *(DigiRosterSwapRec *)e->record = *g;
             *g = tmp;
             id = 0x1FD0112;
@@ -3918,7 +3918,7 @@ void func_80017214(Actor *a0) {
             Task_SetState1(a0, 4);
             return;
         case 3:
-            if (g->field_0 >= 3) {
+            if (g->state >= 3) {
                 id = 0x1FD011E;
                 goto icon;
             }
@@ -3934,12 +3934,12 @@ void func_80017214(Actor *a0) {
 
 void func_800174F8(Actor *a0) {
     MenuDigiPickWork *w = (MenuDigiPickWork *)a0->work;
-    MenuDigiPickRow *e = &w->field_6C[Menu_GridIndexColMajor(w->field_50, w->field_54)];
+    MenuDigiPickRow *e = &w->rows[Menu_GridIndexColMajor(w->cursor, w->gridSize)];
     s32 k;
 
     if (D_8005F704 > 0) {
         k = 0x10;
-        if (e->field_0 == 1) {
+        if (e->kind == 1) {
             Menu_Ctx->field_128 = e->record;
             Menu_Ctx->field_126 = 0;
             w->field_62 = 3;
@@ -3952,8 +3952,8 @@ void func_800174F8(Actor *a0) {
 
 void Menu_ConfirmMultiPick(Actor *a0) {
     MenuDigiPickWork *w = (MenuDigiPickWork *)a0->work;
-    s32 k = Menu_GridIndexColMajor(w->field_50, w->field_54);
-    MenuDigiPickRow *e = &w->field_6C[k];
+    s32 k = Menu_GridIndexColMajor(w->cursor, w->gridSize);
+    MenuDigiPickRow *e = &w->rows[k];
     s32 i;
 
     if (D_8005F704 > 0) {
@@ -3961,20 +3961,20 @@ void Menu_ConfirmMultiPick(Actor *a0) {
             Snd_PlayById(0x10, 0);
             return;
         }
-        e->pickState = w->field_19E + 3;
-        w->field_1A0[w->field_19E++] = k;
+        e->pickState = w->pickedCount + 3;
+        w->pickedIndices[w->pickedCount++] = k;
         Snd_PlayById(0xE, 0);
-        if (w->field_19E < w->field_19C) {
+        if (w->pickedCount < w->pickMax) {
             Task_SetState1(a0, 1);
         } else {
             MenuCtx *d;
-            Menu_Ctx->pickCount = w->field_19C;
+            Menu_Ctx->pickCount = w->pickMax;
             d = Menu_Ctx;
             i = 0;
-            if (w->field_19C > 0) {
+            if (w->pickMax > 0) {
                 do {
-                    d->pickedRecords[i] = w->field_6C[w->field_1A0[i]].record;
-                } while (++i < w->field_19C);
+                    d->pickedRecords[i] = w->rows[w->pickedIndices[i]].record;
+                } while (++i < w->pickMax);
             }
             w->field_62 = 2;
             Task_SetState1(a0, 3);
@@ -4002,16 +4002,16 @@ void Menu_UndoLastPick(Actor *s0) {
 
 void Menu_UseItemOnDigi(Actor *a0) {
     MenuDigiPickWork *w = (MenuDigiPickWork *)a0->work;
-    MenuDigiPickRow *e = &w->field_6C[Menu_GridIndexColMajor(w->field_50, w->field_54)];
+    MenuDigiPickRow *e = &w->rows[Menu_GridIndexColMajor(w->cursor, w->gridSize)];
     TextDescHalves st;
 
     if (D_8005F704 > 0) {
-        if (e->field_0 == 1 && Item_Use(Menu_Ctx->itemId, Menu_Ctx->bagSlot, 0, e->record) != 0) {
+        if (e->kind == 1 && Item_Use(Menu_Ctx->itemId, Menu_Ctx->bagSlot, 0, e->record) != 0) {
             st.pos = D_8005070C;
             st.color = 0;
-            st.field_10 = 0x81;
+            st.packedStyle = 0x81;
             st.text = (s32)Cd_GetFileEntry(0x1FD00FD);
-            st.field_4 = Item_GetNameText(Menu_Ctx->itemId);
+            st.strArg0 = Item_GetNameText(Menu_Ctx->itemId);
             Text_OpenDesc(w->field_40, (TextDesc *)&st);
             Snd_PlayById(0x1D, 0);
             Task_SetState1(a0, 4);
@@ -4027,14 +4027,14 @@ void Menu_PickUseItemDirect(Actor *a0) {
 
     st.pos = D_8005070C;
     st.color = 0;
-    st.field_10 = 0x81;
+    st.packedStyle = 0x81;
     if (Item_Use(Menu_Ctx->itemId, Menu_Ctx->bagSlot, 0, 0) != 0) {
         st.text = (s32)Cd_GetFileEntry(0x1FD00FD);
-        st.field_4 = Item_GetNameText(Menu_Ctx->itemId);
+        st.strArg0 = Item_GetNameText(Menu_Ctx->itemId);
         Snd_PlayById(0x1D, 0);
     } else {
         st.text = (s32)Cd_GetFileEntry(0x1FD00A0);
-        st.field_4 = 0;
+        st.strArg0 = 0;
     }
     Text_OpenDesc(w->field_40, (TextDesc *)&st);
 }
@@ -4045,12 +4045,12 @@ void Menu_ConfirmSinglePick(Actor *a0) {
     s32 c;
 
     if (D_8005F704 > 0) {
-        k = Menu_GridIndexColMajor(w->field_50, w->field_54);
-        if ((c = w->field_6C[k].field_0) == 1) {
-            Menu_Ctx->selRecord = (u8 *)w->field_6C[k].record;
+        k = Menu_GridIndexColMajor(w->cursor, w->gridSize);
+        if ((c = w->rows[k].kind) == 1) {
+            Menu_Ctx->selRecord = (u8 *)w->rows[k].record;
             w->field_62 = 0;
             Task_SetState1(a0, 3);
-            Menu_Ctx->field_35C = c;
+            Menu_Ctx->pickResult = c;
             Snd_PlayById(0xE, 0);
         } else {
             Snd_PlayById(0x10, 0);
@@ -4168,8 +4168,8 @@ void Menu_DigiListDrawRows(MenuDigiListRowsView *a0, s32 a1) {
     MenuDigiListRow *rec;
     TextDesc st;
 
-    st.field_4 = 0;
-    st.field_10 = a1;
+    st.strArg0 = 0;
+    st.packedStyle = a1;
     st.color = 0;
     for (i = 0; i < 16; i++) {
         Text_Close(&a0->textBoxes[i]);
@@ -4218,7 +4218,7 @@ void Menu_SetDigiListMode(Actor *a, s16 mode) {
     MenuDigiListModeWork *w = (MenuDigiListModeWork *)a->work;
 
     w->mode = mode;
-    if (mode == 3 && ((ItemEffect *)Item_GetEffectRec(Menu_Ctx->itemId))->field_0 == 2) {
+    if (mode == 3 && ((ItemEffect *)Item_GetEffectRec(Menu_Ctx->itemId))->useType == 2) {
         w->mode = 4;
     }
     w->flag6A = 1;
@@ -4299,7 +4299,7 @@ void Menu_DigiListTask(Actor *a0) {
                 Task_NextState1(a0);
                 break;
             }
-            if (w->field_6A != 0) {
+            if (w->showCursor != 0) {
                 Text_OpenPacked(&w->field_48, (s32)Cd_GetFileEntry(0x1FD00FA), 0, D_80050710);
             }
             break;
@@ -4369,16 +4369,16 @@ void Menu_DigiListTask(Actor *a0) {
                 switch (w->mode) {
                 case 1:
                 case 2:
-                    if (Menu_Ctx->field_35E == 0) {
+                    if (Menu_Ctx->confirmed == 0) {
                         Task_SetState1(a0, 0);
-                        Menu_Ctx->field_35C = 2;
+                        Menu_Ctx->pickResult = 2;
                     } else {
                         w->field_62 ^= 1;
                         Task_SetState2(a0, 2);
                     }
                     break;
                 case 5:
-                    if (Menu_Ctx->field_122 != 0) {
+                    if (Menu_Ctx->pickConfirmed != 0) {
                         Digi_SortRoster();
                         Task_SetState0(a0, 2);
                         break;
@@ -4431,10 +4431,10 @@ void Menu_DigiListTask(Actor *a0) {
                     for (i = 0; i < Menu_Ctx->pickCount; i++) {
                         *Menu_Ctx->pickedRecords[i] = i + 3;
                     }
-                    Menu_Ctx->field_122 = -1;
+                    Menu_Ctx->pickConfirmed = -1;
                     Task_SetState1(a0, 4);
                 } else {
-                    Menu_Ctx->field_122 = 0;
+                    Menu_Ctx->pickConfirmed = 0;
                     Task_SetState0(a0, 2);
                 }
                 break;
@@ -4473,7 +4473,7 @@ void Menu_DigiListTask(Actor *a0) {
 
 
 void func_800188BC(Actor *actor) {
-    Wk188BC *w = (Wk188BC *)actor->work;
+    MenuDigiListDrawView *w = (MenuDigiListDrawView *)actor->work;
     s32 *p;
     void *obj;
     s32 i;
@@ -4496,7 +4496,7 @@ void func_800188BC(Actor *actor) {
         obj = Cd_GetFileEntry(p[i]);
         switch (i) {
         case 0:
-            if (w->field_6A != 0) {
+            if (w->showCursor != 0) {
             tmp = w->cursor;
             tmp.field_2 = w->cursor.field_2 - w->scrollTop;
             Menu_SetPartsGridPos(obj, 2, (s32 *)&tmp, &w->gridCols);
@@ -4524,7 +4524,7 @@ void func_800188BC(Actor *actor) {
             }
             Gfx_HidePartsByMask(obj, 0);
             f = 2;
-            if (w->field_6A != 0 && j == w->cursor.field_2 - w->scrollTop) {
+            if (w->showCursor != 0 && j == w->cursor.field_2 - w->scrollTop) {
                 f = 1;
             }
             switch (r->kind) {
@@ -4576,10 +4576,10 @@ void Menu_DigiStatusInit(Actor *a0, s16 a1) {
     w->field_7C = a1;
     p = Menu_Ctx->selRecord;
     w->digimon = p;
-    a0->field_C = p[1];
-    Actor_InitTransform((ContC40 *)a0, w->pos, w->field_BC);
-    w->modelFile = Digi_GetModelFile(a0->field_C);
-    w->animFile = Anim_GetModelAnimFile(a0->field_C, 0);
+    a0->digiId = p[1];
+    Actor_InitTransform((ContC40 *)a0, w->pos, w->initRotY);
+    w->modelFile = Digi_GetModelFile(a0->digiId);
+    w->animFile = Anim_GetModelAnimFile(a0->digiId, 0);
     Gfx_AttachModel(a0, w->modelFile)->otIndex = 3;
     Cd_QueueFile(w->modelFile);
     Cd_QueueFile(w->animFile);
@@ -4647,7 +4647,7 @@ void Menu_DigiStatusTask(Actor *a) {
                 }
             }
             *q = 0;
-            Text_PrintList(&w->field_54, &h[1], (s32 *)&w->speciesName, 1);
+            Text_PrintList(&w->infoTexts, &h[1], (s32 *)&w->speciesName, 1);
             Task_NextState1(a);
             break;
         case 1:
@@ -4678,10 +4678,10 @@ void Menu_DigiStatusTask(Actor *a) {
             if (d->triangle > 0 || d->circle > 0) {
                 Task_SetState0(a, 2);
                 if (d->circle > 0) {
-                    Menu_Ctx->field_35E = -1;
+                    Menu_Ctx->confirmed = -1;
                     Snd_PlayById(0xE, 0);
                 } else {
-                    Menu_Ctx->field_35E = 0;
+                    Menu_Ctx->confirmed = 0;
                     Snd_PlayById(0xB, 0);
                 }
             }
@@ -4901,8 +4901,8 @@ void func_80019614(Actor194C8 *w, s32 arg1) {
     for (i = 6; i < 18; i++) {
         Text_Close(&w->textBoxes[i]);
     }
-    st.field_4 = 0;
-    st.field_10 = arg1;
+    st.strArg0 = 0;
+    st.packedStyle = arg1;
     for (ch = 0; ch < 4; ch++) {
         st.pos = ((Halves *)Cd_GetFileEntry(0x5130025))[ch];
         d0 = w->scrollTop[ch];
@@ -4964,7 +4964,7 @@ void func_80019808(Actor *a0) {
             func_80019614(w, 1);
             h.lo = 0x13;
             h.hi = 0x32;
-            Text_OpenPacked(&w->field_50, (s32)&w->selRecord[0x4C], 1, h);
+            Text_OpenPacked(&w->nameText, (s32)&w->selRecord[0x4C], 1, h);
             Task_NextState1(a0);
             break;
         case 1:
@@ -4975,14 +4975,14 @@ void func_80019808(Actor *a0) {
             if (k < w->records[i].count) {
                 id = w->records[i].arr[w->slot54[i].row];
                 st.pos = D_80050714;
-                st.field_10 = 0x80;
+                st.packedStyle = 0x80;
                 st.color = 0;
                 st.text = func_8001EDD4(id);
                 Text_OpenDesc(&w->descText, (TextDesc *)&st);
                 st.pos.hi = 0xCA;
                 st.text = (s32)Cd_GetFileEntry(0x1FD0150);
                 Text_FormatNumber(w->numBuf, func_8001EE80(id), -4);
-                st.field_4 = (s32)w->numBuf;
+                st.strArg0 = (s32)w->numBuf;
                 Text_OpenDesc(&w->numberText, (TextDesc *)&st);
             }
             Task_NextState1(a0);
@@ -5010,10 +5010,10 @@ void func_80019808(Actor *a0) {
                 } else if (D_8005F6F0[0].triangle > 0 || D_8005F6F0[0].circle > 0) {
                     Task_SetState0(a0, 2);
                     if (D_8005F6F0[0].circle > 0) {
-                        Menu_Ctx->field_35E = -1;
+                        Menu_Ctx->confirmed = -1;
                         Snd_PlayById(0xE, 0);
                     } else {
-                        Menu_Ctx->field_35E = 0;
+                        Menu_Ctx->confirmed = 0;
                         Snd_PlayById(0xB, 0);
                     }
                 }
@@ -5593,21 +5593,21 @@ void Text_UpdateAllBoxes(Actor *a0) {
                 case 0xFC:
                     r->text = (s32)(s + 1);
                     r->visibleChars = 0;
-                    r->field_24 = 0;
-                    r->field_25 = 0;
-                    r->field_26 = 0;
-                    r->field_2A = 0;
-                    r->field_2B = 0;
-                    r->field_2C = 0;
-                    r->field_2D = 0;
-                    r->field_2E = 0;
-                    r->field_2F = 0;
+                    r->cmdFADone = 0;
+                    r->cmdFBDone = 0;
+                    r->cmdF9Done = 0;
+                    r->cmdF6Done = 0;
+                    r->pausesDone = 0;
+                    r->cmdF4TurnDone = 0;
+                    r->cmdF4ObjDone = 0;
+                    r->cmdF4TaskDone = 0;
+                    r->soundsDone = 0;
                     break;
                 case 0xFB:
-                    if (r->field_25 == nFB) {
+                    if (r->cmdFBDone == nFB) {
                         stop = 1;
                         if (tb[r->padIndex].cross > 0) {
-                            r->field_25 = nFB + 1;
+                            r->cmdFBDone = nFB + 1;
                             r->waitingInput = 0;
                             Snd_PlayById(0x13, 0);
                         } else {
@@ -5624,7 +5624,7 @@ void Text_UpdateAllBoxes(Actor *a0) {
                     break;
                 case 0xFA:
                     s++;
-                    if (r->field_24 == nFA) {
+                    if (r->cmdFADone == nFA) {
                         switch (a0->stateLevel1) {
                         default:
                         case 0:
@@ -5666,14 +5666,14 @@ void Text_UpdateAllBoxes(Actor *a0) {
                         case 1:
                             if (slots[row + 1]->stateLevel1 == 1) {
                                 r->waitingInput = 0;
-                                r->field_24++;
+                                r->cmdFADone++;
                                 Task_SetState1(a0, 0);
                             }
                             break;
                         case 2:
                             if (slots[row + 1] == 0) {
                                 r->waitingInput = 0;
-                                r->field_24++;
+                                r->cmdFADone++;
                                 Task_SetState1(a0, 0);
                             }
                             break;
@@ -5685,14 +5685,14 @@ void Text_UpdateAllBoxes(Actor *a0) {
                     s++;
                     k9 = *s;
                     if (k9 & 1) {
-                        if (r->field_26 == nF9) {
+                        if (r->cmdF9Done == nF9) {
                             if (slots[((k9 >> 1) & 1) + 0x33] != 0) {
                                 Task_SetState0(slots[((k9 >> 1) & 1) + 0x33], 2);
                             }
-                            r->field_26++;
+                            r->cmdF9Done++;
                             Snd_PlayById(0x3A, 0);
                         }
-                    } else if (r->field_26 == nF9) {
+                    } else if (r->cmdF9Done == nF9) {
                         num[1] = (k9 >> 1) & 1;
                         s++;
                         num[0] = *s++ * 100;
@@ -5703,7 +5703,7 @@ void Text_UpdateAllBoxes(Actor *a0) {
                         } else {
                             Task_Create(5, (s32 *)&slots[num[1] + 0x33], (s32)num);
                         }
-                        r->field_26++;
+                        r->cmdF9Done++;
                         Snd_PlayById(0x39, 0);
                     } else {
                         s += 3;
@@ -5720,7 +5720,7 @@ void Text_UpdateAllBoxes(Actor *a0) {
                     goto cntF8;
                 case 0xF8:
                     s++;
-                    if (r->field_28 == nF8) {
+                    if (r->choicesDone == nF8) {
                         switch (*s) {
                         default:
                         case 0:
@@ -5735,7 +5735,7 @@ void Text_UpdateAllBoxes(Actor *a0) {
                             }
                             if (e->cross > 0) {
                                 r->waitingInput = 0;
-                                r->field_28++;
+                                r->choicesDone++;
                                 Flag_Set(0x10, 1);
                                 Flag_Set(0x11, r->choiceCursor);
                                 Snd_PlayById(0xA, 0);
@@ -5764,7 +5764,7 @@ void Text_UpdateAllBoxes(Actor *a0) {
                     isF6 = *s == 0xF6;
                     mode2 = D_8005F770.gameMode / 256 == 2;
                     s++;
-                    if (r->field_2A == nF6) {
+                    if (r->cmdF6Done == nF6) {
                         switch (a0->stateLevel1) {
                         case 0:
                         default:
@@ -5799,7 +5799,7 @@ void Text_UpdateAllBoxes(Actor *a0) {
                         }
                     advF6:
                         r->waitingInput = 0;
-                        r->field_2A++;
+                        r->cmdF6Done++;
                         Task_SetState1(a0, 0);
                     } else {
                         s += 8;
@@ -5808,10 +5808,10 @@ void Text_UpdateAllBoxes(Actor *a0) {
                     nF6++;
                     break;
                 case 0xF5:
-                    if (r->field_2B == nF5) {
+                    if (r->pausesDone == nF5) {
                         stop = 1;
                         if (wk->waitTimer == 0x1E) {
-                            r->field_2B = nF5 + 1;
+                            r->pausesDone = nF5 + 1;
                             r->waitingInput = 0;
                             wk->waitTimer = 0;
                         } else {
@@ -5826,7 +5826,7 @@ void Text_UpdateAllBoxes(Actor *a0) {
                     k4 = *s;
                     s++;
                     if (k4 < 0x10) {
-                        if (r->field_2D == nF4a) {
+                        if (r->cmdF4ObjDone == nF4a) {
                             s32 d0, d1;
                             d0 = *s++;
                             d1 = *s++;
@@ -5834,13 +5834,13 @@ void Text_UpdateAllBoxes(Actor *a0) {
                             if (h != 0) {
                                 func_8006AA0C(h, k4 + 0x1E);
                             }
-                            r->field_2D++;
+                            r->cmdF4ObjDone++;
                         } else {
                             s += 2;
                         }
                         nF4a++;
                     } else if (k4 < 0x20) {
-                        if (r->field_2C == nF4b) {
+                        if (r->cmdF4TurnDone == nF4b) {
                             s32 n;
                             n = *s++ * 100;
                             n += *s++ * 10;
@@ -5848,15 +5848,15 @@ void Text_UpdateAllBoxes(Actor *a0) {
                             k4 = (k4 - 0x10) << 10;
                             h = func_8006A8C0(n + *s);
                             if (h != 0) {
-                                h->field_38->field_42 = k4;
+                                h->transform->rotY = k4;
                             }
-                            r->field_2C++;
+                            r->cmdF4TurnDone++;
                         } else {
                             s += 2;
                         }
                         nF4b++;
                     } else if (k4 < 0x30) {
-                        if (r->field_2E == nF4c) {
+                        if (r->cmdF4TaskDone == nF4c) {
                             switch (a0->stateLevel1) {
                             case 0:
                             default:
@@ -5871,7 +5871,7 @@ void Text_UpdateAllBoxes(Actor *a0) {
                                 if (slots[0x35] == 0) {
                                     a0->stateLevel1 = 0;
                                     r->waitingInput = 0;
-                                    r->field_2E++;
+                                    r->cmdF4TaskDone++;
                                 }
                                 break;
                             }
@@ -5884,11 +5884,11 @@ void Text_UpdateAllBoxes(Actor *a0) {
                         s--;
                     } else {
                         k4 &= 0xF;
-                        if (r->field_2F == nF4d) {
+                        if (r->soundsDone == nF4d) {
                             if (k4 != 7) {
                                 Snd_PlayById(D_8004142C[k4], 0);
                             }
-                            r->field_2F++;
+                            r->soundsDone++;
                             if (k4 == 4) {
                                 func_80063C84();
                             }
@@ -5999,7 +5999,7 @@ void Text_UpdateAllBoxes(Actor *a0) {
                     pkt->x1 = pkt->x3 = pkt->x0 + glyph.field_0;
                     pkt->y0 = pkt->y1 = pos.field_2;
                     pkt->y2 = pkt->y3 = pkt->y0 + glyph.field_2;
-                    pkt->u0 = pkt->u2 = font[page]->field_C + ((s16)c % cols) * cell.field_0;
+                    pkt->u0 = pkt->u2 = font[page]->uOffset + ((s16)c % cols) * cell.field_0;
                     pkt->u1 = pkt->u3 = pkt->u0 + glyph.field_0;
                     pkt->v0 = pkt->v1 = ((s16)c / cols) * cell.field_2;
                     pkt->v2 = pkt->v3 = pkt->v0 + glyph.field_2;
@@ -6110,27 +6110,27 @@ void Text_Open(void *arg0, TextOpenArgs *arg1) {
     rec->y = src->y - 0x78;
     rec->charAdvance = *(u8 *)&src->charAdvance;
     rec->lineAdvance = *(u8 *)&src->lineAdvance;
-    rec->charDelay = *(u16 *)&src->field_18;
-    rec->strArg0 = src->field_1C;
-    rec->strArg1 = src->field_20;
-    rec->strArg2 = src->field_24;
-    rec->strArg3 = src->field_28;
+    rec->charDelay = *(u16 *)&src->charDelay;
+    rec->strArg0 = src->strArg0;
+    rec->strArg1 = src->strArg1;
+    rec->strArg2 = src->strArg2;
+    rec->strArg3 = src->strArg3;
     rec->baseColor = *(u8 *)&src->color;
-    rec->delayTimer = *(u8 *)&src->field_18;
+    rec->delayTimer = *(u8 *)&src->charDelay;
     rec->visibleChars = 0;
     rec->finished = 0;
-    rec->field_24 = 0;
-    rec->field_25 = 0;
+    rec->cmdFADone = 0;
+    rec->cmdFBDone = 0;
     rec->waitingInput = 0;
-    rec->field_26 = 0;
-    rec->field_28 = 0;
+    rec->cmdF9Done = 0;
+    rec->choicesDone = 0;
     rec->choiceCursor = 0;
-    rec->field_2A = 0;
-    rec->field_2B = 0;
-    rec->field_2C = 0;
-    rec->field_2D = 0;
-    rec->field_2E = 0;
-    rec->field_2F = 0;
+    rec->cmdF6Done = 0;
+    rec->pausesDone = 0;
+    rec->cmdF4TurnDone = 0;
+    rec->cmdF4ObjDone = 0;
+    rec->cmdF4TaskDone = 0;
+    rec->soundsDone = 0;
     rec->padIndex = 0;
     rec->otIndex = 0;
 
@@ -6182,7 +6182,7 @@ void Text_OpenById(void *a0, s32 a1, s32 a2, Halves a3) {
     local.y = a3.hi;
     local.charAdvance = 0;
     local.lineAdvance = 0;
-    local.field_18 = 0;
+    local.charDelay = 0;
     Text_Open(a0, &local);
 }
 
@@ -6195,7 +6195,7 @@ void func_8001C038(void *arg0, s32 arg1) {
     local.charAdvance = 0;
     local.lineAdvance = 0;
     local.text = arg1;
-    local.field_18 = 1;
+    local.charDelay = 1;
     Text_Open(arg0, &local);
     Flag_Set(0x10, 0);
 }
@@ -6424,12 +6424,12 @@ void Gpu_SetLayerOtPtrs(void) {
 
     for (i = 0; i < 8; i++) {
         D_8005F770.otLayerLen[i] = D_80041570[D_8005CCF8.field_60][i];
-        D_8005F770.otLayers.s[i] = &Gpu_OtBufs[D_8005F770.bufIndex].field_0[D_800415F0[D_8005CCF8.field_60][i]];
+        D_8005F770.otLayers.s[i] = &Gpu_OtBufs[D_8005F770.bufIndex].entries[D_800415F0[D_8005CCF8.field_60][i]];
     }
 }
 
 void func_8001C800(s32 arg0) {
-    Gpu_OtBufs[2].field_0[0] = arg0;
+    Gpu_OtBufs[2].entries[0] = arg0;
 }
 
 void Gpu_ClearOt(s32 arg0) {
@@ -6505,13 +6505,13 @@ void Gfx_InitTexSlots(void) {
         Gfx_TexSlots[i].fileId = 0;
         Gfx_TexSlots[i].lastUsed = 0;
         Gfx_TexSlots[i].colorMode = 0;
-        Gfx_TexSlots[i].field_C = 0;
+        Gfx_TexSlots[i].uOffset = 0;
         Gfx_TexSlots[i].tpage = 0;
     }
 }
 
 s32 Gfx_GetTimPixelMode() {
-    return Cd_GetFileEntry()->field_4 & 7;
+    return Cd_GetFileEntry()->packedId & 7;
 }
 
 void Gfx_LoadTexSlotImage(GfxTexSlot *a0) {
@@ -6595,11 +6595,11 @@ GfxTexSlot *Gfx_FindOrLoadTexSlot(s32 id) {
     e->lastUsed = D_8005F770.frameCount;
     e->colorMode = tp;
     t = e->index & 2;
-    e->field_C = t == 0;
+    e->uOffset = t == 0;
     if (tp) {
-        e->field_C <<= 6;
+        e->uOffset <<= 6;
     } else {
-        e->field_C <<= 7;
+        e->uOffset <<= 7;
     }
     e->tpage = (tp << 7) | ((e->vramY & 0x100) >> 4) | ((e->vramX & 0x3FF) >> 6) | ((e->vramY & 0x200) << 2);
     Gfx_LoadTexSlotImage(e);
@@ -6641,7 +6641,7 @@ s32 Gfx_ReserveTexSlot(void) {
     p->fileId = -2;
     p->lastUsed = D_8005F770.frameCount;
     p->colorMode = 0;
-    p->field_C = ((p->index & 2) == 0) << 7;
+    p->uOffset = ((p->index & 2) == 0) << 7;
     p->tpage = ((p->vramY & 0x100) >> 4) | ((p->vramX & 0x3FF) >> 6) | ((p->vramY & 0x200) << 2);
     return (s32)p;
 }
@@ -6789,7 +6789,7 @@ void Gfx_DrawPartQuadsRot(void *arg0, void *arg1, s32 arg2, s32 arg3) {
 
 
 void Gfx_HidePartsByMask(GfxPartMaskView *p, s32 mask) {
-    if (p->field_0 != 0) {
+    if (p->fileId != 0) {
         do {
             if (p->partMask & mask) {
                 p->visible = 0;
@@ -6797,7 +6797,7 @@ void Gfx_HidePartsByMask(GfxPartMaskView *p, s32 mask) {
                 p->visible = 1;
             }
             p++;
-        } while (p->field_0 != 0);
+        } while (p->fileId != 0);
     }
 }
 
@@ -6822,9 +6822,9 @@ void Gfx_SetPartsScale(GfxPartScaleView *p, s32 a1, s32 a2) {
     } while (p->fileId != 0);
 }
 
-void Gfx_SetPartsNumber(Part28 *p, s32 mask, s32 n, s32 val) {
+void Gfx_SetPartsNumber(GfxPart *p, s32 mask, s32 n, s32 val) {
     u8 d[8];
-    Part28 *q;
+    GfxPart *q;
     s32 i = 0;
     s32 lead = 0;
     s32 k;
@@ -6839,21 +6839,21 @@ void Gfx_SetPartsNumber(Part28 *p, s32 mask, s32 n, s32 val) {
         d[k] = x % 10;
         x /= 10;
     }
-    if (p->field_0 != 0) {
+    if (p->fileId != 0) {
         q = p;
         do {
             if (q->groupMask & mask) {
                 if (lead == 1 || i == n - 1 || d[i] != 0) {
                     lead = 1;
-                    q->field_D = d[i];
+                    q->frame = d[i];
                 } else {
-                    q->field_D = 0xFF;
+                    q->frame = 0xFF;
                 }
                 i++;
             }
             p++;
             q++;
-        } while (p->field_0 != 0);
+        } while (p->fileId != 0);
     }
 }
 
@@ -7090,7 +7090,7 @@ void Digi_InitFromTable(s32 a0, s32 a1, DigiRosterEntry *e) {
     e->field_22 = r[a1].field_17;
     e->field_23 = r[a1].field_18;
     e->field_24 = r[a1].field_19;
-    e->field_F = func_8001EB58(e->level);
+    e->maxLevel = func_8001EB58(e->level);
     if (e->level == 1) {
         e->exp = 0;
     } else {
@@ -7335,7 +7335,7 @@ DigiData *Digi_FindDataById(s32 id) {
     s32 k;
 
     while (1) {
-        k = (e->u4.field_4 >> 1) & 0x7FFF;
+        k = (e->u4.packedId >> 1) & 0x7FFF;
         if (k == 0) {
             break;
         }
@@ -7348,7 +7348,7 @@ DigiData *Digi_FindDataById(s32 id) {
 }
 
 s32 Digi_GetModelFile(s32 id) {
-    return Digi_FindDataById(id)->u4.h4.field_6;
+    return Digi_FindDataById(id)->u4.h4.modelFile;
 }
 
 s32 Anim_GetModelAnimFile(s32 arg0, s32 arg1) {
@@ -7384,18 +7384,18 @@ void func_8001E7E4(s32 a0, void *a1) {
 }
 
 s32 func_8001E8D0(s32 id) {
-    return Digi_FindDataById(id)->u4.field_4 & 1;
+    return Digi_FindDataById(id)->u4.packedId & 1;
 }
 
 u16 func_8001E8F4(s32 idx) {
     EntA0 *p = Cd_GetFileEntry(0x1F80000) + idx;
-    return (p->field_4 >> 1) & 0x7FFF;
+    return (p->packedId >> 1) & 0x7FFF;
 }
 
 s32 func_8001E938(void) {
     EntA0 *p = Cd_GetFileEntry(0x1F80000);
     s32 i = 0;
-    while ((p->field_4 >> 1) & 0x7FFF) {
+    while ((p->packedId >> 1) & 0x7FFF) {
         p++;
         i++;
     }
@@ -7623,30 +7623,30 @@ void Anim_SetModelAnim(Actor *a, s32 n) {
     s32 i;
     s32 k;
 
-    s->field_54 = n;
+    s->animId = n;
     s->animPos = 0;
     s->animData = 0;
     for (i = 10; i < 0x6F; i += 10) {
         if (n < i) {
-            s->animFileId = Anim_GetModelAnimFile(a->field_C, i / 10 - 1);
+            s->animFileId = Anim_GetModelAnimFile(a->digiId, i / 10 - 1);
             k = i - 10;
             s->animIndex = n - k;
             break;
         }
     }
     s->animTimer = 1;
-    s->field_60 = 0;
+    s->animDone = 0;
 }
 
 void Anim_SetModelAnimFile(Actor *arg0, s32 arg1, s32 arg2) {
     ActorModel *p = arg0->model;
-    p->field_54 = arg1;
+    p->animId = arg1;
     p->animPos = 0;
     p->animData = 0;
     p->animFileId = arg2;
     p->animIndex = 0;
     p->animTimer = 1;
-    p->field_60 = 0;
+    p->animDone = 0;
 }
 
 s32 Anim_HasModelAnim(Actor *a0, s32 n) {
@@ -7658,12 +7658,12 @@ s32 Anim_HasModelAnim(Actor *a0, s32 n) {
     if (n < 10) {
         k = 0;
         n = k;
-        id = Anim_GetModelAnimFile(a0->field_C, k);
+        id = Anim_GetModelAnimFile(a0->digiId, k);
     } else if (n < 20) {
-        id = Anim_GetModelAnimFile(a0->field_C, 1);
+        id = Anim_GetModelAnimFile(a0->digiId, 1);
         n -= 10;
     } else {
-        id = Anim_GetModelAnimFile(a0->field_C, 2);
+        id = Anim_GetModelAnimFile(a0->digiId, 2);
         n -= 20;
     }
     p = (s32 *)(Cd_GetFileOrNull(id) + ((sub->boneCount + 1) << 2));
@@ -7714,12 +7714,12 @@ void Anim_StepModelAnim(Actor *a) {
         if (*q & 0x80) {
             switch (*q) {
             case 0xFF:
-                s->field_60 = -1;
+                s->animDone = -1;
                 s->animPos = pos;
                 goto done;
             case 0xFE:
                 s->animPos = (q[2] << 8) | q[1];
-                s->field_60 = -1;
+                s->animDone = -1;
                 break;
             }
         }
@@ -7818,8 +7818,8 @@ s32 func_8001F970(s32 arg0) {
 
 void Gfx_AnimateModelTex(Actor *a0) {
     ActorModel *w = a0->model;
-    GfxTexAnimPart *r = (GfxTexAnimPart *)w->field_1C;
-    GfxModelTexSlot *pos = w->field_44;
+    GfxTexAnimPart *r = (GfxTexAnimPart *)w->texAnimParts;
+    GfxModelTexSlot *pos = w->texSlot;
     s32 k = 0;
     s32 j;
     s32 i;
@@ -7831,10 +7831,10 @@ void Gfx_AnimateModelTex(Actor *a0) {
     u8 n;
 
     if (r->dstX != 0xFF) {
-        if (func_8001F970(w->field_54) != 0) {
-            switch (w->field_2C >> 1) {
+        if (func_8001F970(w->animId) != 0) {
+            switch (w->blinkTimer >> 1) {
             case 0:
-                w->field_2C = (Rand_Next() & 0x7F) + 0x3C;
+                w->blinkTimer = (Rand_Next() & 0x7F) + 0x3C;
                 k = 0;
                 break;
             case 1:
@@ -7848,20 +7848,20 @@ void Gfx_AnimateModelTex(Actor *a0) {
                 k = 4;
                 break;
             }
-            if ((w->field_2C -= D_8005F770.frameDelta) < 0) {
-                w->field_2C = 0;
+            if ((w->blinkTimer -= D_8005F770.frameDelta) < 0) {
+                w->blinkTimer = 0;
             }
         } else {
             k = 4;
-            w->field_2C = 0;
+            w->blinkTimer = 0;
         }
     }
-    w->field_30 += D_8005F770.frameDelta;
+    w->texAnimTimer += D_8005F770.frameDelta;
     while (1) {
-        if (w->field_30 < 0x18) break;
-        w->field_30 -= 0x18;
+        if (w->texAnimTimer < 0x18) break;
+        w->texAnimTimer -= 0x18;
     }
-    j = (w->field_30 / 8) * 2;
+    j = (w->texAnimTimer / 8) * 2;
     prim = D_8005F770.packet.drMove;
     for (i = 0; i < 10; i++, r++) {
         if (i < 2) {
@@ -7945,8 +7945,8 @@ ActorModel *Gfx_AttachModel(Actor *a0, s32 id) {
     s->boneVerts = (s16 **)base->tables;
     s->boneNormals = s->boneVerts + s->boneCount;
     s->bonePolys = (ModelQuadSection **)(s->boneNormals + s->boneCount);
-    s->field_18 = (s32 *)(s->bonePolys + s->boneCount);
-    s->field_1C = s->field_18 + s->boneCount;
+    s->boneDepths = (s32 *)(s->bonePolys + s->boneCount);
+    s->texAnimParts = s->boneDepths + s->boneCount;
     if (m->relocated == 0) {
         for (i = 0; i < s->boneCount; i++) {
             s->boneVerts[i] = (s16 *)((s32)s->boneVerts[i] + (s32)base);
@@ -8019,7 +8019,7 @@ void Gfx_CalcModelBoneMatrices(Actor *a0) {
     }
     n = s->boneCount;
     for (j = 0; j < n; j++, d++) {
-        e = &sp[s->field_18[j] + 1];
+        e = &sp[s->boneDepths[j] + 1];
         e->local = d->localMat;
         for (k = 0; k < 3; k++) {
             switch (k) {
@@ -8088,7 +8088,7 @@ void Gfx_DrawTexModel(Actor *a0, s32 mode) {
     s = a0->model;
     i = 0;
     e = s->bones;
-    s->field_44 = (struct GfxModelTexSlot *)Gfx_FindOrLoadTexSlot(s->fileId << 16);
+    s->texSlot = (struct GfxModelTexSlot *)Gfx_FindOrLoadTexSlot(s->fileId << 16);
     s->otzShift = D_8005F770.otLayerLen[s->otIndex] - 2;
     for (; i < s->boneCount; i++, e++) {
         p = s->bonePolys[i];
@@ -8261,7 +8261,7 @@ void Actor_InitTransform(ContC40 *a0, s32 *a1, u16 a2) {
         p->posY = a1[1];
         p->posZ = a1[2];
     }
-    p->field_42 = a2;
+    p->rotY = a2;
     Actor_RefreshTransform((s32)a0);
 }
 
@@ -8377,7 +8377,7 @@ void func_80020FD0(GfxModelTriGT3 *t, s32 n, ActorModel *s, s32 mode) {
     xy = s->screenXY;
     col = (CVECTOR *)s->vertColors;
     sz = s->vertOtz;
-    tex = (GfxTexSlot *)s->field_44;
+    tex = (GfxTexSlot *)s->texSlot;
     idx = s->otIndex;
     code = 0x36;
     if (mode == 1) {
@@ -8414,9 +8414,9 @@ void func_80020FD0(GfxModelTriGT3 *t, s32 n, ActorModel *s, s32 mode) {
             p->tpage = tex->tpage | t->tpage;
         }
         p->clut = t->clut + (((tex->vramY + s->field_34) << 6) | ((tex->vramX >> 4) & 0x3F));
-        p->u0 = t->u0 + tex->field_C;
-        p->u1 = t->u1 + tex->field_C;
-        p->u2 = t->u2 + tex->field_C;
+        p->u0 = t->u0 + tex->uOffset;
+        p->u1 = t->u1 + tex->uOffset;
+        p->u2 = t->u2 + tex->uOffset;
         p->v0 = t->v0;
         p->v1 = t->v1;
         p->v2 = t->v2;
@@ -8443,7 +8443,7 @@ void Gfx_AddQuadsGT4(ModelQuadGT4 *t, s32 n, ActorModel *s, s32 mode) {
     s32 z;
     SysState *g;
 
-    tex = (GfxTexSlot *)s->field_44;
+    tex = (GfxTexSlot *)s->texSlot;
     xy = s->screenXY;
     col = (CVECTOR *)s->vertColors;
     sz = s->vertOtz;
@@ -8487,10 +8487,10 @@ void Gfx_AddQuadsGT4(ModelQuadGT4 *t, s32 n, ActorModel *s, s32 mode) {
             p->tpage = tex->tpage | t->tpage;
         }
         p->clut = t->clut + (((tex->vramY + s->field_34) << 6) | ((tex->vramX >> 4) & 0x3F));
-        p->u0 = t->u0 + tex->field_C;
-        p->u1 = t->u1 + tex->field_C;
-        p->u2 = t->u2 + tex->field_C;
-        p->u3 = t->u3 + tex->field_C;
+        p->u0 = t->u0 + tex->uOffset;
+        p->u1 = t->u1 + tex->uOffset;
+        p->u2 = t->u2 + tex->uOffset;
+        p->u3 = t->u3 + tex->uOffset;
         p->v0 = t->v0;
         p->v1 = t->v1;
         p->v2 = t->v2;
@@ -8944,9 +8944,9 @@ void Save_ResetGameState(void) {
 
 void func_800224EC(s32 i, s32 v, s32 flag) {
     GameStateView *p = D_80050720;
-    u8 *q = &p->field_52[i];
+    u8 *q = &p->slotStatus[i];
 
-    p->field_2C[i] = v;
+    p->slotItems[i] = v;
     if (v != 0) {
         *q = flag;
         return;
@@ -8957,18 +8957,18 @@ void func_800224EC(s32 i, s32 v, s32 flag) {
 
 s32 func_80022518(s32 i) {
     GameStateView *p = D_80050720;
-    if (p->field_52[i] == 1) {
+    if (p->slotStatus[i] == 1) {
         return -1;
     }
-    return p->field_2C[i];
+    return p->slotItems[i];
 }
 
 
 void func_8002254C(s32 i, s32 v) {
     s32 r = 0;
     GameStateView *p = D_80050720;
-    u16 t = p->field_2C[i];
-    u8 *q = &p->field_52[i];
+    u16 t = p->slotItems[i];
+    u8 *q = &p->slotStatus[i];
 
     if (t != 0) {
         r = v;
@@ -9078,7 +9078,7 @@ void Item_RemoveFromBag(s32 i) {
 
 
 s32 Item_GetBagCapacity(void) {
-    u16 v = D_80050720->field_34;
+    u16 v = D_80050720->slot4Item;
     s32 r = v - 0x49;
     s32 ret = 8;
     if ((u32)(v - 0x4B) < 5) {
@@ -9960,7 +9960,7 @@ void func_80024350(Actor *arg0) {
         break;
     case 1: {
         ActorModel *s = arg0->model;
-        if (arg0->elapsed < work->field_18 && s->field_60 >= 0)
+        if (arg0->elapsed < work->field_18 && s->animDone >= 0)
             break;
         Task_SetState0(arg0, 3);
         break;
@@ -10086,7 +10086,7 @@ void Pad_ResetPortState(PadPort *a0) {
         a0->sendInfoHook = 0;
         a0->parseInfoHook = 0;
         a0->modeCount = 0;
-        a0->field_E4 = 0;
+        a0->curModeIndex = 0;
         a0->field_E6 = 0;
         a0->actCount = 0;
         a0->combCount = 0;
@@ -10305,7 +10305,7 @@ void Pad_HandleReply(PadPort *a0) {
         D_80048E1C(a0);
     }
 
-    a0->field_4A = 0;
+    a0->retryCount = 0;
     if (a0->infoStep == 0xFF) {
         return;
     }
@@ -10339,19 +10339,19 @@ void Pad_HandleReply(PadPort *a0) {
 }
 
 void func_80025034(PadPort *a0) {
-    a0->field_4C++;
+    a0->errorCount++;
     if (a0->infoStep != 0) {
         if (a0->infoStep == 1) {
-            if (a0->field_4A < 11) {
-                a0->field_4A++;
+            if (a0->retryCount < 11) {
+                a0->retryCount++;
                 return;
             }
             a0->state = 2;
             a0->infoStep = 0xFF;
             return;
         }
-        if (a0->field_4A < 11) {
-            a0->field_4A++;
+        if (a0->retryCount < 11) {
+            a0->retryCount++;
             return;
         }
         if (a0->state != 0) {
@@ -10662,7 +10662,7 @@ void Pad_SendInfoCmd(PadPort *a0) {
         Pad_CmdQueryModel((Actor *)a0);
         break;
     case 3:
-        Pad_CmdQueryMode((Actor *)a0, a0->field_E4);
+        Pad_CmdQueryMode((Actor *)a0, a0->curModeIndex);
         break;
     case 4:
         Pad_CmdQueryComb((Actor *)a0, a0->infoIndex);
@@ -10681,17 +10681,17 @@ s32 Pad_ParseInfoReply(PadPort *a0) {
         if (p[7] != 0) {
             goto ret0;
         }
-        if (a0->modeCount == p[3] && a0->field_E4 == p[4] && a0->actCount == p[5] && a0->combCount == p[6]) {
+        if (a0->modeCount == p[3] && a0->curModeIndex == p[4] && a0->actCount == p[5] && a0->combCount == p[6]) {
             a0->field_EE = 0;
         } else {
             a0->field_EE = 0xFFFF;
         }
         a0->modeCount = (*(u8 *volatile *)&a0->rxBuf)[3];
-        a0->field_E4 = (*(u8 *volatile *)&a0->rxBuf)[4];
+        a0->curModeIndex = (*(u8 *volatile *)&a0->rxBuf)[4];
         a0->field_E6 = 0;
         a0->actCount = (*(u8 *volatile *)&a0->rxBuf)[5];
         a0->combCount = (*(u8 *volatile *)&a0->rxBuf)[6];
-        a0->field_EC = 0;
+        a0->combInfoSize = 0;
         if (a0->field_EE != 0) {
             goto ret0;
         }
@@ -10726,10 +10726,10 @@ s32 Pad_ParseInfoReply(PadPort *a0) {
         if (p[3] != 0) {
             goto ret0;
         }
-        v = a0->field_EC;
+        v = a0->combInfoSize;
         v += 8;
         v += (p[4] + 3) & 0x1FC;
-        a0->field_EC = v;
+        a0->combInfoSize = v;
         if (++a0->infoIndex < a0->combCount) {
             goto ret0;
         }
@@ -10739,10 +10739,10 @@ s32 Pad_ParseInfoReply(PadPort *a0) {
             a0->state = 2;
             goto ret0;
         }
-        if (a0->field_EE != a0->field_EC) {
-            a0->field_EE = a0->field_EC;
+        if (a0->field_EE != a0->combInfoSize) {
+            a0->field_EE = a0->combInfoSize;
             a0->infoIndex = 0;
-            a0->field_EC = 0;
+            a0->combInfoSize = 0;
             return 0;
         }
         a0->field_EE = 0;
@@ -10760,7 +10760,7 @@ s32 Pad_ParseInfoReply(PadPort *a0) {
 s32 Pad_CalcInfoBufSize(PadPort *arg0) {
     s32 a = ((arg0->modeCount + 1) >> 1) << 2;
     s32 b = ((arg0->actCount * 5 + 3) & 0xFFC) + 4;
-    return a + b + arg0->field_EC;
+    return a + b + arg0->combInfoSize;
 }
 
 s32 Pad_SetupInfoTables(PadPort *a0, s32 a1) {
@@ -11436,10 +11436,10 @@ GpuOtBuf *ClearOTagR(GpuOtBuf *ot, s32 n) {
     if (D_80048F12 >= 2) {
         D_80048F0C(D_8001034C, ot, n);
     }
-    D_80048F08->otc(ot->field_0, n);
+    D_80048F08->otc(ot->entries, n);
     term = &D_80048FD0;
     *term = ((u32)&D_80048FBC & 0xFFFFFF) | 0x4000000;
-    ot->field_0[0] = (u32)term & 0xFFFFFF;
+    ot->entries[0] = (u32)term & 0xFFFFFF;
     return ot;
 }
 
@@ -13819,7 +13819,7 @@ void func_8002DF74(void) {
     StRingSlotRec *r = &((StRingSlotRec *)D_80061B38)[D_80061B20];
     void (*cb)(void);
 
-    r->field_0 = 2;
+    r->id = 2;
     *(StRingLocBytes *)&D_80061B40 = r->loc;
     D_80061B44 = r->frameCount;
     D_80061B20 = ((W1_2DF74 *)&D_80061B1C)->v;
@@ -13868,11 +13868,11 @@ s32 StFreeRing(u32 *arg0) {
     idx = (arg0 - (u32 *)&((StRingSlotRec *)D_80061B38)[D_80061B3C]) / 504;
     r = &((StRingSlotRec *)D_80061B38)[idx];
     n = r->nSectors;
-    if (r->field_0 != 4) {
+    if (r->id != 4) {
         goto end;
     }
     for (i = 0; i < (s16)n; i++) {
-        ((StRingSlotRec *)*(volatile s32 *)&D_80061B38)[i + idx].field_0 = 0;
+        ((StRingSlotRec *)*(volatile s32 *)&D_80061B38)[i + idx].id = 0;
     }
     D_80061B24 = i + idx;
     ret = 0;
@@ -15339,7 +15339,7 @@ void _SsSndCrescendo(s16 a0, s16 a1) {
             }
         }
     }
-    _SsVmGetSeqVol((s16)(a0 | (a1 << 8)), (u16 *)&e->field_5C, (u16 *)&e->field_5E);
+    _SsVmGetSeqVol((s16)(a0 | (a1 << 8)), (u16 *)&e->curVolL, (u16 *)&e->curVolR);
 }
 
 
@@ -15388,7 +15388,7 @@ void Snd_SeqEndOfTrack(s16 a0, s16 a1) {
     e->playCount++;
     if ((s8)e->loopCount == 0) {
         e->elapsedTicks = 0;
-        e->field_1C = 0;
+        e->loopCountPending = 0;
         e->deltaValue = 0;
         if (Snd_SeqScores[a0][a1].flags & 0x400) {
             e->readPos = e->field_C;
@@ -15399,7 +15399,7 @@ void Snd_SeqEndOfTrack(s16 a0, s16 a1) {
     }
     if ((s8)e->playCount < (s8)e->loopCount) {
         e->elapsedTicks = 0;
-        e->field_1C = 0;
+        e->loopCountPending = 0;
         e->deltaValue = 0;
         if (Snd_SeqScores[a0][a1].flags & 0x400) {
             e->readPos = e->field_C;
@@ -15574,9 +15574,9 @@ void _SsClose(s16 id) {
         (*pp)[i].fadeFrame = 0;
         (*pp)[i].field_4C = 0;
         (*pp)[i].tempoTarget = 0;
-        (*pp)[i].field_A8 = 0;
+        (*pp)[i].tempoFrames = 0;
         (*pp)[i].field_A4 = 0;
-        (*pp)[i].field_4E = 0;
+        (*pp)[i].tempoStep = 0;
         (*pp)[i].volL = 0x7F;
         (*pp)[i].volR = 0x7F;
     }
@@ -15700,10 +15700,10 @@ void _SsContDataEntry(s16 a0, s16 a1, s16 a2) {
 
     SsUtGetProgAtr(e->vabId, e->programs[k], h);
     v = a2;
-    if (e->field_1C == 1 && e->field_15 == 0) {
+    if (e->loopCountPending == 1 && e->inLoop == 0) {
         e->nrpnLoopCount = a2;
-        e->field_1C = 0;
-        e->field_15 = 1;
+        e->loopCountPending = 0;
+        e->inLoop = 1;
         e->deltaValue = _SsReadDeltaValue(a0, a1);
     } else if (e->rpnCount == 2) {
         if (e->rpn2 == 0) {
@@ -15813,7 +15813,7 @@ void _SsContNrpn1(s16 a0, s16 a1, u8 a2) {
     }
     if (e->nrpn2 != 0x1E && e->nrpn2 != 0x14 && e->nrpn2 != 0x28) {
         e->nrpn1 = a2;
-        e->field_1C = 0;
+        e->loopCountPending = 0;
         e->nrpnCount++;
     }
     e->deltaValue = _SsReadDeltaValue(a0, a1);
@@ -15830,7 +15830,7 @@ u8 a2;
     switch (a2) {
     case 0x14:
         e->nrpn2 = a2;
-        e->field_1C = 1;
+        e->loopCountPending = 1;
         e->deltaValue = _SsReadDeltaValue(a0, a1);
         e->loopPos = (s32)e->readPos;
         break;
@@ -15838,7 +15838,7 @@ u8 a2;
         n = e->nrpnLoopCount;
         e->nrpn2 = a2;
         if (n == 0) {
-            e->field_15 = 0;
+            e->inLoop = 0;
             e->deltaValue = _SsReadDeltaValue(a0, a1);
         } else if (n < 0x7F) {
             e->nrpnLoopCount = n - 1;
@@ -15846,7 +15846,7 @@ u8 a2;
             if (e->nrpnLoopCount != 0) {
                 e->readPos = (u8 *)e->loopPos;
             } else {
-                e->field_15 = 0;
+                e->inLoop = 0;
             }
         } else {
             _SsReadDeltaValue(a0, a1);
@@ -16235,14 +16235,14 @@ s32 _SsInitSoundSeq(s16 a0, s16 a1, s16 a2, s32 a3) {
     n = 0;
     e = &Snd_SeqScores[a0][a1];
     e->loopCount = 1;
-    e->field_15 = 0;
+    e->inLoop = 0;
     e->runningStatus = 0;
     e->channel = 0;
     e->rpn1 = 0;
     e->rpn2 = 0;
     e->nrpn1 = 0;
     e->nrpn2 = 0;
-    e->field_1C = 0;
+    e->loopCountPending = 0;
     e->nrpnLoopCount = 0;
     e->rpnCount = 0;
     e->nrpnCount = 0;
@@ -16252,7 +16252,7 @@ s32 _SsInitSoundSeq(s16 a0, s16 a1, s16 a2, s32 a3) {
     e->resolution = 0;
     e->vabId = a2;
     e->field_56 = 0;
-    e->field_84 = 0;
+    e->startDelta = 0;
     e->elapsedTicks = 0;
     e->tempo = 0;
     e->deltaValue = 0;
@@ -16309,7 +16309,7 @@ s32 _SsInitSoundSeq(s16 a0, s16 a1, s16 a2, s32 a3) {
     p8 = *(u8 *volatile *)&e->readPos;
     p4 = *(u8 *volatile *)&e->readPos;
     e->field_C = pC;
-    e->field_84 = r;
+    e->startDelta = r;
     e->deltaValue = r;
     e->field_10 = 0;
     e->loopPos = (s32)p8;
@@ -16568,7 +16568,7 @@ void _SsSndStop(s32 arg0, s32 arg1) {
 
     e->playMode = 0;
     e->elapsedTicks = 0;
-    e->field_1C = 0;
+    e->loopCountPending = 0;
     e->rpn1 = 0;
     e->rpn2 = 0;
     e->rpnCount = 0;
@@ -16577,11 +16577,11 @@ void _SsSndStop(s32 arg0, s32 arg1) {
     e->nrpnCount = 0;
     e->channel = 0;
     e->playCount = 0;
-    e->field_1C = 0;
+    e->loopCountPending = 0;
     e->nrpnLoopCount = 0;
-    e->field_15 = 0;
+    e->inLoop = 0;
     e->runningStatus = 0;
-    e->deltaValue = e->field_84;
+    e->deltaValue = e->startDelta;
     e->tempoCur = e->tempo;
     e->field_54 = e->field_56;
     e->readPos = e->seqStart;
@@ -16592,8 +16592,8 @@ void _SsSndStop(s32 arg0, s32 arg1) {
         e->panpot[i] = 0x40;
         e->channelVol[i] = 0x7F;
     }
-    e->field_5C = 0x7F;
-    e->field_5E = 0x7F;
+    e->curVolL = 0x7F;
+    e->curVolR = 0x7F;
 }
 
 void SsSeqStop(s16 arg0) { _SsSndStop(arg0, 0); }
@@ -16672,13 +16672,13 @@ void SsSetTableSize(void *base, s16 rows, s16 cols) {
                     (*q)[j].fadeFrame = 0;
                     (*q)[j].field_4C = 0;
                     (*q)[j].tempoTarget = 0;
-                    (*q)[j].field_A8 = 0;
+                    (*q)[j].tempoFrames = 0;
                     (*q)[j].field_A4 = 0;
-                    (*q)[j].field_4E = 0;
+                    (*q)[j].tempoStep = 0;
                     (*q)[j].volL = k;
                     (*q)[j].volR = k;
-                    (*q)[j].field_5C = k;
-                    (*q)[j].field_5E = k;
+                    (*q)[j].curVolL = k;
+                    (*q)[j].curVolR = k;
                 } while (++j < D_800624D2);
             }
             pp++;
@@ -16791,14 +16791,14 @@ void _SsSndTempo(s16 a0, s16 a1) {
     u32 tgt;
     u32 v;
 
-    t = e->field_A8 - 1;
-    e->field_A8 = t;
+    t = e->tempoFrames - 1;
+    e->tempoFrames = t;
     if (t < 0) {
         Snd_SeqScores[a0][a1].flags &= ~0x40;
         Snd_SeqScores[a0][a1].flags &= ~0x80;
         return;
     }
-    n = e->field_4E;
+    n = e->tempoStep;
     if (n > 0) {
         if (t % n != 0) {
             return;
@@ -16836,7 +16836,7 @@ done:
     if (e->field_54 <= 0) {
         e->field_54 = 1;
     }
-    if (e->field_A8 == 0 || e->tempoCur == e->tempoTarget) {
+    if (e->tempoFrames == 0 || e->tempoCur == e->tempoTarget) {
         Snd_SeqScores[a0][a1].flags &= ~0x40;
         Snd_SeqScores[a0][a1].flags &= ~0x80;
     }
@@ -19891,7 +19891,7 @@ s32 func_8003D7E8(void) {
 s32 func_8003D850(void) {
     Flags506C0 *p = D_800506C0;
 
-if (!((p->field_4 & 1) && (p->field_0 & 1))) {
+if (!((p->mask & 1) && (p->stat & 1))) {
  return 0;
  }
  return 1;
@@ -20141,11 +20141,11 @@ void MemCardStart(void) {
     p->cmd = 0;
     p->result = 0;
     p->done = 0;
-    ((volatile CardState *)p)->field_50[1] = 0;
+    ((volatile CardState *)p)->vsyncCount[1] = 0;
     p->fd = -1;
     p->field_48[1] = 1;
     p->field_48[0] = 1;
-    p->field_50[0] = ((volatile CardState *)p)->field_50[1];
+    p->vsyncCount[0] = ((volatile CardState *)p)->vsyncCount[1];
     Card_OpenEvents();
     VSyncCallbacks(7, (s32)Card_OnVSync);
 }
@@ -20194,7 +20194,7 @@ s32 Card_InfoTask(s32 *st) {
         D_80062F54 = 0;
         D_80062F50 = 0;
         *st = 10;
-        e = &D_80062F80.field_50[D_80062F80.chan >> 4];
+        e = &D_80062F80.vsyncCount[D_80062F80.chan >> 4];
         v = *e;
         *e = 0;
         D_800506C8 = v;
@@ -20960,8 +20960,8 @@ void Card_OnVSync(void) {
         }
     }
     v = &D_80062F80;
-    v->field_50[0]++;
-    v->field_50[1]++;
+    v->vsyncCount[0]++;
+    v->vsyncCount[1]++;
 }
 
 void Card_MakeDevName(s32 n, u8 *out) {
