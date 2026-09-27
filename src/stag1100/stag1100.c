@@ -153,7 +153,9 @@ u8 *func_800676F4(void) {
     return ((Stg11SaveWork *)D_800685D0->work)->u34.s.field_234;
 }
 
-INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_8006770C);
+u8 *func_8006770C(void) {
+    return ((Stg11SaveWork *)D_800685D0->work)->field_4034;
+}
 
 INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80067724);
 
