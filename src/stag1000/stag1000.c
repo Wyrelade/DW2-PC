@@ -511,7 +511,28 @@ void func_8006495C(void (*func)()) {
     DMACallback(1, func);
 }
 
-INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80064980);
+void func_80064980(s32 arg0) {
+    switch (arg0) {
+    case 0:
+        *D_8006539C = 0x80000000;
+        *D_80065370 = 0;
+        *D_8006537C = 0;
+        *D_8006539C = 0x60000000;
+        func_80064A70(&D_80065258, 0x20);
+        func_80064A70(&D_800652DC, 0x20);
+        break;
+    case 1:
+        *D_8006539C = 0x80000000;
+        *D_80065370 = 0;
+        *D_8006537C = 0;
+        *D_8006537C;
+        *D_8006539C = 0x60000000;
+        break;
+    default:
+        printf(D_80063360, arg0);
+        break;
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80064A70);
 
