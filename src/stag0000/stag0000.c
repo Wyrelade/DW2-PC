@@ -126,7 +126,9 @@ INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80067428);
 
 INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_800679C8);
 
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80067A50);
+void func_80067A50(Actor *arg0, Stg00Vec3 *arg1) {
+    *(Stg00Vec3 *)arg0->work = *arg1;
+}
 
 INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80067A70);
 
