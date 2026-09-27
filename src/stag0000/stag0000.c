@@ -189,7 +189,9 @@ INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80068830);
 
 INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80068884);
 
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80068930);
+TaskEntry *func_80068930(void) {
+    return Task_FindFirst(0x109, -1, -1);
+}
 
 INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80068958);
 
