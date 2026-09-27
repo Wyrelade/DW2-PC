@@ -91,7 +91,13 @@ void func_80063F38(u8 *arg0) {
     } while (CdRead2(0x1E0) == 0);
 }
 
-INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80063FA0);
+void func_80063FA0(u8 *arg0, void (*arg1)()) {
+    func_800646C0(0);
+    func_8006495C(arg1);
+    StSetRing((s32)D_800661E8, 0x20);
+    StSetStream(1, 1, -1, 0, 0);
+    func_80063F38(arg0);
+}
 
 INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_8006400C);
 
