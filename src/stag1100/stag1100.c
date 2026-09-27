@@ -54,7 +54,37 @@ void func_8006374C(Actor *arg0) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_8006377C);
+void func_8006377C(Actor *arg0) {
+    GfxPart *list = (GfxPart *)Cd_GetFileEntry(0x459000C);
+    GfxPart *p;
+
+    for (p = list; p->fileId != 0; p++) {
+        switch (p->groupMask) {
+        case 2:
+            p->palette = Math_CycleRange(arg0->elapsed, 10, 0, 7);
+            break;
+        case 8:
+            p->x -= 2;
+            if (p->x == -0x168) {
+                p->x = 0;
+            }
+            break;
+        case 0x10:
+            p->x += 1;
+            if (p->x == 0xD8) {
+                p->x = 0;
+            }
+            break;
+        case 0x20:
+            p->x -= 2;
+            if (p->x == -0x1C0) {
+                p->x = 0;
+            }
+            break;
+        }
+    }
+    Gfx_DrawParts(list);
+}
 
 void func_80063894(Actor *arg0, s16 arg1) {
     Stg11Work63894 *w = (Stg11Work63894 *)arg0->work;
