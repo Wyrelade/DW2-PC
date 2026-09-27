@@ -3959,19 +3959,19 @@
       "padnop"
     ]
   },
-  "func_80064894": {
+  "stag1000:func_80064894": {
     "passes": [
       "nodb"
     ]
   },
-  "func_80064938": {
+  "stag1000:func_80064938": {
     "passes": [
       "reg_realloc",
       "prologue_save_hoist",
       "epilogue_unfill"
     ]
   },
-  "func_8006495C": {
+  "stag1000:func_8006495C": {
     "passes": [
       "reg_realloc",
       "prologue_save_hoist",

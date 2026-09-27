@@ -257,6 +257,12 @@ def compile_c(cpp, cc1, as_bin, skip_asm=False, units=None):
                 # Functions from translation units retail built without split
                 # addresses are taken from a second cc1 compile of the same file.
                 manifest = asm_normalizer.load_manifest()
+                # "unit:func" keys (stage overlays, whose func names can repeat across
+                # overlays) apply only to that unit; plain keys apply everywhere.
+                unit = os.path.relpath(dirpath, src_root).replace("\\", "/").split("/")[0]
+                manifest = dict((k.split(":", 1)[1] if ":" in k else k, v)
+                                for k, v in manifest.items()
+                                if ":" not in k or k.split(":", 1)[0] == unit)
                 ctx["alt_s"] = {}
                 for flavor in asm_normalizer.alt_flavors(manifest):
                     alt_file = "%s.%s.s" % (stem, flavor)
