@@ -3897,5 +3897,21 @@
       "delay_fill",
       "padnop"
     ]
+  },
+  "func_80032CD4": {
+    "passes": [
+      "nosplit",
+      "zero_remat",
+      "sched_pre",
+      "sreg_perm",
+      "web_realloc",
+      "save_slot",
+      "dead_spill",
+      "commutative_swap",
+      "web_resched",
+      "block_iso_wide",
+      "delay_fill",
+      "padnop"
+    ]
   }
 }

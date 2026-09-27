@@ -840,6 +840,7 @@ extern void func_80017214(Actor *a0);
 extern s32 D_8005F70C;
 extern Coord1F668 *D_80061A68[];
 extern Coord1F668 *D_80061A64[];
+extern void (*D_80061BF4[])(s16, s16, s16, Rec62D08, s32, s32);
 s16 func_800388A4(s16, s16, s16, s16, u16);
 void func_80021DC8(void);
 
@@ -14835,7 +14836,69 @@ void func_80032C54(s16 arg0, s16 arg1, s16 arg2) {
     e->field_90 = func_80032494(arg0, arg1);
 }
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80032CD4);
+void func_80032CD4(s16 a0, s16 a1, s16 a2) {
+    Elm354F4 *e = &D_80061C50[a0][a1];
+    s32 k = e->field_17;
+    SlotHead8 h[2];
+    Rec62D08 atr;
+    s32 i;
+    u16 t;
+    u8 v;
+
+    func_80036054(e->field_26, e->field_37[k], h);
+    v = a2;
+    if (e->field_1C == 1 && e->field_15 == 0) {
+        e->field_1D = a2;
+        e->field_1C = 0;
+        e->field_15 = 1;
+        e->field_90 = func_80032494(a0, a1);
+    } else if (e->field_1E == 2) {
+        if (e->field_19 == 0) {
+            for (i = 0; i < h[0].field_0; i++) {
+                func_80036164(e->field_26, e->field_37[k], (s16)i, &atr);
+                switch (e->field_18) {
+                case 0:
+                    atr.field_C = atr.field_D = v & 0x7F;
+                    break;
+                case 1:
+                    if ((u8)(v - 0x41) < 0x3F) {
+                        t = ((v * 100) / 0x2000) << 13;
+                    } else {
+                        t = 0;
+                    }
+                    atr.field_5 |= t >> 16;
+                    break;
+                case 2:
+                    if ((u8)(v - 0x40) < 0x40) {
+                        t = v * 6400;
+                    } else {
+                        t = 0;
+                    }
+                    atr.field_4 |= t >> 16;
+                    if (v > 0x80) t = 0;
+                    if (v < 0x40) t = 0;
+                    break;
+                }
+                func_80036594(e->field_26, e->field_37[k], (s16)i, &atr);
+            }
+        }
+        e->field_90 = func_80032494(a0, a1);
+        e->field_1E = 0;
+    } else if (e->field_1F == 2) {
+        if (e->field_1B == 0x10) {
+            void (**tbl)(s16, s16, s16, Rec62D08, s32, s32) = D_80061BF4;
+            tbl[e->field_1A](e->field_26, e->field_37[k], 0, atr, e->field_1A, v);
+        } else {
+            void (**tbl)(s16, s16, s16, Rec62D08, s32, s32) = D_80061BF4;
+            tbl[e->field_1A](e->field_26, e->field_37[k], e->field_1B, atr, e->field_1A, v);
+        }
+        e->field_90 = func_80032494(a0, a1);
+        e->field_1F = 0;
+    } else {
+        e->field_90 = func_80032494(a0, a1);
+    }
+}
+
 
 void func_80033054(s16 a0, s16 a1, u8 a2) {
     Elm354F4 *e = &D_80061C50[a0][a1];

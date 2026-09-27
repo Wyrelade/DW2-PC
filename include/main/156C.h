@@ -2687,7 +2687,7 @@ void func_80033664(s16 arg0, s16 arg1, s16 arg2);
 void func_800336D4(s16 arg0, s16 arg1, s16 arg2);
 void func_80033394(s16 a0, s16 a1, u8 a2);
 void func_80033744(s16 a0, s16 a1);
-void func_80032CD4();
+void func_80032CD4(s16 a0, s16 a1, s16 a2);
 void func_80033804(s16 a0, s16 a1, s16 a2, HandlerArg arg);
 void func_80033894(s16 a0, s16 a1, s16 a2, HandlerArg arg);
 void func_80033954(s16 a0, s16 a1, s16 a2, HandlerArg d);
