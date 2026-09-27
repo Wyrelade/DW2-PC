@@ -51,8 +51,8 @@ INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80064780);
 
 INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80064818);
 
-void func_80064894(void) {
-    func_80064B00();
+void func_80064894(u32 *buf, s32 size) {
+    func_80064B00(buf, size);
 }
 
 INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_800648B4);
