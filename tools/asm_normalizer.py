@@ -7810,6 +7810,101 @@ def zext_drop_pass(stext, tgt):
     return "\n".join(l for i, l in enumerate(lines) if i not in set(drop))
 
 
+# --------------------------------------------------------------------------
+# call_slot_swap: two frame stores before a call, one in the jal's delay slot:
+# our sched1/reorg put `sw B,y($sp)` in the slot and `sw A,x($sp)` earlier;
+# retail has B earlier and A in the slot. Both still complete before the callee
+# runs, so their order only matters to the insns in between. Target-guided: the
+# target's call to the same function (same ordinal) has `sw A',x(sp)` in its slot
+# and an earlier `sw B',y(sp)` in its straight-line lead-in. Sound when x != y,
+# nothing between A and the jal writes A's source or reads/writes either slot,
+# and B's source is not written between A and the jal. Count-preserving.
+# --------------------------------------------------------------------------
+_CSW_SW = re.compile(r"^(\s*)sw\s+(\$\w+)\s*,\s*(-?\d+|-?0x[0-9A-Fa-f]+)\(\$(?:sp|29)\)\s*$")
+
+
+def _csw_tgt(tgt):
+    """[(callee, slot sw offset, set of earlier sw offsets)] per target jal."""
+    out = []
+    for i, (w, d) in enumerate(tgt):
+        m = re.match(r"\s*jal\s+(\w+)\s*$", d.strip())
+        if not m or i + 1 >= len(tgt):
+            continue
+        ms = re.match(r"\s*sw\s+\$\w+\s*,\s*(-?0x[0-9A-Fa-f]+|-?\d+)\(\$sp\)\s*$", tgt[i + 1][1].strip())
+        early = set()
+        for q in range(i - 1, max(-1, i - 12), -1):
+            dq = tgt[q][1].strip()
+            if is_branch(dq) or re.match(r"\s*j", dq):
+                break
+            me = re.match(r"\s*sw\s+\$\w+\s*,\s*(-?0x[0-9A-Fa-f]+|-?\d+)\(\$sp\)\s*$", dq)
+            if me:
+                early.add(int(me.group(1), 0))
+        out.append((m.group(1), int(ms.group(1), 0) if ms else None, early))
+    return out
+
+
+def call_slot_swap_pass(stext, tgt):
+    if not tgt:
+        return stext
+    tj = _csw_tgt(tgt)
+    lines = stext.split("\n")
+    nr = _noreorder_lines(lines)
+    ins = [(i, l) for i, l in enumerate(lines) if _s_is_insn(l)]
+    ours = [(p, re.match(r"\s*jal\s+(\w+)\s*$", l.split("#", 1)[0]).group(1))
+            for p, (i, l) in enumerate(ins) if re.match(r"\s*jal\s+\w+\s*$", l.split("#", 1)[0])]
+    if len(ours) != len(tj):
+        return stext
+    changed = False
+    for (p, callee), (tc, tslot, tearly) in zip(ours, tj):
+        if callee != tc or tslot is None or p + 1 >= len(ins) or ins[p][0] not in nr:
+            continue
+        si, sl = ins[p + 1]
+        mb = _CSW_SW.match(sl.split("#", 1)[0].rstrip())
+        if not mb or si not in nr:
+            continue
+        y = int(mb.group(3), 0)
+        if y == tslot or y not in tearly:
+            continue
+        # our earlier `sw A,tslot($sp)` on the straight line before the jal
+        q = p - 1
+        found = None
+        while q >= 0:
+            qi, ql = ins[q]
+            if _src_is_branch(ql) or re.match(r"\s*jalr?\b", ql) or any(
+                    _s_is_label(x) and not x.strip().startswith("LM") for x in lines[qi + 1:ins[q + 1][0]]):
+                break
+            ma = _CSW_SW.match(ql.split("#", 1)[0].rstrip())
+            if ma and int(ma.group(3), 0) == tslot:
+                found = q
+                break
+            q -= 1
+        if found is None or ins[found][0] in nr:
+            continue
+        ai, al = ins[found]
+        ma = _CSW_SW.match(al.split("#", 1)[0].rstrip())
+        ra, rb = norm_reg(ma.group(2)), norm_reg(mb.group(2))
+        ok = True
+        for r in range(found + 1, p):
+            body = ins[r][1].split("#", 1)[0].strip()
+            d, u = defs_uses(body)
+            if ra in d or rb in d:
+                ok = False
+                break
+            mo = _mem_operand(body)
+            if mo and norm_reg(mo[0]) == "sp" and (mo[1] in (y, tslot)):
+                ok = False
+                break
+        if not ok:
+            continue
+        # swap the two stores' bodies (A goes into the slot, B takes A's place)
+        a_body = al.split("#", 1)[0].strip()
+        b_body = sl.split("#", 1)[0].strip()
+        lines[ai] = _src_indent(al) + b_body
+        lines[si] = _src_indent(sl) + a_body
+        changed = True
+    return "\n".join(lines) if changed else stext
+
+
 PASSES = {
     # reg_realloc is applied specially (it needs sigma from words); the ordered
     # list in the manifest still names it so the recipe is explicit and auditable.
@@ -7874,6 +7969,7 @@ PASSES = {
     "ulcopy_rename": ulcopy_rename_pass,
     "movstr_rename": movstr_rename_pass,
     "zext_drop": zext_drop_pass,
+    "call_slot_swap": call_slot_swap_pass,
 }
 
 # Passes that CHANGE the instruction count and so must run BEFORE sigma is derived
