@@ -9263,6 +9263,68 @@ def dead_spill_pass(stext, tgt):
     return stext
 
 
+# --------------------------------------------------------------------------
+# arg_unrename: a global register map (reg_realloc_inj) sends an argument register
+# to another register because a LATER web in that argument register pairs with it
+# (e.g. a1 holds the incoming arg at entry and an unrelated constant in the loop);
+# the entry-block read of the argument then reads a register nothing defined yet
+# (`move s3,t9`). In the entry block (straight line from the function label), a
+# read of a caller-saved temporary that no earlier insn of the block defined is
+# the renamed argument: where the target insn at the same word differs only in
+# that operand and names an argument register aK (not redefined before), read aK.
+# Post-sigma; sound: only a read of a value that is undefined in our text changes.
+# --------------------------------------------------------------------------
+_ARGU_TMP = {"v0", "v1", "t0", "t1", "t2", "t3", "t4", "t5", "t6", "t7", "t8", "t9"}
+
+
+def arg_unrename_pass(stext, tgt):
+    if not tgt:
+        return stext
+    lines = stext.split("\n")
+    ent = next((i for i, l in enumerate(lines) if re.match(r"\s*\.ent\s", l)), None)
+    if ent is None:
+        return stext
+    nr = _noreorder_lines(lines)
+    defined, argdef = set(), set()
+    w = 0
+    changed = False
+    seen_label = False
+    for i in range(ent + 1, len(lines)):
+        l = lines[i]
+        if _s_is_label(l):
+            if seen_label and not l.strip().startswith(("LM", "$LM", "$Lb")):
+                break
+            seen_label = True
+            continue
+        if not _s_is_insn(l):
+            continue
+        body = l.split("#", 1)[0].strip()
+        if _src_is_branch(l) or _src_is_ret(l) or re.match(r"jalr?\s", body) or i in nr:
+            break
+        d, u = defs_uses(body)
+        for r in sorted(u):
+            if r not in _ARGU_TMP or r in defined or w >= len(tgt):
+                continue
+            tb = tgt[w][1].strip()
+            ok = False
+            for ak in ("a0", "a1", "a2", "a3"):
+                if ak in argdef:
+                    continue
+                cand = re.sub(r"\$(\w+)", lambda m: "$%d" % ABI2NUM[ak]
+                              if norm_reg("$" + m.group(1)) == r else m.group(0), body)
+                if _zsp_norm(cand) == _zsp_norm(tb):
+                    lines[i] = l.replace(body, cand)
+                    body, ok = cand, True
+                    break
+            if ok:
+                changed = True
+                d, u = defs_uses(body)
+        defined |= set(d)
+        argdef |= set(d) & {"a0", "a1", "a2", "a3"}
+        w += _src_nwords(l)
+    return "\n".join(lines) if changed else stext
+
+
 PASSES = {
     # reg_realloc is applied specially (it needs sigma from words); the ordered
     # list in the manifest still names it so the recipe is explicit and auditable.
@@ -9343,6 +9405,7 @@ PASSES = {
     "slot_redundant": slot_redundant_pass,
     "at_dest": at_dest_pass,
     "dead_spill": dead_spill_pass,
+    "arg_unrename": arg_unrename_pass,
 }
 
 # Passes that CHANGE the instruction count and so must run BEFORE sigma is derived
