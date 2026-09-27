@@ -367,7 +367,59 @@ void func_8006437C(Actor *arg0) {
     DrawSync(0);
 }
 
-INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80064454);
+void func_80064454(Actor *a0) {
+    s32 st = a0->stateLevel0;
+    ActorWork *work = a0->work;
+
+    switch (st) {
+    case 0:
+        while (Cd_PollRead() != 0) {
+        }
+        D_800661E8 = (u32 *)Mem_Alloc(0x10000, 2);
+        D_800661EC = (u32 *)Mem_Alloc(0x28000, 2);
+        D_800661F0 = (u32 *)Mem_Alloc(0x28000, 2);
+        D_800661F4 = (u32 *)Mem_Alloc(0x4E00, 2);
+        D_800661F8 = (u32 *)Mem_Alloc(0x4E00, 2);
+        D_80066240 = (u32 *)Mem_Alloc(0x11000, 2);
+        func_80063EB0(&D_80066208, 0, 0, 0, 0x1A0);
+        Cd_GetFilePos(D_80066200, work);
+        func_80063FA0(work, func_80064198);
+        func_800650D0(D_80066240);
+        func_80064110(&D_80066208);
+        D_800661FC = 0;
+        Task_NextState0(a0);
+    case 1:
+        func_80064818(D_80066208.vlcbuf[D_80066208.vlcid], 3);
+        func_80064894(D_80066208.imgbuf[D_80066208.imgid],
+                      D_80066208.slice.w * D_80066208.slice.h / 2);
+        func_80064110(&D_80066208);
+        func_800642E8(&D_80066208, 0);
+        if (D_800661FC == 1 || D_8005F724 > 0) {
+            switch (D_8005F770.gameMode) {
+            case 0x404:
+                D_8005F770.nextGameMode = 0x325;
+                D_8005F770.field_24 = 2;
+                break;
+            case 0x405:
+                D_8005F770.nextGameMode = 0x327;
+                D_8005F770.field_24 = 2;
+                break;
+            case 0x406:
+                D_8005F770.nextGameMode = 0x408;
+                break;
+            case 0x407:
+                D_8005F770.nextGameMode = 0x301;
+                D_8005F770.field_24 = 2;
+                break;
+            default:
+                D_8005F770.nextGameMode = 0x401;
+                D_8005F770.field_24 = 0;
+                break;
+            }
+        }
+        break;
+    }
+}
 
 void func_800646C0(s32 arg0) {
     if (arg0 == 0) {
