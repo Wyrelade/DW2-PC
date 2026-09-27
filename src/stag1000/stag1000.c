@@ -489,7 +489,12 @@ void func_80064894(u32 *buf, s32 size) {
     func_80064B00(buf, size);
 }
 
-INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_800648B4);
+s32 func_800648B4(s32 arg0) {
+    if (arg0 != 0) {
+        return ((u32)func_80064CB4() >> 29) & 1;
+    }
+    return func_80064B8C();
+}
 
 INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_800648F0);
 
