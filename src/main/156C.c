@@ -62,7 +62,7 @@ extern void Cd_EvictLruFile(void);
 extern void Text_Close(s32 *);
 extern void Mem_Free(ActorWork *);
 extern s32 D_8005F79C;
-extern Sub3C *Gfx_AttachModel(Actor *, s32);
+extern ActorModel *Gfx_AttachModel(Actor *, s32);
 extern void Gfx_ResetModelBones(Actor *);
 extern s32 D_80043704[];
 extern void Actor_UpdateTransform(Actor *);
@@ -105,7 +105,7 @@ extern SndSeqScore *Snd_SeqScores[];
 extern s32 _SsReadDeltaValue(s16, s16);
 extern s32 D_80060050;
 extern s32 D_8006004C;
-extern Flags4FC68 *D_8004FC68;
+extern IrqRegs *D_8004FC68;
 extern s32 D_8004FC70[];
 extern int MemCardCallback(int);
 extern Vt4FB80 *D_8004FB80;
@@ -270,9 +270,9 @@ extern DrawEnv D_80061908;
 extern Rect2AB54 D_80061980;
 extern TaskDesc **D_80040D50[];
 extern char D_80010390[];
-extern Obj25FBC *(*D_80048E2C)(void);
-extern void (*D_80048E1C)(Obj25FBC *);
-extern s32 (*D_80048EA0[])(Obj25FBC *);
+extern PadPort *(*D_80048E2C)(void);
+extern void (*D_80048E1C)(PadPort *);
+extern s32 (*D_80048EA0[])(PadPort *);
 extern s32 D_80048E5C;
 extern void (*D_80048E18)(s32);
 extern void Pad_SetTimeout(s32);
@@ -310,7 +310,7 @@ extern s32 D_80048E50;
 extern Reg48DF0 *D_80048DF0;
 extern State60058 D_80060058;
 extern void SysEnqIntRP(s32, u8 *);
-extern Obj25FBC *D_80048E4C;
+extern PadPort *D_80048E4C;
 extern s32 Card_InfoTask(s32 *);
 extern s32 D_8005F704;
 extern char D_800102F8[];
@@ -392,7 +392,7 @@ extern s32 D_80048E68;
 extern s32 D_80048E6C;
 extern s32 D_80048E58;
 extern s32 D_80048E60;
-extern s32 func_8002533C(Obj25FBC *);
+extern s32 func_8002533C(PadPort *);
 extern char D_800102D4[];
 extern char D_800102E0[];
 extern char D_800102F4[];
@@ -420,9 +420,9 @@ extern s32 open(u8 *, s32);
 extern s32 MemCardSync(s32 wait, s32 *a1, s32 *a2);
 extern void Card_ClearEvents(void);
 extern s32 D_80062F90;
-extern void Pad_SendInfoCmd(Obj25FBC *a0);
+extern void Pad_SendInfoCmd(PadPort *a0);
 extern void Pad_CmdConfigMode(Actor *arg0, u8 arg1);
-extern void (*D_80048E1C)(Obj25FBC *);
+extern void (*D_80048E1C)(PadPort *);
 extern Flags506C0 *D_800506C0;
 extern s32 D_800506DC;
 extern Obj50720 *D_80050720;
@@ -449,7 +449,7 @@ extern void (*D_80061BE8)(s16, s16, s32);
 extern void (*D_80061BEC)(s16, s16, s32);
 extern void (*D_80061BF0)(s16, s16);
 extern void Gfx_LoadTexSlotImage(GfxTexSlot *);
-extern s32 Pad_ParseInfoReply(Obj25FBC *);
+extern s32 Pad_ParseInfoReply(PadPort *);
 extern s32 D_80061C44;
 extern void _SsVmFlush(void);
 extern void _SsSndCrescendo(s16, s16);
@@ -657,7 +657,7 @@ extern s32 D_80048E54;
 extern void (*D_80048E48)(void);
 extern void (*D_80048E44)(void);
 extern s32 Pad_SioExchangeByte();
-extern Obj25FBC *D_80048E4C;
+extern PadPort *D_80048E4C;
 extern s32 (*D_80048E34)(void);
 extern void func_800260C8(Actor *a);
 extern s32 func_80026170();
@@ -706,7 +706,7 @@ extern u16 D_80062EE8[];
 extern char D_80010AA4[];
 extern char D_80010AB4[];
 extern void _spu_Fw1ts(void);
-extern s32 func_80025FF4(Obj25FBC *a0, s32 a1);
+extern s32 func_80025FF4(PadPort *a0, s32 a1);
 extern s16 D_8004DDC0[];
 extern s32 D_80061B80;
 extern s32 D_80061B84;
@@ -729,17 +729,17 @@ extern s32 Card_GetHwEventBits(void);
 extern s32 Card_WaitHwEvent(void);
 extern s32 func_80024960(Ent266D0 *, s32);
 extern s32 (*D_80048E3C)(Actor *);
-extern void (*D_80048E38)(Obj25FBC *);
+extern void (*D_80048E38)(PadPort *);
 extern u8 D_8005FFB8[];
 extern u8 D_80060000[];
 extern void func_8002485C(s32 code);
-extern void Pad_ResetPortState(Obj25FBC *a0);
+extern void Pad_ResetPortState(PadPort *a0);
 extern s32 func_80024950(Actor *arg0);
-extern void Pad_AllocActPower(Obj25FBC *a0);
+extern void Pad_AllocActPower(PadPort *a0);
 extern u8 *Pad_GetPortBlock(s32 arg0);
-extern s32 func_80024CB8(Obj25FBC *a0);
-extern void func_80024DC8(Obj25FBC *a0);
-extern s32 func_80025114(Obj25FBC *p);
+extern s32 func_80024CB8(PadPort *a0);
+extern void func_80024DC8(PadPort *a0);
+extern s32 func_80025114(PadPort *p);
 extern volatile s8 D_80062D27;
 extern u8 D_80050760;
 extern s32 D_80049040;
@@ -845,8 +845,8 @@ extern SVec1F668 D_80050744;
 extern s32 Gfx_IsOriginOffscreen(void);
 extern s32 Gfx_ProjectModelVerts(Vert6Pmv *, Obj21ABC *, s32);
 extern void Gfx_CalcNormalColors(Vert6Pmv *, Obj21ABC *);
-extern void Gfx_AddQuadsGT4(QuadGT4_2130C *, s32, Sub3C *, s32);
-extern void func_80020FD0(TriGT3_20FD0 *, s32, Sub3C *, s32);
+extern void Gfx_AddQuadsGT4(QuadGT4_2130C *, s32, ActorModel *, s32);
+extern void func_80020FD0(TriGT3_20FD0 *, s32, ActorModel *, s32);
 s16 _SsVmPBVoice(s16, s16, s16, s16, u16);
 void Save_ClearEventFlags(void);
 
@@ -948,7 +948,7 @@ void Task_Create(u32 id, s32 *slot, s32 arg) {
     d = D_80040D50[id >> 8][id & 0xFF];
     o = Task_AllocWithBuffers(d->workSize, d->auxSize);
     o->id = id;
-    o->field_24 = 0;
+    o->frameCount = 0;
     if (arg != 0 && d->init != 0) {
         d->init(o, arg);
     }
@@ -1022,7 +1022,7 @@ Act125C *arg0;
         Mem_Free(arg0->field_38);
     }
 
-    sub = arg0->field_3C;
+    sub = arg0->model;
     if (sub != 0) {
         if (sub->field_6C != 0) {
             Mem_Free(sub->field_6C);
@@ -1034,10 +1034,10 @@ Act125C *arg0;
         if (i) {
             Mem_Free(sub->field_74);
         }
-        if (sub->field_78 != 0) {
-            Mem_Free(sub->field_78);
+        if (sub->bones != 0) {
+            Mem_Free(sub->bones);
         }
-        Mem_Free((ActorWork *)arg0->field_3C);
+        Mem_Free((ActorWork *)arg0->model);
     }
 
     for (j = 0; j < 100; j++) {
@@ -1279,10 +1279,10 @@ void func_80011854(Actor *a0) {
             q->palette = w->field_14;
             if (w->field_4 != 0) {
                 q->scaleX = -0x1000;
-                q->field_E = 0;
+                q->unscaled = 0;
             } else {
                 q->scaleX = 0x1000;
-                q->field_E = 1;
+                q->unscaled = 1;
             }
         }
     }
@@ -1596,8 +1596,8 @@ s32 Item_ApplyToDigi(s32 a0, s32 a1, s32 a2, s32 a3) {
         cur = &o->hp;
         lim = &o->maxHp;
     } else {
-        cur = &o->field_1A;
-        lim = &o->field_18;
+        cur = &o->mp;
+        lim = &o->maxMp;
     }
     if (*cur == *lim) {
         return 0;
@@ -1623,7 +1623,7 @@ s32 Item_UseStatBoost(s32 a0, s32 a1, s32 a2, s32 a3) {
     if (dg->hp == 0) {
         return 0;
     }
-    switch (rec->kind) {
+    switch (rec->effectType) {
     case 9:
         d = rec->amount;
         if (d > 0 && d + dg->field_E >= 100) {
@@ -1635,14 +1635,14 @@ s32 Item_UseStatBoost(s32 a0, s32 a1, s32 a2, s32 a3) {
         dg->field_E += rec->amount;
         return 1;
     case 10:
-        if (dg->field_10 == 99999999) {
+        if (dg->exp == 99999999) {
             return 0;
         }
-        d = dg->field_10 += rec->amount;
+        d = dg->exp += rec->amount;
         if (d > 99999999) {
             d = 99999999;
         }
-        dg->field_10 = d;
+        dg->exp = d;
         return 1;
     case 4:
     default:
@@ -1687,7 +1687,7 @@ s32 Item_UseRecoverAll(s32 a0, s32 a1) {
         if (e->state < 2) continue;
         cur = e->hp;
         if (cur == 0) continue;
-        if (c->target == 0 || c->target == 2) {
+        if (c->effectType == 0 || c->effectType == 2) {
             max = e->maxHp;
             if (cur != max) {
                 if (c->amount == 0) {
@@ -1698,7 +1698,7 @@ s32 Item_UseRecoverAll(s32 a0, s32 a1) {
                 n++;
             }
         }
-        if ((u8)(c->target - 1) < 2) {
+        if ((u8)(c->effectType - 1) < 2) {
             cur = e->mp;
             max = e->maxMp;
             if (cur != max) {
@@ -2154,11 +2154,11 @@ void Task_DefaultDestroy2(void) {
     Task_Free();
 }
 
-void Text_OpenDesc(void *arg0, Src13470 *arg1) {
+void Text_OpenDesc(void *arg0, TextDesc *arg1) {
     TextOpenArgs local;
     local.text = arg1->text;
     local.bigFont = arg1->field_10 >> 7;
-    local.color = arg1->field_11;
+    local.color = arg1->color;
     local.x = arg1->x;
     local.y = arg1->y;
     local.charAdvance = 0;
@@ -2291,7 +2291,7 @@ s32 func_80013854(Part28 *p, s32 mask, s32 n) {
         if (p->field_0 != 0) {
             do {
                 if (q->groupMask & mask) {
-                    q->palette = (Menu_Ctx->field_4 >> 2) & 3;
+                    q->palette = (Menu_Ctx->elapsed >> 2) & 3;
                 }
                 p++;
                 q++;
@@ -2461,7 +2461,7 @@ void Menu_TopMenuTask(Actor *a0) {
         if (Digi_CountByState(0) == 0x24) {
             Menu_Ctx->flags = (Menu_Ctx->flags | 0x10) & ~2;
         }
-        Menu_Ctx->field_4 = 0;
+        Menu_Ctx->elapsed = 0;
         Mem_FillWordsNeg1(&w->field_0, 8);
         Task_NextState0(a0);
         Gfx_FadeInFromBlack(0x20);
@@ -2571,7 +2571,7 @@ void Menu_TopMenuTask(Actor *a0) {
         break;
     }
     if (Menu_Ctx != NULL) {
-        Menu_Ctx->field_4 = a0->elapsed;
+        Menu_Ctx->elapsed = a0->elapsed;
     }
 }
 
@@ -2861,7 +2861,7 @@ void func_80014984(Actor *a0) {
             w->textArgs[2] = (s32)D_80050720->field_D1;
             p = &w->textArgs[3];
             for (i = 0; i < w->digiCount; i++) {
-                *p++ = (s32)w->digiList[i]->field_4C;
+                *p++ = (s32)w->digiList[i]->name;
             }
             *p = 0;
             Text_PrintList(w->field_40, (Halves *)Cd_GetFileEntry(0x513000C), w->textArgs, 2);
@@ -2934,11 +2934,11 @@ void func_80014CBC(Actor *actor) {
             Gfx_SetPartsNumber(obj, 0x20, 4, D_80050720->field_28);
         } else if (i - 1 < w->digiCount) {
             rec = w->digiList[i - 1];
-            Gfx_SetPartsNumber(obj, 2, 3, rec->field_14);
-            Gfx_SetPartsNumber(obj, 4, 3, rec->field_16);
-            Gfx_SetPartsNumber(obj, 8, 3, rec->field_18);
-            Gfx_SetPartsNumber(obj, 0x10, 3, rec->field_1A);
-            Gfx_SetPartsNumber(obj, 0x20, 2, rec->field_D);
+            Gfx_SetPartsNumber(obj, 2, 3, rec->maxHp);
+            Gfx_SetPartsNumber(obj, 4, 3, rec->hp);
+            Gfx_SetPartsNumber(obj, 8, 3, rec->maxMp);
+            Gfx_SetPartsNumber(obj, 0x10, 3, rec->mp);
+            Gfx_SetPartsNumber(obj, 0x20, 2, rec->level);
             Gfx_HidePartsByMask(obj, 0);
         } else {
             Gfx_HidePartsByMask(obj, 0xFFFF);
@@ -2956,11 +2956,11 @@ void Menu_UseItemDirect(Actor *a0) {
 
     if (Item_Use(Menu_Ctx->itemId, Menu_Ctx->bagSlot, 0, 0) != 0) {
         st.pos = D_80050700;
-        st.field_11 = 0;
+        st.color = 0;
         st.field_10 = 0x81;
         st.text = (s32)Cd_GetFileEntry(0x1FD00FD);
         st.field_4 = Item_GetNameText(Menu_Ctx->itemId);
-        Text_OpenDesc(&w->field_50, (Src13470 *)&st);
+        Text_OpenDesc(&w->field_50, (TextDesc *)&st);
         Snd_PlayById(0x1D, 0);
     } else {
         Text_OpenPacked(&w->field_50, (s32)Cd_GetFileEntry(0x1FD00A0), 0x81, D_80050700);
@@ -2979,12 +2979,12 @@ void func_80014F78(Actor *a0) {
 
     rec = (Sub17D84 *)Item_GetEffectRec(Menu_Ctx->itemId);
     pos = &D_80050700;
-    n = rec->field_1 - 0xC;
+    n = rec->digiId - 0xC;
     m = D_8005071C->field_BA5[n];
     st.pos = *pos;
-    st.field_11 = 0;
+    st.color = 0;
     st.field_10 = 0x81;
-    switch (rec->field_1) {
+    switch (rec->digiId) {
     case 0xC:
     case 0xD:
     case 0xE:
@@ -3001,7 +3001,7 @@ void func_80014F78(Actor *a0) {
             st.text = (s32)Cd_GetFileEntry(0x1FD00B4);
             st.field_4 = Item_GetNameText(Menu_Ctx->itemId);
         }
-        Text_OpenDesc(&w->field_50, (Src13470 *)&st);
+        Text_OpenDesc(&w->field_50, (TextDesc *)&st);
         break;
     case 0xF:
     default:
@@ -3021,7 +3021,7 @@ void func_80014F78(Actor *a0) {
             r = 0x1FD00EC;
             st.field_4 = (s32)Cd_GetFileEntry(n * 3 + (D_80050760 + r));
         }
-        Text_OpenDesc(&w->field_50, (Src13470 *)&st);
+        Text_OpenDesc(&w->field_50, (TextDesc *)&st);
         break;
     case 0x10:
         r = Item_Use(Menu_Ctx->itemId, Menu_Ctx->bagSlot, 0, 0);
@@ -3040,7 +3040,7 @@ void func_80014F78(Actor *a0) {
                 st.text = (s32)Cd_GetFileEntry(0x1FD00B6);
             }
         }
-        Text_OpenDesc(&w->field_50, (Src13470 *)&st);
+        Text_OpenDesc(&w->field_50, (TextDesc *)&st);
         break;
     }
 end:
@@ -3153,11 +3153,11 @@ void Menu_UseItemOnTarget(Actor *a0) {
         id = D_8005076C[Menu_GridIndexColMajor(w->field_88, w->field_8C)];
         if (id != 0xFF && Item_Use(Menu_Ctx->itemId, Menu_Ctx->bagSlot, id, 0) != 0) {
             st.pos = D_80050700;
-            st.field_11 = 0;
+            st.color = 0;
             st.field_10 = 0x81;
             st.text = (s32)Cd_GetFileEntry(0x1FD00FC);
             st.field_4 = Item_GetNameText(D_80050720->field_2C[id]);
-            Text_OpenDesc(&w->field_50, (Src13470 *)&st);
+            Text_OpenDesc(&w->field_50, (TextDesc *)&st);
             func_80015298(a0, 0);
             Snd_PlayById(0x1D, 0);
             Task_SetState1(a0, 3);
@@ -3462,12 +3462,12 @@ void Menu_DrawItemGrid(Obj16198 *a0, s32 a1) {
         if (a0->cells[base + i].itemId != 0 && a0->cells[base + i].count != 0) {
             st.pos = h;
             st.field_10 = a1;
-            st.field_11 = 0;
+            st.color = 0;
             st.text = (s32)Cd_GetFileEntry(0x1FD0125);
             st.field_4 = img;
             st.field_8 = a0->countText[i];
             Text_FormatNumber(a0->countText[i], a0->cells[base + i].count, -2);
-            Text_OpenDesc(&a0->cellTextSlots[i], (Src13470 *)&st);
+            Text_OpenDesc(&a0->cellTextSlots[i], (TextDesc *)&st);
         } else {
             Text_OpenPacked(&a0->cellTextSlots[i], img, a1, h);
         }
@@ -3489,10 +3489,10 @@ void Item_MoveToStorage(Actor *a0, Obj16198 *w) {
         Item_RemoveFromBag(c->bagSlot);
         st.pos = D_80050704;
         st.field_10 = 0x81;
-        st.field_11 = 0;
+        st.color = 0;
         st.field_4 = Item_GetNameText(id);
         st.text = (s32)Cd_GetFileEntry(0x1FD0122);
-        Text_OpenDesc(&w->msgTextSlot, (Src13470 *)&st);
+        Text_OpenDesc(&w->msgTextSlot, (TextDesc *)&st);
         Item_BuildMenuList(w);
         Menu_DrawItemGrid(w, 0);
         Task_SetState1(a0, 2);
@@ -3529,10 +3529,10 @@ void Item_TakeFromStorage(Actor *a0, Obj16198 *w) {
             D_80050720->storageCounts[c->itemId]--;
             st.pos = D_80050704;
             st.field_10 = 0x81;
-            st.field_11 = 0;
+            st.color = 0;
             st.field_4 = Item_GetNameText(c->itemId);
             st.text = (s32)Cd_GetFileEntry(0x1FD0123);
-            Text_OpenDesc(&w->msgTextSlot, (Src13470 *)&st);
+            Text_OpenDesc(&w->msgTextSlot, (TextDesc *)&st);
             Item_BuildMenuList(w);
             if (w->cursor[0] >= w->gridLayout.gridSize[0]) {
                 w->cursor[0] = w->gridLayout.gridSize[0] - 1;
@@ -3730,22 +3730,22 @@ void Menu_ItemTask(Actor *a0) {
             st.pos.lo = 0x10;
             st.pos.hi = 0xBA;
             st.field_10 = 0x81;
-            st.field_11 = 0;
+            st.color = 0;
             st.field_4 = Item_GetNameText(Menu_Ctx->itemId);
             switch (a0->stateLevel2) {
             case 0:
             default:
                 st.text = (s32)Cd_GetFileEntry(0x1FD00B9);
-                Text_OpenDesc(&w->field_44, (Src13470 *)&st);
+                Text_OpenDesc(&w->descText, (TextDesc *)&st);
                 Task_NextState2(a0);
                 break;
             case 1:
-                r = func_800136A4(w->field_44);
+                r = func_800136A4(w->descText);
                 switch (r) {
                 case 1:
                     Item_RemoveFromBag(Menu_Ctx->bagSlot);
                     st.text = (s32)Cd_GetFileEntry(0x1FD00BA);
-                    Text_OpenDesc(&w->field_44, (Src13470 *)&st);
+                    Text_OpenDesc(&w->descText, (TextDesc *)&st);
                     Item_BuildMenuList(w);
                     Menu_DrawItemGrid(w, 0);
                     Task_SetState1(a0, 2);
@@ -4005,11 +4005,11 @@ void Menu_UseItemOnDigi(Actor *a0) {
     if (D_8005F704 > 0) {
         if (e->field_0 == 1 && Item_Use(Menu_Ctx->itemId, Menu_Ctx->bagSlot, 0, e->record) != 0) {
             st.pos = D_8005070C;
-            st.field_11 = 0;
+            st.color = 0;
             st.field_10 = 0x81;
             st.text = (s32)Cd_GetFileEntry(0x1FD00FD);
             st.field_4 = Item_GetNameText(Menu_Ctx->itemId);
-            Text_OpenDesc(w->field_40, (Src13470 *)&st);
+            Text_OpenDesc(w->field_40, (TextDesc *)&st);
             Snd_PlayById(0x1D, 0);
             Task_SetState1(a0, 4);
         } else {
@@ -4023,7 +4023,7 @@ void Menu_PickUseItemDirect(Actor *a0) {
     Src16198 st;
 
     st.pos = D_8005070C;
-    st.field_11 = 0;
+    st.color = 0;
     st.field_10 = 0x81;
     if (Item_Use(Menu_Ctx->itemId, Menu_Ctx->bagSlot, 0, 0) != 0) {
         st.text = (s32)Cd_GetFileEntry(0x1FD00FD);
@@ -4033,7 +4033,7 @@ void Menu_PickUseItemDirect(Actor *a0) {
         st.text = (s32)Cd_GetFileEntry(0x1FD00A0);
         st.field_4 = 0;
     }
-    Text_OpenDesc(w->field_40, (Src13470 *)&st);
+    Text_OpenDesc(w->field_40, (TextDesc *)&st);
 }
 
 void Menu_ConfirmSinglePick(Actor *a0) {
@@ -4163,11 +4163,11 @@ void func_800179EC(Wk179EC *w) {
 void func_80017D84(Obj17D84 *a0, s32 a1) {
     s32 i;
     Ent17D84 *rec;
-    Src13470 st;
+    TextDesc st;
 
     st.field_4 = 0;
     st.field_10 = a1;
-    st.field_11 = 0;
+    st.color = 0;
     for (i = 0; i < 16; i++) {
         Text_Close(&a0->textBoxes[i]);
     }
@@ -4187,11 +4187,11 @@ void func_80017D84(Obj17D84 *a0, s32 a1) {
             Text_OpenDesc(&a0->textBoxes[i * 4 + 1], &st);
             st.x = 109;
             st.y = i * 33 + 50;
-            st.text = (s32)rec->field_4->field_4C;
+            st.text = (s32)rec->digi->name;
             Text_OpenDesc(&a0->textBoxes[i * 4 + 2], &st);
             st.x = 208;
             st.y = i * 33 + 50;
-            st.text = (s32)Digi_GetDefaultName(rec->field_4->field_1);
+            st.text = (s32)Digi_GetDefaultName(rec->digi->digiId);
             Text_OpenDesc(&a0->textBoxes[i * 4 + 3], &st);
             break;
         case 2:
@@ -4529,12 +4529,12 @@ void func_800188BC(Actor *actor) {
                 Gfx_HidePartsByMask(obj, f | 0xFE4);
                 break;
             case 1:
-                e = (Part188BC *)r->field_4;
+                e = (Part188BC *)r->digi;
                 Gfx_HidePartsByMask(obj, f | D_80040F40[r->field_2 - 1]);
                 Gfx_SetPartsNumber(obj, 0x20, 3, e->maxHp);
                 Gfx_SetPartsNumber(obj, 0x40, 3, e->hp);
-                Gfx_SetPartsNumber(obj, 0x80, 3, e->field_18);
-                Gfx_SetPartsNumber(obj, 0x100, 3, e->field_1A);
+                Gfx_SetPartsNumber(obj, 0x80, 3, e->maxMp);
+                Gfx_SetPartsNumber(obj, 0x100, 3, e->mp);
                 break;
             case 2:
             case 3:
@@ -4577,18 +4577,18 @@ void func_80018BF8(Actor *a0, s16 a1) {
     Actor_InitTransform((ContC40 *)a0, w->pos, w->field_BC);
     w->modelFile = func_8001E704(a0->field_C);
     w->animFile = Anim_GetModelAnimFile(a0->field_C, 0);
-    Gfx_AttachModel(a0, w->modelFile)->field_3C = 3;
+    Gfx_AttachModel(a0, w->modelFile)->otIndex = 3;
     Cd_QueueFile(w->modelFile);
     Cd_QueueFile(w->animFile);
-    w->field_C8 = 0;
-    w->field_14C = 0;
-    w->field_CC = D_80040F64;
+    w->modelPhase = 0;
+    w->modelScale = 0;
+    w->view = D_80040F64;
     GsInitCoordinate2(0, (Coord1F668 *)&w->coord);
     w->field_148 = 1;
-    w->field_142 = 11;
-    w->field_140 = 0;
-    w->field_144 = 0;
-    w->field_138 = -0xE3;
+    w->rotSpeedY = 11;
+    w->rotSpeedX = 0;
+    w->rotSpeedZ = 0;
+    w->rotX = -0xE3;
     b = (Blk16 *)Cd_GetFileEntry(0x513001F);
     q = (s32 *)Cd_GetFileEntry(0x5130020);
     for (i = 0; i < 3; i++) {
@@ -4626,7 +4626,7 @@ void func_80018D78(Actor *a) {
         default:
         case 0:
             h = (Halves *)Cd_GetFileEntry(0x513001E);
-            (*(Actor **)a->u34.children)->model->field_3C = 4;
+            (*(Actor **)a->u34.children)->model->otIndex = 4;
             if (Math_RampToOne((s32)a, &w->ramp) != 0) {
                 break;
             }
@@ -4648,14 +4648,14 @@ void func_80018D78(Actor *a) {
             Task_NextState1(a);
             break;
         case 1:
-            w->field_C8 = 1;
-            GsSetOffset(-0xA0, w->field_138[0] * 80 / 682 + 180);
+            w->modelPhase = 1;
+            GsSetOffset(-0xA0, w->rot[0] * 80 / 682 + 180);
             Task_NextState1(a);
             break;
         case 2:
-            Math_RampToOne((s32)a, &w->field_14C);
-            p = w->field_138;
-            s = w->field_140;
+            Math_RampToOne((s32)a, &w->modelScale);
+            p = w->rot;
+            s = w->rotSpeed;
             a->childCount = 1;
             p[1] += s[1];
             if (D_8005F6F0[0].left != 0) {
@@ -4693,7 +4693,7 @@ void func_80018D78(Actor *a) {
             Task_NextState1(a);
             break;
         case 1:
-            Math_RampToZero((s32)a, &w->field_14C);
+            Math_RampToZero((s32)a, &w->modelScale);
             if (Math_RampToZero((s32)a, &w->ramp) == 0) {
                 GsSetOffset(0, 0);
                 Task_SetState0(a, 3);
@@ -4859,7 +4859,7 @@ Actor194C8 *a;
     u8 *q;
     void *base;
 
-    tbl = a->field_118;
+    tbl = a->selRecord;
 
     for (i = 3; i >= 0; i--) {
         a->records[i].count = 0;
@@ -4915,10 +4915,10 @@ void func_80019614(Actor194C8 *w, s32 arg1) {
             } else if (w->slot54[ch].row != j + d0) {
                 f = 1;
             }
-            st.field_11 = f;
+            st.color = f;
             st.text = func_8001ED84(w->records[ch].arr[j + d0]);
             m = j + 6;
-            Text_OpenDesc(&w->textBoxes[ch * 3 + m], (Src13470 *)&st);
+            Text_OpenDesc(&w->textBoxes[ch * 3 + m], (TextDesc *)&st);
             st.pos.hi += 11;
         }
         Text_SetColor(w->textBoxes[ch + 2], w->curTab != ch);
@@ -4944,7 +4944,7 @@ void func_80019808(Actor *a0) {
     switch (a0->stateLevel0) {
     case 0:
     default:
-        w->field_118 = Menu_Ctx->selRecord;
+        w->selRecord = Menu_Ctx->selRecord;
         func_800194C8(w);
         w->curTab = 0;
         Mem_FillWordsNeg1(&w->textBoxes, 0x15);
@@ -4961,7 +4961,7 @@ void func_80019808(Actor *a0) {
             func_80019614(w, 1);
             h.lo = 0x13;
             h.hi = 0x32;
-            Text_OpenPacked(&w->field_50, (s32)&w->field_118[0x4C], 1, h);
+            Text_OpenPacked(&w->field_50, (s32)&w->selRecord[0x4C], 1, h);
             Task_NextState1(a0);
             break;
         case 1:
@@ -4973,14 +4973,14 @@ void func_80019808(Actor *a0) {
                 id = w->records[i].arr[w->slot54[i].row];
                 st.pos = D_80050714;
                 st.field_10 = 0x80;
-                st.field_11 = 0;
+                st.color = 0;
                 st.text = func_8001EDD4(id);
-                Text_OpenDesc(&w->descText, (Src13470 *)&st);
+                Text_OpenDesc(&w->descText, (TextDesc *)&st);
                 st.pos.hi = 0xCA;
                 st.text = (s32)Cd_GetFileEntry(0x1FD0150);
                 Text_FormatNumber(w->numBuf, func_8001EE80(id), -4);
                 st.field_4 = (s32)w->numBuf;
-                Text_OpenDesc(&w->numberText, (Src13470 *)&st);
+                Text_OpenDesc(&w->numberText, (TextDesc *)&st);
             }
             Task_NextState1(a0);
             break;
@@ -5082,7 +5082,7 @@ void func_80019BF4(Actor *actor) {
                         m -= 1 << (j * 4 + 2);
                     }
                 }
-                if (w->grids[j].field_2 - w->scroll[j] >= 4) {
+                if (w->grids[j].rows - w->scroll[j] >= 4) {
                     if (w->activePane == j) {
                         m -= 1 << (j * 4 + 3);
                     } else {
@@ -5493,7 +5493,7 @@ void Text_UpdateAllBoxes(Actor *a0) {
     s32 nF4c;
     u8 nF4d;
     s32 grew;
-    Rec34 *r;
+    TextBox *r;
     u8 *s;
     s32 stop;
     s32 line;
@@ -5536,11 +5536,11 @@ void Text_UpdateAllBoxes(Actor *a0) {
             line = 0;
             page = 0;
             r->color = r->baseColor;
-            if (r->field_27 == 0 && r->field_6 != 0) {
-                r->field_21 += D_8005F770.frameDelta;
-                if (r->field_21 >= r->field_6) {
-                    r->field_22++;
-                    r->field_21 -= r->field_6;
+            if (r->waitingInput == 0 && r->charDelay != 0) {
+                r->delayTimer += D_8005F770.frameDelta;
+                if (r->delayTimer >= r->charDelay) {
+                    r->visibleChars++;
+                    r->delayTimer -= r->charDelay;
                 }
             }
             if (r->bigFont != 0) {
@@ -5568,8 +5568,8 @@ void Text_UpdateAllBoxes(Actor *a0) {
                 case 0xFF:
                     vf = Text_PopReturn();
                     if (vf == 0) {
-                        r->field_6 = 0;
-                        r->field_23 = 1;
+                        r->charDelay = 0;
+                        r->finished = 1;
                         stop = 1;
                         break;
                     }
@@ -5582,14 +5582,14 @@ void Text_UpdateAllBoxes(Actor *a0) {
                     break;
                 case 0xFD:
                     pos.field_0 += r->charAdvance;
-                    if (grew == 0 && line + 1 >= r->field_22) {
+                    if (grew == 0 && line + 1 >= r->visibleChars) {
                         grew = 1;
-                        r->field_22++;
+                        r->visibleChars++;
                     }
                     break;
                 case 0xFC:
                     r->text = (s32)(s + 1);
-                    r->field_22 = 0;
+                    r->visibleChars = 0;
                     r->field_24 = 0;
                     r->field_25 = 0;
                     r->field_26 = 0;
@@ -5603,9 +5603,9 @@ void Text_UpdateAllBoxes(Actor *a0) {
                 case 0xFB:
                     if (r->field_25 == nFB) {
                         stop = 1;
-                        if (tb[r->field_30].cross > 0) {
+                        if (tb[r->padIndex].cross > 0) {
                             r->field_25 = nFB + 1;
-                            r->field_27 = 0;
+                            r->waitingInput = 0;
                             Snd_PlayById(0x13, 0);
                         } else {
                             wk->blinkTimer += D_8005F770.frameDelta;
@@ -5613,7 +5613,7 @@ void Text_UpdateAllBoxes(Actor *a0) {
                                 wk->blinkTimer -= 0x18;
                             }
                             c = ((wk->blinkTimer / 6) & 3) + 0x4F;
-                            r->field_27 = 1;
+                            r->waitingInput = 1;
                             goto draw;
                         }
                     }
@@ -5657,19 +5657,19 @@ void Text_UpdateAllBoxes(Actor *a0) {
                                 Task_NextState1(a0);
                                 break;
                             }
-                            r->field_27 = 1;
+                            r->waitingInput = 1;
                             Task_NextState1(a0);
                             break;
                         case 1:
                             if (slots[row + 1]->stateLevel1 == 1) {
-                                r->field_27 = 0;
+                                r->waitingInput = 0;
                                 r->field_24++;
                                 Task_SetState1(a0, 0);
                             }
                             break;
                         case 2:
                             if (slots[row + 1] == 0) {
-                                r->field_27 = 0;
+                                r->waitingInput = 0;
                                 r->field_24++;
                                 Task_SetState1(a0, 0);
                             }
@@ -5708,11 +5708,11 @@ void Text_UpdateAllBoxes(Actor *a0) {
                     nF9++;
                     break;
                 set1:
-                    r->field_29 = 1;
+                    r->choiceCursor = 1;
                     Snd_PlayById(0xC, 0);
                     goto cntF8;
                 set0:
-                    r->field_29 = 0;
+                    r->choiceCursor = 0;
                     Snd_PlayById(0xC, 0);
                     goto cntF8;
                 case 0xF8:
@@ -5722,8 +5722,8 @@ void Text_UpdateAllBoxes(Actor *a0) {
                         default:
                         case 0:
                             stop = 1;
-                            r->field_27 = 1;
-                            e = &tb[r->field_30];
+                            r->waitingInput = 1;
+                            e = &tb[r->padIndex];
                             if (e->pressed & 0x6000) {
                                 goto set1;
                             }
@@ -5731,10 +5731,10 @@ void Text_UpdateAllBoxes(Actor *a0) {
                                 goto set0;
                             }
                             if (e->cross > 0) {
-                                r->field_27 = 0;
+                                r->waitingInput = 0;
                                 r->field_28++;
                                 Flag_Set(0x10, 1);
-                                Flag_Set(0x11, r->field_29);
+                                Flag_Set(0x11, r->choiceCursor);
                                 Snd_PlayById(0xA, 0);
                             }
                         cntF8:
@@ -5742,13 +5742,13 @@ void Text_UpdateAllBoxes(Actor *a0) {
                             goto next;
                         case 1:
                             c = 0x53;
-                            if (r->field_29 == 0) {
+                            if (r->choiceCursor == 0) {
                                 goto draw;
                             }
                             break;
                         case 2:
                             c = 0x53;
-                            if (r->field_29 == 1) {
+                            if (r->choiceCursor == 1) {
                                 goto draw;
                             }
                             break;
@@ -5779,7 +5779,7 @@ void Text_UpdateAllBoxes(Actor *a0) {
                                 wk->field_A2C = h;
                                 func_8006A920(h, &nums[1]);
                             }
-                            r->field_27 = 1;
+                            r->waitingInput = 1;
                             Task_NextState1(a0);
                             break;
                         case 1:
@@ -5795,7 +5795,7 @@ void Text_UpdateAllBoxes(Actor *a0) {
                             goto nextF6;
                         }
                     advF6:
-                        r->field_27 = 0;
+                        r->waitingInput = 0;
                         r->field_2A++;
                         Task_SetState1(a0, 0);
                     } else {
@@ -5809,11 +5809,11 @@ void Text_UpdateAllBoxes(Actor *a0) {
                         stop = 1;
                         if (wk->waitTimer == 0x1E) {
                             r->field_2B = nF5 + 1;
-                            r->field_27 = 0;
+                            r->waitingInput = 0;
                             wk->waitTimer = 0;
                         } else {
                             wk->waitTimer++;
-                            r->field_27 = 1;
+                            r->waitingInput = 1;
                         }
                     }
                     nF5++;
@@ -5861,13 +5861,13 @@ void Text_UpdateAllBoxes(Actor *a0) {
                                 num[1] = 0;
                                 Task_Create(0x16, (s32 *)&slots[0x35], (s32)num);
                                 a0->stateLevel1++;
-                                r->field_27 = 1;
+                                r->waitingInput = 1;
                                 break;
                             case 1:
                                 s += 2;
                                 if (slots[0x35] == 0) {
                                     a0->stateLevel1 = 0;
-                                    r->field_27 = 0;
+                                    r->waitingInput = 0;
                                     r->field_2E++;
                                 }
                                 break;
@@ -5963,7 +5963,7 @@ void Text_UpdateAllBoxes(Actor *a0) {
                     case 4:
                         {
                             s32 jj = k - 1;
-                            s = (u8 *)(&r->field_C)[jj] - 1;
+                            s = (u8 *)(&r->strArg0)[jj] - 1;
                         }
                         break;
                     default:
@@ -6018,9 +6018,9 @@ void Text_UpdateAllBoxes(Actor *a0) {
                     *ot = (*ot & 0xFF000000) | ((u32)pkt & 0xFFFFFF);
                     pkt++;
                     pos.field_0 += r->charAdvance;
-                    if (grew == 0 && line + 1 >= r->field_22) {
+                    if (grew == 0 && line + 1 >= r->visibleChars) {
                         grew = 1;
-                        r->field_22++;
+                        r->visibleChars++;
                     }
                     break;
                 }
@@ -6029,7 +6029,7 @@ void Text_UpdateAllBoxes(Actor *a0) {
                 if (stop != 0) {
                     break;
                 }
-            } while (r->field_6 == 0 || ++line < r->field_22);
+            } while (r->charDelay == 0 || ++line < r->visibleChars);
         }
     } while (++row < 0x32);
     D_8005F79C = (s32)pkt;
@@ -6040,7 +6040,7 @@ void Text_Close(s32 *slot) {
     Ent11440 *e;
     Actor *a;
     s32 i;
-    Rec34 *r;
+    TextBox *r;
     Actor **q;
 
     if (*slot == -1) {
@@ -6064,9 +6064,9 @@ void Text_Close(s32 *slot) {
 void Text_Open(void *arg0, TextOpenArgs *arg1) {
     SrcBC24 *src = (SrcBC24 *)arg1;
     Ent11440 *r;
-    Rec34 *base;
-    Rec34 *p;
-    Rec34 *rec;
+    TextBox *base;
+    TextBox *p;
+    TextBox *rec;
     s32 i;
 
     r = Task_FindFirst(9, -1, -1);
@@ -6083,52 +6083,52 @@ void Text_Open(void *arg0, TextOpenArgs *arg1) {
         }
     }
 
-    if (src->field_C == 0) {
-        if (src->field_0 != 0) {
-            src->field_C = 9;
+    if (src->charAdvance == 0) {
+        if (src->bigFont != 0) {
+            src->charAdvance = 9;
         } else {
-            src->field_C = 7;
+            src->charAdvance = 7;
         }
     }
-    if (src->field_10 == 0) {
-        if (src->field_0 != 0) {
-            src->field_10 = 0xF;
+    if (src->lineAdvance == 0) {
+        if (src->bigFont != 0) {
+            src->lineAdvance = 0xF;
         } else {
-            src->field_10 = 0xA;
+            src->lineAdvance = 0xA;
         }
     }
 
     rec = &base[i];
     rec->inUse = 1;
-    rec->bigFont = *(u8 *)&src->field_0;
-    rec->color = *(u8 *)&src->field_4;
+    rec->bigFont = *(u8 *)&src->bigFont;
+    rec->color = *(u8 *)&src->color;
     rec->text = src->text;
     rec->x = src->x - 0xA0;
     rec->y = src->y - 0x78;
-    rec->charAdvance = *(u8 *)&src->field_C;
-    rec->lineAdvance = *(u8 *)&src->field_10;
-    rec->field_6 = *(u16 *)&src->field_18;
-    rec->field_C = src->field_1C;
-    rec->field_10 = src->field_20;
-    rec->field_14 = src->field_24;
-    rec->field_18 = src->field_28;
-    rec->baseColor = *(u8 *)&src->field_4;
-    rec->field_21 = *(u8 *)&src->field_18;
-    rec->field_22 = 0;
-    rec->field_23 = 0;
+    rec->charAdvance = *(u8 *)&src->charAdvance;
+    rec->lineAdvance = *(u8 *)&src->lineAdvance;
+    rec->charDelay = *(u16 *)&src->field_18;
+    rec->strArg0 = src->field_1C;
+    rec->strArg1 = src->field_20;
+    rec->strArg2 = src->field_24;
+    rec->strArg3 = src->field_28;
+    rec->baseColor = *(u8 *)&src->color;
+    rec->delayTimer = *(u8 *)&src->field_18;
+    rec->visibleChars = 0;
+    rec->finished = 0;
     rec->field_24 = 0;
     rec->field_25 = 0;
-    rec->field_27 = 0;
+    rec->waitingInput = 0;
     rec->field_26 = 0;
     rec->field_28 = 0;
-    rec->field_29 = 0;
+    rec->choiceCursor = 0;
     rec->field_2A = 0;
     rec->field_2B = 0;
     rec->field_2C = 0;
     rec->field_2D = 0;
     rec->field_2E = 0;
     rec->field_2F = 0;
-    rec->field_30 = 0;
+    rec->padIndex = 0;
     rec->otIndex = 0;
 
     *(s32 *)arg0 = i;
@@ -6144,13 +6144,13 @@ s32 Text_IsFinished(s32 id) {
     if (p == 0) {
         return 0;
     }
-    return p->work[id].field_23;
+    return p->work[id].finished;
 }
 
 void Text_SetColor(s32 a0, s32 a1) {
     Ent11440 *p = Task_FindFirst(9, -1, -1);
     if (a0 != -1 && p != 0) {
-        Rec34 *r = &p->work[a0];
+        TextBox *r = &p->work[a0];
         r->baseColor = a1;
         r->color = a1;
     }
@@ -6159,7 +6159,7 @@ void Text_SetColor(s32 a0, s32 a1) {
 void Text_SetInputPad(s32 a0, s32 a1) {
     Ent11440 *p = Task_FindFirst(9, -1, -1);
     if (a0 != -1 && p != 0) {
-        p->work[a0].field_30 = a1;
+        p->work[a0].padIndex = a1;
     }
 }
 
@@ -6501,7 +6501,7 @@ void Gfx_InitTexSlots(void) {
         Gfx_TexSlots[i].vramY = (i & 1) << 8;
         Gfx_TexSlots[i].fileId = 0;
         Gfx_TexSlots[i].lastUsed = 0;
-        Gfx_TexSlots[i].field_8 = 0;
+        Gfx_TexSlots[i].colorMode = 0;
         Gfx_TexSlots[i].field_C = 0;
         Gfx_TexSlots[i].tpage = 0;
     }
@@ -6590,7 +6590,7 @@ GfxTexSlot *Gfx_FindOrLoadTexSlot(s32 id) {
     e = &Gfx_TexSlots[idx];
     e->fileId = id;
     e->lastUsed = D_8005F770.frameCount;
-    e->field_8 = tp;
+    e->colorMode = tp;
     t = e->index & 2;
     e->field_C = t == 0;
     if (tp) {
@@ -6637,7 +6637,7 @@ s32 Gfx_ReserveTexSlot(void) {
     p = &Gfx_TexSlots[best];
     p->fileId = -2;
     p->lastUsed = D_8005F770.frameCount;
-    p->field_8 = 0;
+    p->colorMode = 0;
     p->field_C = ((p->index & 2) == 0) << 7;
     p->tpage = ((p->vramY & 0x100) >> 4) | ((p->vramX & 0x3FF) >> 6) | ((p->vramY & 0x200) << 2);
     return (s32)p;
@@ -6683,11 +6683,11 @@ void Gfx_DrawPartSprites(void *arg0, s32 arg1) {
         if (p->s.h == 0) {
             p->s.h--;
         }
-        if (t->field_8 != 0) {
-            y = t->field_14 + 0x1E0;
-            p->s.clut = (e->field_A + y + s->clutRow) << 6;
+        if (t->is8bit != 0) {
+            y = t->index + 0x1E0;
+            p->s.clut = (e->clutRow + y + s->clutRow) << 6;
         } else {
-            p->s.clut = ((e->clutY + t->clutY + e->field_A + s->clutRow) << 6) |
+            p->s.clut = ((e->clutY + t->clutY + e->clutRow + s->clutRow) << 6) |
                        (((e->clutX + t->clutX) >> 4) & 0x3F);
         }
         p->s.tag.addr = ot->addr;
@@ -6758,11 +6758,11 @@ void Gfx_DrawPartQuadsRot(void *arg0, void *arg1, s32 arg2, s32 arg3) {
         if (p->v[2].v == 0) {
             p->v[2].v = p->v[3].v = 0xFF;
         }
-        if (t->field_8 != 0) {
-            y = t->field_14 + 0x1E0;
-            p->v[0].extra = (e->field_A + y + ((Obj1CE9C *)arg0)->clutRow) << 6;
+        if (t->is8bit != 0) {
+            y = t->index + 0x1E0;
+            p->v[0].extra = (e->clutRow + y + ((Obj1CE9C *)arg0)->clutRow) << 6;
         } else {
-            p->v[0].extra = ((e->clutY + t->clutY + e->field_A + ((Obj1CE9C *)arg0)->clutRow) << 6) |
+            p->v[0].extra = ((e->clutY + t->clutY + e->clutRow + ((Obj1CE9C *)arg0)->clutRow) << 6) |
                             (((e->clutX + t->clutX) >> 4) & 0x3F);
         }
         if (arg3 & 1) {
@@ -6799,24 +6799,24 @@ void Gfx_HidePartsByMask(Obj1D504 *p, s32 mask) {
 }
 
 void Gfx_SetPartsScale(Ent1D550 *p, s32 a1, s32 a2) {
-    if (p->field_0 == 0) {
+    if (p->fileId == 0) {
         return;
     }
     do {
         if (a1 != 0x1000) {
-            p->field_E = 0;
+            p->unscaled = 0;
         } else {
-            p->field_E = 1;
+            p->unscaled = 1;
         }
-        p->field_10 = a1;
+        p->scaleX = a1;
         if (a2 != 0x1000) {
-            p->field_E = 0;
+            p->unscaled = 0;
         } else {
-            p->field_E = 1;
+            p->unscaled = 1;
         }
-        p->field_14 = a2;
+        p->scaleY = a2;
         p++;
-    } while (p->field_0 != 0);
+    } while (p->fileId != 0);
 }
 
 void Gfx_SetPartsNumber(Part28 *p, s32 mask, s32 n, s32 val) {
@@ -7053,8 +7053,8 @@ void func_8001DB68(void *a0, Out1DB68 *out) {
     {
         Row1DB18 *row = (Row1DB18 *)p;
         for (i = 0; i < 3; i++) {
-            out->field_1C[i] = row[i].digiId;
-            out->field_22[i] = row[i].level;
+            out->digiIds[i] = row[i].digiId;
+            out->levels[i] = row[i].level;
         }
     }
 }
@@ -7074,24 +7074,24 @@ void Digi_InitFromTable(s32 a0, s32 a1, ElmE620 *e) {
     Mem_Zero(e, 0x5C);
     e->state = 2;
     e->digiId = r[a1].digiId;
-    e->hp = e->maxHp = r[a1].field_A;
-    e->mp = e->maxMp = r[a1].field_C;
+    e->hp = e->maxHp = r[a1].hp;
+    e->mp = e->maxMp = r[a1].mp;
     name = Digi_GetDefaultName(e->digiId);
     for (i = 0; i < 14; i++) {
         e->name[i] = name[i];
     }
-    e->field_D = r[a1].level;
+    e->level = r[a1].level;
     e->field_1C = r[a1].field_13;
     e->field_1E = r[a1].field_14;
     e->field_20 = r[a1].field_16;
     e->field_22 = r[a1].field_17;
     e->field_23 = r[a1].field_18;
     e->field_24 = r[a1].field_19;
-    e->field_F = func_8001EB58(e->field_D);
-    if (e->field_D == 1) {
-        e->field_10 = 0;
+    e->field_F = func_8001EB58(e->level);
+    if (e->level == 1) {
+        e->exp = 0;
     } else {
-        e->field_10 = Digi_GetExpToNextLevel(e->field_D - 1, 100, 0);
+        e->exp = Digi_GetExpToNextLevel(e->level - 1, 100, 0);
     }
 }
 
@@ -7108,16 +7108,16 @@ void func_8001DDA8(s32 a0, s32 a1, ElmE620 *e, Out1DDA8 *o) {
         }
     }
     e->state = a1 + 3;
-    e->digiId = t->rows[a1].field_0;
-    e->hp = e->maxHp = t->rows[a1].field_2;
-    e->mp = e->maxMp = t->rows[a1].field_4;
+    e->digiId = t->rows[a1].digiId;
+    e->hp = e->maxHp = t->rows[a1].hp;
+    e->mp = e->maxMp = t->rows[a1].mp;
     if (e->digiId != 0) {
         name = Digi_GetDefaultName(e->digiId);
         for (i = 0; i < 14; i++) {
             e->name[i] = name[i];
         }
-        e->field_D = t->rows[a1].field_A;
-        e->field_10 = t->rows[a1].field_6;
+        e->level = t->rows[a1].field_A;
+        e->exp = t->rows[a1].field_6;
         e->field_1C = t->rows[a1].field_B;
         e->field_1E = t->rows[a1].field_C;
         e->field_20 = t->rows[a1].field_E;
@@ -7162,12 +7162,12 @@ s32 arg0;
 
 s32 Item_GetNameText(s32 arg0) {
     s32 base = Cd_GetFileOrNull(0x45E);
-    return Item_FindById(arg0)->field_8 + base;
+    return Item_FindById(arg0)->nameOffset + base;
 }
 
 s32 func_8001E084(s32 arg0) {
     s32 base = Cd_GetFileOrNull(0x45E);
-    return Item_FindById(arg0)->field_C + base;
+    return Item_FindById(arg0)->descOffset + base;
 }
 
 s32 func_8001E0C0(s32 id) {
@@ -7349,13 +7349,13 @@ s32 func_8001E704(s32 id) {
 }
 
 s32 Anim_GetModelAnimFile(s32 arg0, s32 arg1) {
-    return Digi_FindDataById(arg0)->field8[arg1];
+    return Digi_FindDataById(arg0)->animFiles[arg1];
 }
 
 u8 *Digi_GetDefaultName(s32 id) {
     s32 v;
 
-    v = Digi_FindDataById(id)->field_0;
+    v = Digi_FindDataById(id)->nameOffset;
     v += Cd_GetFileOrNull(func_8001E67C(id));
     return (u8 *)v;
 }
@@ -7461,7 +7461,7 @@ void func_8001EC10(Actor *arg0) {
     switch (state) {
     case 0:
         Actor_InitTransform((ContC40 *)arg0, D_80043704, 0);
-        Gfx_AttachModel(arg0, 0x5B)->field_3C = 4;
+        Gfx_AttachModel(arg0, 0x5B)->otIndex = 4;
         Gfx_ResetModelBones(arg0);
         Task_NextState0(arg0);
         break;
@@ -7512,14 +7512,14 @@ s32 func_8001ED84(s32 arg0) {
     s32 base = Cd_GetFileOrNull(0x25B);
     EntED40 *p = func_8001ED40(arg0);
     if (p != 0) {
-        return p->field_24 + base;
+        return p->nameOffset + base;
     }
     return 0;
 }
 
 s32 func_8001EDD4(s32 arg0) {
     s32 base = Cd_GetFileOrNull(0x25B);
-    return func_8001ED40(arg0)->field_28 + base;
+    return func_8001ED40(arg0)->descOffset + base;
 }
 
 s32 func_8001EE10(s32 id) {
@@ -7616,7 +7616,7 @@ s32 func_8001F180(s32 id) {
 }
 
 void Anim_SetModelAnim(Actor *a, s32 n) {
-    Sub3C *s = a->model;
+    ActorModel *s = a->model;
     s32 i;
     s32 k;
 
@@ -7636,7 +7636,7 @@ void Anim_SetModelAnim(Actor *a, s32 n) {
 }
 
 void Anim_SetModelAnimFile(Actor *arg0, s32 arg1, s32 arg2) {
-    Sub3C *p = arg0->model;
+    ActorModel *p = arg0->model;
     p->field_54 = arg1;
     p->animPos = 0;
     p->animData = 0;
@@ -7647,7 +7647,7 @@ void Anim_SetModelAnimFile(Actor *arg0, s32 arg1, s32 arg2) {
 }
 
 s32 Anim_HasModelAnim(Actor *a0, s32 n) {
-    Sub3C *sub = a0->model;
+    ActorModel *sub = a0->model;
     s32 id;
     s32 k;
     s32 *p;
@@ -7669,7 +7669,7 @@ s32 Anim_HasModelAnim(Actor *a0, s32 n) {
 }
 
 void Anim_StepModelAnim(Actor *a) {
-    Sub3C *s = a->model;
+    ActorModel *s = a->model;
     s32 *data = (s32 *)Cd_GetFileOrNull(s->animFileId);
     s32 i;
     s32 j;
@@ -7737,7 +7737,7 @@ done:
 extern Blk20 D_80043714;
 
 void Gfx_ResetModelBones(Actor *a0) {
-    Sub3C *sub = a0->model;
+    ActorModel *sub = a0->model;
     ModelBone *p = sub->bones;
     s32 i = 0;
     while (i < sub->boneCount) {
@@ -7814,7 +7814,7 @@ s32 func_8001F970(s32 arg0) {
 }
 
 void Gfx_AnimateModelTex(Actor *a0) {
-    Sub3C *w = a0->model;
+    ActorModel *w = a0->model;
     Part1F9AC *r = (Part1F9AC *)w->field_1C;
     Pos1F9AC *pos = w->field_44;
     s32 k = 0;
@@ -7915,12 +7915,12 @@ void Gfx_AnimateModelTex(Actor *a0) {
 }
 
 
-Sub3C *Gfx_AttachModel(Actor *a0, s32 id) {
+ActorModel *Gfx_AttachModel(Actor *a0, s32 id) {
     s32 fresh = 0;
     Mdl1FDBC *m = (Mdl1FDBC *)Cd_GetFileOrNull(id);
     Mdl1FDBC *base = m;
-    Sub3C *t = a0->model;
-    Sub3C *s;
+    ActorModel *t = a0->model;
+    ActorModel *s;
     s32 i;
     Sec1FDBC20 *p;
     Sec1FDBC20 *q;
@@ -7929,7 +7929,7 @@ Sub3C *Gfx_AttachModel(Actor *a0, s32 id) {
     Ent1FDBC20 *e;
 
     if (t == NULL) {
-        a0->model = (Sub3C *)Mem_Alloc(0x7C, 2);
+        a0->model = (ActorModel *)Mem_Alloc(0x7C, 2);
         Mem_Zero(a0->model, 0x7C);
         fresh = 1;
     } else if (t->file == m && m->relocated != 0) {
@@ -7939,33 +7939,33 @@ Sub3C *Gfx_AttachModel(Actor *a0, s32 id) {
     s->fileId = id;
     s->file = base;
     s->boneCount = m->count;
-    s->field_C = (s16 **)base->tables;
-    s->field_10 = s->field_C + s->boneCount;
-    s->field_14 = (Sec1FDBC20 **)(s->field_10 + s->boneCount);
-    s->field_18 = (s32 *)(s->field_14 + s->boneCount);
+    s->boneVerts = (s16 **)base->tables;
+    s->boneNormals = s->boneVerts + s->boneCount;
+    s->bonePolys = (Sec1FDBC20 **)(s->boneNormals + s->boneCount);
+    s->field_18 = (s32 *)(s->bonePolys + s->boneCount);
     s->field_1C = s->field_18 + s->boneCount;
     if (m->relocated == 0) {
         for (i = 0; i < s->boneCount; i++) {
-            s->field_C[i] = (s16 *)((s32)s->field_C[i] + (s32)base);
-            s->field_10[i] = (s16 *)((s32)s->field_10[i] + (s32)base);
-            s->field_14[i] = (Sec1FDBC20 *)((s32)s->field_14[i] + (s32)base);
+            s->boneVerts[i] = (s16 *)((s32)s->boneVerts[i] + (s32)base);
+            s->boneNormals[i] = (s16 *)((s32)s->boneNormals[i] + (s32)base);
+            s->bonePolys[i] = (Sec1FDBC20 *)((s32)s->bonePolys[i] + (s32)base);
         }
         m->relocated = 1;
     }
     if (fresh) {
-        s->field_20 = 0;
-        s->field_24 = 0;
+        s->maxVerts = 0;
+        s->maxNormals = 0;
         for (i = 0; i < s->boneCount; i++) {
-            if (s->field_20 < *s->field_C[i]) {
-                s->field_20 = *s->field_C[i];
+            if (s->maxVerts < *s->boneVerts[i]) {
+                s->maxVerts = *s->boneVerts[i];
             }
-            if (s->field_24 < *s->field_10[i]) {
-                s->field_24 = *s->field_10[i];
+            if (s->maxNormals < *s->boneNormals[i]) {
+                s->maxNormals = *s->boneNormals[i];
             }
         }
         s->field_28 = 0;
         for (i = 0; i < s->boneCount; i++) {
-            p = s->field_14[i];
+            p = s->bonePolys[i];
             e = p->e;
             q = (Sec1FDBC20 *)(e + p->n);
             e = q->e;
@@ -7976,9 +7976,9 @@ Sub3C *Gfx_AttachModel(Actor *a0, s32 id) {
             }
         }
         s->bones = (ModelBone *)Mem_Alloc(s->boneCount * sizeof(ModelBone), 2);
-        s->field_6C = (s32 *)Mem_Alloc(s->field_20 * 4, 2);
-        s->field_70 = (s32 *)Mem_Alloc(s->field_20 * 4, 2);
-        s->field_74 = (s32 *)Mem_Alloc(s->field_24 * 4, 2);
+        s->screenXY = (s32 *)Mem_Alloc(s->maxVerts * 4, 2);
+        s->vertOtz = (s32 *)Mem_Alloc(s->maxVerts * 4, 2);
+        s->vertColors = (s32 *)Mem_Alloc(s->maxNormals * 4, 2);
     }
     return s;
 }
@@ -7986,7 +7986,7 @@ Sub3C *Gfx_AttachModel(Actor *a0, s32 id) {
 void Gfx_CalcModelBoneMatrices(Actor *a0) {
     ObjC0E4 cam;
     Mat1F668 light;
-    Sub3C *s;
+    ActorModel *s;
     ObjEC10 *o;
     ModelBone *d;
     SpNode200D0 *sp;
@@ -8073,7 +8073,7 @@ void Gfx_CalcModelBoneMatrices(Actor *a0) {
 
 
 void Gfx_DrawTexModel(Actor *a0, s32 mode) {
-    Sub3C *s;
+    ActorModel *s;
     ModelBone *e;
     Sec1FDBC20 *p;
     QuadGT4_2130C *q;
@@ -8086,19 +8086,19 @@ void Gfx_DrawTexModel(Actor *a0, s32 mode) {
     i = 0;
     e = s->bones;
     s->field_44 = (struct Pos1F9AC *)Gfx_FindOrLoadTexSlot(s->fileId << 16);
-    s->field_40 = D_8005F770.otLayerLen[s->field_3C] - 2;
+    s->otzShift = D_8005F770.otLayerLen[s->otIndex] - 2;
     for (; i < s->boneCount; i++, e++) {
-        p = s->field_14[i];
+        p = s->bonePolys[i];
         gte_SetRotMatrix(&e->viewMat);
         gte_SetTransMatrix(&e->viewMat);
         if (mode == 0 && Gfx_IsOriginOffscreen() != 0) {
             continue;
         }
-        if (Gfx_ProjectModelVerts((Vert6Pmv *)s->field_C[i], (Obj21ABC *)s, mode) != 0) {
+        if (Gfx_ProjectModelVerts((Vert6Pmv *)s->boneVerts[i], (Obj21ABC *)s, mode) != 0) {
             continue;
         }
         gte_SetLightMatrix(&e->lightMat);
-        Gfx_CalcNormalColors((Vert6Pmv *)s->field_10[i], (Obj21ABC *)s);
+        Gfx_CalcNormalColors((Vert6Pmv *)s->boneNormals[i], (Obj21ABC *)s);
         for (j = 0; j < 2; j++) {
             n = p->n;
             q = (QuadGT4_2130C *)p->e;
@@ -8131,7 +8131,7 @@ void Gfx_DrawTexModel(Actor *a0, s32 mode) {
 
 
 void Gfx_DrawWireModel(Actor *a0, s32 mode, Col21ABC *col) {
-    Sub3C *s;
+    ActorModel *s;
     ModelBone *e;
     Sec1FDBC20 *p;
     Ent1FDBC20 *q;
@@ -8143,15 +8143,15 @@ void Gfx_DrawWireModel(Actor *a0, s32 mode, Col21ABC *col) {
     i = 0;
     s = a0->model;
     e = s->bones;
-    s->field_40 = D_8005F770.otLayerLen[s->field_3C] - 2;
+    s->otzShift = D_8005F770.otLayerLen[s->otIndex] - 2;
     for (; i < s->boneCount; i++, e++) {
-        p = s->field_14[i];
+        p = s->bonePolys[i];
         gte_SetRotMatrix(&e->viewMat);
         gte_SetTransMatrix(&e->viewMat);
         if (mode == 0 && Gfx_IsOriginOffscreen() != 0) {
             continue;
         }
-        if (Gfx_ProjectModelVerts((Vert6Pmv *)s->field_C[i], (Obj21ABC *)s, mode) != 0) {
+        if (Gfx_ProjectModelVerts((Vert6Pmv *)s->boneVerts[i], (Obj21ABC *)s, mode) != 0) {
             continue;
         }
         for (j = 0; j < 2; j++) {
@@ -8282,7 +8282,7 @@ void func_80020CE8(Obj20CE8 *a0, s32 a1) {
 
 s32 func_80020D54(ContC40 *a0, s32 i) {
     AllocC40 *p = a0->transform;
-    Obj20CE8 *e = &p->field_6C[i];
+    Obj20CE8 *e = &p->axisMotion[i];
 
     if (i != 1) {
         func_80020CE8(e, 0);
@@ -8299,7 +8299,7 @@ s32 func_80020D54(ContC40 *a0, s32 i) {
 
 s32 func_80020E00(ContC40 *a0, s32 i) {
     AllocC40 *p = a0->transform;
-    Obj20CE8 *e = &p->field_6C[i];
+    Obj20CE8 *e = &p->axisMotion[i];
 
     func_80020CE8(e, 0);
     switch (i) {
@@ -8359,7 +8359,7 @@ void Gfx_CalcNormalColors(Vert6Pmv *v, Obj21ABC *o) {
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80020FD0);
 
-void Gfx_AddQuadsGT4(QuadGT4_2130C *t, s32 n, Sub3C *s, s32 mode) {
+void Gfx_AddQuadsGT4(QuadGT4_2130C *t, s32 n, ActorModel *s, s32 mode) {
     s32 sxy[4];
     s32 opz;
     s32 *xy;
@@ -8374,10 +8374,10 @@ void Gfx_AddQuadsGT4(QuadGT4_2130C *t, s32 n, Sub3C *s, s32 mode) {
     SysState *g;
 
     tex = (GfxTexSlot *)s->field_44;
-    xy = s->field_6C;
-    col = (Col21ABC *)s->field_74;
-    sz = s->field_70;
-    idx = s->field_3C;
+    xy = s->screenXY;
+    col = (Col21ABC *)s->vertColors;
+    sz = s->vertOtz;
+    idx = s->otIndex;
     code = 0x3E;
     if (mode == 1) {
         code = 0x3C;
@@ -9119,12 +9119,12 @@ void Digi_SortRoster(void) {
             return;
         }
         best = i;
-        bestk = base[i].digiId + (999 - base[i].field_D) * 1000 + tbl.b[base[i].state] * 1000000;
+        bestk = base[i].digiId + (999 - base[i].level) * 1000 + tbl.sortRank[base[i].state] * 1000000;
         for (j = i + 1; j < 0x24; j++) {
             if (base[j].state == 0) {
                 break;
             }
-            k = base[j].digiId + (999 - base[j].field_D) * 1000 + tbl.b[base[j].state] * 1000000;
+            k = base[j].digiId + (999 - base[j].level) * 1000 + tbl.sortRank[base[j].state] * 1000000;
             if (k < bestk) {
                 best = j;
                 bestk = k;
@@ -9640,7 +9640,7 @@ void Cd_EvictLruFile(void) {
     p->data = 0;
     p->lastUsed = 0;
     p->state = 0;
-    p->field_2 = 0;
+    p->locked = 0;
 }
 
 void Cd_QueueFile(s32 id) {
@@ -9884,12 +9884,12 @@ void func_80024350(Actor *arg0) {
     switch (arg0->stateLevel0) {
     case 0:
         Actor_InitTransform((ContC40 *)arg0, &work->field_8, work->field_14);
-        Gfx_AttachModel(arg0, work->field_0)->field_3C = 3;
+        Gfx_AttachModel(arg0, work->field_0)->otIndex = 3;
         Anim_SetModelAnimFile(arg0, 0, work->field_4);
         Task_NextState0(arg0);
         break;
     case 1: {
-        Sub3C *s = arg0->model;
+        ActorModel *s = arg0->model;
         if (arg0->elapsed < work->field_18 && s->field_60 >= 0)
             break;
         Task_SetState0(arg0, 3);
@@ -9912,10 +9912,10 @@ void func_80024410(Actor *arg0) {
 }
 
 u8 PadGetState(void) {
-    Obj25FBC *o = D_80048E2C();
+    PadPort *o = D_80048E2C();
 
     if (o->sendCmd != 0 || o->field_38 != 0 || (o != o->field_10 && o->field_39 != 0)
-        || *o->field_30 != 0) {
+        || *o->padBuf != 0) {
         switch (o->state) {
         case 3:
             return 1;
@@ -9935,8 +9935,8 @@ void PadStartCom(void) {
     EnterCriticalSection();
     SysDeqIntRP(2, D_80048E78);
     SysEnqIntRP(2, D_80048E78);
-    D_80048DF0->field_0 = -2;
-    D_80048DF0->field_4 |= 1;
+    D_80048DF0->stat = -2;
+    D_80048DF0->mask |= 1;
     ChangeClearRCnt(3, 0);
     ExitCriticalSection();
     D_80048E1C(D_80048E4C);
@@ -9954,8 +9954,8 @@ void PadStopCom(void) {
 }
 
 void PadInitDirect(u8 *a0, u8 *a1) {
-    Obj25FBC *base;
-    Obj25FBC *p;
+    PadPort *base;
+    PadPort *p;
     u8 *q;
     s32 i;
     s32 j;
@@ -9964,15 +9964,15 @@ void PadInitDirect(u8 *a0, u8 *a1) {
     D_80048E64 = 0;
     Pad_InitDriverHooks();
     base = D_80048E4C;
-    base[0].field_30 = a0;
-    base[1].field_30 = a1;
+    base[0].padBuf = a0;
+    base[1].padBuf = a1;
     p = base;
     for (i = 0; i < 2; i++, p++) {
-        q = p->field_5D;
+        q = p->actAlign;
         p->field_C = 0;
         p->field_10 = p;
-        p->field_30[0] = 0xFF;
-        p->field_30[1] = 0;
+        p->padBuf[0] = 0xFF;
+        p->padBuf[1] = 0;
         for (j = 5; j >= 0; j--) {
             *q++ = 0xFF;
         }
@@ -9982,17 +9982,17 @@ void PadInitDirect(u8 *a0, u8 *a1) {
 
 
 void Pad_InitDriverHooks(void) {
-    Obj25FBC *o = (Obj25FBC *)D_8005FDD8;
+    PadPort *o = (PadPort *)D_8005FDD8;
 
     bzero((u8 *)o, 0x1E0);
-    o[0].field_3C = D_8005FFB8;
+    o[0].rxBuf = D_8005FFB8;
     o[0].field_40 = D_80060000;
-    o[1].field_3C = &D_8005FFB8[0x23];
+    o[1].rxBuf = &D_8005FFB8[0x23];
     D_80048E18 = func_8002485C;
     D_80048E1C = Pad_ResetPortState;
     D_80048E20 = func_80024960;
     D_80048E24 = (void (*)(Ent266D0 *))Pad_AllocActPower;
-    D_80048E2C = (Obj25FBC *(*)(void))Pad_GetPortBlock;
+    D_80048E2C = (PadPort *(*)(void))Pad_GetPortBlock;
     D_80048E3C = func_80024950;
     D_80048E30 = func_80024CB8;
     D_80048E34 = (s32 (*)(void))func_80025114;
@@ -10001,28 +10001,28 @@ void Pad_InitDriverHooks(void) {
     D_80048E38 = func_80024DC8;
 }
 
-void Pad_ResetPortState(Obj25FBC *a0) {
+void Pad_ResetPortState(PadPort *a0) {
     u8 *p;
     s32 k;
     u8 c;
 
     if (a0->state != 0) {
-        p = a0->field_5D;
+        p = a0->actAlign;
         c = 0xFF;
         k = 5;
         a0->state = 0;
-        a0->field_46 = 0;
+        a0->infoStep = 0;
         a0->field_E6 = 0;
-        a0->field_14 = 0;
-        a0->field_18 = 0;
-        a0->field_E3 = 0;
+        a0->sendInfoHook = 0;
+        a0->parseInfoHook = 0;
+        a0->modeCount = 0;
         a0->field_E4 = 0;
         a0->field_E6 = 0;
-        a0->field_E9 = 0;
-        a0->field_EA = 0;
-        a0->field_0 = 0;
-        a0->field_4 = 0;
-        a0->field_8 = 0;
+        a0->actCount = 0;
+        a0->combCount = 0;
+        a0->modeTable = 0;
+        a0->actTable = 0;
+        a0->combTable = 0;
         do {
             *p = c;
             k--;
@@ -10032,11 +10032,11 @@ void Pad_ResetPortState(Obj25FBC *a0) {
 }
 
 void func_8002485C(s32 code) {
-    Obj25FBC *o;
+    PadPort *o;
     s32 done;
 
     do {
-        o = &((Obj25FBC *)D_8005FDD8)[D_80048E58];
+        o = &((PadPort *)D_8005FDD8)[D_80048E58];
         if (code != -9) {
             if (code == 0) {
                 *(D_80048E70 + D_80048E58) = 0;
@@ -10049,7 +10049,7 @@ void func_8002485C(s32 code) {
         D_80048E00->ctrl = 0;
         D_80048E58++;
         if (D_80048E58 <= D_80048E6C) {
-            done = func_8002533C(&((Obj25FBC *)D_8005FDD8)[D_80048E58]);
+            done = func_8002533C(&((PadPort *)D_8005FDD8)[D_80048E58]);
         } else {
             done = 1;
         }
@@ -10066,33 +10066,33 @@ s32 func_80024950(Actor *arg0) {
 }
 
 s32 func_80024960(Ent266D0 *e, s32 a1) {
-    Obj25FBC *a0 = (Obj25FBC *)e;
-    s32 i = a0->field_45 - 3;
+    PadPort *a0 = (PadPort *)e;
+    s32 i = a0->xferPos - 3;
 
     switch (a0->sendCmd) {
     case 0:
-        if (i < 6 && a0->field_57[i] == 0) {
+        if (i < 6 && a0->actEnabled[i] == 0) {
             return 0;
         }
-        if (i < a0->field_34) {
-            return a0->field_28[i];
+        if (i < a0->actDataLen) {
+            return a0->actData[i];
         }
         return 0;
     case 0x4D:
-        if (i < a0->field_36) {
-            return a0->field_2C[i];
+        if (i < a0->sendParamCount) {
+            return a0->sendParams[i];
         }
         return 0xFF;
     default:
-        if (i < a0->field_36) {
-            return a0->field_2C[i];
+        if (i < a0->sendParamCount) {
+            return a0->sendParams[i];
         }
         return 0;
     }
 }
 
 
-void Pad_AllocActPower(Obj25FBC *a0) {
+void Pad_AllocActPower(PadPort *a0) {
     s32 n;
     s32 i;
     s32 j;
@@ -10102,20 +10102,20 @@ void Pad_AllocActPower(Obj25FBC *a0) {
     u8 *p;
     u8 *q;
 
-    bzero(a0->field_57, 6);
-    if (a0->field_E6 != 0 && a0->field_28 != 0) {
+    bzero(a0->actEnabled, 6);
+    if (a0->field_E6 != 0 && a0->actData != 0) {
         n = 6;
-        if (a0->field_34 < 7) {
-            n = a0->field_34;
+        if (a0->actDataLen < 7) {
+            n = a0->actDataLen;
         }
-        for (i = 0; i < a0->field_E9; i++) {
+        for (i = 0; i < a0->actCount; i++) {
             found = 0;
             mask = 1;
-            if (a0->field_4[i].field_2 != 0) {
+            if (a0->actTable[i].size != 0) {
                 mask = 0xFF;
             }
-            p = a0->field_5D;
-            q = a0->field_28;
+            p = a0->actAlign;
+            q = a0->actData;
             for (j = 0; j < n; p++, j++, q++) {
                 if (*p == i && (*q & mask)) {
                     found = 1;
@@ -10123,15 +10123,15 @@ void Pad_AllocActPower(Obj25FBC *a0) {
                 }
             }
             if (found) {
-                s = D_80048E60 + a0->field_4[i].curr;
+                s = D_80048E60 + a0->actTable[i].curr;
                 if (s < 0x3D) {
                     D_80048E60 = s;
                 } else {
                     found = 0;
                 }
                 if (found) {
-                    p = a0->field_5D;
-                    q = a0->field_57;
+                    p = a0->actAlign;
+                    q = a0->actEnabled;
                     for (j = 0; j < n; j++, q++) {
                         if (*p++ == i) {
                             *q = 1;
@@ -10142,21 +10142,21 @@ void Pad_AllocActPower(Obj25FBC *a0) {
         }
         return;
     }
-    if ((a0->field_E8 - 4U < 2 || a0->field_E8 == 7) && a0->field_E6 == 0 && a0->field_34 >= 2) {
-        if ((a0->field_28[0] & 0xC0) == 0x40 && (a0->field_28[1] & 1) && D_80048E60 + 10 < 0x3D) {
-            a0->field_57[1] = 1;
-            a0->field_57[0] = 1;
+    if ((a0->padType - 4U < 2 || a0->padType == 7) && a0->field_E6 == 0 && a0->actDataLen >= 2) {
+        if ((a0->actData[0] & 0xC0) == 0x40 && (a0->actData[1] & 1) && D_80048E60 + 10 < 0x3D) {
+            a0->actEnabled[1] = 1;
+            a0->actEnabled[0] = 1;
             D_80048E60 += 10;
         }
         return;
     }
-    if (*(volatile u8 *)&a0->field_E8 == 3) {
-        a0->field_57[0] = 1;
+    if (*(volatile u8 *)&a0->padType == 3) {
+        a0->actEnabled[0] = 1;
         return;
     }
     if (a0->field_E6 == 0) {
         for (i = 0; i < 6; i++) {
-            a0->field_57[i] = 1;
+            a0->actEnabled[i] = 1;
         }
     }
 }
@@ -10170,20 +10170,20 @@ u8 *Pad_GetPortBlock(s32 arg0) {
     return p;
 }
 
-s32 func_80024CB8(Obj25FBC *a0) {
-    if (*a0->field_3C == 0xF3) {
-        if (a0->field_E8 == 0) {
+s32 func_80024CB8(PadPort *a0) {
+    if (*a0->rxBuf == 0xF3) {
+        if (a0->padType == 0) {
             Pad_CmdConfigMode((Actor *)a0, 0);
             return 0;
         }
-        if (a0->field_46 == 0xFF) {
+        if (a0->infoStep == 0xFF) {
             goto stop;
         }
         if (a0->state == 2) {
             D_80048E1C(a0);
         }
     }
-    switch (a0->field_46) {
+    switch (a0->infoStep) {
     case 1:
         Pad_CmdConfigMode((Actor *)a0, 1);
         break;
@@ -10195,8 +10195,8 @@ s32 func_80024CB8(Obj25FBC *a0) {
     case 0xFF:
         break;
     default:
-        if (a0->field_14 != 0) {
-            a0->field_14(a0);
+        if (a0->sendInfoHook != 0) {
+            a0->sendInfoHook(a0);
         } else {
             Pad_SendInfoCmd(a0);
         }
@@ -10205,79 +10205,79 @@ s32 func_80024CB8(Obj25FBC *a0) {
     return 0;
 }
 
-void func_80024DC8(Obj25FBC *a0) {
+void func_80024DC8(PadPort *a0) {
     s32 old;
     s32 i;
     s32 r;
 
-    if (!(*a0->field_3C & 0xF0)) {
-        a0->field_30[0] = 0xFF;
-        a0->field_30[1] = 0;
-        a0->field_E8 = 0;
-        a0->field_35 = 0;
+    if (!(*a0->rxBuf & 0xF0)) {
+        a0->padBuf[0] = 0xFF;
+        a0->padBuf[1] = 0;
+        a0->padType = 0;
+        a0->rxLen = 0;
         D_80048E1C(a0);
         return;
     }
-    old = a0->field_E8;
-    a0->field_E8 = *a0->field_3C >> 4;
-    if (a0->field_E8 == 0xF) {
-        a0->field_E8 = old;
+    old = a0->padType;
+    a0->padType = *a0->rxBuf >> 4;
+    if (a0->padType == 0xF) {
+        a0->padType = old;
     } else {
-        a0->field_30[0] = 0;
-        a0->field_30[1] = a0->field_3C[0];
-        a0->field_35 = a0->field_44;
-        for (i = 2; i < a0->field_44; i++) {
-            a0->field_30[i] = a0->field_3C[i];
+        a0->padBuf[0] = 0;
+        a0->padBuf[1] = a0->rxBuf[0];
+        a0->rxLen = a0->rxPos;
+        for (i = 2; i < a0->rxPos; i++) {
+            a0->padBuf[i] = a0->rxBuf[i];
         }
     }
-    if ((a0->field_3C[1] == 0 && (a0->field_46 != 1 || a0->field_14 != 0) && a0->field_50 == 0)
-        || a0->field_E8 != old) {
+    if ((a0->rxBuf[1] == 0 && (a0->infoStep != 1 || a0->sendInfoHook != 0) && a0->field_50 == 0)
+        || a0->padType != old) {
         D_80048E1C(a0);
     }
 
     a0->field_4A = 0;
-    if (a0->field_46 == 0xFF) {
+    if (a0->infoStep == 0xFF) {
         return;
     }
-    if (a0->field_46 != 0 && a0->sendCmd == 0) {
+    if (a0->infoStep != 0 && a0->sendCmd == 0) {
         return;
     }
-    if ((u8)(a0->field_46 - 2) < 0xFC && *a0->field_3C != 0xF3) {
+    if ((u8)(a0->infoStep - 2) < 0xFC && *a0->rxBuf != 0xF3) {
         D_80048E1C(a0);
         return;
     }
-    switch (a0->field_46) {
+    switch (a0->infoStep) {
     case 0:
         a0->state = 1;
-        a0->field_46++;
+        a0->infoStep++;
         break;
     case 1:
-        a0->field_47 = 0;
-        a0->field_46++;
+        a0->infoIndex = 0;
+        a0->infoStep++;
         break;
     case 0xFE:
-        a0->field_46 = 0xFF;
+        a0->infoStep = 0xFF;
         break;
     default:
-        if (a0->field_18 != 0) {
-            a0->field_46 += a0->field_18(a0);
+        if (a0->parseInfoHook != 0) {
+            a0->infoStep += a0->parseInfoHook(a0);
         } else {
-            a0->field_46 += Pad_ParseInfoReply(a0);
+            a0->infoStep += Pad_ParseInfoReply(a0);
         }
         break;
     }
 }
 
-void func_80025034(Obj25FBC *a0) {
+void func_80025034(PadPort *a0) {
     a0->field_4C++;
-    if (a0->field_46 != 0) {
-        if (a0->field_46 == 1) {
+    if (a0->infoStep != 0) {
+        if (a0->infoStep == 1) {
             if (a0->field_4A < 11) {
                 a0->field_4A++;
                 return;
             }
             a0->state = 2;
-            a0->field_46 = 0xFF;
+            a0->infoStep = 0xFF;
             return;
         }
         if (a0->field_4A < 11) {
@@ -10288,16 +10288,16 @@ void func_80025034(Obj25FBC *a0) {
             D_80048E1C(a0);
         }
     }
-    if (*a0->field_3C != 0xF3) {
-        a0->field_30[0] = 0xFF;
-        a0->field_30[1] = 0;
-        a0->field_E8 = 0;
-        a0->field_35 = 0;
+    if (*a0->rxBuf != 0xF3) {
+        a0->padBuf[0] = 0xFF;
+        a0->padBuf[1] = 0;
+        a0->padType = 0;
+        a0->rxLen = 0;
     }
 }
 
-s32 func_80025114(Obj25FBC *p) {
-    if (p->field_E6 != 0 && p->field_46 == 0xFF) {
+s32 func_80025114(PadPort *p) {
+    if (p->field_E6 != 0 && p->infoStep == 0xFF) {
         return 0;
     }
     return 1;
@@ -10345,7 +10345,7 @@ s32 func_800251AC(void) {
     return 0;
 }
 
-s32 func_8002533C(Obj25FBC *a0) {
+s32 func_8002533C(PadPort *a0) {
     SioRegs *st;
     s32 *tbl;
     s32 *q;
@@ -10357,7 +10357,7 @@ s32 func_8002533C(Obj25FBC *a0) {
     *(volatile u16 *)&st->ctrl = 0;
     *(volatile u16 *)&st->mode = 0xD;
     *(volatile u16 *)&st->baud = 0x88;
-    Pad_SetTimeout(a0->field_E8 == 8 ? 0x50 : 0x91);
+    Pad_SetTimeout(a0->padType == 8 ? 0x50 : 0x91);
     Pad_SioRegs->ctrl = D_80048E58 ? 0x3003 : 0x1003;
     n = D_80048E70[D_80048E58];
     tbl = D_80048E70;
@@ -10370,7 +10370,7 @@ s32 func_8002533C(Obj25FBC *a0) {
         }
         q = &D_80048E70[D_80048E58];
         if (*q == 0) {
-            void (*fp)(Obj25FBC *);
+            void (*fp)(PadPort *);
             fp = D_80048E38;
             *q = -1;
             fp(a0);
@@ -10427,13 +10427,13 @@ s32 func_8002533C(Obj25FBC *a0) {
 }
 
 
-void Pad_SioRunStep(Obj25FBC *a0) {
+void Pad_SioRunStep(PadPort *a0) {
     s32 r;
 
     r = D_80048EA0[D_80048E5C++](a0);
     if (r >= 0) {
         if (D_80048E5C != 0) {
-            if (D_80048E5C != 3 || *a0->field_3C != 0x80) {
+            if (D_80048E5C != 3 || *a0->rxBuf != 0x80) {
                 Pad_SetTimeout(0x3C);
                 if (func_80025C00() == 0) {
                     D_80048E18(-3);
@@ -10455,8 +10455,8 @@ s32 func_80025760(Ent266D0 *a0, s32 a1) {
 
     if (a1 < 0) {
         r = Pad_SioRegs->data;
-        a0->field_44 = 0xFF;
-        a0->field_45 = 1;
+        a0->rxPos = 0xFF;
+        a0->xferPos = 1;
         *a0->field_40 = ~a1;
         while (!(Pad_SioRegs->stat & 1)) {
         }
@@ -10465,8 +10465,8 @@ s32 func_80025760(Ent266D0 *a0, s32 a1) {
         Pad_SioRegs->data = ~a1;
     } else {
         v = 0x88;
-        t = *a0->field_3C;
-        if ((t >> 4) == 8 && a0->field_44 >= 9) {
+        t = *a0->rxBuf;
+        if ((t >> 4) == 8 && a0->rxPos >= 9) {
             v = 0x22;
         }
         D_80060050 = 0x1AE;
@@ -10486,9 +10486,9 @@ s32 func_80025760(Ent266D0 *a0, s32 a1) {
             Pad_IntrRegs->iStat = -0x81;
             Pad_SioRegs->ctrl |= 0x10;
         }
-        a0->field_45++;
-        a0->field_3C[a0->field_44] = r;
-        a0->field_44++;
+        a0->xferPos++;
+        a0->rxBuf[a0->rxPos] = r;
+        a0->rxPos++;
     }
     return r;
 }
@@ -10503,8 +10503,8 @@ s32 Pad_SioExchangeByte(Ent266D0 *a0, s32 a1) {
     s32 lim;
     IntrRegs *p;
 
-    d = *a0->field_3C;
-    if ((d >> 4) == 8 && a0->field_44 >= 9) {
+    d = *a0->rxBuf;
+    if ((d >> 4) == 8 && a0->rxPos >= 9) {
         v = 0x22;
     } else {
         v = 0x88;
@@ -10513,7 +10513,7 @@ s32 Pad_SioExchangeByte(Ent266D0 *a0, s32 a1) {
     }
     Pad_SetTimeout(0x190);
     r = Pad_SioRegs->data;
-    if (a0->field_44 != 0 || (r >> 4) != 8) {
+    if (a0->rxPos != 0 || (r >> 4) != 8) {
         *(volatile u16 *)&Pad_SioRegs->baud = v;
     } else {
         Pad_SioRegs->baud = 0x22;
@@ -10540,7 +10540,7 @@ s32 Pad_SioExchangeByte(Ent266D0 *a0, s32 a1) {
             }
         } while (!(Pad_IntrRegs->iStat & 0x80));
     }
-    if (((Slot267F0 *)a0)->field_E8 != 8 && D_80048E5C == 2) {
+    if (((Slot267F0 *)a0)->padType != 8 && D_80048E5C == 2) {
         Pad_SetTimeout(0x3C);
         while (Pad_IsTimedOut() == 0) {
         }
@@ -10550,11 +10550,11 @@ s32 Pad_SioExchangeByte(Ent266D0 *a0, s32 a1) {
         Pad_IntrRegs->iStat = -0x81;
         Pad_SioRegs->ctrl |= 0x10;
     }
-    a0->field_45++;
-    if (a0->field_44 != 0xFF) {
-        (*(u8 * volatile *)&a0->field_3C)[*(volatile u8 *)&a0->field_44] = r;
+    a0->xferPos++;
+    if (a0->rxPos != 0xFF) {
+        (*(u8 * volatile *)&a0->rxBuf)[*(volatile u8 *)&a0->rxPos] = r;
     }
-    a0->field_44++;
+    a0->rxPos++;
     return r;
 }
 
@@ -10586,8 +10586,8 @@ void Pad_SetCmd(Actor *arg0, u8 arg1, ActorWork *arg2, u8 arg3) {
     arg0->u34.b.field_36 = arg3;
 }
 
-void Pad_SendInfoCmd(Obj25FBC *a0) {
-    switch (a0->field_46) {
+void Pad_SendInfoCmd(PadPort *a0) {
+    switch (a0->infoStep) {
     case 2:
         Pad_CmdQueryModel((Actor *)a0);
         break;
@@ -10595,32 +10595,32 @@ void Pad_SendInfoCmd(Obj25FBC *a0) {
         Pad_CmdQueryMode((Actor *)a0, a0->field_E4);
         break;
     case 4:
-        Pad_CmdQueryComb((Actor *)a0, a0->field_47);
+        Pad_CmdQueryComb((Actor *)a0, a0->infoIndex);
         break;
     }
 }
 
-s32 Pad_ParseInfoReply(Obj25FBC *a0) {
+s32 Pad_ParseInfoReply(PadPort *a0) {
     u8 *p;
     s32 v;
 
-    switch (a0->field_46) {
+    switch (a0->infoStep) {
 
     case 2:
-        p = *(u8 *volatile *)&a0->field_3C;
+        p = *(u8 *volatile *)&a0->rxBuf;
         if (p[7] != 0) {
             goto ret0;
         }
-        if (a0->field_E3 == p[3] && a0->field_E4 == p[4] && a0->field_E9 == p[5] && a0->field_EA == p[6]) {
+        if (a0->modeCount == p[3] && a0->field_E4 == p[4] && a0->actCount == p[5] && a0->combCount == p[6]) {
             a0->field_EE = 0;
         } else {
             a0->field_EE = 0xFFFF;
         }
-        a0->field_E3 = (*(u8 *volatile *)&a0->field_3C)[3];
-        a0->field_E4 = (*(u8 *volatile *)&a0->field_3C)[4];
+        a0->modeCount = (*(u8 *volatile *)&a0->rxBuf)[3];
+        a0->field_E4 = (*(u8 *volatile *)&a0->rxBuf)[4];
         a0->field_E6 = 0;
-        a0->field_E9 = (*(u8 *volatile *)&a0->field_3C)[5];
-        a0->field_EA = (*(u8 *volatile *)&a0->field_3C)[6];
+        a0->actCount = (*(u8 *volatile *)&a0->rxBuf)[5];
+        a0->combCount = (*(u8 *volatile *)&a0->rxBuf)[6];
         a0->field_EC = 0;
         if (a0->field_EE != 0) {
             goto ret0;
@@ -10629,7 +10629,7 @@ s32 Pad_ParseInfoReply(Obj25FBC *a0) {
         break;
 
     case 3:
-        p = *(u8 *volatile *)&a0->field_3C;
+        p = *(u8 *volatile *)&a0->rxBuf;
         if (p[2] != 0) {
             goto ret0;
         }
@@ -10645,11 +10645,11 @@ s32 Pad_ParseInfoReply(Obj25FBC *a0) {
         }
         a0->field_EE = 0xFFFF;
         a0->field_EB = 0;
-        a0->field_47 = 0;
+        a0->infoIndex = 0;
         break;
 
     case 4:
-        p = *(u8 *volatile *)&a0->field_3C;
+        p = *(u8 *volatile *)&a0->rxBuf;
         if (p[2] != 0) {
             goto ret0;
         }
@@ -10660,26 +10660,26 @@ s32 Pad_ParseInfoReply(Obj25FBC *a0) {
         v += 8;
         v += (p[4] + 3) & 0x1FC;
         a0->field_EC = v;
-        if (++a0->field_47 < a0->field_EA) {
+        if (++a0->infoIndex < a0->combCount) {
             goto ret0;
         }
         if (func_80025FBC(a0) > 0x80) {
             D_80048E1C(a0);
-            a0->field_46 = 0xFE;
+            a0->infoStep = 0xFE;
             a0->state = 2;
             goto ret0;
         }
         if (a0->field_EE != a0->field_EC) {
             a0->field_EE = a0->field_EC;
-            a0->field_47 = 0;
+            a0->infoIndex = 0;
             a0->field_EC = 0;
             return 0;
         }
         a0->field_EE = 0;
         a0->field_EB = 0;
-        a0->field_46 = 0xFF;
-        func_80025FF4(a0, a0->field_63);
-        a0->field_46 = 2;
+        a0->infoStep = 0xFF;
+        func_80025FF4(a0, a0->infoBuf);
+        a0->infoStep = 2;
         goto ret0;
 
     }
@@ -10687,43 +10687,43 @@ s32 Pad_ParseInfoReply(Obj25FBC *a0) {
 }
 
 
-s32 func_80025FBC(Obj25FBC *arg0) {
-    s32 a = ((arg0->field_E3 + 1) >> 1) << 2;
-    s32 b = ((arg0->field_E9 * 5 + 3) & 0xFFC) + 4;
+s32 func_80025FBC(PadPort *arg0) {
+    s32 a = ((arg0->modeCount + 1) >> 1) << 2;
+    s32 b = ((arg0->actCount * 5 + 3) & 0xFFC) + 4;
     return a + b + arg0->field_EC;
 }
 
-s32 func_80025FF4(Obj25FBC *a0, s32 a1) {
+s32 func_80025FF4(PadPort *a0, s32 a1) {
     s32 n;
 
-    if (a1 == 0 || a0->field_4 != 0 || D_80048E34() != 0) {
+    if (a1 == 0 || a0->actTable != 0 || D_80048E34() != 0) {
         return 0;
     }
     a0->state = 4;
-    a0->field_46 = 1;
-    a0->field_14 = (s32)func_800260C8;
-    a0->field_18 = (s32)func_80026170;
+    a0->infoStep = 1;
+    a0->sendInfoHook = (s32)func_800260C8;
+    a0->parseInfoHook = (s32)func_80026170;
     n = (a1 + 3) >> 2 << 2;
-    a0->field_0 = n;
-    a0->field_47 = 0;
-    n += (a0->field_E3 + 1) / 2 * 4;
-    a0->field_4 = n;
-    n += (a0->field_E9 * 5 + 3) & 0xFFC;
-    a0->field_8 = n;
+    a0->modeTable = n;
+    a0->infoIndex = 0;
+    n += (a0->modeCount + 1) / 2 * 4;
+    a0->actTable = n;
+    n += (a0->actCount * 5 + 3) & 0xFFC;
+    a0->combTable = n;
     return 1;
 }
 
 void func_800260C8(Actor *a) {
-    switch (a->field_46) {
+    switch (a->infoStep) {
     case 2:
-        Pad_CmdQueryMode(a, a->field_47);
+        Pad_CmdQueryMode(a, a->infoIndex);
         return;
     case 3:
-        Pad_CmdQueryAct(a, a->field_47);
+        Pad_CmdQueryAct(a, a->infoIndex);
         return;
     case 4:
         if (a->field_48[0].isbg == 0) {
-            Pad_CmdQueryComb(a, a->field_47);
+            Pad_CmdQueryComb(a, a->infoIndex);
             return;
         }
         func_800265FC(a);
@@ -10732,7 +10732,7 @@ void func_800260C8(Actor *a) {
 }
 
 s32 func_80026170(Obj26170 *a) {
-    volatile Ent26170 *q;
+    volatile PadActInfo *q;
     PadCombEntry *e;
     u8 *src;
     s32 n;
@@ -10756,17 +10756,17 @@ s32 func_80026170(Obj26170 *a) {
         if (a->rxBuf[2] != 0) return 0;
         if (a->rxBuf[3] != 0) return 0;
         q = &a->actTable[a->queryIndex];
-        if (q->field_0 == a->rxBuf[4] && q->field_1 == (a->rxBuf[5] & 0x7F) && q->field_2 == a->rxBuf[6]
-            && q->field_3 == a->rxBuf[7] && (x = a->rxBuf[5], q->field_4 == x >> 7)) {
+        if (q->func == a->rxBuf[4] && q->subFunc == (a->rxBuf[5] & 0x7F) && q->size == a->rxBuf[6]
+            && q->curr == a->rxBuf[7] && (x = a->rxBuf[5], q->sign == x >> 7)) {
             a->field_EE = 0;
         } else {
             a->field_EE = 0xFFFF;
         }
-        q->field_0 = a->rxBuf[4];
-        q->field_1 = a->rxBuf[5] & 0x7F;
-        q->field_2 = a->rxBuf[6];
-        q->field_3 = a->rxBuf[7];
-        q->field_4 = (x = a->rxBuf[5]) >> 7;
+        q->func = a->rxBuf[4];
+        q->subFunc = a->rxBuf[5] & 0x7F;
+        q->size = a->rxBuf[6];
+        q->curr = a->rxBuf[7];
+        q->sign = (x = a->rxBuf[5]) >> 7;
         if (a->field_EE != 0) return 0;
         a->field_EB = 0;
         if (++a->queryIndex < a->actCount) return 0;
@@ -10895,11 +10895,11 @@ s32 Pad_IsTimedOut(void) {
 
 void func_800266D0(Ent266D0 *a0) {
     D_80048E98 = D_80048E30(a0);
-    *a0->field_3C = 0;
+    *a0->rxBuf = 0;
     func_80025760(a0, -2);
 }
 
-void Pad_SioStepSendCmd(Obj25FBC *a0) {
+void Pad_SioStepSendCmd(PadPort *a0) {
     if (D_80048E58 == D_80048E68 && D_80048E54 != 0) {
         D_80048E48();
         D_80048E44();
@@ -10940,14 +10940,14 @@ s32 Pad_SioStepRecv5A(Ent266D0 *a0) {
     s32 r;
 
     if (D_80048E64 != 0) {
-        s32 st = *a0->field_3C;
+        s32 st = *a0->rxBuf;
         if ((st >> 4) == 8) {
             f = a0->sendCmd == 0;
         }
     }
     D_80048E9C = f;
     if (f == 0 && a0->sendCmd == 0 && a0->field_38 == 0
-        && (a0 == a0->field_10 || a0->field_39 == 0) && *a0->field_30 == 0) {
+        && (a0 == a0->field_10 || a0->field_39 == 0) && *a0->padBuf == 0) {
         D_80048E24(a0);
     }
     r = Pad_SioExchangeByte(a0, (u8)D_80048E20(a0, D_80048E9C));
@@ -11001,13 +11001,13 @@ s32 Pad_SioStepRecvData(Ent266D0 *a0) {
     s32 t;
     s32 ok;
     s32 idx;
-    Obj25FBC *e;
+    PadPort *e;
     Slot267F0 *s;
     s32 *slot;
     s32 c;
 
     if (D_80048E9C != 0 && a0->sendCmd == 0 && a0->field_38 == 0
-        && (a0 == a0->field_10 || a0->field_39 == 0) && *a0->field_30 == 0) {
+        && (a0 == a0->field_10 || a0->field_39 == 0) && *a0->padBuf == 0) {
         D_80048E24(a0);
     }
     f = D_80048E9C;
@@ -11019,7 +11019,7 @@ s32 Pad_SioStepRecvData(Ent266D0 *a0) {
             if (i >= 0) {
                 s = &a0->field_C[i];
                 if (s->e.sendCmd == 0 && s->e.field_38 == 0
-                    && (&s->e == s->e.field_10 || s->e.field_39 == 0) && *s->e.field_30 == 0) {
+                    && (&s->e == s->e.field_10 || s->e.field_39 == 0) && *s->e.padBuf == 0) {
                     D_80048E24(&s->e);
                 }
             }
@@ -11090,9 +11090,9 @@ s32 Pad_SioStepRecvData(Ent266D0 *a0) {
         }
     }
     {
-        s32 k = a0->field_44;
-        a0->field_44 = k + 1;
-        a0->field_3C[k] = Pad_SioRegs->data;
+        s32 k = a0->rxPos;
+        a0->rxPos = k + 1;
+        a0->rxBuf[k] = Pad_SioRegs->data;
     }
     D_80048E18(0);
     return 0;
@@ -11196,7 +11196,7 @@ s32 ResetGraph(s32 mode) {
         g->type = _reset(mode);
         g->queMode = 1;
         g->vramW = D_80048F90[((volatile GpuEnv *)g)->type][0];
-        g->vramH = D_80048F9C.field_0[g->type][0];
+        g->vramH = D_80048F9C.vramH[g->type][0];
         func_80029FDC(g->draw, -1, 0x5C);
         func_80029FDC((u8 *)&g->disp, -1, 0x14);
         return g->type;
@@ -11797,7 +11797,7 @@ s32 _addque2(void (*func)(s32 *, s32), s32 *param, s32 n, s32 x) {
     }
     D_80049040 = SetIntrMask(0);
     g = &D_80048F10;
-    g->field_8 = 1;
+    g->syncPending = 1;
     if (g->queMode == 0 ||
         (D_80049038 == D_8004903C && !(*D_80049024 & 0x1000000) && g->drawSyncCb == 0)) {
         while (!(*(volatile s32 *)D_80049018 & 0x4000000)) {
@@ -11846,10 +11846,10 @@ s32 _exeque(void) {
         D_8004903C = (D_8004903C + 1) & 0x3F;
     }
     SetIntrMask(D_80049044);
-    if (D_80049038 == D_8004903C && !(*D_80049024 & 0x1000000) && D_80048F10.field_8 != 0) {
+    if (D_80049038 == D_8004903C && !(*D_80049024 & 0x1000000) && D_80048F10.syncPending != 0) {
         cb = (void (*)(void))D_80048F10.drawSyncCb;
         if (cb != 0) {
-            ((volatile GpuEnv *)&D_80048F10)->field_8 = 0;
+            ((volatile GpuEnv *)&D_80048F10)->syncPending = 0;
             cb();
         }
     }
@@ -14319,7 +14319,7 @@ s32 CD_cw(com, param, result, async)
     }
     D_8004E9A4.syncIntr = 0;
     t = &D_8004E80C;
-    if (t->field_0[com] != 0) {
+    if (t->clearsReadyIntr[com] != 0) {
         D_8004E9A4.readyIntr = 0;
     }
     *D_8004E98C = 0;
@@ -14856,7 +14856,7 @@ void trapIntr(void) {
         printf(D_800109C8, *D_8004FB84);
         ReturnFromException();
     }
-    D_8004EAF8.field_2 = 1;
+    D_8004EAF8.inInterrupt = 1;
     while ((mask = (D_8004EAF8.enabledInterruptsMask & *(volatile u16 *)D_8004FB84) & *(volatile u16 *)Sys_IntrMaskPtr) != 0) {
         for (i = 0; mask != 0 && i < 11; i++, mask >>= 1) {
             if (mask & 1) {
@@ -15156,15 +15156,15 @@ void _SsSndCrescendo(s16 a0, s16 a1) {
     s32 l;
     s32 r;
 
-    t = e->field_A0 + 1;
-    e->field_A0 = t;
-    if (e->field_9C < t) {
+    t = e->fadeFrame + 1;
+    e->fadeFrame = t;
+    if (e->fadeFrames < t) {
         (*pp)[a1].flags &= ~0x10;
     } else {
-        d = e->field_48 * t / e->field_9C;
-        d -= e->field_4A;
+        d = e->fadeVol * t / e->fadeFrames;
+        d -= e->fadeVolDone;
         if (d != 0) {
-            e->field_4A += d;
+            e->fadeVolDone += d;
             _SsVmGetSeqVol((s16)(a0 | (a1 << 8)), &vol[0], &vol[1]);
             l = vol[0] + d;
             if (l >= 0x80) {
@@ -15194,7 +15194,7 @@ void _SsSndPause(s32 a0, s16 a1) {
     SndSeqScore *e = &Snd_SeqScores[(s16)a0][a1];
 
     _SsVmSeqKeyOff((s16)(a0 | (a1 << 8)));
-    e->field_14 = 0;
+    e->playMode = 0;
     Snd_SeqScores[(s16)a0][a1].flags &= ~2;
 }
 
@@ -15232,9 +15232,9 @@ void func_80031DA4(s16 a0, s16 a1) {
 void func_80031EA0(s16 a0, s16 a1) {
     SndSeqScore *e = &Snd_SeqScores[a0][a1];
 
-    e->field_21++;
+    e->playCount++;
     if ((s8)e->loopCount == 0) {
-        e->field_88 = 0;
+        e->elapsedTicks = 0;
         e->field_1C = 0;
         e->deltaValue = 0;
         if (Snd_SeqScores[a0][a1].flags & 0x400) {
@@ -15244,16 +15244,16 @@ void func_80031EA0(s16 a0, s16 a1) {
         }
         return;
     }
-    if ((s8)e->field_21 < (s8)e->loopCount) {
-        e->field_88 = 0;
+    if ((s8)e->playCount < (s8)e->loopCount) {
+        e->elapsedTicks = 0;
         e->field_1C = 0;
         e->deltaValue = 0;
         if (Snd_SeqScores[a0][a1].flags & 0x400) {
             e->readPos = e->field_C;
-            e->field_8 = (s32)e->field_C;
+            e->loopPos = (s32)e->field_C;
         } else {
             e->readPos = e->seqStart;
-            e->field_8 = (s32)e->seqStart;
+            e->loopPos = (s32)e->seqStart;
         }
         return;
     }
@@ -15262,17 +15262,17 @@ void func_80031EA0(s16 a0, s16 a1) {
     Snd_SeqScores[a0][a1].flags &= ~2;
     Snd_SeqScores[a0][a1].flags |= 0x200;
     Snd_SeqScores[a0][a1].flags |= 4;
-    e->field_14 = 0;
+    e->playMode = 0;
     if (Snd_SeqScores[a0][a1].flags & 0x400) {
-        e->field_8 = (s32)e->field_C;
+        e->loopPos = (s32)e->field_C;
     } else {
-        e->field_8 = (s32)e->seqStart;
+        e->loopPos = (s32)e->seqStart;
     }
     {
-        s8 n = e->field_22;
+        s8 n = e->nextSeqAccess;
         if (n != -1) {
-            e->field_14 = 0;
-            _SsSndNextSep(e->field_22, (s8)e->field_23);
+            e->playMode = 0;
+            _SsSndNextSep(e->nextSeqAccess, (s8)e->nextSepNo);
             _SsVmSeqKeyOff((s16)(a0 | (a1 << 8)));
         }
     }
@@ -15300,27 +15300,27 @@ s32 _SsGetSeqData(s16 a0, s16 a1) {
         ev = st & 0xF0;
         switch (ev) {
         case 0x90:
-            e->field_16 = ev;
+            e->runningStatus = ev;
             n = *e->readPos++;
             d = *e->readPos++;
             e->deltaValue = _SsReadDeltaValue(a0, a1);
             D_80061BB0[0](a0, a1, n, d);
             break;
         case 0xB0:
-            e->field_16 = ev;
+            e->runningStatus = ev;
             D_80061BB0[4](a0, a1, *e->readPos++);
             break;
         case 0xC0:
-            e->field_16 = ev;
+            e->runningStatus = ev;
             D_80061BB0[1](a0, a1, *e->readPos++);
             break;
         case 0xE0:
-            e->field_16 = ev;
+            e->runningStatus = ev;
             e->readPos++;
             D_80061BB0[2](a0, a1);
             break;
         case 0xF0:
-            e->field_16 = 0xFF;
+            e->runningStatus = 0xFF;
             st = *e->readPos++; c = st;
             if (c == 0x2F) {
                 goto end_track;
@@ -15328,7 +15328,7 @@ s32 _SsGetSeqData(s16 a0, s16 a1) {
             goto meta;
         }
     } else {
-        switch (e->field_16) {
+        switch (e->runningStatus) {
         case 0x90:
             d = *e->readPos++;
             e->deltaValue = _SsReadDeltaValue(a0, a1);
@@ -15376,7 +15376,7 @@ s32 _SsReadDeltaValue(s16 a0, s16 a1) {
             } while (c & 0x80);
         }
         r = v * 10;
-        e->field_88 += r;
+        e->elapsedTicks += r;
     } else {
         r = 0;
     }
@@ -15387,19 +15387,19 @@ void _SsSndNextSep(s32 a0, s16 a1) {
     SndSeqScore *e = &Snd_SeqScores[(s16)a0][a1];
 
     e->loopCount = 1;
-    e->field_21 = 0;
+    e->playCount = 0;
     Snd_SeqScores[(s16)a0][a1].flags &= ~0x100;
     Snd_SeqScores[(s16)a0][a1].flags &= ~8;
     Snd_SeqScores[(s16)a0][a1].flags &= ~2;
     Snd_SeqScores[(s16)a0][a1].flags &= ~4;
     Snd_SeqScores[(s16)a0][a1].flags &= ~0x200;
-    e->field_14 = 1;
+    e->playMode = 1;
     e->readPos = e->seqStart;
     Snd_SeqScores[(s16)a0][a1].flags |= 1;
 }
 
 void _SsSndReplay(s16 a0, s16 a1) {
-    Snd_SeqScores[a0][a1].field_14 = 1;
+    Snd_SeqScores[a0][a1].playMode = 1;
     Snd_SeqScores[a0][a1].flags &= ~8;
 }
 
@@ -15413,12 +15413,12 @@ void _SsClose(s16 id) {
     for (i = 0; i < D_800624D2; i++) {
         pp = &Snd_SeqScores[id];
         (*pp)[i].flags = 0;
-        (*pp)[i].field_22 = -1;
-        (*pp)[i].field_23 = 0;
-        (*pp)[i].field_48 = 0;
-        (*pp)[i].field_4A = 0;
-        (*pp)[i].field_9C = 0;
-        (*pp)[i].field_A0 = 0;
+        (*pp)[i].nextSeqAccess = -1;
+        (*pp)[i].nextSepNo = 0;
+        (*pp)[i].fadeVol = 0;
+        (*pp)[i].fadeVolDone = 0;
+        (*pp)[i].fadeFrames = 0;
+        (*pp)[i].fadeFrame = 0;
         (*pp)[i].field_4C = 0;
         (*pp)[i].tempoTarget = 0;
         (*pp)[i].field_A8 = 0;
@@ -15548,15 +15548,15 @@ void _SsContDataEntry(s16 a0, s16 a1, s16 a2) {
     SsUtGetProgAtr(e->vabId, e->programs[k], h);
     v = a2;
     if (e->field_1C == 1 && e->field_15 == 0) {
-        e->field_1D = a2;
+        e->nrpnLoopCount = a2;
         e->field_1C = 0;
         e->field_15 = 1;
         e->deltaValue = _SsReadDeltaValue(a0, a1);
-    } else if (e->field_1E == 2) {
-        if (e->field_19 == 0) {
+    } else if (e->rpnCount == 2) {
+        if (e->rpn2 == 0) {
             for (i = 0; i < h[0].tones; i++) {
                 SsUtGetVagAtr(e->vabId, e->programs[k], (s16)i, &atr);
-                switch (e->field_18) {
+                switch (e->rpn1) {
                 case 0:
                     atr.pbmin = atr.pbmax = v & 0x7F;
                     break;
@@ -15583,17 +15583,17 @@ void _SsContDataEntry(s16 a0, s16 a1, s16 a2) {
             }
         }
         e->deltaValue = _SsReadDeltaValue(a0, a1);
-        e->field_1E = 0;
-    } else if (e->field_1F == 2) {
-        if (e->field_1B == 0x10) {
+        e->rpnCount = 0;
+    } else if (e->nrpnCount == 2) {
+        if (e->nrpn2 == 0x10) {
             void (**tbl)(s16, s16, s16, VagAtr, s32, s32) = D_80061BF4;
-            tbl[e->field_1A](e->vabId, e->programs[k], 0, atr, e->field_1A, v);
+            tbl[e->nrpn1](e->vabId, e->programs[k], 0, atr, e->nrpn1, v);
         } else {
             void (**tbl)(s16, s16, s16, VagAtr, s32, s32) = D_80061BF4;
-            tbl[e->field_1A](e->vabId, e->programs[k], e->field_1B, atr, e->field_1A, v);
+            tbl[e->nrpn1](e->vabId, e->programs[k], e->nrpn2, atr, e->nrpn1, v);
         }
         e->deltaValue = _SsReadDeltaValue(a0, a1);
-        e->field_1F = 0;
+        e->nrpnCount = 0;
     } else {
         e->deltaValue = _SsReadDeltaValue(a0, a1);
     }
@@ -15652,16 +15652,16 @@ void _SsContNrpn1(s16 a0, s16 a1, u8 a2) {
     SndSeqScore *e = &Snd_SeqScores[a0][a1];
     Hook33424 *row;
 
-    if (e->field_1B == 0x28) {
+    if (e->nrpn2 == 0x28) {
         row = Snd_MarkCallbacks[a0];
         if (row[a1] != 0) {
             row[a1](a0, a1, a2);
         }
     }
-    if (e->field_1B != 0x1E && e->field_1B != 0x14 && e->field_1B != 0x28) {
-        e->field_1A = a2;
+    if (e->nrpn2 != 0x1E && e->nrpn2 != 0x14 && e->nrpn2 != 0x28) {
+        e->nrpn1 = a2;
         e->field_1C = 0;
-        e->field_1F++;
+        e->nrpnCount++;
     }
     e->deltaValue = _SsReadDeltaValue(a0, a1);
 }
@@ -15676,34 +15676,34 @@ u8 a2;
 
     switch (a2) {
     case 0x14:
-        e->field_1B = a2;
+        e->nrpn2 = a2;
         e->field_1C = 1;
         e->deltaValue = _SsReadDeltaValue(a0, a1);
-        e->field_8 = (s32)e->readPos;
+        e->loopPos = (s32)e->readPos;
         break;
     case 0x1E:
-        n = e->field_1D;
-        e->field_1B = a2;
+        n = e->nrpnLoopCount;
+        e->nrpn2 = a2;
         if (n == 0) {
             e->field_15 = 0;
             e->deltaValue = _SsReadDeltaValue(a0, a1);
         } else if (n < 0x7F) {
-            e->field_1D = n - 1;
+            e->nrpnLoopCount = n - 1;
             e->deltaValue = _SsReadDeltaValue(a0, a1);
-            if (e->field_1D != 0) {
-                e->readPos = (u8 *)e->field_8;
+            if (e->nrpnLoopCount != 0) {
+                e->readPos = (u8 *)e->loopPos;
             } else {
                 e->field_15 = 0;
             }
         } else {
             _SsReadDeltaValue(a0, a1);
             e->deltaValue = 0;
-            e->readPos = (u8 *)e->field_8;
+            e->readPos = (u8 *)e->loopPos;
         }
         break;
     default:
-        e->field_1B = a2;
-        e->field_1F++;
+        e->nrpn2 = a2;
+        e->nrpnCount++;
         e->deltaValue = _SsReadDeltaValue(a0, a1);
         break;
     }
@@ -15711,15 +15711,15 @@ u8 a2;
 
 void _SsContRpn1(s16 arg0, s16 arg1, s16 arg2) {
     SndSeqScore *e = &Snd_SeqScores[arg0][arg1];
-    e->field_18 = arg2;
-    e->field_1E++;
+    e->rpn1 = arg2;
+    e->rpnCount++;
     e->deltaValue = _SsReadDeltaValue(arg0, arg1);
 }
 
 void _SsContRpn2(s16 arg0, s16 arg1, s16 arg2) {
     SndSeqScore *e = &Snd_SeqScores[arg0][arg1];
-    e->field_19 = arg2;
-    e->field_1E++;
+    e->rpn2 = arg2;
+    e->rpnCount++;
     e->deltaValue = _SsReadDeltaValue(arg0, arg1);
 }
 
@@ -15729,8 +15729,8 @@ void _SsContResetAll(s16 a0, s16 a1) {
     SsUtReverbOff();
     _SsVmDamperOff();
     e->programs[e->channel] = e->channel;
-    e->field_18 = 0;
-    e->field_19 = 0;
+    e->rpn1 = 0;
+    e->rpn2 = 0;
     e->channelVol[e->channel] = 0x7F;
     e->panpot[e->channel] = 0x40;
     e->deltaValue = _SsReadDeltaValue(a0, a1);
@@ -16049,7 +16049,7 @@ void _SsNoteOn(s32 a0, s32 a1, s32 a2, s32 a3) {
     s32 on = (u8)a3;
 
     if (a3 & 0xFF) {
-        if (!((e->field_80 >> k) & 1)) {
+        if (!((e->muteMask >> k) & 1)) {
             _SsVmKeyOn((s16)(a0 | (a1 << 8)), e->vabId, e->programs[k], (u8)a2, on, v);
         }
     } else {
@@ -16083,27 +16083,27 @@ s32 _SsInitSoundSeq(s16 a0, s16 a1, s16 a2, s32 a3) {
     e = &Snd_SeqScores[a0][a1];
     e->loopCount = 1;
     e->field_15 = 0;
-    e->field_16 = 0;
+    e->runningStatus = 0;
     e->channel = 0;
-    e->field_18 = 0;
-    e->field_19 = 0;
-    e->field_1A = 0;
-    e->field_1B = 0;
+    e->rpn1 = 0;
+    e->rpn2 = 0;
+    e->nrpn1 = 0;
+    e->nrpn2 = 0;
     e->field_1C = 0;
-    e->field_1D = 0;
-    e->field_1E = 0;
-    e->field_1F = 0;
-    e->field_14 = 0;
-    e->field_21 = 0;
+    e->nrpnLoopCount = 0;
+    e->rpnCount = 0;
+    e->nrpnCount = 0;
+    e->playMode = 0;
+    e->playCount = 0;
     e->field_52 = 1;
     e->resolution = 0;
     e->vabId = a2;
     e->field_56 = 0;
     e->field_84 = 0;
-    e->field_88 = 0;
+    e->elapsedTicks = 0;
     e->tempo = 0;
     e->deltaValue = 0;
-    e->field_80 = 0;
+    e->muteMask = 0;
     e->rhythmN = 0;
     e->rhythmD = 0;
     for (i = 0; i < 0x10; i++) {
@@ -16159,7 +16159,7 @@ s32 _SsInitSoundSeq(s16 a0, s16 a1, s16 a2, s32 a3) {
     e->field_84 = r;
     e->deltaValue = r;
     e->field_10 = 0;
-    e->field_8 = (s32)p8;
+    e->loopPos = (s32)p8;
     e->seqStart = p4;
     if (x * 10 < (u32)(Snd_TicksPerSec * 60)) {
         e->field_54 = e->field_52 = (u32)(Snd_TicksPerSec * 600) / x;
@@ -16186,7 +16186,7 @@ void Snd_SetPlayMode(s16 a0, s16 a1, s8 a2, s16 a3) {
     s32 c;
 
     e->readPos = e->seqStart;
-    e->field_8 = e->seqStart;
+    e->loopPos = e->seqStart;
     e->field_C = e->seqStart;
     (*p)[a1].flags &= ~0x200;
     c = a2;
@@ -16194,8 +16194,8 @@ void Snd_SetPlayMode(s16 a0, s16 a1, s8 a2, s16 a3) {
     e->loopCount = a3;
     if (c == 1) {
         (*p)[a1].flags |= 1;
-        e->field_14 = c;
-        e->field_21 = 0;
+        e->playMode = c;
+        e->playCount = 0;
         _SsVmSetSeqVol((s16)(a0 | (a1 << 8)), e->volL, e->volR, 1);
     } else if (c == 0) {
         (*p)[a1].flags |= 2;
@@ -16413,26 +16413,26 @@ void _SsSndStop(s32 arg0, s32 arg1) {
     _SsVmSeqKeyOff((s16)(arg0 | (arg1 << 8)));
     _SsVmDamperOff();
 
-    e->field_14 = 0;
-    e->field_88 = 0;
+    e->playMode = 0;
+    e->elapsedTicks = 0;
     e->field_1C = 0;
-    e->field_18 = 0;
-    e->field_19 = 0;
-    e->field_1E = 0;
-    e->field_1A = 0;
-    e->field_1B = 0;
-    e->field_1F = 0;
+    e->rpn1 = 0;
+    e->rpn2 = 0;
+    e->rpnCount = 0;
+    e->nrpn1 = 0;
+    e->nrpn2 = 0;
+    e->nrpnCount = 0;
     e->channel = 0;
-    e->field_21 = 0;
+    e->playCount = 0;
     e->field_1C = 0;
-    e->field_1D = 0;
+    e->nrpnLoopCount = 0;
     e->field_15 = 0;
-    e->field_16 = 0;
+    e->runningStatus = 0;
     e->deltaValue = e->field_84;
     e->tempoCur = e->tempo;
     e->field_54 = e->field_56;
     e->readPos = e->seqStart;
-    e->field_8 = e->seqStart;
+    e->loopPos = e->seqStart;
 
     for (i = 0; i < 0x10; i++) {
         e->programs[i] = i;
@@ -16511,12 +16511,12 @@ void SsSetTableSize(void *base, s16 rows, s16 cols) {
                 q = pp;
                 do {
                     (*q)[j].flags = 0;
-                    (*q)[j].field_22 = m1;
-                    (*q)[j].field_23 = 0;
-                    (*q)[j].field_48 = 0;
-                    (*q)[j].field_4A = 0;
-                    (*q)[j].field_9C = 0;
-                    (*q)[j].field_A0 = 0;
+                    (*q)[j].nextSeqAccess = m1;
+                    (*q)[j].nextSepNo = 0;
+                    (*q)[j].fadeVol = 0;
+                    (*q)[j].fadeVolDone = 0;
+                    (*q)[j].fadeFrames = 0;
+                    (*q)[j].fadeFrame = 0;
                     (*q)[j].field_4C = 0;
                     (*q)[j].tempoTarget = 0;
                     (*q)[j].field_A8 = 0;
@@ -17013,14 +17013,14 @@ void _SsVmInit(s32 arg) {
         D_800624E8[i].age = 0x18;
         D_800624E8[i].vagIdx = 0xFF;
         D_800624E8[i].keyStat = 0;
-        D_800624E8[i].field_4 = 0;
+        D_800624E8[i].pitch = 0;
         D_800624E8[i].envx = 0;
         D_800624E8[i].seqSepNo = -1;
         D_800624E8[i].progIdx = 0;
         D_800624E8[i].prog = 0;
         D_800624E8[i].tone = 0xFF;
         D_800624E8[i].vol = 0;
-        D_800624E8[i].field_C = 0;
+        D_800624E8[i].channel = 0;
         D_800624E8[i].pan = 0x40;
         D_800624E8[i].field_36 = 0;
         D_800624E8[i].field_1E = 0;
@@ -17112,7 +17112,7 @@ s32 _SsVmKeyOn(s16 a0, s16 a1, s16 a2, u16 a3, u16 arg4, u16 arg5) {
                 D_800624E8[D_80062D18.voice].prog = a2;
                 if (a0 != 0x21) {
                     D_800624E8[D_80062D18.voice].vol = a4;
-                    D_800624E8[D_80062D18.voice].field_C = e->channel;
+                    D_800624E8[D_80062D18.voice].channel = e->channel;
                 }
                 D_800624E8[D_80062D18.voice].pan = a5;
                 D_800624E8[D_80062D18.voice].field_36 = D_80062D18.vol;
@@ -17407,7 +17407,7 @@ void func_80037D64(u8 a0) {
         lo = 0;
         hi = 1 << (v - 16);
     }
-    D_800624E8[a0].field_4 = 10;
+    D_800624E8[a0].pitch = 10;
     for (i = 0; i < D_80062D0C; i++) {
         m = 1 << i;
         if (!(D_8004FC18 & m)) {
@@ -17434,7 +17434,7 @@ void func_80037D64(u8 a0) {
 void vmNoiseOff(u8 arg0) {
     D_800624E8[arg0].keyStat = 0;
     D_800624E8[arg0].vagIdx = 0;
-    D_800624E8[arg0].field_4 = 0;
+    D_800624E8[arg0].pitch = 0;
 }
 
 void _SsVmKeyOffNow(s32 a0) {
@@ -17455,7 +17455,7 @@ void _SsVmKeyOffNow(s32 a0) {
     D_800624E8[ch].keyStat = 0;
     c10 = D_80062C10;
     c12 = D_80062C12;
-    D_800624E8[ch].field_4 = 0;
+    D_800624E8[ch].pitch = 0;
     D_800624E8[ch].vagIdx = 0;
     c10 |= lo;
     D_80062C10 = c10;
@@ -17522,7 +17522,7 @@ void _SsVmKeyOnNow(u8 a0, u16 a1) {
     D_80062A48[k] = l2;
     D_80062A4A[k] = r2;
     D_80062A28[D_80062D18.voice] |= 7;
-    D_800624E8[D_80062D18.voice].field_4 = a1;
+    D_800624E8[D_80062D18.voice].pitch = a1;
     if (D_80062D18.voice < 16) {
         lo = 1 << D_80062D18.voice;
         hi = 0;
@@ -17638,7 +17638,7 @@ s16 _SsVmSetSeqVol(s32 a0, s32 a1, s32 a2, s32 a3) {
 
         if (!(D_8004FC18 & m) && D_800624E8[i].seqSepNo == (s16)id && D_800624E8[i].vabId == e->vabId) {
             _SsVmVSetUp(D_800624E8[i].vabId, D_800624E8[i].progIdx);
-            t = D_800624E8[i].vol * *(D_800624E8[i].field_C + e->channelVol) / 127 * 0x3FFF;
+            t = D_800624E8[i].vol * *(D_800624E8[i].channel + e->channelVol) / 127 * 0x3FFF;
             vol = ((Snd62D04 *)D_80062D04)->mvol * t / 0x3F01;
             vol = vol * D_80062CFC[D_800624E8[i].prog].mvol * D_80062D08[D_800624E8[i].progIdx * 16 + D_800624E8[i].tone].vol / 0x3F01;
             l = vol * e->volL / 127;
@@ -19692,7 +19692,7 @@ s32 func_8003D770(void) {
 s32 func_8003D7E8(void) {
     volatile s32 i[4];
 
-    D_800506BC->field_A = 0;
+    D_800506BC->ctrl = 0;
     i[0] = 10;
     while (--i[0] != -1) {
     }
@@ -19963,7 +19963,7 @@ void MemCardStart(void) {
     p->result = 0;
     p->done = 0;
     ((volatile CardState *)p)->field_50[1] = 0;
-    p->field_14 = -1;
+    p->fd = -1;
     p->field_48[1] = 1;
     p->field_48[0] = 1;
     p->field_50[0] = ((volatile CardState *)p)->field_50[1];
@@ -20212,16 +20212,16 @@ s32 MemCardOpen(s32 a0, s32 a1, s32 a2) {
     s32 st;
 
     tries = 0;
-    if (D_80062F80.field_14 >= 0) {
+    if (D_80062F80.fd >= 0) {
         printf(D_80010C70);
         return -1;
     }
-    Card_MakeDevName(a0, D_80062F80.field_24);
-    strcat(D_80062F80.field_24, a1);
+    Card_MakeDevName(a0, D_80062F80.path);
+    strcat(D_80062F80.path, a1);
     D_80062F80.chan = a0;
     do {
     retry:
-        r = open(D_80062F80.field_24, 1);
+        r = open(D_80062F80.path, 1);
         if (r >= 0) {
             goto ok;
         }
@@ -20251,7 +20251,7 @@ s32 MemCardOpen(s32 a0, s32 a1, s32 a2) {
 ok:
     close(r);
     Card_ClearEvents();
-    D_80062F80.field_14 = open(D_80062F80.field_24, a2 | 0x8000);
+    D_80062F80.fd = open(D_80062F80.path, a2 | 0x8000);
     return 0;
 }
 
@@ -20268,7 +20268,7 @@ void Card_CloseFile(void) {
 s32 MemCardReadData(s32 a0, s32 a1, s32 a2) {
     char *msg;
 
-    if (D_80062F80.field_14 < 0) {
+    if (D_80062F80.fd < 0) {
         msg = D_80010C98;
     } else if (D_80062F80.cmd > 0) {
         msg = D_80010B74;
@@ -20280,9 +20280,9 @@ s32 MemCardReadData(s32 a0, s32 a1, s32 a2) {
         D_80062F80.cmd = 5;
         D_80062F80.result = 0;
         D_80062F80.done = 0;
-        D_80062F80.field_18 = a1;
-        D_80062F80.field_20 = a0;
-        D_80062F80.field_1C = a2;
+        D_80062F80.offset = a1;
+        D_80062F80.buf = a0;
+        D_80062F80.size = a2;
         Card_PushTask(Card_ReadDataTask);
         return 1;
     }
@@ -20303,10 +20303,10 @@ s32 Card_ReadDataTask(s32 *state) {
         if (D_80062F80.result != 0) {
             return 1;
         }
-        while (lseek(D_80062F80.field_14, D_80062F80.field_18, 0) != D_80062F80.field_18) {
+        while (lseek(D_80062F80.fd, D_80062F80.offset, 0) != D_80062F80.offset) {
         }
         Card_ClearEvents();
-        while (read(D_80062F80.field_14, D_80062F80.field_20, D_80062F80.field_1C) != 0) {
+        while (read(D_80062F80.fd, D_80062F80.buf, D_80062F80.size) != 0) {
         }
         *state = 30;
         break;
@@ -20348,7 +20348,7 @@ s32 Card_ReadDataTask(s32 *state) {
 s32 MemCardWriteData(s32 a0, s32 a1, s32 a2) {
     char *msg;
 
-    if (D_80062F80.field_14 < 0) {
+    if (D_80062F80.fd < 0) {
         msg = D_80010C98;
     } else if (D_80062F80.cmd > 0) {
         msg = D_80010B74;
@@ -20360,9 +20360,9 @@ s32 MemCardWriteData(s32 a0, s32 a1, s32 a2) {
         D_80062F80.cmd = 6;
         D_80062F80.result = 0;
         D_80062F80.done = 0;
-        D_80062F80.field_18 = a1;
-        D_80062F80.field_20 = a0;
-        D_80062F80.field_1C = a2;
+        D_80062F80.offset = a1;
+        D_80062F80.buf = a0;
+        D_80062F80.size = a2;
         Card_PushTask(Card_WriteDataTask);
         return 1;
     }
@@ -20383,10 +20383,10 @@ s32 Card_WriteDataTask(s32 *st) {
         if (D_80062F80.result != 0) {
             return 1;
         }
-        while (lseek(D_80062F80.field_14, D_80062F80.field_18, 0) != D_80062F80.field_18) {
+        while (lseek(D_80062F80.fd, D_80062F80.offset, 0) != D_80062F80.offset) {
         }
         Card_ClearEvents();
-        while (write(D_80062F80.field_14, (u8 *)D_80062F80.field_20, D_80062F80.field_1C) != 0) {
+        while (write(D_80062F80.fd, (u8 *)D_80062F80.buf, D_80062F80.size) != 0) {
         }
         *st = 30;
         break;
@@ -20431,7 +20431,7 @@ s32 MemCardReadFile(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4) {
         printf(D_80010D18);
         return 0;
     }
-    if (D_80062F80.field_14 >= 0) {
+    if (D_80062F80.fd >= 0) {
         printf(D_80010C70);
         return 0;
     }
@@ -20443,14 +20443,14 @@ s32 MemCardReadFile(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4) {
         printf(D_80010CE8);
         return 0;
     }
-    Card_MakeDevName(a0, &D_80062F80.field_24);
-    strcat(&D_80062F80.field_24, a1);
+    Card_MakeDevName(a0, &D_80062F80.path);
+    strcat(&D_80062F80.path, a1);
     D_80062F80.cmd = 3;
     D_80062F80.result = 0;
     D_80062F80.done = 0;
-    D_80062F80.field_18 = a3;
-    D_80062F80.field_20 = a2;
-    D_80062F80.field_1C = a4;
+    D_80062F80.offset = a3;
+    D_80062F80.buf = a2;
+    D_80062F80.size = a4;
     D_80062F80.chan = a0;
     Card_PushTask(Card_ReadFileTask);
     return 1;
@@ -20470,8 +20470,8 @@ s32 Card_ReadFileTask(s32 *a0) {
         if (D_80062F80.result != 0) {
             return 1;
         }
-        r = open(D_80062F80.field_24, 0x8001);
-        D_80062F80.field_14 = r;
+        r = open(D_80062F80.path, 0x8001);
+        D_80062F80.fd = r;
         p = &D_80062F80;
         if (r < 0) {
             p->result = 5;
@@ -20482,8 +20482,8 @@ s32 Card_ReadFileTask(s32 *a0) {
         Card_PushTask(Card_ReadDataTask);
         return 0;
     case 20:
-        close(D_80062F80.field_14);
-        D_80062F80.field_14 = -1;
+        close(D_80062F80.fd);
+        D_80062F80.fd = -1;
         return 1;
     }
     return 0;
@@ -20495,7 +20495,7 @@ s32 MemCardWriteFile(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4) {
         printf(D_80010D18);
         return 0;
     }
-    if (D_80062F80.field_14 >= 0) {
+    if (D_80062F80.fd >= 0) {
         printf(D_80010C70);
         return 0;
     }
@@ -20507,14 +20507,14 @@ s32 MemCardWriteFile(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4) {
         printf(D_80010CE8);
         return 0;
     }
-    Card_MakeDevName(a0, D_80062F80.field_24);
-    strcat(D_80062F80.field_24, a1);
+    Card_MakeDevName(a0, D_80062F80.path);
+    strcat(D_80062F80.path, a1);
     D_80062F80.cmd = 4;
     D_80062F80.result = 0;
     D_80062F80.done = 0;
-    D_80062F80.field_18 = a3;
-    D_80062F80.field_20 = a2;
-    D_80062F80.field_1C = a4;
+    D_80062F80.offset = a3;
+    D_80062F80.buf = a2;
+    D_80062F80.size = a4;
     D_80062F80.chan = a0;
     Card_PushTask(Card_WriteFileTask);
     return 1;
@@ -20535,8 +20535,8 @@ s32 Card_WriteFileTask(s32 *st) {
         if (D_80062F80.result != 0) {
             return 1;
         }
-        r = open(D_80062F80.field_24, 0x8001);
-        D_80062F80.field_14 = r;
+        r = open(D_80062F80.path, 0x8001);
+        D_80062F80.fd = r;
         if (r < 0) {
             vp = &D_80062F80;
             vp->result = 5;
@@ -20762,7 +20762,7 @@ s32 Card_EventToMcErr(s32 a0) {
 
 void Card_OnVSync(void) {
     CardState *s;
-    Pair62F70 *d;
+    CardCmdResult *d;
     volatile CardState *v;
 
     if (Card_IsTaskStackEmpty() == 0) {
@@ -20770,13 +20770,13 @@ void Card_OnVSync(void) {
         if (Card_IsTaskStackEmpty() != 0) {
             s = &D_80062F80;
             ((volatile CardState *)s)->done = 1;
-            d = (Pair62F70 *)&D_80062F70;
-            ((volatile Pair62F70 *)d)->field_0 = ((volatile CardState *)s)->cmd;
-            ((volatile Pair62F70 *)d)->field_4 = ((volatile CardState *)s)->result;
+            d = (CardCmdResult *)&D_80062F70;
+            ((volatile CardCmdResult *)d)->cmd = ((volatile CardState *)s)->cmd;
+            ((volatile CardCmdResult *)d)->result = ((volatile CardState *)s)->result;
             ((volatile CardState *)s)->cmd = 0;
             ((volatile CardState *)s)->result = 0;
             if (s->callback != 0) {
-                ((void (*)(s32, s32))s->callback)(((volatile Pair62F70 *)d)->field_0, ((volatile Pair62F70 *)d)->field_4);
+                ((void (*)(s32, s32))s->callback)(((volatile CardCmdResult *)d)->cmd, ((volatile CardCmdResult *)d)->result);
             }
         }
     }

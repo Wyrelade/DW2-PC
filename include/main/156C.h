@@ -82,7 +82,7 @@ typedef struct {
 /* Record returned by the Cd_FindLruCachedFile lookup; cleared by Cd_EvictLruFile. */
 typedef struct {
     /* 0x00 */ u16 state;
-    /* 0x02 */ u16 field_2;
+    /* 0x02 */ u16 locked;
     /* 0x04 */ s32 fileId;
     /* 0x08 */ s32 lastUsed;
     /* 0x0C */ s32 data;
@@ -133,7 +133,7 @@ typedef struct {
 typedef struct {
     /* 0x00 */ s32 fileId;
     /* 0x04 */ s32 lastUsed;
-    /* 0x08 */ s32 field_8;
+    /* 0x08 */ s32 colorMode;
     /* 0x0C */ s32 field_C;
     /* 0x10 */ s16 tpage;
     u8 _pad12[2];
@@ -260,21 +260,21 @@ typedef struct {
     /* 0x00 */ s32 fileId;
     /* 0x04 */ struct Mdl1FDBC *file;
     /* 0x08 */ s32 boneCount;
-    /* 0x0C */ s16 **field_C;
-    /* 0x10 */ s16 **field_10;
-    /* 0x14 */ struct Sec1FDBC20 **field_14;
+    /* 0x0C */ s16 **boneVerts;
+    /* 0x10 */ s16 **boneNormals;
+    /* 0x14 */ struct Sec1FDBC20 **bonePolys;
     /* 0x18 */ s32 *field_18;
     /* 0x1C */ s32 *field_1C;
-    /* 0x20 */ s32 field_20;
-    /* 0x24 */ s32 field_24;
+    /* 0x20 */ s32 maxVerts;
+    /* 0x24 */ s32 maxNormals;
     /* 0x28 */ s32 field_28;
     /* 0x2C */ s32 field_2C;
     /* 0x30 */ s32 field_30;
     /* 0x34 */ s16 field_34;
     /* 0x36 */ s16 field_36;
     u8 _pad38[0x04];
-    /* 0x3C */ s32 field_3C;
-    /* 0x40 */ s32 field_40;
+    /* 0x3C */ s32 otIndex;
+    /* 0x40 */ s32 otzShift;
     /* 0x44 */ struct Pos1F9AC *field_44;
     /* 0x48 */ s32 animFileId;
     /* 0x4C */ s32 animIndex;
@@ -285,11 +285,11 @@ typedef struct {
     /* 0x60 */ s32 field_60;
     /* 0x64 */ s32 *animTable;
     /* 0x68 */ s32 *bonePoseTables;
-    /* 0x6C */ s32 *field_6C;
-    /* 0x70 */ s32 *field_70;
-    /* 0x74 */ s32 *field_74;
+    /* 0x6C */ s32 *screenXY;
+    /* 0x70 */ s32 *vertOtz;
+    /* 0x74 */ s32 *vertColors;
     /* 0x78 */ ModelBone *bones;
-} Sub3C;
+} ActorModel;
 
 /* Sub-object reached through the Act125C container at 0x3C; Task_Free frees
    the four owned pointers at 0x6C..0x78. */
@@ -298,7 +298,7 @@ typedef struct {
     /* 0x6C */ ActorWork *field_6C;
     /* 0x70 */ ActorWork *field_70;
     /* 0x74 */ ActorWork *field_74;
-    /* 0x78 */ ActorWork *field_78;
+    /* 0x78 */ ActorWork *bones;
 } Obj125C;
 
 /* Container torn down by Task_Free: a Task_Destroy array at 0x34 with count
@@ -309,7 +309,7 @@ typedef struct {
     /* 0x30 */ s32 childCount;
     /* 0x34 */ s32 *children;
     /* 0x38 */ ActorWork *field_38;
-    /* 0x3C */ Obj125C *field_3C;
+    /* 0x3C */ Obj125C *model;
 } Act125C;
 
 /* Two of these live in Actor at 0x48 (stride 0x5C). func_8001C194 stamps the
@@ -354,10 +354,10 @@ typedef struct {
         /* 0x38 */ u8 field_38;
         ObjEC10 *ptr38;
     } u38;
-    /* 0x3C */ Sub3C *model;
+    /* 0x3C */ ActorModel *model;
     u8 _pad40[0x06];
-    /* 0x46 */ u8 field_46;
-    /* 0x47 */ u8 field_47;
+    /* 0x46 */ u8 infoStep;
+    /* 0x47 */ u8 infoIndex;
     /* 0x48 */ ActorSub5C field_48[2];
     u8 _pad100[0x10];
     /* 0x110 */ u16 field_110;
@@ -412,8 +412,8 @@ typedef struct {
 typedef struct {
     u8 _pad00[0x08];
     /* 0x08 */ u16 digiId;
-    /* 0x0A */ u16 field_A;
-    /* 0x0C */ u16 field_C;
+    /* 0x0A */ u16 hp;
+    /* 0x0C */ u16 mp;
     u8 _pad0E[0x4];
     /* 0x12 */ u8 level;
     /* 0x13 */ u8 field_13;
@@ -434,8 +434,8 @@ typedef struct {
     /* 0x10 */ s32 field_10;
     /* 0x14 */ s32 field_14;
     /* 0x18 */ s32 field_18;
-    /* 0x1C */ u16 field_1C[3];
-    /* 0x22 */ u16 field_22[3];
+    /* 0x1C */ u16 digiIds[3];
+    /* 0x22 */ u16 levels[3];
 } Out1DB68;
 
 Ent1DB18 *func_8001DB18();
@@ -443,7 +443,7 @@ Ent1DB18 *func_8001DB18();
 
 /* Entry returned by the Digi_FindDataById table lookup (0x28 stride). */
 typedef struct {
-    /* 0x00 */ s32 field_0;
+    /* 0x00 */ s32 nameOffset;
     union {
         /* 0x04 */ u32 field_4;
         struct {
@@ -451,7 +451,7 @@ typedef struct {
             /* 0x06 */ s16 field_6;
         } h4;
     } u4;
-    /* 0x08 */ s16 field8[11];
+    /* 0x08 */ s16 animFiles[11];
     /* 0x1E */ s16 field_1E;
     /* 0x20 */ s16 field_20;
     /* 0x22 */ s16 field_22;
@@ -488,8 +488,8 @@ typedef struct {
     /* 0x18 */ u32 field_18;
     /* 0x1C */ u32 field_1C;
     /* 0x20 */ u32 field_20;
-    /* 0x24 */ u32 field_24;
-    /* 0x28 */ u32 field_28;
+    /* 0x24 */ u32 nameOffset;
+    /* 0x28 */ u32 descOffset;
     /* 0x2C */ s16 field_2C[4][3]; /* -> size 0x44 (table stride) */
 } EntED40;
 
@@ -512,8 +512,8 @@ typedef struct {
             /* 0x07 */ u8 field_7;
         } b4;
     } u4;
-    /* 0x08 */ s32 field_8;
-    /* 0x0C */ s32 field_C;
+    /* 0x08 */ s32 nameOffset;
+    /* 0x0C */ s32 descOffset;
 } EntDFF4;
 
 EntD8C4 *func_8001D8C4();
@@ -610,8 +610,8 @@ typedef struct {
     /* 0x0C */ u16 x;
     /* 0x0E */ u16 y;
     /* 0x10 */ u8 field_10;
-    /* 0x11 */ u8 field_11;
-} Src13470;
+    /* 0x11 */ u8 color;
+} TextDesc;
 
 /* A pair of 16-bit values passed by value in one register (Text_OpenPacked). */
 typedef struct {
@@ -638,12 +638,12 @@ typedef struct {
 /* Read view of the TextOpenArgs block used by Text_Open: same layout, but the
    0x8/0xA halfwords are read unsigned and 0x24/0x28 are read as words. */
 typedef struct {
-    /* 0x00 */ s32 field_0;
-    /* 0x04 */ s32 field_4;
+    /* 0x00 */ s32 bigFont;
+    /* 0x04 */ s32 color;
     /* 0x08 */ u16 x;
     /* 0x0A */ u16 y;
-    /* 0x0C */ s32 field_C;
-    /* 0x10 */ s32 field_10;
+    /* 0x0C */ s32 charAdvance;
+    /* 0x10 */ s32 lineAdvance;
     /* 0x14 */ s32 text;
     /* 0x18 */ s32 field_18;
     /* 0x1C */ s32 field_1C;
@@ -660,34 +660,34 @@ typedef struct {
     /* 0x03 */ u8 charAdvance;
     /* 0x04 */ u8 lineAdvance;
     u8 _pad5;
-    /* 0x06 */ s16 field_6;
+    /* 0x06 */ s16 charDelay;
     /* 0x08 */ s32 text;
-    /* 0x0C */ s32 field_C;
-    /* 0x10 */ s32 field_10;
-    /* 0x14 */ s32 field_14;
-    /* 0x18 */ s32 field_18;
+    /* 0x0C */ s32 strArg0;
+    /* 0x10 */ s32 strArg1;
+    /* 0x14 */ s32 strArg2;
+    /* 0x18 */ s32 strArg3;
     /* 0x1C */ s16 x;
     /* 0x1E */ s16 y;
     /* 0x20 */ u8 baseColor;
-    /* 0x21 */ u8 field_21;
-    /* 0x22 */ u8 field_22;
-    /* 0x23 */ u8 field_23;
+    /* 0x21 */ u8 delayTimer;
+    /* 0x22 */ u8 visibleChars;
+    /* 0x23 */ u8 finished;
     /* 0x24 */ u8 field_24;
     /* 0x25 */ u8 field_25;
     /* 0x26 */ u8 field_26;
-    /* 0x27 */ u8 field_27;
+    /* 0x27 */ u8 waitingInput;
     /* 0x28 */ u8 field_28;
-    /* 0x29 */ u8 field_29;
+    /* 0x29 */ u8 choiceCursor;
     /* 0x2A */ u8 field_2A;
     /* 0x2B */ u8 field_2B;
     /* 0x2C */ u8 field_2C;
     /* 0x2D */ u8 field_2D;
     /* 0x2E */ u8 field_2E;
     /* 0x2F */ u8 field_2F;
-    /* 0x30 */ u8 field_30;
+    /* 0x30 */ u8 padIndex;
     /* 0x31 */ u8 otIndex;
     u8 _pad32[2];
-} Rec34;
+} TextBox;
 
 /* Returned by Task_FindNext/Task_FindFirst: the stride-0x34 record array at 0x2C. */
 typedef struct {
@@ -695,7 +695,7 @@ typedef struct {
     /* 0x04 */ s32 field_4;
     /* 0x08 */ s32 field_8;
     u8 _pad0C[0x20];
-    /* 0x2C */ Rec34 *work;
+    /* 0x2C */ TextBox *work;
     u8 _pad30[4];
     /* 0x34 */ Actor **children;
 } Ent11440;
@@ -759,7 +759,7 @@ typedef struct {
     /* 0xA8 */ s32 fadeRamp;
     /* 0xAC */ Rec1A records[4];
     /* 0x114 */ s32 curTab;
-    /* 0x118 */ u8 *field_118;
+    /* 0x118 */ u8 *selRecord;
     /* 0x11C */ u8 numBuf[8];
 } Actor194C8;
 
@@ -787,10 +787,10 @@ typedef struct {
     /* 0x00 */ u8 state;
     /* 0x01 */ u8 digiId;
     u8 _pad02[0xB];
-    /* 0x0D */ u8 field_D;
+    /* 0x0D */ u8 level;
     u8 _pad0E[0x1];
     /* 0x0F */ u8 field_F;
-    /* 0x10 */ s32 field_10;
+    /* 0x10 */ s32 exp;
     /* 0x14 */ u16 maxHp;
     /* 0x16 */ u16 hp;
     /* 0x18 */ u16 maxMp;
@@ -892,7 +892,7 @@ typedef struct {
     u8 _pad64[0x04];
     /* 0x68 */ s16 screenX;
     /* 0x6A */ s16 screenY;
-    /* 0x6C */ Obj20CE8 field_6C[3];
+    /* 0x6C */ Obj20CE8 axisMotion[3];
 } AllocC40;
 
 /* Container whose field_38 holds an AllocC40* (Actor_InitTransform's arg0). */
@@ -906,7 +906,7 @@ typedef struct {
 typedef struct {
     /* 0x00 */ u32 id;
     u8 _pad04[0x20];
-    /* 0x24 */ s32 field_24;
+    /* 0x24 */ s32 frameCount;
     u8 _pad28[0x04];
     /* 0x2C */ s32 work;
     /* 0x30 */ s32 childCount;
@@ -922,40 +922,40 @@ typedef struct {
     /* 0x14 */ s32 auxSize;
 } TaskDesc;
 
-/* 5-byte slot descriptor walked by Pad_AllocActPower (Obj25FBC field_4). */
+/* 5-byte slot descriptor walked by Pad_AllocActPower (PadPort field_4). */
 typedef struct {
     u8 _pad0[2];
-    /* 0x02 */ u8 field_2;
+    /* 0x02 */ u8 size;
     /* 0x03 */ u8 curr;
     u8 _pad4;
 } Slot24A1C;
 
 /* Argument to func_80025FBC (byte/half fields deep in a large record). */
-typedef struct Obj25FBC {
-    /* 0x00 */ s32 field_0;
-    /* 0x04 */ Slot24A1C *field_4;
-    /* 0x08 */ s32 field_8;
-    /* 0x0C */ struct Obj25FBC *field_C;
+typedef struct PadPort {
+    /* 0x00 */ s32 modeTable;
+    /* 0x04 */ Slot24A1C *actTable;
+    /* 0x08 */ s32 combTable;
+    /* 0x0C */ struct PadPort *field_C;
     /* 0x10 */ void *field_10;
-    /* 0x14 */ void (*field_14)(void *);
-    /* 0x18 */ s32 (*field_18)(void *);
+    /* 0x14 */ void (*sendInfoHook)(void *);
+    /* 0x18 */ s32 (*parseInfoHook)(void *);
     u8 _pad1C[0xC];
-    /* 0x28 */ u8 *field_28;
-    /* 0x2C */ u8 *field_2C;
-    /* 0x30 */ u8 *field_30;
-    /* 0x34 */ u8 field_34;
-    /* 0x35 */ u8 field_35;
-    /* 0x36 */ u8 field_36;
+    /* 0x28 */ u8 *actData;
+    /* 0x2C */ u8 *sendParams;
+    /* 0x30 */ u8 *padBuf;
+    /* 0x34 */ u8 actDataLen;
+    /* 0x35 */ u8 rxLen;
+    /* 0x36 */ u8 sendParamCount;
     /* 0x37 */ u8 sendCmd;
     /* 0x38 */ u8 field_38;
     /* 0x39 */ u8 field_39;
     u8 _pad3A[0x2];
-    /* 0x3C */ volatile u8 *field_3C;
+    /* 0x3C */ volatile u8 *rxBuf;
     /* 0x40 */ u8 *field_40;
-    /* 0x44 */ volatile u8 field_44;
-    /* 0x45 */ u8 field_45;
-    /* 0x46 */ u8 field_46;
-    /* 0x47 */ u8 field_47;
+    /* 0x44 */ volatile u8 rxPos;
+    /* 0x45 */ u8 xferPos;
+    /* 0x46 */ u8 infoStep;
+    /* 0x47 */ u8 infoIndex;
     u8 _pad48[0x1];
     /* 0x49 */ u8 state;
     /* 0x4A */ u8 field_4A;
@@ -963,30 +963,30 @@ typedef struct Obj25FBC {
     /* 0x4C */ s32 field_4C;
     /* 0x50 */ u8 field_50;
     u8 _pad51[0x6];
-    /* 0x57 */ u8 field_57[6];
-    /* 0x5D */ u8 field_5D[6];
-    /* 0x63 */ u8 field_63[0x80];
-    /* 0xE3 */ u8 field_E3;
+    /* 0x57 */ u8 actEnabled[6];
+    /* 0x5D */ u8 actAlign[6];
+    /* 0x63 */ u8 infoBuf[0x80];
+    /* 0xE3 */ u8 modeCount;
     /* 0xE4 */ u8 field_E4;
     u8 _padE5[0x1];
     /* 0xE6 */ u16 field_E6;
-    /* 0xE8 */ u8 field_E8;
-    /* 0xE9 */ u8 field_E9;
-    /* 0xEA */ u8 field_EA;
+    /* 0xE8 */ u8 padType;
+    /* 0xE9 */ u8 actCount;
+    /* 0xEA */ u8 combCount;
     /* 0xEB */ u8 field_EB;
     /* 0xEC */ u16 field_EC;
     /* 0xEE */ u16 field_EE;
-} Obj25FBC;
+} PadPort;
 
 /* Stride-0x28 array element written by Gfx_SetPartsScale: a flag byte at 0xE plus
  * two words at 0x10/0x14; field_0 is the loop guard (zero terminates). */
 typedef struct {
-    /* 0x00 */ s32 field_0;
+    /* 0x00 */ s32 fileId;
     u8 _pad04[0xE - 0x4];
-    /* 0x0E */ s8 field_E;
+    /* 0x0E */ s8 unscaled;
     u8 _pad0F[0x1];
-    /* 0x10 */ s32 field_10;
-    /* 0x14 */ s32 field_14;
+    /* 0x10 */ s32 scaleX;
+    /* 0x14 */ s32 scaleY;
     u8 _pad18[0x28 - 0x18];
 } Ent1D550;
 
@@ -1070,33 +1070,33 @@ typedef struct {
 typedef struct {
     u8 *readPos;        /* 0x00 */
     u8 *volatile seqStart; /* 0x04 */
-    s32 field_8;        /* 0x08 */
+    s32 loopPos;        /* 0x08 */
     u8 *volatile field_C; /* 0x0C */
     s32 field_10;       /* 0x10 */
-    u8  field_14;       /* 0x14 */
+    u8  playMode;       /* 0x14 */
     u8  field_15;       /* 0x15 */
-    u8  field_16;       /* 0x16 */
+    u8  runningStatus;       /* 0x16 */
     u8  channel;       /* 0x17 */
-    u8  field_18;       /* 0x18 */
-    u8  field_19;       /* 0x19 */
-    u8  field_1A;       /* 0x1A */
-    u8  field_1B;       /* 0x1B */
+    u8  rpn1;       /* 0x18 */
+    u8  rpn2;       /* 0x19 */
+    u8  nrpn1;       /* 0x1A */
+    u8  nrpn2;       /* 0x1B */
     u8  field_1C;       /* 0x1C */
-    u8  field_1D;       /* 0x1D */
-    u8  field_1E;       /* 0x1E */
-    u8  field_1F;       /* 0x1F */
+    u8  nrpnLoopCount;       /* 0x1D */
+    u8  rpnCount;       /* 0x1E */
+    u8  nrpnCount;       /* 0x1F */
     u8  loopCount;       /* 0x20 */
-    u8  field_21;       /* 0x21 */
-    s8  field_22;       /* 0x22 */
-    u8  field_23;       /* 0x23 */
+    u8  playCount;       /* 0x21 */
+    s8  nextSeqAccess;       /* 0x22 */
+    u8  nextSepNo;       /* 0x23 */
     u8  rhythmN;       /* 0x24 */
     u8  rhythmD;       /* 0x25 */
     s8  vabId;       /* 0x26 */
     u8  panpot[0x10]; /* 0x27 */
     u8  programs[0x10]; /* 0x37 */
     u8  _p47[0x1];      /* 0x47 */
-    s16 field_48;       /* 0x48 */
-    s16 field_4A;       /* 0x4A */
+    s16 fadeVol;       /* 0x48 */
+    s16 fadeVolDone;       /* 0x4A */
     s16 field_4C;       /* 0x4C */
     s16 field_4E;       /* 0x4E */
     s16 resolution;       /* 0x50 */
@@ -1108,16 +1108,16 @@ typedef struct {
     s16 field_5C;       /* 0x5C */
     s16 field_5E;       /* 0x5E */
     s16 channelVol[0x10]; /* 0x60 */
-    s16 field_80;       /* 0x80 */
+    s16 muteMask;       /* 0x80 */
     u8  _p82[0x2];      /* 0x82 */
     s32 field_84;       /* 0x84 */
-    s32 field_88;       /* 0x88 */
+    s32 elapsedTicks;       /* 0x88 */
     s32 tempo;       /* 0x8C */
     s32 deltaValue;       /* 0x90 */
     s32 tempoCur;       /* 0x94 */
     s32 flags;       /* 0x98 */
-    s32 field_9C;       /* 0x9C */
-    s32 field_A0;       /* 0xA0 */
+    s32 fadeFrames;       /* 0x9C */
+    s32 fadeFrame;       /* 0xA0 */
     s32 field_A4;       /* 0xA4 */
     s32 field_A8;       /* 0xA8 */
     s32 tempoTarget;       /* 0xAC -> size 0xB0 */
@@ -1126,9 +1126,9 @@ typedef struct {
 /* Bit-flag block pointed to by D_8004FC68; D_8004FC70[] holds the masks
  * StartRCnt / StopRCnt set and clear in field_4. */
 typedef struct {
-    /* 0x00 */ s32 field_0;
+    /* 0x00 */ s32 stat;
     /* 0x04 */ s32 mask;
-} Flags4FC68;
+} IrqRegs;
 
 /* Callback table reached through D_8004FB80; the ResetCallback..80030DF8
  * wrappers forward their arguments to one slot each. */
@@ -1158,7 +1158,7 @@ typedef struct {
 /* Object reached through Menu_Ctx; func_800143CC clears field_35C. */
 typedef struct {
     /* 0x000 */ u32 flags;
-    /* 0x004 */ u32 field_4;
+    /* 0x004 */ u32 elapsed;
     u8 _pad008[0x100];
     /* 0x108 */ s16 itemId;
     /* 0x10A */ s16 bagSlot;
@@ -1197,12 +1197,12 @@ typedef struct {
 typedef struct {
     /* 0x00 */ s16 vagIdx;
     /* 0x02 */ u16 age;
-    /* 0x04 */ s16 field_4;
+    /* 0x04 */ s16 pitch;
     /* 0x06 */ u16 envx;
     /* 0x08 */ s16 vol;
     /* 0x0A */ u8 pan;
     u8 _pad0B;
-    /* 0x0C */ s16 field_C;
+    /* 0x0C */ s16 channel;
     /* 0x0E */ s16 note;
     /* 0x10 */ s16 seqSepNo;
     /* 0x12 */ s16 progIdx;
@@ -1240,16 +1240,16 @@ typedef struct {
     /* 0x0C */ struct Slot267F0 *field_C;
     /* 0x10 */ void *field_10;
     u8 _pad14[0x1C];
-    /* 0x30 */ u8 *field_30;
+    /* 0x30 */ u8 *padBuf;
     u8 _pad34[0x3];
     /* 0x37 */ u8 sendCmd;
     /* 0x38 */ u8 field_38;
     /* 0x39 */ u8 field_39;
     u8 _pad3A[0x2];
-    /* 0x3C */ u8 *field_3C;
+    /* 0x3C */ u8 *rxBuf;
     /* 0x40 */ u8 *field_40;
-    /* 0x44 */ u8 field_44;
-    /* 0x45 */ u8 field_45;
+    /* 0x44 */ u8 rxPos;
+    /* 0x45 */ u8 xferPos;
 } Ent266D0;
 
 /* Block reached through D_8005071C; func_80011F04 compacts the 12 slot bytes at
@@ -1348,11 +1348,11 @@ typedef struct {
     /* 0x08 */ s32 done;
     /* 0x0C */ s32 field_C;
     /* 0x10 */ s32 chan;
-    /* 0x14 */ s32 field_14;
-    /* 0x18 */ s32 field_18;
-    /* 0x1C */ s32 field_1C;
-    /* 0x20 */ s32 field_20;
-    /* 0x24 */ u8 field_24[0x20];
+    /* 0x14 */ s32 fd;
+    /* 0x18 */ s32 offset;
+    /* 0x1C */ s32 size;
+    /* 0x20 */ s32 buf;
+    /* 0x24 */ u8 path[0x20];
     /* 0x44 */ s32 callback;
     /* 0x48 */ s32 field_48[2];
     /* 0x50 */ s32 field_50[2];
@@ -1520,7 +1520,7 @@ typedef struct {
 /* Global D_8004EAF8: one-shot stream state opened by restartIntr. */
 typedef struct {
     /* 0x00 */ u16 interruptsInitialized;
-    /* 0x02 */ u16 field_2;
+    /* 0x02 */ u16 inInterrupt;
     /* 0x04 */ s32 handlers[11];
     /* 0x30 */ u16 enabledInterruptsMask;
     /* 0x32 */ u16 savedMask;
@@ -1551,8 +1551,8 @@ typedef struct {
 
 /* Word pair at *D_80048DF0: PadStartCom writes -2 to 0x0 and sets bit 0 of 0x4. */
 typedef struct {
-    /* 0x0 */ volatile s32 field_0;
-    /* 0x4 */ volatile s32 field_4;
+    /* 0x0 */ volatile s32 stat;
+    /* 0x4 */ volatile s32 mask;
 } Reg48DF0;
 
 /* Two-word state D_80060058, cleared by PadStartCom. */
@@ -1620,14 +1620,14 @@ typedef struct {
 /* Static GPU packets at D_80048F9C; the VRAM-to-VRAM move packet (tag, GP0
  * 0x80 command, source xy, destination xy, size) starts at 0xC. */
 typedef struct {
-    /* 0x00 */ u16 field_0[3][2];
+    /* 0x00 */ u16 vramH[3][2];
     /* 0x0C */ u32 move[5];
 } Pkt48F9C;
 
 /* Register block reached through the pointer at D_800506BC. */
 typedef struct {
     u8 _pad0[0xA];
-    /* 0xA */ s16 field_A;
+    /* 0xA */ s16 ctrl;
 } Reg506BC;
 
 /* GPU display environment (libgpu DISPENV layout) at D_80061968, set up by
@@ -1697,18 +1697,18 @@ typedef struct {
     u8 _padBE[0x2];
     /* 0xC0 */ s32 modelFile;
     /* 0xC4 */ s32 animFile;
-    /* 0xC8 */ s32 field_C8;
-    /* 0xCC */ Prm1C field_CC;
+    /* 0xC8 */ s32 modelPhase;
+    /* 0xCC */ Prm1C view;
     /* 0xE8 */ s32 coord;
     u8 _padEC[0x4C];
-    /* 0x138 */ s16 field_138;
+    /* 0x138 */ s16 rotX;
     u8 _pad13A[0x6];
-    /* 0x140 */ s16 field_140;
-    /* 0x142 */ s16 field_142;
-    /* 0x144 */ s16 field_144;
+    /* 0x140 */ s16 rotSpeedX;
+    /* 0x142 */ s16 rotSpeedY;
+    /* 0x144 */ s16 rotSpeedZ;
     u8 _pad146[0x2];
     /* 0x148 */ s32 field_148;
-    /* 0x14C */ s32 field_14C;
+    /* 0x14C */ s32 modelScale;
 } Wk18BF8;
 
 /* Per-channel hook table Snd_MarkCallbacks[ch][16] run by _SsContNrpn1. */
@@ -1753,7 +1753,7 @@ typedef struct {
 typedef struct {
     /* 0x000 */ s32 cellTextSlots[16];
     /* 0x040 */ s32 msgTextSlot;
-    /* 0x044 */ s32 field_44;
+    /* 0x044 */ s32 descText;
     u8 _pad48[0x4];
     /* 0x04C */ s32 field_4C;
     u8 _pad50[0x4];
@@ -1769,14 +1769,14 @@ typedef struct {
     /* 0x702 */ u8 countText[16][4];
 } Obj16198;
 
-/* Src13470 view with the position pair stored as one Halves. */
+/* TextDesc view with the position pair stored as one Halves. */
 typedef struct {
     /* 0x00 */ s32 text;
     /* 0x04 */ s32 field_4;
     /* 0x08 */ u8 *field_8;
     /* 0x0C */ Halves pos;
     /* 0x10 */ u8 field_10;
-    /* 0x11 */ u8 field_11;
+    /* 0x11 */ u8 color;
 } Src16198;
 
 /* 0x64-stride zero-terminated table (Cd_GetFileOrNull(0xC6F)) searched by
@@ -1795,14 +1795,14 @@ typedef struct {
 /* Record listed in Wk14CBC.field_A0 (func_80014CBC). */
 typedef struct {
     u8 _pad00[0x0D];
-    /* 0x0D */ u8 field_D;
+    /* 0x0D */ u8 level;
     u8 _pad0E[0x06];
-    /* 0x14 */ s16 field_14;
-    /* 0x16 */ s16 field_16;
-    /* 0x18 */ s16 field_18;
-    /* 0x1A */ s16 field_1A;
+    /* 0x14 */ s16 maxHp;
+    /* 0x16 */ s16 hp;
+    /* 0x18 */ s16 maxMp;
+    /* 0x1A */ s16 mp;
     u8 _pad1C[0x30];
-    /* 0x4C */ u8 field_4C[14];
+    /* 0x4C */ u8 name[14];
 } Rec14CBC;
 
 /* Three sprite slots cleared together by func_80014984. */
@@ -1853,9 +1853,9 @@ typedef struct {
 /* Record behind Ent17D84.field_4: an id byte at 0x01, a name at 0x4C. */
 typedef struct {
     u8 _pad00[0x01];
-    /* 0x01 */ u8 field_1;
+    /* 0x01 */ u8 digiId;
     u8 _pad02[0x4A];
-    /* 0x4C */ u8 field_4C[4];
+    /* 0x4C */ u8 name[4];
 } Sub17D84;
 
 /* 8-byte row of the list page func_80017D84 draws. */
@@ -1863,7 +1863,7 @@ typedef struct {
     /* 0x00 */ u8 kind;
     /* 0x01 */ u8 field_1;
     u8 _pad02[0x02];
-    /* 0x04 */ Sub17D84 *field_4;
+    /* 0x04 */ Sub17D84 *digi;
 } Ent17D84;
 
 /* List page: 16 sprite slots, first visible row at 0x68, rows from 0x6C. */
@@ -1878,7 +1878,7 @@ typedef struct {
 /* 12-byte record in the func_80019BF4 work view (s16 at +2 compared against field_94). */
 typedef struct {
     /* 0x0 */ s16 field_0;
-    /* 0x2 */ s16 field_2;
+    /* 0x2 */ s16 rows;
     u8 _pad4[0x8];
 } Rec19BF4;
 
@@ -1903,9 +1903,9 @@ typedef struct {
 /* One 0x1E-byte row of the func_8001DB18 table as func_8001DDA8 reads it
    (rows start 8 bytes into the table; field_12 is a 4x3 byte matrix). */
 typedef struct {
-    /* 0x00 */ u16 field_0;
-    /* 0x02 */ u16 field_2;
-    /* 0x04 */ u16 field_4;
+    /* 0x00 */ u16 digiId;
+    /* 0x02 */ u16 hp;
+    /* 0x04 */ u16 mp;
     /* 0x06 */ s16 field_6;
     /* 0x08 */ u16 field_8;
     /* 0x0A */ u8 field_A;
@@ -1964,7 +1964,7 @@ typedef struct {
     /* 0x7 */ u8 clutY;
     /* 0x8 */ u8 w;
     /* 0x9 */ u8 h;
-    /* 0xA */ u8 field_A;
+    /* 0xA */ u8 clutRow;
     /* 0xB */ u8 blend;
     /* 0xC */ u8 frame;
     u8 _padD[3];
@@ -1972,12 +1972,12 @@ typedef struct {
 
 typedef struct {
     u8 _pad0[8];
-    /* 0x08 */ s32 field_8;
+    /* 0x08 */ s32 is8bit;
     /* 0x0C */ u8 u;
     u8 _padD[3];
     /* 0x10 */ u16 tpage;
     u8 _pad12[2];
-    /* 0x14 */ u16 field_14;
+    /* 0x14 */ u16 index;
     u8 _pad16[2];
     /* 0x18 */ s32 clutX;
     /* 0x1C */ u16 clutY;
@@ -2096,7 +2096,7 @@ typedef struct MemBlock {
 
 /* 6-byte rank table at D_80050724, indexed by ElmE620.field_0 (Digi_SortRoster). */
 typedef struct {
-    u8 b[6];
+    u8 sortRank[6];
 } Tbl50724;
 
 /* D_8005F770: the global frame/display state (Sys_Main, Sys_VSyncHandler,
@@ -2202,7 +2202,7 @@ typedef struct {
 
 typedef struct {
     /* 0x00 */ u8 field_0;
-    /* 0x01 */ u8 kind;
+    /* 0x01 */ u8 effectType;
     /* 0x02 */ s16 amount;
 } Rec12490;
 
@@ -2210,7 +2210,7 @@ typedef struct {
     u8 _pad00[0xE];
     /* 0x0E */ u8 field_E;
     u8 _pad0F;
-    /* 0x10 */ s32 field_10;
+    /* 0x10 */ s32 exp;
     /* 0x14 */ s16 maxHp;
     /* 0x16 */ s16 hp;
     /* 0x18 */ s16 maxMp;
@@ -2407,13 +2407,13 @@ typedef struct {
     /* 0x94 */ void *field_94;
     /* 0x98 */ u8 *field_98[3];
     u8 _padA4[0x24];
-    /* 0xC8 */ s32 field_C8;
+    /* 0xC8 */ s32 modelPhase;
     u8 _padCC[0x6C];
-    /* 0x138 */ s16 field_138[2];
+    /* 0x138 */ s16 rot[2];
     u8 _pad13C[0x4];
-    /* 0x140 */ s16 field_140[2];
+    /* 0x140 */ s16 rotSpeed[2];
     u8 _pad144[0x8];
-    /* 0x14C */ s32 field_14C;
+    /* 0x14C */ s32 modelScale;
 } Wk18D78;
 
 /* One list row of the func_800179EC page (8 bytes). */
@@ -2499,7 +2499,7 @@ typedef struct {
     /* 0x1 */ u8 field_1;
     /* 0x2 */ u8 field_2;
     u8 _pad3;
-    /* 0x4 */ void *field_4;
+    /* 0x4 */ void *digi;
 } Row188BC;
 
 typedef struct {
@@ -2523,8 +2523,8 @@ typedef struct {
     u8 _pad00[0x14];
     /* 0x14 */ s16 maxHp;
     /* 0x16 */ s16 hp;
-    /* 0x18 */ s16 field_18;
-    /* 0x1A */ s16 field_1A;
+    /* 0x18 */ s16 maxMp;
+    /* 0x1A */ s16 mp;
 } Part188BC;
 
 
@@ -2583,7 +2583,7 @@ typedef struct {
     /* 0x03 */ u8 reverse;
     /* 0x04 */ s16 vramW;
     /* 0x06 */ s16 vramH;
-    /* 0x08 */ s32 field_8;
+    /* 0x08 */ s32 syncPending;
     /* 0x0C */ s32 drawSyncCb;
     /* 0x10 */ u8 draw[0x5C];
     /* 0x6C */ volatile DispEnv disp; /* cached display environment */
@@ -2672,7 +2672,7 @@ typedef struct { B4_2DF74 tag; s32 val; } T40_2DF74;
 typedef struct Slot267F0 {
     /* 0x00 */ Ent266D0 e;
     u8 _pad48[0xA0];
-    /* 0xE8 */ u8 field_E8;
+    /* 0xE8 */ u8 padType;
     u8 _padE9[0x7];
 } Slot267F0; /* size 0xF0 */
 
@@ -2680,7 +2680,7 @@ typedef struct Slot267F0 {
 /* Stat-regen config returned by Item_GetEffectRec, read by Item_UseRecoverAll. */
 typedef struct {
     /* 0x00 */ u8 field_0;
-    /* 0x01 */ u8 target;
+    /* 0x01 */ u8 effectType;
     /* 0x02 */ s16 amount;
 } Cfg12640;
 
@@ -2835,8 +2835,8 @@ typedef struct {
     u8 _pad02[0x12];
     /* 0x14 */ s16 maxHp;
     /* 0x16 */ s16 hp;
-    /* 0x18 */ s16 field_18;
-    /* 0x1A */ s16 field_1A;
+    /* 0x18 */ s16 maxMp;
+    /* 0x1A */ s16 mp;
 } Obj1236C;
 
 typedef struct { s32 x[8]; s32 y[8]; } XY2CC64;
@@ -2907,9 +2907,9 @@ typedef union {
 s32 _SsVmPitchBend(s16 a0, s16 a1, s16 a2, s32 a3);
 
 
-/* Gfx_AnimateModelTex: 10-byte fixed part (field_1C list of Sub3C, 0xFF/0xFE ended),
+/* Gfx_AnimateModelTex: 10-byte fixed part (field_1C list of ActorModel, 0xFF/0xFE ended),
  * 0x2A-byte animated part that follows a 0xFE marker, the position block at
- * Sub3C 0x44 and the D_8005F770 fields it reads. */
+ * ActorModel 0x44 and the D_8005F770 fields it reads. */
 typedef struct {
     /* 0x0 */ u8 dstX;
     /* 0x1 */ u8 dstY;
@@ -2942,12 +2942,12 @@ typedef struct Pos1F9AC {
 
 /* func_80026170 5-byte directory entry (field_4 table). */
 typedef struct {
-    /* 0x0 */ u8 field_0;
-    /* 0x1 */ u8 field_1;
-    /* 0x2 */ u8 field_2;
-    /* 0x3 */ u8 field_3;
-    /* 0x4 */ u8 field_4;
-} Ent26170;
+    /* 0x0 */ u8 func;
+    /* 0x1 */ u8 subFunc;
+    /* 0x2 */ u8 size;
+    /* 0x3 */ u8 curr;
+    /* 0x4 */ u8 sign;
+} PadActInfo;
 
 /* func_80026170 stride-8 block record (field_8 table): length byte + data pointer. */
 typedef struct {
@@ -2956,10 +2956,10 @@ typedef struct {
     /* 0x4 */ u8 *data;
 } PadCombEntry;
 
-/* func_80026170 view of Obj25FBC: the three table pointers typed for the record parser. */
+/* func_80026170 view of PadPort: the three table pointers typed for the record parser. */
 typedef struct {
     /* 0x00 */ u16 *modeTable;
-    /* 0x04 */ Ent26170 *actTable;
+    /* 0x04 */ PadActInfo *actTable;
     /* 0x08 */ PadCombEntry *combTable;
     u8 _pad0C[0x30];
     /* 0x3C */ volatile u8 *rxBuf;
@@ -2985,7 +2985,7 @@ typedef struct {
 
 /* CD command tables at 0x8004E80C: per-command result flag, then parameter byte count; read by CD_cw. */
 typedef struct {
-    /* 0x000 */ s32 field_0[64];
+    /* 0x000 */ s32 clearsReadyIntr[64];
     /* 0x100 */ s32 nParams[64];
 } CdTbl4E80C;
 
@@ -2995,9 +2995,9 @@ typedef Mat1F668 S32;
 
 /* Latched copy of CardState.field_0/4 handed to its field_44 callback. */
 typedef struct {
-    /* 0x00 */ s32 field_0;
-    /* 0x04 */ s32 field_4;
-} Pair62F70;
+    /* 0x00 */ s32 cmd;
+    /* 0x04 */ s32 result;
+} CardCmdResult;
 
 /* Pending voice attribute values at D_80062A48 (stride 0x10). */
 typedef struct {
@@ -3022,7 +3022,7 @@ typedef struct {
     u8 _pad04[0x8];
     /* 0x0C */ u8 palette;
     u8 _pad0D[0x1];
-    /* 0x0E */ u8 field_E;
+    /* 0x0E */ u8 unscaled;
     /* 0x0F */ u8 visible;
     /* 0x10 */ s32 scaleX;
     u8 _pad14[0x8];
@@ -3212,10 +3212,10 @@ typedef struct {
 } Stamp61988;
 
 
-/* Text_UpdateAllBoxes (text renderer): the actor work block is 50 Rec34 text boxes
+/* Text_UpdateAllBoxes (text renderer): the actor work block is 50 TextBox text boxes
  * followed by three counters; D_8005F770 viewed through the fields it reads. */
 typedef struct {
-    /* 0x000 */ Rec34 rec[50];
+    /* 0x000 */ TextBox rec[50];
     /* 0xA28 */ s32 blinkTimer;
     /* 0xA2C */ void *field_A2C;
     /* 0xA30 */ s32 waitTimer;
