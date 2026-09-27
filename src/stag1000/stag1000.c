@@ -166,7 +166,19 @@ void func_80064198(void) {
     LoadImage(&snap, D_80066208.imgbuf[id]);
 }
 
-INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_800642E8);
+void func_800642E8(StrDecEnv *dec) {
+    volatile s32 cnt = 0x800000;
+
+    while (dec->isdone == 0) {
+        if (--cnt == 0) {
+            dec->isdone = 1;
+            dec->rectid = dec->rectid == 0;
+            dec->slice.x = dec->rect[dec->rectid].x;
+            dec->slice.y = dec->rect[dec->rectid].y;
+        }
+    }
+    dec->isdone = 0;
+}
 
 INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_8006437C);
 
