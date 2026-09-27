@@ -10661,17 +10661,17 @@ s32 func_800269B8(Ent266D0 *a0) {
 }
 
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", InitHeap);
+ASM_SOURCE("src/main/asm/libapi", InitHeap);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", EnterCriticalSection);
+ASM_SOURCE("src/main/asm/libapi", EnterCriticalSection);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", ExitCriticalSection);
+ASM_SOURCE("src/main/asm/libapi", ExitCriticalSection);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", SysEnqIntRP);
+ASM_SOURCE("src/main/asm/libapi", SysEnqIntRP);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", SysDeqIntRP);
+ASM_SOURCE("src/main/asm/libapi", SysDeqIntRP);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", ChangeClearRCnt);
+ASM_SOURCE("src/main/asm/libapi", ChangeClearRCnt);
 
 u8 *bzero(u8 *s, s32 n) {
     u8 *r = 0;
@@ -11586,7 +11586,7 @@ void func_80029FDC(u8 *arg0, s32 arg1, u32 arg2) {
     }
 }
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", GPU_cw);
+ASM_SOURCE("src/main/asm/libapi", GPU_cw);
 
 void printf(fmt, a1, a2, a3) char *fmt; s32 a1; s32 a2; s32 a3; {
     char **fp = &fmt;
@@ -11943,7 +11943,7 @@ flush:
     }
 }
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", write);
+ASM_SOURCE("src/main/asm/libapi", write);
 
 s32 func_8002A9B4(s8 *s) {
     s32 n = 0;
@@ -12791,39 +12791,39 @@ __asm__(".word 0\n");
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002CE54);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002CE5C);
+ASM_SOURCE("src/main/asm/libgte", func_8002CE5C);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", SquareRoot0);
+ASM_SOURCE("src/main/asm/libgte", SquareRoot0);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", ApplyMatrixLV);
+ASM_SOURCE("src/main/asm/libgte", ApplyMatrixLV);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002D0D4);
+ASM_SOURCE("src/main/asm/libgte", func_8002D0D4);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002D178);
+ASM_SOURCE("src/main/asm/libgte", func_8002D178);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", MulMatrix);
+ASM_SOURCE("src/main/asm/libgte", MulMatrix);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", MulMatrix2);
+ASM_SOURCE("src/main/asm/libgte", MulMatrix2);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", ApplyMatrixSV);
+ASM_SOURCE("src/main/asm/libgte", ApplyMatrixSV);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", ScaleMatrix);
+ASM_SOURCE("src/main/asm/libgte", ScaleMatrix);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", SetRotMatrix);
+ASM_SOURCE("src/main/asm/libgte", SetRotMatrix);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", SetColorMatrix);
+ASM_SOURCE("src/main/asm/libgte", SetColorMatrix);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", SetTransMatrix);
+ASM_SOURCE("src/main/asm/libgte", SetTransMatrix);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", SetBackColor);
+ASM_SOURCE("src/main/asm/libgte", SetBackColor);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", SetFarColor);
+ASM_SOURCE("src/main/asm/libgte", SetFarColor);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", SetGeomOffset);
+ASM_SOURCE("src/main/asm/libgte", SetGeomOffset);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", SetGeomScreen);
+ASM_SOURCE("src/main/asm/libgte", SetGeomScreen);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", RotTransPers);
+ASM_SOURCE("src/main/asm/libgte", RotTransPers);
 
 Obj2D704 *TransposeMatrix(Obj2D704 *src, Obj2D704 *dst) {
     s32 a;
@@ -12850,7 +12850,7 @@ Obj2D704 *TransposeMatrix(Obj2D704 *src, Obj2D704 *dst) {
 }
 
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002D744);
+ASM_SOURCE("src/main/asm/libgte", func_8002D744);
 
 s32 ratan2(s32 y, s32 x) {
     s32 c;
@@ -12894,13 +12894,13 @@ s32 ratan2(s32 y, s32 x) {
 }
 
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002DAC4);
+ASM_SOURCE("src/main/asm/libapi", func_8002DAC4);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002DB70);
+ASM_SOURCE("src/main/asm/libapi", func_8002DB70);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", FlushCache);
+ASM_SOURCE("src/main/asm/libapi", FlushCache);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Gte_CountLeadingZeros);
+ASM_SOURCE("src/main/asm/libgte", Gte_CountLeadingZeros);
 
 void StSetRing(s32 arg0, s32 arg1) {
     D_80061B38 = arg0;
@@ -12941,7 +12941,7 @@ void def_cbready(void) { DeliverEvent(0xF0000003, 0x40); }
 
 void def_cbread(void) { DeliverEvent(0xF0000003, 0x40); }
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", DeliverEvent);
+ASM_SOURCE("src/main/asm/libapi", DeliverEvent);
 
 s32 CdPosToInt(void *arg) {
     u8 *p = arg;
@@ -14078,7 +14078,7 @@ void func_80030C2C(s32 a0, s32 a1) {
     }
 }
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", ChangeClearPAD);
+ASM_SOURCE("src/main/asm/libapi", ChangeClearPAD);
 
 void ResetCallback(void) {
     D_8004FB80->fn_C();
@@ -14272,17 +14272,17 @@ void memclr(s32 *arg0, s32 arg1) {
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80031394);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", _96_remove);
+ASM_SOURCE("src/main/asm/libapi", _96_remove);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", ReturnFromException);
+ASM_SOURCE("src/main/asm/libapi", ReturnFromException);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", ResetEntryInt);
+ASM_SOURCE("src/main/asm/libapi", ResetEntryInt);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", HookEntryInt);
+ASM_SOURCE("src/main/asm/libapi", HookEntryInt);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", setjmp);
+ASM_SOURCE("src/main/asm/libc", setjmp);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", longjmp);
+ASM_SOURCE("src/main/asm/libc", longjmp);
 
 extern void trapIntrVSync(void);
 extern void setIntrVSync(s32 arg0, void (*arg1)(void));
@@ -17368,9 +17368,9 @@ void func_8003A13C(void) {
     }
 }
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", OpenEvent);
+ASM_SOURCE("src/main/asm/libapi", OpenEvent);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", EnableEvent);
+ASM_SOURCE("src/main/asm/libapi", EnableEvent);
 
 s32 func_8003A1D4(s32 a0) {
     u32 i;
@@ -18341,7 +18341,7 @@ s32 func_8003C3A4(s32 a0) {
     return 0;
 }
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", WaitEvent);
+ASM_SOURCE("src/main/asm/libapi", WaitEvent);
 
 void SpuSetKey(s32 on_off, u32 voice_bit) {
     u32 hi;
@@ -18453,7 +18453,7 @@ s32 func_8003C804(s32 a0) {
     return r;
 }
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", TestEvent);
+ASM_SOURCE("src/main/asm/libapi", TestEvent);
 
 void _spu_setInTransfer(s32 arg0) {
     if (arg0 == 1) {
@@ -18890,7 +18890,7 @@ void func_8003D4A4(void) {
 
 void func_8003D4D4(void) { func_8003D5DC(); }
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", _bu_init);
+ASM_SOURCE("src/main/asm/libapi", _bu_init);
 
 extern s32 func_8003D610(void);
 extern void InitCARD(s32);
@@ -19008,39 +19008,39 @@ if (!((p->field_4 & 1) && (p->field_0 & 1))) {
  return 1;
 }
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", InitPAD);
+ASM_SOURCE("src/main/asm/libapi", InitPAD);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", StartPAD);
+ASM_SOURCE("src/main/asm/libapi", StartPAD);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", PAD_init);
+ASM_SOURCE("src/main/asm/libapi", PAD_init);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8003D8C4);
+ASM_SOURCE("src/main/asm/libapi", func_8003D8C4);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8003D8EC);
+ASM_SOURCE("src/main/asm/libapi", func_8003D8EC);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8003D964);
+ASM_SOURCE("src/main/asm/libapi", func_8003D964);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", InitCARD);
+ASM_SOURCE("src/main/asm/libapi", InitCARD);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", StartCARD);
+ASM_SOURCE("src/main/asm/libapi", StartCARD);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", StopCARD);
+ASM_SOURCE("src/main/asm/libapi", StopCARD);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8003DA04);
+ASM_SOURCE("src/main/asm/libapi", func_8003DA04);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8003DA48);
+ASM_SOURCE("src/main/asm/libapi", func_8003DA48);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8003DA74);
+ASM_SOURCE("src/main/asm/libapi", func_8003DA74);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8003DAB8);
+ASM_SOURCE("src/main/asm/libapi", func_8003DAB8);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8003DAE0);
+ASM_SOURCE("src/main/asm/libapi", func_8003DAE0);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8003DB74);
+ASM_SOURCE("src/main/asm/libapi", func_8003DB74);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8003DBE4);
+ASM_SOURCE("src/main/asm/libapi", func_8003DBE4);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8003DC24);
+ASM_SOURCE("src/main/asm/libapi", func_8003DC24);
 
 void func_8003DCA4(void) {
     D_80062FD8 = MemCardCallback(0);
@@ -19891,15 +19891,15 @@ void Card_MakeDevName(s32 n, u8 *out) {
 }
 
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", open);
+ASM_SOURCE("src/main/asm/libapi", open);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", lseek);
+ASM_SOURCE("src/main/asm/libapi", lseek);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", read);
+ASM_SOURCE("src/main/asm/libapi", read);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", close);
+ASM_SOURCE("src/main/asm/libapi", close);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", nextfile);
+ASM_SOURCE("src/main/asm/libapi", nextfile);
 
 s32 func_8003F5C4(s8 *name, s32 a1) {
     Dcb3F760 *e;
@@ -19963,7 +19963,7 @@ void func_8003F760(s32 *a0, s32 a1, s32 a2) {
 }
 
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", firstfile);
+ASM_SOURCE("src/main/asm/libapi", firstfile);
 
 s8 *func_8003F874(s8 *dst, s8 *src) {
     s8 *ret;
@@ -20005,9 +20005,9 @@ s32 func_8003F924(s8 *a, s8 *b) {
     return *a - b[-1];
 }
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", _card_info);
+ASM_SOURCE("src/main/asm/libapi", _card_info);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", _card_load);
+ASM_SOURCE("src/main/asm/libapi", _card_load);
 
 extern void _new_card();
 extern s32 _card_write();
@@ -20018,9 +20018,9 @@ s32 _card_clear(s32 a0) {
 }
 __asm__(".word 0\n.word 0\n.word 0\n");
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", _card_write);
+ASM_SOURCE("src/main/asm/libapi", _card_write);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", _new_card);
+ASM_SOURCE("src/main/asm/libapi", _new_card);
 
 void Card_ClearTaskStack(void) {
     D_800506E8 = -1;
@@ -20206,7 +20206,7 @@ s32 Card_GetHwEventBits(void) {
     return D_80063090 + D_80063094 * 2 + D_80063098 * 4 + D_8006309C * 8;
 }
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", CloseEvent);
+ASM_SOURCE("src/main/asm/libapi", CloseEvent);
 
 static inline s32 mcWriteFrame401E4(s32 port, s32 blk) {
     s32 j = 0;
@@ -20526,4 +20526,4 @@ u8 *strncpy(u8 *dst, u8 *src, s32 n) {
 }
 
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", _card_read);
+ASM_SOURCE("src/main/asm/libapi", _card_read);
