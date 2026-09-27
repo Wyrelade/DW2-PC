@@ -21,6 +21,7 @@ supplies the function names; the caller supplies the toolchain paths and the
 retail-asm root via a small context object.
 """
 import difflib
+import glob
 import json
 import os
 import collections
@@ -1416,10 +1417,42 @@ def _sm_units(lines, ins, la_tmp=None, reorder_after_br=False):
     return blocks
 
 
+_SYM_MAP = []
+
+
+def _sym_map():
+    """({name: address}, {address: name}) of the named symbols in the splat symbol file
+    (configs/<ver>/sym.*.txt next to tools/), so a renamed data symbol still resolves."""
+    if not _SYM_MAP:
+        by_name, by_addr = {}, {}
+        root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        for p in sorted(glob.glob(os.path.join(root, "configs", "*", "sym.*.txt"))):
+            for line in open(p, encoding="utf-8", errors="replace"):
+                m = re.match(r"\s*([A-Za-z_]\w*)\s*=\s*(0x[0-9A-Fa-f]+)\s*;", line)
+                if m:
+                    by_name[m.group(1)] = int(m.group(2), 16)
+                    by_addr.setdefault(int(m.group(2), 16), m.group(1))
+        _SYM_MAP.extend([by_name, by_addr])
+    return _SYM_MAP[0], _SYM_MAP[1]
+
+
+def _sym_addr(name):
+    """Address of a `D_XXXXXXXX` placeholder or of a named symbol, else None."""
+    m = re.fullmatch(r"D_([0-9A-Fa-f]{8})", name)
+    if m:
+        return int(m.group(1), 16)
+    return _sym_map()[0].get(name)
+
+
 def _sm_sym(s):
-    """`D_XXXXXXXX+k` -> the splat name of the address it resolves to."""
-    m = re.fullmatch(r"D_([0-9A-Fa-f]{8})\+(\d+)", s)
-    return "D_%08X" % (int(m.group(1), 16) + int(m.group(2))) if m else s
+    """`SYM+k` -> the splat name of the address it resolves to (the symbol file's name
+    for that address when it has one, else `D_XXXXXXXX`)."""
+    m = re.fullmatch(r"([A-Za-z_]\w*)\+(\d+)", s)
+    a = _sym_addr(m.group(1)) if m else None
+    if a is None:
+        return s
+    a += int(m.group(2))
+    return _sym_map()[1].get(a, "D_%08X" % a)
 
 
 def _sm_srckey(body):
@@ -10638,9 +10671,10 @@ def _gp_small(alt_text):
 
 
 def _gp_addr(name):
-    """Address a splat-style `D_XXXXXXXX[+k]` name resolves to, else None."""
-    m = re.fullmatch(r"D_([0-9A-Fa-f]{8})(?:\+(\d+))?", name)
-    return int(m.group(1), 16) + int(m.group(2) or 0) if m else None
+    """Address a `D_XXXXXXXX[+k]` or named `SYM[+k]` symbol resolves to, else None."""
+    m = re.fullmatch(r"([A-Za-z_]\w*)(?:\+(\d+))?", name)
+    a = _sym_addr(m.group(1)) if m else None
+    return a + int(m.group(2) or 0) if a is not None else None
 
 
 def _gp_target_refs(name):
