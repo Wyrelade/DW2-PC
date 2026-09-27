@@ -189,7 +189,11 @@ s32 func_80067818(void) {
     return ((Stg11SaveWork *)D_800685D0->work)->field_4;
 }
 
-INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80067838);
+void func_80067838(u8 *arg0, u8 arg1) {
+    Stg11SaveWork *w = (Stg11SaveWork *)D_800685D0->work;
+    strcpy(w->field_C, arg0);
+    w->field_21 = arg1;
+}
 
 INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80067880);
 
