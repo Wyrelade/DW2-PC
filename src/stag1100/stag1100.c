@@ -95,7 +95,28 @@ void func_80063894(Actor *arg0, s16 arg1) {
 
 INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_800638BC);
 
-INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80063C08);
+void func_80063C08(Actor *arg0) {
+    Stg11Work63894 *w = (Stg11Work63894 *)arg0->work;
+    s32 *list;
+    s32 i;
+    GfxPart *parts;
+    s32 *masks;
+
+    if (w->field_28 != 0) {
+        list = (s32 *)Cd_GetFileEntry(0xD280002);
+        for (i = 0; list[i] != 0; i++) {
+            parts = (GfxPart *)Cd_GetFileEntry(list[i]);
+            if (i == 0) {
+                masks = (s32 *)Cd_GetFileEntry(0xD280004);
+                Menu_SetPartsGridPos(parts, 0x20, &w->field_10, &w->field_14);
+                Gfx_SetPartsPalette(parts, 0x20, (arg0->elapsed >> 2) & 3);
+                Gfx_HidePartsByMask((GfxPartMaskView *)parts, masks[w->field_20 - 1]);
+            }
+            Gfx_SetPartsScale((GfxPartScaleView *)parts, 0x1000, w->field_28);
+            Gfx_DrawParts(parts);
+        }
+    }
+}
 
 void func_80063D20(void) {
 }
