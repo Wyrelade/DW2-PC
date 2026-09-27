@@ -1,4 +1,5 @@
 #include "common.h"
+#include "stag1100/stag1100.h"
 
 INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_8006358C);
 
@@ -6,7 +7,12 @@ INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_8006374C);
 
 INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_8006377C);
 
-INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80063894);
+void func_80063894(Actor *arg0, s16 arg1) {
+    Stg11Work63894 *w = (Stg11Work63894 *)arg0->work;
+    D_800685C8 = 0;
+    w->field_20 = arg1;
+    w->field_24 = arg1 == 4;
+}
 
 INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_800638BC);
 
