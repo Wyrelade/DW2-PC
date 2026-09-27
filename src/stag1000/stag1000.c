@@ -1,4 +1,5 @@
 #include "common.h"
+#include "stag1000/stag1000.h"
 
 INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_800633B0);
 
@@ -13,7 +14,11 @@ INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80063D34);
 
 INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80063E24);
 
-INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80063E88);
+void func_80063E88(s32 arg0, s32 *arg1) {
+    D_80050741 = 1;
+    D_80066200 = arg1[0];
+    D_80066204 = arg1[1];
+}
 
 INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80063EB0);
 
