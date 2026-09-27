@@ -54,7 +54,10 @@ void func_80064E4C(s16 arg0) {
 
 INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80064E78);
 
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80065114);
+void func_80065114(void) {
+    Gfx_ReleaseTexSlot(D_80069360->field_8D0);
+    Mem_Free((ActorWork *)D_80069360);
+}
 
 INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80065150);
 
