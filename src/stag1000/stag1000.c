@@ -45,7 +45,16 @@ void func_80063D34(Actor *arg0) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80063E24);
+void func_80063E24(Actor *arg0) {
+    StgWork *w = (StgWork *)arg0->work;
+    StgFileEntry *e = (StgFileEntry *)Cd_GetFileEntry(0xD760000);
+    StgFileEntry *p;
+
+    for (p = e; p->field_0 != 0; p++) {
+        p->field_C = w->byte;
+    }
+    func_8001D8A4((s32)e);
+}
 
 void func_80063E88(s32 arg0, s32 *arg1) {
     D_80050741 = 1;
