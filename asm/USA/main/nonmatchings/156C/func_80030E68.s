@@ -23,7 +23,7 @@ glabel func_80030E68
     /* 216B4 80030EB4 8CFB428C */  lw         $v0, %lo(D_8004FB8C)($v0)
     /* 216B8 80030EB8 21200002 */  addu       $a0, $s0, $zero
     /* 216BC 80030EBC 000045AC */  sw         $a1, 0x0($v0)
-    /* 216C0 80030EC0 DCC4000C */  jal        func_80031370
+    /* 216C0 80030EC0 DCC4000C */  jal        memclr
     /* 216C4 80030EC4 1A040524 */   addiu     $a1, $zero, 0x41A
     /* 216C8 80030EC8 F9C4000C */  jal        setjmp
     /* 216CC 80030ECC 38000426 */   addiu     $a0, $s0, 0x38

@@ -56,7 +56,7 @@ glabel func_80020510
     /* 10DD8 800205D8 0038CE48 */  ctc2       $t6, $7 /* handwritten instruction */
     /* 10DDC 800205DC 0500E016 */  bnez       $s7, .L800205F4
     /* 10DE0 800205E0 00000000 */   nop
-    /* 10DE4 800205E4 0E86000C */  jal        func_80021838
+    /* 10DE4 800205E4 0E86000C */  jal        Gfx_IsOriginOffscreen
     /* 10DE8 800205E8 00000000 */   nop
     /* 10DEC 800205EC 4A004014 */  bnez       $v0, .L80020718
     /* 10DF0 800205F0 00000000 */   nop
@@ -65,7 +65,7 @@ glabel func_80020510
     /* 10DF8 800205F8 21286002 */  addu       $a1, $s3, $zero
     /* 10DFC 800205FC 21100202 */  addu       $v0, $s0, $v0
     /* 10E00 80020600 0000448C */  lw         $a0, 0x0($v0)
-    /* 10E04 80020604 B985000C */  jal        func_800216E4
+    /* 10E04 80020604 B985000C */  jal        Gfx_ProjectModelVerts
     /* 10E08 80020608 2130E002 */   addu      $a2, $s7, $zero
     /* 10E0C 8002060C 42004014 */  bnez       $v0, .L80020718
     /* 10E10 80020610 40008226 */   addiu     $v0, $s4, 0x40

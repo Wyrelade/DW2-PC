@@ -40,7 +40,7 @@ glabel func_80034114
     /* 2499C 8003419C 1000A427 */  addiu      $a0, $sp, 0x10
     /* 249A0 800341A0 5C00A527 */  addiu      $a1, $sp, 0x5C
     /* 249A4 800341A4 5E00A627 */  addiu      $a2, $sp, 0x5E
-    /* 249A8 800341A8 E0CE000C */  jal        func_80033B80
+    /* 249A8 800341A8 E0CE000C */  jal        _SsUtBuildADSR
     /* 249AC 800341AC 4C00B027 */   addiu     $s0, $sp, 0x4C
     /* 249B0 800341B0 00241100 */  sll        $a0, $s1, 16
     /* 249B4 800341B4 03240400 */  sra        $a0, $a0, 16

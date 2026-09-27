@@ -18,7 +18,7 @@ glabel func_80036594
     /* 26DCC 800365CC FFFF0224 */   addiu     $v0, $zero, -0x1
   .L800365D0:
     /* 26DD0 800365D0 002C0500 */  sll        $a1, $a1, 16
-    /* 26DD4 800365D4 35E6000C */  jal        func_800398D4
+    /* 26DD4 800365D4 35E6000C */  jal        _SsVmVSetUp
     /* 26DD8 800365D8 032C0500 */   sra       $a1, $a1, 16
     /* 26DDC 800365DC 0680033C */  lui        $v1, %hi(D_80062D1F)
     /* 26DE0 800365E0 1F2D6380 */  lb         $v1, %lo(D_80062D1F)($v1)

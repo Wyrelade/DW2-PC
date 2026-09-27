@@ -35,7 +35,7 @@ glabel func_80039334
     /* 29BB0 800393B0 21204002 */  addu       $a0, $s2, $zero
     /* 29BB4 800393B4 21286002 */  addu       $a1, $s3, $zero
     /* 29BB8 800393B8 5000B697 */  lhu        $s6, 0x50($sp)
-    /* 29BBC 800393BC 35E6000C */  jal        func_800398D4
+    /* 29BBC 800393BC 35E6000C */  jal        _SsVmVSetUp
     /* 29BC0 800393C0 21A06200 */   addu      $s4, $v1, $v0
     /* 29BC4 800393C4 0680013C */  lui        $at, %hi(D_80062D2C)
     /* 29BC8 800393C8 2C2D30A4 */  sh         $s0, %lo(D_80062D2C)($at)

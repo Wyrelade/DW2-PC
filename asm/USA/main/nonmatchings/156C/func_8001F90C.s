@@ -18,9 +18,9 @@ glabel func_8001F90C
     /* 10140 8001F940 10003126 */   addiu     $s1, $s1, 0x10
     /* 10144 8001F944 CC040424 */  addiu      $a0, $zero, 0x4CC
     /* 10148 8001F948 21288000 */  addu       $a1, $a0, $zero
-    /* 1014C 8001F94C D5AE000C */  jal        func_8002BB54
+    /* 1014C 8001F94C D5AE000C */  jal        GsSetAmbient
     /* 10150 8001F950 21308000 */   addu      $a2, $a0, $zero
-    /* 10154 8001F954 B5AE000C */  jal        func_8002BAD4
+    /* 10154 8001F954 B5AE000C */  jal        GsSetLightMode
     /* 10158 8001F958 21200000 */   addu      $a0, $zero, $zero
     /* 1015C 8001F95C 1800BF8F */  lw         $ra, 0x18($sp)
     /* 10160 8001F960 1400B18F */  lw         $s1, 0x14($sp)

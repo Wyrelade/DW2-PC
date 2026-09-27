@@ -12,7 +12,7 @@ glabel func_8002A9F4
     /* 1B214 8002AA14 21A0C000 */  addu       $s4, $a2, $zero
     /* 1B218 8002AA18 1000B0AF */  sw         $s0, 0x10($sp)
     /* 1B21C 8002AA1C 2400BFAF */  sw         $ra, 0x24($sp)
-    /* 1B220 8002AA20 0EC6000C */  jal        func_80031838
+    /* 1B220 8002AA20 0EC6000C */  jal        GetVideoMode
     /* 1B224 8002AA24 2180E000 */   addu      $s0, $a3, $zero
     /* 1B228 8002AA28 01000324 */  addiu      $v1, $zero, 0x1
     /* 1B22C 8002AA2C 000033A6 */  sh         $s3, 0x0($s1)

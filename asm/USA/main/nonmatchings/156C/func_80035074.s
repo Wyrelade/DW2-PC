@@ -122,18 +122,18 @@ glabel func_80035074
   .L80035218:
     /* 25A18 80035218 F19B000C */  jal        EnterCriticalSection
     /* 25A1C 8003521C 00000000 */   nop
-    /* 25A20 80035220 2FD5000C */  jal        func_800354BC
+    /* 25A20 80035220 2FD5000C */  jal        ResetRCnt
     /* 25A24 80035224 21204002 */   addu      $a0, $s2, $zero
     /* 25A28 80035228 21204002 */  addu       $a0, $s2, $zero
     /* 25A2C 8003522C FFFF2532 */  andi       $a1, $s1, 0xFFFF
-    /* 25A30 80035230 E1D4000C */  jal        func_80035384
+    /* 25A30 80035230 E1D4000C */  jal        SetRCnt
     /* 25A34 80035234 00100624 */   addiu     $a2, $zero, 0x1000
     /* 25A38 80035238 02000482 */  lb         $a0, 0x2($s0)
     /* 25A3C 8003523C 00000000 */  nop
     /* 25A40 80035240 09008014 */  bnez       $a0, .L80035268
     /* 25A44 80035244 00000000 */   nop
     /* 25A48 80035248 21200000 */  addu       $a0, $zero, $zero
-    /* 25A4C 8003524C 41C3000C */  jal        func_80030D04
+    /* 25A4C 8003524C 41C3000C */  jal        InterruptCallback
     /* 25A50 80035250 21280000 */   addu      $a1, $zero, $zero
     /* 25A54 80035254 02000482 */  lb         $a0, 0x2($s0)
     /* 25A58 80035258 0380053C */  lui        $a1, %hi(func_800352E4)
@@ -147,7 +147,7 @@ glabel func_80035074
     /* 25A74 80035274 3053A524 */   addiu     $a1, $a1, %lo(func_80035330)
     /* 25A78 80035278 F8FF058E */  lw         $a1, -0x8($s0)
   .L8003527C:
-    /* 25A7C 8003527C 41C3000C */  jal        func_80030D04
+    /* 25A7C 8003527C 41C3000C */  jal        InterruptCallback
     /* 25A80 80035280 00000000 */   nop
   .L80035284:
     /* 25A84 80035284 F59B000C */  jal        ExitCriticalSection

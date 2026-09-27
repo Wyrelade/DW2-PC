@@ -102,11 +102,11 @@ glabel func_8001A01C
     /* A988 8001A188 0000428C */  lw         $v0, 0x0($v0)
     /* A98C 8001A18C 2800058E */  lw         $a1, 0x28($s0)
     /* A990 8001A190 0400448C */  lw         $a0, 0x4($v0)
-    /* A994 8001A194 798E000C */  jal        func_800239E4
+    /* A994 8001A194 798E000C */  jal        Mem_GetOffsetEntry
     /* A998 8001A198 00000000 */   nop
     /* A99C 8001A19C 21204000 */  addu       $a0, $v0, $zero
     /* A9A0 8001A1A0 002C1200 */  sll        $a1, $s2, 16
-    /* A9A4 8001A1A4 91E6000C */  jal        func_80039A44
+    /* A9A4 8001A1A4 91E6000C */  jal        SsVabOpenHead
     /* A9A8 8001A1A8 032C0500 */   sra       $a1, $a1, 16
     /* A9AC 8001A1AC 82680008 */  j          .L8001A208
     /* A9B0 8001A1B0 00000000 */   nop
@@ -156,7 +156,7 @@ glabel func_8001A01C
     /* AA50 8001A250 10008010 */  beqz       $a0, .L8001A294
     /* AA54 8001A254 00000000 */   nop
     /* AA58 8001A258 2800058E */  lw         $a1, 0x28($s0)
-    /* AA5C 8001A25C 798E000C */  jal        func_800239E4
+    /* AA5C 8001A25C 798E000C */  jal        Mem_GetOffsetEntry
     /* AA60 8001A260 2C009426 */   addiu     $s4, $s4, 0x2C
     /* AA64 8001A264 21204000 */  addu       $a0, $v0, $zero
     /* AA68 8001A268 08000586 */  lh         $a1, 0x8($s0)
@@ -177,7 +177,7 @@ glabel func_8001A01C
     /* AAA0 8001A2A0 B3680008 */  j          .L8001A2CC
     /* AAA4 8001A2A4 040002AE */   sw        $v0, 0x4($s0)
   .L8001A2A8:
-    /* AAA8 8001A2A8 01E8000C */  jal        func_8003A004
+    /* AAA8 8001A2A8 01E8000C */  jal        SsVabTransCompleted
     /* AAAC 8001A2AC 21200000 */   addu      $a0, $zero, $zero
     /* AAB0 8001A2B0 00140200 */  sll        $v0, $v0, 16
     /* AAB4 8001A2B4 05004010 */  beqz       $v0, .L8001A2CC

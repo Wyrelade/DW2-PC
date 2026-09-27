@@ -27,7 +27,7 @@ glabel func_8001A410
     /* AC6C 8001A46C 21104300 */  addu       $v0, $v0, $v1
     /* AC70 8001A470 21104600 */  addu       $v0, $v0, $a2
     /* AC74 8001A474 0C004484 */  lh         $a0, 0xC($v0)
-    /* AC78 8001A478 A7D5000C */  jal        func_8003569C
+    /* AC78 8001A478 A7D5000C */  jal        SsSepStop
     /* AC7C 8001A47C 00000000 */   nop
   .L8001A480:
     /* AC80 8001A480 2000828F */  lw         $v0, %gp_rel(D_80050718)($gp)

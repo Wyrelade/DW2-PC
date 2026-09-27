@@ -23,10 +23,10 @@ glabel func_8002DDE4
     /* 1E62C 8002DE2C 981B22AC */  sw         $v0, %lo(D_80061B98)($at)
   .L8002DE30:
     /* 1E630 8002DE30 0380043C */  lui        $a0, %hi(func_8002DF74)
-    /* 1E634 8002DE34 8DC2000C */  jal        func_80030A34
+    /* 1E634 8002DE34 8DC2000C */  jal        CdDataCallback
     /* 1E638 8002DE38 74DF8424 */   addiu     $a0, $a0, %lo(func_8002DF74)
     /* 1E63C 8002DE3C 0380043C */  lui        $a0, %hi(func_8002DE68)
-    /* 1E640 8002DE40 4DC1000C */  jal        func_80030534
+    /* 1E640 8002DE40 4DC1000C */  jal        CdReadyCallback
     /* 1E644 8002DE44 68DE8424 */   addiu     $a0, $a0, %lo(func_8002DE68)
   .L8002DE48:
     /* 1E648 8002DE48 1B000424 */  addiu      $a0, $zero, 0x1B

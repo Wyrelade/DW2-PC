@@ -11,7 +11,7 @@ glabel func_8001EF88
     /* F7A4 8001EFA4 06000224 */  addiu      $v0, $zero, 0x6
     /* F7A8 8001EFA8 0D006214 */  bne        $v1, $v0, .L8001EFE0
     /* F7AC 8001EFAC 21106000 */   addu      $v0, $v1, $zero
-    /* F7B0 8001EFB0 448E000C */  jal        func_80023910
+    /* F7B0 8001EFB0 448E000C */  jal        Rand_Next
     /* F7B4 8001EFB4 00000000 */   nop
     /* F7B8 8001EFB8 FFFF4230 */  andi       $v0, $v0, 0xFFFF
     /* F7BC 8001EFBC CCCC033C */  lui        $v1, (0xCCCCCCCD >> 16)

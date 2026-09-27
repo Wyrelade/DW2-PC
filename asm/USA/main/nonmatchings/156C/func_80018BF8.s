@@ -59,7 +59,7 @@ glabel func_80018BF8
     /* 94D4 80018CD4 1800478D */  lw         $a3, 0x18($t2)
     /* 94D8 80018CD8 00000000 */  nop
     /* 94DC 80018CDC E40007AE */  sw         $a3, 0xE4($s0)
-    /* 94E0 80018CE0 09AD000C */  jal        func_8002B424
+    /* 94E0 80018CE0 09AD000C */  jal        GsInitCoordinate2
     /* 94E4 80018CE4 E8000526 */   addiu     $a1, $s0, 0xE8
     /* 94E8 80018CE8 1305043C */  lui        $a0, (0x513001F >> 16)
     /* 94EC 80018CEC 1F008434 */  ori        $a0, $a0, (0x513001F & 0xFFFF)
@@ -88,9 +88,9 @@ glabel func_80018BF8
     /* 9544 80018D44 0000448E */  lw         $a0, 0x0($s2)
     /* 9548 80018D48 0400458E */  lw         $a1, 0x4($s2)
     /* 954C 80018D4C 0800468E */  lw         $a2, 0x8($s2)
-    /* 9550 80018D50 D5AE000C */  jal        func_8002BB54
+    /* 9550 80018D50 D5AE000C */  jal        GsSetAmbient
     /* 9554 80018D54 00000000 */   nop
-    /* 9558 80018D58 B5AE000C */  jal        func_8002BAD4
+    /* 9558 80018D58 B5AE000C */  jal        GsSetLightMode
     /* 955C 80018D5C 21200000 */   addu      $a0, $zero, $zero
     /* 9560 80018D60 1C00BF8F */  lw         $ra, 0x1C($sp)
     /* 9564 80018D64 1800B28F */  lw         $s2, 0x18($sp)

@@ -10,7 +10,7 @@ glabel func_8002CDB8
     /* 1D5D0 8002CDD0 8FB30008 */  j          .L8002CE3C
     /* 1D5D4 8002CDD4 21100000 */   addu      $v0, $zero, $zero
   .L8002CDD8:
-    /* 1D5D8 8002CDD8 EDB6000C */  jal        func_8002DBB4
+    /* 1D5D8 8002CDD8 EDB6000C */  jal        Gte_CountLeadingZeros
     /* 1D5DC 8002CDDC 21202002 */   addu      $a0, $s1, $zero
     /* 1D5E0 8002CDE0 08000324 */  addiu      $v1, $zero, 0x8
     /* 1D5E4 8002CDE4 23106200 */  subu       $v0, $v1, $v0

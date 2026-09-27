@@ -3,9 +3,9 @@ nonmatching func_80032914, 0x38
 glabel func_80032914
     /* 23114 80032914 E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* 23118 80032918 1000BFAF */  sw         $ra, 0x10($sp)
-    /* 2311C 8003291C 35C3000C */  jal        func_80030CD4
+    /* 2311C 8003291C 35C3000C */  jal        ResetCallback
     /* 23120 80032920 00000000 */   nop
-    /* 23124 80032924 0DE8000C */  jal        func_8003A034
+    /* 23124 80032924 0DE8000C */  jal        SpuInit
     /* 23128 80032928 00000000 */   nop
     /* 2312C 8003292C E9F0000C */  jal        func_8003C3A4
     /* 23130 80032930 07000424 */   addiu     $a0, $zero, 0x7

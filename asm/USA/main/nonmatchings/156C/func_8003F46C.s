@@ -3,13 +3,13 @@ nonmatching func_8003F46C, 0xAC
 glabel func_8003F46C
     /* 2FC6C 8003F46C E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* 2FC70 8003F470 1000BFAF */  sw         $ra, 0x10($sp)
-    /* 2FC74 8003F474 C3FE000C */  jal        func_8003FB0C
+    /* 2FC74 8003F474 C3FE000C */  jal        Card_IsTaskStackEmpty
     /* 2FC78 8003F478 00000000 */   nop
     /* 2FC7C 8003F47C 18004014 */  bnez       $v0, .L8003F4E0
     /* 2FC80 8003F480 00000000 */   nop
-    /* 2FC84 8003F484 A8FE000C */  jal        func_8003FAA0
+    /* 2FC84 8003F484 A8FE000C */  jal        Card_RunTopTask
     /* 2FC88 8003F488 00000000 */   nop
-    /* 2FC8C 8003F48C C3FE000C */  jal        func_8003FB0C
+    /* 2FC8C 8003F48C C3FE000C */  jal        Card_IsTaskStackEmpty
     /* 2FC90 8003F490 00000000 */   nop
     /* 2FC94 8003F494 12004010 */  beqz       $v0, .L8003F4E0
     /* 2FC98 8003F498 01000224 */   addiu     $v0, $zero, 0x1

@@ -6,7 +6,7 @@ glabel func_8003A614
     /* 2AE1C 8003A61C E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* 2AE20 8003A620 03004014 */  bnez       $v0, .L8003A630
     /* 2AE24 8003A624 1000BFAF */   sw        $ra, 0x10($sp)
-    /* 2AE28 8003A628 2BEB000C */  jal        func_8003ACAC
+    /* 2AE28 8003A628 2BEB000C */  jal        _spu_Fw1ts
     /* 2AE2C 8003A62C 00000000 */   nop
   .L8003A630:
     /* 2AE30 8003A630 0580043C */  lui        $a0, %hi(D_8004FE28)

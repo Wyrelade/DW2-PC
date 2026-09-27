@@ -41,7 +41,7 @@ glabel func_80033124
     /* 239B8 800331B8 1000A2AF */   sw        $v0, 0x10($sp)
     /* 239BC 800331BC 21204002 */  addu       $a0, $s2, $zero
     /* 239C0 800331C0 21282002 */  addu       $a1, $s1, $zero
-    /* 239C4 800331C4 25C9000C */  jal        func_80032494
+    /* 239C4 800331C4 25C9000C */  jal        _SsReadDeltaValue
     /* 239C8 800331C8 270074A2 */   sb        $s4, 0x27($s3)
     /* 239CC 800331CC 900002AE */  sw         $v0, 0x90($s0)
     /* 239D0 800331D0 2C00BF8F */  lw         $ra, 0x2C($sp)

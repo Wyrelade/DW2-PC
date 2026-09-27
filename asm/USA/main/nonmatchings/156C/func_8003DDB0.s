@@ -21,7 +21,7 @@ glabel func_8003DDB0
     /* 2E5F4 8003DDF4 01000224 */   addiu     $v0, $zero, 0x1
   .L8003DDF8:
     /* 2E5F8 8003DDF8 0180043C */  lui        $a0, %hi(D_80010B74)
-    /* 2E5FC 8003DDFC 05A8000C */  jal        func_8002A014
+    /* 2E5FC 8003DDFC 05A8000C */  jal        printf
     /* 2E600 8003DE00 740B8424 */   addiu     $a0, $a0, %lo(D_80010B74)
     /* 2E604 8003DE04 21100000 */  addu       $v0, $zero, $zero
   .L8003DE08:

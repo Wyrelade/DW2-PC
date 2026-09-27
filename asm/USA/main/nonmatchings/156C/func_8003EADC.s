@@ -41,7 +41,7 @@ glabel func_8003EADC
     /* 2F364 8003EB64 14004014 */  bnez       $v0, .L8003EBB8
     /* 2F368 8003EB68 21208002 */   addu      $a0, $s4, $zero
     /* 2F36C 8003EB6C 24003026 */  addiu      $s0, $s1, 0x24
-    /* 2F370 8003EB70 46FD000C */  jal        func_8003F518
+    /* 2F370 8003EB70 46FD000C */  jal        Card_MakeDevName
     /* 2F374 8003EB74 21280002 */   addu      $a1, $s0, $zero
     /* 2F378 8003EB78 21200002 */  addu       $a0, $s0, $zero
     /* 2F37C 8003EB7C 1DFE000C */  jal        func_8003F874
@@ -63,7 +63,7 @@ glabel func_8003EADC
     /* 2F3B8 8003EBB8 0180043C */  lui        $a0, %hi(D_80010CE8)
     /* 2F3BC 8003EBBC E80C8424 */  addiu      $a0, $a0, %lo(D_80010CE8)
   .L8003EBC0:
-    /* 2F3C0 8003EBC0 05A8000C */  jal        func_8002A014
+    /* 2F3C0 8003EBC0 05A8000C */  jal        printf
     /* 2F3C4 8003EBC4 00000000 */   nop
     /* 2F3C8 8003EBC8 21100000 */  addu       $v0, $zero, $zero
   .L8003EBCC:

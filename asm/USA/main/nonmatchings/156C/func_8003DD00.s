@@ -7,7 +7,7 @@ glabel func_8003DD00
     /* 2E50C 8003DD0C 802F1026 */  addiu      $s0, $s0, %lo(D_80062F80)
     /* 2E510 8003DD10 1400BFAF */  sw         $ra, 0x14($sp)
     /* 2E514 8003DD14 0C0000AE */  sw         $zero, 0xC($s0)
-    /* 2E518 8003DD18 85FE000C */  jal        func_8003FA14
+    /* 2E518 8003DD18 85FE000C */  jal        Card_ClearTaskStack
     /* 2E51C 8003DD1C 440000AE */   sw        $zero, 0x44($s0)
     /* 2E520 8003DD20 000000AE */  sw         $zero, 0x0($s0)
     /* 2E524 8003DD24 040000AE */  sw         $zero, 0x4($s0)
@@ -23,7 +23,7 @@ glabel func_8003DD00
     /* 2E54C 8003DD4C 500003AE */   sw        $v1, 0x50($s0)
     /* 2E550 8003DD50 0480053C */  lui        $a1, %hi(func_8003F46C)
     /* 2E554 8003DD54 6CF4A524 */  addiu      $a1, $a1, %lo(func_8003F46C)
-    /* 2E558 8003DD58 66C3000C */  jal        func_80030D98
+    /* 2E558 8003DD58 66C3000C */  jal        VSyncCallbacks
     /* 2E55C 8003DD5C 07000424 */   addiu     $a0, $zero, 0x7
     /* 2E560 8003DD60 1400BF8F */  lw         $ra, 0x14($sp)
     /* 2E564 8003DD64 1000B08F */  lw         $s0, 0x10($sp)

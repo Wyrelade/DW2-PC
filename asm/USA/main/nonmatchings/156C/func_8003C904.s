@@ -54,7 +54,7 @@ glabel func_8003C904
     /* 2D1B4 8003C9B4 02220500 */  srl        $a0, $a1, 8
     /* 2D1B8 8003C9B8 FF00A530 */  andi       $a1, $a1, 0xFF
     /* 2D1BC 8003C9BC 02320700 */  srl        $a2, $a3, 8
-    /* 2D1C0 8003C9C0 C1F3000C */  jal        func_8003CF04
+    /* 2D1C0 8003C9C0 C1F3000C */  jal        _spu_note2pitch
     /* 2D1C4 8003C9C4 FF00E730 */   andi      $a3, $a3, 0xFF
     /* 2D1C8 8003C9C8 0580043C */  lui        $a0, %hi(D_8004FE28)
     /* 2D1CC 8003C9CC 28FE848C */  lw         $a0, %lo(D_8004FE28)($a0)
@@ -206,7 +206,7 @@ glabel func_8003C904
     /* 2D3A8 8003CBA8 00000000 */   nop
   .L8003CBAC:
     /* 2D3AC 8003CBAC 1C00058E */  lw         $a1, 0x1C($s0)
-    /* 2D3B0 8003CBB0 C9EA000C */  jal        func_8003AB24
+    /* 2D3B0 8003CBB0 C9EA000C */  jal        _spu_FsetRXXa
     /* 2D3B4 8003CBB4 03006436 */   ori       $a0, $s3, 0x3
   .L8003CBB8:
     /* 2D3B8 8003CBB8 04004016 */  bnez       $s2, .L8003CBCC
@@ -216,7 +216,7 @@ glabel func_8003C904
     /* 2D3C8 8003CBC8 00000000 */   nop
   .L8003CBCC:
     /* 2D3CC 8003CBCC 2000058E */  lw         $a1, 0x20($s0)
-    /* 2D3D0 8003CBD0 C9EA000C */  jal        func_8003AB24
+    /* 2D3D0 8003CBD0 C9EA000C */  jal        _spu_FsetRXXa
     /* 2D3D4 8003CBD4 07006436 */   ori       $a0, $s3, 0x7
   .L8003CBD8:
     /* 2D3D8 8003CBD8 05004016 */  bnez       $s2, .L8003CBF0

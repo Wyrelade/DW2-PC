@@ -4,7 +4,7 @@ glabel func_8003A054
     /* 2A854 8003A054 E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* 2A858 8003A058 1000B0AF */  sw         $s0, 0x10($sp)
     /* 2A85C 8003A05C 1400BFAF */  sw         $ra, 0x14($sp)
-    /* 2A860 8003A060 35C3000C */  jal        func_80030CD4
+    /* 2A860 8003A060 35C3000C */  jal        ResetCallback
     /* 2A864 8003A064 21808000 */   addu      $s0, $a0, $zero
     /* 2A868 8003A068 75E8000C */  jal        func_8003A1D4
     /* 2A86C 8003A06C 21200002 */   addu      $a0, $s0, $zero
@@ -37,7 +37,7 @@ glabel func_8003A054
     /* 2A8D0 8003A0D0 0C0040AC */  sw         $zero, 0xC($v0)
     /* 2A8D4 8003A0D4 0580013C */  lui        $at, %hi(D_8004FDC4)
     /* 2A8D8 8003A0D8 C4FD25AC */  sw         $a1, %lo(D_8004FDC4)($at)
-    /* 2A8DC 8003A0DC B8EA000C */  jal        func_8003AAE0
+    /* 2A8DC 8003A0DC B8EA000C */  jal        _spu_FsetRXX
     /* 2A8E0 8003A0E0 21300000 */   addu      $a2, $zero, $zero
     /* 2A8E4 8003A0E4 0580013C */  lui        $at, %hi(D_8004FE88)
     /* 2A8E8 8003A0E8 88FE20AC */  sw         $zero, %lo(D_8004FE88)($at)

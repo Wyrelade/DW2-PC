@@ -21,7 +21,7 @@ glabel func_80039994
     /* 2A1D8 800399D8 0680043C */  lui        $a0, %hi(D_80062D98)
     /* 2A1DC 800399DC 21208200 */  addu       $a0, $a0, $v0
     /* 2A1E0 800399E0 982D848C */  lw         $a0, %lo(D_80062D98)($a0)
-    /* 2A1E4 800399E4 DDEC000C */  jal        func_8003B374
+    /* 2A1E4 800399E4 DDEC000C */  jal        SpuFree
     /* 2A1E8 800399E8 00000000 */   nop
     /* 2A1EC 800399EC 0680013C */  lui        $at, %hi(D_80062D38)
     /* 2A1F0 800399F0 21083000 */  addu       $at, $at, $s0
@@ -36,7 +36,7 @@ glabel func_80039994
     /* 2A214 80039A14 01000324 */  addiu      $v1, $zero, 0x1
     /* 2A218 80039A18 03004314 */  bne        $v0, $v1, .L80039A28
     /* 2A21C 80039A1C 00000000 */   nop
-    /* 2A220 80039A20 31F2000C */  jal        func_8003C8C4
+    /* 2A220 80039A20 31F2000C */  jal        _spu_setInTransfer
     /* 2A224 80039A24 21200000 */   addu      $a0, $zero, $zero
   .L80039A28:
     /* 2A228 80039A28 1400BF8F */  lw         $ra, 0x14($sp)

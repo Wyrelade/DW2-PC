@@ -227,7 +227,7 @@ glabel func_8002A054
     /* 1AB4C 8002A34C 0B008006 */  bltz       $s4, .L8002A37C
     /* 1AB50 8002A350 21204002 */   addu      $a0, $s2, $zero
     /* 1AB54 8002A354 21280000 */  addu       $a1, $zero, $zero
-    /* 1AB58 8002A358 BDA9000C */  jal        func_8002A6F4
+    /* 1AB58 8002A358 BDA9000C */  jal        memchr
     /* 1AB5C 8002A35C 21308002 */   addu      $a2, $s4, $zero
     /* 1AB60 8002A360 04004010 */  beqz       $v0, .L8002A374
     /* 1AB64 8002A364 23B05200 */   subu      $s6, $v0, $s2

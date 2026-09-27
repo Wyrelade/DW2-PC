@@ -8,29 +8,29 @@ glabel func_8001A75C
     /* AF6C 8001A76C 10000624 */  addiu      $a2, $zero, 0x10
     /* AF70 8001A770 1800BFAF */  sw         $ra, 0x18($sp)
     /* AF74 8001A774 1400B1AF */  sw         $s1, 0x14($sp)
-    /* AF78 8001A778 F9D5000C */  jal        func_800357E4
+    /* AF78 8001A778 F9D5000C */  jal        SsSetTableSize
     /* AF7C 8001A77C 1000B0AF */   sw        $s0, 0x10($sp)
     /* AF80 8001A780 81D6000C */  jal        func_80035A04
     /* AF84 8001A784 00100424 */   addiu     $a0, $zero, 0x1000
     /* AF88 8001A788 B1D4000C */  jal        func_800352C4
     /* AF8C 8001A78C 0480103C */   lui       $s0, %hi(D_800411FC)
     /* AF90 8001A790 7F000424 */  addiu      $a0, $zero, 0x7F
-    /* AF94 8001A794 09D4000C */  jal        func_80035024
+    /* AF94 8001A794 09D4000C */  jal        SsSetMVol
     /* AF98 8001A798 21288000 */   addu      $a1, $a0, $zero
     /* AF9C 8001A79C 21200000 */  addu       $a0, $zero, $zero
     /* AFA0 8001A7A0 21288000 */  addu       $a1, $a0, $zero
-    /* AFA4 8001A7A4 D9D3000C */  jal        func_80034F64
+    /* AFA4 8001A7A4 D9D3000C */  jal        SsSetSerialAttr
     /* AFA8 8001A7A8 01000624 */   addiu     $a2, $zero, 0x1
     /* AFAC 8001A7AC 21200000 */  addu       $a0, $zero, $zero
     /* AFB0 8001A7B0 7F000524 */  addiu      $a1, $zero, 0x7F
-    /* AFB4 8001A7B4 B5D5000C */  jal        func_800356D4
+    /* AFB4 8001A7B4 B5D5000C */  jal        SsSetSerialVol
     /* AFB8 8001A7B8 2130A000 */   addu      $a2, $a1, $zero
     /* AFBC 8001A7BC 1DD9000C */  jal        func_80036474
     /* AFC0 8001A7C0 03000424 */   addiu     $a0, $zero, 0x3
     /* AFC4 8001A7C4 21200000 */  addu       $a0, $zero, $zero
-    /* AFC8 8001A7C8 F9D8000C */  jal        func_800363E4
+    /* AFC8 8001A7C8 F9D8000C */  jal        SsUtSetReverbDepth
     /* AFCC 8001A7CC 21288000 */   addu      $a1, $a0, $zero
-    /* AFD0 8001A7D0 5DD9000C */  jal        func_80036574
+    /* AFD0 8001A7D0 5DD9000C */  jal        SsUtReverbOn
     /* AFD4 8001A7D4 FC111126 */   addiu     $s1, $s0, %lo(D_800411FC)
     /* AFD8 8001A7D8 04000524 */  addiu      $a1, $zero, 0x4
     /* AFDC 8001A7DC FC11048E */  lw         $a0, %lo(D_800411FC)($s0)

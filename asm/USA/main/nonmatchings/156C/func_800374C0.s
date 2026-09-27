@@ -70,7 +70,7 @@ glabel func_800374C0
   .L800375C4:
     /* 27DC4 800375C4 0680013C */  lui        $at, %hi(D_80062D30)
     /* 27DC8 800375C8 302D22A4 */  sh         $v0, %lo(D_80062D30)($at)
-    /* 27DCC 800375CC C5E0000C */  jal        func_80038314
+    /* 27DCC 800375CC C5E0000C */  jal        _SsVmKeyOffNow
     /* 27DD0 800375D0 21200000 */   addu      $a0, $zero, $zero
     /* 27DD4 800375D4 01003126 */  addiu      $s1, $s1, 0x1
   .L800375D8:

@@ -46,7 +46,7 @@ glabel func_8002B564
     /* 1BE0C 8002B60C 18004200 */  mult       $v0, $v0
     /* 1BE10 8002B610 21208300 */  addu       $a0, $a0, $v1
     /* 1BE14 8002B614 12300000 */  mflo       $a2
-    /* 1BE18 8002B618 B9B3000C */  jal        func_8002CEE4
+    /* 1BE18 8002B618 B9B3000C */  jal        SquareRoot0
     /* 1BE1C 8002B61C 21208600 */   addu      $a0, $a0, $a2
     /* 1BE20 8002B620 21204000 */  addu       $a0, $v0, $zero
     /* 1BE24 8002B624 F5008010 */  beqz       $a0, .L8002B9FC

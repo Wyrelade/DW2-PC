@@ -19,14 +19,14 @@ glabel func_8003E444
     /* 2EC80 8003E480 06004004 */  bltz       $v0, .L8003E49C
     /* 2EC84 8003E484 21900000 */   addu      $s2, $zero, $zero
     /* 2EC88 8003E488 0180043C */  lui        $a0, %hi(D_80010C70)
-    /* 2EC8C 8003E48C 05A8000C */  jal        func_8002A014
+    /* 2EC8C 8003E48C 05A8000C */  jal        printf
     /* 2EC90 8003E490 700C8424 */   addiu     $a0, $a0, %lo(D_80010C70)
     /* 2EC94 8003E494 6AF90008 */  j          .L8003E5A8
     /* 2EC98 8003E498 FFFF0224 */   addiu     $v0, $zero, -0x1
   .L8003E49C:
     /* 2EC9C 8003E49C 21206002 */  addu       $a0, $s3, $zero
     /* 2ECA0 8003E4A0 10003026 */  addiu      $s0, $s1, 0x10
-    /* 2ECA4 8003E4A4 46FD000C */  jal        func_8003F518
+    /* 2ECA4 8003E4A4 46FD000C */  jal        Card_MakeDevName
     /* 2ECA8 8003E4A8 21280002 */   addu      $a1, $s0, $zero
     /* 2ECAC 8003E4AC 21200002 */  addu       $a0, $s0, $zero
     /* 2ECB0 8003E4B0 1DFE000C */  jal        func_8003F874
@@ -41,14 +41,14 @@ glabel func_8003E444
     /* 2ECCC 8003E4CC 01000524 */   addiu     $a1, $zero, 0x1
     /* 2ECD0 8003E4D0 2C004104 */  bgez       $v0, .L8003E584
     /* 2ECD4 8003E4D4 00000000 */   nop
-    /* 2ECD8 8003E4D8 5EFC000C */  jal        func_8003F178
+    /* 2ECD8 8003E4D8 5EFC000C */  jal        MemCardCallback
     /* 2ECDC 8003E4DC 21200000 */   addu      $a0, $zero, $zero
     /* 2ECE0 8003E4E0 DCFF038E */  lw         $v1, -0x24($s0)
     /* 2ECE4 8003E4E4 0680013C */  lui        $at, %hi(D_80062FD8)
     /* 2ECE8 8003E4E8 06006018 */  blez       $v1, .L8003E504
     /* 2ECEC 8003E4EC D82F22AC */   sw        $v0, %lo(D_80062FD8)($at)
     /* 2ECF0 8003E4F0 0180043C */  lui        $a0, %hi(D_80010B74)
-    /* 2ECF4 8003E4F4 05A8000C */  jal        func_8002A014
+    /* 2ECF4 8003E4F4 05A8000C */  jal        printf
     /* 2ECF8 8003E4F8 740B8424 */   addiu     $a0, $a0, %lo(D_80010B74)
     /* 2ECFC 8003E4FC 4AF90008 */  j          .L8003E528
     /* 2ED00 8003E500 21200000 */   addu      $a0, $zero, $zero
@@ -64,11 +64,11 @@ glabel func_8003E444
     /* 2ED24 8003E524 21200000 */  addu       $a0, $zero, $zero
   .L8003E528:
     /* 2ED28 8003E528 21280000 */  addu       $a1, $zero, $zero
-    /* 2ED2C 8003E52C 63FC000C */  jal        func_8003F18C
+    /* 2ED2C 8003E52C 63FC000C */  jal        MemCardSync
     /* 2ED30 8003E530 1000A627 */   addiu     $a2, $sp, 0x10
     /* 2ED34 8003E534 0680043C */  lui        $a0, %hi(D_80062FD8)
     /* 2ED38 8003E538 D82F848C */  lw         $a0, %lo(D_80062FD8)($a0)
-    /* 2ED3C 8003E53C 5EFC000C */  jal        func_8003F178
+    /* 2ED3C 8003E53C 5EFC000C */  jal        MemCardCallback
     /* 2ED40 8003E540 00000000 */   nop
     /* 2ED44 8003E544 1000A38F */  lw         $v1, 0x10($sp)
     /* 2ED48 8003E548 03000224 */  addiu      $v0, $zero, 0x3

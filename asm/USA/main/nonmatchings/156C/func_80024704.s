@@ -7,7 +7,7 @@ glabel func_80024704
     /* 14F10 80024710 D8FD1026 */  addiu      $s0, $s0, %lo(D_8005FDD8)
     /* 14F14 80024714 21200002 */  addu       $a0, $s0, $zero
     /* 14F18 80024718 1400BFAF */  sw         $ra, 0x14($sp)
-    /* 14F1C 8002471C 059C000C */  jal        func_80027014
+    /* 14F1C 8002471C 059C000C */  jal        bzero
     /* 14F20 80024720 E0010524 */   addiu     $a1, $zero, 0x1E0
     /* 14F24 80024724 0680023C */  lui        $v0, %hi(D_8005FFB8)
     /* 14F28 80024728 B8FF4224 */  addiu      $v0, $v0, %lo(D_8005FFB8)
@@ -34,8 +34,8 @@ glabel func_80024704
     /* 14F7C 8002477C 1C4A4224 */  addiu      $v0, $v0, %lo(func_80024A1C)
     /* 14F80 80024780 0580013C */  lui        $at, %hi(D_80048E24)
     /* 14F84 80024784 248E22AC */  sw         $v0, %lo(D_80048E24)($at)
-    /* 14F88 80024788 0280023C */  lui        $v0, %hi(func_80024C98)
-    /* 14F8C 8002478C 984C4224 */  addiu      $v0, $v0, %lo(func_80024C98)
+    /* 14F88 80024788 0280023C */  lui        $v0, %hi(Pad_GetPortBlock)
+    /* 14F8C 8002478C 984C4224 */  addiu      $v0, $v0, %lo(Pad_GetPortBlock)
     /* 14F90 80024790 0580013C */  lui        $at, %hi(D_80048E2C)
     /* 14F94 80024794 2C8E22AC */  sw         $v0, %lo(D_80048E2C)($at)
     /* 14F98 80024798 0280023C */  lui        $v0, %hi(func_80024950)

@@ -47,7 +47,7 @@ glabel func_8003ADA4
     /* 2B644 8003AE44 B4EB0008 */  j          .L8003AED0
     /* 2B648 8003AE48 21900000 */   addu      $s2, $zero, $zero
   .L8003AE4C:
-    /* 2B64C 8003AE4C 1DEC000C */  jal        func_8003B074
+    /* 2B64C 8003AE4C 1DEC000C */  jal        _spu_gcSPU
     /* 2B650 8003AE50 00000000 */   nop
     /* 2B654 8003AE54 0580033C */  lui        $v1, %hi(D_8004FE88)
     /* 2B658 8003AE58 88FE638C */  lw         $v1, %lo(D_8004FE88)($v1)
@@ -127,7 +127,7 @@ glabel func_8003ADA4
     /* 2B770 8003AF70 8CFE24AC */  sw         $a0, %lo(D_8004FE8C)($at)
     /* 2B774 8003AF74 0400D1AC */  sw         $s1, 0x4($a2)
     /* 2B778 8003AF78 24104500 */  and        $v0, $v0, $a1
-    /* 2B77C 8003AF7C 1DEC000C */  jal        func_8003B074
+    /* 2B77C 8003AF7C 1DEC000C */  jal        _spu_gcSPU
     /* 2B780 8003AF80 0000C2AC */   sw        $v0, 0x0($a2)
     /* 2B784 8003AF84 0580023C */  lui        $v0, %hi(D_8004FE90)
     /* 2B788 8003AF88 90FE428C */  lw         $v0, %lo(D_8004FE90)($v0)
@@ -174,7 +174,7 @@ glabel func_8003ADA4
     /* 2B824 8003B024 FFFF8434 */  ori        $a0, $a0, (0xFFFFFFF & 0xFFFF)
     /* 2B828 8003B028 040071AC */  sw         $s1, 0x4($v1)
     /* 2B82C 8003B02C 24104400 */  and        $v0, $v0, $a0
-    /* 2B830 8003B030 1DEC000C */  jal        func_8003B074
+    /* 2B830 8003B030 1DEC000C */  jal        _spu_gcSPU
     /* 2B834 8003B034 000062AC */   sw        $v0, 0x0($v1)
     /* 2B838 8003B038 0580023C */  lui        $v0, %hi(D_8004FE90)
     /* 2B83C 8003B03C 90FE428C */  lw         $v0, %lo(D_8004FE90)($v0)

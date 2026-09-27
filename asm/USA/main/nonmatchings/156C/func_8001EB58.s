@@ -24,7 +24,7 @@ glabel func_8001EB58
     /* F3A4 8001EBA4 1C00022A */  slti       $v0, $s0, 0x1C
     /* F3A8 8001EBA8 10004014 */  bnez       $v0, .L8001EBEC
     /* F3AC 8001EBAC 00000000 */   nop
-    /* F3B0 8001EBB0 448E000C */  jal        func_80023910
+    /* F3B0 8001EBB0 448E000C */  jal        Rand_Next
     /* F3B4 8001EBB4 00000000 */   nop
     /* F3B8 8001EBB8 FFFF4230 */  andi       $v0, $v0, 0xFFFF
     /* F3BC 8001EBBC AAAA033C */  lui        $v1, (0xAAAAAAAB >> 16)

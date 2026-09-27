@@ -126,7 +126,7 @@ glabel func_80019214
     /* 9BF4 800193F4 2C00A2AF */  sw         $v0, 0x2C($sp)
     /* 9BF8 800193F8 2400A3AF */  sw         $v1, 0x24($sp)
     /* 9BFC 800193FC E400448E */  lw         $a0, 0xE4($s2)
-    /* 9C00 80019400 51AD000C */  jal        func_8002B544
+    /* 9C00 80019400 51AD000C */  jal        GsSetProjection
     /* 9C04 80019404 00000000 */   nop
     /* 9C08 80019408 59B0000C */  jal        func_8002C164
     /* 9C0C 8001940C 1000A427 */   addiu     $a0, $sp, 0x10

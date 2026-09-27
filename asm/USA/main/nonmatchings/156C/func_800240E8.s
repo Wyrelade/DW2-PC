@@ -52,7 +52,7 @@ glabel func_800240E8
     /* 14998 80024198 0C00C2A0 */   sb        $v0, 0xC($a2)
   .L8002419C:
     /* 1499C 8002419C 0280043C */  lui        $a0, %hi(func_8002405C)
-    /* 149A0 800241A0 4DC1000C */  jal        func_80030534
+    /* 149A0 800241A0 4DC1000C */  jal        CdReadyCallback
     /* 149A4 800241A4 5C408424 */   addiu     $a0, $a0, %lo(func_8002405C)
     /* 149A8 800241A8 06000424 */  addiu      $a0, $zero, 0x6
     /* 149AC 800241AC 21280000 */  addu       $a1, $zero, $zero
@@ -73,7 +73,7 @@ glabel func_800240E8
     /* 149DC 800241DC 06004014 */  bnez       $v0, .L800241F8
     /* 149E0 800241E0 00000000 */   nop
     /* 149E4 800241E4 B88D05AE */  sw         $a1, %lo(D_80048DB8)($s0)
-    /* 149E8 800241E8 45C1000C */  jal        func_80030514
+    /* 149E8 800241E8 45C1000C */  jal        CdSyncCallback
     /* 149EC 800241EC 21200000 */   addu      $a0, $zero, $zero
     /* 149F0 800241F0 84900008 */  j          .L80024210
     /* 149F4 800241F4 00000000 */   nop

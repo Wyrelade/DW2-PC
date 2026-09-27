@@ -24,14 +24,14 @@ glabel func_80033C24
     /* 24474 80033C74 21388002 */   addu      $a3, $s4, $zero
     /* 24478 80033C78 5C00A497 */  lhu        $a0, 0x5C($sp)
     /* 2447C 80033C7C 5E00A597 */  lhu        $a1, 0x5E($sp)
-    /* 24480 80033C80 C9CE000C */  jal        func_80033B24
+    /* 24480 80033C80 C9CE000C */  jal        _SsUtResolveADSR
     /* 24484 80033C84 1000A627 */   addiu     $a2, $sp, 0x10
     /* 24488 80033C88 1000A427 */  addiu      $a0, $sp, 0x10
     /* 2448C 80033C8C 5C00A527 */  addiu      $a1, $sp, 0x5C
     /* 24490 80033C90 5E00A627 */  addiu      $a2, $sp, 0x5E
     /* 24494 80033C94 01000224 */  addiu      $v0, $zero, 0x1
     /* 24498 80033C98 1A00A2A7 */  sh         $v0, 0x1A($sp)
-    /* 2449C 80033C9C E0CE000C */  jal        func_80033B80
+    /* 2449C 80033C9C E0CE000C */  jal        _SsUtBuildADSR
     /* 244A0 80033CA0 1000B3A7 */   sh        $s3, 0x10($sp)
     /* 244A4 80033CA4 21204002 */  addu       $a0, $s2, $zero
     /* 244A8 80033CA8 21282002 */  addu       $a1, $s1, $zero

@@ -5,12 +5,12 @@ glabel func_8002FF04
     /* 20708 8002FF08 0180043C */  lui        $a0, %hi(D_80010944)
     /* 2070C 8002FF0C 44098424 */  addiu      $a0, $a0, %lo(D_80010944)
     /* 20710 8002FF10 1000BFAF */  sw         $ra, 0x10($sp)
-    /* 20714 8002FF14 CDC0000C */  jal        func_80030334
+    /* 20714 8002FF14 CDC0000C */  jal        Debug_PutString
     /* 20718 8002FF18 00000000 */   nop
     /* 2071C 8002FF1C 0180043C */  lui        $a0, %hi(D_80010950)
     /* 20720 8002FF20 50098424 */  addiu      $a0, $a0, %lo(D_80010950)
     /* 20724 8002FF24 0580053C */  lui        $a1, %hi(D_8004E9A8)
-    /* 20728 8002FF28 05A8000C */  jal        func_8002A014
+    /* 20728 8002FF28 05A8000C */  jal        printf
     /* 2072C 8002FF2C A8E9A524 */   addiu     $a1, $a1, %lo(D_8004E9A8)
     /* 20730 8002FF30 0580013C */  lui        $at, %hi(D_8004E6E5)
     /* 20734 8002FF34 E5E620A0 */  sb         $zero, %lo(D_8004E6E5)($at)
@@ -23,11 +23,11 @@ glabel func_8002FF04
     /* 20750 8002FF50 0580013C */  lui        $at, %hi(D_8004E6D8)
     /* 20754 8002FF54 D8E620AC */  sw         $zero, %lo(D_8004E6D8)($at)
     /* 20758 8002FF58 0580013C */  lui        $at, %hi(D_8004E6D4)
-    /* 2075C 8002FF5C 35C3000C */  jal        func_80030CD4
+    /* 2075C 8002FF5C 35C3000C */  jal        ResetCallback
     /* 20760 8002FF60 D4E620AC */   sw        $zero, %lo(D_8004E6D4)($at)
     /* 20764 8002FF64 0380053C */  lui        $a1, %hi(func_80030258)
     /* 20768 8002FF68 5802A524 */  addiu      $a1, $a1, %lo(func_80030258)
-    /* 2076C 8002FF6C 41C3000C */  jal        func_80030D04
+    /* 2076C 8002FF6C 41C3000C */  jal        InterruptCallback
     /* 20770 8002FF70 02000424 */   addiu     $a0, $zero, 0x2
     /* 20774 8002FF74 0580033C */  lui        $v1, %hi(D_8004E98C)
     /* 20778 8002FF78 8CE9638C */  lw         $v1, %lo(D_8004E98C)($v1)

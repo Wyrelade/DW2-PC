@@ -3,7 +3,7 @@
 
 extern Ent23A78 D_8005F8C8[0x50];
 extern Ent54C48 D_80054C48[3];
-extern s32 func_80024220(void);
+extern s32 Cd_PollRead(void);
 extern void func_80023D68(s32);
 extern s32 D_8005F774;
 extern u8 D_80048F12;
@@ -49,18 +49,18 @@ extern EntE620 D_8005E620;
 extern s32 D_80062FD8;
 extern void func_8001DC24(s32, s32, ElmE620 *);
 extern void func_80022AE4(void);
-extern Blk54CF8 *func_8002796C(Blk54CF8 *, s32);
+extern Blk54CF8 *ClearOTagR(Blk54CF8 *, s32);
 extern void func_8001A68C(s32, s32);
-extern s32 func_80027A74(void *);
+extern s32 DrawOTag(void *);
 extern s32 EnterCriticalSection(void);
 extern void ExitCriticalSection(void);
 extern s32 StartCARD(void);
 extern void ChangeClearPAD(s32);
 extern s32 Gfx_ReserveTexSlot(void);
-extern s32 func_80022E90(s32, s32);
+extern s32 Mem_TryAlloc(s32, s32);
 extern void func_80023BB0(void);
 extern void func_8001BB88(s32 *);
-extern void func_80022D84(ActorWork *);
+extern void Mem_Free(ActorWork *);
 extern s32 D_8005F79C;
 extern Sub3C *func_8001FDBC(Actor *, s32);
 extern void func_8001F5E8(Actor *);
@@ -70,17 +70,17 @@ extern void func_800200D0(Actor *);
 extern void func_80020510(Actor *, s32);
 extern Obj48DB8 D_80048DB8;
 extern u8 D_8005FDC8[];
-extern s32 func_8002DD64(void *);
-extern s32 func_80030914(void *, s32);
-extern s32 func_80030534(s32);
+extern s32 CdPosToInt(void *);
+extern s32 CdGetSector(void *, s32);
+extern s32 CdReadyCallback(s32);
 extern s32 func_80030690(s32, s32);
-extern void *func_80030514(void *);
+extern void *CdSyncCallback(void *);
 extern void func_800240E8();
 extern void func_8001F320(Actor *);
 extern Blk16 D_800416CC[];
 extern s32 func_8002B564(s32, Blk16 *);
-extern void func_8002BB54(s32, s32, s32);
-extern void func_8002BAD4(s32);
+extern void GsSetAmbient(s32, s32, s32);
+extern void GsSetLightMode(s32);
 extern s32 func_8001E134(void);
 extern s32 *func_80011F5C(s32);
 extern s32 D_80040FD0[];
@@ -91,23 +91,23 @@ extern void func_800221C4(s32, s32);
 extern void Gfx_SetPartsNumber(Part28 *, s32, s32, s32);
 extern s32 Digi_GetExpToNextLevel(s32, s32, s32);
 extern void func_8002D744(void *, Obj209 *);
-extern void func_8002B544(s32);
+extern void GsSetProjection(s32);
 extern void func_8001F1A8(Actor *, s32);
 extern s32 D_8004E6D0;
 extern s32 D_8004E6CC;
 extern void *D_8004E6C8;
 extern s32 func_800294AC();
-extern void func_80030D34();
+extern void DMACallback();
 extern Cmd62C18 D_80062C18;
-extern void func_80036514(s16);
-extern void func_800363A4(s16);
+extern void SsUtSetReverbFeedback(s16);
+extern void SsUtSetReverbDelay(s16);
 extern Elm354F4 *D_80061C50[];
-extern s32 func_80032494(s16, s16);
+extern s32 _SsReadDeltaValue(s16, s16);
 extern s32 D_80060050;
 extern s32 D_8006004C;
 extern Flags4FC68 *D_8004FC68;
 extern s32 D_8004FC70[];
-extern int func_8003F178(int);
+extern int MemCardCallback(int);
 extern Vt4FB80 *D_8004FB80;
 extern u8 D_8005FDD8[];
 extern s32 *D_80049014;
@@ -121,7 +121,7 @@ extern s32 D_8004FDB8;
 extern s32 D_8004FE44;
 extern Stat48E90 *D_80048E90;
 extern Obj50768 *D_80050768;
-extern s32 func_8002CB30(s32);
+extern s32 sin_1(s32);
 extern s32 func_8002FF04();
 extern s32 func_8002FDC8();
 extern s32 func_80039B54();
@@ -131,7 +131,7 @@ extern volatile s32 D_80063080;
 extern void ChangeClearRCnt(s32, s32);
 extern void SysDeqIntRP(s32, u8 *);
 extern u8 D_80048E78[];
-extern void func_8003A034(void);
+extern void SpuInit(void);
 extern s32 func_8003C3A4(s32);
 extern void func_80032874();
 extern Elm624E8 D_800624E8[];
@@ -141,13 +141,13 @@ extern s32 write(s32, u8 *, s32);
 extern s32 D_8004E6D8;
 extern s32 D_8004E6D4;
 extern void func_80030258();
-extern void func_80030CD4(void);
-extern void func_80030D04(s32 arg0, void (*arg1)());
+extern void ResetCallback(void);
+extern void InterruptCallback(s32 arg0, void (*arg1)());
 extern s32 D_8004FBD4[];
 extern s32 *D_8004FBD0;
 extern void func_800315D0();
-extern s32 func_80031750();
-extern void func_800317FC(s32 *arg0, u32 arg1);
+extern s32 setIntrDMA();
+extern void memclr_dma(s32 *arg0, u32 arg1);
 extern u16 *D_8004FE28;
 extern s32 D_8004FE50;
 extern void func_80023BF4(s32);
@@ -161,25 +161,25 @@ extern s16 func_80038BE4(s32, s32, s32, s32);
 extern s32 D_80063010[4][4];
 extern s32 (*D_80063050[4])(s32 *);
 extern char D_80010D44[];
-extern void func_8002A014();
+extern void printf();
 extern s32 func_8003B794(s32);
 extern s32 func_80030554(s32, u8 *, u8 *);
 extern void func_8002DF74(void);
 extern void func_8002CE5C(void);
-extern void func_8002D684(s32, s32, s32);
-extern void func_8002D6A4(s32, s32);
+extern void SetFarColor(s32, s32, s32);
+extern void SetGeomOffset(s32, s32);
 extern s16 D_8006197E;
 extern s16 D_8006197C;
 extern Blk5071C *D_8005071C;
 extern char D_8001031C[];
-extern void func_800274E8(char *, Rect2AB54 *);
+extern void checkRECT(char *, Rect2AB54 *);
 extern s8 D_80010974[];
 extern void func_8002A744(s8);
 extern void (*volatile D_8004FE60)(void);
 extern s32 func_8003A9F8(s32, u32);
 extern Snd62D18 D_80062D18;
 extern Rec62D08 *D_80062D08;
-extern s32 func_80037C38(s32, s32, s32, s32);
+extern s32 SsPitchFromNote(s32, s32, s32, s32);
 extern s32 D_8004FC5C;
 extern Gpu48F10 D_80048F10;
 extern char D_80010250[];
@@ -187,19 +187,19 @@ extern char D_80010290[];
 extern s32 *D_8004FE38;
 extern volatile u16 D_8004FE40;
 extern s32 func_8003A778(s32, ...);
-extern u32 func_8003AB24(s32, u32);
+extern u32 _spu_FsetRXXa(s32, u32);
 extern Regs48E8C *D_80048E8C;
 extern void (*D_80048E40)(void);
 extern s32 D_8004FBC0;
 extern char D_80010B74[];
 extern s32 func_8003E19C(s32 *);
 extern void func_8003FA24(s32 (*)(s32 *));
-extern void func_8002A014();
+extern void printf();
 extern s16 D_8006198C;
 extern void func_8002ACC8(u16, u16, u16, u16, u16);
 extern void func_8002BB84(void);
 extern void func_8002AE4C();
-extern void func_8002B2B4(void);
+extern void GsSetDrawBuffClip(void);
 extern void func_8002B1A4();
 extern s32 D_8004FE18;
 extern s32 D_8004FDB0;
@@ -207,7 +207,7 @@ extern void func_8003A614(void);
 extern s32 OpenEvent(s32, s32, s32, s32);
 extern void EnableEvent(s32);
 extern char D_80010310[];
-extern void func_800274E8(char *, Rect2AB54 *);
+extern void checkRECT(char *, Rect2AB54 *);
 extern s32 D_80061B24;
 extern s32 D_80061B20;
 extern s32 D_80061B1C;
@@ -219,24 +219,24 @@ extern void func_8002E1A4(s32, s32);
 extern s32 D_8004FE88;
 extern s32 D_8004FE8C;
 extern Hdr3AD44 *D_8004FE90;
-extern s32 func_80023910();
+extern s32 Rand_Next();
 extern St6191C D_8006191C;
 extern St6196C D_8006196C;
 extern s16 D_8006198E;
 extern void func_8002AE4C();
 extern s32 Task_Run(s32);
 extern Ent62CFC *D_80062CFC;
-extern s32 func_800398D4(s16, s16);
+extern s32 _SsVmVSetUp(s16, s16);
 extern s32 D_8004E6E8;
 extern u8 *D_8004E600;
 extern u8 *D_8004E60C;
-extern void func_80030A34(s32);
+extern void CdDataCallback(s32);
 extern int func_80030A64(int);
 extern void func_80030A84(s32);
-extern void func_80026588(Actor *arg0);
-extern void func_8002659C(Actor *arg0, u8 arg1);
-extern void func_800265DC(Actor *arg0, u8 arg1);
-extern s32 func_80026630(void);
+extern void Pad_CmdQueryModel(Actor *arg0);
+extern void Pad_CmdQueryMode(Actor *arg0, u8 arg1);
+extern void Pad_CmdQueryComb(Actor *arg0, u8 arg1);
+extern s32 Pad_IsTimedOut(void);
 extern s32 *D_8004FBC4;
 extern Pair61900 D_80061900;
 extern s32 D_80061990;
@@ -245,18 +245,18 @@ extern s32 D_80061998;
 extern s32 D_8006199C;
 extern s32 D_800619A0;
 extern char D_80010624[];
-extern void func_8002A014();
+extern void printf();
 extern s16 func_80038BE4(s32, s32, s32, s32);
 extern void func_8003A454(u16 *, u32);
 extern s32 func_80036164();
 extern s32 func_80036594();
-extern void func_800391B4(s32);
+extern void _SsVmSeqKeyOff(s32);
 extern u8 D_80062D38[];
 extern u16 D_80062D90;
 extern s32 D_80062D98[];
-extern void func_8003B374(s32);
+extern void SpuFree(s32);
 extern s32 func_8003C8EC(void);
-extern void func_8003C8C4(s32);
+extern void _spu_setInTransfer(s32);
 extern s32 D_80061B28;
 extern s32 D_80061B50;
 extern s32 D_80061B00;
@@ -275,7 +275,7 @@ extern void (*D_80048E1C)(Obj25FBC *);
 extern s32 (*D_80048EA0[])(Obj25FBC *);
 extern s32 D_80048E5C;
 extern void (*D_80048E18)(s32);
-extern void func_80026610(s32);
+extern void Pad_SetTimeout(s32);
 extern s32 func_80025C00(void);
 extern char D_80010C98[];
 extern char D_80010CBC[];
@@ -328,7 +328,7 @@ extern s8 D_80062D0C;
 extern s32 D_8004FC18;
 extern Rec624F8 D_800624F8[];
 extern s16 D_80062D30;
-extern void func_8003FA14(void);
+extern void Card_ClearTaskStack(void);
 extern void func_8003FBF4(void);
 extern void func_8003F46C();
 extern char D_800103C4[];
@@ -363,7 +363,7 @@ extern s32 D_80049060;
 extern s8 D_80049071[];
 extern BlkFill618D0 D_800618D0[];
 extern void func_80024260(s32, s32);
-extern void func_8003569C(s16, s16);
+extern void SsSepStop(s16, s16);
 extern void func_80032844(s16);
 extern void func_80039994(s16);
 extern char D_800103F8[];
@@ -371,7 +371,7 @@ extern void func_80029FB4(void);
 extern void func_80029FB4(void);
 extern s32 D_80062F70;
 extern s32 D_80062F74;
-extern void func_80029984(void);
+extern void set_alarm(void);
 extern s32 D_80041570[][8];
 extern s32 D_800415F0[][8];
 extern Mode5CCF8 D_8005CCF8;
@@ -383,7 +383,7 @@ extern Prm1C D_80040F64;
 extern s32 func_8001E704(s32 id);
 extern s32 func_8001E728(s32 arg0, s32 arg1);
 extern void func_80020C40(ContC40 *a0, s32 *a1, u16 a2);
-extern void func_8002B424(Coord1F668 *, Coord1F668 *);
+extern void GsInitCoordinate2(Coord1F668 *, Coord1F668 *);
 extern s16 D_8005E6E4;
 extern void func_800226AC(void);
 extern void func_80066F34(s32, s32);
@@ -404,24 +404,24 @@ extern u8 *D_8004E98C;
 extern u8 *D_8004E99C;
 extern u8 *D_8004E990;
 extern Hook33424 D_80061CD0[][16];
-extern int func_8003FB24(void);
-extern int func_8003FB38(void);
-extern int func_8003FB4C(void);
-extern int func_8003FB60(void);
-extern int func_8003FB74(void);
-extern int func_8003FB88(void);
-extern int func_8003FB9C(void);
-extern int func_8003FBB0(void);
+extern int Card_OnSwIoe(void);
+extern int Card_OnSwError(void);
+extern int Card_OnSwTimeout(void);
+extern int Card_OnSwNewCard(void);
+extern int Card_OnHwIoe(void);
+extern int Card_OnHwError(void);
+extern int Card_OnHwTimeout(void);
+extern int Card_OnHwNewCard(void);
 extern void func_8003FEA4(void);
 extern char D_80010C70[];
-extern void func_8003F518(s32, u8 *);
+extern void Card_MakeDevName(s32, u8 *);
 extern s8 *func_8003F874(s8 *, s8 *);
 extern s32 open(u8 *, s32);
-extern s32 func_8003F18C(s32 wait, s32 *a1, s32 *a2);
+extern s32 MemCardSync(s32 wait, s32 *a1, s32 *a2);
 extern void func_8003FEA4(void);
 extern s32 D_80062F90;
 extern void func_80025CC8(Obj25FBC *a0);
-extern void func_80026568(Actor *arg0, u8 arg1);
+extern void Pad_CmdConfigMode(Actor *arg0, u8 arg1);
 extern void (*D_80048E1C)(Obj25FBC *);
 extern Flags506C0 *D_800506C0;
 extern s32 D_800506DC;
@@ -458,7 +458,7 @@ extern void func_80031CD4(s32 a0, s16 a1);
 extern void func_80032644(s16 a0, s16 a1);
 extern void func_800354F4(s32 arg0, s32 arg1);
 extern void func_80031D74(s16, s16);
-extern s32 func_800223EC(s32, s32, s32, s32);
+extern s32 Math_CycleRange(s32, s32, s32, s32);
 extern s32 D_80050790;
 extern s32 D_80050718;
 extern s32 D_80050774;
@@ -518,10 +518,10 @@ extern s32 func_80023B70(s32 arg0);
 extern s32 func_80023DB0(s32 arg0);
 extern void func_80023E78(s32 a0);
 extern void func_80023EB8(s32 a0);
-extern s32 func_800239E4(s32 arg0, s32 *arg1);
-extern s16 func_80039A44(s32 arg0, s16 arg1);
+extern s32 Mem_GetOffsetEntry(s32 arg0, s32 *arg1);
+extern s16 SsVabOpenHead(s32 arg0, s16 arg1);
 extern s16 func_80039F44(s32 a0, s16 id);
-extern s16 func_8003A004(s16 a0);
+extern s16 SsVabTransCompleted(s16 a0);
 extern s16 func_80032954(s32, s16, s32);
 extern s16 D_80062D2C[];
 extern u16 D_8004FC24[];
@@ -531,22 +531,22 @@ extern Rec62D08 *D_80062CB8[];
 extern s32 D_80062C70[];
 extern Ent62CFC *D_80062C30[];
 extern s32 D_80062D04;
-extern void func_80022F8C(void *a0, s32 a1);
+extern void Mem_Zero(void *a0, s32 a1);
 extern s32 func_800299B8(void);
-extern void func_8002D444(void *, SVec1D104 *, DVec1D104 *);
+extern void ApplyMatrixSV(void *, SVec1D104 *, DVec1D104 *);
 extern s32 D_80062F58;
 extern s32 D_80062F5C;
 extern s32 D_80062F60;
 extern s32 D_80062F64;
 extern s32 D_80062F68;
-extern s32 func_80040198(void);
+extern s32 Card_GetHwEventBits(void);
 extern s32 func_80040084(void);
 extern void _card_load(s32);
 extern void _card_info(s32);
 extern s32 func_8004015C(void);
 extern s32 func_8003FFAC(void);
 extern s32 func_8003F418(s32);
-extern s32 func_8003F9B4(s32 a0);
+extern s32 _card_clear(s32 a0);
 extern void Mem_FillWordsNeg1(s32 *arg0, s32 arg1);
 extern void func_8001C0B0(s32 *arg0, s32 arg1);
 extern void Mem_FillWordsNeg1(s32 *arg0, s32 arg1);
@@ -586,7 +586,7 @@ extern u8 D_80062A28[];
 extern u8 D_80062D48;
 extern s32 D_80062D10;
 extern void func_8003C904(VAttr36C54 *);
-extern void func_80038314(s32);
+extern void _SsVmKeyOffNow(s32);
 extern s32 D_800506D0;
 extern s32 D_8004E9E0[];
 extern Dma4FBF4 *D_8004FBF4;
@@ -594,16 +594,16 @@ extern char D_80010A04[];
 extern char D_80010A20[];
 extern s32 func_80036FA4(s16, s16, s16, u16, u16, u16);
 extern s32 func_800374C0(s32 a0, s32 a1, s32 a2, s32 a3);
-extern u8 func_80037744(s32);
-extern void func_800379B4(void);
+extern u8 _SsVmAlloc(s32);
+extern void _SsVmDoAllocate(void);
 extern u16 func_80037B84(void);
 extern void func_80037D64(u8);
 extern u8 func_80039264(u8 *idx, u8 *val);
 extern char D_800103AC[];
 extern u8 D_8004900C[];
 extern Rng48FE4 D_80048FE4[][5];
-extern s32 func_80031838(void);
-extern s32 func_8003B744(s32);
+extern s32 GetVideoMode(void);
+extern s32 SpuSetNoiseClock(s32);
 extern s32 D_80040E38[];
 extern s32 D_80040E44[];
 extern s32 D_80062F00;
@@ -615,9 +615,9 @@ extern void *D_8004E5E0;
 extern s32 D_8004E5E4;
 extern char D_800106D4[];
 extern s32 func_8002DC94(void);
-extern void func_8002DCD0(void);
-extern void func_8002DCF8(void);
-extern void func_8002DD20(void);
+extern void def_cbsync(void);
+extern void def_cbready(void);
+extern void def_cbread(void);
 extern void (*D_80062FE0)(s32 *, s32, s32);
 extern s8 D_80062FE8[];
 extern s32 func_8002A9B4(s8 *);
@@ -651,8 +651,8 @@ extern u32 D_8004FE58;
 extern Str3F518 D_80010D38;
 extern u32 D_80060060[];
 extern u32 D_80060088[];
-extern void func_80029160(s32 arg0);
-extern s32 func_800291A8(s32 arg0);
+extern void _cwc(s32 arg0);
+extern s32 _param(s32 arg0);
 extern s32 D_80048E54;
 extern void (*D_80048E48)(void);
 extern void (*D_80048E44)(void);
@@ -661,7 +661,7 @@ extern Obj25FBC *D_80048E4C;
 extern s32 (*D_80048E34)(void);
 extern void func_800260C8(Actor *a);
 extern s32 func_80026170();
-extern void func_8003B074();
+extern void _spu_gcSPU();
 extern u16 D_8004FC88[12];
 extern u16 D_8004FCA0[128];
 extern s16 func_80039150(s32 a0, u16 *a1, u16 *a2);
@@ -677,15 +677,15 @@ extern u16 D_80050298[];
 extern u16 D_800502B0[];
 extern volatile s32 D_8004FE7C;
 extern s32 D_8004FE80;
-extern void func_8003AC84(void);
-extern void func_8003AC5C(void);
+extern void _spu_FsetDelayR(void);
+extern void _spu_FsetDelayW(void);
 extern char D_80010AA4[];
 extern char D_80010AC4[];
 extern char D_80010AD8[];
 extern char D_80010D18[];
 extern s32 func_800401E4();
 extern s32 func_8003F418(s32 a0);
-extern u8 *func_80027014(u8 *s, s32 n);
+extern u8 *bzero(u8 *s, s32 n);
 extern char D_80010D18[];
 extern s32 D_8004E9E0[];
 extern s32 func_8002F860();
@@ -705,7 +705,7 @@ extern s32 D_8004FE68[];
 extern u16 D_80062EE8[];
 extern char D_80010AA4[];
 extern char D_80010AB4[];
-extern void func_8003ACAC(void);
+extern void _spu_Fw1ts(void);
 extern s32 func_80025FF4(Obj25FBC *a0, s32 a1);
 extern s16 D_8004DDC0[];
 extern s32 D_80061B80;
@@ -724,8 +724,8 @@ extern s32 lseek(s32, s32, s32);
 extern void func_8003FEA4(void);
 extern s32 func_8004015C(void);
 extern s32 func_8003FFAC(void);
-extern s32 func_8003F9B4(s32 a0);
-extern s32 func_80040198(void);
+extern s32 _card_clear(s32 a0);
+extern s32 Card_GetHwEventBits(void);
 extern s32 func_80040084(void);
 extern s32 func_80024960(Ent266D0 *, s32);
 extern s32 (*D_80048E3C)(Actor *);
@@ -736,22 +736,22 @@ extern void func_8002485C(s32 code);
 extern void func_800247F4(Obj25FBC *a0);
 extern s32 func_80024950(Actor *arg0);
 extern void func_80024A1C(Obj25FBC *a0);
-extern u8 *func_80024C98(s32 arg0);
+extern u8 *Pad_GetPortBlock(s32 arg0);
 extern s32 func_80024CB8(Obj25FBC *a0);
 extern void func_80024DC8(Obj25FBC *a0);
 extern s32 func_80025114(Obj25FBC *p);
 extern volatile s8 D_80062D27;
 extern u8 D_80050760;
 extern s32 D_80049040;
-extern s32 func_800354BC(s32 arg0);
-extern s32 func_80035384(s32 arg0, s32 arg1, s32 arg2);
+extern s32 ResetRCnt(s32 arg0);
+extern s32 SetRCnt(s32 arg0, s32 arg1, s32 arg2);
 extern void func_800352E4(void);
 extern void func_80035330(void);
 extern char D_800106F4[];
 extern volatile Reg2EC0C *D_8004E68C;
 extern volatile u32 *D_8004E688;
 extern volatile u8 *D_8004E670;
-extern u16 func_8003CF04(s32 cenHigh, s32 cenLow, s32 noteHigh, s32 noteLow);
+extern u16 _spu_note2pitch(s32 cenHigh, s32 cenLow, s32 noteHigh, s32 noteLow);
 extern u16 *D_8004FB84;
 extern s32 D_8004FB90;
 extern char D_800109C8[];
@@ -766,8 +766,8 @@ extern char D_80010904[];
 extern u8 D_8004E6E0[];
 extern CdTbl4E80C D_8004E80C;
 extern Mat1F668 D_800619A8;
-extern s32 func_8002CEE4(s32);
-extern void func_8003B074(void);
+extern s32 SquareRoot0(s32);
+extern void _spu_gcSPU(void);
 extern s8 D_80010A64[];
 extern char *D_80061B88;
 extern char D_800108E0[];
@@ -777,7 +777,7 @@ extern u8 D_80061B78[];
 extern u8 D_80061B70[];
 extern u8 D_80061B68[];
 extern s32 func_8002EDB4(void);
-extern void func_80030334(s8 *s);
+extern void Debug_PutString(s8 *s);
 extern s32 setjmp(s32 *env);
 extern void HookEntryInt(s32 *env);
 extern void _96_remove(void);
@@ -788,12 +788,12 @@ extern s32 D_80062BCC;
 extern s32 D_80062BD0[];
 extern void (*D_80062BC8)(s32);
 extern void (*D_80062A40)(s32);
-extern void func_8003C554(s32 on_off, u32 voice_bit);
-extern void func_8003D104(s32 a0, u16 *a1);
-extern void func_8003B3F4(s32, s32);
-extern void func_8003C344(s32, s32);
-extern void func_8003B6E4(void);
-extern void func_8003C374(void);
+extern void SpuSetKey(s32 on_off, u32 voice_bit);
+extern void SpuGetVoiceEnvelope(s32 a0, u16 *a1);
+extern void SpuSetNoiseVoice(s32, s32);
+extern void SpuSetReverbVoice(s32, s32);
+extern void SpuGetNoiseVoice(void);
+extern void SpuGetReverbVoice(void);
 extern u16 D_80062A4E[];
 extern u16 D_80062A50[];
 extern u16 D_80062A52[];
@@ -813,7 +813,7 @@ extern u8 D_800632E0[0x80];
 extern McDir401E4 D_800630A0[15];
 extern s32 D_80063280[20];
 extern Rev3B994 D_800503E8[];
-extern void func_8002EBE0(s32 *dst, s32 *src, u32 count);
+extern void Mem_CopyWords(s32 *dst, s32 *src, u32 count);
 extern void func_8002EC0C(s32 ch, u32 madr, s32 hi, s32 lo, u32 chcr, u8 mode);
 extern char D_80010404[];
 extern char D_80010418[];
@@ -828,7 +828,7 @@ extern Rec624F8 D_800624FE[];
 extern Rec624F8 D_80062500[];
 extern s8 D_800632D0[16];
 extern char D_80010D64[];
-extern s32 func_80040CE4(s32, s32, u8 *);
+extern s32 _card_read(s32, s32, u8 *);
 extern void func_80017214(Actor *);
 extern s32 D_80049044;
 extern u16 D_80062D60[];
@@ -924,7 +924,7 @@ void Task_ClearList(void) {
 Buf111D4 *Task_Alloc(void) {
     Buf111D4 *s0 = (Buf111D4 *)func_80022F3C(0x40, 2);
     s32 i;
-    func_80022F8C(s0, 0x40);
+    Mem_Zero(s0, 0x40);
     for (i = 0; i < 0x64; i++) {
         if (D_80050798.entries[i] == 0) {
             D_80050798.entries[i] = (s32)s0;
@@ -956,32 +956,32 @@ Act125C *arg0;
             } while (++i < arg0->field_30);
             fp = arg0->field_34;
         }
-        func_80022D84((ActorWork *)fp);
+        Mem_Free((ActorWork *)fp);
     }
 
     if (arg0->field_2C != 0) {
-        func_80022D84(arg0->field_2C);
+        Mem_Free(arg0->field_2C);
     }
     if (arg0->field_38 != 0) {
-        func_80022D84(arg0->field_38);
+        Mem_Free(arg0->field_38);
     }
 
     sub = arg0->field_3C;
     if (sub != 0) {
         if (sub->field_6C != 0) {
-            func_80022D84(sub->field_6C);
+            Mem_Free(sub->field_6C);
         }
         if (sub->field_70 != 0) {
-            func_80022D84(sub->field_70);
+            Mem_Free(sub->field_70);
         }
         i = sub->field_74 != 0;
         if (i) {
-            func_80022D84(sub->field_74);
+            Mem_Free(sub->field_74);
         }
         if (sub->field_78 != 0) {
-            func_80022D84(sub->field_78);
+            Mem_Free(sub->field_78);
         }
-        func_80022D84((ActorWork *)arg0->field_3C);
+        Mem_Free((ActorWork *)arg0->field_3C);
     }
 
     for (j = 0; j < 100; j++) {
@@ -991,7 +991,7 @@ Act125C *arg0;
         }
     }
 
-    func_80022D84((ActorWork *)arg0);
+    Mem_Free((ActorWork *)arg0);
 }
 
 Buf111D4 *Task_AllocWithBuffers(s32 a0, s32 a1) {
@@ -999,12 +999,12 @@ Buf111D4 *Task_AllocWithBuffers(s32 a0, s32 a1) {
     if (a0 != 0) {
         s32 x = func_80022F3C(a0, 2);
         s0->field_2C = x;
-        func_80022F8C((void *)x, a0);
+        Mem_Zero((void *)x, a0);
     }
     if (a1 != 0) {
         s32 y = func_80022F3C(a1, 2);
         s0->field_34 = y;
-        func_80022F8C((void *)y, a1);
+        Mem_Zero((void *)y, a1);
         s0->field_30 = a1 >> 2;
     }
     return s0;
@@ -1608,7 +1608,7 @@ s32 func_80012490(s32 a0, s32 a1, s32 a2, s32 a3) {
     if (*p == 999) {
         return 0;
     }
-    n = (func_80023910() & 0xFFF) * 100 / 0x21000;
+    n = (Rand_Next() & 0xFFF) * 100 / 0x21000;
     inc = 3;
     if (n < 3) {
         inc = n + 1;
@@ -2327,7 +2327,7 @@ s32 Menu_GridIndexRowMajor(s16 *arg0, s16 *arg1) {
 
 s32 func_80013AB0(s32 arg0, s32 arg1) {
     s32 *p = (s32 *)func_800239A0(arg0);
-    s32 r = func_80023A08(arg0 >> 16);
+    s32 r = Cd_GetFileOrNull(arg0 >> 16);
     return p[arg1] + r;
 }
 
@@ -2508,7 +2508,7 @@ void func_80013C04(Actor *a0) {
         case 1:
             if (Math_RampToZero((s32)a0, &w->field_34) == 0) {
                 Task_SetState0(a0, 3);
-                func_80022D84((ActorWork *)D_80050768);
+                Mem_Free((ActorWork *)D_80050768);
             }
             break;
         }
@@ -2558,7 +2558,7 @@ void func_800141D4(Actor *actor) {
     for (q = base; q->field_0 != 0; q++) {
         switch (q->field_1C) {
         case 2:
-            q->field_C = func_800223EC(actor->field_28, 0xA, 0, 7);
+            q->field_C = Math_CycleRange(actor->field_28, 0xA, 0, 7);
             break;
         case 8:
             q->field_4 -= 2;
@@ -4527,7 +4527,7 @@ void func_80018BF8(Actor *a0, s16 a1) {
     w->field_C8 = 0;
     w->field_14C = 0;
     w->field_CC = D_80040F64;
-    func_8002B424(0, (Coord1F668 *)&w->field_E8);
+    GsInitCoordinate2(0, (Coord1F668 *)&w->field_E8);
     w->field_148 = 1;
     w->field_142 = 11;
     w->field_140 = 0;
@@ -4538,8 +4538,8 @@ void func_80018BF8(Actor *a0, s16 a1) {
     for (i = 0; i < 3; i++) {
         func_8002B564(i, &b[i]);
     }
-    func_8002BB54(q[0], q[1], q[2]);
-    func_8002BAD4(0);
+    GsSetAmbient(q[0], q[1], q[2]);
+    GsSetLightMode(0);
 }
 
 
@@ -4771,7 +4771,7 @@ Ltail:
     ls.field_14 = work->field_E0;
     ls.field_18 = 0;
     ls.field_1C = &work->field_E8;
-    func_8002B544(work->field_E4);
+    GsSetProjection(work->field_E4);
     func_8002C164(&ls);
     if (work->field_C8 == 0) {
         return;
@@ -5058,7 +5058,7 @@ void func_80019E50(Actor *a0) {
         return;
     }
     s = (s32 *)a0->u34.field_34;
-    p = (Ent19E50 *)func_80023A08(a0->work->field_0);
+    p = (Ent19E50 *)Cd_GetFileOrNull(a0->work->field_0);
     slot = s;
 loop:
     if (p->field_0 == end) {
@@ -5158,7 +5158,7 @@ void func_8001A01C(void) {
             e->field_4++;
             break;
         case 4:
-            e->field_8 = func_80039A44(func_800239E4(D_80041194[e->field_0]->field_4, e->field_28), i);
+            e->field_8 = SsVabOpenHead(Mem_GetOffsetEntry(D_80041194[e->field_0]->field_4, e->field_28), i);
             e->field_4++;
             break;
         case 5:
@@ -5175,14 +5175,14 @@ void func_8001A01C(void) {
             j = e->field_A;
             p = *(j + D_80041194[e->field_0]->field_8);
             if (p != 0) {
-                e->field_C[j] = func_80032954(func_800239E4(p, e->field_28), e->field_8, 0x10);
+                e->field_C[j] = func_80032954(Mem_GetOffsetEntry(p, e->field_28), e->field_8, 0x10);
                 e->field_A++;
             } else {
                 e->field_4++;
             }
             break;
         default:
-            if (func_8003A004(0)) {
+            if (SsVabTransCompleted(0)) {
                 func_80023EB8(e->field_20);
                 e->field_4 = 0;
             }
@@ -5214,7 +5214,7 @@ void func_8001A340(void) {
         if (p->field_8 != -1) {
             for (j = 0; j < p->field_A; j++) {
                 for (k = 0; k < 0x10; k++) {
-                    func_8003569C(p->field_C[j], k);
+                    SsSepStop(p->field_C[j], k);
                 }
             }
         }
@@ -5233,7 +5233,7 @@ void func_8001A410(s32 id) {
         j = (id >> 4) & 0xF;
         k = id & 0xF;
         if (D_80054C48[i].field_4 == 0) {
-            func_8003569C(D_80054C48[i].field_C[j], k);
+            SsSepStop(D_80054C48[i].field_C[j], k);
         }
         if (D_80050718 == id) {
             D_80050718 = -1;
@@ -5250,7 +5250,7 @@ void func_8001A4A8(s32 idx) {
     }
     for (i = 0; i < D_80054C48[idx].field_A; i++) {
         for (k = 0; k < 0x10; k++) {
-            func_8003569C(D_80054C48[idx].field_C[i], k);
+            SsSepStop(D_80054C48[idx].field_C[i], k);
         }
         func_80032844(D_80054C48[idx].field_C[i]);
     }
@@ -5285,7 +5285,7 @@ void func_8001A68C(s32 id, s32 set) {
         i = id >> 8;
         j = (id >> 4) & 0xF;
         k = id & 0xF;
-        func_8003569C(D_80054C48[i].field_C[j], k);
+        SsSepStop(D_80054C48[i].field_C[j], k);
         func_80035C4C(D_80054C48[i].field_C[j], k, 0x7F, 0x7F);
         func_80034E04(D_80054C48[i].field_C[j], k, 1, 1);
         if (set != 0) {
@@ -5306,15 +5306,15 @@ typedef struct {
 
 extern u8 D_80050A48;
 
-extern void func_800357E4(void *, s16, s16);
+extern void SsSetTableSize(void *, s16, s16);
 extern void func_80035A04(s32);
 extern void func_800352C4();
-extern void func_80035024(s16, s16);
-extern void func_80034F64(s8, s8, s8);
-extern void func_800356D4(s8, s16, s16);
+extern void SsSetMVol(s16, s16);
+extern void SsSetSerialAttr(s8, s8, s8);
+extern void SsSetSerialVol(s8, s16, s16);
 extern s16 func_80036474(s16);
-extern void func_800363E4(s16, s16);
-extern void func_80036574();
+extern void SsUtSetReverbDepth(s16, s16);
+extern void SsUtReverbOn();
 extern s32 func_80022F3C(s32, s32);
 extern void func_8001A5F4(s32, s32);
 extern void func_80023C74();
@@ -5324,15 +5324,15 @@ void func_8001A75C(void) {
     s32 i;
     Ew54C48 *e;
 
-    func_800357E4(&D_80050A48, 6, 0x10);
+    SsSetTableSize(&D_80050A48, 6, 0x10);
     func_80035A04(0x1000);
     func_800352C4();
-    func_80035024(0x7F, 0x7F);
-    func_80034F64(0, 0, 1);
-    func_800356D4(0, 0x7F, 0x7F);
+    SsSetMVol(0x7F, 0x7F);
+    SsSetSerialAttr(0, 0, 1);
+    SsSetSerialVol(0, 0x7F, 0x7F);
     func_80036474(3);
-    func_800363E4(0, 0);
-    func_80036574();
+    SsUtSetReverbDepth(0, 0);
+    SsUtReverbOn();
 
     v0 = func_80022F3C(D_800411FC[0] + D_800411FC[1] + D_800411FC[2], 4);
     e = (Ew54C48 *)D_80054C48;
@@ -6164,7 +6164,7 @@ void func_8001C104(void) {
         r = ((View1C104 *)&D_8005F770)->area[i].rect;
         func_80027104(1);
         func_80027694((s32)&r, 0, 0, 0);
-        func_80027480(0);
+        DrawSync(0);
     }
 }
 
@@ -6197,8 +6197,8 @@ void func_8001C1E0(s32 w, s32 h, s32 mode, s32 inter) {
     case 0:
         func_8002A9F4(&g->draw[0], 0, h, w, h);
         func_8002A9F4(&g->draw[1], 0, 0, w, h);
-        func_8002AAB4(&g->disp[0], 0, 0, w, h);
-        func_8002AAB4(&g->disp[1], 0, h, w, h);
+        SetDefDispEnv(&g->disp[0], 0, 0, w, h);
+        SetDefDispEnv(&g->disp[1], 0, h, w, h);
         g->draw[0].ofs[0] = hw;
         g->draw[0].ofs[1] = h + hh;
         g->draw[1].ofs[0] = hw;
@@ -6208,8 +6208,8 @@ void func_8001C1E0(s32 w, s32 h, s32 mode, s32 inter) {
     case 1:
         func_8002A9F4(&g->draw[0], 0, 0, w, h);
         func_8002A9F4(&g->draw[1], 0, 0, w, h);
-        func_8002AAB4(&g->disp[0], 0, 0, w, h);
-        func_8002AAB4(&g->disp[1], 0, 0, w, h);
+        SetDefDispEnv(&g->disp[0], 0, 0, w, h);
+        SetDefDispEnv(&g->disp[1], 0, 0, w, h);
         g->draw[0].ofs[0] = hw;
         g->draw[0].ofs[1] = hh;
         g->draw[1].ofs[0] = hw;
@@ -6220,9 +6220,9 @@ void func_8001C1E0(s32 w, s32 h, s32 mode, s32 inter) {
         if (inter != 0) {
             func_8002A9F4(&g->draw[0], 480, 0, 320, 480);
             func_8002A9F4(&g->draw[1], 0, 0, 320, 480);
-            func_8002AAB4(&g->disp[0], 0, 0, 320, 480);
+            SetDefDispEnv(&g->disp[0], 0, 0, 320, 480);
             g->disp[0].isrgb24 = 1;
-            func_8002AAB4(&g->disp[1], 480, 0, 320, 480);
+            SetDefDispEnv(&g->disp[1], 480, 0, 320, 480);
             g->disp[1].isrgb24 = 1;
             g->draw[0].dfe = 1;
             g->draw[1].dfe = 1;
@@ -6233,8 +6233,8 @@ void func_8001C1E0(s32 w, s32 h, s32 mode, s32 inter) {
         } else {
             func_8002A9F4(&g->draw[0], w, 0, w, h);
             func_8002A9F4(&g->draw[1], 0, 0, w, h);
-            func_8002AAB4(&g->disp[0], 0, 0, w, h);
-            func_8002AAB4(&g->disp[1], w, 0, w, h);
+            SetDefDispEnv(&g->disp[0], 0, 0, w, h);
+            SetDefDispEnv(&g->disp[1], w, 0, w, h);
             g->draw[0].dfe = 1;
             g->draw[1].dfe = 1;
             g->draw[0].ofs[0] = w + hw;
@@ -6247,7 +6247,7 @@ void func_8001C1E0(s32 w, s32 h, s32 mode, s32 inter) {
     }
     func_8001CD2C(n);
     func_8002B4C4();
-    func_8002D6A4(0, 0);
+    SetGeomOffset(0, 0);
 }
 
 void Gfx_FadeInFromBlack(s32 arg0) {
@@ -6374,12 +6374,12 @@ void func_8001C800(s32 arg0) {
 }
 
 void Gpu_ClearOt(s32 arg0) {
-    func_8002796C(&D_80054CF8[arg0], 0x100C);
+    ClearOTagR(&D_80054CF8[arg0], 0x100C);
 }
 
 s32 Gpu_DrawOt(s32 arg0) {
     s32 *p = (s32 *)&D_80058D28[arg0];
-    return func_80027A74(&p[-1]);
+    return DrawOTag(&p[-1]);
 }
 
 void Gpu_SkipEmptyOtEntries(s32 arg0) {
@@ -6412,9 +6412,9 @@ s32 func_8001C92C(void) {
 
 void func_8001C934(void) {
     if (D_80041670[0] != 0) {
-        func_80022D84(D_80041670[0]);
+        Mem_Free(D_80041670[0]);
         D_80041670[0] = 0;
-        func_80022D84(D_80041670[1]);
+        Mem_Free(D_80041670[1]);
         D_80041670[1] = 0;
     }
     D_8005F79C = 0;
@@ -6679,7 +6679,7 @@ void func_8001D104(void *arg0, void *arg1, s32 arg2, s32 arg3) {
         if (e->field_9) sv[2].vy = sv[3].vy = e->field_4 + e->field_9; else sv[2].vy = sv[3].vy = e->field_4 + 0xFF;
         sv[0].vz = sv[1].vz = sv[2].vz = sv[3].vz = 0;
         for (i = 0; i < 4; i++) {
-            func_8002D444(arg1, &sv[i], &out);
+            ApplyMatrixSV(arg1, &sv[i], &out);
             p->v[i].x = out.vx + ((Obj1CE9C *)arg0)->field_4;
             p->v[i].y = out.vy + ((Obj1CE9C *)arg0)->field_6;
         }
@@ -6843,7 +6843,7 @@ extern G4167C D_8004167C;
 extern u8 D_80041694;
 extern void func_8001CE9C(void *, s32);
 extern void func_8001D104(void *, void *, s32, s32);
-extern void func_8002D4A4(Obj209 *, s32 *);
+extern void ScaleMatrix(Obj209 *, s32 *);
 
 void func_8001D6B4(void *arg0, s32 arg1) {
     Rec1D6B4 *s2 = (Rec1D6B4 *)arg0;
@@ -6885,7 +6885,7 @@ void func_8001D6B4(void *arg0, s32 arg1) {
                 D_8004167C.field_8 = s2->field_10;
                 D_8004167C.field_C = s2->field_14;
                 func_8002D744(&D_8004167C, (Obj209 *)&D_8004167C.field_18);
-                func_8002D4A4((Obj209 *)&D_8004167C.field_18, &D_8004167C.field_8);
+                ScaleMatrix((Obj209 *)&D_8004167C.field_18, &D_8004167C.field_8);
             }
             func_8001D104(s2, &D_80041694, s4, s3);
         }
@@ -6903,7 +6903,7 @@ void func_8001D8A4(s32 arg0) {
 }
 
 EntD8C4 *func_8001D8C4(id) s32 id; {
-    EntD8C4 *p = (EntD8C4 *)func_80023A08(0xC6C);
+    EntD8C4 *p = (EntD8C4 *)Cd_GetFileOrNull(0xC6C);
     s16 v;
 
 loop:
@@ -6976,7 +6976,7 @@ u8 func_8001DA80(s32 id, s32 val) {
 }
 
 Ent1DB18 *func_8001DB18(s32 id) {
-    Rec1DB18 *p = (Rec1DB18 *)func_80023A08(0xC6F);
+    Rec1DB18 *p = (Rec1DB18 *)Cd_GetFileOrNull(0xC6F);
 
     while (1) {
         if (p->field_0 == 0) {
@@ -7023,7 +7023,7 @@ void func_8001DC24(s32 a0, s32 a1, ElmE620 *e) {
             a1 = 0;
         }
     }
-    func_80022F8C(e, 0x5C);
+    Mem_Zero(e, 0x5C);
     e->field_0 = 2;
     e->field_1 = r[a1].field_8;
     e->field_16 = e->field_14 = r[a1].field_A;
@@ -7113,12 +7113,12 @@ s32 arg0;
 }
 
 s32 func_8001E048(s32 arg0) {
-    s32 base = func_80023A08(0x45E);
+    s32 base = Cd_GetFileOrNull(0x45E);
     return func_8001DFF4(arg0)->field_8 + base;
 }
 
 s32 func_8001E084(s32 arg0) {
-    s32 base = func_80023A08(0x45E);
+    s32 base = Cd_GetFileOrNull(0x45E);
     return func_8001DFF4(arg0)->field_C + base;
 }
 
@@ -7217,7 +7217,7 @@ s32 func_8001E390(void) {
 }
 
 void func_8001E480(void) {
-    D_8005D560.field_4 = func_80023A08(D_8005D560.field_0);
+    D_8005D560.field_4 = Cd_GetFileOrNull(D_8005D560.field_0);
     D_8005D560.field_C = func_800239A0(D_8005D560.field_0 << 16);
     D_8005D560.field_8 = 0;
     func_8001E390();
@@ -7237,7 +7237,7 @@ s32 func_8001E514(s32 arg0) {
     EntE4CC *base;
     s32 r;
     s32 i;
-    r = func_80023A08(D_8005D560.field_0);
+    r = Cd_GetFileOrNull(D_8005D560.field_0);
     base = func_8001E4CC(arg0);
     for (i = 0; i < 6; i++) {
         if (func_80022038(func_8001E2E0((ArgE298 *)base, i)) != 0) {
@@ -7252,7 +7252,7 @@ s32 func_8001E514(s32 arg0) {
 }
 
 s32 func_8001E5C0(void) {
-    return func_80023A08(D_8005D560.field_0);
+    return Cd_GetFileOrNull(D_8005D560.field_0);
 }
 
 Blk12 *func_8001E5E8(void) {
@@ -7308,7 +7308,7 @@ u8 *func_8001E758(s32 id) {
     s32 v;
 
     v = func_8001E6A8(id)->field_0;
-    v += func_80023A08(func_8001E67C(id));
+    v += Cd_GetFileOrNull(func_8001E67C(id));
     return (u8 *)v;
 }
 
@@ -7398,7 +7398,7 @@ s32 func_8001EB58(s32 x) {
         return h + 17;
     }
     {
-        s32 r = (u16)((u16)func_80023910() % 3) + 2;
+        s32 r = (u16)((u16)Rand_Next() % 3) + 2;
         return x + r;
     }
 }
@@ -7461,7 +7461,7 @@ EntED40 *func_8001ED40(s32 id) {
 }
 
 s32 func_8001ED84(s32 arg0) {
-    s32 base = func_80023A08(0x25B);
+    s32 base = Cd_GetFileOrNull(0x25B);
     EntED40 *p = func_8001ED40(arg0);
     if (p != 0) {
         return p->field_24 + base;
@@ -7470,7 +7470,7 @@ s32 func_8001ED84(s32 arg0) {
 }
 
 s32 func_8001EDD4(s32 arg0) {
-    s32 base = func_80023A08(0x25B);
+    s32 base = Cd_GetFileOrNull(0x25B);
     return func_8001ED40(arg0)->field_28 + base;
 }
 
@@ -7514,7 +7514,7 @@ u16 func_8001EF88(s32 id) {
     u16 v = func_8001ED40(id)->u0.b0.field_3 & 0xF;
 
     if (v == 6) {
-        return (u16)func_80023910() % 5;
+        return (u16)Rand_Next() % 5;
     }
     return v;
 }
@@ -7615,14 +7615,14 @@ s32 func_8001F274(Actor *a0, s32 n) {
         id = func_8001E728(a0->field_C, 2);
         n -= 20;
     }
-    p = (s32 *)(func_80023A08(id) + ((sub->field_8 + 1) << 2));
+    p = (s32 *)(Cd_GetFileOrNull(id) + ((sub->field_8 + 1) << 2));
     sub->field_64 = p;
     return p[n] != 0;
 }
 
 void func_8001F320(Actor *a) {
     Sub3C *s = a->field_3C;
-    s32 *data = (s32 *)func_80023A08(s->field_48);
+    s32 *data = (s32 *)Cd_GetFileOrNull(s->field_48);
     s32 i;
     s32 j;
     s32 k;
@@ -7710,34 +7710,34 @@ void func_8001F668(Col1F668 *col, SVec1F668 *v, s32 flags, s32 idx) {
     s32 *ot;
     Actor *g;
 
-    func_8002B424(0, &coord);
+    GsInitCoordinate2(0, &coord);
     func_8002BD94(&coord, &m);
-    func_8002B494(&m);
+    GsSetLsMatrix(&m);
     g = &D_8005F770;
     p = (PolyF4_1F668 *)g->work;
     ot = g->field_138[idx];
     p->c = *col;
-    func_8002AB34((u8 *)p);
+    SetPolyF4((u8 *)p);
     q = p;
     if (flags & 4) {
         p->c.code |= 2;
     }
-    func_8002D6D4(&v[0], &p->xy[0], &pz, &flag);
+    RotTransPers(&v[0], &p->xy[0], &pz, &flag);
     p->xy[0].x /= 2;
     p->xy[0].y /= 2;
-    func_8002D6D4(&v[1], &p->xy[1], &pz, &flag);
+    RotTransPers(&v[1], &p->xy[1], &pz, &flag);
     p->xy[1].x /= 2;
     p->xy[1].y /= 2;
-    func_8002D6D4(&v[2], &p->xy[2], &pz, &flag);
+    RotTransPers(&v[2], &p->xy[2], &pz, &flag);
     p->xy[2].x /= 2;
     p->xy[2].y /= 2;
-    func_8002D6D4(&v[3], &p->xy[3], &pz, &flag);
+    RotTransPers(&v[3], &p->xy[3], &pz, &flag);
     p->xy[3].x /= 2;
     p->xy[3].y /= 2;
     p->tag.addr = ((Tag1F668 *)ot)->addr;
     ((Tag1F668 *)ot)->addr = (u32)p;
     p++;
-    func_8002ABB4((DrMode1F668 *)p, 0, 0, (flags & 3) << 5, 0);
+    SetDrawMode((DrMode1F668 *)p, 0, 0, (flags & 3) << 5, 0);
     dm = (DrMode1F668 *)(q + 1);
     dm->tag.addr = ((Tag1F668 *)ot)->addr;
     ((Tag1F668 *)ot)->addr = (u32)p;
@@ -7751,8 +7751,8 @@ void func_8001F90C(void) {
     for (i = 0; i < 3; i++) {
         func_8002B564(i, &D_800416CC[i]);
     }
-    func_8002BB54(0x4CC, 0x4CC, 0x4CC);
-    func_8002BAD4(0);
+    GsSetAmbient(0x4CC, 0x4CC, 0x4CC);
+    GsSetLightMode(0);
 }
 
 s32 func_8001F970(s32 arg0) {
@@ -7783,7 +7783,7 @@ void func_8001F9AC(Actor *a0) {
         if (func_8001F970(w->field_54) != 0) {
             switch (w->field_2C >> 1) {
             case 0:
-                w->field_2C = (func_80023910() & 0x7F) + 0x3C;
+                w->field_2C = (Rand_Next() & 0x7F) + 0x3C;
                 k = 0;
                 break;
             case 1:
@@ -7828,8 +7828,8 @@ void func_8001F9AC(Actor *a0) {
         }
         rc.w = r->field_2;
         rc.h = r->field_3;
-        func_8002AB54(prim, &rc, r->field_0 + pos->field_18, r->field_1 + pos->field_1C);
-        func_8002AAF4(((Wk1F9AC *)&D_8005F770)->field_150, (unsigned int *)prim);
+        SetDrawMove(prim, &rc, r->field_0 + pos->field_18, r->field_1 + pos->field_1C);
+        AddPrim(((Wk1F9AC *)&D_8005F770)->field_150, (unsigned int *)prim);
         prim++;
     }
     if (r->field_0 == 0xFE) {
@@ -7851,15 +7851,15 @@ void func_8001F9AC(Actor *a0) {
             rc2.y = q->uv[m + 1] + pos->field_1C;
             rc2.w = q->field_2;
             rc2.h = q->field_3;
-            func_8002AB54(prim, &rc2, q->field_0 + pos->field_18, q->field_1 + pos->field_1C);
-            func_8002AAF4(((Wk1F9AC *)&D_8005F770)->field_150, (unsigned int *)prim);
+            SetDrawMove(prim, &rc2, q->field_0 + pos->field_18, q->field_1 + pos->field_1C);
+            AddPrim(((Wk1F9AC *)&D_8005F770)->field_150, (unsigned int *)prim);
             prim++;
             rc2.x = q->uv[m + 2] + pos->field_18;
             rc2.y = q->uv[m + 3] + pos->field_1C;
             rc2.w = q->field_6;
             rc2.h = q->field_7;
-            func_8002AB54(prim, &rc2, q->field_4 + pos->field_18, q->field_5 + pos->field_1C);
-            func_8002AAF4(((Wk1F9AC *)&D_8005F770)->field_150, (unsigned int *)prim);
+            SetDrawMove(prim, &rc2, q->field_4 + pos->field_18, q->field_5 + pos->field_1C);
+            AddPrim(((Wk1F9AC *)&D_8005F770)->field_150, (unsigned int *)prim);
             prim++;
         }
     }
@@ -7869,7 +7869,7 @@ void func_8001F9AC(Actor *a0) {
 
 Sub3C *func_8001FDBC(Actor *a0, s32 id) {
     s32 fresh = 0;
-    Mdl1FDBC *m = (Mdl1FDBC *)func_80023A08(id);
+    Mdl1FDBC *m = (Mdl1FDBC *)Cd_GetFileOrNull(id);
     Mdl1FDBC *base = m;
     Sub3C *t = a0->field_3C;
     Sub3C *s;
@@ -7882,7 +7882,7 @@ Sub3C *func_8001FDBC(Actor *a0, s32 id) {
 
     if (t == NULL) {
         a0->field_3C = (Sub3C *)func_80022F3C(0x7C, 2);
-        func_80022F8C(a0->field_3C, 0x7C);
+        Mem_Zero(a0->field_3C, 0x7C);
         fresh = 1;
     } else if (t->field_4 == m && m->field_4 != 0) {
         return t;
@@ -7942,7 +7942,7 @@ INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80020510);
 INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80020768);
 
 extern void func_8002D744(void *, Obj209 *);
-extern void func_8002D4A4(Obj209 *, s32 *);
+extern void ScaleMatrix(Obj209 *, s32 *);
 
 void func_80020920(Actor *arg0) {
     Obj209 *obj = (Obj209 *)arg0->u38.ptr38;
@@ -7950,14 +7950,14 @@ void func_80020920(Actor *arg0) {
 
     obj->field_20 = obj->field_30;
     func_8002D744(&obj->field_40, obj);
-    func_8002CF74((ObjC0E4 *)obj, &obj->field_48, local);
+    ApplyMatrixLV((ObjC0E4 *)obj, &obj->field_48, local);
     obj->field_30.x += local[0];
     obj->field_30.y += local[1];
     obj->field_30.z += local[2];
     if (obj->field_58 == 0x1000 && obj->field_5C == obj->field_58 &&
         obj->field_60 == obj->field_5C) {
     } else {
-        func_8002D4A4(obj, &obj->field_58);
+        ScaleMatrix(obj, &obj->field_58);
     }
     obj->field_50 = 0;
     obj->field_4C = 0;
@@ -7971,14 +7971,14 @@ void func_80020C14(s32 arg0) {
     func_800209F8(arg0);
 }
 
-extern void func_80022F8C(void *, s32);
+extern void Mem_Zero(void *, s32);
 
 void func_80020C40(ContC40 *a0, s32 *a1, u16 a2) {
     AllocC40 *p;
     if (a0->field_38 == 0) {
         a0->field_38 = (AllocC40 *)func_80022F3C(0x90, 2);
     }
-    func_80022F8C(a0->field_38, 0x90);
+    Mem_Zero(a0->field_38, 0x90);
     p = a0->field_38;
     p->field_60 = 0x1000;
     p->field_5C = 0x1000;
@@ -8064,11 +8064,11 @@ INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80020FD0);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002130C);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_800216E4);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Gfx_ProjectModelVerts);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80021838);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Gfx_IsOriginOffscreen);
 
-void func_800218CC(Tri218CC *t, s32 n, Obj21ABC *o, Col21ABC *col) {
+void Gfx_DrawWireTris(Tri218CC *t, s32 n, Obj21ABC *o, Col21ABC *col) {
     s32 i;
     s32 z;
     u32 *ot;
@@ -8110,7 +8110,7 @@ void func_800218CC(Tri218CC *t, s32 n, Obj21ABC *o, Col21ABC *col) {
     D_8005F79C = (s32)pk;
 }
 
-void func_80021ABC(Quad21ABC *q, s32 n, Obj21ABC *o, Col21ABC *col) {
+void Gfx_DrawWireQuads(Quad21ABC *q, s32 n, Obj21ABC *o, Col21ABC *col) {
     s32 i;
     s32 z;
     u32 *ot;
@@ -8223,7 +8223,7 @@ void func_80021DC8(void) {
 }
 
 
-s32 func_80021E54(u8 *arg0, s32 arg1) {
+s32 Mem_TestBit(u8 *arg0, s32 arg1) {
     s32 i = arg1 >> 3;
     s32 m = 1 << (arg1 & 7);
 
@@ -8241,23 +8241,23 @@ extern s32 D_8005F644;
 extern s32 D_8005F64C;
 extern s32 D_8005F654;
 extern s32 D_8005F664;
-extern s32 func_80021E54(u8 *, s32);
+extern s32 Mem_TestBit(u8 *, s32);
 extern s32 func_80066B48(s32);
 
 s32 func_80021E78(s32 arg0) {
     s32 i;
 
     if (arg0 < 0x258) {
-        return func_80021E54(&D_8005F624, arg0);
+        return Mem_TestBit(&D_8005F624, arg0);
     }
     if (arg0 < 0x2BC) {
-        return func_80021E54(&D_8005F644, arg0 - 0x258);
+        return Mem_TestBit(&D_8005F644, arg0 - 0x258);
     }
     if (arg0 < 0x320) {
-        return func_80021E54(&D_8005F64C, arg0 - 0x2BC);
+        return Mem_TestBit(&D_8005F64C, arg0 - 0x2BC);
     }
     if (arg0 < 0x3E8) {
-        return func_80021E54(&D_8005F654, arg0 - 0x320);
+        return Mem_TestBit(&D_8005F654, arg0 - 0x320);
     }
     if (arg0 < 0x44C) {
         return D_8005F664 >= arg0 - 0x3E8;
@@ -8317,7 +8317,7 @@ s32 func_80022038(Ent22038 *p) {
 }
 
 
-void func_800220D0(u8 *arg0, s32 arg1, s32 arg2) {
+void Mem_WriteBit(u8 *arg0, s32 arg1, s32 arg2) {
     s32 idx = arg1 >> 3;
     s32 mask = 1 << (arg1 & 7);
     if (arg2 != 0) {
@@ -8345,15 +8345,15 @@ void func_80022118(s32 arg0) {
 void func_800221C4(s32 id, s32 val) {
     if (id < 600) {
         if (id == 0x10 && val == 0) {
-            func_800220D0((u8 *)&D_8005F624, 0x11, 0);
+            Mem_WriteBit((u8 *)&D_8005F624, 0x11, 0);
         }
-        func_800220D0((u8 *)&D_8005F624, id, val);
+        Mem_WriteBit((u8 *)&D_8005F624, id, val);
     } else if (id < 700) {
-        func_800220D0((u8 *)&D_8005F644, id - 600, val);
+        Mem_WriteBit((u8 *)&D_8005F644, id - 600, val);
     } else if (id < 800) {
-        func_800220D0((u8 *)&D_8005F64C, id - 700, val);
+        Mem_WriteBit((u8 *)&D_8005F64C, id - 700, val);
     } else if (id < 1000) {
-        func_800220D0((u8 *)&D_8005F654, id - 800, val);
+        Mem_WriteBit((u8 *)&D_8005F654, id - 800, val);
     } else if (id < 2000) {
         D_8005F664 = id - 1900;
     } else if (id < 0x8BD) {
@@ -8390,7 +8390,7 @@ void func_80022388(Pair22388 *p) {
     }
 }
 
-s32 func_800223EC(s32 v, s32 div, s32 lo, s32 hi) {
+s32 Math_CycleRange(s32 v, s32 div, s32 lo, s32 hi) {
     s32 r;
     v /= div;
     if (lo < hi) {
@@ -8403,7 +8403,7 @@ s32 func_800223EC(s32 v, s32 div, s32 lo, s32 hi) {
 }
 
 
-s32 func_80022430(s32 v, s32 div, s32 lo, s32 hi) {
+s32 Math_PingPongRange(s32 v, s32 div, s32 lo, s32 hi) {
     s32 span;
     s32 r;
 
@@ -8418,7 +8418,7 @@ s32 func_80022430(s32 v, s32 div, s32 lo, s32 hi) {
 
 
 void func_80022468(void) {
-    func_80022F8C(D_80050720, 0x1058);
+    Mem_Zero(D_80050720, 0x1058);
     D_80050720->field_0 = 1;
     func_80021DC8();
     D_8005E620.field_14 = 0x8F;
@@ -8701,7 +8701,7 @@ void func_80022AE4(void) {
 }
 
 
-void func_80022D84(ActorWork *arg0) {
+void Mem_Free(ActorWork *arg0) {
     Node22D84 *n = (Node22D84 *)((u8 *)arg0 - 0xC);
     Node22D84 *m = n->field_0;
     Node22D84 *nx = n->field_4;
@@ -8722,7 +8722,7 @@ void func_80022DEC(s32 tag) {
     if (b->field_8 != 1) {
         do {
             if (b->field_8 == tag) {
-                func_80022D84((ActorWork *)(b + 1));
+                Mem_Free((ActorWork *)(b + 1));
             }
             b = b->field_4;
         } while (b->field_8 != 1);
@@ -8730,7 +8730,7 @@ void func_80022DEC(s32 tag) {
 }
 
 
-void func_80022E60(Blk22E60 *heap, s32 size) {
+void Mem_InitHeap(Blk22E60 *heap, s32 size) {
     Blk22E60 *end;
 
     D_80050784 = size;
@@ -8745,7 +8745,7 @@ void func_80022E60(Blk22E60 *heap, s32 size) {
 }
 
 
-s32 func_80022E90(s32 arg0, s32 tag) {
+s32 Mem_TryAlloc(s32 arg0, s32 tag) {
     u32 size = ((u32)(arg0 + 3) >> 2) << 2;
     Blk22E60 *b = D_80050788;
     Blk22E60 *n;
@@ -8778,13 +8778,13 @@ s32 func_80022E90(s32 arg0, s32 tag) {
 
 s32 func_80022F3C(s32 arg0, s32 arg1) {
     s32 r;
-    while ((r = func_80022E90(arg0, arg1)) == 0) {
+    while ((r = Mem_TryAlloc(arg0, arg1)) == 0) {
         func_80023BB0();
     }
     return r;
 }
 
-void func_80022F8C(void *a0, s32 a1) {
+void Mem_Zero(void *a0, s32 a1) {
     s32 i;
     if (a1 & 3) {
         u8 *b = (u8 *)a0;
@@ -8796,7 +8796,7 @@ void func_80022F8C(void *a0, s32 a1) {
     }
 }
 
-void func_80022FE8(s32 *tbl) {
+void Mem_SumSizesByTag(s32 *tbl) {
     Blk22E60 *b = D_80050788;
 
     if (b->field_8 != 1) {
@@ -8808,7 +8808,7 @@ void func_80022FE8(s32 *tbl) {
 }
 
 
-u32 func_80023044(void) {
+u32 Mem_GetLargestFree(void) {
     Blk22E60 *b = D_80050788;
     u32 best = 0;
     u32 sz;
@@ -8831,7 +8831,7 @@ void func_800230AC(void) {
     func_80024544();
 }
 
-void func_800230DC(Rec230DC *arg0) {
+void Pad_ResetButtons(Rec230DC *arg0) {
     arg0->field_C = 0;
     arg0->field_15 = 0;
     arg0->field_14 = 0;
@@ -8841,7 +8841,7 @@ void func_800230DC(Rec230DC *arg0) {
     arg0->field_8 = 0;
 }
 
-void func_800230FC(Rec230DC *p, u8 *buf) {
+void Pad_UpdateButtons(Rec230DC *p, u8 *buf) {
     s32 n;
 
     p->field_8 = p->field_4;
@@ -8869,17 +8869,17 @@ void func_800230FC(Rec230DC *p, u8 *buf) {
 }
 
 void func_800231AC(Elm6A8 *a0, s32 i) {
-    switch (func_80024474(i << 4)) {
+    switch (PadGetState(i << 4)) {
     case 2:
     case 6:
         switch (D_8005F678[i].field_C) {
         case 0:
         default:
-            func_800230DC((Rec230DC *)&D_8005F678[i]);
+            Pad_ResetButtons((Rec230DC *)&D_8005F678[i]);
             D_8005F678[i].field_C = 1;
             break;
         case 1:
-            func_800230FC(&D_8005F678[i], a0);
+            Pad_UpdateButtons(&D_8005F678[i], a0);
             break;
         }
         break;
@@ -8890,7 +8890,7 @@ void func_800231AC(Elm6A8 *a0, s32 i) {
     }
 }
 
-s32 func_80023270(s32 arg0, s32 arg1, s32 arg2) {
+s32 Pad_GetButtonState(s32 arg0, s32 arg1, s32 arg2) {
     s32 r = 0;
     if (arg0 & arg2) {
         r = 1;
@@ -8920,20 +8920,20 @@ void func_8002329C(void) {
             D_8005F678[i].field_10 = 0;
             D_8005F6F0[i].field_3E = 0;
         }
-        D_8005F6F0[i].field_8 = func_80023270(D_8005F678[i].field_0, D_8005F678[i].field_4, 0x1000);
-        D_8005F6F0[i].field_C = func_80023270(D_8005F678[i].field_0, D_8005F678[i].field_4, 0x4000);
-        D_8005F6F0[i].field_0 = func_80023270(D_8005F678[i].field_0, D_8005F678[i].field_4, 0x2000);
-        D_8005F6F0[i].field_4 = func_80023270(D_8005F678[i].field_0, D_8005F678[i].field_4, 0x8000);
-        D_8005F6F0[i].field_10 = func_80023270(D_8005F678[i].field_0, D_8005F678[i].field_4, 0x20);
-        D_8005F6F0[i].field_14 = func_80023270(D_8005F678[i].field_0, D_8005F678[i].field_4, 0x40);
-        D_8005F6F0[i].field_1C = func_80023270(D_8005F678[i].field_0, D_8005F678[i].field_4, 0x10);
-        D_8005F6F0[i].field_18 = func_80023270(D_8005F678[i].field_0, D_8005F678[i].field_4, 0x80);
-        D_8005F6F0[i].field_28 = func_80023270(D_8005F678[i].field_0, D_8005F678[i].field_4, 0x4);
-        D_8005F6F0[i].field_2C = func_80023270(D_8005F678[i].field_0, D_8005F678[i].field_4, 0x1);
-        D_8005F6F0[i].field_20 = func_80023270(D_8005F678[i].field_0, D_8005F678[i].field_4, 0x8);
-        D_8005F6F0[i].field_24 = func_80023270(D_8005F678[i].field_0, D_8005F678[i].field_4, 0x2);
-        D_8005F6F0[i].field_30 = func_80023270(D_8005F678[i].field_0, D_8005F678[i].field_4, 0x100);
-        D_8005F6F0[i].field_34 = func_80023270(D_8005F678[i].field_0, D_8005F678[i].field_4, 0x800);
+        D_8005F6F0[i].field_8 = Pad_GetButtonState(D_8005F678[i].field_0, D_8005F678[i].field_4, 0x1000);
+        D_8005F6F0[i].field_C = Pad_GetButtonState(D_8005F678[i].field_0, D_8005F678[i].field_4, 0x4000);
+        D_8005F6F0[i].field_0 = Pad_GetButtonState(D_8005F678[i].field_0, D_8005F678[i].field_4, 0x2000);
+        D_8005F6F0[i].field_4 = Pad_GetButtonState(D_8005F678[i].field_0, D_8005F678[i].field_4, 0x8000);
+        D_8005F6F0[i].field_10 = Pad_GetButtonState(D_8005F678[i].field_0, D_8005F678[i].field_4, 0x20);
+        D_8005F6F0[i].field_14 = Pad_GetButtonState(D_8005F678[i].field_0, D_8005F678[i].field_4, 0x40);
+        D_8005F6F0[i].field_1C = Pad_GetButtonState(D_8005F678[i].field_0, D_8005F678[i].field_4, 0x10);
+        D_8005F6F0[i].field_18 = Pad_GetButtonState(D_8005F678[i].field_0, D_8005F678[i].field_4, 0x80);
+        D_8005F6F0[i].field_28 = Pad_GetButtonState(D_8005F678[i].field_0, D_8005F678[i].field_4, 0x4);
+        D_8005F6F0[i].field_2C = Pad_GetButtonState(D_8005F678[i].field_0, D_8005F678[i].field_4, 0x1);
+        D_8005F6F0[i].field_20 = Pad_GetButtonState(D_8005F678[i].field_0, D_8005F678[i].field_4, 0x8);
+        D_8005F6F0[i].field_24 = Pad_GetButtonState(D_8005F678[i].field_0, D_8005F678[i].field_4, 0x2);
+        D_8005F6F0[i].field_30 = Pad_GetButtonState(D_8005F678[i].field_0, D_8005F678[i].field_4, 0x100);
+        D_8005F6F0[i].field_34 = Pad_GetButtonState(D_8005F678[i].field_0, D_8005F678[i].field_4, 0x800);
         D_8005F6F0[i].field_38 = D_8005F678[i].field_4;
         D_8005F6F0[i].field_3A = D_8005F678[i].field_0;
         D_8005F6F0[i].field_3C = D_8005F678[i].field_10;
@@ -8968,7 +8968,7 @@ void func_80023550(void) {
     s32 u;
 
     func_80010D74();
-    func_80030CD4();
+    ResetCallback();
     func_80030AB4(0);
     func_800273E8(0);
     func_80027104(0);
@@ -8978,7 +8978,7 @@ void func_80023550(void) {
     r.w = 0x280;
     r.h = 0x1FF;
     func_80027604((s32)&r, 0, 0, 0);
-    func_80027480(0);
+    DrawSync(0);
     func_8002AC54(0x140, 0xF0, 1, 1, 0);
     func_8002B4C4();
     func_80032914();
@@ -8987,17 +8987,17 @@ void func_80023550(void) {
     func_80027AE4(&((Db5F770 *)&D_8005F770)->draw[0]);
     func_80027CB0(&((Db5F770 *)&D_8005F770)->disp[0]);
     func_80030AB4(0);
-    func_8002BBD4((u32 *)(D_80010000[0] + 4), &tim);
+    GsGetTimInfo((u32 *)(D_80010000[0] + 4), &tim);
     func_80030AB4(0);
     func_8002772C((s32)&D_80050730, (s32)tim.paddr);
-    func_80027480(0);
+    DrawSync(0);
     func_80030AB4(0);
     func_800273E8(1);
     func_8002DC04();
-    func_800304B4(0);
-    func_80027278(0);
-    func_80022E60(D_800506F8[0], 0x801FF000 - (s32)D_800506F8[0]);
-    func_80023A38();
+    CdSetDebug(0);
+    SetGraphDebug(0);
+    Mem_InitHeap(D_800506F8[0], 0x801FF000 - (s32)D_800506F8[0]);
+    Cd_ClearFileCache();
     func_8001A75C();
     D_8005F770.field_0 = 0;
     ((Db5F770 *)&D_8005F770)->field_4 = 0;
@@ -9005,7 +9005,7 @@ void func_80023550(void) {
     func_8001C934();
     func_8001C800(0);
     Gpu_SetLayerOtPtrs();
-    func_800238E4(0);
+    Rand_Seed(0);
     ((void (*)(s32))func_8003D4A4)(0);
     func_8003DD00();
     func_800230AC();
@@ -9051,7 +9051,7 @@ void func_80023550(void) {
         D_8005F770.field_14 = 1;
         slot = Task_TryRun((void *)slot);
         Gpu_SkipEmptyOtEntries(D_8005F770.field_28);
-        func_80027480(0);
+        DrawSync(0);
         D_8005078C = 1;
         while (*(volatile s32 *)&D_8005078C != 0) {
         }
@@ -9069,30 +9069,30 @@ void func_80023550(void) {
         }
         D_8005F770.field_0++;
         func_8002329C();
-        func_800238F4();
+        Rand_Step();
         func_80023C74();
         func_8001A01C();
     }
 }
 
 
-void func_800238E4(s32 a0) {
+void Rand_Seed(s32 a0) {
     D_80050790 = a0 & 0xFFF;
 }
 
 
-void func_800238F4(void) {
+void Rand_Step(void) {
     D_80050790 = (D_80050790 + 1) & 0xFFF;
 }
 
 
-s32 func_80023910(void) {
-    func_800238F4();
+s32 Rand_Next(void) {
+    Rand_Step();
     return D_80041704[D_80050790];
 }
 
 
-u16 func_80023944(u32 arg0) {
+u16 Rand_GetAt(u32 arg0) {
     return D_80041704[arg0 & 0xFFF];
 }
 
@@ -9123,21 +9123,21 @@ EntA0 *func_800239A0(u32 arg0) {
     return (EntA0 *)(((u32 *)base)[index] + (u32)base);
 }
 
-s32 func_800239E4(s32 arg0, s32 *arg1) {
+s32 Mem_GetOffsetEntry(s32 arg0, s32 *arg1) {
     if (arg0 == 0) {
         return 0;
     }
     return arg1[(u16)arg0] + (s32)arg1;
 }
 
-s32 func_80023A08(s32 arg0) {
+s32 Cd_GetFileOrNull(s32 arg0) {
     if (arg0 == 0) {
         return 0;
     }
     return func_80023DB0(arg0);
 }
 
-void func_80023A38(void) {
+void Cd_ClearFileCache(void) {
     s32 i;
     Ent23A78 *p = D_8005F8C8;
     for (i = 0; i < 0x50; i++, p++) {
@@ -9149,7 +9149,7 @@ void func_80023A38(void) {
     }
 }
 
-Ent23A78 *func_80023A78(arg0)
+Ent23A78 *Cd_FindCachedFile(arg0)
 s32 arg0;
 {
     s32 i;
@@ -9160,7 +9160,7 @@ s32 arg0;
     return NULL;
 }
 
-Ent23A78 *func_80023AB0(void) {
+Ent23A78 *Cd_FindFreeCacheSlot(void) {
     s32 i;
     Ent23A78 *p = D_8005F8C8;
     for (i = 0; i < 0x50; i++, p++) {
@@ -9169,7 +9169,7 @@ Ent23A78 *func_80023AB0(void) {
     return NULL;
 }
 
-Ent23AE8 *func_80023AE8(void) {
+Ent23AE8 *Cd_FindLruCachedFile(void) {
     s32 min = D_8005F770.field_0;
     Ent23A78 *p = D_8005F8C8;
     Ent23A78 *best = 0;
@@ -9186,7 +9186,7 @@ Ent23AE8 *func_80023AE8(void) {
 }
 
 s32 func_80023B70(s32 arg0) {
-    Ent23A78 *e = func_80023A78(arg0);
+    Ent23A78 *e = Cd_FindCachedFile(arg0);
 
     if (e != 0) {
         e->field_8 = D_8005F770.field_0;
@@ -9196,8 +9196,8 @@ s32 func_80023B70(s32 arg0) {
 }
 
 void func_80023BB0(void) {
-    Ent23AE8 *p = func_80023AE8();
-    func_80022D84(p->field_C);
+    Ent23AE8 *p = Cd_FindLruCachedFile();
+    Mem_Free(p->field_C);
     p->field_4 = 0;
     p->field_C = 0;
     p->field_8 = 0;
@@ -9206,13 +9206,13 @@ void func_80023BB0(void) {
 }
 
 void func_80023BF4(s32 id) {
-    Ent23A78 *p = func_80023A78(id);
+    Ent23A78 *p = Cd_FindCachedFile(id);
 
     if (p != NULL) {
         p->field_8 = D_8005F770.field_0;
         return;
     }
-    p = func_80023AB0();
+    p = Cd_FindFreeCacheSlot();
     p->field_4 = id;
     p->field_C = func_80022F3C(func_80023F90(id) << 11, 3);
     p->field_0 = 1;
@@ -9230,7 +9230,7 @@ void func_80023C74(void) {
     if (D_80050750 == 0) {
         return;
     }
-    if (func_80024220() != 0) {
+    if (Cd_PollRead() != 0) {
         return;
     }
     p = D_8005F8C8;
@@ -9270,22 +9270,22 @@ void func_80023D68(s32 arg0) {
 }
 
 s32 func_80023DB0(s32 arg0) {
-    Ent23A78 *p = func_80023A78(arg0);
+    Ent23A78 *p = Cd_FindCachedFile(arg0);
     if (p != 0 && p->field_0 == 3) {
         p->field_8 = D_8005F770.field_0;
     } else {
-        while (func_80024220() != 0) {
+        while (Cd_PollRead() != 0) {
         }
         func_80023D68(arg0);
     }
-    return func_80023A78(arg0)->field_C;
+    return Cd_FindCachedFile(arg0)->field_C;
 }
 
 void func_80023E20(void) {
-    Ent23A78 *p = func_80023A78();
+    Ent23A78 *p = Cd_FindCachedFile();
     if (p != 0) {
         if (p->field_0 == 3) {
-            func_80022D84(p->field_C);
+            Mem_Free(p->field_C);
             p->field_4 = 0;
             p->field_C = 0;
             p->field_8 = 0;
@@ -9295,7 +9295,7 @@ void func_80023E20(void) {
 }
 
 void func_80023E78(s32 a0) {
-    Ent23A78 *p = func_80023A78();
+    Ent23A78 *p = Cd_FindCachedFile();
     if (p != 0) {
         if (p->field_0 == 3) {
             p->field_2 = 1;
@@ -9304,7 +9304,7 @@ void func_80023E78(s32 a0) {
 }
 
 void func_80023EB8(s32 a0) {
-    Ent23A78 *p = func_80023A78();
+    Ent23A78 *p = Cd_FindCachedFile();
     if (p != 0) {
         if (p->field_0 == 3) {
             p->field_2 = 0;
@@ -9316,7 +9316,7 @@ void func_80023EF8(void) {
     s32 i;
     for (i = 0; i < 0x50; i++) {
         if (D_8005F8C8[i].field_4 != 0 && D_8005F8C8[i].field_2 == 0) {
-            func_80022D84(D_8005F8C8[i].field_C);
+            Mem_Free(D_8005F8C8[i].field_C);
             D_8005F8C8[i].field_4 = 0;
             D_8005F8C8[i].field_C = 0;
             D_8005F8C8[i].field_8 = 0;
@@ -9325,7 +9325,7 @@ void func_80023EF8(void) {
     }
 }
 
-s32 func_80023F74(s32 arg0) {
+s32 Cd_IsFileValid(s32 arg0) {
     return D_80043794[arg0] != 0;
 }
 
@@ -9333,18 +9333,18 @@ s32 func_80023F90(s32 arg0) {
     return D_80047100[arg0];
 }
 
-s32 func_80023FAC(s32 arg0) {
+s32 Cd_GetFileLba(s32 arg0) {
     return D_80043794[arg0];
 }
 
-void func_80023FC8(s32 arg0, void *arg1) {
-    func_80030394(D_80043794[arg0]);
+void Cd_GetFilePos(s32 arg0, void *arg1) {
+    CdIntToPos(D_80043794[arg0]);
 }
 
 s32 func_80023FFC(void) {
     s32 x;
-    func_80030914(D_8005FDC8, 3);
-    x = func_8002DD64(D_8005FDC8);
+    CdGetSector(D_8005FDC8, 3);
+    x = CdPosToInt(D_8005FDC8);
     if (x == D_80048DB8.field_1C) {
         D_80048DB8.field_1C = x + 1;
         return 0;
@@ -9354,7 +9354,7 @@ s32 func_80023FFC(void) {
 
 void func_8002405C(s32 a0) {
     if (a0 == 1 && func_80023FFC() == 0) {
-        func_80030914((void *)D_80048DB8.field_8, 0x200);
+        CdGetSector((void *)D_80048DB8.field_8, 0x200);
         D_80048DB8.field_8 += 0x800;
         D_80048DB8.field_4 -= 1;
         if (D_80048DB8.field_4 != 0) {
@@ -9363,7 +9363,7 @@ void func_8002405C(s32 a0) {
     } else {
         D_80048DB8.field_4 = -1;
     }
-    func_80030534(0);
+    CdReadyCallback(0);
     func_80030690(9, 0);
 }
 
@@ -9384,7 +9384,7 @@ void func_800240E8(s32 ev) {
             D_80048DB8.field_0++;
             break;
         case 2:
-            func_80030534((s32)func_8002405C);
+            CdReadyCallback((s32)func_8002405C);
             func_80030690(6, 0);
             D_80048DB8.field_0++;
             break;
@@ -9394,7 +9394,7 @@ void func_800240E8(s32 ev) {
         case 4:
             if (D_80048DB8.field_4 == 0) {
                 D_80048DB8.field_0 = 5;
-                func_80030514(0);
+                CdSyncCallback(0);
             } else {
                 D_80048DB8.field_0 = 0;
                 D_80048DB8.field_4 = D_80048DB8.field_10;
@@ -9405,7 +9405,7 @@ void func_800240E8(s32 ev) {
     }
 }
 
-s32 func_80024220(void) {
+s32 Cd_PollRead(void) {
     switch (D_80048DB8.field_0) {
     case 0:
         return 0;
@@ -9421,18 +9421,18 @@ void func_80024260(s32 arg0, s32 arg1) {
     s32 r;
 
     if (D_80048DB8.field_0 != 0) {
-        while (func_80024220() != 0) {}
+        while (Cd_PollRead() != 0) {}
     }
-    func_80023FC8(arg0, sp10);
+    Cd_GetFilePos(arg0, sp10);
     r = func_80023F90(arg0);
     D_80048DB8.field_4 = r;
     D_80048DB8.field_8 = arg1;
     D_80048DB8.field_10 = r;
     D_80048DB8.field_14 = arg0;
     D_80048DB8.field_18 = arg1;
-    D_80048DB8.field_1C = func_80023FAC(arg0);
+    D_80048DB8.field_1C = Cd_GetFileLba(arg0);
     D_80048DB8.field_0 += 1;
-    func_80030514(func_800240E8);
+    CdSyncCallback(func_800240E8);
     func_80030690(2, sp10);
 }
 
@@ -9473,7 +9473,7 @@ void func_80024410(Actor *arg0) {
     }
 }
 
-u8 func_80024474(void) {
+u8 PadGetState(void) {
     Obj25FBC *o = D_80048E2C();
 
     if (o->field_37 != 0 || o->field_38 != 0 || (o != o->field_10 && o->field_39 != 0)
@@ -9546,7 +9546,7 @@ void func_80024654(u8 *a0, u8 *a1) {
 void func_80024704(void) {
     Obj25FBC *o = (Obj25FBC *)D_8005FDD8;
 
-    func_80027014((u8 *)o, 0x1E0);
+    bzero((u8 *)o, 0x1E0);
     o[0].field_3C = D_8005FFB8;
     o[0].field_40 = D_80060000;
     o[1].field_3C = &D_8005FFB8[0x23];
@@ -9554,7 +9554,7 @@ void func_80024704(void) {
     D_80048E1C = func_800247F4;
     D_80048E20 = func_80024960;
     D_80048E24 = (void (*)(Ent266D0 *))func_80024A1C;
-    D_80048E2C = (Obj25FBC *(*)(void))func_80024C98;
+    D_80048E2C = (Obj25FBC *(*)(void))Pad_GetPortBlock;
     D_80048E3C = func_80024950;
     D_80048E30 = func_80024CB8;
     D_80048E34 = (s32 (*)(void))func_80025114;
@@ -9664,7 +9664,7 @@ void func_80024A1C(Obj25FBC *a0) {
     u8 *p;
     u8 *q;
 
-    func_80027014(a0->field_57, 6);
+    bzero(a0->field_57, 6);
     if (a0->field_E6 != 0 && a0->field_28 != 0) {
         n = 6;
         if (a0->field_34 < 7) {
@@ -9723,7 +9723,7 @@ void func_80024A1C(Obj25FBC *a0) {
     }
 }
 
-u8 *func_80024C98(s32 arg0) {
+u8 *Pad_GetPortBlock(s32 arg0) {
     u8 *p = D_8005FDD8;
 
     if (arg0 & 0xF0) {
@@ -9735,7 +9735,7 @@ u8 *func_80024C98(s32 arg0) {
 s32 func_80024CB8(Obj25FBC *a0) {
     if (*a0->field_3C == 0xF3) {
         if (a0->field_E8 == 0) {
-            func_80026568((Actor *)a0, 0);
+            Pad_CmdConfigMode((Actor *)a0, 0);
             return 0;
         }
         if (a0->field_46 == 0xFF) {
@@ -9747,11 +9747,11 @@ s32 func_80024CB8(Obj25FBC *a0) {
     }
     switch (a0->field_46) {
     case 1:
-        func_80026568((Actor *)a0, 1);
+        Pad_CmdConfigMode((Actor *)a0, 1);
         break;
     case 0xFE:
     stop:
-        func_80026568((Actor *)a0, 0);
+        Pad_CmdConfigMode((Actor *)a0, 0);
         break;
     case 0:
     case 0xFF:
@@ -9865,7 +9865,7 @@ s32 func_80025114(Obj25FBC *p) {
     return 1;
 }
 
-s32 func_80025144(void) {
+s32 Pad_VBlankIrqVerify(void) {
     if (!(D_80048E8C->field_4 & 1)) {
         return 0;
     }
@@ -9919,7 +9919,7 @@ s32 func_8002533C(Obj25FBC *a0) {
     *(volatile u16 *)&st->field_A = 0;
     *(volatile u16 *)&st->field_8 = 0xD;
     *(volatile u16 *)&st->field_E = 0x88;
-    func_80026610(a0->field_E8 == 8 ? 0x50 : 0x91);
+    Pad_SetTimeout(a0->field_E8 == 8 ? 0x50 : 0x91);
     D_80048E90->field_A = D_80048E58 ? 0x3003 : 0x1003;
     n = D_80048E70[D_80048E58];
     tbl = D_80048E70;
@@ -9944,39 +9944,39 @@ s32 func_8002533C(Obj25FBC *a0) {
         *(volatile u16 *)&st->field_A |= 0x10;
         if (st->field_4 & 0x200) {
             do {
-            } while (func_80026630() == 0);
+            } while (Pad_IsTimedOut() == 0);
             D_80048E90->field_0 = 1;
-            func_80026610(0x7D0);
+            Pad_SetTimeout(0x7D0);
             if (func_80025C00() == 0) {
                 return 0;
             }
-            func_80025C90();
+            Pad_WaitSioRx();
             D_80048E90->field_0;
-            func_80026610(0x1AE);
+            Pad_SetTimeout(0x1AE);
             while (!(D_80048E8C->field_0 & 0x80)) {
-                if (func_80026630() != 0) {
+                if (Pad_IsTimedOut() != 0) {
                     return 0;
                 }
             }
             D_80048E90->field_0 = 0x42;
-            func_80026610(0x3C);
+            Pad_SetTimeout(0x3C);
             if (func_80025C00() == 0) {
                 return 0;
             }
-            func_80025C90();
+            Pad_WaitSioRx();
             D_80048E90->field_0;
-            func_80026610(0x1AE);
+            Pad_SetTimeout(0x1AE);
             while (!(D_80048E8C->field_0 & 0x80)) {
-                if (func_80026630() != 0) {
+                if (Pad_IsTimedOut() != 0) {
                     return 0;
                 }
             }
             D_80048E90->field_0 = 1;
-            func_80026610(0x3C);
+            Pad_SetTimeout(0x3C);
             if (func_80025C00() == 0) {
                 return 0;
             }
-            func_80025C90();
+            Pad_WaitSioRx();
             D_80048E90->field_0;
             return 0;
         }
@@ -9996,7 +9996,7 @@ void func_80025670(Obj25FBC *a0) {
     if (r >= 0) {
         if (D_80048E5C != 0) {
             if (D_80048E5C != 3 || *a0->field_3C != 0x80) {
-                func_80026610(0x3C);
+                Pad_SetTimeout(0x3C);
                 if (func_80025C00() == 0) {
                     D_80048E18(-3);
                 }
@@ -10022,7 +10022,7 @@ s32 func_80025760(Ent266D0 *a0, s32 a1) {
         *a0->field_40 = ~a1;
         while (!(D_80048E90->field_4 & 1)) {
         }
-        while (func_80026630() == 0) {
+        while (Pad_IsTimedOut() == 0) {
         }
         D_80048E90->field_0 = ~a1;
     } else {
@@ -10039,7 +10039,7 @@ s32 func_80025760(Ent266D0 *a0, s32 a1) {
         r = D_80048E90->field_0;
         D_80048E90->field_E = v;
         while (!(D_80048E8C->field_0 & 0x80)) {
-            if (func_80026630() != 0) {
+            if (Pad_IsTimedOut() != 0) {
                 return -0x14;
             }
         }
@@ -10073,7 +10073,7 @@ s32 func_80025984(Ent266D0 *a0, s32 a1) {
     }
     while (!(D_80048E90->field_4 & 2)) {
     }
-    func_80026610(0x190);
+    Pad_SetTimeout(0x190);
     r = D_80048E90->field_0;
     if (a0->field_44 != 0 || (r >> 4) != 8) {
         *(volatile u16 *)&D_80048E90->field_E = v;
@@ -10103,8 +10103,8 @@ s32 func_80025984(Ent266D0 *a0, s32 a1) {
         } while (!(D_80048E8C->field_0 & 0x80));
     }
     if (((Slot267F0 *)a0)->field_E8 != 8 && D_80048E5C == 2) {
-        func_80026610(0x3C);
-        while (func_80026630() == 0) {
+        Pad_SetTimeout(0x3C);
+        while (Pad_IsTimedOut() == 0) {
         }
     }
     D_80048E90->field_0 = a1;
@@ -10128,7 +10128,7 @@ s32 func_80025C00(void) {
     q->field_0 = -0x81;
     if (st->field_4 & 0x80) {
         do {
-            if (func_80026630() != 0) {
+            if (Pad_IsTimedOut() != 0) {
                 return 0;
             }
         } while (D_80048E90->field_4 & 0x80);
@@ -10137,12 +10137,12 @@ s32 func_80025C00(void) {
     return 1;
 }
 
-void func_80025C90(void) {
+void Pad_WaitSioRx(void) {
     while (!(D_80048E90->field_4 & 2)) {
     }
 }
 
-void func_80025CB8(Actor *arg0, u8 arg1, ActorWork *arg2, u8 arg3) {
+void Pad_SetCmd(Actor *arg0, u8 arg1, ActorWork *arg2, u8 arg3) {
     arg0->u34.b.field_37 = arg1;
     arg0->work = arg2;
     arg0->u34.b.field_36 = arg3;
@@ -10151,13 +10151,13 @@ void func_80025CB8(Actor *arg0, u8 arg1, ActorWork *arg2, u8 arg3) {
 void func_80025CC8(Obj25FBC *a0) {
     switch (a0->field_46) {
     case 2:
-        func_80026588((Actor *)a0);
+        Pad_CmdQueryModel((Actor *)a0);
         break;
     case 3:
-        func_8002659C((Actor *)a0, a0->field_E4);
+        Pad_CmdQueryMode((Actor *)a0, a0->field_E4);
         break;
     case 4:
-        func_800265DC((Actor *)a0, a0->field_47);
+        Pad_CmdQueryComb((Actor *)a0, a0->field_47);
         break;
     }
 }
@@ -10278,14 +10278,14 @@ s32 func_80025FF4(Obj25FBC *a0, s32 a1) {
 void func_800260C8(Actor *a) {
     switch (a->field_46) {
     case 2:
-        func_8002659C(a, a->field_47);
+        Pad_CmdQueryMode(a, a->field_47);
         return;
     case 3:
-        func_800265BC(a, a->field_47);
+        Pad_CmdQueryAct(a, a->field_47);
         return;
     case 4:
         if (a->field_48[0].field_0 == 0) {
-            func_800265DC(a, a->field_47);
+            Pad_CmdQueryComb(a, a->field_47);
             return;
         }
         func_800265FC(a);
@@ -10386,34 +10386,34 @@ s32 func_80026170(Obj26170 *a) {
 }
 
 
-void func_80026568(Actor *arg0, u8 arg1) {
+void Pad_CmdConfigMode(Actor *arg0, u8 arg1) {
     arg0->u34.b.field_37 = 0x43;
     arg0->work = (ActorWork *)&arg0->field_24;
     arg0->field_24 = arg1;
     arg0->u34.b.field_36 = 1;
 }
 
-void func_80026588(Actor *arg0) {
+void Pad_CmdQueryModel(Actor *arg0) {
     arg0->u34.b.field_37 = 0x45;
     arg0->work = NULL;
     arg0->u34.b.field_36 = 0;
 }
 
-void func_8002659C(Actor *arg0, u8 arg1) {
+void Pad_CmdQueryMode(Actor *arg0, u8 arg1) {
     arg0->u34.b.field_37 = 0x4C;
     arg0->work = (ActorWork *)&arg0->field_24;
     arg0->field_24 = arg1;
     arg0->u34.b.field_36 = 1;
 }
 
-void func_800265BC(Actor *arg0, u8 arg1) {
+void Pad_CmdQueryAct(Actor *arg0, u8 arg1) {
     arg0->u34.b.field_37 = 0x46;
     arg0->work = (ActorWork *)&arg0->field_24;
     arg0->field_24 = arg1;
     arg0->u34.b.field_36 = 1;
 }
 
-void func_800265DC(Actor *arg0, u8 arg1) {
+void Pad_CmdQueryComb(Actor *arg0, u8 arg1) {
     arg0->u34.b.field_37 = 0x47;
     arg0->work = (ActorWork *)&arg0->field_24;
     arg0->field_24 = arg1;
@@ -10426,12 +10426,12 @@ void func_800265FC(Actor *arg0) {
     arg0->u34.b.field_36 = 0;
 }
 
-void func_80026610(s32 arg0) {
+void Pad_SetTimeout(s32 arg0) {
     D_80060050 = arg0;
     D_8006004C = *(volatile u16 *)0x1F801120;
 }
 
-s32 func_80026630(void) {
+s32 Pad_IsTimedOut(void) {
     u16 c = *(volatile u16 *)0x1F801120;
     s32 t = c;
     s32 d;
@@ -10530,7 +10530,7 @@ static inline s32 inl_w(s32 arg0) {
     q->field_0 = -0x81;
     if (st->field_4 & 0x80) {
         do {
-            if (func_80026630() != 0) {
+            if (Pad_IsTimedOut() != 0) {
                 return 0;
             }
         } while (D_80048E90->field_4 & 0x80);
@@ -10547,7 +10547,7 @@ static inline s32 inl_h(s32 arg0, volatile u16 *hw) {
     q->field_0 = -0x81;
     if (st->field_4 & 0x80) {
         do {
-            if (func_80026630() != 0) {
+            if (Pad_IsTimedOut() != 0) {
                 return 0;
             }
         } while (D_80048E90->field_4 & 0x80);
@@ -10673,7 +10673,7 @@ INCLUDE_ASM("asm/USA/main/nonmatchings/156C", SysDeqIntRP);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/156C", ChangeClearRCnt);
 
-u8 *func_80027014(u8 *s, s32 n) {
+u8 *bzero(u8 *s, s32 n) {
     u8 *r = 0;
 
     if (s != 0) {
@@ -10749,11 +10749,11 @@ s32 func_80027104(s32 mode) {
     switch (mode & 7) {
     case 0:
     case 3:
-        func_8002A014(D_8001021C, D_80048EC8, &D_80048F10);
+        printf(D_8001021C, D_80048EC8, &D_80048F10);
     case 5:
         g = &D_80048F10;
         func_80029FDC((u8 *)g, 0, 0x80);
-        func_80030CD4();
+        ResetCallback();
         GPU_cw((s32)D_80048F08 & 0xFFFFFF);
         g->field_0 = func_8002970C(mode);
         g->field_1 = 1;
@@ -10770,7 +10770,7 @@ s32 func_80027104(s32 mode) {
     }
 }
 
-u8 func_80027278(u8 level) {
+u8 SetGraphDebug(u8 level) {
     s32 old = D_80048F10.field_2;
 
     D_80048F10.field_2 = level;
@@ -10782,7 +10782,7 @@ u8 func_80027278(u8 level) {
 
 extern char D_8001027C[];
 
-s32 func_800272D4(s32 a0) {
+s32 SetGrapQue(s32 a0) {
     s32 old = D_80048F10.field_1;
 
     if (D_80048F10.field_2 >= 2) {
@@ -10791,17 +10791,17 @@ s32 func_800272D4(s32 a0) {
     if (a0 != D_80048F10.field_1) {
         D_80048F08->fn_34(1);
         D_80048F10.field_1 = a0;
-        func_80030D34(2, 0);
+        DMACallback(2, 0);
     }
     return old;
 }
 
 
-u8 func_80027378(void) {
+u8 GetGraphDebug(void) {
     return D_80048F12;
 }
 
-s32 func_80027388(s32 a0) {
+s32 DrawSyncCallback(s32 a0) {
     s32 old;
 
     if (D_80048F10.field_2 >= 2) {
@@ -10822,14 +10822,14 @@ void func_800273E8(s32 a0) {
     D_80048F08->fn_10(a0 ? 0x03000000 : 0x03000001);
 }
 
-void func_80027480(void *a0) {
+void DrawSync(void *a0) {
     if (D_80048F12 >= 2) {
         D_80048F0C(&D_800102C0, a0);
     }
     D_80048F08->fn_3C(a0);
 }
 
-void func_800274E8(char *name, Rect2AB54 *r) {
+void checkRECT(char *name, Rect2AB54 *r) {
     switch (D_80048F10.field_2) {
     case 1:
         if (r->w > D_80048F10.field_4 || r->w + r->x > D_80048F10.field_4
@@ -10847,27 +10847,27 @@ void func_800274E8(char *name, Rect2AB54 *r) {
 }
 
 void func_80027604(s32 a0, s32 a1, s32 a2, s32 a3) {
-    func_800274E8(D_800102F8, a0);
+    checkRECT(D_800102F8, a0);
     D_80048F08->fn_8(D_80048F08->field_C, a0, 8, ((a3 & 0xFF) << 16) | ((a2 & 0xFF) << 8) | (a1 & 0xFF));
 }
 
 void func_80027694(s32 a0, s32 a1, s32 a2, s32 a3) {
-    func_800274E8(D_80010304, a0);
+    checkRECT(D_80010304, a0);
     D_80048F08->fn_8(D_80048F08->field_C, a0, 8, ((a3 & 0xFF) << 16 | 0x80000000 | (a2 & 0xFF) << 8) | (a1 & 0xFF));
 }
 
 void func_8002772C(s32 a0, s32 a1) {
-    func_800274E8(D_80010310, a0);
+    checkRECT(D_80010310, a0);
     D_80048F08->fn_8(D_80048F08->field_20, a0, 8, a1);
 }
 
 void func_8002778C(s32 a0, s32 a1) {
-    func_800274E8(D_8001031C, a0);
+    checkRECT(D_8001031C, a0);
     D_80048F08->fn_8(D_80048F08->field_1C, a0, 8, a1);
 }
 
 s32 func_800277EC(Rect2AB54 *rect, s32 x, s32 y) {
-    func_800274E8(D_80010328, (s32)rect);
+    checkRECT(D_80010328, (s32)rect);
     if (rect->w == 0 || rect->h == 0) {
         return -1;
     }
@@ -10877,7 +10877,7 @@ s32 func_800277EC(Rect2AB54 *rect, s32 x, s32 y) {
     return D_80048F08->fn_8((s32)D_80048F08->field_18, (s32)D_80048F9C.move, 0x14, 0);
 }
 
-OTag *func_800278A4(OTag *ot, s32 n) {
+OTag *ClearOTag(OTag *ot, s32 n) {
     u32 *term;
 
     if (D_80048F12 >= 2) {
@@ -10894,7 +10894,7 @@ OTag *func_800278A4(OTag *ot, s32 n) {
     return ot;
 }
 
-Blk54CF8 *func_8002796C(Blk54CF8 *ot, s32 n) {
+Blk54CF8 *ClearOTagR(Blk54CF8 *ot, s32 n) {
     u32 *term;
 
     if (D_80048F12 >= 2) {
@@ -10907,14 +10907,14 @@ Blk54CF8 *func_8002796C(Blk54CF8 *ot, s32 n) {
     return ot;
 }
 
-void func_80027A18(Ent27A18 *a0) {
+void DrawPrim(Ent27A18 *a0) {
     s32 n = a0->field_3;
 
     D_80048F08->fn_3C(0);
     D_80048F08->fn_14(a0->field_4, n);
 }
 
-s32 func_80027A74(void *a0) {
+s32 DrawOTag(void *a0) {
     if (D_80048F12 >= 2) {
         D_80048F0C(&D_80010364, a0);
     }
@@ -10971,7 +10971,7 @@ DispEnv *func_80027CB0(DispEnv *e) {
         || d->disp.y != env->disp.y
         || d->disp.w != env->disp.w
         || d->disp.h != env->disp.h) {
-        env->pad0 = func_80031838();
+        env->pad0 = GetVideoMode();
         if (env->pad0 == 1) {
             mode |= 0x08;
         }
@@ -11012,7 +11012,7 @@ DispEnv *func_80027CB0(DispEnv *e) {
         || D_80048F10.field_6C.screen.w != env->screen.w
         || D_80048F10.field_6C.screen.h != env->screen.h
         || env->pad0 == 8) {
-        env->pad0 = func_80031838();
+        env->pad0 = GetVideoMode();
         y = env->screen.y;
         if (env->pad0 != 0) {
             vs = y + 0x13;
@@ -11062,23 +11062,23 @@ s32 func_800281A8(s32 arg0) {
     return arg0;
 }
 
-u32 func_800281DC(void) {
+u32 GetODE(void) {
     return (u32)D_80048F08->fn() >> 31;
 }
 
-extern s32 func_80028754(s16, s16);
-extern s32 func_800287EC(s16, s16);
+extern s32 get_cs(s16, s16);
+extern s32 get_ce(s16, s16);
 
 void func_8002820C(Obj8228C *a0, Pt8228C *a1) {
     a0->field_3 = 2;
-    a0->field_4 = func_80028754(a1->field_0, a1->field_2);
-    a0->field_8 = func_800287EC((s16)(a1->field_0 + a1->field_4 - 1),
+    a0->field_4 = get_cs(a1->field_0, a1->field_2);
+    a0->field_8 = get_ce((s16)(a1->field_0 + a1->field_4 - 1),
                                 (s16)(a1->field_2 + a1->field_6 - 1));
 }
 
 void func_8002828C(Obj8228C *arg0, Pt8228C *arg1) {
     arg0->field_3 = 2;
-    arg0->field_4 = func_80028884(arg1->field_0, arg1->field_2);
+    arg0->field_4 = get_ofs(arg1->field_0, arg1->field_2);
     arg0->field_8 = 0;
 }
 
@@ -11086,11 +11086,11 @@ void func_800282CC(DrEnv282CC *d, DrawEnv *env) {
     Rect282CC rect;
     s32 len;
 
-    d->w[1] = func_80028754(env->clip_x, env->clip_y);
-    d->w[2] = func_800287EC(env->clip_w + env->clip_x - 1, env->clip_y + env->clip_h - 1);
-    d->w[3] = func_80028884(env->ofs[0], env->ofs[1]);
-    d->w[4] = func_80028734(env->dfe, env->dtd, env->tpage);
-    d->w[5] = func_800288A0((Rect288A0 *)&env->tw_x);
+    d->w[1] = get_cs(env->clip_x, env->clip_y);
+    d->w[2] = get_ce(env->clip_w + env->clip_x - 1, env->clip_y + env->clip_h - 1);
+    d->w[3] = get_ofs(env->ofs[0], env->ofs[1]);
+    d->w[4] = get_mode(env->dfe, env->dtd, env->tpage);
+    d->w[5] = get_tw((Rect288A0 *)&env->tw_x);
     d->w[6] = 0xE6000000;
     len = 7;
     if (env->isbg) {
@@ -11113,11 +11113,11 @@ void func_800284C4(DrEnv282CC *d, DrawEnv *env) {
     Rect282CC rect;
     s32 len;
 
-    d->w[1] = func_80028754(env->clip_x, env->clip_y);
-    d->w[2] = func_800287EC(env->clip_w + env->clip_x - 1, env->clip_y + env->clip_h - 1);
-    d->w[3] = func_80028884(env->ofs[0], env->ofs[1]);
-    d->w[4] = func_80028734(env->dfe, env->dtd, env->tpage);
-    d->w[5] = func_800288A0((Rect288A0 *)&env->tw_x);
+    d->w[1] = get_cs(env->clip_x, env->clip_y);
+    d->w[2] = get_ce(env->clip_w + env->clip_x - 1, env->clip_y + env->clip_h - 1);
+    d->w[3] = get_ofs(env->ofs[0], env->ofs[1]);
+    d->w[4] = get_mode(env->dfe, env->dtd, env->tpage);
+    d->w[5] = get_tw((Rect288A0 *)&env->tw_x);
     d->w[6] = 0xE6000000;
     len = 7;
     if (env->isbg) {
@@ -11142,7 +11142,7 @@ void func_800284C4(DrEnv282CC *d, DrawEnv *env) {
     d->h.len = len - 1;
 }
 
-int func_80028734(int a0, int a1, int a2) {
+int get_mode(int a0, int a1, int a2) {
     int v1 = 0xE1000000;
     int v0;
     if (a1) v1 = 0xE1000200;
@@ -11151,23 +11151,23 @@ int func_80028734(int a0, int a1, int a2) {
     return v0 | v1;
 }
 
-s32 func_80028754(s16 x, s16 y) {
+s32 get_cs(s16 x, s16 y) {
     x = (x < 0) ? 0 : ((x > D_80048F10.field_4 - 1) ? D_80048F10.field_4 - 1 : x);
     y = (y < 0) ? 0 : ((y > D_80048F10.field_6 - 1) ? D_80048F10.field_6 - 1 : y);
     return 0xE3000000 | ((y & 0x3FF) << 10) | (x & 0x3FF);
 }
 
-s32 func_800287EC(s16 x, s16 y) {
+s32 get_ce(s16 x, s16 y) {
     x = (x < 0) ? 0 : ((x > D_80048F10.field_4 - 1) ? D_80048F10.field_4 - 1 : x);
     y = (y < 0) ? 0 : ((y > D_80048F10.field_6 - 1) ? D_80048F10.field_6 - 1 : y);
     return 0xE4000000 | ((y & 0x3FF) << 10) | (x & 0x3FF);
 }
 
-s32 func_80028884(s32 arg0, s32 arg1) {
+s32 get_ofs(s32 arg0, s32 arg1) {
     return 0xE5000000 | ((arg1 & 0x7FF) << 11) | (arg0 & 0x7FF);
 }
 
-u32 func_800288A0(Rect288A0 *tw) {
+u32 get_tw(Rect288A0 *tw) {
     s32 t[4];
 
     if (tw != 0) {
@@ -11180,7 +11180,7 @@ u32 func_800288A0(Rect288A0 *tw) {
     return 0;
 }
 
-s32 func_80028920(void) {
+s32 _status(void) {
     return *D_80049018;
 }
 
@@ -11190,7 +11190,7 @@ s32 func_80028938(s32 *a0, s32 a1) {
     *D_80049028 = (s32)&a0[a1 - 1];
     *D_8004902C = a1;
     *D_80049030 = 0x11000002;
-    func_80029984();
+    set_alarm();
     while (*D_80049030 & 0x01000000) {
         if (func_800299B8() != 0) {
             return -1;
@@ -11213,9 +11213,9 @@ s32 func_80028A18(Rect282CC *rect, s32 color) {
         D_80060060[7] = rect->w[0];
         D_80060060[8] = rect->w[1];
         D_80060088[0] = 0x03FFFFFF;
-        D_80060088[1] = func_800291A8(3) | 0xE3000000;
-        D_80060088[2] = func_800291A8(4) | 0xE4000000;
-        D_80060088[3] = func_800291A8(5) | 0xE5000000;
+        D_80060088[1] = _param(3) | 0xE3000000;
+        D_80060088[2] = _param(4) | 0xE4000000;
+        D_80060088[3] = _param(5) | 0xE5000000;
     } else {
         D_80060060[0] = 0x05FFFFFF;
         D_80060060[1] = 0xE6000000;
@@ -11224,7 +11224,7 @@ s32 func_80028A18(Rect282CC *rect, s32 color) {
         D_80060060[4] = rect->w[0];
         D_80060060[5] = rect->w[1];
     }
-    func_80029160((s32)D_80060060);
+    _cwc((s32)D_80060060);
     return 0;
 }
 
@@ -11237,7 +11237,7 @@ s32 func_80028C48(Rect28C48 *rect, s32 *p) {
     s32 v;
     s32 *g;
 
-    func_80029984();
+    set_alarm();
     clr = 0;
     rect->r.w = (rect->r.w < 0) ? 0 : ((rect->r.w > D_80048F10.field_4) ? D_80048F10.field_4 : rect->r.w);
     rect->r.h = (rect->r.h < 0) ? 0 : ((rect->r.h > D_80048F10.field_6) ? D_80048F10.field_6 : rect->r.h);
@@ -11280,7 +11280,7 @@ s32 func_80028E84(Rect28E84 *rect, s32 *p) {
     s32 n;
     s32 blocks;
 
-    func_80029984();
+    set_alarm();
     rect->r.w = (rect->r.w < 0) ? 0 : ((rect->r.w > D_80048F10.field_4) ? D_80048F10.field_4 : rect->r.w);
     rect->r.h = (rect->r.h < 0) ? 0 : ((rect->r.h > D_80048F10.field_6) ? D_80048F10.field_6 : rect->r.h);
     size = (rect->r.w * rect->r.h + 1) / 2;
@@ -11317,14 +11317,14 @@ s32 func_80028E84(Rect28E84 *rect, s32 *p) {
 }
 
 
-void func_80029104(s32 arg0) {
+void _ctl(s32 arg0) {
     *D_80049018 = arg0;
 }
 
 void func_80029118(void) {
 }
 
-s32 func_80029120(s32 *arg0, u32 arg1) {
+s32 _cwb(s32 *arg0, u32 arg1) {
     *D_80049018 = 0x4000000;
     while (arg1-- != 0) {
         *D_80049014 = *arg0++;
@@ -11332,32 +11332,32 @@ s32 func_80029120(s32 *arg0, u32 arg1) {
     return 0;
 }
 
-void func_80029160(s32 arg0) {
+void _cwc(s32 arg0) {
     *D_80049018 = 0x4000002;
     *D_8004901C = arg0;
     *D_80049020 = 0;
     *D_80049024 = 0x1000401;
 }
 
-s32 func_800291A8(s32 arg0) {
+s32 _param(s32 arg0) {
     *D_80049018 = arg0 | 0x10000000;
     return *D_80049014 & 0xFFFFFF;
 }
 
-void func_800291D8(s32 arg0, s32 arg1, s32 arg2) { func_800291FC(arg0, arg1, 0, arg2); }
+void _addque(s32 arg0, s32 arg1, s32 arg2) { func_800291FC(arg0, arg1, 0, arg2); }
 
 s32 func_800291FC(void (*func)(s32 *, s32), s32 *param, s32 n, s32 x) {
     s32 i;
     Gpu48F10 *g;
 
-    func_80029984();
+    set_alarm();
     while (((D_80049038 + 1) & 0x3F) == D_8004903C) {
         if (func_800299B8() != 0) {
             return -1;
         }
         func_800294AC();
     }
-    D_80049040 = func_80030E50(0);
+    D_80049040 = SetIntrMask(0);
     g = &D_80048F10;
     g->field_8 = 1;
     if (g->field_1 == 0 ||
@@ -11365,10 +11365,10 @@ s32 func_800291FC(void (*func)(s32 *, s32), s32 *param, s32 n, s32 x) {
         while (!(*(volatile s32 *)D_80049018 & 0x4000000)) {
         }
         func(param, x);
-        func_80030E50(D_80049040);
+        SetIntrMask(D_80049040);
         return 0;
     }
-    func_80030D34(2, func_800294AC);
+    DMACallback(2, func_800294AC);
     if (n != 0) {
         for (i = 0; i < n / 4; i++) {
             volatile s32 *d = D_800600B0[D_80049038].param;
@@ -11381,7 +11381,7 @@ s32 func_800291FC(void (*func)(s32 *, s32), s32 *param, s32 n, s32 x) {
     D_800600B0[D_80049038].x = x;
     D_800600B0[D_80049038].func = func;
     D_80049038 = (D_80049038 + 1) & 0x3F;
-    func_80030E50(D_80049040);
+    SetIntrMask(D_80049040);
     func_800294AC();
     return (D_80049038 - D_8004903C) & 0x3F;
 }
@@ -11396,10 +11396,10 @@ s32 func_800294AC(void) {
     if (*D_80049024 & 0x1000000) {
         return 1;
     }
-    D_80049044 = func_80030E50(0);
+    D_80049044 = SetIntrMask(0);
     while (D_80049038 != D_8004903C && (k2 = 0x1000000, !(*D_80049024 & k2))) {
         if (((D_8004903C + 1) & 0x3F) == D_80049038 && D_80048F10.field_C == 0) {
-            func_80030D34(2, 0);
+            DMACallback(2, 0);
         }
         g = (volatile s32 *)D_80049018;
         while (k1 = 0x4000000, !(*g & k1)) {
@@ -11407,7 +11407,7 @@ s32 func_800294AC(void) {
         D_800600B0[D_8004903C].func(D_800600B0[D_8004903C].ptr, D_800600B0[D_8004903C].x);
         D_8004903C = (D_8004903C + 1) & 0x3F;
     }
-    func_80030E50(D_80049044);
+    SetIntrMask(D_80049044);
     if (D_80049038 == D_8004903C && !(*D_80049024 & 0x1000000) && D_80048F10.field_8 != 0) {
         cb = (void (*)(void))D_80048F10.field_C;
         if (cb != 0) {
@@ -11420,7 +11420,7 @@ s32 func_800294AC(void) {
 
 
 s32 func_8002970C(s32 mode) {
-    D_80049048 = func_80030E50(0);
+    D_80049048 = SetIntrMask(0);
     D_80049038 = D_8004903C = 0;
     switch (mode & 7) {
     case 0:
@@ -11438,18 +11438,18 @@ s32 func_8002970C(s32 mode) {
         *D_80049018 = 0x1000000;
         break;
     }
-    func_80030E50(D_80049048);
+    SetIntrMask(D_80049048);
     if (mode & 7) {
         return 0;
     }
-    return func_80029AFC(mode);
+    return _version(mode);
 }
 
 s32 func_80029848(s32 a0) {
     s32 n;
 
     if (a0 == 0) {
-        func_80029984();
+        set_alarm();
         while (D_80049038 != D_8004903C) {
             func_800294AC();
             if (func_800299B8() != 0) {
@@ -11477,7 +11477,7 @@ s32 func_80029848(s32 a0) {
 }
 
 
-void func_80029984(void) {
+void set_alarm(void) {
     D_8004904C = func_80030AB4(-1) + 0xF0;
     D_80049050 = 0;
 }
@@ -11485,22 +11485,22 @@ void func_80029984(void) {
 s32 func_800299B8(void) {
     if (func_80030AB4(-1) > D_8004904C || D_80049050++ > 0xF0000) {
         *(volatile s32 *)D_80049018;
-        func_8002A014(D_800103C4, (D_80049038 - D_8004903C) & 0x3F, *(volatile s32 *)D_80049018,
+        printf(D_800103C4, (D_80049038 - D_8004903C) & 0x3F, *(volatile s32 *)D_80049018,
                       *(volatile s32 *)D_80049024, *(volatile s32 *)D_8004901C);
-        D_80049048 = func_80030E50(0);
+        D_80049048 = SetIntrMask(0);
         D_8004903C = 0;
         D_80049038 = D_8004903C;
         *D_80049024 = 0x401;
         *D_80049034 |= 0x800;
         *D_80049018 = 0x2000000;
         *D_80049018 = 0x1000000;
-        func_80030E50(D_80049048);
+        SetIntrMask(D_80049048);
         return -1;
     }
     return 0;
 }
 
-s32 func_80029AFC(s32 a0) {
+s32 _version(s32 a0) {
     *D_80049018 = 0x10000007;
     if ((*D_80049014 & 0xFFFFFF) != 2) {
         *D_80049014 = (*D_80049018 & 0x3FFF) | 0xE1001000;
@@ -11515,7 +11515,7 @@ s32 func_80029AFC(s32 a0) {
 }
 
 s32 func_80029B9C(s32 a0, s32 a1) {
-    func_800274E8(D_800103F8, a0);
+    checkRECT(D_800103F8, a0);
     D_8004904C = func_80030AB4(-1) + 0xF0;
     D_80049050 = 0;
     while ((*D_80049024 & 0x01000000) || !(*D_80049018 & 0x04000000)) {
@@ -11523,13 +11523,13 @@ s32 func_80029B9C(s32 a0, s32 a1) {
             return -1;
         }
     }
-    func_80030D34(2, func_80029FB4);
+    DMACallback(2, func_80029FB4);
     D_80048F08->field_20(a0, a1);
     return 0;
 }
 
 s32 func_80029C88(s32 a0, s32 a1) {
-    func_800274E8(D_8001031C, a0);
+    checkRECT(D_8001031C, a0);
     D_8004904C = func_80030AB4(-1) + 0xF0;
     D_80049050 = 0;
     while ((*D_80049024 & 0x1000000) || !(*D_80049018 & 0x4000000)) {
@@ -11537,13 +11537,13 @@ s32 func_80029C88(s32 a0, s32 a1) {
             return -1;
         }
     }
-    func_80030D34(2, func_80029FB4);
+    DMACallback(2, func_80029FB4);
     D_80048F08->field_1C(a0, a1);
     return 0;
 }
 
 s32 func_80029D74(Rect2AB54 *rect, s32 x, s32 y) {
-    func_800274E8(D_80010328, (s32)rect);
+    checkRECT(D_80010328, (s32)rect);
     D_8004904C = func_80030AB4(-1) + 0xF0;
     D_80049050 = 0;
     while ((*D_80049024 & 0x01000000) || !(*D_80049018 & 0x04000000)) {
@@ -11551,7 +11551,7 @@ s32 func_80029D74(Rect2AB54 *rect, s32 x, s32 y) {
             return -1;
         }
     }
-    func_80030D34(2, func_80029FB4);
+    DMACallback(2, func_80029FB4);
     if (rect->w == 0 || rect->h == 0) {
         return -1;
     }
@@ -11573,12 +11573,12 @@ s32 func_80029EB8(u32 *p) {
             return -1;
         }
     }
-    func_80030D34(2, func_80029FB4);
+    DMACallback(2, func_80029FB4);
     D_80048F08->field_18(p);
     return 0;
 }
 
-void func_80029FB4(void) { func_80030D34(0x2, func_800294AC); }
+void func_80029FB4(void) { DMACallback(0x2, func_800294AC); }
 
 void func_80029FDC(u8 *arg0, s32 arg1, u32 arg2) {
     while (arg2-- != 0) {
@@ -11588,7 +11588,7 @@ void func_80029FDC(u8 *arg0, s32 arg1, u32 arg2) {
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/156C", GPU_cw);
 
-void func_8002A014(fmt, a1, a2, a3) char *fmt; s32 a1; s32 a2; s32 a3; {
+void printf(fmt, a1, a2, a3) char *fmt; s32 a1; s32 a2; s32 a3; {
     char **fp = &fmt;
     s32 *ap = &a1;
     ap[1] = a2;
@@ -11735,7 +11735,7 @@ s32 func_8002A054(s32 fd, char *fmt0, char *ap) {
                 cp = D_80010418;
             }
             if (prec >= 0) {
-                p = (char *)func_8002A6F4((u8 *)cp, 0, prec);
+                p = (char *)memchr((u8 *)cp, 0, prec);
                 if (p != 0) {
                     size = p - cp;
                     if (size > prec) {
@@ -11842,7 +11842,7 @@ s32 func_8002A054(s32 fd, char *fmt0, char *ap) {
 }
 
 
-u8 *func_8002A6F4(u8 *p, s32 c, s32 n) {
+u8 *memchr(u8 *p, s32 c, s32 n) {
     u8 *r = 0;
 
     if (p == 0) {
@@ -11960,7 +11960,7 @@ s32 func_8002A9B4(s8 *s) {
 
 
 DrawEnv *func_8002A9F4(DrawEnv *env, s32 x, s32 y, s32 w, s32 h) {
-    s32 mode = func_80031838();
+    s32 mode = GetVideoMode();
 
     env->clip_x = x;
     env->clip_y = y;
@@ -11986,7 +11986,7 @@ DrawEnv *func_8002A9F4(DrawEnv *env, s32 x, s32 y, s32 w, s32 h) {
     return env;
 }
 
-Rec2AAB4 *func_8002AAB4(Rec2AAB4 *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
+Rec2AAB4 *SetDefDispEnv(Rec2AAB4 *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
     arg0->field_0 = arg1;
     arg0->field_2 = arg2;
     arg0->field_4 = arg3;
@@ -12002,17 +12002,17 @@ Rec2AAB4 *func_8002AAB4(Rec2AAB4 *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) 
     return arg0;
 }
 
-void func_8002AAF4(unsigned int *a0, unsigned int *a1) {
+void AddPrim(unsigned int *a0, unsigned int *a1) {
     *a1 = (*a1 & 0xFF000000) | (*a0 & 0x00FFFFFF);
     *a0 = (*a0 & 0xFF000000) | ((unsigned int)a1 & 0x00FFFFFF);
 }
 
-void func_8002AB34(u8 *a0) {
+void SetPolyF4(u8 *a0) {
     a0[3] = 5;
     a0[7] = 0x28;
 }
 
-void func_8002AB54(DrMove2AB54 *p, Rect2AB54 *r, s32 x, s32 y) {
+void SetDrawMove(DrMove2AB54 *p, Rect2AB54 *r, s32 x, s32 y) {
     s32 len = 5;
 
     if (r->w == 0 || r->h == 0) {
@@ -12036,7 +12036,7 @@ typedef struct {
     u32 code[2];
 } DrMode2ABB4;
 
-void func_8002ABB4(DrMode2ABB4 *p, s32 dfe, s32 dtd, s32 tpage, Rect2ABB4 *tw) {
+void SetDrawMode(DrMode2ABB4 *p, s32 dfe, s32 dtd, s32 tpage, Rect2ABB4 *tw) {
     p->len = 2;
     p->code[0] = 0xE1000000 | (dtd ? 0x200 : 0) | (dfe ? 0x400 : 0) | (tpage & 0x9FF);
     if (tw) {
@@ -12053,7 +12053,7 @@ void func_8002AC54(u16 a0, u16 a1, u16 a2, u16 a3, u16 a4) {
     func_8002BB84();
     D_8006198C = 0;
     func_8002AE4C(a0, a1);
-    func_8002B2B4();
+    GsSetDrawBuffClip();
     func_8002B1A4();
 }
 
@@ -12086,7 +12086,7 @@ void func_8002ACC8(u16 x, u16 y, u16 flags, u16 dtd, u16 rgb24) {
     r->y = 0;
     r->w = 0;
     r->h = 0;
-    mode = func_80031838();
+    mode = GetVideoMode();
     if (mode == 1) {
         D_80061968.screen.y = 0x18;
         D_80061968.pad0 = mode;
@@ -12097,7 +12097,7 @@ void func_8002ACC8(u16 x, u16 y, u16 flags, u16 dtd, u16 rgb24) {
     func_80027CB0(&D_80061968);
 }
 
-void func_8002ADE4(s16 a0, s16 a1, s32 flags, u8 a3, u16 a4) {
+void GsInitGraph(s16 a0, s16 a1, s32 flags, u8 a3, u16 a4) {
     D_8006191C.field_0 = 0;
     D_8006191C.field_2 = a3;
     D_8006191C.field_3 = 0;
@@ -12172,7 +12172,7 @@ void func_8002B06C(u8 r, u8 g, u8 b, Db2B06C *db) {
     } else {
         D_800618D0[i].w = D_80061990;
     }
-    func_8002AAF4(db->ot, (unsigned int *)&D_800618D0[D_8006198C]);
+    AddPrim(db->ot, (unsigned int *)&D_800618D0[D_8006198C]);
 }
 
 void func_8002B1A4() {
@@ -12188,14 +12188,14 @@ void func_8002B1A4() {
     } else {
         x = D_80061900.field_0 + *(D_8006198C ? &D_800618F0[0] : &D_800618F0[1]);
         y = D_80061900.field_2 + *(D_8006198C ? &D_800618F4[0] : &D_800618F4[1]);
-        func_8002D6A4(x, y);
+        SetGeomOffset(x, y);
         D_8006197C = x;
         D_8006197E = y;
     }
 }
 
 
-void func_8002B2B4(void) {
+void GsSetDrawBuffClip(void) {
     DrawEnv *dst = &D_80061908;
     Rect2AB54 *src = &D_80061980;
     s32 dx = D_800618F0[D_8006198C];
@@ -12225,14 +12225,14 @@ void func_8002B334(s32 a0, s32 a1) {
     } else {
         x = a0 + *(D_8006198C ? &D_800618F0[0] : &D_800618F0[1]);
         y = a1 + *(D_8006198C ? &D_800618F4[0] : &D_800618F4[1]);
-        func_8002D6A4(x, y);
+        SetGeomOffset(x, y);
         D_8006197C = x;
         D_8006197E = y;
     }
 }
 
 
-void func_8002B424(Coord1F668 *super, Coord1F668 *c) {
+void GsInitCoordinate2(Coord1F668 *super, Coord1F668 *c) {
     c->coord = D_80061A28;
     c->super = super;
     c->flg = 0;
@@ -12242,11 +12242,11 @@ void func_8002B424(Coord1F668 *super, Coord1F668 *c) {
 }
 
 
-extern void func_8002D5E4();
+extern void SetRotMatrix();
 extern s32 SetTransMatrix();
 
-s32 func_8002B494(s32 a0) {
-    func_8002D5E4(a0);
+s32 GsSetLsMatrix(s32 a0) {
+    SetRotMatrix(a0);
     return SetTransMatrix(a0);
 }
 __asm__(".word 0\n");
@@ -12260,7 +12260,7 @@ void func_8002B4C4(void) {
     D_80061998 = 0x3FFF;
 }
 
-void func_8002B544(s32 arg0) { SetGeomScreen(); }
+void GsSetProjection(s32 arg0) { SetGeomScreen(); }
 
 s32 func_8002B564(s32 idx, Blk16 *src) {
     S32 lm;
@@ -12275,7 +12275,7 @@ s32 func_8002B564(s32 idx, Blk16 *src) {
     b = src->b;
     lm = D_800619A8;
     func_8002BA80(&cm);
-    len = func_8002CEE4(src->x * src->x + src->y * src->y + src->z * src->z);
+    len = SquareRoot0(src->x * src->x + src->y * src->y + src->z * src->z);
     if (len == 0) {
         return -1;
     }
@@ -12312,15 +12312,15 @@ s32 func_8002B564(s32 idx, Blk16 *src) {
 
 
 extern S32 D_800619C8;
-extern void func_8002D614(S32 *);
+extern void SetColorMatrix(S32 *);
 
 void func_8002BA1C(S32 *src) {
     D_800619C8 = *src;
-    func_8002D614(src);
+    SetColorMatrix(src);
 }
 void func_8002BA80(S32 *dst) { *dst = D_800619C8; }
 
-void func_8002BAD4(s32 a0) {
+void GsSetLightMode(s32 a0) {
     switch (a0) {
     case 0:
         D_8006199C = 0;
@@ -12335,22 +12335,22 @@ void func_8002BAD4(s32 a0) {
         D_8006199C = a0;
         break;
     default:
-        func_8002A014(D_80010624, a0);
+        printf(D_80010624, a0);
         break;
     }
 }
 
-void func_8002BB54(s32 arg0, s32 arg1, s32 arg2) { func_8002D664(arg0 >> 4, arg1 >> 4, arg2 >> 4); }
+void GsSetAmbient(s32 arg0, s32 arg1, s32 arg2) { SetBackColor(arg0 >> 4, arg1 >> 4, arg2 >> 4); }
 
 void func_8002BB84(void) {
     func_8002CE5C();
-    func_8002D684(0, 0, 0);
-    func_8002D6A4(0, 0);
+    SetFarColor(0, 0, 0);
+    SetGeomOffset(0, 0);
     D_8006197E = 0;
     D_8006197C = 0;
 }
 
-void func_8002BBD4(u32 *tim, TimInfo2BBD4 *out) {
+void GsGetTimInfo(u32 *tim, TimInfo2BBD4 *out) {
     u32 flag = *tim;
     u32 *p;
 
@@ -12470,14 +12470,14 @@ void func_8002BD94(Coord1F668 *coord, Mat1F668 *m) {
 }
 
 
-extern void func_8002CF74(ObjC0E4 *, s32 *, s32 *);
-extern void func_8002D224(ObjC0E4 *, ArgC0E4 *);
-extern void func_8002D334(ObjC0E4 *, ArgC0E4 *);
+extern void ApplyMatrixLV(ObjC0E4 *, s32 *, s32 *);
+extern void MulMatrix(ObjC0E4 *, ArgC0E4 *);
+extern void MulMatrix2(ObjC0E4 *, ArgC0E4 *);
 
 void func_8002C064(ObjC0E4 *a0, ArgC0E4 *a1) {
     s32 tmp[3];
-    func_8002CF74(a0, &a1->field_14, tmp);
-    func_8002D334(a0, a1);
+    ApplyMatrixLV(a0, &a1->field_14, tmp);
+    MulMatrix2(a0, a1);
     a1->field_14 = tmp[0] + a0->field_14;
     a1->field_18 = tmp[1] + a0->field_18;
     a1->field_1C = tmp[2] + a0->field_1C;
@@ -12485,8 +12485,8 @@ void func_8002C064(ObjC0E4 *a0, ArgC0E4 *a1) {
 
 void func_8002C0E4(ObjC0E4 *a0, ArgC0E4 *a1) {
     s32 tmp[3];
-    func_8002CF74(a0, &a1->field_14, tmp);
-    func_8002D224(a0, a1);
+    ApplyMatrixLV(a0, &a1->field_14, tmp);
+    MulMatrix(a0, a1);
     a0->field_14 = tmp[0] + a0->field_14;
     a0->field_18 = tmp[1] + a0->field_18;
     a0->field_1C = tmp[2] + a0->field_1C;
@@ -12518,9 +12518,9 @@ s32 func_8002C164(Ctx19214 *c) {
     if (d != 0) {
         dy = c->field_4 - c->field_10;
         x = dy * dy;
-        e = 12 - func_8002DBB4(x);
+        e = 12 - Gte_CountLeadingZeros(x);
         if (e < 0) {
-            a = -((c->field_4 - c->field_10) << 12) / func_8002CEE4(d);
+            a = -((c->field_4 - c->field_10) << 12) / SquareRoot0(d);
         } else if (c->field_4 - c->field_10 >= 0) {
             a = -func_8002CDB8((x << (12 - e)) / (d >> e));
         } else {
@@ -12529,21 +12529,21 @@ s32 func_8002C164(Ctx19214 *c) {
         dx = c->field_C - c->field_0;
         dz = c->field_14 - c->field_8;
         x = dx * dx + dz * dz;
-        e = 12 - func_8002DBB4(x);
+        e = 12 - Gte_CountLeadingZeros(x);
         if (e < 0) {
-            b = (func_8002CEE4(x) << 12) / func_8002CEE4(d);
+            b = (SquareRoot0(x) << 12) / SquareRoot0(d);
         } else {
             b = func_8002CDB8((x << (12 - e)) / (d >> e));
         }
         func_8002BCC4(&m, a, b, 0x78);
-        func_8002D224(&D_80061A08, (ArgC0E4 *)&m);
+        MulMatrix(&D_80061A08, (ArgC0E4 *)&m);
         if (x != 0) {
             d = x;
             dx = c->field_C - c->field_0;
             x = dx * dx;
-            e = 12 - func_8002DBB4(x);
+            e = 12 - Gte_CountLeadingZeros(x);
             if (e < 0) {
-                a = -((c->field_C - c->field_0) << 12) / func_8002CEE4(d);
+                a = -((c->field_C - c->field_0) << 12) / SquareRoot0(d);
             } else if (c->field_C - c->field_0 >= 0) {
                 a = -func_8002CDB8((x << (12 - e)) / (d >> e));
             } else {
@@ -12551,25 +12551,25 @@ s32 func_8002C164(Ctx19214 *c) {
             }
             dz = c->field_14 - c->field_8;
             x = dz * dz;
-            e = 12 - func_8002DBB4(x);
+            e = 12 - Gte_CountLeadingZeros(x);
             if (e < 0) {
-                b = ((c->field_14 - c->field_8) << 12) / func_8002CEE4(d);
+                b = ((c->field_14 - c->field_8) << 12) / SquareRoot0(d);
             } else if (c->field_14 - c->field_8 >= 0) {
                 b = func_8002CDB8((x << (12 - e)) / (d >> e));
             } else {
                 b = -func_8002CDB8((x << (12 - e)) / (d >> e));
             }
             func_8002BCC4(&m, a, b, 0x79);
-            func_8002D224(&D_80061A08, (ArgC0E4 *)&m);
+            MulMatrix(&D_80061A08, (ArgC0E4 *)&m);
         }
         v[0] = -c->field_0;
         v[1] = -c->field_4;
         v[2] = -c->field_8;
-        func_8002CF74(&D_80061A08, v, &D_80061A08.field_14);
+        ApplyMatrixLV(&D_80061A08, v, &D_80061A08.field_14);
         if (c->field_1C != NULL) {
             func_8002C834(c->field_1C, &m);
-            func_8002D704((Obj2D704 *)&m, (Obj2D704 *)&o);
-            func_8002CF74(&o, &m.t[0], v);
+            TransposeMatrix((Obj2D704 *)&m, (Obj2D704 *)&o);
+            ApplyMatrixLV(&o, &m.t[0], v);
             o.field_14 = -v[0];
             o.field_18 = -v[1];
             o.field_1C = -v[2];
@@ -12606,7 +12606,7 @@ void func_8002C774(ObjC0E4 *a0, s32 a1) {
     mtx.field_14 = 0;
     mtx.field_18 = 0;
     mtx.field_1C = 0;
-    func_8002D224(a0, &mtx);
+    MulMatrix(a0, &mtx);
 }
 __asm__(".word 0\n.word 0\n.word 0\n");
 
@@ -12666,15 +12666,15 @@ void func_8002C834(Coord1F668 *coord, Mat1F668 *m) {
 
 s32 func_8002CAF4(s32 arg0) {
     if (arg0 < 0) {
-        return -func_8002CB30(-arg0 & 0xFFF);
+        return -sin_1(-arg0 & 0xFFF);
     }
-    return func_8002CB30(arg0 & 0xFFF);
+    return sin_1(arg0 & 0xFFF);
 }
 
 extern s16 D_80049110[];
 extern s16 D_80048110[];
 
-s32 func_8002CB30(s32 a) {
+s32 sin_1(s32 a) {
     if (a <= 0x800) {
         if (a <= 0x400) {
             return D_80049110[a];
@@ -12765,7 +12765,7 @@ s32 func_8002CC64(s32 a) {
     return v[0][7];
 }
 
-extern s32 func_8002DBB4(s32);
+extern s32 Gte_CountLeadingZeros(s32);
 extern s32 func_8002CC64(s32);
 
 s32 func_8002CDB8(s32 a0) {
@@ -12773,7 +12773,7 @@ s32 func_8002CDB8(s32 a0) {
     if (a0 == 0) {
         return 0;
     }
-    e = 8 - func_8002DBB4(a0);
+    e = 8 - Gte_CountLeadingZeros(a0);
     if (e >= 0) {
         sh = e >> 1;
         x = a0 >> (sh << 1);
@@ -12793,39 +12793,39 @@ INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002CE54);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002CE5C);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002CEE4);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", SquareRoot0);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002CF74);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", ApplyMatrixLV);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002D0D4);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002D178);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002D224);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", MulMatrix);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002D334);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", MulMatrix2);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002D444);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", ApplyMatrixSV);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002D4A4);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", ScaleMatrix);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002D5E4);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", SetRotMatrix);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002D614);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", SetColorMatrix);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/156C", SetTransMatrix);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002D664);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", SetBackColor);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002D684);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", SetFarColor);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002D6A4);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", SetGeomOffset);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/156C", SetGeomScreen);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002D6D4);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", RotTransPers);
 
-Obj2D704 *func_8002D704(Obj2D704 *src, Obj2D704 *dst) {
+Obj2D704 *TransposeMatrix(Obj2D704 *src, Obj2D704 *dst) {
     s32 a;
     s32 b;
     s32 c;
@@ -12852,7 +12852,7 @@ Obj2D704 *func_8002D704(Obj2D704 *src, Obj2D704 *dst) {
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002D744);
 
-s32 func_8002D944(s32 y, s32 x) {
+s32 ratan2(s32 y, s32 x) {
     s32 c;
     s32 r;
     s32 s1 = 0;
@@ -12900,9 +12900,9 @@ INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002DB70);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/156C", FlushCache);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002DBB4);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Gte_CountLeadingZeros);
 
-void func_8002DBD4(s32 arg0, s32 arg1) {
+void StSetRing(s32 arg0, s32 arg1) {
     D_80061B38 = arg0;
     D_80061B3C = arg1;
     func_8002DE94();
@@ -12917,12 +12917,12 @@ loop:
         if (--i != -1) {
             goto loop;
         }
-        func_8002A014(D_800106D4);
+        printf(D_800106D4);
         return 0;
     }
-    D_8004E6C8 = func_8002DCD0;
-    D_8004E6CC = (s32)func_8002DCF8;
-    D_8004E5E0 = func_8002DD20;
+    D_8004E6C8 = def_cbsync;
+    D_8004E6CC = (s32)def_cbready;
+    D_8004E5E0 = def_cbread;
     D_8004E5E4 = 0;
     return 1;
 }
@@ -12935,15 +12935,15 @@ s32 func_8002DC94(void) {
     return func_8002FDC8() == 0;
 }
 
-void func_8002DCD0(void) { DeliverEvent(0xF0000003, 0x20); }
+void def_cbsync(void) { DeliverEvent(0xF0000003, 0x20); }
 
-void func_8002DCF8(void) { DeliverEvent(0xF0000003, 0x40); }
+void def_cbready(void) { DeliverEvent(0xF0000003, 0x40); }
 
-void func_8002DD20(void) { DeliverEvent(0xF0000003, 0x40); }
+void def_cbread(void) { DeliverEvent(0xF0000003, 0x40); }
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/156C", DeliverEvent);
 
-s32 func_8002DD64(void *arg) {
+s32 CdPosToInt(void *arg) {
     u8 *p = arg;
 
     return (((p[0] >> 4) * 10 + (p[0] & 0xF)) * 60
@@ -12964,8 +12964,8 @@ void func_8002DDE4(s32 arg0) {
         } else {
             D_80061B98 = 1;
         }
-        func_80030A34((s32)func_8002DF74);
-        func_80030534((s32)func_8002DE68);
+        CdDataCallback((s32)func_8002DF74);
+        CdReadyCallback((s32)func_8002DE68);
     }
     func_80030554(0x1B, 0, 0);
 }
@@ -12989,8 +12989,8 @@ void func_8002DEF4(void) {
         func_80030A84(0);
         func_80030A64(0);
     } else {
-        func_80030A34(0);
-        func_80030534(0);
+        CdDataCallback(0);
+        CdReadyCallback(0);
     }
     *D_8004E600 = 0;
     *D_8004E60C = 0;
@@ -13022,14 +13022,14 @@ s32 func_8002E000(s32 arg0) {
     if (D_80061B98 != 0) {
         return -1;
     }
-    t = func_8002DD64(&D_80061B40);
-    func_80030394(t + 1, arg0);
+    t = CdPosToInt(&D_80061B40);
+    CdIntToPos(t + 1, arg0);
     return D_80061B44;
 }
 __asm__(".word 0\n.word 0\n.word 0\n");
 
 void func_8002E064(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4) {
-    func_8002E2A4(1, a1, a2);
+    StSetMask(1, a1, a2);
     D_80061B28 = 0;
     D_80061B50 = a3;
     D_80061B00 = a0 & 1;
@@ -13040,7 +13040,7 @@ void func_8002E064(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4) {
     D_80061B54 = a4;
 }
 
-s32 func_8002E0F4(u32 *arg0) {
+s32 StFreeRing(u32 *arg0) {
     s32 idx;
     s32 i;
     s32 ret = 1;
@@ -13073,7 +13073,7 @@ void func_8002E1A4(s32 first, s32 n) {
     }
 }
 
-s32 func_8002E1E4(Sect2E1E4 **a0, u16 **a1) {
+s32 StGetNext(Sect2E1E4 **a0, u16 **a1) {
     u16 *s;
 
     s = &((Slot2E1E4 *)D_80061B38)[D_80061B24].status;
@@ -13094,7 +13094,7 @@ s32 func_8002E1E4(Sect2E1E4 **a0, u16 **a1) {
 }
 
 extern s32 D_80061B30, D_80061B0C, D_80061B2C;
-void func_8002E2A4(s32 a0, s32 a1, s32 a2) {
+void StSetMask(s32 a0, s32 a1, s32 a2) {
     D_80061B30 = a0;
     D_80061B0C = a1;
     D_80061B2C = a2;
@@ -13111,7 +13111,7 @@ extern s32 D_8004E6B8;
 extern s32 D_80061B18;
 extern volatile u16 *D_80061B58;
 extern u32 *D_80061B34;
-extern void func_800304F4(void);
+extern void CdReady(void);
 
 void func_8002E2C4(void) {
     volatile Res2E2C4 r;
@@ -13133,7 +13133,7 @@ void func_8002E2C4(void) {
         D_8004E6B8 = 1;
         return;
     }
-    if (((s32 (*)(s32, u8 *))func_800304F4)(1, res) == 5) {
+    if (((s32 (*)(s32, u8 *))CdReady)(1, res) == 5) {
         return;
     }
     r.stat = res[0];
@@ -13166,7 +13166,7 @@ void func_8002E2C4(void) {
     }
     m = 0x11000000;
     if (D_80061B28 != 0) {
-        ((void (*)(void *, s32, s32, s32))func_8002EBE0)((void *)D_80061B58, D_80061B28 + D_80061B18 * 2048, 8, 0);
+        ((void (*)(void *, s32, s32, s32))Mem_CopyWords)((void *)D_80061B58, D_80061B28 + D_80061B18 * 2048, 8, 0);
     } else {
         ((void (*)(s32, void *, s32, s32, s32, s32, s32))func_8002EC0C)(3, (void *)D_80061B58, 0, 8, m, 0, 0);
     }
@@ -13272,7 +13272,7 @@ void func_8002E2C4(void) {
     if (D_80061B58[3] - 1 == D_80061B58[2]) {
         D_80061B14 = 1;
         if (D_80061B28 != 0) {
-            ((void (*)(void *, s32, s32, s32))func_8002EBE0)(D_80061B34, D_80061B28 + D_80061B18 * 2048 + 0x20, 0x1F8, 1);
+            ((void (*)(void *, s32, s32, s32))Mem_CopyWords)(D_80061B34, D_80061B28 + D_80061B18 * 2048 + 0x20, 0x1F8, 1);
             D_80061B18++;
         } else {
             ((void (*)(s32, void *, s32, s32, s32, s32, s32))func_8002EC0C)(3, D_80061B34, 0, 0x1F8, m, 1, 0);
@@ -13282,7 +13282,7 @@ void func_8002E2C4(void) {
         D_80061B10 = D_80061B08;
     } else {
         if (D_80061B28 != 0) {
-            ((void (*)(void *, s32, s32, s32))func_8002EBE0)(D_80061B34, D_80061B28 + D_80061B18 * 2048 + 0x20, 0x1F8, 0);
+            ((void (*)(void *, s32, s32, s32))Mem_CopyWords)(D_80061B34, D_80061B28 + D_80061B18 * 2048 + 0x20, 0x1F8, 0);
             D_80061B18++;
         } else {
             ((void (*)(s32, void *, s32, s32, s32, s32, s32))func_8002EC0C)(3, D_80061B34, 0, 0x1F8, m, 0, 0);
@@ -13297,7 +13297,7 @@ void func_8002E2C4(void) {
 }
 
 
-void func_8002EBE0(s32 *dst, s32 *src, u32 count) {
+void Mem_CopyWords(s32 *dst, s32 *src, u32 count) {
     u32 i;
     for (i = 0; i < count; i++) {
         *dst++ = *src++;
@@ -13317,7 +13317,7 @@ void func_8002EC0C(s32 ch, u32 madr, s32 hi, s32 lo, u32 chcr, u8 mode) {
     off = ch * 16;
     while (*(volatile u32 *)(off + 0x1F801088) & 0x01000000) {
         if (i == 0x10000) {
-            func_8002A014(D_800106F4, *(volatile u32 *)(off + 0x1F801088));
+            printf(D_800106F4, *(volatile u32 *)(off + 0x1F801088));
             break;
         }
         i++;
@@ -13393,9 +13393,9 @@ s32 func_8002EDB4(void) {
         err = D_8004E6D4 & 0x1D;
     }
     if (r == 5 && D_8004E6D0 >= 3) {
-        func_8002A014(D_8001087C);
+        printf(D_8001087C);
         if (D_8004E6D0 >= 3) {
-            func_8002A014(D_80010888, D_8004E6EC[D_8004E6E5], D_8004E6D4, D_8004E6D8);
+            printf(D_80010888, D_8004E6EC[D_8004E6E5], D_8004E6D4, D_8004E6D8);
         }
     }
     switch (r) {
@@ -13437,8 +13437,8 @@ s32 func_8002EDB4(void) {
         cd_memcpy2EDB4(D_80061B70, result, 8);
         return 6;
     default:
-        func_80030334(D_800108A4);
-        func_8002A014(D_800108B8, r);
+        Debug_PutString(D_800108A4);
+        printf(D_800108B8, r);
         return 0;
     }
 }
@@ -13466,10 +13466,10 @@ s32 func_8002F318(a0, a1)
     D_80061B88 = D_800108D8;
     do {
         if (D_80061B80 < func_80030AB4(-1) || (n = D_80061B84++, n > 0x3C0000)) {
-            func_80030334(D_80010850);
+            Debug_PutString(D_80010850);
             p0 = &intr[D_8004E9A4.field_0];
-            func_8002A014(D_80010860, D_80061B88, *(s8 * volatile *)&com[D_8004E6E5], *(char * volatile *)p0, intr[D_8004E9A4.field_1]);
-            func_8002FCF4();
+            printf(D_80010860, D_80061B88, *(s8 * volatile *)&com[D_8004E6E5], *(char * volatile *)p0, intr[D_8004E9A4.field_1]);
+            CD_flush();
             r = -1;
         } else {
             r = 0;
@@ -13477,7 +13477,7 @@ s32 func_8002F318(a0, a1)
         if (r != 0) {
             return -1;
         }
-        if (func_80030E28() != 0) {
+        if (CheckCallback() != 0) {
             s = *D_8004E98C & 3;
             while ((e = func_8002EDB4()) != 0) {
                 if (e & 4) {
@@ -13506,12 +13506,12 @@ s32 func_8002F318(a0, a1)
 
 static __inline__ s32 func_8002F598_timeout(s8 **com, char **intr) {
     if (D_80061B80 < func_80030AB4(-1) || D_80061B84++ > 0x3C0000) {
-        func_80030334(D_80010850);
+        Debug_PutString(D_80010850);
         {
         char **p = &intr[D_8004E9A4.field_0];
-        func_8002A014(D_80010860, D_80061B88, com[D_8004E6E5], *p, intr[D_8004E9A4.field_1]);
+        printf(D_80010860, D_80061B88, com[D_8004E6E5], *p, intr[D_8004E9A4.field_1]);
         }
-        func_8002FCF4();
+        CD_flush();
         return -1;
     }
     return 0;
@@ -13540,7 +13540,7 @@ u8 *result;
         if (func_8002F598_timeout(com, intr) != 0) {
             return -1;
         }
-        if (func_80030E28() != 0) {
+        if (CheckCallback() != 0) {
             st = *D_8004E98C & 3;
             while ((ie = func_8002EDB4()) != 0) {
                 if (ie & 4) {
@@ -13600,11 +13600,11 @@ s32 func_8002F860(com, param, result, async)
     s32 *np;
 
     if (D_8004E6D0 >= 2) {
-        func_8002A014(D_800108EC, D_8004E6EC[com]);
+        printf(D_800108EC, D_8004E6EC[com]);
     }
     if (D_8004E80C.field_100[com] != 0 && param == 0) {
         if (D_8004E6D0 > 0) {
-            func_8002A014(D_800108F4, D_8004E6EC[com]);
+            printf(D_800108F4, D_8004E6EC[com]);
         }
         return -2;
     }
@@ -13638,10 +13638,10 @@ s32 func_8002F860(com, param, result, async)
             intr = D_8004E76C;
             do {
                 if (D_80061B80 < func_80030AB4(-1) || (n = D_80061B84++, n > 0x3C0000)) {
-                    func_80030334(D_80010850);
+                    Debug_PutString(D_80010850);
                     p0 = &intr[D_8004E9A4.field_0];
-                    func_8002A014(D_80010860, D_80061B88, *(s8 * volatile *)&cm[D_8004E6E5], *(char * volatile *)p0, intr[D_8004E9A4.field_1]);
-                    func_8002FCF4();
+                    printf(D_80010860, D_80061B88, *(s8 * volatile *)&cm[D_8004E6E5], *(char * volatile *)p0, intr[D_8004E9A4.field_1]);
+                    CD_flush();
                     r = -1;
                 } else {
                     r = 0;
@@ -13649,7 +13649,7 @@ s32 func_8002F860(com, param, result, async)
                 if (r != 0) {
                     return -1;
                 }
-                if (func_80030E28() != 0) {
+                if (CheckCallback() != 0) {
                     com = *D_8004E98C & 3;
                     while ((e = func_8002EDB4()) != 0) {
                         if (e & 4) {
@@ -13682,7 +13682,7 @@ extern u8 *D_8004E98C;
 extern u8 *D_8004E99C;
 extern u8 *D_8004E990;
 extern u8 *D_8004E998;
-s32 func_8002FC6C(u8 *a0) {
+s32 CD_vol(u8 *a0) {
     *D_8004E98C = 2;
     *D_8004E99C = a0[0];
     *D_8004E990 = a0[1];
@@ -13693,7 +13693,7 @@ s32 func_8002FC6C(u8 *a0) {
     return 0;
 }
 
-void func_8002FCF4(void) {
+void CD_flush(void) {
     *D_8004E98C = 1;
     while (*D_8004E990 & 7) {
         *D_8004E98C = 1;
@@ -13740,21 +13740,21 @@ void func_8002FEB8(void) {
     D_8004E6C8 = 0;
     D_8004E6D8 = 0;
     D_8004E6D4 = 0;
-    func_80030CD4();
-    func_80030D04(2, func_80030258);
+    ResetCallback();
+    InterruptCallback(2, func_80030258);
 }
 
 s32 func_8002FF04(void) {
-    func_80030334(D_80010944);
-    func_8002A014(D_80010950, D_8004E9A8);
+    Debug_PutString(D_80010944);
+    printf(D_80010950, D_8004E9A8);
     D_8004E6E5 = 0;
     D_8004E6E4 = 0;
     D_8004E6CC = 0;
     D_8004E6C8 = 0;
     D_8004E6D8 = 0;
     D_8004E6D4 = 0;
-    func_80030CD4();
-    func_80030D04(2, func_80030258);
+    ResetCallback();
+    InterruptCallback(2, func_80030258);
     *D_8004E98C = 1;
     while (*D_8004E990 & 7) {
         *D_8004E98C = 1;
@@ -13807,10 +13807,10 @@ s32 func_800300E4(s32 mode) {
     D_80061B88 = D_8001095C;
     do {
         if (D_80061B80 < func_80030AB4(-1) || (n = D_80061B84++, n > lim)) {
-            func_80030334(D_80010850);
+            Debug_PutString(D_80010850);
 p0 = &intr[st->field_0];
-func_8002A014(D_80010860, D_80061B88, *(s8 * volatile *)&com[D_8004E6E5], *(char * volatile *)p0, intr[st->field_1]);
-            func_8002FCF4();
+printf(D_80010860, D_80061B88, *(s8 * volatile *)&com[D_8004E6E5], *(char * volatile *)p0, intr[st->field_1]);
+            CD_flush();
             t = -1;
         } else {
             t = 0;
@@ -13858,7 +13858,7 @@ loop:
     *D_8004E98C = save;
 }
 
-void func_80030334(s8 *s) {
+void Debug_PutString(s8 *s) {
     s8 c;
 
     if (!s) {
@@ -13871,7 +13871,7 @@ void func_80030334(s8 *s) {
     func_8002A840();
 }
 
-u8 *func_80030394(a0, a1)
+u8 *CdIntToPos(a0, a1)
 s32 a0;
 u8 *a1;
 {
@@ -13887,19 +13887,19 @@ u8 *a1;
 }
 __asm__(".word 0\n.word 0\n.word 0\n");
 
-u8 func_800304A4(void) {
+u8 CdLastCom(void) {
     return D_8004E6E5;
 }
 
-s32 func_800304B4(s32 a0) { s32 old = D_8004E6D0; D_8004E6D0 = a0; return old; }
+s32 CdSetDebug(s32 a0) { s32 old = D_8004E6D0; D_8004E6D0 = a0; return old; }
 
-void func_800304D4(void) { func_8002F318(); }
+void CdSync(void) { func_8002F318(); }
 
-void func_800304F4(void) { func_8002F598(); }
+void CdReady(void) { func_8002F598(); }
 
-void *func_80030514(void *a0) { void *old = D_8004E6C8; D_8004E6C8 = a0; return old; }
+void *CdSyncCallback(void *a0) { void *old = D_8004E6C8; D_8004E6C8 = a0; return old; }
 
-s32 func_80030534(s32 a0) { s32 old = D_8004E6CC; D_8004E6CC = a0; return old; }
+s32 CdReadyCallback(s32 a0) { s32 old = D_8004E6CC; D_8004E6CC = a0; return old; }
 
 s32 func_80030554(s32 arg0, u8 *arg1, u8 *arg2) {
     u8 *param = arg1;
@@ -13992,11 +13992,11 @@ done:
 }
 
 
-s32 func_80030914(void *arg0, s32 arg1) {
-    return func_80030934() == 0;
+s32 CdGetSector(void *arg0, s32 arg1) {
+    return CD_getsector() == 0;
 }
 
-s32 func_80030934(s32 addr, s32 size) {
+s32 CD_getsector(s32 addr, s32 size) {
     *D_8004EA60 = 0;
     *D_8004EA64 = 0x80;
     *D_8004EA6C = 0x20943;
@@ -14013,7 +14013,7 @@ s32 func_80030934(s32 addr, s32 size) {
     return 0;
 }
 
-void func_80030A34(s32 arg0) { func_80030D34(3, arg0); }
+void CdDataCallback(s32 arg0) { DMACallback(3, arg0); }
 
 extern s32 D_80061BA4;
 int func_80030A64(int a0) {
@@ -14022,7 +14022,7 @@ int func_80030A64(int a0) {
     return old;
 }
 
-void func_80030A84(s32 arg0) { func_80030D34(3, arg0); }
+void func_80030A84(s32 arg0) { DMACallback(3, arg0); }
 
 s32 func_80030AB4(s32 mode) {
     volatile s32 buf;
@@ -14070,7 +14070,7 @@ void func_80030C2C(s32 a0, s32 a1) {
 
     while (D_8004FBC0 < a0) {
         if (--n == -1) {
-            func_80030334(D_80010984);
+            Debug_PutString(D_80010984);
             ChangeClearPAD(0);
             ChangeClearRCnt(3, 0);
             return;
@@ -14080,15 +14080,15 @@ void func_80030C2C(s32 a0, s32 a1) {
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/156C", ChangeClearPAD);
 
-void func_80030CD4(void) {
+void ResetCallback(void) {
     D_8004FB80->fn_C();
 }
 
-void func_80030D04(s32 arg0, void (*arg1)()) {
+void InterruptCallback(s32 arg0, void (*arg1)()) {
     D_8004FB80->fn_8(arg0, arg1);
 }
 
-void func_80030D34(s32 arg0, s32 arg1) {
+void DMACallback(s32 arg0, s32 arg1) {
     D_8004FB80->fn_4(arg0, arg1);
 }
 
@@ -14096,27 +14096,27 @@ void func_80030D64(s32 arg0) {
     D_8004FB80->fn_14(4, arg0);
 }
 
-void func_80030D98(s32 a0, s32 a1) {
+void VSyncCallbacks(s32 a0, s32 a1) {
     D_8004FB80->fn_14(a0, a1);
 }
 
-void func_80030DC8(void) {
+void StopCallback(void) {
     D_8004FB80->fn_10();
 }
 
-void func_80030DF8(void) {
+void RestartCallback(void) {
     D_8004FB80->fn_18();
 }
 
-u16 func_80030E28(void) {
+u16 CheckCallback(void) {
     return D_8004EAFA;
 }
 
-u16 func_80030E38(void) {
+u16 GetIntrMask(void) {
     return *D_8004FB88;
 }
 
-int func_80030E50(int a0) {
+int SetIntrMask(int a0) {
     int old = *D_8004FB88;
     *D_8004FB88 = a0;
     return old;
@@ -14134,7 +14134,7 @@ Obj4EAF8 *func_80030E68(void) {
     *q = 0;
     *r = *q;
     *D_8004FB8C = 0x33333333;
-    func_80031370((s32 *)&D_8004EAF8, 0x41A);
+    memclr((s32 *)&D_8004EAF8, 0x41A);
     if (setjmp(D_8004EAF8.field_38) != 0) {
         func_80030F40();
     }
@@ -14153,7 +14153,7 @@ void func_80030F40(void) {
     u16 mask;
 
     if (D_8004EAF8.field_0 == 0) {
-        func_8002A014(D_800109C8, *D_8004FB84);
+        printf(D_800109C8, *D_8004FB84);
         ReturnFromException();
     }
     D_8004EAF8.field_2 = 1;
@@ -14169,7 +14169,7 @@ void func_80030F40(void) {
     }
     if (*D_8004FB84 & *(volatile u16 *)D_8004FB88) {
         if (D_8004FB90++ > 0x800) {
-            func_8002A014(D_800109E4, *D_8004FB84, *(volatile u16 *)D_8004FB88);
+            printf(D_800109E4, *D_8004FB84, *(volatile u16 *)D_8004FB88);
             D_8004FB90 = 0;
             *D_8004FB84 = 0;
         }
@@ -14263,7 +14263,7 @@ Obj4EAF8 *func_800312F8(void) {
     return p;
 }
 
-void func_80031370(s32 *arg0, s32 arg1) {
+void memclr(s32 *arg0, s32 arg1) {
     s32 i;
     for (i = arg1 - 1; i != -1; i--) {
         *arg0++ = 0;
@@ -14282,20 +14282,20 @@ INCLUDE_ASM("asm/USA/main/nonmatchings/156C", HookEntryInt);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/156C", setjmp);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80031420);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", longjmp);
 
-extern void func_800314BC(void);
-extern void func_80031528(s32 arg0, void (*arg1)(void));
+extern void trapIntrVSync(void);
+extern void setIntrVSync(s32 arg0, void (*arg1)(void));
 
 void (*func_80031464(void))(s32, void (*)(void)) {
     *D_8004FBC4 = 0x100;
     D_8004FBC0 = 0;
-    func_80031554(D_8004FBA0, 8);
-    func_80030D04(0, func_800314BC);
-    return func_80031528;
+    memclr_vb(D_8004FBA0, 8);
+    InterruptCallback(0, trapIntrVSync);
+    return setIntrVSync;
 }
 
-void func_800314BC(void) {
+void trapIntrVSync(void) {
     void (**p)(void);
     s32 i;
 
@@ -14311,23 +14311,23 @@ void func_800314BC(void) {
     } while (i < 8);
 }
 
-void func_80031528(s32 arg0, void (*arg1)(void)) {
+void setIntrVSync(s32 arg0, void (*arg1)(void)) {
     if (arg1 != D_8004FBA0[arg0]) {
         D_8004FBA0[arg0] = arg1;
     }
 }
 
-void func_80031554(s32 *arg0, u32 arg1) {
+void memclr_vb(s32 *arg0, u32 arg1) {
     while (arg1-- != 0) {
         *arg0++ = 0;
     }
 }
 
 void *func_80031584(void) {
-    func_800317FC(D_8004FBD4, 8);
+    memclr_dma(D_8004FBD4, 8);
     *D_8004FBD0 = 0;
-    func_80030D04(3, func_800315D0);
-    return func_80031750;
+    InterruptCallback(3, func_800315D0);
+    return setIntrDMA;
 }
 
 void func_800315D0(void) {
@@ -14345,15 +14345,15 @@ void func_800315D0(void) {
         }
     }
     if ((*(volatile u32 *)D_8004FBD0 & 0xFF000000) == 0x80000000 || (*(volatile u32 *)D_8004FBD0 & 0x8000)) {
-        func_8002A014(D_80010A04, *(volatile u32 *)D_8004FBD0);
+        printf(D_80010A04, *(volatile u32 *)D_8004FBD0);
         for (i = 0; i < 7; i++) {
-            func_8002A014(D_80010A20, i, D_8004FBF4[i].madr);
+            printf(D_80010A20, i, D_8004FBF4[i].madr);
         }
     }
 }
 
 
-s32 func_80031750(s32 ch, s32 v) {
+s32 setIntrDMA(s32 ch, s32 v) {
     s32 *p = D_8004FBD4;
     s32 old;
 
@@ -14378,15 +14378,15 @@ s32 func_80031750(s32 ch, s32 v) {
 }
 
 
-void func_800317FC(s32 *arg0, u32 arg1) {
+void memclr_dma(s32 *arg0, u32 arg1) {
     while (arg1-- != 0) {
         *arg0++ = 0;
     }
 }
 
-s32 func_80031824(s32 a0) { s32 old = D_8004FC00; D_8004FC00 = a0; return old; }
+s32 SetVideoMode(s32 a0) { s32 old = D_8004FC00; D_8004FC00 = a0; return old; }
 
-s32 func_80031838(void) {
+s32 GetVideoMode(void) {
     return D_8004FC00;
 }
 __asm__(".word 0\n.word 0\n.word 0\n");
@@ -14493,7 +14493,7 @@ void func_80031AC4(s16 a0, s16 a1) {
 void func_80031CD4(s32 a0, s16 a1) {
     Elm354F4 *e = &D_80061C50[(s16)a0][a1];
 
-    func_800391B4((s16)(a0 | (a1 << 8)));
+    _SsVmSeqKeyOff((s16)(a0 | (a1 << 8)));
     e->field_14 = 0;
     D_80061C50[(s16)a0][a1].field_98 &= ~2;
 }
@@ -14573,10 +14573,10 @@ void func_80031EA0(s16 a0, s16 a1) {
         if (n != -1) {
             e->field_14 = 0;
             func_80032544(e->field_22, (s8)e->field_23);
-            func_800391B4((s16)(a0 | (a1 << 8)));
+            _SsVmSeqKeyOff((s16)(a0 | (a1 << 8)));
         }
     }
-    func_800391B4((s16)(a0 | (a1 << 8)));
+    _SsVmSeqKeyOff((s16)(a0 | (a1 << 8)));
     e->field_90 = e->field_54;
 }
 
@@ -14603,7 +14603,7 @@ s32 func_800320E4(s16 a0, s16 a1) {
             e->field_16 = ev;
             n = *e->field_0++;
             d = *e->field_0++;
-            e->field_90 = func_80032494(a0, a1);
+            e->field_90 = _SsReadDeltaValue(a0, a1);
             D_80061BB0[0](a0, a1, n, d);
             break;
         case 0xB0:
@@ -14631,7 +14631,7 @@ s32 func_800320E4(s16 a0, s16 a1) {
         switch (e->field_16) {
         case 0x90:
             d = *e->field_0++;
-            e->field_90 = func_80032494(a0, a1);
+            e->field_90 = _SsReadDeltaValue(a0, a1);
             D_80061BB0[0](a0, a1, st, d);
             break;
         case 0xB0:
@@ -14660,7 +14660,7 @@ meta:
 }
 
 
-s32 func_80032494(s16 a0, s16 a1) {
+s32 _SsReadDeltaValue(s16 a0, s16 a1) {
     Elm354F4 *e = &D_80061C50[a0][a1];
     u32 v = *e->field_0++;
     s32 r;
@@ -14708,7 +14708,7 @@ void func_800326A4(s16 id) {
     Elm354F4 **pp;
 
     func_80038BE4(id, 0, 0, 1);
-    func_800391B4(id);
+    _SsVmSeqKeyOff(id);
     D_80061C48 &= ~(1 << id);
     for (i = 0; i < D_800624D2; i++) {
         pp = &D_80061C50[id];
@@ -14756,8 +14756,8 @@ void func_80032874(void) {
 
 
 void func_80032914(void) {
-    func_80030CD4();
-    func_8003A034();
+    ResetCallback();
+    SpuInit();
     func_8003C3A4(7);
     func_80032874();
 }
@@ -14771,23 +14771,23 @@ s16 func_80032954(s32 src, s16 arg1, s32 count) {
 
     code = 0;
     if (D_80061C48 == -1) {
-        func_8002A014(D_80010A34);
+        printf(D_80010A34);
         return -1;
     }
     D_80061BB0[0] = (TextOp)func_800348D4;
-    D_80061BB0[1] = (TextOp)func_800349B4;
-    D_80061BB0[3] = (TextOp)func_80034704;
+    D_80061BB0[1] = (TextOp)_SsSetProgramChange;
+    D_80061BB0[3] = (TextOp)_SsGetMetaEvent;
     D_80061BB0[2] = (TextOp)func_80034424;
     D_80061BB0[4] = (TextOp)func_800344D4;
-    D_80061BB0[5] = (TextOp)func_80032C54;
+    D_80061BB0[5] = (TextOp)_SsContBankChange;
     D_80061BB0[7] = (TextOp)func_80033054;
     D_80061BB0[8] = (TextOp)func_80033124;
     D_80061BB0[9] = (TextOp)func_800331F4;
     D_80061BB0[10] = (TextOp)func_800332E4;
-    D_80061BB0[11] = (TextOp)func_80033424;
+    D_80061BB0[11] = (TextOp)_SsContNrpn1;
     D_80061BB0[12] = (TextOp)func_80033524;
-    D_80061BB0[13] = (TextOp)func_80033664;
-    D_80061BB0[14] = (TextOp)func_800336D4;
+    D_80061BB0[13] = (TextOp)_SsContRpn1;
+    D_80061BB0[14] = (TextOp)_SsContRpn2;
     D_80061BB0[15] = (TextOp)func_80033394;
     D_80061BB0[16] = (TextOp)func_80033744;
     D_80061BB0[6] = (TextOp)func_80032CD4;
@@ -14806,11 +14806,11 @@ s16 func_80032954(s32 src, s16 arg1, s32 count) {
     D_80061BB0[29] = (TextOp)func_80034114;
     D_80061BB0[30] = (TextOp)func_800341F4;
     D_80061BB0[31] = (TextOp)func_80034294;
-    D_80061BB0[32] = (TextOp)func_80034334;
-    D_80061BB0[33] = (TextOp)func_80034364;
-    D_80061BB0[34] = (TextOp)func_80034394;
-    D_80061BB0[35] = (TextOp)func_800343C4;
-    D_80061BB0[36] = (TextOp)func_800343F4;
+    D_80061BB0[32] = (TextOp)_SsSetNrpnVabAttr15;
+    D_80061BB0[33] = (TextOp)_SsSetNrpnVabAttr16;
+    D_80061BB0[34] = (TextOp)_SsSetNrpnVabAttr17;
+    D_80061BB0[35] = (TextOp)_SsSetNrpnVabAttr18;
+    D_80061BB0[36] = (TextOp)_SsSetNrpnVabAttr19;
     for (i = 0; i < 32; i++) {
         m = 1 << i;
         if (!(D_80061C48 & m)) {
@@ -14830,10 +14830,10 @@ s16 func_80032954(s32 src, s16 arg1, s32 count) {
 }
 
 
-void func_80032C54(s16 arg0, s16 arg1, s16 arg2) {
+void _SsContBankChange(s16 arg0, s16 arg1, s16 arg2) {
     Elm354F4 *e = &D_80061C50[arg0][arg1];
     e->field_26 = *e->field_0++;
-    e->field_90 = func_80032494(arg0, arg1);
+    e->field_90 = _SsReadDeltaValue(arg0, arg1);
 }
 
 void func_80032CD4(s16 a0, s16 a1, s16 a2) {
@@ -14851,7 +14851,7 @@ void func_80032CD4(s16 a0, s16 a1, s16 a2) {
         e->field_1D = a2;
         e->field_1C = 0;
         e->field_15 = 1;
-        e->field_90 = func_80032494(a0, a1);
+        e->field_90 = _SsReadDeltaValue(a0, a1);
     } else if (e->field_1E == 2) {
         if (e->field_19 == 0) {
             for (i = 0; i < h[0].field_0; i++) {
@@ -14882,7 +14882,7 @@ void func_80032CD4(s16 a0, s16 a1, s16 a2) {
                 func_80036594(e->field_26, e->field_37[k], (s16)i, &atr);
             }
         }
-        e->field_90 = func_80032494(a0, a1);
+        e->field_90 = _SsReadDeltaValue(a0, a1);
         e->field_1E = 0;
     } else if (e->field_1F == 2) {
         if (e->field_1B == 0x10) {
@@ -14892,10 +14892,10 @@ void func_80032CD4(s16 a0, s16 a1, s16 a2) {
             void (**tbl)(s16, s16, s16, Rec62D08, s32, s32) = D_80061BF4;
             tbl[e->field_1A](e->field_26, e->field_37[k], e->field_1B, atr, e->field_1A, v);
         }
-        e->field_90 = func_80032494(a0, a1);
+        e->field_90 = _SsReadDeltaValue(a0, a1);
         e->field_1F = 0;
     } else {
-        e->field_90 = func_80032494(a0, a1);
+        e->field_90 = _SsReadDeltaValue(a0, a1);
     }
 }
 
@@ -14906,7 +14906,7 @@ void func_80033054(s16 a0, s16 a1, u8 a2) {
 
     func_80039334((s16)(a0 | (a1 << 8)), (s8)e->field_26, e->field_37[k], a2, e->field_27[k]);
     e->field_60[k] = a2;
-    e->field_90 = func_80032494(a0, a1);
+    e->field_90 = _SsReadDeltaValue(a0, a1);
 }
 
 void func_80033124(s16 a0, s16 a1, s32 a2) {
@@ -14915,7 +14915,7 @@ void func_80033124(s16 a0, s16 a1, s32 a2) {
 
     func_80039334(a0 | (a1 << 8), e->field_26, e->field_37[i], e->field_60[i], (u8)a2);
     e->field_27[i] = a2;
-    e->field_90 = func_80032494(a0, a1);
+    e->field_90 = _SsReadDeltaValue(a0, a1);
 }
 
 void func_800331F4(s16 a0, s16 a1, s32 a2) {
@@ -14924,7 +14924,7 @@ void func_800331F4(s16 a0, s16 a1, s32 a2) {
 
     func_80038B74((s8)e->field_26, e->field_37[k], (u8)a2);
     func_80039334(a0 | (a1 << 8), (s8)e->field_26, e->field_37[k], e->field_60[k], e->field_27[k]);
-    e->field_90 = func_80032494(a0, a1);
+    e->field_90 = _SsReadDeltaValue(a0, a1);
 }
 
 extern void func_80036764(void);
@@ -14938,17 +14938,17 @@ void func_800332E4(s16 a0, s16 a1, u8 a2) {
     } else {
         func_80036774();
     }
-    e->field_90 = func_80032494(a0, a1);
+    e->field_90 = _SsReadDeltaValue(a0, a1);
 }
 
 void func_80033394(s16 a0, s16 a1, u8 a2) {
     Elm354F4 *e = &D_80061C50[a0][a1];
 
-    func_800363E4(a2, a2);
-    e->field_90 = func_80032494(a0, a1);
+    SsUtSetReverbDepth(a2, a2);
+    e->field_90 = _SsReadDeltaValue(a0, a1);
 }
 
-void func_80033424(s16 a0, s16 a1, u8 a2) {
+void _SsContNrpn1(s16 a0, s16 a1, u8 a2) {
     Elm354F4 *e = &D_80061C50[a0][a1];
     Hook33424 *row;
 
@@ -14963,7 +14963,7 @@ void func_80033424(s16 a0, s16 a1, u8 a2) {
         e->field_1C = 0;
         e->field_1F++;
     }
-    e->field_90 = func_80032494(a0, a1);
+    e->field_90 = _SsReadDeltaValue(a0, a1);
 }
 
 void func_80033524(a0, a1, a2)
@@ -14978,7 +14978,7 @@ u8 a2;
     case 0x14:
         e->field_1B = a2;
         e->field_1C = 1;
-        e->field_90 = func_80032494(a0, a1);
+        e->field_90 = _SsReadDeltaValue(a0, a1);
         e->field_8 = (s32)e->field_0;
         break;
     case 0x1E:
@@ -14986,17 +14986,17 @@ u8 a2;
         e->field_1B = a2;
         if (n == 0) {
             e->field_15 = 0;
-            e->field_90 = func_80032494(a0, a1);
+            e->field_90 = _SsReadDeltaValue(a0, a1);
         } else if (n < 0x7F) {
             e->field_1D = n - 1;
-            e->field_90 = func_80032494(a0, a1);
+            e->field_90 = _SsReadDeltaValue(a0, a1);
             if (e->field_1D != 0) {
                 e->field_0 = (u8 *)e->field_8;
             } else {
                 e->field_15 = 0;
             }
         } else {
-            func_80032494(a0, a1);
+            _SsReadDeltaValue(a0, a1);
             e->field_90 = 0;
             e->field_0 = (u8 *)e->field_8;
         }
@@ -15004,36 +15004,36 @@ u8 a2;
     default:
         e->field_1B = a2;
         e->field_1F++;
-        e->field_90 = func_80032494(a0, a1);
+        e->field_90 = _SsReadDeltaValue(a0, a1);
         break;
     }
 }
 
-void func_80033664(s16 arg0, s16 arg1, s16 arg2) {
+void _SsContRpn1(s16 arg0, s16 arg1, s16 arg2) {
     Elm354F4 *e = &D_80061C50[arg0][arg1];
     e->field_18 = arg2;
     e->field_1E++;
-    e->field_90 = func_80032494(arg0, arg1);
+    e->field_90 = _SsReadDeltaValue(arg0, arg1);
 }
 
-void func_800336D4(s16 arg0, s16 arg1, s16 arg2) {
+void _SsContRpn2(s16 arg0, s16 arg1, s16 arg2) {
     Elm354F4 *e = &D_80061C50[arg0][arg1];
     e->field_19 = arg2;
     e->field_1E++;
-    e->field_90 = func_80032494(arg0, arg1);
+    e->field_90 = _SsReadDeltaValue(arg0, arg1);
 }
 
 void func_80033744(s16 a0, s16 a1) {
     Elm354F4 *e = &D_80061C50[a0][a1];
 
-    func_80036554();
+    SsUtReverbOff();
     func_80036764();
     e->field_37[e->field_17] = e->field_17;
     e->field_18 = 0;
     e->field_19 = 0;
     e->field_60[e->field_17] = 0x7F;
     e->field_27[e->field_17] = 0x40;
-    e->field_90 = func_80032494(a0, a1);
+    e->field_90 = _SsReadDeltaValue(a0, a1);
 }
 
 void func_80033804(s16 a0, s16 a1, s16 a2, HandlerArg arg) {
@@ -15052,9 +15052,9 @@ void func_80033894(s16 a0, s16 a1, s16 a2, HandlerArg arg) {
     func_80036594(a0, a1, a2, &arg);
     v &= 0xFF;
     if (v == 0) {
-        func_80036554();
+        SsUtReverbOff();
     } else if (v == 4) {
-        func_80036574();
+        SsUtReverbOn();
     }
 }
 
@@ -15079,22 +15079,22 @@ void func_800339E4(s16 a0, s16 a1, s16 a2, HandlerArg d) {
 
 
 extern s32 func_80036164();
-extern void func_80033B80();
+extern void _SsUtBuildADSR();
 extern s32 func_80036594();
-void func_80033B24(u32, u32, Out33B24 *);
+void _SsUtResolveADSR(u32, u32, Out33B24 *);
 
 void func_80033A74(s16 a0, s16 a1, s16 a2, Arg33 d) {
     Out33B24 buf;
     u16 flag = d.field_24;
     func_80036164(a0, a1, a2, &d);
-    func_80033B24(d.field_10, d.field_12, &buf);
+    _SsUtResolveADSR(d.field_10, d.field_12, &buf);
     buf.field_A = 0;
     buf.field_0 = flag;
-    func_80033B80(&buf, &d.field_10, &d.field_12);
+    _SsUtBuildADSR(&buf, &d.field_10, &d.field_12);
     func_80036594(a0, a1, a2, &d);
 }
 
-void func_80033B24(u32 arg0, u32 arg1, Out33B24 *arg2) {
+void _SsUtResolveADSR(u32 arg0, u32 arg1, Out33B24 *arg2) {
     arg2->field_A = arg0 & 0x8000;
     arg2->field_C = arg1 & 0x8000;
     arg2->field_10 = arg1 & 0x4000;
@@ -15106,7 +15106,7 @@ void func_80033B24(u32 arg0, u32 arg1, Out33B24 *arg2) {
     arg2->field_8 = arg1 & 0x1F;
 }
 
-void func_80033B80(Out33B24 *p, u16 *adsr1, u16 *adsr2) {
+void _SsUtBuildADSR(Out33B24 *p, u16 *adsr1, u16 *adsr2) {
     u16 c;
     u16 a;
     u16 m;
@@ -15132,10 +15132,10 @@ void func_80033C24(s16 a0, s16 a1, s16 a2, Arg33 d) {
     Out33B24 buf;
     u16 flag = d.field_24;
     func_80036164(a0, a1, a2, &d);
-    func_80033B24(d.field_10, d.field_12, &buf);
+    _SsUtResolveADSR(d.field_10, d.field_12, &buf);
     buf.field_A = 1;
     buf.field_0 = flag;
-    func_80033B80(&buf, &d.field_10, &d.field_12);
+    _SsUtBuildADSR(&buf, &d.field_10, &d.field_12);
     func_80036594(a0, a1, a2, &d);
 }
 
@@ -15144,9 +15144,9 @@ void func_80033CE4(s16 a0, s16 a1, s16 a2, HandlerArg d) {
     s32 v = (u8)d.field_24;
 
     func_80036164(a0, a1, a2, &d);
-    func_80033B24(d.field_10, d.field_12, &buf);
+    _SsUtResolveADSR(d.field_10, d.field_12, &buf);
     buf.field_2 = v;
-    func_80033B80(&buf, &d.field_10, &d.field_12);
+    _SsUtBuildADSR(&buf, &d.field_10, &d.field_12);
     func_80036594(a0, a1, a2, &d);
 }
 
@@ -15154,9 +15154,9 @@ void func_80033D94(s16 a0, s16 a1, s16 a2, Arg33 d) {
     Out33B24 buf;
     u16 flag = d.field_24;
     func_80036164(a0, a1, a2, &d);
-    func_80033B24(d.field_10, d.field_12, &buf);
+    _SsUtResolveADSR(d.field_10, d.field_12, &buf);
     buf.field_4 = flag;
-    func_80033B80(&buf, &d.field_10, &d.field_12);
+    _SsUtBuildADSR(&buf, &d.field_10, &d.field_12);
     func_80036594(a0, a1, a2, &d);
 }
 
@@ -15164,10 +15164,10 @@ void func_80033E44(s16 a0, s16 a1, s16 a2, Arg33 d) {
     Out33B24 buf;
     u16 flag = d.field_24;
     func_80036164(a0, a1, a2, &d);
-    func_80033B24(d.field_10, d.field_12, &buf);
+    _SsUtResolveADSR(d.field_10, d.field_12, &buf);
     buf.field_C = 0;
     buf.field_6 = flag;
-    func_80033B80(&buf, &d.field_10, &d.field_12);
+    _SsUtBuildADSR(&buf, &d.field_10, &d.field_12);
     func_80036594(a0, a1, a2, &d);
 }
 
@@ -15175,10 +15175,10 @@ void func_80033EF4(s16 a0, s16 a1, s16 a2, Arg33 d) {
     Out33B24 buf;
     u16 flag = d.field_24;
     func_80036164(a0, a1, a2, &d);
-    func_80033B24(d.field_10, d.field_12, &buf);
+    _SsUtResolveADSR(d.field_10, d.field_12, &buf);
     buf.field_C = 1;
     buf.field_6 = flag;
-    func_80033B80(&buf, &d.field_10, &d.field_12);
+    _SsUtBuildADSR(&buf, &d.field_10, &d.field_12);
     func_80036594(a0, a1, a2, &d);
 }
 
@@ -15186,10 +15186,10 @@ void func_80033FB4(s16 a0, s16 a1, s16 a2, Arg33 d) {
     Out33B24 buf;
     u16 flag = d.field_24;
     func_80036164(a0, a1, a2, &d);
-    func_80033B24(d.field_10, d.field_12, &buf);
+    _SsUtResolveADSR(d.field_10, d.field_12, &buf);
     buf.field_E = 0;
     buf.field_8 = flag;
-    func_80033B80(&buf, &d.field_10, &d.field_12);
+    _SsUtBuildADSR(&buf, &d.field_10, &d.field_12);
     func_80036594(a0, a1, a2, &d);
 }
 
@@ -15200,7 +15200,7 @@ void func_80034064(s16 a0, s16 a1, s16 a2, Arg33 d) {
     func_80036164(a0, a1, a2, &d);
     buf.field_E = 1;
     buf.field_8 = f;
-    func_80033B80(&buf, &d.field_10, &d.field_12);
+    _SsUtBuildADSR(&buf, &d.field_10, &d.field_12);
     func_80036594(a0, a1, a2, &d);
 }
 
@@ -15214,7 +15214,7 @@ void func_80034114(s16 a0, s16 a1, s16 a2, HandlerArg d) {
     } else if ((u8)(v - 64) < 64) {
         buf.field_10 = 1;
     }
-    func_80033B80(&buf, &d.field_10, &d.field_12);
+    _SsUtBuildADSR(&buf, &d.field_10, &d.field_12);
     func_80036594(a0, a1, a2, &d);
 }
 
@@ -15224,7 +15224,7 @@ void func_800341F4(s16 a0, s16 a1, s16 a2, HandlerArg d) {
 
     func_80036164(a0, a1, a2, &d);
     d.field_9 = v;
-    func_80033B80(&buf, &d.field_10, &d.field_12);
+    _SsUtBuildADSR(&buf, &d.field_10, &d.field_12);
     func_80036594(a0, a1, a2, &d);
 }
 
@@ -15234,28 +15234,28 @@ void func_80034294(s16 a0, s16 a1, s16 a2, HandlerArg arg) {
 
     func_80036164(a0, a1, a2, &arg);
     arg.field_A = v;
-    func_80033B80(&buf, &arg.field_10, &arg.field_12);
+    _SsUtBuildADSR(&buf, &arg.field_10, &arg.field_12);
     func_80036594(a0, a1, a2, &arg);
 }
 
-void func_80034334(s16 arg0, s16 arg1, s16 arg2, HandlerArg arg) {
+void _SsSetNrpnVabAttr15(s16 arg0, s16 arg1, s16 arg2, HandlerArg arg) {
     func_80036474((u8)arg.field_24);
 }
 
-void func_80034364(s16 arg0, s16 arg1, s16 arg2, HandlerArg arg) {
-    func_800363E4((u8)arg.field_24, (u8)arg.field_24);
+void _SsSetNrpnVabAttr16(s16 arg0, s16 arg1, s16 arg2, HandlerArg arg) {
+    SsUtSetReverbDepth((u8)arg.field_24, (u8)arg.field_24);
 }
 
-void func_80034394(s16 arg0, s16 arg1, s16 arg2, HandlerArg arg) {
-    func_80036514((u8)arg.field_24);
+void _SsSetNrpnVabAttr17(s16 arg0, s16 arg1, s16 arg2, HandlerArg arg) {
+    SsUtSetReverbFeedback((u8)arg.field_24);
 }
 
-void func_800343C4(s16 arg0, s16 arg1, s16 arg2, HandlerArg arg) {
-    func_800363A4((u8)arg.field_24);
+void _SsSetNrpnVabAttr18(s16 arg0, s16 arg1, s16 arg2, HandlerArg arg) {
+    SsUtSetReverbDelay((u8)arg.field_24);
 }
 
-void func_800343F4(s16 arg0, s16 arg1, s16 arg2, HandlerArg arg) {
-    func_800363A4((u8)arg.field_24);
+void _SsSetNrpnVabAttr19(s16 arg0, s16 arg1, s16 arg2, HandlerArg arg) {
+    SsUtSetReverbDelay((u8)arg.field_24);
 }
 
 void func_80034424(s16 a0, s16 a1) {
@@ -15263,7 +15263,7 @@ void func_80034424(s16 a0, s16 a1) {
     s32 note = *e->field_0++;
 
     func_80038A90((s16)(a0 | (a1 << 8)), e->field_26, e->field_37[e->field_17], note);
-    e->field_90 = func_80032494(a0, a1);
+    e->field_90 = _SsReadDeltaValue(a0, a1);
 }
 
 void func_800344D4(s16 a0, s16 a1, s32 a2) {
@@ -15275,7 +15275,7 @@ void func_800344D4(s16 a0, s16 a1, s32 a2) {
     switch ((u8)a2) {
     case 0:
         e->field_26 = v;
-        e->field_90 = func_80032494(i, j);
+        e->field_90 = _SsReadDeltaValue(i, j);
         return;
     case 6:
         D_80061BC8(i, j, v);
@@ -15311,11 +15311,11 @@ void func_800344D4(s16 a0, s16 a1, s32 a2) {
         D_80061BF0(i, j);
         return;
     }
-    e->field_90 = func_80032494(a0, a1);
+    e->field_90 = _SsReadDeltaValue(a0, a1);
 }
 
 
-void func_80034704(s16 a0, s16 a1) {
+void _SsGetMetaEvent(s16 a0, s16 a1) {
     Elm354F4 *e = &D_80061C50[a0][a1];
     s32 b0;
     s32 b1;
@@ -15338,7 +15338,7 @@ void func_80034704(s16 a0, s16 a1) {
             e->field_54 = e->field_54 + 1;
         }
     }
-    e->field_90 = func_80032494(a0, a1);
+    e->field_90 = _SsReadDeltaValue(a0, a1);
 }
 
 
@@ -15357,10 +15357,10 @@ void func_800348D4(s32 a0, s32 a1, s32 a2, s32 a3) {
     }
 }
 
-void func_800349B4(s16 arg0, s16 arg1, s16 arg2) {
+void _SsSetProgramChange(s16 arg0, s16 arg1, s16 arg2) {
     Elm354F4 *e = &D_80061C50[arg0][arg1];
     e->field_37[e->field_17] = arg2;
-    e->field_90 = func_80032494(arg0, arg1);
+    e->field_90 = _SsReadDeltaValue(arg0, arg1);
 }
 
 s32 func_80034A24(s16 a0, s16 a1, s16 a2, s32 a3) {
@@ -15416,7 +15416,7 @@ s32 func_80034A24(s16 a0, s16 a1, s16 a2, s32 a3) {
         if (*e->field_0 == 'S' || *e->field_0 == 'p') {
             e->field_0 += 5;
             if (*e->field_0++ != 0) {
-                func_8002A014(D_80010A64);
+                printf(D_80010A64);
                 return -1;
             }
             e->field_0 += 2;
@@ -15450,7 +15450,7 @@ s32 func_80034A24(s16 a0, s16 a1, s16 a2, s32 a3) {
     t = *e->field_0++;
     len = t | ((b0 << 24) + (b1 << 16) + (b2 << 8));
     n += 6;
-    r = func_80032494(a0, a1);
+    r = _SsReadDeltaValue(a0, a1);
     x = e->field_50 * e->field_8C;
     pC = *(u8 *volatile *)&e->field_0;
     p8 = *(u8 *volatile *)&e->field_0;
@@ -15502,7 +15502,7 @@ void func_80034E44(s16 a0, s16 a1, s8 a2, s16 a3) {
     }
 }
 
-void func_80034F64(s8 a0, s8 a1, s8 a2) {
+void SsSetSerialAttr(s8 a0, s8 a1, s8 a2) {
     Cmd3D124 c;
 
     if (a0 == 0) {
@@ -15525,16 +15525,16 @@ void func_80034F64(s8 a0, s8 a1, s8 a2) {
             c.field_20 = a2;
         }
     }
-    func_8003D124(&c);
+    SpuSetCommonAttr(&c);
 }
 
-void func_80035024(s16 a0, s16 a1) {
+void SsSetMVol(s16 a0, s16 a1) {
     Cmd3D124 c;
 
     c.field_0 = 3;
     c.field_4 = a0 * 0x81;
     c.field_6 = a1 * 0x81;
-    func_8003D124(&c);
+    SpuSetCommonAttr(&c);
 }
 
 void func_80035074(s32 a0) {
@@ -15587,15 +15587,15 @@ void func_80035074(s32 a0) {
         func_80030D64((s32)D_8004FC48.fn_0);
     } else {
         EnterCriticalSection();
-        func_800354BC(cmd);
-        func_80035384(cmd, (u16)rate, 0x1000);
+        ResetRCnt(cmd);
+        SetRCnt(cmd, (u16)rate, 0x1000);
         if (D_8004FC48.b2 == 0) {
-            D_8004FC48.fn_4 = ((void (*(*)(s32, void (*)(void)))(void))func_80030D04)(0, 0);
-            func_80030D04(D_8004FC48.b2, func_800352E4);
+            D_8004FC48.fn_4 = ((void (*(*)(s32, void (*)(void)))(void))InterruptCallback)(0, 0);
+            InterruptCallback(D_8004FC48.b2, func_800352E4);
         } else if (D_8004FC48.b1 != 0) {
-            func_80030D04(D_8004FC48.b2, func_80035330);
+            InterruptCallback(D_8004FC48.b2, func_80035330);
         } else {
-            func_80030D04(D_8004FC48.b2, D_8004FC48.fn_0);
+            InterruptCallback(D_8004FC48.b2, D_8004FC48.fn_0);
         }
     }
     ExitCriticalSection();
@@ -15633,7 +15633,7 @@ typedef struct {
 
 extern Ch35384 *D_8004FC6C;
 
-s32 func_80035384(s32 arg0, s32 arg1, s32 arg2) {
+s32 SetRCnt(s32 arg0, s32 arg1, s32 arg2) {
     s32 ch = (u16)arg0;
     s32 flags = 0x48;
     if (ch >= 3) {
@@ -15661,7 +15661,7 @@ s32 func_80035384(s32 arg0, s32 arg1, s32 arg2) {
 }
 
 
-s32 func_80035420(s32 arg0) {
+s32 GetRCnt(s32 arg0) {
     s32 ch = arg0 & 0xFFFF;
     s32 ret;
 
@@ -15674,19 +15674,19 @@ s32 func_80035420(s32 arg0) {
 }
 
 
-s32 func_80035458(u16 arg0) {
+s32 StartRCnt(u16 arg0) {
     s32 i = arg0;
 
     D_8004FC68->field_4 |= D_8004FC70[i];
     return i < 3;
 }
 
-s32 func_80035488(u16 arg0) {
+s32 StopRCnt(u16 arg0) {
     D_8004FC68->field_4 &= ~D_8004FC70[arg0];
     return 1;
 }
 
-s32 func_800354BC(s32 arg0) {
+s32 ResetRCnt(s32 arg0) {
     s32 ch = arg0 & 0xFFFF;
 
     if (ch >= 3) {
@@ -15710,7 +15710,7 @@ void func_800354F4(s32 arg0, s32 arg1) {
     D_80061C50[(s16)arg0][(s16)arg1].field_98 &= ~8;
     D_80061C50[(s16)arg0][(s16)arg1].field_98 &= ~0x400;
     D_80061C50[(s16)arg0][(s16)arg1].field_98 |= 4;
-    func_800391B4((s16)(arg0 | (arg1 << 8)));
+    _SsVmSeqKeyOff((s16)(arg0 | (arg1 << 8)));
     func_80036764();
 
     e->field_14 = 0;
@@ -15745,9 +15745,9 @@ void func_800354F4(s32 arg0, s32 arg1) {
 
 void func_80035674(s16 arg0) { func_800354F4(arg0, 0); }
 
-void func_8003569C(s16 arg0, s16 arg1) { func_800354F4(arg0, arg1); }
+void SsSepStop(s16 arg0, s16 arg1) { func_800354F4(arg0, arg1); }
 
-void func_800356D4(s8 a0, s16 l, s16 r) {
+void SsSetSerialVol(s8 a0, s16 l, s16 r) {
     Cmd3D124 c;
 
     if (a0 == 0) {
@@ -15772,10 +15772,10 @@ void func_800356D4(s8 a0, s16 l, s16 r) {
         c.field_1C = l * 0x102;
         c.field_1E = r * 0x102;
     }
-    func_8003D124(&c);
+    SpuSetCommonAttr(&c);
 }
 
-void func_800357E4(void *base, s16 rows, s16 cols) {
+void SsSetTableSize(void *base, s16 rows, s16 cols) {
     Elm354F4 *b = base;
     Elm354F4 **pp;
     s32 i;
@@ -15837,7 +15837,7 @@ void func_800357E4(void *base, s16 rows, s16 cols) {
 void func_80035A04(s32 arg) {
     s32 mode;
 
-    mode = func_80031838();
+    mode = GetVideoMode();
     if (arg & 0x1000) {
         D_8004FC48.flag = 1;
         D_8004FC48.mode = arg & 0xFFF;
@@ -16015,7 +16015,7 @@ void func_80035F04(s32 arg) {
             attr.voice = bit;
             func_8003C904(&attr);
             D_80062D30 = i;
-            func_80038314(1);
+            _SsVmKeyOffNow(1);
         }
     }
 }
@@ -16023,7 +16023,7 @@ void func_80035F04(s32 arg) {
 
 s32 func_80036054(s16 a0, s16 a1, SlotHead8 *out) {
     if (D_80062D38[a0] == 1) {
-        func_800398D4(a0, a1);
+        _SsVmVSetUp(a0, a1);
         out->field_0 = D_80062CFC[a1].field_0;
         out->field_1 = D_80062CFC[a1].field_1;
         out->field_2 = D_80062CFC[a1].field_2;
@@ -16039,7 +16039,7 @@ s32 func_80036164(s32 a0, s32 a1, s32 a2, Rec62D08 *out) {
     s32 k;
 
     if (D_80062D38[(s16)a0] == 1) {
-        func_800398D4(a0, a1);
+        _SsVmVSetUp(a0, a1);
         k = (s16)(a2 + D_80062D1F * 16);
         out->field_0 = D_80062D08[k].field_0;
         out->field_1 = D_80062D08[k].field_1;
@@ -16065,13 +16065,13 @@ s32 func_80036164(s32 a0, s32 a1, s32 a2, Rec62D08 *out) {
 }
 
 
-void func_800363A4(s16 arg0) {
+void SsUtSetReverbDelay(s16 arg0) {
     D_80062C18.field_0 = 8;
     D_80062C18.field_C = arg0;
     func_8003B994(&D_80062C18);
 }
 
-void func_800363E4(s16 arg0, s16 arg1) {
+void SsUtSetReverbDepth(s16 arg0, s16 arg1) {
     D_80062C18.field_0 = 6;
     D_80062C18.field_8 = arg0 * 0x7FFF / 127;
     D_80062C18.field_A = arg1 * 0x7FFF / 127;
@@ -16106,15 +16106,15 @@ s16 func_80036474(s16 arg0) {
     return -1;
 }
 
-void func_80036514(s16 arg0) {
+void SsUtSetReverbFeedback(s16 arg0) {
     D_80062C18.field_0 = 0x10;
     D_80062C18.field_10 = arg0;
     func_8003B994(&D_80062C18);
 }
 
-void func_80036554(void) { func_8003B794(0); }
+void SsUtReverbOff(void) { func_8003B794(0); }
 
-void func_80036574(void) { func_8003B794(1); }
+void SsUtReverbOn(void) { func_8003B794(1); }
 
 s32 func_80036594(a0, a1, a2, src)
 s16 a0;
@@ -16125,7 +16125,7 @@ Rec62D08 *src;
     s16 i;
 
     if (D_80062D38[a0] == 1) {
-        func_800398D4(a0, a1);
+        _SsVmVSetUp(a0, a1);
         i = a2 + D_80062D18.field_7 * 16;
         D_80062D08[i].field_0 = src->field_0;
         D_80062D08[i].field_1 = src->field_1;
@@ -16176,7 +16176,7 @@ void func_80036784(void) {
     D_80062BD0[D_80062BCC] = 0;
     masks = D_80062BD0;
     for (i = 0; i < D_80062D0C; i++) {
-        func_8003D104(i, (u16 *)&D_800624E8[i].field_6);
+        SpuGetVoiceEnvelope(i, (u16 *)&D_800624E8[i].field_6);
         if (D_800624E8[i].field_6 == 0) {
             masks[D_80062BCC] |= 1 << i;
         }
@@ -16202,7 +16202,7 @@ void func_80036784(void) {
                         lo = 0;
                         hi = 1 << (i - 16);
                     }
-                    func_8003B3F4(0, (hi << 16) | lo);
+                    SpuSetNoiseVoice(0, (hi << 16) | lo);
                 }
                 D_800624E8[i].field_1D = 0;
             }
@@ -16260,13 +16260,13 @@ void func_80036784(void) {
         p1++;
         p0++;
     }
-    func_8003C554(0, ((D_80062C12 & 0xFF) << 16) | D_80062C10);
-    func_8003C554(1, ((D_800624DA & 0xFF) << 16) | D_800624D8);
+    SpuSetKey(0, ((D_80062C12 & 0xFF) << 16) | D_80062C10);
+    SpuSetKey(1, ((D_800624DA & 0xFF) << 16) | D_800624D8);
     k = 0xFFFFFF >> (24 - D_80062D0C);
     x = ((D_800624DE << 16) | D_800624DC) & k;
-    func_8003C344(8, x | (((s32 (*)(void))func_8003C374)() & ~k));
+    SpuSetReverbVoice(8, x | (((s32 (*)(void))SpuGetReverbVoice)() & ~k));
     x = ((D_800624E2 << 16) | D_800624E0) & k;
-    func_8003B3F4(8, x | (((s32 (*)(void))func_8003B6E4)() & ~k));
+    SpuSetNoiseVoice(8, x | (((s32 (*)(void))SpuGetNoiseVoice)() & ~k));
     D_80062C10 = 0;
     D_80062C12 = 0;
     D_800624D8 = 0;
@@ -16282,9 +16282,9 @@ void func_80036C54(s32 arg) {
     u16 i;
     u16 *p;
 
-    func_8003C8C4(0);
+    _spu_setInTransfer(0);
     D_80062CB0 = 0;
-    func_8003AD44(0x20, &D_80062DE0);
+    SpuInitMalloc(0x20, &D_80062DE0);
     p = D_80062A48;
     for (i = 0; i < 0xC0; i++) {
         p[i] = 0;
@@ -16336,7 +16336,7 @@ void func_80036C54(s32 arg) {
         attr.voice = 1 << i;
         func_8003C904(&attr);
         D_80062D30 = i;
-        func_80038314(1);
+        _SsVmKeyOffNow(1);
     }
     D_80062C18.field_0 = 0;
     D_80062C18.field_8 = 0x3FFF;
@@ -16370,7 +16370,7 @@ s32 func_80036FA4(s16 a0, s16 a1, s16 a2, u16 a3, u16 arg4, u16 arg5) {
 
     ret = 0;
     e = &D_80061C50[a0 & 0xFF][(a0 & 0xFF00) >> 8];
-    if (func_800398D4(a1, a2) != 0) {
+    if (_SsVmVSetUp(a1, a2) != 0) {
         return -1;
     }
     D_80062D18.field_14 = a0;
@@ -16402,7 +16402,7 @@ s32 func_80036FA4(s16 a0, s16 a1, s16 a2, u16 a3, u16 arg4, u16 arg5) {
             D_80062D18.field_10 = D_80062D08[k].field_4;
             D_80062D18.field_11 = D_80062D08[k].field_5;
             D_80062D18.field_12 = D_80062D08[k].field_1;
-            D_80062D18.field_18 = func_80037744(0);
+            D_80062D18.field_18 = _SsVmAlloc(0);
             if (D_80062D18.field_18 < D_80062D0C) {
                 D_800624E8[D_80062D18.field_18].field_1D = 1;
                 D_800624E8[D_80062D18.field_18].field_2 = 0;
@@ -16420,11 +16420,11 @@ s32 func_80036FA4(s16 a0, s16 a1, s16 a2, u16 a3, u16 arg4, u16 arg5) {
                 D_800624E8[D_80062D18.field_18].field_E = a3;
                 D_800624E8[D_80062D18.field_18].field_1A = (s8)D_80062D18.field_F;
                 D_800624E8[D_80062D18.field_18].field_0 = D_80062D18.field_16;
-                func_800379B4();
+                _SsVmDoAllocate();
                 if (D_80062D18.field_16 == 0xFF) {
                     func_80037D64(D_80062D18.field_18);
                 } else {
-                    func_800383D4(n, func_80037B84());
+                    _SsVmKeyOnNow(n, func_80037B84());
                 }
                 ret |= 1 << D_80062D30;
             } else {
@@ -16454,7 +16454,7 @@ s32 func_800374C0(s32 a0, s32 a1, s32 a2, s32 a3) {
                     func_800382D4(i);
                 } else {
                     D_80062D30 = i;
-                    func_80038314(0);
+                    _SsVmKeyOffNow(0);
                 }
                 n++;
             }
@@ -16484,7 +16484,7 @@ void func_80037620(s32 a0, s32 a1, s32 a2, s32 a3, u16 p4, u16 p5) {
 
 void func_8003770C(s16 arg0, s16 arg1, u16 arg2) { func_800374C0(0x21, arg0, arg1, arg2); }
 
-u8 func_80037744(s32 arg0) {
+u8 _SsVmAlloc(s32 arg0) {
     u8 res = 99;
     u16 best_ee = 0xFFFF;
     u8 count = 0;
@@ -16553,7 +16553,7 @@ u8 func_80037744(s32 arg0) {
     return res;
 }
 
-void func_800379B4(void) {
+void _SsVmDoAllocate(void) {
     s32 i;
     s16 vi;
     s16 v;
@@ -16601,15 +16601,15 @@ u16 func_80037B84(void) {
     if (v >= 0x80) {
         v = 0x7F;
     }
-    return func_80037C38(D_80062D18.field_2, 0, D_80062D18.field_10, v);
+    return SsPitchFromNote(D_80062D18.field_2, 0, D_80062D18.field_10, v);
 }
 
 u16 func_80037BD0(s16 a0, s16 a1) {
     s16 i = D_80062D18.field_7 * 16 + (s8)D_80062D18.field_C;
-    return func_80037C38(a0, a1, D_80062D08[i].field_4, D_80062D08[i].field_5);
+    return SsPitchFromNote(a0, a1, D_80062D08[i].field_4, D_80062D08[i].field_5);
 }
 
-s32 func_80037C38(s32 note, s32 fine, s32 center, s32 shift) {
+s32 SsPitchFromNote(s32 note, s32 fine, s32 center, s32 shift) {
     s16 f = (u8)shift + fine;
     s16 n;
     s16 fr;
@@ -16696,7 +16696,7 @@ void func_80037D64(u8 a0) {
         r2 = r2 * r2 / 0x3FFF;
     }
     v = a0;
-    func_8003B744((D_80062D18.field_2 - (s8)D_80062D18.field_10) & 0x3F);
+    SpuSetNoiseClock((D_80062D18.field_2 - (s8)D_80062D18.field_10) & 0x3F);
     ((Snd62A28 *)D_80062A28)->regs[v].vol_r = r2;
     D_80062A48[v * 8] = l2;
     D_80062A28[v] |= 3;
@@ -16737,7 +16737,7 @@ void func_800382D4(u8 arg0) {
     D_800624E8[arg0].field_4 = 0;
 }
 
-void func_80038314(s32 a0) {
+void _SsVmKeyOffNow(s32 a0) {
     u16 ch = D_80062D30;
     u32 v = ch & 0xFFFF;
     s32 hi;
@@ -16765,7 +16765,7 @@ void func_80038314(s32 a0) {
     D_800624DA &= ~c12;
 }
 
-void func_800383D4(u8 a0, u16 a1) {
+void _SsVmKeyOnNow(u8 a0, u16 a1) {
     u32 vol;
     u32 l;
     u32 r;
@@ -16885,7 +16885,7 @@ s32 func_80038A90(s16 a0, s16 a1, s16 a2, s32 a3) {
     s16 i;
     s32 sum;
 
-    func_800398D4(a1, a2);
+    _SsVmVSetUp(a1, a2);
     i = 0;
     D_80062D2C[0] = a0;
     sum = 0;
@@ -16897,7 +16897,7 @@ s32 func_80038A90(s16 a0, s16 a1, s16 a2, s32 a3) {
 
 
 s32 func_80038B74(s16 a0, s16 a1, s32 a2) {
-    if (func_800398D4(a0, a1) != 0) {
+    if (_SsVmVSetUp(a0, a1) != 0) {
         return -1;
     }
     D_80062CFC[a1].field_1 = a2;
@@ -16937,7 +16937,7 @@ s16 func_80038BE4(s32 a0, s32 a1, s32 a2, s32 a3) {
         m = 1 << i;
 
         if (!(D_8004FC18 & m) && D_800624E8[i].field_10 == (s16)id && D_800624E8[i].field_18 == e->field_26) {
-            func_800398D4(D_800624E8[i].field_18, D_800624E8[i].field_12);
+            _SsVmVSetUp(D_800624E8[i].field_18, D_800624E8[i].field_12);
             t = D_800624E8[i].field_8 * *(D_800624E8[i].field_C + e->field_60) / 127 * 0x3FFF;
             vol = ((Snd62D04 *)D_80062D04)->field_18 * t / 0x3F01;
             vol = vol * D_80062CFC[D_800624E8[i].field_14].field_1 * D_80062D08[D_800624E8[i].field_12 * 16 + D_800624E8[i].field_16].field_2 / 0x3F01;
@@ -16991,7 +16991,7 @@ s16 func_80039150(s32 a0, u16 *a1, u16 *a2) {
     return D_80062D2C[0];
 }
 
-void func_800391B4(s32 id) {
+void _SsVmSeqKeyOff(s32 id) {
     u8 i;
 
     for (i = 0; i < D_80062D0C; i++) {
@@ -16999,7 +16999,7 @@ void func_800391B4(s32 id) {
 
         if (!(D_8004FC18 & m) && D_800624F8[i].field_0 == (s16)id) {
             D_80062D30 = i;
-            func_80038314(0);
+            _SsVmKeyOffNow(0);
         }
     }
 }
@@ -17037,7 +17037,7 @@ s32 func_80039334(s16 a0, s16 a1, s16 a2, u16 a3, u16 a4) {
     n = 0;
     v4 = a4;
     e = &D_80061C50[a0 & 0xFF][(a0 & 0xFF00) >> 8];
-    func_800398D4(a1, a2);
+    _SsVmVSetUp(a1, a2);
     D_80062D2C[0] = a0;
     if (v4 == 0) {
         v4 = 1;
@@ -17114,7 +17114,7 @@ s32 func_80039334(s16 a0, s16 a1, s16 a2, u16 a3, u16 a4) {
 }
 
 
-s32 func_800398D4(s16 a0, s16 a1) {
+s32 _SsVmVSetUp(s16 a0, s16 a1) {
     if ((u16)a0 >= 16 || D_80062D38[a0] != 1 || a1 >= D_80062CFA) {
         return -1;
     }
@@ -17135,18 +17135,18 @@ void func_80039994(s16 id) {
         st = D_80062D38[id];
         if (st < 3) {
             if (st != 0) {
-                func_8003B374(D_80062D98[id]);
+                SpuFree(D_80062D98[id]);
                 D_80062D38[id] = 0;
                 D_80062D90--;
                 if (func_8003C8EC() == 1) {
-                    func_8003C8C4(0);
+                    _spu_setInTransfer(0);
                 }
             }
         }
     }
 }
 
-s16 func_80039A44(s32 arg0, s16 arg1) {
+s16 SsVabOpenHead(s32 arg0, s16 arg1) {
     return func_80039B54(arg0, arg1, func_80039A78, 0);
 }
 
@@ -17155,7 +17155,7 @@ s32 func_80039A78(s32 a0, s32 a1, s32 id) {
 
     if (r == -1) {
         D_80062D38[(s16)id] = 0;
-        func_8003C8C4(0);
+        _spu_setInTransfer(0);
         D_80062D90--;
         return -1;
     }
@@ -17190,7 +17190,7 @@ s32 func_80039B54(u8 *addr, s32 vabid, s32 (*fn)(), s32 mode) {
     if (func_8003C8EC() == 1) {
         return -1;
     }
-    func_8003C8C4(1);
+    _spu_setInTransfer(1);
     if ((s16)vabid >= 16) {
         goto fail;
     }
@@ -17212,7 +17212,7 @@ s32 func_80039B54(u8 *addr, s32 vabid, s32 (*fn)(), s32 mode) {
     }
     if (id >= 16) {
     fail:
-        func_8003C8C4(0);
+        _spu_setInTransfer(0);
         return -1;
     }
     q = addr;
@@ -17222,7 +17222,7 @@ s32 func_80039B54(u8 *addr, s32 vabid, s32 (*fn)(), s32 mode) {
     D_80062D10 = 0;
     if (((u32)vh->form >> 8) != 0x564142) {
         D_80062D38[id] = 0;
-        func_8003C8C4(0);
+        _spu_setInTransfer(0);
         D_80062D90--;
         return -1;
     }
@@ -17233,7 +17233,7 @@ s32 func_80039B54(u8 *addr, s32 vabid, s32 (*fn)(), s32 mode) {
     }
     if (vh->ps > D_80062CFA) {
         D_80062D38[id] = 0;
-        func_8003C8C4(0);
+        _spu_setInTransfer(0);
         D_80062D90--;
         return -1;
     }
@@ -17271,7 +17271,7 @@ s32 func_80039B54(u8 *addr, s32 vabid, s32 (*fn)(), s32 mode) {
     }
     if ((u32)(spu + n) > 0x80000) {
         D_80062D38[id] = 0;
-        func_8003C8C4(0);
+        _spu_setInTransfer(0);
         D_80062D90--;
         return -1;
     }
@@ -17299,19 +17299,19 @@ s16 func_80039F44(s32 a0, s16 id) {
             addr = D_80062D98[id];
             func_8003C7D4(0);
             if (func_8003C774(addr) != 0) {
-                func_8003C714(a0, D_80062D50[id]);
+                SpuWrite(a0, D_80062D50[id]);
                 D_80062D38[id] = 1;
                 return id;
             }
         }
     }
-    func_8003C8C4(0);
+    _spu_setInTransfer(0);
     return -1;
 }
 
 extern s32 func_8003C804();
 
-s16 func_8003A004(s16 a0) {
+s16 SsVabTransCompleted(s16 a0) {
     do { } while (0);
     return func_8003C804(a0);
 }
@@ -17319,13 +17319,13 @@ __asm__(".word 0\n.word 0\n");
 
 extern void func_8003A054(s32);
 
-void func_8003A034(void) { func_8003A054(0); }
+void SpuInit(void) { func_8003A054(0); }
 
 void func_8003A054(s32 a0) {
     s32 i;
     u16 *p;
 
-    func_80030CD4();
+    ResetCallback();
     func_8003A1D4(a0);
     if (a0 == 0) {
         i = 23;
@@ -17345,7 +17345,7 @@ void func_8003A054(s32 a0) {
     D_8004FDCC.field_8 = 0;
     D_8004FDCC.field_C = 0;
     D_8004FDC4 = D_800503B8[0];
-    func_8003AAE0(0xD1, D_800503B8[0], 0);
+    _spu_FsetRXX(0xD1, D_800503B8[0], 0);
     D_8004FE88 = 0;
     D_8004FE8C = 0;
     D_8004FE90 = 0;
@@ -17361,7 +17361,7 @@ void func_8003A13C(void) {
     if (D_8004FE18 == 0) {
         D_8004FE18 = 1;
         EnterCriticalSection();
-        func_8003AD14((s32)func_8003A614);
+        _SpuDataCallback((s32)func_8003A614);
         D_8004FDB0 = OpenEvent(0xF0000009, 0x20, 0x2000, 0);
         EnableEvent(D_8004FDB0);
         ExitCriticalSection();
@@ -17385,13 +17385,13 @@ s32 func_8003A1D4(s32 a0) {
     ((volatile u16 *)D_8004FE28)[0xC0] = 0;
     ((volatile u16 *)D_8004FE28)[0xC1] = 0;
     ((volatile u16 *)D_8004FE28)[0xD5] = 0;
-    func_8003ACAC();
+    _spu_Fw1ts();
     ((volatile u16 *)D_8004FE28)[0xC0] = 0;
     ((volatile u16 *)D_8004FE28)[0xC1] = 0;
     i = 0;
     while (((volatile u16 *)D_8004FE28)[0xD7] & 0x7FF) {
         if (++i > 0xF00) {
-            func_8002A014(D_80010AA4, D_80010AB4);
+            printf(D_80010AA4, D_80010AB4);
             break;
         }
     }
@@ -17434,16 +17434,16 @@ s32 func_8003A1D4(s32 a0) {
         }
         ((volatile u16 *)D_8004FE28)[0xC4] = 0xFFFF;
         ((volatile u16 *)D_8004FE28)[0xC5] = 0xFF;
-        func_8003ACAC();
-        func_8003ACAC();
-        func_8003ACAC();
-        func_8003ACAC();
+        _spu_Fw1ts();
+        _spu_Fw1ts();
+        _spu_Fw1ts();
+        _spu_Fw1ts();
         ((volatile u16 *)D_8004FE28)[0xC6] = 0xFFFF;
         ((volatile u16 *)D_8004FE28)[0xC7] = 0xFF;
-        func_8003ACAC();
-        func_8003ACAC();
-        func_8003ACAC();
-        func_8003ACAC();
+        _spu_Fw1ts();
+        _spu_Fw1ts();
+        _spu_Fw1ts();
+        _spu_Fw1ts();
     }
     D_8004FE5C = 1;
     ((volatile u16 *)D_8004FE28)[0xD5] = 0xC000;
@@ -17461,7 +17461,7 @@ void func_8003A454(u16 *addr, u32 size) {
 
     ((volatile u16 *)D_8004FE28)[0xD3] = D_8004FE40;
     status = ((volatile u16 *)D_8004FE28)[0xD7] & 0x7FF;
-    func_8003ACAC();
+    _spu_Fw1ts();
     while (size != 0) {
         wsize = 0x40;
         if (size <= 0x40) {
@@ -17471,23 +17471,23 @@ void func_8003A454(u16 *addr, u32 size) {
             ((volatile u16 *)D_8004FE28)[0xD4] = *addr++;
         }
         ((volatile u16 *)D_8004FE28)[0xD5] = (((volatile u16 *)D_8004FE28)[0xD5] & ~0x30) | 0x10;
-        func_8003ACAC();
+        _spu_Fw1ts();
         count = 0;
         while (((volatile u16 *)D_8004FE28)[0xD7] & 0x400) {
             if (++count > 0xF00) {
-                func_8002A014(D_80010AA4, D_80010AC4);
+                printf(D_80010AA4, D_80010AC4);
                 break;
             }
         }
-        func_8003ACAC();
-        func_8003ACAC();
+        _spu_Fw1ts();
+        _spu_Fw1ts();
         size -= wsize;
     }
     ((volatile u16 *)D_8004FE28)[0xD5] &= ~0x30;
     count = 0;
     while ((((volatile u16 *)D_8004FE28)[0xD7] & 0x7FF) != status) {
         if (++count > 0xF00) {
-            func_8002A014(D_80010AA4, D_80010AD8);
+            printf(D_80010AA4, D_80010AD8);
             break;
         }
     }
@@ -17498,7 +17498,7 @@ void func_8003A614(void) {
     u32 i;
 
     if (D_8004FE78 == 0) {
-        func_8003ACAC();
+        _spu_Fw1ts();
     }
     r = D_8004FE28;
     r[0xD5] &= 0xFFCF;
@@ -17517,11 +17517,11 @@ void func_8003A614(void) {
 
 void func_8003A6D0(s32 addr, u16 spuAddr, s32 blocks) {
     D_8004FE28[0xD3] = spuAddr;
-    func_8003ACAC();
+    _spu_Fw1ts();
     D_8004FE28[0xD5] |= 0x30;
     blocks <<= 16;
-    func_8003ACAC();
-    func_8003AC84();
+    _spu_Fw1ts();
+    _spu_FsetDelayR();
     *D_8004FE2C = addr;
     *D_8004FE30 = blocks | 0x10;
     D_8004FE78 = 1;
@@ -17575,9 +17575,9 @@ s32 func_8003A778(s32 mode, ...) {
             }
         }
         if (D_8004FE78 == 1) {
-            func_8003AC84();
+            _spu_FsetDelayR();
         } else {
-            func_8003AC5C();
+            _spu_FsetDelayW();
         }
         ap++;
         c = 0x1000201;
@@ -17613,7 +17613,7 @@ s32 func_8003AA7C(s32 a0, s32 a1) {
     return a1;
 }
 
-void func_8003AAE0(s32 arg0, u32 arg1, s32 arg2) {
+void _spu_FsetRXX(s32 arg0, u32 arg1, s32 arg2) {
     if (arg2 == 0) {
         D_8004FE28[arg0] = arg1;
     } else {
@@ -17621,7 +17621,7 @@ void func_8003AAE0(s32 arg0, u32 arg1, s32 arg2) {
     }
 }
 
-u32 func_8003AB24(s32 idx, u32 a1) {
+u32 _spu_FsetRXXa(s32 idx, u32 a1) {
     u32 v;
     u32 d;
     u16 r;
@@ -17647,13 +17647,13 @@ u32 func_8003AB24(s32 idx, u32 a1) {
 }
 
 
-s32 func_8003ABC8(s32 a0, s32 a1) {
+s32 _spu_FgetRXXa(s32 a0, s32 a1) {
     u16 x = D_8004FE28[a0];
     if (a1 == -1) return x;
     return x << D_8004FE50;
 }
 
-void func_8003AC04(s32 a0) {
+void _spu_FsetPCR(s32 a0) {
     *D_8004FE38 &= 0xFFF8FFFF;
     if (a0 != 0) {
         *D_8004FE38 |= 0x30000;
@@ -17663,15 +17663,15 @@ void func_8003AC04(s32 a0) {
 }
 
 extern u32 *D_8004FE3C;
-void func_8003AC5C(void) {
+void _spu_FsetDelayW(void) {
     *D_8004FE3C = (*D_8004FE3C & 0xF0FFFFFF) | 0x20000000;
 }
 
-void func_8003AC84(void) {
+void _spu_FsetDelayR(void) {
     *D_8004FE3C = (*D_8004FE3C & 0xF0FFFFFF) | 0x22000000;
 }
 
-void func_8003ACAC(void) {
+void _spu_Fw1ts(void) {
     volatile s32 i;
     volatile s32 x;
 
@@ -17681,9 +17681,9 @@ void func_8003ACAC(void) {
     }
 }
 
-void func_8003AD14(s32 arg0) { func_80030D34(4, arg0); }
+void _SpuDataCallback(s32 arg0) { DMACallback(4, arg0); }
 
-s32 func_8003AD44(s32 n, Hdr3AD44 *h) {
+s32 SpuInitMalloc(s32 n, Hdr3AD44 *h) {
     if (n > 0) {
         h->field_0 = 0x40001010;
         D_8004FE90 = h;
@@ -17719,7 +17719,7 @@ s32 func_8003ADA4(s32 size) {
     if (D_8004FE90->field_0 & 0x40000000) {
         found = 0;
     } else {
-        func_8003B074();
+        _spu_gcSPU();
         for (; i < D_8004FE88; i++) {
             if ((D_8004FE90[i].field_0 & 0x40000000) ||
                 ((D_8004FE90[i].field_0 & 0x80000000) && (u32)D_8004FE90[i].field_4 >= (u32)size)) {
@@ -17745,7 +17745,7 @@ s32 func_8003ADA4(s32 size) {
         D_8004FE8C = n;
         e->field_4 = size;
         e->field_0 &= 0x0FFFFFFF;
-        func_8003B074();
+        _spu_gcSPU();
         return D_8004FE90[found].field_0;
     }
     esz = e->field_4;
@@ -17763,12 +17763,12 @@ s32 func_8003ADA4(s32 size) {
     }
     D_8004FE90[found].field_4 = size;
     D_8004FE90[found].field_0 &= 0x0FFFFFFF;
-    func_8003B074();
+    _spu_gcSPU();
     return D_8004FE90[found].field_0;
 }
 
 
-void func_8003B074(void) {
+void _spu_gcSPU(void) {
     Hdr3AD44 *e;
     Hdr3AD44 *o;
     s32 i;
@@ -17848,7 +17848,7 @@ void func_8003B074(void) {
 }
 
 
-void func_8003B374(s32 id) {
+void SpuFree(s32 id) {
     s32 i;
     u32 w;
 
@@ -17862,12 +17862,12 @@ void func_8003B374(s32 id) {
             break;
         }
     }
-    func_8003B074();
+    _spu_gcSPU();
 }
 
-void func_8003B3F4(s32 arg0, s32 arg1) { func_8003B424(arg0, arg1, 0xCA, 0xCB); }
+void SpuSetNoiseVoice(s32 arg0, s32 arg1) { _SpuSetAnyVoice(arg0, arg1, 0xCA, 0xCB); }
 
-s32 func_8003B424(s32 mode, u32 bits, s32 lo, s32 hi) {
+s32 _SpuSetAnyVoice(s32 mode, u32 bits, s32 lo, s32 hi) {
     volatile u16 *r;
     u32 ret;
     u32 h;
@@ -17932,16 +17932,16 @@ s32 func_8003B424(s32 mode, u32 bits, s32 lo, s32 hi) {
 }
 
 
-void func_8003B6E4(void) { func_8003B714(0xCA, 0xCB); }
+void SpuGetNoiseVoice(void) { _SpuGetAnyVoice(0xCA, 0xCB); }
 
-s32 func_8003B714(s32 a0, s32 a1) {
+s32 _SpuGetAnyVoice(s32 a0, s32 a1) {
     volatile u16 *r = D_8004FE28;
     s32 hi = (r[a1] & 0xFF) << 16;
 
     return r[a0] | hi;
 }
 
-s32 func_8003B744(s32 arg0) {
+s32 SpuSetNoiseClock(s32 arg0) {
     s32 v;
 
     if (arg0 < 0) {
@@ -17970,7 +17970,7 @@ s32 func_8003B794(s32 a0) {
         D_8004FDCC.field_6 = 0;
         break;
     case 1:
-        if (D_8004FDC0 != a0 && func_8003B904(D_8004FDC4) != 0) {
+        if (D_8004FDC0 != a0 && _SpuIsInAllocateArea_(D_8004FDC4) != 0) {
             r = D_8004FE28[0xD5];
             D_8004FDBC = 0;
             D_8004FE28[0xD5] = r & ~0x80;
@@ -17984,7 +17984,7 @@ s32 func_8003B794(s32 a0) {
     return D_8004FDBC;
 }
 
-s32 func_8003B884(u32 addr) {
+s32 _SpuIsInAllocateArea(u32 addr) {
     Hdr3AD44 *h;
     u32 v;
 
@@ -18011,7 +18011,7 @@ s32 func_8003B884(u32 addr) {
     return 0;
 }
 
-s32 func_8003B904(u32 a0) {
+s32 _SpuIsInAllocateArea_(u32 a0) {
     Hdr3AD44 *p;
     u32 v;
     u32 m1;
@@ -18079,7 +18079,7 @@ s32 func_8003B994(Cmd62C18 *attr) {
             mode &= ~0x100;
             clear = 1;
         }
-        if (mode >= 10 || (tbl = D_800503B8, func_8003B904(D_800503B8[mode]))) {
+        if (mode >= 10 || (tbl = D_800503B8, _SpuIsInAllocateArea_(D_800503B8[mode]))) {
             return -1;
         }
         modeSet = 1;
@@ -18165,13 +18165,13 @@ s32 func_8003B994(Cmd62C18 *attr) {
     D_8004FDCC.field_6 = 0;
 done:
     if (modeSet || delaySet || fbSet) {
-        func_8003BE74(&p);
+        _spu_setReverbAttr(&p);
     }
     if (clear) {
         func_8003C3A4(D_8004FDCC.field_0);
     }
     if (modeSet) {
-        func_8003AAE0(0xD1, D_8004FDC4, 0);
+        _spu_FsetRXX(0xD1, D_8004FDC4, 0);
         if (wasOn) {
             D_8004FE28[0xD5] |= 0x80;
         }
@@ -18180,7 +18180,7 @@ done:
 }
 
 
-void func_8003BE74(Rev3B994 *p) {
+void _spu_setReverbAttr(Rev3B994 *p) {
     u32 mask;
     s32 all;
 
@@ -18285,9 +18285,9 @@ void func_8003BE74(Rev3B994 *p) {
 }
 
 
-void func_8003C344(s32 arg0, s32 arg1) { func_8003B424(arg0, arg1, 0xCC, 0xCD); }
+void SpuSetReverbVoice(s32 arg0, s32 arg1) { _SpuSetAnyVoice(arg0, arg1, 0xCC, 0xCD); }
 
-void func_8003C374(void) { func_8003B714(0xCC, 0xCD); }
+void SpuGetReverbVoice(void) { _SpuGetAnyVoice(0xCC, 0xCD); }
 
 s32 func_8003C3A4(s32 a0) {
     u32 size;
@@ -18299,7 +18299,7 @@ s32 func_8003C3A4(s32 a0) {
     s32 *p;
     void (*volatile cb)(void) = 0;
 
-    if ((u32)a0 >= 10 || func_8003B904(*(p = &D_800503B8[a0])) != 0) {
+    if ((u32)a0 >= 10 || _SpuIsInAllocateArea_(*(p = &D_800503B8[a0])) != 0) {
         return -1;
     }
     if (a0 == 0) {
@@ -18343,7 +18343,7 @@ s32 func_8003C3A4(s32 a0) {
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/156C", WaitEvent);
 
-void func_8003C554(s32 on_off, u32 voice_bit) {
+void SpuSetKey(s32 on_off, u32 voice_bit) {
     u32 hi;
     s32 t;
     volatile u16 *p;
@@ -18396,7 +18396,7 @@ void func_8003C554(s32 on_off, u32 voice_bit) {
 }
 
 
-u32 func_8003C714(s32 a0, u32 n) {
+u32 SpuWrite(s32 a0, u32 n) {
     if (n > 0x7EFF0) {
         n = 0x7EFF0;
     }
@@ -18411,7 +18411,7 @@ s32 func_8003C774(u32 addr) {
     if (addr - 0x1010 > 0x7EFE8) {
         return 0;
     }
-    D_8004FE40 = func_8003AB24(-1, addr);
+    D_8004FE40 = _spu_FsetRXXa(-1, addr);
     return D_8004FE40 << D_8004FE50;
 }
 
@@ -18455,7 +18455,7 @@ s32 func_8003C804(s32 a0) {
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/156C", TestEvent);
 
-void func_8003C8C4(s32 arg0) {
+void _spu_setInTransfer(s32 arg0) {
     if (arg0 == 1) {
         D_8004FE5C = 0;
     } else {
@@ -18493,7 +18493,7 @@ void func_8003C904(VAttr36C54 *arg) {
             D_8004FDE4[ch] = arg->sample_note;
         }
         if (all || (mask & 0x20)) {
-            D_8004FE28[ch8 + 2] = func_8003CF04(D_8004FDE4[ch] >> 8, D_8004FDE4[ch] & 0xFF,
+            D_8004FE28[ch8 + 2] = _spu_note2pitch(D_8004FDE4[ch] >> 8, D_8004FDE4[ch] & 0xFF,
                                                 arg->note >> 8, arg->note & 0xFF);
         }
         if (all || (mask & 0x1)) {
@@ -18571,10 +18571,10 @@ void func_8003C904(VAttr36C54 *arg) {
             D_8004FE28[ch8 + 1] = vol | vmode;
         }
         if (all || (mask & 0x80)) {
-            func_8003AB24(ch8 | 3, arg->addr);
+            _spu_FsetRXXa(ch8 | 3, arg->addr);
         }
         if (all || (mask & 0x10000)) {
-            func_8003AB24(ch8 | 7, arg->loop_addr);
+            _spu_FsetRXXa(ch8 | 7, arg->loop_addr);
         }
         if (all || (mask & 0x20000)) {
             D_8004FE28[ch8 + 4] = arg->adsr1;
@@ -18656,7 +18656,7 @@ void func_8003C904(VAttr36C54 *arg) {
 }
 
 
-u16 func_8003CF04(s32 cenHigh, s32 cenLow, s32 noteHigh, s32 noteLow) {
+u16 _spu_note2pitch(s32 cenHigh, s32 cenLow, s32 noteHigh, s32 noteLow) {
     s16 fine;
     s32 note;
     s32 oct;
@@ -18683,7 +18683,7 @@ u16 func_8003CF04(s32 cenHigh, s32 cenLow, s32 noteHigh, s32 noteLow) {
     return pitch;
 }
 
-s32 func_8003CFD4(s32 note, s32 fine, u16 pitch) {
+s32 _spu_pitch2note(s32 note, s32 fine, u16 pitch) {
     s32 i;
     s32 j;
     s32 k;
@@ -18729,11 +18729,11 @@ s32 func_8003CFD4(s32 note, s32 fine, u16 pitch) {
 }
 
 
-void func_8003D104(s32 a0, u16 *a1) {
+void SpuGetVoiceEnvelope(s32 a0, u16 *a1) {
     *a1 = D_8004FE28[a0 * 8 + 6];
 }
 
-void func_8003D124(Cmd3D124 *a0) {
+void SpuSetCommonAttr(Cmd3D124 *a0) {
     s32 mask;
     s32 all;
     s32 mode;
@@ -18954,7 +18954,7 @@ void func_8003D620(s32 a0, s32 a1, s32 a2, s32 a3) {
     ExitCriticalSection();
     ChangeClearPAD(0);
     func_8003D770();
-    func_8003D8B4(a0, a1, a2, a3);
+    PAD_init(a0, a1, a2, a3);
     D_800506B8 = 1;
 }
 
@@ -19012,7 +19012,7 @@ INCLUDE_ASM("asm/USA/main/nonmatchings/156C", InitPAD);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/156C", StartPAD);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8003D8B4);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", PAD_init);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8003D8C4);
 
@@ -19043,10 +19043,10 @@ INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8003DBE4);
 INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8003DC24);
 
 void func_8003DCA4(void) {
-    D_80062FD8 = func_8003F178(0);
+    D_80062FD8 = MemCardCallback(0);
 }
 
-void func_8003DCCC(void) { func_8003F178(D_80062FD8); }
+void func_8003DCCC(void) { MemCardCallback(D_80062FD8); }
 
 s32 *func_8003DCF4(void) {
     return &D_80062F80.field_0;
@@ -19057,7 +19057,7 @@ void func_8003DD00(void) {
 
     p->field_C = 0;
     p->field_44 = 0;
-    func_8003FA14();
+    Card_ClearTaskStack();
     p->field_0 = 0;
     p->field_4 = 0;
     p->field_8 = 0;
@@ -19067,7 +19067,7 @@ void func_8003DD00(void) {
     p->field_48[0] = 1;
     p->field_50[0] = ((volatile State62F80 *)p)->field_50[1];
     func_8003FBF4();
-    func_80030D98(7, (s32)func_8003F46C);
+    VSyncCallbacks(7, (s32)func_8003F46C);
 }
 
 void func_8003DD70(void) {
@@ -19075,7 +19075,7 @@ void func_8003DD70(void) {
 
     while (*p != 0) {
     }
-    func_80030D98(7, 0);
+    VSyncCallbacks(7, 0);
     func_8003FDF0();
 }
 
@@ -19090,7 +19090,7 @@ s32 func_8003DDB0(s32 arg0) {
         func_8003FA24(func_8003DE18);
         r = 1;
     } else {
-        func_8002A014(D_80010B74, arg0);
+        printf(D_80010B74, arg0);
         r = 0;
     }
     return r;
@@ -19137,7 +19137,7 @@ s32 func_8003DE18(s32 *st) {
         case 4:
             if (D_800506CC == 0 && D_800506C8 < 0x80) {
                 func_8003FEA4();
-                func_8003F9B4(D_80062F80.field_10);
+                _card_clear(D_80062F80.field_10);
                 *st = 0x15;
                 break;
             }
@@ -19180,21 +19180,21 @@ s32 func_8003DE18(s32 *st) {
         }
         break;
     case 21:
-        if (func_80040198() == 0) {
+        if (Card_GetHwEventBits() == 0) {
             return 0;
         }
         func_80040084();
         *st = 0;
         break;
     default:
-        func_8002A014(D_80010B9C);
+        printf(D_80010B9C);
         break;
     }
     return 0;
 }
 
 
-s32 func_8003E134(s32 arg0) {
+s32 MemCardAccept(s32 arg0) {
     s32 r;
 
     if (D_80062F80.field_0 <= 0) {
@@ -19205,7 +19205,7 @@ s32 func_8003E134(s32 arg0) {
         func_8003FA24(func_8003E19C);
         r = 1;
     } else {
-        func_8002A014(D_80010B74);
+        printf(D_80010B74);
         r = 0;
     }
     return r;
@@ -19237,7 +19237,7 @@ s32 func_8003E19C(s32 *st) {
                 q->field_C = D_80062F80.field_C | (1 << D_80062F80.field_10);
             }
             func_8003FEA4();
-            func_8003F9B4(D_80062F80.field_10);
+            _card_clear(D_80062F80.field_10);
             *st = 0x15;
             break;
         case 0:
@@ -19249,7 +19249,7 @@ s32 func_8003E19C(s32 *st) {
         }
         break;
     case 21:
-        if (func_80040198() == 0) {
+        if (Card_GetHwEventBits() == 0) {
             return 0;
         }
         func_80040084();
@@ -19312,10 +19312,10 @@ s32 func_8003E444(s32 a0, s32 a1, s32 a2) {
 
     tries = 0;
     if (D_80062F80.field_14 >= 0) {
-        func_8002A014(D_80010C70);
+        printf(D_80010C70);
         return -1;
     }
-    func_8003F518(a0, D_80062F80.field_24);
+    Card_MakeDevName(a0, D_80062F80.field_24);
     func_8003F874(D_80062F80.field_24, a1);
     D_80062F80.field_10 = a0;
     do {
@@ -19324,9 +19324,9 @@ s32 func_8003E444(s32 a0, s32 a1, s32 a2) {
         if (r >= 0) {
             goto ok;
         }
-        D_80062FD8 = func_8003F178(0);
+        D_80062FD8 = MemCardCallback(0);
         if (D_80062F80.field_0 > 0) {
-            func_8002A014(D_80010B74);
+            printf(D_80010B74);
         } else {
             D_80062F80.field_0 = 2;
             D_80062F80.field_4 = 0;
@@ -19334,8 +19334,8 @@ s32 func_8003E444(s32 a0, s32 a1, s32 a2) {
             D_80062F90 = a0;
             func_8003FA24(func_8003E19C);
         }
-        func_8003F18C(0, NULL, &st);
-        func_8003F178(D_80062FD8);
+        MemCardSync(0, NULL, &st);
+        MemCardCallback(D_80062FD8);
         if (st == 3) {
             goto retry;
         }
@@ -19385,7 +19385,7 @@ s32 func_8003E610(s32 a0, s32 a1, s32 a2) {
         func_8003FA24(func_8003E6C8);
         return 1;
     }
-    func_8002A014(msg);
+    printf(msg);
     return 0;
 }
 
@@ -19423,7 +19423,7 @@ s32 func_8003E6C8(s32 *state) {
         }
         if (r == 4) {
             func_8003FEA4();
-            func_8003F9B4(D_80062F90);
+            _card_clear(D_80062F90);
             *state = 32;
             break;
         }
@@ -19431,7 +19431,7 @@ s32 func_8003E6C8(s32 *state) {
         ((volatile State62F80 *)&D_80062F80)->field_4 = func_8003F418(r);
         return 1;
     case 32:
-        if (func_80040198() == 0) {
+        if (Card_GetHwEventBits() == 0) {
             return 0;
         }
         func_80040084();
@@ -19444,7 +19444,7 @@ s32 func_8003E6C8(s32 *state) {
 }
 
 
-s32 func_8003E878(s32 a0, s32 a1, s32 a2) {
+s32 MemCardWriteData(s32 a0, s32 a1, s32 a2) {
     char *msg;
 
     if (D_80062F80.field_14 < 0) {
@@ -19465,7 +19465,7 @@ s32 func_8003E878(s32 a0, s32 a1, s32 a2) {
         func_8003FA24(func_8003E930);
         return 1;
     }
-    func_8002A014(msg);
+    printf(msg);
     return 0;
 }
 
@@ -19501,7 +19501,7 @@ s32 func_8003E930(s32 *st) {
             }
             if (r == 4) {
                 func_8003FEA4();
-                func_8003F9B4(D_80062F80.field_10);
+                _card_clear(D_80062F80.field_10);
                 *st = 32;
                 break;
             }
@@ -19513,7 +19513,7 @@ s32 func_8003E930(s32 *st) {
         }
         return 1;
     case 32:
-        if (!func_80040198()) {
+        if (!Card_GetHwEventBits()) {
             return 0;
         }
         func_80040084();
@@ -19527,22 +19527,22 @@ s32 func_8003E930(s32 *st) {
 
 s32 func_8003EADC(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4) {
     if (D_80062F80.field_0 > 0) {
-        func_8002A014(D_80010D18);
+        printf(D_80010D18);
         return 0;
     }
     if (D_80062F80.field_14 >= 0) {
-        func_8002A014(D_80010C70);
+        printf(D_80010C70);
         return 0;
     }
     if (a4 & 0x7F) {
-        func_8002A014(D_80010CBC);
+        printf(D_80010CBC);
         return 0;
     }
     if (a3 & 0x7F) {
-        func_8002A014(D_80010CE8);
+        printf(D_80010CE8);
         return 0;
     }
-    func_8003F518(a0, &D_80062F80.field_24);
+    Card_MakeDevName(a0, &D_80062F80.field_24);
     func_8003F874(&D_80062F80.field_24, a1);
     D_80062F80.field_0 = 3;
     D_80062F80.field_4 = 0;
@@ -19591,22 +19591,22 @@ s32 func_8003EBF4(s32 *a0) {
 
 s32 func_8003ECFC(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4) {
     if (D_80062F80.field_0 > 0) {
-        func_8002A014(D_80010D18);
+        printf(D_80010D18);
         return 0;
     }
     if (D_80062F80.field_14 >= 0) {
-        func_8002A014(D_80010C70);
+        printf(D_80010C70);
         return 0;
     }
     if (a4 & 0x7F) {
-        func_8002A014(D_80010CBC);
+        printf(D_80010CBC);
         return 0;
     }
     if (a3 & 0x7F) {
-        func_8002A014(D_80010CE8);
+        printf(D_80010CE8);
         return 0;
     }
-    func_8003F518(a0, D_80062F80.field_24);
+    Card_MakeDevName(a0, D_80062F80.field_24);
     func_8003F874(D_80062F80.field_24, a1);
     D_80062F80.field_0 = 4;
     D_80062F80.field_4 = 0;
@@ -19668,11 +19668,11 @@ s32 func_8003EF1C(s32 a0_arg, s8 *a1, Ent3EF1C *out_arg, s32 *count_arg, s32 ski
     s32 ret;
 
     if (D_80062F80.field_0 != 0) {
-        func_8002A014(D_80010D18);
+        printf(D_80010D18);
         ret = -1;
         goto end;
     }
-    func_8003F518(a0, buf);
+    Card_MakeDevName(a0, buf);
     func_8003F874(buf, a1);
     tries = 0;
     i = 0;
@@ -19692,9 +19692,9 @@ s32 func_8003EF1C(s32 a0_arg, s8 *a1, Ent3EF1C *out_arg, s32 *count_arg, s32 ski
                     goto have;
                 }
             } while (++tries < 4);
-            D_80062FD8 = func_8003F178(0);
+            D_80062FD8 = MemCardCallback(0);
             if (D_80062F80.field_0 > 0) {
-                func_8002A014(D_80010B74);
+                printf(D_80010B74);
             } else {
                 D_80062F80.field_0 = 2;
                 D_80062F80.field_4 = 0;
@@ -19702,8 +19702,8 @@ s32 func_8003EF1C(s32 a0_arg, s8 *a1, Ent3EF1C *out_arg, s32 *count_arg, s32 ski
                 D_80062F90 = a0;
                 func_8003FA24(func_8003E19C);
             }
-            func_8003F18C(0, NULL, &st);
-            func_8003F178(D_80062FD8);
+            MemCardSync(0, NULL, &st);
+            MemCardCallback(D_80062FD8);
             ret = st;
             goto end;
         } else {
@@ -19727,13 +19727,13 @@ end:
 }
 
 
-int func_8003F178(int a0) {
+int MemCardCallback(int a0) {
     int old = D_80062FC4;
     D_80062FC4 = a0;
     return old;
 }
 
-s32 func_8003F18C(s32 wait, s32 *a1, s32 *a2) {
+s32 MemCardSync(s32 wait, s32 *a1, s32 *a2) {
     State62F80 *p = &D_80062F80;
     s32 t0;
     s32 a3;
@@ -19786,7 +19786,7 @@ s32 func_8003F2A8(s32 a0, s32 a1, s32 a2) {
     if (D_80062F80.field_0 == 0) {
         goto work;
     }
-    func_8002A014(D_80010D18);
+    printf(D_80010D18);
     return -1;
 e1:
     return 7;
@@ -19795,7 +19795,7 @@ e2:
 e3:
     return 6;
 work:
-    func_8003F518(a0, buf);
+    Card_MakeDevName(a0, buf);
     func_8003F874(buf, a1);
     D_80062F80.field_C |= 1 << a0;
     r = func_800405B4(a0, a1, a2);
@@ -19824,7 +19824,7 @@ s32 func_8003F3A4(void) {
     s32 r;
 
     if (s->field_0 != 0) {
-        func_8002A014(D_80010D18);
+        printf(D_80010D18);
         return -1;
     }
     r = func_800401E4();
@@ -19864,9 +19864,9 @@ void func_8003F46C(void) {
     Pair62F70 *d;
     volatile State62F80 *v;
 
-    if (func_8003FB0C() == 0) {
-        func_8003FAA0();
-        if (func_8003FB0C() != 0) {
+    if (Card_IsTaskStackEmpty() == 0) {
+        Card_RunTopTask();
+        if (Card_IsTaskStackEmpty() != 0) {
             s = &D_80062F80;
             ((volatile State62F80 *)s)->field_8 = 1;
             d = (Pair62F70 *)&D_80062F70;
@@ -19884,7 +19884,7 @@ void func_8003F46C(void) {
     v->field_50[1]++;
 }
 
-void func_8003F518(s32 n, u8 *out) {
+void Card_MakeDevName(s32 n, u8 *out) {
     *(Str3F518 *)out = D_80010D38;
     out[2] = n / 16 + '0';
     out[3] = n % 16 + '0';
@@ -20012,7 +20012,7 @@ INCLUDE_ASM("asm/USA/main/nonmatchings/156C", _card_load);
 extern void _new_card();
 extern s32 _card_write();
 
-s32 func_8003F9B4(s32 a0) {
+s32 _card_clear(s32 a0) {
     _new_card(a0);
     return _card_write(a0, 0x3F, 0);
 }
@@ -20022,7 +20022,7 @@ INCLUDE_ASM("asm/USA/main/nonmatchings/156C", _card_write);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/156C", _new_card);
 
-void func_8003FA14(void) {
+void Card_ClearTaskStack(void) {
     D_800506E8 = -1;
 }
 
@@ -20032,7 +20032,7 @@ void func_8003FA24(s32 (*fn)(s32 *)) {
     s32 k;
 
     if (i >= 4) {
-        func_8002A014(D_80010D44);
+        printf(D_80010D44);
         return;
     }
     k = 3;
@@ -20044,7 +20044,7 @@ void func_8003FA24(s32 (*fn)(s32 *)) {
     }
 }
 
-void func_8003FAA0(void) {
+void Card_RunTopTask(void) {
     s32 i = D_800506E8;
 
     if (i >= 0) {
@@ -20054,54 +20054,54 @@ void func_8003FAA0(void) {
     }
 }
 
-s32 func_8003FB0C(void) {
+s32 Card_IsTaskStackEmpty(void) {
     return D_800506E8 >> 31;
 }
 __asm__(".word 0\n.word 0\n");
 
-int func_8003FB24(void) {
+int Card_OnSwIoe(void) {
     D_80063080 = 1;
     return 0;
 }
 
 extern volatile s32 D_80063084;
-int func_8003FB38(void) {
+int Card_OnSwError(void) {
     D_80063084 = 1;
     return 0;
 }
 
 extern volatile s32 D_80063088;
-int func_8003FB4C(void) {
+int Card_OnSwTimeout(void) {
     D_80063088 = 1;
     return 0;
 }
 
 extern volatile s32 D_8006308C;
-int func_8003FB60(void) {
+int Card_OnSwNewCard(void) {
     D_8006308C = 1;
     return 0;
 }
 
 extern volatile s32 D_80063090;
-int func_8003FB74(void) {
+int Card_OnHwIoe(void) {
     D_80063090 = 1;
     return 0;
 }
 
 extern volatile s32 D_80063094;
-int func_8003FB88(void) {
+int Card_OnHwError(void) {
     D_80063094 = 1;
     return 0;
 }
 
 extern volatile s32 D_80063098;
-int func_8003FB9C(void) {
+int Card_OnHwTimeout(void) {
     D_80063098 = 1;
     return 0;
 }
 
 extern volatile s32 D_8006309C;
-int func_8003FBB0(void) {
+int Card_OnHwNewCard(void) {
     D_8006309C = 1;
     return 0;
 }
@@ -20116,14 +20116,14 @@ void func_8003FBF4(void) {
     s32 s;
 
     s = EnterCriticalSection();
-    D_80063060 = OpenEvent(0xF4000001, 4, 0x1000, (s32)func_8003FB24);
-    D_80063064 = OpenEvent(0xF4000001, 0x8000, 0x1000, (s32)func_8003FB38);
-    D_80063068 = OpenEvent(0xF4000001, 0x100, 0x1000, (s32)func_8003FB4C);
-    D_8006306C = OpenEvent(0xF4000001, 0x2000, 0x1000, (s32)func_8003FB60);
-    D_80063070 = OpenEvent(0xF0000011, 4, 0x1000, (s32)func_8003FB74);
-    D_80063074 = OpenEvent(0xF0000011, 0x8000, 0x1000, (s32)func_8003FB88);
-    D_80063078 = OpenEvent(0xF0000011, 0x100, 0x1000, (s32)func_8003FB9C);
-    D_8006307C = OpenEvent(0xF0000011, 0x2000, 0x1000, (s32)func_8003FBB0);
+    D_80063060 = OpenEvent(0xF4000001, 4, 0x1000, (s32)Card_OnSwIoe);
+    D_80063064 = OpenEvent(0xF4000001, 0x8000, 0x1000, (s32)Card_OnSwError);
+    D_80063068 = OpenEvent(0xF4000001, 0x100, 0x1000, (s32)Card_OnSwTimeout);
+    D_8006306C = OpenEvent(0xF4000001, 0x2000, 0x1000, (s32)Card_OnSwNewCard);
+    D_80063070 = OpenEvent(0xF0000011, 4, 0x1000, (s32)Card_OnHwIoe);
+    D_80063074 = OpenEvent(0xF0000011, 0x8000, 0x1000, (s32)Card_OnHwError);
+    D_80063078 = OpenEvent(0xF0000011, 0x100, 0x1000, (s32)Card_OnHwTimeout);
+    D_8006307C = OpenEvent(0xF0000011, 0x2000, 0x1000, (s32)Card_OnHwNewCard);
     EnableEvent(D_80063060);
     EnableEvent(D_80063064);
     EnableEvent(D_80063068);
@@ -20202,7 +20202,7 @@ s32 func_8004015C(void) {
     return D_80063080 + D_80063084 * 2 + D_80063088 * 4 + D_8006308C * 8;
 }
 
-s32 func_80040198(void) {
+s32 Card_GetHwEventBits(void) {
     return D_80063090 + D_80063094 * 2 + D_80063098 * 4 + D_8006309C * 8;
 }
 
@@ -20226,7 +20226,7 @@ static inline s32 mcWriteFrame401E4(s32 port, s32 blk) {
         if (r == 0) break;
         if (r == 4) {
             func_8003FEA4();
-            func_8003F9B4(port);
+            _card_clear(port);
             func_80040084();
         }
         j++;
@@ -20245,8 +20245,8 @@ s32 func_800401E4(s32 a0) {
     d = D_800630A0;
     for (i = 0; i < 15; i++, d++) {
         buf = D_800632E0;
-        func_80027014(buf, 0x80);
-        func_80027014((u8 *)d, 0x20);
+        bzero(buf, 0x80);
+        bzero((u8 *)d, 0x20);
         D_800630A0[i].field_0 = 0xA0;
         D_800630A0[i].field_4 = 0;
         D_800630A0[i].field_8 = 0xFFFF;
@@ -20258,13 +20258,13 @@ s32 func_800401E4(s32 a0) {
     for (i = 0; i < 20; i++, q++) {
         do { *q = -1; } while (0);
         buf = D_800632E0;
-        func_80027014(buf, 0x80);
+        bzero(buf, 0x80);
         do { *(McBlk4 *)buf = *(McBlk4 *)q; } while (0);
         r = mcWriteFrame401E4(a0, i + 0x10);
         if (r != 0) goto out;
     }
     buf = D_800632E0;
-    func_80027014(buf, 0x80);
+    bzero(buf, 0x80);
     {
         s32 j = 0;
         u8 c = 0;
@@ -20284,7 +20284,7 @@ s32 func_800401E4(s32 a0) {
             if (t == 0) break;
             if (t == 4) {
                 func_8003FEA4();
-                func_8003F9B4(a0);
+                _card_clear(a0);
                 func_80040084();
             }
             j++;
@@ -20299,7 +20299,7 @@ s32 func_800401E4(s32 a0) {
         if (r == 0) return 0;
         n++;
         func_8003FEA4();
-        func_8003F9B4(a0);
+        _card_clear(a0);
         func_80040084();
     } while (n < 8);
 out:
@@ -20332,19 +20332,19 @@ s32 func_800405B4(s32 port, s8 *name, s32 nblocks)
     nb = nblocks;
     free = 0;
     tries = 0;
-    func_80027014(D_800632E0, 0x80);
+    bzero(D_800632E0, 0x80);
     i = 0;
-    func_80027014(D_800632E0, 0x80);
+    bzero(D_800632E0, 0x80);
     do {
         func_8003FEA4();
-        func_80040CE4(port, 0, D_800632E0);
+        _card_read(port, 0, D_800632E0);
         r = func_80040084();
         if (r == 0) {
             break;
         }
         if (r == 4) {
             func_8003FEA4();
-            func_8003F9B4(port);
+            _card_clear(port);
             func_80040084();
         }
     } while (++i < 8);
@@ -20363,19 +20363,19 @@ s32 func_800405B4(s32 port, s8 *name, s32 nblocks)
     blk = 1;
     for (i = 0; i < 15; d++, blk++) {
         D_800632D0[blk - 1] = 0;
-        func_80027014(D_800632E0, 0x80);
+        bzero(D_800632E0, 0x80);
         k = 0;
-        func_80027014(D_800632E0, 0x80);
+        bzero(D_800632E0, 0x80);
         do {
             func_8003FEA4();
-            func_80040CE4(port, blk, D_800632E0);
+            _card_read(port, blk, D_800632E0);
             r = func_80040084();
             if (r == 0) {
                 break;
             }
             if (r == 4) {
                 func_8003FEA4();
-                func_8003F9B4(port);
+                _card_clear(port);
                 func_80040084();
             }
         } while (++k < 8);
@@ -20406,7 +20406,7 @@ s32 func_800405B4(s32 port, s8 *name, s32 nblocks)
     }
     for (i = 0; i < 15; i++) {
         if (D_800630A0[i].field_0 == 0x51 && func_8003F924(D_800630A0[i].field_A, nm) == 0) {
-            func_8002A014(D_80010D64, D_800630A0[i].field_A, nm);
+            printf(D_80010D64, D_800630A0[i].field_A, nm);
             return -3;
         }
     }
@@ -20427,7 +20427,7 @@ s32 func_800405B4(s32 port, s8 *name, s32 nblocks)
             if (free == 0) {
                 D_800630A0[i].field_0 = 0x51;
                 D_800630A0[i].field_4 = sz;
-                func_80040C74((u8 *)D_800630A0[i].field_A, (u8 *)nm, 0x14);
+                strncpy((u8 *)D_800630A0[i].field_A, (u8 *)nm, 0x14);
                 prev = i;
                 D_800632D0[i] = 1;
             } else {
@@ -20449,7 +20449,7 @@ s32 func_800405B4(s32 port, s8 *name, s32 nblocks)
     d = &D_800630A0[14];
     for (i = 14; i >= 0; i--, d--) {
         if (D_800632D0[i] != 0) {
-            func_80027014(D_800632E0, 0x80);
+            bzero(D_800632E0, 0x80);
             do { *(McBlk20 *)D_800632E0 = *(McBlk20 *)d; } while (0);
             blk = i + 1;
             k = 0;
@@ -20469,7 +20469,7 @@ s32 func_800405B4(s32 port, s8 *name, s32 nblocks)
                 }
                 if (r == 4) {
                     func_8003FEA4();
-                    func_8003F9B4(port);
+                    _card_clear(port);
                     func_80040084();
                 }
             } while (++k < 8);
@@ -20488,7 +20488,7 @@ s32 func_800405B4(s32 port, s8 *name, s32 nblocks)
             return 0;
         }
         func_8003FEA4();
-        func_8003F9B4(port);
+        _card_clear(port);
         func_80040084();
     } while (++tries < 8);
     return r;
@@ -20496,7 +20496,7 @@ s32 func_800405B4(s32 port, s8 *name, s32 nblocks)
 
 
 
-u8 *func_80040C74(u8 *dst, u8 *src, s32 n) {
+u8 *strncpy(u8 *dst, u8 *src, s32 n) {
     u8 *r = 0;
 
     if (dst != 0 && src != 0) {
@@ -20526,4 +20526,4 @@ u8 *func_80040C74(u8 *dst, u8 *src, s32 n) {
 }
 
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80040CE4);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", _card_read);

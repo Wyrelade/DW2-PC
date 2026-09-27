@@ -21,7 +21,7 @@ glabel func_80030C2C
     /* 2146C 80030C6C 0B004314 */  bne        $v0, $v1, .L80030C9C
     /* 21470 80030C70 00000000 */   nop
     /* 21474 80030C74 0180043C */  lui        $a0, %hi(D_80010984)
-    /* 21478 80030C78 CDC0000C */  jal        func_80030334
+    /* 21478 80030C78 CDC0000C */  jal        Debug_PutString
     /* 2147C 80030C7C 84098424 */   addiu     $a0, $a0, %lo(D_80010984)
     /* 21480 80030C80 31C3000C */  jal        ChangeClearPAD
     /* 21484 80030C84 21200000 */   addu      $a0, $zero, $zero

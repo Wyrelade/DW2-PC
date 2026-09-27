@@ -9,7 +9,7 @@ glabel func_8002E064
     /* 1E878 8002E078 1800B2AF */  sw         $s2, 0x18($sp)
     /* 1E87C 8002E07C 3000B28F */  lw         $s2, 0x30($sp)
     /* 1E880 8002E080 1C00BFAF */  sw         $ra, 0x1C($sp)
-    /* 1E884 8002E084 A9B8000C */  jal        func_8002E2A4
+    /* 1E884 8002E084 A9B8000C */  jal        StSetMask
     /* 1E888 8002E088 01000424 */   addiu     $a0, $zero, 0x1
     /* 1E88C 8002E08C 01001032 */  andi       $s0, $s0, 0x1
     /* 1E890 8002E090 0680013C */  lui        $at, %hi(D_80061B28)

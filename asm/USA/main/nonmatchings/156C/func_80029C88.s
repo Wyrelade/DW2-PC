@@ -9,7 +9,7 @@ glabel func_80029C88
     /* 1A49C 80029C9C 0180043C */  lui        $a0, %hi(D_8001031C)
     /* 1A4A0 80029CA0 1C038424 */  addiu      $a0, $a0, %lo(D_8001031C)
     /* 1A4A4 80029CA4 1800BFAF */  sw         $ra, 0x18($sp)
-    /* 1A4A8 80029CA8 3A9D000C */  jal        func_800274E8
+    /* 1A4A8 80029CA8 3A9D000C */  jal        checkRECT
     /* 1A4AC 80029CAC 21280002 */   addu      $a1, $s0, $zero
     /* 1A4B0 80029CB0 ADC2000C */  jal        func_80030AB4
     /* 1A4B4 80029CB4 FFFF0424 */   addiu     $a0, $zero, -0x1
@@ -47,7 +47,7 @@ glabel func_80029C88
     /* 1A52C 80029D2C 00000000 */   nop
     /* 1A530 80029D30 0380053C */  lui        $a1, %hi(func_80029FB4)
     /* 1A534 80029D34 B49FA524 */  addiu      $a1, $a1, %lo(func_80029FB4)
-    /* 1A538 80029D38 4DC3000C */  jal        func_80030D34
+    /* 1A538 80029D38 4DC3000C */  jal        DMACallback
     /* 1A53C 80029D3C 02000424 */   addiu     $a0, $zero, 0x2
     /* 1A540 80029D40 0580023C */  lui        $v0, %hi(D_80048F08)
     /* 1A544 80029D44 088F428C */  lw         $v0, %lo(D_80048F08)($v0)

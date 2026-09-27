@@ -35,7 +35,7 @@ glabel func_80025760
     /* 15FD8 800257D8 FCFF4010 */  beqz       $v0, .L800257CC
     /* 15FDC 800257DC 00000000 */   nop
   .L800257E0:
-    /* 15FE0 800257E0 8C99000C */  jal        func_80026630
+    /* 15FE0 800257E0 8C99000C */  jal        Pad_IsTimedOut
     /* 15FE4 800257E4 00000000 */   nop
     /* 15FE8 800257E8 FDFF4010 */  beqz       $v0, .L800257E0
     /* 15FEC 800257EC 27101300 */   nor       $v0, $zero, $s3
@@ -99,7 +99,7 @@ glabel func_80025760
     /* 160C0 800258C0 0D004014 */  bnez       $v0, .L800258F8
     /* 160C4 800258C4 FF009130 */   andi      $s1, $a0, 0xFF
   .L800258C8:
-    /* 160C8 800258C8 8C99000C */  jal        func_80026630
+    /* 160C8 800258C8 8C99000C */  jal        Pad_IsTimedOut
     /* 160CC 800258CC 00000000 */   nop
     /* 160D0 800258D0 25004014 */  bnez       $v0, .L80025968
     /* 160D4 800258D4 ECFF0224 */   addiu     $v0, $zero, -0x14

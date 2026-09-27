@@ -4,7 +4,7 @@ glabel func_80022468
     /* 12C68 80022468 E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* 12C6C 8002246C 2800848F */  lw         $a0, %gp_rel(D_80050720)($gp)
     /* 12C70 80022470 1000BFAF */  sw         $ra, 0x10($sp)
-    /* 12C74 80022474 E38B000C */  jal        func_80022F8C
+    /* 12C74 80022474 E38B000C */  jal        Mem_Zero
     /* 12C78 80022478 58100524 */   addiu     $a1, $zero, 0x1058
     /* 12C7C 8002247C 2800838F */  lw         $v1, %gp_rel(D_80050720)($gp)
     /* 12C80 80022480 01000224 */  addiu      $v0, $zero, 0x1

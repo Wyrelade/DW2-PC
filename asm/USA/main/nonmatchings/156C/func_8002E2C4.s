@@ -36,7 +36,7 @@ glabel func_8002E2C4
     /* 1EB40 8002E340 F4BA0008 */  j          .L8002EBD0
     /* 1EB44 8002E344 B8E624AC */   sw        $a0, %lo(D_8004E6B8)($at)
   .L8002E348:
-    /* 1EB48 8002E348 3DC1000C */  jal        func_800304F4
+    /* 1EB48 8002E348 3DC1000C */  jal        CdReady
     /* 1EB4C 8002E34C 3000A527 */   addiu     $a1, $sp, 0x30
     /* 1EB50 8002E350 05000324 */  addiu      $v1, $zero, 0x5
     /* 1EB54 8002E354 1E024310 */  beq        $v0, $v1, .L8002EBD0
@@ -146,7 +146,7 @@ glabel func_8002E2C4
     /* 1ECDC 8002E4DC 0680043C */  lui        $a0, %hi(D_80061B58)
     /* 1ECE0 8002E4E0 581B848C */  lw         $a0, %lo(D_80061B58)($a0)
     /* 1ECE4 8002E4E4 C02A0500 */  sll        $a1, $a1, 11
-    /* 1ECE8 8002E4E8 F8BA000C */  jal        func_8002EBE0
+    /* 1ECE8 8002E4E8 F8BA000C */  jal        Mem_CopyWords
     /* 1ECEC 8002E4EC 21284500 */   addu      $a1, $v0, $a1
     /* 1ECF0 8002E4F0 47B90008 */  j          .L8002E51C
     /* 1ECF4 8002E4F4 00000000 */   nop
@@ -534,7 +534,7 @@ glabel func_8002E2C4
     /* 1F284 8002EA84 341B848C */  lw         $a0, %lo(D_80061B34)($a0)
     /* 1F288 8002EA88 C02A0500 */  sll        $a1, $a1, 11
     /* 1F28C 8002EA8C 21284500 */  addu       $a1, $v0, $a1
-    /* 1F290 8002EA90 F8BA000C */  jal        func_8002EBE0
+    /* 1F290 8002EA90 F8BA000C */  jal        Mem_CopyWords
     /* 1F294 8002EA94 2000A524 */   addiu     $a1, $a1, 0x20
     /* 1F298 8002EA98 0680023C */  lui        $v0, %hi(D_80061B18)
     /* 1F29C 8002EA9C 181B428C */  lw         $v0, %lo(D_80061B18)($v0)
@@ -576,7 +576,7 @@ glabel func_8002E2C4
     /* 1F320 8002EB20 341B848C */  lw         $a0, %lo(D_80061B34)($a0)
     /* 1F324 8002EB24 C02A0500 */  sll        $a1, $a1, 11
     /* 1F328 8002EB28 21284500 */  addu       $a1, $v0, $a1
-    /* 1F32C 8002EB2C F8BA000C */  jal        func_8002EBE0
+    /* 1F32C 8002EB2C F8BA000C */  jal        Mem_CopyWords
     /* 1F330 8002EB30 2000A524 */   addiu     $a1, $a1, 0x20
     /* 1F334 8002EB34 0680023C */  lui        $v0, %hi(D_80061B18)
     /* 1F338 8002EB38 181B428C */  lw         $v0, %lo(D_80061B18)($v0)

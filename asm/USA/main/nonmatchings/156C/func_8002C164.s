@@ -56,13 +56,13 @@ glabel func_8002C164
     /* 1CA34 8002C234 2310A600 */  subu       $v0, $a1, $a2
     /* 1CA38 8002C238 18004200 */  mult       $v0, $v0
     /* 1CA3C 8002C23C 12880000 */  mflo       $s1
-    /* 1CA40 8002C240 EDB6000C */  jal        func_8002DBB4
+    /* 1CA40 8002C240 EDB6000C */  jal        Gte_CountLeadingZeros
     /* 1CA44 8002C244 21202002 */   addu      $a0, $s1, $zero
     /* 1CA48 8002C248 0C000424 */  addiu      $a0, $zero, 0xC
     /* 1CA4C 8002C24C 23288200 */  subu       $a1, $a0, $v0
     /* 1CA50 8002C250 1600A104 */  bgez       $a1, .L8002C2AC
     /* 1CA54 8002C254 00000000 */   nop
-    /* 1CA58 8002C258 B9B3000C */  jal        func_8002CEE4
+    /* 1CA58 8002C258 B9B3000C */  jal        SquareRoot0
     /* 1CA5C 8002C25C 21200002 */   addu      $a0, $s0, $zero
     /* 1CA60 8002C260 0400438E */  lw         $v1, 0x4($s2)
     /* 1CA64 8002C264 1000448E */  lw         $a0, 0x10($s2)
@@ -130,16 +130,16 @@ glabel func_8002C164
     /* 1CB40 8002C340 18004200 */  mult       $v0, $v0
     /* 1CB44 8002C344 12180000 */  mflo       $v1
     /* 1CB48 8002C348 21888300 */  addu       $s1, $a0, $v1
-    /* 1CB4C 8002C34C EDB6000C */  jal        func_8002DBB4
+    /* 1CB4C 8002C34C EDB6000C */  jal        Gte_CountLeadingZeros
     /* 1CB50 8002C350 21202002 */   addu      $a0, $s1, $zero
     /* 1CB54 8002C354 0C000424 */  addiu      $a0, $zero, 0xC
     /* 1CB58 8002C358 23288200 */  subu       $a1, $a0, $v0
     /* 1CB5C 8002C35C 1400A104 */  bgez       $a1, .L8002C3B0
     /* 1CB60 8002C360 23208500 */   subu      $a0, $a0, $a1
-    /* 1CB64 8002C364 B9B3000C */  jal        func_8002CEE4
+    /* 1CB64 8002C364 B9B3000C */  jal        SquareRoot0
     /* 1CB68 8002C368 21202002 */   addu      $a0, $s1, $zero
     /* 1CB6C 8002C36C 21200002 */  addu       $a0, $s0, $zero
-    /* 1CB70 8002C370 B9B3000C */  jal        func_8002CEE4
+    /* 1CB70 8002C370 B9B3000C */  jal        SquareRoot0
     /* 1CB74 8002C374 21804000 */   addu      $s0, $v0, $zero
     /* 1CB78 8002C378 00831000 */  sll        $s0, $s0, 12
     /* 1CB7C 8002C37C 1A000202 */  div        $zero, $s0, $v0
@@ -179,7 +179,7 @@ glabel func_8002C164
     /* 1CBF0 8002C3F0 78000724 */   addiu     $a3, $zero, 0x78
     /* 1CBF4 8002C3F4 0680043C */  lui        $a0, %hi(D_80061A08)
     /* 1CBF8 8002C3F8 081A8424 */  addiu      $a0, $a0, %lo(D_80061A08)
-    /* 1CBFC 8002C3FC 89B4000C */  jal        func_8002D224
+    /* 1CBFC 8002C3FC 89B4000C */  jal        MulMatrix
     /* 1CC00 8002C400 21280002 */   addu      $a1, $s0, $zero
     /* 1CC04 8002C404 84002012 */  beqz       $s1, .L8002C618
     /* 1CC08 8002C408 00000000 */   nop
@@ -189,13 +189,13 @@ glabel func_8002C164
     /* 1CC18 8002C418 23104300 */  subu       $v0, $v0, $v1
     /* 1CC1C 8002C41C 18004200 */  mult       $v0, $v0
     /* 1CC20 8002C420 12880000 */  mflo       $s1
-    /* 1CC24 8002C424 EDB6000C */  jal        func_8002DBB4
+    /* 1CC24 8002C424 EDB6000C */  jal        Gte_CountLeadingZeros
     /* 1CC28 8002C428 21202002 */   addu      $a0, $s1, $zero
     /* 1CC2C 8002C42C 0C000424 */  addiu      $a0, $zero, 0xC
     /* 1CC30 8002C430 23288200 */  subu       $a1, $a0, $v0
     /* 1CC34 8002C434 1600A104 */  bgez       $a1, .L8002C490
     /* 1CC38 8002C438 00000000 */   nop
-    /* 1CC3C 8002C43C B9B3000C */  jal        func_8002CEE4
+    /* 1CC3C 8002C43C B9B3000C */  jal        SquareRoot0
     /* 1CC40 8002C440 21200002 */   addu      $a0, $s0, $zero
     /* 1CC44 8002C444 0C00438E */  lw         $v1, 0xC($s2)
     /* 1CC48 8002C448 0000448E */  lw         $a0, 0x0($s2)
@@ -256,13 +256,13 @@ glabel func_8002C164
     /* 1CD08 8002C508 23104300 */  subu       $v0, $v0, $v1
     /* 1CD0C 8002C50C 18004200 */  mult       $v0, $v0
     /* 1CD10 8002C510 12880000 */  mflo       $s1
-    /* 1CD14 8002C514 EDB6000C */  jal        func_8002DBB4
+    /* 1CD14 8002C514 EDB6000C */  jal        Gte_CountLeadingZeros
     /* 1CD18 8002C518 21202002 */   addu      $a0, $s1, $zero
     /* 1CD1C 8002C51C 0C000424 */  addiu      $a0, $zero, 0xC
     /* 1CD20 8002C520 23288200 */  subu       $a1, $a0, $v0
     /* 1CD24 8002C524 1500A104 */  bgez       $a1, .L8002C57C
     /* 1CD28 8002C528 00000000 */   nop
-    /* 1CD2C 8002C52C B9B3000C */  jal        func_8002CEE4
+    /* 1CD2C 8002C52C B9B3000C */  jal        SquareRoot0
     /* 1CD30 8002C530 21200002 */   addu      $a0, $s0, $zero
     /* 1CD34 8002C534 1400438E */  lw         $v1, 0x14($s2)
     /* 1CD38 8002C538 0800448E */  lw         $a0, 0x8($s2)
@@ -327,7 +327,7 @@ glabel func_8002C164
     /* 1CE04 8002C604 79000724 */   addiu     $a3, $zero, 0x79
     /* 1CE08 8002C608 0680043C */  lui        $a0, %hi(D_80061A08)
     /* 1CE0C 8002C60C 081A8424 */  addiu      $a0, $a0, %lo(D_80061A08)
-    /* 1CE10 8002C610 89B4000C */  jal        func_8002D224
+    /* 1CE10 8002C610 89B4000C */  jal        MulMatrix
     /* 1CE14 8002C614 21280002 */   addu      $a1, $s0, $zero
   .L8002C618:
     /* 1CE18 8002C618 0680113C */  lui        $s1, %hi(D_80061A08)
@@ -344,7 +344,7 @@ glabel func_8002C164
     /* 1CE44 8002C644 0800428E */  lw         $v0, 0x8($s2)
     /* 1CE48 8002C648 14002626 */  addiu      $a2, $s1, 0x14
     /* 1CE4C 8002C64C 23100200 */  negu       $v0, $v0
-    /* 1CE50 8002C650 DDB3000C */  jal        func_8002CF74
+    /* 1CE50 8002C650 DDB3000C */  jal        ApplyMatrixLV
     /* 1CE54 8002C654 9800A2AF */   sw        $v0, 0x98($sp)
     /* 1CE58 8002C658 1C00448E */  lw         $a0, 0x1C($s2)
     /* 1CE5C 8002C65C 00000000 */  nop
@@ -354,11 +354,11 @@ glabel func_8002C164
     /* 1CE6C 8002C66C 21280002 */   addu      $a1, $s0, $zero
     /* 1CE70 8002C670 21200002 */  addu       $a0, $s0, $zero
     /* 1CE74 8002C674 5000B027 */  addiu      $s0, $sp, 0x50
-    /* 1CE78 8002C678 C1B5000C */  jal        func_8002D704
+    /* 1CE78 8002C678 C1B5000C */  jal        TransposeMatrix
     /* 1CE7C 8002C67C 21280002 */   addu      $a1, $s0, $zero
     /* 1CE80 8002C680 21200002 */  addu       $a0, $s0, $zero
     /* 1CE84 8002C684 4400A527 */  addiu      $a1, $sp, 0x44
-    /* 1CE88 8002C688 DDB3000C */  jal        func_8002CF74
+    /* 1CE88 8002C688 DDB3000C */  jal        ApplyMatrixLV
     /* 1CE8C 8002C68C 21306002 */   addu      $a2, $s3, $zero
     /* 1CE90 8002C690 21202002 */  addu       $a0, $s1, $zero
     /* 1CE94 8002C694 21280002 */  addu       $a1, $s0, $zero

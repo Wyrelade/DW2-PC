@@ -24,7 +24,7 @@ glabel func_8002F860
     /* 200B0 8002F8B0 2128A200 */  addu       $a1, $a1, $v0
     /* 200B4 8002F8B4 ECE6A58C */  lw         $a1, %lo(D_8004E6EC)($a1)
     /* 200B8 8002F8B8 0180043C */  lui        $a0, %hi(D_800108EC)
-    /* 200BC 8002F8BC 05A8000C */  jal        func_8002A014
+    /* 200BC 8002F8BC 05A8000C */  jal        printf
     /* 200C0 8002F8C0 EC088424 */   addiu     $a0, $a0, %lo(D_800108EC)
   .L8002F8C4:
     /* 200C4 8002F8C4 FF002232 */  andi       $v0, $s1, 0xFF
@@ -46,7 +46,7 @@ glabel func_8002F860
     /* 20104 8002F904 2128A300 */  addu       $a1, $a1, $v1
     /* 20108 8002F908 ECE6A58C */  lw         $a1, %lo(D_8004E6EC)($a1)
     /* 2010C 8002F90C 0180043C */  lui        $a0, %hi(D_800108F4)
-    /* 20110 8002F910 05A8000C */  jal        func_8002A014
+    /* 20110 8002F910 05A8000C */  jal        printf
     /* 20114 8002F914 F4088424 */   addiu     $a0, $a0, %lo(D_800108F4)
     /* 20118 8002F918 11BF0008 */  j          .L8002FC44
     /* 2011C 8002F91C FEFF0224 */   addiu     $v0, $zero, -0x2
@@ -164,7 +164,7 @@ glabel func_8002F860
     /* 202BC 8002FABC 00000000 */   nop
   .L8002FAC0:
     /* 202C0 8002FAC0 0180043C */  lui        $a0, %hi(D_80010850)
-    /* 202C4 8002FAC4 CDC0000C */  jal        func_80030334
+    /* 202C4 8002FAC4 CDC0000C */  jal        Debug_PutString
     /* 202C8 8002FAC8 50088424 */   addiu     $a0, $a0, %lo(D_80010850)
     /* 202CC 8002FACC 00004492 */  lbu        $a0, 0x0($s2)
     /* 202D0 8002FAD0 01004292 */  lbu        $v0, 0x1($s2)
@@ -183,9 +183,9 @@ glabel func_8002F860
     /* 20304 8002FB04 0000468C */  lw         $a2, 0x0($v0)
     /* 20308 8002FB08 0000878C */  lw         $a3, 0x0($a0)
     /* 2030C 8002FB0C 0180043C */  lui        $a0, %hi(D_80010860)
-    /* 20310 8002FB10 05A8000C */  jal        func_8002A014
+    /* 20310 8002FB10 05A8000C */  jal        printf
     /* 20314 8002FB14 60088424 */   addiu     $a0, $a0, %lo(D_80010860)
-    /* 20318 8002FB18 3DBF000C */  jal        func_8002FCF4
+    /* 20318 8002FB18 3DBF000C */  jal        CD_flush
     /* 2031C 8002FB1C 00000000 */   nop
     /* 20320 8002FB20 CBBE0008 */  j          .L8002FB2C
     /* 20324 8002FB24 FFFF0224 */   addiu     $v0, $zero, -0x1
@@ -194,7 +194,7 @@ glabel func_8002F860
   .L8002FB2C:
     /* 2032C 8002FB2C 45004014 */  bnez       $v0, .L8002FC44
     /* 20330 8002FB30 FFFF0224 */   addiu     $v0, $zero, -0x1
-    /* 20334 8002FB34 8AC3000C */  jal        func_80030E28
+    /* 20334 8002FB34 8AC3000C */  jal        CheckCallback
     /* 20338 8002FB38 00000000 */   nop
     /* 2033C 8002FB3C 29004010 */  beqz       $v0, .L8002FBE4
     /* 20340 8002FB40 00000000 */   nop

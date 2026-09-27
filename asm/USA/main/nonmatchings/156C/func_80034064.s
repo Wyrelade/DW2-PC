@@ -27,7 +27,7 @@ glabel func_80034064
     /* 248C0 800340C0 5E00A627 */  addiu      $a2, $sp, 0x5E
     /* 248C4 800340C4 01000224 */  addiu      $v0, $zero, 0x1
     /* 248C8 800340C8 1E00A2A7 */  sh         $v0, 0x1E($sp)
-    /* 248CC 800340CC E0CE000C */  jal        func_80033B80
+    /* 248CC 800340CC E0CE000C */  jal        _SsUtBuildADSR
     /* 248D0 800340D0 1800B3A7 */   sh        $s3, 0x18($sp)
     /* 248D4 800340D4 21204002 */  addu       $a0, $s2, $zero
     /* 248D8 800340D8 21282002 */  addu       $a1, $s1, $zero

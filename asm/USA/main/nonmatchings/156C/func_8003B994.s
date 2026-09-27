@@ -42,7 +42,7 @@ glabel func_8003B994
     /* 2C224 8003BA24 21208200 */  addu       $a0, $a0, $v0
     /* 2C228 8003BA28 B803848C */  lw         $a0, %lo(D_800503B8)($a0)
     /* 2C22C 8003BA2C 0580113C */  lui        $s1, %hi(D_800503B8)
-    /* 2C230 8003BA30 41EE000C */  jal        func_8003B904
+    /* 2C230 8003BA30 41EE000C */  jal        _SpuIsInAllocateArea_
     /* 2C234 8003BA34 B8033126 */   addiu     $s1, $s1, %lo(D_800503B8)
     /* 2C238 8003BA38 03004010 */  beqz       $v0, .L8003BA48
     /* 2C23C 8003BA3C 01001424 */   addiu     $s4, $zero, 0x1
@@ -298,7 +298,7 @@ glabel func_8003B994
     /* 2C5C8 8003BDC8 0300C013 */  beqz       $fp, .L8003BDD8
     /* 2C5CC 8003BDCC 00000000 */   nop
   .L8003BDD0:
-    /* 2C5D0 8003BDD0 9DEF000C */  jal        func_8003BE74
+    /* 2C5D0 8003BDD0 9DEF000C */  jal        _spu_setReverbAttr
     /* 2C5D4 8003BDD4 1000A427 */   addiu     $a0, $sp, 0x10
   .L8003BDD8:
     /* 2C5D8 8003BDD8 5800A88F */  lw         $t0, 0x58($sp)
@@ -314,7 +314,7 @@ glabel func_8003B994
     /* 2C5FC 8003BDFC D1000424 */   addiu     $a0, $zero, 0xD1
     /* 2C600 8003BE00 0580053C */  lui        $a1, %hi(D_8004FDC4)
     /* 2C604 8003BE04 C4FDA58C */  lw         $a1, %lo(D_8004FDC4)($a1)
-    /* 2C608 8003BE08 B8EA000C */  jal        func_8003AAE0
+    /* 2C608 8003BE08 B8EA000C */  jal        _spu_FsetRXX
     /* 2C60C 8003BE0C 21300000 */   addu      $a2, $zero, $zero
     /* 2C610 8003BE10 0900E012 */  beqz       $s7, .L8003BE38
     /* 2C614 8003BE14 21100000 */   addu      $v0, $zero, $zero

@@ -4,7 +4,7 @@ glabel func_80030A84
     /* 21284 80030A84 E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* 21288 80030A88 1000BFAF */  sw         $ra, 0x10($sp)
     /* 2128C 80030A8C 21288000 */  addu       $a1, $a0, $zero
-    /* 21290 80030A90 4DC3000C */  jal        func_80030D34
+    /* 21290 80030A90 4DC3000C */  jal        DMACallback
     /* 21294 80030A94 03000424 */   addiu     $a0, $zero, 0x3
     /* 21298 80030A98 1000BF8F */  lw         $ra, 0x10($sp)
     /* 2129C 80030A9C 1800BD27 */  addiu      $sp, $sp, 0x18

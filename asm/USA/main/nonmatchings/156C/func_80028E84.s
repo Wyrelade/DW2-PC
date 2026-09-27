@@ -9,7 +9,7 @@ glabel func_80028E84
     /* 19698 80028E98 2400BFAF */  sw         $ra, 0x24($sp)
     /* 1969C 80028E9C 2000B4AF */  sw         $s4, 0x20($sp)
     /* 196A0 80028EA0 1C00B3AF */  sw         $s3, 0x1C($sp)
-    /* 196A4 80028EA4 61A6000C */  jal        func_80029984
+    /* 196A4 80028EA4 61A6000C */  jal        set_alarm
     /* 196A8 80028EA8 1000B0AF */   sw        $s0, 0x10($sp)
     /* 196AC 80028EAC 04002586 */  lh         $a1, 0x4($s1)
     /* 196B0 80028EB0 04002396 */  lhu        $v1, 0x4($s1)

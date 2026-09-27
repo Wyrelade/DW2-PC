@@ -5,7 +5,7 @@ glabel func_80023BF4
     /* 143F8 80023BF8 1400B1AF */  sw         $s1, 0x14($sp)
     /* 143FC 80023BFC 21888000 */  addu       $s1, $a0, $zero
     /* 14400 80023C00 1800BFAF */  sw         $ra, 0x18($sp)
-    /* 14404 80023C04 9E8E000C */  jal        func_80023A78
+    /* 14404 80023C04 9E8E000C */  jal        Cd_FindCachedFile
     /* 14408 80023C08 1000B0AF */   sw        $s0, 0x10($sp)
     /* 1440C 80023C0C 21804000 */  addu       $s0, $v0, $zero
     /* 14410 80023C10 04000012 */  beqz       $s0, .L80023C24
@@ -14,7 +14,7 @@ glabel func_80023BF4
     /* 1441C 80023C1C 188F0008 */  j          .L80023C60
     /* 14420 80023C20 080002AE */   sw        $v0, 0x8($s0)
   .L80023C24:
-    /* 14424 80023C24 AC8E000C */  jal        func_80023AB0
+    /* 14424 80023C24 AC8E000C */  jal        Cd_FindFreeCacheSlot
     /* 14428 80023C28 00000000 */   nop
     /* 1442C 80023C2C 21804000 */  addu       $s0, $v0, $zero
     /* 14430 80023C30 21202002 */  addu       $a0, $s1, $zero

@@ -19,7 +19,7 @@ glabel func_8003C3A4
     /* 2CBE0 8003C3E0 80101000 */  sll        $v0, $s0, 2
     /* 2CBE4 8003C3E4 21884300 */  addu       $s1, $v0, $v1
     /* 2CBE8 8003C3E8 0000248E */  lw         $a0, 0x0($s1)
-    /* 2CBEC 8003C3EC 41EE000C */  jal        func_8003B904
+    /* 2CBEC 8003C3EC 41EE000C */  jal        _SpuIsInAllocateArea_
     /* 2CBF0 8003C3F0 00000000 */   nop
     /* 2CBF4 8003C3F4 03004010 */  beqz       $v0, .L8003C404
     /* 2CBF8 8003C3F8 00000000 */   nop

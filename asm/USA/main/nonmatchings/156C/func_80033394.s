@@ -22,10 +22,10 @@ glabel func_80033394
     /* 23BDC 800333DC 21800302 */  addu       $s0, $s0, $v1
     /* 23BE0 800333E0 501C108E */  lw         $s0, %lo(D_80061C50)($s0)
     /* 23BE4 800333E4 00110200 */  sll        $v0, $v0, 4
-    /* 23BE8 800333E8 F9D8000C */  jal        func_800363E4
+    /* 23BE8 800333E8 F9D8000C */  jal        SsUtSetReverbDepth
     /* 23BEC 800333EC 21800202 */   addu      $s0, $s0, $v0
     /* 23BF0 800333F0 21204002 */  addu       $a0, $s2, $zero
-    /* 23BF4 800333F4 25C9000C */  jal        func_80032494
+    /* 23BF4 800333F4 25C9000C */  jal        _SsReadDeltaValue
     /* 23BF8 800333F8 21282002 */   addu      $a1, $s1, $zero
     /* 23BFC 800333FC 900002AE */  sw         $v0, 0x90($s0)
     /* 23C00 80033400 1C00BF8F */  lw         $ra, 0x1C($sp)

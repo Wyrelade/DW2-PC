@@ -20,7 +20,7 @@ glabel func_8002BA1C
     /* 1C25C 8002BA5C 1800828C */  lw         $v0, 0x18($a0)
     /* 1C260 8002BA60 1C00838C */  lw         $v1, 0x1C($a0)
     /* 1C264 8002BA64 1800C2AC */  sw         $v0, 0x18($a2)
-    /* 1C268 8002BA68 85B5000C */  jal        func_8002D614
+    /* 1C268 8002BA68 85B5000C */  jal        SetColorMatrix
     /* 1C26C 8002BA6C 1C00C3AC */   sw        $v1, 0x1C($a2)
     /* 1C270 8002BA70 1000BF8F */  lw         $ra, 0x10($sp)
     /* 1C274 8002BA74 1800BD27 */  addiu      $sp, $sp, 0x18

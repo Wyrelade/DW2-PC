@@ -33,7 +33,7 @@ glabel func_80025670
     /* 15EE4 800256E4 0C006210 */  beq        $v1, $v0, .L80025718
     /* 15EE8 800256E8 00000000 */   nop
   .L800256EC:
-    /* 15EEC 800256EC 8499000C */  jal        func_80026610
+    /* 15EEC 800256EC 8499000C */  jal        Pad_SetTimeout
     /* 15EF0 800256F0 3C000424 */   addiu     $a0, $zero, 0x3C
     /* 15EF4 800256F4 0097000C */  jal        func_80025C00
     /* 15EF8 800256F8 00000000 */   nop

@@ -5,7 +5,7 @@ glabel func_8003DCCC
     /* 2E4D0 8003DCD0 D82F848C */  lw         $a0, %lo(D_80062FD8)($a0)
     /* 2E4D4 8003DCD4 E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* 2E4D8 8003DCD8 1000BFAF */  sw         $ra, 0x10($sp)
-    /* 2E4DC 8003DCDC 5EFC000C */  jal        func_8003F178
+    /* 2E4DC 8003DCDC 5EFC000C */  jal        MemCardCallback
     /* 2E4E0 8003DCE0 00000000 */   nop
     /* 2E4E4 8003DCE4 1000BF8F */  lw         $ra, 0x10($sp)
     /* 2E4E8 8003DCE8 1800BD27 */  addiu      $sp, $sp, 0x18

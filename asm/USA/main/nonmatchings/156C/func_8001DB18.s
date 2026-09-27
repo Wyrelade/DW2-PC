@@ -5,7 +5,7 @@ glabel func_8001DB18
     /* E31C 8001DB1C 1000B0AF */  sw         $s0, 0x10($sp)
     /* E320 8001DB20 21808000 */  addu       $s0, $a0, $zero
     /* E324 8001DB24 1400BFAF */  sw         $ra, 0x14($sp)
-    /* E328 8001DB28 828E000C */  jal        func_80023A08
+    /* E328 8001DB28 828E000C */  jal        Cd_GetFileOrNull
     /* E32C 8001DB2C 6F0C0424 */   addiu     $a0, $zero, 0xC6F
     /* E330 8001DB30 21184000 */  addu       $v1, $v0, $zero
   .L8001DB34:

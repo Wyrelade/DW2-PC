@@ -11,7 +11,7 @@ glabel func_8002D0D4
     /* 1D8EC 8002D0EC 0580013C */  lui        $at, %hi(D_80049AB0)
     /* 1D8F0 8002D0F0 B09A3FAC */  sw         $ra, %lo(D_80049AB0)($at)
     /* 1D8F4 8002D0F4 0580043C */  lui        $a0, %hi(D_80049D40)
-    /* 1D8F8 8002D0F8 05A8000C */  jal        func_8002A014
+    /* 1D8F8 8002D0F8 05A8000C */  jal        printf
     /* 1D8FC 8002D0FC 409D8424 */   addiu     $a0, $a0, %lo(D_80049D40)
     /* 1D900 8002D100 05801F3C */  lui        $ra, %hi(D_80049AB0)
     /* 1D904 8002D104 B09AFF8F */  lw         $ra, %lo(D_80049AB0)($ra)

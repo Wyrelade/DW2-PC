@@ -11,7 +11,7 @@ glabel func_8003A13C
     /* 2A958 8003A158 F19B000C */  jal        EnterCriticalSection
     /* 2A95C 8003A15C 18FE22AC */   sw        $v0, %lo(D_8004FE18)($at)
     /* 2A960 8003A160 0480043C */  lui        $a0, %hi(func_8003A614)
-    /* 2A964 8003A164 45EB000C */  jal        func_8003AD14
+    /* 2A964 8003A164 45EB000C */  jal        _SpuDataCallback
     /* 2A968 8003A168 14A68424 */   addiu     $a0, $a0, %lo(func_8003A614)
     /* 2A96C 8003A16C 00F0043C */  lui        $a0, (0xF0000009 >> 16)
     /* 2A970 8003A170 09008434 */  ori        $a0, $a0, (0xF0000009 & 0xFFFF)

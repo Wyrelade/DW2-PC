@@ -17,9 +17,9 @@ glabel func_8002DEF4
     /* 1E728 8002DF28 D0B70008 */  j          .L8002DF40
     /* 1E72C 8002DF2C 00000000 */   nop
   .L8002DF30:
-    /* 1E730 8002DF30 8DC2000C */  jal        func_80030A34
+    /* 1E730 8002DF30 8DC2000C */  jal        CdDataCallback
     /* 1E734 8002DF34 21200000 */   addu      $a0, $zero, $zero
-    /* 1E738 8002DF38 4DC1000C */  jal        func_80030534
+    /* 1E738 8002DF38 4DC1000C */  jal        CdReadyCallback
     /* 1E73C 8002DF3C 21200000 */   addu      $a0, $zero, $zero
   .L8002DF40:
     /* 1E740 8002DF40 0580023C */  lui        $v0, %hi(D_8004E600)

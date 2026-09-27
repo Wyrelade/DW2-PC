@@ -86,7 +86,7 @@ glabel func_80012490
     /* 2DAC 800125AC E7030224 */  addiu      $v0, $zero, 0x3E7
     /* 2DB0 800125B0 1F006210 */  beq        $v1, $v0, .L80012630
     /* 2DB4 800125B4 21100000 */   addu      $v0, $zero, $zero
-    /* 2DB8 800125B8 448E000C */  jal        func_80023910
+    /* 2DB8 800125B8 448E000C */  jal        Rand_Next
     /* 2DBC 800125BC 00000000 */   nop
     /* 2DC0 800125C0 0F3E043C */  lui        $a0, (0x3E0F83E1 >> 16)
     /* 2DC4 800125C4 E1838434 */  ori        $a0, $a0, (0x3E0F83E1 & 0xFFFF)

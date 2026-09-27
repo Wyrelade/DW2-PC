@@ -98,7 +98,7 @@ glabel func_8001D6B4
     /* E018 8001D818 D1B5000C */  jal        func_8002D744
     /* E01C 8001D81C 0C0022AE */   sw        $v0, 0xC($s1)
     /* E020 8001D820 2120C002 */  addu       $a0, $s6, $zero
-    /* E024 8001D824 29B5000C */  jal        func_8002D4A4
+    /* E024 8001D824 29B5000C */  jal        ScaleMatrix
     /* E028 8001D828 08002526 */   addiu     $a1, $s1, 0x8
     /* E02C 8001D82C 21204002 */  addu       $a0, $s2, $zero
   .L8001D830:

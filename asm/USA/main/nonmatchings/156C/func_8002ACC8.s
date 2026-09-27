@@ -48,7 +48,7 @@ glabel func_8002ACC8
     /* 1B574 8002AD74 080000A6 */  sh         $zero, 0x8($s0)
     /* 1B578 8002AD78 020040A4 */  sh         $zero, 0x2($v0)
     /* 1B57C 8002AD7C 040040A4 */  sh         $zero, 0x4($v0)
-    /* 1B580 8002AD80 0EC6000C */  jal        func_80031838
+    /* 1B580 8002AD80 0EC6000C */  jal        GetVideoMode
     /* 1B584 8002AD84 060040A4 */   sh        $zero, 0x6($v0)
     /* 1B588 8002AD88 21184000 */  addu       $v1, $v0, $zero
     /* 1B58C 8002AD8C 01000224 */  addiu      $v0, $zero, 0x1

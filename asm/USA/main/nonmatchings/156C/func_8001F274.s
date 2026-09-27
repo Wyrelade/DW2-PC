@@ -30,7 +30,7 @@ glabel func_8001F274
     /* FAD4 8001F2D4 02000524 */   addiu     $a1, $zero, 0x2
     /* FAD8 8001F2D8 ECFF1026 */  addiu      $s0, $s0, -0x14
   .L8001F2DC:
-    /* FADC 8001F2DC 828E000C */  jal        func_80023A08
+    /* FADC 8001F2DC 828E000C */  jal        Cd_GetFileOrNull
     /* FAE0 8001F2E0 21204000 */   addu      $a0, $v0, $zero
     /* FAE4 8001F2E4 0800238E */  lw         $v1, 0x8($s1)
     /* FAE8 8001F2E8 00000000 */  nop

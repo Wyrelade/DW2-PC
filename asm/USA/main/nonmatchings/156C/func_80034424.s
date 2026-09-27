@@ -36,7 +36,7 @@ glabel func_80034424
     /* 24CA4 800344A4 A4E2000C */  jal        func_80038A90
     /* 24CA8 800344A8 03240400 */   sra       $a0, $a0, 16
     /* 24CAC 800344AC 21204002 */  addu       $a0, $s2, $zero
-    /* 24CB0 800344B0 25C9000C */  jal        func_80032494
+    /* 24CB0 800344B0 25C9000C */  jal        _SsReadDeltaValue
     /* 24CB4 800344B4 21282002 */   addu      $a1, $s1, $zero
     /* 24CB8 800344B8 900002AE */  sw         $v0, 0x90($s0)
     /* 24CBC 800344BC 1C00BF8F */  lw         $ra, 0x1C($sp)

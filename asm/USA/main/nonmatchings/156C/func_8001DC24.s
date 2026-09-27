@@ -25,7 +25,7 @@ glabel func_8001DC24
     /* E474 8001DC74 21200002 */   addu      $a0, $s0, $zero
     /* E478 8001DC78 21880000 */  addu       $s1, $zero, $zero
   .L8001DC7C:
-    /* E47C 8001DC7C E38B000C */  jal        func_80022F8C
+    /* E47C 8001DC7C E38B000C */  jal        Mem_Zero
     /* E480 8001DC80 5C000524 */   addiu     $a1, $zero, 0x5C
     /* E484 8001DC84 02000224 */  addiu      $v0, $zero, 0x2
     /* E488 8001DC88 000002A2 */  sb         $v0, 0x0($s0)

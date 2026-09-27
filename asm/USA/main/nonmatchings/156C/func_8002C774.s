@@ -38,7 +38,7 @@ glabel func_8002C774
     /* 1CFFC 8002C7FC 2000A2A7 */  sh         $v0, 0x20($sp)
     /* 1D000 8002C800 2400A0AF */  sw         $zero, 0x24($sp)
     /* 1D004 8002C804 2800A0AF */  sw         $zero, 0x28($sp)
-    /* 1D008 8002C808 89B4000C */  jal        func_8002D224
+    /* 1D008 8002C808 89B4000C */  jal        MulMatrix
     /* 1D00C 8002C80C 2C00A0AF */   sw        $zero, 0x2C($sp)
   .L8002C810:
     /* 1D010 8002C810 3C00BF8F */  lw         $ra, 0x3C($sp)

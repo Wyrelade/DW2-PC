@@ -151,7 +151,7 @@ glabel func_800344D4
     /* 24EDC 800346DC 002C0500 */  sll        $a1, $a1, 16
     /* 24EE0 800346E0 032C0500 */  sra        $a1, $a1, 16
   .L800346E4:
-    /* 24EE4 800346E4 25C9000C */  jal        func_80032494
+    /* 24EE4 800346E4 25C9000C */  jal        _SsReadDeltaValue
     /* 24EE8 800346E8 00000000 */   nop
     /* 24EEC 800346EC 900002AE */  sw         $v0, 0x90($s0)
   .L800346F0:

@@ -41,7 +41,7 @@ glabel func_8001A4A8
     /* AD34 8001A534 0C002486 */  lh         $a0, 0xC($s1)
     /* AD38 8001A538 002C1000 */  sll        $a1, $s0, 16
     /* AD3C 8001A53C 01001026 */  addiu      $s0, $s0, 0x1
-    /* AD40 8001A540 A7D5000C */  jal        func_8003569C
+    /* AD40 8001A540 A7D5000C */  jal        SsSepStop
     /* AD44 8001A544 032C0500 */   sra       $a1, $a1, 16
     /* AD48 8001A548 1000022A */  slti       $v0, $s0, 0x10
     /* AD4C 8001A54C F9FF4014 */  bnez       $v0, .L8001A534

@@ -4,7 +4,7 @@ glabel func_80035A04
     /* 26204 80035A04 E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* 26208 80035A08 1000B0AF */  sw         $s0, 0x10($sp)
     /* 2620C 80035A0C 1400BFAF */  sw         $ra, 0x14($sp)
-    /* 26210 80035A10 0EC6000C */  jal        func_80031838
+    /* 26210 80035A10 0EC6000C */  jal        GetVideoMode
     /* 26214 80035A14 21808000 */   addu      $s0, $a0, $zero
     /* 26218 80035A18 21204000 */  addu       $a0, $v0, $zero
     /* 2621C 80035A1C 00100232 */  andi       $v0, $s0, 0x1000

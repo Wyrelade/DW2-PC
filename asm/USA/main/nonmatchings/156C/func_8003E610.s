@@ -45,7 +45,7 @@ glabel func_8003E610
     /* 2EEA4 8003E6A4 0180043C */  lui        $a0, %hi(D_80010CE8)
     /* 2EEA8 8003E6A8 E80C8424 */  addiu      $a0, $a0, %lo(D_80010CE8)
   .L8003E6AC:
-    /* 2EEAC 8003E6AC 05A8000C */  jal        func_8002A014
+    /* 2EEAC 8003E6AC 05A8000C */  jal        printf
     /* 2EEB0 8003E6B0 00000000 */   nop
     /* 2EEB4 8003E6B4 21100000 */  addu       $v0, $zero, $zero
   .L8003E6B8:

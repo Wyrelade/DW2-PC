@@ -10,7 +10,7 @@ glabel func_8001E758
     /* EF70 8001E770 0000508C */  lw         $s0, 0x0($v0)
     /* EF74 8001E774 9F79000C */  jal        func_8001E67C
     /* EF78 8001E778 21202002 */   addu      $a0, $s1, $zero
-    /* EF7C 8001E77C 828E000C */  jal        func_80023A08
+    /* EF7C 8001E77C 828E000C */  jal        Cd_GetFileOrNull
     /* EF80 8001E780 21204000 */   addu      $a0, $v0, $zero
     /* EF84 8001E784 1800BF8F */  lw         $ra, 0x18($sp)
     /* EF88 8001E788 1400B18F */  lw         $s1, 0x14($sp)

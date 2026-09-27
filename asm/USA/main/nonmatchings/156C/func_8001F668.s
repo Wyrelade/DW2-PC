@@ -17,13 +17,13 @@ glabel func_8001F668
     /* FE9C 8001F69C A400B5AF */  sw         $s5, 0xA4($sp)
     /* FEA0 8001F6A0 A000B4AF */  sw         $s4, 0xA0($sp)
     /* FEA4 8001F6A4 9C00B3AF */  sw         $s3, 0x9C($sp)
-    /* FEA8 8001F6A8 09AD000C */  jal        func_8002B424
+    /* FEA8 8001F6A8 09AD000C */  jal        GsInitCoordinate2
     /* FEAC 8001F6AC 9000B0AF */   sw        $s0, 0x90($sp)
     /* FEB0 8001F6B0 1800A427 */  addiu      $a0, $sp, 0x18
     /* FEB4 8001F6B4 6800B027 */  addiu      $s0, $sp, 0x68
     /* FEB8 8001F6B8 65AF000C */  jal        func_8002BD94
     /* FEBC 8001F6BC 21280002 */   addu      $a1, $s0, $zero
-    /* FEC0 8001F6C0 25AD000C */  jal        func_8002B494
+    /* FEC0 8001F6C0 25AD000C */  jal        GsSetLsMatrix
     /* FEC4 8001F6C4 21200002 */   addu      $a0, $s0, $zero
     /* FEC8 8001F6C8 0680023C */  lui        $v0, %hi(D_8005F770)
     /* FECC 8001F6CC 70F75724 */  addiu      $s7, $v0, %lo(D_8005F770)
@@ -36,7 +36,7 @@ glabel func_8001F668
     /* FEE8 8001F6E8 00000000 */  nop
     /* FEEC 8001F6EC 070069AA */  swl        $t1, 0x7($s3)
     /* FEF0 8001F6F0 040069BA */  swr        $t1, 0x4($s3)
-    /* FEF4 8001F6F4 CDAA000C */  jal        func_8002AB34
+    /* FEF4 8001F6F4 CDAA000C */  jal        SetPolyF4
     /* FEF8 8001F6F8 21206002 */   addu      $a0, $s3, $zero
     /* FEFC 8001F6FC 0400C233 */  andi       $v0, $fp, 0x4
     /* FF00 8001F700 05004010 */  beqz       $v0, .L8001F718
@@ -51,7 +51,7 @@ glabel func_8001F668
     /* FF20 8001F720 8800B027 */  addiu      $s0, $sp, 0x88
     /* FF24 8001F724 21300002 */  addu       $a2, $s0, $zero
     /* FF28 8001F728 8C00B227 */  addiu      $s2, $sp, 0x8C
-    /* FF2C 8001F72C B5B5000C */  jal        func_8002D6D4
+    /* FF2C 8001F72C B5B5000C */  jal        RotTransPers
     /* FF30 8001F730 21384002 */   addu      $a3, $s2, $zero
     /* FF34 8001F734 0800C426 */  addiu      $a0, $s6, 0x8
     /* FF38 8001F738 0C006526 */  addiu      $a1, $s3, 0xC
@@ -72,7 +72,7 @@ glabel func_8001F668
     /* FF74 8001F774 21104800 */  addu       $v0, $v0, $t0
     /* FF78 8001F778 43100200 */  sra        $v0, $v0, 1
     /* FF7C 8001F77C 080063A6 */  sh         $v1, 0x8($s3)
-    /* FF80 8001F780 B5B5000C */  jal        func_8002D6D4
+    /* FF80 8001F780 B5B5000C */  jal        RotTransPers
     /* FF84 8001F784 0A0062A6 */   sh        $v0, 0xA($s3)
     /* FF88 8001F788 1000C426 */  addiu      $a0, $s6, 0x10
     /* FF8C 8001F78C 10006526 */  addiu      $a1, $s3, 0x10
@@ -91,7 +91,7 @@ glabel func_8001F668
     /* FFC0 8001F7C0 21104800 */  addu       $v0, $v0, $t0
     /* FFC4 8001F7C4 43100200 */  sra        $v0, $v0, 1
     /* FFC8 8001F7C8 0C0063A6 */  sh         $v1, 0xC($s3)
-    /* FFCC 8001F7CC B5B5000C */  jal        func_8002D6D4
+    /* FFCC 8001F7CC B5B5000C */  jal        RotTransPers
     /* FFD0 8001F7D0 0E0062A6 */   sh        $v0, 0xE($s3)
     /* FFD4 8001F7D4 1800C426 */  addiu      $a0, $s6, 0x18
     /* FFD8 8001F7D8 14006526 */  addiu      $a1, $s3, 0x14
@@ -110,7 +110,7 @@ glabel func_8001F668
     /* 1000C 8001F80C 21104800 */  addu       $v0, $v0, $t0
     /* 10010 8001F810 43100200 */  sra        $v0, $v0, 1
     /* 10014 8001F814 100063A6 */  sh         $v1, 0x10($s3)
-    /* 10018 8001F818 B5B5000C */  jal        func_8002D6D4
+    /* 10018 8001F818 B5B5000C */  jal        RotTransPers
     /* 1001C 8001F81C 120062A6 */   sh        $v0, 0x12($s3)
     /* 10020 8001F820 21280000 */  addu       $a1, $zero, $zero
     /* 10024 8001F824 2130A000 */  addu       $a2, $a1, $zero
@@ -144,7 +144,7 @@ glabel func_8001F668
     /* 10094 8001F894 24105000 */  and        $v0, $v0, $s0
     /* 10098 8001F898 25104300 */  or         $v0, $v0, $v1
     /* 1009C 8001F89C 000082AE */  sw         $v0, 0x0($s4)
-    /* 100A0 8001F8A0 EDAA000C */  jal        func_8002ABB4
+    /* 100A0 8001F8A0 EDAA000C */  jal        SetDrawMode
     /* 100A4 8001F8A4 1000A0AF */   sw        $zero, 0x10($sp)
     /* 100A8 8001F8A8 1800A38E */  lw         $v1, 0x18($s5)
     /* 100AC 8001F8AC 0000828E */  lw         $v0, 0x0($s4)

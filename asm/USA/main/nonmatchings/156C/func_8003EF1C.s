@@ -23,12 +23,12 @@ glabel func_8003EF1C
     /* 2F768 8003EF68 06004010 */  beqz       $v0, .L8003EF84
     /* 2F76C 8003EF6C 2120C002 */   addu      $a0, $s6, $zero
     /* 2F770 8003EF70 0180043C */  lui        $a0, %hi(D_80010D18)
-    /* 2F774 8003EF74 05A8000C */  jal        func_8002A014
+    /* 2F774 8003EF74 05A8000C */  jal        printf
     /* 2F778 8003EF78 180D8424 */   addiu     $a0, $a0, %lo(D_80010D18)
     /* 2F77C 8003EF7C 52FC0008 */  j          .L8003F148
     /* 2F780 8003EF80 FFFF0224 */   addiu     $v0, $zero, -0x1
   .L8003EF84:
-    /* 2F784 8003EF84 46FD000C */  jal        func_8003F518
+    /* 2F784 8003EF84 46FD000C */  jal        Card_MakeDevName
     /* 2F788 8003EF88 1000A527 */   addiu     $a1, $sp, 0x10
     /* 2F78C 8003EF8C 1000A427 */  addiu      $a0, $sp, 0x10
     /* 2F790 8003EF90 1DFE000C */  jal        func_8003F874
@@ -72,7 +72,7 @@ glabel func_8003EF1C
     /* 2F820 8003F020 0400422A */  slti       $v0, $s2, 0x4
     /* 2F824 8003F024 EFFF4014 */  bnez       $v0, .L8003EFE4
     /* 2F828 8003F028 00000000 */   nop
-    /* 2F82C 8003F02C 5EFC000C */  jal        func_8003F178
+    /* 2F82C 8003F02C 5EFC000C */  jal        MemCardCallback
     /* 2F830 8003F030 21200000 */   addu      $a0, $zero, $zero
     /* 2F834 8003F034 0000638E */  lw         $v1, 0x0($s3)
     /* 2F838 8003F038 0680013C */  lui        $at, %hi(D_80062FD8)
@@ -80,7 +80,7 @@ glabel func_8003EF1C
     /* 2F840 8003F040 06006018 */  blez       $v1, .L8003F05C
     /* 2F844 8003F044 02000824 */   addiu     $t0, $zero, 0x2
     /* 2F848 8003F048 0180043C */  lui        $a0, %hi(D_80010B74)
-    /* 2F84C 8003F04C 05A8000C */  jal        func_8002A014
+    /* 2F84C 8003F04C 05A8000C */  jal        printf
     /* 2F850 8003F050 740B8424 */   addiu     $a0, $a0, %lo(D_80010B74)
     /* 2F854 8003F054 20FC0008 */  j          .L8003F080
     /* 2F858 8003F058 21200000 */   addu      $a0, $zero, $zero
@@ -96,11 +96,11 @@ glabel func_8003EF1C
     /* 2F87C 8003F07C 21200000 */  addu       $a0, $zero, $zero
   .L8003F080:
     /* 2F880 8003F080 21280000 */  addu       $a1, $zero, $zero
-    /* 2F884 8003F084 63FC000C */  jal        func_8003F18C
+    /* 2F884 8003F084 63FC000C */  jal        MemCardSync
     /* 2F888 8003F088 5800A627 */   addiu     $a2, $sp, 0x58
     /* 2F88C 8003F08C 0680043C */  lui        $a0, %hi(D_80062FD8)
     /* 2F890 8003F090 D82F848C */  lw         $a0, %lo(D_80062FD8)($a0)
-    /* 2F894 8003F094 5EFC000C */  jal        func_8003F178
+    /* 2F894 8003F094 5EFC000C */  jal        MemCardCallback
     /* 2F898 8003F098 00000000 */   nop
     /* 2F89C 8003F09C 5800A28F */  lw         $v0, 0x58($sp)
     /* 2F8A0 8003F0A0 52FC0008 */  j          .L8003F148

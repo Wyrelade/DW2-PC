@@ -8,10 +8,10 @@ glabel func_8002C064
     /* 1C874 8002C074 2188A000 */  addu       $s1, $a1, $zero
     /* 1C878 8002C078 14002526 */  addiu      $a1, $s1, 0x14
     /* 1C87C 8002C07C 2800BFAF */  sw         $ra, 0x28($sp)
-    /* 1C880 8002C080 DDB3000C */  jal        func_8002CF74
+    /* 1C880 8002C080 DDB3000C */  jal        ApplyMatrixLV
     /* 1C884 8002C084 1000A627 */   addiu     $a2, $sp, 0x10
     /* 1C888 8002C088 21200002 */  addu       $a0, $s0, $zero
-    /* 1C88C 8002C08C CDB4000C */  jal        func_8002D334
+    /* 1C88C 8002C08C CDB4000C */  jal        MulMatrix2
     /* 1C890 8002C090 21282002 */   addu      $a1, $s1, $zero
     /* 1C894 8002C094 1000A28F */  lw         $v0, 0x10($sp)
     /* 1C898 8002C098 1400038E */  lw         $v1, 0x14($s0)

@@ -15,7 +15,7 @@ glabel func_80037B84
   .L80037BB0:
     /* 283B0 80037BB0 F1FF6480 */  lb         $a0, -0xF($v1)
     /* 283B4 80037BB4 FFFF6690 */  lbu        $a2, -0x1($v1)
-    /* 283B8 80037BB8 0EDF000C */  jal        func_80037C38
+    /* 283B8 80037BB8 0EDF000C */  jal        SsPitchFromNote
     /* 283BC 80037BBC 21280000 */   addu      $a1, $zero, $zero
     /* 283C0 80037BC0 1000BF8F */  lw         $ra, 0x10($sp)
     /* 283C4 80037BC4 FFFF4230 */  andi       $v0, $v0, 0xFFFF

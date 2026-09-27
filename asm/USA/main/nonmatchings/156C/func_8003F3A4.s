@@ -10,7 +10,7 @@ glabel func_8003F3A4
     /* 2FBBC 8003F3BC 06004010 */  beqz       $v0, .L8003F3D8
     /* 2FBC0 8003F3C0 00000000 */   nop
     /* 2FBC4 8003F3C4 0180043C */  lui        $a0, %hi(D_80010D18)
-    /* 2FBC8 8003F3C8 05A8000C */  jal        func_8002A014
+    /* 2FBC8 8003F3C8 05A8000C */  jal        printf
     /* 2FBCC 8003F3CC 180D8424 */   addiu     $a0, $a0, %lo(D_80010D18)
     /* 2FBD0 8003F3D0 02FD0008 */  j          .L8003F408
     /* 2FBD4 8003F3D4 FFFF0224 */   addiu     $v0, $zero, -0x1

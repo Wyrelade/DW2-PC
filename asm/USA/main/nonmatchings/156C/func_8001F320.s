@@ -7,7 +7,7 @@ glabel func_8001F320
     /* FB2C 8001F32C 3C00908C */  lw         $s0, 0x3C($a0)
     /* FB30 8001F330 00000000 */  nop
     /* FB34 8001F334 4800048E */  lw         $a0, 0x48($s0)
-    /* FB38 8001F338 828E000C */  jal        func_80023A08
+    /* FB38 8001F338 828E000C */  jal        Cd_GetFileOrNull
     /* FB3C 8001F33C 00000000 */   nop
     /* FB40 8001F340 5000038E */  lw         $v1, 0x50($s0)
     /* FB44 8001F344 21284000 */  addu       $a1, $v0, $zero

@@ -11,7 +11,7 @@ glabel func_800326A4
     /* 22EC0 800326C0 1400BFAF */  sw         $ra, 0x14($sp)
     /* 22EC4 800326C4 F9E2000C */  jal        func_80038BE4
     /* 22EC8 800326C8 01000724 */   addiu     $a3, $zero, 0x1
-    /* 22ECC 800326CC 6DE4000C */  jal        func_800391B4
+    /* 22ECC 800326CC 6DE4000C */  jal        _SsVmSeqKeyOff
     /* 22ED0 800326D0 21200002 */   addu      $a0, $s0, $zero
     /* 22ED4 800326D4 01000324 */  addiu      $v1, $zero, 0x1
     /* 22ED8 800326D8 04180302 */  sllv       $v1, $v1, $s0

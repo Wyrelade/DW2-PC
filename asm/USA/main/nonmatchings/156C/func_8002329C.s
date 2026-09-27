@@ -40,72 +40,72 @@ glabel func_8002329C
   .L80023320:
     /* 13B20 80023320 0000048E */  lw         $a0, 0x0($s0)
     /* 13B24 80023324 0400058E */  lw         $a1, 0x4($s0)
-    /* 13B28 80023328 9C8C000C */  jal        func_80023270
+    /* 13B28 80023328 9C8C000C */  jal        Pad_GetButtonState
     /* 13B2C 8002332C 00100624 */   addiu     $a2, $zero, 0x1000
     /* 13B30 80023330 080022AE */  sw         $v0, 0x8($s1)
     /* 13B34 80023334 0000048E */  lw         $a0, 0x0($s0)
     /* 13B38 80023338 0400058E */  lw         $a1, 0x4($s0)
-    /* 13B3C 8002333C 9C8C000C */  jal        func_80023270
+    /* 13B3C 8002333C 9C8C000C */  jal        Pad_GetButtonState
     /* 13B40 80023340 00400624 */   addiu     $a2, $zero, 0x4000
     /* 13B44 80023344 0C0022AE */  sw         $v0, 0xC($s1)
     /* 13B48 80023348 0000048E */  lw         $a0, 0x0($s0)
     /* 13B4C 8002334C 0400058E */  lw         $a1, 0x4($s0)
-    /* 13B50 80023350 9C8C000C */  jal        func_80023270
+    /* 13B50 80023350 9C8C000C */  jal        Pad_GetButtonState
     /* 13B54 80023354 00200624 */   addiu     $a2, $zero, 0x2000
     /* 13B58 80023358 000022AE */  sw         $v0, 0x0($s1)
     /* 13B5C 8002335C 0000048E */  lw         $a0, 0x0($s0)
     /* 13B60 80023360 0400058E */  lw         $a1, 0x4($s0)
-    /* 13B64 80023364 9C8C000C */  jal        func_80023270
+    /* 13B64 80023364 9C8C000C */  jal        Pad_GetButtonState
     /* 13B68 80023368 00800634 */   ori       $a2, $zero, 0x8000
     /* 13B6C 8002336C 040022AE */  sw         $v0, 0x4($s1)
     /* 13B70 80023370 0000048E */  lw         $a0, 0x0($s0)
     /* 13B74 80023374 0400058E */  lw         $a1, 0x4($s0)
-    /* 13B78 80023378 9C8C000C */  jal        func_80023270
+    /* 13B78 80023378 9C8C000C */  jal        Pad_GetButtonState
     /* 13B7C 8002337C 20000624 */   addiu     $a2, $zero, 0x20
     /* 13B80 80023380 100022AE */  sw         $v0, 0x10($s1)
     /* 13B84 80023384 0000048E */  lw         $a0, 0x0($s0)
     /* 13B88 80023388 0400058E */  lw         $a1, 0x4($s0)
-    /* 13B8C 8002338C 9C8C000C */  jal        func_80023270
+    /* 13B8C 8002338C 9C8C000C */  jal        Pad_GetButtonState
     /* 13B90 80023390 40000624 */   addiu     $a2, $zero, 0x40
     /* 13B94 80023394 140022AE */  sw         $v0, 0x14($s1)
     /* 13B98 80023398 0000048E */  lw         $a0, 0x0($s0)
     /* 13B9C 8002339C 0400058E */  lw         $a1, 0x4($s0)
-    /* 13BA0 800233A0 9C8C000C */  jal        func_80023270
+    /* 13BA0 800233A0 9C8C000C */  jal        Pad_GetButtonState
     /* 13BA4 800233A4 10000624 */   addiu     $a2, $zero, 0x10
     /* 13BA8 800233A8 1C0022AE */  sw         $v0, 0x1C($s1)
     /* 13BAC 800233AC 0000048E */  lw         $a0, 0x0($s0)
     /* 13BB0 800233B0 0400058E */  lw         $a1, 0x4($s0)
-    /* 13BB4 800233B4 9C8C000C */  jal        func_80023270
+    /* 13BB4 800233B4 9C8C000C */  jal        Pad_GetButtonState
     /* 13BB8 800233B8 80000624 */   addiu     $a2, $zero, 0x80
     /* 13BBC 800233BC 180022AE */  sw         $v0, 0x18($s1)
     /* 13BC0 800233C0 0000048E */  lw         $a0, 0x0($s0)
     /* 13BC4 800233C4 0400058E */  lw         $a1, 0x4($s0)
-    /* 13BC8 800233C8 9C8C000C */  jal        func_80023270
+    /* 13BC8 800233C8 9C8C000C */  jal        Pad_GetButtonState
     /* 13BCC 800233CC 04000624 */   addiu     $a2, $zero, 0x4
     /* 13BD0 800233D0 280022AE */  sw         $v0, 0x28($s1)
     /* 13BD4 800233D4 0000048E */  lw         $a0, 0x0($s0)
     /* 13BD8 800233D8 0400058E */  lw         $a1, 0x4($s0)
-    /* 13BDC 800233DC 9C8C000C */  jal        func_80023270
+    /* 13BDC 800233DC 9C8C000C */  jal        Pad_GetButtonState
     /* 13BE0 800233E0 01000624 */   addiu     $a2, $zero, 0x1
     /* 13BE4 800233E4 2C0022AE */  sw         $v0, 0x2C($s1)
     /* 13BE8 800233E8 0000048E */  lw         $a0, 0x0($s0)
     /* 13BEC 800233EC 0400058E */  lw         $a1, 0x4($s0)
-    /* 13BF0 800233F0 9C8C000C */  jal        func_80023270
+    /* 13BF0 800233F0 9C8C000C */  jal        Pad_GetButtonState
     /* 13BF4 800233F4 08000624 */   addiu     $a2, $zero, 0x8
     /* 13BF8 800233F8 200022AE */  sw         $v0, 0x20($s1)
     /* 13BFC 800233FC 0000048E */  lw         $a0, 0x0($s0)
     /* 13C00 80023400 0400058E */  lw         $a1, 0x4($s0)
-    /* 13C04 80023404 9C8C000C */  jal        func_80023270
+    /* 13C04 80023404 9C8C000C */  jal        Pad_GetButtonState
     /* 13C08 80023408 02000624 */   addiu     $a2, $zero, 0x2
     /* 13C0C 8002340C 240022AE */  sw         $v0, 0x24($s1)
     /* 13C10 80023410 0000048E */  lw         $a0, 0x0($s0)
     /* 13C14 80023414 0400058E */  lw         $a1, 0x4($s0)
-    /* 13C18 80023418 9C8C000C */  jal        func_80023270
+    /* 13C18 80023418 9C8C000C */  jal        Pad_GetButtonState
     /* 13C1C 8002341C 00010624 */   addiu     $a2, $zero, 0x100
     /* 13C20 80023420 300022AE */  sw         $v0, 0x30($s1)
     /* 13C24 80023424 0000048E */  lw         $a0, 0x0($s0)
     /* 13C28 80023428 0400058E */  lw         $a1, 0x4($s0)
-    /* 13C2C 8002342C 9C8C000C */  jal        func_80023270
+    /* 13C2C 8002342C 9C8C000C */  jal        Pad_GetButtonState
     /* 13C30 80023430 00080624 */   addiu     $a2, $zero, 0x800
     /* 13C34 80023434 340022AE */  sw         $v0, 0x34($s1)
     /* 13C38 80023438 04000296 */  lhu        $v0, 0x4($s0)

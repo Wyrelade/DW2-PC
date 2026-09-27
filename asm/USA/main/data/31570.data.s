@@ -10384,7 +10384,7 @@ nonmatching D_80048E78
 dlabel D_80048E78
     /* 39678 80048E78 00000000 */ .word 0x00000000
     /* 3967C 80048E7C AC510280 */ .word func_800251AC
-    /* 39680 80048E80 44510280 */ .word func_80025144
+    /* 39680 80048E80 44510280 */ .word Pad_VBlankIrqVerify
     /* 39684 80048E84 00000000 */ .word 0x00000000
 enddlabel D_80048E78
 
@@ -10443,20 +10443,20 @@ nonmatching D_80048EC8
 
 dlabel D_80048EC8
     /* 396C8 80048EC8 E4010180 */ .word D_800101E4
-    /* 396CC 80048ECC D8910280 */ .word func_800291D8
+    /* 396CC 80048ECC D8910280 */ .word _addque
     /* 396D0 80048ED0 FC910280 */ .word func_800291FC
     /* 396D4 80048ED4 188A0280 */ .word func_80028A18
-    /* 396D8 80048ED8 04910280 */ .word func_80029104
-    /* 396DC 80048EDC 20910280 */ .word func_80029120
-    /* 396E0 80048EE0 60910280 */ .word func_80029160
+    /* 396D8 80048ED8 04910280 */ .word _ctl
+    /* 396DC 80048EDC 20910280 */ .word _cwb
+    /* 396E0 80048EE0 60910280 */ .word _cwc
     /* 396E4 80048EE4 848E0280 */ .word func_80028E84
     /* 396E8 80048EE8 488C0280 */ .word func_80028C48
     /* 396EC 80048EEC AC940280 */ .word func_800294AC
     /* 396F0 80048EF0 18910280 */ .word func_80029118
     /* 396F4 80048EF4 38890280 */ .word func_80028938
-    /* 396F8 80048EF8 A8910280 */ .word func_800291A8
+    /* 396F8 80048EF8 A8910280 */ .word _param
     /* 396FC 80048EFC 0C970280 */ .word func_8002970C
-    /* 39700 80048F00 20890280 */ .word func_80028920
+    /* 39700 80048F00 20890280 */ .word _status
     /* 39704 80048F04 48980280 */ .word func_80029848
 enddlabel D_80048EC8
 
@@ -10469,7 +10469,7 @@ enddlabel D_80048F08
 nonmatching D_80048F0C
 
 dlabel D_80048F0C
-    /* 3970C 80048F0C 14A00280 */ .word func_8002A014
+    /* 3970C 80048F0C 14A00280 */ .word printf
 enddlabel D_80048F0C
 
 nonmatching D_80048F10

@@ -221,7 +221,7 @@ glabel func_80037D64
     /* 288A0 800380A0 FCFFC280 */  lb         $v0, -0x4($a2)
     /* 288A4 800380A4 00000000 */  nop
     /* 288A8 800380A8 23208200 */  subu       $a0, $a0, $v0
-    /* 288AC 800380AC D1ED000C */  jal        func_8003B744
+    /* 288AC 800380AC D1ED000C */  jal        SpuSetNoiseClock
     /* 288B0 800380B0 3F008430 */   andi      $a0, $a0, 0x3F
     /* 288B4 800380B4 FF007032 */  andi       $s0, $s3, 0xFF
     /* 288B8 800380B8 00191000 */  sll        $v1, $s0, 4

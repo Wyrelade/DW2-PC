@@ -9,7 +9,7 @@ glabel func_80013AB0
     /* 42C4 80013AC4 688E000C */  jal        func_800239A0
     /* 42C8 80013AC8 2180A000 */   addu      $s0, $a1, $zero
     /* 42CC 80013ACC 03241100 */  sra        $a0, $s1, 16
-    /* 42D0 80013AD0 828E000C */  jal        func_80023A08
+    /* 42D0 80013AD0 828E000C */  jal        Cd_GetFileOrNull
     /* 42D4 80013AD4 21884000 */   addu      $s1, $v0, $zero
     /* 42D8 80013AD8 80801000 */  sll        $s0, $s0, 2
     /* 42DC 80013ADC 21801102 */  addu       $s0, $s0, $s1

@@ -47,13 +47,13 @@ glabel func_8001C1E0
     /* CA88 8001C288 21280000 */  addu       $a1, $zero, $zero
     /* CA8C 8001C28C 2130A000 */  addu       $a2, $a1, $zero
     /* CA90 8001C290 21384002 */  addu       $a3, $s2, $zero
-    /* CA94 8001C294 ADAA000C */  jal        func_8002AAB4
+    /* CA94 8001C294 ADAA000C */  jal        SetDefDispEnv
     /* CA98 8001C298 1000B0AF */   sw        $s0, 0x10($sp)
     /* CA9C 8001C29C FC002426 */  addiu      $a0, $s1, 0xFC
     /* CAA0 8001C2A0 21280000 */  addu       $a1, $zero, $zero
     /* CAA4 8001C2A4 21300002 */  addu       $a2, $s0, $zero
     /* CAA8 8001C2A8 21384002 */  addu       $a3, $s2, $zero
-    /* CAAC 8001C2AC ADAA000C */  jal        func_8002AAB4
+    /* CAAC 8001C2AC ADAA000C */  jal        SetDefDispEnv
     /* CAB0 8001C2B0 1000B0AF */   sw        $s0, 0x10($sp)
     /* CAB4 8001C2B4 21184002 */  addu       $v1, $s2, $zero
     /* CAB8 8001C2B8 21101402 */  addu       $v0, $s0, $s4
@@ -83,13 +83,13 @@ glabel func_8001C1E0
     /* CB10 8001C310 21280000 */  addu       $a1, $zero, $zero
     /* CB14 8001C314 2130A000 */  addu       $a2, $a1, $zero
     /* CB18 8001C318 21384002 */  addu       $a3, $s2, $zero
-    /* CB1C 8001C31C ADAA000C */  jal        func_8002AAB4
+    /* CB1C 8001C31C ADAA000C */  jal        SetDefDispEnv
     /* CB20 8001C320 1000B0AF */   sw        $s0, 0x10($sp)
     /* CB24 8001C324 FC002426 */  addiu      $a0, $s1, 0xFC
     /* CB28 8001C328 21280000 */  addu       $a1, $zero, $zero
     /* CB2C 8001C32C 2130A000 */  addu       $a2, $a1, $zero
     /* CB30 8001C330 21384002 */  addu       $a3, $s2, $zero
-    /* CB34 8001C334 ADAA000C */  jal        func_8002AAB4
+    /* CB34 8001C334 ADAA000C */  jal        SetDefDispEnv
     /* CB38 8001C338 1000B0AF */   sw        $s0, 0x10($sp)
     /* CB3C 8001C33C 21104002 */  addu       $v0, $s2, $zero
     /* CB40 8001C340 380033A6 */  sh         $s3, 0x38($s1)
@@ -120,14 +120,14 @@ glabel func_8001C1E0
     /* CB9C 8001C39C 21280000 */  addu       $a1, $zero, $zero
     /* CBA0 8001C3A0 2130A000 */  addu       $a2, $a1, $zero
     /* CBA4 8001C3A4 40010724 */  addiu      $a3, $zero, 0x140
-    /* CBA8 8001C3A8 ADAA000C */  jal        func_8002AAB4
+    /* CBA8 8001C3A8 ADAA000C */  jal        SetDefDispEnv
     /* CBAC 8001C3AC 1000B0AF */   sw        $s0, 0x10($sp)
     /* CBB0 8001C3B0 FC002426 */  addiu      $a0, $s1, 0xFC
     /* CBB4 8001C3B4 E0010524 */  addiu      $a1, $zero, 0x1E0
     /* CBB8 8001C3B8 21300000 */  addu       $a2, $zero, $zero
     /* CBBC 8001C3BC 40010724 */  addiu      $a3, $zero, 0x140
     /* CBC0 8001C3C0 F90035A2 */  sb         $s5, 0xF9($s1)
-    /* CBC4 8001C3C4 ADAA000C */  jal        func_8002AAB4
+    /* CBC4 8001C3C4 ADAA000C */  jal        SetDefDispEnv
     /* CBC8 8001C3C8 1000B0AF */   sw        $s0, 0x10($sp)
     /* CBCC 8001C3CC 21105302 */  addu       $v0, $s2, $s3
     /* CBD0 8001C3D0 0D0135A2 */  sb         $s5, 0x10D($s1)
@@ -154,13 +154,13 @@ glabel func_8001C1E0
     /* CC20 8001C420 21280000 */  addu       $a1, $zero, $zero
     /* CC24 8001C424 2130A000 */  addu       $a2, $a1, $zero
     /* CC28 8001C428 21384002 */  addu       $a3, $s2, $zero
-    /* CC2C 8001C42C ADAA000C */  jal        func_8002AAB4
+    /* CC2C 8001C42C ADAA000C */  jal        SetDefDispEnv
     /* CC30 8001C430 1000B0AF */   sw        $s0, 0x10($sp)
     /* CC34 8001C434 FC002426 */  addiu      $a0, $s1, 0xFC
     /* CC38 8001C438 21284002 */  addu       $a1, $s2, $zero
     /* CC3C 8001C43C 21300000 */  addu       $a2, $zero, $zero
     /* CC40 8001C440 21384002 */  addu       $a3, $s2, $zero
-    /* CC44 8001C444 ADAA000C */  jal        func_8002AAB4
+    /* CC44 8001C444 ADAA000C */  jal        SetDefDispEnv
     /* CC48 8001C448 1000B0AF */   sw        $s0, 0x10($sp)
     /* CC4C 8001C44C 21204002 */  addu       $a0, $s2, $zero
     /* CC50 8001C450 21109300 */  addu       $v0, $a0, $s3
@@ -184,7 +184,7 @@ glabel func_8001C1E0
     /* CC8C 8001C48C 31AD000C */  jal        func_8002B4C4
     /* CC90 8001C490 00000000 */   nop
     /* CC94 8001C494 21200000 */  addu       $a0, $zero, $zero
-    /* CC98 8001C498 A9B5000C */  jal        func_8002D6A4
+    /* CC98 8001C498 A9B5000C */  jal        SetGeomOffset
     /* CC9C 8001C49C 21288000 */   addu      $a1, $a0, $zero
     /* CCA0 8001C4A0 3400BF8F */  lw         $ra, 0x34($sp)
     /* CCA4 8001C4A4 3000B68F */  lw         $s6, 0x30($sp)

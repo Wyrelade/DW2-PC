@@ -15,7 +15,7 @@ glabel func_80039A78
     /* 2A2A4 80039AA4 0680013C */  lui        $at, %hi(D_80062D38)
     /* 2A2A8 80039AA8 21082200 */  addu       $at, $at, $v0
     /* 2A2AC 80039AAC 382D20A0 */  sb         $zero, %lo(D_80062D38)($at)
-    /* 2A2B0 80039AB0 31F2000C */  jal        func_8003C8C4
+    /* 2A2B0 80039AB0 31F2000C */  jal        _spu_setInTransfer
     /* 2A2B4 80039AB4 21200000 */   addu      $a0, $zero, $zero
     /* 2A2B8 80039AB8 0680033C */  lui        $v1, %hi(D_80062D90)
     /* 2A2BC 80039ABC 902D6394 */  lhu        $v1, %lo(D_80062D90)($v1)

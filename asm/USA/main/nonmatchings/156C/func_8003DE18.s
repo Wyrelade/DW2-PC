@@ -99,7 +99,7 @@ glabel func_8003DE18
     /* 2E780 8003DF80 A9FF000C */  jal        func_8003FEA4
     /* 2E784 8003DF84 00000000 */   nop
     /* 2E788 8003DF88 0000248E */  lw         $a0, 0x0($s1)
-    /* 2E78C 8003DF8C 6DFE000C */  jal        func_8003F9B4
+    /* 2E78C 8003DF8C 6DFE000C */  jal        _card_clear
     /* 2E790 8003DF90 00000000 */   nop
     /* 2E794 8003DF94 15000224 */  addiu      $v0, $zero, 0x15
     /* 2E798 8003DF98 45F80008 */  j          .L8003E114
@@ -196,7 +196,7 @@ glabel func_8003DE18
     /* 2E8E0 8003E0E0 46F80008 */  j          .L8003E118
     /* 2E8E4 8003E0E4 480080AC */   sw        $zero, 0x48($a0)
   .L8003E0E8:
-    /* 2E8E8 8003E0E8 6600010C */  jal        func_80040198
+    /* 2E8E8 8003E0E8 6600010C */  jal        Card_GetHwEventBits
     /* 2E8EC 8003E0EC 00000000 */   nop
     /* 2E8F0 8003E0F0 09004010 */  beqz       $v0, .L8003E118
     /* 2E8F4 8003E0F4 21100000 */   addu      $v0, $zero, $zero
@@ -206,7 +206,7 @@ glabel func_8003DE18
     /* 2E904 8003E104 000000AE */   sw        $zero, 0x0($s0)
   .L8003E108:
     /* 2E908 8003E108 0180043C */  lui        $a0, %hi(D_80010B9C)
-    /* 2E90C 8003E10C 05A8000C */  jal        func_8002A014
+    /* 2E90C 8003E10C 05A8000C */  jal        printf
     /* 2E910 8003E110 9C0B8424 */   addiu     $a0, $a0, %lo(D_80010B9C)
   .L8003E114:
     /* 2E914 8003E114 21100000 */  addu       $v0, $zero, $zero

@@ -13,7 +13,7 @@ glabel func_80027694
     /* 17EB8 800276B8 2180C000 */  addu       $s0, $a2, $zero
     /* 17EBC 800276BC 1400B1AF */  sw         $s1, 0x14($sp)
     /* 17EC0 800276C0 2000BFAF */  sw         $ra, 0x20($sp)
-    /* 17EC4 800276C4 3A9D000C */  jal        func_800274E8
+    /* 17EC4 800276C4 3A9D000C */  jal        checkRECT
     /* 17EC8 800276C8 2188E000 */   addu      $s1, $a3, $zero
     /* 17ECC 800276CC 21286002 */  addu       $a1, $s3, $zero
     /* 17ED0 800276D0 FF003132 */  andi       $s1, $s1, 0xFF

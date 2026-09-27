@@ -75,7 +75,7 @@ glabel func_8002B06C
     /* 1B980 8002B180 8C19A584 */  lh         $a1, %lo(D_8006198C)($a1)
     /* 1B984 8002B184 1000E48C */  lw         $a0, 0x10($a3)
     /* 1B988 8002B188 00290500 */  sll        $a1, $a1, 4
-    /* 1B98C 8002B18C BDAA000C */  jal        func_8002AAF4
+    /* 1B98C 8002B18C BDAA000C */  jal        AddPrim
     /* 1B990 8002B190 2128A200 */   addu      $a1, $a1, $v0
     /* 1B994 8002B194 1000BF8F */  lw         $ra, 0x10($sp)
     /* 1B998 8002B198 1800BD27 */  addiu      $sp, $sp, 0x18

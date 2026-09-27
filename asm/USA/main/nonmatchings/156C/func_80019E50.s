@@ -15,7 +15,7 @@ glabel func_80019E50
     /* A67C 80019E7C 2C00428E */  lw         $v0, 0x2C($s2)
     /* A680 80019E80 3400438E */  lw         $v1, 0x34($s2)
     /* A684 80019E84 0000448C */  lw         $a0, 0x0($v0)
-    /* A688 80019E88 828E000C */  jal        func_80023A08
+    /* A688 80019E88 828E000C */  jal        Cd_GetFileOrNull
     /* A68C 80019E8C 21886000 */   addu      $s1, $v1, $zero
     /* A690 80019E90 21804000 */  addu       $s0, $v0, $zero
   .L80019E94:

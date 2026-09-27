@@ -10,13 +10,13 @@ glabel func_80036C54
     /* 2746C 80036C6C 6000B4AF */  sw         $s4, 0x60($sp)
     /* 27470 80036C70 5C00B3AF */  sw         $s3, 0x5C($sp)
     /* 27474 80036C74 5800B2AF */  sw         $s2, 0x58($sp)
-    /* 27478 80036C78 31F2000C */  jal        func_8003C8C4
+    /* 27478 80036C78 31F2000C */  jal        _spu_setInTransfer
     /* 2747C 80036C7C 5000B0AF */   sw        $s0, 0x50($sp)
     /* 27480 80036C80 0680053C */  lui        $a1, %hi(D_80062DE0)
     /* 27484 80036C84 E02DA524 */  addiu      $a1, $a1, %lo(D_80062DE0)
     /* 27488 80036C88 0680013C */  lui        $at, %hi(D_80062CB0)
     /* 2748C 80036C8C B02C20A4 */  sh         $zero, %lo(D_80062CB0)($at)
-    /* 27490 80036C90 51EB000C */  jal        func_8003AD44
+    /* 27490 80036C90 51EB000C */  jal        SpuInitMalloc
     /* 27494 80036C94 20000424 */   addiu     $a0, $zero, 0x20
     /* 27498 80036C98 21800000 */  addu       $s0, $zero, $zero
     /* 2749C 80036C9C 0680033C */  lui        $v1, %hi(D_80062A48)
@@ -170,7 +170,7 @@ glabel func_80036C54
     /* 276D4 80036ED4 1000A3AF */   sw        $v1, 0x10($sp)
     /* 276D8 80036ED8 0680013C */  lui        $at, %hi(D_80062D30)
     /* 276DC 80036EDC 302D30A4 */  sh         $s0, %lo(D_80062D30)($at)
-    /* 276E0 80036EE0 C5E0000C */  jal        func_80038314
+    /* 276E0 80036EE0 C5E0000C */  jal        _SsVmKeyOffNow
     /* 276E4 80036EE4 01000424 */   addiu     $a0, $zero, 0x1
     /* 276E8 80036EE8 01001026 */  addiu      $s0, $s0, 0x1
     /* 276EC 80036EEC 0680033C */  lui        $v1, %hi(D_80062D0C)

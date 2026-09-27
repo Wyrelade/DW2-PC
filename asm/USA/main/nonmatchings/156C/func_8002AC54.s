@@ -21,7 +21,7 @@ glabel func_8002AC54
     /* 1B498 8002AC98 8C1920A4 */  sh         $zero, %lo(D_8006198C)($at)
     /* 1B49C 8002AC9C 93AB000C */  jal        func_8002AE4C
     /* 1B4A0 8002ACA0 21280002 */   addu      $a1, $s0, $zero
-    /* 1B4A4 8002ACA4 ADAC000C */  jal        func_8002B2B4
+    /* 1B4A4 8002ACA4 ADAC000C */  jal        GsSetDrawBuffClip
     /* 1B4A8 8002ACA8 00000000 */   nop
     /* 1B4AC 8002ACAC 69AC000C */  jal        func_8002B1A4
     /* 1B4B0 8002ACB0 00000000 */   nop

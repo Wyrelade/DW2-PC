@@ -25,7 +25,7 @@ glabel func_8003D620
     /* 2DE74 8003D674 21200002 */  addu       $a0, $s0, $zero
     /* 2DE78 8003D678 21282002 */  addu       $a1, $s1, $zero
     /* 2DE7C 8003D67C 21304002 */  addu       $a2, $s2, $zero
-    /* 2DE80 8003D680 2DF6000C */  jal        func_8003D8B4
+    /* 2DE80 8003D680 2DF6000C */  jal        PAD_init
     /* 2DE84 8003D684 21386002 */   addu      $a3, $s3, $zero
     /* 2DE88 8003D688 01000224 */  addiu      $v0, $zero, 0x1
     /* 2DE8C 8003D68C 0580013C */  lui        $at, %hi(D_800506B8)

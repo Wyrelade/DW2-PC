@@ -12,13 +12,13 @@ glabel func_80024260
     /* 14A80 80024280 05004010 */  beqz       $v0, .L80024298
     /* 14A84 80024284 1C00B1AF */   sw        $s1, 0x1C($sp)
   .L80024288:
-    /* 14A88 80024288 8890000C */  jal        func_80024220
+    /* 14A88 80024288 8890000C */  jal        Cd_PollRead
     /* 14A8C 8002428C 00000000 */   nop
     /* 14A90 80024290 FDFF4014 */  bnez       $v0, .L80024288
     /* 14A94 80024294 00000000 */   nop
   .L80024298:
     /* 14A98 80024298 21200002 */  addu       $a0, $s0, $zero
-    /* 14A9C 8002429C F28F000C */  jal        func_80023FC8
+    /* 14A9C 8002429C F28F000C */  jal        Cd_GetFilePos
     /* 14AA0 800242A0 1000A527 */   addiu     $a1, $sp, 0x10
     /* 14AA4 800242A4 E48F000C */  jal        func_80023F90
     /* 14AA8 800242A8 21200002 */   addu      $a0, $s0, $zero
@@ -29,14 +29,14 @@ glabel func_80024260
     /* 14ABC 800242BC 080012AE */  sw         $s2, 0x8($s0)
     /* 14AC0 800242C0 100002AE */  sw         $v0, 0x10($s0)
     /* 14AC4 800242C4 140004AE */  sw         $a0, 0x14($s0)
-    /* 14AC8 800242C8 EB8F000C */  jal        func_80023FAC
+    /* 14AC8 800242C8 EB8F000C */  jal        Cd_GetFileLba
     /* 14ACC 800242CC 180012AE */   sw        $s2, 0x18($s0)
     /* 14AD0 800242D0 0280043C */  lui        $a0, %hi(func_800240E8)
     /* 14AD4 800242D4 B88D238E */  lw         $v1, %lo(D_80048DB8)($s1)
     /* 14AD8 800242D8 E8408424 */  addiu      $a0, $a0, %lo(func_800240E8)
     /* 14ADC 800242DC 1C0002AE */  sw         $v0, 0x1C($s0)
     /* 14AE0 800242E0 01006324 */  addiu      $v1, $v1, 0x1
-    /* 14AE4 800242E4 45C1000C */  jal        func_80030514
+    /* 14AE4 800242E4 45C1000C */  jal        CdSyncCallback
     /* 14AE8 800242E8 B88D23AE */   sw        $v1, %lo(D_80048DB8)($s1)
     /* 14AEC 800242EC 02000424 */  addiu      $a0, $zero, 0x2
     /* 14AF0 800242F0 A4C1000C */  jal        func_80030690

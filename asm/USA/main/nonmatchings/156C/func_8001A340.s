@@ -29,7 +29,7 @@ glabel func_8001A340
     /* AB98 8001A398 0C006486 */  lh         $a0, 0xC($s3)
     /* AB9C 8001A39C 002C1000 */  sll        $a1, $s0, 16
     /* ABA0 8001A3A0 01001026 */  addiu      $s0, $s0, 0x1
-    /* ABA4 8001A3A4 A7D5000C */  jal        func_8003569C
+    /* ABA4 8001A3A4 A7D5000C */  jal        SsSepStop
     /* ABA8 8001A3A8 032C0500 */   sra       $a1, $a1, 16
     /* ABAC 8001A3AC 1000022A */  slti       $v0, $s0, 0x10
     /* ABB0 8001A3B0 F9FF4014 */  bnez       $v0, .L8001A398

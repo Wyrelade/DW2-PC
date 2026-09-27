@@ -15,7 +15,7 @@ glabel func_80038A90
     /* 292BC 80038ABC 3400BFAF */  sw         $ra, 0x34($sp)
     /* 292C0 80038AC0 3000B6AF */  sw         $s6, 0x30($sp)
     /* 292C4 80038AC4 1C00B1AF */  sw         $s1, 0x1C($sp)
-    /* 292C8 80038AC8 35E6000C */  jal        func_800398D4
+    /* 292C8 80038AC8 35E6000C */  jal        _SsVmVSetUp
     /* 292CC 80038ACC 1800B0AF */   sw        $s0, 0x18($sp)
     /* 292D0 80038AD0 21880000 */  addu       $s1, $zero, $zero
     /* 292D4 80038AD4 0680023C */  lui        $v0, %hi(D_80062D0C)

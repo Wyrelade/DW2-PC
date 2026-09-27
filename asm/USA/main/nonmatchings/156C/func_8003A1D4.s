@@ -22,7 +22,7 @@ glabel func_8003A1D4
     /* 2AA1C 8003A21C 40FE20A4 */  sh         $zero, %lo(D_8004FE40)($at)
     /* 2AA20 8003A220 800140A4 */  sh         $zero, 0x180($v0)
     /* 2AA24 8003A224 820140A4 */  sh         $zero, 0x182($v0)
-    /* 2AA28 8003A228 2BEB000C */  jal        func_8003ACAC
+    /* 2AA28 8003A228 2BEB000C */  jal        _spu_Fw1ts
     /* 2AA2C 8003A22C AA0140A4 */   sh        $zero, 0x1AA($v0)
     /* 2AA30 8003A230 0580023C */  lui        $v0, %hi(D_8004FE28)
     /* 2AA34 8003A234 28FE428C */  lw         $v0, %lo(D_8004FE28)($v0)
@@ -42,7 +42,7 @@ glabel func_8003A1D4
     /* 2AA68 8003A268 0180043C */  lui        $a0, %hi(D_80010AA4)
     /* 2AA6C 8003A26C A40A8424 */  addiu      $a0, $a0, %lo(D_80010AA4)
     /* 2AA70 8003A270 0180053C */  lui        $a1, %hi(D_80010AB4)
-    /* 2AA74 8003A274 05A8000C */  jal        func_8002A014
+    /* 2AA74 8003A274 05A8000C */  jal        printf
     /* 2AA78 8003A278 B40AA524 */   addiu     $a1, $a1, %lo(D_80010AB4)
     /* 2AA7C 8003A27C AAE80008 */  j          .L8003A2A8
     /* 2AA80 8003A280 21200000 */   addu      $a0, $zero, $zero
@@ -130,25 +130,25 @@ glabel func_8003A1D4
     /* 2ABB4 8003A3B4 28FE428C */  lw         $v0, %lo(D_8004FE28)($v0)
     /* 2ABB8 8003A3B8 FF001024 */  addiu      $s0, $zero, 0xFF
     /* 2ABBC 8003A3BC 880151A4 */  sh         $s1, 0x188($v0)
-    /* 2ABC0 8003A3C0 2BEB000C */  jal        func_8003ACAC
+    /* 2ABC0 8003A3C0 2BEB000C */  jal        _spu_Fw1ts
     /* 2ABC4 8003A3C4 8A0150A4 */   sh        $s0, 0x18A($v0)
-    /* 2ABC8 8003A3C8 2BEB000C */  jal        func_8003ACAC
+    /* 2ABC8 8003A3C8 2BEB000C */  jal        _spu_Fw1ts
     /* 2ABCC 8003A3CC 00000000 */   nop
-    /* 2ABD0 8003A3D0 2BEB000C */  jal        func_8003ACAC
+    /* 2ABD0 8003A3D0 2BEB000C */  jal        _spu_Fw1ts
     /* 2ABD4 8003A3D4 00000000 */   nop
-    /* 2ABD8 8003A3D8 2BEB000C */  jal        func_8003ACAC
+    /* 2ABD8 8003A3D8 2BEB000C */  jal        _spu_Fw1ts
     /* 2ABDC 8003A3DC 00000000 */   nop
     /* 2ABE0 8003A3E0 0580023C */  lui        $v0, %hi(D_8004FE28)
     /* 2ABE4 8003A3E4 28FE428C */  lw         $v0, %lo(D_8004FE28)($v0)
     /* 2ABE8 8003A3E8 00000000 */  nop
     /* 2ABEC 8003A3EC 8C0151A4 */  sh         $s1, 0x18C($v0)
-    /* 2ABF0 8003A3F0 2BEB000C */  jal        func_8003ACAC
+    /* 2ABF0 8003A3F0 2BEB000C */  jal        _spu_Fw1ts
     /* 2ABF4 8003A3F4 8E0150A4 */   sh        $s0, 0x18E($v0)
-    /* 2ABF8 8003A3F8 2BEB000C */  jal        func_8003ACAC
+    /* 2ABF8 8003A3F8 2BEB000C */  jal        _spu_Fw1ts
     /* 2ABFC 8003A3FC 00000000 */   nop
-    /* 2AC00 8003A400 2BEB000C */  jal        func_8003ACAC
+    /* 2AC00 8003A400 2BEB000C */  jal        _spu_Fw1ts
     /* 2AC04 8003A404 00000000 */   nop
-    /* 2AC08 8003A408 2BEB000C */  jal        func_8003ACAC
+    /* 2AC08 8003A408 2BEB000C */  jal        _spu_Fw1ts
     /* 2AC0C 8003A40C 00000000 */   nop
     /* 2AC10 8003A410 21100000 */  addu       $v0, $zero, $zero
   .L8003A414:

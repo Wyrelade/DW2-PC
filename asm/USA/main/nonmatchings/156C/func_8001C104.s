@@ -26,7 +26,7 @@ glabel func_8001C104
     /* C958 8001C158 2130A000 */  addu       $a2, $a1, $zero
     /* C95C 8001C15C A59D000C */  jal        func_80027694
     /* C960 8001C160 2138A000 */   addu      $a3, $a1, $zero
-    /* C964 8001C164 209D000C */  jal        func_80027480
+    /* C964 8001C164 209D000C */  jal        DrawSync
     /* C968 8001C168 21200000 */   addu      $a0, $zero, $zero
     /* C96C 8001C16C 01003126 */  addiu      $s1, $s1, 0x1
     /* C970 8001C170 0200222A */  slti       $v0, $s1, 0x2

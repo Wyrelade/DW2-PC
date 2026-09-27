@@ -9,7 +9,7 @@ glabel func_8002778C
     /* 17FA0 800277A0 0180043C */  lui        $a0, %hi(D_8001031C)
     /* 17FA4 800277A4 1C038424 */  addiu      $a0, $a0, %lo(D_8001031C)
     /* 17FA8 800277A8 1800BFAF */  sw         $ra, 0x18($sp)
-    /* 17FAC 800277AC 3A9D000C */  jal        func_800274E8
+    /* 17FAC 800277AC 3A9D000C */  jal        checkRECT
     /* 17FB0 800277B0 21280002 */   addu      $a1, $s0, $zero
     /* 17FB4 800277B4 21280002 */  addu       $a1, $s0, $zero
     /* 17FB8 800277B8 0580023C */  lui        $v0, %hi(D_80048F08)

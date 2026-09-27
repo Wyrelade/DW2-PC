@@ -3,7 +3,7 @@ nonmatching func_80023EB8, 0x40
 glabel func_80023EB8
     /* 146B8 80023EB8 E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* 146BC 80023EBC 1000BFAF */  sw         $ra, 0x10($sp)
-    /* 146C0 80023EC0 9E8E000C */  jal        func_80023A78
+    /* 146C0 80023EC0 9E8E000C */  jal        Cd_FindCachedFile
     /* 146C4 80023EC4 00000000 */   nop
     /* 146C8 80023EC8 21204000 */  addu       $a0, $v0, $zero
     /* 146CC 80023ECC 06008010 */  beqz       $a0, .L80023EE8

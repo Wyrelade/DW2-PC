@@ -3,7 +3,7 @@ nonmatching func_80023E20, 0x58
 glabel func_80023E20
     /* 14620 80023E20 E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* 14624 80023E24 1400BFAF */  sw         $ra, 0x14($sp)
-    /* 14628 80023E28 9E8E000C */  jal        func_80023A78
+    /* 14628 80023E28 9E8E000C */  jal        Cd_FindCachedFile
     /* 1462C 80023E2C 1000B0AF */   sw        $s0, 0x10($sp)
     /* 14630 80023E30 21804000 */  addu       $s0, $v0, $zero
     /* 14634 80023E34 0C000012 */  beqz       $s0, .L80023E68
@@ -13,7 +13,7 @@ glabel func_80023E20
     /* 14644 80023E44 08006214 */  bne        $v1, $v0, .L80023E68
     /* 14648 80023E48 00000000 */   nop
     /* 1464C 80023E4C 0C00048E */  lw         $a0, 0xC($s0)
-    /* 14650 80023E50 618B000C */  jal        func_80022D84
+    /* 14650 80023E50 618B000C */  jal        Mem_Free
     /* 14654 80023E54 00000000 */   nop
     /* 14658 80023E58 040000AE */  sw         $zero, 0x4($s0)
     /* 1465C 80023E5C 0C0000AE */  sw         $zero, 0xC($s0)

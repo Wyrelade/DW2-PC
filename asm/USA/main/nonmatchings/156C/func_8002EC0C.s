@@ -49,7 +49,7 @@ glabel func_8002EC0C
     /* 1F4B0 8002ECB0 21082500 */  addu       $at, $at, $a1
     /* 1F4B4 8002ECB4 8810258C */  lw         $a1, (0x1F801088 & 0xFFFF)($at)
     /* 1F4B8 8002ECB8 0180043C */  lui        $a0, %hi(D_800106F4)
-    /* 1F4BC 8002ECBC 05A8000C */  jal        func_8002A014
+    /* 1F4BC 8002ECBC 05A8000C */  jal        printf
     /* 1F4C0 8002ECC0 F4068424 */   addiu     $a0, $a0, %lo(D_800106F4)
     /* 1F4C4 8002ECC4 22BB0008 */  j          .L8002EC88
     /* 1F4C8 8002ECC8 01000224 */   addiu     $v0, $zero, 0x1

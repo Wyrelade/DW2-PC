@@ -9,7 +9,7 @@ glabel func_8001E514
     /* ED28 8001E528 1400B1AF */  sw         $s1, 0x14($sp)
     /* ED2C 8001E52C 21880000 */  addu       $s1, $zero, $zero
     /* ED30 8001E530 1C00BFAF */  sw         $ra, 0x1C($sp)
-    /* ED34 8001E534 828E000C */  jal        func_80023A08
+    /* ED34 8001E534 828E000C */  jal        Cd_GetFileOrNull
     /* ED38 8001E538 1800B2AF */   sw        $s2, 0x18($sp)
     /* ED3C 8001E53C 21200002 */  addu       $a0, $s0, $zero
     /* ED40 8001E540 3379000C */  jal        func_8001E4CC

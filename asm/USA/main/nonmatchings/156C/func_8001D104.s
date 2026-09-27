@@ -105,7 +105,7 @@ glabel func_8001D104
   .L8001D284:
     /* DA84 8001D284 21284002 */  addu       $a1, $s2, $zero
     /* DA88 8001D288 6C00A48F */  lw         $a0, 0x6C($sp)
-    /* DA8C 8001D28C 11B5000C */  jal        func_8002D444
+    /* DA8C 8001D28C 11B5000C */  jal        ApplyMatrixSV
     /* DA90 8001D290 1000A627 */   addiu     $a2, $sp, 0x10
     /* DA94 8001D294 1000A297 */  lhu        $v0, 0x10($sp)
     /* DA98 8001D298 0400E396 */  lhu        $v1, 0x4($s7)

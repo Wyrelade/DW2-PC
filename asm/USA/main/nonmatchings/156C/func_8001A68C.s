@@ -33,7 +33,7 @@ glabel func_8001A68C
     /* AEF8 8001A6F8 21800402 */  addu       $s0, $s0, $a0
     /* AEFC 8001A6FC 0F005132 */  andi       $s1, $s2, 0xF
     /* AF00 8001A700 0C000486 */  lh         $a0, 0xC($s0)
-    /* AF04 8001A704 A7D5000C */  jal        func_8003569C
+    /* AF04 8001A704 A7D5000C */  jal        SsSepStop
     /* AF08 8001A708 21282002 */   addu      $a1, $s1, $zero
     /* AF0C 8001A70C 21282002 */  addu       $a1, $s1, $zero
     /* AF10 8001A710 7F000624 */  addiu      $a2, $zero, 0x7F

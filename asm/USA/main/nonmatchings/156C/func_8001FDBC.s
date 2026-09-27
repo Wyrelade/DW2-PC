@@ -11,7 +11,7 @@ glabel func_8001FDBC
     /* 105D8 8001FDD8 21206002 */  addu       $a0, $s3, $zero
     /* 105DC 8001FDDC 2400BFAF */  sw         $ra, 0x24($sp)
     /* 105E0 8001FDE0 1800B2AF */  sw         $s2, 0x18($sp)
-    /* 105E4 8001FDE4 828E000C */  jal        func_80023A08
+    /* 105E4 8001FDE4 828E000C */  jal        Cd_GetFileOrNull
     /* 105E8 8001FDE8 1400B1AF */   sw        $s1, 0x14($sp)
     /* 105EC 8001FDEC 21904000 */  addu       $s2, $v0, $zero
     /* 105F0 8001FDF0 3C00038E */  lw         $v1, 0x3C($s0)
@@ -34,7 +34,7 @@ glabel func_8001FDBC
     /* 10630 8001FE30 02000524 */   addiu     $a1, $zero, 0x2
     /* 10634 8001FE34 3C0002AE */  sw         $v0, 0x3C($s0)
     /* 10638 8001FE38 21204000 */  addu       $a0, $v0, $zero
-    /* 1063C 8001FE3C E38B000C */  jal        func_80022F8C
+    /* 1063C 8001FE3C E38B000C */  jal        Mem_Zero
     /* 10640 8001FE40 7C000524 */   addiu     $a1, $zero, 0x7C
     /* 10644 8001FE44 01001424 */  addiu      $s4, $zero, 0x1
   .L8001FE48:

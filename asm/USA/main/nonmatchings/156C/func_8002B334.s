@@ -51,7 +51,7 @@ glabel func_8002B334
     /* 1BBE4 8002B3E4 00007084 */  lh         $s0, 0x0($v1)
     /* 1BBE8 8002B3E8 21202002 */  addu       $a0, $s1, $zero
     /* 1BBEC 8002B3EC 2180D000 */  addu       $s0, $a2, $s0
-    /* 1BBF0 8002B3F0 A9B5000C */  jal        func_8002D6A4
+    /* 1BBF0 8002B3F0 A9B5000C */  jal        SetGeomOffset
     /* 1BBF4 8002B3F4 21280002 */   addu      $a1, $s0, $zero
     /* 1BBF8 8002B3F8 0680013C */  lui        $at, %hi(D_8006197C)
     /* 1BBFC 8002B3FC 7C1931A4 */  sh         $s1, %lo(D_8006197C)($at)

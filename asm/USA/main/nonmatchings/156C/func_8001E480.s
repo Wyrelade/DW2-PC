@@ -6,7 +6,7 @@ glabel func_8001E480
     /* EC88 8001E488 0680103C */  lui        $s0, %hi(D_8005D560)
     /* EC8C 8001E48C 60D5048E */  lw         $a0, %lo(D_8005D560)($s0)
     /* EC90 8001E490 1400BFAF */  sw         $ra, 0x14($sp)
-    /* EC94 8001E494 828E000C */  jal        func_80023A08
+    /* EC94 8001E494 828E000C */  jal        Cd_GetFileOrNull
     /* EC98 8001E498 00000000 */   nop
     /* EC9C 8001E49C 60D5048E */  lw         $a0, %lo(D_8005D560)($s0)
     /* ECA0 8001E4A0 60D51026 */  addiu      $s0, $s0, %lo(D_8005D560)

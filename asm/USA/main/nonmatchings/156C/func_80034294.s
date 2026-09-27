@@ -25,7 +25,7 @@ glabel func_80034294
     /* 24AE8 800342E8 1000A427 */  addiu      $a0, $sp, 0x10
     /* 24AEC 800342EC 5C00A527 */  addiu      $a1, $sp, 0x5C
     /* 24AF0 800342F0 5E00A627 */  addiu      $a2, $sp, 0x5E
-    /* 24AF4 800342F4 E0CE000C */  jal        func_80033B80
+    /* 24AF4 800342F4 E0CE000C */  jal        _SsUtBuildADSR
     /* 24AF8 800342F8 5600B3A3 */   sb        $s3, 0x56($sp)
     /* 24AFC 800342FC 21204002 */  addu       $a0, $s2, $zero
     /* 24B00 80034300 21282002 */  addu       $a1, $s1, $zero

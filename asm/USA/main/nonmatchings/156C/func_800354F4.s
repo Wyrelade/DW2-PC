@@ -49,7 +49,7 @@ glabel func_800354F4
     /* 25DA8 800355A8 9800628C */  lw         $v0, 0x98($v1)
     /* 25DAC 800355AC 03240400 */  sra        $a0, $a0, 16
     /* 25DB0 800355B0 04004234 */  ori        $v0, $v0, 0x4
-    /* 25DB4 800355B4 6DE4000C */  jal        func_800391B4
+    /* 25DB4 800355B4 6DE4000C */  jal        _SsVmSeqKeyOff
     /* 25DB8 800355B8 980062AC */   sw        $v0, 0x98($v1)
     /* 25DBC 800355BC D9D9000C */  jal        func_80036764
     /* 25DC0 800355C0 00000000 */   nop

@@ -9,7 +9,7 @@ glabel func_8003C774
     /* 2CF88 8003C788 2B104300 */  sltu       $v0, $v0, $v1
     /* 2CF8C 8003C78C 0B004014 */  bnez       $v0, .L8003C7BC
     /* 2CF90 8003C790 1000BFAF */   sw        $ra, 0x10($sp)
-    /* 2CF94 8003C794 C9EA000C */  jal        func_8003AB24
+    /* 2CF94 8003C794 C9EA000C */  jal        _spu_FsetRXXa
     /* 2CF98 8003C798 FFFF0424 */   addiu     $a0, $zero, -0x1
     /* 2CF9C 8003C79C 0580013C */  lui        $at, %hi(D_8004FE40)
     /* 2CFA0 8003C7A0 40FE22A4 */  sh         $v0, %lo(D_8004FE40)($at)

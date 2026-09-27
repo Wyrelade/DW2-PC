@@ -39,7 +39,7 @@ glabel func_8001F9AC
     /* 10238 8001FA38 08004000 */  jr         $v0
     /* 1023C 8001FA3C 00000000 */   nop
   jlabel .L8001FA40
-    /* 10240 8001FA40 448E000C */  jal        func_80023910
+    /* 10240 8001FA40 448E000C */  jal        Rand_Next
     /* 10244 8001FA44 00000000 */   nop
     /* 10248 8001FA48 7F004230 */  andi       $v0, $v0, 0x7F
     /* 1024C 8001FA4C 3C004224 */  addiu      $v0, $v0, 0x3C
@@ -148,11 +148,11 @@ glabel func_8001F9AC
     /* 103B4 8001FBB4 00002292 */  lbu        $v0, 0x0($s1)
     /* 103B8 8001FBB8 1C00878E */  lw         $a3, 0x1C($s4)
     /* 103BC 8001FBBC 21306600 */  addu       $a2, $v1, $a2
-    /* 103C0 8001FBC0 D5AA000C */  jal        func_8002AB54
+    /* 103C0 8001FBC0 D5AA000C */  jal        SetDrawMove
     /* 103C4 8001FBC4 21384700 */   addu      $a3, $v0, $a3
     /* 103C8 8001FBC8 21286002 */  addu       $a1, $s3, $zero
     /* 103CC 8001FBCC 5001C48F */  lw         $a0, 0x150($fp)
-    /* 103D0 8001FBD0 BDAA000C */  jal        func_8002AAF4
+    /* 103D0 8001FBD0 BDAA000C */  jal        AddPrim
     /* 103D4 8001FBD4 18007326 */   addiu     $s3, $s3, 0x18
   .L8001FBD8:
     /* 103D8 8001FBD8 01005226 */  addiu      $s2, $s2, 0x1
@@ -229,10 +229,10 @@ glabel func_8001F9AC
     /* 104D8 8001FCD8 FCFF2292 */  lbu        $v0, -0x4($s1)
     /* 104DC 8001FCDC 1C00878E */  lw         $a3, 0x1C($s4)
     /* 104E0 8001FCE0 21306600 */  addu       $a2, $v1, $a2
-    /* 104E4 8001FCE4 D5AA000C */  jal        func_8002AB54
+    /* 104E4 8001FCE4 D5AA000C */  jal        SetDrawMove
     /* 104E8 8001FCE8 21384700 */   addu      $a3, $v0, $a3
     /* 104EC 8001FCEC 5001E48E */  lw         $a0, 0x150($s7)
-    /* 104F0 8001FCF0 BDAA000C */  jal        func_8002AAF4
+    /* 104F0 8001FCF0 BDAA000C */  jal        AddPrim
     /* 104F4 8001FCF4 21286002 */   addu      $a1, $s3, $zero
     /* 104F8 8001FCF8 02000226 */  addiu      $v0, $s0, 0x2
     /* 104FC 8001FCFC 21104202 */  addu       $v0, $s2, $v0
@@ -260,11 +260,11 @@ glabel func_8001F9AC
     /* 10554 8001FD54 1800868E */  lw         $a2, 0x18($s4)
     /* 10558 8001FD58 1C00878E */  lw         $a3, 0x1C($s4)
     /* 1055C 8001FD5C 21304600 */  addu       $a2, $v0, $a2
-    /* 10560 8001FD60 D5AA000C */  jal        func_8002AB54
+    /* 10560 8001FD60 D5AA000C */  jal        SetDrawMove
     /* 10564 8001FD64 21386700 */   addu      $a3, $v1, $a3
     /* 10568 8001FD68 21286002 */  addu       $a1, $s3, $zero
     /* 1056C 8001FD6C 5001E48E */  lw         $a0, 0x150($s7)
-    /* 10570 8001FD70 BDAA000C */  jal        func_8002AAF4
+    /* 10570 8001FD70 BDAA000C */  jal        AddPrim
     /* 10574 8001FD74 18007326 */   addiu     $s3, $s3, 0x18
     /* 10578 8001FD78 0A00A22A */  slti       $v0, $s5, 0xA
     /* 1057C 8001FD7C A5FF4014 */  bnez       $v0, .L8001FC14

@@ -9,7 +9,7 @@ glabel func_8003A6D0
     /* 2AEE4 8003A6E4 1000B0AF */  sw         $s0, 0x10($sp)
     /* 2AEE8 8003A6E8 1800BFAF */  sw         $ra, 0x18($sp)
     /* 2AEEC 8003A6EC A60145A4 */  sh         $a1, 0x1A6($v0)
-    /* 2AEF0 8003A6F0 2BEB000C */  jal        func_8003ACAC
+    /* 2AEF0 8003A6F0 2BEB000C */  jal        _spu_Fw1ts
     /* 2AEF4 8003A6F4 2180C000 */   addu      $s0, $a2, $zero
     /* 2AEF8 8003A6F8 0580033C */  lui        $v1, %hi(D_8004FE28)
     /* 2AEFC 8003A6FC 28FE638C */  lw         $v1, %lo(D_8004FE28)($v1)
@@ -18,9 +18,9 @@ glabel func_8003A6D0
     /* 2AF08 8003A708 00000000 */  nop
     /* 2AF0C 8003A70C 30004234 */  ori        $v0, $v0, 0x30
     /* 2AF10 8003A710 AA0162A4 */  sh         $v0, 0x1AA($v1)
-    /* 2AF14 8003A714 2BEB000C */  jal        func_8003ACAC
+    /* 2AF14 8003A714 2BEB000C */  jal        _spu_Fw1ts
     /* 2AF18 8003A718 00841000 */   sll       $s0, $s0, 16
-    /* 2AF1C 8003A71C 21EB000C */  jal        func_8003AC84
+    /* 2AF1C 8003A71C 21EB000C */  jal        _spu_FsetDelayR
     /* 2AF20 8003A720 00000000 */   nop
     /* 2AF24 8003A724 0001043C */  lui        $a0, (0x1000200 >> 16)
     /* 2AF28 8003A728 00028434 */  ori        $a0, $a0, (0x1000200 & 0xFFFF)

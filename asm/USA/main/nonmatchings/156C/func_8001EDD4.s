@@ -5,7 +5,7 @@ glabel func_8001EDD4
     /* F5D8 8001EDD8 1000B0AF */  sw         $s0, 0x10($sp)
     /* F5DC 8001EDDC 21808000 */  addu       $s0, $a0, $zero
     /* F5E0 8001EDE0 1400BFAF */  sw         $ra, 0x14($sp)
-    /* F5E4 8001EDE4 828E000C */  jal        func_80023A08
+    /* F5E4 8001EDE4 828E000C */  jal        Cd_GetFileOrNull
     /* F5E8 8001EDE8 5B020424 */   addiu     $a0, $zero, 0x25B
     /* F5EC 8001EDEC 21200002 */  addu       $a0, $s0, $zero
     /* F5F0 8001EDF0 507B000C */  jal        func_8001ED40
