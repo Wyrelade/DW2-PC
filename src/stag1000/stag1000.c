@@ -166,7 +166,7 @@ void func_80064198(void) {
     LoadImage(&snap, D_80066208.imgbuf[id]);
 }
 
-void func_800642E8(StrDecEnv *dec) {
+void func_800642E8(StrDecEnv *dec, s32 mode) {
     volatile s32 cnt = 0x800000;
 
     while (dec->isdone == 0) {
