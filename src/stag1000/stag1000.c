@@ -564,7 +564,17 @@ s32 func_80064B8C(void) {
     return 0;
 }
 
-INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80064C20);
+s32 func_80064C20(void) {
+    volatile s32 cnt = 0x100000;
+
+    while (*D_8006537C & 0x01000000) {
+        if (--cnt == -1) {
+            func_80064CCC(D_8006338C);
+            return -1;
+        }
+    }
+    return 0;
+}
 
 s32 func_80064CB4(void) {
     return *D_8006539C;
