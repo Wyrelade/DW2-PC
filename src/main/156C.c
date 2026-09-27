@@ -8058,7 +8058,34 @@ void func_80020EE8(Ctx38 *arg0, s32 arg1) {
     e->field_0 = 0;
 }
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Gfx_CalcNormalColors);
+void Gfx_CalcNormalColors(Vert6Pmv *v, Obj21ABC *o) {
+    s32 n;
+    Col21ABC *c;
+    s32 i;
+
+    n = v->vx;
+    c = o->field_74;
+    v++;
+    if (o->field_34 != 0) {
+        for (i = 0; i < n; i++) {
+            *c = o->field_38;
+            c++;
+        }
+        return;
+    }
+    gte_ldv0u(v);
+    gte_ncs();
+    gte_strgb(c);
+    v++;
+    for (i = 1; i < n; ) {
+        gte_ldv0u(v);
+        gte_ncs();
+        v++;
+        c++;
+        i++;
+        gte_strgb(c);
+    }
+}
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80020FD0);
 

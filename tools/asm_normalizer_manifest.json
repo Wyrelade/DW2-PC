@@ -3921,5 +3921,8 @@
   },
   "Gfx_ProjectModelVerts": {
     "passes": []
+  },
+  "Gfx_CalcNormalColors": {
+    "passes": []
   }
 }

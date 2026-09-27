@@ -3130,12 +3130,16 @@ typedef struct {
 
 /* Model view Gfx_DrawWireQuads reads: OT slot at 0x3C, projected xy / z tables at 0x6C / 0x70. */
 typedef struct {
-    u8 _pad00[0x3C];
+    u8 _pad00[0x34];
+    /* 0x34 */ s16 field_34;
+    u8 _pad36[0x02];
+    /* 0x38 */ Col21ABC field_38;
     /* 0x3C */ s32 field_3C;
     /* 0x40 */ s32 field_40;
     u8 _pad44[0x28];
     /* 0x6C */ s32 *field_6C;
     /* 0x70 */ s32 *field_70;
+    /* 0x74 */ Col21ABC *field_74;
 } Obj21ABC;
 
 
