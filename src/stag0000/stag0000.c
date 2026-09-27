@@ -360,7 +360,25 @@ void func_80066618(Actor *arg0) {
 
 INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80066678);
 
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80066828);
+void func_80066828(Actor *arg0) {
+    switch (((Stg00ModeWork *)arg0->work)->field_0) {
+    default:
+        Gpu_InitDoubleBuffer(0x140, 0xF0, 0, 0);
+        break;
+    case 2:
+        Gpu_InitDoubleBuffer(0x140, 0x1E0, 2, 0);
+        break;
+    case 1:
+        Gpu_InitDoubleBuffer(0x280, 0xF0, 0, 0);
+        break;
+    case 0:
+        Gpu_InitDoubleBuffer(0x280, 0x1E0, 1, 0);
+        break;
+    }
+    Gpu_SetBgClearColor(0, 0, 0);
+    Gpu_ClearScreens();
+    Gfx_FadeInFromBlack(0x100);
+}
 
 INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_800668D4);
 
