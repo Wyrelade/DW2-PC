@@ -101,7 +101,27 @@ void func_80064190(Actor *arg0, Stg00SelWork *arg1, s32 arg2) {
     arg1->field_10 = f[0];
 }
 
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_800641E0);
+void func_800641E0(Actor *arg0, Stg00SelWork *arg1) {
+    Stg00SelEnt *e;
+
+    if (D_8005F72C & 0x8000) {
+        if (arg1->field_0 > 0) {
+            arg1->field_0--;
+        }
+    }
+    if (D_8005F72C & 0x2000) {
+        if (arg1->field_0 + 1 < 0x23) {
+            arg1->field_0++;
+        }
+    }
+    if (D_8005F700 > 0) {
+        arg1->field_2 = 0;
+        arg1->field_4 = -1;
+        e = (Stg00SelEnt *)Cd_GetFileEntry(0xE20000A);
+        func_80064190(arg0, arg1, e[arg1->field_0].field_0);
+        Task_SetState1(arg0, 1);
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_800642BC);
 
