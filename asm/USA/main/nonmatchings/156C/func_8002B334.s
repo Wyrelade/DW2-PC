@@ -29,7 +29,7 @@ glabel func_8002B334
     /* 1BB98 8002B398 F4184294 */  lhu        $v0, %lo(D_800618F4)($v0)
     /* 1BB9C 8002B39C F8FFA424 */  addiu      $a0, $a1, -0x8
     /* 1BBA0 8002B3A0 21104600 */  addu       $v0, $v0, $a2
-    /* 1BBA4 8002B3A4 B99E000C */  jal        func_80027AE4
+    /* 1BBA4 8002B3A4 B99E000C */  jal        PutDrawEnv
     /* 1BBA8 8002B3A8 0200A2A4 */   sh        $v0, 0x2($a1)
     /* 1BBAC 8002B3AC 02AD0008 */  j          .L8002B408
     /* 1BBB0 8002B3B0 00000000 */   nop

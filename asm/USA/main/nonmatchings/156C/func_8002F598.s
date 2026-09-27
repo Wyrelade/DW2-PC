@@ -14,7 +14,7 @@ glabel func_8002F598
     /* 1FDC0 8002F5C0 2800B4AF */  sw         $s4, 0x28($sp)
     /* 1FDC4 8002F5C4 2000B2AF */  sw         $s2, 0x20($sp)
     /* 1FDC8 8002F5C8 1C00B1AF */  sw         $s1, 0x1C($sp)
-    /* 1FDCC 8002F5CC ADC2000C */  jal        func_80030AB4
+    /* 1FDCC 8002F5CC ADC2000C */  jal        VSync
     /* 1FDD0 8002F5D0 1800B0AF */   sw        $s0, 0x18($sp)
     /* 1FDD4 8002F5D4 05801E3C */  lui        $fp, %hi(D_8004E6EC)
     /* 1FDD8 8002F5D8 ECE6DE27 */  addiu      $fp, $fp, %lo(D_8004E6EC)
@@ -34,7 +34,7 @@ glabel func_8002F598
     /* 1FE10 8002F610 0680013C */  lui        $at, %hi(D_80061B88)
     /* 1FE14 8002F614 881B22AC */  sw         $v0, %lo(D_80061B88)($at)
   .L8002F618:
-    /* 1FE18 8002F618 ADC2000C */  jal        func_80030AB4
+    /* 1FE18 8002F618 ADC2000C */  jal        VSync
     /* 1FE1C 8002F61C FFFF0424 */   addiu     $a0, $zero, -0x1
     /* 1FE20 8002F620 0680033C */  lui        $v1, %hi(D_80061B80)
     /* 1FE24 8002F624 801B638C */  lw         $v1, %lo(D_80061B80)($v1)

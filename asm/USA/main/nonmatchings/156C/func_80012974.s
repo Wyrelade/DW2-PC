@@ -184,7 +184,7 @@ glabel func_80012974
     /* 3408 80012C08 1000B6AF */  sw         $s6, 0x10($sp)
     /* 340C 80012C0C 1400A0AF */  sw         $zero, 0x14($sp)
     /* 3410 80012C10 2000A2AF */  sw         $v0, 0x20($sp)
-    /* 3414 80012C14 096F000C */  jal        func_8001BC24
+    /* 3414 80012C14 096F000C */  jal        Text_Open
     /* 3418 80012C18 2800A0AF */   sw        $zero, 0x28($sp)
     /* 341C 80012C1C FD01023C */  lui        $v0, (0x1FD00D5 >> 16)
     /* 3420 80012C20 0C00848E */  lw         $a0, 0xC($s4)
@@ -196,7 +196,7 @@ glabel func_80012974
     /* 3438 80012C38 1000A527 */  addiu      $a1, $sp, 0x10
     /* 343C 80012C3C 2400A2AF */  sw         $v0, 0x24($sp)
     /* 3440 80012C40 65006324 */  addiu      $v1, $v1, 0x65
-    /* 3444 80012C44 096F000C */  jal        func_8001BC24
+    /* 3444 80012C44 096F000C */  jal        Text_Open
     /* 3448 80012C48 1800A3A7 */   sh        $v1, 0x18($sp)
     /* 344C 80012C4C FD01023C */  lui        $v0, (0x1FD00D6 >> 16)
     /* 3450 80012C50 0C00848E */  lw         $a0, 0xC($s4)
@@ -208,7 +208,7 @@ glabel func_80012974
     /* 3468 80012C68 1000A527 */  addiu      $a1, $sp, 0x10
     /* 346C 80012C6C 2400A2AF */  sw         $v0, 0x24($sp)
     /* 3470 80012C70 65006324 */  addiu      $v1, $v1, 0x65
-    /* 3474 80012C74 096F000C */  jal        func_8001BC24
+    /* 3474 80012C74 096F000C */  jal        Text_Open
     /* 3478 80012C78 1800A3A7 */   sh        $v1, 0x18($sp)
     /* 347C 80012C7C 21206002 */  addu       $a0, $s3, $zero
     /* 3480 80012C80 1000A527 */  addiu      $a1, $sp, 0x10
@@ -219,7 +219,7 @@ glabel func_80012974
     /* 3494 80012C94 1A00A2A7 */  sh         $v0, 0x1A($sp)
     /* 3498 80012C98 1C00A0AF */  sw         $zero, 0x1C($sp)
     /* 349C 80012C9C 2000A0AF */  sw         $zero, 0x20($sp)
-    /* 34A0 80012CA0 096F000C */  jal        func_8001BC24
+    /* 34A0 80012CA0 096F000C */  jal        Text_Open
     /* 34A4 80012CA4 2800A0AF */   sw        $zero, 0x28($sp)
     /* 34A8 80012CA8 0000838E */  lw         $v1, 0x0($s4)
     /* 34AC 80012CAC 00000000 */  nop
@@ -277,7 +277,7 @@ glabel func_80012974
     /* 3560 80012D60 4A00A2A7 */  sh         $v0, 0x4A($sp)
     /* 3564 80012D64 4C00A0AF */  sw         $zero, 0x4C($sp)
     /* 3568 80012D68 5000A0AF */  sw         $zero, 0x50($sp)
-    /* 356C 80012D6C 096F000C */  jal        func_8001BC24
+    /* 356C 80012D6C 096F000C */  jal        Text_Open
     /* 3570 80012D70 5800A0AF */   sw        $zero, 0x58($sp)
     /* 3574 80012D74 5945000C */  jal        Task_NextState1
     /* 3578 80012D78 2120E002 */   addu      $a0, $s7, $zero

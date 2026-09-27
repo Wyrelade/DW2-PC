@@ -19,7 +19,7 @@ glabel func_8001A5F4
     /* AE30 8001A630 2190A000 */  addu       $s2, $a1, $zero
     /* AE34 8001A634 0F005210 */  beq        $v0, $s2, .L8001A674
     /* AE38 8001A638 00000000 */   nop
-    /* AE3C 8001A63C 2A69000C */  jal        func_8001A4A8
+    /* AE3C 8001A63C 2A69000C */  jal        Snd_UnloadSlot
     /* AE40 8001A640 00000000 */   nop
     /* AE44 8001A644 2000848F */  lw         $a0, %gp_rel(D_80050718)($gp)
     /* AE48 8001A648 01000224 */  addiu      $v0, $zero, 0x1

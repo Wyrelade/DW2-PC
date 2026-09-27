@@ -19,7 +19,7 @@ glabel func_8001C104
     /* C93C 8001C13C 1000A3BB */  swr        $v1, 0x10($sp)
     /* C940 8001C140 1700A8AB */  swl        $t0, 0x17($sp)
     /* C944 8001C144 1400A8BB */  swr        $t0, 0x14($sp)
-    /* C948 8001C148 419C000C */  jal        func_80027104
+    /* C948 8001C148 419C000C */  jal        ResetGraph
     /* C94C 8001C14C 01000424 */   addiu     $a0, $zero, 0x1
     /* C950 8001C150 21204002 */  addu       $a0, $s2, $zero
     /* C954 8001C154 21280000 */  addu       $a1, $zero, $zero

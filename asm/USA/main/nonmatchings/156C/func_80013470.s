@@ -29,7 +29,7 @@ glabel func_80013470
     /* 3CD4 800134D4 2C00A2AF */  sw         $v0, 0x2C($sp)
     /* 3CD8 800134D8 0800A28C */  lw         $v0, 0x8($a1)
     /* 3CDC 800134DC 1000A527 */  addiu      $a1, $sp, 0x10
-    /* 3CE0 800134E0 096F000C */  jal        func_8001BC24
+    /* 3CE0 800134E0 096F000C */  jal        Text_Open
     /* 3CE4 800134E4 3000A2AF */   sw        $v0, 0x30($sp)
     /* 3CE8 800134E8 4000BF8F */  lw         $ra, 0x40($sp)
     /* 3CEC 800134EC 00000000 */  nop

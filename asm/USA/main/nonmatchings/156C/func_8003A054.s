@@ -6,7 +6,7 @@ glabel func_8003A054
     /* 2A85C 8003A05C 1400BFAF */  sw         $ra, 0x14($sp)
     /* 2A860 8003A060 35C3000C */  jal        ResetCallback
     /* 2A864 8003A064 21808000 */   addu      $s0, $a0, $zero
-    /* 2A868 8003A068 75E8000C */  jal        func_8003A1D4
+    /* 2A868 8003A068 75E8000C */  jal        _spu_init
     /* 2A86C 8003A06C 21200002 */   addu      $a0, $s0, $zero
     /* 2A870 8003A070 08000016 */  bnez       $s0, .L8003A094
     /* 2A874 8003A074 00C00434 */   ori       $a0, $zero, 0xC000

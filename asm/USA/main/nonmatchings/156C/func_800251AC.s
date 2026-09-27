@@ -88,7 +88,7 @@ glabel func_800251AC
     /* 15AE8 800252E8 0580023C */  lui        $v0, %hi(D_80048E4C)
     /* 15AEC 800252EC 4C8E428C */  lw         $v0, %lo(D_80048E4C)($v0)
     /* 15AF0 800252F0 00210400 */  sll        $a0, $a0, 4
-    /* 15AF4 800252F4 9C95000C */  jal        func_80025670
+    /* 15AF4 800252F4 9C95000C */  jal        Pad_SioRunStep
     /* 15AF8 800252F8 21204400 */   addu      $a0, $v0, $a0
     /* 15AFC 800252FC 0580033C */  lui        $v1, %hi(D_80048E58)
     /* 15B00 80025300 588E638C */  lw         $v1, %lo(D_80048E58)($v1)

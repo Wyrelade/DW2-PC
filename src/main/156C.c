@@ -62,7 +62,7 @@ extern void Cd_EvictLruFile(void);
 extern void Text_Close(s32 *);
 extern void Mem_Free(ActorWork *);
 extern s32 D_8005F79C;
-extern Sub3C *func_8001FDBC(Actor *, s32);
+extern Sub3C *Gfx_AttachModel(Actor *, s32);
 extern void func_8001F5E8(Actor *);
 extern s32 D_80043704[];
 extern void func_80020920(Actor *);
@@ -86,7 +86,7 @@ extern s32 *func_80011F5C(s32);
 extern s32 D_80040FD0[];
 extern void Gfx_SetPartsScale(Ent1D550 *, s32, s32);
 extern void func_8001D884(s32);
-extern void func_8001BC24(void *, Arg1BC24 *);
+extern void Text_Open(void *, Arg1BC24 *);
 extern void func_800221C4(s32, s32);
 extern void Gfx_SetPartsNumber(Part28 *, s32, s32, s32);
 extern s32 Digi_GetExpToNextLevel(s32, s32, s32);
@@ -113,7 +113,7 @@ extern u8 D_8005FDD8[];
 extern s32 *D_80049014;
 extern s32 D_8004904C;
 extern s32 D_80049050;
-extern s32 func_80030AB4(s32);
+extern s32 VSync(s32);
 extern s32 D_80061B38;
 extern s32 D_80061B3C;
 extern void StClearRing();
@@ -132,7 +132,7 @@ extern void ChangeClearRCnt(s32, s32);
 extern void SysDeqIntRP(s32, u8 *);
 extern u8 D_80048E78[];
 extern void SpuInit(void);
-extern s32 func_8003C3A4(s32);
+extern s32 SpuClearReverbWorkArea(s32);
 extern void func_80032874();
 extern Elm624E8 D_800624E8[];
 extern s32 D_80049064;
@@ -140,7 +140,7 @@ extern u8 D_800618B0[];
 extern s32 write(s32, u8 *, s32);
 extern s32 D_8004E6D8;
 extern s32 D_8004E6D4;
-extern void func_80030258();
+extern void Cd_IntrCallback();
 extern void ResetCallback(void);
 extern void InterruptCallback(s32 arg0, void (*arg1)());
 extern s32 Sys_DmaCallbacks[];
@@ -150,7 +150,7 @@ extern s32 setIntrDMA();
 extern void memclr_dma(s32 *arg0, u32 arg1);
 extern u16 *D_8004FE28;
 extern s32 D_8004FE50;
-extern void func_80023BF4(s32);
+extern void Cd_QueueFile(s32);
 extern Hooks4FC50 D_8004FC50;
 extern s32 D_80062F94;
 extern void close(s32);
@@ -176,7 +176,7 @@ extern void checkRECT(char *, Rect2AB54 *);
 extern s8 D_80010974[];
 extern void func_8002A744(s8);
 extern void (*volatile D_8004FE60)(void);
-extern s32 func_8003A9F8(s32, u32);
+extern s32 _spu_Fw(s32, u32);
 extern Snd62D18 D_80062D18;
 extern Rec62D08 *D_80062D08;
 extern s32 SsPitchFromNote(s32, s32, s32, s32);
@@ -192,7 +192,7 @@ extern Regs48E8C *Pad_IntrRegs;
 extern void (*D_80048E40)(void);
 extern s32 Sys_VSyncCount;
 extern char D_80010B74[];
-extern s32 func_8003E19C(s32 *);
+extern s32 Card_AcceptTask(s32 *);
 extern void Card_PushTask(s32 (*)(s32 *));
 extern void printf();
 extern s16 D_8006198C;
@@ -280,11 +280,11 @@ extern s32 func_80025C00(void);
 extern char D_80010C98[];
 extern char D_80010CBC[];
 extern char D_80010CE8[];
-extern s32 func_8003E6C8(s32 *);
+extern s32 Card_ReadDataTask(s32 *);
 extern char D_80010C98[];
 extern char D_80010CBC[];
 extern char D_80010CE8[];
-extern s32 func_8003E930(s32 *);
+extern s32 Card_WriteDataTask(s32 *);
 extern s32 D_8004FE78;
 extern u8 D_80010364;
 extern u8 D_80010378;
@@ -356,7 +356,7 @@ extern volatile s32 *D_8004EA70;
 extern volatile s32 *D_8004EA74;
 extern volatile s32 *D_8004EA78;
 extern volatile s32 *D_8004EA7C;
-extern s32 func_80027104(s32);
+extern s32 ResetGraph(s32);
 extern DispEnv *PutDispEnv(DispEnv *);
 extern DispEnv D_80061968;
 extern s32 D_80049060;
@@ -382,7 +382,7 @@ extern s32 *D_80049034;
 extern Prm1C D_80040F64;
 extern s32 func_8001E704(s32 id);
 extern s32 func_8001E728(s32 arg0, s32 arg1);
-extern void func_80020C40(ContC40 *a0, s32 *a1, u16 a2);
+extern void Actor_InitTransform(ContC40 *a0, s32 *a1, u16 a2);
 extern void GsInitCoordinate2(Coord1F668 *, Coord1F668 *);
 extern s16 D_8005E6E4;
 extern void func_800226AC(void);
@@ -451,7 +451,7 @@ extern void (*D_80061BF0)(s16, s16);
 extern void func_8001CAC4(Elem20 *);
 extern s32 func_80025D4C(Obj25FBC *);
 extern s32 D_80061C44;
-extern void func_80036784(void);
+extern void _SsVmFlush(void);
 extern void func_80031AC4(s16, s16);
 extern void func_80035CE4(s16, s16);
 extern void _SsSndPause(s32 a0, s16 a1);
@@ -476,7 +476,7 @@ extern void Snd_StopById(s32);
 extern void Snd_StopById(s32);
 extern void func_80035C4C(s16 a0, s16 a1, s16 a2, s16 a3);
 extern void func_80034E04(s16, s16, s8, s16);
-extern void func_80035F04(s32);
+extern void SsUtAllKeyOff(s32);
 extern Halves D_80050704;
 extern Halves D_80050708;
 extern s32 D_80050750;
@@ -522,10 +522,10 @@ extern s32 Mem_GetOffsetEntry(s32 arg0, s32 *arg1);
 extern s16 SsVabOpenHead(s32 arg0, s16 arg1);
 extern s16 func_80039F44(s32 a0, s16 id);
 extern s16 SsVabTransCompleted(s16 a0);
-extern s16 func_80032954(s32, s16, s32);
+extern s16 SsSepOpen(s32, s16, s32);
 extern s16 D_80062D2C[];
 extern u16 D_8004FC24[];
-extern void func_80036C54(s32);
+extern void _SsVmInit(s32);
 extern s16 D_80062CFA;
 extern Rec62D08 *D_80062CB8[];
 extern s32 D_80062C70[];
@@ -592,7 +592,7 @@ extern s32 D_8004E9E0[];
 extern Dma4FBF4 *D_8004FBF4;
 extern char D_80010A04[];
 extern char D_80010A20[];
-extern s32 func_80036FA4(s16, s16, s16, u16, u16, u16);
+extern s32 _SsVmKeyOn(s16, s16, s16, u16, u16, u16);
 extern s32 _SsVmKeyOff(s32 a0, s32 a1, s32 a2, s32 a3);
 extern u8 _SsVmAlloc(s32);
 extern void _SsVmDoAllocate(void);
@@ -621,7 +621,7 @@ extern void def_cbread(void);
 extern void (*D_80062FE0)(s32 *, s32, s32);
 extern s8 D_80062FE8[];
 extern s32 func_8002A9B4(s8 *);
-extern s32 func_80036FA4(s16 a0, s16 a1, s16 a2, u16 a3, u16 arg4, u16 arg5);
+extern s32 _SsVmKeyOn(s16 a0, s16 a1, s16 a2, u16 a3, u16 arg4, u16 arg5);
 extern s8 D_80062D1F;
 extern u16 D_80062EE8[];
 extern u16 D_80050298[];
@@ -667,12 +667,12 @@ extern u16 D_8004FCA0[128];
 extern s16 func_80039150(s32 a0, u16 *a1, u16 *a2);
 extern char D_80010D18[];
 extern char D_80010C70[];
-extern s32 func_8003EBF4(s32 *a0);
+extern s32 Card_ReadFileTask(s32 *a0);
 extern char D_80010C70[];
 extern char D_80010CBC[];
 extern char D_80010CE8[];
 extern char D_80010D18[];
-extern s32 func_8003EE14(s32 *st);
+extern s32 Card_WriteFileTask(s32 *st);
 extern u16 D_80050298[];
 extern u16 D_800502B0[];
 extern volatile s32 D_8004FE7C;
@@ -1113,9 +1113,9 @@ void func_80011644(void) {
     s32 i;
 
     p = D_80050948;
-    func_80023BF4(0x19A);
+    Cd_QueueFile(0x19A);
     for (i = 0; i < D_8005075C; i++) {
-        func_80023BF4(*p);
+        Cd_QueueFile(*p);
         p++;
     }
 }
@@ -1830,20 +1830,20 @@ void func_80012974(Actor *a0) {
             arg.field_4 = 0;
             arg.field_10 = 0x12;
             arg.field_18 = 0;
-            func_8001BC24(&w->field_10, &arg);
+            Text_Open(&w->field_10, &arg);
             arg.field_14 = (s32)func_800239A0(w->field_C + 0x1FD00D5);
             arg.field_8 += 0x65;
-            func_8001BC24(&w->field_14, &arg);
+            Text_Open(&w->field_14, &arg);
             arg.field_14 = (s32)func_800239A0(w->field_C + 0x1FD00D6);
             arg.field_8 += 0x65;
-            func_8001BC24(&w->field_18, &arg);
+            Text_Open(&w->field_18, &arg);
             arg.field_8 = 0x26;
             arg.field_14 = (s32)p;
             arg.field_A = 0x20;
             arg.field_C = 0;
             arg.field_10 = 0;
             arg.field_18 = 0;
-            func_8001BC24(&w->field_20, &arg);
+            Text_Open(&w->field_20, &arg);
             switch (w->field_0) {
             default:
             case 0:
@@ -1871,7 +1871,7 @@ void func_80012974(Actor *a0) {
             arg2.field_C = 0;
             arg2.field_10 = 0;
             arg2.field_18 = 0;
-            func_8001BC24(&w->field_1C, &arg2);
+            Text_Open(&w->field_1C, &arg2);
             Task_NextState1(a0);
         case 1:
             k = D_8005F6F0[0].field_3C;
@@ -2111,7 +2111,7 @@ void func_80013470(void *arg0, Src13470 *arg1) {
     local.field_18 = arg1->field_10 & 0x7F;
     local.field_1C = arg1->field_4;
     local.field_20 = arg1->field_8;
-    func_8001BC24(arg0, &local);
+    Text_Open(arg0, &local);
 }
 
 void func_800134F8(void *arg0, s32 arg1, u32 arg2, Halves arg3) {
@@ -2124,7 +2124,7 @@ void func_800134F8(void *arg0, s32 arg1, u32 arg2, Halves arg3) {
     local.field_C = 0;
     local.field_10 = 0;
     local.field_18 = arg2 & 3;
-    func_8001BC24(arg0, &local);
+    Text_Open(arg0, &local);
 }
 
 s32 func_80013558(s32 *a0, Key13558 *a1, u32 a2) {
@@ -4519,12 +4519,12 @@ void func_80018BF8(Actor *a0, s16 a1) {
     p = D_80050768->field_110;
     w->field_84 = p;
     a0->field_C = p[1];
-    func_80020C40((ContC40 *)a0, w->field_B0, w->field_BC);
+    Actor_InitTransform((ContC40 *)a0, w->field_B0, w->field_BC);
     w->field_C0 = func_8001E704(a0->field_C);
     w->field_C4 = func_8001E728(a0->field_C, 0);
-    func_8001FDBC(a0, w->field_C0)->field_3C = 3;
-    func_80023BF4(w->field_C0);
-    func_80023BF4(w->field_C4);
+    Gfx_AttachModel(a0, w->field_C0)->field_3C = 3;
+    Cd_QueueFile(w->field_C0);
+    Cd_QueueFile(w->field_C4);
     w->field_C8 = 0;
     w->field_14C = 0;
     w->field_CC = D_80040F64;
@@ -4788,7 +4788,7 @@ Ltail:
     node->field_58 = work->field_14C;
     node->field_5C = work->field_14C;
     node->field_60 = work->field_14C;
-    func_8001FDBC(actor, work->field_C0);
+    Gfx_AttachModel(actor, work->field_C0);
     Anim_StepModelAnim(actor);
     func_80020920(actor);
     func_800200D0(actor);
@@ -5136,7 +5136,7 @@ void func_8001A01C(void) {
             }
             e->field_20 = D_80041194[e->field_0]->field_0 >> 16;
             e->field_24 = D_80041194[e->field_0]->field_4 >> 16;
-            func_80023BF4(e->field_24);
+            Cd_QueueFile(e->field_24);
             e->field_4++;
             break;
         case 2:
@@ -5155,7 +5155,7 @@ void func_8001A01C(void) {
             }
             break;
         case 3:
-            func_80023BF4(e->field_20);
+            Cd_QueueFile(e->field_20);
             e->field_4++;
             break;
         case 4:
@@ -5176,7 +5176,7 @@ void func_8001A01C(void) {
             j = e->field_A;
             p = *(j + D_80041194[e->field_0]->field_8);
             if (p != 0) {
-                e->field_C[j] = func_80032954(Mem_GetOffsetEntry(p, e->field_28), e->field_8, 0x10);
+                e->field_C[j] = SsSepOpen(Mem_GetOffsetEntry(p, e->field_28), e->field_8, 0x10);
                 e->field_A++;
             } else {
                 e->field_4++;
@@ -5220,7 +5220,7 @@ void Snd_StopAll(void) {
             }
         }
     }
-    func_80035F04(0);
+    SsUtAllKeyOff(0);
     D_80050718 = -1;
 }
 
@@ -5242,7 +5242,7 @@ void Snd_StopById(s32 id) {
     }
 }
 
-void func_8001A4A8(s32 idx) {
+void Snd_UnloadSlot(s32 idx) {
     s32 i;
     s32 k;
 
@@ -5266,7 +5266,7 @@ void func_8001A5F4(s32 idx, s32 v) {
     Ent54C48 *e = &D_80054C48[idx];
 
     if (e->field_0 != v) {
-        func_8001A4A8(idx);
+        Snd_UnloadSlot(idx);
         e->field_4 = 1;
         e->field_0 = v;
         if (D_80050718 != -1 && idx == ((D_80050718 & 0xF00) >> 8)) {
@@ -5309,7 +5309,7 @@ extern u8 D_80050A48;
 
 extern void SsSetTableSize(void *, s16, s16);
 extern void SsSetTickMode(s32);
-extern void func_800352C4();
+extern void SsStart2();
 extern void SsSetMVol(s16, s16);
 extern void SsSetSerialAttr(s8, s8, s8);
 extern void SsSetSerialVol(s8, s16, s16);
@@ -5318,7 +5318,7 @@ extern void SsUtSetReverbDepth(s16, s16);
 extern void SsUtReverbOn();
 extern s32 Mem_Alloc(s32, s32);
 extern void func_8001A5F4(s32, s32);
-extern void func_80023C74();
+extern void Cd_ServiceQueue();
 
 void func_8001A75C(void) {
     s32 v0;
@@ -5327,7 +5327,7 @@ void func_8001A75C(void) {
 
     SsSetTableSize(&D_80050A48, 6, 0x10);
     SsSetTickMode(0x1000);
-    func_800352C4();
+    SsStart2();
     SsSetMVol(0x7F, 0x7F);
     SsSetSerialAttr(0, 0, 1);
     SsSetSerialVol(0, 0x7F, 0x7F);
@@ -5352,13 +5352,13 @@ void func_8001A75C(void) {
     func_8001A5F4(0, 1);
     do {
         func_8001A01C();
-        func_80023C74();
+        Cd_ServiceQueue();
     } while (D_80054C48[0].field_4 != 0);
 
     func_8001A5F4(1, 0xE);
     do {
         func_8001A01C();
-        func_80023C74();
+        Cd_ServiceQueue();
     } while (D_80054C48[1].field_4 != 0);
 }
 
@@ -6006,7 +6006,7 @@ void Text_Close(s32 *slot) {
 }
 
 
-void func_8001BC24(void *arg0, Arg1BC24 *arg1) {
+void Text_Open(void *arg0, Arg1BC24 *arg1) {
     SrcBC24 *src = (SrcBC24 *)arg1;
     Ent11440 *r;
     Rec34 *base;
@@ -6125,7 +6125,7 @@ void func_8001BFC8(void *a0, s32 a1, s32 a2, Halves a3) {
     local.field_C = 0;
     local.field_10 = 0;
     local.field_18 = 0;
-    func_8001BC24(a0, &local);
+    Text_Open(a0, &local);
 }
 
 void func_8001C038(void *arg0, s32 arg1) {
@@ -6138,7 +6138,7 @@ void func_8001C038(void *arg0, s32 arg1) {
     local.field_10 = 0;
     local.field_14 = arg1;
     local.field_18 = 1;
-    func_8001BC24(arg0, &local);
+    Text_Open(arg0, &local);
     func_800221C4(0x10, 0);
 }
 
@@ -6163,7 +6163,7 @@ void func_8001C104(void) {
 
     for (i = 0; i < 2; i++) {
         r = ((View1C104 *)&D_8005F770)->area[i].rect;
-        func_80027104(1);
+        ResetGraph(1);
         ClearImage2((s32)&r, 0, 0, 0);
         DrawSync(0);
     }
@@ -6185,7 +6185,7 @@ void func_8001C1CC(void) {
     D_8005F770.field_48[1].field_0 = 0;
 }
 
-void func_8001C1E0(s32 w, s32 h, s32 mode, s32 inter) {
+void Gpu_InitDoubleBuffer(s32 w, s32 h, s32 mode, s32 inter) {
     Db5F770 *g = (Db5F770 *)&D_8005F770;
     s32 n = 0;
     s32 hw = w / 2;
@@ -6427,7 +6427,7 @@ void Gpu_ResetPrimBuf(void) {
 
 extern s32 Mem_Alloc(s32, s32);
 
-void func_8001C9B0(s32 a0) {
+void Gpu_AllocPacketBufs(s32 a0) {
     D_80041670[2] = (ActorWork *)a0;
     D_80041670[0] = (ActorWork *)Mem_Alloc(a0, 2);
     D_80041670[1] = (ActorWork *)Mem_Alloc(a0, 2);
@@ -7413,8 +7413,8 @@ void func_8001EC10(Actor *arg0) {
 
     switch (state) {
     case 0:
-        func_80020C40((ContC40 *)arg0, D_80043704, 0);
-        func_8001FDBC(arg0, 0x5B)->field_3C = 4;
+        Actor_InitTransform((ContC40 *)arg0, D_80043704, 0);
+        Gfx_AttachModel(arg0, 0x5B)->field_3C = 4;
         func_8001F5E8(arg0);
         Task_NextState0(arg0);
         break;
@@ -7443,7 +7443,7 @@ void func_8001EC10(Actor *arg0) {
 
 void func_8001ECE4(Actor *arg0) {
     if (arg0->work->field_4 != 0) {
-        func_8001FDBC(arg0, 0x5B);
+        Gfx_AttachModel(arg0, 0x5B);
         func_80020920(arg0);
         func_800200D0(arg0);
         func_80020510(arg0, 1);
@@ -7700,7 +7700,7 @@ void func_8001F5E8(Actor *a0) {
     }
 }
 
-void func_8001F668(Col1F668 *col, SVec1F668 *v, s32 flags, s32 idx) {
+void Gfx_AddFlatQuad3D(Col1F668 *col, SVec1F668 *v, s32 flags, s32 idx) {
     Coord1F668 coord;
     Mat1F668 m;
     s32 pz;
@@ -7747,7 +7747,7 @@ void func_8001F668(Col1F668 *col, SVec1F668 *v, s32 flags, s32 idx) {
 }
 
 
-void func_8001F90C(void) {
+void Gfx_InitLights(void) {
     s32 i;
     for (i = 0; i < 3; i++) {
         GsSetFlatLight(i, &D_800416CC[i]);
@@ -7868,7 +7868,7 @@ void func_8001F9AC(Actor *a0) {
 }
 
 
-Sub3C *func_8001FDBC(Actor *a0, s32 id) {
+Sub3C *Gfx_AttachModel(Actor *a0, s32 id) {
     s32 fresh = 0;
     Mdl1FDBC *m = (Mdl1FDBC *)Cd_GetFileOrNull(id);
     Mdl1FDBC *base = m;
@@ -8096,7 +8096,7 @@ void func_80020C14(s32 arg0) {
 
 extern void Mem_Zero(void *, s32);
 
-void func_80020C40(ContC40 *a0, s32 *a1, u16 a2) {
+void Actor_InitTransform(ContC40 *a0, s32 *a1, u16 a2) {
     AllocC40 *p;
     if (a0->field_38 == 0) {
         a0->field_38 = (AllocC40 *)Mem_Alloc(0x90, 2);
@@ -9046,7 +9046,7 @@ u32 Mem_GetLargestFree(void) {
 
 
 void func_800230AC(void) {
-    func_80024654(D_8005F6A8, D_8005F6A8 + 0x22);
+    PadInitDirect(D_8005F6A8, D_8005F6A8 + 0x22);
     func_80024544();
 }
 
@@ -9119,7 +9119,7 @@ s32 Pad_GetButtonState(s32 arg0, s32 arg1, s32 arg2) {
     return r;
 }
 
-void func_8002329C(void) {
+void Pad_Update(void) {
     s32 i;
     Elm6A8 *a8 = (Elm6A8 *)D_8005F6A8;
 
@@ -9165,7 +9165,7 @@ void func_80023484(void) {
     if (D_8005078C != 0 && D_8005072C >= t) {
         ((Db5F770 *)&D_8005F770)->field_28 = (((Db5F770 *)&D_8005F770)->field_28 == 0);
         PutDispEnv(&((Db5F770 *)&D_8005F770)->disp[((Db5F770 *)&D_8005F770)->field_28]);
-        func_80027AE4(&((Db5F770 *)&D_8005F770)->draw[((Db5F770 *)&D_8005F770)->field_28]);
+        PutDrawEnv(&((Db5F770 *)&D_8005F770)->draw[((Db5F770 *)&D_8005F770)->field_28]);
         Gpu_DrawOt(((Db5F770 *)&D_8005F770)->field_28 ^ 1);
         D_8005078C = 0;
         D_8005072C = 0;
@@ -9188,9 +9188,9 @@ void func_80023550(void) {
 
     func_80010D74();
     ResetCallback();
-    func_80030AB4(0);
+    VSync(0);
     SetDispMask(0);
-    func_80027104(0);
+    ResetGraph(0);
     func_80030D64((s32)func_80023484);
     r.x = 0;
     r.y = 0;
@@ -9202,15 +9202,15 @@ void func_80023550(void) {
     func_8002B4C4();
     func_80032914();
     func_8002CE5C();
-    func_8001C1E0(0x140, 0x280, 1, 0);
-    func_80027AE4(&((Db5F770 *)&D_8005F770)->draw[0]);
+    Gpu_InitDoubleBuffer(0x140, 0x280, 1, 0);
+    PutDrawEnv(&((Db5F770 *)&D_8005F770)->draw[0]);
     PutDispEnv(&((Db5F770 *)&D_8005F770)->disp[0]);
-    func_80030AB4(0);
+    VSync(0);
     GsGetTimInfo((u32 *)(D_80010000[0] + 4), &tim);
-    func_80030AB4(0);
+    VSync(0);
     LoadImage((s32)&D_80050730, (s32)tim.paddr);
     DrawSync(0);
-    func_80030AB4(0);
+    VSync(0);
     SetDispMask(1);
     func_8002DC04();
     CdSetDebug(0);
@@ -9226,12 +9226,12 @@ void func_80023550(void) {
     Gpu_SetLayerOtPtrs();
     Rand_Seed(0);
     ((void (*)(s32))func_8003D4A4)(0);
-    func_8003DD00();
+    MemCardStart();
     func_800230AC();
     buf = 0x80;
     while (((s32 (*)(s32, u8 *, s32))func_80030554)(0xE, &buf, 0) == 0) {
     }
-    func_80030AB4(3);
+    VSync(3);
     func_800307C4(9, 0, 0);
     Task_ClearList();
     Gfx_InitTexSlots();
@@ -9277,7 +9277,7 @@ void func_80023550(void) {
         Gpu_ResetPrimBuf();
         Gpu_SetLayerOtPtrs();
         Gpu_ClearOt(D_8005F770.field_28);
-        t = func_80030AB4(-1);
+        t = VSync(-1);
         u = D_80050738;
         D_80050738 = t;
         d = t - u;
@@ -9287,9 +9287,9 @@ void func_80023550(void) {
             D_8005F770.field_8 = 6;
         }
         D_8005F770.field_0++;
-        func_8002329C();
+        Pad_Update();
         Rand_Step();
-        func_80023C74();
+        Cd_ServiceQueue();
         func_8001A01C();
     }
 }
@@ -9424,7 +9424,7 @@ void Cd_EvictLruFile(void) {
     p->field_2 = 0;
 }
 
-void func_80023BF4(s32 id) {
+void Cd_QueueFile(s32 id) {
     Ent23A78 *p = Cd_FindCachedFile(id);
 
     if (p != NULL) {
@@ -9440,7 +9440,7 @@ void func_80023BF4(s32 id) {
 }
 
 
-void func_80023C74(void) {
+void Cd_ServiceQueue(void) {
     s32 started;
     s32 busy;
     s32 i;
@@ -9482,9 +9482,9 @@ void func_80023C74(void) {
 
 
 void func_80023D68(s32 arg0) {
-    func_80023BF4(arg0);
+    Cd_QueueFile(arg0);
     do {
-        func_80023C74();
+        Cd_ServiceQueue();
     } while (Cd_GetFileState(arg0) != 3);
 }
 
@@ -9571,7 +9571,7 @@ s32 Cd_CheckNextSector(void) {
     return -1;
 }
 
-void func_8002405C(s32 a0) {
+void Cd_ReadSectorCallback(s32 a0) {
     if (a0 == 1 && Cd_CheckNextSector() == 0) {
         CdGetSector((void *)D_80048DB8.field_8, 0x200);
         D_80048DB8.field_8 += 0x800;
@@ -9603,7 +9603,7 @@ void func_800240E8(s32 ev) {
             D_80048DB8.field_0++;
             break;
         case 2:
-            CdReadyCallback((s32)func_8002405C);
+            CdReadyCallback((s32)Cd_ReadSectorCallback);
             func_80030690(6, 0);
             D_80048DB8.field_0++;
             break;
@@ -9664,8 +9664,8 @@ void func_80024350(Actor *arg0) {
 
     switch (arg0->field_10) {
     case 0:
-        func_80020C40((ContC40 *)arg0, &work->field_8, work->field_14);
-        func_8001FDBC(arg0, work->field_0)->field_3C = 3;
+        Actor_InitTransform((ContC40 *)arg0, &work->field_8, work->field_14);
+        Gfx_AttachModel(arg0, work->field_0)->field_3C = 3;
         func_8001F24C(arg0, 0, work->field_4);
         Task_NextState0(arg0);
         break;
@@ -9684,7 +9684,7 @@ void func_80024350(Actor *arg0) {
 void func_80024410(Actor *arg0) {
     ActorWork *w = arg0->work;
     if (arg0->field_10 == 1) {
-        func_8001FDBC(arg0, w->field_0);
+        Gfx_AttachModel(arg0, w->field_0);
         Anim_StepModelAnim(arg0);
         func_80020920(arg0);
         func_800200D0(arg0);
@@ -9734,7 +9734,7 @@ void func_80024610(void) {
     ExitCriticalSection();
 }
 
-void func_80024654(u8 *a0, u8 *a1) {
+void PadInitDirect(u8 *a0, u8 *a1) {
     Obj25FBC *base;
     Obj25FBC *p;
     u8 *q;
@@ -10118,7 +10118,7 @@ s32 func_800251AC(void) {
             }
             D_80048E60 = 0;
             while (D_80048E58 <= D_80048E6C) {
-                func_80025670(&D_80048E4C[D_80048E58]);
+                Pad_SioRunStep(&D_80048E4C[D_80048E58]);
             }
             Pad_SioRegs->field_E = 0x88;
         }
@@ -10208,7 +10208,7 @@ s32 func_8002533C(Obj25FBC *a0) {
 }
 
 
-void func_80025670(Obj25FBC *a0) {
+void Pad_SioRunStep(Obj25FBC *a0) {
     s32 r;
 
     r = D_80048EA0[D_80048E5C++](a0);
@@ -10680,7 +10680,7 @@ void func_800266D0(Ent266D0 *a0) {
     func_80025760(a0, -2);
 }
 
-void func_80026718(Obj25FBC *a0) {
+void Pad_SioStepSendCmd(Obj25FBC *a0) {
     if (D_80048E58 == D_80048E68 && D_80048E54 != 0) {
         D_80048E48();
         D_80048E44();
@@ -10697,7 +10697,7 @@ void func_80026718(Obj25FBC *a0) {
 }
 
 
-s32 func_800267F0(Ent266D0 *a0) {
+s32 Pad_SioStepRecvId(Ent266D0 *a0) {
     s32 r;
 
     if (D_80048E98 != 0) {
@@ -10716,7 +10716,7 @@ s32 func_800267F0(Ent266D0 *a0) {
 }
 
 
-s32 func_8002689C(Ent266D0 *a0) {
+s32 Pad_SioStepRecv5A(Ent266D0 *a0) {
     s32 f = 0;
     s32 r;
 
@@ -10775,7 +10775,7 @@ static inline s32 inl_h(s32 arg0, volatile u16 *hw) {
     return 1;
 }
 
-s32 func_800269B8(Ent266D0 *a0) {
+s32 Pad_SioStepRecvData(Ent266D0 *a0) {
     s32 f;
     s32 i;
     s32 r;
@@ -10962,7 +10962,7 @@ u8 *func_800270B4(u8 *dst, u8 *src) {
     return r;
 }
 
-s32 func_80027104(s32 mode) {
+s32 ResetGraph(s32 mode) {
     Gpu48F10 *g;
 
     switch (mode & 7) {
@@ -11140,7 +11140,7 @@ s32 DrawOTag(void *a0) {
     return D_80048F08->fn_8(D_80048F08->field_18, (s32)a0, 0, 0);
 }
 
-DrawEnv *func_80027AE4(DrawEnv *env) {
+DrawEnv *PutDrawEnv(DrawEnv *env) {
     if (D_80048F10.field_2 >= 2) {
         D_80048F0C(&D_80010378, env);
     }
@@ -11151,7 +11151,7 @@ DrawEnv *func_80027AE4(DrawEnv *env) {
     return env;
 }
 
-void func_80027BA4(s32 ot, DrawEnv *env) {
+void DrawOTagEnv(s32 ot, DrawEnv *env) {
     if (D_80048F10.field_2 >= 2) {
         D_80048F0C(D_80010390, ot, env);
     }
@@ -11697,12 +11697,12 @@ s32 func_80029848(s32 a0) {
 
 
 void set_alarm(void) {
-    D_8004904C = func_80030AB4(-1) + 0xF0;
+    D_8004904C = VSync(-1) + 0xF0;
     D_80049050 = 0;
 }
 
 s32 func_800299B8(void) {
-    if (func_80030AB4(-1) > D_8004904C || D_80049050++ > 0xF0000) {
+    if (VSync(-1) > D_8004904C || D_80049050++ > 0xF0000) {
         *(volatile s32 *)D_80049018;
         printf(D_800103C4, (D_80049038 - D_8004903C) & 0x3F, *(volatile s32 *)D_80049018,
                       *(volatile s32 *)D_80049024, *(volatile s32 *)D_8004901C);
@@ -11735,7 +11735,7 @@ s32 _version(s32 a0) {
 
 s32 func_80029B9C(s32 a0, s32 a1) {
     checkRECT(D_800103F8, a0);
-    D_8004904C = func_80030AB4(-1) + 0xF0;
+    D_8004904C = VSync(-1) + 0xF0;
     D_80049050 = 0;
     while ((*D_80049024 & 0x01000000) || !(*D_80049018 & 0x04000000)) {
         if (func_800299B8() != 0) {
@@ -11749,7 +11749,7 @@ s32 func_80029B9C(s32 a0, s32 a1) {
 
 s32 func_80029C88(s32 a0, s32 a1) {
     checkRECT(D_8001031C, a0);
-    D_8004904C = func_80030AB4(-1) + 0xF0;
+    D_8004904C = VSync(-1) + 0xF0;
     D_80049050 = 0;
     while ((*D_80049024 & 0x1000000) || !(*D_80049018 & 0x4000000)) {
         if (func_800299B8()) {
@@ -11763,7 +11763,7 @@ s32 func_80029C88(s32 a0, s32 a1) {
 
 s32 func_80029D74(Rect2AB54 *rect, s32 x, s32 y) {
     checkRECT(D_80010328, (s32)rect);
-    D_8004904C = func_80030AB4(-1) + 0xF0;
+    D_8004904C = VSync(-1) + 0xF0;
     D_80049050 = 0;
     while ((*D_80049024 & 0x01000000) || !(*D_80049018 & 0x04000000)) {
         if (func_800299B8() != 0) {
@@ -11785,7 +11785,7 @@ s32 func_80029EB8(u32 *p) {
     if (D_80048F12 >= 2) {
         D_80048F0C(&D_80010364, p);
     }
-    D_8004904C = func_80030AB4(-1) + 0xF0;
+    D_8004904C = VSync(-1) + 0xF0;
     D_80049050 = 0;
     while ((*D_80049024 & 0x01000000) || !(*D_80049018 & 0x04000000)) {
         if (func_800299B8() != 0) {
@@ -12285,7 +12285,7 @@ void func_8002ACC8(u16 x, u16 y, u16 flags, u16 dtd, u16 rgb24) {
     if (((flags >> 4) & 3) == 3) {
         m = 3;
     }
-    func_80027104(m);
+    ResetGraph(m);
     D_80061908.ofs[0] = D_80061908.ofs[1] = 0;
     D_80061908.tw_h = 0;
     D_80061908.tw_w = 0;
@@ -12295,7 +12295,7 @@ void func_8002ACC8(u16 x, u16 y, u16 flags, u16 dtd, u16 rgb24) {
     D_80061908.dtd = dtd;
     D_80061908.dfe = 0;
     D_80061908.isbg = 0;
-    func_80027AE4(&D_80061908);
+    PutDrawEnv(&D_80061908);
     D_80061968.disp.x = 0;
     D_80061968.disp.y = 0;
     D_80061968.disp.w = x;
@@ -12403,7 +12403,7 @@ void func_8002B1A4() {
         D_8006197C = 0;
         D_80061908.ofs[0] = D_80061900.field_0 + D_800618F0[D_8006198C];
         D_80061908.ofs[1] = D_80061900.field_2 + D_800618F4[D_8006198C];
-        func_80027AE4(&D_80061908);
+        PutDrawEnv(&D_80061908);
     } else {
         x = D_80061900.field_0 + *(D_8006198C ? &D_800618F0[0] : &D_800618F0[1]);
         y = D_80061900.field_2 + *(D_8006198C ? &D_800618F4[0] : &D_800618F4[1]);
@@ -12428,7 +12428,7 @@ void GsSetDrawBuffClip(void) {
     y = src->y;
     dst->clip_x = x + dx;
     dst->clip_y = y + dy;
-    func_80027AE4(dst);
+    PutDrawEnv(dst);
 }
 
 void func_8002B334(s32 a0, s32 a1) {
@@ -12440,7 +12440,7 @@ void func_8002B334(s32 a0, s32 a1) {
         D_8006197C = 0;
         D_80061908.ofs[0] = D_800618F0[D_8006198C] + a0;
         D_80061908.ofs[1] = D_800618F4[D_8006198C] + a1;
-        func_80027AE4(&D_80061908);
+        PutDrawEnv(&D_80061908);
     } else {
         x = a0 + *(D_8006198C ? &D_800618F0[0] : &D_800618F0[1]);
         y = a1 + *(D_8006198C ? &D_800618F4[0] : &D_800618F4[1]);
@@ -13677,14 +13677,14 @@ s32 func_8002F318(a0, a1)
     s8 **com;
     char **intr;
 
-    D_80061B80 = func_80030AB4(-1) + 0x3C0;
+    D_80061B80 = VSync(-1) + 0x3C0;
     com = D_8004E6EC;
     intr = D_8004E76C;
     two = 2;
     D_80061B84 = 0;
     D_80061B88 = D_800108D8;
     do {
-        if (D_80061B80 < func_80030AB4(-1) || (n = D_80061B84++, n > 0x3C0000)) {
+        if (D_80061B80 < VSync(-1) || (n = D_80061B84++, n > 0x3C0000)) {
             Debug_PutString(D_80010850);
             p0 = &intr[D_8004E9A4.field_0];
             printf(D_80010860, D_80061B88, *(s8 * volatile *)&com[D_8004E6E5], *(char * volatile *)p0, intr[D_8004E9A4.field_1]);
@@ -13724,7 +13724,7 @@ s32 func_8002F318(a0, a1)
 
 
 static __inline__ s32 func_8002F598_timeout(s8 **com, char **intr) {
-    if (D_80061B80 < func_80030AB4(-1) || D_80061B84++ > 0x3C0000) {
+    if (D_80061B80 < VSync(-1) || D_80061B84++ > 0x3C0000) {
         Debug_PutString(D_80010850);
         {
         char **p = &intr[D_8004E9A4.field_0];
@@ -13750,7 +13750,7 @@ u8 *result;
     u8 *src;
     u8 *dst;
 
-    D_80061B80 = func_80030AB4(-1) + 0x3C0;
+    D_80061B80 = VSync(-1) + 0x3C0;
     D_80061B84 = 0;
     D_80061B88 = D_800108E0;
     com = D_8004E6EC;
@@ -13849,14 +13849,14 @@ s32 func_8002F860(com, param, result, async)
     D_8004E6E5 = com;
     *(volatile u8 *)D_8004E998 = com;
     if (async == 0) {
-        D_80061B80 = func_80030AB4(-1) + 0x3C0;
+        D_80061B80 = VSync(-1) + 0x3C0;
         D_80061B84 = 0;
         D_80061B88 = D_80010904;
         if (D_8004E9A4.field_0 == 0) {
             cm = D_8004E6EC;
             intr = D_8004E76C;
             do {
-                if (D_80061B80 < func_80030AB4(-1) || (n = D_80061B84++, n > 0x3C0000)) {
+                if (D_80061B80 < VSync(-1) || (n = D_80061B84++, n > 0x3C0000)) {
                     Debug_PutString(D_80010850);
                     p0 = &intr[D_8004E9A4.field_0];
                     printf(D_80010860, D_80061B88, *(s8 * volatile *)&cm[D_8004E6E5], *(char * volatile *)p0, intr[D_8004E9A4.field_1]);
@@ -13960,7 +13960,7 @@ void CD_initintr(void) {
     D_8004E6D8 = 0;
     D_8004E6D4 = 0;
     ResetCallback();
-    InterruptCallback(2, func_80030258);
+    InterruptCallback(2, Cd_IntrCallback);
 }
 
 s32 func_8002FF04(void) {
@@ -13973,7 +13973,7 @@ s32 func_8002FF04(void) {
     D_8004E6D8 = 0;
     D_8004E6D4 = 0;
     ResetCallback();
-    InterruptCallback(2, func_80030258);
+    InterruptCallback(2, Cd_IntrCallback);
     *D_8004E98C = 1;
     while (*D_8004E990 & 7) {
         *D_8004E98C = 1;
@@ -14017,7 +14017,7 @@ s32 func_800300E4(s32 mode) {
     volatile Cd4E9A4 *st;
     char **intr;
 
-    D_80061B80 = func_80030AB4(-1) + 0x3C0;
+    D_80061B80 = VSync(-1) + 0x3C0;
     lim = 0x3C0000;
     com = D_8004E6EC;
     st = &D_8004E9A4;
@@ -14025,7 +14025,7 @@ s32 func_800300E4(s32 mode) {
     D_80061B84 = 0;
     D_80061B88 = D_8001095C;
     do {
-        if (D_80061B80 < func_80030AB4(-1) || (n = D_80061B84++, n > lim)) {
+        if (D_80061B80 < VSync(-1) || (n = D_80061B84++, n > lim)) {
             Debug_PutString(D_80010850);
 p0 = &intr[st->field_0];
 printf(D_80010860, D_80061B88, *(s8 * volatile *)&com[D_8004E6E5], *(char * volatile *)p0, intr[st->field_1]);
@@ -14050,7 +14050,7 @@ void func_8003024C(s32 a0) {
     D_8004E970 = a0;
 }
 
-void func_80030258(void) {
+void Cd_IntrCallback(void) {
     u8 save = *D_8004E98C & 3;
     s32 st;
     void (*cb)(u8, u8 *);
@@ -14243,7 +14243,7 @@ int func_80030A64(int a0) {
 
 void func_80030A84(s32 arg0) { DMACallback(3, arg0); }
 
-s32 func_80030AB4(s32 mode) {
+s32 VSync(s32 mode) {
     volatile s32 buf;
     s32 status;
     s32 count;
@@ -14341,7 +14341,7 @@ int SetIntrMask(int a0) {
     return old;
 }
 
-Obj4EAF8 *func_80030E68(void) {
+Obj4EAF8 *startIntr(void) {
     u16 *r;
     volatile u16 *q;
 
@@ -14620,7 +14620,7 @@ void func_80031854(void) {
         return;
     }
     D_80061C44 = 1;
-    func_80036784();
+    _SsVmFlush();
     ch = 0;
     if (ch < D_800624D0) {
     pp = Snd_SeqScores;
@@ -14922,7 +14922,7 @@ void func_80032644(s16 a0, s16 a1) {
     Snd_SeqScores[a0][a1].field_98 &= ~8;
 }
 
-void func_800326A4(s16 id) {
+void _SsClose(s16 id) {
     s32 i;
     Elm354F4 **pp;
 
@@ -14948,9 +14948,9 @@ void func_800326A4(s16 id) {
     }
 }
 
-void func_80032820(s16 arg0) { func_800326A4(arg0); }
+void func_80032820(s16 arg0) { _SsClose(arg0); }
 
-void func_80032844(s16 arg0) { func_800326A4(arg0); }
+void func_80032844(s16 arg0) { _SsClose(arg0); }
 
 void func_80032874(void) {
     volatile u16 *dst = (volatile u16 *)0x1F801D80;
@@ -14961,7 +14961,7 @@ void func_80032874(void) {
     for (i = 0; i < 16; i++) {
         *dst++ = *src++;
     }
-    func_80036C54(0x18);
+    _SsVmInit(0x18);
     for (i = 0; i < 32; i++) {
         Hook33424 *row = Snd_MarkCallbacks[i];
         for (j = 15; j >= 0; j--) {
@@ -14977,11 +14977,11 @@ void func_80032874(void) {
 void func_80032914(void) {
     ResetCallback();
     SpuInit();
-    func_8003C3A4(7);
+    SpuClearReverbWorkArea(7);
     func_80032874();
 }
 
-s16 func_80032954(s32 src, s16 arg1, s32 count) {
+s16 SsSepOpen(s32 src, s16 arg1, s32 count) {
     s16 code;
     s32 i;
     s16 j;
@@ -14996,12 +14996,12 @@ s16 func_80032954(s32 src, s16 arg1, s32 count) {
     D_80061BB0[0] = (TextOp)func_800348D4;
     D_80061BB0[1] = (TextOp)_SsSetProgramChange;
     D_80061BB0[3] = (TextOp)_SsGetMetaEvent;
-    D_80061BB0[2] = (TextOp)func_80034424;
+    D_80061BB0[2] = (TextOp)_SsSetPitchBend;
     D_80061BB0[4] = (TextOp)_SsSetControlChange;
     D_80061BB0[5] = (TextOp)_SsContBankChange;
-    D_80061BB0[7] = (TextOp)func_80033054;
-    D_80061BB0[8] = (TextOp)func_80033124;
-    D_80061BB0[9] = (TextOp)func_800331F4;
+    D_80061BB0[7] = (TextOp)_SsContMainVol;
+    D_80061BB0[8] = (TextOp)_SsContPanpot;
+    D_80061BB0[9] = (TextOp)_SsContExpression;
     D_80061BB0[10] = (TextOp)_SsContDamper;
     D_80061BB0[11] = (TextOp)_SsContNrpn1;
     D_80061BB0[12] = (TextOp)_SsContNrpn2;
@@ -15009,22 +15009,22 @@ s16 func_80032954(s32 src, s16 arg1, s32 count) {
     D_80061BB0[14] = (TextOp)_SsContRpn2;
     D_80061BB0[15] = (TextOp)_SsContExternal;
     D_80061BB0[16] = (TextOp)_SsContResetAll;
-    D_80061BB0[6] = (TextOp)func_80032CD4;
-    D_80061BB0[17] = (TextOp)func_80033804;
-    D_80061BB0[18] = (TextOp)func_80033894;
-    D_80061BB0[19] = (TextOp)func_80033954;
-    D_80061BB0[20] = (TextOp)func_800339E4;
-    D_80061BB0[21] = (TextOp)func_80033A74;
-    D_80061BB0[22] = (TextOp)func_80033C24;
-    D_80061BB0[23] = (TextOp)func_80033CE4;
-    D_80061BB0[24] = (TextOp)func_80033D94;
-    D_80061BB0[25] = (TextOp)func_80033E44;
-    D_80061BB0[26] = (TextOp)func_80033EF4;
-    D_80061BB0[27] = (TextOp)func_80033FB4;
-    D_80061BB0[28] = (TextOp)func_80034064;
-    D_80061BB0[29] = (TextOp)func_80034114;
-    D_80061BB0[30] = (TextOp)func_800341F4;
-    D_80061BB0[31] = (TextOp)func_80034294;
+    D_80061BB0[6] = (TextOp)_SsContDataEntry;
+    D_80061BB0[17] = (TextOp)_SsSetNrpnVabAttr0;
+    D_80061BB0[18] = (TextOp)_SsSetNrpnVabAttr1;
+    D_80061BB0[19] = (TextOp)_SsSetNrpnVabAttr2;
+    D_80061BB0[20] = (TextOp)_SsSetNrpnVabAttr3;
+    D_80061BB0[21] = (TextOp)_SsSetNrpnVabAttr4;
+    D_80061BB0[22] = (TextOp)_SsSetNrpnVabAttr5;
+    D_80061BB0[23] = (TextOp)_SsSetNrpnVabAttr6;
+    D_80061BB0[24] = (TextOp)_SsSetNrpnVabAttr7;
+    D_80061BB0[25] = (TextOp)_SsSetNrpnVabAttr8;
+    D_80061BB0[26] = (TextOp)_SsSetNrpnVabAttr9;
+    D_80061BB0[27] = (TextOp)_SsSetNrpnVabAttr10;
+    D_80061BB0[28] = (TextOp)_SsSetNrpnVabAttr11;
+    D_80061BB0[29] = (TextOp)_SsSetNrpnVabAttr12;
+    D_80061BB0[30] = (TextOp)_SsSetNrpnVabAttr13;
+    D_80061BB0[31] = (TextOp)_SsSetNrpnVabAttr14;
     D_80061BB0[32] = (TextOp)_SsSetNrpnVabAttr15;
     D_80061BB0[33] = (TextOp)_SsSetNrpnVabAttr16;
     D_80061BB0[34] = (TextOp)_SsSetNrpnVabAttr17;
@@ -15055,7 +15055,7 @@ void _SsContBankChange(s16 arg0, s16 arg1, s16 arg2) {
     e->field_90 = _SsReadDeltaValue(arg0, arg1);
 }
 
-void func_80032CD4(s16 a0, s16 a1, s16 a2) {
+void _SsContDataEntry(s16 a0, s16 a1, s16 a2) {
     Elm354F4 *e = &Snd_SeqScores[a0][a1];
     s32 k = e->field_17;
     SlotHead8 h[2];
@@ -15119,7 +15119,7 @@ void func_80032CD4(s16 a0, s16 a1, s16 a2) {
 }
 
 
-void func_80033054(s16 a0, s16 a1, u8 a2) {
+void _SsContMainVol(s16 a0, s16 a1, u8 a2) {
     Elm354F4 *e = &Snd_SeqScores[a0][a1];
     u8 k = e->field_17;
 
@@ -15128,7 +15128,7 @@ void func_80033054(s16 a0, s16 a1, u8 a2) {
     e->field_90 = _SsReadDeltaValue(a0, a1);
 }
 
-void func_80033124(s16 a0, s16 a1, s32 a2) {
+void _SsContPanpot(s16 a0, s16 a1, s32 a2) {
     Elm354F4 *e = &Snd_SeqScores[a0][a1];
     s32 i = e->field_17;
 
@@ -15137,7 +15137,7 @@ void func_80033124(s16 a0, s16 a1, s32 a2) {
     e->field_90 = _SsReadDeltaValue(a0, a1);
 }
 
-void func_800331F4(s16 a0, s16 a1, s32 a2) {
+void _SsContExpression(s16 a0, s16 a1, s32 a2) {
     Elm354F4 *e = &Snd_SeqScores[a0][a1];
     u8 k = e->field_17;
 
@@ -15255,7 +15255,7 @@ void _SsContResetAll(s16 a0, s16 a1) {
     e->field_90 = _SsReadDeltaValue(a0, a1);
 }
 
-void func_80033804(s16 a0, s16 a1, s16 a2, HandlerArg arg) {
+void _SsSetNrpnVabAttr0(s16 a0, s16 a1, s16 a2, HandlerArg arg) {
     s32 v = arg.field_24;
 
     SsUtGetVagAtr(a0, a1, a2, &arg);
@@ -15263,7 +15263,7 @@ void func_80033804(s16 a0, s16 a1, s16 a2, HandlerArg arg) {
     SsUtSetVagAtr(a0, a1, a2, &arg);
 }
 
-void func_80033894(s16 a0, s16 a1, s16 a2, HandlerArg arg) {
+void _SsSetNrpnVabAttr1(s16 a0, s16 a1, s16 a2, HandlerArg arg) {
     s32 v = arg.field_24;
 
     SsUtGetVagAtr(a0, a1, a2, &arg);
@@ -15277,7 +15277,7 @@ void func_80033894(s16 a0, s16 a1, s16 a2, HandlerArg arg) {
     }
 }
 
-void func_80033954(s16 a0, s16 a1, s16 a2, HandlerArg d) {
+void _SsSetNrpnVabAttr2(s16 a0, s16 a1, s16 a2, HandlerArg d) {
     s32 flag = d.field_24;
 
     SsUtGetVagAtr(a0, a1, a2, &d);
@@ -15288,7 +15288,7 @@ void func_80033954(s16 a0, s16 a1, s16 a2, HandlerArg d) {
 extern s32 SsUtGetVagAtr();
 extern s32 SsUtSetVagAtr();
 
-void func_800339E4(s16 a0, s16 a1, s16 a2, HandlerArg d) {
+void _SsSetNrpnVabAttr3(s16 a0, s16 a1, s16 a2, HandlerArg d) {
     s32 v = d.field_24;
 
     SsUtGetVagAtr(a0, a1, a2, &d);
@@ -15302,7 +15302,7 @@ extern void _SsUtBuildADSR();
 extern s32 SsUtSetVagAtr();
 void _SsUtResolveADSR(u32, u32, Out33B24 *);
 
-void func_80033A74(s16 a0, s16 a1, s16 a2, Arg33 d) {
+void _SsSetNrpnVabAttr4(s16 a0, s16 a1, s16 a2, Arg33 d) {
     Out33B24 buf;
     u16 flag = d.field_24;
     SsUtGetVagAtr(a0, a1, a2, &d);
@@ -15347,7 +15347,7 @@ void _SsUtBuildADSR(Out33B24 *p, u16 *adsr1, u16 *adsr2) {
 }
 
 
-void func_80033C24(s16 a0, s16 a1, s16 a2, Arg33 d) {
+void _SsSetNrpnVabAttr5(s16 a0, s16 a1, s16 a2, Arg33 d) {
     Out33B24 buf;
     u16 flag = d.field_24;
     SsUtGetVagAtr(a0, a1, a2, &d);
@@ -15358,7 +15358,7 @@ void func_80033C24(s16 a0, s16 a1, s16 a2, Arg33 d) {
     SsUtSetVagAtr(a0, a1, a2, &d);
 }
 
-void func_80033CE4(s16 a0, s16 a1, s16 a2, HandlerArg d) {
+void _SsSetNrpnVabAttr6(s16 a0, s16 a1, s16 a2, HandlerArg d) {
     Out33B24 buf;
     s32 v = (u8)d.field_24;
 
@@ -15369,7 +15369,7 @@ void func_80033CE4(s16 a0, s16 a1, s16 a2, HandlerArg d) {
     SsUtSetVagAtr(a0, a1, a2, &d);
 }
 
-void func_80033D94(s16 a0, s16 a1, s16 a2, Arg33 d) {
+void _SsSetNrpnVabAttr7(s16 a0, s16 a1, s16 a2, Arg33 d) {
     Out33B24 buf;
     u16 flag = d.field_24;
     SsUtGetVagAtr(a0, a1, a2, &d);
@@ -15379,7 +15379,7 @@ void func_80033D94(s16 a0, s16 a1, s16 a2, Arg33 d) {
     SsUtSetVagAtr(a0, a1, a2, &d);
 }
 
-void func_80033E44(s16 a0, s16 a1, s16 a2, Arg33 d) {
+void _SsSetNrpnVabAttr8(s16 a0, s16 a1, s16 a2, Arg33 d) {
     Out33B24 buf;
     u16 flag = d.field_24;
     SsUtGetVagAtr(a0, a1, a2, &d);
@@ -15390,7 +15390,7 @@ void func_80033E44(s16 a0, s16 a1, s16 a2, Arg33 d) {
     SsUtSetVagAtr(a0, a1, a2, &d);
 }
 
-void func_80033EF4(s16 a0, s16 a1, s16 a2, Arg33 d) {
+void _SsSetNrpnVabAttr9(s16 a0, s16 a1, s16 a2, Arg33 d) {
     Out33B24 buf;
     u16 flag = d.field_24;
     SsUtGetVagAtr(a0, a1, a2, &d);
@@ -15401,7 +15401,7 @@ void func_80033EF4(s16 a0, s16 a1, s16 a2, Arg33 d) {
     SsUtSetVagAtr(a0, a1, a2, &d);
 }
 
-void func_80033FB4(s16 a0, s16 a1, s16 a2, Arg33 d) {
+void _SsSetNrpnVabAttr10(s16 a0, s16 a1, s16 a2, Arg33 d) {
     Out33B24 buf;
     u16 flag = d.field_24;
     SsUtGetVagAtr(a0, a1, a2, &d);
@@ -15412,7 +15412,7 @@ void func_80033FB4(s16 a0, s16 a1, s16 a2, Arg33 d) {
     SsUtSetVagAtr(a0, a1, a2, &d);
 }
 
-void func_80034064(s16 a0, s16 a1, s16 a2, Arg33 d) {
+void _SsSetNrpnVabAttr11(s16 a0, s16 a1, s16 a2, Arg33 d) {
     Out33B24 buf;
     s32 f = d.field_24;
 
@@ -15423,7 +15423,7 @@ void func_80034064(s16 a0, s16 a1, s16 a2, Arg33 d) {
     SsUtSetVagAtr(a0, a1, a2, &d);
 }
 
-void func_80034114(s16 a0, s16 a1, s16 a2, HandlerArg d) {
+void _SsSetNrpnVabAttr12(s16 a0, s16 a1, s16 a2, HandlerArg d) {
     Out33B24 buf;
     s32 v = d.field_24;
 
@@ -15437,7 +15437,7 @@ void func_80034114(s16 a0, s16 a1, s16 a2, HandlerArg d) {
     SsUtSetVagAtr(a0, a1, a2, &d);
 }
 
-void func_800341F4(s16 a0, s16 a1, s16 a2, HandlerArg d) {
+void _SsSetNrpnVabAttr13(s16 a0, s16 a1, s16 a2, HandlerArg d) {
     Out33B24 buf;
     s32 v = d.field_24;
 
@@ -15447,7 +15447,7 @@ void func_800341F4(s16 a0, s16 a1, s16 a2, HandlerArg d) {
     SsUtSetVagAtr(a0, a1, a2, &d);
 }
 
-void func_80034294(s16 a0, s16 a1, s16 a2, HandlerArg arg) {
+void _SsSetNrpnVabAttr14(s16 a0, s16 a1, s16 a2, HandlerArg arg) {
     Out33B24 buf;
     s32 v = arg.field_24;
 
@@ -15477,7 +15477,7 @@ void _SsSetNrpnVabAttr19(s16 arg0, s16 arg1, s16 arg2, HandlerArg arg) {
     SsUtSetReverbDelay((u8)arg.field_24);
 }
 
-void func_80034424(s16 a0, s16 a1) {
+void _SsSetPitchBend(s16 a0, s16 a1) {
     Elm354F4 *e = &Snd_SeqScores[a0][a1];
     s32 note = *e->field_0++;
 
@@ -15569,7 +15569,7 @@ void func_800348D4(s32 a0, s32 a1, s32 a2, s32 a3) {
 
     if (a3 & 0xFF) {
         if (!((e->field_80 >> k) & 1)) {
-            func_80036FA4((s16)(a0 | (a1 << 8)), e->field_26, e->field_37[k], (u8)a2, on, v);
+            _SsVmKeyOn((s16)(a0 | (a1 << 8)), e->field_26, e->field_37[k], (u8)a2, on, v);
         }
     } else {
         _SsVmKeyOff((s16)(a0 | (a1 << 8)), e->field_26, e->field_37[k], (u8)a2);
@@ -15695,11 +15695,11 @@ s32 _SsInitSoundSeq(s16 a0, s16 a1, s16 a2, s32 a3) {
 }
 
 
-void func_80034E44(s16 a0, s16 a1, s8 a2, s16 a3);
+void Snd_SetPlayMode(s16 a0, s16 a1, s8 a2, s16 a3);
 
-void func_80034E04(s16 arg0, s16 arg1, s8 arg2, s16 arg3) { func_80034E44(arg0, arg1, arg2, arg3); }
+void func_80034E04(s16 arg0, s16 arg1, s8 arg2, s16 arg3) { Snd_SetPlayMode(arg0, arg1, arg2, arg3); }
 
-void func_80034E44(s16 a0, s16 a1, s8 a2, s16 a3) {
+void Snd_SetPlayMode(s16 a0, s16 a1, s8 a2, s16 a3) {
     Elm354F4 **p = &Snd_SeqScores[a0];
     Elm354F4 *e = &(*p)[a1];
     s32 c;
@@ -15823,7 +15823,7 @@ void _SsStart(s32 a0) {
 
 void func_800352A4(void) { _SsStart(1); }
 
-void func_800352C4(void) { _SsStart(0); }
+void SsStart2(void) { _SsStart(0); }
 
 void func_800352E4(void) {
     if (D_8004FC50.fn_4 != 0) {
@@ -16209,7 +16209,7 @@ done:
 }
 
 
-void func_80035F04(s32 arg) {
+void SsUtAllKeyOff(s32 arg) {
     VAttr36C54 attr;
     s16 i;
     s32 bit;
@@ -16378,7 +16378,7 @@ void func_80036774(void) {
     D_80062CB0 = 2;
 }
 
-void func_80036784(void) {
+void _SsVmFlush(void) {
     VAttr36C54 attr;
     s32 i;
     s32 m;
@@ -16495,7 +16495,7 @@ void func_80036784(void) {
 }
 
 
-void func_80036C54(s32 arg) {
+void _SsVmInit(s32 arg) {
     VAttr36C54 attr;
     s32 n;
     u16 i;
@@ -16572,11 +16572,11 @@ void func_80036C54(s32 arg) {
     D_80062CF8 = 0;
     D_80062D10 = 0;
     D_80062CFA = 0x80;
-    func_80036784();
+    _SsVmFlush();
 }
 
 
-s32 func_80036FA4(s16 a0, s16 a1, s16 a2, u16 a3, u16 arg4, u16 arg5) {
+s32 _SsVmKeyOn(s16 a0, s16 a1, s16 a2, u16 a3, u16 arg4, u16 arg5) {
     s32 a4 = arg4;
     s32 a5 = arg5;
     u8 val[128];
@@ -16697,7 +16697,7 @@ void func_80037620(s32 a0, s32 a1, s32 a2, s32 a3, u16 p4, u16 p5) {
         a = p5;
         b = 0x7F - (p4 << 6) / p5;
     }
-    func_80036FA4(0x21, (s16)a0, (s16)a1, (u16)a2, a, b);
+    _SsVmKeyOn(0x21, (s16)a0, (s16)a1, (u16)a2, a, b);
 }
 
 
@@ -17545,7 +17545,7 @@ void func_8003A054(s32 a0) {
     u16 *p;
 
     ResetCallback();
-    func_8003A1D4(a0);
+    _spu_init(a0);
     if (a0 == 0) {
         i = 23;
         p = &D_8004FDE4[23];
@@ -17591,7 +17591,7 @@ ASM_SOURCE("src/main/asm/libapi", OpenEvent);
 
 ASM_SOURCE("src/main/asm/libapi", EnableEvent);
 
-s32 func_8003A1D4(s32 a0) {
+s32 _spu_init(s32 a0) {
     u32 i;
     s32 j;
     volatile u16 *p;
@@ -17814,7 +17814,7 @@ s32 _spu_t(s32 mode, ...) {
     return 0;
 }
 
-s32 func_8003A9F8(s32 a0, u32 a1) {
+s32 _spu_Fw(s32 a0, u32 a1) {
     if (D_8004FE44 == 0) {
         _spu_t(2, D_8004FE40 << D_8004FE50);
         _spu_t(1);
@@ -17825,7 +17825,7 @@ s32 func_8003A9F8(s32 a0, u32 a1) {
     return a1;
 }
 
-s32 func_8003AA7C(s32 a0, s32 a1) {
+s32 _spu_Fr(s32 a0, s32 a1) {
     _spu_t(2, D_8004FE40 << D_8004FE50);
     _spu_t(0);
     _spu_t(3, a0, a1);
@@ -18387,7 +18387,7 @@ done:
         _spu_setReverbAttr(&p);
     }
     if (clear) {
-        func_8003C3A4(D_8004FDCC.field_0);
+        SpuClearReverbWorkArea(D_8004FDCC.field_0);
     }
     if (modeSet) {
         _spu_FsetRXX(0xD1, D_8004FDC4, 0);
@@ -18508,7 +18508,7 @@ void SpuSetReverbVoice(s32 arg0, s32 arg1) { _SpuSetAnyVoice(arg0, arg1, 0xCC, 0
 
 void SpuGetReverbVoice(void) { _SpuGetAnyVoice(0xCC, 0xCD); }
 
-s32 func_8003C3A4(s32 a0) {
+s32 SpuClearReverbWorkArea(s32 a0) {
     u32 size;
     u32 addr;
     u32 n;
@@ -18619,7 +18619,7 @@ u32 SpuWrite(s32 a0, u32 n) {
     if (n > 0x7EFF0) {
         n = 0x7EFF0;
     }
-    func_8003A9F8(a0, n);
+    _spu_Fw(a0, n);
     if (D_8004FE60 == 0) {
         Spu_InTransfer = 0;
     }
@@ -19125,7 +19125,7 @@ s32 a0;
     s32 s0 = a0;
     s32 s1;
     ChangeClearPAD(0);
-    func_80030AB4(0);
+    VSync(0);
     s1 = EnterCriticalSection();
     if (func_8003D610() == 0) {
         s0 = 0;
@@ -19271,7 +19271,7 @@ s32 *func_8003DCF4(void) {
     return &D_80062F80.field_0;
 }
 
-void func_8003DD00(void) {
+void MemCardStart(void) {
     State62F80 *p = &D_80062F80;
 
     p->field_C = 0;
@@ -19298,7 +19298,7 @@ void func_8003DD70(void) {
     Card_CloseEvents();
 }
 
-s32 func_8003DDB0(s32 arg0) {
+s32 MemCardExist(s32 arg0) {
     s32 r;
 
     if (D_80062F80.field_0 <= 0) {
@@ -19421,7 +19421,7 @@ s32 MemCardAccept(s32 arg0) {
         D_80062F80.field_4 = 0;
         D_80062F80.field_8 = 0;
         D_80062F80.field_10 = arg0;
-        Card_PushTask(func_8003E19C);
+        Card_PushTask(Card_AcceptTask);
         r = 1;
     } else {
         printf(D_80010B74);
@@ -19430,7 +19430,7 @@ s32 MemCardAccept(s32 arg0) {
     return r;
 }
 
-s32 func_8003E19C(s32 *st) {
+s32 Card_AcceptTask(s32 *st) {
     s32 r;
 
     switch (*st) {
@@ -19524,7 +19524,7 @@ s32 func_8003E19C(s32 *st) {
 }
 
 
-s32 func_8003E444(s32 a0, s32 a1, s32 a2) {
+s32 MemCardOpen(s32 a0, s32 a1, s32 a2) {
     s32 tries;
     s32 r;
     s32 st;
@@ -19551,7 +19551,7 @@ s32 func_8003E444(s32 a0, s32 a1, s32 a2) {
             D_80062F80.field_4 = 0;
             D_80062F80.field_8 = 0;
             D_80062F90 = a0;
-            Card_PushTask(func_8003E19C);
+            Card_PushTask(Card_AcceptTask);
         }
         MemCardSync(0, NULL, &st);
         MemCardCallback(D_80062FD8);
@@ -19601,14 +19601,14 @@ s32 func_8003E610(s32 a0, s32 a1, s32 a2) {
         D_80062F80.field_18 = a1;
         D_80062F80.field_20 = a0;
         D_80062F80.field_1C = a2;
-        Card_PushTask(func_8003E6C8);
+        Card_PushTask(Card_ReadDataTask);
         return 1;
     }
     printf(msg);
     return 0;
 }
 
-s32 func_8003E6C8(s32 *state) {
+s32 Card_ReadDataTask(s32 *state) {
     s32 r;
 
     switch (*state) {
@@ -19681,14 +19681,14 @@ s32 MemCardWriteData(s32 a0, s32 a1, s32 a2) {
         D_80062F80.field_18 = a1;
         D_80062F80.field_20 = a0;
         D_80062F80.field_1C = a2;
-        Card_PushTask(func_8003E930);
+        Card_PushTask(Card_WriteDataTask);
         return 1;
     }
     printf(msg);
     return 0;
 }
 
-s32 func_8003E930(s32 *st) {
+s32 Card_WriteDataTask(s32 *st) {
     s32 r;
 
     switch (*st) {
@@ -19744,7 +19744,7 @@ s32 func_8003E930(s32 *st) {
     return 0;
 }
 
-s32 func_8003EADC(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4) {
+s32 MemCardReadFile(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4) {
     if (D_80062F80.field_0 > 0) {
         printf(D_80010D18);
         return 0;
@@ -19770,11 +19770,11 @@ s32 func_8003EADC(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4) {
     D_80062F80.field_20 = a2;
     D_80062F80.field_1C = a4;
     D_80062F80.field_10 = a0;
-    Card_PushTask(func_8003EBF4);
+    Card_PushTask(Card_ReadFileTask);
     return 1;
 }
 
-s32 func_8003EBF4(s32 *a0) {
+s32 Card_ReadFileTask(s32 *a0) {
     State62F80 *p;
     s32 r;
 
@@ -19797,7 +19797,7 @@ s32 func_8003EBF4(s32 *a0) {
         }
     case 11:
         *a0 = 20;
-        Card_PushTask(func_8003E6C8);
+        Card_PushTask(Card_ReadDataTask);
         return 0;
     case 20:
         close(D_80062F80.field_14);
@@ -19808,7 +19808,7 @@ s32 func_8003EBF4(s32 *a0) {
 }
 
 
-s32 func_8003ECFC(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4) {
+s32 MemCardWriteFile(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4) {
     if (D_80062F80.field_0 > 0) {
         printf(D_80010D18);
         return 0;
@@ -19834,11 +19834,11 @@ s32 func_8003ECFC(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4) {
     D_80062F80.field_20 = a2;
     D_80062F80.field_1C = a4;
     D_80062F80.field_10 = a0;
-    Card_PushTask(func_8003EE14);
+    Card_PushTask(Card_WriteFileTask);
     return 1;
 }
 
-s32 func_8003EE14(s32 *st) {
+s32 Card_WriteFileTask(s32 *st) {
     s32 r;
     s32 *q;
     volatile State62F80 *vp;
@@ -19862,7 +19862,7 @@ s32 func_8003EE14(s32 *st) {
         }
     case 11:
         *st = 20;
-        Card_PushTask(func_8003E930);
+        Card_PushTask(Card_WriteDataTask);
         break;
     case 20:
         q = &D_80062F94;
@@ -19873,7 +19873,7 @@ s32 func_8003EE14(s32 *st) {
     return 0;
 }
 
-s32 func_8003EF1C(s32 a0_arg, s8 *a1, Ent3EF1C *out_arg, s32 *count_arg, s32 skip, s32 n) {
+s32 MemCardGetDirentry(s32 a0_arg, s8 *a1, Ent3EF1C *out_arg, s32 *count_arg, s32 skip, s32 n) {
     s32 a0 = a0_arg;
     Ent3EF1C *out = out_arg;
     s32 *count_out = count_arg;
@@ -19919,7 +19919,7 @@ s32 func_8003EF1C(s32 a0_arg, s8 *a1, Ent3EF1C *out_arg, s32 *count_arg, s32 ski
                 D_80062F80.field_4 = 0;
                 D_80062F80.field_8 = 0;
                 D_80062F90 = a0;
-                Card_PushTask(func_8003E19C);
+                Card_PushTask(Card_AcceptTask);
             }
             MemCardSync(0, NULL, &st);
             MemCardCallback(D_80062FD8);
@@ -19998,7 +19998,7 @@ s32 MemCardSync(s32 wait, s32 *a1, s32 *a2) {
     return 1;
 }
 
-s32 func_8003F2A8(s32 a0, s32 a1, s32 a2) {
+s32 MemCardCreateFile(s32 a0, s32 a1, s32 a2) {
     u8 buf[0x20];
     s32 r;
 

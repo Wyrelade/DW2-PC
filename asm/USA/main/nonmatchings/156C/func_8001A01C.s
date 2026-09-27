@@ -45,7 +45,7 @@ glabel func_8001A01C
     /* A8B8 8001A0B8 0000428C */  lw         $v0, 0x0($v0)
     /* A8BC 8001A0BC 00000000 */  nop
     /* A8C0 8001A0C0 06004494 */  lhu        $a0, 0x6($v0)
-    /* A8C4 8001A0C4 FD8E000C */  jal        func_80023BF4
+    /* A8C4 8001A0C4 FD8E000C */  jal        Cd_QueueFile
     /* A8C8 8001A0C8 240004AE */   sw        $a0, 0x24($s0)
     /* A8CC 8001A0CC A5680008 */  j          .L8001A294
     /* A8D0 8001A0D0 00000000 */   nop
@@ -90,7 +90,7 @@ glabel func_8001A01C
     /* A960 8001A160 00000000 */   nop
   jlabel .L8001A164
     /* A964 8001A164 2000048E */  lw         $a0, 0x20($s0)
-    /* A968 8001A168 FD8E000C */  jal        func_80023BF4
+    /* A968 8001A168 FD8E000C */  jal        Cd_QueueFile
     /* A96C 8001A16C 00000000 */   nop
     /* A970 8001A170 A5680008 */  j          .L8001A294
     /* A974 8001A174 00000000 */   nop
@@ -160,7 +160,7 @@ glabel func_8001A01C
     /* AA60 8001A260 2C009426 */   addiu     $s4, $s4, 0x2C
     /* AA64 8001A264 21204000 */  addu       $a0, $v0, $zero
     /* AA68 8001A268 08000586 */  lh         $a1, 0x8($s0)
-    /* AA6C 8001A26C 55CA000C */  jal        func_80032954
+    /* AA6C 8001A26C 55CA000C */  jal        SsSepOpen
     /* AA70 8001A270 10000624 */   addiu     $a2, $zero, 0x10
     /* AA74 8001A274 40181100 */  sll        $v1, $s1, 1
     /* AA78 8001A278 21180302 */  addu       $v1, $s0, $v1

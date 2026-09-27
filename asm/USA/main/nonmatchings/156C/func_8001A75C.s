@@ -12,7 +12,7 @@ glabel func_8001A75C
     /* AF7C 8001A77C 1000B0AF */   sw        $s0, 0x10($sp)
     /* AF80 8001A780 81D6000C */  jal        SsSetTickMode
     /* AF84 8001A784 00100424 */   addiu     $a0, $zero, 0x1000
-    /* AF88 8001A788 B1D4000C */  jal        func_800352C4
+    /* AF88 8001A788 B1D4000C */  jal        SsStart2
     /* AF8C 8001A78C 0480103C */   lui       $s0, %hi(D_800411FC)
     /* AF90 8001A790 7F000424 */  addiu      $a0, $zero, 0x7F
     /* AF94 8001A794 09D4000C */  jal        SsSetMVol
@@ -68,7 +68,7 @@ glabel func_8001A75C
   .L8001A858:
     /* B058 8001A858 0768000C */  jal        func_8001A01C
     /* B05C 8001A85C 00000000 */   nop
-    /* B060 8001A860 1D8F000C */  jal        func_80023C74
+    /* B060 8001A860 1D8F000C */  jal        Cd_ServiceQueue
     /* B064 8001A864 00000000 */   nop
     /* B068 8001A868 0400028E */  lw         $v0, 0x4($s0)
     /* B06C 8001A86C 00000000 */  nop
@@ -81,7 +81,7 @@ glabel func_8001A75C
   .L8001A888:
     /* B088 8001A888 0768000C */  jal        func_8001A01C
     /* B08C 8001A88C 00000000 */   nop
-    /* B090 8001A890 1D8F000C */  jal        func_80023C74
+    /* B090 8001A890 1D8F000C */  jal        Cd_ServiceQueue
     /* B094 8001A894 00000000 */   nop
     /* B098 8001A898 3000028E */  lw         $v0, 0x30($s0)
     /* B09C 8001A89C 00000000 */  nop

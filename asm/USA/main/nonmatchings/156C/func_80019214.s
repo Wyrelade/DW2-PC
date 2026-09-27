@@ -158,7 +158,7 @@ glabel func_80019214
     /* 9C70 80019470 00000000 */  nop
     /* 9C74 80019474 600062AC */  sw         $v0, 0x60($v1)
     /* 9C78 80019478 C000458E */  lw         $a1, 0xC0($s2)
-    /* 9C7C 8001947C 6F7F000C */  jal        func_8001FDBC
+    /* 9C7C 8001947C 6F7F000C */  jal        Gfx_AttachModel
     /* 9C80 80019480 21208002 */   addu      $a0, $s4, $zero
     /* 9C84 80019484 C87C000C */  jal        Anim_StepModelAnim
     /* 9C88 80019488 21208002 */   addu      $a0, $s4, $zero

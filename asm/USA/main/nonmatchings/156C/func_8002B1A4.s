@@ -31,7 +31,7 @@ glabel func_8002B1A4
     /* 1BA10 8002B210 F4182394 */  lhu        $v1, %lo(D_800618F4)($at)
     /* 1BA14 8002B214 F8FFA424 */  addiu      $a0, $a1, -0x8
     /* 1BA18 8002B218 21104300 */  addu       $v0, $v0, $v1
-    /* 1BA1C 8002B21C B99E000C */  jal        func_80027AE4
+    /* 1BA1C 8002B21C B99E000C */  jal        PutDrawEnv
     /* 1BA20 8002B220 0200A2A4 */   sh        $v0, 0x2($a1)
     /* 1BA24 8002B224 A6AC0008 */  j          .L8002B298
     /* 1BA28 8002B228 00000000 */   nop

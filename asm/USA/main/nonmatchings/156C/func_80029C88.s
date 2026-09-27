@@ -11,7 +11,7 @@ glabel func_80029C88
     /* 1A4A4 80029CA4 1800BFAF */  sw         $ra, 0x18($sp)
     /* 1A4A8 80029CA8 3A9D000C */  jal        checkRECT
     /* 1A4AC 80029CAC 21280002 */   addu      $a1, $s0, $zero
-    /* 1A4B0 80029CB0 ADC2000C */  jal        func_80030AB4
+    /* 1A4B0 80029CB0 ADC2000C */  jal        VSync
     /* 1A4B4 80029CB4 FFFF0424 */   addiu     $a0, $zero, -0x1
     /* 1A4B8 80029CB8 0580033C */  lui        $v1, %hi(D_80049024)
     /* 1A4BC 80029CBC 2490638C */  lw         $v1, %lo(D_80049024)($v1)

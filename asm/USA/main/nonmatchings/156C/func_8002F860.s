@@ -120,7 +120,7 @@ glabel func_8002F860
     /* 20210 8002FA10 000051A0 */  sb         $s1, 0x0($v0)
     /* 20214 8002FA14 8B004016 */  bnez       $s2, .L8002FC44
     /* 20218 8002FA18 21100000 */   addu      $v0, $zero, $zero
-    /* 2021C 8002FA1C ADC2000C */  jal        func_80030AB4
+    /* 2021C 8002FA1C ADC2000C */  jal        VSync
     /* 20220 8002FA20 FFFF0424 */   addiu     $a0, $zero, -0x1
     /* 20224 8002FA24 C0034224 */  addiu      $v0, $v0, 0x3C0
     /* 20228 8002FA28 0580043C */  lui        $a0, %hi(D_8004E9A4)
@@ -143,7 +143,7 @@ glabel func_8002F860
     /* 2026C 8002FA6C 21908000 */  addu       $s2, $a0, $zero
     /* 20270 8002FA70 01005426 */  addiu      $s4, $s2, 0x1
   .L8002FA74:
-    /* 20274 8002FA74 ADC2000C */  jal        func_80030AB4
+    /* 20274 8002FA74 ADC2000C */  jal        VSync
     /* 20278 8002FA78 FFFF0424 */   addiu     $a0, $zero, -0x1
     /* 2027C 8002FA7C 0680033C */  lui        $v1, %hi(D_80061B80)
     /* 20280 8002FA80 801B638C */  lw         $v1, %lo(D_80061B80)($v1)

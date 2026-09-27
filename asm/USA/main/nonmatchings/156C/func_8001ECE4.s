@@ -11,7 +11,7 @@ glabel func_8001ECE4
     /* F500 8001ED00 00000000 */  nop
     /* F504 8001ED04 0A004010 */  beqz       $v0, .L8001ED30
     /* F508 8001ED08 00000000 */   nop
-    /* F50C 8001ED0C 6F7F000C */  jal        func_8001FDBC
+    /* F50C 8001ED0C 6F7F000C */  jal        Gfx_AttachModel
     /* F510 8001ED10 5B000524 */   addiu     $a1, $zero, 0x5B
     /* F514 8001ED14 4882000C */  jal        func_80020920
     /* F518 8001ED18 21200002 */   addu      $a0, $s0, $zero

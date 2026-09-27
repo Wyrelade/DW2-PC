@@ -30,8 +30,8 @@ glabel func_8003E610
   .L8003E670:
     /* 2EE70 8003E670 0C004014 */  bnez       $v0, .L8003E6A4
     /* 2EE74 8003E674 05000224 */   addiu     $v0, $zero, 0x5
-    /* 2EE78 8003E678 0480043C */  lui        $a0, %hi(func_8003E6C8)
-    /* 2EE7C 8003E67C C8E68424 */  addiu      $a0, $a0, %lo(func_8003E6C8)
+    /* 2EE78 8003E678 0480043C */  lui        $a0, %hi(Card_ReadDataTask)
+    /* 2EE7C 8003E67C C8E68424 */  addiu      $a0, $a0, %lo(Card_ReadDataTask)
     /* 2EE80 8003E680 ECFFE2AC */  sw         $v0, -0x14($a3)
     /* 2EE84 8003E684 040060AC */  sw         $zero, 0x4($v1)
     /* 2EE88 8003E688 080060AC */  sw         $zero, 0x8($v1)

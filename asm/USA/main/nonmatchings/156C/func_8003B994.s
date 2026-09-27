@@ -307,7 +307,7 @@ glabel func_8003B994
     /* 2C5E4 8003BDE4 00000000 */   nop
     /* 2C5E8 8003BDE8 0580043C */  lui        $a0, %hi(D_8004FDCC)
     /* 2C5EC 8003BDEC CCFD848C */  lw         $a0, %lo(D_8004FDCC)($a0)
-    /* 2C5F0 8003BDF0 E9F0000C */  jal        func_8003C3A4
+    /* 2C5F0 8003BDF0 E9F0000C */  jal        SpuClearReverbWorkArea
     /* 2C5F4 8003BDF4 00000000 */   nop
   .L8003BDF8:
     /* 2C5F8 8003BDF8 0E008012 */  beqz       $s4, .L8003BE34

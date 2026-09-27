@@ -22,7 +22,7 @@ glabel func_8001BFC8
     /* C810 8001C010 1C00A0AF */  sw         $zero, 0x1C($sp)
     /* C814 8001C014 2000A0AF */  sw         $zero, 0x20($sp)
     /* C818 8001C018 2800A0AF */  sw         $zero, 0x28($sp)
-    /* C81C 8001C01C 096F000C */  jal        func_8001BC24
+    /* C81C 8001C01C 096F000C */  jal        Text_Open
     /* C820 8001C020 1A00A2A7 */   sh        $v0, 0x1A($sp)
     /* C824 8001C024 4800BF8F */  lw         $ra, 0x48($sp)
     /* C828 8001C028 4400B18F */  lw         $s1, 0x44($sp)

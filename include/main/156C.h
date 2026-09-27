@@ -585,7 +585,7 @@ typedef struct {
 } Stack54CD0;
 
 /* Global struct D_80048DB8: field_0 is a small state (Cd_PollRead), field_4 a
-   countdown and field_8 an advancing buffer pointer (func_8002405C; note the
+   countdown and field_8 an advancing buffer pointer (Cd_ReadSectorCallback; note the
    symbol D_80048DBC aliases field_4), field_1C a counter compared/bumped by
    Cd_CheckNextSector. */
 typedef struct {
@@ -617,7 +617,7 @@ typedef struct {
     /* 0x2 */ u16 hi;
 } Halves;
 
-/* 0x2C-byte parameter block built on the stack and passed to func_8001BC24
+/* 0x2C-byte parameter block built on the stack and passed to Text_Open
    (only the leading fields are written; the tail is left uninitialized). */
 typedef struct {
     /* 0x00 */ s32 field_0;
@@ -633,7 +633,7 @@ typedef struct {
     u8 _pad24[0x8];
 } Arg1BC24;
 
-/* Read view of the Arg1BC24 block used by func_8001BC24: same layout, but the
+/* Read view of the Arg1BC24 block used by Text_Open: same layout, but the
    0x8/0xA halfwords are read unsigned and 0x24/0x28 are read as words. */
 typedef struct {
     /* 0x00 */ s32 field_0;
@@ -650,7 +650,7 @@ typedef struct {
     /* 0x28 */ s32 field_28;
 } SrcBC24;
 
-/* Stride-0x34 record built by func_8001BC24 into the Task_FindFirst array. */
+/* Stride-0x34 record built by Text_Open into the Task_FindFirst array. */
 typedef struct {
     /* 0x00 */ u8 field_0;
     /* 0x01 */ u8 field_1;
@@ -698,7 +698,7 @@ typedef struct {
     /* 0x34 */ Actor **field_34;
 } Ent11440;
 
-/* 0x10-stride record; D_800416CC array, per-slot init by func_8001F90C. */
+/* 0x10-stride record; D_800416CC array, per-slot init by Gfx_InitLights. */
 typedef struct {
     /* 0x00 */ s32 x;
     /* 0x04 */ s32 y;
@@ -864,7 +864,7 @@ typedef struct {
     /* 0x8 */ s32 field_8;
 } Obj20CE8;
 
-/* Buffer allocated into a container's field_38 by func_80020C40 (0x90 bytes via
+/* Buffer allocated into a container's field_38 by Actor_InitTransform (0x90 bytes via
  * Mem_Alloc); only the fields it stamps are known. */
 /* Three s32 words copied as one block (position -> matrix translation). */
 typedef struct {
@@ -893,7 +893,7 @@ typedef struct {
     /* 0x6C */ Obj20CE8 field_6C[3];
 } AllocC40;
 
-/* Container whose field_38 holds an AllocC40* (func_80020C40's arg0). */
+/* Container whose field_38 holds an AllocC40* (Actor_InitTransform's arg0). */
 typedef struct {
     u8 _pad00[0x38];
     /* 0x38 */ AllocC40 *field_38;
@@ -988,7 +988,7 @@ typedef struct {
     u8 _pad18[0x28 - 0x18];
 } Ent1D550;
 
-/* func_8002329C source record (stride 0x18): field_0/field_4 feed Pad_GetButtonState
+/* Pad_Update source record (stride 0x18): field_0/field_4 feed Pad_GetButtonState
  * bit tests, field_10 is copied out, field_C is cleared on the disabled path. */
 typedef struct {
     /* 0x0 */ s32 field_0;
@@ -999,7 +999,7 @@ typedef struct {
     u8 _pad14[0x4];
 } Elm678; /* size 0x18 */
 
-/* func_8002329C destination record (stride 0x40): 14 word slots filled from
+/* Pad_Update destination record (stride 0x40): 14 word slots filled from
  * Pad_GetButtonState, three s16 copies at 0x38/0x3A/0x3C, and a flag at 0x3E. */
 typedef struct {
     /* 0x00 */ s32 field_0;
@@ -1022,7 +1022,7 @@ typedef struct {
     /* 0x3E */ s16 field_3E;
 } Elm6F0; /* size 0x40 */
 
-/* func_8002329C control record (stride 0x22): field_0 is an enable flag, the
+/* Pad_Update control record (stride 0x22): field_0 is an enable flag, the
  * high nibble of field_1 selects the active mode. */
 typedef struct {
     /* 0x0 */ u8 field_0;
@@ -1043,7 +1043,7 @@ typedef struct {
 
 s32 func_8003B994(Cmd62C18 *cmd);
 
-/* By-value argument block of the func_80032954 handler table entries
+/* By-value argument block of the SsSepOpen handler table entries
  * (void handler(s16, s16, s16, HandlerArg)). It starts in $a3 and continues on
  * the caller's stack, so the callee homes $a3 to keep it contiguous. Only the
  * fields matched so far are named. */
@@ -1064,7 +1064,7 @@ typedef struct {
 } HandlerArg;
 
 /* Element of the per-slot arrays Snd_SeqScores[slot] (stride 0xB0), indexed
- * Snd_SeqScores[a0][a1] by the func_80032954 handler table and _SsSndStop. */
+ * Snd_SeqScores[a0][a1] by the SsSepOpen handler table and _SsSndStop. */
 typedef struct {
     u8 *field_0;        /* 0x00 */
     u8 *volatile field_4; /* 0x04 */
@@ -1339,7 +1339,7 @@ typedef struct {
 } Regs48E8C;
 
 /* State block at D_80062F80 armed by MemCardAccept (field_0 = 2, arg in
- * field_10) before it pushes func_8003E19C as a state handler. */
+ * field_10) before it pushes Card_AcceptTask as a state handler. */
 typedef struct {
     /* 0x00 */ s32 field_0;
     /* 0x04 */ s32 field_4;
@@ -2262,7 +2262,7 @@ typedef struct {
 } TimInfo2BBD4;
 
 
-/* Section header inside a func_8001FDBC model: a count then 20-byte entries. */
+/* Section header inside a Gfx_AttachModel model: a count then 20-byte entries. */
 typedef struct {
     /* 0x00 */ s32 v[5];
 } Ent1FDBC20;
@@ -2281,7 +2281,7 @@ typedef struct {
     /* 0x04 */ Ent1FDBC16 e[1];
 } Sec1FDBC16;
 
-/* Model file func_8001FDBC binds: field_4 is set once the offset tables are
+/* Model file Gfx_AttachModel binds: field_4 is set once the offset tables are
  * relocated; field_C starts three count-long offset tables (then a fourth). */
 typedef struct Mdl1FDBC {
     u8 _pad00[0x04];
@@ -2506,7 +2506,7 @@ typedef struct {
 } Part188BC;
 
 
-/* SPU voice attribute block (libspu SpuVoiceAttr layout) func_80036C54 fills
+/* SPU voice attribute block (libspu SpuVoiceAttr layout) _SsVmInit fills
  * and hands to func_8003C904. */
 typedef struct {
     /* 0x00 */ u32 voice;
@@ -2656,7 +2656,7 @@ typedef struct { void (*f)(void); } F1_2DF74;
 typedef struct { B4_2DF74 tag; s32 val; } T40_2DF74;
 
 
-/* 0xF0-byte slots at Ent266D0.field_C; func_800267F0 hands slots 2 and 3 to the D_80048E30 callback. */
+/* 0xF0-byte slots at Ent266D0.field_C; Pad_SioStepRecvId hands slots 2 and 3 to the D_80048E30 callback. */
 typedef struct Slot267F0 {
     /* 0x00 */ Ent266D0 e;
     u8 _pad48[0xA0];
@@ -2690,12 +2690,12 @@ typedef void (*TextOp)();
 void func_800348D4(s32 a0, s32 a1, s32 a2, s32 a3);
 void _SsSetProgramChange(s16 arg0, s16 arg1, s16 arg2);
 void _SsGetMetaEvent(s16 a0, s16 a1);
-void func_80034424(s16 a0, s16 a1);
+void _SsSetPitchBend(s16 a0, s16 a1);
 void _SsSetControlChange(s16 a0, s16 a1, s32 a2);
 void _SsContBankChange(s16 arg0, s16 arg1, s16 arg2);
-void func_80033054(s16 a0, s16 a1, u8 a2);
-void func_80033124(s16 a0, s16 a1, s32 a2);
-void func_800331F4(s16 a0, s16 a1, s32 a2);
+void _SsContMainVol(s16 a0, s16 a1, u8 a2);
+void _SsContPanpot(s16 a0, s16 a1, s32 a2);
+void _SsContExpression(s16 a0, s16 a1, s32 a2);
 void _SsContDamper(s16 a0, s16 a1, u8 a2);
 void _SsContNrpn1(s16 a0, s16 a1, u8 a2);
 void _SsContNrpn2();
@@ -2703,22 +2703,22 @@ void _SsContRpn1(s16 arg0, s16 arg1, s16 arg2);
 void _SsContRpn2(s16 arg0, s16 arg1, s16 arg2);
 void _SsContExternal(s16 a0, s16 a1, u8 a2);
 void _SsContResetAll(s16 a0, s16 a1);
-void func_80032CD4(s16 a0, s16 a1, s16 a2);
-void func_80033804(s16 a0, s16 a1, s16 a2, HandlerArg arg);
-void func_80033894(s16 a0, s16 a1, s16 a2, HandlerArg arg);
-void func_80033954(s16 a0, s16 a1, s16 a2, HandlerArg d);
-void func_800339E4(s16 a0, s16 a1, s16 a2, HandlerArg d);
-void func_80033A74(s16 a0, s16 a1, s16 a2, Arg33 d);
-void func_80033C24(s16 a0, s16 a1, s16 a2, Arg33 d);
-void func_80033CE4(s16 a0, s16 a1, s16 a2, HandlerArg d);
-void func_80033D94(s16 a0, s16 a1, s16 a2, Arg33 d);
-void func_80033E44(s16 a0, s16 a1, s16 a2, Arg33 d);
-void func_80033EF4(s16 a0, s16 a1, s16 a2, Arg33 d);
-void func_80033FB4(s16 a0, s16 a1, s16 a2, Arg33 d);
-void func_80034064(s16 a0, s16 a1, s16 a2, Arg33 d);
-void func_80034114(s16 a0, s16 a1, s16 a2, HandlerArg d);
-void func_800341F4(s16 a0, s16 a1, s16 a2, HandlerArg d);
-void func_80034294(s16 a0, s16 a1, s16 a2, HandlerArg arg);
+void _SsContDataEntry(s16 a0, s16 a1, s16 a2);
+void _SsSetNrpnVabAttr0(s16 a0, s16 a1, s16 a2, HandlerArg arg);
+void _SsSetNrpnVabAttr1(s16 a0, s16 a1, s16 a2, HandlerArg arg);
+void _SsSetNrpnVabAttr2(s16 a0, s16 a1, s16 a2, HandlerArg d);
+void _SsSetNrpnVabAttr3(s16 a0, s16 a1, s16 a2, HandlerArg d);
+void _SsSetNrpnVabAttr4(s16 a0, s16 a1, s16 a2, Arg33 d);
+void _SsSetNrpnVabAttr5(s16 a0, s16 a1, s16 a2, Arg33 d);
+void _SsSetNrpnVabAttr6(s16 a0, s16 a1, s16 a2, HandlerArg d);
+void _SsSetNrpnVabAttr7(s16 a0, s16 a1, s16 a2, Arg33 d);
+void _SsSetNrpnVabAttr8(s16 a0, s16 a1, s16 a2, Arg33 d);
+void _SsSetNrpnVabAttr9(s16 a0, s16 a1, s16 a2, Arg33 d);
+void _SsSetNrpnVabAttr10(s16 a0, s16 a1, s16 a2, Arg33 d);
+void _SsSetNrpnVabAttr11(s16 a0, s16 a1, s16 a2, Arg33 d);
+void _SsSetNrpnVabAttr12(s16 a0, s16 a1, s16 a2, HandlerArg d);
+void _SsSetNrpnVabAttr13(s16 a0, s16 a1, s16 a2, HandlerArg d);
+void _SsSetNrpnVabAttr14(s16 a0, s16 a1, s16 a2, HandlerArg arg);
 void _SsSetNrpnVabAttr15(s16 arg0, s16 arg1, s16 arg2, HandlerArg arg);
 void _SsSetNrpnVabAttr16(s16 arg0, s16 arg1, s16 arg2, HandlerArg arg);
 void _SsSetNrpnVabAttr17(s16 arg0, s16 arg1, s16 arg2, HandlerArg arg);

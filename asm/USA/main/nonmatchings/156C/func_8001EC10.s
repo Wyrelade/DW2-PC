@@ -14,10 +14,10 @@ glabel func_8001EC10
     /* F438 8001EC38 2600C014 */  bnez       $a2, .L8001ECD4
     /* F43C 8001EC3C 0480053C */   lui       $a1, %hi(D_80043704)
     /* F440 8001EC40 0437A524 */  addiu      $a1, $a1, %lo(D_80043704)
-    /* F444 8001EC44 1083000C */  jal        func_80020C40
+    /* F444 8001EC44 1083000C */  jal        Actor_InitTransform
     /* F448 8001EC48 21300000 */   addu      $a2, $zero, $zero
     /* F44C 8001EC4C 21200002 */  addu       $a0, $s0, $zero
-    /* F450 8001EC50 6F7F000C */  jal        func_8001FDBC
+    /* F450 8001EC50 6F7F000C */  jal        Gfx_AttachModel
     /* F454 8001EC54 5B000524 */   addiu     $a1, $zero, 0x5B
     /* F458 8001EC58 04000324 */  addiu      $v1, $zero, 0x4
     /* F45C 8001EC5C 3C0043AC */  sw         $v1, 0x3C($v0)

@@ -11,7 +11,7 @@ glabel func_80024410
     /* 14C2C 8002442C 0D004314 */  bne        $v0, $v1, .L80024464
     /* 14C30 80024430 00000000 */   nop
     /* 14C34 80024434 0000A58C */  lw         $a1, 0x0($a1)
-    /* 14C38 80024438 6F7F000C */  jal        func_8001FDBC
+    /* 14C38 80024438 6F7F000C */  jal        Gfx_AttachModel
     /* 14C3C 8002443C 00000000 */   nop
     /* 14C40 80024440 C87C000C */  jal        Anim_StepModelAnim
     /* 14C44 80024444 21200002 */   addu      $a0, $s0, $zero

@@ -61,7 +61,7 @@ glabel func_80037620
     /* 27EE8 800376E8 032C0500 */  sra        $a1, $a1, 16
     /* 27EEC 800376EC 03340600 */  sra        $a2, $a2, 16
     /* 27EF0 800376F0 FFFFE730 */  andi       $a3, $a3, 0xFFFF
-    /* 27EF4 800376F4 E9DB000C */  jal        func_80036FA4
+    /* 27EF4 800376F4 E9DB000C */  jal        _SsVmKeyOn
     /* 27EF8 800376F8 1400A2AF */   sw        $v0, 0x14($sp)
     /* 27EFC 800376FC 1800BF8F */  lw         $ra, 0x18($sp)
     /* 27F00 80037700 2000BD27 */  addiu      $sp, $sp, 0x20

@@ -17,7 +17,7 @@ glabel func_80029EB8
     /* 1A6EC 80029EEC 09F84000 */  jalr       $v0
     /* 1A6F0 80029EF0 21280002 */   addu      $a1, $s0, $zero
   .L80029EF4:
-    /* 1A6F4 80029EF4 ADC2000C */  jal        func_80030AB4
+    /* 1A6F4 80029EF4 ADC2000C */  jal        VSync
     /* 1A6F8 80029EF8 FFFF0424 */   addiu     $a0, $zero, -0x1
     /* 1A6FC 80029EFC 0580033C */  lui        $v1, %hi(D_80049024)
     /* 1A700 80029F00 2490638C */  lw         $v1, %lo(D_80049024)($v1)

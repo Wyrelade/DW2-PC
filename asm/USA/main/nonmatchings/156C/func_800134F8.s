@@ -19,7 +19,7 @@ glabel func_800134F8
     /* 3D34 80013534 1C00A0AF */  sw         $zero, 0x1C($sp)
     /* 3D38 80013538 2000A0AF */  sw         $zero, 0x20($sp)
     /* 3D3C 8001353C 2800A6AF */  sw         $a2, 0x28($sp)
-    /* 3D40 80013540 096F000C */  jal        func_8001BC24
+    /* 3D40 80013540 096F000C */  jal        Text_Open
     /* 3D44 80013544 1A00A2A7 */   sh        $v0, 0x1A($sp)
     /* 3D48 80013548 4000BF8F */  lw         $ra, 0x40($sp)
     /* 3D4C 8001354C 00000000 */  nop

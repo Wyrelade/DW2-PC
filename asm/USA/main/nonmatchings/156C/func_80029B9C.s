@@ -11,7 +11,7 @@ glabel func_80029B9C
     /* 1A3B8 80029BB8 1800BFAF */  sw         $ra, 0x18($sp)
     /* 1A3BC 80029BBC 3A9D000C */  jal        checkRECT
     /* 1A3C0 80029BC0 21280002 */   addu      $a1, $s0, $zero
-    /* 1A3C4 80029BC4 ADC2000C */  jal        func_80030AB4
+    /* 1A3C4 80029BC4 ADC2000C */  jal        VSync
     /* 1A3C8 80029BC8 FFFF0424 */   addiu     $a0, $zero, -0x1
     /* 1A3CC 80029BCC 0580033C */  lui        $v1, %hi(D_80049024)
     /* 1A3D0 80029BD0 2490638C */  lw         $v1, %lo(D_80049024)($v1)

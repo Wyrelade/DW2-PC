@@ -51,9 +51,9 @@ glabel func_800240E8
     /* 14994 80024194 6C900008 */  j          .L800241B0
     /* 14998 80024198 0C00C2A0 */   sb        $v0, 0xC($a2)
   .L8002419C:
-    /* 1499C 8002419C 0280043C */  lui        $a0, %hi(func_8002405C)
+    /* 1499C 8002419C 0280043C */  lui        $a0, %hi(Cd_ReadSectorCallback)
     /* 149A0 800241A0 4DC1000C */  jal        CdReadyCallback
-    /* 149A4 800241A4 5C408424 */   addiu     $a0, $a0, %lo(func_8002405C)
+    /* 149A4 800241A4 5C408424 */   addiu     $a0, $a0, %lo(Cd_ReadSectorCallback)
     /* 149A8 800241A8 06000424 */  addiu      $a0, $zero, 0x6
     /* 149AC 800241AC 21280000 */  addu       $a1, $zero, $zero
   .L800241B0:

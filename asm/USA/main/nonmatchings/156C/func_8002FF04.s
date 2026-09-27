@@ -25,8 +25,8 @@ glabel func_8002FF04
     /* 20758 8002FF58 0580013C */  lui        $at, %hi(D_8004E6D4)
     /* 2075C 8002FF5C 35C3000C */  jal        ResetCallback
     /* 20760 8002FF60 D4E620AC */   sw        $zero, %lo(D_8004E6D4)($at)
-    /* 20764 8002FF64 0380053C */  lui        $a1, %hi(func_80030258)
-    /* 20768 8002FF68 5802A524 */  addiu      $a1, $a1, %lo(func_80030258)
+    /* 20764 8002FF64 0380053C */  lui        $a1, %hi(Cd_IntrCallback)
+    /* 20768 8002FF68 5802A524 */  addiu      $a1, $a1, %lo(Cd_IntrCallback)
     /* 2076C 8002FF6C 41C3000C */  jal        InterruptCallback
     /* 20770 8002FF70 02000424 */   addiu     $a0, $zero, 0x2
     /* 20774 8002FF74 0580033C */  lui        $v1, %hi(D_8004E98C)

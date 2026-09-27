@@ -8,7 +8,7 @@ glabel func_8003D504
     /* 2DD14 8003D514 1800BFAF */  sw         $ra, 0x18($sp)
     /* 2DD18 8003D518 31C3000C */  jal        ChangeClearPAD
     /* 2DD1C 8003D51C 1400B1AF */   sw        $s1, 0x14($sp)
-    /* 2DD20 8003D520 ADC2000C */  jal        func_80030AB4
+    /* 2DD20 8003D520 ADC2000C */  jal        VSync
     /* 2DD24 8003D524 21200000 */   addu      $a0, $zero, $zero
     /* 2DD28 8003D528 F19B000C */  jal        EnterCriticalSection
     /* 2DD2C 8003D52C 00000000 */   nop

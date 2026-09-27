@@ -215,7 +215,7 @@
       "epilogue_unfill"
     ]
   },
-  "func_800352C4": {
+  "SsStart2": {
     "passes": [
       "reg_realloc",
       "epilogue_unfill"
@@ -886,7 +886,7 @@
       "reorder_indep"
     ]
   },
-  "func_8003AA7C": {
+  "_spu_Fr": {
     "passes": [
       "reg_realloc",
       "reorder_indep"
@@ -1030,7 +1030,7 @@
       "epilogue_unfill"
     ]
   },
-  "func_80033954": {
+  "_SsSetNrpnVabAttr2": {
     "passes": [
       "padnop"
     ]
@@ -1068,7 +1068,7 @@
       "padnop"
     ]
   },
-  "func_800339E4": {
+  "_SsSetNrpnVabAttr3": {
     "passes": [
       "padnop"
     ]
@@ -1088,18 +1088,18 @@
       "padnop"
     ]
   },
-  "func_800341F4": {
+  "_SsSetNrpnVabAttr13": {
     "passes": [
       "padnop"
     ]
   },
-  "func_8003A9F8": {
+  "_spu_Fw": {
     "passes": [
       "nosplit",
       "padnop"
     ]
   },
-  "func_80033804": {
+  "_SsSetNrpnVabAttr0": {
     "passes": [
       "padnop"
     ]
@@ -1117,7 +1117,7 @@
       "reg_realloc"
     ]
   },
-  "func_80034294": {
+  "_SsSetNrpnVabAttr14": {
     "passes": [
       "padnop"
     ]
@@ -1129,7 +1129,7 @@
       "padnop"
     ]
   },
-  "func_80034064": {
+  "_SsSetNrpnVabAttr11": {
     "passes": [
       "padnop"
     ]
@@ -1185,7 +1185,7 @@
       "padnop"
     ]
   },
-  "func_80033EF4": {
+  "_SsSetNrpnVabAttr9": {
     "passes": [
       "nosplit",
       "padnop"
@@ -1194,7 +1194,7 @@
   "Task_Create": {
     "passes": []
   },
-  "func_80027BA4": {
+  "DrawOTagEnv": {
     "passes": [
       "nosplit"
     ]
@@ -1219,7 +1219,7 @@
       "nosplit"
     ]
   },
-  "func_80025670": {
+  "Pad_SioRunStep": {
     "passes": [
       "nosplit",
       "delay_fill"
@@ -1269,12 +1269,12 @@
   "Text_SetColor": {
     "passes": []
   },
-  "func_80027AE4": {
+  "PutDrawEnv": {
     "passes": [
       "nosplit"
     ]
   },
-  "func_80033C24": {
+  "_SsSetNrpnVabAttr5": {
     "passes": [
       "nosplit",
       "padnop"
@@ -1352,14 +1352,14 @@
       "reorder_indep"
     ]
   },
-  "func_80034424": {
+  "_SsSetPitchBend": {
     "passes": [
       "nosplit",
       "commutative_swap",
       "prologue_save_hoist"
     ]
   },
-  "func_80033CE4": {
+  "_SsSetNrpnVabAttr6": {
     "passes": [
       "nosplit",
       "padnop"
@@ -1388,7 +1388,7 @@
       "padnop"
     ]
   },
-  "func_8003DDB0": {
+  "MemCardExist": {
     "passes": [
       "nosplit",
       "delay_fill",
@@ -1412,7 +1412,7 @@
       "padnop"
     ]
   },
-  "func_80033D94": {
+  "_SsSetNrpnVabAttr7": {
     "passes": [
       "nosplit",
       "padnop"
@@ -1430,7 +1430,7 @@
       "delay_fill"
     ]
   },
-  "func_8002689C": {
+  "Pad_SioStepRecv5A": {
     "passes": [
       "nosplit",
       "taken_fill",
@@ -1438,7 +1438,7 @@
       "padnop"
     ]
   },
-  "func_80033054": {
+  "_SsContMainVol": {
     "passes": [
       "nosplit",
       "commutative_swap",
@@ -1453,7 +1453,7 @@
       "padnop"
     ]
   },
-  "func_800331F4": {
+  "_SsContExpression": {
     "passes": [
       "nosplit",
       "commutative_swap",
@@ -1475,7 +1475,7 @@
       "epilogue_unfill"
     ]
   },
-  "func_80034114": {
+  "_SsSetNrpnVabAttr12": {
     "passes": [
       "nosplit",
       "padnop"
@@ -1502,7 +1502,7 @@
       "padnop"
     ]
   },
-  "func_8003DD00": {
+  "MemCardStart": {
     "passes": [
       "nosplit",
       "sched_match",
@@ -1545,7 +1545,7 @@
       "taken_fill"
     ]
   },
-  "func_80033124": {
+  "_SsContPanpot": {
     "passes": [
       "nosplit",
       "commutative_swap",
@@ -1657,7 +1657,7 @@
   "func_800240E8": {
     "passes": []
   },
-  "func_8001A4A8": {
+  "Snd_UnloadSlot": {
     "passes": []
   },
   "func_80025114": {
@@ -1717,7 +1717,7 @@
       "padnop"
     ]
   },
-  "func_80033894": {
+  "_SsSetNrpnVabAttr1": {
     "passes": [
       "nosplit",
       "reg_realloc",
@@ -1803,7 +1803,7 @@
   "func_80016198": {
     "passes": []
   },
-  "func_8003E444": {
+  "MemCardOpen": {
     "passes": [
       "nosplit",
       "zero_remat",
@@ -1851,7 +1851,7 @@
       "padnop"
     ]
   },
-  "func_8003EE14": {
+  "Card_WriteFileTask": {
     "passes": [
       "nosplit",
       "delay_fill"
@@ -1872,7 +1872,7 @@
       "padnop"
     ]
   },
-  "func_80027104": {
+  "ResetGraph": {
     "passes": [
       "nosplit",
       "delay_fill"
@@ -1948,7 +1948,7 @@
       "ra_restore_sink"
     ]
   },
-  "func_8001F668": {
+  "Gfx_AddFlatQuad3D": {
     "passes": []
   },
   "func_80024DC8": {
@@ -2120,7 +2120,7 @@
       "label_nop"
     ]
   },
-  "func_80023BF4": {
+  "Cd_QueueFile": {
     "passes": [
       "gp8"
     ]
@@ -2152,7 +2152,7 @@
       "gp8_nosplit"
     ]
   },
-  "func_80023C74": {
+  "Cd_ServiceQueue": {
     "passes": [
       "gp8"
     ]
@@ -2288,7 +2288,7 @@
   "func_80012490": {
     "passes": []
   },
-  "func_8001C1E0": {
+  "Gpu_InitDoubleBuffer": {
     "passes": []
   },
   "func_80011BEC": {
@@ -2346,7 +2346,7 @@
       "delay_fill"
     ]
   },
-  "func_8001FDBC": {
+  "Gfx_AttachModel": {
     "passes": []
   },
   "func_80028C48": {
@@ -2372,7 +2372,7 @@
   "func_8001D104": {
     "passes": []
   },
-  "func_8003E19C": {
+  "Card_AcceptTask": {
     "passes": [
       "nosplit",
       "reg_realloc",
@@ -2436,14 +2436,14 @@
       "web_realloc"
     ]
   },
-  "func_80036C54": {
+  "_SsVmInit": {
     "passes": [
       "nosplit_hf",
       "sched_match",
       "delay_fill"
     ]
   },
-  "func_8003E6C8": {
+  "Card_ReadDataTask": {
     "passes": [
       "nosplit"
     ]
@@ -2464,7 +2464,7 @@
       "padnop"
     ]
   },
-  "func_80036FA4": {
+  "_SsVmKeyOn": {
     "passes": [
       "nosplit_hf",
       "web_realloc",
@@ -2763,7 +2763,7 @@
       "padnop"
     ]
   },
-  "func_800267F0": {
+  "Pad_SioStepRecvId": {
     "passes": [
       "nosplit"
     ]
@@ -2793,7 +2793,7 @@
       "web_realloc"
     ]
   },
-  "func_8003EBF4": {
+  "Card_ReadFileTask": {
     "passes": [
       "nosplit",
       "web_realloc",
@@ -2818,7 +2818,7 @@
       "label_nop"
     ]
   },
-  "func_80032954": {
+  "SsSepOpen": {
     "passes": [
       "nosplit",
       "delay_fill",
@@ -2866,13 +2866,13 @@
       "padnop"
     ]
   },
-  "func_80026718": {
+  "Pad_SioStepSendCmd": {
     "passes": [
       "nosplit",
       "padnop"
     ]
   },
-  "func_80024654": {
+  "PadInitDirect": {
     "passes": [
       "nosplit",
       "ra_restore_sink",
@@ -2982,7 +2982,7 @@
       "padnop"
     ]
   },
-  "func_8003EADC": {
+  "MemCardReadFile": {
     "passes": [
       "nosplit_nodb",
       "reg_realloc",
@@ -2993,7 +2993,7 @@
       "delay_fill"
     ]
   },
-  "func_8003ECFC": {
+  "MemCardWriteFile": {
     "passes": [
       "nosplit_nodb",
       "reg_realloc",
@@ -3013,7 +3013,7 @@
       "padnop"
     ]
   },
-  "func_80034E44": {
+  "Snd_SetPlayMode": {
     "passes": [
       "nosplit",
       "sched_match",
@@ -3021,7 +3021,7 @@
       "padnop"
     ]
   },
-  "func_800326A4": {
+  "_SsClose": {
     "passes": [
       "nosplit_hf",
       "zero_remat",
@@ -3123,7 +3123,7 @@
       "padnop"
     ]
   },
-  "func_8003F2A8": {
+  "MemCardCreateFile": {
     "passes": [
       "nosplit_nodb",
       "arg_unprop",
@@ -3162,7 +3162,7 @@
       "delay_fill"
     ]
   },
-  "func_80030AB4": {
+  "VSync": {
     "passes": [
       "nosplit",
       "shift_const_fold",
@@ -3171,7 +3171,7 @@
       "padnop"
     ]
   },
-  "func_8003A1D4": {
+  "_spu_init": {
     "passes": [
       "nosplit_nodb",
       "sched_match",
@@ -3231,7 +3231,7 @@
       "padnop"
     ]
   },
-  "func_8003C3A4": {
+  "SpuClearReverbWorkArea": {
     "passes": [
       "nosplit",
       "zero_remat",
@@ -3278,7 +3278,7 @@
       "padnop"
     ]
   },
-  "func_8003E930": {
+  "Card_WriteDataTask": {
     "passes": [
       "nosplit",
       "la_unfold_st",
@@ -3384,7 +3384,7 @@
       "delay_fill"
     ]
   },
-  "func_80035F04": {
+  "SsUtAllKeyOff": {
     "passes": [
       "nosplit_hf",
       "padnop"
@@ -3466,7 +3466,7 @@
       "padnop"
     ]
   },
-  "func_8003EF1C": {
+  "MemCardGetDirentry": {
     "passes": [
       "nosplit_nodb",
       "zero_remat",
@@ -3552,7 +3552,7 @@
       "padnop"
     ]
   },
-  "func_800269B8": {
+  "Pad_SioStepRecvData": {
     "passes": [
       "nosplit",
       "sched_pre",
@@ -3598,7 +3598,7 @@
       "padnop"
     ]
   },
-  "func_80030258": {
+  "Cd_IntrCallback": {
     "passes": [
       "nosplit",
       "reg_realloc",
@@ -3608,7 +3608,7 @@
       "padnop"
     ]
   },
-  "func_80030E68": {
+  "startIntr": {
     "passes": [
       "nosplit",
       "web_realloc"
@@ -3624,7 +3624,7 @@
       "padnop"
     ]
   },
-  "func_80036784": {
+  "_SsVmFlush": {
     "passes": [
       "nosplit_nodb",
       "zero_remat",
@@ -3898,7 +3898,7 @@
       "padnop"
     ]
   },
-  "func_80032CD4": {
+  "_SsContDataEntry": {
     "passes": [
       "nosplit",
       "zero_remat",

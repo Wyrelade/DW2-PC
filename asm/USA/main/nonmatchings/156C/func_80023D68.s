@@ -5,11 +5,11 @@ glabel func_80023D68
     /* 1456C 80023D6C 1000B0AF */  sw         $s0, 0x10($sp)
     /* 14570 80023D70 21808000 */  addu       $s0, $a0, $zero
     /* 14574 80023D74 1800BFAF */  sw         $ra, 0x18($sp)
-    /* 14578 80023D78 FD8E000C */  jal        func_80023BF4
+    /* 14578 80023D78 FD8E000C */  jal        Cd_QueueFile
     /* 1457C 80023D7C 1400B1AF */   sw        $s1, 0x14($sp)
     /* 14580 80023D80 03001124 */  addiu      $s1, $zero, 0x3
   .L80023D84:
-    /* 14584 80023D84 1D8F000C */  jal        func_80023C74
+    /* 14584 80023D84 1D8F000C */  jal        Cd_ServiceQueue
     /* 14588 80023D88 00000000 */   nop
     /* 1458C 80023D8C DC8E000C */  jal        Cd_GetFileState
     /* 14590 80023D90 21200002 */   addu      $a0, $s0, $zero

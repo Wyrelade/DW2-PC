@@ -12,7 +12,7 @@ glabel func_8001C038
     /* C858 8001C058 1A00A0A7 */  sh         $zero, 0x1A($sp)
     /* C85C 8001C05C 1C00A0AF */  sw         $zero, 0x1C($sp)
     /* C860 8001C060 2000A0AF */  sw         $zero, 0x20($sp)
-    /* C864 8001C064 096F000C */  jal        func_8001BC24
+    /* C864 8001C064 096F000C */  jal        Text_Open
     /* C868 8001C068 2800A2AF */   sw        $v0, 0x28($sp)
     /* C86C 8001C06C 10000424 */  addiu      $a0, $zero, 0x10
     /* C870 8001C070 7188000C */  jal        func_800221C4

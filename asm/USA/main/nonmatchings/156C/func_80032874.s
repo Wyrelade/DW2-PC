@@ -16,7 +16,7 @@ glabel func_80032874
     /* 230A0 800328A0 10006228 */  slti       $v0, $v1, 0x10
     /* 230A4 800328A4 FAFF4014 */  bnez       $v0, .L80032890
     /* 230A8 800328A8 0200A524 */   addiu     $a1, $a1, 0x2
-    /* 230AC 800328AC 15DB000C */  jal        func_80036C54
+    /* 230AC 800328AC 15DB000C */  jal        _SsVmInit
     /* 230B0 800328B0 18000424 */   addiu     $a0, $zero, 0x18
     /* 230B4 800328B4 21280000 */  addu       $a1, $zero, $zero
     /* 230B8 800328B8 0680043C */  lui        $a0, %hi(Snd_MarkCallbacks)

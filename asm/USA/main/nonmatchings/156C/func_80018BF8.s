@@ -18,7 +18,7 @@ glabel func_80018BF8
     /* 9430 80018C30 00000000 */  nop
     /* 9434 80018C34 0C0022AE */  sw         $v0, 0xC($s1)
     /* 9438 80018C38 BC000696 */  lhu        $a2, 0xBC($s0)
-    /* 943C 80018C3C 1083000C */  jal        func_80020C40
+    /* 943C 80018C3C 1083000C */  jal        Actor_InitTransform
     /* 9440 80018C40 B0000526 */   addiu     $a1, $s0, 0xB0
     /* 9444 80018C44 0C00248E */  lw         $a0, 0xC($s1)
     /* 9448 80018C48 C179000C */  jal        func_8001E704
@@ -29,15 +29,15 @@ glabel func_80018BF8
     /* 945C 80018C5C 21280000 */   addu      $a1, $zero, $zero
     /* 9460 80018C60 C000058E */  lw         $a1, 0xC0($s0)
     /* 9464 80018C64 21202002 */  addu       $a0, $s1, $zero
-    /* 9468 80018C68 6F7F000C */  jal        func_8001FDBC
+    /* 9468 80018C68 6F7F000C */  jal        Gfx_AttachModel
     /* 946C 80018C6C C40002AE */   sw        $v0, 0xC4($s0)
     /* 9470 80018C70 03000324 */  addiu      $v1, $zero, 0x3
     /* 9474 80018C74 3C0043AC */  sw         $v1, 0x3C($v0)
     /* 9478 80018C78 C000048E */  lw         $a0, 0xC0($s0)
-    /* 947C 80018C7C FD8E000C */  jal        func_80023BF4
+    /* 947C 80018C7C FD8E000C */  jal        Cd_QueueFile
     /* 9480 80018C80 21880000 */   addu      $s1, $zero, $zero
     /* 9484 80018C84 C400048E */  lw         $a0, 0xC4($s0)
-    /* 9488 80018C88 FD8E000C */  jal        func_80023BF4
+    /* 9488 80018C88 FD8E000C */  jal        Cd_QueueFile
     /* 948C 80018C8C 00000000 */   nop
     /* 9490 80018C90 21202002 */  addu       $a0, $s1, $zero
     /* 9494 80018C94 0480023C */  lui        $v0, %hi(D_80040F64)

@@ -22,7 +22,7 @@ glabel func_8002ACC8
     /* 1B510 8002AD10 2800BFAF */   sw        $ra, 0x28($sp)
     /* 1B514 8002AD14 03000424 */  addiu      $a0, $zero, 0x3
   .L8002AD18:
-    /* 1B518 8002AD18 419C000C */  jal        func_80027104
+    /* 1B518 8002AD18 419C000C */  jal        ResetGraph
     /* 1B51C 8002AD1C 00000000 */   nop
     /* 1B520 8002AD20 0680023C */  lui        $v0, %hi(D_80061910)
     /* 1B524 8002AD24 10194224 */  addiu      $v0, $v0, %lo(D_80061910)
@@ -36,7 +36,7 @@ glabel func_8002ACC8
     /* 1B544 8002AD44 0C0040A4 */  sh         $zero, 0xC($v0)
     /* 1B548 8002AD48 0E0050A0 */  sb         $s0, 0xE($v0)
     /* 1B54C 8002AD4C 0F0040A0 */  sb         $zero, 0xF($v0)
-    /* 1B550 8002AD50 B99E000C */  jal        func_80027AE4
+    /* 1B550 8002AD50 B99E000C */  jal        PutDrawEnv
     /* 1B554 8002AD54 100040A0 */   sb        $zero, 0x10($v0)
     /* 1B558 8002AD58 0680103C */  lui        $s0, %hi(D_80061968)
     /* 1B55C 8002AD5C 68191026 */  addiu      $s0, $s0, %lo(D_80061968)
