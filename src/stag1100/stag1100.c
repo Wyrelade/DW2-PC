@@ -518,7 +518,39 @@ void func_80066748(Stg11Work66C04 *arg0) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80066860);
+void func_80066860(Stg11Work66C04 *arg0, u8 arg1) {
+    TextDesc st;
+    Stg11Slot *s;
+    s32 i;
+
+    st.strArg0 = 0;
+    st.packedStyle = arg1;
+    st.color = 0;
+    for (i = 0; i < 16; i++) {
+        Text_Close(&arg0->field_0[i]);
+    }
+    s = &arg0->field_6C[arg0->field_66];
+    for (i = 0; i < 4; s++, i++) {
+        if (s->field_0 != 0) if (s->field_0 == 1) {
+            st.x = 0x6D;
+            st.y = i * 0x21 + 0x3E;
+            st.text = (s32)Cd_GetFileEntry(0x1FD0082);
+            Text_OpenDesc(&arg0->field_0[i * 4], &st);
+            st.x = 0xD0;
+            st.y = i * 0x21 + 0x3E;
+            st.text = (s32)Cd_GetFileEntry(0x1FD00BB);
+            Text_OpenDesc(&arg0->field_0[i * 4 + 1], &st);
+            st.y = i * 0x21 + 0x32;
+            st.x = 0x6D;
+            st.text = (s32)s->field_4->name;
+            Text_OpenDesc(&arg0->field_0[i * 4 + 2], &st);
+            st.x = 0xD0;
+            st.y = i * 0x21 + 0x32;
+            st.text = (s32)Digi_GetDefaultName(s->field_4->digiId);
+            Text_OpenDesc(&arg0->field_0[i * 4 + 3], &st);
+        }
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80066A0C);
 
