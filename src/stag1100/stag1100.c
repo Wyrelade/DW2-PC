@@ -40,7 +40,19 @@ void func_800648B4(Actor *arg0, Stg11MenuWork *arg1) {
     arg1->field_86 = 0;
 }
 
-INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_800648E4);
+void func_800648E4(Stg11MenuWork *arg0, s32 arg1) {
+    TextDescHalves st;
+
+    if (arg1 == 0) {
+        Text_Close(&arg0->field_8);
+    } else {
+        st.pos = D_800681D8;
+        st.field_10 = 0x80;
+        st.color = 0;
+        st.text = (s32)Cd_GetFileEntry(arg1 + 0x1FD0000);
+        Text_OpenDesc(&arg0->field_8, (TextDesc *)&st);
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_8006495C);
 
