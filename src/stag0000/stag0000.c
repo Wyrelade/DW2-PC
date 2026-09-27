@@ -244,7 +244,40 @@ void func_800655B8(Actor *arg0) {
     Gfx_DrawTexModel(arg0, 1);
 }
 
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_800655FC);
+void func_800655FC(Actor *arg0) {
+    Stg00NameWork *w = (Stg00NameWork *)arg0->work;
+    s32 *slot = (s32 *)arg0->u34.children;
+    s32 id;
+    Stg00TaskArgs5 args;
+    TextOpenArgs t;
+
+    while ((id = func_8001E8F4(w->field_10)) == -1) {
+        w->field_10 = 0;
+    }
+    Task_Destroy(slot);
+    args.field_0 = id;
+    args.field_10 = 0;
+    args.field_4 = 0;
+    args.field_8 = 0;
+    args.field_C = 0;
+    Task_Create(0x105, slot, (s32)&args);
+    Text_Close(&w->field_14);
+    Text_Close(&w->field_18);
+    t.text = (s32)Digi_GetDefaultName(func_8001E8F4(w->field_10));
+    t.bigFont = 1;
+    t.color = 0;
+    t.x = 0x10;
+    t.y = 0xD0;
+    t.charDelay = 0xE;
+    t.charAdvance = 0;
+    t.lineAdvance = 0;
+    Text_Open(&w->field_14, &t);
+    t.y = 0xC6;
+    t.charDelay = 8;
+    t.bigFont = 0;
+    t.charAdvance = 9;
+    Text_Open(&w->field_18, &t);
+}
 
 INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_8006571C);
 
