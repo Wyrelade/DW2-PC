@@ -72,7 +72,20 @@ s32 func_800649D4(Stg11MenuWork *arg0) {
     return Text_IsFinished(arg0->field_4);
 }
 
-INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_800649F8);
+s32 func_800649F8(Actor *arg0, Stg11MenuWork *arg1) {
+    s32 r = 0;
+    s32 v = func_80067818();
+
+    if (v != -1) {
+        if (v == 0) {
+            Task_SetState1(arg0, 3);
+            r = -1;
+        } else {
+            func_800677AC(4, arg1->field_84);
+        }
+    }
+    return r;
+}
 
 INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80064A6C);
 
