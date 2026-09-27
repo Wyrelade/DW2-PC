@@ -247,6 +247,13 @@ def compile_c(cpp, cc1, as_bin, skip_asm=False, units=None):
             # or its manifest is absent. The linked SHA-1 is the ground gate.
             if asm_normalizer is not None:
                 ctx = normalize_ctx(as_bin)
+                # The stage overlays share one address range, so two overlays can
+                # hold a func_XXXXXXXX of the same name: look targets up in this
+                # unit's asm tree first (callees in the main exe still resolve).
+                unit_asm = os.path.join(ctx["asm_root"],
+                                        os.path.relpath(dirpath, src_root).replace("\\", "/").split("/")[0])
+                if dirpath != src_root and os.path.isdir(unit_asm):
+                    ctx["asm_unit_root"] = unit_asm
                 # Functions from translation units retail built without split
                 # addresses are taken from a second cc1 compile of the same file.
                 manifest = asm_normalizer.load_manifest()

@@ -2304,6 +2304,7 @@ def _ff_word_form(body):
 
 
 _ASM_ROOT = None          # set by normalize_s from ctx["asm_root"]
+_UNIT_ROOT = None         # ctx["asm_unit_root"]: searched first by find_target_s
 _FN_ADDR = {}
 
 
@@ -10870,6 +10871,12 @@ def find_target_s(asm_root, fn):
     """Locate the retail nonmatchings .s for a function under asm_root. Returns a
     path or None. No unit/path is baked in; the layout is asm/**/nonmatchings/**/."""
     want = fn + ".s"
+    # the stage overlays share one address range: two can hold a func of the
+    # same name, so the unit being built is searched first
+    if _UNIT_ROOT:
+        for dirpath, _dirs, files in os.walk(_UNIT_ROOT):
+            if "nonmatchings" in dirpath.replace("\\", "/").split("/") and want in files:
+                return os.path.join(dirpath, want)
     for dirpath, _dirs, files in os.walk(asm_root):
         if "nonmatchings" not in dirpath.replace("\\", "/").split("/"):
             continue
@@ -11201,7 +11208,8 @@ def _jt_data(asm_root):
     global _JT_DATA
     if _JT_DATA is None:
         _JT_DATA = {}
-        for dp, _ds, fs in os.walk(asm_root):
+        roots = ([_UNIT_ROOT] if _UNIT_ROOT else []) + [asm_root]
+        for dp, _ds, fs in (w for r in roots for w in os.walk(r)):
             for f in fs:
                 if not f.endswith(".s"):
                     continue
@@ -11209,6 +11217,8 @@ def _jt_data(asm_root):
                 if "dlabel jtbl_" not in t:
                     continue
                 for m in re.finditer(r"(?ms)^dlabel (jtbl_\w+)\n(.*?)^enddlabel", t):
+                    if m.group(1) in _JT_DATA:
+                        continue
                     _JT_DATA[m.group(1)] = re.findall(r"\.word\s+(\.L\w+)", m.group(2))
     return _JT_DATA
 
@@ -11252,8 +11262,13 @@ def normalize_s(s_file, ctx, manifest=None):
 
     ctx keys: python, maspsx_py, maspsx_flags, as_bin, maspsx_as_flags, objdump,
     run (callable -> (rc, out, err)), asm_root."""
-    global _ASM_ROOT
+    global _ASM_ROOT, _UNIT_ROOT, _JT_DATA
     _ASM_ROOT = ctx.get("asm_root")
+    if ctx.get("asm_unit_root") != _UNIT_ROOT:
+        _UNIT_ROOT = ctx.get("asm_unit_root")
+        for c in (_FN_ADDR, _CALLEE_S, _CALLEE_RD, _CALLEE_CFG):
+            c.clear()
+        _JT_DATA = None
     if manifest is None:
         manifest = load_manifest()
     text = _read_bytes_str(s_file)
