@@ -886,7 +886,7 @@ void Task_Destroy(s32 *arg0) {
     }
 }
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Task_Run);
+ASM_SOURCE("src/main/asm/game", Task_Run);
 
 void Task_Create(u32 id, s32 *slot, s32 arg) {
     ObjDesc *d;
