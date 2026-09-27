@@ -185,7 +185,9 @@ void func_800677AC(u8 arg0, s32 arg1) {
     w->field_22040 = 0;
 }
 
-INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80067818);
+s32 func_80067818(void) {
+    return ((Stg11SaveWork *)D_800685D0->work)->field_4;
+}
 
 INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80067838);
 
