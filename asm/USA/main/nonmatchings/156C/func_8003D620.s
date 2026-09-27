@@ -12,13 +12,13 @@ glabel func_8003D620
     /* 2DE40 8003D640 2000BFAF */  sw         $ra, 0x20($sp)
     /* 2DE44 8003D644 59F6000C */  jal        func_8003D964
     /* 2DE48 8003D648 2198E000 */   addu      $s3, $a3, $zero
-    /* 2DE4C 8003D64C F19B000C */  jal        func_80026FC4
+    /* 2DE4C 8003D64C F19B000C */  jal        EnterCriticalSection
     /* 2DE50 8003D650 00000000 */   nop
     /* 2DE54 8003D654 3BF6000C */  jal        func_8003D8EC
     /* 2DE58 8003D658 00000000 */   nop
-    /* 2DE5C 8003D65C F59B000C */  jal        func_80026FD4
+    /* 2DE5C 8003D65C F59B000C */  jal        ExitCriticalSection
     /* 2DE60 8003D660 00000000 */   nop
-    /* 2DE64 8003D664 31C3000C */  jal        func_80030CC4
+    /* 2DE64 8003D664 31C3000C */  jal        ChangeClearPAD
     /* 2DE68 8003D668 21200000 */   addu      $a0, $zero, $zero
     /* 2DE6C 8003D66C DCF5000C */  jal        func_8003D770
     /* 2DE70 8003D670 00000000 */   nop

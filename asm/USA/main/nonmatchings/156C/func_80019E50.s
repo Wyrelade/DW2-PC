@@ -23,14 +23,14 @@ glabel func_80019E50
     /* A698 80019E98 00000000 */  nop
     /* A69C 80019E9C 07009310 */  beq        $a0, $s3, .L80019EBC
     /* A6A0 80019EA0 21282002 */   addu      $a1, $s1, $zero
-    /* A6A4 80019EA4 1F44000C */  jal        func_8001107C
+    /* A6A4 80019EA4 1F44000C */  jal        Task_Create
     /* A6A8 80019EA8 10000626 */   addiu     $a2, $s0, 0x10
     /* A6AC 80019EAC 0C00028E */  lw         $v0, 0xC($s0)
     /* A6B0 80019EB0 04003126 */  addiu      $s1, $s1, 0x4
     /* A6B4 80019EB4 A5670008 */  j          .L80019E94
     /* A6B8 80019EB8 21800202 */   addu      $s0, $s0, $v0
   .L80019EBC:
-    /* A6BC 80019EBC 5145000C */  jal        func_80011544
+    /* A6BC 80019EBC 5145000C */  jal        Task_NextState0
     /* A6C0 80019EC0 21204002 */   addu      $a0, $s2, $zero
   .L80019EC4:
     /* A6C4 80019EC4 2000BF8F */  lw         $ra, 0x20($sp)

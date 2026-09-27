@@ -11,7 +11,7 @@ glabel func_8001BC24
     /* C440 8001BC40 2130A000 */  addu       $a2, $a1, $zero
     /* C444 8001BC44 2000BFAF */  sw         $ra, 0x20($sp)
     /* C448 8001BC48 1800B2AF */  sw         $s2, 0x18($sp)
-    /* C44C 8001BC4C 4445000C */  jal        func_80011510
+    /* C44C 8001BC4C 4445000C */  jal        Task_FindFirst
     /* C450 8001BC50 1400B1AF */   sw        $s1, 0x14($sp)
     /* C454 8001BC54 65004010 */  beqz       $v0, .L8001BDEC
     /* C458 8001BC58 21880000 */   addu      $s1, $zero, $zero

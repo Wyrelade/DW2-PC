@@ -43,7 +43,7 @@ glabel func_8003E6C8
   .L8003E758:
     /* 2EF58 8003E758 0000048E */  lw         $a0, 0x0($s0)
     /* 2EF5C 8003E75C 0400058E */  lw         $a1, 0x4($s0)
-    /* 2EF60 8003E760 61FD000C */  jal        func_8003F584
+    /* 2EF60 8003E760 61FD000C */  jal        lseek
     /* 2EF64 8003E764 21300000 */   addu      $a2, $zero, $zero
     /* 2EF68 8003E768 0400038E */  lw         $v1, 0x4($s0)
     /* 2EF6C 8003E76C 00000000 */  nop
@@ -57,7 +57,7 @@ glabel func_8003E6C8
     /* 2EF88 8003E788 0000048E */  lw         $a0, 0x0($s0)
     /* 2EF8C 8003E78C 0C00058E */  lw         $a1, 0xC($s0)
     /* 2EF90 8003E790 0800068E */  lw         $a2, 0x8($s0)
-    /* 2EF94 8003E794 65FD000C */  jal        func_8003F594
+    /* 2EF94 8003E794 65FD000C */  jal        read
     /* 2EF98 8003E798 00000000 */   nop
     /* 2EF9C 8003E79C FAFF4014 */  bnez       $v0, .L8003E788
     /* 2EFA0 8003E7A0 1E000224 */   addiu     $v0, $zero, 0x1E

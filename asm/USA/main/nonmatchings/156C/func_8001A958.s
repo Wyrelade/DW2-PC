@@ -21,10 +21,10 @@ glabel func_8001A958
     /* B19C 8001A99C 1001043C */   lui       $a0, (0x1100000 >> 16)
     /* B1A0 8001A9A0 0A000424 */  addiu      $a0, $zero, 0xA
     /* B1A4 8001A9A4 3400058E */  lw         $a1, 0x34($s0)
-    /* B1A8 8001A9A8 1F44000C */  jal        func_8001107C
+    /* B1A8 8001A9A8 1F44000C */  jal        Task_Create
     /* B1AC 8001A9AC 21300000 */   addu      $a2, $zero, $zero
   .L8001A9B0:
-    /* B1B0 8001A9B0 5145000C */  jal        func_80011544
+    /* B1B0 8001A9B0 5145000C */  jal        Task_NextState0
     /* B1B4 8001A9B4 21200002 */   addu      $a0, $s0, $zero
   .L8001A9B8:
     /* B1B8 8001A9B8 1400BF8F */  lw         $ra, 0x14($sp)

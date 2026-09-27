@@ -27,9 +27,9 @@ glabel func_80013384
     /* 3BDC 800133DC 21284002 */  addu       $a1, $s2, $zero
     /* 3BE0 800133E0 1800048E */  lw         $a0, 0x18($s0)
     /* 3BE4 800133E4 21300000 */  addu       $a2, $zero, $zero
-    /* 3BE8 800133E8 1F44000C */  jal        func_8001107C
+    /* 3BE8 800133E8 1F44000C */  jal        Task_Create
     /* 3BEC 800133EC 00FF8430 */   andi      $a0, $a0, 0xFF00
-    /* 3BF0 800133F0 5145000C */  jal        func_80011544
+    /* 3BF0 800133F0 5145000C */  jal        Task_NextState0
     /* 3BF4 800133F4 21202002 */   addu      $a0, $s1, $zero
     /* 3BF8 800133F8 0E4D0008 */  j          .L80013438
     /* 3BFC 800133FC 00000000 */   nop
@@ -48,7 +48,7 @@ glabel func_80013384
     /* 3C28 80013428 21202002 */   addu      $a0, $s1, $zero
     /* 3C2C 8001342C 03000524 */  addiu      $a1, $zero, 0x3
   .L80013430:
-    /* 3C30 80013430 7045000C */  jal        func_800115C0
+    /* 3C30 80013430 7045000C */  jal        Task_SetState0
     /* 3C34 80013434 00000000 */   nop
   .L80013438:
     /* 3C38 80013438 1C00BF8F */  lw         $ra, 0x1C($sp)

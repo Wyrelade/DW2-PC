@@ -7,7 +7,7 @@ glabel func_8003FBC4
     /* 303D0 8003FBD0 00000000 */   nop
     /* 303D4 8003FBD4 65F5000C */  jal        func_8003D594
     /* 303D8 8003FBD8 00000000 */   nop
-    /* 303DC 8003FBDC 3DF5000C */  jal        func_8003D4F4
+    /* 303DC 8003FBDC 3DF5000C */  jal        _bu_init
     /* 303E0 8003FBE0 00000000 */   nop
     /* 303E4 8003FBE4 1000BF8F */  lw         $ra, 0x10($sp)
     /* 303E8 8003FBE8 1800BD27 */  addiu      $sp, $sp, 0x18

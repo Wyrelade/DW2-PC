@@ -9,7 +9,7 @@ glabel func_800168F0
     /* 7104 80016904 2000BFAF */  sw         $ra, 0x20($sp)
     /* 7108 80016908 1C00B3AF */  sw         $s3, 0x1C($sp)
     /* 710C 8001690C 1800B2AF */  sw         $s2, 0x18($sp)
-    /* 7110 80016910 9C4E000C */  jal        func_80013A70
+    /* 7110 80016910 9C4E000C */  jal        Menu_GridIndexColMajor
     /* 7114 80016914 1000B0AF */   sw        $s0, 0x10($sp)
     /* 7118 80016918 40003226 */  addiu      $s2, $s1, 0x40
     /* 711C 8001691C 21204002 */  addu       $a0, $s2, $zero

@@ -3,9 +3,9 @@ nonmatching func_8003D740, 0x30
 glabel func_8003D740
     /* 2DF40 8003D740 E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* 2DF44 8003D744 1000BFAF */  sw         $ra, 0x10($sp)
-    /* 2DF48 8003D748 29F6000C */  jal        func_8003D8A4
+    /* 2DF48 8003D748 29F6000C */  jal        StartPAD
     /* 2DF4C 8003D74C 00000000 */   nop
-    /* 2DF50 8003D750 31C3000C */  jal        func_80030CC4
+    /* 2DF50 8003D750 31C3000C */  jal        ChangeClearPAD
     /* 2DF54 8003D754 21200000 */   addu      $a0, $zero, $zero
     /* 2DF58 8003D758 31F6000C */  jal        func_8003D8C4
     /* 2DF5C 8003D75C 00000000 */   nop

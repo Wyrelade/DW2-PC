@@ -10,7 +10,7 @@ glabel func_8001CD2C
     /* D544 8001CD44 FFFF1124 */  addiu      $s1, $zero, -0x1
     /* D548 8001CD48 1C00BFAF */  sw         $ra, 0x1C($sp)
   .L8001CD4C:
-    /* D54C 8001CD4C 8A72000C */  jal        func_8001CA28
+    /* D54C 8001CD4C 8A72000C */  jal        Gfx_GetTexSlot
     /* D550 8001CD50 21200002 */   addu      $a0, $s0, $zero
     /* D554 8001CD54 21184000 */  addu       $v1, $v0, $zero
     /* D558 8001CD58 2A101202 */  slt        $v0, $s0, $s2

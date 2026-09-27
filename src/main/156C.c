@@ -52,11 +52,11 @@ extern void func_80022AE4(void);
 extern Blk54CF8 *func_8002796C(Blk54CF8 *, s32);
 extern void func_8001A68C(s32, s32);
 extern s32 func_80027A74(void *);
-extern s32 func_80026FC4(void);
-extern void func_80026FD4(void);
-extern s32 func_8003D9E4(void);
-extern void func_80030CC4(s32);
-extern s32 func_8001CDA8(void);
+extern s32 EnterCriticalSection(void);
+extern void ExitCriticalSection(void);
+extern s32 StartCARD(void);
+extern void ChangeClearPAD(s32);
+extern s32 Gfx_ReserveTexSlot(void);
 extern s32 func_80022E90(s32, s32);
 extern void func_80023BB0(void);
 extern void func_8001BB88(s32 *);
@@ -84,12 +84,12 @@ extern void func_8002BAD4(s32);
 extern s32 func_8001E134(void);
 extern s32 *func_80011F5C(s32);
 extern s32 D_80040FD0[];
-extern void func_8001D550(Ent1D550 *, s32, s32);
+extern void Gfx_SetPartsScale(Ent1D550 *, s32, s32);
 extern void func_8001D884(s32);
 extern void func_8001BC24(void *, Arg1BC24 *);
 extern void func_800221C4(s32, s32);
-extern void func_8001D5B4(Part28 *, s32, s32, s32);
-extern s32 func_8001E984(s32, s32, s32);
+extern void Gfx_SetPartsNumber(Part28 *, s32, s32, s32);
+extern s32 Digi_GetExpToNextLevel(s32, s32, s32);
 extern void func_8002D744(void *, Obj209 *);
 extern void func_8002B544(s32);
 extern void func_8001F1A8(Actor *, s32);
@@ -128,8 +128,8 @@ extern s32 func_80039B54();
 extern s32 func_80039A78();
 extern s32 func_80039B4C(s32, s32);
 extern volatile s32 D_80063080;
-extern void func_80027004(s32, s32);
-extern void func_80026FF4(s32, u8 *);
+extern void ChangeClearRCnt(s32, s32);
+extern void SysDeqIntRP(s32, u8 *);
 extern u8 D_80048E78[];
 extern void func_8003A034(void);
 extern s32 func_8003C3A4(s32);
@@ -137,7 +137,7 @@ extern void func_80032874();
 extern Elm624E8 D_800624E8[];
 extern s32 D_80049064;
 extern u8 D_800618B0[];
-extern s32 func_8002A9A4(s32, u8 *, s32);
+extern s32 write(s32, u8 *, s32);
 extern s32 D_8004E6D8;
 extern s32 D_8004E6D4;
 extern void func_80030258();
@@ -153,7 +153,7 @@ extern s32 D_8004FE50;
 extern void func_80023BF4(s32);
 extern Hooks4FC50 D_8004FC50;
 extern s32 D_80062F94;
-extern void func_8003F5A4(s32);
+extern void close(s32);
 extern s32 (*D_80048E30)();
 extern s32 D_80048E98;
 extern s32 func_80025760(Ent266D0 *, s32);
@@ -204,8 +204,8 @@ extern void func_8002B1A4();
 extern s32 D_8004FE18;
 extern s32 D_8004FDB0;
 extern void func_8003A614(void);
-extern s32 func_8003A1B4(s32, s32, s32, s32);
-extern void func_8003A1C4(s32);
+extern s32 OpenEvent(s32, s32, s32, s32);
+extern void EnableEvent(s32);
 extern char D_80010310[];
 extern void func_800274E8(char *, Rect2AB54 *);
 extern s32 D_80061B24;
@@ -224,7 +224,7 @@ extern St6191C D_8006191C;
 extern St6196C D_8006196C;
 extern s16 D_8006198E;
 extern void func_8002AE4C();
-extern s32 func_80010F24(s32);
+extern s32 Task_Run(s32);
 extern Ent62CFC *D_80062CFC;
 extern s32 func_800398D4(s16, s16);
 extern s32 D_8004E6E8;
@@ -309,7 +309,7 @@ extern volatile Cd4E9A4 D_8004E9A4;
 extern s32 D_80048E50;
 extern Reg48DF0 *D_80048DF0;
 extern State60058 D_80060058;
-extern void func_80026FE4(s32, u8 *);
+extern void SysEnqIntRP(s32, u8 *);
 extern Obj25FBC *D_80048E4C;
 extern s32 func_8003DE18(s32 *);
 extern s32 D_8005F704;
@@ -416,7 +416,7 @@ extern void func_8003FEA4(void);
 extern char D_80010C70[];
 extern void func_8003F518(s32, u8 *);
 extern s8 *func_8003F874(s8 *, s8 *);
-extern s32 func_8003F574(u8 *, s32);
+extern s32 open(u8 *, s32);
 extern s32 func_8003F18C(s32 wait, s32 *a1, s32 *a2);
 extern void func_8003FEA4(void);
 extern s32 D_80062F90;
@@ -430,7 +430,7 @@ extern char D_8001021C[];
 extern char D_8001023C[];
 extern char D_80048EC8[];
 extern u16 D_80048F90[][2];
-extern void func_8002A004(s32);
+extern void GPU_cw(s32);
 extern s16 D_800624D0;
 extern s16 D_800624D2;
 extern s32 D_80061C48;
@@ -500,7 +500,7 @@ extern void func_800153F4(Actor *, s32);
 extern s32 D_80050764;
 extern s32 D_8005F788[];
 extern s32 func_8002284C(s32 mode);
-extern void func_8001C4C8(s32 arg0);
+extern void Gfx_FadeInFromBlack(s32 arg0);
 extern void func_8001BE74(s32 a0, s32 a1);
 extern Halves D_80050714;
 extern void func_80019614(Actor194C8 *, s32);
@@ -541,15 +541,15 @@ extern s32 D_80062F64;
 extern s32 D_80062F68;
 extern s32 func_80040198(void);
 extern s32 func_80040084(void);
-extern void func_8003F9A4(s32);
-extern void func_8003F994(s32);
+extern void _card_load(s32);
+extern void _card_info(s32);
 extern s32 func_8004015C(void);
 extern s32 func_8003FFAC(void);
 extern s32 func_8003F418(s32);
 extern s32 func_8003F9B4(s32 a0);
-extern void func_8001C088(s32 *arg0, s32 arg1);
+extern void Mem_FillWordsNeg1(s32 *arg0, s32 arg1);
 extern void func_8001C0B0(s32 *arg0, s32 arg1);
-extern void func_8001C088(s32 *arg0, s32 arg1);
+extern void Mem_FillWordsNeg1(s32 *arg0, s32 arg1);
 extern void func_8001C0B0(s32 *arg0, s32 arg1);
 extern void func_8002B334(s32, s32);
 extern u8 func_8001D934(void);
@@ -627,7 +627,7 @@ extern u16 D_80062EE8[];
 extern u16 D_80050298[];
 extern u16 D_800502B0[];
 extern void func_8003F760(s32 *a0, s32 a1, s32 a2);
-s32 func_8003F864();
+s32 firstfile();
 extern s32 func_8003F924(s8 *a, s8 *b);
 extern Stat48E90 *D_80048E00;
 extern s32 D_80048E70[];
@@ -717,10 +717,10 @@ extern char D_80010860[];
 extern char *D_8004E76C[];
 extern s32 *D_8004E9C0;
 extern u8 D_8004FE98[];
-extern void func_8003C544(s32);
+extern void WaitEvent(s32);
 extern char D_8001034C[];
 extern s32 D_800506D4;
-extern s32 func_8003F584(s32, s32, s32);
+extern s32 lseek(s32, s32, s32);
 extern void func_8003FEA4(void);
 extern s32 func_8004015C(void);
 extern s32 func_8003FFAC(void);
@@ -756,10 +756,10 @@ extern u16 *D_8004FB84;
 extern s32 D_8004FB90;
 extern char D_800109C8[];
 extern char D_800109E4[];
-extern void func_800313B4(void);
+extern void ReturnFromException(void);
 extern char D_800108D8[];
 extern u8 *D_80060048;
-extern s32 func_8003F5B4(Ent3EF1C *);
+extern s32 nextfile(Ent3EF1C *);
 extern char D_800108EC[];
 extern char D_800108F4[];
 extern char D_80010904[];
@@ -779,8 +779,8 @@ extern u8 D_80061B68[];
 extern s32 func_8002EDB4(void);
 extern void func_80030334(s8 *s);
 extern s32 setjmp(s32 *env);
-extern void func_800313D4(s32 *env);
-extern void func_8003139C(void);
+extern void HookEntryInt(s32 *env);
+extern void _96_remove(void);
 extern s32 D_80062BD0[];
 extern u16 D_80062A4E[];
 extern u16 D_80062A50[];
@@ -849,48 +849,48 @@ INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80010D6C);
 void func_80010D74(void) {
 }
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80010D7C);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Sys_Start);
 
-void func_80010E38(Obj10E38 *a0) {
+void Task_RunChildren(Obj10E38 *a0) {
     s32 n = a0->field_30;
     s32 *arr = a0->field_34;
     s32 i;
 
     for (i = 0; i < n; i++) {
         if (arr[i] != 0) {
-            arr[i] = func_80010F24(arr[i]);
+            arr[i] = Task_Run(arr[i]);
         }
     }
 }
 
-s32 func_80010EA4(void *arg0) {
+s32 Task_TryRun(void *arg0) {
     if (arg0 == 0) {
         return 0;
     }
-    return func_80010F24(arg0);
+    return Task_Run(arg0);
 }
 
-void func_80010ED4(s32 *arg0) {
+void Task_Destroy(s32 *arg0) {
     if (*arg0 != 0) {
-        func_800115C0(*arg0, 3);
+        Task_SetState0(*arg0, 3);
         do {
-            *arg0 = func_80010EA4(*arg0);
+            *arg0 = Task_TryRun(*arg0);
         } while (*arg0 != 0);
         *arg0 = 0;
     }
 }
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80010F24);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Task_Run);
 
-void func_8001107C(u32 id, s32 *slot, s32 arg) {
+void Task_Create(u32 id, s32 *slot, s32 arg) {
     ObjDesc *d;
     Buf111D4 *o;
 
     if (*slot != 0) {
-        func_80010ED4(slot);
+        Task_Destroy(slot);
     }
     d = D_80040D50[id >> 8][id & 0xFF];
-    o = func_800113B8(d->field_10, d->field_14);
+    o = Task_AllocWithBuffers(d->field_10, d->field_14);
     o->field_0 = id;
     o->field_24 = 0;
     if (arg != 0 && d->init != 0) {
@@ -900,7 +900,7 @@ void func_8001107C(u32 id, s32 *slot, s32 arg) {
 }
 
 void func_80011140(void) {
-    func_80011544();
+    Task_NextState0();
 }
 
 void func_80011160(void) {
@@ -909,11 +909,11 @@ void func_80011160(void) {
 void func_80011168(void) {
 }
 
-void func_80011170(Actor *arg0) {
-    func_8001125C();
+void Task_DefaultDestroy(Actor *arg0) {
+    Task_Free();
 }
 
-void func_80011190(void) {
+void Task_ClearList(void) {
     s16 i;
     for (i = 0; i < 100; i++) {
         D_80050798.entries[i] = 0;
@@ -921,7 +921,7 @@ void func_80011190(void) {
     D_80050798.count = 0;
 }
 
-Buf111D4 *func_800111D4(void) {
+Buf111D4 *Task_Alloc(void) {
     Buf111D4 *s0 = (Buf111D4 *)func_80022F3C(0x40, 2);
     s32 i;
     func_80022F8C(s0, 0x40);
@@ -937,7 +937,7 @@ Buf111D4 *func_800111D4(void) {
     return s0;
 }
 
-void func_8001125C(arg0)
+void Task_Free(arg0)
 Act125C *arg0;
 {
     Obj125C *sub;
@@ -951,7 +951,7 @@ Act125C *arg0;
         if (arg0->field_30 > 0) {
             p = fp;
             do {
-                func_80010ED4(p);
+                Task_Destroy(p);
                 p++;
             } while (++i < arg0->field_30);
             fp = arg0->field_34;
@@ -994,8 +994,8 @@ Act125C *arg0;
     func_80022D84((ActorWork *)arg0);
 }
 
-Buf111D4 *func_800113B8(s32 a0, s32 a1) {
-    Buf111D4 *s0 = func_800111D4();
+Buf111D4 *Task_AllocWithBuffers(s32 a0, s32 a1) {
+    Buf111D4 *s0 = Task_Alloc();
     if (a0 != 0) {
         s32 x = func_80022F3C(a0, 2);
         s0->field_2C = x;
@@ -1010,7 +1010,7 @@ Buf111D4 *func_800113B8(s32 a0, s32 a1) {
     return s0;
 }
 
-Ent11440 *func_80011440(void) {
+Ent11440 *Task_FindNext(void) {
     s32 i;
     Ent11440 *e;
 
@@ -1029,17 +1029,17 @@ Ent11440 *func_80011440(void) {
     return 0;
 }
 
-extern Ent11440 *func_80011440(void);
+extern Ent11440 *Task_FindNext(void);
 
-Ent11440 *func_80011510(s32 arg0, s32 arg1, s32 arg2) {
+Ent11440 *Task_FindFirst(s32 arg0, s32 arg1, s32 arg2) {
     D_80050938.field_0 = arg0;
     D_80050938.field_4 = arg1;
     D_80050938.field_8 = arg2;
     D_80050938.field_C = 0;
-    return func_80011440();
+    return Task_FindNext();
 }
 
-void func_80011544(Actor *arg0) {
+void Task_NextState0(Actor *arg0) {
     arg0->field_20 = 0;
     arg0->field_1C = 0;
     arg0->field_18 = 0;
@@ -1047,29 +1047,29 @@ void func_80011544(Actor *arg0) {
     arg0->field_10++;
 }
 
-void func_80011564(Actor *arg0) {
+void Task_NextState1(Actor *arg0) {
     arg0->field_20 = 0;
     arg0->field_1C = 0;
     arg0->field_18 = 0;
     arg0->field_14++;
 }
 
-void func_80011580(Actor *arg0) {
+void Task_NextState2(Actor *arg0) {
     arg0->field_20 = 0;
     arg0->field_1C = 0;
     arg0->field_18++;
 }
 
-void func_80011598(Actor *arg0) {
+void Task_NextState3(Actor *arg0) {
     arg0->field_20 = 0;
     arg0->field_1C++;
 }
 
-void func_800115AC(Actor *arg0) {
+void Task_NextState4(Actor *arg0) {
     arg0->field_20++;
 }
 
-void func_800115C0(Actor *arg0, u32 arg1) {
+void Task_SetState0(Actor *arg0, u32 arg1) {
     arg0->field_10 = arg1 & 0xFF;
     arg0->field_20 = 0;
     arg0->field_1C = 0;
@@ -1077,14 +1077,14 @@ void func_800115C0(Actor *arg0, u32 arg1) {
     arg0->field_14 = 0;
 }
 
-void func_800115DC(Actor *arg0, u32 arg1) {
+void Task_SetState1(Actor *arg0, u32 arg1) {
     arg0->field_14 = arg1 & 0xFF;
     arg0->field_20 = 0;
     arg0->field_1C = 0;
     arg0->field_18 = 0;
 }
 
-void func_800115F4(Actor *arg0, u32 arg1, u32 arg2) {
+void Task_SetState01(Actor *arg0, u32 arg1, u32 arg2) {
     arg0->field_10 = arg1 & 0xFF;
     arg0->field_14 = arg2 & 0xFF;
     arg0->field_20 = 0;
@@ -1092,18 +1092,18 @@ void func_800115F4(Actor *arg0, u32 arg1, u32 arg2) {
     arg0->field_18 = 0;
 }
 
-void func_80011614(Actor *arg0, u32 arg1) {
+void Task_SetState2(Actor *arg0, u32 arg1) {
     arg0->field_18 = arg1 & 0xFF;
     arg0->field_20 = 0;
     arg0->field_1C = 0;
 }
 
-void func_80011628(Actor *arg0, u32 arg1) {
+void Task_SetState3(Actor *arg0, u32 arg1) {
     arg0->field_1C = arg1 & 0xFF;
     arg0->field_20 = 0;
 }
 
-void func_80011638(Actor *arg0, u32 arg1) {
+void Task_SetState4(Actor *arg0, u32 arg1) {
     arg0->field_20 = arg1 & 0xFF;
 }
 
@@ -1135,7 +1135,7 @@ void func_800116CC(Actor *a0) {
 
     switch (a0->field_10) {
     case 0:
-        func_80011544(a0);
+        Task_NextState0(a0);
         break;
     case 1:
         switch (a0->field_14) {
@@ -1192,7 +1192,7 @@ void func_800116CC(Actor *a0) {
             a0->field_14++;
             break;
         case 3:
-            func_800115C0(a0, 3);
+            Task_SetState0(a0, 3);
             break;
         }
         break;
@@ -1274,14 +1274,14 @@ void func_80011B58(Actor *arg0, s32 arg1) {
 void func_80011B64(Actor *arg0) {
     ActorWork *w = arg0->work;
     if (arg0->field_10 == 0) {
-        w->field_0 = func_8001CDA8();
-        func_80011544(arg0);
+        w->field_0 = Gfx_ReserveTexSlot();
+        Task_NextState0(arg0);
     }
 }
 
 void func_80011BB0(Actor *arg0) {
-    func_8001CE80(arg0->work->field_0);
-    func_80011170(arg0);
+    Gfx_ReleaseTexSlot(arg0->work->field_0);
+    Task_DefaultDestroy(arg0);
 }
 
 void func_80011BEC(s32 id, Tex11BEC *out, Pt11BEC *pos, Pt11BEC *clut) {
@@ -1292,7 +1292,7 @@ void func_80011BEC(s32 id, Tex11BEC *out, Pt11BEC *pos, Pt11BEC *clut) {
     Rect2AB54 r;
     Rect2AB54 r2;
 
-    t = (Tbl11BEC *)func_80011510(10, -1, -1)->field_2C;
+    t = (Tbl11BEC *)Task_FindFirst(10, -1, -1)->field_2C;
     for (i = 0; i < 18; i++) {
         if (t->slot[i].id == id) {
             goto found;
@@ -1776,7 +1776,7 @@ void func_80012974(Actor *a0) {
     }
     switch (a0->field_10) {
     case 0:
-        func_8001C088(&w->field_10, 5);
+        Mem_FillWordsNeg1(&w->field_10, 5);
         for (i = 0; i < w->field_8; i++) {
             p[i] = 0xFD;
         }
@@ -1811,7 +1811,7 @@ void func_80012974(Actor *a0) {
         func_8001A8BC();
         func_8001A68C(0x22, 1);
         w->field_C = 6;
-        func_80011544(a0);
+        Task_NextState0(a0);
         break;
     case 1:
         switch (a0->field_14) {
@@ -1871,7 +1871,7 @@ void func_80012974(Actor *a0) {
             arg2.field_10 = 0;
             arg2.field_18 = 0;
             func_8001BC24(&w->field_1C, &arg2);
-            func_80011564(a0);
+            Task_NextState1(a0);
         case 1:
             k = D_8005F6F0[0].field_3C;
             if (k & 0x2000) {
@@ -1937,7 +1937,7 @@ void func_80012974(Actor *a0) {
                             }
                             p[i] = 0xFF;
                         }
-                        func_80011544(a0);
+                        Task_NextState0(a0);
                         func_8001A68C(0xE, 0);
                     } else {
                         goto Lnone;
@@ -1960,7 +1960,7 @@ void func_80012974(Actor *a0) {
             func_8001A8D0();
         }
         func_8001C0B0(&w->field_10, 5);
-        func_80011544(a0);
+        Task_NextState0(a0);
         break;
     }
 }
@@ -2067,7 +2067,7 @@ s32 func_80013378(void) {
 
 
 extern void func_80013308(s32);
-extern void func_8001107C(u32, s32 *, s32);
+extern void Task_Create(u32, s32 *, s32);
 extern s32 func_8001A300(void);
 extern s32 D_8005F78C;
 
@@ -2078,24 +2078,24 @@ void func_80013384(Actor *a0) {
     case 0:
     default:
         func_80013308((D_8005F770.field_18 >> 8) - 1);
-        func_8001107C(D_8005F770.field_18 & 0xFF00, t, 0);
-        func_80011544(a0);
+        Task_Create(D_8005F770.field_18 & 0xFF00, t, 0);
+        Task_NextState0(a0);
         break;
     case 1:
         if (D_8005F78C != 0) {
-            func_800115C0(a0, 2);
+            Task_SetState0(a0, 2);
         }
         break;
     case 2:
         if (func_8001A300() == 0) {
-            func_800115C0(a0, 3);
+            Task_SetState0(a0, 3);
         }
         break;
     }
 }
 
-void func_80013450(void) {
-    func_8001125C();
+void Task_DefaultDestroy2(void) {
+    Task_Free();
 }
 
 void func_80013470(void *arg0, Src13470 *arg1) {
@@ -2156,7 +2156,7 @@ s32 func_800136A4() {
     return result;
 }
 
-s32 func_800136E4(s32 arg0, s32 *arg1) {
+s32 Math_RampToOne(s32 arg0, s32 *arg1) {
     s32 v = *arg1 + 0x333;
     *arg1 = v;
     if (v >= 0x1000) {
@@ -2166,7 +2166,7 @@ s32 func_800136E4(s32 arg0, s32 *arg1) {
     return 1;
 }
 
-s32 func_80013714(s32 arg0, s32 *arg1) {
+s32 Math_RampToZero(s32 arg0, s32 *arg1) {
     s32 v = *arg1 - 0x333;
     *arg1 = v;
     if (v <= 0) {
@@ -2176,7 +2176,7 @@ s32 func_80013714(s32 arg0, s32 *arg1) {
     return 1;
 }
 
-void func_8001373C(void *arg0, s32 mask, s32 *arg2, s16 *arg3) {
+void Menu_SetPartsGridPos(void *arg0, s32 mask, s32 *arg2, s16 *arg3) {
     Part28 *p = arg0;
     Part28 *q = p;
     s32 x = arg3[2] + ((s16 *)arg2)[0] * arg3[4];
@@ -2209,7 +2209,7 @@ void func_800137B8(Part28 *p, s32 mask, s32 v) {
     }
 }
 
-void func_800137FC(Part28 *p, s32 mask, u16 *xy) {
+void Menu_SetPartsPos(Part28 *p, s32 mask, u16 *xy) {
     Part28 *q = p;
 
     if (p->field_0 != 0) {
@@ -2245,7 +2245,7 @@ s32 func_80013854(Part28 *p, s32 mask, s32 n) {
     return r;
 }
 
-/* file-local views for func_800138C0 */
+/* file-local views for Menu_MoveGridCursor */
 typedef struct {
     s16 field_0;
     s16 field_2;
@@ -2262,7 +2262,7 @@ typedef struct {
     u8 _p2[0x40 - 0x3E];
 } ElmFlags138C0;
 
-s32 func_800138C0(s32 a0, s32 a1, s32 a2) {
+s32 Menu_MoveGridCursor(s32 a0, s32 a1, s32 a2) {
     Coord138C0 *p0 = (Coord138C0 *)a0;
     Coord138C0 *p1 = (Coord138C0 *)a1;
     Copy138C0 saved;
@@ -2302,11 +2302,11 @@ tail:
     return changed;
 }
 
-s32 func_80013A10(s32 arg0, s32 arg1) {
-    return func_800138C0(arg0, arg1, 0);
+s32 Menu_MoveGridCursorP1(s32 arg0, s32 arg1) {
+    return Menu_MoveGridCursor(arg0, arg1, 0);
 }
 
-s32 func_80013A30(s32 *arg0, s32 arg1, s32 arg2) {
+s32 Menu_ScrollToShow(s32 *arg0, s32 arg1, s32 arg2) {
     s32 old = *arg0;
 
     if (arg2 - 1 < arg1 - old) {
@@ -2317,11 +2317,11 @@ s32 func_80013A30(s32 *arg0, s32 arg1, s32 arg2) {
     return *arg0 - old;
 }
 
-s32 func_80013A70(s16 *arg0, s16 *arg1) {
+s32 Menu_GridIndexColMajor(s16 *arg0, s16 *arg1) {
     return arg1[1] * arg0[0] + arg0[1];
 }
 
-s32 func_80013A90(s16 *arg0, s16 *arg1) {
+s32 Menu_GridIndexRowMajor(s16 *arg0, s16 *arg1) {
     return arg1[0] * arg0[1] + arg0[0];
 }
 
@@ -2331,7 +2331,7 @@ s32 func_80013AB0(s32 arg0, s32 arg1) {
     return p[arg1] + r;
 }
 
-void func_80013AFC(u8 *out, s32 val, s32 width) {
+void Text_FormatNumber(u8 *out, s32 val, s32 width) {
     u8 buf[8];
     s32 sign = 0;
     s32 done = 0;
@@ -2406,16 +2406,16 @@ void func_80013C04(Actor *a0) {
             D_80050768->field_0 = (D_80050768->field_0 | 0x10) & ~2;
         }
         D_80050768->field_4 = 0;
-        func_8001C088(&w->field_0, 8);
-        func_80011544(a0);
-        func_8001C4C8(0x20);
+        Mem_FillWordsNeg1(&w->field_0, 8);
+        Task_NextState0(a0);
+        Gfx_FadeInFromBlack(0x20);
         break;
     case 1:
         tbl = (Pair54 *)func_800239A0(0x5130006);
         switch (a0->field_14) {
         case 0:
         default:
-            if (func_800136E4((s32)a0, &w->field_34) != 0) {
+            if (Math_RampToOne((s32)a0, &w->field_34) != 0) {
                 break;
             }
             func_80013558(&w->field_0, (Key13558 *)func_800239A0(0x5130003), 2);
@@ -2426,13 +2426,13 @@ void func_80013C04(Actor *a0) {
             func_8001BE74(w->field_10, !(D_80050768->field_0 & 2));
             func_8001BE74(w->field_14, !(D_80050768->field_0 & 4));
             func_8001BE74(w->field_18, !(D_80050768->field_0 & 8));
-            func_80011564(a0);
+            Task_NextState1(a0);
             break;
         case 1:
-            if (func_80013A10((s32)w->field_20, (s32)w->field_24) != 0) {
+            if (Menu_MoveGridCursorP1((s32)w->field_20, (s32)w->field_24) != 0) {
                 snd = 0xC;
             } else if (D_8005F6F0[0].field_14 > 0) {
-                k = func_80013A70(w->field_20, w->field_24);
+                k = Menu_GridIndexColMajor(w->field_20, w->field_24);
                 if (k == 5 && (D_80050768->field_0 & 1)) {
                     k = 6;
                 }
@@ -2446,17 +2446,17 @@ void func_80013C04(Actor *a0) {
                     snd = 0x10;
                 } else if (k == 5) {
                     D_80050768->field_360 = 1;
-                    func_800115C0(a0, 2);
+                    Task_SetState0(a0, 2);
                     snd = 0xA;
                 } else {
                     w->field_32 = k;
-                    func_80011564(a0);
+                    Task_NextState1(a0);
                     snd = 0xA;
                 }
             } else {
                 if (D_8005F6F0[0].field_1C > 0) {
                     func_8001A68C(0xB, 0);
-                    func_800115C0(a0, 2);
+                    Task_SetState0(a0, 2);
                 }
                 break;
             }
@@ -2467,11 +2467,11 @@ void func_80013C04(Actor *a0) {
             case 0:
             default:
                 func_8001C0B0(&w->field_0, 8);
-                func_80011580(a0);
+                Task_NextState2(a0);
                 break;
             case 1:
-                if (func_80013714((s32)a0, &w->field_34) == 0) {
-                    func_80011564(a0);
+                if (Math_RampToZero((s32)a0, &w->field_34) == 0) {
+                    Task_NextState1(a0);
                 }
                 break;
             }
@@ -2480,15 +2480,15 @@ void func_80013C04(Actor *a0) {
             switch (a0->field_18) {
             case 0:
             default:
-                func_8001107C(tbl[w->field_32].field_0, slot, tbl[w->field_32].field_2);
-                func_80011580(a0);
+                Task_Create(tbl[w->field_32].field_0, slot, tbl[w->field_32].field_2);
+                Task_NextState2(a0);
                 break;
             case 1:
                 if (*slot == 0) {
                     if (D_80050768->field_360 != 0) {
-                        func_800115C0(a0, 2);
+                        Task_SetState0(a0, 2);
                     } else {
-                        func_800115DC(a0, 0);
+                        Task_SetState1(a0, 0);
                     }
                 }
                 break;
@@ -2502,12 +2502,12 @@ void func_80013C04(Actor *a0) {
         default:
             func_8001C0B0(&w->field_0, 8);
             D_80050764 = D_80050768->field_360;
-            func_80011564(a0);
-            func_8001C4F0(0x20);
+            Task_NextState1(a0);
+            Gfx_FadeOutToBlack(0x20);
             break;
         case 1:
-            if (func_80013714((s32)a0, &w->field_34) == 0) {
-                func_800115C0(a0, 3);
+            if (Math_RampToZero((s32)a0, &w->field_34) == 0) {
+                Task_SetState0(a0, 3);
                 func_80022D84((ActorWork *)D_80050768);
             }
             break;
@@ -2540,14 +2540,14 @@ void func_800141D4(Actor *actor) {
                 switch (i) {
                 case 0:
                 default:
-                    func_8001373C(obj, 2, &w->field_20, &w->field_24);
+                    Menu_SetPartsGridPos(obj, 2, &w->field_20, &w->field_24);
                     func_800137B8(obj, 2, (actor->field_28 >> 2) & 3);
                     break;
                 case 1:
-                    func_8001D5B4(obj, 2, 8, D_80050720->field_8);
+                    Gfx_SetPartsNumber(obj, 2, 8, D_80050720->field_8);
                     break;
                 }
-                func_8001D550(obj, 0x1000, w->field_34);
+                Gfx_SetPartsScale(obj, 0x1000, w->field_34);
                 list++;
                 func_8001D884((s32)obj);
                 i++;
@@ -2604,31 +2604,31 @@ void func_80014400(Actor *a) {
     default:
     case 0:
         w->u2C.blk = ((Blk14400 *)func_800239A0(0x5130007))[w->field_38 - 1];
-        func_8001C088(w, 0xA);
-        func_80011544(a);
+        Mem_FillWordsNeg1(w, 0xA);
+        Task_NextState0(a);
         break;
     case 1:
         tbl = (Pair54 *)func_80013AB0(0x513000A, w->field_38 - 1);
         switch (a->field_14) {
         default:
         case 0:
-            if (func_800136E4((s32)a, &w->field_40) == 0) {
+            if (Math_RampToOne((s32)a, &w->field_40) == 0) {
                 func_80013558((s32 *)w, (Key13558 *)func_80013AB0(0x5130008, w->field_38 - 1), 2);
                 switch (w->field_38) {
                 case 5:
                 case 6:
-                    func_800115DC(a, 2);
+                    Task_SetState1(a, 2);
                     break;
                 default:
-                    func_80011564(a);
+                    Task_NextState1(a);
                     break;
                 }
             }
             break;
         case 1:
-            if (((s32 (*)(s16 *, s16 *))func_80013A10)(w->field_28, w->u2C.field_2C) == 0) {
+            if (((s32 (*)(s16 *, s16 *))Menu_MoveGridCursorP1)(w->field_28, w->u2C.field_2C) == 0) {
             if (D_8005F6F0[0].field_14 > 0) {
-                idx = func_80013A70(w->field_28, w->u2C.field_2C);
+                idx = Menu_GridIndexColMajor(w->field_28, w->u2C.field_2C);
                 if (tbl[idx].field_0 == -1) {
                     break;
                 }
@@ -2638,18 +2638,18 @@ void func_80014400(Actor *a) {
                 case 7:
                 case 8:
                     D_80050768->field_124 = w->field_28[0];
-                    func_80011564(a);
+                    Task_NextState1(a);
                     break;
                 case 4:
-                    func_800115DC(a, 3);
+                    Task_SetState1(a, 3);
                     break;
                 default:
-                    func_80011564(a);
+                    Task_NextState1(a);
                     break;
                 }
             } else if (D_8005F6F0[0].field_1C > 0) {
                 func_8001A68C(0xB, 0);
-                func_800115C0(a, 2);
+                Task_SetState0(a, 2);
             }
             } else {
                 func_8001A68C(0xC, 0);
@@ -2660,8 +2660,8 @@ void func_80014400(Actor *a) {
             default:
             case 0:
                 e = &tbl[w->field_3A];
-                func_8001107C(e->field_0, p, e->field_2);
-                func_80011580(a);
+                Task_Create(e->field_0, p, e->field_2);
+                Task_NextState2(a);
                 break;
             case 1:
                 if (w->field_38 == 3) {
@@ -2681,11 +2681,11 @@ void func_80014400(Actor *a) {
                 if (*p == 0) {
                     switch (w->field_38) {
                     default:
-                        func_800115DC(a, 1);
+                        Task_SetState1(a, 1);
                         break;
                     case 5:
                     case 6:
-                        func_800115C0(a, 2);
+                        Task_SetState0(a, 2);
                         break;
                     }
                 }
@@ -2698,21 +2698,21 @@ void func_80014400(Actor *a) {
             default:
             case 0:
                 func_8001C0B0(w, 0xA);
-                func_80011580(a);
+                Task_NextState2(a);
                 break;
             case 1:
-                if (func_80013714((s32)a, &w->field_40) == 0) {
-                    func_80011580(a);
+                if (Math_RampToZero((s32)a, &w->field_40) == 0) {
+                    Task_NextState2(a);
                 }
                 break;
             case 2:
                 e = &tbl[w->field_3A];
-                func_8001107C(e->field_0, q, e->field_2);
-                func_80011580(a);
+                Task_Create(e->field_0, q, e->field_2);
+                Task_NextState2(a);
                 break;
             case 3:
                 if (*q == 0) {
-                    func_800115DC(a, 0);
+                    Task_SetState1(a, 0);
                 }
                 break;
             }
@@ -2725,11 +2725,11 @@ void func_80014400(Actor *a) {
         default:
         case 0:
             func_8001C0B0(w, 0xA);
-            func_80011564(a);
+            Task_NextState1(a);
             break;
         case 1:
-            if (func_80013714((s32)a, &w->field_40) == 0) {
-                func_800115C0(a, 3);
+            if (Math_RampToZero((s32)a, &w->field_40) == 0) {
+                Task_SetState0(a, 3);
             }
             break;
         }
@@ -2738,9 +2738,9 @@ void func_80014400(Actor *a) {
 }
 
 
-extern void func_8001373C(void *, s32, s32 *, s16 *);
+extern void Menu_SetPartsGridPos(void *, s32, s32 *, s16 *);
 extern void func_800137B8(Part28 *, s32, s32);
-extern void func_8001D504(Obj1D504 *, s32);
+extern void Gfx_HidePartsByMask(Obj1D504 *, s32);
 
 void func_80014870(Actor *actor) {
     ActorWork *w = actor->work;
@@ -2759,14 +2759,14 @@ void func_80014870(Actor *actor) {
     do {
         obj = func_800239A0(*list);
         if (w->field_2C != 0 && w->field_3C == 0) {
-            func_8001373C(obj, 2, &w->field_28, &w->field_2C);
+            Menu_SetPartsGridPos(obj, 2, &w->field_28, &w->field_2C);
             func_800137B8(obj, 2, (actor->field_28 >> 2) & 3);
-            func_8001D504(obj, 0);
+            Gfx_HidePartsByMask(obj, 0);
         } else {
-            func_8001D504(obj, 2);
+            Gfx_HidePartsByMask(obj, 2);
         }
         list++;
-        func_8001D550(obj, 0x1000, w->field_40);
+        Gfx_SetPartsScale(obj, 0x1000, w->field_40);
         func_8001D884((s32)obj);
     } while (*list != 0);
 }
@@ -2788,14 +2788,14 @@ void func_80014984(Actor *a0) {
     case 0:
     default:
         w->field_AC = func_80022910(3, (ElmE620 **)w->field_A0);
-        func_8001C088(w, 0x1A);
-        func_80011544(a0);
+        Mem_FillWordsNeg1(w, 0x1A);
+        Task_NextState0(a0);
         break;
     case 1:
         switch (a0->field_14) {
         case 0:
         default:
-            if (func_800136E4((s32)a0, &w->field_70) != 0) {
+            if (Math_RampToOne((s32)a0, &w->field_70) != 0) {
                 break;
             }
             func_80013558(w->field_0, (Key13558 *)func_800239A0(0x513000B), 2);
@@ -2824,12 +2824,12 @@ void func_80014984(Actor *a0) {
                 func_8001BB88(&w->field_0[i * 3 + 8]);
                 func_8001BB88(&w->field_0[i * 3 + 9]);
             }
-            func_80011564(a0);
+            Task_NextState1(a0);
             break;
         case 1:
             if (D_8005F6F0[0].field_1C > 0) {
                 func_8001A68C(0xB, 0);
-                func_800115C0(a0, 2);
+                Task_SetState0(a0, 2);
             }
             break;
         }
@@ -2839,11 +2839,11 @@ void func_80014984(Actor *a0) {
         case 0:
         default:
             func_8001C0B0(w, 0x1A);
-            func_80011564(a0);
+            Task_NextState1(a0);
             break;
         case 1:
-            if (func_80013714((s32)a0, &w->field_70) == 0) {
-                func_800115C0(a0, 3);
+            if (Math_RampToZero((s32)a0, &w->field_70) == 0) {
+                Task_SetState0(a0, 3);
             }
             break;
         }
@@ -2871,23 +2871,23 @@ void func_80014CBC(Actor *actor) {
     do {
         obj = (Part28 *)func_800239A0(*list);
         if (i == 0) {
-            func_8001D5B4(obj, 2, 8, D_80050720->field_8);
-            func_8001D5B4(obj, 4, 4, D_80050720->field_26);
-            func_8001D5B4(obj, 8, 4, D_80050720->field_24);
-            func_8001D5B4(obj, 0x10, 4, D_80050720->field_2A);
-            func_8001D5B4(obj, 0x20, 4, D_80050720->field_28);
+            Gfx_SetPartsNumber(obj, 2, 8, D_80050720->field_8);
+            Gfx_SetPartsNumber(obj, 4, 4, D_80050720->field_26);
+            Gfx_SetPartsNumber(obj, 8, 4, D_80050720->field_24);
+            Gfx_SetPartsNumber(obj, 0x10, 4, D_80050720->field_2A);
+            Gfx_SetPartsNumber(obj, 0x20, 4, D_80050720->field_28);
         } else if (i - 1 < w->field_AC) {
             rec = w->field_A0[i - 1];
-            func_8001D5B4(obj, 2, 3, rec->field_14);
-            func_8001D5B4(obj, 4, 3, rec->field_16);
-            func_8001D5B4(obj, 8, 3, rec->field_18);
-            func_8001D5B4(obj, 0x10, 3, rec->field_1A);
-            func_8001D5B4(obj, 0x20, 2, rec->field_D);
-            func_8001D504(obj, 0);
+            Gfx_SetPartsNumber(obj, 2, 3, rec->field_14);
+            Gfx_SetPartsNumber(obj, 4, 3, rec->field_16);
+            Gfx_SetPartsNumber(obj, 8, 3, rec->field_18);
+            Gfx_SetPartsNumber(obj, 0x10, 3, rec->field_1A);
+            Gfx_SetPartsNumber(obj, 0x20, 2, rec->field_D);
+            Gfx_HidePartsByMask(obj, 0);
         } else {
-            func_8001D504(obj, 0xFFFF);
+            Gfx_HidePartsByMask(obj, 0xFFFF);
         }
-        func_8001D550((Ent1D550 *)obj, 0x1000, w->field_70);
+        Gfx_SetPartsScale((Ent1D550 *)obj, 0x1000, w->field_70);
         list++;
         func_8001D884((s32)obj);
         i++;
@@ -3049,7 +3049,7 @@ void func_800154F0(Actor *a0) {
     s32 id;
     Halves h;
 
-    i = func_80013A70(w->field_88, w->field_8C);
+    i = Menu_GridIndexColMajor(w->field_88, w->field_8C);
     func_8001BB88(&w->field_50);
     func_8001BB88(&w->field_54);
     func_8001BB88(&w->field_58);
@@ -3094,7 +3094,7 @@ void func_80015770(Actor *a0) {
     Src16198 st;
 
     if (D_8005F704 > 0) {
-        id = D_8005076C[func_80013A70(w->field_88, w->field_8C)];
+        id = D_8005076C[Menu_GridIndexColMajor(w->field_88, w->field_8C)];
         if (id != 0xFF && func_80012778(D_80050768->field_108, D_80050768->field_10A, id, 0) != 0) {
             st.field_C = D_80050700;
             st.field_11 = 0;
@@ -3104,7 +3104,7 @@ void func_80015770(Actor *a0) {
             func_80013470(&w->field_50, (Src13470 *)&st);
             func_80015298(a0, 0);
             func_8001A68C(0x1D, 0);
-            func_800115DC(a0, 3);
+            Task_SetState1(a0, 3);
         } else {
             func_8001A68C(0x10, 0);
         }
@@ -3151,14 +3151,14 @@ void func_80015914(Actor *a0) {
     case 0:
     default:
         *(Layout8C *)w->field_8C = *(Layout8C *)func_800239A0(0x5130010);
-        func_8001C088(w->field_0, 0x22);
-        func_80011544(a0);
+        Mem_FillWordsNeg1(w->field_0, 0x22);
+        Task_NextState0(a0);
         break;
     case 1:
         switch (a0->field_14) {
         case 0:
         default:
-            if (func_800136E4((s32)a0, &w->field_9C) != 0) {
+            if (Math_RampToOne((s32)a0, &w->field_9C) != 0) {
                 break;
             }
             func_80013558(&w->field_70, (Key13558 *)func_800239A0(0x5130011), 2);
@@ -3166,27 +3166,27 @@ void func_80015914(Actor *a0) {
             if (D_80050768->field_0 & 1) {
                 func_800153F4(a0, 1);
             }
-            func_80011564(a0);
+            Task_NextState1(a0);
             break;
         case 1:
             switch (w->field_98) {
             case 1:
                 func_800154F0(a0);
-                func_80011564(a0);
+                Task_NextState1(a0);
                 break;
             case 2:
                 func_80015668(a0);
                 func_80014EA4(a0);
-                func_800115DC(a0, 3);
+                Task_SetState1(a0, 3);
                 break;
             case 3:
                 func_80015668(a0);
-                func_80011564(a0);
+                Task_NextState1(a0);
                 break;
             case 4:
                 func_80015668(a0);
                 func_80014F78(a0);
-                func_800115DC(a0, 3);
+                Task_SetState1(a0, 3);
                 break;
             case 5:
 switch (func_80022518(0x10)) {
@@ -3204,33 +3204,33 @@ id = 0x152;
 break;
 }
                 func_800134F8(&w->field_50, (s32)func_800239A0(id | 0x1FD0000), 0x82, D_80050700);
-                func_800115DC(a0, next);
+                Task_SetState1(a0, next);
                 break;
             }
             break;
         case 2:
-            if (func_80013A10((s32)w->field_88, (s32)w->field_8C) == 0) {
+            if (Menu_MoveGridCursorP1((s32)w->field_88, (s32)w->field_8C) == 0) {
                 if (D_8005F6F0[0].field_1C > 0) {
                     func_8001A68C(0xB, 0);
-                    func_800115C0(a0, 2);
+                    Task_SetState0(a0, 2);
                 } else if (w->field_98 == 3) {
                     func_80015770(a0);
                 }
             } else {
                 func_8001A68C(0xD, 0);
-                func_800115DC(a0, 1);
+                Task_SetState1(a0, 1);
             }
             break;
         case 3:
             switch (a0->field_18) {
             case 0:
                 if (func_8001BE08(w->field_50) != 0) {
-                    func_80011580(a0);
+                    Task_NextState2(a0);
                 }
                 break;
             case 1:
                 if (D_8005F6F0[0].field_1C > 0 || D_8005F6F0[0].field_14 > 0 || a0->field_20++ >= 0x1F) {
-                    func_800115C0(a0, 2);
+                    Task_SetState0(a0, 2);
                 }
                 break;
             }
@@ -3239,12 +3239,12 @@ break;
             r = func_800136A4(w->field_50);
             switch (r) {
             case 1:
-                func_8001C4F0(0x20);
+                Gfx_FadeOutToBlack(0x20);
                 D_80050768->field_360 = r;
-                func_800115C0(a0, 2);
+                Task_SetState0(a0, 2);
                 break;
             case -1:
-                func_800115C0(a0, 2);
+                Task_SetState0(a0, 2);
                 break;
             }
             break;
@@ -3255,11 +3255,11 @@ break;
         case 0:
         default:
             func_8001C0B0(w->field_0, 0x22);
-            func_80011564(a0);
+            Task_NextState1(a0);
             break;
         case 1:
-            if (func_80013714((s32)a0, &w->field_9C) == 0) {
-                func_800115C0(a0, 3);
+            if (Math_RampToZero((s32)a0, &w->field_9C) == 0) {
+                Task_SetState0(a0, 3);
             }
             break;
         }
@@ -3293,16 +3293,16 @@ void func_80015D30(Actor *actor) {
             switch (i) {
             case 0:
             if (w->field_98 == 1 || w->field_98 == 3) {
-                func_8001373C(obj, 2, &w->field_88, &w->field_8C);
+                Menu_SetPartsGridPos(obj, 2, &w->field_88, &w->field_8C);
                 func_800137B8(obj, 2, (actor->field_28 >> 2) & 3);
-                func_8001D504(obj, 0);
+                Gfx_HidePartsByMask(obj, 0);
             } else {
-                func_8001D504(obj, 2);
+                Gfx_HidePartsByMask(obj, 2);
             }
-            func_8001D5B4(obj, 4, 4, D_80050720->field_26);
-            func_8001D5B4(obj, 8, 4, D_80050720->field_24);
-            func_8001D5B4(obj, 0x10, 4, D_80050720->field_2A);
-            func_8001D5B4(obj, 0x20, 4, D_80050720->field_28);
+            Gfx_SetPartsNumber(obj, 4, 4, D_80050720->field_26);
+            Gfx_SetPartsNumber(obj, 8, 4, D_80050720->field_24);
+            Gfx_SetPartsNumber(obj, 0x10, 4, D_80050720->field_2A);
+            Gfx_SetPartsNumber(obj, 0x20, 4, D_80050720->field_28);
                 break;
             case 1:
             case 3:
@@ -3312,13 +3312,13 @@ void func_80015D30(Actor *actor) {
                 } else if (i == 3) {
                     k = 4;
                 }
-                func_8001D504(obj, k);
+                Gfx_HidePartsByMask(obj, k);
                 break;
             default:
-                func_8001D504(obj, 0);
+                Gfx_HidePartsByMask(obj, 0);
                 break;
             }
-            func_8001D550(obj, 0x1000, w->field_9C);
+            Gfx_SetPartsScale(obj, 0x1000, w->field_9C);
             func_8001D884((s32)obj);
         }
         list++;
@@ -3410,7 +3410,7 @@ void func_80016198(Obj16198 *a0, s32 a1) {
             st.field_0 = (s32)func_800239A0(0x1FD0125);
             st.field_4 = img;
             st.field_8 = a0->field_702[i];
-            func_80013AFC(a0->field_702[i], a0->field_72[base + i].field_2, -2);
+            Text_FormatNumber(a0->field_702[i], a0->field_72[base + i].field_2, -2);
             func_80013470(&a0->field_0[i], (Src13470 *)&st);
         } else {
             func_800134F8(&a0->field_0[i], img, a1, h);
@@ -3424,7 +3424,7 @@ void func_80016394(Actor *a0, Obj16198 *w) {
     s32 snd;
     Src16198 st;
 
-    c = &w->field_72[func_80013A70(w->field_54, w->field_58.field_0)];
+    c = &w->field_72[Menu_GridIndexColMajor(w->field_54, w->field_58.field_0)];
     if (c->field_0 == 0) {
         snd = 0x10;
     } else {
@@ -3439,7 +3439,7 @@ void func_80016394(Actor *a0, Obj16198 *w) {
         func_80013470(&w->field_40, (Src13470 *)&st);
         func_80015F68(w);
         func_80016198(w, 0);
-        func_800115DC(a0, 2);
+        Task_SetState1(a0, 2);
         snd = 0xE;
     }
     func_8001A68C(snd, 0);
@@ -3453,10 +3453,10 @@ void func_800164AC(Actor *a0, Obj16198 *w) {
     s32 snd;
     Src16198 st;
 
-    c = &w->field_72[func_80013A70(w->field_54, w->field_58.field_0)];
+    c = &w->field_72[Menu_GridIndexColMajor(w->field_54, w->field_58.field_0)];
     if (c->field_0 == 0) {
         snd = 0x10;
-    } else if (func_80013A70(w->field_54, w->field_58.field_0) >= w->field_6C) {
+    } else if (Menu_GridIndexColMajor(w->field_54, w->field_58.field_0) >= w->field_6C) {
         snd = 0x10;
     } else {
         n = func_8002281C();
@@ -3491,9 +3491,9 @@ void func_800164AC(Actor *a0, Obj16198 *w) {
             w->field_6E = (w->field_6E < t) ? w->field_6E : t;
             func_80016198(w, 0);
             if (w->field_6C == 0) {
-                func_800115DC(a0, 6);
+                Task_SetState1(a0, 6);
             } else {
-                func_800115DC(a0, 2);
+                Task_SetState1(a0, 2);
             }
             snd = 0xE;
         }
@@ -3505,7 +3505,7 @@ void func_800164AC(Actor *a0, Obj16198 *w) {
 void func_800166FC(Actor *a0, Obj166FC *o) {
     s16 *pos = o->field_54;
     s16 *size = o->field_58;
-    s32 id = o->field_72[func_80013A70(pos, size)].field_0;
+    s32 id = o->field_72[Menu_GridIndexColMajor(pos, size)].field_0;
     s32 r;
     Halves h;
 
@@ -3522,22 +3522,22 @@ void func_800166FC(Actor *a0, Obj166FC *o) {
     return;
 found:
     D_80050768->field_108 = id;
-    D_80050768->field_10A = o->field_72[func_80013A70(pos, size)].field_4;
+    D_80050768->field_10A = o->field_72[Menu_GridIndexColMajor(pos, size)].field_4;
     o->field_66 = r == 1;
     func_8001A68C(0xE, 0);
-    func_80011564(a0);
+    Task_NextState1(a0);
 }
 
 void func_80016834(Actor *a0, GridMenu *m) {
-    u16 v = m->field_72[func_80013A70(m->field_54, m->field_58)].field_0;
+    u16 v = m->field_72[Menu_GridIndexColMajor(m->field_54, m->field_58)].field_0;
 
     if (v == 0) {
         func_8001A68C(0x10, 0);
     } else {
         func_8001A68C(0xE, 0);
         D_80050768->field_108 = v;
-        D_80050768->field_10A = func_80013A70(m->field_54, m->field_58);
-        func_800115DC(a0, 4);
+        D_80050768->field_10A = Menu_GridIndexColMajor(m->field_54, m->field_58);
+        Task_SetState1(a0, 4);
     }
 }
 
@@ -3545,7 +3545,7 @@ void func_800168F0(Actor *a0, Obj166FC *o) {
     s32 idx;
     u16 id;
 
-    idx = func_80013A70(o->field_54, o->field_58);
+    idx = Menu_GridIndexColMajor(o->field_54, o->field_58);
     func_8001BB88(&o->field_40);
     func_8001BB88((s32 *)o->field_44);
     id = o->field_72[idx].field_0;
@@ -3577,20 +3577,20 @@ void func_800169DC(Actor *a0) {
         w->field_54[1] = 0;
         w->field_54[0] = 0;
         func_80015F68(w);
-        func_8001C088(w->field_0, 0x15);
-        func_80011544(a0);
+        Mem_FillWordsNeg1(w->field_0, 0x15);
+        Task_NextState0(a0);
         break;
     case 1:
         switch (a0->field_14) {
         case 0:
         default:
-            if (func_800136E4((s32)a0, &w->field_68) != 0) {
+            if (Math_RampToOne((s32)a0, &w->field_68) != 0) {
                 break;
             }
             func_80013558(&w->field_4C, (Key13558 *)func_80013AB0(0x5130018, w->field_64 - 1), 2);
             func_80015F68(w);
             func_80016198(w, 1);
-            func_80011564(a0);
+            Task_NextState1(a0);
             break;
         case 1:
             switch (w->field_64) {
@@ -3603,7 +3603,7 @@ void func_800169DC(Actor *a0) {
                     goto msg;
                 }
                 func_800168F0(a0, (Obj166FC *)w);
-                func_80011564(a0);
+                Task_NextState1(a0);
                 return;
             case 3:
             case 4:
@@ -3615,10 +3615,10 @@ void func_800169DC(Actor *a0) {
                 func_800134F8(&w->field_40, (s32)func_800239A0(((s32)((u16)w->field_64 << 16) >> 16) + 0x1FD011D), 0x80, D_80050704);
                 break;
             }
-            func_80011564(a0);
+            Task_NextState1(a0);
             break;
         case 2:
-            if (func_80013A10((s32)w->field_54, (s32)w->field_58.field_0) != 0) {
+            if (Menu_MoveGridCursorP1((s32)w->field_54, (s32)w->field_58.field_0) != 0) {
                 func_8001A68C(0xD, 0);
                 if (w->field_54[0] - w->field_6E >= 2) {
                     w->field_6E = w->field_54[0] - 1;
@@ -3627,10 +3627,10 @@ void func_800169DC(Actor *a0) {
                     w->field_6E = w->field_54[0];
                     func_80016198(w, 0);
                 }
-                func_800115DC(a0, 1);
+                Task_SetState1(a0, 1);
             } else if (D_8005F6F0[0].field_1C > 0) {
                 func_8001A68C(0xB, 0);
-                func_800115C0(a0, 2);
+                Task_SetState0(a0, 2);
             } else if (D_8005F6F0[0].field_14 > 0) {
                 switch (w->field_64) {
                 case 1:
@@ -3654,18 +3654,18 @@ void func_800169DC(Actor *a0) {
             case 0:
             default:
                 func_8001C0B0(w->field_0, 0x15);
-                func_80011580(a0);
+                Task_NextState2(a0);
                 break;
             case 1:
-                if (func_80013714((s32)a0, &w->field_68) != 0) {
+                if (Math_RampToZero((s32)a0, &w->field_68) != 0) {
                     break;
                 }
-                func_8001107C(D_80040EFC[w->field_66].field_0, slot, D_80040EFC[w->field_66].field_2);
-                func_80011580(a0);
+                Task_Create(D_80040EFC[w->field_66].field_0, slot, D_80040EFC[w->field_66].field_2);
+                Task_NextState2(a0);
                 break;
             case 2:
                 if (*slot == 0) {
-                    func_800115DC(a0, 0);
+                    Task_SetState1(a0, 0);
                 }
                 break;
             }
@@ -3681,7 +3681,7 @@ void func_800169DC(Actor *a0) {
             default:
                 st.field_0 = (s32)func_800239A0(0x1FD00B9);
                 func_80013470(&w->field_44, (Src13470 *)&st);
-                func_80011580(a0);
+                Task_NextState2(a0);
                 break;
             case 1:
                 r = func_800136A4(w->field_44);
@@ -3692,10 +3692,10 @@ void func_800169DC(Actor *a0) {
                     func_80013470(&w->field_44, (Src13470 *)&st);
                     func_80015F68(w);
                     func_80016198(w, 0);
-                    func_800115DC(a0, 2);
+                    Task_SetState1(a0, 2);
                     break;
                 case -1:
-                    func_800115DC(a0, 1);
+                    Task_SetState1(a0, 1);
                     break;
                 }
                 break;
@@ -3705,12 +3705,12 @@ void func_800169DC(Actor *a0) {
             switch (a0->field_18) {
             case 0:
                 if (func_8001BE08(w->field_40) != 0) {
-                    func_80011580(a0);
+                    Task_NextState2(a0);
                 }
                 break;
             case 1:
                 if (D_8005F6F0[0].field_1C > 0 || D_8005F6F0[0].field_14 > 0 || a0->field_20++ >= 0x1F) {
-                    func_800115C0(a0, 2);
+                    Task_SetState0(a0, 2);
                 }
                 break;
             }
@@ -3723,7 +3723,7 @@ void func_800169DC(Actor *a0) {
             id = 0x1FD0127;
         msg:
             func_800134F8(&w->field_40, (s32)func_800239A0(id), 0x81, D_80050704);
-            func_800115DC(a0, 5);
+            Task_SetState1(a0, 5);
             break;
         }
         break;
@@ -3733,11 +3733,11 @@ void func_800169DC(Actor *a0) {
         default:
             func_800226AC();
             func_8001C0B0(w->field_0, 0x15);
-            func_80011564(a0);
+            Task_NextState1(a0);
             break;
         case 1:
-            if (func_80013714((s32)a0, &w->field_68) == 0) {
-                func_800115C0(a0, 3);
+            if (Math_RampToZero((s32)a0, &w->field_68) == 0) {
+                Task_SetState0(a0, 3);
             }
             break;
         }
@@ -3772,17 +3772,17 @@ loop:
         case 0:
             tmp = w->field_54;
             f = w->field_54.field_0 + 1;
-            func_8001D5B4(obj, 0x10, 2, f ? f : 1);
-            func_8001D5B4(obj, 0x20, 2, w->field_58 ? w->field_58 : 1);
+            Gfx_SetPartsNumber(obj, 0x10, 2, f ? f : 1);
+            Gfx_SetPartsNumber(obj, 0x20, 2, w->field_58 ? w->field_58 : 1);
             tmp.field_0 = w->field_54.field_0 - w->field_6E;
-            func_8001373C(obj, 2, (s32 *)&tmp, &w->field_58);
+            Menu_SetPartsGridPos(obj, 2, (s32 *)&tmp, &w->field_58);
             func_800137B8(obj, 2, (actor->field_28 >> 2) & 3);
             f = func_80013854(obj, 8, w->field_6E);
             f |= func_80013854(obj, 4, w->field_58 - w->field_6E - 2);
             if (w->field_70 == 0) {
                 f |= 0xE;
             }
-            func_8001D504(obj, f);
+            Gfx_HidePartsByMask(obj, f);
             break;
         case 1:
             if (w->field_64 < 3) {
@@ -3790,7 +3790,7 @@ loop:
             } else {
                 m = 0xFFFF;
             }
-            func_8001D504(obj, m);
+            Gfx_HidePartsByMask(obj, m);
             break;
         case 3:
             m = 0xFFFF;
@@ -3799,10 +3799,10 @@ loop:
             } else if (w->field_64 == 4) {
                 m = 2;
             }
-            func_8001D504(obj, m);
+            Gfx_HidePartsByMask(obj, m);
             break;
         }
-        func_8001D550(obj, 0x1000, w->field_68);
+        Gfx_SetPartsScale(obj, 0x1000, w->field_68);
         list++;
         func_8001D884((s32)obj);
         i++;
@@ -3821,7 +3821,7 @@ void func_80017214(Actor *a0) {
     s32 n;
     Obj50768 *p;
 
-    e = &w->field_6C[func_80013A70(w->field_50, w->field_54)];
+    e = &w->field_6C[Menu_GridIndexColMajor(w->field_50, w->field_54)];
     p = D_80050768;
     do {} while (0);
     n = D_8005F704;
@@ -3856,7 +3856,7 @@ void func_80017214(Actor *a0) {
             D_80050768->field_126 = -1;
             func_80017D84((Obj17D84 *)w, 0);
             func_8001A68C(0xE, 0);
-            func_800115DC(a0, 4);
+            Task_SetState1(a0, 4);
             return;
         case 3:
             if (g->field_0 >= 3) {
@@ -3864,7 +3864,7 @@ void func_80017214(Actor *a0) {
                 goto icon;
             }
             func_800134F8(w->field_40, func_800239A0(0x1FD011F), 0x81, D_8005070C);
-            func_800115DC(a0, 5);
+            Task_SetState1(a0, 5);
             return;
         case 2:
             break;
@@ -3875,7 +3875,7 @@ void func_80017214(Actor *a0) {
 
 void func_800174F8(Actor *a0) {
     Work174F8 *w = (Work174F8 *)a0->work;
-    Sel174F8 *e = &w->field_6C[func_80013A70(w->field_50, w->field_54)];
+    Sel174F8 *e = &w->field_6C[Menu_GridIndexColMajor(w->field_50, w->field_54)];
     s32 k;
 
     if (D_8005F704 > 0) {
@@ -3884,7 +3884,7 @@ void func_800174F8(Actor *a0) {
             D_80050768->field_128 = e->field_4;
             D_80050768->field_126 = 0;
             w->field_62 = 3;
-            func_800115DC(a0, 3);
+            Task_SetState1(a0, 3);
             k = 0xE;
         }
         func_8001A68C(k, 0);
@@ -3893,7 +3893,7 @@ void func_800174F8(Actor *a0) {
 
 void func_80017594(Actor *a0) {
     Work174F8 *w = (Work174F8 *)a0->work;
-    s32 k = func_80013A70(w->field_50, w->field_54);
+    s32 k = Menu_GridIndexColMajor(w->field_50, w->field_54);
     Sel174F8 *e = &w->field_6C[k];
     s32 i;
 
@@ -3906,7 +3906,7 @@ void func_80017594(Actor *a0) {
         w->field_1A0[w->field_19E++] = k;
         func_8001A68C(0xE, 0);
         if (w->field_19E < w->field_19C) {
-            func_800115DC(a0, 1);
+            Task_SetState1(a0, 1);
         } else {
             Obj50768 *d;
             D_80050768->field_120 = w->field_19C;
@@ -3918,7 +3918,7 @@ void func_80017594(Actor *a0) {
                 } while (++i < w->field_19C);
             }
             w->field_62 = 2;
-            func_800115DC(a0, 3);
+            Task_SetState1(a0, 3);
         }
     }
 }
@@ -3928,7 +3928,7 @@ void func_800176D8(Actor *s0) {
     s16 c = w->field_19E;
     if (c == 0) {
         func_8001A68C(0xB, 0);
-        func_800115C0(s0, 2);
+        Task_SetState0(s0, 2);
     } else {
         s16 idx = (u16)c - 1;
         s16 v;
@@ -3937,13 +3937,13 @@ void func_800176D8(Actor *s0) {
         ((WorkElem8 *)((u8 *)w + 0x6C))[v].field_2 = 2;
         w->field_1A0[w->field_19E] = 0;
         func_8001A68C(0xB, 0);
-        func_800115DC(s0, 1);
+        Task_SetState1(s0, 1);
     }
 }
 
 void func_8001777C(Actor *a0) {
     Work174F8 *w = (Work174F8 *)a0->work;
-    Sel174F8 *e = &w->field_6C[func_80013A70(w->field_50, w->field_54)];
+    Sel174F8 *e = &w->field_6C[Menu_GridIndexColMajor(w->field_50, w->field_54)];
     Src16198 st;
 
     if (D_8005F704 > 0) {
@@ -3955,7 +3955,7 @@ void func_8001777C(Actor *a0) {
             st.field_4 = func_8001E048(D_80050768->field_108);
             func_80013470(w->field_40, (Src13470 *)&st);
             func_8001A68C(0x1D, 0);
-            func_800115DC(a0, 4);
+            Task_SetState1(a0, 4);
         } else {
             func_8001A68C(0x10, 0);
         }
@@ -3986,11 +3986,11 @@ void func_80017944(Actor *a0) {
     s32 c;
 
     if (D_8005F704 > 0) {
-        k = func_80013A70(w->field_50, w->field_54);
+        k = Menu_GridIndexColMajor(w->field_50, w->field_54);
         if ((c = w->field_6C[k].field_0) == 1) {
             D_80050768->field_110 = (u8 *)w->field_6C[k].field_4;
             w->field_62 = 0;
-            func_800115DC(a0, 3);
+            Task_SetState1(a0, 3);
             D_80050768->field_35C = c;
             func_8001A68C(0xE, 0);
         } else {
@@ -4194,40 +4194,40 @@ void func_80018048(Actor *a0) {
         w->field_50[1] = 0;
         w->field_50[0] = 0;
         func_800179EC((Wk179EC *)w);
-        func_8001C088(w->field_0, 0x14);
-        func_80011544(a0);
+        Mem_FillWordsNeg1(w->field_0, 0x14);
+        Task_NextState0(a0);
         break;
     case 1:
         switch (a0->field_14) {
         case 0:
         default:
-            if (func_800136E4((s32)a0, &w->field_64) != 0) {
+            if (Math_RampToOne((s32)a0, &w->field_64) != 0) {
                 break;
             }
             func_80017D84((Obj17D84 *)w, 1);
-            func_80011564(a0);
+            Task_NextState1(a0);
             break;
         case 1:
             switch (w->field_60) {
             default:
                 func_800134F8(&w->field_40, (s32)func_800239A0(0x1FD00D3), 0x80, D_8005070C);
-                func_80011564(a0);
+                Task_NextState1(a0);
                 break;
             case 3:
                 func_800134F8(&w->field_40, (s32)func_800239A0(0x1FD009E), 0x80, D_8005070C);
-                func_80011564(a0);
+                Task_NextState1(a0);
                 break;
             case 4:
                 func_80017884(a0);
-                func_800115DC(a0, 4);
+                Task_SetState1(a0, 4);
                 break;
             case 5:
                 func_800134F8(&w->field_40, (s32)func_800239A0(w->field_19E + 0x1FD0109), 0x80, D_8005070C);
-                func_80011564(a0);
+                Task_NextState1(a0);
                 break;
             case 6:
                 func_800134F8(&w->field_40, (s32)func_800239A0(0x1FD010C), 0x80, D_8005070C);
-                func_800115DC(a0, 5);
+                Task_SetState1(a0, 5);
                 break;
             case 7:
             case 8:
@@ -4237,7 +4237,7 @@ void func_80018048(Actor *a0) {
                     id = 0x1FD009A;
                 }
                 func_800134F8(&w->field_44, (s32)func_800239A0(id), 0, D_80040F38[w->field_1A6]);
-                func_80011564(a0);
+                Task_NextState1(a0);
                 break;
             }
             if (w->field_6A != 0) {
@@ -4245,11 +4245,11 @@ void func_80018048(Actor *a0) {
             }
             break;
         case 2:
-            if (func_80013A10((s32)w->field_50, (s32)w->field_54.field_0) == 0) {
+            if (Menu_MoveGridCursorP1((s32)w->field_50, (s32)w->field_54.field_0) == 0) {
                 if (D_8005F70C > 0) {
                     if (w->field_60 != 5) {
                         func_8001A68C(0xB, 0);
-                        func_800115C0(a0, 2);
+                        Task_SetState0(a0, 2);
                     } else {
                         func_800176D8(a0);
                     }
@@ -4282,7 +4282,7 @@ void func_80018048(Actor *a0) {
                     w->field_68 = w->field_50[1];
                     func_80017D84((Obj17D84 *)w, 0);
                 }
-                func_800115DC(a0, 1);
+                Task_SetState1(a0, 1);
             }
             break;
         case 3:
@@ -4291,17 +4291,17 @@ void func_80018048(Actor *a0) {
             case 0:
             default:
                 func_8001C0B0(w->field_0, 0x14);
-                func_80011580(a0);
+                Task_NextState2(a0);
                 break;
             case 1:
-                if (func_80013714((s32)a0, &w->field_64) != 0) {
+                if (Math_RampToZero((s32)a0, &w->field_64) != 0) {
                     break;
                 }
-                func_80011580(a0);
+                Task_NextState2(a0);
                 break;
             case 2:
-                func_8001107C(D_80040F28[w->field_62].field_0, slot, D_80040F28[w->field_62].field_2);
-                func_80011580(a0);
+                Task_Create(D_80040F28[w->field_62].field_0, slot, D_80040F28[w->field_62].field_2);
+                Task_NextState2(a0);
                 break;
             case 3:
                 if (*slot != 0) {
@@ -4311,30 +4311,30 @@ void func_80018048(Actor *a0) {
                 case 1:
                 case 2:
                     if (D_80050768->field_35E == 0) {
-                        func_800115DC(a0, 0);
+                        Task_SetState1(a0, 0);
                         D_80050768->field_35C = 2;
                     } else {
                         w->field_62 ^= 1;
-                        func_80011614(a0, 2);
+                        Task_SetState2(a0, 2);
                     }
                     break;
                 case 5:
                     if (D_80050768->field_122 != 0) {
                         func_80022AE4();
-                        func_800115C0(a0, 2);
+                        Task_SetState0(a0, 2);
                         break;
                     }
                     func_800176D8(a0);
-                    func_800115DC(a0, 0);
+                    Task_SetState1(a0, 0);
                     break;
                 case 7:
                     if (D_80050768->field_126 != 0) {
                         func_80022AE4();
-                        func_800115C0(a0, 0);
+                        Task_SetState0(a0, 0);
                         break;
                     }
                 default:
-                    func_800115DC(a0, 0);
+                    Task_SetState1(a0, 0);
                     break;
                 }
                 break;
@@ -4344,12 +4344,12 @@ void func_80018048(Actor *a0) {
             switch (a0->field_18) {
             case 0:
                 if (func_8001BE08(w->field_40) != 0) {
-                    func_80011580(a0);
+                    Task_NextState2(a0);
                 }
                 break;
             case 1:
                 if (D_8005F6F0[0].field_1C > 0 || D_8005F6F0[0].field_14 > 0 || a0->field_20++ >= 0x1F) {
-                    func_800115C0(a0, 2);
+                    Task_SetState0(a0, 2);
                 }
                 break;
             }
@@ -4373,10 +4373,10 @@ void func_80018048(Actor *a0) {
                         *D_80050768->field_114[i] = i + 3;
                     }
                     D_80050768->field_122 = -1;
-                    func_800115DC(a0, 4);
+                    Task_SetState1(a0, 4);
                 } else {
                     D_80050768->field_122 = 0;
-                    func_800115C0(a0, 2);
+                    Task_SetState0(a0, 2);
                 }
                 break;
             case 8:
@@ -4386,9 +4386,9 @@ void func_80018048(Actor *a0) {
                     *p = 0;
                     D_80050768->field_126 = -1;
                     func_8001A68C(0xE, 0);
-                    func_800115DC(a0, 4);
+                    Task_SetState1(a0, 4);
                 } else {
-                    func_800115DC(a0, 1);
+                    Task_SetState1(a0, 1);
                 }
                 break;
             }
@@ -4400,11 +4400,11 @@ void func_80018048(Actor *a0) {
         case 0:
         default:
             func_8001C0B0(w->field_0, 0x14);
-            func_80011564(a0);
+            Task_NextState1(a0);
             break;
         case 1:
-            if (func_80013714((s32)a0, &w->field_64) == 0) {
-                func_800115C0(a0, 3);
+            if (Math_RampToZero((s32)a0, &w->field_64) == 0) {
+                Task_SetState0(a0, 3);
             }
             break;
         }
@@ -4440,19 +4440,19 @@ void func_800188BC(Actor *actor) {
             if (w->field_6A != 0) {
             tmp = w->field_50;
             tmp.field_2 = w->field_50.field_2 - w->field_68;
-            func_8001373C(obj, 2, (s32 *)&tmp, &w->field_54);
+            Menu_SetPartsGridPos(obj, 2, (s32 *)&tmp, &w->field_54);
             func_800137B8(obj, 2, (actor->field_28 >> 2) & 3);
             {
                 s32 fl = (w->field_68 < 1) << 2;
                 if (w->field_56 - w->field_68 - 4 <= 0) {
                     fl |= 8;
                 }
-                func_8001D504(obj, fl);
+                Gfx_HidePartsByMask(obj, fl);
             }
-            func_8001D5B4(obj, 0x10, 2, w->field_50.field_2 + 1);
-            func_8001D5B4(obj, 0x20, 2, w->field_56);
+            Gfx_SetPartsNumber(obj, 0x10, 2, w->field_50.field_2 + 1);
+            Gfx_SetPartsNumber(obj, 0x20, 2, w->field_56);
             } else {
-                func_8001D504(obj, -1);
+                Gfx_HidePartsByMask(obj, -1);
             }
             break;
         default:
@@ -4460,29 +4460,29 @@ void func_800188BC(Actor *actor) {
             r = &w->rows[f + i];
             j = i - 1;
             if (j >= w->field_56) {
-                func_8001D504(obj, -1);
+                Gfx_HidePartsByMask(obj, -1);
                 break;
             }
-            func_8001D504(obj, 0);
+            Gfx_HidePartsByMask(obj, 0);
             f = 2;
             if (w->field_6A != 0 && j == w->field_50.field_2 - w->field_68) {
                 f = 1;
             }
             switch (r->field_0) {
             case 0:
-                func_8001D504(obj, f | 0xFE4);
+                Gfx_HidePartsByMask(obj, f | 0xFE4);
                 break;
             case 1:
                 e = (Part188BC *)r->field_4;
-                func_8001D504(obj, f | D_80040F40[r->field_2 - 1]);
-                func_8001D5B4(obj, 0x20, 3, e->field_14);
-                func_8001D5B4(obj, 0x40, 3, e->field_16);
-                func_8001D5B4(obj, 0x80, 3, e->field_18);
-                func_8001D5B4(obj, 0x100, 3, e->field_1A);
+                Gfx_HidePartsByMask(obj, f | D_80040F40[r->field_2 - 1]);
+                Gfx_SetPartsNumber(obj, 0x20, 3, e->field_14);
+                Gfx_SetPartsNumber(obj, 0x40, 3, e->field_16);
+                Gfx_SetPartsNumber(obj, 0x80, 3, e->field_18);
+                Gfx_SetPartsNumber(obj, 0x100, 3, e->field_1A);
                 break;
             case 2:
             case 3:
-                func_8001D504(obj, -5);
+                Gfx_HidePartsByMask(obj, -5);
                 break;
             }
             break;
@@ -4496,10 +4496,10 @@ void func_800188BC(Actor *actor) {
                     m = 2;
                 }
             }
-            func_8001D504(obj, m);
+            Gfx_HidePartsByMask(obj, m);
             break;
         }
-        func_8001D550(obj, 0x1000, w->field_64);
+        Gfx_SetPartsScale(obj, 0x1000, w->field_64);
         func_8001D884((s32)obj);
         i++;
     } while (p[i] != 0);
@@ -4558,12 +4558,12 @@ void func_80018D78(Actor *a) {
     default:
     case 0:
         w->blk = *(Blk18D78 *)func_800239A0(0x513001C);
-        func_8001C088(w, 0x1B);
+        Mem_FillWordsNeg1(w, 0x1B);
         func_8002B334(-0xA0, 0xB4);
         t[0] = a;
-        func_8001107C(6, (s32 *)a->u34.field_34, (s32)t);
+        Task_Create(6, (s32 *)a->u34.field_34, (s32)t);
         a->field_30 = 0;
-        func_80011544(a);
+        Task_NextState0(a);
         break;
     case 1:
         switch (a->field_14) {
@@ -4571,7 +4571,7 @@ void func_80018D78(Actor *a) {
         case 0:
             h = (Halves *)func_800239A0(0x513001E);
             (*(Actor **)a->u34.field_34)->field_3C->field_3C = 4;
-            if (func_800136E4((s32)a, &w->field_80) != 0) {
+            if (Math_RampToOne((s32)a, &w->field_80) != 0) {
                 break;
             }
             func_80013558((s32 *)w, (Key13558 *)func_80013AB0(0x513001D, 0), 1);
@@ -4589,15 +4589,15 @@ void func_80018D78(Actor *a) {
             }
             *q = 0;
             func_8001361C(&w->field_54, &h[1], (s32 *)&w->field_88, 1);
-            func_80011564(a);
+            Task_NextState1(a);
             break;
         case 1:
             w->field_C8 = 1;
             func_8002B334(-0xA0, w->field_138[0] * 80 / 682 + 180);
-            func_80011564(a);
+            Task_NextState1(a);
             break;
         case 2:
-            func_800136E4((s32)a, &w->field_14C);
+            Math_RampToOne((s32)a, &w->field_14C);
             p = w->field_138;
             s = w->field_140;
             a->field_30 = 1;
@@ -4617,7 +4617,7 @@ void func_80018D78(Actor *a) {
             func_8002B334(-0xA0, p[0] * 80 / 682 + 180);
             d = D_8005F6F0;
             if (d->field_1C > 0 || d->field_10 > 0) {
-                func_800115C0(a, 2);
+                Task_SetState0(a, 2);
                 if (d->field_10 > 0) {
                     D_80050768->field_35E = -1;
                     func_8001A68C(0xE, 0);
@@ -4634,13 +4634,13 @@ void func_80018D78(Actor *a) {
         default:
         case 0:
             func_8001C0B0(w, 0x1B);
-            func_80011564(a);
+            Task_NextState1(a);
             break;
         case 1:
-            func_80013714((s32)a, &w->field_14C);
-            if (func_80013714((s32)a, &w->field_80) == 0) {
+            Math_RampToZero((s32)a, &w->field_14C);
+            if (Math_RampToZero((s32)a, &w->field_80) == 0) {
                 func_8002B334(0, 0);
-                func_800115C0(a, 3);
+                Task_SetState0(a, 3);
             }
             break;
         }
@@ -4742,17 +4742,17 @@ void func_80019214(Actor *actor) {
     do {
         obj = func_800239A0(*list);
         list++;
-        func_8001D5B4(obj, 0x2, 3, rec->field_14);
-        func_8001D5B4(obj, 0x4, 3, rec->field_16);
-        func_8001D5B4(obj, 0x8, 3, rec->field_18);
-        func_8001D5B4(obj, 0x10, 3, rec->field_1A);
-        func_8001D5B4(obj, 0x20, 2, rec->field_D);
-        func_8001D5B4(obj, 0x40, 3, rec->field_1C);
-        func_8001D5B4(obj, 0x80, 3, rec->field_1E);
-        func_8001D5B4(obj, 0x100, 3, rec->field_20);
-        func_8001D5B4(obj, 0x200, 8, rec->field_10);
-        func_8001D5B4(obj, 0x400, 8, func_8001E984(rec->field_D, rec->field_F, rec->field_10));
-        func_8001D550((Ent1D550 *)obj, 0x1000, work->field_80);
+        Gfx_SetPartsNumber(obj, 0x2, 3, rec->field_14);
+        Gfx_SetPartsNumber(obj, 0x4, 3, rec->field_16);
+        Gfx_SetPartsNumber(obj, 0x8, 3, rec->field_18);
+        Gfx_SetPartsNumber(obj, 0x10, 3, rec->field_1A);
+        Gfx_SetPartsNumber(obj, 0x20, 2, rec->field_D);
+        Gfx_SetPartsNumber(obj, 0x40, 3, rec->field_1C);
+        Gfx_SetPartsNumber(obj, 0x80, 3, rec->field_1E);
+        Gfx_SetPartsNumber(obj, 0x100, 3, rec->field_20);
+        Gfx_SetPartsNumber(obj, 0x200, 8, rec->field_10);
+        Gfx_SetPartsNumber(obj, 0x400, 8, Digi_GetExpToNextLevel(rec->field_D, rec->field_F, rec->field_10));
+        Gfx_SetPartsScale((Ent1D550 *)obj, 0x1000, work->field_80);
         func_8001D884((s32)obj);
     } while (*list != 0);
 
@@ -4891,14 +4891,14 @@ void func_80019808(Actor *a0) {
         w->field_118 = D_80050768->field_110;
         func_800194C8(w);
         w->field_114 = 0;
-        func_8001C088(&w->field_0, 0x15);
-        func_80011544(a0);
+        Mem_FillWordsNeg1(&w->field_0, 0x15);
+        Task_NextState0(a0);
         break;
     case 1:
         switch (a0->field_14) {
         case 0:
         default:
-            if (func_800136E4((s32)a0, &w->field_A8) != 0) {
+            if (Math_RampToOne((s32)a0, &w->field_A8) != 0) {
                 break;
             }
             func_80013558(&w->field_0, (Key13558 *)func_80013AB0(0x5130024, 0), 1);
@@ -4906,11 +4906,11 @@ void func_80019808(Actor *a0) {
             h.lo = 0x13;
             h.hi = 0x32;
             func_800134F8(&w->field_50, (s32)&w->field_118[0x4C], 1, h);
-            func_80011564(a0);
+            Task_NextState1(a0);
             break;
         case 1:
             i = w->field_114;
-            k = func_80013A70(&w->slot54[i].v, (s16 *)w->block64[i].data);
+            k = Menu_GridIndexColMajor(&w->slot54[i].v, (s16 *)w->block64[i].data);
             func_8001BB88(&w->field_48);
             func_8001BB88(&w->field_4C);
             if (k < w->records[i].count) {
@@ -4922,11 +4922,11 @@ void func_80019808(Actor *a0) {
                 func_80013470(&w->field_48, (Src13470 *)&st);
                 st.field_C.hi = 0xCA;
                 st.field_0 = (s32)func_800239A0(0x1FD0150);
-                func_80013AFC(w->field_11C, func_8001EE80(id), -4);
+                Text_FormatNumber(w->field_11C, func_8001EE80(id), -4);
                 st.field_4 = (s32)w->field_11C;
                 func_80013470(&w->field_4C, (Src13470 *)&st);
             }
-            func_80011564(a0);
+            Task_NextState1(a0);
             break;
         case 2:
             t = D_8005F6F0[0].field_4;
@@ -4940,16 +4940,16 @@ void func_80019808(Actor *a0) {
                 w->field_114 = n & 3;
                 func_8001A68C(0xD, 0);
                 func_80019614(w, 0);
-                func_800115DC(a0, 1);
+                Task_SetState1(a0, 1);
             } else {
                 j = w->field_114;
-                if (func_80013A10((s32)&w->slot54[j], (s32)&w->block64[j]) != 0) {
-                    func_80013A30(&w->field_94[j], w->slot54[j].field_2, 3);
+                if (Menu_MoveGridCursorP1((s32)&w->slot54[j], (s32)&w->block64[j]) != 0) {
+                    Menu_ScrollToShow(&w->field_94[j], w->slot54[j].field_2, 3);
                     func_80019614(w, 0);
                     func_8001A68C(0xD, 0);
-                    func_800115DC(a0, 1);
+                    Task_SetState1(a0, 1);
                 } else if (D_8005F6F0[0].field_1C > 0 || D_8005F6F0[0].field_10 > 0) {
-                    func_800115C0(a0, 2);
+                    Task_SetState0(a0, 2);
                     if (D_8005F6F0[0].field_10 > 0) {
                         D_80050768->field_35E = -1;
                         func_8001A68C(0xE, 0);
@@ -4967,11 +4967,11 @@ void func_80019808(Actor *a0) {
         case 0:
         default:
             func_8001C0B0(&w->field_0, 0x15);
-            func_80011564(a0);
+            Task_NextState1(a0);
             break;
         case 1:
-            if (func_80013714((s32)a0, &w->field_A8) == 0) {
-                func_800115C0(a0, 3);
+            if (Math_RampToZero((s32)a0, &w->field_A8) == 0) {
+                Task_SetState0(a0, 3);
             }
             break;
         }
@@ -5009,12 +5009,12 @@ void func_80019BF4(Actor *actor) {
             if (w->field_AC[k].field_0 != 0) {
                 tmp = w->field_54[k];
                 tmp.field_2 = w->field_54[k].field_2 - w->field_94[k];
-                func_8001373C(obj, 0x4000, (s32 *)&tmp, &w->field_64[k].field_0);
+                Menu_SetPartsGridPos(obj, 0x4000, (s32 *)&tmp, &w->field_64[k].field_0);
                 func_800137B8(obj, 0x4000, (actor->field_28 >> 2) & 3);
             } else {
                 v |= 0x4000;
             }
-            func_8001D504(obj, v);
+            Gfx_HidePartsByMask(obj, v);
             break;
         case 1:
             m = 0xFFFFF;
@@ -5034,10 +5034,10 @@ void func_80019BF4(Actor *actor) {
                     }
                 }
             }
-            func_8001D504(obj, m);
+            Gfx_HidePartsByMask(obj, m);
             break;
         }
-        func_8001D550(obj, 0x1000, w->field_A8);
+        Gfx_SetPartsScale(obj, 0x1000, w->field_A8);
         func_8001D884((s32)obj);
         i++;
     } while (p[i] != 0);
@@ -5064,12 +5064,12 @@ loop:
     if (p->field_0 == end) {
         goto done;
     }
-    func_8001107C(p->field_0, slot, (s32)&p->field_10);
+    Task_Create(p->field_0, slot, (s32)&p->field_10);
     slot++;
     p = (Ent19E50 *)((u8 *)p + p->field_C);
     goto loop;
 done:
-    func_80011544(a0);
+    Task_NextState0(a0);
 }
 
 
@@ -5087,19 +5087,19 @@ void func_80019EE8(Actor *a0) {
             *a1 = nv;
             if ((s16)nv >= 0x1000) {
                 *a1 = 0x1000;
-                func_80011564(a0);
+                Task_NextState1(a0);
             }
         }
         break;
     case 0:
-        func_80011544(a0);
+        Task_NextState0(a0);
         break;
     case 2: {
         s16 nv = *a1 - 0x555;
         *a1 = nv;
         if (nv <= 0) {
             *a1 = 0;
-            func_80011544(a0);
+            Task_NextState0(a0);
         }
         break;
     }
@@ -5109,7 +5109,7 @@ void func_80019EE8(Actor *a0) {
 void func_80019FB4(Actor *arg0) {
     ActorWork *w = arg0->work;
     void *e = func_800239A0(D_80040FD0[arg0->field_8]);
-    func_8001D550(e, 0x1000, *(s16 *)w);
+    Gfx_SetPartsScale(e, 0x1000, *(s16 *)w);
     func_8001D884((s32)e);
 }
 
@@ -5371,12 +5371,12 @@ void func_8001A8D0(void) {
 }
 
 
-void func_8001A8F4(s32 arg0) {
+void Text_PushReturn(s32 arg0) {
     D_80054CD0.data[D_80054CD0.count] = arg0;
     D_80054CD0.count = D_80054CD0.count + 1;
 }
 
-s32 func_8001A920(void) {
+s32 Text_PopReturn(void) {
     if (D_80054CD0.count == 0) {
         return 0;
     }
@@ -5385,7 +5385,7 @@ s32 func_8001A920(void) {
 }
 
 extern Elem20 *func_8001CB80(s32);
-extern void func_8001107C(u32, s32 *, s32);
+extern void Task_Create(u32, s32 *, s32);
 
 void func_8001A958(Actor *a0) {
     if (a0->field_10 != 0) {
@@ -5394,9 +5394,9 @@ void func_8001A958(Actor *a0) {
     func_8001CB80(0x13A0000);
     if ((D_8005F788[0] & 0xF00) != 0x500) {
         func_8001CB80(0x1100000);
-        func_8001107C(0xA, a0->u34.field_34, 0);
+        Task_Create(0xA, a0->u34.field_34, 0);
     }
-    func_80011544(a0);
+    Task_NextState0(a0);
 }
 
 extern Elem20 *func_8001CB80(s32);
@@ -5510,7 +5510,7 @@ void func_8001A9C8(Actor *a0) {
             do {
                 switch (*s) {
                 case 0xFF:
-                    vf = func_8001A920();
+                    vf = Text_PopReturn();
                     if (vf == 0) {
                         r->field_6 = 0;
                         r->field_23 = 1;
@@ -5572,22 +5572,22 @@ void func_8001A9C8(Actor *a0) {
                             func_8001A68C((*s & 1) ? 0x38 : 0x37, 0);
                             switch (*s) {
                             case 0:
-                                func_8001107C(4, (s32 *)&slots[row + 1], 0);
+                                Task_Create(4, (s32 *)&slots[row + 1], 0);
                                 r->field_1C = -0x90;
                                 r->field_1E = 0x34;
                                 break;
                             case 2:
-                                func_8001107C(4, (s32 *)&slots[row + 1], 1);
+                                Task_Create(4, (s32 *)&slots[row + 1], 1);
                                 r->field_1C = -0x90;
                                 r->field_1E = 0x42;
                                 break;
                             case 6:
-                                func_8001107C(4, (s32 *)&slots[row + 1], 3);
+                                Task_Create(4, (s32 *)&slots[row + 1], 3);
                                 r->field_1C = -0x90;
                                 r->field_1E = 0x42;
                                 break;
                             case 4:
-                                func_8001107C(4, (s32 *)&slots[row + 1], 2);
+                                Task_Create(4, (s32 *)&slots[row + 1], 2);
                                 r->field_1C = -0x90;
                                 r->field_1E = 0x12;
                                 break;
@@ -5596,26 +5596,26 @@ void func_8001A9C8(Actor *a0) {
                             case 5:
                             case 7:
                                 if (slots[row + 1] != 0) {
-                                    func_800115C0(slots[row + 1], 2);
+                                    Task_SetState0(slots[row + 1], 2);
                                 }
-                                func_80011564(a0);
+                                Task_NextState1(a0);
                                 break;
                             }
                             r->field_27 = 1;
-                            func_80011564(a0);
+                            Task_NextState1(a0);
                             break;
                         case 1:
                             if (slots[row + 1]->field_14 == 1) {
                                 r->field_27 = 0;
                                 r->field_24++;
-                                func_800115DC(a0, 0);
+                                Task_SetState1(a0, 0);
                             }
                             break;
                         case 2:
                             if (slots[row + 1] == 0) {
                                 r->field_27 = 0;
                                 r->field_24++;
-                                func_800115DC(a0, 0);
+                                Task_SetState1(a0, 0);
                             }
                             break;
                         }
@@ -5628,7 +5628,7 @@ void func_8001A9C8(Actor *a0) {
                     if (k9 & 1) {
                         if (r->field_26 == nF9) {
                             if (slots[((k9 >> 1) & 1) + 0x33] != 0) {
-                                func_800115C0(slots[((k9 >> 1) & 1) + 0x33], 2);
+                                Task_SetState0(slots[((k9 >> 1) & 1) + 0x33], 2);
                             }
                             r->field_26++;
                             func_8001A68C(0x3A, 0);
@@ -5642,7 +5642,7 @@ void func_8001A9C8(Actor *a0) {
                         if (slots[num[1] + 0x33] != 0) {
                             func_80011B58(slots[num[1] + 0x33], num[0]);
                         } else {
-                            func_8001107C(5, (s32 *)&slots[num[1] + 0x33], (s32)num);
+                            Task_Create(5, (s32 *)&slots[num[1] + 0x33], (s32)num);
                         }
                         r->field_26++;
                         func_8001A68C(0x39, 0);
@@ -5724,7 +5724,7 @@ void func_8001A9C8(Actor *a0) {
                                 func_8006A920(h, &nums[1]);
                             }
                             r->field_27 = 1;
-                            func_80011564(a0);
+                            Task_NextState1(a0);
                             break;
                         case 1:
                             break;
@@ -5741,7 +5741,7 @@ void func_8001A9C8(Actor *a0) {
                     advF6:
                         r->field_27 = 0;
                         r->field_2A++;
-                        func_800115DC(a0, 0);
+                        Task_SetState1(a0, 0);
                     } else {
                         s += 8;
                     }
@@ -5803,7 +5803,7 @@ void func_8001A9C8(Actor *a0) {
                             default:
                                 num[0] = k4 & 0xF;
                                 num[1] = 0;
-                                func_8001107C(0x16, (s32 *)&slots[0x35], (s32)num);
+                                Task_Create(0x16, (s32 *)&slots[0x35], (s32)num);
                                 a0->field_14++;
                                 r->field_27 = 1;
                                 break;
@@ -5844,8 +5844,8 @@ void func_8001A9C8(Actor *a0) {
                     switch (a0->field_14) {
                     case 0:
                     default:
-                        func_8001C4F0(0xA);
-                        func_80011564(a0);
+                        Gfx_FadeOutToBlack(0xA);
+                        Task_NextState1(a0);
                         break;
                     case 1:
                         break;
@@ -5874,7 +5874,7 @@ void func_8001A9C8(Actor *a0) {
                         n += *s++ * 10;
                         n += *s;
                         line--;
-                        func_8001A8F4((s32)(s + 1));
+                        Text_PushReturn((s32)(s + 1));
                         s = (u8 *)func_8001E048(n) - 1;
                     }
                     break;
@@ -5886,14 +5886,14 @@ void func_8001A9C8(Actor *a0) {
                         n += *s++ * 10;
                         n += *s;
                         line--;
-                        func_8001A8F4((s32)(s + 1));
+                        Text_PushReturn((s32)(s + 1));
                         s = func_8001E758(n) - 1;
                     }
                     break;
                 case 0xF0:
                     s++;
                     k = *s;
-                    func_8001A8F4((s32)(s + 1));
+                    Text_PushReturn((s32)(s + 1));
                     switch (k) {
                     case 0:
                         s = &D_8005E633;
@@ -5990,7 +5990,7 @@ void func_8001BB88(s32 *slot) {
     if (*slot == -1) {
         return;
     }
-    e = func_80011510(9, -1, -1);
+    e = Task_FindFirst(9, -1, -1);
     if (e != 0) {
         i = *slot;
         r = &e->field_2C[i];
@@ -5998,7 +5998,7 @@ void func_8001BB88(s32 *slot) {
         r->field_0 = 0;
         a = q[1];
         if (a != 0) {
-            func_800115C0(a, 3);
+            Task_SetState0(a, 3);
         }
         *slot = -1;
     }
@@ -6013,7 +6013,7 @@ void func_8001BC24(void *arg0, Arg1BC24 *arg1) {
     Rec34 *rec;
     s32 i;
 
-    r = func_80011510(9, -1, -1);
+    r = Task_FindFirst(9, -1, -1);
     if (r == 0) {
         return;
     }
@@ -6084,7 +6084,7 @@ s32 func_8001BE08(s32 id) {
     if (id == -1) {
         return 1;
     }
-    p = func_80011510(9, -1, -1);
+    p = Task_FindFirst(9, -1, -1);
     if (p == 0) {
         return 0;
     }
@@ -6092,7 +6092,7 @@ s32 func_8001BE08(s32 id) {
 }
 
 void func_8001BE74(s32 a0, s32 a1) {
-    Ent11440 *p = func_80011510(9, -1, -1);
+    Ent11440 *p = Task_FindFirst(9, -1, -1);
     if (a0 != -1 && p != 0) {
         Rec34 *r = &p->field_2C[a0];
         r->field_20 = a1;
@@ -6101,14 +6101,14 @@ void func_8001BE74(s32 a0, s32 a1) {
 }
 
 void func_8001BEE8(s32 a0, s32 a1) {
-    Ent11440 *p = func_80011510(9, -1, -1);
+    Ent11440 *p = Task_FindFirst(9, -1, -1);
     if (a0 != -1 && p != 0) {
         p->field_2C[a0].field_30 = a1;
     }
 }
 
 void func_8001BF58(s32 a0, s32 a1) {
-    Ent11440 *p = func_80011510(9, -1, -1);
+    Ent11440 *p = Task_FindFirst(9, -1, -1);
     if (a0 != -1 && p != 0) {
         p->field_2C[a0].field_31 = a1;
     }
@@ -6141,7 +6141,7 @@ void func_8001C038(void *arg0, s32 arg1) {
     func_800221C4(0x10, 0);
 }
 
-void func_8001C088(s32 *arg0, s32 arg1) {
+void Mem_FillWordsNeg1(s32 *arg0, s32 arg1) {
     s32 i;
     for (i = 0; i < arg1; i++) {
         *arg0++ = -1;
@@ -6250,43 +6250,43 @@ void func_8001C1E0(s32 w, s32 h, s32 mode, s32 inter) {
     func_8002D6A4(0, 0);
 }
 
-void func_8001C4C8(s32 arg0) {
+void Gfx_FadeInFromBlack(s32 arg0) {
     D_80041564.field_8 = 0;
     D_80041564.field_0 = 2;
     D_80041564.field_4 = arg0;
     D_8005F780 = arg0 + 0xFF;
 }
 
-void func_8001C4F0(s32 arg0) {
+void Gfx_FadeOutToBlack(s32 arg0) {
     D_80041564.field_8 = 0;
     D_80041564.field_0 = 3;
     D_80041564.field_4 = arg0;
 }
 
-void func_8001C50C(s32 arg0) {
+void Gfx_FadeInFromWhite(s32 arg0) {
     D_80041564.field_8 = 1;
     D_80041564.field_0 = 2;
     D_80041564.field_4 = arg0;
     D_8005F780 = arg0 + 0xFF;
 }
 
-void func_8001C538(s32 arg0) {
+void Gfx_FadeOutToWhite(s32 arg0) {
     D_80041564.field_8 = 1;
     D_80041564.field_0 = 3;
     D_80041564.field_4 = arg0;
 }
 
-void func_8001C558(void) {
+void Gfx_FadeClear(void) {
     D_80041564.field_8 = 0;
     D_80041564.field_0 = 0;
 }
 
-void func_8001C56C(void) {
+void Gfx_FadeSetBlack(void) {
     D_80041564.field_8 = 0;
     D_80041564.field_0 = 1;
 }
 
-void func_8001C584(void) {
+void Gfx_DrawFade(void) {
     Fade1C584 *p;
     Fade1C584Mode *q;
     Tag1CE9C *ot;
@@ -6360,7 +6360,7 @@ draw:
     D_8005F770.work = (ActorWork *)q;
 }
 
-void func_8001C760(void) {
+void Gpu_SetLayerOtPtrs(void) {
     s32 i;
 
     for (i = 0; i < 8; i++) {
@@ -6373,16 +6373,16 @@ void func_8001C800(s32 arg0) {
     D_80054CF8[2].field_0[0] = arg0;
 }
 
-void func_8001C818(s32 arg0) {
+void Gpu_ClearOt(s32 arg0) {
     func_8002796C(&D_80054CF8[arg0], 0x100C);
 }
 
-s32 func_8001C858(s32 arg0) {
+s32 Gpu_DrawOt(s32 arg0) {
     s32 *p = (s32 *)&D_80058D28[arg0];
     return func_80027A74(&p[-1]);
 }
 
-void func_8001C898(s32 arg0) {
+void Gpu_SkipEmptyOtEntries(s32 arg0) {
     u32 *p = (u32 *)&D_80058D28[arg0];
     u32 *end = (u32 *)&D_80058D28[arg0 - 1];
     u32 *q;
@@ -6420,7 +6420,7 @@ void func_8001C934(void) {
     D_8005F79C = 0;
 }
 
-void func_8001C988(void) {
+void Gpu_ResetPrimBuf(void) {
     D_8005F770.work = D_80041670[D_8005F770.field_28];
 }
 
@@ -6433,11 +6433,11 @@ void func_8001C9B0(s32 a0) {
     D_8005F770.work = D_80041670[D_8005F770.field_28];
 }
 
-Elem20 *func_8001CA28(s32 arg0) {
+Elem20 *Gfx_GetTexSlot(s32 arg0) {
     return &D_8005CD60[arg0];
 }
 
-void func_8001CA3C(void) {
+void Gfx_InitTexSlots(void) {
     s32 i;
     for (i = 0; i < 0x40; i++) {
         D_8005CD60[i].field_18 = 0x3E0 - (i / 2) * 32;
@@ -6550,7 +6550,7 @@ Elem20 *func_8001CB80(s32 id) {
 void func_8001CD2C(s32 arg0) {
     s32 i;
     for (i = 0; i < 0x40; i++) {
-        Elem20 *p = func_8001CA28(i);
+        Elem20 *p = Gfx_GetTexSlot(i);
         if (i >= arg0) {
             p->field_0 = -1;
         } else {
@@ -6559,7 +6559,7 @@ void func_8001CD2C(s32 arg0) {
     }
 }
 
-s32 func_8001CDA8(void) {
+s32 Gfx_ReserveTexSlot(void) {
     u32 min = -1;
     s32 best = 0;
     s32 i;
@@ -6587,7 +6587,7 @@ s32 func_8001CDA8(void) {
     return (s32)p;
 }
 
-void func_8001CE80(s32 *arg0) {
+void Gfx_ReleaseTexSlot(s32 *arg0) {
     if (*arg0 == -2) {
         *arg0 = 0;
     }
@@ -6729,7 +6729,7 @@ void func_8001D104(void *arg0, void *arg1, s32 arg2, s32 arg3) {
 }
 
 
-void func_8001D504(Obj1D504 *p, s32 mask) {
+void Gfx_HidePartsByMask(Obj1D504 *p, s32 mask) {
     if (p->field_0 != 0) {
         do {
             if (p->field_1C & mask) {
@@ -6742,7 +6742,7 @@ void func_8001D504(Obj1D504 *p, s32 mask) {
     }
 }
 
-void func_8001D550(Ent1D550 *p, s32 a1, s32 a2) {
+void Gfx_SetPartsScale(Ent1D550 *p, s32 a1, s32 a2) {
     if (p->field_0 == 0) {
         return;
     }
@@ -6763,7 +6763,7 @@ void func_8001D550(Ent1D550 *p, s32 a1, s32 a2) {
     } while (p->field_0 != 0);
 }
 
-void func_8001D5B4(Part28 *p, s32 mask, s32 n, s32 val) {
+void Gfx_SetPartsNumber(Part28 *p, s32 mask, s32 n, s32 val) {
     u8 d[8];
     Part28 *q;
     s32 i = 0;
@@ -7043,7 +7043,7 @@ void func_8001DC24(s32 a0, s32 a1, ElmE620 *e) {
     if (e->field_D == 1) {
         e->field_10 = 0;
     } else {
-        e->field_10 = func_8001E984(e->field_D - 1, 100, 0);
+        e->field_10 = Digi_GetExpToNextLevel(e->field_D - 1, 100, 0);
     }
 }
 
@@ -7351,7 +7351,7 @@ s32 func_8001E938(void) {
     return i;
 }
 
-s32 func_8001E984(s32 lv, s32 max, s32 cur) {
+s32 Digi_GetExpToNextLevel(s32 lv, s32 max, s32 cur) {
     s32 x;
     s32 sq;
     s32 exp;
@@ -7415,7 +7415,7 @@ void func_8001EC10(Actor *arg0) {
         func_80020C40((ContC40 *)arg0, D_80043704, 0);
         func_8001FDBC(arg0, 0x5B)->field_3C = 4;
         func_8001F5E8(arg0);
-        func_80011544(arg0);
+        Task_NextState0(arg0);
         break;
     case 1: {
         ActorWork *w = arg0->work;
@@ -8058,7 +8058,7 @@ void func_80020EE8(Ctx38 *arg0, s32 arg1) {
     e->field_0 = 0;
 }
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80020F10);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Gfx_CalcNormalColors);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80020FD0);
 
@@ -8947,7 +8947,7 @@ void func_80023484(void) {
         ((Db5F770 *)&D_8005F770)->field_28 = (((Db5F770 *)&D_8005F770)->field_28 == 0);
         func_80027CB0(&((Db5F770 *)&D_8005F770)->disp[((Db5F770 *)&D_8005F770)->field_28]);
         func_80027AE4(&((Db5F770 *)&D_8005F770)->draw[((Db5F770 *)&D_8005F770)->field_28]);
-        func_8001C858(((Db5F770 *)&D_8005F770)->field_28 ^ 1);
+        Gpu_DrawOt(((Db5F770 *)&D_8005F770)->field_28 ^ 1);
         D_8005078C = 0;
         D_8005072C = 0;
     } else {
@@ -9004,7 +9004,7 @@ void func_80023550(void) {
     D_8005F770.field_28 = 1;
     func_8001C934();
     func_8001C800(0);
-    func_8001C760();
+    Gpu_SetLayerOtPtrs();
     func_800238E4(0);
     ((void (*)(s32))func_8003D4A4)(0);
     func_8003DD00();
@@ -9014,10 +9014,10 @@ void func_80023550(void) {
     }
     func_80030AB4(3);
     func_800307C4(9, 0, 0);
-    func_80011190();
-    func_8001CA3C();
-    func_8001C818(0);
-    func_8001C818(1);
+    Task_ClearList();
+    Gfx_InitTexSlots();
+    Gpu_ClearOt(0);
+    Gpu_ClearOt(1);
     D_8005F770.field_0 = 1;
     D_8005F770.field_18 = 0x402;
     D_8005F770.field_1C = 0x402;
@@ -9025,16 +9025,16 @@ void func_80023550(void) {
     D_8005F770.field_C = 0;
     func_80022468();
     D_8005071C->field_0 = 0;
-    func_8001C56C();
-    func_8001C584();
+    Gfx_FadeSetBlack();
+    Gfx_DrawFade();
     slot = 0;
     for (;;) {
         if (slot == 0) {
-            func_80011190();
+            Task_ClearList();
             func_8001C934();
             func_80022DEC(2);
-            func_8001C818(0);
-            func_8001C818(1);
+            Gpu_ClearOt(0);
+            Gpu_ClearOt(1);
             t = D_8005F770.field_18;
             u = D_8005F770.field_1C;
             D_8005F770.field_1C = 0;
@@ -9043,21 +9043,21 @@ void func_80023550(void) {
             for (i = 0; i < 0x11; i++) {
                 func_800221C4(i, 0);
             }
-            func_8001107C(1, &slot, 0);
+            Task_Create(1, &slot, 0);
         }
-        func_8001C584();
+        Gfx_DrawFade();
         D_8005F770.field_14 = 0;
-        slot = func_80010EA4((void *)slot);
+        slot = Task_TryRun((void *)slot);
         D_8005F770.field_14 = 1;
-        slot = func_80010EA4((void *)slot);
-        func_8001C898(D_8005F770.field_28);
+        slot = Task_TryRun((void *)slot);
+        Gpu_SkipEmptyOtEntries(D_8005F770.field_28);
         func_80027480(0);
         D_8005078C = 1;
         while (*(volatile s32 *)&D_8005078C != 0) {
         }
-        func_8001C988();
-        func_8001C760();
-        func_8001C818(D_8005F770.field_28);
+        Gpu_ResetPrimBuf();
+        Gpu_SetLayerOtPtrs();
+        Gpu_ClearOt(D_8005F770.field_28);
         t = func_80030AB4(-1);
         u = D_80050738;
         D_80050738 = t;
@@ -9448,13 +9448,13 @@ void func_80024350(Actor *arg0) {
         func_80020C40((ContC40 *)arg0, &work->field_8, work->field_14);
         func_8001FDBC(arg0, work->field_0)->field_3C = 3;
         func_8001F24C(arg0, 0, work->field_4);
-        func_80011544(arg0);
+        Task_NextState0(arg0);
         break;
     case 1: {
         Sub3C *s = arg0->field_3C;
         if (arg0->field_28 < work->field_18 && s->field_60 >= 0)
             break;
-        func_800115C0(arg0, 3);
+        Task_SetState0(arg0, 3);
         break;
     }
     case 2:
@@ -9494,13 +9494,13 @@ void func_80024544(void) {
     State60058 *p = &D_80060058;
 
     D_80048E50 = 0;
-    func_80026FC4();
-    func_80026FF4(2, D_80048E78);
-    func_80026FE4(2, D_80048E78);
+    EnterCriticalSection();
+    SysDeqIntRP(2, D_80048E78);
+    SysEnqIntRP(2, D_80048E78);
     D_80048DF0->field_0 = -2;
     D_80048DF0->field_4 |= 1;
-    func_80027004(3, 0);
-    func_80026FD4();
+    ChangeClearRCnt(3, 0);
+    ExitCriticalSection();
     D_80048E1C(D_80048E4C);
     D_80048E1C(&D_80048E4C[1]);
     p->field_4 = 0;
@@ -9509,10 +9509,10 @@ void func_80024544(void) {
 }
 
 void func_80024610(void) {
-    func_80026FC4();
-    func_80027004(3, 1);
-    func_80026FF4(2, D_80048E78);
-    func_80026FD4();
+    EnterCriticalSection();
+    ChangeClearRCnt(3, 1);
+    SysDeqIntRP(2, D_80048E78);
+    ExitCriticalSection();
 }
 
 void func_80024654(u8 *a0, u8 *a1) {
@@ -10661,17 +10661,17 @@ s32 func_800269B8(Ent266D0 *a0) {
 }
 
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80026FB4);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", InitHeap);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80026FC4);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", EnterCriticalSection);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80026FD4);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", ExitCriticalSection);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80026FE4);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", SysEnqIntRP);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80026FF4);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", SysDeqIntRP);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80027004);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", ChangeClearRCnt);
 
 u8 *func_80027014(u8 *s, s32 n) {
     u8 *r = 0;
@@ -10754,7 +10754,7 @@ s32 func_80027104(s32 mode) {
         g = &D_80048F10;
         func_80029FDC((u8 *)g, 0, 0x80);
         func_80030CD4();
-        func_8002A004((s32)D_80048F08 & 0xFFFFFF);
+        GPU_cw((s32)D_80048F08 & 0xFFFFFF);
         g->field_0 = func_8002970C(mode);
         g->field_1 = 1;
         g->field_4 = D_80048F90[((volatile Gpu48F10 *)g)->field_0][0];
@@ -11586,7 +11586,7 @@ void func_80029FDC(u8 *arg0, s32 arg1, u32 arg2) {
     }
 }
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002A004);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", GPU_cw);
 
 void func_8002A014(fmt, a1, a2, a3) char *fmt; s32 a1; s32 a2; s32 a3; {
     char **fp = &fmt;
@@ -11893,7 +11893,7 @@ void func_8002A744(s8 c) {
         break;
     }
     if (D_80049064 >= 0x20) {
-        func_8002A9A4(1, D_800618B0, D_80049064);
+        write(1, D_800618B0, D_80049064);
         D_80049064 = 0;
     }
     D_800618B0[D_80049064++] = c;
@@ -11902,7 +11902,7 @@ void func_8002A744(s8 c) {
 
 void func_8002A840(void) {
     if (D_80049064 > 0) {
-        func_8002A9A4(1, D_800618B0, D_80049064);
+        write(1, D_800618B0, D_80049064);
         D_80049064 = 0;
     }
 }
@@ -11927,7 +11927,7 @@ void func_8002A87C(s8 c) {
         break;
     }
     if (D_80049064 >= 0x20) {
-        func_8002A9A4(1, D_800618B0, D_80049064);
+        write(1, D_800618B0, D_80049064);
         D_80049064 = 0;
     }
     {
@@ -11938,12 +11938,12 @@ void func_8002A87C(s8 c) {
     }
 flush:
     if (D_80049064 > 0) {
-        func_8002A9A4(1, D_800618B0, D_80049064);
+        write(1, D_800618B0, D_80049064);
         D_80049064 = 0;
     }
 }
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002A9A4);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", write);
 
 s32 func_8002A9B4(s8 *s) {
     s32 n = 0;
@@ -12243,11 +12243,11 @@ void func_8002B424(Coord1F668 *super, Coord1F668 *c) {
 
 
 extern void func_8002D5E4();
-extern s32 func_8002D644();
+extern s32 SetTransMatrix();
 
 s32 func_8002B494(s32 a0) {
     func_8002D5E4(a0);
-    return func_8002D644(a0);
+    return SetTransMatrix(a0);
 }
 __asm__(".word 0\n");
 
@@ -12260,7 +12260,7 @@ void func_8002B4C4(void) {
     D_80061998 = 0x3FFF;
 }
 
-void func_8002B544(s32 arg0) { func_8002D6C4(); }
+void func_8002B544(s32 arg0) { SetGeomScreen(); }
 
 s32 func_8002B564(s32 idx, Blk16 *src) {
     S32 lm;
@@ -12813,7 +12813,7 @@ INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002D5E4);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002D614);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002D644);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", SetTransMatrix);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002D664);
 
@@ -12821,7 +12821,7 @@ INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002D684);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002D6A4);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002D6C4);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", SetGeomScreen);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002D6D4);
 
@@ -12898,7 +12898,7 @@ INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002DAC4);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002DB70);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002DBA4);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", FlushCache);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002DBB4);
 
@@ -12935,13 +12935,13 @@ s32 func_8002DC94(void) {
     return func_8002FDC8() == 0;
 }
 
-void func_8002DCD0(void) { func_8002DD54(0xF0000003, 0x20); }
+void func_8002DCD0(void) { DeliverEvent(0xF0000003, 0x20); }
 
-void func_8002DCF8(void) { func_8002DD54(0xF0000003, 0x40); }
+void func_8002DCF8(void) { DeliverEvent(0xF0000003, 0x40); }
 
-void func_8002DD20(void) { func_8002DD54(0xF0000003, 0x40); }
+void func_8002DD20(void) { DeliverEvent(0xF0000003, 0x40); }
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002DD54);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", DeliverEvent);
 
 s32 func_8002DD64(void *arg) {
     u8 *p = arg;
@@ -12984,7 +12984,7 @@ void func_8002DE94(void) {
 }
 
 void func_8002DEF4(void) {
-    func_80026FC4();
+    EnterCriticalSection();
     if (D_8004E6E8 == 1) {
         func_80030A84(0);
         func_80030A64(0);
@@ -12994,7 +12994,7 @@ void func_8002DEF4(void) {
     }
     *D_8004E600 = 0;
     *D_8004E60C = 0;
-    func_80026FD4();
+    ExitCriticalSection();
 }
 
 void func_8002DF74(void) {
@@ -14071,14 +14071,14 @@ void func_80030C2C(s32 a0, s32 a1) {
     while (D_8004FBC0 < a0) {
         if (--n == -1) {
             func_80030334(D_80010984);
-            func_80030CC4(0);
-            func_80027004(3, 0);
+            ChangeClearPAD(0);
+            ChangeClearRCnt(3, 0);
             return;
         }
     }
 }
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80030CC4);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", ChangeClearPAD);
 
 void func_80030CD4(void) {
     D_8004FB80->fn_C();
@@ -14139,12 +14139,12 @@ Obj4EAF8 *func_80030E68(void) {
         func_80030F40();
     }
     D_8004EAF8.field_38[1] = (s32)D_8004EAF8.stack_top;
-    func_800313D4(D_8004EAF8.field_38);
+    HookEntryInt(D_8004EAF8.field_38);
     D_8004EAF8.field_0 = 1;
     D_8004FB80->fn_14 = (void (*)())func_80031464();
     D_8004FB80->fn_4 = (void (*)())func_80031584();
-    func_8003139C();
-    func_80026FD4();
+    _96_remove();
+    ExitCriticalSection();
     return &D_8004EAF8;
 }
 
@@ -14154,7 +14154,7 @@ void func_80030F40(void) {
 
     if (D_8004EAF8.field_0 == 0) {
         func_8002A014(D_800109C8, *D_8004FB84);
-        func_800313B4();
+        ReturnFromException();
     }
     D_8004EAF8.field_2 = 1;
     while ((mask = (D_8004EAF8.field_30 & *(volatile u16 *)D_8004FB84) & *(volatile u16 *)D_8004FB88) != 0) {
@@ -14177,7 +14177,7 @@ void func_80030F40(void) {
         D_8004FB90 = 0;
     }
     D_8004EAFA = 0;
-    func_800313B4();
+    ReturnFromException();
 }
 
 s32 func_80031110(s32 ch, s32 val) {
@@ -14206,17 +14206,17 @@ s32 func_80031110(s32 ch, s32 val) {
             }
             if (ch == 0) {
                 z = val == 0;
-                func_80030CC4(z);
-                func_80027004(3, z);
+                ChangeClearPAD(z);
+                ChangeClearRCnt(3, z);
             }
             if (ch == 4) {
-                func_80027004(0, val == 0);
+                ChangeClearRCnt(0, val == 0);
             }
             if (ch == 5) {
-                func_80027004(1, val == 0);
+                ChangeClearRCnt(1, val == 0);
             }
             if (ch == 6) {
-                func_80027004(2, val == 0);
+                ChangeClearRCnt(2, val == 0);
             }
             *D_8004FB88 = m;
         }
@@ -14225,7 +14225,7 @@ s32 func_80031110(s32 ch, s32 val) {
 }
 
 extern u16 *D_8004FB84;
-extern void func_800313C4();
+extern void ResetEntryInt();
 
 Obj4EAF8 *func_80031258(void) {
     Obj4EAF8 *p = &D_8004EAF8;
@@ -14235,7 +14235,7 @@ Obj4EAF8 *func_80031258(void) {
     if (p->field_0 == 0) {
         return 0;
     }
-    func_80026FC4();
+    EnterCriticalSection();
     q = D_8004FB88;
     p->field_32 = *q;
     p->field_34 = *D_8004FB8C;
@@ -14243,7 +14243,7 @@ Obj4EAF8 *func_80031258(void) {
     *q = 0;
     *r = *q;
     *D_8004FB8C &= 0x77777777;
-    func_800313C4();
+    ResetEntryInt();
     p->field_0 = 0;
     return p;
 }
@@ -14255,11 +14255,11 @@ Obj4EAF8 *func_800312F8(void) {
     if (p->field_0 != 0) {
         return 0;
     }
-    func_800313D4(p->field_38);
+    HookEntryInt(p->field_38);
     p->field_0 = 1;
     *D_8004FB88 = p->field_32;
     *D_8004FB8C = p->field_34;
-    func_80026FD4();
+    ExitCriticalSection();
     return p;
 }
 
@@ -14272,13 +14272,13 @@ void func_80031370(s32 *arg0, s32 arg1) {
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80031394);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8003139C);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", _96_remove);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_800313B4);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", ReturnFromException);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_800313C4);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", ResetEntryInt);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_800313D4);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", HookEntryInt);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/156C", setjmp);
 
@@ -15583,10 +15583,10 @@ void func_80035074(s32 a0) {
         break;
     }
     if (D_8004FC48.b0 != 0) {
-        func_80026FC4();
+        EnterCriticalSection();
         func_80030D64((s32)D_8004FC48.fn_0);
     } else {
-        func_80026FC4();
+        EnterCriticalSection();
         func_800354BC(cmd);
         func_80035384(cmd, (u16)rate, 0x1000);
         if (D_8004FC48.b2 == 0) {
@@ -15598,7 +15598,7 @@ void func_80035074(s32 a0) {
             func_80030D04(D_8004FC48.b2, D_8004FC48.fn_0);
         }
     }
-    func_80026FD4();
+    ExitCriticalSection();
 }
 
 
@@ -17360,17 +17360,17 @@ void func_8003A054(s32 a0) {
 void func_8003A13C(void) {
     if (D_8004FE18 == 0) {
         D_8004FE18 = 1;
-        func_80026FC4();
+        EnterCriticalSection();
         func_8003AD14((s32)func_8003A614);
-        D_8004FDB0 = func_8003A1B4(0xF0000009, 0x20, 0x2000, 0);
-        func_8003A1C4(D_8004FDB0);
-        func_80026FD4();
+        D_8004FDB0 = OpenEvent(0xF0000009, 0x20, 0x2000, 0);
+        EnableEvent(D_8004FDB0);
+        ExitCriticalSection();
     }
 }
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8003A1B4);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", OpenEvent);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8003A1C4);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", EnableEvent);
 
 s32 func_8003A1D4(s32 a0) {
     u32 i;
@@ -17511,7 +17511,7 @@ void func_8003A614(void) {
     if (D_8004FE60 != 0) {
         D_8004FE60();
     } else {
-        func_8002DD54(0xF0000009, 0x20);
+        DeliverEvent(0xF0000009, 0x20);
     }
 }
 
@@ -18330,7 +18330,7 @@ s32 func_8003C3A4(s32 a0) {
         func_8003A778(3, D_8004FE98, n);
         size -= 0x400;
         addr += 0x400;
-        func_8003C544(D_8004FDB0);
+        WaitEvent(D_8004FDB0);
     } while (cont);
     if (wait) {
         D_8004FE44 = mode;
@@ -18341,7 +18341,7 @@ s32 func_8003C3A4(s32 a0) {
     return 0;
 }
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8003C544);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", WaitEvent);
 
 void func_8003C554(s32 on_off, u32 voice_bit) {
     u32 hi;
@@ -18439,10 +18439,10 @@ s32 func_8003C804(s32 a0) {
     if (D_8004FDB8 == 1 || D_8004FE5C == 1) {
         return 1;
     }
-    r = func_8003C8B4(D_8004FDB0);
+    r = TestEvent(D_8004FDB0);
     if (a0 == 1) {
         if (r == 0) {
-            while (func_8003C8B4(D_8004FDB0) == 0) {
+            while (TestEvent(D_8004FDB0) == 0) {
             }
         }
         r = 1;
@@ -18453,7 +18453,7 @@ s32 func_8003C804(s32 a0) {
     return r;
 }
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8003C8B4);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", TestEvent);
 
 void func_8003C8C4(s32 arg0) {
     if (arg0 == 1) {
@@ -18885,15 +18885,15 @@ void func_8003D124(Cmd3D124 *a0) {
 void func_8003D4A4(void) {
     func_8003D504();
     func_8003D594();
-    func_8003D4F4();
+    _bu_init();
 }
 
 void func_8003D4D4(void) { func_8003D5DC(); }
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8003D4F4);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", _bu_init);
 
 extern s32 func_8003D610(void);
-extern void func_8003D9D4(s32);
+extern void InitCARD(s32);
 extern void func_8003DBE4(void);
 extern void func_8003DAE0(void);
 extern void func_8003DB74(void);
@@ -18905,35 +18905,35 @@ s32 a0;
 {
     s32 s0 = a0;
     s32 s1;
-    func_80030CC4(0);
+    ChangeClearPAD(0);
     func_80030AB4(0);
-    s1 = func_80026FC4();
+    s1 = EnterCriticalSection();
     if (func_8003D610() == 0) {
         s0 = 0;
     }
-    func_8003D9D4(s0);
+    InitCARD(s0);
     func_8003DBE4();
     func_8003DAE0();
     func_8003DB74();
     func_8003DA04();
     if (s1 == 1) {
-        func_80026FD4();
+        ExitCriticalSection();
     }
 }
 
 s32 func_8003D594(void) {
-    s32 s = func_80026FC4();
-    func_8003D9E4();
-    func_80030CC4(0);
+    s32 s = EnterCriticalSection();
+    StartCARD();
+    ChangeClearPAD(0);
     if (s == 1) {
-        func_80026FD4();
+        ExitCriticalSection();
         return 0;
     }
     return 0;
 }
 
 s32 func_8003D5DC(void) {
-    func_8003D9F4();
+    StopCARD();
     func_8003DC24();
     return 0;
 }
@@ -18949,10 +18949,10 @@ s32 func_8003D610(void) {
 
 void func_8003D620(s32 a0, s32 a1, s32 a2, s32 a3) {
     func_8003D964();
-    func_80026FC4();
+    EnterCriticalSection();
     func_8003D8EC();
-    func_80026FD4();
-    func_80030CC4(0);
+    ExitCriticalSection();
+    ChangeClearPAD(0);
     func_8003D770();
     func_8003D8B4(a0, a1, a2, a3);
     D_800506B8 = 1;
@@ -18960,31 +18960,31 @@ void func_8003D620(s32 a0, s32 a1, s32 a2, s32 a3) {
 
 void func_8003D6B0(s32 a0, s32 a1, s32 a2, s32 a3) {
     func_8003D964();
-    func_80026FC4();
+    EnterCriticalSection();
     func_8003D8EC();
-    func_80026FD4();
-    func_80030CC4(0);
+    ExitCriticalSection();
+    ChangeClearPAD(0);
     func_8003D770();
-    func_8003D894(a0, a1, a2, a3);
+    InitPAD(a0, a1, a2, a3);
     D_800506B8 = 1;
 }
 
 s32 func_8003D740(void) {
-    func_8003D8A4();
-    func_80030CC4(0);
+    StartPAD();
+    ChangeClearPAD(0);
     func_8003D8C4();
     return 1;
 }
 
 s32 func_8003D770(void) {
-    func_80026FC4();
+    EnterCriticalSection();
     D_80062F04[0] = func_8003D7E8;
     D_80062F04[1] = func_8003D850;
     D_80062F00 = 0;
     D_80062F0C = 0;
-    func_80026FF4(1, (u8 *)&D_80062F04[-1]);
-    func_80026FE4(1, (u8 *)&D_80062F04[-1]);
-    func_80026FD4();
+    SysDeqIntRP(1, (u8 *)&D_80062F04[-1]);
+    SysEnqIntRP(1, (u8 *)&D_80062F04[-1]);
+    ExitCriticalSection();
     return 1;
 }
 
@@ -19008,9 +19008,9 @@ if (!((p->field_4 & 1) && (p->field_0 & 1))) {
  return 1;
 }
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8003D894);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", InitPAD);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8003D8A4);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", StartPAD);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8003D8B4);
 
@@ -19020,11 +19020,11 @@ INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8003D8EC);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8003D964);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8003D9D4);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", InitCARD);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8003D9E4);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", StartCARD);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8003D9F4);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", StopCARD);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8003DA04);
 
@@ -19120,7 +19120,7 @@ s32 func_8003DE18(s32 *st) {
         D_800506C8 = v;
     case 10:
         func_8003FEA4();
-        func_8003F994(D_80062F80.field_10);
+        _card_info(D_80062F80.field_10);
         *st = *st + 1;
         break;
     case 11:
@@ -19256,7 +19256,7 @@ s32 func_8003E19C(s32 *st) {
         *st = 30;
     case 30:
         func_8003FEA4();
-        func_8003F9A4(D_80062F90);
+        _card_load(D_80062F90);
         *st = *st + 1;
         break;
     case 31:
@@ -19271,7 +19271,7 @@ s32 func_8003E19C(s32 *st) {
             return 1;
         case 4:
             func_8003FEA4();
-            func_8003F994(D_80062F90);
+            _card_info(D_80062F90);
             *st = 0x32;
             break;
         case 2:
@@ -19320,7 +19320,7 @@ s32 func_8003E444(s32 a0, s32 a1, s32 a2) {
     D_80062F80.field_10 = a0;
     do {
     retry:
-        r = func_8003F574(D_80062F80.field_24, 1);
+        r = open(D_80062F80.field_24, 1);
         if (r >= 0) {
             goto ok;
         }
@@ -19348,9 +19348,9 @@ s32 func_8003E444(s32 a0, s32 a1, s32 a2) {
     }
     return st;
 ok:
-    func_8003F5A4(r);
+    close(r);
     func_8003FEA4();
-    D_80062F80.field_14 = func_8003F574(D_80062F80.field_24, a2 | 0x8000);
+    D_80062F80.field_14 = open(D_80062F80.field_24, a2 | 0x8000);
     return 0;
 }
 
@@ -19359,7 +19359,7 @@ void func_8003E5CC(void) {
     s32 *p = &D_80062F94;
 
     if (*p >= 0) {
-        func_8003F5A4(*p);
+        close(*p);
         *p = -1;
     }
 }
@@ -19402,10 +19402,10 @@ s32 func_8003E6C8(s32 *state) {
         if (D_80062F80.field_4 != 0) {
             return 1;
         }
-        while (func_8003F584(D_80062F80.field_14, D_80062F80.field_18, 0) != D_80062F80.field_18) {
+        while (lseek(D_80062F80.field_14, D_80062F80.field_18, 0) != D_80062F80.field_18) {
         }
         func_8003FEA4();
-        while (func_8003F594(D_80062F80.field_14, D_80062F80.field_20, D_80062F80.field_1C) != 0) {
+        while (read(D_80062F80.field_14, D_80062F80.field_20, D_80062F80.field_1C) != 0) {
         }
         *state = 30;
         break;
@@ -19482,10 +19482,10 @@ s32 func_8003E930(s32 *st) {
         if (D_80062F80.field_4 != 0) {
             return 1;
         }
-        while (func_8003F584(D_80062F80.field_14, D_80062F80.field_18, 0) != D_80062F80.field_18) {
+        while (lseek(D_80062F80.field_14, D_80062F80.field_18, 0) != D_80062F80.field_18) {
         }
         func_8003FEA4();
-        while (func_8002A9A4(D_80062F80.field_14, (u8 *)D_80062F80.field_20, D_80062F80.field_1C) != 0) {
+        while (write(D_80062F80.field_14, (u8 *)D_80062F80.field_20, D_80062F80.field_1C) != 0) {
         }
         *st = 30;
         break;
@@ -19569,7 +19569,7 @@ s32 func_8003EBF4(s32 *a0) {
         if (D_80062F80.field_4 != 0) {
             return 1;
         }
-        r = func_8003F574(D_80062F80.field_24, 0x8001);
+        r = open(D_80062F80.field_24, 0x8001);
         D_80062F80.field_14 = r;
         p = &D_80062F80;
         if (r < 0) {
@@ -19581,7 +19581,7 @@ s32 func_8003EBF4(s32 *a0) {
         func_8003FA24(func_8003E6C8);
         return 0;
     case 20:
-        func_8003F5A4(D_80062F80.field_14);
+        close(D_80062F80.field_14);
         D_80062F80.field_14 = -1;
         return 1;
     }
@@ -19634,7 +19634,7 @@ s32 func_8003EE14(s32 *st) {
         if (D_80062F80.field_4 != 0) {
             return 1;
         }
-        r = func_8003F574(D_80062F80.field_24, 0x8001);
+        r = open(D_80062F80.field_24, 0x8001);
         D_80062F80.field_14 = r;
         if (r < 0) {
             vp = &D_80062F80;
@@ -19647,7 +19647,7 @@ s32 func_8003EE14(s32 *st) {
         break;
     case 20:
         q = &D_80062F94;
-        func_8003F5A4(*q);
+        close(*q);
         *q = -1;
         return 1;
     }
@@ -19707,7 +19707,7 @@ s32 func_8003EF1C(s32 a0_arg, s8 *a1, Ent3EF1C *out_arg, s32 *count_arg, s32 ski
             ret = st;
             goto end;
         } else {
-            r = func_8003F5B4(&ent);
+            r = nextfile(&ent);
         }
     have:
         if (r == 0) {
@@ -19891,15 +19891,15 @@ void func_8003F518(s32 n, u8 *out) {
 }
 
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8003F574);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", open);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8003F584);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", lseek);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8003F594);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", read);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8003F5A4);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", close);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8003F5B4);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", nextfile);
 
 s32 func_8003F5C4(s8 *name, s32 a1) {
     Dcb3F760 *e;
@@ -19937,7 +19937,7 @@ done:
             break;
         }
     }
-    return func_8003F864(name, a1);
+    return firstfile(name, a1);
 }
 
 
@@ -19963,7 +19963,7 @@ void func_8003F760(s32 *a0, s32 a1, s32 a2) {
 }
 
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8003F864);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", firstfile);
 
 s8 *func_8003F874(s8 *dst, s8 *src) {
     s8 *ret;
@@ -20005,22 +20005,22 @@ s32 func_8003F924(s8 *a, s8 *b) {
     return *a - b[-1];
 }
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8003F994);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", _card_info);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8003F9A4);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", _card_load);
 
-extern void func_8003FA04();
-extern s32 func_8003F9F4();
+extern void _new_card();
+extern s32 _card_write();
 
 s32 func_8003F9B4(s32 a0) {
-    func_8003FA04(a0);
-    return func_8003F9F4(a0, 0x3F, 0);
+    _new_card(a0);
+    return _card_write(a0, 0x3F, 0);
 }
 __asm__(".word 0\n.word 0\n.word 0\n");
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8003F9F4);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", _card_write);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8003FA04);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", _new_card);
 
 void func_8003FA14(void) {
     D_800506E8 = -1;
@@ -20109,32 +20109,32 @@ int func_8003FBB0(void) {
 void func_8003FBC4(void) {
     func_8003D504();
     func_8003D594();
-    func_8003D4F4();
+    _bu_init();
 }
 
 void func_8003FBF4(void) {
     s32 s;
 
-    s = func_80026FC4();
-    D_80063060 = func_8003A1B4(0xF4000001, 4, 0x1000, (s32)func_8003FB24);
-    D_80063064 = func_8003A1B4(0xF4000001, 0x8000, 0x1000, (s32)func_8003FB38);
-    D_80063068 = func_8003A1B4(0xF4000001, 0x100, 0x1000, (s32)func_8003FB4C);
-    D_8006306C = func_8003A1B4(0xF4000001, 0x2000, 0x1000, (s32)func_8003FB60);
-    D_80063070 = func_8003A1B4(0xF0000011, 4, 0x1000, (s32)func_8003FB74);
-    D_80063074 = func_8003A1B4(0xF0000011, 0x8000, 0x1000, (s32)func_8003FB88);
-    D_80063078 = func_8003A1B4(0xF0000011, 0x100, 0x1000, (s32)func_8003FB9C);
-    D_8006307C = func_8003A1B4(0xF0000011, 0x2000, 0x1000, (s32)func_8003FBB0);
-    func_8003A1C4(D_80063060);
-    func_8003A1C4(D_80063064);
-    func_8003A1C4(D_80063068);
-    func_8003A1C4(D_8006306C);
-    func_8003A1C4(D_80063070);
-    func_8003A1C4(D_80063074);
-    func_8003A1C4(D_80063078);
-    func_8003A1C4(D_8006307C);
+    s = EnterCriticalSection();
+    D_80063060 = OpenEvent(0xF4000001, 4, 0x1000, (s32)func_8003FB24);
+    D_80063064 = OpenEvent(0xF4000001, 0x8000, 0x1000, (s32)func_8003FB38);
+    D_80063068 = OpenEvent(0xF4000001, 0x100, 0x1000, (s32)func_8003FB4C);
+    D_8006306C = OpenEvent(0xF4000001, 0x2000, 0x1000, (s32)func_8003FB60);
+    D_80063070 = OpenEvent(0xF0000011, 4, 0x1000, (s32)func_8003FB74);
+    D_80063074 = OpenEvent(0xF0000011, 0x8000, 0x1000, (s32)func_8003FB88);
+    D_80063078 = OpenEvent(0xF0000011, 0x100, 0x1000, (s32)func_8003FB9C);
+    D_8006307C = OpenEvent(0xF0000011, 0x2000, 0x1000, (s32)func_8003FBB0);
+    EnableEvent(D_80063060);
+    EnableEvent(D_80063064);
+    EnableEvent(D_80063068);
+    EnableEvent(D_8006306C);
+    EnableEvent(D_80063070);
+    EnableEvent(D_80063074);
+    EnableEvent(D_80063078);
+    EnableEvent(D_8006307C);
     func_8003FEA4();
     if (s == 1) {
-        func_80026FD4();
+        ExitCriticalSection();
     }
 }
 
@@ -20142,30 +20142,30 @@ void func_8003FBF4(void) {
 void func_8003FDD0(void) { func_8003D5DC(); }
 
 void func_8003FDF0(void) {
-    s32 s = func_80026FC4();
+    s32 s = EnterCriticalSection();
 
-    func_800401D4(D_80063060);
-    func_800401D4(D_80063064);
-    func_800401D4(D_80063068);
-    func_800401D4(D_8006306C);
-    func_800401D4(D_80063070);
-    func_800401D4(D_80063074);
-    func_800401D4(D_80063078);
-    func_800401D4(D_8006307C);
+    CloseEvent(D_80063060);
+    CloseEvent(D_80063064);
+    CloseEvent(D_80063068);
+    CloseEvent(D_8006306C);
+    CloseEvent(D_80063070);
+    CloseEvent(D_80063074);
+    CloseEvent(D_80063078);
+    CloseEvent(D_8006307C);
     if (s == 1) {
-        func_80026FD4();
+        ExitCriticalSection();
     }
 }
 
 void func_8003FEA4(void) {
-    func_8003C8B4(D_80063060);
-    func_8003C8B4(D_80063064);
-    func_8003C8B4(D_80063068);
-    func_8003C8B4(D_8006306C);
-    func_8003C8B4(D_80063070);
-    func_8003C8B4(D_80063074);
-    func_8003C8B4(D_80063078);
-    func_8003C8B4(D_8006307C);
+    TestEvent(D_80063060);
+    TestEvent(D_80063064);
+    TestEvent(D_80063068);
+    TestEvent(D_8006306C);
+    TestEvent(D_80063070);
+    TestEvent(D_80063074);
+    TestEvent(D_80063078);
+    TestEvent(D_8006307C);
     D_80063080 = D_80063084 = D_80063088 = D_8006308C = 0;
     D_80063090 = D_80063094 = D_80063098 = D_8006309C = 0;
 }
@@ -20176,10 +20176,10 @@ s32 func_8003FFAC(void) {
     do {
         r = D_80063080 + D_80063084 * 2 + D_80063088 * 4 + D_8006308C * 8;
     } while (r == 0);
-    func_8003C8B4(D_80063070);
-    func_8003C8B4(D_80063074);
-    func_8003C8B4(D_80063078);
-    func_8003C8B4(D_8006307C);
+    TestEvent(D_80063070);
+    TestEvent(D_80063074);
+    TestEvent(D_80063078);
+    TestEvent(D_8006307C);
     D_80063080 = D_80063084 = D_80063088 = D_8006308C = 0;
     return r >> 1;
 }
@@ -20190,10 +20190,10 @@ s32 func_80040084(void) {
     do {
         v = D_80063090 + D_80063094 * 2 + D_80063098 * 4 + D_8006309C * 8;
     } while (v == 0);
-    func_8003C8B4(D_80063060);
-    func_8003C8B4(D_80063064);
-    func_8003C8B4(D_80063068);
-    func_8003C8B4(D_8006306C);
+    TestEvent(D_80063060);
+    TestEvent(D_80063064);
+    TestEvent(D_80063068);
+    TestEvent(D_8006306C);
     D_80063090 = D_80063094 = D_80063098 = D_8006309C = 0;
     return v >> 1;
 }
@@ -20206,7 +20206,7 @@ s32 func_80040198(void) {
     return D_80063090 + D_80063094 * 2 + D_80063098 * 4 + D_8006309C * 8;
 }
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_800401D4);
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", CloseEvent);
 
 static inline s32 mcWriteFrame401E4(s32 port, s32 blk) {
     s32 j = 0;
@@ -20221,7 +20221,7 @@ static inline s32 mcWriteFrame401E4(s32 port, s32 blk) {
     *p = c;
     do {
         func_8003FEA4();
-        func_8003F9F4(port, blk, D_800632E0);
+        _card_write(port, blk, D_800632E0);
         r = func_80040084();
         if (r == 0) break;
         if (r == 4) {
@@ -20279,7 +20279,7 @@ s32 func_800401E4(s32 a0) {
         *buf = c;
         do {
             func_8003FEA4();
-            func_8003F9F4(a0, 0, D_800632E0);
+            _card_write(a0, 0, D_800632E0);
             t = func_80040084();
             if (t == 0) break;
             if (t == 4) {
@@ -20294,7 +20294,7 @@ s32 func_800401E4(s32 a0) {
     if (r != 0) goto out;
     do {
         func_8003FEA4();
-        func_8003F9A4(a0);
+        _card_load(a0);
         r = func_8003FFAC();
         if (r == 0) return 0;
         n++;
@@ -20462,7 +20462,7 @@ s32 func_800405B4(s32 port, s8 *name, s32 nblocks)
             *p = x;
             do {
                 func_8003FEA4();
-                func_8003F9F4(port, blk, D_800632E0);
+                _card_write(port, blk, D_800632E0);
                 r = func_80040084();
                 if (r == 0) {
                     break;
@@ -20482,7 +20482,7 @@ s32 func_800405B4(s32 port, s8 *name, s32 nblocks)
     }
     do {
         func_8003FEA4();
-        func_8003F9A4(port);
+        _card_load(port);
         r = func_8003FFAC();
         if (r == 0) {
             return 0;

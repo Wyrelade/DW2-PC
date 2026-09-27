@@ -4,7 +4,7 @@ nonmatching func_8003D964, 0x68
 glabel func_8003D964
     /* 2E164 8003D964 0680013C */  lui        $at, %hi(D_80062F20)
     /* 2E168 8003D968 202F3FAC */  sw         $ra, %lo(D_80062F20)($at)
-    /* 2E16C 8003D96C F19B000C */  jal        func_80026FC4
+    /* 2E16C 8003D96C F19B000C */  jal        EnterCriticalSection
     /* 2E170 8003D970 00000000 */   nop
     /* 2E174 8003D974 57000924 */  addiu      $t1, $zero, 0x57
     /* 2E178 8003D978 B0000A24 */  addiu      $t2, $zero, 0xB0
@@ -20,9 +20,9 @@ glabel func_8003D964
     /* 2E19C 8003D99C FFFF4A25 */  addiu      $t2, $t2, -0x1
     /* 2E1A0 8003D9A0 FCFF4015 */  bnez       $t2, .L8003D994
     /* 2E1A4 8003D9A4 00000000 */   nop
-    /* 2E1A8 8003D9A8 E9B6000C */  jal        func_8002DBA4
+    /* 2E1A8 8003D9A8 E9B6000C */  jal        FlushCache
     /* 2E1AC 8003D9AC 00000000 */   nop
-    /* 2E1B0 8003D9B0 F59B000C */  jal        func_80026FD4
+    /* 2E1B0 8003D9B0 F59B000C */  jal        ExitCriticalSection
     /* 2E1B4 8003D9B4 00000000 */   nop
     /* 2E1B8 8003D9B8 06801F3C */  lui        $ra, %hi(D_80062F20)
     /* 2E1BC 8003D9BC 202FFF8F */  lw         $ra, %lo(D_80062F20)($ra)

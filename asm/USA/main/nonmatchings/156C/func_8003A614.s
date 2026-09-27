@@ -46,7 +46,7 @@ glabel func_8003A614
     /* 2AEB0 8003A6B0 00000000 */   nop
   .L8003A6B4:
     /* 2AEB4 8003A6B4 09008434 */  ori        $a0, $a0, (0xF0000009 & 0xFFFF)
-    /* 2AEB8 8003A6B8 55B7000C */  jal        func_8002DD54
+    /* 2AEB8 8003A6B8 55B7000C */  jal        DeliverEvent
     /* 2AEBC 8003A6BC 20000524 */   addiu     $a1, $zero, 0x20
   .L8003A6C0:
     /* 2AEC0 8003A6C0 1000BF8F */  lw         $ra, 0x10($sp)

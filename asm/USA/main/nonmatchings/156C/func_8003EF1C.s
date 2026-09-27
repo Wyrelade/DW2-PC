@@ -106,7 +106,7 @@ glabel func_8003EF1C
     /* 2F8A0 8003F0A0 52FC0008 */  j          .L8003F148
     /* 2F8A4 8003F0A4 00000000 */   nop
   .L8003F0A8:
-    /* 2F8A8 8003F0A8 6DFD000C */  jal        func_8003F5B4
+    /* 2F8A8 8003F0A8 6DFD000C */  jal        nextfile
     /* 2F8AC 8003F0AC 3000A427 */   addiu     $a0, $sp, 0x30
     /* 2F8B0 8003F0B0 21804000 */  addu       $s0, $v0, $zero
   .L8003F0B4:

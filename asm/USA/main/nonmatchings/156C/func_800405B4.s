@@ -398,7 +398,7 @@ glabel func_800405B4
     /* 31374 80040B74 2120C002 */  addu       $a0, $s6, $zero
     /* 31378 80040B78 0680063C */  lui        $a2, %hi(D_800632E0)
     /* 3137C 80040B7C E032C624 */  addiu      $a2, $a2, %lo(D_800632E0)
-    /* 31380 80040B80 7DFE000C */  jal        func_8003F9F4
+    /* 31380 80040B80 7DFE000C */  jal        _card_write
     /* 31384 80040B84 21286002 */   addu      $a1, $s3, $zero
     /* 31388 80040B88 2100010C */  jal        func_80040084
     /* 3138C 80040B8C 00000000 */   nop
@@ -428,7 +428,7 @@ glabel func_800405B4
   .L80040BE0:
     /* 313E0 80040BE0 A9FF000C */  jal        func_8003FEA4
     /* 313E4 80040BE4 00000000 */   nop
-    /* 313E8 80040BE8 69FE000C */  jal        func_8003F9A4
+    /* 313E8 80040BE8 69FE000C */  jal        _card_load
     /* 313EC 80040BEC 2120C002 */   addu      $a0, $s6, $zero
     /* 313F0 80040BF0 EBFF000C */  jal        func_8003FFAC
     /* 313F4 80040BF4 00000000 */   nop

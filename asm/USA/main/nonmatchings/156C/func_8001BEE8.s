@@ -9,7 +9,7 @@ glabel func_8001BEE8
     /* C6FC 8001BEFC 09000424 */  addiu      $a0, $zero, 0x9
     /* C700 8001BF00 FFFF0524 */  addiu      $a1, $zero, -0x1
     /* C704 8001BF04 1800BFAF */  sw         $ra, 0x18($sp)
-    /* C708 8001BF08 4445000C */  jal        func_80011510
+    /* C708 8001BF08 4445000C */  jal        Task_FindFirst
     /* C70C 8001BF0C 2130A000 */   addu      $a2, $a1, $zero
     /* C710 8001BF10 21184000 */  addu       $v1, $v0, $zero
     /* C714 8001BF14 FFFF0224 */  addiu      $v0, $zero, -0x1

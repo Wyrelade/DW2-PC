@@ -21,7 +21,7 @@ glabel func_8003C804
   .L8003C844:
     /* 2D044 8003C844 0580043C */  lui        $a0, %hi(D_8004FDB0)
     /* 2D048 8003C848 B0FD848C */  lw         $a0, %lo(D_8004FDB0)($a0)
-    /* 2D04C 8003C84C 2DF2000C */  jal        func_8003C8B4
+    /* 2D04C 8003C84C 2DF2000C */  jal        TestEvent
     /* 2D050 8003C850 00000000 */   nop
     /* 2D054 8003C854 0B003016 */  bne        $s1, $s0, .L8003C884
     /* 2D058 8003C858 00000000 */   nop
@@ -30,7 +30,7 @@ glabel func_8003C804
   .L8003C864:
     /* 2D064 8003C864 0580043C */  lui        $a0, %hi(D_8004FDB0)
     /* 2D068 8003C868 B0FD848C */  lw         $a0, %lo(D_8004FDB0)($a0)
-    /* 2D06C 8003C86C 2DF2000C */  jal        func_8003C8B4
+    /* 2D06C 8003C86C 2DF2000C */  jal        TestEvent
     /* 2D070 8003C870 00000000 */   nop
     /* 2D074 8003C874 FBFF4010 */  beqz       $v0, .L8003C864
     /* 2D078 8003C878 01000224 */   addiu     $v0, $zero, 0x1

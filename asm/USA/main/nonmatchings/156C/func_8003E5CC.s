@@ -10,7 +10,7 @@ glabel func_8003E5CC
     /* 2EDE4 8003E5E4 00000000 */  nop
     /* 2EDE8 8003E5E8 05008004 */  bltz       $a0, .L8003E600
     /* 2EDEC 8003E5EC 00000000 */   nop
-    /* 2EDF0 8003E5F0 69FD000C */  jal        func_8003F5A4
+    /* 2EDF0 8003E5F0 69FD000C */  jal        close
     /* 2EDF4 8003E5F4 00000000 */   nop
     /* 2EDF8 8003E5F8 FFFF0224 */  addiu      $v0, $zero, -0x1
     /* 2EDFC 8003E5FC 000002AE */  sw         $v0, 0x0($s0)

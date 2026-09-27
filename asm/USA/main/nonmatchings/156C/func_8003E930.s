@@ -42,7 +42,7 @@ glabel func_8003E930
   .L8003E9BC:
     /* 2F1BC 8003E9BC 0000048E */  lw         $a0, 0x0($s0)
     /* 2F1C0 8003E9C0 0400058E */  lw         $a1, 0x4($s0)
-    /* 2F1C4 8003E9C4 61FD000C */  jal        func_8003F584
+    /* 2F1C4 8003E9C4 61FD000C */  jal        lseek
     /* 2F1C8 8003E9C8 21300000 */   addu      $a2, $zero, $zero
     /* 2F1CC 8003E9CC 0400038E */  lw         $v1, 0x4($s0)
     /* 2F1D0 8003E9D0 00000000 */  nop
@@ -56,7 +56,7 @@ glabel func_8003E930
     /* 2F1EC 8003E9EC 0000048E */  lw         $a0, 0x0($s0)
     /* 2F1F0 8003E9F0 0C00058E */  lw         $a1, 0xC($s0)
     /* 2F1F4 8003E9F4 0800068E */  lw         $a2, 0x8($s0)
-    /* 2F1F8 8003E9F8 69AA000C */  jal        func_8002A9A4
+    /* 2F1F8 8003E9F8 69AA000C */  jal        write
     /* 2F1FC 8003E9FC 00000000 */   nop
     /* 2F200 8003EA00 FAFF4014 */  bnez       $v0, .L8003E9EC
     /* 2F204 8003EA04 1E000224 */   addiu     $v0, $zero, 0x1E

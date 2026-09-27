@@ -12,7 +12,7 @@ glabel func_8001BE08
   .L8001BE28:
     /* C628 8001BE28 09000424 */  addiu      $a0, $zero, 0x9
     /* C62C 8001BE2C FFFF0524 */  addiu      $a1, $zero, -0x1
-    /* C630 8001BE30 4445000C */  jal        func_80011510
+    /* C630 8001BE30 4445000C */  jal        Task_FindFirst
     /* C634 8001BE34 2130A000 */   addu      $a2, $a1, $zero
     /* C638 8001BE38 21184000 */  addu       $v1, $v0, $zero
     /* C63C 8001BE3C 09006010 */  beqz       $v1, .L8001BE64

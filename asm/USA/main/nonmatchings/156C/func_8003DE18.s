@@ -47,7 +47,7 @@ glabel func_8003DE18
     /* 2E6B8 8003DEB8 00000000 */   nop
     /* 2E6BC 8003DEBC 0680043C */  lui        $a0, %hi(D_80062F90)
     /* 2E6C0 8003DEC0 902F848C */  lw         $a0, %lo(D_80062F90)($a0)
-    /* 2E6C4 8003DEC4 65FE000C */  jal        func_8003F994
+    /* 2E6C4 8003DEC4 65FE000C */  jal        _card_info
     /* 2E6C8 8003DEC8 00000000 */   nop
     /* 2E6CC 8003DECC 0000028E */  lw         $v0, 0x0($s0)
     /* 2E6D0 8003DED0 00000000 */  nop

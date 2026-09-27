@@ -36,7 +36,7 @@ glabel func_80030E68
     /* 216E4 80030EE4 34EB1026 */  addiu      $s0, $s0, %lo(D_8004EB34)
     /* 216E8 80030EE8 FCFF0426 */  addiu      $a0, $s0, -0x4
     /* 216EC 80030EEC DC0F0226 */  addiu      $v0, $s0, 0xFDC
-    /* 216F0 80030EF0 F5C4000C */  jal        func_800313D4
+    /* 216F0 80030EF0 F5C4000C */  jal        HookEntryInt
     /* 216F4 80030EF4 000002AE */   sw        $v0, 0x0($s0)
     /* 216F8 80030EF8 01000224 */  addiu      $v0, $zero, 0x1
     /* 216FC 80030EFC 19C5000C */  jal        func_80031464
@@ -47,9 +47,9 @@ glabel func_80030E68
     /* 21710 80030F10 140062AC */   sw        $v0, 0x14($v1)
     /* 21714 80030F14 0580043C */  lui        $a0, %hi(D_8004FB80)
     /* 21718 80030F18 80FB848C */  lw         $a0, %lo(D_8004FB80)($a0)
-    /* 2171C 80030F1C E7C4000C */  jal        func_8003139C
+    /* 2171C 80030F1C E7C4000C */  jal        _96_remove
     /* 21720 80030F20 040082AC */   sw        $v0, 0x4($a0)
-    /* 21724 80030F24 F59B000C */  jal        func_80026FD4
+    /* 21724 80030F24 F59B000C */  jal        ExitCriticalSection
     /* 21728 80030F28 C4FF1026 */   addiu     $s0, $s0, -0x3C
     /* 2172C 80030F2C 21100002 */  addu       $v0, $s0, $zero
   .L80030F30:

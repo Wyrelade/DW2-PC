@@ -3,7 +3,7 @@ nonmatching func_8003D5DC, 0x28
 glabel func_8003D5DC
     /* 2DDDC 8003D5DC E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* 2DDE0 8003D5E0 1000BFAF */  sw         $ra, 0x10($sp)
-    /* 2DDE4 8003D5E4 7DF6000C */  jal        func_8003D9F4
+    /* 2DDE4 8003D5E4 7DF6000C */  jal        StopCARD
     /* 2DDE8 8003D5E8 00000000 */   nop
     /* 2DDEC 8003D5EC 09F7000C */  jal        func_8003DC24
     /* 2DDF0 8003D5F0 00000000 */   nop

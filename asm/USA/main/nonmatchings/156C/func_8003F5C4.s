@@ -108,7 +108,7 @@ glabel func_8003F5C4
   .L8003F738:
     /* 2FF38 8003F738 21204002 */  addu       $a0, $s2, $zero
   .L8003F73C:
-    /* 2FF3C 8003F73C 19FE000C */  jal        func_8003F864
+    /* 2FF3C 8003F73C 19FE000C */  jal        firstfile
     /* 2FF40 8003F740 21286002 */   addu      $a1, $s3, $zero
   .L8003F744:
     /* 2FF44 8003F744 2000BF8F */  lw         $ra, 0x20($sp)

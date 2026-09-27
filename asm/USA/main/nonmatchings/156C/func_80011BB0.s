@@ -8,9 +8,9 @@ glabel func_80011BB0
     /* 23C0 80011BC0 2C00028E */  lw         $v0, 0x2C($s0)
     /* 23C4 80011BC4 00000000 */  nop
     /* 23C8 80011BC8 0000448C */  lw         $a0, 0x0($v0)
-    /* 23CC 80011BCC A073000C */  jal        func_8001CE80
+    /* 23CC 80011BCC A073000C */  jal        Gfx_ReleaseTexSlot
     /* 23D0 80011BD0 00000000 */   nop
-    /* 23D4 80011BD4 5C44000C */  jal        func_80011170
+    /* 23D4 80011BD4 5C44000C */  jal        Task_DefaultDestroy
     /* 23D8 80011BD8 21200002 */   addu      $a0, $s0, $zero
     /* 23DC 80011BDC 1400BF8F */  lw         $ra, 0x14($sp)
     /* 23E0 80011BE0 1000B08F */  lw         $s0, 0x10($sp)

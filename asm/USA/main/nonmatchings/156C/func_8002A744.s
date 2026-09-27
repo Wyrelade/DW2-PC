@@ -51,7 +51,7 @@ glabel func_8002A744
     /* 1AFF4 8002A7F4 00000000 */   nop
     /* 1AFF8 8002A7F8 0680053C */  lui        $a1, %hi(D_800618B0)
     /* 1AFFC 8002A7FC B018A524 */  addiu      $a1, $a1, %lo(D_800618B0)
-    /* 1B000 8002A800 69AA000C */  jal        func_8002A9A4
+    /* 1B000 8002A800 69AA000C */  jal        write
     /* 1B004 8002A804 01000424 */   addiu     $a0, $zero, 0x1
     /* 1B008 8002A808 0580013C */  lui        $at, %hi(D_80049064)
     /* 1B00C 8002A80C 649020AC */  sw         $zero, %lo(D_80049064)($at)

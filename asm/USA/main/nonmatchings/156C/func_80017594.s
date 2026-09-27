@@ -9,7 +9,7 @@ glabel func_80017594
     /* 7DA8 800175A8 2C00308E */  lw         $s0, 0x2C($s1)
     /* 7DAC 800175AC 00000000 */  nop
     /* 7DB0 800175B0 50000426 */  addiu      $a0, $s0, 0x50
-    /* 7DB4 800175B4 9C4E000C */  jal        func_80013A70
+    /* 7DB4 800175B4 9C4E000C */  jal        Menu_GridIndexColMajor
     /* 7DB8 800175B8 54000526 */   addiu     $a1, $s0, 0x54
     /* 7DBC 800175BC 21304000 */  addu       $a2, $v0, $zero
     /* 7DC0 800175C0 C0100600 */  sll        $v0, $a2, 3
@@ -80,7 +80,7 @@ glabel func_80017594
     /* 7EB4 800176B4 21202002 */  addu       $a0, $s1, $zero
     /* 7EB8 800176B8 03000524 */  addiu      $a1, $zero, 0x3
   .L800176BC:
-    /* 7EBC 800176BC 7745000C */  jal        func_800115DC
+    /* 7EBC 800176BC 7745000C */  jal        Task_SetState1
     /* 7EC0 800176C0 00000000 */   nop
   .L800176C4:
     /* 7EC4 800176C4 1800BF8F */  lw         $ra, 0x18($sp)

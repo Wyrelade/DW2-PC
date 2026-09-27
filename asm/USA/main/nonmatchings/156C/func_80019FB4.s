@@ -18,7 +18,7 @@ glabel func_80019FB4
     /* A7EC 80019FEC 21804000 */  addu       $s0, $v0, $zero
     /* A7F0 80019FF0 21200002 */  addu       $a0, $s0, $zero
     /* A7F4 80019FF4 00002686 */  lh         $a2, 0x0($s1)
-    /* A7F8 80019FF8 5475000C */  jal        func_8001D550
+    /* A7F8 80019FF8 5475000C */  jal        Gfx_SetPartsScale
     /* A7FC 80019FFC 00100524 */   addiu     $a1, $zero, 0x1000
     /* A800 8001A000 2176000C */  jal        func_8001D884
     /* A804 8001A004 21200002 */   addu      $a0, $s0, $zero

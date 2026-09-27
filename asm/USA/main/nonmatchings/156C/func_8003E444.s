@@ -37,7 +37,7 @@ glabel func_8003E444
   .L8003E4C4:
     /* 2ECC4 8003E4C4 21200002 */  addu       $a0, $s0, $zero
   .L8003E4C8:
-    /* 2ECC8 8003E4C8 5DFD000C */  jal        func_8003F574
+    /* 2ECC8 8003E4C8 5DFD000C */  jal        open
     /* 2ECCC 8003E4CC 01000524 */   addiu     $a1, $zero, 0x1
     /* 2ECD0 8003E4D0 2C004104 */  bgez       $v0, .L8003E584
     /* 2ECD4 8003E4D4 00000000 */   nop
@@ -89,12 +89,12 @@ glabel func_8003E444
     /* 2ED7C 8003E57C 6AF90008 */  j          .L8003E5A8
     /* 2ED80 8003E580 00000000 */   nop
   .L8003E584:
-    /* 2ED84 8003E584 69FD000C */  jal        func_8003F5A4
+    /* 2ED84 8003E584 69FD000C */  jal        close
     /* 2ED88 8003E588 21204000 */   addu      $a0, $v0, $zero
     /* 2ED8C 8003E58C A9FF000C */  jal        func_8003FEA4
     /* 2ED90 8003E590 00000000 */   nop
     /* 2ED94 8003E594 21200002 */  addu       $a0, $s0, $zero
-    /* 2ED98 8003E598 5DFD000C */  jal        func_8003F574
+    /* 2ED98 8003E598 5DFD000C */  jal        open
     /* 2ED9C 8003E59C 0080A536 */   ori       $a1, $s5, 0x8000
     /* 2EDA0 8003E5A0 F0FF02AE */  sw         $v0, -0x10($s0)
     /* 2EDA4 8003E5A4 21100000 */  addu       $v0, $zero, $zero

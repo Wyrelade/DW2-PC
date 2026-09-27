@@ -11,7 +11,7 @@ glabel func_8001BB88
     /* C3A4 8001BBA4 1A005110 */  beq        $v0, $s1, .L8001BC10
     /* C3A8 8001BBA8 09000424 */   addiu     $a0, $zero, 0x9
     /* C3AC 8001BBAC 21282002 */  addu       $a1, $s1, $zero
-    /* C3B0 8001BBB0 4445000C */  jal        func_80011510
+    /* C3B0 8001BBB0 4445000C */  jal        Task_FindFirst
     /* C3B4 8001BBB4 21302002 */   addu      $a2, $s1, $zero
     /* C3B8 8001BBB8 21204000 */  addu       $a0, $v0, $zero
     /* C3BC 8001BBBC 14008010 */  beqz       $a0, .L8001BC10
@@ -32,7 +32,7 @@ glabel func_8001BB88
     /* C3F8 8001BBF8 00000000 */  nop
     /* C3FC 8001BBFC 03008010 */  beqz       $a0, .L8001BC0C
     /* C400 8001BC00 00000000 */   nop
-    /* C404 8001BC04 7045000C */  jal        func_800115C0
+    /* C404 8001BC04 7045000C */  jal        Task_SetState0
     /* C408 8001BC08 03000524 */   addiu     $a1, $zero, 0x3
   .L8001BC0C:
     /* C40C 8001BC0C 000011AE */  sw         $s1, 0x0($s0)

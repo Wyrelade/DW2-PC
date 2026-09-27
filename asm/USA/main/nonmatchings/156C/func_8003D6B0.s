@@ -12,20 +12,20 @@ glabel func_8003D6B0
     /* 2DED0 8003D6D0 2000BFAF */  sw         $ra, 0x20($sp)
     /* 2DED4 8003D6D4 59F6000C */  jal        func_8003D964
     /* 2DED8 8003D6D8 2198E000 */   addu      $s3, $a3, $zero
-    /* 2DEDC 8003D6DC F19B000C */  jal        func_80026FC4
+    /* 2DEDC 8003D6DC F19B000C */  jal        EnterCriticalSection
     /* 2DEE0 8003D6E0 00000000 */   nop
     /* 2DEE4 8003D6E4 3BF6000C */  jal        func_8003D8EC
     /* 2DEE8 8003D6E8 00000000 */   nop
-    /* 2DEEC 8003D6EC F59B000C */  jal        func_80026FD4
+    /* 2DEEC 8003D6EC F59B000C */  jal        ExitCriticalSection
     /* 2DEF0 8003D6F0 00000000 */   nop
-    /* 2DEF4 8003D6F4 31C3000C */  jal        func_80030CC4
+    /* 2DEF4 8003D6F4 31C3000C */  jal        ChangeClearPAD
     /* 2DEF8 8003D6F8 21200000 */   addu      $a0, $zero, $zero
     /* 2DEFC 8003D6FC DCF5000C */  jal        func_8003D770
     /* 2DF00 8003D700 00000000 */   nop
     /* 2DF04 8003D704 21200002 */  addu       $a0, $s0, $zero
     /* 2DF08 8003D708 21282002 */  addu       $a1, $s1, $zero
     /* 2DF0C 8003D70C 21304002 */  addu       $a2, $s2, $zero
-    /* 2DF10 8003D710 25F6000C */  jal        func_8003D894
+    /* 2DF10 8003D710 25F6000C */  jal        InitPAD
     /* 2DF14 8003D714 21386002 */   addu      $a3, $s3, $zero
     /* 2DF18 8003D718 01000224 */  addiu      $v0, $zero, 0x1
     /* 2DF1C 8003D71C 0580013C */  lui        $at, %hi(D_800506B8)

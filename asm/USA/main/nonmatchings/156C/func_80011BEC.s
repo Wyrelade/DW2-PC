@@ -16,7 +16,7 @@ glabel func_80011BEC
     /* 241C 80011C1C 3C00BFAF */  sw         $ra, 0x3C($sp)
     /* 2420 80011C20 2C00B3AF */  sw         $s3, 0x2C($sp)
     /* 2424 80011C24 2800B2AF */  sw         $s2, 0x28($sp)
-    /* 2428 80011C28 4445000C */  jal        func_80011510
+    /* 2428 80011C28 4445000C */  jal        Task_FindFirst
     /* 242C 80011C2C 2000B0AF */   sw        $s0, 0x20($sp)
     /* 2430 80011C30 2C00528C */  lw         $s2, 0x2C($v0)
     /* 2434 80011C34 21800000 */  addu       $s0, $zero, $zero

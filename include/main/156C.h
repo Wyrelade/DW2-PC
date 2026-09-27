@@ -120,7 +120,7 @@ typedef struct {
     /* 0x15 */ u8 field_15;
 } Rec230DC;
 
-/* Global struct D_80050938 populated by func_80011510. */
+/* Global struct D_80050938 populated by Task_FindFirst. */
 typedef struct {
     /* 0x00 */ s32 field_0;
     /* 0x04 */ s32 field_4;
@@ -128,8 +128,8 @@ typedef struct {
     /* 0x0C */ s32 field_C;
 } Blk50938;
 
-/* Element of the D_8005CD60 array (stride 0x20), indexed by func_8001CA28 and
-   initialized by func_8001CA3C. */
+/* Element of the D_8005CD60 array (stride 0x20), indexed by Gfx_GetTexSlot and
+   initialized by Gfx_InitTexSlots. */
 typedef struct {
     /* 0x00 */ s32 field_0;
     /* 0x04 */ s32 field_4;
@@ -283,7 +283,7 @@ typedef struct {
     /* 0x78 */ DstElem *field_78;
 } Sub3C;
 
-/* Sub-object reached through the Act125C container at 0x3C; func_8001125C frees
+/* Sub-object reached through the Act125C container at 0x3C; Task_Free frees
    the four owned pointers at 0x6C..0x78. */
 typedef struct {
     u8 _pad00[0x6C];
@@ -293,7 +293,7 @@ typedef struct {
     /* 0x78 */ ActorWork *field_78;
 } Obj125C;
 
-/* Container torn down by func_8001125C: a func_80010ED4 array at 0x34 with count
+/* Container torn down by Task_Free: a Task_Destroy array at 0x34 with count
    at 0x30, plus owned pointers freed via func_80022D84. */
 typedef struct {
     u8 _pad00[0x2C];
@@ -571,8 +571,8 @@ typedef struct {
     /* 0x06 */ u16 field_6;
 } Pt8228C;
 
-/* Integer stack: [0] is the count, entries follow. func_8001A8F4 pushes,
-   func_8001A920 pops. */
+/* Integer stack: [0] is the count, entries follow. Text_PushReturn pushes,
+   Text_PopReturn pops. */
 typedef struct {
     /* 0x00 */ s32 count;
     /* 0x04 */ s32 data[1];
@@ -644,7 +644,7 @@ typedef struct {
     /* 0x28 */ s32 field_28;
 } SrcBC24;
 
-/* Stride-0x34 record built by func_8001BC24 into the func_80011510 array. */
+/* Stride-0x34 record built by func_8001BC24 into the Task_FindFirst array. */
 typedef struct {
     /* 0x00 */ u8 field_0;
     /* 0x01 */ u8 field_1;
@@ -681,7 +681,7 @@ typedef struct {
     u8 _pad32[2];
 } Rec34;
 
-/* Returned by func_80011440/func_80011510: the stride-0x34 record array at 0x2C. */
+/* Returned by Task_FindNext/Task_FindFirst: the stride-0x34 record array at 0x2C. */
 typedef struct {
     /* 0x00 */ s32 field_0;
     /* 0x04 */ s32 field_4;
@@ -768,7 +768,7 @@ typedef struct {
     /* 0x10 */ s16 field_10;
 } Out33B24;
 
-/* Fixed-stride block indexed by func_8001C818 (element size 0x4030). */
+/* Fixed-stride block indexed by Gpu_ClearOt (element size 0x4030). */
 typedef struct {
     /* 0x0000 */ s32 field_0[0x100C];
 } Blk54CF8;
@@ -818,7 +818,7 @@ typedef struct {
     /* 0xE4 */ ElmE620 elems[0x24];
 } EntE620;
 
-/* Table cleared by func_80011190: a count word followed by 100 entries. */
+/* Table cleared by Task_ClearList: a count word followed by 100 entries. */
 typedef struct {
     /* 0x00 */ s32 count;
     /* 0x04 */ s32 entries[100];
@@ -883,8 +883,8 @@ typedef struct {
     /* 0x38 */ AllocC40 *field_38;
 } ContC40;
 
-/* Buffer allocated + registered by func_800111D4 (in the D_80050798 list) and
- * populated by func_800113B8; only the pointer/count fields it writes are known. */
+/* Buffer allocated + registered by Task_Alloc (in the D_80050798 list) and
+ * populated by Task_AllocWithBuffers; only the pointer/count fields it writes are known. */
 typedef struct {
     /* 0x00 */ u32 field_0;
     u8 _pad04[0x20];
@@ -896,7 +896,7 @@ typedef struct {
 } Buf111D4;
 
 /* Object type descriptor from the D_80040D50[id >> 8][id & 0xFF] table
-   (func_8001107C): optional init callback and the two buffer sizes. */
+   (Task_Create): optional init callback and the two buffer sizes. */
 typedef struct {
     /* 0x00 */ void (*init)(Buf111D4 *, s32);
     u8 _pad04[0x0C];
@@ -960,7 +960,7 @@ typedef struct Obj25FBC {
     /* 0xEE */ u16 field_EE;
 } Obj25FBC;
 
-/* Stride-0x28 array element written by func_8001D550: a flag byte at 0xE plus
+/* Stride-0x28 array element written by Gfx_SetPartsScale: a flag byte at 0xE plus
  * two words at 0x10/0x14; field_0 is the loop guard (zero terminates). */
 typedef struct {
     /* 0x00 */ s32 field_0;
@@ -1396,8 +1396,8 @@ typedef struct {
     /* 0xD */ u8 field_D;
 } St6196C;
 
-/* Object whose handle array (count at 0x30, array at 0x34) func_80010E38
- * walks through func_80010F24. */
+/* Object whose handle array (count at 0x30, array at 0x34) Task_RunChildren
+ * walks through Task_Run. */
 typedef struct {
     u8 _pad00[0x30];
     /* 0x30 */ s32 field_30;
@@ -1434,7 +1434,7 @@ typedef struct {
 } Rect288A0;
 
 /* Grid menu: cursor at 0x54, dimensions at 0x58, 6-byte cells from 0x72
-   (cell index = func_80013A70(cursor, dims)). */
+   (cell index = Menu_GridIndexColMajor(cursor, dims)). */
 typedef struct {
     /* 0x00 */ u16 field_0;
     u8 _pad02[0x04];
@@ -1584,7 +1584,7 @@ typedef struct {
     u8 _pad2[0x36];
 } Rec624F8;
 
-/* 0x28-byte model part record; lists end at field_0 == 0 (func_8001373C, func_800137B8). */
+/* 0x28-byte model part record; lists end at field_0 == 0 (Menu_SetPartsGridPos, func_800137B8). */
 typedef struct {
     /* 0x00 */ s32 field_0;
     /* 0x04 */ s16 field_4;
@@ -1656,7 +1656,7 @@ typedef struct {
 } SlotHead8;
 
 /* State block at D_8005CCF8; field_60 selects the row of the slot tables
- * read by func_8001C760. */
+ * read by Gpu_SetLayerOtPtrs. */
 typedef struct {
     u8 _pad0[0x60];
     /* 0x60 */ s32 field_60;
@@ -2566,7 +2566,7 @@ typedef struct {
     /* 0x20 */ VReg62A48 regs[24];
 } Snd62A28;
 
-/* 0x28-stride zero-terminated list func_8001D504 walks (func_80014870 passes it
+/* 0x28-stride zero-terminated list Gfx_HidePartsByMask walks (func_80014870 passes it
  * the func_800239A0 lookups); field_F is set to 0 or 1 from field_1C & mask. */
 typedef struct {
     /* 0x00 */ s32 field_0;
@@ -2843,7 +2843,7 @@ typedef struct {
     /* 0x12 */ s8 b2;
 } Cd4FC48;
 
-/* Screen fade packet func_8001C584 writes at D_8005F770.work: a flat
+/* Screen fade packet Gfx_DrawFade writes at D_8005F770.work: a flat
  * semi-transparent quad (POLY_F4 layout) followed by a draw-mode word pair. */
 typedef struct {
     /* 0x00 */ Tag1CE9C t;

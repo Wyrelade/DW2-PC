@@ -5,15 +5,15 @@ glabel func_80024544
     /* 14D48 80024548 1400BFAF */  sw         $ra, 0x14($sp)
     /* 14D4C 8002454C 1000B0AF */  sw         $s0, 0x10($sp)
     /* 14D50 80024550 0580013C */  lui        $at, %hi(D_80048E50)
-    /* 14D54 80024554 F19B000C */  jal        func_80026FC4
+    /* 14D54 80024554 F19B000C */  jal        EnterCriticalSection
     /* 14D58 80024558 508E20AC */   sw        $zero, %lo(D_80048E50)($at)
     /* 14D5C 8002455C 02000424 */  addiu      $a0, $zero, 0x2
     /* 14D60 80024560 0580103C */  lui        $s0, %hi(D_80048E78)
     /* 14D64 80024564 788E1026 */  addiu      $s0, $s0, %lo(D_80048E78)
-    /* 14D68 80024568 FD9B000C */  jal        func_80026FF4
+    /* 14D68 80024568 FD9B000C */  jal        SysDeqIntRP
     /* 14D6C 8002456C 21280002 */   addu      $a1, $s0, $zero
     /* 14D70 80024570 02000424 */  addiu      $a0, $zero, 0x2
-    /* 14D74 80024574 F99B000C */  jal        func_80026FE4
+    /* 14D74 80024574 F99B000C */  jal        SysEnqIntRP
     /* 14D78 80024578 21280002 */   addu      $a1, $s0, $zero
     /* 14D7C 8002457C 03000424 */  addiu      $a0, $zero, 0x3
     /* 14D80 80024580 0580033C */  lui        $v1, %hi(D_80048DF0)
@@ -23,9 +23,9 @@ glabel func_80024544
     /* 14D90 80024590 0400628C */  lw         $v0, 0x4($v1)
     /* 14D94 80024594 21280000 */  addu       $a1, $zero, $zero
     /* 14D98 80024598 01004234 */  ori        $v0, $v0, 0x1
-    /* 14D9C 8002459C 019C000C */  jal        func_80027004
+    /* 14D9C 8002459C 019C000C */  jal        ChangeClearRCnt
     /* 14DA0 800245A0 040062AC */   sw        $v0, 0x4($v1)
-    /* 14DA4 800245A4 F59B000C */  jal        func_80026FD4
+    /* 14DA4 800245A4 F59B000C */  jal        ExitCriticalSection
     /* 14DA8 800245A8 00000000 */   nop
     /* 14DAC 800245AC 0580043C */  lui        $a0, %hi(D_80048E4C)
     /* 14DB0 800245B0 4C8E848C */  lw         $a0, %lo(D_80048E4C)($a0)

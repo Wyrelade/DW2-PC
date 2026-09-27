@@ -23,10 +23,10 @@ glabel func_80030C2C
     /* 21474 80030C74 0180043C */  lui        $a0, %hi(D_80010984)
     /* 21478 80030C78 CDC0000C */  jal        func_80030334
     /* 2147C 80030C7C 84098424 */   addiu     $a0, $a0, %lo(D_80010984)
-    /* 21480 80030C80 31C3000C */  jal        func_80030CC4
+    /* 21480 80030C80 31C3000C */  jal        ChangeClearPAD
     /* 21484 80030C84 21200000 */   addu      $a0, $zero, $zero
     /* 21488 80030C88 03000424 */  addiu      $a0, $zero, 0x3
-    /* 2148C 80030C8C 019C000C */  jal        func_80027004
+    /* 2148C 80030C8C 019C000C */  jal        ChangeClearRCnt
     /* 21490 80030C90 21280000 */   addu      $a1, $zero, $zero
     /* 21494 80030C94 2DC30008 */  j          .L80030CB4
     /* 21498 80030C98 00000000 */   nop

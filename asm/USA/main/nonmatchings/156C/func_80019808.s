@@ -31,9 +31,9 @@ glabel func_80019808
     /* A070 80019870 180162AE */   sw        $v0, 0x118($s3)
     /* A074 80019874 21206002 */  addu       $a0, $s3, $zero
     /* A078 80019878 15000524 */  addiu      $a1, $zero, 0x15
-    /* A07C 8001987C 2270000C */  jal        func_8001C088
+    /* A07C 8001987C 2270000C */  jal        Mem_FillWordsNeg1
     /* A080 80019880 140180AC */   sw        $zero, 0x114($a0)
-    /* A084 80019884 5145000C */  jal        func_80011544
+    /* A084 80019884 5145000C */  jal        Task_NextState0
     /* A088 80019888 21208002 */   addu      $a0, $s4, $zero
     /* A08C 8001988C F2660008 */  j          .L80019BC8
     /* A090 80019890 00000000 */   nop
@@ -48,7 +48,7 @@ glabel func_80019808
     /* A0B0 800198B0 5E006210 */  beq        $v1, $v0, .L80019A2C
     /* A0B4 800198B4 0680023C */   lui       $v0, %hi(D_8005F6F0)
   .L800198B8:
-    /* A0B8 800198B8 B94D000C */  jal        func_800136E4
+    /* A0B8 800198B8 B94D000C */  jal        Math_RampToOne
     /* A0BC 800198BC A8006526 */   addiu     $a1, $s3, 0xA8
     /* A0C0 800198C0 C1004014 */  bnez       $v0, .L80019BC8
     /* A0C4 800198C4 1305043C */   lui       $a0, (0x5130024 >> 16)
@@ -85,7 +85,7 @@ glabel func_80019808
     /* A13C 8001993C 21801202 */  addu       $s0, $s0, $s2
     /* A140 80019940 80801000 */  sll        $s0, $s0, 2
     /* A144 80019944 64000526 */  addiu      $a1, $s0, 0x64
-    /* A148 80019948 9C4E000C */  jal        func_80013A70
+    /* A148 80019948 9C4E000C */  jal        Menu_GridIndexColMajor
     /* A14C 8001994C 21286502 */   addu      $a1, $s3, $a1
     /* A150 80019950 48007626 */  addiu      $s6, $s3, 0x48
     /* A154 80019954 2120C002 */  addu       $a0, $s6, $zero
@@ -134,7 +134,7 @@ glabel func_80019808
     /* A200 80019A00 1C017026 */  addiu      $s0, $s3, 0x11C
     /* A204 80019A04 21200002 */  addu       $a0, $s0, $zero
     /* A208 80019A08 21284000 */  addu       $a1, $v0, $zero
-    /* A20C 80019A0C BF4E000C */  jal        func_80013AFC
+    /* A20C 80019A0C BF4E000C */  jal        Text_FormatNumber
     /* A210 80019A10 FCFF0624 */   addiu     $a2, $zero, -0x4
     /* A214 80019A14 2120E002 */  addu       $a0, $s7, $zero
     /* A218 80019A18 21282002 */  addu       $a1, $s1, $zero
@@ -181,14 +181,14 @@ glabel func_80019808
     /* A2A8 80019AA8 2128A200 */  addu       $a1, $a1, $v0
     /* A2AC 80019AAC 80280500 */  sll        $a1, $a1, 2
     /* A2B0 80019AB0 6400A524 */  addiu      $a1, $a1, 0x64
-    /* A2B4 80019AB4 844E000C */  jal        func_80013A10
+    /* A2B4 80019AB4 844E000C */  jal        Menu_MoveGridCursorP1
     /* A2B8 80019AB8 21286502 */   addu      $a1, $s3, $a1
     /* A2BC 80019ABC 11004010 */  beqz       $v0, .L80019B04
     /* A2C0 80019AC0 94000426 */   addiu     $a0, $s0, 0x94
     /* A2C4 80019AC4 21206402 */  addu       $a0, $s3, $a0
     /* A2C8 80019AC8 21107002 */  addu       $v0, $s3, $s0
     /* A2CC 80019ACC 56004584 */  lh         $a1, 0x56($v0)
-    /* A2D0 80019AD0 8C4E000C */  jal        func_80013A30
+    /* A2D0 80019AD0 8C4E000C */  jal        Menu_ScrollToShow
     /* A2D4 80019AD4 03000624 */   addiu     $a2, $zero, 0x3
     /* A2D8 80019AD8 21206002 */  addu       $a0, $s3, $zero
     /* A2DC 80019ADC 8565000C */  jal        func_80019614
@@ -198,7 +198,7 @@ glabel func_80019808
     /* A2EC 80019AEC 21280000 */   addu      $a1, $zero, $zero
     /* A2F0 80019AF0 21208002 */  addu       $a0, $s4, $zero
   .L80019AF4:
-    /* A2F4 80019AF4 7745000C */  jal        func_800115DC
+    /* A2F4 80019AF4 7745000C */  jal        Task_SetState1
     /* A2F8 80019AF8 01000524 */   addiu     $a1, $zero, 0x1
     /* A2FC 80019AFC F2660008 */  j          .L80019BC8
     /* A300 80019B00 00000000 */   nop
@@ -212,7 +212,7 @@ glabel func_80019808
     /* A31C 80019B1C 2A004018 */  blez       $v0, .L80019BC8
     /* A320 80019B20 00000000 */   nop
   .L80019B24:
-    /* A324 80019B24 7045000C */  jal        func_800115C0
+    /* A324 80019B24 7045000C */  jal        Task_SetState0
     /* A328 80019B28 02000524 */   addiu     $a1, $zero, 0x2
     /* A32C 80019B2C 1000228E */  lw         $v0, 0x10($s1)
     /* A330 80019B30 00000000 */  nop
@@ -247,16 +247,16 @@ glabel func_80019808
     /* A398 80019B98 2C70000C */  jal        func_8001C0B0
     /* A39C 80019B9C 15000524 */   addiu     $a1, $zero, 0x15
   .L80019BA0:
-    /* A3A0 80019BA0 5945000C */  jal        func_80011564
+    /* A3A0 80019BA0 5945000C */  jal        Task_NextState1
     /* A3A4 80019BA4 21208002 */   addu      $a0, $s4, $zero
     /* A3A8 80019BA8 F2660008 */  j          .L80019BC8
     /* A3AC 80019BAC 00000000 */   nop
   .L80019BB0:
-    /* A3B0 80019BB0 C54D000C */  jal        func_80013714
+    /* A3B0 80019BB0 C54D000C */  jal        Math_RampToZero
     /* A3B4 80019BB4 A8006526 */   addiu     $a1, $s3, 0xA8
     /* A3B8 80019BB8 03004014 */  bnez       $v0, .L80019BC8
     /* A3BC 80019BBC 21208002 */   addu      $a0, $s4, $zero
-    /* A3C0 80019BC0 7045000C */  jal        func_800115C0
+    /* A3C0 80019BC0 7045000C */  jal        Task_SetState0
     /* A3C4 80019BC4 03000524 */   addiu     $a1, $zero, 0x3
   .L80019BC8:
     /* A3C8 80019BC8 5000BF8F */  lw         $ra, 0x50($sp)

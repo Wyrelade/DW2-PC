@@ -37,7 +37,7 @@ glabel func_80019EE8
     /* A760 80019F60 00104228 */  slti       $v0, $v0, 0x1000
     /* A764 80019F64 0F004014 */  bnez       $v0, .L80019FA4
     /* A768 80019F68 00100224 */   addiu     $v0, $zero, 0x1000
-    /* A76C 80019F6C 5945000C */  jal        func_80011564
+    /* A76C 80019F6C 5945000C */  jal        Task_NextState1
     /* A770 80019F70 0000A2A4 */   sh        $v0, 0x0($a1)
     /* A774 80019F74 E9670008 */  j          .L80019FA4
     /* A778 80019F78 00000000 */   nop
@@ -51,7 +51,7 @@ glabel func_80019EE8
     /* A794 80019F94 00000000 */   nop
     /* A798 80019F98 0000A0A4 */  sh         $zero, 0x0($a1)
   .L80019F9C:
-    /* A79C 80019F9C 5145000C */  jal        func_80011544
+    /* A79C 80019F9C 5145000C */  jal        Task_NextState0
     /* A7A0 80019FA0 00000000 */   nop
   .L80019FA4:
     /* A7A4 80019FA4 1000BF8F */  lw         $ra, 0x10($sp)

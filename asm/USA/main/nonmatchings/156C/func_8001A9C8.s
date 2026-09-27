@@ -147,7 +147,7 @@ glabel func_8001A9C8
     /* B3F0 8001ABF0 08004000 */  jr         $v0
     /* B3F4 8001ABF4 00000000 */   nop
   jlabel .L8001ABF8
-    /* B3F8 8001ABF8 486A000C */  jal        func_8001A920
+    /* B3F8 8001ABF8 486A000C */  jal        Text_PopReturn
     /* B3FC 8001ABFC 00000000 */   nop
     /* B400 8001AC00 12034014 */  bnez       $v0, .L8001B84C
     /* B404 8001AC04 00000000 */   nop
@@ -291,7 +291,7 @@ glabel func_8001A9C8
     /* B600 8001AE00 4C00A78F */  lw         $a3, 0x4C($sp)
     /* B604 8001AE04 9400A88F */  lw         $t0, 0x94($sp)
     /* B608 8001AE08 21300000 */  addu       $a2, $zero, $zero
-    /* B60C 8001AE0C 1F44000C */  jal        func_8001107C
+    /* B60C 8001AE0C 1F44000C */  jal        Task_Create
     /* B610 8001AE10 2128E800 */   addu      $a1, $a3, $t0
     /* B614 8001AE14 70FF0224 */  addiu      $v0, $zero, -0x90
     /* B618 8001AE18 1C0042A6 */  sh         $v0, 0x1C($s2)
@@ -312,7 +312,7 @@ glabel func_8001A9C8
     /* B64C 8001AE4C 03000624 */  addiu      $a2, $zero, 0x3
     /* B650 8001AE50 2128E800 */  addu       $a1, $a3, $t0
   .L8001AE54:
-    /* B654 8001AE54 1F44000C */  jal        func_8001107C
+    /* B654 8001AE54 1F44000C */  jal        Task_Create
     /* B658 8001AE58 00000000 */   nop
     /* B65C 8001AE5C 70FF0224 */  addiu      $v0, $zero, -0x90
     /* B660 8001AE60 1C0042A6 */  sh         $v0, 0x1C($s2)
@@ -324,7 +324,7 @@ glabel func_8001A9C8
     /* B674 8001AE74 4C00A98F */  lw         $t1, 0x4C($sp)
     /* B678 8001AE78 9400AA8F */  lw         $t2, 0x94($sp)
     /* B67C 8001AE7C 02000624 */  addiu      $a2, $zero, 0x2
-    /* B680 8001AE80 1F44000C */  jal        func_8001107C
+    /* B680 8001AE80 1F44000C */  jal        Task_Create
     /* B684 8001AE84 21282A01 */   addu      $a1, $t1, $t2
     /* B688 8001AE88 70FF0224 */  addiu      $v0, $zero, -0x90
     /* B68C 8001AE8C 1C0042A6 */  sh         $v0, 0x1C($s2)
@@ -338,15 +338,15 @@ glabel func_8001A9C8
     /* B6A8 8001AEA8 00000000 */  nop
     /* B6AC 8001AEAC 03008010 */  beqz       $a0, .L8001AEBC
     /* B6B0 8001AEB0 00000000 */   nop
-    /* B6B4 8001AEB4 7045000C */  jal        func_800115C0
+    /* B6B4 8001AEB4 7045000C */  jal        Task_SetState0
     /* B6B8 8001AEB8 02000524 */   addiu     $a1, $zero, 0x2
   .L8001AEBC:
-    /* B6BC 8001AEBC 5945000C */  jal        func_80011564
+    /* B6BC 8001AEBC 5945000C */  jal        Task_NextState1
     /* B6C0 8001AEC0 2120C003 */   addu      $a0, $fp, $zero
   .L8001AEC4:
     /* B6C4 8001AEC4 01000824 */  addiu      $t0, $zero, 0x1
     /* B6C8 8001AEC8 270048A2 */  sb         $t0, 0x27($s2)
-    /* B6CC 8001AECC 5945000C */  jal        func_80011564
+    /* B6CC 8001AECC 5945000C */  jal        Task_NextState1
     /* B6D0 8001AED0 2120C003 */   addu      $a0, $fp, $zero
     /* B6D4 8001AED4 D06B0008 */  j          .L8001AF40
     /* B6D8 8001AED8 00000000 */   nop
@@ -376,7 +376,7 @@ glabel func_8001A9C8
     /* B730 8001AF30 270040A2 */  sb         $zero, 0x27($s2)
     /* B734 8001AF34 01004224 */  addiu      $v0, $v0, 0x1
   .L8001AF38:
-    /* B738 8001AF38 7745000C */  jal        func_800115DC
+    /* B738 8001AF38 7745000C */  jal        Task_SetState1
     /* B73C 8001AF3C 240042A2 */   sb        $v0, 0x24($s2)
   .L8001AF40:
     /* B740 8001AF40 6400A88F */  lw         $t0, 0x64($sp)
@@ -403,7 +403,7 @@ glabel func_8001A9C8
     /* B790 8001AF90 00000000 */  nop
     /* B794 8001AF94 03008010 */  beqz       $a0, .L8001AFA4
     /* B798 8001AF98 00000000 */   nop
-    /* B79C 8001AF9C 7045000C */  jal        func_800115C0
+    /* B79C 8001AF9C 7045000C */  jal        Task_SetState0
     /* B7A0 8001AFA0 02000524 */   addiu     $a1, $zero, 0x2
   .L8001AFA4:
     /* B7A4 8001AFA4 166C0008 */  j          .L8001B058
@@ -450,7 +450,7 @@ glabel func_8001A9C8
     /* B840 8001B040 05000424 */  addiu      $a0, $zero, 0x5
     /* B844 8001B044 4C00A98F */  lw         $t1, 0x4C($sp)
     /* B848 8001B048 3000A627 */  addiu      $a2, $sp, 0x30
-    /* B84C 8001B04C 1F44000C */  jal        func_8001107C
+    /* B84C 8001B04C 1F44000C */  jal        Task_Create
     /* B850 8001B050 21282501 */   addu      $a1, $t1, $a1
     /* B854 8001B054 39000424 */  addiu      $a0, $zero, 0x39
   .L8001B058:
@@ -620,7 +620,7 @@ glabel func_8001A9C8
     /* BAA4 8001B2A4 01000824 */  addiu      $t0, $zero, 0x1
   .L8001B2A8:
     /* BAA8 8001B2A8 270048A2 */  sb         $t0, 0x27($s2)
-    /* BAAC 8001B2AC 5945000C */  jal        func_80011564
+    /* BAAC 8001B2AC 5945000C */  jal        Task_NextState1
     /* BAB0 8001B2B0 2120C003 */   addu      $a0, $fp, $zero
     /* BAB4 8001B2B4 FF000232 */  andi       $v0, $s0, 0xFF
   .L8001B2B8:
@@ -647,7 +647,7 @@ glabel func_8001A9C8
     /* BB00 8001B300 21280000 */  addu       $a1, $zero, $zero
     /* BB04 8001B304 270040A2 */  sb         $zero, 0x27($s2)
     /* BB08 8001B308 01004224 */  addiu      $v0, $v0, 0x1
-    /* BB0C 8001B30C 7745000C */  jal        func_800115DC
+    /* BB0C 8001B30C 7745000C */  jal        Task_SetState1
     /* BB10 8001B310 2A0042A2 */   sb        $v0, 0x2A($s2)
     /* BB14 8001B314 C86C0008 */  j          .L8001B320
     /* BB18 8001B318 00000000 */   nop
@@ -800,7 +800,7 @@ glabel func_8001A9C8
     /* BD28 8001B528 0F000232 */  andi       $v0, $s0, 0xF
     /* BD2C 8001B52C 3000A2AF */  sw         $v0, 0x30($sp)
     /* BD30 8001B530 3400A0AF */  sw         $zero, 0x34($sp)
-    /* BD34 8001B534 1F44000C */  jal        func_8001107C
+    /* BD34 8001B534 1F44000C */  jal        Task_Create
     /* BD38 8001B538 D4002525 */   addiu     $a1, $t1, 0xD4
     /* BD3C 8001B53C 1400C28F */  lw         $v0, 0x14($fp)
     /* BD40 8001B540 00000000 */  nop
@@ -876,9 +876,9 @@ glabel func_8001A9C8
     /* BE38 8001B638 05005410 */  beq        $v0, $s4, .L8001B650
     /* BE3C 8001B63C 00000000 */   nop
   .L8001B640:
-    /* BE40 8001B640 3C71000C */  jal        func_8001C4F0
+    /* BE40 8001B640 3C71000C */  jal        Gfx_FadeOutToBlack
     /* BE44 8001B644 0A000424 */   addiu     $a0, $zero, 0xA
-    /* BE48 8001B648 5945000C */  jal        func_80011564
+    /* BE48 8001B648 5945000C */  jal        Task_NextState1
     /* BE4C 8001B64C 2120C003 */   addu      $a0, $fp, $zero
   .L8001B650:
     /* BE50 8001B650 1800C28F */  lw         $v0, 0x18($fp)
@@ -951,7 +951,7 @@ glabel func_8001A9C8
     /* BF40 8001B740 40100200 */  sll        $v0, $v0, 1
     /* BF44 8001B744 00002392 */  lbu        $v1, 0x0($s1)
     /* BF48 8001B748 21800202 */  addu       $s0, $s0, $v0
-    /* BF4C 8001B74C 3D6A000C */  jal        func_8001A8F4
+    /* BF4C 8001B74C 3D6A000C */  jal        Text_PushReturn
     /* BF50 8001B750 21800302 */   addu      $s0, $s0, $v1
     /* BF54 8001B754 1278000C */  jal        func_8001E048
     /* BF58 8001B758 21200002 */   addu      $a0, $s0, $zero
@@ -975,7 +975,7 @@ glabel func_8001A9C8
     /* BF9C 8001B79C 40100200 */  sll        $v0, $v0, 1
     /* BFA0 8001B7A0 00002392 */  lbu        $v1, 0x0($s1)
     /* BFA4 8001B7A4 21800202 */  addu       $s0, $s0, $v0
-    /* BFA8 8001B7A8 3D6A000C */  jal        func_8001A8F4
+    /* BFA8 8001B7A8 3D6A000C */  jal        Text_PushReturn
     /* BFAC 8001B7AC 21800302 */   addu      $s0, $s0, $v1
     /* BFB0 8001B7B0 D679000C */  jal        func_8001E758
     /* BFB4 8001B7B4 21200002 */   addu      $a0, $s0, $zero
@@ -984,7 +984,7 @@ glabel func_8001A9C8
   jlabel .L8001B7C0
     /* BFC0 8001B7C0 01003126 */  addiu      $s1, $s1, 0x1
     /* BFC4 8001B7C4 00003092 */  lbu        $s0, 0x0($s1)
-    /* BFC8 8001B7C8 3D6A000C */  jal        func_8001A8F4
+    /* BFC8 8001B7C8 3D6A000C */  jal        Text_PushReturn
     /* BFCC 8001B7CC 01002426 */   addiu     $a0, $s1, 0x1
     /* BFD0 8001B7D0 FF000332 */  andi       $v1, $s0, 0xFF
     /* BFD4 8001B7D4 05006228 */  slti       $v0, $v1, 0x5

@@ -85,7 +85,7 @@ glabel func_8003E19C
     /* 2EAC4 8003E2C4 00000000 */   nop
     /* 2EAC8 8003E2C8 0680043C */  lui        $a0, %hi(D_80062F90)
     /* 2EACC 8003E2CC 902F848C */  lw         $a0, %lo(D_80062F90)($a0)
-    /* 2EAD0 8003E2D0 69FE000C */  jal        func_8003F9A4
+    /* 2EAD0 8003E2D0 69FE000C */  jal        _card_load
     /* 2EAD4 8003E2D4 00000000 */   nop
     /* 2EAD8 8003E2D8 0000028E */  lw         $v0, 0x0($s0)
     /* 2EADC 8003E2DC 0AF90008 */  j          .L8003E428
@@ -135,7 +135,7 @@ glabel func_8003E19C
     /* 2EB74 8003E374 00000000 */   nop
     /* 2EB78 8003E378 0680043C */  lui        $a0, %hi(D_80062F90)
     /* 2EB7C 8003E37C 902F848C */  lw         $a0, %lo(D_80062F90)($a0)
-    /* 2EB80 8003E380 65FE000C */  jal        func_8003F994
+    /* 2EB80 8003E380 65FE000C */  jal        _card_info
     /* 2EB84 8003E384 00000000 */   nop
     /* 2EB88 8003E388 0AF90008 */  j          .L8003E428
     /* 2EB8C 8003E38C 32000224 */   addiu     $v0, $zero, 0x32

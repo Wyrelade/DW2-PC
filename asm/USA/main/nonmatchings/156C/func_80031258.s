@@ -10,7 +10,7 @@ glabel func_80031258
     /* 21A70 80031270 00000000 */  nop
     /* 21A74 80031274 1C004010 */  beqz       $v0, .L800312E8
     /* 21A78 80031278 21100000 */   addu      $v0, $zero, $zero
-    /* 21A7C 8003127C F19B000C */  jal        func_80026FC4
+    /* 21A7C 8003127C F19B000C */  jal        EnterCriticalSection
     /* 21A80 80031280 00000000 */   nop
     /* 21A84 80031284 0580023C */  lui        $v0, %hi(D_8004FB88)
     /* 21A88 80031288 88FB428C */  lw         $v0, %lo(D_8004FB88)($v0)
@@ -33,7 +33,7 @@ glabel func_80031258
     /* 21ACC 800312CC 0000828C */  lw         $v0, 0x0($a0)
     /* 21AD0 800312D0 77776334 */  ori        $v1, $v1, (0x77777777 & 0xFFFF)
     /* 21AD4 800312D4 24104300 */  and        $v0, $v0, $v1
-    /* 21AD8 800312D8 F1C4000C */  jal        func_800313C4
+    /* 21AD8 800312D8 F1C4000C */  jal        ResetEntryInt
     /* 21ADC 800312DC 000082AC */   sw        $v0, 0x0($a0)
     /* 21AE0 800312E0 21100002 */  addu       $v0, $s0, $zero
     /* 21AE4 800312E4 000040A4 */  sh         $zero, 0x0($v0)

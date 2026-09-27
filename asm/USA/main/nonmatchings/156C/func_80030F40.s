@@ -21,7 +21,7 @@ glabel func_80030F40
     /* 21784 80030F84 0180043C */  lui        $a0, %hi(D_800109C8)
     /* 21788 80030F88 05A8000C */  jal        func_8002A014
     /* 2178C 80030F8C C8098424 */   addiu     $a0, $a0, %lo(D_800109C8)
-    /* 21790 80030F90 EDC4000C */  jal        func_800313B4
+    /* 21790 80030F90 EDC4000C */  jal        ReturnFromException
     /* 21794 80030F94 00000000 */   nop
   .L80030F98:
     /* 21798 80030F98 0580043C */  lui        $a0, %hi(D_8004FB84)
@@ -115,7 +115,7 @@ glabel func_80030F40
     /* 218E0 800310E0 90FB20AC */  sw         $zero, %lo(D_8004FB90)($at)
   .L800310E4:
     /* 218E4 800310E4 0580013C */  lui        $at, %hi(D_8004EAFA)
-    /* 218E8 800310E8 EDC4000C */  jal        func_800313B4
+    /* 218E8 800310E8 EDC4000C */  jal        ReturnFromException
     /* 218EC 800310EC FAEA20A4 */   sh        $zero, %lo(D_8004EAFA)($at)
     /* 218F0 800310F0 2400BF8F */  lw         $ra, 0x24($sp)
     /* 218F4 800310F4 2000B48F */  lw         $s4, 0x20($sp)

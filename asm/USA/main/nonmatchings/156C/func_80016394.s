@@ -9,7 +9,7 @@ glabel func_80016394
     /* 6BA8 800163A8 54002426 */  addiu      $a0, $s1, 0x54
     /* 6BAC 800163AC 58002526 */  addiu      $a1, $s1, 0x58
     /* 6BB0 800163B0 3400BFAF */  sw         $ra, 0x34($sp)
-    /* 6BB4 800163B4 9C4E000C */  jal        func_80013A70
+    /* 6BB4 800163B4 9C4E000C */  jal        Menu_GridIndexColMajor
     /* 6BB8 800163B8 2800B0AF */   sw        $s0, 0x28($sp)
     /* 6BBC 800163BC 40180200 */  sll        $v1, $v0, 1
     /* 6BC0 800163C0 21186200 */  addu       $v1, $v1, $v0
@@ -61,7 +61,7 @@ glabel func_80016394
     /* 6C74 80016474 6658000C */  jal        func_80016198
     /* 6C78 80016478 21280000 */   addu      $a1, $zero, $zero
     /* 6C7C 8001647C 21204002 */  addu       $a0, $s2, $zero
-    /* 6C80 80016480 7745000C */  jal        func_800115DC
+    /* 6C80 80016480 7745000C */  jal        Task_SetState1
     /* 6C84 80016484 02000524 */   addiu     $a1, $zero, 0x2
     /* 6C88 80016488 0E000424 */  addiu      $a0, $zero, 0xE
   .L8001648C:

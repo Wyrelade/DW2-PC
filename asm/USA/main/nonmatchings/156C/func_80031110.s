@@ -50,30 +50,30 @@ glabel func_80031110
     /* 219C0 800311C0 08002016 */  bnez       $s1, .L800311E4
     /* 219C4 800311C4 04000224 */   addiu     $v0, $zero, 0x4
     /* 219C8 800311C8 0100502E */  sltiu      $s0, $s2, 0x1
-    /* 219CC 800311CC 31C3000C */  jal        func_80030CC4
+    /* 219CC 800311CC 31C3000C */  jal        ChangeClearPAD
     /* 219D0 800311D0 21200002 */   addu      $a0, $s0, $zero
     /* 219D4 800311D4 03000424 */  addiu      $a0, $zero, 0x3
-    /* 219D8 800311D8 019C000C */  jal        func_80027004
+    /* 219D8 800311D8 019C000C */  jal        ChangeClearRCnt
     /* 219DC 800311DC 21280002 */   addu      $a1, $s0, $zero
     /* 219E0 800311E0 04000224 */  addiu      $v0, $zero, 0x4
   .L800311E4:
     /* 219E4 800311E4 05002216 */  bne        $s1, $v0, .L800311FC
     /* 219E8 800311E8 05000224 */   addiu     $v0, $zero, 0x5
     /* 219EC 800311EC 21200000 */  addu       $a0, $zero, $zero
-    /* 219F0 800311F0 019C000C */  jal        func_80027004
+    /* 219F0 800311F0 019C000C */  jal        ChangeClearRCnt
     /* 219F4 800311F4 0100452E */   sltiu     $a1, $s2, 0x1
     /* 219F8 800311F8 05000224 */  addiu      $v0, $zero, 0x5
   .L800311FC:
     /* 219FC 800311FC 05002216 */  bne        $s1, $v0, .L80031214
     /* 21A00 80031200 06000224 */   addiu     $v0, $zero, 0x6
     /* 21A04 80031204 01000424 */  addiu      $a0, $zero, 0x1
-    /* 21A08 80031208 019C000C */  jal        func_80027004
+    /* 21A08 80031208 019C000C */  jal        ChangeClearRCnt
     /* 21A0C 8003120C 0100452E */   sltiu     $a1, $s2, 0x1
     /* 21A10 80031210 06000224 */  addiu      $v0, $zero, 0x6
   .L80031214:
     /* 21A14 80031214 03002216 */  bne        $s1, $v0, .L80031224
     /* 21A18 80031218 02000424 */   addiu     $a0, $zero, 0x2
-    /* 21A1C 8003121C 019C000C */  jal        func_80027004
+    /* 21A1C 8003121C 019C000C */  jal        ChangeClearRCnt
     /* 21A20 80031220 0100452E */   sltiu     $a1, $s2, 0x1
   .L80031224:
     /* 21A24 80031224 0580023C */  lui        $v0, %hi(D_8004FB88)

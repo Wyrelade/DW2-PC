@@ -14,7 +14,7 @@ glabel func_800166FC
     /* 6F24 80016724 21284002 */  addu       $a1, $s2, $zero
     /* 6F28 80016728 3000BFAF */  sw         $ra, 0x30($sp)
     /* 6F2C 8001672C 2400B3AF */  sw         $s3, 0x24($sp)
-    /* 6F30 80016730 9C4E000C */  jal        func_80013A70
+    /* 6F30 80016730 9C4E000C */  jal        Menu_GridIndexColMajor
     /* 6F34 80016734 1800B0AF */   sw        $s0, 0x18($sp)
     /* 6F38 80016738 40180200 */  sll        $v1, $v0, 1
     /* 6F3C 8001673C 21186200 */  addu       $v1, $v1, $v0
@@ -54,7 +54,7 @@ glabel func_800166FC
     /* 6FBC 800167BC 0580023C */  lui        $v0, %hi(D_80050768)
     /* 6FC0 800167C0 6807428C */  lw         $v0, %lo(D_80050768)($v0)
     /* 6FC4 800167C4 21284002 */  addu       $a1, $s2, $zero
-    /* 6FC8 800167C8 9C4E000C */  jal        func_80013A70
+    /* 6FC8 800167C8 9C4E000C */  jal        Menu_GridIndexColMajor
     /* 6FCC 800167CC 080150A4 */   sh        $s0, 0x108($v0)
     /* 6FD0 800167D0 0E000424 */  addiu      $a0, $zero, 0xE
     /* 6FD4 800167D4 40180200 */  sll        $v1, $v0, 1
@@ -70,7 +70,7 @@ glabel func_800166FC
     /* 6FFC 800167FC 0100422C */  sltiu      $v0, $v0, 0x1
     /* 7000 80016800 A369000C */  jal        func_8001A68C
     /* 7004 80016804 660082A6 */   sh        $v0, 0x66($s4)
-    /* 7008 80016808 5945000C */  jal        func_80011564
+    /* 7008 80016808 5945000C */  jal        Task_NextState1
     /* 700C 8001680C 2120A002 */   addu      $a0, $s5, $zero
   .L80016810:
     /* 7010 80016810 3000BF8F */  lw         $ra, 0x30($sp)

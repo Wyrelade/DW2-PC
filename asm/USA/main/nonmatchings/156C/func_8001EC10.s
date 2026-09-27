@@ -23,7 +23,7 @@ glabel func_8001EC10
     /* F45C 8001EC5C 3C0043AC */  sw         $v1, 0x3C($v0)
     /* F460 8001EC60 7A7D000C */  jal        func_8001F5E8
     /* F464 8001EC64 21200002 */   addu      $a0, $s0, $zero
-    /* F468 8001EC68 5145000C */  jal        func_80011544
+    /* F468 8001EC68 5145000C */  jal        Task_NextState0
     /* F46C 8001EC6C 21200002 */   addu      $a0, $s0, $zero
     /* F470 8001EC70 357B0008 */  j          .L8001ECD4
     /* F474 8001EC74 00000000 */   nop

@@ -101,7 +101,7 @@ glabel func_80016198
     /* 6B04 80016304 1C00B2AF */  sw         $s2, 0x1C($sp)
     /* 6B08 80016308 2000A4AF */  sw         $a0, 0x20($sp)
     /* 6B0C 8001630C 74000586 */  lh         $a1, 0x74($s0)
-    /* 6B10 80016310 BF4E000C */  jal        func_80013AFC
+    /* 6B10 80016310 BF4E000C */  jal        Text_FormatNumber
     /* 6B14 80016314 FEFF0624 */   addiu     $a2, $zero, -0x2
     /* 6B18 80016318 21208002 */  addu       $a0, $s4, $zero
     /* 6B1C 8001631C 1C4D000C */  jal        func_80013470

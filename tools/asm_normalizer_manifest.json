@@ -709,7 +709,7 @@
       "epilogue_unfill"
     ]
   },
-  "func_80013A30": {
+  "Menu_ScrollToShow": {
     "passes": []
   },
   "func_80023B70": {
@@ -997,7 +997,7 @@
       "operand_recolor"
     ]
   },
-  "func_80010E38": {
+  "Task_RunChildren": {
     "passes": []
   },
   "func_80038B74": {
@@ -1191,7 +1191,7 @@
       "padnop"
     ]
   },
-  "func_8001107C": {
+  "Task_Create": {
     "passes": []
   },
   "func_80027BA4": {
@@ -1336,7 +1336,7 @@
       "nosplit"
     ]
   },
-  "func_8001CDA8": {
+  "Gfx_ReserveTexSlot": {
     "passes": []
   },
   "func_80024544": {
@@ -1536,7 +1536,7 @@
   "func_800137B8": {
     "passes": []
   },
-  "func_800137FC": {
+  "Menu_SetPartsPos": {
     "passes": []
   },
   "func_80029D74": {
@@ -1586,7 +1586,7 @@
       "nosplit"
     ]
   },
-  "func_8001D5B4": {
+  "Gfx_SetPartsNumber": {
     "passes": []
   },
   "func_800277EC": {
@@ -1693,7 +1693,7 @@
       "padnop"
     ]
   },
-  "func_8001C760": {
+  "Gpu_SetLayerOtPtrs": {
     "passes": [
       "web_realloc",
       "sched_match",
@@ -1865,7 +1865,7 @@
   "func_80017D84": {
     "passes": []
   },
-  "func_80011440": {
+  "Task_FindNext": {
     "passes": [
       "reg_realloc",
       "taken_fill",
@@ -1918,7 +1918,7 @@
       "padnop"
     ]
   },
-  "func_8001E984": {
+  "Digi_GetExpToNextLevel": {
     "passes": [
       "web_realloc",
       "commutative_swap"
@@ -1976,7 +1976,7 @@
       "label_nop"
     ]
   },
-  "func_8001C898": {
+  "Gpu_SkipEmptyOtEntries": {
     "passes": [
       "web_realloc",
       "sched_match",
@@ -2491,7 +2491,7 @@
       "padnop"
     ]
   },
-  "func_8001D504": {
+  "Gfx_HidePartsByMask": {
     "passes": [
       "nosplit_nosr"
     ]
@@ -2512,7 +2512,7 @@
       "padnop"
     ]
   },
-  "func_8001373C": {
+  "Menu_SetPartsGridPos": {
     "passes": []
   },
   "func_80019E50": {
@@ -3370,7 +3370,7 @@
       "padnop"
     ]
   },
-  "func_8001C584": {
+  "Gfx_DrawFade": {
     "passes": [
       "padnop"
     ]

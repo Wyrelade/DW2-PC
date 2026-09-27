@@ -93,7 +93,7 @@ glabel func_8001DC24
   .L8001DD7C:
     /* E57C 8001DD7C 0D000492 */  lbu        $a0, 0xD($s0)
     /* E580 8001DD80 21300000 */  addu       $a2, $zero, $zero
-    /* E584 8001DD84 617A000C */  jal        func_8001E984
+    /* E584 8001DD84 617A000C */  jal        Digi_GetExpToNextLevel
     /* E588 8001DD88 FFFF8424 */   addiu     $a0, $a0, -0x1
     /* E58C 8001DD8C 100002AE */  sw         $v0, 0x10($s0)
   .L8001DD90:

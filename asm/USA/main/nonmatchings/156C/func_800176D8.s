@@ -15,7 +15,7 @@ glabel func_800176D8
     /* 7F04 80017704 A369000C */  jal        func_8001A68C
     /* 7F08 80017708 21280000 */   addu      $a1, $zero, $zero
     /* 7F0C 8001770C 21200002 */  addu       $a0, $s0, $zero
-    /* 7F10 80017710 7045000C */  jal        func_800115C0
+    /* 7F10 80017710 7045000C */  jal        Task_SetState0
     /* 7F14 80017714 02000524 */   addiu     $a1, $zero, 0x2
     /* 7F18 80017718 DB5D0008 */  j          .L8001776C
     /* 7F1C 8001771C 00000000 */   nop
@@ -37,7 +37,7 @@ glabel func_800176D8
     /* 7F58 80017758 A369000C */  jal        func_8001A68C
     /* 7F5C 8001775C A00140A4 */   sh        $zero, 0x1A0($v0)
     /* 7F60 80017760 21200002 */  addu       $a0, $s0, $zero
-    /* 7F64 80017764 7745000C */  jal        func_800115DC
+    /* 7F64 80017764 7745000C */  jal        Task_SetState1
     /* 7F68 80017768 01000524 */   addiu     $a1, $zero, 0x1
   .L8001776C:
     /* 7F6C 8001776C 1400BF8F */  lw         $ra, 0x14($sp)

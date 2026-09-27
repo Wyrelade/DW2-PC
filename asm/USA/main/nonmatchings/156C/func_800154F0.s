@@ -11,7 +11,7 @@ glabel func_800154F0
     /* 5D0C 8001550C 2C00908C */  lw         $s0, 0x2C($a0)
     /* 5D10 80015510 00000000 */  nop
     /* 5D14 80015514 88000426 */  addiu      $a0, $s0, 0x88
-    /* 5D18 80015518 9C4E000C */  jal        func_80013A70
+    /* 5D18 80015518 9C4E000C */  jal        Menu_GridIndexColMajor
     /* 5D1C 8001551C 8C000526 */   addiu     $a1, $s0, 0x8C
     /* 5D20 80015520 50001326 */  addiu      $s3, $s0, 0x50
     /* 5D24 80015524 21206002 */  addu       $a0, $s3, $zero

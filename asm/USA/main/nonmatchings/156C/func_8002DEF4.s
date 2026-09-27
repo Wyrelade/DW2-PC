@@ -3,7 +3,7 @@ nonmatching func_8002DEF4, 0x80
 glabel func_8002DEF4
     /* 1E6F4 8002DEF4 E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* 1E6F8 8002DEF8 1000BFAF */  sw         $ra, 0x10($sp)
-    /* 1E6FC 8002DEFC F19B000C */  jal        func_80026FC4
+    /* 1E6FC 8002DEFC F19B000C */  jal        EnterCriticalSection
     /* 1E700 8002DF00 00000000 */   nop
     /* 1E704 8002DF04 0580033C */  lui        $v1, %hi(D_8004E6E8)
     /* 1E708 8002DF08 E8E6638C */  lw         $v1, %lo(D_8004E6E8)($v1)
@@ -29,7 +29,7 @@ glabel func_8002DEF4
     /* 1E750 8002DF50 0580023C */  lui        $v0, %hi(D_8004E60C)
     /* 1E754 8002DF54 0CE6428C */  lw         $v0, %lo(D_8004E60C)($v0)
     /* 1E758 8002DF58 00000000 */  nop
-    /* 1E75C 8002DF5C F59B000C */  jal        func_80026FD4
+    /* 1E75C 8002DF5C F59B000C */  jal        ExitCriticalSection
     /* 1E760 8002DF60 000040A0 */   sb        $zero, 0x0($v0)
     /* 1E764 8002DF64 1000BF8F */  lw         $ra, 0x10($sp)
     /* 1E768 8002DF68 1800BD27 */  addiu      $sp, $sp, 0x18

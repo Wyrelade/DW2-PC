@@ -68,7 +68,7 @@ glabel func_80019BF4
     /* A4EC 80019CEC 94004294 */  lhu        $v0, 0x94($v0)
     /* A4F0 80019CF0 21382702 */  addu       $a3, $s1, $a3
     /* A4F4 80019CF4 23186200 */  subu       $v1, $v1, $v0
-    /* A4F8 80019CF8 CF4D000C */  jal        func_8001373C
+    /* A4F8 80019CF8 CF4D000C */  jal        Menu_SetPartsGridPos
     /* A4FC 80019CFC 1200A3A7 */   sh        $v1, 0x12($sp)
     /* A500 80019D00 21204002 */  addu       $a0, $s2, $zero
     /* A504 80019D04 2800C68E */  lw         $a2, 0x28($s6)
@@ -136,13 +136,13 @@ glabel func_80019BF4
     /* A5D8 80019DD8 0400E724 */   addiu     $a3, $a3, 0x4
     /* A5DC 80019DDC 21204002 */  addu       $a0, $s2, $zero
   .L80019DE0:
-    /* A5E0 80019DE0 4175000C */  jal        func_8001D504
+    /* A5E0 80019DE0 4175000C */  jal        Gfx_HidePartsByMask
     /* A5E4 80019DE4 00000000 */   nop
     /* A5E8 80019DE8 21204002 */  addu       $a0, $s2, $zero
     /* A5EC 80019DEC 00100524 */  addiu      $a1, $zero, 0x1000
   .L80019DF0:
     /* A5F0 80019DF0 A800268E */  lw         $a2, 0xA8($s1)
-    /* A5F4 80019DF4 5475000C */  jal        func_8001D550
+    /* A5F4 80019DF4 5475000C */  jal        Gfx_SetPartsScale
     /* A5F8 80019DF8 04007326 */   addiu     $s3, $s3, 0x4
     /* A5FC 80019DFC 2176000C */  jal        func_8001D884
     /* A600 80019E00 21204002 */   addu      $a0, $s2, $zero

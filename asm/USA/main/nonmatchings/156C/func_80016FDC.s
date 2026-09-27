@@ -59,7 +59,7 @@ glabel func_80016FDC
   .L800170AC:
     /* 78AC 800170AC 21202002 */  addu       $a0, $s1, $zero
     /* 78B0 800170B0 10000524 */  addiu      $a1, $zero, 0x10
-    /* 78B4 800170B4 6D75000C */  jal        func_8001D5B4
+    /* 78B4 800170B4 6D75000C */  jal        Gfx_SetPartsNumber
     /* 78B8 800170B8 02000624 */   addiu     $a2, $zero, 0x2
     /* 78BC 800170BC 58004286 */  lh         $v0, 0x58($s2)
     /* 78C0 800170C0 00000000 */  nop
@@ -69,7 +69,7 @@ glabel func_80016FDC
   .L800170D0:
     /* 78D0 800170D0 21202002 */  addu       $a0, $s1, $zero
     /* 78D4 800170D4 20000524 */  addiu      $a1, $zero, 0x20
-    /* 78D8 800170D8 6D75000C */  jal        func_8001D5B4
+    /* 78D8 800170D8 6D75000C */  jal        Gfx_SetPartsNumber
     /* 78DC 800170DC 02000624 */   addiu     $a2, $zero, 0x2
     /* 78E0 800170E0 21202002 */  addu       $a0, $s1, $zero
     /* 78E4 800170E4 02000524 */  addiu      $a1, $zero, 0x2
@@ -78,7 +78,7 @@ glabel func_80016FDC
     /* 78F0 800170F0 6E004396 */  lhu        $v1, 0x6E($s2)
     /* 78F4 800170F4 58004726 */  addiu      $a3, $s2, 0x58
     /* 78F8 800170F8 23104300 */  subu       $v0, $v0, $v1
-    /* 78FC 800170FC CF4D000C */  jal        func_8001373C
+    /* 78FC 800170FC CF4D000C */  jal        Menu_SetPartsGridPos
     /* 7900 80017100 1000A2A7 */   sh        $v0, 0x10($sp)
     /* 7904 80017104 21202002 */  addu       $a0, $s1, $zero
     /* 7908 80017108 2800A68E */  lw         $a2, 0x28($s5)
@@ -133,13 +133,13 @@ glabel func_80016FDC
   .L800171B8:
     /* 79B8 800171B8 21202002 */  addu       $a0, $s1, $zero
   .L800171BC:
-    /* 79BC 800171BC 4175000C */  jal        func_8001D504
+    /* 79BC 800171BC 4175000C */  jal        Gfx_HidePartsByMask
     /* 79C0 800171C0 00000000 */   nop
     /* 79C4 800171C4 21202002 */  addu       $a0, $s1, $zero
     /* 79C8 800171C8 00100524 */  addiu      $a1, $zero, 0x1000
   .L800171CC:
     /* 79CC 800171CC 6800468E */  lw         $a2, 0x68($s2)
-    /* 79D0 800171D0 5475000C */  jal        func_8001D550
+    /* 79D0 800171D0 5475000C */  jal        Gfx_SetPartsScale
     /* 79D4 800171D4 04009426 */   addiu     $s4, $s4, 0x4
     /* 79D8 800171D8 2176000C */  jal        func_8001D884
     /* 79DC 800171DC 21202002 */   addu      $a0, $s1, $zero

@@ -5,35 +5,35 @@ glabel func_8003FEA4
     /* 306A8 8003FEA8 6030848C */  lw         $a0, %lo(D_80063060)($a0)
     /* 306AC 8003FEAC E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* 306B0 8003FEB0 1000BFAF */  sw         $ra, 0x10($sp)
-    /* 306B4 8003FEB4 2DF2000C */  jal        func_8003C8B4
+    /* 306B4 8003FEB4 2DF2000C */  jal        TestEvent
     /* 306B8 8003FEB8 00000000 */   nop
     /* 306BC 8003FEBC 0680043C */  lui        $a0, %hi(D_80063064)
     /* 306C0 8003FEC0 6430848C */  lw         $a0, %lo(D_80063064)($a0)
-    /* 306C4 8003FEC4 2DF2000C */  jal        func_8003C8B4
+    /* 306C4 8003FEC4 2DF2000C */  jal        TestEvent
     /* 306C8 8003FEC8 00000000 */   nop
     /* 306CC 8003FECC 0680043C */  lui        $a0, %hi(D_80063068)
     /* 306D0 8003FED0 6830848C */  lw         $a0, %lo(D_80063068)($a0)
-    /* 306D4 8003FED4 2DF2000C */  jal        func_8003C8B4
+    /* 306D4 8003FED4 2DF2000C */  jal        TestEvent
     /* 306D8 8003FED8 00000000 */   nop
     /* 306DC 8003FEDC 0680043C */  lui        $a0, %hi(D_8006306C)
     /* 306E0 8003FEE0 6C30848C */  lw         $a0, %lo(D_8006306C)($a0)
-    /* 306E4 8003FEE4 2DF2000C */  jal        func_8003C8B4
+    /* 306E4 8003FEE4 2DF2000C */  jal        TestEvent
     /* 306E8 8003FEE8 00000000 */   nop
     /* 306EC 8003FEEC 0680043C */  lui        $a0, %hi(D_80063070)
     /* 306F0 8003FEF0 7030848C */  lw         $a0, %lo(D_80063070)($a0)
-    /* 306F4 8003FEF4 2DF2000C */  jal        func_8003C8B4
+    /* 306F4 8003FEF4 2DF2000C */  jal        TestEvent
     /* 306F8 8003FEF8 00000000 */   nop
     /* 306FC 8003FEFC 0680043C */  lui        $a0, %hi(D_80063074)
     /* 30700 8003FF00 7430848C */  lw         $a0, %lo(D_80063074)($a0)
-    /* 30704 8003FF04 2DF2000C */  jal        func_8003C8B4
+    /* 30704 8003FF04 2DF2000C */  jal        TestEvent
     /* 30708 8003FF08 00000000 */   nop
     /* 3070C 8003FF0C 0680043C */  lui        $a0, %hi(D_80063078)
     /* 30710 8003FF10 7830848C */  lw         $a0, %lo(D_80063078)($a0)
-    /* 30714 8003FF14 2DF2000C */  jal        func_8003C8B4
+    /* 30714 8003FF14 2DF2000C */  jal        TestEvent
     /* 30718 8003FF18 00000000 */   nop
     /* 3071C 8003FF1C 0680043C */  lui        $a0, %hi(D_8006307C)
     /* 30720 8003FF20 7C30848C */  lw         $a0, %lo(D_8006307C)($a0)
-    /* 30724 8003FF24 2DF2000C */  jal        func_8003C8B4
+    /* 30724 8003FF24 2DF2000C */  jal        TestEvent
     /* 30728 8003FF28 00000000 */   nop
     /* 3072C 8003FF2C 0680013C */  lui        $at, %hi(D_8006308C)
     /* 30730 8003FF30 8C3020AC */  sw         $zero, %lo(D_8006308C)($at)

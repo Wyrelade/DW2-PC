@@ -67,7 +67,7 @@ glabel func_80015D30
     /* 661C 80015E1C 21200002 */  addu       $a0, $s0, $zero
     /* 6620 80015E20 02000524 */  addiu      $a1, $zero, 0x2
     /* 6624 80015E24 88004626 */  addiu      $a2, $s2, 0x88
-    /* 6628 80015E28 CF4D000C */  jal        func_8001373C
+    /* 6628 80015E28 CF4D000C */  jal        Menu_SetPartsGridPos
     /* 662C 80015E2C 8C004726 */   addiu     $a3, $s2, 0x8C
     /* 6630 80015E30 21200002 */  addu       $a0, $s0, $zero
     /* 6634 80015E34 2800C68E */  lw         $a2, 0x28($s6)
@@ -82,35 +82,35 @@ glabel func_80015D30
     /* 6654 80015E54 21200002 */  addu       $a0, $s0, $zero
     /* 6658 80015E58 02000524 */  addiu      $a1, $zero, 0x2
   .L80015E5C:
-    /* 665C 80015E5C 4175000C */  jal        func_8001D504
+    /* 665C 80015E5C 4175000C */  jal        Gfx_HidePartsByMask
     /* 6660 80015E60 00000000 */   nop
     /* 6664 80015E64 21200002 */  addu       $a0, $s0, $zero
     /* 6668 80015E68 0580023C */  lui        $v0, %hi(D_80050720)
     /* 666C 80015E6C 2007428C */  lw         $v0, %lo(D_80050720)($v0)
     /* 6670 80015E70 04000524 */  addiu      $a1, $zero, 0x4
     /* 6674 80015E74 26004784 */  lh         $a3, 0x26($v0)
-    /* 6678 80015E78 6D75000C */  jal        func_8001D5B4
+    /* 6678 80015E78 6D75000C */  jal        Gfx_SetPartsNumber
     /* 667C 80015E7C 2130A000 */   addu      $a2, $a1, $zero
     /* 6680 80015E80 21200002 */  addu       $a0, $s0, $zero
     /* 6684 80015E84 0580023C */  lui        $v0, %hi(D_80050720)
     /* 6688 80015E88 2007428C */  lw         $v0, %lo(D_80050720)($v0)
     /* 668C 80015E8C 08000524 */  addiu      $a1, $zero, 0x8
     /* 6690 80015E90 24004784 */  lh         $a3, 0x24($v0)
-    /* 6694 80015E94 6D75000C */  jal        func_8001D5B4
+    /* 6694 80015E94 6D75000C */  jal        Gfx_SetPartsNumber
     /* 6698 80015E98 04000624 */   addiu     $a2, $zero, 0x4
     /* 669C 80015E9C 21200002 */  addu       $a0, $s0, $zero
     /* 66A0 80015EA0 0580023C */  lui        $v0, %hi(D_80050720)
     /* 66A4 80015EA4 2007428C */  lw         $v0, %lo(D_80050720)($v0)
     /* 66A8 80015EA8 10000524 */  addiu      $a1, $zero, 0x10
     /* 66AC 80015EAC 2A004784 */  lh         $a3, 0x2A($v0)
-    /* 66B0 80015EB0 6D75000C */  jal        func_8001D5B4
+    /* 66B0 80015EB0 6D75000C */  jal        Gfx_SetPartsNumber
     /* 66B4 80015EB4 04000624 */   addiu     $a2, $zero, 0x4
     /* 66B8 80015EB8 21200002 */  addu       $a0, $s0, $zero
     /* 66BC 80015EBC 0580023C */  lui        $v0, %hi(D_80050720)
     /* 66C0 80015EC0 2007428C */  lw         $v0, %lo(D_80050720)($v0)
     /* 66C4 80015EC4 20000524 */  addiu      $a1, $zero, 0x20
     /* 66C8 80015EC8 28004784 */  lh         $a3, 0x28($v0)
-    /* 66CC 80015ECC 6D75000C */  jal        func_8001D5B4
+    /* 66CC 80015ECC 6D75000C */  jal        Gfx_SetPartsNumber
     /* 66D0 80015ED0 04000624 */   addiu     $a2, $zero, 0x4
     /* 66D4 80015ED4 C6570008 */  j          .L80015F18
     /* 66D8 80015ED8 21200002 */   addu      $a0, $s0, $zero
@@ -131,12 +131,12 @@ glabel func_80015D30
   .L80015F08:
     /* 6708 80015F08 21280000 */  addu       $a1, $zero, $zero
   .L80015F0C:
-    /* 670C 80015F0C 4175000C */  jal        func_8001D504
+    /* 670C 80015F0C 4175000C */  jal        Gfx_HidePartsByMask
     /* 6710 80015F10 00000000 */   nop
     /* 6714 80015F14 21200002 */  addu       $a0, $s0, $zero
   .L80015F18:
     /* 6718 80015F18 9C00468E */  lw         $a2, 0x9C($s2)
-    /* 671C 80015F1C 5475000C */  jal        func_8001D550
+    /* 671C 80015F1C 5475000C */  jal        Gfx_SetPartsScale
     /* 6720 80015F20 00100524 */   addiu     $a1, $zero, 0x1000
     /* 6724 80015F24 2176000C */  jal        func_8001D884
     /* 6728 80015F28 21200002 */   addu      $a0, $s0, $zero

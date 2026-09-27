@@ -85,7 +85,7 @@ glabel func_8003C3A4
     /* 2CCC8 8003C4C8 0580043C */  lui        $a0, %hi(D_8004FDB0)
     /* 2CCCC 8003C4CC B0FD848C */  lw         $a0, %lo(D_8004FDB0)($a0)
     /* 2CCD0 8003C4D0 00FC3126 */  addiu      $s1, $s1, -0x400
-    /* 2CCD4 8003C4D4 51F1000C */  jal        func_8003C544
+    /* 2CCD4 8003C4D4 51F1000C */  jal        WaitEvent
     /* 2CCD8 8003C4D8 00045226 */   addiu     $s2, $s2, 0x400
     /* 2CCDC 8003C4DC ECFF6016 */  bnez       $s3, .L8003C490
     /* 2CCE0 8003C4E0 0104222E */   sltiu     $v0, $s1, 0x401
