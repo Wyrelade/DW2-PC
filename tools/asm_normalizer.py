@@ -1807,6 +1807,36 @@ def _bi_try(lines, blk, tkeys, tgt, wpos, anchors=()):
     return None
 
 
+def _bi_drop_hnops(lines, blk):
+    """Units of `blk` minus explicit `nop` units right after a load (cc1 wrote the
+    load-delay nop into the text, e.g. after param_copy moved a copy out of it),
+    and the line numbers of those nops. The nop is not part of the dataflow; the
+    new order must need exactly the target's nops (checked in _bi_try), and the
+    assembler pads a hazard, so an edited block drops them."""
+    out, drop = [], []
+    for u in blk:
+        if (re.match(r"\s*nop\s*$", u[2]) and out
+                and re.match(r"(lw|lh|lhu|lb|lbu)\s", out[-1][2].strip())):
+            drop.extend(y for y in range(u[0], u[1] + 1) if _s_is_insn(lines[y]))
+            continue
+        out.append(u)
+    return out, drop
+
+
+_BI_NOP = [False]
+
+
+def block_iso_nop_pass(stext, tgt):
+    """block_iso that sees through an explicit load-delay nop unit (see
+    _bi_drop_hnops). Separate token: plain block_iso would re-emit a matched
+    function's nop as the assembler's pad."""
+    _BI_NOP[0] = True
+    try:
+        return block_iso_pass(stext, tgt)
+    finally:
+        _BI_NOP[0] = False
+
+
 def block_iso_wide_pass(stext, tgt):
     """block_iso that also pairs mult/multu/mfhi/mflo units (HI/LO as one value)
     and tries every sub-window of a block of at least 3 units, not only up to 7
@@ -1842,6 +1872,9 @@ def block_iso_pass(stext, tgt, wide=False):
         # the whole block, else with up to 7 units trimmed at the head or 3 at the
         # tail (a block boundary the target has and we lack, or a
         # unit the target moved into a delay slot leaves the window)
+        hnops = []
+        if _BI_NOP[0]:
+            blk0, hnops = _bi_drop_hnops(lines, blk0)
         n0 = len(blk0)
         subs = sorted({(i, j) for i in range(max(1, n0 - 2) if wide else min(8, n0))
                        for j in range(i + 3 if wide else max(i + 3, n0 - 3), n0 + 1)},
@@ -1852,11 +1885,14 @@ def block_iso_pass(stext, tgt, wide=False):
             if r == "same" and (i, j) == (0, n0):
                 break
             if r and r != "same":
-                edits.append((blk, r[0], r[1]))
+                edits.append((blk, r[0], r[1],
+                              [y for y in hnops if blk[0][0] < y < blk[-1][0]]))
                 break
     if not edits:
         return stext
-    for blk, pi, tw in sorted(edits, key=lambda e: -e[0][0][0]):
+    for blk, pi, tw, hn in sorted(edits, key=lambda e: -e[0][0][0]):
+        for y in hn:
+            lines[y] = _src_indent(lines[y]) + "#nop"
         for i, (a, z, b) in enumerate(blk):
             f, n, _k = tw[pi[i]]
             if n == 1:
@@ -4073,6 +4109,18 @@ _WR_USE_ONLY = {"jr", "j", "b", "jal", "jalr", "mult",
                 "multu", "div", "divu", "mthi", "mtlo"}
 _WR_FIXED = {"zero", "sp", "fp", "gp", "k0", "k1", "ra", "at", "hi", "lo"}
 _WR_RET = ("v0", "sp", "s0", "s1", "s2", "s3", "s4", "s5", "s6", "s7", "fp", "ra")
+_WR_VOID = [False]
+
+
+def web_realloc_void_pass(stext, tgt):
+    """web_realloc where a void function's return does not read v0, so a web
+    in v0 that reaches the return is not pinned. Separate token: plain
+    web_realloc keeps the conservative return (matched functions rely on it)."""
+    _WR_VOID[0] = True
+    try:
+        return web_realloc_pass(stext, tgt)
+    finally:
+        _WR_VOID[0] = False
 _WR_IMM = {"addu": "addiu", "and": "andi", "or": "ori", "xor": "xori",
            "slt": "slti", "sltu": "sltiu", "subu": "addiu"}
 
@@ -4227,7 +4275,8 @@ def _wr_nodes(lines):
             nodes[last]["jumps"] = jt
             nodes[last]["fall"] = False
         elif mn in ("j", "jr") and regs:
-            node(None, [(r, None) for r in _WR_RET], [], fall=False)
+            node(None, [(r, None) for r in _WR_RET
+                        if not (r == "v0" and _WR_VOID[0] and _s_void(lines))], [], fall=False)
         elif mn in ("j", "b"):
             nodes[last]["jump"] = lab.group(1) if lab else None
             nodes[last]["fall"] = False
@@ -7722,8 +7771,9 @@ _MVR_LW = re.compile(r"^\s*lw\s+(\$\w+)\s*,\s*(-?\d+|-?0x[0-9A-Fa-f]+)\((\$\w+)\
 _MVR_SW = re.compile(r"^\s*sw\s+(\$\w+)\s*,\s*(-?\d+|-?0x[0-9A-Fa-f]+)\((\$\w+)\)\s*$")
 
 
-def _mvr_runs(items):
-    """[(first_idx, last_idx, [scratch per slot], key)] over items [(idx, text)]."""
+def _mvr_runs(items, merge=True):
+    """[(first_idx, last_idx, [scratch per slot], key)] over items [(idx, text)].
+    merge: adjacent groups with the same width form one run (one scratch set)."""
     runs, p = [], 0
     while p < len(items):
         loads = []
@@ -7748,7 +7798,7 @@ def _mvr_runs(items):
         regs = [x[0] for x in loads]
         key = tuple((l[1], l[2], st[0], st[1]) for l, st in zip(loads, stores))
         last = items[p + 2 * k - 1][0]
-        if runs and runs[-1][4] == p - 1:
+        if merge and runs and runs[-1][4] == p - 1:
             a, _, rr, kk, _ = runs[-1]
             if len(rr) == len(regs):
                 runs[-1] = (a, last, rr, kk + key, p + 2 * k - 1)
@@ -7759,18 +7809,32 @@ def _mvr_runs(items):
     return [(a, b, r, k) for a, b, r, k, _ in runs]
 
 
-def movstr_rename_pass(stext, tgt):
+def movstr_rename_split_pass(stext, tgt):
+    """movstr_rename over single load/store groups (a 32-byte copy is two
+    16-byte groups whose scratches differ after sigma), and duplicate-key
+    target runs (the same copy done twice) paired by ordinal when ours has
+    the same number of them."""
+    return movstr_rename_pass(stext, tgt, split=True)
+
+
+def movstr_rename_pass(stext, tgt, split=False):
     if not tgt:
         return stext
-    truns = _mvr_runs([(i, d) for i, (w, d) in enumerate(tgt)])
+    truns = _mvr_runs([(i, d) for i, (w, d) in enumerate(tgt)], merge=not split)
     if not truns:
         return stext
     lines = stext.split("\n")
     nr = _noreorder_lines(lines)
     ins = [(i, l) for i, l in enumerate(lines) if _s_is_insn(l)]
     changed = False
-    for a, b, regs, key in _mvr_runs(ins):
+    ours = _mvr_runs(ins, merge=not split)
+    seen = {}
+    for a, b, regs, key in ours:
+        o = seen.get(key, 0)
+        seen[key] = o + 1
         hit = [r for _, _, r, k in truns if k == key]
+        if split and len(hit) > 1 and len(hit) == sum(1 for x in ours if x[3] == key):
+            hit = [hit[o]]
         if len(hit) != 1 or hit[0] == regs:
             continue
         tr = hit[0]
@@ -8084,6 +8148,510 @@ def at_dest_pass(stext, tgt):
     return "\n".join(lines) if changed else stext
 
 
+
+# --------------------------------------------------------------------------
+# slot_redundant: a conditional branch's delay slot holds S (filled from the
+# fall-through thread), and the branch target's block recomputes the same S
+# before anything changes its inputs or output. Retail's reorg (redundant_insn)
+# deleted that copy: the slot already ran on the taken path. Ours keeps it.
+# Sound only when the target label has this branch as its only entrant (the
+# insn before it is the slot of an unconditional jump, no other reference) and
+# nothing between the label and the copy writes S's registers or memory.
+# Target-guided: ours has more insns with S's key than the target.
+# --------------------------------------------------------------------------
+_SRD_COND = re.compile(r"^(beq|bne|blez|bgtz|bltz|bgez|beqz|bnez)$")
+
+
+def _srd_body(l):
+    return l.split("#", 1)[0].strip()
+
+
+def slot_redundant_pass(stext, tgt):
+    if not tgt:
+        return stext
+    tcount = {}
+    for _w, d in tgt:
+        k = _sm_key(d.strip(), True)
+        if isinstance(k, tuple):
+            tcount[k] = tcount.get(k, 0) + 1
+    lines = stext.split("\n")
+    ins = [(i, l) for i, l in enumerate(lines) if _s_is_insn(l)]
+    ocount = {}
+    for _i, l in ins:
+        k = _sm_srckey(_srd_body(l))
+        if isinstance(k, tuple):
+            ocount[k] = ocount.get(k, 0) + 1
+    nr = _noreorder_lines(lines)
+    labdef = {}
+    for x, l in enumerate(lines):
+        if _s_is_label(l):
+            labdef[l.strip()[:-1]] = x
+    refs = {}
+    for _i, l in ins:
+        for tok in re.findall(r"[\w.$]+", _srd_body(l)):
+            if tok in labdef:
+                refs[tok] = refs.get(tok, 0) + 1
+    changed = False
+    for p in range(len(ins) - 1):
+        bi, bl = ins[p]
+        body = _srd_body(bl)
+        mn = body.split(None, 1)[0].lower()
+        if not _SRD_COND.match(mn) or bi not in nr or ins[p + 1][0] not in nr:
+            continue
+        lab = split_ops(body.split(None, 1)[1])[-1].strip()
+        if lab not in labdef or refs.get(lab) != 1:
+            continue
+        sbody = _srd_body(ins[p + 1][1])
+        sk = _sm_srckey(sbody)
+        if not isinstance(sk, tuple) or _sm_mem(_sm_dep_body(sbody)) \
+                or ocount.get(sk, 0) <= tcount.get(sk, 0):
+            continue
+        sd, su = defs_uses(_sm_dep_body(sbody))
+        sd, su = set(sd), set(su)
+        if not sd or sd & su or "at" in sd | su:
+            continue
+        li = labdef[lab]
+        # the only entrant: the insn before the label is an unconditional jump's slot
+        prev = [q for q in range(len(ins)) if ins[q][0] < li]
+        if len(prev) < 2:
+            continue
+        pj = _srd_body(ins[prev[-2]][1]).split(None, 1)[0].lower()
+        if pj not in ("j", "b", "jr"):
+            continue
+        if any(_s_is_label(lines[y]) and refs.get(lines[y].strip()[:-1], 0)
+               for y in range(ins[prev[-1]][0] + 1, li)):
+            continue
+        q = prev[-1] + 1
+        while q < len(ins):
+            xi, xl = ins[q]
+            if xi in nr or any(_s_is_label(lines[y]) and refs.get(lines[y].strip()[:-1], 0)
+                               for y in range(li + 1, xi)):
+                break
+            xb = _srd_body(xl)
+            if is_branch(xb):
+                break
+            if xb == sbody:
+                lines[xi] = ""
+                ocount[sk] -= 1
+                changed = True
+                break
+            xd, _xu = defs_uses(_sm_dep_body(xb))
+            if set(xd) & (sd | su):
+                break
+            q += 1
+    return "\n".join(lines) if changed else stext
+
+
+
+# --------------------------------------------------------------------------
+# range_unswap: jump.c's "if (foo) bar; else break;" rule swapped two ranges of
+# a case tree in our cc1: `bc X,L1 <slot>; RIGHT ... j D; L1: LEFT; <body>`
+# (LEFT, a run of range tests, falls into the case body whose label died).
+# Retail kept expand's order: `binv X,L1 <slot>; LEFT; j L2; L1: RIGHT ... j D;
+# L2: <body>`. The rewrite inverts the branch, moves LEFT up and adds `j L2`
+# (+2 words with its nop). Sound: L1 has the branch as its only entrant, RIGHT
+# ends in an unconditional jump, the slot runs on both paths as before, LEFT is
+# only compares / moves / conditional branches (no fall-through change for the
+# body: it is still entered at the same insn). Target-guided: the target has
+# the rewritten mnemonic sequence (branch, slot, LEFT, j, RIGHT) and ours not.
+# --------------------------------------------------------------------------
+_RUS_INV = {"beq": "bne", "bne": "beq", "beqz": "bnez", "bnez": "beqz", "blez": "bgtz",
+            "bgtz": "blez", "bltz": "bgez", "bgez": "bltz"}
+_RUS_ALU = ("slt", "slti", "sltu", "sltiu", "li", "move", "addu", "addiu", "subu", "andi",
+            "ori", "xori", "sll", "srl", "sra")
+
+
+def _rus_mn(body):
+    p = body.split(None, 1)
+    if not p:
+        return None
+    op = p[0].lower()
+    ops = [norm_reg(o.strip()) or o.strip() for o in split_ops(p[1])] if len(p) > 1 else []
+    if op in ("beq", "bne") and len(ops) == 3 and "zero" in ops[:2]:
+        return op + "z"
+    if op in ("addiu", "ori") and len(ops) == 3 and ops[1] == "zero":
+        return "li"
+    if op in ("addu", "or") and len(ops) == 3 and ops[2] == "zero":
+        return "move"
+    if op == "sll" and ops[:1] == ["zero"]:
+        return "nop"
+    if op in ("slt", "sltu") and len(ops) == 3 and norm_reg(ops[2]) is None:
+        return op + "i"
+    return op
+
+
+def _rus_body(l):
+    return l.split("#", 1)[0].strip()
+
+
+def range_unswap_pass(stext, tgt):
+    if not tgt:
+        return stext
+    tmn = [m for m in (_rus_mn(d.strip()) for _w, d in tgt) if m and m != "nop"]
+    tstr = " " + " ".join(tmn) + " "
+    lines = stext.split("\n")
+    changed = True
+    nfix = 0
+    while changed and nfix < 8:
+        changed = False
+        ins = [(i, l) for i, l in enumerate(lines) if _s_is_insn(l)]
+        labdef = {}
+        for x, l in enumerate(lines):
+            if _s_is_label(l):
+                labdef[l.strip()[:-1]] = x
+        refs = {}
+        for _i, l in ins:
+            for tok in re.findall(r"[\w.$]+", _rus_body(l)):
+                if tok in labdef:
+                    refs[tok] = refs.get(tok, 0) + 1
+        nr = _noreorder_lines(lines)
+        for p in range(len(ins) - 1):
+            bi, bl = ins[p]
+            body = _rus_body(bl)
+            op = body.split(None, 1)[0].lower()
+            if op not in _RUS_INV or bi not in nr or ins[p + 1][0] not in nr:
+                continue
+            ops = split_ops(body.split(None, 1)[1])
+            l1 = ops[-1].strip()
+            if l1 not in labdef or refs.get(l1) != 1 or labdef[l1] < bi:
+                continue
+            li1 = labdef[l1]
+            # RIGHT: insns after the slot up to the label, ending in `j`
+            right = [q for q in range(p + 2, len(ins)) if ins[q][0] < li1]
+            if not right:
+                continue
+            lastr = right[-1]
+            jq = lastr
+            if ins[lastr][0] in nr and lastr - 1 in right and \
+                    _rus_body(ins[lastr - 1][1]).split(None, 1)[0].lower() == "j":
+                jq = lastr - 1
+            if _rus_body(ins[jq][1]).split(None, 1)[0].lower() != "j":
+                continue
+            if any(_s_is_label(lines[y]) and refs.get(lines[y].strip()[:-1], 0)
+                   for y in range(ins[p + 1][0] + 1, ins[right[0]][0])):
+                continue
+            # LEFT: from the label, compares / moves / cond branches, through the
+            # last cond branch before the first other insn
+            q, lastb = right[-1] + 1, None
+            while q < len(ins):
+                xi, xl = ins[q]
+                if any(_s_is_label(lines[y]) and refs.get(lines[y].strip()[:-1], 0)
+                       for y in range(li1 + 1, xi)):
+                    break
+                xm = _rus_body(xl).split(None, 1)[0].lower()
+                if xm in _RUS_INV:
+                    lastb = q
+                    if xi in nr and q + 1 < len(ins) and ins[q + 1][0] in nr:
+                        q += 2
+                        lastb = q - 1
+                        continue
+                elif xm not in _RUS_ALU or xi in nr:
+                    break
+                q += 1
+            if lastb is None:
+                continue
+            # line span of LEFT: from the label line to the end of its last branch
+            # (and slot and the .set lines closing it)
+            lz = ins[lastb][0]
+            while lz + 1 < len(lines) and lines[lz + 1].strip().startswith(".set") \
+                    and not lines[lz + 1].strip().endswith("noreorder"):
+                lz += 1
+            rz = li1 - 1
+            ra = ins[p + 1][0] + 1
+            while ra <= rz and lines[ra].strip().startswith(".set") \
+                    and not lines[ra].strip().endswith("noreorder"):
+                ra += 1
+            left_lines = lines[li1 + 1:lz + 1]
+            right_lines = lines[ra:rz + 1]
+            smn = _rus_mn(_rus_body(ins[p + 1][1]))
+            lmn = [_rus_mn(_rus_body(l)) for l in left_lines if _s_is_insn(l)]
+            rmn = [_rus_mn(_rus_body(l)) for l in right_lines if _s_is_insn(l)]
+            inv = _RUS_INV[op]
+            newmn = [_rus_mn(inv + " " + body.split(None, 1)[1]), smn] + lmn + ["j"] + rmn
+            oldmn = [_rus_mn(body), smn] + rmn + lmn
+            newmn = [m for m in newmn if m != "nop"]
+            oldmn = [m for m in oldmn if m != "nop"]
+            if (" " + " ".join(newmn) + " ") not in tstr or (" " + " ".join(oldmn) + " ") in tstr:
+                continue
+            l2 = "$Lrus_%d" % bi
+            ind = _src_indent(bl)
+            lines[bi] = ind + inv + "\t" + body.split(None, 1)[1]
+            new = left_lines + [ind + "j\t" + l2, lines[li1]] + right_lines + [l2 + ":"]
+            lines[ra:lz + 1] = new
+            changed = True
+            nfix += 1
+            break
+    return "\n".join(lines) if nfix else stext
+
+
+
+# --------------------------------------------------------------------------
+# slot_rethread: our reorg filled a conditional branch slot with S stolen from
+# the taken thread (`bc L; S` / fall-through `F; ...` / `L: ...`), retail filled
+# it with the fall-through head F (`bc L; F` / `L: ... S ...`). Rewrite: F into
+# the slot, S back into L's block (into the explicit load-delay nop after L's
+# first insn when there is one, else at L's head). Sound when L has this branch
+# as its only entrant and no fall-through into it; S's destination is dead on
+# the fall-through after F (S no longer runs there); F is a plain ALU insn that
+# does not write what the branch or S reads, and on the taken path F's
+# destination is dead at L or F is `move X,Y` with X == Y already holding at
+# the branch. Target-guided by conditional-branch ordinal: the target's slot
+# is F's key. Count-preserving when S fills a nop, else +1 (the fall-through
+# lost F): only the nop form is applied.
+# --------------------------------------------------------------------------
+_SRT_ALU = {"move", "addu", "addiu", "subu", "li", "lui", "or", "ori", "and", "andi", "xor", "xori",
+            "sll", "srl", "sra", "slt", "sltu", "slti", "sltiu", "nor"}
+
+
+def _srt_body(l):
+    return l.split("#", 1)[0].strip()
+
+
+def _srt_copy_holds(lines, ins, q, x, y, depth=0):
+    """`x == y` holds just before insn ins[q] (straight-line walk back, through a
+    label entered only by one unconditional `j`, no fall-through into it)."""
+    if depth > 4:
+        return False
+    labs = {}
+    for k, l in enumerate(lines):
+        if _s_is_label(l):
+            labs[l.strip()[:-1]] = k
+    p = q - 1
+    while p >= 0:
+        xi, xl = ins[p]
+        # labels between ins[p] and ins[p + 1]
+        top = ins[p + 1][0] if p + 1 < len(ins) else len(lines)
+        for y2 in range(xi + 1, top):
+            if _s_is_label(lines[y2]):
+                name = lines[y2].strip()[:-1]
+                srcs = [k for k, (_i, l) in enumerate(ins)
+                        if re.search(r"(?<![\w$])" + re.escape(name) + r"(?![\w$])", _srt_body(l))]
+                if not srcs:
+                    continue
+                if len(srcs) != 1 or _srt_body(ins[srcs[0]][1]).split(None, 1)[0].lower() != "j":
+                    return False
+                # no fall-through: ins[p] is a jump's slot or a reorder-mode j
+                pm = _srt_body(xl).split(None, 1)[0].lower()
+                pm2 = _srt_body(ins[p - 1][1]).split(None, 1)[0].lower() if p else ""
+                if not (pm in ("j", "jr", "b") or pm2 in ("j", "jr", "b")):
+                    return False
+                return _srt_copy_holds(lines, ins, srcs[0], x, y, depth + 1)
+        b = _srt_body(xl)
+        d, _u = defs_uses(b)
+        if x in d or y in d:
+            m = re.match(r"move\s+(\$\w+)\s*,\s*(\$\w+)$", b)
+            return bool(m) and {norm_reg(m.group(1)), norm_reg(m.group(2))} == {x, y}
+        if is_branch(b) and b.split(None, 1)[0].lower() in ("jal", "jalr"):
+            return False
+        p -= 1
+    return False
+
+
+def slot_rethread_pass(stext, tgt):
+    if not tgt:
+        return stext
+    tb = _tgt_cond_branches(tgt, stext)
+    lines = stext.split("\n")
+    nr = _noreorder_lines(lines)
+    ours = [i for i, l in enumerate(lines)
+            if _s_is_insn(l) and l.split(None, 1)[0].lower() in _COND_BR_MN]
+    if len(ours) != len(tb):
+        return stext
+    ins = [(i, l) for i, l in enumerate(lines) if _s_is_insn(l)]
+    pos = {i: k for k, (i, _l) in enumerate(ins)}
+    for bi, tk in zip(ours, tb):
+        if bi not in nr or tk + 1 >= len(tgt):
+            continue
+        p = pos[bi]
+        if p + 2 >= len(ins) or ins[p + 1][0] not in nr:
+            continue
+        sb, fb = _srt_body(ins[p + 1][1]), _srt_body(ins[p + 2][1])
+        if ins[p + 2][0] in nr or _ts_key(fb) != _ts_key(tgt[tk + 1][1].strip()) \
+                or _ts_key(sb) == _ts_key(fb):
+            continue
+        if fb.split(None, 1)[0].lower() not in _SRT_ALU or sb.split(None, 1)[0].lower() not in _SRT_ALU:
+            continue
+        if any(_s_is_label(lines[y]) and not lines[y].strip().startswith("LM")
+               for y in range(ins[p + 1][0] + 1, ins[p + 2][0])):
+            continue
+        lab = _lc_label(_srt_body(lines[bi]))
+        at = next((k for k, l in enumerate(lines) if l.strip() == (lab or "?") + ":"), None)
+        if at is None:
+            continue
+        nref = sum(1 for _i, l in ins if re.search(r"(?<![\w$])" + re.escape(lab) + r"(?![\w$])",
+                                                   _srt_body(l)))
+        if nref != 1:
+            continue
+        pa = [k for k, (i, _l) in enumerate(ins) if i < at]
+        if len(pa) < 2:
+            continue
+        m1 = _srt_body(ins[pa[-1]][1]).split(None, 1)[0].lower()
+        m2 = _srt_body(ins[pa[-2]][1]).split(None, 1)[0].lower()
+        if not ((ins[pa[-1]][0] in nr and m2 in ("j", "jr", "b"))
+                or (ins[pa[-1]][0] not in nr and m1 in ("j", "jr", "b"))):
+            continue
+        bd, bu = defs_uses(_srt_body(lines[bi]))
+        fd, fu = defs_uses(fb)
+        sd, su = defs_uses(sb)
+        if len(fd) != 1 or len(sd) != 1 or set(fd) & (set(bu) | set(su)) or set(sd) & set(fu):
+            continue
+        # S's destination dead on the fall-through after F
+        l2 = lines[:ins[p + 2][0] + 1] + ["$Lsrt_f:"] + lines[ins[p + 2][0] + 1:]
+        ins2 = [(q, x) for q, x in enumerate(l2) if _s_is_insn(x)]
+        if not all(_ff_dead_on(l2, ins2, "$Lsrt_f", r, callee_args=False) for r in sd):
+            continue
+        # F on the taken path: dead at L, or a copy that already holds
+        fr = list(fd)[0]
+        if not _ff_dead_on(lines, ins, lab, fr, callee_args=False):
+            m = re.match(r"move\s+(\$\w+)\s*,\s*(\$\w+)$", fb)
+            if not (m and _srt_copy_holds(lines, ins, p, norm_reg(m.group(1)), norm_reg(m.group(2)))):
+                continue
+        # where S goes: the explicit nop after L's first insn (a load)
+        xs = [k for k, (i, _l) in enumerate(ins) if i > at]
+        if len(xs) < 2 or ins[xs[0]][0] in nr or ins[xs[1]][0] in nr:
+            continue
+        b0 = _srt_body(ins[xs[0]][1])
+        if not re.match(r"(lw|lh|lhu|lb|lbu)\s", b0) or _srt_body(ins[xs[1]][1]) != "nop":
+            continue
+        d0, u0 = defs_uses(b0)
+        if set(sd) & (set(d0) | set(u0)) or set(su) & set(d0):
+            continue
+        ind = _src_indent(ins[p + 1][1])
+        lines[ins[xs[1]][0]] = ind + sb
+        lines[ins[p + 1][0]] = ind + fb
+        lines[ins[p + 2][0]] = ""
+        return slot_rethread_pass("\n".join(lines), tgt)
+    return stext
+
+
+
+# --------------------------------------------------------------------------
+# const_uncse: our cse kept a small constant from a compare (`li $sK,C; beq
+# x,$sK,L`) live into a later use across a call, so it went to a callee-saved
+# register; retail's cse did not (the compare's block ended there) and built
+# C again at each use in a temp (`li v0,C; beq x,v0,L` ... `li v0,C; sh v0,..`).
+# Rewrite: every use of the web gets its own `li T,C` right before it (before
+# its branch when the use sits in a delay slot) with T a caller-saved register
+# dead there and unmentioned by the use / branch, and the original li goes.
+# Target-guided: the target builds C with `li` at least as often as ours will,
+# and never holds C in an s-register. The web must be the li's alone (single
+# def, not pinned) and sK must still be used by other webs (frame unchanged).
+# Count-changing (+uses-1): pre-sigma.
+# --------------------------------------------------------------------------
+_CUN_LI = re.compile(r"^\s*li\s+\$(1[6-9]|2[0-3])\s*,\s*(-?\d+|-?0x[0-9A-Fa-f]+)\s*(?:#.*)?$")
+_CUN_T = ("v0", "v1", "a0", "a1", "a2", "a3", "t0", "t1", "t2", "t3", "t4", "t5", "t6", "t7", "t8", "t9")
+
+
+def const_uncse_pass(stext, tgt):
+    if not tgt:
+        return stext
+    tli, tsli = {}, set()
+    for _w, d in tgt:
+        p = d.strip().split(None, 1)
+        if len(p) < 2:
+            continue
+        ops = [o.strip() for o in split_ops(p[1])]
+        if p[0].lower() in ("addiu", "ori") and len(ops) == 3 and norm_reg(ops[1]) == "zero":
+            try:
+                v = int(ops[2], 0)
+            except ValueError:
+                continue
+            tli[v] = tli.get(v, 0) + 1
+            if (norm_reg(ops[0]) or "").startswith("s"):
+                tsli.add(v)
+    lines = stext.split("\n")
+    oli = {}
+    for l in lines:
+        m = re.match(r"^\s*li\s+(\$\w+)\s*,\s*(-?\d+|-?0x[0-9A-Fa-f]+)\s*(?:#.*)?$", l)
+        if m:
+            v = int(m.group(2), 0)
+            oli[v] = oli.get(v, 0) + 1
+    cands = [i for i, l in enumerate(lines) if _CUN_LI.match(l)]
+    if not cands:
+        return stext
+    nodes, ok = _wr_nodes(lines)
+    if not ok:
+        return stext
+    occ, pinned, reg_of, LO, def_w = _wr_webs(nodes)
+    use_w = [set() for _ in nodes]
+    for (n, r, pos, kd), w in occ.items():
+        if kd == "u":
+            use_w[n].add(w)
+    LI = [use_w[n] | (LO[n] - def_w[n]) for n in range(len(nodes))]
+    lnode = {nd["line"]: n for n, nd in enumerate(nodes) if nd["line"] is not None}
+    nr = _noreorder_lines(lines)
+    edits = []
+    for i in cands:
+        m = _CUN_LI.match(lines[i])
+        v = int(m.group(2), 0)
+        r = norm_reg("$" + m.group(1))
+        n = lnode.get(i)
+        if n is None or v in tsli:
+            continue
+        w = occ.get((n, r, 0, "d"))
+        if w is None or w in pinned:
+            continue
+        defs = [k for k, x in occ.items() if x == w and k[3] == "d"]
+        uses = [k for k, x in occ.items() if x == w and k[3] == "u"]
+        if len(defs) != 1 or len(uses) < 2 or any(k[2] is None for k in uses):
+            continue
+        if tli.get(v, 0) < oli.get(v, 0) + len(uses) - 1:
+            continue
+        # sK still used by another web
+        if not any(x != w and reg_of.get(x) == r and k[2] is not None for k, x in occ.items()):
+            continue
+        plan = []
+        for un, _r, pos, _kd in sorted(uses):
+            ul = nodes[un]["line"]
+            at, bn = ul, un
+            if ul in nr:
+                prv = [y for y in range(ul - 1, -1, -1) if _s_is_insn(lines[y])]
+                if prv and is_branch(lines[prv[0]].split("#", 1)[0].strip()) and prv[0] in nr:
+                    bn = lnode.get(prv[0])
+                    at = prv[0]
+                    while at > 0 and lines[at - 1].strip().startswith(".set"):
+                        at -= 1
+                elif prv and prv[0] == i:
+                    at = ul
+                else:
+                    plan = None
+                    break
+            if bn is None:
+                plan = None
+                break
+            ment = set()
+            for y in {ul, nodes[bn]["line"]}:
+                d, u = defs_uses(lines[y].split("#", 1)[0].strip())
+                ment |= set(d) | set(u)
+            live = {reg_of.get(x) for x in LI[bn]}
+            t = next((c for c in _CUN_T if c not in live and c not in ment and c != r), None)
+            if t is None:
+                plan = None
+                break
+            plan.append((at, ul, pos, t))
+        if not plan:
+            continue
+        edits.append((i, r, v, plan))
+    if not edits:
+        return stext
+    ins_at = []
+    for i, r, v, plan in edits:
+        ind = _src_indent(lines[i])
+        lines[i] = ""
+        for at, ul, pos, t in plan:
+            ind2, mn, ops, com, rp = _wr_parse(lines[ul])
+            ops = list(ops)
+            k, par_, _r = rp[pos]
+            num = "$%d" % ABI2NUM[t]
+            ops[k] = re.sub(r"\(\$\w+\)$", "(%s)" % num, ops[k]) if par_ else num
+            body = lines[ul].split("#", 1)[0].strip().split(None, 1)[0]
+            lines[ul] = "%s%s\t%s%s" % (ind2, body, ",".join(ops), ("\t#" + com) if com else "")
+            ins_at.append((at, "%sli\t%s,%d" % (ind, num, v)))
+    for at, txt in sorted(ins_at, key=lambda x: -x[0]):
+        lines.insert(at, txt)
+    return "\n".join(lines)
+
+
 PASSES = {
     # reg_realloc is applied specially (it needs sigma from words); the ordered
     # list in the manifest still names it so the recipe is explicit and auditable.
@@ -8114,6 +8682,7 @@ PASSES = {
     "la_unfold_st": la_unfold_st_pass,
     "block_iso": block_iso_pass,
     "block_iso_wide": block_iso_wide_pass,
+    "block_iso_nop": block_iso_nop_pass,
     "slot_unsteal": slot_unsteal_pass,
     "arg_unprop": arg_unprop_pass,
     "const_fold": const_fold_pass,
@@ -8150,6 +8719,12 @@ PASSES = {
     "zext_drop": zext_drop_pass,
     "call_slot_swap": call_slot_swap_pass,
     "hi_interleave": hi_interleave_pass,
+    "web_realloc_void": web_realloc_void_pass,
+    "const_uncse": const_uncse_pass,
+    "slot_rethread": slot_rethread_pass,
+    "movstr_rename_split": movstr_rename_split_pass,
+    "range_unswap": range_unswap_pass,
+    "slot_redundant": slot_redundant_pass,
     "at_dest": at_dest_pass,
 }
 
@@ -8160,7 +8735,7 @@ PASSES = {
 PRE_SIGMA_PASSES = ("la_unfold_st", "un_hi_cse", "un_hi_cse_store", "exit_merge", "base_cse_collapse",
                     "shift_const_fold", "zero_remat", "load_remat", "nodiv",
                     "offset_unfold", "zext_keep", "zero_cmp", "param_copy",
-                    "undo_drop", "la_unfold", "arg_unprop", "sched_pre", "la_copy", "la_split", "const_sink", "zext_drop", "at_dest")
+                    "undo_drop", "la_unfold", "arg_unprop", "sched_pre", "la_copy", "la_split", "const_sink", "zext_drop", "at_dest", "range_unswap", "slot_rethread", "const_uncse")
 
 # --------------------------------------------------------------------------
 # WORD-LEVEL passes. The original PSY-Q assembler (aspsx) scheduled branch and
