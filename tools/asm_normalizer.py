@@ -8808,6 +8808,226 @@ def li_uncopy_pass(stext, tgt):
     return "\n".join(lines) if ch else stext
 
 
+
+# --------------------------------------------------------------------------
+# zst_place: sched1 hoists a store of $zero into a frame slot (a counter set to
+# 0, a const-0 pseudo) or a small `li R,C` to one end of its block; retail
+# kept it among the block's loads in source order. Moves each such store (`sw/sh/sb $0,k($sp)`)
+# (or `li R,C`, R untouched by what it passes) down or up in its straight-line block to just after the insn the target
+# has right before it. Sound: the store reads only $sp; nothing it passes
+# touches the frame bytes [k, k+size) or $sp, and no label / branch / call is
+# crossed. Target-guided: the target's store nearest our word position and its
+# predecessor's key. Count-preserving; post-sigma (keys compare registers).
+# --------------------------------------------------------------------------
+_ZSP_ST = re.compile(r"^\s*(sw|sh|sb)\s+\$(?:0|zero)\s*,\s*(-?\d+)\(\$(?:sp|29)\)\s*$")
+
+
+def _zsp_norm(body):
+    """Mnemonic + normalized operands (ABI registers, decimal numbers)."""
+    p = body.strip().split(None, 1)
+    if not p:
+        return ""
+    ops = []
+    for o in (split_ops(p[1]) if len(p) > 1 else []):
+        o = re.sub(r"\$\w+", lambda m: norm_reg(m.group(0)) or m.group(0), o.strip())
+        o = re.sub(r"(?<![\w$])(-?)0x([0-9A-Fa-f]+)", lambda m: str(int(m.group(1) + m.group(2), 16)), o)
+        ops.append(o.replace(" ", ""))
+    mn = p[0].lower()
+    if mn in ("addiu", "ori") and len(ops) == 3 and ops[1] == "zero":
+        mn, ops = "li", [ops[0], ops[2]]
+    elif mn in ("addu", "or") and len(ops) == 3 and ops[2] == "zero":
+        mn, ops = "move", ops[:2]
+    return mn + " " + ",".join(ops)
+
+
+def zst_place_pass(stext, tgt):
+    if not tgt:
+        return stext
+    tn = [_zsp_norm(d) for _w, d in tgt]
+    lines = stext.split("\n")
+    nr = _noreorder_lines(lines)
+    changed = False
+    ins = [(i, l) for i, l in enumerate(lines) if _s_is_insn(l)]
+    wpos, w = {}, 0
+    for i, l in ins:
+        wpos[i] = w
+        w += _src_nwords(l)
+    # drift anchors: our insns whose key occurs once in the target
+    cnt = {}
+    for x in tn:
+        cnt[x] = cnt.get(x, 0) + 1
+    anc = []
+    for i, l in ins:
+        kx = _zsp_norm(l.split("#", 1)[0])
+        if cnt.get(kx) == 1:
+            anc.append((i, tn.index(kx) - wpos[i]))
+    for q in range(len(ins)):
+        i, l = ins[q]
+        b = l.split("#", 1)[0].strip()
+        m = _ZSP_ST.match(b)
+        ml = re.match(r"li\s+(\$\w+)\s*,\s*(-?\d+|-?0x[0-9A-Fa-f]+)$", b)
+        if not (m or ml) or i in nr:
+            continue
+        lr = norm_reg(ml.group(1)) if ml else None
+        if ml and (lr is None or _src_nwords(l) != 1):
+            continue
+        k, sz = (int(m.group(2)), {"sw": 4, "sh": 2, "sb": 1}[m.group(1)]) if m else (0, 0)
+        key = _zsp_norm(b)
+        occ = [t for t, x in enumerate(tn) if x == key]
+        if not occ:
+            continue
+        dr = [dd for ai, dd in anc if ai < i]
+        est = wpos[i] + (dr[-1] if dr else 0)
+        t = min(occ, key=lambda t: abs(t - est))
+        if abs(t - est) > 12:
+            continue
+        p = t - 1
+        while p >= 0 and tn[p] == "nop":
+            p -= 1
+        if p < 0:
+            continue
+        pk = tn[p]
+        # the insn in ours with key pk, in the same straight line, nearest q
+        best = None
+        for dirn in (1, -1):
+            r = q + dirn
+            while 0 <= r < len(ins):
+                ri, rl = ins[r]
+                lo, hi = (i, ri) if ri > i else (ri, i)
+                if any(_s_is_label(lines[y]) and not lines[y].strip().startswith("LM")
+                       for y in range(lo + 1, hi + 1 if dirn == 1 else hi)):
+                    break
+                rb = rl.split("#", 1)[0].strip()
+                if ri in nr or is_branch(rb):
+                    break
+                d, u = defs_uses(rb)
+                if "sp" in d or (lr and (lr in d or lr in u)):
+                    break
+                mm = None if lr else re.search(r"(-?\d+)\(\$(?:sp|29)\)", rb)
+                if mm and re.match(r"(lw|lh|lhu|lb|lbu|sw|sh|sb|lwl|lwr|swl|swr)\s", rb):
+                    o = int(mm.group(1))
+                    osz = 4 if rb.split()[0] in ("lw", "sw", "lwl", "lwr", "swl", "swr") else \
+                        2 if rb.split()[0] in ("lh", "lhu", "sh") else 1
+                    if rb.split()[0] in ("lwl", "swl"):
+                        o -= 3
+                    if o < k + sz and k < o + osz:
+                        break
+                if _zsp_norm(rb) == pk:
+                    best = r
+                    break
+                r += dirn
+            if best is not None:
+                break
+        if best is None or best == q - 1:
+            continue
+        txt = lines[i]
+        bi = ins[best][0]
+        if bi > i:
+            lines.insert(bi + 1, txt)
+            del lines[i]
+        else:
+            del lines[i]
+            lines.insert(bi + 1, txt)
+        changed = True
+        return zst_place_pass("\n".join(lines), tgt)
+    return "\n".join(lines) if changed else stext
+
+
+# --------------------------------------------------------------------------
+# sreg_const_use: `addu R,X,C` / `addiu R,X,C` where the callee-saved sK is
+# known to hold C here (every path reaching the insn last set sK with `li sK,C`,
+# e.g. in the branch slot that leads to a single-entrant label); retail's cse
+# used the register (`addu R,X,sK`). Target-guided: the target has
+# `addu R,X,sK` (either operand order) near our position (the rewrite is
+# sound on its own: sK holds C on every path).
+# Count-preserving; post-sigma.
+# --------------------------------------------------------------------------
+_SCU_ADD = re.compile(r"^(\s*)(addu|addiu)\s+(\$\w+)\s*,\s*(\$\w+)\s*,\s*(-?\d+|-?0x[0-9A-Fa-f]+)\s*$")
+
+
+def _scu_known(lines, ins, q, reg, refs, nr, depth=0):
+    """Value of `reg` just before ins[q] if every reaching def is `li reg,C`."""
+    if depth > 4:
+        return None
+    p = q - 1
+    while p >= 0:
+        xi, xl = ins[p]
+        top = ins[p + 1][0]
+        for y in range(xi + 1, top):
+            if _s_is_label(lines[y]) and not lines[y].strip().startswith("LM"):
+                name = lines[y].strip()[:-1]
+                srcs = refs.get(name, [])
+                if not srcs:
+                    continue
+                if len(srcs) != 1:
+                    return None
+                # no fall-through into the label
+                pm = xl.split("#", 1)[0].strip().split(None, 1)[0].lower()
+                pm2 = ins[p - 1][1].split("#", 1)[0].strip().split(None, 1)[0].lower() if p else ""
+                if not ((xi in nr and pm2 in ("j", "b", "jr")) or (xi not in nr and pm in ("j", "b", "jr"))):
+                    return None
+                sq = srcs[0]
+                # the branch's slot runs on the taken path
+                if ins[sq][0] in nr and sq + 1 < len(ins) and ins[sq + 1][0] in nr:
+                    return _scu_known(lines, ins, sq + 2, reg, refs, nr, depth + 1)
+                return _scu_known(lines, ins, sq + 1, reg, refs, nr, depth + 1)
+        b = xl.split("#", 1)[0].strip()
+        d, _u = defs_uses(b)
+        if reg in d:
+            m = re.match(r"li\s+(\$\w+)\s*,\s*(-?\d+|-?0x[0-9A-Fa-f]+)$", b)
+            if m and norm_reg(m.group(1)) == reg:
+                return int(m.group(2), 0)
+            return None
+        if re.match(r"jalr?\s", b) and reg not in ("s0", "s1", "s2", "s3", "s4", "s5", "s6", "s7", "fp"):
+            return None
+        p -= 1
+    return None
+
+
+def sreg_const_use_pass(stext, tgt):
+    if not tgt:
+        return stext
+    tadd = []
+    for t, (_w, d) in enumerate(tgt):
+        pr = d.strip().split(None, 1)
+        if len(pr) == 2 and pr[0].lower() == "addu":
+            ops = [norm_reg(o.strip()) for o in split_ops(pr[1])]
+            if len(ops) == 3 and all(ops) and any(o in ("s0", "s1", "s2", "s3", "s4", "s5", "s6", "s7", "fp")
+                                                 for o in ops[1:]):
+                tadd.append((t, ops))
+    if not tadd:
+        return stext
+    lines = stext.split("\n")
+    nr = _noreorder_lines(lines)
+    ins = [(i, l) for i, l in enumerate(lines) if _s_is_insn(l)]
+    labs = {l.strip()[:-1] for l in lines if _s_is_label(l)}
+    refs = {}
+    for k, (_i, l) in enumerate(ins):
+        for tok in re.findall(r"[\w.$]+", l.split("#", 1)[0]):
+            if tok in labs:
+                refs.setdefault(tok, []).append(k)
+    wpos, w = {}, 0
+    for i, l in ins:
+        wpos[i] = w
+        w += _src_nwords(l)
+    changed = False
+    for q, (i, l) in enumerate(ins):
+        m = _SCU_ADD.match(l.split("#", 1)[0].rstrip())
+        if not m:
+            continue
+        r, x, c = norm_reg(m.group(3)), norm_reg(m.group(4)), int(m.group(5), 0)
+        for t, ops in tadd:
+            if abs(t - wpos[i]) > 100 or ops[0] != r:
+                continue
+            sk = ops[2] if ops[1] == x else ops[1] if ops[2] == x else None
+            if sk is None or sk == x or _scu_known(lines, ins, q, sk, refs, nr) != c:
+                continue
+            lines[i] = "%saddu\t%s,%s,$%d" % (m.group(1), m.group(3), m.group(4), ABI2NUM[sk])
+            changed = True
+            break
+    return "\n".join(lines) if changed else stext
+
+
 PASSES = {
     # reg_realloc is applied specially (it needs sigma from words); the ordered
     # list in the manifest still names it so the recipe is explicit and auditable.
@@ -8875,6 +9095,8 @@ PASSES = {
     "zext_drop": zext_drop_pass,
     "call_slot_swap": call_slot_swap_pass,
     "hi_interleave": hi_interleave_pass,
+    "zst_place": zst_place_pass,
+    "sreg_const_use": sreg_const_use_pass,
     "la_unhoist": la_unhoist_pass,
     "param_copy_fresh": param_copy_fresh_pass,
     "li_uncopy": li_uncopy_pass,
