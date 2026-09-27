@@ -302,7 +302,35 @@ void func_80064EF0(Actor *arg0, Stg11MenuWork *arg1) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80064FD0);
+void func_80064FD0(Actor *arg0, Stg11MenuWork *arg1) {
+    s32 r;
+
+    switch (arg0->stateLevel2) {
+    case 0:
+        func_800648E4(arg1, 0x193);
+        func_8006495C(arg1, 0, 0);
+        func_800677AC(6, arg1->field_84);
+        Task_NextState2(arg0);
+        break;
+    case 1:
+        arg1->field_94 = 0;
+        r = func_80067818();
+        switch (r) {
+        case 0:
+            Task_SetState1(arg0, 3);
+            break;
+        default:
+            Task_SetState1(arg0, 2);
+            break;
+        case 0x10:
+            Task_SetState1(arg0, 4);
+            break;
+        case -1:
+            break;
+        }
+        break;
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_800650A8);
 
