@@ -54,7 +54,19 @@ void func_800648E4(Stg11MenuWork *arg0, s32 arg1) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_8006495C);
+void func_8006495C(Stg11MenuWork *arg0, s32 arg1, s32 arg2) {
+    TextDescHalves st;
+
+    if (arg1 == 0) {
+        Text_Close(&arg0->field_4);
+    } else {
+        st.pos = D_800681D4;
+        st.field_10 = arg2 - 0x80;
+        st.color = 0;
+        st.text = (s32)Cd_GetFileEntry(arg1 + 0x1FD0000);
+        Text_OpenDesc(&arg0->field_4, (TextDesc *)&st);
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_800649D4);
 
