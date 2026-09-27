@@ -138,7 +138,33 @@ s32 func_80064110(StrDecEnv *dec) {
     return 0;
 }
 
-INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80064198);
+void func_80064198(void) {
+    RECT snap;
+    s32 id;
+
+    if (D_80061B04 != 0) {
+        func_8002E2C4();
+        D_80061B04 = 0;
+    }
+    id = D_80066208.imgid;
+    snap = D_80066208.slice;
+    D_80066208.imgid = D_80066208.imgid ? 0 : 1;
+    D_80066208.slice.x += D_80066208.slice.w;
+    if (D_80066208.rectid) {
+        snap.x += 0x1E0;
+    }
+    snap.y = 0x24;
+    if (D_80066208.slice.x < D_80066208.rect[D_80066208.rectid].x + D_80066208.rect[D_80066208.rectid].w) {
+        func_80064894(D_80066208.imgbuf[D_80066208.imgid], D_80066208.slice.w * D_80066208.slice.h / 2);
+    } else {
+        D_80066208.isdone = 1;
+        D_80066208.rectid = D_80066208.rectid == 0;
+        D_80066208.slice.x = D_80066208.rect[D_80066208.rectid].x;
+        D_80066208.slice.y = D_80066208.rect[D_80066208.rectid].y;
+    }
+    DrawSync(0);
+    LoadImage(&snap, D_80066208.imgbuf[id]);
+}
 
 INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_800642E8);
 
