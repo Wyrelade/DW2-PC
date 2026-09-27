@@ -3883,5 +3883,19 @@
       "delay_fill",
       "padnop"
     ]
+  },
+  "func_8001A9C8": {
+    "passes": [
+      "nodiv",
+      "sreg_perm",
+      "save_slot",
+      "web_realloc",
+      "sched_match",
+      "block_iso",
+      "zst_place",
+      "sreg_const_use",
+      "delay_fill",
+      "padnop"
+    ]
   }
 }

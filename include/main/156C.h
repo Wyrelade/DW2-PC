@@ -3186,4 +3186,80 @@ typedef struct {
     /* 0x0 */ s32 stamp;
 } Stamp61988;
 
+
+/* func_8001A9C8 (text renderer): the actor work block is 50 Rec34 text boxes
+ * followed by three counters; D_8005F770 viewed through the fields it reads. */
+typedef struct {
+    /* 0x000 */ Rec34 rec[50];
+    /* 0xA28 */ s32 field_A28;
+    /* 0xA2C */ void *field_A2C;
+    /* 0xA30 */ s32 field_A30;
+} Wk1A9C8;
+
+typedef struct {
+    u8 _pad0[8];
+    /* 0x08 */ s32 field_8;
+    u8 _padC[0xC];
+    /* 0x18 */ s32 field_18;
+    /* 0x1C */ s32 field_1C;
+    u8 _pad20[4];
+    /* 0x24 */ s32 field_24;
+    u8 _pad28[4];
+    /* 0x2C */ s32 field_2C;
+    u8 _pad30[0xE0];
+    /* 0x110 */ s32 field_110;
+    /* 0x114 */ s32 field_114;
+    u8 _pad118[0x20];
+    /* 0x138 */ u32 *field_138[8];
+} Gl1A9C8;
+
+typedef struct {
+    u8 r;
+    u8 g;
+    u8 b;
+    u8 code;
+} Col1A9C8;
+
+/* POLY_FT4 packet; the colour word is copied with lwl/lwr. */
+typedef struct {
+    /* 0x00 */ union {
+        u32 word;
+        struct {
+            u8 addr[3];
+            u8 len;
+        } b;
+    } tag;
+    /* 0x04 */ Col1A9C8 c;
+    /* 0x08 */ u16 x0;
+    /* 0x0A */ u16 y0;
+    /* 0x0C */ u8 u0;
+    /* 0x0D */ u8 v0;
+    /* 0x0E */ u16 clut;
+    /* 0x10 */ u16 x1;
+    /* 0x12 */ u16 y1;
+    /* 0x14 */ u8 u1;
+    /* 0x15 */ u8 v1;
+    /* 0x16 */ u16 tpage;
+    /* 0x18 */ u16 x2;
+    /* 0x1A */ u16 y2;
+    /* 0x1C */ u8 u2;
+    /* 0x1D */ u8 v2;
+    u16 _pad1E;
+    /* 0x20 */ u16 x3;
+    /* 0x22 */ u16 y3;
+    /* 0x24 */ u8 u3;
+    /* 0x25 */ u8 v3;
+    u16 _pad26;
+} Ft4_1A9C8;
+
+typedef struct {
+    u8 _pad0[0x42];
+    /* 0x42 */ s16 field_42;
+} Sub6A8C0;
+
+typedef struct {
+    u8 _pad0[0x38];
+    /* 0x38 */ Sub6A8C0 *field_38;
+} Obj6A8C0;
+
 #endif /* MAIN_156C_H */

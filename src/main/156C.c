@@ -5398,7 +5398,586 @@ void func_8001A958(Actor *a0) {
     func_80011544(a0);
 }
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8001A9C8);
+extern Elem20 *func_8001CB80(s32);
+extern Obj6A8C0 *func_8006A8C0(s32);
+extern void func_8006A920(void *, s32 *);
+extern s32 func_8006A9F8(void *);
+extern void func_8006AA0C(Obj6A8C0 *, s32);
+extern void func_80071FBC(s32 *);
+extern s32 func_800720FC(void);
+extern void func_80063C84(void);
+extern s16 D_8004142C[];
+extern s32 D_80041440[];
+extern u8 D_8005E633;
+extern u8 D_8005E6F0;
+
+void func_8001A9C8(Actor *a0) {
+    Elem20 *font[2];
+    Pair54 glyph;
+    Pair54 cell;
+    Pair54 pos;
+    s32 num[2];
+    s32 nums[3];
+    Wk1A9C8 *wk;
+    Actor **slots;
+    s32 row;
+    Ft4_1A9C8 *pkt;
+    s32 *ot;
+    s32 cols;
+    s32 page;
+    s32 nFA;
+    s32 nFB;
+    s32 nF9;
+    s32 nF8;
+    s32 nF6;
+    s32 nF5;
+    s32 nF4b;
+    s32 nF4a;
+    s32 nF4c;
+    u8 nF4d;
+    s32 grew;
+    Rec34 *r;
+    u8 *s;
+    s32 stop;
+    s32 line;
+    s32 c;
+    s32 v;
+    s32 vf;
+    u8 k9;
+    s32 k4;
+    s32 id;
+    u8 k;
+    s32 j;
+    s32 *np;
+    u8 isF6;
+    u8 mode2;
+    Obj6A8C0 *h;
+    Elm6F0 *e;
+    Elm6F0 *tb;
+
+    pkt = (Ft4_1A9C8 *)((Gl1A9C8 *)&D_8005F770)->field_2C;
+    slots = (Actor **)a0->u34.field_34;
+    wk = (Wk1A9C8 *)a0->work;
+    tb = D_8005F6F0;
+    row = 0;
+    do {
+        if (wk->rec[row].field_0 != 0) {
+            r = &wk->rec[row];
+            nFA = 0;
+            nFB = 0;
+            nF9 = 0;
+            nF8 = 0;
+            nF6 = 0;
+            nF5 = 0;
+            nF4b = 0;
+            nF4a = 0;
+            s = (u8 *)r->field_8;
+            nF4c = 0;
+            pos = *(Pair54 *)&r->field_1C;
+            nF4d = 0;
+            ot = ((Gl1A9C8 *)&D_8005F770)->field_138[r->field_31];
+            line = 0;
+            page = 0;
+            r->field_2 = r->field_20;
+            if (r->field_27 == 0 && r->field_6 != 0) {
+                r->field_21 += ((Gl1A9C8 *)&D_8005F770)->field_8;
+                if (r->field_21 >= r->field_6) {
+                    r->field_22++;
+                    r->field_21 -= r->field_6;
+                }
+            }
+            if (r->field_1 != 0) {
+                glyph.field_0 = 8;
+                glyph.field_2 = 0xD;
+                cell.field_0 = 9;
+                cols = 0xD;
+                cell.field_2 = 0xE;
+                font[0] = func_8001CB80(0x1100000);
+                font[1] = func_8001CB80(0x1100000);
+            } else {
+                glyph.field_0 = 7;
+                cell.field_0 = 7;
+                cols = 0x11;
+                glyph.field_2 = 9;
+                cell.field_2 = 0xA;
+                font[0] = func_8001CB80(0x13A0000);
+                font[1] = func_8001CB80(0x13A0000);
+            }
+            D_80054CD0.count = 0;
+            stop = 0;
+            grew = 0;
+            do {
+                switch (*s) {
+                case 0xFF:
+                    vf = func_8001A920();
+                    if (vf == 0) {
+                        r->field_6 = 0;
+                        r->field_23 = 1;
+                        stop = 1;
+                        break;
+                    }
+                    s = (u8 *)vf - 1;
+                    line--;
+                    break;
+                case 0xFE:
+                    pos.field_0 = r->field_1C;
+                    pos.field_2 += r->field_4;
+                    break;
+                case 0xFD:
+                    pos.field_0 += r->field_3;
+                    if (grew == 0 && line + 1 >= r->field_22) {
+                        grew = 1;
+                        r->field_22++;
+                    }
+                    break;
+                case 0xFC:
+                    r->field_8 = (s32)(s + 1);
+                    r->field_22 = 0;
+                    r->field_24 = 0;
+                    r->field_25 = 0;
+                    r->field_26 = 0;
+                    r->field_2A = 0;
+                    r->field_2B = 0;
+                    r->field_2C = 0;
+                    r->field_2D = 0;
+                    r->field_2E = 0;
+                    r->field_2F = 0;
+                    break;
+                case 0xFB:
+                    if (r->field_25 == nFB) {
+                        stop = 1;
+                        if (tb[r->field_30].field_14 > 0) {
+                            r->field_25 = nFB + 1;
+                            r->field_27 = 0;
+                            func_8001A68C(0x13, 0);
+                        } else {
+                            wk->field_A28 += ((Gl1A9C8 *)&D_8005F770)->field_8;
+                            if (wk->field_A28 >= 0x18) {
+                                wk->field_A28 -= 0x18;
+                            }
+                            c = ((wk->field_A28 / 6) & 3) + 0x4F;
+                            r->field_27 = 1;
+                            goto draw;
+                        }
+                    }
+                    nFB++;
+                    break;
+                case 0xFA:
+                    s++;
+                    if (r->field_24 == nFA) {
+                        switch (a0->field_14) {
+                        default:
+                        case 0:
+                            func_8001A68C((*s & 1) ? 0x38 : 0x37, 0);
+                            switch (*s) {
+                            case 0:
+                                func_8001107C(4, (s32 *)&slots[row + 1], 0);
+                                r->field_1C = -0x90;
+                                r->field_1E = 0x34;
+                                break;
+                            case 2:
+                                func_8001107C(4, (s32 *)&slots[row + 1], 1);
+                                r->field_1C = -0x90;
+                                r->field_1E = 0x42;
+                                break;
+                            case 6:
+                                func_8001107C(4, (s32 *)&slots[row + 1], 3);
+                                r->field_1C = -0x90;
+                                r->field_1E = 0x42;
+                                break;
+                            case 4:
+                                func_8001107C(4, (s32 *)&slots[row + 1], 2);
+                                r->field_1C = -0x90;
+                                r->field_1E = 0x12;
+                                break;
+                            case 1:
+                            case 3:
+                            case 5:
+                            case 7:
+                                if (slots[row + 1] != 0) {
+                                    func_800115C0(slots[row + 1], 2);
+                                }
+                                func_80011564(a0);
+                                break;
+                            }
+                            r->field_27 = 1;
+                            func_80011564(a0);
+                            break;
+                        case 1:
+                            if (slots[row + 1]->field_14 == 1) {
+                                r->field_27 = 0;
+                                r->field_24++;
+                                func_800115DC(a0, 0);
+                            }
+                            break;
+                        case 2:
+                            if (slots[row + 1] == 0) {
+                                r->field_27 = 0;
+                                r->field_24++;
+                                func_800115DC(a0, 0);
+                            }
+                            break;
+                        }
+                    }
+                    nFA++;
+                    break;
+                case 0xF9:
+                    s++;
+                    k9 = *s;
+                    if (k9 & 1) {
+                        if (r->field_26 == nF9) {
+                            if (slots[((k9 >> 1) & 1) + 0x33] != 0) {
+                                func_800115C0(slots[((k9 >> 1) & 1) + 0x33], 2);
+                            }
+                            r->field_26++;
+                            func_8001A68C(0x3A, 0);
+                        }
+                    } else if (r->field_26 == nF9) {
+                        num[1] = (k9 >> 1) & 1;
+                        s++;
+                        num[0] = *s++ * 100;
+                        num[0] += *s++ * 10;
+                        num[0] += *s;
+                        if (slots[num[1] + 0x33] != 0) {
+                            func_80011B58(slots[num[1] + 0x33], num[0]);
+                        } else {
+                            func_8001107C(5, (s32 *)&slots[num[1] + 0x33], (s32)num);
+                        }
+                        r->field_26++;
+                        func_8001A68C(0x39, 0);
+                    } else {
+                        s += 3;
+                    }
+                    nF9++;
+                    break;
+                set1:
+                    r->field_29 = 1;
+                    func_8001A68C(0xC, 0);
+                    goto cntF8;
+                set0:
+                    r->field_29 = 0;
+                    func_8001A68C(0xC, 0);
+                    goto cntF8;
+                case 0xF8:
+                    s++;
+                    if (r->field_28 == nF8) {
+                        switch (*s) {
+                        default:
+                        case 0:
+                            stop = 1;
+                            r->field_27 = 1;
+                            e = &tb[r->field_30];
+                            if (e->field_3A & 0x6000) {
+                                goto set1;
+                            }
+                            if (e->field_3A & 0x9000) {
+                                goto set0;
+                            }
+                            if (e->field_14 > 0) {
+                                r->field_27 = 0;
+                                r->field_28++;
+                                func_800221C4(0x10, 1);
+                                func_800221C4(0x11, r->field_29);
+                                func_8001A68C(0xA, 0);
+                            }
+                        cntF8:
+                            nF8++;
+                            goto next;
+                        case 1:
+                            c = 0x53;
+                            if (r->field_29 == 0) {
+                                goto draw;
+                            }
+                            break;
+                        case 2:
+                            c = 0x53;
+                            if (r->field_29 == 1) {
+                                goto draw;
+                            }
+                            break;
+                        }
+                    }
+                    pos.field_0 += r->field_3;
+                    break;
+                case 0xF6:
+                case 0xF7:
+                    isF6 = *s == 0xF6;
+                    mode2 = ((Gl1A9C8 *)&D_8005F770)->field_18 / 256 == 2;
+                    s++;
+                    if (r->field_2A == nF6) {
+                        switch (a0->field_14) {
+                        case 0:
+                        default:
+                            np = nums;
+                            for (j = 0; j < 3; j++) {
+                                *np = *s++ * 100;
+                                *np += *s++ * 10;
+                                *np += *s++;
+                                np++;
+                            }
+                            if (mode2) {
+                                func_80071FBC(nums);
+                            } else {
+                                h = func_8006A8C0(nums[0]);
+                                wk->field_A2C = h;
+                                func_8006A920(h, &nums[1]);
+                            }
+                            r->field_27 = 1;
+                            func_80011564(a0);
+                            break;
+                        case 1:
+                            break;
+                        }
+                        if (mode2 == 0) {
+                            if (isF6 == 0 || func_8006A9F8(wk->field_A2C) != 0) {
+                                goto advF6;
+                            }
+                            goto nextF6;
+                        }
+                        if (func_800720FC() != 0) {
+                            goto nextF6;
+                        }
+                    advF6:
+                        r->field_27 = 0;
+                        r->field_2A++;
+                        func_800115DC(a0, 0);
+                    } else {
+                        s += 8;
+                    }
+                nextF6:
+                    nF6++;
+                    break;
+                case 0xF5:
+                    if (r->field_2B == nF5) {
+                        stop = 1;
+                        if (wk->field_A30 == 0x1E) {
+                            r->field_2B = nF5 + 1;
+                            r->field_27 = 0;
+                            wk->field_A30 = 0;
+                        } else {
+                            wk->field_A30++;
+                            r->field_27 = 1;
+                        }
+                    }
+                    nF5++;
+                    break;
+                case 0xF4:
+                    s++;
+                    k4 = *s;
+                    s++;
+                    if (k4 < 0x10) {
+                        if (r->field_2D == nF4a) {
+                            s32 d0, d1;
+                            d0 = *s++;
+                            d1 = *s++;
+                            h = func_8006A8C0(d0 * 100 + d1 * 10 + *s);
+                            if (h != 0) {
+                                func_8006AA0C(h, k4 + 0x1E);
+                            }
+                            r->field_2D++;
+                        } else {
+                            s += 2;
+                        }
+                        nF4a++;
+                    } else if (k4 < 0x20) {
+                        if (r->field_2C == nF4b) {
+                            s32 n;
+                            n = *s++ * 100;
+                            n += *s++ * 10;
+                            do {} while (0);
+                            k4 = (k4 - 0x10) << 10;
+                            h = func_8006A8C0(n + *s);
+                            if (h != 0) {
+                                h->field_38->field_42 = k4;
+                            }
+                            r->field_2C++;
+                        } else {
+                            s += 2;
+                        }
+                        nF4b++;
+                    } else if (k4 < 0x30) {
+                        if (r->field_2E == nF4c) {
+                            switch (a0->field_14) {
+                            case 0:
+                            default:
+                                num[0] = k4 & 0xF;
+                                num[1] = 0;
+                                func_8001107C(0x16, (s32 *)&slots[0x35], (s32)num);
+                                a0->field_14++;
+                                r->field_27 = 1;
+                                break;
+                            case 1:
+                                s += 2;
+                                if (slots[0x35] == 0) {
+                                    a0->field_14 = 0;
+                                    r->field_27 = 0;
+                                    r->field_2E++;
+                                }
+                                break;
+                            }
+                        } else {
+                            s--;
+                        }
+                        nF4c++;
+                    } else if (k4 < 0x40) {
+                        r->field_2 = k4 & 0xF;
+                        s--;
+                    } else {
+                        k4 &= 0xF;
+                        if (r->field_2F == nF4d) {
+                            if (k4 != 7) {
+                                func_8001A68C(D_8004142C[k4], 0);
+                            }
+                            r->field_2F++;
+                            if (k4 == 4) {
+                                func_80063C84();
+                            }
+                        }
+                        s--;
+                        nF4d++;
+                    }
+                    break;
+                case 0xF3:
+                    stop = 1;
+                    s++;
+                    switch (a0->field_14) {
+                    case 0:
+                    default:
+                        func_8001C4F0(0xA);
+                        func_80011564(a0);
+                        break;
+                    case 1:
+                        break;
+                    }
+                    if (++a0->field_18 >= 0x19) {
+                        if (*s == 0xFC) {
+                            ((Gl1A9C8 *)&D_8005F770)->field_1C = 0x605;
+                        } else if (*s == 0xFD) {
+                            ((Gl1A9C8 *)&D_8005F770)->field_1C = 0x500;
+                        } else if (*s == 0xFE) {
+                            ((Gl1A9C8 *)&D_8005F770)->field_1C = 0x404;
+                        } else if (*s == 0xFF) {
+                            ((Gl1A9C8 *)&D_8005F770)->field_1C = 0x405;
+                        } else {
+                            ((Gl1A9C8 *)&D_8005F770)->field_1C = *s + 0x300;
+                        }
+                        s++;
+                        ((Gl1A9C8 *)&D_8005F770)->field_24 = *s;
+                    }
+                    break;
+                case 0xF2:
+                    {
+                        s32 n;
+                        s++;
+                        n = *s++ * 100;
+                        n += *s++ * 10;
+                        n += *s;
+                        line--;
+                        func_8001A8F4((s32)(s + 1));
+                        s = (u8 *)func_8001E048(n) - 1;
+                    }
+                    break;
+                case 0xF1:
+                    {
+                        s32 n;
+                        s++;
+                        n = *s++ * 100;
+                        n += *s++ * 10;
+                        n += *s;
+                        line--;
+                        func_8001A8F4((s32)(s + 1));
+                        s = func_8001E758(n) - 1;
+                    }
+                    break;
+                case 0xF0:
+                    s++;
+                    k = *s;
+                    func_8001A8F4((s32)(s + 1));
+                    switch (k) {
+                    case 0:
+                        s = &D_8005E633;
+                        break;
+                    case 5:
+                        s = &D_8005E6F0;
+                        break;
+                    case 1:
+                    case 2:
+                    case 3:
+                    case 4:
+                        {
+                            s32 jj = k - 1;
+                            s = (u8 *)(&r->field_C)[jj] - 1;
+                        }
+                        break;
+                    default:
+                        s = (u8 *)D_80041440[k - 6] - 1;
+                        break;
+                    }
+                    line--;
+                    break;
+                case 0xEF:
+                    do {
+                        s++;
+                        c = *s + 0xF0;
+                        goto draw;
+                    } while (0);
+                default:
+                    c = *s;
+                draw:
+                    if (r->field_1 != 0) {
+                        if ((s16)c >= 0x88) {
+                            c -= 0x88;
+                            page = 1;
+                        } else {
+                            page = 0;
+                        }
+                    }
+                    pkt->c = *(Col1A9C8 *)&D_8005074C;
+                    pkt->tag.b.len = 9;
+                    pkt->c.code = 0x2C;
+                    pkt->x0 = pkt->x2 = pos.field_0;
+                    pkt->x1 = pkt->x3 = pkt->x0 + glyph.field_0;
+                    pkt->y0 = pkt->y1 = pos.field_2;
+                    pkt->y2 = pkt->y3 = pkt->y0 + glyph.field_2;
+                    pkt->u0 = pkt->u2 = font[page]->field_C + ((s16)c % cols) * cell.field_0;
+                    pkt->u1 = pkt->u3 = pkt->u0 + glyph.field_0;
+                    pkt->v0 = pkt->v1 = ((s16)c / cols) * cell.field_2;
+                    pkt->v2 = pkt->v3 = pkt->v0 + glyph.field_2;
+                    pkt->clut = ((font[page]->field_1C + (r->field_2 + 0xF8)) << 6) | ((font[page]->field_18 >> 4) & 0x3F);
+                    pkt->tpage = font[page]->field_10;
+                    if (((Gl1A9C8 *)&D_8005F770)->field_110 == 0x140) {
+                        pkt->x0 *= 2;
+                        pkt->x1 *= 2;
+                        pkt->x2 *= 2;
+                        pkt->x3 *= 2;
+                    }
+                    if (((Gl1A9C8 *)&D_8005F770)->field_114 == 0xF0) {
+                        pkt->y0 *= 2;
+                        pkt->y1 *= 2;
+                        pkt->y2 *= 2;
+                        pkt->y3 *= 2;
+                    }
+                    pkt->tag.word = (pkt->tag.word & 0xFF000000) | (*ot & 0xFFFFFF);
+                    *ot = (*ot & 0xFF000000) | ((u32)pkt & 0xFFFFFF);
+                    pkt++;
+                    pos.field_0 += r->field_3;
+                    if (grew == 0 && line + 1 >= r->field_22) {
+                        grew = 1;
+                        r->field_22++;
+                    }
+                    break;
+                }
+            next:
+                s++;
+                if (stop != 0) {
+                    break;
+                }
+            } while (r->field_6 == 0 || ++line < r->field_22);
+        }
+    } while (++row < 0x32);
+    D_8005F79C = (s32)pkt;
+}
+
 
 void func_8001BB88(s32 *slot) {
     Ent11440 *e;
