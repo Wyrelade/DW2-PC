@@ -677,7 +677,33 @@ INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80067938);
 
 INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80067B54);
 
-INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80067F64);
+void func_80067F64(Actor *arg0, s32 arg1) {
+    Stg11SaveWork *w = (Stg11SaveWork *)arg0->work;
+    s32 *p;
+
+    switch (arg0->stateLevel2) {
+    case 1:
+        break;
+    case 0:
+    default:
+        w->field_24[w->field_0][0] = -1;
+        w->field_8 = 0;
+        Task_SetState2(arg0, 10);
+        break;
+    case 10:
+        p = &w->field_24[w->field_0][0];
+        if (arg1 < 5) {
+            *p = func_80067B54(w, arg1, w->field_0);
+        } else {
+            *p = func_80067938(w, arg1, w->field_0);
+        }
+        if (*p != -1) {
+            Task_SetState2(arg0, 1);
+        }
+        break;
+    }
+    w->field_4 = w->field_24[w->field_0][0];
+}
 
 void func_80068050(void) {
 }
