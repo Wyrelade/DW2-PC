@@ -33,7 +33,10 @@ INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_800649D8);
 void func_80064AD4(void) {
 }
 
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80064ADC);
+void func_80064ADC(Actor *arg0) {
+    func_80065114();
+    Task_DefaultDestroy(arg0);
+}
 
 INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80064B08);
 
