@@ -63,7 +63,9 @@ INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80065150);
 
 INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80065374);
 
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_800654F4);
+void func_800654F4(s32 arg0, s32 arg1) {
+    func_80065150(arg0, arg1, D_8006935C);
+}
 
 INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_8006551C);
 
