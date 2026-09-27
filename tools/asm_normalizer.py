@@ -9028,6 +9028,154 @@ def sreg_const_use_pass(stext, tgt):
     return "\n".join(lines) if changed else stext
 
 
+# --------------------------------------------------------------------------
+# dead_spill: reload spilled a pseudo whose every reload is dead (a loop
+# invariant loop.c hoisted for a test flow later found useless): ours keeps
+# `OP T,X,C; ...; sw T,k($sp)` in the preheader and a dead `lw R,k($sp)`,
+# retail kept the invariant in a callee-saved register that nothing reads
+# (`OP sK,X,C`) and its frame slot k has no insns at all. Rewrites D's dest to
+# sK and deletes the store and the dead reloads. Sound: the loaded values are
+# dead, the slot has no other reference, T's only reader was the store, sK is
+# saved by the prologue and never read after D (no branch after D reaches back
+# above it). Target-guided: the target has `OP sK,X,C` near our word position
+# and no reference to frame bytes [k, k+4). Post-sigma (keys compare registers).
+# --------------------------------------------------------------------------
+_DSP_SW = re.compile(r"^\s*sw\s+(\$\w+)\s*,\s*(-?\d+)\(\$(?:sp|29)\)\s*$")
+_DSP_LW = re.compile(r"^\s*lw\s+(\$\w+)\s*,\s*(-?\d+)\(\$(?:sp|29)\)\s*$")
+_DSP_IMM = {"addu": "addiu", "sltu": "sltiu", "slt": "slti", "and": "andi", "or": "ori", "xor": "xori"}
+_DSP_SREGS = ("s0", "s1", "s2", "s3", "s4", "s5", "s6", "s7", "fp")
+_DSP_MEMSZ = {"lw": 4, "sw": 4, "lwl": 4, "lwr": 4, "swl": 4, "swr": 4,
+              "lh": 2, "lhu": 2, "sh": 2, "lb": 1, "lbu": 1, "sb": 1}
+
+
+def _dsp_key(body):
+    k = _zsp_norm(body)
+    mn, _, ops = k.partition(" ")
+    o = ops.split(",") if ops else []
+    if mn in _DSP_IMM and len(o) == 3 and re.match(r"-?\d+$", o[2]):
+        mn = _DSP_IMM[mn]
+    return mn + " " + ",".join(o)
+
+
+def _dsp_frame_refs(bodies, k):
+    """Indexes of bodies touching frame bytes [k, k+4)."""
+    refs = []
+    for i, b in bodies:
+        m = re.search(r"(-?\d+)\(\$(?:sp|29)\)", b)
+        mn = b.split(None, 1)[0].lower()
+        if m and mn in _DSP_MEMSZ:
+            o = int(m.group(1))
+            if mn in ("lwl", "swl"):
+                o -= 3
+            if o < k + 4 and k < o + _DSP_MEMSZ[mn]:
+                refs.append(i)
+            continue
+    return refs
+
+
+def _dsp_tgt_refs(tgt, k):
+    for _w, d in tgt:
+        b = d.strip()
+        m = re.search(r"(-?0x[0-9A-Fa-f]+|-?\d+)\(\$(?:sp|29)\)", b)
+        mn = b.split(None, 1)[0].lower() if b else ""
+        if m and mn in _DSP_MEMSZ:
+            o = int(m.group(1), 0)
+            if mn in ("lwl", "swl"):
+                o -= 3
+            if o < k + 4 and k < o + _DSP_MEMSZ[mn]:
+                return True
+    return False
+
+
+def dead_spill_pass(stext, tgt):
+    if not tgt:
+        return stext
+    tk = [_dsp_key(d) for _w, d in tgt]
+    lines = stext.split("\n")
+    nr = _noreorder_lines(lines)
+    ins = [(i, l) for i, l in enumerate(lines) if _s_is_insn(l)]
+    bodies = [(i, l.split("#", 1)[0].strip()) for i, l in ins]
+    wpos, w = {}, 0
+    for i, l in ins:
+        wpos[i] = w
+        w += _src_nwords(l)
+    labpos = {lines[y].strip()[:-1]: y for y in range(len(lines))
+              if _s_is_label(lines[y]) and not lines[y].strip().startswith("LM")}
+    saved = set()
+    for _i, b in bodies:
+        m = _DSP_SW.match(b)
+        if m:
+            saved.add(norm_reg(m.group(1)))
+    for q, (si, sb) in enumerate(bodies):
+        m = _DSP_SW.match(sb)
+        if not m or si in nr:
+            continue
+        t, k = norm_reg(m.group(1)), int(m.group(2))
+        if t in (None, "zero", "sp", "ra") or t in _DSP_SREGS or _dsp_tgt_refs(tgt, k):
+            continue
+        refs = _dsp_frame_refs(bodies, k)
+        if any(r < 0 for r in refs) or refs.count(si) != 1:
+            continue
+        loads = [r for r in refs if r != si]
+        if not loads or not all(_DSP_LW.match(dict(bodies)[r]) and r not in nr for r in loads):
+            continue
+        if any(_bi_live_after(lines, r, norm_reg(_DSP_LW.match(dict(bodies)[r]).group(1))) for r in loads):
+            continue
+        # D: the def of T on the same straight line above the store
+        d = None
+        for p in range(q - 1, -1, -1):
+            pi, pb = bodies[p]
+            if any(_s_is_label(lines[y]) and not lines[y].strip().startswith("LM") for y in range(pi + 1, si)):
+                break
+            if pi in nr or _src_is_branch(lines[pi]) or re.match(r"jalr?\s", pb):
+                break
+            dd, uu = defs_uses(pb)
+            if t in dd:
+                d = p
+                break
+            if t in uu:
+                break
+        if d is None:
+            continue
+        di, db = bodies[d]
+        dd, uu = defs_uses(db)
+        md = re.match(r"(\w+)\s+(\$\w+)\s*,(.*)$", db)
+        if dd != {t} or not md or norm_reg(md.group(2)) != t or t in uu or _src_nwords(lines[di]) != 1:
+            continue
+        if any(t in defs_uses(bodies[x][1])[1] for x in range(d + 1, q)):
+            continue
+        if _bi_live_after(lines, si, t):
+            continue
+        for sk in _DSP_SREGS:
+            if sk not in saved:
+                continue
+            nb = "%s\t$%d,%s" % (md.group(1), ABI2NUM[sk], md.group(3))
+            key = _dsp_key(nb)
+            occ = [x for x, y in enumerate(tk) if y == key]
+            if not occ or min(abs(x - wpos[di]) for x in occ) > 40:
+                continue
+            # sK never read after D, no branch after D back above it
+            ok = True
+            for x in range(d + 1, len(bodies)):
+                xi, xb = bodies[x]
+                if sk in defs_uses(xb)[1]:
+                    ok = False
+                    break
+                for tok in re.findall(r"[\w.$]+", xb):
+                    if tok in labpos and labpos[tok] <= di:
+                        ok = False
+                if not ok:
+                    break
+            if not ok:
+                continue
+            ind = re.match(r"^(\s*)", lines[di]).group(1)
+            lines[di] = ind + nb
+            for r in sorted(loads + [si], reverse=True):
+                del lines[r]
+            return dead_spill_pass("\n".join(lines), tgt)
+    return stext
+
+
 PASSES = {
     # reg_realloc is applied specially (it needs sigma from words); the ordered
     # list in the manifest still names it so the recipe is explicit and auditable.
@@ -9107,6 +9255,7 @@ PASSES = {
     "range_unswap": range_unswap_pass,
     "slot_redundant": slot_redundant_pass,
     "at_dest": at_dest_pass,
+    "dead_spill": dead_spill_pass,
 }
 
 # Passes that CHANGE the instruction count and so must run BEFORE sigma is derived
