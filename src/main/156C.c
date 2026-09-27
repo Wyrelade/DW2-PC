@@ -11835,7 +11835,60 @@ void func_8002BCC4(Mat1F668 *m, s16 s, s16 c, s8 axis) {
 }
 
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002BD94);
+void func_8002BD94(Coord1F668 *coord, Mat1F668 *m) {
+    Coord1F668 *p;
+    s32 i;
+    s32 j;
+    Coord1F668 **stk;
+    Coord1F668 **q;
+    s32 t;
+
+    p = coord;
+    i = 0;
+    j = 100;
+    stk = D_80061A68;
+    for (;;) {
+        stk[i] = p;
+        if (p->super == NULL) {
+            if (p->flg == D_80061988 || p->flg == 0) {
+                p->workm = p->coord;
+                t = ((Stamp61988 *)&D_80061988)->stamp;
+                *m = p->workm;
+                p->flg = t;
+                break;
+            }
+            if (j == 100) {
+                *m = D_80061A68[0]->workm;
+                i = 0;
+            } else {
+                i = j + 1;
+                *m = stk[i]->workm;
+            }
+            break;
+        }
+        if (p->flg == D_80061988) {
+            *m = p->workm;
+            break;
+        }
+        if (p->flg == 0) {
+            j = i;
+        }
+        p = p->super;
+        i++;
+    }
+    if (i > 0) {
+        q = &D_80061A64[i];
+        do {
+            func_8002C0E4((ObjC0E4 *)m, (ArgC0E4 *)&(*q)->coord);
+            i--;
+            (*q)->workm = *m;
+            (*q)->flg = D_80061988;
+            q--;
+        } while (i > 0);
+    }
+    func_8002C064(&D_80061A08, (ArgC0E4 *)m);
+}
+
 
 extern void func_8002CF74(ObjC0E4 *, s32 *, s32 *);
 extern void func_8002D224(ObjC0E4 *, ArgC0E4 *);
