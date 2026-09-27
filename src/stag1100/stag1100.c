@@ -157,7 +157,23 @@ u8 *func_8006770C(void) {
     return ((Stg11SaveWork *)D_800685D0->work)->field_4034;
 }
 
-INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80067724);
+void func_80067724(u8 *arg0) {
+    s32 i = 0;
+    u8 *d = ((Stg11SaveWork *)D_800685D0->work)->u34.s.field_38;
+    u8 c;
+
+    memset(d, i, 0x40);
+loop:
+    c = *arg0++;
+    if (c == 0) {
+        return;
+    }
+    *d++ = c;
+    *d++ = *arg0++;
+    if (++i < 0x20) {
+        goto loop;
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_800677AC);
 
