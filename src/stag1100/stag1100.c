@@ -552,7 +552,32 @@ void func_80066860(Stg11Work66C04 *arg0, u8 arg1) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80066A0C);
+void func_80066A0C(Actor *arg0) {
+    Stg11Work66C04 *w = (Stg11Work66C04 *)arg0->work;
+    s32 idx;
+    Stg11Slot *s;
+    s32 i;
+    DigiRosterEntry *d;
+
+    idx = Menu_GridIndexColMajor(w->field_50, w->field_54);
+    s = &w->field_6C[idx];
+    if (s->field_2 != 2) {
+        Snd_PlayById(0x10, 0);
+        return;
+    }
+    s->field_2 = w->field_1A0 + 3;
+    w->field_1A2[w->field_1A0++] = idx;
+    Snd_PlayById(0xE, 0);
+    if (w->field_1A0 < 3) {
+        Task_SetState1(arg0, 1);
+        return;
+    }
+    for (i = 0; i < 3; i++) {
+        d = w->field_6C[w->field_1A2[i]].field_4;
+        D_800684A8.field_4[i] = *d;
+    }
+    Task_SetState0(arg0, 2);
+}
 
 INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80066B60);
 
