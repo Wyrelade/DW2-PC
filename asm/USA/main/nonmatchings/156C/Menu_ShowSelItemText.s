@@ -41,7 +41,7 @@ glabel Menu_ShowSelItemText
     /* 7184 80016984 3E4D000C */  jal        Text_OpenPacked
     /* 7188 80016988 25384700 */   or        $a3, $v0, $a3
   .L8001698C:
-    /* 718C 8001698C 2178000C */  jal        func_8001E084
+    /* 718C 8001698C 2178000C */  jal        Item_GetDescText
     /* 7190 80016990 21200002 */   addu      $a0, $s0, $zero
     /* 7194 80016994 21206002 */  addu       $a0, $s3, $zero
     /* 7198 80016998 21284000 */  addu       $a1, $v0, $zero

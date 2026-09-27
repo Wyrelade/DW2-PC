@@ -4,7 +4,7 @@ glabel Digi_FindDataById
     /* EEA8 8001E6A8 E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* EEAC 8001E6AC 1000B0AF */  sw         $s0, 0x10($sp)
     /* EEB0 8001E6B0 1400BFAF */  sw         $ra, 0x14($sp)
-    /* EEB4 8001E6B4 9F79000C */  jal        func_8001E67C
+    /* EEB4 8001E6B4 9F79000C */  jal        Digi_GetDataFileId
     /* EEB8 8001E6B8 21808000 */   addu      $s0, $a0, $zero
     /* EEBC 8001E6BC 688E000C */  jal        Cd_GetFileEntry
     /* EEC0 8001E6C0 00240200 */   sll       $a0, $v0, 16

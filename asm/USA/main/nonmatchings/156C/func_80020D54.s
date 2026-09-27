@@ -21,7 +21,7 @@ glabel func_80020D54
   .L80020D98:
     /* 11598 80020D98 01000524 */  addiu      $a1, $zero, 0x1
   .L80020D9C:
-    /* 1159C 80020D9C 3A83000C */  jal        func_80020CE8
+    /* 1159C 80020D9C 3A83000C */  jal        Actor_StepAxisMotion
     /* 115A0 80020DA0 00000000 */   nop
     /* 115A4 80020DA4 02000224 */  addiu      $v0, $zero, 0x2
     /* 115A8 80020DA8 08004212 */  beq        $s2, $v0, .L80020DCC

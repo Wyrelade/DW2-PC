@@ -132,7 +132,7 @@ dlabel D_80040E68
     /* 3167C 80040E7C 1E0D0000 */ .word 0x00000D1E
     /* 31680 80040E80 4D0D0000 */ .word 0x00000D4D
     /* 31684 80040E84 00000000 */ .word 0x00000000
-    /* 31688 80040E88 84330180 */ .word func_80013384
+    /* 31688 80040E88 84330180 */ .word Sys_GameModeTask
     /* 3168C 80040E8C 50340180 */ .word Task_DefaultDestroy2
     /* 31690 80040E90 00000000 */ .word 0x00000000
     /* 31694 80040E94 00000000 */ .word 0x00000000
@@ -140,13 +140,13 @@ dlabel D_80040E68
     /* 3169C 80040E9C F83B0180 */ .word func_80013BF8
     /* 316A0 80040EA0 043C0180 */ .word Menu_TopMenuTask
     /* 316A4 80040EA4 70110180 */ .word Task_DefaultDestroy
-    /* 316A8 80040EA8 D4410180 */ .word func_800141D4
+    /* 316A8 80040EA8 D4410180 */ .word Menu_TopMenuDraw
     /* 316AC 80040EAC 38000000 */ .word 0x00000038
     /* 316B0 80040EB0 04000000 */ .word 0x00000004
     /* 316B4 80040EB4 CC430180 */ .word func_800143CC
     /* 316B8 80040EB8 00440180 */ .word Menu_SubMenuTask
     /* 316BC 80040EBC 70110180 */ .word Task_DefaultDestroy
-    /* 316C0 80040EC0 70480180 */ .word func_80014870
+    /* 316C0 80040EC0 70480180 */ .word Menu_SubMenuDraw
     /* 316C4 80040EC4 44000000 */ .word 0x00000044
     /* 316C8 80040EC8 04000000 */ .word 0x00000004
     /* 316CC 80040ECC 78490180 */ .word func_80014978
@@ -158,7 +158,7 @@ dlabel D_80040E68
     /* 316E4 80040EE4 8C580180 */ .word Menu_SetItemUseMode
     /* 316E8 80040EE8 14590180 */ .word Menu_ItemUseTask
     /* 316EC 80040EEC 70110180 */ .word Task_DefaultDestroy
-    /* 316F0 80040EF0 305D0180 */ .word func_80015D30
+    /* 316F0 80040EF0 305D0180 */ .word Menu_ItemUseDraw
     /* 316F4 80040EF4 A0000000 */ .word 0x000000A0
     /* 316F8 80040EF8 04000000 */ .word 0x00000004
 enddlabel D_80040E68
@@ -171,7 +171,7 @@ dlabel D_80040EFC
     /* 31704 80040F04 D0690180 */ .word func_800169D0
     /* 31708 80040F08 DC690180 */ .word Menu_ItemTask
     /* 3170C 80040F0C 70110180 */ .word Task_DefaultDestroy
-    /* 31710 80040F10 DC6F0180 */ .word func_80016FDC
+    /* 31710 80040F10 DC6F0180 */ .word Menu_ItemDraw
     /* 31714 80040F14 44070000 */ .word 0x00000744
     /* 31718 80040F18 04000000 */ .word 0x00000004
 enddlabel D_80040EFC
@@ -206,8 +206,8 @@ dlabel D_80040F40
     /* 31740 80040F40 040E040E */ .word 0x0E040E04
     /* 31744 80040F44 040C040A */ .word 0x0A040C04
     /* 31748 80040F48 04060000 */ .word 0x00000604
-    /* 3174C 80040F4C 6C7F0180 */ .word func_80017F6C
-    /* 31750 80040F50 48800180 */ .word func_80018048
+    /* 3174C 80040F4C 6C7F0180 */ .word Menu_SetDigiListMode
+    /* 31750 80040F50 48800180 */ .word Menu_DigiListTask
     /* 31754 80040F54 70110180 */ .word Task_DefaultDestroy
     /* 31758 80040F58 BC880180 */ .word func_800188BC
     /* 3175C 80040F5C A8010000 */ .word 0x000001A8
@@ -224,10 +224,10 @@ dlabel D_80040F64
     /* 31774 80040F74 00000000 */ .word 0x00000000
     /* 31778 80040F78 00000000 */ .word 0x00000000
     /* 3177C 80040F7C 30020000 */ .word 0x00000230
-    /* 31780 80040F80 F88B0180 */ .word func_80018BF8
-    /* 31784 80040F84 788D0180 */ .word func_80018D78
+    /* 31780 80040F80 F88B0180 */ .word Menu_DigiStatusInit
+    /* 31784 80040F84 788D0180 */ .word Menu_DigiStatusTask
     /* 31788 80040F88 70110180 */ .word Task_DefaultDestroy
-    /* 3178C 80040F8C 14920180 */ .word func_80019214
+    /* 3178C 80040F8C 14920180 */ .word Menu_DigiStatusDraw
     /* 31790 80040F90 50010000 */ .word 0x00000150
     /* 31794 80040F94 04000000 */ .word 0x00000004
 enddlabel D_80040F64

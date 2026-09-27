@@ -100,7 +100,7 @@ typedef struct {
 } EntE4CC;
 
 /* Global struct D_8005D560; field_0 is an id, 4/8 hold results, field_C walks the
- * Cd_GetFileEntry entry table and field_10 holds the entry func_8001E390 picked. */
+ * Cd_GetFileEntry entry table and field_10 holds the entry Flag_NextPassingEntry picked. */
 typedef struct {
     /* 0x00 */ s32 fileId;
     /* 0x04 */ s32 fileBase;
@@ -148,7 +148,7 @@ typedef struct {
 } Block1C;
 
 /* A 12-byte element in the array at offset 0x6C of the buffer that Ctx38.buf
- * points to; func_80020EE8 zeroes one. */
+ * points to; Actor_StopAxisMotion zeroes one. */
 typedef struct {
     /* 0x0 */ s32 speed;
     /* 0x4 */ s32 accel;
@@ -312,7 +312,7 @@ typedef struct {
     /* 0x3C */ Obj125C *model;
 } Act125C;
 
-/* Two of these live in Actor at 0x48 (stride 0x5C). func_8001C194 stamps the
+/* Two of these live in Actor at 0x48 (stride 0x5C). Gpu_SetBgClearColor stamps the
  * four-byte header of each; field_0 is the pair earlier read as Actor.field_48
  * (element 0) and Actor.field_A4 (element 1). */
 typedef struct {
@@ -858,7 +858,7 @@ typedef struct {
     /* 0x1C */ s32 tz;
 } ArgC0E4;
 
-/* Accumulate-and-clamp record used by func_80020CE8: field_0 += field_4, then
+/* Accumulate-and-clamp record used by Actor_StepAxisMotion: field_0 += field_4, then
  * clamped against field_8. */
 typedef struct {
     /* 0x0 */ s32 speed;
@@ -930,7 +930,7 @@ typedef struct {
     u8 _pad4;
 } Slot24A1C;
 
-/* Argument to func_80025FBC (byte/half fields deep in a large record). */
+/* Argument to Pad_CalcInfoBufSize (byte/half fields deep in a large record). */
 typedef struct PadPort {
     /* 0x00 */ s32 modeTable;
     /* 0x04 */ Slot24A1C *actTable;
@@ -1656,7 +1656,7 @@ typedef struct {
     /* 0xE */ u16 h;
 } BlkFill618D0;
 
-/* Per-buffer draw context handed to func_8002B06C; the ot pointer sits at 0x10. */
+/* Per-buffer draw context handed to GsSortClear; the ot pointer sits at 0x10. */
 typedef struct {
     u8 _pad00[0x10];
     /* 0x10 */ u32 *ot;
@@ -1685,7 +1685,7 @@ typedef struct {
     s32 w[7];
 } Prm1C;
 
-/* View of Actor.work set up by func_80018BF8 (fields 0x7C..0x14C). */
+/* View of Actor.work set up by Menu_DigiStatusInit (fields 0x7C..0x14C). */
 typedef struct {
     u8 _pad00[0x7C];
     /* 0x7C */ s16 field_7C;
@@ -1858,7 +1858,7 @@ typedef struct {
     /* 0x4C */ u8 name[4];
 } Sub17D84;
 
-/* 8-byte row of the list page func_80017D84 draws. */
+/* 8-byte row of the list page Menu_DigiListDrawRows draws. */
 typedef struct {
     /* 0x00 */ u8 kind;
     /* 0x01 */ u8 field_1;
@@ -2077,7 +2077,7 @@ typedef struct Coord1F668 {
     /* 0x4C */ struct Coord1F668 *sub;
 } Coord1F668; /* size 0x50 */
 
-/* Actor work view used by func_800141D4 (part list animation). */
+/* Actor work view used by Menu_TopMenuDraw (part list animation). */
 typedef struct {
     u8 _pad00[0x20];
     /* 0x20 */ s32 cursor;
@@ -2121,7 +2121,7 @@ typedef struct {
         s32 addr;
         DrMove2AB54 *drMove;
     } packet;                            /* primitive packet cursor */
-    /* 0x030 */ DrawEnv draw[2];          /* isbg/r0/g0/b0 set by func_8001C194 */
+    /* 0x030 */ DrawEnv draw[2];          /* isbg/r0/g0/b0 set by Gpu_SetBgClearColor */
     /* 0x0E8 */ DispEnv disp[2];
     /* 0x110 */ union {
         s32 s;
@@ -2376,7 +2376,7 @@ typedef struct {
 } Wk14400;
 
 
-/* func_80018D78: 12-byte window rect record (same shape as Blk14400). */
+/* Menu_DigiStatusTask: 12-byte window rect record (same shape as Blk14400). */
 typedef struct {
     s16 field_0[6];
 } Blk18D78;
@@ -2391,7 +2391,7 @@ typedef struct {
     /* 0x4C */ u8 name[4];
 } Rec18D78;
 
-/* func_80018D78 view of Actor.work (fields 0x50..0x14C). */
+/* Menu_DigiStatusTask view of Actor.work (fields 0x50..0x14C). */
 typedef struct {
     u8 _pad00[0x50];
     /* 0x50 */ s32 nameText;
@@ -2416,7 +2416,7 @@ typedef struct {
     /* 0x14C */ s32 modelScale;
 } Wk18D78;
 
-/* One list row of the func_800179EC page (8 bytes). */
+/* One list row of the Menu_BuildDigiList page (8 bytes). */
 typedef struct {
     /* 0x0 */ u8 kind;
     /* 0x1 */ u8 field_1;
@@ -2425,7 +2425,7 @@ typedef struct {
     /* 0x4 */ void *entry;
 } Row179EC;
 
-/* Work block of the list page built by func_800179EC. */
+/* Work block of the list page built by Menu_BuildDigiList. */
 typedef struct {
     u8 _pad00[0x52];
     /* 0x052 */ s16 cursorRow;
@@ -2604,7 +2604,7 @@ typedef struct {
     /* 0x20 */ VReg62A48 regs[24];
 } Snd62A28;
 
-/* 0x28-stride zero-terminated list Gfx_HidePartsByMask walks (func_80014870 passes it
+/* 0x28-stride zero-terminated list Gfx_HidePartsByMask walks (Menu_SubMenuDraw passes it
  * the Cd_GetFileEntry lookups); field_F is set to 0 or 1 from field_1C & mask. */
 typedef struct {
     /* 0x00 */ s32 field_0;
@@ -2841,7 +2841,7 @@ typedef struct {
 
 typedef struct { s32 x[8]; s32 y[8]; } XY2CC64;
 
-/* func_80017F6C view of an actor work block: mode at 0x60, s16 flag at 0x6A, parity at 0x1A6. */
+/* Menu_SetDigiListMode view of an actor work block: mode at 0x60, s16 flag at 0x6A, parity at 0x1A6. */
 typedef struct {
     u8 _pad00[0x60];
     /* 0x60 */ s16 mode;
@@ -2896,7 +2896,7 @@ typedef struct {
 } Fade1C584;
 
 
-/* func_8002EC0C: DMA control byte view (the byte at +2 holds one enable bit
+/* Cd_StartDma: DMA control byte view (the byte at +2 holds one enable bit
  * per channel; the word is read back to flush the write). */
 typedef union {
     s32 w;
@@ -2940,7 +2940,7 @@ typedef struct Pos1F9AC {
 
 
 
-/* func_80026170 5-byte directory entry (field_4 table). */
+/* Pad_ParseTableReply 5-byte directory entry (field_4 table). */
 typedef struct {
     /* 0x0 */ u8 func;
     /* 0x1 */ u8 subFunc;
@@ -2949,14 +2949,14 @@ typedef struct {
     /* 0x4 */ u8 sign;
 } PadActInfo;
 
-/* func_80026170 stride-8 block record (field_8 table): length byte + data pointer. */
+/* Pad_ParseTableReply stride-8 block record (field_8 table): length byte + data pointer. */
 typedef struct {
     /* 0x0 */ u8 size;
     u8 _pad1[0x3];
     /* 0x4 */ u8 *data;
 } PadCombEntry;
 
-/* func_80026170 view of PadPort: the three table pointers typed for the record parser. */
+/* Pad_ParseTableReply view of PadPort: the three table pointers typed for the record parser. */
 typedef struct {
     /* 0x00 */ u16 *modeTable;
     /* 0x04 */ PadActInfo *actTable;
@@ -3070,7 +3070,7 @@ typedef struct {
     /* 0x26 */ u16 pad2;
 } Ft4_11854;
 
-/* memory card directory frame entry (0x20) written by func_800401E4 */
+/* memory card directory frame entry (0x20) written by Card_Format */
 typedef struct {
     /* 0x00 */ s32 allocState;
     /* 0x04 */ s32 fileSize;
@@ -3078,7 +3078,7 @@ typedef struct {
     /* 0x0A */ s8 name[0x16];
 } CardDirFrame;
 
-/* byte-aligned views used for the frame copies in func_800401E4 */
+/* byte-aligned views used for the frame copies in Card_Format */
 typedef struct { u8 b[0x20]; } McBlk20;
 typedef struct { u8 b[0x4]; } McBlk4;
 
@@ -3186,7 +3186,7 @@ typedef struct {
 } View5F704;
 
 
-/* Actor work block of the func_80018048 menu (list page like Obj17D84). */
+/* Actor work block of the Menu_DigiListTask menu (list page like Obj17D84). */
 typedef struct {
     /* 0x000 */ s32 texts[16];
     /* 0x040 */ s32 promptText;

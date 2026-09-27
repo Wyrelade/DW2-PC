@@ -241,7 +241,7 @@ glabel Pad_SioStepRecvData
     /* 17528 80026D28 09F84000 */  jalr       $v0
     /* 1752C 80026D2C 2128A002 */   addu      $a1, $s5, $zero
     /* 17530 80026D30 21202002 */  addu       $a0, $s1, $zero
-    /* 17534 80026D34 D895000C */  jal        func_80025760
+    /* 17534 80026D34 D895000C */  jal        Pad_SioXferDataByte
     /* 17538 80026D38 FF004530 */   andi      $a1, $v0, 0xFF
     /* 1753C 80026D3C 91004004 */  bltz       $v0, .L80026F84
     /* 17540 80026D40 00000000 */   nop
@@ -315,7 +315,7 @@ glabel Pad_SioStepRecvData
     /* 1763C 80026E3C 09F84000 */  jalr       $v0
     /* 17640 80026E40 2128A002 */   addu      $a1, $s5, $zero
     /* 17644 80026E44 21202002 */  addu       $a0, $s1, $zero
-    /* 17648 80026E48 D895000C */  jal        func_80025760
+    /* 17648 80026E48 D895000C */  jal        Pad_SioXferDataByte
     /* 1764C 80026E4C FF004530 */   andi      $a1, $v0, 0xFF
     /* 17650 80026E50 4C004004 */  bltz       $v0, .L80026F84
     /* 17654 80026E54 00000000 */   nop

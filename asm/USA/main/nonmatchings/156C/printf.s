@@ -10,7 +10,7 @@ glabel printf
     /* 1A82C 8002A02C 040046AC */  sw         $a2, 0x4($v0)
     /* 1A830 8002A030 080047AC */  sw         $a3, 0x8($v0)
     /* 1A834 8002A034 1800A58F */  lw         $a1, 0x18($sp)
-    /* 1A838 8002A038 15A8000C */  jal        func_8002A054
+    /* 1A838 8002A038 15A8000C */  jal        Debug_VPrintf
     /* 1A83C 8002A03C 21304000 */   addu      $a2, $v0, $zero
     /* 1A840 8002A040 1000BF8F */  lw         $ra, 0x10($sp)
     /* 1A844 8002A044 1800BD27 */  addiu      $sp, $sp, 0x18

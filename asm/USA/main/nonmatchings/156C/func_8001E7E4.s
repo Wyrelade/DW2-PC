@@ -7,7 +7,7 @@ glabel func_8001E7E4
     /* EFF0 8001E7F0 1800B2AF */  sw         $s2, 0x18($sp)
     /* EFF4 8001E7F4 2190A000 */  addu       $s2, $a1, $zero
     /* EFF8 8001E7F8 1C00BFAF */  sw         $ra, 0x1C($sp)
-    /* EFFC 8001E7FC 9F79000C */  jal        func_8001E67C
+    /* EFFC 8001E7FC 9F79000C */  jal        Digi_GetDataFileId
     /* F000 8001E800 1400B1AF */   sw        $s1, 0x14($sp)
     /* F004 8001E804 00140200 */  sll        $v0, $v0, 16
     /* F008 8001E808 688E000C */  jal        Cd_GetFileEntry

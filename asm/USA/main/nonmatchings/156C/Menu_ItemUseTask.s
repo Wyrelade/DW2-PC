@@ -73,7 +73,7 @@ glabel Menu_ItemUseTask
     /* 621C 80015A1C 564D000C */  jal        Text_PrintIdList
     /* 6220 80015A20 02000624 */   addiu     $a2, $zero, 0x2
     /* 6224 80015A24 21202002 */  addu       $a0, $s1, $zero
-    /* 6228 80015A28 A654000C */  jal        func_80015298
+    /* 6228 80015A28 A654000C */  jal        Menu_OpenItemNameTexts
     /* 622C 80015A2C 01000524 */   addiu     $a1, $zero, 0x1
     /* 6230 80015A30 0580023C */  lui        $v0, %hi(Menu_Ctx)
     /* 6234 80015A34 6807428C */  lw         $v0, %lo(Menu_Ctx)($v0)

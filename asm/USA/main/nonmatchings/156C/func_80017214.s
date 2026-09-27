@@ -155,7 +155,7 @@ glabel func_80017214
     /* 7C4C 8001744C 0580033C */  lui        $v1, %hi(Menu_Ctx)
     /* 7C50 80017450 6807638C */  lw         $v1, %lo(Menu_Ctx)($v1)
     /* 7C54 80017454 FFFF0224 */  addiu      $v0, $zero, -0x1
-    /* 7C58 80017458 615F000C */  jal        func_80017D84
+    /* 7C58 80017458 615F000C */  jal        Menu_DigiListDrawRows
     /* 7C5C 8001745C 260162A4 */   sh        $v0, 0x126($v1)
     /* 7C60 80017460 0E000424 */  addiu      $a0, $zero, 0xE
     /* 7C64 80017464 A369000C */  jal        Snd_PlayById

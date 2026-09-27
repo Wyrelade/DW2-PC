@@ -45,7 +45,7 @@ glabel _SsGetSeqData
     /* 22988 80032188 80004232 */   andi      $v0, $s2, 0x80
     /* 2298C 8003218C 21202001 */  addu       $a0, $t1, $zero
     /* 22990 80032190 01006690 */  lbu        $a2, 0x1($v1)
-    /* 22994 80032194 A8C7000C */  jal        func_80031EA0
+    /* 22994 80032194 A8C7000C */  jal        Snd_SeqEndOfTrack
     /* 22998 80032198 21280001 */   addu      $a1, $t0, $zero
     /* 2299C 8003219C 1BC90008 */  j          .L8003246C
     /* 229A0 800321A0 FFFF0224 */   addiu     $v0, $zero, -0x1
@@ -232,7 +232,7 @@ glabel _SsGetSeqData
     /* 22C2C 8003242C 03240400 */  sra        $a0, $a0, 16
     /* 22C30 80032430 002C0500 */  sll        $a1, $a1, 16
     /* 22C34 80032434 032C0500 */  sra        $a1, $a1, 16
-    /* 22C38 80032438 A8C7000C */  jal        func_80031EA0
+    /* 22C38 80032438 A8C7000C */  jal        Snd_SeqEndOfTrack
     /* 22C3C 8003243C 2F000624 */   addiu     $a2, $zero, 0x2F
     /* 22C40 80032440 1BC90008 */  j          .L8003246C
     /* 22C44 80032444 2110A002 */   addu      $v0, $s5, $zero

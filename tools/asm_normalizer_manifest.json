@@ -29,7 +29,7 @@
       "epilogue_unfill"
     ]
   },
-  "func_8003D4A4": {
+  "MemCardInit": {
     "passes": [
       "reg_realloc",
       "epilogue_unfill"
@@ -197,7 +197,7 @@
       "epilogue_unfill"
     ]
   },
-  "func_8003D4D4": {
+  "MemCardEnd": {
     "passes": [
       "reg_realloc",
       "epilogue_unfill"
@@ -242,7 +242,7 @@
       "epilogue_unfill"
     ]
   },
-  "func_80032844": {
+  "SsSepClose": {
     "passes": [
       "reg_realloc",
       "prologue_save_hoist",
@@ -584,7 +584,7 @@
       "padnop"
     ]
   },
-  "func_80029FDC": {
+  "Mem_FillBytes": {
     "passes": [
       "padnop"
     ]
@@ -1079,7 +1079,7 @@
       "reorder_indep"
     ]
   },
-  "func_80035C4C": {
+  "SsSepSetVol": {
     "passes": [
       "nosplit",
       "exit_merge",
@@ -1461,7 +1461,7 @@
       "padnop"
     ]
   },
-  "func_800260C8": {
+  "Pad_SendQueryInfoCmd": {
     "passes": [
       "nosplit",
       "epilogue_unfill"
@@ -1581,7 +1581,7 @@
       "padnop"
     ]
   },
-  "func_8002FDC8": {
+  "CD_initvol": {
     "passes": [
       "nosplit"
     ]
@@ -1594,7 +1594,7 @@
       "nosplit"
     ]
   },
-  "func_8001E390": {
+  "Flag_NextPassingEntry": {
     "passes": []
   },
   "CD_getsector": {
@@ -1634,14 +1634,14 @@
       "reg_realloc"
     ]
   },
-  "func_8002A87C": {
+  "Debug_PutCharFlush": {
     "passes": [
       "nosplit",
       "delay_fill",
       "padnop"
     ]
   },
-  "func_8002B06C": {
+  "GsSortClear": {
     "passes": [
       "nosplit",
       "delay_fill",
@@ -1738,7 +1738,7 @@
       "padnop"
     ]
   },
-  "func_80018BF8": {
+  "Menu_DigiStatusInit": {
     "passes": [
       "reorder_indep"
     ]
@@ -1862,7 +1862,7 @@
       "nosplit"
     ]
   },
-  "func_80017D84": {
+  "Menu_DigiListDrawRows": {
     "passes": []
   },
   "Task_FindNext": {
@@ -1886,18 +1886,18 @@
       "padnop"
     ]
   },
-  "func_80025760": {
+  "Pad_SioXferDataByte": {
     "passes": [
       "nosplit"
     ]
   },
-  "func_80015D30": {
+  "Menu_ItemUseDraw": {
     "passes": [
       "nosplit",
       "sched_match"
     ]
   },
-  "func_80016FDC": {
+  "Menu_ItemDraw": {
     "passes": [
       "web_realloc"
     ]
@@ -1951,7 +1951,7 @@
   "Gfx_AddFlatQuad3D": {
     "passes": []
   },
-  "func_80024DC8": {
+  "Pad_HandleReply": {
     "passes": [
       "nosplit",
       "sched_match"
@@ -1970,7 +1970,7 @@
       "zero_remat"
     ]
   },
-  "func_800141D4": {
+  "Menu_TopMenuDraw": {
     "passes": [
       "nosplit",
       "label_nop"
@@ -2043,7 +2043,7 @@
       "gp8"
     ]
   },
-  "func_800225C4": {
+  "Item_FindFreeBagSlot": {
     "passes": [
       "gp8_nosplit",
       "label_nop"
@@ -2070,13 +2070,13 @@
       "gp8"
     ]
   },
-  "func_80031EA0": {
+  "Snd_SeqEndOfTrack": {
     "passes": [
       "load_remat",
       "reorder_indep"
     ]
   },
-  "func_80013854": {
+  "Menu_BlinkOrHideParts": {
     "passes": [
       "gp8_nosplit"
     ]
@@ -2125,7 +2125,7 @@
       "gp8"
     ]
   },
-  "func_80022468": {
+  "Save_ResetGameState": {
     "passes": [
       "gp8"
     ]
@@ -2202,7 +2202,7 @@
       "nodiv"
     ]
   },
-  "func_80015298": {
+  "Menu_OpenItemNameTexts": {
     "passes": [
       "gp8_nosplit",
       "nodiv"
@@ -2395,12 +2395,12 @@
       "padnop"
     ]
   },
-  "func_80018D78": {
+  "Menu_DigiStatusTask": {
     "passes": [
       "gp8"
     ]
   },
-  "func_800179EC": {
+  "Menu_BuildDigiList": {
     "passes": [
       "nosplit",
       "label_nop",
@@ -2482,7 +2482,7 @@
       "padnop"
     ]
   },
-  "func_80037D64": {
+  "vmNoiseOn": {
     "passes": [
       "nosplit",
       "web_realloc",
@@ -2561,7 +2561,7 @@
       "padnop"
     ]
   },
-  "func_8002CBC4": {
+  "rcos": {
     "passes": [
       "nosplit_nodb",
       "exit_merge",
@@ -2879,7 +2879,7 @@
       "padnop"
     ]
   },
-  "func_80025FF4": {
+  "Pad_SetupInfoTables": {
     "passes": [
       "nosplit",
       "shift_const_fold",
@@ -3082,7 +3082,7 @@
       "delay_fill"
     ]
   },
-  "func_8003A454": {
+  "_spu_FwriteByIO": {
     "passes": [
       "nosplit",
       "undo_drop",
@@ -3091,7 +3091,7 @@
       "delay_fill"
     ]
   },
-  "func_8003F3A4": {
+  "MemCardFormat": {
     "passes": [
       "nosplit_nodb",
       "la_unfold",
@@ -3303,7 +3303,7 @@
       "padnop"
     ]
   },
-  "func_80024960": {
+  "Pad_GetTxByte": {
     "passes": [
       "nosplit",
       "exit_merge",
@@ -3321,7 +3321,7 @@
       "padnop"
     ]
   },
-  "func_80017F6C": {
+  "Menu_SetDigiListMode": {
     "passes": [
       "nosplit",
       "delay_fill",
@@ -3375,7 +3375,7 @@
       "padnop"
     ]
   },
-  "func_8002EC0C": {
+  "Cd_StartDma": {
     "passes": [
       "nosplit_nodb",
       "web_resched",
@@ -3452,7 +3452,7 @@
       "padnop"
     ]
   },
-  "func_80026170": {
+  "Pad_ParseTableReply": {
     "passes": [
       "nosplit",
       "exit_merge",
@@ -3675,7 +3675,7 @@
       "padnop"
     ]
   },
-  "func_800401E4": {
+  "Card_Format": {
     "passes": [
       "nosplit",
       "zero_remat",
@@ -3716,7 +3716,7 @@
       "padnop"
     ]
   },
-  "func_8002A054": {
+  "Debug_VPrintf": {
     "passes": [
       "nosplit",
       "zero_remat",
@@ -3774,7 +3774,7 @@
       "padnop"
     ]
   },
-  "func_80039334": {
+  "_SsVmSetVol": {
     "passes": [
       "nosplit_hf",
       "sched_pre",
@@ -3842,7 +3842,7 @@
       "padnop"
     ]
   },
-  "func_80018048": {
+  "Menu_DigiListTask": {
     "passes": [
       "gp8",
       "range_unswap",

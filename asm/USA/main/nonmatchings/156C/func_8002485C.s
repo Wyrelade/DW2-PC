@@ -30,7 +30,7 @@ glabel func_8002485C
   .L800248C0:
     /* 150C0 800248C0 0D94000C */  jal        func_80025034
     /* 150C4 800248C4 21200002 */   addu      $a0, $s0, $zero
-    /* 150C8 800248C8 5492000C */  jal        func_80024950
+    /* 150C8 800248C8 5492000C */  jal        Pad_ConsumeSendCmd
     /* 150CC 800248CC 21200002 */   addu      $a0, $s0, $zero
   .L800248D0:
     /* 150D0 800248D0 0580023C */  lui        $v0, %hi(D_80048E00)

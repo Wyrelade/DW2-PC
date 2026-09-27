@@ -46,7 +46,7 @@ glabel _reset
     /* 19FAC 800297AC 0580023C */  lui        $v0, %hi(D_80049018)
     /* 19FB0 800297B0 1890428C */  lw         $v0, %lo(D_80049018)($v0)
     /* 19FB4 800297B4 00180624 */  addiu      $a2, $zero, 0x1800
-    /* 19FB8 800297B8 F7A7000C */  jal        func_80029FDC
+    /* 19FB8 800297B8 F7A7000C */  jal        Mem_FillBytes
     /* 19FBC 800297BC 000040AC */   sw        $zero, 0x0($v0)
     /* 19FC0 800297C0 05A60008 */  j          .L80029814
     /* 19FC4 800297C4 00000000 */   nop

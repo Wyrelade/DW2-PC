@@ -14,7 +14,7 @@ glabel func_8001E480
     /* ECA8 8001E4A8 688E000C */  jal        Cd_GetFileEntry
     /* ECAC 8001E4AC 00240400 */   sll       $a0, $a0, 16
     /* ECB0 8001E4B0 0C0002AE */  sw         $v0, 0xC($s0)
-    /* ECB4 8001E4B4 E478000C */  jal        func_8001E390
+    /* ECB4 8001E4B4 E478000C */  jal        Flag_NextPassingEntry
     /* ECB8 8001E4B8 080000AE */   sw        $zero, 0x8($s0)
     /* ECBC 8001E4BC 1400BF8F */  lw         $ra, 0x14($sp)
     /* ECC0 8001E4C0 1000B08F */  lw         $s0, 0x10($sp)

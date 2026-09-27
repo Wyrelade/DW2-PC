@@ -53,7 +53,7 @@ glabel Menu_UseItemOnTarget
     /* 6034 80015834 1C4D000C */  jal        Text_OpenDesc
     /* 6038 80015838 1400A2AF */   sw        $v0, 0x14($sp)
     /* 603C 8001583C 21204002 */  addu       $a0, $s2, $zero
-    /* 6040 80015840 A654000C */  jal        func_80015298
+    /* 6040 80015840 A654000C */  jal        Menu_OpenItemNameTexts
     /* 6044 80015844 21280000 */   addu      $a1, $zero, $zero
     /* 6048 80015848 1D000424 */  addiu      $a0, $zero, 0x1D
     /* 604C 8001584C A369000C */  jal        Snd_PlayById

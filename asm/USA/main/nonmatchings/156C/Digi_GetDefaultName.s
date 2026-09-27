@@ -8,7 +8,7 @@ glabel Digi_GetDefaultName
     /* EF68 8001E768 AA79000C */  jal        Digi_FindDataById
     /* EF6C 8001E76C 1000B0AF */   sw        $s0, 0x10($sp)
     /* EF70 8001E770 0000508C */  lw         $s0, 0x0($v0)
-    /* EF74 8001E774 9F79000C */  jal        func_8001E67C
+    /* EF74 8001E774 9F79000C */  jal        Digi_GetDataFileId
     /* EF78 8001E778 21202002 */   addu      $a0, $s1, $zero
     /* EF7C 8001E77C 828E000C */  jal        Cd_GetFileOrNull
     /* EF80 8001E780 21204000 */   addu      $a0, $v0, $zero

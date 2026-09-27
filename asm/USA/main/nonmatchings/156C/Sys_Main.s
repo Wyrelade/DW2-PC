@@ -101,7 +101,7 @@ glabel Sys_Main
     /* 13ED4 800236D4 00000000 */   nop
     /* 13ED8 800236D8 398E000C */  jal        Rand_Seed
     /* 13EDC 800236DC 21200000 */   addu      $a0, $zero, $zero
-    /* 13EE0 800236E0 29F5000C */  jal        func_8003D4A4
+    /* 13EE0 800236E0 29F5000C */  jal        MemCardInit
     /* 13EE4 800236E4 21200000 */   addu      $a0, $zero, $zero
     /* 13EE8 800236E8 40F7000C */  jal        MemCardStart
     /* 13EEC 800236EC 00000000 */   nop
@@ -136,7 +136,7 @@ glabel Sys_Main
     /* 13F5C 8002375C 180002AE */  sw         $v0, 0x18($s0)
     /* 13F60 80023760 1C0002AE */  sw         $v0, 0x1C($s0)
     /* 13F64 80023764 240000AE */  sw         $zero, 0x24($s0)
-    /* 13F68 80023768 1A89000C */  jal        func_80022468
+    /* 13F68 80023768 1A89000C */  jal        Save_ResetGameState
     /* 13F6C 8002376C 0C0000AE */   sw        $zero, 0xC($s0)
     /* 13F70 80023770 21A02002 */  addu       $s4, $s1, $zero
     /* 13F74 80023774 21880002 */  addu       $s1, $s0, $zero

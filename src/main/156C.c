@@ -90,7 +90,7 @@ extern void Text_Open(void *, TextOpenArgs *);
 extern void Flag_Set(s32, s32);
 extern void Gfx_SetPartsNumber(Part28 *, s32, s32, s32);
 extern s32 Digi_GetExpToNextLevel(s32, s32, s32);
-extern void func_8002D744(void *, Obj209 *);
+extern void RotMatrixYXZ(void *, Obj209 *);
 extern void GsSetProjection(s32);
 extern void Anim_SetModelAnim(Actor *, s32);
 extern s32 D_8004E6D0;
@@ -123,7 +123,7 @@ extern SioRegs *Pad_SioRegs;
 extern MenuCtx *Menu_Ctx;
 extern s32 sin_1(s32);
 extern s32 CD_init();
-extern s32 func_8002FDC8();
+extern s32 CD_initvol();
 extern s32 _SsVabOpenHeadWithMode();
 extern s32 func_80039A78();
 extern s32 Snd_VabFixedAddrAlloc(s32, s32);
@@ -156,7 +156,7 @@ extern s32 D_80062F94;
 extern void close(s32);
 extern s32 (*D_80048E30)();
 extern s32 D_80048E98;
-extern s32 func_80025760(Ent266D0 *, s32);
+extern s32 Pad_SioXferDataByte(Ent266D0 *, s32);
 extern s16 _SsVmSetSeqVol(s32, s32, s32, s32);
 extern s32 Card_TaskWork[4][4];
 extern s32 (*Card_TaskFuncs[4])(s32 *);
@@ -247,7 +247,7 @@ extern s32 D_800619A0;
 extern char D_80010624[];
 extern void printf();
 extern s16 _SsVmSetSeqVol(s32, s32, s32, s32);
-extern void func_8003A454(u16 *, u32);
+extern void _spu_FwriteByIO(u16 *, u32);
 extern s32 SsUtGetVagAtr();
 extern s32 SsUtSetVagAtr();
 extern void _SsVmSeqKeyOff(s32);
@@ -318,7 +318,7 @@ extern s32 D_80048E64;
 extern s32 D_80048E9C;
 extern s32 (*D_80048E20)(Ent266D0 *, s32);
 extern void (*D_80048E24)(Ent266D0 *);
-extern s32 func_80039334(s16, s16, s16, u16, u16);
+extern s32 _SsVmSetVol(s16, s16, s16, u16, u16);
 extern s8 D_80010984[];
 extern s32 D_8004FDBC;
 extern s32 D_8004FDC0;
@@ -337,7 +337,7 @@ extern char D_80010304[];
 extern char D_80010328[];
 extern void Gpu_RestoreExequeCb(void);
 extern Pkt48F9C D_80048F9C;
-extern s32 func_80039334(s16, s16, s16, u16, u16);
+extern s32 _SsVmSetVol(s16, s16, s16, u16, u16);
 extern Reg506BC *D_800506BC;
 extern s32 D_8004FDB4;
 extern s32 D_8004FDDC;
@@ -364,7 +364,7 @@ extern s8 D_80049071[];
 extern BlkFill618D0 D_800618D0[];
 extern void Cd_ReadFileAsync(s32, s32);
 extern void SsSepStop(s16, s16);
-extern void func_80032844(s16);
+extern void SsSepClose(s16);
 extern void SsVabClose(s16);
 extern char D_800103F8[];
 extern void Gpu_RestoreExequeCb(void);
@@ -380,7 +380,7 @@ extern s32 *D_8004902C;
 extern s32 *D_80049030;
 extern s32 *D_80049034;
 extern Prm1C D_80040F64;
-extern s32 func_8001E704(s32 id);
+extern s32 Digi_GetModelFile(s32 id);
 extern s32 Anim_GetModelAnimFile(s32 arg0, s32 arg1);
 extern void Actor_InitTransform(ContC40 *a0, s32 *a1, u16 a2);
 extern void GsInitCoordinate2(Coord1F668 *, Coord1F668 *);
@@ -435,7 +435,7 @@ extern s16 D_800624D0;
 extern s16 D_800624D2;
 extern s32 D_80061C48;
 extern s32 D_80060054;
-extern s32 func_80013854(Part28 *, s32, s32);
+extern s32 Menu_BlinkOrHideParts(Part28 *, s32, s32);
 extern u16 D_80040F98[];
 extern void (*D_80061BC8)(s16, s16, s32);
 extern void (*D_80061BCC)(s16, s16, s32);
@@ -474,7 +474,7 @@ extern s32 D_80040E68[];
 extern u8 *D_80010000[];
 extern void Snd_StopById(s32);
 extern void Snd_StopById(s32);
-extern void func_80035C4C(s16 a0, s16 a1, s16 a2, s16 a3);
+extern void SsSepSetVol(s16 a0, s16 a1, s16 a2, s16 a3);
 extern void SsSepPlay(s16, s16, s8, s16);
 extern void SsUtAllKeyOff(s32);
 extern Halves D_80050704;
@@ -489,7 +489,7 @@ extern s32 Item_Use(s32, s32, s32, s32);
 extern u8 *D_8005076C;
 extern u8 *D_80050770;
 extern u8 *D_8005076C;
-extern void func_80015298(Actor *, s32);
+extern void Menu_OpenItemNameTexts(Actor *, s32);
 extern u8 *D_8005076C;
 extern char D_80010334[];
 extern s32 D_80048FBC;
@@ -597,7 +597,7 @@ extern s32 _SsVmKeyOff(s32 a0, s32 a1, s32 a2, s32 a3);
 extern u8 _SsVmAlloc(s32);
 extern void _SsVmDoAllocate(void);
 extern u16 note2pitch(void);
-extern void func_80037D64(u8);
+extern void vmNoiseOn(u8);
 extern u8 _SsVmSelectToneAndVag(u8 *idx, u8 *val);
 extern char D_800103AC[];
 extern u8 D_8004900C[];
@@ -631,7 +631,7 @@ s32 firstfile();
 extern s32 strcmp(s8 *a, s8 *b);
 extern SioRegs *D_80048E00;
 extern s32 D_80048E70[];
-extern s32 func_8002A054(s32, char *, char *);
+extern s32 Debug_VPrintf(s32, char *, char *);
 extern s32 D_80048E94;
 extern s32 Pad_SioExchangeByte(Ent266D0 *, s32);
 extern s32 *D_8004FE2C;
@@ -659,8 +659,8 @@ extern void (*D_80048E44)(void);
 extern s32 Pad_SioExchangeByte();
 extern PadPort *D_80048E4C;
 extern s32 (*D_80048E34)(void);
-extern void func_800260C8(Actor *a);
-extern s32 func_80026170();
+extern void Pad_SendQueryInfoCmd(Actor *a);
+extern s32 Pad_ParseTableReply();
 extern void _spu_gcSPU();
 extern u16 D_8004FC88[12];
 extern u16 D_8004FCA0[128];
@@ -683,7 +683,7 @@ extern char D_80010AA4[];
 extern char D_80010AC4[];
 extern char D_80010AD8[];
 extern char D_80010D18[];
-extern s32 func_800401E4();
+extern s32 Card_Format();
 extern s32 Card_EventToMcErr(s32 a0);
 extern u8 *bzero(u8 *s, s32 n);
 extern char D_80010D18[];
@@ -706,7 +706,7 @@ extern u16 D_80062EE8[];
 extern char D_80010AA4[];
 extern char D_80010AB4[];
 extern void _spu_Fw1ts(void);
-extern s32 func_80025FF4(PadPort *a0, s32 a1);
+extern s32 Pad_SetupInfoTables(PadPort *a0, s32 a1);
 extern s16 D_8004DDC0[];
 extern s32 D_80061B80;
 extern s32 D_80061B84;
@@ -727,18 +727,18 @@ extern s32 Card_WaitSwEvent(void);
 extern s32 _card_clear(s32 a0);
 extern s32 Card_GetHwEventBits(void);
 extern s32 Card_WaitHwEvent(void);
-extern s32 func_80024960(Ent266D0 *, s32);
+extern s32 Pad_GetTxByte(Ent266D0 *, s32);
 extern s32 (*D_80048E3C)(Actor *);
 extern void (*D_80048E38)(PadPort *);
 extern u8 D_8005FFB8[];
 extern u8 D_80060000[];
 extern void func_8002485C(s32 code);
 extern void Pad_ResetPortState(PadPort *a0);
-extern s32 func_80024950(Actor *arg0);
+extern s32 Pad_ConsumeSendCmd(Actor *arg0);
 extern void Pad_AllocActPower(PadPort *a0);
 extern u8 *Pad_GetPortBlock(s32 arg0);
 extern s32 func_80024CB8(PadPort *a0);
-extern void func_80024DC8(PadPort *a0);
+extern void Pad_HandleReply(PadPort *a0);
 extern s32 func_80025114(PadPort *p);
 extern volatile s8 D_80062D27;
 extern u8 D_80050760;
@@ -801,7 +801,7 @@ extern MemBlock *D_800506F8[];
 extern s32 D_80050730;
 extern s32 D_80050738;
 extern void Sys_VSyncHandler(void);
-extern void func_8003D4A4(void);
+extern void MemCardInit(void);
 extern Pair61900 D_80040EFC[];
 extern ObjC0E4 D_80061A08;
 extern ObjC0E4 D_80061A48;
@@ -814,7 +814,7 @@ extern CardDirFrame D_800630A0[15];
 extern s32 D_80063280[20];
 extern SpuReverbRegs D_800503E8[];
 extern void Mem_CopyWords(s32 *dst, s32 *src, u32 count);
-extern void func_8002EC0C(s32 ch, u32 madr, s32 hi, s32 lo, u32 chcr, u8 mode);
+extern void Cd_StartDma(s32 ch, u32 madr, s32 hi, s32 lo, u32 chcr, u8 mode);
 extern char D_80010404[];
 extern char D_80010418[];
 extern char D_80010420[];
@@ -1442,7 +1442,7 @@ end:
     return base;
 }
 
-s32 func_80011FE4(s32 arg0) {
+s32 Item_GetUseKind(s32 arg0) {
     s32 r = 0;
     if (func_8001E134() != 0) {
         u8 *p = Item_GetEffectRec(arg0);
@@ -2127,7 +2127,7 @@ extern void Task_Create(u32, s32 *, s32);
 extern s32 Snd_AnySlotLoading(void);
 extern s32 D_8005F78C;
 
-void func_80013384(Actor *a0) {
+void Sys_GameModeTask(Actor *a0) {
     s32 st = a0->stateLevel0;
     s32 t = a0->u34.children;
     switch (st) {
@@ -2280,7 +2280,7 @@ void Menu_SetPartsPos(Part28 *p, s32 mask, u16 *xy) {
     }
 }
 
-s32 func_80013854(Part28 *p, s32 mask, s32 n) {
+s32 Menu_BlinkOrHideParts(Part28 *p, s32 mask, s32 n) {
     Part28 *q;
     s32 r = 0;
 
@@ -2576,7 +2576,7 @@ void Menu_TopMenuTask(Actor *a0) {
 }
 
 
-void func_800141D4(Actor *actor) {
+void Menu_TopMenuDraw(Actor *actor) {
     Work141D4 *w = (Work141D4 *)actor->work;
     s32 *p;
     s32 *list;
@@ -2798,7 +2798,7 @@ extern void Menu_SetPartsGridPos(void *, s32, s32 *, s16 *);
 extern void Gfx_SetPartsPalette(Part28 *, s32, s32);
 extern void Gfx_HidePartsByMask(Obj1D504 *, s32);
 
-void func_80014870(Actor *actor) {
+void Menu_SubMenuDraw(Actor *actor) {
     ActorWork *w = actor->work;
     s32 *p;
     s32 *list;
@@ -3048,7 +3048,7 @@ end:
 }
 
 
-void func_80015298(Actor *a0, s32 a1) {
+void Menu_OpenItemNameTexts(Actor *a0, s32 a1) {
     Wk14EA4 *w = (Wk14EA4 *)a0->work;
     s32 i;
     s32 id;
@@ -3115,7 +3115,7 @@ void func_800154F0(Actor *a0) {
         h.hi = 0x32;
         Text_OpenPacked(&w->field_58, (s32)Cd_GetFileEntry(D_80050770[i] | 0x1FD0000), 0, h);
         if (D_80050720->field_2C[id] != 0) {
-            Text_OpenPacked(&w->field_50, func_8001E084(D_80050720->field_2C[id]), 0x80, D_80050700);
+            Text_OpenPacked(&w->field_50, Item_GetDescText(D_80050720->field_2C[id]), 0x80, D_80050700);
             if (D_80050720->field_52[id] != 0) {
                 h.lo = 0x10;
                 h.hi = 0xCA;
@@ -3158,7 +3158,7 @@ void Menu_UseItemOnTarget(Actor *a0) {
             st.text = (s32)Cd_GetFileEntry(0x1FD00FC);
             st.field_4 = Item_GetNameText(D_80050720->field_2C[id]);
             Text_OpenDesc(&w->field_50, (TextDesc *)&st);
-            func_80015298(a0, 0);
+            Menu_OpenItemNameTexts(a0, 0);
             Snd_PlayById(0x1D, 0);
             Task_SetState1(a0, 3);
         } else {
@@ -3218,7 +3218,7 @@ void Menu_ItemUseTask(Actor *a0) {
                 break;
             }
             Text_PrintIdList(&w->field_70, (Key13558 *)Cd_GetFileEntry(0x5130011), 2);
-            func_80015298(a0, 1);
+            Menu_OpenItemNameTexts(a0, 1);
             if (Menu_Ctx->flags & 1) {
                 func_800153F4(a0, 1);
             }
@@ -3324,7 +3324,7 @@ break;
 }
 
 
-void func_80015D30(Actor *actor) {
+void Menu_ItemUseDraw(Actor *actor) {
     ActorWork *w = actor->work;
     s32 *p;
     s32 *list;
@@ -3566,7 +3566,7 @@ void Menu_PickItemToUse(Actor *a0, Obj166FC *o) {
     Halves h;
 
     if (id != 0) {
-        r = func_80011FE4(id);
+        r = Item_GetUseKind(id);
         if (r != 0) {
             goto found;
         }
@@ -3609,7 +3609,7 @@ void Menu_ShowSelItemText(Actor *a0, Obj166FC *o) {
         if (o->menuMode != 5) {
             Text_OpenPacked(&o->nameText, Item_GetNameText(id), 0, D_80050708);
         }
-        Text_OpenPacked(o->descText, func_8001E084(id), 0x80, D_80050704);
+        Text_OpenPacked(o->descText, Item_GetDescText(id), 0x80, D_80050704);
     }
 }
 
@@ -3802,7 +3802,7 @@ void Menu_ItemTask(Actor *a0) {
 }
 
 
-void func_80016FDC(Actor *actor) {
+void Menu_ItemDraw(Actor *actor) {
     ActorWork *w = actor->work;
     s32 *p;
     s32 *list;
@@ -3833,8 +3833,8 @@ loop:
             tmp.field_0 = w->field_54.field_0 - w->field_6E;
             Menu_SetPartsGridPos(obj, 2, (s32 *)&tmp, &w->field_58);
             Gfx_SetPartsPalette(obj, 2, (actor->elapsed >> 2) & 3);
-            f = func_80013854(obj, 8, w->field_6E);
-            f |= func_80013854(obj, 4, w->field_58 - w->field_6E - 2);
+            f = Menu_BlinkOrHideParts(obj, 8, w->field_6E);
+            f |= Menu_BlinkOrHideParts(obj, 4, w->field_58 - w->field_6E - 2);
             if (w->field_70 == 0) {
                 f |= 0xE;
             }
@@ -3910,7 +3910,7 @@ void func_80017214(Actor *a0) {
         swap:
             Text_OpenPacked(w->field_40, Cd_GetFileEntry(id), 0x81, D_8005070C);
             Menu_Ctx->field_126 = -1;
-            func_80017D84((Obj17D84 *)w, 0);
+            Menu_DigiListDrawRows((Obj17D84 *)w, 0);
             Snd_PlayById(0xE, 0);
             Task_SetState1(a0, 4);
             return;
@@ -4056,7 +4056,7 @@ void Menu_ConfirmSinglePick(Actor *a0) {
 }
 
 
-void func_800179EC(Wk179EC *w) {
+void Menu_BuildDigiList(Wk179EC *w) {
     Row179EC *r = w->rows;
     ElmE620 *el = D_80050720->elems;
     s32 n = 0;
@@ -4160,7 +4160,7 @@ void func_800179EC(Wk179EC *w) {
 }
 
 
-void func_80017D84(Obj17D84 *a0, s32 a1) {
+void Menu_DigiListDrawRows(Obj17D84 *a0, s32 a1) {
     s32 i;
     Ent17D84 *rec;
     TextDesc st;
@@ -4211,7 +4211,7 @@ void func_80017D84(Obj17D84 *a0, s32 a1) {
     }
 }
 
-void func_80017F6C(Actor *a, s16 mode) {
+void Menu_SetDigiListMode(Actor *a, s16 mode) {
     ModeWork17F6C *w = (ModeWork17F6C *)a->work;
 
     w->mode = mode;
@@ -4234,7 +4234,7 @@ void func_80017F6C(Actor *a, s16 mode) {
     }
 }
 
-void func_80018048(Actor *a0) {
+void Menu_DigiListTask(Actor *a0) {
     Wk18048 *w = (Wk18048 *)a0->work;
     s32 *slot;
     s32 r;
@@ -4249,7 +4249,7 @@ void func_80018048(Actor *a0) {
         w->scrollTop = 0;
         w->cursor[1] = 0;
         w->cursor[0] = 0;
-        func_800179EC((Wk179EC *)w);
+        Menu_BuildDigiList((Wk179EC *)w);
         Mem_FillWordsNeg1(w->texts, 0x14);
         Task_NextState0(a0);
         break;
@@ -4260,7 +4260,7 @@ void func_80018048(Actor *a0) {
             if (Math_RampToOne((s32)a0, &w->scale) != 0) {
                 break;
             }
-            func_80017D84((Obj17D84 *)w, 1);
+            Menu_DigiListDrawRows((Obj17D84 *)w, 1);
             Task_NextState1(a0);
             break;
         case 1:
@@ -4333,10 +4333,10 @@ void func_80018048(Actor *a0) {
                 Snd_PlayById(0xD, 0);
                 if (w->cursor[1] - w->scrollTop >= 4) {
                     w->scrollTop = w->cursor[1] - 3;
-                    func_80017D84((Obj17D84 *)w, 0);
+                    Menu_DigiListDrawRows((Obj17D84 *)w, 0);
                 } else if (w->cursor[1] < w->scrollTop) {
                     w->scrollTop = w->cursor[1];
-                    func_80017D84((Obj17D84 *)w, 0);
+                    Menu_DigiListDrawRows((Obj17D84 *)w, 0);
                 }
                 Task_SetState1(a0, 1);
             }
@@ -4562,7 +4562,7 @@ void func_800188BC(Actor *actor) {
 }
 
 
-void func_80018BF8(Actor *a0, s16 a1) {
+void Menu_DigiStatusInit(Actor *a0, s16 a1) {
     Wk18BF8 *w;
     u8 *p;
     s32 i;
@@ -4575,7 +4575,7 @@ void func_80018BF8(Actor *a0, s16 a1) {
     w->digimon = p;
     a0->field_C = p[1];
     Actor_InitTransform((ContC40 *)a0, w->pos, w->field_BC);
-    w->modelFile = func_8001E704(a0->field_C);
+    w->modelFile = Digi_GetModelFile(a0->field_C);
     w->animFile = Anim_GetModelAnimFile(a0->field_C, 0);
     Gfx_AttachModel(a0, w->modelFile)->otIndex = 3;
     Cd_QueueFile(w->modelFile);
@@ -4599,7 +4599,7 @@ void func_80018BF8(Actor *a0, s16 a1) {
 }
 
 
-void func_80018D78(Actor *a) {
+void Menu_DigiStatusTask(Actor *a) {
     Wk18D78 *w = (Wk18D78 *)a->work;
     Halves *h;
     Rec18D78 *r;
@@ -4705,7 +4705,7 @@ void func_80018D78(Actor *a) {
 }
 
 
-/* View of Actor.work used by func_80019214 (fields 0x80..0x14C). */
+/* View of Actor.work used by Menu_DigiStatusDraw (fields 0x80..0x14C). */
 typedef struct {
     u8 _pad00[0x80];
     /* 0x80 */ s32 field_80;
@@ -4776,7 +4776,7 @@ typedef struct {
 
 extern s32 GsSetRefView2(Ctx19214 *);
 
-void func_80019214(Actor *actor) {
+void Menu_DigiStatusDraw(Actor *actor) {
     Wk19214 *work;
     Rec19214 *rec;
     s32 *list;
@@ -4814,7 +4814,7 @@ void func_80019214(Actor *actor) {
 
 Ltail:
     work->field_148 = 0;
-    func_8002D744(&work->field_138, &work->field_EC);
+    RotMatrixYXZ(&work->field_138, &work->field_EC);
     work->field_100 = work->field_B0;
     work->field_104 = work->field_B4;
     work->field_108 = work->field_B8;
@@ -5308,7 +5308,7 @@ void Snd_UnloadSlot(s32 idx) {
         for (k = 0; k < 0x10; k++) {
             SsSepStop(D_80054C48[idx].sepIds[i], k);
         }
-        func_80032844(D_80054C48[idx].sepIds[i]);
+        SsSepClose(D_80054C48[idx].sepIds[i]);
     }
     SsVabClose(D_80054C48[idx].vabId);
     D_80054C48[idx].loadState = 0;
@@ -5342,7 +5342,7 @@ void Snd_PlayById(s32 id, s32 set) {
         j = (id >> 4) & 0xF;
         k = id & 0xF;
         SsSepStop(D_80054C48[i].sepIds[j], k);
-        func_80035C4C(D_80054C48[i].sepIds[j], k, 0x7F, 0x7F);
+        SsSepSetVol(D_80054C48[i].sepIds[j], k, 0x7F, 0x7F);
         SsSepPlay(D_80054C48[i].sepIds[j], k, 1, 1);
         if (set != 0) {
             Snd_CurrentId = id;
@@ -6225,7 +6225,7 @@ void Gpu_ClearScreens(void) {
 }
 
 
-void func_8001C194(s32 a0, s32 a1, s32 a2) {
+void Gpu_SetBgClearColor(s32 a0, s32 a1, s32 a2) {
     s32 i;
     for (i = 0; i < 2; i++) {
         D_8005F770.draw[i].isbg = 1;
@@ -6235,7 +6235,7 @@ void func_8001C194(s32 a0, s32 a1, s32 a2) {
     }
 }
 
-void func_8001C1CC(void) {
+void Gpu_DisableBgClear(void) {
     D_8005F770.draw[0].isbg = 0;
     D_8005F770.draw[1].isbg = 0;
 }
@@ -6507,7 +6507,7 @@ void Gfx_InitTexSlots(void) {
     }
 }
 
-s32 func_8001CAA0() {
+s32 Gfx_GetTimPixelMode() {
     return Cd_GetFileEntry()->field_4 & 7;
 }
 
@@ -6563,7 +6563,7 @@ GfxTexSlot *Gfx_FindOrLoadTexSlot(s32 id) {
     }
     best = -1;
     idx = 0;
-    if (func_8001CAA0(id)) {
+    if (Gfx_GetTimPixelMode(id)) {
         n = 0x20;
         tp = 1;
     } else {
@@ -6854,7 +6854,7 @@ void Gfx_SetPartsNumber(Part28 *p, s32 mask, s32 n, s32 val) {
     }
 }
 
-/* File-local record walked by func_8001D6B4 (stride 0x28). */
+/* File-local record walked by Gfx_DrawPartsEx (stride 0x28). */
 typedef struct {
     /* 0x00 */ s32 field_0;
     u8 _pad04[0xB - 4];
@@ -6893,7 +6893,7 @@ extern void Gfx_DrawPartSprites(void *, s32);
 extern void Gfx_DrawPartQuadsRot(void *, void *, s32, s32);
 extern void ScaleMatrix(Obj209 *, s32 *);
 
-void func_8001D6B4(void *arg0, s32 arg1) {
+void Gfx_DrawPartsEx(void *arg0, s32 arg1) {
     Rec1D6B4 *s2 = (Rec1D6B4 *)arg0;
     s32 s3 = 0;
     s32 s4;
@@ -6932,7 +6932,7 @@ void func_8001D6B4(void *arg0, s32 arg1) {
                 *(Agg1D6B4 *)&D_8004167C = *(Agg1D6B4 *)&s2->field_20;
                 D_8004167C.field_8 = s2->field_10;
                 D_8004167C.field_C = s2->field_14;
-                func_8002D744(&D_8004167C, (Obj209 *)&D_8004167C.field_18);
+                RotMatrixYXZ(&D_8004167C, (Obj209 *)&D_8004167C.field_18);
                 ScaleMatrix((Obj209 *)&D_8004167C.field_18, &D_8004167C.field_8);
             }
             Gfx_DrawPartQuadsRot(s2, &D_80041694, s4, s3);
@@ -6943,11 +6943,11 @@ void func_8001D6B4(void *arg0, s32 arg1) {
 }
 
 void Gfx_DrawParts(s32 arg0) {
-    func_8001D6B4(arg0, 1);
+    Gfx_DrawPartsEx(arg0, 1);
 }
 
 void func_8001D8A4(s32 arg0) {
-    func_8001D6B4(arg0, 0);
+    Gfx_DrawPartsEx(arg0, 0);
 }
 
 EntD8C4 *func_8001D8C4(id) s32 id; {
@@ -7165,7 +7165,7 @@ s32 Item_GetNameText(s32 arg0) {
     return Item_FindById(arg0)->nameOffset + base;
 }
 
-s32 func_8001E084(s32 arg0) {
+s32 Item_GetDescText(s32 arg0) {
     s32 base = Cd_GetFileOrNull(0x45E);
     return Item_FindById(arg0)->descOffset + base;
 }
@@ -7246,7 +7246,7 @@ Blk18 *func_8001E338(ArgE298 *arg0, s32 arg1) {
     return &base[((ArgE298 *)((u8 *)arg0 + arg1))->altSetIdx];
 }
 
-s32 func_8001E390(void) {
+s32 Flag_NextPassingEntry(void) {
     while (D_8005D560.cursor->field_0 != 0) {
         if (Flag_TestConds(func_8001E298((ArgE298 *)D_8005D560.cursor)) != 0) {
             D_8005D560.match = *D_8005D560.cursor;
@@ -7268,7 +7268,7 @@ void func_8001E480(void) {
     D_8005D560.fileBase = Cd_GetFileOrNull(D_8005D560.fileId);
     D_8005D560.cursor = Cd_GetFileEntry(D_8005D560.fileId << 16);
     D_8005D560.entryIndex = 0;
-    func_8001E390();
+    Flag_NextPassingEntry();
 }
 
 EntE4CC *func_8001E4CC(arg0)
@@ -7281,7 +7281,7 @@ s32 arg0;
 extern s32 Flag_TestConds();
 extern void Flag_ApplySets();
 
-s32 func_8001E514(s32 arg0) {
+s32 Flag_SelectBranch(s32 arg0) {
     EntE4CC *base;
     s32 r;
     s32 i;
@@ -7317,7 +7317,7 @@ s16 func_8001E658(void) {
     return func_8001E4CC()->field_2;
 }
 
-s32 func_8001E67C(s32 arg0) {
+s32 Digi_GetDataFileId(s32 arg0) {
     if (arg0 < 0x12C) {
         return 0xCB9;
     }
@@ -7328,7 +7328,7 @@ s32 func_8001E67C(s32 arg0) {
 }
 
 EntE6A8 *Digi_FindDataById(s32 id) {
-    EntE6A8 *e = (EntE6A8 *)Cd_GetFileEntry(func_8001E67C(id) << 16);
+    EntE6A8 *e = (EntE6A8 *)Cd_GetFileEntry(Digi_GetDataFileId(id) << 16);
     s32 k;
 
     while (1) {
@@ -7344,7 +7344,7 @@ EntE6A8 *Digi_FindDataById(s32 id) {
     return 0;
 }
 
-s32 func_8001E704(s32 id) {
+s32 Digi_GetModelFile(s32 id) {
     return Digi_FindDataById(id)->u4.h4.field_6;
 }
 
@@ -7356,7 +7356,7 @@ u8 *Digi_GetDefaultName(s32 id) {
     s32 v;
 
     v = Digi_FindDataById(id)->nameOffset;
-    v += Cd_GetFileOrNull(func_8001E67C(id));
+    v += Cd_GetFileOrNull(Digi_GetDataFileId(id));
     return (u8 *)v;
 }
 
@@ -7371,7 +7371,7 @@ s16 func_8001E7C0(s32 id) {
 void func_8001E7E4(s32 a0, void *a1) {
     u8 *base;
     EntE6A8 *e;
-    base = (u8 *)Cd_GetFileEntry((func_8001E67C(a0) << 16) | 1);
+    base = (u8 *)Cd_GetFileEntry((Digi_GetDataFileId(a0) << 16) | 1);
     e = Digi_FindDataById(a0);
     *(Row6 *)((u8 *)a1 + 0) = *(Row6 *)(base + e->field_22 * 6);
     e = Digi_FindDataById(a0);
@@ -8176,7 +8176,7 @@ void Gfx_DrawWireModel(Actor *a0, s32 mode, Col21ABC *col) {
 }
 
 
-extern void func_8002D744(void *, Obj209 *);
+extern void RotMatrixYXZ(void *, Obj209 *);
 extern void ScaleMatrix(Obj209 *, s32 *);
 
 void Actor_UpdateTransform(Actor *arg0) {
@@ -8184,7 +8184,7 @@ void Actor_UpdateTransform(Actor *arg0) {
     s32 local[3];
 
     obj->prevPos = obj->pos;
-    func_8002D744(&obj->rot, obj);
+    RotMatrixYXZ(&obj->rot, obj);
     ApplyMatrixLV((ObjC0E4 *)obj, &obj->moveX, local);
     obj->pos.x += local[0];
     obj->pos.y += local[1];
@@ -8262,7 +8262,7 @@ void Actor_InitTransform(ContC40 *a0, s32 *a1, u16 a2) {
     Actor_RefreshTransform((s32)a0);
 }
 
-void func_80020CE8(Obj20CE8 *a0, s32 a1) {
+void Actor_StepAxisMotion(Obj20CE8 *a0, s32 a1) {
     s32 v = a0->speed + a0->accel;
     a0->speed = v;
     if (v > 0) {
@@ -8285,9 +8285,9 @@ s32 func_80020D54(ContC40 *a0, s32 i) {
     Obj20CE8 *e = &p->axisMotion[i];
 
     if (i != 1) {
-        func_80020CE8(e, 0);
+        Actor_StepAxisMotion(e, 0);
     } else {
-        func_80020CE8(e, 1);
+        Actor_StepAxisMotion(e, 1);
     }
     if (i != 2) {
         p->moveDelta[i] += e->speed >> 8;
@@ -8301,7 +8301,7 @@ s32 func_80020E00(ContC40 *a0, s32 i) {
     AllocC40 *p = a0->transform;
     Obj20CE8 *e = &p->axisMotion[i];
 
-    func_80020CE8(e, 0);
+    Actor_StepAxisMotion(e, 0);
     switch (i) {
     case 0:
     case 1:
@@ -8314,14 +8314,14 @@ s32 func_80020E00(ContC40 *a0, s32 i) {
     return e->speed >> 8;
 }
 
-void func_80020EB0(Ctx38 *arg0, s32 arg1, Elem12 *arg2) {
+void Actor_SetAxisMotion(Ctx38 *arg0, s32 arg1, Elem12 *arg2) {
     Elem12 *e = &arg0->buf->elems[arg1];
     e->speed = arg2->speed;
     e->accel = arg2->accel;
     e->maxSpeed = arg2->maxSpeed;
 }
 
-void func_80020EE8(Ctx38 *arg0, s32 arg1) {
+void Actor_StopAxisMotion(Ctx38 *arg0, s32 arg1) {
     Elem12 *e = &arg0->buf->elems[arg1];
     e->maxSpeed = 0;
     e->accel = 0;
@@ -8855,7 +8855,7 @@ s32 Math_PingPongRange(s32 v, s32 div, s32 lo, s32 hi) {
 }
 
 
-void func_80022468(void) {
+void Save_ResetGameState(void) {
     Mem_Zero(D_80050720, 0x1058);
     D_80050720->field_0 = 1;
     Save_ClearEventFlags();
@@ -8916,7 +8916,7 @@ u8 func_80022578(void) {
     return result;
 }
 
-s32 func_800225C4(void) {
+s32 Item_FindFreeBagSlot(void) {
     s32 r;
     s32 n;
     s32 i;
@@ -8993,7 +8993,7 @@ void Item_SortList(void) {
 
 
 s32 Item_AddToBag(s32 id) {
-    s32 i = func_800225C4();
+    s32 i = Item_FindFreeBagSlot();
     if (i != -1) {
         D_80050720->bagItems[i] = id;
     }
@@ -9444,7 +9444,7 @@ void Sys_Main(void) {
     func_8001C800(0);
     Gpu_SetLayerOtPtrs();
     Rand_Seed(0);
-    ((void (*)(s32))func_8003D4A4)(0);
+    ((void (*)(s32))MemCardInit)(0);
     MemCardStart();
     Pad_Init();
     buf = 0x80;
@@ -9461,7 +9461,7 @@ void Sys_Main(void) {
     D_8005F770.nextGameMode = 0x402;
     D_8005F770.field_24 = 0;
     D_8005F770.field_C = 0;
-    func_80022468();
+    Save_ResetGameState();
     D_8005071C->field_0 = 0;
     Gfx_FadeSetBlack();
     Gfx_DrawFade();
@@ -9534,19 +9534,19 @@ u16 Rand_GetAt(u32 arg0) {
     return D_80041704[arg0 & 0xFFF];
 }
 
-void func_80023964(void) {
+void Sys_SetFrameRate60(void) {
     D_8005F774 = 0;
 }
 
-void func_80023970(void) {
+void Sys_SetFrameRate30(void) {
     D_8005F774 = 2;
 }
 
-void func_80023980(void) {
+void Sys_SetFrameRate20(void) {
     D_8005F774 = 3;
 }
 
-void func_80023990(void) {
+void Sys_SetFrameRate15(void) {
     D_8005F774 = 4;
 }
 
@@ -9990,15 +9990,15 @@ void Pad_InitDriverHooks(void) {
     o[1].rxBuf = &D_8005FFB8[0x23];
     D_80048E18 = func_8002485C;
     D_80048E1C = Pad_ResetPortState;
-    D_80048E20 = func_80024960;
+    D_80048E20 = Pad_GetTxByte;
     D_80048E24 = (void (*)(Ent266D0 *))Pad_AllocActPower;
     D_80048E2C = (PadPort *(*)(void))Pad_GetPortBlock;
-    D_80048E3C = func_80024950;
+    D_80048E3C = Pad_ConsumeSendCmd;
     D_80048E30 = func_80024CB8;
     D_80048E34 = (s32 (*)(void))func_80025114;
     D_80048E4C = o;
     o[1].field_40 = &D_80060000[0x23];
-    D_80048E38 = func_80024DC8;
+    D_80048E38 = Pad_HandleReply;
 }
 
 void Pad_ResetPortState(PadPort *a0) {
@@ -10042,7 +10042,7 @@ void func_8002485C(s32 code) {
                 *(D_80048E70 + D_80048E58) = 0;
             } else {
                 func_80025034(o);
-                func_80024950((Actor *)o);
+                Pad_ConsumeSendCmd((Actor *)o);
             }
         }
         D_80048E5C = 0;
@@ -10058,14 +10058,14 @@ void func_8002485C(s32 code) {
 }
 
 
-s32 func_80024950(Actor *arg0) {
+s32 Pad_ConsumeSendCmd(Actor *arg0) {
     s32 tmp = arg0->u34.b.field_37;
     arg0->u34.b.field_37 = 0;
     arg0->u38.field_38 = tmp;
     return tmp;
 }
 
-s32 func_80024960(Ent266D0 *e, s32 a1) {
+s32 Pad_GetTxByte(Ent266D0 *e, s32 a1) {
     PadPort *a0 = (PadPort *)e;
     s32 i = a0->xferPos - 3;
 
@@ -10205,7 +10205,7 @@ s32 func_80024CB8(PadPort *a0) {
     return 0;
 }
 
-void func_80024DC8(PadPort *a0) {
+void Pad_HandleReply(PadPort *a0) {
     s32 old;
     s32 i;
     s32 r;
@@ -10448,7 +10448,7 @@ void Pad_SioRunStep(PadPort *a0) {
     }
 }
 
-s32 func_80025760(Ent266D0 *a0, s32 a1) {
+s32 Pad_SioXferDataByte(Ent266D0 *a0, s32 a1) {
     s32 r;
     s32 v;
     s32 t;
@@ -10663,7 +10663,7 @@ s32 Pad_ParseInfoReply(PadPort *a0) {
         if (++a0->infoIndex < a0->combCount) {
             goto ret0;
         }
-        if (func_80025FBC(a0) > 0x80) {
+        if (Pad_CalcInfoBufSize(a0) > 0x80) {
             D_80048E1C(a0);
             a0->infoStep = 0xFE;
             a0->state = 2;
@@ -10678,7 +10678,7 @@ s32 Pad_ParseInfoReply(PadPort *a0) {
         a0->field_EE = 0;
         a0->field_EB = 0;
         a0->infoStep = 0xFF;
-        func_80025FF4(a0, a0->infoBuf);
+        Pad_SetupInfoTables(a0, a0->infoBuf);
         a0->infoStep = 2;
         goto ret0;
 
@@ -10687,13 +10687,13 @@ s32 Pad_ParseInfoReply(PadPort *a0) {
 }
 
 
-s32 func_80025FBC(PadPort *arg0) {
+s32 Pad_CalcInfoBufSize(PadPort *arg0) {
     s32 a = ((arg0->modeCount + 1) >> 1) << 2;
     s32 b = ((arg0->actCount * 5 + 3) & 0xFFC) + 4;
     return a + b + arg0->field_EC;
 }
 
-s32 func_80025FF4(PadPort *a0, s32 a1) {
+s32 Pad_SetupInfoTables(PadPort *a0, s32 a1) {
     s32 n;
 
     if (a1 == 0 || a0->actTable != 0 || D_80048E34() != 0) {
@@ -10701,8 +10701,8 @@ s32 func_80025FF4(PadPort *a0, s32 a1) {
     }
     a0->state = 4;
     a0->infoStep = 1;
-    a0->sendInfoHook = (s32)func_800260C8;
-    a0->parseInfoHook = (s32)func_80026170;
+    a0->sendInfoHook = (s32)Pad_SendQueryInfoCmd;
+    a0->parseInfoHook = (s32)Pad_ParseTableReply;
     n = (a1 + 3) >> 2 << 2;
     a0->modeTable = n;
     a0->infoIndex = 0;
@@ -10713,7 +10713,7 @@ s32 func_80025FF4(PadPort *a0, s32 a1) {
     return 1;
 }
 
-void func_800260C8(Actor *a) {
+void Pad_SendQueryInfoCmd(Actor *a) {
     switch (a->infoStep) {
     case 2:
         Pad_CmdQueryMode(a, a->infoIndex);
@@ -10731,7 +10731,7 @@ void func_800260C8(Actor *a) {
     }
 }
 
-s32 func_80026170(Obj26170 *a) {
+s32 Pad_ParseTableReply(Obj26170 *a) {
     volatile PadActInfo *q;
     PadCombEntry *e;
     u8 *src;
@@ -10896,7 +10896,7 @@ s32 Pad_IsTimedOut(void) {
 void func_800266D0(Ent266D0 *a0) {
     D_80048E98 = D_80048E30(a0);
     *a0->rxBuf = 0;
-    func_80025760(a0, -2);
+    Pad_SioXferDataByte(a0, -2);
 }
 
 void Pad_SioStepSendCmd(PadPort *a0) {
@@ -11061,7 +11061,7 @@ s32 Pad_SioStepRecvData(Ent266D0 *a0) {
                 *slot = -1;
                 break;
             }
-            r = func_80025760(a0, (u8)D_80048E20(a0, f));
+            r = Pad_SioXferDataByte(a0, (u8)D_80048E20(a0, f));
             if (r < 0) {
                 return r;
             }
@@ -11074,7 +11074,7 @@ s32 Pad_SioStepRecvData(Ent266D0 *a0) {
         s32 u = 0x22;
         volatile u16 *hw = (volatile u16 *)0x1F801120;
         t = 0x3C;
-        r = func_80025760(a0, (u8)D_80048E20(a0, f));
+        r = Pad_SioXferDataByte(a0, (u8)D_80048E20(a0, f));
         if (r < 0) {
             return r;
         }
@@ -11190,15 +11190,15 @@ s32 ResetGraph(s32 mode) {
         printf(D_8001021C, D_80048EC8, &D_80048F10);
     case 5:
         g = &D_80048F10;
-        func_80029FDC((u8 *)g, 0, 0x80);
+        Mem_FillBytes((u8 *)g, 0, 0x80);
         ResetCallback();
         GPU_cw((s32)D_80048F08 & 0xFFFFFF);
         g->type = _reset(mode);
         g->queMode = 1;
         g->vramW = D_80048F90[((volatile GpuEnv *)g)->type][0];
         g->vramH = D_80048F9C.vramH[g->type][0];
-        func_80029FDC(g->draw, -1, 0x5C);
-        func_80029FDC((u8 *)&g->disp, -1, 0x14);
+        Mem_FillBytes(g->draw, -1, 0x5C);
+        Mem_FillBytes((u8 *)&g->disp, -1, 0x14);
         return g->type;
     default:
         if (D_80048F12 >= 2) {
@@ -11255,7 +11255,7 @@ void SetDispMask(s32 a0) {
         D_80048F0C(D_800102AC, a0);
     }
     if (a0 == 0) {
-        func_80029FDC((u8 *)&D_80048F10.disp, -1, 0x14);
+        Mem_FillBytes((u8 *)&D_80048F10.disp, -1, 0x14);
     }
     D_80048F08->ctl(a0 ? 0x03000000 : 0x03000001);
 }
@@ -11866,7 +11866,7 @@ s32 _reset(s32 mode) {
         *D_80049024 = 0x401;
         *D_80049034 |= 0x800;
         *D_80049018 = 0;
-        func_80029FDC((u8 *)D_800600B0, 0, 0x1800);
+        Mem_FillBytes((u8 *)D_800600B0, 0, 0x1800);
         break;
     case 1:
     case 3:
@@ -12018,7 +12018,7 @@ s32 DrawOTag2(u32 *p) {
 
 void Gpu_RestoreExequeCb(void) { DMACallback(0x2, _exeque); }
 
-void func_80029FDC(u8 *arg0, s32 arg1, u32 arg2) {
+void Mem_FillBytes(u8 *arg0, s32 arg1, u32 arg2) {
     while (arg2-- != 0) {
         *arg0++ = arg1;
     }
@@ -12031,11 +12031,11 @@ void printf(fmt, a1, a2, a3) char *fmt; s32 a1; s32 a2; s32 a3; {
     s32 *ap = &a1;
     ap[1] = a2;
     ap[2] = a3;
-    func_8002A054(1, *fp, (char *)ap);
+    Debug_VPrintf(1, *fp, (char *)ap);
 }
 
 
-s32 func_8002A054(s32 fd, char *fmt0, char *ap) {
+s32 Debug_VPrintf(s32 fd, char *fmt0, char *ap) {
     s32 ret;
     s32 dprec;
     s32 fpprec;
@@ -12345,7 +12345,7 @@ void Debug_FlushOut(void) {
     }
 }
 
-void func_8002A87C(s8 c) {
+void Debug_PutCharFlush(s8 c) {
     switch (c) {
     case 10:
         Debug_PutChar(0xD);
@@ -12595,7 +12595,7 @@ u16 a1;
 }
 
 
-void func_8002B06C(u8 r, u8 g, u8 b, Db2B06C *db) {
+void GsSortClear(u8 r, u8 g, u8 b, Db2B06C *db) {
     s32 i;
 
     D_800618D0[D_8006198C].r = r;
@@ -13021,13 +13021,13 @@ s32 GsSetRefView2(Ctx19214 *c) {
 }
 
 
-extern s32 func_8002CBC4(s32);
+extern s32 rcos(s32);
 extern s32 rsin(s32);
 
 void Math_MulMatrixRotZ(ObjC0E4 *a0, s32 a1) {
     ArgC0E4 mtx;
     s32 a = a1 / 360;
-    s32 c = func_8002CBC4(a);
+    s32 c = rcos(a);
     s32 s = rsin(a);
     if (a1 == 0) {
         return;
@@ -13130,7 +13130,7 @@ extern s16 D_80047910[];
 extern s16 D_80048910[];
 extern s16 D_80049110[];
 
-s32 func_8002CBC4(s32 a) {
+s32 rcos(s32 a) {
     if (a < 0) {
         a = -a;
     }
@@ -13296,7 +13296,7 @@ extern char D_80049D71[];       /* underflow message */
 
 /* Pops the matrix pushed by func_8002D0D4 back into the GTE rotation and translation
  * registers; prints a message on underflow. */
-void func_8002D178(void) {
+void PopMatrix(void) {
     ArgC0E4 *m;
 
     if (D_80049ABC <= 0) {
@@ -13309,7 +13309,7 @@ void func_8002D178(void) {
     gte_SetTransMatrix(m);
 }
 #else
-ASM_SOURCE("src/main/asm/libgte", func_8002D178);
+ASM_SOURCE("src/main/asm/libgte", PopMatrix);
 #endif
 
 #ifdef NON_MATCHING
@@ -13456,7 +13456,7 @@ extern s32 D_80049DC0[];        /* 4096 entries: sin (low half) | cos (high half
 
 /* Builds the rotation matrix for the angles in arg0 (vx, vy, vz; 4096 = 360 degrees).
  * The original does the products with GTE gpf (IR0 * IR >> 12); plain C here. */
-void func_8002D744(void *arg0, Obj209 *arg1) {
+void RotMatrixYXZ(void *arg0, Obj209 *arg1) {
     SVec1D104 *ang = (SVec1D104 *)arg0;
     ArgC0E4 *m = (ArgC0E4 *)arg1;       /* the first 0x20 bytes are a GTE MATRIX */
     s32 sx, cx, sy, cy, sz, cz;
@@ -13495,7 +13495,7 @@ void func_8002D744(void *arg0, Obj209 *arg1) {
     m->m[2][2] = (cx * cy) >> 12;
 }
 #else
-ASM_SOURCE("src/main/asm/libgte", func_8002D744);
+ASM_SOURCE("src/main/asm/libgte", RotMatrixYXZ);
 #endif
 
 s32 ratan2(s32 y, s32 x) {
@@ -13632,7 +13632,7 @@ s32 func_8002DC94(void) {
     if (CD_init() != 0) {
         return 0;
     }
-    return func_8002FDC8() == 0;
+    return CD_initvol() == 0;
 }
 
 void def_cbsync(void) { DeliverEvent(0xF0000003, 0x20); }
@@ -13868,7 +13868,7 @@ void func_8002E2C4(void) {
     if (D_80061B28 != 0) {
         ((void (*)(void *, s32, s32, s32))Mem_CopyWords)((void *)D_80061B58, D_80061B28 + D_80061B18 * 2048, 8, 0);
     } else {
-        ((void (*)(s32, void *, s32, s32, s32, s32, s32))func_8002EC0C)(3, (void *)D_80061B58, 0, 8, m, 0, 0);
+        ((void (*)(s32, void *, s32, s32, s32, s32, s32))Cd_StartDma)(3, (void *)D_80061B58, 0, 8, m, 0, 0);
     }
     while (*D_8004E6A0 & 0x1000000) {
     }
@@ -13975,7 +13975,7 @@ void func_8002E2C4(void) {
             ((void (*)(void *, s32, s32, s32))Mem_CopyWords)(D_80061B34, D_80061B28 + D_80061B18 * 2048 + 0x20, 0x1F8, 1);
             D_80061B18++;
         } else {
-            ((void (*)(s32, void *, s32, s32, s32, s32, s32))func_8002EC0C)(3, D_80061B34, 0, 0x1F8, m, 1, 0);
+            ((void (*)(s32, void *, s32, s32, s32, s32, s32))Cd_StartDma)(3, D_80061B34, 0, 0x1F8, m, 1, 0);
         }
         D_80061AFC = 0;
         D_80061AF8 = 0;
@@ -13985,7 +13985,7 @@ void func_8002E2C4(void) {
             ((void (*)(void *, s32, s32, s32))Mem_CopyWords)(D_80061B34, D_80061B28 + D_80061B18 * 2048 + 0x20, 0x1F8, 0);
             D_80061B18++;
         } else {
-            ((void (*)(s32, void *, s32, s32, s32, s32, s32))func_8002EC0C)(3, D_80061B34, 0, 0x1F8, m, 0, 0);
+            ((void (*)(s32, void *, s32, s32, s32, s32, s32))Cd_StartDma)(3, D_80061B34, 0, 0x1F8, m, 0, 0);
         }
     }
     *D_8004E684 = 0x1325;
@@ -14004,7 +14004,7 @@ void Mem_CopyWords(s32 *dst, s32 *src, u32 count) {
     }
 }
 
-void func_8002EC0C(s32 ch, u32 madr, s32 hi, s32 lo, u32 chcr, u8 mode) {
+void Cd_StartDma(s32 ch, u32 madr, s32 hi, s32 lo, u32 chcr, u8 mode) {
     volatile s32 dummy;
     volatile u32 *p;
     s32 off;
@@ -14411,7 +14411,7 @@ void CD_flush(void) {
     *D_8004E994 = 0x1325;
 }
 
-s32 func_8002FDC8(void) {
+s32 CD_initvol(void) {
     u8 v[4];
 
     if (D_8004E9A0[0xDC] == 0 && D_8004E9A0[0xDD] == 0) {
@@ -15229,7 +15229,7 @@ void func_80031DA4(s16 a0, s16 a1) {
     }
 }
 
-void func_80031EA0(s16 a0, s16 a1) {
+void Snd_SeqEndOfTrack(s16 a0, s16 a1) {
     SndSeqScore *e = &Snd_SeqScores[a0][a1];
 
     e->playCount++;
@@ -15292,7 +15292,7 @@ s32 _SsGetSeqData(s16 a0, s16 a1) {
     s32 ret = 0;
 
     if (((*pp)[a1].flags & 0x401) == 0x401 && e->readPos == (u8 *)e->field_10 + 1) {
-        ((void (*)(s16, s16, s32))func_80031EA0)(a0, a1, ((u8 *)e->field_10)[1]);
+        ((void (*)(s16, s16, s32))Snd_SeqEndOfTrack)(a0, a1, ((u8 *)e->field_10)[1]);
         return -1;
     }
     if (st & 0x80) {
@@ -15348,7 +15348,7 @@ s32 _SsGetSeqData(s16 a0, s16 a1) {
             if (c == 0x2F) {
 end_track:
                 ret = 1;
-                ((void (*)(s16, s16, s32))func_80031EA0)(a0, a1, 0x2F);
+                ((void (*)(s16, s16, s32))Snd_SeqEndOfTrack)(a0, a1, 0x2F);
             } else {
 meta:
                 D_80061BB0[3](a0, a1, c);
@@ -15431,7 +15431,7 @@ void _SsClose(s16 id) {
 
 void func_80032820(s16 arg0) { _SsClose(arg0); }
 
-void func_80032844(s16 arg0) { _SsClose(arg0); }
+void SsSepClose(s16 arg0) { _SsClose(arg0); }
 
 void _SsInit(void) {
     volatile u16 *dst = (volatile u16 *)0x1F801D80;
@@ -15604,7 +15604,7 @@ void _SsContMainVol(s16 a0, s16 a1, u8 a2) {
     SndSeqScore *e = &Snd_SeqScores[a0][a1];
     u8 k = e->channel;
 
-    func_80039334((s16)(a0 | (a1 << 8)), (s8)e->vabId, e->programs[k], a2, e->panpot[k]);
+    _SsVmSetVol((s16)(a0 | (a1 << 8)), (s8)e->vabId, e->programs[k], a2, e->panpot[k]);
     e->channelVol[k] = a2;
     e->deltaValue = _SsReadDeltaValue(a0, a1);
 }
@@ -15613,7 +15613,7 @@ void _SsContPanpot(s16 a0, s16 a1, s32 a2) {
     SndSeqScore *e = &Snd_SeqScores[a0][a1];
     s32 i = e->channel;
 
-    func_80039334(a0 | (a1 << 8), e->vabId, e->programs[i], e->channelVol[i], (u8)a2);
+    _SsVmSetVol(a0 | (a1 << 8), e->vabId, e->programs[i], e->channelVol[i], (u8)a2);
     e->panpot[i] = a2;
     e->deltaValue = _SsReadDeltaValue(a0, a1);
 }
@@ -15623,7 +15623,7 @@ void _SsContExpression(s16 a0, s16 a1, s32 a2) {
     u8 k = e->channel;
 
     func_80038B74((s8)e->vabId, e->programs[k], (u8)a2);
-    func_80039334(a0 | (a1 << 8), (s8)e->vabId, e->programs[k], e->channelVol[k], e->panpot[k]);
+    _SsVmSetVol(a0 | (a1 << 8), (s8)e->vabId, e->programs[k], e->channelVol[k], e->panpot[k]);
     e->deltaValue = _SsReadDeltaValue(a0, a1);
 }
 
@@ -16619,7 +16619,7 @@ void SsSeqSetVol(s16 a0, s16 a1, s16 a2) {
     }
 }
 
-void func_80035C4C(s16 a0, s16 a1, s16 a2, s16 a3) {
+void SsSepSetVol(s16 a0, s16 a1, s16 a2, s16 a3) {
     SndSeqScore *e = &Snd_SeqScores[a0][a1];
 
     if (e->flags != 1) {
@@ -17122,7 +17122,7 @@ s32 _SsVmKeyOn(s16 a0, s16 a1, s16 a2, u16 a3, u16 arg4, u16 arg5) {
                 D_800624E8[D_80062D18.voice].vagIdx = D_80062D18.vagIdx;
                 _SsVmDoAllocate();
                 if (D_80062D18.vagIdx == 0xFF) {
-                    func_80037D64(D_80062D18.voice);
+                    vmNoiseOn(D_80062D18.voice);
                 } else {
                     _SsVmKeyOnNow(n, note2pitch());
                 }
@@ -17341,7 +17341,7 @@ s32 SsPitchFromNote(s32 note, s32 fine, s32 center, s32 shift) {
 }
 
 
-void func_80037D64(u8 a0) {
+void vmNoiseOn(u8 a0) {
     u32 vol;
     u32 l;
     u32 r;
@@ -17719,7 +17719,7 @@ u8 _SsVmSelectToneAndVag(u8 *idx, u8 *val) {
     return n;
 }
 
-s32 func_80039334(s16 a0, s16 a1, s16 a2, u16 a3, u16 a4) {
+s32 _SsVmSetVol(s16 a0, s16 a1, s16 a2, u16 a3, u16 a4) {
     SndSeqScore *e;
     VagAtr *rec;
     s16 i;
@@ -18121,7 +18121,7 @@ s32 _spu_init(s32 a0) {
         ((volatile u16 *)D_8004FE28)[0xD9] = 0;
         ((volatile u16 *)D_8004FE28)[0xDA] = 0;
         ((volatile u16 *)D_8004FE28)[0xDB] = 0;
-        func_8003A454((s32)D_8004FE68, 0x10);
+        _spu_FwriteByIO((s32)D_8004FE68, 0x10);
         q = D_8004FE28;
         for (j = 0; j < 24; j++) {
             q[0] = 0;
@@ -18153,7 +18153,7 @@ s32 _spu_init(s32 a0) {
 }
 
 
-void func_8003A454(u16 *addr, u32 size) {
+void _spu_FwriteByIO(u16 *addr, u32 size) {
     u16 status;
     s32 wsize;
     s32 i;
@@ -18301,7 +18301,7 @@ s32 _spu_Fw(s32 a0, u32 a1) {
         _spu_t(1);
         _spu_t(3, a0, a1);
     } else {
-        func_8003A454(a0, a1);
+        _spu_FwriteByIO(a0, a1);
     }
     return a1;
 }
@@ -19582,13 +19582,13 @@ void SpuSetCommonAttr(SpuCommonAttr *a0) {
 }
 
 
-void func_8003D4A4(void) {
-    func_8003D504();
+void MemCardInit(void) {
+    Card_Init();
     Card_Start();
     _bu_init();
 }
 
-void func_8003D4D4(void) { Card_Stop(); }
+void MemCardEnd(void) { Card_Stop(); }
 
 ASM_SOURCE("src/main/asm/libapi", _bu_init);
 
@@ -19599,8 +19599,8 @@ extern void func_8003DAE0(void);
 extern void func_8003DB74(void);
 extern void func_8003DA04(void);
 
-/* K&R definition: func_8003D4A4 / func_8003FBC4 call it without arguments. */
-void func_8003D504(a0)
+/* K&R definition: MemCardInit / func_8003FBC4 call it without arguments. */
+void Card_Init(a0)
 s32 a0;
 {
     s32 s0 = a0;
@@ -20720,7 +20720,7 @@ e0:
     return 0;
 }
 
-s32 func_8003F3A4(void) {
+s32 MemCardFormat(void) {
     CardState *s = &D_80062F80;
     s32 r;
 
@@ -20728,7 +20728,7 @@ s32 func_8003F3A4(void) {
         printf(D_80010D18);
         return -1;
     }
-    r = func_800401E4();
+    r = Card_Format();
     if (r != 0) {
         if (r == 4) {
             return 2;
@@ -21008,7 +21008,7 @@ int Card_OnHwNewCard(void) {
 }
 
 void func_8003FBC4(void) {
-    func_8003D504();
+    Card_Init();
     Card_Start();
     _bu_init();
 }
@@ -21135,7 +21135,7 @@ static inline s32 mcWriteFrame401E4(s32 port, s32 blk) {
     return r;
 }
 
-s32 func_800401E4(s32 a0) {
+s32 Card_Format(s32 a0) {
     s32 i;
     s32 r;
     s32 n = 0;

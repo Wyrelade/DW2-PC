@@ -141,6 +141,9 @@ def rewrite_tree(mapping):
     for old, new in mapping.items():
         for s in glob.glob(os.path.join(ROOT, "asm", "USA", "*", "nonmatchings", "*", old + ".s")):
             os.replace(s, os.path.join(os.path.dirname(s), new + ".s"))
+        # restored hand-written asm sources: ASM_SOURCE("src/main/asm/LIB", NAME) includes LIB/NAME.s
+        for s in glob.glob(os.path.join(ROOT, "src", "main", "asm", "**", old + ".s"), recursive=True):
+            os.replace(s, os.path.join(os.path.dirname(s), new + ".s"))
     return changed
 
 

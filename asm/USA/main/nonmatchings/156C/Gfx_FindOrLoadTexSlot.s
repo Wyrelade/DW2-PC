@@ -29,7 +29,7 @@ glabel Gfx_FindOrLoadTexSlot
     /* D3DC 8001CBDC 20008424 */   addiu     $a0, $a0, 0x20
     /* D3E0 8001CBE0 FFFF1124 */  addiu      $s1, $zero, -0x1
     /* D3E4 8001CBE4 21900000 */  addu       $s2, $zero, $zero
-    /* D3E8 8001CBE8 A872000C */  jal        func_8001CAA0
+    /* D3E8 8001CBE8 A872000C */  jal        Gfx_GetTimPixelMode
     /* D3EC 8001CBEC 21206002 */   addu      $a0, $s3, $zero
     /* D3F0 8001CBF0 05004010 */  beqz       $v0, .L8001CC08
     /* D3F4 8001CBF4 20000624 */   addiu     $a2, $zero, 0x20

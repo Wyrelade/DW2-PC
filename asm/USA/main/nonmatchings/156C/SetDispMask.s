@@ -23,7 +23,7 @@ glabel SetDispMask
     /* 17C30 80027430 04000016 */  bnez       $s0, .L80027444
     /* 17C34 80027434 6A002426 */   addiu     $a0, $s1, 0x6A
     /* 17C38 80027438 FFFF0524 */  addiu      $a1, $zero, -0x1
-    /* 17C3C 8002743C F7A7000C */  jal        func_80029FDC
+    /* 17C3C 8002743C F7A7000C */  jal        Mem_FillBytes
     /* 17C40 80027440 14000624 */   addiu     $a2, $zero, 0x14
   .L80027444:
     /* 17C44 80027444 0003043C */  lui        $a0, (0x3000001 >> 16)

@@ -126,7 +126,7 @@ glabel Pad_ParseInfoReply
     /* 16714 80025F14 2B104300 */  sltu       $v0, $v0, $v1
     /* 16718 80025F18 E2FF4014 */  bnez       $v0, .L80025EA4
     /* 1671C 80025F1C EC0004A6 */   sh        $a0, 0xEC($s0)
-    /* 16720 80025F20 EF97000C */  jal        func_80025FBC
+    /* 16720 80025F20 EF97000C */  jal        Pad_CalcInfoBufSize
     /* 16724 80025F24 21200002 */   addu      $a0, $s0, $zero
     /* 16728 80025F28 81004228 */  slti       $v0, $v0, 0x81
     /* 1672C 80025F2C 0B004014 */  bnez       $v0, .L80025F5C
@@ -157,7 +157,7 @@ glabel Pad_ParseInfoReply
     /* 16788 80025F88 63000526 */  addiu      $a1, $s0, 0x63
     /* 1678C 80025F8C EE0000A6 */  sh         $zero, 0xEE($s0)
     /* 16790 80025F90 EB0000A2 */  sb         $zero, 0xEB($s0)
-    /* 16794 80025F94 FD97000C */  jal        func_80025FF4
+    /* 16794 80025F94 FD97000C */  jal        Pad_SetupInfoTables
     /* 16798 80025F98 460002A2 */   sb        $v0, 0x46($s0)
     /* 1679C 80025F9C 02000224 */  addiu      $v0, $zero, 0x2
     /* 167A0 80025FA0 A9970008 */  j          .L80025EA4

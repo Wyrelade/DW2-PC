@@ -27,7 +27,7 @@ glabel _spu_Fw
     /* 2B254 8003AA54 21100002 */   addu      $v0, $s0, $zero
   .L8003AA58:
     /* 2B258 8003AA58 21202002 */  addu       $a0, $s1, $zero
-    /* 2B25C 8003AA5C 15E9000C */  jal        func_8003A454
+    /* 2B25C 8003AA5C 15E9000C */  jal        _spu_FwriteByIO
     /* 2B260 8003AA60 21280002 */   addu      $a1, $s0, $zero
     /* 2B264 8003AA64 21100002 */  addu       $v0, $s0, $zero
   .L8003AA68:

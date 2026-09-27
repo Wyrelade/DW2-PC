@@ -37,7 +37,7 @@ glabel _SsContPanpot
     /* 239A8 800331A8 37006692 */  lbu        $a2, 0x37($s3)
     /* 239AC 800331AC 60004794 */  lhu        $a3, 0x60($v0)
     /* 239B0 800331B0 FF008232 */  andi       $v0, $s4, 0xFF
-    /* 239B4 800331B4 CDE4000C */  jal        func_80039334
+    /* 239B4 800331B4 CDE4000C */  jal        _SsVmSetVol
     /* 239B8 800331B8 1000A2AF */   sw        $v0, 0x10($sp)
     /* 239BC 800331BC 21204002 */  addu       $a0, $s2, $zero
     /* 239C0 800331C0 21282002 */  addu       $a1, $s1, $zero

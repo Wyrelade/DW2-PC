@@ -7,7 +7,7 @@ glabel func_8002DC94
     /* 1E4A0 8002DCA0 00000000 */   nop
     /* 1E4A4 8002DCA4 05004014 */  bnez       $v0, .L8002DCBC
     /* 1E4A8 8002DCA8 00000000 */   nop
-    /* 1E4AC 8002DCAC 72BF000C */  jal        func_8002FDC8
+    /* 1E4AC 8002DCAC 72BF000C */  jal        CD_initvol
     /* 1E4B0 8002DCB0 00000000 */   nop
     /* 1E4B4 8002DCB4 30B70008 */  j          .L8002DCC0
     /* 1E4B8 8002DCB8 0100422C */   sltiu     $v0, $v0, 0x1

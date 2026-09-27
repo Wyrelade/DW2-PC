@@ -34,7 +34,7 @@ glabel ResetGraph
     /* 17970 80027170 108F1026 */  addiu      $s0, $s0, %lo(D_80048F10)
     /* 17974 80027174 21200002 */  addu       $a0, $s0, $zero
     /* 17978 80027178 21280000 */  addu       $a1, $zero, $zero
-    /* 1797C 8002717C F7A7000C */  jal        func_80029FDC
+    /* 1797C 8002717C F7A7000C */  jal        Mem_FillBytes
     /* 17980 80027180 80000624 */   addiu     $a2, $zero, 0x80
     /* 17984 80027184 35C3000C */  jal        ResetCallback
     /* 17988 80027188 00000000 */   nop
@@ -63,11 +63,11 @@ glabel ResetGraph
     /* 179E4 800271E4 21082200 */  addu       $at, $at, $v0
     /* 179E8 800271E8 9C8F2294 */  lhu        $v0, %lo(D_80048F9C)($at)
     /* 179EC 800271EC 5C000624 */  addiu      $a2, $zero, 0x5C
-    /* 179F0 800271F0 F7A7000C */  jal        func_80029FDC
+    /* 179F0 800271F0 F7A7000C */  jal        Mem_FillBytes
     /* 179F4 800271F4 060002A6 */   sh        $v0, 0x6($s0)
     /* 179F8 800271F8 6C000426 */  addiu      $a0, $s0, 0x6C
     /* 179FC 800271FC FFFF0524 */  addiu      $a1, $zero, -0x1
-    /* 17A00 80027200 F7A7000C */  jal        func_80029FDC
+    /* 17A00 80027200 F7A7000C */  jal        Mem_FillBytes
     /* 17A04 80027204 14000624 */   addiu     $a2, $zero, 0x14
     /* 17A08 80027208 00000292 */  lbu        $v0, 0x0($s0)
     /* 17A0C 8002720C 999C0008 */  j          .L80027264

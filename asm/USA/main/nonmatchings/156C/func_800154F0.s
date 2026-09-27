@@ -55,7 +55,7 @@ glabel func_800154F0
     /* 5DBC 800155BC 00000000 */  nop
     /* 5DC0 800155C0 21004010 */  beqz       $v0, .L80015648
     /* 5DC4 800155C4 00000000 */   nop
-    /* 5DC8 800155C8 2178000C */  jal        func_8001E084
+    /* 5DC8 800155C8 2178000C */  jal        Item_GetDescText
     /* 5DCC 800155CC 21204000 */   addu      $a0, $v0, $zero
     /* 5DD0 800155D0 21206002 */  addu       $a0, $s3, $zero
     /* 5DD4 800155D4 21284000 */  addu       $a1, $v0, $zero

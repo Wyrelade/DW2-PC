@@ -13,7 +13,7 @@ glabel func_800266D0
     /* 16EF4 800266F4 FEFF0524 */  addiu      $a1, $zero, -0x2
     /* 16EF8 800266F8 0580013C */  lui        $at, %hi(D_80048E98)
     /* 16EFC 800266FC 988E22AC */  sw         $v0, %lo(D_80048E98)($at)
-    /* 16F00 80026700 D895000C */  jal        func_80025760
+    /* 16F00 80026700 D895000C */  jal        Pad_SioXferDataByte
     /* 16F04 80026704 000060A0 */   sb        $zero, 0x0($v1)
     /* 16F08 80026708 1400BF8F */  lw         $ra, 0x14($sp)
     /* 16F0C 8002670C 1000B08F */  lw         $s0, 0x10($sp)

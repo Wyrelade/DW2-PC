@@ -16,7 +16,7 @@ glabel Math_MulMatrixRotZ
     /* 1CFA4 8002C7A4 2180D100 */  addu       $s0, $a2, $s1
     /* 1CFA8 8002C7A8 03821000 */  sra        $s0, $s0, 8
     /* 1CFAC 8002C7AC 23800202 */  subu       $s0, $s0, $v0
-    /* 1CFB0 8002C7B0 F1B2000C */  jal        func_8002CBC4
+    /* 1CFB0 8002C7B0 F1B2000C */  jal        rcos
     /* 1CFB4 8002C7B4 21200002 */   addu      $a0, $s0, $zero
     /* 1CFB8 8002C7B8 21200002 */  addu       $a0, $s0, $zero
     /* 1CFBC 8002C7BC BDB2000C */  jal        rsin

@@ -24,7 +24,7 @@ glabel Menu_PickItemToUse
     /* 6F4C 8001674C 00000000 */  nop
     /* 6F50 80016750 16000012 */  beqz       $s0, .L800167AC
     /* 6F54 80016754 10000424 */   addiu     $a0, $zero, 0x10
-    /* 6F58 80016758 F947000C */  jal        func_80011FE4
+    /* 6F58 80016758 F947000C */  jal        Item_GetUseKind
     /* 6F5C 8001675C 21200002 */   addu      $a0, $s0, $zero
     /* 6F60 80016760 21984000 */  addu       $s3, $v0, $zero
     /* 6F64 80016764 15006016 */  bnez       $s3, .L800167BC

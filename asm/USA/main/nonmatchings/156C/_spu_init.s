@@ -106,7 +106,7 @@ glabel _spu_init
     /* 2AB58 8003A358 B20140A4 */  sh         $zero, 0x1B2($v0)
     /* 2AB5C 8003A35C B40140A4 */  sh         $zero, 0x1B4($v0)
     /* 2AB60 8003A360 B60140A4 */  sh         $zero, 0x1B6($v0)
-    /* 2AB64 8003A364 15E9000C */  jal        func_8003A454
+    /* 2AB64 8003A364 15E9000C */  jal        _spu_FwriteByIO
     /* 2AB68 8003A368 10000524 */   addiu     $a1, $zero, 0x10
     /* 2AB6C 8003A36C 21200000 */  addu       $a0, $zero, $zero
     /* 2AB70 8003A370 FF3F0624 */  addiu      $a2, $zero, 0x3FFF

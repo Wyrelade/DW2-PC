@@ -1,0 +1,101 @@
+nonmatching Menu_DigiStatusInit, 0x180
+
+glabel Menu_DigiStatusInit
+    /* 93F8 80018BF8 E0FFBD27 */  addiu      $sp, $sp, -0x20
+    /* 93FC 80018BFC 1400B1AF */  sw         $s1, 0x14($sp)
+    /* 9400 80018C00 21888000 */  addu       $s1, $a0, $zero
+    /* 9404 80018C04 1C00BFAF */  sw         $ra, 0x1C($sp)
+    /* 9408 80018C08 1800B2AF */  sw         $s2, 0x18($sp)
+    /* 940C 80018C0C 1000B0AF */  sw         $s0, 0x10($sp)
+    /* 9410 80018C10 2C00308E */  lw         $s0, 0x2C($s1)
+    /* 9414 80018C14 0580023C */  lui        $v0, %hi(Menu_Ctx)
+    /* 9418 80018C18 6807428C */  lw         $v0, %lo(Menu_Ctx)($v0)
+    /* 941C 80018C1C 7C0005A6 */  sh         $a1, 0x7C($s0)
+    /* 9420 80018C20 1001428C */  lw         $v0, 0x110($v0)
+    /* 9424 80018C24 00000000 */  nop
+    /* 9428 80018C28 840002AE */  sw         $v0, 0x84($s0)
+    /* 942C 80018C2C 01004290 */  lbu        $v0, 0x1($v0)
+    /* 9430 80018C30 00000000 */  nop
+    /* 9434 80018C34 0C0022AE */  sw         $v0, 0xC($s1)
+    /* 9438 80018C38 BC000696 */  lhu        $a2, 0xBC($s0)
+    /* 943C 80018C3C 1083000C */  jal        Actor_InitTransform
+    /* 9440 80018C40 B0000526 */   addiu     $a1, $s0, 0xB0
+    /* 9444 80018C44 0C00248E */  lw         $a0, 0xC($s1)
+    /* 9448 80018C48 C179000C */  jal        Digi_GetModelFile
+    /* 944C 80018C4C 00000000 */   nop
+    /* 9450 80018C50 C00002AE */  sw         $v0, 0xC0($s0)
+    /* 9454 80018C54 0C00248E */  lw         $a0, 0xC($s1)
+    /* 9458 80018C58 CA79000C */  jal        Anim_GetModelAnimFile
+    /* 945C 80018C5C 21280000 */   addu      $a1, $zero, $zero
+    /* 9460 80018C60 C000058E */  lw         $a1, 0xC0($s0)
+    /* 9464 80018C64 21202002 */  addu       $a0, $s1, $zero
+    /* 9468 80018C68 6F7F000C */  jal        Gfx_AttachModel
+    /* 946C 80018C6C C40002AE */   sw        $v0, 0xC4($s0)
+    /* 9470 80018C70 03000324 */  addiu      $v1, $zero, 0x3
+    /* 9474 80018C74 3C0043AC */  sw         $v1, 0x3C($v0)
+    /* 9478 80018C78 C000048E */  lw         $a0, 0xC0($s0)
+    /* 947C 80018C7C FD8E000C */  jal        Cd_QueueFile
+    /* 9480 80018C80 21880000 */   addu      $s1, $zero, $zero
+    /* 9484 80018C84 C400048E */  lw         $a0, 0xC4($s0)
+    /* 9488 80018C88 FD8E000C */  jal        Cd_QueueFile
+    /* 948C 80018C8C 00000000 */   nop
+    /* 9490 80018C90 21202002 */  addu       $a0, $s1, $zero
+    /* 9494 80018C94 0480023C */  lui        $v0, %hi(D_80040F64)
+    /* 9498 80018C98 C80000AE */  sw         $zero, 0xC8($s0)
+    /* 949C 80018C9C 4C0100AE */  sw         $zero, 0x14C($s0)
+    /* 94A0 80018CA0 640F4A24 */  addiu      $t2, $v0, %lo(D_80040F64)
+    /* 94A4 80018CA4 0000478D */  lw         $a3, 0x0($t2)
+    /* 94A8 80018CA8 0400488D */  lw         $t0, 0x4($t2)
+    /* 94AC 80018CAC 0800498D */  lw         $t1, 0x8($t2)
+    /* 94B0 80018CB0 CC0007AE */  sw         $a3, 0xCC($s0)
+    /* 94B4 80018CB4 D00008AE */  sw         $t0, 0xD0($s0)
+    /* 94B8 80018CB8 D40009AE */  sw         $t1, 0xD4($s0)
+    /* 94BC 80018CBC 0C00478D */  lw         $a3, 0xC($t2)
+    /* 94C0 80018CC0 1000488D */  lw         $t0, 0x10($t2)
+    /* 94C4 80018CC4 1400498D */  lw         $t1, 0x14($t2)
+    /* 94C8 80018CC8 D80007AE */  sw         $a3, 0xD8($s0)
+    /* 94CC 80018CCC DC0008AE */  sw         $t0, 0xDC($s0)
+    /* 94D0 80018CD0 E00009AE */  sw         $t1, 0xE0($s0)
+    /* 94D4 80018CD4 1800478D */  lw         $a3, 0x18($t2)
+    /* 94D8 80018CD8 00000000 */  nop
+    /* 94DC 80018CDC E40007AE */  sw         $a3, 0xE4($s0)
+    /* 94E0 80018CE0 09AD000C */  jal        GsInitCoordinate2
+    /* 94E4 80018CE4 E8000526 */   addiu     $a1, $s0, 0xE8
+    /* 94E8 80018CE8 1305043C */  lui        $a0, (0x513001F >> 16)
+    /* 94EC 80018CEC 1F008434 */  ori        $a0, $a0, (0x513001F & 0xFFFF)
+    /* 94F0 80018CF0 01000224 */  addiu      $v0, $zero, 0x1
+    /* 94F4 80018CF4 480102AE */  sw         $v0, 0x148($s0)
+    /* 94F8 80018CF8 0B000224 */  addiu      $v0, $zero, 0xB
+    /* 94FC 80018CFC 420102A6 */  sh         $v0, 0x142($s0)
+    /* 9500 80018D00 1DFF0224 */  addiu      $v0, $zero, -0xE3
+    /* 9504 80018D04 400100A6 */  sh         $zero, 0x140($s0)
+    /* 9508 80018D08 440100A6 */  sh         $zero, 0x144($s0)
+    /* 950C 80018D0C 688E000C */  jal        Cd_GetFileEntry
+    /* 9510 80018D10 380102A6 */   sh        $v0, 0x138($s0)
+    /* 9514 80018D14 1305043C */  lui        $a0, (0x5130020 >> 16)
+    /* 9518 80018D18 20008434 */  ori        $a0, $a0, (0x5130020 & 0xFFFF)
+    /* 951C 80018D1C 688E000C */  jal        Cd_GetFileEntry
+    /* 9520 80018D20 21804000 */   addu      $s0, $v0, $zero
+    /* 9524 80018D24 21904000 */  addu       $s2, $v0, $zero
+  .L80018D28:
+    /* 9528 80018D28 21202002 */  addu       $a0, $s1, $zero
+    /* 952C 80018D2C 59AD000C */  jal        GsSetFlatLight
+    /* 9530 80018D30 21280002 */   addu      $a1, $s0, $zero
+    /* 9534 80018D34 01003126 */  addiu      $s1, $s1, 0x1
+    /* 9538 80018D38 0300222A */  slti       $v0, $s1, 0x3
+    /* 953C 80018D3C FAFF4014 */  bnez       $v0, .L80018D28
+    /* 9540 80018D40 10001026 */   addiu     $s0, $s0, 0x10
+    /* 9544 80018D44 0000448E */  lw         $a0, 0x0($s2)
+    /* 9548 80018D48 0400458E */  lw         $a1, 0x4($s2)
+    /* 954C 80018D4C 0800468E */  lw         $a2, 0x8($s2)
+    /* 9550 80018D50 D5AE000C */  jal        GsSetAmbient
+    /* 9554 80018D54 00000000 */   nop
+    /* 9558 80018D58 B5AE000C */  jal        GsSetLightMode
+    /* 955C 80018D5C 21200000 */   addu      $a0, $zero, $zero
+    /* 9560 80018D60 1C00BF8F */  lw         $ra, 0x1C($sp)
+    /* 9564 80018D64 1800B28F */  lw         $s2, 0x18($sp)
+    /* 9568 80018D68 1400B18F */  lw         $s1, 0x14($sp)
+    /* 956C 80018D6C 1000B08F */  lw         $s0, 0x10($sp)
+    /* 9570 80018D70 0800E003 */  jr         $ra
+    /* 9574 80018D74 2000BD27 */   addiu     $sp, $sp, 0x20
+endlabel Menu_DigiStatusInit

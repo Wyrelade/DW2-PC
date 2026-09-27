@@ -42,7 +42,7 @@ glabel _SsContExpression
     /* 23A8C 8003328C 60002796 */  lhu        $a3, 0x60($s1)
     /* 23A90 80033290 27006292 */  lbu        $v0, 0x27($s3)
     /* 23A94 80033294 03241200 */  sra        $a0, $s2, 16
-    /* 23A98 80033298 CDE4000C */  jal        func_80039334
+    /* 23A98 80033298 CDE4000C */  jal        _SsVmSetVol
     /* 23A9C 8003329C 1000A2AF */   sw        $v0, 0x10($sp)
     /* 23AA0 800332A0 2120C002 */  addu       $a0, $s6, $zero
     /* 23AA4 800332A4 25C9000C */  jal        _SsReadDeltaValue

@@ -34,7 +34,7 @@ glabel _SsContMainVol
     /* 238CC 800330CC 37004390 */  lbu        $v1, 0x37($v0)
     /* 238D0 800330D0 27004290 */  lbu        $v0, 0x27($v0)
     /* 238D4 800330D4 21306000 */  addu       $a2, $v1, $zero
-    /* 238D8 800330D8 CDE4000C */  jal        func_80039334
+    /* 238D8 800330D8 CDE4000C */  jal        _SsVmSetVol
     /* 238DC 800330DC 1000A2AF */   sw        $v0, 0x10($sp)
     /* 238E0 800330E0 21208002 */  addu       $a0, $s4, $zero
     /* 238E4 800330E4 21286002 */  addu       $a1, $s3, $zero

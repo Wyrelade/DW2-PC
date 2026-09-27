@@ -38,7 +38,7 @@ glabel Snd_PlayById
     /* AF0C 8001A70C 21282002 */  addu       $a1, $s1, $zero
     /* AF10 8001A710 7F000624 */  addiu      $a2, $zero, 0x7F
     /* AF14 8001A714 0C000486 */  lh         $a0, 0xC($s0)
-    /* AF18 8001A718 13D7000C */  jal        func_80035C4C
+    /* AF18 8001A718 13D7000C */  jal        SsSepSetVol
     /* AF1C 8001A71C 2138C000 */   addu      $a3, $a2, $zero
     /* AF20 8001A720 21282002 */  addu       $a1, $s1, $zero
     /* AF24 8001A724 01000624 */  addiu      $a2, $zero, 0x1
