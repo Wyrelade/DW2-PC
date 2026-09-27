@@ -475,7 +475,20 @@ void func_800673FC(Actor *arg0) {
 
 INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80067428);
 
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_800679C8);
+void func_800679C8(Actor *arg0) {
+    Stg00ModelWork *w = (Stg00ModelWork *)arg0->work;
+
+    Gfx_AttachModel(arg0, w->field_14);
+    Anim_StepModelAnim(arg0);
+    Actor_UpdateTransform(arg0);
+    Gfx_CalcModelBoneMatrices(arg0);
+    if (w->field_20 != 0) {
+        Gfx_DrawTexModel(arg0, 0);
+    }
+    if (w->field_24 != 0) {
+        Gfx_DrawWireModel(arg0, 0, &w->field_28);
+    }
+}
 
 void func_80067A50(Actor *arg0, Stg00Vec3 *arg1) {
     *(Stg00Vec3 *)arg0->work = *arg1;
