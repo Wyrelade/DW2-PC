@@ -3841,5 +3841,15 @@
       "slot_redundant",
       "padnop"
     ]
+  },
+  "func_80018048": {
+    "passes": [
+      "gp8",
+      "range_unswap",
+      "slot_rethread",
+      "const_uncse",
+      "web_realloc_void",
+      "padnop"
+    ]
   }
 }

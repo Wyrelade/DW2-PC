@@ -3160,4 +3160,25 @@ typedef struct {
     s32 _r[3];
 } View5F704;
 
+
+/* Actor work block of the func_80018048 menu (list page like Obj17D84). */
+typedef struct {
+    /* 0x000 */ s32 field_0[16];
+    /* 0x040 */ s32 field_40;
+    /* 0x044 */ s32 field_44;
+    /* 0x048 */ s32 field_48;
+    u8 _pad4C[0x4];
+    /* 0x050 */ s16 field_50[2];
+    /* 0x054 */ Box16198 field_54;
+    /* 0x060 */ s16 field_60;
+    /* 0x062 */ s16 field_62;
+    /* 0x064 */ s32 field_64;
+    /* 0x068 */ s16 field_68;
+    /* 0x06A */ s16 field_6A;
+    u8 _pad6C[0x132];
+    /* 0x19E */ s16 field_19E;
+    u8 _pad1A0[0x6];
+    /* 0x1A6 */ s16 field_1A6;
+} Wk18048;
+
 #endif /* MAIN_156C_H */
