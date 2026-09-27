@@ -38,7 +38,12 @@ INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_8006437C);
 
 INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80064454);
 
-INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_800646C0);
+void func_800646C0(s32 arg0) {
+    if (arg0 == 0) {
+        ResetCallback();
+    }
+    func_80064980(arg0);
+}
 
 INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_800646F4);
 
