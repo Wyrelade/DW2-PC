@@ -1,7 +1,52 @@
 #include "common.h"
 #include "stag1100/stag1100.h"
 
-INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_8006358C);
+void func_8006358C(Actor *arg0) {
+    Stg11MainWork *w = (Stg11MainWork *)arg0->work;
+    s32 *slot = (s32 *)arg0->u34.children;
+
+    switch (arg0->stateLevel0) {
+    case 0:
+        Gpu_AllocPacketBufs(0x25800);
+        Sys_SetFrameRate30();
+        Gpu_InitDoubleBuffer(0x140, 0xF0, 0, 0);
+        Gpu_SetBgClearColor(0, 0, 0);
+        Gpu_ClearScreens();
+        Gfx_FadeInFromBlack(0x20);
+        Task_Create(9, slot, 0);
+        Task_Create(0x601, slot + 2, 0);
+        Task_Create(0x602, slot + 3, 0);
+        D_80050780 = 0;
+        Task_Create(0x603, slot + 1, D_8005F770.gameMode - 0x600);
+        if (D_8005F770.gameMode != 0x603 && D_8005F770.gameMode != 0x604) {
+            Snd_StopAll();
+            Snd_UnloadSlot(2);
+            Snd_SetSlotContent(1, 0xE);
+            w->field_0 = 0;
+        } else {
+            w->field_0 = 1;
+        }
+        Task_NextState0(arg0);
+        break;
+    case 1:
+        if (arg0->stateLevel1 != 1) {
+            if (w->field_0 == 0 && Snd_AnySlotLoading() == 0) {
+                w->field_0 = 1;
+                Snd_PlayById(0x100, 1);
+            }
+            if (slot[1] == 0) {
+                D_8005F770.nextGameMode = D_8005F770.prevGameMode;
+                if (D_8005F770.gameMode == 0x605) {
+                    D_8005F770.field_24 = 1;
+                }
+                Task_NextState1(arg0);
+            }
+        }
+        break;
+    case 2:
+        break;
+    }
+}
 
 void func_8006374C(Actor *arg0) {
     if (arg0->stateLevel0 == 0) {
