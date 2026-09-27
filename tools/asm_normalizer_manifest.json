@@ -3773,5 +3773,20 @@
       "delay_fill",
       "padnop"
     ]
+  },
+  "func_80039334": {
+    "passes": [
+      "nosplit_hf",
+      "sched_pre",
+      "reg_realloc_inj",
+      "sreg_perm",
+      "web_realloc",
+      "save_slot",
+      "sched_match",
+      "block_iso_wide",
+      "taken_fill",
+      "delay_fill",
+      "padnop"
+    ]
   }
 }
