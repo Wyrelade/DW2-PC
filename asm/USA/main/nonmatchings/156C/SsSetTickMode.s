@@ -1,0 +1,102 @@
+nonmatching SsSetTickMode, 0x148
+
+glabel SsSetTickMode
+    /* 26204 80035A04 E8FFBD27 */  addiu      $sp, $sp, -0x18
+    /* 26208 80035A08 1000B0AF */  sw         $s0, 0x10($sp)
+    /* 2620C 80035A0C 1400BFAF */  sw         $ra, 0x14($sp)
+    /* 26210 80035A10 0EC6000C */  jal        GetVideoMode
+    /* 26214 80035A14 21808000 */   addu      $s0, $a0, $zero
+    /* 26218 80035A18 21204000 */  addu       $a0, $v0, $zero
+    /* 2621C 80035A1C 00100232 */  andi       $v0, $s0, 0x1000
+    /* 26220 80035A20 07004010 */  beqz       $v0, .L80035A40
+    /* 26224 80035A24 01000324 */   addiu     $v1, $zero, 0x1
+    /* 26228 80035A28 0580023C */  lui        $v0, %hi(D_8004FC4C)
+    /* 2622C 80035A2C 4CFC4224 */  addiu      $v0, $v0, %lo(D_8004FC4C)
+    /* 26230 80035A30 000043AC */  sw         $v1, 0x0($v0)
+    /* 26234 80035A34 FF0F0332 */  andi       $v1, $s0, 0xFFF
+    /* 26238 80035A38 94D60008 */  j          .L80035A50
+    /* 2623C 80035A3C FCFF43AC */   sw        $v1, -0x4($v0)
+  .L80035A40:
+    /* 26240 80035A40 0580023C */  lui        $v0, %hi(D_8004FC4C)
+    /* 26244 80035A44 4CFC4224 */  addiu      $v0, $v0, %lo(D_8004FC4C)
+    /* 26248 80035A48 000040AC */  sw         $zero, 0x0($v0)
+    /* 2624C 80035A4C FCFF50AC */  sw         $s0, -0x4($v0)
+  .L80035A50:
+    /* 26250 80035A50 0580033C */  lui        $v1, %hi(D_8004FC48)
+    /* 26254 80035A54 48FC638C */  lw         $v1, %lo(D_8004FC48)($v1)
+    /* 26258 80035A58 00000000 */  nop
+    /* 2625C 80035A5C 06006228 */  slti       $v0, $v1, 0x6
+    /* 26260 80035A60 34004010 */  beqz       $v0, .L80035B34
+    /* 26264 80035A64 0600622C */   sltiu     $v0, $v1, 0x6
+    /* 26268 80035A68 2E004010 */  beqz       $v0, .L80035B24
+    /* 2626C 80035A6C 80100300 */   sll       $v0, $v1, 2
+    /* 26270 80035A70 0180013C */  lui        $at, %hi(jtbl_80010A84)
+    /* 26274 80035A74 21082200 */  addu       $at, $at, $v0
+    /* 26278 80035A78 840A228C */  lw         $v0, %lo(jtbl_80010A84)($at)
+    /* 2627C 80035A7C 00000000 */  nop
+    /* 26280 80035A80 08004000 */  jr         $v0
+    /* 26284 80035A84 00000000 */   nop
+  jlabel .L80035A88
+    /* 26288 80035A88 32000324 */  addiu      $v1, $zero, 0x32
+    /* 2628C 80035A8C 0680013C */  lui        $at, %hi(Snd_TicksPerSec)
+    /* 26290 80035A90 4C1C23AC */  sw         $v1, %lo(Snd_TicksPerSec)($at)
+    /* 26294 80035A94 01000224 */  addiu      $v0, $zero, 0x1
+    /* 26298 80035A98 09008210 */  beq        $a0, $v0, .L80035AC0
+    /* 2629C 80035A9C 05000224 */   addiu     $v0, $zero, 0x5
+    /* 262A0 80035AA0 0580013C */  lui        $at, %hi(D_8004FC48)
+    /* 262A4 80035AA4 CFD60008 */  j          .L80035B3C
+    /* 262A8 80035AA8 48FC23AC */   sw        $v1, %lo(D_8004FC48)($at)
+  jlabel .L80035AAC
+    /* 262AC 80035AAC 3C000224 */  addiu      $v0, $zero, 0x3C
+    /* 262B0 80035AB0 0680013C */  lui        $at, %hi(Snd_TicksPerSec)
+    /* 262B4 80035AB4 02008014 */  bnez       $a0, .L80035AC0
+    /* 262B8 80035AB8 4C1C22AC */   sw        $v0, %lo(Snd_TicksPerSec)($at)
+    /* 262BC 80035ABC 05000224 */  addiu      $v0, $zero, 0x5
+  .L80035AC0:
+    /* 262C0 80035AC0 0580013C */  lui        $at, %hi(D_8004FC48)
+    /* 262C4 80035AC4 CFD60008 */  j          .L80035B3C
+    /* 262C8 80035AC8 48FC22AC */   sw        $v0, %lo(D_8004FC48)($at)
+  jlabel .L80035ACC
+    /* 262CC 80035ACC 78000224 */  addiu      $v0, $zero, 0x78
+    /* 262D0 80035AD0 0680013C */  lui        $at, %hi(Snd_TicksPerSec)
+    /* 262D4 80035AD4 CFD60008 */  j          .L80035B3C
+    /* 262D8 80035AD8 4C1C22AC */   sw        $v0, %lo(Snd_TicksPerSec)($at)
+  jlabel .L80035ADC
+    /* 262DC 80035ADC F0000224 */  addiu      $v0, $zero, 0xF0
+    /* 262E0 80035AE0 0680013C */  lui        $at, %hi(Snd_TicksPerSec)
+    /* 262E4 80035AE4 CFD60008 */  j          .L80035B3C
+    /* 262E8 80035AE8 4C1C22AC */   sw        $v0, %lo(Snd_TicksPerSec)($at)
+  jlabel .L80035AEC
+    /* 262EC 80035AEC 0D008010 */  beqz       $a0, .L80035B24
+    /* 262F0 80035AF0 01000224 */   addiu     $v0, $zero, 0x1
+    /* 262F4 80035AF4 07008210 */  beq        $a0, $v0, .L80035B14
+    /* 262F8 80035AF8 3C000224 */   addiu     $v0, $zero, 0x3C
+    /* 262FC 80035AFC CAD60008 */  j          .L80035B28
+    /* 26300 80035B00 00000000 */   nop
+  jlabel .L80035B04
+    /* 26304 80035B04 07008010 */  beqz       $a0, .L80035B24
+    /* 26308 80035B08 01000224 */   addiu     $v0, $zero, 0x1
+    /* 2630C 80035B0C 06008214 */  bne        $a0, $v0, .L80035B28
+    /* 26310 80035B10 3C000224 */   addiu     $v0, $zero, 0x3C
+  .L80035B14:
+    /* 26314 80035B14 32000224 */  addiu      $v0, $zero, 0x32
+    /* 26318 80035B18 0680013C */  lui        $at, %hi(Snd_TicksPerSec)
+    /* 2631C 80035B1C CFD60008 */  j          .L80035B3C
+    /* 26320 80035B20 4C1C22AC */   sw        $v0, %lo(Snd_TicksPerSec)($at)
+  .L80035B24:
+    /* 26324 80035B24 3C000224 */  addiu      $v0, $zero, 0x3C
+  .L80035B28:
+    /* 26328 80035B28 0680013C */  lui        $at, %hi(Snd_TicksPerSec)
+    /* 2632C 80035B2C CFD60008 */  j          .L80035B3C
+    /* 26330 80035B30 4C1C22AC */   sw        $v0, %lo(Snd_TicksPerSec)($at)
+  .L80035B34:
+    /* 26334 80035B34 0680013C */  lui        $at, %hi(Snd_TicksPerSec)
+    /* 26338 80035B38 4C1C23AC */  sw         $v1, %lo(Snd_TicksPerSec)($at)
+  .L80035B3C:
+    /* 2633C 80035B3C 1400BF8F */  lw         $ra, 0x14($sp)
+    /* 26340 80035B40 1000B08F */  lw         $s0, 0x10($sp)
+    /* 26344 80035B44 0800E003 */  jr         $ra
+    /* 26348 80035B48 1800BD27 */   addiu     $sp, $sp, 0x18
+endlabel SsSetTickMode
+    /* 2634C 80035B4C 00000000 */  nop
+    /* 26350 80035B50 00000000 */  nop
