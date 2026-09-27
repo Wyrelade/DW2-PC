@@ -44,7 +44,7 @@ options:
 
   ld_bss_is_noload: True
 
-# Stage overlay: loaded by func_80013308 (main exe) to 0x80063360, over the main exe's
+# Stage overlay: loaded by Ovl_Load (main exe) to 0x80063360, over the main exe's
 # .data there. Text range found by scanning for the first prologue / last `jr ra`.
 segments:
   - name: stag2000

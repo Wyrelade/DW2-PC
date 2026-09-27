@@ -2018,7 +2018,7 @@
       "gp8_nosplit"
     ]
   },
-  "func_80013378": {
+  "Ovl_GetCurrentId": {
     "passes": [
       "gp8_nosplit"
     ]
@@ -2081,7 +2081,7 @@
       "gp8_nosplit"
     ]
   },
-  "func_80013308": {
+  "Ovl_Load": {
     "passes": [
       "gp8_nosplit",
       "sched_match"

@@ -1,17 +1,17 @@
-nonmatching func_80013308, 0x70
+nonmatching Ovl_Load, 0x70
 
-glabel func_80013308
-    /* 3B08 80013308 0400828F */  lw         $v0, %gp_rel(D_800506FC)($gp)
+glabel Ovl_Load
+    /* 3B08 80013308 0400828F */  lw         $v0, %gp_rel(Ovl_CurrentId)($gp)
     /* 3B0C 8001330C E0FFBD27 */  addiu      $sp, $sp, -0x20
     /* 3B10 80013310 1800BFAF */  sw         $ra, 0x18($sp)
     /* 3B14 80013314 1400B1AF */  sw         $s1, 0x14($sp)
     /* 3B18 80013318 12004410 */  beq        $v0, $a0, .L80013364
     /* 3B1C 8001331C 1000B0AF */   sw        $s0, 0x10($sp)
-    /* 3B20 80013320 0480023C */  lui        $v0, %hi(D_80040E68)
-    /* 3B24 80013324 680E4224 */  addiu      $v0, $v0, %lo(D_80040E68)
+    /* 3B20 80013320 0480023C */  lui        $v0, %hi(Ovl_FileIds)
+    /* 3B24 80013324 680E4224 */  addiu      $v0, $v0, %lo(Ovl_FileIds)
     /* 3B28 80013328 80800400 */  sll        $s0, $a0, 2
     /* 3B2C 8001332C 21800202 */  addu       $s0, $s0, $v0
-    /* 3B30 80013330 040084AF */  sw         $a0, %gp_rel(D_800506FC)($gp)
+    /* 3B30 80013330 040084AF */  sw         $a0, %gp_rel(Ovl_CurrentId)($gp)
     /* 3B34 80013334 0000048E */  lw         $a0, 0x0($s0)
     /* 3B38 80013338 6C8F000C */  jal        Cd_GetFileSync
     /* 3B3C 8001333C 00000000 */   nop
@@ -30,4 +30,4 @@ glabel func_80013308
     /* 3B6C 8001336C 1000B08F */  lw         $s0, 0x10($sp)
     /* 3B70 80013370 0800E003 */  jr         $ra
     /* 3B74 80013374 2000BD27 */   addiu     $sp, $sp, 0x20
-endlabel func_80013308
+endlabel Ovl_Load

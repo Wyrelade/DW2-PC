@@ -463,14 +463,14 @@ extern s32 D_80050790;
 extern s32 Snd_CurrentId;
 extern s32 Snd_SavedId;
 extern GameStateView *D_80050720;
-extern s32 D_800506FC;
+extern s32 Ovl_CurrentId;
 extern s32 D_80050778;
 extern s32 D_8005077C;
 extern s32 D_80050784;
 extern MemBlock *D_80050788;
 extern s32 D_80050948[];
 extern s32 D_8005075C;
-extern s32 D_80040E68[];
+extern s32 Ovl_FileIds[];
 extern u8 *D_80010000[];
 extern void Snd_StopById(s32);
 extern void Snd_StopById(s32);
@@ -2103,26 +2103,29 @@ void Menu_NameEntryDrawParts(Actor *a) {
 }
 
 
-void func_80013308(s32 id) {
+/* Ovl_FileIds[id] (Cd file ids, matched by LBA + sector count):
+ * 0 STAG0000, 1 STAG4000, 2 STAG2000, 3 STAG1000, 4 STAG3000, 5 STAG1100, 6 STAG3500.
+ * Sys_GameModeTask loads id (gameMode >> 8) - 1. */
+void Ovl_Load(s32 id) {
     s32 *p;
     u8 *src;
     u8 *dst;
 
-    if (D_800506FC != id) {
-        p = &D_80040E68[id];
-        D_800506FC = id;
+    if (Ovl_CurrentId != id) {
+        p = &Ovl_FileIds[id];
+        Ovl_CurrentId = id;
         src = (u8 *)Cd_GetFileSync(*p);
         dst = D_80010000[0];
         memcpy(dst, src, Cd_GetFileSectors(*p) << 11);
     }
 }
 
-s32 func_80013378(void) {
-    return D_800506FC;
+s32 Ovl_GetCurrentId(void) {
+    return Ovl_CurrentId;
 }
 
 
-extern void func_80013308(s32);
+extern void Ovl_Load(s32);
 extern void Task_Create(u32, s32 *, s32);
 extern s32 Snd_AnySlotLoading(void);
 extern s32 D_8005F78C;
@@ -2133,7 +2136,7 @@ void Sys_GameModeTask(Actor *a0) {
     switch (st) {
     case 0:
     default:
-        func_80013308((D_8005F770.gameMode >> 8) - 1);
+        Ovl_Load((D_8005F770.gameMode >> 8) - 1);
         Task_Create(D_8005F770.gameMode & 0xFF00, t, 0);
         Task_NextState0(a0);
         break;
@@ -8792,7 +8795,7 @@ s32 Flag_Test(s32 arg0) {
         }
         return 0;
     }
-    if (func_80013378() == 2) {
+    if (Ovl_GetCurrentId() == 2) {
         return func_80066B48(arg0);
     }
     return 0;
@@ -8879,7 +8882,7 @@ void Flag_Set(s32 id, s32 val) {
             break;
         }
     } else if (id < 10000) {
-        if (func_80013378() == 2) {
+        if (Ovl_GetCurrentId() == 2) {
             func_80066F34(id, val);
         }
     }

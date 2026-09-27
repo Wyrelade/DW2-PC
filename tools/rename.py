@@ -126,6 +126,8 @@ def rewrite_tree(mapping):
     files = source_files()
     files += glob.glob(os.path.join(ROOT, "asm", "USA", "**", "*.s"), recursive=True)
     files += glob.glob(os.path.join(ROOT, "linkers", "USA", "*.txt"))
+    # overlay symbol files carry the main exe's names (tools/ovl_setup.py)
+    files += glob.glob(os.path.join(ROOT, "configs", "USA", "sym.stag*.txt"))
     files.append(os.path.join(ROOT, "tools", "asm_normalizer_manifest.json"))
     files.append(os.path.join(ROOT, "tools", "difficult_functions"))
     changed = []

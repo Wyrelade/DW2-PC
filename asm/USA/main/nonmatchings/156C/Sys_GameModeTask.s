@@ -22,7 +22,7 @@ glabel Sys_GameModeTask
     /* 3BC8 800133C8 1800048E */  lw         $a0, 0x18($s0)
     /* 3BCC 800133CC 00000000 */  nop
     /* 3BD0 800133D0 03220400 */  sra        $a0, $a0, 8
-    /* 3BD4 800133D4 C24C000C */  jal        func_80013308
+    /* 3BD4 800133D4 C24C000C */  jal        Ovl_Load
     /* 3BD8 800133D8 FFFF8424 */   addiu     $a0, $a0, -0x1
     /* 3BDC 800133DC 21284002 */  addu       $a1, $s2, $zero
     /* 3BE0 800133E0 1800048E */  lw         $a0, 0x18($s0)

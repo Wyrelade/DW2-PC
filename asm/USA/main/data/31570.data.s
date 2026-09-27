@@ -121,9 +121,9 @@ dlabel D_80040E44
     /* 31664 80040E64 00000000 */ .word 0x00000000
 enddlabel D_80040E44
 
-nonmatching D_80040E68
+nonmatching Ovl_FileIds
 
-dlabel D_80040E68
+dlabel Ovl_FileIds
     /* 31668 80040E68 90010000 */ .word 0x00000190
     /* 3166C 80040E6C 9A010000 */ .word 0x0000019A
     /* 31670 80040E70 92010000 */ .word 0x00000192
@@ -161,7 +161,7 @@ dlabel D_80040E68
     /* 316F0 80040EF0 305D0180 */ .word Menu_ItemUseDraw
     /* 316F4 80040EF4 A0000000 */ .word 0x000000A0
     /* 316F8 80040EF8 04000000 */ .word 0x00000004
-enddlabel D_80040E68
+enddlabel Ovl_FileIds
 
 nonmatching D_80040EFC
 
@@ -20428,11 +20428,11 @@ dlabel D_800506F8
     /* 40EF8 800506F8 00500780 */ .word 0x80075000
 enddlabel D_800506F8
 
-nonmatching D_800506FC
+nonmatching Ovl_CurrentId
 
-dlabel D_800506FC
+dlabel Ovl_CurrentId
     /* 40EFC 800506FC FFFFFFFF */ .word 0xFFFFFFFF
-enddlabel D_800506FC
+enddlabel Ovl_CurrentId
 
 nonmatching D_80050700
 

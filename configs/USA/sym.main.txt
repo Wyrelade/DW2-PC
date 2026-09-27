@@ -758,3 +758,7 @@ Snd_SeqEndOfTrack = 0x80031EA0; // type:func
 Card_Format = 0x800401E4; // type:func
 Menu_DigiListTask = 0x80018048; // type:func
 Menu_DigiListDrawRows = 0x80017D84; // type:func
+Ovl_Load = 0x80013308; // type:func
+Ovl_GetCurrentId = 0x80013378; // type:func
+Ovl_CurrentId = 0x800506FC;
+Ovl_FileIds = 0x80040E68;

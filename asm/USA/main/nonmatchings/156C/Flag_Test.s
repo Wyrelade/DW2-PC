@@ -110,7 +110,7 @@ glabel Flag_Test
     /* 127F4 80021FF4 0A880008 */  j          .L80022028
     /* 127F8 80021FF8 21100000 */   addu      $v0, $zero, $zero
   .L80021FFC:
-    /* 127FC 80021FFC DE4C000C */  jal        func_80013378
+    /* 127FC 80021FFC DE4C000C */  jal        Ovl_GetCurrentId
     /* 12800 80022000 00000000 */   nop
     /* 12804 80022004 02000324 */  addiu      $v1, $zero, 0x2
     /* 12808 80022008 05004310 */  beq        $v0, $v1, .L80022020
