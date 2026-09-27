@@ -224,7 +224,53 @@ void func_80064A6C(Actor *arg0, Stg11MenuWork *arg1) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80064B00);
+void func_80064B00(Actor *arg0, Stg11MenuWork *arg1) {
+    s32 msg;
+
+    switch (arg0->stateLevel2) {
+    case 0:
+        msg = 0;
+        switch (func_80067818()) {
+        case 1:
+            msg = arg1->field_7A == 0 ? 0x16D : 0x16E;
+            break;
+        case 4:
+            msg = 0x183;
+            break;
+        case 5:
+            msg = 0x182;
+            break;
+        case 6:
+            msg = 0x171;
+            break;
+        case 7:
+            msg = 0x194;
+            break;
+        case 8:
+            msg = 0x16F;
+            break;
+        case 10:
+            msg = 0x16E;
+            break;
+        case 11:
+            msg = arg1->field_80 != 0 ? 0x1B1 : 0x186;
+            break;
+        }
+        func_800648E4(arg1, msg);
+        func_800648B4(arg0, arg1);
+        func_800677AC(4, arg1->field_84);
+        Task_NextState2(arg0);
+        break;
+    case 1:
+        if (D_8005F6F0[arg1->field_7E].triangle > 0) {
+            Snd_PlayById(0xB, 0);
+            Task_SetState0(arg0, 2);
+            return;
+        }
+        break;
+    }
+    func_800649F8(arg0, arg1);
+}
 
 INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80064C64);
 
