@@ -136,7 +136,12 @@ INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80066A0C);
 
 INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80066B60);
 
-INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80066C04);
+void func_80066C04(Actor *arg0, s16 arg1) {
+    Stg11Work66C04 *w = (Stg11Work66C04 *)arg0->work;
+    w->field_60 = arg1;
+    w->field_64 = (arg1 - 1) % 2;
+    w->field_68 = w->field_60 >= 3;
+}
 
 INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80066C48);
 
