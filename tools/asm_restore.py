@@ -3,6 +3,7 @@
 
     python tools/asm_restore.py LIB NAME [NAME...] [--doc "one line"]
     python tools/asm_restore.py --batch FILE        (lines: `LIB NAME [# doc]`)
+    python tools/asm_restore.py --unit stag1000 LIB NAME   (a stage overlay: src/stag1000/asm/LIB)
 
 Some functions were assembly in the original build (Psy-Q libapi BIOS stubs, libgte register
 helpers, setjmp, exception handlers): no C compiles to them, so they are restored in their
@@ -26,8 +27,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BYTES = re.compile(r"^\s*/\*\s*[0-9A-Fa-f]+\s+[0-9A-Fa-f]{8}\s+[0-9A-Fa-f]{8}\s*\*/\s?")
 
 
-def split_file(name):
-    hits = glob.glob(os.path.join(ROOT, "asm", "USA", "*", "nonmatchings", "*", name + ".s"))
+def split_file(name, unit="*"):
+    hits = glob.glob(os.path.join(ROOT, "asm", "USA", unit, "nonmatchings", "*", name + ".s"))
     if len(hits) != 1:
         sys.exit("%s: expected one split .s, found %d" % (name, len(hits)))
     return hits[0]
@@ -43,8 +44,8 @@ def prototype(name):
     return None
 
 
-def restore(lib, name, doc):
-    src = open(split_file(name), encoding="latin1").read().replace("\r\n", "\n").split("\n")
+def restore(lib, name, doc, unit="main"):
+    src = open(split_file(name, unit), encoding="latin1").read().replace("\r\n", "\n").split("\n")
     body, pad, state = [], [], 0
     for line in src:
         s = line.strip()
@@ -92,15 +93,15 @@ def restore(lib, name, doc):
     out = head + [""] + body + [""]
     if pad:
         out += ["    # alignment padding up to the next function"] + ["    %s" % p for p in pad] + [""]
-    d = os.path.join(ROOT, "src", "main", "asm", lib)
+    d = os.path.join(ROOT, "src", unit, "asm", lib)
     os.makedirs(d, exist_ok=True)
     with open(os.path.join(d, name + ".s"), "w", encoding="latin1", newline="\r\n") as f:
         f.write("\n".join(out))
     n = 0
-    for p in glob.glob(os.path.join(ROOT, "src", "**", "*.c"), recursive=True):
+    for p in glob.glob(os.path.join(ROOT, "src", unit, "**", "*.c"), recursive=True):
         t = open(p, encoding="latin1", newline="").read()
         t2_, k = re.subn(r'INCLUDE_ASM\("[^"]+",\s*%s\);' % re.escape(name),
-                         'ASM_SOURCE("src/main/asm/%s", %s);' % (lib, name), t)
+                         'ASM_SOURCE("src/%s/asm/%s", %s);' % (unit, lib, name), t)
         if k:
             with open(p, "w", encoding="latin1", newline="") as f:
                 f.write(t2_)
@@ -109,10 +110,10 @@ def restore(lib, name, doc):
         # already restored: only the source file was regenerated
         n = sum(len(re.findall(r'ASM_SOURCE\("[^"]+",\s*%s\);' % re.escape(name),
                                open(p, encoding="latin1").read()))
-                for p in glob.glob(os.path.join(ROOT, "src", "**", "*.c"), recursive=True))
+                for p in glob.glob(os.path.join(ROOT, "src", unit, "**", "*.c"), recursive=True))
     if n != 1:
         sys.exit("%s: replaced %d INCLUDE_ASM lines (want 1)" % (name, n))
-    print("%s -> src/main/asm/%s/%s.s" % (name, lib, name))
+    print("%s -> src/%s/asm/%s/%s.s" % (name, unit, lib, name))
 
 
 def main():
@@ -121,6 +122,7 @@ def main():
     ap.add_argument("names", nargs="*")
     ap.add_argument("--doc", default="")
     ap.add_argument("--batch")
+    ap.add_argument("--unit", default="main", help="split unit (main, stag1000, ...)")
     a = ap.parse_args()
     jobs = []
     if a.batch:
@@ -132,7 +134,7 @@ def main():
     else:
         jobs = [(a.lib, n, a.doc) for n in a.names]
     for lib, name, doc in jobs:
-        restore(lib, name, doc)
+        restore(lib, name, doc, a.unit)
 
 
 if __name__ == "__main__":
