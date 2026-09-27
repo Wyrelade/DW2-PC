@@ -579,7 +579,20 @@ void func_80066A0C(Actor *arg0) {
     Task_SetState0(arg0, 2);
 }
 
-INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80066B60);
+void func_80066B60(Actor *arg0) {
+    Stg11Work66C04 *w = (Stg11Work66C04 *)arg0->work;
+
+    if (w->field_1A0 == 0) {
+        Snd_PlayById(0xB, 0);
+        Task_SetState0(arg0, 2);
+    } else {
+        w->field_1A0--;
+        (w->field_6C + w->field_1A2[w->field_1A0])->field_2 = 2;
+        w->field_1A2[w->field_1A0] = 0;
+        Snd_PlayById(0xB, 0);
+        Task_SetState1(arg0, 1);
+    }
+}
 
 void func_80066C04(Actor *arg0, s16 arg1) {
     Stg11Work66C04 *w = (Stg11Work66C04 *)arg0->work;
