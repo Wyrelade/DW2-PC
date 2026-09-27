@@ -3788,5 +3788,24 @@
       "delay_fill",
       "padnop"
     ]
+  },
+  "func_800405B4": {
+    "passes": [
+      "nosplit_hf",
+      "zero_remat",
+      "la_split",
+      "sched_pre",
+      "sreg_perm",
+      "web_realloc",
+      "save_slot",
+      "sched_match",
+      "block_iso_wide",
+      "movstr_rename",
+      "ulcopy_rename",
+      "call_slot_swap",
+      "taken_fill",
+      "delay_fill",
+      "padnop"
+    ]
   }
 }

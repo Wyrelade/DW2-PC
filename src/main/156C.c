@@ -826,6 +826,9 @@ extern Rec624F8 D_800624FA[];
 extern Rec624F8 D_800624FC[];
 extern Rec624F8 D_800624FE[];
 extern Rec624F8 D_80062500[];
+extern s8 D_800632D0[16];
+extern char D_80010D64[];
+extern s32 func_80040CE4(s32, s32, u8 *);
 s16 func_800388A4(s16, s16, s16, s16, u16);
 void func_80021DC8(void);
 
@@ -19119,7 +19122,194 @@ out:
 }
 
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_800405B4);
+s32 func_800405B4(s32 port, s8 *name, s32 nblocks)
+{
+    s8 *nm;
+    s32 nb;
+    s32 free;
+    s32 tries;
+    s32 i;
+    s32 r;
+    u32 j;
+    s32 prev;
+    s32 k;
+    u8 *p;
+    u8 x;
+    s32 ret;
+    s8 *u;
+    McDir401E4 *d;
+    s32 blk;
+    s32 n;
+    s32 sz;
+    s8 *np;
+
+    nm = name;
+    nb = nblocks;
+    free = 0;
+    tries = 0;
+    func_80027014(D_800632E0, 0x80);
+    i = 0;
+    func_80027014(D_800632E0, 0x80);
+    do {
+        func_8003FEA4();
+        func_80040CE4(port, 0, D_800632E0);
+        r = func_80040084();
+        if (r == 0) {
+            break;
+        }
+        if (r == 4) {
+            func_8003FEA4();
+            func_8003F9B4(port);
+            func_80040084();
+        }
+    } while (++i < 8);
+    ret = r;
+    i = 0;
+    if (ret != 0) {
+        return ret;
+    }
+    if (D_800632E0[0] != 'M') {
+        return -2;
+    }
+    if (D_800632E0[1] != 'C') {
+        return -2;
+    }
+    d = D_800630A0;
+    blk = 1;
+    for (i = 0; i < 15; d++, blk++) {
+        D_800632D0[blk - 1] = 0;
+        func_80027014(D_800632E0, 0x80);
+        k = 0;
+        func_80027014(D_800632E0, 0x80);
+        do {
+            func_8003FEA4();
+            func_80040CE4(port, blk, D_800632E0);
+            r = func_80040084();
+            if (r == 0) {
+                break;
+            }
+            if (r == 4) {
+                func_8003FEA4();
+                func_8003F9B4(port);
+                func_80040084();
+            }
+        } while (++k < 8);
+        ret = r;
+        i++;
+        if (ret != 0) {
+            return ret;
+        }
+        do { *(McBlk20 *)d = *(McBlk20 *)D_800632E0; } while (0);
+    }
+    for (i = 0; i < 15; i++) {
+        if (D_800630A0[i].field_0 == 0x51) {
+            D_800632D0[i] = 1;
+            j = i;
+            while (D_800630A0[j].field_8 != 0xFFFF) {
+                j = D_800630A0[j].field_8;
+                if (j >= 15) {
+                    break;
+                }
+                D_800632D0[j] = 1;
+            }
+        }
+    }
+    for (i = 0; i < 15; i++) {
+        if (D_800632D0[i] == 0) {
+            D_800630A0[i].field_0 = 0xA0;
+        }
+    }
+    for (i = 0; i < 15; i++) {
+        if (D_800630A0[i].field_0 == 0x51 && func_8003F924(D_800630A0[i].field_A, nm) == 0) {
+            func_8002A014(D_80010D64, D_800630A0[i].field_A, nm);
+            return -3;
+        }
+    }
+    for (i = 0; i < 15; i++) {
+        D_800632D0[i] = 0;
+        if ((D_800630A0[i].field_0 & 0xF0) == 0xA0) {
+            free++;
+        }
+    }
+    if (free < nb) {
+        return -1;
+    }
+    free = 0;
+    prev = 0;
+    sz = nb << 13;
+    for (i = 0; i < 15; i++) {
+        if ((D_800630A0[i].field_0 & 0xF0) == 0xA0) {
+            if (free == 0) {
+                D_800630A0[i].field_0 = 0x51;
+                D_800630A0[i].field_4 = sz;
+                func_80040C74((u8 *)D_800630A0[i].field_A, (u8 *)nm, 0x14);
+                prev = i;
+                D_800632D0[i] = 1;
+            } else {
+                D_800630A0[prev].field_8 = i;
+                D_800630A0[i].field_0 = 0x52;
+                prev = i;
+                D_800632D0[i] = 1;
+            }
+            free++;
+            if (free >= nb) {
+                D_800630A0[i].field_8 = 0xFFFF;
+                if (free >= 2) {
+                    D_800630A0[i].field_0 = 0x53;
+                }
+                break;
+            }
+        }
+    }
+    d = &D_800630A0[14];
+    for (i = 14; i >= 0; i--, d--) {
+        if (D_800632D0[i] != 0) {
+            func_80027014(D_800632E0, 0x80);
+            do { *(McBlk20 *)D_800632E0 = *(McBlk20 *)d; } while (0);
+            blk = i + 1;
+            k = 0;
+            p = D_800632E0;
+            x = 0;
+            n = 0x7E;
+            do {
+                x ^= *p++;
+            } while (--n >= 0);
+            *p = x;
+            do {
+                func_8003FEA4();
+                func_8003F9F4(port, blk, D_800632E0);
+                r = func_80040084();
+                if (r == 0) {
+                    break;
+                }
+                if (r == 4) {
+                    func_8003FEA4();
+                    func_8003F9B4(port);
+                    func_80040084();
+                }
+            } while (++k < 8);
+            ret = r;
+            k = 0;
+            if (ret != 0) {
+                return ret;
+            }
+        }
+    }
+    do {
+        func_8003FEA4();
+        func_8003F9A4(port);
+        r = func_8003FFAC();
+        if (r == 0) {
+            return 0;
+        }
+        func_8003FEA4();
+        func_8003F9B4(port);
+        func_80040084();
+    } while (++tries < 8);
+    return r;
+}
+
+
 
 u8 *func_80040C74(u8 *dst, u8 *src, s32 n) {
     u8 *r = 0;
