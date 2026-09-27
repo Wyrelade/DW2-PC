@@ -10,8 +10,8 @@ fields.txt lines:
 
 Field names repeat across structs (field_4 is in hundreds of them), so a text replace cannot
 tell which accesses belong to STRUCT. This tool renames the field in STRUCT's definition in
-include/main/156C.h, compiles src/main/156C.c (cpp + cc1, with and without -DNON_MATCHING),
-and fixes exactly the lines the compiler reports as "structure has no member named `old'",
+include/main/156C.h, compiles src/main/156C.c and every stage overlay source that uses the
+main header (src/stagXXXX/*.c; cpp + cc1, with and without -DNON_MATCHING), and fixes exactly the lines the compiler reports as "structure has no member named `old'",
 repeating until the file compiles clean. A batch must not rename the same old field name in
 two structs (the error would not say which one it means).
 
@@ -29,6 +29,21 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "tools"))
 HDR = os.path.join(ROOT, "include", "main", "156C.h")
 SRC = os.path.join(ROOT, "src", "main", "156C.c")
+MAIN_SRC = SRC
+
+
+def sources():
+    """156C.c plus the overlay sources (they include main/156C.h through their headers)."""
+    import glob
+    out = [MAIN_SRC]
+    for c in sorted(glob.glob(os.path.join(ROOT, "src", "stag*", "*.c"))):
+        out.append(c)
+    return out
+
+
+def overlay_headers():
+    import glob
+    return sorted(glob.glob(os.path.join(ROOT, "include", "stag*", "*.h")))
 IDENT = re.compile(r"[A-Za-z_]\w*$")
 
 
@@ -110,7 +125,8 @@ def main():
     write(HDR, hdr)
     ren = {o: n for _s, o, n in fields}
     fixed = 0
-    for flags in ([], ["-DNON_MATCHING"]):
+    global SRC
+    for SRC, flags in [(c, f) for c in sources() for f in ([], ["-DNON_MATCHING"])]:
         for _round in range(50):
             rc, errs = compile_errors(flags)
             miss = [(f, n, e) for f, n, e in errs if "has no member named" in e]
@@ -125,7 +141,7 @@ def main():
             ambiguous = []
             for f, n, e in miss:
                 m = re.search(r"named `(\w+)'", e)
-                if not m or m.group(1) not in ren or not re.sub(r"[\\/]+", "/", f).endswith("src/main/156C.c"):
+                if not m or m.group(1) not in ren or not re.sub(r"[\\/]+", "/", f).endswith(os.path.relpath(SRC, ROOT).replace("\\", "/")):
                     sys.exit("unexpected: %s:%d: %s" % (f, n, e))
                 old = m.group(1)
                 occ = list(re.finditer(r"(->|\.)(\s*)%s\b" % re.escape(old), src[n - 1]))
@@ -172,7 +188,7 @@ def main():
     if types:
         pat = re.compile(r"\b(%s)\b" % "|".join(re.escape(o) for o, _n in types))
         tmap = dict(types)
-        for p in (HDR, SRC):
+        for p in [HDR] + sources() + overlay_headers():
             write(p, pat.sub(lambda q: tmap[q.group(1)], read(p)))
     print("renamed %d fields (%d access lines fixed), %d types" % (len(fields), fixed, len(types)))
 
