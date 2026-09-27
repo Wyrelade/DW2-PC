@@ -140,7 +140,10 @@ void func_80067DFC(Actor *arg0, Stg00Vec3 *arg1) {
 
 INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80067E1C);
 
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80068050);
+void func_80068050(Actor *arg0) {
+    CdControlF(9, 0);
+    Task_DefaultDestroy(arg0);
+}
 
 INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80068084);
 
