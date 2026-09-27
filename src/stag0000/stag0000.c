@@ -380,7 +380,35 @@ void func_80066828(Actor *arg0) {
     Gfx_FadeInFromBlack(0x100);
 }
 
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_800668D4);
+void func_800668D4(Actor *arg0) {
+    s32 *slot = (s32 *)arg0->u34.children;
+    Stg00TaskArgs5 args;
+    s32 r;
+    s32 c;
+    s32 k;
+    s32 base;
+    s32 idx;
+    s32 x;
+    s32 y;
+    s32 z;
+
+    for (r = 0, z = -0x1400, y = 0x800, base = 0; r < 2; r++, base += 3) {
+        for (c = 0, k = base, x = -0xA00; c < 3; k++, c++, x += 0xA00) {
+            Task_Destroy(&slot[k]);
+            do {
+                idx = (Rand_Next() & 0xFFFF) % func_8001E938();
+            } while (func_8001E8F4(idx) >= 0xF0);
+            args.field_0 = func_8001E8F4(idx);
+            args.field_10 = y;
+            args.field_4 = x;
+            args.field_8 = 0;
+            args.field_C = z;
+            Task_Create(0x105, &slot[k], (s32)&args);
+        }
+        z += 0x2800;
+        y += 0x800;
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_800669F4);
 

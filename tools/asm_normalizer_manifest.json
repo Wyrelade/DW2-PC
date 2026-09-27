@@ -4047,5 +4047,11 @@
   },
   "stag1100:func_80068058": {
     "passes": []
+  },
+  "stag0000:func_800668D4": {
+    "passes": [
+      "nosr",
+      "nodiv"
+    ]
   }
 }
