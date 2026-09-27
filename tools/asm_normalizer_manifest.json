@@ -3936,5 +3936,15 @@
   },
   "func_80020510": {
     "passes": []
+  },
+  "func_8002130C": {
+    "passes": [
+      "reg_realloc_inj",
+      "arg_unrename",
+      "web_realloc",
+      "save_slot",
+      "block_iso_wide",
+      "padnop"
+    ]
   }
 }
