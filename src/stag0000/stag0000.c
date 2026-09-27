@@ -67,7 +67,9 @@ void func_800654F4(s32 arg0, s32 arg1) {
     func_80065150(arg0, arg1, D_8006935C);
 }
 
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_8006551C);
+void func_8006551C(s32 arg0, s32 arg1) {
+    func_80065150(arg0 + D_8005F770.centerX.s, arg1 + D_8005F770.centerY.s, D_8006935C);
+}
 
 INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80065558);
 
