@@ -101,7 +101,7 @@ glabel func_80014984
     /* 52F4 80014AF4 40008426 */  addiu      $a0, $s4, 0x40
     /* 52F8 80014AF8 21284000 */  addu       $a1, $v0, $zero
     /* 52FC 80014AFC 74008626 */  addiu      $a2, $s4, 0x74
-    /* 5300 80014B00 874D000C */  jal        func_8001361C
+    /* 5300 80014B00 874D000C */  jal        Text_PrintList
     /* 5304 80014B04 02000724 */   addiu     $a3, $zero, 0x2
     /* 5308 80014B08 0580023C */  lui        $v0, %hi(D_80050768)
     /* 530C 80014B0C 6807428C */  lw         $v0, %lo(D_80050768)($v0)
@@ -166,11 +166,11 @@ glabel func_80014984
     /* 53E4 80014BE4 20005224 */  addiu      $s2, $v0, 0x20
     /* 53E8 80014BE8 1C005124 */  addiu      $s1, $v0, 0x1C
   .L80014BEC:
-    /* 53EC 80014BEC E26E000C */  jal        func_8001BB88
+    /* 53EC 80014BEC E26E000C */  jal        Text_Close
     /* 53F0 80014BF0 21209102 */   addu      $a0, $s4, $s1
-    /* 53F4 80014BF4 E26E000C */  jal        func_8001BB88
+    /* 53F4 80014BF4 E26E000C */  jal        Text_Close
     /* 53F8 80014BF8 21209202 */   addu      $a0, $s4, $s2
-    /* 53FC 80014BFC E26E000C */  jal        func_8001BB88
+    /* 53FC 80014BFC E26E000C */  jal        Text_Close
     /* 5400 80014C00 21209302 */   addu      $a0, $s4, $s3
     /* 5404 80014C04 0C007326 */  addiu      $s3, $s3, 0xC
     /* 5408 80014C08 0C005226 */  addiu      $s2, $s2, 0xC

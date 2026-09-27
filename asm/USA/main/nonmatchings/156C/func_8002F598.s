@@ -96,7 +96,7 @@ glabel func_8002F598
     /* 1FEF8 8002F6F8 00000000 */  nop
     /* 1FEFC 8002F6FC 03005130 */  andi       $s1, $v0, 0x3
   .L8002F700:
-    /* 1FF00 8002F700 6DBB000C */  jal        func_8002EDB4
+    /* 1FF00 8002F700 6DBB000C */  jal        getintr
     /* 1FF04 8002F704 00000000 */   nop
     /* 1FF08 8002F708 21804000 */  addu       $s0, $v0, $zero
     /* 1FF0C 8002F70C 1A000012 */  beqz       $s0, .L8002F778

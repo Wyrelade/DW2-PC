@@ -37,7 +37,7 @@ glabel func_8003E610
     /* 2EE88 8003E688 080060AC */  sw         $zero, 0x8($v1)
     /* 2EE8C 8003E68C 180065AC */  sw         $a1, 0x18($v1)
     /* 2EE90 8003E690 200068AC */  sw         $t0, 0x20($v1)
-    /* 2EE94 8003E694 89FE000C */  jal        func_8003FA24
+    /* 2EE94 8003E694 89FE000C */  jal        Card_PushTask
     /* 2EE98 8003E698 1C0066AC */   sw        $a2, 0x1C($v1)
     /* 2EE9C 8003E69C AEF90008 */  j          .L8003E6B8
     /* 2EEA0 8003E6A0 01000224 */   addiu     $v0, $zero, 0x1

@@ -31,7 +31,7 @@ glabel func_8001A5F4
     /* AE60 8001A660 03120200 */  sra        $v0, $v0, 8
     /* AE64 8001A664 03002216 */  bne        $s1, $v0, .L8001A674
     /* AE68 8001A668 00000000 */   nop
-    /* AE6C 8001A66C 0469000C */  jal        func_8001A410
+    /* AE6C 8001A66C 0469000C */  jal        Snd_StopById
     /* AE70 8001A670 00000000 */   nop
   .L8001A674:
     /* AE74 8001A674 1C00BF8F */  lw         $ra, 0x1C($sp)

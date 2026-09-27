@@ -9,7 +9,7 @@ glabel func_800326A4
     /* 22EB8 800326B8 21280000 */  addu       $a1, $zero, $zero
     /* 22EBC 800326BC 21300000 */  addu       $a2, $zero, $zero
     /* 22EC0 800326C0 1400BFAF */  sw         $ra, 0x14($sp)
-    /* 22EC4 800326C4 F9E2000C */  jal        func_80038BE4
+    /* 22EC4 800326C4 F9E2000C */  jal        _SsVmSetSeqVol
     /* 22EC8 800326C8 01000724 */   addiu     $a3, $zero, 0x1
     /* 22ECC 800326CC 6DE4000C */  jal        _SsVmSeqKeyOff
     /* 22ED0 800326D0 21200002 */   addu      $a0, $s0, $zero
@@ -25,8 +25,8 @@ glabel func_800326A4
     /* 22EF8 800326F8 481C22AC */  sw         $v0, %lo(D_80061C48)($at)
     /* 22EFC 800326FC 44008018 */  blez       $a0, .L80032810
     /* 22F00 80032700 21300000 */   addu      $a2, $zero, $zero
-    /* 22F04 80032704 0680033C */  lui        $v1, %hi(D_80061C50)
-    /* 22F08 80032708 501C6324 */  addiu      $v1, $v1, %lo(D_80061C50)
+    /* 22F04 80032704 0680033C */  lui        $v1, %hi(Snd_SeqScores)
+    /* 22F08 80032708 501C6324 */  addiu      $v1, $v1, %lo(Snd_SeqScores)
     /* 22F0C 8003270C 80101000 */  sll        $v0, $s0, 2
     /* 22F10 80032710 21284300 */  addu       $a1, $v0, $v1
     /* 22F14 80032714 FFFF0824 */  addiu      $t0, $zero, -0x1

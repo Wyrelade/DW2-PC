@@ -79,7 +79,7 @@ glabel func_80018BF8
     /* 9524 80018D24 21904000 */  addu       $s2, $v0, $zero
   .L80018D28:
     /* 9528 80018D28 21202002 */  addu       $a0, $s1, $zero
-    /* 952C 80018D2C 59AD000C */  jal        func_8002B564
+    /* 952C 80018D2C 59AD000C */  jal        GsSetFlatLight
     /* 9530 80018D30 21280002 */   addu      $a1, $s0, $zero
     /* 9534 80018D34 01003126 */  addiu      $s1, $s1, 0x1
     /* 9538 80018D38 0300222A */  slti       $v0, $s1, 0x3

@@ -3,8 +3,8 @@ nonmatching func_80031AC4, 0x208
 glabel func_80031AC4
     /* 222C4 80031AC4 C8FFBD27 */  addiu      $sp, $sp, -0x38
     /* 222C8 80031AC8 00140400 */  sll        $v0, $a0, 16
-    /* 222CC 80031ACC 0680033C */  lui        $v1, %hi(D_80061C50)
-    /* 222D0 80031AD0 501C6324 */  addiu      $v1, $v1, %lo(D_80061C50)
+    /* 222CC 80031ACC 0680033C */  lui        $v1, %hi(Snd_SeqScores)
+    /* 222D0 80031AD0 501C6324 */  addiu      $v1, $v1, %lo(Snd_SeqScores)
     /* 222D4 80031AD4 83130200 */  sra        $v0, $v0, 14
     /* 222D8 80031AD8 21404300 */  addu       $t0, $v0, $v1
     /* 222DC 80031ADC 001C0500 */  sll        $v1, $a1, 16
@@ -94,7 +94,7 @@ glabel func_80031AC4
   .L80031C14:
     /* 22414 80031C14 FFFF2532 */  andi       $a1, $s1, 0xFFFF
     /* 22418 80031C18 FFFF0632 */  andi       $a2, $s0, 0xFFFF
-    /* 2241C 80031C1C F9E2000C */  jal        func_80038BE4
+    /* 2241C 80031C1C F9E2000C */  jal        _SsVmSetSeqVol
     /* 22420 80031C20 01000724 */   addiu     $a3, $zero, 0x1
     /* 22424 80031C24 7F000224 */  addiu      $v0, $zero, 0x7F
     /* 22428 80031C28 03002216 */  bne        $s1, $v0, .L80031C38
@@ -115,9 +115,9 @@ glabel func_80031AC4
     /* 2245C 80031C5C 21104300 */  addu       $v0, $v0, $v1
     /* 22460 80031C60 80100200 */  sll        $v0, $v0, 2
     /* 22464 80031C64 23104300 */  subu       $v0, $v0, $v1
-    /* 22468 80031C68 0680033C */  lui        $v1, %hi(D_80061C50)
+    /* 22468 80031C68 0680033C */  lui        $v1, %hi(Snd_SeqScores)
     /* 2246C 80031C6C 21186400 */  addu       $v1, $v1, $a0
-    /* 22470 80031C70 501C638C */  lw         $v1, %lo(D_80061C50)($v1)
+    /* 22470 80031C70 501C638C */  lw         $v1, %lo(Snd_SeqScores)($v1)
     /* 22474 80031C74 00110200 */  sll        $v0, $v0, 4
     /* 22478 80031C78 21104300 */  addu       $v0, $v0, $v1
   .L80031C7C:

@@ -19,7 +19,7 @@ glabel func_8003A054
     /* 2A88C 8003A08C FDFF6104 */  bgez       $v1, .L8003A084
     /* 2A890 8003A090 FEFF4224 */   addiu     $v0, $v0, -0x2
   .L8003A094:
-    /* 2A894 8003A094 4FE8000C */  jal        func_8003A13C
+    /* 2A894 8003A094 4FE8000C */  jal        SpuStart
     /* 2A898 8003A098 00000000 */   nop
     /* 2A89C 8003A09C D1000424 */  addiu      $a0, $zero, 0xD1
     /* 2A8A0 8003A0A0 0580023C */  lui        $v0, %hi(D_8004FDCC)
@@ -43,8 +43,8 @@ glabel func_8003A054
     /* 2A8E8 8003A0E8 88FE20AC */  sw         $zero, %lo(D_8004FE88)($at)
     /* 2A8EC 8003A0EC 0580013C */  lui        $at, %hi(D_8004FE8C)
     /* 2A8F0 8003A0F0 8CFE20AC */  sw         $zero, %lo(D_8004FE8C)($at)
-    /* 2A8F4 8003A0F4 0580013C */  lui        $at, %hi(D_8004FE90)
-    /* 2A8F8 8003A0F8 90FE20AC */  sw         $zero, %lo(D_8004FE90)($at)
+    /* 2A8F4 8003A0F4 0580013C */  lui        $at, %hi(Spu_MemList)
+    /* 2A8F8 8003A0F8 90FE20AC */  sw         $zero, %lo(Spu_MemList)($at)
     /* 2A8FC 8003A0FC 0580013C */  lui        $at, %hi(D_8004FDB8)
     /* 2A900 8003A100 B8FD20AC */  sw         $zero, %lo(D_8004FDB8)($at)
     /* 2A904 8003A104 0580013C */  lui        $at, %hi(D_8004FE44)

@@ -1,8 +1,8 @@
 nonmatching func_800251AC, 0x190
 
 glabel func_800251AC
-    /* 159AC 800251AC 0580033C */  lui        $v1, %hi(D_80048E90)
-    /* 159B0 800251B0 908E638C */  lw         $v1, %lo(D_80048E90)($v1)
+    /* 159AC 800251AC 0580033C */  lui        $v1, %hi(Pad_SioRegs)
+    /* 159B0 800251B0 908E638C */  lw         $v1, %lo(Pad_SioRegs)($v1)
     /* 159B4 800251B4 E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* 159B8 800251B8 1000BFAF */  sw         $ra, 0x10($sp)
     /* 159BC 800251BC 0A006294 */  lhu        $v0, 0xA($v1)
@@ -99,8 +99,8 @@ glabel func_800251AC
     /* 15B14 80025314 F2FF4010 */  beqz       $v0, .L800252E0
     /* 15B18 80025318 00000000 */   nop
   .L8002531C:
-    /* 15B1C 8002531C 0580033C */  lui        $v1, %hi(D_80048E90)
-    /* 15B20 80025320 908E638C */  lw         $v1, %lo(D_80048E90)($v1)
+    /* 15B1C 8002531C 0580033C */  lui        $v1, %hi(Pad_SioRegs)
+    /* 15B20 80025320 908E638C */  lw         $v1, %lo(Pad_SioRegs)($v1)
     /* 15B24 80025324 88000224 */  addiu      $v0, $zero, 0x88
     /* 15B28 80025328 0E0062A4 */  sh         $v0, 0xE($v1)
   .L8002532C:

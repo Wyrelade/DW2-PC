@@ -3,8 +3,8 @@ nonmatching func_80031EA0, 0x244
 glabel func_80031EA0
     /* 226A0 80031EA0 E0FFBD27 */  addiu      $sp, $sp, -0x20
     /* 226A4 80031EA4 00140400 */  sll        $v0, $a0, 16
-    /* 226A8 80031EA8 0680033C */  lui        $v1, %hi(D_80061C50)
-    /* 226AC 80031EAC 501C6324 */  addiu      $v1, $v1, %lo(D_80061C50)
+    /* 226A8 80031EA8 0680033C */  lui        $v1, %hi(Snd_SeqScores)
+    /* 226AC 80031EAC 501C6324 */  addiu      $v1, $v1, %lo(Snd_SeqScores)
     /* 226B0 80031EB0 83130200 */  sra        $v0, $v0, 14
     /* 226B4 80031EB4 21384300 */  addu       $a3, $v0, $v1
     /* 226B8 80031EB8 001C0500 */  sll        $v1, $a1, 16

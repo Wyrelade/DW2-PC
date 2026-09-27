@@ -107,7 +107,7 @@ glabel func_80011BEC
     /* 2568 80011D68 1600A2A7 */  sh         $v0, 0x16($sp)
     /* 256C 80011D6C F0006324 */  addiu      $v1, $v1, 0xF0
     /* 2570 80011D70 21186600 */  addu       $v1, $v1, $a2
-    /* 2574 80011D74 CB9D000C */  jal        func_8002772C
+    /* 2574 80011D74 CB9D000C */  jal        LoadImage
     /* 2578 80011D78 1200A3A7 */   sh        $v1, 0x12($sp)
   .L80011D7C:
     /* 257C 80011D7C 5555023C */  lui        $v0, (0x55555556 >> 16)
@@ -140,7 +140,7 @@ glabel func_80011BEC
     /* 25E8 80011DE8 1C00A2A7 */  sh         $v0, 0x1C($sp)
     /* 25EC 80011DEC 0A002296 */  lhu        $v0, 0xA($s1)
     /* 25F0 80011DF0 1800A427 */  addiu      $a0, $sp, 0x18
-    /* 25F4 80011DF4 CB9D000C */  jal        func_8002772C
+    /* 25F4 80011DF4 CB9D000C */  jal        LoadImage
     /* 25F8 80011DF8 1E00A2A7 */   sh        $v0, 0x1E($sp)
     /* 25FC 80011DFC C0201000 */  sll        $a0, $s0, 3
     /* 2600 80011E00 0480033C */  lui        $v1, %hi(D_80040DAC)

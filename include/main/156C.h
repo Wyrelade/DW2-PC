@@ -54,7 +54,7 @@ typedef struct {
     /* 0xA4 */ s16 field_A4;
 } ActorWork;
 
-/* Global struct D_80041564; only field_0 and field_8 are known so far. */
+/* Global struct Gfx_FadeState; only field_0 and field_8 are known so far. */
 typedef struct {
     /* 0x00 */ s32 field_0;
     /* 0x04 */ s32 field_4;
@@ -79,7 +79,7 @@ typedef struct {
     /* 0x3C */ void (*fn_3C)(void *);
 } Obj48F08;
 
-/* Record returned by the Cd_FindLruCachedFile lookup; cleared by func_80023BB0. */
+/* Record returned by the Cd_FindLruCachedFile lookup; cleared by Cd_EvictLruFile. */
 typedef struct {
     /* 0x00 */ u16 field_0;
     /* 0x02 */ u16 field_2;
@@ -120,7 +120,7 @@ typedef struct {
     /* 0x15 */ u8 field_15;
 } Rec230DC;
 
-/* Global struct D_80050938 populated by Task_FindFirst. */
+/* Global struct Task_FindFilter populated by Task_FindFirst. */
 typedef struct {
     /* 0x00 */ s32 field_0;
     /* 0x04 */ s32 field_4;
@@ -128,7 +128,7 @@ typedef struct {
     /* 0x0C */ s32 field_C;
 } Blk50938;
 
-/* Element of the D_8005CD60 array (stride 0x20), indexed by Gfx_GetTexSlot and
+/* Element of the Gfx_TexSlots array (stride 0x20), indexed by Gfx_GetTexSlot and
    initialized by Gfx_InitTexSlots. */
 typedef struct {
     /* 0x00 */ s32 field_0;
@@ -561,7 +561,7 @@ typedef struct {
     /* 0x28 */ s32 *field_28;
 } Ent54C48; /* 0x2C */
 
-/* Args to func_8002828C: a record it stamps (field_3/field_4/field_8) and a
+/* Args to SetDrawOffset: a record it stamps (field_3/field_4/field_8) and a
    two-halfword source read for the get_ofs call. */
 typedef struct {
     u8 _pad0[3];
@@ -587,7 +587,7 @@ typedef struct {
 /* Global struct D_80048DB8: field_0 is a small state (Cd_PollRead), field_4 a
    countdown and field_8 an advancing buffer pointer (func_8002405C; note the
    symbol D_80048DBC aliases field_4), field_1C a counter compared/bumped by
-   func_80023FFC. */
+   Cd_CheckNextSector. */
 typedef struct {
     /* 0x00 */ s32 field_0;
     /* 0x04 */ s32 field_4;
@@ -865,7 +865,7 @@ typedef struct {
 } Obj20CE8;
 
 /* Buffer allocated into a container's field_38 by func_80020C40 (0x90 bytes via
- * func_80022F3C); only the fields it stamps are known. */
+ * Mem_Alloc); only the fields it stamps are known. */
 /* Three s32 words copied as one block (position -> matrix translation). */
 typedef struct {
     s32 v[3];
@@ -899,7 +899,7 @@ typedef struct {
     /* 0x38 */ AllocC40 *field_38;
 } ContC40;
 
-/* Buffer allocated + registered by Task_Alloc (in the D_80050798 list) and
+/* Buffer allocated + registered by Task_Alloc (in the Task_List list) and
  * populated by Task_AllocWithBuffers; only the pointer/count fields it writes are known. */
 typedef struct {
     /* 0x00 */ u32 field_0;
@@ -1063,8 +1063,8 @@ typedef struct {
     /* 0x24 */ s32 field_24;
 } HandlerArg;
 
-/* Element of the per-slot arrays D_80061C50[slot] (stride 0xB0), indexed
- * D_80061C50[a0][a1] by the func_80032954 handler table and func_800354F4. */
+/* Element of the per-slot arrays Snd_SeqScores[slot] (stride 0xB0), indexed
+ * Snd_SeqScores[a0][a1] by the func_80032954 handler table and _SsSndStop. */
 typedef struct {
     u8 *field_0;        /* 0x00 */
     u8 *volatile field_4; /* 0x04 */
@@ -1140,7 +1140,7 @@ typedef struct {
     /* 0x18 */ void (*fn_18)();
 } Vt4FB80;
 
-/* Status block polled through D_80048E90 (Pad_WaitSioRx spins on bit 1 of
+/* Status block polled through Pad_SioRegs (Pad_WaitSioRx spins on bit 1 of
  * field_4). */
 typedef struct {
     /* 0x00 */ volatile u8 field_0;
@@ -1261,7 +1261,7 @@ typedef struct {
 } Blk5071C;
 
 /* Sound state block at D_80062D18 (splat splits it into small byte symbols);
- * func_80037BD0 indexes the D_80062D08 table with field_7 * 16 + field_C. */
+ * note2pitch2 indexes the D_80062D08 table with field_7 * 16 + field_C. */
 typedef struct {
     /* 0x00 */ s8 field_0;
     /* 0x01 */ s8 field_1;
@@ -1332,7 +1332,7 @@ typedef struct {
     /* 0x04 */ u32 code[5];
 } DrMove2AB54;
 
-/* Status words behind D_80048E8C; Pad_VBlankIrqVerify checks bit 0 of both. */
+/* Status words behind Pad_IntrRegs; Pad_VBlankIrqVerify checks bit 0 of both. */
 typedef struct {
     /* 0x00 */ s32 field_0;
     /* 0x04 */ s32 field_4;
@@ -1384,7 +1384,7 @@ typedef struct {
     /* 0x04 */ u8 field_4[1];
 } Ent27A18;
 
-/* Two-word header SpuInitMalloc fills and publishes through D_8004FE90. */
+/* Two-word header SpuInitMalloc fills and publishes through Spu_MemList. */
 typedef struct {
     /* 0x0 */ u32 field_0;
     /* 0x4 */ s32 field_4;
@@ -1465,7 +1465,7 @@ typedef struct {
 } GridMenu;
 
 /* GPU drawing environment (libgpu DRAWENV layout, 0x1C head); filled by
-   func_8002A9F4. */
+   SetDefDrawEnv. */
 typedef struct {
     /* 0x00 */ s16 clip_x;
     /* 0x02 */ s16 clip_y;
@@ -1629,7 +1629,7 @@ typedef struct {
 } Reg506BC;
 
 /* GPU display environment (libgpu DISPENV layout) at D_80061968, set up by
-   func_8002ACC8 and applied by func_80027CB0. */
+   func_8002ACC8 and applied by PutDispEnv. */
 typedef struct {
     /* 0x00 */ Rect2AB54 disp;
     /* 0x08 */ Rect2AB54 screen;
@@ -1660,7 +1660,7 @@ typedef struct {
     /* 0x10 */ u32 *ot;
 } Db2B06C;
 
-/* 8-byte copy of an Ent62CFC head filled by func_80036054. */
+/* 8-byte copy of an Ent62CFC head filled by SsUtGetProgAtr. */
 typedef struct {
     /* 0x0 */ u8 field_0;
     /* 0x1 */ u8 field_1;
@@ -1709,7 +1709,7 @@ typedef struct {
     /* 0x14C */ s32 field_14C;
 } Wk18BF8;
 
-/* Per-channel hook table D_80061CD0[ch][16] run by _SsContNrpn1. */
+/* Per-channel hook table Snd_MarkCallbacks[ch][16] run by _SsContNrpn1. */
 typedef void (*Hook33424)(s16, s16, u8);
 
 /* DR_ENV packet built by func_800282CC: tag word (length byte at 3) then
@@ -1933,7 +1933,7 @@ typedef struct {
 } Out1DDA8;
 
 /* func_8001CE9C: sprite-list record (arg0), its 0x10-stride part list, the
- * D_8005CD60 texture slot view and the SPRT + DR_TPAGE packets it emits. */
+ * Gfx_TexSlots texture slot view and the SPRT + DR_TPAGE packets it emits. */
 typedef struct {
     /* 0x0 */ u8 r;
     /* 0x1 */ u8 g;
@@ -2124,7 +2124,7 @@ typedef struct {
     /* 0x0C */ s32 field_C;
     s32 field_10[4];
 } Hdr23550;
-/* Clear rectangle for func_80027604. */
+/* Clear rectangle for ClearImage. */
 typedef struct {
     s16 x;
     s16 y;
@@ -2546,7 +2546,7 @@ typedef struct {
 
 
 /* Horizontal display range pair per video standard and width class,
- * D_80048FE4[pad0][k] (func_80027CB0). */
+ * D_80048FE4[pad0][k] (PutDispEnv). */
 typedef struct {
     /* 0x0 */ u16 lo;
     /* 0x2 */ u16 hi;
@@ -2674,7 +2674,7 @@ typedef struct {
 
 
 /* By-value struct arg spanning a3 + stack (0x28 bytes); only three fields
-   are touched here. func_80036164/func_80036594 receive its address. */
+   are touched here. SsUtGetVagAtr/SsUtSetVagAtr receive its address. */
 typedef struct {
     u8 pad0[0x10];
     /* 0x10 */ u16 field_10;
@@ -2691,18 +2691,18 @@ void func_800348D4(s32 a0, s32 a1, s32 a2, s32 a3);
 void _SsSetProgramChange(s16 arg0, s16 arg1, s16 arg2);
 void _SsGetMetaEvent(s16 a0, s16 a1);
 void func_80034424(s16 a0, s16 a1);
-void func_800344D4(s16 a0, s16 a1, s32 a2);
+void _SsSetControlChange(s16 a0, s16 a1, s32 a2);
 void _SsContBankChange(s16 arg0, s16 arg1, s16 arg2);
 void func_80033054(s16 a0, s16 a1, u8 a2);
 void func_80033124(s16 a0, s16 a1, s32 a2);
 void func_800331F4(s16 a0, s16 a1, s32 a2);
-void func_800332E4(s16 a0, s16 a1, u8 a2);
+void _SsContDamper(s16 a0, s16 a1, u8 a2);
 void _SsContNrpn1(s16 a0, s16 a1, u8 a2);
-void func_80033524();
+void _SsContNrpn2();
 void _SsContRpn1(s16 arg0, s16 arg1, s16 arg2);
 void _SsContRpn2(s16 arg0, s16 arg1, s16 arg2);
-void func_80033394(s16 a0, s16 a1, u8 a2);
-void func_80033744(s16 a0, s16 a1);
+void _SsContExternal(s16 a0, s16 a1, u8 a2);
+void _SsContResetAll(s16 a0, s16 a1);
 void func_80032CD4(s16 a0, s16 a1, s16 a2);
 void func_80033804(s16 a0, s16 a1, s16 a2, HandlerArg arg);
 void func_80033894(s16 a0, s16 a1, s16 a2, HandlerArg arg);
@@ -2848,7 +2848,7 @@ typedef struct {
 } Que291FC; /* size 0x60 */
 
 
-/* Stream state block at D_8004FC48 (mode, busy flag, two hooks, three flag bytes), read by func_80035074. */
+/* Stream state block at D_8004FC48 (mode, busy flag, two hooks, three flag bytes), read by _SsStart. */
 typedef struct {
     /* 0x00 */ s32 mode;
     /* 0x04 */ s32 flag;
@@ -2892,7 +2892,7 @@ typedef union {
 } Reg2EC0C;
 
 
-s32 func_80038A90(s16 a0, s16 a1, s16 a2, s32 a3);
+s32 _SsVmPitchBend(s16 a0, s16 a1, s16 a2, s32 a3);
 
 
 /* func_8001F9AC: 10-byte fixed part (field_1C list of Sub3C, 0xFF/0xFE ended),

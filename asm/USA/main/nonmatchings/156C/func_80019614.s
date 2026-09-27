@@ -17,7 +17,7 @@ glabel func_80019614
     /* 9E48 80019648 4C00B5AF */  sw         $s5, 0x4C($sp)
     /* 9E4C 8001964C 4400B3AF */  sw         $s3, 0x44($sp)
   .L80019650:
-    /* 9E50 80019650 E26E000C */  jal        func_8001BB88
+    /* 9E50 80019650 E26E000C */  jal        Text_Close
     /* 9E54 80019654 21202002 */   addu      $a0, $s1, $zero
     /* 9E58 80019658 01001026 */  addiu      $s0, $s0, 0x1
     /* 9E5C 8001965C 1200022A */  slti       $v0, $s0, 0x12
@@ -112,7 +112,7 @@ glabel func_80019614
     /* 9FA8 800197A8 1401858E */  lw         $a1, 0x114($s4)
     /* 9FAC 800197AC 0000448C */  lw         $a0, 0x0($v0)
     /* 9FB0 800197B0 2628B300 */  xor        $a1, $a1, $s3
-    /* 9FB4 800197B4 9D6F000C */  jal        func_8001BE74
+    /* 9FB4 800197B4 9D6F000C */  jal        Text_SetColor
     /* 9FB8 800197B8 2B280500 */   sltu      $a1, $zero, $a1
     /* 9FBC 800197BC 01007326 */  addiu      $s3, $s3, 0x1
     /* 9FC0 800197C0 0400622A */  slti       $v0, $s3, 0x4

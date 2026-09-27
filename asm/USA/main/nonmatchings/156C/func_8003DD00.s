@@ -21,8 +21,8 @@ glabel func_8003DD00
     /* 2E544 8003DD44 480002AE */  sw         $v0, 0x48($s0)
     /* 2E548 8003DD48 FDFE000C */  jal        func_8003FBF4
     /* 2E54C 8003DD4C 500003AE */   sw        $v1, 0x50($s0)
-    /* 2E550 8003DD50 0480053C */  lui        $a1, %hi(func_8003F46C)
-    /* 2E554 8003DD54 6CF4A524 */  addiu      $a1, $a1, %lo(func_8003F46C)
+    /* 2E550 8003DD50 0480053C */  lui        $a1, %hi(Card_OnVSync)
+    /* 2E554 8003DD54 6CF4A524 */  addiu      $a1, $a1, %lo(Card_OnVSync)
     /* 2E558 8003DD58 66C3000C */  jal        VSyncCallbacks
     /* 2E55C 8003DD5C 07000424 */   addiu     $a0, $zero, 0x7
     /* 2E560 8003DD60 1400BF8F */  lw         $ra, 0x14($sp)

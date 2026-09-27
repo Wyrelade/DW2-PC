@@ -22,7 +22,7 @@ glabel func_8001D104
     /* D94C 8001D14C 21F04000 */  addu       $fp, $v0, $zero
     /* D950 8001D150 0000E28E */  lw         $v0, 0x0($s7)
     /* D954 8001D154 FFFF043C */  lui        $a0, (0xFFFF0000 >> 16)
-    /* D958 8001D158 E072000C */  jal        func_8001CB80
+    /* D958 8001D158 E072000C */  jal        Gfx_FindOrLoadTexSlot
     /* D95C 8001D15C 24204400 */   and       $a0, $v0, $a0
     /* D960 8001D160 0680033C */  lui        $v1, %hi(D_8005F79C)
     /* D964 8001D164 21A84000 */  addu       $s5, $v0, $zero

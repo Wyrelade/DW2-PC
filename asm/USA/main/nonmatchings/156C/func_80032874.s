@@ -19,8 +19,8 @@ glabel func_80032874
     /* 230AC 800328AC 15DB000C */  jal        func_80036C54
     /* 230B0 800328B0 18000424 */   addiu     $a0, $zero, 0x18
     /* 230B4 800328B4 21280000 */  addu       $a1, $zero, $zero
-    /* 230B8 800328B8 0680043C */  lui        $a0, %hi(D_80061CD0)
-    /* 230BC 800328BC D01C8424 */  addiu      $a0, $a0, %lo(D_80061CD0)
+    /* 230B8 800328B8 0680043C */  lui        $a0, %hi(Snd_MarkCallbacks)
+    /* 230BC 800328BC D01C8424 */  addiu      $a0, $a0, %lo(Snd_MarkCallbacks)
   .L800328C0:
     /* 230C0 800328C0 0F000324 */  addiu      $v1, $zero, 0xF
     /* 230C4 800328C4 3C008224 */  addiu      $v0, $a0, 0x3C
@@ -34,8 +34,8 @@ glabel func_80032874
     /* 230E0 800328E0 F7FF4014 */  bnez       $v0, .L800328C0
     /* 230E4 800328E4 40008424 */   addiu     $a0, $a0, 0x40
     /* 230E8 800328E8 3C000224 */  addiu      $v0, $zero, 0x3C
-    /* 230EC 800328EC 0680013C */  lui        $at, %hi(D_80061C4C)
-    /* 230F0 800328F0 4C1C22AC */  sw         $v0, %lo(D_80061C4C)($at)
+    /* 230EC 800328EC 0680013C */  lui        $at, %hi(Snd_TicksPerSec)
+    /* 230F0 800328F0 4C1C22AC */  sw         $v0, %lo(Snd_TicksPerSec)($at)
     /* 230F4 800328F4 0680013C */  lui        $at, %hi(D_80061C48)
     /* 230F8 800328F8 481C20AC */  sw         $zero, %lo(D_80061C48)($at)
     /* 230FC 800328FC 0680013C */  lui        $at, %hi(D_80061C44)

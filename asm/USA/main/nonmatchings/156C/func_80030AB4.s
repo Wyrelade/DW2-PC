@@ -26,8 +26,8 @@ glabel func_80030AB4
     /* 21308 80030B08 23104300 */  subu       $v0, $v0, $v1
     /* 2130C 80030B0C 05008104 */  bgez       $a0, .L80030B24
     /* 21310 80030B10 FFFF5130 */   andi      $s1, $v0, 0xFFFF
-    /* 21314 80030B14 0580023C */  lui        $v0, %hi(D_8004FBC0)
-    /* 21318 80030B18 C0FB428C */  lw         $v0, %lo(D_8004FBC0)($v0)
+    /* 21314 80030B14 0580023C */  lui        $v0, %hi(Sys_VSyncCount)
+    /* 21318 80030B18 C0FB428C */  lw         $v0, %lo(Sys_VSyncCount)($v0)
     /* 2131C 80030B1C 06C30008 */  j          .L80030C18
     /* 21320 80030B20 00000000 */   nop
   .L80030B24:
@@ -50,16 +50,16 @@ glabel func_80030AB4
     /* 2135C 80030B5C 21280000 */   addu      $a1, $zero, $zero
     /* 21360 80030B60 FFFF8524 */  addiu      $a1, $a0, -0x1
   .L80030B64:
-    /* 21364 80030B64 0BC3000C */  jal        func_80030C2C
+    /* 21364 80030B64 0BC3000C */  jal        v_wait
     /* 21368 80030B68 21204000 */   addu      $a0, $v0, $zero
     /* 2136C 80030B6C 0580023C */  lui        $v0, %hi(D_8004EA88)
     /* 21370 80030B70 88EA428C */  lw         $v0, %lo(D_8004EA88)($v0)
     /* 21374 80030B74 00000000 */  nop
     /* 21378 80030B78 0000508C */  lw         $s0, 0x0($v0)
-    /* 2137C 80030B7C 0580043C */  lui        $a0, %hi(D_8004FBC0)
-    /* 21380 80030B80 C0FB848C */  lw         $a0, %lo(D_8004FBC0)($a0)
+    /* 2137C 80030B7C 0580043C */  lui        $a0, %hi(Sys_VSyncCount)
+    /* 21380 80030B80 C0FB848C */  lw         $a0, %lo(Sys_VSyncCount)($a0)
     /* 21384 80030B84 01000524 */  addiu      $a1, $zero, 0x1
-    /* 21388 80030B88 0BC3000C */  jal        func_80030C2C
+    /* 21388 80030B88 0BC3000C */  jal        v_wait
     /* 2138C 80030B8C 01008424 */   addiu     $a0, $a0, 0x1
     /* 21390 80030B90 4000023C */  lui        $v0, (0x400000 >> 16)
     /* 21394 80030B94 24100202 */  and        $v0, $s0, $v0
@@ -81,8 +81,8 @@ glabel func_80030AB4
     /* 213D0 80030BD0 FBFF4010 */  beqz       $v0, .L80030BC0
     /* 213D4 80030BD4 00000000 */   nop
   .L80030BD8:
-    /* 213D8 80030BD8 0580023C */  lui        $v0, %hi(D_8004FBC0)
-    /* 213DC 80030BDC C0FB428C */  lw         $v0, %lo(D_8004FBC0)($v0)
+    /* 213D8 80030BD8 0580023C */  lui        $v0, %hi(Sys_VSyncCount)
+    /* 213DC 80030BDC C0FB428C */  lw         $v0, %lo(Sys_VSyncCount)($v0)
     /* 213E0 80030BE0 0580043C */  lui        $a0, %hi(D_8004EA8C)
     /* 213E4 80030BE4 8CEA848C */  lw         $a0, %lo(D_8004EA8C)($a0)
     /* 213E8 80030BE8 0580013C */  lui        $at, %hi(D_8004EA94)

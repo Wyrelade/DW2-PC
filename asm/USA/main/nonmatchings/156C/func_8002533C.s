@@ -4,8 +4,8 @@ glabel func_8002533C
     /* 15B3C 8002533C E0FFBD27 */  addiu      $sp, $sp, -0x20
     /* 15B40 80025340 1000B0AF */  sw         $s0, 0x10($sp)
     /* 15B44 80025344 21808000 */  addu       $s0, $a0, $zero
-    /* 15B48 80025348 0580033C */  lui        $v1, %hi(D_80048E90)
-    /* 15B4C 8002534C 908E638C */  lw         $v1, %lo(D_80048E90)($v1)
+    /* 15B48 80025348 0580033C */  lui        $v1, %hi(Pad_SioRegs)
+    /* 15B4C 8002534C 908E638C */  lw         $v1, %lo(Pad_SioRegs)($v1)
     /* 15B50 80025350 40000224 */  addiu      $v0, $zero, 0x40
     /* 15B54 80025354 1800BFAF */  sw         $ra, 0x18($sp)
     /* 15B58 80025358 1400B1AF */  sw         $s1, 0x14($sp)
@@ -25,8 +25,8 @@ glabel func_8002533C
     /* 15B8C 8002538C 00000000 */   nop
     /* 15B90 80025390 0580023C */  lui        $v0, %hi(D_80048E58)
     /* 15B94 80025394 588E428C */  lw         $v0, %lo(D_80048E58)($v0)
-    /* 15B98 80025398 0580043C */  lui        $a0, %hi(D_80048E90)
-    /* 15B9C 8002539C 908E848C */  lw         $a0, %lo(D_80048E90)($a0)
+    /* 15B98 80025398 0580043C */  lui        $a0, %hi(Pad_SioRegs)
+    /* 15B9C 8002539C 908E848C */  lw         $a0, %lo(Pad_SioRegs)($a0)
     /* 15BA0 800253A0 02004010 */  beqz       $v0, .L800253AC
     /* 15BA4 800253A4 03100324 */   addiu     $v1, $zero, 0x1003
     /* 15BA8 800253A8 03300324 */  addiu      $v1, $zero, 0x3003
@@ -93,8 +93,8 @@ glabel func_8002533C
     /* 15C90 80025490 09F84000 */  jalr       $v0
     /* 15C94 80025494 21200002 */   addu      $a0, $s0, $zero
   .L80025498:
-    /* 15C98 80025498 0580033C */  lui        $v1, %hi(D_80048E90)
-    /* 15C9C 8002549C 908E638C */  lw         $v1, %lo(D_80048E90)($v1)
+    /* 15C98 80025498 0580033C */  lui        $v1, %hi(Pad_SioRegs)
+    /* 15C9C 8002549C 908E638C */  lw         $v1, %lo(Pad_SioRegs)($v1)
     /* 15CA0 800254A0 00000000 */  nop
     /* 15CA4 800254A4 04006294 */  lhu        $v0, 0x4($v1)
     /* 15CA8 800254A8 00000000 */  nop
@@ -115,8 +115,8 @@ glabel func_8002533C
     /* 15CE0 800254E0 00000000 */   nop
     /* 15CE4 800254E4 FDFF4010 */  beqz       $v0, .L800254DC
     /* 15CE8 800254E8 D0070424 */   addiu     $a0, $zero, 0x7D0
-    /* 15CEC 800254EC 0580033C */  lui        $v1, %hi(D_80048E90)
-    /* 15CF0 800254F0 908E638C */  lw         $v1, %lo(D_80048E90)($v1)
+    /* 15CEC 800254EC 0580033C */  lui        $v1, %hi(Pad_SioRegs)
+    /* 15CF0 800254F0 908E638C */  lw         $v1, %lo(Pad_SioRegs)($v1)
     /* 15CF4 800254F4 01000224 */  addiu      $v0, $zero, 0x1
     /* 15CF8 800254F8 8499000C */  jal        Pad_SetTimeout
     /* 15CFC 800254FC 000062A0 */   sb        $v0, 0x0($v1)
@@ -126,8 +126,8 @@ glabel func_8002533C
     /* 15D0C 8002550C 21100000 */   addu      $v0, $zero, $zero
     /* 15D10 80025510 2497000C */  jal        Pad_WaitSioRx
     /* 15D14 80025514 00000000 */   nop
-    /* 15D18 80025518 0580023C */  lui        $v0, %hi(D_80048E90)
-    /* 15D1C 8002551C 908E428C */  lw         $v0, %lo(D_80048E90)($v0)
+    /* 15D18 80025518 0580023C */  lui        $v0, %hi(Pad_SioRegs)
+    /* 15D1C 8002551C 908E428C */  lw         $v0, %lo(Pad_SioRegs)($v0)
     /* 15D20 80025520 AE010424 */  addiu      $a0, $zero, 0x1AE
     /* 15D24 80025524 00004290 */  lbu        $v0, 0x0($v0)
     /* 15D28 80025528 8499000C */  jal        Pad_SetTimeout
@@ -140,16 +140,16 @@ glabel func_8002533C
     /* 15D40 80025540 46004014 */  bnez       $v0, .L8002565C
     /* 15D44 80025544 21100000 */   addu      $v0, $zero, $zero
   .L80025548:
-    /* 15D48 80025548 0580023C */  lui        $v0, %hi(D_80048E8C)
-    /* 15D4C 8002554C 8C8E428C */  lw         $v0, %lo(D_80048E8C)($v0)
+    /* 15D48 80025548 0580023C */  lui        $v0, %hi(Pad_IntrRegs)
+    /* 15D4C 8002554C 8C8E428C */  lw         $v0, %lo(Pad_IntrRegs)($v0)
     /* 15D50 80025550 00000000 */  nop
     /* 15D54 80025554 0000428C */  lw         $v0, 0x0($v0)
     /* 15D58 80025558 00000000 */  nop
     /* 15D5C 8002555C 80004230 */  andi       $v0, $v0, 0x80
     /* 15D60 80025560 F5FF4010 */  beqz       $v0, .L80025538
     /* 15D64 80025564 3C000424 */   addiu     $a0, $zero, 0x3C
-    /* 15D68 80025568 0580033C */  lui        $v1, %hi(D_80048E90)
-    /* 15D6C 8002556C 908E638C */  lw         $v1, %lo(D_80048E90)($v1)
+    /* 15D68 80025568 0580033C */  lui        $v1, %hi(Pad_SioRegs)
+    /* 15D6C 8002556C 908E638C */  lw         $v1, %lo(Pad_SioRegs)($v1)
     /* 15D70 80025570 42000224 */  addiu      $v0, $zero, 0x42
     /* 15D74 80025574 8499000C */  jal        Pad_SetTimeout
     /* 15D78 80025578 000062A0 */   sb        $v0, 0x0($v1)
@@ -159,8 +159,8 @@ glabel func_8002533C
     /* 15D88 80025588 21100000 */   addu      $v0, $zero, $zero
     /* 15D8C 8002558C 2497000C */  jal        Pad_WaitSioRx
     /* 15D90 80025590 00000000 */   nop
-    /* 15D94 80025594 0580023C */  lui        $v0, %hi(D_80048E90)
-    /* 15D98 80025598 908E428C */  lw         $v0, %lo(D_80048E90)($v0)
+    /* 15D94 80025594 0580023C */  lui        $v0, %hi(Pad_SioRegs)
+    /* 15D98 80025598 908E428C */  lw         $v0, %lo(Pad_SioRegs)($v0)
     /* 15D9C 8002559C AE010424 */  addiu      $a0, $zero, 0x1AE
     /* 15DA0 800255A0 00004290 */  lbu        $v0, 0x0($v0)
     /* 15DA4 800255A4 8499000C */  jal        Pad_SetTimeout
@@ -173,16 +173,16 @@ glabel func_8002533C
     /* 15DBC 800255BC 27004014 */  bnez       $v0, .L8002565C
     /* 15DC0 800255C0 21100000 */   addu      $v0, $zero, $zero
   .L800255C4:
-    /* 15DC4 800255C4 0580023C */  lui        $v0, %hi(D_80048E8C)
-    /* 15DC8 800255C8 8C8E428C */  lw         $v0, %lo(D_80048E8C)($v0)
+    /* 15DC4 800255C4 0580023C */  lui        $v0, %hi(Pad_IntrRegs)
+    /* 15DC8 800255C8 8C8E428C */  lw         $v0, %lo(Pad_IntrRegs)($v0)
     /* 15DCC 800255CC 00000000 */  nop
     /* 15DD0 800255D0 0000428C */  lw         $v0, 0x0($v0)
     /* 15DD4 800255D4 00000000 */  nop
     /* 15DD8 800255D8 80004230 */  andi       $v0, $v0, 0x80
     /* 15DDC 800255DC F5FF4010 */  beqz       $v0, .L800255B4
     /* 15DE0 800255E0 3C000424 */   addiu     $a0, $zero, 0x3C
-    /* 15DE4 800255E4 0580033C */  lui        $v1, %hi(D_80048E90)
-    /* 15DE8 800255E8 908E638C */  lw         $v1, %lo(D_80048E90)($v1)
+    /* 15DE4 800255E4 0580033C */  lui        $v1, %hi(Pad_SioRegs)
+    /* 15DE8 800255E8 908E638C */  lw         $v1, %lo(Pad_SioRegs)($v1)
     /* 15DEC 800255EC 01000224 */  addiu      $v0, $zero, 0x1
     /* 15DF0 800255F0 8499000C */  jal        Pad_SetTimeout
     /* 15DF4 800255F4 000062A0 */   sb        $v0, 0x0($v1)
@@ -192,15 +192,15 @@ glabel func_8002533C
     /* 15E04 80025604 21100000 */   addu      $v0, $zero, $zero
     /* 15E08 80025608 2497000C */  jal        Pad_WaitSioRx
     /* 15E0C 8002560C 00000000 */   nop
-    /* 15E10 80025610 0580033C */  lui        $v1, %hi(D_80048E90)
-    /* 15E14 80025614 908E638C */  lw         $v1, %lo(D_80048E90)($v1)
+    /* 15E10 80025610 0580033C */  lui        $v1, %hi(Pad_SioRegs)
+    /* 15E14 80025614 908E638C */  lw         $v1, %lo(Pad_SioRegs)($v1)
     /* 15E18 80025618 21100000 */  addu       $v0, $zero, $zero
     /* 15E1C 8002561C 00006390 */  lbu        $v1, 0x0($v1)
     /* 15E20 80025620 97950008 */  j          .L8002565C
     /* 15E24 80025624 00000000 */   nop
   .L80025628:
-    /* 15E28 80025628 0580033C */  lui        $v1, %hi(D_80048E8C)
-    /* 15E2C 8002562C 8C8E638C */  lw         $v1, %lo(D_80048E8C)($v1)
+    /* 15E28 80025628 0580033C */  lui        $v1, %hi(Pad_IntrRegs)
+    /* 15E2C 8002562C 8C8E638C */  lw         $v1, %lo(Pad_IntrRegs)($v1)
     /* 15E30 80025630 00000000 */  nop
     /* 15E34 80025634 000062AC */  sw         $v0, 0x0($v1)
   .L80025638:

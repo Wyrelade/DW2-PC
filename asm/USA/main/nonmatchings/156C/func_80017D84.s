@@ -19,7 +19,7 @@ glabel func_80017D84
     /* 85C0 80017DC0 2000A5A3 */  sb         $a1, 0x20($sp)
     /* 85C4 80017DC4 2100A0A3 */  sb         $zero, 0x21($sp)
   .L80017DC8:
-    /* 85C8 80017DC8 E26E000C */  jal        func_8001BB88
+    /* 85C8 80017DC8 E26E000C */  jal        Text_Close
     /* 85CC 80017DCC 21200002 */   addu      $a0, $s0, $zero
     /* 85D0 80017DD0 01005226 */  addiu      $s2, $s2, 0x1
     /* 85D4 80017DD4 1000422A */  slti       $v0, $s2, 0x10

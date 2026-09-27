@@ -29,9 +29,9 @@ glabel func_80039334
     /* 29B98 80039398 3800BFAF */  sw         $ra, 0x38($sp)
     /* 29B9C 8003939C 3000B6AF */  sw         $s6, 0x30($sp)
     /* 29BA0 800393A0 2800B4AF */  sw         $s4, 0x28($sp)
-    /* 29BA4 800393A4 0680033C */  lui        $v1, %hi(D_80061C50)
+    /* 29BA4 800393A4 0680033C */  lui        $v1, %hi(Snd_SeqScores)
     /* 29BA8 800393A8 21186400 */  addu       $v1, $v1, $a0
-    /* 29BAC 800393AC 501C638C */  lw         $v1, %lo(D_80061C50)($v1)
+    /* 29BAC 800393AC 501C638C */  lw         $v1, %lo(Snd_SeqScores)($v1)
     /* 29BB0 800393B0 21204002 */  addu       $a0, $s2, $zero
     /* 29BB4 800393B4 21286002 */  addu       $a1, $s3, $zero
     /* 29BB8 800393B8 5000B697 */  lhu        $s6, 0x50($sp)

@@ -15,13 +15,13 @@ glabel func_8003A9F8
     /* 2B224 8003AA24 0580053C */  lui        $a1, %hi(D_8004FE50)
     /* 2B228 8003AA28 50FEA58C */  lw         $a1, %lo(D_8004FE50)($a1)
     /* 2B22C 8003AA2C 02000424 */  addiu      $a0, $zero, 0x2
-    /* 2B230 8003AA30 DEE9000C */  jal        func_8003A778
+    /* 2B230 8003AA30 DEE9000C */  jal        _spu_t
     /* 2B234 8003AA34 0428A200 */   sllv      $a1, $v0, $a1
-    /* 2B238 8003AA38 DEE9000C */  jal        func_8003A778
+    /* 2B238 8003AA38 DEE9000C */  jal        _spu_t
     /* 2B23C 8003AA3C 01000424 */   addiu     $a0, $zero, 0x1
     /* 2B240 8003AA40 03000424 */  addiu      $a0, $zero, 0x3
     /* 2B244 8003AA44 21282002 */  addu       $a1, $s1, $zero
-    /* 2B248 8003AA48 DEE9000C */  jal        func_8003A778
+    /* 2B248 8003AA48 DEE9000C */  jal        _spu_t
     /* 2B24C 8003AA4C 21300002 */   addu      $a2, $s0, $zero
     /* 2B250 8003AA50 9AEA0008 */  j          .L8003AA68
     /* 2B254 8003AA54 21100002 */   addu      $v0, $s0, $zero

@@ -9,7 +9,7 @@ glabel func_8001A958
     /* B16C 8001A96C 00000000 */  nop
     /* B170 8001A970 11004014 */  bnez       $v0, .L8001A9B8
     /* B174 8001A974 00000000 */   nop
-    /* B178 8001A978 E072000C */  jal        func_8001CB80
+    /* B178 8001A978 E072000C */  jal        Gfx_FindOrLoadTexSlot
     /* B17C 8001A97C 3A01043C */   lui       $a0, (0x13A0000 >> 16)
     /* B180 8001A980 0680023C */  lui        $v0, %hi(D_8005F788)
     /* B184 8001A984 88F7428C */  lw         $v0, %lo(D_8005F788)($v0)
@@ -17,7 +17,7 @@ glabel func_8001A958
     /* B18C 8001A98C 000F4230 */  andi       $v0, $v0, 0xF00
     /* B190 8001A990 07004310 */  beq        $v0, $v1, .L8001A9B0
     /* B194 8001A994 00000000 */   nop
-    /* B198 8001A998 E072000C */  jal        func_8001CB80
+    /* B198 8001A998 E072000C */  jal        Gfx_FindOrLoadTexSlot
     /* B19C 8001A99C 1001043C */   lui       $a0, (0x1100000 >> 16)
     /* B1A0 8001A9A0 0A000424 */  addiu      $a0, $zero, 0xA
     /* B1A4 8001A9A4 3400058E */  lw         $a1, 0x34($s0)

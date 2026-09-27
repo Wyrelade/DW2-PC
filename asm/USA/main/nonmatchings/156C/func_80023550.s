@@ -13,7 +13,7 @@ glabel func_80023550
     /* 13D74 80023574 0680103C */   lui       $s0, %hi(D_8005F7A0)
     /* 13D78 80023578 ADC2000C */  jal        func_80030AB4
     /* 13D7C 8002357C 21200000 */   addu      $a0, $zero, $zero
-    /* 13D80 80023580 FA9C000C */  jal        func_800273E8
+    /* 13D80 80023580 FA9C000C */  jal        SetDispMask
     /* 13D84 80023584 21200000 */   addu      $a0, $zero, $zero
     /* 13D88 80023588 419C000C */  jal        func_80027104
     /* 13D8C 8002358C 21200000 */   addu      $a0, $zero, $zero
@@ -29,7 +29,7 @@ glabel func_80023550
     /* 13DB4 800235B4 FF010224 */  addiu      $v0, $zero, 0x1FF
     /* 13DB8 800235B8 1800A0A7 */  sh         $zero, 0x18($sp)
     /* 13DBC 800235BC 1A00A0A7 */  sh         $zero, 0x1A($sp)
-    /* 13DC0 800235C0 819D000C */  jal        func_80027604
+    /* 13DC0 800235C0 819D000C */  jal        ClearImage
     /* 13DC4 800235C4 1E00A2A7 */   sh        $v0, 0x1E($sp)
     /* 13DC8 800235C8 209D000C */  jal        DrawSync
     /* 13DCC 800235CC 21200000 */   addu      $a0, $zero, $zero
@@ -52,7 +52,7 @@ glabel func_80023550
     /* 13E10 80023610 21380000 */   addu      $a3, $zero, $zero
     /* 13E14 80023614 B99E000C */  jal        func_80027AE4
     /* 13E18 80023618 21200002 */   addu      $a0, $s0, $zero
-    /* 13E1C 8002361C 2C9F000C */  jal        func_80027CB0
+    /* 13E1C 8002361C 2C9F000C */  jal        PutDispEnv
     /* 13E20 80023620 B8000426 */   addiu     $a0, $s0, 0xB8
     /* 13E24 80023624 ADC2000C */  jal        func_80030AB4
     /* 13E28 80023628 21200000 */   addu      $a0, $zero, $zero
@@ -65,13 +65,13 @@ glabel func_80023550
     /* 13E44 80023644 21200000 */   addu      $a0, $zero, $zero
     /* 13E48 80023648 2C00A58F */  lw         $a1, 0x2C($sp)
     /* 13E4C 8002364C 38008427 */  addiu      $a0, $gp, %gp_rel(D_80050730)
-    /* 13E50 80023650 CB9D000C */  jal        func_8002772C
+    /* 13E50 80023650 CB9D000C */  jal        LoadImage
     /* 13E54 80023654 00000000 */   nop
     /* 13E58 80023658 209D000C */  jal        DrawSync
     /* 13E5C 8002365C 21200000 */   addu      $a0, $zero, $zero
     /* 13E60 80023660 ADC2000C */  jal        func_80030AB4
     /* 13E64 80023664 21200000 */   addu      $a0, $zero, $zero
-    /* 13E68 80023668 FA9C000C */  jal        func_800273E8
+    /* 13E68 80023668 FA9C000C */  jal        SetDispMask
     /* 13E6C 8002366C 01000424 */   addiu     $a0, $zero, 0x1
     /* 13E70 80023670 01B7000C */  jal        func_8002DC04
     /* 13E74 80023674 00000000 */   nop
@@ -93,7 +93,7 @@ glabel func_80023550
     /* 13EB4 800236B4 D0FF1026 */  addiu      $s0, $s0, -0x30
     /* 13EB8 800236B8 01000224 */  addiu      $v0, $zero, 0x1
     /* 13EBC 800236BC 040000AE */  sw         $zero, 0x4($s0)
-    /* 13EC0 800236C0 4D72000C */  jal        func_8001C934
+    /* 13EC0 800236C0 4D72000C */  jal        Gpu_FreePrimBufs
     /* 13EC4 800236C4 280002AE */   sw        $v0, 0x28($s0)
     /* 13EC8 800236C8 0072000C */  jal        func_8001C800
     /* 13ECC 800236CC 21200000 */   addu      $a0, $zero, $zero
@@ -157,9 +157,9 @@ glabel func_80023550
     /* 13FAC 800237AC 00000000 */   nop
     /* 13FB0 800237B0 6444000C */  jal        Task_ClearList
     /* 13FB4 800237B4 21800000 */   addu      $s0, $zero, $zero
-    /* 13FB8 800237B8 4D72000C */  jal        func_8001C934
+    /* 13FB8 800237B8 4D72000C */  jal        Gpu_FreePrimBufs
     /* 13FBC 800237BC 00000000 */   nop
-    /* 13FC0 800237C0 7B8B000C */  jal        func_80022DEC
+    /* 13FC0 800237C0 7B8B000C */  jal        Mem_FreeTag
     /* 13FC4 800237C4 02000424 */   addiu     $a0, $zero, 0x2
     /* 13FC8 800237C8 0672000C */  jal        Gpu_ClearOt
     /* 13FCC 800237CC 21200000 */   addu      $a0, $zero, $zero

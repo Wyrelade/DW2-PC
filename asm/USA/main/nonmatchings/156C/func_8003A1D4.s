@@ -155,8 +155,8 @@ glabel func_8003A1D4
     /* 2AC14 8003A414 0580043C */  lui        $a0, %hi(D_8004FE28)
     /* 2AC18 8003A418 28FE848C */  lw         $a0, %lo(D_8004FE28)($a0)
     /* 2AC1C 8003A41C 01000324 */  addiu      $v1, $zero, 0x1
-    /* 2AC20 8003A420 0580013C */  lui        $at, %hi(D_8004FE5C)
-    /* 2AC24 8003A424 5CFE23AC */  sw         $v1, %lo(D_8004FE5C)($at)
+    /* 2AC20 8003A420 0580013C */  lui        $at, %hi(Spu_InTransfer)
+    /* 2AC24 8003A424 5CFE23AC */  sw         $v1, %lo(Spu_InTransfer)($at)
     /* 2AC28 8003A428 00C00334 */  ori        $v1, $zero, 0xC000
     /* 2AC2C 8003A42C AA0183A4 */  sh         $v1, 0x1AA($a0)
     /* 2AC30 8003A430 0580013C */  lui        $at, %hi(D_8004FE60)

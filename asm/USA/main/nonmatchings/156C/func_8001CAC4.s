@@ -25,7 +25,7 @@ glabel func_8001CAC4
     /* D318 8001CB18 01000324 */  addiu      $v1, $zero, 0x1
     /* D31C 8001CB1C 1600A3A7 */  sh         $v1, 0x16($sp)
     /* D320 8001CB20 E0014224 */  addiu      $v0, $v0, 0x1E0
-    /* D324 8001CB24 CB9D000C */  jal        func_8002772C
+    /* D324 8001CB24 CB9D000C */  jal        LoadImage
     /* D328 8001CB28 1200A2A7 */   sh        $v0, 0x12($sp)
   .L8001CB2C:
     /* D32C 8001CB2C 0000028E */  lw         $v0, 0x0($s0)
@@ -43,7 +43,7 @@ glabel func_8001CAC4
     /* D358 8001CB58 1C00A2A7 */  sh         $v0, 0x1C($sp)
     /* D35C 8001CB5C 0A000296 */  lhu        $v0, 0xA($s0)
     /* D360 8001CB60 0C000526 */  addiu      $a1, $s0, 0xC
-    /* D364 8001CB64 CB9D000C */  jal        func_8002772C
+    /* D364 8001CB64 CB9D000C */  jal        LoadImage
     /* D368 8001CB68 1E00A2A7 */   sh        $v0, 0x1E($sp)
     /* D36C 8001CB6C 2800BF8F */  lw         $ra, 0x28($sp)
     /* D370 8001CB70 2400B18F */  lw         $s1, 0x24($sp)

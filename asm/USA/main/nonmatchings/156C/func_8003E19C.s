@@ -33,9 +33,9 @@ glabel func_8003E19C
     /* 2EA0C 8003E20C 01004224 */  addiu      $v0, $v0, 0x1
     /* 2EA10 8003E210 000002AE */  sw         $v0, 0x0($s0)
   jlabel .L8003E214
-    /* 2EA14 8003E214 0480043C */  lui        $a0, %hi(func_8003DE18)
-    /* 2EA18 8003E218 89FE000C */  jal        func_8003FA24
-    /* 2EA1C 8003E21C 18DE8424 */   addiu     $a0, $a0, %lo(func_8003DE18)
+    /* 2EA14 8003E214 0480043C */  lui        $a0, %hi(Card_InfoTask)
+    /* 2EA18 8003E218 89FE000C */  jal        Card_PushTask
+    /* 2EA1C 8003E21C 18DE8424 */   addiu     $a0, $a0, %lo(Card_InfoTask)
     /* 2EA20 8003E220 0AF90008 */  j          .L8003E428
     /* 2EA24 8003E224 0A000224 */   addiu     $v0, $zero, 0xA
   jlabel .L8003E228

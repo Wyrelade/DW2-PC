@@ -73,17 +73,17 @@ glabel func_8003C3A4
     /* 2CC9C 8003C49C 21980000 */  addu       $s3, $zero, $zero
   .L8003C4A0:
     /* 2CCA0 8003C4A0 02000424 */  addiu      $a0, $zero, 0x2
-    /* 2CCA4 8003C4A4 DEE9000C */  jal        func_8003A778
+    /* 2CCA4 8003C4A4 DEE9000C */  jal        _spu_t
     /* 2CCA8 8003C4A8 21284002 */   addu      $a1, $s2, $zero
-    /* 2CCAC 8003C4AC DEE9000C */  jal        func_8003A778
+    /* 2CCAC 8003C4AC DEE9000C */  jal        _spu_t
     /* 2CCB0 8003C4B0 01000424 */   addiu     $a0, $zero, 0x1
     /* 2CCB4 8003C4B4 03000424 */  addiu      $a0, $zero, 0x3
     /* 2CCB8 8003C4B8 0580053C */  lui        $a1, %hi(D_8004FE98)
     /* 2CCBC 8003C4BC 98FEA524 */  addiu      $a1, $a1, %lo(D_8004FE98)
-    /* 2CCC0 8003C4C0 DEE9000C */  jal        func_8003A778
+    /* 2CCC0 8003C4C0 DEE9000C */  jal        _spu_t
     /* 2CCC4 8003C4C4 21300002 */   addu      $a2, $s0, $zero
-    /* 2CCC8 8003C4C8 0580043C */  lui        $a0, %hi(D_8004FDB0)
-    /* 2CCCC 8003C4CC B0FD848C */  lw         $a0, %lo(D_8004FDB0)($a0)
+    /* 2CCC8 8003C4C8 0580043C */  lui        $a0, %hi(_spu_EVdma)
+    /* 2CCCC 8003C4CC B0FD848C */  lw         $a0, %lo(_spu_EVdma)($a0)
     /* 2CCD0 8003C4D0 00FC3126 */  addiu      $s1, $s1, -0x400
     /* 2CCD4 8003C4D4 51F1000C */  jal        WaitEvent
     /* 2CCD8 8003C4D8 00045226 */   addiu     $s2, $s2, 0x400

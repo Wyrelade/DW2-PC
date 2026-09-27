@@ -4,7 +4,7 @@ glabel func_80039A78
     /* 2A278 80039A78 E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* 2A27C 80039A7C 1000B0AF */  sw         $s0, 0x10($sp)
     /* 2A280 80039A80 1400BFAF */  sw         $ra, 0x14($sp)
-    /* 2A284 80039A84 69EB000C */  jal        func_8003ADA4
+    /* 2A284 80039A84 69EB000C */  jal        SpuMalloc
     /* 2A288 80039A88 2180C000 */   addu      $s0, $a2, $zero
     /* 2A28C 80039A8C 21184000 */  addu       $v1, $v0, $zero
     /* 2A290 80039A90 FFFF0224 */  addiu      $v0, $zero, -0x1

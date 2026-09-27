@@ -13,7 +13,7 @@ glabel func_80024410
     /* 14C34 80024434 0000A58C */  lw         $a1, 0x0($a1)
     /* 14C38 80024438 6F7F000C */  jal        func_8001FDBC
     /* 14C3C 8002443C 00000000 */   nop
-    /* 14C40 80024440 C87C000C */  jal        func_8001F320
+    /* 14C40 80024440 C87C000C */  jal        Anim_StepModelAnim
     /* 14C44 80024444 21200002 */   addu      $a0, $s0, $zero
     /* 14C48 80024448 4882000C */  jal        func_80020920
     /* 14C4C 8002444C 21200002 */   addu      $a0, $s0, $zero

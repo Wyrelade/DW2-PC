@@ -16,7 +16,7 @@ glabel func_8001BC24
     /* C454 8001BC54 65004010 */  beqz       $v0, .L8001BDEC
     /* C458 8001BC58 21880000 */   addu      $s1, $zero, $zero
     /* C45C 8001BC5C 2C00528C */  lw         $s2, 0x2C($v0)
-    /* C460 8001BC60 E26E000C */  jal        func_8001BB88
+    /* C460 8001BC60 E26E000C */  jal        Text_Close
     /* C464 8001BC64 21206002 */   addu      $a0, $s3, $zero
     /* C468 8001BC68 21184002 */  addu       $v1, $s2, $zero
   .L8001BC6C:

@@ -76,7 +76,7 @@ glabel func_80015298
     /* 5BB0 800153B0 25384700 */   or        $a3, $v0, $a3
     /* 5BB4 800153B4 21286002 */  addu       $a1, $s3, $zero
     /* 5BB8 800153B8 0000448E */  lw         $a0, 0x0($s2)
-    /* 5BBC 800153BC 9D6F000C */  jal        func_8001BE74
+    /* 5BBC 800153BC 9D6F000C */  jal        Text_SetColor
     /* 5BC0 800153C0 04005226 */   addiu     $s2, $s2, 0x4
     /* 5BC4 800153C4 1400222A */  slti       $v0, $s1, 0x14
     /* 5BC8 800153C8 C0FF4014 */  bnez       $v0, .L800152CC

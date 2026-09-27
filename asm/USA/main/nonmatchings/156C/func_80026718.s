@@ -53,7 +53,7 @@ glabel func_80026718
   .L800267D4:
     /* 16FD4 800267D4 37000592 */  lbu        $a1, 0x37($s0)
   .L800267D8:
-    /* 16FD8 800267D8 6196000C */  jal        func_80025984
+    /* 16FD8 800267D8 6196000C */  jal        Pad_SioExchangeByte
     /* 16FDC 800267DC 00000000 */   nop
     /* 16FE0 800267E0 1400BF8F */  lw         $ra, 0x14($sp)
     /* 16FE4 800267E4 1000B08F */  lw         $s0, 0x10($sp)

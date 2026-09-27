@@ -11,7 +11,7 @@ glabel func_80023D68
   .L80023D84:
     /* 14584 80023D84 1D8F000C */  jal        func_80023C74
     /* 14588 80023D88 00000000 */   nop
-    /* 1458C 80023D8C DC8E000C */  jal        func_80023B70
+    /* 1458C 80023D8C DC8E000C */  jal        Cd_GetFileState
     /* 14590 80023D90 21200002 */   addu      $a0, $s0, $zero
     /* 14594 80023D94 FBFF5114 */  bne        $v0, $s1, .L80023D84
     /* 14598 80023D98 00000000 */   nop

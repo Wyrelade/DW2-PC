@@ -31,7 +31,7 @@ glabel func_80036474
     /* 26CD4 800364D4 03840200 */  sra        $s0, $v0, 16
     /* 26CD8 800364D8 03000016 */  bnez       $s0, .L800364E8
     /* 26CDC 800364DC 00000000 */   nop
-    /* 26CE0 800364E0 E5ED000C */  jal        func_8003B794
+    /* 26CE0 800364E0 E5ED000C */  jal        SpuSetReverb
     /* 26CE4 800364E4 21200000 */   addu      $a0, $zero, $zero
   .L800364E8:
     /* 26CE8 800364E8 0680043C */  lui        $a0, %hi(D_80062C18)

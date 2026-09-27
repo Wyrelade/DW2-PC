@@ -21,7 +21,7 @@ glabel func_8001F668
     /* FEAC 8001F6AC 9000B0AF */   sw        $s0, 0x90($sp)
     /* FEB0 8001F6B0 1800A427 */  addiu      $a0, $sp, 0x18
     /* FEB4 8001F6B4 6800B027 */  addiu      $s0, $sp, 0x68
-    /* FEB8 8001F6B8 65AF000C */  jal        func_8002BD94
+    /* FEB8 8001F6B8 65AF000C */  jal        GsGetLs
     /* FEBC 8001F6BC 21280002 */   addu      $a1, $s0, $zero
     /* FEC0 8001F6C0 25AD000C */  jal        GsSetLsMatrix
     /* FEC4 8001F6C4 21200002 */   addu      $a0, $s0, $zero

@@ -10,7 +10,7 @@ glabel func_8001F90C
     /* 10124 8001F924 1800BFAF */  sw         $ra, 0x18($sp)
   .L8001F928:
     /* 10128 8001F928 21200002 */  addu       $a0, $s0, $zero
-    /* 1012C 8001F92C 59AD000C */  jal        func_8002B564
+    /* 1012C 8001F92C 59AD000C */  jal        GsSetFlatLight
     /* 10130 8001F930 21282002 */   addu      $a1, $s1, $zero
     /* 10134 8001F934 01001026 */  addiu      $s0, $s0, 0x1
     /* 10138 8001F938 0300022A */  slti       $v0, $s0, 0x3

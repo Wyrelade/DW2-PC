@@ -10,10 +10,10 @@ glabel func_80015668
     /* 5E80 80015680 2C00938C */  lw         $s3, 0x2C($a0)
     /* 5E84 80015684 00000000 */  nop
     /* 5E88 80015688 58007026 */  addiu      $s0, $s3, 0x58
-    /* 5E8C 8001568C E26E000C */  jal        func_8001BB88
+    /* 5E8C 8001568C E26E000C */  jal        Text_Close
     /* 5E90 80015690 21200002 */   addu      $a0, $s0, $zero
     /* 5E94 80015694 5C007226 */  addiu      $s2, $s3, 0x5C
-    /* 5E98 80015698 E26E000C */  jal        func_8001BB88
+    /* 5E98 80015698 E26E000C */  jal        Text_Close
     /* 5E9C 8001569C 21204002 */   addu      $a0, $s2, $zero
     /* 5EA0 800156A0 FD01043C */  lui        $a0, (0x1FD009B >> 16)
     /* 5EA4 800156A4 9B008434 */  ori        $a0, $a0, (0x1FD009B & 0xFFFF)

@@ -109,7 +109,7 @@ glabel func_800388A4
     /* 29238 80038A38 FFFFC430 */  andi       $a0, $a2, 0xFFFF
     /* 2923C 80038A3C FFFFA530 */  andi       $a1, $a1, 0xFFFF
     /* 29240 80038A40 0C0049A4 */  sh         $t1, 0xC($v0)
-    /* 29244 80038A44 F4DE000C */  jal        func_80037BD0
+    /* 29244 80038A44 F4DE000C */  jal        note2pitch2
     /* 29248 80038A48 000043A0 */   sb        $v1, 0x0($v0)
     /* 2924C 80038A4C 00191000 */  sll        $v1, $s0, 4
     /* 29250 80038A50 0680013C */  lui        $at, %hi(D_80062A4C)

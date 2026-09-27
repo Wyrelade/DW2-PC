@@ -51,7 +51,7 @@ glabel func_800153F4
     /* 5CA4 800154A4 2E550008 */  j          .L800154B8
     /* 5CA8 800154A8 04005226 */   addiu     $s2, $s2, 0x4
   .L800154AC:
-    /* 5CAC 800154AC E26E000C */  jal        func_8001BB88
+    /* 5CAC 800154AC E26E000C */  jal        Text_Close
     /* 5CB0 800154B0 21209202 */   addu      $a0, $s4, $s2
     /* 5CB4 800154B4 04005226 */  addiu      $s2, $s2, 0x4
   .L800154B8:

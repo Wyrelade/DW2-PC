@@ -63,7 +63,7 @@ glabel func_8002ACC8
     /* 1B5AC 8002ADAC 04008232 */  andi       $v0, $s4, 0x4
     /* 1B5B0 8002ADB0 0680013C */  lui        $at, %hi(D_8006198E)
     /* 1B5B4 8002ADB4 8E1922A4 */  sh         $v0, %lo(D_8006198E)($at)
-    /* 1B5B8 8002ADB8 2C9F000C */  jal        func_80027CB0
+    /* 1B5B8 8002ADB8 2C9F000C */  jal        PutDispEnv
     /* 1B5BC 8002ADBC 110095A0 */   sb        $s5, 0x11($a0)
     /* 1B5C0 8002ADC0 2800BF8F */  lw         $ra, 0x28($sp)
     /* 1B5C4 8002ADC4 2400B58F */  lw         $s5, 0x24($sp)

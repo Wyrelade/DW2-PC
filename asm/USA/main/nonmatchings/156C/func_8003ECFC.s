@@ -44,7 +44,7 @@ glabel func_8003ECFC
     /* 2F590 8003ED90 46FD000C */  jal        Card_MakeDevName
     /* 2F594 8003ED94 21280002 */   addu      $a1, $s0, $zero
     /* 2F598 8003ED98 21200002 */  addu       $a0, $s0, $zero
-    /* 2F59C 8003ED9C 1DFE000C */  jal        func_8003F874
+    /* 2F59C 8003ED9C 1DFE000C */  jal        strcat
     /* 2F5A0 8003EDA0 21286002 */   addu      $a1, $s3, $zero
     /* 2F5A4 8003EDA4 0480043C */  lui        $a0, %hi(func_8003EE14)
     /* 2F5A8 8003EDA8 14EE8424 */  addiu      $a0, $a0, %lo(func_8003EE14)
@@ -55,7 +55,7 @@ glabel func_8003ECFC
     /* 2F5BC 8003EDBC 180032AE */  sw         $s2, 0x18($s1)
     /* 2F5C0 8003EDC0 200035AE */  sw         $s5, 0x20($s1)
     /* 2F5C4 8003EDC4 1C0036AE */  sw         $s6, 0x1C($s1)
-    /* 2F5C8 8003EDC8 89FE000C */  jal        func_8003FA24
+    /* 2F5C8 8003EDC8 89FE000C */  jal        Card_PushTask
     /* 2F5CC 8003EDCC 100034AE */   sw        $s4, 0x10($s1)
     /* 2F5D0 8003EDD0 7BFB0008 */  j          .L8003EDEC
     /* 2F5D4 8003EDD4 01000224 */   addiu     $v0, $zero, 0x1

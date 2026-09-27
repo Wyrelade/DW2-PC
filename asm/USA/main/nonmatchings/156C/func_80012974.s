@@ -155,16 +155,16 @@ glabel func_80012974
     /* 3398 80012B98 79005610 */  beq        $v0, $s6, .L80012D80
     /* 339C 80012B9C 0680023C */   lui       $v0, %hi(D_8005F6F0)
   .L80012BA0:
-    /* 33A0 80012BA0 E26E000C */  jal        func_8001BB88
+    /* 33A0 80012BA0 E26E000C */  jal        Text_Close
     /* 33A4 80012BA4 21200002 */   addu      $a0, $s0, $zero
     /* 33A8 80012BA8 14009126 */  addiu      $s1, $s4, 0x14
-    /* 33AC 80012BAC E26E000C */  jal        func_8001BB88
+    /* 33AC 80012BAC E26E000C */  jal        Text_Close
     /* 33B0 80012BB0 21202002 */   addu      $a0, $s1, $zero
     /* 33B4 80012BB4 18009226 */  addiu      $s2, $s4, 0x18
-    /* 33B8 80012BB8 E26E000C */  jal        func_8001BB88
+    /* 33B8 80012BB8 E26E000C */  jal        Text_Close
     /* 33BC 80012BBC 21204002 */   addu      $a0, $s2, $zero
     /* 33C0 80012BC0 20009326 */  addiu      $s3, $s4, 0x20
-    /* 33C4 80012BC4 E26E000C */  jal        func_8001BB88
+    /* 33C4 80012BC4 E26E000C */  jal        Text_Close
     /* 33C8 80012BC8 21206002 */   addu      $a0, $s3, $zero
     /* 33CC 80012BCC FD01023C */  lui        $v0, (0x1FD00D4 >> 16)
     /* 33D0 80012BD0 0C00848E */  lw         $a0, 0xC($s4)

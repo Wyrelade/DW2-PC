@@ -12,8 +12,8 @@ glabel func_80031258
     /* 21A78 80031278 21100000 */   addu      $v0, $zero, $zero
     /* 21A7C 8003127C F19B000C */  jal        EnterCriticalSection
     /* 21A80 80031280 00000000 */   nop
-    /* 21A84 80031284 0580023C */  lui        $v0, %hi(D_8004FB88)
-    /* 21A88 80031288 88FB428C */  lw         $v0, %lo(D_8004FB88)($v0)
+    /* 21A84 80031284 0580023C */  lui        $v0, %hi(Sys_IntrMaskPtr)
+    /* 21A88 80031288 88FB428C */  lw         $v0, %lo(Sys_IntrMaskPtr)($v0)
     /* 21A8C 8003128C 0580043C */  lui        $a0, %hi(D_8004FB8C)
     /* 21A90 80031290 8CFB848C */  lw         $a0, %lo(D_8004FB8C)($a0)
     /* 21A94 80031294 00004394 */  lhu        $v1, 0x0($v0)

@@ -24,7 +24,7 @@ glabel func_8001C104
     /* C950 8001C150 21204002 */  addu       $a0, $s2, $zero
     /* C954 8001C154 21280000 */  addu       $a1, $zero, $zero
     /* C958 8001C158 2130A000 */  addu       $a2, $a1, $zero
-    /* C95C 8001C15C A59D000C */  jal        func_80027694
+    /* C95C 8001C15C A59D000C */  jal        ClearImage2
     /* C960 8001C160 2138A000 */   addu      $a3, $a1, $zero
     /* C964 8001C164 209D000C */  jal        DrawSync
     /* C968 8001C168 21200000 */   addu      $a0, $zero, $zero

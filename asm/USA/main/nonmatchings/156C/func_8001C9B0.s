@@ -10,11 +10,11 @@ glabel func_8001C9B0
     /* D1C8 8001C9C8 1400B1AF */  sw         $s1, 0x14($sp)
     /* D1CC 8001C9CC 70165126 */  addiu      $s1, $s2, %lo(D_80041670)
     /* D1D0 8001C9D0 1C00BFAF */  sw         $ra, 0x1C($sp)
-    /* D1D4 8001C9D4 CF8B000C */  jal        func_80022F3C
+    /* D1D4 8001C9D4 CF8B000C */  jal        Mem_Alloc
     /* D1D8 8001C9D8 080030AE */   sw        $s0, 0x8($s1)
     /* D1DC 8001C9DC 21200002 */  addu       $a0, $s0, $zero
     /* D1E0 8001C9E0 02000524 */  addiu      $a1, $zero, 0x2
-    /* D1E4 8001C9E4 CF8B000C */  jal        func_80022F3C
+    /* D1E4 8001C9E4 CF8B000C */  jal        Mem_Alloc
     /* D1E8 8001C9E8 701642AE */   sw        $v0, %lo(D_80041670)($s2)
     /* D1EC 8001C9EC 0680043C */  lui        $a0, %hi(D_8005F770)
     /* D1F0 8001C9F0 70F78424 */  addiu      $a0, $a0, %lo(D_8005F770)

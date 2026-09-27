@@ -43,8 +43,8 @@ glabel func_80032954
     /* 231E4 800329E4 0380033C */  lui        $v1, %hi(func_80034424)
     /* 231E8 800329E8 24446324 */  addiu      $v1, $v1, %lo(func_80034424)
     /* 231EC 800329EC 080043AC */  sw         $v1, 0x8($v0)
-    /* 231F0 800329F0 0380033C */  lui        $v1, %hi(func_800344D4)
-    /* 231F4 800329F4 D4446324 */  addiu      $v1, $v1, %lo(func_800344D4)
+    /* 231F0 800329F0 0380033C */  lui        $v1, %hi(_SsSetControlChange)
+    /* 231F4 800329F4 D4446324 */  addiu      $v1, $v1, %lo(_SsSetControlChange)
     /* 231F8 800329F8 100043AC */  sw         $v1, 0x10($v0)
     /* 231FC 800329FC 0380033C */  lui        $v1, %hi(_SsContBankChange)
     /* 23200 80032A00 542C6324 */  addiu      $v1, $v1, %lo(_SsContBankChange)
@@ -58,14 +58,14 @@ glabel func_80032954
     /* 23220 80032A20 0380033C */  lui        $v1, %hi(func_800331F4)
     /* 23224 80032A24 F4316324 */  addiu      $v1, $v1, %lo(func_800331F4)
     /* 23228 80032A28 240043AC */  sw         $v1, 0x24($v0)
-    /* 2322C 80032A2C 0380033C */  lui        $v1, %hi(func_800332E4)
-    /* 23230 80032A30 E4326324 */  addiu      $v1, $v1, %lo(func_800332E4)
+    /* 2322C 80032A2C 0380033C */  lui        $v1, %hi(_SsContDamper)
+    /* 23230 80032A30 E4326324 */  addiu      $v1, $v1, %lo(_SsContDamper)
     /* 23234 80032A34 280043AC */  sw         $v1, 0x28($v0)
     /* 23238 80032A38 0380033C */  lui        $v1, %hi(_SsContNrpn1)
     /* 2323C 80032A3C 24346324 */  addiu      $v1, $v1, %lo(_SsContNrpn1)
     /* 23240 80032A40 2C0043AC */  sw         $v1, 0x2C($v0)
-    /* 23244 80032A44 0380033C */  lui        $v1, %hi(func_80033524)
-    /* 23248 80032A48 24356324 */  addiu      $v1, $v1, %lo(func_80033524)
+    /* 23244 80032A44 0380033C */  lui        $v1, %hi(_SsContNrpn2)
+    /* 23248 80032A48 24356324 */  addiu      $v1, $v1, %lo(_SsContNrpn2)
     /* 2324C 80032A4C 300043AC */  sw         $v1, 0x30($v0)
     /* 23250 80032A50 0380033C */  lui        $v1, %hi(_SsContRpn1)
     /* 23254 80032A54 64366324 */  addiu      $v1, $v1, %lo(_SsContRpn1)
@@ -73,11 +73,11 @@ glabel func_80032954
     /* 2325C 80032A5C 0380033C */  lui        $v1, %hi(_SsContRpn2)
     /* 23260 80032A60 D4366324 */  addiu      $v1, $v1, %lo(_SsContRpn2)
     /* 23264 80032A64 380043AC */  sw         $v1, 0x38($v0)
-    /* 23268 80032A68 0380033C */  lui        $v1, %hi(func_80033394)
-    /* 2326C 80032A6C 94336324 */  addiu      $v1, $v1, %lo(func_80033394)
+    /* 23268 80032A68 0380033C */  lui        $v1, %hi(_SsContExternal)
+    /* 2326C 80032A6C 94336324 */  addiu      $v1, $v1, %lo(_SsContExternal)
     /* 23270 80032A70 3C0043AC */  sw         $v1, 0x3C($v0)
-    /* 23274 80032A74 0380033C */  lui        $v1, %hi(func_80033744)
-    /* 23278 80032A78 44376324 */  addiu      $v1, $v1, %lo(func_80033744)
+    /* 23274 80032A74 0380033C */  lui        $v1, %hi(_SsContResetAll)
+    /* 23278 80032A78 44376324 */  addiu      $v1, $v1, %lo(_SsContResetAll)
     /* 2327C 80032A7C 400043AC */  sw         $v1, 0x40($v0)
     /* 23280 80032A80 0380033C */  lui        $v1, %hi(func_80032CD4)
     /* 23284 80032A84 D42C6324 */  addiu      $v1, $v1, %lo(func_80032CD4)
@@ -174,7 +174,7 @@ glabel func_80032954
     /* 233E4 80032BE4 002C1000 */  sll        $a1, $s0, 16
     /* 233E8 80032BE8 032C0500 */  sra        $a1, $a1, 16
     /* 233EC 80032BEC 03341200 */  sra        $a2, $s2, 16
-    /* 233F0 80032BF0 89D2000C */  jal        func_80034A24
+    /* 233F0 80032BF0 89D2000C */  jal        _SsInitSoundSeq
     /* 233F4 80032BF4 21388002 */   addu      $a3, $s4, $zero
     /* 233F8 80032BF8 68FF5510 */  beq        $v0, $s5, .L8003299C
     /* 233FC 80032BFC 21A08202 */   addu      $s4, $s4, $v0

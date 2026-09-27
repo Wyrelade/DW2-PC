@@ -1093,12 +1093,12 @@ dlabel D_80041440
     /* 31D60 80041560 D8000000 */ .word 0x000000D8
 enddlabel D_80041440
 
-nonmatching D_80041564
+nonmatching Gfx_FadeState
 
-dlabel D_80041564
+dlabel Gfx_FadeState
     /* 31D64 80041564 01000000 */ .word 0x00000001
     /* 31D68 80041568 00000000 */ .word 0x00000000
-enddlabel D_80041564
+enddlabel Gfx_FadeState
 
 nonmatching D_8004156C
 
@@ -3341,9 +3341,9 @@ dlabel D_80043714
     /* 33F90 80043790 00000000 */ .word 0x00000000
 enddlabel D_80043714
 
-nonmatching D_80043794
+nonmatching Cd_FileLba
 
-dlabel D_80043794
+dlabel Cd_FileLba
     /* 33F94 80043794 AA540200 */ .word 0x000254AA
     /* 33F98 80043798 B9540200 */ .word 0x000254B9
     /* 33F9C 8004379C C4540200 */ .word 0x000254C4
@@ -7019,11 +7019,11 @@ dlabel D_80043794
     /* 378F4 800470F4 DF260200 */ .word 0x000226DF
     /* 378F8 800470F8 E8260200 */ .word 0x000226E8
     /* 378FC 800470FC 3C260200 */ .word 0x0002263C
-enddlabel D_80043794
+enddlabel Cd_FileLba
 
-nonmatching D_80047100
+nonmatching Cd_FileSectors
 
-dlabel D_80047100
+dlabel Cd_FileSectors
     /* 37900 80047100 01000B00 */ .word 0x000B0001
     /* 37904 80047104 05000A00 */ .word 0x000A0005
     /* 37908 80047108 06000700 */ .word 0x00070006
@@ -7540,7 +7540,7 @@ dlabel D_80047100
     /* 38104 80047904 02000900 */ .word 0x00090002
     /* 38108 80047908 02000200 */ .word 0x00020002
     /* 3810C 8004790C 01000200 */ .word 0x00020001
-enddlabel D_80047100
+enddlabel Cd_FileSectors
 
 nonmatching D_80047910
 
@@ -10394,17 +10394,17 @@ dlabel D_80048E88
     /* 39688 80048E88 00000000 */ .word 0x00000000
 enddlabel D_80048E88
 
-nonmatching D_80048E8C
+nonmatching Pad_IntrRegs
 
-dlabel D_80048E8C
+dlabel Pad_IntrRegs
     /* 3968C 80048E8C 7010801F */ .word 0x1F801070
-enddlabel D_80048E8C
+enddlabel Pad_IntrRegs
 
-nonmatching D_80048E90
+nonmatching Pad_SioRegs
 
-dlabel D_80048E90
+dlabel Pad_SioRegs
     /* 39690 80048E90 4010801F */ .word 0x1F801040
-enddlabel D_80048E90
+enddlabel Pad_SioRegs
 
 nonmatching D_80048E94
 
@@ -10445,17 +10445,17 @@ dlabel D_80048EC8
     /* 396C8 80048EC8 E4010180 */ .word D_800101E4
     /* 396CC 80048ECC D8910280 */ .word _addque
     /* 396D0 80048ED0 FC910280 */ .word func_800291FC
-    /* 396D4 80048ED4 188A0280 */ .word func_80028A18
+    /* 396D4 80048ED4 188A0280 */ .word _clr
     /* 396D8 80048ED8 04910280 */ .word _ctl
     /* 396DC 80048EDC 20910280 */ .word _cwb
     /* 396E0 80048EE0 60910280 */ .word _cwc
     /* 396E4 80048EE4 848E0280 */ .word func_80028E84
     /* 396E8 80048EE8 488C0280 */ .word func_80028C48
-    /* 396EC 80048EEC AC940280 */ .word func_800294AC
+    /* 396EC 80048EEC AC940280 */ .word _exeque
     /* 396F0 80048EF0 18910280 */ .word func_80029118
     /* 396F4 80048EF4 38890280 */ .word func_80028938
     /* 396F8 80048EF8 A8910280 */ .word _param
-    /* 396FC 80048EFC 0C970280 */ .word func_8002970C
+    /* 396FC 80048EFC 0C970280 */ .word _reset
     /* 39700 80048F00 20890280 */ .word _status
     /* 39704 80048F04 48980280 */ .word func_80029848
 enddlabel D_80048EC8
@@ -19141,11 +19141,11 @@ dlabel D_8004FB84
     /* 40384 8004FB84 7010801F */ .word 0x1F801070
 enddlabel D_8004FB84
 
-nonmatching D_8004FB88
+nonmatching Sys_IntrMaskPtr
 
-dlabel D_8004FB88
+dlabel Sys_IntrMaskPtr
     /* 40388 8004FB88 7410801F */ .word 0x1F801074
-enddlabel D_8004FB88
+enddlabel Sys_IntrMaskPtr
 
 nonmatching D_8004FB8C
 
@@ -19162,9 +19162,9 @@ dlabel D_8004FB90
     /* 4039C 8004FB9C 00000000 */ .word 0x00000000
 enddlabel D_8004FB90
 
-nonmatching D_8004FBA0
+nonmatching Sys_VSyncCallbacks
 
-dlabel D_8004FBA0
+dlabel Sys_VSyncCallbacks
     /* 403A0 8004FBA0 00000000 */ .word 0x00000000
     /* 403A4 8004FBA4 00000000 */ .word 0x00000000
     /* 403A8 8004FBA8 00000000 */ .word 0x00000000
@@ -19173,13 +19173,13 @@ dlabel D_8004FBA0
     /* 403B4 8004FBB4 00000000 */ .word 0x00000000
     /* 403B8 8004FBB8 00000000 */ .word 0x00000000
     /* 403BC 8004FBBC 00000000 */ .word 0x00000000
-enddlabel D_8004FBA0
+enddlabel Sys_VSyncCallbacks
 
-nonmatching D_8004FBC0
+nonmatching Sys_VSyncCount
 
-dlabel D_8004FBC0
+dlabel Sys_VSyncCount
     /* 403C0 8004FBC0 00000000 */ .word 0x00000000
-enddlabel D_8004FBC0
+enddlabel Sys_VSyncCount
 
 nonmatching D_8004FBC4
 
@@ -19189,15 +19189,15 @@ dlabel D_8004FBC4
     /* 403CC 8004FBCC 00000000 */ .word 0x00000000
 enddlabel D_8004FBC4
 
-nonmatching D_8004FBD0
+nonmatching Sys_DicrPtr
 
-dlabel D_8004FBD0
+dlabel Sys_DicrPtr
     /* 403D0 8004FBD0 F410801F */ .word 0x1F8010F4
-enddlabel D_8004FBD0
+enddlabel Sys_DicrPtr
 
-nonmatching D_8004FBD4
+nonmatching Sys_DmaCallbacks
 
-dlabel D_8004FBD4
+dlabel Sys_DmaCallbacks
     /* 403D4 8004FBD4 00000000 */ .word 0x00000000
     /* 403D8 8004FBD8 00000000 */ .word 0x00000000
     /* 403DC 8004FBDC 00000000 */ .word 0x00000000
@@ -19206,7 +19206,7 @@ dlabel D_8004FBD4
     /* 403E8 8004FBE8 00000000 */ .word 0x00000000
     /* 403EC 8004FBEC 00000000 */ .word 0x00000000
     /* 403F0 8004FBF0 00000000 */ .word 0x00000000
-enddlabel D_8004FBD4
+enddlabel Sys_DmaCallbacks
 
 nonmatching D_8004FBF4
 
@@ -19216,16 +19216,16 @@ dlabel D_8004FBF4
     /* 403FC 8004FBFC 00000000 */ .word 0x00000000
 enddlabel D_8004FBF4
 
-nonmatching D_8004FC00
+nonmatching Sys_VideoMode
 
-dlabel D_8004FC00
+dlabel Sys_VideoMode
     /* 40400 8004FC00 00000000 */ .word 0x00000000
     /* 40404 8004FC04 00000000 */ .word 0x00000000
     /* 40408 8004FC08 00000000 */ .word 0x00000000
     /* 4040C 8004FC0C 00000000 */ .word 0x00000000
     /* 40410 8004FC10 00800000 */ .word 0x00008000
     /* 40414 8004FC14 00008000 */ .word 0x00800000
-enddlabel D_8004FC00
+enddlabel Sys_VideoMode
 
 nonmatching D_8004FC18
 
@@ -19293,11 +19293,11 @@ dlabel D_8004FC68
     /* 40468 8004FC68 7010801F */ .word 0x1F801070
 enddlabel D_8004FC68
 
-nonmatching D_8004FC6C
+nonmatching Sys_RCntRegs
 
-dlabel D_8004FC6C
+dlabel Sys_RCntRegs
     /* 4046C 8004FC6C 0011801F */ .word 0x1F801100
-enddlabel D_8004FC6C
+enddlabel Sys_RCntRegs
 
 nonmatching D_8004FC70
 
@@ -19468,11 +19468,11 @@ dlabel D_8004FCA0
     /* 405AE 8004FDAE */ .short 0x0047
 enddlabel D_8004FCA0
 
-nonmatching D_8004FDB0
+nonmatching _spu_EVdma
 
-dlabel D_8004FDB0
+dlabel _spu_EVdma
     /* 405B0 8004FDB0 00000000 */ .word 0x00000000
-enddlabel D_8004FDB0
+enddlabel _spu_EVdma
 
 nonmatching D_8004FDB4
 
@@ -19576,14 +19576,14 @@ dlabel D_8004FE14
     /* 40614 8004FE14 00000000 */ .word 0x00000000
 enddlabel D_8004FE14
 
-nonmatching D_8004FE18
+nonmatching _spu_isCalled
 
-dlabel D_8004FE18
+dlabel _spu_isCalled
     /* 40618 8004FE18 00000000 */ .word 0x00000000
     /* 4061C 8004FE1C 00000000 */ .word 0x00000000
     /* 40620 8004FE20 00000000 */ .word 0x00000000
     /* 40624 8004FE24 00000000 */ .word 0x00000000
-enddlabel D_8004FE18
+enddlabel _spu_isCalled
 
 nonmatching D_8004FE28
 
@@ -19664,11 +19664,11 @@ dlabel D_8004FE58
     /* 40658 8004FE58 07000000 */ .word 0x00000007
 enddlabel D_8004FE58
 
-nonmatching D_8004FE5C
+nonmatching Spu_InTransfer
 
-dlabel D_8004FE5C
+dlabel Spu_InTransfer
     /* 4065C 8004FE5C 01000000 */ .word 0x00000001
-enddlabel D_8004FE5C
+enddlabel Spu_InTransfer
 
 nonmatching D_8004FE60
 
@@ -19722,12 +19722,12 @@ dlabel D_8004FE8C
     /* 4068C 8004FE8C 00000000 */ .word 0x00000000
 enddlabel D_8004FE8C
 
-nonmatching D_8004FE90
+nonmatching Spu_MemList
 
-dlabel D_8004FE90
+dlabel Spu_MemList
     /* 40690 8004FE90 00000000 */ .word 0x00000000
     /* 40694 8004FE94 00000000 */ .word 0x00000000
-enddlabel D_8004FE90
+enddlabel Spu_MemList
 
 nonmatching D_8004FE98
 
@@ -20413,14 +20413,14 @@ dlabel D_800506DC
     /* 40EE4 800506E4 00000000 */ .word 0x00000000
 enddlabel D_800506DC
 
-nonmatching D_800506E8
+nonmatching Card_TaskTop
 
-dlabel D_800506E8
+dlabel Card_TaskTop
     /* 40EE8 800506E8 FFFFFFFF */ .word 0xFFFFFFFF
     /* 40EEC 800506EC 00000000 */ .word 0x00000000
     /* 40EF0 800506F0 00000000 */ .word 0x00000000
     /* 40EF4 800506F4 00000000 */ .word 0x00000000
-enddlabel D_800506E8
+enddlabel Card_TaskTop
 
 nonmatching D_800506F8
 
@@ -20677,9 +20677,9 @@ dlabel D_80050790
     /* 40F94 80050794 00000000 */ .word 0x00000000
 enddlabel D_80050790
 
-nonmatching D_80050798
+nonmatching Task_List
 
-dlabel D_80050798
+dlabel Task_List
     /* 40F98 80050798 00000000 */ .word 0x00000000
     /* 40F9C 8005079C 00000000 */ .word 0x00000000
     /* 40FA0 800507A0 00000000 */ .word 0x00000000
@@ -20784,16 +20784,16 @@ dlabel D_80050798
     /* 4112C 8005092C 00000000 */ .word 0x00000000
     /* 41130 80050930 00000000 */ .word 0x00000000
     /* 41134 80050934 00000000 */ .word 0x00000000
-enddlabel D_80050798
+enddlabel Task_List
 
-nonmatching D_80050938
+nonmatching Task_FindFilter
 
-dlabel D_80050938
+dlabel Task_FindFilter
     /* 41138 80050938 00000000 */ .word 0x00000000
     /* 4113C 8005093C 00000000 */ .word 0x00000000
     /* 41140 80050940 00000000 */ .word 0x00000000
     /* 41144 80050944 00000000 */ .word 0x00000000
-enddlabel D_80050938
+enddlabel Task_FindFilter
 
 nonmatching D_80050948
 
@@ -25132,9 +25132,9 @@ dlabel D_80054C48
     /* 454CC 80054CCC 00000000 */ .word 0x00000000
 enddlabel D_80054C48
 
-nonmatching D_80054CD0
+nonmatching Text_ReturnStack
 
-dlabel D_80054CD0
+dlabel Text_ReturnStack
     /* 454D0 80054CD0 00000000 */ .word 0x00000000
     /* 454D4 80054CD4 00000000 */ .word 0x00000000
     /* 454D8 80054CD8 00000000 */ .word 0x00000000
@@ -25145,11 +25145,11 @@ dlabel D_80054CD0
     /* 454EC 80054CEC 00000000 */ .word 0x00000000
     /* 454F0 80054CF0 00000000 */ .word 0x00000000
     /* 454F4 80054CF4 00000000 */ .word 0x00000000
-enddlabel D_80054CD0
+enddlabel Text_ReturnStack
 
-nonmatching D_80054CF8
+nonmatching Gpu_OtBufs
 
-dlabel D_80054CF8
+dlabel Gpu_OtBufs
     /* 454F8 80054CF8 00000000 */ .word 0x00000000
     /* 454FC 80054CFC 00000000 */ .word 0x00000000
     /* 45500 80054D00 00000000 */ .word 0x00000000
@@ -29258,7 +29258,7 @@ dlabel D_80054CF8
     /* 4951C 80058D1C 00000000 */ .word 0x00000000
     /* 49520 80058D20 00000000 */ .word 0x00000000
     /* 49524 80058D24 00000000 */ .word 0x00000000
-enddlabel D_80054CF8
+enddlabel Gpu_OtBufs
 
 nonmatching D_80058D28
 
@@ -33380,9 +33380,9 @@ dlabel D_8005CCF8
     /* 4D55C 8005CD5C 00000000 */ .word 0x00000000
 enddlabel D_8005CCF8
 
-nonmatching D_8005CD60
+nonmatching Gfx_TexSlots
 
-dlabel D_8005CD60
+dlabel Gfx_TexSlots
     /* 4D560 8005CD60 00000000 */ .word 0x00000000
     /* 4D564 8005CD64 00000000 */ .word 0x00000000
     /* 4D568 8005CD68 00000000 */ .word 0x00000000
@@ -33895,7 +33895,7 @@ dlabel D_8005CD60
     /* 4DD54 8005D554 00000000 */ .word 0x00000000
     /* 4DD58 8005D558 00000000 */ .word 0x00000000
     /* 4DD5C 8005D55C 00000000 */ .word 0x00000000
-enddlabel D_8005CD60
+enddlabel Gfx_TexSlots
 
 nonmatching D_8005D560
 
@@ -39202,15 +39202,15 @@ dlabel D_80061C48
     /* 52448 80061C48 00000000 */ .word 0x00000000
 enddlabel D_80061C48
 
-nonmatching D_80061C4C
+nonmatching Snd_TicksPerSec
 
-dlabel D_80061C4C
+dlabel Snd_TicksPerSec
     /* 5244C 80061C4C 00000000 */ .word 0x00000000
-enddlabel D_80061C4C
+enddlabel Snd_TicksPerSec
 
-nonmatching D_80061C50
+nonmatching Snd_SeqScores
 
-dlabel D_80061C50
+dlabel Snd_SeqScores
     /* 52450 80061C50 00000000 */ .word 0x00000000
     /* 52454 80061C54 00000000 */ .word 0x00000000
     /* 52458 80061C58 00000000 */ .word 0x00000000
@@ -39243,11 +39243,11 @@ dlabel D_80061C50
     /* 524C4 80061CC4 00000000 */ .word 0x00000000
     /* 524C8 80061CC8 00000000 */ .word 0x00000000
     /* 524CC 80061CCC 00000000 */ .word 0x00000000
-enddlabel D_80061C50
+enddlabel Snd_SeqScores
 
-nonmatching D_80061CD0
+nonmatching Snd_MarkCallbacks
 
-dlabel D_80061CD0
+dlabel Snd_MarkCallbacks
     /* 524D0 80061CD0 00000000 */ .word 0x00000000
     /* 524D4 80061CD4 00000000 */ .word 0x00000000
     /* 524D8 80061CD8 00000000 */ .word 0x00000000
@@ -39760,7 +39760,7 @@ dlabel D_80061CD0
     /* 52CC4 800624C4 00000000 */ .word 0x00000000
     /* 52CC8 800624C8 00000000 */ .word 0x00000000
     /* 52CCC 800624CC 00000000 */ .word 0x00000000
-enddlabel D_80061CD0
+enddlabel Snd_MarkCallbacks
 
 nonmatching D_800624D0
 
@@ -41493,13 +41493,13 @@ dlabel D_80062FE8
     /* 5380C 8006300C 00000000 */ .word 0x00000000
 enddlabel D_80062FE8
 
-nonmatching D_80063010
+nonmatching Card_TaskWork
 
-dlabel D_80063010
+dlabel Card_TaskWork
     /* 53810 80063010 00000000 */ .word 0x00000000
     /* 53814 80063014 00000000 */ .word 0x00000000
     /* 53818 80063018 00000000 */ .word 0x00000000
-enddlabel D_80063010
+enddlabel Card_TaskWork
 
 nonmatching D_8006301C
 
@@ -41519,14 +41519,14 @@ dlabel D_8006301C
     /* 5384C 8006304C 00000000 */ .word 0x00000000
 enddlabel D_8006301C
 
-nonmatching D_80063050
+nonmatching Card_TaskFuncs
 
-dlabel D_80063050
+dlabel Card_TaskFuncs
     /* 53850 80063050 00000000 */ .word 0x00000000
     /* 53854 80063054 00000000 */ .word 0x00000000
     /* 53858 80063058 00000000 */ .word 0x00000000
     /* 5385C 8006305C 00000000 */ .word 0x00000000
-enddlabel D_80063050
+enddlabel Card_TaskFuncs
 
 nonmatching D_80063060
 

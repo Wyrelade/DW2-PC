@@ -350,7 +350,7 @@ glabel func_8002C164
     /* 1CE5C 8002C65C 00000000 */  nop
     /* 1CE60 8002C660 27008010 */  beqz       $a0, .L8002C700
     /* 1CE64 8002C664 3000B027 */   addiu     $s0, $sp, 0x30
-    /* 1CE68 8002C668 0DB2000C */  jal        func_8002C834
+    /* 1CE68 8002C668 0DB2000C */  jal        GsGetLw
     /* 1CE6C 8002C66C 21280002 */   addu      $a1, $s0, $zero
     /* 1CE70 8002C670 21200002 */  addu       $a0, $s0, $zero
     /* 1CE74 8002C674 5000B027 */  addiu      $s0, $sp, 0x50

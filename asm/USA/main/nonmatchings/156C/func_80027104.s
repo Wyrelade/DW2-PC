@@ -44,7 +44,7 @@ glabel func_80027104
     /* 17998 80027198 FFFF4234 */  ori        $v0, $v0, (0xFFFFFF & 0xFFFF)
     /* 1799C 8002719C 01A8000C */  jal        GPU_cw
     /* 179A0 800271A0 24208200 */   and       $a0, $a0, $v0
-    /* 179A4 800271A4 C3A5000C */  jal        func_8002970C
+    /* 179A4 800271A4 C3A5000C */  jal        _reset
     /* 179A8 800271A8 21202002 */   addu      $a0, $s1, $zero
     /* 179AC 800271AC 10000426 */  addiu      $a0, $s0, 0x10
     /* 179B0 800271B0 000002A2 */  sb         $v0, 0x0($s0)

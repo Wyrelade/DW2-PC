@@ -20,7 +20,7 @@ glabel func_800341F4
     /* 24A34 80034234 4C00B427 */  addiu      $s4, $sp, 0x4C
     /* 24A38 80034238 4C00A7AF */  sw         $a3, 0x4C($sp)
     /* 24A3C 8003423C 3C00BFAF */  sw         $ra, 0x3C($sp)
-    /* 24A40 80034240 59D8000C */  jal        func_80036164
+    /* 24A40 80034240 59D8000C */  jal        SsUtGetVagAtr
     /* 24A44 80034244 21388002 */   addu      $a3, $s4, $zero
     /* 24A48 80034248 1000A427 */  addiu      $a0, $sp, 0x10
     /* 24A4C 8003424C 5C00A527 */  addiu      $a1, $sp, 0x5C
@@ -30,7 +30,7 @@ glabel func_800341F4
     /* 24A5C 8003425C 21204002 */  addu       $a0, $s2, $zero
     /* 24A60 80034260 21282002 */  addu       $a1, $s1, $zero
     /* 24A64 80034264 21300002 */  addu       $a2, $s0, $zero
-    /* 24A68 80034268 65D9000C */  jal        func_80036594
+    /* 24A68 80034268 65D9000C */  jal        SsUtSetVagAtr
     /* 24A6C 8003426C 21388002 */   addu      $a3, $s4, $zero
     /* 24A70 80034270 3C00BF8F */  lw         $ra, 0x3C($sp)
     /* 24A74 80034274 3800B48F */  lw         $s4, 0x38($sp)

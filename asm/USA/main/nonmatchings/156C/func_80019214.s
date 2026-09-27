@@ -140,7 +140,7 @@ glabel func_80019214
     /* 9C2C 8001942C 01000224 */   addiu     $v0, $zero, 0x1
     /* 9C30 80019430 07006214 */  bne        $v1, $v0, .L80019450
     /* 9C34 80019434 21208002 */   addu      $a0, $s4, $zero
-    /* 9C38 80019438 6A7C000C */  jal        func_8001F1A8
+    /* 9C38 80019438 6A7C000C */  jal        Anim_SetModelAnim
     /* 9C3C 8001943C 21280000 */   addu      $a1, $zero, $zero
     /* 9C40 80019440 C800428E */  lw         $v0, 0xC8($s2)
     /* 9C44 80019444 00000000 */  nop
@@ -160,7 +160,7 @@ glabel func_80019214
     /* 9C78 80019478 C000458E */  lw         $a1, 0xC0($s2)
     /* 9C7C 8001947C 6F7F000C */  jal        func_8001FDBC
     /* 9C80 80019480 21208002 */   addu      $a0, $s4, $zero
-    /* 9C84 80019484 C87C000C */  jal        func_8001F320
+    /* 9C84 80019484 C87C000C */  jal        Anim_StepModelAnim
     /* 9C88 80019488 21208002 */   addu      $a0, $s4, $zero
     /* 9C8C 8001948C 4882000C */  jal        func_80020920
     /* 9C90 80019490 21208002 */   addu      $a0, $s4, $zero

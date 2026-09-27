@@ -205,7 +205,7 @@ glabel func_8002F860
     /* 20354 8002FB54 00000000 */  nop
     /* 20358 8002FB58 03005130 */  andi       $s1, $v0, 0x3
   .L8002FB5C:
-    /* 2035C 8002FB5C 6DBB000C */  jal        func_8002EDB4
+    /* 2035C 8002FB5C 6DBB000C */  jal        getintr
     /* 20360 8002FB60 00000000 */   nop
     /* 20364 8002FB64 21804000 */  addu       $s0, $v0, $zero
     /* 20368 8002FB68 1A000012 */  beqz       $s0, .L8002FBD4

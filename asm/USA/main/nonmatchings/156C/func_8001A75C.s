@@ -10,7 +10,7 @@ glabel func_8001A75C
     /* AF74 8001A774 1400B1AF */  sw         $s1, 0x14($sp)
     /* AF78 8001A778 F9D5000C */  jal        SsSetTableSize
     /* AF7C 8001A77C 1000B0AF */   sw        $s0, 0x10($sp)
-    /* AF80 8001A780 81D6000C */  jal        func_80035A04
+    /* AF80 8001A780 81D6000C */  jal        SsSetTickMode
     /* AF84 8001A784 00100424 */   addiu     $a0, $zero, 0x1000
     /* AF88 8001A788 B1D4000C */  jal        func_800352C4
     /* AF8C 8001A78C 0480103C */   lui       $s0, %hi(D_800411FC)
@@ -37,7 +37,7 @@ glabel func_8001A75C
     /* AFE0 8001A7E0 0400228E */  lw         $v0, 0x4($s1)
     /* AFE4 8001A7E4 0800238E */  lw         $v1, 0x8($s1)
     /* AFE8 8001A7E8 21208200 */  addu       $a0, $a0, $v0
-    /* AFEC 8001A7EC CF8B000C */  jal        func_80022F3C
+    /* AFEC 8001A7EC CF8B000C */  jal        Mem_Alloc
     /* AFF0 8001A7F0 21208300 */   addu      $a0, $a0, $v1
     /* AFF4 8001A7F4 21300000 */  addu       $a2, $zero, $zero
     /* AFF8 8001A7F8 FFFF0724 */  addiu      $a3, $zero, -0x1

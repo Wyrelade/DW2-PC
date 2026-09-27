@@ -3,7 +3,7 @@ nonmatching func_800136A4, 0x40
 glabel func_800136A4
     /* 3EA4 800136A4 E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* 3EA8 800136A8 1000BFAF */  sw         $ra, 0x10($sp)
-    /* 3EAC 800136AC 826F000C */  jal        func_8001BE08
+    /* 3EAC 800136AC 826F000C */  jal        Text_IsFinished
     /* 3EB0 800136B0 00000000 */   nop
     /* 3EB4 800136B4 21184000 */  addu       $v1, $v0, $zero
     /* 3EB8 800136B8 06006010 */  beqz       $v1, .L800136D4

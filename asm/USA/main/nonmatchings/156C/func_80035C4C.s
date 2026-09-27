@@ -13,9 +13,9 @@ glabel func_80035C4C
     /* 26470 80035C70 80100200 */  sll        $v0, $v0, 2
     /* 26474 80035C74 23104300 */  subu       $v0, $v0, $v1
     /* 26478 80035C78 1000BFAF */  sw         $ra, 0x10($sp)
-    /* 2647C 80035C7C 0680033C */  lui        $v1, %hi(D_80061C50)
+    /* 2647C 80035C7C 0680033C */  lui        $v1, %hi(Snd_SeqScores)
     /* 26480 80035C80 21186400 */  addu       $v1, $v1, $a0
-    /* 26484 80035C84 501C638C */  lw         $v1, %lo(D_80061C50)($v1)
+    /* 26484 80035C84 501C638C */  lw         $v1, %lo(Snd_SeqScores)($v1)
     /* 26488 80035C88 00110200 */  sll        $v0, $v0, 4
     /* 2648C 80035C8C 21206200 */  addu       $a0, $v1, $v0
     /* 26490 80035C90 9800838C */  lw         $v1, 0x98($a0)
@@ -32,7 +32,7 @@ glabel func_80035C4C
     /* 264B8 80035CB8 03240400 */  sra        $a0, $a0, 16
     /* 264BC 80035CBC FFFF2531 */  andi       $a1, $t1, 0xFFFF
     /* 264C0 80035CC0 FFFF4631 */  andi       $a2, $t2, 0xFFFF
-    /* 264C4 80035CC4 F9E2000C */  jal        func_80038BE4
+    /* 264C4 80035CC4 F9E2000C */  jal        _SsVmSetSeqVol
     /* 264C8 80035CC8 01000724 */   addiu     $a3, $zero, 0x1
   .L80035CCC:
     /* 264CC 80035CCC 1000BF8F */  lw         $ra, 0x10($sp)

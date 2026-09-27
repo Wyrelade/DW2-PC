@@ -11,7 +11,7 @@ glabel func_8001C0B0
     /* C8CC 8001C0CC 0700401A */  blez       $s2, .L8001C0EC
     /* C8D0 8001C0D0 1C00BFAF */   sw        $ra, 0x1C($sp)
   .L8001C0D4:
-    /* C8D4 8001C0D4 E26E000C */  jal        func_8001BB88
+    /* C8D4 8001C0D4 E26E000C */  jal        Text_Close
     /* C8D8 8001C0D8 21202002 */   addu      $a0, $s1, $zero
     /* C8DC 8001C0DC 01001026 */  addiu      $s0, $s0, 0x1
     /* C8E0 8001C0E0 2A101202 */  slt        $v0, $s0, $s2

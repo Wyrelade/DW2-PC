@@ -20,13 +20,13 @@ glabel func_80033954
     /* 24194 80033994 3400B327 */  addiu      $s3, $sp, 0x34
     /* 24198 80033998 3400A7AF */  sw         $a3, 0x34($sp)
     /* 2419C 8003399C 2400BFAF */  sw         $ra, 0x24($sp)
-    /* 241A0 800339A0 59D8000C */  jal        func_80036164
+    /* 241A0 800339A0 59D8000C */  jal        SsUtGetVagAtr
     /* 241A4 800339A4 21386002 */   addu      $a3, $s3, $zero
     /* 241A8 800339A8 21204002 */  addu       $a0, $s2, $zero
     /* 241AC 800339AC 21282002 */  addu       $a1, $s1, $zero
     /* 241B0 800339B0 21300002 */  addu       $a2, $s0, $zero
     /* 241B4 800339B4 21386002 */  addu       $a3, $s3, $zero
-    /* 241B8 800339B8 65D9000C */  jal        func_80036594
+    /* 241B8 800339B8 65D9000C */  jal        SsUtSetVagAtr
     /* 241BC 800339BC 3A00B4A3 */   sb        $s4, 0x3A($sp)
     /* 241C0 800339C0 2400BF8F */  lw         $ra, 0x24($sp)
     /* 241C4 800339C4 2000B48F */  lw         $s4, 0x20($sp)

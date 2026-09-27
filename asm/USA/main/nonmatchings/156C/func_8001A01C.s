@@ -51,7 +51,7 @@ glabel func_8001A01C
     /* A8D0 8001A0D0 00000000 */   nop
   jlabel .L8001A0D4
     /* A8D4 8001A0D4 2400048E */  lw         $a0, 0x24($s0)
-    /* A8D8 8001A0D8 DC8E000C */  jal        func_80023B70
+    /* A8D8 8001A0D8 DC8E000C */  jal        Cd_GetFileState
     /* A8DC 8001A0DC 00000000 */   nop
     /* A8E0 8001A0E0 03000324 */  addiu      $v1, $zero, 0x3
     /* A8E4 8001A0E4 79004314 */  bne        $v0, $v1, .L8001A2CC
@@ -112,13 +112,13 @@ glabel func_8001A01C
     /* A9B0 8001A1B0 00000000 */   nop
   jlabel .L8001A1B4
     /* A9B4 8001A1B4 2000048E */  lw         $a0, 0x20($s0)
-    /* A9B8 8001A1B8 DC8E000C */  jal        func_80023B70
+    /* A9B8 8001A1B8 DC8E000C */  jal        Cd_GetFileState
     /* A9BC 8001A1BC 00000000 */   nop
     /* A9C0 8001A1C0 03000324 */  addiu      $v1, $zero, 0x3
     /* A9C4 8001A1C4 41004314 */  bne        $v0, $v1, .L8001A2CC
     /* A9C8 8001A1C8 00000000 */   nop
     /* A9CC 8001A1CC 2000048E */  lw         $a0, 0x20($s0)
-    /* A9D0 8001A1D0 9E8F000C */  jal        func_80023E78
+    /* A9D0 8001A1D0 9E8F000C */  jal        Cd_LockFile
     /* A9D4 8001A1D4 00000000 */   nop
     /* A9D8 8001A1D8 0000028E */  lw         $v0, 0x0($s0)
     /* A9DC 8001A1DC 00000000 */  nop
@@ -183,7 +183,7 @@ glabel func_8001A01C
     /* AAB4 8001A2B4 05004010 */  beqz       $v0, .L8001A2CC
     /* AAB8 8001A2B8 00000000 */   nop
     /* AABC 8001A2BC 2000048E */  lw         $a0, 0x20($s0)
-    /* AAC0 8001A2C0 AE8F000C */  jal        func_80023EB8
+    /* AAC0 8001A2C0 AE8F000C */  jal        Cd_UnlockFile
     /* AAC4 8001A2C4 00000000 */   nop
   .L8001A2C8:
     /* AAC8 8001A2C8 040000AE */  sw         $zero, 0x4($s0)

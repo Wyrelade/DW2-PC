@@ -27,7 +27,7 @@ glabel func_80016198
     /* 69F0 800161F0 21880000 */  addu       $s1, $zero, $zero
     /* 69F4 800161F4 2180C002 */  addu       $s0, $s6, $zero
   .L800161F8:
-    /* 69F8 800161F8 E26E000C */  jal        func_8001BB88
+    /* 69F8 800161F8 E26E000C */  jal        Text_Close
     /* 69FC 800161FC 21200002 */   addu      $a0, $s0, $zero
     /* 6A00 80016200 01003126 */  addiu      $s1, $s1, 0x1
     /* 6A04 80016204 1000222A */  slti       $v0, $s1, 0x10

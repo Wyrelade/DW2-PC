@@ -15,13 +15,13 @@ glabel func_800154F0
     /* 5D1C 8001551C 8C000526 */   addiu     $a1, $s0, 0x8C
     /* 5D20 80015520 50001326 */  addiu      $s3, $s0, 0x50
     /* 5D24 80015524 21206002 */  addu       $a0, $s3, $zero
-    /* 5D28 80015528 E26E000C */  jal        func_8001BB88
+    /* 5D28 80015528 E26E000C */  jal        Text_Close
     /* 5D2C 8001552C 21884000 */   addu      $s1, $v0, $zero
     /* 5D30 80015530 54001426 */  addiu      $s4, $s0, 0x54
-    /* 5D34 80015534 E26E000C */  jal        func_8001BB88
+    /* 5D34 80015534 E26E000C */  jal        Text_Close
     /* 5D38 80015538 21208002 */   addu      $a0, $s4, $zero
     /* 5D3C 8001553C 58001226 */  addiu      $s2, $s0, 0x58
-    /* 5D40 80015540 E26E000C */  jal        func_8001BB88
+    /* 5D40 80015540 E26E000C */  jal        Text_Close
     /* 5D44 80015544 21204002 */   addu      $a0, $s2, $zero
     /* 5D48 80015548 7400828F */  lw         $v0, %gp_rel(D_8005076C)($gp)
     /* 5D4C 8001554C 00000000 */  nop

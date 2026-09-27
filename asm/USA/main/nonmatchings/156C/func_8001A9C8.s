@@ -101,7 +101,7 @@ glabel func_8001A9C8
     /* B344 8001AB44 2000A2A7 */  sh         $v0, 0x20($sp)
     /* B348 8001AB48 0E000224 */  addiu      $v0, $zero, 0xE
     /* B34C 8001AB4C 5C00AAAF */  sw         $t2, 0x5C($sp)
-    /* B350 8001AB50 E072000C */  jal        func_8001CB80
+    /* B350 8001AB50 E072000C */  jal        Gfx_FindOrLoadTexSlot
     /* B354 8001AB54 2200A2A7 */   sh        $v0, 0x22($sp)
     /* B358 8001AB58 E46A0008 */  j          .L8001AB90
     /* B35C 8001AB5C 1001043C */   lui       $a0, (0x1100000 >> 16)
@@ -115,19 +115,19 @@ glabel func_8001A9C8
     /* B378 8001AB78 0A000224 */  addiu      $v0, $zero, 0xA
     /* B37C 8001AB7C 5C00A7AF */  sw         $a3, 0x5C($sp)
     /* B380 8001AB80 1A00A3A7 */  sh         $v1, 0x1A($sp)
-    /* B384 8001AB84 E072000C */  jal        func_8001CB80
+    /* B384 8001AB84 E072000C */  jal        Gfx_FindOrLoadTexSlot
     /* B388 8001AB88 2200A2A7 */   sh        $v0, 0x22($sp)
     /* B38C 8001AB8C 3A01043C */  lui        $a0, (0x13A0000 >> 16)
   .L8001AB90:
-    /* B390 8001AB90 E072000C */  jal        func_8001CB80
+    /* B390 8001AB90 E072000C */  jal        Gfx_FindOrLoadTexSlot
     /* B394 8001AB94 1000A2AF */   sw        $v0, 0x10($sp)
     /* B398 8001AB98 1400A2AF */  sw         $v0, 0x14($sp)
-    /* B39C 8001AB9C 0580023C */  lui        $v0, %hi(D_80054CD0)
+    /* B39C 8001AB9C 0580023C */  lui        $v0, %hi(Text_ReturnStack)
     /* B3A0 8001ABA0 A000A88F */  lw         $t0, 0xA0($sp)
     /* B3A4 8001ABA4 9C00A98F */  lw         $t1, 0x9C($sp)
     /* B3A8 8001ABA8 5400AA8F */  lw         $t2, 0x54($sp)
     /* B3AC 8001ABAC 21A00000 */  addu       $s4, $zero, $zero
-    /* B3B0 8001ABB0 D04C40AC */  sw         $zero, %lo(D_80054CD0)($v0)
+    /* B3B0 8001ABB0 D04C40AC */  sw         $zero, %lo(Text_ReturnStack)($v0)
     /* B3B4 8001ABB4 9000A0AF */  sw         $zero, 0x90($sp)
     /* B3B8 8001ABB8 22005325 */  addiu      $s3, $t2, 0x22
     /* B3BC 8001ABBC 9400A8AF */  sw         $t0, 0x94($sp)

@@ -13,7 +13,7 @@ glabel func_8001CE9C
     /* D6C0 8001CEC0 21804000 */  addu       $s0, $v0, $zero
     /* D6C4 8001CEC4 0000228E */  lw         $v0, 0x0($s1)
     /* D6C8 8001CEC8 FFFF043C */  lui        $a0, (0xFFFF0000 >> 16)
-    /* D6CC 8001CECC E072000C */  jal        func_8001CB80
+    /* D6CC 8001CECC E072000C */  jal        Gfx_FindOrLoadTexSlot
     /* D6D0 8001CED0 24204400 */   and       $a0, $v0, $a0
     /* D6D4 8001CED4 0680033C */  lui        $v1, %hi(D_8005F79C)
     /* D6D8 8001CED8 21404000 */  addu       $t0, $v0, $zero

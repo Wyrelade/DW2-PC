@@ -24,10 +24,10 @@ glabel func_8003E930
     /* 2F17C 8003E97C B2FA0008 */  j          .L8003EAC8
     /* 2F180 8003E980 00000000 */   nop
   .L8003E984:
-    /* 2F184 8003E984 0480043C */  lui        $a0, %hi(func_8003DE18)
-    /* 2F188 8003E988 18DE8424 */  addiu      $a0, $a0, %lo(func_8003DE18)
+    /* 2F184 8003E984 0480043C */  lui        $a0, %hi(Card_InfoTask)
+    /* 2F188 8003E988 18DE8424 */  addiu      $a0, $a0, %lo(Card_InfoTask)
     /* 2F18C 8003E98C 0580013C */  lui        $at, %hi(D_800506D4)
-    /* 2F190 8003E990 89FE000C */  jal        func_8003FA24
+    /* 2F190 8003E990 89FE000C */  jal        Card_PushTask
     /* 2F194 8003E994 D40620AC */   sw        $zero, %lo(D_800506D4)($at)
     /* 2F198 8003E998 B1FA0008 */  j          .L8003EAC4
     /* 2F19C 8003E99C 000030AE */   sw        $s0, 0x0($s1)

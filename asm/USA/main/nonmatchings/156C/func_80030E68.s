@@ -12,8 +12,8 @@ glabel func_80030E68
     /* 21688 80030E88 21100000 */   addu      $v0, $zero, $zero
     /* 2168C 80030E8C 0580033C */  lui        $v1, %hi(D_8004FB84)
     /* 21690 80030E90 84FB638C */  lw         $v1, %lo(D_8004FB84)($v1)
-    /* 21694 80030E94 0580023C */  lui        $v0, %hi(D_8004FB88)
-    /* 21698 80030E98 88FB428C */  lw         $v0, %lo(D_8004FB88)($v0)
+    /* 21694 80030E94 0580023C */  lui        $v0, %hi(Sys_IntrMaskPtr)
+    /* 21698 80030E98 88FB428C */  lw         $v0, %lo(Sys_IntrMaskPtr)($v0)
     /* 2169C 80030E9C 3333053C */  lui        $a1, (0x33333333 >> 16)
     /* 216A0 80030EA0 000040A4 */  sh         $zero, 0x0($v0)
     /* 216A4 80030EA4 00004294 */  lhu        $v0, 0x0($v0)
@@ -29,7 +29,7 @@ glabel func_80030E68
     /* 216CC 80030ECC 38000426 */   addiu     $a0, $s0, 0x38
     /* 216D0 80030ED0 03004010 */  beqz       $v0, .L80030EE0
     /* 216D4 80030ED4 00000000 */   nop
-    /* 216D8 80030ED8 D0C3000C */  jal        func_80030F40
+    /* 216D8 80030ED8 D0C3000C */  jal        trapIntr
     /* 216DC 80030EDC 00000000 */   nop
   .L80030EE0:
     /* 216E0 80030EE0 0580103C */  lui        $s0, %hi(D_8004EB34)
@@ -39,11 +39,11 @@ glabel func_80030E68
     /* 216F0 80030EF0 F5C4000C */  jal        HookEntryInt
     /* 216F4 80030EF4 000002AE */   sw        $v0, 0x0($s0)
     /* 216F8 80030EF8 01000224 */  addiu      $v0, $zero, 0x1
-    /* 216FC 80030EFC 19C5000C */  jal        func_80031464
+    /* 216FC 80030EFC 19C5000C */  jal        startIntrVSync
     /* 21700 80030F00 C4FF02A6 */   sh        $v0, -0x3C($s0)
     /* 21704 80030F04 0580033C */  lui        $v1, %hi(D_8004FB80)
     /* 21708 80030F08 80FB638C */  lw         $v1, %lo(D_8004FB80)($v1)
-    /* 2170C 80030F0C 61C5000C */  jal        func_80031584
+    /* 2170C 80030F0C 61C5000C */  jal        startIntrDMA
     /* 21710 80030F10 140062AC */   sw        $v0, 0x14($v1)
     /* 21714 80030F14 0580043C */  lui        $a0, %hi(D_8004FB80)
     /* 21718 80030F18 80FB848C */  lw         $a0, %lo(D_8004FB80)($a0)

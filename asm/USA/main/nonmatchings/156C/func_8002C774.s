@@ -19,7 +19,7 @@ glabel func_8002C774
     /* 1CFB0 8002C7B0 F1B2000C */  jal        func_8002CBC4
     /* 1CFB4 8002C7B4 21200002 */   addu      $a0, $s0, $zero
     /* 1CFB8 8002C7B8 21200002 */  addu       $a0, $s0, $zero
-    /* 1CFBC 8002C7BC BDB2000C */  jal        func_8002CAF4
+    /* 1CFBC 8002C7BC BDB2000C */  jal        rsin
     /* 1CFC0 8002C7C0 21804000 */   addu      $s0, $v0, $zero
     /* 1CFC4 8002C7C4 12002012 */  beqz       $s1, .L8002C810
     /* 1CFC8 8002C7C8 21184000 */   addu      $v1, $v0, $zero

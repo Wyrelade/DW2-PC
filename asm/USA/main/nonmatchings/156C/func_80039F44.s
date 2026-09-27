@@ -22,7 +22,7 @@ glabel func_80039F44
     /* 2A78C 80039F8C 0680103C */  lui        $s0, %hi(D_80062D98)
     /* 2A790 80039F90 21801202 */  addu       $s0, $s0, $s2
     /* 2A794 80039F94 982D108E */  lw         $s0, %lo(D_80062D98)($s0)
-    /* 2A798 80039F98 F5F1000C */  jal        func_8003C7D4
+    /* 2A798 80039F98 F5F1000C */  jal        SpuSetTransferMode
     /* 2A79C 80039F9C 21200000 */   addu      $a0, $zero, $zero
     /* 2A7A0 80039FA0 DDF1000C */  jal        func_8003C774
     /* 2A7A4 80039FA4 21200002 */   addu      $a0, $s0, $zero

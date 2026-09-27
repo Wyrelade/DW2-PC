@@ -15,7 +15,7 @@ glabel func_8001A68C
     /* AEB8 8001A6B8 FFFF0224 */   addiu     $v0, $zero, -0x1
     /* AEBC 8001A6BC 04008210 */  beq        $a0, $v0, .L8001A6D0
     /* AEC0 8001A6C0 031A1200 */   sra       $v1, $s2, 8
-    /* AEC4 8001A6C4 0469000C */  jal        func_8001A410
+    /* AEC4 8001A6C4 0469000C */  jal        Snd_StopById
     /* AEC8 8001A6C8 00000000 */   nop
   .L8001A6CC:
     /* AECC 8001A6CC 031A1200 */  sra        $v1, $s2, 8
