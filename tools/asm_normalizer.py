@@ -6343,6 +6343,8 @@ def _pc_forward(lines, mv, ak):
 
 def param_copy_pass(stext, tgt):
     tps = _pc_targets(tgt)
+    if _PC_FRESH[0]:
+        tps = [(_PC_FRESH[0], ak) for _rn, ak in tps]
     if not tps:
         return stext
     lines = stext.split("\n")
@@ -7785,10 +7787,17 @@ def _mvr_runs(items, merge=True):
             loads.append((norm_reg(m.group(1)), int(m.group(2), 0), norm_reg(m.group(3))))
         k = len(loads)
         stores = []
+        skip = 0
         for x in range(k):
-            if p + k + x >= len(items):
+            if p + k + x + skip >= len(items):
                 break
-            m = _MVR_SW.match(items[p + k + x][1].split("#", 1)[0].strip())
+            sb = items[p + k + x + skip][1].split("#", 1)[0].strip()
+            # (split, target words) the last store sits in a jump's delay slot
+            if (not merge and x == k - 1 and not skip and re.match(r"(j|b)\s", sb)
+                    and p + k + x + 1 < len(items)):
+                skip = 1
+                sb = items[p + k + x + skip][1].split("#", 1)[0].strip()
+            m = _MVR_SW.match(sb)
             if not m or norm_reg(m.group(1)) != loads[x][0]:
                 break
             stores.append((int(m.group(2), 0), norm_reg(m.group(3))))
@@ -7797,15 +7806,15 @@ def _mvr_runs(items, merge=True):
             continue
         regs = [x[0] for x in loads]
         key = tuple((l[1], l[2], st[0], st[1]) for l, st in zip(loads, stores))
-        last = items[p + 2 * k - 1][0]
+        last = items[p + 2 * k - 1 + skip][0]
         if merge and runs and runs[-1][4] == p - 1:
             a, _, rr, kk, _ = runs[-1]
             if len(rr) == len(regs):
                 runs[-1] = (a, last, rr, kk + key, p + 2 * k - 1)
                 p += 2 * k
                 continue
-        runs.append((items[p][0], last, regs, key, p + 2 * k - 1))
-        p += 2 * k
+        runs.append((items[p][0], last, regs, key, p + 2 * k - 1 + skip))
+        p += 2 * k + skip
     return [(a, b, r, k) for a, b, r, k, _ in runs]
 
 
@@ -8652,6 +8661,153 @@ def const_uncse_pass(stext, tgt):
     return "\n".join(lines)
 
 
+
+# --------------------------------------------------------------------------
+# la_unhoist: loop.c hoisted `la R,S` (into the prologue) whose only reads are
+# load bases `lw X,k(R)`; retail builds S at each read (`lui X,%hi(S+k);
+# lw X,%lo(S+k)(X)`) and has no `la` of S. Target-guided: the target loads
+# through %lo(S) and never forms S's address. R must be written only by the la
+# and read only as a load base by loads whose destination is not R. Deletes the
+# la, expands each read. Count-changing: pre-sigma.
+# --------------------------------------------------------------------------
+_LAU_LD = re.compile(r"^(\s*)(lw|lh|lhu|lb|lbu)(\s+)(\$\w+)\s*,\s*(-?\d+)\((\$\w+)\)\s*$")
+
+
+def la_unhoist_pass(stext, tgt):
+    if not tgt:
+        return stext
+    tla, tmem = set(), set()
+    for _w, d in tgt:
+        m = re.search(r"%lo\(([^)]+)\)\(", d)
+        if m:
+            tmem.add(m.group(1).strip())
+        a = re.search(r"addiu\s+\$?\w+\s*,\s*\$?\w+\s*,\s*%lo\(([^)]+)\)", d)
+        if a:
+            tla.add(a.group(1).strip())
+    lines = stext.split("\n")
+    ins = [(i, l) for i, l in enumerate(lines) if _s_is_insn(l)]
+    rep, dele = {}, set()
+    for i, l in ins:
+        m = _LSP_LA.match(l.split("#", 1)[0])
+        if not m or m.group(4):
+            continue
+        r, sym = norm_reg(m.group(2)), m.group(3)
+        if sym in tla or sym not in tmem:
+            continue
+        uses, ok = [], True
+        for j, x in ins:
+            if j == i:
+                continue
+            body = x.split("#", 1)[0].strip()
+            if re.match(r"jalr?\b", body):
+                continue
+            d, u = defs_uses(body)
+            if r in d or r in u:
+                mm = _LAU_LD.match(x.split("#", 1)[0].rstrip())
+                if not mm or norm_reg(mm.group(6)) != r or norm_reg(mm.group(4)) == r:
+                    ok = False
+                    break
+                uses.append(j)
+        if not ok or not uses:
+            continue
+        dele.add(i)
+        for j in uses:
+            mm = _LAU_LD.match(lines[j].split("#", 1)[0].rstrip())
+            ind, op, sp, x, off = mm.group(1), mm.group(2), mm.group(3), mm.group(4), int(mm.group(5))
+            e = sym if off == 0 else "%s+%d" % (sym, off)
+            rep[j] = ["%slui\t%s,%%hi(%s)" % (ind, x, e), "%s%s%s%s,%%lo(%s)(%s)" % (ind, op, sp, x, e, x)]
+    if not rep:
+        return stext
+    out = []
+    for i, l in enumerate(lines):
+        if i in dele:
+            continue
+        out.extend(rep.get(i, [l]))
+    return "\n".join(out)
+
+
+# --------------------------------------------------------------------------
+# param_copy_fresh: param_copy into a register the function never mentions
+# (sigma names it afterwards). For an entry-argument web that spans a loop
+# (`p = p->super`), the target's copy register is busy before sigma.
+# --------------------------------------------------------------------------
+_PC_FRESH = [None]
+
+
+def param_copy_fresh_pass(stext, tgt):
+    used = set()
+    for l in stext.split("\n"):
+        if _s_is_insn(l):
+            for t in re.findall(r"\$\w+", l.split("#", 1)[0]):
+                if norm_reg(t):
+                    used.add(norm_reg(t))
+    fr = next((r for r in ("t6", "t7", "t8", "t9", "t5", "t4", "t3", "t2", "t1", "t0")
+               if r not in used), None)
+    if fr is None:
+        return stext
+    _PC_FRESH[0] = fr
+    try:
+        return param_copy_pass(stext, tgt)
+    finally:
+        _PC_FRESH[0] = None
+
+
+# --------------------------------------------------------------------------
+# li_uncopy: cse turned `li X,C` into `move X,Y` because Y was set to C earlier
+# on the same straight line; retail keeps both li. Target-guided: the target
+# builds C with li more often than ours. Count-preserving (li of a 16-bit C).
+# --------------------------------------------------------------------------
+_LIU_MV = re.compile(r"^(\s*)move\s+(\$\w+)\s*,\s*(\$\w+)\s*$")
+_LIU_LI = re.compile(r"^\s*li\s+(\$\w+)\s*,\s*(-?\d+|-?0x[0-9A-Fa-f]+)\s*$")
+
+
+def li_uncopy_pass(stext, tgt):
+    if not tgt:
+        return stext
+    tli = {}
+    for _w, d in tgt:
+        m = re.match(r"^\s*(?:li|addiu)\s+\$\w+\s*,\s*(?:\$(?:0|zero)\s*,\s*)?(-?\d+|-?0x[0-9A-Fa-f]+)\s*$",
+                     d.strip())
+        if m:
+            k = int(m.group(1), 0)
+            tli[k] = tli.get(k, 0) + 1
+    lines = stext.split("\n")
+    oli = {}
+    for l in lines:
+        m = _LIU_LI.match(l.split("#", 1)[0].rstrip())
+        if m:
+            k = int(m.group(2), 0)
+            oli[k] = oli.get(k, 0) + 1
+    ch = False
+    for i, l in enumerate(lines):
+        m = _LIU_MV.match(l.split("#", 1)[0].rstrip())
+        if not m:
+            continue
+        y = norm_reg(m.group(3))
+        for j in range(i - 1, -1, -1):
+            x = lines[j].split("#", 1)[0].strip()
+            if x.endswith(":"):
+                if x.startswith("LM"):
+                    continue
+                break
+            if not x or x.startswith("."):
+                continue
+            if _src_is_branch(lines[j]) or re.match(r"jalr?\b", x):
+                break
+            ml = _LIU_LI.match(x)
+            if ml and norm_reg(ml.group(1)) == y:
+                k = int(ml.group(2), 0)
+                if -0x8000 <= k < 0x8000 and tli.get(k, 0) > oli.get(k, 0):
+                    lines[i] = "%sli\t%s,%s" % (m.group(1), m.group(2), ml.group(2))
+                    oli[k] = oli.get(k, 0) + 1
+                    ch = True
+                break
+            d, u = defs_uses(x)
+            if y in d:
+                break
+    return "\n".join(lines) if ch else stext
+
+
 PASSES = {
     # reg_realloc is applied specially (it needs sigma from words); the ordered
     # list in the manifest still names it so the recipe is explicit and auditable.
@@ -8719,6 +8875,9 @@ PASSES = {
     "zext_drop": zext_drop_pass,
     "call_slot_swap": call_slot_swap_pass,
     "hi_interleave": hi_interleave_pass,
+    "la_unhoist": la_unhoist_pass,
+    "param_copy_fresh": param_copy_fresh_pass,
+    "li_uncopy": li_uncopy_pass,
     "web_realloc_void": web_realloc_void_pass,
     "const_uncse": const_uncse_pass,
     "slot_rethread": slot_rethread_pass,
@@ -8735,7 +8894,7 @@ PASSES = {
 PRE_SIGMA_PASSES = ("la_unfold_st", "un_hi_cse", "un_hi_cse_store", "exit_merge", "base_cse_collapse",
                     "shift_const_fold", "zero_remat", "load_remat", "nodiv",
                     "offset_unfold", "zext_keep", "zero_cmp", "param_copy",
-                    "undo_drop", "la_unfold", "arg_unprop", "sched_pre", "la_copy", "la_split", "const_sink", "zext_drop", "at_dest", "range_unswap", "slot_rethread", "const_uncse")
+                    "undo_drop", "la_unfold", "arg_unprop", "sched_pre", "la_copy", "la_split", "const_sink", "zext_drop", "at_dest", "range_unswap", "slot_rethread", "const_uncse", "la_unhoist", "param_copy_fresh", "li_uncopy")
 
 # --------------------------------------------------------------------------
 # WORD-LEVEL passes. The original PSY-Q assembler (aspsx) scheduled branch and
