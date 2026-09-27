@@ -4036,5 +4036,10 @@
       "delay_fill",
       "epilogue_unfill"
     ]
+  },
+  "stag1000:func_800650D0": {
+    "passes": [
+      "nosplit"
+    ]
   }
 }
