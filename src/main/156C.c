@@ -844,12 +844,12 @@ extern void (*D_80061BF4[])(s16, s16, s16, Rec62D08, s32, s32);
 s16 func_800388A4(s16, s16, s16, s16, u16);
 void func_80021DC8(void);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80010D6C);
+ASM_SOURCE("src/main/asm/crt0", func_80010D6C);
 
 void func_80010D74(void) {
 }
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Sys_Start);
+ASM_SOURCE("src/main/asm/crt0", Sys_Start);
 
 void Task_RunChildren(Obj10E38 *a0) {
     s32 n = a0->field_30;
@@ -12789,7 +12789,7 @@ s32 func_8002CDB8(s32 a0) {
 }
 __asm__(".word 0\n");
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002CE54);
+ASM_SOURCE("src/main/asm/crt0", func_8002CE54);
 
 ASM_SOURCE("src/main/asm/libgte", func_8002CE5C);
 
@@ -14270,7 +14270,7 @@ void memclr(s32 *arg0, s32 arg1) {
     }
 }
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80031394);
+ASM_SOURCE("src/main/asm/crt0", func_80031394);
 
 ASM_SOURCE("src/main/asm/libapi", _96_remove);
 
