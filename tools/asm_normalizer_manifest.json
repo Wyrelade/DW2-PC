@@ -3963,5 +3963,12 @@
     "passes": [
       "nodb"
     ]
+  },
+  "func_80064938": {
+    "passes": [
+      "reg_realloc",
+      "prologue_save_hoist",
+      "epilogue_unfill"
+    ]
   }
 }
