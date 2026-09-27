@@ -24,5 +24,9 @@
 #define gte_ldlv0(r0) __asm__ volatile ("lhu $13, 4(%0);" "lhu $12, 0(%0);" "sll $13, $13, 16;" "or $12, $12, $13;" "mtc2 $12, $0;" "lwc2 $1, 8(%0)" : : "r"(r0) : "$12", "$13")
 #define gte_rtv0tr() __asm__ volatile ("nop;" "nop;" "mvmva 1, 0, 0, 0, 0")
 #define gte_stlvnl(r0) __asm__ volatile ("swc2 $25, 0(%0);" "swc2 $26, 4(%0);" "swc2 $27, 8(%0)" : : "r"(r0) : "memory")
+#define gte_SetLightMatrix(r0) __asm__ volatile ("lw $12, 0(%0);" "lw $13, 4(%0);" "ctc2 $12, $8;" "ctc2 $13, $9;" "lw $12, 8(%0);" "lw $13, 12(%0);" "lw $14, 16(%0);" "ctc2 $12, $10;" "ctc2 $13, $11;" "ctc2 $14, $12" : : "r"(r0) : "$12", "$13", "$14")
+#define gte_ldsxy3(r0, r1, r2) __asm__ volatile ("mtc2 %0, $12;" "mtc2 %2, $14;" "mtc2 %1, $13" : : "r"(r0), "r"(r1), "r"(r2))
+#define gte_nclip() __asm__ volatile ("nop;" "nop;" "nclip")
+#define gte_stopz(r0) __asm__ volatile ("swc2 $24, 0(%0)" : : "r"(r0) : "memory")
 
 #endif /* GTE_H */
