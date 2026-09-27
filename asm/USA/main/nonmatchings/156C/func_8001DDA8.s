@@ -46,7 +46,7 @@ glabel func_8001DDA8
     /* E644 8001DE44 180002A6 */  sh         $v0, 0x18($s0)
     /* E648 8001DE48 63006010 */  beqz       $v1, .L8001DFD8
     /* E64C 8001DE4C 1A0002A6 */   sh        $v0, 0x1A($s0)
-    /* E650 8001DE50 D679000C */  jal        func_8001E758
+    /* E650 8001DE50 D679000C */  jal        Digi_GetDefaultName
     /* E654 8001DE54 21206000 */   addu      $a0, $v1, $zero
     /* E658 8001DE58 21284000 */  addu       $a1, $v0, $zero
     /* E65C 8001DE5C 21200000 */  addu       $a0, $zero, $zero

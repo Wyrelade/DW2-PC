@@ -109,7 +109,7 @@ glabel Gfx_FindOrLoadTexSlot
     /* D4F8 8001CCF8 00024230 */  andi       $v0, $v0, 0x200
     /* D4FC 8001CCFC 80100200 */  sll        $v0, $v0, 2
     /* D500 8001CD00 2528A200 */  or         $a1, $a1, $v0
-    /* D504 8001CD04 B172000C */  jal        func_8001CAC4
+    /* D504 8001CD04 B172000C */  jal        Gfx_LoadTexSlotImage
     /* D508 8001CD08 100005A6 */   sh        $a1, 0x10($s0)
     /* D50C 8001CD0C 21100002 */  addu       $v0, $s0, $zero
   .L8001CD10:

@@ -782,7 +782,7 @@ typedef struct {
 } Blk54CF8;
 
 /* Element of the D_8005E620.elems[] array (stride 0x5C); only the leading
-   status byte is touched by func_80022118. */
+   status byte is touched by Digi_AddNew. */
 typedef struct {
     /* 0x00 */ u8 field_0;
     /* 0x01 */ u8 field_1;
@@ -807,7 +807,7 @@ typedef struct {
 } ElmE620; /* size 0x5C */
 
 /* Global at D_8005E620: a 0xE4-byte header followed by an array of 0x24
-   ElmE620 slots (func_80022118 scans and updates their status bytes). */
+   ElmE620 slots (Digi_AddNew scans and updates their status bytes). */
 typedef struct {
     u8 _pad00[0x04];
     /* 0x04 */ s32 field_4;
@@ -1155,7 +1155,7 @@ typedef struct {
     /* 0x0E */ u16 field_E;
 } Stat48E90;
 
-/* Object reached through D_80050768; func_800143CC clears field_35C. */
+/* Object reached through Menu_Ctx; func_800143CC clears field_35C. */
 typedef struct {
     /* 0x000 */ u32 field_0;
     /* 0x004 */ u32 field_4;
@@ -1392,7 +1392,7 @@ typedef struct {
     /* 0x4 */ s32 field_4;
 } Hdr3AD44;
 
-/* (id, arg) pair; func_80022388 walks six of them, -1 id = unused slot. */
+/* (id, arg) pair; Flag_ApplySets walks six of them, -1 id = unused slot. */
 typedef struct {
     /* 0x0 */ s16 field_0;
     /* 0x2 */ s16 field_2;
@@ -1488,21 +1488,21 @@ typedef struct {
     /* 0x1C */ u32 dr_env[16];
 } DrawEnv;
 
-/* Zero-terminated list entry walked by func_80013558: low 12 bits of `key` pick
+/* Zero-terminated list entry walked by Text_PrintIdList: low 12 bits of `key` pick
    the 0x1FD resource, bits 12-15 are mode flags; `h` is forwarded by value. */
 typedef struct {
     /* 0x0 */ s32 key;
     /* 0x4 */ Halves h;
 } Key13558;
 
-/* 6-byte map cell record in the func_800166FC grid (field_0 = item id). */
+/* 6-byte map cell record in the Menu_PickItemToUse grid (field_0 = item id). */
 typedef struct {
     /* 0x0 */ u16 field_0;
     u8 _pad2[0x2];
     /* 0x4 */ u16 field_4;
 } Cell166FC;
 
-/* Map object walked by func_800166FC: cursor (0x54) and size (0x58) s16 pairs
+/* Map object walked by Menu_PickItemToUse: cursor (0x54) and size (0x58) s16 pairs
  * index the cell grid at 0x72. */
 typedef struct {
     u8 _pad00[0x40];
@@ -1934,7 +1934,7 @@ typedef struct {
     /* 0x0D */ u8 field_D[4];
 } Out1DDA8;
 
-/* func_8001CE9C: sprite-list record (arg0), its 0x10-stride part list, the
+/* Gfx_DrawPartSprites: sprite-list record (arg0), its 0x10-stride part list, the
  * Gfx_TexSlots texture slot view and the SPRT + DR_TPAGE packets it emits. */
 typedef struct {
     /* 0x0 */ u8 r;
@@ -2099,7 +2099,7 @@ typedef struct {
     u8 b[6];
 } Tbl50724;
 
-/* View of D_8005F770 as the frame/display state (Sys_VSyncHandler, func_80023550). */
+/* View of D_8005F770 as the frame/display state (Sys_VSyncHandler, Sys_Main). */
 typedef struct {
     /* 0x00 */ s32 field_0;
     /* 0x04 */ s32 field_4;
@@ -2118,7 +2118,7 @@ typedef struct {
     /* 0x110 */ s32 field_110;
     /* 0x114 */ s32 field_114;
 } Db5F770;
-/* Load header filled by GsGetTimInfo (func_80023550 reads field_C). */
+/* Load header filled by GsGetTimInfo (Sys_Main reads field_C). */
 typedef struct {
     s32 field_0;
     s32 field_4;
@@ -2134,7 +2134,7 @@ typedef struct {
     s16 h;
 } Rect23550;
 
-/* Menu work block behind Actor.work for the item-use menu (func_80014EA4..func_80015914). */
+/* Menu work block behind Actor.work for the item-use menu (Menu_UseItemDirect..func_80015914). */
 typedef struct {
     /* 0x00 */ s32 field_0[20];
     /* 0x50 */ s32 field_50;
@@ -2163,7 +2163,7 @@ typedef struct {
     u32 len : 8;
 } OTag;
 
-/* Title/main menu work block behind Actor.work (func_80013C04). */
+/* Title/main menu work block behind Actor.work (Menu_TopMenuTask). */
 typedef struct {
     /* 0x00 */ s32 field_0;
     /* 0x04 */ s32 field_4;
@@ -2200,7 +2200,7 @@ typedef struct {
     /* 0x20 */ s16 field_20;
 } Dg12490;
 
-/* Icon sheet layout (0x20 bytes) copied out by func_80011BEC; 0x18/0x1C are the
+/* Icon sheet layout (0x20 bytes) copied out by Gfx_FindOrLoadImageSlot; 0x18/0x1C are the
  * VRAM base of the icon page. */
 typedef struct {
     u8 _pad00[0xC];
@@ -2233,13 +2233,13 @@ typedef struct {
     /* 0xC */ u32 data[1];
 } TimBlk11BEC;
 
-/* s16 coordinate pair written back by func_80011BEC. */
+/* s16 coordinate pair written back by Gfx_FindOrLoadImageSlot. */
 typedef struct {
     /* 0x0 */ s16 x;
     /* 0x2 */ s16 y;
 } Pt11BEC;
 
-void func_80011BEC(s32 id, Tex11BEC *out, Pt11BEC *pos, Pt11BEC *clut);
+void Gfx_FindOrLoadImageSlot(s32 id, Tex11BEC *out, Pt11BEC *pos, Pt11BEC *clut);
 
 /* Sound-bank record in the D_80041194 pointer table (high halves of field_0 /
  * field_4 are resource ids, field_8 is a zero-ended list). */
@@ -2304,7 +2304,7 @@ typedef union {
 } Rect28C48;
 
 
-/* func_8001D104: POLY_FT4 packet (four 8-byte x/y/u/v/clut-or-tpage vertices)
+/* Gfx_DrawPartQuadsRot: POLY_FT4 packet (four 8-byte x/y/u/v/clut-or-tpage vertices)
  * and the SVECTOR/DVECTOR pair it feeds ApplyMatrixSV. */
 typedef struct {
     /* 0x0 */ u16 x;
@@ -2333,12 +2333,12 @@ typedef struct {
 } DVec1D104;
 
 
-/* func_80014400: 12-byte window rect record copied into Wk14400.blk. */
+/* Menu_SubMenuTask: 12-byte window rect record copied into Wk14400.blk. */
 typedef struct {
     s16 field_0[6];
 } Blk14400;
 
-/* func_80014400 view of Actor.work: cursor/dims pairs at 0x28/0x2C (the dims
+/* Menu_SubMenuTask view of Actor.work: cursor/dims pairs at 0x28/0x2C (the dims
  * pair heads the 12-byte block), selection state at 0x38..0x40. */
 typedef struct {
     u8 _pad00[0x04];
@@ -2361,7 +2361,7 @@ typedef struct {
     s16 field_0[6];
 } Blk18D78;
 
-/* Partner record reached through Wk18D78.field_84 (D_80050768->field_110). */
+/* Partner record reached through Wk18D78.field_84 (Menu_Ctx->field_110). */
 typedef struct {
     u8 _pad00[0x1];
     /* 0x01 */ u8 field_1;
@@ -2667,7 +2667,7 @@ typedef struct Slot267F0 {
 } Slot267F0; /* size 0xF0 */
 
 
-/* Stat-regen config returned by func_80011F5C, read by func_80012640. */
+/* Stat-regen config returned by func_80011F5C, read by Item_UseRecoverAll. */
 typedef struct {
     /* 0x00 */ u8 field_0;
     /* 0x01 */ u8 field_1;
@@ -3167,13 +3167,13 @@ typedef struct {
     u8 _pad03[0xD];
 } Tri218CC; /* size 0x10 */
 
-/* 0x5C-byte record swapped between the menu slots and D_80050768->field_128 (func_80017214). */
+/* 0x5C-byte record swapped between the menu slots and Menu_Ctx->field_128 (func_80017214). */
 typedef struct {
     /* 0x00 */ u8 field_0;
     u8 _pad1[0x3];
     s32 _pad4[0x16];
 } Rec17214;
-/* Non-small views of D_80050768 / D_8005F704 for func_80017214. */
+/* Non-small views of Menu_Ctx / D_8005F704 for func_80017214. */
 typedef struct {
     Obj50768 *p;
     s32 _r[3];
@@ -3210,7 +3210,7 @@ typedef struct {
 } Stamp61988;
 
 
-/* func_8001A9C8 (text renderer): the actor work block is 50 Rec34 text boxes
+/* Text_UpdateAllBoxes (text renderer): the actor work block is 50 Rec34 text boxes
  * followed by three counters; D_8005F770 viewed through the fields it reads. */
 typedef struct {
     /* 0x000 */ Rec34 rec[50];

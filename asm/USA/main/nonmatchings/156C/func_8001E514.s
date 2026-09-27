@@ -35,7 +35,7 @@ glabel func_8001E514
     /* ED84 8001E584 21200002 */  addu       $a0, $s0, $zero
     /* ED88 8001E588 CE78000C */  jal        func_8001E338
     /* ED8C 8001E58C 21282002 */   addu      $a1, $s1, $zero
-    /* ED90 8001E590 E288000C */  jal        func_80022388
+    /* ED90 8001E590 E288000C */  jal        Flag_ApplySets
     /* ED94 8001E594 21204000 */   addu      $a0, $v0, $zero
     /* ED98 8001E598 80101100 */  sll        $v0, $s1, 2
     /* ED9C 8001E59C 21100202 */  addu       $v0, $s0, $v0

@@ -30,8 +30,8 @@ glabel func_80015668
     /* 5ED0 800156D0 003C0700 */  sll        $a3, $a3, 16
     /* 5ED4 800156D4 3E4D000C */  jal        func_800134F8
     /* 5ED8 800156D8 25384700 */   or        $a3, $v0, $a3
-    /* 5EDC 800156DC 0580033C */  lui        $v1, %hi(D_80050768)
-    /* 5EE0 800156E0 6807638C */  lw         $v1, %lo(D_80050768)($v1)
+    /* 5EDC 800156DC 0580033C */  lui        $v1, %hi(Menu_Ctx)
+    /* 5EE0 800156E0 6807638C */  lw         $v1, %lo(Menu_Ctx)($v1)
     /* 5EE4 800156E4 47000224 */  addiu      $v0, $zero, 0x47
     /* 5EE8 800156E8 1000B1A7 */  sh         $s1, 0x10($sp)
     /* 5EEC 800156EC 1200A2A7 */  sh         $v0, 0x12($sp)

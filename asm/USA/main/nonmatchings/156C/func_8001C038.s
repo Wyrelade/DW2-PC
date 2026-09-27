@@ -15,7 +15,7 @@ glabel func_8001C038
     /* C864 8001C064 096F000C */  jal        Text_Open
     /* C868 8001C068 2800A2AF */   sw        $v0, 0x28($sp)
     /* C86C 8001C06C 10000424 */  addiu      $a0, $zero, 0x10
-    /* C870 8001C070 7188000C */  jal        func_800221C4
+    /* C870 8001C070 7188000C */  jal        Flag_Set
     /* C874 8001C074 21280000 */   addu      $a1, $zero, $zero
     /* C878 8001C078 4000BF8F */  lw         $ra, 0x40($sp)
     /* C87C 8001C07C 00000000 */  nop

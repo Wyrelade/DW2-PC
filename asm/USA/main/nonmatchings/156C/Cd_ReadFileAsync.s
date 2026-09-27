@@ -31,9 +31,9 @@ glabel Cd_ReadFileAsync
     /* 14AC4 800242C4 140004AE */  sw         $a0, 0x14($s0)
     /* 14AC8 800242C8 EB8F000C */  jal        Cd_GetFileLba
     /* 14ACC 800242CC 180012AE */   sw        $s2, 0x18($s0)
-    /* 14AD0 800242D0 0280043C */  lui        $a0, %hi(func_800240E8)
+    /* 14AD0 800242D0 0280043C */  lui        $a0, %hi(Cd_ReadSyncCallback)
     /* 14AD4 800242D4 B88D238E */  lw         $v1, %lo(D_80048DB8)($s1)
-    /* 14AD8 800242D8 E8408424 */  addiu      $a0, $a0, %lo(func_800240E8)
+    /* 14AD8 800242D8 E8408424 */  addiu      $a0, $a0, %lo(Cd_ReadSyncCallback)
     /* 14ADC 800242DC 1C0002AE */  sw         $v0, 0x1C($s0)
     /* 14AE0 800242E0 01006324 */  addiu      $v1, $v1, 0x1
     /* 14AE4 800242E4 45C1000C */  jal        CdSyncCallback

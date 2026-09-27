@@ -22,8 +22,8 @@ glabel func_80019808
     /* A050 80019850 CA006210 */  beq        $v1, $v0, .L80019B7C
     /* A054 80019854 00000000 */   nop
   .L80019858:
-    /* A058 80019858 0580023C */  lui        $v0, %hi(D_80050768)
-    /* A05C 8001985C 6807428C */  lw         $v0, %lo(D_80050768)($v0)
+    /* A058 80019858 0580023C */  lui        $v0, %hi(Menu_Ctx)
+    /* A05C 8001985C 6807428C */  lw         $v0, %lo(Menu_Ctx)($v0)
     /* A060 80019860 00000000 */  nop
     /* A064 80019864 1001428C */  lw         $v0, 0x110($v0)
     /* A068 80019868 21206002 */  addu       $a0, $s3, $zero
@@ -53,11 +53,11 @@ glabel func_80019808
     /* A0C0 800198C0 C1004014 */  bnez       $v0, .L80019BC8
     /* A0C4 800198C4 1305043C */   lui       $a0, (0x5130024 >> 16)
     /* A0C8 800198C8 24008434 */  ori        $a0, $a0, (0x5130024 & 0xFFFF)
-    /* A0CC 800198CC AC4E000C */  jal        func_80013AB0
+    /* A0CC 800198CC AC4E000C */  jal        Cd_GetFileEntrySubPtr
     /* A0D0 800198D0 21280000 */   addu      $a1, $zero, $zero
     /* A0D4 800198D4 21206002 */  addu       $a0, $s3, $zero
     /* A0D8 800198D8 21284000 */  addu       $a1, $v0, $zero
-    /* A0DC 800198DC 564D000C */  jal        func_80013558
+    /* A0DC 800198DC 564D000C */  jal        Text_PrintIdList
     /* A0E0 800198E0 01000624 */   addiu     $a2, $zero, 0x1
     /* A0E4 800198E4 21206002 */  addu       $a0, $s3, $zero
     /* A0E8 800198E8 8565000C */  jal        func_80019614
@@ -219,8 +219,8 @@ glabel func_80019808
     /* A334 80019B34 09004018 */  blez       $v0, .L80019B5C
     /* A338 80019B38 0E000424 */   addiu     $a0, $zero, 0xE
     /* A33C 80019B3C 21280000 */  addu       $a1, $zero, $zero
-    /* A340 80019B40 0580033C */  lui        $v1, %hi(D_80050768)
-    /* A344 80019B44 6807638C */  lw         $v1, %lo(D_80050768)($v1)
+    /* A340 80019B40 0580033C */  lui        $v1, %hi(Menu_Ctx)
+    /* A344 80019B44 6807638C */  lw         $v1, %lo(Menu_Ctx)($v1)
     /* A348 80019B48 FFFF0224 */  addiu      $v0, $zero, -0x1
     /* A34C 80019B4C A369000C */  jal        Snd_PlayById
     /* A350 80019B50 5E0362A4 */   sh        $v0, 0x35E($v1)
@@ -228,8 +228,8 @@ glabel func_80019808
     /* A358 80019B58 00000000 */   nop
   .L80019B5C:
     /* A35C 80019B5C 0B000424 */  addiu      $a0, $zero, 0xB
-    /* A360 80019B60 0580023C */  lui        $v0, %hi(D_80050768)
-    /* A364 80019B64 6807428C */  lw         $v0, %lo(D_80050768)($v0)
+    /* A360 80019B60 0580023C */  lui        $v0, %hi(Menu_Ctx)
+    /* A364 80019B64 6807428C */  lw         $v0, %lo(Menu_Ctx)($v0)
     /* A368 80019B68 21280000 */  addu       $a1, $zero, $zero
     /* A36C 80019B6C A369000C */  jal        Snd_PlayById
     /* A370 80019B70 5E0340A4 */   sh        $zero, 0x35E($v0)

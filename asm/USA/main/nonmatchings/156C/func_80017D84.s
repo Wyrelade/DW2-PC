@@ -84,7 +84,7 @@ glabel func_80017D84
     /* 86B8 80017EB8 0300228E */  lw         $v0, 0x3($s1)
     /* 86BC 80017EBC 00000000 */  nop
     /* 86C0 80017EC0 01004490 */  lbu        $a0, 0x1($v0)
-    /* 86C4 80017EC4 D679000C */  jal        func_8001E758
+    /* 86C4 80017EC4 D679000C */  jal        Digi_GetDefaultName
     /* 86C8 80017EC8 00000000 */   nop
     /* 86CC 80017ECC 0C006426 */  addiu      $a0, $s3, 0xC
     /* 86D0 80017ED0 C35F0008 */  j          .L80017F0C

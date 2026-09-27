@@ -98,7 +98,7 @@ def update_symbols(old, new, va, kind, existing):
 
 def source_files():
     files = []
-    for g in ("src/**/*.c", "src/**/*.h", "include/**/*.h"):
+    for g in ("src/**/*.c", "src/**/*.h", "src/**/*.s", "include/**/*.h"):
         files += glob.glob(os.path.join(ROOT, g), recursive=True)
     return files
 

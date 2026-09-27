@@ -31,14 +31,14 @@ glabel func_80016834
     /* 709C 8001689C A369000C */  jal        Snd_PlayById
     /* 70A0 800168A0 21280000 */   addu      $a1, $zero, $zero
     /* 70A4 800168A4 21202002 */  addu       $a0, $s1, $zero
-    /* 70A8 800168A8 0580023C */  lui        $v0, %hi(D_80050768)
-    /* 70AC 800168AC 6807428C */  lw         $v0, %lo(D_80050768)($v0)
+    /* 70A8 800168A8 0580023C */  lui        $v0, %hi(Menu_Ctx)
+    /* 70AC 800168AC 6807428C */  lw         $v0, %lo(Menu_Ctx)($v0)
     /* 70B0 800168B0 21284002 */  addu       $a1, $s2, $zero
     /* 70B4 800168B4 9C4E000C */  jal        Menu_GridIndexColMajor
     /* 70B8 800168B8 080150A4 */   sh        $s0, 0x108($v0)
     /* 70BC 800168BC 21206002 */  addu       $a0, $s3, $zero
-    /* 70C0 800168C0 0580033C */  lui        $v1, %hi(D_80050768)
-    /* 70C4 800168C4 6807638C */  lw         $v1, %lo(D_80050768)($v1)
+    /* 70C0 800168C0 0580033C */  lui        $v1, %hi(Menu_Ctx)
+    /* 70C4 800168C4 6807638C */  lw         $v1, %lo(Menu_Ctx)($v1)
     /* 70C8 800168C8 04000524 */  addiu      $a1, $zero, 0x4
     /* 70CC 800168CC 7745000C */  jal        Task_SetState1
     /* 70D0 800168D0 0A0162A4 */   sh        $v0, 0x10A($v1)

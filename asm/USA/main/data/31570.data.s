@@ -114,7 +114,7 @@ dlabel D_80040E44
     /* 31648 80040E48 05000000 */ .word 0x00000005
     /* 3164C 80040E4C 0A000000 */ .word 0x0000000A
     /* 31650 80040E50 1C290180 */ .word func_8001291C
-    /* 31654 80040E54 74290180 */ .word func_80012974
+    /* 31654 80040E54 74290180 */ .word Menu_NameEntryTask
     /* 31658 80040E58 70110180 */ .word Task_DefaultDestroy
     /* 3165C 80040E5C 9C300180 */ .word func_8001309C
     /* 31660 80040E60 30000000 */ .word 0x00000030
@@ -138,13 +138,13 @@ dlabel D_80040E68
     /* 31694 80040E94 00000000 */ .word 0x00000000
     /* 31698 80040E98 04000000 */ .word 0x00000004
     /* 3169C 80040E9C F83B0180 */ .word func_80013BF8
-    /* 316A0 80040EA0 043C0180 */ .word func_80013C04
+    /* 316A0 80040EA0 043C0180 */ .word Menu_TopMenuTask
     /* 316A4 80040EA4 70110180 */ .word Task_DefaultDestroy
     /* 316A8 80040EA8 D4410180 */ .word func_800141D4
     /* 316AC 80040EAC 38000000 */ .word 0x00000038
     /* 316B0 80040EB0 04000000 */ .word 0x00000004
     /* 316B4 80040EB4 CC430180 */ .word func_800143CC
-    /* 316B8 80040EB8 00440180 */ .word func_80014400
+    /* 316B8 80040EB8 00440180 */ .word Menu_SubMenuTask
     /* 316BC 80040EBC 70110180 */ .word Task_DefaultDestroy
     /* 316C0 80040EC0 70480180 */ .word func_80014870
     /* 316C4 80040EC4 44000000 */ .word 0x00000044
@@ -155,8 +155,8 @@ dlabel D_80040E68
     /* 316D8 80040ED8 BC4C0180 */ .word func_80014CBC
     /* 316DC 80040EDC B0000000 */ .word 0x000000B0
     /* 316E0 80040EE0 04000000 */ .word 0x00000004
-    /* 316E4 80040EE4 8C580180 */ .word func_8001588C
-    /* 316E8 80040EE8 14590180 */ .word func_80015914
+    /* 316E4 80040EE4 8C580180 */ .word Menu_SetItemUseMode
+    /* 316E8 80040EE8 14590180 */ .word Menu_ItemUseTask
     /* 316EC 80040EEC 70110180 */ .word Task_DefaultDestroy
     /* 316F0 80040EF0 305D0180 */ .word func_80015D30
     /* 316F4 80040EF4 A0000000 */ .word 0x000000A0
@@ -169,7 +169,7 @@ dlabel D_80040EFC
     /* 316FC 80040EFC 0E000200 */ .word 0x0002000E
     /* 31700 80040F00 10000300 */ .word 0x00030010
     /* 31704 80040F04 D0690180 */ .word func_800169D0
-    /* 31708 80040F08 DC690180 */ .word func_800169DC
+    /* 31708 80040F08 DC690180 */ .word Menu_ItemTask
     /* 3170C 80040F0C 70110180 */ .word Task_DefaultDestroy
     /* 31710 80040F10 DC6F0180 */ .word func_80016FDC
     /* 31714 80040F14 44070000 */ .word 0x00000744
@@ -1088,7 +1088,7 @@ dlabel D_80041440
     /* 31D4C 8004154C 00000000 */ .word 0x00000000
     /* 31D50 80041550 58A90180 */ .word func_8001A958
     /* 31D54 80041554 70110180 */ .word Task_DefaultDestroy
-    /* 31D58 80041558 C8A90180 */ .word func_8001A9C8
+    /* 31D58 80041558 C8A90180 */ .word Text_UpdateAllBoxes
     /* 31D5C 8004155C 340A0000 */ .word 0x00000A34
     /* 31D60 80041560 D8000000 */ .word 0x000000D8
 enddlabel D_80041440
@@ -20615,11 +20615,11 @@ dlabel D_80050764
     /* 40F64 80050764 00000000 */ .word 0x00000000
 enddlabel D_80050764
 
-nonmatching D_80050768
+nonmatching Menu_Ctx
 
-dlabel D_80050768
+dlabel Menu_Ctx
     /* 40F68 80050768 00000000 */ .word 0x00000000
-enddlabel D_80050768
+enddlabel Menu_Ctx
 
 nonmatching D_8005076C
 

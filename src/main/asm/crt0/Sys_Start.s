@@ -48,7 +48,7 @@ glabel Sys_Start
     lui        $ra, 0x8005
     lw         $ra, 0x758($ra)
     nop
-    jal        func_80023550            # main
+    jal        Sys_Main            # main
      nop
     break      0, 1
 endlabel Sys_Start

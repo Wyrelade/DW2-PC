@@ -49,7 +49,7 @@ glabel func_8001D6B4
     /* DF60 8001D760 06006016 */  bnez       $s3, .L8001D77C
     /* DF64 8001D764 00100224 */   addiu     $v0, $zero, 0x1000
     /* DF68 8001D768 21204002 */  addu       $a0, $s2, $zero
-    /* DF6C 8001D76C A773000C */  jal        func_8001CE9C
+    /* DF6C 8001D76C A773000C */  jal        Gfx_DrawPartSprites
     /* DF70 8001D770 21288002 */   addu      $a1, $s4, $zero
     /* DF74 8001D774 12760008 */  j          .L8001D848
     /* DF78 8001D778 28005226 */   addiu     $s2, $s2, 0x28
@@ -105,7 +105,7 @@ glabel func_8001D6B4
     /* E030 8001D830 0480053C */  lui        $a1, %hi(D_80041694)
     /* E034 8001D834 9416A524 */  addiu      $a1, $a1, %lo(D_80041694)
     /* E038 8001D838 21308002 */  addu       $a2, $s4, $zero
-    /* E03C 8001D83C 4174000C */  jal        func_8001D104
+    /* E03C 8001D83C 4174000C */  jal        Gfx_DrawPartQuadsRot
     /* E040 8001D840 21386002 */   addu      $a3, $s3, $zero
   .L8001D844:
     /* E044 8001D844 28005226 */  addiu      $s2, $s2, 0x28

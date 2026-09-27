@@ -790,7 +790,7 @@
   "Mem_TestBit": {
     "passes": []
   },
-  "func_8002DDE4": {
+  "CdRead2": {
     "passes": [
       "nosplit",
       "zero_remat",
@@ -979,7 +979,7 @@
       "padnop"
     ]
   },
-  "func_80022388": {
+  "Flag_ApplySets": {
     "passes": []
   },
   "func_8001EF88": {
@@ -1205,7 +1205,7 @@
       "epilogue_unfill"
     ]
   },
-  "func_80013558": {
+  "Text_PrintIdList": {
     "passes": []
   },
   "PadGetState": {
@@ -1240,7 +1240,7 @@
       "padnop"
     ]
   },
-  "func_800166FC": {
+  "Menu_PickItemToUse": {
     "passes": [
       "nosplit",
       "reg_realloc",
@@ -1518,10 +1518,10 @@
       "epilogue_unfill"
     ]
   },
-  "func_8001E758": {
+  "Digi_GetDefaultName": {
     "passes": []
   },
-  "func_8001DC24": {
+  "Digi_InitFromTable": {
     "passes": [
       "commutative_swap"
     ]
@@ -1654,7 +1654,7 @@
       "padnop"
     ]
   },
-  "func_800240E8": {
+  "Cd_ReadSyncCallback": {
     "passes": []
   },
   "Snd_UnloadSlot": {
@@ -1743,7 +1743,7 @@
       "reorder_indep"
     ]
   },
-  "func_800221C4": {
+  "Flag_Set": {
     "passes": []
   },
   "func_800251AC": {
@@ -1930,7 +1930,7 @@
       "padnop"
     ]
   },
-  "func_8001CE9C": {
+  "Gfx_DrawPartSprites": {
     "passes": [
       "reg_realloc",
       "web_realloc",
@@ -2157,7 +2157,7 @@
       "gp8"
     ]
   },
-  "func_800226AC": {
+  "Item_SortList": {
     "passes": [
       "gp8_nosplit"
     ]
@@ -2172,7 +2172,7 @@
       "gp8"
     ]
   },
-  "func_80014EA4": {
+  "Menu_UseItemDirect": {
     "passes": [
       "gp8_nosplit"
     ]
@@ -2187,7 +2187,7 @@
       "gp8_nosplit"
     ]
   },
-  "func_80015770": {
+  "Menu_UseItemOnTarget": {
     "passes": [
       "gp8_nosplit"
     ]
@@ -2219,33 +2219,33 @@
       "sched_match"
     ]
   },
-  "func_80017884": {
+  "Menu_PickUseItemDirect": {
     "passes": [
       "gp8_nosplit"
     ]
   },
-  "func_8001777C": {
+  "Menu_UseItemOnDigi": {
     "passes": [
       "gp8_nosplit"
     ]
   },
-  "func_80016394": {
+  "Item_MoveToStorage": {
     "passes": [
       "gp8_nosplit"
     ]
   },
-  "func_800164AC": {
+  "Item_TakeFromStorage": {
     "passes": [
       "gp8_nosplit",
       "label_nop"
     ]
   },
-  "func_80015914": {
+  "Menu_ItemUseTask": {
     "passes": [
       "gp8"
     ]
   },
-  "func_80013C04": {
+  "Menu_TopMenuTask": {
     "passes": [
       "gp8"
     ]
@@ -2275,7 +2275,7 @@
       "gp8_nosplit_noskip"
     ]
   },
-  "func_80012778": {
+  "Item_Use": {
     "passes": []
   },
   "SsSetTickMode": {
@@ -2285,13 +2285,13 @@
       "padnop"
     ]
   },
-  "func_80012490": {
+  "Item_UseStatBoost": {
     "passes": []
   },
   "Gpu_InitDoubleBuffer": {
     "passes": []
   },
-  "func_80011BEC": {
+  "Gfx_FindOrLoadImageSlot": {
     "passes": []
   },
   "func_800224EC": {
@@ -2308,7 +2308,7 @@
       "reorder_indep"
     ]
   },
-  "func_8001A01C": {
+  "Snd_ServiceSlotLoads": {
     "passes": []
   },
   "func_80039150": {
@@ -2369,7 +2369,7 @@
       "label_nop"
     ]
   },
-  "func_8001D104": {
+  "Gfx_DrawPartQuadsRot": {
     "passes": []
   },
   "Card_AcceptTask": {
@@ -2385,7 +2385,7 @@
       "padnop"
     ]
   },
-  "func_80014400": {
+  "Menu_SubMenuTask": {
     "passes": [
       "gp8",
       "reg_realloc",
@@ -2594,7 +2594,7 @@
       "sched_match"
     ]
   },
-  "func_8002DC04": {
+  "CdInit": {
     "passes": [
       "nosplit",
       "zero_remat",
@@ -2702,7 +2702,7 @@
       "commutative_swap"
     ]
   },
-  "func_80012974": {
+  "Menu_NameEntryTask": {
     "passes": [
       "zero_cmp",
       "web_realloc",
@@ -2787,7 +2787,7 @@
       "padnop"
     ]
   },
-  "func_80012640": {
+  "Item_UseRecoverAll": {
     "passes": [
       "nosplit",
       "web_realloc"
@@ -2812,7 +2812,7 @@
       "padnop"
     ]
   },
-  "func_80015F68": {
+  "Item_BuildMenuList": {
     "passes": [
       "nosplit",
       "label_nop"
@@ -3039,7 +3039,7 @@
       "padnop"
     ]
   },
-  "func_8001588C": {
+  "Menu_SetItemUseMode": {
     "passes": [
       "nosplit"
     ]
@@ -3074,7 +3074,7 @@
       "sched_match"
     ]
   },
-  "func_8001CAC4": {
+  "Gfx_LoadTexSlotImage": {
     "passes": [
       "nosplit_nodb",
       "web_realloc",
@@ -3640,13 +3640,13 @@
       "padnop"
     ]
   },
-  "func_80023550": {
+  "Sys_Main": {
     "passes": [
       "gp8",
       "web_realloc"
     ]
   },
-  "func_800169DC": {
+  "Menu_ItemTask": {
     "passes": [
       "gp8",
       "padnop"
@@ -3884,7 +3884,7 @@
       "padnop"
     ]
   },
-  "func_8001A9C8": {
+  "Text_UpdateAllBoxes": {
     "passes": [
       "nodiv",
       "sreg_perm",
