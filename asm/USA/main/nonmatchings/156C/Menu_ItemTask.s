@@ -76,7 +76,7 @@ glabel Menu_ItemTask
     /* 72F0 80016AF0 DA57000C */  jal        Item_BuildMenuList
     /* 72F4 80016AF4 21200002 */   addu      $a0, $s0, $zero
     /* 72F8 80016AF8 21200002 */  addu       $a0, $s0, $zero
-    /* 72FC 80016AFC 6658000C */  jal        func_80016198
+    /* 72FC 80016AFC 6658000C */  jal        Menu_DrawItemGrid
     /* 7300 80016B00 01000524 */   addiu     $a1, $zero, 0x1
     /* 7304 80016B04 E65B0008 */  j          .L80016F98
     /* 7308 80016B08 00000000 */   nop
@@ -156,7 +156,7 @@ glabel Menu_ItemTask
     /* 7410 80016C10 6E0003A6 */  sh         $v1, 0x6E($s0)
   .L80016C14:
     /* 7414 80016C14 21200002 */  addu       $a0, $s0, $zero
-    /* 7418 80016C18 6658000C */  jal        func_80016198
+    /* 7418 80016C18 6658000C */  jal        Menu_DrawItemGrid
     /* 741C 80016C1C 21280000 */   addu      $a1, $zero, $zero
     /* 7420 80016C20 9D5B0008 */  j          .L80016E74
     /* 7424 80016C24 21204002 */   addu      $a0, $s2, $zero
@@ -202,7 +202,7 @@ glabel Menu_ItemTask
     /* 74B4 80016CB4 00000000 */   nop
   .L80016CB8:
     /* 74B8 80016CB8 21204002 */  addu       $a0, $s2, $zero
-    /* 74BC 80016CBC 0D5A000C */  jal        func_80016834
+    /* 74BC 80016CBC 0D5A000C */  jal        Menu_ItemGridSelect
     /* 74C0 80016CC0 21280002 */   addu      $a1, $s0, $zero
     /* 74C4 80016CC4 F15B0008 */  j          .L80016FC4
     /* 74C8 80016CC8 00000000 */   nop
@@ -314,7 +314,7 @@ glabel Menu_ItemTask
     /* 764C 80016E4C DA57000C */  jal        Item_BuildMenuList
     /* 7650 80016E50 21200002 */   addu      $a0, $s0, $zero
     /* 7654 80016E54 21200002 */  addu       $a0, $s0, $zero
-    /* 7658 80016E58 6658000C */  jal        func_80016198
+    /* 7658 80016E58 6658000C */  jal        Menu_DrawItemGrid
     /* 765C 80016E5C 21280000 */   addu      $a1, $zero, $zero
     /* 7660 80016E60 21204002 */  addu       $a0, $s2, $zero
     /* 7664 80016E64 7745000C */  jal        Task_SetState1

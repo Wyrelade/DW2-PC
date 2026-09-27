@@ -1,6 +1,6 @@
-nonmatching func_80016198, 0x1FC
+nonmatching Menu_DrawItemGrid, 0x1FC
 
-glabel func_80016198
+glabel Menu_DrawItemGrid
     /* 6998 80016198 A8FFBD27 */  addiu      $sp, $sp, -0x58
     /* 699C 8001619C 4800B6AF */  sw         $s6, 0x48($sp)
     /* 69A0 800161A0 21B08000 */  addu       $s6, $a0, $zero
@@ -138,4 +138,4 @@ glabel func_80016198
     /* 6B88 80016388 3000B08F */  lw         $s0, 0x30($sp)
     /* 6B8C 8001638C 0800E003 */  jr         $ra
     /* 6B90 80016390 5800BD27 */   addiu     $sp, $sp, 0x58
-endlabel func_80016198
+endlabel Menu_DrawItemGrid

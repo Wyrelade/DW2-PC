@@ -1,6 +1,6 @@
-nonmatching func_8001287C, 0xA0
+nonmatching Menu_NameEntryGetChar, 0xA0
 
-glabel func_8001287C
+glabel Menu_NameEntryGetChar
     /* 307C 8001287C E0FFBD27 */  addiu      $sp, $sp, -0x20
     /* 3080 80012880 FD01053C */  lui        $a1, (0x1FD00D4 >> 16)
     /* 3084 80012884 1800BFAF */  sw         $ra, 0x18($sp)
@@ -42,4 +42,4 @@ glabel func_8001287C
     /* 3110 80012910 00004290 */  lbu        $v0, 0x0($v0)
     /* 3114 80012914 0800E003 */  jr         $ra
     /* 3118 80012918 2000BD27 */   addiu     $sp, $sp, 0x20
-endlabel func_8001287C
+endlabel Menu_NameEntryGetChar

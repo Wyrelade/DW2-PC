@@ -29,7 +29,7 @@ glabel GsSetRefView2
     /* 1C9C8 8002C1C8 180082AC */  sw         $v0, 0x18($a0)
     /* 1C9CC 8002C1CC 1C0083AC */  sw         $v1, 0x1C($a0)
     /* 1C9D0 8002C1D0 1800458E */  lw         $a1, 0x18($s2)
-    /* 1C9D4 8002C1D4 DDB1000C */  jal        func_8002C774
+    /* 1C9D4 8002C1D4 DDB1000C */  jal        Math_MulMatrixRotZ
     /* 1C9D8 8002C1D8 23280500 */   negu      $a1, $a1
     /* 1C9DC 8002C1DC 0C00428E */  lw         $v0, 0xC($s2)
     /* 1C9E0 8002C1E0 0000438E */  lw         $v1, 0x0($s2)

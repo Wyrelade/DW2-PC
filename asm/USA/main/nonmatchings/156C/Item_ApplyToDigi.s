@@ -1,12 +1,12 @@
-nonmatching func_8001236C, 0x124
+nonmatching Item_ApplyToDigi, 0x124
 
-glabel func_8001236C
+glabel Item_ApplyToDigi
     /* 2B6C 8001236C E0FFBD27 */  addiu      $sp, $sp, -0x20
     /* 2B70 80012370 1400B1AF */  sw         $s1, 0x14($sp)
     /* 2B74 80012374 2188E000 */  addu       $s1, $a3, $zero
     /* 2B78 80012378 1C00BFAF */  sw         $ra, 0x1C($sp)
     /* 2B7C 8001237C 1800B2AF */  sw         $s2, 0x18($sp)
-    /* 2B80 80012380 D747000C */  jal        func_80011F5C
+    /* 2B80 80012380 D747000C */  jal        Item_GetEffectRec
     /* 2B84 80012384 1000B0AF */   sw        $s0, 0x10($sp)
     /* 2B88 80012388 21904000 */  addu       $s2, $v0, $zero
     /* 2B8C 8001238C 00004392 */  lbu        $v1, 0x0($s2)
@@ -82,4 +82,4 @@ glabel func_8001236C
     /* 2C84 80012484 1000B08F */  lw         $s0, 0x10($sp)
     /* 2C88 80012488 0800E003 */  jr         $ra
     /* 2C8C 8001248C 2000BD27 */   addiu     $sp, $sp, 0x20
-endlabel func_8001236C
+endlabel Item_ApplyToDigi

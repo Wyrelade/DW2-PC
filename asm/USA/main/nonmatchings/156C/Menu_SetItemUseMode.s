@@ -16,7 +16,7 @@ glabel Menu_SetItemUseMode
     /* 60BC 800158BC 6807428C */  lw         $v0, %lo(Menu_Ctx)($v0)
     /* 60C0 800158C0 00000000 */  nop
     /* 60C4 800158C4 08014484 */  lh         $a0, 0x108($v0)
-    /* 60C8 800158C8 D747000C */  jal        func_80011F5C
+    /* 60C8 800158C8 D747000C */  jal        Item_GetEffectRec
     /* 60CC 800158CC 00000000 */   nop
     /* 60D0 800158D0 01004390 */  lbu        $v1, 0x1($v0)
     /* 60D4 800158D4 0B000224 */  addiu      $v0, $zero, 0xB

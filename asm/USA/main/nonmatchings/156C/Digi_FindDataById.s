@@ -1,6 +1,6 @@
-nonmatching func_8001E6A8, 0x5C
+nonmatching Digi_FindDataById, 0x5C
 
-glabel func_8001E6A8
+glabel Digi_FindDataById
     /* EEA8 8001E6A8 E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* EEAC 8001E6AC 1000B0AF */  sw         $s0, 0x10($sp)
     /* EEB0 8001E6B0 1400BFAF */  sw         $ra, 0x14($sp)
@@ -27,4 +27,4 @@ glabel func_8001E6A8
     /* EEF8 8001E6F8 1000B08F */  lw         $s0, 0x10($sp)
     /* EEFC 8001E6FC 0800E003 */  jr         $ra
     /* EF00 8001E700 1800BD27 */   addiu     $sp, $sp, 0x18
-endlabel func_8001E6A8
+endlabel Digi_FindDataById

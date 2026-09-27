@@ -1,6 +1,6 @@
-nonmatching func_8001DFF4, 0x54
+nonmatching Item_FindById, 0x54
 
-glabel func_8001DFF4
+glabel Item_FindById
     /* E7F4 8001DFF4 E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* E7F8 8001DFF8 1000B0AF */  sw         $s0, 0x10($sp)
     /* E7FC 8001DFFC 21808000 */  addu       $s0, $a0, $zero
@@ -25,4 +25,4 @@ glabel func_8001DFF4
     /* E83C 8001E03C 1000B08F */  lw         $s0, 0x10($sp)
     /* E840 8001E040 0800E003 */  jr         $ra
     /* E844 8001E044 1800BD27 */   addiu     $sp, $sp, 0x18
-endlabel func_8001DFF4
+endlabel Item_FindById

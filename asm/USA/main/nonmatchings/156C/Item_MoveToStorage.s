@@ -58,7 +58,7 @@ glabel Item_MoveToStorage
     /* 6C68 80016468 DA57000C */  jal        Item_BuildMenuList
     /* 6C6C 8001646C 21202002 */   addu      $a0, $s1, $zero
     /* 6C70 80016470 21202002 */  addu       $a0, $s1, $zero
-    /* 6C74 80016474 6658000C */  jal        func_80016198
+    /* 6C74 80016474 6658000C */  jal        Menu_DrawItemGrid
     /* 6C78 80016478 21280000 */   addu      $a1, $zero, $zero
     /* 6C7C 8001647C 21204002 */  addu       $a0, $s2, $zero
     /* 6C80 80016480 7745000C */  jal        Task_SetState1

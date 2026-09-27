@@ -116,7 +116,7 @@ dlabel D_80040E44
     /* 31650 80040E50 1C290180 */ .word func_8001291C
     /* 31654 80040E54 74290180 */ .word Menu_NameEntryTask
     /* 31658 80040E58 70110180 */ .word Task_DefaultDestroy
-    /* 3165C 80040E5C 9C300180 */ .word func_8001309C
+    /* 3165C 80040E5C 9C300180 */ .word Menu_NameEntryDrawParts
     /* 31660 80040E60 30000000 */ .word 0x00000030
     /* 31664 80040E64 00000000 */ .word 0x00000000
 enddlabel D_80040E44

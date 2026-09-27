@@ -441,7 +441,7 @@ typedef struct {
 Ent1DB18 *func_8001DB18();
 
 
-/* Entry returned by the func_8001E6A8 table lookup (0x28 stride). */
+/* Entry returned by the Digi_FindDataById table lookup (0x28 stride). */
 typedef struct {
     /* 0x00 */ s32 field_0;
     union {
@@ -493,7 +493,7 @@ typedef struct {
     /* 0x2C */ s16 field_2C[4][3]; /* -> size 0x44 (table stride) */
 } EntED40;
 
-/* Record returned by the func_8001DFF4 lookup; two 32-bit words read at both
+/* Record returned by the Item_FindById lookup; two 32-bit words read at both
  * word and byte widths. */
 typedef struct {
     union {
@@ -518,7 +518,7 @@ typedef struct {
 
 EntD8C4 *func_8001D8C4();
 EntE4CC *func_8001E4CC();
-EntE6A8 *func_8001E6A8();
+EntE6A8 *Digi_FindDataById();
 
 /* 6-byte record copied wholesale by func_8001E7E4 from a stride-6 table (base is
  * the Cd_GetFileEntry lookup, index is EntE6A8.field_22/24/26). 2-byte alignment
@@ -527,7 +527,7 @@ typedef struct {
     /* 0x0 */ s16 data[3];
 } Row6;
 EntED40 *func_8001ED40();
-EntDFF4 *func_8001DFF4();
+EntDFF4 *Item_FindById();
 
 /* Base record returned by the Cd_GetFileEntry lookup. Stride 0x28 when indexed. */
 typedef struct {
@@ -848,7 +848,7 @@ typedef struct {
     /* 0x1C */ s32 field_1C;
 } ObjC0E4;
 
-/* arg1 of GsMulCoord3: a GTE-style MATRIX. func_8002C774 fills m[3][3] (a Z
+/* arg1 of GsMulCoord3: a GTE-style MATRIX. Math_MulMatrixRotZ fills m[3][3] (a Z
  * rotation scaled to 0x1000) + the field_14/18/1C translation; &field_14 is
  * handed to ApplyMatrixLV. */
 typedef struct {
@@ -1398,7 +1398,7 @@ typedef struct {
     /* 0x2 */ s16 field_2;
 } Pair22388;
 
-/* State blocks reset by GsInitGraph. */
+/* State blocks reset by func_8002ADE4. */
 typedef struct {
     /* 0x0 */ s16 field_0;
     /* 0x2 */ u8 field_2;
@@ -2667,7 +2667,7 @@ typedef struct Slot267F0 {
 } Slot267F0; /* size 0xF0 */
 
 
-/* Stat-regen config returned by func_80011F5C, read by Item_UseRecoverAll. */
+/* Stat-regen config returned by Item_GetEffectRec, read by Item_UseRecoverAll. */
 typedef struct {
     /* 0x00 */ u8 field_0;
     /* 0x01 */ u8 field_1;
@@ -2811,14 +2811,14 @@ typedef struct {
     /* 0x60 */ s32 slot[4];
 } HudSlots153F4;
 
-/* 4-byte record returned (as s32 *) by the func_80011F5C id lookup. */
+/* 4-byte record returned (as s32 *) by the Item_GetEffectRec id lookup. */
 typedef struct {
     /* 0x00 */ u8 field_0;
     /* 0x01 */ u8 field_1;
     /* 0x02 */ s16 field_2;
 } Rec11F5C;
 
-/* Object stepped by func_8001236C: two value/limit s16 pairs at 0x14..0x1A. */
+/* Object stepped by Item_ApplyToDigi: two value/limit s16 pairs at 0x14..0x1A. */
 typedef struct {
     u8 _pad00[0x1];
     /* 0x01 */ u8 field_1;

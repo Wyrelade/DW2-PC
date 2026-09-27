@@ -1,6 +1,6 @@
-nonmatching func_800227A8, 0x48
+nonmatching Item_AddToBag, 0x48
 
-glabel func_800227A8
+glabel Item_AddToBag
     /* 12FA8 800227A8 E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* 12FAC 800227AC 1000B0AF */  sw         $s0, 0x10($sp)
     /* 12FB0 800227B0 1400BFAF */  sw         $ra, 0x14($sp)
@@ -20,4 +20,4 @@ glabel func_800227A8
     /* 12FE4 800227E4 21108000 */  addu       $v0, $a0, $zero
     /* 12FE8 800227E8 0800E003 */  jr         $ra
     /* 12FEC 800227EC 1800BD27 */   addiu     $sp, $sp, 0x18
-endlabel func_800227A8
+endlabel Item_AddToBag

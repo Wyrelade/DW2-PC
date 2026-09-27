@@ -1,6 +1,6 @@
-nonmatching func_8001309C, 0x26C
+nonmatching Menu_NameEntryDrawParts, 0x26C
 
-glabel func_8001309C
+glabel Menu_NameEntryDrawParts
     /* 389C 8001309C E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* 38A0 800130A0 1400BFAF */  sw         $ra, 0x14($sp)
     /* 38A4 800130A4 1000B0AF */  sw         $s0, 0x10($sp)
@@ -175,4 +175,4 @@ glabel func_8001309C
     /* 3AFC 800132FC 1000B08F */  lw         $s0, 0x10($sp)
     /* 3B00 80013300 0800E003 */  jr         $ra
     /* 3B04 80013304 1800BD27 */   addiu     $sp, $sp, 0x18
-endlabel func_8001309C
+endlabel Menu_NameEntryDrawParts

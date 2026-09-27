@@ -4,7 +4,7 @@ glabel Item_UseStatBoost
     /* 2C90 80012490 E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* 2C94 80012494 1000B0AF */  sw         $s0, 0x10($sp)
     /* 2C98 80012498 1400BFAF */  sw         $ra, 0x14($sp)
-    /* 2C9C 8001249C D747000C */  jal        func_80011F5C
+    /* 2C9C 8001249C D747000C */  jal        Item_GetEffectRec
     /* 2CA0 800124A0 2180E000 */   addu      $s0, $a3, $zero
     /* 2CA4 800124A4 16000386 */  lh         $v1, 0x16($s0)
     /* 2CA8 800124A8 21204000 */  addu       $a0, $v0, $zero

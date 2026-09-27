@@ -15,7 +15,7 @@ glabel func_80017F6C
     /* 8798 80017F98 6807428C */  lw         $v0, %lo(Menu_Ctx)($v0)
     /* 879C 80017F9C 00000000 */  nop
     /* 87A0 80017FA0 08014484 */  lh         $a0, 0x108($v0)
-    /* 87A4 80017FA4 D747000C */  jal        func_80011F5C
+    /* 87A4 80017FA4 D747000C */  jal        Item_GetEffectRec
     /* 87A8 80017FA8 00000000 */   nop
     /* 87AC 80017FAC 00004390 */  lbu        $v1, 0x0($v0)
     /* 87B0 80017FB0 02000224 */  addiu      $v0, $zero, 0x2

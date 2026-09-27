@@ -807,7 +807,7 @@
       "padnop"
     ]
   },
-  "func_8001E6A8": {
+  "Digi_FindDataById": {
     "passes": []
   },
   "func_80011F04": {
@@ -933,7 +933,7 @@
       "padnop"
     ]
   },
-  "func_8002AC54": {
+  "GsInitGraph": {
     "passes": [
       "nosplit"
     ]
@@ -951,7 +951,7 @@
       "epilogue_unfill"
     ]
   },
-  "func_8001E1D0": {
+  "Item_GetTableIndex": {
     "passes": []
   },
   "LoadImage": {
@@ -985,7 +985,7 @@
   "func_8001EF88": {
     "passes": []
   },
-  "GsInitGraph": {
+  "func_8002ADE4": {
     "passes": [
       "nosplit",
       "epilogue_unfill"
@@ -1015,7 +1015,7 @@
       "delay_fill"
     ]
   },
-  "func_80011F5C": {
+  "Item_GetEffectRec": {
     "passes": []
   },
   "Pad_SendInfoCmd": {
@@ -1174,7 +1174,7 @@
       "padnop"
     ]
   },
-  "func_80016834": {
+  "Menu_ItemGridSelect": {
     "passes": [
       "nosplit"
     ]
@@ -1800,7 +1800,7 @@
       "sched_match"
     ]
   },
-  "func_80016198": {
+  "Menu_DrawItemGrid": {
     "passes": []
   },
   "MemCardOpen": {
@@ -2049,7 +2049,7 @@
       "label_nop"
     ]
   },
-  "func_800227A8": {
+  "Item_AddToBag": {
     "passes": [
       "gp8_nosplit"
     ]
@@ -2255,7 +2255,7 @@
       "gp8"
     ]
   },
-  "func_8001309C": {
+  "Menu_NameEntryDrawParts": {
     "passes": [
       "reg_realloc"
     ]
@@ -2531,7 +2531,7 @@
   "Text_Close": {
     "passes": []
   },
-  "func_8001287C": {
+  "Menu_NameEntryGetChar": {
     "passes": [
       "web_realloc"
     ]
@@ -2957,7 +2957,7 @@
       "padnop"
     ]
   },
-  "func_80031AC4": {
+  "_SsSndCrescendo": {
     "passes": [
       "nosplit",
       "web_realloc",
@@ -3271,7 +3271,7 @@
       "delay_fill"
     ]
   },
-  "func_8001236C": {
+  "Item_ApplyToDigi": {
     "passes": [
       "reg_realloc",
       "web_realloc",

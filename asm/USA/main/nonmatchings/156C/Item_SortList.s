@@ -21,7 +21,7 @@ glabel Item_SortList
     /* 12EEC 800226EC 24004010 */  beqz       $v0, .L80022780
     /* 12EF0 800226F0 2198A002 */   addu      $s3, $s5, $zero
     /* 12EF4 800226F4 21204000 */  addu       $a0, $v0, $zero
-    /* 12EF8 800226F8 7478000C */  jal        func_8001E1D0
+    /* 12EF8 800226F8 7478000C */  jal        Item_GetTableIndex
     /* 12EFC 800226FC 0100B026 */   addiu     $s0, $s5, 0x1
     /* 12F00 80022700 21904000 */  addu       $s2, $v0, $zero
     /* 12F04 80022704 3000022A */  slti       $v0, $s0, 0x30
@@ -33,7 +33,7 @@ glabel Item_SortList
     /* 12F18 80022718 00000000 */  nop
     /* 12F1C 8002271C 0D004010 */  beqz       $v0, .L80022754
     /* 12F20 80022720 00000000 */   nop
-    /* 12F24 80022724 7478000C */  jal        func_8001E1D0
+    /* 12F24 80022724 7478000C */  jal        Item_GetTableIndex
     /* 12F28 80022728 21204000 */   addu      $a0, $v0, $zero
     /* 12F2C 8002272C 21184000 */  addu       $v1, $v0, $zero
     /* 12F30 80022730 2A107200 */  slt        $v0, $v1, $s2

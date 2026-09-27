@@ -1,6 +1,6 @@
-nonmatching func_8001E1D0, 0x5C
+nonmatching Item_GetTableIndex, 0x5C
 
-glabel func_8001E1D0
+glabel Item_GetTableIndex
     /* E9D0 8001E1D0 E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* E9D4 8001E1D4 1000B0AF */  sw         $s0, 0x10($sp)
     /* E9D8 8001E1D8 21808000 */  addu       $s0, $a0, $zero
@@ -27,4 +27,4 @@ glabel func_8001E1D0
     /* EA20 8001E220 1000B08F */  lw         $s0, 0x10($sp)
     /* EA24 8001E224 0800E003 */  jr         $ra
     /* EA28 8001E228 1800BD27 */   addiu     $sp, $sp, 0x18
-endlabel func_8001E1D0
+endlabel Item_GetTableIndex

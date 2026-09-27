@@ -405,7 +405,7 @@ glabel Menu_NameEntryTask
     /* 3738 80012F38 00000000 */  nop
     /* 373C 80012F3C 36006210 */  beq        $v1, $v0, .L80013018
     /* 3740 80012F40 0A000224 */   addiu     $v0, $zero, 0xA
-    /* 3744 80012F44 1F4A000C */  jal        func_8001287C
+    /* 3744 80012F44 1F4A000C */  jal        Menu_NameEntryGetChar
     /* 3748 80012F48 2120E002 */   addu      $a0, $s7, $zero
     /* 374C 80012F4C 2400838E */  lw         $v1, 0x24($s4)
     /* 3750 80012F50 0E000424 */  addiu      $a0, $zero, 0xE

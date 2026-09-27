@@ -11,7 +11,7 @@ glabel Item_Use
     /* 2F94 80012794 1C00B3AF */  sw         $s3, 0x1C($sp)
     /* 2F98 80012798 2198E000 */  addu       $s3, $a3, $zero
     /* 2F9C 8001279C 2400BFAF */  sw         $ra, 0x24($sp)
-    /* 2FA0 800127A0 D747000C */  jal        func_80011F5C
+    /* 2FA0 800127A0 D747000C */  jal        Item_GetEffectRec
     /* 2FA4 800127A4 1000B0AF */   sw        $s0, 0x10($sp)
     /* 2FA8 800127A8 2B004010 */  beqz       $v0, .L80012858
     /* 2FAC 800127AC 21800000 */   addu      $s0, $zero, $zero
@@ -40,7 +40,7 @@ glabel Item_Use
     /* 3000 80012800 21202002 */  addu       $a0, $s1, $zero
     /* 3004 80012804 21288002 */  addu       $a1, $s4, $zero
     /* 3008 80012808 21304002 */  addu       $a2, $s2, $zero
-    /* 300C 8001280C DB48000C */  jal        func_8001236C
+    /* 300C 8001280C DB48000C */  jal        Item_ApplyToDigi
     /* 3010 80012810 21386002 */   addu      $a3, $s3, $zero
     /* 3014 80012814 124A0008 */  j          .L80012848
     /* 3018 80012818 21804000 */   addu      $s0, $v0, $zero

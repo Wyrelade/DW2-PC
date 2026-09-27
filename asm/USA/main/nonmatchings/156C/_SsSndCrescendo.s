@@ -1,6 +1,6 @@
-nonmatching func_80031AC4, 0x208
+nonmatching _SsSndCrescendo, 0x208
 
-glabel func_80031AC4
+glabel _SsSndCrescendo
     /* 222C4 80031AC4 C8FFBD27 */  addiu      $sp, $sp, -0x38
     /* 222C8 80031AC8 00140400 */  sll        $v0, $a0, 16
     /* 222CC 80031ACC 0680033C */  lui        $v1, %hi(Snd_SeqScores)
@@ -144,6 +144,6 @@ glabel func_80031AC4
     /* 224C0 80031CC0 1800B08F */  lw         $s0, 0x18($sp)
     /* 224C4 80031CC4 0800E003 */  jr         $ra
     /* 224C8 80031CC8 3800BD27 */   addiu     $sp, $sp, 0x38
-endlabel func_80031AC4
+endlabel _SsSndCrescendo
     /* 224CC 80031CCC 00000000 */  nop
     /* 224D0 80031CD0 00000000 */  nop

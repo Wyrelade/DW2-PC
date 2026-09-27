@@ -134,7 +134,7 @@ glabel Item_TakeFromStorage
   .L8001669C:
     /* 6E9C 8001669C 21200002 */  addu       $a0, $s0, $zero
     /* 6EA0 800166A0 21280000 */  addu       $a1, $zero, $zero
-    /* 6EA4 800166A4 6658000C */  jal        func_80016198
+    /* 6EA4 800166A4 6658000C */  jal        Menu_DrawItemGrid
     /* 6EA8 800166A8 6E0003A6 */   sh        $v1, 0x6E($s0)
     /* 6EAC 800166AC 6C000286 */  lh         $v0, 0x6C($s0)
     /* 6EB0 800166B0 00000000 */  nop

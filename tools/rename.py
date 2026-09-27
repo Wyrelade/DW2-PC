@@ -70,10 +70,11 @@ def defined_words():
     return words
 
 
-def check_new(new, syms, words):
+def check_new(new, syms, words, va=None):
     if not IDENT.match(new) or new in C_WORDS:
         sys.exit("%s is not a usable C identifier" % new)
-    if PLACEHOLDER.match(new):
+    m = PLACEHOLDER.match(new)
+    if m and (va is None or int(m.group(2), 16) != va):
         sys.exit("%s looks like a placeholder; give a real name" % new)
     if new in syms or new in words:
         sys.exit("%s is already in use" % new)
@@ -84,7 +85,10 @@ def update_symbols(old, new, va, kind, existing):
     nl = "\r\n" if b"\r\n" in raw else "\n"
     lines = raw.decode("utf-8").splitlines()
     entry = "%s = 0x%08X;%s" % (new, va, " // type:%s" % kind if kind else "")
-    if existing:
+    if existing and PLACEHOLDER.match(new):
+        # back to the placeholder: the symbol file no longer names this address
+        lines = [l for l in lines if not (SYM_LINE.match(l) and SYM_LINE.match(l).group(1) == old)]
+    elif existing:
         out = []
         for l in lines:
             m = SYM_LINE.match(l)
@@ -142,10 +146,12 @@ def rewrite_tree(mapping):
 
 def rename(old, new, syms, words):
     va, kind, existing = resolve(old, syms)
-    check_new(new, syms, words)
+    check_new(new, syms, words, va)
     update_symbols(old, new, va, kind, existing)
     syms.pop(old, None)
-    syms[new] = (va, " // type:%s" % kind if kind else "")
+    words.discard(old)
+    if not PLACEHOLDER.match(new):
+        syms[new] = (va, " // type:%s" % kind if kind else "")
     words.add(new)
     print("%s -> %s (0x%08X)" % (old, new, va))
 

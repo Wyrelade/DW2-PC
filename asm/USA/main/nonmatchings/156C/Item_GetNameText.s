@@ -8,7 +8,7 @@ glabel Item_GetNameText
     /* E858 8001E058 828E000C */  jal        Cd_GetFileOrNull
     /* E85C 8001E05C 5E040424 */   addiu     $a0, $zero, 0x45E
     /* E860 8001E060 21200002 */  addu       $a0, $s0, $zero
-    /* E864 8001E064 FD77000C */  jal        func_8001DFF4
+    /* E864 8001E064 FD77000C */  jal        Item_FindById
     /* E868 8001E068 21804000 */   addu      $s0, $v0, $zero
     /* E86C 8001E06C 0800428C */  lw         $v0, 0x8($v0)
     /* E870 8001E070 1400BF8F */  lw         $ra, 0x14($sp)

@@ -1,6 +1,6 @@
-nonmatching func_8001E22C, 0x60
+nonmatching Item_GetIdAtIndex, 0x60
 
-glabel func_8001E22C
+glabel Item_GetIdAtIndex
     /* EA2C 8001E22C E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* EA30 8001E230 1000B0AF */  sw         $s0, 0x10($sp)
     /* EA34 8001E234 21808000 */  addu       $s0, $a0, $zero
@@ -28,4 +28,4 @@ glabel func_8001E22C
     /* EA80 8001E280 1000B08F */  lw         $s0, 0x10($sp)
     /* EA84 8001E284 0800E003 */  jr         $ra
     /* EA88 8001E288 1800BD27 */   addiu     $sp, $sp, 0x18
-endlabel func_8001E22C
+endlabel Item_GetIdAtIndex

@@ -1,6 +1,6 @@
-nonmatching func_80016834, 0xBC
+nonmatching Menu_ItemGridSelect, 0xBC
 
-glabel func_80016834
+glabel Menu_ItemGridSelect
     /* 7034 80016834 D8FFBD27 */  addiu      $sp, $sp, -0x28
     /* 7038 80016838 1C00B3AF */  sw         $s3, 0x1C($sp)
     /* 703C 8001683C 21988000 */  addu       $s3, $a0, $zero
@@ -50,4 +50,4 @@ glabel func_80016834
     /* 70E4 800168E4 1000B08F */  lw         $s0, 0x10($sp)
     /* 70E8 800168E8 0800E003 */  jr         $ra
     /* 70EC 800168EC 2800BD27 */   addiu     $sp, $sp, 0x28
-endlabel func_80016834
+endlabel Menu_ItemGridSelect

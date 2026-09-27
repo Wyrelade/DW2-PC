@@ -8,7 +8,7 @@ glabel func_8001E084
     /* E894 8001E094 828E000C */  jal        Cd_GetFileOrNull
     /* E898 8001E098 5E040424 */   addiu     $a0, $zero, 0x45E
     /* E89C 8001E09C 21200002 */  addu       $a0, $s0, $zero
-    /* E8A0 8001E0A0 FD77000C */  jal        func_8001DFF4
+    /* E8A0 8001E0A0 FD77000C */  jal        Item_FindById
     /* E8A4 8001E0A4 21804000 */   addu      $s0, $v0, $zero
     /* E8A8 8001E0A8 0C00428C */  lw         $v0, 0xC($v0)
     /* E8AC 8001E0AC 1400BF8F */  lw         $ra, 0x14($sp)

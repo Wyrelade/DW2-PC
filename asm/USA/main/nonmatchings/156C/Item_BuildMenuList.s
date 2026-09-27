@@ -65,7 +65,7 @@ glabel Item_BuildMenuList
     /* 6844 80016044 05001624 */  addiu      $s6, $zero, 0x5
     /* 6848 80016048 74007226 */  addiu      $s2, $s3, 0x74
   .L8001604C:
-    /* 684C 8001604C 8B78000C */  jal        func_8001E22C
+    /* 684C 8001604C 8B78000C */  jal        Item_GetIdAtIndex
     /* 6850 80016050 FFFF2426 */   addiu     $a0, $s1, -0x1
     /* 6854 80016054 21804000 */  addu       $s0, $v0, $zero
     /* 6858 80016058 64006386 */  lh         $v1, 0x64($s3)

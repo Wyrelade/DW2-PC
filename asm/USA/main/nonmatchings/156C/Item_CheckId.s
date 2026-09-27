@@ -3,7 +3,7 @@ nonmatching Item_CheckId, 0x2C
 glabel Item_CheckId
     /* E908 8001E108 E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* E90C 8001E10C 1000BFAF */  sw         $ra, 0x10($sp)
-    /* E910 8001E110 FD77000C */  jal        func_8001DFF4
+    /* E910 8001E110 FD77000C */  jal        Item_FindById
     /* E914 8001E114 00000000 */   nop
     /* E918 8001E118 02004014 */  bnez       $v0, .L8001E124
     /* E91C 8001E11C 21180000 */   addu      $v1, $zero, $zero

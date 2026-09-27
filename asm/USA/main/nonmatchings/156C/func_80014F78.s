@@ -13,7 +13,7 @@ glabel func_80014F78
     /* 579C 80014F9C 2800B0AF */  sw         $s0, 0x28($sp)
     /* 57A0 80014FA0 08014484 */  lh         $a0, 0x108($v0)
     /* 57A4 80014FA4 2C00918E */  lw         $s1, 0x2C($s4)
-    /* 57A8 80014FA8 D747000C */  jal        func_80011F5C
+    /* 57A8 80014FA8 D747000C */  jal        Item_GetEffectRec
     /* 57AC 80014FAC 00000000 */   nop
     /* 57B0 80014FB0 08009327 */  addiu      $s3, $gp, %gp_rel(D_80050700)
     /* 57B4 80014FB4 01004490 */  lbu        $a0, 0x1($v0)

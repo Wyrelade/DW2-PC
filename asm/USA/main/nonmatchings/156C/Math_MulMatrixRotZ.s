@@ -1,6 +1,6 @@
-nonmatching func_8002C774, 0xB4
+nonmatching Math_MulMatrixRotZ, 0xB4
 
-glabel func_8002C774
+glabel Math_MulMatrixRotZ
     /* 1CF74 8002C774 C0FFBD27 */  addiu      $sp, $sp, -0x40
     /* 1CF78 8002C778 3400B1AF */  sw         $s1, 0x34($sp)
     /* 1CF7C 8002C77C 2188A000 */  addu       $s1, $a1, $zero
@@ -47,7 +47,7 @@ glabel func_8002C774
     /* 1D01C 8002C81C 3000B08F */  lw         $s0, 0x30($sp)
     /* 1D020 8002C820 0800E003 */  jr         $ra
     /* 1D024 8002C824 4000BD27 */   addiu     $sp, $sp, 0x40
-endlabel func_8002C774
+endlabel Math_MulMatrixRotZ
     /* 1D028 8002C828 00000000 */  nop
     /* 1D02C 8002C82C 00000000 */  nop
     /* 1D030 8002C830 00000000 */  nop

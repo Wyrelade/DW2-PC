@@ -1,6 +1,6 @@
-nonmatching func_80011F5C, 0x88
+nonmatching Item_GetEffectRec, 0x88
 
-glabel func_80011F5C
+glabel Item_GetEffectRec
     /* 275C 80011F5C E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* 2760 80011F60 21180000 */  addu       $v1, $zero, $zero
     /* 2764 80011F64 1000B0AF */  sw         $s0, 0x10($sp)
@@ -40,4 +40,4 @@ glabel func_80011F5C
     /* 27D8 80011FD8 21106000 */  addu       $v0, $v1, $zero
     /* 27DC 80011FDC 0800E003 */  jr         $ra
     /* 27E0 80011FE0 1800BD27 */   addiu     $sp, $sp, 0x18
-endlabel func_80011F5C
+endlabel Item_GetEffectRec

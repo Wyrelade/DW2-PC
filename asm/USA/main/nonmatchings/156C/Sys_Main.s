@@ -37,7 +37,7 @@ glabel Sys_Main
     /* 13DD4 800235D4 F0000524 */  addiu      $a1, $zero, 0xF0
     /* 13DD8 800235D8 01000624 */  addiu      $a2, $zero, 0x1
     /* 13DDC 800235DC 2138C000 */  addu       $a3, $a2, $zero
-    /* 13DE0 800235E0 15AB000C */  jal        func_8002AC54
+    /* 13DE0 800235E0 15AB000C */  jal        GsInitGraph
     /* 13DE4 800235E4 1000A0AF */   sw        $zero, 0x10($sp)
     /* 13DE8 800235E8 31AD000C */  jal        func_8002B4C4
     /* 13DEC 800235EC A0F71026 */   addiu     $s0, $s0, %lo(D_8005F7A0)

@@ -4,7 +4,7 @@ glabel Anim_GetModelAnimFile
     /* EF28 8001E728 E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* EF2C 8001E72C 1000B0AF */  sw         $s0, 0x10($sp)
     /* EF30 8001E730 1400BFAF */  sw         $ra, 0x14($sp)
-    /* EF34 8001E734 AA79000C */  jal        func_8001E6A8
+    /* EF34 8001E734 AA79000C */  jal        Digi_FindDataById
     /* EF38 8001E738 2180A000 */   addu      $s0, $a1, $zero
     /* EF3C 8001E73C 40801000 */  sll        $s0, $s0, 1
     /* EF40 8001E740 21105000 */  addu       $v0, $v0, $s0

@@ -5,7 +5,7 @@ glabel Digi_GetDefaultName
     /* EF5C 8001E75C 1400B1AF */  sw         $s1, 0x14($sp)
     /* EF60 8001E760 21888000 */  addu       $s1, $a0, $zero
     /* EF64 8001E764 1800BFAF */  sw         $ra, 0x18($sp)
-    /* EF68 8001E768 AA79000C */  jal        func_8001E6A8
+    /* EF68 8001E768 AA79000C */  jal        Digi_FindDataById
     /* EF6C 8001E76C 1000B0AF */   sw        $s0, 0x10($sp)
     /* EF70 8001E770 0000508C */  lw         $s0, 0x0($v0)
     /* EF74 8001E774 9F79000C */  jal        func_8001E67C

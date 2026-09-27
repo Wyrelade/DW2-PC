@@ -13,7 +13,7 @@ glabel func_8001E7E4
     /* F008 8001E808 688E000C */  jal        Cd_GetFileEntry
     /* F00C 8001E80C 01004434 */   ori       $a0, $v0, 0x1
     /* F010 8001E810 21200002 */  addu       $a0, $s0, $zero
-    /* F014 8001E814 AA79000C */  jal        func_8001E6A8
+    /* F014 8001E814 AA79000C */  jal        Digi_FindDataById
     /* F018 8001E818 21884000 */   addu      $s1, $v0, $zero
     /* F01C 8001E81C 22004384 */  lh         $v1, 0x22($v0)
     /* F020 8001E820 21200002 */  addu       $a0, $s0, $zero
@@ -26,7 +26,7 @@ glabel func_8001E7E4
     /* F03C 8001E83C 04004784 */  lh         $a3, 0x4($v0)
     /* F040 8001E840 030046AA */  swl        $a2, 0x3($s2)
     /* F044 8001E844 000046BA */  swr        $a2, 0x0($s2)
-    /* F048 8001E848 AA79000C */  jal        func_8001E6A8
+    /* F048 8001E848 AA79000C */  jal        Digi_FindDataById
     /* F04C 8001E84C 040047A6 */   sh        $a3, 0x4($s2)
     /* F050 8001E850 24004384 */  lh         $v1, 0x24($v0)
     /* F054 8001E854 00000000 */  nop
@@ -40,7 +40,7 @@ glabel func_8001E7E4
     /* F074 8001E874 090046AA */  swl        $a2, 0x9($s2)
     /* F078 8001E878 060046BA */  swr        $a2, 0x6($s2)
     /* F07C 8001E87C 0A0047A6 */  sh         $a3, 0xA($s2)
-    /* F080 8001E880 AA79000C */  jal        func_8001E6A8
+    /* F080 8001E880 AA79000C */  jal        Digi_FindDataById
     /* F084 8001E884 21200002 */   addu      $a0, $s0, $zero
     /* F088 8001E888 26004384 */  lh         $v1, 0x26($v0)
     /* F08C 8001E88C 00000000 */  nop

@@ -6,7 +6,7 @@ glabel Item_UseRecoverAll
     /* 2E48 80012648 0580103C */  lui        $s0, %hi(D_80050720)
     /* 2E4C 8001264C 2007108E */  lw         $s0, %lo(D_80050720)($s0)
     /* 2E50 80012650 1800BFAF */  sw         $ra, 0x18($sp)
-    /* 2E54 80012654 D747000C */  jal        func_80011F5C
+    /* 2E54 80012654 D747000C */  jal        Item_GetEffectRec
     /* 2E58 80012658 1400B1AF */   sw        $s1, 0x14($sp)
     /* 2E5C 8001265C 21484000 */  addu       $t1, $v0, $zero
     /* 2E60 80012660 21400000 */  addu       $t0, $zero, $zero

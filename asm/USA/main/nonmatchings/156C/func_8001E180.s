@@ -3,7 +3,7 @@ nonmatching func_8001E180, 0x2C
 glabel func_8001E180
     /* E980 8001E180 E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* E984 8001E184 1000BFAF */  sw         $ra, 0x10($sp)
-    /* E988 8001E188 FD77000C */  jal        func_8001DFF4
+    /* E988 8001E188 FD77000C */  jal        Item_FindById
     /* E98C 8001E18C 00000000 */   nop
     /* E990 8001E190 FF00033C */  lui        $v1, (0xFFFFFF >> 16)
     /* E994 8001E194 FFFF6334 */  ori        $v1, $v1, (0xFFFFFF & 0xFFFF)
