@@ -87,7 +87,18 @@ s32 func_800649F8(Actor *arg0, Stg11MenuWork *arg1) {
     return r;
 }
 
-INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80064A6C);
+void func_80064A6C(Actor *arg0, Stg11MenuWork *arg1) {
+    if (arg0->stateLevel2 == 0) {
+        func_800677AC(4, arg1->field_84);
+    }
+    if (func_800649F8(arg0, arg1) == 0) {
+        arg0->stateLevel2 = 1;
+        if (D_8005F6F0[arg1->field_7E].triangle > 0) {
+            Snd_PlayById(0xB, 0);
+            Task_SetState0(arg0, 2);
+        }
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80064B00);
 
