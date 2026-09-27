@@ -7,7 +7,7 @@ glabel func_8001E4CC
     /* ECD8 8001E4D8 0680023C */  lui        $v0, %hi(D_8005D560)
     /* ECDC 8001E4DC 60D5448C */  lw         $a0, %lo(D_8005D560)($v0)
     /* ECE0 8001E4E0 1400BFAF */  sw         $ra, 0x14($sp)
-    /* ECE4 8001E4E4 688E000C */  jal        func_800239A0
+    /* ECE4 8001E4E4 688E000C */  jal        Cd_GetFileEntry
     /* ECE8 8001E4E8 00240400 */   sll       $a0, $a0, 16
     /* ECEC 8001E4EC 40181000 */  sll        $v1, $s0, 1
     /* ECF0 8001E4F0 21187000 */  addu       $v1, $v1, $s0

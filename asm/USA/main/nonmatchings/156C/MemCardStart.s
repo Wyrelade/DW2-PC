@@ -19,7 +19,7 @@ glabel MemCardStart
     /* 2E53C 8003DD3C 01000224 */  addiu      $v0, $zero, 0x1
     /* 2E540 8003DD40 4C0002AE */  sw         $v0, 0x4C($s0)
     /* 2E544 8003DD44 480002AE */  sw         $v0, 0x48($s0)
-    /* 2E548 8003DD48 FDFE000C */  jal        func_8003FBF4
+    /* 2E548 8003DD48 FDFE000C */  jal        Card_OpenEvents
     /* 2E54C 8003DD4C 500003AE */   sw        $v1, 0x50($s0)
     /* 2E550 8003DD50 0480053C */  lui        $a1, %hi(Card_OnVSync)
     /* 2E554 8003DD54 6CF4A524 */  addiu      $a1, $a1, %lo(Card_OnVSync)

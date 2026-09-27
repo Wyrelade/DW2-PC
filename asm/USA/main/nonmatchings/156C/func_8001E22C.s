@@ -5,7 +5,7 @@ glabel func_8001E22C
     /* EA30 8001E230 1000B0AF */  sw         $s0, 0x10($sp)
     /* EA34 8001E234 21808000 */  addu       $s0, $a0, $zero
     /* EA38 8001E238 1400BFAF */  sw         $ra, 0x14($sp)
-    /* EA3C 8001E23C 688E000C */  jal        func_800239A0
+    /* EA3C 8001E23C 688E000C */  jal        Cd_GetFileEntry
     /* EA40 8001E240 5E04043C */   lui       $a0, (0x45E0000 >> 16)
     /* EA44 8001E244 21204000 */  addu       $a0, $v0, $zero
     /* EA48 8001E248 0900001A */  blez       $s0, .L8001E270

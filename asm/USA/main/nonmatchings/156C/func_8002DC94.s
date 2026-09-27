@@ -3,7 +3,7 @@ nonmatching func_8002DC94, 0x3C
 glabel func_8002DC94
     /* 1E494 8002DC94 E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* 1E498 8002DC98 1000BFAF */  sw         $ra, 0x10($sp)
-    /* 1E49C 8002DC9C C1BF000C */  jal        func_8002FF04
+    /* 1E49C 8002DC9C C1BF000C */  jal        CD_init
     /* 1E4A0 8002DCA0 00000000 */   nop
     /* 1E4A4 8002DCA4 05004014 */  bnez       $v0, .L8002DCBC
     /* 1E4A8 8002DCA8 00000000 */   nop

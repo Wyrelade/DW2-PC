@@ -53,7 +53,7 @@ glabel func_80017D84
     /* 863C 80017E3C FD01043C */  lui        $a0, (0x1FD0082 >> 16)
     /* 8640 80017E40 82008434 */  ori        $a0, $a0, (0x1FD0082 & 0xFFFF)
     /* 8644 80017E44 1C00BEA7 */  sh         $fp, 0x1C($sp)
-    /* 8648 80017E48 688E000C */  jal        func_800239A0
+    /* 8648 80017E48 688E000C */  jal        Cd_GetFileEntry
     /* 864C 80017E4C 1E00B5A7 */   sh        $s5, 0x1E($sp)
     /* 8650 80017E50 2120D302 */  addu       $a0, $s6, $s3
     /* 8654 80017E54 1000A527 */  addiu      $a1, $sp, 0x10
@@ -63,7 +63,7 @@ glabel func_80017D84
     /* 8664 80017E64 BB008434 */  ori        $a0, $a0, (0x1FD00BB & 0xFFFF)
     /* 8668 80017E68 D0000624 */  addiu      $a2, $zero, 0xD0
     /* 866C 80017E6C 1C00A6A7 */  sh         $a2, 0x1C($sp)
-    /* 8670 80017E70 688E000C */  jal        func_800239A0
+    /* 8670 80017E70 688E000C */  jal        Cd_GetFileEntry
     /* 8674 80017E74 1E00B5A7 */   sh        $s5, 0x1E($sp)
     /* 8678 80017E78 04006426 */  addiu      $a0, $s3, 0x4
     /* 867C 80017E7C 2120C402 */  addu       $a0, $s6, $a0
@@ -102,7 +102,7 @@ glabel func_80017D84
     /* 86F8 80017EF8 1C00BEA7 */  sh         $fp, 0x1C($sp)
     /* 86FC 80017EFC 1E00B0A7 */  sh         $s0, 0x1E($sp)
   .L80017F00:
-    /* 8700 80017F00 688E000C */  jal        func_800239A0
+    /* 8700 80017F00 688E000C */  jal        Cd_GetFileEntry
     /* 8704 80017F04 00000000 */   nop
     /* 8708 80017F08 2120D402 */  addu       $a0, $s6, $s4
   .L80017F0C:

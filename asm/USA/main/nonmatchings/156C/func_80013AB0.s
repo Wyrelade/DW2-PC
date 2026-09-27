@@ -6,7 +6,7 @@ glabel func_80013AB0
     /* 42B8 80013AB8 21888000 */  addu       $s1, $a0, $zero
     /* 42BC 80013ABC 1000B0AF */  sw         $s0, 0x10($sp)
     /* 42C0 80013AC0 1800BFAF */  sw         $ra, 0x18($sp)
-    /* 42C4 80013AC4 688E000C */  jal        func_800239A0
+    /* 42C4 80013AC4 688E000C */  jal        Cd_GetFileEntry
     /* 42C8 80013AC8 2180A000 */   addu      $s0, $a1, $zero
     /* 42CC 80013ACC 03241100 */  sra        $a0, $s1, 16
     /* 42D0 80013AD0 828E000C */  jal        Cd_GetFileOrNull

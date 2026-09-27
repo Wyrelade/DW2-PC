@@ -22,7 +22,7 @@ glabel func_80013558
     /* 3D9C 8001359C 0000048E */  lw         $a0, 0x0($s0)
     /* 3DA0 800135A0 01007326 */  addiu      $s3, $s3, 0x1
     /* 3DA4 800135A4 FF0F8430 */  andi       $a0, $a0, 0xFFF
-    /* 3DA8 800135A8 688E000C */  jal        func_800239A0
+    /* 3DA8 800135A8 688E000C */  jal        Cd_GetFileEntry
     /* 3DAC 800135AC 25209400 */   or        $a0, $a0, $s4
     /* 3DB0 800135B0 21204002 */  addu       $a0, $s2, $zero
     /* 3DB4 800135B4 FEFF2396 */  lhu        $v1, -0x2($s1)

@@ -16,7 +16,7 @@ glabel func_8002B4C4
     /* 1BCF4 8002B4F4 C2170300 */  srl        $v0, $v1, 31
     /* 1BCF8 8002B4F8 21186200 */  addu       $v1, $v1, $v0
     /* 1BCFC 8002B4FC 43180300 */  sra        $v1, $v1, 1
-    /* 1BD00 8002B500 69AC000C */  jal        func_8002B1A4
+    /* 1BD00 8002B500 69AC000C */  jal        GsSetDrawBuffOffset
     /* 1BD04 8002B504 020083A4 */   sh        $v1, 0x2($a0)
     /* 1BD08 8002B508 0A000224 */  addiu      $v0, $zero, 0xA
     /* 1BD0C 8002B50C 0680013C */  lui        $at, %hi(D_800619A0)

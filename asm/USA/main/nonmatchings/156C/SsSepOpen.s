@@ -31,8 +31,8 @@ glabel SsSepOpen
     /* 231B4 800329B4 21386000 */  addu       $a3, $v1, $zero
     /* 231B8 800329B8 0680023C */  lui        $v0, %hi(D_80061BB0)
     /* 231BC 800329BC B01B4224 */  addiu      $v0, $v0, %lo(D_80061BB0)
-    /* 231C0 800329C0 0380033C */  lui        $v1, %hi(func_800348D4)
-    /* 231C4 800329C4 D4486324 */  addiu      $v1, $v1, %lo(func_800348D4)
+    /* 231C0 800329C0 0380033C */  lui        $v1, %hi(_SsNoteOn)
+    /* 231C4 800329C4 D4486324 */  addiu      $v1, $v1, %lo(_SsNoteOn)
     /* 231C8 800329C8 000043AC */  sw         $v1, 0x0($v0)
     /* 231CC 800329CC 0380033C */  lui        $v1, %hi(_SsSetProgramChange)
     /* 231D0 800329D0 B4496324 */  addiu      $v1, $v1, %lo(_SsSetProgramChange)

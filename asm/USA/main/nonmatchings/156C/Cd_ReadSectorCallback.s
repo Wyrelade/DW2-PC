@@ -33,7 +33,7 @@ glabel Cd_ReadSectorCallback
     /* 148C4 800240C4 4DC1000C */  jal        CdReadyCallback
     /* 148C8 800240C8 21200000 */   addu      $a0, $zero, $zero
     /* 148CC 800240CC 09000424 */  addiu      $a0, $zero, 0x9
-    /* 148D0 800240D0 A4C1000C */  jal        func_80030690
+    /* 148D0 800240D0 A4C1000C */  jal        CdControlF
     /* 148D4 800240D4 21280000 */   addu      $a1, $zero, $zero
   .L800240D8:
     /* 148D8 800240D8 1400BF8F */  lw         $ra, 0x14($sp)

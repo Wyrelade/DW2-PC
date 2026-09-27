@@ -15,7 +15,7 @@ glabel func_80014CBC
     /* 54E8 80014CE8 66004010 */  beqz       $v0, .L80014E84
     /* 54EC 80014CEC 00000000 */   nop
     /* 54F0 80014CF0 1305043C */  lui        $a0, (0x513000E >> 16)
-    /* 54F4 80014CF4 688E000C */  jal        func_800239A0
+    /* 54F4 80014CF4 688E000C */  jal        Cd_GetFileEntry
     /* 54F8 80014CF8 0E008434 */   ori       $a0, $a0, (0x513000E & 0xFFFF)
     /* 54FC 80014CFC 21204000 */  addu       $a0, $v0, $zero
     /* 5500 80014D00 0000828C */  lw         $v0, 0x0($a0)
@@ -25,7 +25,7 @@ glabel func_80014CBC
     /* 5510 80014D10 21908000 */  addu       $s2, $a0, $zero
   .L80014D14:
     /* 5514 80014D14 0000448E */  lw         $a0, 0x0($s2)
-    /* 5518 80014D18 688E000C */  jal        func_800239A0
+    /* 5518 80014D18 688E000C */  jal        Cd_GetFileEntry
     /* 551C 80014D1C 00000000 */   nop
     /* 5520 80014D20 26006016 */  bnez       $s3, .L80014DBC
     /* 5524 80014D24 21884000 */   addu      $s1, $v0, $zero

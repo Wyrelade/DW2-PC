@@ -100,7 +100,7 @@ typedef struct {
 } EntE4CC;
 
 /* Global struct D_8005D560; field_0 is an id, 4/8 hold results, field_C walks the
- * func_800239A0 entry table and field_10 holds the entry func_8001E390 picked. */
+ * Cd_GetFileEntry entry table and field_10 holds the entry func_8001E390 picked. */
 typedef struct {
     /* 0x00 */ s32 field_0;
     /* 0x04 */ s32 field_4;
@@ -168,7 +168,7 @@ typedef struct {
     /* 0x38 */ Buf38 *buf;
 } Ctx38;
 
-/* View of Actor.work used by func_800176D8: a s16 counter at 0x19E indexing a
+/* View of Actor.work used by Menu_UndoLastPick: a s16 counter at 0x19E indexing a
  * s16 array at 0x1A0, plus a stride-8 element array reached at offset 0x6C. */
 typedef struct {
     u8 _pad0[0x02];
@@ -521,7 +521,7 @@ EntE4CC *func_8001E4CC();
 EntE6A8 *func_8001E6A8();
 
 /* 6-byte record copied wholesale by func_8001E7E4 from a stride-6 table (base is
- * the func_800239A0 lookup, index is EntE6A8.field_22/24/26). 2-byte alignment
+ * the Cd_GetFileEntry lookup, index is EntE6A8.field_22/24/26). 2-byte alignment
  * makes the copy an unaligned lwl/lwr word plus an lh half. */
 typedef struct {
     /* 0x0 */ s16 data[3];
@@ -529,14 +529,14 @@ typedef struct {
 EntED40 *func_8001ED40();
 EntDFF4 *func_8001DFF4();
 
-/* Base record returned by the func_800239A0 lookup. Stride 0x28 when indexed. */
+/* Base record returned by the Cd_GetFileEntry lookup. Stride 0x28 when indexed. */
 typedef struct {
     u8 _pad00[0x04];
     /* 0x04 */ u32 field_4;
     u8 _pad08[0x20];
 } EntA0;
 
-EntA0 *func_800239A0();
+EntA0 *Cd_GetFileEntry();
 s32 Cd_GetFileOrNull();
 s32 func_8001EE34();
 
@@ -712,13 +712,13 @@ typedef struct {
 } Blk16;
 
 /* 0xC-stride record returned by the func_8001E5E8 getter (base is the
-   func_800239A0((D_8005D560.field_0<<16)|1) lookup, index is EntE4CC.field_4). */
+   Cd_GetFileEntry((D_8005D560.field_0<<16)|1) lookup, index is EntE4CC.field_4). */
 typedef struct {
     u8 data[0xC];
 } Blk12;
 
 /* 0x18-stride record; the func_8001E298 getter family returns &base[index] where
-   base is the func_800239A0((D_8005D560.field_0<<16)|2) lookup result. */
+   base is the Cd_GetFileEntry((D_8005D560.field_0<<16)|2) lookup result. */
 typedef struct {
     u8 data[0x18];
 } Blk18;
@@ -1032,7 +1032,7 @@ typedef struct {
     u8 _pad2[0x20];
 } Elm6A8; /* size 0x22 */
 
-/* Command block D_80062C18 handed to func_8003B994: field_0 is the command
+/* Command block D_80062C18 handed to SpuSetReverbModeParam: field_0 is the command
  * id, the remaining fields are its arguments. */
 typedef struct {
     /* 0x00 */ s32 field_0;
@@ -1043,7 +1043,7 @@ typedef struct {
     /* 0x10 */ s32 field_10;
 } Cmd62C18; /* size 0x14 */
 
-s32 func_8003B994(Cmd62C18 *cmd);
+s32 SpuSetReverbModeParam(Cmd62C18 *cmd);
 
 /* By-value argument block of the SsSepOpen handler table entries
  * (void handler(s16, s16, s16, HandlerArg)). It starts in $a3 and continues on
@@ -1437,7 +1437,7 @@ typedef struct {
     /* 0xE */ u16 field_E;
 } Ent62CFC;
 
-/* s16 pair at D_80061900 filled by func_8002B4C4 and handed to func_8002B1A4. */
+/* s16 pair at D_80061900 filled by func_8002B4C4 and handed to GsSetDrawBuffOffset. */
 typedef struct {
     /* 0x0 */ s16 field_0;
     /* 0x2 */ s16 field_2;
@@ -1586,7 +1586,7 @@ typedef struct {
     /* 0x1A0 */ s16 field_1A0[1];
 } Work174F8;
 
-/* 0x10-byte state block at D_8004FDCC cleared by func_8003A054. */
+/* 0x10-byte state block at D_8004FDCC cleared by _SpuInit. */
 typedef struct {
     /* 0x0 */ s32 field_0;
     /* 0x4 */ s16 field_4;
@@ -2010,7 +2010,7 @@ typedef union {
     Tpage1CE9C t;
 } Pkt1CE9C;
 
-/* Rectangle func_80028E84 clips and sends as two command words. */
+/* Rectangle _drs clips and sends as two command words. */
 typedef union {
     struct {
         s16 x;
@@ -2099,7 +2099,7 @@ typedef struct {
     u8 b[6];
 } Tbl50724;
 
-/* View of D_8005F770 as the frame/display state (func_80023484, func_80023550). */
+/* View of D_8005F770 as the frame/display state (Sys_VSyncHandler, func_80023550). */
 typedef struct {
     /* 0x00 */ s32 field_0;
     /* 0x04 */ s32 field_4;
@@ -2152,7 +2152,7 @@ typedef struct {
     /* 0x9C */ s32 field_9C;
 } Wk14EA4;
 
-/* 12-byte menu layout record (func_800239A0(0x5130010)) copied over Wk14EA4 0x8C..0x97. */
+/* 12-byte menu layout record (Cd_GetFileEntry(0x5130010)) copied over Wk14EA4 0x8C..0x97. */
 typedef struct {
     s16 field_0[6];
 } Layout8C;
@@ -2292,7 +2292,7 @@ typedef struct Mdl1FDBC {
     /* 0x0C */ s32 field_C[1];
 } Mdl1FDBC;
 
-/* VRAM rectangle func_80028C48 uploads: four halfwords, sent to the GPU as two words. */
+/* VRAM rectangle _dws uploads: four halfwords, sent to the GPU as two words. */
 typedef union {
     struct {
         /* 0x0 */ s16 x;
@@ -2433,7 +2433,7 @@ typedef struct {
 } Snd62D04;
 
 
-/* libspu reverb register image (0x44 bytes): func_8003B994 copies a preset
+/* libspu reverb register image (0x44 bytes): SpuSetReverbModeParam copies a preset
  * from D_800503E8[] and patches it, _spu_setReverbAttr writes it out. */
 typedef struct {
     /* 0x00 */ u32 field_0;
@@ -2585,7 +2585,7 @@ typedef struct {
 } Snd62A28;
 
 /* 0x28-stride zero-terminated list Gfx_HidePartsByMask walks (func_80014870 passes it
- * the func_800239A0 lookups); field_F is set to 0 or 1 from field_1C & mask. */
+ * the Cd_GetFileEntry lookups); field_F is set to 0 or 1 from field_1C & mask. */
 typedef struct {
     /* 0x00 */ s32 field_0;
     u8 _pad04[0xB];
@@ -2596,7 +2596,7 @@ typedef struct {
 } Obj1D504;
 
 
-/* Variable-size entry list returned by Cd_GetFileOrNull for func_80019E50: ends
+/* Variable-size entry list returned by Cd_GetFileOrNull for Task_SpawnListFromFile: ends
  * at field_0 == -1, field_C is the byte size of the entry. */
 typedef struct {
     /* 0x00 */ s32 field_0;
@@ -2606,7 +2606,7 @@ typedef struct {
 } Ent19E50;
 
 
-/* func_8001C104 reads two 0x14-stride display areas out of D_8005F770 at 0xE8
+/* Gpu_ClearScreens reads two 0x14-stride display areas out of D_8005F770 at 0xE8
  * (a Rect2AB54 at the head of each). */
 typedef struct {
     /* 0x00 */ Rect2AB54 rect;
@@ -2689,7 +2689,7 @@ typedef struct {
 /* One text-command handler slot in the dialogue op table. */
 typedef void (*TextOp)();
 
-void func_800348D4(s32 a0, s32 a1, s32 a2, s32 a3);
+void _SsNoteOn(s32 a0, s32 a1, s32 a2, s32 a3);
 void _SsSetProgramChange(s16 arg0, s16 arg1, s16 arg2);
 void _SsGetMetaEvent(s16 a0, s16 a1);
 void _SsSetPitchBend(s16 a0, s16 a1);
@@ -2981,7 +2981,7 @@ typedef struct {
 } Ent3EF1C;
 
 
-/* CD command tables at 0x8004E80C: per-command result flag, then parameter byte count; read by func_8002F860. */
+/* CD command tables at 0x8004E80C: per-command result flag, then parameter byte count; read by CD_cw. */
 typedef struct {
     /* 0x000 */ s32 field_0[64];
     /* 0x100 */ s32 field_100[64];

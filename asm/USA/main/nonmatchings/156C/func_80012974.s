@@ -142,7 +142,7 @@ glabel func_80012974
     /* 3368 80012B68 2F6A000C */  jal        func_8001A8BC
     /* 336C 80012B6C 00000000 */   nop
     /* 3370 80012B70 22000424 */  addiu      $a0, $zero, 0x22
-    /* 3374 80012B74 A369000C */  jal        func_8001A68C
+    /* 3374 80012B74 A369000C */  jal        Snd_PlayById
     /* 3378 80012B78 01000524 */   addiu     $a1, $zero, 0x1
     /* 337C 80012B7C 06000224 */  addiu      $v0, $zero, 0x6
     /* 3380 80012B80 1A4C0008 */  j          .L80013068
@@ -169,7 +169,7 @@ glabel func_80012974
     /* 33CC 80012BCC FD01023C */  lui        $v0, (0x1FD00D4 >> 16)
     /* 33D0 80012BD0 0C00848E */  lw         $a0, 0xC($s4)
     /* 33D4 80012BD4 D4004234 */  ori        $v0, $v0, (0x1FD00D4 & 0xFFFF)
-    /* 33D8 80012BD8 688E000C */  jal        func_800239A0
+    /* 33D8 80012BD8 688E000C */  jal        Cd_GetFileEntry
     /* 33DC 80012BDC 21208200 */   addu      $a0, $a0, $v0
     /* 33E0 80012BE0 21200002 */  addu       $a0, $s0, $zero
     /* 33E4 80012BE4 1000A527 */  addiu      $a1, $sp, 0x10
@@ -189,7 +189,7 @@ glabel func_80012974
     /* 341C 80012C1C FD01023C */  lui        $v0, (0x1FD00D5 >> 16)
     /* 3420 80012C20 0C00848E */  lw         $a0, 0xC($s4)
     /* 3424 80012C24 D5004234 */  ori        $v0, $v0, (0x1FD00D5 & 0xFFFF)
-    /* 3428 80012C28 688E000C */  jal        func_800239A0
+    /* 3428 80012C28 688E000C */  jal        Cd_GetFileEntry
     /* 342C 80012C2C 21208200 */   addu      $a0, $a0, $v0
     /* 3430 80012C30 21202002 */  addu       $a0, $s1, $zero
     /* 3434 80012C34 1800A397 */  lhu        $v1, 0x18($sp)
@@ -201,7 +201,7 @@ glabel func_80012974
     /* 344C 80012C4C FD01023C */  lui        $v0, (0x1FD00D6 >> 16)
     /* 3450 80012C50 0C00848E */  lw         $a0, 0xC($s4)
     /* 3454 80012C54 D6004234 */  ori        $v0, $v0, (0x1FD00D6 & 0xFFFF)
-    /* 3458 80012C58 688E000C */  jal        func_800239A0
+    /* 3458 80012C58 688E000C */  jal        Cd_GetFileEntry
     /* 345C 80012C5C 21208200 */   addu      $a0, $a0, $v0
     /* 3460 80012C60 21204002 */  addu       $a0, $s2, $zero
     /* 3464 80012C64 1800A397 */  lhu        $v1, 0x18($sp)
@@ -262,7 +262,7 @@ glabel func_80012974
     /* 352C 80012D2C FD01043C */  lui        $a0, (0x1FD0072 >> 16)
     /* 3530 80012D30 72008434 */  ori        $a0, $a0, (0x1FD0072 & 0xFFFF)
   .L80012D34:
-    /* 3534 80012D34 688E000C */  jal        func_800239A0
+    /* 3534 80012D34 688E000C */  jal        Cd_GetFileEntry
     /* 3538 80012D38 00000000 */   nop
     /* 353C 80012D3C 5400A2AF */  sw         $v0, 0x54($sp)
   .L80012D40:
@@ -457,7 +457,7 @@ glabel func_80012974
   .L80012FF4:
     /* 37F4 80012FF4 21280000 */  addu       $a1, $zero, $zero
   .L80012FF8:
-    /* 37F8 80012FF8 A369000C */  jal        func_8001A68C
+    /* 37F8 80012FF8 A369000C */  jal        Snd_PlayById
     /* 37FC 80012FFC 00000000 */   nop
   .L80013000:
     /* 3800 80013000 2400838E */  lw         $v1, 0x24($s4)

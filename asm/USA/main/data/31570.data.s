@@ -244,7 +244,7 @@ dlabel D_80040F98
     /* 317B0 80040FB0 28010000 */ .word 0x00000128
     /* 317B4 80040FB4 04000000 */ .word 0x00000004
     /* 317B8 80040FB8 409E0180 */ .word func_80019E40
-    /* 317BC 80040FBC 509E0180 */ .word func_80019E50
+    /* 317BC 80040FBC 509E0180 */ .word Task_SpawnListFromFile
     /* 317C0 80040FC0 70110180 */ .word Task_DefaultDestroy
     /* 317C4 80040FC4 00000000 */ .word 0x00000000
     /* 317C8 80040FC8 04000000 */ .word 0x00000004
@@ -10444,20 +10444,20 @@ nonmatching D_80048EC8
 dlabel D_80048EC8
     /* 396C8 80048EC8 E4010180 */ .word D_800101E4
     /* 396CC 80048ECC D8910280 */ .word _addque
-    /* 396D0 80048ED0 FC910280 */ .word func_800291FC
+    /* 396D0 80048ED0 FC910280 */ .word _addque2
     /* 396D4 80048ED4 188A0280 */ .word _clr
     /* 396D8 80048ED8 04910280 */ .word _ctl
     /* 396DC 80048EDC 20910280 */ .word _cwb
     /* 396E0 80048EE0 60910280 */ .word _cwc
-    /* 396E4 80048EE4 848E0280 */ .word func_80028E84
-    /* 396E8 80048EE8 488C0280 */ .word func_80028C48
+    /* 396E4 80048EE4 848E0280 */ .word _drs
+    /* 396E8 80048EE8 488C0280 */ .word _dws
     /* 396EC 80048EEC AC940280 */ .word _exeque
     /* 396F0 80048EF0 18910280 */ .word func_80029118
-    /* 396F4 80048EF4 38890280 */ .word func_80028938
+    /* 396F4 80048EF4 38890280 */ .word _otc
     /* 396F8 80048EF8 A8910280 */ .word _param
     /* 396FC 80048EFC 0C970280 */ .word _reset
     /* 39700 80048F00 20890280 */ .word _status
-    /* 39704 80048F04 48980280 */ .word func_80029848
+    /* 39704 80048F04 48980280 */ .word _sync
 enddlabel D_80048EC8
 
 nonmatching D_80048F08
@@ -19264,7 +19264,7 @@ enddlabel D_8004FC4C
 nonmatching D_8004FC50
 
 dlabel D_8004FC50
-    /* 40450 8004FC50 54180380 */ .word func_80031854
+    /* 40450 8004FC50 54180380 */ .word SsSeqCalledTbyT
 enddlabel D_8004FC50
 
 nonmatching D_8004FC54

@@ -15,7 +15,7 @@ glabel func_80015298
     /* 5AC4 800152C4 21908002 */  addu       $s2, $s4, $zero
     /* 5AC8 800152C8 FD01043C */  lui        $a0, (0x1FD0098 >> 16)
   .L800152CC:
-    /* 5ACC 800152CC 688E000C */  jal        func_800239A0
+    /* 5ACC 800152CC 688E000C */  jal        Cd_GetFileEntry
     /* 5AD0 800152D0 98008434 */   ori       $a0, $a0, (0x1FD0098 & 0xFFFF)
     /* 5AD4 800152D4 21284000 */  addu       $a1, $v0, $zero
     /* 5AD8 800152D8 7400828F */  lw         $v0, %gp_rel(D_8005076C)($gp)

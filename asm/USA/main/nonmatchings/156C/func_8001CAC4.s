@@ -7,7 +7,7 @@ glabel func_8001CAC4
     /* D2D0 8001CAD0 2800BFAF */  sw         $ra, 0x28($sp)
     /* D2D4 8001CAD4 2000B0AF */  sw         $s0, 0x20($sp)
     /* D2D8 8001CAD8 0000248E */  lw         $a0, 0x0($s1)
-    /* D2DC 8001CADC 688E000C */  jal        func_800239A0
+    /* D2DC 8001CADC 688E000C */  jal        Cd_GetFileEntry
     /* D2E0 8001CAE0 00000000 */   nop
     /* D2E4 8001CAE4 04005024 */  addiu      $s0, $v0, 0x4
     /* D2E8 8001CAE8 0000028E */  lw         $v0, 0x0($s0)

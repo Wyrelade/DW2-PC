@@ -1,0 +1,50 @@
+nonmatching SsUtSetReverbType, 0x9C
+
+glabel SsUtSetReverbType
+    /* 26C74 80036474 E8FFBD27 */  addiu      $sp, $sp, -0x18
+    /* 26C78 80036478 21280000 */  addu       $a1, $zero, $zero
+    /* 26C7C 8003647C 21188000 */  addu       $v1, $a0, $zero
+    /* 26C80 80036480 00140400 */  sll        $v0, $a0, 16
+    /* 26C84 80036484 1400BFAF */  sw         $ra, 0x14($sp)
+    /* 26C88 80036488 03004104 */  bgez       $v0, .L80036498
+    /* 26C8C 8003648C 1000B0AF */   sw        $s0, 0x10($sp)
+    /* 26C90 80036490 01000524 */  addiu      $a1, $zero, 0x1
+    /* 26C94 80036494 23180400 */  negu       $v1, $a0
+  .L80036498:
+    /* 26C98 80036498 FFFF6230 */  andi       $v0, $v1, 0xFFFF
+    /* 26C9C 8003649C 0A00422C */  sltiu      $v0, $v0, 0xA
+    /* 26CA0 800364A0 16004010 */  beqz       $v0, .L800364FC
+    /* 26CA4 800364A4 01000224 */   addiu     $v0, $zero, 0x1
+    /* 26CA8 800364A8 0680043C */  lui        $a0, %hi(D_80062C18)
+    /* 26CAC 800364AC 182C8424 */  addiu      $a0, $a0, %lo(D_80062C18)
+    /* 26CB0 800364B0 0400A010 */  beqz       $a1, .L800364C4
+    /* 26CB4 800364B4 000082AC */   sw        $v0, 0x0($a0)
+    /* 26CB8 800364B8 00016234 */  ori        $v0, $v1, 0x100
+    /* 26CBC 800364BC 32D90008 */  j          .L800364C8
+    /* 26CC0 800364C0 00140200 */   sll       $v0, $v0, 16
+  .L800364C4:
+    /* 26CC4 800364C4 00140300 */  sll        $v0, $v1, 16
+  .L800364C8:
+    /* 26CC8 800364C8 03140200 */  sra        $v0, $v0, 16
+    /* 26CCC 800364CC 040082AC */  sw         $v0, 0x4($a0)
+    /* 26CD0 800364D0 00140300 */  sll        $v0, $v1, 16
+    /* 26CD4 800364D4 03840200 */  sra        $s0, $v0, 16
+    /* 26CD8 800364D8 03000016 */  bnez       $s0, .L800364E8
+    /* 26CDC 800364DC 00000000 */   nop
+    /* 26CE0 800364E0 E5ED000C */  jal        SpuSetReverb
+    /* 26CE4 800364E4 21200000 */   addu      $a0, $zero, $zero
+  .L800364E8:
+    /* 26CE8 800364E8 0680043C */  lui        $a0, %hi(D_80062C18)
+    /* 26CEC 800364EC 65EE000C */  jal        SpuSetReverbModeParam
+    /* 26CF0 800364F0 182C8424 */   addiu     $a0, $a0, %lo(D_80062C18)
+    /* 26CF4 800364F4 40D90008 */  j          .L80036500
+    /* 26CF8 800364F8 21100002 */   addu      $v0, $s0, $zero
+  .L800364FC:
+    /* 26CFC 800364FC FFFF0224 */  addiu      $v0, $zero, -0x1
+  .L80036500:
+    /* 26D00 80036500 1400BF8F */  lw         $ra, 0x14($sp)
+    /* 26D04 80036504 1000B08F */  lw         $s0, 0x10($sp)
+    /* 26D08 80036508 0800E003 */  jr         $ra
+    /* 26D0C 8003650C 1800BD27 */   addiu     $sp, $sp, 0x18
+endlabel SsUtSetReverbType
+    /* 26D10 80036510 00000000 */  nop

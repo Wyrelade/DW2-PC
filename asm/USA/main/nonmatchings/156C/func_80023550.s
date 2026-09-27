@@ -17,9 +17,9 @@ glabel func_80023550
     /* 13D84 80023584 21200000 */   addu      $a0, $zero, $zero
     /* 13D88 80023588 419C000C */  jal        ResetGraph
     /* 13D8C 8002358C 21200000 */   addu      $a0, $zero, $zero
-    /* 13D90 80023590 0280043C */  lui        $a0, %hi(func_80023484)
+    /* 13D90 80023590 0280043C */  lui        $a0, %hi(Sys_VSyncHandler)
     /* 13D94 80023594 59C3000C */  jal        func_80030D64
-    /* 13D98 80023598 84348424 */   addiu     $a0, $a0, %lo(func_80023484)
+    /* 13D98 80023598 84348424 */   addiu     $a0, $a0, %lo(Sys_VSyncHandler)
     /* 13D9C 8002359C 1800A427 */  addiu      $a0, $sp, 0x18
     /* 13DA0 800235A0 21280000 */  addu       $a1, $zero, $zero
     /* 13DA4 800235A4 2130A000 */  addu       $a2, $a1, $zero
@@ -41,7 +41,7 @@ glabel func_80023550
     /* 13DE4 800235E4 1000A0AF */   sw        $zero, 0x10($sp)
     /* 13DE8 800235E8 31AD000C */  jal        func_8002B4C4
     /* 13DEC 800235EC A0F71026 */   addiu     $s0, $s0, %lo(D_8005F7A0)
-    /* 13DF0 800235F0 45CA000C */  jal        func_80032914
+    /* 13DF0 800235F0 45CA000C */  jal        SsInit
     /* 13DF4 800235F4 00000000 */   nop
     /* 13DF8 800235F8 97B3000C */  jal        func_8002CE5C
     /* 13DFC 800235FC 00000000 */   nop
@@ -105,14 +105,14 @@ glabel func_80023550
     /* 13EE4 800236E4 21200000 */   addu      $a0, $zero, $zero
     /* 13EE8 800236E8 40F7000C */  jal        MemCardStart
     /* 13EEC 800236EC 00000000 */   nop
-    /* 13EF0 800236F0 2B8C000C */  jal        func_800230AC
+    /* 13EF0 800236F0 2B8C000C */  jal        Pad_Init
     /* 13EF4 800236F4 00000000 */   nop
     /* 13EF8 800236F8 80000224 */  addiu      $v0, $zero, 0x80
     /* 13EFC 800236FC 4000A2A3 */  sb         $v0, 0x40($sp)
   .L80023700:
     /* 13F00 80023700 0E000424 */  addiu      $a0, $zero, 0xE
     /* 13F04 80023704 4000A527 */  addiu      $a1, $sp, 0x40
-    /* 13F08 80023708 55C1000C */  jal        func_80030554
+    /* 13F08 80023708 55C1000C */  jal        CdControl
     /* 13F0C 8002370C 21300000 */   addu      $a2, $zero, $zero
     /* 13F10 80023710 FBFF4010 */  beqz       $v0, .L80023700
     /* 13F14 80023714 00000000 */   nop
@@ -120,7 +120,7 @@ glabel func_80023550
     /* 13F1C 8002371C 03000424 */   addiu     $a0, $zero, 0x3
     /* 13F20 80023720 09000424 */  addiu      $a0, $zero, 0x9
     /* 13F24 80023724 21280000 */  addu       $a1, $zero, $zero
-    /* 13F28 80023728 F1C1000C */  jal        func_800307C4
+    /* 13F28 80023728 F1C1000C */  jal        CdControlB
     /* 13F2C 8002372C 2130A000 */   addu      $a2, $a1, $zero
     /* 13F30 80023730 6444000C */  jal        Task_ClearList
     /* 13F34 80023734 0680113C */   lui       $s1, %hi(D_8005F770)

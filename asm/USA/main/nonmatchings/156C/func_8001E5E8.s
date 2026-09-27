@@ -9,7 +9,7 @@ glabel func_8001E5E8
     /* EDFC 8001E5FC 60D5648C */  lw         $a0, %lo(D_8005D560)($v1)
     /* EE00 8001E600 21804000 */  addu       $s0, $v0, $zero
     /* EE04 8001E604 00240400 */  sll        $a0, $a0, 16
-    /* EE08 8001E608 688E000C */  jal        func_800239A0
+    /* EE08 8001E608 688E000C */  jal        Cd_GetFileEntry
     /* EE0C 8001E60C 01008434 */   ori       $a0, $a0, 0x1
     /* EE10 8001E610 04000492 */  lbu        $a0, 0x4($s0)
     /* EE14 8001E614 1400BF8F */  lw         $ra, 0x14($sp)

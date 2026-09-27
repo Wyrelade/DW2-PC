@@ -3,7 +3,7 @@ nonmatching func_8001E938, 0x4C
 glabel func_8001E938
     /* F138 8001E938 E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* F13C 8001E93C 1000BFAF */  sw         $ra, 0x10($sp)
-    /* F140 8001E940 688E000C */  jal        func_800239A0
+    /* F140 8001E940 688E000C */  jal        Cd_GetFileEntry
     /* F144 8001E944 F801043C */   lui       $a0, (0x1F80000 >> 16)
     /* F148 8001E948 21184000 */  addu       $v1, $v0, $zero
     /* F14C 8001E94C 0400628C */  lw         $v0, 0x4($v1)

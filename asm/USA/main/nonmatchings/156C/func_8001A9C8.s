@@ -214,7 +214,7 @@ glabel func_8001A9C8
     /* B4E8 8001ACE8 21280000 */  addu       $a1, $zero, $zero
     /* B4EC 8001ACEC 21105401 */  addu       $v0, $t2, $s4
     /* B4F0 8001ACF0 250042A2 */  sb         $v0, 0x25($s2)
-    /* B4F4 8001ACF4 A369000C */  jal        func_8001A68C
+    /* B4F4 8001ACF4 A369000C */  jal        Snd_PlayById
     /* B4F8 8001ACF8 270040A2 */   sb        $zero, 0x27($s2)
     /* B4FC 8001ACFC 596B0008 */  j          .L8001AD64
     /* B500 8001AD00 00000000 */   nop
@@ -272,7 +272,7 @@ glabel func_8001A9C8
     /* B5BC 8001ADBC 37000424 */   addiu     $a0, $zero, 0x37
     /* B5C0 8001ADC0 38000424 */  addiu      $a0, $zero, 0x38
   .L8001ADC4:
-    /* B5C4 8001ADC4 A369000C */  jal        func_8001A68C
+    /* B5C4 8001ADC4 A369000C */  jal        Snd_PlayById
     /* B5C8 8001ADC8 21280000 */   addu      $a1, $zero, $zero
     /* B5CC 8001ADCC 00002392 */  lbu        $v1, 0x0($s1)
     /* B5D0 8001ADD0 00000000 */  nop
@@ -457,7 +457,7 @@ glabel func_8001A9C8
     /* B858 8001B058 26004292 */  lbu        $v0, 0x26($s2)
     /* B85C 8001B05C 21280000 */  addu       $a1, $zero, $zero
     /* B860 8001B060 01004224 */  addiu      $v0, $v0, 0x1
-    /* B864 8001B064 A369000C */  jal        func_8001A68C
+    /* B864 8001B064 A369000C */  jal        Snd_PlayById
     /* B868 8001B068 260042A2 */   sb        $v0, 0x26($s2)
     /* B86C 8001B06C 1E6C0008 */  j          .L8001B078
     /* B870 8001B070 00000000 */   nop
@@ -521,7 +521,7 @@ glabel func_8001A9C8
     /* B940 8001B140 11000424 */   addiu     $a0, $zero, 0x11
     /* B944 8001B144 0A000424 */  addiu      $a0, $zero, 0xA
   .L8001B148:
-    /* B948 8001B148 A369000C */  jal        func_8001A68C
+    /* B948 8001B148 A369000C */  jal        Snd_PlayById
     /* B94C 8001B14C 21280000 */   addu      $a1, $zero, $zero
   .L8001B150:
     /* B950 8001B150 7000AA8F */  lw         $t2, 0x70($sp)
@@ -849,7 +849,7 @@ glabel func_8001A9C8
     /* BDD8 8001B5D8 40101000 */  sll        $v0, $s0, 1
     /* BDDC 8001B5DC 21104300 */  addu       $v0, $v0, $v1
     /* BDE0 8001B5E0 00004484 */  lh         $a0, 0x0($v0)
-    /* BDE4 8001B5E4 A369000C */  jal        func_8001A68C
+    /* BDE4 8001B5E4 A369000C */  jal        Snd_PlayById
     /* BDE8 8001B5E8 21280000 */   addu      $a1, $zero, $zero
   .L8001B5EC:
     /* BDEC 8001B5EC 2F004292 */  lbu        $v0, 0x2F($s2)

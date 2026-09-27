@@ -39,7 +39,7 @@ glabel func_80017214
     /* 7A9C 8001729C FD01043C */   lui       $a0, (0x1FD0111 >> 16)
     /* 7AA0 800172A0 11018434 */  ori        $a0, $a0, (0x1FD0111 & 0xFFFF)
   .L800172A4:
-    /* 7AA4 800172A4 688E000C */  jal        func_800239A0
+    /* 7AA4 800172A4 688E000C */  jal        Cd_GetFileEntry
     /* 7AA8 800172A8 00000000 */   nop
     /* 7AAC 800172AC 40000426 */  addiu      $a0, $s0, 0x40
     /* 7AB0 800172B0 21284000 */  addu       $a1, $v0, $zero
@@ -140,7 +140,7 @@ glabel func_80017214
     /* 7C14 80017414 040069AC */  sw         $t1, 0x4($v1)
     /* 7C18 80017418 08006AAC */  sw         $t2, 0x8($v1)
   .L8001741C:
-    /* 7C1C 8001741C 688E000C */  jal        func_800239A0
+    /* 7C1C 8001741C 688E000C */  jal        Cd_GetFileEntry
     /* 7C20 80017420 00000000 */   nop
     /* 7C24 80017424 40000426 */  addiu      $a0, $s0, 0x40
     /* 7C28 80017428 21284000 */  addu       $a1, $v0, $zero
@@ -158,7 +158,7 @@ glabel func_80017214
     /* 7C58 80017458 615F000C */  jal        func_80017D84
     /* 7C5C 8001745C 260162A4 */   sh        $v0, 0x126($v1)
     /* 7C60 80017460 0E000424 */  addiu      $a0, $zero, 0xE
-    /* 7C64 80017464 A369000C */  jal        func_8001A68C
+    /* 7C64 80017464 A369000C */  jal        Snd_PlayById
     /* 7C68 80017468 21280000 */   addu      $a1, $zero, $zero
     /* 7C6C 8001746C 21202002 */  addu       $a0, $s1, $zero
     /* 7C70 80017470 7745000C */  jal        Task_SetState1
@@ -174,7 +174,7 @@ glabel func_80017214
     /* 7C94 80017494 A95C0008 */  j          .L800172A4
     /* 7C98 80017498 1E018434 */   ori       $a0, $a0, (0x1FD011E & 0xFFFF)
   .L8001749C:
-    /* 7C9C 8001749C 688E000C */  jal        func_800239A0
+    /* 7C9C 8001749C 688E000C */  jal        Cd_GetFileEntry
     /* 7CA0 800174A0 1F018434 */   ori       $a0, $a0, (0x1FD011F & 0xFFFF)
     /* 7CA4 800174A4 40000426 */  addiu      $a0, $s0, 0x40
     /* 7CA8 800174A8 21284000 */  addu       $a1, $v0, $zero
@@ -192,7 +192,7 @@ glabel func_80017214
   .L800174D8:
     /* 7CD8 800174D8 10000424 */  addiu      $a0, $zero, 0x10
   .L800174DC:
-    /* 7CDC 800174DC A369000C */  jal        func_8001A68C
+    /* 7CDC 800174DC A369000C */  jal        Snd_PlayById
     /* 7CE0 800174E0 21280000 */   addu      $a1, $zero, $zero
   .L800174E4:
     /* 7CE4 800174E4 7800BF8F */  lw         $ra, 0x78($sp)

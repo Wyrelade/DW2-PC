@@ -10,7 +10,7 @@ glabel func_8001E338
     /* EB50 8001E350 2188A000 */  addu       $s1, $a1, $zero
     /* EB54 8001E354 1800BFAF */  sw         $ra, 0x18($sp)
     /* EB58 8001E358 00240400 */  sll        $a0, $a0, 16
-    /* EB5C 8001E35C 688E000C */  jal        func_800239A0
+    /* EB5C 8001E35C 688E000C */  jal        Cd_GetFileEntry
     /* EB60 8001E360 02008434 */   ori       $a0, $a0, 0x2
     /* EB64 8001E364 21801102 */  addu       $s0, $s0, $s1
     /* EB68 8001E368 0C000492 */  lbu        $a0, 0xC($s0)

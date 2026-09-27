@@ -30,7 +30,7 @@ glabel SsUtSetReverbDepth
     /* 26C4C 8003644C 83110200 */  sra        $v0, $v0, 6
     /* 26C50 80036450 C3370600 */  sra        $a2, $a2, 31
     /* 26C54 80036454 23104600 */  subu       $v0, $v0, $a2
-    /* 26C58 80036458 65EE000C */  jal        func_8003B994
+    /* 26C58 80036458 65EE000C */  jal        SpuSetReverbModeParam
     /* 26C5C 8003645C 0A0082A4 */   sh        $v0, 0xA($a0)
     /* 26C60 80036460 1000BF8F */  lw         $ra, 0x10($sp)
     /* 26C64 80036464 1800BD27 */  addiu      $sp, $sp, 0x18

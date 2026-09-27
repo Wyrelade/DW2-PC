@@ -10,7 +10,7 @@ glabel SsUtSetReverbDelay
     /* 26BBC 800363BC 1000BFAF */  sw         $ra, 0x10($sp)
     /* 26BC0 800363C0 0C0064AC */  sw         $a0, 0xC($v1)
     /* 26BC4 800363C4 21206000 */  addu       $a0, $v1, $zero
-    /* 26BC8 800363C8 65EE000C */  jal        func_8003B994
+    /* 26BC8 800363C8 65EE000C */  jal        SpuSetReverbModeParam
     /* 26BCC 800363CC 000062AC */   sw        $v0, 0x0($v1)
     /* 26BD0 800363D0 1000BF8F */  lw         $ra, 0x10($sp)
     /* 26BD4 800363D4 1800BD27 */  addiu      $sp, $sp, 0x18

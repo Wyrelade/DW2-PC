@@ -10,7 +10,7 @@ glabel SsUtSetReverbFeedback
     /* 26D2C 8003652C 1000BFAF */  sw         $ra, 0x10($sp)
     /* 26D30 80036530 100064AC */  sw         $a0, 0x10($v1)
     /* 26D34 80036534 21206000 */  addu       $a0, $v1, $zero
-    /* 26D38 80036538 65EE000C */  jal        func_8003B994
+    /* 26D38 80036538 65EE000C */  jal        SpuSetReverbModeParam
     /* 26D3C 8003653C 000062AC */   sw        $v0, 0x0($v1)
     /* 26D40 80036540 1000BF8F */  lw         $ra, 0x10($sp)
     /* 26D44 80036544 1800BD27 */  addiu      $sp, $sp, 0x18

@@ -13,7 +13,7 @@ glabel func_80019FB4
     /* A7D8 80019FD8 21104300 */  addu       $v0, $v0, $v1
     /* A7DC 80019FDC 0000448C */  lw         $a0, 0x0($v0)
     /* A7E0 80019FE0 2C00B18C */  lw         $s1, 0x2C($a1)
-    /* A7E4 80019FE4 688E000C */  jal        func_800239A0
+    /* A7E4 80019FE4 688E000C */  jal        Cd_GetFileEntry
     /* A7E8 80019FE8 00000000 */   nop
     /* A7EC 80019FEC 21804000 */  addu       $s0, $v0, $zero
     /* A7F0 80019FF0 21200002 */  addu       $a0, $s0, $zero

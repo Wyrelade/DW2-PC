@@ -25,7 +25,7 @@ glabel func_8001A75C
     /* AFB0 8001A7B0 7F000524 */  addiu      $a1, $zero, 0x7F
     /* AFB4 8001A7B4 B5D5000C */  jal        SsSetSerialVol
     /* AFB8 8001A7B8 2130A000 */   addu      $a2, $a1, $zero
-    /* AFBC 8001A7BC 1DD9000C */  jal        func_80036474
+    /* AFBC 8001A7BC 1DD9000C */  jal        SsUtSetReverbType
     /* AFC0 8001A7C0 03000424 */   addiu     $a0, $zero, 0x3
     /* AFC4 8001A7C4 21200000 */  addu       $a0, $zero, $zero
     /* AFC8 8001A7C8 F9D8000C */  jal        SsUtSetReverbDepth
@@ -61,7 +61,7 @@ glabel func_8001A75C
     /* B03C 8001A83C F9FF4014 */  bnez       $v0, .L8001A824
     /* B040 8001A840 2C00A524 */   addiu     $a1, $a1, 0x2C
     /* B044 8001A844 21200000 */  addu       $a0, $zero, $zero
-    /* B048 8001A848 7D69000C */  jal        func_8001A5F4
+    /* B048 8001A848 7D69000C */  jal        Snd_SetSlotContent
     /* B04C 8001A84C 01000524 */   addiu     $a1, $zero, 0x1
     /* B050 8001A850 0580023C */  lui        $v0, %hi(D_80054C48)
     /* B054 8001A854 484C5024 */  addiu      $s0, $v0, %lo(D_80054C48)
@@ -74,7 +74,7 @@ glabel func_8001A75C
     /* B06C 8001A86C 00000000 */  nop
     /* B070 8001A870 F9FF4014 */  bnez       $v0, .L8001A858
     /* B074 8001A874 01000424 */   addiu     $a0, $zero, 0x1
-    /* B078 8001A878 7D69000C */  jal        func_8001A5F4
+    /* B078 8001A878 7D69000C */  jal        Snd_SetSlotContent
     /* B07C 8001A87C 0E000524 */   addiu     $a1, $zero, 0xE
     /* B080 8001A880 0580023C */  lui        $v0, %hi(D_80054C48)
     /* B084 8001A884 484C5024 */  addiu      $s0, $v0, %lo(D_80054C48)

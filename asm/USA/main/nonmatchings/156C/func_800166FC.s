@@ -34,7 +34,7 @@ glabel func_800166FC
     /* 6F74 80016774 10000224 */  addiu      $v0, $zero, 0x10
     /* 6F78 80016778 1000A2A7 */  sh         $v0, 0x10($sp)
     /* 6F7C 8001677C BA000224 */  addiu      $v0, $zero, 0xBA
-    /* 6F80 80016780 688E000C */  jal        func_800239A0
+    /* 6F80 80016780 688E000C */  jal        Cd_GetFileEntry
     /* 6F84 80016784 1200A2A7 */   sh        $v0, 0x12($sp)
     /* 6F88 80016788 44008426 */  addiu      $a0, $s4, 0x44
     /* 6F8C 8001678C 21284000 */  addu       $a1, $v0, $zero
@@ -46,7 +46,7 @@ glabel func_800166FC
     /* 6FA4 800167A4 25384700 */   or        $a3, $v0, $a3
     /* 6FA8 800167A8 10000424 */  addiu      $a0, $zero, 0x10
   .L800167AC:
-    /* 6FAC 800167AC A369000C */  jal        func_8001A68C
+    /* 6FAC 800167AC A369000C */  jal        Snd_PlayById
     /* 6FB0 800167B0 21280000 */   addu      $a1, $zero, $zero
     /* 6FB4 800167B4 045A0008 */  j          .L80016810
     /* 6FB8 800167B8 00000000 */   nop
@@ -68,7 +68,7 @@ glabel func_800166FC
     /* 6FF4 800167F4 0A01C2A4 */  sh         $v0, 0x10A($a2)
     /* 6FF8 800167F8 0100623A */  xori       $v0, $s3, 0x1
     /* 6FFC 800167FC 0100422C */  sltiu      $v0, $v0, 0x1
-    /* 7000 80016800 A369000C */  jal        func_8001A68C
+    /* 7000 80016800 A369000C */  jal        Snd_PlayById
     /* 7004 80016804 660082A6 */   sh        $v0, 0x66($s4)
     /* 7008 80016808 5945000C */  jal        Task_NextState1
     /* 700C 8001680C 2120A002 */   addu      $a0, $s5, $zero

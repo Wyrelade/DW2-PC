@@ -689,7 +689,7 @@
       "padnop"
     ]
   },
-  "func_80032914": {
+  "SsInit": {
     "passes": [
       "epilogue_unfill",
       "padnop"
@@ -734,7 +734,7 @@
       "exit_merge"
     ]
   },
-  "func_80023D68": {
+  "Cd_LoadFileSync": {
     "passes": []
   },
   "func_800352E4": {
@@ -780,7 +780,7 @@
   "func_8001ED40": {
     "passes": []
   },
-  "func_80036474": {
+  "SsUtSetReverbType": {
     "passes": [
       "nosplit",
       "delay_fill",
@@ -892,7 +892,7 @@
       "reorder_indep"
     ]
   },
-  "func_8003C774": {
+  "SpuSetTransferStartAddr": {
     "passes": [
       "nosplit",
       "epilogue_unfill",
@@ -1297,7 +1297,7 @@
       "nosplit"
     ]
   },
-  "func_80039F44": {
+  "SsVabTransBody": {
     "passes": [
       "nosplit",
       "shift_const_fold",
@@ -1395,7 +1395,7 @@
       "epilogue_unfill"
     ]
   },
-  "func_8003DD70": {
+  "MemCardStop": {
     "passes": [
       "nosplit",
       "epilogue_unfill"
@@ -1512,7 +1512,7 @@
   "Pad_PollPort": {
     "passes": []
   },
-  "func_800299B8": {
+  "get_alarm": {
     "passes": [
       "nosplit",
       "epilogue_unfill"
@@ -1539,7 +1539,7 @@
   "Menu_SetPartsPos": {
     "passes": []
   },
-  "func_80029D74": {
+  "MoveImage2": {
     "passes": [
       "nosplit",
       "taken_fill"
@@ -1562,7 +1562,7 @@
       "epilogue_unfill"
     ]
   },
-  "func_8003A054": {
+  "_SpuInit": {
     "passes": [
       "nosplit",
       "ra_restore_sink",
@@ -1573,7 +1573,7 @@
   "Anim_SetModelAnim": {
     "passes": []
   },
-  "func_800348D4": {
+  "_SsNoteOn": {
     "passes": [
       "nosplit",
       "sched_match",
@@ -1620,7 +1620,7 @@
       "padnop"
     ]
   },
-  "func_80029EB8": {
+  "DrawOTag2": {
     "passes": [
       "nosplit",
       "taken_fill",
@@ -1667,13 +1667,13 @@
       "padnop"
     ]
   },
-  "func_80029B9C": {
+  "LoadImage2": {
     "passes": [
       "nosplit",
       "taken_fill"
     ]
   },
-  "func_80029C88": {
+  "StoreImage2": {
     "passes": [
       "nosplit",
       "taken_fill"
@@ -1686,7 +1686,7 @@
       "dead_code"
     ]
   },
-  "func_80029848": {
+  "_sync": {
     "passes": [
       "nosplit",
       "taken_fill",
@@ -1726,7 +1726,7 @@
       "padnop"
     ]
   },
-  "func_80028938": {
+  "_otc": {
     "passes": [
       "nosplit",
       "zero_remat",
@@ -1760,7 +1760,7 @@
       "delay_fill"
     ]
   },
-  "func_8002FF04": {
+  "CD_init": {
     "passes": [
       "nosplit",
       "zero_remat",
@@ -1787,7 +1787,7 @@
       "sched_match"
     ]
   },
-  "func_8003FBF4": {
+  "Card_OpenEvents": {
     "passes": [
       "nosplit",
       "delay_fill"
@@ -1938,7 +1938,7 @@
       "sched_match"
     ]
   },
-  "func_80028E84": {
+  "_drs": {
     "passes": [
       "nosplit",
       "zero_remat",
@@ -1964,7 +1964,7 @@
       "sched_match"
     ]
   },
-  "func_80031854": {
+  "SsSeqCalledTbyT": {
     "passes": [
       "nosplit",
       "zero_remat"
@@ -2087,14 +2087,14 @@
       "sched_match"
     ]
   },
-  "func_8001A5F4": {
+  "Snd_SetSlotContent": {
     "passes": [
       "gp8_nosplit",
       "web_realloc",
       "sched_match"
     ]
   },
-  "func_8001A68C": {
+  "Snd_PlayById": {
     "passes": [
       "gp8"
     ]
@@ -2167,7 +2167,7 @@
       "gp8"
     ]
   },
-  "func_80023484": {
+  "Sys_VSyncHandler": {
     "passes": [
       "gp8"
     ]
@@ -2316,7 +2316,7 @@
       "nosplit"
     ]
   },
-  "func_80032874": {
+  "_SsInit": {
     "passes": [
       "nosplit",
       "web_realloc",
@@ -2349,7 +2349,7 @@
   "Gfx_AttachModel": {
     "passes": []
   },
-  "func_80028C48": {
+  "_dws": {
     "passes": [
       "nosplit",
       "zero_remat",
@@ -2448,7 +2448,7 @@
       "nosplit"
     ]
   },
-  "func_80030690": {
+  "CdControlF": {
     "passes": [
       "nosplit_hf",
       "zero_remat",
@@ -2496,7 +2496,7 @@
       "nosplit_nosr"
     ]
   },
-  "func_80017594": {
+  "Menu_ConfirmMultiPick": {
     "passes": [
       "web_realloc",
       "self_move",
@@ -2515,10 +2515,10 @@
   "Menu_SetPartsGridPos": {
     "passes": []
   },
-  "func_80019E50": {
+  "Task_SpawnListFromFile": {
     "passes": []
   },
-  "func_8001C104": {
+  "Gpu_ClearScreens": {
     "passes": []
   },
   "func_8001EEA4": {
@@ -2536,7 +2536,7 @@
       "web_realloc"
     ]
   },
-  "func_80017944": {
+  "Menu_ConfirmSinglePick": {
     "passes": [
       "nosplit"
     ]
@@ -2621,13 +2621,13 @@
       "padnop"
     ]
   },
-  "func_8002B1A4": {
+  "GsSetDrawBuffOffset": {
     "passes": [
       "nosplit",
       "padnop"
     ]
   },
-  "func_8002B334": {
+  "GsSetOffset": {
     "passes": [
       "nosplit",
       "delay_fill",
@@ -3137,7 +3137,7 @@
       "padnop"
     ]
   },
-  "func_800307C4": {
+  "CdControlB": {
     "passes": [
       "nosplit_hf",
       "zero_remat",
@@ -3199,7 +3199,7 @@
       "padnop"
     ]
   },
-  "func_800300E4": {
+  "CD_datasync": {
     "passes": [
       "gp8_nosplit",
       "reg_realloc",
@@ -3341,7 +3341,7 @@
       "padnop"
     ]
   },
-  "func_800291FC": {
+  "_addque2": {
     "passes": [
       "nosplit",
       "sched_match",
@@ -3428,7 +3428,7 @@
       "padnop"
     ]
   },
-  "func_8002F318": {
+  "CD_sync": {
     "passes": [
       "gp8_nosplit",
       "sreg_perm",
@@ -3479,7 +3479,7 @@
       "padnop"
     ]
   },
-  "func_8002F860": {
+  "CD_cw": {
     "passes": [
       "gp8_nosplit",
       "zero_remat",
@@ -3541,7 +3541,7 @@
       "padnop"
     ]
   },
-  "func_8002F598": {
+  "CD_ready": {
     "passes": [
       "nosplit",
       "sreg_perm",
@@ -3652,7 +3652,7 @@
       "padnop"
     ]
   },
-  "func_8002C164": {
+  "GsSetRefView2": {
     "passes": [
       "nosplit",
       "sched_pre",
@@ -3689,7 +3689,7 @@
       "padnop"
     ]
   },
-  "func_8003B994": {
+  "SpuSetReverbModeParam": {
     "passes": [
       "nosplit",
       "zero_remat",
@@ -3765,7 +3765,7 @@
       "padnop"
     ]
   },
-  "func_80030554": {
+  "CdControl": {
     "passes": [
       "nosplit_hf",
       "zero_remat",

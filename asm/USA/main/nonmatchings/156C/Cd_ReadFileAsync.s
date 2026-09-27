@@ -39,7 +39,7 @@ glabel Cd_ReadFileAsync
     /* 14AE4 800242E4 45C1000C */  jal        CdSyncCallback
     /* 14AE8 800242E8 B88D23AE */   sw        $v1, %lo(D_80048DB8)($s1)
     /* 14AEC 800242EC 02000424 */  addiu      $a0, $zero, 0x2
-    /* 14AF0 800242F0 A4C1000C */  jal        func_80030690
+    /* 14AF0 800242F0 A4C1000C */  jal        CdControlF
     /* 14AF4 800242F4 1000A527 */   addiu     $a1, $sp, 0x10
     /* 14AF8 800242F8 2400BF8F */  lw         $ra, 0x24($sp)
     /* 14AFC 800242FC 2000B28F */  lw         $s2, 0x20($sp)

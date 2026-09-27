@@ -26,7 +26,7 @@ glabel func_80011F5C
     /* 27AC 80011FAC 1305043C */  lui        $a0, (0x5130002 >> 16)
     /* 27B0 80011FB0 02008434 */  ori        $a0, $a0, (0x5130002 & 0xFFFF)
   .L80011FB4:
-    /* 27B4 80011FB4 688E000C */  jal        func_800239A0
+    /* 27B4 80011FB4 688E000C */  jal        Cd_GetFileEntry
     /* 27B8 80011FB8 00000000 */   nop
     /* 27BC 80011FBC 21184000 */  addu       $v1, $v0, $zero
     /* 27C0 80011FC0 21200002 */  addu       $a0, $s0, $zero

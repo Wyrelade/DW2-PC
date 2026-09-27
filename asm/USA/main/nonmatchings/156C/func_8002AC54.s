@@ -23,7 +23,7 @@ glabel func_8002AC54
     /* 1B4A0 8002ACA0 21280002 */   addu      $a1, $s0, $zero
     /* 1B4A4 8002ACA4 ADAC000C */  jal        GsSetDrawBuffClip
     /* 1B4A8 8002ACA8 00000000 */   nop
-    /* 1B4AC 8002ACAC 69AC000C */  jal        func_8002B1A4
+    /* 1B4AC 8002ACAC 69AC000C */  jal        GsSetDrawBuffOffset
     /* 1B4B0 8002ACB0 00000000 */   nop
     /* 1B4B4 8002ACB4 2000BF8F */  lw         $ra, 0x20($sp)
     /* 1B4B8 8002ACB8 1C00B18F */  lw         $s1, 0x1C($sp)

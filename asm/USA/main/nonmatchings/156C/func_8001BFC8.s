@@ -9,7 +9,7 @@ glabel func_8001BFC8
     /* C7DC 8001BFDC 4000B0AF */  sw         $s0, 0x40($sp)
     /* C7E0 8001BFE0 2180C000 */  addu       $s0, $a2, $zero
     /* C7E4 8001BFE4 4800BFAF */  sw         $ra, 0x48($sp)
-    /* C7E8 8001BFE8 688E000C */  jal        func_800239A0
+    /* C7E8 8001BFE8 688E000C */  jal        Cd_GetFileEntry
     /* C7EC 8001BFEC 5C00A7AF */   sw        $a3, 0x5C($sp)
     /* C7F0 8001BFF0 2400A2AF */  sw         $v0, 0x24($sp)
     /* C7F4 8001BFF4 1000A0AF */  sw         $zero, 0x10($sp)

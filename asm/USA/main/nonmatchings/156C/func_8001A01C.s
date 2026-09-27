@@ -57,7 +57,7 @@ glabel func_8001A01C
     /* A8E4 8001A0E4 79004314 */  bne        $v0, $v1, .L8001A2CC
     /* A8E8 8001A0E8 00000000 */   nop
     /* A8EC 8001A0EC 2400048E */  lw         $a0, 0x24($s0)
-    /* A8F0 8001A0F0 6C8F000C */  jal        func_80023DB0
+    /* A8F0 8001A0F0 6C8F000C */  jal        Cd_GetFileSync
     /* A8F4 8001A0F4 00000000 */   nop
     /* A8F8 8001A0F8 21384000 */  addu       $a3, $v0, $zero
     /* A8FC 8001A0FC 1F80043C */  lui        $a0, (0x801FFFFF >> 16)
@@ -127,10 +127,10 @@ glabel func_8001A01C
     /* A9E8 8001A1E8 0000428C */  lw         $v0, 0x0($v0)
     /* A9EC 8001A1EC 00000000 */  nop
     /* A9F0 8001A1F0 0000448C */  lw         $a0, 0x0($v0)
-    /* A9F4 8001A1F4 688E000C */  jal        func_800239A0
+    /* A9F4 8001A1F4 688E000C */  jal        Cd_GetFileEntry
     /* A9F8 8001A1F8 00000000 */   nop
     /* A9FC 8001A1FC 08000586 */  lh         $a1, 0x8($s0)
-    /* AA00 8001A200 D1E7000C */  jal        func_80039F44
+    /* AA00 8001A200 D1E7000C */  jal        SsVabTransBody
     /* AA04 8001A204 21204000 */   addu      $a0, $v0, $zero
   .L8001A208:
     /* AA08 8001A208 0400038E */  lw         $v1, 0x4($s0)

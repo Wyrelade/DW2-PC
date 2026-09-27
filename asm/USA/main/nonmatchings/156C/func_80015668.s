@@ -20,7 +20,7 @@ glabel func_80015668
     /* 5EA8 800156A8 0F001124 */  addiu      $s1, $zero, 0xF
     /* 5EAC 800156AC 32000224 */  addiu      $v0, $zero, 0x32
     /* 5EB0 800156B0 1000B1A7 */  sh         $s1, 0x10($sp)
-    /* 5EB4 800156B4 688E000C */  jal        func_800239A0
+    /* 5EB4 800156B4 688E000C */  jal        Cd_GetFileEntry
     /* 5EB8 800156B8 1200A2A7 */   sh        $v0, 0x12($sp)
     /* 5EBC 800156BC 21200002 */  addu       $a0, $s0, $zero
     /* 5EC0 800156C0 21284000 */  addu       $a1, $v0, $zero
@@ -50,7 +50,7 @@ glabel func_80015668
     /* 5F20 80015720 03000224 */  addiu      $v0, $zero, 0x3
     /* 5F24 80015724 0B006214 */  bne        $v1, $v0, .L80015754
     /* 5F28 80015728 FD01043C */   lui       $a0, (0x1FD00FB >> 16)
-    /* 5F2C 8001572C 688E000C */  jal        func_800239A0
+    /* 5F2C 8001572C 688E000C */  jal        Cd_GetFileEntry
     /* 5F30 80015730 FB008434 */   ori       $a0, $a0, (0x1FD00FB & 0xFFFF)
     /* 5F34 80015734 50006426 */  addiu      $a0, $s3, 0x50
     /* 5F38 80015738 21284000 */  addu       $a1, $v0, $zero

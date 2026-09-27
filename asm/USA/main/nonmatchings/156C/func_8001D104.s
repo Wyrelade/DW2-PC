@@ -17,7 +17,7 @@ glabel func_8001D104
     /* D938 8001D138 7000A6AF */  sw         $a2, 0x70($sp)
     /* D93C 8001D13C 7400A7AF */  sw         $a3, 0x74($sp)
     /* D940 8001D140 0000E48E */  lw         $a0, 0x0($s7)
-    /* D944 8001D144 688E000C */  jal        func_800239A0
+    /* D944 8001D144 688E000C */  jal        Cd_GetFileEntry
     /* D948 8001D148 00000000 */   nop
     /* D94C 8001D14C 21F04000 */  addu       $fp, $v0, $zero
     /* D950 8001D150 0000E28E */  lw         $v0, 0x0($s7)
