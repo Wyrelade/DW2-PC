@@ -43,7 +43,14 @@ INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80064B08);
 void func_80064E44(void) {
 }
 
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80064E4C);
+void func_80064E4C(s16 arg0) {
+    Stg00Work *w = D_80069360;
+    if (arg0 < 6) {
+        w->field_8D4 = arg0;
+    } else {
+        w->field_8D4 = 0;
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80064E78);
 
