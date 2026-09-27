@@ -7905,6 +7905,78 @@ def call_slot_swap_pass(stext, tgt):
     return "\n".join(lines) if changed else stext
 
 
+# --------------------------------------------------------------------------
+# hi_interleave: two adjacent symbolic loads `lui A,%hi(S1); op A,%lo(S1)(A)`,
+# `lui B,%hi(S2); op B,%lo(S2)(B)`; retail's scheduler interleaved the halves:
+# `lui A,%hi(S1); lui B,%hi(S2); op B,%lo(S2)(B); op A,%lo(S1)(A)` (ours keeps
+# each macro load whole, so sched_match sees two units). Target-guided: the
+# target has exactly that 4-word sequence with the same registers and symbols.
+# Sound: A != B, each load reads only its own register. Count-preserving.
+# --------------------------------------------------------------------------
+_HIL_LUI = re.compile(r"^\s*lui\s+(\$\w+)\s*,\s*%hi\(([\w.$+]+)\)\s*$")
+_HIL_LD = re.compile(r"^\s*(lw|lh|lhu|lb|lbu)\s+(\$\w+)\s*,\s*%lo\(([\w.$+]+)\)\((\$\w+)\)\s*$")
+
+
+def _hil_pair(a, b):
+    """(reg, sym, op) when a/b are `lui R,%hi(S); op R,%lo(S)(R)`."""
+    mh, ml = _HIL_LUI.match(a), _HIL_LD.match(b)
+    if not (mh and ml):
+        return None
+    r = norm_reg(mh.group(1))
+    if r in (None, "at") or norm_reg(ml.group(2)) != r or norm_reg(ml.group(4)) != r \
+            or _sm_sym(mh.group(2)) != _sm_sym(ml.group(3)):
+        return None
+    return r, _sm_sym(mh.group(2)), ml.group(1)
+
+
+def hi_interleave_pass(stext, tgt):
+    if not tgt:
+        return stext
+    want = set()
+    for i in range(len(tgt) - 3):
+        w = [tgt[i + k][1].strip() for k in range(4)]
+        m0, m1 = _HIL_LUI.match(w[0]), _HIL_LUI.match(w[1])
+        l2, l3 = _HIL_LD.match(w[2]), _HIL_LD.match(w[3])
+        if not (m0 and m1 and l2 and l3):
+            continue
+        a, b = norm_reg(m0.group(1)), norm_reg(m1.group(1))
+        if a == b or norm_reg(l2.group(2)) != b or norm_reg(l2.group(4)) != b \
+                or norm_reg(l3.group(2)) != a or norm_reg(l3.group(4)) != a:
+            continue
+        want.add(((a, _sm_sym(m0.group(2)), l3.group(1)), (b, _sm_sym(m1.group(2)), l2.group(1))))
+    if not want:
+        return stext
+    lines = stext.split("\n")
+    nr = _noreorder_lines(lines)
+    ins = [(i, l) for i, l in enumerate(lines) if _s_is_insn(l)]
+    changed = False
+    p = 0
+    while p + 3 < len(ins):
+        idx = [ins[p + k][0] for k in range(4)]
+        body = [ins[p + k][1].split("#", 1)[0].strip() for k in range(4)]
+        # no label between the four lines
+        if any(y in nr for y in idx) or any(_s_is_label(x) and not x.strip().startswith("LM")
+                                           for x in lines[idx[0] + 1:idx[3]]):
+            p += 1
+            continue
+        x, y = _hil_pair(body[0], body[1]), _hil_pair(body[2], body[3])
+        if not (x and y) or x[0] == y[0]:
+            p += 1
+            continue
+        for first, second in ((x, y), (y, x)):
+            if (first, second) in want:
+                f_lui, f_ld = (body[0], body[1]) if first is x else (body[2], body[3])
+                s_lui, s_ld = (body[2], body[3]) if first is x else (body[0], body[1])
+                new = [f_lui, s_lui, s_ld, f_ld]
+                if new != body:
+                    for k in range(4):
+                        lines[idx[k]] = _src_indent(lines[idx[k]]) + new[k]
+                    changed = True
+                break
+        p += 4
+    return "\n".join(lines) if changed else stext
+
+
 PASSES = {
     # reg_realloc is applied specially (it needs sigma from words); the ordered
     # list in the manifest still names it so the recipe is explicit and auditable.
@@ -7970,6 +8042,7 @@ PASSES = {
     "movstr_rename": movstr_rename_pass,
     "zext_drop": zext_drop_pass,
     "call_slot_swap": call_slot_swap_pass,
+    "hi_interleave": hi_interleave_pass,
 }
 
 # Passes that CHANGE the instruction count and so must run BEFORE sigma is derived
