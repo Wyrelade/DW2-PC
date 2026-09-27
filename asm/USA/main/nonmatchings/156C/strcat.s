@@ -11,10 +11,10 @@ glabel strcat
     /* 30090 8003F890 1000B0AF */   sw        $s0, 0x10($sp)
     /* 30094 8003F894 1A004012 */  beqz       $s2, .L8003F900
     /* 30098 8003F898 21100000 */   addu      $v0, $zero, $zero
-    /* 3009C 8003F89C 6DAA000C */  jal        func_8002A9B4
+    /* 3009C 8003F89C 6DAA000C */  jal        strlen
     /* 300A0 8003F8A0 21202002 */   addu      $a0, $s1, $zero
     /* 300A4 8003F8A4 21204002 */  addu       $a0, $s2, $zero
-    /* 300A8 8003F8A8 6DAA000C */  jal        func_8002A9B4
+    /* 300A8 8003F8A8 6DAA000C */  jal        strlen
     /* 300AC 8003F8AC 21802202 */   addu      $s0, $s1, $v0
     /* 300B0 8003F8B0 21104202 */  addu       $v0, $s2, $v0
     /* 300B4 8003F8B4 11000212 */  beq        $s0, $v0, .L8003F8FC

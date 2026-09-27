@@ -1,6 +1,6 @@
-nonmatching func_8003F924, 0x64
+nonmatching strcmp, 0x64
 
-glabel func_8003F924
+glabel strcmp
     /* 30124 8003F924 03008010 */  beqz       $a0, .L8003F934
     /* 30128 8003F928 00000000 */   nop
     /* 3012C 8003F92C 0B00A014 */  bnez       $a1, .L8003F95C
@@ -31,7 +31,7 @@ glabel func_8003F924
   .L8003F980:
     /* 30180 8003F980 0800E003 */  jr         $ra
     /* 30184 8003F984 00000000 */   nop
-endlabel func_8003F924
+endlabel strcmp
     /* 30188 8003F988 00000000 */  nop
     /* 3018C 8003F98C 00000000 */  nop
     /* 30190 8003F990 00000000 */  nop

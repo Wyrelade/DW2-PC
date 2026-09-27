@@ -620,7 +620,7 @@ extern void def_cbready(void);
 extern void def_cbread(void);
 extern void (*D_80062FE0)(s32 *, s32, s32);
 extern s8 D_80062FE8[];
-extern s32 func_8002A9B4(s8 *);
+extern s32 strlen(s8 *);
 extern s32 _SsVmKeyOn(s16 a0, s16 a1, s16 a2, u16 a3, u16 arg4, u16 arg5);
 extern s8 D_80062D1F;
 extern u16 D_80062EE8[];
@@ -628,7 +628,7 @@ extern u16 D_80050298[];
 extern u16 D_800502B0[];
 extern void func_8003F760(s32 *a0, s32 a1, s32 a2);
 s32 firstfile();
-extern s32 func_8003F924(s8 *a, s8 *b);
+extern s32 strcmp(s8 *a, s8 *b);
 extern Stat48E90 *D_80048E00;
 extern s32 D_80048E70[];
 extern s32 func_8002A054(s32, char *, char *);
@@ -2063,7 +2063,7 @@ void func_80013308(s32 id) {
         D_800506FC = id;
         src = (u8 *)Cd_GetFileSync(*p);
         dst = D_80010000[0];
-        func_80027044(dst, src, Cd_GetFileSectors(*p) << 11);
+        memcpy(dst, src, Cd_GetFileSectors(*p) << 11);
     }
 }
 
@@ -11087,7 +11087,7 @@ u8 *bzero(u8 *s, s32 n) {
 }
 
 
-u8 *func_80027044(u8 *dst, u8 *src, s32 n) {
+u8 *memcpy(u8 *dst, u8 *src, s32 n) {
     u8 *r = 0;
 
     if (dst != 0) {
@@ -11102,7 +11102,7 @@ u8 *func_80027044(u8 *dst, u8 *src, s32 n) {
     return r;
 }
 
-u8 *func_80027084(u8 *s, s32 c, s32 n) {
+u8 *memset(u8 *s, s32 c, s32 n) {
     u8 *r = 0;
 
     if (s != 0) {
@@ -11120,7 +11120,7 @@ u8 *func_80027084(u8 *s, s32 c, s32 n) {
 }
 
 
-u8 *func_800270B4(u8 *dst, u8 *src) {
+u8 *strcpy(u8 *dst, u8 *src) {
     u8 *r = 0;
 
     if (dst != 0) {
@@ -11324,7 +11324,7 @@ DrawEnv *PutDrawEnv(DrawEnv *env) {
     func_800284C4(env->dr_env, env);
     env->dr_env[0] |= 0xFFFFFF;
     D_80048F08->fn_8(D_80048F08->field_18, (s32)env->dr_env, 0x40, 0);
-    func_80027044(D_80048F10.field_10, env, 0x5C);
+    memcpy(D_80048F10.field_10, env, 0x5C);
     return env;
 }
 
@@ -11335,11 +11335,11 @@ void DrawOTagEnv(s32 ot, DrawEnv *env) {
     func_800284C4(env->dr_env, env);
     env->dr_env[0] = (env->dr_env[0] & 0xFF000000) | (ot & 0xFFFFFF);
     D_80048F08->fn_8(D_80048F08->field_18, (s32)env->dr_env, 0x40, 0);
-    func_80027044(D_80048F10.field_10, env, 0x5C);
+    memcpy(D_80048F10.field_10, env, 0x5C);
 }
 
 s32 GetDrawEnv(s32 arg0) {
-    func_80027044(arg0, D_80048F20, 0x5C);
+    memcpy(arg0, D_80048F20, 0x5C);
     return arg0;
 }
 
@@ -11448,13 +11448,13 @@ DispEnv *PutDispEnv(DispEnv *e) {
         D_80048F08->fn_10(0x06000000 | ((he & 0xFFF) << 12) | (hs & 0xFFF));
         D_80048F08->fn_10(0x07000000 | ((ve & 0x3FF) << 10) | (vs & 0x3FF));
     }
-    func_80027044((u8 *)&D_80048F10.field_6C, (u8 *)env, 0x14);
+    memcpy((u8 *)&D_80048F10.field_6C, (u8 *)env, 0x14);
     return env;
 }
 
 
 s32 GetDispEnv(s32 arg0) {
-    func_80027044(arg0, D_80048F7C, 0x14);
+    memcpy(arg0, D_80048F7C, 0x14);
     return arg0;
 }
 
@@ -12141,7 +12141,7 @@ s32 func_8002A054(s32 fd, char *fmt0, char *ap) {
                     size = prec;
                 }
             } else {
-                size = func_8002A9B4((s8 *)cp);
+                size = strlen((s8 *)cp);
             }
             sign = 0;
             break;
@@ -12341,7 +12341,7 @@ flush:
 
 ASM_SOURCE("src/main/asm/libapi", write);
 
-s32 func_8002A9B4(s8 *s) {
+s32 strlen(s8 *s) {
     s32 n = 0;
     s32 r = 0;
 
@@ -20314,7 +20314,7 @@ s32 func_8003F5C4(s8 *name, s32 a1) {
     n = *(u32 *)0x154 / 0x50;
     base = *(Dcb3F760 **)0x150;
     for (e = base; e < base + n; e++) {
-        if (e->field_0 != 0 && func_8003F924(e->field_0, D_80062FE8) == 0) {
+        if (e->field_0 != 0 && strcmp(e->field_0, D_80062FE8) == 0) {
             D_80062FE0 = e->field_34;
             found = 1;
             goto done;
@@ -20328,7 +20328,7 @@ done:
     n = *(u32 *)0x154 / 0x50;
     base = *(Dcb3F760 **)0x150;
     for (e = base; e < base + n; e++) {
-        if (e->field_0 != 0 && func_8003F924(e->field_0, D_80062FE8) == 0) {
+        if (e->field_0 != 0 && strcmp(e->field_0, D_80062FE8) == 0) {
             e->field_34 = func_8003F760;
             break;
         }
@@ -20350,7 +20350,7 @@ void func_8003F760(s32 *a0, s32 a1, s32 a2) {
     base = *(Dcb3F760 **)0x150;
     fn = D_80062FE0;
     for (e = base; e < base + n; e++) {
-        if (e->field_0 != 0 && func_8003F924(e->field_0, D_80062FE8) == 0) {
+        if (e->field_0 != 0 && strcmp(e->field_0, D_80062FE8) == 0) {
             e->field_34 = fn;
             break;
         }
@@ -20368,7 +20368,7 @@ s8 *strcat(s8 *dst, s8 *src) {
     if (dst == 0 || src == 0) {
         return 0;
     }
-    if (dst + func_8002A9B4(dst) != src + func_8002A9B4(src)) {
+    if (dst + strlen(dst) != src + strlen(src)) {
         ret = dst;
         while (*dst++ != 0) {
         }
@@ -20383,7 +20383,7 @@ s8 *strcat(s8 *dst, s8 *src) {
 }
 
 
-s32 func_8003F924(s8 *a, s8 *b) {
+s32 strcmp(s8 *a, s8 *b) {
     if (a == 0 || b == 0) {
         if (a == b) {
             return 0;
@@ -20801,7 +20801,7 @@ s32 Card_CreateFile(s32 port, s8 *name, s32 nblocks)
         }
     }
     for (i = 0; i < 15; i++) {
-        if (D_800630A0[i].field_0 == 0x51 && func_8003F924(D_800630A0[i].field_A, nm) == 0) {
+        if (D_800630A0[i].field_0 == 0x51 && strcmp(D_800630A0[i].field_A, nm) == 0) {
             printf(D_80010D64, D_800630A0[i].field_A, nm);
             return -3;
         }

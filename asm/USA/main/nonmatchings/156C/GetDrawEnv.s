@@ -7,7 +7,7 @@ glabel GetDrawEnv
     /* 18488 80027C88 0580053C */  lui        $a1, %hi(D_80048F20)
     /* 1848C 80027C8C 208FA524 */  addiu      $a1, $a1, %lo(D_80048F20)
     /* 18490 80027C90 1400BFAF */  sw         $ra, 0x14($sp)
-    /* 18494 80027C94 119C000C */  jal        func_80027044
+    /* 18494 80027C94 119C000C */  jal        memcpy
     /* 18498 80027C98 5C000624 */   addiu     $a2, $zero, 0x5C
     /* 1849C 80027C9C 21100002 */  addu       $v0, $s0, $zero
     /* 184A0 80027CA0 1400BF8F */  lw         $ra, 0x14($sp)

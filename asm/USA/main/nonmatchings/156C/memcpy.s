@@ -1,6 +1,6 @@
-nonmatching func_80027044, 0x34
+nonmatching memcpy, 0x34
 
-glabel func_80027044
+glabel memcpy
     /* 17844 80027044 0A008010 */  beqz       $a0, .L80027070
     /* 17848 80027048 21100000 */   addu      $v0, $zero, $zero
     /* 1784C 8002704C 0700C018 */  blez       $a2, .L8002706C
@@ -17,7 +17,7 @@ glabel func_80027044
   .L80027070:
     /* 17870 80027070 0800E003 */  jr         $ra
     /* 17874 80027074 00000000 */   nop
-endlabel func_80027044
+endlabel memcpy
     /* 17878 80027078 00000000 */  nop
     /* 1787C 8002707C 00000000 */  nop
     /* 17880 80027080 00000000 */  nop

@@ -47,7 +47,7 @@ glabel DrawOTagEnv
     /* 1844C 80027C4C 21380000 */   addu      $a3, $zero, $zero
     /* 18450 80027C50 0E006426 */  addiu      $a0, $s3, 0xE
     /* 18454 80027C54 21282002 */  addu       $a1, $s1, $zero
-    /* 18458 80027C58 119C000C */  jal        func_80027044
+    /* 18458 80027C58 119C000C */  jal        memcpy
     /* 1845C 80027C5C 5C000624 */   addiu     $a2, $zero, 0x5C
     /* 18460 80027C60 2000BF8F */  lw         $ra, 0x20($sp)
     /* 18464 80027C64 1C00B38F */  lw         $s3, 0x1C($sp)

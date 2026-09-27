@@ -1,6 +1,6 @@
-nonmatching func_80027084, 0x30
+nonmatching memset, 0x30
 
-glabel func_80027084
+glabel memset
     /* 17884 80027084 09008010 */  beqz       $a0, .L800270AC
     /* 17888 80027088 21100000 */   addu      $v0, $zero, $zero
     /* 1788C 8002708C 0300C01C */  bgtz       $a2, .L8002709C
@@ -15,4 +15,4 @@ glabel func_80027084
   .L800270AC:
     /* 178AC 800270AC 0800E003 */  jr         $ra
     /* 178B0 800270B0 00000000 */   nop
-endlabel func_80027084
+endlabel memset

@@ -7,7 +7,7 @@ glabel GetDispEnv
     /* 189B4 800281B4 0580053C */  lui        $a1, %hi(D_80048F7C)
     /* 189B8 800281B8 7C8FA524 */  addiu      $a1, $a1, %lo(D_80048F7C)
     /* 189BC 800281BC 1400BFAF */  sw         $ra, 0x14($sp)
-    /* 189C0 800281C0 119C000C */  jal        func_80027044
+    /* 189C0 800281C0 119C000C */  jal        memcpy
     /* 189C4 800281C4 14000624 */   addiu     $a2, $zero, 0x14
     /* 189C8 800281C8 21100002 */  addu       $v0, $s0, $zero
     /* 189CC 800281CC 1400BF8F */  lw         $ra, 0x14($sp)

@@ -41,7 +41,7 @@ glabel PutDrawEnv
     /* 18374 80027B74 21380000 */   addu      $a3, $zero, $zero
     /* 18378 80027B78 0E004426 */  addiu      $a0, $s2, 0xE
     /* 1837C 80027B7C 21282002 */  addu       $a1, $s1, $zero
-    /* 18380 80027B80 119C000C */  jal        func_80027044
+    /* 18380 80027B80 119C000C */  jal        memcpy
     /* 18384 80027B84 5C000624 */   addiu     $a2, $zero, 0x5C
     /* 18388 80027B88 21102002 */  addu       $v0, $s1, $zero
     /* 1838C 80027B8C 1C00BF8F */  lw         $ra, 0x1C($sp)

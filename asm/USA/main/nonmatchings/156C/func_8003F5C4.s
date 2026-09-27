@@ -47,7 +47,7 @@ glabel func_8003F5C4
     /* 2FE64 8003F664 06008010 */  beqz       $a0, .L8003F680
     /* 2FE68 8003F668 00000000 */   nop
     /* 2FE6C 8003F66C 0680053C */  lui        $a1, %hi(D_80062FE8)
-    /* 2FE70 8003F670 49FE000C */  jal        func_8003F924
+    /* 2FE70 8003F670 49FE000C */  jal        strcmp
     /* 2FE74 8003F674 E82FA524 */   addiu     $a1, $a1, %lo(D_80062FE8)
     /* 2FE78 8003F678 0A004010 */  beqz       $v0, .L8003F6A4
     /* 2FE7C 8003F67C 00000000 */   nop
@@ -96,7 +96,7 @@ glabel func_8003F5C4
     /* 2FF0C 8003F70C 06008010 */  beqz       $a0, .L8003F728
     /* 2FF10 8003F710 00000000 */   nop
     /* 2FF14 8003F714 0680053C */  lui        $a1, %hi(D_80062FE8)
-    /* 2FF18 8003F718 49FE000C */  jal        func_8003F924
+    /* 2FF18 8003F718 49FE000C */  jal        strcmp
     /* 2FF1C 8003F71C E82FA524 */   addiu     $a1, $a1, %lo(D_80062FE8)
     /* 2FF20 8003F720 E5FF4010 */  beqz       $v0, .L8003F6B8
     /* 2FF24 8003F724 00000000 */   nop

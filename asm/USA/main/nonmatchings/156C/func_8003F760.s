@@ -41,7 +41,7 @@ glabel func_8003F760
     /* 2FFEC 8003F7EC 08008010 */  beqz       $a0, .L8003F810
     /* 2FFF0 8003F7F0 00000000 */   nop
     /* 2FFF4 8003F7F4 0680053C */  lui        $a1, %hi(D_80062FE8)
-    /* 2FFF8 8003F7F8 49FE000C */  jal        func_8003F924
+    /* 2FFF8 8003F7F8 49FE000C */  jal        strcmp
     /* 2FFFC 8003F7FC E82FA524 */   addiu     $a1, $a1, %lo(D_80062FE8)
     /* 30000 8003F800 03004014 */  bnez       $v0, .L8003F810
     /* 30004 8003F804 00000000 */   nop

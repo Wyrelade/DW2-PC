@@ -238,7 +238,7 @@ glabel func_8002A054
     /* 1AB74 8002A374 E2A80008 */  j          .L8002A388
     /* 1AB78 8002A378 21B08002 */   addu      $s6, $s4, $zero
   .L8002A37C:
-    /* 1AB7C 8002A37C 6DAA000C */  jal        func_8002A9B4
+    /* 1AB7C 8002A37C 6DAA000C */  jal        strlen
     /* 1AB80 8002A380 21204002 */   addu      $a0, $s2, $zero
     /* 1AB84 8002A384 21B04000 */  addu       $s6, $v0, $zero
   .L8002A388:

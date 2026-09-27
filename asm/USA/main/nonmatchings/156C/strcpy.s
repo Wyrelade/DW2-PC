@@ -1,6 +1,6 @@
-nonmatching func_800270B4, 0x44
+nonmatching strcpy, 0x44
 
-glabel func_800270B4
+glabel strcpy
     /* 178B4 800270B4 0E008010 */  beqz       $a0, .L800270F0
     /* 178B8 800270B8 21100000 */   addu      $v0, $zero, $zero
     /* 178BC 800270BC 0C00A010 */  beqz       $a1, .L800270F0
@@ -21,7 +21,7 @@ glabel func_800270B4
   .L800270F0:
     /* 178F0 800270F0 0800E003 */  jr         $ra
     /* 178F4 800270F4 00000000 */   nop
-endlabel func_800270B4
+endlabel strcpy
     /* 178F8 800270F8 00000000 */  nop
     /* 178FC 800270FC 00000000 */  nop
     /* 17900 80027100 00000000 */  nop

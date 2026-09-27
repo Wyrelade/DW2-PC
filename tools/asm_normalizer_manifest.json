@@ -927,7 +927,7 @@
       "epilogue_unfill"
     ]
   },
-  "func_8003F924": {
+  "strcmp": {
     "passes": [
       "exit_merge",
       "padnop"
@@ -1406,7 +1406,7 @@
       "nosplit"
     ]
   },
-  "func_80027044": {
+  "memcpy": {
     "passes": [
       "nosplit",
       "padnop"
@@ -1826,7 +1826,7 @@
   "func_8001DB18": {
     "passes": []
   },
-  "func_800270B4": {
+  "strcpy": {
     "passes": [
       "nosplit",
       "padnop"
@@ -2736,13 +2736,13 @@
       "exit_merge"
     ]
   },
-  "func_80027084": {
+  "memset": {
     "passes": [
       "nosplit",
       "exit_merge"
     ]
   },
-  "func_8002A9B4": {
+  "strlen": {
     "passes": [
       "nosplit",
       "zero_remat",
