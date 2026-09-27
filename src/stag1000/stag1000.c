@@ -99,7 +99,29 @@ void func_80063FA0(u8 *arg0, void (*arg1)()) {
     func_80063F38(arg0);
 }
 
-INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_8006400C);
+u32 *func_8006400C(StrDecEnv *dec) {
+    u32 *addr;
+    StrHeader *sector;
+    s32 cnt = 2000;
+
+    while (StGetNext(&addr, &sector) != 0) {
+        if (--cnt == 0) {
+            return 0;
+        }
+    }
+    if (sector->frameCount >= D_80066204) {
+        D_800661FC = 1;
+    }
+    if (D_80065220 != sector->width || D_80065224 != sector->height) {
+        Gpu_ClearScreens();
+        D_80065220 = sector->width;
+        D_80065224 = sector->height;
+    }
+    dec->rect[0].w = dec->rect[1].w = D_80065220 * 3 / 2;
+    dec->rect[0].h = dec->rect[1].h = D_80065224;
+    dec->slice.h = D_80065224;
+    return addr;
+}
 
 INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80064110);
 
