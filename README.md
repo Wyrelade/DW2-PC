@@ -1,7 +1,7 @@
 # Digimon World 2 Decompilation
 
 <!-- PROGRESS:BADGE -->
-![matched](https://img.shields.io/badge/matched-905%2F907%20(99.78%25)-1f6feb)
+![matched](https://img.shields.io/badge/matched-906%2F907%20(99.89%25)-1f6feb)
 <!-- /PROGRESS:BADGE -->
 ![build](https://img.shields.io/badge/build-byte--identical-2ea043)
 ![platform](https://img.shields.io/badge/platform-PS1%20(SLUS--01193)-8957e5)
@@ -38,9 +38,9 @@ match alone is never enough.
 <!-- PROGRESS:TABLE -->
 | Component | Functions | Matched | Progress |
 |---|---:|---:|---|
-| **Main executable** (`SLUS_011.93`) | 907 | 905 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 99.78% |
+| **Main executable** (`SLUS_011.93`) | 907 | 906 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 99.89% |
 | &nbsp;&nbsp;└ decompiled to C | | 829 | |
-| &nbsp;&nbsp;└ hand-written assembly, restored as source | | 76 | |
+| &nbsp;&nbsp;└ hand-written assembly, restored as source | | 77 | |
 <!-- /PROGRESS:TABLE -->
 
 DW2 is a single main executable with no overlays, so the main exe is the whole target for
