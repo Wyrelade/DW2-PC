@@ -3831,5 +3831,15 @@
       "delay_fill",
       "padnop"
     ]
+  },
+  "func_8003B424": {
+    "passes": [
+      "nosplit",
+      "param_copy",
+      "web_realloc",
+      "block_iso_nop",
+      "slot_redundant",
+      "padnop"
+    ]
   }
 }

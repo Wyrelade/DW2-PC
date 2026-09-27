@@ -831,6 +831,7 @@ extern char D_80010D64[];
 extern s32 func_80040CE4(s32, s32, u8 *);
 extern void func_80017214(Actor *);
 extern s32 D_80049044;
+extern u16 D_80062D60[];
 s16 func_800388A4(s16, s16, s16, s16, u16);
 void func_80021DC8(void);
 
@@ -16878,7 +16879,70 @@ void func_8003B374(s32 id) {
 
 void func_8003B3F4(s32 arg0, s32 arg1) { func_8003B424(arg0, arg1, 0xCA, 0xCB); }
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8003B424);
+s32 func_8003B424(s32 mode, u32 bits, s32 lo, s32 hi) {
+    volatile u16 *r;
+    u32 ret;
+    u32 h;
+    s32 one;
+    u32 b;
+
+    r = D_80062D60;
+    b = bits;
+    if (!(D_8004FE14 & 1)) {
+        r = D_8004FE28;
+    }
+    h = (r[hi] & 0xFF) << 16;
+    ret = r[lo] | h;
+    one = 1;
+    switch (mode) {
+        do {} while (0);
+    case 1:
+        if (D_8004FE14 & 1) {
+            u16 *p = &D_80062D60[lo];
+            u16 *q = &D_80062D60[hi];
+            *p |= b;
+            *q |= (b >> 16) & 0xFF;
+            D_8004FDE0 |= one << ((lo - 0xC6) >> 1);
+        } else {
+            D_8004FE28[lo] |= b;
+            D_8004FE28[hi] |= (b >> 16) & 0xFF;
+        }
+        ret |= b & 0xFFFFFF;
+        break;
+        do {} while (0);
+    case 0:
+        if (D_8004FE14 & 1) {
+            u16 *p = &D_80062D60[lo];
+            u16 *q = &D_80062D60[hi];
+            *p &= ~b;
+            *q &= ~((b >> 16) & 0xFF);
+            D_8004FDE0 |= one << ((lo - 0xC6) >> 1);
+        } else {
+            D_8004FE28[lo] &= ~b;
+            D_8004FE28[hi] &= ~((b >> 16) & 0xFF);
+        }
+        ret &= ~(b & 0xFFFFFF);
+        break;
+        do {} while (0);
+    case 8:
+        if (D_8004FE14 & 1) {
+            u16 *p = &D_80062D60[lo];
+            u16 *q = &D_80062D60[hi];
+            *p = b;
+            *q = (b >> 16) & 0xFF;
+            D_8004FDE0 |= one << ((lo - 0xC6) >> 1);
+        } else {
+            D_8004FE28[lo] = b;
+            D_8004FE28[hi] = (b >> 16) & 0xFF;
+        }
+        ret = b & 0xFFFFFF;
+        break;
+    default:
+        break;
+    }
+    return ret & 0xFFFFFF;
+}
+
 
 void func_8003B6E4(void) { func_8003B714(0xCA, 0xCB); }
 
