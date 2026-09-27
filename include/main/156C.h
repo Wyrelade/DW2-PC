@@ -3137,4 +3137,11 @@ typedef struct {
     /* 0x70 */ s32 *field_70;
 } Obj21ABC;
 
+
+/* Triangle record func_800218CC walks: three vertex indices, stride 0x10. */
+typedef struct {
+    /* 0x00 */ u8 v[3];
+    u8 _pad03[0xD];
+} Tri218CC; /* size 0x10 */
+
 #endif /* MAIN_156C_H */
