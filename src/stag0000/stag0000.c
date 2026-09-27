@@ -151,7 +151,41 @@ void func_800648BC(Actor *arg0, Stg00SelWork *arg1) {
 void func_800649D0(void) {
 }
 
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_800649D8);
+void func_800649D8(Actor *arg0) {
+    Stg00SelWork *w = (Stg00SelWork *)arg0->work;
+
+    switch (arg0->stateLevel0) {
+    case 0:
+    default:
+        Gpu_InitDoubleBuffer(0x140, 0xF0, 0, 0);
+        Gpu_SetBgClearColor(0, 0, 0);
+        Gpu_ClearScreens();
+        Gfx_FadeInFromBlack(0x20);
+        func_80064E78();
+        func_80064E4C(0);
+        w->field_0 = 0;
+        w->field_2 = 0;
+        w->field_6 = 0;
+        Task_NextState0(arg0);
+        break;
+    case 1:
+        switch (arg0->stateLevel1) {
+        case 0:
+        default:
+            func_800641E0(arg0, w);
+            break;
+        case 1:
+            func_800642BC(arg0, w);
+            break;
+        case 2:
+            func_800648BC(arg0, w);
+            break;
+        }
+        break;
+    case 2:
+        break;
+    }
+}
 
 void func_80064AD4(void) {
 }
