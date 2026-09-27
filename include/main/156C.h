@@ -1626,7 +1626,8 @@ typedef struct {
 /* 16-byte GPU fill-rectangle packets at D_800618D0, one per display buffer
  * (libgpu BLK_FILL shape): tag, r g b code, x0 y0 w h. */
 typedef struct {
-    /* 0x0 */ u32 tag;
+    /* 0x0 */ u8 tag[3];
+    /* 0x3 */ u8 len;
     /* 0x4 */ u8 r;
     /* 0x5 */ u8 g;
     /* 0x6 */ u8 b;
@@ -3083,5 +3084,7 @@ typedef struct {
 } Res2E2C4;
 
 #define VA_ARG(ap, T) (((T *)((ap) += sizeof(T)))[-1])
+
+extern Mat1F668 D_800619C8;
 
 #endif /* MAIN_156C_H */

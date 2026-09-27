@@ -818,6 +818,9 @@ extern void func_8002EC0C(s32 ch, u32 madr, s32 hi, s32 lo, u32 chcr, u8 mode);
 extern char D_80010404[];
 extern char D_80010418[];
 extern char D_80010420[];
+extern Pair61900 D_800618F8;
+extern Pair61900 D_800618FC;
+extern s32 D_80061988;
 s16 func_800388A4(s16, s16, s16, s16, u16);
 void func_80021DC8(void);
 
@@ -11007,7 +11010,52 @@ void func_8002ADE4(s16 a0, s16 a1, s32 flags, u8 a3, u16 a4) {
     func_8002AE4C((u16)a0, (u16)a1, flags & 4);
 }
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002AE4C);
+/* y_div_x_inpb */
+/* b_p */
+void func_8002AE4C(a0, a1)
+u16 a0;
+u16 a1;
+{
+    s32 asp;
+    BlkFill618D0 *p;
+    Rect2AB54 *r;
+
+    D_80061990 = a0;
+    D_80061994 = a1;
+    asp = (*(volatile s32 *)&D_80061994 << 14) / *(volatile s32 *)&D_80061990;
+    do {
+    D_80061A28.m[2][2] = D_80061A28.m[1][1] = D_80061A28.m[0][0] = 0x1000;
+    D_80061A28.m[2][0] = D_80061A28.m[2][1] = D_80061A28.m[1][0] = D_80061A28.m[1][2] = D_80061A28.m[0][1] = D_80061A28.m[0][2] = 0;
+    D_80061A28.t[0] = D_80061A28.t[1] = D_80061A28.t[2] = 0;
+    (*(Mat1F668 *)&D_80061A48) = D_80061A28;
+    } while (0);
+    do {
+    D_800619A8 = D_80061A28;
+    D_800619A8.m[0][0] = D_800619A8.m[1][1] = D_800619A8.m[2][2] = 0;
+    D_800619C8 = D_800619A8;
+    } while (0);
+    D_800618F8.field_0 = 0;
+    D_800618F8.field_2 = 0;
+    D_800618FC.field_0 = 0;
+    D_800618FC.field_2 = 0;
+    D_80061900.field_0 = D_80061900.field_2 = 0;
+    r = &D_80061980;
+    r->y = 0;
+    (*(Mat1F668 *)&D_80061A48).m[1][1] = asp / 3;
+    do {
+    p = D_800618D0;
+    r->x = 0;
+    p->len = 3;
+    p->code = 2;
+    p++;
+    p->len = 3;
+    p->code = 2;
+    } while (0);
+    D_80061988 = 1;
+    r->w = D_80061990;
+    r->h = D_80061994;
+}
+
 
 void func_8002B06C(u8 r, u8 g, u8 b, Db2B06C *db) {
     s32 i;
