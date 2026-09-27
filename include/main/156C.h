@@ -860,8 +860,16 @@ typedef struct {
 
 /* Buffer allocated into a container's field_38 by func_80020C40 (0x90 bytes via
  * func_80022F3C); only the fields it stamps are known. */
+/* Three s32 words copied as one block (position -> matrix translation). */
 typedef struct {
-    u8 _pad00[0x30];
+    s32 v[3];
+} Vec3_209F8;
+
+typedef struct {
+    /* 0x00 */ s16 m[3][3];
+    u8 _pad12[0x02];
+    /* 0x14 */ Vec3_209F8 t;
+    u8 _pad20[0x10];
     /* 0x30 */ s32 field_30;
     /* 0x34 */ s32 field_34;
     /* 0x38 */ s32 field_38;
@@ -873,7 +881,9 @@ typedef struct {
     /* 0x58 */ s32 field_58;
     /* 0x5C */ s32 field_5C;
     /* 0x60 */ s32 field_60;
-    u8 _pad64[0x08];
+    u8 _pad64[0x04];
+    /* 0x68 */ s16 field_68;
+    /* 0x6A */ s16 field_6A;
     /* 0x6C */ Obj20CE8 field_6C[3];
 } AllocC40;
 

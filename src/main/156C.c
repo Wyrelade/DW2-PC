@@ -841,6 +841,7 @@ extern s32 D_8005F70C;
 extern Coord1F668 *D_80061A68[];
 extern Coord1F668 *D_80061A64[];
 extern void (*D_80061BF4[])(s16, s16, s16, Rec62D08, s32, s32);
+extern SVec1F668 D_80050744;
 s16 func_800388A4(s16, s16, s16, s16, u16);
 void func_80021DC8(void);
 
@@ -7964,7 +7965,42 @@ void func_80020920(Actor *arg0) {
     obj->field_48 = 0;
 }
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_800209F8);
+s32 func_800209F8(ContC40 *a0) {
+    Mat1F668 m;
+    AllocC40 *p;
+    Vec3_209F8 *t;
+    s32 x, y;
+
+    p = a0->field_38;
+    t = &p->t;
+    *t = *(Vec3_209F8 *)&p->field_30;
+    gte_SetRotMatrix(&D_80061A08);
+    gte_ldclmv(&p->m[0][0]);
+    gte_rtir();
+    gte_stclmv(&m.m[0][0]);
+    gte_ldclmv(&p->m[0][1]);
+    gte_rtir();
+    gte_stclmv(&m.m[0][1]);
+    gte_ldclmv(&p->m[0][2]);
+    gte_rtir();
+    gte_stclmv(&m.m[0][2]);
+    gte_SetTransMatrix(&D_80061A08);
+    gte_ldlv0(t);
+    gte_rtv0tr();
+    gte_stlvnl(m.t);
+    gte_SetRotMatrix(&m);
+    gte_SetTransMatrix(&m);
+    gte_ldv0(&D_80050744);
+    gte_rtps();
+    gte_stsxy(&p->field_68);
+    x = 0x160;
+    y = 0x110;
+    if (p->field_68 < -x) return 1;
+    if (p->field_68 > x) return 1;
+    if (p->field_6A < -y) return 1;
+    return p->field_6A > y;
+}
+
 
 void func_80020C14(s32 arg0) {
     func_80020920(arg0);
