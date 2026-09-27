@@ -64,7 +64,34 @@ void func_80064064(u32 *arg0, u32 arg1) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80064084);
+s32 func_80064084(u32 *arg0) {
+    u32 base = (u32)arg0;
+    s32 n = 0;
+
+    while (*arg0 != 0) {
+        if (*arg0 < base) {
+            Stg00RelocHdr *h;
+            s32 i;
+
+            *arg0 += base;
+            h = (Stg00RelocHdr *)*arg0;
+            h->field_0 += base;
+            for (i = 0; i < 8; i++) {
+                Stg00RelocEnt **pe = &h->field_8[i];
+                Stg00RelocEnt *e = (Stg00RelocEnt *)((u32)*pe + base);
+                *pe = e;
+                func_80064064(&e->field_0, base);
+                func_80064064(&e->field_4, base);
+                func_80064064(&e->field_8, base);
+                func_80064064(&e->field_C, base);
+                func_80064064(&e->field_10, base);
+            }
+        }
+        arg0++;
+        n++;
+    }
+    return n;
+}
 
 INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80064190);
 
