@@ -829,6 +829,7 @@ extern Rec624F8 D_80062500[];
 extern s8 D_800632D0[16];
 extern char D_80010D64[];
 extern s32 func_80040CE4(s32, s32, u8 *);
+extern void func_80017214(Actor *);
 s16 func_800388A4(s16, s16, s16, s16, u16);
 void func_80021DC8(void);
 
@@ -3798,7 +3799,68 @@ loop:
 }
 
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80017214);
+void func_80017214(Actor *a0) {
+    Work174F8 *w = (Work174F8 *)a0->work;
+    Sel174F8 *e;
+    Rec17214 *g;
+    Sel174F8 *d;
+    Rec17214 tmp;
+    u8 k;
+    s32 id;
+    s32 n;
+    Obj50768 *p;
+
+    e = &w->field_6C[func_80013A70(w->field_50, w->field_54)];
+    p = D_80050768;
+    do {} while (0);
+    n = D_8005F704;
+    g = (Rec17214 *)p->field_128;
+    if (n > 0) {
+        switch (e->field_0) {
+        case 0:
+        default:
+            if (g->field_0 >= 3) {
+                id = 0x1FD0111;
+            icon:
+                func_800134F8(w->field_40, func_800239A0(id), 0x81, D_8005070C);
+                break;
+            }
+            g->field_0 = w->field_1A0[3] != 0 ? 1 : 2;
+            d = &w->field_6C[w->field_50[1]];
+            d->field_0 = 1;
+            d->field_4 = (s32)g;
+            d->field_2 = g->field_0;
+            id = 0x1FD0110;
+            goto swap;
+        case 1:
+            k = g->field_0;
+            tmp = *(Rec17214 *)e->field_4;
+            g->field_0 = tmp.field_0;
+            tmp.field_0 = k;
+            *(Rec17214 *)e->field_4 = *g;
+            *g = tmp;
+            id = 0x1FD0112;
+        swap:
+            func_800134F8(w->field_40, func_800239A0(id), 0x81, D_8005070C);
+            D_80050768->field_126 = -1;
+            func_80017D84((Obj17D84 *)w, 0);
+            func_8001A68C(0xE, 0);
+            func_800115DC(a0, 4);
+            return;
+        case 3:
+            if (g->field_0 >= 3) {
+                id = 0x1FD011E;
+                goto icon;
+            }
+            func_800134F8(w->field_40, func_800239A0(0x1FD011F), 0x81, D_8005070C);
+            func_800115DC(a0, 5);
+            return;
+        case 2:
+            break;
+        }
+        func_8001A68C(0x10, 0);
+    }
+}
 
 void func_800174F8(Actor *a0) {
     Work174F8 *w = (Work174F8 *)a0->work;

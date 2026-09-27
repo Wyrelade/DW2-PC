@@ -3812,5 +3812,14 @@
     "passes": [
       "web_resched"
     ]
+  },
+  "func_80017214": {
+    "passes": [
+      "gp8_nosplit",
+      "sched_pre",
+      "sched_match",
+      "hi_interleave",
+      "padnop"
+    ]
   }
 }

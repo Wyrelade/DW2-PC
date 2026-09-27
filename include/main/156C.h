@@ -3144,4 +3144,20 @@ typedef struct {
     u8 _pad03[0xD];
 } Tri218CC; /* size 0x10 */
 
+/* 0x5C-byte record swapped between the menu slots and D_80050768->field_128 (func_80017214). */
+typedef struct {
+    /* 0x00 */ u8 field_0;
+    u8 _pad1[0x3];
+    s32 _pad4[0x16];
+} Rec17214;
+/* Non-small views of D_80050768 / D_8005F704 for func_80017214. */
+typedef struct {
+    Obj50768 *p;
+    s32 _r[3];
+} View50768;
+typedef struct {
+    s32 n;
+    s32 _r[3];
+} View5F704;
+
 #endif /* MAIN_156C_H */
