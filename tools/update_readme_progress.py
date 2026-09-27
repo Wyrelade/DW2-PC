@@ -25,7 +25,8 @@ def read_counts():
     if not m:
         sys.exit("could not find 'functions identified: N . matched: M' in PROGRESS.md")
     total, matched = int(m.group(1)), int(m.group(2))
-    return total, matched
+    a = re.search(r"asm restored:\s*(\d+)", text)
+    return total, matched, int(a.group(1)) if a else 0
 
 
 def bar(pct):
@@ -43,7 +44,7 @@ def replace_region(text, tag, body):
 
 
 def main():
-    total, matched = read_counts()
+    total, matched, asm = read_counts()
     pct = 100.0 * matched / total if total else 0.0
     pct_s = "%.2f%%" % pct
     b = bar(pct)
@@ -57,9 +58,13 @@ def main():
         "|---|---:|---:|---|",
         "| **Main executable** (`SLUS_011.93`) | %d | %d | `%s` %s |"
         % (total, matched, b, pct_s),
+    ] + ([
+        "| &nbsp;&nbsp;└ decompiled to C | | %d | |" % (matched - asm),
+        "| &nbsp;&nbsp;└ hand-written assembly, restored as source | | %d | |" % asm,
+    ] if asm else [
         "| &nbsp;&nbsp;└ `src/main/156C.c` (text unit) | %d | %d | `%s` %s |"
         % (total, matched, b, pct_s),
-    ])
+    ]))
 
     with open(README, encoding="utf-8") as f:
         text = f.read()
