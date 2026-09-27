@@ -303,7 +303,23 @@ void func_80066084(Actor *arg0) {
     Gfx_FadeInFromBlack(0x100);
 }
 
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80066130);
+void func_80066130(Actor *arg0) {
+    Stg00ListWork *w = (Stg00ListWork *)arg0->work;
+    s32 *slot = (s32 *)arg0->u34.children;
+    Stg00TaskArgs5 args;
+    s32 i;
+
+    for (i = 0; i < 9; i++) {
+        Task_Destroy(slot);
+        args.field_0 = w->field_330[i + w->field_654];
+        args.field_10 = 0x400;
+        args.field_4 = D_80068E18[w->field_658][i].field_0;
+        args.field_8 = 0;
+        args.field_C = D_80068E18[w->field_658][i].field_2;
+        Task_Create(0x105, slot, (s32)&args);
+        slot++;
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_8006620C);
 
