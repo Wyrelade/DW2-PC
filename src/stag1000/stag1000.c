@@ -451,7 +451,25 @@ DecDCTEnv *func_800646F4(DecDCTEnv *env) {
     return env;
 }
 
-INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80064780);
+DecDCTEnv *func_80064780(DecDCTEnv *env) {
+    u32 *dst;
+    u32 *src;
+    s32 i;
+
+    dst = D_8006525C;
+    src = (u32 *)env->iq_y;
+    for (i = 15; i != -1; i--) {
+        *dst++ = *src++;
+    }
+    dst = D_8006529C;
+    src = (u32 *)env->iq_c;
+    for (i = 15; i != -1; i--) {
+        *dst++ = *src++;
+    }
+    func_80064A70(&D_80065258, 0x20);
+    func_80064A70(&D_800652DC, 0x20);
+    return env;
+}
 
 INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80064818);
 

@@ -3982,5 +3982,10 @@
     "passes": [
       "nosplit"
     ]
+  },
+  "stag1000:func_80064780": {
+    "passes": [
+      "nosplit"
+    ]
   }
 }
