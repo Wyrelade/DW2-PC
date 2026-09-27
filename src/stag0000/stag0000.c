@@ -125,7 +125,28 @@ void func_800641E0(Actor *arg0, Stg00SelWork *arg1) {
 
 INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_800642BC);
 
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_800648BC);
+void func_800648BC(Actor *arg0, Stg00SelWork *arg1) {
+    if (D_8005F72C & 0x8000) {
+        if (arg1->field_A > 0) {
+            arg1->field_A--;
+        }
+    }
+    if (D_8005F72C & 0x2000) {
+        if (arg1->field_A + 1 < 0x1E) {
+            arg1->field_A++;
+        }
+    }
+    if (D_8005F6F0[0].cross > 0) {
+        Task_SetState1(arg0, 1);
+    } else if (D_8005F6F0[0].circle > 0) {
+        func_80064E44();
+        D_8005F78C = arg1->field_0 + 0x201;
+        D_8005071C->field_3 = arg1->field_2;
+        D_8005071C->field_4 = arg1->field_8;
+        Flag_Set(arg1->field_A + 0x76C, 1);
+        Task_SetState0(arg0, 2);
+    }
+}
 
 void func_800649D0(void) {
 }
