@@ -534,7 +534,14 @@ void func_80064980(s32 arg0) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80064A70);
+void func_80064A70(u32 *arg0, u32 arg1) {
+    func_80064B8C();
+    *D_800653A0 |= 0x88;
+    *D_80065368 = (u32)(arg0 + 1);
+    *D_8006536C = ((arg1 >> 5) << 16) | 0x20;
+    *D_80065398 = *arg0;
+    *D_80065370 = 0x01000201;
+}
 
 INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80064B00);
 
