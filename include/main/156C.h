@@ -326,23 +326,23 @@ typedef struct {
 /* arg0 of the 0x2C accessor family: a container holding a pointer to its
  * ActorWork at offset 0x2C. */
 typedef struct {
-    /* 0x00 */ s32 field_0;
+    /* 0x00 */ s32 id;
     u8 _pad04[0x04];
     /* 0x08 */ s32 field_8;
     /* 0x0C */ s32 field_C;
-    /* 0x10 */ s32 field_10;
-    /* 0x14 */ s32 field_14;
-    /* 0x18 */ s32 field_18;
-    /* 0x1C */ s32 field_1C;
-    /* 0x20 */ s32 field_20;
-    /* 0x24 */ u8 field_24;
+    /* 0x10 */ s32 stateLevel0;
+    /* 0x14 */ s32 stateLevel1;
+    /* 0x18 */ s32 stateLevel2;
+    /* 0x1C */ s32 stateLevel3;
+    /* 0x20 */ s32 stateLevel4;
+    /* 0x24 */ u8 frameCount;
     u8 _pad25[0x03];
-    /* 0x28 */ s32 field_28;
+    /* 0x28 */ s32 elapsed;
     /* 0x2C */ ActorWork *work;
-    /* 0x30 */ s32 field_30;
+    /* 0x30 */ s32 childCount;
     /* 0x34 read as a word by func_8001A958, or as the two bytes 0x36/0x37 elsewhere. */
     union {
-        /* 0x34 */ s32 field_34;
+        /* 0x34 */ s32 children;
         struct {
             u8 _b34[0x02];
             /* 0x36 */ u8 field_36;
@@ -354,7 +354,7 @@ typedef struct {
         /* 0x38 */ u8 field_38;
         ObjEC10 *ptr38;
     } u38;
-    /* 0x3C */ Sub3C *field_3C;
+    /* 0x3C */ Sub3C *model;
     u8 _pad40[0x06];
     /* 0x46 */ u8 field_46;
     /* 0x47 */ u8 field_47;

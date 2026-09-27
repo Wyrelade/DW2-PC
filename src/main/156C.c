@@ -1096,71 +1096,71 @@ Ent11440 *Task_FindFirst(s32 arg0, s32 arg1, s32 arg2) {
 }
 
 void Task_NextState0(Actor *arg0) {
-    arg0->field_20 = 0;
-    arg0->field_1C = 0;
-    arg0->field_18 = 0;
-    arg0->field_14 = 0;
-    arg0->field_10++;
+    arg0->stateLevel4 = 0;
+    arg0->stateLevel3 = 0;
+    arg0->stateLevel2 = 0;
+    arg0->stateLevel1 = 0;
+    arg0->stateLevel0++;
 }
 
 void Task_NextState1(Actor *arg0) {
-    arg0->field_20 = 0;
-    arg0->field_1C = 0;
-    arg0->field_18 = 0;
-    arg0->field_14++;
+    arg0->stateLevel4 = 0;
+    arg0->stateLevel3 = 0;
+    arg0->stateLevel2 = 0;
+    arg0->stateLevel1++;
 }
 
 void Task_NextState2(Actor *arg0) {
-    arg0->field_20 = 0;
-    arg0->field_1C = 0;
-    arg0->field_18++;
+    arg0->stateLevel4 = 0;
+    arg0->stateLevel3 = 0;
+    arg0->stateLevel2++;
 }
 
 void Task_NextState3(Actor *arg0) {
-    arg0->field_20 = 0;
-    arg0->field_1C++;
+    arg0->stateLevel4 = 0;
+    arg0->stateLevel3++;
 }
 
 void Task_NextState4(Actor *arg0) {
-    arg0->field_20++;
+    arg0->stateLevel4++;
 }
 
 void Task_SetState0(Actor *arg0, u32 arg1) {
-    arg0->field_10 = arg1 & 0xFF;
-    arg0->field_20 = 0;
-    arg0->field_1C = 0;
-    arg0->field_18 = 0;
-    arg0->field_14 = 0;
+    arg0->stateLevel0 = arg1 & 0xFF;
+    arg0->stateLevel4 = 0;
+    arg0->stateLevel3 = 0;
+    arg0->stateLevel2 = 0;
+    arg0->stateLevel1 = 0;
 }
 
 void Task_SetState1(Actor *arg0, u32 arg1) {
-    arg0->field_14 = arg1 & 0xFF;
-    arg0->field_20 = 0;
-    arg0->field_1C = 0;
-    arg0->field_18 = 0;
+    arg0->stateLevel1 = arg1 & 0xFF;
+    arg0->stateLevel4 = 0;
+    arg0->stateLevel3 = 0;
+    arg0->stateLevel2 = 0;
 }
 
 void Task_SetState01(Actor *arg0, u32 arg1, u32 arg2) {
-    arg0->field_10 = arg1 & 0xFF;
-    arg0->field_14 = arg2 & 0xFF;
-    arg0->field_20 = 0;
-    arg0->field_1C = 0;
-    arg0->field_18 = 0;
+    arg0->stateLevel0 = arg1 & 0xFF;
+    arg0->stateLevel1 = arg2 & 0xFF;
+    arg0->stateLevel4 = 0;
+    arg0->stateLevel3 = 0;
+    arg0->stateLevel2 = 0;
 }
 
 void Task_SetState2(Actor *arg0, u32 arg1) {
-    arg0->field_18 = arg1 & 0xFF;
-    arg0->field_20 = 0;
-    arg0->field_1C = 0;
+    arg0->stateLevel2 = arg1 & 0xFF;
+    arg0->stateLevel4 = 0;
+    arg0->stateLevel3 = 0;
 }
 
 void Task_SetState3(Actor *arg0, u32 arg1) {
-    arg0->field_1C = arg1 & 0xFF;
-    arg0->field_20 = 0;
+    arg0->stateLevel3 = arg1 & 0xFF;
+    arg0->stateLevel4 = 0;
 }
 
 void Task_SetState4(Actor *arg0, u32 arg1) {
-    arg0->field_20 = arg1 & 0xFF;
+    arg0->stateLevel4 = arg1 & 0xFF;
 }
 
 void func_80011644(void) {
@@ -1189,12 +1189,12 @@ void func_800116CC(Actor *a0) {
     Wk116CC *w = (Wk116CC *)a0->work;
     s32 v;
 
-    switch (a0->field_10) {
+    switch (a0->stateLevel0) {
     case 0:
         Task_NextState0(a0);
         break;
     case 1:
-        switch (a0->field_14) {
+        switch (a0->stateLevel1) {
         case 0:
             break;
         case 1:
@@ -1230,22 +1230,22 @@ void func_800116CC(Actor *a0) {
         }
         break;
     case 2:
-        switch (a0->field_14) {
+        switch (a0->stateLevel1) {
         case 1:
             w->field_C = 0xD;
             w->field_14 = 0;
-            a0->field_14++;
+            a0->stateLevel1++;
             break;
         case 2:
             w->field_C = 0xE;
             w->field_14 = 0;
-            a0->field_14++;
+            a0->stateLevel1++;
             break;
         case 0:
         default:
             w->field_C = 0xB;
             w->field_14 = 0;
-            a0->field_14++;
+            a0->stateLevel1++;
             break;
         case 3:
             Task_SetState0(a0, 3);
@@ -1329,7 +1329,7 @@ void func_80011B58(Actor *arg0, s32 arg1) {
 
 void Gfx_TexSlotTaskInit(Actor *arg0) {
     ActorWork *w = arg0->work;
-    if (arg0->field_10 == 0) {
+    if (arg0->stateLevel0 == 0) {
         w->field_0 = Gfx_ReserveTexSlot();
         Task_NextState0(arg0);
     }
@@ -1830,7 +1830,7 @@ void Menu_NameEntryTask(Actor *a0) {
         p = D_8005E6F1;
         break;
     }
-    switch (a0->field_10) {
+    switch (a0->stateLevel0) {
     case 0:
         Mem_FillWordsNeg1(&w->field_10, 5);
         for (i = 0; i < w->field_8; i++) {
@@ -1870,7 +1870,7 @@ void Menu_NameEntryTask(Actor *a0) {
         Task_NextState0(a0);
         break;
     case 1:
-        switch (a0->field_14) {
+        switch (a0->stateLevel1) {
         case 0:
         default:
             Text_Close(&w->field_10);
@@ -2128,8 +2128,8 @@ extern s32 Snd_AnySlotLoading(void);
 extern s32 D_8005F78C;
 
 void func_80013384(Actor *a0) {
-    s32 st = a0->field_10;
-    s32 t = a0->u34.field_34;
+    s32 st = a0->stateLevel0;
+    s32 t = a0->u34.children;
     switch (st) {
     case 0:
     default:
@@ -2425,13 +2425,13 @@ void func_80013BF8(Actor *arg0, s16 arg1) {
 
 void Menu_TopMenuTask(Actor *a0) {
     Wk13C04 *w = (Wk13C04 *)a0->work;
-    s32 *slot = (s32 *)a0->u34.field_34;
+    s32 *slot = (s32 *)a0->u34.children;
     Pair54 *tbl;
     s32 v;
     s32 k;
     s32 snd;
 
-    switch (a0->field_10) {
+    switch (a0->stateLevel0) {
     case 0:
     default:
         Menu_Ctx = (MenuCtx *)Mem_Alloc(0x364, 2);
@@ -2468,7 +2468,7 @@ void Menu_TopMenuTask(Actor *a0) {
         break;
     case 1:
         tbl = (Pair54 *)Cd_GetFileEntry(0x5130006);
-        switch (a0->field_14) {
+        switch (a0->stateLevel1) {
         case 0:
         default:
             if (Math_RampToOne((s32)a0, &w->ramp) != 0) {
@@ -2519,7 +2519,7 @@ void Menu_TopMenuTask(Actor *a0) {
             Snd_PlayById(snd, 0);
             break;
         case 2:
-            switch (a0->field_18) {
+            switch (a0->stateLevel2) {
             case 0:
             default:
                 Text_CloseArray(&w->field_0, 8);
@@ -2533,7 +2533,7 @@ void Menu_TopMenuTask(Actor *a0) {
             }
             break;
         case 3:
-            switch (a0->field_18) {
+            switch (a0->stateLevel2) {
             case 0:
             default:
                 Task_Create(tbl[w->selection].field_0, slot, tbl[w->selection].field_2);
@@ -2553,7 +2553,7 @@ void Menu_TopMenuTask(Actor *a0) {
         }
         break;
     case 2:
-        switch (a0->field_14) {
+        switch (a0->stateLevel1) {
         case 0:
         default:
             Text_CloseArray(&w->field_0, 8);
@@ -2571,7 +2571,7 @@ void Menu_TopMenuTask(Actor *a0) {
         break;
     }
     if (Menu_Ctx != NULL) {
-        Menu_Ctx->field_4 = a0->field_28;
+        Menu_Ctx->field_4 = a0->elapsed;
     }
 }
 
@@ -2597,7 +2597,7 @@ void func_800141D4(Actor *actor) {
                 case 0:
                 default:
                     Menu_SetPartsGridPos(obj, 2, &w->cursor, &w->gridSize);
-                    Gfx_SetPartsPalette(obj, 2, (actor->field_28 >> 2) & 3);
+                    Gfx_SetPartsPalette(obj, 2, (actor->elapsed >> 2) & 3);
                     break;
                 case 1:
                     Gfx_SetPartsNumber(obj, 2, 8, D_80050720->field_8);
@@ -2614,7 +2614,7 @@ void func_800141D4(Actor *actor) {
     for (q = base; q->field_0 != 0; q++) {
         switch (q->groupMask) {
         case 2:
-            q->palette = Math_CycleRange(actor->field_28, 0xA, 0, 7);
+            q->palette = Math_CycleRange(actor->elapsed, 0xA, 0, 7);
             break;
         case 8:
             q->x -= 2;
@@ -2651,12 +2651,12 @@ void func_800143CC(Actor *arg0, s16 arg1) {
 
 void Menu_SubMenuTask(Actor *a) {
     Wk14400 *w = (Wk14400 *)a->work;
-    s32 *p = (s32 *)a->u34.field_34;
+    s32 *p = (s32 *)a->u34.children;
     Pair54 *tbl;
     Pair54 *e;
     s32 idx;
 
-    switch (a->field_10) {
+    switch (a->stateLevel0) {
     default:
     case 0:
         w->u2C.blk = ((Blk14400 *)Cd_GetFileEntry(0x5130007))[w->menuId - 1];
@@ -2665,7 +2665,7 @@ void Menu_SubMenuTask(Actor *a) {
         break;
     case 1:
         tbl = (Pair54 *)Cd_GetFileEntrySubPtr(0x513000A, w->menuId - 1);
-        switch (a->field_14) {
+        switch (a->stateLevel1) {
         default:
         case 0:
             if (Math_RampToOne((s32)a, &w->ramp) == 0) {
@@ -2712,7 +2712,7 @@ void Menu_SubMenuTask(Actor *a) {
             }
             break;
         case 2:
-            switch (a->field_18) {
+            switch (a->stateLevel2) {
             default:
             case 0:
                 e = &tbl[w->selection];
@@ -2749,8 +2749,8 @@ void Menu_SubMenuTask(Actor *a) {
             }
             break;
         case 3: {
-            s32 *q = (s32 *)a->u34.field_34;
-            switch (a->field_18) {
+            s32 *q = (s32 *)a->u34.children;
+            switch (a->stateLevel2) {
             default:
             case 0:
                 Text_CloseArray(w, 0xA);
@@ -2777,7 +2777,7 @@ void Menu_SubMenuTask(Actor *a) {
         }
         break;
     case 2:
-        switch (a->field_14) {
+        switch (a->stateLevel1) {
         default:
         case 0:
             Text_CloseArray(w, 0xA);
@@ -2816,7 +2816,7 @@ void func_80014870(Actor *actor) {
         obj = Cd_GetFileEntry(*list);
         if (w->field_2C != 0 && w->field_3C == 0) {
             Menu_SetPartsGridPos(obj, 2, &w->field_28, &w->field_2C);
-            Gfx_SetPartsPalette(obj, 2, (actor->field_28 >> 2) & 3);
+            Gfx_SetPartsPalette(obj, 2, (actor->elapsed >> 2) & 3);
             Gfx_HidePartsByMask(obj, 0);
         } else {
             Gfx_HidePartsByMask(obj, 2);
@@ -2840,7 +2840,7 @@ void func_80014984(Actor *a0) {
     s16 *tbl;
     Halves *h;
 
-    switch (a0->field_10) {
+    switch (a0->stateLevel0) {
     case 0:
     default:
         w->digiCount = Digi_ListByState(3, (ElmE620 **)w->digiList);
@@ -2848,7 +2848,7 @@ void func_80014984(Actor *a0) {
         Task_NextState0(a0);
         break;
     case 1:
-        switch (a0->field_14) {
+        switch (a0->stateLevel1) {
         case 0:
         default:
             if (Math_RampToOne((s32)a0, &w->scale) != 0) {
@@ -2891,7 +2891,7 @@ void func_80014984(Actor *a0) {
         }
         break;
     case 2:
-        switch (a0->field_14) {
+        switch (a0->stateLevel1) {
         case 0:
         default:
             Text_CloseArray(w, 0x1A);
@@ -3203,7 +3203,7 @@ void Menu_ItemUseTask(Actor *a0) {
 
     D_8005076C = (u8 *)Cd_GetFileEntry(0x5130014);
     D_80050770 = (u8 *)Cd_GetFileEntry(0x5130015);
-    switch (a0->field_10) {
+    switch (a0->stateLevel0) {
     case 0:
     default:
         *(Layout8C *)w->field_8C = *(Layout8C *)Cd_GetFileEntry(0x5130010);
@@ -3211,7 +3211,7 @@ void Menu_ItemUseTask(Actor *a0) {
         Task_NextState0(a0);
         break;
     case 1:
-        switch (a0->field_14) {
+        switch (a0->stateLevel1) {
         case 0:
         default:
             if (Math_RampToOne((s32)a0, &w->field_9C) != 0) {
@@ -3278,14 +3278,14 @@ break;
             }
             break;
         case 3:
-            switch (a0->field_18) {
+            switch (a0->stateLevel2) {
             case 0:
                 if (Text_IsFinished(w->field_50) != 0) {
                     Task_NextState2(a0);
                 }
                 break;
             case 1:
-                if (D_8005F6F0[0].triangle > 0 || D_8005F6F0[0].cross > 0 || a0->field_20++ >= 0x1F) {
+                if (D_8005F6F0[0].triangle > 0 || D_8005F6F0[0].cross > 0 || a0->stateLevel4++ >= 0x1F) {
                     Task_SetState0(a0, 2);
                 }
                 break;
@@ -3307,7 +3307,7 @@ break;
         }
         break;
     case 2:
-        switch (a0->field_14) {
+        switch (a0->stateLevel1) {
         case 0:
         default:
             Text_CloseArray(w->field_0, 0x22);
@@ -3350,7 +3350,7 @@ void func_80015D30(Actor *actor) {
             case 0:
             if (w->field_98 == 1 || w->field_98 == 3) {
                 Menu_SetPartsGridPos(obj, 2, &w->field_88, &w->field_8C);
-                Gfx_SetPartsPalette(obj, 2, (actor->field_28 >> 2) & 3);
+                Gfx_SetPartsPalette(obj, 2, (actor->elapsed >> 2) & 3);
                 Gfx_HidePartsByMask(obj, 0);
             } else {
                 Gfx_HidePartsByMask(obj, 2);
@@ -3624,7 +3624,7 @@ void Menu_ItemTask(Actor *a0) {
     s32 id;
     Src16198 st;
 
-    switch (a0->field_10) {
+    switch (a0->stateLevel0) {
     case 0:
     default:
         w->gridLayout = *(Box16198 *)Cd_GetFileEntry(0x5130017);
@@ -3637,7 +3637,7 @@ void Menu_ItemTask(Actor *a0) {
         Task_NextState0(a0);
         break;
     case 1:
-        switch (a0->field_14) {
+        switch (a0->stateLevel1) {
         case 0:
         default:
             if (Math_RampToOne((s32)a0, &w->fade) != 0) {
@@ -3705,8 +3705,8 @@ void Menu_ItemTask(Actor *a0) {
             }
             break;
         case 3:
-            slot = (s32 *)a0->u34.field_34;
-            switch (a0->field_18) {
+            slot = (s32 *)a0->u34.children;
+            switch (a0->stateLevel2) {
             case 0:
             default:
                 Text_CloseArray(w->cellTextSlots, 0x15);
@@ -3732,7 +3732,7 @@ void Menu_ItemTask(Actor *a0) {
             st.field_10 = 0x81;
             st.field_11 = 0;
             st.field_4 = Item_GetNameText(Menu_Ctx->itemId);
-            switch (a0->field_18) {
+            switch (a0->stateLevel2) {
             case 0:
             default:
                 st.text = (s32)Cd_GetFileEntry(0x1FD00B9);
@@ -3758,14 +3758,14 @@ void Menu_ItemTask(Actor *a0) {
             }
             break;
         case 5:
-            switch (a0->field_18) {
+            switch (a0->stateLevel2) {
             case 0:
                 if (Text_IsFinished(w->msgTextSlot) != 0) {
                     Task_NextState2(a0);
                 }
                 break;
             case 1:
-                if (D_8005F6F0[0].triangle > 0 || D_8005F6F0[0].cross > 0 || a0->field_20++ >= 0x1F) {
+                if (D_8005F6F0[0].triangle > 0 || D_8005F6F0[0].cross > 0 || a0->stateLevel4++ >= 0x1F) {
                     Task_SetState0(a0, 2);
                 }
                 break;
@@ -3784,7 +3784,7 @@ void Menu_ItemTask(Actor *a0) {
         }
         break;
     case 2:
-        switch (a0->field_14) {
+        switch (a0->stateLevel1) {
         case 0:
         default:
             Item_SortList();
@@ -3832,7 +3832,7 @@ loop:
             Gfx_SetPartsNumber(obj, 0x20, 2, w->field_58 ? w->field_58 : 1);
             tmp.field_0 = w->field_54.field_0 - w->field_6E;
             Menu_SetPartsGridPos(obj, 2, (s32 *)&tmp, &w->field_58);
-            Gfx_SetPartsPalette(obj, 2, (actor->field_28 >> 2) & 3);
+            Gfx_SetPartsPalette(obj, 2, (actor->elapsed >> 2) & 3);
             f = func_80013854(obj, 8, w->field_6E);
             f |= func_80013854(obj, 4, w->field_58 - w->field_6E - 2);
             if (w->field_70 == 0) {
@@ -4242,7 +4242,7 @@ void func_80018048(Actor *a0) {
     s32 id;
     u8 *p;
 
-    switch (a0->field_10) {
+    switch (a0->stateLevel0) {
     case 0:
     default:
         w->grid = D_80040F1C;
@@ -4254,7 +4254,7 @@ void func_80018048(Actor *a0) {
         Task_NextState0(a0);
         break;
     case 1:
-        switch (a0->field_14) {
+        switch (a0->stateLevel1) {
         case 0:
         default:
             if (Math_RampToOne((s32)a0, &w->scale) != 0) {
@@ -4342,8 +4342,8 @@ void func_80018048(Actor *a0) {
             }
             break;
         case 3:
-            slot = (s32 *)a0->u34.field_34;
-            switch (a0->field_18) {
+            slot = (s32 *)a0->u34.children;
+            switch (a0->stateLevel2) {
             case 0:
             default:
                 Text_CloseArray(w->texts, 0x14);
@@ -4397,14 +4397,14 @@ void func_80018048(Actor *a0) {
             }
             break;
         case 4:
-            switch (a0->field_18) {
+            switch (a0->stateLevel2) {
             case 0:
                 if (Text_IsFinished(w->promptText) != 0) {
                     Task_NextState2(a0);
                 }
                 break;
             case 1:
-                if (D_8005F6F0[0].triangle > 0 || D_8005F6F0[0].cross > 0 || a0->field_20++ >= 0x1F) {
+                if (D_8005F6F0[0].triangle > 0 || D_8005F6F0[0].cross > 0 || a0->stateLevel4++ >= 0x1F) {
                     Task_SetState0(a0, 2);
                 }
                 break;
@@ -4452,7 +4452,7 @@ void func_80018048(Actor *a0) {
         }
         break;
     case 2:
-        switch (a0->field_14) {
+        switch (a0->stateLevel1) {
         case 0:
         default:
             Text_CloseArray(w->texts, 0x14);
@@ -4497,7 +4497,7 @@ void func_800188BC(Actor *actor) {
             tmp = w->cursor;
             tmp.field_2 = w->cursor.field_2 - w->scrollTop;
             Menu_SetPartsGridPos(obj, 2, (s32 *)&tmp, &w->gridCols);
-            Gfx_SetPartsPalette(obj, 2, (actor->field_28 >> 2) & 3);
+            Gfx_SetPartsPalette(obj, 2, (actor->elapsed >> 2) & 3);
             {
                 s32 fl = (w->scrollTop < 1) << 2;
                 if (w->rowCount - w->scrollTop - 4 <= 0) {
@@ -4610,23 +4610,23 @@ void func_80018D78(Actor *a) {
     s16 *s;
     PadState *d;
 
-    switch (a->field_10) {
+    switch (a->stateLevel0) {
     default:
     case 0:
         w->blk = *(Blk18D78 *)Cd_GetFileEntry(0x513001C);
         Mem_FillWordsNeg1(w, 0x1B);
         GsSetOffset(-0xA0, 0xB4);
         t[0] = a;
-        Task_Create(6, (s32 *)a->u34.field_34, (s32)t);
-        a->field_30 = 0;
+        Task_Create(6, (s32 *)a->u34.children, (s32)t);
+        a->childCount = 0;
         Task_NextState0(a);
         break;
     case 1:
-        switch (a->field_14) {
+        switch (a->stateLevel1) {
         default:
         case 0:
             h = (Halves *)Cd_GetFileEntry(0x513001E);
-            (*(Actor **)a->u34.field_34)->field_3C->field_3C = 4;
+            (*(Actor **)a->u34.children)->model->field_3C = 4;
             if (Math_RampToOne((s32)a, &w->ramp) != 0) {
                 break;
             }
@@ -4656,7 +4656,7 @@ void func_80018D78(Actor *a) {
             Math_RampToOne((s32)a, &w->field_14C);
             p = w->field_138;
             s = w->field_140;
-            a->field_30 = 1;
+            a->childCount = 1;
             p[1] += s[1];
             if (D_8005F6F0[0].left != 0) {
                 s[1] = (s[1] - 5 < -0x22) ? -0x22 : s[1] - 5;
@@ -4686,7 +4686,7 @@ void func_80018D78(Actor *a) {
         }
         break;
     case 2:
-        switch (a->field_14) {
+        switch (a->stateLevel1) {
         default:
         case 0:
             Text_CloseArray(w, 0x1B);
@@ -4941,7 +4941,7 @@ void func_80019808(Actor *a0) {
     s32 j;
     s32 n;
 
-    switch (a0->field_10) {
+    switch (a0->stateLevel0) {
     case 0:
     default:
         w->field_118 = Menu_Ctx->selRecord;
@@ -4951,7 +4951,7 @@ void func_80019808(Actor *a0) {
         Task_NextState0(a0);
         break;
     case 1:
-        switch (a0->field_14) {
+        switch (a0->stateLevel1) {
         case 0:
         default:
             if (Math_RampToOne((s32)a0, &w->fadeRamp) != 0) {
@@ -5019,7 +5019,7 @@ void func_80019808(Actor *a0) {
         }
         break;
     case 2:
-        switch (a0->field_14) {
+        switch (a0->stateLevel1) {
         case 0:
         default:
             Text_CloseArray(&w->textBoxes, 0x15);
@@ -5066,7 +5066,7 @@ void func_80019BF4(Actor *actor) {
                 tmp = w->cursors[k];
                 tmp.field_2 = w->cursors[k].field_2 - w->scroll[k];
                 Menu_SetPartsGridPos(obj, 0x4000, (s32 *)&tmp, &w->grids[k].field_0);
-                Gfx_SetPartsPalette(obj, 0x4000, (actor->field_28 >> 2) & 3);
+                Gfx_SetPartsPalette(obj, 0x4000, (actor->elapsed >> 2) & 3);
             } else {
                 v |= 0x4000;
             }
@@ -5110,10 +5110,10 @@ void Task_SpawnListFromFile(Actor *a0) {
     s32 end = -1;
     s32 *s;
 
-    if (a0->field_10 != 0) {
+    if (a0->stateLevel0 != 0) {
         return;
     }
-    s = (s32 *)a0->u34.field_34;
+    s = (s32 *)a0->u34.children;
     p = (Ent19E50 *)Cd_GetFileOrNull(a0->work->field_0);
     slot = s;
 loop:
@@ -5134,11 +5134,11 @@ void func_80019EE0(Actor *arg0, s32 arg1) {
 }
 
 void func_80019EE8(Actor *a0) {
-    s32 v1 = a0->field_10;
+    s32 v1 = a0->stateLevel0;
     u16 *a1 = (u16 *)&a0->work->field_0;
     switch (v1) {
     case 1:
-        if (a0->field_14 == 0 || a0->field_14 != v1) {
+        if (a0->stateLevel1 == 0 || a0->stateLevel1 != v1) {
             u16 nv = *a1 + 0x555;
             *a1 = nv;
             if ((s16)nv >= 0x1000) {
@@ -5444,13 +5444,13 @@ extern GfxTexSlot *Gfx_FindOrLoadTexSlot(s32);
 extern void Task_Create(u32, s32 *, s32);
 
 void func_8001A958(Actor *a0) {
-    if (a0->field_10 != 0) {
+    if (a0->stateLevel0 != 0) {
         return;
     }
     Gfx_FindOrLoadTexSlot(0x13A0000);
     if ((D_8005F788[0] & 0xF00) != 0x500) {
         Gfx_FindOrLoadTexSlot(0x1100000);
-        Task_Create(0xA, a0->u34.field_34, 0);
+        Task_Create(0xA, a0->u34.children, 0);
     }
     Task_NextState0(a0);
 }
@@ -5513,7 +5513,7 @@ void Text_UpdateAllBoxes(Actor *a0) {
     PadState *tb;
 
     pkt = (Ft4_1A9C8 *)D_8005F770.packet.addr;
-    slots = (Actor **)a0->u34.field_34;
+    slots = (Actor **)a0->u34.children;
     wk = (Wk1A9C8 *)a0->work;
     tb = D_8005F6F0;
     row = 0;
@@ -5622,7 +5622,7 @@ void Text_UpdateAllBoxes(Actor *a0) {
                 case 0xFA:
                     s++;
                     if (r->field_24 == nFA) {
-                        switch (a0->field_14) {
+                        switch (a0->stateLevel1) {
                         default:
                         case 0:
                             Snd_PlayById((*s & 1) ? 0x38 : 0x37, 0);
@@ -5661,7 +5661,7 @@ void Text_UpdateAllBoxes(Actor *a0) {
                             Task_NextState1(a0);
                             break;
                         case 1:
-                            if (slots[row + 1]->field_14 == 1) {
+                            if (slots[row + 1]->stateLevel1 == 1) {
                                 r->field_27 = 0;
                                 r->field_24++;
                                 Task_SetState1(a0, 0);
@@ -5762,7 +5762,7 @@ void Text_UpdateAllBoxes(Actor *a0) {
                     mode2 = D_8005F770.gameMode / 256 == 2;
                     s++;
                     if (r->field_2A == nF6) {
-                        switch (a0->field_14) {
+                        switch (a0->stateLevel1) {
                         case 0:
                         default:
                             np = nums;
@@ -5854,19 +5854,19 @@ void Text_UpdateAllBoxes(Actor *a0) {
                         nF4b++;
                     } else if (k4 < 0x30) {
                         if (r->field_2E == nF4c) {
-                            switch (a0->field_14) {
+                            switch (a0->stateLevel1) {
                             case 0:
                             default:
                                 num[0] = k4 & 0xF;
                                 num[1] = 0;
                                 Task_Create(0x16, (s32 *)&slots[0x35], (s32)num);
-                                a0->field_14++;
+                                a0->stateLevel1++;
                                 r->field_27 = 1;
                                 break;
                             case 1:
                                 s += 2;
                                 if (slots[0x35] == 0) {
-                                    a0->field_14 = 0;
+                                    a0->stateLevel1 = 0;
                                     r->field_27 = 0;
                                     r->field_2E++;
                                 }
@@ -5897,7 +5897,7 @@ void Text_UpdateAllBoxes(Actor *a0) {
                 case 0xF3:
                     stop = 1;
                     s++;
-                    switch (a0->field_14) {
+                    switch (a0->stateLevel1) {
                     case 0:
                     default:
                         Gfx_FadeOutToBlack(0xA);
@@ -5906,7 +5906,7 @@ void Text_UpdateAllBoxes(Actor *a0) {
                     case 1:
                         break;
                     }
-                    if (++a0->field_18 >= 0x19) {
+                    if (++a0->stateLevel2 >= 0x19) {
                         if (*s == 0xFC) {
                             D_8005F770.nextGameMode = 0x605;
                         } else if (*s == 0xFD) {
@@ -7456,7 +7456,7 @@ void func_8001EC00(Actor *arg0, s32 *arg1) {
 }
 
 void func_8001EC10(Actor *arg0) {
-    s32 state = arg0->field_10;
+    s32 state = arg0->stateLevel0;
 
     switch (state) {
     case 0:
@@ -7470,9 +7470,9 @@ void func_8001EC10(Actor *arg0) {
         Actor *v1 = (Actor *)w->field_0;
         w->field_4 = 0;
         if (v1 != 0) {
-            s32 st = v1->field_10;
+            s32 st = v1->stateLevel0;
             if (st != 0 && st != 3) {
-                ModelBone *de = v1->field_3C->bones;
+                ModelBone *de = v1->model->bones;
                 ObjEC10 *dst = arg0->u38.ptr38;
                 s32 t = de->worldTx;
                 dst->posY = 0;
@@ -7616,7 +7616,7 @@ s32 func_8001F180(s32 id) {
 }
 
 void Anim_SetModelAnim(Actor *a, s32 n) {
-    Sub3C *s = a->field_3C;
+    Sub3C *s = a->model;
     s32 i;
     s32 k;
 
@@ -7636,7 +7636,7 @@ void Anim_SetModelAnim(Actor *a, s32 n) {
 }
 
 void Anim_SetModelAnimFile(Actor *arg0, s32 arg1, s32 arg2) {
-    Sub3C *p = arg0->field_3C;
+    Sub3C *p = arg0->model;
     p->field_54 = arg1;
     p->animPos = 0;
     p->animData = 0;
@@ -7647,7 +7647,7 @@ void Anim_SetModelAnimFile(Actor *arg0, s32 arg1, s32 arg2) {
 }
 
 s32 Anim_HasModelAnim(Actor *a0, s32 n) {
-    Sub3C *sub = a0->field_3C;
+    Sub3C *sub = a0->model;
     s32 id;
     s32 k;
     s32 *p;
@@ -7669,7 +7669,7 @@ s32 Anim_HasModelAnim(Actor *a0, s32 n) {
 }
 
 void Anim_StepModelAnim(Actor *a) {
-    Sub3C *s = a->field_3C;
+    Sub3C *s = a->model;
     s32 *data = (s32 *)Cd_GetFileOrNull(s->animFileId);
     s32 i;
     s32 j;
@@ -7737,7 +7737,7 @@ done:
 extern Blk20 D_80043714;
 
 void Gfx_ResetModelBones(Actor *a0) {
-    Sub3C *sub = a0->field_3C;
+    Sub3C *sub = a0->model;
     ModelBone *p = sub->bones;
     s32 i = 0;
     while (i < sub->boneCount) {
@@ -7814,7 +7814,7 @@ s32 func_8001F970(s32 arg0) {
 }
 
 void Gfx_AnimateModelTex(Actor *a0) {
-    Sub3C *w = a0->field_3C;
+    Sub3C *w = a0->model;
     Part1F9AC *r = (Part1F9AC *)w->field_1C;
     Pos1F9AC *pos = w->field_44;
     s32 k = 0;
@@ -7919,7 +7919,7 @@ Sub3C *Gfx_AttachModel(Actor *a0, s32 id) {
     s32 fresh = 0;
     Mdl1FDBC *m = (Mdl1FDBC *)Cd_GetFileOrNull(id);
     Mdl1FDBC *base = m;
-    Sub3C *t = a0->field_3C;
+    Sub3C *t = a0->model;
     Sub3C *s;
     s32 i;
     Sec1FDBC20 *p;
@@ -7929,13 +7929,13 @@ Sub3C *Gfx_AttachModel(Actor *a0, s32 id) {
     Ent1FDBC20 *e;
 
     if (t == NULL) {
-        a0->field_3C = (Sub3C *)Mem_Alloc(0x7C, 2);
-        Mem_Zero(a0->field_3C, 0x7C);
+        a0->model = (Sub3C *)Mem_Alloc(0x7C, 2);
+        Mem_Zero(a0->model, 0x7C);
         fresh = 1;
     } else if (t->file == m && m->relocated != 0) {
         return t;
     }
-    s = a0->field_3C;
+    s = a0->model;
     s->fileId = id;
     s->file = base;
     s->boneCount = m->count;
@@ -7999,7 +7999,7 @@ void Gfx_CalcModelBoneMatrices(Actor *a0) {
     s32 k;
     s32 n;
 
-    s = a0->field_3C;
+    s = a0->model;
     o = a0->u38.ptr38;
     d = s->bones;
     cam = D_80061A08;
@@ -8082,7 +8082,7 @@ void Gfx_DrawTexModel(Actor *a0, s32 mode) {
     s32 j;
     s32 n;
 
-    s = a0->field_3C;
+    s = a0->model;
     i = 0;
     e = s->bones;
     s->field_44 = (struct Pos1F9AC *)Gfx_FindOrLoadTexSlot(s->fileId << 16);
@@ -8141,7 +8141,7 @@ void Gfx_DrawWireModel(Actor *a0, s32 mode, Col21ABC *col) {
     s32 n;
 
     i = 0;
-    s = a0->field_3C;
+    s = a0->model;
     e = s->bones;
     s->field_40 = D_8005F770.otLayerLen[s->field_3C] - 2;
     for (; i < s->boneCount; i++, e++) {
@@ -9881,7 +9881,7 @@ void func_80024310(Actor *arg0, Block1C *arg1) {
 void func_80024350(Actor *arg0) {
     ActorWork *work = arg0->work;
 
-    switch (arg0->field_10) {
+    switch (arg0->stateLevel0) {
     case 0:
         Actor_InitTransform((ContC40 *)arg0, &work->field_8, work->field_14);
         Gfx_AttachModel(arg0, work->field_0)->field_3C = 3;
@@ -9889,8 +9889,8 @@ void func_80024350(Actor *arg0) {
         Task_NextState0(arg0);
         break;
     case 1: {
-        Sub3C *s = arg0->field_3C;
-        if (arg0->field_28 < work->field_18 && s->field_60 >= 0)
+        Sub3C *s = arg0->model;
+        if (arg0->elapsed < work->field_18 && s->field_60 >= 0)
             break;
         Task_SetState0(arg0, 3);
         break;
@@ -9902,7 +9902,7 @@ void func_80024350(Actor *arg0) {
 
 void func_80024410(Actor *arg0) {
     ActorWork *w = arg0->work;
-    if (arg0->field_10 == 1) {
+    if (arg0->stateLevel0 == 1) {
         Gfx_AttachModel(arg0, w->field_0);
         Anim_StepModelAnim(arg0);
         Actor_UpdateTransform(arg0);
@@ -10826,8 +10826,8 @@ s32 func_80026170(Obj26170 *a) {
 
 void Pad_CmdConfigMode(Actor *arg0, u8 arg1) {
     arg0->u34.b.field_37 = 0x43;
-    arg0->work = (ActorWork *)&arg0->field_24;
-    arg0->field_24 = arg1;
+    arg0->work = (ActorWork *)&arg0->frameCount;
+    arg0->frameCount = arg1;
     arg0->u34.b.field_36 = 1;
 }
 
@@ -10839,22 +10839,22 @@ void Pad_CmdQueryModel(Actor *arg0) {
 
 void Pad_CmdQueryMode(Actor *arg0, u8 arg1) {
     arg0->u34.b.field_37 = 0x4C;
-    arg0->work = (ActorWork *)&arg0->field_24;
-    arg0->field_24 = arg1;
+    arg0->work = (ActorWork *)&arg0->frameCount;
+    arg0->frameCount = arg1;
     arg0->u34.b.field_36 = 1;
 }
 
 void Pad_CmdQueryAct(Actor *arg0, u8 arg1) {
     arg0->u34.b.field_37 = 0x46;
-    arg0->work = (ActorWork *)&arg0->field_24;
-    arg0->field_24 = arg1;
+    arg0->work = (ActorWork *)&arg0->frameCount;
+    arg0->frameCount = arg1;
     arg0->u34.b.field_36 = 1;
 }
 
 void Pad_CmdQueryComb(Actor *arg0, u8 arg1) {
     arg0->u34.b.field_37 = 0x47;
-    arg0->work = (ActorWork *)&arg0->field_24;
-    arg0->field_24 = arg1;
+    arg0->work = (ActorWork *)&arg0->frameCount;
+    arg0->frameCount = arg1;
     arg0->u34.b.field_36 = 1;
 }
 
