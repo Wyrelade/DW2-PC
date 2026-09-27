@@ -114,7 +114,13 @@ INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80066FE8);
 
 INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80067120);
 
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_800673FC);
+void func_800673FC(Actor *arg0) {
+    Stg00Work73FC *w = (Stg00Work73FC *)arg0->work;
+    ActorTransformView *t = arg0->u38.ptr38;
+    t->posX = w->field_4;
+    t->posY = w->field_8;
+    t->posZ = w->field_C;
+}
 
 INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80067428);
 
