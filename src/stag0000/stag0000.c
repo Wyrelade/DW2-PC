@@ -566,7 +566,14 @@ void func_800687F0(Actor *arg0, Stg00Blk1C *arg1) {
     *(Stg00Blk1C *)arg0->work = *arg1;
 }
 
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80068830);
+void func_80068830(Actor *arg0) {
+    if (arg0->stateLevel0 == 0) {
+        Stg00ObjWork *w = (Stg00ObjWork *)arg0->work;
+        GsInitCoordinate2(NULL, &w->field_1C);
+        w->field_84 = 1;
+        Task_NextState0(arg0);
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80068884);
 
