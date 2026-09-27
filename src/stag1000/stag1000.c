@@ -1,7 +1,56 @@
 #include "common.h"
 #include "stag1000/stag1000.h"
 
-INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_800633B0);
+void func_800633B0(Actor *a0) {
+    s32 args[2];
+    s32 *slot = (s32 *)a0->u34.children;
+
+    if (a0->stateLevel0 != 0) {
+        return;
+    }
+    switch (D_8005F770.gameMode) {
+    case 0x401:
+    default:
+        Gpu_AllocPacketBufs(0x25800);
+        Sys_SetFrameRate30();
+        Gfx_InitTexSlots();
+        Gpu_InitDoubleBuffer(0x140, 0x1E0, 2, 0);
+        Gpu_SetBgClearColor(0, 0, 0);
+        Gpu_ClearScreens();
+        Gfx_FadeInFromBlack(0x20);
+        Task_Create(0x401, slot + 1, 0);
+        Snd_StopAll();
+        break;
+    case 0x408:
+        Gpu_AllocPacketBufs(0x25800);
+        Sys_SetFrameRate30();
+        Gpu_InitDoubleBuffer(0x140, 0x1E0, 2, 0);
+        Gpu_SetBgClearColor(0, 0, 0);
+        Gpu_ClearScreens();
+        Gfx_FadeClear();
+        Task_Create(0x403, slot + 1, 0);
+        break;
+    case 0x402:
+    case 0x403:
+    case 0x404:
+    case 0x405:
+    case 0x406:
+    case 0x407:
+        Gpu_AllocPacketBufs(0x400);
+        Sys_SetFrameRate60();
+        Gpu_InitDoubleBuffer(0x140, 0x1E0, 2, 1);
+        ResetGraph(1);
+        ClearImage2((s32)&D_800651C0, 0, 0, 0);
+        DrawSync(0);
+        D_8005F770.bufIndex = 0;
+        Snd_StopAll();
+        args[0] = D_800651C8[D_8005F770.gameMode - 0x402];
+        args[1] = Cd_GetFileSectors(args[0]) / 10 - 10;
+        Task_Create(0x402, slot + 2, (s32)args);
+        break;
+    }
+    Task_NextState0(a0);
+}
 
 void func_8006359C(void) {
 }
