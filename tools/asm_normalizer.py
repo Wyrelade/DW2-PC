@@ -9325,6 +9325,335 @@ def arg_unrename_pass(stext, tgt):
     return "\n".join(lines) if changed else stext
 
 
+
+# --------------------------------------------------------------------------
+# Loop helpers for giv_unreduce / const_unhoist: a loop is a `$L:` label with a
+# conditional branch back to it from below; its region runs from the label to
+# that branch (plus the delay slot). The loop must be entered only at the label:
+# no branch from outside the region may target a label inside it.
+# --------------------------------------------------------------------------
+_GU_LAB = re.compile(r"^\s*(\$L\w+):\s*$")
+
+
+def _gu_loops(lines):
+    """[(head_line, end_line)] for loops entered only at their head label."""
+    labs = {}
+    for i, l in enumerate(lines):
+        m = _GU_LAB.match(l)
+        if m:
+            labs[m.group(1)] = i
+    refs = {}
+    for i, l in enumerate(lines):
+        if not _s_is_insn(l):
+            continue
+        t = re.search(r"[\s,](\$L\w+)\s*$", l.split("#", 1)[0])
+        if t:
+            refs.setdefault(t.group(1), []).append(i)
+    out = []
+    for lab, h in labs.items():
+        back = [y for y in refs.get(lab, []) if y > h]
+        if not back or any(y < h for y in refs.get(lab, [])):
+            continue
+        e = max(back)
+        e2 = e + 1
+        while e2 < len(lines) and not _s_is_insn(lines[e2]):
+            e2 += 1
+        inner = {x for x, y in labs.items() if h < y <= e}
+        if any((y < h or y > e2) and _s_is_insn(lines[y]) and re.search(
+                r"[\s,](\$L\w+)\s*$", lines[y].split("#", 1)[0]) and re.search(
+                r"[\s,](\$L\w+)\s*$", lines[y].split("#", 1)[0]).group(1) in inner
+                for y in range(len(lines))):
+            continue
+        out.append((h, e2))
+    return out
+
+
+def _gu_du(l):
+    return defs_uses(l.split("#", 1)[0].strip())
+
+
+def _gu_tgt_loops(tgt):
+    """[(first, last)] index ranges of the target's loops (backward branches)."""
+    out = []
+    for q, (w, d) in enumerate(tgt):
+        mn = d.split(None, 1)[0].lower() if d.strip() else ""
+        if not is_branch(mn + " ") or mn in ("j", "jal", "jr", "jalr"):
+            continue
+        try:
+            off = int(w, 16) & 0xFFFF
+        except ValueError:
+            continue
+        if off & 0x8000:
+            off -= 0x10000
+        if off < 0:
+            out.append((q + 1 + off, q + 1))
+    return out
+
+
+def _gu_preheader(lines, h):
+    """Line indexes of the insns of the block that falls into loop head h
+    (walking back from h to the previous label or branch)."""
+    out = []
+    y = h - 1
+    while y >= 0:
+        l = lines[y]
+        if _GU_LAB.match(l):
+            break
+        if _s_is_insn(l):
+            if _src_is_branch(l):
+                break
+            out.append(y)
+        y -= 1
+    return out[::-1]
+
+
+def _gu_place(lines, h, tgt, tq, ta):
+    """Line after which to insert, in our loop-head block starting at label h, the insn that
+    is target insn tq of the target loop starting at ta: after as many of our insns as the
+    target has non-nop insns between ta and tq (falls back to the label, stops at a branch)."""
+    k = sum(1 for _w, d in tgt[ta:tq] if d.strip() != "nop")
+    at, n = h, 0
+    y = h + 1
+    while n < k and y < len(lines):
+        l = lines[y]
+        if _GU_LAB.match(l):
+            break
+        if _s_is_insn(l):
+            if _src_is_branch(l):
+                break
+            n += 1
+            at = y
+        y += 1
+    return at
+
+
+_GU_ADDK = re.compile(r"^(\s*)addi?u\s+(\$\w+)\s*,\s*(\$\w+)\s*,\s*(-?(?:0x[0-9a-fA-F]+|\d+))\s*$")
+
+
+# --------------------------------------------------------------------------
+# giv_unreduce: loop.c strength-reduced a combined DEST_ADDR giv G = B + K of the
+# biv B (`addu G,B,K` in the preheader, `addu G,G,S` next to the biv's `addu
+# B,B,S` in the loop), where retail's loop.c found it not worth reducing and
+# recomputes `addiu G,B,K` at the loop top every iteration. Target-guided: the
+# target has `addiu X,Y,K` inside one of its loops and fewer `R += S` increments
+# than ours. Sound when G has no other definition, is not read after its
+# increment inside the loop nor outside the loop (other than by nothing: dead at
+# the exits), B is not written between the preheader def and the loop head, and
+# the two increments sit in one basic block. -1 insn: pre-sigma.
+# --------------------------------------------------------------------------
+def giv_unreduce_pass(stext, tgt):
+    if not tgt:
+        return stext
+    tl = _gu_tgt_loops(tgt)
+    tk, tinc = {}, {}
+    for q, (_w, d) in enumerate(tgt):
+        m = re.match(r"^\s*addiu\s+\$(\w+)\s*,\s*\$(\w+)\s*,\s*(-?(?:0x[0-9a-fA-F]+|\d+))\s*$", d.strip())
+        if not m:
+            continue
+        k = int(m.group(3), 0)
+        if m.group(1) == m.group(2):
+            tinc[k] = tinc.get(k, 0) + 1
+        elif m.group(2) not in ("sp", "zero") and any(a <= q < b for a, b in tl):
+            tk.setdefault(k, (q, next(a for a, b in tl if a <= q < b)))
+    lines = stext.split("\n")
+    for h, e in _gu_loops(lines):
+        inc = {}
+        for y in range(h, e + 1):
+            m = _GU_ADDK.match(lines[y].split("#", 1)[0].rstrip())
+            if m and norm_reg(m.group(2)) == norm_reg(m.group(3)):
+                inc.setdefault(int(m.group(4), 0), []).append(y)
+        for y in _gu_preheader(lines, h):
+            m = _GU_ADDK.match(lines[y].split("#", 1)[0].rstrip())
+            if not m:
+                continue
+            g, b, k = norm_reg(m.group(2)), norm_reg(m.group(3)), int(m.group(4), 0)
+            if g is None or b is None or g == b or k not in tk or b in ("sp", "zero"):
+                continue
+            # G's increment and B's increment, same step, same block
+            gi = [x for s, xs in inc.items() for x in xs
+                  if norm_reg(_GU_ADDK.match(lines[x].split("#", 1)[0].rstrip()).group(2)) == g]
+            if len(gi) != 1:
+                continue
+            gi = gi[0]
+            s = int(_GU_ADDK.match(lines[gi].split("#", 1)[0].rstrip()).group(4), 0)
+            bi = [x for x in inc.get(s, [])
+                  if norm_reg(_GU_ADDK.match(lines[x].split("#", 1)[0].rstrip()).group(2)) == b]
+            if len(bi) != 1 or len(inc.get(s, [])) <= tinc.get(s, 0):
+                continue
+            bi = bi[0]
+            lo, hi = min(gi, bi), max(gi, bi)
+            if any(_GU_LAB.match(lines[x]) or (_s_is_insn(lines[x]) and _src_is_branch(lines[x]))
+                   for x in range(lo, hi + 1)):
+                continue
+            nr = _noreorder_lines(lines)
+            if gi in nr or y in nr:
+                continue
+            ok = True
+            for x, l in enumerate(lines):
+                if not _s_is_insn(l) or x in (y, gi):
+                    continue
+                d, u = _gu_du(l)
+                if g in d:
+                    ok = False          # another definition of G
+                    break
+                inloop = h <= x <= e
+                if g in u and (not inloop or x > gi):
+                    ok = False          # read outside the loop or after the increment
+                    break
+                if inloop and re.match(r"\s*jalr?\b", l):
+                    ok = False
+                    break
+                if y < x < h and b in d:
+                    ok = False          # B changes between the preheader def and the head
+                    break
+            if not ok:
+                continue
+            ind = m.group(1)
+            new = "%saddu\t%s,%s,%d" % (ind, m.group(2), m.group(3), k)
+            at = _gu_place(lines, h, tgt, tk[k][0], tk[k][1])
+            if at in _noreorder_lines(lines) or any(
+                    _s_is_insn(lines[x]) and (g in _gu_du(lines[x])[1] or b in _gu_du(lines[x])[0])
+                    for x in range(h + 1, at + 1)):
+                at = h
+            out = []
+            for x, l in enumerate(lines):
+                if x in (y, gi):
+                    continue
+                out.append(l)
+                if x == at:
+                    out.append(new)
+            return giv_unreduce_pass("\n".join(out), tgt)
+    return stext
+
+
+# --------------------------------------------------------------------------
+# const_unhoist: loop.c hoisted a constant `li R,C` (C's low half zero: one lui)
+# into the preheader, into a callee-saved register, where retail's loop.c left it
+# in the loop: the target builds C with `lui T,C>>16` inside its loop. Move the li
+# to the loop head (right after the label) into a caller-saved temp nothing in the
+# loop mentions and rename R there. R must be written only by the li and read
+# only inside the loop, with no call in the loop. R's save/restore stay (retail
+# keeps a saved-but-unused s-register). Count-preserving; pre-sigma so sigma sees
+# the target's temp.
+# --------------------------------------------------------------------------
+_GU_LI = re.compile(r"^(\s*)li\s+(\$\w+)\s*,\s*(-?(?:0x[0-9a-fA-F]+|\d+))\s*$")
+
+
+def const_unhoist_pass(stext, tgt):
+    if not tgt:
+        return stext
+    tl = _gu_tgt_loops(tgt)
+    tlui, tpos = {}, {}
+    for q, (_w, d) in enumerate(tgt):
+        m = re.match(r"^\s*lui\s+\$(\w+)\s*,\s*(?:\((0x[0-9a-fA-F]+|\d+)\s*>>\s*16\)|(0x[0-9a-fA-F]+|\d+))\s*$",
+                     d.strip())
+        if not m or not any(a <= q < b for a, b in tl):
+            continue
+        # a lui paired with an ori builds a full constant: only lone luis count
+        if any(re.match(r"^\s*ori\s+\$%s\s*," % m.group(1), tgt[z][1].strip())
+               for z in range(q + 1, min(q + 4, len(tgt)))):
+            continue
+        c = (int(m.group(2), 0) & 0xFFFF0000) if m.group(2) else (int(m.group(3), 0) << 16)
+        tlui[c & 0xFFFFFFFF] = m.group(1)
+        tpos[c & 0xFFFFFFFF] = (q, next(a for a, b in tl if a <= q < b))
+    if not tlui:
+        return stext
+    lines = stext.split("\n")
+    used_all = set()
+    for l in lines:
+        if _s_is_insn(l):
+            d, u = _gu_du(l)
+            used_all |= d | u
+    for h, e in _gu_loops(lines):
+        for y in _gu_preheader(lines, h):
+            m = _GU_LI.match(lines[y].split("#", 1)[0].rstrip())
+            if not m:
+                continue
+            r, c = norm_reg(m.group(2)), int(m.group(3), 0) & 0xFFFFFFFF
+            if c not in tlui or c & 0xFFFF or not r or not (r.startswith("s") or r == "fp"):
+                continue
+            ok, reads = True, []
+            for x, l in enumerate(lines):
+                if not _s_is_insn(l) or x == y:
+                    continue
+                if h <= x <= e and re.match(r"\s*jalr?\b", l):
+                    ok = False
+                    break
+                d, u = _gu_du(l)
+                is_save = re.match(r"^\s*(sw|lw)\s+%s\s*,\s*-?\d+\(\$(sp|29)\)" % re.escape(m.group(2)),
+                                   l.split("#", 1)[0])
+                if is_save:
+                    continue
+                if r in d:
+                    ok = False
+                    break
+                if r in u:
+                    if not h <= x <= e:
+                        ok = False
+                        break
+                    reads.append(x)
+            if not ok or not reads or y in _noreorder_lines(lines):
+                continue
+            inloop = set()
+            for x in range(h, e + 1):
+                if _s_is_insn(lines[x]):
+                    d, u = _gu_du(lines[x])
+                    inloop |= d | u
+            pref = [tlui[c]] + ["t9", "t8", "t7", "t6", "t5", "t4", "t3", "t2", "t1", "t0",
+                                "v1", "a1", "a2", "a3"]
+            t = next((z for z in pref if z not in inloop and z not in used_all), None)
+            if t is None:
+                t = next((z for z in pref if z not in inloop and z in ABI2NUM and not z.startswith("s")
+                          and _ff_dead_on(lines, [(q, x) for q, x in enumerate(lines) if _s_is_insn(x)],
+                                          lines[h].strip()[:-1], z)), None)
+            if t is None and re.match(r"t\d$", tlui[c]) and not any(
+                    _s_is_insn(l) and re.match(r"\s*jalr?\b", l) for l in lines):
+                # every temp is busy in our loop (ours keeps a loop-invariant web in the
+                # target's temp W and the constant in R): exchange W and R over the whole
+                # function (R's saves stay), then the constant lives in W. No call in the
+                # function, so W may hold any web R held.
+                w = "$%d" % ABI2NUM[tlui[c]]
+                sw = {m.group(2): w, w: m.group(2)}
+                pat2 = re.compile(r"(%s|%s)\b" % (re.escape(m.group(2)), re.escape(w)))
+                sw_lines = []
+                for x, l in enumerate(lines):
+                    body, sep, cm = l.partition("#")
+                    if _s_is_insn(l) and not re.match(
+                            r"^\s*(sw|lw)\s+%s\s*,\s*-?\d+\(\$(sp|29)\)" % re.escape(m.group(2)), body):
+                        l = pat2.sub(lambda q: sw[q.group(1)], body) + sep + cm
+                    sw_lines.append(l)
+                at = _gu_place(sw_lines, h, tgt, tpos[c][0], tpos[c][1])
+                if at in _noreorder_lines(sw_lines) or at == y or any(z <= at for z in reads):
+                    at = h
+                out = []
+                for x, l in enumerate(sw_lines):
+                    if x == y:
+                        continue
+                    out.append(l)
+                    if x == at:
+                        out.append(sw_lines[y])
+                return const_unhoist_pass("\n".join(out), tgt)
+            if t is None:
+                continue
+            tn = "$%d" % ABI2NUM[t]
+            pat = re.compile(re.escape(m.group(2)) + r"\b")
+            at = _gu_place(lines, h, tgt, tpos[c][0], tpos[c][1])
+            if at in _noreorder_lines(lines) or at == y or any(z <= at for z in reads):
+                at = h
+            out = []
+            for x, l in enumerate(lines):
+                if x == y:
+                    continue
+                if x in reads:
+                    body, sep, cm = l.partition("#")
+                    l = pat.sub(tn, body) + sep + cm
+                out.append(l)
+                if x == at:
+                    out.append("%sli\t%s,%s" % (m.group(1), tn, m.group(3)))
+            return const_unhoist_pass("\n".join(out), tgt)
+    return stext
+
+
 PASSES = {
     # reg_realloc is applied specially (it needs sigma from words); the ordered
     # list in the manifest still names it so the recipe is explicit and auditable.
@@ -9406,6 +9735,8 @@ PASSES = {
     "at_dest": at_dest_pass,
     "dead_spill": dead_spill_pass,
     "arg_unrename": arg_unrename_pass,
+    "giv_unreduce": giv_unreduce_pass,
+    "const_unhoist": const_unhoist_pass,
 }
 
 # Passes that CHANGE the instruction count and so must run BEFORE sigma is derived
@@ -9415,7 +9746,8 @@ PASSES = {
 PRE_SIGMA_PASSES = ("la_unfold_st", "un_hi_cse", "un_hi_cse_store", "exit_merge", "base_cse_collapse",
                     "shift_const_fold", "zero_remat", "load_remat", "nodiv",
                     "offset_unfold", "zext_keep", "zero_cmp", "param_copy",
-                    "undo_drop", "la_unfold", "arg_unprop", "sched_pre", "la_copy", "la_split", "const_sink", "zext_drop", "at_dest", "range_unswap", "slot_rethread", "const_uncse", "la_unhoist", "param_copy_fresh", "li_uncopy")
+                    "undo_drop", "la_unfold", "arg_unprop", "sched_pre", "la_copy", "la_split", "const_sink", "zext_drop", "at_dest", "range_unswap", "slot_rethread", "const_uncse", "la_unhoist", "param_copy_fresh", "li_uncopy",
+                    "const_unhoist", "giv_unreduce")
 
 # --------------------------------------------------------------------------
 # WORD-LEVEL passes. The original PSY-Q assembler (aspsx) scheduled branch and
