@@ -886,7 +886,57 @@ void Task_Destroy(s32 *arg0) {
     }
 }
 
+#ifdef NON_MATCHING
+extern s32 D_8005F784;
+extern s32 D_8005F778;
+
+/* Task_Run's view of a task: the type id (index into D_80040D50), the state set by
+ * Task_SetState0 (3 = being destroyed) and the two counters it advances. */
+typedef struct {
+    /* 0x00 */ s32 id;
+    u8 _pad04[0x0C];
+    /* 0x10 */ s32 state;
+    u8 _pad14[0x10];
+    /* 0x24 */ s32 field_24;
+    /* 0x28 */ s32 field_28;
+} TaskRunObj;
+
+/* Task_Run's view of an ObjDesc: the callbacks after Task_Create's init. */
+typedef struct {
+    /* 0x00 */ void (*init)(Buf111D4 *, s32);
+    /* 0x04 */ void (*field_4)(TaskRunObj *);
+    /* 0x08 */ void (*field_8)(TaskRunObj *);
+    /* 0x0C */ void (*field_C)(TaskRunObj *);
+} TaskRunDesc;
+
+/* The original switches sp to the scratchpad (old sp saved at 0x1F8003FC, callback
+ * runs with sp = 0x1F8003F8) around the field_4 and field_C calls, then restores it.
+ * The stack switch has no effect on behaviour, so C just calls the callbacks. */
+s32 Task_Run(s32 arg0) {
+    TaskRunObj *t = (TaskRunObj *)arg0;
+    TaskRunDesc *d = (TaskRunDesc *)D_80040D50[t->id >> 8][t->id & 0xFF];
+
+    if (D_8005F784 == 0) {
+        if (t->state == 3) {
+            d->field_8(t);
+            return 0;
+        }
+        d->field_4(t);                      /* on the scratchpad stack */
+    } else {
+        if (d->field_C != 0 && t->field_24 != 0 && t->state != 0 && t->state != 3) {
+            d->field_C(t);                  /* on the scratchpad stack */
+        }
+        if (t->state != 0) {
+            t->field_24++;
+            t->field_28 += D_8005F778;
+        }
+    }
+    Task_RunChildren((Obj10E38 *)t);
+    return (s32)t;
+}
+#else
 ASM_SOURCE("src/main/asm/game", Task_Run);
+#endif
 
 void Task_Create(u32 id, s32 *slot, s32 arg) {
     ObjDesc *d;
@@ -13189,27 +13239,190 @@ ASM_SOURCE("src/main/asm/crt0", func_8002CE54);
 
 ASM_SOURCE("src/main/asm/libgte", func_8002CE5C);
 
-ASM_SOURCE("src/main/asm/libgte", SquareRoot0);
+#ifdef NON_MATCHING
+extern s16 D_80049930[];        /* sqrt table, indexed by the top bits (0x40..0xFF) - 0x40 */
 
+s32 SquareRoot0(s32 a) {
+    s32 n = Gte_CountLeadingZeros(a);
+    s32 e;
+    s32 sh;
+    s32 t;
+
+    if (n == 32) {
+        return 0;
+    }
+    e = n & ~1;
+    sh = (31 - e) >> 1;
+    if (e - 24 >= 0) {
+        t = a << (e - 24);
+    } else {
+        t = a >> (24 - e);
+    }
+    return (u32)(D_80049930[t - 0x40] << sh) >> 12;
+}
+#else
+ASM_SOURCE("src/main/asm/libgte", SquareRoot0);
+#endif
+
+#ifdef NON_MATCHING
+/* out = m * v >> 12 for a 32-bit vector. The GTE only takes 16-bit inputs, so each
+ * component is split sign-magnitude into hi = |v| >> 15 and lo = |v| & 0x7FFF:
+ * out = (m * hi) * 8 + (m * lo >> 12). Also leaves m as the GTE rotation matrix.
+ * (The GTE accumulates in 44 bits; C uses s32, identical for rotation-range m.) */
+void ApplyMatrixLV(ObjC0E4 *arg0, s32 *v, s32 *out) {
+    ArgC0E4 *m = (ArgC0E4 *)arg0;
+    s32 hi[3];
+    s32 lo[3];
+    s32 i;
+    s32 a;
+
+    gte_SetRotMatrix(m);
+    for (i = 0; i < 3; i++) {
+        a = (v[i] < 0) ? -v[i] : v[i];
+        hi[i] = a >> 15;
+        lo[i] = a & 0x7FFF;
+        if (v[i] < 0) {
+            hi[i] = -hi[i];
+            lo[i] = -lo[i];
+        }
+    }
+    for (i = 0; i < 3; i++) {
+        out[i] = (m->m[i][0] * hi[0] + m->m[i][1] * hi[1] + m->m[i][2] * hi[2]) * 8
+               + ((m->m[i][0] * lo[0] + m->m[i][1] * lo[1] + m->m[i][2] * lo[2]) >> 12);
+    }
+}
+#else
 ASM_SOURCE("src/main/asm/libgte", ApplyMatrixLV);
+#endif
 
 ASM_SOURCE("src/main/asm/libgte", func_8002D0D4);
 
+#ifdef NON_MATCHING
+extern s32 D_80049ABC;          /* byte offset of the top of the matrix stack */
+extern ArgC0E4 D_80049AC0[];    /* saved GTE rotation+translation (0x20 each) */
+extern char D_80049D71[];       /* underflow message */
+
+/* Pops the matrix pushed by func_8002D0D4 back into the GTE rotation and translation
+ * registers; prints a message on underflow. */
+void func_8002D178(void) {
+    ArgC0E4 *m;
+
+    if (D_80049ABC <= 0) {
+        printf(D_80049D71);
+        return;
+    }
+    D_80049ABC -= sizeof(ArgC0E4);
+    m = &D_80049AC0[D_80049ABC / sizeof(ArgC0E4)];
+    gte_SetRotMatrix(m);
+    gte_SetTransMatrix(m);
+}
+#else
 ASM_SOURCE("src/main/asm/libgte", func_8002D178);
+#endif
 
+#ifdef NON_MATCHING
+/* m0 = m0 * m1 (column by column through the GTE); leaves m0 (the original) as the
+ * GTE rotation matrix. */
+void MulMatrix(ObjC0E4 *arg0, ArgC0E4 *m1) {
+    ArgC0E4 *m0 = (ArgC0E4 *)arg0;
+    s32 i;
+
+    gte_SetRotMatrix(m0);
+    for (i = 0; i < 3; i++) {
+        gte_ldclmv(&m1->m[0][i]);
+        gte_rtir();
+        gte_stclmv(&m0->m[0][i]);
+    }
+}
+#else
 ASM_SOURCE("src/main/asm/libgte", MulMatrix);
+#endif
 
+#ifdef NON_MATCHING
+/* m1 = m0 * m1 (column by column through the GTE); leaves m0 as the GTE rotation
+ * matrix. */
+void MulMatrix2(ObjC0E4 *arg0, ArgC0E4 *m1) {
+    ArgC0E4 *m0 = (ArgC0E4 *)arg0;
+    s32 i;
+
+    gte_SetRotMatrix(m0);
+    for (i = 0; i < 3; i++) {
+        gte_ldclmv(&m1->m[0][i]);
+        gte_rtir();
+        gte_stclmv(&m1->m[0][i]);
+    }
+}
+#else
 ASM_SOURCE("src/main/asm/libgte", MulMatrix2);
+#endif
 
+#ifdef NON_MATCHING
+/* out = m * v >> 12, each component saturated to s16 (GTE IR). Also leaves m as the
+ * GTE rotation matrix, as the original does. */
+void ApplyMatrixSV(void *arg0, SVec1D104 *v, DVec1D104 *arg2) {
+    ArgC0E4 *m = (ArgC0E4 *)arg0;
+    SVec1D104 *out = (SVec1D104 *)arg2;     /* the asm writes vx/vy/vz: an SVECTOR */
+    s32 r[3];
+    s32 i;
+
+    gte_SetRotMatrix(m);
+    for (i = 0; i < 3; i++) {
+        r[i] = (m->m[i][0] * v->vx + m->m[i][1] * v->vy + m->m[i][2] * v->vz) >> 12;
+        if (r[i] > 0x7FFF) {
+            r[i] = 0x7FFF;
+        } else if (r[i] < -0x8000) {
+            r[i] = -0x8000;
+        }
+    }
+    out->vx = r[0];
+    out->vy = r[1];
+    out->vz = r[2];
+}
+#else
 ASM_SOURCE("src/main/asm/libgte", ApplyMatrixSV);
+#endif
 
+#ifdef NON_MATCHING
+/* m[i][j] = m[i][j] * v[j] >> 12. The asm stores m[2][2] as a full word, so the pad
+ * halfword after it also receives the product's upper bits; C leaves the pad alone. */
+void ScaleMatrix(Obj209 *arg0, s32 *v) {
+    ArgC0E4 *m = (ArgC0E4 *)arg0;       /* the first 0x20 bytes are a GTE MATRIX */
+    s32 i;
+    s32 j;
+
+    for (i = 0; i < 3; i++) {
+        for (j = 0; j < 3; j++) {
+            m->m[i][j] = (m->m[i][j] * v[j]) >> 12;
+        }
+    }
+}
+#else
 ASM_SOURCE("src/main/asm/libgte", ScaleMatrix);
+#endif
 
+#ifdef NON_MATCHING
+void SetRotMatrix(m)
+ArgC0E4 *m;
+{
+    gte_SetRotMatrix(m);
+}
+#else
 ASM_SOURCE("src/main/asm/libgte", SetRotMatrix);
+#endif
 
 ASM_SOURCE("src/main/asm/libgte", SetColorMatrix);
 
+#ifdef NON_MATCHING
+/* The asm does not set v0; callers that return its value return whatever was there. */
+s32 SetTransMatrix(m)
+ArgC0E4 *m;
+{
+    gte_SetTransMatrix(m);
+    return 0;
+}
+#else
 ASM_SOURCE("src/main/asm/libgte", SetTransMatrix);
+#endif
 
 ASM_SOURCE("src/main/asm/libgte", SetBackColor);
 
@@ -13246,7 +13459,52 @@ Obj2D704 *TransposeMatrix(Obj2D704 *src, Obj2D704 *dst) {
 }
 
 
+#ifdef NON_MATCHING
+extern s32 D_80049DC0[];        /* 4096 entries: sin (low half) | cos (high half) << 16 */
+
+/* Builds the rotation matrix for the angles in arg0 (vx, vy, vz; 4096 = 360 degrees).
+ * The original does the products with GTE gpf (IR0 * IR >> 12); plain C here. */
+void func_8002D744(void *arg0, Obj209 *arg1) {
+    SVec1D104 *ang = (SVec1D104 *)arg0;
+    ArgC0E4 *m = (ArgC0E4 *)arg1;       /* the first 0x20 bytes are a GTE MATRIX */
+    s32 sx, cx, sy, cy, sz, cz;
+    s32 w;
+    s32 cysx, sysx;
+
+    w = D_80049DC0[(ang->vx < 0 ? -ang->vx : ang->vx) & 0xFFF];
+    cx = w >> 16;
+    sx = (s16)w;
+    if (ang->vx < 0) {
+        sx = -sx;
+    }
+    w = D_80049DC0[(ang->vy < 0 ? -ang->vy : ang->vy) & 0xFFF];
+    cy = w >> 16;
+    sy = (s16)w;
+    if (ang->vy < 0) {
+        sy = -sy;
+    }
+    w = D_80049DC0[(ang->vz < 0 ? -ang->vz : ang->vz) & 0xFFF];
+    cz = w >> 16;
+    sz = (s16)w;
+    if (ang->vz < 0) {
+        sz = -sz;
+    }
+
+    cysx = (cy * sx) >> 12;
+    sysx = (sy * sx) >> 12;
+    m->m[0][0] = ((cy * cz) >> 12) + ((sz * sysx) >> 12);
+    m->m[0][1] = ((cz * sysx) >> 12) - ((cy * sz) >> 12);
+    m->m[0][2] = (cx * sy) >> 12;
+    m->m[1][0] = (sz * cx) >> 12;
+    m->m[1][1] = (cz * cx) >> 12;
+    m->m[1][2] = -sx;
+    m->m[2][0] = ((sz * cysx) >> 12) - ((sy * cz) >> 12);
+    m->m[2][1] = ((cz * cysx) >> 12) + ((sy * sz) >> 12);
+    m->m[2][2] = (cx * cy) >> 12;
+}
+#else
 ASM_SOURCE("src/main/asm/libgte", func_8002D744);
+#endif
 
 s32 ratan2(s32 y, s32 x) {
     s32 c;
@@ -13290,13 +13548,67 @@ s32 ratan2(s32 y, s32 x) {
 }
 
 
+#ifdef NON_MATCHING
+#ifndef BIOS_B0_TABLE
+/* The BIOS B0 dispatcher (jump to 0xB0 with the function number in t1) indexes the
+ * kernel function table at 0x874; calling through the table entry is the C equivalent.
+ * B0(0x4F) = _card_read, B0(0x56) = GetC0Table, B0(0x57) = GetB0Table,
+ * B0(0x5B) = ChangeClearPad (its code address is the base the pad/card patches use). */
+#define BIOS_B0_TABLE ((void **)0x00000874)
+#define BIOS_GetC0Table() (((void **(*)(void))BIOS_B0_TABLE[0x56])())
+#define BIOS_GetB0Table() (((void **(*)(void))BIOS_B0_TABLE[0x57])())
+#endif
+
+extern u32 func_8002DB70[];     /* 6 words: the stock prologue expected in the handler */
+extern u32 D_8002DB88[];        /* 6 words: the replacement prologue */
+
+/* Patches the kernel exception handler (C0 table entry 6): if the 6 instruction words
+ * at handler+0x28 are the stock sequence in func_8002DB70, overwrite them with the
+ * sequence at D_8002DB88. Both are code words kept in func_8002DB70.s. */
+void func_8002DAC4(void) {
+    void **c0;
+    u32 *code;
+    s32 i;
+
+    EnterCriticalSection();
+    c0 = BIOS_GetC0Table();
+    code = (u32 *)c0[6];
+    for (i = 0; i < 6; i++) {
+        if (code[10 + i] != func_8002DB70[i]) {     /* word 10 = handler+0x28 */
+            break;
+        }
+    }
+    if (i == 6) {
+        for (i = 0; i < 6; i++) {
+            code[10 + i] = D_8002DB88[i];
+        }
+    }
+    FlushCache();
+    ExitCriticalSection();
+}
+#else
 ASM_SOURCE("src/main/asm/libapi", func_8002DAC4);
+#endif
 
 ASM_SOURCE("src/main/asm/libapi", func_8002DB70);
 
 ASM_SOURCE("src/main/asm/libapi", FlushCache);
 
+#ifdef NON_MATCHING
+/* GTE LZCS/LZCR: number of leading bits equal to the sign bit (32 for 0 and -1). */
+s32 Gte_CountLeadingZeros(s32 x) {
+    u32 v = (x < 0) ? ~(u32)x : (u32)x;
+    s32 n = 0;
+
+    while (n < 32 && (v & 0x80000000) == 0) {
+        v <<= 1;
+        n++;
+    }
+    return n;
+}
+#else
 ASM_SOURCE("src/main/asm/libgte", Gte_CountLeadingZeros);
+#endif
 
 void StSetRing(s32 arg0, s32 arg1) {
     D_80061B38 = arg0;
@@ -19410,11 +19722,85 @@ ASM_SOURCE("src/main/asm/libapi", StartPAD);
 
 ASM_SOURCE("src/main/asm/libapi", PAD_init);
 
+#ifdef NON_MATCHING
+extern void *jtbl_80062F18;
+
+/* Tail-jumps (a0..a3 untouched) to the kernel pad routine whose address
+ * func_8003D8EC stored in jtbl_80062F18. The .s also holds a second, unlabeled
+ * 5-word stub right after this one that jumps through jtbl_80062F1C; nothing
+ * references it, so it has no C counterpart. */
+s32 func_8003D8C4(void) {
+    return ((s32 (*)(void))jtbl_80062F18)();
+}
+#else
 ASM_SOURCE("src/main/asm/libapi", func_8003D8C4);
+#endif
 
+#ifdef NON_MATCHING
+#ifndef BIOS_B0_TABLE
+/* The BIOS B0 dispatcher (jump to 0xB0 with the function number in t1) indexes the
+ * kernel function table at 0x874; calling through the table entry is the C equivalent.
+ * B0(0x4F) = _card_read, B0(0x56) = GetC0Table, B0(0x57) = GetB0Table,
+ * B0(0x5B) = ChangeClearPad (its code address is the base the pad/card patches use). */
+#define BIOS_B0_TABLE ((void **)0x00000874)
+#define BIOS_GetC0Table() (((void **(*)(void))BIOS_B0_TABLE[0x56])())
+#define BIOS_GetB0Table() (((void **(*)(void))BIOS_B0_TABLE[0x57])())
+#endif
+
+extern void *jtbl_80062F18;
+extern void *jtbl_80062F1C;
+
+/* Uses the code address of the kernel's ChangeClearPad (B0 table entry 0x5B) as a
+ * base into the kernel pad driver: records two entry points (+0x884, +0x894) for the
+ * func_8003D8C4 stubs and clears 11 words at +0x594. The caller leaves the critical
+ * section. Return value unused (the asm leaves a scratch pointer in v0). */
+s32 func_8003D8EC(void) {
+    u32 *base;
+    s32 i;
+
+    EnterCriticalSection();
+    base = (u32 *)BIOS_GetB0Table()[0x5B];
+    jtbl_80062F18 = &base[0x884 / 4];
+    jtbl_80062F1C = &base[0x894 / 4];
+    for (i = 0; i < 11; i++) {
+        base[0x594 / 4 + i] = 0;
+    }
+    FlushCache();
+    return 0;
+}
+#else
 ASM_SOURCE("src/main/asm/libapi", func_8003D8EC);
+#endif
 
+#ifdef NON_MATCHING
+#ifndef BIOS_B0_TABLE
+/* The BIOS B0 dispatcher (jump to 0xB0 with the function number in t1) indexes the
+ * kernel function table at 0x874; calling through the table entry is the C equivalent.
+ * B0(0x4F) = _card_read, B0(0x56) = GetC0Table, B0(0x57) = GetB0Table,
+ * B0(0x5B) = ChangeClearPad (its code address is the base the pad/card patches use). */
+#define BIOS_B0_TABLE ((void **)0x00000874)
+#define BIOS_GetC0Table() (((void **(*)(void))BIOS_B0_TABLE[0x56])())
+#define BIOS_GetB0Table() (((void **(*)(void))BIOS_B0_TABLE[0x57])())
+#endif
+
+/* Clears 9 words at +0x62C from the kernel's ChangeClearPad code address (B0 table
+ * entry 0x5B, see func_8003D8EC). Return value unused. */
+s32 func_8003D964(void) {
+    u32 *base;
+    s32 i;
+
+    EnterCriticalSection();
+    base = (u32 *)BIOS_GetB0Table()[0x5B];
+    for (i = 0; i < 9; i++) {
+        base[0x62C / 4 + i] = 0;
+    }
+    FlushCache();
+    ExitCriticalSection();
+    return 0;
+}
+#else
 ASM_SOURCE("src/main/asm/libapi", func_8003D964);
+#endif
 
 ASM_SOURCE("src/main/asm/libapi", InitCARD);
 
@@ -19422,7 +19808,28 @@ ASM_SOURCE("src/main/asm/libapi", StartCARD);
 
 ASM_SOURCE("src/main/asm/libapi", StopCARD);
 
+#ifdef NON_MATCHING
+#ifndef BIOS_B0_TABLE
+/* The BIOS B0 dispatcher (jump to 0xB0 with the function number in t1) indexes the
+ * kernel function table at 0x874; calling through the table entry is the C equivalent.
+ * B0(0x4F) = _card_read, B0(0x56) = GetC0Table, B0(0x57) = GetB0Table,
+ * B0(0x5B) = ChangeClearPad (its code address is the base the pad/card patches use). */
+#define BIOS_B0_TABLE ((void **)0x00000874)
+#define BIOS_GetC0Table() (((void **(*)(void))BIOS_B0_TABLE[0x56])())
+#define BIOS_GetB0Table() (((void **(*)(void))BIOS_B0_TABLE[0x57])())
+#endif
+
+/* Clears the word at +0x1988 from the kernel's ChangeClearPad code address (B0 table
+ * entry 0x5B, see func_8003D8EC). */
+void func_8003DA04(void) {
+    u32 *base = (u32 *)BIOS_GetB0Table()[0x5B];
+
+    base[0x1988 / 4] = 0;
+    FlushCache();
+}
+#else
 ASM_SOURCE("src/main/asm/libapi", func_8003DA04);
+#endif
 
 ASM_SOURCE("src/main/asm/libapi", func_8003DA48);
 
@@ -19430,13 +19837,119 @@ ASM_SOURCE("src/main/asm/libapi", func_8003DA74);
 
 ASM_SOURCE("src/main/asm/libapi", func_8003DAB8);
 
+#ifdef NON_MATCHING
+#ifndef BIOS_B0_TABLE
+/* The BIOS B0 dispatcher (jump to 0xB0 with the function number in t1) indexes the
+ * kernel function table at 0x874; calling through the table entry is the C equivalent.
+ * B0(0x4F) = _card_read, B0(0x56) = GetC0Table, B0(0x57) = GetB0Table,
+ * B0(0x5B) = ChangeClearPad (its code address is the base the pad/card patches use). */
+#define BIOS_B0_TABLE ((void **)0x00000874)
+#define BIOS_GetC0Table() (((void **(*)(void))BIOS_B0_TABLE[0x56])())
+#define BIOS_GetB0Table() (((void **(*)(void))BIOS_B0_TABLE[0x57])())
+#endif
+
+extern u32 func_8003DAB8[];     /* 10 code words: 5-word jump stub + 5-word call stub */
+
+/* Words 0x70/0x74 of the kernel exception handler (C0 table entry 6) are a lui/addiu
+ * pair; their two 16-bit immediates give an address. The 5-word stub at func_8003DAB8
+ * is copied to that address + 0x28, and the word after it is recorded at 0xDFFC (the
+ * kernel RAM word func_8003DA74 jumps through). The caller leaves the critical section. */
+void func_8003DAE0(void) {
+    u32 *code;
+    u32 *dst;
+    s32 i;
+
+    EnterCriticalSection();
+    code = (u32 *)BIOS_GetC0Table()[6];
+    dst = (u32 *)(((code[0x70 / 4] & 0xFFFF) << 16) + (code[0x74 / 4] & 0xFFFF) + 0x28);
+    for (i = 0; i < 5; i++) {
+        dst[i] = func_8003DAB8[i];
+    }
+    *(u32 **)0x0000DFFC = &dst[5];
+    FlushCache();
+}
+#else
 ASM_SOURCE("src/main/asm/libapi", func_8003DAE0);
+#endif
 
+#ifdef NON_MATCHING
+#ifndef BIOS_B0_TABLE
+/* The BIOS B0 dispatcher (jump to 0xB0 with the function number in t1) indexes the
+ * kernel function table at 0x874; calling through the table entry is the C equivalent.
+ * B0(0x4F) = _card_read, B0(0x56) = GetC0Table, B0(0x57) = GetB0Table,
+ * B0(0x5B) = ChangeClearPad (its code address is the base the pad/card patches use). */
+#define BIOS_B0_TABLE ((void **)0x00000874)
+#define BIOS_GetC0Table() (((void **(*)(void))BIOS_B0_TABLE[0x56])())
+#define BIOS_GetB0Table() (((void **(*)(void))BIOS_B0_TABLE[0x57])())
+#endif
+
+extern u32 func_8003DAB8[];     /* 10 code words: 5-word jump stub + 5-word call stub */
+
+/* Copies the second 5-word stub of func_8003DAB8 (the call to 0xA000DF80) to +0x9C8
+ * from the kernel's ChangeClearPad code address (B0 table entry 0x5B). The caller
+ * leaves the critical section. */
+void func_8003DB74(void) {
+    u32 *base;
+    s32 i;
+
+    EnterCriticalSection();
+    base = (u32 *)BIOS_GetB0Table()[0x5B];
+    for (i = 0; i < 5; i++) {
+        base[0x9C8 / 4 + i] = func_8003DAB8[5 + i];
+    }
+    FlushCache();
+}
+#else
 ASM_SOURCE("src/main/asm/libapi", func_8003DB74);
+#endif
 
+#ifdef NON_MATCHING
+extern u32 func_8003DA48[];     /* func_8003DA48 + func_8003DA74: 0x70 bytes of code */
+
+/* Copies the 28 code words of func_8003DA48/func_8003DA74 (contiguous in the asm) to
+ * kernel RAM at 0xDF80, where the patched card/exception code calls them. */
+void func_8003DBE4(void) {
+    u32 *dst = (u32 *)0x0000DF80;
+    s32 i;
+
+    for (i = 0; i < 28; i++) {
+        dst[i] = func_8003DA48[i];
+    }
+}
+#else
 ASM_SOURCE("src/main/asm/libapi", func_8003DBE4);
+#endif
 
+#ifdef NON_MATCHING
+#ifndef BIOS_B0_TABLE
+/* The BIOS B0 dispatcher (jump to 0xB0 with the function number in t1) indexes the
+ * kernel function table at 0x874; calling through the table entry is the C equivalent.
+ * B0(0x4F) = _card_read, B0(0x56) = GetC0Table, B0(0x57) = GetB0Table,
+ * B0(0x5B) = ChangeClearPad (its code address is the base the pad/card patches use). */
+#define BIOS_B0_TABLE ((void **)0x00000874)
+#define BIOS_GetC0Table() (((void **(*)(void))BIOS_B0_TABLE[0x56])())
+#define BIOS_GetB0Table() (((void **(*)(void))BIOS_B0_TABLE[0x57])())
+#endif
+
+/* Writes three MIPS nops (0) over words 0x70..0x78 of the kernel exception handler
+ * (C0 table entry 6): the lui/addiu pair func_8003DAE0 reads plus the next word.
+ * Return value unused. */
+s32 func_8003DC24(void) {
+    u32 *code;
+    s32 i;
+
+    EnterCriticalSection();
+    code = (u32 *)BIOS_GetC0Table()[6];
+    for (i = 0; i < 3; i++) {
+        code[0x70 / 4 + i] = 0;
+    }
+    FlushCache();
+    ExitCriticalSection();
+    return 0;
+}
+#else
 ASM_SOURCE("src/main/asm/libapi", func_8003DC24);
+#endif
 
 void Card_SaveCallback(void) {
     D_80062FD8 = MemCardCallback(0);
@@ -20922,4 +21435,23 @@ u8 *strncpy(u8 *dst, u8 *src, s32 n) {
 }
 
 
+#ifdef NON_MATCHING
+#ifndef BIOS_B0_TABLE
+/* The BIOS B0 dispatcher (jump to 0xB0 with the function number in t1) indexes the
+ * kernel function table at 0x874; calling through the table entry is the C equivalent.
+ * B0(0x4F) = _card_read, B0(0x56) = GetC0Table, B0(0x57) = GetB0Table,
+ * B0(0x5B) = ChangeClearPad (its code address is the base the pad/card patches use). */
+#define BIOS_B0_TABLE ((void **)0x00000874)
+#define BIOS_GetC0Table() (((void **(*)(void))BIOS_B0_TABLE[0x56])())
+#define BIOS_GetB0Table() (((void **(*)(void))BIOS_B0_TABLE[0x57])())
+#endif
+
+/* BIOS B0(0x4F). NOTE: in the original the words after this stub in _card_read.s are
+ * data (a pointer table and D_80040D50, the task descriptor table); a build using this
+ * C body must still emit that data. */
+s32 _card_read(s32 chan, s32 block, u8 *buf) {
+    return ((s32 (*)(s32, s32, u8 *))BIOS_B0_TABLE[0x4F])(chan, block, buf);
+}
+#else
 ASM_SOURCE("src/main/asm/libapi", _card_read);
+#endif
