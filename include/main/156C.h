@@ -3,6 +3,17 @@
 
 #include "common.h"
 
+#ifdef NON_MATCHING
+/* Kernel function tables. The BIOS dispatchers at 0xA0/0xB0/0xC0 jump through these with the
+ * function number in t1; the NON_MATCHING bodies of the dispatch stubs call the table entry.
+ * B0(0x56) = GetC0Table, B0(0x57) = GetB0Table. */
+#define BIOS_A0_TABLE ((void **)0x00000200)
+#define BIOS_B0_TABLE ((void **)0x00000874)
+#define BIOS_C0_TABLE ((void **)0x00000674)
+#define BIOS_GetC0Table() (((void **(*)(void))BIOS_B0_TABLE[0x56])())
+#define BIOS_GetB0Table() (((void **(*)(void))BIOS_B0_TABLE[0x57])())
+#endif
+
 /* Two halfwords copied as one 4-byte value (lwl/lwr). */
 typedef struct {
     /* 0x0 */ s16 field_0;

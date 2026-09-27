@@ -11169,17 +11169,45 @@ s32 Pad_SioStepRecvData(PadPortSio *a0) {
 }
 
 
+#ifdef NON_MATCHING
+/* A0(0x39) through the kernel table. */
+int InitHeap() {
+    return ((int (*)())BIOS_A0_TABLE[0x39])();
+}
+#else
 ASM_SOURCE("src/main/asm/libapi", InitHeap);
+#endif
 
 ASM_SOURCE("src/main/asm/libapi", EnterCriticalSection);
 
 ASM_SOURCE("src/main/asm/libapi", ExitCriticalSection);
 
+#ifdef NON_MATCHING
+/* C0(0x02) through the kernel table. */
+void SysEnqIntRP(s32 a0, u8 *a1) {
+    ((void (*)(s32, u8 *))BIOS_C0_TABLE[0x02])(a0, a1);
+}
+#else
 ASM_SOURCE("src/main/asm/libapi", SysEnqIntRP);
+#endif
 
+#ifdef NON_MATCHING
+/* C0(0x03) through the kernel table. */
+void SysDeqIntRP(s32 a0, u8 *a1) {
+    ((void (*)(s32, u8 *))BIOS_C0_TABLE[0x03])(a0, a1);
+}
+#else
 ASM_SOURCE("src/main/asm/libapi", SysDeqIntRP);
+#endif
 
+#ifdef NON_MATCHING
+/* C0(0x0A) through the kernel table. */
+void ChangeClearRCnt(s32 a0, s32 a1) {
+    ((void (*)(s32, s32))BIOS_C0_TABLE[0x0A])(a0, a1);
+}
+#else
 ASM_SOURCE("src/main/asm/libapi", ChangeClearRCnt);
+#endif
 
 u8 *bzero(u8 *s, s32 n) {
     u8 *r = 0;
@@ -12094,7 +12122,14 @@ void Mem_FillBytes(u8 *arg0, s32 arg1, u32 arg2) {
     }
 }
 
+#ifdef NON_MATCHING
+/* A0(0x49) through the kernel table. */
+void GPU_cw(s32 a0) {
+    ((void (*)(s32))BIOS_A0_TABLE[0x49])(a0);
+}
+#else
 ASM_SOURCE("src/main/asm/libapi", GPU_cw);
+#endif
 
 void printf(fmt, a1, a2, a3) char *fmt; s32 a1; s32 a2; s32 a3; {
     char **fp = &fmt;
@@ -12451,7 +12486,14 @@ flush:
     }
 }
 
+#ifdef NON_MATCHING
+/* B0(0x35) through the kernel table. */
+s32 write(s32 a0, u8 *a1, s32 a2) {
+    return ((s32 (*)(s32, u8 *, s32))BIOS_B0_TABLE[0x35])(a0, a1, a2);
+}
+#else
 ASM_SOURCE("src/main/asm/libapi", write);
+#endif
 
 s32 strlen(s8 *s) {
     s32 n = 0;
@@ -13611,16 +13653,6 @@ s32 ratan2(s32 y, s32 x) {
 
 
 #ifdef NON_MATCHING
-#ifndef BIOS_B0_TABLE
-/* The BIOS B0 dispatcher (jump to 0xB0 with the function number in t1) indexes the
- * kernel function table at 0x874; calling through the table entry is the C equivalent.
- * B0(0x4F) = _card_read, B0(0x56) = GetC0Table, B0(0x57) = GetB0Table,
- * B0(0x5B) = ChangeClearPad (its code address is the base the pad/card patches use). */
-#define BIOS_B0_TABLE ((void **)0x00000874)
-#define BIOS_GetC0Table() (((void **(*)(void))BIOS_B0_TABLE[0x56])())
-#define BIOS_GetB0Table() (((void **(*)(void))BIOS_B0_TABLE[0x57])())
-#endif
-
 extern u32 func_8002DB70[];     /* 6 words: the stock prologue expected in the handler */
 extern u32 D_8002DB88[];        /* 6 words: the replacement prologue */
 
@@ -13654,7 +13686,14 @@ ASM_SOURCE("src/main/asm/libapi", func_8002DAC4);
 
 ASM_SOURCE("src/main/asm/libapi", func_8002DB70);
 
+#ifdef NON_MATCHING
+/* A0(0x44) through the kernel table. */
+int FlushCache() {
+    return ((int (*)())BIOS_A0_TABLE[0x44])();
+}
+#else
 ASM_SOURCE("src/main/asm/libapi", FlushCache);
+#endif
 
 #ifdef NON_MATCHING
 /* GTE LZCS/LZCR: number of leading bits equal to the sign bit (32 for 0 and -1). */
@@ -13711,7 +13750,16 @@ void def_cbready(void) { DeliverEvent(0xF0000003, 0x40); }
 
 void def_cbread(void) { DeliverEvent(0xF0000003, 0x40); }
 
+#ifdef NON_MATCHING
+/* B0(0x07) through the kernel table. */
+int DeliverEvent(a0, a1)
+int a0;
+int a1; {
+    return ((int (*)())BIOS_B0_TABLE[0x07])(a0, a1);
+}
+#else
 ASM_SOURCE("src/main/asm/libapi", DeliverEvent);
+#endif
 
 s32 CdPosToInt(void *arg) {
     u8 *p = arg;
@@ -14848,7 +14896,14 @@ void v_wait(s32 a0, s32 a1) {
     }
 }
 
+#ifdef NON_MATCHING
+/* B0(0x5B) through the kernel table. */
+void ChangeClearPAD(s32 a0) {
+    ((void (*)(s32))BIOS_B0_TABLE[0x5B])(a0);
+}
+#else
 ASM_SOURCE("src/main/asm/libapi", ChangeClearPAD);
+#endif
 
 void ResetCallback(void) {
     D_8004FB80->fn_C();
@@ -15042,13 +15097,41 @@ void memclr(s32 *arg0, s32 arg1) {
 
 ASM_SOURCE("src/main/asm/crt0", func_80031394);
 
+#ifdef NON_MATCHING
+/* A0(0x72) through the kernel table. */
+void _96_remove(void) {
+    ((void (*)(void))BIOS_A0_TABLE[0x72])();
+}
+#else
 ASM_SOURCE("src/main/asm/libapi", _96_remove);
+#endif
 
+#ifdef NON_MATCHING
+/* B0(0x17) through the kernel table. */
+void ReturnFromException(void) {
+    ((void (*)(void))BIOS_B0_TABLE[0x17])();
+}
+#else
 ASM_SOURCE("src/main/asm/libapi", ReturnFromException);
+#endif
 
+#ifdef NON_MATCHING
+/* B0(0x18) through the kernel table. */
+void ResetEntryInt() {
+    ((void (*)())BIOS_B0_TABLE[0x18])();
+}
+#else
 ASM_SOURCE("src/main/asm/libapi", ResetEntryInt);
+#endif
 
+#ifdef NON_MATCHING
+/* B0(0x19) through the kernel table. */
+void HookEntryInt(s32 *a0) {
+    ((void (*)(s32 *))BIOS_B0_TABLE[0x19])(a0);
+}
+#else
 ASM_SOURCE("src/main/asm/libapi", HookEntryInt);
+#endif
 
 ASM_SOURCE("src/main/asm/libc", setjmp);
 
@@ -18138,9 +18221,23 @@ void SpuStart(void) {
     }
 }
 
+#ifdef NON_MATCHING
+/* B0(0x08) through the kernel table. */
+s32 OpenEvent(s32 a0, s32 a1, s32 a2, s32 a3) {
+    return ((s32 (*)(s32, s32, s32, s32))BIOS_B0_TABLE[0x08])(a0, a1, a2, a3);
+}
+#else
 ASM_SOURCE("src/main/asm/libapi", OpenEvent);
+#endif
 
+#ifdef NON_MATCHING
+/* B0(0x0C) through the kernel table. */
+void EnableEvent(s32 a0) {
+    ((void (*)(s32))BIOS_B0_TABLE[0x0C])(a0);
+}
+#else
 ASM_SOURCE("src/main/asm/libapi", EnableEvent);
+#endif
 
 s32 _spu_init(s32 a0) {
     u32 i;
@@ -19111,7 +19208,14 @@ s32 SpuClearReverbWorkArea(s32 a0) {
     return 0;
 }
 
+#ifdef NON_MATCHING
+/* B0(0x0A) through the kernel table. */
+void WaitEvent(s32 a0) {
+    ((void (*)(s32))BIOS_B0_TABLE[0x0A])(a0);
+}
+#else
 ASM_SOURCE("src/main/asm/libapi", WaitEvent);
+#endif
 
 void SpuSetKey(s32 on_off, u32 voice_bit) {
     u32 hi;
@@ -19223,7 +19327,15 @@ s32 SpuIsTransferCompleted(s32 a0) {
     return r;
 }
 
+#ifdef NON_MATCHING
+/* B0(0x0B) through the kernel table. */
+int TestEvent(a0)
+int a0; {
+    return ((int (*)())BIOS_B0_TABLE[0x0B])(a0);
+}
+#else
 ASM_SOURCE("src/main/asm/libapi", TestEvent);
+#endif
 
 void _spu_setInTransfer(s32 arg0) {
     if (arg0 == 1) {
@@ -19660,7 +19772,14 @@ void MemCardInit(void) {
 
 void MemCardEnd(void) { Card_Stop(); }
 
+#ifdef NON_MATCHING
+/* A0(0x70) through the kernel table. */
+int _bu_init() {
+    return ((int (*)())BIOS_A0_TABLE[0x70])();
+}
+#else
 ASM_SOURCE("src/main/asm/libapi", _bu_init);
+#endif
 
 extern s32 Pad_IsInitialized(void);
 extern void InitCARD(s32);
@@ -19778,11 +19897,40 @@ if (!((p->field_4 & 1) && (p->field_0 & 1))) {
  return 1;
 }
 
+#ifdef NON_MATCHING
+/* B0(0x12) through the kernel table. */
+int InitPAD(a0, a1, a2, a3)
+int a0;
+int a1;
+int a2;
+int a3; {
+    return ((int (*)())BIOS_B0_TABLE[0x12])(a0, a1, a2, a3);
+}
+#else
 ASM_SOURCE("src/main/asm/libapi", InitPAD);
+#endif
 
+#ifdef NON_MATCHING
+/* B0(0x13) through the kernel table. */
+int StartPAD() {
+    return ((int (*)())BIOS_B0_TABLE[0x13])();
+}
+#else
 ASM_SOURCE("src/main/asm/libapi", StartPAD);
+#endif
 
+#ifdef NON_MATCHING
+/* B0(0x15) through the kernel table. */
+int PAD_init(a0, a1, a2, a3)
+int a0;
+int a1;
+int a2;
+int a3; {
+    return ((int (*)())BIOS_B0_TABLE[0x15])(a0, a1, a2, a3);
+}
+#else
 ASM_SOURCE("src/main/asm/libapi", PAD_init);
+#endif
 
 #ifdef NON_MATCHING
 extern void *jtbl_80062F18;
@@ -19799,16 +19947,6 @@ ASM_SOURCE("src/main/asm/libapi", func_8003D8C4);
 #endif
 
 #ifdef NON_MATCHING
-#ifndef BIOS_B0_TABLE
-/* The BIOS B0 dispatcher (jump to 0xB0 with the function number in t1) indexes the
- * kernel function table at 0x874; calling through the table entry is the C equivalent.
- * B0(0x4F) = _card_read, B0(0x56) = GetC0Table, B0(0x57) = GetB0Table,
- * B0(0x5B) = ChangeClearPad (its code address is the base the pad/card patches use). */
-#define BIOS_B0_TABLE ((void **)0x00000874)
-#define BIOS_GetC0Table() (((void **(*)(void))BIOS_B0_TABLE[0x56])())
-#define BIOS_GetB0Table() (((void **(*)(void))BIOS_B0_TABLE[0x57])())
-#endif
-
 extern void *jtbl_80062F18;
 extern void *jtbl_80062F1C;
 
@@ -19835,16 +19973,6 @@ ASM_SOURCE("src/main/asm/libapi", func_8003D8EC);
 #endif
 
 #ifdef NON_MATCHING
-#ifndef BIOS_B0_TABLE
-/* The BIOS B0 dispatcher (jump to 0xB0 with the function number in t1) indexes the
- * kernel function table at 0x874; calling through the table entry is the C equivalent.
- * B0(0x4F) = _card_read, B0(0x56) = GetC0Table, B0(0x57) = GetB0Table,
- * B0(0x5B) = ChangeClearPad (its code address is the base the pad/card patches use). */
-#define BIOS_B0_TABLE ((void **)0x00000874)
-#define BIOS_GetC0Table() (((void **(*)(void))BIOS_B0_TABLE[0x56])())
-#define BIOS_GetB0Table() (((void **(*)(void))BIOS_B0_TABLE[0x57])())
-#endif
-
 /* Clears 9 words at +0x62C from the kernel's ChangeClearPad code address (B0 table
  * entry 0x5B, see func_8003D8EC). Return value unused. */
 s32 func_8003D964(void) {
@@ -19864,23 +19992,34 @@ s32 func_8003D964(void) {
 ASM_SOURCE("src/main/asm/libapi", func_8003D964);
 #endif
 
-ASM_SOURCE("src/main/asm/libapi", InitCARD);
-
-ASM_SOURCE("src/main/asm/libapi", StartCARD);
-
-ASM_SOURCE("src/main/asm/libapi", StopCARD);
-
 #ifdef NON_MATCHING
-#ifndef BIOS_B0_TABLE
-/* The BIOS B0 dispatcher (jump to 0xB0 with the function number in t1) indexes the
- * kernel function table at 0x874; calling through the table entry is the C equivalent.
- * B0(0x4F) = _card_read, B0(0x56) = GetC0Table, B0(0x57) = GetB0Table,
- * B0(0x5B) = ChangeClearPad (its code address is the base the pad/card patches use). */
-#define BIOS_B0_TABLE ((void **)0x00000874)
-#define BIOS_GetC0Table() (((void **(*)(void))BIOS_B0_TABLE[0x56])())
-#define BIOS_GetB0Table() (((void **(*)(void))BIOS_B0_TABLE[0x57])())
+/* B0(0x4A) through the kernel table. */
+void InitCARD(s32 a0) {
+    ((void (*)(s32))BIOS_B0_TABLE[0x4A])(a0);
+}
+#else
+ASM_SOURCE("src/main/asm/libapi", InitCARD);
 #endif
 
+#ifdef NON_MATCHING
+/* B0(0x4B) through the kernel table. */
+s32 StartCARD(void) {
+    return ((s32 (*)(void))BIOS_B0_TABLE[0x4B])();
+}
+#else
+ASM_SOURCE("src/main/asm/libapi", StartCARD);
+#endif
+
+#ifdef NON_MATCHING
+/* B0(0x4C) through the kernel table. */
+int StopCARD() {
+    return ((int (*)())BIOS_B0_TABLE[0x4C])();
+}
+#else
+ASM_SOURCE("src/main/asm/libapi", StopCARD);
+#endif
+
+#ifdef NON_MATCHING
 /* Clears the word at +0x1988 from the kernel's ChangeClearPad code address (B0 table
  * entry 0x5B, see func_8003D8EC). */
 void func_8003DA04(void) {
@@ -19900,16 +20039,6 @@ ASM_SOURCE("src/main/asm/libapi", func_8003DA74);
 ASM_SOURCE("src/main/asm/libapi", func_8003DAB8);
 
 #ifdef NON_MATCHING
-#ifndef BIOS_B0_TABLE
-/* The BIOS B0 dispatcher (jump to 0xB0 with the function number in t1) indexes the
- * kernel function table at 0x874; calling through the table entry is the C equivalent.
- * B0(0x4F) = _card_read, B0(0x56) = GetC0Table, B0(0x57) = GetB0Table,
- * B0(0x5B) = ChangeClearPad (its code address is the base the pad/card patches use). */
-#define BIOS_B0_TABLE ((void **)0x00000874)
-#define BIOS_GetC0Table() (((void **(*)(void))BIOS_B0_TABLE[0x56])())
-#define BIOS_GetB0Table() (((void **(*)(void))BIOS_B0_TABLE[0x57])())
-#endif
-
 extern u32 func_8003DAB8[];     /* 10 code words: 5-word jump stub + 5-word call stub */
 
 /* Words 0x70/0x74 of the kernel exception handler (C0 table entry 6) are a lui/addiu
@@ -19935,16 +20064,6 @@ ASM_SOURCE("src/main/asm/libapi", func_8003DAE0);
 #endif
 
 #ifdef NON_MATCHING
-#ifndef BIOS_B0_TABLE
-/* The BIOS B0 dispatcher (jump to 0xB0 with the function number in t1) indexes the
- * kernel function table at 0x874; calling through the table entry is the C equivalent.
- * B0(0x4F) = _card_read, B0(0x56) = GetC0Table, B0(0x57) = GetB0Table,
- * B0(0x5B) = ChangeClearPad (its code address is the base the pad/card patches use). */
-#define BIOS_B0_TABLE ((void **)0x00000874)
-#define BIOS_GetC0Table() (((void **(*)(void))BIOS_B0_TABLE[0x56])())
-#define BIOS_GetB0Table() (((void **(*)(void))BIOS_B0_TABLE[0x57])())
-#endif
-
 extern u32 func_8003DAB8[];     /* 10 code words: 5-word jump stub + 5-word call stub */
 
 /* Copies the second 5-word stub of func_8003DAB8 (the call to 0xA000DF80) to +0x9C8
@@ -19983,16 +20102,6 @@ ASM_SOURCE("src/main/asm/libapi", func_8003DBE4);
 #endif
 
 #ifdef NON_MATCHING
-#ifndef BIOS_B0_TABLE
-/* The BIOS B0 dispatcher (jump to 0xB0 with the function number in t1) indexes the
- * kernel function table at 0x874; calling through the table entry is the C equivalent.
- * B0(0x4F) = _card_read, B0(0x56) = GetC0Table, B0(0x57) = GetB0Table,
- * B0(0x5B) = ChangeClearPad (its code address is the base the pad/card patches use). */
-#define BIOS_B0_TABLE ((void **)0x00000874)
-#define BIOS_GetC0Table() (((void **(*)(void))BIOS_B0_TABLE[0x56])())
-#define BIOS_GetB0Table() (((void **(*)(void))BIOS_B0_TABLE[0x57])())
-#endif
-
 /* Writes three MIPS nops (0) over words 0x70..0x78 of the kernel exception handler
  * (C0 table entry 6): the lui/addiu pair func_8003DAE0 reads plus the next word.
  * Return value unused. */
@@ -20862,15 +20971,53 @@ void Card_MakeDevName(s32 n, u8 *out) {
 }
 
 
+#ifdef NON_MATCHING
+/* B0(0x32) through the kernel table. */
+s32 open(u8 *a0, s32 a1) {
+    return ((s32 (*)(u8 *, s32))BIOS_B0_TABLE[0x32])(a0, a1);
+}
+#else
 ASM_SOURCE("src/main/asm/libapi", open);
+#endif
 
+#ifdef NON_MATCHING
+/* B0(0x33) through the kernel table. */
+s32 lseek(s32 a0, s32 a1, s32 a2) {
+    return ((s32 (*)(s32, s32, s32))BIOS_B0_TABLE[0x33])(a0, a1, a2);
+}
+#else
 ASM_SOURCE("src/main/asm/libapi", lseek);
+#endif
 
+#ifdef NON_MATCHING
+/* B0(0x34) through the kernel table. */
+int read(a0, a1, a2)
+int a0;
+int a1;
+int a2; {
+    return ((int (*)())BIOS_B0_TABLE[0x34])(a0, a1, a2);
+}
+#else
 ASM_SOURCE("src/main/asm/libapi", read);
+#endif
 
+#ifdef NON_MATCHING
+/* B0(0x36) through the kernel table. */
+void close(s32 a0) {
+    ((void (*)(s32))BIOS_B0_TABLE[0x36])(a0);
+}
+#else
 ASM_SOURCE("src/main/asm/libapi", close);
+#endif
 
+#ifdef NON_MATCHING
+/* B0(0x43) through the kernel table. */
+s32 nextfile(DirEntry *a0) {
+    return ((s32 (*)(DirEntry *))BIOS_B0_TABLE[0x43])(a0);
+}
+#else
 ASM_SOURCE("src/main/asm/libapi", nextfile);
+#endif
 
 s32 func_8003F5C4(s8 *name, s32 a1) {
     BiosDcb *e;
@@ -20934,7 +21081,16 @@ void func_8003F760(s32 *a0, s32 a1, s32 a2) {
 }
 
 
+#ifdef NON_MATCHING
+/* B0(0x42) through the kernel table. */
+s32 firstfile(a0, a1)
+int a0;
+int a1; {
+    return ((s32 (*)())BIOS_B0_TABLE[0x42])(a0, a1);
+}
+#else
 ASM_SOURCE("src/main/asm/libapi", firstfile);
+#endif
 
 s8 *strcat(s8 *dst, s8 *src) {
     s8 *ret;
@@ -20976,9 +21132,23 @@ s32 strcmp(s8 *a, s8 *b) {
     return *a - b[-1];
 }
 
+#ifdef NON_MATCHING
+/* A0(0xAB) through the kernel table. */
+void _card_info(s32 a0) {
+    ((void (*)(s32))BIOS_A0_TABLE[0xAB])(a0);
+}
+#else
 ASM_SOURCE("src/main/asm/libapi", _card_info);
+#endif
 
+#ifdef NON_MATCHING
+/* A0(0xAC) through the kernel table. */
+void _card_load(s32 a0) {
+    ((void (*)(s32))BIOS_A0_TABLE[0xAC])(a0);
+}
+#else
 ASM_SOURCE("src/main/asm/libapi", _card_load);
+#endif
 
 extern void _new_card();
 extern s32 _card_write();
@@ -20989,9 +21159,27 @@ s32 _card_clear(s32 a0) {
 }
 __asm__(".word 0\n.word 0\n.word 0\n");
 
+#ifdef NON_MATCHING
+/* B0(0x4E) through the kernel table. */
+s32 _card_write(a0, a1, a2)
+int a0;
+int a1;
+int a2; {
+    return ((s32 (*)())BIOS_B0_TABLE[0x4E])(a0, a1, a2);
+}
+#else
 ASM_SOURCE("src/main/asm/libapi", _card_write);
+#endif
 
+#ifdef NON_MATCHING
+/* B0(0x50) through the kernel table. */
+void _new_card(a0)
+int a0; {
+    ((void (*)())BIOS_B0_TABLE[0x50])(a0);
+}
+#else
 ASM_SOURCE("src/main/asm/libapi", _new_card);
+#endif
 
 void Card_ClearTaskStack(void) {
     Card_TaskTop = -1;
@@ -21177,7 +21365,15 @@ s32 Card_GetHwEventBits(void) {
     return D_80063090 + D_80063094 * 2 + D_80063098 * 4 + D_8006309C * 8;
 }
 
+#ifdef NON_MATCHING
+/* B0(0x09) through the kernel table. */
+int CloseEvent(a0)
+int a0; {
+    return ((int (*)())BIOS_B0_TABLE[0x09])(a0);
+}
+#else
 ASM_SOURCE("src/main/asm/libapi", CloseEvent);
+#endif
 
 static inline s32 mcWriteFrame401E4(s32 port, s32 blk) {
     s32 j = 0;
@@ -21498,16 +21694,6 @@ u8 *strncpy(u8 *dst, u8 *src, s32 n) {
 
 
 #ifdef NON_MATCHING
-#ifndef BIOS_B0_TABLE
-/* The BIOS B0 dispatcher (jump to 0xB0 with the function number in t1) indexes the
- * kernel function table at 0x874; calling through the table entry is the C equivalent.
- * B0(0x4F) = _card_read, B0(0x56) = GetC0Table, B0(0x57) = GetB0Table,
- * B0(0x5B) = ChangeClearPad (its code address is the base the pad/card patches use). */
-#define BIOS_B0_TABLE ((void **)0x00000874)
-#define BIOS_GetC0Table() (((void **(*)(void))BIOS_B0_TABLE[0x56])())
-#define BIOS_GetB0Table() (((void **(*)(void))BIOS_B0_TABLE[0x57])())
-#endif
-
 /* BIOS B0(0x4F). NOTE: in the original the words after this stub in _card_read.s are
  * data (a pointer table and D_80040D50, the task descriptor table); a build using this
  * C body must still emit that data. */
