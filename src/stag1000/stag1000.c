@@ -80,7 +80,16 @@ void func_80063EB0(StrDecEnv *dec, s16 x0, s16 y0, s16 x1, s16 y1) {
     dec->isdone = 0;
 }
 
-INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80063F38);
+void func_80063F38(u8 *arg0) {
+    u8 mode = 0x80;
+
+    do {
+        while (CdControl(2, arg0, 0) == 0) {
+        }
+        while (CdControl(0xE, &mode, 0) == 0) {
+        }
+    } while (CdRead2(0x1E0) == 0);
+}
 
 INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80063FA0);
 
