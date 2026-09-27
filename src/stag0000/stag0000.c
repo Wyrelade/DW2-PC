@@ -352,7 +352,11 @@ void func_8006620C(Actor *arg0) {
 
 INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80066318);
 
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80066618);
+void func_80066618(Actor *arg0) {
+    EntA0 *e = Cd_GetFileEntry(0x1890000);
+    Gfx_HidePartsByMask(e, D_80068E84[((Stg00PartsWork *)arg0->work)->field_C]);
+    Gfx_DrawParts(e);
+}
 
 INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80066678);
 
