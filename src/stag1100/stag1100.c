@@ -68,7 +68,9 @@ void func_8006495C(Stg11MenuWork *arg0, s32 arg1, s32 arg2) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_800649D4);
+s32 func_800649D4(Stg11MenuWork *arg0) {
+    return Text_IsFinished(arg0->field_4);
+}
 
 INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_800649F8);
 
