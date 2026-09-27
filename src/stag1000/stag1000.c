@@ -543,7 +543,14 @@ void func_80064A70(u32 *arg0, u32 arg1) {
     *D_80065370 = 0x01000201;
 }
 
-INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80064B00);
+void func_80064B00(u32 *arg0, u32 arg1) {
+    func_80064C20();
+    *D_800653A0 |= 0x88;
+    *D_8006537C = 0;
+    *D_80065374 = (u32)arg0;
+    *D_80065378 = ((arg1 >> 5) << 16) | 0x20;
+    *D_8006537C = 0x01000200;
+}
 
 INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80064B8C);
 
