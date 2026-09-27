@@ -213,7 +213,13 @@ void func_8006899C(Actor *arg0, s32 arg1, s32 arg2, s32 arg3) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_800689E0);
+void func_800689E0(Actor *arg0, s32 arg1) {
+    if (arg0 != NULL) {
+        Stg00ObjWork *w = (Stg00ObjWork *)arg0->work;
+        w->field_18 = arg1;
+        w->field_84 = 1;
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80068A00);
 
