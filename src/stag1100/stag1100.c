@@ -458,7 +458,23 @@ INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80065BA0);
 
 INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80065E64);
 
-INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80066028);
+void func_80066028(Actor *arg0, s16 arg1) {
+    Stg11MenuWork *w = (Stg11MenuWork *)arg0->work;
+
+    w->field_78 = arg1;
+    w->field_7A = arg1 > 2;
+    w->field_84 = (w->field_78 - 1) % 2;
+    w->field_7E = w->field_78 == 7 || w->field_78 == 8;
+    w->field_7C = w->field_78 >= 5 && w->field_78 <= 8;
+    w->field_80 = w->field_78 == 9 || w->field_78 == 10;
+    if (w->field_78 == 9 || w->field_78 == 10) {
+        func_80067838(D_80063454, 1);
+    } else {
+        func_80067838(D_80063464, 0);
+    }
+    w->field_90 = func_800676F4();
+    w->field_94 = 0;
+}
 
 INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_800660F0);
 
