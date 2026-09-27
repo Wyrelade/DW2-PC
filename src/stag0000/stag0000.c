@@ -321,7 +321,34 @@ void func_80066130(Actor *arg0) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_8006620C);
+void func_8006620C(Actor *arg0) {
+    Stg00ListWork *w = (Stg00ListWork *)arg0->work;
+    s32 i;
+    s32 id;
+    s32 v;
+    s32 j;
+    s32 k;
+
+    for (i = 0; (id = func_8001E8F4(i)) < 0x12D; i++) {
+        v = func_8001E79C(id);
+        j = 0;
+        if (w->field_650 != 0) {
+            for (k = j; k < w->field_650; k++) {
+                if (v < w->field_10[k]) {
+                    break;
+                }
+            }
+            j = k;
+            for (k = w->field_650; k >= j; k--) {
+                w->field_10[k] = w->field_10[k - 1];
+                w->field_330[k] = w->field_330[k - 1];
+            }
+        }
+        w->field_10[j] = v;
+        w->field_330[j] = id;
+        w->field_650++;
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80066318);
 
