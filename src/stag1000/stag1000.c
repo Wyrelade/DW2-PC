@@ -1,0 +1,72 @@
+#include "common.h"
+
+INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_800633B0);
+
+void func_8006359C(void) {
+}
+
+INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_800635A4);
+
+INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_800638D4);
+
+INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80063D34);
+
+INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80063E24);
+
+INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80063E88);
+
+INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80063EB0);
+
+INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80063F38);
+
+INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80063FA0);
+
+INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_8006400C);
+
+INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80064110);
+
+INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80064198);
+
+INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_800642E8);
+
+INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_8006437C);
+
+INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80064454);
+
+INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_800646C0);
+
+INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_800646F4);
+
+INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80064780);
+
+INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80064818);
+
+INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80064894);
+
+INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_800648B4);
+
+INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_800648F0);
+
+INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80064938);
+
+INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_8006495C);
+
+INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80064980);
+
+INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80064A70);
+
+INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80064B00);
+
+INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80064B8C);
+
+INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80064C20);
+
+INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80064CB4);
+
+INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80064CCC);
+
+INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80064D50);
+
+INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80064D80);
+
+INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_800650D0);

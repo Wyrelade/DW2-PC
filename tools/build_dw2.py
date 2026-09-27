@@ -14,7 +14,10 @@ Then link with the splat linker script plus the auto symbol file, objcopy to a
 raw image, and check the SHA-1 against the retail target. Prints
 "build/USA/out/SLUS_011.93: OK" on success.
 
-DW2 has no overlay model, so this replaces the PE2 ninja pipeline for now.
+The 7 stage overlays (AAA/3.PRO/STAGxxxx.PRO, all loaded at 0x80063360) are
+split into asm/USA/stagxxxx + src/stagxxxx and linked one by one with their
+own linker script; each prints "build/USA/out/STAGxxxx.PRO: OK".
+--overlays-only builds just those.
 """
 import argparse
 import hashlib
@@ -37,6 +40,29 @@ CONFIG = {
     "out": "build/USA/out/SLUS_011.93",
     "include": "include",
 }
+
+# Stage overlays: (unit, retail SHA-1). Target dumps/disc/AAA/3.PRO/<UNIT>.PRO,
+# linker scripts linkers/USA/<unit>.ld + undefined_{funcs,syms}_auto.<unit>.txt.
+OVERLAYS = [
+    ("stag0000", "ff37a7c6bb5fa96da2887731fac1ea52c6033a6d"),
+    ("stag1000", "ba428a84fbe2b2084ca6e12fd88067790e43fd7f"),
+    ("stag1100", "24b68697c3b018fc1795d0ea57c845b92e298612"),
+    ("stag2000", "9e8f8a1f1eb3aacda2b4a3492abce26264ee9029"),
+    ("stag3000", "6aaf6f61f2af3d9b7379764912cf09b42c2af52b"),
+    ("stag3500", "79b8c96b9ea1c11b45ebc223eeb14bf5a5f54812"),
+    ("stag4000", "2623a98843a5943269af3c06fc20cb54a3bd23ca"),
+]
+OVERLAY_DIRS = [u for u, _ in OVERLAYS]
+# Retail sizes that are not a multiple of 4 (the linker pads the image).
+OVERLAY_SIZES = {"stag2000": 0xDBEE}
+
+
+def _in_units(path, root, units):
+    """True when path (under root) lies in one of the given top-level unit dirs."""
+    if units is None:
+        return True
+    top = os.path.relpath(path, root).replace("\\", "/").split("/")[0]
+    return top in units
 
 # Flags for hand-written asm TUs (data/rodata/header). These are already final
 # machine asm; -O0 keeps as from reordering.
@@ -162,13 +188,15 @@ def obj_for(src):
     return obj
 
 
-def assemble_asm(as_bin):
+def assemble_asm(as_bin, units=None):
     """Assemble every .s under asm/USA except the per-function nonmatchings/
     (those are pulled in by the C files' INCLUDE_ASM stubs)."""
     asm_root = os.path.join(ROOT, CONFIG["asm_dir"])
     count = 0
     for dirpath, _dirs, files in os.walk(asm_root):
         if "nonmatchings" in dirpath.replace("\\", "/").split("/"):
+            continue
+        if dirpath != asm_root and not _in_units(dirpath, asm_root, units):
             continue
         for name in files:
             if not name.endswith(".s"):
@@ -183,7 +211,7 @@ def assemble_asm(as_bin):
     return count
 
 
-def compile_c(cpp, cc1, as_bin, skip_asm=False):
+def compile_c(cpp, cc1, as_bin, skip_asm=False, units=None):
     """Preprocess + cc1 + maspsx(->as) every .c under src/.
 
     skip_asm defines SKIP_ASM so INCLUDE_ASM stubs expand to nothing (see
@@ -196,6 +224,8 @@ def compile_c(cpp, cc1, as_bin, skip_asm=False):
         return 0
     count = 0
     for dirpath, _dirs, files in os.walk(src_root):
+        if dirpath != src_root and not _in_units(dirpath, src_root, units):
+            continue
         for name in files:
             if not name.endswith(".c"):
                 continue
@@ -257,7 +287,10 @@ def main():
     ap.add_argument("--skip-verify", action="store_true",
                     help="link + objcopy but do not SHA-1 check against the retail exe "
                          "(the retail exe is not present in CI)")
+    ap.add_argument("--overlays-only", action="store_true",
+                    help="build, link and verify only the stage overlays")
     args = ap.parse_args()
+    units = OVERLAY_DIRS if args.overlays_only else None
 
     as_bin = tool("as")
     ld_bin = tool("ld")
@@ -283,10 +316,10 @@ def main():
     # one fails to launch under Windows CreateProcess.
     as_abs = os.path.abspath(as_bin)
 
-    n_asm = assemble_asm(as_bin)
+    n_asm = assemble_asm(as_bin, units)
     if n_asm < 0:
         return 1
-    n_c = compile_c(cpp, cc1, as_abs, skip_asm=args.skip_asm)
+    n_c = compile_c(cpp, cc1, as_abs, skip_asm=args.skip_asm, units=units)
     if n_c < 0:
         return 1
     if n_asm == 0 and n_c == 0:
@@ -297,6 +330,55 @@ def main():
         print("objects built (asm=%d, c=%d)" % (n_asm, n_c))
         return 0
 
+    rc = 0 if args.overlays_only else link_main(ld_bin, objcopy_bin, args.skip_verify)
+    for unit, want in OVERLAYS:
+        if link_overlay(unit, want, ld_bin, objcopy_bin, args.skip_verify) != 0:
+            rc = 1
+    return rc
+
+
+def link_overlay(unit, want, ld_bin, objcopy_bin, skip_verify):
+    """Link one stage overlay with its own splat script; skipped when not split yet."""
+    ld_script = "linkers/USA/%s.ld" % unit
+    if not os.path.exists(os.path.join(ROOT, ld_script)):
+        return 0
+    elf = os.path.join(CONFIG["build_dir"], unit + ".elf")
+    out = os.path.join(os.path.dirname(CONFIG["out"]), unit.upper() + ".PRO").replace("\\", "/")
+    cmd = [ld_bin, "-EL"]
+    for kind in ("syms", "funcs"):
+        p = "linkers/USA/undefined_%s_auto.%s.txt" % (kind, unit)
+        if os.path.exists(os.path.join(ROOT, p)):
+            cmd += ["-T", p]
+    cmd += ["-T", ld_script, "-Map", os.path.join(CONFIG["build_dir"], unit + ".map"),
+            "-o", elf, "--no-check-sections"]
+    if run(cmd) != 0:
+        print("BUILD FAILED: linking %s" % unit)
+        return 1
+    os.makedirs(os.path.join(ROOT, os.path.dirname(out)), exist_ok=True)
+    if run([objcopy_bin, "-O", "binary", elf, out]) != 0:
+        print("BUILD FAILED: objcopy %s" % unit)
+        return 1
+    if skip_verify:
+        print("%s: built (verify skipped)" % out)
+        return 0
+    # STAG2000.PRO is 0xDBEE bytes: drop the linker's zero ALIGN(4) pad after
+    # the last .short so the image has the retail length.
+    path = os.path.join(ROOT, out)
+    img = open(path, "rb").read()
+    size = OVERLAY_SIZES.get(unit)
+    if size and len(img) > size and not img[size:].strip(b"\x00"):
+        open(path, "wb").write(img[:size])
+    got = sha1(path)
+    if got != want:
+        print("%s: MISMATCH" % out)
+        print("  built  %s" % got)
+        print("  want   %s" % want)
+        return 1
+    print("%s: OK" % out)
+    return 0
+
+
+def link_main(ld_bin, objcopy_bin, skip_verify):
     # Link: symbol script first so the auto hardware/kernel syms resolve.
     os.makedirs(os.path.join(ROOT, CONFIG["build_dir"]), exist_ok=True)
     cmd = [
@@ -317,7 +399,7 @@ def main():
         print("BUILD FAILED: objcopy")
         return 1
 
-    if args.skip_verify:
+    if skip_verify:
         print("%s: built (verify skipped)" % CONFIG["out"])
         return 0
 

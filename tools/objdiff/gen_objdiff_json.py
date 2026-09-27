@@ -17,6 +17,15 @@ EXPECTED = os.path.join(ROOT, "expected", "USA", "src")
 BUILD = os.path.join(ROOT, "build", "USA", "src")
 
 CATEGORY = {"id": "main", "name": "Main Executable (SLUS_011.93)"}
+OVERLAYS = {"id": "overlays", "name": "Stage Overlays (AAA/3.PRO/STAG*.PRO)"}
+
+
+def categories_for(unit_name):
+    """main/156C -> [main]; stag1000/stag1000 -> [overlays, stag1000]."""
+    top = unit_name.split("/")[0]
+    if top.startswith("stag"):
+        return [OVERLAYS["id"], top]
+    return [CATEGORY["id"]]
 
 
 def main():
@@ -35,17 +44,22 @@ def main():
                 "target_path": os.path.relpath(target, ROOT).replace("\\", "/"),
                 "base_path": os.path.relpath(base, ROOT).replace("\\", "/"),
                 "metadata": {
-                    "progress_categories": [CATEGORY["id"]],
+                    "progress_categories": categories_for(unit_name),
                     "source_path": source_path,
                 },
             })
     if not units:
         raise SystemExit("no target objects under expected/USA/src (build target first)")
+    cats = [CATEGORY]
+    stags = sorted({u["name"].split("/")[0] for u in units if u["name"].startswith("stag")})
+    if stags:
+        cats.append(OVERLAYS)
+        cats += [{"id": s, "name": s.upper() + ".PRO"} for s in stags]
     config = {
         "build_target": False,
         "build_base": False,
         "units": units,
-        "progress_categories": [CATEGORY],
+        "progress_categories": cats,
     }
     out = os.path.join(ROOT, "objdiff.json")
     with open(out, "w") as f:

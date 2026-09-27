@@ -1,0 +1,10 @@
+nonmatching func_800720FC, 0x18
+
+glabel func_800720FC
+    /* ED9C 800720FC 0780023C */  lui        $v0, %hi(D_80072B60)
+    /* EDA0 80072100 602B428C */  lw         $v0, %lo(D_80072B60)($v0)
+    /* EDA4 80072104 00000000 */  nop
+    /* EDA8 80072108 80014284 */  lh         $v0, 0x180($v0)
+    /* EDAC 8007210C 0800E003 */  jr         $ra
+    /* EDB0 80072110 00000000 */   nop
+endlabel func_800720FC

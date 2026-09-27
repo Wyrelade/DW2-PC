@@ -29,6 +29,29 @@ def read_counts():
     return total, matched, int(a.group(1)) if a else 0
 
 
+FUNC_DEF = re.compile(r"^[A-Za-z_][\w \t\*]*?\b\w+\s*\([^;{}]*\)\s*\{", re.M)
+
+
+def overlay_counts():
+    """[(unit, total, matched)] for src/stagXXXX/*.c: an INCLUDE_ASM stub is an
+    unmatched function, a C definition is a matched one."""
+    rows = []
+    src = os.path.join(ROOT, "src")
+    for unit in sorted(os.listdir(src)) if os.path.isdir(src) else []:
+        d = os.path.join(src, unit)
+        if not unit.startswith("stag") or not os.path.isdir(d):
+            continue
+        asm = c = 0
+        for name in os.listdir(d):
+            if name.endswith(".c"):
+                with open(os.path.join(d, name), encoding="latin-1") as f:
+                    text = f.read()
+                asm += len(re.findall(r"^INCLUDE_ASM\(", text, re.M))
+                c += len(FUNC_DEF.findall(text))
+        rows.append((unit, asm + c, c))
+    return rows
+
+
 def bar(pct):
     filled = int(round(pct / 100.0 * BAR_SEGMENTS))
     filled = max(0, min(BAR_SEGMENTS, filled))
@@ -49,10 +72,27 @@ def main():
     pct_s = "%.2f%%" % pct
     b = bar(pct)
 
+    ovl = overlay_counts()
+    o_total = sum(r[1] for r in ovl)
+    o_matched = sum(r[2] for r in ovl)
+    g_total, g_matched = total + o_total, matched + o_matched
+    g_pct_s = "%.2f%%" % (100.0 * g_matched / g_total if g_total else 0.0)
+
     badge = (
         "![matched](https://img.shields.io/badge/matched-"
-        "%d%%2F%d%%20(%s)-1f6feb)" % (matched, total, pct_s.replace("%", "%25"))
+        "%d%%2F%d%%20(%s)-1f6feb)" % (g_matched, g_total, g_pct_s.replace("%", "%25"))
     )
+    ovl_rows = []
+    if ovl:
+        o_pct = 100.0 * o_matched / o_total if o_total else 0.0
+        ovl_rows.append("| **Stage overlays** (`AAA/3.PRO`) | %d | %d | `%s` %.2f%% |"
+                        % (o_total, o_matched, bar(o_pct), o_pct))
+        for unit, t, m in ovl:
+            p = 100.0 * m / t if t else 0.0
+            ovl_rows.append("| &nbsp;&nbsp;└ `%s.PRO` | %d | %d | `%s` %.2f%% |"
+                            % (unit.upper(), t, m, bar(p), p))
+        ovl_rows.append("| **Total** | %d | %d | `%s` %s |"
+                        % (g_total, g_matched, bar(100.0 * g_matched / g_total), g_pct_s))
     table = "\n".join([
         "| Component | Functions | Matched | Progress |",
         "|---|---:|---:|---|",
@@ -64,7 +104,7 @@ def main():
     ] if asm else [
         "| &nbsp;&nbsp;└ `src/main/156C.c` (text unit) | %d | %d | `%s` %s |"
         % (total, matched, b, pct_s),
-    ]))
+    ]) + ovl_rows)
 
     with open(README, encoding="utf-8") as f:
         text = f.read()
@@ -72,7 +112,8 @@ def main():
     text = replace_region(text, "PROGRESS:TABLE", table)
     with open(README, "w", encoding="utf-8", newline="\n") as f:
         f.write(text)
-    print("README progress updated: %d/%d (%s)" % (matched, total, pct_s))
+    print("README progress updated: main %d/%d (%s), overlays %d/%d, total %d/%d (%s)"
+          % (matched, total, pct_s, o_matched, o_total, g_matched, g_total, g_pct_s))
 
 
 if __name__ == "__main__":
