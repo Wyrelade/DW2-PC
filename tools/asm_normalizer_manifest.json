@@ -3977,5 +3977,10 @@
       "prologue_save_hoist",
       "epilogue_unfill"
     ]
+  },
+  "stag1000:func_800646F4": {
+    "passes": [
+      "nosplit"
+    ]
   }
 }

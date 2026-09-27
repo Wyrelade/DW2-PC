@@ -428,7 +428,28 @@ void func_800646C0(s32 arg0) {
     func_80064980(arg0);
 }
 
-INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_800646F4);
+DecDCTEnv *func_800646F4(DecDCTEnv *env) {
+    u32 *dst;
+    u32 *src;
+    s32 i;
+
+    dst = (u32 *)env->iq_y;
+    src = D_8006525C;
+    for (i = 15; i != -1; i--) {
+        *dst++ = *src++;
+    }
+    dst = (u32 *)env->iq_c;
+    src = D_8006529C;
+    for (i = 15; i != -1; i--) {
+        *dst++ = *src++;
+    }
+    dst = (u32 *)env->dct;
+    src = D_800652E0;
+    for (i = 31; i != -1; i--) {
+        *dst++ = *src++;
+    }
+    return env;
+}
 
 INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80064780);
 
