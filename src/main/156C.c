@@ -806,7 +806,7 @@ extern Pair61900 D_80040EFC[];
 extern ObjC0E4 D_80061A08;
 extern ObjC0E4 D_80061A48;
 extern ObjC0E4 D_800619E8;
-extern void func_8002C834(s32 *, Mat1F668 *);
+extern void func_8002C834();
 extern Halves D_8005074C;
 extern Pair54 D_80040D70[][3];
 extern u8 D_800632E0[0x80];
@@ -838,6 +838,8 @@ extern Halves D_80040F38[];
 extern Halves D_80050710;
 extern void func_80017214(Actor *a0);
 extern s32 D_8005F70C;
+extern Coord1F668 *D_80061A68[];
+extern Coord1F668 *D_80061A64[];
 s16 func_800388A4(s16, s16, s16, s16, u16);
 void func_80021DC8(void);
 
@@ -11975,7 +11977,59 @@ void func_8002C774(ObjC0E4 *a0, s32 a1) {
 }
 __asm__(".word 0\n.word 0\n.word 0\n");
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002C834);
+void func_8002C834(Coord1F668 *coord, Mat1F668 *m) {
+    Coord1F668 *p;
+    s32 i;
+    s32 j;
+    Coord1F668 **stk;
+    Coord1F668 **q;
+    s32 t;
+
+    p = coord;
+    i = 0;
+    j = 100;
+    stk = D_80061A68;
+    for (;;) {
+        stk[i] = p;
+        if (p->super == NULL) {
+            if (p->flg == D_80061988 || p->flg == 0) {
+                p->workm = p->coord;
+                t = ((Stamp61988 *)&D_80061988)->stamp;
+                *m = p->workm;
+                p->flg = t;
+                break;
+            }
+            if (j == 100) {
+                *m = D_80061A68[0]->workm;
+                i = 0;
+            } else {
+                i = j + 1;
+                *m = stk[i]->workm;
+            }
+            break;
+        }
+        if (p->flg == D_80061988) {
+            *m = p->workm;
+            break;
+        }
+        if (p->flg == 0) {
+            j = i;
+        }
+        p = p->super;
+        i++;
+    }
+    if (i > 0) {
+        q = &D_80061A64[i];
+        do {
+            func_8002C0E4((ObjC0E4 *)m, (ArgC0E4 *)&(*q)->coord);
+            i--;
+            (*q)->workm = *m;
+            (*q)->flg = D_80061988;
+            q--;
+        } while (i > 0);
+    }
+}
+
 
 s32 func_8002CAF4(s32 arg0) {
     if (arg0 < 0) {

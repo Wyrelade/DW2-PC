@@ -3181,4 +3181,9 @@ typedef struct {
     /* 0x1A6 */ s16 field_1A6;
 } Wk18048;
 
+/* frame stamp bumped once per frame; a coordinate's cached world matrix is valid while its flg equals it */
+typedef struct {
+    /* 0x0 */ s32 stamp;
+} Stamp61988;
+
 #endif /* MAIN_156C_H */

@@ -3851,5 +3851,21 @@
       "web_realloc_void",
       "padnop"
     ]
+  },
+  "func_8002C834": {
+    "passes": [
+      "nosplit",
+      "la_split",
+      "la_unhoist",
+      "param_copy_fresh",
+      "const_uncse",
+      "li_uncopy",
+      "web_realloc_void",
+      "block_iso",
+      "movstr_rename_split",
+      "fallthrough_fill",
+      "delay_fill",
+      "padnop"
+    ]
   }
 }
