@@ -7,7 +7,7 @@ glabel SsVabOpenHead
     /* 2A250 80039A50 032C0500 */  sra        $a1, $a1, 16
     /* 2A254 80039A54 0480063C */  lui        $a2, %hi(func_80039A78)
     /* 2A258 80039A58 789AC624 */  addiu      $a2, $a2, %lo(func_80039A78)
-    /* 2A25C 80039A5C D5E6000C */  jal        func_80039B54
+    /* 2A25C 80039A5C D5E6000C */  jal        _SsVabOpenHeadWithMode
     /* 2A260 80039A60 21380000 */   addu      $a3, $zero, $zero
     /* 2A264 80039A64 00140200 */  sll        $v0, $v0, 16
     /* 2A268 80039A68 1000BF8F */  lw         $ra, 0x10($sp)

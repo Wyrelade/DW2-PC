@@ -188,12 +188,12 @@ glabel Menu_SubMenuTask
     /* 4EB8 800146B8 00000000 */   nop
   .L800146BC:
     /* 4EBC 800146BC 04000426 */  addiu      $a0, $s0, 0x4
-    /* 4EC0 800146C0 2C70000C */  jal        func_8001C0B0
+    /* 4EC0 800146C0 2C70000C */  jal        Text_CloseArray
     /* 4EC4 800146C4 09000524 */   addiu     $a1, $zero, 0x9
     /* 4EC8 800146C8 C0510008 */  j          .L80014700
     /* 4ECC 800146CC 3C0012A6 */   sh        $s2, 0x3C($s0)
   .L800146D0:
-    /* 4ED0 800146D0 2C70000C */  jal        func_8001C0B0
+    /* 4ED0 800146D0 2C70000C */  jal        Text_CloseArray
     /* 4ED4 800146D4 0A000524 */   addiu     $a1, $zero, 0xA
     /* 4ED8 800146D8 1305043C */  lui        $a0, (0x5130008 >> 16)
     /* 4EDC 800146DC 38000586 */  lh         $a1, 0x38($s0)
@@ -244,7 +244,7 @@ glabel Menu_SubMenuTask
     /* 4F7C 8001477C 00000000 */   nop
   .L80014780:
     /* 4F80 80014780 21200002 */  addu       $a0, $s0, $zero
-    /* 4F84 80014784 2C70000C */  jal        func_8001C0B0
+    /* 4F84 80014784 2C70000C */  jal        Text_CloseArray
     /* 4F88 80014788 0A000524 */   addiu     $a1, $zero, 0xA
     /* 4F8C 8001478C F4510008 */  j          .L800147D0
     /* 4F90 80014790 00000000 */   nop
@@ -288,7 +288,7 @@ glabel Menu_SubMenuTask
     /* 5010 80014810 07005210 */  beq        $v0, $s2, .L80014830
     /* 5014 80014814 00000000 */   nop
   .L80014818:
-    /* 5018 80014818 2C70000C */  jal        func_8001C0B0
+    /* 5018 80014818 2C70000C */  jal        Text_CloseArray
     /* 501C 8001481C 0A000524 */   addiu     $a1, $zero, 0xA
   .L80014820:
     /* 5020 80014820 5945000C */  jal        Task_NextState1

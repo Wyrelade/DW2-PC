@@ -361,7 +361,7 @@ glabel func_8002A054
     /* 1AD10 8002A510 08004010 */  beqz       $v0, .L8002A534
     /* 1AD14 8002A514 2180A002 */   addu      $s0, $s5, $zero
   .L8002A518:
-    /* 1AD18 8002A518 D1A9000C */  jal        func_8002A744
+    /* 1AD18 8002A518 D1A9000C */  jal        Debug_PutChar
     /* 1AD1C 8002A51C 20000424 */   addiu     $a0, $zero, 0x20
     /* 1AD20 8002A520 4400A78F */  lw         $a3, 0x44($sp)
     /* 1AD24 8002A524 01001026 */  addiu      $s0, $s0, 0x1
@@ -371,16 +371,16 @@ glabel func_8002A054
   .L8002A534:
     /* 1AD34 8002A534 04008010 */  beqz       $a0, .L8002A548
     /* 1AD38 8002A538 40006232 */   andi      $v0, $s3, 0x40
-    /* 1AD3C 8002A53C D1A9000C */  jal        func_8002A744
+    /* 1AD3C 8002A53C D1A9000C */  jal        Debug_PutChar
     /* 1AD40 8002A540 00000000 */   nop
     /* 1AD44 8002A544 40006232 */  andi       $v0, $s3, 0x40
   .L8002A548:
     /* 1AD48 8002A548 07004010 */  beqz       $v0, .L8002A568
     /* 1AD4C 8002A54C 30006332 */   andi      $v1, $s3, 0x30
-    /* 1AD50 8002A550 D1A9000C */  jal        func_8002A744
+    /* 1AD50 8002A550 D1A9000C */  jal        Debug_PutChar
     /* 1AD54 8002A554 30000424 */   addiu     $a0, $zero, 0x30
     /* 1AD58 8002A558 0000E482 */  lb         $a0, 0x0($s7)
-    /* 1AD5C 8002A55C D1A9000C */  jal        func_8002A744
+    /* 1AD5C 8002A55C D1A9000C */  jal        Debug_PutChar
     /* 1AD60 8002A560 00000000 */   nop
     /* 1AD64 8002A564 30006332 */  andi       $v1, $s3, 0x30
   .L8002A568:
@@ -393,7 +393,7 @@ glabel func_8002A054
     /* 1AD80 8002A580 08004010 */  beqz       $v0, .L8002A5A4
     /* 1AD84 8002A584 2180A002 */   addu      $s0, $s5, $zero
   .L8002A588:
-    /* 1AD88 8002A588 D1A9000C */  jal        func_8002A744
+    /* 1AD88 8002A588 D1A9000C */  jal        Debug_PutChar
     /* 1AD8C 8002A58C 30000424 */   addiu     $a0, $zero, 0x30
     /* 1AD90 8002A590 4400A78F */  lw         $a3, 0x44($sp)
     /* 1AD94 8002A594 01001026 */  addiu      $s0, $s0, 0x1
@@ -407,7 +407,7 @@ glabel func_8002A054
     /* 1ADB0 8002A5B0 08004010 */  beqz       $v0, .L8002A5D4
     /* 1ADB4 8002A5B4 00000000 */   nop
   .L8002A5B8:
-    /* 1ADB8 8002A5B8 D1A9000C */  jal        func_8002A744
+    /* 1ADB8 8002A5B8 D1A9000C */  jal        Debug_PutChar
     /* 1ADBC 8002A5BC 30000424 */   addiu     $a0, $zero, 0x30
     /* 1ADC0 8002A5C0 3C00A78F */  lw         $a3, 0x3C($sp)
     /* 1ADC4 8002A5C4 01001026 */  addiu      $s0, $s0, 0x1
@@ -421,14 +421,14 @@ glabel func_8002A054
   .L8002A5E0:
     /* 1ADE0 8002A5E0 00004482 */  lb         $a0, 0x0($s2)
     /* 1ADE4 8002A5E4 01005226 */  addiu      $s2, $s2, 0x1
-    /* 1ADE8 8002A5E8 D1A9000C */  jal        func_8002A744
+    /* 1ADE8 8002A5E8 D1A9000C */  jal        Debug_PutChar
     /* 1ADEC 8002A5EC FFFF1026 */   addiu     $s0, $s0, -0x1
     /* 1ADF0 8002A5F0 05000006 */  bltz       $s0, .L8002A608
     /* 1ADF4 8002A5F4 00000000 */   nop
     /* 1ADF8 8002A5F8 78A90008 */  j          .L8002A5E0
     /* 1ADFC 8002A5FC 00000000 */   nop
   .L8002A600:
-    /* 1AE00 8002A600 D1A9000C */  jal        func_8002A744
+    /* 1AE00 8002A600 D1A9000C */  jal        Debug_PutChar
     /* 1AE04 8002A604 30000424 */   addiu     $a0, $zero, 0x30
   .L8002A608:
     /* 1AE08 8002A608 4000A78F */  lw         $a3, 0x40($sp)
@@ -445,7 +445,7 @@ glabel func_8002A054
     /* 1AE34 8002A634 08004010 */  beqz       $v0, .L8002A658
     /* 1AE38 8002A638 2180A002 */   addu      $s0, $s5, $zero
   .L8002A63C:
-    /* 1AE3C 8002A63C D1A9000C */  jal        func_8002A744
+    /* 1AE3C 8002A63C D1A9000C */  jal        Debug_PutChar
     /* 1AE40 8002A640 20000424 */   addiu     $a0, $zero, 0x20
     /* 1AE44 8002A644 4400A78F */  lw         $a3, 0x44($sp)
     /* 1AE48 8002A648 01001026 */  addiu      $s0, $s0, 0x1
@@ -466,7 +466,7 @@ glabel func_8002A054
     /* 1AE7C 8002A67C ACA90008 */  j          .L8002A6B0
     /* 1AE80 8002A680 3800A7AF */   sw        $a3, 0x38($sp)
   jlabel .L8002A684
-    /* 1AE84 8002A684 10AA000C */  jal        func_8002A840
+    /* 1AE84 8002A684 10AA000C */  jal        Debug_FlushOut
     /* 1AE88 8002A688 00000000 */   nop
     /* 1AE8C 8002A68C 3800A28F */  lw         $v0, 0x38($sp)
     /* 1AE90 8002A690 AEA90008 */  j          .L8002A6B8
@@ -477,7 +477,7 @@ glabel func_8002A054
     /* 1AEA0 8002A6A0 0100E724 */  addiu      $a3, $a3, 0x1
     /* 1AEA4 8002A6A4 3800A7AF */  sw         $a3, 0x38($sp)
   .L8002A6A8:
-    /* 1AEA8 8002A6A8 D1A9000C */  jal        func_8002A744
+    /* 1AEA8 8002A6A8 D1A9000C */  jal        Debug_PutChar
     /* 1AEAC 8002A6AC 00000000 */   nop
   .L8002A6B0:
     /* 1AEB0 8002A6B0 29A80008 */  j          .L8002A0A4

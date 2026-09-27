@@ -32,7 +32,7 @@ glabel Item_TakeFromStorage
     /* 6D1C 8001651C 2A104300 */  slt        $v0, $v0, $v1
     /* 6D20 80016520 6C004010 */  beqz       $v0, .L800166D4
     /* 6D24 80016524 10000424 */   addiu     $a0, $zero, 0x10
-    /* 6D28 80016528 078A000C */  jal        func_8002281C
+    /* 6D28 80016528 078A000C */  jal        Item_GetBagCapacity
     /* 6D2C 8001652C 00000000 */   nop
     /* 6D30 80016530 21284000 */  addu       $a1, $v0, $zero
     /* 6D34 80016534 0C00A018 */  blez       $a1, .L80016568
@@ -61,7 +61,7 @@ glabel Item_TakeFromStorage
     /* 6D88 80016588 0E008797 */  lhu        $a3, %gp_rel(D_80050706)($gp)
     /* 6D8C 8001658C 0C008297 */  lhu        $v0, %gp_rel(D_80050704)($gp)
     /* 6D90 80016590 003C0700 */  sll        $a3, $a3, 16
-    /* 6D94 80016594 3E4D000C */  jal        func_800134F8
+    /* 6D94 80016594 3E4D000C */  jal        Text_OpenPacked
     /* 6D98 80016598 25384700 */   or        $a3, $v0, $a3
     /* 6D9C 8001659C B5590008 */  j          .L800166D4
     /* 6DA0 800165A0 10000424 */   addiu     $a0, $zero, 0x10
@@ -88,7 +88,7 @@ glabel Item_TakeFromStorage
     /* 6DF0 800165F0 2000A2A3 */  sb         $v0, 0x20($sp)
     /* 6DF4 800165F4 2100A0A3 */  sb         $zero, 0x21($sp)
     /* 6DF8 800165F8 00002496 */  lhu        $a0, 0x0($s1)
-    /* 6DFC 800165FC 1278000C */  jal        func_8001E048
+    /* 6DFC 800165FC 1278000C */  jal        Item_GetNameText
     /* 6E00 80016600 00000000 */   nop
     /* 6E04 80016604 FD01043C */  lui        $a0, (0x1FD0123 >> 16)
     /* 6E08 80016608 23018434 */  ori        $a0, $a0, (0x1FD0123 & 0xFFFF)
@@ -96,7 +96,7 @@ glabel Item_TakeFromStorage
     /* 6E10 80016610 1400A2AF */   sw        $v0, 0x14($sp)
     /* 6E14 80016614 40000426 */  addiu      $a0, $s0, 0x40
     /* 6E18 80016618 1000A527 */  addiu      $a1, $sp, 0x10
-    /* 6E1C 8001661C 1C4D000C */  jal        func_80013470
+    /* 6E1C 8001661C 1C4D000C */  jal        Text_OpenDesc
     /* 6E20 80016620 1000A2AF */   sw        $v0, 0x10($sp)
     /* 6E24 80016624 DA57000C */  jal        Item_BuildMenuList
     /* 6E28 80016628 21200002 */   addu      $a0, $s0, $zero

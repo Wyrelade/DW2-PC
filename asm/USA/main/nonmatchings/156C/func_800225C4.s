@@ -4,7 +4,7 @@ glabel func_800225C4
     /* 12DC4 800225C4 E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* 12DC8 800225C8 1000B0AF */  sw         $s0, 0x10($sp)
     /* 12DCC 800225CC 1400BFAF */  sw         $ra, 0x14($sp)
-    /* 12DD0 800225D0 078A000C */  jal        func_8002281C
+    /* 12DD0 800225D0 078A000C */  jal        Item_GetBagCapacity
     /* 12DD4 800225D4 FFFF1024 */   addiu     $s0, $zero, -0x1
     /* 12DD8 800225D8 21284000 */  addu       $a1, $v0, $zero
     /* 12DDC 800225DC 0D00A018 */  blez       $a1, .L80022614

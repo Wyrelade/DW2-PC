@@ -25,7 +25,7 @@ glabel func_80018BF8
     /* 944C 80018C4C 00000000 */   nop
     /* 9450 80018C50 C00002AE */  sw         $v0, 0xC0($s0)
     /* 9454 80018C54 0C00248E */  lw         $a0, 0xC($s1)
-    /* 9458 80018C58 CA79000C */  jal        func_8001E728
+    /* 9458 80018C58 CA79000C */  jal        Anim_GetModelAnimFile
     /* 945C 80018C5C 21280000 */   addu      $a1, $zero, $zero
     /* 9460 80018C60 C000058E */  lw         $a1, 0xC0($s0)
     /* 9464 80018C64 21202002 */  addu       $a0, $s1, $zero

@@ -953,7 +953,7 @@ glabel Text_UpdateAllBoxes
     /* BF48 8001B748 21800202 */  addu       $s0, $s0, $v0
     /* BF4C 8001B74C 3D6A000C */  jal        Text_PushReturn
     /* BF50 8001B750 21800302 */   addu      $s0, $s0, $v1
-    /* BF54 8001B754 1278000C */  jal        func_8001E048
+    /* BF54 8001B754 1278000C */  jal        Item_GetNameText
     /* BF58 8001B758 21200002 */   addu      $a0, $s0, $zero
     /* BF5C 8001B75C BC6E0008 */  j          .L8001BAF0
     /* BF60 8001B760 FFFF5124 */   addiu     $s1, $v0, -0x1

@@ -66,7 +66,7 @@ glabel func_80031AC4
     /* 223B0 80031BB0 1000A527 */  addiu      $a1, $sp, 0x10
     /* 223B4 80031BB4 1200A627 */  addiu      $a2, $sp, 0x12
     /* 223B8 80031BB8 21107000 */  addu       $v0, $v1, $s0
-    /* 223BC 80031BBC 54E4000C */  jal        func_80039150
+    /* 223BC 80031BBC 54E4000C */  jal        _SsVmGetSeqVol
     /* 223C0 80031BC0 4A0042A6 */   sh        $v0, 0x4A($s2)
     /* 223C4 80031BC4 1000A297 */  lhu        $v0, 0x10($sp)
     /* 223C8 80031BC8 00000000 */  nop
@@ -133,7 +133,7 @@ glabel func_80031AC4
     /* 22494 80031C94 00240400 */  sll        $a0, $a0, 16
     /* 22498 80031C98 03240400 */  sra        $a0, $a0, 16
     /* 2249C 80031C9C 5C004526 */  addiu      $a1, $s2, 0x5C
-    /* 224A0 80031CA0 54E4000C */  jal        func_80039150
+    /* 224A0 80031CA0 54E4000C */  jal        _SsVmGetSeqVol
     /* 224A4 80031CA4 5E004626 */   addiu     $a2, $s2, 0x5E
     /* 224A8 80031CA8 3000BF8F */  lw         $ra, 0x30($sp)
     /* 224AC 80031CAC 2C00B58F */  lw         $s5, 0x2C($sp)

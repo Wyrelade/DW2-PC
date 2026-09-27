@@ -37,7 +37,7 @@ glabel Actor_InitTransform
     /* 114C0 80020CC0 380062AC */  sw         $v0, 0x38($v1)
   .L80020CC4:
     /* 114C4 80020CC4 21200002 */  addu       $a0, $s0, $zero
-    /* 114C8 80020CC8 0583000C */  jal        func_80020C14
+    /* 114C8 80020CC8 0583000C */  jal        Actor_RefreshTransform
     /* 114CC 80020CCC 420072A4 */   sh        $s2, 0x42($v1)
     /* 114D0 80020CD0 1C00BF8F */  lw         $ra, 0x1C($sp)
     /* 114D4 80020CD4 1800B28F */  lw         $s2, 0x18($sp)

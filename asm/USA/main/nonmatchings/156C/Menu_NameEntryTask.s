@@ -139,7 +139,7 @@ glabel Menu_NameEntryTask
     /* 3360 80012B60 35000224 */  addiu      $v0, $zero, 0x35
     /* 3364 80012B64 0500A2A2 */  sb         $v0, 0x5($s5)
   .L80012B68:
-    /* 3368 80012B68 2F6A000C */  jal        func_8001A8BC
+    /* 3368 80012B68 2F6A000C */  jal        Snd_SaveCurrentId
     /* 336C 80012B6C 00000000 */   nop
     /* 3370 80012B70 22000424 */  addiu      $a0, $zero, 0x22
     /* 3374 80012B74 A369000C */  jal        Snd_PlayById
@@ -486,11 +486,11 @@ glabel Menu_NameEntryTask
     /* 3848 80013048 00050224 */  addiu      $v0, $zero, 0x500
     /* 384C 8001304C 03006210 */  beq        $v1, $v0, .L8001305C
     /* 3850 80013050 00000000 */   nop
-    /* 3854 80013054 346A000C */  jal        func_8001A8D0
+    /* 3854 80013054 346A000C */  jal        Snd_RestoreSavedId
     /* 3858 80013058 00000000 */   nop
   .L8001305C:
     /* 385C 8001305C 10008426 */  addiu      $a0, $s4, 0x10
-    /* 3860 80013060 2C70000C */  jal        func_8001C0B0
+    /* 3860 80013060 2C70000C */  jal        Text_CloseArray
     /* 3864 80013064 05000524 */   addiu     $a1, $zero, 0x5
   .L80013068:
     /* 3868 80013068 5145000C */  jal        Task_NextState0

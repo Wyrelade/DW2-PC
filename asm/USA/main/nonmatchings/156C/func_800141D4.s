@@ -43,7 +43,7 @@ glabel func_800141D4
     /* 4A68 80014268 2800868E */  lw         $a2, 0x28($s4)
     /* 4A6C 8001426C 02000524 */  addiu      $a1, $zero, 0x2
     /* 4A70 80014270 0730A600 */  srav       $a2, $a2, $a1
-    /* 4A74 80014274 EE4D000C */  jal        func_800137B8
+    /* 4A74 80014274 EE4D000C */  jal        Gfx_SetPartsPalette
     /* 4A78 80014278 0300C630 */   andi      $a2, $a2, 0x3
     /* 4A7C 8001427C A9500008 */  j          .L800142A4
     /* 4A80 80014280 21200002 */   addu      $a0, $s0, $zero
@@ -61,7 +61,7 @@ glabel func_800141D4
     /* 4AA8 800142A8 3400668E */  lw         $a2, 0x34($s3)
     /* 4AAC 800142AC 5475000C */  jal        Gfx_SetPartsScale
     /* 4AB0 800142B0 04003126 */   addiu     $s1, $s1, 0x4
-    /* 4AB4 800142B4 2176000C */  jal        func_8001D884
+    /* 4AB4 800142B4 2176000C */  jal        Gfx_DrawParts
     /* 4AB8 800142B8 21200002 */   addu      $a0, $s0, $zero
     /* 4ABC 800142BC 0000228E */  lw         $v0, 0x0($s1)
     /* 4AC0 800142C0 00000000 */  nop
@@ -133,7 +133,7 @@ glabel func_800141D4
     /* 4B9C 8001439C D4FF4014 */  bnez       $v0, .L800142F0
     /* 4BA0 800143A0 28001026 */   addiu     $s0, $s0, 0x28
   .L800143A4:
-    /* 4BA4 800143A4 2176000C */  jal        func_8001D884
+    /* 4BA4 800143A4 2176000C */  jal        Gfx_DrawParts
     /* 4BA8 800143A8 21204002 */   addu      $a0, $s2, $zero
     /* 4BAC 800143AC 2400BF8F */  lw         $ra, 0x24($sp)
     /* 4BB0 800143B0 2000B48F */  lw         $s4, 0x20($sp)

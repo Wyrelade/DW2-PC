@@ -12,7 +12,7 @@ glabel Item_SortList
     /* 12ECC 800226CC 1800B2AF */  sw         $s2, 0x18($sp)
     /* 12ED0 800226D0 1400B1AF */  sw         $s1, 0x14($sp)
     /* 12ED4 800226D4 1000B0AF */  sw         $s0, 0x10($sp)
-    /* 12ED8 800226D8 8A89000C */  jal        func_80022628
+    /* 12ED8 800226D8 8A89000C */  jal        Item_CompactBag
     /* 12EDC 800226DC 66005624 */   addiu     $s6, $v0, 0x66
     /* 12EE0 800226E0 21A0C002 */  addu       $s4, $s6, $zero
   .L800226E4:

@@ -11,7 +11,7 @@ glabel Anim_HasModelAnim
     /* FA90 8001F290 06004010 */  beqz       $v0, .L8001F2AC
     /* FA94 8001F294 21280000 */   addu      $a1, $zero, $zero
     /* FA98 8001F298 0C00848C */  lw         $a0, 0xC($a0)
-    /* FA9C 8001F29C CA79000C */  jal        func_8001E728
+    /* FA9C 8001F29C CA79000C */  jal        Anim_GetModelAnimFile
     /* FAA0 8001F2A0 2180A000 */   addu      $s0, $a1, $zero
     /* FAA4 8001F2A4 B77C0008 */  j          .L8001F2DC
     /* FAA8 8001F2A8 00000000 */   nop
@@ -20,13 +20,13 @@ glabel Anim_HasModelAnim
     /* FAB0 8001F2B0 06004010 */  beqz       $v0, .L8001F2CC
     /* FAB4 8001F2B4 00000000 */   nop
     /* FAB8 8001F2B8 0C00848C */  lw         $a0, 0xC($a0)
-    /* FABC 8001F2BC CA79000C */  jal        func_8001E728
+    /* FABC 8001F2BC CA79000C */  jal        Anim_GetModelAnimFile
     /* FAC0 8001F2C0 01000524 */   addiu     $a1, $zero, 0x1
     /* FAC4 8001F2C4 B77C0008 */  j          .L8001F2DC
     /* FAC8 8001F2C8 F6FF1026 */   addiu     $s0, $s0, -0xA
   .L8001F2CC:
     /* FACC 8001F2CC 0C00848C */  lw         $a0, 0xC($a0)
-    /* FAD0 8001F2D0 CA79000C */  jal        func_8001E728
+    /* FAD0 8001F2D0 CA79000C */  jal        Anim_GetModelAnimFile
     /* FAD4 8001F2D4 02000524 */   addiu     $a1, $zero, 0x2
     /* FAD8 8001F2D8 ECFF1026 */  addiu      $s0, $s0, -0x14
   .L8001F2DC:

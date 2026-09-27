@@ -16,7 +16,7 @@ glabel func_8001E390
     /* EBBC 8001E3BC 0C00048E */  lw         $a0, 0xC($s0)
     /* EBC0 8001E3C0 A678000C */  jal        func_8001E298
     /* EBC4 8001E3C4 00000000 */   nop
-    /* EBC8 8001E3C8 0E88000C */  jal        func_80022038
+    /* EBC8 8001E3C8 0E88000C */  jal        Flag_TestConds
     /* EBCC 8001E3CC 21204000 */   addu      $a0, $v0, $zero
     /* EBD0 8001E3D0 1C004010 */  beqz       $v0, .L8001E444
     /* EBD4 8001E3D4 10000326 */   addiu     $v1, $s0, 0x10

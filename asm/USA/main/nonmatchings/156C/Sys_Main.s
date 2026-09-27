@@ -18,7 +18,7 @@ glabel Sys_Main
     /* 13D88 80023588 419C000C */  jal        ResetGraph
     /* 13D8C 8002358C 21200000 */   addu      $a0, $zero, $zero
     /* 13D90 80023590 0280043C */  lui        $a0, %hi(Sys_VSyncHandler)
-    /* 13D94 80023594 59C3000C */  jal        func_80030D64
+    /* 13D94 80023594 59C3000C */  jal        VSyncCallback
     /* 13D98 80023598 84348424 */   addiu     $a0, $a0, %lo(Sys_VSyncHandler)
     /* 13D9C 8002359C 1800A427 */  addiu      $a0, $sp, 0x18
     /* 13DA0 800235A0 21280000 */  addu       $a1, $zero, $zero

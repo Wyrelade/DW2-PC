@@ -89,7 +89,7 @@ glabel func_80018D78
     /* 96C0 80018EC0 0000A296 */  lhu        $v0, 0x0($s5)
     /* 96C4 80018EC4 4C006526 */  addiu      $a1, $s3, 0x4C
     /* 96C8 80018EC8 003C0700 */  sll        $a3, $a3, 16
-    /* 96CC 80018ECC 3E4D000C */  jal        func_800134F8
+    /* 96CC 80018ECC 3E4D000C */  jal        Text_OpenPacked
     /* 96D0 80018ED0 25384700 */   or        $a3, $v0, $a3
     /* 96D4 80018ED4 01006492 */  lbu        $a0, 0x1($s3)
     /* 96D8 80018ED8 D679000C */  jal        Digi_GetDefaultName
@@ -287,7 +287,7 @@ glabel func_80018D78
     /* 999C 8001919C 07005010 */  beq        $v0, $s0, .L800191BC
     /* 99A0 800191A0 00000000 */   nop
   .L800191A4:
-    /* 99A4 800191A4 2C70000C */  jal        func_8001C0B0
+    /* 99A4 800191A4 2C70000C */  jal        Text_CloseArray
     /* 99A8 800191A8 1B000524 */   addiu     $a1, $zero, 0x1B
   .L800191AC:
     /* 99AC 800191AC 5945000C */  jal        Task_NextState1

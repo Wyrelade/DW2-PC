@@ -91,7 +91,7 @@ glabel MemCardOpen
   .L8003E584:
     /* 2ED84 8003E584 69FD000C */  jal        close
     /* 2ED88 8003E588 21204000 */   addu      $a0, $v0, $zero
-    /* 2ED8C 8003E58C A9FF000C */  jal        func_8003FEA4
+    /* 2ED8C 8003E58C A9FF000C */  jal        Card_ClearEvents
     /* 2ED90 8003E590 00000000 */   nop
     /* 2ED94 8003E594 21200002 */  addu       $a0, $s0, $zero
     /* 2ED98 8003E598 5DFD000C */  jal        open

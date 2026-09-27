@@ -12,13 +12,13 @@ glabel func_8002A87C
     /* 1B09C 8002A89C 0A000224 */  addiu      $v0, $zero, 0xA
     /* 1B0A0 8002A8A0 10008214 */  bne        $a0, $v0, .L8002A8E4
     /* 1B0A4 8002A8A4 FF000232 */   andi      $v0, $s0, 0xFF
-    /* 1B0A8 8002A8A8 D1A9000C */  jal        func_8002A744
+    /* 1B0A8 8002A8A8 D1A9000C */  jal        Debug_PutChar
     /* 1B0AC 8002A8AC 0D000424 */   addiu     $a0, $zero, 0xD
     /* 1B0B0 8002A8B0 0580013C */  lui        $at, %hi(D_80049060)
     /* 1B0B4 8002A8B4 46AA0008 */  j          .L8002A918
     /* 1B0B8 8002A8B8 609020AC */   sw        $zero, %lo(D_80049060)($at)
   .L8002A8BC:
-    /* 1B0BC 8002A8BC D1A9000C */  jal        func_8002A744
+    /* 1B0BC 8002A8BC D1A9000C */  jal        Debug_PutChar
     /* 1B0C0 8002A8C0 20000424 */   addiu     $a0, $zero, 0x20
     /* 1B0C4 8002A8C4 0580023C */  lui        $v0, %hi(D_80049060)
     /* 1B0C8 8002A8C8 6090428C */  lw         $v0, %lo(D_80049060)($v0)

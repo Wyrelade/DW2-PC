@@ -7,7 +7,7 @@ glabel Pad_Init
     /* 138B8 800230B8 1000BFAF */  sw         $ra, 0x10($sp)
     /* 138BC 800230BC 9591000C */  jal        PadInitDirect
     /* 138C0 800230C0 22008524 */   addiu     $a1, $a0, 0x22
-    /* 138C4 800230C4 5191000C */  jal        func_80024544
+    /* 138C4 800230C4 5191000C */  jal        PadStartCom
     /* 138C8 800230C8 00000000 */   nop
     /* 138CC 800230CC 1000BF8F */  lw         $ra, 0x10($sp)
     /* 138D0 800230D0 00000000 */  nop

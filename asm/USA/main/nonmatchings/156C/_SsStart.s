@@ -115,7 +115,7 @@ glabel _SsStart
     /* 259FC 800351FC F19B000C */  jal        EnterCriticalSection
     /* 25A00 80035200 00000000 */   nop
     /* 25A04 80035204 F8FF048E */  lw         $a0, -0x8($s0)
-    /* 25A08 80035208 59C3000C */  jal        func_80030D64
+    /* 25A08 80035208 59C3000C */  jal        VSyncCallback
     /* 25A0C 8003520C 00000000 */   nop
     /* 25A10 80035210 A1D40008 */  j          .L80035284
     /* 25A14 80035214 00000000 */   nop
@@ -136,15 +136,15 @@ glabel _SsStart
     /* 25A4C 8003524C 41C3000C */  jal        InterruptCallback
     /* 25A50 80035250 21280000 */   addu      $a1, $zero, $zero
     /* 25A54 80035254 02000482 */  lb         $a0, 0x2($s0)
-    /* 25A58 80035258 0380053C */  lui        $a1, %hi(func_800352E4)
-    /* 25A5C 8003525C E452A524 */  addiu      $a1, $a1, %lo(func_800352E4)
+    /* 25A58 80035258 0380053C */  lui        $a1, %hi(_SsTrapIntrVSync)
+    /* 25A5C 8003525C E452A524 */  addiu      $a1, $a1, %lo(_SsTrapIntrVSync)
     /* 25A60 80035260 9FD40008 */  j          .L8003527C
     /* 25A64 80035264 FCFF02AE */   sw        $v0, -0x4($s0)
   .L80035268:
     /* 25A68 80035268 01000282 */  lb         $v0, 0x1($s0)
-    /* 25A6C 8003526C 0380053C */  lui        $a1, %hi(func_80035330)
+    /* 25A6C 8003526C 0380053C */  lui        $a1, %hi(_SsSeqCalledTbyT_1per2)
     /* 25A70 80035270 02004014 */  bnez       $v0, .L8003527C
-    /* 25A74 80035274 3053A524 */   addiu     $a1, $a1, %lo(func_80035330)
+    /* 25A74 80035274 3053A524 */   addiu     $a1, $a1, %lo(_SsSeqCalledTbyT_1per2)
     /* 25A78 80035278 F8FF058E */  lw         $a1, -0x8($s0)
   .L8003527C:
     /* 25A7C 8003527C 41C3000C */  jal        InterruptCallback

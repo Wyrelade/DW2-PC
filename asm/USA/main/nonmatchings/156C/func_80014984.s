@@ -21,7 +21,7 @@ glabel func_80014984
     /* 51C8 800149C8 00000000 */   nop
   .L800149CC:
     /* 51CC 800149CC 03000424 */  addiu      $a0, $zero, 0x3
-    /* 51D0 800149D0 448A000C */  jal        func_80022910
+    /* 51D0 800149D0 448A000C */  jal        Digi_ListByState
     /* 51D4 800149D4 A0008526 */   addiu     $a1, $s4, 0xA0
     /* 51D8 800149D8 AC0082A6 */  sh         $v0, 0xAC($s4)
     /* 51DC 800149DC 21208002 */  addu       $a0, $s4, $zero
@@ -145,7 +145,7 @@ glabel func_80014984
     /* 5398 80014B98 02002796 */  lhu        $a3, 0x2($s1)
     /* 539C 80014B9C 00002296 */  lhu        $v0, 0x0($s1)
     /* 53A0 80014BA0 003C0700 */  sll        $a3, $a3, 16
-    /* 53A4 80014BA4 3E4D000C */  jal        func_800134F8
+    /* 53A4 80014BA4 3E4D000C */  jal        Text_OpenPacked
     /* 53A8 80014BA8 25384700 */   or        $a3, $v0, $a3
   .L80014BAC:
     /* 53AC 80014BAC 04003126 */  addiu      $s1, $s1, 0x4
@@ -199,7 +199,7 @@ glabel func_80014984
     /* 545C 80014C5C 2120A002 */   addu      $a0, $s5, $zero
   .L80014C60:
     /* 5460 80014C60 21208002 */  addu       $a0, $s4, $zero
-    /* 5464 80014C64 2C70000C */  jal        func_8001C0B0
+    /* 5464 80014C64 2C70000C */  jal        Text_CloseArray
     /* 5468 80014C68 1A000524 */   addiu     $a1, $zero, 0x1A
   .L80014C6C:
     /* 546C 80014C6C 5945000C */  jal        Task_NextState1

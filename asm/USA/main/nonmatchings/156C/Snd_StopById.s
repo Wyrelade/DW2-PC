@@ -30,11 +30,11 @@ glabel Snd_StopById
     /* AC78 8001A478 A7D5000C */  jal        SsSepStop
     /* AC7C 8001A47C 00000000 */   nop
   .L8001A480:
-    /* AC80 8001A480 2000828F */  lw         $v0, %gp_rel(D_80050718)($gp)
+    /* AC80 8001A480 2000828F */  lw         $v0, %gp_rel(Snd_CurrentId)($gp)
     /* AC84 8001A484 00000000 */  nop
     /* AC88 8001A488 02005014 */  bne        $v0, $s0, .L8001A494
     /* AC8C 8001A48C 00000000 */   nop
-    /* AC90 8001A490 200091AF */  sw         $s1, %gp_rel(D_80050718)($gp)
+    /* AC90 8001A490 200091AF */  sw         $s1, %gp_rel(Snd_CurrentId)($gp)
   .L8001A494:
     /* AC94 8001A494 1800BF8F */  lw         $ra, 0x18($sp)
     /* AC98 8001A498 1400B18F */  lw         $s1, 0x14($sp)

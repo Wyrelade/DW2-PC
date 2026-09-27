@@ -54,7 +54,7 @@ glabel Snd_StopAll
     /* ABF8 8001A3F8 1400B18F */  lw         $s1, 0x14($sp)
     /* ABFC 8001A3FC 1000B08F */  lw         $s0, 0x10($sp)
     /* AC00 8001A400 FFFF0224 */  addiu      $v0, $zero, -0x1
-    /* AC04 8001A404 200082AF */  sw         $v0, %gp_rel(D_80050718)($gp)
+    /* AC04 8001A404 200082AF */  sw         $v0, %gp_rel(Snd_CurrentId)($gp)
     /* AC08 8001A408 0800E003 */  jr         $ra
     /* AC0C 8001A40C 3000BD27 */   addiu     $sp, $sp, 0x30
 endlabel Snd_StopAll

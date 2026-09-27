@@ -47,7 +47,7 @@ glabel func_80017214
     /* 7AB8 800172B8 16008797 */  lhu        $a3, %gp_rel(D_8005070E)($gp)
     /* 7ABC 800172BC 14008297 */  lhu        $v0, %gp_rel(D_8005070C)($gp)
     /* 7AC0 800172C0 003C0700 */  sll        $a3, $a3, 16
-    /* 7AC4 800172C4 3E4D000C */  jal        func_800134F8
+    /* 7AC4 800172C4 3E4D000C */  jal        Text_OpenPacked
     /* 7AC8 800172C8 25384700 */   or        $a3, $v0, $a3
     /* 7ACC 800172CC 375D0008 */  j          .L800174DC
     /* 7AD0 800172D0 10000424 */   addiu     $a0, $zero, 0x10
@@ -148,7 +148,7 @@ glabel func_80017214
     /* 7C30 80017430 16008797 */  lhu        $a3, %gp_rel(D_8005070E)($gp)
     /* 7C34 80017434 14008297 */  lhu        $v0, %gp_rel(D_8005070C)($gp)
     /* 7C38 80017438 003C0700 */  sll        $a3, $a3, 16
-    /* 7C3C 8001743C 3E4D000C */  jal        func_800134F8
+    /* 7C3C 8001743C 3E4D000C */  jal        Text_OpenPacked
     /* 7C40 80017440 25384700 */   or        $a3, $v0, $a3
     /* 7C44 80017444 21200002 */  addu       $a0, $s0, $zero
     /* 7C48 80017448 21280000 */  addu       $a1, $zero, $zero
@@ -182,7 +182,7 @@ glabel func_80017214
     /* 7CB0 800174B0 16008797 */  lhu        $a3, %gp_rel(D_8005070E)($gp)
     /* 7CB4 800174B4 14008297 */  lhu        $v0, %gp_rel(D_8005070C)($gp)
     /* 7CB8 800174B8 003C0700 */  sll        $a3, $a3, 16
-    /* 7CBC 800174BC 3E4D000C */  jal        func_800134F8
+    /* 7CBC 800174BC 3E4D000C */  jal        Text_OpenPacked
     /* 7CC0 800174C0 25384700 */   or        $a3, $v0, $a3
     /* 7CC4 800174C4 21202002 */  addu       $a0, $s1, $zero
     /* 7CC8 800174C8 7745000C */  jal        Task_SetState1

@@ -15,12 +15,12 @@ glabel func_80024410
     /* 14C3C 8002443C 00000000 */   nop
     /* 14C40 80024440 C87C000C */  jal        Anim_StepModelAnim
     /* 14C44 80024444 21200002 */   addu      $a0, $s0, $zero
-    /* 14C48 80024448 4882000C */  jal        func_80020920
+    /* 14C48 80024448 4882000C */  jal        Actor_UpdateTransform
     /* 14C4C 8002444C 21200002 */   addu      $a0, $s0, $zero
-    /* 14C50 80024450 3480000C */  jal        func_800200D0
+    /* 14C50 80024450 3480000C */  jal        Gfx_CalcModelBoneMatrices
     /* 14C54 80024454 21200002 */   addu      $a0, $s0, $zero
     /* 14C58 80024458 21200002 */  addu       $a0, $s0, $zero
-    /* 14C5C 8002445C 4481000C */  jal        func_80020510
+    /* 14C5C 8002445C 4481000C */  jal        Gfx_DrawTexModel
     /* 14C60 80024460 21280000 */   addu      $a1, $zero, $zero
   .L80024464:
     /* 14C64 80024464 1400BF8F */  lw         $ra, 0x14($sp)

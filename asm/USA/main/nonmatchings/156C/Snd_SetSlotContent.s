@@ -21,7 +21,7 @@ glabel Snd_SetSlotContent
     /* AE38 8001A638 00000000 */   nop
     /* AE3C 8001A63C 2A69000C */  jal        Snd_UnloadSlot
     /* AE40 8001A640 00000000 */   nop
-    /* AE44 8001A644 2000848F */  lw         $a0, %gp_rel(D_80050718)($gp)
+    /* AE44 8001A644 2000848F */  lw         $a0, %gp_rel(Snd_CurrentId)($gp)
     /* AE48 8001A648 01000224 */  addiu      $v0, $zero, 0x1
     /* AE4C 8001A64C 040002AE */  sw         $v0, 0x4($s0)
     /* AE50 8001A650 FFFF0224 */  addiu      $v0, $zero, -0x1

@@ -54,7 +54,7 @@ glabel MemCardGetDirentry
     /* 2F7DC 8003EFDC 32002016 */  bnez       $s1, .L8003F0A8
     /* 2F7E0 8003EFE0 00000000 */   nop
   .L8003EFE4:
-    /* 2F7E4 8003EFE4 A9FF000C */  jal        func_8003FEA4
+    /* 2F7E4 8003EFE4 A9FF000C */  jal        Card_ClearEvents
     /* 2F7E8 8003EFE8 00000000 */   nop
     /* 2F7EC 8003EFEC 1000A427 */  addiu      $a0, $sp, 0x10
     /* 2F7F0 8003EFF0 71FD000C */  jal        func_8003F5C4
@@ -62,9 +62,9 @@ glabel MemCardGetDirentry
     /* 2F7F8 8003EFF8 21804000 */  addu       $s0, $v0, $zero
     /* 2F7FC 8003EFFC 2F000016 */  bnez       $s0, .L8003F0BC
     /* 2F800 8003F000 2A103E02 */   slt       $v0, $s1, $fp
-    /* 2F804 8003F004 2100010C */  jal        func_80040084
+    /* 2F804 8003F004 2100010C */  jal        Card_WaitHwEvent
     /* 2F808 8003F008 00000000 */   nop
-    /* 2F80C 8003F00C 06FD000C */  jal        func_8003F418
+    /* 2F80C 8003F00C 06FD000C */  jal        Card_EventToMcErr
     /* 2F810 8003F010 21204000 */   addu      $a0, $v0, $zero
     /* 2F814 8003F014 27004010 */  beqz       $v0, .L8003F0B4
     /* 2F818 8003F018 5800A2AF */   sw        $v0, 0x58($sp)

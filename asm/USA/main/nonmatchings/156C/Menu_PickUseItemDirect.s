@@ -29,7 +29,7 @@ glabel Menu_PickUseItemDirect
     /* 80E8 800178E8 6807638C */  lw         $v1, %lo(Menu_Ctx)($v1)
     /* 80EC 800178EC 1000A2AF */  sw         $v0, 0x10($sp)
     /* 80F0 800178F0 08016484 */  lh         $a0, 0x108($v1)
-    /* 80F4 800178F4 1278000C */  jal        func_8001E048
+    /* 80F4 800178F4 1278000C */  jal        Item_GetNameText
     /* 80F8 800178F8 00000000 */   nop
     /* 80FC 800178FC 1D000424 */  addiu      $a0, $zero, 0x1D
     /* 8100 80017900 21280000 */  addu       $a1, $zero, $zero
@@ -45,7 +45,7 @@ glabel Menu_PickUseItemDirect
     /* 8124 80017924 1400A0AF */  sw         $zero, 0x14($sp)
     /* 8128 80017928 40000426 */  addiu      $a0, $s0, 0x40
   .L8001792C:
-    /* 812C 8001792C 1C4D000C */  jal        func_80013470
+    /* 812C 8001792C 1C4D000C */  jal        Text_OpenDesc
     /* 8130 80017930 1000A527 */   addiu     $a1, $sp, 0x10
     /* 8134 80017934 2C00BF8F */  lw         $ra, 0x2C($sp)
     /* 8138 80017938 2800B08F */  lw         $s0, 0x28($sp)

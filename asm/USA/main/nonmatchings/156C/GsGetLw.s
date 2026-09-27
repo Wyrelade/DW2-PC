@@ -152,7 +152,7 @@ glabel GsGetLw
   .L8002CA64:
     /* 1D264 8002CA64 0000058E */  lw         $a1, 0x0($s0)
     /* 1D268 8002CA68 21204002 */  addu       $a0, $s2, $zero
-    /* 1D26C 8002CA6C 39B0000C */  jal        func_8002C0E4
+    /* 1D26C 8002CA6C 39B0000C */  jal        GsMulCoord3
     /* 1D270 8002CA70 0400A524 */   addiu     $a1, $a1, 0x4
     /* 1D274 8002CA74 0000028E */  lw         $v0, 0x0($s0)
     /* 1D278 8002CA78 FFFF3126 */  addiu      $s1, $s1, -0x1

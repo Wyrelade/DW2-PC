@@ -28,11 +28,11 @@ glabel Menu_UseItemDirect
     /* 5704 80014F04 6807638C */  lw         $v1, %lo(Menu_Ctx)($v1)
     /* 5708 80014F08 1000A2AF */  sw         $v0, 0x10($sp)
     /* 570C 80014F0C 08016484 */  lh         $a0, 0x108($v1)
-    /* 5710 80014F10 1278000C */  jal        func_8001E048
+    /* 5710 80014F10 1278000C */  jal        Item_GetNameText
     /* 5714 80014F14 00000000 */   nop
     /* 5718 80014F18 50000426 */  addiu      $a0, $s0, 0x50
     /* 571C 80014F1C 1000A527 */  addiu      $a1, $sp, 0x10
-    /* 5720 80014F20 1C4D000C */  jal        func_80013470
+    /* 5720 80014F20 1C4D000C */  jal        Text_OpenDesc
     /* 5724 80014F24 1400A2AF */   sw        $v0, 0x14($sp)
     /* 5728 80014F28 1D000424 */  addiu      $a0, $zero, 0x1D
     /* 572C 80014F2C A369000C */  jal        Snd_PlayById
@@ -49,7 +49,7 @@ glabel Menu_UseItemDirect
     /* 5754 80014F54 0A008797 */  lhu        $a3, %gp_rel(D_80050702)($gp)
     /* 5758 80014F58 08008297 */  lhu        $v0, %gp_rel(D_80050700)($gp)
     /* 575C 80014F5C 003C0700 */  sll        $a3, $a3, 16
-    /* 5760 80014F60 3E4D000C */  jal        func_800134F8
+    /* 5760 80014F60 3E4D000C */  jal        Text_OpenPacked
     /* 5764 80014F64 25384700 */   or        $a3, $v0, $a3
   .L80014F68:
     /* 5768 80014F68 2C00BF8F */  lw         $ra, 0x2C($sp)

@@ -240,7 +240,7 @@ glabel _SsVmFlush
     /* 272EC 80036AEC 00000000 */  nop
     /* 272F0 80036AF0 03004010 */  beqz       $v0, .L80036B00
     /* 272F4 80036AF4 00000000 */   nop
-    /* 272F8 80036AF8 41F2000C */  jal        func_8003C904
+    /* 272F8 80036AF8 41F2000C */  jal        SpuSetVoiceAttr
     /* 272FC 80036AFC 1000A427 */   addiu     $a0, $sp, 0x10
   .L80036B00:
     /* 27300 80036B00 000020A2 */  sb         $zero, 0x0($s1)

@@ -20,7 +20,7 @@ glabel Item_BuildMenuList
     /* 67A8 80015FA8 24004010 */  beqz       $v0, .L8001603C
     /* 67AC 80015FAC 01001124 */   addiu     $s1, $zero, 0x1
   .L80015FB0:
-    /* 67B0 80015FB0 078A000C */  jal        func_8002281C
+    /* 67B0 80015FB0 078A000C */  jal        Item_GetBagCapacity
     /* 67B4 80015FB4 21880000 */   addu      $s1, $zero, $zero
     /* 67B8 80015FB8 6C0062A6 */  sh         $v0, 0x6C($s3)
     /* 67BC 80015FBC 00140200 */  sll        $v0, $v0, 16

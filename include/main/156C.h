@@ -200,7 +200,7 @@ typedef struct {
     /* 0x12 */ s16 t[3];
 } Rec18; /* size 0x20 */
 
-/* Stride-0x84 destination element func_8001F5E8 fills; the copied block lands
+/* Stride-0x84 destination element Gfx_ResetModelBones fills; the copied block lands
  * at offset 0x60. */
 typedef struct {
     /* 0x00 */ Blk20 field_0;
@@ -227,7 +227,7 @@ typedef struct {
     /* 0x38 */ s32 field_38;
 } ObjEC10;
 
-/* Three-word vector copied field-to-field by value in func_80020920. */
+/* Three-word vector copied field-to-field by value in Actor_UpdateTransform. */
 typedef struct {
     /* 0x0 */ s32 x;
     /* 0x4 */ s32 y;
@@ -235,7 +235,7 @@ typedef struct {
 } Vec3;
 
 /* Larger object reached through Actor at 0x38 (same slot as ObjEC10, used by
- * func_80020920): two Vec3s at 0x20/0x30 plus scalar state at 0x40..0x60. */
+ * Actor_UpdateTransform): two Vec3s at 0x20/0x30 plus scalar state at 0x40..0x60. */
 typedef struct {
     u8 _pad00[0x20];
     /* 0x20 */ Vec3 field_20;
@@ -254,7 +254,7 @@ typedef struct {
 } Obj209;
 
 /* The struct reached through Actor at offset 0x3C. Only the fields written by
- * func_8001F24C / func_8001F5E8 are known so far: field_8 is a signed count and
+ * Anim_SetModelAnimFile / Gfx_ResetModelBones are known so far: field_8 is a signed count and
  * field_78 an array of DstElem. */
 typedef struct {
     /* 0x00 */ s32 field_0;
@@ -551,7 +551,7 @@ typedef struct {
 
 Ent23A78 *Cd_FindCachedFile();
 
-/* 3-entry table at D_80054C48, stride 0x2C, searched by func_8001A300. */
+/* 3-entry table at D_80054C48, stride 0x2C, searched by Snd_AnySlotLoading. */
 typedef struct {
     /* 0x00 */ s32 field_0;
     /* 0x04 */ s32 field_4;
@@ -602,7 +602,7 @@ typedef struct {
     /* 0x1C */ s32 field_1C;
 } Obj48DB8;
 
-/* Source record read by func_80013470 to fill an Arg1BC24. */
+/* Source record read by Text_OpenDesc to fill an Arg1BC24. */
 typedef struct {
     /* 0x00 */ s32 field_0;
     /* 0x04 */ s32 field_4;
@@ -613,7 +613,7 @@ typedef struct {
     /* 0x11 */ u8 field_11;
 } Src13470;
 
-/* A pair of 16-bit values passed by value in one register (func_800134F8). */
+/* A pair of 16-bit values passed by value in one register (Text_OpenPacked). */
 typedef struct {
     /* 0x0 */ u16 lo;
     /* 0x2 */ u16 hi;
@@ -840,7 +840,7 @@ typedef struct Node22D84 {
     /* 0x08 */ s32 field_8;
 } Node22D84;
 
-/* arg0 of func_8002C0E4: three s32 accumulators at 0x14/0x18/0x1C. */
+/* arg0 of GsMulCoord3: three s32 accumulators at 0x14/0x18/0x1C. */
 typedef struct {
     u8 _pad00[0x14];
     /* 0x14 */ s32 field_14;
@@ -848,7 +848,7 @@ typedef struct {
     /* 0x1C */ s32 field_1C;
 } ObjC0E4;
 
-/* arg1 of func_8002C0E4: a GTE-style MATRIX. func_8002C774 fills m[3][3] (a Z
+/* arg1 of GsMulCoord3: a GTE-style MATRIX. func_8002C774 fills m[3][3] (a Z
  * rotation scaled to 0x1000) + the field_14/18/1C translation; &field_14 is
  * handed to ApplyMatrixLV. */
 typedef struct {
@@ -922,7 +922,7 @@ typedef struct {
     /* 0x14 */ s32 field_14;
 } ObjDesc;
 
-/* 5-byte slot descriptor walked by func_80024A1C (Obj25FBC field_4). */
+/* 5-byte slot descriptor walked by Pad_AllocActPower (Obj25FBC field_4). */
 typedef struct {
     u8 _pad0[2];
     /* 0x02 */ u8 field_2;
@@ -1193,7 +1193,7 @@ typedef struct {
     /* 0x13 */ u8 field_13;
 } Rec2AAB4;
 
-/* Element of D_800624E8[] (stride 0x38); func_800382D4 clears a slot. */
+/* Element of D_800624E8[] (stride 0x38); vmNoiseOff clears a slot. */
 typedef struct {
     /* 0x00 */ s16 field_0;
     /* 0x02 */ u16 field_2;
@@ -1227,7 +1227,7 @@ typedef struct {
     /* 0x36 */ s16 field_36;
 } Elm624E8; /* size 0x38 */
 
-/* Hook pair at D_8004FC50; func_800352E4 calls the optional fn_4, then fn_0. */
+/* Hook pair at D_8004FC50; _SsTrapIntrVSync calls the optional fn_4, then fn_0. */
 typedef struct {
     /* 0x00 */ void (*fn_0)(void);
     /* 0x04 */ void (*fn_4)(void);
@@ -1517,7 +1517,7 @@ typedef struct {
     /* 0x72 */ Cell166FC field_72[1];
 } Obj166FC;
 
-/* Global D_8004EAF8: one-shot stream state opened by func_800312F8. */
+/* Global D_8004EAF8: one-shot stream state opened by restartIntr. */
 typedef struct {
     /* 0x00 */ u16 field_0;
     /* 0x02 */ u16 field_2;
@@ -1549,13 +1549,13 @@ typedef struct {
     /* 0x03 */ u8 field_3[6];
 } Cd4E9A4;
 
-/* Word pair at *D_80048DF0: func_80024544 writes -2 to 0x0 and sets bit 0 of 0x4. */
+/* Word pair at *D_80048DF0: PadStartCom writes -2 to 0x0 and sets bit 0 of 0x4. */
 typedef struct {
     /* 0x0 */ volatile s32 field_0;
     /* 0x4 */ volatile s32 field_4;
 } Reg48DF0;
 
-/* Two-word state D_80060058, cleared by func_80024544. */
+/* Two-word state D_80060058, cleared by PadStartCom. */
 typedef struct {
     /* 0x0 */ s32 field_0;
     /* 0x4 */ s32 field_4;
@@ -1602,7 +1602,7 @@ typedef struct {
     u8 _pad2[0x36];
 } Rec624F8;
 
-/* 0x28-byte model part record; lists end at field_0 == 0 (Menu_SetPartsGridPos, func_800137B8). */
+/* 0x28-byte model part record; lists end at field_0 == 0 (Menu_SetPartsGridPos, Gfx_SetPartsPalette). */
 typedef struct {
     /* 0x00 */ s32 field_0;
     /* 0x04 */ s16 field_4;
@@ -2094,7 +2094,7 @@ typedef struct Blk22E60 {
     /* 0x8 */ s32 field_8;
 } Blk22E60;
 
-/* 6-byte rank table at D_80050724, indexed by ElmE620.field_0 (func_80022AE4). */
+/* 6-byte rank table at D_80050724, indexed by ElmE620.field_0 (Digi_SortRoster). */
 typedef struct {
     u8 b[6];
 } Tbl50724;
@@ -2509,7 +2509,7 @@ typedef struct {
 
 
 /* SPU voice attribute block (libspu SpuVoiceAttr layout) _SsVmInit fills
- * and hands to func_8003C904. */
+ * and hands to SpuSetVoiceAttr. */
 typedef struct {
     /* 0x00 */ u32 voice;
     /* 0x04 */ u32 mask;
@@ -2628,7 +2628,7 @@ typedef struct {
 } Dcb3F760;
 
 
-/* file-local view over D_8005E620 for func_80021DC8 */
+/* file-local view over D_8005E620 for Save_ClearEventFlags */
 typedef struct {
     u8 _p[0x1004];
     /* 0x1004 */ u8 a[0x20];
@@ -2780,7 +2780,7 @@ typedef struct {
 } TimBlk;
 
 
-/* libsnd VabHdr (0x20) and ProgAtr (0x10) as parsed by func_80039B54. */
+/* libsnd VabHdr (0x20) and ProgAtr (0x10) as parsed by _SsVabOpenHeadWithMode. */
 typedef struct {
     /* 0x00 */ s32 form;
     /* 0x04 */ s32 ver;
@@ -2897,7 +2897,7 @@ typedef union {
 s32 _SsVmPitchBend(s16 a0, s16 a1, s16 a2, s32 a3);
 
 
-/* func_8001F9AC: 10-byte fixed part (field_1C list of Sub3C, 0xFF/0xFE ended),
+/* Gfx_AnimateModelTex: 10-byte fixed part (field_1C list of Sub3C, 0xFF/0xFE ended),
  * 0x2A-byte animated part that follows a 0xFE marker, the position block at
  * Sub3C 0x44 and the D_8005F770 fields it reads. */
 typedef struct {
@@ -2988,7 +2988,7 @@ typedef struct {
 } CdTbl4E80C;
 
 
-/* GTE color / light matrix (func_8002BA80 reads, func_8002BA1C sets the color one). */
+/* GTE color / light matrix (Gfx_GetLightColorMatrix reads, Gfx_SetLightColorMatrix sets the color one). */
 typedef Mat1F668 S32;
 
 /* Latched copy of State62F80.field_0/4 handed to its field_44 callback. */
@@ -3343,7 +3343,7 @@ typedef struct {
     /* 0x0E */ u16 tpage;
 } TriGT3_20FD0; /* size 0x10 */
 
-/* Textured quad record func_8002130C walks. */
+/* Textured quad record Gfx_AddQuadsGT4 walks. */
 typedef struct {
     /* 0x00 */ u8 v[4];
     /* 0x04 */ u8 c[4];

@@ -34,7 +34,7 @@ glabel Text_PrintIdList
     /* 3DCC 800135CC 83320600 */  sra        $a2, $a2, 10
     /* 3DD0 800135D0 003C0700 */  sll        $a3, $a3, 16
     /* 3DD4 800135D4 2530A602 */  or         $a2, $s5, $a2
-    /* 3DD8 800135D8 3E4D000C */  jal        func_800134F8
+    /* 3DD8 800135D8 3E4D000C */  jal        Text_OpenPacked
     /* 3DDC 800135DC 25386700 */   or        $a3, $v1, $a3
     /* 3DE0 800135E0 08001026 */  addiu      $s0, $s0, 0x8
     /* 3DE4 800135E4 0000028E */  lw         $v0, 0x0($s0)

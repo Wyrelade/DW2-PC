@@ -13,12 +13,12 @@ glabel func_8001ECE4
     /* F508 8001ED08 00000000 */   nop
     /* F50C 8001ED0C 6F7F000C */  jal        Gfx_AttachModel
     /* F510 8001ED10 5B000524 */   addiu     $a1, $zero, 0x5B
-    /* F514 8001ED14 4882000C */  jal        func_80020920
+    /* F514 8001ED14 4882000C */  jal        Actor_UpdateTransform
     /* F518 8001ED18 21200002 */   addu      $a0, $s0, $zero
-    /* F51C 8001ED1C 3480000C */  jal        func_800200D0
+    /* F51C 8001ED1C 3480000C */  jal        Gfx_CalcModelBoneMatrices
     /* F520 8001ED20 21200002 */   addu      $a0, $s0, $zero
     /* F524 8001ED24 21200002 */  addu       $a0, $s0, $zero
-    /* F528 8001ED28 4481000C */  jal        func_80020510
+    /* F528 8001ED28 4481000C */  jal        Gfx_DrawTexModel
     /* F52C 8001ED2C 01000524 */   addiu     $a1, $zero, 0x1
   .L8001ED30:
     /* F530 8001ED30 1400BF8F */  lw         $ra, 0x14($sp)

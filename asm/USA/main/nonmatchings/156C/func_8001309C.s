@@ -169,7 +169,7 @@ glabel func_8001309C
     /* 3AE8 800132E8 82FF4014 */  bnez       $v0, .L800130F4
     /* 3AEC 800132EC 2800A524 */   addiu     $a1, $a1, 0x28
   .L800132F0:
-    /* 3AF0 800132F0 2176000C */  jal        func_8001D884
+    /* 3AF0 800132F0 2176000C */  jal        Gfx_DrawParts
     /* 3AF4 800132F4 00000000 */   nop
     /* 3AF8 800132F8 1400BF8F */  lw         $ra, 0x14($sp)
     /* 3AFC 800132FC 1000B08F */  lw         $s0, 0x10($sp)

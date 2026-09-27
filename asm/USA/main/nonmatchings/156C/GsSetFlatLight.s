@@ -31,7 +31,7 @@ glabel GsSetFlatLight
     /* 1BDD0 8002B5D0 1C00A38C */  lw         $v1, 0x1C($a1)
     /* 1BDD4 8002B5D4 2800A2AF */  sw         $v0, 0x28($sp)
     /* 1BDD8 8002B5D8 2C00A3AF */  sw         $v1, 0x2C($sp)
-    /* 1BDDC 8002B5DC A0AE000C */  jal        func_8002BA80
+    /* 1BDDC 8002B5DC A0AE000C */  jal        Gfx_GetLightColorMatrix
     /* 1BDE0 8002B5E0 3000A427 */   addiu     $a0, $sp, 0x30
     /* 1BDE4 8002B5E4 0000028E */  lw         $v0, 0x0($s0)
     /* 1BDE8 8002B5E8 00000000 */  nop
@@ -315,7 +315,7 @@ glabel GsSetFlatLight
     /* 1C1E4 8002B9E4 2C00A38F */  lw         $v1, 0x2C($sp)
     /* 1C1E8 8002B9E8 1800A2AC */  sw         $v0, 0x18($a1)
     /* 1C1EC 8002B9EC 1C00A3AC */  sw         $v1, 0x1C($a1)
-    /* 1C1F0 8002B9F0 87AE000C */  jal        func_8002BA1C
+    /* 1C1F0 8002B9F0 87AE000C */  jal        Gfx_SetLightColorMatrix
     /* 1C1F4 8002B9F4 3000A427 */   addiu     $a0, $sp, 0x30
     /* 1C1F8 8002B9F8 21100000 */  addu       $v0, $zero, $zero
   .L8002B9FC:

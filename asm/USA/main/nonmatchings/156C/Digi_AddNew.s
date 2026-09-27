@@ -27,7 +27,7 @@ glabel Digi_AddNew
     /* 1296C 8002216C 21280000 */  addu       $a1, $zero, $zero
     /* 12970 80022170 0977000C */  jal        Digi_InitFromTable
     /* 12974 80022174 2130C200 */   addu      $a2, $a2, $v0
-    /* 12978 80022178 B98A000C */  jal        func_80022AE4
+    /* 12978 80022178 B98A000C */  jal        Digi_SortRoster
     /* 1297C 8002217C 00000000 */   nop
     /* 12980 80022180 21180000 */  addu       $v1, $zero, $zero
     /* 12984 80022184 21200002 */  addu       $a0, $s0, $zero

@@ -166,7 +166,7 @@ glabel _SsVmInit
     /* 276C4 80036EC4 0680013C */  lui        $at, %hi(D_8006250E)
     /* 276C8 80036EC8 21082200 */  addu       $at, $at, $v0
     /* 276CC 80036ECC 0E2520A4 */  sh         $zero, %lo(D_8006250E)($at)
-    /* 276D0 80036ED0 41F2000C */  jal        func_8003C904
+    /* 276D0 80036ED0 41F2000C */  jal        SpuSetVoiceAttr
     /* 276D4 80036ED4 1000A3AF */   sw        $v1, 0x10($sp)
     /* 276D8 80036ED8 0680013C */  lui        $at, %hi(D_80062D30)
     /* 276DC 80036EDC 302D30A4 */  sh         $s0, %lo(D_80062D30)($at)

@@ -20,7 +20,7 @@ glabel Cd_ReadFileAsync
     /* 14A98 80024298 21200002 */  addu       $a0, $s0, $zero
     /* 14A9C 8002429C F28F000C */  jal        Cd_GetFilePos
     /* 14AA0 800242A0 1000A527 */   addiu     $a1, $sp, 0x10
-    /* 14AA4 800242A4 E48F000C */  jal        func_80023F90
+    /* 14AA4 800242A4 E48F000C */  jal        Cd_GetFileSectors
     /* 14AA8 800242A8 21200002 */   addu      $a0, $s0, $zero
     /* 14AAC 800242AC 21200002 */  addu       $a0, $s0, $zero
     /* 14AB0 800242B0 0580113C */  lui        $s1, %hi(D_80048DB8)

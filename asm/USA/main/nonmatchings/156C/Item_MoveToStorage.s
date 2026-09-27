@@ -35,7 +35,7 @@ glabel Item_MoveToStorage
     /* 6C0C 8001640C 21108200 */  addu       $v0, $a0, $v0
     /* 6C10 80016410 D40D62A4 */  sh         $v0, 0xDD4($v1)
     /* 6C14 80016414 0400A484 */  lh         $a0, 0x4($a1)
-    /* 6C18 80016418 FC89000C */  jal        func_800227F0
+    /* 6C18 80016418 FC89000C */  jal        Item_RemoveFromBag
     /* 6C1C 8001641C 00000000 */   nop
     /* 6C20 80016420 21200002 */  addu       $a0, $s0, $zero
     /* 6C24 80016424 81000224 */  addiu      $v0, $zero, 0x81
@@ -45,7 +45,7 @@ glabel Item_MoveToStorage
     /* 6C34 80016434 1F00A6AB */  swl        $a2, 0x1F($sp)
     /* 6C38 80016438 1C00A6BB */  swr        $a2, 0x1C($sp)
     /* 6C3C 8001643C 2000A2A3 */  sb         $v0, 0x20($sp)
-    /* 6C40 80016440 1278000C */  jal        func_8001E048
+    /* 6C40 80016440 1278000C */  jal        Item_GetNameText
     /* 6C44 80016444 2100A0A3 */   sb        $zero, 0x21($sp)
     /* 6C48 80016448 FD01043C */  lui        $a0, (0x1FD0122 >> 16)
     /* 6C4C 8001644C 22018434 */  ori        $a0, $a0, (0x1FD0122 & 0xFFFF)
@@ -53,7 +53,7 @@ glabel Item_MoveToStorage
     /* 6C54 80016454 1400A2AF */   sw        $v0, 0x14($sp)
     /* 6C58 80016458 40002426 */  addiu      $a0, $s1, 0x40
     /* 6C5C 8001645C 1000A527 */  addiu      $a1, $sp, 0x10
-    /* 6C60 80016460 1C4D000C */  jal        func_80013470
+    /* 6C60 80016460 1C4D000C */  jal        Text_OpenDesc
     /* 6C64 80016464 1000A2AF */   sw        $v0, 0x10($sp)
     /* 6C68 80016468 DA57000C */  jal        Item_BuildMenuList
     /* 6C6C 8001646C 21202002 */   addu      $a0, $s1, $zero

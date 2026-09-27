@@ -88,7 +88,7 @@ glabel func_80019214
     /* 9B60 80019360 8000468E */  lw         $a2, 0x80($s2)
     /* 9B64 80019364 5475000C */  jal        Gfx_SetPartsScale
     /* 9B68 80019368 00100524 */   addiu     $a1, $zero, 0x1000
-    /* 9B6C 8001936C 2176000C */  jal        func_8001D884
+    /* 9B6C 8001936C 2176000C */  jal        Gfx_DrawParts
     /* 9B70 80019370 21200002 */   addu      $a0, $s0, $zero
     /* 9B74 80019374 0000628E */  lw         $v0, 0x0($s3)
     /* 9B78 80019378 00000000 */  nop
@@ -162,12 +162,12 @@ glabel func_80019214
     /* 9C80 80019480 21208002 */   addu      $a0, $s4, $zero
     /* 9C84 80019484 C87C000C */  jal        Anim_StepModelAnim
     /* 9C88 80019488 21208002 */   addu      $a0, $s4, $zero
-    /* 9C8C 8001948C 4882000C */  jal        func_80020920
+    /* 9C8C 8001948C 4882000C */  jal        Actor_UpdateTransform
     /* 9C90 80019490 21208002 */   addu      $a0, $s4, $zero
-    /* 9C94 80019494 3480000C */  jal        func_800200D0
+    /* 9C94 80019494 3480000C */  jal        Gfx_CalcModelBoneMatrices
     /* 9C98 80019498 21208002 */   addu      $a0, $s4, $zero
     /* 9C9C 8001949C 21208002 */  addu       $a0, $s4, $zero
-    /* 9CA0 800194A0 4481000C */  jal        func_80020510
+    /* 9CA0 800194A0 4481000C */  jal        Gfx_DrawTexModel
     /* 9CA4 800194A4 21280000 */   addu      $a1, $zero, $zero
   .L800194A8:
     /* 9CA8 800194A8 4400BF8F */  lw         $ra, 0x44($sp)

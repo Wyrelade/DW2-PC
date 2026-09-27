@@ -51,8 +51,8 @@ glabel DrawOTag2
     /* 1A768 80029F68 24104300 */  and        $v0, $v0, $v1
     /* 1A76C 80029F6C EDFF4010 */  beqz       $v0, .L80029F24
     /* 1A770 80029F70 00000000 */   nop
-    /* 1A774 80029F74 0380053C */  lui        $a1, %hi(func_80029FB4)
-    /* 1A778 80029F78 B49FA524 */  addiu      $a1, $a1, %lo(func_80029FB4)
+    /* 1A774 80029F74 0380053C */  lui        $a1, %hi(Gpu_RestoreExequeCb)
+    /* 1A778 80029F78 B49FA524 */  addiu      $a1, $a1, %lo(Gpu_RestoreExequeCb)
     /* 1A77C 80029F7C 4DC3000C */  jal        DMACallback
     /* 1A780 80029F80 02000424 */   addiu     $a0, $zero, 0x2
     /* 1A784 80029F84 0580023C */  lui        $v0, %hi(D_80048F08)

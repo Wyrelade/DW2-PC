@@ -12,7 +12,7 @@ glabel func_8003D504
     /* 2DD24 8003D524 21200000 */   addu      $a0, $zero, $zero
     /* 2DD28 8003D528 F19B000C */  jal        EnterCriticalSection
     /* 2DD2C 8003D52C 00000000 */   nop
-    /* 2DD30 8003D530 84F5000C */  jal        func_8003D610
+    /* 2DD30 8003D530 84F5000C */  jal        Pad_IsInitialized
     /* 2DD34 8003D534 21884000 */   addu      $s1, $v0, $zero
     /* 2DD38 8003D538 02004014 */  bnez       $v0, .L8003D544
     /* 2DD3C 8003D53C 00000000 */   nop

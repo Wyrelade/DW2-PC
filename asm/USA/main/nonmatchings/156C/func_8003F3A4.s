@@ -22,7 +22,7 @@ glabel func_8003F3A4
     /* 2FBE8 8003F3E8 04000224 */   addiu     $v0, $zero, 0x4
     /* 2FBEC 8003F3EC 06008210 */  beq        $a0, $v0, .L8003F408
     /* 2FBF0 8003F3F0 02000224 */   addiu     $v0, $zero, 0x2
-    /* 2FBF4 8003F3F4 06FD000C */  jal        func_8003F418
+    /* 2FBF4 8003F3F4 06FD000C */  jal        Card_EventToMcErr
     /* 2FBF8 8003F3F8 00000000 */   nop
     /* 2FBFC 8003F3FC 02FD0008 */  j          .L8003F408
     /* 2FC00 8003F400 00000000 */   nop

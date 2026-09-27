@@ -19121,11 +19121,11 @@ nonmatching D_8004FB60
 dlabel D_8004FB60
     /* 40360 8004FB60 94090180 */ .word 0x80010994
     /* 40364 8004FB64 00000000 */ .word 0x00000000
-    /* 40368 8004FB68 10110380 */ .word func_80031110
+    /* 40368 8004FB68 10110380 */ .word setIntr
     /* 4036C 8004FB6C 680E0380 */ .word startIntr
-    /* 40370 8004FB70 58120380 */ .word func_80031258
+    /* 40370 8004FB70 58120380 */ .word stopIntr
     /* 40374 8004FB74 00000000 */ .word 0x00000000
-    /* 40378 8004FB78 F8120380 */ .word func_800312F8
+    /* 40378 8004FB78 F8120380 */ .word restartIntr
     /* 4037C 8004FB7C F8EA0480 */ .word D_8004EAF8
 enddlabel D_8004FB60
 
@@ -20527,11 +20527,11 @@ dlabel D_80050717
     /* 40F17 80050717 */ .byte 0x00
 enddlabel D_80050717
 
-nonmatching D_80050718
+nonmatching Snd_CurrentId
 
-dlabel D_80050718
+dlabel Snd_CurrentId
     /* 40F18 80050718 FFFFFFFF */ .word 0xFFFFFFFF
-enddlabel D_80050718
+enddlabel Snd_CurrentId
 
 nonmatching D_8005071C
 
@@ -20633,11 +20633,11 @@ dlabel D_80050770
     /* 40F70 80050770 00000000 */ .word 0x00000000
 enddlabel D_80050770
 
-nonmatching D_80050774
+nonmatching Snd_SavedId
 
-dlabel D_80050774
+dlabel Snd_SavedId
     /* 40F74 80050774 00000000 */ .word 0x00000000
-enddlabel D_80050774
+enddlabel Snd_SavedId
 
 nonmatching D_80050778
 

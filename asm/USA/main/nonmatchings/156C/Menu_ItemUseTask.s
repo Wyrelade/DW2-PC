@@ -158,7 +158,7 @@ glabel Menu_ItemUseTask
     /* 6348 80015B48 0A008797 */  lhu        $a3, %gp_rel(D_80050702)($gp)
     /* 634C 80015B4C 08008297 */  lhu        $v0, %gp_rel(D_80050700)($gp)
     /* 6350 80015B50 003C0700 */  sll        $a3, $a3, 16
-    /* 6354 80015B54 3E4D000C */  jal        func_800134F8
+    /* 6354 80015B54 3E4D000C */  jal        Text_OpenPacked
     /* 6358 80015B58 25384700 */   or        $a3, $v0, $a3
     /* 635C 80015B5C 21202002 */  addu       $a0, $s1, $zero
     /* 6360 80015B60 7745000C */  jal        Task_SetState1
@@ -269,7 +269,7 @@ glabel Menu_ItemUseTask
     /* 64DC 80015CDC 21202002 */   addu      $a0, $s1, $zero
   .L80015CE0:
     /* 64E0 80015CE0 21200002 */  addu       $a0, $s0, $zero
-    /* 64E4 80015CE4 2C70000C */  jal        func_8001C0B0
+    /* 64E4 80015CE4 2C70000C */  jal        Text_CloseArray
     /* 64E8 80015CE8 22000524 */   addiu     $a1, $zero, 0x22
   .L80015CEC:
     /* 64EC 80015CEC 5945000C */  jal        Task_NextState1

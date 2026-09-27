@@ -28,7 +28,7 @@ glabel func_80015668
     /* 5EC8 800156C8 1200A797 */  lhu        $a3, 0x12($sp)
     /* 5ECC 800156CC 1000A297 */  lhu        $v0, 0x10($sp)
     /* 5ED0 800156D0 003C0700 */  sll        $a3, $a3, 16
-    /* 5ED4 800156D4 3E4D000C */  jal        func_800134F8
+    /* 5ED4 800156D4 3E4D000C */  jal        Text_OpenPacked
     /* 5ED8 800156D8 25384700 */   or        $a3, $v0, $a3
     /* 5EDC 800156DC 0580033C */  lui        $v1, %hi(Menu_Ctx)
     /* 5EE0 800156E0 6807638C */  lw         $v1, %lo(Menu_Ctx)($v1)
@@ -36,7 +36,7 @@ glabel func_80015668
     /* 5EE8 800156E8 1000B1A7 */  sh         $s1, 0x10($sp)
     /* 5EEC 800156EC 1200A2A7 */  sh         $v0, 0x12($sp)
     /* 5EF0 800156F0 08016484 */  lh         $a0, 0x108($v1)
-    /* 5EF4 800156F4 1278000C */  jal        func_8001E048
+    /* 5EF4 800156F4 1278000C */  jal        Item_GetNameText
     /* 5EF8 800156F8 00000000 */   nop
     /* 5EFC 800156FC 21204002 */  addu       $a0, $s2, $zero
     /* 5F00 80015700 21284000 */  addu       $a1, $v0, $zero
@@ -44,7 +44,7 @@ glabel func_80015668
     /* 5F08 80015708 1200A797 */  lhu        $a3, 0x12($sp)
     /* 5F0C 8001570C 1000A297 */  lhu        $v0, 0x10($sp)
     /* 5F10 80015710 003C0700 */  sll        $a3, $a3, 16
-    /* 5F14 80015714 3E4D000C */  jal        func_800134F8
+    /* 5F14 80015714 3E4D000C */  jal        Text_OpenPacked
     /* 5F18 80015718 25384700 */   or        $a3, $v0, $a3
     /* 5F1C 8001571C 98006386 */  lh         $v1, 0x98($s3)
     /* 5F20 80015720 03000224 */  addiu      $v0, $zero, 0x3
@@ -58,7 +58,7 @@ glabel func_80015668
     /* 5F40 80015740 0A008797 */  lhu        $a3, %gp_rel(D_80050702)($gp)
     /* 5F44 80015744 08008297 */  lhu        $v0, %gp_rel(D_80050700)($gp)
     /* 5F48 80015748 003C0700 */  sll        $a3, $a3, 16
-    /* 5F4C 8001574C 3E4D000C */  jal        func_800134F8
+    /* 5F4C 8001574C 3E4D000C */  jal        Text_OpenPacked
     /* 5F50 80015750 25384700 */   or        $a3, $v0, $a3
   .L80015754:
     /* 5F54 80015754 2800BF8F */  lw         $ra, 0x28($sp)

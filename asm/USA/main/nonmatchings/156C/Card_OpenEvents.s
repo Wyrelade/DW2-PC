@@ -109,7 +109,7 @@ glabel Card_OpenEvents
     /* 30598 8003FD98 7C30848C */  lw         $a0, %lo(D_8006307C)($a0)
     /* 3059C 8003FD9C 71E8000C */  jal        EnableEvent
     /* 305A0 8003FDA0 00000000 */   nop
-    /* 305A4 8003FDA4 A9FF000C */  jal        func_8003FEA4
+    /* 305A4 8003FDA4 A9FF000C */  jal        Card_ClearEvents
     /* 305A8 8003FDA8 00000000 */   nop
     /* 305AC 8003FDAC 01000224 */  addiu      $v0, $zero, 0x1
     /* 305B0 8003FDB0 03000216 */  bne        $s0, $v0, .L8003FDC0

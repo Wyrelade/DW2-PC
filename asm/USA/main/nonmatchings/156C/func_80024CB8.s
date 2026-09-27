@@ -69,7 +69,7 @@ glabel func_80024CB8
     /* 155A4 80024DA4 6E930008 */  j          .L80024DB8
     /* 155A8 80024DA8 21100000 */   addu      $v0, $zero, $zero
   .L80024DAC:
-    /* 155AC 80024DAC 3297000C */  jal        func_80025CC8
+    /* 155AC 80024DAC 3297000C */  jal        Pad_SendInfoCmd
     /* 155B0 80024DB0 21200002 */   addu      $a0, $s0, $zero
     /* 155B4 80024DB4 21100000 */  addu       $v0, $zero, $zero
   .L80024DB8:

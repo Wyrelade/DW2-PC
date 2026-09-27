@@ -56,7 +56,7 @@ glabel MemCardCreateFile
     /* 2FB68 8003F368 04000224 */   addiu     $v0, $zero, 0x4
     /* 2FB6C 8003F36C 06008210 */  beq        $a0, $v0, .L8003F388
     /* 2FB70 8003F370 02000224 */   addiu     $v0, $zero, 0x2
-    /* 2FB74 8003F374 06FD000C */  jal        func_8003F418
+    /* 2FB74 8003F374 06FD000C */  jal        Card_EventToMcErr
     /* 2FB78 8003F378 00000000 */   nop
     /* 2FB7C 8003F37C E2FC0008 */  j          .L8003F388
     /* 2FB80 8003F380 00000000 */   nop

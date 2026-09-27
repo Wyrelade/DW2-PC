@@ -285,7 +285,7 @@ glabel func_8002E2C4
     /* 1EEDC 8002E6DC F81A20AC */  sw         $zero, %lo(D_80061AF8)($at)
     /* 1EEE0 8002E6E0 0680013C */  lui        $at, %hi(D_80061AFC)
     /* 1EEE4 8002E6E4 FC1A20A4 */  sh         $zero, %lo(D_80061AFC)($at)
-    /* 1EEE8 8002E6E8 69B8000C */  jal        func_8002E1A4
+    /* 1EEE8 8002E6E8 69B8000C */  jal        Cd_ClearStreamSlots
     /* 1EEEC 8002E6EC 2328A400 */   subu      $a1, $a1, $a0
     /* 1EEF0 8002E6F0 0680023C */  lui        $v0, %hi(D_80061B20)
     /* 1EEF4 8002E6F4 201B428C */  lw         $v0, %lo(D_80061B20)($v0)
@@ -338,7 +338,7 @@ glabel func_8002E2C4
     /* 1EFA8 8002E7A8 F81A20AC */  sw         $zero, %lo(D_80061AF8)($at)
     /* 1EFAC 8002E7AC 0680013C */  lui        $at, %hi(D_80061AFC)
     /* 1EFB0 8002E7B0 FC1A20A4 */  sh         $zero, %lo(D_80061AFC)($at)
-    /* 1EFB4 8002E7B4 69B8000C */  jal        func_8002E1A4
+    /* 1EFB4 8002E7B4 69B8000C */  jal        Cd_ClearStreamSlots
     /* 1EFB8 8002E7B8 2328A400 */   subu      $a1, $a1, $a0
     /* 1EFBC 8002E7BC 0680023C */  lui        $v0, %hi(D_80061B20)
     /* 1EFC0 8002E7C0 201B428C */  lw         $v0, %lo(D_80061B20)($v0)

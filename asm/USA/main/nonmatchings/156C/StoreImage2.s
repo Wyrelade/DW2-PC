@@ -45,8 +45,8 @@ glabel StoreImage2
     /* 1A524 80029D24 24104300 */  and        $v0, $v0, $v1
     /* 1A528 80029D28 EDFF4010 */  beqz       $v0, .L80029CE0
     /* 1A52C 80029D2C 00000000 */   nop
-    /* 1A530 80029D30 0380053C */  lui        $a1, %hi(func_80029FB4)
-    /* 1A534 80029D34 B49FA524 */  addiu      $a1, $a1, %lo(func_80029FB4)
+    /* 1A530 80029D30 0380053C */  lui        $a1, %hi(Gpu_RestoreExequeCb)
+    /* 1A534 80029D34 B49FA524 */  addiu      $a1, $a1, %lo(Gpu_RestoreExequeCb)
     /* 1A538 80029D38 4DC3000C */  jal        DMACallback
     /* 1A53C 80029D3C 02000424 */   addiu     $a0, $zero, 0x2
     /* 1A540 80029D40 0580023C */  lui        $v0, %hi(D_80048F08)

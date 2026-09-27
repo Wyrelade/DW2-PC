@@ -85,25 +85,25 @@ glabel func_800401E4
     /* 30B20 80040320 21284000 */   addu      $a1, $v0, $zero
     /* 30B24 80040324 000082A0 */  sb         $v0, 0x0($a0)
   .L80040328:
-    /* 30B28 80040328 A9FF000C */  jal        func_8003FEA4
+    /* 30B28 80040328 A9FF000C */  jal        Card_ClearEvents
     /* 30B2C 8004032C 00000000 */   nop
     /* 30B30 80040330 21208002 */  addu       $a0, $s4, $zero
     /* 30B34 80040334 0680063C */  lui        $a2, %hi(D_800632E0)
     /* 30B38 80040338 E032C624 */  addiu      $a2, $a2, %lo(D_800632E0)
     /* 30B3C 8004033C 7DFE000C */  jal        _card_write
     /* 30B40 80040340 2128A002 */   addu      $a1, $s5, $zero
-    /* 30B44 80040344 2100010C */  jal        func_80040084
+    /* 30B44 80040344 2100010C */  jal        Card_WaitHwEvent
     /* 30B48 80040348 00000000 */   nop
     /* 30B4C 8004034C 21804000 */  addu       $s0, $v0, $zero
     /* 30B50 80040350 0D000012 */  beqz       $s0, .L80040388
     /* 30B54 80040354 00000000 */   nop
     /* 30B58 80040358 07001716 */  bne        $s0, $s7, .L80040378
     /* 30B5C 8004035C 00000000 */   nop
-    /* 30B60 80040360 A9FF000C */  jal        func_8003FEA4
+    /* 30B60 80040360 A9FF000C */  jal        Card_ClearEvents
     /* 30B64 80040364 00000000 */   nop
     /* 30B68 80040368 6DFE000C */  jal        _card_clear
     /* 30B6C 8004036C 21208002 */   addu      $a0, $s4, $zero
-    /* 30B70 80040370 2100010C */  jal        func_80040084
+    /* 30B70 80040370 2100010C */  jal        Card_WaitHwEvent
     /* 30B74 80040374 00000000 */   nop
   .L80040378:
     /* 30B78 80040378 01003126 */  addiu      $s1, $s1, 0x1
@@ -147,25 +147,25 @@ glabel func_800401E4
     /* 30C04 80040404 21284000 */   addu      $a1, $v0, $zero
     /* 30C08 80040408 000082A0 */  sb         $v0, 0x0($a0)
   .L8004040C:
-    /* 30C0C 8004040C A9FF000C */  jal        func_8003FEA4
+    /* 30C0C 8004040C A9FF000C */  jal        Card_ClearEvents
     /* 30C10 80040410 00000000 */   nop
     /* 30C14 80040414 21208002 */  addu       $a0, $s4, $zero
     /* 30C18 80040418 0680063C */  lui        $a2, %hi(D_800632E0)
     /* 30C1C 8004041C E032C624 */  addiu      $a2, $a2, %lo(D_800632E0)
     /* 30C20 80040420 7DFE000C */  jal        _card_write
     /* 30C24 80040424 2128A002 */   addu      $a1, $s5, $zero
-    /* 30C28 80040428 2100010C */  jal        func_80040084
+    /* 30C28 80040428 2100010C */  jal        Card_WaitHwEvent
     /* 30C2C 8004042C 00000000 */   nop
     /* 30C30 80040430 21804000 */  addu       $s0, $v0, $zero
     /* 30C34 80040434 0D000012 */  beqz       $s0, .L8004046C
     /* 30C38 80040438 00000000 */   nop
     /* 30C3C 8004043C 07001716 */  bne        $s0, $s7, .L8004045C
     /* 30C40 80040440 00000000 */   nop
-    /* 30C44 80040444 A9FF000C */  jal        func_8003FEA4
+    /* 30C44 80040444 A9FF000C */  jal        Card_ClearEvents
     /* 30C48 80040448 00000000 */   nop
     /* 30C4C 8004044C 6DFE000C */  jal        _card_clear
     /* 30C50 80040450 21208002 */   addu      $a0, $s4, $zero
-    /* 30C54 80040454 2100010C */  jal        func_80040084
+    /* 30C54 80040454 2100010C */  jal        Card_WaitHwEvent
     /* 30C58 80040458 00000000 */   nop
   .L8004045C:
     /* 30C5C 8004045C 01003126 */  addiu      $s1, $s1, 0x1
@@ -200,25 +200,25 @@ glabel func_800401E4
     /* 30CC8 800404C8 000002A2 */  sb         $v0, 0x0($s0)
     /* 30CCC 800404CC 04001224 */  addiu      $s2, $zero, 0x4
   .L800404D0:
-    /* 30CD0 800404D0 A9FF000C */  jal        func_8003FEA4
+    /* 30CD0 800404D0 A9FF000C */  jal        Card_ClearEvents
     /* 30CD4 800404D4 00000000 */   nop
     /* 30CD8 800404D8 21208002 */  addu       $a0, $s4, $zero
     /* 30CDC 800404DC 0680063C */  lui        $a2, %hi(D_800632E0)
     /* 30CE0 800404E0 E032C624 */  addiu      $a2, $a2, %lo(D_800632E0)
     /* 30CE4 800404E4 7DFE000C */  jal        _card_write
     /* 30CE8 800404E8 21280000 */   addu      $a1, $zero, $zero
-    /* 30CEC 800404EC 2100010C */  jal        func_80040084
+    /* 30CEC 800404EC 2100010C */  jal        Card_WaitHwEvent
     /* 30CF0 800404F0 00000000 */   nop
     /* 30CF4 800404F4 21804000 */  addu       $s0, $v0, $zero
     /* 30CF8 800404F8 0D000012 */  beqz       $s0, .L80040530
     /* 30CFC 800404FC 00000000 */   nop
     /* 30D00 80040500 07001216 */  bne        $s0, $s2, .L80040520
     /* 30D04 80040504 00000000 */   nop
-    /* 30D08 80040508 A9FF000C */  jal        func_8003FEA4
+    /* 30D08 80040508 A9FF000C */  jal        Card_ClearEvents
     /* 30D0C 8004050C 00000000 */   nop
     /* 30D10 80040510 6DFE000C */  jal        _card_clear
     /* 30D14 80040514 21208002 */   addu      $a0, $s4, $zero
-    /* 30D18 80040518 2100010C */  jal        func_80040084
+    /* 30D18 80040518 2100010C */  jal        Card_WaitHwEvent
     /* 30D1C 8004051C 00000000 */   nop
   .L80040520:
     /* 30D20 80040520 01003126 */  addiu      $s1, $s1, 0x1
@@ -229,20 +229,20 @@ glabel func_800401E4
     /* 30D30 80040530 14000016 */  bnez       $s0, .L80040584
     /* 30D34 80040534 21100002 */   addu      $v0, $s0, $zero
   .L80040538:
-    /* 30D38 80040538 A9FF000C */  jal        func_8003FEA4
+    /* 30D38 80040538 A9FF000C */  jal        Card_ClearEvents
     /* 30D3C 8004053C 00000000 */   nop
     /* 30D40 80040540 69FE000C */  jal        _card_load
     /* 30D44 80040544 21208002 */   addu      $a0, $s4, $zero
-    /* 30D48 80040548 EBFF000C */  jal        func_8003FFAC
+    /* 30D48 80040548 EBFF000C */  jal        Card_WaitSwEvent
     /* 30D4C 8004054C 00000000 */   nop
     /* 30D50 80040550 21804000 */  addu       $s0, $v0, $zero
     /* 30D54 80040554 0B000012 */  beqz       $s0, .L80040584
     /* 30D58 80040558 21100000 */   addu      $v0, $zero, $zero
-    /* 30D5C 8004055C A9FF000C */  jal        func_8003FEA4
+    /* 30D5C 8004055C A9FF000C */  jal        Card_ClearEvents
     /* 30D60 80040560 0100DE27 */   addiu     $fp, $fp, 0x1
     /* 30D64 80040564 6DFE000C */  jal        _card_clear
     /* 30D68 80040568 21208002 */   addu      $a0, $s4, $zero
-    /* 30D6C 8004056C 2100010C */  jal        func_80040084
+    /* 30D6C 8004056C 2100010C */  jal        Card_WaitHwEvent
     /* 30D70 80040570 00000000 */   nop
     /* 30D74 80040574 0800C22B */  slti       $v0, $fp, 0x8
     /* 30D78 80040578 EFFF4014 */  bnez       $v0, .L80040538

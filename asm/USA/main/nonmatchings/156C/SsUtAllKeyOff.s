@@ -61,7 +61,7 @@ glabel SsUtAllKeyOff
     /* 267E4 80035FE4 0680013C */  lui        $at, %hi(D_8006251E)
     /* 267E8 80035FE8 21082200 */  addu       $at, $at, $v0
     /* 267EC 80035FEC 1E2520A4 */  sh         $zero, %lo(D_8006251E)($at)
-    /* 267F0 80035FF0 41F2000C */  jal        func_8003C904
+    /* 267F0 80035FF0 41F2000C */  jal        SpuSetVoiceAttr
     /* 267F4 80035FF4 1000A5AF */   sw        $a1, 0x10($sp)
     /* 267F8 80035FF8 0680013C */  lui        $at, %hi(D_80062D30)
     /* 267FC 80035FFC 302D30A4 */  sh         $s0, %lo(D_80062D30)($at)

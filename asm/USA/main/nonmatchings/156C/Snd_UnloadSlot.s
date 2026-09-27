@@ -70,7 +70,7 @@ glabel Snd_UnloadSlot
     /* ADA4 8001A5A4 80801000 */  sll        $s0, $s0, 2
     /* ADA8 8001A5A8 21800202 */  addu       $s0, $s0, $v0
     /* ADAC 8001A5AC 08000486 */  lh         $a0, 0x8($s0)
-    /* ADB0 8001A5B0 65E6000C */  jal        func_80039994
+    /* ADB0 8001A5B0 65E6000C */  jal        SsVabClose
     /* ADB4 8001A5B4 00000000 */   nop
     /* ADB8 8001A5B8 FFFF0224 */  addiu      $v0, $zero, -0x1
     /* ADBC 8001A5BC 040000AE */  sw         $zero, 0x4($s0)

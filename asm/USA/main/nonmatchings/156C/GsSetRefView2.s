@@ -175,7 +175,7 @@ glabel GsSetRefView2
     /* 1CBE0 8002C3E0 032C0500 */  sra        $a1, $a1, 16
     /* 1CBE4 8002C3E4 00340200 */  sll        $a2, $v0, 16
     /* 1CBE8 8002C3E8 03340600 */  sra        $a2, $a2, 16
-    /* 1CBEC 8002C3EC 31AF000C */  jal        func_8002BCC4
+    /* 1CBEC 8002C3EC 31AF000C */  jal        Math_MakeAxisRotMatrix
     /* 1CBF0 8002C3F0 78000724 */   addiu     $a3, $zero, 0x78
     /* 1CBF4 8002C3F4 0680043C */  lui        $a0, %hi(D_80061A08)
     /* 1CBF8 8002C3F8 081A8424 */  addiu      $a0, $a0, %lo(D_80061A08)
@@ -323,7 +323,7 @@ glabel GsSetRefView2
     /* 1CDF4 8002C5F4 032C0500 */  sra        $a1, $a1, 16
     /* 1CDF8 8002C5F8 00340200 */  sll        $a2, $v0, 16
     /* 1CDFC 8002C5FC 03340600 */  sra        $a2, $a2, 16
-    /* 1CE00 8002C600 31AF000C */  jal        func_8002BCC4
+    /* 1CE00 8002C600 31AF000C */  jal        Math_MakeAxisRotMatrix
     /* 1CE04 8002C604 79000724 */   addiu     $a3, $zero, 0x79
     /* 1CE08 8002C608 0680043C */  lui        $a0, %hi(D_80061A08)
     /* 1CE0C 8002C60C 081A8424 */  addiu      $a0, $a0, %lo(D_80061A08)
@@ -370,7 +370,7 @@ glabel GsSetRefView2
     /* 1CEAC 8002C6AC 23180300 */  negu       $v1, $v1
     /* 1CEB0 8002C6B0 6C00A3AF */  sw         $v1, 0x6C($sp)
     /* 1CEB4 8002C6B4 23100200 */  negu       $v0, $v0
-    /* 1CEB8 8002C6B8 19B0000C */  jal        func_8002C064
+    /* 1CEB8 8002C6B8 19B0000C */  jal        GsMulCoord2
     /* 1CEBC 8002C6BC 6800A2AF */   sw        $v0, 0x68($sp)
     /* 1CEC0 8002C6C0 5000A28F */  lw         $v0, 0x50($sp)
     /* 1CEC4 8002C6C4 5400A38F */  lw         $v1, 0x54($sp)

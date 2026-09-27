@@ -4,7 +4,7 @@ glabel Snd_PlayById
     /* AE8C 8001A68C D8FFBD27 */  addiu      $sp, $sp, -0x28
     /* AE90 8001A690 1800B2AF */  sw         $s2, 0x18($sp)
     /* AE94 8001A694 21908000 */  addu       $s2, $a0, $zero
-    /* AE98 8001A698 2000848F */  lw         $a0, %gp_rel(D_80050718)($gp)
+    /* AE98 8001A698 2000848F */  lw         $a0, %gp_rel(Snd_CurrentId)($gp)
     /* AE9C 8001A69C 1C00B3AF */  sw         $s3, 0x1C($sp)
     /* AEA0 8001A6A0 2198A000 */  addu       $s3, $a1, $zero
     /* AEA4 8001A6A4 2000BFAF */  sw         $ra, 0x20($sp)
@@ -43,11 +43,11 @@ glabel Snd_PlayById
     /* AF20 8001A720 21282002 */  addu       $a1, $s1, $zero
     /* AF24 8001A724 01000624 */  addiu      $a2, $zero, 0x1
     /* AF28 8001A728 0C000486 */  lh         $a0, 0xC($s0)
-    /* AF2C 8001A72C 81D3000C */  jal        func_80034E04
+    /* AF2C 8001A72C 81D3000C */  jal        SsSepPlay
     /* AF30 8001A730 2138C000 */   addu      $a3, $a2, $zero
     /* AF34 8001A734 02006012 */  beqz       $s3, .L8001A740
     /* AF38 8001A738 00000000 */   nop
-    /* AF3C 8001A73C 200092AF */  sw         $s2, %gp_rel(D_80050718)($gp)
+    /* AF3C 8001A73C 200092AF */  sw         $s2, %gp_rel(Snd_CurrentId)($gp)
   .L8001A740:
     /* AF40 8001A740 2000BF8F */  lw         $ra, 0x20($sp)
     /* AF44 8001A744 1C00B38F */  lw         $s3, 0x1C($sp)

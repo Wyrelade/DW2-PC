@@ -21,7 +21,7 @@ glabel _SsContResetAll
     /* 23F88 80033788 00110200 */  sll        $v0, $v0, 4
     /* 23F8C 8003378C 55D9000C */  jal        SsUtReverbOff
     /* 23F90 80033790 21800202 */   addu      $s0, $s0, $v0
-    /* 23F94 80033794 D9D9000C */  jal        func_80036764
+    /* 23F94 80033794 D9D9000C */  jal        _SsVmDamperOff
     /* 23F98 80033798 00000000 */   nop
     /* 23F9C 8003379C 21204002 */  addu       $a0, $s2, $zero
     /* 23FA0 800337A0 17000392 */  lbu        $v1, 0x17($s0)

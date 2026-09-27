@@ -25,7 +25,7 @@ glabel func_80024350
     /* 14BA4 800243A4 03000324 */  addiu      $v1, $zero, 0x3
     /* 14BA8 800243A8 3C0043AC */  sw         $v1, 0x3C($v0)
     /* 14BAC 800243AC 0400068E */  lw         $a2, 0x4($s0)
-    /* 14BB0 800243B0 937C000C */  jal        func_8001F24C
+    /* 14BB0 800243B0 937C000C */  jal        Anim_SetModelAnimFile
     /* 14BB4 800243B4 21280000 */   addu      $a1, $zero, $zero
     /* 14BB8 800243B8 5145000C */  jal        Task_NextState0
     /* 14BBC 800243BC 21202002 */   addu      $a0, $s1, $zero

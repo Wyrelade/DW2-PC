@@ -19,7 +19,7 @@ glabel func_8001E514
     /* ED4C 8001E54C 21200002 */  addu       $a0, $s0, $zero
     /* ED50 8001E550 B878000C */  jal        func_8001E2E0
     /* ED54 8001E554 21282002 */   addu      $a1, $s1, $zero
-    /* ED58 8001E558 0E88000C */  jal        func_80022038
+    /* ED58 8001E558 0E88000C */  jal        Flag_TestConds
     /* ED5C 8001E55C 21204000 */   addu      $a0, $v0, $zero
     /* ED60 8001E560 05004014 */  bnez       $v0, .L8001E578
     /* ED64 8001E564 06000224 */   addiu     $v0, $zero, 0x6

@@ -21,7 +21,7 @@ glabel func_8001EC10
     /* F454 8001EC54 5B000524 */   addiu     $a1, $zero, 0x5B
     /* F458 8001EC58 04000324 */  addiu      $v1, $zero, 0x4
     /* F45C 8001EC5C 3C0043AC */  sw         $v1, 0x3C($v0)
-    /* F460 8001EC60 7A7D000C */  jal        func_8001F5E8
+    /* F460 8001EC60 7A7D000C */  jal        Gfx_ResetModelBones
     /* F464 8001EC64 21200002 */   addu      $a0, $s0, $zero
     /* F468 8001EC68 5145000C */  jal        Task_NextState0
     /* F46C 8001EC6C 21200002 */   addu      $a0, $s0, $zero

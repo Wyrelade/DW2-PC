@@ -47,8 +47,8 @@ glabel MoveImage2
     /* 1A618 80029E18 24104300 */  and        $v0, $v0, $v1
     /* 1A61C 80029E1C EDFF4010 */  beqz       $v0, .L80029DD4
     /* 1A620 80029E20 00000000 */   nop
-    /* 1A624 80029E24 0380053C */  lui        $a1, %hi(func_80029FB4)
-    /* 1A628 80029E28 B49FA524 */  addiu      $a1, $a1, %lo(func_80029FB4)
+    /* 1A624 80029E24 0380053C */  lui        $a1, %hi(Gpu_RestoreExequeCb)
+    /* 1A628 80029E28 B49FA524 */  addiu      $a1, $a1, %lo(Gpu_RestoreExequeCb)
     /* 1A62C 80029E2C 4DC3000C */  jal        DMACallback
     /* 1A630 80029E30 02000424 */   addiu     $a0, $zero, 0x2
     /* 1A634 80029E34 04000286 */  lh         $v0, 0x4($s0)

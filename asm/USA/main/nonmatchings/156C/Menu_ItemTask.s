@@ -93,7 +93,7 @@ glabel Menu_ItemTask
     /* 7330 80016B30 05006210 */  beq        $v1, $v0, .L80016B48
     /* 7334 80016B34 00000000 */   nop
   .L80016B38:
-    /* 7338 80016B38 3C5A000C */  jal        func_800168F0
+    /* 7338 80016B38 3C5A000C */  jal        Menu_ShowSelItemText
     /* 733C 80016B3C 21280002 */   addu      $a1, $s0, $zero
     /* 7340 80016B40 E65B0008 */  j          .L80016F98
     /* 7344 80016B44 00000000 */   nop
@@ -106,7 +106,7 @@ glabel Menu_ItemTask
     /* 735C 80016B5C 51018434 */   ori       $a0, $a0, (0x1FD0151 & 0xFFFF)
   .L80016B60:
     /* 7360 80016B60 21204002 */  addu       $a0, $s2, $zero
-    /* 7364 80016B64 3C5A000C */  jal        func_800168F0
+    /* 7364 80016B64 3C5A000C */  jal        Menu_ShowSelItemText
     /* 7368 80016B68 21280002 */   addu      $a1, $s0, $zero
     /* 736C 80016B6C E65B0008 */  j          .L80016F98
     /* 7370 80016B70 00000000 */   nop
@@ -128,7 +128,7 @@ glabel Menu_ItemTask
     /* 73A8 80016BA8 0E008797 */  lhu        $a3, %gp_rel(D_80050706)($gp)
     /* 73AC 80016BAC 0C008297 */  lhu        $v0, %gp_rel(D_80050704)($gp)
     /* 73B0 80016BB0 003C0700 */  sll        $a3, $a3, 16
-    /* 73B4 80016BB4 3E4D000C */  jal        func_800134F8
+    /* 73B4 80016BB4 3E4D000C */  jal        Text_OpenPacked
     /* 73B8 80016BB8 25384700 */   or        $a3, $v0, $a3
     /* 73BC 80016BBC E65B0008 */  j          .L80016F98
     /* 73C0 80016BC0 00000000 */   nop
@@ -229,7 +229,7 @@ glabel Menu_ItemTask
     /* 7510 80016D10 14006210 */  beq        $v1, $v0, .L80016D64
     /* 7514 80016D14 00000000 */   nop
   .L80016D18:
-    /* 7518 80016D18 2C70000C */  jal        func_8001C0B0
+    /* 7518 80016D18 2C70000C */  jal        Text_CloseArray
     /* 751C 80016D1C 15000524 */   addiu     $a1, $zero, 0x15
     /* 7520 80016D20 AE5B0008 */  j          .L80016EB8
     /* 7524 80016D24 00000000 */   nop
@@ -269,7 +269,7 @@ glabel Menu_ItemTask
     /* 75A0 80016DA0 2000A2A3 */  sb         $v0, 0x20($sp)
     /* 75A4 80016DA4 2100A0A3 */  sb         $zero, 0x21($sp)
     /* 75A8 80016DA8 08016484 */  lh         $a0, 0x108($v1)
-    /* 75AC 80016DAC 1278000C */  jal        func_8001E048
+    /* 75AC 80016DAC 1278000C */  jal        Item_GetNameText
     /* 75B0 80016DB0 00000000 */   nop
     /* 75B4 80016DB4 1400A2AF */  sw         $v0, 0x14($sp)
     /* 75B8 80016DB8 1800518E */  lw         $s1, 0x18($s2)
@@ -284,7 +284,7 @@ glabel Menu_ItemTask
     /* 75D8 80016DD8 B9008434 */   ori       $a0, $a0, (0x1FD00B9 & 0xFFFF)
     /* 75DC 80016DDC 1000A2AF */  sw         $v0, 0x10($sp)
     /* 75E0 80016DE0 44000426 */  addiu      $a0, $s0, 0x44
-    /* 75E4 80016DE4 1C4D000C */  jal        func_80013470
+    /* 75E4 80016DE4 1C4D000C */  jal        Text_OpenDesc
     /* 75E8 80016DE8 1000A527 */   addiu     $a1, $sp, 0x10
     /* 75EC 80016DEC AE5B0008 */  j          .L80016EB8
     /* 75F0 80016DF0 00000000 */   nop
@@ -302,14 +302,14 @@ glabel Menu_ItemTask
     /* 761C 80016E1C 6807428C */  lw         $v0, %lo(Menu_Ctx)($v0)
     /* 7620 80016E20 00000000 */  nop
     /* 7624 80016E24 0A014484 */  lh         $a0, 0x10A($v0)
-    /* 7628 80016E28 FC89000C */  jal        func_800227F0
+    /* 7628 80016E28 FC89000C */  jal        Item_RemoveFromBag
     /* 762C 80016E2C 00000000 */   nop
     /* 7630 80016E30 FD01043C */  lui        $a0, (0x1FD00BA >> 16)
     /* 7634 80016E34 688E000C */  jal        Cd_GetFileEntry
     /* 7638 80016E38 BA008434 */   ori       $a0, $a0, (0x1FD00BA & 0xFFFF)
     /* 763C 80016E3C 44000426 */  addiu      $a0, $s0, 0x44
     /* 7640 80016E40 1000A527 */  addiu      $a1, $sp, 0x10
-    /* 7644 80016E44 1C4D000C */  jal        func_80013470
+    /* 7644 80016E44 1C4D000C */  jal        Text_OpenDesc
     /* 7648 80016E48 1000A2AF */   sw        $v0, 0x10($sp)
     /* 764C 80016E4C DA57000C */  jal        Item_BuildMenuList
     /* 7650 80016E50 21200002 */   addu      $a0, $s0, $zero
@@ -385,7 +385,7 @@ glabel Menu_ItemTask
     /* 7744 80016F44 0E008797 */  lhu        $a3, %gp_rel(D_80050706)($gp)
     /* 7748 80016F48 0C008297 */  lhu        $v0, %gp_rel(D_80050704)($gp)
     /* 774C 80016F4C 003C0700 */  sll        $a3, $a3, 16
-    /* 7750 80016F50 3E4D000C */  jal        func_800134F8
+    /* 7750 80016F50 3E4D000C */  jal        Text_OpenPacked
     /* 7754 80016F54 25384700 */   or        $a3, $v0, $a3
     /* 7758 80016F58 21204002 */  addu       $a0, $s2, $zero
     /* 775C 80016F5C 7745000C */  jal        Task_SetState1
@@ -403,7 +403,7 @@ glabel Menu_ItemTask
     /* 7784 80016F84 AB89000C */  jal        Item_SortList
     /* 7788 80016F88 00000000 */   nop
     /* 778C 80016F8C 21200002 */  addu       $a0, $s0, $zero
-    /* 7790 80016F90 2C70000C */  jal        func_8001C0B0
+    /* 7790 80016F90 2C70000C */  jal        Text_CloseArray
     /* 7794 80016F94 15000524 */   addiu     $a1, $zero, 0x15
   .L80016F98:
     /* 7798 80016F98 5945000C */  jal        Task_NextState1

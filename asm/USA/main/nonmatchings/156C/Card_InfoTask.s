@@ -43,7 +43,7 @@ glabel Card_InfoTask
     /* 2E6AC 8003DEAC 0580013C */  lui        $at, %hi(D_800506C8)
     /* 2E6B0 8003DEB0 C80622AC */  sw         $v0, %lo(D_800506C8)($at)
   .L8003DEB4:
-    /* 2E6B4 8003DEB4 A9FF000C */  jal        func_8003FEA4
+    /* 2E6B4 8003DEB4 A9FF000C */  jal        Card_ClearEvents
     /* 2E6B8 8003DEB8 00000000 */   nop
     /* 2E6BC 8003DEBC 0680043C */  lui        $a0, %hi(D_80062F90)
     /* 2E6C0 8003DEC0 902F848C */  lw         $a0, %lo(D_80062F90)($a0)
@@ -55,11 +55,11 @@ glabel Card_InfoTask
     /* 2E6D8 8003DED8 45F80008 */  j          .L8003E114
     /* 2E6DC 8003DEDC 000002AE */   sw        $v0, 0x0($s0)
   .L8003DEE0:
-    /* 2E6E0 8003DEE0 5700010C */  jal        func_8004015C
+    /* 2E6E0 8003DEE0 5700010C */  jal        Card_GetSwEventBits
     /* 2E6E4 8003DEE4 00000000 */   nop
     /* 2E6E8 8003DEE8 8B004010 */  beqz       $v0, .L8003E118
     /* 2E6EC 8003DEEC 21100000 */   addu      $v0, $zero, $zero
-    /* 2E6F0 8003DEF0 EBFF000C */  jal        func_8003FFAC
+    /* 2E6F0 8003DEF0 EBFF000C */  jal        Card_WaitSwEvent
     /* 2E6F4 8003DEF4 00000000 */   nop
     /* 2E6F8 8003DEF8 0680113C */  lui        $s1, %hi(D_80062F90)
     /* 2E6FC 8003DEFC 902F3126 */  addiu      $s1, $s1, %lo(D_80062F90)
@@ -96,7 +96,7 @@ glabel Card_InfoTask
     /* 2E774 8003DF74 8000422C */  sltiu      $v0, $v0, 0x80
     /* 2E778 8003DF78 09004010 */  beqz       $v0, .L8003DFA0
     /* 2E77C 8003DF7C 00000000 */   nop
-    /* 2E780 8003DF80 A9FF000C */  jal        func_8003FEA4
+    /* 2E780 8003DF80 A9FF000C */  jal        Card_ClearEvents
     /* 2E784 8003DF84 00000000 */   nop
     /* 2E788 8003DF88 0000248E */  lw         $a0, 0x0($s1)
     /* 2E78C 8003DF8C 6DFE000C */  jal        _card_clear
@@ -114,7 +114,7 @@ glabel Card_InfoTask
     /* 2E7B8 8003DFB8 03110200 */  sra        $v0, $v0, 4
     /* 2E7BC 8003DFBC 80100200 */  sll        $v0, $v0, 2
     /* 2E7C0 8003DFC0 21100202 */  addu       $v0, $s0, $v0
-    /* 2E7C4 8003DFC4 06FD000C */  jal        func_8003F418
+    /* 2E7C4 8003DFC4 06FD000C */  jal        Card_EventToMcErr
     /* 2E7C8 8003DFC8 380043AC */   sw        $v1, 0x38($v0)
     /* 2E7CC 8003DFCC 21184000 */  addu       $v1, $v0, $zero
     /* 2E7D0 8003DFD0 01000224 */  addiu      $v0, $zero, 0x1
@@ -146,7 +146,7 @@ glabel Card_InfoTask
     /* 2E82C 8003E02C 02000424 */   addiu     $a0, $zero, 0x2
     /* 2E830 8003E030 0000A3AC */  sw         $v1, 0x0($a1)
   .L8003E034:
-    /* 2E834 8003E034 06FD000C */  jal        func_8003F418
+    /* 2E834 8003E034 06FD000C */  jal        Card_EventToMcErr
     /* 2E838 8003E038 00000000 */   nop
     /* 2E83C 8003E03C 21204000 */  addu       $a0, $v0, $zero
     /* 2E840 8003E040 01000224 */  addiu      $v0, $zero, 0x1
@@ -167,7 +167,7 @@ glabel Card_InfoTask
     /* 2E874 8003E074 45F80008 */  j          .L8003E114
     /* 2E878 8003E078 000012AE */   sw        $s2, 0x0($s0)
   .L8003E07C:
-    /* 2E87C 8003E07C 06FD000C */  jal        func_8003F418
+    /* 2E87C 8003E07C 06FD000C */  jal        Card_EventToMcErr
     /* 2E880 8003E080 01000424 */   addiu     $a0, $zero, 0x1
     /* 2E884 8003E084 21184000 */  addu       $v1, $v0, $zero
     /* 2E888 8003E088 01000224 */  addiu      $v0, $zero, 0x1
@@ -182,7 +182,7 @@ glabel Card_InfoTask
   .L8003E0AC:
     /* 2E8AC 8003E0AC 0680043C */  lui        $a0, %hi(D_80062F54)
     /* 2E8B0 8003E0B0 542F848C */  lw         $a0, %lo(D_80062F54)($a0)
-    /* 2E8B4 8003E0B4 06FD000C */  jal        func_8003F418
+    /* 2E8B4 8003E0B4 06FD000C */  jal        Card_EventToMcErr
     /* 2E8B8 8003E0B8 00000000 */   nop
     /* 2E8BC 8003E0BC 21284000 */  addu       $a1, $v0, $zero
     /* 2E8C0 8003E0C0 0680043C */  lui        $a0, %hi(D_80062F80)
@@ -200,7 +200,7 @@ glabel Card_InfoTask
     /* 2E8EC 8003E0EC 00000000 */   nop
     /* 2E8F0 8003E0F0 09004010 */  beqz       $v0, .L8003E118
     /* 2E8F4 8003E0F4 21100000 */   addu      $v0, $zero, $zero
-    /* 2E8F8 8003E0F8 2100010C */  jal        func_80040084
+    /* 2E8F8 8003E0F8 2100010C */  jal        Card_WaitHwEvent
     /* 2E8FC 8003E0FC 00000000 */   nop
     /* 2E900 8003E100 45F80008 */  j          .L8003E114
     /* 2E904 8003E104 000000AE */   sw        $zero, 0x0($s0)

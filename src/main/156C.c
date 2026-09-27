@@ -48,7 +48,7 @@ extern Blk54CF8 D_80058D28[];
 extern EntE620 D_8005E620;
 extern s32 D_80062FD8;
 extern void Digi_InitFromTable(s32, s32, ElmE620 *);
-extern void func_80022AE4(void);
+extern void Digi_SortRoster(void);
 extern Blk54CF8 *ClearOTagR(Blk54CF8 *, s32);
 extern void Snd_PlayById(s32, s32);
 extern s32 DrawOTag(void *);
@@ -63,11 +63,11 @@ extern void Text_Close(s32 *);
 extern void Mem_Free(ActorWork *);
 extern s32 D_8005F79C;
 extern Sub3C *Gfx_AttachModel(Actor *, s32);
-extern void func_8001F5E8(Actor *);
+extern void Gfx_ResetModelBones(Actor *);
 extern s32 D_80043704[];
-extern void func_80020920(Actor *);
-extern void func_800200D0(Actor *);
-extern void func_80020510(Actor *, s32);
+extern void Actor_UpdateTransform(Actor *);
+extern void Gfx_CalcModelBoneMatrices(Actor *);
+extern void Gfx_DrawTexModel(Actor *, s32);
 extern Obj48DB8 D_80048DB8;
 extern u8 D_8005FDC8[];
 extern s32 CdPosToInt(void *);
@@ -85,7 +85,7 @@ extern s32 func_8001E134(void);
 extern s32 *func_80011F5C(s32);
 extern s32 D_80040FD0[];
 extern void Gfx_SetPartsScale(Ent1D550 *, s32, s32);
-extern void func_8001D884(s32);
+extern void Gfx_DrawParts(s32);
 extern void Text_Open(void *, Arg1BC24 *);
 extern void Flag_Set(s32, s32);
 extern void Gfx_SetPartsNumber(Part28 *, s32, s32, s32);
@@ -124,9 +124,9 @@ extern Obj50768 *Menu_Ctx;
 extern s32 sin_1(s32);
 extern s32 CD_init();
 extern s32 func_8002FDC8();
-extern s32 func_80039B54();
+extern s32 _SsVabOpenHeadWithMode();
 extern s32 func_80039A78();
-extern s32 func_80039B4C(s32, s32);
+extern s32 Snd_VabFixedAddrAlloc(s32, s32);
 extern volatile s32 D_80063080;
 extern void ChangeClearRCnt(s32, s32);
 extern void SysDeqIntRP(s32, u8 *);
@@ -174,7 +174,7 @@ extern Blk5071C *D_8005071C;
 extern char D_8001031C[];
 extern void checkRECT(char *, Rect2AB54 *);
 extern s8 D_80010974[];
-extern void func_8002A744(s8);
+extern void Debug_PutChar(s8);
 extern void (*volatile D_8004FE60)(void);
 extern s32 _spu_Fw(s32, u32);
 extern Snd62D18 D_80062D18;
@@ -215,7 +215,7 @@ extern s32 D_80061B14;
 extern s32 D_80061B04;
 extern s16 D_80061AFC;
 extern s32 D_80061AF8;
-extern void func_8002E1A4(s32, s32);
+extern void Cd_ClearStreamSlots(s32, s32);
 extern s32 D_8004FE88;
 extern s32 D_8004FE8C;
 extern Hdr3AD44 *Spu_MemList;
@@ -255,7 +255,7 @@ extern u8 D_80062D38[];
 extern u16 D_80062D90;
 extern s32 D_80062D98[];
 extern void SpuFree(s32);
-extern s32 func_8003C8EC(void);
+extern s32 _spu_getInTransfer(void);
 extern void _spu_setInTransfer(s32);
 extern s32 D_80061B28;
 extern s32 D_80061B50;
@@ -335,7 +335,7 @@ extern char D_800103C4[];
 extern u8 *Digi_GetDefaultName(s32);
 extern char D_80010304[];
 extern char D_80010328[];
-extern void func_80029FB4(void);
+extern void Gpu_RestoreExequeCb(void);
 extern Pkt48F9C D_80048F9C;
 extern s32 func_80039334(s16, s16, s16, u16, u16);
 extern Reg506BC *D_800506BC;
@@ -347,7 +347,7 @@ extern s32 D_8004FE14;
 extern s32 D_800503B8[];
 extern u16 *D_8004E9A0;
 extern char D_80010328[];
-extern s32 func_80022038();
+extern s32 Flag_TestConds();
 extern volatile u8 *D_8004EA60;
 extern volatile u8 *D_8004EA64;
 extern volatile s32 *D_8004EA68;
@@ -365,10 +365,10 @@ extern BlkFill618D0 D_800618D0[];
 extern void Cd_ReadFileAsync(s32, s32);
 extern void SsSepStop(s16, s16);
 extern void func_80032844(s16);
-extern void func_80039994(s16);
+extern void SsVabClose(s16);
 extern char D_800103F8[];
-extern void func_80029FB4(void);
-extern void func_80029FB4(void);
+extern void Gpu_RestoreExequeCb(void);
+extern void Gpu_RestoreExequeCb(void);
 extern s32 D_80062F70;
 extern s32 D_80062F74;
 extern void set_alarm(void);
@@ -381,7 +381,7 @@ extern s32 *D_80049030;
 extern s32 *D_80049034;
 extern Prm1C D_80040F64;
 extern s32 func_8001E704(s32 id);
-extern s32 func_8001E728(s32 arg0, s32 arg1);
+extern s32 Anim_GetModelAnimFile(s32 arg0, s32 arg1);
 extern void Actor_InitTransform(ContC40 *a0, s32 *a1, u16 a2);
 extern void GsInitCoordinate2(Coord1F668 *, Coord1F668 *);
 extern s16 D_8005E6E4;
@@ -412,15 +412,15 @@ extern int Card_OnHwIoe(void);
 extern int Card_OnHwError(void);
 extern int Card_OnHwTimeout(void);
 extern int Card_OnHwNewCard(void);
-extern void func_8003FEA4(void);
+extern void Card_ClearEvents(void);
 extern char D_80010C70[];
 extern void Card_MakeDevName(s32, u8 *);
 extern s8 *strcat(s8 *, s8 *);
 extern s32 open(u8 *, s32);
 extern s32 MemCardSync(s32 wait, s32 *a1, s32 *a2);
-extern void func_8003FEA4(void);
+extern void Card_ClearEvents(void);
 extern s32 D_80062F90;
-extern void func_80025CC8(Obj25FBC *a0);
+extern void Pad_SendInfoCmd(Obj25FBC *a0);
 extern void Pad_CmdConfigMode(Actor *arg0, u8 arg1);
 extern void (*D_80048E1C)(Obj25FBC *);
 extern Flags506C0 *D_800506C0;
@@ -449,19 +449,19 @@ extern void (*D_80061BE8)(s16, s16, s32);
 extern void (*D_80061BEC)(s16, s16, s32);
 extern void (*D_80061BF0)(s16, s16);
 extern void Gfx_LoadTexSlotImage(Elem20 *);
-extern s32 func_80025D4C(Obj25FBC *);
+extern s32 Pad_ParseInfoReply(Obj25FBC *);
 extern s32 D_80061C44;
 extern void _SsVmFlush(void);
 extern void func_80031AC4(s16, s16);
-extern void func_80035CE4(s16, s16);
+extern void _SsSndTempo(s16, s16);
 extern void _SsSndPause(s32 a0, s16 a1);
-extern void func_80032644(s16 a0, s16 a1);
+extern void _SsSndReplay(s16 a0, s16 a1);
 extern void _SsSndStop(s32 arg0, s32 arg1);
 extern void func_80031D74(s16, s16);
 extern s32 Math_CycleRange(s32, s32, s32, s32);
 extern s32 D_80050790;
-extern s32 D_80050718;
-extern s32 D_80050774;
+extern s32 Snd_CurrentId;
+extern s32 Snd_SavedId;
 extern Obj50720 *D_80050720;
 extern s32 D_800506FC;
 extern s32 D_80050778;
@@ -475,12 +475,12 @@ extern u8 *D_80010000[];
 extern void Snd_StopById(s32);
 extern void Snd_StopById(s32);
 extern void func_80035C4C(s16 a0, s16 a1, s16 a2, s16 a3);
-extern void func_80034E04(s16, s16, s8, s16);
+extern void SsSepPlay(s16, s16, s8, s16);
 extern void SsUtAllKeyOff(s32);
 extern Halves D_80050704;
 extern Halves D_80050708;
 extern s32 D_80050750;
-extern s32 func_80023F90(s32 arg0);
+extern s32 Cd_GetFileSectors(s32 arg0);
 extern Tbl50724 D_80050724[];
 extern s32 D_8005078C;
 extern s32 D_8005072C;
@@ -499,7 +499,7 @@ extern void func_80014F78(Actor *);
 extern void func_800153F4(Actor *, s32);
 extern s32 D_80050764;
 extern s32 D_8005F788[];
-extern s32 func_8002284C(s32 mode);
+extern s32 Digi_CountByState(s32 mode);
 extern void Gfx_FadeInFromBlack(s32 arg0);
 extern void Text_SetColor(s32 a0, s32 a1);
 extern Halves D_80050714;
@@ -540,17 +540,17 @@ extern s32 D_80062F60;
 extern s32 D_80062F64;
 extern s32 D_80062F68;
 extern s32 Card_GetHwEventBits(void);
-extern s32 func_80040084(void);
+extern s32 Card_WaitHwEvent(void);
 extern void _card_load(s32);
 extern void _card_info(s32);
-extern s32 func_8004015C(void);
-extern s32 func_8003FFAC(void);
-extern s32 func_8003F418(s32);
+extern s32 Card_GetSwEventBits(void);
+extern s32 Card_WaitSwEvent(void);
+extern s32 Card_EventToMcErr(s32);
 extern s32 _card_clear(s32 a0);
 extern void Mem_FillWordsNeg1(s32 *arg0, s32 arg1);
-extern void func_8001C0B0(s32 *arg0, s32 arg1);
+extern void Text_CloseArray(s32 *arg0, s32 arg1);
 extern void Mem_FillWordsNeg1(s32 *arg0, s32 arg1);
-extern void func_8001C0B0(s32 *arg0, s32 arg1);
+extern void Text_CloseArray(s32 *arg0, s32 arg1);
 extern void GsSetOffset(s32, s32);
 extern u8 func_8001D934(void);
 extern s32 func_8001D958(void);
@@ -585,7 +585,7 @@ extern u16 D_80062A48[];
 extern u8 D_80062A28[];
 extern u8 D_80062D48;
 extern s32 D_80062D10;
-extern void func_8003C904(VAttr36C54 *);
+extern void SpuSetVoiceAttr(VAttr36C54 *);
 extern void _SsVmKeyOffNow(s32);
 extern s32 D_800506D0;
 extern s32 D_8004E9E0[];
@@ -598,7 +598,7 @@ extern u8 _SsVmAlloc(s32);
 extern void _SsVmDoAllocate(void);
 extern u16 note2pitch(void);
 extern void func_80037D64(u8);
-extern u8 func_80039264(u8 *idx, u8 *val);
+extern u8 _SsVmSelectToneAndVag(u8 *idx, u8 *val);
 extern char D_800103AC[];
 extern u8 D_8004900C[];
 extern Rng48FE4 D_80048FE4[][5];
@@ -639,7 +639,7 @@ extern s32 *D_8004FE30;
 extern s32 *D_8004FE34;
 extern s32 D_800506D8;
 extern Mat1F668 D_80061A28;
-extern s32 func_8002281C(void);
+extern s32 Item_GetBagCapacity(void);
 extern s32 func_8001E22C(s32 a0);
 extern s32 func_8001E0C0(s32 id);
 extern char D_80010A34[];
@@ -664,7 +664,7 @@ extern s32 func_80026170();
 extern void _spu_gcSPU();
 extern u16 D_8004FC88[12];
 extern u16 D_8004FCA0[128];
-extern s16 func_80039150(s32 a0, u16 *a1, u16 *a2);
+extern s16 _SsVmGetSeqVol(s32 a0, u16 *a1, u16 *a2);
 extern char D_80010D18[];
 extern char D_80010C70[];
 extern s32 Card_ReadFileTask(s32 *a0);
@@ -684,7 +684,7 @@ extern char D_80010AC4[];
 extern char D_80010AD8[];
 extern char D_80010D18[];
 extern s32 func_800401E4();
-extern s32 func_8003F418(s32 a0);
+extern s32 Card_EventToMcErr(s32 a0);
 extern u8 *bzero(u8 *s, s32 n);
 extern char D_80010D18[];
 extern s32 D_8004E9E0[];
@@ -721,21 +721,21 @@ extern void WaitEvent(s32);
 extern char D_8001034C[];
 extern s32 D_800506D4;
 extern s32 lseek(s32, s32, s32);
-extern void func_8003FEA4(void);
-extern s32 func_8004015C(void);
-extern s32 func_8003FFAC(void);
+extern void Card_ClearEvents(void);
+extern s32 Card_GetSwEventBits(void);
+extern s32 Card_WaitSwEvent(void);
 extern s32 _card_clear(s32 a0);
 extern s32 Card_GetHwEventBits(void);
-extern s32 func_80040084(void);
+extern s32 Card_WaitHwEvent(void);
 extern s32 func_80024960(Ent266D0 *, s32);
 extern s32 (*D_80048E3C)(Actor *);
 extern void (*D_80048E38)(Obj25FBC *);
 extern u8 D_8005FFB8[];
 extern u8 D_80060000[];
 extern void func_8002485C(s32 code);
-extern void func_800247F4(Obj25FBC *a0);
+extern void Pad_ResetPortState(Obj25FBC *a0);
 extern s32 func_80024950(Actor *arg0);
-extern void func_80024A1C(Obj25FBC *a0);
+extern void Pad_AllocActPower(Obj25FBC *a0);
 extern u8 *Pad_GetPortBlock(s32 arg0);
 extern s32 func_80024CB8(Obj25FBC *a0);
 extern void func_80024DC8(Obj25FBC *a0);
@@ -745,8 +745,8 @@ extern u8 D_80050760;
 extern s32 D_80049040;
 extern s32 ResetRCnt(s32 arg0);
 extern s32 SetRCnt(s32 arg0, s32 arg1, s32 arg2);
-extern void func_800352E4(void);
-extern void func_80035330(void);
+extern void _SsTrapIntrVSync(void);
+extern void _SsSeqCalledTbyT_1per2(void);
 extern char D_800106F4[];
 extern volatile Reg2EC0C *D_8004E68C;
 extern volatile u32 *D_8004E688;
@@ -845,10 +845,10 @@ extern SVec1F668 D_80050744;
 extern s32 Gfx_IsOriginOffscreen(void);
 extern s32 Gfx_ProjectModelVerts(Vert6Pmv *, Obj21ABC *, s32);
 extern void Gfx_CalcNormalColors(Vert6Pmv *, Obj21ABC *);
-extern void func_8002130C(QuadGT4_2130C *, s32, Sub3C *, s32);
+extern void Gfx_AddQuadsGT4(QuadGT4_2130C *, s32, Sub3C *, s32);
 extern void func_80020FD0(TriGT3_20FD0 *, s32, Sub3C *, s32);
-s16 func_800388A4(s16, s16, s16, s16, u16);
-void func_80021DC8(void);
+s16 _SsVmPBVoice(s16, s16, s16, s16, u16);
+void Save_ClearEventFlags(void);
 
 ASM_SOURCE("src/main/asm/crt0", func_80010D6C);
 
@@ -1236,7 +1236,7 @@ void func_80011854(Actor *a0) {
             }
         }
     }
-    func_8001D884((s32)e);
+    Gfx_DrawParts((s32)e);
     Gfx_FindOrLoadImageSlot(w->field_0, &tex, &pos, &clut);
     s = 1;
     if (w->field_4 != 0) {
@@ -1277,7 +1277,7 @@ void func_80011B58(Actor *arg0, s32 arg1) {
     arg0->work->field_0 = arg1;
 }
 
-void func_80011B64(Actor *arg0) {
+void Gfx_TexSlotTaskInit(Actor *arg0) {
     ActorWork *w = arg0->work;
     if (arg0->field_10 == 0) {
         w->field_0 = Gfx_ReserveTexSlot();
@@ -1285,7 +1285,7 @@ void func_80011B64(Actor *arg0) {
     }
 }
 
-void func_80011BB0(Actor *arg0) {
+void Gfx_TexSlotTaskKill(Actor *arg0) {
     Gfx_ReleaseTexSlot(arg0->work->field_0);
     Task_DefaultDestroy(arg0);
 }
@@ -1688,7 +1688,7 @@ s32 Item_Use(s32 a0, s32 a1, s32 a2, s32 a3) {
             break;
         }
         if (r != 0) {
-            func_800227F0(a1);
+            Item_RemoveFromBag(a1);
         }
     }
     return r;
@@ -1756,8 +1756,8 @@ extern u8 D_8005E6F1[];
 extern Nm12974 D_8005E750[];
 extern u16 D_8005F72C;
 extern u8 func_8001287C(Actor *);
-extern void func_8001A8BC(void);
-extern void func_8001A8D0(void);
+extern void Snd_SaveCurrentId(void);
+extern void Snd_RestoreSavedId(void);
 
 void Menu_NameEntryTask(Actor *a0) {
     Wk12974 *w = (Wk12974 *)a0->work;
@@ -1814,7 +1814,7 @@ void Menu_NameEntryTask(Actor *a0) {
             p[5] = 0x35;
             break;
         }
-        func_8001A8BC();
+        Snd_SaveCurrentId();
         Snd_PlayById(0x22, 1);
         w->field_C = 6;
         Task_NextState0(a0);
@@ -1963,9 +1963,9 @@ void Menu_NameEntryTask(Actor *a0) {
         break;
     case 2:
         if (D_8005F788[0] != 0x500) {
-            func_8001A8D0();
+            Snd_RestoreSavedId();
         }
-        func_8001C0B0(&w->field_10, 5);
+        Text_CloseArray(&w->field_10, 5);
         Task_NextState0(a0);
         break;
     }
@@ -2049,7 +2049,7 @@ void func_8001309C(Actor *a) {
             p->field_F = 1;
         }
     }
-    func_8001D884((s32)base);
+    Gfx_DrawParts((s32)base);
 }
 
 
@@ -2063,7 +2063,7 @@ void func_80013308(s32 id) {
         D_800506FC = id;
         src = (u8 *)Cd_GetFileSync(*p);
         dst = D_80010000[0];
-        func_80027044(dst, src, func_80023F90(*p) << 11);
+        func_80027044(dst, src, Cd_GetFileSectors(*p) << 11);
     }
 }
 
@@ -2074,7 +2074,7 @@ s32 func_80013378(void) {
 
 extern void func_80013308(s32);
 extern void Task_Create(u32, s32 *, s32);
-extern s32 func_8001A300(void);
+extern s32 Snd_AnySlotLoading(void);
 extern s32 D_8005F78C;
 
 void func_80013384(Actor *a0) {
@@ -2093,7 +2093,7 @@ void func_80013384(Actor *a0) {
         }
         break;
     case 2:
-        if (func_8001A300() == 0) {
+        if (Snd_AnySlotLoading() == 0) {
             Task_SetState0(a0, 3);
         }
         break;
@@ -2104,7 +2104,7 @@ void Task_DefaultDestroy2(void) {
     Task_Free();
 }
 
-void func_80013470(void *arg0, Src13470 *arg1) {
+void Text_OpenDesc(void *arg0, Src13470 *arg1) {
     Arg1BC24 local;
     local.field_14 = arg1->field_0;
     local.field_0 = arg1->field_10 >> 7;
@@ -2119,7 +2119,7 @@ void func_80013470(void *arg0, Src13470 *arg1) {
     Text_Open(arg0, &local);
 }
 
-void func_800134F8(void *arg0, s32 arg1, u32 arg2, Halves arg3) {
+void Text_OpenPacked(void *arg0, s32 arg1, u32 arg2, Halves arg3) {
     Arg1BC24 local;
     local.field_0 = (arg2 >> 7) & 1;
     local.field_14 = arg1;
@@ -2137,7 +2137,7 @@ s32 Text_PrintIdList(s32 *a0, Key13558 *a1, u32 a2) {
 
     while (a1->key != 0) {
         n++;
-        func_800134F8(a0, (s32)Cd_GetFileEntry((a1->key & 0xFFF) | 0x1FD0000),
+        Text_OpenPacked(a0, (s32)Cd_GetFileEntry((a1->key & 0xFFF) | 0x1FD0000),
                       a2 | ((a1->key & 0xF000) >> 10), a1->h);
         a1++;
         a0++;
@@ -2147,7 +2147,7 @@ s32 Text_PrintIdList(s32 *a0, Key13558 *a1, u32 a2) {
 
 void Text_PrintList(s32 *a0, Halves *a1, s32 *a2, u32 a3) {
     while (*a2 != 0) {
-        func_800134F8(a0, *a2, a3, *a1);
+        Text_OpenPacked(a0, *a2, a3, *a1);
         a2++;
         a1++;
         a0++;
@@ -2157,7 +2157,7 @@ void Text_PrintList(s32 *a0, Halves *a1, s32 *a2, u32 a3) {
 s32 func_800136A4() {
     s32 result = Text_IsFinished();
     if (result != 0) {
-        result = func_80021E78(0x11) == 0 ? 1 : -1;
+        result = Flag_Test(0x11) == 0 ? 1 : -1;
     }
     return result;
 }
@@ -2201,7 +2201,7 @@ void Menu_SetPartsGridPos(void *arg0, s32 mask, s32 *arg2, s16 *arg3) {
 }
 
 
-void func_800137B8(Part28 *p, s32 mask, s32 v) {
+void Gfx_SetPartsPalette(Part28 *p, s32 mask, s32 v) {
     Part28 *q = p;
 
     if (p->field_0 != 0) {
@@ -2404,11 +2404,11 @@ void Menu_TopMenuTask(Actor *a0) {
             }
         } else {
             Menu_Ctx->field_0 = 1;
-            if (func_80021E78(0x67) == 0) {
+            if (Flag_Test(0x67) == 0) {
                 Menu_Ctx->field_0 |= 8;
             }
         }
-        if (func_8002284C(0) == 0x24) {
+        if (Digi_CountByState(0) == 0x24) {
             Menu_Ctx->field_0 = (Menu_Ctx->field_0 | 0x10) & ~2;
         }
         Menu_Ctx->field_4 = 0;
@@ -2472,7 +2472,7 @@ void Menu_TopMenuTask(Actor *a0) {
             switch (a0->field_18) {
             case 0:
             default:
-                func_8001C0B0(&w->field_0, 8);
+                Text_CloseArray(&w->field_0, 8);
                 Task_NextState2(a0);
                 break;
             case 1:
@@ -2506,7 +2506,7 @@ void Menu_TopMenuTask(Actor *a0) {
         switch (a0->field_14) {
         case 0:
         default:
-            func_8001C0B0(&w->field_0, 8);
+            Text_CloseArray(&w->field_0, 8);
             D_80050764 = Menu_Ctx->field_360;
             Task_NextState1(a0);
             Gfx_FadeOutToBlack(0x20);
@@ -2547,7 +2547,7 @@ void func_800141D4(Actor *actor) {
                 case 0:
                 default:
                     Menu_SetPartsGridPos(obj, 2, &w->field_20, &w->field_24);
-                    func_800137B8(obj, 2, (actor->field_28 >> 2) & 3);
+                    Gfx_SetPartsPalette(obj, 2, (actor->field_28 >> 2) & 3);
                     break;
                 case 1:
                     Gfx_SetPartsNumber(obj, 2, 8, D_80050720->field_8);
@@ -2555,7 +2555,7 @@ void func_800141D4(Actor *actor) {
                 }
                 Gfx_SetPartsScale(obj, 0x1000, w->field_34);
                 list++;
-                func_8001D884((s32)obj);
+                Gfx_DrawParts((s32)obj);
                 i++;
             } while (*list != 0);
         }
@@ -2586,7 +2586,7 @@ void func_800141D4(Actor *actor) {
             break;
         }
     }
-    func_8001D884((s32)base);
+    Gfx_DrawParts((s32)base);
 }
 
 void func_800143CC(Actor *arg0, s16 arg1) {
@@ -2673,11 +2673,11 @@ void Menu_SubMenuTask(Actor *a) {
                 if (w->field_38 == 3) {
                     switch (Menu_Ctx->field_35C) {
                     case 1:
-                        func_8001C0B0(w->field_4, 9);
+                        Text_CloseArray(w->field_4, 9);
                         w->field_3C = 1;
                         break;
                     case 2:
-                        func_8001C0B0(w, 0xA);
+                        Text_CloseArray(w, 0xA);
                         Text_PrintIdList((s32 *)w, (Key13558 *)Cd_GetFileEntrySubPtr(0x5130008, w->field_38 - 1), 0);
                         w->field_3C = 0;
                         break;
@@ -2703,7 +2703,7 @@ void Menu_SubMenuTask(Actor *a) {
             switch (a->field_18) {
             default:
             case 0:
-                func_8001C0B0(w, 0xA);
+                Text_CloseArray(w, 0xA);
                 Task_NextState2(a);
                 break;
             case 1:
@@ -2730,7 +2730,7 @@ void Menu_SubMenuTask(Actor *a) {
         switch (a->field_14) {
         default:
         case 0:
-            func_8001C0B0(w, 0xA);
+            Text_CloseArray(w, 0xA);
             Task_NextState1(a);
             break;
         case 1:
@@ -2745,7 +2745,7 @@ void Menu_SubMenuTask(Actor *a) {
 
 
 extern void Menu_SetPartsGridPos(void *, s32, s32 *, s16 *);
-extern void func_800137B8(Part28 *, s32, s32);
+extern void Gfx_SetPartsPalette(Part28 *, s32, s32);
 extern void Gfx_HidePartsByMask(Obj1D504 *, s32);
 
 void func_80014870(Actor *actor) {
@@ -2766,14 +2766,14 @@ void func_80014870(Actor *actor) {
         obj = Cd_GetFileEntry(*list);
         if (w->field_2C != 0 && w->field_3C == 0) {
             Menu_SetPartsGridPos(obj, 2, &w->field_28, &w->field_2C);
-            func_800137B8(obj, 2, (actor->field_28 >> 2) & 3);
+            Gfx_SetPartsPalette(obj, 2, (actor->field_28 >> 2) & 3);
             Gfx_HidePartsByMask(obj, 0);
         } else {
             Gfx_HidePartsByMask(obj, 2);
         }
         list++;
         Gfx_SetPartsScale(obj, 0x1000, w->field_40);
-        func_8001D884((s32)obj);
+        Gfx_DrawParts((s32)obj);
     } while (*list != 0);
 }
 
@@ -2793,7 +2793,7 @@ void func_80014984(Actor *a0) {
     switch (a0->field_10) {
     case 0:
     default:
-        w->field_AC = func_80022910(3, (ElmE620 **)w->field_A0);
+        w->field_AC = Digi_ListByState(3, (ElmE620 **)w->field_A0);
         Mem_FillWordsNeg1(w, 0x1A);
         Task_NextState0(a0);
         break;
@@ -2821,7 +2821,7 @@ void func_80014984(Actor *a0) {
                     v = (i == 3) ? func_80021D60() : D_8005071C->field_BA5[i];
                     if (v != 0) {
                         id = v + 0x1FD00EC;
-                        func_800134F8(&w->field_58[i], (s32)Cd_GetFileEntry(i * 3 + id), 1, h[i]);
+                        Text_OpenPacked(&w->field_58[i], (s32)Cd_GetFileEntry(i * 3 + id), 1, h[i]);
                     }
                 }
             }
@@ -2844,7 +2844,7 @@ void func_80014984(Actor *a0) {
         switch (a0->field_14) {
         case 0:
         default:
-            func_8001C0B0(w, 0x1A);
+            Text_CloseArray(w, 0x1A);
             Task_NextState1(a0);
             break;
         case 1:
@@ -2895,7 +2895,7 @@ void func_80014CBC(Actor *actor) {
         }
         Gfx_SetPartsScale((Ent1D550 *)obj, 0x1000, w->field_70);
         list++;
-        func_8001D884((s32)obj);
+        Gfx_DrawParts((s32)obj);
         i++;
     } while (*list != 0);
 }
@@ -2909,11 +2909,11 @@ void Menu_UseItemDirect(Actor *a0) {
         st.field_11 = 0;
         st.field_10 = 0x81;
         st.field_0 = (s32)Cd_GetFileEntry(0x1FD00FD);
-        st.field_4 = func_8001E048(Menu_Ctx->field_108);
-        func_80013470(&w->field_50, (Src13470 *)&st);
+        st.field_4 = Item_GetNameText(Menu_Ctx->field_108);
+        Text_OpenDesc(&w->field_50, (Src13470 *)&st);
         Snd_PlayById(0x1D, 0);
     } else {
-        func_800134F8(&w->field_50, (s32)Cd_GetFileEntry(0x1FD00A0), 0x81, D_80050700);
+        Text_OpenPacked(&w->field_50, (s32)Cd_GetFileEntry(0x1FD00A0), 0x81, D_80050700);
     }
 }
 
@@ -2940,7 +2940,7 @@ void func_80014F78(Actor *a0) {
     case 0xE:
         r = Item_Use(Menu_Ctx->field_108, Menu_Ctx->field_10A, 0, 0);
         if (r == 0) {
-            func_800134F8(&w->field_50, (s32)Cd_GetFileEntry(0x1FD00A0), 0x81, *pos);
+            Text_OpenPacked(&w->field_50, (s32)Cd_GetFileEntry(0x1FD00A0), 0x81, *pos);
             goto end;
         }
         if (r == 1) {
@@ -2949,20 +2949,20 @@ void func_80014F78(Actor *a0) {
             st.field_4 = (s32)Cd_GetFileEntry(n * 3 + r);
         } else {
             st.field_0 = (s32)Cd_GetFileEntry(0x1FD00B4);
-            st.field_4 = func_8001E048(Menu_Ctx->field_108);
+            st.field_4 = Item_GetNameText(Menu_Ctx->field_108);
         }
-        func_80013470(&w->field_50, (Src13470 *)&st);
+        Text_OpenDesc(&w->field_50, (Src13470 *)&st);
         break;
     case 0xF:
     default:
         r = Item_Use(Menu_Ctx->field_108, Menu_Ctx->field_10A, 0, 0);
         if (r == 0) {
-            func_800134F8(&w->field_50, (s32)Cd_GetFileEntry(0x1FD00A0), 0x81, D_80050700);
+            Text_OpenPacked(&w->field_50, (s32)Cd_GetFileEntry(0x1FD00A0), 0x81, D_80050700);
             goto end;
         }
         if (r == 2) {
             st.field_0 = (s32)Cd_GetFileEntry(0x1FD00B4);
-            st.field_4 = func_8001E048(Menu_Ctx->field_108);
+            st.field_4 = Item_GetNameText(Menu_Ctx->field_108);
         } else if (D_8005071C->field_BA8 != 0) {
             st.field_0 = (s32)Cd_GetFileEntry(0x1FD00B5);
             st.field_4 = 0;
@@ -2971,17 +2971,17 @@ void func_80014F78(Actor *a0) {
             r = 0x1FD00EC;
             st.field_4 = (s32)Cd_GetFileEntry(n * 3 + (D_80050760 + r));
         }
-        func_80013470(&w->field_50, (Src13470 *)&st);
+        Text_OpenDesc(&w->field_50, (Src13470 *)&st);
         break;
     case 0x10:
         r = Item_Use(Menu_Ctx->field_108, Menu_Ctx->field_10A, 0, 0);
         if (r == 0) {
-            func_800134F8(&w->field_50, (s32)Cd_GetFileEntry(0x1FD00A0), 0x81, *pos);
+            Text_OpenPacked(&w->field_50, (s32)Cd_GetFileEntry(0x1FD00A0), 0x81, *pos);
             goto end;
         }
         if (r == 2) {
             st.field_0 = (s32)Cd_GetFileEntry(0x1FD00B4);
-            st.field_4 = func_8001E048(Menu_Ctx->field_108);
+            st.field_4 = Item_GetNameText(Menu_Ctx->field_108);
         } else {
             st.field_4 = 0;
             if (D_8005071C->field_BA5[0] + D_8005071C->field_BA5[1] + D_8005071C->field_BA5[2] + D_8005071C->field_BA8 != 0) {
@@ -2990,7 +2990,7 @@ void func_80014F78(Actor *a0) {
                 st.field_0 = (s32)Cd_GetFileEntry(0x1FD00B6);
             }
         }
-        func_80013470(&w->field_50, (Src13470 *)&st);
+        Text_OpenDesc(&w->field_50, (Src13470 *)&st);
         break;
     }
 end:
@@ -3011,14 +3011,14 @@ void func_80015298(Actor *a0, s32 a1) {
         id = D_8005076C[i];
         k = 0;
         if (id != 0xFF && D_80050720->field_2C[id] != 0) {
-            img = func_8001E048(D_80050720->field_2C[id]);
+            img = Item_GetNameText(D_80050720->field_2C[id]);
             if (D_80050720->field_52[id] != 0) {
                 k = 3;
             }
         }
         h.lo = (i / w->field_8C[1]) * 98 + 0x88;
         h.hi = (i % w->field_8C[1]) * 12 + 0x32;
-        func_800134F8(&w->field_0[i], img, a1, h);
+        Text_OpenPacked(&w->field_0[i], img, a1, h);
         Text_SetColor(w->field_0[i], k);
     }
 }
@@ -3041,7 +3041,7 @@ void func_800153F4(Actor *a0, s32 a1) {
         if (v != 0) {
             id = v + 0x1FD00EC;
             id = i * 3 + id;
-            func_800134F8(&w->slot[i], (s32)Cd_GetFileEntry(id), a1, *h);
+            Text_OpenPacked(&w->slot[i], (s32)Cd_GetFileEntry(id), a1, *h);
         } else {
             Text_Close(&w->slot[i]);
         }
@@ -3063,13 +3063,13 @@ void func_800154F0(Actor *a0) {
     if (id != 0xFF) {
         h.lo = 0xF;
         h.hi = 0x32;
-        func_800134F8(&w->field_58, (s32)Cd_GetFileEntry(D_80050770[i] | 0x1FD0000), 0, h);
+        Text_OpenPacked(&w->field_58, (s32)Cd_GetFileEntry(D_80050770[i] | 0x1FD0000), 0, h);
         if (D_80050720->field_2C[id] != 0) {
-            func_800134F8(&w->field_50, func_8001E084(D_80050720->field_2C[id]), 0x80, D_80050700);
+            Text_OpenPacked(&w->field_50, func_8001E084(D_80050720->field_2C[id]), 0x80, D_80050700);
             if (D_80050720->field_52[id] != 0) {
                 h.lo = 0x10;
                 h.hi = 0xCA;
-                func_800134F8(&w->field_54, (s32)Cd_GetFileEntry(0x1FD0097), 0x80, h);
+                Text_OpenPacked(&w->field_54, (s32)Cd_GetFileEntry(0x1FD0097), 0x80, h);
             }
         }
     }
@@ -3084,12 +3084,12 @@ void func_80015668(Actor *a0) {
     Text_Close(&w->field_5C);
     h.lo = 0xF;
     h.hi = 0x32;
-    func_800134F8(&w->field_58, (s32)Cd_GetFileEntry(0x1FD009B), 0, h);
+    Text_OpenPacked(&w->field_58, (s32)Cd_GetFileEntry(0x1FD009B), 0, h);
     h.lo = 0xF;
     h.hi = 0x47;
-    func_800134F8(&w->field_5C, func_8001E048(Menu_Ctx->field_108), 0, h);
+    Text_OpenPacked(&w->field_5C, Item_GetNameText(Menu_Ctx->field_108), 0, h);
     if (w->field_98 == 3) {
-        func_800134F8(&w->field_50, (s32)Cd_GetFileEntry(0x1FD00FB), 0x80, D_80050700);
+        Text_OpenPacked(&w->field_50, (s32)Cd_GetFileEntry(0x1FD00FB), 0x80, D_80050700);
     }
 }
 
@@ -3106,8 +3106,8 @@ void Menu_UseItemOnTarget(Actor *a0) {
             st.field_11 = 0;
             st.field_10 = 0x81;
             st.field_0 = (s32)Cd_GetFileEntry(0x1FD00FC);
-            st.field_4 = func_8001E048(D_80050720->field_2C[id]);
-            func_80013470(&w->field_50, (Src13470 *)&st);
+            st.field_4 = Item_GetNameText(D_80050720->field_2C[id]);
+            Text_OpenDesc(&w->field_50, (Src13470 *)&st);
             func_80015298(a0, 0);
             Snd_PlayById(0x1D, 0);
             Task_SetState1(a0, 3);
@@ -3209,7 +3209,7 @@ id = 0x152;
  next = 4;
 break;
 }
-                func_800134F8(&w->field_50, (s32)Cd_GetFileEntry(id | 0x1FD0000), 0x82, D_80050700);
+                Text_OpenPacked(&w->field_50, (s32)Cd_GetFileEntry(id | 0x1FD0000), 0x82, D_80050700);
                 Task_SetState1(a0, next);
                 break;
             }
@@ -3260,7 +3260,7 @@ break;
         switch (a0->field_14) {
         case 0:
         default:
-            func_8001C0B0(w->field_0, 0x22);
+            Text_CloseArray(w->field_0, 0x22);
             Task_NextState1(a0);
             break;
         case 1:
@@ -3300,7 +3300,7 @@ void func_80015D30(Actor *actor) {
             case 0:
             if (w->field_98 == 1 || w->field_98 == 3) {
                 Menu_SetPartsGridPos(obj, 2, &w->field_88, &w->field_8C);
-                func_800137B8(obj, 2, (actor->field_28 >> 2) & 3);
+                Gfx_SetPartsPalette(obj, 2, (actor->field_28 >> 2) & 3);
                 Gfx_HidePartsByMask(obj, 0);
             } else {
                 Gfx_HidePartsByMask(obj, 2);
@@ -3325,7 +3325,7 @@ void func_80015D30(Actor *actor) {
                 break;
             }
             Gfx_SetPartsScale(obj, 0x1000, w->field_9C);
-            func_8001D884((s32)obj);
+            Gfx_DrawParts((s32)obj);
         }
         list++;
         i++;
@@ -3346,7 +3346,7 @@ void Item_BuildMenuList(Obj16198 *w) {
     if (w->field_64 < 4) {
     party:
         i = 0;
-        w->field_6C = func_8002281C();
+        w->field_6C = Item_GetBagCapacity();
         p = w->field_72;
         for (; i < w->field_6C;) {
             c->field_0 = D_80050720->field_66[i];
@@ -3407,7 +3407,7 @@ void func_80016198(Obj16198 *a0, s32 a1) {
         if (a0->field_72[base + i].field_0 == 0) {
             img = (s32)Cd_GetFileEntry(0x1FD0098);
         } else {
-            img = func_8001E048(a0->field_72[base + i].field_0);
+            img = Item_GetNameText(a0->field_72[base + i].field_0);
         }
         if (a0->field_72[base + i].field_0 != 0 && a0->field_72[base + i].field_2 != 0) {
             st.field_C = h;
@@ -3417,9 +3417,9 @@ void func_80016198(Obj16198 *a0, s32 a1) {
             st.field_4 = img;
             st.field_8 = a0->field_702[i];
             Text_FormatNumber(a0->field_702[i], a0->field_72[base + i].field_2, -2);
-            func_80013470(&a0->field_0[i], (Src13470 *)&st);
+            Text_OpenDesc(&a0->field_0[i], (Src13470 *)&st);
         } else {
-            func_800134F8(&a0->field_0[i], img, a1, h);
+            Text_OpenPacked(&a0->field_0[i], img, a1, h);
         }
     }
 }
@@ -3436,13 +3436,13 @@ void Item_MoveToStorage(Actor *a0, Obj16198 *w) {
     } else {
         id = c->field_0;
         D_80050720->field_DD4[id] += (D_80050720->field_DD4[id] + 1 < 100);
-        func_800227F0(c->field_4);
+        Item_RemoveFromBag(c->field_4);
         st.field_C = D_80050704;
         st.field_10 = 0x81;
         st.field_11 = 0;
-        st.field_4 = func_8001E048(id);
+        st.field_4 = Item_GetNameText(id);
         st.field_0 = (s32)Cd_GetFileEntry(0x1FD0122);
-        func_80013470(&w->field_40, (Src13470 *)&st);
+        Text_OpenDesc(&w->field_40, (Src13470 *)&st);
         Item_BuildMenuList(w);
         func_80016198(w, 0);
         Task_SetState1(a0, 2);
@@ -3465,14 +3465,14 @@ void Item_TakeFromStorage(Actor *a0, Obj16198 *w) {
     } else if (Menu_GridIndexColMajor(w->field_54, w->field_58.field_0) >= w->field_6C) {
         snd = 0x10;
     } else {
-        n = func_8002281C();
+        n = Item_GetBagCapacity();
         for (i = 0; i < n; i++) {
             if (D_80050720->field_66[i] == 0) {
                 break;
             }
         }
         if (i == n) {
-            func_800134F8(&w->field_40, (s32)Cd_GetFileEntry(0x1FD0124), 0x81, D_80050704);
+            Text_OpenPacked(&w->field_40, (s32)Cd_GetFileEntry(0x1FD0124), 0x81, D_80050704);
             snd = 0x10;
         } else {
             D_80050720->field_66[i] = c->field_0;
@@ -3480,9 +3480,9 @@ void Item_TakeFromStorage(Actor *a0, Obj16198 *w) {
             st.field_C = D_80050704;
             st.field_10 = 0x81;
             st.field_11 = 0;
-            st.field_4 = func_8001E048(c->field_0);
+            st.field_4 = Item_GetNameText(c->field_0);
             st.field_0 = (s32)Cd_GetFileEntry(0x1FD0123);
-            func_80013470(&w->field_40, (Src13470 *)&st);
+            Text_OpenDesc(&w->field_40, (Src13470 *)&st);
             Item_BuildMenuList(w);
             if (w->field_54[0] >= w->field_58.field_0[0]) {
                 w->field_54[0] = w->field_58.field_0[0] - 1;
@@ -3522,7 +3522,7 @@ void Menu_PickItemToUse(Actor *a0, Obj166FC *o) {
         }
         h.lo = 0x10;
         h.hi = 0xBA;
-        func_800134F8(o->field_44, Cd_GetFileEntry(0x1FD00A1), 0x81, h);
+        Text_OpenPacked(o->field_44, Cd_GetFileEntry(0x1FD00A1), 0x81, h);
     }
     Snd_PlayById(0x10, 0);
     return;
@@ -3547,7 +3547,7 @@ void func_80016834(Actor *a0, GridMenu *m) {
     }
 }
 
-void func_800168F0(Actor *a0, Obj166FC *o) {
+void Menu_ShowSelItemText(Actor *a0, Obj166FC *o) {
     s32 idx;
     u16 id;
 
@@ -3557,9 +3557,9 @@ void func_800168F0(Actor *a0, Obj166FC *o) {
     id = o->field_72[idx].field_0;
     if (id != 0) {
         if (o->field_64 != 5) {
-            func_800134F8(&o->field_40, func_8001E048(id), 0, D_80050708);
+            Text_OpenPacked(&o->field_40, Item_GetNameText(id), 0, D_80050708);
         }
-        func_800134F8(o->field_44, func_8001E084(id), 0x80, D_80050704);
+        Text_OpenPacked(o->field_44, func_8001E084(id), 0x80, D_80050704);
     }
 }
 
@@ -3601,14 +3601,14 @@ void Menu_ItemTask(Actor *a0) {
         case 1:
             switch (w->field_64) {
             default:
-                func_800168F0(a0, (Obj166FC *)w);
+                Menu_ShowSelItemText(a0, (Obj166FC *)w);
                 break;
             case 5:
                 if (w->field_6C == 0) {
                     id = 0x1FD0151;
                     goto msg;
                 }
-                func_800168F0(a0, (Obj166FC *)w);
+                Menu_ShowSelItemText(a0, (Obj166FC *)w);
                 Task_NextState1(a0);
                 return;
             case 3:
@@ -3618,7 +3618,7 @@ void Menu_ItemTask(Actor *a0) {
                         goto full;
                     }
                 }
-                func_800134F8(&w->field_40, (s32)Cd_GetFileEntry(((s32)((u16)w->field_64 << 16) >> 16) + 0x1FD011D), 0x80, D_80050704);
+                Text_OpenPacked(&w->field_40, (s32)Cd_GetFileEntry(((s32)((u16)w->field_64 << 16) >> 16) + 0x1FD011D), 0x80, D_80050704);
                 break;
             }
             Task_NextState1(a0);
@@ -3659,7 +3659,7 @@ void Menu_ItemTask(Actor *a0) {
             switch (a0->field_18) {
             case 0:
             default:
-                func_8001C0B0(w->field_0, 0x15);
+                Text_CloseArray(w->field_0, 0x15);
                 Task_NextState2(a0);
                 break;
             case 1:
@@ -3681,21 +3681,21 @@ void Menu_ItemTask(Actor *a0) {
             st.field_C.hi = 0xBA;
             st.field_10 = 0x81;
             st.field_11 = 0;
-            st.field_4 = func_8001E048(Menu_Ctx->field_108);
+            st.field_4 = Item_GetNameText(Menu_Ctx->field_108);
             switch (a0->field_18) {
             case 0:
             default:
                 st.field_0 = (s32)Cd_GetFileEntry(0x1FD00B9);
-                func_80013470(&w->field_44, (Src13470 *)&st);
+                Text_OpenDesc(&w->field_44, (Src13470 *)&st);
                 Task_NextState2(a0);
                 break;
             case 1:
                 r = func_800136A4(w->field_44);
                 switch (r) {
                 case 1:
-                    func_800227F0(Menu_Ctx->field_10A);
+                    Item_RemoveFromBag(Menu_Ctx->field_10A);
                     st.field_0 = (s32)Cd_GetFileEntry(0x1FD00BA);
-                    func_80013470(&w->field_44, (Src13470 *)&st);
+                    Text_OpenDesc(&w->field_44, (Src13470 *)&st);
                     Item_BuildMenuList(w);
                     func_80016198(w, 0);
                     Task_SetState1(a0, 2);
@@ -3728,7 +3728,7 @@ void Menu_ItemTask(Actor *a0) {
         full:
             id = 0x1FD0127;
         msg:
-            func_800134F8(&w->field_40, (s32)Cd_GetFileEntry(id), 0x81, D_80050704);
+            Text_OpenPacked(&w->field_40, (s32)Cd_GetFileEntry(id), 0x81, D_80050704);
             Task_SetState1(a0, 5);
             break;
         }
@@ -3738,7 +3738,7 @@ void Menu_ItemTask(Actor *a0) {
         case 0:
         default:
             Item_SortList();
-            func_8001C0B0(w->field_0, 0x15);
+            Text_CloseArray(w->field_0, 0x15);
             Task_NextState1(a0);
             break;
         case 1:
@@ -3782,7 +3782,7 @@ loop:
             Gfx_SetPartsNumber(obj, 0x20, 2, w->field_58 ? w->field_58 : 1);
             tmp.field_0 = w->field_54.field_0 - w->field_6E;
             Menu_SetPartsGridPos(obj, 2, (s32 *)&tmp, &w->field_58);
-            func_800137B8(obj, 2, (actor->field_28 >> 2) & 3);
+            Gfx_SetPartsPalette(obj, 2, (actor->field_28 >> 2) & 3);
             f = func_80013854(obj, 8, w->field_6E);
             f |= func_80013854(obj, 4, w->field_58 - w->field_6E - 2);
             if (w->field_70 == 0) {
@@ -3810,7 +3810,7 @@ loop:
         }
         Gfx_SetPartsScale(obj, 0x1000, w->field_68);
         list++;
-        func_8001D884((s32)obj);
+        Gfx_DrawParts((s32)obj);
         i++;
     if (*list != 0) goto loop;
 }
@@ -3839,7 +3839,7 @@ void func_80017214(Actor *a0) {
             if (g->field_0 >= 3) {
                 id = 0x1FD0111;
             icon:
-                func_800134F8(w->field_40, Cd_GetFileEntry(id), 0x81, D_8005070C);
+                Text_OpenPacked(w->field_40, Cd_GetFileEntry(id), 0x81, D_8005070C);
                 break;
             }
             g->field_0 = w->field_1A0[3] != 0 ? 1 : 2;
@@ -3858,7 +3858,7 @@ void func_80017214(Actor *a0) {
             *g = tmp;
             id = 0x1FD0112;
         swap:
-            func_800134F8(w->field_40, Cd_GetFileEntry(id), 0x81, D_8005070C);
+            Text_OpenPacked(w->field_40, Cd_GetFileEntry(id), 0x81, D_8005070C);
             Menu_Ctx->field_126 = -1;
             func_80017D84((Obj17D84 *)w, 0);
             Snd_PlayById(0xE, 0);
@@ -3869,7 +3869,7 @@ void func_80017214(Actor *a0) {
                 id = 0x1FD011E;
                 goto icon;
             }
-            func_800134F8(w->field_40, Cd_GetFileEntry(0x1FD011F), 0x81, D_8005070C);
+            Text_OpenPacked(w->field_40, Cd_GetFileEntry(0x1FD011F), 0x81, D_8005070C);
             Task_SetState1(a0, 5);
             return;
         case 2:
@@ -3958,8 +3958,8 @@ void Menu_UseItemOnDigi(Actor *a0) {
             st.field_11 = 0;
             st.field_10 = 0x81;
             st.field_0 = (s32)Cd_GetFileEntry(0x1FD00FD);
-            st.field_4 = func_8001E048(Menu_Ctx->field_108);
-            func_80013470(w->field_40, (Src13470 *)&st);
+            st.field_4 = Item_GetNameText(Menu_Ctx->field_108);
+            Text_OpenDesc(w->field_40, (Src13470 *)&st);
             Snd_PlayById(0x1D, 0);
             Task_SetState1(a0, 4);
         } else {
@@ -3977,13 +3977,13 @@ void Menu_PickUseItemDirect(Actor *a0) {
     st.field_10 = 0x81;
     if (Item_Use(Menu_Ctx->field_108, Menu_Ctx->field_10A, 0, 0) != 0) {
         st.field_0 = (s32)Cd_GetFileEntry(0x1FD00FD);
-        st.field_4 = func_8001E048(Menu_Ctx->field_108);
+        st.field_4 = Item_GetNameText(Menu_Ctx->field_108);
         Snd_PlayById(0x1D, 0);
     } else {
         st.field_0 = (s32)Cd_GetFileEntry(0x1FD00A0);
         st.field_4 = 0;
     }
-    func_80013470(w->field_40, (Src13470 *)&st);
+    Text_OpenDesc(w->field_40, (Src13470 *)&st);
 }
 
 void Menu_ConfirmSinglePick(Actor *a0) {
@@ -4130,31 +4130,31 @@ void func_80017D84(Obj17D84 *a0, s32 a1) {
             st.field_C = 109;
             st.field_E = i * 33 + 62;
             st.field_0 = (s32)Cd_GetFileEntry(0x1FD0082);
-            func_80013470(&a0->field_0[i * 4], &st);
+            Text_OpenDesc(&a0->field_0[i * 4], &st);
             st.field_C = 208;
             st.field_E = i * 33 + 62;
             st.field_0 = (s32)Cd_GetFileEntry(0x1FD00BB);
-            func_80013470(&a0->field_0[i * 4 + 1], &st);
+            Text_OpenDesc(&a0->field_0[i * 4 + 1], &st);
             st.field_C = 109;
             st.field_E = i * 33 + 50;
             st.field_0 = (s32)rec->field_4->field_4C;
-            func_80013470(&a0->field_0[i * 4 + 2], &st);
+            Text_OpenDesc(&a0->field_0[i * 4 + 2], &st);
             st.field_C = 208;
             st.field_E = i * 33 + 50;
             st.field_0 = (s32)Digi_GetDefaultName(rec->field_4->field_1);
-            func_80013470(&a0->field_0[i * 4 + 3], &st);
+            Text_OpenDesc(&a0->field_0[i * 4 + 3], &st);
             break;
         case 2:
             st.field_C = 109;
             st.field_E = i * 33 + 50;
             st.field_0 = (s32)Cd_GetFileEntry(rec->field_1 + 0x1FD00F5);
-            func_80013470(&a0->field_0[i * 4 + 2], &st);
+            Text_OpenDesc(&a0->field_0[i * 4 + 2], &st);
             break;
         case 3:
             st.field_C = 109;
             st.field_E = i * 33 + 50;
             st.field_0 = (s32)Cd_GetFileEntry(0x1FD0114);
-            func_80013470(&a0->field_0[i * 4 + 2], &st);
+            Text_OpenDesc(&a0->field_0[i * 4 + 2], &st);
             break;
         }
         rec++;
@@ -4216,11 +4216,11 @@ void func_80018048(Actor *a0) {
         case 1:
             switch (w->field_60) {
             default:
-                func_800134F8(&w->field_40, (s32)Cd_GetFileEntry(0x1FD00D3), 0x80, D_8005070C);
+                Text_OpenPacked(&w->field_40, (s32)Cd_GetFileEntry(0x1FD00D3), 0x80, D_8005070C);
                 Task_NextState1(a0);
                 break;
             case 3:
-                func_800134F8(&w->field_40, (s32)Cd_GetFileEntry(0x1FD009E), 0x80, D_8005070C);
+                Text_OpenPacked(&w->field_40, (s32)Cd_GetFileEntry(0x1FD009E), 0x80, D_8005070C);
                 Task_NextState1(a0);
                 break;
             case 4:
@@ -4228,26 +4228,26 @@ void func_80018048(Actor *a0) {
                 Task_SetState1(a0, 4);
                 break;
             case 5:
-                func_800134F8(&w->field_40, (s32)Cd_GetFileEntry(w->field_19E + 0x1FD0109), 0x80, D_8005070C);
+                Text_OpenPacked(&w->field_40, (s32)Cd_GetFileEntry(w->field_19E + 0x1FD0109), 0x80, D_8005070C);
                 Task_NextState1(a0);
                 break;
             case 6:
-                func_800134F8(&w->field_40, (s32)Cd_GetFileEntry(0x1FD010C), 0x80, D_8005070C);
+                Text_OpenPacked(&w->field_40, (s32)Cd_GetFileEntry(0x1FD010C), 0x80, D_8005070C);
                 Task_SetState1(a0, 5);
                 break;
             case 7:
             case 8:
-                func_800134F8(&w->field_40, (s32)Cd_GetFileEntry(w->field_60 + 0x1FD0107), 0x80, D_8005070C);
+                Text_OpenPacked(&w->field_40, (s32)Cd_GetFileEntry(w->field_60 + 0x1FD0107), 0x80, D_8005070C);
                 id = 0x1FD0072;
                 if (w->field_1A6 != 0) {
                     id = 0x1FD009A;
                 }
-                func_800134F8(&w->field_44, (s32)Cd_GetFileEntry(id), 0, D_80040F38[w->field_1A6]);
+                Text_OpenPacked(&w->field_44, (s32)Cd_GetFileEntry(id), 0, D_80040F38[w->field_1A6]);
                 Task_NextState1(a0);
                 break;
             }
             if (w->field_6A != 0) {
-                func_800134F8(&w->field_48, (s32)Cd_GetFileEntry(0x1FD00FA), 0, D_80050710);
+                Text_OpenPacked(&w->field_48, (s32)Cd_GetFileEntry(0x1FD00FA), 0, D_80050710);
             }
             break;
         case 2:
@@ -4296,7 +4296,7 @@ void func_80018048(Actor *a0) {
             switch (a0->field_18) {
             case 0:
             default:
-                func_8001C0B0(w->field_0, 0x14);
+                Text_CloseArray(w->field_0, 0x14);
                 Task_NextState2(a0);
                 break;
             case 1:
@@ -4326,7 +4326,7 @@ void func_80018048(Actor *a0) {
                     break;
                 case 5:
                     if (Menu_Ctx->field_122 != 0) {
-                        func_80022AE4();
+                        Digi_SortRoster();
                         Task_SetState0(a0, 2);
                         break;
                     }
@@ -4335,7 +4335,7 @@ void func_80018048(Actor *a0) {
                     break;
                 case 7:
                     if (Menu_Ctx->field_126 != 0) {
-                        func_80022AE4();
+                        Digi_SortRoster();
                         Task_SetState0(a0, 0);
                         break;
                     }
@@ -4369,7 +4369,7 @@ void func_80018048(Actor *a0) {
             case 6:
             default:
                 if (r == 1) {
-                    func_800134F8(&w->field_40, (s32)Cd_GetFileEntry(0x1FD010D), 0x81, D_8005070C);
+                    Text_OpenPacked(&w->field_40, (s32)Cd_GetFileEntry(0x1FD010D), 0x81, D_8005070C);
                     for (i = 0; i < 0x24; i++) {
                         if (D_80050720->elems[i].field_0 >= 3) {
                             D_80050720->elems[i].field_0 = 2;
@@ -4388,7 +4388,7 @@ void func_80018048(Actor *a0) {
             case 8:
                 if (r == 1) {
                     p = (u8 *)Menu_Ctx->field_128;
-                    func_800134F8(&w->field_40, (s32)Cd_GetFileEntry(0x1FD0113), 0x81, D_8005070C);
+                    Text_OpenPacked(&w->field_40, (s32)Cd_GetFileEntry(0x1FD0113), 0x81, D_8005070C);
                     *p = 0;
                     Menu_Ctx->field_126 = -1;
                     Snd_PlayById(0xE, 0);
@@ -4405,7 +4405,7 @@ void func_80018048(Actor *a0) {
         switch (a0->field_14) {
         case 0:
         default:
-            func_8001C0B0(w->field_0, 0x14);
+            Text_CloseArray(w->field_0, 0x14);
             Task_NextState1(a0);
             break;
         case 1:
@@ -4447,7 +4447,7 @@ void func_800188BC(Actor *actor) {
             tmp = w->field_50;
             tmp.field_2 = w->field_50.field_2 - w->field_68;
             Menu_SetPartsGridPos(obj, 2, (s32 *)&tmp, &w->field_54);
-            func_800137B8(obj, 2, (actor->field_28 >> 2) & 3);
+            Gfx_SetPartsPalette(obj, 2, (actor->field_28 >> 2) & 3);
             {
                 s32 fl = (w->field_68 < 1) << 2;
                 if (w->field_56 - w->field_68 - 4 <= 0) {
@@ -4506,7 +4506,7 @@ void func_800188BC(Actor *actor) {
             break;
         }
         Gfx_SetPartsScale(obj, 0x1000, w->field_64);
-        func_8001D884((s32)obj);
+        Gfx_DrawParts((s32)obj);
         i++;
     } while (p[i] != 0);
 }
@@ -4526,7 +4526,7 @@ void func_80018BF8(Actor *a0, s16 a1) {
     a0->field_C = p[1];
     Actor_InitTransform((ContC40 *)a0, w->field_B0, w->field_BC);
     w->field_C0 = func_8001E704(a0->field_C);
-    w->field_C4 = func_8001E728(a0->field_C, 0);
+    w->field_C4 = Anim_GetModelAnimFile(a0->field_C, 0);
     Gfx_AttachModel(a0, w->field_C0)->field_3C = 3;
     Cd_QueueFile(w->field_C0);
     Cd_QueueFile(w->field_C4);
@@ -4582,7 +4582,7 @@ void func_80018D78(Actor *a) {
             }
             Text_PrintIdList((s32 *)w, (Key13558 *)Cd_GetFileEntrySubPtr(0x513001D, 0), 1);
             r = w->field_84;
-            func_800134F8(&w->field_50, (s32)r->field_4C, 0x81, h[0]);
+            Text_OpenPacked(&w->field_50, (s32)r->field_4C, 0x81, h[0]);
             w->field_88 = Digi_GetDefaultName(r->field_1);
             w->field_8C = Cd_GetFileEntry(((s32 (*)(s32))func_8001D934)(r->field_1) + 0x1FD00C3);
             w->field_90 = Cd_GetFileEntry(((s32 (*)(s32))func_8001D958)(r->field_1) + 0x1FD00C6);
@@ -4639,7 +4639,7 @@ void func_80018D78(Actor *a) {
         switch (a->field_14) {
         default:
         case 0:
-            func_8001C0B0(w, 0x1B);
+            Text_CloseArray(w, 0x1B);
             Task_NextState1(a);
             break;
         case 1:
@@ -4759,7 +4759,7 @@ void func_80019214(Actor *actor) {
         Gfx_SetPartsNumber(obj, 0x200, 8, rec->field_10);
         Gfx_SetPartsNumber(obj, 0x400, 8, Digi_GetExpToNextLevel(rec->field_D, rec->field_F, rec->field_10));
         Gfx_SetPartsScale((Ent1D550 *)obj, 0x1000, work->field_80);
-        func_8001D884((s32)obj);
+        Gfx_DrawParts((s32)obj);
     } while (*list != 0);
 
 Ltail:
@@ -4795,9 +4795,9 @@ Ltail:
     node->field_60 = work->field_14C;
     Gfx_AttachModel(actor, work->field_C0);
     Anim_StepModelAnim(actor);
-    func_80020920(actor);
-    func_800200D0(actor);
-    func_80020510(actor, 0);
+    Actor_UpdateTransform(actor);
+    Gfx_CalcModelBoneMatrices(actor);
+    Gfx_DrawTexModel(actor, 0);
 }
 
 void func_800194C8(a)
@@ -4868,7 +4868,7 @@ void func_80019614(Actor194C8 *w, s32 arg1) {
             st.field_11 = f;
             st.field_0 = func_8001ED84(w->records[ch].arr[j + d0]);
             m = j + 6;
-            func_80013470(&w->field_0[ch * 3 + m], (Src13470 *)&st);
+            Text_OpenDesc(&w->field_0[ch * 3 + m], (Src13470 *)&st);
             st.field_C.hi += 11;
         }
         Text_SetColor(w->field_0[ch + 2], w->field_114 != ch);
@@ -4911,7 +4911,7 @@ void func_80019808(Actor *a0) {
             func_80019614(w, 1);
             h.lo = 0x13;
             h.hi = 0x32;
-            func_800134F8(&w->field_50, (s32)&w->field_118[0x4C], 1, h);
+            Text_OpenPacked(&w->field_50, (s32)&w->field_118[0x4C], 1, h);
             Task_NextState1(a0);
             break;
         case 1:
@@ -4925,12 +4925,12 @@ void func_80019808(Actor *a0) {
                 st.field_10 = 0x80;
                 st.field_11 = 0;
                 st.field_0 = func_8001EDD4(id);
-                func_80013470(&w->field_48, (Src13470 *)&st);
+                Text_OpenDesc(&w->field_48, (Src13470 *)&st);
                 st.field_C.hi = 0xCA;
                 st.field_0 = (s32)Cd_GetFileEntry(0x1FD0150);
                 Text_FormatNumber(w->field_11C, func_8001EE80(id), -4);
                 st.field_4 = (s32)w->field_11C;
-                func_80013470(&w->field_4C, (Src13470 *)&st);
+                Text_OpenDesc(&w->field_4C, (Src13470 *)&st);
             }
             Task_NextState1(a0);
             break;
@@ -4972,7 +4972,7 @@ void func_80019808(Actor *a0) {
         switch (a0->field_14) {
         case 0:
         default:
-            func_8001C0B0(&w->field_0, 0x15);
+            Text_CloseArray(&w->field_0, 0x15);
             Task_NextState1(a0);
             break;
         case 1:
@@ -5016,7 +5016,7 @@ void func_80019BF4(Actor *actor) {
                 tmp = w->field_54[k];
                 tmp.field_2 = w->field_54[k].field_2 - w->field_94[k];
                 Menu_SetPartsGridPos(obj, 0x4000, (s32 *)&tmp, &w->field_64[k].field_0);
-                func_800137B8(obj, 0x4000, (actor->field_28 >> 2) & 3);
+                Gfx_SetPartsPalette(obj, 0x4000, (actor->field_28 >> 2) & 3);
             } else {
                 v |= 0x4000;
             }
@@ -5044,7 +5044,7 @@ void func_80019BF4(Actor *actor) {
             break;
         }
         Gfx_SetPartsScale(obj, 0x1000, w->field_A8);
-        func_8001D884((s32)obj);
+        Gfx_DrawParts((s32)obj);
         i++;
     } while (p[i] != 0);
 }
@@ -5116,7 +5116,7 @@ void func_80019FB4(Actor *arg0) {
     ActorWork *w = arg0->work;
     void *e = Cd_GetFileEntry(D_80040FD0[arg0->field_8]);
     Gfx_SetPartsScale(e, 0x1000, *(s16 *)w);
-    func_8001D884((s32)e);
+    Gfx_DrawParts((s32)e);
 }
 
 void Snd_ServiceSlotLoads(void) {
@@ -5198,7 +5198,7 @@ void Snd_ServiceSlotLoads(void) {
 }
 
 
-s32 func_8001A300(void) {
+s32 Snd_AnySlotLoading(void) {
     s32 found = 0;
     s32 i = 0;
     Ent54C48 *p = D_80054C48;
@@ -5226,7 +5226,7 @@ void Snd_StopAll(void) {
         }
     }
     SsUtAllKeyOff(0);
-    D_80050718 = -1;
+    Snd_CurrentId = -1;
 }
 
 void Snd_StopById(s32 id) {
@@ -5241,8 +5241,8 @@ void Snd_StopById(s32 id) {
         if (D_80054C48[i].field_4 == 0) {
             SsSepStop(D_80054C48[i].field_C[j], k);
         }
-        if (D_80050718 == id) {
-            D_80050718 = -1;
+        if (Snd_CurrentId == id) {
+            Snd_CurrentId = -1;
         }
     }
 }
@@ -5260,7 +5260,7 @@ void Snd_UnloadSlot(s32 idx) {
         }
         func_80032844(D_80054C48[idx].field_C[i]);
     }
-    func_80039994(D_80054C48[idx].field_8);
+    SsVabClose(D_80054C48[idx].field_8);
     D_80054C48[idx].field_4 = 0;
     D_80054C48[idx].field_0 = -1;
     D_80054C48[idx].field_A = 0;
@@ -5274,8 +5274,8 @@ void Snd_SetSlotContent(s32 idx, s32 v) {
         Snd_UnloadSlot(idx);
         e->field_4 = 1;
         e->field_0 = v;
-        if (D_80050718 != -1 && idx == ((D_80050718 & 0xF00) >> 8)) {
-            Snd_StopById(D_80050718);
+        if (Snd_CurrentId != -1 && idx == ((Snd_CurrentId & 0xF00) >> 8)) {
+            Snd_StopById(Snd_CurrentId);
         }
     }
 }
@@ -5284,18 +5284,18 @@ void Snd_PlayById(s32 id, s32 set) {
     s32 k;
     s32 i;
     s32 j;
-    if (D_80050718 != id) {
-        if (set != 0 && D_80050718 != -1) {
-            Snd_StopById(D_80050718);
+    if (Snd_CurrentId != id) {
+        if (set != 0 && Snd_CurrentId != -1) {
+            Snd_StopById(Snd_CurrentId);
         }
         i = id >> 8;
         j = (id >> 4) & 0xF;
         k = id & 0xF;
         SsSepStop(D_80054C48[i].field_C[j], k);
         func_80035C4C(D_80054C48[i].field_C[j], k, 0x7F, 0x7F);
-        func_80034E04(D_80054C48[i].field_C[j], k, 1, 1);
+        SsSepPlay(D_80054C48[i].field_C[j], k, 1, 1);
         if (set != 0) {
-            D_80050718 = id;
+            Snd_CurrentId = id;
         }
     }
 }
@@ -5367,13 +5367,13 @@ void Snd_Init(void) {
     } while (D_80054C48[1].field_4 != 0);
 }
 
-void func_8001A8BC(void) {
-    D_80050774 = D_80050718;
+void Snd_SaveCurrentId(void) {
+    Snd_SavedId = Snd_CurrentId;
 }
 
 
-void func_8001A8D0(void) {
-    Snd_PlayById(D_80050774, 1);
+void Snd_RestoreSavedId(void) {
+    Snd_PlayById(Snd_SavedId, 1);
 }
 
 
@@ -5881,7 +5881,7 @@ void Text_UpdateAllBoxes(Actor *a0) {
                         n += *s;
                         line--;
                         Text_PushReturn((s32)(s + 1));
-                        s = (u8 *)func_8001E048(n) - 1;
+                        s = (u8 *)Item_GetNameText(n) - 1;
                     }
                     break;
                 case 0xF1:
@@ -6154,7 +6154,7 @@ void Mem_FillWordsNeg1(s32 *arg0, s32 arg1) {
     }
 }
 
-void func_8001C0B0(s32 *arg0, s32 arg1) {
+void Text_CloseArray(s32 *arg0, s32 arg1) {
     s32 i;
     for (i = 0; i < arg1; i++) {
         Text_Close(arg0);
@@ -6900,7 +6900,7 @@ void func_8001D6B4(void *arg0, s32 arg1) {
     } while (s2->field_0 != 0);
 }
 
-void func_8001D884(s32 arg0) {
+void Gfx_DrawParts(s32 arg0) {
     func_8001D6B4(arg0, 1);
 }
 
@@ -7118,7 +7118,7 @@ s32 arg0;
     return 0;
 }
 
-s32 func_8001E048(s32 arg0) {
+s32 Item_GetNameText(s32 arg0) {
     s32 base = Cd_GetFileOrNull(0x45E);
     return func_8001DFF4(arg0)->field_8 + base;
 }
@@ -7136,7 +7136,7 @@ s32 func_8001E0E4(void) {
     return func_8001DFF4()->u0.b0.field_3 & 0xF;
 }
 
-s32 func_8001E108(void) {
+s32 Item_CheckId(void) {
     return func_8001DFF4() != 0 ? 0 : -1;
 }
 
@@ -7206,7 +7206,7 @@ Blk18 *func_8001E338(ArgE298 *arg0, s32 arg1) {
 
 s32 func_8001E390(void) {
     while (D_8005D560.field_C->field_0 != 0) {
-        if (func_80022038(func_8001E298((ArgE298 *)D_8005D560.field_C)) != 0) {
+        if (Flag_TestConds(func_8001E298((ArgE298 *)D_8005D560.field_C)) != 0) {
             D_8005D560.field_10 = *D_8005D560.field_C;
             {
                 s32 r = D_8005D560.field_8;
@@ -7236,7 +7236,7 @@ s32 arg0;
     return &base[arg0];
 }
 
-extern s32 func_80022038();
+extern s32 Flag_TestConds();
 extern void Flag_ApplySets();
 
 s32 func_8001E514(s32 arg0) {
@@ -7246,7 +7246,7 @@ s32 func_8001E514(s32 arg0) {
     r = Cd_GetFileOrNull(D_8005D560.field_0);
     base = func_8001E4CC(arg0);
     for (i = 0; i < 6; i++) {
-        if (func_80022038(func_8001E2E0((ArgE298 *)base, i)) != 0) {
+        if (Flag_TestConds(func_8001E2E0((ArgE298 *)base, i)) != 0) {
             break;
         }
     }
@@ -7306,7 +7306,7 @@ s32 func_8001E704(s32 id) {
     return func_8001E6A8(id)->u4.h4.field_6;
 }
 
-s32 func_8001E728(s32 arg0, s32 arg1) {
+s32 Anim_GetModelAnimFile(s32 arg0, s32 arg1) {
     return func_8001E6A8(arg0)->field8[arg1];
 }
 
@@ -7420,7 +7420,7 @@ void func_8001EC10(Actor *arg0) {
     case 0:
         Actor_InitTransform((ContC40 *)arg0, D_80043704, 0);
         Gfx_AttachModel(arg0, 0x5B)->field_3C = 4;
-        func_8001F5E8(arg0);
+        Gfx_ResetModelBones(arg0);
         Task_NextState0(arg0);
         break;
     case 1: {
@@ -7449,9 +7449,9 @@ void func_8001EC10(Actor *arg0) {
 void func_8001ECE4(Actor *arg0) {
     if (arg0->work->field_4 != 0) {
         Gfx_AttachModel(arg0, 0x5B);
-        func_80020920(arg0);
-        func_800200D0(arg0);
-        func_80020510(arg0, 1);
+        Actor_UpdateTransform(arg0);
+        Gfx_CalcModelBoneMatrices(arg0);
+        Gfx_DrawTexModel(arg0, 1);
     }
 }
 
@@ -7583,7 +7583,7 @@ void Anim_SetModelAnim(Actor *a, s32 n) {
     s->field_50 = 0;
     for (i = 10; i < 0x6F; i += 10) {
         if (n < i) {
-            s->field_48 = func_8001E728(a->field_C, i / 10 - 1);
+            s->field_48 = Anim_GetModelAnimFile(a->field_C, i / 10 - 1);
             k = i - 10;
             s->field_4C = n - k;
             break;
@@ -7593,7 +7593,7 @@ void Anim_SetModelAnim(Actor *a, s32 n) {
     s->field_60 = 0;
 }
 
-void func_8001F24C(Actor *arg0, s32 arg1, s32 arg2) {
+void Anim_SetModelAnimFile(Actor *arg0, s32 arg1, s32 arg2) {
     Sub3C *p = arg0->field_3C;
     p->field_54 = arg1;
     p->field_58 = 0;
@@ -7613,12 +7613,12 @@ s32 Anim_HasModelAnim(Actor *a0, s32 n) {
     if (n < 10) {
         k = 0;
         n = k;
-        id = func_8001E728(a0->field_C, k);
+        id = Anim_GetModelAnimFile(a0->field_C, k);
     } else if (n < 20) {
-        id = func_8001E728(a0->field_C, 1);
+        id = Anim_GetModelAnimFile(a0->field_C, 1);
         n -= 10;
     } else {
-        id = func_8001E728(a0->field_C, 2);
+        id = Anim_GetModelAnimFile(a0->field_C, 2);
         n -= 20;
     }
     p = (s32 *)(Cd_GetFileOrNull(id) + ((sub->field_8 + 1) << 2));
@@ -7694,7 +7694,7 @@ done:
 
 extern Blk20 D_80043714;
 
-void func_8001F5E8(Actor *a0) {
+void Gfx_ResetModelBones(Actor *a0) {
     Sub3C *sub = a0->field_3C;
     DstElem *p = sub->field_78;
     s32 i = 0;
@@ -7771,7 +7771,7 @@ s32 func_8001F970(s32 arg0) {
     return arg0 != 0x16;
 }
 
-void func_8001F9AC(Actor *a0) {
+void Gfx_AnimateModelTex(Actor *a0) {
     Sub3C *w = a0->field_3C;
     Part1F9AC *r = (Part1F9AC *)w->field_1C;
     Pos1F9AC *pos = w->field_44;
@@ -7941,7 +7941,7 @@ Sub3C *Gfx_AttachModel(Actor *a0, s32 id) {
     return s;
 }
 
-void func_800200D0(Actor *a0) {
+void Gfx_CalcModelBoneMatrices(Actor *a0) {
     ObjC0E4 cam;
     Mat1F668 light;
     Sub3C *s;
@@ -8030,7 +8030,7 @@ void func_800200D0(Actor *a0) {
 }
 
 
-void func_80020510(Actor *a0, s32 mode) {
+void Gfx_DrawTexModel(Actor *a0, s32 mode) {
     Sub3C *s;
     DstElem *e;
     Sec1FDBC20 *p;
@@ -8062,9 +8062,9 @@ void func_80020510(Actor *a0, s32 mode) {
             q = (QuadGT4_2130C *)p->e;
             if (n != 0) {
                 if (s->field_34 == 1) {
-                    func_8002130C(q, n, s, 2);
+                    Gfx_AddQuadsGT4(q, n, s, 2);
                 } else {
-                    func_8002130C(q, n, s, j);
+                    Gfx_AddQuadsGT4(q, n, s, j);
                 }
                 q += n;
             }
@@ -8084,11 +8084,11 @@ void func_80020510(Actor *a0, s32 mode) {
             p = (Sec1FDBC20 *)r;
         }
     }
-    func_8001F9AC(a0);
+    Gfx_AnimateModelTex(a0);
 }
 
 
-void func_80020768(Actor *a0, s32 mode, Col21ABC *col) {
+void Gfx_DrawWireModel(Actor *a0, s32 mode, Col21ABC *col) {
     Sub3C *s;
     DstElem *e;
     Sec1FDBC20 *p;
@@ -8137,7 +8137,7 @@ void func_80020768(Actor *a0, s32 mode, Col21ABC *col) {
 extern void func_8002D744(void *, Obj209 *);
 extern void ScaleMatrix(Obj209 *, s32 *);
 
-void func_80020920(Actor *arg0) {
+void Actor_UpdateTransform(Actor *arg0) {
     Obj209 *obj = (Obj209 *)arg0->u38.ptr38;
     s32 local[3];
 
@@ -8157,7 +8157,7 @@ void func_80020920(Actor *arg0) {
     obj->field_48 = 0;
 }
 
-s32 func_800209F8(ContC40 *a0) {
+s32 Actor_ProjectToScreen(ContC40 *a0) {
     Mat1F668 m;
     AllocC40 *p;
     Vec3_209F8 *t;
@@ -8194,9 +8194,9 @@ s32 func_800209F8(ContC40 *a0) {
 }
 
 
-void func_80020C14(s32 arg0) {
-    func_80020920(arg0);
-    func_800209F8(arg0);
+void Actor_RefreshTransform(s32 arg0) {
+    Actor_UpdateTransform(arg0);
+    Actor_ProjectToScreen(arg0);
 }
 
 extern void Mem_Zero(void *, s32);
@@ -8217,7 +8217,7 @@ void Actor_InitTransform(ContC40 *a0, s32 *a1, u16 a2) {
         p->field_38 = a1[2];
     }
     p->field_42 = a2;
-    func_80020C14((s32)a0);
+    Actor_RefreshTransform((s32)a0);
 }
 
 void func_80020CE8(Obj20CE8 *a0, s32 a1) {
@@ -8317,7 +8317,7 @@ void Gfx_CalcNormalColors(Vert6Pmv *v, Obj21ABC *o) {
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80020FD0);
 
-void func_8002130C(QuadGT4_2130C *t, s32 n, Sub3C *s, s32 mode) {
+void Gfx_AddQuadsGT4(QuadGT4_2130C *t, s32 n, Sub3C *s, s32 mode) {
     s32 sxy[4];
     s32 opz;
     s32 *xy;
@@ -8587,7 +8587,7 @@ s32 func_80021D60(void) {
 }
 
 
-void func_80021DC8(void) {
+void Save_ClearEventFlags(void) {
     s32 i;
     V1004_21DC8 *p;
 
@@ -8626,7 +8626,7 @@ s32 Mem_TestBit(u8 *arg0, s32 arg1) {
     return (arg0[i] & m) != 0;
 }
 
-/* file-local views over D_8005E620 for func_80021E78 */
+/* file-local views over D_8005E620 for Flag_Test */
 typedef struct { u8 _p[0x66]; u16 a[1]; } V66_21E78;
 typedef struct { u8 _p[0xDD4]; u16 a[1]; } VDD4_21E78;
 typedef struct { u8 field_0; u8 field_1; u8 _p[0x5A]; } ElmV_21E78; /* 0x5C */
@@ -8640,7 +8640,7 @@ extern s32 D_8005F664;
 extern s32 Mem_TestBit(u8 *, s32);
 extern s32 func_80066B48(s32);
 
-s32 func_80021E78(s32 arg0) {
+s32 Flag_Test(s32 arg0) {
     s32 i;
 
     if (arg0 < 0x258) {
@@ -8694,16 +8694,16 @@ typedef struct {
     s16 flag;
 } Ent22038;
 
-s32 func_80022038(Ent22038 *p) {
+s32 Flag_TestConds(Ent22038 *p) {
     s32 i;
     for (i = 0; i < 6; i++, p++) {
         if (p->id != -1) {
             if (p->flag != 0) {
-                if (func_80021E78(p->id) != 1) {
+                if (Flag_Test(p->id) != 1) {
                     return 0;
                 }
             } else {
-                if (func_80021E78(p->id) != 0) {
+                if (Flag_Test(p->id) != 0) {
                     return 0;
                 }
             }
@@ -8731,7 +8731,7 @@ void Digi_AddNew(s32 arg0) {
         }
     }
     Digi_InitFromTable(arg0, 0, &D_8005E620.elems[i]);
-    func_80022AE4();
+    Digi_SortRoster();
     for (i = 0; i < 3; i++) {
         D_8005E620.elems[i].field_0 =
             (D_8005E620.elems[i].field_0 >= 2) ? (i + 3) : 0;
@@ -8816,7 +8816,7 @@ s32 Math_PingPongRange(s32 v, s32 div, s32 lo, s32 hi) {
 void func_80022468(void) {
     Mem_Zero(D_80050720, 0x1058);
     D_80050720->field_0 = 1;
-    func_80021DC8();
+    Save_ClearEventFlags();
     D_8005E620.field_14 = 0x8F;
     D_8005E620.field_15 = 0x95;
     D_8005E620.field_16 = 0xB7;
@@ -8880,7 +8880,7 @@ s32 func_800225C4(void) {
     s32 i;
 
     r = -1;
-    n = func_8002281C();
+    n = Item_GetBagCapacity();
     for (i = 0; i < n; i++) {
         if (D_80050720->field_66[i] == 0) {
             r = i;
@@ -8892,7 +8892,7 @@ done:
 }
 
 
-void func_80022628(void) {
+void Item_CompactBag(void) {
     u16 *src;
     u16 *dst;
     s32 i;
@@ -8903,7 +8903,7 @@ void func_80022628(void) {
     for (i = 0; i < 0x30; i++, src++) {
         v = *src;
         *src = 0;
-        if (((s32 (*)(s32))func_8001E108)(v & 0xFFFF) == 0) {
+        if (((s32 (*)(s32))Item_CheckId)(v & 0xFFFF) == 0) {
             *dst = v;
             if ((v & 0xFFFF) != 0) {
                 dst++;
@@ -8923,7 +8923,7 @@ void Item_SortList(void) {
     s32 v;
     u16 t;
 
-    func_80022628();
+    Item_CompactBag();
     pi = base;
     for (i = 0; i < 0x2F; i++, pi++) {
         if (*pi == 0) {
@@ -8959,13 +8959,13 @@ s32 func_800227A8(s32 id) {
 }
 
 
-void func_800227F0(s32 i) {
+void Item_RemoveFromBag(s32 i) {
     D_80050720->field_66[i] = 0;
-    func_80022628();
+    Item_CompactBag();
 }
 
 
-s32 func_8002281C(void) {
+s32 Item_GetBagCapacity(void) {
     u16 v = D_80050720->field_34;
     s32 r = v - 0x49;
     s32 ret = 8;
@@ -8976,7 +8976,7 @@ s32 func_8002281C(void) {
 }
 
 
-s32 func_8002284C(s32 mode) {
+s32 Digi_CountByState(s32 mode) {
     s32 n = 0;
     s32 i;
     ElmE620 *e = D_80050720->elems;
@@ -9001,7 +9001,7 @@ s32 func_8002284C(s32 mode) {
 }
 
 
-s32 func_80022910(s32 mode, ElmE620 **list) {
+s32 Digi_ListByState(s32 mode, ElmE620 **list) {
     s32 n = 0;
     s32 i;
     ElmE620 **p = list;
@@ -9040,7 +9040,7 @@ s32 func_80022910(s32 mode, ElmE620 **list) {
 }
 
 
-void func_800229F4(void) {
+void Digi_CompactRoster(void) {
     ElmE620 tmp;
     ElmE620 *src;
     ElmE620 *dst;
@@ -9061,7 +9061,7 @@ void func_800229F4(void) {
 }
 
 
-void func_80022AE4(void) {
+void Digi_SortRoster(void) {
     Tbl50724 tbl = D_80050724[0];
     ElmE620 *base = D_80050720->elems;
     ElmE620 tmp;
@@ -9071,7 +9071,7 @@ void func_80022AE4(void) {
     s32 bestk;
     s32 k;
 
-    func_800229F4();
+    Digi_CompactRoster();
     for (i = 0; i < 0x23; i++) {
         if (base[i].field_0 == 0) {
             return;
@@ -9224,7 +9224,7 @@ u32 Mem_GetLargestFree(void) {
 
 void Pad_Init(void) {
     PadInitDirect(D_8005F6A8, D_8005F6A8 + 0x22);
-    func_80024544();
+    PadStartCom();
 }
 
 void Pad_ResetButtons(Rec230DC *arg0) {
@@ -9368,7 +9368,7 @@ void Sys_Main(void) {
     VSync(0);
     SetDispMask(0);
     ResetGraph(0);
-    func_80030D64((s32)Sys_VSyncHandler);
+    VSyncCallback((s32)Sys_VSyncHandler);
     r.x = 0;
     r.y = 0;
     r.w = 0x280;
@@ -9610,7 +9610,7 @@ void Cd_QueueFile(s32 id) {
     }
     p = Cd_FindFreeCacheSlot();
     p->field_4 = id;
-    p->field_C = Mem_Alloc(func_80023F90(id) << 11, 3);
+    p->field_C = Mem_Alloc(Cd_GetFileSectors(id) << 11, 3);
     p->field_0 = 1;
     p->field_8 = 0;
     D_80050750 = 1;
@@ -9725,7 +9725,7 @@ s32 Cd_IsFileValid(s32 arg0) {
     return Cd_FileLba[arg0] != 0;
 }
 
-s32 func_80023F90(s32 arg0) {
+s32 Cd_GetFileSectors(s32 arg0) {
     return Cd_FileSectors[arg0];
 }
 
@@ -9820,7 +9820,7 @@ void Cd_ReadFileAsync(s32 arg0, s32 arg1) {
         while (Cd_PollRead() != 0) {}
     }
     Cd_GetFilePos(arg0, sp10);
-    r = func_80023F90(arg0);
+    r = Cd_GetFileSectors(arg0);
     D_80048DB8.field_4 = r;
     D_80048DB8.field_8 = arg1;
     D_80048DB8.field_10 = r;
@@ -9843,7 +9843,7 @@ void func_80024350(Actor *arg0) {
     case 0:
         Actor_InitTransform((ContC40 *)arg0, &work->field_8, work->field_14);
         Gfx_AttachModel(arg0, work->field_0)->field_3C = 3;
-        func_8001F24C(arg0, 0, work->field_4);
+        Anim_SetModelAnimFile(arg0, 0, work->field_4);
         Task_NextState0(arg0);
         break;
     case 1: {
@@ -9863,9 +9863,9 @@ void func_80024410(Actor *arg0) {
     if (arg0->field_10 == 1) {
         Gfx_AttachModel(arg0, w->field_0);
         Anim_StepModelAnim(arg0);
-        func_80020920(arg0);
-        func_800200D0(arg0);
-        func_80020510(arg0, 0);
+        Actor_UpdateTransform(arg0);
+        Gfx_CalcModelBoneMatrices(arg0);
+        Gfx_DrawTexModel(arg0, 0);
     }
 }
 
@@ -9886,7 +9886,7 @@ u8 PadGetState(void) {
     return o->field_49;
 }
 
-void func_80024544(void) {
+void PadStartCom(void) {
     State60058 *p = &D_80060058;
 
     D_80048E50 = 0;
@@ -9904,7 +9904,7 @@ void func_80024544(void) {
     D_80048E50 = 1;
 }
 
-void func_80024610(void) {
+void PadStopCom(void) {
     EnterCriticalSection();
     ChangeClearRCnt(3, 1);
     SysDeqIntRP(2, D_80048E78);
@@ -9920,7 +9920,7 @@ void PadInitDirect(u8 *a0, u8 *a1) {
 
     D_80048E50 = 0;
     D_80048E64 = 0;
-    func_80024704();
+    Pad_InitDriverHooks();
     base = D_80048E4C;
     base[0].field_30 = a0;
     base[1].field_30 = a1;
@@ -9939,7 +9939,7 @@ void PadInitDirect(u8 *a0, u8 *a1) {
 }
 
 
-void func_80024704(void) {
+void Pad_InitDriverHooks(void) {
     Obj25FBC *o = (Obj25FBC *)D_8005FDD8;
 
     bzero((u8 *)o, 0x1E0);
@@ -9947,9 +9947,9 @@ void func_80024704(void) {
     o[0].field_40 = D_80060000;
     o[1].field_3C = &D_8005FFB8[0x23];
     D_80048E18 = func_8002485C;
-    D_80048E1C = func_800247F4;
+    D_80048E1C = Pad_ResetPortState;
     D_80048E20 = func_80024960;
-    D_80048E24 = (void (*)(Ent266D0 *))func_80024A1C;
+    D_80048E24 = (void (*)(Ent266D0 *))Pad_AllocActPower;
     D_80048E2C = (Obj25FBC *(*)(void))Pad_GetPortBlock;
     D_80048E3C = func_80024950;
     D_80048E30 = func_80024CB8;
@@ -9959,7 +9959,7 @@ void func_80024704(void) {
     D_80048E38 = func_80024DC8;
 }
 
-void func_800247F4(Obj25FBC *a0) {
+void Pad_ResetPortState(Obj25FBC *a0) {
     u8 *p;
     s32 k;
     u8 c;
@@ -10050,7 +10050,7 @@ s32 func_80024960(Ent266D0 *e, s32 a1) {
 }
 
 
-void func_80024A1C(Obj25FBC *a0) {
+void Pad_AllocActPower(Obj25FBC *a0) {
     s32 n;
     s32 i;
     s32 j;
@@ -10156,7 +10156,7 @@ s32 func_80024CB8(Obj25FBC *a0) {
         if (a0->field_14 != 0) {
             a0->field_14(a0);
         } else {
-            func_80025CC8(a0);
+            Pad_SendInfoCmd(a0);
         }
         break;
     }
@@ -10220,7 +10220,7 @@ void func_80024DC8(Obj25FBC *a0) {
         if (a0->field_18 != 0) {
             a0->field_46 += a0->field_18(a0);
         } else {
-            a0->field_46 += func_80025D4C(a0);
+            a0->field_46 += Pad_ParseInfoReply(a0);
         }
         break;
     }
@@ -10544,7 +10544,7 @@ void Pad_SetCmd(Actor *arg0, u8 arg1, ActorWork *arg2, u8 arg3) {
     arg0->u34.b.field_36 = arg3;
 }
 
-void func_80025CC8(Obj25FBC *a0) {
+void Pad_SendInfoCmd(Obj25FBC *a0) {
     switch (a0->field_46) {
     case 2:
         Pad_CmdQueryModel((Actor *)a0);
@@ -10558,7 +10558,7 @@ void func_80025CC8(Obj25FBC *a0) {
     }
 }
 
-s32 func_80025D4C(Obj25FBC *a0) {
+s32 Pad_ParseInfoReply(Obj25FBC *a0) {
     u8 *p;
     s32 v;
 
@@ -11919,7 +11919,7 @@ s32 LoadImage2(s32 a0, s32 a1) {
             return -1;
         }
     }
-    DMACallback(2, func_80029FB4);
+    DMACallback(2, Gpu_RestoreExequeCb);
     D_80048F08->field_20(a0, a1);
     return 0;
 }
@@ -11933,7 +11933,7 @@ s32 StoreImage2(s32 a0, s32 a1) {
             return -1;
         }
     }
-    DMACallback(2, func_80029FB4);
+    DMACallback(2, Gpu_RestoreExequeCb);
     D_80048F08->field_1C(a0, a1);
     return 0;
 }
@@ -11947,7 +11947,7 @@ s32 MoveImage2(Rect2AB54 *rect, s32 x, s32 y) {
             return -1;
         }
     }
-    DMACallback(2, func_80029FB4);
+    DMACallback(2, Gpu_RestoreExequeCb);
     if (rect->w == 0 || rect->h == 0) {
         return -1;
     }
@@ -11969,12 +11969,12 @@ s32 DrawOTag2(u32 *p) {
             return -1;
         }
     }
-    DMACallback(2, func_80029FB4);
+    DMACallback(2, Gpu_RestoreExequeCb);
     D_80048F08->field_18(p);
     return 0;
 }
 
-void func_80029FB4(void) { DMACallback(0x2, _exeque); }
+void Gpu_RestoreExequeCb(void) { DMACallback(0x2, _exeque); }
 
 void func_80029FDC(u8 *arg0, s32 arg1, u32 arg2) {
     while (arg2-- != 0) {
@@ -12193,47 +12193,47 @@ s32 func_8002A054(s32 fd, char *fmt0, char *ap) {
         realsz = fieldsz > dprec ? fieldsz : dprec;
         if ((flags & 0x30) == 0 && width) {
             for (n = realsz; n < width; n++) {
-                func_8002A744(' ');
+                Debug_PutChar(' ');
             }
         }
         ch = sign;
         if (ch) {
-            ((void (*)(s32))func_8002A744)(ch);
+            ((void (*)(s32))Debug_PutChar)(ch);
         }
         if (flags & 0x40) {
-            func_8002A744('0');
-            func_8002A744(*fmt);
+            Debug_PutChar('0');
+            Debug_PutChar(*fmt);
         }
         if ((flags & 0x30) == 0x20) {
             for (n = realsz; n < width; n++) {
-                func_8002A744('0');
+                Debug_PutChar('0');
             }
         }
         for (n = fieldsz; n < dprec; n++) {
-            func_8002A744('0');
+            Debug_PutChar('0');
         }
         for (n = size; --n >= 0;) {
-            func_8002A744(*cp++);
+            Debug_PutChar(*cp++);
         }
         while (--fpprec >= 0) {
-            func_8002A744('0');
+            Debug_PutChar('0');
         }
         if (flags & 0x10) {
             for (n = realsz; n < width; n++) {
-                func_8002A744(' ');
+                Debug_PutChar(' ');
             }
         }
         ret += realsz > width ? realsz : width;
         continue;
     done:
-        func_8002A840();
+        Debug_FlushOut();
         return ret;
     put_s:
         ret++;
-        func_8002A744(*fmt);
+        Debug_PutChar(*fmt);
         continue;
     put:
-        ((void (*)(s32))func_8002A744)(ch);
+        ((void (*)(s32))Debug_PutChar)(ch);
     }
 }
 
@@ -12271,15 +12271,15 @@ end:
 }
 
 
-void func_8002A744(s8 c) {
+void Debug_PutChar(s8 c) {
     switch (c) {
     case 10:
-        func_8002A744(0xD);
+        Debug_PutChar(0xD);
         D_80049060 = 0;
         break;
     case 9:
         do {
-            func_8002A744(0x20);
+            Debug_PutChar(0x20);
         } while (D_80049060 & 7);
         return;
     default:
@@ -12296,7 +12296,7 @@ void func_8002A744(s8 c) {
 }
 
 
-void func_8002A840(void) {
+void Debug_FlushOut(void) {
     if (D_80049064 > 0) {
         write(1, D_800618B0, D_80049064);
         D_80049064 = 0;
@@ -12306,12 +12306,12 @@ void func_8002A840(void) {
 void func_8002A87C(s8 c) {
     switch (c) {
     case 10:
-        func_8002A744(0xD);
+        Debug_PutChar(0xD);
         D_80049060 = 0;
         break;
     case 9:
         for (;;) {
-            func_8002A744(0x20);
+            Debug_PutChar(0x20);
             if ((D_80049060 & 7) == 0) {
                 goto flush;
             }
@@ -12670,7 +12670,7 @@ s32 GsSetFlatLight(s32 idx, Blk16 *src) {
     g = src->g;
     b = src->b;
     lm = D_800619A8;
-    func_8002BA80(&cm);
+    Gfx_GetLightColorMatrix(&cm);
     len = SquareRoot0(src->x * src->x + src->y * src->y + src->z * src->z);
     if (len == 0) {
         return -1;
@@ -12702,7 +12702,7 @@ s32 GsSetFlatLight(s32 idx, Blk16 *src) {
         break;
     }
     D_800619A8 = lm;
-    func_8002BA1C(&cm);
+    Gfx_SetLightColorMatrix(&cm);
     return 0;
 }
 
@@ -12710,11 +12710,11 @@ s32 GsSetFlatLight(s32 idx, Blk16 *src) {
 extern S32 D_800619C8;
 extern void SetColorMatrix(S32 *);
 
-void func_8002BA1C(S32 *src) {
+void Gfx_SetLightColorMatrix(S32 *src) {
     D_800619C8 = *src;
     SetColorMatrix(src);
 }
-void func_8002BA80(S32 *dst) { *dst = D_800619C8; }
+void Gfx_GetLightColorMatrix(S32 *dst) { *dst = D_800619C8; }
 
 void GsSetLightMode(s32 a0) {
     switch (a0) {
@@ -12783,7 +12783,7 @@ void GsGetTimInfo(u32 *tim, TimInfo2BBD4 *out) {
 }
 
 
-void func_8002BCC4(Mat1F668 *m, s16 s, s16 c, s8 axis) {
+void Math_MakeAxisRotMatrix(Mat1F668 *m, s16 s, s16 c, s8 axis) {
     *m = D_80061A28;
     switch (axis) {
     case 'X':
@@ -12855,14 +12855,14 @@ void GsGetLs(Coord1F668 *coord, Mat1F668 *m) {
     if (i > 0) {
         q = &D_80061A64[i];
         do {
-            func_8002C0E4((ObjC0E4 *)m, (ArgC0E4 *)&(*q)->coord);
+            GsMulCoord3((ObjC0E4 *)m, (ArgC0E4 *)&(*q)->coord);
             i--;
             (*q)->workm = *m;
             (*q)->flg = D_80061988;
             q--;
         } while (i > 0);
     }
-    func_8002C064(&D_80061A08, (ArgC0E4 *)m);
+    GsMulCoord2(&D_80061A08, (ArgC0E4 *)m);
 }
 
 
@@ -12870,7 +12870,7 @@ extern void ApplyMatrixLV(ObjC0E4 *, s32 *, s32 *);
 extern void MulMatrix(ObjC0E4 *, ArgC0E4 *);
 extern void MulMatrix2(ObjC0E4 *, ArgC0E4 *);
 
-void func_8002C064(ObjC0E4 *a0, ArgC0E4 *a1) {
+void GsMulCoord2(ObjC0E4 *a0, ArgC0E4 *a1) {
     s32 tmp[3];
     ApplyMatrixLV(a0, &a1->field_14, tmp);
     MulMatrix2(a0, a1);
@@ -12879,7 +12879,7 @@ void func_8002C064(ObjC0E4 *a0, ArgC0E4 *a1) {
     a1->field_1C = tmp[2] + a0->field_1C;
 }
 
-void func_8002C0E4(ObjC0E4 *a0, ArgC0E4 *a1) {
+void GsMulCoord3(ObjC0E4 *a0, ArgC0E4 *a1) {
     s32 tmp[3];
     ApplyMatrixLV(a0, &a1->field_14, tmp);
     MulMatrix(a0, a1);
@@ -12931,7 +12931,7 @@ s32 GsSetRefView2(Ctx19214 *c) {
         } else {
             b = func_8002CDB8((x << (12 - e)) / (d >> e));
         }
-        func_8002BCC4(&m, a, b, 0x78);
+        Math_MakeAxisRotMatrix(&m, a, b, 0x78);
         MulMatrix(&D_80061A08, (ArgC0E4 *)&m);
         if (x != 0) {
             d = x;
@@ -12955,7 +12955,7 @@ s32 GsSetRefView2(Ctx19214 *c) {
             } else {
                 b = -func_8002CDB8((x << (12 - e)) / (d >> e));
             }
-            func_8002BCC4(&m, a, b, 0x79);
+            Math_MakeAxisRotMatrix(&m, a, b, 0x79);
             MulMatrix(&D_80061A08, (ArgC0E4 *)&m);
         }
         v[0] = -c->field_0;
@@ -12969,7 +12969,7 @@ s32 GsSetRefView2(Ctx19214 *c) {
             o.field_14 = -v[0];
             o.field_18 = -v[1];
             o.field_1C = -v[2];
-            func_8002C064(&D_80061A08, (ArgC0E4 *)&o);
+            GsMulCoord2(&D_80061A08, (ArgC0E4 *)&o);
             D_80061A08 = o;
         }
         D_800619E8 = D_80061A08;
@@ -13050,7 +13050,7 @@ void GsGetLw(Coord1F668 *coord, Mat1F668 *m) {
     if (i > 0) {
         q = &D_80061A64[i];
         do {
-            func_8002C0E4((ObjC0E4 *)m, (ArgC0E4 *)&(*q)->coord);
+            GsMulCoord3((ObjC0E4 *)m, (ArgC0E4 *)&(*q)->coord);
             i--;
             (*q)->workm = *m;
             (*q)->flg = D_80061988;
@@ -13373,7 +13373,7 @@ void StClearRing(void) {
     D_80061B20 = 0;
     D_80061B1C = 0;
     D_80061B14 = 0;
-    func_8002E1A4(0, D_80061B3C);
+    Cd_ClearStreamSlots(0, D_80061B3C);
     D_80061B04 = 0;
     D_80061AFC = 0;
     D_80061AF8 = 0;
@@ -13459,7 +13459,7 @@ end:
 }
 
 
-void func_8002E1A4(s32 first, s32 n) {
+void Cd_ClearStreamSlots(s32 first, s32 n) {
     u32 i;
     s32 *w;
 
@@ -13594,7 +13594,7 @@ void func_8002E2C4(void) {
     if (D_80061AFC != D_80061B58[2] || (D_80061AF8 != 0 && D_80061AF8 != D_80061B58[4])) {
         D_80061AF8 = 0;
         D_80061AFC = 0;
-        func_8002E1A4(D_80061B20, D_80061B1C - D_80061B20);
+        Cd_ClearStreamSlots(D_80061B20, D_80061B1C - D_80061B20);
         D_80061B1C = D_80061B20;
         D_80061B58[0] = 0;
         if (D_80061B28 != 0) {
@@ -13609,7 +13609,7 @@ void func_8002E2C4(void) {
         if (D_80061B2C != 0 && (u32)D_80061AF8 >= (u32)D_80061B2C) {
             D_80061AF8 = 0;
             D_80061AFC = 0;
-            func_8002E1A4(D_80061B20, D_80061B1C - D_80061B20);
+            Cd_ClearStreamSlots(D_80061B20, D_80061B1C - D_80061B20);
             D_80061B1C = D_80061B20;
             D_80061B58[0] = 0;
             D_80061B30 = 1;
@@ -14262,9 +14262,9 @@ void Debug_PutString(s8 *s) {
     }
     for (; (c = *s) != 0; ) {
         s++;
-        func_8002A744(c);
+        Debug_PutChar(c);
     }
-    func_8002A840();
+    Debug_FlushOut();
 }
 
 u8 *CdIntToPos(a0, a1)
@@ -14488,7 +14488,7 @@ void DMACallback(s32 arg0, s32 arg1) {
     D_8004FB80->fn_4(arg0, arg1);
 }
 
-void func_80030D64(s32 arg0) {
+void VSyncCallback(s32 arg0) {
     D_8004FB80->fn_14(4, arg0);
 }
 
@@ -14576,7 +14576,7 @@ void trapIntr(void) {
     ReturnFromException();
 }
 
-s32 func_80031110(s32 ch, s32 val) {
+s32 setIntr(s32 ch, s32 val) {
     s32 *arr = D_8004EAF8.field_4;
     s32 *slot = &arr[ch];
     s32 old = *slot;
@@ -14623,7 +14623,7 @@ s32 func_80031110(s32 ch, s32 val) {
 extern u16 *D_8004FB84;
 extern void ResetEntryInt();
 
-Obj4EAF8 *func_80031258(void) {
+Obj4EAF8 *stopIntr(void) {
     Obj4EAF8 *p = &D_8004EAF8;
     volatile u16 *q;
     u16 *r;
@@ -14645,7 +14645,7 @@ Obj4EAF8 *func_80031258(void) {
 }
 
 
-Obj4EAF8 *func_800312F8(void) {
+Obj4EAF8 *restartIntr(void) {
     Obj4EAF8 *p = &D_8004EAF8;
 
     if (p->field_0 != 0) {
@@ -14820,17 +14820,17 @@ void SsSeqCalledTbyT(void) {
                     func_80031AC4(ch, i);
                 }
                 if ((*q)[i].field_98 & 0x40) {
-                    func_80035CE4(ch, i);
+                    _SsSndTempo(ch, i);
                 }
                 if ((*q)[i].field_98 & 0x80) {
-                    func_80035CE4(ch, i);
+                    _SsSndTempo(ch, i);
                 }
             }
             if ((*q)[i].field_98 & 2) {
                 _SsSndPause((s16)ch, (s16)i);
             }
             if ((*q)[i].field_98 & 8) {
-                func_80032644((s16)ch, (s16)i);
+                _SsSndReplay((s16)ch, (s16)i);
             }
             if ((*q)[i].field_98 & 4) {
                 _SsSndStop((s16)ch, (s16)i);
@@ -14861,7 +14861,7 @@ void func_80031AC4(s16 a0, s16 a1) {
         d -= e->field_4A;
         if (d != 0) {
             e->field_4A += d;
-            func_80039150((s16)(a0 | (a1 << 8)), &vol[0], &vol[1]);
+            _SsVmGetSeqVol((s16)(a0 | (a1 << 8)), &vol[0], &vol[1]);
             l = vol[0] + d;
             if (l >= 0x80) {
                 l = 0x7F;
@@ -14882,7 +14882,7 @@ void func_80031AC4(s16 a0, s16 a1) {
             }
         }
     }
-    func_80039150((s16)(a0 | (a1 << 8)), (u16 *)&e->field_5C, (u16 *)&e->field_5E);
+    _SsVmGetSeqVol((s16)(a0 | (a1 << 8)), (u16 *)&e->field_5C, (u16 *)&e->field_5E);
 }
 
 
@@ -14968,7 +14968,7 @@ void func_80031EA0(s16 a0, s16 a1) {
         s8 n = e->field_22;
         if (n != -1) {
             e->field_14 = 0;
-            func_80032544(e->field_22, (s8)e->field_23);
+            _SsSndNextSep(e->field_22, (s8)e->field_23);
             _SsVmSeqKeyOff((s16)(a0 | (a1 << 8)));
         }
     }
@@ -15079,7 +15079,7 @@ s32 _SsReadDeltaValue(s16 a0, s16 a1) {
     return r;
 }
 
-void func_80032544(s32 a0, s16 a1) {
+void _SsSndNextSep(s32 a0, s16 a1) {
     Elm354F4 *e = &Snd_SeqScores[(s16)a0][a1];
 
     e->field_20 = 1;
@@ -15094,7 +15094,7 @@ void func_80032544(s32 a0, s16 a1) {
     Snd_SeqScores[(s16)a0][a1].field_98 |= 1;
 }
 
-void func_80032644(s16 a0, s16 a1) {
+void _SsSndReplay(s16 a0, s16 a1) {
     Snd_SeqScores[a0][a1].field_14 = 1;
     Snd_SeqScores[a0][a1].field_98 &= ~8;
 }
@@ -15323,16 +15323,16 @@ void _SsContExpression(s16 a0, s16 a1, s32 a2) {
     e->field_90 = _SsReadDeltaValue(a0, a1);
 }
 
-extern void func_80036764(void);
-extern void func_80036774(void);
+extern void _SsVmDamperOff(void);
+extern void _SsVmDamperOn(void);
 
 void _SsContDamper(s16 a0, s16 a1, u8 a2) {
     Elm354F4 *e = &Snd_SeqScores[a0][a1];
 
     if (a2 < 0x40) {
-        func_80036764();
+        _SsVmDamperOff();
     } else {
-        func_80036774();
+        _SsVmDamperOn();
     }
     e->field_90 = _SsReadDeltaValue(a0, a1);
 }
@@ -15423,7 +15423,7 @@ void _SsContResetAll(s16 a0, s16 a1) {
     Elm354F4 *e = &Snd_SeqScores[a0][a1];
 
     SsUtReverbOff();
-    func_80036764();
+    _SsVmDamperOff();
     e->field_37[e->field_17] = e->field_17;
     e->field_18 = 0;
     e->field_19 = 0;
@@ -15874,7 +15874,7 @@ s32 _SsInitSoundSeq(s16 a0, s16 a1, s16 a2, s32 a3) {
 
 void Snd_SetPlayMode(s16 a0, s16 a1, s8 a2, s16 a3);
 
-void func_80034E04(s16 arg0, s16 arg1, s8 arg2, s16 arg3) { Snd_SetPlayMode(arg0, arg1, arg2, arg3); }
+void SsSepPlay(s16 arg0, s16 arg1, s8 arg2, s16 arg3) { Snd_SetPlayMode(arg0, arg1, arg2, arg3); }
 
 void Snd_SetPlayMode(s16 a0, s16 a1, s8 a2, s16 a3) {
     Elm354F4 **p = &Snd_SeqScores[a0];
@@ -15980,16 +15980,16 @@ void _SsStart(s32 a0) {
     }
     if (D_8004FC48.b0 != 0) {
         EnterCriticalSection();
-        func_80030D64((s32)D_8004FC48.fn_0);
+        VSyncCallback((s32)D_8004FC48.fn_0);
     } else {
         EnterCriticalSection();
         ResetRCnt(cmd);
         SetRCnt(cmd, (u16)rate, 0x1000);
         if (D_8004FC48.b2 == 0) {
             D_8004FC48.fn_4 = ((void (*(*)(s32, void (*)(void)))(void))InterruptCallback)(0, 0);
-            InterruptCallback(D_8004FC48.b2, func_800352E4);
+            InterruptCallback(D_8004FC48.b2, _SsTrapIntrVSync);
         } else if (D_8004FC48.b1 != 0) {
-            InterruptCallback(D_8004FC48.b2, func_80035330);
+            InterruptCallback(D_8004FC48.b2, _SsSeqCalledTbyT_1per2);
         } else {
             InterruptCallback(D_8004FC48.b2, D_8004FC48.fn_0);
         }
@@ -15998,18 +15998,18 @@ void _SsStart(s32 a0) {
 }
 
 
-void func_800352A4(void) { _SsStart(1); }
+void SsStart(void) { _SsStart(1); }
 
 void SsStart2(void) { _SsStart(0); }
 
-void func_800352E4(void) {
+void _SsTrapIntrVSync(void) {
     if (D_8004FC50.fn_4 != 0) {
         D_8004FC50.fn_4();
     }
     D_8004FC50.fn_0();
 }
 
-void func_80035330(void) {
+void _SsSeqCalledTbyT_1per2(void) {
     if (D_8004FC5C == 0) {
         D_8004FC5C = 1;
     } else {
@@ -16093,7 +16093,7 @@ s32 ResetRCnt(s32 arg0) {
 }
 
 
-extern void func_80036764(void);
+extern void _SsVmDamperOff(void);
 
 void _SsSndStop(s32 arg0, s32 arg1) {
     Elm354F4 *e;
@@ -16107,7 +16107,7 @@ void _SsSndStop(s32 arg0, s32 arg1) {
     Snd_SeqScores[(s16)arg0][(s16)arg1].field_98 &= ~0x400;
     Snd_SeqScores[(s16)arg0][(s16)arg1].field_98 |= 4;
     _SsVmSeqKeyOff((s16)(arg0 | (arg1 << 8)));
-    func_80036764();
+    _SsVmDamperOff();
 
     e->field_14 = 0;
     e->field_88 = 0;
@@ -16139,7 +16139,7 @@ void _SsSndStop(s32 arg0, s32 arg1) {
     e->field_5E = 0x7F;
 }
 
-void func_80035674(s16 arg0) { _SsSndStop(arg0, 0); }
+void SsSeqStop(s16 arg0) { _SsSndStop(arg0, 0); }
 
 void SsSepStop(s16 arg0, s16 arg1) { _SsSndStop(arg0, arg1); }
 
@@ -16304,7 +16304,7 @@ void func_80035B54(s32 a0, s16 a1, s16 a2, s16 a3) {
     }
 }
 
-void func_80035BE4(s16 a0, s16 a1, s16 a2) {
+void SsSeqSetVol(s16 a0, s16 a1, s16 a2) {
     Elm354F4 *e = Snd_SeqScores[a0];
 
     if (e->field_98 != 1) {
@@ -16326,7 +16326,7 @@ void func_80035C4C(s16 a0, s16 a1, s16 a2, s16 a3) {
     }
 }
 
-void func_80035CE4(s16 a0, s16 a1) {
+void _SsSndTempo(s16 a0, s16 a1) {
     Elm354F4 *e = &Snd_SeqScores[a0][a1];
     s32 t;
     s32 n;
@@ -16409,7 +16409,7 @@ void SsUtAllKeyOff(s32 arg) {
             D_800624E8[i].field_16 = 0xFF;
             D_800624E8[i].field_36 = 0;
             attr.voice = bit;
-            func_8003C904(&attr);
+            SpuSetVoiceAttr(&attr);
             D_80062D30 = i;
             _SsVmKeyOffNow(1);
         }
@@ -16547,11 +16547,11 @@ Rec62D08 *src;
 }
 
 extern u16 D_80062CB0;
-void func_80036764(void) {
+void _SsVmDamperOff(void) {
     D_80062CB0 = 0;
 }
 
-void func_80036774(void) {
+void _SsVmDamperOn(void) {
     D_80062CB0 = 2;
 }
 
@@ -16645,7 +16645,7 @@ void _SsVmFlush(void) {
             attr.adsr2 = p5->v;
         }
         if (attr.mask != 0) {
-            func_8003C904(&attr);
+            SpuSetVoiceAttr(&attr);
         }
         *fl = 0;
         fl++;
@@ -16730,7 +16730,7 @@ void _SsVmInit(s32 arg) {
         D_800624E8[i].field_32 = 0;
         D_800624E8[i].field_26 = 0;
         attr.voice = 1 << i;
-        func_8003C904(&attr);
+        SpuSetVoiceAttr(&attr);
         D_80062D30 = i;
         _SsVmKeyOffNow(1);
     }
@@ -16787,7 +16787,7 @@ s32 _SsVmKeyOn(s16 a0, s16 a1, s16 a2, u16 a3, u16 arg4, u16 arg5) {
     if (a4 == 0) {
         ret = _SsVmKeyOff(a0, a1, a2, a3);
     } else {
-        n = func_80039264(idx, val);
+        n = _SsVmSelectToneAndVag(idx, val);
         for (i = 0; i < n; i++) {
             D_80062D18.field_16 = val[i];
             k = (s8)idx[i] + D_80062D18.field_7 * 16;
@@ -16847,7 +16847,7 @@ s32 _SsVmKeyOff(s32 a0, s32 a1, s32 a2, s32 a3) {
 
             if (!(D_8004FC18 & m) && D_800624E8[i].field_E == k && D_800624E8[i].field_14 == (s16)a2 && D_800624E8[i].field_10 == (s16)a0 && D_800624E8[i].field_18 == (s16)a1) {
                 if (D_800624E8[i].field_0 == 0xFF) {
-                    func_800382D4(i);
+                    vmNoiseOff(i);
                 } else {
                     D_80062D30 = i;
                     _SsVmKeyOffNow(0);
@@ -17127,7 +17127,7 @@ void func_80037D64(u8 a0) {
 }
 
 
-void func_800382D4(u8 arg0) {
+void vmNoiseOff(u8 arg0) {
     D_800624E8[arg0].field_1D = 0;
     D_800624E8[arg0].field_0 = 0;
     D_800624E8[arg0].field_4 = 0;
@@ -17242,7 +17242,7 @@ void _SsVmKeyOnNow(u8 a0, u16 a1) {
 }
 
 
-s16 func_800388A4(s16 id, s16 a1, s16 a2, s16 a3, u16 a4) {
+s16 _SsVmPBVoice(s16 id, s16 a1, s16 a2, s16 a3, u16 a4) {
     u16 idx;
     u16 base;
     u16 frac;
@@ -17286,7 +17286,7 @@ s32 _SsVmPitchBend(s16 a0, s16 a1, s16 a2, s32 a3) {
     D_80062D2C[0] = a0;
     sum = 0;
     for (; i < D_80062D0C; i++) {
-        sum += func_800388A4(i, a0, a1, a2, a3);
+        sum += _SsVmPBVoice(i, a0, a1, a2, a3);
     }
     return sum;
 }
@@ -17376,7 +17376,7 @@ s16 _SsVmSetSeqVol(s32 a0, s32 a1, s32 a2, s32 a3) {
     return id;
 }
 
-s16 func_80039150(s32 a0, u16 *a1, u16 *a2) {
+s16 _SsVmGetSeqVol(s32 a0, u16 *a1, u16 *a2) {
     Elm354F4 *base = Snd_SeqScores[a0 & 0xFF];
     Elm354F4 *e;
 
@@ -17400,7 +17400,7 @@ void _SsVmSeqKeyOff(s32 id) {
     }
 }
 
-u8 func_80039264(u8 *idx, u8 *val) {
+u8 _SsVmSelectToneAndVag(u8 *idx, u8 *val) {
     u8 n = 0;
     s8 i;
 
@@ -17524,7 +17524,7 @@ s32 _SsVmVSetUp(s16 a0, s16 a1) {
 }
 
 
-void func_80039994(s16 id) {
+void SsVabClose(s16 id) {
     s32 st;
 
     if ((u16)id < 16) {
@@ -17534,7 +17534,7 @@ void func_80039994(s16 id) {
                 SpuFree(D_80062D98[id]);
                 D_80062D38[id] = 0;
                 D_80062D90--;
-                if (func_8003C8EC() == 1) {
+                if (_spu_getInTransfer() == 1) {
                     _spu_setInTransfer(0);
                 }
             }
@@ -17543,7 +17543,7 @@ void func_80039994(s16 id) {
 }
 
 s16 SsVabOpenHead(s32 arg0, s16 arg1) {
-    return func_80039B54(arg0, arg1, func_80039A78, 0);
+    return _SsVabOpenHeadWithMode(arg0, arg1, func_80039A78, 0);
 }
 
 s32 func_80039A78(s32 a0, s32 a1, s32 id) {
@@ -17559,18 +17559,18 @@ s32 func_80039A78(s32 a0, s32 a1, s32 id) {
 }
 
 s16 func_80039AE4(s32 arg0, s16 arg1, s32 arg2) {
-    return func_80039B54(arg0, arg1, func_80039B4C, arg2);
+    return _SsVabOpenHeadWithMode(arg0, arg1, Snd_VabFixedAddrAlloc, arg2);
 }
 
 s16 func_80039B18(s32 arg0, s16 arg1, s32 arg2) {
-    return func_80039B54(arg0, arg1, func_80039B4C, arg2);
+    return _SsVabOpenHeadWithMode(arg0, arg1, Snd_VabFixedAddrAlloc, arg2);
 }
 
-s32 func_80039B4C(s32 arg0, s32 arg1) {
+s32 Snd_VabFixedAddrAlloc(s32 arg0, s32 arg1) {
     return arg1;
 }
 
-s32 func_80039B54(u8 *addr, s32 vabid, s32 (*fn)(), s32 mode) {
+s32 _SsVabOpenHeadWithMode(u8 *addr, s32 vabid, s32 (*fn)(), s32 mode) {
     s32 vagLens[256];
     s16 id;
     s32 i;
@@ -17583,7 +17583,7 @@ s32 func_80039B54(u8 *addr, s32 vabid, s32 (*fn)(), s32 mode) {
     s32 spu;
 
     id = 16;
-    if (func_8003C8EC() == 1) {
+    if (_spu_getInTransfer() == 1) {
         return -1;
     }
     _spu_setInTransfer(1);
@@ -17705,11 +17705,11 @@ s16 SsVabTransBody(s32 a0, s16 id) {
     return -1;
 }
 
-extern s32 func_8003C804();
+extern s32 SpuIsTransferCompleted();
 
 s16 SsVabTransCompleted(s16 a0) {
     do { } while (0);
-    return func_8003C804(a0);
+    return SpuIsTransferCompleted(a0);
 }
 __asm__(".word 0\n.word 0\n");
 
@@ -18829,7 +18829,7 @@ void SpuSetTransferMode(s32 arg0) {
     D_8004FE44 = v;
 }
 
-s32 func_8003C804(s32 a0) {
+s32 SpuIsTransferCompleted(s32 a0) {
     s32 r;
 
     if (D_8004FDB8 == 1 || Spu_InTransfer == 1) {
@@ -18859,11 +18859,11 @@ void _spu_setInTransfer(s32 arg0) {
     }
 }
 
-s32 func_8003C8EC(void) {
+s32 _spu_getInTransfer(void) {
     return (Spu_InTransfer ^ 1) != 0;
 }
 
-void func_8003C904(VAttr36C54 *arg) {
+void SpuSetVoiceAttr(VAttr36C54 *arg) {
     s32 ch;
     s32 ch8;
     u32 mask;
@@ -19280,15 +19280,15 @@ void SpuSetCommonAttr(Cmd3D124 *a0) {
 
 void func_8003D4A4(void) {
     func_8003D504();
-    func_8003D594();
+    Card_Start();
     _bu_init();
 }
 
-void func_8003D4D4(void) { func_8003D5DC(); }
+void func_8003D4D4(void) { Card_Stop(); }
 
 ASM_SOURCE("src/main/asm/libapi", _bu_init);
 
-extern s32 func_8003D610(void);
+extern s32 Pad_IsInitialized(void);
 extern void InitCARD(s32);
 extern void func_8003DBE4(void);
 extern void func_8003DAE0(void);
@@ -19304,7 +19304,7 @@ s32 a0;
     ChangeClearPAD(0);
     VSync(0);
     s1 = EnterCriticalSection();
-    if (func_8003D610() == 0) {
+    if (Pad_IsInitialized() == 0) {
         s0 = 0;
     }
     InitCARD(s0);
@@ -19317,7 +19317,7 @@ s32 a0;
     }
 }
 
-s32 func_8003D594(void) {
+s32 Card_Start(void) {
     s32 s = EnterCriticalSection();
     StartCARD();
     ChangeClearPAD(0);
@@ -19328,18 +19328,18 @@ s32 func_8003D594(void) {
     return 0;
 }
 
-s32 func_8003D5DC(void) {
+s32 Card_Stop(void) {
     StopCARD();
     func_8003DC24();
     return 0;
 }
 
 extern s32 D_800506B8;
-void func_8003D604(s32 a0) {
+void Pad_SetInitialized(s32 a0) {
     D_800506B8 = a0;
 }
 
-s32 func_8003D610(void) {
+s32 Pad_IsInitialized(void) {
     return D_800506B8;
 }
 
@@ -19365,7 +19365,7 @@ void func_8003D6B0(s32 a0, s32 a1, s32 a2, s32 a3) {
     D_800506B8 = 1;
 }
 
-s32 func_8003D740(void) {
+s32 Pad_Start(void) {
     StartPAD();
     ChangeClearPAD(0);
     func_8003D8C4();
@@ -19438,13 +19438,13 @@ ASM_SOURCE("src/main/asm/libapi", func_8003DBE4);
 
 ASM_SOURCE("src/main/asm/libapi", func_8003DC24);
 
-void func_8003DCA4(void) {
+void Card_SaveCallback(void) {
     D_80062FD8 = MemCardCallback(0);
 }
 
-void func_8003DCCC(void) { MemCardCallback(D_80062FD8); }
+void Card_RestoreCallback(void) { MemCardCallback(D_80062FD8); }
 
-s32 *func_8003DCF4(void) {
+s32 *Card_GetStatePtr(void) {
     return &D_80062F80.field_0;
 }
 
@@ -19515,15 +19515,15 @@ s32 Card_InfoTask(s32 *st) {
         *e = 0;
         D_800506C8 = v;
     case 10:
-        func_8003FEA4();
+        Card_ClearEvents();
         _card_info(D_80062F80.field_10);
         *st = *st + 1;
         break;
     case 11:
-        if (func_8004015C() == 0) {
+        if (Card_GetSwEventBits() == 0) {
             return 0;
         }
-        r = func_8003FFAC();
+        r = Card_WaitSwEvent();
         D_80062F54 = r;
         k = D_80062F80.field_10;
         tbl = D_80062F80.field_48;
@@ -19532,7 +19532,7 @@ s32 Card_InfoTask(s32 *st) {
         switch (r) {
         case 4:
             if (D_800506CC == 0 && D_800506C8 < 0x80) {
-                func_8003FEA4();
+                Card_ClearEvents();
                 _card_clear(D_80062F80.field_10);
                 *st = 0x15;
                 break;
@@ -19540,7 +19540,7 @@ s32 Card_InfoTask(s32 *st) {
             k = D_80062F80.field_10;
             tbl = D_80062F80.field_48;
             tbl[k >> 4] = 1;
-            ((volatile State62F80 *)&D_80062F80)->field_4 = func_8003F418(D_80062F54);
+            ((volatile State62F80 *)&D_80062F80)->field_4 = Card_EventToMcErr(D_80062F54);
             return 1;
         case 0:
             c = D_80062F80.field_C;
@@ -19550,7 +19550,7 @@ s32 Card_InfoTask(s32 *st) {
             }
             w = D_80062F54;
             *e = 0;
-            ((volatile State62F80 *)&D_80062F80)->field_4 = func_8003F418(w);
+            ((volatile State62F80 *)&D_80062F80)->field_4 = Card_EventToMcErr(w);
             return 1;
         case 2:
             if (++D_80062F50 < 3) {
@@ -19558,18 +19558,18 @@ s32 Card_InfoTask(s32 *st) {
                 break;
             }
             *e = 1;
-            ((volatile State62F80 *)&D_80062F80)->field_4 = func_8003F418(2);
+            ((volatile State62F80 *)&D_80062F80)->field_4 = Card_EventToMcErr(2);
             return 1;
         case 1:
             if (++D_80062F50 < 17) {
                 *st = 10;
                 break;
             }
-            ((volatile State62F80 *)&D_80062F80)->field_4 = func_8003F418(1);
+            ((volatile State62F80 *)&D_80062F80)->field_4 = Card_EventToMcErr(1);
             tbl[D_80062F80.field_10 >> 4] = 0;
             return 1;
         default:
-            ((volatile State62F80 *)&D_80062F80)->field_4 = func_8003F418(D_80062F54);
+            ((volatile State62F80 *)&D_80062F80)->field_4 = Card_EventToMcErr(D_80062F54);
             pt = D_80062F80.field_48;
             pt[D_80062F80.field_10 >> 4] = 0;
             return 1;
@@ -19579,7 +19579,7 @@ s32 Card_InfoTask(s32 *st) {
         if (Card_GetHwEventBits() == 0) {
             return 0;
         }
-        func_80040084();
+        Card_WaitHwEvent();
         *st = 0;
         break;
     default:
@@ -19632,7 +19632,7 @@ s32 Card_AcceptTask(s32 *st) {
                 D_80062F68 = 1;
                 q->field_C = D_80062F80.field_C | (1 << D_80062F80.field_10);
             }
-            func_8003FEA4();
+            Card_ClearEvents();
             _card_clear(D_80062F80.field_10);
             *st = 0x15;
             break;
@@ -19648,25 +19648,25 @@ s32 Card_AcceptTask(s32 *st) {
         if (Card_GetHwEventBits() == 0) {
             return 0;
         }
-        func_80040084();
+        Card_WaitHwEvent();
         *st = 30;
     case 30:
-        func_8003FEA4();
+        Card_ClearEvents();
         _card_load(D_80062F90);
         *st = *st + 1;
         break;
     case 31:
-        if (func_8004015C() == 0) {
+        if (Card_GetSwEventBits() == 0) {
             return 0;
         }
-        r = func_8003FFAC();
+        r = Card_WaitSwEvent();
         D_80062F64 = r;
         switch (r) {
         case 0:
             ((volatile State62F80 *)&D_80062F80)->field_4 = D_80062F68 ? 3 : 0;
             return 1;
         case 4:
-            func_8003FEA4();
+            Card_ClearEvents();
             _card_info(D_80062F90);
             *st = 0x32;
             break;
@@ -19678,15 +19678,15 @@ s32 Card_AcceptTask(s32 *st) {
                 goto set30;
             }
         default:
-            ((volatile State62F80 *)&D_80062F80)->field_4 = func_8003F418(D_80062F64);
+            ((volatile State62F80 *)&D_80062F80)->field_4 = Card_EventToMcErr(D_80062F64);
             return 1;
         }
         break;
     case 50:
-        if (func_8004015C() == 0) {
+        if (Card_GetSwEventBits() == 0) {
             return 0;
         }
-        r = func_8003FFAC();
+        r = Card_WaitSwEvent();
         D_80062F64 = r;
         if (r == 0) {
             ((volatile State62F80 *)&D_80062F80)->field_4 = 4;
@@ -19745,7 +19745,7 @@ s32 MemCardOpen(s32 a0, s32 a1, s32 a2) {
     return st;
 ok:
     close(r);
-    func_8003FEA4();
+    Card_ClearEvents();
     D_80062F80.field_14 = open(D_80062F80.field_24, a2 | 0x8000);
     return 0;
 }
@@ -19760,7 +19760,7 @@ void Card_CloseFile(void) {
     }
 }
 
-s32 func_8003E610(s32 a0, s32 a1, s32 a2) {
+s32 MemCardReadData(s32 a0, s32 a1, s32 a2) {
     char *msg;
 
     if (D_80062F80.field_14 < 0) {
@@ -19800,16 +19800,16 @@ s32 Card_ReadDataTask(s32 *state) {
         }
         while (lseek(D_80062F80.field_14, D_80062F80.field_18, 0) != D_80062F80.field_18) {
         }
-        func_8003FEA4();
+        Card_ClearEvents();
         while (read(D_80062F80.field_14, D_80062F80.field_20, D_80062F80.field_1C) != 0) {
         }
         *state = 30;
         break;
     case 30:
-        if (func_8004015C() == 0) {
+        if (Card_GetSwEventBits() == 0) {
             return 0;
         }
-        r = func_8003FFAC();
+        r = Card_WaitSwEvent();
         if (r == 0) {
             goto fail;
         }
@@ -19818,19 +19818,19 @@ s32 Card_ReadDataTask(s32 *state) {
             break;
         }
         if (r == 4) {
-            func_8003FEA4();
+            Card_ClearEvents();
             _card_clear(D_80062F90);
             *state = 32;
             break;
         }
     fail:
-        ((volatile State62F80 *)&D_80062F80)->field_4 = func_8003F418(r);
+        ((volatile State62F80 *)&D_80062F80)->field_4 = Card_EventToMcErr(r);
         return 1;
     case 32:
         if (Card_GetHwEventBits() == 0) {
             return 0;
         }
-        func_80040084();
+        Card_WaitHwEvent();
         *state = 0;
         break;
     default:
@@ -19880,23 +19880,23 @@ s32 Card_WriteDataTask(s32 *st) {
         }
         while (lseek(D_80062F80.field_14, D_80062F80.field_18, 0) != D_80062F80.field_18) {
         }
-        func_8003FEA4();
+        Card_ClearEvents();
         while (write(D_80062F80.field_14, (u8 *)D_80062F80.field_20, D_80062F80.field_1C) != 0) {
         }
         *st = 30;
         break;
     case 30:
-        if (!func_8004015C()) {
+        if (!Card_GetSwEventBits()) {
             return 0;
         }
-        r = func_8003FFAC();
+        r = Card_WaitSwEvent();
         if (r != 0) {
             if (++D_800506D4 < 4) {
                 *st = 10;
                 break;
             }
             if (r == 4) {
-                func_8003FEA4();
+                Card_ClearEvents();
                 _card_clear(D_80062F80.field_10);
                 *st = 32;
                 break;
@@ -19905,14 +19905,14 @@ s32 Card_WriteDataTask(s32 *st) {
         {
             State62F80 *g = &D_80062F80;
 
-            g->field_4 = func_8003F418(r);
+            g->field_4 = Card_EventToMcErr(r);
         }
         return 1;
     case 32:
         if (!Card_GetHwEventBits()) {
             return 0;
         }
-        func_80040084();
+        Card_WaitHwEvent();
         *st = 0;
         break;
     default:
@@ -20078,12 +20078,12 @@ s32 MemCardGetDirentry(s32 a0_arg, s8 *a1, Ent3EF1C *out_arg, s32 *count_arg, s3
     for (; i < skip + n; i++) {
         if (i == 0) {
             do {
-                func_8003FEA4();
+                Card_ClearEvents();
                 r = func_8003F5C4(buf, (s32)&ent);
                 if (r != 0) {
                     goto have;
                 }
-                st = func_8003F418(func_80040084());
+                st = Card_EventToMcErr(Card_WaitHwEvent());
                 if (st == 0) {
                     goto have;
                 }
@@ -20210,7 +20210,7 @@ work:
     if (r == 4) {
         return 2;
     }
-    return func_8003F418(r);
+    return Card_EventToMcErr(r);
 e0:
     return 0;
 }
@@ -20228,12 +20228,12 @@ s32 func_8003F3A4(void) {
         if (r == 4) {
             return 2;
         }
-        return func_8003F418(r);
+        return Card_EventToMcErr(r);
     }
     return 0;
 }
 
-s32 func_8003F418(s32 a0) {
+s32 Card_EventToMcErr(s32 a0) {
     s32 r = 0;
 
     switch (a0) {
@@ -20504,7 +20504,7 @@ int Card_OnHwNewCard(void) {
 
 void func_8003FBC4(void) {
     func_8003D504();
-    func_8003D594();
+    Card_Start();
     _bu_init();
 }
 
@@ -20528,14 +20528,14 @@ void Card_OpenEvents(void) {
     EnableEvent(D_80063074);
     EnableEvent(D_80063078);
     EnableEvent(D_8006307C);
-    func_8003FEA4();
+    Card_ClearEvents();
     if (s == 1) {
         ExitCriticalSection();
     }
 }
 
 
-void func_8003FDD0(void) { func_8003D5DC(); }
+void func_8003FDD0(void) { Card_Stop(); }
 
 void Card_CloseEvents(void) {
     s32 s = EnterCriticalSection();
@@ -20553,7 +20553,7 @@ void Card_CloseEvents(void) {
     }
 }
 
-void func_8003FEA4(void) {
+void Card_ClearEvents(void) {
     TestEvent(D_80063060);
     TestEvent(D_80063064);
     TestEvent(D_80063068);
@@ -20566,7 +20566,7 @@ void func_8003FEA4(void) {
     D_80063090 = D_80063094 = D_80063098 = D_8006309C = 0;
 }
 
-s32 func_8003FFAC(void) {
+s32 Card_WaitSwEvent(void) {
     s32 r;
 
     do {
@@ -20580,7 +20580,7 @@ s32 func_8003FFAC(void) {
     return r >> 1;
 }
 
-s32 func_80040084(void) {
+s32 Card_WaitHwEvent(void) {
     s32 v;
 
     do {
@@ -20594,7 +20594,7 @@ s32 func_80040084(void) {
     return v >> 1;
 }
 
-s32 func_8004015C(void) {
+s32 Card_GetSwEventBits(void) {
     return D_80063080 + D_80063084 * 2 + D_80063088 * 4 + D_8006308C * 8;
 }
 
@@ -20616,14 +20616,14 @@ static inline s32 mcWriteFrame401E4(s32 port, s32 blk) {
     }
     *p = c;
     do {
-        func_8003FEA4();
+        Card_ClearEvents();
         _card_write(port, blk, D_800632E0);
-        r = func_80040084();
+        r = Card_WaitHwEvent();
         if (r == 0) break;
         if (r == 4) {
-            func_8003FEA4();
+            Card_ClearEvents();
             _card_clear(port);
-            func_80040084();
+            Card_WaitHwEvent();
         }
         j++;
     } while (j < 8);
@@ -20674,14 +20674,14 @@ s32 func_800401E4(s32 a0) {
         }
         *buf = c;
         do {
-            func_8003FEA4();
+            Card_ClearEvents();
             _card_write(a0, 0, D_800632E0);
-            t = func_80040084();
+            t = Card_WaitHwEvent();
             if (t == 0) break;
             if (t == 4) {
-                func_8003FEA4();
+                Card_ClearEvents();
                 _card_clear(a0);
-                func_80040084();
+                Card_WaitHwEvent();
             }
             j++;
         } while (j < 8);
@@ -20689,14 +20689,14 @@ s32 func_800401E4(s32 a0) {
     }
     if (r != 0) goto out;
     do {
-        func_8003FEA4();
+        Card_ClearEvents();
         _card_load(a0);
-        r = func_8003FFAC();
+        r = Card_WaitSwEvent();
         if (r == 0) return 0;
         n++;
-        func_8003FEA4();
+        Card_ClearEvents();
         _card_clear(a0);
-        func_80040084();
+        Card_WaitHwEvent();
     } while (n < 8);
 out:
     return r;
@@ -20732,16 +20732,16 @@ s32 Card_CreateFile(s32 port, s8 *name, s32 nblocks)
     i = 0;
     bzero(D_800632E0, 0x80);
     do {
-        func_8003FEA4();
+        Card_ClearEvents();
         _card_read(port, 0, D_800632E0);
-        r = func_80040084();
+        r = Card_WaitHwEvent();
         if (r == 0) {
             break;
         }
         if (r == 4) {
-            func_8003FEA4();
+            Card_ClearEvents();
             _card_clear(port);
-            func_80040084();
+            Card_WaitHwEvent();
         }
     } while (++i < 8);
     ret = r;
@@ -20763,16 +20763,16 @@ s32 Card_CreateFile(s32 port, s8 *name, s32 nblocks)
         k = 0;
         bzero(D_800632E0, 0x80);
         do {
-            func_8003FEA4();
+            Card_ClearEvents();
             _card_read(port, blk, D_800632E0);
-            r = func_80040084();
+            r = Card_WaitHwEvent();
             if (r == 0) {
                 break;
             }
             if (r == 4) {
-                func_8003FEA4();
+                Card_ClearEvents();
                 _card_clear(port);
-                func_80040084();
+                Card_WaitHwEvent();
             }
         } while (++k < 8);
         ret = r;
@@ -20857,16 +20857,16 @@ s32 Card_CreateFile(s32 port, s8 *name, s32 nblocks)
             } while (--n >= 0);
             *p = x;
             do {
-                func_8003FEA4();
+                Card_ClearEvents();
                 _card_write(port, blk, D_800632E0);
-                r = func_80040084();
+                r = Card_WaitHwEvent();
                 if (r == 0) {
                     break;
                 }
                 if (r == 4) {
-                    func_8003FEA4();
+                    Card_ClearEvents();
                     _card_clear(port);
-                    func_80040084();
+                    Card_WaitHwEvent();
                 }
             } while (++k < 8);
             ret = r;
@@ -20877,15 +20877,15 @@ s32 Card_CreateFile(s32 port, s8 *name, s32 nblocks)
         }
     }
     do {
-        func_8003FEA4();
+        Card_ClearEvents();
         _card_load(port);
-        r = func_8003FFAC();
+        r = Card_WaitSwEvent();
         if (r == 0) {
             return 0;
         }
-        func_8003FEA4();
+        Card_ClearEvents();
         _card_clear(port);
-        func_80040084();
+        Card_WaitHwEvent();
     } while (++tries < 8);
     return r;
 }

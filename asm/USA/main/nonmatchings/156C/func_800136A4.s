@@ -8,7 +8,7 @@ glabel func_800136A4
     /* 3EB4 800136B4 21184000 */  addu       $v1, $v0, $zero
     /* 3EB8 800136B8 06006010 */  beqz       $v1, .L800136D4
     /* 3EBC 800136BC 00000000 */   nop
-    /* 3EC0 800136C0 9E87000C */  jal        func_80021E78
+    /* 3EC0 800136C0 9E87000C */  jal        Flag_Test
     /* 3EC4 800136C4 11000424 */   addiu     $a0, $zero, 0x11
     /* 3EC8 800136C8 02004014 */  bnez       $v0, .L800136D4
     /* 3ECC 800136CC FFFF0324 */   addiu     $v1, $zero, -0x1

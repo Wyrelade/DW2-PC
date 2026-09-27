@@ -71,7 +71,7 @@ glabel func_80019808
     /* A108 80019908 1200A2A7 */  sh         $v0, 0x12($sp)
     /* A10C 8001990C 1801658E */  lw         $a1, 0x118($s3)
     /* A110 80019910 1300E734 */  ori        $a3, $a3, (0x320013 & 0xFFFF)
-    /* A114 80019914 3E4D000C */  jal        func_800134F8
+    /* A114 80019914 3E4D000C */  jal        Text_OpenPacked
     /* A118 80019918 4C00A524 */   addiu     $a1, $a1, 0x4C
     /* A11C 8001991C E8660008 */  j          .L80019BA0
     /* A120 80019920 00000000 */   nop
@@ -121,7 +121,7 @@ glabel func_80019808
     /* A1CC 800199CC 2120C002 */  addu       $a0, $s6, $zero
     /* A1D0 800199D0 1800B127 */  addiu      $s1, $sp, 0x18
     /* A1D4 800199D4 21282002 */  addu       $a1, $s1, $zero
-    /* A1D8 800199D8 1C4D000C */  jal        func_80013470
+    /* A1D8 800199D8 1C4D000C */  jal        Text_OpenDesc
     /* A1DC 800199DC 1800A2AF */   sw        $v0, 0x18($sp)
     /* A1E0 800199E0 FD01043C */  lui        $a0, (0x1FD0150 >> 16)
     /* A1E4 800199E4 50018434 */  ori        $a0, $a0, (0x1FD0150 & 0xFFFF)
@@ -138,7 +138,7 @@ glabel func_80019808
     /* A210 80019A10 FCFF0624 */   addiu     $a2, $zero, -0x4
     /* A214 80019A14 2120E002 */  addu       $a0, $s7, $zero
     /* A218 80019A18 21282002 */  addu       $a1, $s1, $zero
-    /* A21C 80019A1C 1C4D000C */  jal        func_80013470
+    /* A21C 80019A1C 1C4D000C */  jal        Text_OpenDesc
     /* A220 80019A20 1C00B0AF */   sw        $s0, 0x1C($sp)
     /* A224 80019A24 E8660008 */  j          .L80019BA0
     /* A228 80019A28 00000000 */   nop
@@ -244,7 +244,7 @@ glabel func_80019808
     /* A390 80019B90 21208002 */   addu      $a0, $s4, $zero
   .L80019B94:
     /* A394 80019B94 21206002 */  addu       $a0, $s3, $zero
-    /* A398 80019B98 2C70000C */  jal        func_8001C0B0
+    /* A398 80019B98 2C70000C */  jal        Text_CloseArray
     /* A39C 80019B9C 15000524 */   addiu     $a1, $zero, 0x15
   .L80019BA0:
     /* A3A0 80019BA0 5945000C */  jal        Task_NextState1

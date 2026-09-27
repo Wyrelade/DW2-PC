@@ -13,7 +13,7 @@ glabel StClearRing
     /* 1E6B8 8002DEB8 1C1B20AC */  sw         $zero, %lo(D_80061B1C)($at)
     /* 1E6BC 8002DEBC 0680013C */  lui        $at, %hi(D_80061B14)
     /* 1E6C0 8002DEC0 141B20AC */  sw         $zero, %lo(D_80061B14)($at)
-    /* 1E6C4 8002DEC4 69B8000C */  jal        func_8002E1A4
+    /* 1E6C4 8002DEC4 69B8000C */  jal        Cd_ClearStreamSlots
     /* 1E6C8 8002DEC8 21200000 */   addu      $a0, $zero, $zero
     /* 1E6CC 8002DECC 0680013C */  lui        $at, %hi(D_80061B04)
     /* 1E6D0 8002DED0 041B20AC */  sw         $zero, %lo(D_80061B04)($at)

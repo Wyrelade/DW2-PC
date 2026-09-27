@@ -10,7 +10,7 @@ glabel PadInitDirect
     /* 14E6C 8002466C 508E20AC */  sw         $zero, %lo(D_80048E50)($at)
     /* 14E70 80024670 0580013C */  lui        $at, %hi(D_80048E64)
     /* 14E74 80024674 648E20AC */  sw         $zero, %lo(D_80048E64)($at)
-    /* 14E78 80024678 C191000C */  jal        func_80024704
+    /* 14E78 80024678 C191000C */  jal        Pad_InitDriverHooks
     /* 14E7C 8002467C 2188A000 */   addu      $s1, $a1, $zero
     /* 14E80 80024680 21380000 */  addu       $a3, $zero, $zero
     /* 14E84 80024684 0580023C */  lui        $v0, %hi(D_80048E4C)

@@ -45,8 +45,8 @@ glabel LoadImage2
     /* 1A438 80029C38 24104300 */  and        $v0, $v0, $v1
     /* 1A43C 80029C3C EDFF4010 */  beqz       $v0, .L80029BF4
     /* 1A440 80029C40 00000000 */   nop
-    /* 1A444 80029C44 0380053C */  lui        $a1, %hi(func_80029FB4)
-    /* 1A448 80029C48 B49FA524 */  addiu      $a1, $a1, %lo(func_80029FB4)
+    /* 1A444 80029C44 0380053C */  lui        $a1, %hi(Gpu_RestoreExequeCb)
+    /* 1A448 80029C48 B49FA524 */  addiu      $a1, $a1, %lo(Gpu_RestoreExequeCb)
     /* 1A44C 80029C4C 4DC3000C */  jal        DMACallback
     /* 1A450 80029C50 02000424 */   addiu     $a0, $zero, 0x2
     /* 1A454 80029C54 0580023C */  lui        $v0, %hi(D_80048F08)

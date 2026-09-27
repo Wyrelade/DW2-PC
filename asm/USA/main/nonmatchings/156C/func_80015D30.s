@@ -73,7 +73,7 @@ glabel func_80015D30
     /* 6634 80015E34 2800C68E */  lw         $a2, 0x28($s6)
     /* 6638 80015E38 02000524 */  addiu      $a1, $zero, 0x2
     /* 663C 80015E3C 0730A600 */  srav       $a2, $a2, $a1
-    /* 6640 80015E40 EE4D000C */  jal        func_800137B8
+    /* 6640 80015E40 EE4D000C */  jal        Gfx_SetPartsPalette
     /* 6644 80015E44 0300C630 */   andi      $a2, $a2, 0x3
     /* 6648 80015E48 21200002 */  addu       $a0, $s0, $zero
     /* 664C 80015E4C 97570008 */  j          .L80015E5C
@@ -138,7 +138,7 @@ glabel func_80015D30
     /* 6718 80015F18 9C00468E */  lw         $a2, 0x9C($s2)
     /* 671C 80015F1C 5475000C */  jal        Gfx_SetPartsScale
     /* 6720 80015F20 00100524 */   addiu     $a1, $zero, 0x1000
-    /* 6724 80015F24 2176000C */  jal        func_8001D884
+    /* 6724 80015F24 2176000C */  jal        Gfx_DrawParts
     /* 6728 80015F28 21200002 */   addu      $a0, $s0, $zero
   .L80015F2C:
     /* 672C 80015F2C 04007326 */  addiu      $s3, $s3, 0x4

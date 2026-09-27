@@ -61,7 +61,7 @@ glabel Card_AcceptTask
     /* 2EA70 8003E270 682F25AC */  sw         $a1, %lo(D_80062F68)($at)
     /* 2EA74 8003E274 04104500 */  sllv       $v0, $a1, $v0
     /* 2EA78 8003E278 25186200 */  or         $v1, $v1, $v0
-    /* 2EA7C 8003E27C A9FF000C */  jal        func_8003FEA4
+    /* 2EA7C 8003E27C A9FF000C */  jal        Card_ClearEvents
     /* 2EA80 8003E280 0C0083AC */   sw        $v1, 0xC($a0)
     /* 2EA84 8003E284 0C00248E */  lw         $a0, 0xC($s1)
     /* 2EA88 8003E288 6DFE000C */  jal        _card_clear
@@ -76,12 +76,12 @@ glabel Card_AcceptTask
     /* 2EAA4 8003E2A4 00000000 */   nop
     /* 2EAA8 8003E2A8 60004010 */  beqz       $v0, .L8003E42C
     /* 2EAAC 8003E2AC 00000000 */   nop
-    /* 2EAB0 8003E2B0 2100010C */  jal        func_80040084
+    /* 2EAB0 8003E2B0 2100010C */  jal        Card_WaitHwEvent
     /* 2EAB4 8003E2B4 00000000 */   nop
     /* 2EAB8 8003E2B8 1E000224 */  addiu      $v0, $zero, 0x1E
     /* 2EABC 8003E2BC 000002AE */  sw         $v0, 0x0($s0)
   jlabel .L8003E2C0
-    /* 2EAC0 8003E2C0 A9FF000C */  jal        func_8003FEA4
+    /* 2EAC0 8003E2C0 A9FF000C */  jal        Card_ClearEvents
     /* 2EAC4 8003E2C4 00000000 */   nop
     /* 2EAC8 8003E2C8 0680043C */  lui        $a0, %hi(D_80062F90)
     /* 2EACC 8003E2CC 902F848C */  lw         $a0, %lo(D_80062F90)($a0)
@@ -91,11 +91,11 @@ glabel Card_AcceptTask
     /* 2EADC 8003E2DC 0AF90008 */  j          .L8003E428
     /* 2EAE0 8003E2E0 01004224 */   addiu     $v0, $v0, 0x1
   jlabel .L8003E2E4
-    /* 2EAE4 8003E2E4 5700010C */  jal        func_8004015C
+    /* 2EAE4 8003E2E4 5700010C */  jal        Card_GetSwEventBits
     /* 2EAE8 8003E2E8 00000000 */   nop
     /* 2EAEC 8003E2EC 50004010 */  beqz       $v0, .L8003E430
     /* 2EAF0 8003E2F0 21100000 */   addu      $v0, $zero, $zero
-    /* 2EAF4 8003E2F4 EBFF000C */  jal        func_8003FFAC
+    /* 2EAF4 8003E2F4 EBFF000C */  jal        Card_WaitSwEvent
     /* 2EAF8 8003E2F8 00000000 */   nop
     /* 2EAFC 8003E2FC 21184000 */  addu       $v1, $v0, $zero
     /* 2EB00 8003E300 0680013C */  lui        $at, %hi(D_80062F64)
@@ -131,7 +131,7 @@ glabel Card_AcceptTask
     /* 2EB68 8003E368 0CF90008 */  j          .L8003E430
     /* 2EB6C 8003E36C 01000224 */   addiu     $v0, $zero, 0x1
   .L8003E370:
-    /* 2EB70 8003E370 A9FF000C */  jal        func_8003FEA4
+    /* 2EB70 8003E370 A9FF000C */  jal        Card_ClearEvents
     /* 2EB74 8003E374 00000000 */   nop
     /* 2EB78 8003E378 0680043C */  lui        $a0, %hi(D_80062F90)
     /* 2EB7C 8003E37C 902F848C */  lw         $a0, %lo(D_80062F90)($a0)
@@ -155,7 +155,7 @@ glabel Card_AcceptTask
   .L8003E3BC:
     /* 2EBBC 8003E3BC 0680043C */  lui        $a0, %hi(D_80062F64)
     /* 2EBC0 8003E3C0 642F848C */  lw         $a0, %lo(D_80062F64)($a0)
-    /* 2EBC4 8003E3C4 06FD000C */  jal        func_8003F418
+    /* 2EBC4 8003E3C4 06FD000C */  jal        Card_EventToMcErr
     /* 2EBC8 8003E3C8 00000000 */   nop
     /* 2EBCC 8003E3CC 21204000 */  addu       $a0, $v0, $zero
     /* 2EBD0 8003E3D0 01000224 */  addiu      $v0, $zero, 0x1
@@ -164,11 +164,11 @@ glabel Card_AcceptTask
     /* 2EBDC 8003E3DC 0CF90008 */  j          .L8003E430
     /* 2EBE0 8003E3E0 040064AC */   sw        $a0, 0x4($v1)
   jlabel .L8003E3E4
-    /* 2EBE4 8003E3E4 5700010C */  jal        func_8004015C
+    /* 2EBE4 8003E3E4 5700010C */  jal        Card_GetSwEventBits
     /* 2EBE8 8003E3E8 00000000 */   nop
     /* 2EBEC 8003E3EC 10004010 */  beqz       $v0, .L8003E430
     /* 2EBF0 8003E3F0 21100000 */   addu      $v0, $zero, $zero
-    /* 2EBF4 8003E3F4 EBFF000C */  jal        func_8003FFAC
+    /* 2EBF4 8003E3F4 EBFF000C */  jal        Card_WaitSwEvent
     /* 2EBF8 8003E3F8 00000000 */   nop
     /* 2EBFC 8003E3FC 21184000 */  addu       $v1, $v0, $zero
     /* 2EC00 8003E400 0680013C */  lui        $at, %hi(D_80062F64)

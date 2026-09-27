@@ -45,11 +45,11 @@ glabel Menu_UseItemOnDigi
     /* 8020 80017820 6807638C */  lw         $v1, %lo(Menu_Ctx)($v1)
     /* 8024 80017824 1000A2AF */  sw         $v0, 0x10($sp)
     /* 8028 80017828 08016484 */  lh         $a0, 0x108($v1)
-    /* 802C 8001782C 1278000C */  jal        func_8001E048
+    /* 802C 8001782C 1278000C */  jal        Item_GetNameText
     /* 8030 80017830 00000000 */   nop
     /* 8034 80017834 40000426 */  addiu      $a0, $s0, 0x40
     /* 8038 80017838 1000A527 */  addiu      $a1, $sp, 0x10
-    /* 803C 8001783C 1C4D000C */  jal        func_80013470
+    /* 803C 8001783C 1C4D000C */  jal        Text_OpenDesc
     /* 8040 80017840 1400A2AF */   sw        $v0, 0x14($sp)
     /* 8044 80017844 1D000424 */  addiu      $a0, $zero, 0x1D
     /* 8048 80017848 A369000C */  jal        Snd_PlayById

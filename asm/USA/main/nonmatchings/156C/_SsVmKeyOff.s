@@ -63,7 +63,7 @@ glabel _SsVmKeyOff
     /* 27DA8 800375A8 00000000 */  nop
     /* 27DAC 800375AC 05006214 */  bne        $v1, $v0, .L800375C4
     /* 27DB0 800375B0 FF000232 */   andi      $v0, $s0, 0xFF
-    /* 27DB4 800375B4 B5E0000C */  jal        func_800382D4
+    /* 27DB4 800375B4 B5E0000C */  jal        vmNoiseOff
     /* 27DB8 800375B8 01003126 */   addiu     $s1, $s1, 0x1
     /* 27DBC 800375BC 77DD0008 */  j          .L800375DC
     /* 27DC0 800375C0 01001026 */   addiu     $s0, $s0, 0x1

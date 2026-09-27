@@ -51,7 +51,7 @@ glabel _SsSndStop
     /* 25DB0 800355B0 04004234 */  ori        $v0, $v0, 0x4
     /* 25DB4 800355B4 6DE4000C */  jal        _SsVmSeqKeyOff
     /* 25DB8 800355B8 980062AC */   sw        $v0, 0x98($v1)
-    /* 25DBC 800355BC D9D9000C */  jal        func_80036764
+    /* 25DBC 800355BC D9D9000C */  jal        _SsVmDamperOff
     /* 25DC0 800355C0 00000000 */   nop
     /* 25DC4 800355C4 21380000 */  addu       $a3, $zero, $zero
     /* 25DC8 800355C8 40000A24 */  addiu      $t2, $zero, 0x40

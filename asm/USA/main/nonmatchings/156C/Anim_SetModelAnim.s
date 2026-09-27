@@ -23,7 +23,7 @@ glabel Anim_SetModelAnim
     /* F9F0 8001F1F0 10180000 */  mfhi       $v1
     /* F9F4 8001F1F4 83280300 */  sra        $a1, $v1, 2
     /* F9F8 8001F1F8 2328A200 */  subu       $a1, $a1, $v0
-    /* F9FC 8001F1FC CA79000C */  jal        func_8001E728
+    /* F9FC 8001F1FC CA79000C */  jal        Anim_GetModelAnimFile
     /* FA00 8001F200 FFFFA524 */   addiu     $a1, $a1, -0x1
     /* FA04 8001F204 480022AE */  sw         $v0, 0x48($s1)
     /* FA08 8001F208 F6FF0226 */  addiu      $v0, $s0, -0xA

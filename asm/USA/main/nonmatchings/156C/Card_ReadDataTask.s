@@ -49,7 +49,7 @@ glabel Card_ReadDataTask
     /* 2EF6C 8003E76C 00000000 */  nop
     /* 2EF70 8003E770 F9FF4314 */  bne        $v0, $v1, .L8003E758
     /* 2EF74 8003E774 00000000 */   nop
-    /* 2EF78 8003E778 A9FF000C */  jal        func_8003FEA4
+    /* 2EF78 8003E778 A9FF000C */  jal        Card_ClearEvents
     /* 2EF7C 8003E77C 00000000 */   nop
     /* 2EF80 8003E780 0680103C */  lui        $s0, %hi(D_80062F94)
     /* 2EF84 8003E784 942F1026 */  addiu      $s0, $s0, %lo(D_80062F94)
@@ -64,11 +64,11 @@ glabel Card_ReadDataTask
     /* 2EFA4 8003E7A4 18FA0008 */  j          .L8003E860
     /* 2EFA8 8003E7A8 000022AE */   sw        $v0, 0x0($s1)
   .L8003E7AC:
-    /* 2EFAC 8003E7AC 5700010C */  jal        func_8004015C
+    /* 2EFAC 8003E7AC 5700010C */  jal        Card_GetSwEventBits
     /* 2EFB0 8003E7B0 00000000 */   nop
     /* 2EFB4 8003E7B4 2B004010 */  beqz       $v0, .L8003E864
     /* 2EFB8 8003E7B8 21100000 */   addu      $v0, $zero, $zero
-    /* 2EFBC 8003E7BC EBFF000C */  jal        func_8003FFAC
+    /* 2EFBC 8003E7BC EBFF000C */  jal        Card_WaitSwEvent
     /* 2EFC0 8003E7C0 00000000 */   nop
     /* 2EFC4 8003E7C4 21204000 */  addu       $a0, $v0, $zero
     /* 2EFC8 8003E7C8 17008010 */  beqz       $a0, .L8003E828
@@ -87,7 +87,7 @@ glabel Card_ReadDataTask
   .L8003E7FC:
     /* 2EFFC 8003E7FC 0A008214 */  bne        $a0, $v0, .L8003E828
     /* 2F000 8003E800 00000000 */   nop
-    /* 2F004 8003E804 A9FF000C */  jal        func_8003FEA4
+    /* 2F004 8003E804 A9FF000C */  jal        Card_ClearEvents
     /* 2F008 8003E808 00000000 */   nop
     /* 2F00C 8003E80C 0680043C */  lui        $a0, %hi(D_80062F90)
     /* 2F010 8003E810 902F848C */  lw         $a0, %lo(D_80062F90)($a0)
@@ -97,7 +97,7 @@ glabel Card_ReadDataTask
     /* 2F020 8003E820 18FA0008 */  j          .L8003E860
     /* 2F024 8003E824 000022AE */   sw        $v0, 0x0($s1)
   .L8003E828:
-    /* 2F028 8003E828 06FD000C */  jal        func_8003F418
+    /* 2F028 8003E828 06FD000C */  jal        Card_EventToMcErr
     /* 2F02C 8003E82C 00000000 */   nop
     /* 2F030 8003E830 0680033C */  lui        $v1, %hi(D_80062F80)
     /* 2F034 8003E834 802F6324 */  addiu      $v1, $v1, %lo(D_80062F80)
@@ -109,7 +109,7 @@ glabel Card_ReadDataTask
     /* 2F048 8003E848 00000000 */   nop
     /* 2F04C 8003E84C 05004010 */  beqz       $v0, .L8003E864
     /* 2F050 8003E850 21100000 */   addu      $v0, $zero, $zero
-    /* 2F054 8003E854 2100010C */  jal        func_80040084
+    /* 2F054 8003E854 2100010C */  jal        Card_WaitHwEvent
     /* 2F058 8003E858 00000000 */   nop
     /* 2F05C 8003E85C 000020AE */  sw         $zero, 0x0($s1)
   .L8003E860:

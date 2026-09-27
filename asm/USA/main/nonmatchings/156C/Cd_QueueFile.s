@@ -18,7 +18,7 @@ glabel Cd_QueueFile
     /* 14428 80023C28 00000000 */   nop
     /* 1442C 80023C2C 21804000 */  addu       $s0, $v0, $zero
     /* 14430 80023C30 21202002 */  addu       $a0, $s1, $zero
-    /* 14434 80023C34 E48F000C */  jal        func_80023F90
+    /* 14434 80023C34 E48F000C */  jal        Cd_GetFileSectors
     /* 14438 80023C38 040004AE */   sw        $a0, 0x4($s0)
     /* 1443C 80023C3C C0220200 */  sll        $a0, $v0, 11
     /* 14440 80023C40 CF8B000C */  jal        Mem_Alloc

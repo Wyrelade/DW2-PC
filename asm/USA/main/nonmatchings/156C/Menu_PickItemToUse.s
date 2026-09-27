@@ -42,7 +42,7 @@ glabel Menu_PickItemToUse
     /* 6F94 80016794 1200A797 */  lhu        $a3, 0x12($sp)
     /* 6F98 80016798 1000A297 */  lhu        $v0, 0x10($sp)
     /* 6F9C 8001679C 003C0700 */  sll        $a3, $a3, 16
-    /* 6FA0 800167A0 3E4D000C */  jal        func_800134F8
+    /* 6FA0 800167A0 3E4D000C */  jal        Text_OpenPacked
     /* 6FA4 800167A4 25384700 */   or        $a3, $v0, $a3
     /* 6FA8 800167A8 10000424 */  addiu      $a0, $zero, 0x10
   .L800167AC:
