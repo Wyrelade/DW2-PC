@@ -3913,5 +3913,10 @@
       "delay_fill",
       "padnop"
     ]
+  },
+  "Gfx_IsOriginOffscreen": {
+    "passes": [
+      "padnop"
+    ]
   }
 }

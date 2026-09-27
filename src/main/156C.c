@@ -8066,7 +8066,28 @@ INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002130C);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Gfx_ProjectModelVerts);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Gfx_IsOriginOffscreen);
+s32 Gfx_IsOriginOffscreen(void) {
+    SxyIso sxy;
+    s32 flag;
+
+    gte_ldv0(D_80043704);
+    gte_rtps();
+    gte_stflg(&flag);
+    if (flag < 0) {
+        return 1;
+    }
+    gte_stsxy(&sxy);
+    if (sxy.vx < -0x160) {
+        return 1;
+    }
+    if (sxy.vx > 0x160) {
+        return 1;
+    }
+    if (sxy.vy < -0x110) {
+        return 1;
+    }
+    return sxy.vy > 0x110;
+}
 
 void Gfx_DrawWireTris(Tri218CC *t, s32 n, Obj21ABC *o, Col21ABC *col) {
     s32 i;

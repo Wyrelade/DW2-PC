@@ -3262,4 +3262,11 @@ typedef struct {
     /* 0x38 */ Sub6A8C0 *field_38;
 } Obj6A8C0;
 
+#include "gte.h"
+/* Screen coordinate pair (PsyQ DVECTOR shape). */
+typedef struct {
+    s16 vx;
+    s16 vy;
+} SxyIso;
+
 #endif /* MAIN_156C_H */
