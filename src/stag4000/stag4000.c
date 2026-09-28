@@ -1712,7 +1712,23 @@ s32 func_800715DC(void) {
     return r;
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80071608);
+s32 func_80071608(void) {
+    u8 buf[16];
+    s32 n = 0;
+    s32 r = -1;
+    u32 i;
+
+    for (i = 0; i < 12; i++) {
+        if (func_80022518(D_80072A4C[i]) > 0) {
+            buf[n++] = D_80072A4C[i];
+        }
+    }
+    if (n != 0) {
+        r = func_80071180() / (100 / n);
+        r = buf[r > n - 1 ? n - 1 : r];
+    }
+    return r;
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_800716EC);
 
