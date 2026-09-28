@@ -128,7 +128,13 @@ void func_80067480(void *t, s32 text, s32 id, Stg20Cell *pos, s32 color) {
     Text_Open(t, &args);
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80067504);
+Stg20Cell *func_80067504(Actor *a) {
+    ActorTransformView *t = a->u38.ptr38;
+
+    D_800709A8.x = (t->posX + 0x4500) / 0x600;
+    D_800709A8.y = 0x16 - (t->posZ + 0x4500) / 0x600;
+    return &D_800709A8;
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80067568);
 
