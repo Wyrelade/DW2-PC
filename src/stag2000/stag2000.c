@@ -437,7 +437,26 @@ void func_8006A248(Actor *a, s32 v) {
     ((Stg20Work *)a->work)->field_0 = v;
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006A254);
+void func_8006A254(Actor *a) {
+    Actor *t;
+
+    switch (a->stateLevel0) {
+    case 0:
+        Actor_InitTransform(a, D_80043704, 0);
+        Gfx_AttachModel(a, 0x5B)->otIndex = 4;
+        Gfx_ResetModelBones(a);
+        Task_NextState0(a);
+        break;
+    case 1:
+        t = ((Stg20LinkWork *)a->work)->target;
+        if (t != NULL && t->stateLevel0 != 0) {
+            ((Stg20PosView *)a->u38.ptr38)->pos = ((Stg20PosView *)t->u38.ptr38)->pos;
+        }
+        break;
+    case 2:
+        break;
+    }
+}
 
 void func_8006A320(Actor *a) {
     Gfx_AttachModel(a, 0x2F7);
