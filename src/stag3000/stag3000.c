@@ -644,7 +644,13 @@ void func_80070C68(Actor *a0) {
     GsSetRefView2(&rv);
 }
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80070D14);
+void func_80070D14(u8 state) {
+    Actor *t = (Actor *)Task_FindFirst(0x503, -1, -1);
+
+    if (t != NULL && t->stateLevel0 == 1) {
+        Task_SetState1(t, state);
+    }
+}
 
 void func_80070D68(Actor *a0, Stg30Ref **args) {
     ((Stg30Work734F8 *)a0->work)->ref = args[0];
