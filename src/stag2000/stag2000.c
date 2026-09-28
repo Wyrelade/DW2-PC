@@ -158,7 +158,18 @@ Stg20Cell *func_80067714(Actor *a, s32 dir) {
     return c;
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80067770);
+s32 func_80067770(Actor *a, s32 dir) {
+    s32 mask;
+
+    if (D_800709B4 != 0) {
+        return 0;
+    }
+    mask = 0xBF;
+    if (((Stg20ModelTask *)a)->field_4 == 0) {
+        mask = 0x7F;
+    }
+    return func_800636A8(func_80067714(a, dir)) & mask;
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_800677C8);
 
