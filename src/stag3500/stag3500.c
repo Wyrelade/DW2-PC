@@ -619,7 +619,14 @@ void func_80068B10(s32 arg0, s32 *arg1) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80068B9C);
+s32 func_80068B9C(void) {
+    Actor *e = (Actor *)Task_FindFirst(0x708, -1, -1);
+
+    if (e != NULL && e->stateLevel1 == 2) {
+        return 1;
+    }
+    return (((Stg35Work708 *)e->work)->field_78 != 0) * 2;
+}
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80068BF8);
 
