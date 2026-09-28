@@ -138,7 +138,138 @@ void func_80064480(void) {
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_800644D4);
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80064B30);
+void func_80064B30(Actor *a0) {
+    Stg30Work73078 *w = (Stg30Work73078 *)a0->work;
+    Halves pos;
+    TextOpenArgs args;
+    s32 i;
+    s32 id;
+    s32 y;
+    s32 j;
+    s32 k;
+
+    switch (a0->stateLevel0) {
+    case 0:
+        D_800737E0 = 0;
+        Mem_FillWordsNeg1(w->text, 4);
+        Task_NextState0(a0);
+        break;
+    case 1:
+        switch (a0->stateLevel2) {
+        case 0:
+        default:
+            switch (a0->stateLevel3) {
+            case 0:
+            default:
+                a0->elapsed = 0;
+                Task_NextState3(a0);
+                break;
+            case 1:
+                for (j = 0; j < a0->elapsed; j++) {
+                    w->scale += 0x2AA;
+                }
+                a0->elapsed = 0;
+                if (w->scale > 0x1000) {
+                    w->scale = 0x1000;
+                    Task_NextState2(a0);
+                }
+                break;
+            }
+            break;
+        case 1:
+            do {
+                if (D_8005F6F0[0].up > 0) {
+                    if (D_800737E0 == 0) break;
+                    D_800737E0--;
+                    Snd_PlayById(0xC, 0);
+                    break;
+                }
+                if (D_8005F6F0[0].down > 0) {
+                    if (D_80073CC0.entries[0].field_8 == 6) {
+                        if (D_800737E0 == 2) break;
+                        if (D_80073CC0.entries[0].field_0 != 0) break;
+                        D_800737E0++;
+                        Snd_PlayById(0xC, 0);
+                        break;
+                    }
+                    if (D_800737E0 == 1) break;
+                    D_800737E0++;
+                    Snd_PlayById(0xC, 0);
+                    break;
+                }
+                if (D_8005F6F0[0].cross > 0) {
+                    D_80073CC0.entries[0].field_14 = 0;
+                    D_80073CC0.entries[0].field_10 = D_800737E0;
+                    Snd_PlayById(0xA, 0);
+                    Task_NextState0(a0);
+                    break;
+                }
+                if (D_80073CC0.entries[0].field_8 == 6) break;
+                if (D_8005F6F0[0].triangle > 0) {
+                    D_80073CC0.entries[0].field_14 = 1;
+                    Snd_PlayById(0xB, 0);
+                    Task_NextState0(a0);
+                }
+            } while (0);
+            if (D_80073CC0.entries[0].field_8 == 6) {
+                Text_OpenPacked(w->text, (s32)D_8005E634, 0x10, D_800633E8);
+                for (k = 0, y = 0x3C; k < 3; y += 11, k++) {
+                    if (D_80073CC0.entries[0].field_0 != 0 && k != 0) {
+                        pos.lo = 0x16;
+                        pos.hi = y;
+                        Text_OpenById(&w->text[k + 1], k + 2, 3, pos);
+                    } else if (D_800737E0 == k) {
+                        pos.lo = 0x16;
+                        pos.hi = y;
+                        Text_OpenById(&w->text[k + 1], k + 2, 0, pos);
+                    } else {
+                        pos.lo = 0x16;
+                        pos.hi = y;
+                        Text_OpenById(&w->text[k + 1], k + 2, 1, pos);
+                    }
+                }
+            } else {
+                if (w->text[0] == -1) {
+                    args.text = (s32)((Stg30StateDigis *)&D_80073CC0)->digis[D_80073CC0.entries[0].field_8].name;
+                    args.color = 4;
+                    args.x = 0x16;
+                    args.bigFont = 0;
+                    args.y = 0x30;
+                    args.charDelay = 0;
+                    args.charAdvance = 0;
+                    args.lineAdvance = 0;
+                    Text_Open(w->text, &args);
+                }
+                for (i = 0; i < 2; i++) {
+                    pos.hi = i * 11 + 0x3C;
+                    pos.lo = 0x16;
+                    Text_OpenById(&w->text[i + 1], i + 5, D_800737E0 != i, pos);
+                }
+            }
+            break;
+        }
+        break;
+    case 2:
+        switch (a0->stateLevel1) {
+        case 0:
+        default:
+            Text_CloseArray(w->text, 4);
+            a0->elapsed = 0;
+            Task_NextState1(a0);
+            break;
+        case 1:
+            for (j = 0; j < a0->elapsed; j++) {
+                w->scale -= 0x2AA;
+            }
+            if (w->scale <= 0) {
+                w->scale = 0;
+                Task_NextState0(a0);
+            }
+            break;
+        }
+        break;
+    }
+}
 
 void func_80064FBC(Actor *a0) {
     Text_CloseArray(((Stg30Work73078 *)a0->work)->text, 4);

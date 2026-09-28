@@ -4283,5 +4283,11 @@
   },
   "stag3000:func_8006D4D8": {
     "passes": []
+  },
+  "stag3000:func_80064B30": {
+    "passes": [
+      "web_realloc",
+      "sched_match"
+    ]
   }
 }
