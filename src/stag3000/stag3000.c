@@ -197,7 +197,11 @@ void func_8006E530(void) {
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006E55C);
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006E5B4);
+void func_8006E5B4(s32 i) {
+    for (; i < 11; i++) {
+        D_80073A20[i] = D_80073A20[i + 1];
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006E5F8);
 
