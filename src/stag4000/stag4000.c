@@ -50,7 +50,10 @@ void func_80064880(void) {
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_800648AC);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80064930);
+void func_80064930(Actor *a0, s32 a1) {
+    Task_SetState0(a0, 2);
+    Task_SetState1(a0, (u8)a1);
+}
 
 void func_80064970(Actor *a0, Stg40InitArg *a1) {
     Stg40InitWork *w = (Stg40InitWork *)a0->work;
