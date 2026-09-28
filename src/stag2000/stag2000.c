@@ -224,7 +224,84 @@ void func_80065774(Actor *a) {
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80065960);
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80065AF4);
+void func_80065AF4(Actor *a) {
+    s32 *slot = (s32 *)a->u34.children;
+
+    switch (a->stateLevel0) {
+    case 0:
+        Task_Create(0x312, &slot[0], 0);
+        Task_Create(0x315, &slot[1], 0);
+        D_80070A00 = 0;
+        Task_NextState0(a);
+        break;
+    case 1:
+        switch (a->stateLevel1) {
+        case 0:
+        default:
+            switch (a->stateLevel2) {
+            case 0:
+            default:
+                Task_Create(0x316, &slot[2], 0);
+                Task_NextState2(a);
+            case 1:
+                if (slot[2] == 0) {
+                    if (D_800709B0.field_8 != 0) {
+                        Task_NextState0(a);
+                    } else if (D_800709B0.field_50 == 0) {
+                        Task_SetState1(a, 1);
+                    } else {
+                        Task_SetState1(a, 2);
+                    }
+                }
+                break;
+            }
+            break;
+        case 1:
+            switch (a->stateLevel2) {
+            case 0:
+            default:
+                D_80070A04 = 0;
+                Task_Create(0x317, &slot[3], 0);
+                Task_NextState2(a);
+            case 1:
+                if (slot[3] == 0) {
+                    Task_SetState1(a, 0);
+                }
+                break;
+            }
+            break;
+        case 2:
+            switch (a->stateLevel2) {
+            case 0:
+            default:
+                D_80070A04 = 1;
+                Task_Create(0x317, &slot[3], 0);
+                Task_NextState2(a);
+            case 1:
+                if (slot[3] == 0) {
+                    Task_SetState1(a, 0);
+                }
+                break;
+            }
+            break;
+        }
+        break;
+    case 2:
+        switch (a->stateLevel1) {
+        case 0:
+        default:
+            Gfx_FadeOutToBlack(0xA);
+            Task_NextState1(a);
+        case 1:
+            if (++a->stateLevel2 >= 0x19) {
+                D_8005F770.nextGameMode = D_8005F770.prevGameMode;
+                D_8005F770.field_24 = D_8005F770.gameMode == 0x330 ? 5 : 6;
+            }
+            break;
+        }
+        break;
+    }
+}
 
 void func_80065D1C(void) {
     Stg20GameState *g = (Stg20GameState *)&D_8005E620;
