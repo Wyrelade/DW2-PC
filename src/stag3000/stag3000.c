@@ -325,7 +325,18 @@ s32 func_8006A118(void) {
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006A140);
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006A968);
+void func_8006A968(s16 *max, s16 *b, s16 *c) {
+    s16 half = *max / 2;
+
+    *c = *c * 90 / 128;
+    if (*c < half) {
+        *c = half;
+    }
+    *b = *b * 90 / 128;
+    if (*b < half) {
+        *b = half;
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006AA18);
 
