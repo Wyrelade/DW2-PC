@@ -234,7 +234,12 @@ void func_80066120(Stg35LoadHandle *arg0) {
     arg0->load->field_8 = 0x1000;
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80066168);
+void func_80066168(Stg35LoadHandle *arg0) {
+    if (arg0->load != NULL) {
+        Mem_Free(arg0->load);
+        arg0->load = NULL;
+    }
+}
 
 void func_800661A4(Stg35LoadHandle *arg0, s32 arg1) {
     arg0->load->fileId = arg1;
