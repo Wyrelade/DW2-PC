@@ -185,7 +185,9 @@ void func_80067894(Actor *a0, u8 on, u8 r, u8 g, u8 b) {
     m->field_3A = b;
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_800678C4);
+s32 func_800678C4(Actor *a0) {
+    return a0->model->animDone < 0;
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_800678D8);
 
