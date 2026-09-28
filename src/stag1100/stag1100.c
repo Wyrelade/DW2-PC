@@ -1560,7 +1560,76 @@ void func_80066C48(Actor *arg0) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80067124);
+void func_80067124(Actor *arg0) {
+    Stg11Work66C04 *w = (Stg11Work66C04 *)arg0->work;
+    s32 *ids;
+    GfxPart *parts;
+    Stg11Slot *e;
+    DigiRosterEntry *cell;
+    Stg11Pos p;
+    s32 i;
+    s32 k;
+    s32 mask;
+    s32 pal;
+    s32 top;
+
+    if (w->scale == 0) {
+        return;
+    }
+    ids = (s32 *)Cd_GetFileEntry(0xD28000D);
+    for (i = 0; ids[i] != 0; i++) {
+        parts = (GfxPart *)Cd_GetFileEntry(ids[i]);
+        if (i == 0) {
+            if (w->field_68 != 0) {
+                p = w->field_50;
+                p.y = w->field_50.y - w->field_66;
+                Menu_SetPartsGridPos(parts, 2, (s32 *)&p, w->field_54.grid);
+                Gfx_SetPartsPalette(parts, 2, (arg0->elapsed >> 2) & 3);
+                mask = (w->field_66 < 1) << 2;
+                if (w->field_54.grid[1] - w->field_66 - 4 <= 0) {
+                    mask |= 8;
+                }
+                Gfx_HidePartsByMask((GfxPartMaskView *)parts, mask);
+                Gfx_SetPartsNumber(parts, 0x10, 2, w->field_50.y + 1);
+                Gfx_SetPartsNumber(parts, 0x20, 2, w->field_54.grid[1]);
+            } else {
+                Gfx_HidePartsByMask((GfxPartMaskView *)parts, -1);
+            }
+        } else {
+            top = w->field_66 - 1;
+            e = &w->field_6C[top + i];
+            k = i - 1;
+            if (k >= w->field_54.grid[1]) {
+                Gfx_HidePartsByMask((GfxPartMaskView *)parts, -1);
+            } else {
+                Gfx_HidePartsByMask((GfxPartMaskView *)parts, 0);
+                pal = 2;
+                if (w->field_68 != 0 && k == w->field_50.y - w->field_66) {
+                    pal = 1;
+                }
+                switch (e->field_0) {
+                case 0:
+                    Gfx_HidePartsByMask((GfxPartMaskView *)parts, pal | 0xFE4);
+                    break;
+                case 1:
+                    cell = e->field_4;
+                    Gfx_HidePartsByMask((GfxPartMaskView *)parts, pal | D_8006820C[e->field_2 - 1]);
+                    Gfx_SetPartsNumber(parts, 0x20, 3, (s16)cell->maxHp);
+                    Gfx_SetPartsNumber(parts, 0x40, 3, (s16)cell->hp);
+                    Gfx_SetPartsNumber(parts, 0x80, 3, (s16)cell->maxMp);
+                    Gfx_SetPartsNumber(parts, 0x100, 3, (s16)cell->mp);
+                    break;
+                case 2:
+                case 3:
+                    Gfx_HidePartsByMask((GfxPartMaskView *)parts, -5);
+                    break;
+                }
+            }
+        }
+        Gfx_SetPartsScale((GfxPartScaleView *)parts, 0x1000, w->scale);
+        Gfx_DrawParts(parts);
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_800673FC);
 
