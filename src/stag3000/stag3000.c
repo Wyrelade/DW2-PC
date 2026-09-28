@@ -1032,7 +1032,75 @@ void func_8006F8EC(Actor *a0) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006FA28);
+void func_8006FA28(Actor *a0) {
+    Stg30WorkVec3 *w = (Stg30WorkVec3 *)a0->work;
+    Stg30Part *p = NULL;
+    Stg30Part *q;
+    s32 draw = 1;
+    s32 id;
+
+    switch (w->pos.x) {
+    case 0:
+    default:
+        p = (Stg30Part *)Cd_GetFileEntry(func_8001EE5C(w->pos.y));
+        break;
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+        p = (Stg30Part *)Cd_GetFileEntry(0xD2D0000);
+        Gfx_HidePartsByMask((GfxPartMaskView *)p, D_80073300[w->pos.x - 4]);
+        break;
+    case 1:
+    case 2:
+    case 3:
+        p = (Stg30Part *)Cd_GetFileEntry(0x1A10000);
+        Gfx_SetPartsNumber((GfxPart *)p, D_8007331C[w->pos.x - 1], 3, w->pos.y);
+        Gfx_HidePartsByMask((GfxPartMaskView *)p, D_80073310[w->pos.x - 1]);
+        break;
+    case 8:
+        draw = 0;
+        break;
+    }
+    if (draw) {
+        for (q = p; q->fileId != 0; q++) {
+            if (w->field_C != 0x1000) {
+                q->field_E = 0;
+                q->field_10 = w->field_C;
+            } else {
+                q->field_E = 1;
+            }
+            q->palette = w->field_10;
+        }
+        Gfx_DrawParts((EntA0 *)p);
+    }
+    if (w->pos.z != 0) {
+        switch (w->pos.z >> 8) {
+        case 0:
+        default:
+            id = 0x1A10026;
+            break;
+        case 1:
+            id = 0x1A10027;
+            break;
+        case 2:
+            id = 0x1A10028;
+            break;
+        }
+        p = (Stg30Part *)Cd_GetFileEntry(id);
+        Gfx_HidePartsByMask((GfxPartMaskView *)p, ~(1 << ((u8)w->pos.z - 1)));
+        for (q = p; q->fileId != 0; q++) {
+            if (w->field_C != 0x1000) {
+                q->field_E = 0;
+                q->field_10 = w->field_C;
+            } else {
+                q->field_E = 1;
+            }
+            q->palette = w->field_10;
+        }
+        Gfx_DrawParts((EntA0 *)p);
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006FC78);
 

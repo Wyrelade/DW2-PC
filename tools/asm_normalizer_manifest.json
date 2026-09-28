@@ -4166,5 +4166,8 @@
     "passes": [
       "nodiv"
     ]
+  },
+  "stag3000:func_8006FA28": {
+    "passes": []
   }
 }
