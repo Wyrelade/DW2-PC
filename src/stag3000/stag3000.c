@@ -294,7 +294,75 @@ INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80066484);
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80066698);
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80066AE0);
+void func_80066AE0(Actor *a0) {
+    Stg30Work73138 *w = (Stg30Work73138 *)a0->work;
+    GfxPart *p;
+    GfxPart *q;
+    s32 m;
+    s32 bit;
+    s32 i;
+    s32 m2;
+    GfxPart *p2;
+    GfxPart *q2;
+
+    while (1) {
+        if (a0->elapsed < 0x18) break;
+        a0->elapsed = a0->elapsed - 0x18;
+    }
+    if (w->field_4C == 0x1000) {
+        p = (GfxPart *)Cd_GetFileEntry(0x1A1001A);
+        m = 0;
+        bit = 2;
+        for (i = 0; i < 4; i++) {
+            if (D_80073810[i] == 0) {
+                m |= bit;
+                bit <<= 1;
+                m |= bit;
+                bit <<= 1;
+            } else if (D_80073800 != i) {
+                m |= bit;
+                bit <<= 2;
+            } else {
+                bit <<= 1;
+                m |= bit;
+                bit <<= 1;
+            }
+            if (D_80073820[i].field_D[0xD] < 4 || D_80073820[i].field_D[0xD] == D_80073810[i] + 3) {
+                m |= bit;
+                bit <<= 1;
+                m |= bit;
+                bit <<= 1;
+            } else if (D_80073800 != i) {
+                m |= bit;
+                bit <<= 2;
+            } else {
+                bit <<= 1;
+                m |= bit;
+                bit <<= 1;
+            }
+        }
+        Gfx_HidePartsByMask((GfxPartMaskView *)p, m);
+        m2 = ~m & D_80073108[D_80073800];
+        for (q = p; q->fileId != 0; q++) {
+            if (q->groupMask & m2) {
+                q->palette = Math_PingPongRange(a0->elapsed, 4, 0, 3);
+            }
+        }
+        Gfx_DrawParts((EntA0 *)p);
+    }
+    p2 = (GfxPart *)Cd_GetFileEntry(0x1A10019);
+    Gfx_SetPartsScale((GfxPartScaleView *)p2, 0x1000, w->field_4C);
+    Gfx_SetPartsNumber(p2, 0x1000, 3, w->field_50);
+    for (q2 = p2; q2->fileId != 0; q2++) {
+        if (q2->groupMask & 0x4000) {
+            q2->x = D_80073118[D_80073800].x;
+            q2->y = D_80073118[D_80073800].y + D_80073808[D_80073800] * 11;
+            q2->palette = Math_PingPongRange(a0->elapsed, 4, 0, 3);
+        }
+    }
+    Gfx_HidePartsByMask((GfxPartMaskView *)p2, D_80073128[D_80073800]);
+    Gfx_DrawParts((EntA0 *)p2);
+}
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80066DB0);
 
