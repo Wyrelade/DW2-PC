@@ -587,7 +587,11 @@ void func_8006FE90(Actor *a0) {
     func_8006FC54(w);
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006FED4);
+void func_8006FED4(void) {
+    Stg40E34 *d = D_8005071C->field_E54;
+
+    D_8005071C->field_E58 = (ActorWork *)Mem_Alloc(d->field_0 * (d->field_2 << 2), 2);
+}
 
 void func_8006FF28(void) {
     Mem_Free(D_8005071C->field_E58);
