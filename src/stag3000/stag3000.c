@@ -256,7 +256,10 @@ INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006EC94);
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006EF50);
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006F530);
+void func_8006F530(Actor *a0) {
+    a0->childCount = 5;
+    Task_DefaultDestroy(a0);
+}
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006F554);
 
