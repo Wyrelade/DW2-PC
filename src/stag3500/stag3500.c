@@ -571,7 +571,39 @@ void func_80066808(Actor *arg0, Stg35Vec3 *arg1) {
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_800668F8);
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80066A9C);
+void func_80066A9C(Actor *arg0) {
+    Stg35Work *w = (Stg35Work *)arg0->work;
+    s32 *slot = (s32 *)arg0->u34.children;
+    Stg35SpawnArgs args;
+    s16 a[4];
+    s16 b[4];
+    s32 i;
+
+    func_8001EEA4(w->field_2C, 1, a, b);
+    for (i = 0; i < 3; i++) {
+        if (a[i] != 0) {
+            args.field_0 = a[i];
+            args.field_4 = b[i];
+            args.field_14 = w->field_10;
+            args.field_8 = w->field_4;
+            args.field_C = w->field_8;
+            args.field_10 = w->field_C;
+            args.field_18 = 0x3C;
+            switch (i) {
+            case 0:
+                args.field_C -= func_8001E79C(arg0->digiId) + 0x280;
+                break;
+            case 1:
+                args.field_C -= func_8001E7C0(arg0->digiId);
+                break;
+            case 2:
+            default:
+                break;
+            }
+            Task_Create(7, &slot[i], (s32)&args);
+        }
+    }
+}
 
 void func_80066BC8(Actor *arg0) {
     Snd_PlayById(!func_8001E8D0(arg0->digiId) ? 0x204 : 0x205, 0);
