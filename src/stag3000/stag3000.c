@@ -1768,7 +1768,72 @@ void func_80071044(Stg30Part *p, s32 unit, s32 num, s32 den) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8007118C);
+void func_8007118C(Actor *a0) {
+    Stg30Work734F8 *w = (Stg30Work734F8 *)a0->work;
+    Stg30Part *p;
+    Stg30Part *q;
+    Stg30DigiS *d;
+    s32 off;
+    s32 j;
+    s32 m;
+    s32 k;
+    s32 t;
+
+    if (a0->stateLevel0 != 2) {
+        p = (Stg30Part *)Cd_GetFileEntry(D_80073498[a0->field_8]);
+        off = 0;
+        for (q = p; q->fileId != 0; q++) {
+            j = 0;
+            m = q->groupMask;
+            for (; j < 6; j++) {
+                if (m & D_800734B0[j]) {
+                    if (D_80073CC0.field_31C[a0->field_8] & D_800734C8[j]) {
+                        q->x = D_800734E0[a0->field_8].x + off;
+                        off += 10;
+                        q->y = D_800734E0[a0->field_8].y;
+                        q->visible = 1;
+                    } else {
+                        q->visible = 0;
+                    }
+                }
+            }
+        }
+        for (q = p; q->fileId != 0; q++) {
+            t = w->field_4;
+            if (t != 0x1000) {
+                q->field_E = 0;
+                q->field_14 = w->field_4;
+            } else {
+                q->field_E = 1;
+                q->field_14 = t;
+            }
+            if (q->groupMask & 1) {
+                if (w->field_8 == 12) {
+                    q->visible = 0;
+                } else {
+                    q->visible = 1;
+                    q->y = w->field_8 + 0x55;
+                }
+            }
+        }
+        k = a0->field_8;
+        if (k < 3) {
+            Gfx_SetPartsNumber((GfxPart *)p, 0x20, 3, D_80073CD8[k].maxHp);
+            Gfx_SetPartsNumber((GfxPart *)p, 0x40, 3, D_80073CD8[k].hp);
+            Gfx_SetPartsNumber((GfxPart *)p, 0x80, 3, D_80073CD8[k].maxMp);
+            Gfx_SetPartsNumber((GfxPart *)p, 0x100, 3, D_80073CD8[k].mp);
+            Gfx_SetPartsNumber((GfxPart *)p, 0x200, 2, D_80073CD8[k].level);
+        }
+        d = &D_80073CD8[a0->field_8];
+        if (a0->field_8 < 3) {
+            func_80071044(p, 0x400, d->hp, d->maxHp);
+            func_80071044(p, 0x4000, d->mp, d->maxMp);
+        } else {
+            func_80071044(p, 0x20, d->hp, d->maxHp);
+        }
+        Gfx_DrawParts((EntA0 *)p);
+    }
+}
 
 void func_80071470(Actor *a0, Stg30Pair *args) {
     ((Stg30Work73718 *)a0->work)->pair = *args;
