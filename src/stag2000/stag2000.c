@@ -695,4 +695,14 @@ INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006F3E0);
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006F730);
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006FBF0);
+void func_8006FBF0(Actor *a) {
+    Stg20CamWork *w = (Stg20CamWork *)a->work;
+
+    RotMatrixYXZ(w->rot, &w->coord.coord);
+    w->coord.coord.t[0] = w->tx;
+    w->coord.coord.t[1] = w->ty;
+    w->coord.coord.t[2] = w->tz;
+    w->coord.flg = 0;
+    GsSetProjection(w->proj);
+    GsSetRefView2(&w->view);
+}
