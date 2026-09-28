@@ -1556,7 +1556,57 @@ void func_8006B320(Actor *a0) {
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006B420);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006B698);
+s32 func_8006B698(Stg40Ent48 *e, Pair54 *out) {
+    Stg40Loc *loc = &e->field_18;
+    Pair54 c[3];
+    s16 dx = D_80072B60->field_4->field_18.u0.pair.field_0 - loc->u0.pair.field_0;
+    s16 dy = D_80072B60->field_4->field_18.u0.pair.field_2 - loc->u0.pair.field_2;
+    s32 n;
+    s32 i;
+
+    if (abs(dx) >= 3 || abs(dy) >= 3) {
+        return 0;
+    }
+    if (abs(dx) >= abs(dy)) {
+        c[0].field_0 = dx >= 0 ? loc->u0.pair.field_0 - 1 : loc->u0.pair.field_0 + 1;
+        c[0].field_2 = loc->u0.pair.field_2;
+        if (dy == 0) {
+            switch (e->field_B) {
+            case 0:
+            case 1:
+            case 7:
+                dy--;
+                break;
+            }
+        }
+        c[1].field_0 = loc->u0.pair.field_0;
+        c[1].field_2 = dy < 0 ? loc->u0.pair.field_2 + 1 : loc->u0.pair.field_2 - 1;
+        c[2].field_0 = loc->u0.pair.field_0;
+        c[2].field_2 = dy < 0 ? loc->u0.pair.field_2 - 1 : loc->u0.pair.field_2 + 1;
+    } else {
+        c[0].field_2 = dy >= 0 ? loc->u0.pair.field_2 - 1 : loc->u0.pair.field_2 + 1;
+        c[0].field_0 = loc->u0.pair.field_0;
+        if (dx == 0) {
+            switch (e->field_B) {
+            case 5:
+            case 6:
+            case 7:
+                dx--;
+                break;
+            }
+        }
+        c[1].field_2 = loc->u0.pair.field_2;
+        c[1].field_0 = dx < 0 ? loc->u0.pair.field_0 + 1 : loc->u0.pair.field_0 - 1;
+        c[2].field_2 = loc->u0.pair.field_2;
+        c[2].field_0 = dx < 0 ? loc->u0.pair.field_0 - 1 : loc->u0.pair.field_0 + 1;
+    }
+    for (i = 0, n = 0; i < 3; i++) {
+        out[n].field_0 = c[i].field_0;
+        out[n].field_2 = c[i].field_2;
+        n++;
+    }
+    return n;
+}
 
 s32 func_8006B8C8(Stg40Ent48 *e, Pair54 *out) {
     Pair54 *p = &e->field_18.u0.pair;
