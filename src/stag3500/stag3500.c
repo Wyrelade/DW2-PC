@@ -363,7 +363,37 @@ s32 func_80065E44(s32 arg0) {
     return D_8006AA58[arg0];
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80065E60);
+void func_80065E60(void) {
+    s32 v[6];
+    s32 i;
+    s32 j;
+    s32 best;
+    s32 max;
+
+    for (i = 0; i < 6; i++) {
+        if (D_8006AA88.rec[i].hp != 0) {
+            v[i] = D_8006AA88.rec[i].field_20 + (u16)((u16)Rand_Next() % 11);
+        } else {
+            v[i] = 0;
+        }
+    }
+    func_80065D00();
+    for (i = 0; i < 6; i++) {
+        max = 0;
+        best = 0;
+        for (j = 0; j < 6; j++) {
+            if (v[j] != 0 && max < v[j]) {
+                max = v[j];
+                best = j;
+            }
+        }
+        if (max == 0) {
+            break;
+        }
+        func_80065D2C(func_80065E04(), best);
+        v[best] = 0;
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80065F8C);
 
