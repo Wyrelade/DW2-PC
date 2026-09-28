@@ -422,7 +422,28 @@ INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006E2B8);
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006E330);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006E490);
+s32 func_8006E490(s32 dx, s32 dy) {
+    s32 idx = 0;
+    s32 r;
+    s32 v;
+
+    if (dx < 0) {
+        idx |= 8;
+    }
+    if (dx > 0) {
+        idx |= 4;
+    }
+    if (dy < 0) {
+        idx |= 2;
+    }
+    idx |= dy > 0;
+    v = D_800728D4[idx];
+    r = 0;
+    if (v != -1) {
+        r = v;
+    }
+    return r;
+}
 
 void func_8006E4DC(a0, a1)
     Actor *a0;
