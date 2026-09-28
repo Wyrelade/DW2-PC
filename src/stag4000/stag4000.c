@@ -885,7 +885,29 @@ INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006FC54);
 void func_8006FDAC(void) {
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006FDB4);
+void func_8006FDB4(Actor *a0) {
+    Stg40TileWork *w = (Stg40TileWork *)a0->work;
+
+    switch (a0->stateLevel0) {
+    case 0:
+    default:
+        D_80072BB0 = (Stg40TileGrid *)w;
+        func_8006F3B0(w);
+        func_8006F290(w);
+        func_8006ECD0(w);
+        func_8006F18C(w);
+        D_80072B60->field_7E = 0;
+        Task_NextState0(a0);
+        break;
+    case 1:
+        func_8006F6BC(w);
+        func_8006F18C(w);
+        func_8006F1C8((Stg40ImgWork *)w);
+        break;
+    case 2:
+        break;
+    }
+}
 
 void func_8006FE5C(Actor *a0) {
     func_8006F38C((Stg40ImgWork *)a0->work);
