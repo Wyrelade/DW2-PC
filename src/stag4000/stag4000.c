@@ -1,7 +1,20 @@
 #include "common.h"
 #include "stag4000/stag4000.h"
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80063758);
+void func_80063758(void) {
+    Blk16 *l;
+    Stg40Rgb *c;
+
+    Sys_SetFrameRate30();
+    Gpu_InitDoubleBuffer(0x140, 0xF0, 0, 0);
+    Gpu_SetBgClearColor(0, 0, 0);
+    Gpu_ClearScreens();
+    Gfx_FadeInFromBlack(0x20);
+    Gpu_AllocPacketBufs(0x19000);
+    l = (Blk16 *)Cd_GetFileEntry(0xE200001);
+    c = (Stg40Rgb *)Cd_GetFileEntry(0xE200002);
+    func_800677FC(l, c->r, c->g, c->b);
+}
 
 void func_800637E8(void) {
     Stg40Blk5071C *b = D_8005071C;
