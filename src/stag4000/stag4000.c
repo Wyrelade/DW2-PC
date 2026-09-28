@@ -248,7 +248,24 @@ INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80067454);
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006755C);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80067610);
+void func_80067610(s32 i, s32 file, s32 a2, s32 a3) {
+    TextOpenArgs arg;
+    s32 *p;
+
+    arg.bigFont = 1;
+    arg.color = 0;
+    arg.x = 0;
+    arg.y = 0;
+    arg.charAdvance = 0;
+    arg.lineAdvance = 0xF;
+    arg.text = (s32)Cd_GetFileEntry(file);
+    arg.charDelay = 1;
+    p = &D_80072B84[i];
+    p[5] = 0;
+    arg.strArg0 = a2;
+    arg.strArg1 = a3;
+    Text_Open(p, &arg);
+}
 
 void func_800676A4(s32 i) {
     Text_Close(&D_80072B84[i]);
