@@ -63,7 +63,53 @@ void func_80063CD0(Actor *a, s32 v) {
     ((Stg20Work *)a->work)->field_0 = v;
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80063CDC);
+void func_80063CDC(Actor *a) {
+    Stg20LoadWork *w = (Stg20LoadWork *)a->work;
+    s32 *tbl;
+    s32 i;
+
+    switch (a->stateLevel0) {
+    case 0:
+        tbl = (s32 *)Cd_GetFileOrNull(w->fileId);
+        for (i = 0; i < 10; i++) {
+            if (tbl[i] != 0) {
+                w->ids[i] = (w->fileId << 16) + i;
+            } else {
+                w->ids[i] = 0;
+            }
+        }
+        SetGeomOffset(0, 0);
+        Task_NextState0(a);
+        break;
+    case 1:
+        break;
+    case 2:
+        switch (a->stateLevel1) {
+        case 0:
+        default:
+            Gfx_FadeOutToBlack(0x10);
+            Task_NextState1(a);
+        case 1:
+            if (D_8005F770.fadeLevel == 0xFF) {
+                switch (w->field_2C) {
+                case 0:
+                default:
+                    D_8005F770.nextGameMode = 0x303;
+                    D_8005F770.field_24 = 3;
+                    break;
+                case 1:
+                    D_8005F770.nextGameMode = 0x200;
+                    break;
+                }
+                Task_NextState1(a);
+            }
+            break;
+        case 2:
+            break;
+        }
+        break;
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80063E38);
 
