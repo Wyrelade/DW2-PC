@@ -486,7 +486,15 @@ void func_8006BA90(Actor *a) {
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006BAC0);
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006BB7C);
+void func_8006BB7C(Actor *a) {
+    s32 *w = (s32 *)a->work;
+
+    if (a->stateLevel0 == 0) {
+        Mem_FillWordsNeg1(w, 1);
+        Text_OpenById(w, 0x5F, 0, D_80063588);
+        Task_NextState0(a);
+    }
+}
 
 void func_8006BBF0(Actor *a) {
     Text_CloseArray((s32 *)a->work, 1);
