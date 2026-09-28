@@ -4087,5 +4087,10 @@
       "reg_realloc",
       "sched_match"
     ]
+  },
+  "stag3500:func_80065B88": {
+    "passes": [
+      "nodiv"
+    ]
   }
 }

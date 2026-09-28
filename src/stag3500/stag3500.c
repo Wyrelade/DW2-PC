@@ -295,7 +295,21 @@ void func_80065B6C(Stg35SpriteHandle *arg0, s16 arg1, s16 arg2, s16 arg3, s16 ar
     s->field_1E = arg4;
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80065B88);
+s32 func_80065B88(s32 arg0, s32 arg1, s32 arg2) {
+    s32 r;
+
+    if (arg2 >= arg1) {
+        return arg0;
+    }
+    r = arg0 * arg2 / arg1;
+    if (arg2 != 0 && r == 0) {
+        r = 1;
+    }
+    if (r == arg1 && r != arg2) {
+        r--;
+    }
+    return r;
+}
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80065BE0);
 
