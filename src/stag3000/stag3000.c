@@ -672,7 +672,27 @@ void func_80071470(Actor *a0, Stg30Pair *args) {
     ((Stg30Work73718 *)a0->work)->pair = *args;
 }
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80071488);
+u8 *func_80071488(u8 *out, s32 n) {
+    u8 buf[8];
+    s32 i;
+    s32 lead;
+    s32 k;
+
+    for (i = 7; i != -1; i--) {
+        buf[i] = n % 10;
+        n /= 10;
+    }
+    lead = 1;
+    k = 0;
+    for (i = 0; i < 8; i++) {
+        if (!lead || buf[i] != 0) {
+            out[k++] = buf[i];
+            lead = 0;
+        }
+    }
+    out[k] = 0xFF;
+    return out;
+}
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80071538);
 
