@@ -176,7 +176,12 @@ void func_8006A248(Actor *a, s32 v) {
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006A254);
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006A320);
+void func_8006A320(Actor *a) {
+    Gfx_AttachModel(a, 0x2F7);
+    Actor_UpdateTransform(a);
+    Gfx_CalcModelBoneMatrices(a);
+    Gfx_DrawTexModel(a, 1);
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006A364);
 
