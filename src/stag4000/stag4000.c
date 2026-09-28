@@ -1,8 +1,6 @@
 #include "common.h"
 #include "stag4000/stag4000.h"
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006374C);
-
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80063758);
 
 void func_800637E8(void) {

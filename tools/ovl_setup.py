@@ -39,7 +39,8 @@ for f in sorted(glob.glob('assets/disc/AAA/3.PRO/STAG*.PRO')):
     jr = [i for i in range(n) if w[i] == 0x03E00008]
     pro = [i for i in range(n) if (w[i] >> 16) == 0x27BD and (w[i] & 0x8000)]
     s = pro[0]
-    while s > 0 and not ptr(w[s - 1]) and w[s - 1] != 0 and not asciiish(w[s - 1]):
+    # stop at data: a pointer, zero, ASCII, or a small integer (STAG4000's {50, 40, 30} table)
+    while s > 0 and not ptr(w[s - 1]) and w[s - 1] != 0 and not asciiish(w[s - 1]) and w[s - 1] >= 0x10000:
         s -= 1
     e = jr[-1] + 2
     ts, te = s * 4, e * 4
