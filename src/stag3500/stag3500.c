@@ -604,7 +604,20 @@ void func_80068AA0(Actor *arg0) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80068B10);
+void func_80068B10(s32 arg0, s32 *arg1) {
+    Actor *e = (Actor *)Task_FindFirst(0x708, -1, -1);
+    Stg35Work708 *w;
+    s32 i;
+
+    if (e != NULL) {
+        w = (Stg35Work708 *)e->work;
+        Task_SetState1(e, 2);
+        e->field_8 = arg0;
+        for (i = 0; i < 6; i++) {
+            w->field_5C[i] = arg1[i];
+        }
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80068B9C);
 
