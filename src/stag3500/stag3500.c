@@ -73,7 +73,9 @@ INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_800657F0);
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80065824);
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80065894);
+void func_80065894(Stg35TextHandle *arg0) {
+    Text_Close(arg0->text);
+}
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_800658B8);
 
