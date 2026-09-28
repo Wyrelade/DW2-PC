@@ -69,7 +69,16 @@ void func_80063694(Actor *arg0, s32 arg1, s32 arg2) {
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80063758);
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80063E00);
+void func_80063E00(Actor *arg0) {
+    Stg35ListWork *w = (Stg35ListWork *)arg0->work;
+    s32 i;
+
+    for (i = 0; i < w->field_2E0; i++) {
+        if (w->field_260[i] != 0) {
+            Cd_FreeFile(w->field_260[i]);
+        }
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80063E74);
 
