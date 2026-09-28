@@ -1600,7 +1600,52 @@ s32 func_800681C4(s32 arg0) {
     return i - 1;
 }
 
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80068208);
+void func_80068208(Actor *arg0) {
+    Stg00CountWork *w = (Stg00CountWork *)arg0->work;
+    s32 i;
+    s32 n;
+
+    switch (arg0->stateLevel0) {
+    case 0:
+        Sys_SetFrameRate60();
+        Gpu_InitDoubleBuffer(0x140, 0xF0, 0, 0);
+        Gpu_SetBgClearColor(0, 0, 0);
+        Gpu_ClearScreens();
+        Gfx_FadeInFromBlack(0x100);
+        Task_NextState0(arg0);
+        break;
+    case 1:
+        if (D_8005F6F0[0].up > 0) {
+            if (w->field_0 == 0) {
+                break;
+            }
+            w->field_0--;
+            w->field_4 = 0x3C;
+        } else if (D_8005F6F0[0].down > 0) {
+            if (w->field_0 == 2) {
+                break;
+            }
+            w->field_0++;
+            w->field_4 = 0x3C;
+        } else {
+            n = 5;
+            for (i = 5; i >= 0; i--) {
+                if (i == 5) {
+                    w->field_8[n]++;
+                }
+                if (w->field_8[i] >= 10) {
+                    w->field_8[i] -= 10;
+                    if (i != 0) {
+                        w->field_8[i - 1]++;
+                    }
+                }
+            }
+        }
+        break;
+    case 2:
+        break;
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_8006835C);
 
