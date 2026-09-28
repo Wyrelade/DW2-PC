@@ -270,7 +270,86 @@ INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80065594);
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80065A98);
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80066000);
+void func_80066000(void) {
+    s32 cnt[4];
+    s32 a[3];
+    s32 b[3];
+    Stg30IdSet *d;
+    s32 i;
+    s32 j;
+    s32 id;
+    s32 k;
+    s32 cost;
+    s32 flag;
+    s32 m;
+
+    d = (Stg30IdSet *)&((Stg30StateDigis *)&D_80073CC0)->digis[D_80073CC0.entries[0].field_8];
+    for (i = 0; i < 4; i++) {
+        cnt[i] = 0;
+        D_80073820[i].field_D[13] = 0;
+        for (j = 0; j < 12; j++) {
+            D_80073820[i].field_D[j] = 0;
+        }
+    }
+    for (i = 0; i < 12; i++) {
+        j = d->ids[i];
+        if (j != 0) {
+            k = func_8001EE34(j);
+            cost = func_8001EE80(j);
+            D_80073820[k].field_D[cnt[k]] = j;
+            D_80073820[k].field_0[cnt[k]] = (d->field_1A < cost) * 2;
+            cnt[k]++;
+        }
+    }
+    for (i = 0; i < 4; i++) {
+        D_80073820[i].field_D[13] = cnt[i];
+    }
+    if (D_80073CC0.field_31C[D_80073CC0.entries[0].field_8] & 8) {
+        b[1] = 0;
+        b[0] = 0;
+        a[1] = 0;
+        a[0] = 0;
+        for (i = 0; i < 4; i++) {
+            for (j = 0; j < cnt[i]; j++) {
+                id = D_80073820[i].field_D[j];
+                m = func_8001EF64(id);
+                cost = func_8001EE80(id);
+                if (a[0] < m) {
+                    a[0] = m;
+                    a[1] = i;
+                    a[2] = j;
+                }
+                if (b[0] < cost) {
+                    b[0] = cost;
+                    b[1] = i;
+                    b[2] = j;
+                }
+            }
+        }
+        if (a[0] != 0) {
+            D_80073820[a[1]].field_0[a[2]] = 2;
+        }
+        if (b[0] != 0) {
+            D_80073820[b[1]].field_0[b[2]] = 2;
+        }
+    }
+    flag = 0;
+    for (i = 3; i < 6; i++) {
+        if (D_80073CC0.entries[i].field_2E != 0 && !(D_80073CC0.field_31C[i] & 0x10000)) {
+            flag = 1;
+            break;
+        }
+    }
+    if (!flag) {
+        for (i = 0; i < 4; i++) {
+            for (j = 0; j < cnt[i]; j++) {
+                if (func_8001EF3C(D_80073820[i].field_D[j]) == 5) {
+                    D_80073820[i].field_0[j] = 2;
+                }
+            }
+        }
+    }
+}
 
 void func_800663F8(void *a0, s32 id, s32 color, Stg30XY pos, s32 name, s32 delay) {
     TextOpenArgs args;
