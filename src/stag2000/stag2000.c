@@ -9,7 +9,10 @@ s32 func_800636A8(Stg20Cell *c) {
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_800636D8);
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80063760);
+void func_80063760(Actor *a, s32 v) {
+    ((Stg20Work *)a->work)->field_0 = v;
+    func_80063610(a);
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80063784);
 
