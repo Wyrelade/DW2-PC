@@ -111,7 +111,23 @@ INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80064FF4);
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80065100);
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_800652C8);
+void func_800652C8(void *a0, s32 id, s32 color, Stg30XY pos, s32 name, s32 delay) {
+    TextOpenArgs args;
+
+    if (name == 0) {
+        args.text = Item_GetDescText(id);
+    } else {
+        args.text = Item_GetNameText(id);
+    }
+    args.bigFont = 0;
+    args.color = color;
+    args.x = pos.x;
+    args.y = pos.y;
+    args.charAdvance = 0;
+    args.lineAdvance = 0;
+    args.charDelay = delay;
+    Text_Open(a0, &args);
+}
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80065354);
 
