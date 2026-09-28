@@ -86,7 +86,20 @@ void func_80065168(s32 a0, s32 a1, s32 a2) {
     Task_SetState1(t, 1);
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_800651C0);
+void func_800651C0(Stg40Loc *loc, s32 a1) {
+    Actor *t = D_80072B68;
+    Stg40B68Work *w = (Stg40B68Work *)t->work;
+    Stg40B60 *b;
+
+    w->field_1E90 = loc->field_C;
+    w->field_1E94 = loc->field_10;
+    b = D_80072B60;
+    w->field_1E98 = b->field_2C;
+    w->field_1E9C = b->field_30;
+    w->field_1EA0 = a1;
+    D_8005071C->field_1064 = loc;
+    Task_SetState1(t, 2);
+}
 
 s32 func_80065230(void) {
     Stg40B68Work *w = (Stg40B68Work *)D_80072B68->work;
