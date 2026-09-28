@@ -939,7 +939,16 @@ s32 func_80072114(void) {
     return D_80072BC0->stateLevel1;
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8007212C);
+void func_8007212C(Stg40Blk20 *blk, s32 a1, s32 a2, s32 a3) {
+    Actor *t = D_80072BC0;
+    Stg40BC0Work *w = (Stg40BC0Work *)t->work;
+
+    w->field_88 = *blk;
+    w->field_A8 = a1;
+    w->field_AC = a2;
+    w->field_B0 = a3;
+    Task_SetState1(t, 1);
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_800721A8);
 
