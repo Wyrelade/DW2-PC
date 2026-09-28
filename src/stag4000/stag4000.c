@@ -320,7 +320,51 @@ void func_80065BF8(s32 x, s32 z, s32 y, Stg40Vec3 *out) {
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80065C50);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80065F94);
+s32 func_80065F94(Stg40W667C *w, s32 pkt, s32 x, s32 y) {
+    Stg40Vtx *a = &w->field_0[y][x];
+    Stg40Vtx *b = &w->field_0[y + 1][x];
+    Stg40Tile *t = &w->field_F20[y][x];
+    s32 k = t->field_0 == 0;
+    u32 *ot;
+
+    if (a[0].s[k].flag + a[1].s[k].flag + b[0].s[k].flag + b[1].s[k].flag == 0) {
+        return pkt;
+    }
+    if (t->field_0 != 0) {
+        ot = D_8005F8C0;
+        *(Stg40FT4 *)pkt = w->field_143C[D_80072620[t->field_3 & 0x7F]];
+        ((Stg40FT4 *)pkt)->x0 = a[0].s[0].x;
+        ((Stg40FT4 *)pkt)->y0 = a[0].s[0].y;
+        ((Stg40FT4 *)pkt)->x1 = a[1].s[0].x;
+        ((Stg40FT4 *)pkt)->y1 = a[1].s[0].y;
+        ((Stg40FT4 *)pkt)->x2 = b[0].s[0].x;
+        ((Stg40FT4 *)pkt)->y2 = b[0].s[0].y;
+        ((Stg40FT4 *)pkt)->x3 = b[1].s[0].x;
+        ((Stg40FT4 *)pkt)->y3 = b[1].s[0].y;
+        ((Stg40FT4 *)pkt)->tag.word = (((Stg40FT4 *)pkt)->tag.word & 0xFF000000) | (*ot & 0xFFFFFF);
+        *ot = (*ot & 0xFF000000) | ((u32)pkt & 0xFFFFFF);
+        pkt += sizeof(Stg40FT4);
+    } else {
+        ot = &D_8005F8B4[w->field_F20[y][x].field_8];
+        ((Stg40F4 *)pkt)->tag.b.len = 5;
+        ((Stg40F4 *)pkt)->code = 0x28;
+        ((Stg40F4 *)pkt)->r0 = 0;
+        ((Stg40F4 *)pkt)->g0 = 0;
+        ((Stg40F4 *)pkt)->b0 = 0;
+        ((Stg40F4 *)pkt)->x0 = a[0].s[1].x;
+        ((Stg40F4 *)pkt)->y0 = a[0].s[1].y;
+        ((Stg40F4 *)pkt)->x1 = a[1].s[1].x;
+        ((Stg40F4 *)pkt)->y1 = a[1].s[1].y;
+        ((Stg40F4 *)pkt)->x2 = b[0].s[1].x;
+        ((Stg40F4 *)pkt)->y2 = b[0].s[1].y;
+        ((Stg40F4 *)pkt)->x3 = b[1].s[1].x;
+        ((Stg40F4 *)pkt)->y3 = b[1].s[1].y;
+        ((Stg40F4 *)pkt)->tag.word = (((Stg40F4 *)pkt)->tag.word & 0xFF000000) | (*ot & 0xFFFFFF);
+        *ot = (*ot & 0xFF000000) | ((u32)pkt & 0xFFFFFF);
+        pkt += sizeof(Stg40F4);
+    }
+    return pkt;
+}
 
 void func_8006620C(Stg40W667C *w) {
     s32 rows;
