@@ -117,7 +117,20 @@ s32 func_800653EC(s32 a, s32 b, s32 c, s32 d) {
     return d;
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80065424);
+s32 func_80065424(s32 a, s32 b, s32 c, s32 d) {
+    if (b >= a) {
+        b = a;
+    }
+    a = b;
+    if (c >= a) {
+        c = a;
+    }
+    a = c;
+    if (d >= a) {
+        d = a;
+    }
+    return d;
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006545C);
 
