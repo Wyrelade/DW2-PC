@@ -1008,7 +1008,34 @@ void func_8006F18C(Stg40TileWork *a0) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006F1C8);
+void func_8006F1C8(Stg40ImgWork *a0) {
+    Stg40ImgClut *p = (Stg40ImgClut *)a0;
+    s32 c;
+    s32 v;
+    s32 h;
+    s32 g;
+    s32 b;
+
+    p->field_75C++;
+    c = 15 - ((p->field_75C & 0xF) >> 1);
+    v = c & 0x1F;
+    b = v << 10;
+    g = (v << 5) | 0x8000;
+    p->clut[4] = b | g;
+    p->clut[3] = v | 0x8000;
+    p->clut[2] = (v << 5) | 0x8000 | v;
+    p->clut[1] = g;
+    h = (c / 2) & 0x1F;
+    p->clut[0] = b | ((h << 5) | 0x8000) | h;
+    if (D_8005F6F0[0].start != 0) {
+        p->clut[6] = 0xA94A;
+        p->clut[7] = 0xE318;
+    } else {
+        p->clut[6] = 0x8000;
+        p->clut[7] = 0xA94A;
+    }
+    func_8006F168(a0);
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006F290);
 
