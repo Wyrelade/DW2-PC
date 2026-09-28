@@ -371,7 +371,129 @@ void func_800663F8(void *a0, s32 id, s32 color, Stg30XY pos, s32 name, s32 delay
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80066484);
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80066698);
+void func_80066698(Actor *a0) {
+    Stg30Work73138 *w = (Stg30Work73138 *)a0->work;
+    s16 *row;
+    s16 *top;
+    s32 cat;
+    s32 c;
+    s32 i;
+
+    switch (a0->stateLevel0) {
+    case 0:
+        Mem_FillWordsNeg1(w->texts, 0x12);
+        func_80066000();
+        w->field_48 = -1;
+        D_80073800 = 0;
+        w->field_4C = 0;
+        D_80073808[0] = 0;
+        D_80073808[1] = 0;
+        D_80073808[2] = 0;
+        D_80073808[3] = 0;
+        D_80073810[0] = 0;
+        D_80073810[1] = 0;
+        D_80073810[2] = 0;
+        D_80073810[3] = 0;
+        Task_NextState0(a0);
+        break;
+    case 1:
+        switch (a0->stateLevel1) {
+        case 0:
+        default:
+            w->field_4C += 0x555;
+            if (w->field_4C >= 0x1000) {
+                w->field_4C = 0x1000;
+                Task_NextState1(a0);
+            }
+            break;
+        case 1:
+            cat = D_80073800;
+            row = &D_80073808[cat];
+            top = &D_80073810[cat];
+            do {
+                if (D_8005F6F0[0].left > 0) {
+                    if (cat == 0) break;
+                    D_80073800--;
+                    Snd_PlayById(0xD, 0);
+                    break;
+                }
+                if (D_8005F6F0[0].right > 0) {
+                    if (cat == 3) break;
+                    D_80073800++;
+                    Snd_PlayById(0xD, 0);
+                    break;
+                }
+                if (D_8005F6F0[0].repeat & 0x1000) {
+                    if (*row != 0) {
+                        *row -= 1;
+                        Snd_PlayById(0xD, 0);
+                        break;
+                    }
+                    if (*top == 0) break;
+                    *top -= 1;
+                    Snd_PlayById(0xD, 0);
+                    break;
+                }
+                if (D_8005F6F0[0].repeat & 0x4000) {
+                    if (*row != 2) {
+                        *row += 1;
+                        Snd_PlayById(0xD, 0);
+                        break;
+                    }
+                    if (D_80073820[cat].field_D[*row + *top + 1] == 0) break;
+                    *top += 1;
+                    Snd_PlayById(0xD, 0);
+                    break;
+                }
+                if (D_8005F6F0[0].cross > 0) {
+                    if (D_80073820[cat].field_D[*row + *top] != 0 && D_80073820[cat].field_0[*row + *top] == 0) {
+                        D_80073CC0.entries[0].field_14 = 0;
+                        D_80073CC0.field_2AC[D_80073CC0.entries[0].field_8].field_0 = cat + 1;
+                        D_80073CC0.field_2AC[D_80073CC0.entries[0].field_8].field_6 = D_80073820[cat].field_D[*row + *top];
+                        D_80073CC0.field_2AC[D_80073CC0.entries[0].field_8].field_8 = func_8006E2BC(D_80073820[cat].field_D[*row + *top]);
+                        Snd_PlayById(0xE, 0);
+                        Task_NextState0(a0);
+                        break;
+                    }
+                    Snd_PlayById(0x10, 0);
+                    break;
+                }
+                if (D_8005F6F0[0].triangle > 0) {
+                    D_80073CD4 = 1;
+                    Snd_PlayById(0xB, 0);
+                    Task_NextState0(a0);
+                }
+            } while (0);
+            func_80066484(a0);
+            Text_OpenById(w, 0x179, 4, D_800633F8);
+            for (i = 0; i < 4; i++) {
+                if (D_80073800 == i) {
+                    c = 4;
+                } else {
+                    c = 5;
+                }
+                Text_OpenById(&w->texts[i + 1], i + 10, c, D_800730F8[i]);
+            }
+            break;
+        }
+        break;
+    case 2:
+        switch (a0->stateLevel1) {
+        case 0:
+        default:
+            Text_CloseArray(w->texts, 0x12);
+            Task_NextState1(a0);
+        case 1:
+            w->field_4C -= 0x555;
+            if (w->field_4C <= 0) {
+                w->field_4C = 0;
+                Task_NextState0(a0);
+            }
+            break;
+        }
+        break;
+    }
+}
 
 void func_80066AE0(Actor *a0) {
     Stg30Work73138 *w = (Stg30Work73138 *)a0->work;
