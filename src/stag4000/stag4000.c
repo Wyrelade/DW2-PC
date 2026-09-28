@@ -1,10 +1,17 @@
 #include "common.h"
+#include "stag4000/stag4000.h"
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006374C);
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80063758);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_800637E8);
+void func_800637E8(void) {
+    Stg40Blk5071C *b = D_8005071C;
+
+    b->field_E54 = &b->field_E34;
+    b->field_E34.field_0 = 0x40;
+    b->field_E54->field_2 = 0x30;
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80063814);
 
