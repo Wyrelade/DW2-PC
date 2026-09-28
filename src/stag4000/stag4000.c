@@ -1013,7 +1013,23 @@ void func_80070EC0(u32 *p, u32 n) {
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80070EE0);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80070FEC);
+s32 func_80070FEC(Stg40Pick *out, Stg40Rec3 *e, u8 key) {
+    s32 r = -1;
+    s32 n = 0;
+
+    for (; e->field_0 != 0xFF; e++) {
+        if (e->field_2 == key) {
+            out->field_0 = e->field_0;
+            out->field_2 = e->field_1;
+            n++;
+            out++;
+        }
+    }
+    if (n != 0) {
+        r = func_800711C4(n);
+    }
+    return r;
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8007107C);
 
