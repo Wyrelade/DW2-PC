@@ -326,7 +326,27 @@ void func_800671E8(void) {
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_800671F0);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80067454);
+void func_80067454(Actor *a0) {
+    ActorWork *w = a0->work;
+    Stg40SlotInfo *info;
+    EntA0 *p;
+    s32 i;
+
+    if (w->field_0 != 0) {
+        info = (Stg40SlotInfo *)D_80072B60->field_80[D_80072B60->field_AC]->field_10;
+        for (i = 0; i < 3; i++) {
+            p = Cd_GetFileEntry(D_80072750[i]);
+            if (i >= info->field_B) {
+                Gfx_HidePartsByMask((GfxPartMaskView *)p, -1);
+            } else {
+                Gfx_SetPartsNumber((GfxPart *)p, 2, 2, info->field_16[i]);
+                Gfx_HidePartsByMask((GfxPartMaskView *)p, 0);
+                Gfx_SetPartsScale((GfxPartScaleView *)p, 0x1000, w->field_0);
+            }
+            Gfx_DrawParts((s32)p);
+        }
+    }
+}
 
 u8 *func_8006755C(s32 i, s32 v) {
     s32 d = 10000;
