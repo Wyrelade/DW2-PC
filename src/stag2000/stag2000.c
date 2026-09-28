@@ -535,7 +535,23 @@ Actor *func_8006A8C0(s32 id) {
     return NULL;
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006A920);
+void func_8006A920(Actor *a, Stg20Pos2 *pos) {
+    Stg20CursorWork *w = (Stg20CursorWork *)a->work;
+    ActorTransformView *t = a->u38.ptr38;
+    Stg20Cell c = *func_80067504(a);
+
+    if (c.x != pos->x && c.y != pos->y) {
+        t->posX = (pos->x - 11) * 0x600;
+        t->posY = 0;
+        t->posZ = -((pos->y - 11) * 0x600);
+    }
+    w->x = pos->x;
+    w->y = pos->y;
+    w->field_8 = w->field_A = 1;
+    w->field_74 = 0;
+    w->field_5C = 0;
+    w->field_18 = 0;
+}
 
 s32 func_8006A9F8(Actor *a) {
     return ((Stg20ModelWork *)a->work)->field_74;
