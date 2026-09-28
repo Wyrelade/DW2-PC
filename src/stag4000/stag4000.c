@@ -694,7 +694,11 @@ void func_8006FF28(void) {
     Mem_Free(D_8005071C->field_E58);
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006FF54);
+u16 func_8006FF54(u16 *pal, u32 *bits, s32 x, s32 y) {
+    s32 w = D_8005071C->field_E54->field_0 / 8;
+
+    return pal[(bits[w * y + x / 8] >> ((x % 8) * 4)) & 0xF];
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006FFCC);
 
