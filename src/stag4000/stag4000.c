@@ -136,7 +136,15 @@ INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006545C);
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80065890);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80065BF8);
+void func_80065BF8(s32 x, s32 z, s32 y, Stg40Vec3 *out) {
+    Stg40B60 *b = D_80072B60;
+    s32 t;
+
+    out->field_4 = -(((z - b->field_30) << 11) / 64);
+    t = x - b->field_2C;
+    out->field_2 = -y;
+    out->field_0 = t * 40;
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80065C50);
 
