@@ -285,7 +285,9 @@ INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006F69C);
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006F820);
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006F8CC);
+void func_8006F8CC(Actor *a0, Vec3 *args) {
+    ((Stg30WorkVec3 *)a0->work)->pos = *args;
+}
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006F8EC);
 
