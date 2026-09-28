@@ -1482,7 +1482,74 @@ void func_80067DFC(Actor *arg0, Stg00Vec3 *arg1) {
     *(Stg00Vec3 *)arg0->work = *arg1;
 }
 
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80067E1C);
+void func_80067E1C(Actor *arg0) {
+    Stg00CdWork *w = (Stg00CdWork *)arg0->work;
+    u8 param[8];
+    u8 mode[8];
+    u8 loc[8];
+    u8 res[8];
+    u8 res2[8];
+
+    switch (arg0->stateLevel0) {
+    case 0:
+    default:
+        switch (arg0->stateLevel1) {
+        case 0:
+        default:
+            w->field_C = Cd_GetFileLba(w->field_0) + D_80068FA0[w->field_8 - 1];
+            w->field_10 = w->field_C + D_80068FB8[w->field_8 - 1];
+            param[0] = 1;
+            param[1] = w->field_4;
+            CdControl(0xD, param, 0);
+            mode[0] = 0xC8;
+            CdControlB(0xE, mode, 0);
+            CdIntToPos(w->field_C, loc);
+            CdControlF(0x15, (s32)loc);
+            Task_NextState1(arg0);
+            break;
+        case 1:
+            switch (CdSync(1, res)) {
+            case 5:
+                Task_SetState0(arg0, 0);
+                break;
+            case 2:
+                Task_NextState0(arg0);
+                break;
+            }
+            break;
+        }
+        break;
+    case 1:
+        break;
+    case 2:
+        switch (arg0->stateLevel1) {
+        case 0:
+        default:
+            CdIntToPos(w->field_C, res);
+            if (CdControl(0x1B, res, 0) == 1) {
+                Task_NextState1(arg0);
+            }
+            break;
+        case 1:
+            if ((((Stg00ActorTimer *)arg0)->field_24 & 0x1F) == 0) {
+                switch (CdSync(1, res2)) {
+                case 5:
+                    Task_SetState0(arg0, 3);
+                    break;
+                case 2:
+                    if (CdLastCom() == 0x11 && CdPosToInt(&res2[5]) >= w->field_10) {
+                        Task_SetState0(arg0, 3);
+                    } else {
+                        CdControlF(0x11, 0);
+                    }
+                    break;
+                }
+            }
+            break;
+        }
+        break;
+    }
+}
 
 void func_80068050(Actor *arg0) {
     CdControlF(9, 0);
