@@ -339,7 +339,45 @@ INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80069A44);
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80069DE8);
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006A030);
+s32 func_8006A030(s32 a, s32 b) {
+    if (a == 5) {
+        return 0;
+    }
+    if (b == 5) {
+        return 0;
+    }
+    if (a == 0 && b == 1) {
+        return 1;
+    }
+    if (a == 1 && b == 2) {
+        return 1;
+    }
+    if (a == 2 && b == 3) {
+        return 1;
+    }
+    if (a == 3 && b == 4) {
+        return 1;
+    }
+    if (a == 4 && b == 0) {
+        return 1;
+    }
+    if (a == 0 && b == 2) {
+        return -1;
+    }
+    if (a == 1 && b == 3) {
+        return -1;
+    }
+    if (a == 2 && b == 4) {
+        return -1;
+    }
+    if (a == 3 && b == 0) {
+        return -1;
+    }
+    if (a == 4 && b == 1) {
+        return -1;
+    }
+    return 0;
+}
 
 s32 func_8006A118(void) {
     if (D_8005D5A0.field_103D == 0) {
