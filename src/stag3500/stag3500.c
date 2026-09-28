@@ -328,7 +328,14 @@ INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80067510);
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_8006768C);
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_800676E0);
+void func_800676E0(Actor *arg0) {
+    Stg35LoadHandle *w = (Stg35LoadHandle *)arg0->work;
+    s32 i;
+
+    for (i = 0; i < 1; i++) {
+        func_800661B0(&w[i]);
+    }
+}
 
 void func_80067720(void) {
     Mem_Zero(D_8006AA88, 0x358);
