@@ -321,7 +321,15 @@ INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80067BA8);
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80067DB4);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_800680B0);
+void func_800680B0(Actor *a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6) {
+    func_8006E4DC(a0, a1);
+    Task_SetState1(a0, 9);
+    D_80072B60->field_34 = a2;
+    D_80072B60->field_38 = a3;
+    D_80072B60->field_44 = a4;
+    D_80072B60->field_48 = a5;
+    D_80072B60->field_4C = a6;
+}
 
 void func_8006813C(Actor *a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) {
     func_8006E4DC(a0, a1);
