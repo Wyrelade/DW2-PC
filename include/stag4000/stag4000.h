@@ -37,10 +37,21 @@ typedef struct {
     /* 0x04 */ s16 field_4;
     u8 _pad06[0x01];
     /* 0x07 */ u8 field_7;
-    u8 _pad08[0x10];
+    /* 0x08 */ u8 field_8;         /* kind, switched on by func_8006D418 */
+    u8 _pad09[0x05];
+    /* 0x0E */ u16 field_E;
+    /* 0x10 */ u8 *field_10;
+    /* 0x14 */ Actor *field_14;
     /* 0x18 */ Stg40Loc field_18;
     u8 _pad2C[0x1C];
 } Stg40Ent48;
+
+/* x, y, value byte triple (Stg40Blk5071C.field_D08; func_800709DC, func_80070FEC). */
+typedef struct {
+    /* 0x0 */ u8 field_0;
+    /* 0x1 */ u8 field_1;
+    /* 0x2 */ u8 field_2;
+} Stg40Rec3;
 
 /* Element of the grid behind Stg40Blk5071C.field_E58 (field_E54 dims; func_800703E0). */
 typedef struct {
@@ -50,13 +61,19 @@ typedef struct {
 } Stg40Cell;
 
 typedef struct {
-    u8 _pad000[0x04];
+    u8 _pad000[0x01];
+    /* 0x001 */ u8 field_1;
+    /* 0x002 */ u8 field_2;
+    /* 0x003 */ u8 field_3;
     /* 0x004 */ u8 field_4;
     u8 _pad005[0x07];
     /* 0x00C */ s16 field_C;       /* count of live field_18 entries (func_800689E0) */
-    u8 _pad00E[0x0A];
+    u8 _pad00E[0x06];
+    /* 0x014 */ s16 field_14;      /* count of live field_D08 entries (func_800709DC) */
+    u8 _pad016[0x02];
     /* 0x018 */ Stg40Ent48 field_18[41];
-    u8 _padBA0[0xE34 - 0xBA0];
+    u8 _padBA0[0xD08 - 0xBA0];
+    /* 0xD08 */ Stg40Rec3 field_D08[100];
     /* 0xE34 */ Stg40E34 field_E34;
     u8 _padE38[0x1C];
     /* 0xE54 */ Stg40E34 *field_E54;
@@ -64,7 +81,9 @@ typedef struct {
     /* 0xE5C */ s32 field_E5C[8];
     /* 0xE7C */ u8 field_E7C[0x180];
     /* 0xFFC */ Stg40FFC field_FFC;
-    u8 _pad1018[0x4C];
+    u8 _pad1018[0x40];
+    /* 0x1058 */ s16 field_1058;
+    u8 _pad105A[0x0A];
     /* 0x1064 */ Stg40Loc *field_1064;
 } Stg40Blk5071C;
 
@@ -120,7 +139,16 @@ typedef struct {
     /* 0x748 */ RECT rect;
     u8 _pad750[0x08];
     /* 0x758 */ s32 *field_758;
+    /* 0x75C */ s32 field_75C;
 } Stg40ImgWork;
+
+/* Stg40ImgWork viewed with the 16-colour CLUT func_8006F1C8 animates at 0x14. */
+typedef struct {
+    u8 _pad000[0x14];
+    /* 0x014 */ u16 clut[8];
+    u8 _pad024[0x75C - 0x24];
+    /* 0x75C */ s32 field_75C;     /* frame counter */
+} Stg40ImgClut;
 
 /* Stg40TileWork viewed as 4bpp pixels, 18 halfwords per row (func_8006EB84). */
 typedef struct {
@@ -143,20 +171,53 @@ typedef struct {
     /* 0x76A */ s16 field_76A;
 } Stg40TileWork;
 
+/* Element of Stg40B60.field_144 (stride 8, 5 entries; func_8006E6CC). */
+typedef struct {
+    union {
+        /* 0x0 */ s32 field_0;
+        /* 0x0 */ Pair54 pair;
+    } u0;
+    /* 0x4 */ s32 field_4;
+} Stg40B60Ent;
+
 typedef struct {
     /* 0x000 */ s32 field_0;
-    u8 _pad004[0x28];
+    /* 0x004 */ Stg40Ent48 *field_4;
+    u8 _pad008[0x04];
+    /* 0x00C */ s32 *field_C;      /* Cd_GetFileOrNull table (func_80070CC0) */
+    /* 0x010 */ s32 field_10;
+    u8 _pad014[0x04];
+    /* 0x018 */ s16 field_18;      /* count of non-zero field_C words */
+    u8 _pad01A[0x02];
+    /* 0x01C */ s32 field_1C;
+    u8 _pad020[0x0C];
     /* 0x02C */ s32 field_2C;
     /* 0x030 */ s32 field_30;
     /* 0x034 */ s32 field_34;
     /* 0x038 */ s32 field_38;
-    u8 _pad03C[0x08];
+    /* 0x03C */ Actor *field_3C;
+    /* 0x040 */ Stg40Ent48 *field_40;
     /* 0x044 */ s32 field_44;
     /* 0x048 */ s32 field_48;
     /* 0x04C */ s32 field_4C;
-    u8 _pad050[0x2E];
+    /* 0x050 */ s32 field_50;
+    u8 _pad054[0x0C];
+    /* 0x060 */ u8 field_60[8];    /* stack indexed by field_68 (func_800690CC) */
+    /* 0x068 */ s16 field_68;
+    /* 0x06A */ u8 field_6A[0x0E];
+    /* 0x078 */ s32 field_78;
+    u8 _pad07C[0x02];
     /* 0x07E */ s16 field_7E;
-    u8 _pad080[0x100];
+    u8 _pad080[0x61];
+    /* 0x0E1 */ u8 field_E1;
+    /* 0x0E2 */ u8 field_E2;       /* cursor, 0..field_E1-1 (func_8006AE74) */
+    u8 _pad0E3[0x01];
+    /* 0x0E4 */ u8 field_E4;
+    u8 _pad0E5[0x5F];
+    /* 0x144 */ Stg40B60Ent field_144[5];
+    /* 0x16C */ u32 field_16C;
+    /* 0x170 */ s32 field_170;
+    u8 _pad174[0x0C];
     /* 0x180 */ s16 field_180;
 } Stg40B60;
 
@@ -193,6 +254,7 @@ typedef struct {
     /* 0xB0 */ s32 field_B0;
     /* 0xB4 */ Stg40Cmd *field_B4;
     /* 0xB8 */ s32 field_B8;
+    /* 0xBC */ Stg40Cmd field_BC[1]; /* filled by func_800721A8 up to a zero field_0 record; count unknown */
 } Stg40BC0Work;
 
 /* Three halfwords written by func_80065BF8 (SVECTOR-like). */
@@ -201,6 +263,33 @@ typedef struct {
     /* 0x2 */ s16 field_2;
     /* 0x4 */ s16 field_4;
 } Stg40Vec3;
+
+/* Three words at Cd_GetFileEntry(0xE200002): ambient r, g, b (func_80063758). */
+typedef struct {
+    /* 0x0 */ s32 r;
+    /* 0x4 */ s32 g;
+    /* 0x8 */ s32 b;
+} Stg40Rgb;
+
+/* Output pair written by func_80070FEC. */
+typedef struct {
+    /* 0x0 */ s16 field_0;
+    /* 0x2 */ s16 field_2;
+} Stg40Pick;
+
+/* Actor.work of the task driven by func_8006667C. */
+typedef struct {
+    u8 _pad0000[0x1418];
+    /* 0x1418 */ s32 field_1418[1]; /* texture ids, -1 terminated */
+} Stg40W667C;
+
+/* arg0 of func_8006E764: a file-queue countdown (0x28) gated by 0x34. */
+typedef struct {
+    u8 _pad00[0x28];
+    /* 0x28 */ u8 field_28;
+    u8 _pad29[0x0B];
+    /* 0x34 */ s16 field_34;
+} Stg40E764;
 
 /* main exe */
 extern Stg40Blk5071C *D_8005071C;
@@ -229,6 +318,26 @@ extern s32 GsSetFlatLight(s32, Blk16 *);
 extern void GsSetAmbient(s32, s32, s32);
 extern void GsSetLightMode(s32);
 
+extern void Cd_QueueFile(s32);
+extern void Sys_SetFrameRate30(void);
+extern void Gpu_InitDoubleBuffer(s32 w, s32 h, s32 mode, s32 inter);
+extern void Gpu_SetBgClearColor(s32 a0, s32 a1, s32 a2);
+extern void Gpu_ClearScreens(void);
+extern void Gfx_FadeInFromBlack(s32 arg0);
+extern void Gpu_AllocPacketBufs(s32 a0);
+extern void Text_Open(void *, TextOpenArgs *);
+extern GfxTexSlot *Gfx_FindOrLoadTexSlot(s32);
+extern u16 D_8005F72C;
+extern void Snd_PlayById(s32, s32);
+extern void Task_NextState2(Actor *arg0);
+extern s32 Cd_GetFileOrNull(s32 arg0);
+extern void func_8001E28C(s32 arg0);
+extern s32 func_8001E480(void); /* main defines it void; its tail call leaves Flag_NextPassingEntry's result in v0 */
+extern Blk12 *func_8001E5E8(); /* main defines it (void); the overlay passes the entry index */
+extern s32 Flag_NextPassingEntry(void);
+extern PadState D_8005F6F0[];
+extern s32 Flag_Test(s32 arg0);
+
 /* overlay data */
 extern s32 D_80072944;
 extern Stg40B60 *D_80072B60;
@@ -243,6 +352,9 @@ extern s16 D_800729E0[];
 extern s16 D_800728D4[];
 extern u8 D_800729F8[][6];
 extern s32 D_80072A1C[];
+extern u8 D_80072B90[][8];
+extern s32 D_80072868[];
+extern s32 D_80072BB8;
 
 /* overlay functions */
 void func_8006ED5C(void);
@@ -271,9 +383,41 @@ void func_8006DB68(s32 a0, s32 a1, s32 a2, s32 a3);
 s32 func_8006DEF0(u8 (*tbl)[2], s32 n);
 s32 func_8006E330(void);
 void func_8006E4E8(Actor *a0, s32 a1);
-void func_8006E764(s32 a0, s32 a1, s32 a2);
+void func_8006E764(Stg40E764 *a0, s32 a1, s32 a2);
 s16 *func_80070AD0(s16 v);
 s16 func_80070C94(void);
 void func_8007212C(Stg40Blk20 *blk, s32 a1, s32 a2, s32 a3);
+void func_800677FC(Blk16 *l, s32 r, s32 g, s32 b);
+u16 func_800703E0(s32 x, s32 y);
+void func_8006EB84(s32 idx, s32 row, s32 val);
+void func_80065300(Actor *a0);
+void func_8006545C(ActorWork *w);
+void func_80065890(ActorWork *w);
+s32 func_80068604(Stg40Ent48 *e);
+s16 func_80070C48(void);
+void func_8006F290(Stg40TileWork *w);
+void func_8006F6BC(Stg40TileWork *w);
+void func_8006F1C8(Stg40ImgWork *a0);
+void func_8006F18C(Stg40TileWork *a0);
+s16 func_8006F3B0(Stg40TileWork *a0);
+void func_8006ECD0(Stg40TileWork *a0);
+Stg40Cell *func_800708A4(s32 x, s32 y);
+void func_8006620C(Stg40W667C *w);
+void func_80070EE0(s32 *p);
+void func_80067880(Actor *a0, u8 a1);
+void func_8006813C(Actor *a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5);
+void func_8006AD10(void);
+void func_8006F168(Stg40ImgWork *a0);
+s32 func_80068B8C(Actor *a0);
+s32 func_8006C6C4(Actor *a0);
+s32 func_8006C84C(Actor *a0);
+s32 func_8006CAD4(Actor *a0);
+s32 func_8006CD1C(Actor *a0);
+s32 func_8006CF54(Actor *a0);
+s32 func_8006D0E8(Actor *a0);
+Stg40Ent48 *func_800689E0(Stg40Ent48 *a0);
+s32 func_80071258(s32 i);
+void func_80070490(s32 buf, s32 a1, s32 x, s32 y, s32 flag);
+void func_80070754(void);
 
 #endif
