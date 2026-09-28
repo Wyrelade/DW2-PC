@@ -2122,7 +2122,50 @@ void func_80072418(Actor *a0, Block1C *a1) {
     w->field_B8 = 0;
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80072468);
+void func_80072468(Actor *a0) {
+    Stg40BC0Work *w = (Stg40BC0Work *)a0->work;
+    Stg40RView v;
+
+    switch (a0->stateLevel0) {
+    case 0:
+    default:
+        GsInitCoordinate2(0, &w->field_1C);
+        w->field_84 = 1;
+        Task_NextState0(a0);
+        break;
+    case 1:
+        switch (a0->stateLevel1) {
+        case 0:
+        default:
+            if (w->field_B8 != 0) {
+                func_80072250(a0);
+            }
+            break;
+        case 1:
+            func_800722B8(a0);
+            break;
+        }
+        w->field_84 = 0;
+        RotMatrixYXZ(w->field_7C, &w->field_1C.coord);
+        w->field_1C.coord.t[0] = w->field_6C;
+        w->field_1C.coord.t[1] = w->field_70;
+        w->field_1C.coord.t[2] = w->field_74;
+        w->field_1C.flg = 0;
+        v.field_0[0] = w->field_0.words[0];
+        v.field_0[1] = w->field_0.words[1];
+        v.field_0[2] = w->field_0.words[2];
+        v.field_0[3] = w->field_0.words[3];
+        v.field_0[4] = w->field_0.words[4];
+        v.field_0[5] = w->field_0.words[5];
+        v.field_18 = 0;
+        v.field_1C = &w->field_1C;
+        GsSetProjection(w->field_0.words[6]);
+        GsSetRefView2(&v);
+        break;
+    case 2:
+        break;
+    }
+}
 
 void func_800725A8(void) {
 }
