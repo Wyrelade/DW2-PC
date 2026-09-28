@@ -173,7 +173,20 @@ s32 func_80067770(Actor *a, s32 dir) {
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_800677C8);
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_800678A8);
+void func_800678A8(Actor *a, Stg20Marks *m) {
+    s32 i;
+    s32 flag = ((Stg20ModelTask *)a)->field_4 == 0;
+
+    for (i = 0; i < 5; i++) {
+        if (m->timer[i] != 0) {
+            if (--m->timer[i] == 0) {
+                func_800636D8(&m->cell[i], 0, flag);
+            } else {
+                func_800636D8(&m->cell[i], 1, flag);
+            }
+        }
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80067928);
 
