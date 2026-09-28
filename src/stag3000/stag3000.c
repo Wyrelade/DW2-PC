@@ -233,7 +233,14 @@ INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006E690);
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006E770);
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006E850);
+void func_8006E850(Actor *a0, s32 anim) {
+    Stg30Work732B8 *w = (Stg30Work732B8 *)a0->work;
+
+    if (w->anim != anim) {
+        w->anim = anim;
+        Anim_SetModelAnim(a0, anim);
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006E888);
 
