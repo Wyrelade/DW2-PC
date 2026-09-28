@@ -197,7 +197,9 @@ INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006A8C0);
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006A920);
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006A9F8);
+s32 func_8006A9F8(Actor *a) {
+    return ((Stg20ModelWork *)a->work)->field_74;
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006AA0C);
 
