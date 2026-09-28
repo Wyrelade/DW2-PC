@@ -1362,7 +1362,52 @@ INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006CAD4);
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006CD1C);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006CF54);
+s32 func_8006CF54(Actor *a0) {
+    Stg40ActWork *w = (Stg40ActWork *)a0->work;
+    Stg40Ent48 *e = w->field_2C;
+
+    func_800708FC(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2, 1);
+    if (func_800703E0(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2) & 0x2000) {
+        e->field_0 |= 0x1000;
+    }
+    if (e->field_0 & 0x1000) {
+        func_8006EBF4(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2, -1, -1, e->field_8);
+    }
+    switch (a0->stateLevel1) {
+    case 0:
+    case 3:
+    default:
+        func_8006E4DC(a0, 0x28);
+        e->field_0 |= 0x4000;
+        Task_SetState1(a0, 1);
+        break;
+    case 1:
+    case 4:
+    case 5:
+        break;
+    case 2:
+        func_80070974(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2);
+        func_8006EBF4(-1, -1, e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2, e->field_8);
+        e->field_0 = 0;
+        Task_SetState0(a0, 3);
+        break;
+    case 6:
+        switch (a0->stateLevel2) {
+        case 0:
+        default:
+            func_8006E4DC(a0, 0x2B);
+            Snd_PlayById(0x35, 0);
+            Task_NextState2(a0);
+            break;
+        case 1:
+            if (func_8006E588(a0) == 1) {
+                Task_SetState1(a0, 2);
+            }
+            break;
+        }
+        break;
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006D0E8);
 
