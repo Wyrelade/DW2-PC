@@ -83,7 +83,12 @@ INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_800658F4);
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80065930);
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80065B04);
+void func_80065B04(Stg35SpriteHandle *arg0, s32 arg1, s16 arg2, s16 arg3) {
+    Stg35Sprite *s = arg0->sprite;
+    s->field_0 = arg1;
+    s->field_14 = arg2;
+    s->field_16 = arg3;
+}
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80065B1C);
 
