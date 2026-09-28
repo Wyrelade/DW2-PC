@@ -87,7 +87,13 @@ INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80066DB0);
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_800672B0);
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80067530);
+void func_80067530(Actor *a0, s32 a1, s32 a2) {
+    a0->stateLevel0 = 2;
+    a0->stateLevel1 = a1;
+    a0->stateLevel2 = 0;
+    a0->stateLevel3 = 0;
+    a0->stateLevel4 = a2;
+}
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006754C);
 
