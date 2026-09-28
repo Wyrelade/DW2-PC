@@ -881,7 +881,41 @@ void func_8006AE74(void) {
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006AF34);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006B20C);
+void func_8006B20C(Actor *a0) {
+    s32 r;
+
+    switch (a0->stateLevel2) {
+    case 0:
+    default:
+        Snd_PlayById(0x30, 1);
+        func_8006E4DC(a0, 0x2B);
+        break;
+    case 1:
+        if (func_8006E588(a0) != 1) {
+            return;
+        }
+        func_80067610(1, 0x1FD0054, (s32)D_80050720->field_D1, 0);
+        break;
+    case 2:
+        r = func_80067704(1);
+        if (r != 1) {
+            return;
+        }
+        D_8005071C->field_1 = 3;
+        D_8005071C->field_7 = r;
+        Snd_PlayById(0x1F, 0);
+        break;
+    case 3:
+        if (a0->stateLevel3++ < 30) {
+            return;
+        }
+        Gfx_FadeOutToBlack(0x10);
+        break;
+    case 4:
+        return;
+    }
+    Task_NextState2(a0);
+}
 
 void func_8006B320(Actor *a0) {
     switch (a0->stateLevel2) {

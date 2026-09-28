@@ -4206,5 +4206,8 @@
     "passes": [
       "nodiv"
     ]
+  },
+  "stag4000:func_8006B20C": {
+    "passes": []
   }
 }
