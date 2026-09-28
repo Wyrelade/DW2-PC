@@ -1644,7 +1644,28 @@ void func_80070D74(void) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80070DC0);
+void func_80070DC0(void) {
+    Stg40B60 *b = D_80072B60;
+    Stg40Blk5071C *g = D_8005071C;
+    Stg40Map *m = (Stg40Map *)b->field_10;
+    u8 *src;
+    u8 *dst;
+
+    b->field_14 = m->field_8[g->field_4];
+    g->field_E54->field_A = m->field_28;
+    g->field_E54->field_4 = 1;
+    g->field_E54->field_C = m->field_2E;
+    src = m->field_0;
+    dst = D_8005071C->field_E54->field_E;
+    memset(dst, 0xFF, 16);
+    D_8005071C->field_E54->field_D = 0;
+    while (*src != 0xFF) {
+        *dst = *src;
+        D_8005071C->field_E54->field_D++;
+        src++;
+        dst++;
+    }
+}
 
 void func_80070EC0(u32 *p, u32 n) {
     if (*p < n) {
