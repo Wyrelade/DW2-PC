@@ -278,7 +278,16 @@ void func_8006778C(Actor *a0) {
 void func_800677F4(void) {
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_800677FC);
+void func_800677FC(Blk16 *l, s32 r, s32 g, s32 b) {
+    s32 i;
+    Blk16 *p;
+
+    for (i = 0, p = l; i < 3; i++, p++) {
+        GsSetFlatLight(i, p);
+    }
+    GsSetAmbient(r, g, b);
+    GsSetLightMode(0);
+}
 
 void func_80067880(Actor *a0, u8 a1) {
     Stg40ActWork *w = (Stg40ActWork *)a0->work;
