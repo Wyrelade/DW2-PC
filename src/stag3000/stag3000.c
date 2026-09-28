@@ -36,7 +36,10 @@ INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_800644D4);
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80064B30);
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80064FBC);
+void func_80064FBC(Actor *a0) {
+    Text_CloseArray(((Stg30Work73078 *)a0->work)->text, 4);
+    Task_DefaultDestroy(a0);
+}
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80064FF4);
 
