@@ -5,7 +5,30 @@ void func_80063898(Actor *a0, s32 a1) {
     a0->field_8 = a1;
 }
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_800638A0);
+void func_800638A0(Actor *a0) {
+    switch (a0->stateLevel0) {
+    case 0:
+        if (a0->field_8 == 1) Snd_PlayById(0x24, 0);
+        Task_NextState0(a0);
+        break;
+    case 1:
+        switch (a0->field_8) {
+        case 0:
+        default:
+            if (a0->elapsed >= 0x100) Task_SetState0(a0, 3);
+            break;
+        case 1:
+        case 2:
+            if (a0->elapsed >= 0x80) Task_SetState0(a0, 3);
+            break;
+        case 3:
+            if (a0->elapsed >= 0x12D && (D_8005F72A & 0x840)) Task_SetState0(a0, 3);
+            break;
+        }
+        break;
+case 2: break;
+    }
+}
 
 void func_8006399C(Actor *a0) {
     Stg30Part *p = (Stg30Part *)Cd_GetFileEntry(D_80072FC8[a0->field_8]);
