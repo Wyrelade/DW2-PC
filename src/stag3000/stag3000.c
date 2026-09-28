@@ -366,7 +366,57 @@ void func_80066AE0(Actor *a0) {
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80066DB0);
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_800672B0);
+void func_800672B0(Actor *a0) {
+    Stg30Work73170 *w = (Stg30Work73170 *)a0->work;
+    GfxPart *p = (GfxPart *)Cd_GetFileEntry(0x1A1000A);
+    GfxPart *q;
+    s32 m;
+
+    switch (w->field_8) {
+    case 0:
+    case 1:
+    case 5:
+        Gfx_HidePartsByMask((GfxPartMaskView *)p, D_80073150[w->field_4]);
+        break;
+    case 2:
+        m = D_8007316C;
+        if (D_80073CC0.entries[2].field_2E == 0) m |= 8;
+        if (D_80073CC0.entries[1].field_2E == 0) m |= 4;
+        if (D_80073CC0.entries[0].field_2E == 0) m |= 2;
+        Gfx_HidePartsByMask((GfxPartMaskView *)p, m);
+        break;
+    case 6:
+        m = D_80073168;
+        if (D_80073CC0.entries[5].field_2E == 0) m |= 0x40;
+        if (D_80073CC0.entries[4].field_2E == 0) m |= 0x20;
+        if (D_80073CC0.entries[3].field_2E == 0) m |= 0x10;
+        Gfx_HidePartsByMask((GfxPartMaskView *)p, m);
+        break;
+    case 8:
+        m = -0x7F;
+        if (func_8001F0E4(w->field_18) & 0x2000) {
+            if (D_80073CC0.entries[0].field_19 == 0) m = -0x7D;
+            if (D_80073CC0.entries[1].field_19 == 0) m |= 4;
+            if (D_80073CC0.entries[2].field_19 == 0) m |= 8;
+            if (D_80073CC0.entries[3].field_19 == 0) m |= 0x10;
+            if (D_80073CC0.entries[4].field_19 == 0) m |= 0x20;
+            if (D_80073CC0.entries[5].field_19 == 0) m |= 0x40;
+        } else {
+            if (D_80073CC0.entries[0].field_2E == 0) m = -0x7D;
+            if (D_80073CC0.entries[1].field_2E == 0) m |= 4;
+            if (D_80073CC0.entries[2].field_2E == 0) m |= 8;
+            if (D_80073CC0.entries[3].field_2E == 0) m |= 0x10;
+            if (D_80073CC0.entries[4].field_2E == 0) m |= 0x20;
+            if (D_80073CC0.entries[5].field_2E == 0) m |= 0x40;
+        }
+        Gfx_HidePartsByMask((GfxPartMaskView *)p, m);
+        break;
+    }
+    for (q = p; q->fileId != 0; q++) {
+        q->palette = Math_PingPongRange(a0->elapsed, 8, 0, 3);
+    }
+    Gfx_DrawParts((EntA0 *)p);
+}
 
 void func_80067530(Actor *a0, s32 a1, s32 a2) {
     a0->stateLevel0 = 2;
