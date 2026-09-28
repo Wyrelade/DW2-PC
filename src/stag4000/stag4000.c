@@ -230,7 +230,27 @@ s32 func_80067750(s32 i) {
 void func_80067784(void) {
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006778C);
+void func_8006778C(Actor *a0) {
+    s32 *w = (s32 *)a0->work;
+    s32 i;
+    s32 m;
+
+    switch (a0->stateLevel0) {
+    case 1:
+    case 2:
+        break;
+    case 0:
+    default:
+        m = -1;
+        D_80072B80 = a0;
+        D_80072B84 = w;
+        for (i = 4; i >= 0; i--) {
+            w[i] = m;
+        }
+        Task_NextState0(a0);
+        break;
+    }
+}
 
 void func_800677F4(void) {
 }
