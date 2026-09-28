@@ -201,7 +201,15 @@ s32 func_8006A9F8(Actor *a) {
     return ((Stg20ModelWork *)a->work)->field_74;
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006AA0C);
+void func_8006AA0C(Actor *a, s32 anim) {
+    Stg20ModelTask *t = (Stg20ModelTask *)a;
+    Stg20ModelWork *w = t->work;
+
+    if (t->field_4 >= 0 && w->anim != anim) {
+        w->anim = anim;
+        Anim_SetModelAnim(a, anim);
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006AA4C);
 
