@@ -1283,7 +1283,105 @@ void func_8006A3D0(Actor *a) {
     Gfx_DrawWireModel(a, 1, &c);
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006A434);
+void func_8006A434(Actor *a) {
+    Stg20Rot *o = (Stg20Rot *)a->u38.ptr38;
+    Stg20DrawWork *w = (Stg20DrawWork *)a->work;
+    Stg20ModelTint *t;
+    s32 f;
+    s32 st;
+    s32 v;
+
+    switch (a->stateLevel0) {
+    case 0:
+        switch (a->stateLevel1) {
+        case 0:
+        default:
+            a->digiId = D_800709B0.field_40;
+            w->modelId = Digi_GetModelFile(a->digiId);
+            w->pos[0] = 0;
+            w->pos[1] = 0;
+            w->pos[2] = 0;
+            a->field_8 = D_800709B0.field_48;
+            Task_NextState1(a);
+        case 1:
+            f = Digi_GetModelFile(a->digiId);
+            Cd_QueueFile(f);
+            st = Cd_GetFileState(f);
+            if (st != 3) {
+                break;
+            }
+            f = Anim_GetModelAnimFile(a->digiId, 0);
+            Cd_QueueFile(f);
+            if (Cd_GetFileState(f) != st) {
+                break;
+            }
+            Task_NextState1(a);
+        case 2:
+            Actor_InitTransform(a, w->pos, w->rot);
+            o = (Stg20Rot *)a->u38.ptr38;
+            Gfx_AttachModel(a, w->modelId)->otIndex = 3;
+            Anim_SetModelAnim(a, 0);
+            t = (Stg20ModelTint *)a->model;
+            w->field_1C = 1;
+            w->field_20 = 0;
+            t->b = 0x80;
+            t->g = 0x80;
+            t->r = 0x80;
+            w->field_26 = 0;
+            w->field_25 = 0;
+            w->field_24 = 0;
+            if (D_800709F4 == 0) {
+                o->field_60 = 0;
+                o->field_5C = 0;
+                o->field_58 = 0;
+            }
+            w->visible = 1;
+            Task_NextState0(a);
+            if (a->field_8 != 0) {
+                Task_SetState1(a, 2);
+            }
+            break;
+        }
+        break;
+    case 1:
+        switch (a->stateLevel1) {
+        case 0:
+        default:
+            break;
+        case 1:
+            if (o->field_30 > -0x640) {
+                o->field_30 -= 0x20;
+            } else {
+                o->field_30 = -0x640;
+                Task_SetState1(a, 0);
+            }
+            break;
+        case 2:
+            if (o->field_30 < 0x640) {
+                o->field_30 += 0x20;
+            } else {
+                o->field_30 = 0x640;
+                Task_SetState1(a, 0);
+            }
+            break;
+        }
+        if (a->field_8 != 0) {
+            o->field_42 -= 0xB;
+        } else {
+            o->field_42 += 0xB;
+        }
+        if (o->field_58 != 0x1000) {
+            v = o->field_58 + 0x100;
+            o->field_58 = v;
+            o->field_60 = v;
+            o->field_5C = v;
+        }
+        break;
+    case 2:
+        Task_NextState0(a);
+        break;
+    }
+}
 
 void func_8006A6DC(Actor *a) {
     Stg20DrawWork *w = (Stg20DrawWork *)a->work;
