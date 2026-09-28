@@ -16,7 +16,12 @@ void func_80063550(Actor *arg0) {
     Task_DefaultDestroy(arg0);
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80063584);
+void func_80063584(Actor *arg0) {
+    Stg35LoadHandle *w = (Stg35LoadHandle *)arg0->work;
+
+    func_80066520(w, 2, Math_CycleRange(arg0->elapsed, 6, 0, 7));
+    func_800661B0(w);
+}
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_800635D4);
 
