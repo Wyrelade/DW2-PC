@@ -4061,5 +4061,8 @@
       "save_slot",
       "ra_restore_sink"
     ]
+  },
+  "stag1100:func_80064C64": {
+    "passes": []
   }
 }

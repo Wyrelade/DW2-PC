@@ -537,7 +537,91 @@ void func_80064B00(Actor *arg0, Stg11MenuWork *arg1) {
     func_800649F8(arg0, arg1);
 }
 
-INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80064C64);
+void func_80064C64(Actor *arg0, Stg11MenuWork *arg1) {
+    switch (arg0->stateLevel2) {
+    case 0:
+        func_8006495C(arg1, arg1->field_88, 1);
+        arg1->field_88 = 0;
+        arg1->field_86 = 0;
+        func_800648B4(arg0, arg1);
+        Task_SetState2(arg0, 0xA);
+    case 10:
+        func_800677AC(2, arg1->field_84);
+        Task_NextState2(arg0);
+        break;
+    case 11:
+        switch (func_80067818()) {
+        case -1:
+            break;
+        case 2:
+            func_800648E4(arg1, arg1->field_80 ? 0x1AD : 0x16B);
+            Task_SetState2(arg0, 0x14);
+            break;
+        case 0:
+            func_800648E4(arg1, arg1->field_84 + (arg1->field_80 ? 0x1AE : 0x180));
+            Task_SetState2(arg0, 0xA);
+            break;
+        }
+        break;
+    case 20:
+        func_800677AC(4, arg1->field_84);
+        Task_NextState2(arg0);
+        break;
+    case 21:
+        switch (func_80067818()) {
+        case -1:
+            break;
+        case 2:
+            Task_SetState2(arg0, 0x1E);
+            break;
+        case 0:
+            func_800648E4(arg1, arg1->field_84 + (arg1->field_80 ? 0x1AE : 0x180));
+            Task_SetState2(arg0, 0xA);
+            break;
+        case 1:
+            if (arg1->field_7A != 0) {
+                Task_SetState1(arg0, 2);
+            } else {
+                Task_SetState1(arg0, 9);
+            }
+            break;
+        default:
+            Task_SetState1(arg0, 2);
+            break;
+        }
+        break;
+    case 30:
+        func_800677AC(5, arg1->field_84);
+        Task_NextState2(arg0);
+        break;
+    case 31:
+        switch (func_80067818()) {
+        case -1:
+            break;
+        case 9:
+            Task_SetState1(arg0, 6);
+            break;
+        case 10:
+            if (arg1->field_7A != 0) {
+                Task_SetState1(arg0, 2);
+            } else {
+                Task_SetState1(arg0, 4);
+            }
+            break;
+        case 0:
+            Task_SetState2(arg0, 0xA);
+            break;
+        default:
+            Task_SetState1(arg0, 2);
+            break;
+        }
+        break;
+    }
+    if (D_8005F6F0[arg1->field_7E].triangle > 0) {
+        Snd_PlayById(0xB, 0);
+        Task_SetState0(arg0, 2);
+    }
+}
 
 void func_80064EF0(Actor *arg0, Stg11MenuWork *arg1) {
     s32 r;
