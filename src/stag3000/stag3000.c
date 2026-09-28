@@ -627,7 +627,30 @@ void func_8006F530(Actor *a0) {
     Task_DefaultDestroy(a0);
 }
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006F554);
+void func_8006F554(Actor *a0) {
+    Stg30Work732B8 *w = (Stg30Work732B8 *)a0->work;
+    CVECTOR c;
+
+    if (w->field_28 != 0) {
+        Gfx_AttachModel(a0, w->field_14);
+        Anim_StepModelAnim(a0);
+        Actor_UpdateTransform(a0);
+        Gfx_CalcModelBoneMatrices(a0);
+        if (w->field_18 != 0) {
+            Gfx_DrawTexModel(a0, 0);
+        }
+        if (w->field_1C != 0) {
+            if (a0->field_8 < 3) {
+                c = w->color;
+            } else {
+                c.r = w->color.g;
+                c.g = w->color.r;
+                c.b = w->color.b;
+            }
+            Gfx_DrawWireModel(a0, 0, &c);
+        }
+    }
+}
 
 void func_8006F640(Actor *a0, s32 a1) {
     ((Stg30Work732B8 *)a0->work)->field_28 = a1;
