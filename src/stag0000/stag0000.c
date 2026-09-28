@@ -133,7 +133,34 @@ void func_80063E34(Stg00Sprt *arg0, GfxPartTexSlot *arg1, s32 arg2, s32 arg3) {
     arg0->clut = (arg1->index + 0x1E0) << 6;
 }
 
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80063E9C);
+void func_80063E9C(Actor *arg0) {
+    Stg00ScrollWork *w = (Stg00ScrollWork *)arg0->work;
+    GfxPartOTag *ot = (GfxPartOTag *)D_8005F770.otLayers.addr[6];
+    GfxPartPkt *p = (GfxPartPkt *)D_8005F770.packet.addr;
+    GfxPartTexSlot *t;
+    s32 i;
+    s32 j;
+    s32 x;
+    s32 y;
+
+    for (i = 0; i < 4; i++) {
+        for (j = 0; j < 20; j++) {
+            t = (GfxPartTexSlot *)Gfx_FindOrLoadTexSlot(D_80068AA0[j % 10 + (i % 2) * 10]);
+            x = w->field_0 - 0xA0;
+            y = w->field_4 - 0x78;
+            func_80063E34((Stg00Sprt *)&p->s, t, j * 64 + x, i * 256 + y);
+            p->s.tag.addr = ot->addr;
+            ot->addr = (u32)p;
+            p = (GfxPartPkt *)(&p->s + 1);
+            p->t.tag.len = 1;
+            p->t.code = 0xE1000600 | (t->tpage & 0x9FF);
+            p->t.tag.addr = ot->addr;
+            ot->addr = (u32)p;
+            p = (GfxPartPkt *)(&p->t + 1);
+        }
+    }
+    D_8005F79C = (s32)p;
+}
 
 void func_80064064(u32 *arg0, u32 arg1) {
     if (*arg0 < arg1) {
