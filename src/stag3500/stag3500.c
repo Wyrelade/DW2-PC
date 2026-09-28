@@ -234,7 +234,175 @@ void func_80063E00(Actor *arg0) {
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80063E74);
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80063F38);
+void func_80063F38(Actor *arg0) {
+    Stg35Work4 *w = (Stg35Work4 *)arg0->work;
+    s32 *slot = (s32 *)arg0->u34.children;
+    s32 i;
+    u16 pad;
+    SysState *g;
+
+    switch (arg0->stateLevel0) {
+    case 0:
+        switch (D_8005F770.field_24) {
+        case 0:
+        default:
+            for (i = 4; i >= 0; i--) {
+                D_8005E620.elems[i].state = 0;
+            }
+            w->field_2C = 0;
+            break;
+        case 1:
+            w->field_2C = 2;
+            break;
+        case 2:
+            w->field_2C = 1;
+            break;
+        }
+        if (D_8005E620.elems[0].state != 0) {
+            w->field_34 = 1;
+        }
+        if (D_8005E620.elems[3].state != 0) {
+            w->field_38 = 1;
+        }
+        Gpu_AllocPacketBufs(0x32000);
+        Sys_SetFrameRate30();
+        Gpu_InitDoubleBuffer(0x140, 0x1E0, 2, 0);
+        Gpu_SetBgClearColor(0, 0, 0);
+        Gpu_ClearScreens();
+        Gfx_FadeInFromBlack(0x40);
+        Task_Create(9, &slot[0], 0);
+        Task_Create(0x702, &slot[1], 0);
+        for (i = 0; i < 4; i++) {
+            func_80066120(&w->load[i]);
+        }
+        for (i = 0; i < 7; i++) {
+            func_800656D0(&w->text[i]);
+        }
+        Snd_UnloadSlot(2);
+        Snd_SetSlotContent(1, 0x18);
+        Task_NextState0(arg0);
+        break;
+    sel:
+        Snd_PlayById(0xB, 0);
+        w->field_3C = 1;
+        goto next;
+    case 1:
+        if (w->field_40 == 0 && Snd_AnySlotLoading() == 0) {
+            w->field_40 = 1;
+            Snd_PlayById(0x103, 1);
+            Snd_SetSlotContent(2, 0x19);
+        }
+        switch (arg0->stateLevel1) {
+        case 0:
+        default:
+            func_800661A4(&w->load[0], 0xD3F0001);
+            func_800664F4(&w->load[0]);
+            func_800661A4(&w->load[1], 0x3120003);
+            func_800664F4(&w->load[1]);
+            if (w->field_34 != 0) {
+                func_800661A4(&w->load[2], 0xD3F0003);
+                func_800664F4(&w->load[2]);
+                func_80066778(&w->load[2], 2, 3, (s16)D_8005E620.elems[0].maxHp);
+                func_80066778(&w->load[2], 0x10, 3, (s16)D_8005E620.elems[0].maxMp);
+                func_80066778(&w->load[2], 4, 3, (s16)D_8005E620.elems[1].maxHp);
+                func_80066778(&w->load[2], 0x20, 3, (s16)D_8005E620.elems[1].maxMp);
+                func_80066778(&w->load[2], 8, 3, (s16)D_8005E620.elems[2].maxHp);
+                func_80066778(&w->load[2], 0x40, 3, (s16)D_8005E620.elems[2].maxMp);
+            }
+            if (w->field_38 != 0) {
+                func_800661A4(&w->load[3], 0xD3F0004);
+                func_800664F4(&w->load[3]);
+                func_80066778(&w->load[3], 2, 3, (s16)D_8005E620.elems[3].maxHp);
+                func_80066778(&w->load[3], 0x10, 3, (s16)D_8005E620.elems[3].maxMp);
+                func_80066778(&w->load[3], 4, 3, (s16)D_8005E620.elems[4].maxHp);
+                func_80066778(&w->load[3], 0x20, 3, (s16)D_8005E620.elems[4].maxMp);
+                func_80066778(&w->load[3], 8, 3, (s16)D_8005E620.elems[5].maxHp);
+                func_80066778(&w->load[3], 0x40, 3, (s16)D_8005E620.elems[5].maxMp);
+            }
+            func_80065760(&w->text[0], 0x101, 0x10, 0xBA);
+            if (w->field_34 != 0) {
+                for (i = 0; i < 3; i++) {
+                    func_80065760(&w->text[i + 1], 0, 0x15, i * 0x22 + 0x4E);
+                    func_800657A0((Stg35LoadHandle *)&w->text[i + 1], (s32)D_8005E620.elems[i].name);
+                    func_80065824(&w->text[i + 1]);
+                }
+            }
+            if (w->field_38 != 0) {
+                for (i = 0; i < 3; i++) {
+                    func_80065760(&w->text[i + 4], 0, 0xC9, i * 0x22 + 0x4E);
+                    func_800657A0((Stg35LoadHandle *)&w->text[i + 4], (s32)D_8005E620.elems[i + 3].name);
+                    func_80065824(&w->text[i + 4]);
+                }
+            }
+            w->field_30 = 1;
+            Task_NextState1(arg0);
+        case 1:
+            switch (w->field_2C) {
+            case 0:
+            default:
+                pad = D_8005F6F0[0].pressed;
+                break;
+            case 1:
+                pad = D_8005F6F0[0].pressed | D_8005F6F0[1].pressed;
+                break;
+            case 2:
+                pad = D_8005F6F0[1].pressed;
+                break;
+            }
+            if (pad & 0x10) {
+                goto sel;
+            }
+            if (pad & 0x40) {
+                Snd_PlayById(0xE, 0);
+                w->field_3C = 0;
+            next:
+                Task_NextState0(arg0);
+            }
+            if (w->field_30 != 0) {
+                w->field_30 = 0;
+                func_800657B8(&w->text[0], D_8006A4AC[w->field_2C]);
+                func_80065824(&w->text[0]);
+            }
+            func_800663CC(&w->load[0], D_8006A4B8[w->field_2C]);
+            break;
+        }
+        break;
+    case 2:
+        switch (arg0->stateLevel2) {
+        case 0:
+        default:
+            for (i = 0; i < 4; i++) {
+                func_80066508(&w->load[i]);
+            }
+            for (i = 0; i < 7; i++) {
+                func_80065894(&w->text[i]);
+            }
+            Gfx_FadeOutToBlack(0x10);
+            Task_NextState2(arg0);
+        case 1:
+            break;
+        }
+        g = &D_8005F770;
+        if (g->fadeLevel == 0xFF) {
+            s32 v;
+
+            switch (w->field_2C) {
+            case 0:
+            default:
+                v = w->field_3C == 0 ? 0x603 : 0x401;
+                break;
+            case 1:
+                v = w->field_3C == 0 ? 0x702 : 0x701;
+                break;
+            case 2:
+                v = w->field_3C == 0 ? 0x604 : 0x701;
+                break;
+            }
+            g->nextGameMode = v;
+        }
+        break;
+    }
+}
 
 void func_800645B4(Actor *arg0) {
     Stg35Work4 *w = (Stg35Work4 *)arg0->work;
