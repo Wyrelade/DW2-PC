@@ -213,7 +213,7 @@ void func_800657A0(Stg35LoadHandle *arg0, s32 arg1) {
 }
 
 void func_800657AC(Stg35LoadHandle *arg0, s32 arg1) {
-    arg0->load->field_C = arg1;
+    arg0->load->u.field_C = arg1;
 }
 
 void func_800657B8(Stg35TextHandle *arg0, s32 arg1) {
@@ -271,19 +271,19 @@ void func_80065B1C(Stg35SpriteHandle *arg0, s32 arg1, u8 arg2, u8 arg3, u8 arg4)
     s->field_4[arg1].b = arg4;
 }
 
-void func_80065B3C(Stg35SpriteHandle *arg0, s16 arg1) {
+void func_80065B3C(Stg35SpriteHandle *arg0, s32 arg1) {
     arg0->sprite->field_1C = arg1;
 }
 
-void func_80065B48(Stg35SpriteHandle *arg0, s16 arg1) {
+void func_80065B48(Stg35SpriteHandle *arg0, s32 arg1) {
     arg0->sprite->field_1E = arg1;
 }
 
-void func_80065B54(Stg35SpriteHandle *arg0, s16 arg1) {
+void func_80065B54(Stg35SpriteHandle *arg0, s32 arg1) {
     arg0->sprite->field_18 = arg1;
 }
 
-void func_80065B60(Stg35SpriteHandle *arg0, s16 arg1) {
+void func_80065B60(Stg35SpriteHandle *arg0, s32 arg1) {
     arg0->sprite->field_1A = arg1;
 }
 
@@ -554,7 +554,7 @@ void func_800676E0(Actor *arg0) {
 }
 
 void func_80067720(void) {
-    Mem_Zero(D_8006AA88, 0x358);
+    Mem_Zero(&D_8006AA88, 0x358);
 }
 
 void func_80067748(Actor *arg0, Stg35Vec3 *arg1) {
@@ -636,8 +636,8 @@ void func_80068BF8(void) {
     if (e != NULL) {
         w = (Stg35Work708 *)e->work;
         for (i = 0; i < 6; i++) {
-            w->field_80[i].field_0 = D_8006AA88[i].field_26;
-            w->field_80[i].field_8 = D_8006AA88[i].field_24;
+            w->field_80[i].field_0 = D_8006AA88.rec[i].hp;
+            w->field_80[i].field_8 = D_8006AA88.rec[i].maxHp;
         }
     }
 }
