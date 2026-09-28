@@ -196,7 +196,16 @@ void func_80065D84(s32 arg0) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80065DC8);
+s32 func_80065DC8(s32 arg0) {
+    s32 i;
+
+    for (i = 0; i < 12; i++) {
+        if (arg0 == D_8006AA58[i]) {
+            return i;
+        }
+    }
+    return -1;
+}
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80065E04);
 
