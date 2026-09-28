@@ -774,7 +774,66 @@ INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_800678D8);
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80067A80);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80067BA8);
+void func_80067BA8(Actor *a0) {
+    Stg40ActWork *w = (Stg40ActWork *)a0->work;
+    Stg40Arg207 arg;
+    s32 *slot;
+
+    switch (a0->stateLevel0) {
+    case 0:
+    default:
+        Task_NextState0(a0);
+        if (w->field_2C->field_0 & 0x100) {
+            if (w->field_2C->field_0 & 1) {
+                Task_SetState1(a0, 5);
+            }
+            if (w->field_2C->field_0 & 2) {
+                if (w->field_2C->field_0 & 0x800) {
+                    Task_SetState1(a0, 4);
+                } else {
+                    Task_SetState1(a0, 3);
+                }
+            }
+            if (w->field_2C->field_0 & 0x200) {
+                Task_SetState1(a0, 0);
+                w->field_2C->field_0 &= ~0x200;
+            }
+            w->field_2C->field_0 &= ~0x900;
+        }
+        Actor_InitTransform(a0, &w->field_4, w->field_10);
+        w->field_30 = 0x28;
+        w->field_32 = -1;
+        w->field_36 = -1;
+        w->field_38 = -1;
+        break;
+    case 1:
+        func_800678D8(w->field_2C);
+        if (w->field_2C->field_0 & 1) {
+            func_8006B420(a0);
+        }
+        if (w->field_2C->field_0 & 2) {
+            func_8006BFB0(a0);
+        }
+        if (w->field_2C->field_0 & 4) {
+            func_8006D418(a0);
+        }
+        if (w->field_36 != -1) {
+            slot = (s32 *)a0->u34.children;
+            if (*slot != 0) {
+                Task_SetState0((Actor *)*slot, 3);
+            } else {
+                arg.field_0 = a0;
+                arg.field_4 = w->field_36;
+                Task_Create(0x207, slot, (s32)&arg);
+                w->field_38 = w->field_36;
+                w->field_36 = -1;
+            }
+        }
+        break;
+    case 2:
+        break;
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80067DB4);
 
