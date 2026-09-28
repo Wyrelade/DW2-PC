@@ -506,7 +506,28 @@ s32 func_80068B8C(Actor *a0) {
     return r;
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80068C60);
+s32 func_80068C60(Actor *a0) {
+    Stg40Ent48 *e = ((Stg40ActWork *)a0->work)->field_2C;
+    Stg40Loc *l = &e->field_18;
+    s32 r = 0;
+    s16 t;
+
+    if (l->field_8 == l->field_A / 2 && (l->field_1E & 1)) {
+        func_80070974(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2);
+        t = e->field_18.u0.pair.field_0;
+        e->field_18.u0.pair.field_0 = e->field_18.field_4.field_0;
+        e->field_18.field_4.field_0 = t;
+        t = e->field_18.u0.pair.field_2;
+        e->field_18.u0.pair.field_2 = e->field_18.field_4.field_2;
+        e->field_18.field_4.field_2 = t;
+        e->field_18.field_8 = 0xC;
+        e->field_18.field_A = 0x18;
+        func_800708FC(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2, 1);
+        Task_SetState1(a0, 0xF);
+        r = -1;
+    }
+    return r;
+}
 
 void func_80068D3C(Actor *a0) {
     Stg40Ent48 *e = ((Stg40ActWork *)a0->work)->field_2C;
