@@ -370,7 +370,28 @@ s32 func_80068E6C(void) {
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80068EB0);
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80068FB8);
+void func_80068FB8(void) {
+    GfxPart *p = (GfxPart *)Cd_GetFileEntry(0xD120001);
+    GfxPart *q;
+
+    for (q = p; q->fileId != 0; q++) {
+        if (q->groupMask & 6) {
+            switch (D_800709B0.field_20) {
+            case 0:
+            default:
+                q->visible = 0;
+                break;
+            case 1:
+                q->visible = ((u32)q->groupMask >> 1) & 1;
+                break;
+            case 2:
+                q->visible = ((u32)q->groupMask >> 2) & 1;
+                break;
+            }
+        }
+    }
+    Gfx_DrawParts((s32)p);
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80069068);
 
