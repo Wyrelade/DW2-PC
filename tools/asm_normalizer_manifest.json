@@ -4053,5 +4053,13 @@
       "nosr",
       "nodiv"
     ]
+  },
+  "stag1100:func_800646C0": {
+    "passes": [
+      "reg_realloc",
+      "web_realloc",
+      "save_slot",
+      "ra_restore_sink"
+    ]
   }
 }
