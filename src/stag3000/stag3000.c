@@ -209,7 +209,16 @@ void func_8006754C(Stg30ListOwner *a0) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_800675CC);
+void func_800675CC(Stg30ListOwner *a0) {
+    s32 i;
+    Stg30ActorList *l = a0->list;
+
+    for (i = 0; i < 6; i++) {
+        if (l->actors[i] != NULL) {
+            func_8006F640(l->actors[i], 1);
+        }
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80067624);
 
