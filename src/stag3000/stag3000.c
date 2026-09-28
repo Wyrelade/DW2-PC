@@ -423,7 +423,24 @@ INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006B950);
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006BBD8);
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006CA3C);
+void func_8006CA3C(s32 idx) {
+    s16 *p = D_80073890;
+
+    *p++ = 2;
+    *p++ = idx + 10;
+    *p++ = 3;
+    *p++ = idx;
+    *p++ = 0xE;
+    *p++ = 4;
+    *p++ = 1;
+    *p++ = 0;
+    p[0] = 0x78;
+    p[1] = 0x18;
+    D_80073CC0.entries[idx].field_32 += D_80073CC0.entries[idx].field_30 / 10;
+    if (D_80073CC0.entries[idx].field_30 < D_80073CC0.entries[idx].field_32) {
+        D_80073CC0.entries[idx].field_32 = D_80073CC0.entries[idx].field_30;
+    }
+}
 
 s32 func_8006CB28(s32 idx) {
     switch (D_80073CC0.field_2AC[idx].field_0) {
