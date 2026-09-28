@@ -238,7 +238,11 @@ void func_8006BA5C(Actor *a) {
     Task_DefaultDestroy(a);
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006BA90);
+void func_8006BA90(Actor *a) {
+    if (a->stateLevel0 == 0) {
+        Task_NextState0(a);
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006BAC0);
 
