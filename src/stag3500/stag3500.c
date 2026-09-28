@@ -395,7 +395,48 @@ void func_80065E60(void) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80065F8C);
+void func_80065F8C(s32 arg0, s32 arg1) {
+    Stg35Rec2C *b = &D_8006AA88.field_238[arg0];
+    s32 t;
+    s32 base;
+    s32 n;
+
+    b->field_0 = 1;
+    b->field_8 = b->field_C[arg1];
+    switch (b->field_12[arg1]) {
+    case 0:
+    default:
+        t = D_8006A55C[arg0];
+        if (D_8006AA88.rec[t].hp != 0) {
+            b->field_4 = t;
+            break;
+        }
+    case 1:
+        if (arg0 < 3) {
+            base = 3;
+        } else {
+            base = 0;
+        }
+        for (n = 0; n < 100; n++) {
+            t = (u16)((u16)Rand_Next() % 3) + base;
+            if (D_8006AA88.rec[t].hp != 0) {
+                break;
+            }
+        }
+        if (n == 100) {
+            t = arg0;
+        }
+        b->field_4 = t;
+        break;
+    case 2:
+        if (arg0 < 3) {
+            b->field_4 = 8;
+        } else {
+            b->field_4 = 7;
+        }
+        break;
+    }
+}
 
 void func_80066120(Stg35LoadHandle *arg0) {
     Stg35Load *p = (Stg35Load *)Mem_Alloc(0x24, 2);
