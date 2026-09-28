@@ -1717,7 +1717,91 @@ s32 func_800678F0(Stg11SaveWork *arg0) {
     return sum;
 }
 
-INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80067938);
+s32 func_80067938(Stg11SaveWork *arg0, s32 arg1, s32 arg2) {
+    s32 r = -1;
+    s32 chan = (arg2 != 0) << 4;
+    s32 cmd;
+    s32 st;
+
+    if (MemCardSync(1, &cmd, &st) == -1) {
+        switch (arg1) {
+        case 6:
+            st = MemCardCreateFile(chan, (s32)D_800685D4->field_C, 2);
+            switch (st) {
+            case 1:
+                r = 0;
+                break;
+            case 4:
+                r = -1;
+                if (++arg0->field_8 >= 5) {
+                    r = 1;
+                }
+                break;
+            default:
+                r = -1;
+                if (++arg0->field_8 >= 5) {
+                    r = 6;
+                }
+                break;
+            case 7:
+                r = 8;
+                break;
+            case 0:
+            case 6:
+                r = 9;
+                break;
+            }
+            break;
+        case 7:
+            st = MemCardOpen(chan, (s32)D_800685D4->field_C, 1);
+            switch (st) {
+            case 0:
+                r = 9;
+                Card_CloseFile();
+                break;
+            case 1:
+                r = 0;
+                break;
+            case 2:
+                r = -1;
+                if (++arg0->field_8 >= 5) {
+                    r = 0xB;
+                }
+                break;
+            case 4:
+                r = -1;
+                if (++arg0->field_8 >= 5) {
+                    r = 1;
+                }
+                break;
+            case 3:
+            case 5:
+            default:
+                r = 0xA;
+                break;
+            }
+            break;
+        case 8:
+            st = MemCardFormat(chan);
+            switch (st) {
+            case 2:
+            default:
+                if (++arg0->field_8 >= 5) {
+                    r = 7;
+                }
+                break;
+            case 1:
+                r = 0;
+                break;
+            case 0:
+                r = 0x10;
+                break;
+            }
+            break;
+        }
+    }
+    return r;
+}
 
 INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80067B54);
 
