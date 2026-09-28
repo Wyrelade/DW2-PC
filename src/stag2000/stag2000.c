@@ -391,7 +391,16 @@ void func_8006A6DC(Actor *a) {
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006A744);
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006A8C0);
+Actor *func_8006A8C0(s32 id) {
+    Actor *e;
+
+    for (e = (Actor *)Task_FindFirst(0x302, -1, -1); e != NULL; e = (Actor *)Task_FindNext()) {
+        if (e->digiId == id) {
+            return e;
+        }
+    }
+    return NULL;
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006A920);
 
