@@ -188,7 +188,24 @@ void func_800678A8(Actor *a, Stg20Marks *m) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80067928);
+s32 func_80067928(Stg20Cell *c, s32 x, s32 y, s32 flag) {
+    s32 dx = c->x - x;
+    s32 dy;
+
+    if (dx < 0) {
+        dx = -dx;
+    }
+    dy = c->y - y;
+    if (dy < 0) {
+        dy = -dy;
+    }
+    if (flag) {
+        dx *= 3;
+    } else {
+        dy *= 3;
+    }
+    return dx + dy;
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80067978);
 
