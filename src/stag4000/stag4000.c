@@ -111,7 +111,20 @@ s32 func_80065230(void) {
     return r;
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80065278);
+void func_80065278(Actor *a0) {
+    Stg40B68Work *w = (Stg40B68Work *)a0->work;
+    s32 x0 = w->field_1E90;
+    s32 y0 = w->field_1E94;
+    s32 n = w->field_1EA0;
+    s32 k = n - a0->stateLevel2;
+    s32 dx = (x0 - w->field_1E98) * k / n;
+    s32 dy = (y0 - w->field_1E9C) * k / n;
+    Stg40B60 *b = D_80072B60;
+
+    b->field_2C = x0 - dx;
+    b->field_30 = y0 - dy;
+    a0->stateLevel2++;
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80065300);
 
