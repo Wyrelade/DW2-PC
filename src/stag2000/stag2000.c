@@ -662,7 +662,19 @@ void func_8006BDD0(Actor *a) {
     Task_DefaultDestroy(a);
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006BE04);
+void func_8006BE04(Actor *a) {
+    GfxPart *p = (GfxPart *)Cd_GetFileEntry(0xDD60004);
+    GfxPart *q;
+
+    for (q = p; q->fileId != 0; q++) {
+        if (q->groupMask & 2) {
+            q->palette = Math_CycleRange(a->elapsed, 4, 0, 3);
+            q->x = D_800709B0.field_50 != 0 ? -0x6C : -0x90;
+            q->y = -0x62;
+        }
+    }
+    Gfx_DrawParts((s32)p);
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006BEDC);
 
