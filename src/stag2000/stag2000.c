@@ -213,7 +213,15 @@ INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80067B20);
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80067E9C);
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80068134);
+void func_80068134(Actor *a, s32 open) {
+    Stg20PickWork *w = (Stg20PickWork *)a->work;
+
+    if (open == 0) {
+        Text_Close(&w->text);
+    } else {
+        Text_OpenPacked(&w->text, w->recs[w->index].field_0, 0, D_80063564);
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_800681A0);
 
