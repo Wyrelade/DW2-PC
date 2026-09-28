@@ -369,7 +369,7 @@ void func_800728A0(Actor *a0, s32 *args) {
     s32 idx = args[0];
 
     ((Stg30Work737C8 *)a0->work)->index = idx;
-    a0->digiId = D_80073CC0[idx].field_19;
+    a0->digiId = D_80073CC0.entries[idx].field_19;
 }
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_800728D8);
