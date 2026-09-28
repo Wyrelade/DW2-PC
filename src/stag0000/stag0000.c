@@ -719,7 +719,65 @@ void func_80066618(Actor *arg0) {
     Gfx_DrawParts(e);
 }
 
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80066678);
+void func_80066678(Actor *arg0) {
+    Stg00ModeWork *w;
+    Stg00ModeWork *w2;
+
+    switch (arg0->stateLevel0) {
+    case 0:
+        switch (arg0->stateLevel1) {
+        case 0:
+        default:
+            Gpu_AllocPacketBufs(0x25800);
+            Gfx_InitLights();
+        case 1:
+            break;
+        }
+        w = (Stg00ModeWork *)arg0->work;
+        Sys_SetFrameRate60();
+        switch (w->field_0) {
+        case 1:
+        default:
+            Gpu_InitDoubleBuffer(0x140, 0xF0, 0, 0);
+            break;
+        case 0:
+            Gpu_InitDoubleBuffer(0x140, 0x1E0, 2, 0);
+            break;
+        case 3:
+            Gpu_InitDoubleBuffer(0x280, 0xF0, 0, 0);
+            break;
+        case 2:
+            Gpu_InitDoubleBuffer(0x280, 0x1E0, 1, 0);
+            break;
+        }
+        Gpu_SetBgClearColor(0, 0, 0);
+        Gpu_ClearScreens();
+        Gfx_FadeInFromBlack(0x100);
+        Task_NextState0(arg0);
+        break;
+    case 1:
+        switch (arg0->stateLevel1) {
+        case 0:
+        default:
+            Task_NextState1(arg0);
+        case 1:
+            break;
+        }
+        w2 = (Stg00ModeWork *)arg0->work;
+        if (D_8005F720 > 0) {
+            if (w2->field_0 != 3) {
+                w2->field_0++;
+            } else {
+                w2->field_0 = 0;
+            }
+            Task_SetState0(arg0, 2);
+        }
+        break;
+    case 2:
+        Task_SetState01(arg0, 0, 1);
+        break;
+    }
+}
 
 void func_80066828(Actor *arg0) {
     switch (((Stg00ModeWork *)arg0->work)->field_0) {
