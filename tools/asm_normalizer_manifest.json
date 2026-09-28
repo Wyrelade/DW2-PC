@@ -4192,5 +4192,14 @@
   },
   "stag2000:func_80065960": {
     "passes": []
+  },
+  "stag3000:func_800672B0": {
+    "passes": []
+  },
+  "stag3000:func_8006EC94": {
+    "passes": []
+  },
+  "stag4000:func_8006EBF4": {
+    "passes": []
   }
 }
