@@ -203,7 +203,16 @@ void func_8006E5B4(s32 i) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006E5F8);
+s32 func_8006E5F8(s32 v) {
+    s32 i;
+
+    for (i = 0; i < 12; i++) {
+        if (v == D_80073A20[i]) {
+            return i;
+        }
+    }
+    return -1;
+}
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006E634);
 
