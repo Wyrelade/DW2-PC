@@ -305,7 +305,10 @@ void func_800702A8(Actor *a0, Vec3 *args) {
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_800702C8);
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_800704FC);
+void func_800704FC(Actor *a0) {
+    CdControlF(9, 0);
+    Task_DefaultDestroy(a0);
+}
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80070530);
 
