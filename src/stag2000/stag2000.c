@@ -365,7 +365,15 @@ void func_8006A364(Actor *a) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006A3D0);
+void func_8006A3D0(Actor *a) {
+    CVECTOR c;
+
+    Gfx_AttachModel(a, 0xD14);
+    Actor_UpdateTransform(a);
+    Gfx_CalcModelBoneMatrices(a);
+    c = D_80063584;
+    Gfx_DrawWireModel(a, 1, &c);
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006A434);
 
