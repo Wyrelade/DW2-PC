@@ -339,7 +339,58 @@ void func_80064304(Actor *arg0, Stg11MenuWork *arg1) {
     Text_OpenDesc(&arg1->field_C, (TextDesc *)&st);
 }
 
-INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_8006448C);
+void func_8006448C(Actor *arg0, Stg11MenuWork *arg1) {
+    Stg11MenuRow *c = &arg1->field_98[Menu_GridIndexColMajor(arg1->cursor, arg1->u6C.gridSize)];
+    Stg11DigiEntry *e = (Stg11DigiEntry *)D_80050720->elems;
+    u8 *src;
+    u8 *dst;
+    s32 i;
+
+    if (arg1->field_138 == 0 || c->field_0 == 0 || c->field_2 != 0) {
+        Snd_PlayById(0x10, 0);
+        return;
+    }
+    for (i = 0; i < 0x24; i++) {
+        if (e[i].state == 0) {
+            break;
+        }
+    }
+    if (i == 0x24) {
+        Snd_PlayById(0x10, 0);
+        return;
+    }
+    e += i;
+    memset((u8 *)e, 0, 0x5C);
+    e->state = 1;
+    e->digiId = c->field_0;
+    e->level = c->level;
+    e->field_E = 0;
+    e->field_F = c->field_F;
+    e->exp = c->exp;
+    e->maxHp = c->hp;
+    e->hp = c->hp;
+    e->maxMp = c->mp;
+    e->mp = c->mp;
+    e->field_1C = c->field_18;
+    e->field_1E = c->field_1A;
+    e->field_20 = c->field_1C;
+    src = Digi_GetDefaultName(e->digiId);
+    dst = e->name;
+    while (*src != 0xFF) {
+        *dst++ = *src++;
+    }
+    *dst = 0xFF;
+    for (i = 0; i < c->skillCount; i++) {
+        e->skills[i] = c->skills[i];
+    }
+    e->field_49 = 1;
+    e->field_4A = c->field_1E;
+    arg1->field_138--;
+    c->field_2 = 1;
+    func_80064304(arg0, arg1);
+    func_8006495C(arg1, 0x110, 1);
+    Snd_PlayById(0xE, 0);
+}
 
 INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_800646C0);
 
