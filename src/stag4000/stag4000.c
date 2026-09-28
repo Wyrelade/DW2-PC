@@ -818,7 +818,17 @@ INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8007212C);
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_800721A8);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80072250);
+void func_80072250(Actor *a0) {
+    Stg40BC0Work *w = (Stg40BC0Work *)a0->work;
+    Stg40Cmd *c;
+
+    if (w->field_B8 != 0) {
+        c = w->field_B4;
+        func_8007212C(&c->field_C, c->field_0, c->field_4, c->field_8);
+        w->field_B8--;
+        w->field_B4++;
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_800722B8);
 
