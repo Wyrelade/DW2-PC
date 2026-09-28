@@ -7,7 +7,22 @@ void func_80063898(Actor *a0, s32 a1) {
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_800638A0);
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006399C);
+void func_8006399C(Actor *a0) {
+    Stg30Part *p = (Stg30Part *)Cd_GetFileEntry(D_80072FC8[a0->field_8]);
+    Stg30Part *q;
+
+    for (q = p; q->fileId != 0; q++) {
+        q->palette = Math_CycleRange(a0->elapsed, 4, 0, 7);
+    }
+    if (a0->field_8 == 3) {
+        if (D_80073CC0.entries[0].field_0 != 0) {
+            Gfx_HidePartsByMask((GfxPartMaskView *)p, 1);
+        } else {
+            Gfx_HidePartsByMask((GfxPartMaskView *)p, 2);
+        }
+    }
+    Gfx_DrawParts((EntA0 *)p);
+}
 
 void func_80063A6C(Actor *a0) {
     if (a0->stateLevel0 == 0) {
