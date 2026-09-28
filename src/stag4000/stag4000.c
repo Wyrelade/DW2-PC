@@ -430,7 +430,10 @@ void func_8006FDAC(void) {
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006FDB4);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006FE5C);
+void func_8006FE5C(Actor *a0) {
+    func_8006F38C((Stg40ImgWork *)a0->work);
+    Task_DefaultDestroy(a0);
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006FE90);
 
