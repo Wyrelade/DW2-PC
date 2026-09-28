@@ -2033,7 +2033,79 @@ void func_8006C7CC(Stg40E764 *a0, s32 a1) {
     func_8006E764(a0, x, y);
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006C84C);
+s32 func_8006C84C(Actor *a0) {
+    Stg40ActWork *w = (Stg40ActWork *)a0->work;
+    Stg40Ent48 *e = w->field_2C;
+
+    func_800708FC(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2, 1);
+    if (func_800703E0(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2) & 0x2000) {
+        e->field_0 |= 0x1000;
+    }
+    if (e->field_0 & 0x1000) {
+        func_8006EBF4(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2, -1, -1, e->field_8);
+    }
+    if (e->field_10[1] >= 1 && e->field_10[1] <= 5) {
+        func_8006C7CC((Stg40E764 *)w, e->field_10[1] - 1);
+    }
+    switch (a0->stateLevel1) {
+    case 0:
+    default:
+        if (e->field_10[1] == 0xFF) {
+            func_8006E4DC(a0, 0x29);
+        } else {
+            func_8006E4DC(a0, 0x28);
+        }
+        Task_SetState1(a0, 1);
+        break;
+    case 1:
+        if (e->field_10[1] == 0xFF) {
+            func_8006E4DC(a0, 0x29);
+        } else {
+            func_8006E4DC(a0, 0x28);
+        }
+        break;
+    case 2:
+        func_80070974(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2);
+        func_8006EBF4(-1, -1, e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2, e->field_8);
+        e->field_0 = 0;
+        Task_SetState0(a0, 3);
+        break;
+    case 3:
+        break;
+    case 4:
+        switch (a0->stateLevel2) {
+        case 0:
+        default:
+            func_8006E4DC(a0, 0x2A);
+            Task_NextState2(a0);
+            Snd_PlayById(2, 0);
+            break;
+        case 1:
+            if (func_8006E588(a0) == 1) {
+                func_8006E4DC(a0, 0x29);
+                Task_SetState1(a0, 3);
+            }
+            break;
+        }
+        break;
+    case 5:
+        switch (a0->stateLevel2) {
+        case 0:
+        default:
+            if (a0->stateLevel4++ >= 11) {
+                func_8006E4DC(a0, 0x2B);
+                Task_NextState2(a0);
+            }
+            break;
+        case 1:
+            if (func_8006E588(a0) == 1) {
+                Task_SetState1(a0, 2);
+            }
+            break;
+        }
+        break;
+    }
+}
 
 s32 func_8006CAD4(Actor *a0) {
     Stg40ActWork *w = (Stg40ActWork *)a0->work;
