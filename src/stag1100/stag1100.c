@@ -250,7 +250,64 @@ void func_80063D28(Stg11MenuRow *arg0, Stg11CardRec *arg1) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80064000);
+void func_80064000(Actor *arg0, Stg11MenuWork *arg1) {
+    Stg11CardRec *p = (Stg11CardRec *)func_8006770C();
+    s16 *tbl = (s16 *)Cd_GetFileEntry(0xD28000F);
+    Stg11MenuRow *c = arg1->field_98;
+    Stg11CardRec *rec;
+    s16 maxLv;
+    s32 i;
+    s32 j;
+    s32 n;
+    s32 sum;
+
+    p = ((Stg11CardArea *)p)->cards;
+    arg1->field_138 = 0x18;
+    maxLv = 0;
+    for (i = 0; i < 0x24; i++) {
+        if (D_80050720->elems[i].state == 1) {
+            arg1->field_138--;
+        }
+        if (D_80050720->elems[i].state != 0 && maxLv < func_8001D958(D_80050720->elems[i].digiId)) {
+            maxLv = func_8001D958(D_80050720->elems[i].digiId);
+        }
+    }
+    n = 0;
+    for (i = 0; i < 5; i++, p++, c++) {
+        rec = p;
+        c->field_0 = 0;
+        c->field_2 = 0;
+        for (sum = j = 0; j < 0x80; j++) {
+            sum += rec->bytes[j];
+        }
+        if (sum == 0x880 && (rec->field_BD & 0xF) && rec->field_A2 < 0x100 && tbl[rec->field_A2] != 0
+            && rec->field_80 != -1 && rec->field_80 >= 0x780) {
+            for (j = 0; j < i; j++) {
+                if (arg1->field_98[j].field_0 != 0 && arg1->field_98[j].field_1E == rec->uid) {
+                    break;
+                }
+            }
+            if (j == i) {
+                c->field_0 = tbl[rec->field_A2];
+                for (j = 0; j < 0x24; j++) {
+                    if (((Stg11GameState *)D_80050720)->elems[j].state != 0 && ((Stg11GameState *)D_80050720)->elems[j].field_49 != 0 && ((Stg11GameState *)D_80050720)->elems[j].field_4A == rec->uid) {
+                        c->field_2 = 1;
+                    }
+                }
+                if (maxLv < func_8001D958(c->field_0)) {
+                    c->field_2 = 2;
+                }
+                if (c->field_2 == 0) {
+                    n++;
+                }
+                func_80063D28(c, rec);
+            }
+        }
+    }
+    if (n < arg1->field_138) {
+        arg1->field_138 = n;
+    }
+}
 
 void func_80064304(Actor *arg0, Stg11MenuWork *arg1) {
     Halves *pos = (Halves *)Cd_GetFileEntry(0xD28000C);
