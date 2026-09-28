@@ -462,7 +462,44 @@ void func_80065114(void) {
 
 INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80065150);
 
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80065374);
+void func_80065374(void) {
+    Stg00PolyFT4 *p = (Stg00PolyFT4 *)D_8005F770.packet.work;
+    u32 *ot = D_8005F770.otLayers.u[0];
+    Stg00Work *w;
+    Stg00TexSlot *t;
+    s32 h;
+
+    p->tag.b.len = 9;
+    p->code = 0x2C;
+    p->r0 = 0xFF;
+    p->g0 = 0xFF;
+    p->b0 = 0xFF;
+    w = D_80069360;
+    t = (Stg00TexSlot *)w->field_8D0;
+    p->tpage = (0 << 7) | (1 << 5) | ((t->y & 0x100) >> 4) | ((t->x & 0x3FF) >> 6) | ((t->y & 0x200) << 2);
+    p->clut = (w->field_8C2 << 6) | ((w->field_8C0 >> 4) & 0x3F);
+    p->u0 = ((Stg00TexSlot *)w->field_8D0)->u;
+    p->v0 = 0;
+    p->u1 = ((Stg00TexSlot *)D_80069360->field_8D0)->u + 0x40;
+    p->v1 = 0;
+    p->u2 = ((Stg00TexSlot *)D_80069360->field_8D0)->u;
+    p->v2 = h = 0x40;
+    p->u3 = ((Stg00TexSlot *)D_80069360->field_8D0)->u + h;
+    p->v3 = h;
+    p->x0 = -0x20;
+    p->y0 = -0x20;
+    p->x1 = 0x20;
+    p->y1 = -0x20;
+    p->x2 = -0x20;
+    p->y2 = 0x20;
+    p->x3 = 0x20;
+    p->y3 = 0x20;
+    p->code &= ~2;
+    p->tag.word = (p->tag.word & 0xFF000000) | (*ot & 0xFFFFFF);
+    *ot = (*ot & 0xFF000000) | ((u32)p & 0xFFFFFF);
+    p++;
+    D_8005F770.packet.work = (ActorWork *)p;
+}
 
 void func_800654F4(s32 arg0, s32 arg1) {
     func_80065150(arg0, arg1, D_8006935C);
