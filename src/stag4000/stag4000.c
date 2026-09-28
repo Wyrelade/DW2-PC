@@ -532,7 +532,25 @@ INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80069188);
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006932C);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006940C);
+void func_8006940C(Actor *a0) {
+    switch (a0->stateLevel2) {
+    case 0:
+    default:
+        if (func_8006E588(a0) == 1) {
+            if (D_80072B60->field_34 != -1) {
+                func_8006E4DC(a0, D_80072B60->field_34);
+            }
+            func_80067610(1, D_80072B60->field_44, D_80072B60->field_48, D_80072B60->field_4C);
+            Task_NextState2(a0);
+        }
+        break;
+    case 1:
+        if (func_80067704(1) == 1) {
+            Task_SetState1(a0, (u8)D_80072B60->field_38);
+        }
+        break;
+    }
+}
 
 void func_800694D0(Actor *a0) {
     if (func_8006E588(a0) == 1) {
