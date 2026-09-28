@@ -1682,7 +1682,102 @@ void func_8006835C(Actor *arg0) {
     Gfx_DrawParts(e);
 }
 
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_800684E4);
+void func_800684E4(Actor *arg0) {
+    Stg00SndWork *w = (Stg00SndWork *)arg0->work;
+    TextOpenArgs t;
+
+    switch (arg0->stateLevel0) {
+    case 0:
+        Mem_FillWordsNeg1(&w->field_0, 3);
+        Snd_UnloadSlot(1);
+        Snd_UnloadSlot(2);
+        w->field_14 = -1;
+        Task_NextState0(arg0);
+        break;
+    load:
+        w->field_14 = w->field_C;
+        Snd_SetSlotContent(0, w->field_C + 1);
+        w->field_18 = w->field_10;
+        Task_SetState1(arg0, 1);
+        goto text;
+    case 1:
+        switch (arg0->stateLevel1) {
+        case 0:
+        default:
+            if (D_8005F6F0[0].right > 0) {
+                w->field_C++;
+                if (w->field_C == func_80068190()) {
+                    w->field_C = 0;
+                }
+                w->field_10 = 0;
+            } else if (D_8005F6F0[0].left > 0) {
+                if (w->field_C == 0) {
+                    w->field_C = func_80068190() - 1;
+                } else {
+                    w->field_C--;
+                }
+                w->field_10 = 0;
+            } else if (D_8005F6F0[0].up > 0) {
+                w->field_10++;
+                if (w->field_10 == func_800681C4(w->field_C)) {
+                    w->field_10 = 0;
+                }
+            } else if (D_8005F6F0[0].down > 0) {
+                if (w->field_10 == 0) {
+                    w->field_10 = func_800681C4(w->field_C) - 1;
+                } else {
+                    w->field_10--;
+                }
+            } else if (D_8005F6F0[0].circle > 0) {
+                if (w->field_14 == w->field_C) {
+                    Snd_PlayById(w->field_10, 0);
+                } else {
+                    goto load;
+                }
+            } else if (D_8005F6F0[0].cross > 0) {
+                Snd_StopAll();
+            }
+        text:
+            t.text = (s32)D_80069318;
+            t.bigFont = 1;
+            t.color = 0;
+            t.x = 0x28;
+            t.y = 0x28;
+            t.charDelay = 0;
+            t.charAdvance = 0xE;
+            t.lineAdvance = 0x14;
+            Text_Open(&w->field_0, &t);
+            t.text = (s32)func_80068150(w->field_C);
+            t.bigFont = 1;
+            t.color = 0;
+            t.x = 0x78;
+            t.y = 0x50;
+            t.charDelay = 0;
+            t.charAdvance = 0xE;
+            t.lineAdvance = 0x14;
+            Text_Open(&w->field_4, &t);
+            t.text = (s32)func_80068170(w->field_C, w->field_10);
+            t.bigFont = 1;
+            t.color = 0;
+            t.x = 0x78;
+            t.y = 0x64;
+            t.charDelay = 0;
+            t.charAdvance = 0xE;
+            t.lineAdvance = 0x14;
+            Text_Open(&w->field_8, &t);
+            break;
+        case 1:
+            if (!Snd_AnySlotLoading()) {
+                Snd_PlayById(w->field_18, 0);
+                Task_SetState1(arg0, 0);
+            }
+            break;
+        }
+        break;
+    case 2:
+        break;
+    }
+}
 
 void func_800687E8(void) {
 }
