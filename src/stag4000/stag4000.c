@@ -494,7 +494,79 @@ void func_80066E30(Actor *a0, s32 *a1) {
     w->field_20 = *a1;
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80066E48);
+void func_80066E48(Actor *a0) {
+    Stg40ObjWork *w = (Stg40ObjWork *)a0->work;
+    TextOpenArgs args;
+    s32 n;
+    s32 i;
+
+    n = 6;
+    if (w->field_20 != 0) {
+        n = 7;
+    }
+    switch (a0->stateLevel0) {
+    case 0:
+    default:
+        Mem_FillWordsNeg1(w->field_0, n);
+        w->field_1C = 0;
+        D_80072B70 = a0;
+        Task_NextState0(a0);
+        break;
+    case 1:
+        switch (a0->stateLevel1) {
+        case 0:
+        default:
+            if (Math_RampToOne(a0, &w->field_1C) == 0) {
+                args.x = 0x1B;
+                args.y = 0x33;
+                args.bigFont = 0;
+                args.color = 0;
+                args.charAdvance = 0;
+                args.lineAdvance = 0xC;
+                args.charDelay = 0;
+                for (i = 0; i < w->field_44; i++) {
+                    args.text = w->field_28[i];
+                    Text_Open(&w->field_0[i], &args);
+                    Text_SetOtLayer(w->field_0[i], 2);
+                    args.y += 0xC;
+                }
+                if (w->field_20 != 0) {
+                    args.bigFont = 1;
+                    args.text = w->field_40;
+                    args.x = 0x10;
+                    args.y = 0x8A;
+                    args.charAdvance = 0;
+                    args.lineAdvance = 0;
+                    Text_Open(&w->field_18, &args);
+                    Text_SetOtLayer(w->field_18, 2);
+                }
+                w->field_24 = 0;
+                Task_NextState1(a0);
+            }
+            break;
+        case 1:
+            if (w->field_24 != 0) {
+                Task_SetState1(a0, 0);
+            }
+            break;
+        }
+        break;
+    case 2:
+        switch (a0->stateLevel1) {
+        case 0:
+        default:
+            Text_CloseArray(w->field_0, n);
+            Task_NextState1(a0);
+            break;
+        case 1:
+            if (Math_RampToZero(a0, &w->field_1C) == 0) {
+                Task_SetState0(a0, 3);
+            }
+            break;
+        }
+        break;
+    }
+}
 
 void func_80067044(Actor *a0) {
     Stg40ObjWork *w = (Stg40ObjWork *)a0->work;
