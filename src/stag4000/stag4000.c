@@ -527,7 +527,23 @@ void func_80069514(Actor *a0) {
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006955C);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006965C);
+void func_8006965C(Actor *a0) {
+    switch (a0->stateLevel2) {
+    case 0:
+    default:
+        Snd_PlayById(0x2F, 0);
+        func_8006E4DC(a0, 0x2C);
+        func_80067880(a0, 1);
+        Task_NextState2(a0);
+        break;
+    case 1:
+        if (func_800678C4(a0) == 1 || a0->stateLevel4++ >= 11) {
+            func_8006E4DC(a0, 0x28);
+            Task_SetState1(a0, 6);
+        }
+        break;
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80069714);
 
