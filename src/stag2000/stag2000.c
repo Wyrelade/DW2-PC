@@ -584,7 +584,24 @@ void func_8006D0F0(Actor *a) {
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006D124);
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006D2C0);
+void func_8006D2C0(void *t, s32 id, Halves pos, s32 arg) {
+    Stg20TextArgs args;
+
+    if (id < 1000) {
+        args.text = (s32)Cd_GetFileEntry(id + 0x1FD0000);
+    } else {
+        args.text = Item_GetDescText(id - 1000);
+    }
+    args.bigFont = 1;
+    args.color = 0;
+    args.pos.x = pos.lo;
+    args.pos.y = pos.hi;
+    args.charAdvance = 0;
+    args.lineAdvance = 0;
+    args.charDelay = 0;
+    args.strArg0 = arg;
+    Text_Open(t, &args);
+}
 
 void func_8006D350(Actor *a) {
     Stg20ListWork *w = (Stg20ListWork *)a->work;
