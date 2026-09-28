@@ -1657,7 +1657,77 @@ void func_8006AE74(void) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006AF34);
+void func_8006AF34(Actor *a0) {
+    s32 arg;
+    s32 i;
+    u16 *bag;
+
+    switch (a0->stateLevel2) {
+    case 0:
+    default:
+        D_80072B60->field_E2 = 0;
+        D_80072B60->field_E3 = 0;
+        func_8006E4DC(a0, 0x28);
+        arg = D_80072B60->field_E4 != 0;
+        Task_Create(0x20B, &D_80072AA4->field_10, (s32)&arg);
+        Snd_PlayById(0x37, 0);
+        func_8006AD10();
+        Task_NextState2(a0);
+        break;
+    case 1:
+        if (a0->stateLevel3++ >= 9) {
+            Task_NextState2(a0);
+        }
+        break;
+    case 2:
+        func_8006AE74();
+        if (D_8005F6F0[0].triangle > 0) {
+            Snd_PlayById(0xB, 0);
+            Task_SetState2(a0, 4);
+        } else if (D_8005F6F0[0].cross > 0) {
+            D_80072B60->field_E0 = D_80072B60->field_B0[D_80072B60->field_E2];
+            for (i = 0, bag = D_80050720->bagItems; i < 0x30; i++, bag++) {
+                if (*bag == D_80072B60->field_E0) {
+                    *bag = 0;
+                    Item_CompactBag();
+                    break;
+                }
+            }
+            if (D_80072B60->field_E4 != 0) {
+                func_800651C0(&((Stg40ActWork *)a0->work)->field_2C->field_18, 8);
+                Snd_PlayById(0xE, 0);
+            } else {
+                Snd_PlayById(0xA, 0);
+            }
+            Task_NextState2(a0);
+        }
+        if (a0->stateLevel2 != 2) {
+            Task_SetState0((Actor *)D_80072AA4->field_10, 2);
+        }
+        break;
+    case 3:
+        if (D_80072AA4->field_10 == 0) {
+            if (D_80072B60->field_E4 == 0) {
+                Task_SetState1(a0, 0x12);
+            } else {
+                Task_SetState1(a0, 0x1B);
+            }
+        }
+        break;
+    case 4:
+        if (D_80072AA4->field_10 == 0) {
+            if (D_80072B60->field_E4 == 0) {
+                Task_SetState1(a0, 1);
+                D_80072B60->field_7E = D_80050720->field_0;
+            } else {
+                Task_SetState1(a0, 0x1A);
+                Task_SetState2(a0, 2);
+                Task_SetState3(a0, 1);
+            }
+        }
+        break;
+    }
+}
 
 void func_8006B20C(Actor *a0) {
     s32 r;
