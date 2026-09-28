@@ -530,7 +530,19 @@ void func_8006E690(void) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006E770);
+void func_8006E770(void) {
+    s32 i;
+
+    for (i = 0; i < 6; i++) {
+        ((Stg30StateDigis *)&D_80073CC0)->digis[i] = D_80073A50.digis[i];
+        D_80073CC0.field_31C[i] = D_80073A50.field_228[i];
+        D_80073CC0.field_340[i] = D_80073A50.field_240[i];
+        D_80073CC0.field_346[i] = D_80073A50.field_246[i];
+        D_80073CC0.field_356[i] = D_80073A50.field_24C[i];
+        D_80073CC0.field_362[i] = D_80073A50.field_258[i];
+        D_80073CC0.field_36E[i] = D_80073A50.field_264[i];
+    }
+}
 
 void func_8006E850(Actor *a0, s32 anim) {
     Stg30Work732B8 *w = (Stg30Work732B8 *)a0->work;
