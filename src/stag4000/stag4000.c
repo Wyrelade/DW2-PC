@@ -891,7 +891,35 @@ void func_800690CC(Actor *a0) {
     func_8006813C(a0, 0x28, 8, D_80072868[k], arg, 0);
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80069188);
+void func_80069188(Actor *a0) {
+    Stg40ActWork *w = (Stg40ActWork *)a0->work;
+    s32 v;
+    s32 n;
+
+    func_8006E4E8(a0, 0x28);
+    if (D_8005071C->field_2 != 0) {
+        return;
+    }
+    if (D_8005F700 > 0 && D_80072AA0->stateLevel0 == 1 && D_80072AA0->stateLevel1 == 1 && D_80072AA0->stateLevel2 == 1) {
+        Task_SetState1(D_80072AA0, 4);
+        D_8005071C->field_2 = 1;
+        return;
+    }
+    if (func_80068604(w->field_2C) == 1) {
+        if (D_8005071C->field_BA0 & 1) {
+            func_8006813C(a0, 0x28, 6, 0x1FD001D, 0, 0);
+        } else {
+            Task_SetState1(a0, 2);
+        }
+        return;
+    }
+    if (func_800682DC(a0) == 0 && func_800681BC(a0) == 0 && func_80022518(0x12) > 0 && D_8005F720 > 0) {
+        v = D_80050720->field_0 + 1;
+        n = (v < 3) ? v : 0;
+        D_80050720->field_0 = n;
+        D_80072B60->field_7E = D_80050720->field_0;
+    }
+}
 
 void func_8006932C(Actor *a0) {
     Stg40Ent48 *e = ((Stg40ActWork *)a0->work)->field_2C;
