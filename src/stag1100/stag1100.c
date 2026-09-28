@@ -93,7 +93,85 @@ void func_80063894(Actor *arg0, s16 arg1) {
     w->field_24 = arg1 == 4;
 }
 
-INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_800638BC);
+void func_800638BC(Actor *arg0) {
+    Stg11Work63894 *w = (Stg11Work63894 *)arg0->work;
+    s32 *slot = (s32 *)arg0->u34.children;
+    Stg11TaskEntry *tasks;
+    s32 idx;
+
+    switch (arg0->stateLevel0) {
+    case 0:
+    default:
+        w->field_14.layout = ((Layout8C *)Cd_GetFileEntry(0xD280000))[w->field_20 - 1];
+        Mem_FillWordsNeg1(w->texts, 4);
+        Task_NextState0(arg0);
+        break;
+    case 1:
+        tasks = (Stg11TaskEntry *)Cd_GetFileEntrySubPtr(0xD280003, w->field_20 - 1);
+        switch (arg0->stateLevel1) {
+        case 0:
+        default:
+            if (Math_RampToOne(arg0, &w->field_28) == 0) {
+                Text_PrintIdList(w->texts, (TextIdListEntry *)Cd_GetFileEntrySubPtr(0xD280001, w->field_20 - 1), 2);
+                Text_OpenPacked(&w->texts[3], (s32)Cd_GetFileEntry(w->field_20 + 0x1FD01A2), 0x81, D_800681B8);
+                Task_NextState1(arg0);
+            }
+            break;
+        case 1:
+            if (Menu_MoveGridCursor(w->field_10, w->field_14.gridSize, w->field_24) == 0) {
+                if (D_8005F6F0[w->field_24].cross > 0) {
+                    if (tasks[Menu_GridIndexColMajor(w->field_10, w->field_14.gridSize)].id != -1) {
+                        Snd_PlayById(0xA, 0);
+                        Task_NextState1(arg0);
+                    }
+                } else if (D_8005F6F0[w->field_24].triangle > 0) {
+                    Snd_PlayById(0xB, 0);
+                    Task_SetState0(arg0, 2);
+                }
+            } else {
+                Snd_PlayById(0xC, 0);
+            }
+            break;
+        case 2:
+            switch (arg0->stateLevel2) {
+            case 0:
+            default:
+                idx = Menu_GridIndexColMajor(w->field_10, w->field_14.gridSize);
+                Task_Create(tasks[idx].id, slot, tasks[idx].arg);
+                Text_Close(&w->texts[3]);
+                Task_NextState2(arg0);
+                break;
+            case 1:
+                if (*slot == 0) {
+                    if (D_800685C8 == 0) {
+                        Text_OpenPacked(&w->texts[3], (s32)Cd_GetFileEntry(w->field_20 + 0x1FD01A2), 0x81, D_800681B8);
+                        Task_SetState1(arg0, 1);
+                    } else {
+                        Task_SetState0(arg0, 2);
+                    }
+                }
+                break;
+            }
+            break;
+        }
+        break;
+    case 2:
+        switch (arg0->stateLevel1) {
+        case 0:
+        default:
+            Text_CloseArray(w->texts, 4);
+            Gfx_FadeOutToBlack(0x20);
+            Task_NextState1(arg0);
+            break;
+        case 1:
+            if (Math_RampToZero(arg0, &w->field_28) == 0) {
+                Task_SetState0(arg0, 3);
+            }
+            break;
+        }
+        break;
+    }
+}
 
 void func_80063C08(Actor *arg0) {
     Stg11Work63894 *w = (Stg11Work63894 *)arg0->work;
