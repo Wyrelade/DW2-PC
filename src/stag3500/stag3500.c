@@ -628,7 +628,19 @@ s32 func_80068B9C(void) {
     return (((Stg35Work708 *)e->work)->field_78 != 0) * 2;
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80068BF8);
+void func_80068BF8(void) {
+    Actor *e = (Actor *)Task_FindFirst(0x708, -1, -1);
+    Stg35Work708 *w;
+    s32 i;
+
+    if (e != NULL) {
+        w = (Stg35Work708 *)e->work;
+        for (i = 0; i < 6; i++) {
+            w->field_80[i].field_0 = D_8006AA88[i].field_26;
+            w->field_80[i].field_8 = D_8006AA88[i].field_24;
+        }
+    }
+}
 
 s32 func_80068C5C(void) {
     TaskEntry *e = Task_FindFirst(0x708, -1, -1);
