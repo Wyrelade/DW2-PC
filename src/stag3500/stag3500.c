@@ -592,7 +592,17 @@ void func_800689FC(Actor *arg0) {
     Task_DefaultDestroy(arg0);
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80068AA0);
+void func_80068AA0(Actor *arg0) {
+    Stg35Work3 *w = (Stg35Work3 *)arg0->work;
+    s32 i;
+
+    for (i = 0; i < 3; i++) {
+        func_800661B0(&w->load[i]);
+    }
+    for (i = 0; i < 10; i++) {
+        func_80065930(&w->sprite[i]);
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80068B10);
 
