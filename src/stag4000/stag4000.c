@@ -213,7 +213,22 @@ void func_800665E0(Actor *a0) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006667C);
+void func_8006667C(Actor *a0) {
+    Stg40W667C *w = (Stg40W667C *)a0->work;
+    s32 f = 1;
+    s32 n = func_80022518(0x11);
+    s32 *p;
+
+    if (n <= 0 || (D_8005071C->field_1058 == 0x10 && n == 0x75)) {
+        f = 0;
+    }
+    if (f) {
+        func_8006620C(w);
+    }
+    for (p = w->field_1418; *p != -1; p++) {
+        Gfx_FindOrLoadTexSlot(*p);
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80066720);
 
