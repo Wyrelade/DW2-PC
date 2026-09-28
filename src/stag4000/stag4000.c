@@ -88,7 +88,15 @@ void func_80065168(s32 a0, s32 a1, s32 a2) {
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_800651C0);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80065230);
+s32 func_80065230(void) {
+    Stg40B68Work *w = (Stg40B68Work *)D_80072B68->work;
+    s32 r = 0;
+
+    if (D_80072B60->field_2C == w->field_1E90 && D_80072B60->field_30 == w->field_1E94) {
+        r = -1;
+    }
+    return r;
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80065278);
 
