@@ -439,7 +439,17 @@ void func_8006AD6C(Actor *a, s32 i) {
     ((Stg20Rot *)a->u38.ptr38)->field_42 = D_800703D8[i];
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006AD8C);
+void func_8006AD8C(Actor *a) {
+    Stg20CursorWork *w = (Stg20CursorWork *)a->work;
+    Stg20Cell c = *func_80067504(a);
+
+    w->x = c.x;
+    w->y = c.y;
+    w->field_8 = w->field_A = 1;
+    w->field_74 = 1;
+    w->field_5C = 0;
+    w->field_18 = 0;
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006ADF8);
 
