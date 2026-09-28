@@ -376,4 +376,8 @@ INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_800728D8);
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8007292C);
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80072F84);
+void func_80072F84(Actor *a0) {
+    if (((Stg30Work737C8 *)a0->work)->field_10 != 0) {
+        Gfx_DrawParts(Cd_GetFileEntry(0x1A10017));
+    }
+}
