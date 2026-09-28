@@ -166,7 +166,65 @@ void func_80064FF4(Actor *a0) {
     Gfx_DrawParts((EntA0 *)p);
 }
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80065100);
+void func_80065100(Actor *a0) {
+    Stg30Work730D0 *w = (Stg30Work730D0 *)a0->work;
+    s32 i;
+    s32 n;
+    s32 id;
+
+    if (w->field_40[0] != 0 && w->field_4C[0] == 0) {
+        i = 0;
+        n = i;
+        for (; i < 0x30; i++) {
+            id = ((Stg30GameIds *)&D_8005E620)->field_66[i];
+            if (id == 0) {
+                break;
+            }
+            switch (func_8001E0C0(id)) {
+            case 0x14:
+            case 0x1D:
+            case 0x1E:
+                w->field_58[0][n++] = id;
+                break;
+            }
+        }
+        w->field_E8[0] = n;
+    } else {
+        w->field_E8[0] = 0;
+    }
+    if (w->field_40[1] != 0 && w->field_4C[1] == 0) {
+        i = 0;
+        n = i;
+        for (; i < 0x30; i++) {
+            id = ((Stg30GameIds *)&D_8005E620)->field_66[i];
+            if (id == 0) {
+                break;
+            }
+            if (func_8001E0C0(id) == 0x1A) {
+                w->field_58[1][n++] = id;
+            }
+        }
+        w->field_E8[1] = n;
+    } else {
+        w->field_E8[1] = 0;
+    }
+    if (w->field_40[2] != 0 && w->field_4C[2] == 0) {
+        i = 0;
+        n = i;
+        for (; i < 0x30; i++) {
+            id = ((Stg30GameIds *)&D_8005E620)->field_66[i];
+            if (id == 0) {
+                break;
+            }
+            if (func_8001E0C0(id) == 0x19) {
+                w->field_58[2][n++] = id;
+            }
+        }
+        w->field_E8[2] = n;
+    } else {
+        w->field_E8[2] = 0;
+    }
+}
 
 void func_800652C8(void *a0, s32 id, s32 color, Stg30XY pos, s32 name, s32 delay) {
     TextOpenArgs args;
