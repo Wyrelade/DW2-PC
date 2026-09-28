@@ -1,6 +1,9 @@
 #include "common.h"
+#include "stag3000/stag3000.h"
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80063898);
+void func_80063898(Actor *a0, s32 a1) {
+    a0->field_8 = a1;
+}
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_800638A0);
 
