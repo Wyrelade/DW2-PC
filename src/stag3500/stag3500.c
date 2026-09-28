@@ -1937,7 +1937,239 @@ void func_800698C8(Stg35CamWork *w, s32 *t) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_800699FC);
+void func_800699FC(Actor *arg0) {
+    Stg35CamWork *w = (Stg35CamWork *)arg0->work;
+    s32 i;
+    s32 h;
+
+    switch (arg0->stateLevel0) {
+    case 0:
+        GsInitCoordinate2(0, &w->field_1C);
+        w->field_4 = -0x4E20;
+        w->field_10 = 0x12C;
+        w->field_18 = 0x5DC;
+        Task_NextState0(arg0);
+        break;
+    case 1:
+        switch (arg0->stateLevel1) {
+        case 0:
+        default:
+            switch (arg0->stateLevel2) {
+            case 0:
+            default:
+                w->field_4 += 0xE9;
+                w->field_8 -= 0x15E;
+                w->field_7E += 0x44;
+                if (w->field_7E > 0x1000) {
+                    w->field_7E = 0;
+                    Task_NextState2(arg0);
+                }
+                break;
+            case 1:
+                w->field_10 -= 0x21;
+                if (++arg0->stateLevel3 == 0x1E) {
+                    w->field_10 = -0x2BC;
+                    Task_NextState1(arg0);
+                }
+                break;
+            }
+            break;
+        case 1:
+            {
+                s32 t[7];
+
+                t[2] = -0x169B;
+                t[3] = -0x5366;
+                t[5] = 0;
+                t[6] = 0;
+                t[0] = 0;
+                t[1] = 0;
+                t[4] = -0x2BC;
+                func_800698C8(w, t);
+            }
+            break;
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+            {
+                s32 t[7];
+
+                i = arg0->stateLevel1 - 2;
+                h = func_8001E79C(D_8006AA88.rec[i].digiId);
+                h = h < 0x300 ? 0 : h - 0x300;
+                h /= 256;
+                t[5] = (i % 3) * 0xA00 - 0xA00;
+                t[6] = (i / 3) * 0x2800 - 0x1400;
+                t[0] = D_8006A690[i];
+                t[1] = 0;
+                t[2] = -0xC30;
+                t[3] = D_8006A69C[h];
+                t[4] = D_8006A6B0[h];
+                func_800698C8(w, t);
+            }
+            break;
+        case 8:
+            {
+                s32 t[7];
+
+                t[6] = -0x1400;
+                t[0] = 0x238;
+                t[2] = -0x91C;
+                t[3] = 0x33FC;
+                t[5] = 0;
+                t[1] = 0;
+                t[4] = -0x36C;
+                func_800698C8(w, t);
+            }
+            break;
+        case 9:
+            {
+                s32 t[7];
+
+                t[6] = 0x1400;
+                t[0] = 0x5C7;
+                t[2] = -0x91C;
+                t[3] = 0x33FC;
+                t[5] = 0;
+                t[1] = 0;
+                t[4] = -0x36C;
+                func_800698C8(w, t);
+            }
+            break;
+        case 22:
+            w->field_74 = -0x1E00;
+            w->field_4 = -0x1F40;
+            w->field_6C = 0;
+            w->field_7E = 0;
+            w->field_0 = 0;
+            w->field_8 = 0x4E20;
+            w->field_C = 0;
+            w->field_10 = 0;
+            w->field_14 = 0;
+            break;
+        case 23:
+            w->field_74 = 0x1E00;
+            w->field_7E = 0x800;
+            w->field_4 = -0x1F40;
+            w->field_6C = 0;
+            w->field_0 = 0;
+            w->field_8 = 0x4E20;
+            w->field_C = 0;
+            w->field_10 = 0;
+            w->field_14 = 0;
+            break;
+        case 24:
+            {
+                s32 t[7];
+
+                t[0] = -0x400;
+                t[2] = -0x50FB;
+                t[3] = -0x6EC6;
+                t[5] = 0;
+                t[6] = 0;
+                t[1] = 0;
+                t[4] = -0x29C;
+                func_800698C8(w, t);
+            }
+            break;
+        case 10:
+        case 11:
+        case 12:
+        case 13:
+        case 14:
+        case 15:
+            switch (arg0->stateLevel2) {
+            case 0:
+            default:
+                D_8006AF70 = Rand_Next() & 3;
+                Task_NextState2(arg0);
+            case 1:
+                break;
+            }
+            w->field_4 = -0x514;
+            w->field_8 = 0x2EE0;
+            w->field_10 = -0x578;
+            w->field_0 = 0;
+            w->field_C = 0;
+            w->field_14 = 0;
+            w->field_7E = 0xAA;
+            w->field_6C = (arg0->stateLevel1 - 10) * 0xA00 - 0xC80;
+            w->field_74 = -0x1400;
+            switch (D_8006AF70) {
+            case 1:
+                w->field_7E = 0x38;
+                w->field_6C = (arg0->stateLevel1 - 10) * 0xA00 - 0xA00;
+                w->field_8 = 0x34BC;
+                break;
+            case 2:
+                w->field_4 = -0x1914;
+                w->field_6C = (arg0->stateLevel1 - 10) * 0xA00 - 0xA00;
+                w->field_74 = -0xF00;
+                w->field_8 = 0x34BC;
+                break;
+            }
+            if (arg0->stateLevel1 >= 13) {
+                w->field_7E = 0x800 - w->field_7E;
+                w->field_6C -= 0x1E00;
+                w->field_74 = -w->field_74;
+            }
+            break;
+        case 16:
+        case 17:
+        case 18:
+        case 19:
+        case 20:
+        case 21:
+            w->field_4 = -0x5DC;
+            w->field_8 = 0x2EE0;
+            w->field_0 = 0;
+            w->field_C = 0;
+            w->field_10 = -0x640;
+            w->field_14 = 0;
+            if (arg0->stateLevel1 < 19) {
+                w->field_7E = 0xAA;
+                w->field_6C = (arg0->stateLevel1 - 16) * 0xA00 - 0xA00;
+                w->field_74 = -0x1400;
+            } else {
+                w->field_7E = 0x755;
+                w->field_6C = (arg0->stateLevel1 - 19) * 0xA00 - 0xA00;
+                w->field_74 = 0x1400;
+            }
+            break;
+        case 25:
+            w->field_74 = -0x1400;
+            w->field_4 = -0x1388;
+            w->field_8 = 0x3A98;
+            w->field_6C = 0;
+            w->field_70 = 0;
+            w->field_7E = 0;
+            w->field_0 = 0;
+            w->field_C = 0;
+            w->field_10 = -0x3E8;
+            w->field_14 = 0;
+            break;
+        case 26:
+            w->field_74 = 0x1400;
+            w->field_7E = 0x800;
+            w->field_4 = -0x1388;
+            w->field_8 = 0x3A98;
+            w->field_6C = 0;
+            w->field_70 = 0;
+            w->field_0 = 0;
+            w->field_C = 0;
+            w->field_10 = -0x3E8;
+            w->field_14 = 0;
+            break;
+        }
+        break;
+    case 2:
+    default:
+        break;
+    }
+}
 
 void func_80069FD4(Actor *arg0) {
     Stg35CamWork *w = (Stg35CamWork *)arg0->work;
