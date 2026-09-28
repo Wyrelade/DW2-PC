@@ -1108,7 +1108,81 @@ void func_80066028(Actor *arg0, s16 arg1) {
     w->field_94 = 0;
 }
 
-INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_800660F0);
+void func_800660F0(Actor *arg0) {
+    Stg11MenuWork *w = (Stg11MenuWork *)arg0->work;
+
+    switch (arg0->stateLevel0) {
+    case 0:
+    default:
+        w->u6C.layout = ((Layout8C *)Cd_GetFileEntry(0xD280005))[w->field_78 - 1];
+        Mem_FillWordsNeg1((s32 *)w, 0x1A);
+        Task_NextState0(arg0);
+        break;
+    case 1:
+        switch (arg0->stateLevel1) {
+        case 0:
+        default:
+            if (Math_RampToOne(arg0, &w->field_8C) == 0) {
+                Text_PrintIdList((s32 *)w, (TextIdListEntry *)Cd_GetFileEntrySubPtr(0xD280006, w->field_78 - 1), 2);
+                w->field_88 = 0;
+                func_800648E4(w, w->field_80 ? 0x1AD : 0x16B);
+                Task_SetState1(arg0, 3);
+            }
+            break;
+        case 3:
+            func_80064C64(arg0, w);
+            break;
+        case 2:
+            func_80064B00(arg0, w);
+            break;
+        case 1:
+            func_80064A6C(arg0, w);
+            break;
+        case 4:
+            func_800650A8(arg0, w);
+            break;
+        case 5:
+            func_80065188(arg0, w);
+            break;
+        case 6:
+            func_80065318(arg0, w);
+            break;
+        case 7:
+            func_800654E4(arg0, w);
+            break;
+        case 8:
+            func_80065A3C(arg0, w);
+            break;
+        case 9:
+            func_80064EF0(arg0, w);
+            break;
+        case 10:
+            func_80064FD0(arg0, w);
+            break;
+        case 11:
+            func_80065BA0(arg0, w);
+            break;
+        case 12:
+            func_80065E64(arg0, w);
+            break;
+        }
+        break;
+    case 2:
+        switch (arg0->stateLevel1) {
+        case 0:
+        default:
+            Text_CloseArray((s32 *)w, 0x1A);
+            Task_NextState1(arg0);
+            break;
+        case 1:
+            if (Math_RampToZero(arg0, &w->field_8C) == 0) {
+                Task_SetState0(arg0, 3);
+            }
+            break;
+        }
+        break;
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_8006637C);
 
