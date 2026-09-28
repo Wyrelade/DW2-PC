@@ -293,7 +293,11 @@ void func_80066D78(Actor *a0) {
     }
 }
 
-void func_80066DF0(u8 a0, u8 a1, u8 a2) {
+void func_80066DF0(a0, a1, a2)
+    u8 a0;
+    u8 a1;
+    u8 a2;
+{
     Stg40ObjWork *w = (Stg40ObjWork *)D_80072B70->work;
 
     w->field_46 = a0;
@@ -937,7 +941,7 @@ s32 func_8006D418(Actor *a0) {
         return func_8006C84C(a0);
     case 2:
     case 3:
-        return func_8006C6C4(a0);
+        return ((s32 (*)(Actor *))func_8006C6C4)(a0);
     }
 }
 
