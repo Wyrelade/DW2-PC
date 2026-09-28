@@ -1247,7 +1247,45 @@ void func_8006F1C8(Stg40ImgWork *a0) {
     func_8006F168(a0);
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006F290);
+void func_8006F290(Stg40TileWork *w) {
+    GfxTexSlot *s;
+    RECT *r;
+    u16 *d;
+    u16 *src;
+    s32 i;
+    s32 n;
+    s32 j;
+    s32 k;
+
+    ((Stg40ImgWork *)w)->field_758 = Gfx_ReserveTexSlot();
+    s = (GfxTexSlot *)((Stg40ImgWork *)w)->field_758;
+    r = &((Stg40ImgWork *)w)->rect;
+    r->x = s->vramX;
+    r->y = s->vramY + 0xFE;
+    r->w = 0x10;
+    r->h = 2;
+    d = (u16 *)((Stg40ImgWork *)w)->data;
+    src = D_80072948;
+    for (j = 0; j < 32; j++) {
+        *d++ = *src++;
+    }
+    func_8006F168((Stg40ImgWork *)w);
+    r = &w->rect;
+    r->x = s->vramX;
+    r->y = s->vramY;
+    r->w = 0x12;
+    r->h = 0x32;
+    n = 0x12 * 0x32;
+    d = ((Stg40TileGrid *)w)->pix;
+    for (i = 0; i < n; i++) {
+        *d++ = 0;
+    }
+    w->field_760 = -1;
+    func_8006F18C(w);
+    for (k = 1; k >= 0; k--) {
+        w->field_762[k] = 0;
+    }
+}
 
 void func_8006F38C(Stg40ImgWork *a0) {
     Gfx_ReleaseTexSlot(a0->field_758);
