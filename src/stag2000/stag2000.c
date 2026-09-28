@@ -279,7 +279,16 @@ void func_80068CF8(void) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80068D34);
+void func_80068D34(s32 id) {
+    TaskEntry *e = Task_FindFirst(0x30D, -1, -1);
+
+    if (e != NULL) {
+        Stg20TextWork *w = (Stg20TextWork *)e->work;
+
+        w->field_4 = func_8001EDD4(id);
+        w->field_18 = 1;
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80068D84);
 
