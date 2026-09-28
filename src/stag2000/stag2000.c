@@ -997,7 +997,64 @@ INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_800698F4);
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80069AAC);
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80069D98);
+void func_80069D98(Actor *a) {
+    Stg20SkillWork *w = (Stg20SkillWork *)a->work;
+    GfxPart *p;
+    GfxPart *q;
+    s32 m;
+    s32 bit;
+    s32 i;
+    s32 m2;
+
+    p = (GfxPart *)Cd_GetFileEntry(0xD120009);
+    for (q = p; q->fileId != 0; q++) {
+        q->visible = (q->groupMask & D_800700D4[w->col]) == 0;
+        if (q->groupMask & 0x4000) {
+            q->x = D_8007009C[w->col].lo;
+            q->y = D_8007009C[w->col].hi + w->cursor[w->col] * 11;
+        }
+    }
+    Gfx_DrawParts((s32)p);
+    p = (GfxPart *)Cd_GetFileEntry(0xD12000A);
+    m = 0;
+    bit = 2;
+    for (i = 0; i < 4; i++) {
+        if (w->top[i] == 0) {
+            m |= bit;
+            bit <<= 1;
+            m |= bit;
+            bit <<= 1;
+        } else if (w->col != i) {
+            m |= bit;
+            bit <<= 2;
+        } else {
+            bit <<= 1;
+            m |= bit;
+            bit <<= 1;
+        }
+        if (w->groups[i].count < 4 || w->groups[i].count == w->top[i] + 3) {
+            m |= bit;
+            bit <<= 1;
+            m |= bit;
+            bit <<= 1;
+        } else if (w->col != i) {
+            m |= bit;
+            bit <<= 2;
+        } else {
+            bit <<= 1;
+            m |= bit;
+            bit <<= 1;
+        }
+    }
+    Gfx_HidePartsByMask((GfxPartMaskView *)p, m);
+    m2 = ~m & D_800700E4[w->col];
+    for (q = p; q->fileId != 0; q++) {
+        if (q->groupMask & m2) {
+            q->palette = Math_PingPongRange(a->elapsed, 4, 0, 3);
+        }
+    }
+    Gfx_DrawParts((s32)p);
+}
 
 void func_8006A000(Actor *a) {
     s32 *w = (s32 *)a->work;
