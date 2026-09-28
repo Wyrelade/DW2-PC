@@ -573,7 +573,19 @@ INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006FC78);
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006FFD0);
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_800701FC);
+void func_800701FC(void) {
+    Mem_Zero(&D_80073CC0, 0x3E0);
+    D_80073CC0.field_3D4 = 1;
+    if ((D_8005F770.prevGameMode & 0xFF00) == 0x300) {
+        D_8005D5A0.field_103D = 0;
+        D_8005D5A0.field_1040 = 0;
+        D_80073CC0.entries[0].field_0 = 1;
+    }
+    if (D_8005F770.field_24 == 0x97 && Flag_Test(0x88)) {
+        D_8005F770.field_24++;
+    }
+    D_80074098 = 4;
+}
 
 void func_800702A8(Actor *a0, Vec3 *args) {
     ((Stg30WorkVec3 *)a0->work)->pos = *args;
