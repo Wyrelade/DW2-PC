@@ -1022,7 +1022,69 @@ s32 func_8006C18C(s32 id) {
     return 0;
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006C1C4);
+s32 func_8006C1C4(s32 id) {
+    if (func_8006C18C(id)) {
+        return 0x132;
+    }
+    if (func_8006C14C(D_800704FC, id)) {
+        return 0x131;
+    }
+    if (func_8006C14C(D_80070530, id)) {
+        if (D_8005E65C != 0) {
+            return 0x12F;
+        }
+        return 0x130;
+    }
+    if (func_8006C14C(D_80070548, id)) {
+        if (D_8005E65E != 0) {
+            return 0x12F;
+        }
+        return 0x133;
+    }
+    if (func_8006C14C(D_800705A4, id)) {
+        if (D_8005E662 != 0) {
+            return 0x12F;
+        }
+        return 0x135;
+    }
+    if (func_8006C14C(D_800705B4, id)) {
+        if (D_8005E660 != 0) {
+            return 0x12F;
+        }
+        return 0x136;
+    }
+    if (func_8006C14C(D_80070554, id)) {
+        if (D_8005E64C == 0xEC) {
+            return 0x131;
+        }
+        return 0x134;
+    }
+    if (func_8006C14C(D_80070570, id)) {
+        if (D_8005E64C == 0xEA) {
+            return 0x131;
+        }
+        return 0x134;
+    }
+    if (func_8006C14C(D_80070588, id)) {
+        if (D_8005E64C == 0xEB) {
+            return 0x131;
+        }
+        return 0x134;
+    }
+    if (func_8006C14C(D_80070580, id)) {
+        if (D_8005E64C != 0xEC) {
+            return 0x131;
+        }
+        return 0x134;
+    }
+    if (func_8006C14C(D_80070594, id)) {
+        if (D_8005E64C != 0xEA) {
+            return 0x131;
+        }
+        return 0x134;
+    }
+    return 0;
+}
 
 s32 func_8006C3B8(s32 id) {
     s32 n;
