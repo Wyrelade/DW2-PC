@@ -392,7 +392,10 @@ void func_8006ED5C(void) {
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006ED88);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006F06C);
+void func_8006F06C(void) {
+    func_8006ED5C();
+    func_8006ED88(1);
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006F094);
 
