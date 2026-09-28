@@ -165,7 +165,11 @@ void func_800664F4(Stg35LoadHandle *arg0) {
     l->field_8 = 0;
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80066508);
+void func_80066508(Stg35LoadHandle *arg0) {
+    Stg35Load *l = arg0->load;
+    l->mode = 2;
+    l->field_8 = 0x1000;
+}
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80066520);
 
