@@ -932,7 +932,35 @@ void func_8006A614(Actor *a0) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006A6EC);
+void func_8006A6EC(Actor *a0) {
+    Actor *t = D_80072B60->field_3C;
+    u8 *d = D_80072B60->field_40->field_10;
+
+    switch (a0->stateLevel2) {
+    case 0:
+    default:
+        if (d[0] == 0) {
+            func_80067610(1, 0x1FD004E, 0, 0);
+            Task_SetState1(t, 5);
+        } else if (Item_AddToBag(d[0]) == -1) {
+            func_80067610(1, 0x1FD0055, Item_GetNameText(d[0]), 0);
+            d[1] = 0xFF;
+            Snd_PlayById(0x1C, 0);
+        } else {
+            func_80067610(1, 0x1FD004D, Item_GetNameText(d[0]), 0);
+            Task_SetState1(t, 5);
+            Snd_PlayById(0x19, 0);
+            Item_SortList();
+        }
+        Task_NextState2(a0);
+        break;
+    case 1:
+        if (func_80067704(1) == 1) {
+            Task_SetState1(a0, 6);
+        }
+        break;
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006A848);
 
