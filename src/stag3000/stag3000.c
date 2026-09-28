@@ -115,7 +115,9 @@ s32 func_8006767C(Stg30IdSet *a0, s16 *a1, u8 id) {
     return 0;
 }
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_800676C4);
+s32 func_800676C4(s32 a0, u8 a1) {
+    return a0 >= func_8001F0C0(a1);
+}
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_800676F4);
 
