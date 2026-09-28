@@ -47,7 +47,50 @@ void func_80063760(Actor *a, s32 v) {
     func_80063610(a);
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80063784);
+void func_80063784(Actor *a) {
+    Stg20LoadWork *w = (Stg20LoadWork *)a->work;
+    s32 *tbl;
+    s32 i;
+
+    switch (a->stateLevel0) {
+    case 0:
+        tbl = (s32 *)Cd_GetFileOrNull(w->fileId);
+        for (i = 0; i < 10; i++) {
+            if (tbl[i] != 0) {
+                w->ids[i] = (w->fileId << 16) + i;
+            } else {
+                w->ids[i] = 0;
+            }
+        }
+        w->field_2C = 0;
+        w->field_30 = 0;
+        Task_NextState0(a);
+        break;
+    case 1:
+        switch (a->stateLevel1) {
+        case 0:
+            break;
+        case 1:
+            switch (a->stateLevel2) {
+            case 0:
+            default:
+                a->elapsed = 0;
+                Task_NextState2(a);
+            case 1:
+                w->field_2C += D_8006FC4C[((Stg20BlinkTask *)a)->field_24 & 3].x;
+                w->field_30 += D_8006FC4C[((Stg20BlinkTask *)a)->field_24 & 3].y;
+                if (a->elapsed >= 0x78) {
+                    Task_SetState1(a, 0);
+                }
+                break;
+            }
+            break;
+        }
+        break;
+    case 2:
+        break;
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_800638E8);
 
