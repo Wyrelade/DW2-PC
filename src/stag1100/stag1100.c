@@ -1184,7 +1184,106 @@ void func_800660F0(Actor *arg0) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_8006637C);
+void func_8006637C(Actor *arg0) {
+    Stg11MenuWork *w = (Stg11MenuWork *)arg0->work;
+    s32 *ids;
+    GfxPart *parts;
+    s32 *tbl;
+    s32 *tblA;
+    Stg11SaveSlot *slot;
+    Stg11PolyG4 *p;
+    u32 *ot;
+    s32 i;
+    s32 mask;
+    s32 m1;
+    s32 bit;
+    Stg11SaveList *list;
+    u32 t;
+    s32 h;
+
+    if (w->field_8C != 0) {
+        ids = (s32 *)Cd_GetFileEntry(0xD280007);
+        for (i = 0; ids[i] != 0; i++) {
+            parts = (GfxPart *)Cd_GetFileEntry(ids[i]);
+            switch (i) {
+            case 0:
+                tbl = (s32 *)Cd_GetFileEntry(0xD280008);
+                bit = (w->field_86 == 2) << 4;
+                Gfx_HidePartsByMask((GfxPartMaskView *)parts, tbl[w->field_78 - 1] & ~bit);
+                break;
+            case 1:
+                tbl = (s32 *)Cd_GetFileEntry(0xD280009);
+                m1 = tbl[w->field_86];
+                if (w->field_94 == 0) {
+                    m1 |= 0x20;
+                }
+                Gfx_HidePartsByMask((GfxPartMaskView *)parts, m1);
+                if (w->field_86 == 1) {
+                    Menu_SetPartsGridPos(parts, 2, (s32 *)w->cursor, w->u6C.gridSize);
+                    Gfx_SetPartsPalette(parts, 2, (arg0->elapsed >> 2) & 3);
+                }
+                if (w->field_86 == 2) {
+                    Menu_SetPartsGridPos(parts, 0x10, (s32 *)w->cursor, w->u6C.gridSize);
+                }
+                break;
+            default:
+                tblA = (s32 *)Cd_GetFileEntry(0xD28000A);
+                list = w->field_90;
+                mask = -1;
+                if (w->field_86 == 1) {
+                    mask = tblA[1];
+                    slot = &list->slots[i - 2];
+                    if (list->used[i - 2] != 0) {
+                        t = slot->u.hdr.playTime;
+                        if (t > 0x14996FF) {
+                            t = 0x14996FF;
+                        }
+                        Gfx_SetPartsNumber(parts, 0x10, 8, slot->u.hdr.money);
+                        h = t / 216000;
+                        Gfx_SetPartsNumber(parts, 0x20, -4, h * 100 + (t / 3600 - h * 60));
+                    } else {
+                        Gfx_SetPartsNumber(parts, 0x10, 8, 0);
+                        Gfx_SetPartsNumber(parts, 0x20, -4, 0);
+                    }
+                }
+                Gfx_HidePartsByMask((GfxPartMaskView *)parts, mask);
+                break;
+            }
+            Gfx_SetPartsScale((GfxPartScaleView *)parts, 0x1000, w->field_8C);
+            Gfx_DrawParts(parts);
+        }
+    }
+    if (w->field_94 != 0) {
+        p = (Stg11PolyG4 *)D_8005F770.packet.addr;
+        ot = D_8005F770.otLayers.u[0];
+        p->tag.b.len = 8;
+        p->code = 0x38;
+        p->r0 = 0xD;
+        p->g0 = 0x66;
+        p->b0 = 0x11;
+        p->r1 = 0xFF;
+        p->g1 = 0x96;
+        p->b1 = 0;
+        p->r2 = 0xD;
+        p->g2 = 0x66;
+        p->b2 = 0x11;
+        p->r3 = 0xFF;
+        p->g3 = 0x96;
+        p->b3 = 0;
+        p->code &= ~2;
+        p->x0 = 0x12;
+        p->y0 = 0x2A;
+        p->x1 = w->field_96 + 0x12;
+        p->y1 = 0x2A;
+        p->x2 = 0x12;
+        p->y2 = 0x35;
+        p->x3 = w->field_96 + 0x12;
+        p->y3 = 0x35;
+        p->tag.word = (p->tag.word & 0xFF000000) | (*ot & 0xFFFFFF);
+        *ot = (*ot & 0xFF000000) | ((u32)p & 0xFFFFFF);
+        D_8005F770.packet.addr = (s32)(p + 1);
+    }
+}
 
 void func_80066748(Stg11Work66C04 *arg0) {
     Stg11Slot *s = arg0->field_6C;
