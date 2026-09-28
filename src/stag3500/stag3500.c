@@ -766,7 +766,29 @@ void func_8006A2D0(Actor *arg0, s32 arg1) {
     arg0->field_8 = arg1;
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_8006A2D8);
+void func_8006A2D8(Actor *arg0) {
+    Stg35LoadHandle *w = (Stg35LoadHandle *)arg0->work;
+    s32 masks[2];
+    s32 i;
+
+    switch (arg0->stateLevel0) {
+    case 0:
+        for (i = 0; i < 1; i++) {
+            func_80066120(&w[i]);
+        }
+        func_800661A4(w, 0xD3F0008);
+        masks[0] = 2;
+        masks[1] = 4;
+        func_800663CC(w, ~masks[arg0->field_8]);
+        Task_NextState0(arg0);
+    case 1:
+        func_80066520(w, 6, Math_PingPongRange(arg0->elapsed, 4, 0, 7));
+        break;
+    case 2:
+    default:
+        break;
+    }
+}
 
 void func_8006A3B8(Actor *arg0) {
     Stg35LoadHandle *w = (Stg35LoadHandle *)arg0->work;
