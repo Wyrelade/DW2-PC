@@ -458,7 +458,35 @@ Stg40Ent48 *func_800689E0(Stg40Ent48 *a0) {
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80068A54);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80068B8C);
+s32 func_80068B8C(Actor *a0) {
+    Stg40Ent48 *e = ((Stg40ActWork *)a0->work)->field_2C;
+    s32 r = 0;
+    Stg40Ent48 *f;
+    Stg40B60 *b;
+    Actor *t;
+
+    if (func_8006E6CC()) {
+        Task_SetState1(a0, 0x1E);
+        return 1;
+    }
+    f = func_800689E0(e);
+    if (f == NULL) {
+        return 0;
+    }
+    t = f->field_14;
+    b = D_80072B60;
+    b->field_3C = t;
+    b->field_40 = f;
+    switch (f->field_8) {
+    case 2:
+    case 3:
+        D_8005071C->field_1 = (f->field_8 != 2) ? 3 : 2;
+        Task_SetState1(a0, 0x17);
+        r = 1;
+        break;
+    }
+    return r;
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80068C60);
 
