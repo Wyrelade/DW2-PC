@@ -725,7 +725,13 @@ void func_80069FD4(Actor *arg0) {
     GsSetRefView2(&rv);
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_8006A080);
+void func_8006A080(s32 arg0) {
+    Actor *e = (Actor *)Task_FindFirst(0x706, -1, -1);
+
+    if (e != NULL && e->stateLevel0 == 1) {
+        Task_SetState1(e, (u8)arg0);
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_8006A0D4);
 
