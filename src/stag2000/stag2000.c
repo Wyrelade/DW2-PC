@@ -848,7 +848,82 @@ void func_800685C4(Actor *a) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006863C);
+void func_8006863C(Actor *a) {
+    Stg20SlotWork *w = (Stg20SlotWork *)a->work;
+    s32 i;
+    s32 j;
+    s32 snd;
+    s32 idx;
+
+    switch (a->stateLevel0) {
+    case 0:
+        Mem_FillWordsNeg1(w->texts, 16);
+        for (j = 0; j < 0x24; j++) {
+            if (D_8005E620.elems[j].state != 0) {
+                w->count++;
+            }
+        }
+        func_800685C4(a);
+        Task_NextState0(a);
+        break;
+    tri:
+        D_800709B0.field_8 = 1;
+        D_800709B0.field_1C = D_800709B0.field_14 + D_800709B0.field_18;
+        Snd_PlayById(0xB, 0);
+        Task_NextState0(a);
+        goto done;
+    ok:
+        D_800709B0.field_8 = 0;
+        D_800709B0.field_1C = idx;
+        Snd_PlayById(0xE, 0);
+        Task_NextState0(a);
+        goto done;
+    case 1:
+        snd = 0;
+        if (D_8005F6F0[0].repeat & 0x1000) {
+            if (D_800709B0.field_18 != 0) {
+                w->timer = 0;
+                snd = 1;
+                D_800709B0.field_18--;
+            } else if (D_800709B0.field_14 != 0) {
+                D_800709B0.field_14--;
+                snd = 1;
+            }
+            func_800685C4(a);
+        } else if (D_8005F6F0[0].repeat & 0x4000) {
+            if (D_800709B0.field_18 != 3) {
+                w->timer = 0;
+                snd = 1;
+                D_800709B0.field_18++;
+            } else if (D_800709B0.field_14 + 4 < w->count) {
+                D_800709B0.field_14++;
+                snd = 1;
+            }
+            func_800685C4(a);
+        } else if (D_8005F6F0[0].triangle > 0) {
+            goto tri;
+        } else if (D_8005F6F0[0].cross > 0) {
+            idx = D_800709B0.field_14 + D_800709B0.field_18;
+            if ((D_800709B0.field_10 != 0 && D_800709B0.field_34 == idx) || D_8005E620.elems[idx].state == 0) {
+                Snd_PlayById(0x10, 0);
+            } else {
+                goto ok;
+            }
+        }
+    done:
+        if (snd != 0) {
+            Snd_PlayById(0xD, 0);
+        }
+        for (i = 0; i < 4; i++) {
+            func_80068420(a, i);
+        }
+        break;
+    case 2:
+        Text_CloseArray(w->texts, 16);
+        Task_NextState0(a);
+        break;
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_800688E4);
 
