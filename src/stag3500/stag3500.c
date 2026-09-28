@@ -226,7 +226,13 @@ INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80065E60);
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80065F8C);
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80066120);
+void func_80066120(Stg35LoadHandle *arg0) {
+    Stg35Load *p = (Stg35Load *)Mem_Alloc(0x24, 2);
+
+    arg0->load = p;
+    Mem_Zero(p, 0x24);
+    arg0->load->field_8 = 0x1000;
+}
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80066168);
 
