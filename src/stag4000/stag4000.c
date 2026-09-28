@@ -545,7 +545,13 @@ INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006E920);
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006EA84);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006EB84);
+void func_8006EB84(s32 idx, s32 row, s32 val) {
+    Stg40TileGrid *t = D_80072BB0;
+    s32 sh = (idx % 4) * 4;
+    u16 *p = &t->pix[(row + 1) * 18 + idx / 4 + 1];
+    *p = (*p & ~(0xF << sh)) | (val << sh);
+    t->field_760 = -1;
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006EBF4);
 
