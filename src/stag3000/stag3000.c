@@ -709,7 +709,39 @@ void func_8006E888(Actor *a0, s32 *args) {
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006E978);
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006EB24);
+void func_8006EB24(Actor *a0) {
+    Stg30Work732B8 *w = (Stg30Work732B8 *)a0->work;
+    Stg30FxArgs args;
+    s32 *slots;
+    s16 a[4];
+    s16 b[4];
+    s32 i;
+
+    slots = (s32 *)a0->u34.children;
+    func_8001EEA4(w->field_2C, 1, a, b);
+    for (i = 0; i < 3; i++) {
+        if (a[i] != 0) {
+            args.field_0 = a[i];
+            args.field_4 = b[i];
+            args.field_14 = w->field_10;
+            args.field_8 = w->field_4;
+            args.field_C = w->field_8;
+            args.field_10 = w->field_C;
+            args.field_18 = 0x3C;
+            switch (i) {
+            case 0:
+                args.field_C += -0x280 - func_8001E79C(a0->digiId);
+                break;
+            case 1:
+                args.field_C -= func_8001E7C0(a0->digiId);
+                break;
+            case 2:
+                break;
+            }
+            Task_Create(7, &slots[i + 1], (s32)&args);
+        }
+    }
+}
 
 void func_8006EC5C(Actor *a0) {
     Snd_PlayById(func_8001E8D0(a0->digiId) == 0 ? 0x204 : 0x205, 0);
