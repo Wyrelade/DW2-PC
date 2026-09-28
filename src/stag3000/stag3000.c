@@ -59,7 +59,16 @@ void func_80063B80(Actor *a0, s32 file, s32 lba) {
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80063C44);
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006436C);
+void func_8006436C(Actor *a0) {
+    Stg30Work73040 *w = (Stg30Work73040 *)a0->work;
+    s32 i;
+
+    for (i = 0; i < w->field_2E0; i++) {
+        if (w->field_260[i] != 0) {
+            Cd_FreeFile(w->field_260[i]);
+        }
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_800643E0);
 
