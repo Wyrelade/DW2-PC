@@ -145,7 +145,26 @@ void func_80064FBC(Actor *a0) {
     Task_DefaultDestroy(a0);
 }
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80064FF4);
+void func_80064FF4(Actor *a0) {
+    Stg30Work73078 *w = (Stg30Work73078 *)a0->work;
+    Stg30Part *p;
+    Stg30Part *q;
+
+    p = (Stg30Part *)Cd_GetFileEntry(0x1A10009);
+    Gfx_SetPartsScale((GfxPartScaleView *)p, 0x1000, w->scale);
+    for (q = p; q->fileId != 0; q++) {
+        if (q->groupMask & 2) {
+            q->x = -0x92;
+            q->y = D_800737E0 * 11 - 0x33;
+            while (1) {
+                if (a0->elapsed < 0x18) break;
+                a0->elapsed = a0->elapsed - 0x18;
+            }
+            q->palette = D_80073070[a0->elapsed / 4];
+        }
+    }
+    Gfx_DrawParts((EntA0 *)p);
+}
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80065100);
 
