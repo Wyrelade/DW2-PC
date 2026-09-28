@@ -137,7 +137,9 @@ INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006755C);
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80067610);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_800676A4);
+void func_800676A4(s32 i) {
+    Text_Close(&D_80072B84[i]);
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_800676D0);
 
