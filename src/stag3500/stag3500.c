@@ -67,7 +67,159 @@ void func_80063694(Actor *arg0, s32 arg1, s32 arg2) {
     w->field_2D8++;
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80063758);
+void func_80063758(Actor *arg0) {
+    Stg35ListWork *w = (Stg35ListWork *)arg0->work;
+    s16 *p;
+    GfxPart *part;
+    s16 a[4];
+    s16 b[4];
+    s32 i;
+    s32 j;
+    s32 k;
+
+    if (arg0->stateLevel0 != 0) {
+        return;
+    }
+    switch (arg0->stateLevel1) {
+    case 0:
+    default:
+        p = w->field_0;
+        k = 0;
+        while (*p != 0x14) {
+            switch (*p) {
+            case 13:
+            case 19:
+                p += 3;
+                break;
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+            case 7:
+            case 14:
+            case 15:
+                p += 2;
+                break;
+            case 4:
+            case 5:
+            case 6:
+            case 16:
+            case 17:
+            case 18:
+                p += 1;
+                break;
+            case 8:
+                w->field_2E8 = D_8006AA88.rec[p[1]].digiId;
+                w->field_31C = p[2];
+                p += 3;
+                break;
+            case 9:
+                w->field_304[k] = 1;
+                w->field_2EC[k] = D_8006AA88.rec[p[1]].digiId;
+                p += 3;
+                k++;
+                break;
+            case 10:
+                w->field_304[k] = 2;
+                w->field_2EC[k] = D_8006AA88.rec[p[1]].digiId;
+                p += 3;
+                k++;
+                break;
+            case 11:
+                w->field_304[k] = 3;
+                w->field_2EC[k] = D_8006AA88.rec[p[1]].digiId;
+                p += 3;
+                k++;
+                break;
+            case 12:
+                w->field_304[k] = 0;
+                w->field_2EC[k] = D_8006AA88.rec[p[1]].digiId;
+                p += 3;
+                k++;
+                break;
+            }
+        }
+        Cd_QueueFile(func_8001EE5C(w->field_31C) >> 16);
+        Task_NextState1(arg0);
+        break;
+    case 1:
+        w->field_2DC = 0;
+        w->field_2E0 = 0;
+        w->field_1E8[w->field_2DC++] = Digi_GetModelFile(w->field_2E8);
+        w->field_1E8[w->field_2DC++] = Anim_GetModelAnimFile(w->field_2E8, 0);
+        w->field_260[w->field_2E0++] = Anim_GetModelAnimFile(w->field_2E8, func_8001EE10(w->field_31C) + 5);
+        for (i = 0; i < 6; i++) {
+            if (w->field_2EC[i] != 0) {
+                w->field_1E8[w->field_2DC++] = Digi_GetModelFile(w->field_2EC[i]);
+                w->field_1E8[w->field_2DC++] = Anim_GetModelAnimFile(w->field_2EC[i], 0);
+                switch (w->field_304[i]) {
+                case 0:
+                default:
+                    break;
+                case 1:
+                    w->field_260[w->field_2E0++] = Anim_GetModelAnimFile(w->field_2EC[i], 1);
+                    break;
+                case 3:
+                    w->field_1E8[w->field_2DC++] = Anim_GetModelAnimFile(w->field_2EC[i], 0xA);
+                case 2:
+                    w->field_260[w->field_2E0++] = Anim_GetModelAnimFile(w->field_2EC[i], 2);
+                    w->field_260[w->field_2E0++] = Anim_GetModelAnimFile(w->field_2EC[i], 9);
+                    break;
+                }
+            }
+        }
+        if (w->field_31C != 0) {
+            for (k = 0; k < 2; k++) {
+                func_8001EEA4(w->field_31C, k, a, b);
+                for (j = 0; j < 3; j++) {
+                    if (a[j] != 0) {
+                        w->field_260[w->field_2E0++] = a[j];
+                    }
+                    if (b[j] != 0) {
+                        w->field_260[w->field_2E0++] = b[j];
+                    }
+                }
+            }
+        }
+        w->field_1E8[w->field_2DC++] = 0x1A1;
+        w->field_1E8[w->field_2DC++] = 0x13B;
+        w->field_1E8[w->field_2DC++] = 0x1A0;
+        w->field_1E8[w->field_2DC++] = 0x22B;
+        w->field_1E8[w->field_2DC++] = 0xCB9;
+        Task_NextState1(arg0);
+        break;
+    case 2:
+        if (Cd_GetFileState(func_8001EE5C(w->field_31C) >> 16) == 3) {
+            w->field_1E8[w->field_2DC++] = 0x1EF;
+            part = (GfxPart *)Cd_GetFileEntry(func_8001EE5C(w->field_31C));
+            while (part->fileId != 0) {
+                w->field_260[w->field_2E0++] = part->fileId >> 16;
+                part++;
+            }
+            w->field_2D8 = 0;
+            for (i = 0; i < w->field_2DC; i++) {
+                func_80063694(arg0, w->field_1E8[i], Cd_GetFileLba(w->field_1E8[i]));
+            }
+            for (i = 0; i < w->field_2E0; i++) {
+                func_80063694(arg0, w->field_260[i], Cd_GetFileLba(w->field_260[i]));
+            }
+            Task_NextState1(arg0);
+            w->field_4 = 0;
+        }
+        break;
+    case 3:
+        if (++w->field_4 < 300) {
+            for (i = 0; i < w->field_2D8; i++) {
+                Cd_QueueFile(w->field_8[i]);
+                if (Cd_GetFileState(w->field_8[i]) != 3) {
+                    return;
+                }
+            }
+        }
+        Task_NextState0(arg0);
+        break;
+    }
+}
 
 void func_80063E00(Actor *arg0) {
     Stg35ListWork *w = (Stg35ListWork *)arg0->work;
