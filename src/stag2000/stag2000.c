@@ -2704,7 +2704,164 @@ void func_8006F3E0(Actor *a) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006F730);
+void func_8006F730(Actor *a) {
+    Stg20CamWork *w = (Stg20CamWork *)a->work;
+    Actor *e;
+
+    switch (a->stateLevel0) {
+    case 0:
+        GsInitCoordinate2(0, &w->coord);
+        if (D_8005F788[0] < 0x32F) {
+            w->proj = 0x5A0;
+            w->view.field_4 = -0x5D00;
+            w->view.field_0 = 0;
+            w->view.field_8 = -0x5A00;
+            w->view.field_C = 0;
+            w->view.field_10 = 0;
+        } else {
+            w->proj = 0x5DC;
+            w->view.field_4 = -0xFA0;
+            w->view.field_8 = -0x3578;
+            w->view.field_0 = 0;
+            w->view.field_C = 0;
+            w->view.field_10 = -0x3E8;
+        }
+        w->view.field_14 = 0;
+        w->view.field_18 = 0;
+        w->view.field_1C = &w->coord;
+        w->rot[2] = 0;
+        w->rot[1] = 0;
+        w->rot[0] = 0;
+        Task_NextState0(a);
+        break;
+    case 2:
+        break;
+    case 1:
+        if (D_8005F788[0] < 0x32F) {
+            break;
+        }
+        switch (a->stateLevel1) {
+        case 0:
+        default:
+            w->view.field_4 = -0xFA0;
+            w->view.field_8 = -0x3578;
+            w->speed = 0;
+            return;
+        case 1:
+            switch (a->stateLevel2) {
+            case 0:
+            default:
+                if (w->view.field_4 >= -0x270F) {
+                    w->view.field_4 -= 0x1F4;
+                    break;
+                }
+                w->view.field_4 = -0x2710;
+                Task_NextState2(a);
+                w->timer = 0x7B;
+            case 1:
+                w->speed += 0x840;
+                if (--w->timer != 0) {
+                    break;
+                }
+                Task_NextState2(a);
+                w->timer = 0xF;
+                Gfx_FadeOutToWhite(0x14);
+            case 2:
+                w->speed += 0x840;
+                w->view.field_8 += 0x390;
+                w->view.field_4 += 0x29A;
+                if (--w->timer != 0) {
+                    break;
+                }
+                Task_NextState2(a);
+                w->timer = 0xF;
+                Gfx_FadeInFromWhite(0x14);
+            case 3:
+                w->speed -= 0x1080;
+                w->view.field_8 -= 0x390;
+                w->view.field_4 -= 0x10A;
+                if (--w->timer != 0) {
+                    break;
+                }
+                Task_NextState2(a);
+                w->timer = 0x78;
+            case 4:
+                if (w->speed > 0) {
+                    w->speed -= 0x1080;
+                } else {
+                    w->speed = 0;
+                }
+                if (--w->timer == 0) {
+                    Task_SetState1(a, 0);
+                }
+                break;
+            }
+            w->rot[1] -= w->speed / 256;
+            break;
+        case 2:
+            switch (a->stateLevel2) {
+            case 0:
+            default:
+                if (w->view.field_4 >= -0x270F) {
+                    w->view.field_4 -= 0x1F4;
+                    break;
+                }
+                w->view.field_4 = -0x2710;
+                Task_NextState2(a);
+                w->timer = 0x7B;
+            case 1:
+                w->speed += 0x840;
+                if (--w->timer != 0) {
+                    break;
+                }
+                Task_NextState2(a);
+                w->timer = 0xF;
+                Gfx_FadeOutToWhite(0x14);
+            case 2:
+                w->speed += 0x840;
+                w->view.field_8 += 0x390;
+                w->view.field_4 += 0x29A;
+                if (--w->timer != 0) {
+                    break;
+                }
+                Task_NextState2(a);
+                w->timer = 0xF;
+                Gfx_FadeInFromWhite(0x14);
+            case 3:
+                w->speed -= 0x840;
+                w->view.field_8 -= 0x390;
+                w->view.field_4 -= 0x10A;
+                if (--w->timer != 0) {
+                    break;
+                }
+                Task_NextState2(a);
+                w->timer = 0x78;
+            case 4:
+                w->speed -= 0x840;
+                if (--w->timer == 0) {
+                    Task_SetState1(a, 0);
+                }
+                break;
+            }
+            e = (Actor *)Task_FindFirst(0x30A, -1, 0);
+            if (e != NULL) {
+                ((Stg20Rot *)e->u38.ptr38)->field_42 += w->speed / 256;
+            }
+            e = (Actor *)Task_FindFirst(0x30A, -1, 1);
+            if (e != NULL) {
+                ((Stg20Rot *)e->u38.ptr38)->field_42 -= w->speed / 256;
+            }
+            break;
+        }
+        if (D_800709EC[0] == 0) {
+            e = (Actor *)Task_FindFirst(7, -1, -1);
+            if (e != NULL) {
+                ((Stg20Rot *)e->u38.ptr38)->field_42 = w->rot[1];
+            }
+        }
+        break;
+    }
+}
 
 void func_8006FBF0(Actor *a) {
     Stg20CamWork *w = (Stg20CamWork *)a->work;
