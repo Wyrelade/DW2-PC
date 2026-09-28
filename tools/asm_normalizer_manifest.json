@@ -4259,5 +4259,10 @@
       "save_slot",
       "ra_restore_sink"
     ]
+  },
+  "stag2000:func_80066B48": {
+    "passes": [
+      "web_realloc"
+    ]
   }
 }

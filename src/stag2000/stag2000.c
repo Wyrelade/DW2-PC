@@ -552,7 +552,120 @@ void func_80066AE0(s32 id) {
     Digi_SortRoster();
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80066B48);
+s32 func_80066B48(s32 id) {
+    s32 i;
+    s32 n;
+    s32 free;
+
+    switch (id) {
+    case 9000:
+        n = Item_GetBagCapacity();
+        for (i = 0; i < n; i++) {
+            if (((Stg20GameState *)&D_8005E620)->field_66[i] == 0) {
+                return 1;
+            }
+        }
+        return 0;
+    case 9001:
+        n = 0;
+        free = 0;
+        for (i = 0; i < 0x24; i++) {
+            if (D_8005E620.elems[i].state == 0) {
+                free = 1;
+            }
+            if (D_8005E620.elems[i].state >= 2) {
+                n++;
+            }
+        }
+        if (free == 0) {
+            return 0;
+        }
+        return n < 12;
+    case 9003:
+        return func_80066A4C(0xDA);
+    case 9004:
+        return func_80066A4C(0xD1);
+    case 9005:
+        return func_80066A4C(0x43);
+    case 9023:
+        for (i = 0; i < 3; i++) {
+            if (((Stg20GameRoster *)&D_8005E620)->elems[i].state == i + 3
+                && ((Stg20GameRoster *)&D_8005E620)->elems[i].field_16 != 0) {
+                return 0;
+            }
+        }
+        return 1;
+    case 9009:
+        return D_8005E64E >= 0x10;
+    case 9010:
+        return D_8005E64E >= 0x1F;
+    case 9012:
+        return D_8005F790 == 0x32A;
+    case 9034:
+        return D_8005F790 == 0x32B;
+    case 9013:
+        if (D_8005F770.gameMode == 0x301 && D_8005F770.field_24 == 3) {
+            return 1;
+        }
+        if (D_8005F770.gameMode == 0x321 && D_8005F770.field_24 == 2) {
+            return 1;
+        }
+        return 0;
+    case 9014:
+        if (D_8005F770.gameMode == 0x301 && D_8005F770.field_24 == 4) {
+            return 1;
+        }
+        if (D_8005F770.gameMode == 0x321 && D_8005F770.field_24 == 3) {
+            return 1;
+        }
+        return 0;
+    case 9015:
+        return D_8005E628 >= 500;
+    case 9016:
+        return D_8005E628 >= 1000;
+    case 9017:
+        return D_8005E628 >= 1500;
+    case 9018:
+        return D_8005E628 >= 2000;
+    case 9019:
+        return D_8005E628 >= 2500;
+    case 9020:
+        return D_8005E628 >= 3000;
+    case 9021:
+        return D_8005E628 >= 3500;
+    case 9022:
+        return D_8005E628 >= 4000;
+    case 9024:
+        return D_8005E632 < 2;
+    case 9025:
+        return D_8005E632 < 3;
+    case 9026:
+        return D_8005E632 < 4;
+    case 9027:
+        return D_8005E632 < 5;
+    case 9028:
+        return D_8005E632 < 6;
+    case 9029:
+        return D_8005E632 < 7;
+    case 9030:
+        return D_8005E632 < 8;
+    case 9031:
+        return D_8005E632 < 9;
+    case 9032:
+        return D_8005E632 < 10;
+    case 9033:
+        return D_8005E632 < 11;
+    case 9035:
+        if (Flag_Test(0x2C6) == 0) {
+            return 0;
+        }
+        if (Flag_Test(0x2C7) == 0) {
+            return 0;
+        }
+        return Flag_Test(0x2C8) != 0;
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80066F34);
 
