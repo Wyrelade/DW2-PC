@@ -287,7 +287,16 @@ s32 func_8006C14C(u8 *s, s32 c) {
     return 0;
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006C18C);
+s32 func_8006C18C(s32 id) {
+    s32 i;
+
+    for (i = 0; i < 0x13; i++) {
+        if (((Stg20GameState *)&D_8005E620)->field_2C[i] == id) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006C1C4);
 
