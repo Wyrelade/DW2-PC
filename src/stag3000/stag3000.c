@@ -474,7 +474,66 @@ s32 func_800699F8(s32 a, s32 b) {
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80069A44);
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80069DE8);
+void func_80069DE8(void) {
+    s32 idx = func_8006E674(0);
+    Stg30Rec73F6C *e = &D_80073F6C[idx];
+    s32 fl = func_8001F044(e->field_6);
+    s32 lo;
+    s32 n;
+    s32 i;
+    s32 t;
+    s32 cnt;
+    s32 max;
+    s32 best;
+    s32 list[6];
+    s32 k;
+
+    if ((fl & 2) && e->field_0 != 2) {
+        lo = 0;
+        n = 3;
+        switch (e->field_4) {
+        case 3:
+        case 4:
+        case 5:
+        case 8:
+            lo = 3;
+            break;
+        case 9:
+            n = 6;
+            break;
+        }
+        for (i = 0; i < 100; i++) {
+            t = (u16)Rand_Next() % n + lo;
+            if (D_80073CC0.entries[t].field_2E != 0) {
+                break;
+            }
+        }
+        if (i == 100) {
+            t = idx;
+        }
+        e->field_4 = t;
+    }
+    if ((fl & 4) && e->field_0 == 2) {
+        e->field_4 = idx < 3 ? 8 : 7;
+    }
+    if (fl & 8) {
+        best = idx;
+        cnt = 0;
+        for (k = 0; k < 6; k++) {
+            if (D_80073CC0.entries[k].field_19 != 0 && D_80073CC0.entries[k].field_2E == 0) {
+                list[cnt++] = k;
+            }
+        }
+        max = 0;
+        for (k = 0; k < cnt; k++) {
+            if (max < D_80073CC0.entries[list[k]].field_32) {
+                max = D_80073CC0.entries[list[k]].field_32;
+                best = list[k];
+            }
+        }
+        e->field_4 = best;
+    }
+}
 
 s32 func_8006A030(s32 a, s32 b) {
     if (a == 5) {

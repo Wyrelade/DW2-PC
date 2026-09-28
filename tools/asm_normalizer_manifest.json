@@ -4179,5 +4179,10 @@
     "passes": [
       "nodiv"
     ]
+  },
+  "stag3000:func_80069DE8": {
+    "passes": [
+      "nodiv"
+    ]
   }
 }
