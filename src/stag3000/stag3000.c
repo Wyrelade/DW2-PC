@@ -338,7 +338,21 @@ void func_8006A968(s16 *max, s16 *b, s16 *c) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006AA18);
+void func_8006AA18(s16 *max, s16 *b, s16 *c) {
+    s16 lim;
+    s16 t;
+
+    t = *c + *c / 2;
+    lim = *max * 2;
+    *c = t;
+    if (*c > lim) {
+        *c = lim;
+    }
+    *b += *b / 2;
+    if (*b > lim) {
+        *b = lim;
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006AAA8);
 
