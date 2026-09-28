@@ -733,7 +733,20 @@ INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80070490);
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_800706C8);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80070754);
+void func_80070754(void) {
+    Stg40Blk5071C *b = D_8005071C;
+    s32 n = b->field_E54->field_0 * b->field_E54->field_2;
+    u8 v = D_80072B60->field_0;
+    Stg40Cell *c = (Stg40Cell *)b->field_E58;
+    s32 i;
+
+    for (i = 0; i < n; i++, c++) {
+        if (c->field_0 & 0x2000) {
+            c->field_2 = v;
+            c->field_0 &= ~0x2000;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_800707D0);
 
