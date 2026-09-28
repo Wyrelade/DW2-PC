@@ -897,7 +897,26 @@ INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006BDEC);
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006BFB0);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006C6C4);
+void func_8006C6C4(Actor *a0) {
+    Stg40ActWork *w = (Stg40ActWork *)a0->work;
+    Stg40Ent48 *e = w->field_2C;
+
+    func_800708FC(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2, 0);
+    if (func_800703E0(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2) & 0x2000) {
+        e->field_0 |= 0x1000;
+    }
+    if (e->field_0 & 0x1000) {
+        func_8006EBF4(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2, -1, -1, e->field_8);
+    }
+    if (e->field_8 == 2) {
+        func_8006E764((Stg40E764 *)w, 0xDF0, 0xDF1);
+    } else {
+        func_8006E764((Stg40E764 *)w, 0xDF2, 0xDF3);
+    }
+    if (a0->stateLevel1 != 1 && (a0->stateLevel1 < 2 || (a0->stateLevel1 != 4 && a0->stateLevel1 != 9))) {
+        Task_SetState1(a0, 1);
+    }
+}
 
 void func_8006C7CC(Stg40E764 *a0, s32 a1) {
     s32 x;
