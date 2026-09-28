@@ -705,7 +705,16 @@ void func_80071BDC(Actor *a0) {
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80071C14);
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80071D70);
+void func_80071D70(Actor *a0, Stg30Init737A0 *args) {
+    Stg30Work737A0 *w = (Stg30Work737A0 *)a0->work;
+    s32 i;
+
+    w->field_0 = args->field_0;
+    for (i = 0; i < 12; i++) {
+        w->field_74[0][i] = args->field_4[i];
+    }
+    Snd_PlayById(0x2B, 0);
+}
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80071DC4);
 
