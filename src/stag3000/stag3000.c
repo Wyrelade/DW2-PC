@@ -263,7 +263,14 @@ void func_8006F530(Actor *a0) {
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006F554);
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006F640);
+void func_8006F640(Actor *a0, s32 a1) {
+    ((Stg30Work732B8 *)a0->work)->field_28 = a1;
+    if (a1 != 0) {
+        a0->childCount = 5;
+    } else {
+        a0->childCount = 4;
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006F664);
 
