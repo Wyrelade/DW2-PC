@@ -645,7 +645,118 @@ s32 func_80068DA4(s32 idx, s32 i, Stg30ByteLists *p) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80068E34);
+s32 func_80068E34(s32 cond, s32 self) {
+    s32 r;
+    s32 i;
+    s32 ret;
+
+    r = Rand_Next() & 0xFFFF;
+    switch (cond) {
+    case 0:
+        return 1;
+    case 1:
+        return !(r & 1);
+    case 2:
+        return (r & 3) == 0;
+    case 3:
+        return (r & 7) == 0;
+    case 5:
+        return D_80073E02 != 0;
+    case 4:
+        return D_80073E5E != 0;
+    case 6:
+        return D_80073EBA != 0;
+    case 7:
+        ret = 1;
+        for (i = 3; i < 6; i++) {
+            if (i != self && D_80073CC0.entries[i].field_2E != 0) {
+                ret = 0;
+            }
+        }
+        return ret;
+    case 8:
+        ret = 1;
+        for (i = 3; i < 6; i++) {
+            if (D_80073CC0.entries[i].field_19 != 0 && D_80073CC0.entries[i].field_2E != D_80073CC0.entries[i].field_2C) {
+                ret = 0;
+            }
+        }
+        return ret;
+    case 9:
+        ret = 0;
+        for (i = 3; i < 6; i++) {
+            if (D_80073CC0.entries[i].field_19 != 0 && D_80073CC0.entries[i].field_2E < (s16)(D_80073CC0.entries[i].field_2C / 10)) {
+                ret = 1;
+            }
+        }
+        return ret;
+    case 10:
+        ret = 0;
+        for (i = 3; i < 6; i++) {
+            if (D_80073CC0.entries[i].field_19 != 0 && (D_80073CC0.field_31C[i] & 7)) {
+                ret = 1;
+            }
+        }
+        return ret;
+    case 11:
+        ret = 0;
+        for (i = 3; i < 6; i++) {
+            if (D_80073CC0.entries[i].field_19 != 0 && D_80073CC0.field_340[i] != 0) {
+                ret = 1;
+            }
+        }
+        return ret;
+    case 12:
+        ret = 0;
+        for (i = 3; i < 6; i++) {
+            if (D_80073CC0.entries[i].field_19 != 0 && D_80073CC0.entries[i].field_2E == 0) {
+                ret = 1;
+            }
+        }
+        return ret;
+    case 13:
+        ret = 0;
+        for (i = 0; i < 6; i++) {
+            if (D_80073CC0.entries[i].field_19 != 0 && D_80073CC0.entries[i].field_2E == 0) {
+                ret = 1;
+            }
+        }
+        return ret;
+    case 14:
+        ret = 0;
+        for (i = 0; i < 3; i++) {
+            if (D_80073CC0.entries[i].field_19 != 0 && D_80073CC0.field_346[i] != 0) {
+                ret = 1;
+            }
+        }
+        return ret;
+    case 15:
+        ret = 0;
+        for (i = 0; i < 3; i++) {
+            if (D_80073CC0.entries[i].field_19 != 0 && func_8001D934(D_80073CC0.entries[i].field_19) == 0) {
+                ret = 1;
+            }
+        }
+        return ret;
+    case 16:
+        ret = 0;
+        for (i = 0; i < 3; i++) {
+            if (D_80073CC0.entries[i].field_19 != 0 && func_8001D934(D_80073CC0.entries[i].field_19) == 1) {
+                ret = 1;
+            }
+        }
+        return ret;
+    case 17:
+        ret = 0;
+        for (i = 0; i < 3; i++) {
+            if (D_80073CC0.entries[i].field_19 != 0 && func_8001D934(D_80073CC0.entries[i].field_19) == 2) {
+                ret = 1;
+            }
+        }
+        return ret;
+    }
+    return 0;
+}
 
 s32 func_800692A4(s32 id, s32 kind, s32 def) {
     s32 i;
