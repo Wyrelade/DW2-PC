@@ -63,7 +63,9 @@ void func_800657A0(Stg35LoadHandle *arg0, s32 arg1) {
     arg0->load->mode = arg1;
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_800657AC);
+void func_800657AC(Stg35LoadHandle *arg0, s32 arg1) {
+    arg0->load->field_C = arg1;
+}
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_800657B8);
 
