@@ -356,7 +356,11 @@ INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006E820);
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006E858);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006E8C4);
+void func_8006E8C4(s32 i, u8 status) {
+    GameStateView *g = D_80050720;
+
+    g->slotStatus[i] = g->slotItems[i] ? status : 0;
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006E8F4);
 
