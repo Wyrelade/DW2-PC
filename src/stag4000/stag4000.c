@@ -1371,7 +1371,53 @@ INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006B9A8);
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006BBBC);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006BDEC);
+s32 func_8006BDEC(Stg40Ent48 *e, s32 mode) {
+    Pair54 buf[3];
+    Pair54 *sel = NULL;
+    Stg40Loc *loc = &e->field_18;
+    s32 i;
+    s32 n;
+
+    for (i = 0; i < 3; i++) {
+        buf[i].field_0 = buf[i].field_2 = -1;
+    }
+    switch (mode) {
+    case 0:
+    default:
+        n = func_8006B9A8(e, buf);
+        break;
+    case 1:
+        n = func_8006B698(e, buf);
+        break;
+    case 2:
+        n = func_8006BBBC(e, buf);
+        break;
+    case 4:
+        n = func_8006B8C8(e, buf);
+        break;
+    case 3:
+        return 0;
+    }
+    for (i = 0; i < n; i++) {
+        if ((func_800703E0(buf[i].field_0, buf[i].field_2) & 0x4020) == 0x4000) {
+            sel = &buf[i];
+            break;
+        }
+    }
+    if (sel == NULL) {
+        return 0;
+    }
+    e->field_E = (func_8006E490(sel->field_0 - loc->u0.pair.field_0, sel->field_2 - loc->u0.pair.field_2) << 16) >> 7;
+    loc->field_4.field_0 = loc->u0.pair.field_0;
+    loc->field_4.field_2 = loc->u0.pair.field_2;
+    loc->u0.pair.field_0 = sel->field_0;
+    loc->u0.pair.field_2 = sel->field_2;
+    loc->field_8 = loc->field_A = 12;
+    func_80070974(loc->field_4.field_0, loc->field_4.field_2);
+    func_800708FC(loc->u0.pair.field_0, loc->u0.pair.field_2, 1);
+    loc->field_1C = 1;
+    return 1;
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006BFB0);
 
