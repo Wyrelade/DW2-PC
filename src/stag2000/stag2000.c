@@ -150,7 +150,13 @@ void func_800676A8(Actor *a, s32 i) {
     v->field_8 = D_8006FF1C[i].field_8;
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80067714);
+Stg20Cell *func_80067714(Actor *a, s32 dir) {
+    Stg20Cell *c = func_80067504(a);
+
+    c->x += D_8006FF34[dir].x;
+    c->y += D_8006FF34[dir].y;
+    return c;
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80067770);
 
