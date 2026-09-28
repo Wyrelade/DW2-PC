@@ -2021,7 +2021,48 @@ Stg40Ent48 *func_80071F50(s32 id) {
     return NULL;
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80071FBC);
+void func_80071FBC(s32 *arg) {
+    Stg40Ent48 *e;
+    Actor *t;
+    s32 st;
+
+    st = -1;
+    D_80072B60->field_178 = *arg++;
+    D_80072B60->field_17C.field_0 = arg[0] - 1;
+    D_80072B60->field_17C.field_2 = arg[1] - 1;
+    D_80072B60->field_180 = 0;
+    D_80072B60->field_184 = NULL;
+    e = func_80071F50(D_80072B60->field_178);
+    if (e != NULL) {
+        t = e->field_14;
+        D_80072B60->field_180 = 1;
+        switch (D_80072B60->field_17C.field_0) {
+        default:
+            st = 5;
+            break;
+        case 0x62:
+            if (D_80072B60->field_17C.field_2 == -1) {
+                st = 4;
+                D_80072B60->field_184 = t;
+            } else {
+                st = 6;
+                D_80072B60->field_180 = 0;
+            }
+            break;
+        case 0x61:
+            e->field_E = (D_80072B60->field_17C.field_2 << 12) / 360;
+            D_80072B60->field_180 = 0;
+            break;
+        case 0x60:
+            e->field_0 |= 0x200;
+            D_80072B60->field_180 = 0;
+            break;
+        }
+        if (st != -1) {
+            Task_SetState1(t, (u8)st);
+        }
+    }
+}
 
 void func_800720EC(void) {
     D_80072B60->field_180 = 0;
