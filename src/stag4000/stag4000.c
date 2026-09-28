@@ -578,7 +578,14 @@ void func_8006FE5C(Actor *a0) {
     Task_DefaultDestroy(a0);
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006FE90);
+void func_8006FE90(Actor *a0) {
+    ActorWork *w = a0->work;
+
+    if (func_80022518(0x12) <= 0) {
+        D_80072B60->field_7E = 0;
+    }
+    func_8006FC54(w);
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006FED4);
 
