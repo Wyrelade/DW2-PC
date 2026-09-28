@@ -610,7 +610,31 @@ void func_800690CC(Actor *a0) {
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80069188);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006932C);
+void func_8006932C(Actor *a0) {
+    Stg40Ent48 *e = ((Stg40ActWork *)a0->work)->field_2C;
+
+    switch (a0->stateLevel2) {
+    case 0:
+    default:
+        func_8006E4DC(a0, 0x2D);
+        Task_SetState2(a0, 1);
+        break;
+    case 1:
+        if (func_800678C4(a0) == 1) {
+            Task_SetState2(a0, 2);
+        }
+        break;
+    case 2:
+        if (D_8005071C->field_2 == 0) {
+            if (func_80070C94() == e->field_7) {
+                Task_SetState1(a0, 1);
+            } else {
+                Task_SetState1(a0, 0);
+            }
+        }
+        break;
+    }
+}
 
 void func_8006940C(Actor *a0) {
     switch (a0->stateLevel2) {
