@@ -1803,7 +1803,158 @@ s32 func_80067938(Stg11SaveWork *arg0, s32 arg1, s32 arg2) {
     return r;
 }
 
-INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80067B54);
+s32 func_80067B54(Stg11SaveWork *arg0, s32 arg1, s32 arg2) {
+    s32 r = -1;
+    s32 chan = (arg2 != 0) << 4;
+    s32 cmd;
+    s32 st;
+    s32 sum;
+
+    switch (MemCardSync(1, &cmd, &st)) {
+    default:
+        if (arg0->field_2203C < arg0->field_22038) {
+            arg0->field_2203C++;
+        }
+        break;
+    case -1:
+        arg0->field_22038 = 1;
+        arg0->field_2203C = 0;
+        arg0->field_22040 = 1;
+        switch (arg1) {
+        case 1:
+            MemCardExist(chan);
+            break;
+        case 2:
+            arg0->field_22038 = 0x26;
+            MemCardAccept(chan);
+            break;
+        case 3:
+            arg0->field_22038 = 0x83;
+            arg0->u34.s.field_4032 = func_800678F0(arg0);
+            MemCardWriteFile(chan, (s32)arg0->field_C, (s32)&arg0->u34, 0, 0x4000);
+            break;
+        case 4:
+            if (arg0->field_21 == 0) {
+                arg0->field_22038 = 0x81;
+                MemCardReadFile(chan, (s32)arg0->field_C, (s32)&arg0->u34, 0, 0x4000);
+            } else {
+                arg0->field_22038 = 0x3C8;
+                MemCardReadFile(chan, (s32)arg0->field_C, (s32)arg0->field_4034, 0, 0x1E000);
+            }
+            break;
+        }
+        break;
+    case 1:
+        if (arg0->field_22040 == 0) {
+            return -1;
+        }
+        arg0->field_2203C = arg0->field_22038;
+        switch (arg1) {
+        case 1:
+            if (cmd == arg1) {
+                switch (st) {
+                case 0:
+                case 3:
+                    r = 2;
+                    break;
+                case 1:
+                case 2:
+                    r = 0;
+                    break;
+                }
+            }
+            break;
+        case 2:
+            if (cmd == arg1) {
+                switch (st) {
+                case 0:
+                case 3:
+                    r = 2;
+                    break;
+                case 1:
+                    r = 0;
+                    break;
+                case 2:
+                default:
+                    r = -1;
+                    if (++arg0->field_8 >= 5) {
+                        r = 0xB;
+                    }
+                    break;
+                case 4:
+                    r = -1;
+                    if (++arg0->field_8 >= 5) {
+                        r = 1;
+                    }
+                    break;
+                }
+            }
+            break;
+        case 3:
+            if (cmd == 4) {
+                switch (st) {
+                case 0:
+                    r = 0xC;
+                    break;
+                case 1:
+                    r = 0;
+                    break;
+                case 2:
+                case 4:
+                default:
+                    r = -1;
+                    if (++arg0->field_8 >= 5) {
+                        r = 5;
+                    }
+                    break;
+                case 3:
+                    r = 0xF;
+                    break;
+                case 5:
+                    r = 0xA;
+                    break;
+                }
+            }
+            break;
+        case 4:
+            if (cmd == 3) {
+                switch (st) {
+                case 0:
+                    r = 0xD;
+                    if (arg0->field_21 == 0) {
+                        sum = arg0->u34.s.field_4032;
+                        if (sum == func_800678F0(arg0) && arg0->u34.s.field_4030 == 0x102) {
+                            r = 0xD;
+                        } else {
+                            r = 0xE;
+                        }
+                    }
+                    break;
+                case 1:
+                    r = 0;
+                    break;
+                case 5:
+                    r = 0xA;
+                    break;
+                case 2:
+                case 4:
+                default:
+                    r = -1;
+                    if (++arg0->field_8 >= 5) {
+                        r = 4;
+                    }
+                    break;
+                case 3:
+                    r = 0xF;
+                    break;
+                }
+            }
+            break;
+        }
+        break;
+    }
+    return r;
+}
 
 void func_80067F64(Actor *arg0, s32 arg1) {
     Stg11SaveWork *w = (Stg11SaveWork *)arg0->work;
