@@ -227,7 +227,147 @@ void func_800641E0(Actor *arg0, Stg00SelWork *arg1) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_800642BC);
+void func_800642BC(Actor *arg0, Stg00SelWork *arg1_) {
+    Stg00SelWorkX *arg1 = (Stg00SelWorkX *)arg1_;
+    s32 i;
+    s32 j;
+    s32 bit;
+
+    if (D_8005F72C & 0x8000) {
+        if (arg1->field_2 > 0) {
+            arg1->field_2--;
+        }
+    }
+    if (D_8005F72C & 0x2000) {
+        if (arg1->field_2 + 1 < arg1->field_6) {
+            arg1->field_2++;
+        }
+    }
+    if (D_8005F72C & 0x1000) {
+        if (arg1->field_8 > 0) {
+            arg1->field_8--;
+        }
+    }
+    if (D_8005F72C & 0x4000) {
+        if (arg1->field_8 + 1 < 8) {
+            arg1->field_8++;
+        }
+    }
+    if (D_8005F6F0[0].cross > 0) {
+        Task_SetState1(arg0, 0);
+        return;
+    }
+    if (D_8005F6F0[0].circle > 0) {
+        Task_SetState1(arg0, 2);
+        return;
+    }
+    if (arg1->field_2 == arg1->field_4) {
+        return;
+    }
+    for (i = 0; i < 8; i++) {
+        arg1->field_14[i] = func_80064B08((Stg00RelocHdr *)arg1->field_C[arg1->field_2], i);
+        arg1->field_34[i] = 0;
+        for (j = 0; j < 32; j++) {
+            bit = 1 << j;
+            if (arg1->field_14[i] & bit) {
+                arg1->field_34[i]++;
+            }
+        }
+        arg1->field_44[i][7] = 0;
+        arg1->field_44[i][6] = 0;
+        arg1->field_44[i][5] = 0;
+        arg1->field_44[i][4] = 0;
+        arg1->field_44[i][3] = 0;
+        arg1->field_44[i][2] = 0;
+        arg1->field_44[i][1] = 0;
+        arg1->field_44[i][0] = 0;
+        if (arg1->field_14[i] & 1) {
+            arg1->field_44[i][0] = 1;
+        }
+        if (arg1->field_14[i] & 0x20) {
+            arg1->field_44[i][1]++;
+        }
+        if (arg1->field_14[i] & 0x40) {
+            arg1->field_44[i][1]++;
+        }
+        if (arg1->field_14[i] & 0x80) {
+            arg1->field_44[i][1]++;
+        }
+        if (arg1->field_14[i] & 0x100) {
+            arg1->field_44[i][1]++;
+        }
+        if (arg1->field_14[i] & 0x200) {
+            arg1->field_44[i][1]++;
+        }
+        if (arg1->field_14[i] & 0x400) {
+            arg1->field_44[i][2]++;
+        }
+        if (arg1->field_14[i] & 0x800) {
+            arg1->field_44[i][2]++;
+        }
+        if (arg1->field_14[i] & 0x1000) {
+            arg1->field_44[i][2]++;
+        }
+        if (arg1->field_14[i] & 0x2000) {
+            arg1->field_44[i][2]++;
+        }
+        if (arg1->field_14[i] & 0x4000) {
+            arg1->field_44[i][2]++;
+        }
+        if (arg1->field_14[i] & 0x8000) {
+            arg1->field_44[i][3]++;
+        }
+        if (arg1->field_14[i] & 0x10000) {
+            arg1->field_44[i][3]++;
+        }
+        if (arg1->field_14[i] & 0x20000) {
+            arg1->field_44[i][3]++;
+        }
+        if (arg1->field_14[i] & 0x40000) {
+            arg1->field_44[i][3]++;
+        }
+        if (arg1->field_14[i] & 0x80000) {
+            arg1->field_44[i][3]++;
+        }
+        if (arg1->field_14[i] & 0x100000) {
+            arg1->field_44[i][4]++;
+        }
+        if (arg1->field_14[i] & 0x200000) {
+            arg1->field_44[i][4]++;
+        }
+        if (arg1->field_14[i] & 0x400000) {
+            arg1->field_44[i][4]++;
+        }
+        if (arg1->field_14[i] & 0x800000) {
+            arg1->field_44[i][5]++;
+        }
+        if (arg1->field_14[i] & 0x1000000) {
+            arg1->field_44[i][5]++;
+        }
+        if (arg1->field_14[i] & 0x2000000) {
+            arg1->field_44[i][5]++;
+        }
+        if (arg1->field_14[i] & 0x4000000) {
+            arg1->field_44[i][6]++;
+        }
+        if (arg1->field_14[i] & 0x8000000) {
+            arg1->field_44[i][6]++;
+        }
+        if (arg1->field_14[i] & 0x10000000) {
+            arg1->field_44[i][6]++;
+        }
+        if (arg1->field_14[i] & 0x20000000) {
+            arg1->field_44[i][7]++;
+        }
+        if (arg1->field_14[i] & 0x40000000) {
+            arg1->field_44[i][7]++;
+        }
+        if (arg1->field_14[i] & 0x80000000) {
+            arg1->field_44[i][7]++;
+        }
+    }
+    arg1->field_4 = arg1->field_2;
+}
 
 void func_800648BC(Actor *arg0, Stg00SelWork *arg1) {
     if (D_8005F72C & 0x8000) {
