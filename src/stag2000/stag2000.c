@@ -355,7 +355,15 @@ void func_8006A320(Actor *a) {
     Gfx_DrawTexModel(a, 1);
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006A364);
+void func_8006A364(Actor *a) {
+    if (a->stateLevel0 == 0) {
+        Actor_InitTransform(a, D_80043704, 0);
+        Gfx_AttachModel(a, 0xD14)->otIndex = 5;
+        Gfx_ResetModelBones(a);
+        ((Stg20Rot *)a->u38.ptr38)->field_42 = 0x200;
+        Task_NextState0(a);
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006A3D0);
 
