@@ -1280,7 +1280,53 @@ void func_8007100C(Actor *a0) {
     Task_DefaultDestroy(a0);
 }
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80071044);
+void func_80071044(Stg30Part *p, s32 unit, s32 num, s32 den) {
+    s32 lv[4];
+    s32 masks[4];
+    s32 n;
+    s32 i;
+
+    if (num != 0) {
+        n = num * 40 / den;
+        if (n == 0) {
+            n = 1;
+        }
+    } else {
+        n = 0;
+    }
+    masks[0] = unit;
+    masks[1] = unit * 2;
+    masks[2] = unit * 4;
+    masks[3] = unit * 8;
+    if (n < 10) {
+        lv[0] = 10 - n;
+        lv[1] = 10;
+        lv[2] = 10;
+        lv[3] = 10;
+    } else if (n < 20) {
+        lv[0] = 0;
+        lv[1] = 20 - n;
+        lv[2] = 10;
+        lv[3] = 10;
+    } else if (n < 30) {
+        lv[0] = 0;
+        lv[1] = 0;
+        lv[2] = 30 - n;
+        lv[3] = 10;
+    } else {
+        lv[0] = 0;
+        lv[1] = 0;
+        lv[2] = 0;
+        lv[3] = 40 - n;
+    }
+    for (; p->fileId != 0; p++) {
+        for (i = 0; i < 4; i++) {
+            if (p->groupMask == masks[i]) {
+                p->palette = lv[3 - i];
+            }
+        }
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8007118C);
 
