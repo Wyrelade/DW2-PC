@@ -799,7 +799,71 @@ void func_8006F674(Stg30TaskHead *a0, s32 *args) {
     a0->field_4 = args[1] ? 2 : 4;
 }
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006F69C);
+void func_8006F69C(Stg30TaskHead *a0) {
+    Stg30Work732E8 *w = (Stg30Work732E8 *)a0->work;
+    s32 snd;
+
+    switch (a0->stateLevel0) {
+    case 0:
+        switch (a0->field_8) {
+        case 0:
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+        default:
+            snd = 0x25;
+            break;
+        case 5:
+            if (a0->field_4 == 2) {
+                snd = 0x26;
+            } else {
+                snd = 0x1C;
+            }
+            break;
+        }
+        Snd_PlayById(snd, 0);
+        Task_NextState0((Actor *)a0);
+        break;
+    case 1:
+        switch (a0->stateLevel1) {
+        case 0:
+        default:
+            if (w->field_4 != 7) {
+                w->field_4++;
+            }
+            w->field_0 += 0x200;
+            if (w->field_0 >= 0x1000) {
+                w->field_0 = 0x1000;
+                w->field_4 = 7;
+                Task_NextState1((Actor *)a0);
+            }
+            break;
+        case 1:
+            switch (a0->stateLevel2) {
+            case 0:
+            default:
+                a0->elapsed = 0;
+                Task_NextState2((Actor *)a0);
+                break;
+            case 1:
+                if (a0->elapsed >= 0x3C) {
+                    Task_NextState0((Actor *)a0);
+                }
+                break;
+            }
+            break;
+        }
+        break;
+    case 2:
+        if (w->field_4 != 0) {
+            w->field_4--;
+        } else {
+            Task_SetState0((Actor *)a0, 3);
+        }
+        break;
+    }
+}
 
 void func_8006F820(Stg30TaskHead *a0) {
     Stg30Work732E8 *w = (Stg30Work732E8 *)a0->work;
