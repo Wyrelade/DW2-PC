@@ -399,7 +399,9 @@ void func_8006F06C(void) {
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006F094);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006F168);
+void func_8006F168(Stg40ImgWork *a0) {
+    LoadImage(&a0->rect, a0->data);
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006F18C);
 
