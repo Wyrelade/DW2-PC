@@ -612,7 +612,10 @@ s32 func_8006E520(Actor *a0) {
     return r;
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006E588);
+    if (func_8006E588(a0) == 1) {
+        Task_SetState1(a0, (u8)D_80072B60->field_38);
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006E60C);
 
