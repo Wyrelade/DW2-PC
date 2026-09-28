@@ -162,7 +162,9 @@ INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80069D98);
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006A000);
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006A118);
+void func_8006A118(void) {
+    Gfx_DrawParts((s32)Cd_GetFileEntry(0xD120007));
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006A144);
 
