@@ -128,7 +128,12 @@ void func_800658B8(Stg35SpriteHandle *arg0) {
     Mem_Zero(arg0->sprite, 0x20);
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_800658F4);
+void func_800658F4(Stg35SpriteHandle *arg0) {
+    if (arg0->sprite != NULL) {
+        Mem_Free(arg0->sprite);
+        arg0->sprite = NULL;
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80065930);
 
