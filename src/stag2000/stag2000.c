@@ -160,7 +160,67 @@ INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80064008);
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_800650BC);
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80065774);
+void func_80065774(Actor *a) {
+    Stg20CtrlWork *w = (Stg20CtrlWork *)a->work;
+    s32 *slot = (s32 *)a->u34.children;
+
+    switch (a->stateLevel0) {
+    case 0:
+        D_800709B0.field_C = 0;
+        Task_Create(0x30D, &slot[5], 0);
+        w->menu = Task_FindFirst(0x308, -1, -1);
+        D_800709B0.field_0 = 0;
+        Task_NextState0(a);
+        break;
+    case 1:
+        switch (a->stateLevel1) {
+        case 0:
+        default:
+            switch (a->stateLevel2) {
+            case 0:
+            default:
+                Task_SetState0((Actor *)w->menu, 0);
+                Task_Create(0x30B, &slot[3], 0);
+                func_80068D84(0x115);
+                Task_NextState2(a);
+            case 1:
+                if (slot[3] == 0) {
+                    if (D_800709B0.field_8 != 0) {
+                        Task_NextState0(a);
+                    } else {
+                        if (D_800709B0.field_C != 0) {
+                            Task_NextState1(a);
+                        }
+                        Task_NextState1(a);
+                    }
+                }
+                break;
+            }
+            break;
+        case 1:
+            func_800650BC(a);
+            break;
+        case 2:
+            func_80064008(a);
+            break;
+        }
+        break;
+    case 2:
+        switch (a->stateLevel1) {
+        case 0:
+        default:
+            Gfx_FadeOutToBlack(0xA);
+            Task_NextState1(a);
+        case 1:
+            if (++a->stateLevel2 >= 0x19) {
+                D_8005F770.field_24 = 1;
+                D_8005F770.nextGameMode = D_8005F770.prevGameMode;
+            }
+            break;
+        }
+        break;
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80065960);
 
