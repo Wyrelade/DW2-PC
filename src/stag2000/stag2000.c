@@ -349,7 +349,19 @@ void func_8006D4BC(Actor *a, s32 v) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006D4F4);
+void func_8006D4F4(s16 *list, s32 n, s32 v) {
+    s32 i;
+    s32 t;
+
+    for (i = 0; i < n; i++) {
+        t = list[i];
+        if (t < v) {
+            list[i] = v;
+            v = t;
+        }
+    }
+    list[i] = v;
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006D53C);
 
