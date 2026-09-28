@@ -177,7 +177,17 @@ INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80066AD0);
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80066BE4);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80066D78);
+void func_80066D78(Actor *a0) {
+    ActorWork *w = a0->work;
+    EntA0 *p;
+
+    if (w->field_4 != 0) {
+        p = Cd_GetFileEntry(0x7D40002);
+        Gfx_SetPartsNumber((GfxPart *)p, 2, 8, w->field_8);
+        Gfx_SetPartsScale((GfxPartScaleView *)p, 0x1000, w->field_4);
+        Gfx_DrawParts((s32)p);
+    }
+}
 
 void func_80066DF0(u8 a0, u8 a1, u8 a2) {
     Stg40ObjWork *w = (Stg40ObjWork *)D_80072B70->work;
