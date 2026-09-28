@@ -478,7 +478,15 @@ void func_8006E4E8(Actor *a0, s32 a1) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006E520);
+s32 func_8006E520(Actor *a0) {
+    s32 r = 0;
+
+    a0->stateLevel4++;
+    if (func_800678C4(a0) == 1 || a0->stateLevel4 >= 31) {
+        r = 1;
+    }
+    return r;
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006E588);
 
