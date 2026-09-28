@@ -77,7 +77,25 @@ void func_80064970(Actor *a0, Stg40InitArg *a1) {
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006498C);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80064AFC);
+void func_80064AFC(Actor *a0) {
+    Stg40ChildWork *w = (Stg40ChildWork *)a0->work;
+    Actor *p = w->field_20;
+    Stg40Xform *x;
+
+    if (((Stg40ActWork *)p->work)->field_34 != 0) {
+        x = (Stg40Xform *)a0->u38.ptr38;
+        *x = *(Stg40Xform *)p->u38.ptr38;
+        x->field_44 = 0;
+        x->field_40 = 0;
+        x->field_42 = 0;
+        x->field_34 += w->field_28;
+        Gfx_AttachModel(a0, w->field_14)->otIndex = 3;
+        Anim_StepModelAnim(a0);
+        Actor_UpdateTransform(a0);
+        Gfx_CalcModelBoneMatrices(a0);
+        Gfx_DrawTexModel(a0, 0);
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80064BD8);
 
