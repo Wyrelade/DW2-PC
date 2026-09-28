@@ -647,7 +647,22 @@ INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006E60C);
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006E6CC);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006E764);
+void func_8006E764(Stg40E764 *a0, s32 a1, s32 a2) {
+    if (a0->field_34 == 0) {
+        a0->field_28 = 0;
+        return;
+    }
+    if (a0->field_28 == 0) {
+        if (a1 != 0) {
+            Cd_QueueFile(a1);
+        }
+        if (a2 != 0) {
+            Cd_QueueFile(a2);
+        }
+        a0->field_28 = 16;
+    }
+    a0->field_28--;
+}
 
 void func_8006E7F0(s32 i, s32 item, u8 status) {
     GameStateView *g = D_80050720;
