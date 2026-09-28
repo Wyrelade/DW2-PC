@@ -3621,7 +3621,228 @@ void func_800728D8(Actor *a0, s32 a1) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8007292C);
+void func_8007292C(Actor *a0) {
+    Stg30Work737C8 *w = (Stg30Work737C8 *)a0->work;
+    Stg30GameRoster *g;
+    TaskEntry *t;
+    Stg30Pair args;
+    s32 i;
+    s32 cnt;
+    s32 n;
+    s32 j;
+    s32 *p;
+
+    p = (s32 *)a0->u34.children;
+
+    switch (a0->stateLevel0) {
+    case 0:
+        Mem_FillWordsNeg1(w->text, 2);
+        w->field_C = (Actor *)Task_FindFirst(0x509, -1, w->index);
+        Task_NextState0(a0);
+        break;
+    case 1:
+        switch (a0->stateLevel1) {
+        case 0:
+        default:
+            ((void (*)(s32))func_80070D14)(w->index + 2);
+            func_8006F640(w->field_C, 1);
+            a0->elapsed = 0;
+            Task_NextState1(a0);
+        case 1:
+            switch (a0->stateLevel2) {
+            case 0:
+            default:
+                if (a0->elapsed < 0x15) {
+                    break;
+                }
+                for (t = Task_FindFirst(0x509, -1, -1); t != NULL; t = Task_FindNext()) {
+                    if (t->field_8 < 3) {
+                        func_8006F640((Actor *)t, 0);
+                        func_8006F664((Actor *)t);
+                    }
+                }
+                Task_NextState2(a0);
+                break;
+            case 1:
+                if (a0->elapsed < 0x78) {
+                    break;
+                }
+                Task_SetState0(w->field_C, 2);
+                Task_SetState1(w->field_C, 0xB);
+                Task_NextState1(a0);
+                break;
+            }
+            break;
+        case 2:
+            switch (a0->stateLevel2) {
+            case 0:
+            default:
+                w->field_10 = 1;
+                Text_OpenPacked(&w->text[0], (s32)Digi_GetDefaultName(a0->digiId), 0, D_800737B8[0]);
+                Text_OpenPacked(&w->text[1], (s32)Cd_GetFileEntry(0x1FD018D), 0x81, D_800737B8[1]);
+                Flag_Set(0x10, 0);
+                Task_NextState2(a0);
+                break;
+            case 1:
+                if (!Flag_Test(0x10)) {
+                    break;
+                }
+                if (Flag_Test(0x11)) {
+                    Task_SetState1(a0, 8);
+                    break;
+                }
+                Task_SetState1(a0, 3);
+                break;
+            }
+            break;
+        case 3:
+            switch (a0->stateLevel2) {
+            case 0:
+            default:
+                cnt = 0;
+                for (j = 0; j < 0x24; j++) {
+                    if (D_8005E620.elems[j].state >= 2) {
+                        cnt++;
+                    }
+                }
+                n = D_800737C0[D_8005E650 - 0x2F] - D_8005071C->field_BA8;
+                if (n > 0 && cnt < n) {
+                    Task_SetState1(a0, 4);
+                    break;
+                }
+                Text_OpenPacked(&w->text[1], (s32)Cd_GetFileEntry(0x1FD018E), 0x81, D_800737B8[1]);
+                Task_NextState2(a0);
+                break;
+            case 1:
+                if (D_8005F704 <= 0) {
+                    break;
+                }
+                g = (Stg30GameRoster *)&D_8005E620;
+                if (g->field_4A == 0) {
+                    Task_SetState1(a0, 6);
+                    break;
+                }
+                if (g->field_61 != 0) {
+                    Task_SetState1(a0, 7);
+                    break;
+                }
+                cnt = 0;
+                for (i = 0; i < 0x24; i++) {
+                    if (g->elems[i].state == 1) {
+                        cnt++;
+                    }
+                }
+                if (cnt < 0x18) {
+                    Task_SetState1(a0, 5);
+                    break;
+                }
+                Text_OpenPacked(&w->text[1], (s32)Cd_GetFileEntry(0x1FD0190), 0x81, D_800737B8[1]);
+                Task_NextState2(a0);
+                break;
+            case 2:
+                if (D_8005F704 > 0) {
+                    Task_SetState1(a0, 8);
+                }
+                break;
+            }
+            break;
+        case 4:
+            p = (s32 *)a0->u34.children;
+            switch (a0->stateLevel2) {
+            case 0:
+            default:
+                w->field_10 = 0;
+                Text_Close(&w->text[0]);
+                Text_Close(&w->text[1]);
+                func_800728D8(a0, 0);
+                args.field_0 = 0;
+                args.field_4 = 0x23;
+                Task_Create(0x16, p, (s32)&args);
+                Task_NextState2(a0);
+                break;
+            case 1:
+                if (*p != 0) {
+                    break;
+                }
+                Digi_SortRoster();
+                Task_NextState0(a0);
+                break;
+            }
+            break;
+        case 5:
+            switch (a0->stateLevel2) {
+            case 0:
+            default:
+                Text_OpenPacked(&w->text[1], (s32)Cd_GetFileEntry(0x1FD018F), 0x81, D_800737B8[1]);
+                Flag_Set(0x10, 0);
+                Task_NextState2(a0);
+                break;
+            case 1:
+                if (!Flag_Test(0x10)) {
+                    break;
+                }
+                if (!Flag_Test(0x11)) {
+                    Task_NextState2(a0);
+                    break;
+                }
+                Task_SetState1(a0, 8);
+                break;
+            case 2:
+                w->field_10 = 0;
+                Text_Close(&w->text[0]);
+                Text_Close(&w->text[1]);
+                func_800728D8(a0, 1);
+                args.field_0 = 0;
+                args.field_4 = 0x23;
+                Task_Create(0x16, p, (s32)&args);
+                Task_NextState2(a0);
+                break;
+            case 3:
+                if (*p != 0) {
+                    break;
+                }
+                Digi_SortRoster();
+                Task_NextState0(a0);
+                break;
+            }
+            break;
+        case 7:
+            switch (a0->stateLevel2) {
+            case 0:
+            default:
+                Text_OpenPacked(&w->text[1], (s32)Cd_GetFileEntry(0x1FD0191), 0x81, D_800737B8[1]);
+                Task_NextState2(a0);
+                break;
+            case 1:
+                if (D_8005F704 > 0) {
+                    Task_SetState1(a0, 8);
+                }
+                break;
+            }
+            break;
+        case 6:
+        case 8:
+            switch (a0->stateLevel2) {
+            case 0:
+            default:
+                Snd_PlayById(0x1C, 0);
+                Text_OpenPacked(&w->text[1], (s32)Cd_GetFileEntry(0x1FD0192), 0x81, D_800737B8[1]);
+                Task_NextState2(a0);
+            case 1:
+                if (D_8005F704 > 0) {
+                    Task_NextState0(a0);
+                }
+                break;
+            }
+            break;
+        }
+        break;
+    case 2:
+        Text_CloseArray(w->text, 2);
+        Task_NextState0(a0);
+        break;
+    }
+}
 
 void func_80072F84(Actor *a0) {
     if (((Stg30Work737C8 *)a0->work)->field_10 != 0) {

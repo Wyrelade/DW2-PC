@@ -4343,5 +4343,10 @@
   },
   "stag2000:func_80064008": {
     "passes": []
+  },
+  "stag3000:func_8007292C": {
+    "passes": [
+      "sched_match"
+    ]
   }
 }
