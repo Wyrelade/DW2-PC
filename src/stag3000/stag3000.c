@@ -397,7 +397,156 @@ void func_80065584(Actor *a0, s32 *args) {
     ((Stg30WorkWord *)a0->work)->field_0 = args[0];
 }
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80065594);
+void func_80065594(Actor *a0) {
+    Stg30Work730D0 *w = (Stg30Work730D0 *)a0->work;
+    Stg30GameFlags *g;
+    s16 *row;
+    s16 *top;
+    s32 cat;
+    s32 item;
+    s32 id;
+    s32 i;
+    s32 c;
+    s16 *pc;
+
+    switch (a0->stateLevel0) {
+    case 0:
+        Mem_FillWordsNeg1(&w->field_4, 0xE);
+        Text_OpenById(&w->field_4, 0x178, 0, D_800633F0);
+        g = (Stg30GameFlags *)&D_8005E620;
+        if (g->field_3C != 0) {
+            w->field_40[0] = 1;
+        }
+        if (g->field_40 != 0) {
+            w->field_40[1] = 1;
+        }
+        if (g->field_3E != 0) {
+            w->field_40[2] = 1;
+        }
+        if (g->field_5A != 0) {
+            w->field_4C[0] = 1;
+        }
+        if (g->field_5C != 0) {
+            w->field_4C[1] = 1;
+        }
+        if (g->field_5B != 0) {
+            w->field_4C[2] = 1;
+        }
+        D_800737E8 = 0;
+        D_800737F0[0] = 0;
+        D_800737F0[1] = 0;
+        D_800737F0[2] = 0;
+        D_800737F8[0] = 0;
+        D_800737F8[1] = 0;
+        D_800737F8[2] = 0;
+        w->field_3C = 0;
+        func_80065100(a0);
+        Task_NextState0(a0);
+        break;
+    case 1:
+        switch (a0->stateLevel1) {
+        case 0:
+        default:
+            w->field_3C += 0x555;
+            if (w->field_3C >= 0x1000) {
+                w->field_3C = 0x1000;
+                Task_NextState1(a0);
+            }
+            break;
+        case 1:
+            cat = D_800737E8;
+            row = &D_800737F0[cat];
+            top = &D_800737F8[cat];
+            pc = &D_800737E8;
+            do {
+                if (D_8005F6F0[0].left > 0) {
+                    if (cat == 0) break;
+                    D_800737E8--;
+                    Snd_PlayById(0xD, 0);
+                    break;
+                }
+                if (D_8005F6F0[0].right > 0) {
+                    if (cat == 2) break;
+                    D_800737E8++;
+                    Snd_PlayById(0xD, 0);
+                    break;
+                }
+                if (w->field_40[cat] != 0 && w->field_4C[cat] == 0) {
+                    if (D_8005F6F0[0].repeat & 0x1000) {
+                        if (*row != 0) {
+                            *row -= 1;
+                            Snd_PlayById(0xD, 0);
+                            break;
+                        }
+                        if (*top == 0) break;
+                        *top -= 1;
+                        Snd_PlayById(0xD, 0);
+                        break;
+                    }
+                    if (D_8005F6F0[0].repeat & 0x4000) {
+                        if (*row != 2) {
+                            *row += 1;
+                            Snd_PlayById(0xD, 0);
+                            break;
+                        }
+                        if (w->field_58[cat][*row + *top + 1] == 0) break;
+                        *top += 1;
+                        Snd_PlayById(0xD, 0);
+                        break;
+                    }
+                }
+                if (D_8005F6F0[0].triangle > 0) {
+                    D_80073CD4 = 1;
+                    Snd_PlayById(0xB, 0);
+                    Task_NextState0(a0);
+                    break;
+                }
+                if (D_8005F6F0[0].cross <= 0) break;
+                item = w->field_58[D_800737E8][D_800737F0[D_800737E8] + D_800737F8[D_800737E8]];
+                if (w->field_40[D_800737E8] == 0 || w->field_4C[D_800737E8] != 0 || item == 0) {
+                    Snd_PlayById(0x10, 0);
+                    break;
+                }
+                id = func_80065540(item);
+                D_80073CC0.field_3AC = item;
+                D_80073CC0.entries[0].field_14 = 0;
+                D_80073CC0.field_3B2 = *pc;
+                D_80073CC0.field_2AC[D_80073CC0.entries[0].field_8].field_0 = func_8001EE34(id) + 1;
+                D_80073CC0.field_2AC[D_80073CC0.entries[0].field_8].field_6 = id;
+                D_80073CC0.field_2AC[D_80073CC0.entries[0].field_8].field_8 = func_8006E2BC(id);
+                D_80073CC0.field_2AC[D_80073CC0.entries[0].field_8].field_4 = func_8001EF3C(id);
+                Snd_PlayById(0xE, 0);
+                Task_NextState0(a0);
+            } while (0);
+            for (i = 0; i < 3; i++) {
+                if (D_800737E8 == i) {
+                    c = 4;
+                } else {
+                    c = 5;
+                }
+                Text_OpenById(&w->field_C[i], i + 7, c, D_8007309C[i]);
+            }
+            func_80065354(a0);
+            break;
+        }
+        break;
+    case 2:
+        switch (a0->stateLevel1) {
+        case 0:
+        default:
+            Text_CloseArray(&w->field_4, 0xE);
+            Task_NextState1(a0);
+        case 1:
+            w->field_3C -= 0x555;
+            if (w->field_3C <= 0) {
+                w->field_3C = 0;
+                Task_NextState0(a0);
+            }
+            break;
+        }
+        break;
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80065A98);
 

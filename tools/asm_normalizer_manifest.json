@@ -4292,5 +4292,10 @@
   },
   "stag3000:func_80066DB0": {
     "passes": []
+  },
+  "stag3000:func_80065594": {
+    "passes": [
+      "web_realloc"
+    ]
   }
 }
