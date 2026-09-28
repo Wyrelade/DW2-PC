@@ -1647,7 +1647,40 @@ void func_80068208(Actor *arg0) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_8006835C);
+void func_8006835C(Actor *arg0) {
+    Stg00CountWork *w = (Stg00CountWork *)arg0->work;
+    EntA0 *e = Cd_GetFileEntry(0x770000);
+    Stg00Part *p;
+
+    Gfx_HidePartsByMask(e, D_800692C4[w->field_0]);
+    p = (Stg00Part *)e;
+    while (p->fileId != 0) {
+        if (p->partMask & D_800692D0[w->field_0].field_8) {
+            p->field_E = 0;
+            if (w->field_4 != 0) {
+                w->field_4--;
+            } else {
+                p->field_20 += 0x20;
+            }
+        }
+        if (p->partMask & D_800692D0[w->field_0].field_0) {
+            if ((p->field_20 + 0x400) & 0x800) {
+                p->field_F = 0;
+            }
+        }
+        if (p->partMask & D_800692D0[w->field_0].field_4) {
+            if ((p->field_20 - 0x418) & 0x800) {
+                p->field_F = 0;
+            }
+        }
+        if (p->partMask & D_800692D0[w->field_0].field_C) {
+            p->field_E = 1;
+            p->field_20 = 0;
+        }
+        p++;
+    }
+    Gfx_DrawParts(e);
+}
 
 INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_800684E4);
 
