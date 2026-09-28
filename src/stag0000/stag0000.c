@@ -937,7 +937,54 @@ void func_80066DB0(Actor *arg0, Stg00ModelArg *arg1) {
     w->field_10 = arg1->field_10;
 }
 
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80066E1C);
+void func_80066E1C(Actor *arg0, s32 arg1) {
+    Stg00SpawnWork *w = (Stg00SpawnWork *)arg0->work;
+    s32 *slot = (s32 *)arg0->u34.children;
+    Stg00TaskArgs args;
+    s16 a[3];
+    s16 b[3];
+    Row6 rows[3];
+    Stg00TaskArgs3 args2;
+    Row6 *r;
+    s32 i;
+
+    func_8001EEA4(w->field_2C, 0, a, b);
+    func_8001E7E4(arg0->digiId, rows);
+    r = &rows[arg1];
+    for (i = 0; i < 3; i++) {
+        if (a[i] != 0) {
+            args.field_0 = a[i];
+            args.field_4 = b[i];
+            args.field_14 = w->field_10;
+            args.field_8 = w->field_4;
+            args.field_C = w->field_8;
+            args.field_10 = w->field_C;
+            args.field_18 = 0x78;
+            switch (i) {
+            case 0:
+                args.field_C -= func_8001E79C(arg0->digiId) + 0x280;
+                break;
+            case 1:
+                args.field_C -= r->data[1];
+                if (args.field_14 == 0) {
+                    args.field_8 += r->data[0];
+                    args.field_10 -= 0x100 + r->data[2];
+                } else {
+                    args.field_8 -= r->data[0];
+                    args.field_10 += 0x100 + r->data[2];
+                }
+                break;
+            case 2:
+                break;
+            }
+            Task_Create(7, &slot[i + 1], (s32)&args);
+        }
+    }
+    args2.field_4 = w->field_2C;
+    args2.field_0 = 0;
+    args2.field_8 = 0;
+    Task_Create(0x10B, &slot[4], (s32)&args2);
+}
 
 void func_80066FE8(Actor *arg0) {
     Stg00SpawnWork *w = (Stg00SpawnWork *)arg0->work;
