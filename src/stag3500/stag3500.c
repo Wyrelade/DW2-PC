@@ -229,7 +229,9 @@ void func_80067720(void) {
     Mem_Zero(D_8006AA88, 0x358);
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80067748);
+void func_80067748(Actor *arg0, Stg35Vec3 *arg1) {
+    ((Stg35VecWork *)arg0->work)->field_0 = *arg1;
+}
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80067768);
 
