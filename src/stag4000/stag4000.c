@@ -1629,7 +1629,30 @@ INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006F6BC);
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006F86C);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006FC54);
+void func_8006FC54(ActorWork *w) {
+    Stg40TileWork *t = (Stg40TileWork *)w;
+    Stg40Loc *loc;
+    s32 i;
+
+    for (i = 0; i < 2; i++) {
+        if (i == D_80072B60->field_7E - 1) {
+            t->field_762[i] = (t->field_762[i] + 0x20 < 0x100) ? (u16)t->field_762[i] + 0x20 : 0xFF;
+        } else {
+            t->field_762[i] = (t->field_762[i] - 0x20 >= 0) ? (u16)t->field_762[i] - 0x20 : 0;
+        }
+        if (t->field_762[i] != 0) {
+            switch (i) {
+            case 0:
+                loc = D_8005071C->field_1068;
+                func_8006F86C(t, 0x50, 0, loc->u0.pair.field_0, loc->u0.pair.field_2, 0x11, 0x11, 3, t->field_762[0]);
+                break;
+            case 1:
+                func_8006F86C(t, 0, 0, 0x20, 0x18, 0x41, 0x31, 4, t->field_762[1]);
+                break;
+            }
+        }
+    }
+}
 
 void func_8006FDAC(void) {
 }
