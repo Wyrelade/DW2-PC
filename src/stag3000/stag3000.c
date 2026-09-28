@@ -2088,7 +2088,91 @@ u8 *func_80071488(u8 *out, s32 n) {
     return out;
 }
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80071538);
+void func_80071538(DigiRosterEntry *e) {
+    u16 *p;
+    s32 r;
+    s32 c;
+    s32 lv;
+    s32 k;
+    u16 t;
+
+    e->level = e->level + 1;
+    lv = e->level;
+    for (k = 0; k < 2; k++) {
+        if (k == 0) {
+            p = &e->maxHp;
+        } else {
+            p = &e->maxMp;
+        }
+        r = Rand_Next() & 3;
+        c = func_8001D9CC(e->digiId, k);
+        if (lv < 12) {
+            *p += D_80073510[0][c][r] + 10;
+        } else if (lv < 22) {
+            *p += D_80073510[1][c][r] + 6;
+        } else if (lv < 32) {
+            *p += D_80073510[2][c][r] + 4;
+        } else if (lv < 42) {
+            *p += D_80073510[3][c][r] + 2;
+        } else if (lv < 52) {
+            *p = *p + D_80073510[4][c][r];
+        } else {
+            *p = *p + D_80073510[5][c][r];
+        }
+        t = *p;
+        if ((s16)*p >= 1000) {
+            t = 999;
+        }
+        *p = t;
+    }
+    k = 1;
+    lv = e->level - (func_8001D958(e->digiId) * 10 + k);
+    for (k = 0; k < 2; k++) {
+        if (k == 0) {
+            p = (u16 *)&e->field_1C;
+        } else {
+            p = &e->field_1E;
+        }
+        r = Rand_Next() & 3;
+        c = func_8001D9CC(e->digiId, k + 2);
+        if (lv == 1) {
+            *p += D_800735A0[0][c][r] + 4;
+        } else if (lv < 4) {
+            *p += D_800735A0[1][c][r] + 3;
+        } else if (lv < 7) {
+            *p += D_800735A0[2][c][r] + 2;
+        } else if (lv < 11) {
+            *p += D_800735A0[3][c][r] + 1;
+        } else {
+            *p = *p + D_800735A0[4][c][r];
+        }
+        t = *p;
+        if ((s16)*p >= 1000) {
+            t = 999;
+        }
+        *p = t;
+    }
+    lv = e->field_20;
+    p = (u16 *)&e->field_20;
+    r = Rand_Next() & 3;
+    c = func_8001D9CC(e->digiId, 4);
+    if (lv < 21) {
+        *p += D_80073618[0][c][r] + 3;
+    } else if (lv < 51) {
+        *p += D_80073618[1][c][r] + 2;
+    } else if (lv < 101) {
+        *p += D_80073618[2][c][r] + 1;
+    } else {
+        *p = *p + D_80073618[3][c][r];
+    }
+    t = *p;
+    if ((s16)*p >= 1000) {
+        t = 999;
+    }
+    *p = t;
+    e->hp = e->maxHp;
+    e->mp = e->maxMp;
+}
 
 void func_8007191C(Actor *a0) {
     Stg30Work73718 *w = (Stg30Work73718 *)a0->work;
