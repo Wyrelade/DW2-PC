@@ -644,7 +644,19 @@ INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80070974);
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_800709DC);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80070A7C);
+void func_80070A7C(void) {
+    Stg40FFC *p = &D_8005071C->field_FFC;
+    s16 *q = p->field_0;
+    s32 i;
+
+    p->field_18 = 10;
+    p->field_16 = 0;
+    p->field_1A = 0;
+    for (i = 0; i < p->field_18; i++) {
+        *q++ = -1;
+    }
+    *q = -2;
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80070AD0);
 
