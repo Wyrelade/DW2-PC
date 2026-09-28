@@ -740,7 +740,100 @@ s32 func_80067978(Actor *a, s32 dir) {
     return found;
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80067B20);
+void func_80067B20(Actor *a) {
+    Stg20NavWork *w = (Stg20NavWork *)a->work;
+    Stg20PickRec *r;
+    s32 i;
+    s32 n;
+    s32 k;
+
+    switch (a->stateLevel0) {
+    case 0:
+        if (D_8005F770.prevGameMode == 0x602) {
+            D_8005F770.field_24 = ((Stg20GameState *)&D_8005E620)->field_1;
+        }
+        Mem_FillWordsNeg1(&w->text, 1);
+        w->index = 0;
+        for (i = 0, n = 0; ; i++) {
+            r = (Stg20PickRec *)func_8006F360(i);
+            if (i == D_8005F770.field_24) {
+                w->index = n;
+            }
+            if (r->id == -1) {
+                break;
+            }
+            if (r->id == 0 || Flag_Test(r->id) != 0) {
+                w->recs[n] = *r;
+                n++;
+            }
+        }
+        w->recs[n].id = -1;
+        w->redraw = 1;
+        ((Stg20GameState *)&D_8005E620)->field_1 = D_8005F794;
+        Task_NextState0(a);
+        break;
+    case 1:
+        if (D_8005F6F0[0].down > 0) {
+            k = func_80067978(a, 0);
+            if (k != -1) {
+                Snd_PlayById(0x12, 0);
+                w->index = k;
+            }
+            w->redraw = 1;
+        } else if (D_8005F6F0[0].left > 0) {
+            k = func_80067978(a, 1);
+            if (k != -1) {
+                Snd_PlayById(0x12, 0);
+                w->index = k;
+            }
+            w->redraw = 1;
+        } else if (D_8005F6F0[0].up > 0) {
+            k = func_80067978(a, 2);
+            if (k != -1) {
+                Snd_PlayById(0x12, 0);
+                w->index = k;
+            }
+            w->redraw = 1;
+        } else if (D_8005F6F0[0].right > 0) {
+            k = func_80067978(a, 3);
+            if (k != -1) {
+                Snd_PlayById(0x12, 0);
+                w->index = k;
+            }
+            w->redraw = 1;
+        } else if (D_8005F6F0[0].cross > 0) {
+            if (w->recs[w->index].mode != 0x301) {
+                goto play;
+            }
+            if (w->recs[w->index].arg != 2 || Flag_Test(0x12) != 0) {
+            play:
+                Snd_PlayById(0xE, 0);
+                Task_NextState0(a);
+            }
+        }
+        if (w->redraw != 0) {
+            w->redraw = 0;
+            Text_Close(&w->text);
+            Text_OpenPacked(&w->text, w->recs[w->index].text, 0, D_80063564);
+        }
+        break;
+    case 2:
+        switch (a->stateLevel1) {
+        case 0:
+        default:
+            Gfx_FadeOutToBlack(0xA);
+            Task_NextState1(a);
+        case 1:
+            if (++a->stateLevel2 >= 0x19) {
+                D_8005F770.nextGameMode = w->recs[w->index].mode;
+                D_8005F770.field_24 = w->recs[w->index].arg;
+                Text_CloseArray(&w->text, 1);
+            }
+            break;
+        }
+        break;
+    }
+}
 
 void func_80067E9C(Actor *a) {
     Stg20NavWork *w = (Stg20NavWork *)a->work;

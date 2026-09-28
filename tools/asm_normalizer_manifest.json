@@ -4251,5 +4251,13 @@
     "passes": [
       "web_realloc"
     ]
+  },
+  "stag2000:func_80067B20": {
+    "passes": [
+      "reg_realloc",
+      "web_realloc",
+      "save_slot",
+      "ra_restore_sink"
+    ]
   }
 }
