@@ -660,7 +660,53 @@ void func_80067508(Actor *arg0, s32 arg1) {
     arg0->field_8 = arg1;
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80067510);
+void func_80067510(Actor *arg0) {
+    Stg35FadeWork *w = (Stg35FadeWork *)arg0->work;
+
+    s32 i;
+
+    switch (arg0->stateLevel0) {
+    case 0:
+        for (i = 0; i < 1; i++) {
+            func_80066120(&w->load[i]);
+        }
+        func_800661A4(w->load, 0xD3F0009);
+        {
+            Stg35Masks masks = D_80063418;
+
+            func_800663CC(w->load, ~masks.v[arg0->field_8]);
+        }
+        Snd_PlayById(0x24, 0);
+        Task_NextState0(arg0);
+    case 1:
+        switch (arg0->stateLevel1) {
+        case 0:
+        default:
+            w->field_4++;
+            func_80066520(w->load, 0x1F, w->field_4 >> 1);
+            if (w->field_4 != 14) {
+                break;
+            }
+            Task_NextState1(arg0);
+        case 1:
+            if (((ActorAllocView *)arg0)->frameCount < 8) {
+                break;
+            }
+            Task_NextState1(arg0);
+        case 2:
+            w->field_4--;
+            func_80066520(w->load, 0x1F, w->field_4 >> 1);
+            if (w->field_4 == 0) {
+                Task_SetState0(arg0, 3);
+            }
+            break;
+        }
+        break;
+    case 2:
+    default:
+        break;
+    }
+}
 
 void func_8006768C(Actor *arg0) {
     Stg35LoadHandle *w = (Stg35LoadHandle *)arg0->work;
