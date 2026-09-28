@@ -982,7 +982,55 @@ INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80069C94);
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80069F84);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006A498);
+void func_8006A498(Actor *a0) {
+    u8 *d = D_80072B60->field_40->field_10;
+    s32 r;
+    s32 msg;
+
+    switch (a0->stateLevel2) {
+    case 0:
+    default:
+        Snd_PlayById(0x2E, 0);
+        func_8006E4DC(a0, 0x2D);
+        Task_NextState2(a0);
+        break;
+    case 1:
+        if (func_8006E588(a0) == 1) {
+            func_8006E4DC(a0, 0x28);
+            Task_NextState2(a0);
+        }
+        break;
+    case 2:
+        if (d[1] == 0xFF) {
+            Task_SetState1(a0, 0x15);
+        } else if (d[1] == 0) {
+            Task_SetState1(a0, 0x14);
+        } else {
+            D_80072B60->field_50 = func_80071204(d[1]);
+            r = func_800715DC(7);
+            msg = D_80072B60->field_50 + 0x1FD0040;
+            if (r == -1) {
+                msg = 0x1FD0045;
+            }
+            if (r == 0) {
+                msg = 0x1FD0046;
+            }
+            func_80067610(1, msg, 0, 0);
+            Task_NextState2(a0);
+        }
+        break;
+    case 3:
+        switch (func_80067750(1)) {
+        case -1:
+            Task_SetState1(a0, 6);
+            break;
+        case 1:
+            Task_SetState1(a0, 0x14);
+            break;
+        }
+        break;
+    }
+}
 
 void func_8006A614(Actor *a0) {
     Stg40B60 *b = D_80072B60;
