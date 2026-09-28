@@ -253,7 +253,17 @@ INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_800676F4);
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80067DB4);
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80067EC4);
+void func_80067EC4(void) {
+    s32 i;
+
+    for (i = 0; i < 3; i++) {
+        if (D_80073CC0.entries[i].field_18 >= 3) {
+            D_80073CC0.entries[i].field_34 = D_8005E620.elems[i].field_1C;
+            D_80073CC0.entries[i].field_36 = D_8005E620.elems[i].field_1E;
+            D_80073CC0.entries[i].field_38 = D_8005E620.elems[i].field_20;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80067F2C);
 
