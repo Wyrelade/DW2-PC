@@ -881,7 +881,16 @@ s32 func_80071258(s32 i) {
     return func_80071180() < D_80072A1C[i];
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80071294);
+s32 func_80071294(void) {
+    s32 r = D_80072A30[func_80071180() / 4];
+
+    if (r >= 4 && r < 16) {
+        if (func_8006E820(D_800729E0[r - 4]) <= 0) {
+            r = 16;
+        }
+    }
+    return r;
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80071310);
 
