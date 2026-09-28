@@ -111,7 +111,9 @@ void func_80066DF0(u8 a0, u8 a1, u8 a2) {
     w->field_24 = -1;
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80066E18);
+s32 *func_80066E18(void) {
+    return &((Stg40ObjWork *)D_80072B70->work)->field_28;
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80066E30);
 
