@@ -491,7 +491,84 @@ void func_800661A4(Stg35LoadHandle *arg0, s32 arg1) {
     arg0->load->fileId = arg1;
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_800661B0);
+void func_800661B0(Stg35LoadHandle *arg0) {
+    Stg35Load *l = arg0->load;
+    Stg35Part *p = (Stg35Part *)Cd_GetFileEntry(l->fileId);
+    Stg35Part *q;
+    Stg35Part *r;
+    Stg35Slide *s;
+    s32 f;
+    s32 c;
+    s16 t;
+    s32 k;
+
+    switch (l->mode) {
+    case 1:
+        l->field_8 += 0x200;
+        f = l->field_8 >= 0x1000;
+        q = p;
+        if (q->fileId != 0) {
+            r = q;
+            do {
+                r->field_E = f;
+                r->field_14 = l->field_8;
+                q++;
+                r++;
+            } while (q->fileId != 0);
+        }
+        if (f) {
+            l->mode = 0;
+        }
+        break;
+    case 2:
+        l->field_8 -= 0x200;
+        q = p;
+        if (q->fileId != 0) {
+            r = q;
+            do {
+                r->field_E = 0;
+                r->field_14 = l->field_8;
+                q++;
+                r++;
+            } while (q->fileId != 0);
+        }
+        if (l->field_8 == 0) {
+            l->mode = 0;
+        }
+        break;
+    }
+    for (k = 0; k < 2; k++) {
+        if (l->u.slide[k].active != 0) {
+            q = p;
+            if (q->fileId != 0) {
+                r = q;
+                do {
+                    if (r->groupMask & l->u.slide[k].mask) {
+                        if (l->u.slide[k].dir != 0) {
+                            l->u.slide[k].accum += l->u.slide[k].speed;
+                            r->x += (s16)l->u.slide[k].accum >> 8;
+                            l->u.slide[k].accum = (u8)l->u.slide[k].accum;
+                            c = l->u.slide[k].target > r->x;
+                        } else {
+                            l->u.slide[k].accum += l->u.slide[k].speed;
+                            r->x -= (s16)l->u.slide[k].accum >> 8;
+                            l->u.slide[k].accum = (u8)l->u.slide[k].accum;
+                            c = r->x > l->u.slide[k].target;
+                        }
+                        t = l->u.slide[k].target;
+                        if (!c) {
+                            r->x = t;
+                            l->u.slide[k].active = 0;
+                        }
+                    }
+                    q++;
+                    r++;
+                } while (q->fileId != 0);
+            }
+        }
+    }
+    Gfx_DrawParts((s32)p);
+}
 
 void func_800663CC(Stg35LoadHandle *arg0, s32 arg1) {
     Gfx_HidePartsByMask((GfxPartMaskView *)Cd_GetFileEntry(arg0->load->fileId), arg1);
