@@ -370,7 +370,14 @@ INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80068B9C);
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80068BF8);
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80068C5C);
+s32 func_80068C5C(void) {
+    TaskEntry *e = Task_FindFirst(0x708, -1, -1);
+
+    if (e != NULL) {
+        return ((Stg35Work708 *)e->work)->field_74;
+    }
+    return 1;
+}
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80068CA0);
 
