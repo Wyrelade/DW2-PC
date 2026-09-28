@@ -1408,7 +1408,75 @@ void func_80067A70(Actor *arg0) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80067BAC);
+void func_80067BAC(Actor *arg0) {
+    Stg00PanelWork *w = (Stg00PanelWork *)arg0->work;
+    EntA0 *e = NULL;
+    s32 draw = 1;
+    Stg00PartScale *p;
+    s32 id;
+
+    switch (w->field_0) {
+    case 0:
+    default:
+        e = Cd_GetFileEntry(func_8001EE5C(w->field_4));
+        break;
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+        e = Cd_GetFileEntry(0xD2D0000);
+        Gfx_HidePartsByMask(e, D_80068F28[w->field_0 - 4]);
+        break;
+    case 1:
+    case 2:
+    case 3:
+        e = Cd_GetFileEntry(0x1A10000);
+        Gfx_SetPartsNumber(e, D_80068F44[w->field_0 - 1], 3, w->field_4);
+        Gfx_HidePartsByMask(e, D_80068F38[w->field_0 - 1]);
+        break;
+    case 8:
+        draw = 0;
+        break;
+    }
+    if (draw) {
+        for (p = (Stg00PartScale *)e; p->fileId != 0; p++) {
+            if (w->field_C != 0x1000) {
+                p->field_E = 0;
+                p->field_10 = w->field_C;
+            } else {
+                p->field_E = 1;
+            }
+            p->field_C = w->field_10;
+        }
+        Gfx_DrawParts(e);
+    }
+    if (w->field_8 != 0) {
+        switch (w->field_8 >> 8) {
+        case 0:
+        default:
+            id = 0x1A10026;
+            break;
+        case 1:
+            id = 0x1A10027;
+            break;
+        case 2:
+            id = 0x1A10028;
+            break;
+        }
+        e = Cd_GetFileEntry(id);
+        Gfx_HidePartsByMask(e, ~(1 << ((u8)w->field_8 - 1)));
+        for (p = (Stg00PartScale *)e; p->fileId != 0; p++) {
+            if (w->field_C != 0x1000) {
+                p->field_E = 0;
+                p->field_10 = w->field_C;
+            } else {
+                p->field_E = 1;
+            }
+            p->field_C = w->field_10;
+        }
+        Gfx_DrawParts(e);
+    }
+}
 
 void func_80067DFC(Actor *arg0, Stg00Vec3 *arg1) {
     *(Stg00Vec3 *)arg0->work = *arg1;
