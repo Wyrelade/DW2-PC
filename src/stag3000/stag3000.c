@@ -736,7 +736,88 @@ s32 func_800699F8(s32 a, s32 b) {
     return -1;
 }
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80069A44);
+s32 func_80069A44(s32 idx) {
+    u8 buf[12];
+    s32 i;
+    s32 n;
+    s32 tech;
+    s32 t;
+
+    D_80073CC0.field_3B0 = 0;
+    for (i = 0; D_800731B8[i] != 0; i++) {
+        if ((D_80073CC0.field_31C[idx] & D_800731B8[i]) && (Rand_Next() & 3) == 0) {
+            D_80073CC0.field_31C[idx] -= D_800731B8[i];
+            D_80073CC0.field_3B0 = D_800731C8[i];
+        }
+    }
+    for (i = 0; D_800731D0[i] != 0; i++) {
+        if ((D_80073CC0.field_31C[idx] & D_800731D0[i]) && (u16)((u16)Rand_Next() % 3) == 0) {
+            D_80073CC0.field_31C[idx] -= D_800731D0[i];
+            D_80073CC0.field_3B0 = D_800731FC[i];
+        }
+    }
+    if (D_80073CC0.field_31C[idx] & 4) {
+        n = 0;
+        for (i = 0; i < 12; i++) {
+            if (D_80073CC0.entries[idx].field_3A[i] == 0) {
+                break;
+            }
+            if (func_8001EE10(D_80073CC0.entries[idx].field_3A[i]) == 0) {
+                buf[n++] = D_80073CC0.entries[idx].field_3A[i];
+            }
+        }
+        if (n == 0) {
+            D_80073CC0.field_2AC[idx].field_0 = 0;
+            D_80073CC0.field_2AC[idx].field_4 = 0;
+            D_80073CC0.field_2AC[idx].field_6 = 0;
+            D_80073CC0.field_2AC[idx].field_8 = 0;
+            return 0;
+        }
+        tech = buf[(u16)Rand_Next() % n];
+        n = func_8001EF3C(tech);
+        do {
+            switch (n) {
+            case 0:
+            case 3:
+            case 4:
+            case 7:
+            default:
+                t = idx;
+                break;
+            case 1:
+                if (idx < 3) {
+                    t = (u16)((u16)Rand_Next() % 3);
+                } else {
+                    t = (u16)((u16)Rand_Next() % 3) + 3;
+                }
+                break;
+            case 5:
+                if (idx < 3) {
+                    t = (u16)((u16)Rand_Next() % 3);
+                } else {
+                    t = (u16)((u16)Rand_Next() % 3) + 3;
+                }
+                break;
+            case 2:
+            case 6:
+                if (idx < 3) {
+                    t = 7;
+                } else {
+                    t = 8;
+                }
+                break;
+            case 8:
+                t = 9;
+                break;
+            }
+        } while ((n == 1 || n == 5) && D_80073CC0.entries[t].field_2E == 0);
+        D_80073CC0.field_2AC[idx].field_0 = 1;
+        D_80073CC0.field_2AC[idx].field_6 = tech;
+        D_80073CC0.field_2AC[idx].field_4 = t;
+        D_80073CC0.field_2AC[idx].field_8 = func_8006E2BC(tech);
+    }
+    return 1;
+}
 
 void func_80069DE8(void) {
     s32 idx = func_8006E674(0);
