@@ -1,8 +1,11 @@
 #include "common.h"
+#include "stag2000/stag2000.h"
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80063610);
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_800636A8);
+s32 func_800636A8(Stg20Cell *c) {
+    return D_80070768[c->x][c->y];
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_800636D8);
 
