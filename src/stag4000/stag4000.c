@@ -1067,7 +1067,34 @@ void func_8006EB84(s32 idx, s32 row, s32 val) {
     t->field_760 = -1;
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006EBF4);
+void func_8006EBF4(s32 x, s32 y, s32 ox, s32 oy, s32 dir) {
+    s32 v;
+
+    if (ox != -1) {
+        func_8006EB84(ox, oy, (func_800703E0(ox, oy) >> 13) & 1);
+    }
+    if (x != -1) {
+        switch (dir) {
+        case 0:
+            v = 14;
+            break;
+        case 1:
+            v = 13;
+            break;
+        case 2:
+        case 3:
+            v = 10;
+            break;
+        case 4:
+            v = 11;
+            break;
+        default:
+            v = 12;
+            break;
+        }
+        func_8006EB84(x, y, v);
+    }
+}
 
 void func_8006ECD0(Stg40TileWork *a0) {
     s32 h = a0->field_768;
