@@ -575,7 +575,22 @@ void func_8006BA90(Actor *a) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006BAC0);
+void func_8006BAC0(Actor *a) {
+    GfxPart *p;
+    GfxPart *q;
+
+    if (D_8005F788[0] < 0x333) {
+        p = (GfxPart *)Cd_GetFileEntry(0xDD60001);
+    } else {
+        p = (GfxPart *)Cd_GetFileEntry(0xC930001);
+    }
+    for (q = p; q->fileId != 0; q++) {
+        if (q->groupMask == 2) {
+            q->palette = Math_CycleRange(a->elapsed, 6, 0, 7);
+        }
+    }
+    Gfx_DrawParts((s32)p);
+}
 
 void func_8006BB7C(Actor *a) {
     s32 *w = (s32 *)a->work;
