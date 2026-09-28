@@ -1644,7 +1644,76 @@ void func_80070D68(Actor *a0, Stg30Ref **args) {
     a0->field_8 = args[0]->field_8;
 }
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80070D8C);
+void func_80070D8C(Stg30TaskHead *a0) {
+    Stg30Work734F8 *w = (Stg30Work734F8 *)a0->work;
+    TextOpenArgs args;
+    s32 v;
+
+    switch (a0->stateLevel0) {
+    case 0:
+        w->field_8 = 12;
+        Mem_FillWordsNeg1(w->text, 2);
+        Task_NextState0((Actor *)a0);
+        break;
+    case 1:
+        switch (a0->stateLevel1) {
+        case 0:
+        default:
+            if (a0->field_24 > D_80073454[a0->field_8] && w->field_4 != 0x1000) {
+                w->field_4 += 0x100;
+            }
+            if (w->field_4 == 0x1000) {
+                Task_NextState1((Actor *)a0);
+            }
+            break;
+        case 1:
+            args.text = (s32)D_80073D24[a0->field_8].name;
+            args.bigFont = 0;
+            args.color = 0;
+            args.x = D_8007346C[a0->field_8].x;
+            args.y = D_8007346C[a0->field_8].y;
+            args.charDelay = 8;
+            args.charAdvance = 0;
+            args.lineAdvance = 0;
+            Text_Open(&w->text[0], &args);
+            Task_NextState1((Actor *)a0);
+            break;
+        case 2:
+            v = D_80073CC0.field_2AC[a0->field_8].field_0;
+            if (v != 0) {
+                if (w->field_8 != 0) {
+                    w->field_8 -= 4;
+                } else {
+                    Text_OpenById(&w->text[1], D_80073484[v - 1], 0, D_8007348C[a0->field_8]);
+                }
+            } else if (w->field_8 != 12) {
+                w->field_8 += 4;
+                Text_Close(&w->text[1]);
+            }
+            break;
+        }
+        break;
+    case 2:
+        switch (a0->stateLevel1) {
+        case 0:
+        default:
+            switch (a0->stateLevel2) {
+            case 0:
+            default:
+                Text_CloseArray(w->text, 2);
+                Task_NextState2((Actor *)a0);
+                break;
+            case 1:
+                break;
+            }
+            break;
+        case 1:
+            Task_SetState01((Actor *)a0, 1, 1);
+            break;
+        }
+        break;
+    }
+}
 
 void func_8007100C(Actor *a0) {
     Text_CloseArray(((Stg30Work734F8 *)a0->work)->text, 2);
