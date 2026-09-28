@@ -675,7 +675,25 @@ s32 func_8006E588(Actor *a0) {
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006E60C);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006E6CC);
+s32 func_8006E6CC(void) {
+    u32 i = 0;
+    s32 r = 0;
+    Stg40B60Ent *e = D_80072B60->field_144;
+
+    for (; i < D_80072B60->field_16C; e++) {
+        Stg40B60 *b = D_80072B60;
+        i++;
+        if (b->field_4->field_18.u0.field_0 == e->u0.field_0) {
+            b->field_170 = e->field_4;
+            e->u0.pair.field_2 = -1;
+            e->u0.pair.field_0 = -1;
+            r = -1;
+            D_8005071C->field_2 = 2;
+            break;
+        }
+    }
+    return r;
+}
 
 void func_8006E764(Stg40E764 *a0, s32 a1, s32 a2) {
     if (a0->field_34 == 0) {
