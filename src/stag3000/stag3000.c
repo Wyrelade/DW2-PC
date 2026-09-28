@@ -1015,7 +1015,41 @@ void func_80071BDC(Actor *a0) {
     Task_DefaultDestroy(a0);
 }
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80071C14);
+void func_80071C14(Actor *a0) {
+    Stg30Work73718 *w = (Stg30Work73718 *)a0->work;
+    GfxPart *p;
+    s32 i;
+    s32 draw;
+
+    for (i = 0; i < 6; i++) {
+        draw = 1;
+        p = (GfxPart *)Cd_GetFileEntry(D_80073700[i]);
+        switch (i) {
+        case 0:
+        case 1:
+        case 2:
+            if (D_80073CC0.entries[i].field_19 == 0) {
+                draw = 0;
+                break;
+            }
+            if (D_80073CC0.field_34C[i] != 0) {
+                Gfx_HidePartsByMask((GfxPartMaskView *)p, 0);
+            } else {
+                Gfx_HidePartsByMask((GfxPartMaskView *)p, 0x10);
+            }
+            Gfx_SetPartsNumber(p, 1, 8, D_80073CC0.entries[i].field_28);
+            Gfx_SetPartsNumber(p, 4, 8, w->field_18[i]);
+            Gfx_SetPartsNumber(p, 8, 2, D_80073CC0.entries[i].field_25);
+            break;
+        case 4:
+            Gfx_SetPartsNumber(p, 1, 8, D_8005E620.field_8);
+            break;
+        }
+        if (draw) {
+            Gfx_DrawParts((EntA0 *)p);
+        }
+    }
+}
 
 void func_80071D70(Actor *a0, Stg30Init737A0 *args) {
     Stg30Work737A0 *w = (Stg30Work737A0 *)a0->work;
