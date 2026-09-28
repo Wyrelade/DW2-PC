@@ -18,7 +18,9 @@ void func_80063B28(Actor *a0) {
     Gfx_DrawTexModel(a0, 1);
 }
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80063B70);
+void func_80063B70(Actor *a0, s32 *args) {
+    ((Stg30WorkWord *)a0->work)->field_0 = args[0];
+}
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80063B80);
 
