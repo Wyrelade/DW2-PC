@@ -829,7 +829,97 @@ void func_800668D4(Actor *arg0) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_800669F4);
+void func_800669F4(Actor *arg0) {
+    Stg00ViewWork *w;
+    Actor *cam;
+    s32 i;
+
+    switch (arg0->stateLevel0) {
+    case 0:
+        ((Stg00ViewWork *)arg0->work)->field_0 = 2;
+        Gpu_AllocPacketBufs(0x25800);
+        func_80066828(arg0);
+        func_800668D4(arg0);
+        Task_NextState0(arg0);
+        break;
+    case 1:
+        w = (Stg00ViewWork *)arg0->work;
+        cam = (Actor *)func_80068930();
+        for (i = 0; i < D_8005F770.frameDelta; i++) {
+            if (D_8005F6F0[0].right) {
+                func_80068A44(cam, 0, 0x20, 0);
+            } else if (D_8005F6F0[0].left) {
+                func_80068A44(cam, 0, -0x20, 0);
+            }
+            if (D_8005F6F0[0].up) {
+                func_80068958(cam, 0, 0, -0x20);
+                func_8006899C(cam, 0, 0, -0x20);
+            } else if (D_8005F6F0[0].down) {
+                func_80068958(cam, 0, 0, 0x20);
+                func_8006899C(cam, 0, 0, 0x20);
+            }
+            if (D_8005F6F0[0].triangle) {
+                func_80068958(cam, 0, -0x20, 0);
+            } else if (D_8005F6F0[0].cross) {
+                func_80068958(cam, 0, 0x20, 0);
+            }
+            if (D_8005F6F0[0].r1) {
+                func_8006899C(cam, 0, -0x20, 0);
+            } else if (D_8005F6F0[0].l1) {
+                func_8006899C(cam, 0, 0x20, 0);
+            }
+        }
+        if (D_8005F708 > 0) {
+            if (++w->field_8 == 7) {
+                w->field_8 = 0;
+            }
+            switch (w->field_8) {
+            case 0:
+            default:
+                func_80068A00(cam, 0xA00, 0, -0x1400);
+                break;
+            case 1:
+                func_80068A00(cam, -0xA00, 0, -0x1400);
+                break;
+            case 2:
+                func_80068A00(cam, 0xA00, 0, 0);
+                break;
+            case 3:
+                func_80068A00(cam, 0xA00, 0, 0);
+                break;
+            case 4:
+                func_80068A00(cam, 0, 0, 0x2800);
+                break;
+            case 5:
+            case 6:
+                func_80068A00(cam, -0xA00, 0, 0);
+                break;
+            }
+        }
+        if (D_8005F720 > 0) {
+            if (w->field_0 != 3) {
+                w->field_0++;
+            } else {
+                w->field_0 = 0;
+            }
+            func_80066828(arg0);
+        }
+        if (D_8005F6F0[0].start > 0) {
+            func_800668D4(arg0);
+        }
+        if (D_8005F6F0[0].circle > 0) {
+            if (++w->field_C == 4) {
+                w->field_C = 0;
+            }
+        }
+        if (D_8005F714 > 0) {
+            D_8005F78C = 0x102;
+        }
+        break;
+    case 2:
+        break;
+    }
+}
 
 void func_80066D50(Actor *arg0) {
     EntA0 *e = Cd_GetFileEntry(0x1890000);
