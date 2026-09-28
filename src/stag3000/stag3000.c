@@ -65,7 +65,9 @@ s32 func_80065540(s32 c) {
     return c + 0x85;
 }
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80065584);
+void func_80065584(Actor *a0, s32 *args) {
+    ((Stg30WorkWord *)a0->work)->field_0 = args[0];
+}
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80065594);
 
