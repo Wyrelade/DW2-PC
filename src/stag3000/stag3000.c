@@ -568,7 +568,82 @@ s32 func_80068DA4(s32 idx, s32 i, Stg30ByteLists *p) {
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80068E34);
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_800692A4);
+s32 func_800692A4(s32 id, s32 kind, s32 def) {
+    s32 i;
+    s32 j;
+    s32 min;
+    s32 x;
+    s16 v;
+
+    switch (kind) {
+    case 0:
+        x = func_8001EF3C(id);
+        if (x == 2) goto r8;
+        if (x < 3) return def;
+        if (x == 6) goto r7;
+        if (x == 8) goto r9;
+        return def;
+    r8:
+        return 8;
+    r7:
+        return 7;
+    r9:
+        return 9;
+    case 1:
+        for (i = 0; i < 100; i++) {
+            x = (u16)((u16)Rand_Next() % 3) + 3;
+            if (D_80073CC0.entries[x].field_2E != 0) {
+                return x;
+            }
+        }
+        return def;
+    case 7:
+        for (i = 0; i < 100; i++) {
+            x = (u16)((u16)Rand_Next() % 3);
+            if (D_80073CC0.entries[x].field_2E != 0) {
+                return x;
+            }
+        }
+        return def;
+    case 3:
+        return 3;
+    case 2:
+        return 4;
+    case 4:
+        return 5;
+    case 5:
+        j = def;
+        min = 9999;
+        for (i = 3; i < 6; i++) {
+            v = D_80073CC0.entries[i].field_2E;
+            if (v != 0 && v < min) {
+                j = i;
+                min = v;
+            }
+        }
+        return j;
+    case 8:
+        j = 0;
+        min = 9999;
+        for (i = 0; i < 3; i++) {
+            v = D_80073CC0.entries[i].field_2E;
+            if (v != 0 && v < min) {
+                j = i;
+                min = v;
+            }
+        }
+        return j;
+    case 6:
+        for (i = 0; i < 100; i++) {
+            x = (u16)((u16)Rand_Next() % 3) + 3;
+            if (D_80073CC0.entries[x].field_19 != 0 && D_80073CC0.entries[x].field_2E == 0) {
+                return x;
+            }
+        }
+        return x;
+    }
+    return def;
+}
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80069594);
 
