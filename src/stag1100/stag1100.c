@@ -975,7 +975,69 @@ void func_80065A3C(Actor *arg0, Stg11MenuWork *arg1) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80065BA0);
+void func_80065BA0(Actor *arg0, Stg11MenuWork *arg1) {
+    s32 *slot = (s32 *)arg0->u34.children;
+    DigiRosterEntry *d;
+    u8 *src;
+    u8 *dst;
+    s32 i;
+
+    if (arg0->stateLevel2 == 0) {
+        func_800677AC(4, arg1->field_84);
+    }
+    if (func_800649F8(arg0, arg1) != 0) {
+        if (*slot != 0) {
+            Task_SetState0((Actor *)*slot, 2);
+        }
+        Text_PrintIdList((s32 *)arg1, (TextIdListEntry *)Cd_GetFileEntrySubPtr(0xD280006, arg1->field_78 - 1), 0);
+        func_800648B4(arg0, arg1);
+        arg1->field_8C = 0x1000;
+        return;
+    }
+    switch (arg0->stateLevel2) {
+    case 0:
+    default:
+        Text_CloseArray((s32 *)arg1, 0x1A);
+        Task_NextState2(arg0);
+        break;
+    case 1:
+        if (Math_RampToZero(arg0, &arg1->field_8C) == 0) {
+            Task_Create(0x605, slot, arg1->field_7E + 1);
+            D_80050780 = 0;
+            Task_NextState2(arg0);
+        }
+        break;
+    case 2:
+        if (*slot == 0) {
+            if (D_80050780 != 0) {
+                d = &D_80050720->elems[arg1->field_7E * 3];
+                for (i = 0; i < 3; i++) {
+                    *d = D_800684A8.field_4[i];
+                    if (d->state != 0) {
+                        d->state = i + 3;
+                    }
+                    d++;
+                }
+                src = D_800684A8.field_0->field_14;
+                dst = D_80050720->elems[arg1->field_7E + 6].name;
+                while (*src != 0xFF) {
+                    *dst++ = *src++;
+                }
+                *dst = 0xFF;
+                Task_SetState0(arg0, 3);
+            } else {
+                Task_NextState2(arg0);
+            }
+        }
+        break;
+    case 3:
+        if (Math_RampToOne(arg0, &arg1->field_8C) == 0) {
+            Text_PrintIdList((s32 *)arg1, (TextIdListEntry *)Cd_GetFileEntrySubPtr(0xD280006, arg1->field_78 - 1), 2);
+            Task_SetState1(arg0, 7);
+        }
+        break;
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80065E64);
 
