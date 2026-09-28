@@ -362,7 +362,20 @@ INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006BBD8);
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006CA3C);
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006CB28);
+s32 func_8006CB28(s32 idx) {
+    switch (D_80073CC0.field_2AC[idx].field_0) {
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    default:
+        func_8006BBD8(idx);
+        return 1;
+    case 5:
+        func_8006CA3C(idx);
+        return 1;
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006CB8C);
 
