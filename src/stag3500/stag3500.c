@@ -576,7 +576,21 @@ INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80067C74);
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80067E48);
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_800689FC);
+void func_800689FC(Actor *arg0) {
+    Stg35Work3 *w = (Stg35Work3 *)arg0->work;
+    s32 i;
+
+    for (i = 0; i < 3; i++) {
+        func_80066168(&w->load[i]);
+    }
+    for (i = 0; i < 7; i++) {
+        func_80065718(&w->text[i]);
+    }
+    for (i = 0; i < 10; i++) {
+        func_800658F4(&w->sprite[i]);
+    }
+    Task_DefaultDestroy(arg0);
+}
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80068AA0);
 
