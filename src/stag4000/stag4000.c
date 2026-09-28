@@ -1351,7 +1351,29 @@ s32 func_8006E2B8(Stg40Ent48 *a, Stg40Ent48 *b) {
     return dx < 2 && dy < 2;
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006E330);
+s32 func_8006E330(void) {
+    Stg40List *l = &D_8005071C->field_1018;
+    Stg40Ent48 *e = D_8005071C->field_18;
+    s32 i;
+    s32 r;
+
+    l->field_20 = 0;
+    for (i = 0; i < D_8005071C->field_C; i++, e++) {
+        if ((e->field_0 & 0x8002) == 0x8002 && e->field_14->stateLevel1 != 4) {
+            r = func_8006E2B8(e, D_80072B60->field_4);
+            if (r == 1) {
+                l->field_0[l->field_20++] = e;
+                e->field_0 |= 0x100;
+                Task_SetState1(e->field_14, 3);
+                e->field_0 |= (l->field_20 == r) ? 0x800 : 0;
+            }
+        }
+    }
+    if (l->field_20 != 0) {
+        D_80072B60->field_4->field_0 |= 0x100;
+    }
+    return l->field_20;
+}
 
 s32 func_8006E490(s32 dx, s32 dy) {
     s32 idx = 0;
