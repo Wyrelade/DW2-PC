@@ -4143,5 +4143,12 @@
     "passes": [
       "taken_fill"
     ]
+  },
+  "stag2000:func_80067568": {
+    "passes": [
+      "web_realloc",
+      "taken_fill",
+      "selfmove_nop"
+    ]
   }
 }
