@@ -57,7 +57,12 @@ INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80065960);
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80065AF4);
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80065D1C);
+void func_80065D1C(void) {
+    Stg20GameState *g = (Stg20GameState *)&D_8005E620;
+
+    g->field_26 = g->field_24 = D_8006FCCC[g->field_2C[1] - 1];
+    g->field_2A = g->field_28 = D_8006FD28[g->field_2C[3] - 0x35];
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80065D74);
 
