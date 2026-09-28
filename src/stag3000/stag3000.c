@@ -225,7 +225,9 @@ s32 func_8006E634(void) {
     return i - 1;
 }
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006E674);
+s32 func_8006E674(s32 i) {
+    return D_80073A20[i];
+}
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006E690);
 
