@@ -1239,7 +1239,168 @@ s32 func_8006A118(void) {
     return D_8005D5A0.field_103D - 2;
 }
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006A140);
+s32 func_8006A140(s32 attacker, s32 target, s32 tech, s16 *p4, s16 *p5) {
+    s32 revived;
+    s32 flags;
+    u32 already;
+    s32 cure;
+    s32 i;
+    s32 old;
+    s32 mask;
+    s32 hit;
+
+    revived = 0;
+    flags = func_8001F068(tech);
+    already = D_80073CC0.field_31C[target] & 1;
+    if (flags & 1) {
+        if ((u16)((u16)Rand_Next() % 3) == 0) {
+            D_80073CC0.field_31C[target] |= 1;
+        }
+    }
+    if (flags & 2) {
+        if ((u16)((u16)Rand_Next() % 3) != 0) {
+            D_80073CC0.field_31C[target] |= 1;
+        }
+    }
+    if (flags & 4) {
+        if (D_80073CC0.field_2AC[attacker].field_0 == 2) {
+            D_80073CC0.field_31C[target] |= 1;
+        }
+    }
+    if (!already) {
+        if (D_80073CC0.field_31C[target] & 1) {
+            *p5 = 1;
+        }
+    }
+    already = (u32)D_80073CC0.field_31C[target] >> 1;
+    already &= 1;
+    if (flags & 0x10) {
+        if ((u16)((u16)Rand_Next() % 3) == 0) {
+            D_80073CC0.field_31C[target] |= 2;
+        }
+    }
+    if (flags & 0x20) {
+        if ((u16)((u16)Rand_Next() % 3) != 0) {
+            D_80073CC0.field_31C[target] |= 2;
+        }
+    }
+    if (flags & 0x40) {
+        if (D_80073CC0.field_2AC[attacker].field_0 == 2) {
+            D_80073CC0.field_31C[target] |= 2;
+        }
+    }
+    if (flags & 0x80) {
+        if (D_80073CC0.field_2AC[attacker].field_0 == 3) {
+            D_80073CC0.field_31C[target] |= 2;
+        }
+    }
+    if (!already) {
+        if (D_80073CC0.field_31C[target] & 2) {
+            *p5 = 3;
+        }
+    }
+    if (D_80073CC0.field_3DC == 0 || target < 3) {
+        already = (u32)D_80073CC0.field_31C[target] >> 2;
+    already &= 1;
+        if (flags & 0x100) {
+            if ((u16)((u16)Rand_Next() % 3) == 0) {
+                D_80073CC0.field_31C[target] |= 4;
+            }
+        }
+        if (flags & 0x200) {
+            if ((u16)((u16)Rand_Next() % 3) != 0) {
+                D_80073CC0.field_31C[target] |= 4;
+            }
+        }
+        if (flags & 0x400) {
+            if (D_80073CC0.field_2AC[attacker].field_0 == 2) {
+                D_80073CC0.field_31C[target] |= 4;
+            }
+        }
+        if (!already) {
+            if (D_80073CC0.field_31C[target] & 4) {
+                *p5 = 5;
+            }
+        }
+    }
+    if (flags & 0x1000000) {
+        if (D_80073CC0.entries[target].field_2E == 0) {
+            D_80073CC0.field_31C[target] |= 0x8000;
+            D_80073CC0.entries[target].field_2E = 1;
+            D_80073CC0.field_34F[target] |= 0xA;
+            *p4 = 3;
+            *p5 = 0x119;
+        }
+    }
+    if (flags & 0x1000) {
+        D_80073CC0.field_31C[target] |= 8;
+        *p5 = 0xC;
+    }
+    if (flags & 0x4000) {
+        D_80073CC0.field_31C[target] |= 0x20;
+    }
+    if (flags & 0x8000) {
+        D_80073CC0.field_31C[target] |= 0x40;
+        *p5 = 0x10B;
+    }
+    if (flags & 0x10000) {
+        D_80073CC0.field_31C[target] |= 0x80;
+        *p5 = 0x1B;
+    }
+    if (flags & 0x20000) {
+        D_80073CC0.field_31C[target] |= 0x800;
+        *p5 = 0x103;
+    }
+    if (flags & 0x40000) {
+        D_80073CC0.field_31C[target] |= 0x400;
+        *p5 = 0x101;
+    }
+    if (flags & 0x80000) {
+        D_80073CC0.field_31C[target] |= 0x100;
+        *p5 = 0x1D;
+    }
+    if (flags & 0x100000) {
+        D_80073CC0.field_31C[target] |= 0x200;
+        *p5 = 0x1F;
+    }
+    if (flags & 0x200000) {
+        D_80073CC0.field_31C[target] |= 0x1000;
+        *p5 = 0x105;
+    }
+    if (flags & 0x400000) {
+        D_80073CC0.field_31C[target] |= 0x2000;
+        *p5 = 0x107;
+    }
+    if (flags & 0x800000) {
+        D_80073CC0.field_31C[target] |= 0x4000;
+        *p5 = 0x109;
+    }
+    if (flags & 0x2000000) {
+        D_80073CC0.field_31C[target] |= 0x10000;
+        *p5 = 0x10C;
+    }
+    if (!(D_80073CC0.field_34F[target] & 4)) {
+        flags = func_8001F094(tech);
+        if (flags & 0x20000) {
+            revived = 1;
+            D_80073CC0.entries[target].field_2E = D_80073CC0.entries[target].field_2C;
+            *p4 = 3;
+            *p5 = 0x18;
+        }
+        for (cure = 1, i = 0; i < 17; cure <<= 1, i++) {
+            old = D_80073CC0.field_31C[target];
+            mask = D_80073210[i];
+            hit = old & mask;
+            if (flags & cure) {
+                D_80073CC0.field_31C[target] = old & ~mask;
+                if (hit) {
+                    *p5 = D_80073254[i];
+                }
+            }
+        }
+    }
+    return revived;
+}
 
 void func_8006A968(s16 *max, s16 *b, s16 *c) {
     s16 half = *max / 2;
