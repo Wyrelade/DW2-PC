@@ -54,8 +54,8 @@ typedef struct {
 /* Work of task D_80073040 (func_80063C44, func_80063B80, func_8006436C): two
    (file, lba) lists kept sorted by lba, plus a list of files to free. */
 typedef struct {
-    /* 0x000 */ s32 field_0;
-    u8 _pad004[0x04];
+    /* 0x000 */ s16 *field_0;  /* s16 command script (func_80063C44) */
+    /* 0x004 */ s32 field_4;
     /* 0x008 */ s32 files[60];
     /* 0x0F8 */ s32 lbas[60];
     /* 0x1E8 */ s32 field_1E8[30];
@@ -63,7 +63,12 @@ typedef struct {
     /* 0x2D8 */ s32 count;
     /* 0x2DC */ s32 field_2DC;
     /* 0x2E0 */ s32 field_2E0;
-    u8 _pad2E4[0x40];
+    u8 _pad2E4[0x04];
+    /* 0x2E8 */ s32 field_2E8;
+    /* 0x2EC */ s32 field_2EC[6];
+    /* 0x304 */ s32 field_304[6];
+    /* 0x31C */ s32 field_31C;
+    /* 0x320 */ s32 field_320;
 } Stg30Work73040; /* size 0x324 */
 
 /* Stack block passed to GsSetRefView2. */
@@ -187,14 +192,15 @@ typedef struct {
 /* Work of task D_800737C8 (func_800728A0, func_80072F84). */
 typedef struct {
     /* 0x00 */ s32 index;
-    u8 _pad04[0x0C];
+    /* 0x04 */ s32 text[2];
+    /* 0x0C */ Actor *field_C;
     /* 0x10 */ s32 field_10;
 } Stg30Work737C8;
 
 /* 0x5C-stride entries at the head of D_80073CC0 (index = Stg30Work737C8.index). */
 typedef struct {
     /* 0x00 */ s32 field_0;
-    u8 _pad04[0x04];
+    /* 0x04 */ s32 field_4;
     /* 0x08 */ s32 field_8;
     /* 0x0C */ s32 field_C;
     /* 0x10 */ s32 field_10;
@@ -220,7 +226,7 @@ typedef struct {
 /* 0x12-byte record of D_80073CC0.field_240 (arg2 of func_80068DA4): byte lists
    indexed by the same slot i at 0x02, 0x05, 0x09 and 0x0D. */
 typedef struct {
-    u8 _pad00[0x02];
+    /* 0x00 */ s16 field_0;
     /* 0x02 */ u8 field_2[3];
     /* 0x05 */ u8 field_5[4];
     /* 0x09 */ u8 field_9[4];
@@ -236,7 +242,8 @@ typedef struct {
     /* 0x08 */ s16 field_8;
     u8 _pad0A[0x02];
     /* 0x0C */ s16 field_C;  /* hp delta of the last hit */
-    u8 _pad0E[0x02];
+    /* 0x0E */ u8 field_E;
+    /* 0x0F */ u8 field_F;
 } Stg30Sub10;
 
 /* D_80073CC0: overlay state block (func_800701FC clears 0x3E0 bytes from here). */
@@ -264,20 +271,29 @@ typedef struct {
     /* 0x3AC */ s32 field_3AC;
     /* 0x3B0 */ s16 field_3B0;
     /* 0x3B2 */ s16 field_3B2;
-    u8 _pad3B4[0x1C];
+    /* 0x3B4 */ s16 field_3B4;
+    u8 _pad3B6[0x02];
+    /* 0x3B8 */ s32 field_3B8[6];
     /* 0x3D0 */ s32 field_3D0;
     /* 0x3D4 */ s32 field_3D4;
-    u8 _pad3D8[0x04];
+    /* 0x3D8 */ s32 field_3D8;
     /* 0x3DC */ s32 field_3DC;
 } Stg30State; /* size 0x3E0 */
 
 /* arg0 of func_800675CC / func_80067624 / func_8006754C: a pointer at 0x34 to a
    six-actor list at 0x2C. */
 typedef struct {
-    u8 _pad00[0x24];
+    /* 0x00 */ s32 field_0;
+    u8 _pad04[0x08];
+    /* 0x0C */ s32 field_C;
+    /* 0x10 */ s32 field_10;
+    /* 0x14 */ s32 field_14;
+    u8 _pad18[0x0C];
     /* 0x24 */ s32 field_24;
-    u8 _pad28[0x04];
+    /* 0x28 */ s32 field_28;
     /* 0x2C */ Actor *actors[6];
+    u8 _pad44[0x04];
+    /* 0x48 */ s32 field_48;
 } Stg30ActorList;
 
 /* Same object as an Actor (state words at 0x18/0x1C). */
@@ -363,12 +379,19 @@ typedef struct {
 } Stg30XY;
 
 
-/* Struct passed as arg0 of func_8006767C: 12 byte ids at 0x22. */
+/* Struct passed as arg0 of func_8006767C: 12 byte ids at 0x22 (a roster entry:
+   func_800676F4 also reads digiId, level, the 24 bytes at 0x2E and the byte at 0x46). */
 typedef struct {
-    u8 _pad00[0x1A];
+    u8 _pad00[0x01];
+    /* 0x01 */ u8 digiId;
+    u8 _pad02[0x0B];
+    /* 0x0D */ u8 level;
+    u8 _pad0E[0x0C];
     /* 0x1A */ s16 field_1A;
     u8 _pad1C[0x06];
     /* 0x22 */ u8 ids[12];
+    /* 0x2E */ u8 field_2E[0x18];
+    /* 0x46 */ u8 field_46;
 } Stg30IdSet;
 
 /* Main-exe global read at 0x103D by func_8006A118. */
@@ -759,5 +782,106 @@ typedef struct {
 
 extern u8 D_8005E634[];
 extern Halves D_800633E8;
+
+/* D_8005E620 viewed with the words func_8007292C reads (0x30 map id, 0x4A, 0x61). */
+typedef struct {
+    u8 _pad00[0x30];
+    /* 0x30 */ u16 field_30;
+    u8 _pad32[0x18];
+    /* 0x4A */ u16 field_4A;
+    u8 _pad4C[0x15];
+    /* 0x61 */ u8 field_61;
+    u8 _pad62[0x82];
+    /* 0xE4 */ DigiRosterEntry elems[0x24];
+} Stg30GameRoster;
+
+extern Halves D_800737B8[];
+extern u8 D_800737C0[];
+extern u16 D_8005E650;  /* D_8005E620 halfword at 0x30 as a scalar reloc (map id) */
+extern Blk5071C *D_8005071C;
+extern u8 *Digi_GetDefaultName(s32);
+extern void Digi_SortRoster(void);
+extern void Flag_Set(s32, s32);
+extern TaskEntry *Task_FindNext(void);
+extern void func_800728D8(Actor *a0, s32 a1);
+extern void Task_SetState2(Actor *, u32);
+extern s32 D_80073CC4;  /* D_80073CC0.entries[0].field_4 as a scalar reloc */
+extern void func_800643E0(s32 sel, s32 from, s32 to);
+extern void func_80064480(void);
+extern s32 D_8007409C;
+extern s16 D_80073188[][3];
+extern s16 D_8005E5E0;  /* D_8005D5A0.field_1040 as a scalar reloc */
+extern s32 D_8005F78C;  /* D_8005F770.nextGameMode as a scalar reloc */
+extern s32 D_8005F790;  /* D_8005F770.prevGameMode as a scalar reloc */
+extern s32 Anim_GetModelAnimFile(s32 arg0, s32 arg1);
+extern void Cd_QueueFile(s32);
+extern s32 Cd_GetFileState(s32 arg0);
+extern void func_80011644(void);
+extern s32 func_8006767C(Stg30IdSet *a0, s16 *a1, u8 id);
+extern s32 func_800676C4(s32 a0, u8 a1);
+extern void func_80063B80(Actor *a0, s32 file, s32 lba);
+extern s32 Item_GetBagCapacity(void);
+extern void Item_SortList(void);
+extern s32 func_8006D4D8(s32 target, s32 tech, s16 *p3, s16 *p4);
+
+/* Work of the battle script runner (func_8006CB8C): program counter into D_80073890. */
+typedef struct {
+    /* 0x00 */ s16 *pc;
+} Stg30WorkPc;
+
+/* Child-task slots at Actor.u34 of the script runner (Task_Create completion words). */
+typedef struct {
+    /* 0x00 */ s32 field_0;
+    /* 0x04 */ s32 field_4;
+    /* 0x08 */ s32 field_8;
+    /* 0x0C */ s32 field_C;
+    /* 0x10 */ Actor *field_10;
+    /* 0x14 */ Actor *field_14;
+} Stg30Slots;
+
+extern void func_80067530(Actor *a0, s32 a1, s32 a2);
+extern s32 *func_8001EFF0(s32 id);
+extern void Task_SetState4(Actor *, u32);
+
+/* Work of the battle main task D_800731A0 (update func_80067F2C). */
+typedef struct {
+    /* 0x00 */ s32 field_0;
+    /* 0x04 */ s32 field_4;
+    /* 0x08 */ s32 field_8;
+} Stg30Work731A0; /* size 0xC */
+
+extern void func_800701FC(void);
+extern void Snd_SetSlotContent(s32 idx, s32 v);
+extern s32 Snd_AnySlotLoading(void);
+extern void Cd_FreeUnlockedFiles(void);
+extern void Gpu_AllocPacketBufs(s32 a0);
+extern void Gfx_InitLights(void);
+extern void Sys_SetFrameRate30(void);
+extern void Gpu_SetBgClearColor(s32 a0, s32 a1, s32 a2);
+extern void Gpu_ClearScreens(void);
+extern void Gfx_FadeInFromBlack(s32 arg0);
+extern void func_8001DDA8(s32 a0, s32 a1, DigiRosterEntry *e, Out1DDA8 *o);
+extern void func_8001DB68(void *a0, Out1DB68 *out);
+extern void func_80067EC4(void);
+extern void Task_SetState3(Actor *arg0, u32 arg1);
+extern void func_80069594(void);
+extern void func_800696E8(void);
+extern s32 func_80069A44(s32 idx);
+extern void func_8006E690(void);
+extern void func_80069DE8(void);
+extern s32 func_8006CB28(s32 idx);
+extern void func_8006E770(void);
+extern void Task_Destroy(s32 *arg0);
+extern void func_80067DB4(Stg30ListOwner *a0);
+extern void func_80067624(Stg30ListOwner *a0);
+extern void func_800675CC(Stg30ListOwner *a0);
+extern void func_8006DB90(void);
+extern void func_800676F4(Actor *a0);
+extern s32 func_8001F180(s32 id);
+extern s32 func_8006AAA8(s32 attacker, s32 target, s32 tech, s16 *p4, s16 *p5);
+extern s32 func_8006B950(s32 idx, s16 *tgt, s32 n, s32 id);
+extern s16 D_80074070;
+extern s16 D_80074074;
+extern s32 D_80073278;
 
 #endif

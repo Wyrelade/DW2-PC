@@ -196,6 +196,9 @@ typedef struct {
     /* 0x7C */ s32 tz;
     u8 _pad80[0x04];
     /* 0x84 */ s16 rot[3];
+    u8 _pad8A[0x02];
+    /* 0x8C */ s32 timer;
+    /* 0x90 */ s32 speed;
 } Stg20CamWork;
 
 extern void RotMatrixYXZ(s16 *, Mat1F668 *);
@@ -249,7 +252,7 @@ typedef struct {
 
 typedef struct {
     /* 0x00 */ s32 field_0;
-    u8 _pad04[0x04];
+    /* 0x04 */ s32 field_4;
     /* 0x08 */ s32 field_8;
     /* 0x0C */ s32 field_C;
     /* 0x10 */ s32 field_10;
@@ -257,15 +260,19 @@ typedef struct {
     /* 0x18 */ s32 field_18;
     /* 0x1C */ s32 field_1C;
     /* 0x20 */ s32 field_20;
-    u8 _pad24[0x10];
+    /* 0x24 */ s32 field_24;
+    /* 0x28 */ s32 field_28;
+    /* 0x2C */ s32 field_2C;
+    /* 0x30 */ s32 field_30;
     /* 0x34 */ s32 field_34;
     /* 0x38 */ s32 field_38;
     u8 _pad3C[0x04];
     /* 0x40 */ s32 field_40;
-    u8 _pad44[0x04];
+    /* 0x44 */ s32 field_44;
     /* 0x48 */ s32 field_48;
-    u8 _pad4C[0x04];
+    /* 0x4C */ s32 field_4C;
     /* 0x50 */ s32 field_50;
+    /* 0x54 */ s32 field_54;
 } Stg20MenuState;
 
 /* 0x18-byte record of file 0xD28xxxx (func_8006F360). */
@@ -317,13 +324,15 @@ typedef struct {
 /* Map file 0x309xxxx header; offsets relocated by the file base on first use (func_80066714). */
 typedef struct {
     /* 0x00 */ s32 loaded;
-    u8 _pad04[0x04];
+    /* 0x04 */ s32 field_4;
     /* 0x08 */ s32 field_8;
     /* 0x0C */ s32 field_C;
     /* 0x10 */ u8 *bits;
-    u8 _pad14[0x04];
+    /* 0x14 */ s16 field_14;
+    /* 0x16 */ s16 field_16;
     /* 0x18 */ s32 field_18;
     /* 0x1C */ s32 field_1C;
+    /* 0x20 */ s32 field_20;
 } Stg20MapFile;
 
 /* Work of task 0x30D viewed with the 14-byte name at 0x08 (func_80068DD8). */
@@ -469,11 +478,11 @@ typedef struct {
 
 /* Item list work (func_8006D7DC). */
 typedef struct {
-    u8 _pad00[0x1C];
+    /* 0x00 */ s32 hdr[7];
     /* 0x1C */ s32 descText;
     /* 0x20 */ s32 texts[10];
     /* 0x48 */ s32 field_48;
-    u8 _pad4C[0x04];
+    /* 0x4C */ s32 field_4C;
     /* 0x50 */ s32 field_50;
     /* 0x54 */ s32 field_54;
     /* 0x58 */ s32 field_58;
@@ -528,7 +537,7 @@ typedef struct {
     /* 0x64 */ u8 names[50][25];
 } Stg20ShopList;
 typedef struct {
-    u8 _pad00[0x10];
+    /* 0x00 */ s32 hdr[4];
     /* 0x10 */ s32 descText;
     /* 0x14 */ s32 text14;
     /* 0x18 */ s32 text18;
@@ -556,6 +565,8 @@ extern void func_80064008(Actor *a);
 typedef struct {
     u8 _pad00[0x04];
     /* 0x04 */ TaskEntry *menu;
+    /* 0x08 */ s32 timer;
+    /* 0x0C */ s32 field_C;
 } Stg20CtrlWork;
 extern s32 func_8006C14C(u8 *s, s32 c);
 extern s32 func_8006C18C(s32 id);
@@ -746,5 +757,175 @@ extern u8 D_8005E632;  /* D_8005E620 byte 0x12 as a scalar reloc */
 extern s32 D_8005F790; /* D_8005F770.prevGameMode as a scalar reloc */
 extern s32 Item_GetBagCapacity(void);
 extern s32 func_80066A4C(s32 id);
+
+/* ---- added by p36 agent e ---- */
+extern void GsInitCoordinate2(Coord1F668 *, Coord1F668 *);
+extern void Gfx_FadeOutToWhite(s32);
+extern void Gfx_FadeInFromWhite(s32);
+extern s32 D_800709EC[];
+
+extern void Digi_AddNew(s32);
+extern u16 D_8005E66E; /* D_8005E620.field_66[4] as a scalar reloc */
+extern u8 D_8005E631;  /* D_8005E620 byte 0x11 as a scalar reloc */
+
+
+/* D_800709B0 viewed from its field_8 (func_8006CB58 addresses D_800709B0.field_54 as 0x4C from it). */
+typedef struct {
+    /* 0x00 */ s32 field_0;
+    u8 _pad04[0x48];
+    /* 0x4C */ s32 field_4C;
+} Stg20MenuSub;
+extern Stg20MenuSub D_800709B8;
+extern s32 D_8005F70C; /* D_8005F6F0[0].triangle as a scalar reloc */
+extern void Item_RemoveFromBag(s32 i);
+
+/* Digimon info page work: 13 texts and the roster entry shown (func_80069068). */
+typedef struct {
+    /* 0x00 */ s32 texts[13];
+    u8 _pad34[0x28];
+    /* 0x5C */ DigiRosterEntry *digi;
+} Stg20InfoWork;
+
+extern Stg20Cell D_80070040[13];
+extern u8 D_80070074[4][4];
+extern s32 D_800709D4;
+extern s32 D_800709D8;
+extern s32 D_800709DC;
+extern s32 D_800709E4;
+extern s32 func_8001D980(s32);
+extern s32 func_8001DA80(s32 id, s32 val);
+
+extern void Task_NextState3(Actor *);
+extern void Task_NextState4(Actor *);
+extern void Task_SetState2(Actor *, u32);
+extern void Task_SetState3(Actor *, u32);
+extern void Snd_StopById(s32);
+extern u8 func_8001D9A8(s32);
+
+/* Roster entry viewed with signed HP/MP words and the byte at 0x46 (func_800650BC). */
+typedef struct {
+    /* 0x00 */ u8 state;
+    /* 0x01 */ u8 digiId;
+    u8 _pad02[0x12];
+    /* 0x14 */ s16 maxHp;
+    /* 0x16 */ s16 hp;
+    /* 0x18 */ s16 maxMp;
+    /* 0x1A */ s16 mp;
+    u8 _pad1C[0x2A];
+    /* 0x46 */ u8 field_46;
+    u8 _pad47[0x15];
+} Stg20DigiBoost; /* size 0x5C */
+
+extern void Gpu_AllocPacketBufs(s32 a0);
+extern void Sys_SetFrameRate30(void);
+extern void Gpu_InitDoubleBuffer(s32 w, s32 h, s32 mode, s32 inter);
+extern void Gpu_SetBgClearColor(s32 a0, s32 a1, s32 a2);
+extern void Gpu_ClearScreens(void);
+extern void Gfx_FadeInFromBlack(s32 arg0);
+extern void Gfx_FadeSetBlack(void);
+extern void Gfx_InitLights(void);
+extern void func_8001E28C(s32 arg0);
+extern s32 func_8001E480(s32 id);
+extern Blk12 *func_8001E5E8(s32 id);
+extern s16 func_8001E634(s32 id);
+extern s16 func_8001E658(s32 id);
+extern s32 Flag_NextPassingEntry(void);
+extern void Snd_UnloadSlot(s32 idx);
+extern void Snd_SetSlotContent(s32 idx, s32 v);
+extern void Mem_Zero(void *a0, s32 a1);
+extern s32 Snd_AnySlotLoading(void);
+extern s32 D_80050764;
+extern s32 D_8005F700; /* D_8005F6F0[0].circle as a scalar reloc */
+
+/* Work of the stage main task (func_80065FB8). */
+typedef struct {
+    /* 0x00 */ s32 field_0;
+    /* 0x04 */ s32 bgmOn;
+    /* 0x08 */ s32 field_8;
+    /* 0x0C */ s32 field_C;
+} Stg20MainWork;
+
+/* 4-byte start position record at Stg20MapFile.field_8 (func_80065FB8). */
+typedef struct {
+    /* 0x00 */ u8 x;
+    /* 0x01 */ u8 y;
+    /* 0x02 */ u16 dir;
+} Stg20Start;
+
+/* Byte pair of the 0xC-byte NPC block (func_80065FB8). */
+typedef struct {
+    /* 0x00 */ u8 x;
+    /* 0x01 */ u8 y;
+} Stg20BytePair;
+
+extern void func_80067604(Actor *a, s32 doX, s32 doZ);
+extern void func_800676A8(Actor *a, s32 i);
+extern s32 func_80067568(Actor *a);
+extern s32 func_80067770(Actor *a, s32 dir);
+extern void func_800677C8(Actor *a, Stg20Marks *m, s32 dir, s32 timer);
+extern void func_800678A8(Actor *a, Stg20Marks *m);
+extern void func_8006AA0C(Actor *a, s32 anim);
+extern void func_8006AB0C(Actor *a);
+extern s32 func_8006AD14(Actor *a);
+extern void func_8006AD6C(Actor *a, s32 i);
+
+extern s32 Flag_SelectBranch(s32 arg0);
+extern void func_8001C038(void *arg0, s32 arg1);
+extern s32 Text_IsFinished(s32 id);
+extern s32 func_8001E5C0(void);
+extern void Actor_StopAxisMotion(Actor *a, s32 axis);
+extern s32 func_80020D54(Actor *a, s32 i);
+
+/* Work of the map walker/NPC model task (func_8006ADF8). */
+typedef struct {
+    /* 0x00 */ s32 field_0;
+    /* 0x04 */ Stg20Cell blk[6];
+    /* 0x1C */ s32 field_1C;
+    /* 0x20 */ s32 modelId;
+    /* 0x24 */ s32 input;
+    /* 0x28 */ s32 held;
+    /* 0x2C */ s32 anim;
+    /* 0x30 */ s32 dir;
+    /* 0x34 */ Stg20Marks marks;
+    /* 0x5C */ s32 wait;
+    /* 0x60 */ s32 counter;
+    /* 0x64 */ s32 visible;
+    /* 0x68 */ Actor *target;
+    /* 0x6C */ s32 text;
+    /* 0x70 */ s32 timer;
+} Stg20NpcWork;
+
+extern s32 D_8005F704; /* D_8005F6F0[0].cross as a scalar reloc */
+extern s32 D_80070624[10];
+extern s32 D_8007064C[10];
+
+extern s32 func_8001F0C0(s32 id);
+extern s32 func_8001EF64(s32 id);
+extern s32 D_800709FC;
+
+/* Roster entry as the jogress code builds and reads it (func_80064008). */
+typedef struct {
+    /* 0x00 */ u8 state;
+    /* 0x01 */ u8 digiId;
+    u8 _pad02[0x0B];
+    /* 0x0D */ u8 level;
+    /* 0x0E */ u8 field_E;
+    /* 0x0F */ u8 maxLevel;
+    /* 0x10 */ s32 exp;
+    /* 0x14 */ s16 maxHp;
+    /* 0x16 */ s16 hp;
+    /* 0x18 */ s16 maxMp;
+    /* 0x1A */ s16 mp;
+    /* 0x1C */ s16 field_1C;
+    /* 0x1E */ s16 field_1E;
+    /* 0x20 */ s16 field_20;
+    /* 0x22 */ u8 skills[12];
+    /* 0x2E */ u8 learned[0x19];
+    /* 0x47 */ u8 parent0;
+    /* 0x48 */ u8 parent1;
+    u8 _pad49[0x13];
+} Stg20Digi; /* size 0x5C */
+
+extern void func_80068DD8(s32 text, s32 digi);
 
 #endif
