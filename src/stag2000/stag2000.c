@@ -438,7 +438,28 @@ s32 func_80068E6C(void) {
     return 0;
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80068EB0);
+void func_80068EB0(Actor *a) {
+    s32 *w = (s32 *)a->work;
+
+    switch (a->stateLevel0) {
+    case 0:
+        Mem_FillWordsNeg1(w, 2);
+        if (D_800709D0 == 0) {
+            Text_OpenById(w, 0x102, 0, D_8007001C[0]);
+        } else {
+            Text_OpenById(w, 0x103, 0, D_8007001C[1]);
+            Text_OpenById(&w[1], 0x104, 0, D_8007001C[2]);
+        }
+        Task_NextState0(a);
+        break;
+    case 1:
+        break;
+    case 2:
+        Text_CloseArray(w, 2);
+        Task_NextState0(a);
+        break;
+    }
+}
 
 void func_80068FB8(void) {
     GfxPart *p = (GfxPart *)Cd_GetFileEntry(0xD120001);
