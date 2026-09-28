@@ -72,7 +72,16 @@ INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80066714);
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_800667AC);
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80066A4C);
+s32 func_80066A4C(s32 id) {
+    s32 i;
+
+    for (i = 0; i < 0x24; i++) {
+        if (D_8005E620.elems[i].state >= 2 && D_8005E620.elems[i].digiId == id) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 void func_80066A9C(s32 d) {
     GameState *g = &D_8005E620;
