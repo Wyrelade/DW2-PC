@@ -669,7 +669,18 @@ void func_80070A7C(void) {
     *q = -2;
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80070AD0);
+s16 *func_80070AD0(s16 v) {
+    Stg40FFC *f = &D_8005071C->field_FFC;
+    s16 *p = f->field_0;
+
+    while (*p != -2) {
+        if (*p == v) {
+            return p;
+        }
+        p++;
+    }
+    return NULL;
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80070B2C);
 
