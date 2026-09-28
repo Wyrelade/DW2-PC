@@ -532,7 +532,23 @@ void func_80068FB8(void) {
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80069068);
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006964C);
+void func_8006964C(Actor *a) {
+    Stg20StatusWork *w = (Stg20StatusWork *)a->work;
+    GfxPart *p = (GfxPart *)Cd_GetFileEntry(0xD120008);
+
+    Gfx_SetPartsNumber(p, 2, 3, w->digi->field_14);
+    Gfx_SetPartsNumber(p, 4, 3, w->digi->field_16);
+    Gfx_SetPartsNumber(p, 8, 3, w->digi->field_18);
+    Gfx_SetPartsNumber(p, 0x10, 3, w->digi->field_1A);
+    Gfx_SetPartsNumber(p, 0x20, 2, w->digi->level);
+    Gfx_SetPartsNumber(p, 0x40, 3, w->digi->field_1C);
+    Gfx_SetPartsNumber(p, 0x80, 3, w->digi->field_1E);
+    Gfx_SetPartsNumber(p, 0x100, 3, w->digi->field_20);
+    Gfx_SetPartsNumber(p, 0x200, 8, w->digi->exp);
+    Gfx_SetPartsNumber(p, 0x400, 8, Digi_GetExpToNextLevel(w->digi->level, w->digi->maxLevel, w->digi->exp));
+    Gfx_SetPartsNumber(p, 0x800, 2, w->digi->field_E);
+    Gfx_DrawParts((s32)p);
+}
 
 void func_800697AC(Actor *a) {
     Stg20SkillWork *w = (Stg20SkillWork *)a->work;
