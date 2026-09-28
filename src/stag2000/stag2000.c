@@ -195,7 +195,482 @@ void func_80063E38(Actor *a) {
     D_8005F79C = (s32)p;
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80064008);
+void func_80064008(Actor *a) {
+    Stg20CtrlWork *w = (Stg20CtrlWork *)a->work;
+    s32 *slot = (s32 *)a->u34.children;
+    s32 buf[9];
+    Stg20WarpFx args;
+    Stg20Digi nd;
+    Stg20Digi *p;
+    Stg20Digi *q;
+    s32 t;
+    s32 i;
+    s32 ok;
+    s32 v;
+    s32 hi;
+    s32 lo;
+    s32 best;
+    s32 bestv;
+    s32 n;
+    s32 s;
+    u8 ml;
+    s32 j;
+    s32 k;
+    s32 f;
+
+    D_800709EC[0] = 1;
+    switch (a->stateLevel2) {
+    case 0:
+    default:
+        switch (a->stateLevel3) {
+        case 0:
+        default:
+            if (slot[1] != 0) {
+                Task_SetState0((Actor *)slot[1], 2);
+            }
+            D_800709B0.field_10 = 0;
+            Task_Create(0x30C, &slot[3], 0);
+            func_80068D84(0x117);
+            D_800709B0.field_20 = 1;
+            Task_Create(0x30E, &slot[4], 0);
+            Task_NextState3(a);
+        case 1:
+            if (((Actor *)slot[3])->stateLevel0 == 2) {
+                Task_SetState0((Actor *)slot[4], 2);
+                if (D_800709B8.field_0 != 0) {
+                    Task_SetState1(a, 0);
+                } else {
+                    Task_NextState2(a);
+                }
+            }
+            break;
+        }
+        break;
+    case 1:
+        switch (a->stateLevel3) {
+        case 0:
+        default:
+            D_800709B0.field_40 = D_8005E620.elems[D_800709B0.field_1C].digiId;
+            D_800709B0.field_44 = 0;
+            D_800709B0.field_48 = 0;
+            Task_Create(0x30A, &slot[1], 0);
+            Task_NextState3(a);
+        case 1:
+            if (slot[5] == 0) {
+                Task_Create(0x30D, &slot[5], 0);
+            }
+            D_800709B0.field_24 = 2;
+            D_800709B0.field_28 = D_800709B0.field_1C;
+            Task_Create(0x30F, &slot[3], 0);
+            Task_NextState3(a);
+            break;
+        case 2:
+            if (((Actor *)slot[3])->stateLevel0 == 2) {
+                switch (D_800709B0.field_8) {
+                case 0:
+                    Task_NextState2(a);
+                    break;
+                case 1:
+                case 3:
+                    Task_SetState2(a, 0);
+                    break;
+                case 2:
+                    Task_SetState2(a, 3);
+                    D_800709B0.field_34 = D_800709B0.field_28;
+                    break;
+                }
+            }
+            break;
+        }
+        break;
+    case 2:
+        switch (a->stateLevel3) {
+        case 0:
+        default:
+            D_800709B0.field_30 = D_800709B0.field_1C;
+            Task_Create(0x310, &slot[3], 0);
+            Task_NextState3(a);
+        case 1:
+            if (((Actor *)slot[3])->stateLevel0 == 2) {
+                Task_SetState2(a, 1);
+                Task_SetState3(a, 1);
+            }
+            break;
+        }
+        break;
+    case 3:
+        switch (a->stateLevel3) {
+        case 0:
+        default:
+            Task_SetState1((Actor *)slot[1], 1);
+            if (slot[2] != 0) {
+                Task_SetState0((Actor *)slot[2], 2);
+            }
+            D_800709B0.field_10 = 1;
+            Task_Create(0x30C, &slot[3], 0);
+            func_80068DD8(0x11C, D_8005E620.elems[D_800709B0.field_34].digiId);
+            D_800709B0.field_20 = 2;
+            Task_Create(0x30E, &slot[4], 0);
+            Task_NextState3(a);
+        case 1:
+            if (((Actor *)slot[3])->stateLevel0 == 2) {
+                Task_SetState0((Actor *)slot[4], 2);
+                if (D_800709B0.field_8 != 0) {
+                    if (slot[1] != 0) {
+                        Task_SetState0((Actor *)slot[1], 2);
+                    }
+                    Task_SetState2(a, 0);
+                } else {
+                    D_800709B0.field_38 = D_800709B0.field_1C;
+                    Task_NextState2(a);
+                }
+            }
+            break;
+        }
+        break;
+    case 4:
+        switch (a->stateLevel3) {
+        case 0:
+        default:
+            D_800709B0.field_40 = D_8005E620.elems[D_800709B0.field_38].digiId;
+            D_800709B0.field_44 = 0;
+            D_800709B0.field_48 = 1;
+            Task_Create(0x30A, &slot[2], 0);
+            Task_NextState3(a);
+        case 1:
+            if (slot[5] == 0) {
+                Task_Create(0x30D, &slot[5], 0);
+            }
+            D_800709B0.field_24 = 3;
+            D_800709B0.field_28 = D_800709B0.field_38;
+            Task_Create(0x30F, &slot[3], 0);
+            Task_NextState3(a);
+            break;
+        case 2:
+            if (((Actor *)slot[3])->stateLevel0 == 2) {
+                switch (D_800709B8.field_0) {
+                case 0:
+                    Task_NextState2(a);
+                    break;
+                case 1:
+                case 3:
+                    Task_SetState2(a, 3);
+                    break;
+                case 2:
+                    Task_SetState2(a, 6);
+                    Task_SetState0((Actor *)slot[5], 3);
+                    break;
+                }
+            }
+            break;
+        }
+        break;
+    case 5:
+        switch (a->stateLevel3) {
+        case 0:
+        default:
+            D_800709B0.field_30 = D_800709B0.field_1C;
+            Task_Create(0x310, &slot[3], 0);
+            Task_NextState3(a);
+        case 1:
+            if (((Actor *)slot[3])->stateLevel0 == 2) {
+                Task_SetState2(a, 4);
+                Task_SetState3(a, 1);
+            }
+            break;
+        }
+        break;
+    case 6:
+        switch (a->stateLevel3) {
+        case 0:
+        default:
+            ok = 1;
+            buf[0] = Digi_GetModelFile(D_800709B0.field_2C);
+            buf[1] = Anim_GetModelAnimFile(D_800709B0.field_2C, 0);
+            buf[2] = 0xDD8;
+            buf[3] = 0xDD7;
+            buf[4] = 0x25B;
+            buf[5] = 0x1A1;
+            buf[6] = 0x314;
+            buf[7] = 0x25C;
+            buf[8] = 0x3D0;
+            for (f = 0; f < 9; f++) {
+                Cd_QueueFile(buf[f]);
+                if (Cd_GetFileState(buf[f]) != 3) {
+                    ok = 0;
+                    break;
+                }
+            }
+            if (ok != 0) {
+                Task_NextState3(a);
+            }
+            break;
+        case 1:
+            switch (a->stateLevel4) {
+            case 0:
+            default:
+                buf[0] = 0x512;
+                buf[1] = 1;
+                buf[2] = 0x2A3;
+                Task_Create(0x313, &slot[8], (s32)buf);
+                Task_NextState4(a);
+                Snd_StopById(0x101);
+                break;
+            case 1:
+                if (((Actor *)slot[8])->stateLevel0 == 0) {
+                    break;
+                }
+                Task_SetState0((Actor *)slot[8], 2);
+                Task_SetState1((Actor *)w->menu, 2);
+                w->timer = 0x5A;
+                w->field_C = 1;
+                Task_NextState3(a);
+                break;
+            }
+            break;
+        case 2:
+            if (--w->timer != 0) {
+                break;
+            }
+            args.field_4 = 0xDD8;
+            args.field_0 = 0xDD7;
+            args.field_14 = 0;
+            args.field_18 = 0x78;
+            args.z = 0;
+            args.y = 0;
+            args.x = 0;
+            Task_Create(7, &slot[6], (s32)&args);
+            Task_SetState1((Actor *)slot[1], 2);
+            Task_SetState1((Actor *)slot[2], 1);
+            Task_NextState3(a);
+            break;
+        case 3:
+            if (((Actor *)w->menu)->stateLevel2 == 3) {
+                D_800709B0.field_40 = D_800709B0.field_2C;
+                D_800709B0.field_44 = 1;
+                D_800709B0.field_48 = 0;
+                Task_Create(0x30A, &slot[1], 0);
+                Task_SetState0((Actor *)slot[2], 3);
+                Task_NextState3(a);
+            }
+            break;
+        case 4:
+            if (((Actor *)w->menu)->stateLevel1 != 0) {
+                break;
+            }
+            p = (Stg20Digi *)&D_8005E704[D_800709B0.field_34];
+            q = (Stg20Digi *)&D_8005E704[D_800709B0.field_38];
+            t = func_8001D958(D_800709B0.field_2C);
+            w->field_C = 0;
+            Snd_PlayById(0x101, 1);
+            Mem_Zero(&nd, 0x5C);
+            nd.state = 1;
+            nd.level = t * 10 + 1;
+            nd.digiId = D_800709B0.field_2C;
+            nd.field_E = (p->field_E > q->field_E ? p->field_E : q->field_E) + 1;
+            if (p->level > q->level) {
+                ml = p->level + q->level / 5;
+            } else {
+                ml = q->level + p->level / 5;
+            }
+            nd.maxLevel = ml;
+            if (ml >= 99) {
+                nd.maxLevel = 99;
+            }
+            if (nd.level == 1) {
+                nd.exp = 0;
+            } else {
+                nd.exp = Digi_GetExpToNextLevel(nd.level - 1, 100, 0);
+            }
+            s = p->maxHp + q->maxHp;
+            switch (t) {
+            case 0:
+            default:
+                v = s * 10;
+                break;
+            case 1:
+                v = s * 34;
+                break;
+            case 2:
+                v = s * 45;
+                break;
+            }
+            nd.hp = nd.maxHp = v / 100;
+            s = p->maxMp + q->maxMp;
+            switch (t) {
+            case 0:
+            default:
+                v = s * 10;
+                break;
+            case 1:
+                v = s * 34;
+                break;
+            case 2:
+                v = s * 45;
+                break;
+            }
+            nd.mp = nd.maxMp = v / 100;
+            if (p->field_1C > q->field_1C) {
+                hi = p->field_1C;
+                lo = q->field_1C;
+            } else {
+                lo = p->field_1C;
+                hi = q->field_1C;
+            }
+            switch (t) {
+            case 0:
+            default:
+                nd.field_1C = (hi * 40 + lo * 30) / 100;
+                break;
+            case 1:
+                nd.field_1C = (hi * 50 + lo * 30) / 100;
+                break;
+            case 2:
+                nd.field_1C = (hi * 50 + lo * 40) / 100;
+                break;
+            }
+            if (p->field_1E > q->field_1E) {
+                hi = p->field_1E;
+                lo = q->field_1E;
+            } else {
+                lo = p->field_1E;
+                hi = q->field_1E;
+            }
+            switch (t) {
+            case 0:
+            default:
+                nd.field_1E = (hi * 40 + lo * 30) / 100;
+                break;
+            case 1:
+                nd.field_1E = (hi * 50 + lo * 30) / 100;
+                break;
+            case 2:
+                nd.field_1E = (hi * 50 + lo * 40) / 100;
+                break;
+            }
+            switch (t) {
+            case 0:
+            default:
+                nd.field_20 = (p->field_20 + q->field_20) * 30 / 100;
+                break;
+            case 1:
+                nd.field_20 = (p->field_20 + q->field_20) * 45 / 100;
+                break;
+            case 2:
+                nd.field_20 = (p->field_20 + q->field_20) / 2;
+                break;
+            }
+            best = 0;
+            bestv = 0;
+            for (i = 0; i < 12; i++) {
+                if (p->skills[i] != 0 && t >= func_8001F0C0(p->skills[i])) {
+                    v = func_8001EF64(p->skills[i]);
+                    if (bestv < v) {
+                        bestv = v;
+                        best = p->skills[i];
+                    }
+                }
+                if (q->skills[i] != 0 && t >= func_8001F0C0(q->skills[i])) {
+                    v = func_8001EF64(q->skills[i]);
+                    if (bestv < v) {
+                        bestv = v;
+                        best = q->skills[i];
+                    }
+                }
+            }
+            nd.skills[0] = func_8001D9A8(nd.digiId);
+            if (best != 0 && nd.skills[0] != best) {
+                nd.skills[1] = best;
+            }
+            for (j = 0, n = 0; j < 12; j++) {
+                if (p->skills[j] != nd.skills[0] && p->skills[j] != nd.skills[1]) {
+                    nd.learned[n++] = p->skills[j];
+                }
+                if (q->skills[j] != nd.skills[0] && q->skills[j] != nd.skills[1]) {
+                    nd.learned[n++] = q->skills[j];
+                }
+            }
+            nd.parent0 = p->digiId;
+            nd.parent1 = q->digiId;
+            p->state = 0;
+            q->state = 0;
+            Digi_SortRoster();
+            for (k = 0; k < 0x24; k++) {
+                if (D_8005E620.elems[k].state == 0) {
+                    break;
+                }
+            }
+            D_8005E620.elems[k] = *(DigiRosterEntry *)&nd;
+            D_800709FC = k;
+            Task_NextState2(a);
+            break;
+        }
+        break;
+    case 7:
+        switch (a->stateLevel3) {
+        case 0:
+        default:
+            buf[4] = 0;
+            buf[5] = D_800709FC;
+            Task_Create(0x16, &slot[7], (s32)&buf[4]);
+            Task_NextState3(a);
+            break;
+        case 1:
+            if (slot[7] == 0) {
+                Task_NextState2(a);
+            }
+            break;
+        }
+        break;
+    case 8:
+        switch (a->stateLevel3) {
+        case 0:
+        default:
+            D_800709B0.field_1C = D_800709B0.field_4C;
+            if (slot[5] == 0) {
+                Task_Create(0x30D, &slot[5], 0);
+            }
+            D_800709B0.field_24 = 4;
+            D_800709B0.field_28 = D_800709B0.field_1C;
+            Task_Create(0x30F, &slot[3], 0);
+            Task_NextState3(a);
+            break;
+        case 2:
+            if (((Actor *)slot[3])->stateLevel0 == 2) {
+                switch (D_800709B8.field_0) {
+                case 1:
+                case 2:
+                case 3:
+                    Digi_SortRoster();
+                    D_8005E620.elems[0].state = D_8005E620.elems[0].state != 0 ? 3 : 0;
+                    D_8005E620.elems[1].state = D_8005E620.elems[1].state != 0 ? 4 : 0;
+                    D_8005E620.elems[2].state = D_8005E620.elems[2].state != 0 ? 5 : 0;
+                    Task_SetState2(a, 0);
+                    break;
+                case 0:
+                    Task_NextState2(a);
+                    break;
+                }
+            }
+            break;
+        }
+        break;
+    case 9:
+        switch (a->stateLevel3) {
+        case 0:
+        default:
+            D_800709B0.field_30 = D_800709B0.field_1C;
+            Task_Create(0x310, &slot[3], 0);
+            Task_NextState3(a);
+        case 1:
+            if (((Actor *)slot[3])->stateLevel0 == 2) {
+                Task_SetState2(a, 8);
+            }
+            break;
+        }
+        break;
+    }
+}
 
 void func_800650BC(Actor *a) {
     Stg20CtrlWork *w = (Stg20CtrlWork *)a->work;
