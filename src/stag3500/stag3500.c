@@ -725,7 +725,30 @@ void func_800679D0(Actor *arg0) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80067B18);
+void func_80067B18(Actor *arg0, s32 arg1) {
+    Stg35Work708 *w = (Stg35Work708 *)arg0->work;
+    s32 s = func_80065B88(0xC4, 0x7000, w->field_54[arg0->field_8]);
+    Stg35SpriteHandle *sp;
+
+    if (arg0->field_8 == 0) {
+        sp = &w->sprite[2];
+    } else {
+        sp = &w->sprite[3];
+    }
+    func_80065B48(sp, s);
+    func_80065B60(sp, 0x60 - s);
+    if (w->field_54[arg0->field_8] >= 0x6000) {
+        func_80065B1C(sp, 0, 0xA4, 0x19, 2);
+        func_80065B1C(sp, 1, 0xA4, 0x19, 2);
+        func_80065B1C(sp, 2, 0xA4, 0x19, 2);
+        func_80065B1C(sp, 3, 0xA4, 0x19, 2);
+    } else {
+        func_80065B1C(sp, 0, 0xAE, 0x7E, 0x11);
+        func_80065B1C(sp, 1, 0xAE, 0x7E, 0x11);
+        func_80065B1C(sp, 2, 0xA4, 0x19, 2);
+        func_80065B1C(sp, 3, 0xA4, 0x19, 2);
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80067C74);
 
