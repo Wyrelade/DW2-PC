@@ -255,7 +255,41 @@ void func_800658F4(Stg35SpriteHandle *arg0) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80065930);
+void func_80065930(Stg35SpriteHandle *arg0) {
+    Stg35Sprite *s = arg0->sprite;
+    SysState *g;
+    Stg35PolyG4 *p;
+    u32 *ot;
+
+    if (s->field_1C != 0 && s->field_1E != 0) {
+        g = &D_8005F770;
+        p = (Stg35PolyG4 *)g->packet.work;
+        ot = g->otLayers.u[s->field_0];
+        p->c0 = s->field_4[0];
+        p->c1 = s->field_4[1];
+        p->c2 = s->field_4[2];
+        p->c3 = s->field_4[3];
+        p->tag.b.len = 8;
+        p->c0.code = 0x38;
+        if (s->field_14 != 0) {
+            p->c0.code = 0x3A;
+        }
+        p->x0 = p->x2 = s->field_18;
+        p->x1 = p->x3 = s->field_18 + s->field_1C;
+        p->y0 = p->y1 = s->field_1A;
+        p->y2 = p->y3 = s->field_1A + s->field_1E;
+        p->tag.word = (p->tag.word & 0xFF000000) | (*ot & 0xFFFFFF);
+        *ot = (*ot & 0xFF000000) | ((u32)p & 0xFFFFFF);
+        p++;
+        if (s->field_14 != 0) {
+            SetDrawMode((Stg35DrMode *)p, 0, 0, (s->field_16 & 3) << 5, 0);
+            ((Stg35DrMode *)p)->tag = (((Stg35DrMode *)p)->tag & 0xFF000000) | (*ot & 0xFFFFFF);
+            *ot = (*ot & 0xFF000000) | ((u32)p & 0xFFFFFF);
+            p = (Stg35PolyG4 *)((Stg35DrMode *)p + 1);
+        }
+        g->packet.work = (ActorWork *)p;
+    }
+}
 
 void func_80065B04(Stg35SpriteHandle *arg0, s32 arg1, s16 arg2, s16 arg3) {
     Stg35Sprite *s = arg0->sprite;
