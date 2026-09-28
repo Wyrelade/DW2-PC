@@ -157,7 +157,34 @@ void func_80065278(Actor *a0) {
     a0->stateLevel2++;
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80065300);
+void func_80065300(Actor *a0) {
+    Stg40B68Work *w = (Stg40B68Work *)a0->work;
+
+    switch (a0->stateLevel1) {
+    case 0:
+    default:
+        D_80072B60->field_2C = D_8005071C->field_1064->field_C;
+        D_80072B60->field_30 = D_8005071C->field_1064->field_10;
+        break;
+    case 1:
+        if (a0->stateLevel2 < w->field_1EA0) {
+            func_80065278(a0);
+        } else {
+            D_80072B60->field_2C = w->field_1E90;
+            D_80072B60->field_30 = w->field_1E94;
+        }
+        break;
+    case 2:
+        if (a0->stateLevel2 < w->field_1EA0) {
+            func_80065278(a0);
+        } else {
+            D_80072B60->field_2C = w->field_1E90;
+            D_80072B60->field_30 = w->field_1E94;
+            Task_SetState1(a0, 0);
+        }
+        break;
+    }
+}
 
 s32 func_800653EC(s32 a, s32 b, s32 c, s32 d) {
     if (a >= b) {
