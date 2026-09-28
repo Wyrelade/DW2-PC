@@ -1246,7 +1246,17 @@ void func_8007212C(Stg40Blk20 *blk, s32 a1, s32 a2, s32 a3) {
     Task_SetState1(t, 1);
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_800721A8);
+void func_800721A8(Stg40Cmd *src) {
+    Stg40BC0Work *w = (Stg40BC0Work *)D_80072BC0->work;
+    s32 i;
+
+    w->field_B4 = w->field_BC;
+    w->field_B8 = 0;
+    for (i = 0; src->field_0 != 0; i++, src++) {
+        w->field_BC[i] = *src;
+        w->field_B8++;
+    }
+}
 
 void func_80072250(Actor *a0) {
     Stg40BC0Work *w = (Stg40BC0Work *)a0->work;
