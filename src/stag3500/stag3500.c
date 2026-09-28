@@ -44,7 +44,28 @@ void func_80063684(Actor *arg0, s32 *arg1) {
     ((Stg35Work *)arg0->work)->field_0 = *arg1;
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80063694);
+void func_80063694(Actor *arg0, s32 arg1, s32 arg2) {
+    Stg35ListWork *w = (Stg35ListWork *)arg0->work;
+    s32 found = 0;
+    s32 i;
+    s32 j;
+
+    for (i = 0; i < w->field_2D8; i++) {
+        if (arg2 < w->field_F8[i]) {
+            found = 1;
+            break;
+        }
+    }
+    if (found) {
+        for (j = w->field_2D8; i < j; j--) {
+            w->field_8[j] = w->field_8[j - 1];
+            w->field_F8[j] = w->field_F8[j - 1];
+        }
+    }
+    w->field_8[i] = arg1;
+    w->field_F8[i] = arg2;
+    w->field_2D8++;
+}
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80063758);
 
