@@ -442,7 +442,22 @@ void func_80068D3C(Actor *a0) {
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80068DC0);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80068F20);
+void func_80068F20(Actor *a0) {
+    Stg40ActWork *w = (Stg40ActWork *)a0->work;
+    Stg40Ent48 *e = w->field_2C;
+
+    if (func_80070C48() == e->field_7) {
+        if (func_80068604(w->field_2C) == 1) {
+            Task_SetState1(a0, 2);
+        } else {
+            Task_SetState1(a0, 0);
+        }
+    } else if (func_8006E330()) {
+        Task_SetState1(a0, 4);
+    } else {
+        Task_SetState1(a0, 0);
+    }
+}
 
 void func_80068FBC(Actor *a0) {
     if (func_800716EC(a0)) {
