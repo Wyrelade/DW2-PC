@@ -2850,7 +2850,202 @@ s32 func_8006D4D8(s32 target, s32 tech, s16 *p3, s16 *p4) {
     return dmg;
 }
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006DB90);
+void func_8006DB90(void) {
+    s16 tgt[8];
+    s32 res[6];
+    s16 kind[8];
+    s16 z[8];
+    Stg30Sub10 *act;
+    s16 *out;
+    s32 i;
+    s32 n;
+    s32 mode;
+    s32 cnt;
+    s16 tech;
+
+    act = &D_80073CC0.field_2AC[6];
+    tech = act->field_6;
+    mode = 1;
+    out = D_80073890;
+    for (i = 0; i < Item_GetBagCapacity(); i++) {
+        if (((Stg30GameIds *)&D_8005E620)->field_66[i] == D_80073CC0.field_3AC) {
+            ((Stg30GameIds *)&D_8005E620)->field_66[i] = 0;
+            Item_SortList();
+            break;
+        }
+    }
+    for (i = 0; i < 6; i++) {
+        res[i] = 0;
+        tgt[i] = -1;
+        kind[i] = act->field_8;
+        z[i] = 0;
+    }
+    switch (act->field_4) {
+    default:
+        tgt[0] = act->field_4;
+        n = 1;
+        break;
+    case 7:
+        switch (kind[0]) {
+        case 0:
+        case 1:
+        case 2:
+        default:
+            i = 0;
+            cnt = 0;
+            for (; i < 3; i++) {
+                if (D_80073CC0.entries[i].field_2E != 0) {
+                    tgt[cnt++] = i;
+                }
+            }
+            n = cnt;
+            break;
+        case 3:
+            i = 0;
+            cnt = 0;
+            for (; i < 3; i++) {
+                if (D_80073CC0.entries[i].field_19 != 0 && D_80073CC0.entries[i].field_2E == 0) {
+                    tgt[cnt++] = i;
+                }
+            }
+            n = cnt;
+            break;
+        }
+        mode = 0;
+        break;
+    case 8:
+        switch (kind[0]) {
+        case 0:
+        case 1:
+        case 2:
+        default:
+            cnt = 0;
+            for (i = 3; i < 6; i++) {
+                if (D_80073CC0.entries[i].field_2E != 0) {
+                    tgt[cnt++] = i;
+                }
+            }
+            n = cnt;
+            break;
+        case 3:
+            cnt = 0;
+            for (i = 3; i < 6; i++) {
+                if (D_80073CC0.entries[i].field_19 != 0 && D_80073CC0.entries[i].field_2E == 0) {
+                    tgt[cnt++] = i;
+                }
+            }
+            n = cnt;
+            break;
+        }
+        mode = 1;
+        break;
+    case 9:
+        switch (kind[0]) {
+        case 0:
+        case 1:
+        case 2:
+        default:
+            cnt = 0;
+            for (i = 0; i < 6; i++) {
+                if (D_80073CC0.entries[i].field_2E != 0) {
+                    tgt[cnt++] = i;
+                }
+            }
+            n = cnt;
+            break;
+        case 3:
+            cnt = 0;
+            for (i = 0; i < 6; i++) {
+                if (D_80073CC0.entries[i].field_19 != 0 && D_80073CC0.entries[i].field_2E == 0) {
+                    tgt[cnt++] = i;
+                }
+            }
+            n = cnt;
+            break;
+        }
+        mode = 2;
+        break;
+    }
+    for (i = 0; i < n; i++) {
+        kind[i] = act->field_8;
+        res[i] = func_8006D4D8(tgt[i], tech, &kind[i], &z[i]);
+    }
+    *out++ = 2;
+    *out++ = tgt[0] + 10;
+    *out++ = 3;
+    *out++ = tgt[0];
+    *out++ = 9;
+    *out++ = 6;
+    *out++ = tech;
+    *out++ = 0x15;
+    *out++ = 0x16;
+    *out++ = 0x11;
+    *out++ = D_80073CC0.field_3B2;
+    *out++ = 0x12;
+    *out++ = 0x17;
+    *out++ = tech;
+    *out++ = n;
+    *out++ = 0;
+    *out++ = 0x96;
+    for (i = 0; i < n; i++) {
+        *out++ = 2;
+        *out++ = tgt[i] + 0x10;
+        *out++ = 3;
+        *out++ = tgt[i];
+        *out++ = 0;
+        *out++ = (i == 0) ? 0x1E : 0xC;
+        *out++ = 0x10;
+        *out++ = res[i];
+        *out++ = (kind[i] < 3) ? act->field_8 + 1 : 8;
+        *out++ = z[i];
+        switch (kind[i]) {
+        case 0:
+            if (D_80073CC0.entries[tgt[i]].field_2E != 0) {
+                *out++ = (D_80073CC0.field_2AC[tgt[i]].field_0 != 5) ? 11 : 10;
+            } else {
+                *out++ = 0xC;
+            }
+            break;
+        case 3:
+            *out++ = 8;
+            break;
+        case 1:
+        case 2:
+        case 4:
+            *out++ = 0xD;
+            break;
+        }
+        *out++ = tgt[i];
+        *out++ = tech;
+        if (n == 1) {
+            if (kind[i] == 0) {
+                *out++ = n;
+                *out++ = tgt[i];
+                *out++ = 0;
+                *out++ = 0x1E;
+            } else if (kind[i] >= 0) {
+                if (kind[i] < 5) {
+                    *out++ = 0;
+                    *out++ = 0x78;
+                }
+            }
+        } else {
+            *out++ = 0;
+            *out++ = 0x3C;
+        }
+    }
+    if (n != 1) {
+        *out++ = 2;
+        *out++ = mode + 0x16;
+        *out++ = mode + 4;
+        *out++ = 0;
+        *out++ = 0xB4;
+    }
+    *out = 0x18;
+    for (i = 0; i < 6; i++) {
+        D_80073CC0.field_3B8[i] = tgt[i];
+    }
+}
 
 s32 func_8006E2BC(s32 id) {
     s32 r = func_8001EF64(id);
