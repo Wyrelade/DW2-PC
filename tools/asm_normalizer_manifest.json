@@ -4348,5 +4348,10 @@
     "passes": [
       "sched_match"
     ]
+  },
+  "stag3000:func_800644D4": {
+    "passes": [
+      "nodiv"
+    ]
   }
 }

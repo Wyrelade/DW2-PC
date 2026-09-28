@@ -136,7 +136,236 @@ void func_80064480(void) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_800644D4);
+void func_800644D4(Actor *a0) {
+    Stg30WorkWord *w = (Stg30WorkWord *)a0->work;
+    s32 *p = (s32 *)a0->u34.children;
+    TaskEntry *t;
+    s32 i;
+    s32 n;
+    s32 a;
+    s32 b;
+    s32 r;
+    s32 j;
+
+    switch (a0->stateLevel0) {
+    case 0:
+        D_80073CC4 = 0;
+        Task_NextState0(a0);
+        break;
+    case 2:
+        break;
+    case 1:
+        switch (a0->stateLevel1) {
+        case 0:
+        default:
+            switch (a0->stateLevel2) {
+            case 0:
+            default:
+                func_80070D14(1);
+                D_80073CC0.entries[0].field_8 = 6;
+                Task_Create(0x504, p, 0);
+                D_80073CC0.field_2AC[6].field_0 = 0;
+                for (i = 0; i < 6; i++) {
+                    t = Task_FindFirst(0x509, -1, i);
+                    if (t != NULL) {
+                        Task_SetState01((Actor *)t, 2, 9);
+                    }
+                }
+                Task_NextState2(a0);
+            case 1:
+                if (*p != 0) {
+                    break;
+                }
+                switch (D_80073CC0.entries[0].field_10) {
+                case 0:
+                default:
+                    Task_SetState1(a0, 2);
+                    w->field_0 = func_8006E31C(0, 0, 0);
+                    break;
+                case 1:
+                    Task_SetState1(a0, 1);
+                    break;
+                case 2:
+                    if (D_80073CC0.field_3DC != 0) {
+                        D_80073CC0.entries[0].field_4 = 2;
+                    } else {
+                        a = 0;
+                        b = 0;
+                        n = 0;
+                        for (j = 0; j < 3; j++) {
+                            if (D_80073CC0.entries[j].field_2E != 0) {
+                                n++;
+                                a += D_80073CC0.entries[j].field_38;
+                            }
+                        }
+                        a /= n;
+                        n = 0;
+                        for (j = 3; j < 6; j++) {
+                            if (D_80073CC0.entries[j].field_2E != 0) {
+                                n++;
+                                b += D_80073CC0.entries[j].field_38;
+                            }
+                        }
+                        b /= n;
+                        n = a * 100 / b;
+                        if ((Rand_Next() & 0x7F) < n) {
+                            D_80073CC4 = 1;
+                        } else {
+                            D_80073CC4 = 2;
+                        }
+                    }
+                    Task_SetState0(a0, 3);
+                    break;
+                }
+                break;
+            }
+            break;
+        case 1:
+            switch (a0->stateLevel2) {
+            case 0:
+            default:
+                func_80070D14(8);
+                Task_Create(0x506, p, 0);
+                Task_NextState2(a0);
+            case 1:
+                if (*p != 0) {
+                    break;
+                }
+                if (D_80073CD4 != 0) {
+                    Task_SetState1(a0, 0);
+                } else {
+                    Task_NextState2(a0);
+                }
+                break;
+            case 2:
+                switch (a0->stateLevel3) {
+                case 0:
+                default:
+                    Task_Create(0x508, p, 0);
+                    Task_NextState3(a0);
+                    break;
+                case 1:
+                    if (*p != 0) {
+                        break;
+                    }
+                    if (D_80073CC0.entries[0].field_14 != 0) {
+                        func_80064480();
+                        D_80073CC0.field_2AC[6].field_0 = 0;
+                        Task_SetState2(a0, 0);
+                        break;
+                    }
+                    D_80073CC0.field_2AC[6].field_4 = D_80073CC0.entries[0].field_C;
+                    w->field_0 = func_8006E31C(0, 0, 0);
+                    Task_SetState1(a0, 2);
+                    break;
+                }
+                break;
+            }
+            break;
+        case 2:
+            switch (a0->stateLevel2) {
+            case 0:
+            default:
+                func_800643E0(w->field_0, 0, 2);
+                ((void (*)(s32))func_80070D14)(w->field_0 + 2);
+                D_80073CC8 = w->field_0;
+                Task_Create(0x504, p, 0);
+                Task_NextState2(a0);
+            case 1:
+                if (*p != 0) {
+                    break;
+                }
+                if (D_80073CC0.entries[0].field_14 != 0) {
+                    if (w->field_0 != func_8006E31C(0, 0, 0)) {
+                        r = func_8006E3D0(0, w->field_0, 0, 0);
+                        w->field_0 = r;
+                        D_80073CC0.field_2AC[r].field_0 = 0;
+                        Task_SetState1(a0, 2);
+                        break;
+                    }
+                    Task_SetState1(a0, 0);
+                    break;
+                }
+                if (D_80073CC0.entries[0].field_10 == 0) {
+                    Task_NextState2(a0);
+                    break;
+                }
+                D_80073CC0.field_2AC[w->field_0].field_0 = 5;
+                Task_SetState2(a0, 4);
+                break;
+            case 2:
+                switch (a0->stateLevel3) {
+                case 0:
+                default:
+                    ((void (*)(s32))func_80070D14)(w->field_0 + 2);
+                    D_80073CC8 = w->field_0;
+                    Task_Create(0x507, p, 0);
+                    Task_NextState3(a0);
+                case 1:
+                    if (*p != 0) {
+                        break;
+                    }
+                    if (D_80073CD4 != 0) {
+                        Task_SetState1(a0, 2);
+                    } else {
+                        Task_NextState2(a0);
+                    }
+                    break;
+                }
+                break;
+            case 3:
+                switch (a0->stateLevel3) {
+                case 0:
+                default:
+                    Task_Create(0x508, p, 0);
+                    Task_NextState3(a0);
+                    break;
+                case 1:
+                    if (*p != 0) {
+                        break;
+                    }
+                    if (D_80073CC0.entries[0].field_14 != 0) {
+                        func_800643E0(w->field_0, 0, 2);
+                        Task_SetState2(a0, 2);
+                        break;
+                    }
+                    D_80073CC0.field_2AC[w->field_0].field_4 = D_80073CC0.entries[0].field_C;
+                    Task_NextState2(a0);
+                    break;
+                }
+                break;
+            case 4:
+                n = w->field_0;
+                w->field_0 = func_8006E47C(0, n, 0, 0);
+                if (w->field_0 == n) {
+                    Task_NextState1(a0);
+                } else {
+                    Task_SetState1(a0, 2);
+                }
+                break;
+            }
+            break;
+        case 3:
+            switch (a0->stateLevel2) {
+            case 0:
+            default:
+                for (n = 0; n < 6; n++) {
+                    t = Task_FindFirst(0x509, -1, n);
+                    if (t != NULL) {
+                        Task_SetState01((Actor *)t, 2, 9);
+                    }
+                }
+                func_80070D14(1);
+                Task_NextState2(a0);
+            case 1:
+                Task_SetState0(a0, 3);
+                break;
+            }
+            break;
+        }
+        break;
+    }
+}
 
 void func_80064B30(Actor *a0) {
     Stg30Work73078 *w = (Stg30Work73078 *)a0->work;
