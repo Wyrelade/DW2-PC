@@ -171,7 +171,16 @@ Stg20Cell *func_80067504(Actor *a) {
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80067568);
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80067604);
+void func_80067604(Actor *a, s32 doX, s32 doZ) {
+    ActorTransformView *t = a->u38.ptr38;
+
+    if (doX) {
+        t->posX = (t->posX + 0x12F00) / 0x600 * 0x600 - 0x12C00;
+    }
+    if (doZ) {
+        t->posZ = (t->posZ + 0x12F00) / 0x600 * 0x600 - 0x12C00;
+    }
+}
 
 void func_800676A8(Actor *a, s32 i) {
     Stg20Vec3 *v = &((Stg20Rot *)a->u38.ptr38)->field_84;
