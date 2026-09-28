@@ -407,7 +407,16 @@ INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006E024);
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006E200);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006E278);
+void func_8006E278(void) {
+    s32 i;
+    Stg40Ent48 *e = D_8005071C->field_18;
+
+    for (i = 0; i < 41; i++, e++) {
+        if (e->field_0 & 0x8000) {
+            e->field_0 |= 0x5000;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006E2B8);
 
