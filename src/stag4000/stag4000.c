@@ -439,7 +439,9 @@ INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006FE90);
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006FED4);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006FF28);
+void func_8006FF28(void) {
+    Mem_Free(D_8005071C->field_E58);
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006FF54);
 
