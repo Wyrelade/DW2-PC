@@ -828,7 +828,19 @@ s32 func_80069870(s32 arg0, s32 arg1) {
     return r;
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_800698C8);
+void func_800698C8(Stg35CamWork *w, s32 *t) {
+    s32 i;
+
+    for (i = 0; i < D_8005F770.frameDelta; i++) {
+        w->field_7E += func_80069870(t[0], w->field_7E);
+        w->field_0 += func_80069870(t[1], w->field_0);
+        w->field_4 += func_80069870(t[2], w->field_4);
+        w->field_8 += func_80069870(t[3], w->field_8);
+        w->field_10 += func_80069870(t[4], w->field_10);
+        w->field_6C += func_80069870(t[5], w->field_6C);
+        w->field_74 += func_80069870(t[6], w->field_74);
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_800699FC);
 
