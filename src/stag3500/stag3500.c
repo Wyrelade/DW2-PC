@@ -224,7 +224,20 @@ void func_800657F0(Stg35TextHandle *arg0, s32 arg1) {
     arg0->text->field_4 = func_8001ED84(arg1);
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80065824);
+void func_80065824(Stg35TextHandle *arg0) {
+    Stg35TextObj *t = arg0->text;
+    TextOpenArgs a;
+
+    a.text = t->field_4;
+    a.bigFont = t->field_8;
+    a.color = t->field_C;
+    a.x = t->field_10;
+    a.y = t->field_14;
+    a.charAdvance = 0;
+    a.lineAdvance = 0;
+    a.charDelay = t->field_18;
+    Text_Open(t, &a);
+}
 
 void func_80065894(Stg35TextHandle *arg0) {
     Text_Close(arg0->text);
