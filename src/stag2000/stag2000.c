@@ -1,7 +1,27 @@
 #include "common.h"
 #include "stag2000/stag2000.h"
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80063610);
+void func_80063610(Actor *a) {
+    s32 x, y;
+    u8 *p;
+    s32 bit = 0;
+    p = func_80066714()->bits;
+    p--;
+    for (x = 0; x < 0x18; x++) {
+        for (y = 0; y < 0x18; y++) {
+            bit <<= 1;
+            if (!(y & 7)) {
+                bit = 1;
+                p++;
+            }
+            if (*p & bit) {
+                D_80070768[y][x] = 1;
+            } else {
+                D_80070768[y][x] = 0;
+            }
+        }
+    }
+}
 
 s32 func_800636A8(Stg20Cell *c) {
     return D_80070768[c->x][c->y];
