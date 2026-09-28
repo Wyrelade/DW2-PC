@@ -678,7 +678,27 @@ s32 func_80069850(s32 arg0) {
     return 1;
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80069870);
+s32 func_80069870(s32 arg0, s32 arg1) {
+    s32 neg = 0;
+    s32 r;
+
+    arg0 -= arg1;
+    if (arg0 == 0) {
+        return neg;
+    }
+    if (arg0 < 0) {
+        neg = 1;
+        arg0 = -arg0;
+    }
+    r = arg0 / 16;
+    if (r == 0) {
+        r = 1;
+    }
+    if (neg) {
+        r = -r;
+    }
+    return r;
+}
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_800698C8);
 
