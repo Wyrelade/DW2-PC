@@ -13,7 +13,12 @@ void func_800637E8(void) {
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80063814);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_800639FC);
+void func_800639FC(void) {
+    func_80070DC0();
+    func_8006FED4();
+    func_8006FFCC();
+    func_800707D0();
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80063A34);
 
