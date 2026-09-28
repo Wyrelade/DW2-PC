@@ -601,7 +601,19 @@ INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006FF54);
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006FFCC);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_800703E0);
+u16 func_800703E0(s32 x, s32 y) {
+    Stg40Blk5071C *b = D_8005071C;
+    Stg40E34 *d = b->field_E54;
+    Stg40Cell *cells = (Stg40Cell *)b->field_E58;
+    s32 w = d->field_0;
+    s32 h = d->field_2;
+    u16 r = 0;
+
+    if (x >= 0 && y >= 0 && x < w && y < h) {
+        r = cells[w * y + x].field_0;
+    }
+    return r;
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80070438);
 
