@@ -70,7 +70,21 @@ void func_8006436C(Actor *a0) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_800643E0);
+void func_800643E0(s32 sel, s32 from, s32 to) {
+    s32 i;
+    TaskEntry *t;
+
+    for (i = from; i <= to; i++) {
+        t = Task_FindFirst(0x509, -1, i);
+        if (t != NULL) {
+            if (sel == -1 || i == sel) {
+                Task_SetState01((Actor *)t, 2, 8);
+            } else {
+                Task_SetState01((Actor *)t, 2, 7);
+            }
+        }
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80064480);
 
