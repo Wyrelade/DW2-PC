@@ -964,7 +964,21 @@ INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006E9E8);
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006EA90);
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006ED24);
+void func_8006ED24(Actor *a) {
+    Stg20ItemWork *w = (Stg20ItemWork *)a->work;
+    s32 i;
+
+    if (w->dirty != 0) {
+        w->dirty = 0;
+        for (i = 0; i < 6; i++) {
+            Text_OpenPacked(&w->texts[i], (s32)w->recs[i].name, 0, D_800706A4[i + 4]);
+        }
+        Text_Close(&w->descText);
+        if (w->recs[w->index].item != 0) {
+            Text_OpenPacked(&w->descText, Item_GetDescText(w->recs[w->index].item), 0, D_800706A4[10]);
+        }
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006EE24);
 
