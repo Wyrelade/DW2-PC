@@ -1003,7 +1003,80 @@ void func_80067BA8(Actor *a0) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80067DB4);
+void func_80067DB4(Actor *a0) {
+    Stg40ActWork *w = (Stg40ActWork *)a0->work;
+    Stg40Ent48 *e = w->field_2C;
+    Stg40Xform *x;
+    s32 dx;
+    s32 dy;
+    s32 vis;
+    s32 r;
+    u8 k;
+
+    w->field_34 = 0;
+    if (e->field_4 == -1) {
+        return;
+    }
+    dx = e->field_18.field_C - D_80072B60->field_2C;
+    if (dx < 0) {
+        dx = D_80072B60->field_2C - e->field_18.field_C;
+    }
+    dy = e->field_18.field_10 - D_80072B60->field_30;
+    if (dy < 0) {
+        dy = D_80072B60->field_30 - e->field_18.field_10;
+    }
+    if (dx < 0x1C0 && dy < 0x1C0) {
+        Cd_QueueFile(w->field_14);
+        Cd_QueueFile(w->field_18);
+    }
+    if (dx < 0x140 && dy < 0x140) {
+        vis = 1;
+        r = func_80022518(0x11);
+        if (r <= 0 || (D_8005071C->field_1058 == 0x10 && r == 0x75)) {
+            vis = 0;
+        }
+        if (e->field_0 & 1) {
+            vis = 1;
+        }
+        Gfx_AttachModel(a0, w->field_14)->otIndex = 3;
+        if (w->field_30 != -1) {
+            Anim_SetModelAnim(a0, w->field_30);
+            w->field_32 = w->field_30;
+            w->field_30 = -1;
+        }
+        x = (Stg40Xform *)a0->u38.ptr38;
+        x->field_30 = (s16)((e->field_18.field_C - D_80072B60->field_2C) * 40);
+        x->field_38 = (s16)-(((e->field_18.field_10 - D_80072B60->field_30) << 11) / 64);
+        x->field_34 = -(s16)e->field_18.field_14;
+        x->field_42 = e->field_C;
+        x->field_58 = e->field_38;
+        x->field_5C = e->field_3C;
+        x->field_60 = e->field_40;
+        if ((e->field_0 & 0x4000) && vis) {
+            if (!(e->field_0 & 0x80)) {
+                func_80064BD8(&e->field_18);
+            }
+            if (!(e->field_0 & 0x400)) {
+                Anim_StepModelAnim(a0);
+                Actor_UpdateTransform(a0);
+                Gfx_CalcModelBoneMatrices(a0);
+                Gfx_DrawTexModel(a0, 0);
+            }
+        }
+        w->field_34 = 1;
+    }
+    if (w->field_26 != 0) {
+        k = D_8007278C[w->field_27];
+        if (k == 0xFF) {
+            w->field_26 = 0;
+            func_80067894(a0, 0, 0, 0, 0);
+        } else {
+            func_80067894(a0, k, D_8007279C[w->field_26 - 1].r, D_8007279C[w->field_26 - 1].g,
+                          D_8007279C[w->field_26 - 1].b);
+            w->field_27++;
+        }
+    }
+}
 
 void func_800680B0(Actor *a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6) {
     func_8006E4DC(a0, a1);
