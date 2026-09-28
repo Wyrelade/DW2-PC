@@ -199,7 +199,56 @@ void func_80063C08(Actor *arg0) {
 void func_80063D20(void) {
 }
 
-INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80063D28);
+void func_80063D28(Stg11MenuRow *arg0, Stg11CardRec *arg1) {
+    s16 *skillTbl = (s16 *)Cd_GetFileEntry(0xD28000E);
+    Stg11SpeciesRec *t = (Stg11SpeciesRec *)Cd_GetFileEntry(0xD280010);
+    s32 i;
+
+    t += func_8001D958(arg0->field_0);
+    arg0->level = t->level;
+    arg0->field_F = func_8001EB58(arg0->level);
+    arg0->exp = t->exp;
+    arg0->hp = t->base + arg1->field_92 / 20;
+    if (t->hpMax < arg0->hp) {
+        arg0->hp = t->hpMax;
+    }
+    arg0->mp = t->base + arg1->field_96 / 20;
+    if (t->hpMax < arg0->mp) {
+        arg0->mp = t->hpMax;
+    }
+    arg0->field_18 = arg1->field_9A / 7;
+    if (t->statMax < arg0->field_18) {
+        arg0->field_18 = t->statMax;
+    }
+    if (arg0->field_18 == 0) {
+        arg0->field_18 = 1;
+    }
+    arg0->field_1A = arg1->field_9C / 7;
+    if (t->statMax < arg0->field_1A) {
+        arg0->field_1A = t->statMax;
+    }
+    if (arg0->field_1A == 0) {
+        arg0->field_1A = 1;
+    }
+    arg0->field_1C = arg1->field_A0 / 10;
+    if (t->field_A < arg0->field_1C) {
+        arg0->field_1C = t->field_A;
+    }
+    if (arg0->field_1C == 0) {
+        arg0->field_1C = 1;
+    }
+    arg0->field_1E = arg1->uid;
+    arg0->skillCount = 0;
+    for (i = 0; i < arg1->skillCount; i++) {
+        if (arg1->skills[i] < 0x78 && skillTbl[arg1->skills[i]] != 0) {
+            arg0->skills[arg0->skillCount++] = skillTbl[arg1->skills[i]];
+        }
+    }
+    if (arg0->skillCount == 0) {
+        arg0->skills[0] = func_8001D9A8(arg0->field_0);
+        arg0->skillCount = 1;
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80064000);
 
