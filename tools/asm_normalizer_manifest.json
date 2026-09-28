@@ -4126,5 +4126,8 @@
   },
   "stag3500:func_80066EBC": {
     "passes": []
+  },
+  "stag3500:func_80068D34": {
+    "passes": []
   }
 }

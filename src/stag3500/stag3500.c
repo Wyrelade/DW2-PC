@@ -1582,7 +1582,175 @@ s32 func_80068CA0(s32 arg0) {
     return 0;
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80068D34);
+void func_80068D34(Actor *arg0) {
+    Stg35ScriptWork *w = (Stg35ScriptWork *)arg0->work;
+    Actor **children = (Actor **)arg0->u34.children;
+    Actor *e;
+    s32 *q;
+    s32 cont;
+    Stg35Arg1 a1;
+    Stg35Arg3 a3;
+
+    switch (arg0->stateLevel0) {
+    case 0:
+        w->script = D_8006ADE0;
+        Task_NextState0(arg0);
+        break;
+    case 1:
+        cont = 1;
+        do {
+            switch (w->script[0]) {
+            case 0:
+                switch (arg0->stateLevel1) {
+                case 0:
+                default:
+                    arg0->elapsed = 0;
+                    arg0->stateLevel1++;
+                case 1:
+                    break;
+                }
+                if (w->script[1] < arg0->elapsed) {
+                    arg0->stateLevel1 = 0;
+                    w->script += 2;
+                } else {
+                    cont = 0;
+                }
+                break;
+            case 1:
+                e = (Actor *)Task_FindFirst(0x707, -1, w->script[1]);
+                if (e->stateLevel0 == 2) {
+                    cont = 0;
+                } else {
+                    w->script += 2;
+                }
+                break;
+            case 2:
+                func_8006A080(w->script[1]);
+                cont = 0;
+                w->script += 2;
+                break;
+            case 3:
+                for (e = (Actor *)Task_FindFirst(0x707, -1, -1); e != NULL; e = (Actor *)Task_FindNext()) {
+                    if (e->field_8 == w->script[1]) {
+                        func_800674D4(e, 1);
+                        func_800674F8(e);
+                    } else {
+                        func_800674D4(e, 0);
+                    }
+                }
+                w->script += 2;
+                break;
+            case 4:
+                for (e = (Actor *)Task_FindFirst(0x707, -1, -1); e != NULL; e = (Actor *)Task_FindNext()) {
+                    if (e->field_8 < 3) {
+                        func_800674D4(e, 1);
+                        func_800674F8(e);
+                    }
+                }
+                w->script += 1;
+                break;
+            case 5:
+                for (e = (Actor *)Task_FindFirst(0x707, -1, -1); e != NULL; e = (Actor *)Task_FindNext()) {
+                    if (e->field_8 >= 3) {
+                        func_800674D4(e, 1);
+                        func_800674F8(e);
+                    }
+                }
+                w->script += 1;
+                break;
+            case 6:
+                for (e = (Actor *)Task_FindFirst(0x707, -1, -1); e != NULL; e = (Actor *)Task_FindNext()) {
+                    func_800674D4(e, 1);
+                    func_800674F8(e);
+                }
+                w->script += 1;
+                break;
+            case 7:
+                e = (Actor *)Task_FindFirst(0x707, -1, w->script[1]);
+                Task_SetState0(e, 2);
+                Task_SetState1(e, 0);
+                w->script += 2;
+                break;
+            case 8:
+                e = (Actor *)Task_FindFirst(0x707, -1, w->script[1]);
+                Task_SetState0(e, 2);
+                Task_SetState1(e, 1);
+                Task_SetState4(e, (u8)w->script[2]);
+                w->script += 3;
+                break;
+            case 9:
+                e = (Actor *)Task_FindFirst(0x707, -1, w->script[1]);
+                func_80064B94(e, 3, w->script[2]);
+                w->script += 3;
+                break;
+            case 10:
+                e = (Actor *)Task_FindFirst(0x707, -1, w->script[1]);
+                func_80068BF8();
+                func_80064B94(e, 4, w->script[2]);
+                w->script += 3;
+                break;
+            case 11:
+                e = (Actor *)Task_FindFirst(0x707, -1, w->script[1]);
+                func_80068BF8();
+                func_80064B94(e, 5, w->script[2]);
+                w->script += 3;
+                break;
+            case 12:
+                e = (Actor *)Task_FindFirst(0x707, -1, w->script[1]);
+                func_80064B94(e, 6, w->script[2]);
+                w->script += 3;
+                break;
+            case 13:
+                w->script += 3;
+                break;
+            case 14:
+            case 15:
+                w->script += 2;
+                break;
+            case 16:
+                break;
+            case 17:
+                a1.field_0 = (s32)D_8006ADE0;
+                Task_Create(0x70A, (s32 *)&children[3], (s32)&a1);
+                w->script += 1;
+                break;
+            case 18:
+                if (children[3]->stateLevel0 == 1) {
+                    w->script += 1;
+                } else {
+                    cont = 0;
+                }
+                break;
+            case 19:
+                switch (arg0->stateLevel1) {
+                case 0:
+                default:
+                    q = func_8001EFF0(w->script[1]);
+                    a3.field_0 = q[0];
+                    a3.field_4 = q[1];
+                    a3.field_8 = w->script[2];
+                    Task_Create(0x70B, (s32 *)&children[4], (s32)&a3);
+                    Task_NextState1(arg0);
+                case 1:
+                    break;
+                }
+                if (children[4]->stateLevel0 == 1) {
+                    Task_SetState0(children[4], 2);
+                    w->script += 3;
+                    Task_SetState1(arg0, 0);
+                } else {
+                    cont = 0;
+                }
+                break;
+            case 20:
+                Task_SetState0(arg0, 3);
+                cont = 0;
+                break;
+            }
+        } while (cont);
+        break;
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_8006926C);
 
