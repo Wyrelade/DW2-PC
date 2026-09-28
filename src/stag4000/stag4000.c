@@ -486,7 +486,22 @@ void func_8006E278(void) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006E2B8);
+s32 func_8006E2B8(Stg40Ent48 *a, Stg40Ent48 *b) {
+    s16 dx;
+    s16 dy;
+
+    if (a->field_18.u0.pair.field_0 - b->field_18.u0.pair.field_0 >= 0) {
+        dx = a->field_18.u0.pair.field_0 - b->field_18.u0.pair.field_0;
+    } else {
+        dx = b->field_18.u0.pair.field_0 - a->field_18.u0.pair.field_0;
+    }
+    if (a->field_18.u0.pair.field_2 - b->field_18.u0.pair.field_2 >= 0) {
+        dy = a->field_18.u0.pair.field_2 - b->field_18.u0.pair.field_2;
+    } else {
+        dy = b->field_18.u0.pair.field_2 - a->field_18.u0.pair.field_2;
+    }
+    return dx < 2 && dy < 2;
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006E330);
 
