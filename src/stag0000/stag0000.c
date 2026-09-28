@@ -1019,7 +1019,115 @@ void func_80066FE8(Actor *arg0) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80067120);
+void func_80067120(Actor *arg0, s32 arg1, s32 arg2) {
+    Stg00Xform *t = (Stg00Xform *)arg0->u38.ptr38;
+
+    if (arg0->stateLevel3 == 0 && arg0->stateLevel4 == 0) {
+        Actor_StopAxisMotion(arg0, 1);
+    } else {
+        func_80020D54(arg0, 1);
+        func_80020E00(arg0, 2);
+    }
+    switch (arg0->stateLevel3) {
+    case 0:
+    default:
+        switch (arg0->stateLevel4) {
+        case 0:
+        default:
+            if (arg2) {
+                Actor_SetAxisMotion(arg0, 2, &D_80068F04);
+            }
+            if (!Anim_HasModelAnim(arg0, 0x14)) {
+                Task_NextState3(arg0);
+                break;
+            }
+            Anim_SetModelAnim(arg0, 0x14);
+            Actor_SetAxisMotion(arg0, 1, &D_80068EEC);
+            Task_NextState4(arg0);
+            return;
+        case 1:
+            if (t->field_34 > 0) {
+                Actor_StopAxisMotion(arg0, 1);
+                t->field_34 = 0;
+                t->field_4C = 0;
+                Task_NextState3(arg0);
+            }
+            return;
+        }
+    case 1:
+        switch (arg0->stateLevel4) {
+        case 0:
+        default:
+            if (!Anim_HasModelAnim(arg0, 0x15)) {
+                Task_NextState3(arg0);
+                break;
+            }
+            Anim_SetModelAnim(arg0, 0x15);
+            Actor_SetAxisMotion(arg0, 1, &D_80068EF8);
+            Task_NextState4(arg0);
+            return;
+        case 1:
+            if (t->field_34 > 0) {
+                Actor_StopAxisMotion(arg0, 1);
+                t->field_34 = 0;
+                t->field_4C = 0;
+                Task_NextState3(arg0);
+            }
+            return;
+        }
+    case 2:
+        switch (arg0->stateLevel4) {
+        case 0:
+        default:
+            Anim_SetModelAnim(arg0, 0x16);
+            Task_NextState4(arg0);
+            break;
+        case 1:
+            if (arg0->model->animDone < 0) {
+                if (arg1 == 0) {
+                    Task_NextState3(arg0);
+                }
+                Task_NextState3(arg0);
+            }
+            break;
+        }
+        break;
+    case 3:
+        switch (arg0->stateLevel4) {
+        case 0:
+        default:
+            Anim_SetModelAnim(arg0, 0x64);
+            Task_NextState4(arg0);
+            break;
+        case 1:
+            if (arg0->model->animDone == 0) {
+                break;
+            }
+            arg0->elapsed = 0;
+            Task_NextState4(arg0);
+        case 2:
+            if (arg0->elapsed >= 0x5A) {
+                Task_NextState3(arg0);
+            }
+            break;
+        }
+        break;
+    case 4:
+        switch (arg0->stateLevel4) {
+        case 0:
+        default:
+            Anim_SetModelAnim(arg0, 0x5A);
+            Task_NextState4(arg0);
+            break;
+        case 1:
+            if (arg0->model->animDone < 0) {
+                Task_SetState1(arg0, 0);
+            }
+            break;
+        }
+        break;
+    }
+}
 
 void func_800673FC(Actor *arg0) {
     Stg00Work73FC *w = (Stg00Work73FC *)arg0->work;
