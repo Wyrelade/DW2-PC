@@ -111,7 +111,22 @@ INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80066B48);
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80066F34);
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80067480);
+void func_80067480(void *t, s32 text, s32 id, Stg20Cell *pos, s32 color) {
+    Stg20TextArgs args;
+
+    if (id == 0) {
+        args.text = text;
+    } else {
+        args.text = (s32)Cd_GetFileEntry(id + 0x1FD0000);
+    }
+    args.bigFont = 0;
+    args.color = color;
+    args.pos = *pos;
+    args.charAdvance = 0;
+    args.lineAdvance = 0xC;
+    args.charDelay = 0;
+    Text_Open(t, &args);
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80067504);
 
