@@ -88,7 +88,20 @@ INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80065D74);
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80065FB8);
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80066714);
+Stg20MapFile *func_80066714(void) {
+    Stg20MapFile *f = (Stg20MapFile *)Cd_GetFileEntry(((Stg20Mode *)D_8005F788)->lo + 0x308FFFF);
+    s32 base;
+
+    if (f->loaded == 0) {
+        base = Cd_GetFileOrNull(0x309);
+        f->loaded = 1;
+        f->field_C += base;
+        f->field_8 += base;
+        f->bits += base;
+        f->field_18 = f->field_18 != 0 ? f->field_18 + base : 0;
+    }
+    return f;
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_800667AC);
 
