@@ -95,7 +95,17 @@ void func_80066A9C(s32 d) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80066AE0);
+void func_80066AE0(s32 id) {
+    s32 i;
+
+    for (i = 0; i < 0x24; i++) {
+        if (D_8005E620.elems[i].state >= 2 && D_8005E620.elems[i].digiId == id) {
+            D_8005E620.elems[i].state = 0;
+            break;
+        }
+    }
+    Digi_SortRoster();
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80066B48);
 
