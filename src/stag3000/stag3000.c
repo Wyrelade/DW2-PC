@@ -843,7 +843,19 @@ s32 func_80070530(s32 a, s32 b) {
     return r;
 }
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80070588);
+void func_80070588(Stg30Work7343C *w, Stg30CamGoal *g) {
+    s32 i;
+
+    for (i = 0; i < D_8005F770.frameDelta; i++) {
+        w->field_7E += func_80070530(g->field_0, w->field_7E);
+        w->field_0 += func_80070530(g->field_4, w->field_0);
+        w->field_4 += func_80070530(g->field_8, w->field_4);
+        w->field_8 += func_80070530(g->field_C, w->field_8);
+        w->field_10 += func_80070530(g->field_10, w->field_10);
+        w->field_6C += func_80070530(g->field_14, w->field_6C);
+        w->field_74 += func_80070530(g->field_18, w->field_74);
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_800706BC);
 
