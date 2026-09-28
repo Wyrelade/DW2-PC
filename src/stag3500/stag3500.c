@@ -422,7 +422,280 @@ void func_80064C54(Stg35ChildOwner *arg0) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80064CB8);
+void func_80064CB8(Actor *arg0) {
+    Stg35BattleWork *w = (Stg35BattleWork *)arg0->work;
+    Actor **c = (Actor **)arg0->u34.children;
+    Stg35Arg3 a;
+    s32 buf[6];
+    s32 cnt[2];
+    Actor *e;
+    Actor *e2;
+    s32 i;
+    s32 k;
+    s32 n;
+    s32 m;
+    s32 j;
+    s32 r;
+    s32 sum;
+    s32 wait;
+    s32 f;
+
+    switch (arg0->stateLevel0) {
+    case 0:
+        Snd_PlayById(0x102, 1);
+        func_80067720();
+        Cd_FreeUnlockedFiles();
+        Gpu_AllocPacketBufs(0x32000);
+        Gfx_InitLights();
+        Sys_SetFrameRate30();
+        Gpu_InitDoubleBuffer(0x140, 0x1E0, 2, 0);
+        Gpu_SetBgClearColor(0, 0, 0);
+        Gpu_ClearScreens();
+        Gfx_FadeInFromBlack(0x40);
+        Task_Create(9, (s32 *)&c[0], 0);
+        Task_Create(0x706, (s32 *)&c[4], 0);
+        Task_Create(0x704, (s32 *)&c[5], 0);
+        Cd_QueueFile(0x1FD);
+        Cd_QueueFile(0x25B);
+        Cd_QueueFile(0xD3F);
+        Cd_QueueFile(0xD41);
+        Cd_QueueFile(0xD93);
+        for (k = 0; k < 6; k++) {
+            D_8006AA88.rec[k] = D_8005E620.elems[k];
+        }
+        for (j = 0; j < 6; j++) {
+            a.field_8 = 0;
+            a.field_0 = D_8006AA88.rec[j].digiId;
+            a.field_4 = j;
+            Task_Create(0x707, (s32 *)&c[11 + j], (s32)&a);
+        }
+        for (j = 0; j < 6; j++) {
+            func_8006A168(j);
+        }
+        Task_NextState0(arg0);
+        break;
+    case 1:
+        switch (arg0->stateLevel1) {
+        case 0:
+        default:
+            if (c[4]->stateLevel0 == 1 && c[4]->stateLevel1 == 1) {
+                Task_Create(0x708, (s32 *)&c[19], 0);
+                Task_NextState1(arg0);
+            }
+            break;
+        case 1:
+            switch (arg0->stateLevel2) {
+            case 0:
+            default:
+                func_80064C54((Stg35ChildOwner *)arg0);
+                func_8006A080(0x18);
+                func_80065E60();
+                e2 = (Actor *)Task_FindFirst(0x708, -1, -1);
+                if (e2 != NULL) {
+                    Task_SetState1(e2, 1);
+                }
+                Task_NextState2(arg0);
+            case 2:
+                Task_Create(0x70C, (s32 *)&c[17], w->field_4);
+                Task_NextState2(arg0);
+            case 3:
+                if (c[17] == NULL) {
+                    Task_NextState1(arg0);
+                }
+                break;
+            }
+            break;
+        case 2:
+            switch (arg0->stateLevel2) {
+            case 0:
+            default:
+                if (D_8006AA88.rec[func_80065E44(0)].hp == 0) {
+                    Task_NextState1(arg0);
+                    break;
+                }
+                Task_NextState2(arg0);
+            case 1:
+                switch (arg0->stateLevel3) {
+                case 0:
+                default:
+                    func_8006A080(func_80065E44(0) + 0xA);
+                    for (e = (Actor *)Task_FindFirst(0x707, -1, -1); e != NULL; e = (Actor *)Task_FindNext()) {
+                        if (e->field_8 == func_80065E44(0)) {
+                            func_800674D4(e, 1);
+                            func_800674F8(e);
+                        } else {
+                            func_800674D4(e, 0);
+                        }
+                    }
+                    for (m = 0; m < 6; m++) {
+                        buf[5 - m] = D_8006AA88.field_238[func_80065E44(0)].field_C[m];
+                    }
+                    func_80068B10(func_80065E44(0) >= 3, buf);
+                    Task_NextState3(arg0);
+                    break;
+                case 1:
+                    if (func_80068B9C() == 1) {
+                        break;
+                    }
+                    if (func_80068B9C() == 2) {
+                        Task_SetState1(arg0, 3);
+                        break;
+                    }
+                    f = func_80065E44(0);
+                    func_80065F8C(f, func_80068C5C());
+                    Task_NextState2(arg0);
+                    break;
+                }
+                break;
+            case 2:
+                if (func_80069850(func_80065E44(0)) != 0) {
+                    Task_Create(0x709, (s32 *)&c[18], 1);
+                }
+                Task_NextState2(arg0);
+            case 3:
+                if (c[18] == NULL) {
+                    Task_NextState1(arg0);
+                }
+                break;
+            }
+            break;
+        lose:
+            Task_SetState1(arg0, 3);
+            r = 1;
+            w->field_C = r;
+            goto chk;
+        case 3:
+            r = 0;
+            sum = 0;
+            for (n = 0; n < 3; n++) {
+                sum += D_8006AA88.rec[n].hp;
+            }
+            if (sum == 0) {
+                goto lose;
+            }
+            sum = 0;
+            for (n = 3; n < 6; n++) {
+                sum += D_8006AA88.rec[n].hp;
+            }
+            if (sum == 0) {
+                Task_SetState1(arg0, 4);
+                r = 1;
+                w->field_C = 0;
+            }
+        chk:
+            if (r == 0) {
+                func_80065D84(0);
+                if (func_80065E44(0) == -1) {
+                if (++w->field_4 == 3) {
+                memset((u8 *)cnt, 0, 8);
+                for (n = 0; n < 3; n++) {
+                    if (D_8006AA88.rec[n].hp != 0) {
+                        cnt[0]++;
+                    }
+                }
+                for (n = 3; n < 6; n++) {
+                    if (D_8006AA88.rec[n].hp != 0) {
+                        cnt[1]++;
+                    }
+                }
+                if (cnt[0] == cnt[1]) {
+                    cnt[0] = 0;
+                    cnt[1] = 0;
+                    for (n = 0; n < 3; n++) {
+                        if (D_8006AA88.rec[n].hp != 0) {
+                            cnt[0] += D_8006AA88.rec[n].hp;
+                        }
+                    }
+                    for (n = 3; n < 6; n++) {
+                        if (D_8006AA88.rec[n].hp != 0) {
+                            cnt[1] += D_8006AA88.rec[n].hp;
+                        }
+                    }
+                }
+                if (cnt[0] >= cnt[1]) {
+                    w->field_C = 0;
+                } else {
+                    w->field_C = 1;
+                }
+                } else {
+                    Task_SetState1(arg0, 1);
+                    break;
+                }
+                } else {
+                    Task_SetState1(arg0, 2);
+                    break;
+                }
+            }
+            Task_NextState0(arg0);
+            break;
+        }
+        break;
+    case 2:
+        switch (arg0->stateLevel1) {
+        nf:
+            wait = 1;
+            goto done;
+        case 0:
+        default:
+            Snd_PlayById(0x202, 1);
+            func_8006A080(w->field_C + 0x19);
+            func_80064BB0((Stg35ChildOwner *)arg0, w->field_C);
+            arg0->elapsed = 0;
+            Task_NextState1(arg0);
+        case 1:
+            wait = 0;
+            for (i = w->field_C * 3; i < w->field_C * 3 + 3; i++) {
+                if (D_8006AA88.rec[i].hp != 0) {
+                    f = Anim_GetModelAnimFile(D_8006AA88.rec[i].digiId, 8);
+                    Cd_QueueFile(f);
+                    if (Cd_GetFileState(f) != 3) {
+                        goto nf;
+                    }
+                }
+            }
+        done:
+            if (wait != 0) {
+                break;
+            }
+            if (arg0->elapsed < 0x3C) {
+                break;
+            }
+            for (j = w->field_C * 3; j < w->field_C * 3 + 3; j++) {
+                if (D_8006AA88.rec[j].hp != 0) {
+                    Task_SetState01(c[11 + j], 2, 2);
+                }
+            }
+            Task_NextState1(arg0);
+            arg0->elapsed = 0;
+        case 2:
+            if (arg0->elapsed < 0x78) {
+                break;
+            }
+            Task_Create(0x70D, (s32 *)&c[10], w->field_C);
+            Task_NextState1(arg0);
+        case 3:
+            if (arg0->elapsed < 0x78) {
+                break;
+            }
+            if (D_8005F6F0[0].cross > 0 || D_8005F6F0[1].cross > 0) {
+                Task_NextState1(arg0);
+            }
+            break;
+        case 4:
+            Gfx_FadeOutToBlack(0xF);
+            Task_NextState1(arg0);
+        case 5:
+            if (++arg0->stateLevel2 >= 0x10) {
+                D_8005F770.nextGameMode = 0x701;
+                Task_NextState1(arg0);
+            }
+            break;
+        case 6:
+            break;
+        }
+        break;
+    }
+}
 
 void func_80065694(Actor *arg0) {
     Gpu_InitDoubleBuffer(0x140, 0xF0, 0, 0);
