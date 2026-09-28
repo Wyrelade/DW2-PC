@@ -68,8 +68,8 @@ INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80064AFC);
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80064BD8);
 
-void func_80065134(s32 arg0) {
-    D_8005071C->field_1064 = arg0;
+void func_80065134(Stg40Loc *loc) {
+    D_8005071C->field_1064 = loc;
     Task_SetState1(D_80072B68, 0);
 }
 
@@ -313,13 +313,13 @@ INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006940C);
 
 void func_800694D0(Actor *a0) {
     if (func_8006E588(a0) == 1) {
-        Task_SetState1(a0, D_80072B60->field_38);
+        Task_SetState1(a0, (u8)D_80072B60->field_38);
     }
 }
 
 void func_80069514(Actor *a0) {
     if (func_80067704(1) == 1) {
-        Task_SetState1(a0, D_80072B60->field_38);
+        Task_SetState1(a0, (u8)D_80072B60->field_38);
     }
 }
 
@@ -750,7 +750,7 @@ s16 func_800720FC(void) {
 }
 
 s32 func_80072114(void) {
-    return D_80072BC0->field_14;
+    return D_80072BC0->stateLevel1;
 }
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8007212C);
@@ -764,7 +764,7 @@ INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_800722B8);
 void func_80072418(Actor *a0, Block1C *a1) {
     Stg40BC0Work *w = (Stg40BC0Work *)a0->work;
 
-    D_80072BC0 = (Stg40BC0 *)a0;
+    D_80072BC0 = a0;
     w->field_0 = *a1;
     w->field_B4 = 0;
     w->field_B8 = 0;
