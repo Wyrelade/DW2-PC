@@ -422,7 +422,18 @@ INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006AA4C);
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006AB0C);
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006AD14);
+s32 func_8006AD14(Actor *a) {
+    u16 m = 0x1000;
+    s32 i;
+
+    for (i = 0; i < 4; i++) {
+        if (((Stg20FlagWork *)a->work)->field_24 & m) {
+            return (i + 2) % 4;
+        }
+        m <<= 1;
+    }
+    return -1;
+}
 
 void func_8006AD6C(Actor *a, s32 i) {
     ((Stg20Rot *)a->u38.ptr38)->field_42 = D_800703D8[i];
