@@ -392,7 +392,20 @@ void func_800663CC(Stg35LoadHandle *arg0, s32 arg1) {
     Gfx_HidePartsByMask((GfxPartMaskView *)Cd_GetFileEntry(arg0->load->fileId), arg1);
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80066408);
+void func_80066408(Stg35LoadHandle *arg0, s32 mask) {
+    GfxPart *p = (GfxPart *)Cd_GetFileEntry(arg0->load->fileId);
+    GfxPart *q = p;
+
+    if (p->fileId != 0) {
+        do {
+            if (q->groupMask & mask) {
+                q->visible = 1;
+            }
+            p++;
+            q++;
+        } while (p->fileId != 0);
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80066480);
 
