@@ -1344,7 +1344,286 @@ s32 func_8006D2EC(s32 idx, s32 id, s32 lvl) {
     return r;
 }
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006D4D8);
+s32 func_8006D4D8(s32 target, s32 tech, s16 *p3, s16 *p4) {
+    Stg30DigiS *d = &D_80073CD8[target];
+    s32 *st = &((Stg30CombatCD8 *)D_80073CD8)->status[target];
+    s32 type = func_8001D934(d->digiId);
+    s32 dmg;
+
+    switch (tech) {
+    case 0xFD:
+    case 0x100:
+    case 0x107:
+    case 0x10A:
+        dmg = 40;
+        break;
+    case 0xFE:
+    case 0x101:
+    case 0x108:
+    case 0x10B:
+        dmg = 80;
+        break;
+    case 0xFF:
+    case 0x102:
+    case 0x109:
+    case 0x10C:
+        dmg = 160;
+        break;
+    case 0x10F:
+        if (type == 0) {
+            dmg = d->maxHp - d->hp;
+        } else {
+            dmg = 0;
+            *p3 = 4;
+        }
+        break;
+    case 0x110:
+        if (type == 0) {
+            dmg = d->maxMp - d->mp;
+        } else {
+            dmg = 0;
+            *p3 = 4;
+        }
+        break;
+    case 0x112:
+        if (type == 1) {
+            dmg = d->maxHp - d->hp;
+        } else {
+            dmg = 0;
+            *p3 = 4;
+        }
+        break;
+    case 0x113:
+        if (type == 1) {
+            dmg = d->maxMp - d->mp;
+        } else {
+            dmg = 0;
+            *p3 = 4;
+        }
+        break;
+    case 0x115:
+        if (type == 2) {
+            dmg = d->maxHp - d->hp;
+        } else {
+            dmg = 0;
+            *p3 = 4;
+        }
+        break;
+    case 0x116:
+        if (type == 2) {
+            dmg = d->maxMp - d->mp;
+        } else {
+            dmg = 0;
+            *p3 = 4;
+        }
+        break;
+    case 0x124:
+    case 0x125:
+    case 0x126:
+    case 0x127:
+    case 0x128:
+    case 0x129:
+    case 0x12A:
+    case 0x12B:
+    case 0x12C:
+    case 0x12D:
+        dmg = func_8006D2EC(target, tech, D_8005E65E - 0x60);
+        break;
+    default:
+        dmg = 0;
+        break;
+    }
+    switch (tech) {
+    case 0xFD:
+    case 0xFE:
+    case 0xFF:
+    case 0x107:
+    case 0x108:
+    case 0x109:
+    case 0x10F:
+    case 0x112:
+    case 0x115:
+        d->hp += dmg;
+        if (d->maxHp < d->hp) {
+            d->hp = d->maxHp;
+        }
+        break;
+    case 0x100:
+    case 0x101:
+    case 0x102:
+    case 0x10A:
+    case 0x10B:
+    case 0x10C:
+    case 0x110:
+    case 0x113:
+    case 0x116:
+        d->mp += dmg;
+        if (d->maxMp < d->mp) {
+            d->mp = d->maxMp;
+        }
+        break;
+    case 0x103:
+        *p3 = 4;
+        *p4 = 2;
+        *st &= ~1;
+        break;
+    case 0x104:
+        *p3 = 4;
+        *p4 = 4;
+        *st &= ~2;
+        break;
+    case 0x105:
+        *p3 = 4;
+        *p4 = 6;
+        *st &= ~4;
+        break;
+    case 0x106:
+    case 0x10D:
+        *p3 = 4;
+        *p4 = 0x10F;
+        *st = 0;
+        break;
+    case 0x10E:
+        *p3 = 4;
+        *p4 = 0x204;
+        d->hp = d->maxHp;
+        d->mp = d->maxMp;
+        break;
+    case 0x111:
+        if (type == 0) {
+            d->hp = d->maxHp;
+            *p4 = 0x18;
+        } else {
+            *p3 = 4;
+        }
+        break;
+    case 0x114:
+        if (type == 1) {
+            d->hp = d->maxHp;
+            *p4 = 0x18;
+        } else {
+            *p3 = 4;
+        }
+        break;
+    case 0x117:
+        if (type == 2) {
+            d->hp = d->maxHp;
+            *p4 = 0x18;
+        } else {
+            *p3 = 4;
+        }
+        break;
+    case 0x118:
+        if (type == 0) {
+            d->defense = d->defense * 120 / 100;
+            D_80073CC0.field_346[target] = 1;
+            *p4 = 0x16;
+        }
+        *p3 = 4;
+        break;
+    case 0x119:
+        if (type == 0) {
+            d->defense = d->defense * 80 / 100;
+            D_80073CC0.field_340[target] = 1;
+            *p4 = 0xA;
+        }
+        *p3 = 4;
+        break;
+    case 0x11A:
+        if (type == 0) {
+            d->attack = d->attack * 120 / 100;
+            D_80073CC0.field_346[target] = 1;
+            *p4 = 0x15;
+        }
+        *p3 = 4;
+        break;
+    case 0x11B:
+        if (type == 0) {
+            d->attack = d->attack * 80 / 100;
+            D_80073CC0.field_340[target] = 1;
+            *p4 = 9;
+        }
+        *p3 = 4;
+        break;
+    case 0x11C:
+        if (type == 1) {
+            d->defense = d->defense * 120 / 100;
+            D_80073CC0.field_346[target] = 1;
+            *p4 = 0x16;
+        }
+        *p3 = 4;
+        break;
+    case 0x11D:
+        if (type == 1) {
+            d->defense = d->defense * 80 / 100;
+            D_80073CC0.field_340[target] = 1;
+            *p4 = 0xA;
+        }
+        *p3 = 4;
+        break;
+    case 0x11E:
+        if (type == 1) {
+            d->attack = d->attack * 120 / 100;
+            D_80073CC0.field_346[target] = 1;
+            *p4 = 0x15;
+        }
+        *p3 = 4;
+        break;
+    case 0x11F:
+        if (type == 1) {
+            d->attack = d->attack * 80 / 100;
+            D_80073CC0.field_340[target] = 1;
+            *p4 = 9;
+        }
+        *p3 = 4;
+        break;
+    case 0x120:
+        if (type == 2) {
+            d->defense = d->defense * 120 / 100;
+            D_80073CC0.field_346[target] = 1;
+            *p4 = 0x16;
+        }
+        *p3 = 4;
+        break;
+    case 0x121:
+        if (type == 2) {
+            d->defense = d->defense * 80 / 100;
+            D_80073CC0.field_340[target] = 1;
+            *p4 = 0xA;
+        }
+        *p3 = 4;
+        break;
+    case 0x122:
+        if (type == 2) {
+            d->attack = d->attack * 120 / 100;
+            D_80073CC0.field_346[target] = 1;
+            *p4 = 0x15;
+        }
+        *p3 = 4;
+        break;
+    case 0x123:
+        if (type == 2) {
+            d->attack = d->attack * 80 / 100;
+            D_80073CC0.field_340[target] = 1;
+            *p4 = 9;
+        }
+        *p3 = 4;
+        break;
+    case 0x124:
+    case 0x125:
+    case 0x126:
+    case 0x127:
+    case 0x128:
+    case 0x129:
+    case 0x12A:
+    case 0x12B:
+    case 0x12C:
+    case 0x12D:
+        d->hp = (d->hp < dmg) ? 0 : d->hp - dmg;
+        break;
+    }
+    return dmg;
+}
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006DB90);
 
