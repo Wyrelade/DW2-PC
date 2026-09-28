@@ -108,7 +108,7 @@ void func_80063C08(Actor *arg0) {
             parts = (GfxPart *)Cd_GetFileEntry(list[i]);
             if (i == 0) {
                 masks = (s32 *)Cd_GetFileEntry(0xD280004);
-                Menu_SetPartsGridPos(parts, 0x20, &w->field_10, &w->field_14);
+                Menu_SetPartsGridPos(parts, 0x20, (s32 *)w->field_10, w->field_14.gridSize);
                 Gfx_SetPartsPalette(parts, 0x20, (arg0->elapsed >> 2) & 3);
                 Gfx_HidePartsByMask((GfxPartMaskView *)parts, masks[w->field_20 - 1]);
             }
@@ -472,7 +472,7 @@ void func_80066028(Actor *arg0, s16 arg1) {
     } else {
         func_80067838(D_80063464, 0);
     }
-    w->field_90 = func_800676F4();
+    w->field_90 = (Stg11SaveList *)func_800676F4();
     w->field_94 = 0;
 }
 
@@ -491,8 +491,8 @@ void func_80066748(Stg11Work66C04 *arg0) {
         s[i].field_2 = 0;
         s[i].field_0 = 0;
     }
-    arg0->field_54[0] = 1;
-    arg0->field_54[1] = 0;
+    arg0->field_54.grid[0] = 1;
+    arg0->field_54.grid[1] = 0;
     n = arg0->field_60 < 3 ? 3 : 0x24;
     if (arg0->field_60 < 3) {
         e = pt->field_4;
@@ -507,7 +507,7 @@ void func_80066748(Stg11Work66C04 *arg0) {
         s->field_4 = e;
         s->field_2 = arg0->field_60 < 3 ? i + 3 : 2;
         s++;
-        arg0->field_54[1]++;
+        arg0->field_54.grid[1]++;
     }
     arg0->field_6A = 0;
     e = pt->field_0->elems;
@@ -559,7 +559,7 @@ void func_80066A0C(Actor *arg0) {
     s32 i;
     DigiRosterEntry *d;
 
-    idx = Menu_GridIndexColMajor(w->field_50, w->field_54);
+    idx = Menu_GridIndexColMajor((s16 *)&w->field_50, w->field_54.grid);
     s = &w->field_6C[idx];
     if (s->field_2 != 2) {
         Snd_PlayById(0x10, 0);
@@ -655,7 +655,7 @@ void func_80067838(u8 *arg0, u8 arg1) {
 
 INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80067880);
 
-u16 func_800678F0(Stg11SaveWork *arg0) {
+s32 func_800678F0(Stg11SaveWork *arg0) {
     u16 *p = arg0->u34.sum;
     u16 sum = 0;
     s32 n = 0x1FFF;
@@ -715,7 +715,7 @@ void func_80068058(Actor *arg0) {
     case 0:
     default:
         D_800685D0 = arg0;
-        D_800685D4 = arg0->work;
+        D_800685D4 = (Stg11SaveWork *)arg0->work;
         Task_NextState0(arg0);
         break;
     case 1:
