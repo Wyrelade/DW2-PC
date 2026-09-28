@@ -545,7 +545,21 @@ void func_8006F674(Stg30TaskHead *a0, s32 *args) {
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006F69C);
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006F820);
+void func_8006F820(Stg30TaskHead *a0) {
+    Stg30Work732E8 *w = (Stg30Work732E8 *)a0->work;
+    Stg30Part *p = (Stg30Part *)Cd_GetFileEntry(D_800732D0[a0->field_8]);
+    Stg30Part *q;
+    s32 vis;
+
+    for (q = p; q->fileId != 0; q++) {
+        vis = q->groupMask == a0->field_4;
+        q->field_E = 0;
+        q->visible = vis;
+        q->field_10 = w->field_0;
+        q->palette = w->field_4;
+    }
+    Gfx_DrawParts((EntA0 *)p);
+}
 
 void func_8006F8CC(Actor *a0, Vec3 *args) {
     ((Stg30WorkVec3 *)a0->work)->pos = *args;
