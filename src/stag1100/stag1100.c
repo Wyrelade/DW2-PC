@@ -1406,7 +1406,159 @@ void func_80066C04(Actor *arg0, s16 arg1) {
     w->field_68 = w->field_60 >= 3;
 }
 
-INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80066C48);
+void func_80066C48(Actor *arg0) {
+    Stg11Work66C04 *w = (Stg11Work66C04 *)arg0->work;
+    s32 *slot;
+    s32 r;
+    s32 r3;
+    s32 *slot2;
+
+    switch (arg0->stateLevel0) {
+    case 0:
+    default:
+        w->field_54.layout = D_800681F8;
+        w->field_66 = 0;
+        w->field_50.y = 0;
+        w->field_50.x = 0;
+        func_80066748(w);
+        Mem_FillWordsNeg1(w->field_0, 0x14);
+        Task_NextState0(arg0);
+        break;
+    case 1:
+        switch (arg0->stateLevel1) {
+        case 0:
+        default:
+            if (Math_RampToOne(arg0, &w->scale) == 0) {
+                func_80066860(w, 1);
+                Task_NextState1(arg0);
+            }
+            break;
+        case 1:
+            switch (w->field_60) {
+            case 1:
+            case 2:
+            default:
+                if (w->field_6A >= 4) {
+                    Task_SetState1(arg0, 3);
+                } else {
+                    Task_SetState1(arg0, 4);
+                }
+                break;
+            case 3:
+            case 4:
+                Text_OpenPacked(&w->field_0[0x10], (s32)Cd_GetFileEntry(w->field_1A0 + 0x1FD0109), 0x80, D_80068204);
+                Text_OpenPacked(&w->field_0[0x12], (s32)Cd_GetFileEntry(0x1FD00FA), 0, D_80068208);
+                Task_NextState1(arg0);
+                break;
+            }
+            break;
+        case 2:
+            if (Menu_MoveGridCursor((s16 *)&w->field_50, w->field_54.grid, w->field_64) == 0) {
+                if (D_8005F6F0[w->field_64].triangle > 0) {
+                    func_80066B60(arg0);
+                } else if (D_8005F6F0[w->field_64].cross > 0) {
+                    func_80066A0C(arg0);
+                }
+            } else {
+                Snd_PlayById(0xD, 0);
+                if (w->field_50.y - w->field_66 >= 4) {
+                    w->field_66 = w->field_50.y - 3;
+                    func_80066860(w, 0);
+                } else if (w->field_50.y < w->field_66) {
+                    w->field_66 = w->field_50.y;
+                    func_80066860(w, 0);
+                }
+                Task_SetState1(arg0, 1);
+            }
+            break;
+        case 3:
+            switch (arg0->stateLevel2) {
+            case 0:
+            default:
+                Text_OpenPacked(&w->field_0[0x10], (s32)Cd_GetFileEntry(0x1FD01A9), 0x81, D_80068204);
+                Text_SetInputPad(w->field_0[0x10], w->field_64);
+                Task_NextState2(arg0);
+                break;
+            case 1:
+                r3 = func_800136A4(w->field_0[0x10]);
+                if (r3 != 0) {
+                    if (r3 == 1) {
+                        Task_SetState1(arg0, 5);
+                    } else {
+                        Task_SetState1(arg0, 4);
+                    }
+                }
+                break;
+            }
+            break;
+        case 4:
+            switch (arg0->stateLevel2) {
+            case 0:
+            default:
+                Text_OpenPacked(&w->field_0[0x10], (s32)Cd_GetFileEntry(0x1FD01AA), 0x81, D_80068204);
+                Text_SetInputPad(w->field_0[0x10], w->field_64);
+                Task_NextState2(arg0);
+                break;
+            case 1:
+                r = func_800136A4(w->field_0[0x10]);
+                if (r != 0) {
+                    if (r == 1) {
+                        D_80050780 = r;
+                        D_800685C8 = r;
+                    }
+                    Task_SetState0(arg0, 2);
+                }
+                break;
+            }
+            break;
+        case 5:
+            slot = (s32 *)arg0->u34.children;
+            switch (arg0->stateLevel2) {
+            case 0:
+            default:
+                Text_CloseArray(w->field_0, 0x14);
+                Task_NextState2(arg0);
+                break;
+            case 1:
+                if (Math_RampToZero(arg0, &w->scale) == 0) {
+                    Task_Create(0x605, slot, w->field_64 + 3);
+                    Task_NextState2(arg0);
+                }
+                break;
+            case 2:
+                if (*slot == 0) {
+                    Task_SetState0(arg0, 0);
+                }
+                break;
+            }
+            break;
+        }
+        break;
+    case 2:
+        slot2 = (s32 *)arg0->u34.children;
+        switch (arg0->stateLevel1) {
+        case 0:
+        default:
+            if (*slot2 != 0) {
+                Task_SetState0((Actor *)*slot2, 2);
+            }
+            Text_CloseArray(w->field_0, 0x14);
+            Task_NextState1(arg0);
+            break;
+        case 1:
+            if (*slot2 == 0) {
+                Task_NextState1(arg0);
+            }
+            break;
+        case 2:
+            if (Math_RampToZero(arg0, &w->scale) == 0) {
+                Task_SetState0(arg0, 3);
+            }
+            break;
+        }
+        break;
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80067124);
 
