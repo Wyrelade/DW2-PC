@@ -4079,5 +4079,13 @@
   },
   "stag1100:func_80067B54": {
     "passes": []
+  },
+  "stag1100:func_80067880": {
+    "passes": [
+      "nodiv",
+      "param_copy",
+      "reg_realloc",
+      "sched_match"
+    ]
   }
 }
