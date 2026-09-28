@@ -464,7 +464,20 @@ void func_8006659C(Stg35LoadHandle *arg0, s32 mask, s32 v) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80066618);
+void func_80066618(Stg35LoadHandle *arg0, s32 mask, s32 v) {
+    GfxPart *p = (GfxPart *)Cd_GetFileEntry(arg0->load->fileId);
+    GfxPart *q = p;
+
+    if (p->fileId != 0) {
+        do {
+            if (q->groupMask & mask) {
+                q->y = v;
+            }
+            p++;
+            q++;
+        } while (p->fileId != 0);
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80066694);
 
