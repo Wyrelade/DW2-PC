@@ -101,7 +101,19 @@ INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_800675CC);
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80067624);
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006767C);
+s32 func_8006767C(Stg30IdSet *a0, s16 *a1, u8 id) {
+    s32 i;
+
+    for (i = 0; i < 12; i++) {
+        if (a0->ids[i] == id) {
+            return 1;
+        }
+        if (a1[i] == id) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_800676C4);
 
