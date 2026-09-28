@@ -320,7 +320,10 @@ INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80070C68);
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80070D14);
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80070D68);
+void func_80070D68(Actor *a0, Stg30Ref **args) {
+    ((Stg30Work734F8 *)a0->work)->ref = args[0];
+    a0->field_8 = args[0]->field_8;
+}
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80070D8C);
 
