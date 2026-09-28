@@ -1238,7 +1238,19 @@ void func_80070754(void) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_800707D0);
+void func_800707D0(void) {
+    s32 w = D_8005071C->field_E54->field_0;
+    s32 buf = Mem_Alloc(0x3FF8, 2);
+    s32 i;
+
+    D_80072B60->field_0 = 0;
+    while ((D_80072BB8 = i = func_800706C8()) != -1) {
+        func_80070490(buf, 0, i % w, i / w, 0x2000);
+        func_80070754();
+        D_80072B60->field_0++;
+    }
+    Mem_Free((ActorWork *)buf);
+}
 
 Stg40Cell *func_800708A4(s32 x, s32 y) {
     Stg40Blk5071C *b = D_8005071C;
