@@ -1752,7 +1752,149 @@ void func_80068D34(Actor *arg0) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_8006926C);
+void func_8006926C(s32 arg0) {
+    Stg35Rec2C *b = &D_8006AA88.field_238[arg0];
+    s16 *p;
+    s16 targets[6];
+    s32 dmg[6];
+    s16 kind = 1;
+    s16 skill = (s16)b->field_8;
+    s32 hit;
+    s32 n;
+    s32 c;
+    s32 i;
+
+    hit = func_8001EF64((s16)b->field_8) > 0;
+    p = D_8006ADE0;
+    for (i = 0; i < 6; i++) {
+        dmg[i] = 0;
+        targets[i] = -1;
+    }
+    n = 0;
+    switch (b->field_4) {
+    default:
+        if (D_8006AA88.rec[b->field_4].hp != 0) {
+            n = 1;
+            targets[0] = b->field_4;
+        }
+        break;
+    case 7:
+        if (hit) {
+            for (i = 0, c = 0; i < 3; i++) {
+                if (D_8006AA88.rec[i].hp != 0) {
+                    targets[c++] = i;
+                }
+            }
+        } else {
+            for (i = 0, c = 0; i < 3; i++) {
+                targets[c++] = i;
+            }
+        }
+        n = c;
+        kind = 0;
+        break;
+    case 8:
+        if (hit) {
+            for (c = 0, i = 3; i < 6; i++) {
+                if (D_8006AA88.rec[i].hp != 0) {
+                    targets[c++] = i;
+                }
+            }
+        } else {
+            for (c = 0, i = 3; i < 6; i++) {
+                targets[c++] = i;
+            }
+        }
+        n = c;
+        kind = 1;
+        break;
+    case 9:
+        if (hit) {
+            for (c = 0, i = 0; i < 6; i++) {
+                if (D_8006AA88.rec[i].hp != 0) {
+                    targets[c++] = i;
+                }
+            }
+        } else {
+            for (c = 0, i = 0; i < 6; i++) {
+                targets[c++] = i;
+            }
+        }
+        n = c;
+        kind = 2;
+        break;
+    }
+    for (i = 0; i < n; i++) {
+        dmg[i] = func_80065BE0(arg0, targets[i], skill);
+    }
+    *p++ = 2;
+    *p++ = arg0 + 10;
+    *p++ = 3;
+    *p++ = arg0;
+    *p++ = 0x11;
+    *p++ = 0xD;
+    *p++ = D_8006AA88.field_238[arg0].field_0 - 1;
+    *p++ = 1;
+    *p++ = 0x12;
+    *p++ = 0xE;
+    *p++ = skill;
+    *p++ = 0x13;
+    *p++ = skill;
+    *p++ = n;
+    *p++ = 8;
+    *p++ = arg0;
+    *p++ = skill;
+    *p++ = 0;
+    *p++ = 0x96;
+    *p++ = 7;
+    *p++ = arg0;
+    for (i = 0; i < n; i++) {
+        *p++ = 2;
+        *p++ = targets[i] + 0x10;
+        *p++ = 3;
+        *p++ = targets[i];
+        *p++ = 0;
+        *p++ = i == 0 ? 0x1E : 0xC;
+        *p++ = 0xF;
+        *p++ = dmg[i];
+        if (hit) {
+            if (D_8006AA88.rec[targets[i]].hp != 0) {
+                *p++ = D_8006AA88.field_238[targets[i]].field_0 != 5 ? 0xA : 9;
+            } else {
+                *p++ = 0xB;
+            }
+        } else {
+            *p++ = 0xC;
+        }
+        *p++ = targets[i];
+        *p++ = skill;
+        if (n == 1) {
+            if (hit) {
+                *p++ = 1;
+                *p++ = targets[i];
+                *p++ = 0;
+                *p++ = 0x1E;
+            } else {
+                *p++ = 0;
+                *p++ = 0x78;
+            }
+        } else {
+            *p++ = 0;
+            *p++ = 0x3C;
+        }
+    }
+    if (n != 1) {
+        *p++ = 2;
+        *p++ = kind + 0x16;
+        *p++ = kind + 4;
+        *p++ = 0;
+        *p++ = 0xB4;
+    }
+    *p = 0x14;
+    for (i = 0; i < 6; i++) {
+        D_8006AA88.field_340[i] = targets[i];
+    }
+}
 
 s32 func_80069850(s32 arg0) {
     func_8006926C(arg0);
