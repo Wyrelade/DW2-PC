@@ -2227,7 +2227,101 @@ void func_8006DA18(void) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006DB68);
+s32 func_8006DB68(a0, a1, a2, a3)
+    s32 a0;
+    s32 a1;
+    s16 a2;
+    s16 a3;
+{
+    Stg40Ids4 tbl;
+    s32 lvl;
+    s32 t;
+    s32 u;
+    s32 m;
+    s32 kind;
+    s32 model;
+    s32 bit;
+    Stg40Rec3 *r;
+    u8 *d;
+
+    lvl = a1;
+    u = lvl;
+    if (lvl == 0) {
+        u = 1;
+    }
+    lvl = u;
+    switch (a0) {
+    case 0:
+    default:
+        return 0;
+    case 2:
+        t = 5;
+        t = (lvl < t) ? lvl : t;
+        lvl = t;
+        model = lvl + 0x25A;
+        kind = 6;
+        bit = lvl - 1;
+        break;
+    case 3:
+        t = 5;
+        t = (lvl < t) ? lvl : t;
+        lvl = t;
+        model = lvl + 0x25F;
+        kind = 7;
+        bit = lvl + 4;
+        break;
+    case 4:
+        t = 5;
+        t = (lvl < t) ? lvl : t;
+        lvl = t;
+        model = lvl + 0x270;
+        kind = 8;
+        bit = lvl + 9;
+        break;
+    case 5:
+    case 6:
+    case 7:
+    case 8:
+        tbl = D_8006362C;
+        t = 3;
+        t = (lvl < t) ? lvl : t;
+        lvl = t;
+        kind = a0 + 4;
+        model = tbl.id[a0 - 5];
+        t = lvl + 5;
+        bit = kind + t;
+        model = model + lvl - 1;
+        break;
+    case 1:
+        m = 5;
+        m = (lvl < m) ? lvl : m;
+        lvl = m;
+        if (D_8005071C->field_14 >= 100) {
+            return -1;
+        }
+        r = &D_8005071C->field_D08[D_8005071C->field_14];
+        r->field_0 = a2;
+        r->field_1 = a3;
+        r->field_2 = lvl;
+        D_8005071C->field_14++;
+        return 0;
+    }
+    if (!(bit & D_80072B60->field_188)) {
+        if (D_80072B60->field_18C >= 12) {
+            return -1;
+        }
+        D_80072B60->field_188 |= bit;
+        D_80072B60->field_18C++;
+    }
+    if (D_8005071C->field_12 < 16) {
+        func_8006D4E0(kind, a0, model, 0, a2, a3);
+        d = D_8005071C->field_CE8[D_8005071C->field_12 - 1];
+        d[0] = a0;
+        d[1] = lvl;
+        return 0;
+    }
+    return -1;
+}
 
 void func_8006DDDC(void) {
     Stg40Spawn *e;
