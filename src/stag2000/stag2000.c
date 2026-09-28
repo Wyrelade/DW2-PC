@@ -327,7 +327,40 @@ void func_80068B3C(Actor *a, s32 v) {
     a->field_8 = v;
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80068B44);
+void func_80068B44(Actor *a) {
+    Stg20NameWork *w = (Stg20NameWork *)a->work;
+    Stg20TextArgs args;
+
+    switch (a->stateLevel0) {
+    case 0:
+        Mem_FillWordsNeg1((s32 *)w, 1);
+        Flag_Set(0x10, 0);
+        Task_NextState0(a);
+        break;
+    case 1:
+        if (w->field_18 != 0) {
+            args.text = w->field_4;
+            args.bigFont = 1;
+            args.color = 0;
+            args.pos.x = 0x10;
+            args.pos.y = 0xBA;
+            args.charAdvance = 0;
+            args.lineAdvance = 0x10;
+            args.charDelay = 3;
+            args.strArg0 = (s32)w->name;
+            Text_Open(w, &args);
+            Flag_Set(0x10, 0);
+            w->field_1C = -1;
+            w->field_18 = 0;
+        }
+        if (w->field_1C == -1 && Flag_Test(0x10) != 0) {
+            w->field_1C = Flag_Test(0x11);
+        }
+        break;
+    case 2:
+        break;
+    }
+}
 
 void func_80068C50(Actor *a) {
     Text_CloseArray((s32 *)a->work, 1);
