@@ -647,7 +647,78 @@ s32 func_800692A4(s32 id, s32 kind, s32 def) {
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80069594);
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_800696E8);
+void func_800696E8(void) {
+    s32 spd[6];
+    s32 i;
+    s32 n;
+    s32 best;
+    s32 bonus;
+    s32 k;
+    s32 slot;
+    s32 slot2;
+    s32 j;
+
+    for (i = 0; i < 6; i++) {
+        if (D_80073CC0.entries[i].field_2E != 0 && D_80073CC0.field_2AC[i].field_0 != 0) {
+            bonus = 0;
+            if (D_80073CC0.field_2AC[i].field_0 == 1 && (func_8001F020(D_80073CC0.field_2AC[i].field_6) & 8)) {
+                bonus = D_80073CC0.entries[i].field_38;
+            }
+            spd[i] = D_80073CC0.entries[i].field_38 + bonus + (u16)((u16)Rand_Next() % 11);
+        } else {
+            spd[i] = 0;
+        }
+    }
+    func_8006E530();
+    for (i = 0; i < 6; ) {
+        best = 0;
+        n = 0;
+        for (j = 0; j < 6; j++) {
+            if (spd[j] != 0 && best < spd[j]) {
+                best = spd[j];
+                n = j;
+            }
+        }
+        if (best == 0) {
+            break;
+        }
+        i++;
+        func_8006E55C(func_8006E634(), n);
+        spd[n] = 0;
+    }
+    for (i = 0; i < 6; i++) {
+        slot = func_8006E5F8(i);
+        k = func_8006E674(slot);
+        if (slot != -1) {
+            switch (D_80073CC0.field_2AC[i].field_0) {
+            case 2:
+                func_8006E5B4(slot);
+                func_8006E55C(func_8006E634(), i);
+                break;
+            case 3:
+                func_8006E5B4(slot);
+                break;
+            case 5:
+                func_8006E5B4(slot);
+                func_8006E55C(0, k);
+                break;
+            }
+        }
+    }
+    for (i = 0; i < 6; i++) {
+        if (D_80073CC0.entries[i].field_19 != 0 && D_80073CC0.field_2AC[i].field_6 != 0 &&
+            (func_8001F020(D_80073CC0.field_2AC[i].field_6) & 0x20)) {
+            slot2 = func_8006E5F8(i);
+            if (slot2 != -1) {
+                func_8006E5B4(slot2);
+                func_8006E55C(func_8006E634(), i);
+            }
+        }
+    }
+    if (D_80073CC0.field_2AC[func_8006E674(0)].field_0 == 2) {
+        D_80073CC0.field_2AC[func_8006E674(0)].field_0 = 1;
+    }
+}
 
 s32 func_800699F8(s32 a, s32 b) {
     if (a == b) {
