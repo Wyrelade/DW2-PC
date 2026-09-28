@@ -179,7 +179,14 @@ INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80065B88);
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80065BE0);
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80065D00);
+void func_80065D00(void) {
+    s32 v = -1;
+    s32 i;
+
+    for (i = 11; i >= 0; i--) {
+        D_8006AA58[i] = v;
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80065D2C);
 
