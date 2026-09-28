@@ -377,7 +377,17 @@ void func_8006A3D0(Actor *a) {
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006A434);
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006A6DC);
+void func_8006A6DC(Actor *a) {
+    Stg20DrawWork *w = (Stg20DrawWork *)a->work;
+
+    if (w->visible != 0) {
+        Gfx_AttachModel(a, w->modelId);
+        Anim_StepModelAnim(a);
+        Actor_UpdateTransform(a);
+        Gfx_CalcModelBoneMatrices(a);
+        Gfx_DrawTexModel(a, 0);
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006A744);
 
