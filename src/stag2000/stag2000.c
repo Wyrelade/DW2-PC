@@ -213,7 +213,30 @@ s32 func_80067770(Actor *a, s32 dir) {
     return func_800636A8(func_80067714(a, dir)) & mask;
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_800677C8);
+void func_800677C8(Actor *a, Stg20Marks *m, s32 dir, s32 timer) {
+    Stg20Cell *c;
+    s32 i;
+
+    if (dir == -1) {
+        c = func_80067504(a);
+    } else {
+        c = func_80067714(a, dir);
+    }
+    for (i = 0; i < 5; i++) {
+        if (m->cell[i].x == c->x && m->cell[i].y == c->y) {
+            goto found;
+        }
+    }
+    for (i = 0; i < 5; i++) {
+        if (m->timer[i] == 0) {
+            goto found;
+        }
+    }
+    return;
+found:
+    m->cell[i] = *c;
+    m->timer[i] = timer;
+}
 
 void func_800678A8(Actor *a, Stg20Marks *m) {
     s32 i;
