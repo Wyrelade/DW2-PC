@@ -733,7 +733,32 @@ void func_8006A080(s32 arg0) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_8006A0D4);
+void func_8006A0D4(u8 arg0, s32 *arg1, s32 *arg2, s32 *arg3, s32 *arg4) {
+    Stg35Rec6 *p;
+    s32 i;
+    s32 j;
+
+    for (i = 0; i < 6; i++) {
+        p = D_8006AA24[i];
+        j = 0;
+        while (p->field_0 != 0) {
+            if (p->field_0 == arg0) {
+                goto found;
+            }
+            p++;
+            j++;
+        }
+        continue;
+    found:
+        *arg1 = i;
+        *arg2 = j;
+        *arg3 = p->field_4;
+        *arg4 = p->field_2;
+        return;
+    }
+    *arg1 = -1;
+    *arg2 = 100;
+}
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_8006A168);
 
