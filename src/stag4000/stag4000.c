@@ -2046,7 +2046,40 @@ void func_8006F62C(Stg40TileWork *a0, s32 x, s32 y) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006F6BC);
+void func_8006F6BC(Stg40TileWork *w) {
+    s32 x = D_8005071C->field_1068->u0.pair.field_0;
+    s32 y = D_8005071C->field_1068->u0.pair.field_2;
+    s32 dx = w->field_76C - x;
+    s32 dy = w->field_76E - y;
+
+    if (dx == 0 && dy == 0) {
+        return;
+    }
+    func_8006F3F4(w, x, y);
+    if (dx > 0) {
+        func_8006F62C(w, x - 1, y - 1);
+        func_8006F62C(w, x - 1, y);
+        func_8006F62C(w, x - 1, y + 1);
+    }
+    if (dx < 0) {
+        func_8006F62C(w, x + 1, y - 1);
+        func_8006F62C(w, x + 1, y);
+        func_8006F62C(w, x + 1, y + 1);
+    }
+    if (dy > 0) {
+        func_8006F62C(w, x - 1, y - 1);
+        func_8006F62C(w, x, y - 1);
+        func_8006F62C(w, x + 1, y - 1);
+    }
+    if (dy < 0) {
+        func_8006F62C(w, x - 1, y + 1);
+        func_8006F62C(w, x, y + 1);
+        func_8006F62C(w, x + 1, y + 1);
+    }
+    func_8006F62C(w, x, y);
+    w->field_76C = D_8005071C->field_1068->u0.pair.field_0;
+    w->field_76E = D_8005071C->field_1068->u0.pair.field_2;
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006F86C);
 
