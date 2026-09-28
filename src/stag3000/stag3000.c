@@ -248,7 +248,9 @@ INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006E978);
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006EB24);
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006EC5C);
+void func_8006EC5C(Actor *a0) {
+    Snd_PlayById(func_8001E8D0(a0->digiId) == 0 ? 0x204 : 0x205, 0);
+}
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006EC94);
 
