@@ -598,7 +598,26 @@ void func_800704FC(Actor *a0) {
     Task_DefaultDestroy(a0);
 }
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80070530);
+s32 func_80070530(s32 a, s32 b) {
+    s32 neg = 0;
+    s32 r;
+    a -= b;
+    if (a == 0) {
+        return neg;
+    }
+    if (a < 0) {
+        neg = 1;
+        a = -a;
+    }
+    r = a / 16;
+    if (r == 0) {
+        r = 1;
+    }
+    if (neg) {
+        r = -r;
+    }
+    return r;
+}
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80070588);
 
