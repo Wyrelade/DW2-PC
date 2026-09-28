@@ -9,7 +9,7 @@
 # Digimon World 2 Decompilation
 
 <!-- PROGRESS:BADGE -->
-![matched](https://img.shields.io/badge/matched-1522%2F1645%20(92.52%25)-1f6feb)
+![matched](https://img.shields.io/badge/matched-1535%2F1645%20(93.31%25)-1f6feb)
 <!-- /PROGRESS:BADGE -->
 ![build](https://img.shields.io/badge/build-byte--identical-2ea043)
 ![platform](https://img.shields.io/badge/platform-PS1%20(SLUS--01193)-8957e5)
@@ -50,15 +50,15 @@ match alone is never enough.
 | **Main executable** (`SLUS_011.93`) | 907 | 907 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 100.00% |
 | &nbsp;&nbsp;└ decompiled to C | | 830 | |
 | &nbsp;&nbsp;└ hand-written assembly, restored as source | | 77 | |
-| **Stage overlays** (`AAA/3.PRO`) | 738 | 615 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱▱▱` 83.33% |
+| **Stage overlays** (`AAA/3.PRO`) | 738 | 628 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱▱▱` 85.09% |
 | &nbsp;&nbsp;└ `STAG0000.PRO` | 69 | 64 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱` 92.75% |
 | &nbsp;&nbsp;└ `STAG1000.PRO` | 35 | 33 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱` 94.29% |
 | &nbsp;&nbsp;└ `STAG1100.PRO` | 55 | 55 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 100.00% |
 | &nbsp;&nbsp;└ `STAG2000.PRO` | 133 | 112 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱▱▱` 84.21% |
-| &nbsp;&nbsp;└ `STAG3000.PRO` | 123 | 92 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱▱▱▱▱` 74.80% |
+| &nbsp;&nbsp;└ `STAG3000.PRO` | 123 | 105 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱▱▱` 85.37% |
 | &nbsp;&nbsp;└ `STAG3500.PRO` | 108 | 105 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱` 97.22% |
 | &nbsp;&nbsp;└ `STAG4000.PRO` | 215 | 154 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱▱▱▱▱▱` 71.63% |
-| **Total** | 1645 | 1522 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱` 92.52% |
+| **Total** | 1645 | 1535 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱` 93.31% |
 <!-- /PROGRESS:TABLE -->
 
 The main executable is fully matched. It is not the whole game: DW2 also has 7 stage
@@ -119,4 +119,5 @@ overlay is then linked with its own script and checked the same way
 
 Workflow and toolchain derived from the Parasite Eve 2 decomp. DW2 file-format
 documentation by RmBeastbow. Thanks to ThirstyWraith for pointing out the stage overlays
-(issue #3).
+(issue #3) and for their STAG3000 battle notes and decomp.me scratches (issue #4), which
+seeded the matches of the battle status and item functions.
