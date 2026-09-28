@@ -1007,7 +1007,42 @@ void func_8006C420(u8 *out, s32 v) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006C514);
+void func_8006C514(Actor *a, s32 id) {
+    Stg20ShopListWork *w = (Stg20ShopListWork *)a->work;
+    s32 i;
+    s32 j;
+    u8 *name;
+    u8 *list = (u8 *)Cd_GetFileEntry(id + 0x3CF0000);
+
+    w->count = 0;
+    for (i = 0; i < 50; i++) {
+        D_80070A08.items[i] = 0;
+        for (j = 0; j < 25; j++) {
+            D_80070A08.names[i][j] = 0xFD;
+        }
+        D_80070A08.names[i][24] = 0xFF;
+    }
+    for (i = 0; i < 50; i++) {
+        if (list[i] == 0) {
+            break;
+        }
+        D_80070A08.items[i] = list[i];
+        name = (u8 *)Item_GetNameText(list[i]);
+        for (j = 0; j < 10; j++) {
+            if (*name == 0xFF) {
+                break;
+            }
+            D_80070A08.names[i][j] = *name++;
+        }
+        func_8006C420(&D_80070A08.names[i][14], list[i]);
+        D_80070A08.names[i][19] = 0xB;
+        D_80070A08.names[i][20] = 0x12;
+        D_80070A08.names[i][21] = 0x1D;
+        D_80070A08.names[i][22] = 0x36;
+        w->count++;
+    }
+    w->pages = w->count != 0 ? (w->count - 1) / 8 : 0;
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006C6F0);
 
