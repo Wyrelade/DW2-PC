@@ -4227,5 +4227,10 @@
       "sched_match",
       "block_iso"
     ]
+  },
+  "stag2000:func_8006EA90": {
+    "passes": [
+      "web_realloc"
+    ]
   }
 }

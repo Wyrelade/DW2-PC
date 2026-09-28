@@ -1903,7 +1903,65 @@ void func_8006E754(Actor *a) {
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006E9E8);
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006EA90);
+void func_8006EA90(Actor *a) {
+    Stg20ItemWork *w = (Stg20ItemWork *)a->work;
+    u8 digits[5];
+    s32 i;
+    s32 j;
+    s32 id;
+    s32 v;
+    s32 lead;
+    u8 *name;
+
+    for (i = 0; i < 6; i++) {
+        for (j = 0; j < 0x18; j++) {
+            w->recs[i].name[j] = 0xFD;
+        }
+        w->recs[i].name[0x14] = 0xB;
+        w->recs[i].name[0x15] = 0x12;
+        w->recs[i].name[0x16] = 0x1D;
+        w->recs[i].name[0x17] = 0xFF;
+    }
+    for (i = 0; i < 6; i++) {
+        id = ((Stg20GameState *)&D_8005E620)->field_2C[D_800706D4[i]];
+        w->recs[i].item = id;
+        if (id != 0) {
+            name = (u8 *)Item_GetNameText(id);
+            j = 0;
+            while (*name != 0xFF) {
+                w->recs[i].name[j++] = *name++;
+            }
+            if (func_8006E9E8(id) != 0) {
+                w->recs[i].price = func_8001E180(id + 1) - func_8001E180(id);
+            } else {
+                w->recs[i].price = 0;
+            }
+        } else {
+            for (j = 0; j < 10; j++) {
+                w->recs[i].name[j] = 0x49;
+            }
+            w->recs[i].price = 0;
+        }
+        v = w->recs[i].price;
+        if (v != 0) {
+            for (j = 4; j != -1; j--) {
+                digits[j] = v % 10;
+                v /= 10;
+            }
+            lead = 1;
+            for (j = 0; j < 5; j++) {
+                if (!lead || digits[j] != 0) {
+                    lead = 0;
+                    w->recs[i].name[j + 0xF] = digits[j];
+                }
+            }
+        } else {
+            for (j = 0; j < 5; j++) {
+                w->recs[i].name[j + 0xF] = 0x49;
+            }
+        }
+    }
+}
 
 void func_8006ED24(Actor *a) {
     Stg20ItemWork *w = (Stg20ItemWork *)a->work;
