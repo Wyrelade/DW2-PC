@@ -11,7 +11,10 @@ void func_800634FC(Actor *arg0) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80063550);
+void func_80063550(Actor *arg0) {
+    func_80066168((Stg35LoadHandle *)arg0->work);
+    Task_DefaultDestroy(arg0);
+}
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80063584);
 
