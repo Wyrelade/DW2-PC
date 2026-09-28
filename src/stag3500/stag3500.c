@@ -1,7 +1,15 @@
 #include "common.h"
 #include "stag3500/stag3500.h"
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_800634FC);
+void func_800634FC(Actor *arg0) {
+    Stg35LoadHandle *w = (Stg35LoadHandle *)arg0->work;
+
+    if (arg0->stateLevel0 == 0) {
+        func_80066120(w);
+        func_800661A4(w, 0xD3F0000);
+        Task_NextState0(arg0);
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80063550);
 
