@@ -229,7 +229,16 @@ INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80068364);
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80068420);
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_800685C4);
+void func_800685C4(Actor *a) {
+    Stg20SlotWork *w = (Stg20SlotWork *)a->work;
+    s32 i;
+
+    for (i = 0; i < 4; i++) {
+        w->slots[i].used = D_8005E620.elems[i + D_800709B0.field_14].state != 0;
+        w->slots[i].enabled = 1;
+        w->slots[i].slot = i + D_800709B0.field_14;
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006863C);
 
