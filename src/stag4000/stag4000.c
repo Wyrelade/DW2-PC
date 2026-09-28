@@ -1668,7 +1668,49 @@ s32 func_8006B9A8(Stg40Ent48 *e, Pair54 *out) {
     return n;
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006BBBC);
+s32 func_8006BBBC(Stg40Ent48 *e, Pair54 *out) {
+    s16 k = e->field_10[4];
+    s32 i;
+    s32 n;
+    s32 m = 0;
+    Stg40Loc *loc = &e->field_18;
+    Pair54 c[3];
+    s16 dx = D_80072B60->field_4->field_18.u0.pair.field_0 - loc->u0.pair.field_0;
+    s16 dy = D_80072B60->field_4->field_18.u0.pair.field_2 - loc->u0.pair.field_2;
+
+    if (dx != 0) {
+        if (dy != 0) {
+            if (abs(dx) >= abs(dy)) {
+                c[0].field_0 = dx < 0 ? loc->u0.pair.field_0 - 1 : loc->u0.pair.field_0 + 1;
+                c[0].field_2 = loc->u0.pair.field_2;
+                c[1].field_0 = loc->u0.pair.field_0;
+                c[1].field_2 = dy < 0 ? loc->u0.pair.field_2 - 1 : loc->u0.pair.field_2 + 1;
+            } else {
+                c[1].field_0 = dx < 0 ? loc->u0.pair.field_0 - 1 : loc->u0.pair.field_0 + 1;
+                c[1].field_2 = loc->u0.pair.field_2;
+                c[0].field_0 = loc->u0.pair.field_0;
+                c[0].field_2 = dy < 0 ? loc->u0.pair.field_2 - 1 : loc->u0.pair.field_2 + 1;
+            }
+            m = 2;
+        } else {
+            c[0].field_0 = dx < 0 ? loc->u0.pair.field_0 - 1 : loc->u0.pair.field_0 + 1;
+            c[0].field_2 = loc->u0.pair.field_2;
+            m = 1;
+        }
+    } else if (dy != 0) {
+        c[0].field_0 = loc->u0.pair.field_0;
+        c[0].field_2 = dy < 0 ? loc->u0.pair.field_2 - 1 : loc->u0.pair.field_2 + 1;
+        m = 1;
+    }
+    for (i = 0, n = 0; i < m; i++) {
+        if (k == (s16)(func_800703E0(c[i].field_0, c[i].field_2) & 0xF)) {
+            out[n].field_0 = c[i].field_0;
+            out[n].field_2 = c[i].field_2;
+            n++;
+        }
+    }
+    return n;
+}
 
 s32 func_8006BDEC(Stg40Ent48 *e, s32 mode) {
     Pair54 buf[3];
