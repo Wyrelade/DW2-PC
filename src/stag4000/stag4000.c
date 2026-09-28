@@ -387,7 +387,56 @@ void func_8006620C(Stg40W667C *w) {
     D_8005F79C = pkt;
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80066318);
+void func_80066318(Actor *a0, s32 *ids) {
+    Stg40W667C *w = (Stg40W667C *)a0->work;
+    GfxTexSlot *slot;
+    Stg40TexRec *e;
+    Stg40FT4 *p;
+    Stg40FT4 *q;
+    s32 i;
+
+    D_80072B68 = a0;
+    D_80072B6C = w;
+    w->field_1414 = 0;
+    w->field_1438 = 0;
+    for (i = 0; i < 2; i++) {
+        slot = Gfx_FindOrLoadTexSlot(*ids);
+        e = (Stg40TexRec *)Cd_GetFileEntry(*ids + 1);
+        w->field_13D4[w->field_1414] = slot;
+        w->field_13F4[w->field_1414] = e;
+        w->field_1418[w->field_1414] = *ids;
+        for (; e->u != 0xFF; e++) {
+            p = &w->field_143C[w->field_1438];
+            p->tag.b.len = 9;
+            p->code = 0x2C;
+            p->r0 = 0x7F;
+            p->g0 = 0x7F;
+            p->b0 = 0x7F;
+            if (w->field_1438 != 26) {
+                p->code &= ~2;
+                p->tpage = ((slot->vramY & 0x100) >> 4) | ((slot->vramX & 0x3FF) >> 6) | ((slot->vramY & 0x200) << 2);
+            } else {
+                p->code |= 2;
+                p->tpage = 0x40 | ((slot->vramY & 0x100) >> 4) | ((slot->vramX & 0x3FF) >> 6) | ((slot->vramY & 0x200) << 2);
+            }
+            p->clut = ((slot->vramY + e->cy) << 6) | (((slot->vramX + (e->cx >> 2)) >> 4) & 0x3F);
+            p->u0 = slot->uOffset + e->u;
+            p->v0 = e->v;
+            p->u1 = slot->uOffset + e->u + (e->w * 4 - 1);
+            p->v1 = e->v;
+            p->u2 = slot->uOffset + e->u;
+            p->v2 = e->v + (e->h - 1);
+            p->u3 = slot->uOffset + e->u + (e->w * 4 - 1);
+            p->v3 = e->v + (e->h - 1);
+            w->field_1438++;
+        }
+        ids++;
+        w->field_1414++;
+    }
+    w->field_1418[w->field_1414] = -1;
+    q = &w->field_143C[26];
+    q->code |= 2;
+}
 
 void func_800665E0(Actor *a0) {
     ActorWork *w = a0->work;
