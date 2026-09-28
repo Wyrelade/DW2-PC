@@ -211,7 +211,15 @@ s32 func_800676D0(s32 i) {
     return Text_IsFinished(*p);
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80067704);
+s32 func_80067704(s32 i) {
+    s32 r = 0;
+
+    if (func_800676D0(i) == 1) {
+        func_800676A4(i);
+        r = 1;
+    }
+    return r;
+}
 
 s32 func_80067750(s32 i) {
     s32 *p = &D_80072B84[i];
