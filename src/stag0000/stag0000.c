@@ -1362,7 +1362,51 @@ void func_80067A50(Actor *arg0, Stg00Vec3 *arg1) {
     *(Stg00Vec3 *)arg0->work = *arg1;
 }
 
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80067A70);
+void func_80067A70(Actor *arg0) {
+    Stg00FadeWork *w = (Stg00FadeWork *)arg0->work;
+    s32 v;
+
+    switch (arg0->stateLevel0) {
+    case 0:
+        Task_NextState0(arg0);
+        break;
+    case 1:
+        switch (arg0->stateLevel1) {
+        case 0:
+        default:
+            w->field_10++;
+            w->field_C += 0x200;
+            if (w->field_10 != 7) {
+                break;
+            }
+            arg0->elapsed = 0;
+            w->field_C = 0x1000;
+            Task_NextState1(arg0);
+        case 1:
+            v = w->field_0;
+            if (v != 7) {
+                if (arg0->elapsed < 0x28) {
+                    break;
+                }
+            } else {
+                w->field_10 = Math_CycleRange(arg0->elapsed, 2, 8, 0xF);
+                if (arg0->elapsed < 0x90) {
+                    break;
+                }
+                w->field_10 = v;
+            }
+            Task_NextState1(arg0);
+        case 2:
+            if (--w->field_10 < 0) {
+                Task_SetState0(arg0, 3);
+            }
+            break;
+        }
+        break;
+    case 2:
+        break;
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80067BAC);
 
