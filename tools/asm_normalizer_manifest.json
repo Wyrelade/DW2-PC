@@ -4353,5 +4353,14 @@
     "passes": [
       "nodiv"
     ]
+  },
+  "stag3000:func_800676F4": {
+    "passes": [
+      "nodiv",
+      "reg_realloc",
+      "web_realloc",
+      "save_slot",
+      "sched_match"
+    ]
   }
 }

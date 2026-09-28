@@ -1363,7 +1363,214 @@ s32 func_800676C4(s32 a0, u8 a1) {
     return a0 >= func_8001F0C0(a1);
 }
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_800676F4);
+void func_800676F4(Actor *a0) {
+    Stg30ActorList *l = (Stg30ActorList *)a0->u34.children;
+    Stg30Pair sum;
+    Stg30Init737A0 args;
+    u8 ids[24];
+    u8 idx[24];
+    s32 arg;
+    s32 cnt;
+    Stg30IdSet *e;
+    s32 flag;
+    s32 i;
+    s32 n;
+    s32 m;
+    s32 stage;
+    s32 f;
+    s32 st;
+    s32 t;
+    s32 k;
+    s32 done;
+    s32 j;
+    s32 stage2;
+
+    switch (a0->stateLevel2) {
+    case 0:
+    default:
+        if (D_8007409C != 0) {
+            Snd_PlayById(0x202, 1);
+        } else {
+            Snd_PlayById(0x201, 1);
+        }
+        Task_Create(0x505, &l->field_24, 2);
+        func_80070D14(0x19);
+        func_8006754C((Stg30ListOwner *)a0);
+        a0->elapsed = 0;
+        Task_NextState2(a0);
+    case 1:
+        done = 0;
+        for (i = 0; i < 3; i++) {
+            if (D_80073CC0.entries[i].field_2E != 0) {
+                f = Anim_GetModelAnimFile(D_80073CC0.entries[i].field_19, 8);
+                Cd_QueueFile(f);
+                if (Cd_GetFileState(f) != 3) {
+                    done = 1;
+                    break;
+                }
+            }
+        }
+        if (done) {
+            break;
+        }
+        if (a0->elapsed < 0x3C) {
+            break;
+        }
+        for (i = 0; i < 3; i++) {
+            if (D_80073CC0.entries[i].field_2E != 0) {
+                Task_SetState01(l->actors[i], 2, 2);
+            }
+        }
+        Cd_QueueFile(0x13A);
+        Cd_QueueFile(0x110);
+        Cd_QueueFile(0x25C);
+        a0->elapsed = 0;
+        Task_NextState2(a0);
+    case 2:
+        if (Cd_GetFileState(0x13A) != 3 || Cd_GetFileState(0x110) != 3 || Cd_GetFileState(0x25C) != 3) {
+            break;
+        }
+        if (a0->elapsed < 0xF0) {
+            break;
+        }
+        if (D_80073CC0.entries[0].field_0 == 0) {
+            sum.field_4 = 0;
+            sum.field_0 = 0;
+            for (t = 3; t < 6; t++) {
+                if (D_80073CC0.entries[t].field_19 != 0) {
+                    sum.field_4 += D_80073CC0.field_240[t].field_0;
+                    sum.field_0 += D_80073CC0.entries[t].field_28;
+                }
+            }
+            Task_Create(0x502, &l->field_28, (s32)&sum);
+            Task_NextState2(a0);
+            break;
+        }
+        Task_SetState2(a0, 5);
+        break;
+    case 3:
+        switch (a0->stateLevel3) {
+        case 0:
+        default:
+            if (l->field_28 != 0) {
+                break;
+            }
+            Task_NextState3(a0);
+        case 1:
+        case 2:
+        case 3:
+            if (D_80073CC0.field_34C[a0->stateLevel3 - 1] == 0) {
+                Task_NextState3(a0);
+                break;
+            }
+            switch (a0->stateLevel4) {
+            case 0:
+            default:
+                e = (Stg30IdSet *)&((Stg30StateDigis *)&D_80073CC0)->digis[a0->stateLevel3 - 1];
+                Mem_Zero(&args, 0x1C);
+                args.field_0 = a0->stateLevel3 - 1;
+                flag = 0;
+                cnt = 0;
+                if (e->field_46 != 0) {
+                    if (!func_8006767C(e, args.field_4, e->field_46)) {
+                        args.field_4[cnt++] = e->field_46;
+                        flag = 1;
+                    }
+                    e->field_46 = 0;
+                }
+                j = 0;
+                n = 0;
+                stage = func_8001D958(e->digiId);
+                for (; j < 0x18; j++) {
+                    if (e->field_2E[j] != 0 && func_800676C4(stage, e->field_2E[j])) {
+                        idx[n] = j;
+                        ids[n] = e->field_2E[j];
+                        n++;
+                    }
+                }
+                if (n != 0) {
+                    m = (e->level - 2) % 10;
+                    if (m >= 3) {
+                        k = n;
+                    } else {
+                        k = n / (4 - m) + 1;
+                    }
+                    for (j = 0; j < k; j++) {
+                        if (func_8006767C(e, args.field_4, ids[j])) {
+                            e->field_2E[idx[j]] = 0;
+                        } else {
+                            flag = 1;
+                            args.field_4[cnt++] = ids[j];
+                            e->field_2E[idx[j]] = 0;
+                        }
+                    }
+                }
+                if (!flag) {
+                    Task_NextState3(a0);
+                    break;
+                }
+                Task_Create(0x512, &l->field_28, (s32)&args);
+                Task_NextState4(a0);
+                break;
+            case 1:
+                if (l->field_28 == 0) {
+                    Task_NextState3(a0);
+                }
+                break;
+            }
+            break;
+        case 4:
+            Task_NextState2(a0);
+            break;
+        }
+        break;
+    case 4:
+        if (l->field_28 != 0) {
+            break;
+        }
+        st = D_8005E5E0;
+        if (st != 0) {
+            stage2 = func_8001D958(D_80073CC0.entries[D_80073CC0.field_3D8].field_19);
+            if ((Rand_Next() & 0x7F) < D_80073188[stage2][st - 1]) {
+                arg = D_80073CC0.field_3D8;
+                Task_Create(0x513, &l->field_28, (s32)&arg);
+            }
+        }
+        Task_NextState2(a0);
+        break;
+    case 5:
+        if (l->field_28 != 0) {
+            break;
+        }
+        if ((D_8005F790 & 0xFF00) == 0x200) {
+            func_80011644();
+        }
+        Task_NextState2(a0);
+    case 6:
+        switch (a0->stateLevel3) {
+        case 0:
+        default:
+            Gfx_FadeOutToBlack(0xF);
+            Task_NextState3(a0);
+        case 1:
+            if (++a0->stateLevel4 < 0x10) {
+                break;
+            }
+            if (Flag_Test(0x2DD)) {
+                Flag_Set(0x2DD, 0);
+                D_8005F78C = 0x406;
+            } else {
+                D_8005F770.field_24 = 2;
+                D_8005F770.nextGameMode = D_8005F770.prevGameMode;
+            }
+            Task_NextState3(a0);
+            break;
+        case 2:
+            break;
+        }
+        break;
+    }
+}
 
 void func_80067DB4(Stg30ListOwner *a0) {
     Stg30ActorList *l = a0->list;
