@@ -696,7 +696,34 @@ void func_8006799C(Actor *arg0) {
     Task_DefaultDestroy(arg0);
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_800679D0);
+void func_800679D0(Actor *arg0) {
+    Stg35Work708 *w = (Stg35Work708 *)arg0->work;
+    s32 sel = 6 - w->field_54[arg0->field_8] / 4096;
+    Stg35TextHandle *t;
+    s32 i;
+
+    for (i = 0; i < 7; i++) {
+        t = &w->text[i];
+        if (arg0->field_8 == 0) {
+            func_80065760(t, 0, 0xB8, i * 14 + 0x49);
+        } else {
+            func_80065760(t, 0, 0x1C, i * 14 + 0x49);
+        }
+        if (i == 0) {
+            func_800657B8(t, 1);
+        } else if (w->field_5C[i - 1] != 0) {
+            func_800657F0(t, w->field_5C[i - 1]);
+        } else {
+            func_800657B8(t, 0x1C3);
+        }
+        if (i == sel) {
+            func_800657AC((Stg35LoadHandle *)t, 4);
+        } else {
+            func_800657AC((Stg35LoadHandle *)t, 1);
+        }
+        func_80065824(t);
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80067B18);
 
