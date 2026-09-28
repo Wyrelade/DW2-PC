@@ -41,7 +41,9 @@ typedef struct {
     /* 0x14 */ s32 field_14;
     u8 _pad18[0x04];
     /* 0x1C */ s32 groupMask;
-    u8 _pad20[0x08];
+    u8 _pad20[0x04];
+    /* 0x24 */ s16 field_24;
+    u8 _pad26[0x02];
 } Stg30Part; /* size 0x28 */
 
 /* Work of task D_80073040 (init func_80063B70) and D_800730D0 (init func_80065584). */
@@ -114,7 +116,7 @@ typedef struct {
     /* 0x18 */ s32 field_18;
     /* 0x1C */ s32 field_1C;
     /* 0x20 */ CVECTOR color;
-    u8 _pad24[0x04];
+    /* 0x24 */ s32 field_24;
     /* 0x28 */ s32 field_28;
     /* 0x2C */ s32 field_2C;
     /* 0x30 */ s32 field_30;
@@ -192,7 +194,11 @@ typedef struct {
 /* 0x5C-stride entries at the head of D_80073CC0 (index = Stg30Work737C8.index). */
 typedef struct {
     /* 0x00 */ s32 field_0;
-    u8 _pad04[0x14];
+    u8 _pad04[0x04];
+    /* 0x08 */ s32 field_8;
+    /* 0x0C */ s32 field_C;
+    /* 0x10 */ s32 field_10;
+    /* 0x14 */ s32 field_14;
     /* 0x18 */ u8 field_18;
     /* 0x19 */ u8 field_19;
     u8 _pad1A[0x0B];
@@ -200,15 +206,15 @@ typedef struct {
     u8 _pad26[0x01];
     /* 0x27 */ u8 field_27;
     /* 0x28 */ s32 field_28;
-    u8 _pad2C[0x02];
+    /* 0x2C */ s16 field_2C;
     /* 0x2E */ s16 field_2E;
     /* 0x30 */ s16 field_30;
     /* 0x32 */ s16 field_32;
     /* 0x34 */ s16 field_34;
     /* 0x36 */ s16 field_36;
     /* 0x38 */ s16 field_38;
-    /* 0x3A */ u8 field_3A[3];
-    u8 _pad3D[0x1F];
+    /* 0x3A */ u8 field_3A[12];
+    u8 _pad46[0x16];
 } Stg30Entry5C; /* size 0x5C */
 
 /* 0x12-byte record of D_80073CC0.field_240 (arg2 of func_80068DA4): byte lists
@@ -228,7 +234,9 @@ typedef struct {
     /* 0x04 */ s16 field_4;
     /* 0x06 */ s16 field_6;
     /* 0x08 */ s16 field_8;
-    u8 _pad0A[0x06];
+    u8 _pad0A[0x02];
+    /* 0x0C */ s16 field_C;  /* hp delta of the last hit */
+    u8 _pad0E[0x02];
 } Stg30Sub10;
 
 /* D_80073CC0: overlay state block (func_800701FC clears 0x3E0 bytes from here). */
@@ -238,15 +246,26 @@ typedef struct {
     /* 0x240 */ Stg30ByteLists field_240[6];
     /* 0x2AC */ Stg30Sub10 field_2AC[7];
     /* 0x31C */ s32 field_31C[6];
-    u8 _pad334[0x0C];
+    /* 0x334 */ u8 field_334[6];
+    u8 _pad33A[0x06];
     /* 0x340 */ u8 field_340[6];
     /* 0x346 */ u8 field_346[6];
-    /* 0x34C */ u8 field_34C[6];
-    u8 _pad352[0x04];
+    /* 0x34C */ u8 field_34C[3];
+    /* 0x34F */ u8 field_34F[6];  /* per-slot flag bytes (4 = no status recovery) */
+    u8 _pad355[0x01];
     /* 0x356 */ s16 field_356[6];
     /* 0x362 */ s16 field_362[6];
     /* 0x36E */ s16 field_36E[6];
-    u8 _pad37A[0x5A];
+    /* 0x37A */ s16 field_37A[6];
+    /* 0x386 */ s16 field_386[6];
+    /* 0x392 */ s16 field_392[6];
+    /* 0x39E */ s16 field_39E[6];
+    u8 _pad3AA[0x02];
+    /* 0x3AC */ s32 field_3AC;
+    /* 0x3B0 */ s16 field_3B0;
+    /* 0x3B2 */ s16 field_3B2;
+    u8 _pad3B4[0x1C];
+    /* 0x3D0 */ s32 field_3D0;
     /* 0x3D4 */ s32 field_3D4;
     u8 _pad3D8[0x04];
     /* 0x3DC */ s32 field_3DC;
@@ -273,7 +292,7 @@ typedef struct {
 /* Work of task D_800737A0 (init func_80071D70, func_80072080). */
 typedef struct {
     /* 0x00 */ s32 field_0;
-    u8 _pad04[0x10];
+    /* 0x04 */ s32 field_4[4];
     /* 0x14 */ s32 texts[20];
     /* 0x64 */ s32 text[3];
     /* 0x70 */ s32 field_70;
@@ -290,11 +309,11 @@ typedef struct {
 /* Work of task D_800730D0 (init func_80065584; func_80065100 fills three id lists). */
 typedef struct {
     /* 0x00 */ s32 field_0;
-    u8 _pad04[0x04];
+    /* 0x04 */ s32 field_4;  /* first of 14 text words cleared by func_80065594 */
     /* 0x08 */ s32 field_8;
-    u8 _pad0C[0x0C];
+    /* 0x0C */ s32 field_C[3];
     /* 0x18 */ s32 texts[3][3];
-    u8 _pad3C[0x04];
+    /* 0x3C */ s32 field_3C;
     /* 0x40 */ s32 field_40[3];
     /* 0x4C */ s32 field_4C[3];
     /* 0x58 */ u8 field_58[3][0x30];
@@ -346,7 +365,9 @@ typedef struct {
 
 /* Struct passed as arg0 of func_8006767C: 12 byte ids at 0x22. */
 typedef struct {
-    u8 _pad00[0x22];
+    u8 _pad00[0x1A];
+    /* 0x1A */ s16 field_1A;
+    u8 _pad1C[0x06];
     /* 0x22 */ u8 ids[12];
 } Stg30IdSet;
 
@@ -412,11 +433,31 @@ typedef struct {
 
 /* Actor.u38 transform viewed with the vertical speed words. */
 typedef struct {
-    u8 _pad00[0x34];
+    u8 _pad00[0x30];
+    /* 0x30 */ s32 field_30;
     /* 0x34 */ s32 field_34;
-    u8 _pad38[0x14];
+    /* 0x38 */ s32 field_38;
+    u8 _pad3C[0x0C];
+    /* 0x48 */ s32 field_48;
     /* 0x4C */ s32 field_4C;
+    /* 0x50 */ s32 field_50;
 } Stg30Xform;
+
+/* ActorModel viewed with the three tint bytes at 0x38..0x3A (func_8006EF50). */
+typedef struct {
+    u8 _pad00[0x34];
+    /* 0x34 */ s16 field_34;
+    /* 0x36 */ s16 field_36;
+    /* 0x38 */ u8 field_38;
+    /* 0x39 */ u8 field_39;
+    /* 0x3A */ u8 field_3A;
+    u8 _pad3B[0x01];
+    /* 0x3C */ s32 otIndex;
+    u8 _pad40[0x14];
+    /* 0x54 */ s32 animId;
+    u8 _pad58[0x08];
+    /* 0x60 */ s32 animDone;
+} Stg30ModelTint;
 
 extern Elem12 D_80073294;
 extern Elem12 D_800732A0;
@@ -462,15 +503,34 @@ extern void func_80071538(DigiRosterEntry *);
 /* D_80073CC0 roster (Stg30StateDigis.digis) as a scalar reloc at 0x18, with the
    stat halfwords read signed. */
 typedef struct {
-    u8 _pad00[0x0D];
+    u8 _pad00[0x01];
+    /* 0x01 */ u8 digiId;
+    u8 _pad02[0x0B];
     /* 0x0D */ u8 level;
     u8 _pad0E[0x06];
     /* 0x14 */ s16 maxHp;
     /* 0x16 */ s16 hp;
     /* 0x18 */ s16 maxMp;
     /* 0x1A */ s16 mp;
-    u8 _pad1C[0x40];
+    /* 0x1C */ s16 attack;
+    /* 0x1E */ s16 defense;
+    /* 0x20 */ s16 speed;
+    u8 _pad22[0x3A];
 } Stg30DigiS; /* size 0x5C */
+
+/* D_80073CC0 viewed with its roster as Stg30DigiS (signed stat reads). */
+typedef struct {
+    u8 _pad000[0x18];
+    /* 0x018 */ Stg30DigiS digis[6];
+} Stg30StateS;
+
+/* D_80073CD8 viewed as the battle block from 0x18 of D_80073CC0: the roster
+   then the status words (D_80073CC0.field_31C) at 0x304. */
+typedef struct {
+    /* 0x000 */ Stg30DigiS digis[6];
+    u8 _pad228[0xDC];
+    /* 0x304 */ s32 status[6];
+} Stg30CombatCD8;
 
 extern Stg30DigiS D_80073CD8[];
 extern s32 D_80073498[];
@@ -629,6 +689,75 @@ extern void func_800663F8(void *a0, s32 id, s32 color, Stg30XY pos, s32 name, s3
 extern void func_8006754C(Stg30ListOwner *a0);
 
 /* part 36 salvage */
+extern s32 func_8001EF3C(s32 id);
+extern void func_8006E530(void);
+extern void func_8006E55C(s32 idx, s32 v);
+extern void func_8006E5B4(s32 i);
+extern s32 func_8006E5F8(s32 v);
+extern s32 func_8006E634(void);
+extern s32 D_800731B8[];
+extern u16 D_800731C8[];
+extern s32 D_800731D0[];
+extern u16 D_800731FC[];
+extern s32 func_8001EE10(s32 id);
+extern u16 D_80073510[6][3][4];
+extern u16 D_800735A0[5][3][4];
+extern u16 D_80073618[4][3][4];
+extern s32 func_8001D958(s32 id);
+extern s32 func_8001D9CC(s32 id, s32 k);
+extern s32 func_8001D934(s32 id);
+extern s16 D_80073E02;  /* D_80073CC0.entries[3].field_2E as a scalar reloc */
+extern s16 D_80073E5E;  /* D_80073CC0.entries[4].field_2E */
+extern s16 D_80073EBA;  /* D_80073CC0.entries[5].field_2E */
+extern PadState D_8005F6F0[];
+extern Halves D_800633F8;
+extern Halves D_800730F8[];
+extern s32 D_80073CD4;  /* D_80073CC0.entries[0].field_14 as a scalar reloc */
+extern void func_80066484(Actor *a0);
+extern void func_80065354(Actor *a0);
+extern s32 D_8005F6F4;  /* D_8005F6F0[0].left as a scalar reloc */
+extern s32 D_80073CC8;  /* D_80073CC0.entries[0].field_8 as a scalar reloc */
+extern s32 func_8006E31C(s32 team, s32 flag, s32 mode);
+extern s32 func_8006E3D0(s32 team, s32 cur, s32 flag, s32 mode);
+extern s32 func_8006E47C(s32 team, s32 cur, s32 flag, s32 mode);
+extern s32 func_80065540(s32 c);
+extern Halves D_800633F0;
+extern Halves D_8007309C[];
+extern s32 D_800730A8[];
+extern s32 D_800730B8[];
+extern Stg30XY D_800730C4[];
+extern void func_80071DC4(Actor *a0);
+extern void func_80071F9C(Actor *a0);
+extern void func_80072080(Actor *a0, s32 row);
+extern s32 func_8006D2EC(s32 idx, s32 id, s32 lvl);
+extern s32 func_8001F068(s32 id);
+extern s32 func_8001F10C(s32 id);
+extern s32 func_8001F130(s32 id);
+extern s32 func_8001F158(s32 id);
+extern s32 func_800699F8(s32 a, s32 b);
+extern s32 func_8006A030(s32 a, s32 b);
+extern s32 func_8006A118(void);
+extern void func_8006A968(s16 *max, s16 *b, s16 *c);
+extern void func_8006AA18(s16 *max, s16 *b, s16 *c);
+extern s32 func_8006A140(s32 attacker, s32 target, s32 tech, s16 *p4, s16 *p5);
+extern s32 D_80073210[];
+extern s16 D_80073254[];
+extern u16 D_8005E65E;  /* D_8005E620 halfword at 0x3E as a scalar reloc (Z-cannon level) */
 
+/* D_8005E620 viewed with the item-menu enable words/bytes func_80065594 reads. */
+typedef struct {
+    u8 _pad00[0x3C];
+    /* 0x3C */ u16 field_3C;
+    /* 0x3E */ u16 field_3E;
+    /* 0x40 */ u16 field_40;
+    u8 _pad42[0x18];
+    /* 0x5A */ u8 field_5A;
+    /* 0x5B */ u8 field_5B;
+    /* 0x5C */ u8 field_5C;
+} Stg30GameFlags;
+
+
+extern u8 D_8005E634[];
+extern Halves D_800633E8;
 
 #endif
