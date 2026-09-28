@@ -866,7 +866,35 @@ void func_80069714(Actor *a0) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80069830);
+void func_80069830(Actor *a0) {
+    Stg40Ent48 *e = D_80072B60->field_40;
+    Actor *t = D_80072B60->field_3C;
+
+    switch (a0->stateLevel2) {
+    case 0:
+    default:
+        func_8006E4DC(a0, 0x2C);
+        func_80067880(a0, 2);
+        Task_SetState1(t, 4);
+        D_80072B60->field_58 = e->field_10[1] * 200;
+        func_8006E8F4(D_80072B60->field_58);
+        Snd_PlayById(0x33, 0);
+        Task_NextState2(a0);
+        break;
+    case 1:
+        if (func_8006E588(a0) == 1) {
+            func_8006E4DC(a0, 0x28);
+            func_80067610(1, 0x1FD001F, (s32)D_80050720->field_D1, (s32)func_8006755C(0, D_80072B60->field_58));
+            Task_NextState2(a0);
+        }
+        break;
+    case 2:
+        if (func_80067704(1) == 1) {
+            Task_SetState1(a0, 6);
+        }
+        break;
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006997C);
 
