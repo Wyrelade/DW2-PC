@@ -2512,7 +2512,42 @@ s32 func_80071294(void) {
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80071310);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8007142C);
+void func_8007142C(s32 a0, s32 a1) {
+    s32 i;
+    s32 k;
+    DigiRosterEntry *r;
+    Stg40Blk5071C *g;
+
+    switch (a0) {
+    case 0:
+        D_80072B60->field_58 = a1 * 400;
+        func_8006E8F4(D_80072B60->field_58);
+        break;
+    case 1:
+        D_80072B60->field_58 = a1 * 10;
+        func_8006EA84(3);
+        for (i = 0; i < D_80072B60->field_140; i++) {
+            r = &D_80050720->elems[D_80072B60->field_128[i]];
+            r->hp = ((s16)r->hp - D_80072B60->field_58 > 0) ? (u16)r->hp - (u16)D_80072B60->field_58 : 1;
+        }
+        break;
+    case 2:
+        D_8005071C->field_BA0 = (D_8005071C->field_BA0 | 2) & ~0x80;
+        D_8005071C->field_BA4 = func_800711C4(4) + 1;
+        break;
+    case 3:
+        g = D_8005071C;
+        g->field_BB5 = 0;
+        g->field_BA0 = (g->field_BA0 | 1) & ~0x40;
+        break;
+    default:
+        k = D_800729E0[a0 - 4];
+        D_80050720->slotStatus[k] = 1;
+        break;
+    case 16:
+        break;
+    }
+}
 
 s32 func_800715DC(void) {
     s32 r = func_8006E820();
