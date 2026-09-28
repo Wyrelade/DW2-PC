@@ -544,7 +544,58 @@ s32 func_80067928(Stg20Cell *c, s32 x, s32 y, s32 flag) {
     return dx + dy;
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80067978);
+s32 func_80067978(Actor *a, s32 dir) {
+    Stg20NavWork *w = (Stg20NavWork *)a->work;
+    Stg20Cell c;
+    s32 best;
+    s32 found;
+    s32 i;
+    s32 d;
+    Stg20PickRec *r;
+
+    c.x = w->recs[w->index].cell.x;
+    c.y = w->recs[w->index].cell.y;
+    best = 0x7D00;
+    found = -1;
+    for (i = 0; (r = &w->recs[i])->id != -1; i++) {
+        if (i == w->index) {
+            continue;
+        }
+        switch (dir) {
+        case 0:
+            if (c.y < r->cell.y) {
+                d = func_80067928(&c, r->cell.x, r->cell.y, 1);
+                break;
+            }
+            continue;
+        case 1:
+            if (c.x > r->cell.x) {
+                d = func_80067928(&c, r->cell.x, r->cell.y, 0);
+                break;
+            }
+            continue;
+        case 2:
+            if (c.y > r->cell.y) {
+                d = func_80067928(&c, r->cell.x, r->cell.y, 1);
+                break;
+            }
+            continue;
+        case 3:
+            if (c.x < r->cell.x) {
+                d = func_80067928(&c, r->cell.x, r->cell.y, 0);
+                break;
+            }
+            continue;
+        default:
+            continue;
+        }
+        if (d < best) {
+            best = d;
+            found = i;
+        }
+    }
+    return found;
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80067B20);
 

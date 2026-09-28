@@ -4214,5 +4214,10 @@
     "passes": [
       "sched_match"
     ]
+  },
+  "stag2000:func_80067978": {
+    "passes": [
+      "web_realloc"
+    ]
   }
 }
