@@ -550,7 +550,13 @@ void func_8006F38C(Stg40ImgWork *a0) {
     Gfx_ReleaseTexSlot(a0->field_758);
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006F3B0);
+s16 func_8006F3B0(Stg40TileWork *a0) {
+    Stg40Blk5071C *b = D_8005071C;
+
+    a0->field_766 = b->field_E54->field_0;
+    a0->field_768 = b->field_E54->field_2;
+    return a0->field_76A = a0->field_766 / 8;
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006F3F4);
 
