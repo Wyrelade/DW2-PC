@@ -590,7 +590,26 @@ INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006AB48);
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006AD10);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006AE74);
+void func_8006AE74(void) {
+    s32 old = D_80072B60->field_E2;
+    s32 n;
+
+    if (D_8005F72C & 0x1000) {
+        if (old != 0) {
+            D_80072B60->field_E2 = old - 1;
+        }
+    }
+    if (D_8005F72C & 0x4000) {
+        n = D_80072B60->field_E2 + 1;
+        if (n < D_80072B60->field_E1) {
+            D_80072B60->field_E2 = n;
+        }
+    }
+    if (old != D_80072B60->field_E2) {
+        Snd_PlayById(D_80072B60->field_E4 ? 0xD : 0xC, 0);
+        func_8006AD10();
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006AF34);
 
