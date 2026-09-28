@@ -4150,5 +4150,11 @@
       "taken_fill",
       "selfmove_nop"
     ]
+  },
+  "stag4000:func_8006755C": {
+    "passes": [
+      "nodiv",
+      "sched_match"
+    ]
   }
 }

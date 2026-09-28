@@ -279,7 +279,28 @@ INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_800671F0);
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80067454);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006755C);
+u8 *func_8006755C(s32 i, s32 v) {
+    s32 d = 10000;
+    s32 nz = 0;
+    u8 *p = D_80072B90[i];
+    s32 k;
+    s32 q;
+
+    v = (v > 99999) ? 99999 : v;
+    for (k = 3; k >= 0; k--) {
+        q = v / d;
+        *p = q;
+        if (*p != 0) {
+            nz = -1;
+        }
+        v -= q * d;
+        p -= nz;
+        d /= 10;
+    }
+    p[1] = 0xFF;
+    p[0] = v;
+    return D_80072B90[i];
+}
 
 void func_80067610(s32 i, s32 file, s32 a2, s32 a3) {
     TextOpenArgs arg;
