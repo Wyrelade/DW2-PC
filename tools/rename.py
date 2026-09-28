@@ -5,6 +5,7 @@
     python tools/rename.py D_80061BF4 Snd_ToneHandlers
     python tools/rename.py OldName NewName          (fix an earlier name)
     python tools/rename.py --batch renames.txt      (lines: `old new`, `#` comments)
+    python tools/rename.py --unit stag3000 func_8006AAA8 Btl_CalcDamage   (stage overlay symbol)
 
 What it does:
   1. configs/USA/sym.main.txt: adds `NewName = 0xVA; // type:func` (or rewrites the line of an
@@ -13,6 +14,12 @@ What it does:
      tools/difficult_functions and the split asm/ tree, and renames the function's
      asm/USA/main/nonmatchings/<unit>/<old>.s. The asm rewrite is exactly what a re-split with
      the new sym.main.txt would produce, without re-running splat.
+
+Stage overlays (--unit stagXXXX): all overlays load at the same address, so their func_/D_ names
+overlap each other and must never go into sym.main.txt. With --unit the name goes into
+configs/USA/sym.stagXXXX.txt and only that overlay's files are rewritten (src/ and include/ of the
+unit, its asm/ tree and linker script, manifest keys `stagXXXX:old`, difficult_functions lines
+`stagXXXX:old`). A new name must still be unique in the whole tree (overlay C includes main headers).
 
 Names never change bytes. Run `python tools/build_dw2.py` afterwards: a rename must keep the
 build OK.
@@ -34,10 +41,17 @@ goto if int long register return short signed sizeof static struct switch typede
 void volatile while u8 s8 u16 s16 u32 s32 main""".split())
 
 
+UNIT = None  # stage overlay unit for --unit (stag0000 ...), None = main exe
+
+
+def sym_path():
+    return os.path.join(ROOT, "configs", "USA", "sym.%s.txt" % UNIT) if UNIT else SYMS
+
+
 def load_symbols():
     by_name = {}
-    if os.path.exists(SYMS):
-        for line in open(SYMS, encoding="utf-8"):
+    if os.path.exists(sym_path()):
+        for line in open(sym_path(), encoding="utf-8"):
             m = SYM_LINE.match(line)
             if m:
                 by_name[m.group(1)] = (int(m.group(2), 16), m.group(3))
@@ -54,10 +68,24 @@ def resolve(old, syms):
     if not m:
         sys.exit("%s: not a placeholder (func_/D_XXXXXXXX) and not in sym.main.txt" % old)
     va = int(m.group(2), 16)
+    if UNIT and not unit_has(old):
+        sys.exit("%s is not a symbol of %s" % (old, UNIT))
     taken = [n for n, (v, _r) in syms.items() if v == va]
     if taken:
         sys.exit("%s is already named %s (rename that instead)" % (old, taken[0]))
     return va, ("func" if m.group(1) == "func" else None), False
+
+
+def unit_has(name):
+    """name appears in the overlay's split asm (function file or data label)."""
+    root = os.path.join(ROOT, "asm", "USA", UNIT)
+    if glob.glob(os.path.join(root, "nonmatchings", UNIT, name + ".s")):
+        return True
+    pat = re.compile(r"(?<![\w$.])%s(?!\w)" % re.escape(name))
+    for p in glob.glob(os.path.join(root, "**", "*.s"), recursive=True):
+        if pat.search(open(p, encoding="latin1").read()):
+            return True
+    return False
 
 
 def defined_words():
@@ -81,6 +109,7 @@ def check_new(new, syms, words, va=None):
 
 
 def update_symbols(old, new, va, kind, existing):
+    SYMS = sym_path()
     raw = open(SYMS, "rb").read() if os.path.exists(SYMS) else b""
     nl = "\r\n" if b"\r\n" in raw else "\n"
     lines = raw.decode("utf-8").splitlines()
@@ -100,7 +129,12 @@ def update_symbols(old, new, va, kind, existing):
         f.write(nl.join(lines) + nl)
 
 
-def source_files():
+def source_files(unit_only=False):
+    if unit_only and UNIT:
+        files = []
+        for g in ("src/%s/**/*.c" % UNIT, "src/%s/**/*.h" % UNIT, "include/%s/**/*.h" % UNIT):
+            files += glob.glob(os.path.join(ROOT, g), recursive=True)
+        return files
     files = []
     for g in ("src/**/*.c", "src/**/*.h", "src/**/*.s", "include/**/*.h"):
         files += glob.glob(os.path.join(ROOT, g), recursive=True)
@@ -123,6 +157,8 @@ def _write(p, text):
 def rewrite_tree(mapping):
     """Rewrite every old name of `mapping` (old -> new) in one pass over the tree."""
     pat = re.compile(r"(?<![\w$.])(%s)(?!\w)" % "|".join(re.escape(o) for o in sorted(mapping, key=len, reverse=True)))
+    if UNIT:
+        return rewrite_unit(mapping, pat)
     files = source_files()
     files += glob.glob(os.path.join(ROOT, "asm", "USA", "**", "*.s"), recursive=True)
     files += glob.glob(os.path.join(ROOT, "linkers", "USA", "*.txt"))
@@ -149,6 +185,34 @@ def rewrite_tree(mapping):
     return changed
 
 
+def rewrite_unit(mapping, pat):
+    """--unit: rewrite only the overlay's own files; manifest / difficult_functions by `unit:` key."""
+    files = source_files(unit_only=True)
+    files += glob.glob(os.path.join(ROOT, "asm", "USA", UNIT, "**", "*.s"), recursive=True)
+    files += glob.glob(os.path.join(ROOT, "linkers", "USA", "%s.ld" % UNIT))
+    changed = []
+    for p in files:
+        text = open(p, encoding="latin1", newline="").read()
+        new_text, n = pat.subn(lambda m: mapping[m.group(1)], text)
+        if n:
+            _write(p, new_text)
+            if not p.endswith(".s"):
+                changed.append((os.path.relpath(p, ROOT), n))
+    upat = re.compile(r"(?<![\w$.])%s:(%s)(?!\w)" % (UNIT, "|".join(re.escape(o) for o in mapping)))
+    for p in (os.path.join(ROOT, "tools", "asm_normalizer_manifest.json"),
+              os.path.join(ROOT, "tools", "difficult_functions")):
+        if os.path.exists(p):
+            text = open(p, encoding="latin1", newline="").read()
+            new_text, n = upat.subn(lambda m: "%s:%s" % (UNIT, mapping[m.group(1)]), text)
+            if n:
+                _write(p, new_text)
+                changed.append((os.path.relpath(p, ROOT), n))
+    for old, new in mapping.items():
+        for s in glob.glob(os.path.join(ROOT, "asm", "USA", UNIT, "nonmatchings", UNIT, old + ".s")):
+            os.replace(s, os.path.join(os.path.dirname(s), new + ".s"))
+    return changed
+
+
 def rename(old, new, syms, words):
     va, kind, existing = resolve(old, syms)
     check_new(new, syms, words, va)
@@ -166,7 +230,13 @@ def main():
     ap.add_argument("old", nargs="?")
     ap.add_argument("new", nargs="?")
     ap.add_argument("--batch", help="file of `old new` lines")
+    ap.add_argument("--unit", help="stage overlay (stag0000 ...): rename that overlay's symbol")
     a = ap.parse_args()
+    global UNIT
+    if a.unit:
+        if not re.match(r"stag\d{4}$", a.unit) or not os.path.isdir(os.path.join(ROOT, "src", a.unit)):
+            sys.exit("unknown overlay unit %s" % a.unit)
+        UNIT = a.unit
     pairs = []
     if a.batch:
         for line in open(a.batch, encoding="utf-8"):
