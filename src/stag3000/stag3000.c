@@ -1227,7 +1227,37 @@ void func_80071D70(Actor *a0, Stg30Init737A0 *args) {
     Snd_PlayById(0x2B, 0);
 }
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80071DC4);
+void func_80071DC4(Actor *a0) {
+    Stg30Work737A0 *w = (Stg30Work737A0 *)a0->work;
+    s32 row;
+    s32 col;
+    s32 k;
+    s32 *slot;
+    s32 item;
+    s32 id;
+    s32 scroll;
+
+    for (row = 0; row < 2; row++) {
+        scroll = w->field_B0[row];
+        for (col = 0; col < 10; col++) {
+            k = row * 10 + col;
+            slot = &w->texts[k];
+            Text_Close(slot);
+            item = w->field_74[row][col + scroll];
+            if (item != 0) {
+                Text_OpenPacked(slot, func_8001ED84(item), 0, D_80073730[k + 4]);
+            }
+        }
+    }
+    Text_Close(&w->field_70);
+    id = w->field_74[w->field_A4][w->field_B0[w->field_A4] + w->field_A8[w->field_A4]];
+    if (id != 0 && w->field_C8 == 0) {
+        Text_OpenPacked(&w->field_70, func_8001EDD4(id), 0, D_80073730[27]);
+        w->field_C0 = func_8001EE80(id);
+    } else {
+        w->field_C0 = 0;
+    }
+}
 
 void func_80071F9C(Actor *a0) {
     Stg30Work737A0 *w = (Stg30Work737A0 *)a0->work;
