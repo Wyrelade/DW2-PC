@@ -691,7 +691,31 @@ INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006CF54);
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006D0E8);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006D418);
+s32 func_8006D418(Actor *a0) {
+    Stg40ActWork *w = (Stg40ActWork *)a0->work;
+
+    switch (w->field_2C->field_8) {
+    case 5:
+    default:
+        return w->field_2C->field_E;
+    case 6:
+        return func_8006CD1C(a0);
+    case 7:
+        return func_8006CF54(a0);
+    case 8:
+        return func_8006CAD4(a0);
+    case 9:
+    case 10:
+    case 11:
+    case 12:
+        return func_8006D0E8(a0);
+    case 4:
+        return func_8006C84C(a0);
+    case 2:
+    case 3:
+        return func_8006C6C4(a0);
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006D4E0);
 

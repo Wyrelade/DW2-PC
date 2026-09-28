@@ -4156,5 +4156,10 @@
       "nodiv",
       "sched_match"
     ]
+  },
+  "stag4000:func_8006D418": {
+    "passes": [
+      "web_realloc"
+    ]
   }
 }
