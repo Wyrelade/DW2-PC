@@ -750,7 +750,14 @@ void func_800728A0(Actor *a0, s32 *args) {
     a0->digiId = D_80073CC0.entries[idx].field_19;
 }
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_800728D8);
+void func_800728D8(Actor *a0, s32 a1) {
+    DigiRosterEntry *e = &D_8005F398;
+
+    Digi_InitFromTable(D_8005F794, ((Stg30WorkWord *)a0->work)->field_0 - 3, e);
+    if (a1 != 0) {
+        e->state = 1;
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8007292C);
 
