@@ -135,7 +135,9 @@ INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80065DC8);
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80065E04);
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80065E44);
+s32 func_80065E44(s32 arg0) {
+    return D_8006AA58[arg0];
+}
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80065E60);
 
