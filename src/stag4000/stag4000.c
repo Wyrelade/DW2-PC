@@ -710,7 +710,18 @@ void func_8006EB84(s32 idx, s32 row, s32 val) {
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006EBF4);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006ECD0);
+void func_8006ECD0(Stg40TileWork *a0) {
+    s32 h = a0->field_768;
+    s32 w = a0->field_766;
+    s32 x;
+    s32 y;
+
+    for (y = 0; y < h; y++) {
+        for (x = 0; x < w; x++) {
+            func_8006EB84(x, y, (func_800703E0(x, y) >> 13) & 1);
+        }
+    }
+}
 
 void func_8006ED5C(void) {
     s32 i;
