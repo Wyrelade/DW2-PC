@@ -1717,7 +1717,87 @@ void func_8006C6F0(Actor *a) {
     w->pages = w->count != 0 ? (w->count - 1) / 8 : 0;
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006C8BC);
+void func_8006C8BC(Actor *a) {
+    Stg20ShopListWork *w = (Stg20ShopListWork *)a->work;
+    Stg20TextArgs args;
+    s32 page;
+    s32 base;
+    s32 i;
+    s32 id;
+
+    if (w->dirty != 0) {
+        page = w->page;
+        if (w->pages < page) {
+            page = w->pages;
+        }
+        base = page * 8;
+        w->page = page;
+        args.bigFont = 0;
+        args.color = 0;
+        args.pos.x = 0x21;
+        args.charAdvance = 0;
+        args.lineAdvance = 0;
+        args.charDelay = 0;
+        for (i = 0; i < 8; i++) {
+            Text_Close(&w->texts[i]);
+        }
+        for (i = 0; i < 8; i++) {
+            if (D_80070A08.items[i + base] == 0) {
+                break;
+            }
+            args.text = (s32)D_80070A08.names[i + base];
+            args.pos.y = 0x30 + i * 12;
+            w->field_50 = 9;
+            w->field_51 = 0xFF;
+            Text_Open(&w->texts[i], &args);
+        }
+        id = D_80070A08.items[w->cursor + w->page * 8];
+        Text_Close(&w->descText);
+        if (id != 0) {
+            args.text = Item_GetDescText(id);
+            args.pos.x = 0x13;
+            args.bigFont = 0;
+            args.color = 0;
+            args.pos.y = 0xA2;
+            args.charAdvance = 0;
+            args.lineAdvance = 0;
+            args.charDelay = 0;
+            Text_Open(&w->descText, &args);
+        }
+        if (D_80070A04 == 0) {
+            if (id != 0) {
+                w->field_58 = func_8006C3B8(id);
+            } else {
+                w->field_58 = 0;
+            }
+        }
+        Text_Close(&w->text14);
+        if (w->field_5C != 0) {
+            args.text = (s32)Cd_GetFileEntry(w->field_5C + 0x1FD0000);
+            args.bigFont = 1;
+            args.color = 0;
+            args.charAdvance = 0;
+            args.lineAdvance = 0;
+            args.charDelay = 0;
+            args.pos.x = D_800704E4[4].x;
+            args.pos.y = D_800704E4[4].y;
+            Text_Open(&w->text14, &args);
+        }
+        Text_Close(&w->text18);
+        if (w->field_60 != 0) {
+            args.text = (s32)Cd_GetFileEntry(w->field_60 + 0x1FD0000);
+            args.bigFont = 1;
+            args.color = 0;
+            args.charAdvance = 0;
+            args.lineAdvance = 0;
+            args.charDelay = 0;
+            args.pos.x = D_800704E4[5].x;
+            args.pos.y = D_800704E4[5].y;
+            Text_Open(&w->text18, &args);
+        }
+        w->dirty = 0;
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006CB58);
 
