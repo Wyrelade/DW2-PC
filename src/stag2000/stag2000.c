@@ -233,7 +233,10 @@ void func_8006B840(Actor *a, Stg20Vec3 *v) {
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006B860);
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006BA5C);
+void func_8006BA5C(Actor *a) {
+    CdControlF(9, 0);
+    Task_DefaultDestroy(a);
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006BA90);
 
