@@ -4237,5 +4237,14 @@
     "passes": [
       "web_realloc"
     ]
+  },
+  "stag2000:func_8006D53C": {
+    "passes": [
+      "reg_realloc",
+      "web_realloc",
+      "save_slot",
+      "ra_restore_sink",
+      "reorder_indep"
+    ]
   }
 }

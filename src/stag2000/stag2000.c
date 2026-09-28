@@ -1958,7 +1958,84 @@ void func_8006D4F4(s16 *list, s32 n, s32 v) {
     list[i] = v;
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006D53C);
+void func_8006D53C(Actor *a, s32 mode) {
+    Stg20ItemListWork *w = (Stg20ItemListWork *)a->work;
+    Stg20GameState *g;
+    s32 i;
+    s32 n;
+    s32 id;
+    s32 ok;
+    s32 mask;
+    s32 cnt;
+
+    for (i = 0; i < 0x43; i++) {
+        w->items[i] = 0;
+        w->colors[i] = 1;
+    }
+    n = 0;
+    g = (Stg20GameState *)&D_8005E620;
+    for (i = 0; i < 0x43; i++) {
+        id = w->inv[i];
+        if (id == 0) {
+            continue;
+        }
+        if (mode != 0x63) {
+            if (func_8001E0C0(id) != mode) {
+                continue;
+            }
+            func_8006D4F4(w->items, n, id);
+            n++;
+        } else {
+            ok = 0;
+            if (g->field_2C[8] == 0) {
+                ok = func_8001E0C0(id) == 7;
+            }
+            if (g->field_2C[9] == 0 && func_8001E0C0(id) == 8) {
+                ok = 1;
+            }
+            if (g->field_2C[10] == 0 && func_8001E0C0(id) == 9) {
+                ok = 1;
+            }
+            if (g->field_2C[11] == 0 && func_8001E0C0(id) == 10) {
+                ok = 1;
+            }
+            if (g->field_2C[12] == 0 && func_8001E0C0(id) == 11) {
+                ok = 1;
+            }
+            if (ok != 0) {
+                func_8006D4F4(w->items, n, id);
+                n++;
+            }
+        }
+    }
+    w->count = n;
+    mask = 1 << w->field_48;
+    cnt = 0;
+    for (i = 0; i < 0x43; i++) {
+        if (w->items[i] != 0) {
+            if (func_8001E1AC(w->items[i]) & mask) {
+                w->colors[i] = 0;
+                cnt++;
+            } else {
+                w->colors[i] = 1;
+            }
+        }
+    }
+    if (cnt == 0) {
+        w->count = 0;
+    }
+    cnt = 0;
+    if (mode == 1 || mode == 3) {
+        for (i = 0; i < 0x43; i++) {
+            if (cnt == 0 && w->items[i] != 0 && (func_8001E1AC(w->items[i]) & mask)) {
+                w->colors[i] = 0;
+                cnt = 1;
+            } else {
+                w->colors[i] = 1;
+            }
+        }
+    }
+}
 
 void func_8006D7DC(Actor *a) {
     Stg20ItemListWork *w = (Stg20ItemListWork *)a->work;
