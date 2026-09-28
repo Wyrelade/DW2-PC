@@ -528,7 +528,29 @@ void func_8006AA0C(Actor *a, s32 anim) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006AA4C);
+void func_8006AA4C(Actor *a, Stg20Spawn *s) {
+    Stg20SpawnWork *w = (Stg20SpawnWork *)a->work;
+    s32 i;
+
+    a->digiId = s->id;
+    w->field_0 = s->field_2;
+    w->field_1C = s->field_1C;
+    for (i = 0; i < 6; i++) {
+        w->blk[i] = s->blk[i];
+    }
+    ((Stg20ModelTask *)a)->field_4 = 1;
+    if (s->id == 0x1F2) {
+        ((Stg20ModelTask *)a)->field_4 = -3;
+    } else if (s->id == 0x1F3) {
+        ((Stg20ModelTask *)a)->field_4 = -2;
+    } else if (s->id == 0x1F4) {
+        ((Stg20ModelTask *)a)->field_4 = 0;
+    }
+    w->visible = 1;
+    if (s->id >= 0x1F1 && s->id <= 0x1F3) {
+        w->visible = 0;
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006AB0C);
 
