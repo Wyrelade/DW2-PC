@@ -865,7 +865,44 @@ void func_8006A6DC(Actor *a) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006A744);
+void func_8006A744(Actor *a) {
+    Stg20ExitWork *w = (Stg20ExitWork *)a->work;
+    Stg20Exit *e;
+    Stg20Cell c;
+
+    switch (a->stateLevel0) {
+    case 0:
+        Task_NextState0(a);
+        break;
+    case 1:
+        for (e = (Stg20Exit *)func_80066714()->field_C; e->x != 0; e++) {
+            c.x = e->x;
+            c.y = e->y;
+            if (func_800636A8(&c) & 0x80) {
+                Task_FindFirst(0x302, 0, -1)->field_8 = 1;
+                w->mode = e->mode + 0x300;
+                w->arg = e->arg;
+                Task_NextState0(a);
+                break;
+            }
+        }
+        break;
+    case 2:
+        switch (a->stateLevel1) {
+        case 0:
+        default:
+            Gfx_FadeOutToBlack(0xA);
+            Task_NextState1(a);
+        case 1:
+            if (++a->stateLevel2 >= 0x19) {
+                D_8005F770.nextGameMode = w->mode;
+                D_8005F770.field_24 = w->arg;
+            }
+            break;
+        }
+        break;
+    }
+}
 
 Actor *func_8006A8C0(s32 id) {
     Actor *e;
