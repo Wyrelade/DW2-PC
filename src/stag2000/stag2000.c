@@ -810,7 +810,29 @@ s32 func_8006C3B8(s32 id) {
     return r;
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006C420);
+void func_8006C420(u8 *out, s32 v) {
+    u8 d[5];
+    s32 n;
+    s32 i;
+    s32 lead;
+
+    n = func_8001E180(v);
+    if (D_80070A04 != 0) {
+        n /= 2;
+    }
+    n = n < 0 ? 0 : n;
+    for (i = 4; i != -1; i--) {
+        d[i] = n % 10;
+        n /= 10;
+    }
+    lead = 1;
+    for (i = 0; i < 5; i++) {
+        if (i == 4 || lead == 0 || d[i] != 0) {
+            lead = 0;
+            out[i] = d[i];
+        }
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006C514);
 
