@@ -75,7 +75,57 @@ void func_80064970(Actor *a0, Stg40InitArg *a1) {
     w->field_24 = a1->field_4;
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006498C);
+void func_8006498C(Actor *a0) {
+    Stg40InitWork *w = (Stg40InitWork *)a0->work;
+    Stg40Model25DC *ent;
+    ActorModel *m;
+
+    switch (a0->stateLevel0) {
+    case 0:
+    default:
+        ent = &D_800725DC[(s16)w->field_24];
+        Actor_InitTransform(a0, w->field_4, w->field_10);
+        w->field_4[2] = 0;
+        w->field_4[1] = 0;
+        w->field_4[0] = 0;
+        w->field_10 = 0;
+        a0->digiId = w->field_0 = ent->field_0;
+        w->field_14 = Digi_GetModelFile(a0->digiId);
+        w->field_18 = Anim_GetModelAnimFile(a0->digiId, 4);
+        Gfx_AttachModel(a0, w->field_14)->otIndex = 3;
+        Task_NextState0(a0);
+        if (ent->field_2 != 1) {
+            Anim_SetModelAnim(a0, 0x28);
+            w->field_28 = 0;
+            break;
+        }
+        Anim_SetModelAnim(a0, 0x2C);
+        w->field_28 = -0xA80;
+        Task_NextState1(a0);
+        break;
+    case 1:
+        m = a0->model;
+        switch (a0->stateLevel1) {
+        case 0:
+        default:
+            if (m->animDone < 0) {
+                Task_SetState0(a0, 3);
+            }
+            break;
+        case 1:
+            if (m->animDone < 0) {
+                Anim_SetModelAnim(a0, 0x28);
+                Task_NextState1(a0);
+            }
+            break;
+        case 2:
+            break;
+        }
+        break;
+    case 2:
+        break;
+    }
+}
 
 void func_80064AFC(Actor *a0) {
     Stg40ChildWork *w = (Stg40ChildWork *)a0->work;
