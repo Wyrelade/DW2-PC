@@ -271,7 +271,10 @@ INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006BE04);
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006BEDC);
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006C040);
+void func_8006C040(Actor *a) {
+    Text_CloseArray((s32 *)a->work, 2);
+    Task_DefaultDestroy(a);
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006C074);
 
