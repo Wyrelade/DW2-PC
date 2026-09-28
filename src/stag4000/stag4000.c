@@ -786,7 +786,12 @@ s16 func_8006F3B0(Stg40TileWork *a0) {
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006F3F4);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006F62C);
+void func_8006F62C(Stg40TileWork *a0, s32 x, s32 y) {
+    if (func_800703E0(x, y) & 0x8000) {
+        ((Stg40Cell *)D_8005071C->field_E58)[a0->field_766 * y + x].field_0 |= 0x2000;
+        func_8006EB84(x, y, 1);
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006F6BC);
 
