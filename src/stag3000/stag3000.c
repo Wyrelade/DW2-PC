@@ -1206,7 +1206,45 @@ void func_80072080(Actor *a0, s32 row) {
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_800720E4);
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_800726E8);
+void func_800726E8(Actor *a0) {
+    Stg30Work737A0 *w = (Stg30Work737A0 *)a0->work;
+    GfxPart *p;
+    GfxPart *q;
+    s32 m;
+
+    p = (GfxPart *)Cd_GetFileEntry(0x1A1001B);
+    Gfx_DrawParts((EntA0 *)p);
+    p = (GfxPart *)Cd_GetFileEntry(0x1A1001C);
+    Gfx_DrawParts((EntA0 *)p);
+    p = (GfxPart *)Cd_GetFileEntry(0x1A1001D);
+    for (q = p; q->fileId != 0; q++) {
+        if (q->groupMask & 0x4000) {
+            if (w->field_C8 != 0) {
+                q->visible = 0;
+            } else {
+                q->visible = 1;
+                q->x = w->field_A4 != 0 ? 3 : -0x85;
+                q->y = w->field_A8[w->field_A4] * 11 - 0x15;
+                q->palette = Math_PingPongRange(a0->elapsed, 4, 0, 3);
+            }
+        }
+    }
+    Gfx_SetPartsNumber(p, 0x800, 3, w->field_C0);
+    Gfx_DrawParts((EntA0 *)p);
+    p = (GfxPart *)Cd_GetFileEntry(0x1A1001E);
+    m = (w->field_B0[0] == 0) << 1;
+    if (w->field_B0[0] + 10 >= w->field_B8[0]) {
+        m |= 8;
+    }
+    if (w->field_B0[1] == 0) {
+        m |= 0x20;
+    }
+    if (w->field_B0[1] + 10 >= w->field_B8[1]) {
+        m |= 0x80;
+    }
+    Gfx_HidePartsByMask((GfxPartMaskView *)p, m);
+    Gfx_DrawParts((EntA0 *)p);
+}
 
 void func_800728A0(Actor *a0, s32 *args) {
     s32 idx = args[0];
