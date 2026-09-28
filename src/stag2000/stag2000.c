@@ -255,7 +255,21 @@ void func_80068C50(Actor *a) {
     Task_DefaultDestroy(a);
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80068C84);
+void func_80068C84(Actor *a) {
+    Stg20Part *p;
+    Stg20Part *q;
+    s32 id;
+
+    id = 0x3120003;
+    if (a->field_8 != 0) {
+        id = 0x3120001;
+    }
+    p = (Stg20Part *)Cd_GetFileEntry(id);
+    for (q = p; q->fileId != 0; q++) {
+        q->field_E = 1;
+    }
+    Gfx_DrawParts((s32)p);
+}
 
 void func_80068CF8(void) {
     TaskEntry *e = Task_FindFirst(0x30D, -1, -1);
