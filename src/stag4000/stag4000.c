@@ -615,7 +615,82 @@ void func_80067044(Actor *a0) {
 void func_800671E8(void) {
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_800671F0);
+void func_800671F0(Actor *a0) {
+    Stg40W71F0 *w = (Stg40W71F0 *)a0->work;
+    Stg40SlotInfo *info;
+    TextOpenArgs args;
+    u16 *pos;
+    s32 i;
+    s32 k;
+
+    switch (a0->stateLevel0) {
+    case 0:
+    default:
+        D_80072B78 = a0;
+        Mem_FillWordsNeg1(w->field_8, 12);
+        Task_NextState0(a0);
+        break;
+    case 1:
+        switch (a0->stateLevel1) {
+        case 0:
+        default:
+            if (Math_RampToOne(a0, &w->field_0) == 0) {
+                pos = D_80072720;
+                info = (Stg40SlotInfo *)D_80072B60->field_80[D_80072B60->field_AC]->field_10;
+                args.bigFont = 0;
+                args.color = 0;
+                args.charAdvance = 0;
+                args.lineAdvance = 0xC;
+                args.charDelay = 1;
+                Text_CloseArray(w->field_8, 12);
+                for (i = 0; i < info->field_B * 4; i++) {
+                    args.x = *pos++;
+                    args.y = *pos++;
+                    k = info->field_10[i / 4];
+                    switch (i % 4) {
+                    case 0:
+                    default:
+                        args.text = (s32)Cd_GetFileEntry(0x1FD0081);
+                        break;
+                    case 1:
+                        args.text = (s32)Digi_GetDefaultName(k);
+                        break;
+                    case 2:
+                        args.text = (s32)Cd_GetFileEntry(func_8001D934(k) + 0x1FD00C3);
+                        break;
+                    case 3:
+                        args.text = (s32)Cd_GetFileEntry(func_8001D958(k) + 0x1FD00C6);
+                        break;
+                    }
+                    Text_Open(&w->field_8[i], &args);
+                    Text_SetOtLayer(w->field_8[i], 2);
+                }
+                Task_NextState1(a0);
+            }
+            break;
+        case 1:
+            break;
+        }
+        break;
+    case 2:
+        switch (a0->stateLevel1) {
+        case 0:
+        default:
+            Text_CloseArray(w->field_8, 12);
+            Task_NextState1(a0);
+            break;
+        case 1:
+            if (Math_RampToZero(a0, &w->field_0) == 0) {
+                Task_SetState0(a0, 3);
+            }
+            break;
+        case 100:
+            Task_SetState0(a0, 1);
+            break;
+        }
+        break;
+    }
+}
 
 void func_80067454(Actor *a0) {
     ActorWork *w = a0->work;
