@@ -57,7 +57,10 @@ INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80064AFC);
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80064BD8);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80065134);
+void func_80065134(s32 arg0) {
+    D_8005071C->field_1064 = arg0;
+    Task_SetState1(D_80072B68, 0);
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80065168);
 
