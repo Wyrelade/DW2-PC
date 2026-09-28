@@ -1001,7 +1001,206 @@ void func_80066C00(Actor *arg0, s32 arg1) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80066EBC);
+void func_80066EBC(Actor *arg0) {
+    Stg35Work *w = (Stg35Work *)arg0->work;
+    Stg35ModelFade *m = (Stg35ModelFade *)arg0->model;
+    Stg35Arg1 a1;
+    Stg35Xform *t;
+    Stg35ModelFade *m0;
+    s32 k;
+
+    switch (arg0->stateLevel0) {
+    case 0:
+        Actor_InitTransform(arg0, &w->field_4, (u16)w->field_10);
+        Gfx_AttachModel(arg0, w->field_14)->otIndex = 3;
+        w->field_34 = -1;
+        func_800667D0(arg0, 0);
+        a1.field_0 = (s32)arg0;
+        Task_Create(6, &((s32 *)arg0->u34.children)[3], (s32)&a1);
+        m0 = (Stg35ModelFade *)arg0->model;
+        w->field_18 = 1;
+        w->field_1C = 0;
+        m0->field_38 = m0->field_39 = m0->field_3A = 0x80;
+        w->field_20.r = w->field_20.g = w->field_20.b = 0;
+        w->field_28 = 1;
+        if (w->field_38 != 0) {
+            func_800667D0(arg0, 0x64);
+        }
+        Task_NextState0(arg0);
+        break;
+    case 1:
+        break;
+    case 2:
+        switch (arg0->stateLevel1) {
+        case 0:
+        default:
+            func_800667D0(arg0, 0);
+            Task_SetState0(arg0, 1);
+            break;
+        case 6:
+            switch (arg0->stateLevel2) {
+            case 0:
+            default:
+                w->field_2C = arg0->stateLevel4;
+                func_80066A9C(arg0);
+                arg0->elapsed = 0;
+                Task_NextState2(arg0);
+                break;
+            case 1:
+                if (arg0->elapsed >= 0x78) {
+                    Task_SetState1(arg0, 0);
+                }
+                break;
+            }
+            break;
+        case 1:
+            w->field_2C = arg0->stateLevel4;
+            k = func_8001EE10(w->field_2C);
+            func_800668F8(arg0, k);
+            switch (k) {
+            case 0:
+            default:
+                func_800667D0(arg0, 0x32);
+                break;
+            case 1:
+                func_800667D0(arg0, 0x3C);
+                break;
+            case 2:
+                func_800667D0(arg0, 0x46);
+                break;
+            }
+            Task_SetState0(arg0, 1);
+            break;
+        case 2:
+            func_800667D0(arg0, 0x50);
+            Task_SetState0(arg0, 1);
+            break;
+        case 3:
+            switch (arg0->stateLevel2) {
+            case 0:
+            default:
+                w->field_2C = arg0->stateLevel4;
+                func_80066A9C(arg0);
+                func_800667D0(arg0, 0xA);
+                Task_NextState2(arg0);
+                break;
+            case 1:
+                if (arg0->model->animDone < 0) {
+                    Task_SetState1(arg0, 0);
+                }
+                break;
+            }
+            break;
+        case 4:
+        case 5:
+            switch (arg0->stateLevel2) {
+            case 0:
+            default:
+                w->field_2C = arg0->stateLevel4;
+                func_80066A9C(arg0);
+                Task_NextState2(arg0);
+            case 1:
+                func_80066C00(arg0, arg0->stateLevel1 - 4);
+                break;
+            }
+            break;
+        case 11:
+            switch (arg0->stateLevel2) {
+            case 0:
+            default:
+                func_800667D0(arg0, 0x5A);
+                Task_NextState2(arg0);
+                break;
+            case 1:
+                if (arg0->model->animDone < 0) {
+                    Task_SetState1(arg0, 0);
+                }
+                break;
+            }
+            break;
+        case 12:
+            w->field_2C = arg0->stateLevel4;
+            func_80066A9C(arg0);
+            if (arg0->model->animId != 0) {
+                func_800667D0(arg0, 0);
+            }
+            Task_SetState0(arg0, 1);
+            break;
+        case 7:
+            w->field_18 = 1;
+            w->field_1C = 1;
+            m->field_34 = 1;
+            m->field_36 = 0x20;
+            if (m->field_38 > 8) {
+                m->field_38 -= 8;
+            } else {
+                m->field_38 = 0;
+            }
+            m->field_39 = m->field_3A = m->field_38;
+            if (w->field_20.g < 0xEF) {
+                w->field_20.g += 0x10;
+            } else {
+                w->field_20.g = 0xFF;
+            }
+            if (m->field_38 == 0 && w->field_20.g == 0xFF) {
+                m->field_34 = 0;
+                m->field_36 = 0;
+                w->field_18 = 0;
+                Task_SetState0(arg0, 1);
+            }
+            break;
+        case 8:
+            w->field_18 = 1;
+            w->field_1C = 1;
+            m->field_34 = 1;
+            m->field_36 = 0x20;
+            if (m->field_38 < 0x78) {
+                m->field_38 += 8;
+            } else {
+                m->field_38 = 0x80;
+            }
+            m->field_39 = m->field_3A = m->field_38;
+            if (w->field_20.g > 0x10) {
+                w->field_20.g -= 0x10;
+            } else {
+                w->field_20.g = 0;
+            }
+            if (m->field_38 == 0x80 && w->field_20.g == 0) {
+                m->field_34 = 0;
+                m->field_36 = 0;
+                w->field_1C = 0;
+                Task_SetState0(arg0, 1);
+            }
+            break;
+        case 10:
+            w->field_28 = 0;
+            break;
+        case 9:
+            m->field_38 = m->field_39 = m->field_3A = 0x80;
+            m->field_34 = 0;
+            m->field_36 = 0;
+            w->field_18 = 1;
+            w->field_1C = 0;
+            w->field_28 = 1;
+            Task_SetState0(arg0, 1);
+            break;
+        }
+        break;
+    }
+    if (w->field_28 != 0) {
+        arg0->childCount = 4;
+    } else {
+        arg0->childCount = 3;
+    }
+    if (w->field_30 != 0 && --w->field_30 == 1) {
+        t = (Stg35Xform *)arg0->u38.ptr38;
+        t->field_30 = w->field_4;
+        t->field_38 = w->field_C;
+        t->field_50 = 0;
+        t->field_48 = 0;
+        Actor_StopAxisMotion(arg0, 2);
+    }
+}
 
 void func_800673C4(Actor *arg0) {
     arg0->childCount = 4;
