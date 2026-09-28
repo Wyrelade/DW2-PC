@@ -50,7 +50,17 @@ INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_800667AC);
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80066A4C);
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80066A9C);
+void func_80066A9C(s32 d) {
+    GameState *g = &D_8005E620;
+
+    g->field_8 += d;
+    if (g->field_8 < 0) {
+        g->field_8 = 0;
+    }
+    if (g->field_8 > 99999999) {
+        g->field_8 = 99999999;
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80066AE0);
 
