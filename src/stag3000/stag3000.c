@@ -696,7 +696,178 @@ void func_80066AE0(Actor *a0) {
     Gfx_DrawParts((EntA0 *)p2);
 }
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80066DB0);
+void func_80066DB0(Actor *a0) {
+    Stg30Work73170 *w = (Stg30Work73170 *)a0->work;
+    TaskEntry *t;
+    s32 i;
+    s32 old;
+    s32 changed;
+    s32 v;
+
+    switch (a0->stateLevel0) {
+    case 0:
+        w->field_18 = D_80073CC0.field_2AC[D_80073CC0.entries[0].field_8].field_6;
+        w->field_8 = func_8001EF3C(w->field_18);
+        w->field_14 = D_80073CC0.field_2AC[D_80073CC0.entries[0].field_8].field_8;
+        switch (w->field_8) {
+        case 0:
+        case 3:
+        case 4:
+        case 7:
+        default:
+            v = D_80073CC8;
+            w->field_4 = v;
+            w->field_10 = v;
+            w->field_C = v;
+            break;
+        case 1:
+            w->field_C = 0;
+            w->field_10 = 2;
+            w->field_1C = 0;
+            w->field_4 = func_8006E31C(0, 1, w->field_14);
+            break;
+        case 2:
+            v = 7;
+            w->field_4 = v;
+            w->field_10 = v;
+            w->field_C = v;
+            break;
+        case 5:
+            w->field_C = 3;
+            w->field_10 = 5;
+            w->field_1C = 1;
+            w->field_4 = func_8006E31C(1, 1, w->field_14);
+            break;
+        case 6:
+            v = 8;
+            w->field_4 = v;
+            w->field_10 = v;
+            w->field_C = v;
+            break;
+        case 8:
+            v = 9;
+            w->field_4 = v;
+            w->field_10 = v;
+            w->field_C = v;
+            break;
+        case 9:
+            D_80073CC0.entries[0].field_C = 0;
+            D_80073CC0.entries[0].field_14 = 0;
+            Task_SetState0(a0, 3);
+            return;
+        }
+        Task_NextState0(a0);
+        break;
+    case 1:
+        changed = 0;
+        do {
+        if (w->field_8 == 1 || w->field_8 == 5) {
+            if (D_8005F6F4 > 0) {
+                old = w->field_4;
+                if (w->field_1C != 0) {
+                    w->field_4 = func_8006E3D0(w->field_1C, old, 1, w->field_14);
+                } else {
+                    w->field_4 = func_8006E47C(0, old, 1, w->field_14);
+                }
+                if (w->field_4 != old) {
+                    changed = 1;
+                    Snd_PlayById(0x12, 0);
+                }
+            }
+            if (D_8005F6F0[0].right > 0) {
+                old = w->field_4;
+                if (w->field_1C != 0) {
+                    w->field_4 = func_8006E47C(w->field_1C, old, 1, w->field_14);
+                } else {
+                    w->field_4 = func_8006E3D0(0, old, 1, w->field_14);
+                }
+                if (w->field_4 != old) {
+                    changed = 1;
+                    Snd_PlayById(0x12, 0);
+                }
+            }
+        }
+            if (D_8005F6F0[0].cross > 0) {
+                D_80073CC0.entries[0].field_C = w->field_4;
+                D_80073CC0.entries[0].field_14 = 0;
+                Snd_PlayById(0xE, 0);
+                Task_SetState0(a0, 3);
+                break;
+            }
+            if (D_8005F6F0[0].triangle > 0) {
+                D_80073CD4 = 1;
+                Snd_PlayById(0xB, 0);
+                Task_SetState0(a0, 3);
+            }
+        } while (0);
+        if (changed || w->field_0 == 0) {
+            w->field_0 = 1;
+            switch (w->field_8) {
+            case 1:
+            case 5:
+                for (i = w->field_C; i <= w->field_10; i++) {
+                    t = Task_FindFirst(0x509, -1, i);
+                    if (t != NULL) {
+                        if (w->field_4 == i) {
+                            Task_SetState01((Actor *)t, 2, 8);
+                        } else {
+                            Task_SetState01((Actor *)t, 2, 7);
+                        }
+                    }
+                }
+                break;
+            case 2:
+                for (i = 0; i < 3; i++) {
+                    t = Task_FindFirst(0x509, -1, i);
+                    if (t != NULL && D_80073CC0.entries[i].field_2E != 0) {
+                        Task_SetState01((Actor *)t, 2, 8);
+                    } else {
+                        Task_SetState01((Actor *)t, 2, 7);
+                    }
+                }
+                break;
+            case 6:
+                for (i = 3; i < 6; i++) {
+                    t = Task_FindFirst(0x509, -1, i);
+                    if (t != NULL && D_80073CC0.entries[i].field_2E != 0) {
+                        Task_SetState01((Actor *)t, 2, 8);
+                    } else {
+                        Task_SetState01((Actor *)t, 2, 7);
+                    }
+                }
+                break;
+            case 8:
+                for (i = 0; i < 6; i++) {
+                    t = Task_FindFirst(0x509, -1, i);
+                    if (t != NULL && D_80073CC0.entries[i].field_2E != 0) {
+                        Task_SetState01((Actor *)t, 2, 8);
+                    } else {
+                        Task_SetState01((Actor *)t, 2, 7);
+                    }
+                }
+                break;
+            }
+        }
+        switch (w->field_8) {
+        case 1:
+        case 5:
+            ((void (*)(s32))func_80070D14)(w->field_4 + 2);
+            break;
+        case 2:
+            func_80070D14(8);
+            break;
+        case 6:
+            func_80070D14(9);
+            break;
+        case 8:
+            func_80070D14(0x18);
+            break;
+        }
+        break;
+    case 2:
+        break;
+    }
+}
 
 void func_800672B0(Actor *a0) {
     Stg30Work73170 *w = (Stg30Work73170 *)a0->work;
