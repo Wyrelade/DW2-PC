@@ -821,7 +821,51 @@ void func_8006F8CC(Actor *a0, Vec3 *args) {
     ((Stg30WorkVec3 *)a0->work)->pos = *args;
 }
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006F8EC);
+void func_8006F8EC(Actor *a0) {
+    Stg30WorkVec3 *w = (Stg30WorkVec3 *)a0->work;
+    s32 t;
+
+    switch (a0->stateLevel0) {
+    case 0:
+        Task_NextState0(a0);
+        break;
+    case 1:
+        switch (a0->stateLevel1) {
+        case 0:
+        default:
+            w->field_10++;
+            w->field_C += 0x200;
+            if (w->field_10 != 7) {
+                break;
+            }
+            a0->elapsed = 0;
+            w->field_C = 0x1000;
+            Task_NextState1(a0);
+        case 1:
+            t = w->pos.x;
+            if (t != 7) {
+                if (a0->elapsed < 0x28) {
+                    break;
+                }
+            } else {
+                w->field_10 = Math_CycleRange(a0->elapsed, 2, 8, 0xF);
+                if (a0->elapsed < 0x90) {
+                    break;
+                }
+                w->field_10 = t;
+            }
+            Task_NextState1(a0);
+        case 2:
+            if (--w->field_10 < 0) {
+                Task_SetState0(a0, 3);
+            }
+            break;
+        }
+        break;
+    case 2:
+        break;
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006FA28);
 
