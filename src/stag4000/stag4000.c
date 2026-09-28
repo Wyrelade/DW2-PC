@@ -400,7 +400,7 @@ void func_80066DF0(a0, a1, a2)
 }
 
 s32 *func_80066E18(void) {
-    return &((Stg40ObjWork *)D_80072B70->work)->field_28;
+    return ((Stg40ObjWork *)D_80072B70->work)->field_28;
 }
 
 void func_80066E30(Actor *a0, s32 *a1) {

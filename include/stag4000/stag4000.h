@@ -38,7 +38,8 @@ typedef struct {
     /* 0x0A */ s16 field_A;
     /* 0x0C */ s32 field_C;
     /* 0x10 */ s32 field_10;
-    u8 _pad14[0x08];
+    /* 0x14 */ s32 field_14;
+    u8 _pad18[0x04];
     /* 0x1C */ s16 field_1C;
     /* 0x1E */ u16 field_1E;
 } Stg40Loc;
@@ -47,18 +48,19 @@ typedef struct {
 typedef struct {
     /* 0x00 */ s32 field_0;
     /* 0x04 */ s16 field_4;
-    u8 _pad06[0x01];
+    /* 0x06 */ u8 field_6;
     /* 0x07 */ u8 field_7;
     /* 0x08 */ u8 field_8;         /* kind, switched on by func_8006D418 */
-    u8 _pad09[0x01];
+    /* 0x09 */ u8 field_9;
     /* 0x0A */ u8 field_A;
-    u8 _pad0B[0x03];
+    /* 0x0B */ u8 field_B;         /* heading octant (func_800678D8) */
+    /* 0x0C */ s16 field_C;        /* current heading, turns toward field_E */
     /* 0x0E */ u16 field_E;
     /* 0x10 */ u8 *field_10;
     /* 0x14 */ Actor *field_14;
     /* 0x18 */ Stg40Loc field_18;
     /* 0x38 */ s32 field_38;
-    u8 _pad3C[0x04];
+    /* 0x3C */ s32 field_3C;
     /* 0x40 */ s32 field_40;
     u8 _pad44[0x04];
 } Stg40Ent48;
@@ -120,7 +122,8 @@ typedef struct {
 typedef struct {
     u8 _pad00[0x0B];
     /* 0x0B */ u8 field_B;          /* count of used field_16 entries */
-    u8 _pad0C[0x0A];
+    u8 _pad0C[0x04];
+    /* 0x10 */ s16 field_10[3];     /* digimon ids (func_800671F0) */
     /* 0x16 */ s16 field_16[3];
 } Stg40SlotInfo;
 
@@ -144,6 +147,25 @@ typedef struct {
     /* 0x14 */ s16 field_14;
 } Stg40W6AD0;
 
+/* Element of Stg40Map.field_54 (func_8006E024): four random value nibbles, four random count nibbles. */
+typedef struct {
+    /* 0x0 */ u32 val0 : 4;
+    u32 val1 : 4;
+    u32 val2 : 4;
+    u32 val3 : 4;
+    u32 _rest0 : 16;
+    /* 0x4 */ u32 cnt0 : 4;
+    u32 cnt1 : 4;
+    u32 cnt2 : 4;
+    u32 cnt3 : 4;
+    u32 _rest1 : 16;
+} Stg40MapGen;
+
+/* Five ids copied from D_80063664 (func_8006E024). */
+typedef struct {
+    s32 id[5];
+} Stg40Ids5;
+
 /* Map header behind Stg40B60.field_10 (func_80070DC0). */
 typedef struct {
     /* 0x00 */ u8 *field_0;       /* 0xFF-terminated byte list */
@@ -153,7 +175,8 @@ typedef struct {
     u8 _pad2A[0x04];
     /* 0x2E */ u8 field_2E;
     u8 _pad2F[0x05];
-    /* 0x34 */ Stg40MapPos field_34[15];
+    /* 0x34 */ Stg40MapPos field_34[8];
+    /* 0x54 */ Stg40MapGen field_54[5];
 } Stg40Map;
 
 /* Entries collected by func_8006E330 (Stg40Blk5071C.field_1018). */
@@ -161,6 +184,16 @@ typedef struct {
     /* 0x00 */ Stg40Ent48 *field_0[8];
     /* 0x20 */ s16 field_20;       /* count */
 } Stg40List;
+
+/* 0x14-byte row of file 0xE20000A (func_80063814). */
+typedef struct {
+    /* 0x00 */ s16 field_0;
+    /* 0x02 */ s16 field_2;
+    /* 0x04 */ s32 field_4;
+    /* 0x08 */ s32 field_8;
+    /* 0x0C */ s32 field_C;
+    /* 0x10 */ s32 field_10;
+} Stg40Stage14;
 
 /* Element of the grid behind Stg40Blk5071C.field_E58 (field_E54 dims; func_800703E0). */
 typedef struct {
@@ -170,24 +203,36 @@ typedef struct {
 } Stg40Cell;
 
 typedef struct {
-    u8 _pad000[0x01];
+    /* 0x000 */ u8 field_0;
     /* 0x001 */ u8 field_1;
     /* 0x002 */ u8 field_2;
     /* 0x003 */ u8 field_3;
     /* 0x004 */ u8 field_4;
-    u8 _pad005[0x02];
+    /* 0x005 */ u8 field_5;
+    /* 0x006 */ u8 field_6;
     /* 0x007 */ u8 field_7;
-    u8 _pad008[0x04];
+    /* 0x008 */ s32 field_8;
     /* 0x00C */ s16 field_C;       /* count of live field_18 entries (func_800689E0) */
-    u8 _pad00E[0x02];
+    /* 0x00E */ s16 field_E;       /* count of field_BB8 records (func_8006D4E0) */
     /* 0x010 */ s16 field_10;      /* count of field_CCE pairs (func_8006DA18) */
-    u8 _pad012[0x02];
+    /* 0x012 */ s16 field_12;      /* count of field_CE8 pairs (func_8006D4E0) */
     /* 0x014 */ s16 field_14;      /* count of live field_D08 entries (func_800709DC) */
     u8 _pad016[0x02];
     /* 0x018 */ Stg40Ent48 field_18[41];
-    u8 _padBA0[0xCCE - 0xBA0];
+    /* 0xBA0 */ s32 field_BA0;     /* bit 0 tested by func_80069188 */
+    /* 0xBA4 */ u8 field_BA4;
+    /* 0xBA5 */ u8 field_BA5;
+    /* 0xBA6 */ u8 field_BA6;
+    /* 0xBA7 */ u8 field_BA7;
+    /* 0xBA8 */ u8 field_BA8;
+    /* 0xBA9 */ u8 field_BA9[12];
+    /* 0xBB5 */ u8 field_BB5;
+    u8 _padBB6[0x02];
+    /* 0xBB8 */ u8 field_BB8[9][0x1C]; /* per-entry data of kind 1 (func_8006D4E0) */
+    u8 _padCB4[0xCCE - 0xCB4];
     /* 0xCCE */ u8 field_CCE[12][2];
-    u8 _padCE6[0xD08 - 0xCE6];
+    u8 _padCE6[0x02];
+    /* 0xCE8 */ u8 field_CE8[16][2]; /* per-entry data of kinds 5..12 (func_8006D4E0) */
     /* 0xD08 */ Stg40Rec3 field_D08[100];
     /* 0xE34 */ Stg40E34 field_E34;
     /* 0xE54 */ Stg40E34 *field_E54;
@@ -196,20 +241,25 @@ typedef struct {
     /* 0xE7C */ u8 field_E7C[0x180];
     /* 0xFFC */ Stg40FFC field_FFC;
     /* 0x1018 */ Stg40List field_1018;
-    u8 _pad103C[0x1C];
+    u8 _pad103C[0x08];
+    /* 0x1044 */ Stg40Stage14 field_1044; /* row of file 0xE20000A picked by field_1058 */
     /* 0x1058 */ s16 field_1058;
-    u8 _pad105A[0x0A];
+    u8 _pad105A[0x02];
+    /* 0x105C */ s32 field_105C;
+    /* 0x1060 */ s32 field_1060;
     /* 0x1064 */ Stg40Loc *field_1064;
     /* 0x1068 */ Stg40Loc *field_1068;
 } Stg40Blk5071C;
 
 /* Work of the task behind D_80072B70 (init func_80066E30). */
 typedef struct {
-    u8 _pad00[0x20];
+    /* 0x00 */ s32 field_0[6];     /* text handles of the list rows */
+    /* 0x18 */ s32 field_18;       /* text handle of the description */
+    /* 0x1C */ s32 field_1C;       /* scale; 0 = hidden (func_80067044) */
     /* 0x20 */ s32 field_20;
     /* 0x24 */ s32 field_24;
-    /* 0x28 */ s32 field_28;
-    u8 _pad2C[0x18];
+    /* 0x28 */ s32 field_28[6];    /* row text ids (filled through func_80066E18) */
+    /* 0x40 */ s32 field_40;       /* description text id */
     /* 0x44 */ u8 field_44;
     /* 0x45 */ u8 field_45;
     /* 0x46 */ u8 field_46;
@@ -264,7 +314,8 @@ typedef struct {
     /* 0x30 */ s16 field_30;
     /* 0x32 */ s16 field_32;
     /* 0x34 */ s16 field_34;
-    /* 0x36 */ s16 field_36;
+    /* 0x36 */ s16 field_36;       /* pending child task arg, -1 = none (func_80067BA8) */
+    /* 0x38 */ s16 field_38;       /* last child task arg */
 } Stg40ActWork;
 
 /* 0x90-byte transform block behind Actor.u38 (copied whole by func_80064AFC). */
@@ -350,6 +401,8 @@ typedef struct {
     /* 0x766 */ s16 field_766;
     /* 0x768 */ s16 field_768;
     /* 0x76A */ s16 field_76A;
+    /* 0x76C */ s16 field_76C;     /* last drawn player cell x (func_8006F6BC) */
+    /* 0x76E */ s16 field_76E;     /* last drawn player cell y */
 } Stg40TileWork;
 
 /* Element of Stg40B60.field_144 (stride 8, 5 entries; func_8006E6CC). */
@@ -384,7 +437,7 @@ typedef struct {
     /* 0x048 */ s32 field_48;
     /* 0x04C */ s32 field_4C;
     /* 0x050 */ s32 field_50;
-    u8 _pad054[0x04];
+    /* 0x054 */ s32 field_54;      /* func_80071294 result (func_8006A848) */
     /* 0x058 */ s32 field_58;
     u8 _pad05C[0x04];
     /* 0x060 */ u8 field_60[8];    /* stack indexed by field_68 (func_800690CC) */
@@ -396,7 +449,8 @@ typedef struct {
     /* 0x080 */ Stg40Ent48 *field_80[10]; /* matching entries (func_800681BC) */
     /* 0x0A8 */ s32 field_A8;      /* count of field_80 */
     /* 0x0AC */ s32 field_AC;      /* index into field_80 */
-    /* 0x0B0 */ u8 field_B0[0x31]; /* item ids listed by func_8006AD10 */
+    /* 0x0B0 */ u8 field_B0[0x30]; /* item ids listed by func_8006AD10 */
+    /* 0x0E0 */ u8 field_E0;       /* item id counted by func_8006AB48 */
     /* 0x0E1 */ u8 field_E1;
     /* 0x0E2 */ u8 field_E2;       /* cursor, 0..field_E1-1 (func_8006AE74) */
     /* 0x0E3 */ u8 field_E3;       /* first visible row (func_8006AD10) */
@@ -414,6 +468,8 @@ typedef struct {
     /* 0x180 */ s16 field_180;
     u8 _pad182[0x02];
     /* 0x184 */ Actor *field_184;
+    /* 0x188 */ s32 field_188;     /* spawned object mask (func_8006DB68) */
+    /* 0x18C */ s16 field_18C;     /* spawned object count, max 12 */
 } Stg40B60;
 
 /* Argument of func_8006E920: an event id, up to 4 item-category keys (-1 = unused), a result base. */
@@ -489,16 +545,86 @@ typedef struct {
 
 /* Element of Stg40W667C.field_F20 (stride 0xC; func_8006620C / func_80065F94). */
 typedef struct {
-    /* 0x0 */ u16 field_0;
-    u8 _pad2[0x0A];
+    /* 0x0 */ u16 field_0;         /* 0 = untextured floor */
+    u8 _pad2[0x01];
+    /* 0x3 */ u8 field_3;          /* template index (low 7 bits) into D_80072620 */
+    u8 _pad4[0x04];
+    /* 0x8 */ s32 field_8;         /* ordering table index of the flat quad */
 } Stg40Tile;
+
+/* One projected corner (func_80065F94): screen x/y and a visibility weight. */
+typedef struct {
+    /* 0x0 */ s16 x;
+    /* 0x2 */ s16 y;
+    u8 _pad4[0x06];
+    /* 0xA */ s16 flag;
+} Stg40VSet;
+
+/* Grid vertex of Stg40W667C.field_0 (stride 0x20): set 0 textured, set 1 flat. */
+typedef struct {
+    /* 0x00 */ Stg40VSet s[2];
+    u8 _pad18[0x08];
+} Stg40Vtx;
+
+/* GPU packet tag word; byte 3 is the packet length. */
+typedef union {
+    u32 word;
+    struct {
+        u8 addr[3];
+        u8 len;
+    } b;
+} Stg40Tag;
+
+/* POLY_FT4-shaped packet (0x28), copied whole from Stg40W667C.field_143C. */
+typedef struct {
+    /* 0x00 */ Stg40Tag tag;
+    /* 0x04 */ u8 r0, g0, b0, code;
+    /* 0x08 */ s16 x0, y0;
+    /* 0x0C */ u8 u0, v0;
+    /* 0x0E */ u16 clut;
+    /* 0x10 */ s16 x1, y1;
+    /* 0x14 */ u8 u1, v1;
+    /* 0x16 */ u16 tpage;
+    /* 0x18 */ s16 x2, y2;
+    /* 0x1C */ u8 u2, v2;
+    u16 _pad1E;
+    /* 0x20 */ s16 x3, y3;
+    /* 0x24 */ u8 u3, v3;
+    u16 _pad26;
+} Stg40FT4;
+
+/* POLY_F4-shaped packet (0x18). */
+typedef struct {
+    /* 0x00 */ Stg40Tag tag;
+    /* 0x04 */ u8 r0, g0, b0, code;
+    /* 0x08 */ s16 x0, y0;
+    /* 0x0C */ s16 x1, y1;
+    /* 0x10 */ s16 x2, y2;
+    /* 0x14 */ s16 x3, y3;
+} Stg40F4;
+
+/* 8-byte sprite record of a texture's table (Cd_GetFileEntry(id + 1)); u 0xFF ends it (func_80066318). */
+typedef struct {
+    /* 0x0 */ u8 u;
+    /* 0x1 */ u8 v;
+    /* 0x2 */ u8 w;                /* width / 4 */
+    /* 0x3 */ u8 h;
+    /* 0x4 */ u8 cx;               /* clut x * 4 */
+    /* 0x5 */ u8 cy;
+    u8 _pad6[0x02];
+} Stg40TexRec;
 
 /* Actor.work of the task driven by func_8006667C. */
 typedef struct {
-    u8 _pad0000[0xF20];
+    /* 0x0000 */ Stg40Vtx field_0[11][11];
     /* 0x0F20 */ Stg40Tile field_F20[10][10];
-    u8 _pad13D0[0x1418 - 0x13D0];
-    /* 0x1418 */ s32 field_1418[1]; /* texture ids, -1 terminated */
+    u8 _pad13D0[0x04];
+    /* 0x13D4 */ GfxTexSlot *field_13D4[8]; /* texture slots (func_80066318) */
+    /* 0x13F4 */ Stg40TexRec *field_13F4[8]; /* sprite tables of those textures */
+    /* 0x1414 */ s32 field_1414;   /* count of the three arrays above */
+    /* 0x1418 */ s32 field_1418[8]; /* texture ids, -1 terminated */
+    /* 0x1438 */ s32 field_1438;   /* count of field_143C */
+    /* 0x143C */ Stg40FT4 field_143C[27]; /* textured tile templates; [26] is semi-transparent */
 } Stg40W667C;
 
 /* arg0 of func_8006E764: a file-queue countdown (0x28) gated by 0x34. */
@@ -597,7 +723,7 @@ extern s32 GsSetRefView2(Stg40RView *);
 void func_80072250(Actor *a0);
 void func_800722B8(Actor *a0);
 void func_8006E8F4(s32 n);
-s32 func_8006D4E0(s32 kind, s32 a1, s32 a2, s32 a3, s32 x, s32 y);
+s32 func_8006D4E0(s32 kind, s32 a1, s32 a2, s32 a3, s32 x, s32 y); /* K&R definition (a3, x, y are s16) */
 void func_8006F86C(Stg40TileWork *w, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6, s32 a7, s32 a8);
 u8 *func_8006755C(s32 i, s32 v);
 s32 func_80065F94(Stg40W667C *w, s32 pkt, s32 x, s32 y);
@@ -627,7 +753,7 @@ s32 func_800716EC(Actor *a0);
 void func_80065134(Stg40Loc *loc);
 s32 func_800678C4(Actor *a0);
 void func_80067610(s32 a0, s32 a1, s32 a2, s32 a3);
-void func_8006DB68(s32 a0, s32 a1, s32 a2, s32 a3);
+s32 func_8006DB68(s32 a0, s32 a1, s32 a2, s32 a3); /* K&R definition (a2, a3 are s16) */
 s32 func_8006DEF0(u8 (*tbl)[2], s32 n);
 s32 func_8006E330(void);
 void func_8006E4E8(Actor *a0, s32 a1);
@@ -699,5 +825,135 @@ extern s32 *Gfx_ReserveTexSlot(void);
 extern u16 D_80072948[];
 extern s32 Flag_SelectBranch(s32 arg0);
 extern void func_8001C038(void *arg0, s32 arg1);
+
+/* p36 agent d */
+s32 func_80071294(void);
+void func_8007142C(s32 a0, s32 a1);
+void func_80071310(s32 a0, s32 a1);
+
+typedef struct {
+    /* 0x0 */ s32 field_0;         /* text handle */
+    /* 0x4 */ s32 field_4;         /* scale ramp */
+    /* 0x8 */ s32 field_8;         /* shown value, follows D_80050720->field_8 */
+} Stg40W6BE4;
+
+typedef struct {
+    /* 0x0 */ s32 id;
+    /* 0x4 */ Halves pos;
+} Stg40TextPos;
+
+extern Stg40TextPos D_800726E0;
+extern void Mem_FillWordsNeg1(s32 *arg0, s32 arg1);
+extern void Text_CloseArray(s32 *arg0, s32 arg1);
+extern s32 Math_RampToOne(Actor *arg0, s32 *arg1);
+extern s32 Math_RampToZero(Actor *arg0, s32 *arg1);
+extern void Text_OpenById(void *a0, s32 a1, s32 a2, Halves a3);
+extern void Text_SetOtLayer(s32 a0, s32 a1);
+
+extern s32 D_80072700[];
+
+extern s32 D_8005F700; /* D_8005F6F0[0].circle as a scalar reloc */
+extern s32 D_8005F720; /* D_8005F6F0[0].select as a scalar reloc */
+extern Actor *D_80072AA0;
+s32 func_800682DC(Actor *a0);
+s32 func_800681BC(Actor *a0);
+
+void func_8006F3F4(Stg40TileWork *w, s32 x, s32 y);
+void func_8006F62C(Stg40TileWork *w, s32 x, s32 y);
+
+s16 func_8006EA84(s32 mode);
+
+s32 func_8006B9A8(Stg40Ent48 *e, Pair54 *out);
+s32 func_8006B698(Stg40Ent48 *e, Pair54 *out);
+s32 func_8006BBBC(Stg40Ent48 *e, Pair54 *out);
+s32 func_8006B8C8(Stg40Ent48 *e, Pair54 *out);
+s32 func_8006E490(s32 dx, s32 dy);
+
+extern s32 D_8007289C[];
+
+extern Stg40Ids5 D_80063664;
+void func_8006DFA4(u8 (*tbl)[2], s32 a1, s32 a2);
+
+extern SysState D_8005F770;
+extern void Digi_SortRoster(void);
+
+/* Task_Create arg block of task 0x207 (func_80067BA8). */
+typedef struct {
+    /* 0x0 */ Actor *field_0;
+    /* 0x4 */ s16 field_4;
+} Stg40Arg207;
+
+extern void Task_Create(u32, s32 *, s32);
+void func_8006B420(Actor *a0);
+void func_8006BFB0(Actor *a0);
+s32 func_800678D8(Stg40Ent48 *e);
+
+void func_8006C7CC(Stg40E764 *a0, s32 a1);
+
+/* Actor.work of the task behind D_80072B78 (func_800671F0). */
+typedef struct {
+    /* 0x00 */ s32 field_0;        /* scale ramp */
+    u8 _pad04[0x04];
+    /* 0x08 */ s32 field_8[12];    /* text handles */
+} Stg40W71F0;
+
+extern Actor *D_80072B78;
+extern u16 D_80072720[];
+extern u8 *Digi_GetDefaultName(s32);
+extern s32 func_8001D934(s32);
+extern s32 func_8001D958(s32);
+
+/* Four model ids copied from D_8006362C (func_8006DB68). */
+typedef struct {
+    s32 id[4];
+} Stg40Ids4;
+
+extern Stg40Ids4 D_8006362C;
+
+extern u32 *D_8005F8C0;
+extern u32 *D_8005F8B4;
+extern u8 D_80072620[];
+
+void func_80068D3C(Actor *a0);
+void func_80068F20(Actor *a0);
+void func_80068FBC(Actor *a0);
+void func_80068FFC(Actor *a0);
+void func_800690CC(Actor *a0);
+void func_8006932C(Actor *a0);
+void func_8006940C(Actor *a0);
+void func_800694D0(Actor *a0);
+void func_80069514(Actor *a0);
+void func_8006955C(Actor *a0);
+void func_8006965C(Actor *a0);
+void func_8006997C(Actor *a0);
+void func_8006A614(Actor *a0);
+void func_8006A9CC(Actor *a0);
+void func_8006AF34(Actor *a0);
+void func_80069C94(Actor *a0);
+void func_80069F84(Actor *a0);
+void func_8006B320(Actor *a0);
+void func_80068DC0(Actor *a0);
+void func_80069714(Actor *a0);
+void func_80069830(Actor *a0);
+void func_8006A498(Actor *a0);
+void func_8006A6EC(Actor *a0);
+void func_8006B20C(Actor *a0);
+void func_80069188(Actor *a0);
+void func_8006A848(Actor *a0);
+void func_8006AB48(Actor *a0);
+
+extern Stg40W667C *D_80072B6C;
+
+/* Object behind D_80072AA4: a Task_Create slot at 0x10 (func_8006AF34). */
+typedef struct {
+    u8 _pad00[0x10];
+    /* 0x10 */ s32 field_10;       /* child task (Actor *) */
+} Stg40AA4;
+
+extern Stg40AA4 *D_80072AA4;
+extern void Item_CompactBag(void);
+extern void Task_SetState3(Actor *arg0, u32 arg1);
+void func_800651C0(Stg40Loc *loc, s32 a1);
+void func_8006AE74(void);
 
 #endif
