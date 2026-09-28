@@ -538,7 +538,9 @@ void func_800720EC(void) {
     D_80072B60->field_180 = 0;
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_800720FC);
+s16 func_800720FC(void) {
+    return D_80072B60->field_180;
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80072114);
 
