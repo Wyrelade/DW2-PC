@@ -950,7 +950,40 @@ void func_8006A0D4(u8 arg0, s32 *arg1, s32 *arg2, s32 *arg3, s32 *arg4) {
     *arg2 = 100;
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_8006A168);
+void func_8006A168(s32 arg0) {
+    u8 *ids = D_8006AA88.rec[arg0].field_22;
+    Stg35Rec2C *b = &D_8006AA88.field_238[arg0];
+    s32 best[6];
+    s32 grp;
+    s32 idx;
+    s32 v4;
+    s32 v2;
+    s32 found;
+    s32 i;
+
+    for (i = 0; i < 6; i++) {
+        b->field_C[i] = 0;
+        best[i] = 100;
+    }
+    found = 0;
+    for (i = 0; i < 12; i++) {
+        if (ids[i] != 0) {
+            func_8006A0D4(ids[i], &grp, &idx, &v4, &v2);
+            if (grp != -1 && best[grp] > idx) {
+                best[grp] = idx;
+                found = 1;
+                b->field_C[grp] = ids[i];
+                b->field_1E[grp] = v2;
+                b->field_12[grp] = v4;
+            }
+        }
+    }
+    if (!found) {
+        b->field_C[0] = D_8006A6DC[1].field_0;
+        b->field_1E[0] = D_8006A6DC[1].field_2;
+        b->field_12[0] = D_8006A6DC[1].field_4;
+    }
+}
 
 void func_8006A2D0(Actor *arg0, s32 arg1) {
     arg0->field_8 = arg1;
