@@ -704,7 +704,26 @@ INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_800698C8);
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_800699FC);
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80069FD4);
+void func_80069FD4(Actor *arg0) {
+    Stg35CamWork *w = (Stg35CamWork *)arg0->work;
+    Stg35RefView rv;
+
+    RotMatrixYXZ(&w->field_7C, &w->field_1C.coord);
+    w->field_1C.coord.t[0] = w->field_6C;
+    w->field_1C.coord.t[1] = w->field_70;
+    w->field_1C.coord.t[2] = w->field_74;
+    w->field_1C.flg = 0;
+    rv.field_0 = w->field_0;
+    rv.field_4 = w->field_4;
+    rv.field_8 = w->field_8;
+    rv.field_C = w->field_C;
+    rv.field_10 = w->field_10;
+    rv.field_14 = w->field_14;
+    rv.field_18 = 0;
+    rv.field_1C = &w->field_1C;
+    GsSetProjection(w->field_18);
+    GsSetRefView2(&rv);
+}
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_8006A080);
 
