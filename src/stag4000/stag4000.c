@@ -1731,7 +1731,36 @@ void func_80070EC0(u32 *p, u32 n) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80070EE0);
+s32 func_80070EE0(s32 *p) {
+    u32 *tbl = (u32 *)p;
+    u32 base = (u32)p;
+    s32 n = 0;
+    s32 i;
+    Stg40MapRel *m;
+    Stg40MapRoomRel *r;
+    u32 *q;
+
+    while (*tbl != 0) {
+        if (*tbl < base) {
+            *tbl += base;
+            m = (Stg40MapRel *)*tbl;
+            m->field_0 += base;
+            for (i = 0; i < 8; i++) {
+                q = &m->field_8[i];
+                *q += base;
+                r = (Stg40MapRoomRel *)*q;
+                func_80070EC0(&r->field_0[0], base);
+                func_80070EC0(&r->field_0[1], base);
+                func_80070EC0(&r->field_0[2], base);
+                func_80070EC0(&r->field_0[3], base);
+                func_80070EC0(&r->field_0[4], base);
+            }
+        }
+        tbl++;
+        n++;
+    }
+    return n;
+}
 
 s32 func_80070FEC(Stg40Pick *out, Stg40Rec3 *e, u8 key) {
     s32 r = -1;
