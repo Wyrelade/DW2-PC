@@ -37,7 +37,13 @@ void func_80064B70(Actor *arg0) {
     func_800661B0((Stg35LoadHandle *)arg0->work);
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80064B94);
+void func_80064B94(Actor *arg0, s32 arg1, s32 arg2) {
+    arg0->stateLevel0 = 2;
+    arg0->stateLevel1 = arg1;
+    arg0->stateLevel2 = 0;
+    arg0->stateLevel3 = 0;
+    arg0->stateLevel4 = arg2;
+}
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80064BB0);
 
