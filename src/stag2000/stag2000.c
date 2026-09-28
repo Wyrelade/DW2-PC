@@ -1846,7 +1846,60 @@ void func_8006E720(Actor *a) {
     Task_DefaultDestroy(a);
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006E754);
+void func_8006E754(Actor *a) {
+    Stg20ItemListWork *w = (Stg20ItemListWork *)a->work;
+    GfxPart *p;
+    GfxPart *q;
+
+    func_8006D93C(a);
+    p = (GfxPart *)Cd_GetFileEntry(D_80070674[0][w->field_48]);
+    Gfx_HidePartsByMask((GfxPartMaskView *)p, w->field_54);
+    Gfx_DrawParts((s32)p);
+    p = (GfxPart *)Cd_GetFileEntry(D_80070674[1][w->field_48]);
+    Gfx_HidePartsByMask((GfxPartMaskView *)p, w->field_58);
+    Gfx_DrawParts((s32)p);
+    p = (GfxPart *)Cd_GetFileEntry(0xC93000A);
+    for (q = p; q->fileId != 0; q++) {
+        switch (w->field_50) {
+        case 0:
+        default:
+            q->visible = (q->groupMask & 0x78) == 0;
+            break;
+        case 3:
+            q->visible = (q->groupMask & 0x60) == 0;
+            break;
+        case 4:
+            q->visible = (((u32)q->groupMask >> 6) ^ 1) & 1;
+            break;
+        case 5:
+            q->visible = 1;
+            break;
+        }
+        if (q->groupMask & 2) {
+            q->visible = 0;
+        }
+    }
+    Gfx_DrawParts((s32)p);
+    Gfx_DrawParts((s32)Cd_GetFileEntry(0xC930009));
+    if (w->field_1B8 != 0) {
+        p = (GfxPart *)Cd_GetFileEntry(0xC93000B);
+        for (q = p; q->fileId != 0; q++) {
+            if (q->groupMask & 2) {
+                q->visible = w->field_1BC != 0;
+                q->x = 0x26;
+                q->y = w->cursor * 12 - 0x50;
+                q->palette = Math_CycleRange(a->elapsed, 4, 0, 3);
+            }
+            if (q->groupMask & 4) {
+                q->visible = w->top != 0;
+            }
+            if (q->groupMask & 8) {
+                q->visible = w->count - 1 >= w->top + 10;
+            }
+        }
+        Gfx_DrawParts((s32)p);
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006E9E8);
 
