@@ -414,7 +414,19 @@ s32 func_8006E31C(s32 team, s32 flag, s32 mode) {
     return lo;
 }
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006E3D0);
+s32 func_8006E3D0(s32 team, s32 cur, s32 flag, s32 mode) {
+    s32 i;
+    s32 lo = team * 3;
+
+    for (i = cur - 1; i >= lo; i--) {
+        if (D_80073CC0.entries[i].field_19 != 0 && (mode == 3 || D_80073CC0.entries[i].field_2E != 0)) {
+            if (flag == 0 || !(D_80073CC0.field_31C[i] & 0x10000)) {
+                return i;
+            }
+        }
+    }
+    return cur;
+}
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006E47C);
 
