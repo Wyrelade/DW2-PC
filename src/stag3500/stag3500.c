@@ -25,7 +25,12 @@ void func_80063584(Actor *arg0) {
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_800635D4);
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_8006363C);
+void func_8006363C(Actor *arg0) {
+    Gfx_AttachModel(arg0, arg0->digiId);
+    Actor_UpdateTransform(arg0);
+    Gfx_CalcModelBoneMatrices(arg0);
+    Gfx_DrawTexModel(arg0, 1);
+}
 
 void func_80063684(Actor *arg0, s32 *arg1) {
     ((Stg35Work *)arg0->work)->field_0 = *arg1;
