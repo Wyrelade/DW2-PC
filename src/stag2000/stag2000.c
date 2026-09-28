@@ -31,7 +31,13 @@ INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80063784);
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_800638E8);
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80063C84);
+void func_80063C84(void) {
+    Actor *a = (Actor *)Task_FindFirst(0x301, -1, -1);
+
+    if (a != NULL && a->stateLevel0 == 1) {
+        Task_SetState1(a, 1);
+    }
+}
 
 void func_80063CD0(Actor *a, s32 v) {
     ((Stg20Work *)a->work)->field_0 = v;
