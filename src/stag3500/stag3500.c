@@ -347,7 +347,10 @@ void func_80067748(Actor *arg0, Stg35Vec3 *arg1) {
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80067768);
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_8006799C);
+void func_8006799C(Actor *arg0) {
+    CdControlF(9, 0);
+    Task_DefaultDestroy(arg0);
+}
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_800679D0);
 
