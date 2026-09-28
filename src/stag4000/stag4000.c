@@ -32,7 +32,12 @@ INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006424C);
 void func_80064830(void) {
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80064838);
+void func_80064838(Actor *a0) {
+    func_8006ED88(0);
+    func_8006FF28();
+    Mem_Free((ActorWork *)D_80072B60);
+    Task_DefaultDestroy(a0);
+}
 
 void func_80064880(void) {
     s32 i;
