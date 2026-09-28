@@ -222,14 +222,17 @@ typedef struct {
 } Stg20Slot;
 
 typedef struct {
-    u8 _pad00[0x48];
+    u8 _pad00[0x08];
+    /* 0x08 */ s32 texts[16];
     /* 0x48 */ Stg20Slot slots[4];
 } Stg20SlotWork;
 
 typedef struct {
-    u8 _pad00[0x08];
+    /* 0x00 */ s32 field_0;
+    u8 _pad04[0x04];
     /* 0x08 */ s32 field_8;
-    u8 _pad0C[0x08];
+    /* 0x0C */ s32 field_C;
+    u8 _pad10[0x04];
     /* 0x14 */ s32 field_14;
     u8 _pad18[0x08];
     /* 0x20 */ s32 field_20;
@@ -394,8 +397,12 @@ typedef struct {
 } Stg20SkillGroup;
 
 typedef struct {
-    u8 _pad00[0x70];
+    /* 0x00 */ s32 texts[19];
+    /* 0x4C */ s32 col;
+    /* 0x50 */ s32 cursor[4];
+    /* 0x60 */ s32 top[4];
     /* 0x70 */ Stg20SkillGroup groups[4];
+    /* 0xA8 */ s32 skill;
 } Stg20SkillWork;
 
 /* Work of the stage loader task (func_80063CDC). */
@@ -473,5 +480,92 @@ extern void Flag_Set(s32, s32);
 extern s32 Math_CycleRange(s32, s32, s32, s32);
 extern s32 Item_GetDescText(s32);
 extern u8 *Digi_GetDefaultName(s32);
+
+/* part 36 salvage */
+typedef struct {
+    /* 0x00 */ u16 items[50];
+    /* 0x64 */ u8 names[50][25];
+} Stg20ShopList;
+typedef struct {
+    u8 _pad00[0x48];
+    /* 0x48 */ s32 count;
+    /* 0x4C */ s32 pages;
+} Stg20ShopListWork;
+extern Stg20ShopList D_80070A08;
+extern u16 D_8005E686[0x30];
+/* D_8005E620.field_66 as a scalar reloc */
+extern void func_8006C420(u8 *out, s32 v);
+extern void Task_Create(u32, s32 *, s32);
+extern void func_80068D84(s32 id);
+extern void func_800650BC(Actor *a);
+extern void func_80064008(Actor *a);
+typedef struct {
+    u8 _pad00[0x04];
+    /* 0x04 */ TaskEntry *menu;
+} Stg20CtrlWork;
+extern s32 func_8006C14C(u8 *s, s32 c);
+extern s32 func_8006C18C(s32 id);
+extern u8 D_800704FC[];
+extern u8 D_80070530[];
+extern u8 D_80070548[];
+extern u8 D_80070554[];
+extern u8 D_80070570[];
+extern u8 D_80070580[];
+extern u8 D_80070588[];
+extern u8 D_80070594[];
+extern u8 D_800705A4[];
+extern u8 D_800705B4[];
+extern u16 D_8005E64C;
+/* D_8005E620.field_2C[0] as a scalar reloc */
+extern u16 D_8005E65C;
+/* D_8005E620.field_2C[8] */
+extern u16 D_8005E65E;
+/* D_8005E620.field_2C[9] */
+extern u16 D_8005E660;
+/* D_8005E620.field_2C[10] */
+extern u16 D_8005E662;
+extern s32 Cd_GetFileLba(s32 arg0);
+extern s32 CdControl(s32, u8 *, u8 *);
+extern s32 CdControlB(s32, u8 *, u8 *);
+extern void CdIntToPos(s32, u8 *);
+extern s32 CdPosToInt(void *);
+extern s32 CdSync(s32, u8 *);
+extern s32 CdLastCom(void);
+typedef struct {
+    /* 0x00 */ s32 fileId;
+    /* 0x04 */ u8 channel;
+    u8 _pad05[0x03];
+    /* 0x08 */ s32 len;
+    /* 0x0C */ s32 start;
+    /* 0x10 */ s32 end;
+} Stg20XaWork;
+extern s32 D_80070A00;
+typedef struct {
+    /* 0x00 */ u8 x;
+    /* 0x01 */ u8 y;
+    /* 0x02 */ u8 mode;
+    /* 0x03 */ u8 arg;
+} Stg20Exit;
+typedef struct {
+    /* 0x00 */ s32 mode;
+    /* 0x04 */ s32 arg;
+} Stg20ExitWork;
+typedef struct {
+    /* 0x00 */ s32 scroll;
+    u8 _pad04[0x08];
+    /* 0x0C */ s32 on;
+    /* 0x10 */ s32 level;
+} Stg20ScrollWork;
+typedef struct {
+    u8 _pad00[0x40];
+    /* 0x40 */ s32 row;
+    /* 0x44 */ s32 field_44;
+    u8 _pad48[0x04];
+    /* 0x4C */ s32 field_4C;
+    u8 _pad50[0x08];
+    /* 0x58 */ s32 field_58;
+} Stg20ShopWork;
+extern Halves D_8006FF9C[4][4];
+extern s32 func_8001D958(s32);
 
 #endif

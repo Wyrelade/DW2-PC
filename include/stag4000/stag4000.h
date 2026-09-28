@@ -26,9 +26,13 @@ typedef struct {
         /* 0x00 */ s32 field_0;
         /* 0x00 */ Pair54 pair;
     } u0;
-    u8 _pad04[0x08];
+    /* 0x04 */ Pair54 field_4;
+    /* 0x08 */ s16 field_8;
+    /* 0x0A */ s16 field_A;
     /* 0x0C */ s32 field_C;
     /* 0x10 */ s32 field_10;
+    u8 _pad14[0x0A];
+    /* 0x1E */ u16 field_1E;
 } Stg40Loc;
 
 /* Element of Stg40Blk5071C.field_18 (stride 0x48, 41 entries; func_8006E278). */
@@ -43,7 +47,7 @@ typedef struct {
     /* 0x10 */ u8 *field_10;
     /* 0x14 */ Actor *field_14;
     /* 0x18 */ Stg40Loc field_18;
-    u8 _pad2C[0x1C];
+    u8 _pad38[0x10];
 } Stg40Ent48;
 
 /* x, y, value byte triple (Stg40Blk5071C.field_D08; func_800709DC, func_80070FEC). */
@@ -121,7 +125,29 @@ typedef struct {
     /* 0x2C */ Stg40Ent48 *field_2C;
     /* 0x30 */ s16 field_30;
     /* 0x32 */ s16 field_32;
+    /* 0x34 */ s16 field_34;
 } Stg40ActWork;
+
+/* 0x90-byte transform block behind Actor.u38 (copied whole by func_80064AFC). */
+typedef struct {
+    u8 _pad00[0x34];
+    /* 0x34 */ s32 field_34;
+    u8 _pad38[0x08];
+    /* 0x40 */ s16 field_40;
+    /* 0x42 */ s16 field_42;
+    /* 0x44 */ s16 field_44;
+    u8 _pad46[0x4A];
+} Stg40Xform;
+
+/* Work of the child object drawn by func_80064AFC. */
+typedef struct {
+    u8 _pad00[0x14];
+    /* 0x14 */ s32 field_14;       /* model file */
+    u8 _pad18[0x08];
+    /* 0x20 */ Actor *field_20;    /* parent */
+    u8 _pad24[0x04];
+    /* 0x28 */ s32 field_28;
+} Stg40ChildWork;
 
 /* Actor.model viewed with the bytes func_80067894 sets. */
 typedef struct {
@@ -165,7 +191,7 @@ typedef struct {
     /* 0x750 */ RECT rect;
     u8 _pad758[0x08];
     /* 0x760 */ s16 field_760;
-    u8 _pad762[0x04];
+    /* 0x762 */ s16 field_762[2];
     /* 0x766 */ s16 field_766;
     /* 0x768 */ s16 field_768;
     /* 0x76A */ s16 field_76A;
@@ -213,11 +239,16 @@ typedef struct {
     /* 0x0E2 */ u8 field_E2;       /* cursor, 0..field_E1-1 (func_8006AE74) */
     u8 _pad0E3[0x01];
     /* 0x0E4 */ u8 field_E4;
-    u8 _pad0E5[0x5F];
+    u8 _pad0E5[0x43];
+    /* 0x128 */ s16 field_128[12]; /* roster indices picked by func_8006EA84 */
+    /* 0x140 */ s16 field_140;
+    u8 _pad142[0x02];
     /* 0x144 */ Stg40B60Ent field_144[5];
     /* 0x16C */ u32 field_16C;
     /* 0x170 */ s32 field_170;
-    u8 _pad174[0x0C];
+    /* 0x174 */ s32 field_174;     /* text handle (func_8006B320) */
+    /* 0x178 */ s32 field_178;
+    /* 0x17C */ Pair54 field_17C;  /* target cell (func_8006B8C8) */
     /* 0x180 */ s16 field_180;
 } Stg40B60;
 
@@ -419,5 +450,20 @@ Stg40Ent48 *func_800689E0(Stg40Ent48 *a0);
 s32 func_80071258(s32 i);
 void func_80070490(s32 buf, s32 a1, s32 x, s32 y, s32 flag);
 void func_80070754(void);
+
+/* part 36 salvage */
+extern ActorModel *Gfx_AttachModel(Actor *, s32);
+extern void Actor_UpdateTransform(Actor *);
+extern void Gfx_CalcModelBoneMatrices(Actor *);
+extern void Gfx_DrawTexModel(Actor *, s32);
+extern void Anim_StepModelAnim(Actor *);
+void func_80070974(s32 x, s32 y);
+void func_800708FC(s32 x, s32 y, s32 flag);
+extern void Task_SetState2(Actor *arg0, u32 arg1);
+void func_80065278(Actor *a0);
+extern s32 *Gfx_ReserveTexSlot(void);
+extern u16 D_80072948[];
+extern s32 Flag_SelectBranch(s32 arg0);
+extern void func_8001C038(void *arg0, s32 arg1);
 
 #endif

@@ -161,7 +161,9 @@ typedef struct {
 /* Work of task D_800734F8 (func_80070D68, func_8007100C). */
 typedef struct {
     /* 0x00 */ Stg30Ref *ref;
-    u8 _pad04[0x08];
+    /* 0x04 */ s16 field_4;
+    u8 _pad06[0x02];
+    /* 0x08 */ s32 field_8;
     /* 0x0C */ s32 text[2];
 } Stg30Work734F8;
 
@@ -174,7 +176,8 @@ typedef struct {
 /* Work of task D_80073718 (func_80071470, func_80071BDC). */
 typedef struct {
     /* 0x00 */ Stg30Pair pair;
-    u8 _pad08[0x10];
+    /* 0x08 */ u8 buf0[8];
+    /* 0x10 */ u8 buf1[8];
     /* 0x18 */ s32 field_18[3];
     /* 0x24 */ s32 text[14];
 } Stg30Work73718;
@@ -194,7 +197,8 @@ typedef struct {
     /* 0x19 */ u8 field_19;
     u8 _pad1A[0x0B];
     /* 0x25 */ u8 field_25;
-    u8 _pad26[0x02];
+    u8 _pad26[0x01];
+    /* 0x27 */ u8 field_27;
     /* 0x28 */ s32 field_28;
     u8 _pad2C[0x02];
     /* 0x2E */ s16 field_2E;
@@ -244,7 +248,9 @@ typedef struct {
     /* 0x36E */ s16 field_36E[6];
     u8 _pad37A[0x5A];
     /* 0x3D4 */ s32 field_3D4;
-} Stg30State; /* size 0x3D8 */
+    u8 _pad3D8[0x04];
+    /* 0x3DC */ s32 field_3DC;
+} Stg30State; /* size 0x3E0 */
 
 /* arg0 of func_800675CC / func_80067624 / func_8006754C: a pointer at 0x34 to a
    six-actor list at 0x2C. */
@@ -300,7 +306,8 @@ typedef struct {
 typedef struct {
     /* 0x00 */ s32 texts[18]; /* [5] is the description text, [6 + row * 3 + col] the grid */
     /* 0x48 */ s32 field_48;
-    u8 _pad4C[0x04];
+    /* 0x4C */ s16 field_4C;
+    u8 _pad4E[0x02];
     /* 0x50 */ s32 field_50;
 } Stg30Work73138; /* size 0x54 */
 
@@ -390,6 +397,108 @@ typedef struct {
     /* 0x14 */ s32 field_14;
     /* 0x18 */ s32 field_18;
 } Stg30FxArgs;
+
+/* Work of task D_80073170 (update func_80066DB0, draw func_800672B0). */
+typedef struct {
+    /* 0x00 */ s32 field_0;
+    /* 0x04 */ s32 field_4;
+    /* 0x08 */ s32 field_8;
+    /* 0x0C */ s32 field_C;
+    /* 0x10 */ s32 field_10;
+    /* 0x14 */ s32 field_14;
+    /* 0x18 */ s32 field_18;
+    /* 0x1C */ s32 field_1C;
+} Stg30Work73170; /* size 0x20 */
+
+/* Actor.u38 transform viewed with the vertical speed words. */
+typedef struct {
+    u8 _pad00[0x34];
+    /* 0x34 */ s32 field_34;
+    u8 _pad38[0x14];
+    /* 0x4C */ s32 field_4C;
+} Stg30Xform;
+
+extern Elem12 D_80073294;
+extern Elem12 D_800732A0;
+extern Elem12 D_800732AC;
+extern void Task_NextState4(Actor *arg0);
+extern void Actor_StopAxisMotion(Actor *arg0, s32 arg1);
+extern void Actor_SetAxisMotion(Actor *arg0, s32 arg1, Elem12 *arg2);
+extern s32 func_80020D54(Actor *a0, s32 i);
+extern s32 func_80020E00(Actor *a0, s32 i);
+extern s32 Anim_HasModelAnim(Actor *a0, s32 n);
+extern void func_8006E850(Actor *a0, s32 anim);
+extern void func_8006EC5C(Actor *a0);
+
+/* TextOpenArgs with x/y as one Stg30XY (copied as a unit from a table). */
+typedef struct {
+    /* 0x00 */ s32 bigFont;
+    /* 0x04 */ s32 color;
+    /* 0x08 */ Stg30XY pos;
+    /* 0x0C */ s32 charAdvance;
+    /* 0x10 */ s32 lineAdvance;
+    /* 0x14 */ s32 text;
+    /* 0x18 */ s32 charDelay;
+    /* 0x1C */ s32 strArg0;
+    /* 0x20 */ s32 strArg1;
+    u8 _pad24[0x8];
+} Stg30TextArgs;
+
+/* 8-byte text layout records of D_80073690 (func_8007191C). */
+typedef struct {
+    /* 0x00 */ u8 slot;
+    /* 0x01 */ u8 src;
+    /* 0x02 */ u8 color;
+    /* 0x03 */ u8 bigFont;
+    /* 0x04 */ Stg30XY pos;
+} Stg30TextRec;
+
+extern Stg30TextRec D_80073690[];
+extern s32 D_8005F704;
+extern s32 Digi_GetExpToNextLevel(s32, s32, s32);
+extern u8 *func_80071488(u8 *out, s32 n);
+extern void func_80071538(DigiRosterEntry *);
+
+/* D_80073CC0 roster (Stg30StateDigis.digis) as a scalar reloc at 0x18, with the
+   stat halfwords read signed. */
+typedef struct {
+    u8 _pad00[0x0D];
+    /* 0x0D */ u8 level;
+    u8 _pad0E[0x06];
+    /* 0x14 */ s16 maxHp;
+    /* 0x16 */ s16 hp;
+    /* 0x18 */ s16 maxMp;
+    /* 0x1A */ s16 mp;
+    u8 _pad1C[0x40];
+} Stg30DigiS; /* size 0x5C */
+
+extern Stg30DigiS D_80073CD8[];
+extern s32 D_80073498[];
+extern s32 D_800734B0[];
+extern s32 D_800734C8[];
+extern Stg30XY D_800734E0[];
+extern void func_80071044(Stg30Part *p, s32 unit, s32 num, s32 den);
+
+extern s32 D_80073108[];
+extern Stg30XY D_80073118[];
+extern s32 D_80073128[];
+
+extern s32 D_80073150[];
+extern s32 D_80073168;
+extern s32 D_8007316C;
+extern s32 func_8001F0E4(s32 id);
+extern u8 func_8001F020(s32 id);
+/* D_80073CC0 roster names: Stg30StateDigis.digis[i].name as a scalar reloc (0x64 = 0x18 + 0x4C). */
+typedef struct {
+    /* 0x00 */ u8 name[14];
+    u8 _pad0E[0x4E];
+} Stg30Name5C; /* size 0x5C */
+extern Stg30Name5C D_80073D24[];
+extern s32 D_80073454[];
+extern Stg30XY D_8007346C[];
+extern u8 D_80073484[];
+extern Halves D_8007348C[];
+extern void Mem_FillWordsNeg1(s32 *arg0, s32 arg1);
 
 extern Stg30Save73A50 D_80073A50;
 extern s32 D_800737E0;
@@ -518,5 +627,8 @@ extern s32 func_8006E674(s32 i);
 extern void func_800652C8(void *a0, s32 id, s32 color, Stg30XY pos, s32 name, s32 delay);
 extern void func_800663F8(void *a0, s32 id, s32 color, Stg30XY pos, s32 name, s32 delay);
 extern void func_8006754C(Stg30ListOwner *a0);
+
+/* part 36 salvage */
+
 
 #endif
