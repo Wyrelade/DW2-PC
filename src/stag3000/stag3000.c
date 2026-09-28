@@ -1798,7 +1798,74 @@ u8 *func_80071488(u8 *out, s32 n) {
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80071538);
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8007191C);
+void func_8007191C(Actor *a0) {
+    Stg30Work73718 *w = (Stg30Work73718 *)a0->work;
+    Stg30TextArgs args;
+    Stg30TextRec *r;
+    s32 i;
+    s32 j;
+
+    switch (a0->stateLevel0) {
+    case 0:
+        Mem_FillWordsNeg1(w->text, 14);
+        for (i = 0; i < 3; i++) {
+            if (D_80073CC0.entries[i].field_2E != 0) {
+                D_80073CC0.entries[i].field_28 += w->pair.field_0;
+            }
+            w->field_18[i] = Digi_GetExpToNextLevel(D_80073CC0.entries[i].field_25, D_80073CC0.entries[i].field_27,
+                                                   D_80073CC0.entries[i].field_28);
+            if (w->field_18[i] == 0 && D_80073CC0.entries[i].field_2E != 0) {
+                D_80073CC0.field_34C[i] = 1;
+                func_80071538(&((Stg30StateDigis *)&D_80073CC0)->digis[i]);
+            } else {
+                D_80073CC0.field_34C[i] = 0;
+            }
+        }
+        D_8005E620.field_8 += w->pair.field_4;
+        if (D_8005E620.field_8 > 99999999) {
+            D_8005E620.field_8 = 99999999;
+        }
+        Task_NextState0(a0);
+        break;
+    case 1:
+        switch (a0->stateLevel1) {
+        case 0:
+        default:
+            for (j = 0; j < 14; j++) {
+                r = &D_80073690[j];
+                if (r->slot == 9 || D_80073CC0.entries[r->slot].field_19 != 0) {
+                    if (r->src < 3) {
+                        args.text = (s32)D_80073D24[r->src].name;
+                    } else {
+                        args.text = (s32)Cd_GetFileEntry(r->src | 0x1FD0000);
+                    }
+                    if (j == 7) {
+                        args.strArg0 = (s32)func_80071488(w->buf0, w->pair.field_0);
+                    }
+                    if (j == 13) {
+                        args.strArg0 = (s32)func_80071488(w->buf1, w->pair.field_4);
+                    }
+                    args.bigFont = r->bigFont;
+                    args.color = r->color;
+                    args.pos = r->pos;
+                    args.charAdvance = 0;
+                    args.lineAdvance = 0;
+                    args.charDelay = 0;
+                    Text_Open(&w->text[j], (TextOpenArgs *)&args);
+                }
+            }
+            Task_NextState1(a0);
+        case 1:
+            if (D_8005F704 > 0) {
+                Task_SetState0(a0, 3);
+            }
+            break;
+        }
+        break;
+    case 2:
+        break;
+    }
+}
 
 void func_80071BDC(Actor *a0) {
     Text_CloseArray(((Stg30Work73718 *)a0->work)->text, 14);
