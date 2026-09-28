@@ -623,7 +623,26 @@ INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80070588);
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_800706BC);
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80070C68);
+void func_80070C68(Actor *a0) {
+    Stg30Work7343C *w = (Stg30Work7343C *)a0->work;
+    Stg30RefView rv;
+
+    RotMatrixYXZ(&w->field_7C, &w->field_1C.coord);
+    w->field_1C.coord.t[0] = w->field_6C;
+    w->field_1C.coord.t[1] = w->field_70;
+    w->field_1C.coord.t[2] = w->field_74;
+    w->field_1C.flg = 0;
+    rv.field_0 = w->field_0;
+    rv.field_4 = w->field_4;
+    rv.field_8 = w->field_8;
+    rv.field_C = w->field_C;
+    rv.field_10 = w->field_10;
+    rv.field_14 = w->field_14;
+    rv.field_18 = 0;
+    rv.field_1C = &w->field_1C;
+    GsSetProjection(w->field_18);
+    GsSetRefView2(&rv);
+}
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80070D14);
 
