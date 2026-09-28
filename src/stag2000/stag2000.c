@@ -718,7 +718,52 @@ s32 func_80067978(Actor *a, s32 dir) {
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80067B20);
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80067E9C);
+void func_80067E9C(Actor *a) {
+    Stg20NavWork *w = (Stg20NavWork *)a->work;
+    s32 i;
+    GfxPart *p;
+    GfxPart *q;
+
+    for (i = 0; ; i++) {
+        GfxPart *unused; /* block-scope decl: keeps GCC from copying the exit test (loop not inverted) */
+
+        if (w->recs[i].fileId == 0) {
+            break;
+        }
+        if (w->recs[i].flag != 0 && Flag_Test(w->recs[i].flag) != 0) {
+            p = (GfxPart *)Cd_GetFileEntry(w->recs[i].altFileId);
+        } else {
+            p = (GfxPart *)Cd_GetFileEntry(w->recs[i].fileId);
+        }
+        for (q = p; q->fileId != 0; q++) {
+            if (q->groupMask & (0xF - (1 << Math_CycleRange(a->elapsed, 6, 0, 3)))) {
+                q->visible = 0;
+            } else {
+                q->visible = 1;
+                q->x = w->recs[i].cell.x;
+                q->y = w->recs[i].cell.y;
+            }
+        }
+        Gfx_DrawParts((s32)p);
+    }
+    p = (GfxPart *)Cd_GetFileEntry(0x4100000);
+    for (q = p; q->fileId != 0; q++) {
+        if (q->groupMask & 2) {
+            q->palette = Math_CycleRange(a->elapsed, 4, 0, 7);
+            q->x = w->recs[w->index].cell.x;
+            q->y = w->recs[w->index].cell.y;
+        }
+    }
+    Gfx_HidePartsByMask((GfxPartMaskView *)p, D_8006FF44[D_8005F770.gameMode - 0x32A]);
+    Gfx_DrawParts((s32)p);
+    p = (GfxPart *)Cd_GetFileEntry(D_8006FF58[D_8005F770.gameMode - 0x32A]);
+    for (q = p; q->fileId != 0; q++) {
+        if (q->groupMask & 2) {
+            q->palette = Math_CycleRange(a->elapsed, 4, 0, 0xF);
+        }
+    }
+    Gfx_DrawParts((s32)p);
+}
 
 void func_80068134(Actor *a, s32 open) {
     Stg20PickWork *w = (Stg20PickWork *)a->work;

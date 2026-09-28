@@ -4232,5 +4232,10 @@
     "passes": [
       "web_realloc"
     ]
+  },
+  "stag2000:func_80067E9C": {
+    "passes": [
+      "web_realloc"
+    ]
   }
 }
