@@ -278,7 +278,14 @@ void func_8006C040(Actor *a) {
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006C074);
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006C14C);
+s32 func_8006C14C(u8 *s, s32 c) {
+    for (; *s != 0; s++) {
+        if (*s == c) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006C18C);
 
