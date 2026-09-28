@@ -914,7 +914,39 @@ void func_80067B18(Actor *arg0, s32 arg1) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80067C74);
+void func_80067C74(Actor *arg0, s32 arg1) {
+    Stg35Work708 *w = (Stg35Work708 *)arg0->work;
+    s32 s = func_80065B88(0x70, 0x6000, w->field_54[arg0->field_8]);
+    Stg35SpriteHandle *sp;
+
+    if (arg0->field_8 == 0) {
+        sp = &w->sprite[0];
+    } else {
+        sp = &w->sprite[1];
+    }
+    if (arg0->field_8 == 0) {
+        func_80065B3C(sp, s);
+        func_80065B54(sp, -0x16 - s);
+    } else {
+        func_80065B3C(sp, s);
+    }
+    if (s == 0x70) {
+        func_80065B1C(sp, 0, 0xA4, 0x19, 2);
+        func_80065B1C(sp, 1, 0xA4, 0x19, 2);
+        func_80065B1C(sp, 2, 0xA4, 0x19, 2);
+        func_80065B1C(sp, 3, 0xA4, 0x19, 2);
+    } else if (arg0->field_8 == 0) {
+        func_80065B1C(sp, 0, 0xFA, 0, 0);
+        func_80065B1C(sp, 1, 0, 0, 0xFC);
+        func_80065B1C(sp, 2, 0xFA, 0, 0);
+        func_80065B1C(sp, 3, 0, 0, 0xFC);
+    } else {
+        func_80065B1C(sp, 1, 0xFA, 0, 0);
+        func_80065B1C(sp, 0, 0, 0, 0xFC);
+        func_80065B1C(sp, 3, 0xFA, 0, 0);
+        func_80065B1C(sp, 2, 0, 0, 0xFC);
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80067E48);
 
