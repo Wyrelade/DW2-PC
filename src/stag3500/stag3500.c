@@ -1,4 +1,5 @@
 #include "common.h"
+#include "stag3500/stag3500.h"
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_800634FC);
 
@@ -10,7 +11,9 @@ INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_800635D4);
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_8006363C);
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80063684);
+void func_80063684(Actor *arg0, s32 *arg1) {
+    ((Stg35Work *)arg0->work)->field_0 = *arg1;
+}
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80063694);
 
