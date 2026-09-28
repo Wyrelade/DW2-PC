@@ -123,7 +123,10 @@ void func_80065894(Stg35TextHandle *arg0) {
     Text_Close(arg0->text);
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_800658B8);
+void func_800658B8(Stg35SpriteHandle *arg0) {
+    arg0->sprite = (Stg35Sprite *)Mem_Alloc(0x20, 2);
+    Mem_Zero(arg0->sprite, 0x20);
+}
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_800658F4);
 
