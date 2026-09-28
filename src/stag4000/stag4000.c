@@ -317,7 +317,11 @@ void func_800694D0(Actor *a0) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80069514);
+void func_80069514(Actor *a0) {
+    if (func_80067704(1) == 1) {
+        Task_SetState1(a0, D_80072B60->field_38);
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006955C);
 
