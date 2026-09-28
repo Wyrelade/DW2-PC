@@ -458,7 +458,49 @@ void func_80066E30(Actor *a0, s32 *a1) {
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80066E48);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80067044);
+void func_80067044(Actor *a0) {
+    Stg40ObjWork *w = (Stg40ObjWork *)a0->work;
+    GfxPart *p;
+    GfxPart *q;
+    s32 n;
+    s32 i;
+    s32 mask;
+
+    if (w->field_1C != 0) {
+        n = 1;
+        if (w->field_20 != 0) {
+            n = 2;
+        }
+        for (i = 0; i < n; i++) {
+            p = (GfxPart *)Cd_GetFileEntry(D_80072700[i]);
+            switch (i) {
+            case 0:
+            default:
+                mask = ((w->field_45 & 1) == 0) << 2;
+                if (!(w->field_45 & 2)) {
+                    mask |= 8;
+                }
+                for (q = p; q->fileId != 0; q++) {
+                    if (q->groupMask & 2) {
+                        q->x = -0x90;
+                        q->y = w->field_46 * 12 - 0x46;
+                        q->palette = (a0->elapsed >> 2) & 3;
+                    }
+                    if (q->groupMask & 0xC) {
+                        q->palette = (a0->elapsed >> 2) & 3;
+                    }
+                }
+                Gfx_HidePartsByMask((GfxPartMaskView *)p, mask);
+                break;
+            case 1:
+                Gfx_HidePartsByMask((GfxPartMaskView *)p, 0);
+                break;
+            }
+            Gfx_SetPartsScale((GfxPartScaleView *)p, 0x1000, w->field_1C);
+            Gfx_DrawParts((s32)p);
+        }
+    }
+}
 
 void func_800671E8(void) {
 }
