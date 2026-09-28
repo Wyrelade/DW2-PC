@@ -165,7 +165,17 @@ void func_80064BB0(Stg35ChildOwner *arg0, s32 arg1) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80064C54);
+void func_80064C54(Stg35ChildOwner *arg0) {
+    Stg35ChildList *l = arg0->field_34;
+    s32 i;
+
+    for (i = 0; i < 6; i++) {
+        if (l->field_2C[i] != NULL) {
+            func_800674D4(l->field_2C[i], 1);
+            func_800674F8(l->field_2C[i]);
+        }
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80064CB8);
 
