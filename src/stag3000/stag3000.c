@@ -9,7 +9,19 @@ INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_800638A0);
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006399C);
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80063A6C);
+void func_80063A6C(Actor *a0) {
+    if (a0->stateLevel0 == 0) {
+        if (D_80073CC0.entries[0].field_0 != 0) {
+            a0->digiId = D_80073008;
+        } else {
+            a0->digiId = D_80072FF0[D_8007300C[D_8005E5DD]];
+        }
+        Actor_InitTransform(a0, D_80043704, 0);
+        Gfx_AttachModel(a0, a0->digiId)->otIndex = 5;
+        Gfx_ResetModelBones(a0);
+        Task_NextState0(a0);
+    }
+}
 
 void func_80063B28(Actor *a0) {
     Gfx_AttachModel(a0, a0->digiId);
