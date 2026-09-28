@@ -1164,7 +1164,19 @@ s16 func_80070C94(void) {
     return p->field_0[p->field_1A];
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80070CC0);
+void func_80070CC0(s32 id) {
+    s32 *p;
+
+    p = (s32 *)Cd_GetFileOrNull(id);
+    func_80070EE0(p);
+    D_80072B60->field_1C = id;
+    D_80072B60->field_C = p;
+    D_80072B60->field_10 = p[D_8005071C->field_3];
+    D_80072B60->field_18 = 0;
+    while (D_80072B60->field_C[D_80072B60->field_18] != 0) {
+        D_80072B60->field_18++;
+    }
+}
 
 void func_80070D74(void) {
     s32 i;
