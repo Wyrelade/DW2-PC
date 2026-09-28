@@ -706,7 +706,9 @@ s32 func_80071180(void) {
     return (Rand_Next() & 0xFFF) * 100 / 4096;
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_800711C4);
+s32 func_800711C4(s32 n) {
+    return (Rand_Next() & 0xFFF) * n / 4096;
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80071204);
 
