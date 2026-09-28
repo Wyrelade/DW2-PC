@@ -109,7 +109,9 @@ void func_800657AC(Stg35LoadHandle *arg0, s32 arg1) {
     arg0->load->field_C = arg1;
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_800657B8);
+void func_800657B8(Stg35TextHandle *arg0, s32 arg1) {
+    arg0->text->field_4 = (s32)Cd_GetFileEntry(arg1 + 0x1FD0000);
+}
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_800657F0);
 
