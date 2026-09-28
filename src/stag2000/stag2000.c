@@ -267,7 +267,21 @@ void func_80068134(Actor *a, s32 open) {
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_800681A0);
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80068364);
+void func_80068364(Actor *a) {
+    Stg20BlinkTask *t = (Stg20BlinkTask *)a;
+    Stg20Work *w = t->work;
+    GfxPart *p = (GfxPart *)Cd_GetFileEntry(0xD120000);
+    GfxPart *q;
+
+    for (q = p; q->fileId != 0; q++) {
+        if (q->groupMask & 2) {
+            q->x = w->field_0 * 0x36 - 0x8E;
+            q->y = -0x60;
+            q->visible = ((t->field_24 >> 4) ^ 1) & 1;
+        }
+    }
+    Gfx_DrawParts((s32)p);
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80068420);
 
