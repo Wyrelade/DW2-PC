@@ -1519,7 +1519,44 @@ void func_8006E8F4(s32 n) {
     g->hp = (g->hp - n < 0) ? 0 : g->hp - n;
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006E920);
+s32 func_8006E920(Stg40Shop *a) {
+    s32 ret;
+    s32 j;
+    s32 i;
+    s32 key;
+    u16 *bag;
+    u16 *items;
+
+    D_80072B60->field_E1 = 0;
+    switch (func_8006E820(a->field_0)) {
+    case -1:
+        ret = a->field_C;
+        break;
+    case 0:
+        ret = a->field_C + 1;
+        break;
+    default:
+        for (j = 0; j < 4; j++) {
+            key = a->field_2[j];
+            items = D_80050720->bagItems;
+            if (key != -1) {
+                for (i = 0, bag = items; i < 0x30; i++, bag++) {
+                    if (*bag != 0 && key == func_8001E0C0(*bag)) {
+                        D_80072B60->field_B0[D_80072B60->field_E1] = *bag;
+                        D_80072B60->field_E1++;
+                    }
+                }
+            }
+        }
+        if (D_80072B60->field_E1 == 0) {
+            ret = a->field_C + 2;
+        } else {
+            ret = 0;
+        }
+        break;
+    }
+    return ret;
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006EA84);
 
