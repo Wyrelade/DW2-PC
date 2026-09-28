@@ -308,7 +308,44 @@ s32 func_800676C4(s32 a0, u8 a1) {
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_800676F4);
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80067DB4);
+void func_80067DB4(Stg30ListOwner *a0) {
+    Stg30ActorList *l = a0->list;
+
+    switch (a0->stateLevel2) {
+    case 0:
+    default:
+        Snd_PlayById(0x203, 1);
+        func_8006754C(a0);
+        Task_Create(0x505, &l->field_24, 3);
+        func_80070D14(0x19);
+        Task_NextState2((Actor *)a0);
+    case 1:
+        if (l->field_24 != 0) {
+            break;
+        }
+        Task_NextState2((Actor *)a0);
+    case 2:
+        switch (a0->stateLevel3) {
+        case 0:
+        default:
+            Gfx_FadeOutToBlack(0xF);
+            Task_NextState3((Actor *)a0);
+        case 1:
+            if (D_8005F770.fadeLevel == 0xFF) {
+                if (D_80073CC0.entries[0].field_0 != 0) {
+                    D_8005F770.field_24 = 2;
+                    D_8005F770.nextGameMode = D_8005F770.prevGameMode;
+                } else {
+                    D_8005F770.nextGameMode = 0x401;
+                }
+                Task_NextState3((Actor *)a0);
+            }
+        case 2:
+            break;
+        }
+        break;
+    }
+}
 
 void func_80067EC4(void) {
     s32 i;
