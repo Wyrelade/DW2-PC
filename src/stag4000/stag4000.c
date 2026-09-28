@@ -329,7 +329,9 @@ INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006E330);
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006E490);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006E4DC);
+void func_8006E4DC(Actor *a0, s16 a1) {
+    ((Stg40ActWork *)a0->work)->field_30 = a1;
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006E4E8);
 
