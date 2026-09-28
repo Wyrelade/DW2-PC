@@ -1693,7 +1693,29 @@ s32 func_80070FEC(Stg40Pick *out, Stg40Rec3 *e, u8 key) {
     return r;
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8007107C);
+void func_8007107C(void) {
+    Stg40Pick buf[20];
+    Stg40Rec3 *list = D_80072B60->field_14->field_4;
+    s32 r;
+
+    r = func_80070FEC(buf, list, 0);
+    D_80072B60->field_20.field_0 = buf[r].field_0;
+    D_80072B60->field_20.field_2 = buf[r].field_2;
+    r = func_80070FEC(buf, list, 1);
+    D_80072B60->field_24.field_2 = -1;
+    D_80072B60->field_24.field_0 = -1;
+    if (r != -1) {
+        D_80072B60->field_24.field_0 = buf[r].field_0;
+        D_80072B60->field_24.field_2 = buf[r].field_2;
+    }
+    r = func_80070FEC(buf, list, 2);
+    D_80072B60->field_28.field_2 = -1;
+    D_80072B60->field_28.field_0 = -1;
+    if (r != -1) {
+        D_80072B60->field_28.field_0 = buf[r].field_0;
+        D_80072B60->field_28.field_2 = buf[r].field_2;
+    }
+}
 
 s32 func_80071180(void) {
     return (Rand_Next() & 0xFFF) * 100 / 4096;
