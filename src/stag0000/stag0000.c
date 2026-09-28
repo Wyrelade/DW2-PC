@@ -43,7 +43,7 @@ void func_80063D04(Actor *arg0) {
     }
 }
 
-void func_80063E34(Stg00Sprt *arg0, GfxPartTexSlot *arg1, s16 arg2, s16 arg3) {
+void func_80063E34(Stg00Sprt *arg0, GfxPartTexSlot *arg1, s32 arg2, s32 arg3) {
     arg0->c = *(Col1A9C8 *)&D_8005074C;
     arg0->tag.len = 4;
     arg0->c.code = 0x64;
@@ -528,12 +528,12 @@ u8 *func_80068084(s32 arg0, s32 arg1) {
     return D_80069364[row];
 }
 
-void func_80068150(s32 arg0) {
-    func_80068084(arg0, 0);
+u8 *func_80068150(s32 arg0) {
+    return func_80068084(arg0, 0);
 }
 
-void func_80068170(s32 arg0, s32 arg1) {
-    func_80068084(arg0, arg1 + 1);
+u8 *func_80068170(s32 arg0, s32 arg1) {
+    return func_80068084(arg0, arg1 + 1);
 }
 
 s32 func_80068190(void) {
