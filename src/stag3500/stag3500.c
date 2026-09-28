@@ -72,7 +72,10 @@ INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80064C54);
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80064CB8);
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80065694);
+void func_80065694(Actor *arg0) {
+    Gpu_InitDoubleBuffer(0x140, 0xF0, 0, 0);
+    Task_DefaultDestroy(arg0);
+}
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_800656D0);
 
