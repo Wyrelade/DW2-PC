@@ -490,7 +490,14 @@ INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006DDDC);
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006DEF0);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006DFA4);
+void func_8006DFA4(u8 (*tbl)[2], s32 a1, s32 a2) {
+    s32 n = func_8006DEF0(tbl, func_800711C4(D_80072B60->field_0));
+
+    if (n != 0) {
+        n = func_800711C4(n);
+        func_8006DB68(a1, a2, tbl[n][0], tbl[n][1]);
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006E024);
 
