@@ -86,7 +86,17 @@ void func_800643E0(s32 sel, s32 from, s32 to) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80064480);
+void func_80064480(void) {
+    s32 i;
+    TaskEntry *t;
+
+    for (i = 0; i < 3; i++) {
+        t = Task_FindFirst(0x509, -1, i);
+        if (t != NULL) {
+            Task_SetState01((Actor *)t, 2, 8);
+        }
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_800644D4);
 
