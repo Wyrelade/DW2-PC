@@ -3156,7 +3156,56 @@ void func_8006ED5C(void) {
     D_80072944 = 0;
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006ED88);
+void func_8006ED88(s32 arg0) {
+    s32 n;
+    u8 *p;
+    Stg40Cell *c;
+    s32 i;
+
+    p = D_8005071C->field_E7C;
+    c = (Stg40Cell *)D_8005071C->field_E58;
+    n = D_8005071C->field_E54->field_0 * D_8005071C->field_E54->field_2 / 8;
+
+    for (i = 0; i < n; i++) {
+        if (arg0 == 0) {
+            *p = 0;
+            *p = (c->field_0 >> 13) & 1;
+            c++;
+            *p |= (c->field_0 & 0x2000) ? 2 : 0;
+            c++;
+            *p |= (c->field_0 & 0x2000) ? 4 : 0;
+            c++;
+            *p |= (c->field_0 & 0x2000) ? 8 : 0;
+            c++;
+            *p |= (c->field_0 & 0x2000) ? 0x10 : 0;
+            c++;
+            *p |= (c->field_0 & 0x2000) ? 0x20 : 0;
+            c++;
+            *p |= (c->field_0 & 0x2000) ? 0x40 : 0;
+            c++;
+            *p |= (c->field_0 & 0x2000) ? 0x80 : 0;
+            c++;
+        } else {
+            if (*p & 1) c->field_0 |= 0x2000; else c->field_0 &= ~0x2000;
+            c++;
+            if (*p & 2) c->field_0 |= 0x2000; else c->field_0 &= ~0x2000;
+            c++;
+            if (*p & 4) c->field_0 |= 0x2000; else c->field_0 &= ~0x2000;
+            c++;
+            if (*p & 8) c->field_0 |= 0x2000; else c->field_0 &= ~0x2000;
+            c++;
+            if (*p & 0x10) c->field_0 |= 0x2000; else c->field_0 &= ~0x2000;
+            c++;
+            if (*p & 0x20) c->field_0 |= 0x2000; else c->field_0 &= ~0x2000;
+            c++;
+            if (*p & 0x40) c->field_0 |= 0x2000; else c->field_0 &= ~0x2000;
+            c++;
+            if (*p & 0x80) c->field_0 |= 0x2000; else c->field_0 &= ~0x2000;
+            c++;
+        }
+        p++;
+    }
+}
 
 void func_8006F06C(void) {
     func_8006ED5C();
