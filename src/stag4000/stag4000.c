@@ -2036,7 +2036,84 @@ s32 func_8006D418(Actor *a0) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006D4E0);
+s32 func_8006D4E0(kind, a1, a2, a3, x, y)
+    s32 kind;
+    s32 a1;
+    s32 a2;
+    s16 a3;
+    s16 x;
+    s16 y;
+{
+    Stg40Ent48 *e;
+    s32 flag = 0;
+    s32 n;
+    s16 h;
+
+    e = &D_8005071C->field_18[D_8005071C->field_C];
+    if (D_8005071C->field_C >= 41) {
+        return -1;
+    }
+    e->field_7 = D_8005071C->field_C;
+    e->field_6 = 0;
+    e->field_0 = 0xC000;
+    e->field_8 = kind;
+    e->field_9 = a1;
+    e->field_4 = a2;
+    h = (a3 << 12) / 360;
+    e->field_C = h;
+    e->field_E = h;
+    e->field_B = h / 512;
+    e->field_18.u0.pair.field_0 = x;
+    e->field_18.u0.pair.field_2 = y;
+    e->field_18.field_14 = 0;
+    if (a2 >= 500 && a2 <= 532) {
+        e->field_38 = e->field_3C = e->field_40 = 0xD99;
+    } else {
+        e->field_38 = e->field_3C = e->field_40 = 0x1000;
+    }
+    switch (e->field_8) {
+    case 0:
+        flag = 1;
+        e->field_0 |= flag;
+        e->field_10 = (u8 *)&D_8005071C->field_BA0;
+        D_80072B60->field_4 = e;
+        D_8005071C->field_BA0 = 0;
+        D_8005071C->field_BA4 = 0;
+        break;
+    case 1:
+        flag = 1;
+        e->field_10 = D_8005071C->field_BB8[D_8005071C->field_E++];
+        e->field_0 |= 2;
+        break;
+    case 4:
+        flag = 1;
+        n = D_8005071C->field_10++;
+        e->field_10 = D_8005071C->field_CCE[n + 1];
+        e->field_0 |= 4;
+        break;
+    case 5:
+    case 6:
+    case 7:
+    case 8:
+    case 9:
+    case 10:
+    case 11:
+    case 12:
+        flag = 0;
+        n = D_8005071C->field_12++;
+        e->field_10 = D_8005071C->field_CE8[n];
+        e->field_0 |= 4;
+        break;
+    case 2:
+    case 3:
+        flag = 0;
+        e->field_0 |= 4;
+        break;
+    }
+    func_800708FC(x, y, flag);
+    D_8005071C->field_C++;
+    return 0;
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006D738);
 
