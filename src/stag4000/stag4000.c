@@ -1149,7 +1149,40 @@ INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006D4E0);
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006D738);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006DA18);
+void func_8006DA18(void) {
+    Stg40MapPos *pos = ((Stg40Map *)D_80072B60->field_10)->field_34;
+    Stg40Drop *r;
+    s32 k;
+    u8 *d;
+
+    for (r = D_80072B60->field_14->field_8; r->x != 0xFF; r++) {
+        if (D_8005071C->field_10 >= 12) {
+            break;
+        }
+        switch (func_800711C4(4)) {
+        case 0:
+        default:
+            k = r->pick0;
+            break;
+        case 1:
+            k = r->pick1;
+            break;
+        case 2:
+            k = r->pick2;
+            break;
+        case 3:
+            k = r->pick3;
+            break;
+        }
+        if (k != 0) {
+            func_8006D4E0(4, 0, 0x276, 0, r->x, r->y);
+            k--;
+            d = D_8005071C->field_CCE[D_8005071C->field_10];
+            d[0] = pos[k].field_0;
+            d[1] = pos[k].field_1;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006DB68);
 
