@@ -24,7 +24,45 @@ void func_800637E8(void) {
     b->field_E54->field_2 = 0x30;
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80063814);
+void func_80063814(void) {
+    Stg40Stage14 *tbl;
+    s32 i;
+    Stg40Ent48 *e;
+
+    D_8005071C->field_0 = 1;
+    D_8005071C->field_5 = 0;
+    D_8005071C->field_3 = 0;
+    D_8005071C->field_6 = 0;
+    D_8005071C->field_7 = 0;
+    if (D_8005F770.prevGameMode == 0x32B) {
+        D_8005071C->field_6 = 1;
+    }
+    if (D_8005F770.gameMode != 0x200) {
+        D_8005071C->field_1058 = (u16)D_8005F770.gameMode - 0x201;
+    } else {
+        D_8005071C->field_1058 = D_8005F770.field_24;
+    }
+    tbl = (Stg40Stage14 *)Cd_GetFileEntry(0xE20000A);
+    D_8005071C->field_1044 = tbl[D_8005071C->field_1058];
+    D_8005071C->field_105C = tbl[D_8005071C->field_1058].field_C;
+    D_8005071C->field_1060 = tbl[D_8005071C->field_1058].field_10;
+    e = D_8005071C->field_18;
+    for (i = 0; i < 41; i++, e++) {
+        e->field_0 = 0;
+    }
+    D_8005071C->field_BA5 = D_8005071C->field_BA6 = D_8005071C->field_BA7 = D_8005071C->field_BA8 = 0;
+    for (i = 0; i < 12; i++) {
+        D_8005071C->field_BA9[i] = 0;
+    }
+    D_8005071C->field_8 = D_8005071C->field_1044.field_0;
+    Digi_SortRoster();
+    for (i = 0; i < 3; i++) {
+        if (D_80050720->elems[i].state < 2) {
+            break;
+        }
+        D_80050720->elems[i].state = i + 3;
+    }
+}
 
 void func_800639FC(void) {
     func_80070DC0();
