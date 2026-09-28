@@ -505,7 +505,28 @@ void func_80068FBC(Actor *a0) {
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80068FFC);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_800690CC);
+void func_800690CC(Actor *a0) {
+    Stg40B60 *b = D_80072B60;
+    s32 arg = 0;
+    s32 k;
+
+    if (b->field_68 == 0) {
+        Task_SetState1(a0, 7);
+        return;
+    }
+    b->field_68--;
+    k = b->field_60[b->field_68];
+    if (k >= 2 && k < 6) {
+        arg = (s32)D_80050720->field_D1;
+    }
+    if (k == 6) {
+        arg = b->field_78;
+    }
+    if (k == 7) {
+        arg = (s32)b->field_6A;
+    }
+    func_8006813C(a0, 0x28, 8, D_80072868[k], arg, 0);
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80069188);
 
