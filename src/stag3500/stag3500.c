@@ -77,7 +77,13 @@ void func_80065694(Actor *arg0) {
     Task_DefaultDestroy(arg0);
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_800656D0);
+void func_800656D0(Stg35TextHandle *arg0) {
+    Stg35TextObj *p = (Stg35TextObj *)Mem_Alloc(0x1C, 2);
+
+    arg0->text = p;
+    Mem_Zero(p, 0x1C);
+    arg0->text->field_0 = -1;
+}
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80065718);
 
