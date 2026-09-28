@@ -267,7 +267,17 @@ void func_80067EC4(void) {
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80067F2C);
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80068CE0);
+void func_80068CE0(Actor *a0) {
+    s32 i;
+
+    for (i = 0; i < 3; i++) {
+        if (((Stg30StateDigis *)&D_80073CC0)->digis[i].state >= 3) {
+            D_8005E620.elems[i] = ((Stg30StateDigis *)&D_80073CC0)->digis[i];
+        }
+    }
+    Gpu_InitDoubleBuffer(0x140, 0xF0, 0, 0);
+    Task_DefaultDestroy(a0);
+}
 
 s32 func_80068DA4(s32 idx, s32 i, Stg30ByteLists *p) {
     s32 v = p->field_9[i];
