@@ -202,7 +202,14 @@ void func_800673C4(Actor *arg0) {
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_800673E8);
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_800674D4);
+void func_800674D4(Actor *arg0, s32 arg1) {
+    ((Stg35Work *)arg0->work)->field_28 = arg1;
+    if (arg1 != 0) {
+        arg0->childCount = 4;
+    } else {
+        arg0->childCount = 3;
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_800674F8);
 
