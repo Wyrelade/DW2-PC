@@ -1401,7 +1401,37 @@ void func_8006D0F0(Actor *a) {
     Task_DefaultDestroy(a);
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006D124);
+void func_8006D124(Actor *a) {
+    Stg20ShopWork *w = (Stg20ShopWork *)a->work;
+    GfxPart *p;
+    GfxPart *q;
+
+    Cd_GetFileEntry(0xDD60002);
+    p = (GfxPart *)Cd_GetFileEntry(0xDD60002);
+    for (q = p; q->fileId != 0; q++) {
+        switch (q->groupMask) {
+        case 2:
+            q->palette = Math_CycleRange(a->elapsed, 4, 0, 3);
+            q->x = -0x8A;
+            q->y = w->row * 12 - 0x49;
+            break;
+        case 0x20:
+            q->visible = w->field_44 != 0;
+            break;
+        case 0x40:
+            q->visible = w->field_44 != w->field_4C;
+            break;
+        }
+    }
+    Gfx_SetPartsNumber(p, 4, 2, w->field_44 + 1);
+    Gfx_SetPartsNumber(p, 8, 2, w->field_4C + 1);
+    Gfx_DrawParts((s32)p);
+    if (D_80070A04 == 0) {
+        p = (GfxPart *)Cd_GetFileEntry(0xDD60003);
+        Gfx_SetPartsNumber(p, 2, 2, w->field_58);
+        Gfx_DrawParts((s32)p);
+    }
+}
 
 void func_8006D2C0(void *t, s32 id, Halves pos, s32 arg) {
     Stg20TextArgs args;
