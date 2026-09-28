@@ -578,7 +578,25 @@ void func_80068364(Actor *a) {
     Gfx_DrawParts((s32)p);
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80068420);
+void func_80068420(Actor *a, s32 i) {
+    Stg20SlotWork *w = (Stg20SlotWork *)a->work;
+    Stg20Slot *s = &w->slots[i];
+    Halves *pos = D_8006FF9C[i];
+    s32 digi = D_8005E620.elems[s->slot].digiId;
+    s32 j;
+
+    if (s->enabled != 0) {
+        for (j = 0; j < 4; j++) {
+            Text_Close(&w->texts[i * 4 + j]);
+        }
+        if (s->used != 0) {
+            Text_OpenById(&w->texts[i * 4 + 0], 0x81, 0, pos[0]);
+            Text_OpenPacked(&w->texts[i * 4 + 1], (s32)D_8005E750[s->slot].name, 0, pos[1]);
+            Text_OpenPacked(&w->texts[i * 4 + 2], (s32)Digi_GetDefaultName(digi), 0, pos[2]);
+            Text_OpenById(&w->texts[i * 4 + 3], func_8001D958(digi) + 0xC6, 0, pos[3]);
+        }
+    }
+}
 
 void func_800685C4(Actor *a) {
     Stg20SlotWork *w = (Stg20SlotWork *)a->work;
