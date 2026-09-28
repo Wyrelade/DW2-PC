@@ -450,7 +450,14 @@ void func_8006E530(void) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006E55C);
+void func_8006E55C(s32 idx, s32 v) {
+    s32 i;
+
+    for (i = 10; i >= idx; i--) {
+        D_80073A20[i + 1] = D_80073A20[i];
+    }
+    D_80073A20[idx] = v;
+}
 
 void func_8006E5B4(s32 i) {
     for (; i < 11; i++) {
