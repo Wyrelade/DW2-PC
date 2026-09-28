@@ -586,7 +586,22 @@ INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006D124);
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006D2C0);
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006D350);
+void func_8006D350(Actor *a) {
+    Stg20ListWork *w = (Stg20ListWork *)a->work;
+    s32 i;
+    s32 n;
+
+    for (i = 0x2F; i >= 0; i--) {
+        ((Stg20GameState *)&D_8005E620)->field_66[i] = 0;
+    }
+    n = 0;
+    for (i = 0; i < 0x43; i++) {
+        if (w->field_60[i] != 0) {
+            ((Stg20GameState *)&D_8005E620)->field_66[n++] = w->field_60[i];
+        }
+    }
+    Item_SortList();
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006D3CC);
 
