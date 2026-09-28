@@ -819,7 +819,24 @@ s32 func_8006E588(Actor *a0) {
     return r;
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006E60C);
+void func_8006E60C(s32 a0) {
+    s32 n;
+    Blk12 *e;
+    Stg40B60 *b;
+
+    D_80072B60->field_16C = 0;
+    if (a0 != 0) {
+        func_8001E28C(a0);
+        for (n = func_8001E480(); n != -1; n = Flag_NextPassingEntry()) {
+            e = func_8001E5E8(n);
+            b = D_80072B60;
+            b->field_144[b->field_16C].u0.pair.field_0 = e->data[0] - 1;
+            b->field_144[b->field_16C].u0.pair.field_2 = e->data[1] - 1;
+            b->field_144[b->field_16C].field_4 = n;
+            b->field_16C++;
+        }
+    }
+}
 
 s32 func_8006E6CC(void) {
     u32 i = 0;
