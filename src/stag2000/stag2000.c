@@ -491,7 +491,31 @@ Stg20MapFile *func_80066714(void) {
     return f;
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_800667AC);
+void func_800667AC(s32 arg0) {
+    s32 i;
+    s32 j;
+
+    if (arg0 == 0) {
+        ((Stg20GameInit *)&D_8005E620)->start = D_8006FD84;
+        D_8005E620.elems[0].state = 0;
+        D_8005E620.elems[1].state = 0;
+        D_8005E620.elems[2].state = 0;
+    } else {
+        ((Stg20GameInit *)&D_8005E620)->start = D_8006FE44;
+        Digi_InitFromTable(0x99, 0, &D_8005E620.elems[0]);
+        D_8005E620.elems[0].state = 3;
+        Digi_InitFromTable(0x99, 1, &D_8005E620.elems[1]);
+        D_8005E620.elems[1].state = 4;
+        Digi_InitFromTable(0x99, 2, &D_8005E620.elems[2]);
+        D_8005E620.elems[2].state = 5;
+        Digi_SortRoster();
+        for (i = 0; i < 3; i++) {
+            for (j = 0; j < 8; j++) {
+                D_8005E620.elems[i].name[j] = D_8006FF04[i][j];
+            }
+        }
+    }
+}
 
 s32 func_80066A4C(s32 id) {
     s32 i;
