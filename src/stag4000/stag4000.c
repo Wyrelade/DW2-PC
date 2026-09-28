@@ -1673,7 +1673,108 @@ void func_8006B320(Actor *a0) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006B420);
+void func_8006B420(Actor *a0) {
+    Stg40Ent48 *e;
+
+    func_800708FC(((Stg40ActWork *)a0->work)->field_2C->field_18.u0.pair.field_0, ((Stg40ActWork *)a0->work)->field_2C->field_18.u0.pair.field_2, 1);
+    switch (a0->stateLevel1) {
+    case 0:
+    case 24:
+    case 25:
+    default:
+        func_80068D3C(a0);
+        break;
+    case 1:
+        func_80069188(a0);
+        break;
+    case 2:
+        func_80068DC0(a0);
+        break;
+    case 3:
+        func_80068F20(a0);
+        break;
+    case 6:
+        func_80068FBC(a0);
+        break;
+    case 7:
+        func_80068FFC(a0);
+        break;
+    case 8:
+        func_800690CC(a0);
+        break;
+    case 4:
+        if (a0->stateLevel2 != 1) {
+            D_8005071C->field_1 = 1;
+            D_8005071C->field_2 = 1;
+            Task_NextState2(a0);
+        }
+        break;
+    case 5:
+        func_8006932C(a0);
+        break;
+    case 9:
+        func_8006940C(a0);
+        break;
+    case 10:
+        func_800694D0(a0);
+        break;
+    case 11:
+        func_80069514(a0);
+        break;
+    case 12:
+        func_8006955C(a0);
+        break;
+    case 13:
+        func_8006965C(a0);
+        break;
+    case 14:
+        func_80069714(a0);
+        break;
+    case 15:
+        func_80069830(a0);
+        break;
+    case 16:
+        func_8006997C(a0);
+        break;
+    case 19:
+        func_8006A498(a0);
+        break;
+    case 20:
+        func_8006A614(a0);
+        break;
+    case 21:
+        func_8006A6EC(a0);
+        break;
+    case 22:
+        func_8006A848(a0);
+        break;
+    case 23:
+        func_8006A9CC(a0);
+        break;
+    case 18:
+        func_8006AB48(a0);
+        break;
+    case 17:
+        func_8006AF34(a0);
+        break;
+    case 26:
+        func_80069C94(a0);
+        break;
+    case 27:
+        func_80069F84(a0);
+        break;
+    case 28:
+        func_8006B20C(a0);
+        break;
+    case 30:
+        func_8006B320(a0);
+        break;
+    case 29:
+        break;
+    }
+    e = ((Stg40ActWork *)a0->work)->field_2C;
+    func_8006EBF4(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2, e->field_18.field_4.field_0, e->field_18.field_4.field_2, e->field_8);
+}
 
 s32 func_8006B698(Stg40Ent48 *e, Pair54 *out) {
     Stg40Loc *loc = &e->field_18;
