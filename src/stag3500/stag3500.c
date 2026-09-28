@@ -519,7 +519,25 @@ void func_800667D0(Actor *arg0, s32 arg1) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80066808);
+void func_80066808(Actor *arg0, Stg35Vec3 *arg1) {
+    s32 i = arg1->field_4;
+    Stg35Work *w = (Stg35Work *)arg0->work;
+    s32 n;
+
+    arg0->field_8 = i;
+    arg0->digiId = D_8006AA88.rec[i].digiId;
+    w->field_14 = Digi_GetModelFile(arg0->digiId);
+    if (arg0->field_8 < 3) {
+        w->field_10 = 0x800;
+    } else {
+        w->field_10 = 0;
+    }
+    n = arg0->field_8;
+    w->field_8 = 0;
+    w->field_4 = (n % 3) * 0xA00 - 0xA00;
+    w->field_C = (n / 3) * 0x2800 - 0x1400;
+    w->field_38 = arg1->field_8;
+}
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_800668F8);
 
