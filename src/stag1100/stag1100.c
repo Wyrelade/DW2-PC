@@ -1631,7 +1631,25 @@ void func_80067124(Actor *arg0) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_800673FC);
+void func_800673FC(void) {
+    Stg11SaveWork *w = (Stg11SaveWork *)D_800685D0->work;
+    struct Stg11CardBlock *h = &w->u34.s;
+    struct Stg11CardBlock *h2 = h;
+    u8 *data = w->u34.s.field_234;
+
+    h->magic[0] = 'S';
+    h->magic[1] = 'C';
+    h->iconFlag = 0x13;
+    h->blocks = 2;
+    func_80067724(D_800634C4);
+    memset(h->field_78, 0, 0x1C);
+    h->clut = D_80068244.clut;
+    h->icons[0] = D_80068244.icon;
+    h2->icons[1] = D_80068330;
+    h2->icons[2] = D_800683F0;
+    memset(data, 0, 0x3DFC);
+    h->field_4030 = 0x102;
+}
 
 u8 *func_800676F4(void) {
     return ((Stg11SaveWork *)D_800685D0->work)->u34.s.field_234;
