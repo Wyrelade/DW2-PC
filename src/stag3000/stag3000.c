@@ -608,7 +608,25 @@ void func_8006E850(Actor *a0, s32 anim) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006E888);
+void func_8006E888(Actor *a0, s32 *args) {
+    Stg30Work732B8 *w = (Stg30Work732B8 *)a0->work;
+    s32 idx = args[1];
+    s32 n;
+
+    a0->field_8 = idx;
+    a0->digiId = D_80073CC0.entries[idx].field_19;
+    w->field_14 = Digi_GetModelFile(a0->digiId);
+    if (a0->field_8 < 3) {
+        w->field_10 = 0x800;
+    } else {
+        w->field_10 = 0;
+    }
+    n = a0->field_8;
+    w->field_8 = 0;
+    w->field_4 = (n % 3) * 0xA00 - 0xA00;
+    w->field_C = (n / 3) * 0x2800 - 0x1400;
+    w->field_38 = args[2];
+}
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006E978);
 
