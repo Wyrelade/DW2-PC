@@ -1963,7 +1963,278 @@ void func_8006AD8C(Actor *a) {
     w->field_18 = 0;
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006ADF8);
+void func_8006ADF8(Actor *a) {
+    Stg20NpcWork *w = (Stg20NpcWork *)a->work;
+    s32 pos[3];
+    Stg20Cell c;
+    Stg20Cell c2;
+    Actor *e;
+    Actor *p;
+    Actor *q;
+    Stg20NpcWork *ew;
+    s32 v;
+    s32 dir;
+    s32 d2;
+    s32 idx;
+    s32 mask;
+    s32 found;
+    s32 ok;
+    s32 snd;
+    Stg20Rot *r;
+
+    if (((Stg20ModelTask *)a)->field_4 == 0) {
+        D_800709B0.field_0 = 0;
+    }
+    switch (a->stateLevel0) {
+    case 0:
+        pos[0] = (w->blk[0].x - 0xB) * 0x600;
+        pos[1] = 0;
+        pos[2] = -((w->blk[0].y - 0xB) * 0x600);
+        Actor_InitTransform(a, pos, (w->field_0 << 10) & 0xFC00);
+        if (w->visible != 0) {
+            w->modelId = Digi_GetModelFile(a->digiId);
+            Gfx_AttachModel(a, w->modelId)->otIndex = 3;
+            func_8006AA0C(a, 0x1E);
+            Task_Create(0x303, (s32 *)a->u34.children, (s32)a);
+            r = (Stg20Rot *)a->u38.ptr38;
+            switch (D_8005F788[0]) {
+            case 0x30F:
+                v = 0;
+                if (a->digiId == 0x2E) {
+                    v = -0x480;
+                }
+                r->field_34 = v;
+                break;
+            case 0x318:
+                v = 0;
+                if (a->digiId == 0x14) {
+                    v = -0x480;
+                }
+                r->field_34 = v;
+                break;
+            }
+        }
+        w->text = -1;
+        Task_NextState0(a);
+        break;
+    case 2:
+        break;
+    case 1:
+        if (((Stg20ModelTask *)a)->field_4 < -1) {
+            switch (a->stateLevel1) {
+            case 0:
+            default:
+                p = (Actor *)Task_FindFirst(0x302, 0, -1);
+                if (p == NULL) {
+                    break;
+                }
+                c = *func_80067504(p);
+                if (w->blk[0].x == c.x && w->blk[0].y == c.y && func_80067568(p) != 0) {
+                    func_8001C038(&w->text, Flag_SelectBranch(w->field_1C));
+                    w->target = p;
+                    func_8006AD8C(p);
+                    Task_SetState1(p, 0);
+                    Task_NextState1(a);
+                    D_800709B4 = 1;
+                }
+                break;
+            case 1:
+                func_8001E5C0();
+                if (Text_IsFinished(w->text) != 0) {
+                    Text_Close(&w->text);
+                    if (Flag_Test(0x10) != 0) {
+                        func_8001C038(&w->text, Flag_SelectBranch(w->field_1C));
+                        break;
+                    }
+                    if (((Stg20ModelTask *)a)->field_4 == -2) {
+                        Task_SetState0(a, 3);
+                    } else {
+                        Task_SetState1(a, 0);
+                    }
+                    Task_SetState1(w->target, 0);
+                    D_800709B4 = 0;
+                }
+                break;
+            }
+            break;
+        }
+        if (w->visible != 0) {
+            func_8006AB0C(a);
+        } else {
+            w->input = 0;
+        }
+        switch (a->stateLevel1) {
+        case 0:
+        default:
+            switch (a->stateLevel2) {
+            case 0:
+            default:
+                Actor_StopAxisMotion(a, 2);
+                func_8006AA0C(a, 0x1E);
+                func_80067604(a, 1, 1);
+                Task_NextState2(a);
+            case 1:
+                func_800677C8(a, &w->marks, -1, 5);
+                if (w->input & 0xF000) {
+                    if (func_80067770(a, func_8006AD14(a)) == 0) {
+                        func_800677C8(a, &w->marks, func_8006AD14(a), 0x14);
+                        Task_SetState1(a, 1);
+                        w->counter = 0;
+                    } else {
+                        func_8006AD6C(a, func_8006AD14(a));
+                    }
+                } else if (((Stg20ModelTask *)a)->field_4 == 0) {
+                    if (w->timer < D_8005F770.frameCount && (w->input & 0x40)) {
+                        dir = (((Stg20Rot *)a->u38.ptr38)->field_42 & 0xFFF) / 0x400;
+                        if (func_80067770(a, dir) & 0x40) {
+                            e = (Actor *)Task_FindFirst(0x302, 1, -1);
+                            found = 0;
+                            c = *func_80067714(a, dir);
+                            while (e != NULL) {
+                                c2 = *func_80067504(e);
+                                if (c2.x == c.x && c2.y == c.y) {
+                                    if (e->stateLevel1 == 0) {
+                                        w->target = e;
+                                        found = 1;
+                                    }
+                                    break;
+                                }
+                                e = (Actor *)Task_FindNext();
+                            }
+                            if (found != 0) {
+                                Task_NextState2(a);
+                            }
+                        }
+                    }
+                    if (((Stg20ModelTask *)a)->field_4 == 0 && a->stateLevel2 == 1) {
+                        D_800709B0.field_0 = 1;
+                    }
+                }
+                break;
+            case 2:
+                if (((Stg20ModelTask *)a)->field_4 == 0) {
+                    q = w->target;
+                    ew = (Stg20NpcWork *)q->work;
+                    D_800709B0.field_4 = 1;
+                    func_800677C8(a, &w->marks, -1, 5);
+                    func_8006AA0C(a, 0x20);
+                    Task_SetState1(q, 0);
+                    Task_SetState2(q, 2);
+                    ew->target = a;
+                    ((Stg20Rot *)q->u38.ptr38)->field_42 = ((Stg20Rot *)a->u38.ptr38)->field_42 + 0x800;
+                    func_8006AD8C(a);
+                    Task_SetState1(a, 0);
+                    Task_SetState2(a, 1);
+                } else {
+                    switch (a->stateLevel3) {
+                    case 0:
+                    default:
+                        func_8006AA0C(a, 0x20);
+                        func_8001C038(&w->text, Flag_SelectBranch(w->field_1C));
+                        Task_NextState3(a);
+                        break;
+                    case 1:
+                        func_8001E5C0();
+                        if (Text_IsFinished(w->text) != 0) {
+                            Text_Close(&w->text);
+                            if (Flag_Test(0x10) != 0) {
+                                Task_SetState3(a, 0);
+                            } else {
+                                ((Stg20NpcWork *)w->target->work)->timer = D_8005F770.frameCount + 0x1E;
+                                Task_SetState1(w->target, 0);
+                                Task_SetState2(a, 0);
+                                D_800709B4 = 0;
+                            }
+                        }
+                        break;
+                    }
+                }
+                break;
+            case 3:
+                break;
+            }
+            if (w->anim < 0x25) {
+                if (w->anim >= 0x22 && a->model->animDone != 0) {
+                    func_8006AA0C(a, 0x1E);
+                }
+            }
+            break;
+        case 1:
+            switch (a->stateLevel2) {
+            case 0:
+            default:
+                d2 = func_8006AD14(a);
+                if (d2 == -1) {
+                    Task_SetState1(a, 0);
+                    break;
+                }
+                func_8006AD6C(a, d2);
+                w->dir = d2;
+                if (func_80067770(a, func_8006AD14(a)) != 0) {
+                    Task_SetState1(a, 0);
+                    break;
+                }
+                func_800677C8(a, &w->marks, w->dir, 0x14);
+                Task_NextState2(a);
+            case 1:
+                if ((w->input & 0x10) || D_800709B4 != 0 || ((Stg20ModelTask *)a)->field_4 != 0) {
+                    func_8006AA0C(a, 0x1F);
+                    func_800676A8(a, 0);
+                } else {
+                    func_8006AA0C(a, 0x25);
+                    func_800676A8(a, 1);
+                }
+                if (((Stg20ModelTask *)a)->field_4 == 0) {
+                    ok = 0;
+                    w->counter++;
+                    if ((w->input & 0x10) || D_800709B4 != 0) {
+                        if (w->counter >= 13) {
+                            ok = 1;
+                        }
+                    } else if (w->counter >= 5) {
+                        ok = 1;
+                    }
+                    if (ok != 0) {
+                        snd = 0x27;
+                        if (func_80066714()->field_18 != 0) {
+                            c = *func_80067504(a);
+                            idx = c.y * 3 + c.x / 8;
+                            mask = 1 << (s16)(c.x % 8);
+                            if (((u8 *)func_80066714()->field_18)[idx] & mask) {
+                                snd = 0x28;
+                            }
+                        }
+                        Snd_PlayById(snd, 0);
+                        w->counter = 0;
+                    }
+                }
+                func_80020D54(a, 2);
+                func_800677C8(a, &w->marks, -1, 5);
+                if (func_80067568(a) != 0) {
+                    if ((w->input & 0xF000) && func_80067770(a, func_8006AD14(a)) == 0) {
+                        Task_SetState1(a, 1);
+                    } else {
+                        Task_SetState1(a, 0);
+                    }
+                }
+                switch (w->dir) {
+                case 0:
+                case 2:
+                    func_80067604(a, 1, 0);
+                    break;
+                case 1:
+                case 3:
+                    func_80067604(a, 0, 1);
+                    break;
+                }
+                break;
+            }
+            break;
+        }
+        func_800678A8(a, &w->marks);
+        break;
+    }
+}
 
 void func_8006B7C8(Actor *a) {
     Stg20Draw2Work *w = (Stg20Draw2Work *)a->work;
