@@ -253,7 +253,12 @@ void func_8006BBF0(Actor *a) {
     Task_DefaultDestroy(a);
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006BC24);
+void func_8006BC24(void) {
+    GfxPart *p = (GfxPart *)Cd_GetFileEntry(0xDD60000);
+
+    Gfx_SetPartsNumber(p, 2, 8, D_8005E628);
+    Gfx_DrawParts((s32)p);
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006BC6C);
 
