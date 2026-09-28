@@ -409,7 +409,9 @@ INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006F1C8);
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006F290);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006F38C);
+void func_8006F38C(Stg40ImgWork *a0) {
+    Gfx_ReleaseTexSlot(a0->field_758);
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006F3B0);
 
