@@ -102,7 +102,14 @@ INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80066BE4);
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80066D78);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80066DF0);
+void func_80066DF0(u8 a0, u8 a1, u8 a2) {
+    Stg40ObjWork *w = (Stg40ObjWork *)D_80072B70->work;
+
+    w->field_46 = a0;
+    w->field_44 = a1;
+    w->field_45 = a2;
+    w->field_24 = -1;
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80066E18);
 
