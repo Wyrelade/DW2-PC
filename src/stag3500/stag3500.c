@@ -93,7 +93,13 @@ void func_80065718(Stg35TextHandle *arg0) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80065760);
+void func_80065760(Stg35TextHandle *arg0, s32 arg1, s32 arg2, s32 arg3) {
+    arg0->text->field_8 = arg1 >> 8;
+    arg0->text->field_C = 0;
+    arg0->text->field_10 = arg2;
+    arg0->text->field_14 = arg3;
+    arg0->text->field_18 = arg1 & 0xFF;
+}
 
 void func_800657A0(Stg35LoadHandle *arg0, s32 arg1) {
     arg0->load->mode = arg1;
