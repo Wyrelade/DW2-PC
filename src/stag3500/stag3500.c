@@ -23,7 +23,15 @@ void func_80063584(Actor *arg0) {
     func_800661B0(w);
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_800635D4);
+void func_800635D4(Actor *arg0) {
+    if (arg0->stateLevel0 == 0) {
+        arg0->digiId = 0xD77;
+        Actor_InitTransform(arg0, D_80043704, 0);
+        Gfx_AttachModel(arg0, arg0->digiId)->otIndex = 5;
+        Gfx_ResetModelBones(arg0);
+        Task_NextState0(arg0);
+    }
+}
 
 void func_8006363C(Actor *arg0) {
     Gfx_AttachModel(arg0, arg0->digiId);
