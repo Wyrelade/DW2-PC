@@ -111,7 +111,100 @@ void func_80064638(Actor *arg0) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_800646C0);
+void func_800646C0(Actor *arg0) {
+    Stg35Work1 *w = (Stg35Work1 *)arg0->work;
+    s32 *slot = (s32 *)arg0->u34.children;
+    s32 i;
+    s32 j;
+    s32 k;
+    s32 l;
+    s32 v;
+
+    switch (arg0->stateLevel0) {
+    case 0:
+        Gpu_AllocPacketBufs(0x32000);
+        Sys_SetFrameRate30();
+        Gpu_InitDoubleBuffer(0x140, 0x1E0, 2, 0);
+        Gpu_SetBgClearColor(0, 0, 0);
+        Gpu_ClearScreens();
+        Gfx_FadeInFromBlack(0x40);
+        Task_Create(9, slot, 0);
+        for (i = 0; i < 1; i++) {
+            func_80066120(&w->load[i]);
+        }
+        for (i = 0; i < 14; i++) {
+            func_800656D0(&w->text[i]);
+        }
+        Task_NextState0(arg0);
+        break;
+    case 1:
+        switch (arg0->stateLevel1) {
+        case 0:
+        default:
+            switch (arg0->stateLevel2) {
+            case 0:
+            default:
+                func_800661A4(w->load, 0xD3F0002);
+                func_80066694(w->load, 0, 2, 0x140, 0, -0x1400);
+                func_80066694(w->load, 1, 4, -0x140, 0, 0x1400);
+                func_800663CC(w->load, 0x18);
+                Task_NextState2(arg0);
+            case 1:
+                if (++arg0->stateLevel3 == 0x14) {
+                    Snd_PlayById(0x101, 1);
+                    func_800663CC(w->load, 0x10);
+                    for (j = 0; j < 6; j++) {
+                        func_80065760(&w->text[j], 1, D_8006A4DC[j].x, D_8006A4DC[j].y);
+                        func_800657B8(&w->text[j], D_8006A4F4[j]);
+                        func_80065824(&w->text[j]);
+                    }
+                    for (k = 0; k < 6; k++) {
+                        func_80065760(&w->text[k + 6], 1, D_8006A500[k / 3].x, D_8006A500[k / 3].y + (k % 3) * 12);
+                        func_800657A0((Stg35LoadHandle *)&w->text[k + 6], (s32)Digi_GetDefaultName(D_8005E620.elems[k].digiId));
+                        func_80065824(&w->text[k + 6]);
+                    }
+                    for (l = 0; l < 2; l++) {
+                        func_80065760(&w->text[l + 12], 1, D_8006A508[l].x, D_8006A508[l].y);
+                        func_800657A0((Stg35LoadHandle *)&w->text[l + 12], (s32)D_8005E620.elems[l + 6].name);
+                        func_80065824(&w->text[l + 12]);
+                    }
+                }
+                if (arg0->stateLevel3 == 0x1E) {
+                    Task_NextState2(arg0);
+                }
+                break;
+            case 2:
+                v = Math_CycleRange(arg0->elapsed, 6, 0, 7);
+                func_800663CC(w->load, 0);
+                func_80066520(w->load, 0x10, v);
+                if (v == 7) {
+                    Task_NextState1(arg0);
+                }
+                break;
+            }
+            break;
+        case 1:
+            if (D_8005F6F0[0].cross > 0 || D_8005F6F0[1].cross > 0) {
+                Task_NextState0(arg0);
+            }
+            break;
+        }
+        break;
+    case 2:
+        switch (arg0->stateLevel2) {
+        case 0:
+        default:
+            Gfx_FadeOutToBlack(0x10);
+            Task_NextState2(arg0);
+        case 1:
+            if (D_8005F770.fadeLevel == 0xFF) {
+                D_8005F770.nextGameMode = 0x703;
+            }
+            break;
+        }
+        break;
+    }
+}
 
 void func_80064AF0(Actor *arg0) {
     Stg35Work1 *w = (Stg35Work1 *)arg0->work;
