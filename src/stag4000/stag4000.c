@@ -1697,7 +1697,57 @@ void func_8006DFA4(u8 (*tbl)[2], s32 a1, s32 a2) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006E024);
+void func_8006E024(void) {
+    Stg40Map *m = (Stg40Map *)D_80072B60->field_10;
+    Stg40Ids5 ids = D_80063664;
+    Stg40MapGen *g = m->field_54;
+    s32 buf;
+    s32 i;
+    s32 j;
+    s32 n;
+    s32 v;
+
+    if (D_80072B60->field_0 == 0) {
+        return;
+    }
+    buf = Mem_Alloc(0x1800, 2);
+    for (i = 0; i < 5; g++, i++) {
+        switch (func_800711C4(4)) {
+        case 0:
+        default:
+            n = g->cnt0;
+            break;
+        case 1:
+            n = g->cnt1;
+            break;
+        case 2:
+            n = g->cnt2;
+            break;
+        case 3:
+            n = g->cnt3;
+            break;
+        }
+        for (j = 0; j < n; j++) {
+            switch (func_800711C4(4)) {
+            case 0:
+            default:
+                v = g->val0;
+                break;
+            case 1:
+                v = g->val1;
+                break;
+            case 2:
+                v = g->val2;
+                break;
+            case 3:
+                v = g->val3;
+                break;
+            }
+            func_8006DFA4((u8 (*)[2])buf, ids.id[i], v);
+        }
+    }
+    Mem_Free((ActorWork *)buf);
+}
 
 Stg40Ent48 *func_8006E200(s16 x, s16 y) {
     Stg40Ent48 *e = D_8005071C->field_18;
