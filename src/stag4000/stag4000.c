@@ -115,7 +115,12 @@ s32 *func_80066E18(void) {
     return &((Stg40ObjWork *)D_80072B70->work)->field_28;
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80066E30);
+void func_80066E30(Actor *a0, s32 *a1) {
+    Stg40ObjWork *w = (Stg40ObjWork *)a0->work;
+
+    D_80072B70 = a0;
+    w->field_20 = *a1;
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80066E48);
 
