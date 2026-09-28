@@ -337,7 +337,17 @@ s32 func_8006D484(Actor *a, s32 v) {
     return 0;
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006D4BC);
+void func_8006D4BC(Actor *a, s32 v) {
+    Stg20ListWork *w = (Stg20ListWork *)a->work;
+    s32 i;
+
+    for (i = 0; i < 0x43; i++) {
+        if (w->field_60[i] == v) {
+            w->field_60[i] = 0;
+            return;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006D4F4);
 
