@@ -1193,7 +1193,69 @@ void func_8006FA28(Actor *a0) {
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006FC78);
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006FFD0);
+void func_8006FFD0(Actor *a0) {
+    Stg30Work73358 *w = (Stg30Work73358 *)a0->work;
+    Stg30Part *p;
+    Stg30Part *q;
+    s32 k;
+
+    if (a0->stateLevel0 == 1 && a0->stateLevel1 == 0) {
+        p = (Stg30Part *)Cd_GetFileEntry(0x1A10008);
+        for (q = p; q->fileId != 0; q++) {
+            q->field_10 = w->field_0;
+            q->field_14 = w->field_2;
+            q->palette = w->field_4;
+            if (w->field_C == 0) {
+                switch (q->groupMask) {
+                case 0x10:
+                    q->visible = 0;
+                    break;
+                case 4:
+                    q->visible = ((u32)D_8005F770.frameCount >> 1) & 1;
+                    break;
+                case 8:
+                    q->visible = (((u32)D_8005F770.frameCount >> 1) ^ 1) & 1;
+                    break;
+                default:
+                    q->visible = 1;
+                    break;
+                }
+            } else {
+                switch (q->groupMask) {
+                case 4:
+                    q->visible = 0;
+                    break;
+                case 0x10:
+                    q->visible = ((u32)D_8005F770.frameCount >> 1) & 1;
+                    break;
+                case 0x20:
+                    q->visible = (((u32)D_8005F770.frameCount >> 1) ^ 1) & 1;
+                    break;
+                default:
+                    q->visible = 1;
+                    break;
+                }
+            }
+        }
+        Gfx_DrawParts((EntA0 *)p);
+    }
+    if (D_80073CC0.field_3D4 != 0) {
+        p = (Stg30Part *)Cd_GetFileEntry(0x1A1000B);
+        k = w->field_10;
+        if (D_80073CC0.field_2AC[k].field_0 != 3) {
+            k += 3;
+        }
+        for (q = p; q->fileId != 0; q++) {
+            if (q->groupMask & D_80073340[k]) {
+                q->visible = 1;
+                q->palette = w->field_8;
+            } else {
+                q->visible = 0;
+            }
+        }
+        Gfx_DrawParts((EntA0 *)p);
+    }
+}
 
 void func_800701FC(void) {
     Mem_Zero(&D_80073CC0, 0x3E0);
