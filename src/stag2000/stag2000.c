@@ -140,7 +140,15 @@ INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80067568);
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80067604);
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_800676A8);
+void func_800676A8(Actor *a, s32 i) {
+    Stg20Vec3 *v = &((Stg20Rot *)a->u38.ptr38)->field_84;
+
+    if (v->field_0 == 0) {
+        v->field_0 = D_8006FF1C[i].field_0;
+    }
+    v->field_4 = D_8006FF1C[i].field_4;
+    v->field_8 = D_8006FF1C[i].field_8;
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80067714);
 
