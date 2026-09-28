@@ -817,7 +817,123 @@ void func_80065318(Actor *arg0, Stg11MenuWork *arg1) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_800654E4);
+void func_800654E4(Actor *arg0, Stg11MenuWork *arg1) {
+    Stg11SaveList *list = arg1->field_90;
+    Stg11SaveSlot *slot;
+    DigiRosterEntry *e;
+    s32 idx;
+    s32 idx2;
+    s32 msg;
+    s32 r;
+    s32 i;
+    s32 n;
+
+    if (arg0->stateLevel2 == 0) {
+        func_800677AC(4, arg1->field_84);
+    }
+    if (func_800649F8(arg0, arg1) != 0) {
+        return;
+    }
+    switch (arg0->stateLevel2) {
+    case 0:
+    default:
+        func_800648E4(arg1, 0);
+        msg = 0x170;
+        if (arg1->field_7A == 0) {
+            msg = 0x172;
+        }
+        if (arg1->field_7C != 0) {
+            msg = 0x1A8;
+        }
+        func_8006495C(arg1, msg, 1);
+        arg1->field_86 = 1;
+        func_800646C0(arg0, arg1);
+        Task_NextState2(arg0);
+        break;
+    case 1:
+        if (Menu_MoveGridCursor(arg1->cursor, arg1->u6C.gridSize, arg1->field_7E) == 0) {
+            if (D_8005F6F0[arg1->field_7E].cross > 0) {
+                idx = Menu_GridIndexColMajor(arg1->cursor, arg1->u6C.gridSize);
+                if (arg1->field_7A == 0) {
+                    if (list->used[idx] == 0) {
+                        list->used[idx] = D_8005F770.prevGameMode;
+                        *(list->slots + idx) = *(Stg11SaveSlot *)D_80050720;
+                        func_800646C0(arg0, arg1);
+                        Task_SetState1(arg0, 8);
+                        Snd_PlayById(0xE, 0);
+                    } else {
+                        func_8006495C(arg1, 0x175, 1);
+                        Task_NextState2(arg0);
+                        Snd_PlayById(0xE, 0);
+                    }
+                } else {
+                    if (list->used[idx] == 0) {
+                        Snd_PlayById(0x10, 0);
+                    } else {
+                        if (arg1->field_7C == 0) {
+                            *(Stg11SaveSlot *)D_80050720 = *(list->slots + idx);
+                            D_800685C8 = 1;
+                            D_8005F770.prevGameMode = list->used[idx];
+                            Task_SetState0(arg0, 2);
+                            Snd_PlayById(0xE, 0);
+                        } else {
+                            slot = &list->slots[idx];
+                            e = slot->u.gs.elems;
+                            D_800684A8.field_0 = &slot->u.gs;
+                            for (n = i = 0; i < 3; i++, e++) {
+                                D_800684A8.field_4[i].state = 0;
+                                if (e->state >= 3) {
+                                    D_800684A8.field_4[n] = *e;
+                                    n++;
+                                }
+                            }
+                            if (n < 3) {
+                                Snd_PlayById(0x10, 0);
+                                func_8006495C(arg1, 0x1AB, 1);
+                            } else {
+                                Snd_PlayById(0xE, 0);
+                                Task_SetState1(arg0, 0xB);
+                            }
+                        }
+                    }
+                }
+            } else if (D_8005F6F0[arg1->field_7E].triangle > 0) {
+                Snd_PlayById(0xB, 0);
+                Task_SetState0(arg0, 2);
+            }
+        } else {
+            Snd_PlayById(0xD, 0);
+            msg = 0x170;
+            if (arg1->field_7A == 0) {
+                msg = 0x172;
+            }
+            if (arg1->field_7C != 0) {
+                msg = 0x1A8;
+            }
+            func_8006495C(arg1, msg, 0);
+        }
+        break;
+    case 2:
+        r = func_800136A4(arg1->field_4);
+        if (r != -1) {
+            if (r == 1) {
+                idx2 = Menu_GridIndexColMajor(arg1->cursor, arg1->u6C.gridSize);
+                list->used[idx2] = D_8005F770.prevGameMode;
+                *(list->slots + idx2) = *(Stg11SaveSlot *)D_80050720;
+                func_800646C0(arg0, arg1);
+                Task_SetState1(arg0, 8);
+            }
+        } else {
+            msg = 0x170;
+            if (arg1->field_7A == 0) {
+                msg = 0x172;
+            }
+            func_8006495C(arg1, msg, 1);
+            Task_SetState2(arg0, 1);
+        }
+        break;
+    }
+}
 
 void func_80065A3C(Actor *arg0, Stg11MenuWork *arg1) {
     switch (arg0->stateLevel2) {
