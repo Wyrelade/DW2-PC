@@ -138,7 +138,32 @@ void func_80064B94(Actor *arg0, s32 arg1, s32 arg2) {
     arg0->stateLevel4 = arg2;
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80064BB0);
+void func_80064BB0(Stg35ChildOwner *arg0, s32 arg1) {
+    Stg35ChildList *l = arg0->field_34;
+    s32 i;
+
+    for (i = 0; i < 6; i++) {
+        Actor *a = l->field_2C[i];
+
+        if (a != NULL) {
+            if (arg1 == 0) {
+                if (i < 3) {
+                    func_800674D4(a, 1);
+                    func_800674F8(l->field_2C[i]);
+                } else {
+                    func_800674D4(a, 0);
+                }
+            } else {
+                if (i >= 3) {
+                    func_800674D4(a, 1);
+                    func_800674F8(l->field_2C[i]);
+                } else {
+                    func_800674D4(a, 0);
+                }
+            }
+        }
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80064C54);
 
