@@ -1007,7 +1007,17 @@ void func_80070974(s32 x, s32 y) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_800709DC);
+void func_800709DC(void) {
+    Stg40Rec3 *r = D_8005071C->field_D08;
+    Stg40Cell *c;
+    s32 i;
+
+    for (i = 0; i < D_8005071C->field_14; r++, i++) {
+        c = func_800708A4(r->field_0, r->field_1);
+        c->field_0 &= 0xFFF0;
+        c->field_0 |= r->field_2 + 7;
+    }
+}
 
 void func_80070A7C(void) {
     Stg40FFC *p = &D_8005071C->field_FFC;
