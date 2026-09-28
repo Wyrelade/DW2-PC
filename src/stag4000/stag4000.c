@@ -1069,7 +1069,36 @@ INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006DA18);
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006DB68);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006DDDC);
+void func_8006DDDC(void) {
+    Stg40Spawn *e;
+    s32 kind;
+    s32 val;
+
+    for (e = D_80072B60->field_14->field_C; e->x != 0xFF; e++) {
+        switch (func_800711C4(4)) {
+        case 0:
+        default:
+            kind = e->kind0;
+            val = e->val0;
+            break;
+        case 1:
+            kind = e->kind1;
+            val = e->val1;
+            break;
+        case 2:
+            kind = e->kind2;
+            val = e->val2;
+            break;
+        case 3:
+            kind = e->kind3;
+            val = e->val3;
+            break;
+        }
+        if (kind != 0) {
+            func_8006DB68(kind, val + D_8005071C->field_E54->field_C, e->x, e->y);
+        }
+    }
+}
 
 s32 func_8006DEF0(u8 (*tbl)[2], s32 v) {
     Stg40Blk5071C *b = D_8005071C;
