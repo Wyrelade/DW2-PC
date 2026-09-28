@@ -436,7 +436,35 @@ INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006BFB0);
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006C6C4);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006C7CC);
+void func_8006C7CC(s32 a0, s32 a1) {
+    s32 x;
+    s32 y;
+
+    switch (a1) {
+    case 0:
+    default:
+        x = 0xDE3;
+        y = 0xDE2;
+        break;
+    case 1:
+        x = 0xDE1;
+        y = 0xDDE;
+        break;
+    case 2:
+        x = 0xDDF;
+        y = 0xDE0;
+        break;
+    case 3:
+        x = 0xDE4;
+        y = 0xDE5;
+        break;
+    case 4:
+        x = 0xDDC;
+        y = 0xDDD;
+        break;
+    }
+    func_8006E764(a0, x, y);
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006C84C);
 
