@@ -759,7 +759,63 @@ void func_80065188(Actor *arg0, Stg11MenuWork *arg1) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80065318);
+void func_80065318(Actor *arg0, Stg11MenuWork *arg1) {
+    Stg11SaveList *list;
+    Stg11SaveSlot *slot;
+    s32 i;
+    s32 j;
+
+    switch (arg0->stateLevel2) {
+    case 0:
+        func_800677AC(9, arg1->field_84);
+        func_800648E4(arg1, arg1->field_80 ? 0x1B0 : 0x185);
+        func_8006495C(arg1, 0, 0);
+        Task_NextState2(arg0);
+        break;
+    case 1:
+        arg1->field_94 = 0;
+        switch (func_80067818()) {
+        case -1:
+            arg1->field_94 = 2;
+            arg1->field_96 = func_80067880(0x80);
+            break;
+        case 0:
+        case 15:
+            arg1->field_88 = arg1->field_7A ? 0x183 : 0;
+            Task_SetState1(arg0, 3);
+            break;
+        default:
+            arg1->field_88 = arg1->field_7A ? 0x183 : 0;
+            Task_SetState1(arg0, 2);
+            break;
+        case 14:
+            func_800673FC();
+            Task_SetState1(arg0, 7);
+            break;
+        case 13:
+            if (arg1->field_80 != 0) {
+                Task_SetState1(arg0, 0xC);
+                break;
+            }
+            list = arg1->field_90;
+            for (i = 0; i < 3; i++) {
+                slot = &list->slots[i];
+                if (list->used[i] != 0) {
+                    for (j = 0; j < 0x24; j++) {
+                        if (slot->u.gs.elems[j].state != 0) {
+                            slot->u.gs.elems[j].name[13] = 0xFF;
+                        }
+                    }
+                    slot->u.gs.field_14[5] = 0xFF;
+                    slot->u.gs.field_D1[7] = 0xFF;
+                }
+            }
+            Task_SetState1(arg0, 7);
+            break;
+        }
+        break;
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_800654E4);
 
