@@ -481,7 +481,9 @@ void func_80066618(Stg35LoadHandle *arg0, s32 mask, s32 v) {
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80066694);
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80066778);
+void func_80066778(Stg35LoadHandle *arg0, s32 arg1, s32 arg2, s32 arg3) {
+    Gfx_SetPartsNumber((GfxPart *)Cd_GetFileEntry(arg0->load->fileId), arg1, arg2, arg3);
+}
 
 void func_800667D0(Actor *arg0, s32 arg1) {
     Stg35Work *w = (Stg35Work *)arg0->work;
