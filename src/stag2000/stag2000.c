@@ -222,7 +222,50 @@ void func_80065774(Actor *a) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80065960);
+void func_80065960(Actor *a) {
+    Stg20ScrollWork *w = (Stg20ScrollWork *)a->work;
+    GfxPart *p = (GfxPart *)Cd_GetFileEntry(0xD12000B);
+    GfxPart *q;
+
+    if (w->on != 0) {
+        if (w->level != 7) {
+            w->level++;
+        }
+    } else {
+        if (w->level != 0) {
+            w->level--;
+        }
+    }
+    for (q = p; q->fileId != 0; q++) {
+        switch (q->groupMask) {
+        case 1:
+            q->y = w->scroll;
+            break;
+        case 2:
+            q->x = q->x == -0x133 ? 0 : q->x - 1;
+            break;
+        case 4:
+            q->x = q->x == 0xC1 ? 0 : q->x + 1;
+            break;
+        case 8:
+            q->x = q->x == 0x18E ? 0 : q->x + 2;
+            break;
+        case 16:
+            q->x = q->x == -0x18E ? 0 : q->x - 2;
+            break;
+        }
+        if (q->groupMask & 0x1E) {
+            if (w->level != 0) {
+                q->palette = w->level;
+                q->visible = 1;
+            } else {
+                q->visible = 0;
+            }
+        }
+    }
+    w->scroll = w->scroll == -0xEC ? 0 : w->scroll - 1;
+    Gfx_DrawParts((s32)p);
+}
 
 void func_80065AF4(Actor *a) {
     s32 *slot = (s32 *)a->u34.children;
