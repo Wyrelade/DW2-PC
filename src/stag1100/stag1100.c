@@ -1039,7 +1039,56 @@ void func_80065BA0(Actor *arg0, Stg11MenuWork *arg1) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80065E64);
+void func_80065E64(Actor *arg0, Stg11MenuWork *arg1) {
+    s32 r;
+
+    if (arg0->stateLevel2 == 0) {
+        func_800677AC(4, arg1->field_84);
+    }
+    if (func_800649F8(arg0, arg1) != 0) {
+        Text_CloseArray(arg1->field_38, 11);
+        Text_Close(&arg1->field_C);
+        return;
+    }
+    switch (arg0->stateLevel2) {
+    case 0:
+    default:
+        arg1->field_86 = 2;
+        arg1->u6C.gridSize[1] = 5;
+        func_800648E4(arg1, 0);
+        func_80064000(arg0, arg1);
+        func_80064304(arg0, arg1);
+        Task_NextState2(arg0);
+        break;
+    case 1:
+        func_8006495C(arg1, 0x1B6, 0);
+        Task_NextState2(arg0);
+        break;
+    case 2:
+        if (Menu_MoveGridCursor(arg1->cursor, arg1->u6C.gridSize, arg1->field_7E) == 0) {
+            if (D_8005F6F0[arg1->field_7E].cross > 0) {
+                func_8006448C(arg0, arg1);
+            } else if (D_8005F6F0[arg1->field_7E].triangle > 0) {
+                func_8006495C(arg1, 0x1B8, 1);
+                Task_NextState2(arg0);
+            }
+        } else {
+            func_8006495C(arg1, 0x1B6, 0);
+            Snd_PlayById(0xD, 0);
+        }
+        break;
+    case 3:
+        r = func_800136A4(arg1->field_4);
+        if (r != -1) {
+            if (r == 1) {
+                Task_SetState0(arg0, 2);
+            }
+        } else {
+            Task_SetState2(arg0, 1);
+        }
+        break;
+    }
+}
 
 void func_80066028(Actor *arg0, s16 arg1) {
     Stg11MenuWork *w = (Stg11MenuWork *)arg0->work;
