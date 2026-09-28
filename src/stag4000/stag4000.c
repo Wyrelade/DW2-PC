@@ -847,7 +847,23 @@ Stg40Cell *func_80070438(s32 x, s32 y) {
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80070490);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_800706C8);
+s32 func_800706C8(void) {
+    Stg40Blk5071C *b = D_8005071C;
+    Stg40Cell *c = (Stg40Cell *)b->field_E58;
+    s32 h = b->field_E54->field_2;
+    s32 w = b->field_E54->field_0;
+    s32 x;
+    s32 y;
+
+    for (y = 0; y < h; y++) {
+        for (x = 0; x < w; x++, c++) {
+            if ((c->field_0 & 0x4000) && c->field_2 == 0xFF) {
+                return y * w + x;
+            }
+        }
+    }
+    return -1;
+}
 
 void func_80070754(void) {
     Stg40Blk5071C *b = D_8005071C;
