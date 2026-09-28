@@ -542,7 +542,24 @@ INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80069AAC);
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80069D98);
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006A000);
+void func_8006A000(Actor *a) {
+    s32 *w = (s32 *)a->work;
+
+    switch (a->stateLevel0) {
+    case 0:
+        Mem_FillWordsNeg1(w, 2);
+        func_80067480(w, (s32)D_8005E750[D_800709B0.field_34].name, 0, &D_8007010C[0], 0);
+        func_80067480(&w[1], (s32)D_8005E750[D_800709B0.field_38].name, 0, &D_8007010C[1], 0);
+        Task_NextState0(a);
+        break;
+    case 1:
+        break;
+    case 2:
+        Text_CloseArray(w, 2);
+        Task_NextState0(a);
+        break;
+    }
+}
 
 void func_8006A118(void) {
     Gfx_DrawParts((s32)Cd_GetFileEntry(0xD120007));
