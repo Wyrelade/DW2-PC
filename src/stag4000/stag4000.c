@@ -1036,7 +1036,17 @@ void func_8006F06C(void) {
     func_8006ED88(1);
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006F094);
+void func_8006F094(void) {
+    Stg40TileWork *t = (Stg40TileWork *)D_80072BB0;
+    s32 x;
+    s32 y;
+
+    for (y = 0; y < D_8005071C->field_E54->field_2; y++) {
+        for (x = 0; x < D_8005071C->field_E54->field_0; x++) {
+            func_8006F62C(t, x, y);
+        }
+    }
+}
 
 void func_8006F168(Stg40ImgWork *a0) {
     LoadImage(&a0->rect, a0->data);
