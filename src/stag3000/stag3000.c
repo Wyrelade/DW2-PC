@@ -34,7 +34,28 @@ void func_80063B70(Actor *a0, s32 *args) {
     ((Stg30WorkWord *)a0->work)->field_0 = args[0];
 }
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80063B80);
+void func_80063B80(Actor *a0, s32 file, s32 lba) {
+    Stg30Work73040 *w = (Stg30Work73040 *)a0->work;
+    s32 found = 0;
+    s32 i;
+    s32 j;
+
+    for (i = 0; i < w->count; i++) {
+        if (lba < w->lbas[i]) {
+            found = 1;
+            break;
+        }
+    }
+    if (found) {
+        for (j = w->count; i < j; j--) {
+            w->files[j] = w->files[j - 1];
+            w->lbas[j] = w->lbas[j - 1];
+        }
+    }
+    w->files[i] = file;
+    w->lbas[i] = lba;
+    w->count++;
+}
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80063C44);
 
