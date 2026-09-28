@@ -4246,5 +4246,10 @@
       "ra_restore_sink",
       "reorder_indep"
     ]
+  },
+  "stag2000:func_8006F3E0": {
+    "passes": [
+      "web_realloc"
+    ]
   }
 }

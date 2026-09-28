@@ -2418,7 +2418,85 @@ void func_8006F3D8(Actor *a, s32 v) {
     a->field_8 = v;
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006F3E0);
+void func_8006F3E0(Actor *a) {
+    Stg20LinkWork *w = (Stg20LinkWork *)a->work;
+    Stg20Cell c;
+    Stg20WarpFx args;
+    Stg20Rot *o;
+    s32 ok;
+    s32 *slot;
+
+    switch (a->stateLevel0) {
+    case 0:
+        if (++a->stateLevel1 >= 5) {
+            Cd_QueueFile(0xE45);
+            Cd_QueueFile(0xE46);
+            w->target = (Actor *)Task_FindFirst(0x302, 0, -1);
+            c = *func_80067504(w->target);
+            ok = 0;
+            if (c.x == D_80070704[a->field_8].cell.x && c.y == D_80070704[a->field_8].cell.y) {
+                ok = func_80067568(w->target) != 0;
+            }
+            if (ok == 0) {
+                Task_NextState0(a);
+            }
+        }
+        break;
+    case 1:
+        c = *func_80067504(w->target);
+        if (c.x == D_80070704[a->field_8].cell.x && c.y == D_80070704[a->field_8].cell.y
+            && func_80067568(w->target) != 0) {
+            func_8006AD8C(w->target);
+            D_800709B4 = 1;
+            Task_NextState0(a);
+        }
+        break;
+    case 2:
+        o = (Stg20Rot *)w->target->u38.ptr38;
+        o->field_42 += 0x177;
+        o->field_5C += 0x190;
+        if (o->field_58 > 100) {
+            o->field_58 -= 100;
+        } else {
+            o->field_58 = 0;
+        }
+        if (o->field_60 > 100) {
+            o->field_60 -= 100;
+        } else {
+            o->field_60 = 0;
+        }
+        switch (a->stateLevel1) {
+        case 0:
+        default:
+            Snd_PlayById(0x32, 0);
+            o = (Stg20Rot *)w->target->u38.ptr38;
+            slot = (s32 *)a->u34.children;
+            args.field_4 = 0xE45;
+            args.field_0 = 0xE46;
+            args.field_14 = 0;
+            args.field_18 = 0x78;
+            args.x = o->field_30;
+            args.y = o->field_34;
+            args.z = o->field_38;
+            Task_Create(7, slot, (s32)&args);
+            Task_NextState1(a);
+            a->elapsed = 0;
+        case 1:
+            if (a->elapsed < 0x5A) {
+                break;
+            }
+            Gfx_FadeOutToBlack(0xA);
+            Task_NextState1(a);
+        case 2:
+            if (++a->stateLevel2 >= 0x19) {
+                D_8005F770.nextGameMode = D_80070704[a->field_8].nextMode;
+                D_8005F770.field_24 = D_80070704[a->field_8].field_8;
+            }
+            break;
+        }
+        break;
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006F730);
 
