@@ -11,7 +11,12 @@ INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006399C);
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80063A6C);
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80063B28);
+void func_80063B28(Actor *a0) {
+    Gfx_AttachModel(a0, a0->digiId);
+    Actor_UpdateTransform(a0);
+    Gfx_CalcModelBoneMatrices(a0);
+    Gfx_DrawTexModel(a0, 1);
+}
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80063B70);
 
