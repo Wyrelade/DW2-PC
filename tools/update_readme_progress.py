@@ -29,7 +29,8 @@ def read_counts():
     return total, matched, int(a.group(1)) if a else 0
 
 
-FUNC_DEF = re.compile(r"^[A-Za-z_][\w \t\*]*?\b\w+\s*\([^;{}]*\)\s*\{", re.M)
+# a definition, ANSI or K&R (parameter declarations between `)` and `{`)
+FUNC_DEF = re.compile(r"^[A-Za-z_][\w \t\*]*?\b\w+\s*\([^;{}]*\)[ \t]*(?:\n[ \t]+[^\n{}()]*;[ \t]*)*\s*\{", re.M)
 
 
 def overlay_counts():
