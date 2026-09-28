@@ -272,7 +272,9 @@ void func_8006F640(Actor *a0, s32 a1) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006F664);
+void func_8006F664(Actor *a0) {
+    ((Stg30Work732B8 *)a0->work)->field_30 = 2;
+}
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006F674);
 
