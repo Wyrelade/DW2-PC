@@ -97,7 +97,19 @@ void func_800645B4(Actor *arg0) {
     Task_DefaultDestroy(arg0);
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80064638);
+void func_80064638(Actor *arg0) {
+    Stg35Work4 *w = (Stg35Work4 *)arg0->work;
+
+    func_80066520(&w->load[0], 0x2A, Math_CycleRange(arg0->elapsed, 6, 0, 7));
+    func_800661B0(&w->load[0]);
+    func_800661B0(&w->load[1]);
+    if (w->field_34 != 0) {
+        func_800661B0(&w->load[2]);
+    }
+    if (w->field_38 != 0) {
+        func_800661B0(&w->load[3]);
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_800646C0);
 
