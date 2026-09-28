@@ -172,7 +172,18 @@ void func_80067880(Actor *a0, u8 a1) {
     w->field_27 = 0;
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80067894);
+void func_80067894(Actor *a0, u8 on, u8 r, u8 g, u8 b) {
+    Stg40ModelView *m = (Stg40ModelView *)a0->model;
+
+    if (on == 0) {
+        m->field_34 = 0;
+        return;
+    }
+    m->field_34 = 2;
+    m->field_38 = r;
+    m->field_39 = g;
+    m->field_3A = b;
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_800678C4);
 
