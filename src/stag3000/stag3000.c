@@ -720,7 +720,24 @@ INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80071DC4);
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80071F9C);
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80072080);
+void func_80072080(Actor *a0, s32 row) {
+    Stg30Work737A0 *w = (Stg30Work737A0 *)a0->work;
+    s32 i;
+    s32 n;
+
+    i = 0;
+    n = i;
+    for (; i < 12; i++) {
+        if (w->field_74[row][i] != 0) {
+            w->field_74[row][n] = w->field_74[row][i];
+            if (i != n) {
+                w->field_74[row][i] = 0;
+            }
+            n++;
+        }
+    }
+    w->field_B8[row] = n;
+}
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_800720E4);
 
