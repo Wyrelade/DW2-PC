@@ -296,7 +296,31 @@ void func_8006667C(Actor *a0) {
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80066720);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80066AD0);
+void func_80066AD0(Actor *a0) {
+    Stg40W6AD0 *w = (Stg40W6AD0 *)a0->work;
+    EntA0 *p;
+    s32 i;
+
+    if (w->field_C != 0) {
+        for (i = 0; i < 2; i++) {
+            p = Cd_GetFileEntry(D_800726C0[i]);
+            switch (i) {
+            case 0:
+            default:
+                Gfx_SetPartsNumber((GfxPart *)p, 2, 4, D_8005E620.maxHp);
+                Gfx_SetPartsNumber((GfxPart *)p, 4, 4, w->field_12);
+                Gfx_SetPartsNumber((GfxPart *)p, 8, 4, D_8005E620.maxMp);
+                Gfx_SetPartsNumber((GfxPart *)p, 0x10, 4, w->field_14);
+                break;
+            case 1:
+                Gfx_HidePartsByMask((GfxPartMaskView *)p, w->field_10);
+                break;
+            }
+            Gfx_SetPartsScale((GfxPartScaleView *)p, 0x1000, w->field_C);
+            Gfx_DrawParts((s32)p);
+        }
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80066BE4);
 
