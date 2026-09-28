@@ -135,7 +135,14 @@ INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80068D84);
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80068DD8);
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80068E6C);
+s32 func_80068E6C(void) {
+    TaskEntry *e = Task_FindFirst(0x30D, -1, -1);
+
+    if (e != NULL) {
+        return ((Stg20TextWork *)e->work)->field_1C;
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80068EB0);
 
