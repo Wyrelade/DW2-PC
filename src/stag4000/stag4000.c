@@ -535,7 +535,12 @@ void func_8006F168(Stg40ImgWork *a0) {
     LoadImage(&a0->rect, a0->data);
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006F18C);
+void func_8006F18C(Stg40TileWork *a0) {
+    if (a0->field_760 != 0) {
+        LoadImage(&a0->rect, a0->data);
+        a0->field_760 = 0;
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006F1C8);
 
