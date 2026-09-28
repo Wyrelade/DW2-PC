@@ -121,7 +121,13 @@ void func_80068C50(Actor *a) {
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80068C84);
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80068CF8);
+void func_80068CF8(void) {
+    TaskEntry *e = Task_FindFirst(0x30D, -1, -1);
+
+    if (e != NULL) {
+        Text_Close((s32 *)e->work);
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80068D34);
 
