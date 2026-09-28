@@ -538,7 +538,30 @@ void func_800673C4(Actor *arg0) {
     Task_DefaultDestroy(arg0);
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_800673E8);
+void func_800673E8(Actor *arg0) {
+    Stg35Work *w = (Stg35Work *)arg0->work;
+    CVECTOR c;
+
+    if (w->field_28 != 0) {
+        Gfx_AttachModel(arg0, w->field_14);
+        Anim_StepModelAnim(arg0);
+        Actor_UpdateTransform(arg0);
+        Gfx_CalcModelBoneMatrices(arg0);
+        if (w->field_18 != 0) {
+            Gfx_DrawTexModel(arg0, 0);
+        }
+        if (w->field_1C != 0) {
+            if (arg0->field_8 < 3) {
+                c = w->field_20;
+            } else {
+                c.r = w->field_20.g;
+                c.g = w->field_20.r;
+                c.b = w->field_20.b;
+            }
+            Gfx_DrawWireModel(arg0, 0, &c);
+        }
+    }
+}
 
 void func_800674D4(Actor *arg0, s32 arg1) {
     ((Stg35Work *)arg0->work)->field_28 = arg1;
