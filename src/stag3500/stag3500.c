@@ -85,7 +85,13 @@ void func_800656D0(Stg35TextHandle *arg0) {
     arg0->text->field_0 = -1;
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80065718);
+void func_80065718(Stg35TextHandle *arg0) {
+    if (arg0->text != NULL) {
+        Text_Close(arg0->text);
+        Mem_Free(arg0->text);
+        arg0->text = NULL;
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80065760);
 
