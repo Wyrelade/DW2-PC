@@ -2526,7 +2526,76 @@ s32 func_8006D4E0(kind, a1, a2, a3, x, y)
     return 0;
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006D738);
+void func_8006D738(void) {
+    Stg40Drop *r;
+    Stg40SlotInfo *s;
+    Out1DB68 out;
+    s32 k;
+    s32 id;
+    s32 i;
+    s16 t;
+    s32 m;
+    s32 c;
+    Stg40Map *map;
+
+    for (r = D_80072B60->field_14->field_10; r->x != 0xFF; r++) {
+        if (D_8005071C->field_E >= 10) {
+            break;
+        }
+        switch (func_800711C4(4)) {
+        case 0:
+        default:
+            k = r->pick0;
+            break;
+        case 1:
+            k = r->pick1;
+            break;
+        case 2:
+            k = r->pick2;
+            break;
+        case 3:
+            k = r->pick3;
+            break;
+        }
+        if (k != 0) {
+            id = k[((Stg40Map *)D_80072B60->field_10)->field_2F];
+            func_8001DB68(id, &out);
+            c = out.field_0;
+            func_8006D4E0(1, 0, c, 0, r->x, r->y);
+            s = (Stg40SlotInfo *)D_8005071C->field_BB8[D_8005071C->field_E - 1];
+            s->field_0 = id;
+            s->field_2 = out.field_10 != 0;
+            s->field_3 = out.field_C;
+            s->field_E = out.field_18;
+            t = s->field_E;
+            if (t == 0) {
+                t = 1;
+            }
+            s->field_E = t;
+            s->field_A = 0;
+            s->field_C = 0;
+            s->field_7 = D_80072904[out.field_8 * 2];
+            s->field_6 = D_80072904[out.field_8 * 2 + 1];
+            s->field_4 = D_800728F4[out.field_4 * 2];
+            m = s->field_5 = D_800728F4[out.field_4 * 2 + 1];
+            if (m == 2) {
+                if (s->field_4 != (func_800703E0(r->x, r->y) & 0xF)) {
+                    s->field_4 = m;
+                    s->field_5 = 0;
+                }
+            }
+            s->field_B = 0;
+            for (i = 0; i < 3; i++) {
+                if ((s16)out.digiIds[i] == 0) {
+                    break;
+                }
+                s->field_10[i] = out.digiIds[i];
+                s->field_16[i] = out.levels[i];
+                s->field_B++;
+            }
+        }
+    }
+}
 
 void func_8006DA18(void) {
     Stg40MapPos *pos = ((Stg40Map *)D_80072B60->field_10)->field_34;
