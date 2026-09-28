@@ -633,9 +633,14 @@ s32 func_8006E520(Actor *a0) {
     return r;
 }
 
-    if (func_8006E588(a0) == 1) {
-        Task_SetState1(a0, (u8)D_80072B60->field_38);
+s32 func_8006E588(Actor *a0) {
+    s32 r = 0;
+
+    a0->stateLevel4++;
+    if (func_800678C4(a0) == 1 || a0->stateLevel4 >= 31 || (a0->stateLevel4 >= 11 && D_8005F704 != 0)) {
+        r = 1;
     }
+    return r;
 }
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006E60C);
