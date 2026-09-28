@@ -1070,7 +1070,22 @@ void func_80070B2C(s32 v) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80070BA4);
+void func_80070BA4(s16 v) {
+    Stg40FFC *f = &D_8005071C->field_FFC;
+    s16 *p = func_80070AD0(v);
+    s16 *q;
+
+    if (p != NULL) {
+        for (q = p + 1; *q != -2;) {
+            *p++ = *q++;
+        }
+        *p = -1;
+        f->field_16--;
+        if (f->field_0[f->field_1A] == -1) {
+            f->field_1A = 0;
+        }
+    }
+}
 
 s16 func_80070C48(void) {
     Stg40FFC *p = &D_8005071C->field_FFC;
