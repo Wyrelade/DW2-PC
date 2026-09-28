@@ -534,7 +534,34 @@ INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80069068);
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006964C);
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_800697AC);
+void func_800697AC(Actor *a) {
+    Stg20SkillWork *w = (Stg20SkillWork *)a->work;
+    Stg20Roster *e = &D_8005E704[a->field_8];
+    s32 cnt[4];
+    s32 i;
+    s32 j;
+    s32 s;
+    s32 k;
+
+    for (i = 0; i < 4; i++) {
+        cnt[i] = 0;
+        w->groups[i].count = 0;
+        for (j = 0; j < 12; j++) {
+            w->groups[i].list[j] = 0;
+        }
+    }
+    for (i = 0; i < 12; i++) {
+        s = e->skills[i];
+        if (s != 0) {
+            k = func_8001EE34(s);
+            w->groups[k].list[cnt[k]] = s;
+            cnt[k]++;
+        }
+    }
+    for (i = 0; i < 4; i++) {
+        w->groups[i].count = cnt[i];
+    }
+}
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_800698F4);
 
