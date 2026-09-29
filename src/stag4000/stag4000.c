@@ -2559,7 +2559,108 @@ s32 func_8006CF54(Actor *a0) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006D0E8);
+s32 func_8006D0E8(Actor *a0) {
+    Stg40ActWork *w = (Stg40ActWork *)a0->work;
+    Stg40Ent48 *e = w->field_2C;
+
+    func_800708FC(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2, 0);
+    if (e->field_0 & 0x1000) {
+        func_8006EBF4(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2, -1, -1, e->field_8);
+    }
+    switch (a0->stateLevel1) {
+    case 0:
+    case 3:
+    default:
+        e->field_18.field_14 = 0x2800;
+        e->field_0 = (e->field_0 & 0x1000) ? (e->field_0 | 0x4400) : (e->field_0 & ~0x4000);
+        Task_SetState1(a0, 1);
+        break;
+    case 1:
+        break;
+    case 2:
+        func_80070974(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2);
+        func_8006EBF4(-1, -1, e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2, e->field_8);
+        e->field_0 = 0;
+        Task_SetState0(a0, 3);
+        break;
+    case 4:
+        switch (a0->stateLevel2) {
+        case 0:
+        default:
+            e->field_0 = (e->field_0 | 0x5000) & ~0x400;
+            func_8006E4DC(a0, 0x28);
+            e->field_18.field_18 = 0;
+            e->field_18.field_14 = 0x2800;
+            Snd_PlayById(4, 0);
+            Task_NextState2(a0);
+            break;
+        case 1:
+            e->field_18.field_18 += 0x26;
+            e->field_18.field_14 -= e->field_18.field_18;
+            if (e->field_18.field_14 < 0x500) {
+                e->field_18.field_14 = 0x500;
+                e->field_18.field_18 = -(e->field_18.field_18 / 2);
+                Task_NextState2(a0);
+            }
+            break;
+        case 2:
+            e->field_18.field_18 += 0x26;
+            e->field_18.field_14 -= e->field_18.field_18;
+            if (e->field_18.field_18 > 0) {
+                func_8006E4DC(a0, 0x2B);
+                Task_NextState2(a0);
+            }
+            break;
+        case 3:
+            if (func_8006E588(a0) == 1) {
+                e->field_0 |= 0x400;
+                Task_SetState1(a0, 1);
+            }
+            break;
+        }
+        break;
+    case 5:
+        e->field_0 |= 0x5400;
+        Task_SetState1(a0, 1);
+        break;
+    case 6:
+        switch (a0->stateLevel2) {
+        case 0:
+        default:
+            e->field_0 = (e->field_0 | 0x5000) & ~0x400;
+            func_8006E4DC(a0, 0x28);
+            e->field_18.field_18 = 0;
+            e->field_18.field_14 = 0x2800;
+            Snd_PlayById(5, 0);
+            Task_NextState2(a0);
+            break;
+        case 1:
+            e->field_18.field_18 += 0x26;
+            e->field_18.field_14 -= e->field_18.field_18;
+            if (e->field_18.field_14 < 0) {
+                e->field_18.field_14 = 0;
+                e->field_18.field_18 = -(e->field_18.field_18 / 2);
+                Task_NextState2(a0);
+            }
+            break;
+        case 2:
+            e->field_18.field_18 += 0x26;
+            e->field_18.field_14 -= e->field_18.field_18;
+            if (e->field_18.field_14 < 0) {
+                e->field_18.field_14 = 0;
+                func_8006E4DC(a0, 0x2B);
+                Task_NextState2(a0);
+            }
+            break;
+        case 3:
+            if (func_8006E588(a0) == 1) {
+                Task_SetState1(a0, 2);
+            }
+            break;
+        }
+        break;
+    }
+}
 
 s32 func_8006D418(Actor *a0) {
     Stg40ActWork *w = (Stg40ActWork *)a0->work;
