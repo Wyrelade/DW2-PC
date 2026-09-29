@@ -4377,5 +4377,11 @@
   },
   "stag4000:func_8006D0E8": {
     "passes": []
+  },
+  "stag4000:func_80071310": {
+    "passes": [
+      "web_realloc",
+      "commutative_swap"
+    ]
   }
 }

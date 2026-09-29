@@ -4030,7 +4030,31 @@ s32 func_80071294(void) {
     return r;
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80071310);
+void func_80071310(s32 a0, s32 a1) {
+    s32 base = 0x1FD0011;
+
+    if (a0 == 0) {
+        base = 0x1FD0047;
+    }
+    switch (a1) {
+    case 0:
+        func_80067610(1, base, (s32)D_80050720->field_D1, (s32)func_8006755C(0, D_80072B60->field_58));
+        break;
+    case 1:
+        func_80067610(1, base + 1, (s32)func_8006755C(0, D_80072B60->field_58), 0);
+        break;
+    case 2:
+    case 3:
+        func_80067610(1, base + a1, 0, 0);
+        break;
+    case 16:
+        func_80067610(1, base + 5, 0, 0);
+        break;
+    default:
+        func_80067610(1, base + 4, Item_GetNameText(*(D_80050720->slotItems + D_800729E0[a1 - 4])), 0);
+        break;
+    }
+}
 
 void func_8007142C(s32 a0, s32 a1) {
     s32 i;
