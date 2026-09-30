@@ -1705,7 +1705,61 @@ void func_80068134(Actor *a, s32 open) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_800681A0);
+void func_800681A0(Actor *a)
+{
+  Stg20YesNoWork *w = (Stg20YesNoWork *) a->work;
+  switch (a->stateLevel0)
+  {
+    case 0:
+      w->sel = D_800709BC != 0;
+      Mem_FillWordsNeg1(w->texts, 2);
+      Text_OpenById(&w->texts[0], 0x102, 0, D_80063568);
+      Text_OpenById(&w->texts[1], 0x103, 0, D_8006356C);
+      Task_NextState0(a);
+      break;
+
+    case 1:
+      if (D_8005F6F0[0].left > 0)
+    {
+      if (w->sel == 0)
+      {
+        break;
+      }
+      w->sel = 0;
+      Snd_PlayById(0xC, 0);
+    }
+    else
+      if (D_8005F6F0[0].right > 0)
+    {
+      if (w->sel != 0)
+      {
+        break;
+      }
+      w->sel = 1;
+      Snd_PlayById(0xC, 0);
+    }
+    else
+      if (D_8005F6F0[0].triangle <= 0)
+    {
+ do { if (D_8005F6F0[0].cross > 0) { D_800709B0.field_8 = 0; D_800709B0.field_C = w->sel; Snd_PlayById(0xA, 0); Task_NextState0(a); } } while (0);
+    }
+    else
+    {
+      D_800709B0.field_8 = 1;
+      D_800709B0.field_C = w->sel;
+      Snd_PlayById(0xB, 0);
+      Task_NextState0(a);
+    }
+      break;
+
+    case 2:
+      Text_CloseArray(w->texts, 2);
+      Task_NextState0(a);
+      break;
+
+  }
+
+}
 
 void func_80068364(Actor *a) {
     Stg20BlinkTask *t = (Stg20BlinkTask *)a;

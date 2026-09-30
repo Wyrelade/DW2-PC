@@ -4383,5 +4383,10 @@
       "web_realloc",
       "commutative_swap"
     ]
+  },
+  "stag2000:func_800681A0": {
+    "passes": [
+      "web_realloc"
+    ]
   }
 }
