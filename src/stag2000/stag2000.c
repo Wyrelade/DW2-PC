@@ -1529,7 +1529,203 @@ s32 func_80066B48(s32 id) {
     return 0;
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80066F34);
+void func_80066F34(s32 id, s32 on) {
+    s32 i;
+    s32 j;
+
+    if (on == 0) {
+        return;
+    }
+    switch (id) {
+    case 0x238C:
+        D_8005E64C = 0xEB;
+        break;
+    case 0x23B5:
+        D_8005E64C = 0xEC;
+        break;
+    case 0x238D:
+        D_8005E66E = 0x76;
+        break;
+    case 0x238E:
+        func_800667AC(0);
+        break;
+    case 0x238F:
+        func_800667AC(1);
+        break;
+    case 0x2390:
+        func_80066A9C(2000);
+        break;
+    case 0x2391:
+        func_80066A9C(1000);
+        break;
+    case 0x2392:
+        func_80066AE0(0x54);
+        Digi_AddNew(0xBF);
+        break;
+    case 0x2393:
+        func_80066AE0(0xC5);
+        Digi_AddNew(0xC0);
+        break;
+    case 0x2394:
+        func_80066AE0(0xB);
+        Digi_AddNew(0xC1);
+        break;
+    case 0x2395:
+        func_80066AE0(0x16);
+        Digi_AddNew(0xC2);
+        break;
+    case 0x2396:
+        func_80066AE0(0x4F);
+        Digi_AddNew(0xC3);
+        break;
+    case 0x2397:
+        func_80066AE0(0x85);
+        Digi_AddNew(0xC4);
+        break;
+    case 0x2398:
+        func_80066AE0(0xEA);
+        Digi_AddNew(0xC5);
+        break;
+    case 0x2399:
+        func_80066AE0(0xCC);
+        Digi_AddNew(0xC6);
+        break;
+    case 0x239A:
+        func_80066AE0(0x1A);
+        Digi_AddNew(0xC7);
+        break;
+    case 0x23AA:
+        func_80066A9C(-500);
+        break;
+    case 0x23AB:
+        func_80066A9C(-1000);
+        break;
+    case 0x23AC:
+        func_80066A9C(-1500);
+        break;
+    case 0x23AD:
+        func_80066A9C(-2000);
+        break;
+    case 0x23AE:
+        func_80066A9C(-2500);
+        break;
+    case 0x23AF:
+        func_80066A9C(-3000);
+        break;
+    case 0x23B0:
+        func_80066A9C(-3500);
+        break;
+    case 0x23B1:
+        func_80066A9C(-4000);
+        break;
+    case 0x239C:
+        D_8005E632 = 1;
+        break;
+    case 0x239D:
+        D_8005E632 = 2;
+        break;
+    case 0x239E:
+        D_8005E632 = 3;
+        break;
+    case 0x239F:
+        D_8005E632 = 4;
+        break;
+    case 0x23A0:
+        D_8005E632 = 5;
+        break;
+    case 0x23A1:
+        D_8005E632 = 6;
+        break;
+    case 0x23A2:
+        D_8005E632 = 7;
+        break;
+    case 0x23A3:
+        D_8005E632 = 8;
+        break;
+    case 0x23A4:
+        D_8005E632 = 9;
+        break;
+    case 0x23A5:
+        D_8005E632 = 10;
+        break;
+    case 0x23A6:
+        D_8005E631 = 0;
+        break;
+    case 0x23A7:
+        D_8005E631 = 1;
+        break;
+    case 0x23A8:
+        D_8005E631 = 2;
+        break;
+    case 0x23B3:
+        for (j = 0; j < Item_GetBagCapacity(); j++) {
+            if (((Stg20GameState *)&D_8005E620)->field_66[j] == 0xC2) {
+                ((Stg20GameState *)&D_8005E620)->field_66[j] = 0;
+                Item_SortList();
+                break;
+            }
+        }
+        break;
+    case 0x23B2:
+    case 0x23B4:
+        ((Stg20GameState *)&D_8005E620)->field_28 = ((Stg20GameState *)&D_8005E620)->field_2A;
+        ((Stg20GameState *)&D_8005E620)->field_24 = ((Stg20GameState *)&D_8005E620)->field_26;
+        for (i = 0x12; i >= 0; i--) {
+            ((Stg20GameState *)&D_8005E620)->field_52[i] = 0;
+        }
+        for (i = 0; i < 0x24; i++) {
+            if (D_8005E620.elems[i].state != 0) {
+                D_8005E620.elems[i].hp = D_8005E620.elems[i].maxHp;
+                D_8005E620.elems[i].mp = D_8005E620.elems[i].maxMp;
+            }
+        }
+        break;
+    case 0x23B6:
+        Flag_Set(0x25B, 0);
+        Flag_Set(0x25C, 0);
+        Flag_Set(0x25D, 0);
+        Flag_Set(0x262, 1);
+        Flag_Set(0x263, 1);
+        Flag_Set(0x264, 1);
+        break;
+    case 0x23B7:
+        ((Stg20GameState *)&D_8005E620)->field_DD4[0xDA]++;
+        break;
+    case 0x23B8:
+        ((Stg20GameState *)&D_8005E620)->field_DD4[0xBF]++;
+        break;
+    case 0x23B9:
+        ((Stg20GameState *)&D_8005E620)->field_DD4[0xD6]++;
+        break;
+    case 0x23BA:
+        ((Stg20GameState *)&D_8005E620)->field_DD4[0xC0]++;
+        break;
+    case 0x23BB:
+        ((Stg20GameState *)&D_8005E620)->field_DD4[0xDF]++;
+        break;
+    case 0x23BC:
+        ((Stg20GameState *)&D_8005E620)->field_DD4[0xE0]++;
+        break;
+    case 0x23BD:
+        ((Stg20GameState *)&D_8005E620)->field_DD4[0xD3]++;
+        break;
+    case 0x23BE:
+        ((Stg20GameState *)&D_8005E620)->field_DD4[0xD8]++;
+        break;
+    case 0x23BF:
+        ((Stg20GameState *)&D_8005E620)->field_DD4[0x49]++;
+        break;
+    case 0x23C0:
+        ((Stg20GameState *)&D_8005E620)->field_DD4[0x4F]++;
+        break;
+    case 0x23C1:
+        ((Stg20GameState *)&D_8005E620)->field_DD4[0x2E]++;
+        break;
+    case 0x23C2:
+        ((Stg20GameState *)&D_8005E620)->field_DD4[0x34]++;
+        break;
+    }
+}
 
 void func_80067480(void *t, s32 text, s32 id, Stg20Cell *pos, s32 color) {
     Stg20TextArgs args;

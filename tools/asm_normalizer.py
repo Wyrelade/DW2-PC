@@ -9938,7 +9938,8 @@ PRE_SIGMA_PASSES = ("la_unfold_st", "un_hi_cse", "un_hi_cse_store", "exit_merge"
 # rescheduled).
 WORD_PASSES = ("delay_fill", "epilogue_unfill", "reorder_indep", "reorder_indep_nops",
                "padnop", "prologue_save_hoist", "delay_slot_select", "decouple_reg",
-               "delay_decouple", "reorder_deep", "region_swap", "slot_migrate")
+               "delay_decouple", "reorder_deep", "region_swap", "slot_migrate",
+               "iv_ptr_reduce")
 
 # minimal register def/use for the delay_fill dependency guard (gas `$reg` syntax)
 _STORE_MN = {"sb", "sh", "sw", "swl", "swr", "swc1", "swc2", "sd", "sdc1", "sdc2"}
@@ -11736,6 +11737,152 @@ def region_swap_src(span, tgt, our_words):
     return "\n".join(lines), True
 
 
+def iv_ptr_reduce_src(span, tgt, our_words):
+    """Strength-reduce a loop's per-iteration base+index recompute into a
+    decrementing pointer, matching retail's induction-variable choice.
+
+    Our cc1 keeps the loop counter C and recomputes the store address
+    `addu Bx,C,B` (base+index) every iteration, storing `st Z,OFF(Bx)`, with a
+    dead self-move `move P,P` in the preheader. Retail strength-reduces: it
+    initialises a pointer `addu P,B,C` once in the preheader, stores `st Z,OFF(P)`
+    at the loop top and decrements `addiu P,P,-1` in the branch delay slot (C is
+    still decremented for the exit test). P == B + C at every iteration (both start
+    at B+C and decrement by 1 in lockstep), so P+OFF == Bx+OFF == B+C+OFF: identical
+    store addresses.
+
+    Target-guided (words aligned to the retail stream): the three positions where our
+    word diverges from the target must form exactly this signature; then rewrite the
+    three source lines. Count-preserving; opt-in. No `.set noreorder` needed -- the
+    preheader pointer-init and loop-top store are straight-line (gas `.set reorder`
+    only fills delay slots, it does not reschedule these), and the delay-slot
+    pointer-decrement stays inside the branch's existing noreorder block, emitted as
+    `addiu` (a real instruction, legal there under `.set nomacro`)."""
+    n = len(our_words)
+    if n < 5 or len(tgt) != n:
+        return span, False
+
+    def _wm(a, b):
+        if a == b:
+            return True
+        oa, ob = int(a, 16), int(b, 16)
+        op = oa >> 26
+        if op != ob >> 26:
+            return False
+        if op in (2, 3):
+            return True
+        if (oa & 0xFFFF) == 0 and (oa >> 16) == (ob >> 16):
+            return True
+        return False
+
+    def _store_parts(dis):
+        m, regs, sk = insn_parts(dis)
+        if m not in _STORE_MN or len(regs) != 2:
+            return None
+        off = None
+        for s in sk:
+            mo = re.match(r"(-?(?:0x[0-9a-fA-F]+|\d+))\(#\)$", s)
+            if mo:
+                off = int(mo.group(1), 0)
+        if off is None:
+            return None
+        return m, regs[0], off, regs[1]                     # mnem, Z, offset, base
+
+    # Pattern-scan for the signature (not a total-diff count: the full-unit assembly
+    # resolves local %lo(jtbl) relocations to concrete values that ovm's word mask
+    # does not hide, so unrelated diffs may coexist -- the overlays link gate proves
+    # correctness). POS C: tgt `addiu P,P,-1`, ours a store, and the two must differ.
+    pa = pb = pc = None
+    tregs_a = oregs_b = None
+    P = None
+    for c in range(2, n):
+        mc = re.match(r"addiu?\s+\$?(\w+)\s*,\s*\$?(\w+)\s*,\s*(-?(?:0x[0-9a-fA-F]+|\d+))\s*$",
+                      tgt[c][1].strip())
+        if not mc:
+            continue
+        Pc = norm_reg("$" + mc.group(1))
+        if Pc is None or norm_reg("$" + mc.group(2)) != Pc or int(mc.group(3), 0) != -1:
+            continue
+        sc = _store_parts(our_words[c][1])
+        if sc is None or _wm(our_words[c][0], tgt[c][0]):
+            continue
+        # POS B: nearest earlier position where tgt is our store rebased to Pc and
+        # ours is the base+index recompute whose dest is our store's base
+        b = None
+        for bb in range(c - 1, max(c - 12, 0), -1):
+            sbt = _store_parts(tgt[bb][1])
+            if sbt is None or sbt[:3] != sc[:3] or sbt[3] != Pc:
+                continue
+            m_b, r_b, _s_b = insn_parts(our_words[bb][1])
+            if m_b == "addu" and len(r_b) == 3 and r_b[0] == sc[3]:
+                b = bb
+                oregs_b = r_b
+                break
+        if b is None:
+            continue
+        # POS A: nearest earlier position where tgt inits the pointer `addu P,B,C`
+        # and ours is a dead self-move
+        a = None
+        for aa in range(b - 1, max(b - 12, 0), -1):
+            tm_a, tr_a, _ts_a = insn_parts(tgt[aa][1])
+            if tm_a != "addu" or len(tr_a) != 3 or tr_a[0] != Pc:
+                continue
+            m_a, r_a, _s_a = insn_parts(our_words[aa][1])
+            if (m_a == "move" and len(r_a) == 2 and r_a[0] == r_a[1]) or \
+               (m_a == "addu" and len(r_a) == 3 and r_a[1:] == [r_a[0], "zero"]):
+                a = aa
+                tregs_a = tr_a
+                break
+        if a is None:
+            continue
+        # the recompute's base+index must be retail's pointer-init operands (B, C)
+        if set(oregs_b[1:]) != set(tregs_a[1:]):
+            continue
+        pa, pb, pc, P = a, b, c, Pc
+        break
+    if pa is None:
+        return span, False
+    # P (retail's pointer) must be free ACROSS this loop: unused throughout the
+    # rewritten region [pa, pc] (so overwriting it there clobbers nothing live), and
+    # dead leaving it -- from pc+1 the first mention of P must be a write, else a
+    # later read would see our pointer instead of P's original value.
+    for k in range(pa, pc + 1):
+        d, u = defs_uses(our_words[k][1])
+        if P in d or P in u:
+            return span, False
+    for k in range(pc + 1, n):
+        d, u = defs_uses(our_words[k][1])
+        if P in u and P not in d:
+            return span, False
+        if P in d:
+            break
+    # map our words to source insn lines
+    lines = span.split("\n")
+    ins = [(i, l) for i, l in enumerate(lines) if _s_is_insn(l)]
+    word_src = [None] * n
+    si = 0
+    for w in range(n):
+        if is_nop(our_words[w][1]):
+            if si < len(ins) and _src_is_nop(ins[si][1]):
+                word_src[w] = ins[si][0]; si += 1
+        elif si < len(ins):
+            word_src[w] = ins[si][0]; si += 1
+    if si != len(ins) or any(word_src[p] is None for p in (pa, pb, pc)):
+        return span, False
+    la, lb, lc = word_src[pa], word_src[pb], word_src[pc]
+    Pn = "$%d" % ABI2NUM[P]
+    Bn = "$%d" % ABI2NUM[tregs_a[1]]
+    Cn = "$%d" % ABI2NUM[tregs_a[2]]
+    store_src = lines[lc].split("#", 1)[0].rstrip()
+    mstore = re.match(r"(\s*\w+\s+.*)\(\$?\w+\)\s*$", store_src)
+    if not mstore:
+        return span, False
+    # POS A: pointer init; POS B: the store rebased onto P; POS C: pointer decrement
+    lines[la] = "%saddu\t%s,%s,%s" % (_src_indent(lines[la]), Pn, Bn, Cn)
+    lines[lb] = "%s(%s)" % (mstore.group(1), Pn)
+    lines[lc] = "%saddiu\t%s,%s,-1" % (_src_indent(lines[lc]), Pn, Pn)
+    return "\n".join(lines), True
+
+
 _REORDER_SRC = {
     "epilogue_unfill": epilogue_unfill_src,
     "delay_fill": delay_fill_src,
@@ -11748,6 +11895,7 @@ _REORDER_SRC = {
     "reorder_deep": reorder_deep_src,
     "region_swap": region_swap_src,
     "slot_migrate": slot_migrate_src,
+    "iv_ptr_reduce": iv_ptr_reduce_src,
 }
 
 
@@ -11771,7 +11919,7 @@ def emit_noreorder_span(span, tgt, our_words, reorder_passes, reassemble=None):
             raise NotImplementedError("reorder pass not wired: %s" % name)
         if name in ("delay_fill", "reorder_indep", "reorder_indep_nops",
                     "delay_slot_select", "decouple_reg", "delay_decouple",
-                    "reorder_deep", "region_swap", "slot_migrate"):
+                    "reorder_deep", "region_swap", "slot_migrate", "iv_ptr_reduce"):
             words = reassemble(txt) if reassemble is not None else our_words
             txt, _fired = fn(txt, tgt, words)
         else:
@@ -12344,7 +12492,7 @@ def normalize_s(s_file, ctx, manifest=None):
                                 "reorder_indep_nops", "prologue_save_hoist",
                                 "delay_slot_select", "decouple_reg",
                                 "delay_decouple", "reorder_deep", "region_swap",
-                                "slot_migrate")]
+                                "slot_migrate", "iv_ptr_reduce")]
             if not reorder:
                 continue
             our, err = assemble_words(ctx, s_file, name)
