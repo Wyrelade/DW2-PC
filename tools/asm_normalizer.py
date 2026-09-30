@@ -9938,7 +9938,7 @@ PRE_SIGMA_PASSES = ("la_unfold_st", "un_hi_cse", "un_hi_cse_store", "exit_merge"
 # rescheduled).
 WORD_PASSES = ("delay_fill", "epilogue_unfill", "reorder_indep", "reorder_indep_nops",
                "padnop", "prologue_save_hoist", "delay_slot_select", "decouple_reg",
-               "delay_decouple")
+               "delay_decouple", "reorder_deep")
 
 # minimal register def/use for the delay_fill dependency guard (gas `$reg` syntax)
 _STORE_MN = {"sb", "sh", "sw", "swl", "swr", "swc1", "swc2", "sd", "sdc1", "sdc2"}
@@ -10533,6 +10533,101 @@ def reorder_indep_src(span, tgt, our_words):
     return "\n".join(out), True
 
 
+def reorder_deep_src(span, tgt, our_words):
+    """Nop-aware `reorder_indep`. reorder_indep requires a 1:1 source-to-word map and
+    truncates at the first maspsx-inserted delay/load nop, so a scheduling reorder that
+    sits past such a nop is never reached (func_8006CB58's `lui/addiu` la-pair vs two
+    stores). This pass maps each word to its source line, splits the word stream at the
+    maspsx nops into NOP-FREE segments (a load-delay nop that a reorder would need is
+    itself a segment boundary, so an intra-segment reorder can never create a load-use
+    hazard), and runs reorder_indep's target-guided move loop inside each segment:
+    relocate the instruction that belongs at a mismatched position up past a run it is
+    pairwise reorderable with (`_reorder_swappable`) and register-independent of
+    (`_indep`). The moved source lines re-emit under `.set noreorder`. Semantics-
+    preserving (only independent, non-aliasing instructions move) and count-preserving.
+    Returns (new_span, fired)."""
+    lines = span.split("\n")
+    ins = [(i, l) for i, l in enumerate(lines) if _s_is_insn(l)]
+    n = len(our_words)
+    word_src = [None] * n
+    si = 0
+    for w in range(n):
+        if is_nop(our_words[w][1]):
+            if si < len(ins) and _src_is_nop(ins[si][1]):
+                word_src[w] = ins[si][0]
+                si += 1
+        elif si < len(ins):
+            word_src[w] = ins[si][0]
+            si += 1
+    if si != len(ins):
+        return span, False
+    edits = {}                                   # src_line_idx -> new stripped text
+    noreo = set()                                # src_line_idx to wrap in noreorder
+    moved = False
+    w = 0
+    while w < n:
+        if word_src[w] is None:
+            w += 1
+            continue
+        a = w
+        while w < n and word_src[w] is not None:
+            w += 1
+        m = w - a                                # segment words [a, a+m)
+        if m < 2 or a >= len(tgt):
+            continue
+        seg_ow = list(our_words[a:a + m])
+        seg_src = [word_src[a + i] for i in range(m)]
+        order = list(range(m))
+        swapped = set()
+        pos = 0
+        while pos < m - 1 and a + pos < len(tgt):
+            if _word_eq(seg_ow[pos][0], tgt[a + pos][0], tgt[a + pos][1]):
+                pos += 1
+                continue
+            j = None
+            for k in range(pos + 1, m):
+                if _word_eq(seg_ow[k][0], tgt[a + pos][0], tgt[a + pos][1]):
+                    j = k
+                    break
+            if j is None:
+                break
+            mover = seg_ow[j][1]
+            if not all(_reorder_swappable(mover, seg_ow[k][1]) and _indep(mover, seg_ow[k][1])
+                       for k in range(pos, j)):
+                break
+            seg_ow.insert(pos, seg_ow.pop(j))
+            order.insert(pos, order.pop(j))
+            swapped |= set(range(pos, j + 1))
+            pos += 1
+        if not swapped:
+            continue
+        moved = True
+        for p in range(m):
+            src_here = seg_src[p]
+            edits[src_here] = lines[seg_src[order[p]]].strip()
+            if p in swapped:
+                noreo.add(src_here)
+    if not moved:
+        return span, False
+    real = [i for i, _ in ins]
+    pos_of = {li: p for p, li in enumerate(real)}
+    out = []
+    for idx, l in enumerate(lines):
+        if idx in pos_of and (idx in edits or idx in noreo):
+            p = pos_of[idx]
+            indent = _src_indent(lines[idx])
+            prev_r = real[p - 1] if p > 0 else None
+            next_r = real[p + 1] if p + 1 < len(real) else None
+            if idx in noreo and (prev_r is None or prev_r not in noreo):
+                out.append(indent + ".set\tnoreorder")
+            out.append(indent + edits.get(idx, l.strip()))
+            if idx in noreo and (next_r is None or next_r not in noreo):
+                out.append(indent + ".set\treorder")
+        else:
+            out.append(l)
+    return "\n".join(out), True
+
+
 def _mem_operand(line):
     """(base_reg, offset, size) of a load/store `op $r,off($b)` source/disasm line,
     or None. Offset must be a plain integer (a %lo reloc operand returns None)."""
@@ -10934,6 +11029,10 @@ def _norm_skel(skel):
     out = []
     for t in skel:
         s = t.strip()
+        mm = re.fullmatch(r"(-?(?:0x[0-9a-fA-F]+|\d+))\(#\)", s)
+        if mm:                                  # a memory offset `N(#)`: canonicalize N
+            out.append("%d(#)" % int(mm.group(1), 0))
+            continue
         try:
             out.append(str(int(s, 0)))
         except ValueError:
@@ -11208,64 +11307,71 @@ def delay_decouple_src(span, tgt, our_words):
     if p is None:
         return span, False
 
-    # relabel our later reads of S to R where the target reads R, until R or S is
-    # redefined; bail if a position cannot be aligned/edited (leaves the tail).
+    # relabel our reads of S to R where the target reads R (the copy makes R == S), on
+    # BOTH successors of the branch: the fall-through (from p+2) and the taken target
+    # block. The delay-slot copy executes before the transfer, so R holds S's value on
+    # either path; relabel until R or S is redefined. Guided by the target so we only
+    # rename where retail reads R. `edits` accumulates line rewrites keyed by line index.
     edits = {}
-    end = p + 1
-    for k in range(p + 2, n):
-        if k >= len(tgt) or word_src[k] is None:
-            break
-        defs, _u = defs_uses(our_words[k][1])
-        if R in defs or S in defs:
-            break
-        om, oregs, osk = insn_parts(our_words[k][1])
-        tm, tregs, tsk = insn_parts(tgt[k][1])
-        skel_ok = is_branch(our_words[k][1]) or _norm_skel(osk) == _norm_skel(tsk)
-        if om != tm or not skel_ok or len(oregs) != len(tregs):
-            break
-        line = line_of[word_src[k]]
-        ok = True
-        for oi in range(len(oregs)):
-            if oregs[oi] == tregs[oi]:
-                continue
-            if oregs[oi] == S and tregs[oi] == R:
-                nl = _src_set_op_reg(line, oi, R)
-                if nl is None:
-                    ok = False
-                    break
-                line = nl
-            else:
-                ok = False
+
+    def relabel(start):
+        for k in range(start, n):
+            if k >= len(tgt) or word_src[k] is None:
+                return
+            defs, _u = defs_uses(our_words[k][1])
+            if R in defs or S in defs:
+                return
+            om, oregs, osk = insn_parts(our_words[k][1])
+            tm, tregs, tsk = insn_parts(tgt[k][1])
+            skel_ok = is_branch(our_words[k][1]) or _norm_skel(osk) == _norm_skel(tsk)
+            if om != tm or not skel_ok or len(oregs) != len(tregs):
+                return
+            line = edits.get(word_src[k], line_of[word_src[k]])
+            for oi in range(len(oregs)):
+                if oregs[oi] == tregs[oi]:
+                    continue
+                if oregs[oi] == S and tregs[oi] == R:
+                    nl = _src_set_op_reg(line, oi, R)
+                    if nl is None:
+                        return
+                    line = nl
+                else:
+                    return
+            if line != line_of[word_src[k]]:
+                edits[word_src[k]] = line
+
+    relabel(p + 2)                                 # fall-through path
+    # taken path: find the branch's target label, then the first word at/after it.
+    w_of_src = {word_src[w]: w for w in range(n) if word_src[w] is not None}
+    mlab = re.search(r",\s*(\$L\w+)\s*$", line_of[word_src[p]].split("#", 1)[0])
+    if mlab:
+        lab = mlab.group(1) + ":"
+        for li in range(len(lines)):
+            if lines[li].strip() == lab:
+                for lj in range(li + 1, len(lines)):
+                    if _s_is_insn(lines[lj]):
+                        if lj in w_of_src:
+                            relabel(w_of_src[lj])
+                        break
                 break
-        if not ok:
-            break
-        if line != line_of[word_src[k]]:
-            edits[word_src[k]] = line
-        end = k
 
     indent = _src_indent(line_of[word_src[p]])
     copy_line = indent + "addu\t$%d,$%d,$0" % (ABI2NUM[R], ABI2NUM[S])
     lo = word_src[p]
-    hi = word_src[end] if word_src[end] is not None else lo
     slot_src = word_src[p + 1]                     # a real source nop to drop, if any
     out = []
     for idx, l in enumerate(lines):
         if slot_src is not None and idx == slot_src:
             continue                              # the source nop becomes our filled slot
-        if idx < lo or idx > hi:
-            out.append(l)
-            continue
         if idx == lo:
             out.append(indent + ".set\tnoreorder")
             out.append(indent + ".set\tnomacro")
-        st = l.strip()
-        if not (st.startswith(".set") and re.search(r"\b(no)?(reorder|macro)\b", st)):
             out.append(edits.get(idx, l))
-        if idx == word_src[p]:
             out.append(copy_line)                 # fill the branch delay slot
-        if idx == hi:
             out.append(indent + ".set\tmacro")
             out.append(indent + ".set\treorder")
+            continue
+        out.append(edits.get(idx, l))             # relabels elsewhere are plain renames
     return "\n".join(out), True
 
 
@@ -11351,6 +11457,7 @@ _REORDER_SRC = {
     "delay_slot_select": delay_slot_select_src,
     "decouple_reg": decouple_reg_src,
     "delay_decouple": delay_decouple_src,
+    "reorder_deep": reorder_deep_src,
 }
 
 
@@ -11373,7 +11480,8 @@ def emit_noreorder_span(span, tgt, our_words, reorder_passes, reassemble=None):
         if fn is None:
             raise NotImplementedError("reorder pass not wired: %s" % name)
         if name in ("delay_fill", "reorder_indep", "reorder_indep_nops",
-                    "delay_slot_select", "decouple_reg", "delay_decouple"):
+                    "delay_slot_select", "decouple_reg", "delay_decouple",
+                    "reorder_deep"):
             words = reassemble(txt) if reassemble is not None else our_words
             txt, _fired = fn(txt, tgt, words)
         else:
@@ -11945,7 +12053,7 @@ def normalize_s(s_file, ctx, manifest=None):
                        if p in ("delay_fill", "epilogue_unfill", "reorder_indep",
                                 "reorder_indep_nops", "prologue_save_hoist",
                                 "delay_slot_select", "decouple_reg",
-                                "delay_decouple")]
+                                "delay_decouple", "reorder_deep")]
             if not reorder:
                 continue
             our, err = assemble_words(ctx, s_file, name)

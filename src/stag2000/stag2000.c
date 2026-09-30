@@ -3320,7 +3320,170 @@ void func_8006C8BC(Actor *a) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006CB58);
+void func_8006CB58(Actor *a) {
+    Stg20ShopListWork *w = (Stg20ShopListWork *)a->work;
+    s32 *slot = (s32 *)a->u34.children;
+    s32 id;
+    s32 idx;
+    Stg20GameState *g;
+    PadState *pad;
+    s32 item;
+    Stg20MenuSub *m;
+
+    switch (a->stateLevel0) {
+    case 0:
+        Mem_FillWordsNeg1(w->hdr, 0xF);
+        Task_Create(0x30D, slot, 0);
+        Text_OpenById(&w->hdr[0], 0x12D, 4, *(Halves *)&D_800704E4[0]);
+        Text_OpenById(&w->hdr[1], D_800709B0.field_54 + 0x12B, 4, *(Halves *)&D_800704E4[1]);
+        Text_OpenById(&w->hdr[2], 0xFA, 0, *(Halves *)&D_800704E4[2]);
+        if (D_800709B0.field_54 == 0) {
+            Text_OpenById(&w->hdr[3], 0x12E, 0, *(Halves *)&D_800704E4[3]);
+        }
+        if (D_800709B0.field_54 == 0) {
+            func_8006C514(a, D_8005F770.field_24);
+        } else {
+            func_8006C6F0(a);
+        }
+        Task_NextState0(a);
+        break;
+    case 2:
+        break;
+    case 1:
+        switch (a->stateLevel1) {
+        case 0:
+        default:
+            switch (a->stateLevel2) {
+            case 0:
+            default:
+                w->dirty = 1;
+                Task_NextState2(a);
+            case 1:
+                break;
+            }
+            w->field_5C = 0x138;
+            w->field_60 = 0;
+            pad = D_8005F6F0;
+            m = &D_800709B8;
+            if ((pad->repeat & 0x1000) && w->cursor != 0) {
+                goto up;
+            }
+            if ((pad->repeat & 0x4000) && w->cursor != 7) {
+                goto down;
+            }
+            if (pad->right > 0) {
+                if (w->page != w->pages) {
+                    w->page++;
+                    w->dirty = 1;
+                    Snd_PlayById(0xD, 0);
+                }
+            } else if (pad->left > 0) {
+                if (w->page != 0) {
+                    w->page--;
+                    w->dirty = 1;
+                    Snd_PlayById(0xD, 0);
+                }
+            } else if (pad->triangle > 0) {
+                goto cancel;
+            } else if (pad->cross > 0) {
+                if (m->field_4C == 0) {
+                    item = D_80070A08.items[w->cursor + w->page * 8];
+                    if (item != 0) {
+                        if (func_8001E180(item) > D_8005E628) {
+                            w->field_5C = 0x139;
+                            w->dirty = 1;
+                            Snd_PlayById(0x10, 0);
+                        } else {
+                            goto buy;
+                        }
+                    }
+                } else {
+                    item = D_80070A08.items[w->cursor + w->page * 8];
+                    if (item != 0) {
+                        if (func_8001E180(item) != 0) {
+                            goto sell;
+                        }
+                        Snd_PlayById(0x10, 0);
+                    }
+                }
+            }
+            break;
+        case 1:
+            id = D_80070A08.items[w->cursor + w->page * 8];
+            switch (a->stateLevel2) {
+            case 0:
+            default:
+                w->field_5C = func_8006C1C4(id);
+                w->field_60 = 0x137;
+                w->dirty = 1;
+                Flag_Set(0x10, 0);
+                Task_NextState2(a);
+            case 1:
+                break;
+            }
+            if (Flag_Test(0x10) != 0 && Flag_Test(0x11) == 0) {
+                Snd_PlayById(0xF, 0);
+                g = (Stg20GameState *)&D_8005E620;
+                g->field_DD4[id] = g->field_DD4[id] == 99 ? 99 : g->field_DD4[id] + 1;
+                D_8005E620.field_8 -= func_8001E180(id);
+                Task_SetState1(a, 0);
+            } else if (D_8005F70C > 0 || Flag_Test(0x10) != 0) {
+                Snd_PlayById(0xB, 0);
+                Task_SetState1(a, 0);
+            }
+            break;
+        up:
+            w->cursor--;
+            w->dirty = 1;
+            Snd_PlayById(0xD, 0);
+            break;
+        down:
+            w->cursor++;
+            w->dirty = 1;
+            Snd_PlayById(0xD, 0);
+            break;
+        cancel:
+            m->field_0 = 1;
+            Task_SetState0(a, 3);
+            Snd_PlayById(0xB, 0);
+            break;
+        sell:
+            Task_NextState1(a);
+        buy:
+            Task_NextState1(a);
+            break;
+        case 2:
+            idx = w->cursor + w->page * 8;
+            id = D_80070A08.items[idx];
+            switch (a->stateLevel2) {
+            case 0:
+            default:
+                w->field_5C = 0x13A;
+                w->field_60 = 0;
+                w->dirty = 1;
+                Flag_Set(0x10, 0);
+                Task_NextState2(a);
+            case 1:
+                break;
+            }
+            if (Flag_Test(0x10) != 0) {
+                if (Flag_Test(0x11) == 0) {
+                    Snd_PlayById(0xF, 0);
+                    D_8005E620.field_8 += func_8001E180(id) / 2;
+                    if (D_8005E620.field_8 > 99999999) {
+                        D_8005E620.field_8 = 99999999;
+                    }
+                    Item_RemoveFromBag(idx);
+                    func_8006C6F0(a);
+                }
+                Task_SetState1(a, 0);
+            }
+            break;
+        }
+        func_8006C8BC(a);
+        break;
+    }
+}
 
 void func_8006D0F0(Actor *a) {
     Text_CloseArray((s32 *)a->work, 0xF);
