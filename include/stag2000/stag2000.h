@@ -113,6 +113,7 @@ extern void func_80063610(Actor *);
 
 /* ---- added by p35 agent o ---- */
 extern u8 D_8007012C[3][3];
+extern u8 D_80070138[][3][8][8];
 extern u16 D_8006FCCC[];
 extern u16 D_8006FD28[];
 extern s32 D_800709B4;
@@ -126,6 +127,7 @@ extern s32 D_80043704[];
 extern void Task_SetState1(Actor *arg0, u32 arg1);
 extern TaskEntry *Task_FindNext(void);
 extern s32 func_8001D934(s32);
+extern s32 func_8001D910(s32);
 extern s32 func_8001EDD4(s32);
 extern void Digi_SortRoster(void);
 extern void Anim_StepModelAnim(Actor *);

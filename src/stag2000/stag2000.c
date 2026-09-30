@@ -2671,13 +2671,21 @@ void func_8006A118(void) {
     Gfx_DrawParts((s32)Cd_GetFileEntry(0xD120007));
 }
 
-u8 func_8006A144(s32 a, s32 b) {
+s32 func_8006A144(s32 a, s32 b) {
     a = func_8001D934(a);
     b = func_8001D934(b);
     return D_8007012C[a][b];
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006A190);
+u8 func_8006A190(s32 a, s32 b) {
+    s32 s4 = func_8006A144(a, b);
+    s32 r1 = func_8001D958(a);
+    s32 r2 = func_8001D958(b);
+    s32 m = (r1 < r2 ? r1 : r2) - 1;
+    s32 r3 = func_8001D910(a);
+    s32 r4 = func_8001D910(b);
+    return D_80070138[s4][m][r3][r4];
+}
 
 void func_8006A248(Actor *a, s32 v) {
     ((Stg20Work *)a->work)->field_0 = v;
