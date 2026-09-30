@@ -4450,5 +4450,12 @@
       "nodiv",
       "web_realloc"
     ]
+  },
+  "stag3500:func_80065BE0": {
+    "passes": [
+      "nodiv",
+      "reg_realloc",
+      "web_realloc"
+    ]
   }
 }

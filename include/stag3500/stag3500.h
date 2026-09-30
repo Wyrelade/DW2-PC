@@ -564,6 +564,7 @@ extern s16 D_8006A4F4[];
 extern Stg35XY D_8006A500[];
 extern Stg35XY D_8006A508[];
 extern s32 D_8006A540[];
+extern Stg35Rec5C D_8006AA98[];
 extern Elem12 D_8006A574;
 extern Elem12 D_8006A580;
 extern Elem12 D_8006A58C;
