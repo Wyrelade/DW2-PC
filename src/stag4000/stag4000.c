@@ -1905,7 +1905,47 @@ void func_8006AB48(Actor *a0) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006AD10);
+void func_8006AD10(void) {
+    s32 s3;
+    s32 s0;
+    s32 s1;
+    s32 e1;
+    s32 e3;
+    s32 v1;
+    s32 *dst;
+    s32 *p;
+
+    s3 = 0;
+    s0 = D_80072B60->field_E2 - D_80072B60->field_E3;
+    dst = func_80066E18();
+    p = dst;
+    if (s0 >= 6) {
+        D_80072B60->field_E3 = D_80072B60->field_E2 - 5;
+    }
+    if (s0 < 0) {
+        D_80072B60->field_E3 = D_80072B60->field_E2;
+    }
+    e1 = D_80072B60->field_E1;
+    e3 = D_80072B60->field_E3;
+    s1 = e1;
+    v1 = e3 + 6;
+    if (s1 >= v1) {
+        s1 = v1;
+    }
+    s0 = e3;
+    while (s0 < s1) {
+        *p = Item_GetNameText(D_80072B60->field_B0[s0]);
+        s0++;
+        p++;
+    }
+    s3 |= D_80072B60->field_E3 != 0;
+    if (s1 < D_80072B60->field_E1) {
+        s3 |= 2;
+    }
+    func_80066DF0(D_80072B60->field_E2 - D_80072B60->field_E3, s1 - D_80072B60->field_E3, s3);
+    dst[6] = Item_GetDescText(D_80072B60->field_B0[D_80072B60->field_E2]);
+    s1 = e1;
+}
 
 void func_8006AE74(void) {
     s32 old = D_80072B60->field_E2;
