@@ -9937,7 +9937,8 @@ PRE_SIGMA_PASSES = ("la_unfold_st", "un_hi_cse", "un_hi_cse_store", "exit_merge"
 # assembler re-scheduling it. padnop needs neither (a trailing nop cannot be
 # rescheduled).
 WORD_PASSES = ("delay_fill", "epilogue_unfill", "reorder_indep", "reorder_indep_nops",
-               "padnop", "prologue_save_hoist", "delay_slot_select", "decouple_reg")
+               "padnop", "prologue_save_hoist", "delay_slot_select", "decouple_reg",
+               "delay_decouple")
 
 # minimal register def/use for the delay_fill dependency guard (gas `$reg` syntax)
 _STORE_MN = {"sb", "sh", "sw", "swl", "swr", "swc1", "swc2", "sd", "sdc1", "sdc2"}
@@ -10384,7 +10385,11 @@ def _reorder_swappable(a, b):
     pa, pb = _pure_alu(a), _pure_alu(b)
     if pa and pb:
         return True
-    if (pa and _frame_store(b)) or (pb and _frame_store(a)):
+    # a pure-ALU insn has no memory effect, so transposing it past ANY store cannot
+    # alias (only its register independence matters, checked by _indep). reorder_indep
+    # is target-guided and only moves an instruction to FIX a mismatch, so widening
+    # this beyond frame (sp-based) stores cannot disturb an already-matching function.
+    if (pa and _is_store(b)) or (pb and _is_store(a)):
         return True
     # an ALU insn and a load: no memory write, so only registers matter
     if (pa and _is_load(b)) or (pb and _is_load(a)):
@@ -10392,6 +10397,11 @@ def _reorder_swappable(a, b):
     # a stack-frame load and a store through the assembler temp ($at only ever
     # holds a global symbol's %hi address) touch disjoint memory
     return (_frame_load(a) and _at_store(b)) or (_frame_load(b) and _at_store(a))
+
+
+def _is_store(disasm):
+    p = disasm.split(None, 1)
+    return bool(p) and p[0].lower() in _STORE_MN
 
 
 def _is_load(disasm):
@@ -11131,6 +11141,134 @@ def decouple_reg_src(span, tgt, our_words):
     return "\n".join(out), True
 
 
+def delay_decouple_src(span, tgt, our_words):
+    """Delay-slot variant of decouple_reg. Retail sometimes fills a branch's delay
+    slot with a register copy `addu rD,rS,$0` (aliasing rS into a fresh register rD)
+    and then reads rD downstream, where our cc1 leaves the slot a nop and keeps
+    reading rS. Target-guided: at a branch whose target delay slot is exactly such a
+    copy while OUR same branch has a nop slot, replace the (maspsx or source) nop with
+    the copy under `.set noreorder`, then relabel our later reads of rS to rD wherever
+    the target reads rD, up to the point rD or rS is redefined.
+
+    Semantics-preserving: rD must be DEAD at the branch (its first later occurrence in
+    our stream is a definition, never a use), so nothing live is clobbered; after the
+    copy rD holds exactly rS's value, so reading rD in place of rS is identical while
+    the two agree. Count-preserving (nop -> copy). Runs as a word pass; the branch and
+    its slot re-emit under `.set noreorder` so the assembler keeps the filled slot.
+    Returns (new_span, fired)."""
+    lines = span.split("\n")
+    ins = [(i, l) for i, l in enumerate(lines) if _s_is_insn(l)]
+    n = len(our_words)
+    if n < 3:
+        return span, False
+    word_src = [None] * n
+    si = 0
+    for w in range(n):
+        if is_nop(our_words[w][1]):
+            if si < len(ins) and _src_is_nop(ins[si][1]):
+                word_src[w] = ins[si][0]
+                si += 1
+        elif si < len(ins):
+            word_src[w] = ins[si][0]
+            si += 1
+    if si != len(ins):
+        return span, False
+    line_of = {i: l for i, l in enumerate(lines)}
+
+    p = None
+    R = S = None
+    for k in range(min(n, len(tgt)) - 1):
+        if not is_branch(tgt[k][1]):
+            continue
+        if not _same_insn(our_words[k][1], tgt[k][1]):
+            continue                              # not the same branch
+        cp = _reg_copy_dst_src(tgt[k + 1][1])
+        if cp is None:
+            continue
+        rD, rS = cp
+        if rD == rS or "zero" in (rD, rS) or rD in _INJ_FIXED or rS in _INJ_FIXED:
+            continue
+        if not is_nop(our_words[k + 1][1]):
+            continue                              # our slot is already filled
+        if word_src[k] is None:
+            continue                              # branch has no source line to anchor
+        # rD must be dead at the branch: its first later occurrence is a definition.
+        dead = True
+        for j in range(k + 1, n):
+            d, u = defs_uses(our_words[j][1])
+            if rD in u and rD not in d:
+                dead = False
+                break
+            if rD in d:
+                break
+        if not dead:
+            continue
+        p, R, S = k, rD, rS
+        break
+    if p is None:
+        return span, False
+
+    # relabel our later reads of S to R where the target reads R, until R or S is
+    # redefined; bail if a position cannot be aligned/edited (leaves the tail).
+    edits = {}
+    end = p + 1
+    for k in range(p + 2, n):
+        if k >= len(tgt) or word_src[k] is None:
+            break
+        defs, _u = defs_uses(our_words[k][1])
+        if R in defs or S in defs:
+            break
+        om, oregs, osk = insn_parts(our_words[k][1])
+        tm, tregs, tsk = insn_parts(tgt[k][1])
+        skel_ok = is_branch(our_words[k][1]) or _norm_skel(osk) == _norm_skel(tsk)
+        if om != tm or not skel_ok or len(oregs) != len(tregs):
+            break
+        line = line_of[word_src[k]]
+        ok = True
+        for oi in range(len(oregs)):
+            if oregs[oi] == tregs[oi]:
+                continue
+            if oregs[oi] == S and tregs[oi] == R:
+                nl = _src_set_op_reg(line, oi, R)
+                if nl is None:
+                    ok = False
+                    break
+                line = nl
+            else:
+                ok = False
+                break
+        if not ok:
+            break
+        if line != line_of[word_src[k]]:
+            edits[word_src[k]] = line
+        end = k
+
+    indent = _src_indent(line_of[word_src[p]])
+    copy_line = indent + "addu\t$%d,$%d,$0" % (ABI2NUM[R], ABI2NUM[S])
+    lo = word_src[p]
+    hi = word_src[end] if word_src[end] is not None else lo
+    slot_src = word_src[p + 1]                     # a real source nop to drop, if any
+    out = []
+    for idx, l in enumerate(lines):
+        if slot_src is not None and idx == slot_src:
+            continue                              # the source nop becomes our filled slot
+        if idx < lo or idx > hi:
+            out.append(l)
+            continue
+        if idx == lo:
+            out.append(indent + ".set\tnoreorder")
+            out.append(indent + ".set\tnomacro")
+        st = l.strip()
+        if not (st.startswith(".set") and re.search(r"\b(no)?(reorder|macro)\b", st)):
+            out.append(edits.get(idx, l))
+        if idx == word_src[p]:
+            out.append(copy_line)                 # fill the branch delay slot
+        if idx == hi:
+            out.append(indent + ".set\tmacro")
+            out.append(indent + ".set\treorder")
+    return "\n".join(out), True
+
+
 def reorder_indep_nops_src(span, tgt, our_words):
     """Swap two adjacent independent pure-ALU instructions to match the target's
     schedule, even when maspsx-inserted delay/load nops earlier in the function break
@@ -11212,6 +11350,7 @@ _REORDER_SRC = {
     "prologue_save_hoist": prologue_save_hoist_src,
     "delay_slot_select": delay_slot_select_src,
     "decouple_reg": decouple_reg_src,
+    "delay_decouple": delay_decouple_src,
 }
 
 
@@ -11234,7 +11373,7 @@ def emit_noreorder_span(span, tgt, our_words, reorder_passes, reassemble=None):
         if fn is None:
             raise NotImplementedError("reorder pass not wired: %s" % name)
         if name in ("delay_fill", "reorder_indep", "reorder_indep_nops",
-                    "delay_slot_select", "decouple_reg"):
+                    "delay_slot_select", "decouple_reg", "delay_decouple"):
             words = reassemble(txt) if reassemble is not None else our_words
             txt, _fired = fn(txt, tgt, words)
         else:
@@ -11805,7 +11944,8 @@ def normalize_s(s_file, ctx, manifest=None):
             reorder = [p for p in manifest[name]["passes"]
                        if p in ("delay_fill", "epilogue_unfill", "reorder_indep",
                                 "reorder_indep_nops", "prologue_save_hoist",
-                                "delay_slot_select", "decouple_reg")]
+                                "delay_slot_select", "decouple_reg",
+                                "delay_decouple")]
             if not reorder:
                 continue
             our, err = assemble_words(ctx, s_file, name)
