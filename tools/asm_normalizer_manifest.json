@@ -4408,5 +4408,11 @@
       "reorder_deep",
       "delay_decouple"
     ]
+  },
+  "func_80069AAC": {
+    "passes": [
+      "reorder_deep",
+      "region_swap"
+    ]
   }
 }

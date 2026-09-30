@@ -9938,7 +9938,7 @@ PRE_SIGMA_PASSES = ("la_unfold_st", "un_hi_cse", "un_hi_cse_store", "exit_merge"
 # rescheduled).
 WORD_PASSES = ("delay_fill", "epilogue_unfill", "reorder_indep", "reorder_indep_nops",
                "padnop", "prologue_save_hoist", "delay_slot_select", "decouple_reg",
-               "delay_decouple", "reorder_deep")
+               "delay_decouple", "reorder_deep", "region_swap")
 
 # minimal register def/use for the delay_fill dependency guard (gas `$reg` syntax)
 _STORE_MN = {"sb", "sh", "sw", "swl", "swr", "swc1", "swc2", "sd", "sdc1", "sdc2"}
@@ -11448,6 +11448,178 @@ def reorder_indep_nops_src(span, tgt, our_words):
     return "\n".join(out), True
 
 
+# --------------------------------------------------------------------------
+# region_swap: a REGION-LOCAL 2-cycle of two registers (including callee-saved
+# regs, which web_realloc / web_cycle pin so their global batch never touches).
+# Retail and our cc1 disagree only on WHICH of two registers holds each of two
+# co-equal values across a contiguous stretch -- e.g. two flags both init'd to 0
+# then each set to 1 on its own path (`li s0,1` / `li s1,1`); which physical
+# register is which is a pure register-allocation-order artifact. web_cycle
+# cannot see it (the two `li ,1` tokenise identically so its vote step cannot
+# tell the webs apart, and both webs are pinned by their prologue save).
+#
+# Word pass, target-guided. Aligns our assembled words positionally to the target
+# (after any earlier reorder pass), votes a swap pair from single-pair register
+# disagreements, then finds the maximal contiguous run of SWAP words (our ra/rb
+# roles are the target's swapped) bounded by SAME words (already agree). ra/rb
+# reused elsewhere as address temporaries form a distinct live range outside the
+# run and are left alone. Soundness (a pure sub-range relabel of two registers is
+# semantics-preserving iff their boundary values are interchangeable): ra and rb
+# must be DEAD leaving the run (their next word after it is a definition -- e.g.
+# the epilogue restore) and hold EQUAL resolvable values entering it. The
+# save/restore slots sit outside the run and are untouched, so the frame is
+# unchanged. Count-preserving; the run re-emits under `.set noreorder`.
+# --------------------------------------------------------------------------
+def _rsw_val_before(words, before, reg, depth=0):
+    """Symbolic value of `reg` just before word index `before` for the simple
+    straight-line init idioms: ('imm', K) or None. Follows one reg->reg copy."""
+    if depth > 4:
+        return None
+    for j in range(before - 1, -1, -1):
+        d, u = defs_uses(words[j][1])
+        if reg not in d:
+            continue
+        li = _li_dst_imm(words[j][1])
+        if li is not None and li[0] == reg:
+            return ("imm", li[1])
+        cp = _reg_copy_dst_src(words[j][1])
+        if cp is not None and cp[0] == reg:
+            if cp[1] == "zero":
+                return ("imm", 0)
+            return _rsw_val_before(words, j, cp[1], depth + 1)
+        return None
+    return None
+
+
+def region_swap_src(span, tgt, our_words):
+    lines = span.split("\n")
+    ins = [(i, l) for i, l in enumerate(lines) if _s_is_insn(l)]
+    n = len(our_words)
+    if n < 3:
+        return span, False
+    word_src = [None] * n
+    si = 0
+    for w in range(n):
+        if is_nop(our_words[w][1]):
+            if si < len(ins) and _src_is_nop(ins[si][1]):
+                word_src[w] = ins[si][0]
+                si += 1
+        elif si < len(ins):
+            word_src[w] = ins[si][0]
+            si += 1
+    if si != len(ins):
+        return span, False
+    line_of = {i: l for i, l in enumerate(lines)}
+
+    m = min(n, len(tgt))
+    # vote a swap pair from single non-fixed pair disagreements (skeletons, e.g.
+    # branch labels, are NOT compared -- only register roles)
+    votes = {}
+    for k in range(m):
+        om, oregs, osk = insn_parts(our_words[k][1])
+        tm, tregs, tsk = insn_parts(tgt[k][1])
+        if om != tm or len(oregs) != len(tregs):
+            continue
+        diffs = [(a, b) for a, b in zip(oregs, tregs) if a != b]
+        if not diffs:
+            continue
+        ps, ok = set(), True
+        for a, b in diffs:
+            if a in _INJ_FIXED or b in _INJ_FIXED or a == "zero" or b == "zero":
+                ok = False
+                break
+            ps.add(frozenset((a, b)))
+        if ok and len(ps) == 1 and len(next(iter(ps))) == 2:
+            votes[next(iter(ps))] = votes.get(next(iter(ps)), 0) + 1
+    if not votes:
+        return span, False
+    ra, rb = tuple(max(votes, key=lambda p: votes[p]))
+
+    def cls(k):
+        om, oregs, osk = insn_parts(our_words[k][1])
+        our_has = tuple(r for r in oregs if r in (ra, rb))
+        if not our_has:
+            return None
+        tm, tregs, tsk = insn_parts(tgt[k][1])
+        # load-immediate up to li/addiu/ori spelling: compare dest + imm only
+        oli, tli = _li_dst_imm(our_words[k][1]), _li_dst_imm(tgt[k][1])
+        if oli is not None and tli is not None and oli[1] == tli[1]:
+            od, td = oli[0], tli[0]
+            if od == td:
+                return "SAME"
+            if {od, td} == {ra, rb}:
+                return "SWAP"
+            return "BAD"
+        if om != tm or len(oregs) != len(tregs):
+            return "BAD"
+        tgt_has = tuple(r for r in tregs if r in (ra, rb))
+        sw = tuple(rb if r == ra else ra for r in our_has)
+        if our_has == tgt_has:
+            return "SAME"
+        if sw == tgt_has:
+            return "SWAP"
+        return "BAD"
+    best, run = None, []
+    for k in range(m):
+        c = cls(k)
+        if c is None:
+            continue
+        if c == "SWAP":
+            run.append(k)
+        else:
+            if run and (best is None or len(run) > len(best)):
+                best = run
+            run = []
+    if run and (best is None or len(run) > len(best)):
+        best = run
+    if not best:
+        return span, False
+    lo_w, hi_w = best[0], best[-1]
+    for k in range(lo_w, hi_w + 1):
+        c = cls(k)
+        if c is not None and c != "SWAP":         # a SAME/BAD ra|rb word inside the run
+            return span, False
+    # exit-dead: after hi_w, ra and rb are written before any read
+    for reg in (ra, rb):
+        for j in range(hi_w + 1, n):
+            d, u = defs_uses(our_words[j][1])
+            if reg in u and reg not in d:
+                return span, False
+            if reg in d:
+                break
+    # entry-equal: ra and rb hold the same resolvable value entering the run
+    va = _rsw_val_before(our_words, lo_w, ra)
+    vb = _rsw_val_before(our_words, lo_w, rb)
+    if va is None or va != vb:
+        return span, False
+    # relabel: for each word in the run whose source line uses ra/rb, swap them
+    edits = {}
+    for k in range(lo_w, hi_w + 1):
+        if word_src[k] is None:
+            continue
+        om, oregs, osk = insn_parts(our_words[k][1])
+        line = edits.get(word_src[k], line_of[word_src[k]])
+        for oi, r in enumerate(oregs):
+            if r == ra:
+                nl = _src_set_op_reg(line, oi, rb)
+            elif r == rb:
+                nl = _src_set_op_reg(line, oi, ra)
+            else:
+                continue
+            if nl is None:
+                return span, False
+            line = nl
+        if line != line_of[word_src[k]]:
+            edits[word_src[k]] = line
+    if not edits:
+        return span, False
+    # A register relabel moves nothing, so no `.set noreorder` wrap is needed (and
+    # wrapping the run would nest inside the branches' own noreorder/macro blocks).
+    for idx, nl in edits.items():
+        lines[idx] = nl
+    return "\n".join(lines), True
+
+
 _REORDER_SRC = {
     "epilogue_unfill": epilogue_unfill_src,
     "delay_fill": delay_fill_src,
@@ -11458,6 +11630,7 @@ _REORDER_SRC = {
     "decouple_reg": decouple_reg_src,
     "delay_decouple": delay_decouple_src,
     "reorder_deep": reorder_deep_src,
+    "region_swap": region_swap_src,
 }
 
 
@@ -11481,7 +11654,7 @@ def emit_noreorder_span(span, tgt, our_words, reorder_passes, reassemble=None):
             raise NotImplementedError("reorder pass not wired: %s" % name)
         if name in ("delay_fill", "reorder_indep", "reorder_indep_nops",
                     "delay_slot_select", "decouple_reg", "delay_decouple",
-                    "reorder_deep"):
+                    "reorder_deep", "region_swap"):
             words = reassemble(txt) if reassemble is not None else our_words
             txt, _fired = fn(txt, tgt, words)
         else:
@@ -12053,7 +12226,7 @@ def normalize_s(s_file, ctx, manifest=None):
                        if p in ("delay_fill", "epilogue_unfill", "reorder_indep",
                                 "reorder_indep_nops", "prologue_save_hoist",
                                 "delay_slot_select", "decouple_reg",
-                                "delay_decouple", "reorder_deep")]
+                                "delay_decouple", "reorder_deep", "region_swap")]
             if not reorder:
                 continue
             our, err = assemble_words(ctx, s_file, name)

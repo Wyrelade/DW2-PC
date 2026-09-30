@@ -2153,7 +2153,83 @@ void func_800697AC(Actor *a) {
 
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_800698F4);
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80069AAC);
+void func_80069AAC(Actor *a) {
+    Stg20SkillWork *w = (Stg20SkillWork *)a->work;
+    s32 snd;
+    s32 redraw;
+    s32 col;
+    s32 *cur;
+    s32 *top;
+
+    switch (a->stateLevel0) {
+    case 0:
+        Mem_FillWordsNeg1(w->texts, 0x13);
+        a->field_8 = D_800709E0;
+        func_800697AC(a);
+        Task_NextState0(a);
+        break;
+    case 1:
+        if (a->stateLevel1 == 0) {
+            func_80067480(&w->texts[0], 0, 0xA, &D_800700AC[0], 4);
+            func_80067480(&w->texts[1], 0, 0xB, &D_800700AC[1], 4);
+            func_80067480(&w->texts[2], 0, 0xC, &D_800700AC[2], 4);
+            func_80067480(&w->texts[3], 0, 0xD, &D_800700AC[3], 4);
+            func_80067480(&w->texts[4], (s32)D_8005E750[D_800709E0].name, 0, &D_800700AC[8], 0);
+            func_80067480(&w->texts[5], 0, 0xD1, &D_800700AC[9], 0);
+            Task_NextState1(a);
+        }
+        redraw = 0;
+        snd = 0;
+        col = w->col;
+        cur = &w->cursor[col];
+        top = &w->top[col];
+        if (D_8005F6F0[0].left > 0) {
+            if (col != 0) {
+                w->col = col - 1;
+                snd = 1;
+            }
+            redraw = 1;
+        } else if (D_8005F6F0[0].right > 0) {
+            if (col != 3) {
+                w->col = col + 1;
+                snd = 1;
+            }
+            redraw = 1;
+        } else if (D_8005F6F0[0].repeat & 0x1000) {
+            if (*cur != 0) {
+                (*cur)--;
+                snd = 1;
+            } else if (*top != 0) {
+                (*top)--;
+                snd = 1;
+            }
+            redraw = 1;
+        } else if (D_8005F6F0[0].repeat & 0x4000) {
+            if (*cur != 2) {
+                (*cur)++;
+                snd = 1;
+            } else if (w->groups[0].list[*top + col * 14 + 3] != 0) {
+                (*top)++;
+                snd = 1;
+            }
+            redraw = 1;
+        } else if (D_8005F6F0[0].triangle > 0 || D_8005F6F0[0].circle > 0) {
+            Task_NextState0(a);
+        }
+        if (snd != 0) {
+            Snd_PlayById(0xD, 0);
+        }
+        if (redraw != 0 || ((Stg20BlinkTask *)a)->field_24 == 1) {
+            func_800698F4(a);
+        }
+        break;
+    case 2:
+        Text_CloseArray(w->texts, 0x13);
+        func_80068CF8();
+        Task_NextState0(a);
+        break;
+    }
+}
 
 void func_80069D98(Actor *a) {
     Stg20SkillWork *w = (Stg20SkillWork *)a->work;

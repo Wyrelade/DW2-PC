@@ -954,4 +954,8 @@ typedef struct {
 
 extern void func_80068DD8(s32 text, s32 digi);
 
+extern s32 D_800709E0;
+extern Stg20Cell D_800700AC[10];
+extern void func_800698F4(Actor *a);
+
 #endif
