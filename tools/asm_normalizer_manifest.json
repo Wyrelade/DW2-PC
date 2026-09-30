@@ -4414,5 +4414,10 @@
       "reorder_deep",
       "region_swap"
     ]
+  },
+  "stag2000:func_80065FB8": {
+    "passes": [
+      "slot_migrate"
+    ]
   }
 }

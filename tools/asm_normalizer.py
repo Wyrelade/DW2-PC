@@ -9938,7 +9938,7 @@ PRE_SIGMA_PASSES = ("la_unfold_st", "un_hi_cse", "un_hi_cse_store", "exit_merge"
 # rescheduled).
 WORD_PASSES = ("delay_fill", "epilogue_unfill", "reorder_indep", "reorder_indep_nops",
                "padnop", "prologue_save_hoist", "delay_slot_select", "decouple_reg",
-               "delay_decouple", "reorder_deep", "region_swap")
+               "delay_decouple", "reorder_deep", "region_swap", "slot_migrate")
 
 # minimal register def/use for the delay_fill dependency guard (gas `$reg` syntax)
 _STORE_MN = {"sb", "sh", "sw", "swl", "swr", "swc1", "swc2", "sd", "sdc1", "sdc2"}
@@ -10842,6 +10842,122 @@ def delay_slot_select_src(span, tgt, our_words):
     return "\n".join(out), True
 
 
+def slot_migrate_src(span, tgt, our_words):
+    """Relocate a delay-slot filler from an EARLIER jal to a LATER jal. Our cc1 and
+    retail both need one instruction X (typically `move rD,$0`) live across a run of
+    calls, but pick a different call's delay slot to hide it in: retail leaves the
+    earlier jal's slot a nop and sinks X into a later jal's slot (whose slot our cc1
+    instead fills with a REDUNDANT reload Y -- e.g. `li $a0,K` when $a0 already holds
+    K from before the call and is call-clobbered after). Target-guided: for a pair of
+    jals J1<J2 where the target's J1 slot is a nop while ours holds X, and the target's
+    J2 slot holds exactly that X while ours holds some Y, move X to J2's slot and blank
+    J1's. Count-preserving (X and Y -> nop and X).
+
+    Semantics-preserving: rD (X's dest) must not be read between J1's slot and J2 (so
+    delaying its definition to J2's slot changes nothing), and Y must be dead at J2's
+    slot (its dest not read before it is next written -- true for a call-arg reload the
+    callee clobbers), so dropping Y loses nothing. The touched jals re-emit under
+    `.set noreorder`. Returns (new_span, fired)."""
+    def _is_call(dis):
+        p = dis.split(None, 1)
+        return bool(p) and p[0].lower() in ("jal", "bal", "jalr")
+    lines = span.split("\n")
+    ins = [(i, l) for i, l in enumerate(lines) if _s_is_insn(l)]
+    our_jal = [k for k, (_w, d) in enumerate(our_words) if _is_call(d)]
+    tgt_jal = [k for k, (_w, d) in enumerate(tgt) if _is_call(d)]
+    src_jal = [p for p, (_i, l) in enumerate(ins)
+               if re.match(r"\s*(jal|bal|jalr)\b", l)]
+    if not our_jal or len(our_jal) != len(tgt_jal) or len(our_jal) != len(src_jal):
+        return span, False
+    # find J1: our slot holds X, target slot is nop
+    donors = []
+    for k in range(len(our_jal)):
+        jw, tw = our_jal[k], tgt_jal[k]
+        if jw + 1 >= len(our_words) or tw + 1 >= len(tgt):
+            continue
+        if is_nop(our_words[jw + 1][1]) or not is_nop(tgt[tw + 1][1]):
+            continue
+        donors.append(k)
+    if not donors:
+        return span, False
+    edits = {}                                   # ins-index -> new source text
+    wrapped = set()                              # ins-indices to wrap in noreorder
+    for k1 in donors:
+        jw1, tw1, sp1 = our_jal[k1], tgt_jal[k1], src_jal[k1]
+        X = our_words[jw1 + 1][1]
+        Xd, _Xu = defs_uses(X)
+        if len(Xd) != 1:
+            continue
+        rD = next(iter(Xd))
+        # find J2>J1 whose target slot holds X and whose our slot holds a different Y
+        best = None
+        for k2 in range(k1 + 1, len(our_jal)):
+            jw2, tw2, sp2 = our_jal[k2], tgt_jal[k2], src_jal[k2]
+            if jw2 + 1 >= len(our_words) or tw2 + 1 >= len(tgt):
+                continue
+            if is_nop(our_words[jw2 + 1][1]):
+                continue
+            if not _same_insn(our_words[jw1 + 1][1], tgt[tw2 + 1][1]):
+                continue                          # target J2 slot is not our X
+            best = k2
+            break
+        if best is None:
+            continue
+        jw2, tw2, sp2 = our_jal[best], tgt_jal[best], src_jal[best]
+        # rD must not be read between J1's slot and J2 (words jw1+2 .. jw2)
+        live = False
+        for w in range(jw1 + 2, jw2 + 1):
+            d, u = defs_uses(our_words[w][1])
+            if rD in u:
+                live = True
+                break
+            if rD in d:
+                break
+        if live:
+            continue
+        # Y (our J2 slot) must be dead: its dest not read before next write
+        Y = our_words[jw2 + 1][1]
+        Yd, _Yu = defs_uses(Y)
+        if len(Yd) != 1:
+            continue
+        rY = next(iter(Yd))
+        ydead = False
+        for w in range(jw2 + 2, len(our_words)):
+            d, u = defs_uses(our_words[w][1])
+            if rY in u:
+                break
+            if rY in d:
+                ydead = True
+                break
+        else:
+            ydead = True
+        if not ydead:
+            continue
+        # source edits: J1 slot -> nop, J2 slot -> X's source text
+        x_src = ins[sp1 + 1][1].strip()
+        indent = _src_indent(ins[sp1 + 1][1])
+        edits[sp1 + 1] = indent + "nop"
+        edits[sp2 + 1] = _src_indent(ins[sp2 + 1][1]) + x_src
+        wrapped |= {sp1, sp1 + 1, sp2, sp2 + 1}
+    if not edits:
+        return span, False
+    line_pos = {ins[p][0]: p for p in range(len(ins))}
+    out = []
+    for idx, l in enumerate(lines):
+        if idx in line_pos:
+            p = line_pos[idx]
+            body = edits.get(p, ins[p][1])
+            indent = _src_indent(ins[p][1])
+            if p in wrapped and (p - 1) not in wrapped:
+                out.append(indent + ".set\tnoreorder")
+            out.append(body if p in edits else l)
+            if p in wrapped and (p + 1) not in wrapped:
+                out.append(indent + ".set\treorder")
+        else:
+            out.append(l)
+    return "\n".join(out), True
+
+
 def _src_ra_save_idx(ins):
     """Index in the source insn list of the prologue `sw $ra,K($sp)` register-save,
     or None."""
@@ -11631,6 +11747,7 @@ _REORDER_SRC = {
     "delay_decouple": delay_decouple_src,
     "reorder_deep": reorder_deep_src,
     "region_swap": region_swap_src,
+    "slot_migrate": slot_migrate_src,
 }
 
 
@@ -11654,7 +11771,7 @@ def emit_noreorder_span(span, tgt, our_words, reorder_passes, reassemble=None):
             raise NotImplementedError("reorder pass not wired: %s" % name)
         if name in ("delay_fill", "reorder_indep", "reorder_indep_nops",
                     "delay_slot_select", "decouple_reg", "delay_decouple",
-                    "reorder_deep", "region_swap"):
+                    "reorder_deep", "region_swap", "slot_migrate"):
             words = reassemble(txt) if reassemble is not None else our_words
             txt, _fired = fn(txt, tgt, words)
         else:
@@ -12226,7 +12343,8 @@ def normalize_s(s_file, ctx, manifest=None):
                        if p in ("delay_fill", "epilogue_unfill", "reorder_indep",
                                 "reorder_indep_nops", "prologue_save_hoist",
                                 "delay_slot_select", "decouple_reg",
-                                "delay_decouple", "reorder_deep", "region_swap")]
+                                "delay_decouple", "reorder_deep", "region_swap",
+                                "slot_migrate")]
             if not reorder:
                 continue
             our, err = assemble_words(ctx, s_file, name)

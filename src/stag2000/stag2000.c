@@ -1174,7 +1174,169 @@ void func_80065D74(Actor *a) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80065FB8);
+void func_80065FB8(Actor *a) {
+    Stg20MainWork *w = (Stg20MainWork *)a->work;
+    s32 *slot = (s32 *)a->u34.children;
+    Stg20Spawn sp;
+    Stg20Start *st;
+    Stg20BytePair *src;
+    s32 id;
+    s32 n;
+    s32 k;
+    s32 task;
+
+    switch (a->stateLevel0) {
+    case 0:
+        Gpu_AllocPacketBufs(0x25800);
+        Sys_SetFrameRate30();
+        if (D_8005F788[0] != 0x32F) {
+            Gpu_InitDoubleBuffer(0x140, 0xF0, 0, 0);
+        } else {
+            Gpu_InitDoubleBuffer(0x140, 0x1E0, 2, 0);
+        }
+        Gpu_SetBgClearColor(0, 0, 0);
+        Gpu_ClearScreens();
+        Gfx_FadeInFromBlack(0x1E);
+        Task_Create(9, &slot[0], 0);
+        func_8001E28C(func_80066714()->field_20);
+        Task_Create(0x308, &slot[5], 0);
+        if (D_8005F770.gameMode < 0x32A) {
+            st = &((Stg20Start *)func_80066714()->field_8)[D_8005F770.field_24];
+            sp.id = 0x1F4;
+            sp.blk[0].x = st->x;
+            sp.blk[0].y = st->y;
+            sp.blk[1].x = 0;
+            sp.blk[1].y = 0;
+            sp.field_2 = st->dir;
+            Task_Create(0x302, &slot[4], (s32)&sp);
+            n = 0;
+            if (func_80066714()->field_20 != 0) {
+                for (id = func_8001E480(0x304); id != -1; id = Flag_NextPassingEntry()) {
+                    src = (Stg20BytePair *)func_8001E5E8(id);
+                    sp.id = func_8001E634(id);
+                    sp.field_2 = func_8001E658(id);
+                    sp.field_1C = id;
+                    for (k = 0; k < 6; k++) {
+                        sp.blk[k].x = src[k].x != 0xFF ? src[k].x : 0;
+                        sp.blk[k].y = src[k].y != 0xFF ? src[k].y : 0;
+                    }
+                    Task_Create(0x302, &slot[6 + n], (s32)&sp);
+                    n++;
+                }
+            }
+            Task_Create(0x304, &slot[26], 0);
+            Task_Create(0x301, &slot[2], func_80066714()->field_4);
+            switch (D_8005F788[0]) {
+            case 0x31D:
+                Task_Create(0x31C, &slot[27], 0);
+                break;
+            case 0x320:
+                Task_Create(0x31C, &slot[27], 1);
+                break;
+            case 0x326:
+                Task_Create(0x31C, &slot[27], 2);
+                break;
+            case 0x327:
+                Task_Create(0x31C, &slot[27], 3);
+                break;
+            }
+        } else if (D_8005F770.gameMode < 0x32F) {
+            w->field_C = 1;
+            D_800709B0.field_0 = 1;
+            Task_Create(0x305, &slot[2], func_80066714()->field_4);
+            Task_Create(0x306, &slot[3], 0);
+        } else {
+            if (D_8005F770.gameMode < 0x330) {
+                task = 0x307;
+            } else if (D_8005F770.gameMode < 0x333) {
+                task = 0x314;
+            } else {
+                task = 0x319;
+            }
+            Task_Create(task, &slot[2], 0);
+        }
+        Gfx_InitLights();
+        ((Stg20MainWork *)a->work)->field_0 = -1;
+        D_800709B0.field_4 = 0;
+        if (func_80066714()->field_14 != 0) {
+            Snd_UnloadSlot(2);
+            Snd_SetSlotContent(1, func_80066714()->field_14);
+        }
+        Task_NextState0(a);
+        break;
+    case 2:
+        break;
+    case 1:
+        if (D_8005F770.fadeLevel != 0) {
+            Mem_Zero(D_8005F6F0, 0x40);
+        }
+        switch (a->stateLevel1) {
+        case 0:
+        default:
+            switch (a->stateLevel2) {
+            case 0:
+            default:
+                Flag_Set(0x10, 0);
+                Task_NextState2(a);
+            case 1:
+                break;
+            }
+            if (w->bgmOn == 0 && Snd_AnySlotLoading() == 0) {
+                if (func_80066714()->field_16 != -1) {
+                    Snd_PlayById(func_80066714()->field_16, 1);
+                }
+                w->bgmOn = 1;
+            }
+            if (((Stg20BlinkTask *)a)->field_24 == 10) {
+                Cd_QueueFile(0x312);
+                Cd_QueueFile(0x315);
+                Cd_QueueFile(0x325);
+            }
+            if (((Stg20BlinkTask *)a)->field_24 == 15
+                && ((D_8005F770.gameMode == 0x307 && Flag_Test(0x320) == 0)
+                    || (D_8005F788[0] == 0x301 && Flag_Test(0x3E8) == 1 && Flag_Test(0x5DD) == 1
+                        && Flag_Test(0x320) == 1 && Flag_Test(0x2336) == 1)
+                    || (D_8005F788[0] == 0x304 && Flag_Test(0x3E8) == 1 && Flag_Test(0x5DD) == 1
+                        && Flag_Test(0x32A) == 1)
+                    || (D_8005F788[0] == 0x308 && Flag_Test(0x3E8) == 1 && Flag_Test(0x5DD) == 1
+                        && Flag_Test(0x320) == 1 && Flag_Test(0x32B) == 1)
+                    || (D_8005F788[0] == 0x30C && Flag_Test(0x3E8) == 1 && Flag_Test(0x5DD) == 1
+                        && Flag_Test(0x32C) == 1))) {
+                Cd_QueueFile(0x1FD);
+                Cd_QueueFile(0x1A1);
+                Cd_QueueFile(0x314);
+                Cd_QueueFile(0x25C);
+            }
+            if (D_8005F700 > 0 && D_800709B0.field_4 == 0 && D_8005F788[0] < 0x32F
+                && D_800709B0.field_0 != 0 && Snd_AnySlotLoading() == 0) {
+                Task_Create(0xB, &slot[1], 0);
+                a->childCount = 2;
+                Task_NextState1(a);
+                if (w->field_C != 0) {
+                    func_80068134((Actor *)slot[3], 0);
+                }
+            }
+            break;
+        case 1:
+            if (slot[1] == 0) {
+                a->childCount = 0x1C;
+                if (w->field_C != 0 && D_80050764 != 0) {
+                    Gfx_FadeSetBlack();
+                    D_8005F770.nextGameMode = 0x601;
+                    Task_NextState0(a);
+                } else {
+                    Gfx_FadeInFromBlack(0x20);
+                    Task_SetState1(a, 0);
+                }
+                if (w->field_C != 0) {
+                    func_80068134((Actor *)slot[3], 1);
+                }
+            }
+            break;
+        }
+        break;
+    }
+}
 
 Stg20MapFile *func_80066714(void) {
     Stg20MapFile *f = (Stg20MapFile *)Cd_GetFileEntry(((Stg20Mode *)D_8005F788)->lo + 0x308FFFF);
