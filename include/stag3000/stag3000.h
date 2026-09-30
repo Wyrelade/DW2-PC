@@ -566,6 +566,21 @@ typedef struct {
     /* 0x304 */ s32 status[6];
 } Stg30CombatCD8;
 
+/* Roster entry viewed as the byte table at 0x21 indexed by Stg30ByteLists.field_9. */
+typedef struct {
+    u8 _pad00[0x16];
+    /* 0x16 */ s16 hp;
+    u8 _pad18[0x9];
+    /* 0x21 */ u8 b21[0x3B];
+} Stg30DigiB21; /* size 0x5C */
+
+/* D_80073CD8 battle block: roster, then the byte lists and Sub10 records. */
+typedef struct {
+    /* 0x000 */ Stg30DigiB21 digis[6];
+    /* 0x228 */ Stg30ByteLists lists[6];
+    /* 0x294 */ Stg30Sub10 sub[7];
+} Stg30SlotBlk;
+
 extern Stg30DigiS D_80073CD8[];
 extern s32 D_80073498[];
 extern s32 D_800734B0[];

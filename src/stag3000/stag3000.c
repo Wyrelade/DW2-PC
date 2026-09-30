@@ -2430,7 +2430,42 @@ s32 func_800692A4(s32 id, s32 kind, s32 def) {
     return def;
 }
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80069594);
+void func_80069594(void) {
+    s32 col;
+
+    for (col = 3; col < 6; col++) {
+        Stg30DigiB21 *d = &((Stg30SlotBlk *)D_80073CD8)->digis[col];
+        Stg30ByteLists *p = &((Stg30SlotBlk *)D_80073CD8)->lists[col];
+        Stg30Sub10 *out = &((Stg30SlotBlk *)D_80073CD8)->sub[col];
+        s32 i;
+
+        if (d->hp != 0) {
+            out->field_0 = 0;
+            out->field_4 = 0;
+            out->field_6 = 0;
+            for (i = 0; i < 4; i++) {
+                if (p->field_9[i] == 0) {
+                    break;
+                }
+                if (func_80068DA4(col, i, p)) {
+                    if (func_80068E34(p->field_5[i], col)) {
+                        s32 v;
+                        if (p->field_9[i] == 4) {
+                            out->field_0 = 5;
+                            break;
+                        }
+                        v = (&d->b21[0])[p->field_9[i]];
+                        out->field_6 = v;
+                        out->field_4 = func_800692A4(v, p->field_D[i], col);
+                        out->field_0 = func_8001EE34(out->field_6) + 1;
+                        out->field_8 = func_8006E2BC(out->field_6);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+}
 
 void func_800696E8(void) {
     s32 spd[6];
