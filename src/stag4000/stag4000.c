@@ -4144,7 +4144,11 @@ s32 func_800711C4(s32 n) {
     return (Rand_Next() & 0xFFF) * n / 4096;
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80071204);
+s32 func_80071204(s32 i) {
+    s32 r = func_8006E858(7);
+    r = r < 0 ? 0 : r;
+    return D_800729F8[r][i];
+}
 
 s32 func_80071258(s32 i) {
     return func_80071180() < D_80072A1C[i];
