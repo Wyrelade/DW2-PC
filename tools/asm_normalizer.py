@@ -4636,6 +4636,173 @@ def web_realloc_pass(stext, tgt):
     return "\n".join(lines)
 
 
+def _wr_pick(lines, tk):
+    """Shared web-realloc vote step: build the CFG/webs, align our token stream to
+    the target and return (nodes, occ, pinned, reg_of, LO, def_w, pick) where
+    pick[web] = the register the target uses for that web at a plurality of aligned
+    occurrences. `pick` is the raw wanted mapping BEFORE any interference filtering.
+    Returns None if the CFG could not be built."""
+    nodes, ok = _wr_nodes(lines)
+    if not ok:
+        return None
+    occ, pinned, reg_of, LO, def_w = _wr_webs(nodes)
+    ours = []
+    for n, nd in enumerate(nodes):
+        if nd["line"] is None or n == 0:
+            continue
+        ind, mn, ops, com, rp = _wr_parse(lines[nd["line"]])
+        if mn == "nop" or not mn:
+            continue
+        sy = _SYM_RE.findall(lines[nd["line"]].split("#", 1)[0])
+        im = _wr_imms(ops)
+        if mn == "subu" and len(im) == 1:
+            im = [str(-int(im[0]))]
+        for cm, cr in _wr_canon(mn, ops, rp):
+            if mn == "li" and cm == "lui":
+                im = [str((int(ops[-1], 0) >> 16) & 0xFFFF)]
+            ours.append((n, cr, "?" if cm == "?" else
+                         _wr_tok(cm, [r for r, _p in cr], sy[0] if sy else "", im)))
+    sm = difflib.SequenceMatcher(None, [o[2] for o in ours], [t[0] for t in tk],
+                                 autojunk=False)
+    want, comm_ops = {}, []
+
+    def vote(w, t):
+        if w is not None:
+            cnt = want.setdefault(w, {})
+            cnt[t] = cnt.get(t, 0) + 1
+    for a, b, size in sm.get_matching_blocks():
+        for q in range(size):
+            n, cr, cm = ours[a + q]
+            treg = tk[b + q][1]
+            if len(treg) != len(cr):
+                continue
+            comm = cm.split("|", 1)[0] in _COMMUTATIVE_ACC | {"mult", "multu"}
+            if not comm and any(
+                    occ.get((n, r, pos, kd)) in pinned and r != t
+                    for (r, pos), t in zip(cr, treg) if pos is not None
+                    for kd in ("d", "u")):
+                continue
+            uses = []
+            for k, ((r, pos), t) in enumerate(zip(cr, treg)):
+                if pos is None:
+                    continue
+                vote(occ.get((n, r, pos, "d")), t)
+                if comm and (k > 0 or cm.startswith("mult")):
+                    uses.append((occ.get((n, r, pos, "u")), t))
+                else:
+                    vote(occ.get((n, r, pos, "u")), t)
+            if len(uses) == 2:
+                comm_ops.append(uses)
+            else:
+                for w, t in uses:
+                    vote(w, t)
+    base = {w: max(c.items(), key=lambda x: x[1])[0] for w, c in want.items()}
+    for (w1, t1), (w2, t2) in comm_ops:
+        st = (base.get(w1) == t1) + (base.get(w2) == t2)
+        cr_ = (base.get(w1) == t2) + (base.get(w2) == t1)
+        if cr_ > st:
+            t1, t2 = t2, t1
+        vote(w1, t1)
+        vote(w2, t2)
+    pick = {}
+    for w, cnt in want.items():
+        top = sorted(cnt.items(), key=lambda x: -x[1])
+        if len(top) == 1 or top[0][1] > top[1][1]:
+            pick[w] = top[0][0]
+    return nodes, occ, pinned, reg_of, LO, def_w, pick, want
+
+
+def web_cycle_pass(stext, tgt):
+    """Resolve a PERMUTATION CYCLE of webs that web_realloc's global all-or-nothing
+    batch cannot, because that batch aborts on any single interference anywhere in
+    the function (registers like $v0 are reused for dozens of unrelated values, so a
+    global `fin[x]==fin[y]` clash is almost always present). This pass finds the
+    webs whose target register is held by ANOTHER moving web, decomposes them into
+    closed cycles (w1 wants reg_of[w2], w2 wants reg_of[w3], ..., wk wants reg_of[w1]),
+    and applies each cycle SIMULTANEOUSLY when the interference check restricted to
+    that cycle's members passes. Renaming a set of webs onto a permutation of the
+    registers they already occupy is semantics-preserving iff no cycle member is live
+    where another web that keeps one of those registers is defined; the check below
+    enforces exactly that (Chaitin interference over the delay-slot-aware CFG). A pure
+    cycle only reshuffles registers among the cycle's own webs, so it never collides
+    with the cycle members themselves. Count-preserving, opt-in (no committed recipe
+    names it, so zero regression), text pass after sigma. Handles func_800678D8's
+    v1->v0->a0->v1 first-block 3-cycle that web_realloc leaves at bad 5."""
+    lines = stext.split("\n")
+    tk = []
+    for _, d in tgt:
+        mn, regs, sk = insn_parts(d)
+        if mn != "nop":
+            sy = _SYM_RE.findall(d)
+            tk.append((_wr_tok(mn, regs, sy[0] if sy else "", _wr_imms(sk)), regs))
+    for _ in range(12):
+        got = _wr_pick(lines, tk)
+        if got is None:
+            return "\n".join(lines)
+        nodes, occ, pinned, reg_of, LO, def_w, pick, want = got
+        # candidate movers: the strongest voted register that is NOT the web's
+        # current one, as long as it is at least as strongly voted as staying put.
+        # (pick drops ties, which hides a cycle member whose target reg ties with
+        # its current reg -- func_800678D8 web 36 votes v1:2/a0:2. A cycle is only
+        # ever APPLIED when it closes and passes interference, so admitting tie
+        # candidates here is safe; non-closing ones are dropped below.)
+        move = {}
+        for w, cnt in want.items():
+            if w in pinned:
+                continue
+            r = reg_of.get(w)
+            if r is None or r in _WR_FIXED:
+                continue
+            alts = [(v, t) for t, v in cnt.items() if t != r and t not in _WR_FIXED]
+            if not alts:
+                continue
+            v, t = max(alts)
+            if v >= cnt.get(r, 0):
+                move[w] = t
+        if not move:
+            return "\n".join(lines)
+        holder = {}                                # register -> the moving web in it
+        for w in move:
+            holder[reg_of[w]] = w
+        applied = False
+        seen = set()
+        for w0 in list(move):
+            if w0 in seen:
+                continue
+            cyc, cur = [], w0
+            while cur is not None and cur not in seen:
+                seen.add(cur)
+                cyc.append(cur)
+                cur = holder.get(move[cur])        # who currently holds our target reg
+            # closed cycle: last member's target register is held by the first member
+            if not cyc or holder.get(move[cyc[-1]]) != cyc[0]:
+                continue
+            cycset = set(cyc)
+            cmap = {x: move[x] for x in cyc}
+            fin = dict(reg_of)
+            fin.update(cmap)
+            clash = False
+            for n in range(len(nodes)):
+                for x in def_w[n]:
+                    for y in LO[n]:
+                        if x != y and (x in cycset or y in cycset) \
+                                and fin.get(x) == fin.get(y):
+                            clash = True
+                            break
+                    if clash:
+                        break
+                if clash:
+                    break
+            if clash:
+                continue
+            _wr_rename(lines, nodes, occ, cmap)
+            applied = True
+            break                                  # webs changed: rebuild and repeat
+        if not applied:
+            break
+    return "\n".join(lines)
+
+
 # --------------------------------------------------------------------------
 # const_fold: `li $t,K ... addu $r,$b,$t` where retail folded the constant into
 # the add (`addiu $r,$b,K`; the li stays for $t's other uses). Our cc1 keeps the
@@ -9666,6 +9833,7 @@ PASSES = {
     "commutative_swap": commutative_swap_s,
     "operand_recolor": operand_recolor_s,
     "web_realloc": web_realloc_pass,
+    "web_cycle": web_cycle_pass,
     "save_slot": save_slot_pass,
     "label_nop": label_nop_pass,
     "laform": laform_fold_pass,
