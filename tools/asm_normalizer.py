@@ -9769,7 +9769,7 @@ PRE_SIGMA_PASSES = ("la_unfold_st", "un_hi_cse", "un_hi_cse_store", "exit_merge"
 # assembler re-scheduling it. padnop needs neither (a trailing nop cannot be
 # rescheduled).
 WORD_PASSES = ("delay_fill", "epilogue_unfill", "reorder_indep", "padnop",
-               "prologue_save_hoist", "delay_slot_select")
+               "prologue_save_hoist", "delay_slot_select", "decouple_reg")
 
 # minimal register def/use for the delay_fill dependency guard (gas `$reg` syntax)
 _STORE_MN = {"sb", "sh", "sw", "swl", "swr", "swc1", "swc2", "sd", "sdc1", "sdc2"}
@@ -10750,12 +10750,226 @@ def prologue_save_hoist_src(span, tgt):
     return "\n".join(out), True
 
 
+def _norm_skel(skel):
+    """Skeleton with integer immediates canonicalized (our objdump prints `-6`, the
+    retail .s prints `-0x6`; both are the same operand)."""
+    out = []
+    for t in skel:
+        s = t.strip()
+        try:
+            out.append(str(int(s, 0)))
+        except ValueError:
+            out.append(s)
+    return out
+
+
+def _reg_copy_dst_src(disasm):
+    """(dst, src) ABI regs if disasm is a register-to-register copy
+    (`move d,s` / `addu d,s,zero` / `or d,s,zero`), else None."""
+    m, regs, skel = insn_parts(disasm)
+    if m == "move" and len(regs) == 2:
+        return regs[0], regs[1]
+    if m in ("addu", "or", "addiu", "ori", "daddu") and len(regs) == 3 \
+            and regs[2] == "zero":
+        return regs[0], regs[1]
+    return None
+
+
+_MACRO_MNEM = {"li", "la", "move", "not", "neg", "b", "bal", "abs"}
+
+
+def _src_is_macro(line):
+    body = line.split("#", 1)[0]
+    p = body.split()
+    mn = p[0].lower() if p else ""
+    return mn in _MACRO_MNEM or "%hi" in body or "%lo" in body or "%gp_rel" in body
+
+
+def _src_set_op_reg(line, op_index, abi):
+    """Rewrite operand `op_index` of a cc1 gas insn line so its register is `$<num>`,
+    preserving a `off($b)` memory form. Returns the new line or None."""
+    body, sep, comment = line.partition("#")
+    m = re.match(r"^(\s*)(\S+)([ \t]+)(.*?)\s*$", body)
+    if not m:
+        return None
+    ind, mnem, gap, rest = m.groups()
+    ops = split_ops(rest)
+    if op_index >= len(ops):
+        return None
+    num = "$%d" % ABI2NUM[abi]
+    tok = ops[op_index].strip()
+    mm = re.fullmatch(r"(.*)\((\$?\w+)\)", tok)
+    ops[op_index] = "%s(%s)" % (mm.group(1), num) if mm else num
+    new = "%s%s%s%s" % (ind, mnem, gap, ",".join(ops))
+    return new + (sep + comment if sep else "")
+
+
+def _li_dst_imm(disasm):
+    """(dst, imm_int) if disasm loads an immediate (`li d,i` / `addiu d,zero,i` /
+    `ori d,zero,i`), else None."""
+    m, regs, skel = insn_parts(disasm)
+    if m == "li" and len(regs) == 1 and len(skel) == 2:
+        try:
+            return regs[0], int(skel[1], 0)
+        except ValueError:
+            return None
+    if m in ("addiu", "ori", "addu") and len(regs) == 2 and skel[1] == "#" \
+            and regs[1] == "zero" and len(skel) == 3:
+        try:
+            return regs[0], int(skel[2], 0)
+        except ValueError:
+            return None
+    return None
+
+
+def _same_insn(od, td):
+    """Two disassemblies are the same instruction up to spelling/relocation: equal
+    register-to-register copies, equal load-immediates, or same mnemonic + registers
+    (a branch/reloc whose only word difference is its unresolved target)."""
+    c = _reg_copy_dst_src(od)
+    if c is not None and c == _reg_copy_dst_src(td):
+        return True
+    li = _li_dst_imm(od)
+    if li is not None and li == _li_dst_imm(td):
+        return True
+    om, oregs, _ = insn_parts(od)
+    tm, tregs, _ = insn_parts(td)
+    return om == tm and oregs == tregs
+
+
+def decouple_reg_src(span, tgt, our_words):
+    """Un-coalesce a register the target keeps split by a dead copy. Retail sometimes
+    computes a value into one register, copies it to a second (`addu rD,rS,zero`), and
+    reads the original from rS while the shift/index reads the copy rD; our cc1
+    coalesces the two into one register and drops the copy, so we emit one instruction
+    fewer. This pass, guided by the target, retargets our definition's destination from
+    rD to rS, inserts the `addu rD,rS,zero` copy, and relabels the uses of rD that read
+    the ORIGINAL (which the target reads from rS) up to the point rD is redefined.
+
+    Splitting a live range by inserting `rD = rS` and reading rS instead of rD while the
+    two hold the same value is semantics-preserving. Target-guided and count-changing
+    (+1 copy); runs as a word pass and re-emits the touched run under `.set noreorder`
+    so the assembler keeps the inserted copy in place. Returns (new_span, fired)."""
+    lines = span.split("\n")
+    ins = [(i, l) for i, l in enumerate(lines) if _s_is_insn(l)]
+    n = len(our_words)
+    if n < 3:
+        return span, False
+    # map each assembled word to its source line, skipping the delay/load nops maspsx
+    # inserts (which have no source of their own). Non-nop words consume source insns in
+    # order; a real source `nop` line consumes a nop word.
+    word_src = [None] * n
+    si = 0
+    for w in range(n):
+        if is_nop(our_words[w][1]):
+            if si < len(ins) and _src_is_nop(ins[si][1]):
+                word_src[w] = ins[si][0]
+                si += 1
+        elif si < len(ins):
+            word_src[w] = ins[si][0]
+            si += 1
+    if si != len(ins):
+        return span, False                  # a macro expanded to several words: unsafe
+    line_of = {i: l for i, l in enumerate(lines)}
+
+    # locate the first word that differs from the target and read the split shape.
+    p = None
+    for k in range(min(n, len(tgt)) - 1):
+        if _word_eq(our_words[k][0], tgt[k][0], tgt[k][1]):
+            continue
+        if _same_insn(our_words[k][1], tgt[k][1]):
+            continue                        # spelling/branch-offset only: not a real diff
+        om, oregs, osk = insn_parts(our_words[k][1])
+        tm, tregs, tsk = insn_parts(tgt[k][1])
+        if om != tm or _norm_skel(osk) != _norm_skel(tsk):
+            return span, False
+        if len(oregs) != len(tregs) or oregs[1:] != tregs[1:] or oregs[0] == tregs[0]:
+            return span, False
+        R, S = oregs[0], tregs[0]           # our (coalesced) dest, target (kept) dest
+        if "zero" in (R, S) or R in _INJ_FIXED or S in _INJ_FIXED:
+            return span, False
+        cp = _reg_copy_dst_src(tgt[k + 1][1])
+        if cp != (R, S):
+            return span, False
+        p = k
+        break
+    if p is None:
+        return span, False
+
+    # walk the split: our[k] aligns to tgt[k+1] (target has the extra copy). The only
+    # allowed difference is a USE of R (ours) where the target reads S. Stop when R is
+    # redefined (the split ends there). Bail on any other structural difference.
+    if word_src[p] is None:
+        return span, False
+    pdef = _src_set_op_reg(line_of[word_src[p]], 0, S)      # def rD -> rS
+    if pdef is None:
+        return span, False
+    edits = {word_src[p]: pdef}
+    end = p
+    for k in range(p + 1, n):
+        if k + 1 >= len(tgt) or word_src[k] is None:
+            return span, False
+        defs, _uses = defs_uses(our_words[k][1])
+        if R in defs:                       # rD redefined here: the split ends before k
+            if not _same_insn(our_words[k][1], tgt[k + 1][1]):
+                return span, False
+            break
+        om, oregs, osk = insn_parts(our_words[k][1])
+        tm, tregs, tsk = insn_parts(tgt[k + 1][1])
+        # a branch/jump target operand is a label that legitimately differs; compare
+        # skeletons only for non-control-flow instructions.
+        skel_ok = is_branch(our_words[k][1]) or _norm_skel(osk) == _norm_skel(tsk)
+        if om != tm or not skel_ok or len(oregs) != len(tregs):
+            return span, False
+        line = line_of[word_src[k]]
+        for oi in range(len(oregs)):
+            if oregs[oi] == tregs[oi]:
+                continue
+            if oregs[oi] == R and tregs[oi] == S:
+                nl = _src_set_op_reg(line, oi, S)
+                if nl is None:
+                    return span, False
+                line = nl
+            else:
+                return span, False
+        if line != line_of[word_src[k]]:
+            edits[word_src[k]] = line
+        end = k
+
+    lo, hi = word_src[p], word_src[end]
+    if any(is_nop(our_words[w][1]) and word_src[w] is None
+           for w in range(p, end + 1)):
+        return span, False                  # a maspsx-inserted nop inside the frozen run
+    if any(_src_is_macro(lines[j]) for j in range(lo, hi + 1) if _s_is_insn(lines[j])):
+        return span, False                  # a macro in the frozen run is unsafe
+    indent = _src_indent(line_of[word_src[p]])
+    copy_line = indent + "addu\t$%d,$%d,$0" % (ABI2NUM[R], ABI2NUM[S])
+    out = []
+    for idx, l in enumerate(lines):
+        if idx < lo or idx > hi:
+            out.append(l)
+            continue
+        if idx == lo:
+            out.append(indent + ".set\tnoreorder")
+            out.append(indent + ".set\tnomacro")
+        st = l.strip()
+        if not (st.startswith(".set") and re.search(r"\b(no)?(reorder|macro)\b", st)):
+            out.append(edits.get(idx, l))
+        if idx == word_src[p]:
+            out.append(copy_line)
+        if idx == hi:
+            out.append(indent + ".set\tmacro")
+            out.append(indent + ".set\treorder")
+    return "\n".join(out), True
+
+
 _REORDER_SRC = {
     "epilogue_unfill": epilogue_unfill_src,
     "delay_fill": delay_fill_src,
     "reorder_indep": reorder_indep_src,
     "prologue_save_hoist": prologue_save_hoist_src,
     "delay_slot_select": delay_slot_select_src,
+    "decouple_reg": decouple_reg_src,
 }
 
 
@@ -10777,7 +10991,7 @@ def emit_noreorder_span(span, tgt, our_words, reorder_passes, reassemble=None):
         fn = _REORDER_SRC.get(name)
         if fn is None:
             raise NotImplementedError("reorder pass not wired: %s" % name)
-        if name in ("delay_fill", "reorder_indep", "delay_slot_select"):
+        if name in ("delay_fill", "reorder_indep", "delay_slot_select", "decouple_reg"):
             words = reassemble(txt) if reassemble is not None else our_words
             txt, _fired = fn(txt, tgt, words)
         else:
@@ -11347,7 +11561,8 @@ def normalize_s(s_file, ctx, manifest=None):
                 continue
             reorder = [p for p in manifest[name]["passes"]
                        if p in ("delay_fill", "epilogue_unfill", "reorder_indep",
-                                "prologue_save_hoist", "delay_slot_select")]
+                                "prologue_save_hoist", "delay_slot_select",
+                                "decouple_reg")]
             if not reorder:
                 continue
             our, err = assemble_words(ctx, s_file, name)
