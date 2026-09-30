@@ -9431,6 +9431,99 @@ def dead_spill_pass(stext, tgt):
     return stext
 
 
+_SMR_OPS = {"addu", "addiu", "or", "ori", "and", "andi", "xor", "xori", "subu",
+            "sll", "srl", "sra", "nor"}
+_SMR_SCRATCH = ("v0", "v1", "a0", "a1", "a2", "a3", "t0", "t1", "t2", "t3",
+                "t4", "t5", "t6", "t7", "t8", "t9")
+_SMR_SELF = re.compile(
+    r"(?:move\s+(\$\w+)\s*,\s*(\$\w+)"
+    r"|addu\s+(\$\w+)\s*,\s*(\$\w+)\s*,\s*\$(?:zero|0)"
+    r"|or\s+(\$\w+)\s*,\s*(\$\w+)\s*,\s*\$(?:zero|0))\s*$")
+
+
+def _smr_dead_in(bodies, start, S):
+    """From bodies index `start` forward, is S written before it is read? (dead-in)."""
+    for x in range(start, len(bodies)):
+        d, u = defs_uses(bodies[x][1])
+        if S in u:
+            return False
+        if S in d:
+            return True
+    return True
+
+
+def selfmove_respill_pass(stext, tgt):
+    """After web_realloc canonicalises the count copy it can leave a dead self-move
+    (`move $X,$X`) right after an in-place ALU op (`op $D,$D,imm`); the retail code
+    instead computes that op into a dead scratch $S and copies $S->$D in the
+    self-move's slot (GCC materialised the other pseudo through the temp). Rewrite
+    `op $D,$Dsrc,rest ; move $X,$X` -> `op $S,$Dsrc,rest ; addu $D,$S,$0`.
+    Target-guided (both rewritten words must occur in the target near these
+    positions) and liveness-checked: $S is dead-in at the op and unread after the
+    copy, so the value in $D is unchanged. Count-preserving text pass after sigma."""
+    if not tgt:
+        return stext
+    tk = [_dsp_key(d) for _w, d in tgt]
+    lines = stext.split("\n")
+    nr = _noreorder_lines(lines)
+    ins = [(i, l) for i, l in enumerate(lines) if _s_is_insn(l)]
+    bodies = [(i, l.split("#", 1)[0].strip()) for i, l in ins]
+    wpos, w = {}, 0
+    for i, l in ins:
+        wpos[i] = w
+        w += _src_nwords(l)
+    for q in range(1, len(bodies)):
+        si, sb = bodies[q]
+        if si in nr:
+            continue
+        ms = _SMR_SELF.match(sb)
+        if not ms:
+            continue
+        xa = norm_reg(ms.group(1) or ms.group(3) or ms.group(5))
+        xb = norm_reg(ms.group(2) or ms.group(4) or ms.group(6))
+        if xa is None or xa != xb:
+            continue                       # must be a dead self-move
+        pi, pb = bodies[q - 1]
+        # operand-only rewrite keeps each instruction's slot, so a .set noreorder
+        # span (delay slots) is fine; no need to skip nr here.
+        mp = re.match(r"(\w+)\s+(\$\w+)\s*,\s*(\$\w+)\s*,\s*(.+?)\s*$", pb)
+        if not mp:
+            continue
+        op = mp.group(1).lower()
+        D, Dsrc = norm_reg(mp.group(2)), norm_reg(mp.group(3))
+        rest = mp.group(4)
+        if op not in _SMR_OPS or D is None or Dsrc is None:
+            continue
+        if _src_nwords(lines[pi]) != 1 or _src_nwords(lines[si]) != 1:
+            continue
+        if norm_reg(rest) is not None:     # keep it to reg,reg,imm (no third reg)
+            continue
+        for S in _SMR_SCRATCH:
+            if S in (D, Dsrc, xa):
+                continue
+            newp = "%s\t$%d,$%d,%s" % (op, ABI2NUM[S], ABI2NUM[Dsrc], rest)
+            news = "addu\t$%d,$%d,$0" % (ABI2NUM[D], ABI2NUM[S])
+            kp, ks = _dsp_key(newp), _dsp_key(news)
+            op_occ = [x for x, y in enumerate(tk) if y == kp]
+            os_occ = [x for x, y in enumerate(tk) if y == ks]
+            if not op_occ or not os_occ:
+                continue
+            if min(abs(x - wpos[pi]) for x in op_occ) > 40:
+                continue
+            if min(abs(x - wpos[si]) for x in os_occ) > 40:
+                continue
+            if not _smr_dead_in(bodies, q - 1, S):
+                continue                   # S holds a live value we would clobber
+            if _bi_live_after(lines, si, S):
+                continue                   # S read after the copy before a redef
+            ind_p = re.match(r"^(\s*)", lines[pi]).group(1)
+            ind_s = re.match(r"^(\s*)", lines[si]).group(1)
+            lines[pi] = ind_p + newp
+            lines[si] = ind_s + news
+            return selfmove_respill_pass("\n".join(lines), tgt)
+    return stext
+
+
 # --------------------------------------------------------------------------
 # arg_unrename: a global register map (reg_realloc_inj) sends an argument register
 # to another register because a LATER web in that argument register pairs with it
@@ -9903,6 +9996,7 @@ PASSES = {
     "slot_redundant": slot_redundant_pass,
     "at_dest": at_dest_pass,
     "dead_spill": dead_spill_pass,
+    "selfmove_respill": selfmove_respill_pass,
     "arg_unrename": arg_unrename_pass,
     "giv_unreduce": giv_unreduce_pass,
     "const_unhoist": const_unhoist_pass,

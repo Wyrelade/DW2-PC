@@ -4426,5 +4426,11 @@
       "web_realloc",
       "iv_ptr_reduce"
     ]
+  },
+  "stag4000:func_800648AC": {
+    "passes": [
+      "web_realloc",
+      "selfmove_respill"
+    ]
   }
 }
