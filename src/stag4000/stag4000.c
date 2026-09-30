@@ -3545,7 +3545,41 @@ s32 func_8006E920(Stg40Shop *a) {
     return ret;
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006EA84);
+s16 func_8006EA84(s32 mode) {
+    DigiRosterEntry *e = D_80050720->elems;
+    Stg40B60 *b;
+    s32 *pi;
+    s32 i;
+
+    D_80072B60->field_140 = 0;
+    b = D_80072B60;
+    for (i = 0; i < 36; e++, i++) {
+        if (e->state >= 2) {
+            switch (mode) {
+            case 1:
+                if ((s16)e->hp == 0) {
+                    continue;
+                }
+                b->field_128[b->field_140++] = i;
+                break;
+            case 2:
+                if ((s16)e->hp == 0) {
+                    b->field_128[b->field_140++] = i;
+                }
+                break;
+            case 3:
+                if ((s16)e->hp >= 2) {
+                    b->field_128[b->field_140++] = i;
+                }
+                break;
+            default:
+                b->field_128[b->field_140++] = *(pi = &i);
+                break;
+            }
+        }
+    }
+    return D_80072B60->field_140;
+}
 
 void func_8006EB84(s32 idx, s32 row, s32 val) {
     Stg40TileGrid *t = D_80072BB0;
