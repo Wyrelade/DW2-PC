@@ -307,6 +307,16 @@ typedef struct {
 extern Halves D_80063588;
 extern Stg20MenuState D_800709B0;
 extern s32 D_8005F788[];
+
+/* func_800681A0 yes/no prompt */
+typedef struct {
+    /* 0x00 */ s32 sel;
+    /* 0x04 */ s32 texts[2];
+} Stg20YesNoWork;
+extern s32 D_800709BC; /* D_800709B0.field_C as a scalar reloc */
+extern Halves D_80063568;
+extern Halves D_8006356C;
+
 extern void Mem_FillWordsNeg1(s32 *arg0, s32 arg1);
 extern void Text_OpenById(void *a0, s32 a1, s32 a2, Halves a3);
 extern s32 Actor_ProjectToScreen(Actor *);
