@@ -940,7 +940,47 @@ s32 func_800678C4(Actor *a0) {
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_800678D8);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80067A80);
+void func_80067A80(Actor *a0, Stg40Ent48 *e)
+{
+  Stg40ActWork *w = (Stg40ActWork *) a0->work;
+  Stg40Ent48 *new_var;
+  Stg40Loc *loc;
+  w->field_2C = e;
+  e->field_14 = a0;
+  if (e->field_4 != (-1))
+  {
+    a0->digiId = e->field_4;
+    w->field_14 = Digi_GetModelFile(a0->digiId);
+    w->field_18 = Anim_GetModelAnimFile(a0->digiId, 4);
+    w->field_C = 0;
+    w->field_8 = 0;
+    w->field_4 = 0;
+    w->field_10 = (s16) e->field_E;
+    w->field_20 = 0;
+    w->field_22 = (w->field_23 = (w->field_24 = 0x80));
+    w->field_26 = 0;
+    w->field_27 = 0;
+    w->field_28 = 0;
+  }
+  loc = &e->field_18;
+  e->field_18.u0.pair.field_0 = (loc->field_4.field_0 = e->field_18.u0.pair.field_0);
+  loc->u0.pair.field_2 = (loc->field_4.field_2 = e->field_18.u0.pair.field_2);
+  loc->field_8 = 0;
+  loc->field_A = 1;
+  loc->field_1C = 0;
+  loc->field_C = loc->u0.pair.field_0 << 6;
+  loc->field_10 = loc->u0.pair.field_2 << 6;
+  if (e->field_0 & 1)
+  {
+    D_8005071C->field_1064 = loc;
+    D_8005071C->field_1068 = loc;
+    new_var = w->field_2C;
+    D_80072B60->field_8 = a0;
+    D_80072B60->field_4 = new_var;
+    func_80070B2C(e->field_7);
+  }
+  w->field_34 = 0;
+}
 
 void func_80067BA8(Actor *a0) {
     Stg40ActWork *w = (Stg40ActWork *)a0->work;
