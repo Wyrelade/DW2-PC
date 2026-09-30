@@ -562,7 +562,86 @@ void func_800655FC(Actor *arg0) {
 
 INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_8006571C);
 
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80065E24);
+void func_80065E24(Actor *arg0) {
+    s32 period;
+    Work65E24 *w = (Work65E24 *)arg0->work;
+    EntA0 *parts;
+    TextOpenArgs args;
+    s32 fp = 0;
+    s32 e;
+    s32 mask;
+    s32 i;
+    s32 s5;
+    s32 s6;
+    s32 s7;
+    EntA0 *parts2;
+    s32 col;
+    s32 slot;
+
+    if (arg0->stateLevel0 == 1 && arg0->stateLevel1 == 0) {
+        return;
+    }
+    e = arg0->elapsed;
+    if (e < 0x14) {
+        fp = 1;
+    } else {
+        period = 0x28;
+        if (e >= period) {
+            arg0->elapsed = e - period;
+        }
+    }
+    parts = Cd_GetFileEntry(0x10B0000);
+    mask = 0;
+    if (fp && w->field_8 == 0) {
+        mask = 1 << (w->field_0 + 1);
+    }
+    Gfx_HidePartsByMask(parts, mask);
+    Gfx_SetPartsNumber(parts, 0x20, 4, func_8001E8F4(w->field_10));
+    Gfx_DrawParts(parts);
+    parts = Cd_GetFileEntry(D_80068DB8[w->field_C].field_0);
+    parts2 = parts;
+    mask = 0;
+    if (fp && w->field_8 == 1) {
+        mask = 1 << (w->field_4 + 1);
+    }
+    Gfx_HidePartsByMask(parts2, mask);
+    Gfx_DrawParts(parts2);
+    for (i = 0; i < 0xE; i++) {
+        Text_Close(&w->field_1C[i]);
+    }
+
+    if (w->field_C != 1) {
+        return;
+    }
+    s6 = w->field_5C;
+    slot = 0;
+    s7 = 0x10;
+    for (s5 = 0; s5 <= 0; s5++) {
+        s32 y = 0x3A;
+        slot++;
+        slot--;
+        for (col = 0; col < 0xE; col++, y = y + 9) {
+            args.text = func_8001ED84(D_80068CE8[s6++]);
+            args.bigFont = 0;
+            args.x = s7;
+            args.y = y;
+            args.charAdvance = 0;
+            args.lineAdvance = 0;
+            args.charDelay = 0;
+            if (w->field_60 == s5 && w->field_64 == col) {
+                if (fp && w->field_8 == 1) {
+                    continue;
+                }
+                args.color = 4;
+            } else {
+                args.color = 0;
+            }
+            Text_Open(&w->field_1C[slot], &args);
+            slot++;
+        }
+        s7 += 0x6E;
+    }
+}
 
 void func_80066084(Actor *arg0) {
     switch (((Stg00ModeWork *)arg0->work)->field_0) {

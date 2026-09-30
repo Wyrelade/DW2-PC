@@ -4438,5 +4438,11 @@
       "web_realloc",
       "selfmove_drop"
     ]
+  },
+  "stag0000:func_80065E24": {
+    "passes": [
+      "web_realloc",
+      "sched_pre"
+    ]
   }
 }
