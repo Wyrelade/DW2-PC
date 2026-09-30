@@ -4396,5 +4396,11 @@
   },
   "stag3000:func_8006FC78": {
     "passes": []
+  },
+  "func_80066720": {
+    "passes": [
+      "decouple_reg",
+      "reorder_indep_nops"
+    ]
   }
 }

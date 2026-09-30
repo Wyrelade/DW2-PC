@@ -859,6 +859,24 @@ typedef struct {
 } Stg40TextPos;
 
 extern Stg40TextPos D_800726E0;
+extern Stg40TextPos D_800726B0[];
+
+/* Actor.work of the HP/MP status task func_80066720. */
+typedef struct {
+    /* 0x00 */ s32 field_0;   /* text handle */
+    /* 0x04 */ s32 field_4;   /* text handle */
+    /* 0x08 */ s32 field_8;   /* text handle */
+    /* 0x0C */ s32 field_C;   /* scale ramp */
+    /* 0x10 */ s16 field_10;  /* part mask */
+    /* 0x12 */ s16 field_12;  /* cursor x */
+    /* 0x14 */ s16 field_14;  /* cursor y */
+} Stg40W6720;
+
+/* Actor.u34.children container of func_80066720: a child task handle at 0. */
+typedef struct {
+    /* 0x0 */ Actor *field_0;
+} Stg40Slot34;
+
 extern void Mem_FillWordsNeg1(s32 *arg0, s32 arg1);
 extern void Text_CloseArray(s32 *arg0, s32 arg1);
 extern s32 Math_RampToOne(Actor *arg0, s32 *arg1);

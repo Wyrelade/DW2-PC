@@ -475,7 +475,98 @@ void func_8006667C(Actor *a0) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80066720);
+void func_80066720(Actor *a0) {
+    Stg40W6720 *w = (Stg40W6720 *)a0->work;
+    Stg40Slot34 *s3 = (Stg40Slot34 *)a0->u34.children;
+    TextOpenArgs args;
+    Stg40E34 *fe;
+    s32 n;
+
+    switch (a0->stateLevel0) {
+    case 0:
+    default:
+        Mem_FillWordsNeg1(&w->field_0, 3);
+        w->field_C = 0;
+        s3->field_0 = 0;
+        n = D_8005071C->field_E54->field_D - 6;
+        w->field_10 = ~(1 << ((n < 7) ? n : 6));
+        w->field_12 = D_80050720->hp;
+        w->field_14 = D_80050720->mp;
+        Task_NextState0(a0);
+        break;
+    case 1:
+        switch (a0->stateLevel1) {
+        case 0:
+        default:
+            if (Math_RampToOne(a0, &w->field_C) == 0) {
+                fe = D_8005071C->field_E54;
+                args.x = 0x12;
+                args.y = 0x16;
+                args.bigFont = 0;
+                args.color = 0;
+                args.charAdvance = 0;
+                args.lineAdvance = 0xC;
+                args.charDelay = 0;
+                args.text = (s32)fe->field_E;
+                Text_Open(&w->field_8, &args);
+                Text_SetOtLayer(w->field_8, 2);
+                Text_OpenById(&w->field_0, D_800726B0[0].id, 0, D_800726B0[0].pos);
+                Text_OpenById(&w->field_4, D_800726B0[1].id, 0, D_800726B0[1].pos);
+                Text_SetOtLayer(w->field_0, 2);
+                Text_SetOtLayer(w->field_4, 2);
+                Task_NextState1(a0);
+            }
+            break;
+        case 1:
+            if (w->field_12 > D_80050720->hp) {
+                w->field_12 = (w->field_12 - 0x21 < D_80050720->hp) ? D_80050720->hp : (u16)w->field_12 - 0x21;
+            }
+            if (w->field_12 < D_80050720->hp) {
+                w->field_12 = (D_80050720->hp < w->field_12 + 0x21) ? D_80050720->hp : (u16)w->field_12 + 0x21;
+            }
+            if (D_80050720->hp == 0) {
+                w->field_12 = 0;
+            }
+            if (w->field_14 > D_80050720->mp) {
+                w->field_14 = (w->field_14 - 1 < D_80050720->mp) ? D_80050720->mp : (u16)w->field_14 - 1;
+            }
+            if (w->field_14 < D_80050720->mp) {
+                w->field_14 = (D_80050720->mp < w->field_14 + 1) ? D_80050720->mp : (u16)w->field_14 + 1;
+            }
+            if (D_80050720->mp == 0) {
+                w->field_14 = 0;
+            }
+            break;
+        }
+        if (s3->field_0 != 0) {
+            if (D_8005071C->field_BA5 == 0 && s3->field_0->stateLevel0 != 2) {
+                Task_SetState0(s3->field_0, 2);
+            }
+        } else {
+            if (D_8005071C->field_BA5 != 0) {
+                Task_Create(0x20A, (s32 *)s3, 0);
+            }
+        }
+        break;
+    case 2:
+        switch (a0->stateLevel1) {
+        case 0:
+        default:
+            Text_CloseArray(&w->field_0, 3);
+            if (s3->field_0 != 0) {
+                Task_SetState0(s3->field_0, 2);
+            }
+            Task_NextState1(a0);
+            break;
+        case 1:
+            if (Math_RampToZero(a0, &w->field_C) == 0) {
+                Task_SetState0(a0, 3);
+            }
+            break;
+        }
+        break;
+    }
+}
 
 void func_80066AD0(Actor *a0) {
     Stg40W6AD0 *w = (Stg40W6AD0 *)a0->work;

@@ -9768,8 +9768,8 @@ PRE_SIGMA_PASSES = ("la_unfold_st", "un_hi_cse", "un_hi_cse_store", "exit_merge"
 # under `.set noreorder` (one instruction per line, verbatim source) to stop the
 # assembler re-scheduling it. padnop needs neither (a trailing nop cannot be
 # rescheduled).
-WORD_PASSES = ("delay_fill", "epilogue_unfill", "reorder_indep", "padnop",
-               "prologue_save_hoist", "delay_slot_select", "decouple_reg")
+WORD_PASSES = ("delay_fill", "epilogue_unfill", "reorder_indep", "reorder_indep_nops",
+               "padnop", "prologue_save_hoist", "delay_slot_select", "decouple_reg")
 
 # minimal register def/use for the delay_fill dependency guard (gas `$reg` syntax)
 _STORE_MN = {"sb", "sh", "sw", "swl", "swr", "swc1", "swc2", "sd", "sdc1", "sdc2"}
@@ -10963,10 +10963,84 @@ def decouple_reg_src(span, tgt, our_words):
     return "\n".join(out), True
 
 
+def reorder_indep_nops_src(span, tgt, our_words):
+    """Swap two adjacent independent pure-ALU instructions to match the target's
+    schedule, even when maspsx-inserted delay/load nops earlier in the function break
+    the 1:1 source-to-word mapping `reorder_indep` needs (it truncates at the first
+    such nop and never reaches a later swap). This pass maps each assembled word to its
+    source line, skipping the maspsx nops (same word->source map as decouple_reg), then
+    at each adjacent word pair (pos, pos+1) that is mismatched against the target but
+    would BOTH match after a transpose, swaps their source lines -- provided both are
+    real-source pure-ALU instructions with no register dependency in either direction.
+    Restricting to pure-ALU pairs means neither is a load or store, so the swap cannot
+    create a load-use hazard or alias, and the touched pair carries no maspsx nop of its
+    own. The two lines are re-emitted under `.set noreorder` so the assembler keeps the
+    order. Count-preserving. Returns (new_span, fired)."""
+    lines = span.split("\n")
+    ins = [(i, l) for i, l in enumerate(lines) if _s_is_insn(l)]
+    n = len(our_words)
+    if n < 2:
+        return span, False
+    # map each assembled word to its source line, skipping maspsx-inserted nops (which
+    # have no source of their own): the identical mapping decouple_reg builds.
+    word_src = [None] * n
+    si = 0
+    for w in range(n):
+        if is_nop(our_words[w][1]):
+            if si < len(ins) and _src_is_nop(ins[si][1]):
+                word_src[w] = ins[si][0]
+                si += 1
+        elif si < len(ins):
+            word_src[w] = ins[si][0]
+            si += 1
+    if si != len(ins):
+        return span, False                       # a macro expanded to several words
+    line_of = {i: l for i, l in enumerate(lines)}
+    swaps = []                                    # (line_idx_a, line_idx_b) with a < b
+    p = 0
+    while p + 1 < min(n, len(tgt)):
+        a, b = word_src[p], word_src[p + 1]
+        if a is None or b is None:
+            p += 1; continue
+        oa, ob = our_words[p][1], our_words[p + 1][1]
+        # already-correct positions and any nop pair are skipped
+        if (_word_eq(our_words[p][0], tgt[p][0], tgt[p][1]) and
+                _word_eq(our_words[p + 1][0], tgt[p + 1][0], tgt[p + 1][1])):
+            p += 1; continue
+        # a transpose fixes BOTH positions, both are pure-ALU, and independent
+        if (_word_eq(our_words[p][0], tgt[p + 1][0], tgt[p + 1][1]) and
+                _word_eq(our_words[p + 1][0], tgt[p][0], tgt[p][1]) and
+                _pure_alu(oa) and _pure_alu(ob) and _indep(oa, ob)):
+            swaps.append((a, b) if a < b else (b, a))
+            p += 2
+            continue
+        p += 1
+    if not swaps:
+        return span, False
+    swap_by_a = {a: b for a, b in swaps}
+    swap_by_b = {b: a for a, b in swaps}
+    out = []
+    for idx, l in enumerate(lines):
+        if idx in swap_by_a:                      # first line of a pair: emit the second
+            b = swap_by_a[idx]
+            indent = _src_indent(line_of[idx])
+            out.append(indent + ".set\tnoreorder")
+            out.append(indent + line_of[b].strip())
+        elif idx in swap_by_b:                    # second line of a pair: emit the first
+            a = swap_by_b[idx]
+            indent = _src_indent(line_of[idx])
+            out.append(indent + line_of[a].strip())
+            out.append(indent + ".set\treorder")
+        else:
+            out.append(l)
+    return "\n".join(out), True
+
+
 _REORDER_SRC = {
     "epilogue_unfill": epilogue_unfill_src,
     "delay_fill": delay_fill_src,
     "reorder_indep": reorder_indep_src,
+    "reorder_indep_nops": reorder_indep_nops_src,
     "prologue_save_hoist": prologue_save_hoist_src,
     "delay_slot_select": delay_slot_select_src,
     "decouple_reg": decouple_reg_src,
@@ -10991,7 +11065,8 @@ def emit_noreorder_span(span, tgt, our_words, reorder_passes, reassemble=None):
         fn = _REORDER_SRC.get(name)
         if fn is None:
             raise NotImplementedError("reorder pass not wired: %s" % name)
-        if name in ("delay_fill", "reorder_indep", "delay_slot_select", "decouple_reg"):
+        if name in ("delay_fill", "reorder_indep", "reorder_indep_nops",
+                    "delay_slot_select", "decouple_reg"):
             words = reassemble(txt) if reassemble is not None else our_words
             txt, _fired = fn(txt, tgt, words)
         else:
@@ -11561,8 +11636,8 @@ def normalize_s(s_file, ctx, manifest=None):
                 continue
             reorder = [p for p in manifest[name]["passes"]
                        if p in ("delay_fill", "epilogue_unfill", "reorder_indep",
-                                "prologue_save_hoist", "delay_slot_select",
-                                "decouple_reg")]
+                                "reorder_indep_nops", "prologue_save_hoist",
+                                "delay_slot_select", "decouple_reg")]
             if not reorder:
                 continue
             our, err = assemble_words(ctx, s_file, name)
