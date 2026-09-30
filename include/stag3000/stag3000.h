@@ -141,6 +141,17 @@ typedef struct {
     /* 0x10 */ s32 field_10;
 } Stg30Work73358; /* size 0x14 */
 
+/* Stg30Work73358 with the words at 0x04 / 0x08 as func_8006FC78 writes them. */
+typedef struct {
+    /* 0x00 */ s16 field_0;
+    /* 0x02 */ s16 field_2;
+    /* 0x04 */ s32 field_4;
+    /* 0x08 */ s32 field_8;
+    /* 0x0C */ s32 field_C;
+    /* 0x10 */ s32 field_10;
+} Stg30Work73358W; /* size 0x14 */
+extern s32 D_80074094;
+
 /* Work of task D_800733F0 (CD streaming, func_800702C8), as read after the
    func_800702A8 Vec3 init: file id, channel byte, 1-based track index, lba range. */
 typedef struct {
