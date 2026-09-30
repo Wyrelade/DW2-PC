@@ -9,7 +9,7 @@
 # Digimon World 2 Decompilation
 
 <!-- PROGRESS:BADGE -->
-![matched](https://img.shields.io/badge/matched-1578%2F1645%20(95.93%25)-1f6feb)
+![matched](https://img.shields.io/badge/matched-1584%2F1645%20(96.29%25)-1f6feb)
 <!-- /PROGRESS:BADGE -->
 ![build](https://img.shields.io/badge/build-byte--identical-2ea043)
 ![platform](https://img.shields.io/badge/platform-PS1%20(SLUS--01193)-8957e5)
@@ -50,15 +50,15 @@ match alone is never enough.
 | **Main executable** (`SLUS_011.93`) | 907 | 907 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 100.00% |
 | &nbsp;&nbsp;└ decompiled to C | | 830 | |
 | &nbsp;&nbsp;└ hand-written assembly, restored as source | | 77 | |
-| **Stage overlays** (`AAA/3.PRO`) | 738 | 671 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱▱` 90.92% |
+| **Stage overlays** (`AAA/3.PRO`) | 738 | 677 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱▱` 91.73% |
 | &nbsp;&nbsp;└ `STAG0000.PRO` | 69 | 64 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱` 92.75% |
 | &nbsp;&nbsp;└ `STAG1000.PRO` | 35 | 33 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱` 94.29% |
 | &nbsp;&nbsp;└ `STAG1100.PRO` | 55 | 55 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 100.00% |
-| &nbsp;&nbsp;└ `STAG2000.PRO` | 133 | 116 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱▱▱` 87.22% |
-| &nbsp;&nbsp;└ `STAG3000.PRO` | 123 | 112 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱▱` 91.06% |
+| &nbsp;&nbsp;└ `STAG2000.PRO` | 133 | 119 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱▱` 89.47% |
+| &nbsp;&nbsp;└ `STAG3000.PRO` | 123 | 113 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱▱` 91.87% |
 | &nbsp;&nbsp;└ `STAG3500.PRO` | 108 | 105 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱` 97.22% |
-| &nbsp;&nbsp;└ `STAG4000.PRO` | 215 | 186 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱▱▱` 86.51% |
-| **Total** | 1645 | 1578 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱` 95.93% |
+| &nbsp;&nbsp;└ `STAG4000.PRO` | 215 | 188 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱▱▱` 87.44% |
+| **Total** | 1645 | 1584 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱` 96.29% |
 <!-- /PROGRESS:TABLE -->
 
 The main executable is fully matched. It is not the whole game: DW2 also has 7 stage
