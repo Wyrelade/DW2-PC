@@ -317,6 +317,22 @@ extern s32 D_800709BC; /* D_800709B0.field_C as a scalar reloc */
 extern Halves D_80063568;
 extern Halves D_8006356C;
 
+/* func_8006AB0C waypoint walker */
+typedef struct {
+    u8 _pad00[0x04];
+    Stg20Cell path[5];
+    s32 index;
+    u8 _pad1C[0x08];
+    s32 input;
+    s32 held;
+    u8 _pad2C[0x30];
+    s32 wait;
+    u8 _pad60[0x14];
+    s32 done;
+} Stg20WalkWork;
+extern u16 D_8005F728; /* D_8005F6F0[0].held as a scalar reloc */
+extern s32 Rand_Next();
+
 extern void Mem_FillWordsNeg1(s32 *arg0, s32 arg1);
 extern void Text_OpenById(void *a0, s32 a1, s32 a2, Halves a3);
 extern s32 Actor_ProjectToScreen(Actor *);
