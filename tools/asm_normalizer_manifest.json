@@ -4388,5 +4388,10 @@
     "passes": [
       "web_realloc"
     ]
+  },
+  "stag2000:func_800688E4": {
+    "passes": [
+      "web_realloc"
+    ]
   }
 }
