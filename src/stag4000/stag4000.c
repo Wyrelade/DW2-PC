@@ -4478,7 +4478,38 @@ void func_80072250(Actor *a0) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_800722B8);
+void func_800722B8(Actor *task) {
+    Stg40BC0Work *w = (Stg40BC0Work *)task->work;
+    s32 dx;
+    s32 x0;
+    s32 y0;
+    s32 z0;
+
+    if (task->stateLevel2 >= w->field_A8) {
+        do {
+            w->field_0.words[0] = w->field_88.words[4];
+            w->field_0.words[1] = w->field_88.words[5];
+            w->field_0.words[2] = w->field_88.words[6];
+            w->field_7C[1] = (u16)w->field_AC;
+            if (w->field_B8 != 0) {
+                func_80072250(task);
+            } else {
+                Task_SetState1(task, 0);
+            }
+        } while (0);
+        return;
+    }
+    x0 = w->field_88.words[0];
+    dx = (x0 - w->field_88.words[4]) / w->field_A8;
+    y0 = w->field_88.words[1];
+    z0 = w->field_88.words[2];
+    w->field_0.words[0] = x0 - dx * task->stateLevel2;
+    w->field_0.words[1] = y0 - ((y0 - w->field_88.words[5]) / w->field_A8) * task->stateLevel2;
+    w->field_0.words[2] = z0 - ((z0 - w->field_88.words[6]) / w->field_A8) * task->stateLevel2;
+    w->field_84 = 1;
+    w->field_7C[1] = (u16)w->field_AC + (w->field_B0 / w->field_A8) * (w->field_A8 - task->stateLevel2);
+    task->stateLevel2 = task->stateLevel2 + 1;
+}
 
 void func_80072418(Actor *a0, Block1C *a1) {
     Stg40BC0Work *w = (Stg40BC0Work *)a0->work;

@@ -4444,5 +4444,11 @@
       "web_realloc",
       "sched_pre"
     ]
+  },
+  "stag4000:func_800722B8": {
+    "passes": [
+      "nodiv",
+      "web_realloc"
+    ]
   }
 }
