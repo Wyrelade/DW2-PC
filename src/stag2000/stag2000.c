@@ -2515,7 +2515,46 @@ void func_8006AA4C(Actor *a, Stg20Spawn *s) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006AB0C);
+void func_8006AB0C(Actor *a)
+{
+  Stg20WalkWork *w = (Stg20WalkWork *) a->work;
+  Stg20Cell *c;
+  Stg20Cell *p;
+  s32 r;
+  if ((((Stg20ModelTask *) a)->field_4 == 0) && (D_800709B4 == 0))
+  {
+    switch (a->field_8)
+    {
+      case 0:
+
+      default:
+        w->input = (w->held = D_8005F728);
+        break;
+
+      case 1:
+        w->input = (w->held & 0xF000) | 0x10;
+        break;
+
+    }
+
+    return;
+  }
+  if ((w->path[1].x != 0) || (w->done == 0))
+  {
+    if (w->wait != 0)
+    {
+      w->wait--;
+    }
+    else
+    {
+ do { c = func_80067504(a); if (((c->x == w->path[w->index].x) && (c->y == w->path[w->index].y)) && (func_80067568(a) != 0)) { w->index++; switch (w->path[w->index].x) { case 1: w->done = 1; case 0: w->index = 0; break; } r = Rand_Next(); w->input = 0; w->wait = ((u16) (((u16) r) % 60)) + 15; } else { p = &w->path[w->index]; if (c->y != p->y) { if (c->y < p->y) { w->input = 0x4000; } else { w->input = 0x1000; } } if (c->x != p->x) { if (c->x < p->x) { w->input = 0x2000; } else { w->input = 0x8000; } } } } while (0);
+    }
+  }
+  else
+  {
+    w->input = 0;
+  }
+}
 
 s32 func_8006AD14(Actor *a) {
     u16 m = 0x1000;
