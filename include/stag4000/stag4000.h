@@ -854,6 +854,36 @@ typedef struct {
 } Stg40Offs8;
 extern Stg40Offs8 D_8006368C;
 
+/* Ordering-table link word (24-bit next pointer, 8-bit length). */
+typedef struct {
+    u32 addr : 24;
+    u32 len : 8;
+} Stg40OTag;
+
+/* Per-face record of D_80072670 (func_80065C50): corner indices and shift per side. */
+typedef struct {
+    /* 0x0 */ u16 field_0;
+    /* 0x2 */ u8 field_2;
+    /* 0x3 */ u8 field_3;
+    /* 0x4 */ u8 field_4;
+    /* 0x5 */ u8 field_5;
+    /* 0x6 */ u8 field_6;
+    /* 0x7 */ u8 field_7;
+    /* 0x8 */ u8 field_8;
+    /* 0x9 */ u8 field_9;
+} Stg40Rec10;
+extern Stg40Rec10 D_80072670[];
+extern u8 D_8007265C[];
+
+typedef struct {
+    s16 x;
+    s16 y;
+} Stg40XY16;
+extern Stg40XY16 D_800727C0[];
+extern Stg40Shop D_800727E8[];
+extern s32 Item_CheckId(s32 arg0);
+extern Stg40Ent48 *func_8006E200(s16 x, s16 y);
+
 /* Byte views of the status block func_8006997C indexes. */
 typedef struct {
     u8 _pad000[0xB9C];

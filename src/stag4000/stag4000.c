@@ -536,7 +536,65 @@ void func_80065BF8(s32 x, s32 z, s32 y, Stg40Vec3 *out) {
     out->field_0 = t * 40;
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80065C50);
+s32 func_80065C50(Stg40W667C *w, s32 pkt, s32 x, s32 y)
+{
+    Stg40Tile *tile = &w->field_F20[y][x];
+    Stg40Rec10 *rec;
+    u8 *base;
+    s32 i;
+    Stg40Vtx *a;
+    Stg40Vtx *b;
+    s32 k;
+    u32 *ot;
+    s32 ax;
+    s32 ay;
+    s32 n;
+    s32 m;
+    Stg40FT4 *src;
+
+    base = &D_8007265C[(u16)D_8005071C->field_E54->field_A * 5];
+
+    for (i = 0; i < 4; i++) {
+        rec = &D_80072670[i];
+        if ((tile->field_0 & rec->field_0) == 0) {
+            continue;
+        }
+        a = &w->field_0[y + rec->field_4][x + rec->field_3];
+        b = &w->field_0[y + rec->field_6][x + rec->field_5];
+        if (a->s[0].flag + b->s[0].flag + a->s[1].flag + b->s[1].flag == 0) {
+            continue;
+        }
+        ax = a->s[0].x;
+        ay = a->s[0].y;
+        n = (b->s[0].x - ax) * (b->s[1].y - ay);
+        m = b->s[0].y - ay;
+        if (n - (b->s[1].x - ax) * m > 0) {
+            continue;
+        }
+        k = (tile->field_2 >> rec->field_2) & 3;
+        if (k == 0 && (tile->field_3 & 0x80)) {
+            k = 4;
+        }
+        ot = &D_8005F770.otLayers.u[3][w->field_0[y + rec->field_8][x + rec->field_7].field_1C];
+        src = &w->field_143C[base[k]];
+        *(Stg40FT4 *)pkt = *src;
+        ((Stg40FT4 *)pkt)->x0 = a->s[1].x;
+        ((Stg40FT4 *)pkt)->y0 = a->s[1].y;
+        ((Stg40FT4 *)pkt)->x1 = b->s[1].x;
+        ((Stg40FT4 *)pkt)->y1 = b->s[1].y;
+        ((Stg40FT4 *)pkt)->x2 = a->s[0].x;
+        ((Stg40FT4 *)pkt)->y2 = a->s[0].y;
+        ((Stg40FT4 *)pkt)->x3 = b->s[0].x;
+        ((Stg40FT4 *)pkt)->y3 = b->s[0].y;
+        ((Stg40FT4 *)pkt)->r0 = rec->field_9;
+        ((Stg40FT4 *)pkt)->g0 = rec->field_9;
+        ((Stg40FT4 *)pkt)->b0 = rec->field_9;
+        ((Stg40OTag *)pkt)->addr = ((Stg40OTag *)ot)->addr;
+        ((Stg40OTag *)ot)->addr = pkt;
+        pkt += sizeof(Stg40FT4);
+    }
+    return pkt;
+}
 
 s32 func_80065F94(Stg40W667C *w, s32 pkt, s32 x, s32 y) {
     Stg40Vtx *a = &w->field_0[y][x];
@@ -1501,7 +1559,100 @@ s32 func_800681BC(Actor *a0) {
     return 0;
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_800682DC);
+s32 func_800682DC(Actor *a0)
+{
+    Stg40Ent48 *e;
+    Stg40Ent48 *found;
+    s32 snd;
+    s32 r;
+    s32 idx;
+    s32 lim;
+    s32 snd2;
+    Actor *child;
+    s32 r2;
+    s32 r3;
+
+    e = ((Stg40ActWork *)a0->work)->field_2C;
+    if (D_8005F704 <= 0) {
+        return 0;
+    }
+    found = func_8006E200(e->field_18.u0.pair.field_0 + ((s16 *)D_800727C0)[(e->field_B + 1) << 1],
+                          e->field_18.u0.pair.field_2 + ((s16 *)D_800727C0)[((e->field_B + 1) << 1) | 1]);
+    if (found == 0) {
+        snd2 = 0x1FD000F;
+        r2 = func_800703E0(e->field_18.u0.pair.field_0 + ((s16 *)D_800727C0)[(e->field_B + 1) << 1],
+                          e->field_18.u0.pair.field_2 + ((s16 *)D_800727C0)[((e->field_B + 1) << 1) | 1]) & 0xF;
+        if (r2 >= 3) {
+            snd2 = r2 + 0x1FD0194;
+        }
+        Snd_PlayById(0x2E, 0);
+        func_800680B0(a0, 0x2D, 0x28, 6, snd2, 0, 0);
+        goto end;
+    }
+    child = found->field_14;
+    D_80072B60->field_3C = child;
+    D_80072B60->field_40 = found;
+    switch (found->field_8) {
+    default:
+        Snd_PlayById(0x2E, 0);
+        func_800680B0(a0, 0x2D, 0x28, 6, 0x1FD000F, 0, 0);
+        return -1;
+    case 2:
+    case 3:
+        Snd_PlayById(0x2E, 0);
+        func_800680B0(a0, 0x2D, 0x28, 6, (found->field_8 == 2) ? 0x1FD0195 : 0x1FD0196, 0, 0);
+        return -1;
+    case 4:
+        Task_SetState1(a0, 0x13);
+        return -1;
+    case 8:
+        snd = -1;
+        if (!(found->field_0 & 0x1000)) {
+            break;
+        }
+        r = func_8006E820(6);
+        if (r == -1) {
+            snd = 0x1FD0019;
+        } else if (r == 0) {
+            snd = 0x1FD001A;
+        } else {
+            lim = found->field_10[1];
+            if (func_8006E858(6) < lim) {
+                snd = 0x1FD0018;
+            }
+        }
+        if (snd != -1) {
+            func_8006813C(a0, 0x28, 1, snd, 0, 0);
+            goto end;
+        }
+        Task_SetState1(a0, 0xE);
+        return -1;
+    case 6:
+    case 7:
+    case 9:
+    case 10:
+    case 11:
+    case 12:
+        idx = found->field_8 - 6;
+        if (!(found->field_0 & 0x1000)) {
+            break;
+        }
+        Item_CheckId(0);
+        r3 = func_8006E920(&D_800727E8[idx]);
+        if (r3 != 0) {
+            func_8006813C(a0, 0x28, 1, r3, 0, 0);
+            goto end;
+        }
+        Task_SetState1(a0, 0x11);
+        D_80072B60->field_7E = 0;
+        D_80072B60->field_E4 = 0;
+        D_80072B60->field_E0 = D_80072B60->field_B0[0];
+        goto end;
+    }
+    Task_SetState1(a0, 0xC);
+end:
+    return -1;
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80068604);
 
