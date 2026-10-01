@@ -415,7 +415,116 @@ s32 func_80065424(s32 a, s32 b, s32 c, s32 d) {
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006545C);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80065890);
+void func_80065890(ActorWork *arg0)
+{
+    Stg40Cell *grid;
+    s32 rowCount;
+    s32 colCount;
+    s32 gridCols;
+    s32 gridRows;
+    Stg40E34 *e54;
+    s32 mapRow;
+    s32 row;
+    s32 col;
+    s32 mapCol;
+    Stg40Tile *tp;
+    Stg40Vtx *v0p;
+    Stg40Vtx *v1p;
+    s32 r;
+    s32 k;
+    s32 a;
+    s32 lt400;
+    s32 n;
+    Stg40Cell *cell;
+
+    e54 = D_8005071C->field_E54;
+    grid = (Stg40Cell *)D_8005071C->field_E58;
+    rowCount = 9;
+    gridCols = e54->field_0;
+    gridRows = e54->field_2;
+    if (D_80072B60->field_30 & 0x3F) {
+        rowCount = 0xA;
+    }
+    colCount = 9;
+    if (D_80072B60->field_2C & 0x3F) {
+        colCount = 0xA;
+    }
+    mapRow = D_80072B60->field_30 / 64 - 4;
+    for (row = 0; row < rowCount; row++) {
+        tp = ((Stg40W667C *)arg0)->field_F20[row];
+        v0p = ((Stg40W667C *)arg0)->field_0[row];
+        v1p = ((Stg40W667C *)arg0)->field_0[row + 1];
+        mapCol = D_80072B60->field_2C / 64 - 4;
+        for (col = 0; col < colCount; col++) {
+            tp->field_4 = func_800653EC(v0p[0].s[0].field_4, v0p[1].s[0].field_4, v1p[0].s[0].field_4, v1p[1].s[0].field_4);
+            tp->field_8 = func_80065424(v0p[0].s[1].field_4, v0p[1].s[1].field_4, v1p[0].s[1].field_4, v1p[1].s[1].field_4);
+            if (mapCol < 0 || mapRow < 0 || mapCol >= gridCols || mapRow >= gridRows) {
+                tp->field_0 = 0;
+                tp->field_2 = 0;
+                tp->field_3 = 0;
+            } else {
+                r = Rand_GetAt(mapCol + (mapRow << 6));
+                cell = &grid[mapRow * gridCols + mapCol];
+                tp->field_0 = cell->field_0;
+                tp->field_2 = cell->field_3;
+                k = tp->field_0 & 0xF;
+                switch (k) {
+                case 0:
+                    tp->field_3 = 0;
+                    break;
+                case 1:
+                case 2:
+                    n = 0;
+                    if (k == 1) {
+                        n = 0x18;
+                    }
+                    tp->field_3 = n;
+                    a = tp->field_3 + ((tp->field_0 >> 9) & 1);
+                    tp->field_3 = a;
+                    a = tp->field_3;
+                    if (tp->field_0 & 0x80) {
+                        a += 2;
+                    }
+                    tp->field_3 = a;
+                    a = tp->field_3;
+                    if (tp->field_0 & 0x800) {
+                        a += 4;
+                    }
+                    tp->field_3 = a;
+                    a = tp->field_3;
+                    if ((u16)r < 0x200) {
+                        a += 8;
+                    }
+                    tp->field_3 = a;
+                    a = tp->field_3;
+                    if ((u16)r < 0x400) {
+                        a += 8;
+                    }
+                    tp->field_3 = a;
+                    a = tp->field_3;
+                    if ((u16)r < 0x400) {
+                        a |= 0x80;
+                    }
+                    tp->field_3 = a;
+                    break;
+                default:
+                    tp->field_3 = (tp->field_0 & 0xF) + 0x2D;
+                    a = tp->field_3;
+                    if ((u16)r < 0x400) {
+                        a |= 0x80;
+                    }
+                    tp->field_3 = a;
+                    break;
+                }
+            }
+            mapCol++;
+            v0p++;
+            v1p++;
+            tp++;
+        }
+        mapRow++;
+    }
+}
 
 void func_80065BF8(s32 x, s32 z, s32 y, Stg40Vec3 *out) {
     Stg40B60 *b = D_80072B60;
@@ -1825,7 +1934,89 @@ void func_80069830(Actor *a0) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006997C);
+void func_8006997C(Actor *arg0)
+{
+    Stg40Ent48 *e;
+    Actor *t;
+    s32 idx;
+    s32 bit;
+    s32 r;
+    s32 n;
+
+    e = D_80072B60->field_40;
+    t = D_80072B60->field_3C;
+    idx = e->field_8 - 9;
+    bit = 0x100 << idx;
+    switch (arg0->stateLevel2) {
+    case 0:
+    default:
+        func_8006E4DC(arg0, 0x28);
+        Task_SetState1(t, 4);
+        Task_NextState2(arg0);
+        break;
+    case 1:
+        if (t->stateLevel1 != 1) {
+            return;
+        }
+        r = 0;
+        switch (e->field_8) {
+        default:
+            if (((Stg40BA5View *)D_8005071C)->field_BA5[idx] == 0) {
+                ((Stg40BA5View *)D_8005071C)->field_BA5[idx] = e->field_10[1];
+                r = -1;
+            }
+            break;
+        case 9:
+            if (D_8005071C->field_BA5 == 0) {
+                if (D_80050720->field_8 != 0 || func_80071608() != -1) {
+                    r = -1;
+                    ((Stg40StatusView *)D_8005071C)->field_B9C[e->field_8] = e->field_10[1];
+                }
+            }
+            break;
+        case 0xB:
+            if (D_8005071C->field_BA7 != 0 || ((s32 (*)(s32))func_8006EA84)(1) < 2 || Digi_CountByState(1) >= 0x18) {
+                r = 0;
+            } else {
+                r = -1;
+                ((Stg40StatusView *)D_8005071C)->field_B9C[e->field_8] = e->field_10[1];
+            }
+            break;
+        case 0xC:
+            n = ((s32 (*)(void))func_80022578)();
+            n -= ((s32 (*)(s32))func_8006EA84)(0);
+            if (n != D_8005071C->field_BA8) {
+                D_8005071C->field_BA9[D_8005071C->field_BA8] = e->field_10[1];
+                r = -1;
+                D_8005071C->field_BA8++;
+            }
+            break;
+        }
+        if (r == 0) {
+            func_80067610(1, e->field_8 + 0x1FD0022, (s32)D_80050720 + 0xD1, 0);
+            Task_SetState2(arg0, 3);
+        } else {
+            D_8005071C->field_BA0 &= ~bit;
+            func_8006E4DC(arg0, 0x2A);
+            func_80067880(arg0, 2);
+            Task_NextState2(arg0);
+            Snd_PlayById(0x2F, 0);
+        }
+        break;
+    case 2:
+        if (func_8006E588(arg0) == 1) {
+            func_8006E4DC(arg0, 0x28);
+            func_80067610(1, e->field_8 + 0x1FD001E, 0, 0);
+            Task_NextState2(arg0);
+        }
+        break;
+    case 3:
+        if (func_80067704(1) == 1) {
+            Task_SetState1(arg0, 6);
+        }
+        break;
+    }
+}
 
 void func_80069C94(Actor *a0) {
     Stg40Ent48 *e = ((Stg40ActWork *)a0->work)->field_2C;

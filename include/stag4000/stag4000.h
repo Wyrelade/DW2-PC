@@ -211,7 +211,7 @@ typedef struct {
 typedef struct {
     /* 0x00 */ u16 field_0;
     /* 0x02 */ u8 field_2;
-    u8 _pad03[0x01];
+    /* 0x03 */ u8 field_3;
 } Stg40Cell;
 
 typedef struct {
@@ -568,9 +568,9 @@ typedef struct {
 /* Element of Stg40W667C.field_F20 (stride 0xC; func_8006620C / func_80065F94). */
 typedef struct {
     /* 0x0 */ u16 field_0;         /* 0 = untextured floor */
-    u8 _pad2[0x01];
+    /* 0x2 */ u8 field_2;
     /* 0x3 */ u8 field_3;          /* template index (low 7 bits) into D_80072620 */
-    u8 _pad4[0x04];
+    /* 0x4 */ s32 field_4;
     /* 0x8 */ s32 field_8;         /* ordering table index of the flat quad */
 } Stg40Tile;
 
@@ -578,14 +578,16 @@ typedef struct {
 typedef struct {
     /* 0x0 */ s16 x;
     /* 0x2 */ s16 y;
-    u8 _pad4[0x06];
+    /* 0x4 */ s32 field_4;
+    u8 _pad8[0x02];
     /* 0xA */ s16 flag;
 } Stg40VSet;
 
 /* Grid vertex of Stg40W667C.field_0 (stride 0x20): set 0 textured, set 1 flat. */
 typedef struct {
     /* 0x00 */ Stg40VSet s[2];
-    u8 _pad18[0x08];
+    u8 _pad18[0x04];
+    /* 0x1C */ s32 field_1C;
 } Stg40Vtx;
 
 /* GPU packet tag word; byte 3 is the packet length. */
@@ -851,6 +853,16 @@ typedef struct {
     s16 v[8];
 } Stg40Offs8;
 extern Stg40Offs8 D_8006368C;
+
+/* Byte views of the status block func_8006997C indexes. */
+typedef struct {
+    u8 _pad000[0xB9C];
+    u8 field_B9C[13];
+} Stg40StatusView;
+typedef struct {
+    u8 _pad000[0xBA5];
+    u8 field_BA5[3];
+} Stg40BA5View;
 void func_80070490(s32 buf, s32 a1, s32 x, s32 y, s32 flag);
 void func_80070754(void);
 

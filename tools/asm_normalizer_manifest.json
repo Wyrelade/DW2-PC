@@ -4500,5 +4500,16 @@
     "passes": [
       "web_realloc"
     ]
+  },
+  "stag4000:func_8006997C": {
+    "passes": [
+      "web_realloc",
+      "commutative_swap"
+    ]
+  },
+  "stag4000:func_80065890": {
+    "passes": [
+      "commutative_swap"
+    ]
   }
 }
