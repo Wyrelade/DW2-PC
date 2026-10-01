@@ -2509,7 +2509,43 @@ void func_800697AC(Actor *a) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_800698F4);
+void func_800698F4(Actor *a) {
+    Stg20SkillWork *w = (Stg20SkillWork *)a->work;
+    Stg20TextArgs args;
+    s32 i;
+    s32 j;
+    s32 s;
+    u8 *list;
+    s32 top;
+
+    for (i = 0; i < 4; i++) {
+        list = w->groups[i].list;
+        top = w->top[i];
+        for (j = 0; j < 3; j++) {
+            if (list[j + top] != 0) {
+                args.text = func_8001ED84(list[j + top]);
+                args.bigFont = 0;
+                args.color = w->col != i;
+                args.pos.x = D_8007009C[i + 8].lo;
+                args.pos.y = D_8007009C[i + 8].hi + j * 11;
+                args.charAdvance = 0;
+                args.lineAdvance = 0;
+                args.charDelay = 0;
+                Text_Open(&w->texts[7 + i * 3 + j], &args);
+            }
+        }
+    }
+    s = w->groups[w->col].list[w->cursor[w->col] + w->top[w->col]];
+    if (s != 0) {
+        if (w->skill != s) {
+            w->skill = s;
+            func_80068D34(s);
+        }
+    } else {
+        w->skill = 0;
+        func_80068CF8();
+    }
+}
 
 void func_80069AAC(Actor *a) {
     Stg20SkillWork *w = (Stg20SkillWork *)a->work;

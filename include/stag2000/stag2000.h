@@ -805,6 +805,7 @@ typedef struct {
     /* 0x4C */ s32 field_4C;
 } Stg20MenuSub;
 extern Stg20MenuSub D_800709B8;
+extern s32 func_8001ED84(s32);
 extern Halves D_80063594;
 extern Halves D_80063598;
 extern s32 D_8005F70C; /* D_8005F6F0[0].triangle as a scalar reloc */
