@@ -4514,5 +4514,11 @@
   },
   "stag4000:func_800682DC": {
     "passes": []
+  },
+  "stag3000:func_8006B950": {
+    "passes": [
+      "nodiv",
+      "web_realloc"
+    ]
   }
 }

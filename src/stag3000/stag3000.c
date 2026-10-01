@@ -2941,7 +2941,70 @@ void func_8006AA18(s16 *max, s16 *b, s16 *c) {
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006AAA8);
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006B950);
+s32 func_8006B950(s32 idx, s16 *tgt, s32 n, s32 id) {
+    s32 hp;
+    s32 min;
+    s32 i;
+    s32 v;
+    s32 chance;
+    s32 t;
+    hp = D_80073CC0.entries[idx].field_38;
+    min = 0x270F;
+    if ((D_80073CC0.field_3DC != 0) && (idx < 3)) {
+        if (id == 0xA8) {
+            return 0;
+        }
+        if (id == 0x3A) {
+            return 0;
+        }
+        if (id == 0x49) {
+            return 0;
+        }
+        if (id == 0x73) {
+            return 0;
+        }
+        if (id == 0xA3) {
+            return 0;
+        }
+    }
+    if ((n == 1) && (D_80073CC0.field_31C[tgt[0]] & 0x10000)) {
+        return 0;
+    }
+    if (func_8001F0E4(id) & 4) {
+        return D_80073CC0.field_2AC[idx].field_0 == 2;
+    }
+    if (D_80073CC0.field_34F[idx] & 0x10) {
+        return (Rand_Next() & 3) == 0;
+    }
+    if (D_80073CC0.field_31C[idx] & 2) {
+        if (Rand_Next() & 1) {
+            return 0;
+        }
+    }
+    if ((n == 1) && (D_80073CC0.field_2AC[tgt[0]].field_0 == 2)) {
+        if (func_8001F020(D_80073CC0.field_2AC[tgt[0]].field_6) & 0x10) {
+            if (Rand_Next() & 1) {
+                return 0;
+            }
+        }
+    }
+    for (i = 0; i < n; i++) {
+        t = D_80073CC0.entries[tgt[i]].field_38;
+        v = t;
+        if (v >= min) {
+            v = min;
+        }
+        min = v;
+    }
+
+    t = func_8001F0E4(id);
+    if (t & 8) {
+        hp *= 10;
+    }
+    chance = min << 7;
+    chance = chance / (hp * 20);
+    return (Rand_Next() & 0x7F) >= chance;
+}
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006BBD8);
 
