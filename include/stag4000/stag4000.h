@@ -728,6 +728,8 @@ extern u8 D_80072B90[][8];
 extern s32 D_80072868[];
 extern s32 D_80072BB8;
 extern u8 D_80072A4C[];
+extern u8 D_80072A58[];
+extern u8 D_80072A78[];
 extern u8 *memset(u8 *s, s32 c, s32 n);
 extern void Gfx_HidePartsByMask(GfxPartMaskView *, s32);
 extern s32 D_80072750[];

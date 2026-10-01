@@ -4586,7 +4586,40 @@ s32 func_80071608(void) {
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_800716EC);
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80071DB4);
+void func_80071DB4(void) {
+    Stg40Ent48 *e = D_8005071C->field_18;
+    s32 a;
+    s32 b;
+    s32 i;
+    s32 v;
+
+    a = func_8006E858(13);
+    a = a < 0 ? 0 : a;
+    b = func_8006E858(14);
+    b = b < 0 ? 0 : b;
+    for (i = 0; i < D_8005071C->field_C; e++, i++) {
+        if (e->field_0 & 0x8000) {
+            switch (e->field_8) {
+            case 6:
+            case 8:
+                v = D_80072A58[e->field_10[1] - 1 + a * 5];
+                if (func_80071180() < v) {
+                    e->field_0 |= 0x1000;
+                }
+                break;
+            case 9:
+            case 10:
+            case 11:
+            case 12:
+                v = D_80072A78[e->field_10[1] - 1 + b * 3];
+                if (func_80071180() < v) {
+                    e->field_0 |= 0x1000;
+                }
+                break;
+            }
+        }
+    }
+}
 
 Stg40Ent48 *func_80071F50(s32 id) {
     Stg40Ent48 *e;
