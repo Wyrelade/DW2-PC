@@ -845,6 +845,12 @@ typedef struct {
 } Stg40FillPt;
 
 extern s32 D_800729C0[8]; /* 4 neighbour (dx, dy) pairs */
+
+/* 4 neighbour (dx, dy) pairs as s16, copied whole to the stack by func_8006F3F4. */
+typedef struct {
+    s16 v[8];
+} Stg40Offs8;
+extern Stg40Offs8 D_8006368C;
 void func_80070490(s32 buf, s32 a1, s32 x, s32 y, s32 flag);
 void func_80070754(void);
 

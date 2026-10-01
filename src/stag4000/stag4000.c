@@ -4017,7 +4017,61 @@ s16 func_8006F3B0(Stg40TileWork *a0) {
     return a0->field_76A = a0->field_766 / 8;
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006F3F4);
+void func_8006F3F4(Stg40TileWork *w, s32 x, s32 y)
+{
+    s32 group;
+    s32 row;
+    s32 n;
+    s32 mask;
+    u8 kind;
+    s32 dim1;
+    Stg40E34 *dims;
+    s32 count;
+    Stg40Cell *grid;
+    s32 col;
+
+    dims = D_8005071C->field_E54;
+    dim1 = dims->field_0;
+    count = dims->field_2;
+    kind = func_80070438(x, y)->field_2;
+    if (kind == 0xFF) {
+        return;
+    }
+    group = kind >> 5;
+    mask = 1 << (kind % 32);
+    if (group < 8) {
+        if (D_8005071C->field_E5C[group] & mask) {
+            return;
+        }
+        D_8005071C->field_E5C[group] |= mask;
+    }
+    grid = (Stg40Cell *)D_8005071C->field_E58;
+    for (row = 0; row < count; row++) {
+        for (col = 0; col < dim1; col++) {
+            if (grid[col + row * dim1].field_2 == kind) {
+                grid[col + row * dim1].field_0 |= 0x2000;
+                func_8006EB84(col, row, 1);
+                {
+                    Stg40Offs8 o = D_8006368C;
+
+                    for (n = 0; n < 4; n++) {
+                        s32 nx = col + o.v[n * 2];
+                        s32 ny = row + o.v[n * 2 + 1];
+
+                        if ((func_800703E0(nx, ny) & 0xC000) == 0x8000) {
+                            do {
+                                do {
+                                    grid[nx + dim1 * ny].field_0 |= 0x2000;
+                                    func_8006EB84(nx, ny, 1);
+                                } while (0);
+                            } while (0);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
 
 void func_8006F62C(Stg40TileWork *a0, s32 x, s32 y) {
     if (func_800703E0(x, y) & 0x8000) {

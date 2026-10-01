@@ -4495,5 +4495,10 @@
   },
   "stag4000:func_80071DB4": {
     "passes": []
+  },
+  "stag4000:func_8006F3F4": {
+    "passes": [
+      "web_realloc"
+    ]
   }
 }
