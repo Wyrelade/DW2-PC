@@ -4487,5 +4487,10 @@
   },
   "stag3000:func_8006EF50": {
     "passes": []
+  },
+  "stag0000:func_80065150": {
+    "passes": [
+      "web_resched"
+    ]
   }
 }

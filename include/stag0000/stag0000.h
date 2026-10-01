@@ -365,6 +365,12 @@ typedef struct {
     u16 _pad26;
 } Stg00PolyFT4; /* size 0x28 */
 
+/* Ordering-table link word (libgs setaddr/addPrim shape: 24-bit next pointer, 8-bit length). */
+typedef struct {
+    u32 addr : 24;
+    u32 len : 8;
+} Stg00OTag;
+
 /* 0x28-stride zero-terminated part list returned by Cd_GetFileEntry (GfxPartMaskView shape). */
 typedef struct {
     /* 0x00 */ s32 fileId;

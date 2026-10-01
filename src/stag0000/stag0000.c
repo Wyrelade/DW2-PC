@@ -460,7 +460,62 @@ void func_80065114(void) {
     Mem_Free((ActorWork *)D_80069360);
 }
 
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80065150);
+void func_80065150(s32 arg0, s32 arg1, u8 *arg2)
+{
+    Stg00PolyFT4 *poly = (Stg00PolyFT4 *) D_8005F770.packet.addr;
+    Stg00OTag *ot = (Stg00OTag *) D_8005F770.otLayers.s[0];
+    Stg00Work *work = D_80069360;
+    u8 ch;
+    s32 x;
+    s32 y = arg1 - D_8005F770.centerY.s;
+    Stg00TexSlot *tex;
+    u16 clut;
+    u16 tpage;
+    s32 c;
+
+    clut = ((work->field_8C2 + work->field_8D4) << 6) | ((work->field_8C0 >> 4) & 0x3F);
+    tex = (Stg00TexSlot *) work->field_8D0;
+    x = arg0 - D_8005F770.centerX.s;
+    tpage = (1 << 5) | ((tex->y & 0x100) >> 4) | ((tex->x & 0x3FF) >> 6) | ((tex->y & 0x200) << 2);
+    while ((ch = *arg2) != 0) {
+        if ((u32) (ch - 0x20) < 0x50) {
+            c = *arg2;
+            if (c >= 0x60) {
+                c -= 0x20;
+            }
+            c -= 0x20;
+            poly->tag.b.len = 9;
+            poly->code = 0x2C;
+            poly->r0 = 0xFF;
+            poly->g0 = 0xFF;
+            poly->b0 = 0xFF;
+            poly->tpage = tpage;
+            poly->clut = clut;
+            poly->u0 = c % 8 * 8 + ((Stg00TexSlot *) D_80069360->field_8D0)->u;
+            poly->v0 = c / 8 * 8;
+            poly->u1 = ((Stg00TexSlot *) D_80069360->field_8D0)->u + c % 8 * 8 + 8;
+            poly->v1 = c / 8 * 8;
+            poly->u2 = ((Stg00TexSlot *) D_80069360->field_8D0)->u + c % 8 * 8;
+            poly->v2 = c / 8 * 8 + 8;
+            poly->u3 = ((Stg00TexSlot *) D_80069360->field_8D0)->u + c % 8 * 8 + 8;
+            poly->v3 = c / 8 * 8 + 8;
+            poly->x0 = x;
+            poly->y0 = y;
+            poly->x1 = x + 8;
+            poly->y1 = y;
+            poly->x2 = x;
+            poly->y2 = y + 8;
+            poly->x3 = x + 8;
+            poly->y3 = y + 8;
+            ((Stg00OTag *) &poly->tag)->addr = ot->addr;
+            ot->addr = (u32) poly;
+            poly++;
+        }
+        arg2++;
+        x += 8;
+    }
+    D_8005F79C = (s32) poly;
+}
 
 void func_80065374(void) {
     Stg00PolyFT4 *p = (Stg00PolyFT4 *)D_8005F770.packet.work;
