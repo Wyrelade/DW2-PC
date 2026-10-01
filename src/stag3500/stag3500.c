@@ -232,7 +232,45 @@ void func_80063E00(Actor *arg0) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80063E74);
+void func_80063E74(Actor *arg0) {
+    s32 *slot = (s32 *)arg0->u34.children;
+    s32 id;
+    SysState *s;
+    SysState *t;
+
+    if (arg0->stateLevel0 != 0) {
+        return;
+    }
+    s = &D_8005F770;
+    switch (s->gameMode) {
+    case 0x701:
+    default:
+        t = s;
+        switch (t->prevGameMode) {
+        case 0x603:
+            t->field_24 = D_80050780 != 0;
+            break;
+            do {
+            } while (0);
+        case 0x604:
+            s->field_24 = (D_80050780 != 0) ? 2 : 1;
+            break;
+        default:
+            t->field_24 = 0;
+            break;
+        }
+        id = 0x701;
+        break;
+    case 0x703:
+        id = 0x705;
+        break;
+    case 0x702:
+        id = 0x703;
+        break;
+    }
+    Task_Create(id, slot, 0);
+    Task_NextState0(arg0);
+}
 
 void func_80063F38(Actor *arg0) {
     Stg35Work4 *w = (Stg35Work4 *)arg0->work;
