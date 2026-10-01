@@ -2053,7 +2053,57 @@ void func_8006A848(Actor *a0) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006A9CC);
+void func_8006A9CC(Actor *a0) {
+    Stg40ActWork *w = (Stg40ActWork *)a0->work;
+    Stg40Ent48 *e = w->field_2C;
+    Stg40ModelFade *m = (Stg40ModelFade *)a0->model;
+    s32 v;
+    switch (a0->stateLevel2) {
+        case 0:
+        default:
+        {
+            u8 k = D_8005071C->field_1;
+            if (k == 2) {
+                Snd_PlayById(0x23, 0);
+                w->field_36 = 0;
+            } else {
+                if (k == 3)
+                    Snd_PlayById(0x18, 0);
+                else
+                    Snd_PlayById(0x1F, 0);
+                w->field_36 = 1;
+            }
+            m->field_34 = 1;
+            m->field_36 = 0x20;
+            m->field_38 = D_80063438;
+            func_8006E4DC(a0, 0x28);
+            e->field_0 |= 0x80;
+            w->field_26 = 0;
+            Task_NextState2(a0);
+            break;
+        }
+        case 1:
+            if (a0->stateLevel3++ >= 0x3C) {
+                Gfx_FadeOutToBlack(8);
+                Task_NextState2(a0);
+            }
+            break;
+        case 2:
+            break;
+    }
+
+    v = e->field_38 - 0x51;
+    if (v < 0) {
+        v = 0;
+    }
+    e->field_38 = v;
+    e->field_40 = v;
+    if (m->field_38.r != 0xFF) {
+        m->field_38.r++;
+        m->field_38.g++;
+        m->field_38.b++;
+    }
+}
 
 void func_8006AB48(Actor *a0) {
     Stg40Ent48 *e = D_80072B60->field_40;
