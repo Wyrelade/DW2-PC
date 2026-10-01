@@ -4457,5 +4457,10 @@
       "reg_realloc",
       "web_realloc"
     ]
+  },
+  "stag4000:func_800678D8": {
+    "passes": [
+      "nodiv"
+    ]
   }
 }

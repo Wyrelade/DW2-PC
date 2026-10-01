@@ -921,6 +921,7 @@ extern void Task_Create(u32, s32 *, s32);
 void func_8006B420(Actor *a0);
 void func_8006BFB0(Actor *a0);
 s32 func_800678D8(Stg40Ent48 *e);
+Stg40Cell *func_80070438(s32 x, s32 y);
 
 void func_8006C7CC(Stg40E764 *a0, s32 a1);
 

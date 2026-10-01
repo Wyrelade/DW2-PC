@@ -1057,7 +1057,41 @@ s32 func_800678C4(Actor *a0) {
     return a0->model->animDone < 0;
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_800678D8);
+s32 func_800678D8(Stg40Ent48 *e) {
+    s32 d;
+    Stg40Loc *loc = &e->field_18;
+    s32 x;
+    s32 y;
+    s32 dx;
+    s32 dy;
+    s32 c;
+
+    if ((s16)e->field_E != e->field_C) {
+        c = e->field_C;
+        if (((s16)(e->field_E - ((u16)e->field_C - 0x1000)) / 0x800) & 1) {
+            e->field_C = c - 0x100;
+        } else {
+            e->field_C = c + 0x100;
+        }
+        e->field_C &= 0xFFF;
+        d = (s16)e->field_E - e->field_C;
+        if ((d >= 0) ? (d < 0x100) : ((e->field_C - (s16)e->field_E) < 0x100)) {
+            e->field_C = e->field_E;
+        }
+    }
+    e->field_B = (s16)e->field_E / 512;
+    if ((s16)e->field_E == e->field_C && loc->field_8 != 0 && --loc->field_8 == 0 && loc->field_1C == 1) {
+        loc->field_1C = 0;
+    }
+    x = loc->u0.pair.field_0 << 6;
+    dx = ((x - (loc->field_4.field_0 << 6)) * loc->field_8) / loc->field_A;
+    y = loc->u0.pair.field_2 << 6;
+    dy = ((y - (loc->field_4.field_2 << 6)) * loc->field_8) / loc->field_A;
+    loc->field_C = x - dx;
+    loc->field_10 = y - dy;
+    e->field_A = func_80070438(loc->u0.pair.field_0, loc->u0.pair.field_2)->field_2;
+    return loc->field_8 != 0;
+}
 
 void func_80067A80(Actor *a0, Stg40Ent48 *e)
 {
