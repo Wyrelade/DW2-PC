@@ -4691,7 +4691,227 @@ void func_80070588(Stg30Work7343C *w, Stg30CamGoal *g) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_800706BC);
+void func_800706BC(Actor *arg0) {
+    Stg30Work7343C *w = (Stg30Work7343C *)arg0->work;
+    s32 i;
+    s32 h;
+
+    switch (arg0->stateLevel0) {
+    case 0:
+        GsInitCoordinate2(0, &w->field_1C);
+        w->field_4 = -0x4E20;
+        w->field_10 = 0x12C;
+        w->field_18 = 0x5DC;
+        Task_NextState0(arg0);
+        break;
+    case 1:
+        switch (arg0->stateLevel1) {
+        case 0:
+        default:
+            switch (arg0->stateLevel2) {
+            case 0:
+            default:
+                w->field_4 += 0xE9;
+                w->field_8 -= 0x15E;
+                w->field_7E += 0x44;
+                if (w->field_7E > 0x1000) {
+                    w->field_7E = 0;
+                    Task_NextState2(arg0);
+                }
+                break;
+            case 1:
+                w->field_10 -= 0x21;
+                if (++arg0->stateLevel3 == 0x1E) {
+                    w->field_10 = -0x2BC;
+                    Task_NextState1(arg0);
+                }
+                break;
+            }
+            break;
+        case 1:
+            {
+                Stg30CamGoal g;
+
+                g.field_8 = -0x169B;
+                g.field_C = -0x5366;
+                g.field_14 = 0;
+                g.field_18 = 0;
+                g.field_0 = 0;
+                g.field_4 = 0;
+                g.field_10 = -0x2BC;
+                func_80070588(w, &g);
+            }
+            break;
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+            {
+                Stg30CamGoal g;
+
+                i = arg0->stateLevel1 - 2;
+                h = func_8001E79C(D_80073CC0.entries[i].field_19);
+                h = h < 0x300 ? 0 : h - 0x300;
+                h /= 256;
+                g.field_14 = (i % 3) * 0xA00 - 0xA00;
+                g.field_18 = (i / 3) * 0x2800 - 0x1400;
+                g.field_0 = D_80073408[i];
+                g.field_4 = 0;
+                g.field_8 = -0xC30;
+                g.field_C = D_80073414[h];
+                g.field_10 = D_80073428[h];
+                func_80070588(w, &g);
+            }
+            break;
+        case 8:
+            {
+                Stg30CamGoal g;
+
+                g.field_18 = -0x1400;
+                g.field_0 = 0x238;
+                g.field_8 = -0x91C;
+                g.field_C = 0x33FC;
+                g.field_14 = 0;
+                g.field_4 = 0;
+                g.field_10 = -0x36C;
+                func_80070588(w, &g);
+            }
+            break;
+        case 9:
+            {
+                Stg30CamGoal g;
+
+                g.field_18 = 0x1400;
+                g.field_0 = 0x5C7;
+                g.field_8 = -0x91C;
+                g.field_C = 0x33FC;
+                g.field_14 = 0;
+                g.field_4 = 0;
+                g.field_10 = -0x36C;
+                func_80070588(w, &g);
+            }
+            break;
+        case 22:
+            w->field_74 = -0x1E00;
+            w->field_4 = -0x1F40;
+            w->field_6C = 0;
+            w->field_7E = 0;
+            w->field_0 = 0;
+            w->field_8 = 0x4E20;
+            w->field_C = 0;
+            w->field_10 = 0;
+            w->field_14 = 0;
+            break;
+        case 23:
+            w->field_74 = 0x1E00;
+            w->field_7E = 0x800;
+            w->field_4 = -0x1F40;
+            w->field_6C = 0;
+            w->field_0 = 0;
+            w->field_8 = 0x4E20;
+            w->field_C = 0;
+            w->field_10 = 0;
+            w->field_14 = 0;
+            break;
+        case 24:
+            {
+                Stg30CamGoal g;
+
+                g.field_0 = -0x400;
+                g.field_8 = -0x50FB;
+                g.field_C = -0x6EC6;
+                g.field_14 = 0;
+                g.field_18 = 0;
+                g.field_4 = 0;
+                g.field_10 = -0x29C;
+                func_80070588(w, &g);
+            }
+            break;
+        case 10:
+        case 11:
+        case 12:
+        case 13:
+        case 14:
+        case 15:
+            switch (arg0->stateLevel2) {
+            case 0:
+            default:
+                D_800740A0 = Rand_Next() & 3;
+                Task_NextState2(arg0);
+            case 1:
+                break;
+            }
+            w->field_4 = -0x514;
+            w->field_8 = 0x2EE0;
+            w->field_10 = -0x578;
+            w->field_0 = 0;
+            w->field_C = 0;
+            w->field_14 = 0;
+            w->field_7E = 0xAA;
+            w->field_6C = (arg0->stateLevel1 - 10) * 0xA00 - 0xC80;
+            w->field_74 = -0x1400;
+            switch (D_800740A0) {
+            case 1:
+                w->field_7E = 0x38;
+                w->field_6C = (arg0->stateLevel1 - 10) * 0xA00 - 0xA00;
+                w->field_8 = 0x34BC;
+                break;
+            case 2:
+                w->field_4 = -0x1914;
+                w->field_6C = (arg0->stateLevel1 - 10) * 0xA00 - 0xA00;
+                w->field_74 = -0xF00;
+                w->field_8 = 0x34BC;
+                break;
+            }
+            if (arg0->stateLevel1 >= 13) {
+                w->field_7E = 0x800 - w->field_7E;
+                w->field_6C -= 0x1E00;
+                w->field_74 = -w->field_74;
+            }
+            break;
+        case 16:
+        case 17:
+        case 18:
+        case 19:
+        case 20:
+        case 21:
+            w->field_4 = -0x5DC;
+            w->field_8 = 0x2EE0;
+            w->field_0 = 0;
+            w->field_C = 0;
+            w->field_10 = -0x640;
+            w->field_14 = 0;
+            if (arg0->stateLevel1 < 19) {
+                w->field_7E = 0xAA;
+                w->field_6C = (arg0->stateLevel1 - 16) * 0xA00 - 0xA00;
+                w->field_74 = -0x1400;
+            } else {
+                w->field_7E = 0x755;
+                w->field_6C = (arg0->stateLevel1 - 19) * 0xA00 - 0xA00;
+                w->field_74 = 0x1400;
+            }
+            break;
+        case 25:
+            w->field_74 = -0x1400;
+            w->field_7E = 0x238;
+            w->field_4 = -0x1388;
+            w->field_8 = 0x3A98;
+            w->field_6C = 0;
+            w->field_70 = 0;
+            w->field_0 = 0;
+            w->field_C = 0;
+            w->field_10 = -0x3E8;
+            w->field_14 = 0;
+            break;
+        }
+        break;
+    case 2:
+    default:
+        break;
+    }
+}
 
 void func_80070C68(Actor *a0) {
     Stg30Work7343C *w = (Stg30Work7343C *)a0->work;

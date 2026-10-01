@@ -638,6 +638,10 @@ extern u16 D_8005F72A;  /* D_8005F6F0[0].pressed as a scalar reloc */
 extern Stg30Glob5D5A0 D_8005D5A0;
 extern s32 D_80073A20[12];
 extern Stg30State D_80073CC0;
+extern s16 D_80073408[];  /* camera goal x per party slot (func_800706BC) */
+extern s16 D_80073414[];  /* camera goal tables indexed by digimon height step */
+extern s16 D_80073428[];
+extern s32 D_800740A0;    /* random camera variant (0..3) */
 extern s32 D_80072FF0[];
 extern s32 D_80073008;
 extern s32 D_8007300C[];
