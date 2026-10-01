@@ -838,6 +838,13 @@ s32 func_8006CF54(Actor *a0);
 s32 func_8006D0E8(Actor *a0);
 Stg40Ent48 *func_800689E0(Stg40Ent48 *a0);
 s32 func_80071258(s32 i);
+/* Flood-fill queue entry in func_80070490's work buffer. */
+typedef struct {
+    /* 0x0 */ s16 x;
+    /* 0x2 */ s16 y;
+} Stg40FillPt;
+
+extern s32 D_800729C0[8]; /* 4 neighbour (dx, dy) pairs */
 void func_80070490(s32 buf, s32 a1, s32 x, s32 y, s32 flag);
 void func_80070754(void);
 

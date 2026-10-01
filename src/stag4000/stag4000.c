@@ -4174,7 +4174,51 @@ Stg40Cell *func_80070438(s32 x, s32 y) {
     return r;
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80070490);
+void func_80070490(s32 buf, s32 p1, s32 x, s32 y, s32 fill)
+{
+    Stg40Cell *grid = (Stg40Cell *)D_8005071C->field_E58;
+    s32 width = D_8005071C->field_E54->field_0;
+    s32 maxRun = 0;
+    s32 count;
+    s32 k;
+    s32 nx;
+    s32 ny;
+    s32 r;
+
+    if (!(func_800703E0(x, y) & 0x4000)) {
+        return;
+    }
+    count = 1;
+    ((Stg40FillPt *)buf)[0].x = x;
+    ((Stg40FillPt *)buf)[0].y = y;
+    grid[width * y + x].field_0 |= fill;
+    do {
+        if (maxRun < count) {
+            maxRun = count;
+        }
+        count--;
+        x = ((Stg40FillPt *)buf)[count].x;
+        y = ((Stg40FillPt *)buf)[count].y;
+        for (k = 0; k < 4; k++) {
+            nx = D_800729C0[k * 2] + x;
+            ny = D_800729C0[k * 2 + 1] + y;
+            r = func_800703E0(nx, ny);
+            if ((r & (fill | 0x8000)) != 0x8000) {
+                continue;
+            }
+            if (p1 != 0) {
+                grid[width * ny + nx].field_0 |= fill;
+            }
+            if (!(r & 0x4000)) {
+                continue;
+            }
+            grid[width * ny + nx].field_0 |= fill;
+            ((Stg40FillPt *)buf)[count].x = nx;
+            ((Stg40FillPt *)buf)[count].y = ny;
+            count++;
+        }
+    } while (count != 0);
+}
 
 s32 func_800706C8(void) {
     Stg40Blk5071C *b = D_8005071C;
