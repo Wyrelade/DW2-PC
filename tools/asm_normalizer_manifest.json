@@ -4462,5 +4462,13 @@
     "passes": [
       "nodiv"
     ]
+  },
+  "stag1000:func_80064CCC": {
+    "passes": [
+      "nosplit",
+      "epilogue_unfill",
+      "web_resched",
+      "padnop"
+    ]
   }
 }

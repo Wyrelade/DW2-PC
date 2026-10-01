@@ -580,7 +580,15 @@ s32 func_80064CB4(void) {
     return *D_8006539C;
 }
 
-INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_80064CCC);
+s32 func_80064CCC(char *msg) {
+    printf(D_8006339C, msg);
+    *D_8006539C = 0x80000000;
+    *D_80065370 = 0;
+    *D_8006537C = 0;
+    *D_8006537C;
+    *D_8006539C = 0x60000000;
+    return 0;
+}
 
 ASM_SOURCE("src/stag1000/asm/libpress", func_80064D50);
 
