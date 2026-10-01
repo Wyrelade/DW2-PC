@@ -4470,5 +4470,11 @@
       "web_resched",
       "padnop"
     ]
+  },
+  "stag4000:func_80063F00": {
+    "passes": [
+      "nodiv",
+      "load_remat"
+    ]
   }
 }

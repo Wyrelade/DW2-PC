@@ -76,7 +76,88 @@ INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80063A34);
 void func_80063EF8(void) {
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80063F00);
+s32 func_80063F00(Actor *arg0) {
+    Blk13 sp10;
+    Stg40Ent48 *e;
+    ActorWork *w = arg0->work;
+    s16 q;
+    s32 a0v;
+    s32 a1v;
+    s32 ret;
+    u8 **slot;
+
+    if (D_8005071C->field_1 == 0) {
+        return 0;
+    }
+    switch (D_8005071C->field_1) {
+    case 1:
+    default:
+        func_800721A8(Cd_GetFileEntry(0xE200003));
+        D_8005071C->field_2 = 1;
+        w->field_0 = 0x500;
+        e = D_8005071C->field_1018.field_0[0];
+        sp10 = D_80063384;
+        D_8005071C->field_103D = sp10.b[func_800703E0(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2) & 0xF];
+        slot = &e->field_10;
+        D_8005071C->field_103E = ((Stg40SlotInfo *)e->field_10)->field_E;
+        q = ((Stg40SlotInfo *)*slot)->field_C / (s16)((Stg40SlotInfo *)*slot)->field_E;
+        D_8005071C->field_1040 = q;
+        if ((s16)q >= 4) {
+            q = 3;
+        }
+        D_8005071C->field_1040 = q;
+        D_8005F794 = ((Stg40SlotInfo *)*slot)->field_0;
+        if (((Stg40SlotInfo *)*slot)->field_2 != 0) {
+            if (Flag_Test(0x88) != 0 && D_8005071C->field_1044.field_8 == 0x100) {
+                a0v = 0x101;
+                a1v = 1;
+            } else {
+                a0v = D_8005071C->field_1044.field_8;
+                a1v = D_8005071C->field_1044.field_A;
+            }
+        } else {
+            a0v = 0x200;
+            a1v = 1;
+        }
+        ret = 1;
+        Snd_PlayById(a0v, a1v);
+        Snd_PlayById(0x206, 0);
+        Task_SetState1(arg0, 3);
+        Gfx_FadeOutToBlack(8);
+        Cd_QueueFile(0x193);
+        break;
+
+    case 2:
+        func_800721A8(Cd_GetFileEntry(0xE200004));
+        w->field_0 = D_8005F788;
+        Task_SetState1(arg0, 3);
+        ret = 1;
+        D_8005071C->field_3 = D_8005071C->field_3 + ret;
+        break;
+
+    case 3:
+    case 4:
+        if (D_8005071C->field_6 == 0) {
+            w->field_0 = 0x301;
+            D_8005F770.field_24 = D_8005071C->field_7 ? 3 : 4;
+        } else if (!Flag_Test(0x81)) {
+            w->field_0 = 0x301;
+            D_8005F770.field_24 = D_8005071C->field_7 ? 3 : 4;
+        } else {
+            w->field_0 = 0x321;
+            D_8005F770.field_24 = D_8005071C->field_7 ? 2 : 3;
+        }
+        if (D_8005071C->field_7 != 0) {
+            func_800721A8(Cd_GetFileEntry(0xE200009));
+        } else {
+            func_800721A8(Cd_GetFileEntry(0xE200004));
+        }
+        ret = 1;
+        Task_SetState1(arg0, 3);
+        break;
+    }
+    return ret;
+}
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006424C);
 

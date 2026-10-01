@@ -199,8 +199,10 @@ typedef struct {
 typedef struct {
     /* 0x00 */ s16 field_0;
     /* 0x02 */ s16 field_2;
-    /* 0x04 */ s32 field_4;
-    /* 0x08 */ s32 field_8;
+    /* 0x04 */ s16 field_4;
+    /* 0x06 */ s16 field_6;
+    /* 0x08 */ s16 field_8;      /* sound id (func_80063F00) */
+    /* 0x0A */ s16 field_A;      /* sound arg (func_80063F00) */
     /* 0x0C */ s32 field_C;
     /* 0x10 */ s32 field_10;
 } Stg40Stage14;
@@ -251,7 +253,11 @@ typedef struct {
     /* 0xE7C */ u8 field_E7C[0x180];
     /* 0xFFC */ Stg40FFC field_FFC;
     /* 0x1018 */ Stg40List field_1018;
-    u8 _pad103C[0x08];
+    u8 _pad103C[0x01];
+    /* 0x103D */ u8 field_103D;
+    /* 0x103E */ u16 field_103E;
+    /* 0x1040 */ s16 field_1040;
+    u8 _pad1042[0x02];
     /* 0x1044 */ Stg40Stage14 field_1044; /* row of file 0xE20000A picked by field_1058 */
     /* 0x1058 */ s16 field_1058;
     u8 _pad105A[0x02];
@@ -653,6 +659,12 @@ typedef struct {
 
 /* main exe */
 extern Stg40Blk5071C *D_8005071C;
+
+/* 13-byte const table copied to a stack local (func_80063F00). */
+typedef struct { u8 b[13]; } Blk13;
+extern Blk13 D_80063384;
+extern s32 D_8005F788;
+extern s32 D_8005F794;
 extern GameStateView *D_80050720;
 extern s32 D_80050948[];
 extern s32 D_8005075C;
