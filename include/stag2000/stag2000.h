@@ -800,10 +800,13 @@ extern u8 D_8005E631;  /* D_8005E620 byte 0x11 as a scalar reloc */
 /* D_800709B0 viewed from its field_8 (func_8006CB58 addresses D_800709B0.field_54 as 0x4C from it). */
 typedef struct {
     /* 0x00 */ s32 field_0;
-    u8 _pad04[0x48];
+    u8 _pad04[0x44];
+    /* 0x48 */ s32 field_48; /* = D_80070A00 (func_8006BEDC addresses field_0 as -0x48 from it) */
     /* 0x4C */ s32 field_4C;
 } Stg20MenuSub;
 extern Stg20MenuSub D_800709B8;
+extern Halves D_80063594;
+extern Halves D_80063598;
 extern s32 D_8005F70C; /* D_8005F6F0[0].triangle as a scalar reloc */
 extern void Item_RemoveFromBag(s32 i);
 
