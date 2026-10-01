@@ -1411,7 +1411,56 @@ Stg40Ent48 *func_800689E0(Stg40Ent48 *a0) {
     return r;
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80068A54);
+s32 func_80068A54(Actor *task) {
+    Stg40ActWork *w = (Stg40ActWork *)task->work;
+    Stg40Ent48 *ent = w->field_2C;
+    Stg40Ent48 *other;
+    GameStateView *gs;
+    u16 dir;
+    s32 n;
+    s32 hp;
+    s32 state;
+    s32 ret;
+    Actor *child;
+
+    ret = 0;
+    if ((u32)((dir = func_800703E0(ent->field_18.u0.pair.field_0, ent->field_18.u0.pair.field_2) & 0xF) - 8) < 5) {
+        n = dir - 7;
+        if (func_8006E858(5) < n) {
+            n *= 50;
+            gs = D_80050720;
+            hp = gs->hp - n;
+            if (hp < 0) {
+                hp = ret;
+            }
+            gs->hp = hp;
+            Task_SetState1(task, 0xD);
+            return 1;
+        }
+    }
+    other = func_800689E0(ent);
+    if (other != NULL) {
+        child = other->field_14;
+        D_80072B60->field_3C = child;
+        D_80072B60->field_40 = other;
+        switch (other->field_8) {
+        default:
+            break;
+        case 8:
+            Task_SetState1(task, 0x16);
+            ret = 1;
+            break;
+        case 9:
+        case 10:
+        case 11:
+        case 12:
+            Task_SetState1(task, 0x10);
+            ret = 1;
+            break;
+        }
+    }
+    return ret;
+}
 
 s32 func_80068B8C(Actor *a0) {
     Stg40Ent48 *e = ((Stg40ActWork *)a0->work)->field_2C;
