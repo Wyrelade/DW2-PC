@@ -4229,7 +4229,26 @@ void func_8006E754(Actor *a) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006E9E8);
+s32 func_8006E9E8(s32 item)
+{
+    if (item < 0x2F) {
+        if (item == 0x2E) return 0;
+        if (item == item / 5 * 5) return 0;
+    } else if (item < 0x4A) {
+        if (item == 0x49) return 0;
+        { s32 n = item - 0x34;
+        if (n == n / 5 * 5) return 0; }
+    } else if (item < 0x63) {
+        if (item == 0x62) return 0;
+    } else if (item < 0x66) {
+        if (item == 0x65) return 0;
+    } else if (item < 0x6D) {
+        if (item == 0x6C) return 0;
+    } else if (item < 0x72) {
+        if (item == 0x6F) return 0;
+    }
+    return 1;
+}
 
 void func_8006EA90(Actor *a) {
     Stg20ItemWork *w = (Stg20ItemWork *)a->work;

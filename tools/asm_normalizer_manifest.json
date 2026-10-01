@@ -4476,5 +4476,10 @@
       "nodiv",
       "load_remat"
     ]
+  },
+  "stag2000:func_8006E9E8": {
+    "passes": [
+      "nodiv"
+    ]
   }
 }
