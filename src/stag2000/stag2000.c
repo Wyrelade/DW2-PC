@@ -3437,7 +3437,50 @@ void func_8006BC24(void) {
     Gfx_DrawParts((s32)p);
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006BC6C);
+void func_8006BC6C(Actor *a) {
+    s32 state = a->stateLevel0;
+    s32 *w = (s32 *)a->work;
+
+    switch (state) {
+    case 0:
+        Mem_FillWordsNeg1(w, 2);
+        Text_OpenById(w, 0x12B, 0, D_8006358C);
+        Text_OpenById(&w[1], 0x12C, 0, D_80063590);
+        Task_NextState0(a);
+        break;
+
+    case 1:
+        do {
+            s32 *p = &D_800709B8.field_48;
+
+            if (D_8005F6F0[0].right > 0) {
+                if (*p != 0) {
+                    break;
+                }
+                *p = state;
+                Snd_PlayById(0xC, 0);
+            } else if (D_8005F6F0[0].left > 0) {
+                if (*p == 0) {
+                    break;
+                }
+                *p -= 1;
+                Snd_PlayById(0xC, 0);
+            } else if (D_8005F6F0[0].triangle > 0) {
+                p[-18] = state;
+                Snd_PlayById(0xB, 0);
+                Task_SetState0(a, 3);
+            } else if (D_8005F6F0[0].cross > 0) {
+                p[-18] = 0;
+                Snd_PlayById(0xA, 0);
+                Task_SetState0(a, 3);
+            }
+        } while (0);
+        break;
+
+    case 2:
+        break;
+    }
+}
 
 void func_8006BDD0(Actor *a) {
     Text_CloseArray((s32 *)a->work, 2);
