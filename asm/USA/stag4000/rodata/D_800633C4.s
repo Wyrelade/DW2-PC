@@ -1,0 +1,9 @@
+
+nonmatching D_800633C4
+
+dlabel D_800633C4
+    /* 64 800633C4 00FB00FC */ .word 0xFC00FB00
+    /* 68 800633C8 000500FC */ .word 0xFC000500
+    /* 6C 800633CC 00FB0004 */ .word 0x0400FB00
+    /* 70 800633D0 00050004 */ .word 0x04000500
+enddlabel D_800633C4

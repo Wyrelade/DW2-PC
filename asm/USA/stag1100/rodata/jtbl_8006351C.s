@@ -1,0 +1,12 @@
+.align 3
+
+nonmatching jtbl_8006351C
+
+dlabel jtbl_8006351C
+    /* 1BC 8006351C D47D0680 */ .word .L80067DD4
+    /* 1C0 80063520 0C7F0680 */ .word .L80067F0C
+    /* 1C4 80063524 DC7D0680 */ .word .L80067DDC
+    /* 1C8 80063528 D47D0680 */ .word .L80067DD4
+    /* 1CC 8006352C 007E0680 */ .word .L80067E00
+    /* 1D0 80063530 00000000 */ .word 0x00000000
+enddlabel jtbl_8006351C

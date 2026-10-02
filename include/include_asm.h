@@ -18,6 +18,17 @@
             "\t.set at # maspsx-keep\n" \
         ); \
     }
+#if !defined(INCLUDE_RODATA)
+/* same for rodata: file-scope asm would land in front of every cc1 jump table */
+#define INCLUDE_RODATA(FOLDER, NAME) \
+    void __maspsx_include_asm_hack_rodata_##NAME() { \
+        __asm__( \
+            ".section .rodata # maspsx-keep\n" \
+            ".include \"" FOLDER "/" #NAME ".s\" # maspsx-keep\n" \
+            ".section .text # maspsx-keep\n" \
+        ); \
+    }
+#endif
 #endif
 #ifndef INCLUDE_ASM
 #define INCLUDE_ASM(FOLDER, NAME) \

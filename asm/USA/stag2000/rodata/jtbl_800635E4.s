@@ -1,0 +1,12 @@
+.align 3
+
+nonmatching jtbl_800635E4
+
+dlabel jtbl_800635E4
+    /* 284 800635E4 80F80680 */ .word .L8006F880
+    /* 288 800635E8 B4F80680 */ .word .L8006F8B4
+    /* 28C 800635EC E8F80680 */ .word .L8006F8E8
+    /* 290 800635F0 34F90680 */ .word .L8006F934
+    /* 294 800635F4 78F90680 */ .word .L8006F978
+    /* 298 800635F8 00000000 */ .word 0x00000000
+enddlabel jtbl_800635E4

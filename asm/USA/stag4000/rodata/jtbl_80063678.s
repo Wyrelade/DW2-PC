@@ -1,0 +1,11 @@
+.align 3
+
+nonmatching jtbl_80063678
+
+dlabel jtbl_80063678
+    /* 318 80063678 7CEC0680 */ .word .L8006EC7C
+    /* 31C 8006367C 84EC0680 */ .word .L8006EC84
+    /* 320 80063680 8CEC0680 */ .word .L8006EC8C
+    /* 324 80063684 8CEC0680 */ .word .L8006EC8C
+    /* 328 80063688 94EC0680 */ .word .L8006EC94
+enddlabel jtbl_80063678

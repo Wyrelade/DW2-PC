@@ -1,0 +1,13 @@
+.align 3
+
+nonmatching jtbl_800633F0
+
+dlabel jtbl_800633F0
+    /* 90 800633F0 304D0680 */ .word .L80064D30
+    /* 94 800633F4 504D0680 */ .word .L80064D50
+    /* 98 800633F8 704D0680 */ .word .L80064D70
+    /* 9C 800633FC 904D0680 */ .word .L80064D90
+    /* A0 80063400 B04D0680 */ .word .L80064DB0
+    /* A4 80063404 D04D0680 */ .word .L80064DD0
+    /* A8 80063408 F04D0680 */ .word .L80064DF0
+enddlabel jtbl_800633F0

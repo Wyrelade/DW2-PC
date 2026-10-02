@@ -1,0 +1,14 @@
+.align 3
+
+nonmatching jtbl_80063404
+
+dlabel jtbl_80063404
+    /* A4 80063404 E49F0680 */ .word .L80069FE4
+    /* A8 80063408 90A00680 */ .word .L8006A090
+    /* AC 8006340C 60A10680 */ .word .L8006A160
+    /* B0 80063410 9CA10680 */ .word .L8006A19C
+    /* B4 80063414 C0A10680 */ .word .L8006A1C0
+    /* B8 80063418 C8A20680 */ .word .L8006A2C8
+    /* BC 8006341C F8A30680 */ .word .L8006A3F8
+    /* C0 80063420 3CA40680 */ .word .L8006A43C
+enddlabel jtbl_80063404

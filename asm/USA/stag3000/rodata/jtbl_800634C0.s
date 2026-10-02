@@ -1,0 +1,11 @@
+.align 3
+
+nonmatching jtbl_800634C0
+
+dlabel jtbl_800634C0
+    /* 160 800634C0 D4860680 */ .word .L800686D4
+    /* 164 800634C4 0C870680 */ .word .L8006870C
+    /* 168 800634C8 BC870680 */ .word .L800687BC
+    /* 16C 800634CC 4C890680 */ .word .L8006894C
+    /* 170 800634D0 DC8A0680 */ .word .L80068ADC
+enddlabel jtbl_800634C0

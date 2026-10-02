@@ -1,0 +1,1256 @@
+#include "common.h"
+#include "stag3000/stag3000.h"
+#include "stag3000/stag3000_funcs.h"
+#include "stag3000/stag3000_100C_funcs.h"
+#include "stag3000/stag3000_41D0_funcs.h"
+#include "stag3000/stag3000_5980_funcs.h"
+#include "stag3000/stag3000_6A88_funcs.h"
+#include "stag3000/stag3000_96DC_funcs.h"
+#include "stag3000/stag3000_9F8C_funcs.h"
+#include "stag3000/stag3000_AF5C_funcs.h"
+#include "stag3000/stag3000_C918_funcs.h"
+
+#ifdef NORMALIZED
+void func_8006FFD0(Actor *a0) {
+    Stg30Work73358 *w = (Stg30Work73358 *)a0->work;
+    Stg30Part *p;
+    Stg30Part *q;
+    s32 k;
+
+    if (a0->stateLevel0 == 1 && a0->stateLevel1 == 0) {
+        p = (Stg30Part *)Cd_GetFileEntry(0x1A10008);
+        for (q = p; q->fileId != 0; q++) {
+            q->field_10 = w->field_0;
+            q->field_14 = w->field_2;
+            q->palette = w->field_4;
+            if (w->field_C == 0) {
+                switch (q->groupMask) {
+                case 0x10:
+                    q->visible = 0;
+                    break;
+                case 4:
+                    q->visible = ((u32)D_8005F770.frameCount >> 1) & 1;
+                    break;
+                case 8:
+                    q->visible = (((u32)D_8005F770.frameCount >> 1) ^ 1) & 1;
+                    break;
+                default:
+                    q->visible = 1;
+                    break;
+                }
+            } else {
+                switch (q->groupMask) {
+                case 4:
+                    q->visible = 0;
+                    break;
+                case 0x10:
+                    q->visible = ((u32)D_8005F770.frameCount >> 1) & 1;
+                    break;
+                case 0x20:
+                    q->visible = (((u32)D_8005F770.frameCount >> 1) ^ 1) & 1;
+                    break;
+                default:
+                    q->visible = 1;
+                    break;
+                }
+            }
+        }
+        Gfx_DrawParts((EntA0 *)p);
+    }
+    if (D_80073CC0.field_3D4 != 0) {
+        p = (Stg30Part *)Cd_GetFileEntry(0x1A1000B);
+        k = w->field_10;
+        if (D_80073CC0.field_2AC[k].field_0 != 3) {
+            k += 3;
+        }
+        for (q = p; q->fileId != 0; q++) {
+            if (q->groupMask & D_80073340[k]) {
+                q->visible = 1;
+                q->palette = w->field_8;
+            } else {
+                q->visible = 0;
+            }
+        }
+        Gfx_DrawParts((EntA0 *)p);
+    }
+}
+#else
+INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000_CC70", func_8006FFD0);
+void func_8006FFD0(Actor *a0);
+#endif
+
+void func_800701FC(void) {
+    Mem_Zero(&D_80073CC0, 0x3E0);
+    D_80073CC0.field_3D4 = 1;
+    if ((D_8005F770.prevGameMode & 0xFF00) == 0x300) {
+        D_8005D5A0.field_103D = 0;
+        D_8005D5A0.field_1040 = 0;
+        D_80073CC0.entries[0].field_0 = 1;
+    }
+    if (D_8005F770.field_24 == 0x97 && Flag_Test(0x88)) {
+        D_8005F770.field_24++;
+    }
+    D_80074098 = 4;
+}
+
+void func_800702A8(Actor *a0, Vec3 *args) {
+    ((Stg30WorkVec3 *)a0->work)->pos = *args;
+}
+
+void func_800702C8(Stg30TaskHead *a0) {
+    Stg30Work733F0 *w = (Stg30Work733F0 *)a0->work;
+    u8 param[8];
+    u8 mode[8];
+    u8 loc[8];
+    u8 res[8];
+    u8 res2[8];
+    s32 lba;
+    s32 r;
+
+    switch (a0->stateLevel0) {
+    case 0:
+    default:
+        switch (a0->stateLevel1) {
+        case 0:
+        default:
+            lba = Cd_GetFileLba(w->file) + D_800733C0[w->track - 1];
+            w->field_C = lba;
+            w->field_10 = lba + D_800733D8[w->track - 1];
+            param[0] = 1;
+            param[1] = w->channel;
+            CdControl(0xD, param, 0);
+            mode[0] = 0xC8;
+            CdControlB(0xE, mode, 0);
+            CdIntToPos(w->field_C, loc);
+            CdControlF(0x15, loc);
+            Task_NextState1((Actor *)a0);
+            break;
+        case 1:
+            switch (CdSync(1, res)) {
+            case 5:
+                Task_SetState0((Actor *)a0, 0);
+                break;
+            case 2:
+                Task_NextState0((Actor *)a0);
+                break;
+            }
+            break;
+        }
+        break;
+    case 1:
+        break;
+    case 2:
+        switch (a0->stateLevel1) {
+        case 0:
+        default:
+            CdIntToPos(w->field_C, res);
+            if (CdControl(0x1B, res, 0) == 1) {
+                Task_NextState1((Actor *)a0);
+            }
+            break;
+        case 1:
+            if (a0->field_24 & 0x1F) {
+                break;
+            }
+            switch (CdSync(1, res2)) {
+            case 5:
+                Task_SetState0((Actor *)a0, 3);
+                break;
+            case 2:
+                if (CdLastCom() == 0x11 && CdPosToInt(&res2[5]) >= w->field_10) {
+                    Task_SetState0((Actor *)a0, 3);
+                } else {
+                    CdControlF(0x11, 0);
+                }
+                break;
+            }
+            break;
+        }
+        break;
+    }
+}
+
+void func_800704FC(Actor *a0) {
+    CdControlF(9, 0);
+    Task_DefaultDestroy(a0);
+}
+
+s32 func_80070530(s32 a, s32 b) {
+    s32 neg = 0;
+    s32 r;
+    a -= b;
+    if (a == 0) {
+        return neg;
+    }
+    if (a < 0) {
+        neg = 1;
+        a = -a;
+    }
+    r = a / 16;
+    if (r == 0) {
+        r = 1;
+    }
+    if (neg) {
+        r = -r;
+    }
+    return r;
+}
+
+void func_80070588(Stg30Work7343C *w, Stg30CamGoal *g) {
+    s32 i;
+
+    for (i = 0; i < D_8005F770.frameDelta; i++) {
+        w->field_7E += func_80070530(g->field_0, w->field_7E);
+        w->field_0 += func_80070530(g->field_4, w->field_0);
+        w->field_4 += func_80070530(g->field_8, w->field_4);
+        w->field_8 += func_80070530(g->field_C, w->field_8);
+        w->field_10 += func_80070530(g->field_10, w->field_10);
+        w->field_6C += func_80070530(g->field_14, w->field_6C);
+        w->field_74 += func_80070530(g->field_18, w->field_74);
+    }
+}
+
+void func_800706BC(Actor *arg0) {
+    Stg30Work7343C *w = (Stg30Work7343C *)arg0->work;
+    s32 i;
+    s32 h;
+
+    switch (arg0->stateLevel0) {
+    case 0:
+        GsInitCoordinate2(0, &w->field_1C);
+        w->field_4 = -0x4E20;
+        w->field_10 = 0x12C;
+        w->field_18 = 0x5DC;
+        Task_NextState0(arg0);
+        break;
+    case 1:
+        switch (arg0->stateLevel1) {
+        case 0:
+        default:
+            switch (arg0->stateLevel2) {
+            case 0:
+            default:
+                w->field_4 += 0xE9;
+                w->field_8 -= 0x15E;
+                w->field_7E += 0x44;
+                if (w->field_7E > 0x1000) {
+                    w->field_7E = 0;
+                    Task_NextState2(arg0);
+                }
+                break;
+            case 1:
+                w->field_10 -= 0x21;
+                if (++arg0->stateLevel3 == 0x1E) {
+                    w->field_10 = -0x2BC;
+                    Task_NextState1(arg0);
+                }
+                break;
+            }
+            break;
+        case 1:
+            {
+                Stg30CamGoal g;
+
+                g.field_8 = -0x169B;
+                g.field_C = -0x5366;
+                g.field_14 = 0;
+                g.field_18 = 0;
+                g.field_0 = 0;
+                g.field_4 = 0;
+                g.field_10 = -0x2BC;
+                func_80070588(w, &g);
+            }
+            break;
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+            {
+                Stg30CamGoal g;
+
+                i = arg0->stateLevel1 - 2;
+                h = func_8001E79C(D_80073CC0.entries[i].field_19);
+                h = h < 0x300 ? 0 : h - 0x300;
+                h /= 256;
+                g.field_14 = (i % 3) * 0xA00 - 0xA00;
+                g.field_18 = (i / 3) * 0x2800 - 0x1400;
+                g.field_0 = D_80073408[i];
+                g.field_4 = 0;
+                g.field_8 = -0xC30;
+                g.field_C = D_80073414[h];
+                g.field_10 = D_80073428[h];
+                func_80070588(w, &g);
+            }
+            break;
+        case 8:
+            {
+                Stg30CamGoal g;
+
+                g.field_18 = -0x1400;
+                g.field_0 = 0x238;
+                g.field_8 = -0x91C;
+                g.field_C = 0x33FC;
+                g.field_14 = 0;
+                g.field_4 = 0;
+                g.field_10 = -0x36C;
+                func_80070588(w, &g);
+            }
+            break;
+        case 9:
+            {
+                Stg30CamGoal g;
+
+                g.field_18 = 0x1400;
+                g.field_0 = 0x5C7;
+                g.field_8 = -0x91C;
+                g.field_C = 0x33FC;
+                g.field_14 = 0;
+                g.field_4 = 0;
+                g.field_10 = -0x36C;
+                func_80070588(w, &g);
+            }
+            break;
+        case 22:
+            w->field_74 = -0x1E00;
+            w->field_4 = -0x1F40;
+            w->field_6C = 0;
+            w->field_7E = 0;
+            w->field_0 = 0;
+            w->field_8 = 0x4E20;
+            w->field_C = 0;
+            w->field_10 = 0;
+            w->field_14 = 0;
+            break;
+        case 23:
+            w->field_74 = 0x1E00;
+            w->field_7E = 0x800;
+            w->field_4 = -0x1F40;
+            w->field_6C = 0;
+            w->field_0 = 0;
+            w->field_8 = 0x4E20;
+            w->field_C = 0;
+            w->field_10 = 0;
+            w->field_14 = 0;
+            break;
+        case 24:
+            {
+                Stg30CamGoal g;
+
+                g.field_0 = -0x400;
+                g.field_8 = -0x50FB;
+                g.field_C = -0x6EC6;
+                g.field_14 = 0;
+                g.field_18 = 0;
+                g.field_4 = 0;
+                g.field_10 = -0x29C;
+                func_80070588(w, &g);
+            }
+            break;
+        case 10:
+        case 11:
+        case 12:
+        case 13:
+        case 14:
+        case 15:
+            switch (arg0->stateLevel2) {
+            case 0:
+            default:
+                D_800740A0 = Rand_Next() & 3;
+                Task_NextState2(arg0);
+            case 1:
+                break;
+            }
+            w->field_4 = -0x514;
+            w->field_8 = 0x2EE0;
+            w->field_10 = -0x578;
+            w->field_0 = 0;
+            w->field_C = 0;
+            w->field_14 = 0;
+            w->field_7E = 0xAA;
+            w->field_6C = (arg0->stateLevel1 - 10) * 0xA00 - 0xC80;
+            w->field_74 = -0x1400;
+            switch (D_800740A0) {
+            case 1:
+                w->field_7E = 0x38;
+                w->field_6C = (arg0->stateLevel1 - 10) * 0xA00 - 0xA00;
+                w->field_8 = 0x34BC;
+                break;
+            case 2:
+                w->field_4 = -0x1914;
+                w->field_6C = (arg0->stateLevel1 - 10) * 0xA00 - 0xA00;
+                w->field_74 = -0xF00;
+                w->field_8 = 0x34BC;
+                break;
+            }
+            if (arg0->stateLevel1 >= 13) {
+                w->field_7E = 0x800 - w->field_7E;
+                w->field_6C -= 0x1E00;
+                w->field_74 = -w->field_74;
+            }
+            break;
+        case 16:
+        case 17:
+        case 18:
+        case 19:
+        case 20:
+        case 21:
+            w->field_4 = -0x5DC;
+            w->field_8 = 0x2EE0;
+            w->field_0 = 0;
+            w->field_C = 0;
+            w->field_10 = -0x640;
+            w->field_14 = 0;
+            if (arg0->stateLevel1 < 19) {
+                w->field_7E = 0xAA;
+                w->field_6C = (arg0->stateLevel1 - 16) * 0xA00 - 0xA00;
+                w->field_74 = -0x1400;
+            } else {
+                w->field_7E = 0x755;
+                w->field_6C = (arg0->stateLevel1 - 19) * 0xA00 - 0xA00;
+                w->field_74 = 0x1400;
+            }
+            break;
+        case 25:
+            w->field_74 = -0x1400;
+            w->field_7E = 0x238;
+            w->field_4 = -0x1388;
+            w->field_8 = 0x3A98;
+            w->field_6C = 0;
+            w->field_70 = 0;
+            w->field_0 = 0;
+            w->field_C = 0;
+            w->field_10 = -0x3E8;
+            w->field_14 = 0;
+            break;
+        }
+        break;
+    case 2:
+    default:
+        break;
+    }
+}
+
+void func_80070C68(Actor *a0) {
+    Stg30Work7343C *w = (Stg30Work7343C *)a0->work;
+    Stg30RefView rv;
+
+    RotMatrixYXZ(&w->field_7C, &w->field_1C.coord);
+    w->field_1C.coord.t[0] = w->field_6C;
+    w->field_1C.coord.t[1] = w->field_70;
+    w->field_1C.coord.t[2] = w->field_74;
+    w->field_1C.flg = 0;
+    rv.field_0 = w->field_0;
+    rv.field_4 = w->field_4;
+    rv.field_8 = w->field_8;
+    rv.field_C = w->field_C;
+    rv.field_10 = w->field_10;
+    rv.field_14 = w->field_14;
+    rv.field_18 = 0;
+    rv.field_1C = &w->field_1C;
+    GsSetProjection(w->field_18);
+    GsSetRefView2(&rv);
+}
+
+void func_80070D14(u8 state) {
+    Actor *t = (Actor *)Task_FindFirst(0x503, -1, -1);
+
+    if (t != NULL && t->stateLevel0 == 1) {
+        Task_SetState1(t, state);
+    }
+}
+
+void func_80070D68(Actor *a0, Stg30Ref **args) {
+    ((Stg30Work734F8 *)a0->work)->ref = args[0];
+    a0->field_8 = args[0]->field_8;
+}
+
+void func_80070D8C(Stg30TaskHead *a0) {
+    Stg30Work734F8 *w = (Stg30Work734F8 *)a0->work;
+    TextOpenArgs args;
+    s32 v;
+
+    switch (a0->stateLevel0) {
+    case 0:
+        w->field_8 = 12;
+        Mem_FillWordsNeg1(w->text, 2);
+        Task_NextState0((Actor *)a0);
+        break;
+    case 1:
+        switch (a0->stateLevel1) {
+        case 0:
+        default:
+            if (a0->field_24 > D_80073454[a0->field_8] && w->field_4 != 0x1000) {
+                w->field_4 += 0x100;
+            }
+            if (w->field_4 == 0x1000) {
+                Task_NextState1((Actor *)a0);
+            }
+            break;
+        case 1:
+            args.text = (s32)D_80073D24[a0->field_8].name;
+            args.bigFont = 0;
+            args.color = 0;
+            args.x = D_8007346C[a0->field_8].x;
+            args.y = D_8007346C[a0->field_8].y;
+            args.charDelay = 8;
+            args.charAdvance = 0;
+            args.lineAdvance = 0;
+            Text_Open(&w->text[0], &args);
+            Task_NextState1((Actor *)a0);
+            break;
+        case 2:
+            v = D_80073CC0.field_2AC[a0->field_8].field_0;
+            if (v != 0) {
+                if (w->field_8 != 0) {
+                    w->field_8 -= 4;
+                } else {
+                    Text_OpenById(&w->text[1], D_80073484[v - 1], 0, D_8007348C[a0->field_8]);
+                }
+            } else if (w->field_8 != 12) {
+                w->field_8 += 4;
+                Text_Close(&w->text[1]);
+            }
+            break;
+        }
+        break;
+    case 2:
+        switch (a0->stateLevel1) {
+        case 0:
+        default:
+            switch (a0->stateLevel2) {
+            case 0:
+            default:
+                Text_CloseArray(w->text, 2);
+                Task_NextState2((Actor *)a0);
+                break;
+            case 1:
+                break;
+            }
+            break;
+        case 1:
+            Task_SetState01((Actor *)a0, 1, 1);
+            break;
+        }
+        break;
+    }
+}
+
+void func_8007100C(Actor *a0) {
+    Text_CloseArray(((Stg30Work734F8 *)a0->work)->text, 2);
+    Task_DefaultDestroy(a0);
+}
+
+#ifdef NORMALIZED
+void func_80071044(Stg30Part *p, s32 unit, s32 num, s32 den) {
+    s32 lv[4];
+    s32 masks[4];
+    s32 n;
+    s32 i;
+
+    if (num != 0) {
+        n = num * 40 / den;
+        if (n == 0) {
+            n = 1;
+        }
+    } else {
+        n = 0;
+    }
+    masks[0] = unit;
+    masks[1] = unit * 2;
+    masks[2] = unit * 4;
+    masks[3] = unit * 8;
+    if (n < 10) {
+        lv[0] = 10 - n;
+        lv[1] = 10;
+        lv[2] = 10;
+        lv[3] = 10;
+    } else if (n < 20) {
+        lv[0] = 0;
+        lv[1] = 20 - n;
+        lv[2] = 10;
+        lv[3] = 10;
+    } else if (n < 30) {
+        lv[0] = 0;
+        lv[1] = 0;
+        lv[2] = 30 - n;
+        lv[3] = 10;
+    } else {
+        lv[0] = 0;
+        lv[1] = 0;
+        lv[2] = 0;
+        lv[3] = 40 - n;
+    }
+    for (; p->fileId != 0; p++) {
+        for (i = 0; i < 4; i++) {
+            if (p->groupMask == masks[i]) {
+                p->palette = lv[3 - i];
+            }
+        }
+    }
+}
+#else
+INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000_CC70", func_80071044);
+void func_80071044(Stg30Part *p, s32 unit, s32 num, s32 den);
+#endif
+
+void func_8007118C(Actor *a0) {
+    Stg30Work734F8 *w = (Stg30Work734F8 *)a0->work;
+    Stg30Part *p;
+    Stg30Part *q;
+    Stg30DigiS *d;
+    s32 off;
+    s32 j;
+    s32 m;
+    s32 k;
+    s32 t;
+
+    if (a0->stateLevel0 != 2) {
+        p = (Stg30Part *)Cd_GetFileEntry(D_80073498[a0->field_8]);
+        off = 0;
+        for (q = p; q->fileId != 0; q++) {
+            j = 0;
+            m = q->groupMask;
+            for (; j < 6; j++) {
+                if (m & D_800734B0[j]) {
+                    if (D_80073CC0.field_31C[a0->field_8] & D_800734C8[j]) {
+                        q->x = D_800734E0[a0->field_8].x + off;
+                        off += 10;
+                        q->y = D_800734E0[a0->field_8].y;
+                        q->visible = 1;
+                    } else {
+                        q->visible = 0;
+                    }
+                }
+            }
+        }
+        for (q = p; q->fileId != 0; q++) {
+            t = w->field_4;
+            if (t != 0x1000) {
+                q->field_E = 0;
+                q->field_14 = w->field_4;
+            } else {
+                q->field_E = 1;
+                q->field_14 = t;
+            }
+            if (q->groupMask & 1) {
+                if (w->field_8 == 12) {
+                    q->visible = 0;
+                } else {
+                    q->visible = 1;
+                    q->y = w->field_8 + 0x55;
+                }
+            }
+        }
+        k = a0->field_8;
+        if (k < 3) {
+            Stg30DigiS *s = &D_80073CD8[k];
+
+            Gfx_SetPartsNumber((GfxPart *)p, 0x20, 3, s->maxHp);
+            Gfx_SetPartsNumber((GfxPart *)p, 0x40, 3, s->hp);
+            Gfx_SetPartsNumber((GfxPart *)p, 0x80, 3, s->maxMp);
+            Gfx_SetPartsNumber((GfxPart *)p, 0x100, 3, s->mp);
+            Gfx_SetPartsNumber((GfxPart *)p, 0x200, 2, s->level);
+        }
+        d = &D_80073CD8[a0->field_8];
+        if (a0->field_8 < 3) {
+            func_80071044(p, 0x400, d->hp, d->maxHp);
+            func_80071044(p, 0x4000, d->mp, d->maxMp);
+        } else {
+            func_80071044(p, 0x20, d->hp, d->maxHp);
+        }
+        Gfx_DrawParts((EntA0 *)p);
+    }
+}
+
+void func_80071470(Actor *a0, Stg30Pair *args) {
+    ((Stg30Work73718 *)a0->work)->pair = *args;
+}
+
+u8 *func_80071488(u8 *out, s32 n) {
+    u8 buf[8];
+    s32 i;
+    s32 lead;
+    s32 k;
+
+    for (i = 7; i != -1; i--) {
+        buf[i] = n % 10;
+        n /= 10;
+    }
+    lead = 1;
+    k = 0;
+    for (i = 0; i < 8; i++) {
+        if (!lead || buf[i] != 0) {
+            out[k++] = buf[i];
+            lead = 0;
+        }
+    }
+    out[k] = 0xFF;
+    return out;
+}
+
+void func_80071538(DigiRosterEntry *e) {
+    u16 *p;
+    s32 r;
+    s32 c;
+    s32 lv;
+    s32 k;
+    u16 t;
+
+    e->level = e->level + 1;
+    lv = e->level;
+    for (k = 0; k < 2; k++) {
+        if (k == 0) {
+            p = &e->maxHp;
+        } else {
+            p = &e->maxMp;
+        }
+        r = Rand_Next() & 3;
+        c = func_8001D9CC(e->digiId, k);
+        if (lv < 12) {
+            *p += D_80073510[0][c][r] + 10;
+        } else if (lv < 22) {
+            *p += D_80073510[1][c][r] + 6;
+        } else if (lv < 32) {
+            *p += D_80073510[2][c][r] + 4;
+        } else if (lv < 42) {
+            *p += D_80073510[3][c][r] + 2;
+        } else if (lv < 52) {
+            *p = *p + D_80073510[4][c][r];
+        } else {
+            *p = *p + D_80073510[5][c][r];
+        }
+        t = *p;
+        if ((s16)*p >= 1000) {
+            t = 999;
+        }
+        *p = t;
+    }
+    k = 1;
+    lv = e->level - (func_8001D958(e->digiId) * 10 + k);
+    for (k = 0; k < 2; k++) {
+        if (k == 0) {
+            p = (u16 *)&e->field_1C;
+        } else {
+            p = &e->field_1E;
+        }
+        r = Rand_Next() & 3;
+        c = func_8001D9CC(e->digiId, k + 2);
+        if (lv == 1) {
+            *p += D_800735A0[0][c][r] + 4;
+        } else if (lv < 4) {
+            *p += D_800735A0[1][c][r] + 3;
+        } else if (lv < 7) {
+            *p += D_800735A0[2][c][r] + 2;
+        } else if (lv < 11) {
+            *p += D_800735A0[3][c][r] + 1;
+        } else {
+            *p = *p + D_800735A0[4][c][r];
+        }
+        t = *p;
+        if ((s16)*p >= 1000) {
+            t = 999;
+        }
+        *p = t;
+    }
+    lv = e->field_20;
+    p = (u16 *)&e->field_20;
+    r = Rand_Next() & 3;
+    c = func_8001D9CC(e->digiId, 4);
+    if (lv < 21) {
+        *p += D_80073618[0][c][r] + 3;
+    } else if (lv < 51) {
+        *p += D_80073618[1][c][r] + 2;
+    } else if (lv < 101) {
+        *p += D_80073618[2][c][r] + 1;
+    } else {
+        *p = *p + D_80073618[3][c][r];
+    }
+    t = *p;
+    if ((s16)*p >= 1000) {
+        t = 999;
+    }
+    *p = t;
+    e->hp = e->maxHp;
+    e->mp = e->maxMp;
+}
+
+void func_8007191C(Actor *a0) {
+    Stg30Work73718 *w = (Stg30Work73718 *)a0->work;
+    Stg30TextArgs args;
+    Stg30TextRec *r;
+    s32 i;
+    s32 j;
+
+    switch (a0->stateLevel0) {
+    case 0:
+        Mem_FillWordsNeg1(w->text, 14);
+        for (i = 0; i < 3; i++) {
+            if (D_80073CC0.entries[i].field_2E != 0) {
+                D_80073CC0.entries[i].field_28 += w->pair.field_0;
+            }
+            w->field_18[i] = Digi_GetExpToNextLevel(D_80073CC0.entries[i].field_25, D_80073CC0.entries[i].field_27,
+                                                   D_80073CC0.entries[i].field_28);
+            if (w->field_18[i] == 0 && D_80073CC0.entries[i].field_2E != 0) {
+                D_80073CC0.field_34C[i] = 1;
+                func_80071538(&((Stg30StateDigis *)&D_80073CC0)->digis[i]);
+            } else {
+                D_80073CC0.field_34C[i] = 0;
+            }
+        }
+        D_8005E620.field_8 += w->pair.field_4;
+        if (D_8005E620.field_8 > 99999999) {
+            D_8005E620.field_8 = 99999999;
+        }
+        Task_NextState0(a0);
+        break;
+    case 1:
+        switch (a0->stateLevel1) {
+        case 0:
+        default:
+            for (j = 0; j < 14; j++) {
+                r = &D_80073690[j];
+                if (r->slot == 9 || D_80073CC0.entries[r->slot].field_19 != 0) {
+                    if (r->src < 3) {
+                        args.text = (s32)D_80073D24[r->src].name;
+                    } else {
+                        args.text = (s32)Cd_GetFileEntry(r->src | 0x1FD0000);
+                    }
+                    if (j == 7) {
+                        args.strArg0 = (s32)func_80071488(w->buf0, w->pair.field_0);
+                    }
+                    if (j == 13) {
+                        args.strArg0 = (s32)func_80071488(w->buf1, w->pair.field_4);
+                    }
+                    args.bigFont = r->bigFont;
+                    args.color = r->color;
+                    args.pos = r->pos;
+                    args.charAdvance = 0;
+                    args.lineAdvance = 0;
+                    args.charDelay = 0;
+                    Text_Open(&w->text[j], (TextOpenArgs *)&args);
+                }
+            }
+            Task_NextState1(a0);
+        case 1:
+            if (D_8005F704 > 0) {
+                Task_SetState0(a0, 3);
+            }
+            break;
+        }
+        break;
+    case 2:
+        break;
+    }
+}
+
+void func_80071BDC(Actor *a0) {
+    Text_CloseArray(((Stg30Work73718 *)a0->work)->text, 14);
+    Task_DefaultDestroy(a0);
+}
+
+void func_80071C14(Actor *a0) {
+    Stg30Work73718 *w = (Stg30Work73718 *)a0->work;
+    GfxPart *p;
+    s32 i;
+    s32 draw;
+
+    for (i = 0; i < 6; i++) {
+        draw = 1;
+        p = (GfxPart *)Cd_GetFileEntry(D_80073700[i]);
+        switch (i) {
+        case 0:
+        case 1:
+        case 2:
+            if (D_80073CC0.entries[i].field_19 == 0) {
+                draw = 0;
+                break;
+            }
+            if (D_80073CC0.field_34C[i] != 0) {
+                Gfx_HidePartsByMask((GfxPartMaskView *)p, 0);
+            } else {
+                Gfx_HidePartsByMask((GfxPartMaskView *)p, 0x10);
+            }
+            Gfx_SetPartsNumber(p, 1, 8, D_80073CC0.entries[i].field_28);
+            Gfx_SetPartsNumber(p, 4, 8, w->field_18[i]);
+            Gfx_SetPartsNumber(p, 8, 2, D_80073CC0.entries[i].field_25);
+            break;
+        case 4:
+            Gfx_SetPartsNumber(p, 1, 8, D_8005E620.field_8);
+            break;
+        }
+        if (draw) {
+            Gfx_DrawParts((EntA0 *)p);
+        }
+    }
+}
+
+void func_80071D70(Actor *a0, Stg30Init737A0 *args) {
+    Stg30Work737A0 *w = (Stg30Work737A0 *)a0->work;
+    s32 i;
+
+    w->field_0 = args->field_0;
+    for (i = 0; i < 12; i++) {
+        w->field_74[0][i] = args->field_4[i];
+    }
+    Snd_PlayById(0x2B, 0);
+}
+
+void func_80071DC4(Actor *a0) {
+    Stg30Work737A0 *w = (Stg30Work737A0 *)a0->work;
+    s32 row;
+    s32 col;
+    s32 k;
+    s32 *slot;
+    s32 item;
+    s32 id;
+    s32 scroll;
+
+    for (row = 0; row < 2; row++) {
+        scroll = w->field_B0[row];
+        for (col = 0; col < 10; col++) {
+            k = row * 10 + col;
+            slot = &w->texts[k];
+            Text_Close(slot);
+            item = w->field_74[row][col + scroll];
+            if (item != 0) {
+                Text_OpenPacked(slot, func_8001ED84(item), 0, D_80073730[k + 4]);
+            }
+        }
+    }
+    Text_Close(&w->field_70);
+    id = w->field_74[w->field_A4][w->field_B0[w->field_A4] + w->field_A8[w->field_A4]];
+    if (id != 0 && w->field_C8 == 0) {
+        Text_OpenPacked(&w->field_70, func_8001EDD4(id), 0, D_80073730[27]);
+        w->field_C0 = func_8001EE80(id);
+    } else {
+        w->field_C0 = 0;
+    }
+}
+
+void func_80071F9C(Actor *a0) {
+    Stg30Work737A0 *w = (Stg30Work737A0 *)a0->work;
+    s32 i;
+
+    for (i = 0; i < 3; i++) {
+        Text_Close(&w->text[i]);
+        if (w->field_C8 == 0 || w->field_C4 != i || !(a0->elapsed & 0x10)) {
+            s32 c;
+            if (w->field_C4 == i) c = 4; else c = 5;
+            Text_OpenById(&w->text[i], i + 0x188, c, D_80073730[i + 24]);
+        }
+    }
+}
+
+void func_80072080(Actor *a0, s32 row) {
+    Stg30Work737A0 *w = (Stg30Work737A0 *)a0->work;
+    s32 i;
+    s32 n;
+
+    i = 0;
+    n = i;
+    for (; i < 12; i++) {
+        if (w->field_74[row][i] != 0) {
+            w->field_74[row][n] = w->field_74[row][i];
+            if (i != n) {
+                w->field_74[row][i] = 0;
+            }
+            n++;
+        }
+    }
+    w->field_B8[row] = n;
+}
+
+INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000_CC70", func_800720E4);
+
+void func_800726E8(Actor *a0) {
+    Stg30Work737A0 *w = (Stg30Work737A0 *)a0->work;
+    GfxPart *p;
+    GfxPart *q;
+    s32 m;
+
+    p = (GfxPart *)Cd_GetFileEntry(0x1A1001B);
+    Gfx_DrawParts((EntA0 *)p);
+    p = (GfxPart *)Cd_GetFileEntry(0x1A1001C);
+    Gfx_DrawParts((EntA0 *)p);
+    p = (GfxPart *)Cd_GetFileEntry(0x1A1001D);
+    for (q = p; q->fileId != 0; q++) {
+        if (q->groupMask & 0x4000) {
+            if (w->field_C8 != 0) {
+                q->visible = 0;
+            } else {
+                q->visible = 1;
+                q->x = w->field_A4 != 0 ? 3 : -0x85;
+                q->y = w->field_A8[w->field_A4] * 11 - 0x15;
+                q->palette = Math_PingPongRange(a0->elapsed, 4, 0, 3);
+            }
+        }
+    }
+    Gfx_SetPartsNumber(p, 0x800, 3, w->field_C0);
+    Gfx_DrawParts((EntA0 *)p);
+    p = (GfxPart *)Cd_GetFileEntry(0x1A1001E);
+    m = (w->field_B0[0] == 0) << 1;
+    if (w->field_B0[0] + 10 >= w->field_B8[0]) {
+        m |= 8;
+    }
+    if (w->field_B0[1] == 0) {
+        m |= 0x20;
+    }
+    if (w->field_B0[1] + 10 >= w->field_B8[1]) {
+        m |= 0x80;
+    }
+    Gfx_HidePartsByMask((GfxPartMaskView *)p, m);
+    Gfx_DrawParts((EntA0 *)p);
+}
+
+void func_800728A0(Actor *a0, s32 *args) {
+    s32 idx = args[0];
+
+    ((Stg30Work737C8 *)a0->work)->index = idx;
+    a0->digiId = D_80073CC0.entries[idx].field_19;
+}
+
+void func_800728D8(Actor *a0, s32 a1) {
+    DigiRosterEntry *e = &D_8005F398;
+
+    Digi_InitFromTable(D_8005F794, ((Stg30WorkWord *)a0->work)->field_0 - 3, e);
+    if (a1 != 0) {
+        e->state = 1;
+    }
+}
+
+INCLUDE_RODATA("asm/USA/stag3000/rodata", jtbl_80063874);
+#ifdef NORMALIZED
+void func_8007292C(Actor *a0) {
+    Stg30Work737C8 *w = (Stg30Work737C8 *)a0->work;
+    Stg30GameRoster *g;
+    TaskEntry *t;
+    Stg30Pair args;
+    s32 i;
+    s32 cnt;
+    s32 n;
+    s32 j;
+    s32 *p;
+
+    p = (s32 *)a0->u34.children;
+
+    switch (a0->stateLevel0) {
+    case 0:
+        Mem_FillWordsNeg1(w->text, 2);
+        w->field_C = (Actor *)Task_FindFirst(0x509, -1, w->index);
+        Task_NextState0(a0);
+        break;
+    case 1:
+        switch (a0->stateLevel1) {
+        case 0:
+        default:
+            ((void (*)(s32))func_80070D14)(w->index + 2);
+            func_8006F640(w->field_C, 1);
+            a0->elapsed = 0;
+            Task_NextState1(a0);
+        case 1:
+            switch (a0->stateLevel2) {
+            case 0:
+            default:
+                if (a0->elapsed < 0x15) {
+                    break;
+                }
+                for (t = Task_FindFirst(0x509, -1, -1); t != NULL; t = Task_FindNext()) {
+                    if (t->field_8 < 3) {
+                        func_8006F640((Actor *)t, 0);
+                        func_8006F664((Actor *)t);
+                    }
+                }
+                Task_NextState2(a0);
+                break;
+            case 1:
+                if (a0->elapsed < 0x78) {
+                    break;
+                }
+                Task_SetState0(w->field_C, 2);
+                Task_SetState1(w->field_C, 0xB);
+                Task_NextState1(a0);
+                break;
+            }
+            break;
+        case 2:
+            switch (a0->stateLevel2) {
+            case 0:
+            default:
+                w->field_10 = 1;
+                Text_OpenPacked(&w->text[0], (s32)Digi_GetDefaultName(a0->digiId), 0, D_800737B8[0]);
+                Text_OpenPacked(&w->text[1], (s32)Cd_GetFileEntry(0x1FD018D), 0x81, D_800737B8[1]);
+                Flag_Set(0x10, 0);
+                Task_NextState2(a0);
+                break;
+            case 1:
+                if (!Flag_Test(0x10)) {
+                    break;
+                }
+                if (Flag_Test(0x11)) {
+                    Task_SetState1(a0, 8);
+                    break;
+                }
+                Task_SetState1(a0, 3);
+                break;
+            }
+            break;
+        case 3:
+            switch (a0->stateLevel2) {
+            case 0:
+            default:
+                cnt = 0;
+                for (j = 0; j < 0x24; j++) {
+                    if (D_8005E620.elems[j].state >= 2) {
+                        cnt++;
+                    }
+                }
+                n = D_800737C0[D_8005E650 - 0x2F] - D_8005071C->field_BA8;
+                if (n > 0 && cnt < n) {
+                    Task_SetState1(a0, 4);
+                    break;
+                }
+                Text_OpenPacked(&w->text[1], (s32)Cd_GetFileEntry(0x1FD018E), 0x81, D_800737B8[1]);
+                Task_NextState2(a0);
+                break;
+            case 1:
+                if (D_8005F704 <= 0) {
+                    break;
+                }
+                g = (Stg30GameRoster *)&D_8005E620;
+                if (g->field_4A == 0) {
+                    Task_SetState1(a0, 6);
+                    break;
+                }
+                if (g->field_61 != 0) {
+                    Task_SetState1(a0, 7);
+                    break;
+                }
+                cnt = 0;
+                for (i = 0; i < 0x24; i++) {
+                    if (g->elems[i].state == 1) {
+                        cnt++;
+                    }
+                }
+                if (cnt < 0x18) {
+                    Task_SetState1(a0, 5);
+                    break;
+                }
+                Text_OpenPacked(&w->text[1], (s32)Cd_GetFileEntry(0x1FD0190), 0x81, D_800737B8[1]);
+                Task_NextState2(a0);
+                break;
+            case 2:
+                if (D_8005F704 > 0) {
+                    Task_SetState1(a0, 8);
+                }
+                break;
+            }
+            break;
+        case 4:
+            p = (s32 *)a0->u34.children;
+            switch (a0->stateLevel2) {
+            case 0:
+            default:
+                w->field_10 = 0;
+                Text_Close(&w->text[0]);
+                Text_Close(&w->text[1]);
+                func_800728D8(a0, 0);
+                args.field_0 = 0;
+                args.field_4 = 0x23;
+                Task_Create(0x16, p, (s32)&args);
+                Task_NextState2(a0);
+                break;
+            case 1:
+                if (*p != 0) {
+                    break;
+                }
+                Digi_SortRoster();
+                Task_NextState0(a0);
+                break;
+            }
+            break;
+        case 5:
+            switch (a0->stateLevel2) {
+            case 0:
+            default:
+                Text_OpenPacked(&w->text[1], (s32)Cd_GetFileEntry(0x1FD018F), 0x81, D_800737B8[1]);
+                Flag_Set(0x10, 0);
+                Task_NextState2(a0);
+                break;
+            case 1:
+                if (!Flag_Test(0x10)) {
+                    break;
+                }
+                if (!Flag_Test(0x11)) {
+                    Task_NextState2(a0);
+                    break;
+                }
+                Task_SetState1(a0, 8);
+                break;
+            case 2:
+                w->field_10 = 0;
+                Text_Close(&w->text[0]);
+                Text_Close(&w->text[1]);
+                func_800728D8(a0, 1);
+                args.field_0 = 0;
+                args.field_4 = 0x23;
+                Task_Create(0x16, p, (s32)&args);
+                Task_NextState2(a0);
+                break;
+            case 3:
+                if (*p != 0) {
+                    break;
+                }
+                Digi_SortRoster();
+                Task_NextState0(a0);
+                break;
+            }
+            break;
+        case 7:
+            switch (a0->stateLevel2) {
+            case 0:
+            default:
+                Text_OpenPacked(&w->text[1], (s32)Cd_GetFileEntry(0x1FD0191), 0x81, D_800737B8[1]);
+                Task_NextState2(a0);
+                break;
+            case 1:
+                if (D_8005F704 > 0) {
+                    Task_SetState1(a0, 8);
+                }
+                break;
+            }
+            break;
+        case 6:
+        case 8:
+            switch (a0->stateLevel2) {
+            case 0:
+            default:
+                Snd_PlayById(0x1C, 0);
+                Text_OpenPacked(&w->text[1], (s32)Cd_GetFileEntry(0x1FD0192), 0x81, D_800737B8[1]);
+                Task_NextState2(a0);
+            case 1:
+                if (D_8005F704 > 0) {
+                    Task_NextState0(a0);
+                }
+                break;
+            }
+            break;
+        }
+        break;
+    case 2:
+        Text_CloseArray(w->text, 2);
+        Task_NextState0(a0);
+        break;
+    }
+}
+#else
+INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000_CC70", func_8007292C);
+void func_8007292C(Actor *a0);
+#endif
+
+void func_80072F84(Actor *a0) {
+    if (((Stg30Work737C8 *)a0->work)->field_10 != 0) {
+        Gfx_DrawParts(Cd_GetFileEntry(0x1A10017));
+    }
+}

@@ -1,0 +1,9 @@
+
+.align 2
+nonmatching D_80010C70
+
+dlabel D_80010C70
+    /* 1470 80010C70 */ .asciz "Access Denied. : file already open.\n"
+    /* 4163636573732044656E6965642E203A2066696C6520616C7265616479206F70656E2E0A00000000 */
+.align 2
+enddlabel D_80010C70

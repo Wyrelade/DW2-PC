@@ -1,10 +1,4 @@
 {
-  "Text_SetInputPad": {
-    "passes": []
-  },
-  "Text_SetOtLayer": {
-    "passes": []
-  },
   "func_80020E00": {
     "passes": [
       "commutative_swap",
@@ -17,18 +11,12 @@
       "padnop"
     ]
   },
-  "Digi_InitFromTable": {
-    "passes": []
-  },
   "Gpu_SetLayerOtPtrs": {
     "passes": [
       "web_realloc",
       "sched_match",
       "padnop"
     ]
-  },
-  "Text_IsFinished": {
-    "passes": []
   },
   "Task_FindNext": {
     "passes": [
@@ -37,16 +25,10 @@
       "padnop"
     ]
   },
-  "Menu_ItemUseDraw": {
-    "passes": []
-  },
   "Menu_ItemDraw": {
     "passes": [
       "web_realloc"
     ]
-  },
-  "func_8001DDA8": {
-    "passes": []
   },
   "Digi_GetExpToNextLevel": {
     "passes": [
@@ -81,24 +63,6 @@
       "sched_match"
     ]
   },
-  "Snd_SetSlotContent": {
-    "passes": []
-  },
-  "Digi_ListByState": {
-    "passes": []
-  },
-  "Math_CycleRange": {
-    "passes": []
-  },
-  "Math_PingPongRange": {
-    "passes": []
-  },
-  "Menu_OpenItemNameTexts": {
-    "passes": []
-  },
-  "Menu_ItemUseTask": {
-    "passes": []
-  },
   "Menu_NameEntryDrawParts": {
     "passes": [
       "reg_realloc"
@@ -111,27 +75,6 @@
       "fallthrough_fill"
     ]
   },
-  "func_8001D9CC": {
-    "passes": []
-  },
-  "Item_Use": {
-    "passes": []
-  },
-  "Item_UseStatBoost": {
-    "passes": []
-  },
-  "func_800224EC": {
-    "passes": []
-  },
-  "func_8002254C": {
-    "passes": []
-  },
-  "Snd_ServiceSlotLoads": {
-    "passes": []
-  },
-  "Menu_SubMenuTask": {
-    "passes": []
-  },
   "Menu_BuildDigiList": {
     "passes": [
       "nosplit",
@@ -142,12 +85,6 @@
       "padnop"
     ]
   },
-  "func_800188BC": {
-    "passes": []
-  },
-  "Gfx_HidePartsByMask": {
-    "passes": []
-  },
   "Menu_ConfirmMultiPick": {
     "passes": [
       "web_realloc",
@@ -155,15 +92,6 @@
       "commutative_swap",
       "padnop"
     ]
-  },
-  "func_8001EEA4": {
-    "passes": []
-  },
-  "Menu_NameEntryGetChar": {
-    "passes": []
-  },
-  "Flag_TestConds": {
-    "passes": []
   },
   "Menu_NameEntryTask": {
     "passes": [
@@ -203,9 +131,6 @@
       "padnop"
     ]
   },
-  "func_800153F4": {
-    "passes": []
-  },
   "func_8001204C": {
     "passes": [
       "web_realloc"
@@ -228,9 +153,6 @@
       "web_realloc"
     ]
   },
-  "Menu_ItemTask": {
-    "passes": []
-  },
   "func_80011854": {
     "passes": [
       "la_copy",
@@ -241,9 +163,6 @@
       "sched_match",
       "padnop"
     ]
-  },
-  "func_80014F78": {
-    "passes": []
   },
   "Gfx_DrawWireQuads": {
     "passes": [
@@ -311,12 +230,6 @@
       "padnop"
     ]
   },
-  "stag1100:func_80064B00": {
-    "passes": []
-  },
-  "stag1100:func_80068058": {
-    "passes": []
-  },
   "stag0000:func_800668D4": {
     "passes": [
       "nosr",
@@ -331,72 +244,6 @@
       "ra_restore_sink"
     ]
   },
-  "stag1100:func_80064C64": {
-    "passes": []
-  },
-  "stag1100:func_80065318": {
-    "passes": []
-  },
-  "stag1100:func_800660F0": {
-    "passes": []
-  },
-  "stag1100:func_80066C48": {
-    "passes": []
-  },
-  "stag1100:func_80067938": {
-    "passes": []
-  },
-  "stag1100:func_80067B54": {
-    "passes": []
-  },
-  "stag1100:func_80067880": {
-    "passes": []
-  },
-  "stag3500:func_80065B88": {
-    "passes": []
-  },
-  "stag2000:func_8006F360": {
-    "passes": []
-  },
-  "stag0000:func_80063A74": {
-    "passes": []
-  },
-  "stag0000:func_800669F4": {
-    "passes": []
-  },
-  "stag0000:func_80067120": {
-    "passes": []
-  },
-  "stag0000:func_80067428": {
-    "passes": []
-  },
-  "stag0000:func_80067BAC": {
-    "passes": []
-  },
-  "stag4000:func_8006C7CC": {
-    "passes": []
-  },
-  "stag4000:func_80065278": {
-    "passes": []
-  },
-  "stag3500:func_80066C00": {
-    "passes": []
-  },
-  "stag3500:func_80066EBC": {
-    "passes": []
-  },
-  "stag3500:func_80068D34": {
-    "passes": []
-  },
-  "stag3500:func_800699FC": {
-    "passes": []
-  },
-  "stag3500:func_80063758": {
-    "passes": []
-  },
-  "stag3500:func_80064CB8": {
-    "passes": []
-  },
   "stag3500:func_80063F38": {
     "passes": [
       "taken_fill"
@@ -409,53 +256,20 @@
       "selfmove_nop"
     ]
   },
-  "stag4000:func_8006755C": {
-    "passes": []
-  },
   "stag4000:func_8006D418": {
     "passes": [
       "web_realloc"
     ]
-  },
-  "stag4000:func_800707D0": {
-    "passes": []
-  },
-  "stag3000:func_8006FA28": {
-    "passes": []
   },
   "stag3000:func_80071044": {
     "passes": [
       "nodiv"
     ]
   },
-  "stag3000:func_8006D2EC": {
-    "passes": []
-  },
-  "stag3000:func_80069DE8": {
-    "passes": []
-  },
   "stag3000:func_8006FFD0": {
     "passes": [
       "web_realloc"
     ]
-  },
-  "stag2000:func_80065960": {
-    "passes": []
-  },
-  "stag3000:func_800672B0": {
-    "passes": []
-  },
-  "stag3000:func_8006EC94": {
-    "passes": []
-  },
-  "stag4000:func_8006EBF4": {
-    "passes": []
-  },
-  "stag4000:func_80071608": {
-    "passes": []
-  },
-  "stag4000:func_8006B20C": {
-    "passes": []
   },
   "stag2000:func_8006C6F0": {
     "passes": [
@@ -512,86 +326,26 @@
       "web_realloc"
     ]
   },
-  "stag3000:func_8007118C": {
-    "passes": []
-  },
-  "stag3000:func_800692A4": {
-    "passes": []
-  },
-  "stag3000:func_80069A44": {
-    "passes": []
-  },
-  "stag3000:func_80068E34": {
-    "passes": []
-  },
-  "stag3000:func_8006D4D8": {
-    "passes": []
-  },
   "stag3000:func_80064B30": {
     "passes": [
       "web_realloc",
       "sched_match"
     ]
   },
-  "stag3000:func_80066DB0": {
-    "passes": []
-  },
   "stag3000:func_80065594": {
     "passes": [
       "web_realloc"
     ]
-  },
-  "stag4000:func_8006A848": {
-    "passes": []
-  },
-  "stag4000:func_8006CF54": {
-    "passes": []
-  },
-  "stag4000:func_8007142C": {
-    "passes": []
-  },
-  "stag4000:func_8006BDEC": {
-    "passes": []
-  },
-  "stag4000:func_8006CD1C": {
-    "passes": []
-  },
-  "stag4000:func_8006CAD4": {
-    "passes": []
-  },
-  "stag4000:func_8006D4E0": {
-    "passes": []
   },
   "stag4000:func_8006DB68": {
     "passes": [
       "web_realloc"
     ]
   },
-  "stag4000:func_8006B420": {
-    "passes": []
-  },
-  "stag4000:func_8006C84C": {
-    "passes": []
-  },
-  "stag4000:func_8006AF34": {
-    "passes": []
-  },
-  "stag2000:func_8006F730": {
-    "passes": []
-  },
-  "stag2000:func_800650BC": {
-    "passes": []
-  },
-  "stag2000:func_80064008": {
-    "passes": []
-  },
   "stag3000:func_8007292C": {
     "passes": [
       "sched_match"
     ]
-  },
-  "stag3000:func_800644D4": {
-    "passes": []
   },
   "stag3000:func_800676F4": {
     "passes": [
@@ -602,31 +356,10 @@
       "sched_match"
     ]
   },
-  "stag3000:func_80063C44": {
-    "passes": []
-  },
-  "stag3000:func_8006DB90": {
-    "passes": []
-  },
-  "stag3000:func_8006CB8C": {
-    "passes": []
-  },
-  "stag3000:func_80067F2C": {
-    "passes": []
-  },
-  "stag4000:func_8006D0E8": {
-    "passes": []
-  },
-  "stag4000:func_80071310": {
-    "passes": []
-  },
   "stag2000:func_800688E4": {
     "passes": [
       "web_realloc"
     ]
-  },
-  "stag3000:func_8006FC78": {
-    "passes": []
   },
   "func_80066720": {
     "passes": [
@@ -664,32 +397,11 @@
       "selfmove_respill"
     ]
   },
-  "stag4000:func_8006EA84": {
-    "passes": []
-  },
   "stag0000:func_80065E24": {
     "passes": [
       "web_realloc",
       "sched_pre"
     ]
-  },
-  "stag4000:func_800722B8": {
-    "passes": []
-  },
-  "stag3500:func_80065BE0": {
-    "passes": []
-  },
-  "stag4000:func_800678D8": {
-    "passes": []
-  },
-  "stag4000:func_80063F00": {
-    "passes": []
-  },
-  "stag3000:func_800706BC": {
-    "passes": []
-  },
-  "stag3000:func_8006EF50": {
-    "passes": []
   },
   "stag4000:func_8006F3F4": {
     "passes": [
@@ -702,23 +414,11 @@
       "commutative_swap"
     ]
   },
-  "stag4000:func_80065890": {
-    "passes": []
-  },
-  "stag4000:func_800682DC": {
-    "passes": []
-  },
-  "stag3000:func_8006B950": {
-    "passes": []
-  },
   "func_8006571C": {
     "passes": [
       "web_realloc",
       "sched_match"
     ]
-  },
-  "func_8006EE24": {
-    "passes": []
   },
   "func_8006424C": {
     "passes": [

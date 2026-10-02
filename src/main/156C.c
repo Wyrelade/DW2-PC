@@ -11,6 +11,7 @@ extern TaskDesc **D_80040D50[];
 
 ASM_SOURCE("src/main/asm/crt0", func_80010D6C);
 
+INCLUDE_RODATA("asm/USA/main/rodata", D_80010000);
 void func_80010D74(void) {
 }
 

@@ -56,5 +56,8 @@ segments:
     subsegments:
       - [0x0, rodata, stag0000_rodata]
       - [0x714, c, stag0000]
+      - [0x1AE4, c, stag0000_1AE4]
+      - [0x39F0, c, stag0000_39F0]
+      - [0x4668, c, stag0000_4668]
       - [0x5728, data, stag0000_data]
   - [0x6018]

@@ -1,0 +1,11 @@
+.align 3
+
+nonmatching jtbl_800637F8
+
+dlabel jtbl_800637F8
+    /* 498 800637F8 58FD0680 */ .word .L8006FD58
+    /* 49C 800637FC 7CFD0680 */ .word .L8006FD7C
+    /* 4A0 80063800 A4FD0680 */ .word .L8006FDA4
+    /* 4A4 80063804 D4FD0680 */ .word .L8006FDD4
+    /* 4A8 80063808 18FE0680 */ .word .L8006FE18
+enddlabel jtbl_800637F8

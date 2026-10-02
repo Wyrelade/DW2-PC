@@ -1,0 +1,81 @@
+#ifndef STAG3500_2334_FUNCS_H
+#define STAG3500_2334_FUNCS_H
+
+/* Functions src/stag3500/stag3500_2334.c defines or declares, for the units after it
+ * (in the single file the definition was the prototype for later code). */
+void func_80065694(Actor *arg0);
+void func_800656D0(Stg35TextHandle *arg0);
+void func_80065718(Stg35TextHandle *arg0);
+void func_80065760(Stg35TextHandle *arg0, s32 arg1, s32 arg2, s32 arg3);
+void func_800657A0(Stg35LoadHandle *arg0, s32 arg1);
+void func_800657AC(Stg35LoadHandle *arg0, s32 arg1);
+void func_800657B8(Stg35TextHandle *arg0, s32 arg1);
+void func_800657F0(Stg35TextHandle *arg0, s32 arg1);
+void func_80065824(Stg35TextHandle *arg0);
+void func_80065894(Stg35TextHandle *arg0);
+void func_800658B8(Stg35SpriteHandle *arg0);
+void func_800658F4(Stg35SpriteHandle *arg0);
+void func_80065930(Stg35SpriteHandle *arg0);
+void func_80065B04(Stg35SpriteHandle *arg0, s32 arg1, s16 arg2, s16 arg3);
+void func_80065B1C(Stg35SpriteHandle *arg0, s32 arg1, u8 arg2, u8 arg3, u8 arg4);
+void func_80065B3C(Stg35SpriteHandle *arg0, s32 arg1);
+void func_80065B48(Stg35SpriteHandle *arg0, s32 arg1);
+void func_80065B54(Stg35SpriteHandle *arg0, s32 arg1);
+void func_80065B60(Stg35SpriteHandle *arg0, s32 arg1);
+void func_80065B6C(Stg35SpriteHandle *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4);
+s32 func_80065B88(s32 arg0, s32 arg1, s32 arg2);
+s32 func_80065BE0(s32 arg0, s32 arg1, s32 arg2);
+void func_80065D00(void);
+void func_80065D2C(s32 arg0, s32 arg1);
+void func_80065D84(s32 arg0);
+s32 func_80065DC8(s32 arg0);
+s32 func_80065E04(void);
+s32 func_80065E44(s32 arg0);
+void func_80065E60(void);
+void func_80065F8C(s32 arg0, s32 arg1);
+void func_80066120(Stg35LoadHandle *arg0);
+void func_80066168(Stg35LoadHandle *arg0);
+void func_800661A4(Stg35LoadHandle *arg0, s32 arg1);
+void func_800661B0(Stg35LoadHandle *arg0);
+void func_800663CC(Stg35LoadHandle *arg0, s32 arg1);
+void func_80066408(Stg35LoadHandle *arg0, s32 mask);
+void func_80066480(Stg35LoadHandle *arg0, s32 mask);
+void func_800664F4(Stg35LoadHandle *arg0);
+void func_80066508(Stg35LoadHandle *arg0);
+void func_80066520(Stg35LoadHandle *arg0, s32 mask, s32 v);
+void func_8006659C(Stg35LoadHandle *arg0, s32 mask, s32 v);
+void func_80066618(Stg35LoadHandle *arg0, s32 mask, s32 v);
+void func_80066694(Stg35LoadHandle *arg0, s32 idx, s32 mask, s32 v, s32 target, s32 speed);
+void func_80066778(Stg35LoadHandle *arg0, s32 arg1, s32 arg2, s32 arg3);
+void func_800667D0(Actor *arg0, s32 arg1);
+void func_80066808(Actor *arg0, Stg35Vec3 *arg1);
+void func_800668F8(Actor *arg0, s32 arg1);
+void func_80066A9C(Actor *arg0);
+void func_80066BC8(Actor *arg0);
+void func_80066C00(Actor *arg0, s32 arg1);
+void func_80066EBC(Actor *arg0);
+void func_800673C4(Actor *arg0);
+void func_800673E8(Actor *arg0);
+void func_800674D4(Actor *arg0, s32 arg1);
+void func_800674F8(Actor *arg0);
+void func_80067508(Actor *arg0, s32 arg1);
+void func_80067510(Actor *arg0);
+void func_8006768C(Actor *arg0);
+void func_800676E0(Actor *arg0);
+void func_80067720(void);
+void func_80067748(Actor *arg0, Stg35Vec3 *arg1);
+void func_80067768(Actor *arg0);
+void func_8006799C(Actor *arg0);
+void func_800679D0(Actor *arg0);
+void func_80067B18(Actor *arg0, s32 arg1);
+void func_80067C74(Actor *arg0, s32 arg1);
+void func_800689FC(Actor *arg0);
+void func_80068AA0(Actor *arg0);
+void func_80068B10(s32 arg0, s32 *arg1);
+s32 func_80068B9C(void);
+void func_80068BF8(void);
+s32 func_80068C5C(void);
+s32 func_80068CA0(s32 arg0);
+void func_80068D34(Actor *arg0);
+
+#endif /* STAG3500_2334_FUNCS_H */

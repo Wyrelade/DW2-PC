@@ -10,17 +10,20 @@ SECTIONS
         stag1100_RODATA_START = .;
         build/USA/asm/USA/stag1100/data/stag1100_rodata.rodata.s.o(.rodata);
         build/USA/src/stag1100/stag1100.c.o(.rodata);
+        build/USA/src/stag1100/stag1100_301C.c.o(.rodata);
         . = ALIGN(., 4);
         stag1100_RODATA_END = .;
         stag1100_RODATA_SIZE = ABSOLUTE(stag1100_RODATA_END - stag1100_RODATA_START);
         stag1100_TEXT_START = .;
         build/USA/src/stag1100/stag1100.c.o(.text);
+        build/USA/src/stag1100/stag1100_301C.c.o(.text);
         . = ALIGN(., 4);
         stag1100_TEXT_END = .;
         stag1100_TEXT_SIZE = ABSOLUTE(stag1100_TEXT_END - stag1100_TEXT_START);
         stag1100_DATA_START = .;
         build/USA/asm/USA/stag1100/data/stag1100_rodata.rodata.s.o(.data);
         build/USA/src/stag1100/stag1100.c.o(.data);
+        build/USA/src/stag1100/stag1100_301C.c.o(.data);
         build/USA/asm/USA/stag1100/data/stag1100_data.data.s.o(.data);
         . = ALIGN(., 4);
         stag1100_DATA_END = .;
@@ -33,6 +36,7 @@ SECTIONS
         stag1100_BSS_START = .;
         build/USA/asm/USA/stag1100/data/stag1100_rodata.rodata.s.o(.bss);
         build/USA/src/stag1100/stag1100.c.o(.bss);
+        build/USA/src/stag1100/stag1100_301C.c.o(.bss);
         . = ALIGN(., 4);
         stag1100_BSS_END = .;
         stag1100_BSS_SIZE = ABSOLUTE(stag1100_BSS_END - stag1100_BSS_START);

@@ -1,7 +1,11 @@
 #include "common.h"
 #include "main/game.h"
 #include "main/187C.h"
+#include "main/307C.h"
 #include "main/4BCC.h"
+#include "main/6530.h"
+#include "main/77DC.h"
+#include "main/E280.h"
 #include "main/12550.h"
 
 /* Small data this unit defines (retail reaches it with %gp_rel here). The bytes

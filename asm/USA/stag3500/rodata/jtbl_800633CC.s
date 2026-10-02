@@ -1,0 +1,12 @@
+.align 3
+
+nonmatching jtbl_800633CC
+
+dlabel jtbl_800633CC
+    /* 6C 800633CC 906C0680 */ .word .L80066C90
+    /* 70 800633D0 046D0680 */ .word .L80066D04
+    /* 74 800633D4 9C6D0680 */ .word .L80066D9C
+    /* 78 800633D8 006E0680 */ .word .L80066E00
+    /* 7C 800633DC 4C6E0680 */ .word .L80066E4C
+    /* 80 800633E0 00000000 */ .word 0x00000000
+enddlabel jtbl_800633CC

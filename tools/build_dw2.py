@@ -53,6 +53,11 @@ OVERLAYS = [
     ("stag4000", "2623a98843a5943269af3c06fc20cb54a3bd23ca"),
 ]
 OVERLAY_DIRS = [u for u, _ in OVERLAYS]
+# Units whose .rodata comes from their C objects (issue #5 E2.2): cc1 emits the jump
+# tables of decompiled functions, every other item is an INCLUDE_RODATA of the per-item
+# split tools/rodata_own.py writes to asm/USA/<unit>/rodata/. The unit's splat rodata
+# file is then assembled empty and no jump table is bound by the normalizer.
+RODATA_IN_C = {"main", "stag0000", "stag1100", "stag2000", "stag3000", "stag3500", "stag4000"}
 # Retail sizes that are not a multiple of 4 (the linker pads the image).
 OVERLAY_SIZES = {"stag2000": 0xDBEE}
 
@@ -226,8 +231,13 @@ def assemble_asm(as_bin, units=None):
     (those are pulled in by the C files' INCLUDE_ASM stubs)."""
     asm_root = os.path.join(ROOT, CONFIG["asm_dir"])
     count = 0
+    for u in sorted(RODATA_IN_C):
+        if units is None or u in units:
+            subprocess.run([sys.executable, os.path.join(ROOT, "tools", "rodata_own.py"), u, "--split"],
+                           cwd=ROOT, capture_output=True, text=True, check=True)
     for dirpath, _dirs, files in os.walk(asm_root):
-        if "nonmatchings" in dirpath.replace("\\", "/").split("/"):
+        parts = os.path.relpath(dirpath, asm_root).replace("\\", "/").split("/")
+        if "nonmatchings" in parts or (len(parts) > 1 and parts[1] == "rodata"):
             continue
         if dirpath != asm_root and not _in_units(dirpath, asm_root, units):
             continue
@@ -236,6 +246,20 @@ def assemble_asm(as_bin, units=None):
                 continue
             src = os.path.join(dirpath, name)
             obj = obj_for(src)
+            if parts[0] in RODATA_IN_C and name.endswith(".rodata.s"):
+                # the C objects carry this unit's .rodata; keep the object the
+                # linker script names, empty or with the PsyQ items only
+                import rodata_own
+                cwd = os.getcwd()
+                os.chdir(ROOT)
+                try:
+                    keep = rodata_own.keep_asm_text(parts[0])
+                finally:
+                    os.chdir(cwd)
+                stub = obj[:-2] + ".keep.s"
+                with open(stub, "w") as f:
+                    f.write(keep or '.section .rodata, "a"\n')
+                src = stub
             cmd = [as_bin] + AS_FLAGS + ["-I", CONFIG["include"], "-o", obj, src]
             if run(cmd) != 0:
                 print("BUILD FAILED: assembling %s" % os.path.relpath(src, ROOT))
@@ -322,6 +346,9 @@ def compile_c(cpp, cc1, as_bin, skip_asm=False, units=None, strict="off"):
                                 for k, v in manifest.items()
                                 if ":" not in k or k.split(":", 1)[0] == unit)
                 manifest = strict_manifest(manifest, strict)
+                if unit in RODATA_IN_C:
+                    # tables of decompiled functions stay where cc1 put them
+                    manifest = dict((k, v) for k, v in manifest.items() if v.get("passes"))
                 ctx["alt_s"] = {}
                 for flavor in asm_normalizer.alt_flavors(manifest):
                     alt_file = "%s.%s.s" % (stem, flavor)
@@ -466,6 +493,9 @@ def link_overlay(unit, want, ld_bin, objcopy_bin, skip_verify):
     size = OVERLAY_SIZES.get(unit)
     if size and len(img) > size and not img[size:].strip(b"\x00"):
         open(path, "wb").write(img[:size])
+    elif size and len(img) < size:
+        # splat drops the odd zero tail (.short 0) from the data asm: pad it back
+        open(path, "wb").write(img + b"\x00" * (size - len(img)))
     got = sha1(path)
     if got != want:
         print("%s: MISMATCH" % out)
@@ -479,10 +509,22 @@ def link_overlay(unit, want, ld_bin, objcopy_bin, skip_verify):
 def link_main(ld_bin, objcopy_bin, skip_verify):
     # Link: symbol script first so the auto hardware/kernel syms resolve.
     os.makedirs(os.path.join(ROOT, CONFIG["build_dir"]), exist_ok=True)
+    ld_script = CONFIG["ld_script"]
+    if "main" in RODATA_IN_C:
+        # game .rodata comes from the C objects; the asm rodata object keeps only the
+        # PsyQ items, which retail places after the game units: link it last
+        lines = open(os.path.join(ROOT, ld_script)).read().split("\n")
+        asm = [l for l in lines if "/asm/USA/main/data/" in l and l.strip().endswith(".rodata.s.o(.rodata);")]
+        assert len(asm) == 1, asm
+        lines.remove(asm[0])
+        last = max(i for i, l in enumerate(lines) if l.strip().endswith(".c.o(.rodata);"))
+        lines.insert(last + 1, asm[0])
+        ld_script = os.path.join(CONFIG["build_dir"], "main.rodata_in_c.ld")
+        open(os.path.join(ROOT, ld_script), "w").write("\n".join(lines))
     cmd = [
         ld_bin, "-EL",
         "-T", CONFIG["sym_script"],
-        "-T", CONFIG["ld_script"],
+        "-T", ld_script,
         "-Map", os.path.join(CONFIG["build_dir"], "main.map"),
         "-o", CONFIG["elf"],
         "--no-check-sections",

@@ -1,0 +1,13 @@
+.align 3
+
+nonmatching jtbl_800100C0
+
+dlabel jtbl_800100C0
+    /* 8C0 800100C0 BC6A0180 */ .word .L80016ABC
+    /* 8C4 800100C4 0C6B0180 */ .word .L80016B0C
+    /* 8C8 800100C8 C46B0180 */ .word .L80016BC4
+    /* 8CC 800100CC F06C0180 */ .word .L80016CF0
+    /* 8D0 800100D0 846D0180 */ .word .L80016D84
+    /* 8D4 800100D4 846E0180 */ .word .L80016E84
+    /* 8D8 800100D8 146F0180 */ .word .L80016F14
+enddlabel jtbl_800100C0

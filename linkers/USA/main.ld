@@ -25,7 +25,11 @@ SECTIONS
         build/USA/asm/USA/main/data/800.rodata.s.o(.rodata);
         build/USA/src/main/156C.c.o(.rodata);
         build/USA/src/main/187C.c.o(.rodata);
+        build/USA/src/main/307C.c.o(.rodata);
         build/USA/src/main/4BCC.c.o(.rodata);
+        build/USA/src/main/6530.c.o(.rodata);
+        build/USA/src/main/77DC.c.o(.rodata);
+        build/USA/src/main/E280.c.o(.rodata);
         build/USA/src/main/12550.c.o(.rodata);
         build/USA/src/main/12654.c.o(.rodata);
         build/USA/src/main/13584.c.o(.rodata);
@@ -36,7 +40,11 @@ SECTIONS
         main_TEXT_START = .;
         build/USA/src/main/156C.c.o(.text);
         build/USA/src/main/187C.c.o(.text);
+        build/USA/src/main/307C.c.o(.text);
         build/USA/src/main/4BCC.c.o(.text);
+        build/USA/src/main/6530.c.o(.text);
+        build/USA/src/main/77DC.c.o(.text);
+        build/USA/src/main/E280.c.o(.text);
         build/USA/src/main/12550.c.o(.text);
         build/USA/src/main/12654.c.o(.text);
         build/USA/src/main/13584.c.o(.text);
@@ -48,7 +56,11 @@ SECTIONS
         build/USA/asm/USA/main/data/800.rodata.s.o(.data);
         build/USA/src/main/156C.c.o(.data);
         build/USA/src/main/187C.c.o(.data);
+        build/USA/src/main/307C.c.o(.data);
         build/USA/src/main/4BCC.c.o(.data);
+        build/USA/src/main/6530.c.o(.data);
+        build/USA/src/main/77DC.c.o(.data);
+        build/USA/src/main/E280.c.o(.data);
         build/USA/src/main/12550.c.o(.data);
         build/USA/src/main/12654.c.o(.data);
         build/USA/src/main/13584.c.o(.data);
@@ -66,7 +78,11 @@ SECTIONS
         build/USA/asm/USA/main/data/800.rodata.s.o(.bss);
         build/USA/src/main/156C.c.o(.bss);
         build/USA/src/main/187C.c.o(.bss);
+        build/USA/src/main/307C.c.o(.bss);
         build/USA/src/main/4BCC.c.o(.bss);
+        build/USA/src/main/6530.c.o(.bss);
+        build/USA/src/main/77DC.c.o(.bss);
+        build/USA/src/main/E280.c.o(.bss);
         build/USA/src/main/12550.c.o(.bss);
         build/USA/src/main/12654.c.o(.bss);
         build/USA/src/main/13584.c.o(.bss);
