@@ -281,20 +281,36 @@ typedef struct {
 } Ent68DB8; /* size 8 */
 extern Ent68DB8 D_80068DB8[];
 
-/* Actor.work of func_80065E24. */
+/* Actor.work of func_80065E24 (also func_8006571C: the same dialog-cursor state). */
 typedef struct {
     /* 0x00 */ s32 field_0;
     /* 0x04 */ s32 field_4;
     /* 0x08 */ s32 field_8;
     /* 0x0C */ s32 field_C;
     /* 0x10 */ s32 field_10;
-    u8 _pad14[0x08];
+    /* 0x14 */ s32 field_14;
+    /* 0x18 */ s32 field_18;
     /* 0x1C */ s32 field_1C[14]; /* text handles */
-    u8 _pad54[0x08];
+    /* 0x54 */ s32 field_54;
+    /* 0x58 */ s32 field_58;
     /* 0x5C */ s32 field_5C;
     /* 0x60 */ s32 field_60;
     /* 0x64 */ s32 field_64;
 } Work65E24;
+
+/* Work65E24's leading 4 words (field_0..field_C) viewed as a slot array,
+ * indexed by field_8 (func_8006571C). */
+typedef union {
+    /* 0x00 */ s32 words[4];
+    /* 0x00 */ u8 bytes[16];
+} Work65E24Slots;
+
+extern void Text_CloseArray(s32 *arg0, s32 arg1);
+extern void func_800655FC(Actor *arg0);
+extern void Task_SetState2(Actor *arg0, u32 arg1);
+extern void Task_SetState4(Actor *arg0, u32 arg1);
+extern u8 D_80068DD8[][4];
+extern u8 D_80068DF4[][4];
 
 void func_80064064(u32 *arg0, u32 arg1);
 void func_800642BC(Actor *arg0, Stg00SelWork *arg1);

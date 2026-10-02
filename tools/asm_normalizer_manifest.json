@@ -4520,5 +4520,11 @@
       "nodiv",
       "web_realloc"
     ]
+  },
+  "func_8006571C": {
+    "passes": [
+      "web_realloc",
+      "sched_match"
+    ]
   }
 }

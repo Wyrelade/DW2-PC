@@ -615,7 +615,343 @@ void func_800655FC(Actor *arg0) {
     Text_Open(&w->field_18, &t);
 }
 
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_8006571C);
+void func_8006571C(Actor *arg0)
+{
+  Work65E24 *work;
+  Actor *cam;
+  Actor *s1;
+  s32 i;
+  s32 j;
+  s32 count;
+  s32 v0;
+  s32 v1;
+  work = (Work65E24 *) arg0->work;
+  if (arg0->stateLevel0 == 1)
+  {
+    goto state1;
+  }
+  if (arg0->stateLevel0 >= 2)
+  {
+    return;
+  }
+  if (arg0->stateLevel0 != 0)
+  {
+    return;
+  }
+  work->field_8 = 0;
+  work->field_0 = 0;
+  work->field_4 = 0;
+  work->field_C = 0;
+  work->field_54 = 1;
+  Mem_FillWordsNeg1(&work->field_14, 0x10);
+  func_800655FC(arg0);
+  Task_NextState0(arg0);
+  return;
+  state1:
+  {
+    switch (arg0->stateLevel1)
+    {
+      case 0:
+
+      default:
+        cam = (Actor *) func_80068930();
+        for (i = 0; i < D_8005F770.frameDelta; i++)
+      {
+        if (D_8005F6F0[0].right)
+        {
+          func_80068A44(cam, 0, 0x20, 0);
+        }
+        else
+          if (D_8005F6F0[0].left)
+        {
+          func_80068A44(cam, 0, -0x20, 0);
+        }
+        if (D_8005F6F0[0].up)
+        {
+          func_80068958(cam, 0, 0, -0x20);
+        }
+        else
+          if (D_8005F6F0[0].down)
+        {
+          func_80068958(cam, 0, 0, 0x20);
+        }
+        if (D_8005F6F0[0].triangle)
+        {
+          func_80068958(cam, 0, -0x20, 0);
+        }
+        else
+          if (D_8005F6F0[0].cross)
+        {
+          func_80068958(cam, 0, 0x20, 0);
+        }
+        if (D_8005F6F0[0].r1)
+        {
+          func_8006899C(cam, 0, -0x20, 0);
+        }
+        else
+          if (D_8005F6F0[0].l1)
+        {
+          func_8006899C(cam, 0, 0x20, 0);
+        }
+      }
+
+        if (D_8005F700 > 0)
+      {
+        ((Stg00ActorTimer *) arg0)->field_24 = 0;
+        Task_NextState1(arg0);
+      }
+        break;
+
+      case 1:
+        if ((work->field_C == 1) && (work->field_8 == 1))
+      {
+        if (D_8005F72C & 0x1000)
+        {
+          work->field_58 = work->field_8;
+          if (work->field_64 != 0)
+          {
+            work->field_64 -= 1;
+          }
+          else
+            if (work->field_5C != 0)
+          {
+            work->field_5C -= 1;
+          }
+        }
+        if (D_8005F72C & 0x4000)
+        {
+          work->field_58 = 0;
+          if (work->field_64 != 0xD)
+          {
+            work->field_64 += 1;
+          }
+          else
+            if (D_80068CE8[work->field_5C + 0xE] != 0)
+          {
+            work->field_5C += 1;
+          }
+        }
+        if (D_8005F72C & 0x8000)
+        {
+          for (i = 0; i < 0xE; i++)
+          {
+            if (work->field_58 != 0)
+            {
+              if (work->field_64 != 0)
+              {
+                work->field_64 -= 1;
+              }
+              else
+                if (work->field_5C != 0)
+              {
+                work->field_5C -= 1;
+              }
+            }
+            else
+              if (work->field_64 != 0xD)
+            {
+              work->field_64 += 1;
+            }
+            else
+              if (D_80068CE8[work->field_5C + 0xE] != 0)
+            {
+              work->field_5C += 1;
+            }
+          }
+
+        }
+      }
+        if (D_8005F6F0[0].up > 0)
+      {
+        if (((Work65E24Slots *) work)->words[work->field_8] != 0)
+        {
+          ((Work65E24Slots *) work)->words[work->field_8] -= 1;
+          goto clearElapsed1;
+        }
+      }
+      else
+        if (D_8005F6F0[0].down > 0)
+      {
+        if (work->field_8 == 0)
+        {
+          if (work->field_0 != 3)
+          {
+            work->field_0 += 1;
+            goto clearElapsed1;
+          }
+        }
+        else
+        {
+          v0 = D_80068DB8[work->field_C].field_4;
+          if (work->field_4 != v0)
+          {
+            work->field_4 += 1;
+            clearElapsed1:
+            arg0->elapsed = 0;
+
+          }
+        }
+      }
+        if (D_8005F6F0[0].right > 0)
+      {
+        if (work->field_8 == 1)
+        {
+          work->field_8 = 0;
+          goto clearElapsed2;
+        }
+      }
+      else
+      {
+        do
+        {
+          if (D_8005F6F0[0].left > 0)
+          {
+            if (work->field_8 == 0)
+            {
+              work->field_8 = 1;
+              clearElapsed2:
+              arg0->elapsed = 0;
+            }
+          }
+        }
+        while (0);
+      }
+        if (D_8005F708 > 0)
+      {
+        work->field_C += 1;
+        if (work->field_C == 4)
+        {
+          work->field_C = 0;
+        }
+        work->field_4 = 0;
+      }
+        if (D_8005F700 > 0)
+      {
+        if (work->field_8 != 0)
+        {
+          goto findFirstSection;
+        }
+        count = 1;
+        if (work->field_0 == 0)
+        {
+          count = 8;
+        }
+        if (work->field_0 == 3)
+        {
+          count = 8;
+        }
+        j = 0;
+        if (count != 0)
+        {
+          do
+          {
+            v1 = ((Work65E24Slots *) work)->words[work->field_8];
+            if (v1 < 0)
+            {
+              goto rangeElse;
+            }
+            if (v1 < 2)
+            {
+              goto rangeElse;
+            }
+            if (v1 < 4)
+            {
+              goto rangeThen;
+            }
+            rangeElse:
+            if (work->field_10 != 0)
+            {
+              v0 = work->field_10 - 1;
+            }
+            else
+            {
+              v0 = func_8001E938() - 1;
+            }
+
+            goto storeAndUse;
+            rangeThen:
+            v0 = func_8001E938() - 1;
+
+            v1 = work->field_10;
+            if (v0 == v1)
+            {
+              work->field_10 = 0;
+              goto useField10;
+            }
+            v0 = v1 + 1;
+            storeAndUse:
+            work->field_10 = v0;
+
+            useField10:
+            func_8001E8F4(work->field_10);
+
+            j++;
+          }
+          while (j < count);
+        }
+        do
+        {
+          func_800655FC(arg0);
+          goto afterD700;
+        }
+        while (0);
+        findFirstSection:
+        s1 = (Actor *) Task_FindFirst(0x105, -1, -1);
+
+        if (s1 != ((void *) 0))
+        {
+          switch (work->field_C)
+          {
+            case 0:
+              Task_SetState01(s1, 2, ((Work65E24Slots *) work)->bytes[work->field_8 * 4]);
+              break;
+
+            case 1:
+              Text_CloseArray(work->field_1C, 0xE);
+              Task_SetState01(s1, 2, 0xA);
+              Task_SetState4(s1, D_80068CE8[work->field_5C + work->field_64]);
+              break;
+
+            case 2:
+              Task_SetState01(s1, 2, 0xFF);
+              Task_SetState2(s1, D_80068DD8[work->field_4][0]);
+              break;
+
+            case 3:
+              Task_SetState01(s1, 2, 0xFF);
+              Task_SetState2(s1, D_80068DF4[work->field_4][0]);
+              break;
+
+          }
+
+          Task_SetState1(arg0, 0);
+        }
+        afterD700:
+        ;
+
+        ;
+      }
+        break;
+
+    }
+
+    if (D_8005F724 > 0)
+    {
+      s32 *ch;
+      work = (Work65E24 *) arg0->work;
+      ch = (s32 *) arg0->u34.children;
+      if (work->field_54 != 0)
+      {
+        Task_SetState01((Actor *) ch[0], 2, 8);
+        work->field_54 = 0;
+        return;
+      }
+      Task_SetState01((Actor *) ch[0], 2, 9);
+      work->field_54 = 1;
+    }
+  }
+
+}
 
 void func_80065E24(Actor *arg0) {
     s32 period;
