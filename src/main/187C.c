@@ -836,7 +836,6 @@ s32 Item_Use(s32 a0, s32 a1, s32 a2, s32 a3) {
 }
 
 
-#ifdef NORMALIZED
 u8 Menu_NameEntryGetChar(Actor *a0) {
     ActorWork *w;
     s32 base;
@@ -844,8 +843,8 @@ u8 Menu_NameEntryGetChar(Actor *a0) {
     u8 *p;
 
     w = a0->work;
-    base = w->field_C;
-    base += 0x1FD00D4;
+    base = 0x1FD00D4;
+    base += w->field_C;
     k = w->field_2C >= 10;
     if (w->field_2C >= 5) {
         k++;
@@ -853,10 +852,6 @@ u8 Menu_NameEntryGetChar(Actor *a0) {
     p = (u8 *)Cd_GetFileEntry(base + k);
     return p[w->field_2E * D_80040E38[k] + w->field_2C - D_80040E44[k]];
 }
-#else
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Menu_NameEntryGetChar);
-u8 Menu_NameEntryGetChar(Actor *a0);
-#endif
 
 
 void func_8001291C(Actor *a, Pair1291C *v) {

@@ -187,9 +187,7 @@
     ]
   },
   "Menu_NameEntryGetChar": {
-    "passes": [
-      "web_realloc"
-    ]
+    "passes": []
   },
   "Flag_TestConds": {
     "passes": [
