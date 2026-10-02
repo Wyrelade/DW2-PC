@@ -4519,12 +4519,12 @@ void func_8006ED24(Actor *a) {
     }
 }
 
-#ifdef NORMALIZED
 void func_8006EE24(Actor *task) {
     Stg20ItemWork *w = (Stg20ItemWork *) task->work;
     s32 state = task->stateLevel0;
     s32 children = task->u34.children;
     s32 sub;
+    s32 st2;
 
     if (state == 1) {
         goto case1;
@@ -4608,7 +4608,8 @@ void func_8006EE24(Actor *task) {
         goto text_update;
     f080:
         state = task->stateLevel2;
-        switch (state) {
+        st2 = state;
+        switch (st2) {
         default:
         case 0:
         w->msgArg = Item_GetNameText(w->recs[w->index].item + 1);
@@ -4630,7 +4631,7 @@ void func_8006EE24(Actor *task) {
         }
     f124:
         Snd_PlayById(0xB, 0);
-        w->dirty = state;
+        w->dirty = st2;
         w->msg = 0x17C;
         Task_SetState1(task, 0);
         goto text_update;
@@ -4639,7 +4640,7 @@ void func_8006EE24(Actor *task) {
         D_8005E620.field_8 -= w->recs[w->index].price;
         D_8005E620.itemCounts[D_800706D4[w->index]]++;
         func_8006EA90(task);
-        w->dirty = state;
+        w->dirty = st2;
         w->msg = 0x17F;
         Task_NextState2(task);
         goto text_update;
@@ -4660,10 +4661,6 @@ void func_8006EE24(Actor *task) {
         func_8006D2C0(&w->msgText, w->msg, D_800706A4[11], w->msgArg);
     }
 }
-#else
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006EE24);
-void func_8006EE24(Actor *task);
-#endif
 
 void func_8006F258(Actor *a) {
     Text_CloseArray((s32 *)a->work, 0xC);
