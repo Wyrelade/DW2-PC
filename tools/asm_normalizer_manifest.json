@@ -251,14 +251,6 @@
       "web_realloc"
     ]
   },
-  "stag2000:func_80063E38": {
-    "passes": [
-      "reg_realloc",
-      "save_slot",
-      "sched_match",
-      "block_iso"
-    ]
-  },
   "stag2000:func_8006EA90": {
     "passes": [
       "web_realloc"

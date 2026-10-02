@@ -154,51 +154,38 @@ void func_80063CDC(Actor *a) {
     }
 }
 
-#ifdef NORMALIZED
-void func_80063E38(Actor *a) {
-    Stg20LoadWork *w = (Stg20LoadWork *)a->work;
-    GfxPartPkt *p = (GfxPartPkt *)D_8005F770.packet.addr;
-    GfxPartOTag *ot = (GfxPartOTag *)D_8005F770.otLayers.addr[6];
-    GfxPartTexSlot *t;
-    s32 i;
-    s16 x;
-
-    i = 0;
-    while (i < 10) {
-        if (w->ids[i] != 0) {
-            t = (GfxPartTexSlot *)Gfx_FindOrLoadTexSlot(w->ids[i]);
-            p->s.c = *(Col1CE9C *)&D_8005074C;
-            p->s.tag.len = 4;
-            p->s.c.code = 0x64;
-            x = i * 64 - 0xA0;
-            p->s.x0 = x;
-            if (x >= -0xE0) {
-            if (x <= 0xA0) {
-                p->s.u0 = t->u;
-                p->s.w = 0x40;
-                p->s.y0 = -0x80;
-                p->s.v0 = 0;
-                p->s.h = 0xFF;
-                p->s.clut = (t->index + 0x1E0) << 6;
-                p->s.tag.addr = ot->addr;
-                ot->addr = (u32)p;
-                p = (GfxPartPkt *)(&p->s + 1);
-                p->t.tag.len = 1;
-                p->t.code = 0xE1000600 | (t->tpage & 0x9FF);
-                p->t.tag.addr = ot->addr;
-                ot->addr = (u32)p;
-                p = (GfxPartPkt *)(&p->t + 1);
-            }
-            }
+void func_80063E38(Actor *a)
+{
+  Stg20LoadWork *w = (Stg20LoadWork *) a->work;
+  GfxPartPkt *p = (GfxPartPkt *) D_8005F770.packet.addr;
+  GfxPartOTag *ot = (GfxPartOTag *) D_8005F770.otLayers.addr[6];
+  GfxPartTexSlot *t;
+  s32 i;
+  s16 x;
+  i = 0;
+  while (i < 10)
+  {
+    if (w->ids[i] != 0)
+    {
+      t = (GfxPartTexSlot *) Gfx_FindOrLoadTexSlot(w->ids[i]);
+      p->s.c = *((Col1CE9C *) (&D_8005074C));
+      p->s.tag.len = 4;
+      p->s.c.code = 0x64;
+      x = (i * 64) - 0xA0;
+      p->s.x0 = x;
+      if (x >= (-0xE0))
+      {
+        if (x <= 0xA0)
+        {
+ do { p->s.u0 = t->u; p->s.w = 0x40; p->s.y0 = -0x80; p->s.v0 = 0; p->s.h = 0xFF; p->s.clut = (t->index + 0x1E0) << 6; p->s.tag.addr = ot->addr; ot->addr = (u32) p; p = (GfxPartPkt *) ((&p->s) + 1); p->t.tag.len = 1; p->t.code = 0xE1000600 | (t->tpage & 0x9FF); p->t.tag.addr = ot->addr; ot->addr = (u32) p; p = (GfxPartPkt *) ((&p->t) + 1); } while (0);
         }
-        i++;
+      }
     }
-    D_8005F79C = (s32)p;
+    i++;
+  }
+
+  D_8005F79C = (s32) p;
 }
-#else
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80063E38);
-void func_80063E38(Actor *a);
-#endif
 
 void func_80064008(Actor *a) {
     Stg20CtrlWork *w = (Stg20CtrlWork *)a->work;
