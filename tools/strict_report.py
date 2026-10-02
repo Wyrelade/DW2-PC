@@ -97,7 +97,7 @@ def funcs_of(obj):
                 cur[-1].append((typ, sym))
     addr = sym_addrs(unit_of(obj))
     for v in res.values():
-        resolve_data_relocs(v, addr)
+        resolve_data_relocs(v, addr, rodata_range(unit_of(obj)))
     return {k: [(w[0], w[1]) for w in v] for k, v in res.items()}
 
 
@@ -123,7 +123,28 @@ def sym_addrs(unit):
     return _SYMS[unit]
 
 
-def resolve_data_relocs(v, addr):
+_RODATA = {}
+
+
+def rodata_range(unit):
+    """[lo, hi) vram of the unit's split .rodata subsegment (from its splat yaml)."""
+    if unit not in _RODATA:
+        y = "SLUS_011.93.yaml" if unit == "main" else unit + ".yaml"
+        t = open(os.path.join(ROOT, "configs", "USA", y)).read()
+        seg = re.search(r"- name: %s\b.*?start: (0x[0-9A-Fa-f]+).*?vram: (0x[0-9A-Fa-f]+)"
+                        r"(.*?)(?:\n  - |\Z)" % unit, t, re.S)
+        rng = (0, 0)
+        if seg:
+            start, vram = int(seg.group(1), 16), int(seg.group(2), 16)
+            subs = re.findall(r"- \[(0x[0-9A-Fa-f]+), (\w+)", seg.group(3))
+            for i, (off, kind) in enumerate(subs[:-1]):
+                if kind == "rodata":
+                    rng = (vram + int(off, 16) - start, vram + int(subs[i + 1][0], 16) - start)
+        _RODATA[unit] = rng
+    return _RODATA[unit]
+
+
+def resolve_data_relocs(v, addr, rodata=(0, 0)):
     """Data references compare by the address they resolve to, not by symbol name:
     splat names every referenced address (D_8005F774) while C reaches the same
     word as a struct field (D_8005F770 + 4). Linked bytes are identical either way.
@@ -158,7 +179,10 @@ def resolve_data_relocs(v, addr):
         else:
             full = (b + word) & 0xFFFFFFFF
             w[0] = 0
-        w[1] = w[1].replace("%s:%s;" % (typ, sym), "%s:@%08x;" % (typ, full))
+        # A literal or table in the split asm .rodata is the C object's own .rodata in a
+        # base build (layout differs, bytes do not): compare it like a .rodata section reloc.
+        key = "%s:.rodata;" % typ if rodata[0] <= full < rodata[1] else "%s:@%08x;" % (typ, full)
+        w[1] = w[1].replace("%s:%s;" % (typ, sym), key)
 
 
 def src_info():

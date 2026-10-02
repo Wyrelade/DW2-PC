@@ -5,101 +5,15 @@
       "operand_recolor"
     ]
   },
-  "func_8001C800": {
-    "passes": []
-  },
   "func_800143CC": {
     "passes": [
-      "nosplit",
       "delay_fill"
     ]
-  },
-  "Cd_PollRead": {
-    "passes": []
-  },
-  "Menu_ScrollToShow": {
-    "passes": []
-  },
-  "Cd_GetFileState": {
-    "passes": []
-  },
-  "Cd_LoadFileSync": {
-    "passes": []
-  },
-  "func_8001ED40": {
-    "passes": []
-  },
-  "Mem_TestBit": {
-    "passes": []
-  },
-  "Digi_FindDataById": {
-    "passes": []
-  },
-  "func_80011F04": {
-    "passes": [
-      "nosplit",
-      "exit_merge"
-    ]
-  },
-  "func_8001291C": {
-    "passes": []
-  },
-  "Item_GetTableIndex": {
-    "passes": []
-  },
-  "Flag_ApplySets": {
-    "passes": []
-  },
-  "func_8001EF88": {
-    "passes": []
   },
   "Text_SetOtLayer": {
     "passes": [
       "reg_realloc",
       "operand_recolor"
-    ]
-  },
-  "Task_RunChildren": {
-    "passes": []
-  },
-  "Item_GetEffectRec": {
-    "passes": []
-  },
-  "func_8001DA80": {
-    "passes": [
-      "reg_realloc"
-    ]
-  },
-  "Menu_ItemGridSelect": {
-    "passes": [
-      "nosplit"
-    ]
-  },
-  "Task_Create": {
-    "passes": []
-  },
-  "Text_PrintIdList": {
-    "passes": []
-  },
-  "Menu_PickItemToUse": {
-    "passes": [
-      "nosplit",
-      "reg_realloc",
-      "padnop"
-    ]
-  },
-  "Text_SetColor": {
-    "passes": []
-  },
-  "func_800116CC": {
-    "passes": []
-  },
-  "Gfx_ReserveTexSlot": {
-    "passes": []
-  },
-  "func_8001EB58": {
-    "passes": [
-      "padnop"
     ]
   },
   "func_80020E00": {
@@ -114,42 +28,10 @@
       "padnop"
     ]
   },
-  "func_800174F8": {
-    "passes": [
-      "nosplit"
-    ]
-  },
-  "Pad_PollPort": {
-    "passes": []
-  },
-  "Digi_GetDefaultName": {
-    "passes": []
-  },
   "Digi_InitFromTable": {
     "passes": [
       "commutative_swap"
     ]
-  },
-  "Gfx_SetPartsPalette": {
-    "passes": []
-  },
-  "Menu_SetPartsPos": {
-    "passes": []
-  },
-  "Anim_SetModelAnim": {
-    "passes": []
-  },
-  "Gfx_SetPartsNumber": {
-    "passes": []
-  },
-  "Flag_NextPassingEntry": {
-    "passes": []
-  },
-  "Cd_ReadSyncCallback": {
-    "passes": []
-  },
-  "Snd_UnloadSlot": {
-    "passes": []
   },
   "Gpu_SetLayerOtPtrs": {
     "passes": [
@@ -167,32 +49,6 @@
       "padnop"
     ]
   },
-  "Menu_DigiStatusInit": {
-    "passes": [
-      "gp8",
-      "reorder_indep"
-    ]
-  },
-  "Flag_Set": {
-    "passes": []
-  },
-  "Menu_DrawItemGrid": {
-    "passes": []
-  },
-  "Pad_UpdateButtons": {
-    "passes": []
-  },
-  "func_8001DB18": {
-    "passes": []
-  },
-  "func_80014CBC": {
-    "passes": [
-      "nosplit"
-    ]
-  },
-  "Menu_DigiListDrawRows": {
-    "passes": []
-  },
   "Task_FindNext": {
     "passes": [
       "reg_realloc",
@@ -202,7 +58,6 @@
   },
   "Menu_ItemUseDraw": {
     "passes": [
-      "nosplit",
       "sched_match"
     ]
   },
@@ -210,9 +65,6 @@
     "passes": [
       "web_realloc"
     ]
-  },
-  "func_80019BF4": {
-    "passes": []
   },
   "func_8001DDA8": {
     "passes": [
@@ -239,108 +91,11 @@
       "sched_match"
     ]
   },
-  "Gfx_AddFlatQuad3D": {
-    "passes": []
-  },
-  "Menu_TopMenuDraw": {
-    "passes": [
-      "nosplit",
-      "label_nop"
-    ]
-  },
   "Gpu_SkipEmptyOtEntries": {
     "passes": [
       "web_realloc",
       "sched_match",
       "padnop"
-    ]
-  },
-  "Rand_Seed": {
-    "passes": [
-      "nosplit"
-    ]
-  },
-  "Snd_SaveCurrentId": {
-    "passes": [
-      "nosplit"
-    ]
-  },
-  "Snd_RestoreSavedId": {
-    "passes": [
-      "nosplit"
-    ]
-  },
-  "func_80022518": {
-    "passes": [
-      "nosplit"
-    ]
-  },
-  "Item_CompactBag": {
-    "passes": [
-      "nosplit"
-    ]
-  },
-  "Item_RemoveFromBag": {
-    "passes": [
-      "nosplit"
-    ]
-  },
-  "Item_GetBagCapacity": {
-    "passes": [
-      "nosplit"
-    ]
-  },
-  "Ovl_GetCurrentId": {
-    "passes": [
-      "nosplit"
-    ]
-  },
-  "Rand_Step": {
-    "passes": [
-      "nosplit"
-    ]
-  },
-  "func_8001EFF0": {
-    "passes": [
-      "nosplit"
-    ]
-  },
-  "Mem_InitHeap": {
-    "passes": [
-      "nosplit"
-    ]
-  },
-  "Rand_Next": {
-    "passes": []
-  },
-  "Item_FindFreeBagSlot": {
-    "passes": [
-      "nosplit",
-      "label_nop"
-    ]
-  },
-  "Item_AddToBag": {
-    "passes": [
-      "nosplit"
-    ]
-  },
-  "Mem_SumSizesByTag": {
-    "passes": [
-      "nosplit"
-    ]
-  },
-  "Mem_GetLargestFree": {
-    "passes": [
-      "nosplit",
-      "label_nop"
-    ]
-  },
-  "func_80011644": {
-    "passes": []
-  },
-  "Menu_BlinkOrHideParts": {
-    "passes": [
-      "nosplit"
     ]
   },
   "Ovl_Load": {
@@ -356,86 +111,10 @@
       "sched_match"
     ]
   },
-  "Snd_PlayById": {
-    "passes": []
-  },
-  "Snd_StopById": {
-    "passes": []
-  },
-  "Snd_StopAll": {
-    "passes": []
-  },
-  "Menu_ShowSelItemText": {
-    "passes": [
-      "nosplit"
-    ]
-  },
-  "Mem_FreeTag": {
-    "passes": [
-      "nosplit",
-      "label_nop"
-    ]
-  },
-  "Cd_QueueFile": {
-    "passes": []
-  },
-  "Save_ResetGameState": {
-    "passes": []
-  },
-  "Mem_TryAlloc": {
-    "passes": [
-      "nosplit",
-      "label_nop"
-    ]
-  },
-  "Digi_CountByState": {
-    "passes": [
-      "nosplit"
-    ]
-  },
   "Digi_ListByState": {
     "passes": [
       "nosplit",
       "reorder_indep"
-    ]
-  },
-  "Digi_CompactRoster": {
-    "passes": [
-      "nosplit"
-    ]
-  },
-  "Cd_ServiceQueue": {
-    "passes": []
-  },
-  "Item_SortList": {
-    "passes": [
-      "nosplit"
-    ]
-  },
-  "Digi_SortRoster": {
-    "passes": []
-  },
-  "Sys_VSyncHandler": {
-    "passes": []
-  },
-  "Menu_UseItemDirect": {
-    "passes": [
-      "nosplit"
-    ]
-  },
-  "func_800154F0": {
-    "passes": [
-      "nosplit"
-    ]
-  },
-  "func_80015668": {
-    "passes": [
-      "nosplit"
-    ]
-  },
-  "Menu_UseItemOnTarget": {
-    "passes": [
-      "nosplit"
     ]
   },
   "Math_CycleRange": {
@@ -450,45 +129,11 @@
   },
   "Menu_OpenItemNameTexts": {
     "passes": [
-      "nosplit",
       "nodiv"
     ]
   },
-  "Menu_PickUseItemDirect": {
-    "passes": [
-      "nosplit"
-    ]
-  },
-  "Menu_UseItemOnDigi": {
-    "passes": [
-      "nosplit"
-    ]
-  },
-  "Item_MoveToStorage": {
-    "passes": [
-      "nosplit"
-    ]
-  },
-  "Item_TakeFromStorage": {
-    "passes": [
-      "nosplit",
-      "label_nop"
-    ]
-  },
   "Menu_ItemUseTask": {
-    "passes": [
-      "gp8"
-    ]
-  },
-  "Menu_TopMenuTask": {
-    "passes": [
-      "gp8"
-    ]
-  },
-  "func_80019808": {
-    "passes": [
-      "gp8"
-    ]
+    "passes": []
   },
   "Menu_NameEntryDrawParts": {
     "passes": [
@@ -516,12 +161,6 @@
   "Item_UseStatBoost": {
     "passes": []
   },
-  "Gpu_InitDoubleBuffer": {
-    "passes": []
-  },
-  "Gfx_FindOrLoadImageSlot": {
-    "passes": []
-  },
   "func_800224EC": {
     "passes": [
       "nosplit",
@@ -539,32 +178,13 @@
   "Snd_ServiceSlotLoads": {
     "passes": []
   },
-  "Gfx_AttachModel": {
-    "passes": []
-  },
-  "func_80014984": {
-    "passes": [
-      "nosplit",
-      "taken_fill",
-      "label_nop"
-    ]
-  },
-  "Gfx_DrawPartQuadsRot": {
-    "passes": []
-  },
   "Menu_SubMenuTask": {
     "passes": [
-      "gp8",
       "reg_realloc",
       "save_slot",
       "commutative_swap",
       "ra_restore_sink",
       "padnop"
-    ]
-  },
-  "Menu_DigiStatusTask": {
-    "passes": [
-      "gp8"
     ]
   },
   "Menu_BuildDigiList": {
@@ -584,26 +204,16 @@
   },
   "Gfx_HidePartsByMask": {
     "passes": [
-      "nosplit_nosr"
+      "nosr"
     ]
   },
   "Menu_ConfirmMultiPick": {
     "passes": [
-      "gp8",
       "web_realloc",
       "self_move",
       "commutative_swap",
       "padnop"
     ]
-  },
-  "Menu_SetPartsGridPos": {
-    "passes": []
-  },
-  "Task_SpawnListFromFile": {
-    "passes": []
-  },
-  "Gpu_ClearScreens": {
-    "passes": []
   },
   "func_8001EEA4": {
     "passes": [
@@ -612,22 +222,14 @@
       "ra_restore_sink"
     ]
   },
-  "Text_Close": {
-    "passes": []
-  },
   "Menu_NameEntryGetChar": {
     "passes": [
       "web_realloc"
     ]
   },
-  "Menu_ConfirmSinglePick": {
-    "passes": [
-      "nosplit"
-    ]
-  },
   "Flag_TestConds": {
     "passes": [
-      "nosplit_nocse",
+      "nocse",
       "sched_match"
     ]
   },
@@ -645,33 +247,21 @@
   },
   "Item_UseRecoverAll": {
     "passes": [
-      "nosplit",
       "web_realloc"
-    ]
-  },
-  "Item_BuildMenuList": {
-    "passes": [
-      "nosplit",
-      "label_nop"
     ]
   },
   "Anim_HasModelAnim": {
     "passes": [
-      "nosplit_nodb",
+      "nodb",
       "copy_swap",
       "fallthrough_fill",
       "delay_fill",
       "padnop"
     ]
   },
-  "Menu_SetItemUseMode": {
-    "passes": [
-      "nosplit"
-    ]
-  },
   "Gfx_LoadTexSlotImage": {
     "passes": [
-      "nosplit_nodb",
+      "nodb",
       "web_realloc",
       "fallthrough_fill",
       "delay_fill"
@@ -688,7 +278,7 @@
   },
   "func_800153F4": {
     "passes": [
-      "nosplit_nodb",
+      "nodb",
       "sched_pre",
       "commutative_swap",
       "web_resched",
@@ -699,29 +289,9 @@
       "padnop"
     ]
   },
-  "Item_ApplyToDigi": {
-    "passes": [
-      "reg_realloc",
-      "web_realloc",
-      "padnop"
-    ]
-  },
-  "Menu_SetDigiListMode": {
-    "passes": [
-      "nosplit",
-      "delay_fill",
-      "padnop"
-    ]
-  },
   "func_8001204C": {
     "passes": [
-      "gp8",
       "web_realloc"
-    ]
-  },
-  "Gfx_DrawFade": {
-    "passes": [
-      "padnop"
     ]
   },
   "Gfx_AnimateModelTex": {
@@ -736,20 +306,13 @@
       "padnop"
     ]
   },
-  "func_8001D8C4": {
-    "passes": [
-      "epilogue_unfill"
-    ]
-  },
   "Sys_Main": {
     "passes": [
-      "gp8",
       "web_realloc"
     ]
   },
   "Menu_ItemTask": {
     "passes": [
-      "gp8",
       "padnop"
     ]
   },
@@ -766,7 +329,6 @@
   },
   "func_80014F78": {
     "passes": [
-      "nosplit",
       "sched_match",
       "block_iso",
       "delay_fill",
@@ -816,29 +378,6 @@
       "delay_fill",
       "padnop"
     ]
-  },
-  "Gfx_IsOriginOffscreen": {
-    "passes": [
-      "padnop"
-    ]
-  },
-  "Gfx_ProjectModelVerts": {
-    "passes": []
-  },
-  "Gfx_CalcNormalColors": {
-    "passes": []
-  },
-  "Actor_ProjectToScreen": {
-    "passes": []
-  },
-  "Gfx_CalcModelBoneMatrices": {
-    "passes": []
-  },
-  "Gfx_DrawWireModel": {
-    "passes": []
-  },
-  "Gfx_DrawTexModel": {
-    "passes": []
   },
   "Gfx_AddQuadsGT4": {
     "passes": [
@@ -1209,11 +748,6 @@
       "commutative_swap"
     ]
   },
-  "stag2000:func_800681A0": {
-    "passes": [
-      "web_realloc"
-    ]
-  },
   "stag2000:func_800688E4": {
     "passes": [
       "web_realloc"
@@ -1294,23 +828,10 @@
       "load_remat"
     ]
   },
-  "stag2000:func_8006E9E8": {
-    "passes": [
-      "nodiv"
-    ]
-  },
   "stag3000:func_800706BC": {
     "passes": []
   },
   "stag3000:func_8006EF50": {
-    "passes": []
-  },
-  "stag0000:func_80065150": {
-    "passes": [
-      "web_resched"
-    ]
-  },
-  "stag4000:func_80071DB4": {
     "passes": []
   },
   "stag4000:func_8006F3F4": {

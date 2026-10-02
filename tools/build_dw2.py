@@ -98,6 +98,9 @@ MASPSX_AS_FLAGS = [
 # library code, and with -G > 0 cc1 writes C function text after the top-level asm,
 # which would move its one C stub.
 UNIT_G = {"main": "8", "main/psyq.c": "0", "main/156C.c": "0"}
+UNIT_ASPSX = {"main": "2.81"}
+# Extra cc1 flags per unit or unit/file (one flag set per translation unit).
+UNIT_CC1 = {}
 AS_G_OVERRIDE = None    # --as-g: one -G for every unit (flag experiments)
 
 
@@ -106,11 +109,17 @@ def unit_flags(unit, name=None):
     g = UNIT_G.get("%s/%s" % (unit, name), UNIT_G.get(unit, "0"))
     if AS_G_OVERRIDE is not None:
         g = AS_G_OVERRIDE
+    extra = UNIT_CC1.get("%s/%s" % (unit, name), UNIT_CC1.get(unit, []))
     if g == "0":
-        return CC1_FLAGS, MASPSX_FLAGS, MASPSX_AS_FLAGS
-    cc1 = CC1_FLAGS[:CC1_FLAGS.index("-G0")] + ["-G" + g] + CC1_FLAGS[CC1_FLAGS.index("-G0") + 1:]
+        return CC1_FLAGS + extra, MASPSX_FLAGS, MASPSX_AS_FLAGS
+    cc1 = CC1_FLAGS[:CC1_FLAGS.index("-G0")] + ["-G" + g] + CC1_FLAGS[CC1_FLAGS.index("-G0") + 1:] + extra
     as_flags = [("-G" + g) if f == "-G0" else f for f in MASPSX_AS_FLAGS]
-    return cc1, MASPSX_FLAGS + ["--dont-force-G0"], as_flags
+    # maspsx decides gp-relative access like aspsx: only for symbols this file defines
+    # (.comm/.lcomm/.sdata), and it hands GNU as -G0. Tentative definitions stay COMMON
+    # (--use-comm-section), so they bind to the data asm's labels instead of taking space.
+    flags = [f for f in MASPSX_FLAGS if not f.startswith("--aspsx-version")]
+    flags.append("--aspsx-version=" + UNIT_ASPSX.get(unit, "2.77"))
+    return cc1, flags + ["--use-comm-section"], as_flags
 
 
 def binutils_dir():
@@ -347,12 +356,17 @@ def main():
     ap.add_argument("--units", help="comma list of src/ units to build (objects only)")
     ap.add_argument("--cc1-extra", default="",
                     help="extra cc1 flags for every C unit (flag-set experiments, e.g. -G8)")
+    ap.add_argument("--tu-flags", action="append", default=[],
+                    help="UNIT[/FILE.c]=FLAGS: extra cc1 flags for one unit or file (experiments)")
     ap.add_argument("--as-g", help="-G value cc1/maspsx/as use for every unit instead of UNIT_G")
     args = ap.parse_args()
     if args.build_dir:
         CONFIG["build_dir"] = args.build_dir
     if args.cc1_extra:
         CC1_FLAGS.extend(args.cc1_extra.split())
+    for tf in args.tu_flags:
+        k, v = tf.split("=", 1)
+        UNIT_CC1[k] = v.split()
     if args.as_g is not None:
         global AS_G_OVERRIDE
         AS_G_OVERRIDE = args.as_g
