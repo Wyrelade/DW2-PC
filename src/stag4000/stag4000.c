@@ -4883,7 +4883,6 @@ void func_80070754(void) {
     }
 }
 
-#ifdef NORMALIZED
 void func_800707D0(void) {
     s32 w = D_8005071C->field_E54->field_0;
     s32 buf = Mem_Alloc(0x3FF8, 2);
@@ -4897,10 +4896,6 @@ void func_800707D0(void) {
     }
     Mem_Free((ActorWork *)buf);
 }
-#else
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_800707D0);
-void func_800707D0(void);
-#endif
 
 Stg40Cell *func_800708A4(s32 x, s32 y) {
     Stg40Blk5071C *b = D_8005071C;
