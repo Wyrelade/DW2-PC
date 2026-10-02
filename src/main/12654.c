@@ -67,17 +67,16 @@ s32 Flag_Test(s32 arg0) {
     return 0;
 }
 
-#ifdef NORMALIZED
 s32 Flag_TestConds(Ent22038 *p) {
     s32 i;
-    for (i = 0; i < 6; i++, p++) {
-        if (p->id != -1) {
-            if (p->flag != 0) {
-                if (Flag_Test(p->id) != 1) {
+    for (i = 0; i < 6; i++) {
+        if (p[i].id != -1) {
+            if (p[i].flag != 0) {
+                if (Flag_Test(p[i].id) != 1) {
                     return 0;
                 }
             } else {
-                if (Flag_Test(p->id) != 0) {
+                if (Flag_Test(p[i].id) != 0) {
                     return 0;
                 }
             }
@@ -85,10 +84,6 @@ s32 Flag_TestConds(Ent22038 *p) {
     }
     return 1;
 }
-#else
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Flag_TestConds);
-s32 Flag_TestConds(Ent22038 *p);
-#endif
 
 
 void Mem_WriteBit(u8 *arg0, s32 arg1, s32 arg2) {

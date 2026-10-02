@@ -168,10 +168,7 @@
     "passes": []
   },
   "Flag_TestConds": {
-    "passes": [
-      "nocse",
-      "sched_match"
-    ]
+    "passes": []
   },
   "Menu_NameEntryTask": {
     "passes": [
