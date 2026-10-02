@@ -1311,7 +1311,6 @@ void Actor_StepAxisMotion(AxisMotion *a0, s32 a1) {
     }
 }
 
-#ifdef NORMALIZED
 s32 func_80020D54(ContC40 *a0, s32 i) {
     AllocC40 *p = a0->transform;
     AxisMotion *e = &p->axisMotion[i];
@@ -1322,18 +1321,13 @@ s32 func_80020D54(ContC40 *a0, s32 i) {
         Actor_StepAxisMotion(e, 1);
     }
     if (i != 2) {
-        p->moveDelta[i] += e->speed >> 8;
+        (&p->moveDelta.vx)[i] += e->speed >> 8;
     } else {
-        p->moveDelta[2] -= e->speed >> 8;
+        p->moveDelta.vz -= e->speed >> 8;
     }
     return e->speed >> 8;
 }
-#else
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80020D54);
-s32 func_80020D54(ContC40 *a0, s32 i);
-#endif
 
-#ifdef NORMALIZED
 s32 func_80020E00(ContC40 *a0, s32 i) {
     AllocC40 *p = a0->transform;
     AxisMotion *e = &p->axisMotion[i];
@@ -1342,18 +1336,14 @@ s32 func_80020E00(ContC40 *a0, s32 i) {
     switch (i) {
     case 0:
     case 1:
-        p->moveDelta[i] -= e->speed >> 8;
+        (&p->moveDelta.vx)[i] -= e->speed >> 8;
         break;
     case 2:
-        p->moveDelta[2] += e->speed >> 8;
+        p->moveDelta.vz += e->speed >> 8;
         break;
     }
     return e->speed >> 8;
 }
-#else
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80020E00);
-s32 func_80020E00(ContC40 *a0, s32 i);
-#endif
 
 void Actor_SetAxisMotion(Ctx38 *arg0, s32 arg1, Elem12 *arg2) {
     Elem12 *e = &arg0->buf->elems[arg1];

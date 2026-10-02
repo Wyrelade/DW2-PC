@@ -885,6 +885,15 @@ typedef struct {
     s32 v[3];
 } LongVec3;
 
+/* PsyQ VECTOR shape: three s32 components and a pad word. Code indexes the
+   components as (&v.vx)[i]. */
+typedef struct {
+    s32 vx;
+    s32 vy;
+    s32 vz;
+    s32 pad;
+} VecL;
+
 typedef struct {
     /* 0x00 */ s16 m[3][3];
     u8 _pad12[0x02];
@@ -896,8 +905,7 @@ typedef struct {
     u8 _pad3C[0x06];
     /* 0x42 */ s16 rotY;
     u8 _pad44[0x04];
-    /* 0x48 */ s32 moveDelta[3];
-    u8 _pad54[0x04];
+    /* 0x48 */ VecL moveDelta;
     /* 0x58 */ s32 scaleX;
     /* 0x5C */ s32 scaleY;
     /* 0x60 */ s32 scaleZ;

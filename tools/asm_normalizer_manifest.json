@@ -1,16 +1,4 @@
 {
-  "func_80020E00": {
-    "passes": [
-      "commutative_swap",
-      "padnop"
-    ]
-  },
-  "func_80020D54": {
-    "passes": [
-      "commutative_swap",
-      "padnop"
-    ]
-  },
   "Gpu_SetLayerOtPtrs": {
     "passes": [
       "web_realloc",
