@@ -159,7 +159,191 @@ s32 func_80063F00(Actor *arg0) {
     return ret;
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006424C);
+void func_8006424C(Actor *arg0) {
+    ActorWork *work = arg0->work;
+    s32 st = arg0->stateLevel0;
+    Stg40AA4 *ctx = (Stg40AA4 *)arg0->u34.children;
+    Actor *bt;
+    s32 a0v;
+    switch (st) {
+    default:
+    case 0:
+        D_80072AA0 = arg0;
+        D_80072AA4 = ctx;
+        D_80072B60 = (Stg40B60 *)Mem_Alloc(0x190, 2);
+        func_80063A34(arg0);
+        Task_NextState0(arg0);
+        D_80072B60->field_7E = 0;
+        Snd_SetSlotContent(1, D_8005071C->field_1044.field_2);
+        work->field_8 = 0;
+        break;
+    case 1:
+        if (work->field_8 == 0 && Snd_AnySlotLoading() == 0) {
+            work->field_8 = st;
+            Snd_PlayById(D_8005071C->field_1044.field_4, D_8005071C->field_1044.field_6);
+            Snd_SetSlotContent(2, 0x19);
+        }
+        switch (arg0->stateLevel1) {
+        default:
+        case 0:
+            st = arg0->stateLevel2;
+            switch (st) {
+            default:
+            case 0:
+                a0v = D_8005071C->field_0;
+                if (a0v >= 3) {
+                    goto setSt;
+                }
+                if (a0v != 0) {
+                    goto load;
+                }
+            setSt:
+                Task_SetState1(arg0, 1);
+                goto done0;
+            load:
+                if (a0v == 1) {
+                    a0v = 0xE200006;
+                } else {
+                    a0v = 0xE200005;
+                }
+                func_800721A8(Cd_GetFileEntry(a0v));
+                Task_NextState2(arg0);
+                D_8005071C->field_2 = 1;
+            done0:
+                D_8005071C->field_2 = 1;
+                D_80072B60->field_7E = 0;
+                break;
+            case 1:
+                if (func_80072114() == 0) {
+                    bt = D_80072B60->field_8;
+                    if (func_8006E6CC() != 0) {
+                        Task_SetState1(bt, 0x1E);
+                        Task_SetState1(arg0, 2);
+                    } else if (func_8006E330() != 0) {
+                        Task_SetState1(bt, 4);
+                        D_8005071C->field_1 = st;
+                        D_8005071C->field_2 = st;
+                        func_80063F00(arg0);
+                    } else {
+                        Task_SetState1(arg0, 1);
+                    }
+                } else {
+                    if (++arg0->stateLevel3 == 6) {
+                        Cd_QueueFile(0x1FD);
+                        Cd_QueueFile(0x315);
+                        Cd_QueueFile(0x7D4);
+                        Cd_QueueFile(0x457);
+                        Cd_QueueFile(0x6B5);
+                        Cd_QueueFile(0x312);
+                    }
+                }
+                break;
+            case 2:
+                break;
+            }
+            break;
+        case 1:
+            st = arg0->stateLevel2;
+            switch (st) {
+            default:
+            case 0:
+                Task_Create(0x209, &ctx->field_8, 0);
+                D_8005071C->field_2 = 0;
+                D_80072B60->field_7E = D_80050720->field_0;
+                Task_NextState2(arg0);
+                break;
+            case 1:
+                if (D_8005071C->field_2 == 2) {
+                    Task_SetState0((Actor *)ctx->field_8, 2);
+                    D_80072B60->field_7E = 0;
+                    Task_SetState1(arg0, 2);
+                } else if (func_80063F00(arg0) == st) {
+                    D_80072B60->field_7E = 0;
+                }
+                break;
+            }
+            break;
+        case 2:
+            if (D_8005071C->field_2 != 2) {
+                if (D_8005071C->field_2 == 0) {
+                    Task_SetState1(arg0, 1);
+                } else if (func_80063F00(arg0) != 1) {
+                    Task_SetState1(arg0, 1);
+                }
+            }
+            break;
+        case 4:
+            switch (arg0->stateLevel2) {
+            default:
+            case 0:
+                Task_SetState0((Actor *)ctx->field_8, 2);
+                D_80072B60->field_7E = 0;
+                Gfx_FadeOutToBlack(0x20);
+                Task_NextState2(arg0);
+                break;
+            case 1:
+                if (ctx->field_8 == 0) {
+                    if (arg0->stateLevel4++ >= 0xF) {
+                        Task_Create(0xB, &ctx->field_4, 0);
+                        arg0->childCount = 2;
+                        Task_NextState2(arg0);
+                    }
+                }
+                break;
+            case 2:
+                if (ctx->field_4 == 0) {
+                    arg0->childCount = 0x38;
+                    Gfx_FadeInFromBlack(0x20);
+                    if (D_80050764 == 1) {
+                        Task_SetState1(D_80072B60->field_8, 0x1D);
+                        Task_SetState2(arg0, 4);
+                    } else {
+                        Task_Create(0x209, &ctx->field_8, 0);
+                        D_80072B60->field_7E = D_80050720->field_0;
+                        Task_NextState2(arg0);
+                    }
+                }
+                break;
+            case 3:
+                if (arg0->stateLevel4++ >= 8) {
+                    D_8005071C->field_2 = 0;
+                    Task_SetState1(arg0, 1);
+                    Task_SetState2(arg0, 1);
+                }
+                break;
+            case 4:
+                if (arg0->stateLevel4++ >= 8) {
+                    D_8005071C->field_1 = 4;
+                    Task_SetState1(D_80072B60->field_8, 0x17);
+                    func_80063F00(arg0);
+                }
+                break;
+            }
+            break;
+        case 3:
+            switch (arg0->stateLevel2) {
+            default:
+            case 0:
+                D_8005071C->field_2 = 1;
+                Task_SetState0((Actor *)ctx->field_8, 2);
+                Task_NextState2(arg0);
+                break;
+            case 1:
+                if (func_80072114() == 0) {
+                    D_8005F78C = work->field_0;
+                    Task_NextState2(arg0);
+                }
+                break;
+            case 2:
+                break;
+            }
+            break;
+        }
+        break;
+    case 2:
+        break;
+    }
+}
 
 void func_80064830(void) {
 }

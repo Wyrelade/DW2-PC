@@ -4531,5 +4531,11 @@
     "passes": [
       "block_iso"
     ]
+  },
+  "func_8006424C": {
+    "passes": [
+      "web_realloc",
+      "sched_match"
+    ]
   }
 }

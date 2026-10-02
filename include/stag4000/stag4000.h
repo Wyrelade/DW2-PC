@@ -1050,12 +1050,17 @@ extern Stg40W667C *D_80072B6C;
 
 /* Object behind D_80072AA4: a Task_Create slot at 0x10 (func_8006AF34). */
 typedef struct {
-    u8 _pad00[0x10];
+    u8 _pad00[0x04];
+    /* 0x04 */ s32 field_4;        /* child task (Actor *) (func_8006424C) */
+    /* 0x08 */ s32 field_8;        /* child task (Actor *) (func_8006424C) */
+    u8 _pad0C[0x04];
     /* 0x10 */ s32 field_10;       /* child task (Actor *) */
     /* 0x14 */ s32 field_14;       /* child task (Actor *) (func_80069C94) */
 } Stg40AA4;
 
 extern Stg40AA4 *D_80072AA4;
+extern s32 D_8005F78C;  /* D_8005F770.nextGameMode as a scalar reloc */
+extern s32 D_80050764;
 extern void Item_CompactBag(void);
 extern void Task_SetState3(Actor *arg0, u32 arg1);
 void func_800651C0(Stg40Loc *loc, s32 a1);
