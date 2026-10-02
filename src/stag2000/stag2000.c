@@ -2044,7 +2044,6 @@ INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80067B20);
 void func_80067B20(Actor *a);
 #endif
 
-#ifdef NORMALIZED
 void func_80067E9C(Actor *a) {
     Stg20NavWork *w = (Stg20NavWork *)a->work;
     s32 i;
@@ -2082,7 +2081,9 @@ void func_80067E9C(Actor *a) {
         }
     }
     Gfx_HidePartsByMask((GfxPartMaskView *)p, D_8006FF44[D_8005F770.gameMode - 0x32A]);
-    Gfx_DrawParts((s32)p);
+    do {
+        Gfx_DrawParts((s32)p);
+    } while (0);
     p = (GfxPart *)Cd_GetFileEntry(D_8006FF58[D_8005F770.gameMode - 0x32A]);
     for (q = p; q->fileId != 0; q++) {
         if (q->groupMask & 2) {
@@ -2091,10 +2092,6 @@ void func_80067E9C(Actor *a) {
     }
     Gfx_DrawParts((s32)p);
 }
-#else
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80067E9C);
-void func_80067E9C(Actor *a);
-#endif
 
 void func_80068134(Actor *a, s32 open) {
     Stg20PickWork *w = (Stg20PickWork *)a->work;
@@ -2288,66 +2285,53 @@ void func_8006863C(Actor *a) {
     }
 }
 
-#ifdef NORMALIZED
-void func_800688E4(Actor *a)
-{
-  Stg20Roster *new_var;
-  Stg20SlotWork *w = (Stg20SlotWork *) a->work;
-  GfxPart *p;
-  GfxPart *r;
-  GfxPart *q;
-  GfxPart *s;
-  s32 i;
-  w->timer++;
-  p = (GfxPart *) Cd_GetFileEntry(0xD120002);
-  for (q = p; q->fileId != 0; q++)
-  {
-    if (q->groupMask & 2)
-    {
-      q->x = 0x1D;
-      q->y = (D_800709B0.field_18 * 0x22) - 0x3E;
-      q->visible = ((w->timer >> 4) ^ 1) & 1;
-    }
-    if (q->groupMask & 4)
-    {
-      q->visible = D_800709B0.field_14 != 0;
-    }
-    if (q->groupMask & 8)
-    {
-      q->visible = (D_800709B0.field_14 + 4) < w->count;
-    }
-  }
+void func_800688E4(Actor *a) {
+    Stg20Roster *ros;
+    Stg20SlotWork *w = (Stg20SlotWork *)a->work;
+    GfxPart *p;
+    GfxPart *r;
+    GfxPart *q;
+    GfxPart *s;
+    s32 i;
 
-  Gfx_DrawParts((s32) p);
-  for (i = 0; i < 4; i++)
-  {
-    new_var = D_8005E704;
-    r = (GfxPart *) Cd_GetFileEntry(D_8006FFDC[i]);
-    for (s = r; s->fileId != 0; s++)
-    {
-      if (s->groupMask & 2)
-      {
-        s->visible = D_800709B0.field_18 != i;
-      }
-      if (s->groupMask & 4)
-      {
-        s->visible = D_800709B0.field_18 == i;
-      }
-      if (s->groupMask & 8)
-      {
-        s->visible = w->slots[i].used != 0;
-      }
-    }
-
-    Gfx_SetPartsNumber(r, 8, 2, new_var[i + D_800709B0.field_14].level);
-    Gfx_DrawParts((s32) r);
-  }
-
+    w->timer++;
+    p = (GfxPart *)Cd_GetFileEntry(0xD120002);
+    do {
+        for (q = p; q->fileId != 0; q++) {
+            if (q->groupMask & 2) {
+                q->x = 0x1D;
+                q->y = D_800709B0.field_18 * 0x22 - 0x3E;
+                q->visible = ((w->timer >> 4) ^ 1) & 1;
+            }
+            if (q->groupMask & 4) {
+                q->visible = D_800709B0.field_14 != 0;
+            }
+            if (q->groupMask & 8) {
+                q->visible = D_800709B0.field_14 + 4 < w->count;
+            }
+        }
+        Gfx_DrawParts((s32)p);
+        for (i = 0; i < 4; i++) {
+            ros = D_8005E704;
+            r = (GfxPart *)Cd_GetFileEntry(D_8006FFDC[i]);
+            for (s = r; s->fileId != 0; s++) {
+                do {
+                    if (s->groupMask & 2) {
+                        s->visible = D_800709B0.field_18 != i;
+                    }
+                } while (0);
+                if (s->groupMask & 4) {
+                    s->visible = D_800709B0.field_18 == i;
+                }
+                if (s->groupMask & 8) {
+                    s->visible = w->slots[i].used != 0;
+                }
+            }
+            Gfx_SetPartsNumber(r, 8, 2, ros[i + D_800709B0.field_14].level);
+            Gfx_DrawParts((s32)r);
+        }
+    } while (0);
 }
-#else
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_800688E4);
-void func_800688E4(Actor *a);
-#endif
 
 void func_80068B3C(Actor *a, s32 v) {
     a->field_8 = v;
