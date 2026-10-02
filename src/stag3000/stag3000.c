@@ -2659,7 +2659,6 @@ s32 func_80069A44(s32 idx) {
     return 1;
 }
 
-#ifdef NORMALIZED
 void func_80069DE8(void) {
     s32 idx = func_8006E674(0);
     Stg30Rec73F6C *e = &D_80073F6C[idx];
@@ -2720,10 +2719,6 @@ void func_80069DE8(void) {
         e->field_4 = best;
     }
 }
-#else
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80069DE8);
-void func_80069DE8(void);
-#endif
 
 s32 func_8006A030(s32 a, s32 b) {
     if (a == 5) {
