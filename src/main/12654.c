@@ -177,7 +177,6 @@ s32 Math_CycleRange(s32 v, s32 div, s32 lo, s32 hi) {
 }
 
 
-#ifdef NORMALIZED
 s32 Math_PingPongRange(s32 v, s32 div, s32 lo, s32 hi) {
     s32 span;
     s32 r;
@@ -190,10 +189,6 @@ s32 Math_PingPongRange(s32 v, s32 div, s32 lo, s32 hi) {
     }
     return hi - (r - span);
 }
-#else
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Math_PingPongRange);
-s32 Math_PingPongRange(s32 v, s32 div, s32 lo, s32 hi);
-#endif
 
 
 void Save_ResetGameState(void) {

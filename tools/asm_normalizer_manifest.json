@@ -116,9 +116,7 @@
     "passes": []
   },
   "Math_PingPongRange": {
-    "passes": [
-      "nodiv"
-    ]
+    "passes": []
   },
   "Menu_OpenItemNameTexts": {
     "passes": [
