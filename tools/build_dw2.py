@@ -86,7 +86,7 @@ CC1_FLAGS = [
     "-msoft-float", "-mgas", "-fgnu-linker",
     "-gcoff", "-G0", "-quiet",
 ]
-MASPSX_FLAGS = ["--aspsx-version=2.77", "--run-assembler", "--expand-div"]
+MASPSX_FLAGS = ["--aspsx-version=2.77", "--run-assembler"]
 # as flags maspsx forwards to the assembler when it runs it.
 MASPSX_AS_FLAGS = [
     "-EL", "-march=r3000", "-mtune=r3000",
