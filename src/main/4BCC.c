@@ -4876,21 +4876,16 @@ u8 func_8001EE80(s32 id) {
     return func_8001ED40(id)->field_4;
 }
 
-#ifdef NORMALIZED
 void func_8001EEA4(s32 id, s32 n, s16 *a, s16 *b) {
     EntED40 *p = func_8001ED40(id);
     s32 i;
 
     n *= 2;
     for (i = 0; i < 3; i++) {
-        *a++ = p->field_2C[n][i];
-        *b++ = p->field_2C[n + 1][i];
+        a[i] = p->field_2C[n][i];
+        b[i] = p->field_2C[n + 1][i];
     }
 }
-#else
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8001EEA4);
-void func_8001EEA4(s32 id, s32 n, s16 *a, s16 *b);
-#endif
 
 
 s32 func_8001EF3C(s32 id) {
