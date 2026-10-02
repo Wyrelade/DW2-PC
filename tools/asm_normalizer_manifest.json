@@ -36,13 +36,7 @@
     ]
   },
   "Text_IsFinished": {
-    "passes": [
-      "taken_fill",
-      "dead_code",
-      "web_realloc",
-      "commutative_swap",
-      "padnop"
-    ]
+    "passes": []
   },
   "Task_FindNext": {
     "passes": [

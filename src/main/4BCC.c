@@ -3491,7 +3491,6 @@ void Text_Open(void *arg0, TextOpenArgs *arg1) {
     *(s32 *)arg0 = i;
 }
 
-#ifdef NORMALIZED
 s32 Text_IsFinished(s32 id) {
     TaskEntry *p;
 
@@ -3499,15 +3498,12 @@ s32 Text_IsFinished(s32 id) {
         return 1;
     }
     p = Task_FindFirst(9, -1, -1);
-    if (p == 0) {
-        return 0;
+    if (p != 0) {
+        TextBox *w = &p->work[id];
+        return w->finished;
     }
-    return p->work[id].finished;
+    return 0;
 }
-#else
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Text_IsFinished);
-s32 Text_IsFinished(s32 id);
-#endif
 
 void Text_SetColor(s32 a0, s32 a1) {
     TaskEntry *p = Task_FindFirst(9, -1, -1);
