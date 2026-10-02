@@ -4685,24 +4685,17 @@ void func_8006F28C(Actor *a) {
     Gfx_DrawParts((s32)p);
 }
 
-#ifdef NORMALIZED
 Stg20FileRec *func_8006F360(s32 i) {
     Stg20FileRec *r = (Stg20FileRec *)Cd_GetFileEntry(D_8005F788[0] + 0xD28FCD6);
 
-    r = &r[i];
-
-    if (r->field_13 == 0) {
+    if (r[i].field_13 == 0) {
         s32 base = Cd_GetFileOrNull(0xD29);
 
-        r->field_13 = 1;
-        r->field_4 += base;
+        r[i].field_13 = 1;
+        r[i].field_4 += base;
     }
-    return r;
+    return &r[i];
 }
-#else
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006F360);
-Stg20FileRec *func_8006F360(s32 i);
-#endif
 
 void func_8006F3D8(Actor *a, s32 v) {
     a->field_8 = v;

@@ -436,9 +436,7 @@
     ]
   },
   "stag2000:func_8006F360": {
-    "passes": [
-      "commutative_swap"
-    ]
+    "passes": []
   },
   "stag0000:func_80063A74": {
     "passes": []
