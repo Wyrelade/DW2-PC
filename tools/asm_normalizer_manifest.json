@@ -5,11 +5,6 @@
       "operand_recolor"
     ]
   },
-  "func_800143CC": {
-    "passes": [
-      "delay_fill"
-    ]
-  },
   "Text_SetOtLayer": {
     "passes": [
       "reg_realloc",

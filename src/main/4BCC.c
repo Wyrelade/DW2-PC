@@ -23,8 +23,8 @@ void func_800143CC(Actor *arg0, s16 arg1) {
     w->field_38 = arg1;
     if (arg1 == 3) {
         Menu_Ctx->pickResult = 0;
-        w->field_3C = 0;
     }
+    w->field_3C = 0;
 }
 
 void Menu_SubMenuTask(Actor *a) {
