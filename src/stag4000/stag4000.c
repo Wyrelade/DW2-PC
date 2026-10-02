@@ -4314,7 +4314,6 @@ s32 func_8006E920(Stg40Shop *a) {
     return ret;
 }
 
-#ifdef NORMALIZED
 s16 func_8006EA84(s32 mode) {
     DigiRosterEntry *e = D_80050720->elems;
     Stg40B60 *b;
@@ -4348,12 +4347,9 @@ s16 func_8006EA84(s32 mode) {
             }
         }
     }
-    return D_80072B60->field_140;
+    i = D_80072B60->field_140;
+    return i;
 }
-#else
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006EA84);
-s16 func_8006EA84(s32 mode);
-#endif
 
 void func_8006EB84(s32 idx, s32 row, s32 val) {
     Stg40TileGrid *t = D_80072BB0;
