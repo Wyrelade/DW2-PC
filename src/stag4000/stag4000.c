@@ -609,7 +609,6 @@ s32 func_80065424(s32 a, s32 b, s32 c, s32 d) {
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006545C);
 
-#ifdef NORMALIZED
 void func_80065890(ActorWork *arg0)
 {
     Stg40Cell *grid;
@@ -630,7 +629,6 @@ void func_80065890(ActorWork *arg0)
     s32 a;
     s32 lt400;
     s32 n;
-    Stg40Cell *cell;
 
     e54 = D_8005071C->field_E54;
     grid = (Stg40Cell *)D_8005071C->field_E58;
@@ -659,9 +657,8 @@ void func_80065890(ActorWork *arg0)
                 tp->field_3 = 0;
             } else {
                 r = Rand_GetAt(mapCol + (mapRow << 6));
-                cell = &grid[mapRow * gridCols + mapCol];
-                tp->field_0 = cell->field_0;
-                tp->field_2 = cell->field_3;
+                tp->field_0 = grid[mapRow * gridCols + mapCol].field_0;
+                tp->field_2 = grid[mapRow * gridCols + mapCol].field_3;
                 k = tp->field_0 & 0xF;
                 switch (k) {
                 case 0:
@@ -720,10 +717,6 @@ void func_80065890(ActorWork *arg0)
         mapRow++;
     }
 }
-#else
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80065890);
-void func_80065890(ActorWork *arg0);
-#endif
 
 void func_80065BF8(s32 x, s32 z, s32 y, Stg40Vec3 *out) {
     Stg40B60 *b = D_80072B60;

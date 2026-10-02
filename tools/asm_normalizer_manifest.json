@@ -772,9 +772,7 @@
     ]
   },
   "stag4000:func_80065890": {
-    "passes": [
-      "commutative_swap"
-    ]
+    "passes": []
   },
   "stag4000:func_800682DC": {
     "passes": []
