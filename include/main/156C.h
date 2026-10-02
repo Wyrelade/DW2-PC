@@ -828,7 +828,9 @@ typedef struct {
     /* 0x15 */ u8 field_15;
     /* 0x16 */ u8 field_16;
     /* 0x17 */ u8 field_17;
-    u8 _pad18[0xB9];
+    u8 _pad18[0x14];
+    /* 0x2C */ u16 itemCounts[0x50];   /* indexed by item slot (stag2000 shop) */
+    u8 _padCC[0x05];
     /* 0xD1 */ u8 field_D1;
     /* 0xD2 */ u8 field_D2;
     /* 0xD3 */ u8 field_D3;

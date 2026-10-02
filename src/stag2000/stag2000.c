@@ -4449,7 +4449,146 @@ void func_8006ED24(Actor *a) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006EE24);
+void func_8006EE24(Actor *task) {
+    Stg20ItemWork *w = (Stg20ItemWork *) task->work;
+    s32 state = task->stateLevel0;
+    s32 children = task->u34.children;
+    s32 sub;
+
+    if (state == 1) {
+        goto case1;
+    }
+    if (state >= 2) {
+        return;
+    }
+    if (state != 0) {
+        return;
+    }
+    {
+        Mem_FillWordsNeg1(w->hdr, 0xC);
+        Text_OpenById(&w->hdr[0], 0x17A, 4, D_800706A4[0]);
+        Text_OpenById(&w->hdr[1], 0x17B, 4, D_800706A4[1]);
+        Text_OpenById(&w->hdr[2], 0xDE, 0, D_800706A4[2]);
+        Text_OpenPacked(&w->hdr[3], (s32) &D_8005E6F1, 0, D_800706A4[3]);
+        Task_Create(0x30D, (s32 *) children, 0);
+        func_8006EA90(task);
+        w->dirty = 1;
+        w->msg = 0x17C;
+        Task_NextState0(task);
+        return;
+    triangle:
+        Snd_PlayById(0xB, 0);
+        Task_SetState0(task, 3);
+        goto f070;
+    noPrice:
+        sub = 0x17D;
+        goto buzz;
+    tooHigh:
+        sub = 0x139;
+    buzz:
+        w->msg = sub;
+        Snd_PlayById(0x10, 0);
+        goto f070;
+    case1:
+        sub = task->stateLevel1;
+        if (sub != 0 && sub == state) {
+            goto f080;
+        }
+        if (D_8005F6F0[0].repeat & 0x1000) {
+            if (w->index == 0) {
+                goto efec;
+            }
+            w->index = w->index - 1;
+            goto beep;
+        }
+        if (D_8005F6F0[0].repeat & 0x4000) {
+            if (w->index == 5) {
+                goto efec;
+            }
+            w->index = w->index + 1;
+        beep:
+            Snd_PlayById(0xD, 0);
+        efec:
+            w->dirty = state;
+            w->msg = 0x17C;
+            goto f070;
+        }
+        do {
+        if (D_8005F6F0[0].triangle > 0) {
+            goto triangle;
+        }
+        if (D_8005F6F0[0].cross <= 0) {
+            goto f070;
+        }
+        if (w->recs[w->index].item == 0) {
+            goto f070;
+        }
+        if (w->recs[w->index].price == 0) {
+            goto noPrice;
+        }
+        if (D_8005E628 < w->recs[w->index].price) {
+            goto tooHigh;
+        }
+        Snd_PlayById(0xE, 0);
+        Task_NextState1(task);
+        } while (0);
+    f070:
+        func_8006ED24(task);
+        goto text_update;
+    f080:
+        state = task->stateLevel2;
+        switch (state) {
+        default:
+        case 0:
+        w->msgArg = Item_GetNameText(w->recs[w->index].item + 1);
+        w->msg = 0x17E;
+        Flag_Set(0x10, 0);
+        Task_NextState2(task);
+        goto text_update;
+        case 1:
+        if (Flag_Test(0x10) != 0) {
+            if (Flag_Test(0x11) == 0) {
+                goto f144;
+            }
+        }
+        if (D_8005F70C > 0) {
+            goto f124;
+        }
+        if (Flag_Test(0x10) == 0) {
+            goto text_update;
+        }
+    f124:
+        Snd_PlayById(0xB, 0);
+        w->dirty = state;
+        w->msg = 0x17C;
+        Task_SetState1(task, 0);
+        goto text_update;
+    f144:
+        Snd_PlayById(0x14, 0);
+        D_8005E620.field_8 -= w->recs[w->index].price;
+        D_8005E620.itemCounts[D_800706D4[w->index]]++;
+        func_8006EA90(task);
+        w->dirty = state;
+        w->msg = 0x17F;
+        Task_NextState2(task);
+        goto text_update;
+        case 2:
+        if (D_8005F704 > 0) {
+            Task_SetState1(task, 0);
+        }
+        }
+    text_update:
+        if (w->msg == w->shownMsg) {
+            return;
+        }
+        w->shownMsg = w->msg;
+        Text_Close(&w->msgText);
+        if (w->msg == 0) {
+            return;
+        }
+        func_8006D2C0(&w->msgText, w->msg, D_800706A4[11], w->msgArg);
+    }
+}
 
 void func_8006F258(Actor *a) {
     Text_CloseArray((s32 *)a->work, 0xC);

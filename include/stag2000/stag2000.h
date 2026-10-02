@@ -94,6 +94,7 @@ extern u8 D_80070768[24][24];
 /* main exe */
 extern GameState D_8005E620;
 extern s32 D_8005E628;             /* D_8005E620.field_8 as a scalar reloc */
+extern u8 D_8005E6F1;
 extern void Task_DefaultDestroy(Actor *);
 extern void Task_NextState0(Actor *);
 extern TaskEntry *Task_FindFirst(s32, s32, s32);

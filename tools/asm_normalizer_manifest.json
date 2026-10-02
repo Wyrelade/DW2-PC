@@ -4526,5 +4526,10 @@
       "web_realloc",
       "sched_match"
     ]
+  },
+  "func_8006EE24": {
+    "passes": [
+      "block_iso"
+    ]
   }
 }
