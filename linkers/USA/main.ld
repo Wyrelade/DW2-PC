@@ -24,12 +24,14 @@ SECTIONS
         main_RODATA_START = .;
         build/USA/asm/USA/main/data/800.rodata.s.o(.rodata);
         build/USA/src/main/156C.c.o(.rodata);
+        build/USA/src/main/187C.c.o(.rodata);
         build/USA/src/main/psyq.c.o(.rodata);
         . = ALIGN(., 4);
         main_RODATA_END = .;
         main_RODATA_SIZE = ABSOLUTE(main_RODATA_END - main_RODATA_START);
         main_TEXT_START = .;
         build/USA/src/main/156C.c.o(.text);
+        build/USA/src/main/187C.c.o(.text);
         build/USA/src/main/psyq.c.o(.text);
         . = ALIGN(., 4);
         main_TEXT_END = .;
@@ -37,6 +39,7 @@ SECTIONS
         main_DATA_START = .;
         build/USA/asm/USA/main/data/800.rodata.s.o(.data);
         build/USA/src/main/156C.c.o(.data);
+        build/USA/src/main/187C.c.o(.data);
         build/USA/src/main/psyq.c.o(.data);
         build/USA/asm/USA/main/data/31570.data.s.o(.data);
         . = ALIGN(., 4);
@@ -50,6 +53,7 @@ SECTIONS
         main_BSS_START = .;
         build/USA/asm/USA/main/data/800.rodata.s.o(.bss);
         build/USA/src/main/156C.c.o(.bss);
+        build/USA/src/main/187C.c.o(.bss);
         build/USA/src/main/psyq.c.o(.bss);
         . = ALIGN(., 4);
         main_BSS_END = .;

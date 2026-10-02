@@ -92,6 +92,25 @@ MASPSX_AS_FLAGS = [
     "-EL", "-march=r3000", "-mtune=r3000",
     "-no-pad-sections", "-G0", "-I", "include",
 ]
+# Per-unit small-data threshold (issue #5 Phase D). Retail main game code was built
+# with -G8 (gp-relative scalars up to 8 bytes); the stage overlays with -G0. Keys are a
+# unit or a unit/file.c; the file entry wins. psyq.c stays -G0: it is INCLUDE_ASM
+# library code, and with -G > 0 cc1 writes C function text after the top-level asm,
+# which would move its one C stub.
+UNIT_G = {"main": "8", "main/psyq.c": "0", "main/156C.c": "0"}
+AS_G_OVERRIDE = None    # --as-g: one -G for every unit (flag experiments)
+
+
+def unit_flags(unit, name=None):
+    """(cc1 flags, maspsx flags, maspsx as flags) for a src/ unit (and file name)."""
+    g = UNIT_G.get("%s/%s" % (unit, name), UNIT_G.get(unit, "0"))
+    if AS_G_OVERRIDE is not None:
+        g = AS_G_OVERRIDE
+    if g == "0":
+        return CC1_FLAGS, MASPSX_FLAGS, MASPSX_AS_FLAGS
+    cc1 = CC1_FLAGS[:CC1_FLAGS.index("-G0")] + ["-G" + g] + CC1_FLAGS[CC1_FLAGS.index("-G0") + 1:]
+    as_flags = [("-G" + g) if f == "-G0" else f for f in MASPSX_AS_FLAGS]
+    return cc1, MASPSX_FLAGS + ["--dont-force-G0"], as_flags
 
 
 def binutils_dir():
@@ -143,15 +162,15 @@ except Exception:               # optional: build works without it (pure no-op)
     asm_normalizer = None
 
 
-def normalize_ctx(as_bin):
+def normalize_ctx(as_bin, maspsx_flags=None, maspsx_as_flags=None):
     """Toolchain paths the .s normalizer needs. No function names or unit paths
     are baked into the normalizer; they come from the manifest and from here."""
     return {
         "python": sys.executable,
         "maspsx_py": maspsx_py(),
-        "maspsx_flags": MASPSX_FLAGS,
+        "maspsx_flags": maspsx_flags or MASPSX_FLAGS,
         "as_bin": as_bin,
-        "maspsx_as_flags": MASPSX_AS_FLAGS,
+        "maspsx_as_flags": maspsx_as_flags or MASPSX_AS_FLAGS,
         "objdump": tool("objdump"),
         "asm_root": os.path.join(ROOT, CONFIG["asm_dir"]),
         "run": lambda cmd: (lambda r: (r.returncode, r.stdout, r.stderr))(
@@ -250,11 +269,13 @@ def compile_c(cpp, cc1, as_bin, skip_asm=False, units=None, strict="off"):
             stem = obj[:-2]  # drop trailing ".o"
             i_file = stem + ".i"
             s_file = stem + ".s"
+            unit = os.path.relpath(dirpath, src_root).replace("\\", "/").split("/")[0]
+            cc1_flags, maspsx_flags, maspsx_as_flags = unit_flags(unit, name)
 
             if run([cpp] + cpp_flags + ["-o", i_file, src]) != 0:
                 print("BUILD FAILED: preprocessing %s" % os.path.relpath(src, ROOT))
                 return -1
-            if run([cc1] + CC1_FLAGS + ["-o", s_file, i_file]) != 0:
+            if run([cc1] + cc1_flags + ["-o", s_file, i_file]) != 0:
                 print("BUILD FAILED: cc1 %s" % os.path.relpath(src, ROOT))
                 return -1
 
@@ -262,7 +283,7 @@ def compile_c(cpp, cc1, as_bin, skip_asm=False, units=None, strict="off"):
             # functions (between cc1 and the assembler). No-op if the normalizer
             # or its manifest is absent. The linked SHA-1 is the ground gate.
             if asm_normalizer is not None:
-                ctx = normalize_ctx(as_bin)
+                ctx = normalize_ctx(as_bin, maspsx_flags, maspsx_as_flags)
                 # The stage overlays share one address range, so two overlays can
                 # hold a func_XXXXXXXX of the same name: look targets up in this
                 # unit's asm tree first (callees in the main exe still resolve).
@@ -275,7 +296,6 @@ def compile_c(cpp, cc1, as_bin, skip_asm=False, units=None, strict="off"):
                 manifest = asm_normalizer.load_manifest()
                 # "unit:func" keys (stage overlays, whose func names can repeat across
                 # overlays) apply only to that unit; plain keys apply everywhere.
-                unit = os.path.relpath(dirpath, src_root).replace("\\", "/").split("/")[0]
                 manifest = dict((k.split(":", 1)[1] if ":" in k else k, v)
                                 for k, v in manifest.items()
                                 if ":" not in k or k.split(":", 1)[0] == unit)
@@ -283,7 +303,7 @@ def compile_c(cpp, cc1, as_bin, skip_asm=False, units=None, strict="off"):
                 ctx["alt_s"] = {}
                 for flavor in asm_normalizer.alt_flavors(manifest):
                     alt_file = "%s.%s.s" % (stem, flavor)
-                    if run([cc1] + CC1_FLAGS + asm_normalizer.ALT_FLAVORS[flavor]
+                    if run([cc1] + cc1_flags + asm_normalizer.ALT_FLAVORS[flavor]
                            + ["-o", alt_file, i_file]) != 0:
                         print("BUILD FAILED: cc1 (%s) %s"
                               % (flavor, os.path.relpath(src, ROOT)))
@@ -298,9 +318,9 @@ def compile_c(cpp, cc1, as_bin, skip_asm=False, units=None, strict="off"):
                 if rewrote:
                     print("  normalized: %s" % ", ".join(rewrote))
 
-            cmd = [sys.executable, maspsx_py()] + MASPSX_FLAGS + [
+            cmd = [sys.executable, maspsx_py()] + maspsx_flags + [
                 "--gnu-as-path=%s" % as_bin,
-            ] + MASPSX_AS_FLAGS + ["-o", obj, s_file]
+            ] + maspsx_as_flags + ["-o", obj, s_file]
             if run(cmd, stdin_devnull=True) != 0:
                 print("BUILD FAILED: maspsx/as %s" % os.path.relpath(src, ROOT))
                 return -1
@@ -327,15 +347,15 @@ def main():
     ap.add_argument("--units", help="comma list of src/ units to build (objects only)")
     ap.add_argument("--cc1-extra", default="",
                     help="extra cc1 flags for every C unit (flag-set experiments, e.g. -G8)")
-    ap.add_argument("--as-g", help="-G value maspsx/as use instead of 0 (with --cc1-extra -GN)")
+    ap.add_argument("--as-g", help="-G value cc1/maspsx/as use for every unit instead of UNIT_G")
     args = ap.parse_args()
     if args.build_dir:
         CONFIG["build_dir"] = args.build_dir
     if args.cc1_extra:
         CC1_FLAGS.extend(args.cc1_extra.split())
     if args.as_g is not None:
-        MASPSX_AS_FLAGS[MASPSX_AS_FLAGS.index("-G0")] = "-G" + args.as_g
-        MASPSX_FLAGS.append("--dont-force-G0")
+        global AS_G_OVERRIDE
+        AS_G_OVERRIDE = args.as_g
     units = OVERLAY_DIRS if args.overlays_only else None
     if args.units:
         units = args.units.split(",")

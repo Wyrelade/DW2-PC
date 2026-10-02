@@ -169,6 +169,7 @@
   },
   "Menu_DigiStatusInit": {
     "passes": [
+      "gp8",
       "reorder_indep"
     ]
   },
@@ -256,205 +257,185 @@
   },
   "Rand_Seed": {
     "passes": [
-      "gp8_nosplit"
+      "nosplit"
     ]
   },
   "Snd_SaveCurrentId": {
     "passes": [
-      "gp8_nosplit"
+      "nosplit"
     ]
   },
   "Snd_RestoreSavedId": {
     "passes": [
-      "gp8_nosplit"
+      "nosplit"
     ]
   },
   "func_80022518": {
     "passes": [
-      "gp8_nosplit"
+      "nosplit"
     ]
   },
   "Item_CompactBag": {
     "passes": [
-      "gp8_nosplit"
+      "nosplit"
     ]
   },
   "Item_RemoveFromBag": {
     "passes": [
-      "gp8_nosplit"
+      "nosplit"
     ]
   },
   "Item_GetBagCapacity": {
     "passes": [
-      "gp8_nosplit"
+      "nosplit"
     ]
   },
   "Ovl_GetCurrentId": {
     "passes": [
-      "gp8_nosplit"
+      "nosplit"
     ]
   },
   "Rand_Step": {
     "passes": [
-      "gp8_nosplit"
+      "nosplit"
     ]
   },
   "func_8001EFF0": {
     "passes": [
-      "gp8_nosplit"
+      "nosplit"
     ]
   },
   "Mem_InitHeap": {
     "passes": [
-      "gp8_nosplit"
+      "nosplit"
     ]
   },
   "Rand_Next": {
-    "passes": [
-      "gp8"
-    ]
+    "passes": []
   },
   "Item_FindFreeBagSlot": {
     "passes": [
-      "gp8_nosplit",
+      "nosplit",
       "label_nop"
     ]
   },
   "Item_AddToBag": {
     "passes": [
-      "gp8_nosplit"
+      "nosplit"
     ]
   },
   "Mem_SumSizesByTag": {
     "passes": [
-      "gp8_nosplit"
+      "nosplit"
     ]
   },
   "Mem_GetLargestFree": {
     "passes": [
-      "gp8_nosplit",
+      "nosplit",
       "label_nop"
     ]
   },
   "func_80011644": {
-    "passes": [
-      "gp8"
-    ]
+    "passes": []
   },
   "Menu_BlinkOrHideParts": {
     "passes": [
-      "gp8_nosplit"
+      "nosplit"
     ]
   },
   "Ovl_Load": {
     "passes": [
-      "gp8_nosplit",
+      "nosplit",
       "sched_match"
     ]
   },
   "Snd_SetSlotContent": {
     "passes": [
-      "gp8_nosplit",
+      "nosplit",
       "web_realloc",
       "sched_match"
     ]
   },
   "Snd_PlayById": {
-    "passes": [
-      "gp8"
-    ]
+    "passes": []
   },
   "Snd_StopById": {
-    "passes": [
-      "gp8"
-    ]
+    "passes": []
   },
   "Snd_StopAll": {
-    "passes": [
-      "gp8"
-    ]
+    "passes": []
   },
   "Menu_ShowSelItemText": {
     "passes": [
-      "gp8_nosplit"
+      "nosplit"
     ]
   },
   "Mem_FreeTag": {
     "passes": [
-      "gp8_nosplit",
+      "nosplit",
       "label_nop"
     ]
   },
   "Cd_QueueFile": {
-    "passes": [
-      "gp8"
-    ]
+    "passes": []
   },
   "Save_ResetGameState": {
-    "passes": [
-      "gp8"
-    ]
+    "passes": []
   },
   "Mem_TryAlloc": {
     "passes": [
-      "gp8_nosplit",
+      "nosplit",
       "label_nop"
     ]
   },
   "Digi_CountByState": {
     "passes": [
-      "gp8_nosplit"
+      "nosplit"
     ]
   },
   "Digi_ListByState": {
     "passes": [
-      "gp8_nosplit",
+      "nosplit",
       "reorder_indep"
     ]
   },
   "Digi_CompactRoster": {
     "passes": [
-      "gp8_nosplit"
+      "nosplit"
     ]
   },
   "Cd_ServiceQueue": {
-    "passes": [
-      "gp8"
-    ]
+    "passes": []
   },
   "Item_SortList": {
     "passes": [
-      "gp8_nosplit"
+      "nosplit"
     ]
   },
   "Digi_SortRoster": {
-    "passes": [
-      "gp8"
-    ]
+    "passes": []
   },
   "Sys_VSyncHandler": {
-    "passes": [
-      "gp8"
-    ]
+    "passes": []
   },
   "Menu_UseItemDirect": {
     "passes": [
-      "gp8_nosplit"
+      "nosplit"
     ]
   },
   "func_800154F0": {
     "passes": [
-      "gp8_nosplit"
+      "nosplit"
     ]
   },
   "func_80015668": {
     "passes": [
-      "gp8_nosplit"
+      "nosplit"
     ]
   },
   "Menu_UseItemOnTarget": {
     "passes": [
-      "gp8_nosplit"
+      "nosplit"
     ]
   },
   "Math_CycleRange": {
@@ -469,28 +450,28 @@
   },
   "Menu_OpenItemNameTexts": {
     "passes": [
-      "gp8_nosplit",
+      "nosplit",
       "nodiv"
     ]
   },
   "Menu_PickUseItemDirect": {
     "passes": [
-      "gp8_nosplit"
+      "nosplit"
     ]
   },
   "Menu_UseItemOnDigi": {
     "passes": [
-      "gp8_nosplit"
+      "nosplit"
     ]
   },
   "Item_MoveToStorage": {
     "passes": [
-      "gp8_nosplit"
+      "nosplit"
     ]
   },
   "Item_TakeFromStorage": {
     "passes": [
-      "gp8_nosplit",
+      "nosplit",
       "label_nop"
     ]
   },
@@ -543,14 +524,14 @@
   },
   "func_800224EC": {
     "passes": [
-      "gp8_nosplit",
+      "nosplit",
       "offset_unfold",
       "reorder_indep"
     ]
   },
   "func_8002254C": {
     "passes": [
-      "gp8_nosplit",
+      "nosplit",
       "offset_unfold",
       "reorder_indep"
     ]
@@ -608,6 +589,7 @@
   },
   "Menu_ConfirmMultiPick": {
     "passes": [
+      "gp8",
       "web_realloc",
       "self_move",
       "commutative_swap",
@@ -744,7 +726,6 @@
   },
   "Gfx_AnimateModelTex": {
     "passes": [
-      "gp8",
       "sched_pre",
       "reg_realloc",
       "web_realloc",
@@ -785,7 +766,7 @@
   },
   "func_80014F78": {
     "passes": [
-      "gp8_nosplit",
+      "nosplit",
       "sched_match",
       "block_iso",
       "delay_fill",
@@ -805,7 +786,7 @@
   },
   "func_80017214": {
     "passes": [
-      "gp8_nosplit",
+      "nosplit",
       "sched_pre",
       "sched_match",
       "hi_interleave",

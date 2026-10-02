@@ -590,11 +590,11 @@ typedef struct {
     /* 0x06 */ u16 h;
 } DrawAreaRect;
 
-/* Integer stack: [0] is the count, entries follow. Text_PushReturn pushes,
+/* Integer stack at Text_ReturnStack (0x28 bytes): count, then 9 entries. Text_PushReturn pushes,
    Text_PopReturn pops. */
 typedef struct {
     /* 0x00 */ s32 count;
-    /* 0x04 */ s32 data[1];
+    /* 0x04 */ s32 data[9];
 } TextStack;
 
 /* Global struct D_80048DB8: field_0 is a small state (Cd_PollRead), field_4 a
@@ -829,7 +829,9 @@ typedef struct {
     /* 0x16 */ u8 field_16;
     /* 0x17 */ u8 field_17;
     u8 _pad18[0x14];
-    /* 0x2C */ u16 itemCounts[0x50];   /* indexed by item slot (stag2000 shop) */
+    /* 0x2C */ u16 itemCounts[0x4C];   /* indexed by item slot (stag2000 shop) */
+    /* 0xC4 */ s16 field_C4;           /* Flag_Set ids 2000..2236 store id - 2000 */
+    u8 _padC6[0x06];
     u8 _padCC[0x05];
     /* 0xD1 */ u8 field_D1;
     /* 0xD2 */ u8 field_D2;
@@ -1033,7 +1035,7 @@ typedef struct {
     /* 0x34 */ s32 start;
     /* 0x38 */ s16 held;
     /* 0x3A */ s16 pressed;
-    /* 0x3C */ s16 repeat;
+    /* 0x3C */ u16 repeat;
     /* 0x3E */ s16 connected;
 } PadState; /* size 0x40 */
 
@@ -2659,7 +2661,17 @@ typedef struct {
     /* 0x102C */ u8 c[0x8];
     /* 0x1034 */ u8 d[0x10];
 } SaveEventFlags;
-extern s32 D_8005F664;
+
+/* Event flags at D_8005F624 (D_8005E620 + 0x1004). Flag_Set / Flag_Test map flag
+ * ids onto bit arrays by range (ids 0..599 run past flags0 into the next arrays). */
+typedef struct {
+    /* 0x00 */ u8 flags0[0x20];     /* ids 0..599 */
+    /* 0x20 */ u8 flags600[0x8];    /* ids 600..699 */
+    /* 0x28 */ u8 flags700[0x8];    /* ids 700..799 */
+    /* 0x30 */ u8 flags800[0x10];   /* ids 800..999 */
+    /* 0x40 */ s32 field_40;        /* ids 1000..1999: value id - 1900 */
+} EventFlags; /* size 0x44 */
+extern EventFlags D_8005F624;
 
 
 /* 4-byte unaligned tag and the 0x20-byte records at D_80061B38 (func_8002DF74). */

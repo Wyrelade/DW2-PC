@@ -93,7 +93,72 @@ def funcs_of(obj):
                 elif typ in ("R_MIPS_HI16", "R_MIPS_LO16", "R_MIPS_GPREL16"):
                     cur[-1][0] = w & ~0xFFFF
             cur[-1][1] += "%s:%s;" % (typ, sym)
-    return {k: [(w, r) for w, r in v] for k, v in res.items()}
+            if not sym.startswith(".") and typ in ("R_MIPS_HI16", "R_MIPS_LO16", "R_MIPS_GPREL16", "R_MIPS_32"):
+                cur[-1].append((typ, sym))
+    addr = sym_addrs(unit_of(obj))
+    for v in res.values():
+        resolve_data_relocs(v, addr)
+    return {k: [(w[0], w[1]) for w in v] for k, v in res.items()}
+
+
+_SYMS = {}
+
+
+def unit_of(obj):
+    m = re.search(r"[\\/]src[\\/]([^\\/]+)[\\/]", obj)
+    return m.group(1) if m else "main"
+
+
+def sym_addrs(unit):
+    """{name: address} from configs/USA/sym.<unit>.txt and the splat undefined_*_auto lists."""
+    if unit not in _SYMS:
+        d = {}
+        for p in ("configs/USA/sym.%s.txt" % unit, "linkers/USA/undefined_syms_auto.%s.txt" % unit,
+                  "linkers/USA/undefined_funcs_auto.%s.txt" % unit):
+            p = os.path.join(ROOT, p)
+            if os.path.exists(p):
+                for n, a in re.findall(r"^\s*(\w+)\s*=\s*0x([0-9A-Fa-f]+)", open(p).read(), re.M):
+                    d.setdefault(n, int(a, 16))
+        _SYMS[unit] = d
+    return _SYMS[unit]
+
+
+def resolve_data_relocs(v, addr):
+    """Data references compare by the address they resolve to, not by symbol name:
+    splat names every referenced address (D_8005F774) while C reaches the same
+    word as a struct field (D_8005F770 + 4). Linked bytes are identical either way.
+    HI16 takes its low half from the next LO16 against the same symbol (MIPS ABI AHL)."""
+    def base(sym):
+        if sym in addr:
+            return addr[sym]
+        m = re.match(r"^(?:D|jtbl|func)_([0-9A-F]{8})$", sym)
+        return int(m.group(1), 16) if m else None
+
+    for i, w in enumerate(v):
+        if len(w) < 3:
+            continue
+        typ, sym = w[2]
+        b = base(sym)
+        if b is None:
+            continue
+        word = w[0]
+        if typ == "R_MIPS_HI16":
+            lo = next((x for x in v[i + 1:] if len(x) > 2 and x[2] == ("R_MIPS_LO16", sym)), None)
+            if lo is None:
+                continue
+            slo = lo[0] & 0xFFFF
+            slo = slo - 0x10000 if slo & 0x8000 else slo
+            full = (b + ((word & 0xFFFF) << 16) + slo) & 0xFFFFFFFF
+            w[0] = word & ~0xFFFF
+        elif typ in ("R_MIPS_LO16", "R_MIPS_GPREL16"):
+            slo = word & 0xFFFF
+            slo = slo - 0x10000 if slo & 0x8000 else slo
+            full = (b + slo) & 0xFFFFFFFF
+            w[0] = word & ~0xFFFF
+        else:
+            full = (b + word) & 0xFFFFFFFF
+            w[0] = 0
+        w[1] = w[1].replace("%s:%s;" % (typ, sym), "%s:@%08x;" % (typ, full))
 
 
 def src_info():

@@ -28,14 +28,14 @@ import tempfile
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "tools"))
 HDR = os.path.join(ROOT, "include", "main", "156C.h")
-SRC = os.path.join(ROOT, "src", "main", "156C.c")
-MAIN_SRC = SRC
+SRC = os.path.join(ROOT, "src", "main", "187C.c")
+MAIN_SRCS = [os.path.join(ROOT, "src", "main", f) for f in ("156C.c", "187C.c")]
 
 
 def sources():
-    """156C.c plus the overlay sources (they include main/156C.h through their headers)."""
+    """Main game sources plus the overlay sources (they include main/156C.h through their headers)."""
     import glob
-    out = [MAIN_SRC]
+    out = list(MAIN_SRCS)
     for c in sorted(glob.glob(os.path.join(ROOT, "src", "stag*", "*.c"))):
         out.append(c)
     return out
