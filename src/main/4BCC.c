@@ -449,7 +449,6 @@ void Menu_OpenItemNameTexts(Actor *a0, s32 a1) {
 }
 
 
-#ifdef NORMALIZED
 void func_800153F4(Actor *a0, s32 a1) {
     HudSlots153F4 *w = (HudSlots153F4 *)a0->work;
     Halves *h;
@@ -465,19 +464,14 @@ void func_800153F4(Actor *a0, s32 a1) {
             v = D_8005071C->field_BA5[i];
         }
         if (v != 0) {
-            id = v + 0x1FD00EC;
-            id = i * 3 + id;
-            Text_OpenPacked(&w->slot[i], (s32)Cd_GetFileEntry(id), a1, *h);
+            id = 0x1FD00EC;
+            id = i * 3 + (v + id);
+            Text_OpenPacked(&w->slot[i], (s32)Cd_GetFileEntry(id), a1, h[i]);
         } else {
             Text_Close(&w->slot[i]);
         }
-        h++;
     }
 }
-#else
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_800153F4);
-void func_800153F4(Actor *a0, s32 a1);
-#endif
 
 void func_800154F0(Actor *a0) {
     MenuItemUseWork *w = (MenuItemUseWork *)a0->work;

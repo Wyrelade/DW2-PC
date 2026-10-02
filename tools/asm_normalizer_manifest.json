@@ -204,17 +204,7 @@
     ]
   },
   "func_800153F4": {
-    "passes": [
-      "nodb",
-      "sched_pre",
-      "commutative_swap",
-      "web_resched",
-      "taken_fill",
-      "fallthrough_fill",
-      "label_nop",
-      "delay_fill",
-      "padnop"
-    ]
+    "passes": []
   },
   "func_8001204C": {
     "passes": [
