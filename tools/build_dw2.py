@@ -100,7 +100,12 @@ MASPSX_AS_FLAGS = [
 UNIT_G = {"main": "8", "main/psyq.c": "0", "main/156C.c": "0"}
 UNIT_ASPSX = {"main": "2.81"}
 # Extra cc1 flags per unit or unit/file (one flag set per translation unit).
-UNIT_CC1 = {}
+UNIT_CC1 = {
+    # the game function after libpress in STAG1000 is its own object, built without split addresses
+    "stag1000/stag1000_tail.c": ["-mno-split-addresses"],
+    # event flag reset unit before Mem_TestBit (func_80021D60, Save_ClearEventFlags)
+    "main/12550.c": ["-fno-cse-skip-blocks", "-fno-strength-reduce"],
+}
 AS_G_OVERRIDE = None    # --as-g: one -G for every unit (flag experiments)
 
 

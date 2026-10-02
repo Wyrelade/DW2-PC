@@ -3,6 +3,7 @@
 #include "main/187C.h"
 #include "main/4BCC.h"
 #include "main/12550.h"
+#include "main/12654.h"
 
 /* Small data this unit defines (retail reaches it with %gp_rel here). The bytes
  * live in the data asm; these tentative definitions are COMMON and bind to it. */

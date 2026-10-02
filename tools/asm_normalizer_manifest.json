@@ -150,11 +150,6 @@
   "func_8001D9CC": {
     "passes": []
   },
-  "func_80021D60": {
-    "passes": [
-      "gp8_nosplit_noskip"
-    ]
-  },
   "Item_Use": {
     "passes": []
   },
@@ -231,11 +226,6 @@
     "passes": [
       "nocse",
       "sched_match"
-    ]
-  },
-  "Save_ClearEventFlags": {
-    "passes": [
-      "nosr"
     ]
   },
   "Menu_NameEntryTask": {
@@ -399,11 +389,6 @@
       "save_slot",
       "block_iso_wide",
       "padnop"
-    ]
-  },
-  "stag1000:func_800650D0": {
-    "passes": [
-      "nosplit"
     ]
   },
   "stag1100:func_80064B00": {

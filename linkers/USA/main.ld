@@ -27,6 +27,7 @@ SECTIONS
         build/USA/src/main/187C.c.o(.rodata);
         build/USA/src/main/4BCC.c.o(.rodata);
         build/USA/src/main/12550.c.o(.rodata);
+        build/USA/src/main/12654.c.o(.rodata);
         build/USA/src/main/13584.c.o(.rodata);
         build/USA/src/main/psyq.c.o(.rodata);
         . = ALIGN(., 4);
@@ -37,6 +38,7 @@ SECTIONS
         build/USA/src/main/187C.c.o(.text);
         build/USA/src/main/4BCC.c.o(.text);
         build/USA/src/main/12550.c.o(.text);
+        build/USA/src/main/12654.c.o(.text);
         build/USA/src/main/13584.c.o(.text);
         build/USA/src/main/psyq.c.o(.text);
         . = ALIGN(., 4);
@@ -48,6 +50,7 @@ SECTIONS
         build/USA/src/main/187C.c.o(.data);
         build/USA/src/main/4BCC.c.o(.data);
         build/USA/src/main/12550.c.o(.data);
+        build/USA/src/main/12654.c.o(.data);
         build/USA/src/main/13584.c.o(.data);
         build/USA/src/main/psyq.c.o(.data);
         build/USA/asm/USA/main/data/31570.data.s.o(.data);
@@ -65,6 +68,7 @@ SECTIONS
         build/USA/src/main/187C.c.o(.bss);
         build/USA/src/main/4BCC.c.o(.bss);
         build/USA/src/main/12550.c.o(.bss);
+        build/USA/src/main/12654.c.o(.bss);
         build/USA/src/main/13584.c.o(.bss);
         build/USA/src/main/psyq.c.o(.bss);
         . = ALIGN(., 4);

@@ -29,7 +29,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "tools"))
 HDR = os.path.join(ROOT, "include", "main", "156C.h")
 SRC = os.path.join(ROOT, "src", "main", "187C.c")
-MAIN_SRCS = [os.path.join(ROOT, "src", "main", f) for f in ("156C.c", "187C.c", "4BCC.c", "12550.c", "13584.c")]
+MAIN_SRCS = [os.path.join(ROOT, "src", "main", f) for f in ("156C.c", "187C.c", "4BCC.c", "12550.c", "12654.c", "13584.c")]
 
 
 def sources():
