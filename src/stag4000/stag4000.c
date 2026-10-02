@@ -5245,7 +5245,6 @@ s32 func_800715DC(void) {
     return r;
 }
 
-#ifdef NORMALIZED
 s32 func_80071608(void) {
     u8 buf[16];
     s32 n = 0;
@@ -5263,10 +5262,6 @@ s32 func_80071608(void) {
     }
     return r;
 }
-#else
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80071608);
-s32 func_80071608(void);
-#endif
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_800716EC);
 
