@@ -533,7 +533,6 @@ s32 func_80065230(void) {
     return r;
 }
 
-#ifdef NORMALIZED
 void func_80065278(Actor *a0) {
     Stg40B68Work *w = (Stg40B68Work *)a0->work;
     s32 x0 = w->field_1E90;
@@ -548,10 +547,6 @@ void func_80065278(Actor *a0) {
     b->field_30 = y0 - dy;
     a0->stateLevel2++;
 }
-#else
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80065278);
-void func_80065278(Actor *a0);
-#endif
 
 void func_80065300(Actor *a0) {
     Stg40B68Work *w = (Stg40B68Work *)a0->work;
