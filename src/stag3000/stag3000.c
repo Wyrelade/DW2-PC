@@ -313,7 +313,6 @@ void func_80064480(void) {
     }
 }
 
-#ifdef NORMALIZED
 void func_800644D4(Actor *a0) {
     Stg30WorkWord *w = (Stg30WorkWord *)a0->work;
     s32 *p = (s32 *)a0->u34.children;
@@ -544,10 +543,6 @@ void func_800644D4(Actor *a0) {
         break;
     }
 }
-#else
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_800644D4);
-void func_800644D4(Actor *a0);
-#endif
 
 #ifdef NORMALIZED
 void func_80064B30(Actor *a0) {
