@@ -1,9 +1,6 @@
 {
   "Text_SetInputPad": {
-    "passes": [
-      "reg_realloc",
-      "operand_recolor"
-    ]
+    "passes": []
   },
   "Text_SetOtLayer": {
     "passes": [

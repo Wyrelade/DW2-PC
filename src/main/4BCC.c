@@ -3514,17 +3514,13 @@ void Text_SetColor(s32 a0, s32 a1) {
     }
 }
 
-#ifdef NORMALIZED
 void Text_SetInputPad(s32 a0, s32 a1) {
     TaskEntry *p = Task_FindFirst(9, -1, -1);
     if (a0 != -1 && p != 0) {
-        p->work[a0].padIndex = a1;
+        TextBox *r = &p->work[a0];
+        r->padIndex = a1;
     }
 }
-#else
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Text_SetInputPad);
-void Text_SetInputPad(s32 a0, s32 a1);
-#endif
 
 #ifdef NORMALIZED
 void Text_SetOtLayer(s32 a0, s32 a1) {
