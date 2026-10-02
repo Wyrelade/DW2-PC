@@ -256,11 +256,6 @@
       "web_realloc"
     ]
   },
-  "stag3000:func_80071044": {
-    "passes": [
-      "nodiv"
-    ]
-  },
   "stag3000:func_8006FFD0": {
     "passes": [
       "web_realloc"

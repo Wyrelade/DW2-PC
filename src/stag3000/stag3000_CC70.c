@@ -542,7 +542,6 @@ void func_8007100C(Actor *a0) {
     Task_DefaultDestroy(a0);
 }
 
-#ifdef NORMALIZED
 void func_80071044(Stg30Part *p, s32 unit, s32 num, s32 den) {
     s32 lv[4];
     s32 masks[4];
@@ -590,10 +589,6 @@ void func_80071044(Stg30Part *p, s32 unit, s32 num, s32 den) {
         }
     }
 }
-#else
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000_CC70", func_80071044);
-void func_80071044(Stg30Part *p, s32 unit, s32 num, s32 den);
-#endif
 
 void func_8007118C(Actor *a0) {
     Stg30Work734F8 *w = (Stg30Work734F8 *)a0->work;
