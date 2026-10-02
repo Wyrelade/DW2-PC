@@ -130,18 +130,10 @@
     "passes": []
   },
   "func_800224EC": {
-    "passes": [
-      "nosplit",
-      "offset_unfold",
-      "reorder_indep"
-    ]
+    "passes": []
   },
   "func_8002254C": {
-    "passes": [
-      "nosplit",
-      "offset_unfold",
-      "reorder_indep"
-    ]
+    "passes": []
   },
   "Snd_ServiceSlotLoads": {
     "passes": []

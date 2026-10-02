@@ -208,22 +208,12 @@ void Save_ResetGameState(void) {
 }
 
 
-#ifdef NORMALIZED
 void func_800224EC(s32 i, s32 v, s32 flag) {
     GameStateView *p = D_80050720;
-    u8 *q = &p->slotStatus[i];
 
     p->slotItems[i] = v;
-    if (v != 0) {
-        *q = flag;
-        return;
-    }
-    *q = 1;
+    p->slotStatus[i] = (v != 0) ? flag : 1;
 }
-#else
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_800224EC);
-void func_800224EC(s32 i, s32 v, s32 flag);
-#endif
 
 
 s32 func_80022518(s32 i) {
@@ -235,22 +225,11 @@ s32 func_80022518(s32 i) {
 }
 
 
-#ifdef NORMALIZED
 void func_8002254C(s32 i, s32 v) {
-    s32 r = 0;
     GameStateView *p = D_80050720;
-    u16 t = p->slotItems[i];
-    u8 *q = &p->slotStatus[i];
 
-    if (t != 0) {
-        r = v;
-    }
-    *q = r;
+    p->slotStatus[i] = (p->slotItems[i] != 0) ? v : 0;
 }
-#else
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002254C);
-void func_8002254C(s32 i, s32 v);
-#endif
 
 
 u8 func_80022578(void) {
