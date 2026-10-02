@@ -669,10 +669,7 @@
     "passes": []
   },
   "stag4000:func_80071310": {
-    "passes": [
-      "web_realloc",
-      "commutative_swap"
-    ]
+    "passes": []
   },
   "stag2000:func_800688E4": {
     "passes": [

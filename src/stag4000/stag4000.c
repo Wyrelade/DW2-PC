@@ -5161,7 +5161,6 @@ s32 func_80071294(void) {
     return r;
 }
 
-#ifdef NORMALIZED
 void func_80071310(s32 a0, s32 a1) {
     s32 base = 0x1FD0011;
 
@@ -5183,14 +5182,13 @@ void func_80071310(s32 a0, s32 a1) {
         func_80067610(1, base + 5, 0, 0);
         break;
     default:
-        func_80067610(1, base + 4, Item_GetNameText(*(D_80050720->slotItems + D_800729E0[a1 - 4])), 0);
+        {
+            s32 k = D_800729E0[a1 - 4];
+            func_80067610(1, base + 4, Item_GetNameText(D_80050720->slotItems[k]), 0);
+        }
         break;
     }
 }
-#else
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80071310);
-void func_80071310(s32 a0, s32 a1);
-#endif
 
 void func_8007142C(s32 a0, s32 a1) {
     s32 i;
