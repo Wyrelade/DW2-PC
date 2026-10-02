@@ -164,7 +164,6 @@ void Flag_ApplySets(FlagSetPair *p) {
     }
 }
 
-#ifdef NORMALIZED
 s32 Math_CycleRange(s32 v, s32 div, s32 lo, s32 hi) {
     s32 r;
     v /= div;
@@ -176,10 +175,6 @@ s32 Math_CycleRange(s32 v, s32 div, s32 lo, s32 hi) {
         return lo - r;
     }
 }
-#else
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Math_CycleRange);
-s32 Math_CycleRange(s32 v, s32 div, s32 lo, s32 hi);
-#endif
 
 
 #ifdef NORMALIZED
