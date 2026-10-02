@@ -5404,7 +5404,6 @@ void func_80072250(Actor *a0) {
     }
 }
 
-#ifdef NORMALIZED
 void func_800722B8(Actor *task) {
     Stg40BC0Work *w = (Stg40BC0Work *)task->work;
     s32 dx;
@@ -5437,10 +5436,6 @@ void func_800722B8(Actor *task) {
     w->field_7C[1] = (u16)w->field_AC + (w->field_B0 / w->field_A8) * (w->field_A8 - task->stateLevel2);
     task->stateLevel2 = task->stateLevel2 + 1;
 }
-#else
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_800722B8);
-void func_800722B8(Actor *task);
-#endif
 
 void func_80072418(Actor *a0, Block1C *a1) {
     Stg40BC0Work *w = (Stg40BC0Work *)a0->work;
