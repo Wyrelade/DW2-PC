@@ -8,10 +8,13 @@
 
 /* Work area pointed to by D_80069360. */
 typedef struct {
-    u8 _pad000[0x8C0];
-    /* 0x8C0 */ u16 field_8C0;
-    /* 0x8C2 */ u16 field_8C2;
-    u8 _pad8C4[0x0C];
+    /* 0x000 */ u16 clut[0x60];
+    /* 0x0C0 */ u16 buf[0x400];
+    /* 0x8C0 */ u16 field_8C0;      /* small RECT x (LoadImage) */
+    /* 0x8C2 */ u16 field_8C2;      /* small RECT y */
+    /* 0x8C4 */ s16 field_8C4;      /* small RECT w */
+    /* 0x8C6 */ s16 field_8C6;      /* small RECT h */
+    /* 0x8C8 */ RECT rectBig;
     /* 0x8D0 */ s32 *field_8D0;
     /* 0x8D4 */ s16 field_8D4;
 } Stg00Work;
@@ -37,6 +40,7 @@ extern SysState D_8005F770;
 extern u8 **D_8006925C[];
 extern u8 *D_8006935C;
 extern Stg00Work *D_80069360;
+extern u8 D_80068AD0[];       /* 1bpp font bits unpacked by func_80064E78 */
 
 extern void Task_DefaultDestroy(Actor *arg0);
 extern TaskEntry *Task_FindFirst(s32 arg0, s32 arg1, s32 arg2);

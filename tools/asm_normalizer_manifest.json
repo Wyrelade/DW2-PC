@@ -4537,5 +4537,11 @@
       "web_realloc",
       "sched_match"
     ]
+  },
+  "func_80064E78": {
+    "passes": [
+      "web_resched",
+      "block_iso"
+    ]
   }
 }
