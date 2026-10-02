@@ -303,7 +303,7 @@ void Sys_Main(void) {
     PutDrawEnv(&D_8005F770.draw[0]);
     PutDispEnv(&D_8005F770.disp[0]);
     VSync(0);
-    GsGetTimInfo((u32 *)(D_80010000[0] + 4), &tim);
+    GsGetTimInfo((u32 *)(D_80010000 + 4), &tim);
     VSync(0);
     LoadImage((s32)&D_80050730, (s32)tim.paddr);
     DrawSync(0);

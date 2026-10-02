@@ -1197,7 +1197,7 @@ void Ovl_Load(s32 id) {
         p = &Ovl_FileIds[id];
         Ovl_CurrentId = id;
         src = (u8 *)Cd_GetFileSync(*p);
-        dst = D_80010000[0];
+        dst = D_80010000;
         memcpy(dst, src, Cd_GetFileSectors(*p) << 11);
     }
 }

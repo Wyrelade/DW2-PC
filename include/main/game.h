@@ -473,7 +473,7 @@ extern MemBlock *D_80050788;
 extern s32 D_80050948[];
 extern s32 D_8005075C;
 extern s32 Ovl_FileIds[];
-extern u8 *D_80010000[];
+extern u8 *D_80010000; /* overlay load address (0x80063360) */
 extern void Snd_StopById(s32);
 extern void Snd_StopById(s32);
 extern void SsSepSetVol(s16 a0, s16 a1, s16 a2, s16 a3);
