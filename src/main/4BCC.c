@@ -436,7 +436,6 @@ void func_80014F78(Actor *a0);
 #endif
 
 
-#ifdef NORMALIZED
 void Menu_OpenItemNameTexts(Actor *a0, s32 a1) {
     MenuItemUseWork *w = (MenuItemUseWork *)a0->work;
     s32 i;
@@ -461,10 +460,6 @@ void Menu_OpenItemNameTexts(Actor *a0, s32 a1) {
         Text_SetColor(w->itemTexts[i], k);
     }
 }
-#else
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Menu_OpenItemNameTexts);
-void Menu_OpenItemNameTexts(Actor *a0, s32 a1);
-#endif
 
 
 #ifdef NORMALIZED
