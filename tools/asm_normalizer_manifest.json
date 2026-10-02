@@ -3,10 +3,7 @@
     "passes": []
   },
   "Text_SetOtLayer": {
-    "passes": [
-      "reg_realloc",
-      "operand_recolor"
-    ]
+    "passes": []
   },
   "func_80020E00": {
     "passes": [

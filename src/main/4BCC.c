@@ -3522,17 +3522,13 @@ void Text_SetInputPad(s32 a0, s32 a1) {
     }
 }
 
-#ifdef NORMALIZED
 void Text_SetOtLayer(s32 a0, s32 a1) {
     TaskEntry *p = Task_FindFirst(9, -1, -1);
     if (a0 != -1 && p != 0) {
-        p->work[a0].otIndex = a1;
+        TextBox *r = &p->work[a0];
+        r->otIndex = a1;
     }
 }
-#else
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Text_SetOtLayer);
-void Text_SetOtLayer(s32 a0, s32 a1);
-#endif
 
 void Text_OpenById(void *a0, s32 a1, s32 a2, Halves a3) {
     TextOpenArgs local;
