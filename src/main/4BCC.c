@@ -2666,23 +2666,16 @@ void Snd_UnloadSlot(s32 idx) {
     D_80054C48[idx].vabId = -1;
 }
 
-#ifdef NORMALIZED
 void Snd_SetSlotContent(s32 idx, s32 v) {
-    SndSlot *e = &D_80054C48[idx];
-
-    if (e->contentId != v) {
+    if (D_80054C48[idx].contentId != v) {
         Snd_UnloadSlot(idx);
-        e->loadState = 1;
-        e->contentId = v;
+        D_80054C48[idx].loadState = 1;
+        D_80054C48[idx].contentId = v;
         if (Snd_CurrentId != -1 && idx == ((Snd_CurrentId & 0xF00) >> 8)) {
             Snd_StopById(Snd_CurrentId);
         }
     }
 }
-#else
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Snd_SetSlotContent);
-void Snd_SetSlotContent(s32 idx, s32 v);
-#endif
 
 void Snd_PlayById(s32 id, s32 set) {
     s32 k;

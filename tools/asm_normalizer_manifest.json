@@ -84,11 +84,7 @@
     ]
   },
   "Snd_SetSlotContent": {
-    "passes": [
-      "nosplit",
-      "web_realloc",
-      "sched_match"
-    ]
+    "passes": []
   },
   "Digi_ListByState": {
     "passes": [
