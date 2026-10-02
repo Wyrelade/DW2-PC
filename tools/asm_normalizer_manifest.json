@@ -751,9 +751,7 @@
     ]
   },
   "func_8006EE24": {
-    "passes": [
-      "block_iso"
-    ]
+    "passes": []
   },
   "func_8006424C": {
     "passes": [
