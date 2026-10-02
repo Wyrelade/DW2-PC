@@ -783,10 +783,7 @@
     ]
   },
   "stag4000:func_80063F00": {
-    "passes": [
-      "nodiv",
-      "load_remat"
-    ]
+    "passes": []
   },
   "stag3000:func_800706BC": {
     "passes": []

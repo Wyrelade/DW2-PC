@@ -76,7 +76,6 @@ INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80063A34);
 void func_80063EF8(void) {
 }
 
-#ifdef NORMALIZED
 s32 func_80063F00(Actor *arg0) {
     Blk13 sp10;
     Stg40Ent48 *e;
@@ -159,10 +158,6 @@ s32 func_80063F00(Actor *arg0) {
     }
     return ret;
 }
-#else
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80063F00);
-s32 func_80063F00(Actor *arg0);
-#endif
 
 #ifdef NORMALIZED
 void func_8006424C(Actor *arg0) {
