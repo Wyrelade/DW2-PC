@@ -1074,7 +1074,6 @@ s32 func_80065B88(s32 arg0, s32 arg1, s32 arg2) {
     return r;
 }
 
-#ifdef NORMALIZED
 s32 func_80065BE0(s32 arg0, s32 arg1, s32 arg2) {
     Stg35Rec5C *rec0 = &D_8006AA98[arg0];
     Stg35Rec5C *rec1 = &D_8006AA98[arg1];
@@ -1099,18 +1098,13 @@ s32 func_80065BE0(s32 arg0, s32 arg1, s32 arg2) {
     c = prod / 100;
     denom = c * 2;
     result = num / denom;
-    c = rec1->hp;
-    if (result < c) {
+    if (result < rec1->hp) {
         rec1->hp = rec1->hp - result;
     } else {
         rec1->hp = 0;
     }
     return result;
 }
-#else
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80065BE0);
-s32 func_80065BE0(s32 arg0, s32 arg1, s32 arg2);
-#endif
 
 void func_80065D00(void) {
     s32 v = -1;
