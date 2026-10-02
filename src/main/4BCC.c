@@ -27,12 +27,10 @@ void func_800143CC(Actor *arg0, s16 arg1) {
     w->field_3C = 0;
 }
 
-#ifdef NORMALIZED
 void Menu_SubMenuTask(Actor *a) {
     MenuSubMenuWork *w = (MenuSubMenuWork *)a->work;
     s32 *p = (s32 *)a->u34.children;
     Pair54 *tbl;
-    Pair54 *e;
     s32 idx;
 
     switch (a->stateLevel0) {
@@ -94,8 +92,7 @@ void Menu_SubMenuTask(Actor *a) {
             switch (a->stateLevel2) {
             default:
             case 0:
-                e = &tbl[w->selection];
-                Task_Create(e->field_0, p, e->field_2);
+                Task_Create(tbl[w->selection].field_0, p, tbl[w->selection].field_2);
                 Task_NextState2(a);
                 break;
             case 1:
@@ -141,8 +138,7 @@ void Menu_SubMenuTask(Actor *a) {
                 }
                 break;
             case 2:
-                e = &tbl[w->selection];
-                Task_Create(e->field_0, q, e->field_2);
+                Task_Create(tbl[w->selection].field_0, q, tbl[w->selection].field_2);
                 Task_NextState2(a);
                 break;
             case 3:
@@ -171,10 +167,6 @@ void Menu_SubMenuTask(Actor *a) {
         break;
     }
 }
-#else
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Menu_SubMenuTask);
-void Menu_SubMenuTask(Actor *a);
-#endif
 
 
 extern void Menu_SetPartsGridPos(void *, s32, s32 *, s16 *);
