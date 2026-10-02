@@ -21,6 +21,7 @@ def main() -> None:
     parser.add_argument("--force-stdin", action="store_true")
     parser.add_argument("--use-comm-section", action="store_true")
     parser.add_argument("--use-comm-for-lcomm", action="store_true")
+    parser.add_argument("--div-branch-nopad", action="store_true")
     # decomp.me debugging
     parser.add_argument("--print-output", action="store_true")
     parser.add_argument("--print-input", action="store_true")
@@ -129,6 +130,7 @@ def main() -> None:
         gp_allow_la=gp_allow_la,
         use_comm_section=args.use_comm_section,
         use_comm_for_lcomm=args.use_comm_for_lcomm,
+        div_branch_nopad=args.div_branch_nopad,
     )
     try:
         out_lines = maspsx_processor.process_lines()

@@ -145,8 +145,10 @@ def line_loads_from_reg(line: str, r_source: str) -> bool:
 
 
 def _branch_reads_div(line: str) -> bool:
-    """aspsx does not pad between an expanded div/rem's mflo/mfhi and a
-    conditional branch reading the result (retail `mfhi v0; beqz v0,L; nop`).
+    """With --div-branch-nopad: no pad between an expanded div/rem's mflo/mfhi and
+    a conditional branch reading the result (PsyQ library code, `mfhi v0; beqz v0,L;
+    nop`). DW2 game code pads there like before any other reader (`mflo a3; nop;
+    bnez a3`), which is the default.
     With the expansion on, no reader gets a pad at all (retail `mflo v1;
     sh v1,0x54(a3)`): mflo has no load delay."""
     p = strip_comments(line).split(None, 1)
@@ -419,6 +421,7 @@ class MaspsxProcessor:
         gp_allow_la=False,
         use_comm_section=False,
         use_comm_for_lcomm=False,
+        div_branch_nopad=False,
     ):
         self.lines = [x.strip() for x in lines]
 
@@ -438,6 +441,7 @@ class MaspsxProcessor:
         self.gp_allow_la = gp_allow_la
 
         self.use_comm_section = use_comm_section
+        self.div_branch_nopad = div_branch_nopad
         self.use_comm_for_lcomm = use_comm_for_lcomm
 
         self.bss_entries: dict[str, int] = {}
@@ -1191,7 +1195,7 @@ class MaspsxProcessor:
                 extra_nops = self._handle_nop_before_next_instruction(
                     next_instruction, r_dest
                 )
-                if self.expand_div or _branch_reads_div(next_instruction):
+                if self.expand_div or (self.div_branch_nopad and _branch_reads_div(next_instruction)):
                     extra_nops = []
                 res.extend(extra_nops)
 
@@ -1237,7 +1241,7 @@ class MaspsxProcessor:
                 extra_nops = self._handle_nop_before_next_instruction(
                     next_instruction, r_dest
                 )
-                if self.expand_div or _branch_reads_div(next_instruction):
+                if self.expand_div or (self.div_branch_nopad and _branch_reads_div(next_instruction)):
                     extra_nops = []
                 res.extend(extra_nops)
 
