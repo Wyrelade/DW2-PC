@@ -38,9 +38,7 @@
     ]
   },
   "Menu_ItemUseDraw": {
-    "passes": [
-      "sched_match"
-    ]
+    "passes": []
   },
   "Menu_ItemDraw": {
     "passes": [
@@ -87,10 +85,7 @@
     "passes": []
   },
   "Digi_ListByState": {
-    "passes": [
-      "nosplit",
-      "reorder_indep"
-    ]
+    "passes": []
   },
   "Math_CycleRange": {
     "passes": []

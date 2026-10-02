@@ -363,48 +363,38 @@ s32 Digi_CountByState(s32 mode) {
 }
 
 
-#ifdef NORMALIZED
 s32 Digi_ListByState(s32 mode, DigiRosterEntry **list) {
     s32 n = 0;
     s32 i;
-    DigiRosterEntry **p = list;
     DigiRosterEntry *e = D_80050720->elems;
 
     for (i = 0; i < 0x24; i++, e++) {
         switch (mode) {
         default:
             if (e->state == mode) {
-                *p++ = e;
-                n++;
+                list[n++] = e;
             }
             break;
         case 2:
             if (e->state >= 2) {
-                *p++ = e;
-                n++;
+                list[n++] = e;
             }
             break;
         case 3:
             if (e->state >= 3) {
-                p++;
                 list[e->state - 3] = e;
                 n++;
             }
             break;
         case 4:
             if (e->state == 2) {
-                *p++ = e;
-                n++;
+                list[n++] = e;
             }
             break;
         }
     }
     return n;
 }
-#else
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Digi_ListByState);
-s32 Digi_ListByState(s32 mode, DigiRosterEntry **list);
-#endif
 
 
 void Digi_CompactRoster(void) {

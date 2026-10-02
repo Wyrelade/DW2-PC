@@ -709,11 +709,9 @@ break;
 }
 
 
-#ifdef NORMALIZED
 void Menu_ItemUseDraw(Actor *actor) {
     ActorWork *w = actor->work;
     s32 *p;
-    s32 *list;
     void *obj;
     s32 i;
     s32 k;
@@ -727,9 +725,8 @@ void Menu_ItemUseDraw(Actor *actor) {
         return;
     }
     i = 0;
-    list = p;
     do {
-        obj = Cd_GetFileEntry(*list);
+        obj = Cd_GetFileEntry(p[i]);
         mask = 1 << i;
         if (((s32 *)Cd_GetFileEntry(0x5130013))[w->field_98 - 1] & mask) {
             switch (i) {
@@ -763,14 +760,9 @@ void Menu_ItemUseDraw(Actor *actor) {
             Gfx_SetPartsScale(obj, 0x1000, w->field_9C);
             Gfx_DrawParts((s32)obj);
         }
-        list++;
         i++;
-    } while (*list != 0);
+    } while (p[i] != 0);
 }
-#else
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Menu_ItemUseDraw);
-void Menu_ItemUseDraw(Actor *actor);
-#endif
 
 
 void Item_BuildMenuList(MenuItemWork *w) {
