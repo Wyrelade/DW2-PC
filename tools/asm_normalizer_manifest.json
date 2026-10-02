@@ -425,10 +425,7 @@
     ]
   },
   "stag4000:func_8006755C": {
-    "passes": [
-      "nodiv",
-      "sched_match"
-    ]
+    "passes": []
   },
   "stag4000:func_8006D418": {
     "passes": [
