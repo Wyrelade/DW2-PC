@@ -2576,7 +2576,6 @@ s32 func_800699F8(s32 a, s32 b) {
     return -1;
 }
 
-#ifdef NORMALIZED
 s32 func_80069A44(s32 idx) {
     u8 buf[12];
     s32 i;
@@ -2659,10 +2658,6 @@ s32 func_80069A44(s32 idx) {
     }
     return 1;
 }
-#else
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80069A44);
-s32 func_80069A44(s32 idx);
-#endif
 
 #ifdef NORMALIZED
 void func_80069DE8(void) {
