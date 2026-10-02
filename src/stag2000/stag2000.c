@@ -4783,7 +4783,6 @@ INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006F3E0);
 void func_8006F3E0(Actor *a);
 #endif
 
-#ifdef NORMALIZED
 void func_8006F730(Actor *a) {
     Stg20CamWork *w = (Stg20CamWork *)a->work;
     Actor *e;
@@ -4798,6 +4797,7 @@ void func_8006F730(Actor *a) {
             w->view.field_8 = -0x5A00;
             w->view.field_C = 0;
             w->view.field_10 = 0;
+            w->view.field_14 = 0;
         } else {
             w->proj = 0x5DC;
             w->view.field_4 = -0xFA0;
@@ -4805,8 +4805,8 @@ void func_8006F730(Actor *a) {
             w->view.field_0 = 0;
             w->view.field_C = 0;
             w->view.field_10 = -0x3E8;
+            w->view.field_14 = 0;
         }
-        w->view.field_14 = 0;
         w->view.field_18 = 0;
         w->view.field_1C = &w->coord;
         w->rot[2] = 0;
@@ -4942,10 +4942,6 @@ void func_8006F730(Actor *a) {
         break;
     }
 }
-#else
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006F730);
-void func_8006F730(Actor *a);
-#endif
 
 void func_8006FBF0(Actor *a) {
     Stg20CamWork *w = (Stg20CamWork *)a->work;
