@@ -253,12 +253,7 @@
     ]
   },
   "func_80014F78": {
-    "passes": [
-      "sched_match",
-      "block_iso",
-      "delay_fill",
-      "padnop"
-    ]
+    "passes": []
   },
   "Gfx_DrawWireQuads": {
     "passes": [

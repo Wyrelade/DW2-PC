@@ -343,7 +343,6 @@ void Menu_UseItemDirect(Actor *a0) {
 }
 
 
-#ifdef NORMALIZED
 void func_80014F78(Actor *a0) {
     MenuItemUseWork *w = (MenuItemUseWork *)a0->work;
     Halves *pos;
@@ -371,8 +370,8 @@ void func_80014F78(Actor *a0) {
         }
         if (r == 1) {
             st.text = (s32)Cd_GetFileEntry(0x1FD00B3);
-            r = m + 0x1FD00EC;
-            st.strArg0 = (s32)Cd_GetFileEntry(n * 3 + r);
+            r = 0x1FD00EC;
+            st.strArg0 = (s32)Cd_GetFileEntry(n * 3 + (m + r));
         } else {
             st.text = (s32)Cd_GetFileEntry(0x1FD00B4);
             st.strArg0 = Item_GetNameText(Menu_Ctx->itemId);
@@ -422,10 +421,6 @@ void func_80014F78(Actor *a0) {
 end:
     func_800153F4(a0, 0);
 }
-#else
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80014F78);
-void func_80014F78(Actor *a0);
-#endif
 
 
 void Menu_OpenItemNameTexts(Actor *a0, s32 a1) {
