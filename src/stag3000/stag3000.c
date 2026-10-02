@@ -5400,7 +5400,6 @@ INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80071044);
 void func_80071044(Stg30Part *p, s32 unit, s32 num, s32 den);
 #endif
 
-#ifdef NORMALIZED
 void func_8007118C(Actor *a0) {
     Stg30Work734F8 *w = (Stg30Work734F8 *)a0->work;
     Stg30Part *p;
@@ -5451,11 +5450,13 @@ void func_8007118C(Actor *a0) {
         }
         k = a0->field_8;
         if (k < 3) {
-            Gfx_SetPartsNumber((GfxPart *)p, 0x20, 3, D_80073CD8[k].maxHp);
-            Gfx_SetPartsNumber((GfxPart *)p, 0x40, 3, D_80073CD8[k].hp);
-            Gfx_SetPartsNumber((GfxPart *)p, 0x80, 3, D_80073CD8[k].maxMp);
-            Gfx_SetPartsNumber((GfxPart *)p, 0x100, 3, D_80073CD8[k].mp);
-            Gfx_SetPartsNumber((GfxPart *)p, 0x200, 2, D_80073CD8[k].level);
+            Stg30DigiS *s = &D_80073CD8[k];
+
+            Gfx_SetPartsNumber((GfxPart *)p, 0x20, 3, s->maxHp);
+            Gfx_SetPartsNumber((GfxPart *)p, 0x40, 3, s->hp);
+            Gfx_SetPartsNumber((GfxPart *)p, 0x80, 3, s->maxMp);
+            Gfx_SetPartsNumber((GfxPart *)p, 0x100, 3, s->mp);
+            Gfx_SetPartsNumber((GfxPart *)p, 0x200, 2, s->level);
         }
         d = &D_80073CD8[a0->field_8];
         if (a0->field_8 < 3) {
@@ -5467,10 +5468,6 @@ void func_8007118C(Actor *a0) {
         Gfx_DrawParts((EntA0 *)p);
     }
 }
-#else
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8007118C);
-void func_8007118C(Actor *a0);
-#endif
 
 void func_80071470(Actor *a0, Stg30Pair *args) {
     ((Stg30Work73718 *)a0->work)->pair = *args;
