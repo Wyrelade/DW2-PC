@@ -324,10 +324,21 @@ def main():
                          "alternate cc1 flag sets only, no target-guided rewrites; none: base "
                          "flags only. Anything but off is for match accounting, not linking.")
     ap.add_argument("--build-dir", help="object/output dir (default build/USA)")
+    ap.add_argument("--units", help="comma list of src/ units to build (objects only)")
+    ap.add_argument("--cc1-extra", default="",
+                    help="extra cc1 flags for every C unit (flag-set experiments, e.g. -G8)")
+    ap.add_argument("--as-g", help="-G value maspsx/as use instead of 0 (with --cc1-extra -GN)")
     args = ap.parse_args()
     if args.build_dir:
         CONFIG["build_dir"] = args.build_dir
+    if args.cc1_extra:
+        CC1_FLAGS.extend(args.cc1_extra.split())
+    if args.as_g is not None:
+        MASPSX_AS_FLAGS[MASPSX_AS_FLAGS.index("-G0")] = "-G" + args.as_g
+        MASPSX_FLAGS.append("--dont-force-G0")
     units = OVERLAY_DIRS if args.overlays_only else None
+    if args.units:
+        units = args.units.split(",")
 
     as_bin = tool("as")
     ld_bin = tool("ld")
