@@ -1884,7 +1884,6 @@ void Menu_DigiListTask(Actor *a0);
 #endif
 
 
-#ifdef NORMALIZED
 void func_800188BC(Actor *actor) {
     MenuDigiListDrawView *w = (MenuDigiListDrawView *)actor->work;
     s32 *p;
@@ -1928,8 +1927,7 @@ void func_800188BC(Actor *actor) {
             }
             break;
         default:
-            f = w->scrollTop - 1;
-            r = &w->rows[f + i];
+            r = &w->rows[w->scrollTop + (i - 1)];
             j = i - 1;
             if (j >= w->rowCount) {
                 Gfx_HidePartsByMask(obj, -1);
@@ -1976,10 +1974,6 @@ void func_800188BC(Actor *actor) {
         i++;
     } while (p[i] != 0);
 }
-#else
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_800188BC);
-void func_800188BC(Actor *actor);
-#endif
 
 
 void Menu_DigiStatusInit(Actor *a0, s16 a1) {

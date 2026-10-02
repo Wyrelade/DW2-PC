@@ -160,9 +160,7 @@
     ]
   },
   "func_800188BC": {
-    "passes": [
-      "web_realloc"
-    ]
+    "passes": []
   },
   "Gfx_HidePartsByMask": {
     "passes": []
