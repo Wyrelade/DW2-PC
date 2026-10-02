@@ -729,10 +729,7 @@
     "passes": []
   },
   "stag3000:func_8006B950": {
-    "passes": [
-      "nodiv",
-      "web_realloc"
-    ]
+    "passes": []
   },
   "func_8006571C": {
     "passes": [

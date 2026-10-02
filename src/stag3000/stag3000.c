@@ -2956,7 +2956,6 @@ void func_8006AA18(s16 *max, s16 *b, s16 *c) {
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006AAA8);
 
-#ifdef NORMALIZED
 s32 func_8006B950(s32 idx, s16 *tgt, s32 n, s32 id) {
     s32 hp;
     s32 min;
@@ -3005,7 +3004,8 @@ s32 func_8006B950(s32 idx, s16 *tgt, s32 n, s32 id) {
         }
     }
     for (i = 0; i < n; i++) {
-        t = D_80073CC0.entries[tgt[i]].field_38;
+        v = tgt[i];
+        t = D_80073CC0.entries[v].field_38;
         v = t;
         if (v >= min) {
             v = min;
@@ -3021,10 +3021,6 @@ s32 func_8006B950(s32 idx, s16 *tgt, s32 n, s32 id) {
     chance = chance / (hp * 20);
     return (Rand_Next() & 0x7F) >= chance;
 }
-#else
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006B950);
-s32 func_8006B950(s32 idx, s16 *tgt, s32 n, s32 id);
-#endif
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006BBD8);
 
