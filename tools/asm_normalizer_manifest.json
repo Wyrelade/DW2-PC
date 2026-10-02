@@ -193,9 +193,7 @@
     ]
   },
   "Gfx_HidePartsByMask": {
-    "passes": [
-      "nosr"
-    ]
+    "passes": []
   },
   "Menu_ConfirmMultiPick": {
     "passes": [

@@ -4187,23 +4187,17 @@ void Gfx_DrawPartQuadsRot(void *arg0, void *arg1, s32 arg2, s32 arg3) {
 }
 
 
-#ifdef NORMALIZED
 void Gfx_HidePartsByMask(GfxPartMaskView *p, s32 mask) {
-    if (p->fileId != 0) {
-        do {
-            if (p->partMask & mask) {
-                p->visible = 0;
-            } else {
-                p->visible = 1;
-            }
-            p++;
-        } while (p->fileId != 0);
+    s32 i;
+
+    for (i = 0; p[i].fileId != 0; i++) {
+        if (p[i].partMask & mask) {
+            p[i].visible = 0;
+        } else {
+            p[i].visible = 1;
+        }
     }
 }
-#else
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Gfx_HidePartsByMask);
-void Gfx_HidePartsByMask(GfxPartMaskView *p, s32 mask);
-#endif
 
 void Gfx_SetPartsScale(GfxPartScaleView *p, s32 a1, s32 a2) {
     if (p->fileId == 0) {
