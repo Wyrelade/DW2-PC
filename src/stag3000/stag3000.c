@@ -3304,7 +3304,6 @@ void func_8006CB8C(Actor *a0) {
     }
 }
 
-#ifdef NORMALIZED
 s32 func_8006D2EC(s32 idx, s32 id, s32 lvl) {
     s32 k = (lvl + 1) * 20;
     s32 pow = func_8001EF64(id);
@@ -3336,10 +3335,6 @@ s32 func_8006D2EC(s32 idx, s32 id, s32 lvl) {
     }
     return r;
 }
-#else
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006D2EC);
-s32 func_8006D2EC(s32 idx, s32 id, s32 lvl);
-#endif
 
 s32 func_8006D4D8(s32 target, s32 tech, s16 *p3, s16 *p4) {
     Stg30DigiS *d = &D_80073CD8[target];
