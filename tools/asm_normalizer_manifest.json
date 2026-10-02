@@ -18,9 +18,7 @@
     ]
   },
   "Digi_InitFromTable": {
-    "passes": [
-      "commutative_swap"
-    ]
+    "passes": []
   },
   "Gpu_SetLayerOtPtrs": {
     "passes": [
@@ -50,9 +48,7 @@
     ]
   },
   "func_8001DDA8": {
-    "passes": [
-      "commutative_swap"
-    ]
+    "passes": []
   },
   "Digi_GetExpToNextLevel": {
     "passes": [

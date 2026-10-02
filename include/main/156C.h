@@ -809,10 +809,7 @@ typedef struct {
     /* 0x1C */ s16 field_1C;
     /* 0x1E */ u16 field_1E;
     /* 0x20 */ s16 field_20;
-    /* 0x22 */ u8 field_22;
-    /* 0x23 */ u8 field_23;
-    /* 0x24 */ u8 field_24;
-    /* 0x25 */ u8 field_25[0x27];
+    /* 0x22 */ u8 attr[0x2A]; /* 0..2 copied from the init row, 3..11 cleared */
     /* 0x4C */ u8 name[14];
     u8 _pad5A[0x2];
 } DigiRosterEntry; /* size 0x5C */

@@ -4399,7 +4399,6 @@ void func_8001DB68(void *a0, Out1DB68 *out) {
     }
 }
 
-#ifdef NORMALIZED
 void Digi_InitFromTable(s32 a0, s32 a1, DigiRosterEntry *e) {
     DigiInitRow *r = (DigiInitRow *)func_8001DB18(a0);
     u8 *name;
@@ -4414,20 +4413,26 @@ void Digi_InitFromTable(s32 a0, s32 a1, DigiRosterEntry *e) {
     }
     Mem_Zero(e, 0x5C);
     e->state = 2;
-    e->digiId = r[a1].digiId;
-    e->hp = e->maxHp = r[a1].hp;
-    e->mp = e->maxMp = r[a1].mp;
+    {
+        DigiInitRow *row = &r[a1];
+        e->digiId = row->digiId;
+        e->hp = e->maxHp = row->hp;
+        e->mp = e->maxMp = row->mp;
+    }
     name = Digi_GetDefaultName(e->digiId);
     for (i = 0; i < 14; i++) {
         e->name[i] = name[i];
     }
-    e->level = r[a1].level;
-    e->field_1C = r[a1].field_13;
-    e->field_1E = r[a1].field_14;
-    e->field_20 = r[a1].field_16;
-    e->field_22 = r[a1].field_17;
-    e->field_23 = r[a1].field_18;
-    e->field_24 = r[a1].field_19;
+    {
+        DigiInitRow *row = &r[a1];
+        e->level = row->level;
+        e->field_1C = row->field_13;
+        e->field_1E = row->field_14;
+        e->field_20 = row->field_16;
+        e->attr[0] = row->field_17;
+        e->attr[1] = row->field_18;
+        e->attr[2] = row->field_19;
+    }
     e->maxLevel = func_8001EB58(e->level);
     if (e->level == 1) {
         e->exp = 0;
@@ -4435,12 +4440,7 @@ void Digi_InitFromTable(s32 a0, s32 a1, DigiRosterEntry *e) {
         e->exp = Digi_GetExpToNextLevel(e->level - 1, 100, 0);
     }
 }
-#else
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Digi_InitFromTable);
-void Digi_InitFromTable(s32 a0, s32 a1, DigiRosterEntry *e);
-#endif
 
-#ifdef NORMALIZED
 void func_8001DDA8(s32 a0, s32 a1, DigiRosterEntry *e, Out1DDA8 *o) {
     Tbl1DDA8 *t = (Tbl1DDA8 *)func_8001DB18(a0);
     u8 *name;
@@ -4467,11 +4467,11 @@ void func_8001DDA8(s32 a0, s32 a1, DigiRosterEntry *e, Out1DDA8 *o) {
         e->field_1C = t->rows[a1].field_B;
         e->field_1E = t->rows[a1].field_C;
         e->field_20 = t->rows[a1].field_E;
-        e->field_22 = t->rows[a1].field_F;
-        e->field_23 = t->rows[a1].field_10;
-        e->field_24 = t->rows[a1].field_11;
+        e->attr[0] = t->rows[a1].field_F;
+        e->attr[1] = t->rows[a1].field_10;
+        e->attr[2] = t->rows[a1].field_11;
         for (i = 3; i < 12; i++) {
-            e->field_25[i - 3] = 0;
+            e->attr[i] = 0;
         }
         o->field_2 = t->rows[a1].field_F;
         o->field_3 = t->rows[a1].field_10;
@@ -4491,10 +4491,6 @@ void func_8001DDA8(s32 a0, s32 a1, DigiRosterEntry *e, Out1DDA8 *o) {
         o->field_5[3] = t->rows[a1].field_12[3][0];
     }
 }
-#else
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8001DDA8);
-void func_8001DDA8(s32 a0, s32 a1, DigiRosterEntry *e, Out1DDA8 *o);
-#endif
 
 
 ItemTableEntry *Item_FindById(arg0)
