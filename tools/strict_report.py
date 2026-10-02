@@ -95,9 +95,11 @@ def funcs_of(obj):
             cur[-1][1] += "%s:%s;" % (typ, sym)
             if not sym.startswith(".") and typ in ("R_MIPS_HI16", "R_MIPS_LO16", "R_MIPS_GPREL16", "R_MIPS_32"):
                 cur[-1].append((typ, sym))
+            elif typ == "R_MIPS_PC16" and re.match(r"^\.L[0-9A-F]{8}$", sym):
+                cur[-1].append((typ, sym))
     addr = sym_addrs(unit_of(obj))
-    for v in res.values():
-        resolve_data_relocs(v, addr, rodata_range(unit_of(obj)))
+    for name, v in res.items():
+        resolve_data_relocs(v, addr, rodata_range(unit_of(obj)), name)
     return {k: [(w[0], w[1]) for w in v] for k, v in res.items()}
 
 
@@ -144,7 +146,7 @@ def rodata_range(unit):
     return _RODATA[unit]
 
 
-def resolve_data_relocs(v, addr, rodata=(0, 0)):
+def resolve_data_relocs(v, addr, rodata=(0, 0), fname=None):
     """Data references compare by the address they resolve to, not by symbol name:
     splat names every referenced address (D_8005F774) while C reaches the same
     word as a struct field (D_8005F770 + 4). Linked bytes are identical either way.
@@ -159,6 +161,15 @@ def resolve_data_relocs(v, addr, rodata=(0, 0)):
         if len(w) < 3:
             continue
         typ, sym = w[2]
+        if typ == "R_MIPS_PC16":
+            # a branch to a global jump-table label (splat jlabel) keeps a reloc in the
+            # retail-asm object; resolve it to the branch offset the C object encodes
+            fa = base(fname) if fname else None
+            if fa is not None:
+                off = ((int(sym[2:], 16) - (fa + 4 * i + 4)) >> 2) & 0xFFFF
+                w[0] = (w[0] & ~0xFFFF) | off
+                w[1] = w[1].replace("%s:%s;" % (typ, sym), "")
+            continue
         b = base(sym)
         if b is None:
             continue
