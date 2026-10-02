@@ -100,11 +100,6 @@
       "redundant_skip"
     ]
   },
-  "Item_UseRecoverAll": {
-    "passes": [
-      "web_realloc"
-    ]
-  },
   "Anim_HasModelAnim": {
     "passes": [
       "nodb",

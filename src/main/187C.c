@@ -759,7 +759,6 @@ s32 Item_UseStatBoost(s32 a0, s32 a1, s32 a2, s32 a3) {
 }
 
 
-#ifdef NORMALIZED
 s32 Item_UseRecoverAll(s32 a0, s32 a1) {
     DigiRosterEntry *e = D_80050720->elems;
     ItemRecoverEffect *c = (ItemRecoverEffect *)Item_GetEffectRec(a0);
@@ -773,7 +772,9 @@ s32 Item_UseRecoverAll(s32 a0, s32 a1) {
         cur = e->hp;
         if (cur == 0) continue;
         if (c->effectType == 0 || c->effectType == 2) {
-            max = e->maxHp;
+            s32 m;
+
+            max = m = e->maxHp;
             if (cur != max) {
                 if (c->amount == 0) {
                     e->hp = max;
@@ -798,10 +799,6 @@ s32 Item_UseRecoverAll(s32 a0, s32 a1) {
     }
     return n != 0;
 }
-#else
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Item_UseRecoverAll);
-s32 Item_UseRecoverAll(s32 a0, s32 a1);
-#endif
 
 
 s32 Item_Use(s32 a0, s32 a1, s32 a2, s32 a3) {
