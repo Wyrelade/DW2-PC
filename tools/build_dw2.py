@@ -211,7 +211,23 @@ def assemble_asm(as_bin, units=None):
     return count
 
 
-def compile_c(cpp, cc1, as_bin, skip_asm=False, units=None):
+def strict_manifest(manifest, strict):
+    """--strict filter. off: the full manifest (byte-perfect build). flavors: only
+    the alternate cc1 flag sets, no target-guided rewrite passes. none: no
+    manifest at all (every function compiled with the base flags only)."""
+    if strict == "none":
+        return {}
+    if strict == "flavors":
+        out = {}
+        for k, v in manifest.items():
+            keep = [p for p in v.get("passes", []) if p in asm_normalizer.ALT_FLAVORS]
+            if keep:
+                out[k] = dict(v, passes=keep)
+        return out
+    return manifest
+
+
+def compile_c(cpp, cc1, as_bin, skip_asm=False, units=None, strict="off"):
     """Preprocess + cc1 + maspsx(->as) every .c under src/.
 
     skip_asm defines SKIP_ASM so INCLUDE_ASM stubs expand to nothing (see
@@ -263,6 +279,7 @@ def compile_c(cpp, cc1, as_bin, skip_asm=False, units=None):
                 manifest = dict((k.split(":", 1)[1] if ":" in k else k, v)
                                 for k, v in manifest.items()
                                 if ":" not in k or k.split(":", 1)[0] == unit)
+                manifest = strict_manifest(manifest, strict)
                 ctx["alt_s"] = {}
                 for flavor in asm_normalizer.alt_flavors(manifest):
                     alt_file = "%s.%s.s" % (stem, flavor)
@@ -302,7 +319,14 @@ def main():
                          "(the retail exe is not present in CI)")
     ap.add_argument("--overlays-only", action="store_true",
                     help="build, link and verify only the stage overlays")
+    ap.add_argument("--strict", choices=("off", "flavors", "none"), default="off",
+                    help="off: full asm_normalizer manifest (byte-perfect build); flavors: "
+                         "alternate cc1 flag sets only, no target-guided rewrites; none: base "
+                         "flags only. Anything but off is for match accounting, not linking.")
+    ap.add_argument("--build-dir", help="object/output dir (default build/USA)")
     args = ap.parse_args()
+    if args.build_dir:
+        CONFIG["build_dir"] = args.build_dir
     units = OVERLAY_DIRS if args.overlays_only else None
 
     as_bin = tool("as")
@@ -332,7 +356,8 @@ def main():
     n_asm = assemble_asm(as_bin, units)
     if n_asm < 0:
         return 1
-    n_c = compile_c(cpp, cc1, as_abs, skip_asm=args.skip_asm, units=units)
+    n_c = compile_c(cpp, cc1, as_abs, skip_asm=args.skip_asm, units=units,
+                    strict=args.strict)
     if n_c < 0:
         return 1
     if n_asm == 0 and n_c == 0:

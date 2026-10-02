@@ -1,7 +1,9 @@
 # Builds the DW2 objdiff progress report for decomp.dev. No ROM required: the
 # report is derived from the committed disassembly (asm/) + source (src/).
 #   TARGET object = full build (INCLUDE_ASM pulls the retail asm) = every function.
-#   BASE   object = built with --skip-asm = only the hand-decompiled C functions.
+#   BASE   object = built with --skip-asm --strict none = only the hand-decompiled C
+#            functions, compiled with the base flags and no asm_normalizer rewrites, so a
+#            function only counts when its C matches on its own (issue #5).
 # objdiff-cli diffs them; decomp.dev ingests the uploaded "<game_id>_report".
 name: Progress
 
@@ -45,8 +47,8 @@ jobs:
           mkdir -p expected/USA
           cp -r build/USA/src expected/USA/src
 
-      - name: Build BASE objects (--skip-asm, decompiled functions only)
-        run: python3 tools/build_dw2.py --objects-only --skip-verify --skip-asm
+      - name: Build BASE objects (decompiled functions only, strict)
+        run: python3 tools/build_dw2.py --objects-only --skip-verify --skip-asm --strict none
 
       - name: Generate objdiff.json
         run: python3 tools/objdiff/gen_objdiff_json.py

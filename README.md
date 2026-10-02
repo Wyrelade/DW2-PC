@@ -9,7 +9,7 @@
 # Digimon World 2 Decompilation
 
 <!-- PROGRESS:BADGE -->
-![matched](https://img.shields.io/badge/matched-1623%2F1645%20(98.66%25)-1f6feb)
+![matched](https://img.shields.io/badge/matched-842%2F1089%20(77.32%25)-1f6feb)
 <!-- /PROGRESS:BADGE -->
 ![build](https://img.shields.io/badge/build-byte--identical-2ea043)
 ![platform](https://img.shields.io/badge/platform-PS1%20(SLUS--01193)-8957e5)
@@ -37,36 +37,41 @@ tree.
 
 ## Status
 
-Phase 0 is complete: the split relinks **byte-identical** to the retail executable, and the
-text segment is compiled per-function so matching is underway. Each matched function is
-verified by the full relink still producing `SLUS_011.93: OK` (SHA-1 match) - a scratch
-match alone is never enough.
+The split relinks **byte-identical** to the retail executable and all 7 stage overlays.
+That build still uses a per-function asm post-processing step (`tools/asm_normalizer.py`) for
+a number of functions, so a byte-identical build is not the same as a matched function.
+
+A function counts as **matched** only when its C reproduces the retail bytes with the base
+compiler setup (GCC 2.8.1-psx `-O2 -G0`, maspsx `--aspsx-version=2.77`) and no target-guided
+asm rewrites. Functions that still need a per-function flag set or asm rewrites are listed
+separately and are not counted. PsyQ library code (PsyQ 4.7 in the exe, libpress 4.6 in
+`STAG1000.PRO`) is not game code and is excluded from progress
+(`configs/USA/psyq_funcs.txt`). Counts come from `tools/strict_report.py`, which builds each
+function with and without the post-processing and compares it against the target. See
+[issue #5](https://github.com/Wyrelade/Digimon-World-2-Decomp/issues/5).
 
 ### Progress by component
 
 <!-- PROGRESS:TABLE -->
-| Component | Functions | Matched | Progress |
-|---|---:|---:|---|
-| **Main executable** (`SLUS_011.93`) | 907 | 907 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 100.00% |
-| &nbsp;&nbsp;└ decompiled to C | | 830 | |
-| &nbsp;&nbsp;└ hand-written assembly, restored as source | | 77 | |
-| **Stage overlays** (`AAA/3.PRO`) | 738 | 716 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱` 97.02% |
-| &nbsp;&nbsp;└ `STAG0000.PRO` | 69 | 68 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱` 98.55% |
-| &nbsp;&nbsp;└ `STAG1000.PRO` | 35 | 34 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱` 97.14% |
-| &nbsp;&nbsp;└ `STAG1100.PRO` | 55 | 55 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 100.00% |
-| &nbsp;&nbsp;└ `STAG2000.PRO` | 133 | 129 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱` 96.99% |
-| &nbsp;&nbsp;└ `STAG3000.PRO` | 123 | 117 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱` 95.12% |
-| &nbsp;&nbsp;└ `STAG3500.PRO` | 108 | 107 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱` 99.07% |
-| &nbsp;&nbsp;└ `STAG4000.PRO` | 215 | 206 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱` 95.81% |
-| **Total** | 1645 | 1623 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱` 98.66% |
+| Component | Functions | Matched | Progress | Flags per function | Asm rewrites | Asm |
+|---|---:|---:|---|---:|---:|---:|
+| **Main executable** (`SLUS_011.93`, game code) | 369 | 252 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱▱▱▱▱▱` 68.29% | 51 | 64 | 2 |
+| **Stage overlays** (`AAA/3.PRO`) | 720 | 590 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱▱▱▱` 81.94% | 1 | 107 | 22 |
+| &nbsp;&nbsp;└ `STAG0000.PRO` | 69 | 59 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱▱▱` 85.51% | 0 | 9 | 1 |
+| &nbsp;&nbsp;└ `STAG1000.PRO` | 17 | 15 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱▱` 88.24% | 1 | 0 | 1 |
+| &nbsp;&nbsp;└ `STAG1100.PRO` | 55 | 45 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱▱▱▱` 81.82% | 0 | 10 | 0 |
+| &nbsp;&nbsp;└ `STAG2000.PRO` | 133 | 108 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱▱▱▱` 81.20% | 0 | 21 | 4 |
+| &nbsp;&nbsp;└ `STAG3000.PRO` | 123 | 91 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱▱▱▱▱` 73.98% | 0 | 26 | 6 |
+| &nbsp;&nbsp;└ `STAG3500.PRO` | 108 | 98 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱▱` 90.74% | 0 | 9 | 1 |
+| &nbsp;&nbsp;└ `STAG4000.PRO` | 215 | 174 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱▱▱▱` 80.93% | 0 | 32 | 9 |
+| **Total (game code)** | 1089 | 842 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱▱▱▱▱` 77.32% | 52 | 171 | 24 |
+| PsyQ libraries (not counted) | 557 | | | | | |
 <!-- /PROGRESS:TABLE -->
 
-The main executable is fully matched. It is not the whole game: DW2 also has 7 stage
-overlays on the disc, `AAA/3.PRO/STAG0000.PRO` to `STAG4000.PRO`. The main exe loads one at a
-time to `0x80063360` (`func_80013308`, indexed by the game mode), so they share one address
-range. Each overlay is split into its own unit (`src/stagXXXX`, `asm/USA/stagXXXX`) and relinks
-byte-identical to the retail file. Matching their 739 functions is the current target; the
-few already counted as matched are empty functions splat writes as C.
+DW2 has the main exe plus 7 stage overlays on the disc, `AAA/3.PRO/STAG0000.PRO` to
+`STAG4000.PRO`. The main exe loads one at a time to `0x80063360` (`func_80013308`, indexed by
+the game mode), so they share one address range. Each overlay is split into its own unit
+(`src/stagXXXX`, `asm/USA/stagXXXX`) and relinks byte-identical to the retail file.
 
 The `AAA` directory is left out of the disc's root directory record, so a plain ISO extract
 only shows `SLUS_011.93` and `SYSTEM.CNF`. `dumpsxiso -pt` (path table walk) extracts the full

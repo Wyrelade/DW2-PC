@@ -1,57 +1,25 @@
 #!/usr/bin/env python3
-"""Regenerate the README progress badge and table from PROGRESS.md.
+"""Regenerate the README progress badge and table from tools/match_status.json.
 
-PROGRESS.md is the single source of truth. Its header line
-    **Main exe functions identified: 907 . matched: 55 (6.06%)** ...
-gives the total and matched counts. This script recomputes the percentage,
-draws the bars, and rewrites the marked regions in README.md so the two files
-never drift. Run it after bumping the matched count in PROGRESS.md.
+tools/strict_report.py writes match_status.json (one class per function, see its
+docstring). Only "natural" functions count as matched: C that reproduces the
+retail bytes with the base compiler flags and no target-guided asm rewrites.
+"flavor" (needs a per-function alternate flag set) and "normalized" (needs asm
+rewrites) are shown but not counted. PsyQ library functions
+(configs/USA/psyq_funcs.txt) are listed separately and never counted.
 """
+import json
 import os
 import re
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PROGRESS = os.path.join(ROOT, "PROGRESS.md")
+STATUS = os.path.join(ROOT, "tools", "match_status.json")
+PSYQ = os.path.join(ROOT, "configs", "USA", "psyq_funcs.txt")
 README = os.path.join(ROOT, "README.md")
 
 BAR_SEGMENTS = 20
-
-
-def read_counts():
-    with open(PROGRESS, encoding="utf-8") as f:
-        text = f.read()
-    m = re.search(r"functions identified:\s*(\d+)\s*.\s*matched:\s*(\d+)", text)
-    if not m:
-        sys.exit("could not find 'functions identified: N . matched: M' in PROGRESS.md")
-    total, matched = int(m.group(1)), int(m.group(2))
-    a = re.search(r"asm restored:\s*(\d+)", text)
-    return total, matched, int(a.group(1)) if a else 0
-
-
-# a definition, ANSI or K&R (parameter declarations between `)` and `{`)
-FUNC_DEF = re.compile(r"^[A-Za-z_][\w \t\*]*?\b\w+\s*\([^;{}]*\)[ \t]*(?:\n[ \t]+[^\n{}()]*;[ \t]*)*\s*\{", re.M)
-
-
-def overlay_counts():
-    """[(unit, total, matched)] for src/stagXXXX/*.c: an INCLUDE_ASM stub is an
-    unmatched function, a C definition or a restored ASM_SOURCE is a matched one."""
-    rows = []
-    src = os.path.join(ROOT, "src")
-    for unit in sorted(os.listdir(src)) if os.path.isdir(src) else []:
-        d = os.path.join(src, unit)
-        if not unit.startswith("stag") or not os.path.isdir(d):
-            continue
-        asm = c = 0
-        for name in os.listdir(d):
-            if name.endswith(".c"):
-                with open(os.path.join(d, name), encoding="latin-1") as f:
-                    text = f.read()
-                asm += len(re.findall(r"^INCLUDE_ASM\(", text, re.M))
-                c += len(FUNC_DEF.findall(text))
-                c += len(re.findall(r"^ASM_SOURCE\(", text, re.M))
-        rows.append((unit, asm + c, c))
-    return rows
+CLASSES = ("natural", "flavor", "normalized", "asm", "asm_source")
 
 
 def bar(pct):
@@ -68,54 +36,63 @@ def replace_region(text, tag, body):
     return pat.sub(lambda _: repl, text)
 
 
+def counts():
+    status = json.load(open(STATUS, encoding="utf-8"))
+    psyq = set()
+    if os.path.exists(PSYQ):
+        psyq = {l.split()[0] for l in open(PSYQ) if l.strip() and not l.startswith("#")}
+    groups = {}
+    for key, cls in status.items():
+        unit = key.split(":")[0] if ":" in key else "main"
+        grp = "psyq" if key in psyq else unit
+        g = groups.setdefault(grp, dict.fromkeys(CLASSES, 0))
+        g[cls] += 1
+    return groups
+
+
+def row(label, g):
+    total = sum(g.values())
+    m = g["natural"]
+    pct = 100.0 * m / total if total else 0.0
+    return "| %s | %d | %d | `%s` %.2f%% | %d | %d | %d |" % (
+        label, total, m, bar(pct), pct, g["flavor"], g["normalized"], g["asm"] + g["asm_source"])
+
+
+def add(*gs):
+    out = dict.fromkeys(CLASSES, 0)
+    for g in gs:
+        for c in CLASSES:
+            out[c] += g[c]
+    return out
+
+
 def main():
-    total, matched, asm = read_counts()
-    pct = 100.0 * matched / total if total else 0.0
-    pct_s = "%.2f%%" % pct
-    b = bar(pct)
-
-    ovl = overlay_counts()
-    o_total = sum(r[1] for r in ovl)
-    o_matched = sum(r[2] for r in ovl)
-    g_total, g_matched = total + o_total, matched + o_matched
-    g_pct_s = "%.2f%%" % (100.0 * g_matched / g_total if g_total else 0.0)
-
-    badge = (
-        "![matched](https://img.shields.io/badge/matched-"
-        "%d%%2F%d%%20(%s)-1f6feb)" % (g_matched, g_total, g_pct_s.replace("%", "%25"))
-    )
-    ovl_rows = []
-    if ovl:
-        o_pct = 100.0 * o_matched / o_total if o_total else 0.0
-        ovl_rows.append("| **Stage overlays** (`AAA/3.PRO`) | %d | %d | `%s` %.2f%% |"
-                        % (o_total, o_matched, bar(o_pct), o_pct))
-        for unit, t, m in ovl:
-            p = 100.0 * m / t if t else 0.0
-            ovl_rows.append("| &nbsp;&nbsp;└ `%s.PRO` | %d | %d | `%s` %.2f%% |"
-                            % (unit.upper(), t, m, bar(p), p))
-        ovl_rows.append("| **Total** | %d | %d | `%s` %s |"
-                        % (g_total, g_matched, bar(100.0 * g_matched / g_total), g_pct_s))
-    table = "\n".join([
-        "| Component | Functions | Matched | Progress |",
-        "|---|---:|---:|---|",
-        "| **Main executable** (`SLUS_011.93`) | %d | %d | `%s` %s |"
-        % (total, matched, b, pct_s),
-    ] + ([
-        "| &nbsp;&nbsp;└ decompiled to C | | %d | |" % (matched - asm),
-        "| &nbsp;&nbsp;└ hand-written assembly, restored as source | | %d | |" % asm,
-    ] if asm else [
-        "| &nbsp;&nbsp;└ `src/main/156C.c` (text unit) | %d | %d | `%s` %s |"
-        % (total, matched, b, pct_s),
-    ]) + ovl_rows)
-
+    groups = counts()
+    stags = sorted(u for u in groups if u.startswith("stag"))
+    ovl = add(*[groups[u] for u in stags])
+    game = add(groups["main"], ovl)
+    total, matched = sum(game.values()), game["natural"]
+    pct_s = "%.2f%%" % (100.0 * matched / total if total else 0.0)
+    badge = ("![matched](https://img.shields.io/badge/matched-%d%%2F%d%%20(%s)-1f6feb)"
+             % (matched, total, pct_s.replace("%", "%25")))
+    lines = [
+        "| Component | Functions | Matched | Progress | Flags per function | Asm rewrites | Asm |",
+        "|---|---:|---:|---|---:|---:|---:|",
+        row("**Main executable** (`SLUS_011.93`, game code)", groups["main"]),
+        row("**Stage overlays** (`AAA/3.PRO`)", ovl),
+    ] + [row("&nbsp;&nbsp;└ `%s.PRO`" % u.upper(), groups[u]) for u in stags] + [
+        row("**Total (game code)**", game),
+    ]
+    if "psyq" in groups:
+        lines.append("| PsyQ libraries (not counted) | %d | | | | | |" % sum(groups["psyq"].values()))
     with open(README, encoding="utf-8") as f:
         text = f.read()
     text = replace_region(text, "PROGRESS:BADGE", badge)
-    text = replace_region(text, "PROGRESS:TABLE", table)
+    text = replace_region(text, "PROGRESS:TABLE", "\n".join(lines))
     with open(README, "w", encoding="utf-8", newline="\n") as f:
         f.write(text)
-    print("README progress updated: main %d/%d (%s), overlays %d/%d, total %d/%d (%s)"
-          % (matched, total, pct_s, o_matched, o_total, g_matched, g_total, g_pct_s))
+    print("README progress updated: game code %d/%d (%s), byte-perfect build %d/%d"
+          % (matched, total, pct_s, total - game["asm"], total))
 
 
 if __name__ == "__main__":
