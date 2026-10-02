@@ -453,6 +453,7 @@ void func_80064E4C(s16 arg0) {
     }
 }
 
+#ifdef NORMALIZED
 void func_80064E78(void)
 {
   s32 i;
@@ -524,6 +525,10 @@ void func_80064E78(void)
   LoadImage(&D_80069360->rectBig, (u32 *) D_80069360->buf);
   func_80064E4C(0);
 }
+#else
+INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80064E78);
+void func_80064E78(void);
+#endif
 
 void func_80065114(void) {
     Gfx_ReleaseTexSlot(D_80069360->field_8D0);
@@ -685,6 +690,7 @@ void func_800655FC(Actor *arg0) {
     Text_Open(&w->field_18, &t);
 }
 
+#ifdef NORMALIZED
 void func_8006571C(Actor *arg0)
 {
   Work65E24 *work;
@@ -1022,7 +1028,12 @@ void func_8006571C(Actor *arg0)
   }
 
 }
+#else
+INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_8006571C);
+void func_8006571C(Actor *arg0);
+#endif
 
+#ifdef NORMALIZED
 void func_80065E24(Actor *arg0) {
     s32 period;
     Work65E24 *w = (Work65E24 *)arg0->work;
@@ -1103,6 +1114,10 @@ void func_80065E24(Actor *arg0) {
         s7 += 0x6E;
     }
 }
+#else
+INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80065E24);
+void func_80065E24(Actor *arg0);
+#endif
 
 void func_80066084(Actor *arg0) {
     switch (((Stg00ModeWork *)arg0->work)->field_0) {
@@ -1339,6 +1354,7 @@ void func_80066828(Actor *arg0) {
     Gfx_FadeInFromBlack(0x100);
 }
 
+#ifdef NORMALIZED
 void func_800668D4(Actor *arg0) {
     s32 *slot = (s32 *)arg0->u34.children;
     Stg00TaskArgs5 args;
@@ -1368,6 +1384,10 @@ void func_800668D4(Actor *arg0) {
         y += 0x800;
     }
 }
+#else
+INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_800668D4);
+void func_800668D4(Actor *arg0);
+#endif
 
 void func_800669F4(Actor *arg0) {
     Stg00ViewWork *w;

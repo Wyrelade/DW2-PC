@@ -9,7 +9,7 @@
 # Digimon World 2 Decompilation
 
 <!-- PROGRESS:BADGE -->
-![matched](https://img.shields.io/badge/matched-957%2F1089%20(87.88%25)-1f6feb)
+![matched](https://img.shields.io/badge/matched-958%2F1089%20(87.97%25)-1f6feb)
 <!-- /PROGRESS:BADGE -->
 ![build](https://img.shields.io/badge/build-byte--identical-2ea043)
 ![platform](https://img.shields.io/badge/platform-PS1%20(SLUS--01193)-8957e5)
@@ -38,13 +38,16 @@ tree.
 ## Status
 
 The split relinks **byte-identical** to the retail executable and all 7 stage overlays.
-That build still uses a per-function asm post-processing step (`tools/asm_normalizer.py`) for
-a number of functions, so a byte-identical build is not the same as a matched function.
+The default build compiles matched C and includes the retail asm for every function that is
+not matched yet (its C draft sits under `#ifdef NORMALIZED`). `build_dw2.py --strict off`
+builds that C too, through a per-function asm post-processing step
+(`tools/asm_normalizer.py`); that byte-identical C build is for modding, it does not count.
 
-A function counts as **matched** only when its C reproduces the retail bytes with the base
-compiler setup (GCC 2.8.1-psx `-O2 -G0`, maspsx `--aspsx-version=2.77`) and no target-guided
-asm rewrites. Functions that still need a per-function flag set or asm rewrites are listed
-separately and are not counted. PsyQ library code (PsyQ 4.7 in the exe, libpress 4.6 in
+A function counts as **matched** only when its C reproduces the retail bytes with the compiler
+setup of its translation unit and no asm rewrites: GCC 2.8.1-psx `-O2`, main game `-G8` with
+maspsx `--aspsx-version=2.81`, overlays `-G0` with 2.77, plus a few per-unit flags in
+`tools/build_dw2.py`. Functions that still need a per-function flag set or asm rewrites are
+listed separately and are not counted. PsyQ library code (PsyQ 4.7 in the exe, libpress 4.6 in
 `STAG1000.PRO`) is not game code and is excluded from progress
 (`configs/USA/psyq_funcs.txt`). Counts come from `tools/strict_report.py`, which builds each
 function with and without the post-processing and compares it against the target. See
@@ -55,7 +58,7 @@ function with and without the post-processing and compares it against the target
 <!-- PROGRESS:TABLE -->
 | Component | Functions | Matched | Progress | Flags per function | Asm rewrites | Asm |
 |---|---:|---:|---|---:|---:|---:|
-| **Main executable** (`SLUS_011.93`, game code) | 369 | 315 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱▱▱` 85.37% | 1 | 51 | 2 |
+| **Main executable** (`SLUS_011.93`, game code) | 369 | 316 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱▱▱` 85.64% | 1 | 50 | 2 |
 | **Stage overlays** (`AAA/3.PRO`) | 720 | 642 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱▱` 89.17% | 0 | 56 | 22 |
 | &nbsp;&nbsp;└ `STAG0000.PRO` | 69 | 64 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱` 92.75% | 0 | 4 | 1 |
 | &nbsp;&nbsp;└ `STAG1000.PRO` | 17 | 16 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱` 94.12% | 0 | 0 | 1 |
@@ -64,7 +67,7 @@ function with and without the post-processing and compares it against the target
 | &nbsp;&nbsp;└ `STAG3000.PRO` | 123 | 105 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱▱▱` 85.37% | 0 | 12 | 6 |
 | &nbsp;&nbsp;└ `STAG3500.PRO` | 108 | 104 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱` 96.30% | 0 | 3 | 1 |
 | &nbsp;&nbsp;└ `STAG4000.PRO` | 215 | 189 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱▱` 87.91% | 0 | 17 | 9 |
-| **Total (game code)** | 1089 | 957 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱▱` 87.88% | 1 | 107 | 24 |
+| **Total (game code)** | 1089 | 958 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱▱` 87.97% | 1 | 106 | 24 |
 | PsyQ libraries (not counted) | 557 | | | | | |
 <!-- /PROGRESS:TABLE -->
 

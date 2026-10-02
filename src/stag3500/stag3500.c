@@ -272,6 +272,7 @@ void func_80063E74(Actor *arg0) {
     Task_NextState0(arg0);
 }
 
+#ifdef NORMALIZED
 void func_80063F38(Actor *arg0) {
     Stg35Work4 *w = (Stg35Work4 *)arg0->work;
     s32 *slot = (s32 *)arg0->u34.children;
@@ -441,6 +442,10 @@ void func_80063F38(Actor *arg0) {
         break;
     }
 }
+#else
+INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80063F38);
+void func_80063F38(Actor *arg0);
+#endif
 
 void func_800645B4(Actor *arg0) {
     Stg35Work4 *w = (Stg35Work4 *)arg0->work;
@@ -1053,6 +1058,7 @@ void func_80065B6C(Stg35SpriteHandle *arg0, s16 arg1, s16 arg2, s16 arg3, s16 ar
     s->field_1E = arg4;
 }
 
+#ifdef NORMALIZED
 s32 func_80065B88(s32 arg0, s32 arg1, s32 arg2) {
     s32 r;
 
@@ -1068,7 +1074,12 @@ s32 func_80065B88(s32 arg0, s32 arg1, s32 arg2) {
     }
     return r;
 }
+#else
+INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80065B88);
+s32 func_80065B88(s32 arg0, s32 arg1, s32 arg2);
+#endif
 
+#ifdef NORMALIZED
 s32 func_80065BE0(s32 arg0, s32 arg1, s32 arg2) {
     Stg35Rec5C *rec0 = &D_8006AA98[arg0];
     Stg35Rec5C *rec1 = &D_8006AA98[arg1];
@@ -1101,6 +1112,10 @@ s32 func_80065BE0(s32 arg0, s32 arg1, s32 arg2) {
     }
     return result;
 }
+#else
+INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80065BE0);
+s32 func_80065BE0(s32 arg0, s32 arg1, s32 arg2);
+#endif
 
 void func_80065D00(void) {
     s32 v = -1;

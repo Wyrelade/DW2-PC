@@ -272,6 +272,7 @@ void Sys_VSyncHandler(void) {
 }
 
 
+#ifdef NORMALIZED
 void Sys_Main(void) {
     SysClearRect r;
     GsIMAGE tim;
@@ -389,6 +390,10 @@ void Sys_Main(void) {
         Snd_ServiceSlotLoads();
     }
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Sys_Main);
+void Sys_Main(void);
+#endif
 
 
 void Rand_Seed(s32 a0) {

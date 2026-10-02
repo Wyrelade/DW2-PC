@@ -313,6 +313,7 @@ void func_80064480(void) {
     }
 }
 
+#ifdef NORMALIZED
 void func_800644D4(Actor *a0) {
     Stg30WorkWord *w = (Stg30WorkWord *)a0->work;
     s32 *p = (s32 *)a0->u34.children;
@@ -543,7 +544,12 @@ void func_800644D4(Actor *a0) {
         break;
     }
 }
+#else
+INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_800644D4);
+void func_800644D4(Actor *a0);
+#endif
 
+#ifdef NORMALIZED
 void func_80064B30(Actor *a0) {
     Stg30Work73078 *w = (Stg30Work73078 *)a0->work;
     Halves pos;
@@ -676,6 +682,10 @@ void func_80064B30(Actor *a0) {
         break;
     }
 }
+#else
+INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80064B30);
+void func_80064B30(Actor *a0);
+#endif
 
 void func_80064FBC(Actor *a0) {
     Text_CloseArray(((Stg30Work73078 *)a0->work)->text, 4);
@@ -803,6 +813,7 @@ void func_80065584(Actor *a0, s32 *args) {
     ((Stg30WorkWord *)a0->work)->field_0 = args[0];
 }
 
+#ifdef NORMALIZED
 void func_80065594(Actor *a0) {
     Stg30Work730D0 *w = (Stg30Work730D0 *)a0->work;
     Stg30GameFlags *g;
@@ -953,6 +964,10 @@ void func_80065594(Actor *a0) {
         break;
     }
 }
+#else
+INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80065594);
+void func_80065594(Actor *a0);
+#endif
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80065A98);
 
@@ -1540,6 +1555,7 @@ s32 func_800676C4(s32 a0, u8 a1) {
     return a0 >= func_8001F0C0(a1);
 }
 
+#ifdef NORMALIZED
 void func_800676F4(Actor *a0) {
     Stg30ActorList *l = (Stg30ActorList *)a0->u34.children;
     Stg30Pair sum;
@@ -1748,6 +1764,10 @@ void func_800676F4(Actor *a0) {
         break;
     }
 }
+#else
+INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_800676F4);
+void func_800676F4(Actor *a0);
+#endif
 
 void func_80067DB4(Stg30ListOwner *a0) {
     Stg30ActorList *l = a0->list;
@@ -2556,6 +2576,7 @@ s32 func_800699F8(s32 a, s32 b) {
     return -1;
 }
 
+#ifdef NORMALIZED
 s32 func_80069A44(s32 idx) {
     u8 buf[12];
     s32 i;
@@ -2638,7 +2659,12 @@ s32 func_80069A44(s32 idx) {
     }
     return 1;
 }
+#else
+INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80069A44);
+s32 func_80069A44(s32 idx);
+#endif
 
+#ifdef NORMALIZED
 void func_80069DE8(void) {
     s32 idx = func_8006E674(0);
     Stg30Rec73F6C *e = &D_80073F6C[idx];
@@ -2699,6 +2725,10 @@ void func_80069DE8(void) {
         e->field_4 = best;
     }
 }
+#else
+INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80069DE8);
+void func_80069DE8(void);
+#endif
 
 s32 func_8006A030(s32 a, s32 b) {
     if (a == 5) {
@@ -2941,6 +2971,7 @@ void func_8006AA18(s16 *max, s16 *b, s16 *c) {
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006AAA8);
 
+#ifdef NORMALIZED
 s32 func_8006B950(s32 idx, s16 *tgt, s32 n, s32 id) {
     s32 hp;
     s32 min;
@@ -3005,6 +3036,10 @@ s32 func_8006B950(s32 idx, s16 *tgt, s32 n, s32 id) {
     chance = chance / (hp * 20);
     return (Rand_Next() & 0x7F) >= chance;
 }
+#else
+INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006B950);
+s32 func_8006B950(s32 idx, s16 *tgt, s32 n, s32 id);
+#endif
 
 INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006BBD8);
 
@@ -3279,6 +3314,7 @@ void func_8006CB8C(Actor *a0) {
     }
 }
 
+#ifdef NORMALIZED
 s32 func_8006D2EC(s32 idx, s32 id, s32 lvl) {
     s32 k = (lvl + 1) * 20;
     s32 pow = func_8001EF64(id);
@@ -3310,6 +3346,10 @@ s32 func_8006D2EC(s32 idx, s32 id, s32 lvl) {
     }
     return r;
 }
+#else
+INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006D2EC);
+s32 func_8006D2EC(s32 idx, s32 id, s32 lvl);
+#endif
 
 s32 func_8006D4D8(s32 target, s32 tech, s16 *p3, s16 *p4) {
     Stg30DigiS *d = &D_80073CD8[target];
@@ -4795,6 +4835,7 @@ void func_8006FC78(Actor *a0)
 
 }
 
+#ifdef NORMALIZED
 void func_8006FFD0(Actor *a0) {
     Stg30Work73358 *w = (Stg30Work73358 *)a0->work;
     Stg30Part *p;
@@ -4858,6 +4899,10 @@ void func_8006FFD0(Actor *a0) {
         Gfx_DrawParts((EntA0 *)p);
     }
 }
+#else
+INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8006FFD0);
+void func_8006FFD0(Actor *a0);
+#endif
 
 void func_800701FC(void) {
     Mem_Zero(&D_80073CC0, 0x3E0);
@@ -5322,6 +5367,7 @@ void func_8007100C(Actor *a0) {
     Task_DefaultDestroy(a0);
 }
 
+#ifdef NORMALIZED
 void func_80071044(Stg30Part *p, s32 unit, s32 num, s32 den) {
     s32 lv[4];
     s32 masks[4];
@@ -5369,7 +5415,12 @@ void func_80071044(Stg30Part *p, s32 unit, s32 num, s32 den) {
         }
     }
 }
+#else
+INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_80071044);
+void func_80071044(Stg30Part *p, s32 unit, s32 num, s32 den);
+#endif
 
+#ifdef NORMALIZED
 void func_8007118C(Actor *a0) {
     Stg30Work734F8 *w = (Stg30Work734F8 *)a0->work;
     Stg30Part *p;
@@ -5436,6 +5487,10 @@ void func_8007118C(Actor *a0) {
         Gfx_DrawParts((EntA0 *)p);
     }
 }
+#else
+INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8007118C);
+void func_8007118C(Actor *a0);
+#endif
 
 void func_80071470(Actor *a0, Stg30Pair *args) {
     ((Stg30Work73718 *)a0->work)->pair = *args;
@@ -5793,6 +5848,7 @@ void func_800728D8(Actor *a0, s32 a1) {
     }
 }
 
+#ifdef NORMALIZED
 void func_8007292C(Actor *a0) {
     Stg30Work737C8 *w = (Stg30Work737C8 *)a0->work;
     Stg30GameRoster *g;
@@ -6015,6 +6071,10 @@ void func_8007292C(Actor *a0) {
         break;
     }
 }
+#else
+INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000", func_8007292C);
+void func_8007292C(Actor *a0);
+#endif
 
 void func_80072F84(Actor *a0) {
     if (((Stg30Work737C8 *)a0->work)->field_10 != 0) {

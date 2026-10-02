@@ -137,6 +137,7 @@ ActorAllocView *Task_AllocWithBuffers(s32 a0, s32 a1) {
     return s0;
 }
 
+#ifdef NORMALIZED
 TaskEntry *Task_FindNext(void) {
     s32 i;
     TaskEntry *e;
@@ -155,6 +156,10 @@ TaskEntry *Task_FindNext(void) {
     }
     return 0;
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Task_FindNext);
+TaskEntry *Task_FindNext(void);
+#endif
 
 extern TaskEntry *Task_FindNext(void);
 
@@ -326,6 +331,7 @@ void func_800116CC(Actor *a0) {
     }
 }
 
+#ifdef NORMALIZED
 void func_80011854(Actor *a0) {
     ActorWork *w = a0->work;
     Part11854 *e;
@@ -393,6 +399,10 @@ void func_80011854(Actor *a0) {
     }
     D_8005F770.packet.addr = (s32)p;
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80011854);
+void func_80011854(Actor *a0);
+#endif
 
 void func_80011B58(Actor *arg0, s32 arg1) {
     arg0->work->field_0 = arg1;
@@ -531,6 +541,7 @@ s32 Item_GetUseKind(s32 arg0) {
     return r;
 }
 
+#ifdef NORMALIZED
 s32 func_8001204C(s32 a0, s32 a1, s32 a2, s32 a3) {
     ItemEffect *rec;
     s32 r;
@@ -641,6 +652,10 @@ s32 func_8001204C(s32 a0, s32 a1, s32 a2, s32 a3) {
     }
     return r;
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8001204C);
+s32 func_8001204C(s32 a0, s32 a1, s32 a2, s32 a3);
+#endif
 
 
 s32 Item_ApplyToDigi(s32 a0, s32 a1, s32 a2, s32 a3) {
@@ -746,6 +761,7 @@ s32 Item_UseStatBoost(s32 a0, s32 a1, s32 a2, s32 a3) {
 }
 
 
+#ifdef NORMALIZED
 s32 Item_UseRecoverAll(s32 a0, s32 a1) {
     DigiRosterEntry *e = D_80050720->elems;
     ItemRecoverEffect *c = (ItemRecoverEffect *)Item_GetEffectRec(a0);
@@ -784,6 +800,10 @@ s32 Item_UseRecoverAll(s32 a0, s32 a1) {
     }
     return n != 0;
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Item_UseRecoverAll);
+s32 Item_UseRecoverAll(s32 a0, s32 a1);
+#endif
 
 
 s32 Item_Use(s32 a0, s32 a1, s32 a2, s32 a3) {
@@ -816,6 +836,7 @@ s32 Item_Use(s32 a0, s32 a1, s32 a2, s32 a3) {
 }
 
 
+#ifdef NORMALIZED
 u8 Menu_NameEntryGetChar(Actor *a0) {
     ActorWork *w;
     s32 base;
@@ -832,6 +853,10 @@ u8 Menu_NameEntryGetChar(Actor *a0) {
     p = (u8 *)Cd_GetFileEntry(base + k);
     return p[w->field_2E * D_80040E38[k] + w->field_2C - D_80040E44[k]];
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Menu_NameEntryGetChar);
+u8 Menu_NameEntryGetChar(Actor *a0);
+#endif
 
 
 void func_8001291C(Actor *a, Pair1291C *v) {
@@ -855,6 +880,7 @@ extern u8 Menu_NameEntryGetChar(Actor *);
 extern void Snd_SaveCurrentId(void);
 extern void Snd_RestoreSavedId(void);
 
+#ifdef NORMALIZED
 void Menu_NameEntryTask(Actor *a0) {
     Wk12974 *w = (Wk12974 *)a0->work;
     u8 *p;
@@ -1066,8 +1092,13 @@ void Menu_NameEntryTask(Actor *a0) {
         break;
     }
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Menu_NameEntryTask);
+void Menu_NameEntryTask(Actor *a0);
+#endif
 
 
+#ifdef NORMALIZED
 void Menu_NameEntryDrawParts(Actor *a) {
     ActorWork *w = a->work;
     GfxPart *base = (GfxPart *)Cd_GetFileEntry(0x1A10018);
@@ -1147,11 +1178,16 @@ void Menu_NameEntryDrawParts(Actor *a) {
     }
     Gfx_DrawParts((s32)base);
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Menu_NameEntryDrawParts);
+void Menu_NameEntryDrawParts(Actor *a);
+#endif
 
 
 /* Ovl_FileIds[id] (Cd file ids, matched by LBA + sector count):
  * 0 STAG0000, 1 STAG4000, 2 STAG2000, 3 STAG1000, 4 STAG3000, 5 STAG1100, 6 STAG3500.
  * Sys_GameModeTask loads id (gameMode >> 8) - 1. */
+#ifdef NORMALIZED
 void Ovl_Load(s32 id) {
     s32 *p;
     u8 *src;
@@ -1165,6 +1201,10 @@ void Ovl_Load(s32 id) {
         memcpy(dst, src, Cd_GetFileSectors(*p) << 11);
     }
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Ovl_Load);
+void Ovl_Load(s32 id);
+#endif
 
 s32 Ovl_GetCurrentId(void) {
     return Ovl_CurrentId;

@@ -67,6 +67,7 @@ s32 Flag_Test(s32 arg0) {
     return 0;
 }
 
+#ifdef NORMALIZED
 s32 Flag_TestConds(Ent22038 *p) {
     s32 i;
     for (i = 0; i < 6; i++, p++) {
@@ -84,6 +85,10 @@ s32 Flag_TestConds(Ent22038 *p) {
     }
     return 1;
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Flag_TestConds);
+s32 Flag_TestConds(Ent22038 *p);
+#endif
 
 
 void Mem_WriteBit(u8 *arg0, s32 arg1, s32 arg2) {
@@ -159,6 +164,7 @@ void Flag_ApplySets(FlagSetPair *p) {
     }
 }
 
+#ifdef NORMALIZED
 s32 Math_CycleRange(s32 v, s32 div, s32 lo, s32 hi) {
     s32 r;
     v /= div;
@@ -170,8 +176,13 @@ s32 Math_CycleRange(s32 v, s32 div, s32 lo, s32 hi) {
         return lo - r;
     }
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Math_CycleRange);
+s32 Math_CycleRange(s32 v, s32 div, s32 lo, s32 hi);
+#endif
 
 
+#ifdef NORMALIZED
 s32 Math_PingPongRange(s32 v, s32 div, s32 lo, s32 hi) {
     s32 span;
     s32 r;
@@ -184,6 +195,10 @@ s32 Math_PingPongRange(s32 v, s32 div, s32 lo, s32 hi) {
     }
     return hi - (r - span);
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Math_PingPongRange);
+s32 Math_PingPongRange(s32 v, s32 div, s32 lo, s32 hi);
+#endif
 
 
 void Save_ResetGameState(void) {
@@ -203,6 +218,7 @@ void Save_ResetGameState(void) {
 }
 
 
+#ifdef NORMALIZED
 void func_800224EC(s32 i, s32 v, s32 flag) {
     GameStateView *p = D_80050720;
     u8 *q = &p->slotStatus[i];
@@ -214,6 +230,10 @@ void func_800224EC(s32 i, s32 v, s32 flag) {
     }
     *q = 1;
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_800224EC);
+void func_800224EC(s32 i, s32 v, s32 flag);
+#endif
 
 
 s32 func_80022518(s32 i) {
@@ -225,6 +245,7 @@ s32 func_80022518(s32 i) {
 }
 
 
+#ifdef NORMALIZED
 void func_8002254C(s32 i, s32 v) {
     s32 r = 0;
     GameStateView *p = D_80050720;
@@ -236,6 +257,10 @@ void func_8002254C(s32 i, s32 v) {
     }
     *q = r;
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8002254C);
+void func_8002254C(s32 i, s32 v);
+#endif
 
 
 u8 func_80022578(void) {
@@ -374,6 +399,7 @@ s32 Digi_CountByState(s32 mode) {
 }
 
 
+#ifdef NORMALIZED
 s32 Digi_ListByState(s32 mode, DigiRosterEntry **list) {
     s32 n = 0;
     s32 i;
@@ -411,6 +437,10 @@ s32 Digi_ListByState(s32 mode, DigiRosterEntry **list) {
     }
     return n;
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Digi_ListByState);
+s32 Digi_ListByState(s32 mode, DigiRosterEntry **list);
+#endif
 
 
 void Digi_CompactRoster(void) {

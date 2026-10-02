@@ -392,6 +392,7 @@ void func_8006448C(Actor *arg0, Stg11MenuWork *arg1) {
     Snd_PlayById(0xE, 0);
 }
 
+#ifdef NORMALIZED
 void func_800646C0(Actor *arg0, Stg11MenuWork *arg1) {
     Stg11SaveList *list = arg1->field_90;
     Halves *pos = (Halves *)Cd_GetFileEntry(0xD28000B);
@@ -423,6 +424,10 @@ void func_800646C0(Actor *arg0, Stg11MenuWork *arg1) {
         Text_OpenDesc(&arg1->field_10[i * 3 + 2], (TextDesc *)&st);
     }
 }
+#else
+INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_800646C0);
+void func_800646C0(Actor *arg0, Stg11MenuWork *arg1);
+#endif
 
 void func_800648B4(Actor *arg0, Stg11MenuWork *arg1) {
     Text_CloseArray(arg1->field_10, 9);
@@ -1697,6 +1702,7 @@ void func_80067838(u8 *arg0, u8 arg1) {
     w->field_21 = arg1;
 }
 
+#ifdef NORMALIZED
 s32 func_80067880(s32 arg0) {
     Stg11SaveWork *w = (Stg11SaveWork *)D_800685D0->work;
     s32 r = w->field_22038;
@@ -1712,6 +1718,10 @@ s32 func_80067880(s32 arg0) {
     }
     return r;
 }
+#else
+INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80067880);
+s32 func_80067880(s32 arg0);
+#endif
 
 s32 func_800678F0(Stg11SaveWork *arg0) {
     u16 *p = arg0->u34.sum;

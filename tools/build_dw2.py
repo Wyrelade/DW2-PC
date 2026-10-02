@@ -245,11 +245,15 @@ def assemble_asm(as_bin, units=None):
 
 
 def strict_manifest(manifest, strict):
-    """--strict filter. off: the full manifest (byte-perfect build). flavors: only
-    the alternate cc1 flag sets, no target-guided rewrite passes. none: no
-    manifest at all (every function compiled with the base flags only)."""
+    """--strict filter. asm (default): functions that only match through rewrites are
+    INCLUDE_ASM (their C sits under #ifdef NORMALIZED), so only the entries without
+    passes stay: they bind literals and jump tables to the split .rodata (link layout).
+    off: the full manifest, C for every function (byte-perfect C build for modding).
+    flavors: only the alternate cc1 flag sets. none: no manifest at all."""
     if strict == "none":
         return {}
+    if strict == "asm":
+        return dict((k, v) for k, v in manifest.items() if not v.get("passes"))
     if strict == "flavors":
         out = {}
         for k, v in manifest.items():
@@ -267,7 +271,8 @@ def compile_c(cpp, cc1, as_bin, skip_asm=False, units=None, strict="off"):
     include/include_asm.h): the object then holds only the hand-decompiled C
     functions -- this is the objdiff "current" object, whose matched functions
     are all that differ from the full "target" object built without it."""
-    cpp_flags = CPP_FLAGS + (["-DSKIP_ASM"] if skip_asm else [])
+    cpp_flags = CPP_FLAGS + (["-DSKIP_ASM"] if skip_asm else []) + (
+        [] if strict == "asm" else ["-DNORMALIZED"])
     src_root = os.path.join(ROOT, CONFIG["src_dir"])
     if not os.path.isdir(src_root):
         return 0
@@ -286,7 +291,10 @@ def compile_c(cpp, cc1, as_bin, skip_asm=False, units=None, strict="off"):
             unit = os.path.relpath(dirpath, src_root).replace("\\", "/").split("/")[0]
             cc1_flags, maspsx_flags, maspsx_as_flags = unit_flags(unit, name)
 
-            if run([cpp] + cpp_flags + ["-o", i_file, src]) != 0:
+            # with -G > 0 cc1 writes function text after file-scope asm, so INCLUDE_ASM
+            # goes inside a function maspsx strips (include/include_asm.h)
+            in_func = ["-DINCLUDE_ASM_IN_FUNC"] if cc1_flags is not CC1_FLAGS and "-G0" not in cc1_flags else []
+            if run([cpp] + cpp_flags + in_func + ["-o", i_file, src]) != 0:
                 print("BUILD FAILED: preprocessing %s" % os.path.relpath(src, ROOT))
                 return -1
             if run([cc1] + cc1_flags + ["-o", s_file, i_file]) != 0:
@@ -353,10 +361,12 @@ def main():
                          "(the retail exe is not present in CI)")
     ap.add_argument("--overlays-only", action="store_true",
                     help="build, link and verify only the stage overlays")
-    ap.add_argument("--strict", choices=("off", "flavors", "none"), default="off",
-                    help="off: full asm_normalizer manifest (byte-perfect build); flavors: "
-                         "alternate cc1 flag sets only, no target-guided rewrites; none: base "
-                         "flags only. Anything but off is for match accounting, not linking.")
+    ap.add_argument("--strict", choices=("asm", "off", "flavors", "none"), default="asm",
+                    help="asm (default): natural C, INCLUDE_ASM for functions that need asm "
+                         "rewrites (byte-perfect, no rewrite passes); off: C everywhere "
+                         "(-DNORMALIZED) + full asm_normalizer manifest (byte-perfect C build); "
+                         "flavors: -DNORMALIZED, alternate cc1 flag sets only; none: "
+                         "-DNORMALIZED, base flags only. flavors/none are for match accounting.")
     ap.add_argument("--build-dir", help="object/output dir (default build/USA)")
     ap.add_argument("--units", help="comma list of src/ units to build (objects only)")
     ap.add_argument("--cc1-extra", default="",

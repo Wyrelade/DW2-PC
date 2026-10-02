@@ -297,9 +297,7 @@
     ]
   },
   "Menu_ItemTask": {
-    "passes": [
-      "padnop"
-    ]
+    "passes": []
   },
   "func_80011854": {
     "passes": [

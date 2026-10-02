@@ -76,6 +76,7 @@ INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80063A34);
 void func_80063EF8(void) {
 }
 
+#ifdef NORMALIZED
 s32 func_80063F00(Actor *arg0) {
     Blk13 sp10;
     Stg40Ent48 *e;
@@ -158,7 +159,12 @@ s32 func_80063F00(Actor *arg0) {
     }
     return ret;
 }
+#else
+INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80063F00);
+s32 func_80063F00(Actor *arg0);
+#endif
 
+#ifdef NORMALIZED
 void func_8006424C(Actor *arg0) {
     ActorWork *work = arg0->work;
     s32 st = arg0->stateLevel0;
@@ -344,6 +350,10 @@ void func_8006424C(Actor *arg0) {
         break;
     }
 }
+#else
+INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006424C);
+void func_8006424C(Actor *arg0);
+#endif
 
 void func_80064830(void) {
 }
@@ -364,6 +374,7 @@ void func_80064880(void) {
     D_8005075C = 0;
 }
 
+#ifdef NORMALIZED
 s32 func_800648AC(s32 val) {
     s32 i;
     s32 *p;
@@ -393,6 +404,10 @@ s32 func_800648AC(s32 val) {
     }
     return ret;
 }
+#else
+INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_800648AC);
+s32 func_800648AC(s32 val);
+#endif
 
 void func_80064930(Actor *a0, s32 a1) {
     Task_SetState0(a0, 2);
@@ -523,6 +538,7 @@ s32 func_80065230(void) {
     return r;
 }
 
+#ifdef NORMALIZED
 void func_80065278(Actor *a0) {
     Stg40B68Work *w = (Stg40B68Work *)a0->work;
     s32 x0 = w->field_1E90;
@@ -537,6 +553,10 @@ void func_80065278(Actor *a0) {
     b->field_30 = y0 - dy;
     a0->stateLevel2++;
 }
+#else
+INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80065278);
+void func_80065278(Actor *a0);
+#endif
 
 void func_80065300(Actor *a0) {
     Stg40B68Work *w = (Stg40B68Work *)a0->work;
@@ -599,6 +619,7 @@ s32 func_80065424(s32 a, s32 b, s32 c, s32 d) {
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006545C);
 
+#ifdef NORMALIZED
 void func_80065890(ActorWork *arg0)
 {
     Stg40Cell *grid;
@@ -709,6 +730,10 @@ void func_80065890(ActorWork *arg0)
         mapRow++;
     }
 }
+#else
+INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80065890);
+void func_80065890(ActorWork *arg0);
+#endif
 
 void func_80065BF8(s32 x, s32 z, s32 y, Stg40Vec3 *out) {
     Stg40B60 *b = D_80072B60;
@@ -935,6 +960,7 @@ void func_8006667C(Actor *a0) {
     }
 }
 
+#ifdef NORMALIZED
 void func_80066720(Actor *a0) {
     Stg40W6720 *w = (Stg40W6720 *)a0->work;
     Stg40Slot34 *s3 = (Stg40Slot34 *)a0->u34.children;
@@ -1027,6 +1053,10 @@ void func_80066720(Actor *a0) {
         break;
     }
 }
+#else
+INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80066720);
+void func_80066720(Actor *a0);
+#endif
 
 void func_80066AD0(Actor *a0) {
     Stg40W6AD0 *w = (Stg40W6AD0 *)a0->work;
@@ -1358,6 +1388,7 @@ void func_80067454(Actor *a0) {
     }
 }
 
+#ifdef NORMALIZED
 u8 *func_8006755C(s32 i, s32 v) {
     s32 d = 10000;
     s32 nz = 0;
@@ -1380,6 +1411,10 @@ u8 *func_8006755C(s32 i, s32 v) {
     p[0] = v;
     return D_80072B90[i];
 }
+#else
+INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006755C);
+u8 *func_8006755C(s32 i, s32 v);
+#endif
 
 void func_80067610(s32 i, s32 file, s32 a2, s32 a3) {
     TextOpenArgs arg;
@@ -1489,6 +1524,7 @@ s32 func_800678C4(Actor *a0) {
     return a0->model->animDone < 0;
 }
 
+#ifdef NORMALIZED
 s32 func_800678D8(Stg40Ent48 *e) {
     s32 d;
     Stg40Loc *loc = &e->field_18;
@@ -1524,6 +1560,10 @@ s32 func_800678D8(Stg40Ent48 *e) {
     e->field_A = func_80070438(loc->u0.pair.field_0, loc->u0.pair.field_2)->field_2;
     return loc->field_8 != 0;
 }
+#else
+INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_800678D8);
+s32 func_800678D8(Stg40Ent48 *e);
+#endif
 
 void func_80067A80(Actor *a0, Stg40Ent48 *e)
 {
@@ -2269,6 +2309,7 @@ void func_80069830(Actor *a0) {
     }
 }
 
+#ifdef NORMALIZED
 void func_8006997C(Actor *arg0)
 {
     Stg40Ent48 *e;
@@ -2352,6 +2393,10 @@ void func_8006997C(Actor *arg0)
         break;
     }
 }
+#else
+INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006997C);
+void func_8006997C(Actor *arg0);
+#endif
 
 void func_80069C94(Actor *a0) {
     Stg40Ent48 *e = ((Stg40ActWork *)a0->work)->field_2C;
@@ -3601,6 +3646,7 @@ s32 func_8006D0E8(Actor *a0) {
     }
 }
 
+#ifdef NORMALIZED
 s32 func_8006D418(Actor *a0) {
     Stg40ActWork *w = (Stg40ActWork *)a0->work;
 
@@ -3626,6 +3672,10 @@ s32 func_8006D418(Actor *a0) {
         return ((s32 (*)(Actor *))func_8006C6C4)(a0);
     }
 }
+#else
+INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006D418);
+s32 func_8006D418(Actor *a0);
+#endif
 
 s32 func_8006D4E0(kind, a1, a2, a3, x, y)
     s32 kind;
@@ -3812,6 +3862,7 @@ void func_8006DA18(void) {
     }
 }
 
+#ifdef NORMALIZED
 s32 func_8006DB68(a0, a1, a2, a3)
     s32 a0;
     s32 a1;
@@ -3907,6 +3958,10 @@ s32 func_8006DB68(a0, a1, a2, a3)
     }
     return -1;
 }
+#else
+INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006DB68);
+s32 func_8006DB68();
+#endif
 
 void func_8006DDDC(void) {
     Stg40Spawn *e;
@@ -4285,6 +4340,7 @@ s32 func_8006E920(Stg40Shop *a) {
     return ret;
 }
 
+#ifdef NORMALIZED
 s16 func_8006EA84(s32 mode) {
     DigiRosterEntry *e = D_80050720->elems;
     Stg40B60 *b;
@@ -4320,6 +4376,10 @@ s16 func_8006EA84(s32 mode) {
     }
     return D_80072B60->field_140;
 }
+#else
+INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006EA84);
+s16 func_8006EA84(s32 mode);
+#endif
 
 void func_8006EB84(s32 idx, s32 row, s32 val) {
     Stg40TileGrid *t = D_80072BB0;
@@ -4543,6 +4603,7 @@ s16 func_8006F3B0(Stg40TileWork *a0) {
     return a0->field_76A = a0->field_766 / 8;
 }
 
+#ifdef NORMALIZED
 void func_8006F3F4(Stg40TileWork *w, s32 x, s32 y)
 {
     s32 group;
@@ -4598,6 +4659,10 @@ void func_8006F3F4(Stg40TileWork *w, s32 x, s32 y)
         }
     }
 }
+#else
+INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006F3F4);
+void func_8006F3F4(Stg40TileWork *w, s32 x, s32 y);
+#endif
 
 void func_8006F62C(Stg40TileWork *a0, s32 x, s32 y) {
     if (func_800703E0(x, y) & 0x8000) {
@@ -4833,6 +4898,7 @@ void func_80070754(void) {
     }
 }
 
+#ifdef NORMALIZED
 void func_800707D0(void) {
     s32 w = D_8005071C->field_E54->field_0;
     s32 buf = Mem_Alloc(0x3FF8, 2);
@@ -4846,6 +4912,10 @@ void func_800707D0(void) {
     }
     Mem_Free((ActorWork *)buf);
 }
+#else
+INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_800707D0);
+void func_800707D0(void);
+#endif
 
 Stg40Cell *func_800708A4(s32 x, s32 y) {
     Stg40Blk5071C *b = D_8005071C;
@@ -5118,6 +5188,7 @@ s32 func_80071294(void) {
     return r;
 }
 
+#ifdef NORMALIZED
 void func_80071310(s32 a0, s32 a1) {
     s32 base = 0x1FD0011;
 
@@ -5143,6 +5214,10 @@ void func_80071310(s32 a0, s32 a1) {
         break;
     }
 }
+#else
+INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80071310);
+void func_80071310(s32 a0, s32 a1);
+#endif
 
 void func_8007142C(s32 a0, s32 a1) {
     s32 i;
@@ -5190,6 +5265,7 @@ s32 func_800715DC(void) {
     return r;
 }
 
+#ifdef NORMALIZED
 s32 func_80071608(void) {
     u8 buf[16];
     s32 n = 0;
@@ -5207,6 +5283,10 @@ s32 func_80071608(void) {
     }
     return r;
 }
+#else
+INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80071608);
+s32 func_80071608(void);
+#endif
 
 INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_800716EC);
 
@@ -5349,6 +5429,7 @@ void func_80072250(Actor *a0) {
     }
 }
 
+#ifdef NORMALIZED
 void func_800722B8(Actor *task) {
     Stg40BC0Work *w = (Stg40BC0Work *)task->work;
     s32 dx;
@@ -5381,6 +5462,10 @@ void func_800722B8(Actor *task) {
     w->field_7C[1] = (u16)w->field_AC + (w->field_B0 / w->field_A8) * (w->field_A8 - task->stateLevel2);
     task->stateLevel2 = task->stateLevel2 + 1;
 }
+#else
+INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_800722B8);
+void func_800722B8(Actor *task);
+#endif
 
 void func_80072418(Actor *a0, Block1C *a1) {
     Stg40BC0Work *w = (Stg40BC0Work *)a0->work;

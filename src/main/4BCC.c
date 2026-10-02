@@ -27,6 +27,7 @@ void func_800143CC(Actor *arg0, s16 arg1) {
     w->field_3C = 0;
 }
 
+#ifdef NORMALIZED
 void Menu_SubMenuTask(Actor *a) {
     MenuSubMenuWork *w = (MenuSubMenuWork *)a->work;
     s32 *p = (s32 *)a->u34.children;
@@ -170,6 +171,10 @@ void Menu_SubMenuTask(Actor *a) {
         break;
     }
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Menu_SubMenuTask);
+void Menu_SubMenuTask(Actor *a);
+#endif
 
 
 extern void Menu_SetPartsGridPos(void *, s32, s32 *, s16 *);
@@ -346,6 +351,7 @@ void Menu_UseItemDirect(Actor *a0) {
 }
 
 
+#ifdef NORMALIZED
 void func_80014F78(Actor *a0) {
     MenuItemUseWork *w = (MenuItemUseWork *)a0->work;
     Halves *pos;
@@ -424,8 +430,13 @@ void func_80014F78(Actor *a0) {
 end:
     func_800153F4(a0, 0);
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80014F78);
+void func_80014F78(Actor *a0);
+#endif
 
 
+#ifdef NORMALIZED
 void Menu_OpenItemNameTexts(Actor *a0, s32 a1) {
     MenuItemUseWork *w = (MenuItemUseWork *)a0->work;
     s32 i;
@@ -450,8 +461,13 @@ void Menu_OpenItemNameTexts(Actor *a0, s32 a1) {
         Text_SetColor(w->itemTexts[i], k);
     }
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Menu_OpenItemNameTexts);
+void Menu_OpenItemNameTexts(Actor *a0, s32 a1);
+#endif
 
 
+#ifdef NORMALIZED
 void func_800153F4(Actor *a0, s32 a1) {
     HudSlots153F4 *w = (HudSlots153F4 *)a0->work;
     Halves *h;
@@ -476,6 +492,10 @@ void func_800153F4(Actor *a0, s32 a1) {
         h++;
     }
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_800153F4);
+void func_800153F4(Actor *a0, s32 a1);
+#endif
 
 void func_800154F0(Actor *a0) {
     MenuItemUseWork *w = (MenuItemUseWork *)a0->work;
@@ -702,6 +722,7 @@ break;
 }
 
 
+#ifdef NORMALIZED
 void Menu_ItemUseDraw(Actor *actor) {
     ActorWork *w = actor->work;
     s32 *p;
@@ -759,6 +780,10 @@ void Menu_ItemUseDraw(Actor *actor) {
         i++;
     } while (*list != 0);
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Menu_ItemUseDraw);
+void Menu_ItemUseDraw(Actor *actor);
+#endif
 
 
 void Item_BuildMenuList(MenuItemWork *w) {
@@ -1180,6 +1205,7 @@ void Menu_ItemTask(Actor *a0) {
 }
 
 
+#ifdef NORMALIZED
 void Menu_ItemDraw(Actor *actor) {
     ActorWork *w = actor->work;
     s32 *p;
@@ -1242,8 +1268,13 @@ loop:
         i++;
     if (*list != 0) goto loop;
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Menu_ItemDraw);
+void Menu_ItemDraw(Actor *actor);
+#endif
 
 
+#ifdef NORMALIZED
 void func_80017214(Actor *a0) {
     MenuDigiPickWork *w = (MenuDigiPickWork *)a0->work;
     MenuDigiPickRow *e;
@@ -1306,6 +1337,10 @@ void func_80017214(Actor *a0) {
         Snd_PlayById(0x10, 0);
     }
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80017214);
+void func_80017214(Actor *a0);
+#endif
 
 void func_800174F8(Actor *a0) {
     MenuDigiPickWork *w = (MenuDigiPickWork *)a0->work;
@@ -1325,6 +1360,7 @@ void func_800174F8(Actor *a0) {
     }
 }
 
+#ifdef NORMALIZED
 void Menu_ConfirmMultiPick(Actor *a0) {
     MenuDigiPickWork *w = (MenuDigiPickWork *)a0->work;
     s32 k = Menu_GridIndexColMajor(w->cursor, w->gridSize);
@@ -1356,6 +1392,10 @@ void Menu_ConfirmMultiPick(Actor *a0) {
         }
     }
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Menu_ConfirmMultiPick);
+void Menu_ConfirmMultiPick(Actor *a0);
+#endif
 
 void Menu_UndoLastPick(Actor *s0) {
     MenuPickWork *w = (MenuPickWork *)s0->work;
@@ -1434,6 +1474,7 @@ void Menu_ConfirmSinglePick(Actor *a0) {
 }
 
 
+#ifdef NORMALIZED
 void Menu_BuildDigiList(MenuDigiListBuildWork *w) {
     MenuDigiListBuildRow *r = w->rows;
     DigiRosterEntry *el = D_80050720->elems;
@@ -1536,6 +1577,10 @@ void Menu_BuildDigiList(MenuDigiListBuildWork *w) {
         w->pick0 = 0;
     }
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Menu_BuildDigiList);
+void Menu_BuildDigiList(MenuDigiListBuildWork *w);
+#endif
 
 
 void Menu_DigiListDrawRows(MenuDigiListRowsView *a0, s32 a1) {
@@ -1612,6 +1657,7 @@ void Menu_SetDigiListMode(Actor *a, s16 mode) {
     }
 }
 
+#ifdef NORMALIZED
 void Menu_DigiListTask(Actor *a0) {
     MenuDigiListWork *w = (MenuDigiListWork *)a0->work;
     s32 *slot;
@@ -1845,8 +1891,13 @@ void Menu_DigiListTask(Actor *a0) {
         break;
     }
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Menu_DigiListTask);
+void Menu_DigiListTask(Actor *a0);
+#endif
 
 
+#ifdef NORMALIZED
 void func_800188BC(Actor *actor) {
     MenuDigiListDrawView *w = (MenuDigiListDrawView *)actor->work;
     s32 *p;
@@ -1938,6 +1989,10 @@ void func_800188BC(Actor *actor) {
         i++;
     } while (p[i] != 0);
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_800188BC);
+void func_800188BC(Actor *actor);
+#endif
 
 
 void Menu_DigiStatusInit(Actor *a0, s16 a1) {
@@ -2191,6 +2246,7 @@ Actor194C8 *a;
     }
 }
 
+#ifdef NORMALIZED
 void func_80019614(Actor194C8 *w, s32 arg1) {
     TextDescHalves st;
     s32 i;
@@ -2232,6 +2288,10 @@ void func_80019614(Actor194C8 *w, s32 arg1) {
         Text_SetColor(w->textBoxes[ch + 2], w->curTab != ch);
     }
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80019614);
+void func_80019614(Actor194C8 *w, s32 arg1);
+#endif
 
 
 void func_800197FC(Actor *arg0, s16 arg1) {
@@ -2625,6 +2685,7 @@ void Snd_UnloadSlot(s32 idx) {
     D_80054C48[idx].vabId = -1;
 }
 
+#ifdef NORMALIZED
 void Snd_SetSlotContent(s32 idx, s32 v) {
     SndSlot *e = &D_80054C48[idx];
 
@@ -2637,6 +2698,10 @@ void Snd_SetSlotContent(s32 idx, s32 v) {
         }
     }
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Snd_SetSlotContent);
+void Snd_SetSlotContent(s32 idx, s32 v);
+#endif
 
 void Snd_PlayById(s32 id, s32 set) {
     s32 k;
@@ -2760,6 +2825,7 @@ extern void func_80071FBC(s32 *);
 extern s32 func_800720FC(void);
 extern void func_80063C84(void);
 
+#ifdef NORMALIZED
 void Text_UpdateAllBoxes(Actor *a0) {
     GfxTexSlot *font[2];
     Pair54 glyph;
@@ -3326,6 +3392,10 @@ void Text_UpdateAllBoxes(Actor *a0) {
     } while (++row < 0x32);
     D_8005F770.packet.addr = (s32)pkt;
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Text_UpdateAllBoxes);
+void Text_UpdateAllBoxes(Actor *a0);
+#endif
 
 
 void Text_Close(s32 *slot) {
@@ -3426,6 +3496,7 @@ void Text_Open(void *arg0, TextOpenArgs *arg1) {
     *(s32 *)arg0 = i;
 }
 
+#ifdef NORMALIZED
 s32 Text_IsFinished(s32 id) {
     TaskEntry *p;
 
@@ -3438,6 +3509,10 @@ s32 Text_IsFinished(s32 id) {
     }
     return p->work[id].finished;
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Text_IsFinished);
+s32 Text_IsFinished(s32 id);
+#endif
 
 void Text_SetColor(s32 a0, s32 a1) {
     TaskEntry *p = Task_FindFirst(9, -1, -1);
@@ -3448,19 +3523,29 @@ void Text_SetColor(s32 a0, s32 a1) {
     }
 }
 
+#ifdef NORMALIZED
 void Text_SetInputPad(s32 a0, s32 a1) {
     TaskEntry *p = Task_FindFirst(9, -1, -1);
     if (a0 != -1 && p != 0) {
         p->work[a0].padIndex = a1;
     }
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Text_SetInputPad);
+void Text_SetInputPad(s32 a0, s32 a1);
+#endif
 
+#ifdef NORMALIZED
 void Text_SetOtLayer(s32 a0, s32 a1) {
     TaskEntry *p = Task_FindFirst(9, -1, -1);
     if (a0 != -1 && p != 0) {
         p->work[a0].otIndex = a1;
     }
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Text_SetOtLayer);
+void Text_SetOtLayer(s32 a0, s32 a1);
+#endif
 
 void Text_OpenById(void *a0, s32 a1, s32 a2, Halves a3) {
     TextOpenArgs local;
@@ -3708,6 +3793,7 @@ draw:
     D_8005F770.packet.work = (ActorWork *)q;
 }
 
+#ifdef NORMALIZED
 void Gpu_SetLayerOtPtrs(void) {
     s32 i;
 
@@ -3716,6 +3802,10 @@ void Gpu_SetLayerOtPtrs(void) {
         D_8005F770.otLayers.s[i] = &Gpu_OtBufs[D_8005F770.bufIndex].entries[D_800415F0[D_8005CCF8.field_60][i]];
     }
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Gpu_SetLayerOtPtrs);
+void Gpu_SetLayerOtPtrs(void);
+#endif
 
 void func_8001C800(s32 arg0) {
     Gpu_OtBufs[2].entries[0] = arg0;
@@ -3730,6 +3820,7 @@ s32 Gpu_DrawOt(s32 arg0) {
     return DrawOTag(&p[-1]);
 }
 
+#ifdef NORMALIZED
 void Gpu_SkipEmptyOtEntries(s32 arg0) {
     u32 *p = (u32 *)&D_80058D28[arg0];
     u32 *end = (u32 *)&D_80058D28[arg0 - 1];
@@ -3753,6 +3844,10 @@ void Gpu_SkipEmptyOtEntries(s32 arg0) {
         p = q;
     }
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Gpu_SkipEmptyOtEntries);
+void Gpu_SkipEmptyOtEntries(s32 arg0);
+#endif
 
 s32 func_8001C92C(void) {
     return 0;
@@ -3803,6 +3898,7 @@ s32 Gfx_GetTimPixelMode() {
     return Cd_GetFileEntry()->packedId & 7;
 }
 
+#ifdef NORMALIZED
 void Gfx_LoadTexSlotImage(GfxTexSlot *a0) {
     u32 *p;
     u32 flags;
@@ -3828,8 +3924,13 @@ void Gfx_LoadTexSlotImage(GfxTexSlot *a0) {
     img.h = ((TimBlk *)p)->rect.h;
     LoadImage((s32)&img, (s32)((TimBlk *)p + 1));
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Gfx_LoadTexSlotImage);
+void Gfx_LoadTexSlotImage(GfxTexSlot *a0);
+#endif
 
 
+#ifdef NORMALIZED
 GfxTexSlot *Gfx_FindOrLoadTexSlot(s32 id) {
     GfxTexSlot *e;
     GfxTexSlot *p;
@@ -3894,6 +3995,10 @@ GfxTexSlot *Gfx_FindOrLoadTexSlot(s32 id) {
     Gfx_LoadTexSlotImage(e);
     return e;
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Gfx_FindOrLoadTexSlot);
+GfxTexSlot *Gfx_FindOrLoadTexSlot(s32 id);
+#endif
 
 void Gfx_SetTexSlotCount(s32 arg0) {
     s32 i;
@@ -3941,6 +4046,7 @@ void Gfx_ReleaseTexSlot(s32 *arg0) {
     }
 }
 
+#ifdef NORMALIZED
 void Gfx_DrawPartSprites(void *arg0, s32 arg1) {
     GfxPartSprite *s = arg0;
     GfxPartOTag *ot = (GfxPartOTag *)arg1;
@@ -3993,6 +4099,10 @@ void Gfx_DrawPartSprites(void *arg0, s32 arg1) {
     }
     D_8005F770.packet.addr = (s32)p;
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Gfx_DrawPartSprites);
+void Gfx_DrawPartSprites(void *arg0, s32 arg1);
+#endif
 
 
 void Gfx_DrawPartQuadsRot(void *arg0, void *arg1, s32 arg2, s32 arg3) {
@@ -4077,6 +4187,7 @@ void Gfx_DrawPartQuadsRot(void *arg0, void *arg1, s32 arg2, s32 arg3) {
 }
 
 
+#ifdef NORMALIZED
 void Gfx_HidePartsByMask(GfxPartMaskView *p, s32 mask) {
     if (p->fileId != 0) {
         do {
@@ -4089,6 +4200,10 @@ void Gfx_HidePartsByMask(GfxPartMaskView *p, s32 mask) {
         } while (p->fileId != 0);
     }
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Gfx_HidePartsByMask);
+void Gfx_HidePartsByMask(GfxPartMaskView *p, s32 mask);
+#endif
 
 void Gfx_SetPartsScale(GfxPartScaleView *p, s32 a1, s32 a2) {
     if (p->fileId == 0) {
@@ -4315,6 +4430,7 @@ void func_8001DB68(void *a0, Out1DB68 *out) {
     }
 }
 
+#ifdef NORMALIZED
 void Digi_InitFromTable(s32 a0, s32 a1, DigiRosterEntry *e) {
     DigiInitRow *r = (DigiInitRow *)func_8001DB18(a0);
     u8 *name;
@@ -4350,7 +4466,12 @@ void Digi_InitFromTable(s32 a0, s32 a1, DigiRosterEntry *e) {
         e->exp = Digi_GetExpToNextLevel(e->level - 1, 100, 0);
     }
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Digi_InitFromTable);
+void Digi_InitFromTable(s32 a0, s32 a1, DigiRosterEntry *e);
+#endif
 
+#ifdef NORMALIZED
 void func_8001DDA8(s32 a0, s32 a1, DigiRosterEntry *e, Out1DDA8 *o) {
     Tbl1DDA8 *t = (Tbl1DDA8 *)func_8001DB18(a0);
     u8 *name;
@@ -4401,6 +4522,10 @@ void func_8001DDA8(s32 a0, s32 a1, DigiRosterEntry *e, Out1DDA8 *o) {
         o->field_5[3] = t->rows[a1].field_12[3][0];
     }
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8001DDA8);
+void func_8001DDA8(s32 a0, s32 a1, DigiRosterEntry *e, Out1DDA8 *o);
+#endif
 
 
 ItemTableEntry *Item_FindById(arg0)
@@ -4655,6 +4780,7 @@ s32 func_8001E938(void) {
     return i;
 }
 
+#ifdef NORMALIZED
 s32 Digi_GetExpToNextLevel(s32 lv, s32 max, s32 cur) {
     s32 x;
     s32 sq;
@@ -4688,6 +4814,10 @@ s32 Digi_GetExpToNextLevel(s32 lv, s32 max, s32 cur) {
     }
     return exp - cur;
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Digi_GetExpToNextLevel);
+s32 Digi_GetExpToNextLevel(s32 lv, s32 max, s32 cur);
+#endif
 
 s32 func_8001EB58(s32 x) {
     s32 h = x / 2;
@@ -4794,6 +4924,7 @@ u8 func_8001EE80(s32 id) {
     return func_8001ED40(id)->field_4;
 }
 
+#ifdef NORMALIZED
 void func_8001EEA4(s32 id, s32 n, s16 *a, s16 *b) {
     EntED40 *p = func_8001ED40(id);
     s32 i;
@@ -4804,6 +4935,10 @@ void func_8001EEA4(s32 id, s32 n, s16 *a, s16 *b) {
         *b++ = p->field_2C[n + 1][i];
     }
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8001EEA4);
+void func_8001EEA4(s32 id, s32 n, s16 *a, s16 *b);
+#endif
 
 
 s32 func_8001EF3C(s32 id) {
@@ -4902,6 +5037,7 @@ void Anim_SetModelAnimFile(Actor *arg0, s32 arg1, s32 arg2) {
     p->animDone = 0;
 }
 
+#ifdef NORMALIZED
 s32 Anim_HasModelAnim(Actor *a0, s32 n) {
     ActorModel *sub = a0->model;
     s32 id;
@@ -4923,7 +5059,12 @@ s32 Anim_HasModelAnim(Actor *a0, s32 n) {
     sub->animTable = p;
     return p[n] != 0;
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Anim_HasModelAnim);
+s32 Anim_HasModelAnim(Actor *a0, s32 n);
+#endif
 
+#ifdef NORMALIZED
 void Anim_StepModelAnim(Actor *a) {
     ActorModel *s = a->model;
     s32 *data = (s32 *)Cd_GetFileOrNull(s->animFileId);
@@ -4988,6 +5129,10 @@ done:
         e++;
     }
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Anim_StepModelAnim);
+void Anim_StepModelAnim(Actor *a);
+#endif
 
 void Gfx_ResetModelBones(Actor *a0) {
     ActorModel *sub = a0->model;
@@ -5066,6 +5211,7 @@ s32 func_8001F970(s32 arg0) {
     return arg0 != 0x16;
 }
 
+#ifdef NORMALIZED
 void Gfx_AnimateModelTex(Actor *a0) {
     ActorModel *w = a0->model;
     GfxTexAnimPart *r = (GfxTexAnimPart *)w->texAnimParts;
@@ -5166,6 +5312,10 @@ void Gfx_AnimateModelTex(Actor *a0) {
     }
     D_8005F770.packet.addr = (s32)prim;
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Gfx_AnimateModelTex);
+void Gfx_AnimateModelTex(Actor *a0);
+#endif
 
 
 ActorModel *Gfx_AttachModel(Actor *a0, s32 id) {
@@ -5533,6 +5683,7 @@ void Actor_StepAxisMotion(AxisMotion *a0, s32 a1) {
     }
 }
 
+#ifdef NORMALIZED
 s32 func_80020D54(ContC40 *a0, s32 i) {
     AllocC40 *p = a0->transform;
     AxisMotion *e = &p->axisMotion[i];
@@ -5549,7 +5700,12 @@ s32 func_80020D54(ContC40 *a0, s32 i) {
     }
     return e->speed >> 8;
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80020D54);
+s32 func_80020D54(ContC40 *a0, s32 i);
+#endif
 
+#ifdef NORMALIZED
 s32 func_80020E00(ContC40 *a0, s32 i) {
     AllocC40 *p = a0->transform;
     AxisMotion *e = &p->axisMotion[i];
@@ -5566,6 +5722,10 @@ s32 func_80020E00(ContC40 *a0, s32 i) {
     }
     return e->speed >> 8;
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80020E00);
+s32 func_80020E00(ContC40 *a0, s32 i);
+#endif
 
 void Actor_SetAxisMotion(Ctx38 *arg0, s32 arg1, Elem12 *arg2) {
     Elem12 *e = &arg0->buf->elems[arg1];
@@ -5610,6 +5770,7 @@ void Gfx_CalcNormalColors(Vert6Pmv *v, ModelProjView *o) {
     }
 }
 
+#ifdef NORMALIZED
 void func_80020FD0(GfxModelTriGT3 *t, s32 n, ActorModel *s, s32 mode) {
     s32 sxy[3];
     s32 opz;
@@ -5677,8 +5838,13 @@ void func_80020FD0(GfxModelTriGT3 *t, s32 n, ActorModel *s, s32 mode) {
     }
     D_8005F770.packet.addr = (s32)p;
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80020FD0);
+void func_80020FD0(GfxModelTriGT3 *t, s32 n, ActorModel *s, s32 mode);
+#endif
 
 
+#ifdef NORMALIZED
 void Gfx_AddQuadsGT4(ModelQuadGT4 *t, s32 n, ActorModel *s, s32 mode) {
     s32 sxy[4];
     s32 opz;
@@ -5751,6 +5917,10 @@ void Gfx_AddQuadsGT4(ModelQuadGT4 *t, s32 n, ActorModel *s, s32 mode) {
     }
     D_8005F770.packet.addr = (s32)p;
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Gfx_AddQuadsGT4);
+void Gfx_AddQuadsGT4(ModelQuadGT4 *t, s32 n, ActorModel *s, s32 mode);
+#endif
 
 
 s32 Gfx_ProjectModelVerts(Vert6Pmv *v, ModelProjView *o, s32 noCheck) {
@@ -5826,6 +5996,7 @@ s32 Gfx_IsOriginOffscreen(void) {
     return sxy.vy > 0x110;
 }
 
+#ifdef NORMALIZED
 void Gfx_DrawWireTris(ModelWireTri *t, s32 n, ModelProjView *o, CVECTOR *col) {
     s32 i;
     s32 z;
@@ -5867,7 +6038,12 @@ void Gfx_DrawWireTris(ModelWireTri *t, s32 n, ModelProjView *o, CVECTOR *col) {
     }
     D_8005F770.packet.addr = (s32)pk;
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Gfx_DrawWireTris);
+void Gfx_DrawWireTris(ModelWireTri *t, s32 n, ModelProjView *o, CVECTOR *col);
+#endif
 
+#ifdef NORMALIZED
 void Gfx_DrawWireQuads(GfxModelQuad *q, s32 n, ModelProjView *o, CVECTOR *col) {
     s32 i;
     s32 z;
@@ -5927,3 +6103,7 @@ void Gfx_DrawWireQuads(GfxModelQuad *q, s32 n, ModelProjView *o, CVECTOR *col) {
     }
     D_8005F770.packet.addr = (s32)pk;
 }
+#else
+INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Gfx_DrawWireQuads);
+void Gfx_DrawWireQuads(GfxModelQuad *q, s32 n, ModelProjView *o, CVECTOR *col);
+#endif

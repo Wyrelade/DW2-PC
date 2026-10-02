@@ -154,6 +154,7 @@ void func_80063CDC(Actor *a) {
     }
 }
 
+#ifdef NORMALIZED
 void func_80063E38(Actor *a) {
     Stg20LoadWork *w = (Stg20LoadWork *)a->work;
     GfxPartPkt *p = (GfxPartPkt *)D_8005F770.packet.addr;
@@ -194,6 +195,10 @@ void func_80063E38(Actor *a) {
     }
     D_8005F79C = (s32)p;
 }
+#else
+INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80063E38);
+void func_80063E38(Actor *a);
+#endif
 
 void func_80064008(Actor *a) {
     Stg20CtrlWork *w = (Stg20CtrlWork *)a->work;
@@ -1174,6 +1179,7 @@ void func_80065D74(Actor *a) {
     }
 }
 
+#ifdef NORMALIZED
 void func_80065FB8(Actor *a) {
     Stg20MainWork *w = (Stg20MainWork *)a->work;
     s32 *slot = (s32 *)a->u34.children;
@@ -1337,6 +1343,10 @@ void func_80065FB8(Actor *a) {
         break;
     }
 }
+#else
+INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80065FB8);
+void func_80065FB8(Actor *a);
+#endif
 
 Stg20MapFile *func_80066714(void) {
     Stg20MapFile *f = (Stg20MapFile *)Cd_GetFileEntry(((Stg20Mode *)D_8005F788)->lo + 0x308FFFF);
@@ -1414,6 +1424,7 @@ void func_80066AE0(s32 id) {
     Digi_SortRoster();
 }
 
+#ifdef NORMALIZED
 s32 func_80066B48(s32 id) {
     s32 i;
     s32 n;
@@ -1528,7 +1539,12 @@ s32 func_80066B48(s32 id) {
     }
     return 0;
 }
+#else
+INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80066B48);
+s32 func_80066B48(s32 id);
+#endif
 
+#ifdef NORMALIZED
 void func_80066F34(s32 id, s32 on) {
     s32 i;
     s32 j;
@@ -1726,6 +1742,10 @@ void func_80066F34(s32 id, s32 on) {
         break;
     }
 }
+#else
+INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80066F34);
+void func_80066F34(s32 id, s32 on);
+#endif
 
 void func_80067480(void *t, s32 text, s32 id, Stg20Cell *pos, s32 color) {
     Stg20TextArgs args;
@@ -1752,10 +1772,15 @@ Stg20Cell *func_80067504(Actor *a) {
     return &D_800709A8;
 }
 
+#ifdef NORMALIZED
 s32 func_80067568(Actor *a) {
     ActorTransformView *t = a->u38.ptr38;
     s32 m = 0xE6; s32 r; s32 v; v = (t->posX + 0x12C73) % 0x600; if (v > m) goto zero; r = 1; v = (t->posZ + 0x12C73) % 0x600; if (v > m) { zero: r = 0; } return r;
 }
+#else
+INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80067568);
+s32 func_80067568(Actor *a);
+#endif
 
 void func_80067604(Actor *a, s32 doX, s32 doZ) {
     ActorTransformView *t = a->u38.ptr38;
@@ -1858,6 +1883,7 @@ s32 func_80067928(Stg20Cell *c, s32 x, s32 y, s32 flag) {
     return dx + dy;
 }
 
+#ifdef NORMALIZED
 s32 func_80067978(Actor *a, s32 dir) {
     Stg20NavWork *w = (Stg20NavWork *)a->work;
     Stg20Cell c;
@@ -1910,7 +1936,12 @@ s32 func_80067978(Actor *a, s32 dir) {
     }
     return found;
 }
+#else
+INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80067978);
+s32 func_80067978(Actor *a, s32 dir);
+#endif
 
+#ifdef NORMALIZED
 void func_80067B20(Actor *a) {
     Stg20NavWork *w = (Stg20NavWork *)a->work;
     Stg20PickRec *r;
@@ -2005,7 +2036,12 @@ void func_80067B20(Actor *a) {
         break;
     }
 }
+#else
+INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80067B20);
+void func_80067B20(Actor *a);
+#endif
 
+#ifdef NORMALIZED
 void func_80067E9C(Actor *a) {
     Stg20NavWork *w = (Stg20NavWork *)a->work;
     s32 i;
@@ -2052,6 +2088,10 @@ void func_80067E9C(Actor *a) {
     }
     Gfx_DrawParts((s32)p);
 }
+#else
+INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80067E9C);
+void func_80067E9C(Actor *a);
+#endif
 
 void func_80068134(Actor *a, s32 open) {
     Stg20PickWork *w = (Stg20PickWork *)a->work;
@@ -2243,6 +2283,7 @@ void func_8006863C(Actor *a) {
     }
 }
 
+#ifdef NORMALIZED
 void func_800688E4(Actor *a)
 {
   Stg20Roster *new_var;
@@ -2298,6 +2339,10 @@ void func_800688E4(Actor *a)
   }
 
 }
+#else
+INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_800688E4);
+void func_800688E4(Actor *a);
+#endif
 
 void func_80068B3C(Actor *a, s32 v) {
     a->field_8 = v;
@@ -2547,6 +2592,7 @@ void func_800698F4(Actor *a) {
     }
 }
 
+#ifdef NORMALIZED
 void func_80069AAC(Actor *a) {
     Stg20SkillWork *w = (Stg20SkillWork *)a->work;
     s32 snd;
@@ -2624,6 +2670,10 @@ void func_80069AAC(Actor *a) {
         break;
     }
 }
+#else
+INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80069AAC);
+void func_80069AAC(Actor *a);
+#endif
 
 void func_80069D98(Actor *a) {
     Stg20SkillWork *w = (Stg20SkillWork *)a->work;
@@ -3766,6 +3816,7 @@ void func_8006C514(Actor *a, s32 id) {
     w->pages = w->count != 0 ? (w->count - 1) / 8 : 0;
 }
 
+#ifdef NORMALIZED
 void func_8006C6F0(Actor *a) {
     Stg20ShopListWork *w = (Stg20ShopListWork *)a->work;
     s32 i;
@@ -3802,6 +3853,10 @@ void func_8006C6F0(Actor *a) {
     }
     w->pages = w->count != 0 ? (w->count - 1) / 8 : 0;
 }
+#else
+INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006C6F0);
+void func_8006C6F0(Actor *a);
+#endif
 
 void func_8006C8BC(Actor *a) {
     Stg20ShopListWork *w = (Stg20ShopListWork *)a->work;
@@ -3885,6 +3940,7 @@ void func_8006C8BC(Actor *a) {
     }
 }
 
+#ifdef NORMALIZED
 void func_8006CB58(Actor *a) {
     Stg20ShopListWork *w = (Stg20ShopListWork *)a->work;
     s32 *slot = (s32 *)a->u34.children;
@@ -4049,6 +4105,10 @@ void func_8006CB58(Actor *a) {
         break;
     }
 }
+#else
+INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006CB58);
+void func_8006CB58(Actor *a);
+#endif
 
 void func_8006D0F0(Actor *a) {
     Text_CloseArray((s32 *)a->work, 0xF);
@@ -4183,6 +4243,7 @@ void func_8006D4F4(s16 *list, s32 n, s32 v) {
     list[i] = v;
 }
 
+#ifdef NORMALIZED
 void func_8006D53C(Actor *a, s32 mode) {
     Stg20ItemListWork *w = (Stg20ItemListWork *)a->work;
     Stg20GameState *g;
@@ -4261,6 +4322,10 @@ void func_8006D53C(Actor *a, s32 mode) {
         }
     }
 }
+#else
+INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006D53C);
+void func_8006D53C(Actor *a, s32 mode);
+#endif
 
 void func_8006D7DC(Actor *a) {
     Stg20ItemListWork *w = (Stg20ItemListWork *)a->work;
@@ -4373,6 +4438,7 @@ s32 func_8006E9E8(s32 item)
     return 1;
 }
 
+#ifdef NORMALIZED
 void func_8006EA90(Actor *a) {
     Stg20ItemWork *w = (Stg20ItemWork *)a->work;
     u8 digits[5];
@@ -4432,6 +4498,10 @@ void func_8006EA90(Actor *a) {
         }
     }
 }
+#else
+INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006EA90);
+void func_8006EA90(Actor *a);
+#endif
 
 void func_8006ED24(Actor *a) {
     Stg20ItemWork *w = (Stg20ItemWork *)a->work;
@@ -4449,6 +4519,7 @@ void func_8006ED24(Actor *a) {
     }
 }
 
+#ifdef NORMALIZED
 void func_8006EE24(Actor *task) {
     Stg20ItemWork *w = (Stg20ItemWork *) task->work;
     s32 state = task->stateLevel0;
@@ -4589,6 +4660,10 @@ void func_8006EE24(Actor *task) {
         func_8006D2C0(&w->msgText, w->msg, D_800706A4[11], w->msgArg);
     }
 }
+#else
+INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006EE24);
+void func_8006EE24(Actor *task);
+#endif
 
 void func_8006F258(Actor *a) {
     Text_CloseArray((s32 *)a->work, 0xC);
@@ -4610,6 +4685,7 @@ void func_8006F28C(Actor *a) {
     Gfx_DrawParts((s32)p);
 }
 
+#ifdef NORMALIZED
 Stg20FileRec *func_8006F360(s32 i) {
     Stg20FileRec *r = (Stg20FileRec *)Cd_GetFileEntry(D_8005F788[0] + 0xD28FCD6);
 
@@ -4623,11 +4699,16 @@ Stg20FileRec *func_8006F360(s32 i) {
     }
     return r;
 }
+#else
+INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006F360);
+Stg20FileRec *func_8006F360(s32 i);
+#endif
 
 void func_8006F3D8(Actor *a, s32 v) {
     a->field_8 = v;
 }
 
+#ifdef NORMALIZED
 void func_8006F3E0(Actor *a) {
     Stg20LinkWork *w = (Stg20LinkWork *)a->work;
     Stg20Cell c;
@@ -4707,7 +4788,12 @@ void func_8006F3E0(Actor *a) {
         break;
     }
 }
+#else
+INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006F3E0);
+void func_8006F3E0(Actor *a);
+#endif
 
+#ifdef NORMALIZED
 void func_8006F730(Actor *a) {
     Stg20CamWork *w = (Stg20CamWork *)a->work;
     Actor *e;
@@ -4866,6 +4952,10 @@ void func_8006F730(Actor *a) {
         break;
     }
 }
+#else
+INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_8006F730);
+void func_8006F730(Actor *a);
+#endif
 
 void func_8006FBF0(Actor *a) {
     Stg20CamWork *w = (Stg20CamWork *)a->work;
