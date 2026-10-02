@@ -1051,52 +1051,65 @@ Actor194C8 *a;
     }
 }
 
-#ifdef NORMALIZED
-void func_80019614(Actor194C8 *w, s32 arg1) {
-    TextDescHalves st;
-    s32 i;
-    s32 ch;
-    s32 n;
-    s32 j;
-    s32 k;
-    s32 d0;
-    s32 d;
-    s32 f;
-    s32 m;
+void func_80019614(Actor194C8 *w, s32 arg1)
+{
+  int new_var;
+  TextDescHalves st;
+  s32 i;
+  s32 new_var2;
+  s32 ch;
+  s32 n;
+  s32 j;
+  s32 k;
+  s32 d0;
+  s32 d;
+  s32 f;
+  s32 m;
+  for (i = 6; i < 18; i++)
+  {
+    Text_Close(&w->textBoxes[i]);
+  }
 
-    for (i = 6; i < 18; i++) {
-        Text_Close(&w->textBoxes[i]);
+  st.strArg0 = 0;
+  st.packedStyle = arg1;
+  for (ch = 0; ch < 4; ch++)
+  {
+    st.pos = ((Halves *) Cd_GetFileEntry(0x5130025))[ch];
+    d0 = w->scrollTop[ch];
+    d = w->records[ch].count - d0;
+    n = 3;
+    if (d < 4)
+    {
+      n = d;
     }
-    st.strArg0 = 0;
-    st.packedStyle = arg1;
-    for (ch = 0; ch < 4; ch++) {
-        st.pos = ((Halves *)Cd_GetFileEntry(0x5130025))[ch];
-        d0 = w->scrollTop[ch];
-        d = w->records[ch].count - d0;
-        n = 3;
-        if (d < 4) {
-            n = d;
+    for (j = 0; j < n; j++)
+    {
+      i = d0;
+      f = 0;
+      if (w->curTab != ch)
+      {
+        f = 1;
+      }
+      else
+      {
+        new_var2 = d0;
+        if (w->slot54[ch].row != (j + new_var2))
+        {
+          f = 1;
         }
-        for (j = 0; j < n; j++) {
-            f = 0;
-            if (w->curTab != ch) {
-                f = 1;
-            } else if (w->slot54[ch].row != j + d0) {
-                f = 1;
-            }
-            st.color = f;
-            st.text = func_8001ED84(w->records[ch].arr[j + d0]);
-            m = j + 6;
-            Text_OpenDesc(&w->textBoxes[ch * 3 + m], (TextDesc *)&st);
-            st.pos.hi += 11;
-        }
-        Text_SetColor(w->textBoxes[ch + 2], w->curTab != ch);
+      }
+      new_var = 11;
+      st.color = f;
+      st.text = func_8001ED84(w->records[ch].arr[j + i]);
+      m = j + 6;
+      Text_OpenDesc(&w->textBoxes[(ch * 3) + m], (TextDesc *) (&st));
+      st.pos.hi += new_var;
     }
+
+    Text_SetColor(w->textBoxes[ch + 2], w->curTab != ch);
+  }
+
 }
-#else
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80019614);
-void func_80019614(Actor194C8 *w, s32 arg1);
-#endif
 
 
 void func_800197FC(Actor *arg0, s16 arg1) {
