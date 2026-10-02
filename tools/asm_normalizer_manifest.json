@@ -360,12 +360,7 @@
     "passes": []
   },
   "stag1100:func_80067880": {
-    "passes": [
-      "nodiv",
-      "param_copy",
-      "reg_realloc",
-      "sched_match"
-    ]
+    "passes": []
   },
   "stag3500:func_80065B88": {
     "passes": []
@@ -682,10 +677,7 @@
     ]
   },
   "stag4000:func_8006EA84": {
-    "passes": [
-      "web_realloc",
-      "selfmove_drop"
-    ]
+    "passes": []
   },
   "stag0000:func_80065E24": {
     "passes": [

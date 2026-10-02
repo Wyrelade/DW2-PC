@@ -1702,26 +1702,22 @@ void func_80067838(u8 *arg0, u8 arg1) {
     w->field_21 = arg1;
 }
 
-#ifdef NORMALIZED
 s32 func_80067880(s32 arg0) {
     Stg11SaveWork *w = (Stg11SaveWork *)D_800685D0->work;
-    s32 r = w->field_22038;
+    s32 d = w->field_22038;
+    s32 r;
 
-    if (r != 0) {
-        if (r < 0) {
+    if (d != 0) {
+        if (d < 0) {
             r = 0;
         } else {
-            r = arg0 * w->field_2203C / r;
+            r = arg0 * w->field_2203C / d;
         }
     } else {
         r = arg0;
     }
     return r;
 }
-#else
-INCLUDE_ASM("asm/USA/stag1100/nonmatchings/stag1100", func_80067880);
-s32 func_80067880(s32 arg0);
-#endif
 
 s32 func_800678F0(Stg11SaveWork *arg0) {
     u16 *p = arg0->u34.sum;
