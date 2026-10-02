@@ -18,6 +18,8 @@ BUILD = os.path.join(ROOT, "build", "USA", "src")
 
 CATEGORY = {"id": "main", "name": "Main Executable (SLUS_011.93)"}
 OVERLAYS = {"id": "overlays", "name": "Stage Overlays (AAA/3.PRO/STAG*.PRO)"}
+# PsyQ library units (split asm, not game code): left out of the report (issue #5).
+PSYQ_UNITS = {"main/psyq", "stag1000/stag1000_libpress"}
 
 
 def categories_for(unit_name):
@@ -38,6 +40,8 @@ def main():
             rel = os.path.relpath(target, EXPECTED).replace("\\", "/")  # main/156C.c.o
             base = os.path.join(BUILD, rel)
             unit_name = rel[:-4]          # main/156C
+            if unit_name in PSYQ_UNITS:
+                continue
             source_path = "src/" + rel[:-2]  # src/main/156C.c
             units.append({
                 "name": unit_name,

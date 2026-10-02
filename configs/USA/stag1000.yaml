@@ -56,5 +56,7 @@ segments:
     subsegments:
       - [0x0, rodata, stag1000_rodata]
       - [0x50, c, stag1000]
+      - [0x1360, c, stag1000_libpress]   # PsyQ libpress 4.6 (DecDCT/MDEC), asm only, not counted
+      - [0x1D70, c, stag1000_tail]
       - [0x1E54, data, stag1000_data]
   - [0x2EE4]

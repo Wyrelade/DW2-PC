@@ -63,5 +63,6 @@ segments:
     subsegments:
       - [0x800, rodata, 800]
       - [0x156C, c, 156C]        # .text as c-type: INCLUDE_ASM per-function nonmatchings
+      - [0x14C74, c, psyq]      # PsyQ 4.7 libraries (PadGetState ..), asm only, not counted
       - [0x31570, data, 31570]   # estimated .data start (refine after first split)
   - [0x9F000]
