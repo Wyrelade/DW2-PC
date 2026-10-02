@@ -1514,7 +1514,6 @@ s32 func_800678C4(Actor *a0) {
     return a0->model->animDone < 0;
 }
 
-#ifdef NORMALIZED
 s32 func_800678D8(Stg40Ent48 *e) {
     s32 d;
     Stg40Loc *loc = &e->field_18;
@@ -1550,10 +1549,6 @@ s32 func_800678D8(Stg40Ent48 *e) {
     e->field_A = func_80070438(loc->u0.pair.field_0, loc->u0.pair.field_2)->field_2;
     return loc->field_8 != 0;
 }
-#else
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_800678D8);
-s32 func_800678D8(Stg40Ent48 *e);
-#endif
 
 void func_80067A80(Actor *a0, Stg40Ent48 *e)
 {
