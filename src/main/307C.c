@@ -265,13 +265,10 @@ void Menu_NameEntryTask(Actor *a0);
 #endif
 
 
-INCLUDE_RODATA("asm/USA/main/rodata", jtbl_80010080);
-#ifdef NORMALIZED
 void Menu_NameEntryDrawParts(Actor *a) {
     ActorWork *w = a->work;
     GfxPart *base = (GfxPart *)Cd_GetFileEntry(0x1A10018);
     GfxPart *p;
-    s32 k;
     s32 v;
     s32 x;
 
@@ -298,15 +295,15 @@ void Menu_NameEntryDrawParts(Actor *a) {
             p->x = x + v * 19;
             p->y = w->field_2E * 18 - 0x2F;
         }
-        k = 0;
+        x = 0;
         if (w->field_2C >= 10 && w->field_2E >= 4) {
-            k = w->field_2E - 3;
+            x = w->field_2E - 3;
         }
         if (p->groupMask & 0x7DC) {
             p->visible = 0;
         }
         if (!(w->field_28 & 0x10)) {
-            switch (k) {
+            switch (x) {
             case 0:
                 if (p->groupMask & 0x40) {
                     p->visible = 1;
@@ -346,10 +343,6 @@ void Menu_NameEntryDrawParts(Actor *a) {
     }
     Gfx_DrawParts((s32)base);
 }
-#else
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Menu_NameEntryDrawParts);
-void Menu_NameEntryDrawParts(Actor *a);
-#endif
 
 
 /* Ovl_FileIds[id] (Cd file ids, matched by LBA + sector count):

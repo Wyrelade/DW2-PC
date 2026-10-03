@@ -612,7 +612,6 @@ void func_8006D4F4(s16 *list, s32 n, s32 v) {
     list[i] = v;
 }
 
-#ifdef NORMALIZED
 void func_8006D53C(Actor *a, s32 mode) {
     Stg20ItemListWork *w = (Stg20ItemListWork *)a->work;
     Stg20GameState *g;
@@ -627,9 +626,9 @@ void func_8006D53C(Actor *a, s32 mode) {
         w->items[i] = 0;
         w->colors[i] = 1;
     }
-    n = 0;
+    i = n = 0;
     g = (Stg20GameState *)&D_8005E620;
-    for (i = 0; i < 0x43; i++) {
+    for (; i < 0x43; i++) {
         id = w->inv[i];
         if (id == 0) {
             continue;
@@ -638,8 +637,6 @@ void func_8006D53C(Actor *a, s32 mode) {
             if (func_8001E0C0(id) != mode) {
                 continue;
             }
-            func_8006D4F4(w->items, n, id);
-            n++;
         } else {
             ok = 0;
             if (g->field_2C[8] == 0) {
@@ -657,11 +654,12 @@ void func_8006D53C(Actor *a, s32 mode) {
             if (g->field_2C[12] == 0 && func_8001E0C0(id) == 11) {
                 ok = 1;
             }
-            if (ok != 0) {
-                func_8006D4F4(w->items, n, id);
-                n++;
+            if (ok == 0) {
+                continue;
             }
         }
+        func_8006D4F4(w->items, n, id);
+        n++;
     }
     w->count = n;
     mask = 1 << w->field_48;
@@ -691,10 +689,6 @@ void func_8006D53C(Actor *a, s32 mode) {
         }
     }
 }
-#else
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000_8CE0", func_8006D53C);
-void func_8006D53C(Actor *a, s32 mode);
-#endif
 
 void func_8006D7DC(Actor *a) {
     Stg20ItemListWork *w = (Stg20ItemListWork *)a->work;

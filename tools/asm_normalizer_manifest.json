@@ -6,22 +6,12 @@
       "padnop"
     ]
   },
-  "Menu_ItemDraw": {
-    "passes": [
-      "web_realloc"
-    ]
-  },
   "Gfx_DrawPartSprites": {
     "passes": [
       "reg_realloc",
       "web_realloc",
       "save_slot",
       "sched_match"
-    ]
-  },
-  "Menu_NameEntryDrawParts": {
-    "passes": [
-      "reg_realloc"
     ]
   },
   "Anim_StepModelAnim": {
@@ -147,15 +137,6 @@
   "stag2000:func_8006C6F0": {
     "passes": [
       "sched_match"
-    ]
-  },
-  "stag2000:func_8006D53C": {
-    "passes": [
-      "reg_realloc",
-      "web_realloc",
-      "save_slot",
-      "ra_restore_sink",
-      "reorder_indep"
     ]
   },
   "stag3000:func_80064B30": {

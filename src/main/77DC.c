@@ -13,11 +13,9 @@ Halves D_80050714;
 s32 Snd_CurrentId;
 s32 Snd_SavedId;
 
-#ifdef NORMALIZED
 void Menu_ItemDraw(Actor *actor) {
     ActorWork *w = actor->work;
     s32 *p;
-    s32 *list;
     void *obj;
     s32 i;
     s32 k;
@@ -33,9 +31,8 @@ void Menu_ItemDraw(Actor *actor) {
         return;
     }
     i = 0;
-    list = p;
-loop:
-        obj = Cd_GetFileEntry(*list);
+    do {
+        obj = Cd_GetFileEntry(p[i]);
         switch (i) {
         case 0:
             tmp = w->field_54;
@@ -45,15 +42,16 @@ loop:
             tmp.field_0 = w->field_54.field_0 - w->field_6E;
             Menu_SetPartsGridPos(obj, 2, (s32 *)&tmp, &w->field_58);
             Gfx_SetPartsPalette(obj, 2, (actor->elapsed >> 2) & 3);
-            f = Menu_BlinkOrHideParts(obj, 8, w->field_6E);
-            f |= Menu_BlinkOrHideParts(obj, 4, w->field_58 - w->field_6E - 2);
+            k = Menu_BlinkOrHideParts(obj, 8, w->field_6E);
+            k |= Menu_BlinkOrHideParts(obj, 4, w->field_58 - w->field_6E - 2);
             if (w->field_70 == 0) {
-                f |= 0xE;
+                k |= 0xE;
             }
-            Gfx_HidePartsByMask(obj, f);
+            Gfx_HidePartsByMask(obj, k);
             break;
         case 1:
-            if (w->field_64 < 3) {
+            f = w->field_64;
+            if (f < 3) {
                 m = 2;
             } else {
                 m = 0xFFFF;
@@ -71,15 +69,10 @@ loop:
             break;
         }
         Gfx_SetPartsScale(obj, 0x1000, w->field_68);
-        list++;
         Gfx_DrawParts((s32)obj);
         i++;
-    if (*list != 0) goto loop;
+    } while (p[i] != 0);
 }
-#else
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Menu_ItemDraw);
-void Menu_ItemDraw(Actor *actor);
-#endif
 
 
 void func_80017214(Actor *a0) {
