@@ -427,6 +427,17 @@ typedef struct {
     /* 0x76E */ s16 field_76E;     /* last drawn player cell y */
 } Stg40TileWork;
 
+/* Stg40TileWork viewed with the Stg40ImgWork CLUT rect and texture slot (func_8006F86C). */
+typedef struct {
+    u8 _pad000[0x748];
+    /* 0x748 */ RECT clut;
+    u8 _pad750[0x08];
+    /* 0x758 */ GfxTexSlot *slot;
+    u8 _pad75C[0x0A];
+    /* 0x766 */ s16 field_766;
+    /* 0x768 */ s16 field_768;
+} Stg40TileBlit;
+
 /* Element of Stg40B60.field_144 (stride 8, 5 entries; func_8006E6CC). */
 typedef struct {
     union {
@@ -956,6 +967,7 @@ extern void Text_SetOtLayer(s32 a0, s32 a1);
 extern s32 D_80072700[];
 
 extern s32 D_8005F700; /* D_8005F6F0[0].circle as a scalar reloc */
+extern s32 D_8005F710; /* D_8005F6F0[0].r1 as a scalar reloc */
 extern s32 D_8005F720; /* D_8005F6F0[0].select as a scalar reloc */
 extern Actor *D_80072AA0;
 s32 func_800682DC(Actor *a0);
