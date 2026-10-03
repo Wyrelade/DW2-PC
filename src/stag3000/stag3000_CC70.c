@@ -10,11 +10,11 @@
 #include "stag3000/stag3000_AF5C_funcs.h"
 #include "stag3000/stag3000_C918_funcs.h"
 
-#ifdef NORMALIZED
 void func_8006FFD0(Actor *a0) {
     Stg30Work73358 *w = (Stg30Work73358 *)a0->work;
     Stg30Part *p;
     Stg30Part *q;
+    Stg30Part *r;
     s32 k;
 
     if (a0->stateLevel0 == 1 && a0->stateLevel1 == 0) {
@@ -63,21 +63,17 @@ void func_8006FFD0(Actor *a0) {
         if (D_80073CC0.field_2AC[k].field_0 != 3) {
             k += 3;
         }
-        for (q = p; q->fileId != 0; q++) {
-            if (q->groupMask & D_80073340[k]) {
-                q->visible = 1;
-                q->palette = w->field_8;
+        for (r = p; r->fileId != 0; r++) {
+            if (r->groupMask & D_80073340[k]) {
+                r->visible = 1;
+                r->palette = w->field_8;
             } else {
-                q->visible = 0;
+                r->visible = 0;
             }
         }
         Gfx_DrawParts((EntA0 *)p);
     }
 }
-#else
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000_CC70", func_8006FFD0);
-void func_8006FFD0(Actor *a0);
-#endif
 
 void func_800701FC(void) {
     Mem_Zero(&D_80073CC0, 0x3E0);

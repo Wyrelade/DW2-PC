@@ -268,7 +268,6 @@ void Menu_ConfirmSinglePick(Actor *a0) {
 }
 
 
-#ifdef NORMALIZED
 void Menu_BuildDigiList(MenuDigiListBuildWork *w) {
     MenuDigiListBuildRow *r = w->rows;
     DigiRosterEntry *el = D_80050720->elems;
@@ -277,8 +276,7 @@ void Menu_BuildDigiList(MenuDigiListBuildWork *w) {
     s32 ok;
     MenuDigiListBuildRow *t;
 
-    t = r;
-    for (i = 0; i < 0x26; i++) {
+    for (i = 0, t = r; i < 0x26; i++) {
         t->field_2 = 0;
         t->kind = 0;
         t++;
@@ -330,11 +328,7 @@ void Menu_BuildDigiList(MenuDigiListBuildWork *w) {
                 break;
             case 7:
             case 8:
-                if (w->parity != 0) {
-                    if (el->state == 1) ok = -1;
-                } else {
-                    if (el->state >= 2) ok = -1;
-                }
+                if (w->parity == 0 ? el->state >= 2 : el->state == 1) ok = -1;
                 break;
             case 2:
                 if (el->state == 1) ok = -1;
@@ -350,12 +344,17 @@ void Menu_BuildDigiList(MenuDigiListBuildWork *w) {
         }
     }
     if (Menu_Ctx->flags & 1) {
-        if (w->mode != 2 && w->mode != 5) {
+        switch (w->mode) {
+        case 2:
+        case 5:
+            break;
+        default:
             r = &w->rows[w->rowCount - 1];
             for (i = 0; i < D_8005071C->field_BA8; i++, r--) {
                 r->kind = 2;
                 r->field_1 = D_8005071C->field_BA9[i];
             }
+            break;
         }
     }
     if (w->mode == 5) {
@@ -371,10 +370,6 @@ void Menu_BuildDigiList(MenuDigiListBuildWork *w) {
         w->pick0 = 0;
     }
 }
-#else
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Menu_BuildDigiList);
-void Menu_BuildDigiList(MenuDigiListBuildWork *w);
-#endif
 
 
 void Menu_DigiListDrawRows(MenuDigiListRowsView *a0, s32 a1) {
