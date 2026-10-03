@@ -594,7 +594,6 @@ INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000_1AE4", func_8006571C);
 void func_8006571C(Actor *arg0);
 #endif
 
-#ifdef NORMALIZED
 void func_80065E24(Actor *arg0) {
     s32 period;
     Work65E24 *w = (Work65E24 *)arg0->work;
@@ -609,7 +608,6 @@ void func_80065E24(Actor *arg0) {
     s32 s7;
     EntA0 *parts2;
     s32 col;
-    s32 slot;
 
     if (arg0->stateLevel0 == 1 && arg0->stateLevel1 == 0) {
         return;
@@ -647,20 +645,17 @@ void func_80065E24(Actor *arg0) {
         return;
     }
     s6 = w->field_5C;
-    slot = 0;
-    s7 = 0x10;
-    for (s5 = 0; s5 <= 0; s5++) {
-        s32 y = 0x3A;
-        slot++;
-        slot--;
-        for (col = 0; col < 0xE; col++, y = y + 9) {
+    i = 0;
+    for (s5 = 0, s7 = 0x10; s5 <= 0; s5++, s7 += 0x6E) {
+        s32 y;
+        for (col = 0, y = 0x3A; col < 0xE; col++, y += 9) {
             args.text = func_8001ED84(D_80068CE8[s6++]);
             args.bigFont = 0;
             args.x = s7;
             args.y = y;
+            args.charDelay = 0;
             args.charAdvance = 0;
             args.lineAdvance = 0;
-            args.charDelay = 0;
             if (w->field_60 == s5 && w->field_64 == col) {
                 if (fp && w->field_8 == 1) {
                     continue;
@@ -669,16 +664,11 @@ void func_80065E24(Actor *arg0) {
             } else {
                 args.color = 0;
             }
-            Text_Open(&w->field_1C[slot], &args);
-            slot++;
+            Text_Open(&w->field_1C[i], &args);
+            i++;
         }
-        s7 += 0x6E;
     }
 }
-#else
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000_1AE4", func_80065E24);
-void func_80065E24(Actor *arg0);
-#endif
 
 void func_80066084(Actor *arg0) {
     switch (((Stg00ModeWork *)arg0->work)->field_0) {

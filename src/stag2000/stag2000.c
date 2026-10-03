@@ -1411,18 +1411,17 @@ void func_80066AE0(s32 id) {
     Digi_SortRoster();
 }
 
-INCLUDE_RODATA("asm/USA/stag2000/rodata", jtbl_800633F8);
-#ifdef NORMALIZED
 s32 func_80066B48(s32 id) {
     s32 i;
     s32 n;
     s32 free;
+    s32 j;
 
     switch (id) {
     case 9000:
         n = Item_GetBagCapacity();
-        for (i = 0; i < n; i++) {
-            if (((Stg20GameState *)&D_8005E620)->field_66[i] == 0) {
+        for (j = 0; j < n; j++) {
+            if (((Stg20GameState *)&D_8005E620)->field_66[j] == 0) {
                 return 1;
             }
         }
@@ -1449,9 +1448,9 @@ s32 func_80066B48(s32 id) {
     case 9005:
         return func_80066A4C(0x43);
     case 9023:
-        for (i = 0; i < 3; i++) {
-            if (((Stg20GameRoster *)&D_8005E620)->elems[i].state == i + 3
-                && ((Stg20GameRoster *)&D_8005E620)->elems[i].field_16 != 0) {
+        for (n = 0; n < 3; n++) {
+            if (((Stg20GameRoster *)&D_8005E620)->elems[n].state == n + 3
+                && ((Stg20GameRoster *)&D_8005E620)->elems[n].field_16 != 0) {
                 return 0;
             }
         }
@@ -1527,10 +1526,6 @@ s32 func_80066B48(s32 id) {
     }
     return 0;
 }
-#else
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80066B48);
-s32 func_80066B48(s32 id);
-#endif
 
 INCLUDE_RODATA("asm/USA/stag2000/rodata", jtbl_80063488);
 #ifdef NORMALIZED

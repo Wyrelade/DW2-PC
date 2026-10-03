@@ -82,7 +82,6 @@ void Menu_ItemDraw(Actor *actor);
 #endif
 
 
-#ifdef NORMALIZED
 void func_80017214(Actor *a0) {
     MenuDigiPickWork *w = (MenuDigiPickWork *)a0->work;
     MenuDigiPickRow *e;
@@ -92,13 +91,10 @@ void func_80017214(Actor *a0) {
     u8 k;
     s32 id;
     s32 n;
-    MenuCtx *p;
 
     e = &w->rows[Menu_GridIndexColMajor(w->cursor, w->gridSize)];
-    p = Menu_Ctx;
-    do {} while (0);
     n = D_8005F6F0[0].cross;
-    g = (DigiRosterSwapRec *)p->field_128;
+    g = (DigiRosterSwapRec *)Menu_Ctx->field_128;
     if (n > 0) {
         switch (e->kind) {
         case 0:
@@ -114,8 +110,12 @@ void func_80017214(Actor *a0) {
             d->kind = 1;
             d->record = (s32)g;
             d->pickState = g->state;
-            id = 0x1FD0110;
-            goto swap;
+            Text_OpenPacked(w->field_40, Cd_GetFileEntry(0x1FD0110), 0x81, D_8005070C);
+            Menu_Ctx->field_126 = -1;
+            Menu_DigiListDrawRows((MenuDigiListRowsView *)w, 0);
+            Snd_PlayById(0xE, 0);
+            Task_SetState1(a0, 4);
+            return;
         case 1:
             k = g->state;
             tmp = *(DigiRosterSwapRec *)e->record;
@@ -123,9 +123,7 @@ void func_80017214(Actor *a0) {
             tmp.state = k;
             *(DigiRosterSwapRec *)e->record = *g;
             *g = tmp;
-            id = 0x1FD0112;
-        swap:
-            Text_OpenPacked(w->field_40, Cd_GetFileEntry(id), 0x81, D_8005070C);
+            Text_OpenPacked(w->field_40, Cd_GetFileEntry(0x1FD0112), 0x81, D_8005070C);
             Menu_Ctx->field_126 = -1;
             Menu_DigiListDrawRows((MenuDigiListRowsView *)w, 0);
             Snd_PlayById(0xE, 0);
@@ -145,10 +143,6 @@ void func_80017214(Actor *a0) {
         Snd_PlayById(0x10, 0);
     }
 }
-#else
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80017214);
-void func_80017214(Actor *a0);
-#endif
 
 void func_800174F8(Actor *a0) {
     MenuDigiPickWork *w = (MenuDigiPickWork *)a0->work;
@@ -168,7 +162,6 @@ void func_800174F8(Actor *a0) {
     }
 }
 
-#ifdef NORMALIZED
 void Menu_ConfirmMultiPick(Actor *a0) {
     MenuDigiPickWork *w = (MenuDigiPickWork *)a0->work;
     s32 k = Menu_GridIndexColMajor(w->cursor, w->gridSize);
@@ -186,24 +179,17 @@ void Menu_ConfirmMultiPick(Actor *a0) {
         if (w->pickedCount < w->pickMax) {
             Task_SetState1(a0, 1);
         } else {
-            MenuCtx *d;
-            Menu_Ctx->pickCount = w->pickMax;
-            d = Menu_Ctx;
-            i = 0;
-            if (w->pickMax > 0) {
-                do {
-                    d->pickedRecords[i] = w->rows[w->pickedIndices[i]].record;
-                } while (++i < w->pickMax);
+            MenuCtx *d = Menu_Ctx;
+            d->pickCount = w->pickMax;
+            for (i = 0; i < w->pickMax; i++) {
+                e = &w->rows[w->pickedIndices[i]];
+                d->pickedRecords[i] = e->record;
             }
             w->field_62 = 2;
             Task_SetState1(a0, 3);
         }
     }
 }
-#else
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Menu_ConfirmMultiPick);
-void Menu_ConfirmMultiPick(Actor *a0);
-#endif
 
 void Menu_UndoLastPick(Actor *s0) {
     MenuPickWork *w = (MenuPickWork *)s0->work;

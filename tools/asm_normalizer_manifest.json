@@ -73,14 +73,6 @@
       "padnop"
     ]
   },
-  "Menu_ConfirmMultiPick": {
-    "passes": [
-      "web_realloc",
-      "self_move",
-      "commutative_swap",
-      "padnop"
-    ]
-  },
   "Menu_NameEntryTask": {
     "passes": [
       "zero_cmp",
@@ -139,15 +131,6 @@
   "Gfx_DrawWireTris": {
     "passes": [
       "web_resched"
-    ]
-  },
-  "func_80017214": {
-    "passes": [
-      "nosplit",
-      "sched_pre",
-      "sched_match",
-      "hi_interleave",
-      "padnop"
     ]
   },
   "Menu_DigiListTask": {
@@ -242,11 +225,6 @@
       "reorder_indep"
     ]
   },
-  "stag2000:func_80066B48": {
-    "passes": [
-      "web_realloc"
-    ]
-  },
   "stag3000:func_80064B30": {
     "passes": [
       "web_realloc",
@@ -300,12 +278,6 @@
       "reg_realloc",
       "web_realloc",
       "iv_ptr_reduce"
-    ]
-  },
-  "stag0000:func_80065E24": {
-    "passes": [
-      "web_realloc",
-      "sched_pre"
     ]
   },
   "func_8006571C": {
