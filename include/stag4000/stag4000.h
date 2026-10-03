@@ -826,7 +826,7 @@ void func_800677FC(Blk16 *l, s32 r, s32 g, s32 b);
 u16 func_800703E0(s32 x, s32 y);
 void func_8006EB84(s32 idx, s32 row, s32 val);
 void func_80065300(Actor *a0);
-void func_8006545C(ActorWork *w);
+void func_8006545C(Stg40W667C *w);
 void func_80065890(ActorWork *w);
 s32 func_80068604(Stg40Ent48 *e);
 s16 func_80070C48(void);

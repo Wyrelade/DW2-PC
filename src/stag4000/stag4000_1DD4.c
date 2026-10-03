@@ -430,7 +430,7 @@ void func_800665E0(Actor *a0) {
         break;
     case 1:
         func_80065300(a0);
-        func_8006545C(w);
+        func_8006545C((Stg40W667C *)w);
         func_80065890(w);
         break;
     case 2:

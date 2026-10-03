@@ -21,6 +21,7 @@ reported separately and never counted.
 
 Writes tools/match_status.json and prints a summary per unit.
   --reuse   skip the builds, compare existing objects."""
+import glob
 import json
 import os
 import re
@@ -56,6 +57,11 @@ def funcs_of(obj):
     starts = sorted((int(a, 16), n) for a, n in
                     re.findall(r"^([0-9a-f]+)\s.*\sF\s+\.text\s+[0-9a-f]+\s+(\S+)$", syms, re.M))
     fsyms = {n for _a, n in starts}
+    # retail jlabels (.L<address>): absolute address -> (function, offset) via the symbol map
+    # (a jlabel is a jump-table target inside the function that jumps to it)
+    def label_where(name, func):
+        fa = func_vram(unit_of(obj), func)
+        return "%s+%x" % (func, int(name[2:], 16) - fa) if fa else name
 
     def where(off):
         best = None
@@ -74,6 +80,7 @@ def funcs_of(obj):
             # symbols start a new function
             if m.group(2) in fsyms:
                 cur = res.setdefault(m.group(2), [])
+                curname = m.group(2)
             continue
         if cur is None:
             continue
@@ -85,7 +92,12 @@ def funcs_of(obj):
         if m and cur:
             typ, sym = m.group(1), m.group(2)
             w = cur[-1][0]
-            if sym.startswith("."):
+            if typ == "R_MIPS_26" and re.match(r"^\.L[0-9A-F]{8}$", sym) and not (w & 0x3FFFFFF):
+                # retail jlabels are global symbols: a j to one relocates against the
+                # label, ours against .text; compare the target location instead
+                cur[-1][0] = w & ~0x3FFFFFF
+                sym = ".text:" + label_where(sym, curname)
+            elif sym.startswith("."):
                 if typ == "R_MIPS_26":
                     tgt = (w & 0x3FFFFFF) << 2
                     cur[-1][0] = w & ~0x3FFFFFF
@@ -104,6 +116,16 @@ def funcs_of(obj):
 
 
 _SYMS = {}
+_VRAM = {}
+
+
+def func_vram(unit, func):
+    """Retail address of a function, from the first instruction comment of its asm file."""
+    if (unit, func) not in _VRAM:
+        fs = glob.glob(os.path.join(ROOT, "asm", "USA", unit, "**", func + ".s"), recursive=True)
+        m = re.search(r"/\* [0-9A-F]+ ([0-9A-F]{8}) ", open(fs[0], encoding="latin-1").read()) if fs else None
+        _VRAM[(unit, func)] = int(m.group(1), 16) if m else None
+    return _VRAM[(unit, func)]
 
 
 def unit_of(obj):
