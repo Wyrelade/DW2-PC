@@ -439,10 +439,6 @@ void Menu_SetDigiListMode(Actor *a, s16 mode) {
     }
 }
 
-INCLUDE_RODATA("asm/USA/main/rodata", jtbl_800100DC);
-INCLUDE_RODATA("asm/USA/main/rodata", jtbl_800100F4);
-INCLUDE_RODATA("asm/USA/main/rodata", jtbl_8001010C);
-#ifdef NORMALIZED
 void Menu_DigiListTask(Actor *a0) {
     MenuDigiListWork *w = (MenuDigiListWork *)a0->work;
     s32 *slot;
@@ -573,6 +569,9 @@ void Menu_DigiListTask(Actor *a0) {
                     break;
                 }
                 switch (w->mode) {
+                default:
+                    Task_SetState1(a0, 0);
+                    break;
                 case 1:
                 case 2:
                     if (Menu_Ctx->confirmed == 0) {
@@ -598,7 +597,6 @@ void Menu_DigiListTask(Actor *a0) {
                         Task_SetState0(a0, 0);
                         break;
                     }
-                default:
                     Task_SetState1(a0, 0);
                     break;
                 }
@@ -676,10 +674,6 @@ void Menu_DigiListTask(Actor *a0) {
         break;
     }
 }
-#else
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Menu_DigiListTask);
-void Menu_DigiListTask(Actor *a0);
-#endif
 
 
 void func_800188BC(Actor *actor) {

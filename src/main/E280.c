@@ -826,9 +826,6 @@ s32 func_8001F970(s32 arg0) {
     return arg0 != 0x16;
 }
 
-INCLUDE_RODATA("asm/USA/main/rodata", jtbl_800101C8);
-INCLUDE_RODATA("asm/USA/main/rodata", D_800101E4);
-#ifdef NORMALIZED
 void Gfx_AnimateModelTex(Actor *a0) {
     ActorModel *w = a0->model;
     GfxTexAnimPart *r = (GfxTexAnimPart *)w->texAnimParts;
@@ -836,6 +833,7 @@ void Gfx_AnimateModelTex(Actor *a0) {
     s32 k = 0;
     s32 j;
     s32 i;
+    s32 c;
     s32 m;
     DR_MOVE *prim;
     RECT rc;
@@ -848,6 +846,7 @@ void Gfx_AnimateModelTex(Actor *a0) {
             switch (w->blinkTimer >> 1) {
             case 0:
                 w->blinkTimer = (Rand_Next() & 0x7F) + 0x3C;
+            default:
                 k = 0;
                 break;
             case 1:
@@ -897,8 +896,8 @@ void Gfx_AnimateModelTex(Actor *a0) {
         prim++;
     }
     if (r->dstX == 0xFE) {
-        q = (GfxModelTexAnim *)&r->dstY;
-        for (i = 0; i < 10; i++, q++) {
+        q = (GfxModelTexAnim *)&(r++)->dstY;
+        for (c = 0; c < 10; c++, q++) {
             if (q->dstX == 0xFF) break;
             if (D_8005F770.frameDelta == 1) {
                 q->timer += 1;
@@ -929,10 +928,7 @@ void Gfx_AnimateModelTex(Actor *a0) {
     }
     D_8005F770.packet.addr = (s32)prim;
 }
-#else
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Gfx_AnimateModelTex);
-void Gfx_AnimateModelTex(Actor *a0);
-#endif
+INCLUDE_RODATA("asm/USA/main/rodata", D_800101E4);
 
 
 ActorModel *Gfx_AttachModel(Actor *a0, s32 id) {

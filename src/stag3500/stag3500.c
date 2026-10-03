@@ -272,7 +272,6 @@ void func_80063E74(Actor *arg0) {
     Task_NextState0(arg0);
 }
 
-#ifdef NORMALIZED
 void func_80063F38(Actor *arg0) {
     Stg35Work4 *w = (Stg35Work4 *)arg0->work;
     s32 *slot = (s32 *)arg0->u34.children;
@@ -321,10 +320,6 @@ void func_80063F38(Actor *arg0) {
         Snd_SetSlotContent(1, 0x18);
         Task_NextState0(arg0);
         break;
-    sel:
-        Snd_PlayById(0xB, 0);
-        w->field_3C = 1;
-        goto next;
     case 1:
         if (w->field_40 == 0 && Snd_AnySlotLoading() == 0) {
             w->field_40 = 1;
@@ -376,27 +371,31 @@ void func_80063F38(Actor *arg0) {
             w->field_30 = 1;
             Task_NextState1(arg0);
         case 1:
-            switch (w->field_2C) {
-            case 0:
-            default:
-                pad = D_8005F6F0[0].pressed;
-                break;
-            case 1:
-                pad = D_8005F6F0[0].pressed | D_8005F6F0[1].pressed;
-                break;
-            case 2:
-                pad = D_8005F6F0[1].pressed;
-                break;
-            }
-            if (pad & 0x10) {
-                goto sel;
-            }
-            if (pad & 0x40) {
-                Snd_PlayById(0xE, 0);
-                w->field_3C = 0;
-            next:
-                Task_NextState0(arg0);
-            }
+            do {
+                switch (w->field_2C) {
+                case 0:
+                default:
+                    pad = D_8005F6F0[0].pressed;
+                    break;
+                case 1:
+                    pad = D_8005F6F0[0].pressed | D_8005F6F0[1].pressed;
+                    break;
+                case 2:
+                    pad = D_8005F6F0[1].pressed;
+                    break;
+                }
+                if (pad & 0x10) {
+                    Snd_PlayById(0xB, 0);
+                    w->field_3C = 1;
+                    Task_NextState0(arg0);
+                    break;
+                }
+                if (pad & 0x40) {
+                    Snd_PlayById(0xE, 0);
+                    w->field_3C = 0;
+                    Task_NextState0(arg0);
+                }
+            } while (0);
             if (w->field_30 != 0) {
                 w->field_30 = 0;
                 func_800657B8(&w->text[0], D_8006A4AC[w->field_2C]);
@@ -442,10 +441,6 @@ void func_80063F38(Actor *arg0) {
         break;
     }
 }
-#else
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500", func_80063F38);
-void func_80063F38(Actor *arg0);
-#endif
 
 void func_800645B4(Actor *arg0) {
     Stg35Work4 *w = (Stg35Work4 *)arg0->work;

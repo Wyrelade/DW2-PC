@@ -35,28 +35,6 @@
       "web_realloc"
     ]
   },
-  "Gfx_AnimateModelTex": {
-    "passes": [
-      "sched_pre",
-      "reg_realloc",
-      "web_realloc",
-      "sched_match",
-      "block_iso",
-      "call_slot_sink",
-      "giv_rebase",
-      "padnop"
-    ]
-  },
-  "Menu_DigiListTask": {
-    "passes": [
-      "gp8",
-      "range_unswap",
-      "slot_rethread",
-      "const_uncse",
-      "web_realloc_void",
-      "padnop"
-    ]
-  },
   "Text_UpdateAllBoxes": {
     "passes": [
       "nodiv",
@@ -91,11 +69,6 @@
       "save_slot",
       "block_iso_wide",
       "padnop"
-    ]
-  },
-  "stag3500:func_80063F38": {
-    "passes": [
-      "taken_fill"
     ]
   },
   "stag2000:func_80067568": {
