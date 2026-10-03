@@ -722,7 +722,93 @@ void func_8006D7DC(Actor *a) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000_8CE0", func_8006D93C);
+void func_8006D93C(Actor *a) {
+    Stg20ItemListWork *w = (Stg20ItemListWork *)a->work;
+    s32 mask;
+    s32 shift;
+
+    w->field_54 = 0;
+    w->field_58 = 0;
+    mask = 0x3FF;
+    if (((Stg20GameState *)&D_8005E620)->field_2C[1] != 0) {
+        shift = (((Stg20GameState *)&D_8005E620)->field_2C[1] - 1) / 5;
+        w->field_54 |= mask - (1 << shift);
+    } else {
+        w->field_54 |= mask;
+    }
+    mask = 0x1F8000;
+    if (((Stg20GameState *)&D_8005E620)->field_2C[2] != 0) {
+        shift = ((Stg20GameState *)&D_8005E620)->field_2C[2] - 0x2F;
+        w->field_54 |= mask - (0x8000 << shift);
+    } else {
+        w->field_54 |= mask;
+    }
+    mask = 0x7C00;
+    if (((Stg20GameState *)&D_8005E620)->field_2C[3] != 0) {
+        shift = (((Stg20GameState *)&D_8005E620)->field_2C[3] - 0x35) / 5;
+        w->field_54 |= mask - (0x400 << shift);
+    } else {
+        w->field_54 |= mask;
+    }
+    mask = 0x7E00000;
+    if (((Stg20GameState *)&D_8005E620)->field_2C[4] != 0) {
+        shift = ((Stg20GameState *)&D_8005E620)->field_2C[4] - 0x4A;
+        w->field_54 |= mask - (0x200000 << shift);
+    } else {
+        w->field_54 |= mask;
+    }
+    mask = 0x3E;
+    if (((Stg20GameState *)&D_8005E620)->field_2C[5] != 0) {
+        shift = ((Stg20GameState *)&D_8005E620)->field_2C[5] - 0x50;
+        w->field_58 |= mask - (2 << shift);
+    } else {
+        w->field_58 |= mask;
+    }
+    mask = 0x7C0;
+    if (((Stg20GameState *)&D_8005E620)->field_2C[6] != 0) {
+        shift = ((Stg20GameState *)&D_8005E620)->field_2C[6] - 0x55;
+        w->field_58 |= mask - (0x40 << shift);
+    } else {
+        w->field_58 |= mask;
+    }
+    mask = 0x1F0000;
+    if (((Stg20GameState *)&D_8005E620)->field_2C[7] != 0) {
+        shift = ((Stg20GameState *)&D_8005E620)->field_2C[7] - 0x5A;
+        w->field_58 |= mask - (0x10000 << shift);
+    } else {
+        w->field_58 |= mask;
+    }
+    if (((Stg20GameState *)&D_8005E620)->field_2C[8] == 0) {
+        w->field_58 |= 0x800;
+    }
+    if (((Stg20GameState *)&D_8005E620)->field_2C[9] == 0) {
+        w->field_58 |= 0x8000;
+    }
+    if (((Stg20GameState *)&D_8005E620)->field_2C[10] == 0) {
+        w->field_58 |= 0x4000;
+    }
+    if (((Stg20GameState *)&D_8005E620)->field_2C[11] == 0) {
+        w->field_58 |= 0x1000;
+    }
+    if (((Stg20GameState *)&D_8005E620)->field_2C[12] == 0) {
+        w->field_58 |= 0x2000;
+    }
+    if (((Stg20GameState *)&D_8005E620)->field_2C[13] == 0) {
+        w->field_58 |= 0x2000000;
+    }
+    if (((Stg20GameState *)&D_8005E620)->field_2C[14] == 0) {
+        w->field_58 |= 0x4000000;
+    }
+    if (((Stg20GameState *)&D_8005E620)->field_2C[15] == 0) {
+        w->field_58 |= 0x8000000;
+    }
+    if (((Stg20GameState *)&D_8005E620)->field_2C[17] == 0) {
+        w->field_58 |= 0x200000;
+    }
+    if (((Stg20GameState *)&D_8005E620)->field_2C[18] == 0) {
+        w->field_58 |= 0x400000;
+    }
+}
 
 INCLUDE_RODATA("asm/USA/stag2000/rodata", jtbl_8006359C);
 INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000_8CE0", func_8006DCCC);
