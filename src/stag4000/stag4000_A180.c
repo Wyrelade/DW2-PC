@@ -191,8 +191,6 @@ void func_8006DA18(void) {
 }
 
 INCLUDE_RODATA("asm/USA/stag4000/rodata", D_8006362C);
-INCLUDE_RODATA("asm/USA/stag4000/rodata", jtbl_80063640);
-#ifdef NORMALIZED
 s32 func_8006DB68(a0, a1, a2, a3)
     s32 a0;
     s32 a1;
@@ -206,6 +204,7 @@ s32 func_8006DB68(a0, a1, a2, a3)
     s32 m;
     s32 kind;
     s32 model;
+    s32 id;
     s32 bit;
     Stg40Rec3 *r;
     u8 *d;
@@ -253,10 +252,11 @@ s32 func_8006DB68(a0, a1, a2, a3)
         t = (lvl < t) ? lvl : t;
         lvl = t;
         kind = a0 + 4;
-        model = tbl.id[a0 - 5];
+        id = tbl.id[a0 - 5];
         t = lvl + 5;
         bit = kind + t;
-        model = model + lvl - 1;
+        id += lvl;
+        model = id - 1;
         break;
     case 1:
         m = 5;
@@ -288,10 +288,6 @@ s32 func_8006DB68(a0, a1, a2, a3)
     }
     return -1;
 }
-#else
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000_A180", func_8006DB68);
-s32 func_8006DB68();
-#endif
 
 void func_8006DDDC(void) {
     Stg40Spawn *e;

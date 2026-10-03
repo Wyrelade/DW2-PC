@@ -39,12 +39,6 @@
       "padnop"
     ]
   },
-  "Ovl_Load": {
-    "passes": [
-      "nosplit",
-      "sched_match"
-    ]
-  },
   "Menu_NameEntryDrawParts": {
     "passes": [
       "reg_realloc"
@@ -226,11 +220,6 @@
     ]
   },
   "stag3000:func_80065594": {
-    "passes": [
-      "web_realloc"
-    ]
-  },
-  "stag4000:func_8006DB68": {
     "passes": [
       "web_realloc"
     ]

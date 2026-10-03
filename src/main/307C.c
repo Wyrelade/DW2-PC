@@ -355,24 +355,21 @@ void Menu_NameEntryDrawParts(Actor *a);
 /* Ovl_FileIds[id] (Cd file ids, matched by LBA + sector count):
  * 0 STAG0000, 1 STAG4000, 2 STAG2000, 3 STAG1000, 4 STAG3000, 5 STAG1100, 6 STAG3500.
  * Sys_GameModeTask loads id (gameMode >> 8) - 1. */
-#ifdef NORMALIZED
 void Ovl_Load(s32 id) {
+    s32 *ids;
     s32 *p;
     u8 *src;
     u8 *dst;
 
     if (Ovl_CurrentId != id) {
-        p = &Ovl_FileIds[id];
+        ids = Ovl_FileIds;
+        p = &ids[id];
         Ovl_CurrentId = id;
         src = (u8 *)Cd_GetFileSync(*p);
         dst = D_80010000;
         memcpy(dst, src, Cd_GetFileSectors(*p) << 11);
     }
 }
-#else
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Ovl_Load);
-void Ovl_Load(s32 id);
-#endif
 
 s32 Ovl_GetCurrentId(void) {
     return Ovl_CurrentId;
