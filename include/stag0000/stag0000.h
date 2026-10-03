@@ -17,7 +17,8 @@ typedef struct {
     /* 0x8C8 */ RECT rectBig;
     /* 0x8D0 */ s32 *field_8D0;
     /* 0x8D4 */ s16 field_8D4;
-} Stg00Work;
+    /* 0x8D6 */ u8 field_8D6[0x102]; /* D_8006935C points here */
+} Stg00Work; /* size 0x9D8 */
 
 typedef struct {
     /* 0x00 */ s32 field_0;

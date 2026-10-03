@@ -67,8 +67,6 @@ s32 func_800676C4(s32 a0, u8 a1) {
     return a0 >= func_8001F0C0(a1);
 }
 
-INCLUDE_RODATA("asm/USA/stag3000/rodata", jtbl_80063488);
-#ifdef NORMALIZED
 void func_800676F4(Actor *a0) {
     Stg30ActorList *l = (Stg30ActorList *)a0->u34.children;
     Stg30Pair sum;
@@ -184,33 +182,35 @@ void func_800676F4(Actor *a0) {
                     }
                     e->field_46 = 0;
                 }
-                j = 0;
-                n = 0;
-                stage = func_8001D958(e->digiId);
-                for (; j < 0x18; j++) {
-                    if (e->field_2E[j] != 0 && func_800676C4(stage, e->field_2E[j])) {
-                        idx[n] = j;
-                        ids[n] = e->field_2E[j];
-                        n++;
-                    }
-                }
-                if (n != 0) {
-                    m = (e->level - 2) % 10;
-                    if (m >= 3) {
-                        k = n;
-                    } else {
-                        k = n / (4 - m) + 1;
-                    }
-                    for (j = 0; j < k; j++) {
-                        if (func_8006767C(e, args.field_4, ids[j])) {
-                            e->field_2E[idx[j]] = 0;
-                        } else {
-                            flag = 1;
-                            args.field_4[cnt++] = ids[j];
-                            e->field_2E[idx[j]] = 0;
+                do {
+                    stage = func_8001D958(e->digiId);
+                    j = 0;
+                    n = 0;
+                    for (; j < 0x18; j++) {
+                        if (e->field_2E[j] != 0 && func_800676C4(stage, e->field_2E[j])) {
+                            idx[n] = j;
+                            ids[n] = e->field_2E[j];
+                            n++;
                         }
                     }
-                }
+                    if (n != 0) {
+                        m = (e->level - 2) % 10;
+                        if (m >= 3) {
+                            k = n;
+                        } else {
+                            k = n / (4 - m) + 1;
+                        }
+                        for (j = 0; j < k; j++) {
+                            if (func_8006767C(e, args.field_4, ids[j])) {
+                                e->field_2E[idx[j]] = 0;
+                            } else {
+                                flag = 1;
+                                args.field_4[cnt++] = ids[j];
+                                e->field_2E[idx[j]] = 0;
+                            }
+                        }
+                    }
+                } while (0);
                 if (!flag) {
                     Task_NextState3(a0);
                     break;
@@ -277,10 +277,6 @@ void func_800676F4(Actor *a0) {
         break;
     }
 }
-#else
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000_41D0", func_800676F4);
-void func_800676F4(Actor *a0);
-#endif
 
 void func_80067DB4(Stg30ListOwner *a0) {
     Stg30ActorList *l = a0->list;

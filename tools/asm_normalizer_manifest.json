@@ -11,12 +11,6 @@
       "web_realloc"
     ]
   },
-  "Digi_GetExpToNextLevel": {
-    "passes": [
-      "web_realloc",
-      "commutative_swap"
-    ]
-  },
   "Gfx_DrawPartSprites": {
     "passes": [
       "reg_realloc",
@@ -175,15 +169,6 @@
       "web_realloc"
     ]
   },
-  "stag3000:func_800676F4": {
-    "passes": [
-      "nodiv",
-      "reg_realloc",
-      "web_realloc",
-      "save_slot",
-      "sched_match"
-    ]
-  },
   "func_80066720": {
     "passes": [
       "decouple_reg",
@@ -206,12 +191,6 @@
       "reg_realloc",
       "web_realloc",
       "iv_ptr_reduce"
-    ]
-  },
-  "func_80064E78": {
-    "passes": [
-      "web_resched",
-      "block_iso"
     ]
   }
 }

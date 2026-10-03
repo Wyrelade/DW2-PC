@@ -14,82 +14,71 @@ void func_80064E4C(s16 arg0) {
     }
 }
 
-#ifdef NORMALIZED
-void func_80064E78(void)
-{
-  s32 i;
-  s32 j;
-  s32 n;
-  u8 *src;
-  u16 *buf;
-  u16 *d;
-  u16 *p;
-  s32 t;
-  RECT *r;
-  D_80069360 = (Stg00Work *) Mem_Alloc(0x9D8, 2);
-  D_8006935C = ((u8 *) D_80069360) + 0x8D6;
-  D_80069360->field_8D0 = Gfx_ReserveTexSlot();
-  n = 0x200;
-  src = D_80068AD0;
-  r = &D_80069360->rectBig;
-  r->x = ((Stg00TexSlot *) D_80069360->field_8D0)->x;
-  r->y = ((Stg00TexSlot *) D_80069360->field_8D0)->y;
-  r->w = 0x10;
-  r->h = 0x40;
-  r = (RECT *) (&D_80069360->field_8C0);
-  r->x = ((Stg00TexSlot *) D_80069360->field_8D0)->x;
-  r->y = ((Stg00TexSlot *) D_80069360->field_8D0)->y + 0xF9;
-  r->w = 0x10;
-  r->h = 6;
-  buf = D_80069360->buf;
-  for (i = 0x3FF; i >= 0; i--)
-  {
-    buf[i] = 0x2222;
-  }
+void func_80064E78(void) {
+    s32 i;
+    s32 n;
+    s32 fill;
+    u8 *src;
+    u16 *p;
+    RECT *r;
 
-  for (j = 0; j < n; j++, src++)
-  {
-    i = (j / 64) * 128;
-    d = &buf[(i + ((j % 8) * 16)) + (((j / 8) % 8) * 2)];
-    d[0] = 0;
-    d[0] = (*src) >> 7;
-    d[0] |= ((*src) & 0x40) ? (0x10) : (0);
-    d[0] |= ((*src) & 0x20) ? (0x100) : (0);
-    d[0] |= ((*src) & 0x10) ? (0x1000) : (0);
-    d[1] = 0;
-    d[1] = ((*src) >> 3) & 1;
-    d[1] |= ((*src) & 0x04) ? (0x10) : (0);
-    d[1] |= ((*src) & 0x02) ? (0x100) : (0);
-    d[1] |= ((*src) & 0x01) ? (0x1000) : (0);
-  }
+    D_80069360 = (Stg00Work *)Mem_Alloc(0x9D8, 2);
+    D_8006935C = D_80069360->field_8D6;
+    D_80069360->field_8D0 = Gfx_ReserveTexSlot();
+    n = 0x200;
+    src = D_80068AD0;
+    r = &D_80069360->rectBig;
+    r->x = ((Stg00TexSlot *)D_80069360->field_8D0)->x;
+    r->y = ((Stg00TexSlot *)D_80069360->field_8D0)->y;
+    r->w = 0x10;
+    r->h = 0x40;
+    r = (RECT *)&D_80069360->field_8C0;
+    r->x = ((Stg00TexSlot *)D_80069360->field_8D0)->x;
+    r->y = ((Stg00TexSlot *)D_80069360->field_8D0)->y + 0xF9;
+    r->w = 0x10;
+    r->h = 6;
+    p = D_80069360->buf;
+    fill = 0x2222;
+    for (i = 0x3FF; i >= 0; i--) {
+        p[i] = fill;
+    }
+    for (i = 0; i < n; i++, src++) {
+        s32 k = (i / 64) * 128;
 
-  p = D_80069360->clut;
-  for (i = 0; i < 0x18; i++)
-  {
-    *(p++) = 0;
-    *(p++) = 0;
-    *(p++) = 0;
-    *(p++) = 0;
-  }
-
-  p = D_80069360->clut;
-  p[0x00] = 0x8000;
-  p[0x10] = 0x8000;
-  p[0x20] = 0x8000;
-  p[0x01] = 0x3DEF;
-  p[0x31] = 0x3DEF;
-  p[0x11] = 0x0F;
-  p[0x41] = 0x0F;
-  p[0x21] = 0x3C00;
-  p[0x51] = 0x3C00;
-  LoadImage((RECT *) (&D_80069360->field_8C0), (u32 *) D_80069360->clut);
-  LoadImage(&D_80069360->rectBig, (u32 *) D_80069360->buf);
-  func_80064E4C(0);
+        k += (i % 8) * 16;
+        k += ((i / 8) % 8) * 2;
+        p[k] = 0;
+        p[k] = *src >> 7;
+        p[k] |= (*src & 0x40) ? 0x10 : 0;
+        p[k] |= (*src & 0x20) ? 0x100 : 0;
+        p[k] |= (*src & 0x10) ? 0x1000 : 0;
+        p[k + 1] = 0;
+        p[k + 1] = (*src >> 3) & 1;
+        p[k + 1] |= (*src & 0x04) ? 0x10 : 0;
+        p[k + 1] |= (*src & 0x02) ? 0x100 : 0;
+        p[k + 1] |= (*src & 0x01) ? 0x1000 : 0;
+    }
+    p = D_80069360->clut;
+    for (i = 0; i < 0x18; i++) {
+        *p++ = 0;
+        *p++ = 0;
+        *p++ = 0;
+        *p++ = 0;
+    }
+    p = D_80069360->clut;
+    p[0x00] = 0x8000;
+    p[0x10] = 0x8000;
+    p[0x20] = 0x8000;
+    p[0x01] = 0x3DEF;
+    p[0x31] = 0x3DEF;
+    p[0x11] = 0x0F;
+    p[0x41] = 0x0F;
+    p[0x21] = 0x3C00;
+    p[0x51] = 0x3C00;
+    LoadImage((RECT *)&D_80069360->field_8C0, (u32 *)D_80069360->clut);
+    LoadImage(&D_80069360->rectBig, (u32 *)D_80069360->buf);
+    func_80064E4C(0);
 }
-#else
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000_1AE4", func_80064E78);
-void func_80064E78(void);
-#endif
 
 void func_80065114(void) {
     Gfx_ReleaseTexSlot(D_80069360->field_8D0);
