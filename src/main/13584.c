@@ -276,7 +276,6 @@ void Sys_VSyncHandler(void) {
 }
 
 
-#ifdef NORMALIZED
 void Sys_Main(void) {
     SysClearRect r;
     GsIMAGE tim;
@@ -316,7 +315,7 @@ void Sys_Main(void) {
     CdInit();
     CdSetDebug(0);
     SetGraphDebug(0);
-    Mem_InitHeap(D_800506F8[0], 0x801FF000 - (s32)D_800506F8[0]);
+    Mem_InitHeap(D_800506F8, 0x801FF000 - (s32)D_800506F8);
     Cd_ClearFileCache();
     Snd_Init();
     D_8005F770.frameCount = 0;
@@ -355,11 +354,14 @@ void Sys_Main(void) {
             Mem_FreeTag(2);
             Gpu_ClearOt(0);
             Gpu_ClearOt(1);
-            t = D_8005F770.gameMode;
-            u = D_8005F770.nextGameMode;
-            D_8005F770.nextGameMode = 0;
-            D_8005F770.prevGameMode = t;
-            D_8005F770.gameMode = u;
+            {
+                s32 cur = D_8005F770.gameMode;
+                s32 next = D_8005F770.nextGameMode;
+
+                D_8005F770.nextGameMode = 0;
+                D_8005F770.prevGameMode = cur;
+                D_8005F770.gameMode = next;
+            }
             for (i = 0; i < 0x11; i++) {
                 Flag_Set(i, 0);
             }
@@ -394,10 +396,6 @@ void Sys_Main(void) {
         Snd_ServiceSlotLoads();
     }
 }
-#else
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Sys_Main);
-void Sys_Main(void);
-#endif
 
 
 void Rand_Seed(s32 a0) {

@@ -1614,7 +1614,6 @@ s32 Gfx_IsOriginOffscreen(void) {
     return sxy.vy > 0x110;
 }
 
-#ifdef NORMALIZED
 void Gfx_DrawWireTris(ModelWireTri *t, s32 n, ModelProjView *o, CVECTOR *col) {
     s32 i;
     s32 z;
@@ -1633,16 +1632,15 @@ void Gfx_DrawWireTris(ModelWireTri *t, s32 n, ModelProjView *o, CVECTOR *col) {
     for (i = 0; i < n; i++, t++) {
         do {
             z = (sz[t->v[0]] + sz[t->v[1]] + sz[t->v[2]]) / 3;
-            ot = (u32 *)D_8005F770.otLayers.s[idx];
+            ot = (u32 *)D_8005F770.otLayers.s[idx] + z;
             l = (LINE_F4 *)pk;
             l->c = *col;
             l->tag.len = 6;
             l->c.code = 0x4E;
             l->end = 0x55555555;
-            l->xy[3] = l->xy[0] = sxy[t->v[0]];
+            l->xy[0] = l->xy[3] = sxy[t->v[0]];
             l->xy[1] = sxy[t->v[1]];
             l->xy[2] = sxy[t->v[2]];
-            ot += z;
             pk->addr = ((GfxModelOTag *)ot)->addr;
             ((GfxModelOTag *)ot)->addr = (u32)pk;
             pk = (GfxModelOTag *)((LINE_F4 *)pk + 1);
@@ -1656,10 +1654,6 @@ void Gfx_DrawWireTris(ModelWireTri *t, s32 n, ModelProjView *o, CVECTOR *col) {
     }
     D_8005F770.packet.addr = (s32)pk;
 }
-#else
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Gfx_DrawWireTris);
-void Gfx_DrawWireTris(ModelWireTri *t, s32 n, ModelProjView *o, CVECTOR *col);
-#endif
 
 #ifdef NORMALIZED
 void Gfx_DrawWireQuads(GfxModelQuad *q, s32 n, ModelProjView *o, CVECTOR *col) {

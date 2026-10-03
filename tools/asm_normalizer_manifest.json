@@ -94,11 +94,6 @@
       "padnop"
     ]
   },
-  "Sys_Main": {
-    "passes": [
-      "web_realloc"
-    ]
-  },
   "func_80011854": {
     "passes": [
       "la_copy",
@@ -114,11 +109,6 @@
     "passes": [
       "sched_match",
       "padnop"
-    ]
-  },
-  "Gfx_DrawWireTris": {
-    "passes": [
-      "web_resched"
     ]
   },
   "Menu_DigiListTask": {

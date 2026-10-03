@@ -799,7 +799,7 @@ extern void SpuGetReverbVoice(void);
 extern u16 D_80062A4E[];
 extern u16 D_80062A50[];
 extern u16 D_80062A52[];
-extern MemBlock *D_800506F8[];
+extern MemBlock *D_800506F8;
 extern s32 D_80050730;
 extern s32 D_80050738;
 extern void Sys_VSyncHandler(void);
