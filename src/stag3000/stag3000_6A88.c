@@ -305,7 +305,323 @@ void func_8006AA18(s16 *max, s16 *b, s16 *c) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000_6A88", func_8006AAA8);
+s32 func_8006AAA8(s32 attacker, s32 target, s32 tech, s16 *p4, s16 *p5) {
+    Stg30DigiS *a = &((Stg30StateS *)&D_80073CC0)->digis[attacker];
+    Stg30DigiS *t = &((Stg30StateS *)&D_80073CC0)->digis[target];
+    s32 type[2];
+    s32 revived;
+    s32 flags1;
+    s32 flags2;
+    s32 buff;
+    s32 prevent;
+    s32 dmg;
+    s32 idx;
+    s32 atk;
+    s32 power;
+    s32 aAtk;
+    s32 def;
+    s32 el;
+    s32 tEl;
+    s32 st;
+    s32 hit;
+    s32 hp;
+    s32 gain;
+    s32 drain;
+    s32 steal;
+
+    flags1 = func_8001F0E4(tech);
+    flags2 = func_8001F10C(tech);
+    buff = func_8001F130(tech);
+    prevent = func_8001F158(tech);
+    type[0] = func_8001D934(a->digiId);
+    dmg = 0;
+    revived = 0;
+    type[1] = func_8001D934(t->digiId);
+    if (prevent & 2) {
+        D_80073CC0.field_34F[target] |= 2;
+        *p5 = 0xF;
+    }
+    if (prevent & 4) {
+        D_80073CC0.field_34F[target] |= 4;
+        *p5 = 0x11;
+    }
+    if (prevent & 8) {
+        idx = func_8006E5F8(target);
+        if (idx != -1) {
+            switch (D_80073CC0.field_2AC[target].field_0) {
+            case 2:
+            case 3:
+                func_8006E5B4(idx);
+                *p5 = 0x118;
+                break;
+            }
+        }
+    }
+    if (prevent & 0x10) {
+        D_80073CC0.field_34F[target] |= 8;
+        *p5 = 0x19;
+    }
+    if (flags2 & 0x200) {
+        D_80073CC0.field_31C[target] |= D_80073CC0.field_31C[attacker];
+    }
+    if (buff & 1) {
+        func_8006A968(&D_80073CC0.field_37A[target], &t->attack, &D_80073CC0.field_356[target]);
+        *p5 = 9;
+        D_80073CC0.field_340[target] = 1;
+    }
+    if (buff & 2) {
+        func_8006AA18(&D_80073CC0.field_37A[target], &t->attack, &D_80073CC0.field_356[target]);
+        *p5 = 0x15;
+        D_80073CC0.field_346[target] = 1;
+    }
+    if (buff & 4) {
+        func_8006A968(&D_80073CC0.field_386[target], &t->defense, &D_80073CC0.field_362[target]);
+        *p5 = 0xA;
+        D_80073CC0.field_340[target] = 1;
+    }
+    if (buff & 8) {
+        func_8006AA18(&D_80073CC0.field_386[target], &t->defense, &D_80073CC0.field_362[target]);
+        *p5 = 0x16;
+        D_80073CC0.field_346[target] = 1;
+    }
+    if (buff & 0x10) {
+        func_8006A968(&D_80073CC0.field_392[target], &t->speed, &D_80073CC0.field_36E[target]);
+        *p5 = 0xB;
+        D_80073CC0.field_340[target] = 1;
+    }
+    if (buff & 0x20) {
+        func_8006AA18(&D_80073CC0.field_392[target], &t->speed, &D_80073CC0.field_36E[target]);
+        *p5 = 0x17;
+        D_80073CC0.field_346[target] = 1;
+    }
+    if ((buff & 0x100) && D_80073CC0.field_340[target] != 0) {
+        t->attack = D_80073CC0.field_37A[target];
+        t->defense = D_80073CC0.field_386[target];
+        t->speed = D_80073CC0.field_392[target];
+        D_80073CC0.field_340[target] = 0;
+    }
+    if ((buff & 0x200) && D_80073CC0.field_346[target] != 0) {
+        t->attack = D_80073CC0.field_37A[target];
+        t->defense = D_80073CC0.field_386[target];
+        t->speed = D_80073CC0.field_392[target];
+        D_80073CC0.field_340[target] = 0;
+    }
+    if ((buff & 0x400) && type[1] == 1) {
+        func_8006A968(&D_80073CC0.field_37A[target], &t->attack, &D_80073CC0.field_356[target]);
+        func_8006A968(&D_80073CC0.field_386[target], &t->defense, &D_80073CC0.field_362[target]);
+        *p5 = 0x14;
+        D_80073CC0.field_340[target] = 1;
+    }
+    if ((buff & 0x800) && type[1] == 2) {
+        func_8006A968(&D_80073CC0.field_37A[target], &t->attack, &D_80073CC0.field_356[target]);
+        func_8006A968(&D_80073CC0.field_386[target], &t->defense, &D_80073CC0.field_362[target]);
+        *p5 = 0x14;
+        D_80073CC0.field_340[target] = 1;
+    }
+    if ((buff & 0x1000) && type[1] == 0) {
+        func_8006A968(&((Stg30CombatCD8 *)D_80073CD8)->field_37A[target], &t->attack, &((Stg30CombatCD8 *)D_80073CD8)->field_356[target]);
+        func_8006A968(&((Stg30CombatCD8 *)D_80073CD8)->field_386[target], &t->defense, &((Stg30CombatCD8 *)D_80073CD8)->field_362[target]);
+        *p5 = 0x14;
+        ((Stg30CombatCD8 *)D_80073CD8)->field_340[target] = 1;
+    }
+    do {
+        if (D_80073CC0.field_2AC[attacker].field_0 == 2 && (flags1 & 1)) {
+            hit = D_80073CC0.field_2AC[attacker].field_C;
+            dmg = hit / 2 + hit;
+            t->hp = (dmg < t->hp) ? t->hp - dmg : 0;
+            break;
+        }
+        if (flags2 & 2) {
+            dmg = t->hp / 2;
+            t->hp -= dmg;
+            if (t->hp == 0) {
+                t->hp = 1;
+            }
+            break;
+        }
+        if ((flags2 & 4) && t->hp != 0) {
+            dmg = t->maxHp - t->hp;
+            t->hp = t->maxHp;
+            break;
+        }
+        if (flags2 & 8) {
+            if (t->hp < 60) {
+                dmg = t->hp;
+                t->hp = 0;
+            } else {
+                dmg = 0;
+            }
+            break;
+        }
+        revived = func_8006A140(attacker, target, tech, p4, p5);
+        atk = func_8001EF64(tech);
+        if (atk == 0 || (D_80073CC0.field_34F[target] & 8)) {
+            break;
+        }
+        if (atk < 0) {
+            if (D_80073CC0.field_31C[attacker] & 0x8000) {
+                dmg = 0;
+                revived = 1;
+                break;
+            }
+            dmg = 0;
+            if (!(D_80073CC0.field_34F[target] & 2)) {
+                t->hp -= atk;
+                if (t->maxHp < t->hp) {
+                    t->hp = t->maxHp;
+                }
+                dmg = atk;
+            }
+            break;
+        }
+        if (flags1 & 0x10) {
+            if (D_80073CC0.field_39E[attacker] < 70) {
+                D_80073CC0.field_39E[attacker] += 5;
+            } else {
+                D_80073CC0.field_39E[attacker] = 70;
+            }
+            atk += D_80073CC0.field_39E[attacker];
+        } else {
+            D_80073CC0.field_39E[attacker] = 0;
+        }
+        if ((flags1 & 0x20) && D_80073CC0.field_2AC[attacker].field_0 == 2) {
+            atk += atk / 2;
+        }
+        if ((flags1 & 0x40) && (D_80073CC0.field_31C[attacker] & 1)) {
+            atk += atk / 2;
+        }
+        if ((flags1 & 0x80) && D_80073CC0.field_2AC[target].field_0 == 3) {
+            atk += atk / 2;
+        }
+        if ((flags1 & 0x100) && D_80073CC0.field_2AC[target].field_0 == 2) {
+            atk += atk / 2;
+        }
+        if ((flags1 & 0x200) && (D_80073CC0.field_2AC[target].field_0 == 2 || D_80073CC0.field_2AC[target].field_0 == 3)) {
+            atk += atk / 2;
+        }
+        if ((flags1 & 0x400) && D_80073CC0.field_3D0 != -1 && D_80073CC0.field_2AC[attacker].field_C > 0) {
+            atk += atk / 2;
+        }
+        power = atk;
+        aAtk = a->attack;
+        el = func_8001EF88(tech);
+        def = t->defense;
+        tEl = func_8001D980(t->digiId);
+        st = D_80073CC0.field_31C[attacker];
+        if (st & 0x400) {
+            el = 0;
+        }
+        if (st & 0x800) {
+            el = 1;
+        }
+        if (st & 0x1000) {
+            el = 2;
+        }
+        if (st & 0x2000) {
+            el = 3;
+        }
+        if (st & 0x4000) {
+            el = 4;
+        }
+        if (D_80073CC0.field_2AC[target].field_0 == 5) {
+            def = def * 150 / 100;
+        }
+        switch (func_800699F8(type[0], type[1])) {
+        case 1:
+            aAtk = aAtk * 120 / 100;
+            break;
+        case -1:
+            aAtk = aAtk * 80 / 100;
+            break;
+        }
+        switch (func_8006A030(el, tEl)) {
+        case 1:
+            power = power * 120 / 100;
+            break;
+        case -1:
+            power = power * 80 / 100;
+            break;
+        }
+        if (el != 5 && el == func_8006A118()) {
+            power = power * 120 / 100;
+        }
+        if (tEl != 5 && tEl == func_8006A118()) {
+            def = def * 120 / 100;
+        }
+        dmg = aAtk * power / (def * 2);
+        if (D_80073CC0.field_31C[target] & 1) {
+            dmg += 10;
+        }
+        if (dmg < t->hp) {
+            t->hp -= dmg;
+        } else {
+            t->hp = 0;
+        }
+        if (flags1 & 0x800) {
+            a->hp = (a->hp + dmg > a->maxHp) ? a->maxHp : a->hp + dmg;
+            *p5 = 0x13;
+        }
+        if (attacker != target) {
+            if (D_80073CC0.field_31C[target] & 0x40) {
+                D_80073CC0.field_31C[attacker] |= 1;
+            }
+            if (D_80073CC0.field_31C[attacker] & 0x80) {
+                D_80073CC0.field_31C[target] |= 1;
+                *p5 = 1;
+            }
+            if (D_80073CC0.field_31C[attacker] & 0x100) {
+                D_80073CC0.field_31C[target] |= 2;
+                *p5 = 3;
+            }
+            if ((D_80073CC0.field_3DC == 0 || target < 3) && (D_80073CC0.field_31C[attacker] & 0x200)) {
+                D_80073CC0.field_31C[target] |= 4;
+                *p5 = 5;
+            }
+        }
+    } while (0);
+    if ((flags1 & 2) && func_800699F8(type[0], type[1]) == -1) {
+        hp = t->hp + dmg;
+        if (t->maxHp < hp) {
+            hp = t->maxHp;
+        }
+        t->hp = hp;
+        *p4 = 1;
+    }
+    if (flags1 & 0x2000) {
+        steal = 100;
+        if (t->mp < 100) {
+            steal = t->mp;
+        }
+        t->mp -= steal;
+        a->mp = (a->mp + steal > a->maxMp) ? a->maxMp : a->mp + steal;
+        *p5 = 0x201;
+    }
+    if (flags1 & 0x4000) {
+        gain = func_8001EE80(D_80073CC0.field_2AC[target].field_6);
+        a->mp = (a->mp + gain > a->maxMp) ? a->maxMp : a->mp + gain;
+        *p5 = 0x201;
+    }
+    if (flags2 & 0x20) {
+        drain = (Rand_Next() & 3) + 4;
+        t->mp = (t->mp < drain) ? 0 : t->mp - drain;
+        *p5 = 0x120;
+    }
+    if (flags2 & 0x40) {
+        drain = (Rand_Next() & 7) + 13;
+        t->mp = (t->mp < drain) ? 0 : t->mp - drain;
+        *p5 = 0x120;
+    }
+    if (flags2 & 0x10) {
+        if (++D_80073CC0.field_334[target] >= 3) {
+            t->hp = 0;
+            dmg = 999;
+        }
+    }
+    if (dmg == 0 && revived == 0) {
+        *p4 = 4;
+    }
+    return dmg;
+}
 
 s32 func_8006B950(s32 idx, s16 *tgt, s32 n, s32 id) {
     s32 hp;
@@ -373,5 +689,354 @@ s32 func_8006B950(s32 idx, s16 *tgt, s32 n, s32 id) {
     return (Rand_Next() & 0x7F) >= chance;
 }
 
-INCLUDE_RODATA("asm/USA/stag3000/rodata", jtbl_80063568);
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000_6A88", func_8006BBD8);
+void func_8006BBD8(s32 idx) {
+    s16 kind = 1;
+    Stg30Sub10 *rec = &D_80073CC0.field_2AC[idx];
+    s16 targets[6];
+    s32 results[6];
+    s16 hitKind[6];
+    s16 msg[6];
+    s16 *out = D_80073890;
+    s32 id;
+    s32 num;
+    s32 i;
+    s32 n;
+    s32 attr;
+    s32 flags;
+    s32 cost;
+    s16 *mp;
+
+    id = (u16)rec->field_6;
+    D_80073CC0.field_3B4 = 1;
+    attr = func_8001F020((s16)id);
+    if (attr & 1) {
+        D_80073CC0.field_2AC[idx].field_E = 1;
+    }
+    if (attr & 2) {
+        D_80073CC0.field_2AC[idx].field_F = 1;
+    }
+    if (attr & 0x40) {
+        D_80073CC0.entries[idx].field_36 /= 2;
+    }
+    for (i = 0; i < 6; i++) {
+        results[i] = 0;
+        targets[i] = -1;
+        hitKind[i] = rec->field_8;
+        msg[i] = 0;
+    }
+    num = 0;
+    switch (rec->field_4) {
+    default:
+        if (func_8001F044((s16)id) & 8) {
+            if (idx != rec->field_4) {
+                targets[0] = rec->field_4;
+                num = 1;
+            }
+        } else if (func_8001F094((s16)id) & 0x20000) {
+            num = 1;
+            targets[0] = rec->field_4;
+        } else if (D_80073CC0.entries[rec->field_4].field_2E != 0) {
+            targets[0] = rec->field_4;
+            num = 1;
+        }
+        break;
+    case 7:
+        switch (hitKind[0]) {
+        case 0:
+        case 1:
+        case 2:
+        default:
+            for (i = 0, n = 0; i < 3; i++) {
+                if (D_80073CC0.entries[i].field_2E != 0) {
+                    targets[n++] = i;
+                }
+            }
+            num = n;
+            break;
+        case 3:
+            for (i = 0, n = 0; i < 3; i++) {
+                if (D_80073CC0.entries[i].field_19 != 0 && D_80073CC0.entries[i].field_2E == 0) {
+                    targets[n++] = i;
+                }
+            }
+            num = n;
+            break;
+        }
+        kind = 0;
+        break;
+    case 8:
+        switch (hitKind[0]) {
+        case 0:
+        case 1:
+        case 2:
+        default:
+            n = 0;
+            for (i = 3; i < 6; i++) {
+                if (D_80073CC0.entries[i].field_2E != 0) {
+                    targets[n++] = i;
+                }
+            }
+            num = n;
+            break;
+        case 3:
+            n = 0;
+            for (i = 3; i < 6; i++) {
+                if (D_80073CC0.entries[i].field_19 != 0 && D_80073CC0.entries[i].field_2E == 0) {
+                    targets[n++] = i;
+                }
+            }
+            num = n;
+            break;
+        }
+        kind = 1;
+        break;
+    case 9:
+        switch (hitKind[0]) {
+        case 0:
+        case 1:
+        case 2:
+        default:
+            n = 0;
+            for (i = 0; i < 6; i++) {
+                if (D_80073CC0.entries[i].field_2E != 0) {
+                    targets[n++] = i;
+                }
+            }
+            num = n;
+            break;
+        case 3:
+            n = 0;
+            for (i = 0; i < 6; i++) {
+                if (D_80073CC0.entries[i].field_19 != 0 && D_80073CC0.entries[i].field_2E == 0) {
+                    targets[n++] = i;
+                }
+            }
+            num = n;
+            break;
+        }
+        kind = 2;
+        break;
+    }
+    if (num == 0 || (rec->field_8 == 0 && func_8006B950(idx, targets, num, (s16)id) == 0)) {
+        D_80074074 = 0;
+    }
+    if (D_80073CC0.field_3B4 != 0) {
+        if (rec->field_0 == 3) {
+            flags = func_8001F180((s16)id);
+            if (flags & 1) {
+                if (D_80073CC0.field_3DC == 0 || idx >= 3) {
+                    if (Rand_Next() & 7) {
+                        func_8006E5B4(1);
+                    }
+                }
+            }
+            if (flags & 4) {
+                s32 slot = func_8006E674(1);
+
+                if (slot != -1) {
+                    D_80073CC0.entries[slot].field_34 = D_80073CC0.entries[slot].field_34 * 38 / 128;
+                    msg[0] = 0x111;
+                }
+            }
+            if (flags & 8) {
+                s32 slot = func_8006E674(1);
+
+                if (slot != -1) {
+                    D_80073CC0.entries[slot].field_34 = D_80073CC0.entries[slot].field_34 * 77 / 128;
+                    msg[0] = 0x111;
+                }
+            }
+            if (flags & 0x10) {
+                s32 slot = func_8006E674(1);
+
+                if (slot != -1) {
+                    D_80073CC0.field_34F[slot] = 0x10;
+                }
+            }
+            if (flags & 0x40) {
+                s32 slot = func_8006E674(1);
+
+                if (slot != -1) {
+                    func_8006E5B4(1);
+                    func_8006E55C(func_8006E634(), slot);
+                }
+            }
+        }
+        if ((s16)id == 0xF1 || (s16)id == 0xF4) {
+            D_80073CC0.field_3B0 = 0x11E;
+        } else if ((s16)id == 0xDD) {
+            D_80073CC0.field_3B0 = 0x202;
+        }
+        for (i = 0; i < num; i++) {
+            results[i] = func_8006AAA8(idx, targets[i], (s16)id, &hitKind[i], &msg[i]);
+        }
+        *out++ = 2;
+        *out++ = idx + 0xA;
+        *out++ = 3;
+        *out++ = idx;
+        *out++ = 0x15;
+        *out++ = 0xE;
+        *out++ = D_80073CC0.field_2AC[idx].field_0 - 1;
+        *out++ = 1;
+        if (D_80073CC0.field_2AC[idx].field_F == 0 && D_80073CC0.field_3D0 == -1 && rec->field_0 != 2) {
+            if (idx >= 3) {
+                if (D_80073CC0.field_2AC[0].field_0 == 3 || D_80073CC0.field_2AC[1].field_0 == 3 ||
+                    D_80073CC0.field_2AC[2].field_0 == 3) {
+                    *out++ = 0;
+                    *out++ = 0x3C;
+                    *out++ = 0x13;
+                }
+            } else if (D_80073CC0.field_2AC[3].field_0 == 3 || D_80073CC0.field_2AC[4].field_0 == 3 ||
+                       D_80073CC0.field_2AC[5].field_0 == 3) {
+                *out++ = 0;
+                *out++ = 0x3C;
+                *out++ = 0x14;
+            }
+        }
+        *out++ = 0x16;
+        *out++ = 0xF;
+        *out++ = id;
+        *out++ = 0x17;
+        *out++ = id;
+        *out++ = num;
+        *out++ = 9;
+        *out++ = idx;
+        *out++ = id;
+        *out++ = 0;
+        *out++ = 0x96;
+        *out++ = 7;
+        *out++ = idx;
+        for (i = 0; i < num; i++) {
+            *out++ = 2;
+            *out++ = targets[i] + 0x10;
+            *out++ = 3;
+            *out++ = targets[i];
+            *out++ = 0;
+            *out++ = (i == 0) ? 0x1E : 0xC;
+            *out++ = 0x10;
+            *out++ = results[i];
+            *out++ = (hitKind[i] < 3) ? hitKind[i] + 1 : 8;
+            *out++ = msg[i];
+            switch (hitKind[i]) {
+            case 0:
+                if (D_80073CC0.entries[targets[i]].field_2E != 0) {
+                    *out++ = (D_80073CC0.field_2AC[targets[i]].field_0 != 5) ? 0xB : 0xA;
+                } else {
+                    *out++ = 0xC;
+                }
+                break;
+            case 3:
+                *out++ = 8;
+                break;
+            case 1:
+            case 2:
+            case 4:
+                *out++ = 0xD;
+                break;
+            }
+            *out++ = targets[i];
+            *out++ = id;
+            if (num == 1) {
+                if (hitKind[i] == 0) {
+                    *out++ = num;
+                    *out++ = targets[i];
+                    *out++ = 0;
+                    *out++ = 0x1E;
+                } else if (hitKind[i] >= 0) {
+                    if (hitKind[i] < 5) {
+                        *out++ = 0;
+                        *out++ = 0x78;
+                    }
+                }
+            } else {
+                *out++ = 0;
+                *out++ = 0x3C;
+            }
+        }
+        if (num != 1) {
+            *out++ = 2;
+            *out++ = kind + 0x16;
+            *out++ = kind + 4;
+            *out++ = 0;
+            *out++ = 0xB4;
+        }
+    } else {
+        *out++ = 2;
+        *out++ = idx + 0xA;
+        *out++ = 3;
+        *out++ = idx;
+        *out++ = 0xE;
+        *out++ = 0;
+        *out++ = 0;
+        *out++ = 0;
+        *out++ = 0xB4;
+    }
+    *out = 0x18;
+    if (D_80073CC0.field_3B4 == 0) {
+        return;
+    }
+    for (i = 0; i < 6; i++) {
+        s32 tgt = targets[i];
+
+        D_80073CC0.field_3B8[i] = tgt;
+        if (tgt != -1) {
+            D_80073CC0.field_2AC[tgt].field_C = results[i];
+        }
+    }
+    cost = func_8001EE80((s16)id);
+    if (rec->field_0 == 2 && (func_8001F0E4((s16)id) & 0x1000)) {
+        mp = &D_80073CC0.entries[targets[0]].field_32;
+    } else {
+        mp = &D_80073CC0.entries[idx].field_32;
+    }
+    *mp -= cost;
+    if (*mp < 0) {
+        *mp = 0;
+    }
+    do {
+        if ((s16)id == 0x4D || (s16)id == 0xFB) {
+            if (D_80073CC0.entries[targets[0]].field_2E == 0) {
+                D_80073CC0.field_2AC[idx].field_6 = 0xFB;
+                if (idx < 3) {
+                    D_80073CC0.field_2AC[idx].field_4 = func_800692A4(0x4D, 1, idx);
+                } else {
+                    D_80073CC0.field_2AC[idx].field_4 = func_800692A4(0x4D, 7, idx);
+                }
+                if (D_80073CC0.field_2AC[idx].field_4 != idx) {
+                    func_8006E55C(1, idx);
+                }
+                break;
+            }
+        }
+        if ((s16)id == 0x68 && func_8001EE80(0x68) <= D_80073CC0.entries[idx].field_32) {
+            if (idx < 3) {
+                D_80073CC0.field_2AC[idx].field_4 = func_800692A4(0x4D, 1, idx);
+            } else {
+                D_80073CC0.field_2AC[idx].field_4 = func_800692A4(0x4D, 7, idx);
+            }
+            if (D_80073CC0.field_2AC[idx].field_4 != idx) {
+                func_8006E55C(1, idx);
+            }
+            break;
+        }
+        if ((s16)id == 0xDC) {
+            if (D_80073278 == 0) {
+                D_80073278 = (u16)((u16)Rand_Next() % 3) + 1;
+            }
+            if (--D_80073278 != 0) {
+                if (func_8001EE80(0xDC) <= D_80073CC0.entries[idx].field_32) {
+                    if (idx < 3) {
+                        D_80073CC0.field_2AC[idx].field_4 = func_800692A4(0x4D, 1, idx);
+                    } else {
+                        D_80073CC0.field_2AC[idx].field_4 = func_800692A4(0x4D, 7, idx);
+                    }
+                    if (D_80073CC0.field_2AC[idx].field_4 != idx) {
+                        func_8006E55C(1, idx);
+                    }
+                } else {
+                    D_80073278 = 0;
+                }
+            }
+        }
+    } while (0);
+}

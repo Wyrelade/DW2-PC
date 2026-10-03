@@ -559,11 +559,21 @@ typedef struct {
 } Stg30StateS;
 
 /* D_80073CD8 viewed as the battle block from 0x18 of D_80073CC0: the roster
-   then the status words (D_80073CC0.field_31C) at 0x304. */
+   then the status words (D_80073CC0.field_31C) at 0x304. The stat arrays after
+   it keep their D_80073CC0 names (func_8006AAA8 uses this view in one block,
+   where retail relocates against a separate symbol, not D_80073CC0). */
 typedef struct {
     /* 0x000 */ Stg30DigiS digis[6];
     u8 _pad228[0xDC];
     /* 0x304 */ s32 status[6];
+    u8 _pad31C[0x0C];
+    /* 0x328 */ u8 field_340[6];   /* D_80073CC0.field_340 */
+    u8 _pad32E[0x10];
+    /* 0x33E */ s16 field_356[6];  /* D_80073CC0.field_356 */
+    /* 0x34A */ s16 field_362[6];  /* D_80073CC0.field_362 */
+    u8 _pad356[0x0C];
+    /* 0x362 */ s16 field_37A[6];  /* D_80073CC0.field_37A */
+    /* 0x36E */ s16 field_386[6];  /* D_80073CC0.field_386 */
 } Stg30CombatCD8;
 
 /* Roster entry viewed as the byte table at 0x21 indexed by Stg30ByteLists.field_9. */
@@ -596,7 +606,7 @@ extern s32 D_80073150[];
 extern s32 D_80073168;
 extern s32 D_8007316C;
 extern s32 func_8001F0E4(s32 id);
-extern u8 func_8001F020(s32 id);
+extern s32 func_8001F020(s32 id);  /* u8 in the main exe; used unmasked here */
 /* D_80073CC0 roster names: Stg30StateDigis.digis[i].name as a scalar reloc (0x64 = 0x18 + 0x4C). */
 typedef struct {
     /* 0x00 */ u8 name[14];
