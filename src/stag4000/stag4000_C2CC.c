@@ -705,10 +705,130 @@ s32 func_80071608(void) {
     return r;
 }
 
-INCLUDE_RODATA("asm/USA/stag4000/rodata", D_80063728);
-INCLUDE_RODATA("asm/USA/stag4000/rodata", D_80063738);
-INCLUDE_RODATA("asm/USA/stag4000/rodata", D_80063748);
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000_C2CC", func_800716EC);
+s32 func_800716EC(Actor *a0) {
+    Stg40BA0View *st;
+    u8 *stack;
+    u8 *p;
+    s16 *count;
+    s32 sfx;
+    s32 i;
+    s32 slot;
+    s32 n;
+    s32 r;
+    DigiRosterEntry *ent;
+
+    sfx = 0;
+    st = (Stg40BA0View *)&D_8005071C->field_BA0;
+    stack = D_80072B60->field_60;
+    count = &D_80072B60->field_68;
+    p = &stack[7];
+    for (i = 7; i >= 0; i--) {
+        *p-- = 0;
+    }
+    *count = 0;
+    if (st->field_0 & 1) {
+        if (++st->field_15 >= 3 || (func_80071180() < 50 && (st->field_0 & 0x40))) {
+            st->field_0 &= ~1;
+            stack[(*count)++] = 0;
+        }
+        st->field_0 |= 0x40;
+    }
+    if (st->field_0 & 2) {
+        if (func_80071180() < 10 && (st->field_0 & 0x80)) {
+            st->field_0 &= ~2;
+            stack[(*count)++] = 1;
+        }
+        st->field_0 |= 0x80;
+    }
+    if (D_8005071C->field_BA5 != 0) {
+        slot = func_80071608();
+        if ((func_80071180() < 5 && (st->field_0 & 0x100)) || (D_80050720->field_8 == 0 && slot == -1)) {
+            stack[(*count)++] = 2;
+            D_8005071C->field_BA5 = 0;
+        } else {
+            if (D_80050720->field_8 != 0) {
+                s32 cost[4] = { 0, 20, 50, 100 };
+                s32 v = D_80050720->field_8 -= cost[st->field_5];
+                if (v < 0) {
+                    v = 0;
+                }
+                D_80050720->field_8 = v;
+                sfx = 4;
+            } else {
+                func_8002254C(slot, 1);
+                stack[(*count)++] = 6;
+                sfx = 3;
+                D_80072B60->field_78 = Item_GetNameText(D_80050720->slotItems[slot]);
+            }
+            func_80067880(a0, 2);
+        }
+        st->field_0 |= 0x100;
+    }
+    if (D_8005071C->field_BA6 != 0) {
+        if (func_80071180() < 2 && (st->field_0 & 0x200)) {
+            stack[(*count)++] = 3;
+            D_8005071C->field_BA6 = 0;
+        } else {
+            s32 cost[4] = { 0, 2, 4, 6 };
+            s16 v = D_80050720->mp - cost[st->field_6];
+            D_80050720->mp = v;
+            if (v < 0) {
+                v = 0;
+            }
+            D_80050720->mp = v;
+            func_80067880(a0, 2);
+            sfx = 2;
+        }
+        st->field_0 |= 0x200;
+    }
+    if (D_8005071C->field_BA7 != 0) {
+        s32 chance[4] = { 0, 50, 40, 30 };
+        n = ((s32 (*)(s32))func_8006EA84)(1);
+        if ((func_80071180() < chance[st->field_7] && (st->field_0 & 0x400)) || n < 2 ||
+            Digi_CountByState(1) >= 24) {
+            stack[(*count)++] = 4;
+            D_8005071C->field_BA7 = 0;
+        } else {
+            n = ((s32 (*)(s32))func_8006EA84)(0);
+            r = func_80071180() / (100 / n);
+            if (r > n - 1) {
+                r = n - 1;
+            }
+            ent = &D_80050720->elems[D_80072B60->field_128[r]];
+            ent->state = 1;
+            *(Stg40Agg14 *)D_80072B60->field_6A = *(Stg40Agg14 *)ent->name;
+            Digi_SortRoster();
+            for (i = 0; i < 3; i++) {
+                if (D_80050720->elems[i].state < 2) {
+                    break;
+                }
+                D_80050720->elems[i].state = i + 3;
+            }
+            stack[(*count)++] = 7;
+            func_80067880(a0, 2);
+            sfx = 1;
+        }
+        st->field_0 |= 0x400;
+    }
+    if (D_8005071C->field_BA8 != 0) {
+        st->field_0 |= 0x800;
+    }
+    switch (sfx) {
+    case 1:
+        Snd_PlayById(3, 0);
+        break;
+    case 2:
+        Snd_PlayById(7, 0);
+        break;
+    case 3:
+        Snd_PlayById(6, 0);
+        break;
+    case 4:
+        Snd_PlayById(8, 0);
+        break;
+    }
+    return D_80072B60->field_68;
+}
 
 void func_80071DB4(void) {
     Stg40Ent48 *e = D_8005071C->field_18;

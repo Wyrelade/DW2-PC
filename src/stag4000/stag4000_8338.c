@@ -208,5 +208,234 @@ s32 func_8006BDEC(Stg40Ent48 *e, s32 mode) {
 }
 
 INCLUDE_RODATA("asm/USA/stag4000/rodata", D_800634FC);
-INCLUDE_RODATA("asm/USA/stag4000/rodata", jtbl_80063500);
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000_8338", func_8006BFB0);
+void func_8006BFB0(Actor *a0) {
+    Stg40ActWork *w = (Stg40ActWork *)a0->work;
+    Stg40Ent48 *e = w->field_2C;
+    Stg40Ent48 *other = D_80072B60->field_4;
+    Stg40ModelFade *m;
+    s32 lvl2;
+    s32 n;
+    s32 v;
+
+    func_800708FC(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2, 1);
+    if (e->field_0 & 0x1000) {
+        func_8006EBF4(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2,
+                      e->field_18.field_4.field_0, e->field_18.field_4.field_2, e->field_8);
+    }
+    if (a0->stateLevel1 != 4) {
+        Stg40SlotInfo *info = (Stg40SlotInfo *)e->field_10;
+        s32 t = info->field_C / (s16)info->field_E;
+        s32 lvl;
+        lvl = 3;
+        if (t < 4) {
+            lvl = t;
+        }
+        v = lvl;
+        if (v != 0) {
+            v += 7;
+            if (w->field_38 != v) {
+                w->field_36 = v;
+            }
+        }
+    }
+    switch (a0->stateLevel1) {
+    case 0:
+    default:
+        func_8006E4E8(a0, 0x28);
+        if (e->field_A == other->field_A) {
+            func_80070B2C(e->field_7);
+            Task_SetState1(a0, 1);
+            ((Stg40SlotInfo *)e->field_10)->field_8 = 0;
+            ((Stg40SlotInfo *)e->field_10)->field_9 = 0;
+            e->field_18.field_4.field_0 = e->field_18.u0.pair.field_0;
+            e->field_18.field_4.field_2 = e->field_18.u0.pair.field_2;
+            e->field_0 |= 0x1000;
+        }
+        break;
+    case 1:
+        func_8006E4E8(a0, 0x28);
+        if (D_8005071C->field_2 != 0) {
+            break;
+        }
+        if (e->field_A != other->field_A) {
+            func_80070BA4(e->field_7);
+            Task_SetState1(a0, 0);
+            break;
+        }
+        if (func_80070C94() != e->field_7) {
+            break;
+        }
+        ((Stg40SlotInfo *)e->field_10)->field_8++;
+        if (((Stg40SlotInfo *)e->field_10)->field_8 > ((Stg40SlotInfo *)e->field_10)->field_6) {
+            Task_SetState1(a0, 2);
+            ((Stg40SlotInfo *)e->field_10)->field_8 = 0;
+        } else {
+            func_80070C48();
+        }
+        break;
+    case 2:
+        switch (a0->stateLevel2) {
+        case 0:
+        default:
+            if (func_8006BDEC(e, ((Stg40SlotInfo *)e->field_10)->field_5) == 1) {
+                func_8006E4E8(a0, 0x29);
+                Task_SetState2(a0, 1);
+            } else {
+                func_8006E4DC(a0, 0x28);
+                Task_SetState2(a0, 2);
+            }
+            break;
+        case 1:
+            if (w->field_2C->field_18.field_8 != 0) {
+                break;
+            }
+            ((Stg40SlotInfo *)e->field_10)->field_9++;
+            if (((Stg40SlotInfo *)e->field_10)->field_9 >= ((Stg40SlotInfo *)e->field_10)->field_7) {
+                Task_SetState2(a0, 2);
+            } else {
+                Task_SetState2(a0, 0);
+            }
+            break;
+        case 2:
+            ((Stg40SlotInfo *)e->field_10)->field_9 = 0;
+            func_80070C48();
+            if (func_8006E2B8(e, other) == 1) {
+                Task_SetState1(a0, 3);
+            } else {
+                Task_SetState1(a0, 1);
+            }
+            break;
+        }
+        break;
+    case 3:
+        switch (a0->stateLevel2) {
+        case 1:
+            break;
+        case 0:
+        default:
+            func_8006E4DC(a0, 0x28);
+            e->field_E = (func_8006E490(other->field_18.u0.pair.field_0 - e->field_18.u0.pair.field_0,
+                                         other->field_18.u0.pair.field_2 - e->field_18.u0.pair.field_2) << 16) >> 7;
+            Task_SetState2(a0, 1);
+            break;
+        }
+        break;
+    case 4:
+        if (a0->digiId < 0x1F5) {
+            switch (a0->stateLevel2) {
+            case 0:
+            default:
+                func_8006E4DC(a0, 0x28);
+                Task_NextState2(a0);
+                break;
+            case 1:
+                if (a0->stateLevel3++ < 10) {
+                    break;
+                }
+                Task_NextState2(a0);
+                e->field_0 |= 0x80;
+                break;
+            case 2:
+                v = e->field_38 - 0x51;
+                if (v < 0) {
+                    v = 0;
+                }
+                e->field_38 = v;
+                e->field_40 = v;
+                n = a0->stateLevel3;
+                e->field_E += (n << 13) / 360;
+                n++;
+                a0->stateLevel3 = n;
+                e->field_E &= 0xFFF;
+                e->field_C = e->field_E;
+                if (++a0->stateLevel3 == 6) {
+                    Snd_PlayById(0x17, 0);
+                    w->field_36 = 7;
+                }
+                if (e->field_40 == 0) {
+                    Task_NextState2(a0);
+                }
+                break;
+            case 3:
+                Task_SetState1(a0, 6);
+                break;
+            }
+        } else {
+            lvl2 = a0->stateLevel2;
+            m = (Stg40ModelFade *)a0->model;
+            switch (lvl2) {
+            case 0:
+                func_8006E4DC(a0, 0x28);
+                Task_NextState2(a0);
+                break;
+            case 1:
+                if (a0->stateLevel3++ < 10) {
+                    break;
+                }
+                Task_NextState2(a0);
+                e->field_0 |= 0x80;
+                m->field_36 = 0x20;
+                m->field_34 = lvl2;
+                m->field_38 = D_800634FC;
+                Snd_PlayById(0x1F, 0);
+                w->field_36 = lvl2;
+                break;
+            case 2: {
+                s32 v = e->field_38 - 0x51;
+                if (v < 0) {
+                    v = 0;
+                }
+                e->field_38 = v;
+                e->field_40 = v;
+                if (m->field_38.r != 0xFF) {
+                    m->field_38.r++;
+                    m->field_38.g++;
+                    m->field_38.b++;
+                }
+                if (e->field_40 == 0) {
+                    Task_NextState2(a0);
+                }
+                break;
+            }
+            case 3:
+                Task_SetState1(a0, 6);
+                break;
+            }
+        }
+        break;
+    case 6:
+        func_80070BA4(e->field_7);
+        func_80070974(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2);
+        func_8006EBF4(-1, -1, e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2, e->field_8);
+        e->field_0 = 0;
+        if (a0 == D_80072B60->field_184) {
+            D_80072B60->field_184 = NULL;
+            func_800720EC();
+        }
+        Task_SetState0(a0, 3);
+        break;
+    case 5:
+        switch (a0->stateLevel2) {
+        case 0:
+        default:
+            if (func_8006BDEC(e, 4) == 1) {
+                func_8006E4E8(a0, 0x29);
+                Task_SetState2(a0, 1);
+            } else {
+                func_8006E4DC(a0, 0x28);
+                func_800720EC();
+                Task_SetState2(a0, 2);
+            }
+            break;
+        case 2:
+            break;
+        case 1:
+            if (w->field_2C->field_18.field_8 != 0) {
+                break;
+            }
+            Task_SetState2(a0, 0);
+            break;
+        }
+        break;
+    }
+}

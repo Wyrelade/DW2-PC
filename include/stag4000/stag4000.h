@@ -128,7 +128,8 @@ typedef struct {
     /* 0x05 */ u8 field_5;
     /* 0x06 */ u8 field_6;
     /* 0x07 */ u8 field_7;
-    u8 _pad08[0x02];
+    /* 0x08 */ u8 field_8;
+    /* 0x09 */ u8 field_9;
     /* 0x0A */ u8 field_A;
     /* 0x0B */ u8 field_B;          /* count of used field_16 entries */
     /* 0x0C */ s16 field_C;
@@ -864,6 +865,7 @@ s32 func_800715DC(); /* defined (void); func_8006A498 passes 7 (forwarded to fun
 s32 func_80067750(s32 i);
 extern Stg40Model25DC D_800725DC[];
 extern Stg40Col D_80063438;
+extern Stg40Col D_800634FC;
 s32 func_8006E920(Stg40Shop *a);
 void func_8006C6C4(Actor *a0); /* void: func_8006D418 returns its leftover v0 through a cast */
 s32 func_8006C84C(Actor *a0);
@@ -926,6 +928,21 @@ typedef struct {
     u8 _pad000[0xBA5];
     u8 field_BA5[3];
 } Stg40BA5View;
+/* Status flags at Stg40Blk5071C.field_BA0 and the bytes after them, through one pointer
+ * (func_800716EC). */
+typedef struct {
+    /* 0x00 */ s32 field_0;
+    /* 0x04 */ u8 field_4;
+    /* 0x05 */ u8 field_5;
+    /* 0x06 */ u8 field_6;
+    /* 0x07 */ u8 field_7;
+    u8 _pad08[0x0D];
+    /* 0x15 */ u8 field_15;
+} Stg40BA0View;
+/* 14-byte, 2-aligned record copied whole (DigiRosterEntry.name -> Stg40B60.field_6A). */
+typedef struct {
+    /* 0x0 */ s16 field_0[7];
+} Stg40Agg14;
 void func_80070490(s32 buf, s32 a1, s32 x, s32 y, s32 flag);
 void func_80070754(void);
 
@@ -1120,6 +1137,7 @@ void func_80067894(Actor *a0, u8 on, u8 r, u8 g, u8 b);
 extern u8 D_8007278C[];
 extern Stg40Col D_8007279C[];
 s32 func_80071608(void);
+void func_8002254C(s32 i, s32 v);
 extern s32 Digi_CountByState(s32 mode);
 extern u8 func_80022578(void);
 
