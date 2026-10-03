@@ -6,13 +6,6 @@
       "padnop"
     ]
   },
-  "Task_FindNext": {
-    "passes": [
-      "reg_realloc",
-      "taken_fill",
-      "padnop"
-    ]
-  },
   "Menu_ItemDraw": {
     "passes": [
       "web_realloc"
@@ -230,12 +223,6 @@
       "reg_realloc",
       "web_realloc",
       "iv_ptr_reduce"
-    ]
-  },
-  "func_8006571C": {
-    "passes": [
-      "web_realloc",
-      "sched_match"
     ]
   },
   "func_80064E78": {

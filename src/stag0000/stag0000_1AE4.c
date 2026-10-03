@@ -251,7 +251,6 @@ void func_800655FC(Actor *arg0) {
     Text_Open(&w->field_18, &t);
 }
 
-#ifdef NORMALIZED
 void func_8006571C(Actor *arg0)
 {
   Work65E24 *work;
@@ -259,6 +258,7 @@ void func_8006571C(Actor *arg0)
   Actor *s1;
   s32 i;
   s32 j;
+  s32 k;
   s32 count;
   s32 v0;
   s32 v1;
@@ -370,7 +370,7 @@ void func_8006571C(Actor *arg0)
         }
         if (D_8005F72C & 0x8000)
         {
-          for (i = 0; i < 0xE; i++)
+          for (k = 0; k < 0xE; k++)
           {
             if (work->field_58 != 0)
             {
@@ -419,8 +419,8 @@ void func_8006571C(Actor *arg0)
         }
         else
         {
-          v0 = D_80068DB8[work->field_C].field_4;
-          if (work->field_4 != v0)
+          Ent68DB8 *e = &D_80068DB8[work->field_C];
+          if (work->field_4 != e->field_4)
           {
             work->field_4 += 1;
             clearElapsed1:
@@ -589,10 +589,6 @@ void func_8006571C(Actor *arg0)
   }
 
 }
-#else
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000_1AE4", func_8006571C);
-void func_8006571C(Actor *arg0);
-#endif
 
 void func_80065E24(Actor *arg0) {
     s32 period;

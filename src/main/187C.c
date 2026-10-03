@@ -134,29 +134,32 @@ ActorAllocView *Task_AllocWithBuffers(s32 a0, s32 a1) {
     return s0;
 }
 
-#ifdef NORMALIZED
 TaskEntry *Task_FindNext(void) {
     s32 i;
     TaskEntry *e;
 
     i = Task_FindFilter.nextIndex;
     while (i < Task_List.count) {
-        e = (TaskEntry *)Task_List.entries[i];
-        if (e != 0
-            && (Task_FindFilter.key0 == -1 || e->id == Task_FindFilter.key0)
-            && (Task_FindFilter.key1 == -1 || e->field_4 == Task_FindFilter.key1)
-            && (Task_FindFilter.key2 == -1 || e->field_8 == Task_FindFilter.key2)) {
-            Task_FindFilter.nextIndex = i + 1;
-            return (TaskEntry *)Task_List.entries[i];
-        }
+        do {
+            e = (TaskEntry *)Task_List.entries[i];
+            if (e != 0) {
+                if (Task_FindFilter.key0 != -1) {
+                    if (e->id != Task_FindFilter.key0) break;
+                }
+                if (Task_FindFilter.key1 != -1) {
+                    if (e->field_4 != Task_FindFilter.key1) break;
+                }
+                if (Task_FindFilter.key2 != -1) {
+                    if (e->field_8 != Task_FindFilter.key2) break;
+                }
+                Task_FindFilter.nextIndex = i + 1;
+                return (TaskEntry *)Task_List.entries[i];
+            }
+        } while (0);
         i++;
     }
     return 0;
 }
-#else
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Task_FindNext);
-TaskEntry *Task_FindNext(void);
-#endif
 
 extern TaskEntry *Task_FindNext(void);
 
