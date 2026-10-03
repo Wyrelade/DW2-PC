@@ -1015,8 +1015,6 @@ void func_800728D8(Actor *a0, s32 a1) {
     }
 }
 
-INCLUDE_RODATA("asm/USA/stag3000/rodata", jtbl_80063874);
-#ifdef NORMALIZED
 void func_8007292C(Actor *a0) {
     Stg30Work737C8 *w = (Stg30Work737C8 *)a0->work;
     Stg30GameRoster *g;
@@ -1142,8 +1140,9 @@ void func_8007292C(Actor *a0) {
                 break;
             }
             break;
-        case 4:
-            p = (s32 *)a0->u34.children;
+        case 4: {
+            s32 *q = (s32 *)a0->u34.children;
+
             switch (a0->stateLevel2) {
             case 0:
             default:
@@ -1153,11 +1152,11 @@ void func_8007292C(Actor *a0) {
                 func_800728D8(a0, 0);
                 args.field_0 = 0;
                 args.field_4 = 0x23;
-                Task_Create(0x16, p, (s32)&args);
+                Task_Create(0x16, q, (s32)&args);
                 Task_NextState2(a0);
                 break;
             case 1:
-                if (*p != 0) {
+                if (*q != 0) {
                     break;
                 }
                 Digi_SortRoster();
@@ -1165,6 +1164,7 @@ void func_8007292C(Actor *a0) {
                 break;
             }
             break;
+        }
         case 5:
             switch (a0->stateLevel2) {
             case 0:
@@ -1239,10 +1239,6 @@ void func_8007292C(Actor *a0) {
         break;
     }
 }
-#else
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000_CC70", func_8007292C);
-void func_8007292C(Actor *a0);
-#endif
 
 void func_80072F84(Actor *a0) {
     if (((Stg30Work737C8 *)a0->work)->field_10 != 0) {

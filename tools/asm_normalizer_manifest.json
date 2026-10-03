@@ -263,11 +263,6 @@
       "web_realloc"
     ]
   },
-  "stag3000:func_8007292C": {
-    "passes": [
-      "sched_match"
-    ]
-  },
   "stag3000:func_800676F4": {
     "passes": [
       "nodiv",
@@ -311,12 +306,6 @@
     "passes": [
       "web_realloc",
       "sched_pre"
-    ]
-  },
-  "stag4000:func_8006997C": {
-    "passes": [
-      "web_realloc",
-      "commutative_swap"
     ]
   },
   "func_8006571C": {

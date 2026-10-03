@@ -1795,7 +1795,6 @@ void func_80069830(Actor *a0) {
     }
 }
 
-#ifdef NORMALIZED
 void func_8006997C(Actor *arg0)
 {
     Stg40Ent48 *e;
@@ -1832,7 +1831,7 @@ void func_8006997C(Actor *arg0)
             if (D_8005071C->field_BA5 == 0) {
                 if (D_80050720->field_8 != 0 || func_80071608() != -1) {
                     r = -1;
-                    ((Stg40StatusView *)D_8005071C)->field_B9C[e->field_8] = e->field_10[1];
+                    ((Stg40BA5View *)D_8005071C)->field_BA5[e->field_8 - 9] = e->field_10[1];
                 }
             }
             break;
@@ -1841,7 +1840,7 @@ void func_8006997C(Actor *arg0)
                 r = 0;
             } else {
                 r = -1;
-                ((Stg40StatusView *)D_8005071C)->field_B9C[e->field_8] = e->field_10[1];
+                ((Stg40BA5View *)D_8005071C)->field_BA5[e->field_8 - 9] = e->field_10[1];
             }
             break;
         case 0xC:
@@ -1879,10 +1878,6 @@ void func_8006997C(Actor *arg0)
         break;
     }
 }
-#else
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000_1DD4", func_8006997C);
-void func_8006997C(Actor *arg0);
-#endif
 
 void func_80069C94(Actor *a0) {
     Stg40Ent48 *e = ((Stg40ActWork *)a0->work)->field_2C;
