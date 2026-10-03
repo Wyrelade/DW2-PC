@@ -110,6 +110,12 @@ extern void Mem_Free();
 extern void Task_DefaultDestroy();
 extern void Task_NextState0();
 extern void Task_NextState1();
+extern void Task_NextState2(Actor *arg0);
+extern void Task_SetState1(Actor *arg0, u32 arg1);
+extern void Snd_PlayById(s32 id, s32 set);
+extern void Snd_StopById(s32 id);
+extern void Gfx_FadeOutToBlack(s32 arg0);
+extern void Save_ResetGameState(void);
 extern s32 ResetGraph(s32);
 extern void ClearImage2();
 extern void DrawSync();
@@ -119,6 +125,8 @@ extern void func_8001D8A4(s32);
 extern void func_8002E2C4(void);
 
 /* this overlay */
+extern s32 D_800651EC;
+extern void func_8006359C(void);
 extern char D_80063360[];
 extern char D_8006337C[];
 extern char D_8006338C[];

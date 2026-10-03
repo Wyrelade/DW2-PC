@@ -55,7 +55,127 @@ void func_800633B0(Actor *a0) {
 void func_8006359C(void) {
 }
 
-INCLUDE_ASM("asm/USA/stag1000/nonmatchings/stag1000", func_800635A4);
+void func_800635A4(Actor *a0) {
+    Stag1000Menu *w = (Stag1000Menu *)a0->work;
+    s32 v;
+
+    switch (a0->stateLevel0) {
+    case 0:
+        do {
+            Snd_PlayById(0x31, 1);
+            w->field_0 = 0;
+            w->field_C = 1;
+            Task_NextState0(a0);
+        } while (0);
+        break;
+    case 1:
+        switch (a0->stateLevel1) {
+        case 0:
+        default:
+            w->field_8 = 0;
+            if (D_8005F6F0[0].start > 0) {
+                Snd_PlayById(0x11, 0);
+                Task_NextState1(a0);
+            }
+            switch (a0->stateLevel2) {
+            case 0:
+            default:
+                if (a0->elapsed >= 600) {
+                    if (D_800651EC == 0) {
+                        D_8005F78C = 0x403;
+                    } else {
+                        D_8005F78C = 0x402;
+                    }
+                    if (++D_800651EC == 20) {
+                        D_800651EC = 0;
+                    }
+                    Task_NextState2(a0);
+                }
+                break;
+            case 1:
+                break;
+            }
+            break;
+        case 1:
+            w->field_8 = 1;
+            {
+                PadState *pad;
+                PadState *p;
+
+                do {
+                    pad = D_8005F6F0;
+                    if (pad[0].down > 0 && w->field_C != 2) {
+                        v = w->field_C + 1;
+                        goto snd;
+                    }
+                } while (0);
+                p = pad;
+                if (pad[0].up > 0 && w->field_C != 0) {
+                    v = w->field_C - 1;
+                    goto snd;
+                }
+                if (p->start > 0 || p->cross > 0) {
+                    Snd_PlayById(0x11, 0);
+                    if (w->field_C == 2 && (pad[0].connected == 0 || pad[1].connected == 0)) {
+                        Task_NextState1(a0);
+                    } else {
+                        Task_NextState0(a0);
+                    }
+                }
+            }
+            break;
+        case 2:
+            do {
+                w->field_10 = 1;
+                if (D_8005F6F0[0].start > 0) {
+                    w->field_10 = 0;
+                    Task_SetState1(a0, 1);
+                }
+            } while (0);
+            break;
+        }
+        break;
+    case 2:
+        switch (a0->stateLevel2) {
+        case 0:
+        default:
+            Snd_StopById(0x31);
+            Gfx_FadeOutToBlack(0x10);
+            Task_NextState2(a0);
+        case 1:
+            if (++a0->stateLevel4 >= 20) {
+                switch (w->field_C) {
+                case 0:
+                default:
+                    Save_ResetGameState();
+                    D_8005F770.nextGameMode = 0x307;
+                    D_8005F770.field_24 = 4;
+                    break;
+                case 1:
+                    D_8005F770.nextGameMode = 0x602;
+                    D_8005F770.field_24 = 0;
+                    break;
+                case 2:
+                    D_8005F770.nextGameMode = 0x701;
+                    D_8005F770.field_24 = 0;
+                    break;
+                snd:
+                    w->field_C = v;
+                    Snd_PlayById(0xC, 0);
+                    break;
+                case 3:
+                    func_8006359C();
+                    Task_NextState2(a0);
+                    break;
+                }
+            }
+            break;
+        case 2:
+            break;
+        }
+        break;
+    }
+}
 
 void func_800638D4(Actor *a0) {
     Stag1000Menu *w = (Stag1000Menu *)a0->work;

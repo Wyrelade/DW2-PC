@@ -146,11 +146,41 @@ typedef struct {
     /* 0x10 */ u32 field_10;
 } Stg00RelocEnt;
 
+/* 8-byte record of the list at Stg00RelocEnt.field_C (tag 0xFF ends it). */
+typedef struct {
+    /* 0x00 */ union {
+        u8 tag;
+        u32 bits;
+    } field_0;
+    /* 0x04 */ u32 field_4;
+} Stg00RelocCmd;
+
+typedef struct {
+    /* 0x00 */ u8 field_0;
+    u8 _pad01[0x03];
+} Stg00RelocFlag;
+
+typedef struct {
+    /* 0x00 */ u32 sel;
+    /* 0x04 */ u32 chk;
+} Stg00RelocPair;
+
 typedef struct {
     /* 0x00 */ u32 field_0;
     u8 _pad04[0x04];
     /* 0x08 */ Stg00RelocEnt *field_8[8];
+    u8 _pad28[0x06];
+    /* 0x2E */ s16 field_2E;
+    u8 _pad30[0x04];
+    /* 0x34 */ Stg00RelocFlag field_34[8];
+    /* 0x54 */ Stg00RelocPair field_54[5];
 } Stg00RelocHdr;
+
+/* Bit table copied to the stack by func_80064B08 (5 groups of 6 words). */
+typedef struct {
+    /* 0x00 */ u32 bits[5][6];
+} Stg00BitTbl; /* size 0x78 */
+extern Stg00BitTbl D_80063378;
 
 /* Actor.work of the select task (func_800649D8 and its states). */
 typedef struct {
