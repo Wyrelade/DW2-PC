@@ -1948,8 +1948,149 @@ void func_80069C94(Actor *a0) {
     }
 }
 
-INCLUDE_RODATA("asm/USA/stag4000/rodata", jtbl_80063404);
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000_1DD4", func_80069F84);
+void func_80069F84(Actor *actor) {
+    s32 state = actor->stateLevel2;
+    Stg40Ent48 *self = ((Stg40ActWork *)actor->work)->field_2C;
+    Stg40Ent48 *target = D_80072B60->field_40;
+    Stg40Loc *loc = &D_80072B60->field_108;
+
+    switch (state) {
+    case 0:
+    default: {
+        s32 angle;
+
+        func_8006E4DC(actor, 0x29);
+        angle = ratan2(self->field_18.field_C - target->field_18.field_C,
+                       target->field_18.field_10 - self->field_18.field_10);
+        D_80072B60->field_E8 = angle & 0xFFF;
+        D_80072B60->field_EC = -rsin(D_80072B60->field_E8);
+        D_80072B60->field_F0 = rcos(D_80072B60->field_E8);
+        D_80072B60->field_F4 = self->field_18.u0.pair.field_0 << 14;
+        D_80072B60->field_F8 = self->field_18.u0.pair.field_2 << 14;
+        D_80072B60->field_FC = target->field_18.u0.pair.field_0 << 14;
+        D_80072B60->field_100 = target->field_18.u0.pair.field_2 << 14;
+        Task_NextState2(actor);
+        break;
+    }
+    case 1:
+        if ((s16)self->field_E != D_80072B60->field_E8) {
+            s32 h = (s16)self->field_E;
+            s32 diff = (s16)((u16)D_80072B60->field_E8 - ((u16)self->field_E - 0x1000));
+            s32 d;
+            s32 t;
+
+            if (diff < 0) {
+                diff += 0x7FF;
+            }
+            if ((diff >> 11) & 1) {
+                self->field_E = h - 0x40;
+            } else {
+                self->field_E = h + 0x40;
+            }
+            t = self->field_E & 0xFFF;
+            self->field_E = t;
+            d = D_80072B60->field_E8 - t;
+            if ((d >= 0) ? (d < 0x40) : (t - D_80072B60->field_E8 < 0x40)) {
+                self->field_E = D_80072B60->field_E8;
+            }
+            self->field_C = self->field_E;
+        } else {
+            func_8006E4DC(actor, 0x28);
+            goto next;
+        }
+        break;
+    case 2:
+        if (actor->stateLevel4++ < 0x10) {
+            break;
+        }
+        Snd_PlayById(0x2D, 0);
+        func_8006E4DC(actor, 0x2A);
+        goto next;
+    case 3:
+        if (actor->stateLevel4++ < 6) {
+            break;
+        }
+        goto next;
+    case 4: {
+        s32 ax;
+        s32 ay;
+
+        D_80072B60->field_F4 += D_80072B60->field_EC;
+        D_80072B60->field_F8 += D_80072B60->field_F0;
+        loc->field_C = D_80072B60->field_F4 >> 8;
+        loc->field_10 = D_80072B60->field_F8 >> 8;
+        func_80065134(loc);
+        ax = D_80072B60->field_EC;
+        ax = (ax >= 0) ? ax : -ax;
+        if ((D_80072B60->field_FC - D_80072B60->field_F4 >= 0)
+                ? (ax >= D_80072B60->field_FC - D_80072B60->field_F4)
+                : (ax >= D_80072B60->field_F4 - D_80072B60->field_FC)) {
+            ay = D_80072B60->field_F0;
+            ay = (ay >= 0) ? ay : -ay;
+            if ((D_80072B60->field_100 - D_80072B60->field_F8 >= 0)
+                    ? (ay >= D_80072B60->field_100 - D_80072B60->field_F8)
+                    : (ay >= D_80072B60->field_F8 - D_80072B60->field_100)) {
+                func_80065134(&target->field_18);
+                Task_NextState2(actor);
+                Snd_PlayById(0x1B, 0);
+            }
+        }
+        break;
+    }
+    case 5: {
+        Stg40SlotInfo *info;
+        s32 msg;
+
+        if (actor->stateLevel4++ < 0x1F) {
+            break;
+        }
+        info = (Stg40SlotInfo *)target->field_10;
+        msg = 0x1FD0050;
+        if (info->field_A < 9) {
+            s32 r = func_8001E0C0(D_80072B60->field_E0);
+            s32 kind;
+
+            if (r >= 0x25) {
+                kind = 3;
+            } else if (r >= 0x22) {
+                kind = 0x22;
+                kind = r - kind;
+            } else {
+                kind = 3;
+            }
+            if (kind == 3 || kind == info->field_3) {
+                if (func_80071180() < D_80072888[info->field_A]) {
+                    s32 idx;
+
+                    info->field_A++;
+                    idx = func_8001E0E4(D_80072B60->field_E0);
+                    msg = 0x1FD004F;
+                    info->field_C += D_80072894[idx - 1];
+                }
+            }
+        }
+        func_80067610(1, msg, Digi_GetDefaultName(info->field_10[0]),
+                      Item_GetNameText(D_80072B60->field_E0));
+        goto next;
+    }
+    case 6:
+        if (func_80067704(1) != 1) {
+            break;
+        }
+        func_800651C0(&self->field_18, 8);
+        Task_SetState0((Actor *)D_80072AA4->field_14, 2);
+    next:
+        Task_NextState2(actor);
+        break;
+    case 7:
+        if (D_80072AA4->field_14 == 0) {
+            break;
+        }
+        Task_SetState1(actor, 6);
+        D_80072B60->field_7E = D_80050720->field_0;
+        break;
+    }
+}
 
 void func_8006A498(Actor *a0) {
     u8 *d = D_80072B60->field_40->field_10;

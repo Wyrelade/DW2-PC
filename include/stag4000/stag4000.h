@@ -112,7 +112,7 @@ typedef struct {
 
 /* Element picked from Stg40Map.field_8 into Stg40B60.field_14 (func_8007107C). */
 typedef struct {
-    u8 _pad00[0x04];
+    /* 0x00 */ u32 *field_0;      /* 4-bit cell codes, 8 per word (func_8006FF54) */
     /* 0x04 */ Stg40Rec3 *field_4;  /* 0xFF-terminated, passed to func_80070FEC */
     /* 0x08 */ Stg40Drop *field_8;  /* 0xFF-terminated (func_8006DA18) */
     /* 0x0C */ Stg40Spawn *field_C; /* 0xFF-terminated (func_8006DDDC) */
@@ -179,10 +179,11 @@ typedef struct {
 /* Map header behind Stg40B60.field_10 (func_80070DC0). */
 typedef struct {
     /* 0x00 */ u8 *field_0;       /* 0xFF-terminated byte list */
-    u8 _pad04[0x04];
+    /* 0x04 */ s32 field_4;       /* flag script (func_8006E60C) */
     /* 0x08 */ Stg40MapRoom *field_8[8];
     /* 0x28 */ u16 field_28;
-    u8 _pad2A[0x04];
+    u8 _pad2A[0x02];
+    /* 0x2C */ s16 field_2C;      /* index into D_800729B4 */
     /* 0x2E */ u8 field_2E;
     /* 0x2F */ u8 field_2F[5];     /* 1-based ids picked by func_8006D738 */
     /* 0x34 */ Stg40MapPos field_34[8];
@@ -488,7 +489,16 @@ typedef struct {
     /* 0x0E2 */ u8 field_E2;       /* cursor, 0..field_E1-1 (func_8006AE74) */
     /* 0x0E3 */ u8 field_E3;       /* first visible row (func_8006AD10) */
     /* 0x0E4 */ u8 field_E4;
-    u8 _pad0E5[0x43];
+    u8 _pad0E5[0x03];
+    /* 0x0E8 */ s32 field_E8;      /* heading to the target (func_80069F84) */
+    /* 0x0EC */ s32 field_EC;      /* step x */
+    /* 0x0F0 */ s32 field_F0;      /* step y */
+    /* 0x0F4 */ s32 field_F4;      /* position x << 14 */
+    /* 0x0F8 */ s32 field_F8;
+    /* 0x0FC */ s32 field_FC;      /* target x << 14 */
+    /* 0x100 */ s32 field_100;
+    u8 _pad104[0x04];
+    /* 0x108 */ Stg40Loc field_108;
     /* 0x128 */ s16 field_128[12]; /* roster indices picked by func_8006EA84 */
     /* 0x140 */ s16 field_140;
     u8 _pad142[0x02];
@@ -597,7 +607,7 @@ typedef struct {
 /* Grid vertex of Stg40W667C.field_0 (stride 0x20): set 0 textured, set 1 flat. */
 typedef struct {
     /* 0x00 */ Stg40VSet s[2];
-    u8 _pad18[0x04];
+    /* 0x18 */ s32 field_18;
     /* 0x1C */ s32 field_1C;
 } Stg40Vtx;
 
@@ -653,7 +663,8 @@ typedef struct {
 typedef struct {
     /* 0x0000 */ Stg40Vtx field_0[11][11];
     /* 0x0F20 */ Stg40Tile field_F20[10][10];
-    u8 _pad13D0[0x04];
+    /* 0x13D0 */ s16 field_13D0;   /* columns built by func_8006545C */
+    /* 0x13D2 */ s16 field_13D2;   /* rows */
     /* 0x13D4 */ GfxTexSlot *field_13D4[8]; /* texture slots (func_80066318) */
     /* 0x13F4 */ Stg40TexRec *field_13F4[8]; /* sprite tables of those textures */
     /* 0x1414 */ s32 field_1414;   /* count of the three arrays above */
@@ -760,6 +771,12 @@ extern s32 Anim_GetModelAnimFile(s32 arg0, s32 arg1);
 void func_80070B2C(s32 a0);
 Stg40Ent48 *func_80071F50(s32 id);
 extern void RotMatrixYXZ(void *, Mat1F668 *);
+extern Mat1F668 D_80061A08;
+extern void func_8002D0D4(void);
+extern void SetRotMatrix(Mat1F668 *m);
+extern void SetTransMatrix(Mat1F668 *m);
+extern s32 RotTransPers(Stg40Vec3 *v, s16 *out, s32 *dtz, s32 *flag);
+extern void PopMatrix(void);
 extern void GsSetProjection(s32);
 extern void GsInitCoordinate2(Coord1F668 *, Coord1F668 *);
 extern s32 GsSetRefView2(Stg40RView *);
@@ -834,6 +851,11 @@ void func_80066DF0(); /* K&R definition: func_8006AD10 passes ints unconverted *
 s32 *func_80066E18(void);
 extern s32 Item_GetDescText(s32 arg0);
 extern s32 func_8001E0C0(s32 id);
+extern s32 ratan2(s32 y, s32 x);
+extern s32 rsin(s32 a);
+extern s32 rcos(s32 a);
+extern u8 D_80072888[];
+extern u8 D_80072894[];
 extern void Actor_InitTransform(Actor *a0, s32 *a1, u16 a2); /* main: ContC40 * */
 extern void Anim_SetModelAnim(Actor *, s32);
 extern void Task_NextState1(Actor *arg0);
@@ -1072,6 +1094,15 @@ typedef struct {
 
 extern Stg40AA4 *D_80072AA4;
 extern s32 D_8005F78C;  /* D_8005F770.nextGameMode as a scalar reloc */
+extern u16 D_800729A0[10];
+extern u16 D_800729B4[6];
+extern s32 D_8005F790;  /* D_8005F770.prevGameMode as a scalar reloc */
+
+/* Base levels by slot item (D_80063360, func_80063A34). */
+typedef struct {
+    s16 field_0[18];
+} Stg40Buf24;
+extern Stg40Buf24 D_80063360;
 extern s32 D_80050764;
 extern void Item_CompactBag(void);
 extern void Task_SetState3(Actor *arg0, u32 arg1);

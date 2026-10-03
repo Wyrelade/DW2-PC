@@ -132,7 +132,94 @@ u16 func_8006FF54(u16 *pal, u32 *bits, s32 x, s32 y) {
     return pal[(bits[w * y + x / 8] >> ((x % 8) * 4)) & 0xF];
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000_C2CC", func_8006FFCC);
+void func_8006FFCC(void) {
+    Stg40Blk5071C *g = D_8005071C;
+    Stg40Cell *cell;
+    Stg40E34 *dims;
+    Stg40Map *map;
+    Stg40MapRoom *room;
+    u32 *bits;
+    s32 cols;
+    s32 rows;
+    s32 lastX;
+    s32 x;
+    s32 y;
+    u16 up;
+    u16 down;
+    u16 left;
+    u16 right;
+    u16 v;
+
+    cell = (Stg40Cell *)g->field_E58;
+    map = (Stg40Map *)D_80072B60->field_10;
+    dims = g->field_E54;
+    cols = dims->field_0;
+    rows = dims->field_2;
+    room = D_80072B60->field_14;
+    bits = room->field_0;
+    D_800729A0[7] = D_800729B4[map->field_2C];
+    for (y = 0; y < rows; y++) {
+        for (x = 0; x < cols; x++) {
+            v = func_8006FF54(D_800729A0, bits, x, y);
+            if (v == 0) {
+                cell->field_0 = 0;
+                cell->field_2 = 0xFF;
+                cell->field_3 = 0;
+            } else {
+                cell->field_0 = v | 0x8000;
+                cell->field_0 |= (v != 1) ? 0x4000 : 0;
+                if (y == 0 || (y > 0 && !func_8006FF54(D_800729A0, bits, x, y - 1))) {
+                    cell->field_0 |= 0x800;
+                }
+                if (y == rows - 1 || (y < rows - 1 && !func_8006FF54(D_800729A0, bits, x, y + 1))) {
+                    cell->field_0 |= 0x400;
+                }
+                if (x == 0 || (x > 0 && !func_8006FF54(D_800729A0, bits, x - 1, y))) {
+                    cell->field_0 |= 0x200;
+                }
+                lastX = cols - 1;
+                if (x == lastX || (x < lastX && !func_8006FF54(D_800729A0, bits, x + 1, y))) {
+                    cell->field_0 |= 0x100;
+                }
+            }
+            cell->field_2 = 0xFF;
+            cell->field_3 = 0;
+            cell++;
+        }
+    }
+
+    cell = (Stg40Cell *)D_8005071C->field_E58;
+    for (y = 0; y < rows; y++) {
+        for (x = 0; x < cols; x++) {
+            if (cell->field_0 & 0xF) {
+                up = func_800703E0(x, y - 1);
+                down = func_800703E0(x, y + 1);
+                left = func_800703E0(x - 1, y);
+                right = func_800703E0(x + 1, y);
+                if (cell->field_0 & 0x800) {
+                    cell->field_3 |= (left & 0x800) ? 0 : 1;
+                    cell->field_3 |= (right & 0x800) ? 0 : 2;
+                }
+                if (cell->field_0 & 0x400) {
+                    cell->field_3 |= (right & 0x400) ? 0 : 4;
+                    cell->field_3 |= (left & 0x400) ? 0 : 8;
+                }
+                if (cell->field_0 & 0x200) {
+                    cell->field_3 |= (down & 0x200) ? 0 : 0x10;
+                    cell->field_3 |= (up & 0x200) ? 0 : 0x20;
+                }
+                if (cell->field_0 & 0x100) {
+                    cell->field_3 |= (up & 0x100) ? 0 : 0x40;
+                    cell->field_3 |= (down & 0x100) ? 0 : 0x80;
+                }
+                if (!(func_800703E0(x - 1, y - 1) & 0xF)) {
+                    cell->field_0 |= 0x80;
+                }
+            }
+            cell++;
+        }
+    }
+}
 
 u16 func_800703E0(s32 x, s32 y) {
     Stg40Blk5071C *b = D_8005071C;

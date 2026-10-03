@@ -24,7 +24,7 @@ void func_800637E8(void) {
     b->field_E54->field_2 = 0x30;
 }
 
-void func_80063814(void) {
+void func_80063814() { /* K&R: func_80063A34 passes its work pointer */
     Stg40Stage14 *tbl;
     s32 i;
     Stg40Ent48 *e;
@@ -72,7 +72,124 @@ void func_800639FC(void) {
 }
 
 INCLUDE_RODATA("asm/USA/stag4000/rodata", D_80063360);
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80063A34);
+void func_80063A34(Actor *a0) {
+    ActorWork *work = a0->work;
+    s32 *slots = (s32 *)a0->u34.children;
+    s32 reset = 0;
+    s32 *cur;
+    s32 j;
+    Stg40Ent48 *e;
+    Stg40Blk5071C *blk;
+    s32 mode;
+
+    func_80063758();
+    func_800637E8();
+    func_80064880();
+    mode = D_8005F790 / 256;
+    switch (mode) {
+    default:
+        D_8005071C->field_0 = 0;
+        break;
+    case 2:
+        D_8005071C->field_0 = 1;
+        break;
+    case 5:
+        D_8005071C->field_0 = 2;
+        break;
+    }
+    if (D_8005071C->field_0 == 0) {
+        func_80063814(work);
+    }
+    func_80070CC0(D_8005071C->field_8);
+    func_8006E60C(((Stg40Map *)D_80072B60->field_10)->field_4);
+    if (D_8005071C->field_0 == 1) {
+        Stg40Ent48 *p;
+        s32 i;
+        Stg40Buf24 buf;
+        s32 level;
+
+        blk = D_8005071C;
+        blk->field_C = 0;
+        blk->field_E = 0;
+        blk->field_10 = 0;
+        blk->field_12 = 0;
+        blk->field_14 = 0;
+        D_80072B60->field_18C = 0;
+        D_80072B60->field_188 = 0;
+        p = blk->field_18;
+        for (i = 0x28; i >= 0; i--) {
+            p->field_0 = 0;
+            p++;
+        }
+        reset = -1;
+        func_80070D74(blk, p);
+        func_800639FC();
+        func_8007107C();
+        buf = D_80063360;
+        level = D_80050720->slotItems[0];
+        level = (level != 0) ? (level - 0xEA) * 6 : 0;
+        if (D_80050720->field_36 != 0) {
+            level += D_80050720->field_36 - 0x4F;
+        }
+        if (level < 0x12) {
+            level = buf.field_0[level];
+        } else {
+            level = 0x1F8;
+        }
+        if (Flag_Test(0x68) != 0) {
+            level = 0x20B;
+        }
+        func_8006D4E0(0, 0, level, 0, D_80072B60->field_20.field_0, D_80072B60->field_20.field_2);
+        if (D_80072B60->field_24.field_0 != -1) {
+            func_8006D4E0(2, 0, 0x258, 0, D_80072B60->field_24.field_0, D_80072B60->field_24.field_2);
+        }
+        if (D_80072B60->field_28.field_0 != -1) {
+            func_8006D4E0(3, 0, 0x259, 0, D_80072B60->field_28.field_0, D_80072B60->field_28.field_2);
+        }
+        func_8006D738();
+        func_8006DA18();
+        func_8006DDDC();
+        func_800709DC();
+        func_8006E024();
+        func_80071DB4();
+        func_8006ED5C();
+        func_80070A7C();
+    }
+    D_8005071C->field_2 = 0;
+    D_8005071C->field_1 = 0;
+    if (reset != -1) {
+        func_800639FC();
+        func_800709DC();
+    }
+    func_8006ED88(1);
+    Task_Create(9, slots, 0);
+    cur = slots + 6;
+    Task_Create(0x203, cur, (s32)Cd_GetFileEntry(0xE200000));
+    cur = slots + 7;
+    j = 0;
+    e = D_8005071C->field_18;
+    if (D_8005071C->field_C > 0) {
+        do {
+            if (e->field_0 & 0x8000) {
+                Task_Create(0x204, cur, (s32)e);
+                cur++;
+            }
+            e++;
+            j++;
+        } while (j < D_8005071C->field_C);
+    }
+    Task_Create(0x202, cur, (s32)&D_8005071C->field_105C);
+    cur++;
+    Task_Create(0x206, cur, 0);
+    cur++;
+    Task_Create(0x208, cur, 0);
+    if (D_8005071C->field_0 == 2) {
+        Cd_QueueFile(0xE31);
+        Cd_QueueFile(0xE30);
+    }
+    D_8005071C->field_2 = 1;
+    D_8005071C->field_E54->field_4 = 1;
+}
 
 void func_80063EF8(void) {
 }

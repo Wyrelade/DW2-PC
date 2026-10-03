@@ -1861,7 +1861,8 @@ typedef struct {
     /* 0x2A */ s16 maxMp;
     /* 0x2C */ u16 slotItems[4];
     /* 0x34 */ u16 slot4Item;
-    u8 _pad36[0x1C];
+    /* 0x36 */ u16 field_36;
+    u8 _pad38[0x1A];
     /* 0x52 */ u8 slotStatus[0x14];
     /* 0x66 */ u16 bagItems[0x30];
     u8 _padC6[0x0B];
