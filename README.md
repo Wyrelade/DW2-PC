@@ -9,7 +9,7 @@
 # Digimon World 2 Decompilation
 
 <!-- PROGRESS:BADGE -->
-![matched](https://img.shields.io/badge/matched-1016%2F1089%20(93.30%25)-1f6feb)
+![matched](https://img.shields.io/badge/matched-1032%2F1089%20(94.77%25)-1f6feb)
 <!-- /PROGRESS:BADGE -->
 ![build](https://img.shields.io/badge/build-byte--identical-2ea043)
 ![platform](https://img.shields.io/badge/platform-PS1%20(SLUS--01193)-8957e5)
@@ -58,16 +58,16 @@ function with and without the post-processing and compares it against the target
 <!-- PROGRESS:TABLE -->
 | Component | Functions | Matched | Progress | Flags per function | Asm rewrites | Asm |
 |---|---:|---:|---|---:|---:|---:|
-| **Main executable** (`SLUS_011.93`, game code) | 369 | 342 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱` 92.68% | 0 | 25 | 2 |
-| **Stage overlays** (`AAA/3.PRO`) | 720 | 674 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱` 93.61% | 0 | 24 | 22 |
-| &nbsp;&nbsp;└ `STAG0000.PRO` | 69 | 65 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱` 94.20% | 0 | 3 | 1 |
+| **Main executable** (`SLUS_011.93`, game code) | 369 | 349 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱` 94.58% | 0 | 18 | 2 |
+| **Stage overlays** (`AAA/3.PRO`) | 720 | 683 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱` 94.86% | 0 | 16 | 21 |
+| &nbsp;&nbsp;└ `STAG0000.PRO` | 69 | 66 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱` 95.65% | 0 | 2 | 1 |
 | &nbsp;&nbsp;└ `STAG1000.PRO` | 17 | 16 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱` 94.12% | 0 | 0 | 1 |
 | &nbsp;&nbsp;└ `STAG1100.PRO` | 55 | 55 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 100.00% | 0 | 0 | 0 |
-| &nbsp;&nbsp;└ `STAG2000.PRO` | 133 | 119 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱▱` 89.47% | 0 | 10 | 4 |
-| &nbsp;&nbsp;└ `STAG3000.PRO` | 123 | 112 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱▱` 91.06% | 0 | 5 | 6 |
+| &nbsp;&nbsp;└ `STAG2000.PRO` | 133 | 122 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱▱` 91.73% | 0 | 8 | 3 |
+| &nbsp;&nbsp;└ `STAG3000.PRO` | 123 | 114 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱` 92.68% | 0 | 3 | 6 |
 | &nbsp;&nbsp;└ `STAG3500.PRO` | 108 | 106 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 98.15% | 0 | 1 | 1 |
-| &nbsp;&nbsp;└ `STAG4000.PRO` | 215 | 201 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱` 93.49% | 0 | 5 | 9 |
-| **Total (game code)** | 1089 | 1016 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱` 93.30% | 0 | 49 | 24 |
+| &nbsp;&nbsp;└ `STAG4000.PRO` | 215 | 204 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱` 94.88% | 0 | 2 | 9 |
+| **Total (game code)** | 1089 | 1032 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱` 94.77% | 0 | 34 | 23 |
 | PsyQ libraries (not counted) | 557 | | | | | |
 <!-- /PROGRESS:TABLE -->
 
