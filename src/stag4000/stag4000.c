@@ -373,17 +373,18 @@ void func_80064880(void) {
     D_8005075C = 0;
 }
 
-#ifdef NORMALIZED
 s32 func_800648AC(s32 val) {
     s32 i;
     s32 *p;
+    s32 *list;
     s32 count;
     s32 ret;
 
     i = 0;
     ret = 0;
-    p = &D_80050948[0];
+    list = &D_80050948[0];
     if (D_8005075C > 0) {
+        p = list;
         do {
             if (*p == val) {
                 return 1;
@@ -403,10 +404,6 @@ s32 func_800648AC(s32 val) {
     }
     return ret;
 }
-#else
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_800648AC);
-s32 func_800648AC(s32 val);
-#endif
 
 void func_80064930(Actor *a0, s32 a1) {
     Task_SetState0(a0, 2);

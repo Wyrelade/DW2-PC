@@ -1068,7 +1068,6 @@ void func_8006F3D8(Actor *a, s32 v) {
     a->field_8 = v;
 }
 
-#ifdef NORMALIZED
 void func_8006F3E0(Actor *a) {
     Stg20LinkWork *w = (Stg20LinkWork *)a->work;
     Stg20Cell c;
@@ -1076,6 +1075,7 @@ void func_8006F3E0(Actor *a) {
     Stg20Rot *o;
     s32 ok;
     s32 *slot;
+    s32 v;
 
     switch (a->stateLevel0) {
     case 0:
@@ -1083,8 +1083,8 @@ void func_8006F3E0(Actor *a) {
             Cd_QueueFile(0xE45);
             Cd_QueueFile(0xE46);
             w->target = (Actor *)Task_FindFirst(0x302, 0, -1);
-            c = *func_80067504(w->target);
             ok = 0;
+            c = *func_80067504(w->target);
             if (c.x == D_80070704[a->field_8].cell.x && c.y == D_80070704[a->field_8].cell.y) {
                 ok = func_80067568(w->target) != 0;
             }
@@ -1111,7 +1111,8 @@ void func_8006F3E0(Actor *a) {
         } else {
             o->field_58 = 0;
         }
-        if (o->field_60 > 100) {
+        v = o->field_60;
+        if (v > 100) {
             o->field_60 -= 100;
         } else {
             o->field_60 = 0;
@@ -1148,10 +1149,6 @@ void func_8006F3E0(Actor *a) {
         break;
     }
 }
-#else
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000_8CE0", func_8006F3E0);
-void func_8006F3E0(Actor *a);
-#endif
 
 void func_8006F730(Actor *a) {
     Stg20CamWork *w = (Stg20CamWork *)a->work;

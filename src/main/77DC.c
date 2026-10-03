@@ -2699,18 +2699,21 @@ s32 Gfx_GetTimPixelMode() {
     return Cd_GetFileEntry()->packedId & 7;
 }
 
-#ifdef NORMALIZED
 void Gfx_LoadTexSlotImage(GfxTexSlot *a0) {
     u32 *p;
     u32 flags;
     RECT clut;
     RECT img;
+    s32 hasClut;
+    s32 mode;
 
     p = (u32 *)Cd_GetFileEntry(a0->fileId);
     p++;
     flags = *p++;
-    if (flags & 8) {
-        if (flags & 7) {
+    hasClut = flags & 8;
+    mode = flags & 7;
+    if (hasClut) {
+        if (mode) {
             clut.x = 0;
             clut.y = a0->index + 0x1E0;
             clut.w = 0x100;
@@ -2725,10 +2728,6 @@ void Gfx_LoadTexSlotImage(GfxTexSlot *a0) {
     img.h = ((TimBlk *)p)->rect.h;
     LoadImage((s32)&img, (s32)((TimBlk *)p + 1));
 }
-#else
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Gfx_LoadTexSlotImage);
-void Gfx_LoadTexSlotImage(GfxTexSlot *a0);
-#endif
 
 
 #ifdef NORMALIZED

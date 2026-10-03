@@ -915,7 +915,6 @@ void func_80066828(Actor *arg0) {
     Gfx_FadeInFromBlack(0x100);
 }
 
-#ifdef NORMALIZED
 void func_800668D4(Actor *arg0) {
     s32 *slot = (s32 *)arg0->u34.children;
     Stg00TaskArgs5 args;
@@ -930,7 +929,7 @@ void func_800668D4(Actor *arg0) {
 
     for (r = 0, z = -0x1400, y = 0x800, base = 0; r < 2; r++, base += 3) {
         for (c = 0, k = base, x = -0xA00; c < 3; k++, c++, x += 0xA00) {
-            Task_Destroy(&slot[k]);
+            Task_Destroy(&slot[*&k]);
             do {
                 idx = (Rand_Next() & 0xFFFF) % func_8001E938();
             } while (func_8001E8F4(idx) >= 0xF0);
@@ -945,10 +944,6 @@ void func_800668D4(Actor *arg0) {
         y += 0x800;
     }
 }
-#else
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000_1AE4", func_800668D4);
-void func_800668D4(Actor *arg0);
-#endif
 
 void func_800669F4(Actor *arg0) {
     Stg00ViewWork *w;

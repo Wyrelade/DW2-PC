@@ -1931,7 +1931,6 @@ s32 func_80067978(Actor *a, s32 dir);
 #endif
 
 INCLUDE_RODATA("asm/USA/stag2000/rodata", D_80063564);
-#ifdef NORMALIZED
 void func_80067B20(Actor *a) {
     Stg20NavWork *w = (Stg20NavWork *)a->work;
     Stg20PickRec *r;
@@ -1965,49 +1964,8 @@ void func_80067B20(Actor *a) {
         Task_NextState0(a);
         break;
     case 1:
-        if (D_8005F6F0[0].down > 0) {
-            k = func_80067978(a, 0);
-            if (k != -1) {
-                Snd_PlayById(0x12, 0);
-                w->index = k;
-            }
-            w->redraw = 1;
-        } else if (D_8005F6F0[0].left > 0) {
-            k = func_80067978(a, 1);
-            if (k != -1) {
-                Snd_PlayById(0x12, 0);
-                w->index = k;
-            }
-            w->redraw = 1;
-        } else if (D_8005F6F0[0].up > 0) {
-            k = func_80067978(a, 2);
-            if (k != -1) {
-                Snd_PlayById(0x12, 0);
-                w->index = k;
-            }
-            w->redraw = 1;
-        } else if (D_8005F6F0[0].right > 0) {
-            k = func_80067978(a, 3);
-            if (k != -1) {
-                Snd_PlayById(0x12, 0);
-                w->index = k;
-            }
-            w->redraw = 1;
-        } else if (D_8005F6F0[0].cross > 0) {
-            if (w->recs[w->index].mode != 0x301) {
-                goto play;
-            }
-            if (w->recs[w->index].arg != 2 || Flag_Test(0x12) != 0) {
-            play:
-                Snd_PlayById(0xE, 0);
-                Task_NextState0(a);
-            }
-        }
-        if (w->redraw != 0) {
-            w->redraw = 0;
-            Text_Close(&w->text);
-            Text_OpenPacked(&w->text, w->recs[w->index].text, 0, D_80063564);
-        }
+        do {
+            if (D_8005F6F0[0].down > 0) {                k = func_80067978(a, 0);                if (k != -1) {                    Snd_PlayById(0x12, 0);                    w->index = k;                }                w->redraw = 1;            } else if (D_8005F6F0[0].left > 0) {                k = func_80067978(a, 1);                if (k != -1) {                    Snd_PlayById(0x12, 0);                    w->index = k;                }                w->redraw = 1;            } else if (D_8005F6F0[0].up > 0) {                k = func_80067978(a, 2);                if (k != -1) {                    Snd_PlayById(0x12, 0);                    w->index = k;                }                w->redraw = 1;            } else if (D_8005F6F0[0].right > 0) {                k = func_80067978(a, 3);                if (k != -1) {                    Snd_PlayById(0x12, 0);                    w->index = k;                }                w->redraw = 1;            } else if (D_8005F6F0[0].cross > 0) {                if (w->recs[w->index].mode != 0x301) {                    goto play;                }                if (w->recs[w->index].arg != 2 || Flag_Test(0x12) != 0) {                play:                    Snd_PlayById(0xE, 0);                    Task_NextState0(a);                }            }            if (w->redraw != 0) {                w->redraw = 0;                Text_Close(&w->text);                Text_OpenPacked(&w->text, w->recs[w->index].text, 0, D_80063564);            }        } while (0);
         break;
     case 2:
         switch (a->stateLevel1) {
@@ -2026,10 +1984,6 @@ void func_80067B20(Actor *a) {
         break;
     }
 }
-#else
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80067B20);
-void func_80067B20(Actor *a);
-#endif
 
 void func_80067E9C(Actor *a) {
     Stg20NavWork *w = (Stg20NavWork *)a->work;

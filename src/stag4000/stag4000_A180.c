@@ -931,7 +931,6 @@ s16 func_8006F3B0(Stg40TileWork *a0) {
 }
 
 INCLUDE_RODATA("asm/USA/stag4000/rodata", D_8006368C);
-#ifdef NORMALIZED
 void func_8006F3F4(Stg40TileWork *w, s32 x, s32 y)
 {
     s32 group;
@@ -944,6 +943,7 @@ void func_8006F3F4(Stg40TileWork *w, s32 x, s32 y)
     s32 count;
     Stg40Cell *grid;
     s32 col;
+    s32 t;
 
     dims = D_8005071C->field_E54;
     dim1 = dims->field_0;
@@ -955,7 +955,8 @@ void func_8006F3F4(Stg40TileWork *w, s32 x, s32 y)
     group = kind >> 5;
     mask = 1 << (kind % 32);
     if (group < 8) {
-        if (D_8005071C->field_E5C[group] & mask) {
+        t = D_8005071C->field_E5C[group];
+        if (t & mask) {
             return;
         }
         D_8005071C->field_E5C[group] |= mask;
@@ -976,7 +977,8 @@ void func_8006F3F4(Stg40TileWork *w, s32 x, s32 y)
                         if ((func_800703E0(nx, ny) & 0xC000) == 0x8000) {
                             do {
                                 do {
-                                    grid[nx + dim1 * ny].field_0 |= 0x2000;
+                                    t = nx + dim1 * ny;
+                                    grid[t].field_0 |= 0x2000;
                                     func_8006EB84(nx, ny, 1);
                                 } while (0);
                             } while (0);
@@ -987,7 +989,3 @@ void func_8006F3F4(Stg40TileWork *w, s32 x, s32 y)
         }
     }
 }
-#else
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000_A180", func_8006F3F4);
-void func_8006F3F4(Stg40TileWork *w, s32 x, s32 y);
-#endif

@@ -97,14 +97,6 @@
       "padnop"
     ]
   },
-  "Gfx_LoadTexSlotImage": {
-    "passes": [
-      "nodb",
-      "web_realloc",
-      "fallthrough_fill",
-      "delay_fill"
-    ]
-  },
   "func_8001204C": {
     "passes": [
       "web_realloc"
@@ -204,12 +196,6 @@
       "padnop"
     ]
   },
-  "stag0000:func_800668D4": {
-    "passes": [
-      "nosr",
-      "nodiv"
-    ]
-  },
   "stag3500:func_80063F38": {
     "passes": [
       "taken_fill"
@@ -254,19 +240,6 @@
       "save_slot",
       "ra_restore_sink",
       "reorder_indep"
-    ]
-  },
-  "stag2000:func_8006F3E0": {
-    "passes": [
-      "web_realloc"
-    ]
-  },
-  "stag2000:func_80067B20": {
-    "passes": [
-      "reg_realloc",
-      "web_realloc",
-      "save_slot",
-      "ra_restore_sink"
     ]
   },
   "stag2000:func_80066B48": {
@@ -334,21 +307,10 @@
       "iv_ptr_reduce"
     ]
   },
-  "stag4000:func_800648AC": {
-    "passes": [
-      "web_realloc",
-      "selfmove_respill"
-    ]
-  },
   "stag0000:func_80065E24": {
     "passes": [
       "web_realloc",
       "sched_pre"
-    ]
-  },
-  "stag4000:func_8006F3F4": {
-    "passes": [
-      "web_realloc"
     ]
   },
   "stag4000:func_8006997C": {
