@@ -161,16 +161,13 @@ s32 func_80063F00(Actor *arg0) {
     return ret;
 }
 
-INCLUDE_RODATA("asm/USA/stag4000/rodata", jtbl_80063398);
-INCLUDE_RODATA("asm/USA/stag4000/rodata", jtbl_800633B0);
-#ifdef NORMALIZED
 void func_8006424C(Actor *arg0) {
     ActorWork *work = arg0->work;
-    s32 st = arg0->stateLevel0;
+    s32 st;
     Stg40AA4 *ctx = (Stg40AA4 *)arg0->u34.children;
     Actor *bt;
     s32 a0v;
-    switch (st) {
+    switch (arg0->stateLevel0) {
     default:
     case 0:
         D_80072AA0 = arg0;
@@ -184,7 +181,7 @@ void func_8006424C(Actor *arg0) {
         break;
     case 1:
         if (work->field_8 == 0 && Snd_AnySlotLoading() == 0) {
-            work->field_8 = st;
+            work->field_8 = 1;
             Snd_PlayById(D_8005071C->field_1044.field_4, D_8005071C->field_1044.field_6);
             Snd_SetSlotContent(2, 0x19);
         }
@@ -207,11 +204,11 @@ void func_8006424C(Actor *arg0) {
                 goto done0;
             load:
                 if (a0v == 1) {
-                    a0v = 0xE200006;
+                    func_800721A8(Cd_GetFileEntry(0xE200006));
                 } else {
-                    a0v = 0xE200005;
+                    func_800721A8(Cd_GetFileEntry(0xE200005));
                 }
-                func_800721A8(Cd_GetFileEntry(a0v));
+
                 Task_NextState2(arg0);
                 D_8005071C->field_2 = 1;
             done0:
@@ -349,10 +346,6 @@ void func_8006424C(Actor *arg0) {
         break;
     }
 }
-#else
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_8006424C);
-void func_8006424C(Actor *arg0);
-#endif
 
 void func_80064830(void) {
 }

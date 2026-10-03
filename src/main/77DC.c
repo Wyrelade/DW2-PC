@@ -2716,11 +2716,11 @@ void Gfx_LoadTexSlotImage(GfxTexSlot *a0) {
 }
 
 
-#ifdef NORMALIZED
 GfxTexSlot *Gfx_FindOrLoadTexSlot(s32 id) {
     GfxTexSlot *e;
     GfxTexSlot *p;
     s32 i;
+    s32 j;
     u32 best;
     s32 idx;
     s32 n;
@@ -2750,7 +2750,7 @@ GfxTexSlot *Gfx_FindOrLoadTexSlot(s32 id) {
         tp = 0;
     }
     e = Gfx_TexSlots;
-    for (i = 0; i < n; i++, e++) {
+    for (j = 0; j < n; j++, e++) {
         if (e->fileId == -1) {
             continue;
         }
@@ -2758,12 +2758,12 @@ GfxTexSlot *Gfx_FindOrLoadTexSlot(s32 id) {
             continue;
         }
         if (e->fileId == 0) {
-            idx = i;
+            idx = j;
             break;
         }
         if (e->lastUsed < best) {
             best = e->lastUsed;
-            idx = i;
+            idx = j;
         }
     }
     e = &Gfx_TexSlots[idx];
@@ -2781,10 +2781,6 @@ GfxTexSlot *Gfx_FindOrLoadTexSlot(s32 id) {
     Gfx_LoadTexSlotImage(e);
     return e;
 }
-#else
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Gfx_FindOrLoadTexSlot);
-GfxTexSlot *Gfx_FindOrLoadTexSlot(s32 id);
-#endif
 
 void Gfx_SetTexSlotCount(s32 arg0) {
     s32 i;

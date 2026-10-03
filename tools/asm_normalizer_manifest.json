@@ -24,12 +24,6 @@
       "commutative_swap"
     ]
   },
-  "Gfx_FindOrLoadTexSlot": {
-    "passes": [
-      "web_realloc",
-      "padnop"
-    ]
-  },
   "Gfx_DrawPartSprites": {
     "passes": [
       "reg_realloc",
@@ -281,12 +275,6 @@
     ]
   },
   "func_8006571C": {
-    "passes": [
-      "web_realloc",
-      "sched_match"
-    ]
-  },
-  "func_8006424C": {
     "passes": [
       "web_realloc",
       "sched_match"
