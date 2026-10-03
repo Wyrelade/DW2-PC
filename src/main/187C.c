@@ -331,7 +331,6 @@ void func_800116CC(Actor *a0) {
     }
 }
 
-#ifdef NORMALIZED
 void func_80011854(Actor *a0) {
     ActorWork *w = a0->work;
     Part11854 *e;
@@ -344,7 +343,7 @@ void func_80011854(Actor *a0) {
     s32 j;
     u8 u;
     u8 v;
-    SysState *g;
+
     Ft4_11854 *p;
 
     e = (Part11854 *)Cd_GetFileEntry(0x3120002);
@@ -369,13 +368,13 @@ void func_80011854(Actor *a0) {
     if (w->field_4 != 0) {
         s = -1;
     }
-    g = &D_8005F770;
-    p = (Ft4_11854 *)g->packet.work;
+
+    p = (Ft4_11854 *)D_8005F770.packet.work;
     for (j = 0; j < 2; j++) {
         for (i = 0; i < 2; i++) {
-            p->c.rgb = D_8005074C[0];
+            p->c = *(Col1A9C8 *)&D_8005074C;
             p->tag.len = 9;
-            p->c.b.code = 0x2C;
+            p->c.code = 0x2C;
             p->x0 = D_80040D70[j][i].field_0 * s;
             p->x1 = D_80040D70[j][i + 1].field_0 * s;
             p->x2 = D_80040D70[j + 1][i].field_0 * s;
@@ -392,17 +391,13 @@ void func_80011854(Actor *a0) {
             p->v2 = p->v3 = v + 20;
             p->tpage = tex.tpage;
             p->clut = ((tex.vramY + clut.y) << 6) | (((tex.vramX + clut.x) >> 4) & 0x3F);
-            p->tag.addr = ((PTag11854 *)g->otLayers.s[0])->addr;
-            ((PTag11854 *)g->otLayers.s[0])->addr = (u32)p;
+            p->tag.addr = ((PTag11854 *)D_8005F770.otLayers.s[0])->addr;
+            ((PTag11854 *)D_8005F770.otLayers.s[0])->addr = (u32)p;
             p++;
         }
     }
     D_8005F770.packet.addr = (s32)p;
 }
-#else
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80011854);
-void func_80011854(Actor *a0);
-#endif
 
 void func_80011B58(Actor *arg0, s32 arg1) {
     arg0->work->field_0 = arg1;

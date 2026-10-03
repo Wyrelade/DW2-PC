@@ -2134,7 +2134,7 @@ void Text_UpdateAllBoxes(Actor *a0) {
                             page = 0;
                         }
                     }
-                    pkt->c = *(Col1A9C8 *)D_8005074C;
+                    pkt->c = *(Col1A9C8 *)&D_8005074C;
                     pkt->tag.b.len = 9;
                     pkt->c.code = 0x2C;
                     pkt->x0 = pkt->x2 = pos.field_0;

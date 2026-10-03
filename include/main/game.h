@@ -809,7 +809,7 @@ extern CoordMatrix D_80061A08;
 extern CoordMatrix D_80061A48;
 extern CoordMatrix D_800619E8;
 extern void GsGetLw();
-extern Halves D_8005074C[]; /* default rgb 0x808080; retail reaches it with lui/%lo, so not a sized small-data extern */
+extern Halves D_8005074C;
 extern Pair54 D_80040D70[][3];
 extern u8 D_800632E0[0x80];
 extern CardDirFrame D_800630A0[15];

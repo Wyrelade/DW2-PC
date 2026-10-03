@@ -1248,8 +1248,305 @@ void func_80067C74(Actor *arg0, s32 arg1) {
     }
 }
 
-INCLUDE_RODATA("asm/USA/stag3500/rodata", jtbl_80063424);
-INCLUDE_ASM("asm/USA/stag3500/nonmatchings/stag3500_2334", func_80067E48);
+void func_80067E48(Actor *arg0) {
+    Stg35Work708 *w = (Stg35Work708 *)arg0->work;
+    s32 i;
+    s32 j;
+    s32 order[6];
+    Stg35SpriteHandle *sp;
+
+    switch (arg0->stateLevel0) {
+    case 0:
+        for (i = 0; i < 3; i++) {
+            func_80066120(&w->load[i]);
+        }
+        for (i = 0; i < 7; i++) {
+            func_800656D0(&w->text[i]);
+        }
+        for (i = 0; i < 10; i++) {
+            func_800658B8(&w->sprite[i]);
+        }
+        func_800661A4(&w->load[0], 0xD3F0005);
+        func_800661A4(&w->load[1], 0xD3F0006);
+        func_800661A4(&w->load[2], 0xD3F0007);
+        sp = &w->sprite[0];
+        func_80065B04(sp, 0, 0, 0);
+        func_80065B6C(sp, -0x86, -0xC4, 0x70, 0x12);
+        sp = &w->sprite[1];
+        func_80065B04(sp, 0, 0, 0);
+        func_80065B6C(sp, 0x15, -0xC4, 0x70, 0x12);
+        sp = &w->sprite[3];
+        func_80065B04(sp, 0, 0, 0);
+        func_80065B6C(sp, -0x84, -0x64, 0x6B, 0xC4);
+        sp = &w->sprite[2];
+        func_80065B04(sp, 0, 0, 0);
+        func_80065B6C(sp, 0x18, -0x64, 0x6B, 0xC4);
+        for (i = 0; i < 3; i++) {
+            sp = &w->sprite[4 + i];
+            func_80065B04(sp, 0, 0, 0);
+            func_80065B1C(sp, 0, 0xB6, 0x92, 0x16);
+            func_80065B1C(sp, 2, 0xB6, 0x92, 0x16);
+            func_80065B1C(sp, 1, 0xEB, 0xEE, 6);
+            func_80065B1C(sp, 3, 0xEB, 0xEE, 6);
+            func_80065B6C(sp, D_8006A648[i].x, D_8006A648[i].y, 0x70, 0xC);
+        }
+        for (i = 0; i < 3; i++) {
+            sp = &w->sprite[7 + i];
+            func_80065B04(sp, 0, 0, 0);
+            func_80065B1C(sp, 1, 0xB6, 0x92, 0x16);
+            func_80065B1C(sp, 3, 0xB6, 0x92, 0x16);
+            func_80065B1C(sp, 0, 0xEB, 0xEE, 6);
+            func_80065B1C(sp, 2, 0xEB, 0xEE, 6);
+            func_80065B6C(sp, D_8006A654[i].x, D_8006A654[i].y, 0x70, 0xC);
+        }
+        Task_NextState0(arg0);
+    case 1:
+        switch (arg0->stateLevel1) {
+        default:
+        case 0:
+            switch (arg0->stateLevel2) {
+            default:
+            case 0:
+                func_800663CC(&w->load[0], -2);
+                func_800663CC(&w->load[1], -0xE1);
+                func_800663CC(&w->load[2], -0xE1);
+                func_80065B48(&w->sprite[3], 0);
+                func_80065B48(&w->sprite[2], 0);
+                break;
+            case 1:
+                break;
+            }
+            break;
+        case 1:
+            for (j = 0; j < 6; j++) {
+                order[j] = 0;
+            }
+            for (j = 0; j < 6; j++) {
+                s32 r = func_80065E44(j);
+                if (r != -1) {
+                    order[r] = j + 1;
+                }
+            }
+            func_80066778(&w->load[1], 0x20, 1, order[0]);
+            func_80066778(&w->load[1], 0x40, 1, order[1]);
+            func_80066778(&w->load[1], 0x80, 1, order[2]);
+            func_80066778(&w->load[2], 0x20, 1, order[3]);
+            func_80066778(&w->load[2], 0x40, 1, order[4]);
+            func_80066778(&w->load[2], 0x80, 1, order[5]);
+            break;
+        case 2: {
+            s32 *gauge = &w->field_54[arg0->field_8];
+            Stg35LoadHandle *load = &w->load[arg0->field_8 + 1];
+            Stg35LoadHandle *base = w->load;
+            s32 pressed = D_8005F6F0[arg0->field_8].pressed & 0xFFFF;
+            s32 r;
+
+            switch (arg0->stateLevel2) {
+            default:
+            case 0:
+                switch (arg0->stateLevel3) {
+                default:
+                case 0:
+                    Snd_PlayById(0x25, 0);
+                    w->field_78 = 0;
+                    func_80066408(load, 2);
+                    Task_NextState3(arg0);
+                    arg0->elapsed = 0;
+                case 1: {
+                    s32 frame = Math_CycleRange(arg0->elapsed, 2, 0, 7);
+                    func_80066520(load, 2, frame);
+                    if (frame == 7) {
+                        arg0->elapsed = 0;
+                        Task_NextState3(arg0);
+                    }
+                    break;
+                }
+                case 2:
+                    if (arg0->elapsed < 0x78) {
+                        break;
+                    }
+                    Task_NextState3(arg0);
+                    arg0->elapsed = 0;
+                case 3: {
+                    s32 frame = Math_CycleRange(arg0->elapsed, 2, 7, 0);
+                    func_80066520(load, 2, frame);
+                    if (frame == 0) {
+                        arg0->elapsed = 0;
+                        Task_NextState2(arg0);
+                    }
+                    break;
+                }
+                }
+                break;
+            case 1:
+                switch (arg0->stateLevel3) {
+                case 0:
+                    arg0->elapsed = 0;
+                    w->field_54[arg0->field_8] = 0;
+                    func_80066480(load, 2);
+                    func_80066408(base, 2);
+                    if (arg0->field_8 == 0) {
+                        func_80066408(base, 8);
+                        func_80066408(base, 0x20);
+                    } else {
+                        func_80066408(base, 4);
+                        func_80066408(base, 0x10);
+                    }
+                    Task_NextState3(arg0);
+                case 1:
+                    if (pressed & 0x40) {
+                        *gauge += 0xD00;
+                        Snd_PlayById(0x100, 0);
+                    } else {
+                        *gauge = (*gauge < 0x1F9) ? 0 : *gauge - 0x1F8;
+                    }
+                    *gauge = (*gauge >= 0x7000) ? 0x6FFF : *gauge;
+                    func_80067B18(arg0, 0);
+                    func_80067C74(arg0, 0);
+                    func_800679D0(arg0);
+                    if (arg0->field_8 == 0) {
+                        func_8006659C(&w->load[0], 0x20, 0x4F);
+                        func_80066618(&w->load[0], 0x20, 0x2B - (w->field_54[0] / 0x1000) * 14);
+                    } else {
+                        func_8006659C(&w->load[0], 0x10, -0x4D);
+                        func_80066618(&w->load[0], 0x10, 0x2B - (w->field_54[1] / 0x1000) * 14);
+                    }
+                    if (((ActorAllocView *)arg0)->frameCount & 4) {
+                        func_80066408(load, 4);
+                    } else {
+                        func_80066480(load, 4);
+                    }
+                    {
+                        s32 pct = (0x12C - arg0->elapsed) / 3;
+                        if (pct == 100) {
+                            pct = 99;
+                        }
+                        func_80066778(base, 2, 2, pct);
+                    }
+                    if (arg0->elapsed >= 0x12C) {
+                        Task_NextState3(arg0);
+                        arg0->elapsed = 0;
+                    }
+                    break;
+                case 2:
+                    switch (arg0->stateLevel4) {
+                    default:
+                    case 0:
+                        Snd_PlayById(0xE, 0);
+                        func_80067C74(arg0, 1);
+                        func_80067B18(arg0, 1);
+                        arg0->elapsed = 0;
+                        Task_NextState4(arg0);
+                    case 1:
+                        r = Math_CycleRange(arg0->elapsed, 2, 0, 7);
+                        if (arg0->field_8 == 0) {
+                            func_80066520(&w->load[0], 0x20, r);
+                        } else {
+                            func_80066520(&w->load[0], 0x10, r);
+                        }
+                        if (r == 7) {
+                            Task_NextState4(arg0);
+                        }
+                        break;
+                    case 2:
+                        if (arg0->elapsed >= 0x3C) {
+                            s32 level = w->field_54[arg0->field_8] / 0x1000;
+                            w->field_74 = level;
+                            w->field_7C = w->field_5C[5 - level];
+                            Task_NextState3(arg0);
+                        }
+                        break;
+                    }
+                    break;
+                case 3:
+                    for (i = 0; i < 7; i++) {
+                        func_80065894(&w->text[i]);
+                    }
+                    func_80065B48(&w->sprite[arg0->field_8 + 2], 0);
+                    func_80066480(load, 6);
+                    func_80066480(base, 0x3E);
+                    if (w->field_74 == 6) {
+                        w->field_78 = 1;
+                        Task_NextState3(arg0);
+                        arg0->elapsed = 0;
+                    } else if (w->field_5C[5 - w->field_74] != 0) {
+                        goto done;
+                    } else {
+                        w->field_78 = 1;
+                        Task_NextState3(arg0);
+                        Task_NextState3(arg0);
+                        arg0->elapsed = 0;
+                    }
+                    break;
+                case 4:
+                    switch (arg0->stateLevel4) {
+                    default:
+                    case 0:
+                        Snd_PlayById(7, 0);
+                        Task_NextState4(arg0);
+                    case 1:
+                        func_80066408(base, 0x40);
+                        func_80066520(base, 0x40, Math_PingPongRange(arg0->elapsed, 4, 0, 7));
+                        if (arg0->elapsed >= 0xB4) {
+                            func_80066480(base, 0x40);
+                            goto done;
+                        }
+                        break;
+                    }
+                    break;
+                case 5:
+                    switch (arg0->stateLevel4) {
+                    default:
+                    case 0:
+                        Snd_PlayById(0x1C, 0);
+                        Task_NextState4(arg0);
+                    case 1:
+                        func_80066408(base, 0x80);
+                        func_80066520(base, 0x80, Math_PingPongRange(arg0->elapsed, 4, 0, 7));
+                        if (arg0->elapsed >= 0xB4) {
+                            func_80066480(base, 0x80);
+                        done:
+                            Task_SetState1(arg0, 1);
+                        }
+                        break;
+                    }
+                    break;
+                }
+                break;
+            }
+            break;
+        }
+        }
+        for (i = 0; i < 6; i++) {
+            if (w->field_80[i].field_4 != w->field_80[i].field_0) {
+                if (w->field_80[i].field_4 < w->field_80[i].field_0) {
+                    w->field_80[i].field_4 += arg0->elapsed;
+                    if (w->field_80[i].field_0 < w->field_80[i].field_4) {
+                        w->field_80[i].field_4 = w->field_80[i].field_0;
+                    }
+                } else {
+                    w->field_80[i].field_4 -= arg0->elapsed;
+                    if (w->field_80[i].field_4 < w->field_80[i].field_0) {
+                        w->field_80[i].field_4 = w->field_80[i].field_0;
+                    }
+                }
+            }
+            func_80065B3C(&w->sprite[4 + i], func_80065B88(0x70, w->field_80[i].field_8, w->field_80[i].field_4));
+        }
+        break;
+    case 2:
+        switch (arg0->stateLevel2) {
+        default:
+        case 0:
+            Gfx_FadeOutToBlack(0x10);
+            Task_NextState2(arg0);
+            break;
+        case 1:
+            break;
+        }
+        break;
+    }
+}
 
 void func_800689FC(Actor *arg0) {
     Stg35Work3 *w = (Stg35Work3 *)arg0->work;

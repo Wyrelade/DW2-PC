@@ -3067,18 +3067,17 @@ typedef struct {
     u32 len : 8;
 } PTag11854;
 
+typedef struct {
+    u8 r;
+    u8 g;
+    u8 b;
+    u8 code;
+} Col1A9C8;
+
 /* Textured quad packet (libgpu POLY_FT4 layout). */
 typedef struct {
     /* 0x00 */ PTag11854 tag;
-    /* 0x04 */ union {
-        Halves rgb;
-        struct {
-            u8 r0;
-            u8 g0;
-            u8 b0;
-            u8 code;
-        } b;
-    } c;
+    /* 0x04 */ Col1A9C8 c;
     /* 0x08 */ s16 x0;
     /* 0x0A */ s16 y0;
     /* 0x0C */ u8 u0;
@@ -3252,13 +3251,6 @@ typedef struct {
     /* 0xA30 */ s32 waitTimer;
 } TextBoxWork;
 
-
-typedef struct {
-    u8 r;
-    u8 g;
-    u8 b;
-    u8 code;
-} Col1A9C8;
 
 /* POLY_FT4 packet; the colour word is copied with lwl/lwr. */
 typedef struct {

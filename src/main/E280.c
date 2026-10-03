@@ -680,7 +680,6 @@ INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Anim_HasModelAnim);
 s32 Anim_HasModelAnim(Actor *a0, s32 n);
 #endif
 
-#ifdef NORMALIZED
 void Anim_StepModelAnim(Actor *a) {
     ActorModel *s = a->model;
     s32 *data = (s32 *)Cd_GetFileOrNull(s->animFileId);
@@ -696,8 +695,10 @@ void Anim_StepModelAnim(Actor *a) {
     if (data != s->animData) {
         s->animData = data;
         s->bonePoseTables = data + 1;
-        i = s->boneCount + 1;
-        s->animTable = &data[i];
+        {
+            s32 n = s->boneCount + 1;
+            s->animTable = &data[n];
+        }
     }
     if (data[0] == 0) {
         data[0] = 1;
@@ -735,20 +736,18 @@ void Anim_StepModelAnim(Actor *a) {
         }
     }
 done:
-    e = s->bones;
-    for (i = 0; i < s->boneCount; i++) {
-        r = &((Rec18 *)s->bonePoseTables[i])[e->keyIndex];
-        e->localMat.m = r->m;
-        for (j = 0; j < 3; j++) {
-            e->localMat.t[j] = r->t[j];
+    {
+        ModelBone *b = s->bones;
+        s32 n;
+        for (n = 0; n < s->boneCount; n++, b++) {
+            r = &((Rec18 *)s->bonePoseTables[n])[b->keyIndex];
+            b->localMat.m = r->m;
+            for (j = 0; j < 3; j++) {
+                b->localMat.t[j] = r->t[j];
+            }
         }
-        e++;
     }
 }
-#else
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Anim_StepModelAnim);
-void Anim_StepModelAnim(Actor *a);
-#endif
 
 void Gfx_ResetModelBones(Actor *a0) {
     ActorModel *sub = a0->model;
@@ -1645,7 +1644,6 @@ void Gfx_DrawWireTris(ModelWireTri *t, s32 n, ModelProjView *o, CVECTOR *col) {
     D_8005F770.packet.addr = (s32)pk;
 }
 
-#ifdef NORMALIZED
 void Gfx_DrawWireQuads(GfxModelQuad *q, s32 n, ModelProjView *o, CVECTOR *col) {
     s32 i;
     s32 z;
@@ -1656,7 +1654,9 @@ void Gfx_DrawWireQuads(GfxModelQuad *q, s32 n, ModelProjView *o, CVECTOR *col) {
     GfxModelOTag *pk;
     LINE_F4 *l4;
     LINE_F2 *l2;
+    s32 *layer;
     Tpage21ABC *tp;
+    GfxModelQuad *last;
     s32 idx;
 
     pk = (GfxModelOTag *)D_8005F770.packet.work;
@@ -1666,11 +1666,13 @@ void Gfx_DrawWireQuads(GfxModelQuad *q, s32 n, ModelProjView *o, CVECTOR *col) {
     for (i = 0; i < n; i++, q++) {
         do {
             z = (sz[q->v[0]] + sz[q->v[1]] + sz[q->v[2]] + sz[q->v[3]]) / 4;
-            ot = (u32 *)D_8005F770.otLayers.s[idx];
+            layer = D_8005F770.otLayers.s[idx];
+            ot = (u32 *)layer;
             xy[0] = sxy[q->v[0]];
             xy[1] = sxy[q->v[1]];
             xy[2] = sxy[q->v[2]];
-            xy[3] = sxy[q->v[3]];
+            last = q;
+            xy[3] = sxy[last->v[3]];
             l4 = (LINE_F4 *)pk;
             l4->c = *col;
             l4->tag.len = 6;
@@ -1680,8 +1682,6 @@ void Gfx_DrawWireQuads(GfxModelQuad *q, s32 n, ModelProjView *o, CVECTOR *col) {
             l4->xy[1] = xy[1];
             l4->xy[2] = xy[3];
             l4->xy[3] = xy[2];
-            do {
-            } while (0);
             ot += z;
             pk->addr = ((GfxModelOTag *)ot)->addr;
             ((GfxModelOTag *)ot)->addr = (u32)pk;
@@ -1705,7 +1705,3 @@ void Gfx_DrawWireQuads(GfxModelQuad *q, s32 n, ModelProjView *o, CVECTOR *col) {
     }
     D_8005F770.packet.addr = (s32)pk;
 }
-#else
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Gfx_DrawWireQuads);
-void Gfx_DrawWireQuads(GfxModelQuad *q, s32 n, ModelProjView *o, CVECTOR *col);
-#endif

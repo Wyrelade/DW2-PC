@@ -14,13 +14,6 @@
       "sched_match"
     ]
   },
-  "Anim_StepModelAnim": {
-    "passes": [
-      "web_realloc",
-      "sched_match",
-      "fallthrough_fill"
-    ]
-  },
   "Menu_NameEntryTask": {
     "passes": [
       "zero_cmp",
@@ -51,23 +44,6 @@
       "block_iso",
       "call_slot_sink",
       "giv_rebase",
-      "padnop"
-    ]
-  },
-  "func_80011854": {
-    "passes": [
-      "la_copy",
-      "const_sink",
-      "sreg_perm",
-      "web_realloc",
-      "save_slot",
-      "sched_match",
-      "padnop"
-    ]
-  },
-  "Gfx_DrawWireQuads": {
-    "passes": [
-      "sched_match",
       "padnop"
     ]
   },
