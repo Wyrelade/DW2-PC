@@ -2431,8 +2431,158 @@ void func_80068FB8(void) {
     Gfx_DrawParts((s32)p);
 }
 
-INCLUDE_RODATA("asm/USA/stag2000/rodata", jtbl_80063570);
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80069068);
+void func_80069068(Actor *a) {
+    Stg20InfoWork *w = (Stg20InfoWork *)a->work;
+    DigiRosterEntry *d;
+    s32 t;
+    s32 lv;
+    s32 ok;
+    s32 id0;
+    s32 id1;
+    s32 x;
+    s32 y;
+    s32 p;
+
+    switch (a->stateLevel0) {
+    case 0:
+        Mem_FillWordsNeg1(w->texts, 0xD);
+        w->digi = (DigiRosterEntry *)&D_8005E704[D_800709D8];
+        Task_NextState0(a);
+        break;
+    case 1:
+        switch (a->stateLevel1) {
+        case 0:
+        default:
+            func_80067480(&w->texts[0], (s32)w->digi->name, 0, &D_80070040[0], 0);
+            func_80067480(&w->texts[1], (s32)Digi_GetDefaultName(w->digi->digiId), 0, &D_80070040[1], 0);
+            func_80067480(&w->texts[2], 0, func_8001D934(w->digi->digiId) + 0xC3, &D_80070040[2], 0);
+            func_80067480(&w->texts[3], 0, func_8001D958(w->digi->digiId) + 0xC6, &D_80070040[3], 0);
+            func_80067480(&w->texts[4], 0, func_8001D980(w->digi->digiId) + 0xCA, &D_80070040[4], 0);
+            if (w->digi->attr[0x25] != 0) {
+                func_80067480(&w->texts[5], (s32)Digi_GetDefaultName(w->digi->attr[0x25]), 0, &D_80070040[5], 0);
+            }
+            if (w->digi->attr[0x26] != 0) {
+                func_80067480(&w->texts[6], (s32)Digi_GetDefaultName(w->digi->attr[0x26]), 0, &D_80070040[6], 0);
+            }
+            func_80067480(&w->texts[7], 0, 0x105, &D_80070040[7], 0);
+            func_80067480(&w->texts[8], 0, 0x106, &D_80070040[8], 0);
+            func_80067480(&w->texts[9], 0, 0x107, &D_80070040[9], 0);
+            func_80067480(&w->texts[10], 0, 0xBF, &D_80070040[10], 0);
+            func_80067480(&w->texts[11], 0, 0xD0, &D_80070040[11], 0);
+            func_80067480(&w->texts[12], 0, 0x9D, &D_80070040[12], 0);
+            switch (D_800709D4) {
+            case 0:
+                t = func_8001D958(w->digi->digiId);
+                d = w->digi;
+                lv = (d->level - 1) / 10;
+                if (lv >= 4) {
+                    lv = 3;
+                }
+                switch (D_80070074[lv][t]) {
+                case 0:
+                    func_80068D84(0x118);
+                    break;
+                case 1:
+                    p = func_8001DA80(d->digiId, d->field_E);
+                    D_800709DC = p;
+                    if (p == 0) {
+                case 2:
+                        func_80068D84(0x11D);
+                    } else {
+                        func_80068DD8(0x119, p);
+                    }
+                    break;
+                }
+                break;
+            case 1:
+                func_80068DD8(0x126, D_800709DC);
+                break;
+            case 2:
+                if (func_8001D958(w->digi->digiId) != 0) {
+                    func_80068D84(0x11B);
+                } else {
+                    func_80068D84(0x11A);
+                }
+                break;
+            case 3:
+                ok = 0;
+                id0 = D_8005E620.elems[D_800709E4].digiId;
+                id1 = w->digi->digiId;
+                x = func_8001D934(id0);
+                y = func_8001D934(id1);
+                switch (D_8005F790) {
+                case 0x305:
+                    if (x != 0 && y != 0) {
+                        ok = 1;
+                    }
+                    break;
+                case 0x309:
+                    if (x != 2 && y != 2) {
+                        ok = 1;
+                    }
+                    break;
+                case 0x30D:
+                    if (x != 1 && y != 1) {
+                        ok = 1;
+                    }
+                    break;
+                default:
+                    ok = 1;
+                    break;
+                }
+                if (ok != 0) {
+                    if (func_8001D958(w->digi->digiId) == 0) {
+                        func_80068D84(0x11A);
+                    } else {
+                        D_800709DC = func_8006A190(id0, id1);
+                        func_80068DD8(0x128, D_800709DC);
+                    }
+                } else {
+                    func_80068D84(0x12A);
+                }
+                break;
+            case 4:
+                func_80068DD8(0x129, D_800709DC);
+                break;
+            }
+            Task_NextState1(a);
+            break;
+        case 1:
+            do {
+                if (D_8005F6F0[0].circle > 0) {
+                    D_800709B8.field_0 = 0;
+                    Task_NextState0(a);
+                    break;
+                }
+                if (D_8005F6F0[0].triangle > 0) {
+                    Snd_PlayById(0xB, 0);
+                    D_800709B8.field_0 = 1;
+                    Task_NextState0(a);
+                    break;
+                }
+                if (D_800709B0.field_24 == 1) {
+                    break;
+                }
+                switch (func_80068E6C()) {
+                case 0:
+                    D_800709B0.field_8 = 2;
+                    Task_NextState0(a);
+                    break;
+                case 1:
+                    D_800709B0.field_8 = 3;
+                    Task_NextState0(a);
+                    break;
+                }
+            } while (0);
+            break;
+        }
+        break;
+    case 2:
+        Text_CloseArray(w->texts, 0xD);
+        Task_NextState0(a);
+        break;
+    }
+}
 
 void func_8006964C(Actor *a) {
     Stg20StatusWork *w = (Stg20StatusWork *)a->work;

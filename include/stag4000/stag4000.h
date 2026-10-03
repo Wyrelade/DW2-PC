@@ -619,6 +619,10 @@ typedef union {
         u8 addr[3];
         u8 len;
     } b;
+    struct {
+        u32 addr : 24;
+        u32 len : 8;
+    } f;
 } Stg40Tag;
 
 /* POLY_FT4-shaped packet (0x28), copied whole from Stg40W667C.field_143C. */
@@ -778,6 +782,14 @@ extern void SetRotMatrix(Mat1F668 *m);
 extern void SetTransMatrix(Mat1F668 *m);
 extern s32 RotTransPers(Stg40Vec3 *v, s16 *out, s32 *dtz, s32 *flag);
 extern void PopMatrix(void);
+
+/* Four ground-quad corner offsets (x, z) read by func_80064BD8. */
+typedef struct {
+    s16 v[8];
+} Stg40Quad;
+
+extern u8 D_8007265A;          /* tile template index into Stg40W667C.field_143C */
+extern Stg40Quad D_800633C4;
 extern void GsSetProjection(s32);
 extern void GsInitCoordinate2(Coord1F668 *, Coord1F668 *);
 extern s32 GsSetRefView2(Stg40RView *);

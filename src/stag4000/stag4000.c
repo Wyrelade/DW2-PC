@@ -600,4 +600,105 @@ void func_80064AFC(Actor *a0) {
 }
 
 INCLUDE_RODATA("asm/USA/stag4000/rodata", D_800633C4);
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000", func_80064BD8);
+void func_80064BD8(Stg40Loc *loc) {
+    struct {
+        s16 x;
+        s16 y;
+        u8 _pad4[8];
+    } out[4];
+    struct {
+        s16 x;
+        s16 y;
+        s16 z;
+    } vec;
+    Mat1F668 mtx;
+    Stg40Quad quad;
+    s32 xoff;
+    s32 zoff;
+    Stg40W667C *w;
+    Stg40Vtx *a;
+    Stg40Vtx *b;
+    Stg40FT4 *pkt;
+    s32 row;
+    s32 col;
+    s32 i;
+    s32 count;
+    s32 dz;
+    s32 centerX;
+    s32 centerY;
+
+    if ((loc->field_C & 0x3F) == 0 && (loc->field_10 & 0x3F) == 0) {
+        col = loc->field_C / 64 - D_80072B60->field_2C / 64 + 4;
+        row = loc->field_10 / 64 - D_80072B60->field_30 / 64 + 4;
+        if (col >= 0 && col < D_80072B6C->field_13D0 - 1 && row >= 0 && row < D_80072B6C->field_13D2 - 1) {
+            w = D_80072B6C;
+            a = &w->field_0[row][col];
+            b = &w->field_0[row + 1][col];
+            pkt = (Stg40FT4 *)D_8005F79C;
+            *pkt = w->field_143C[D_8007265A];
+            pkt->x0 = a[0].s[0].x;
+            pkt->y0 = a[0].s[0].y;
+            pkt->x1 = a[1].s[0].x;
+            pkt->y1 = a[1].s[0].y;
+            pkt->x2 = b[0].s[0].x;
+            pkt->y2 = b[0].s[0].y;
+            pkt->x3 = b[1].s[0].x;
+            pkt->y3 = b[1].s[0].y;
+            pkt->tag.f.addr = ((Stg40OTag *)D_8005F770.otLayers.u[4])->addr;
+            ((Stg40OTag *)D_8005F770.otLayers.u[4])->addr = (u32)pkt;
+            pkt++;
+            D_8005F770.packet.addr = (s32)pkt;
+        }
+        return;
+    }
+    mtx = D_80061A08;
+    quad = D_800633C4;
+    centerX = D_8005F770.centerX.s;
+    centerY = D_8005F770.centerY.s;
+    count = 0;
+    func_8002D0D4();
+    SetRotMatrix(&mtx);
+    SetTransMatrix(&mtx);
+    dz = (loc->field_10 - D_80072B60->field_30) << 11;
+    xoff = (loc->field_C - D_80072B60->field_2C) * 40;
+    zoff = dz / 64;
+    zoff = -zoff;
+    vec.y = 0;
+    for (i = 0; i < 4; i++) {
+        vec.x = quad.v[i * 2] + xoff;
+        vec.z = quad.v[i * 2 + 1] + zoff;
+        RotTransPers(&vec, &out[i], 0, 0);
+        {
+            s32 x = out[i].x;
+            s32 y;
+
+            if (centerX != 0x140) {
+                x >>= 1;
+            }
+            out[i].x = x;
+            y = out[i].y;
+            if (centerY != 0xF0) {
+                y >>= 1;
+            }
+            out[i].y = y;
+        }
+        count += ((out[i].x < 0 ? -out[i].x : out[i].x) < centerX) && ((out[i].y < 0 ? -out[i].y : out[i].y) < centerY);
+    }
+    if (count != 0) {
+        pkt = (Stg40FT4 *)D_8005F79C;
+        *pkt = D_80072B6C->field_143C[D_8007265A];
+        pkt->x0 = out[0].x;
+        pkt->y0 = out[0].y;
+        pkt->x1 = out[1].x;
+        pkt->y1 = out[1].y;
+        pkt->x2 = out[2].x;
+        pkt->y2 = out[2].y;
+        pkt->x3 = out[3].x;
+        pkt->y3 = out[3].y;
+        pkt->tag.f.addr = ((Stg40OTag *)D_8005F770.otLayers.u[4])->addr;
+        ((Stg40OTag *)D_8005F770.otLayers.u[4])->addr = (u32)pkt;
+        pkt++;
+        D_8005F770.packet.addr = (s32)pkt;
+    }
+    PopMatrix();
+}

@@ -695,7 +695,139 @@ INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000_100C", func_80065594);
 void func_80065594(Actor *a0);
 #endif
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000_100C", func_80065A98);
+void func_80065A98(Actor *a0) {
+    Stg30Work730D0 *w = (Stg30Work730D0 *)a0->work;
+    Stg30Part *p;
+    Stg30Part *q;
+    Stg30Part *s;
+    Stg30Part *r;
+    s32 m;
+    s32 bit;
+    s32 i;
+    s32 m2;
+    Stg30Part *p2;
+    Stg30Part *p3;
+
+    p = (Stg30Part *)Cd_GetFileEntry(0x1A10016);
+    for (r = p; r->fileId != 0; r++) {
+        r->visible = 0;
+        switch (r->groupMask) {
+        case 0x2:
+        case 0x4:
+            if (w->field_40[0] == 0 || w->field_4C[0] != 0) {
+                r->visible = 1;
+            }
+            break;
+        case 0x8:
+        case 0x10:
+            if (w->field_40[0] == 0) {
+                r->visible = 1;
+            } else if (w->field_4C[0] != 0) {
+                r->visible = 1;
+            }
+            break;
+        case 0x20:
+        case 0x40:
+            if (w->field_40[1] == 0 || w->field_4C[1] != 0) {
+                r->visible = 1;
+            }
+            break;
+        case 0x80:
+        case 0x100:
+            if (w->field_40[1] == 0 || w->field_4C[1] != 0) {
+                r->visible = 1;
+            }
+            break;
+        case 0x200:
+        case 0x400:
+        case 0x800:
+        case 0x1000:
+            if (w->field_40[2] == 0 || w->field_4C[2] != 0) {
+                r->visible = 1;
+            }
+            break;
+        }
+        if (r->visible != 0) {
+            r->field_E = 0;
+            switch (r->groupMask) {
+            case 0x2:
+            case 0x8:
+            case 0x20:
+            case 0x80:
+            case 0x200:
+            case 0x800:
+                r->field_24 = 0x9F;
+                break;
+            case 0x4:
+            case 0x10:
+            case 0x40:
+            case 0x100:
+            case 0x400:
+            case 0x1000:
+                r->field_24 = -0x9F;
+                break;
+            }
+        }
+    }
+    Gfx_DrawParts((EntA0 *)p);
+    if (w->field_3C == 0x1000) {
+        p2 = (Stg30Part *)Cd_GetFileEntry(0x1A10015);
+        m = 0;
+        bit = 2;
+        for (i = 0; i < 3; i++) {
+            if (D_800737F8[i] == 0) {
+                m |= bit;
+                bit <<= 1;
+                m |= bit;
+                bit <<= 1;
+            } else if (D_800737E8 != i) {
+                m |= bit;
+                bit <<= 2;
+            } else {
+                bit <<= 1;
+                m |= bit;
+                bit <<= 1;
+            }
+            if (w->field_E8[i] < 4 || w->field_E8[i] == D_800737F8[i] + 3) {
+                m |= bit;
+                bit <<= 1;
+                m |= bit;
+                bit <<= 1;
+            } else if (D_800737E8 != i) {
+                m |= bit;
+                bit <<= 2;
+            } else {
+                bit <<= 1;
+                m |= bit;
+                bit <<= 1;
+            }
+        }
+        Gfx_HidePartsByMask((GfxPartMaskView *)p2, m);
+        m2 = ~m & D_800730A8[D_800737E8];
+        for (q = p2; q->fileId != 0; q++) {
+            if (q->groupMask & m2) {
+                q->palette = Math_PingPongRange(a0->elapsed, 4, 0, 3);
+            }
+        }
+        Gfx_DrawParts((EntA0 *)p2);
+    }
+    p3 = (Stg30Part *)Cd_GetFileEntry(0x1A10014);
+    Gfx_SetPartsScale((GfxPartScaleView *)p3, 0x1000, w->field_3C);
+    Gfx_HidePartsByMask((GfxPartMaskView *)p3, D_800730B8[D_800737E8]);
+    for (s = p3; s->fileId != 0; s++) {
+        if (s->groupMask & 0x4000) {
+            if (w->field_40[D_800737E8] != 0 && w->field_4C[D_800737E8] == 0) {
+                s->x = D_800730C4[D_800737E8].x;
+                s->y = D_800730C4[D_800737E8].y + D_800737F0[D_800737E8] * 11;
+                s->palette = Math_PingPongRange(a0->elapsed, 4, 0, 3);
+                s->visible = 1;
+            } else {
+                s->visible = 0;
+            }
+        }
+    }
+    Gfx_DrawParts((EntA0 *)p3);
+}
 
 void func_80066000(void) {
     s32 cnt[4];

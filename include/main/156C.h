@@ -799,7 +799,7 @@ typedef struct {
     /* 0x01 */ u8 digiId;
     u8 _pad02[0xB];
     /* 0x0D */ u8 level;
-    u8 _pad0E[0x1];
+    /* 0x0E */ u8 field_E;
     /* 0x0F */ u8 maxLevel;
     /* 0x10 */ s32 exp;
     /* 0x14 */ u16 maxHp;
