@@ -25,13 +25,6 @@
       "sched_match"
     ]
   },
-  "Gpu_SkipEmptyOtEntries": {
-    "passes": [
-      "web_realloc",
-      "sched_match",
-      "padnop"
-    ]
-  },
   "Menu_NameEntryDrawParts": {
     "passes": [
       "reg_realloc"
@@ -160,16 +153,6 @@
   "stag2000:func_8006C6F0": {
     "passes": [
       "sched_match"
-    ]
-  },
-  "stag2000:func_80067978": {
-    "passes": [
-      "web_realloc"
-    ]
-  },
-  "stag2000:func_8006EA90": {
-    "passes": [
-      "web_realloc"
     ]
   },
   "stag2000:func_8006D53C": {

@@ -1867,7 +1867,6 @@ s32 func_80067928(Stg20Cell *c, s32 x, s32 y, s32 flag) {
     return dx + dy;
 }
 
-#ifdef NORMALIZED
 s32 func_80067978(Actor *a, s32 dir) {
     Stg20NavWork *w = (Stg20NavWork *)a->work;
     Stg20Cell c;
@@ -1889,41 +1888,43 @@ s32 func_80067978(Actor *a, s32 dir) {
         case 0:
             if (c.y < r->cell.y) {
                 d = func_80067928(&c, r->cell.x, r->cell.y, 1);
-                break;
+                if (d < best) {
+                    best = d;
+                    found = i;
+                }
             }
-            continue;
+            break;
         case 1:
             if (c.x > r->cell.x) {
                 d = func_80067928(&c, r->cell.x, r->cell.y, 0);
-                break;
+                if (d < best) {
+                    best = d;
+                    found = i;
+                }
             }
-            continue;
+            break;
         case 2:
             if (c.y > r->cell.y) {
                 d = func_80067928(&c, r->cell.x, r->cell.y, 1);
-                break;
+                if (d < best) {
+                    best = d;
+                    found = i;
+                }
             }
-            continue;
+            break;
         case 3:
             if (c.x < r->cell.x) {
                 d = func_80067928(&c, r->cell.x, r->cell.y, 0);
-                break;
+                if (d < best) {
+                    best = d;
+                    found = i;
+                }
             }
-            continue;
-        default:
-            continue;
-        }
-        if (d < best) {
-            best = d;
-            found = i;
+            break;
         }
     }
     return found;
 }
-#else
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80067978);
-s32 func_80067978(Actor *a, s32 dir);
-#endif
 
 INCLUDE_RODATA("asm/USA/stag2000/rodata", D_80063564);
 void func_80067B20(Actor *a) {

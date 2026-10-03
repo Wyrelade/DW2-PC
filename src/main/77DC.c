@@ -2602,34 +2602,26 @@ s32 Gpu_DrawOt(s32 arg0) {
     return DrawOTag(&p[-1]);
 }
 
-#ifdef NORMALIZED
 void Gpu_SkipEmptyOtEntries(s32 arg0) {
-    u32 *p = (u32 *)&D_80058D28[arg0];
+    u32 *ot = (u32 *)&D_80058D28[arg0];
     u32 *end = (u32 *)&D_80058D28[arg0 - 1];
+    u32 *p;
     u32 *q;
-    u32 m = 0xFFFFFF;
+    u32 m;
 
-    p--;
+    p = ot - 1;
+    m = 0xFFFFFF;
     while (p != end) {
         q = p - 1;
         if ((*p & m) == ((u32)q & m)) {
-            u32 v = *q;
-            u32 w = (u32)(q - 1) & m;
-
-            while ((v & m) == w) {
+            while ((*q & m) == ((u32)(q - 1) & m)) {
                 q--;
-                v = *q;
-                w = (u32)(q - 1) & m;
             }
             *p = (u32)q & m;
         }
         p = q;
     }
 }
-#else
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Gpu_SkipEmptyOtEntries);
-void Gpu_SkipEmptyOtEntries(s32 arg0);
-#endif
 
 s32 func_8001C92C(void) {
     return 0;

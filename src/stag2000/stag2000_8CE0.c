@@ -894,12 +894,12 @@ s32 func_8006E9E8(s32 item)
     return 1;
 }
 
-#ifdef NORMALIZED
 void func_8006EA90(Actor *a) {
     Stg20ItemWork *w = (Stg20ItemWork *)a->work;
     u8 digits[5];
     s32 i;
     s32 j;
+    s32 k;
     s32 id;
     s32 v;
     s32 lead;
@@ -936,28 +936,24 @@ void func_8006EA90(Actor *a) {
         }
         v = w->recs[i].price;
         if (v != 0) {
-            for (j = 4; j != -1; j--) {
-                digits[j] = v % 10;
+            for (k = 4; k != -1; k--) {
+                digits[k] = v % 10;
                 v /= 10;
             }
             lead = 1;
-            for (j = 0; j < 5; j++) {
-                if (!lead || digits[j] != 0) {
+            for (k = 0; k < 5; k++) {
+                if (!lead || digits[k] != 0) {
                     lead = 0;
-                    w->recs[i].name[j + 0xF] = digits[j];
+                    w->recs[i].name[k + 0xF] = digits[k];
                 }
             }
         } else {
-            for (j = 0; j < 5; j++) {
-                w->recs[i].name[j + 0xF] = 0x49;
+            for (k = 0; k < 5; k++) {
+                w->recs[i].name[k + 0xF] = 0x49;
             }
         }
     }
 }
-#else
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000_8CE0", func_8006EA90);
-void func_8006EA90(Actor *a);
-#endif
 
 void func_8006ED24(Actor *a) {
     Stg20ItemWork *w = (Stg20ItemWork *)a->work;
