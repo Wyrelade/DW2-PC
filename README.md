@@ -9,7 +9,7 @@
 # Digimon World 2 Decompilation
 
 <!-- PROGRESS:BADGE -->
-![matched](https://img.shields.io/badge/matched-1068%2F1089%20(98.07%25)-1f6feb)
+![matched](https://img.shields.io/badge/matched-1069%2F1089%20(98.16%25)-1f6feb)
 <!-- /PROGRESS:BADGE -->
 ![build](https://img.shields.io/badge/build-byte--identical-2ea043)
 ![platform](https://img.shields.io/badge/platform-PS1%20(SLUS--01193)-8957e5)
@@ -59,15 +59,15 @@ function with and without the post-processing and compares it against the target
 | Component | Functions | Matched | Progress | Flags per function | Asm rewrites | Asm |
 |---|---:|---:|---|---:|---:|---:|
 | **Main executable** (`SLUS_011.93`, game code) | 369 | 362 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 98.10% | 0 | 5 | 2 |
-| **Stage overlays** (`AAA/3.PRO`) | 720 | 706 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 98.06% | 0 | 8 | 6 |
+| **Stage overlays** (`AAA/3.PRO`) | 720 | 707 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 98.19% | 0 | 7 | 6 |
 | &nbsp;&nbsp;└ `STAG0000.PRO` | 69 | 68 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 98.55% | 0 | 0 | 1 |
 | &nbsp;&nbsp;└ `STAG1000.PRO` | 17 | 17 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 100.00% | 0 | 0 | 0 |
 | &nbsp;&nbsp;└ `STAG1100.PRO` | 55 | 55 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 100.00% | 0 | 0 | 0 |
 | &nbsp;&nbsp;└ `STAG2000.PRO` | 133 | 128 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▱` 96.24% | 0 | 4 | 1 |
 | &nbsp;&nbsp;└ `STAG3000.PRO` | 123 | 120 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 97.56% | 0 | 2 | 1 |
 | &nbsp;&nbsp;└ `STAG3500.PRO` | 108 | 108 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 100.00% | 0 | 0 | 0 |
-| &nbsp;&nbsp;└ `STAG4000.PRO` | 215 | 210 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 97.67% | 0 | 2 | 3 |
-| **Total (game code)** | 1089 | 1068 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 98.07% | 0 | 13 | 8 |
+| &nbsp;&nbsp;└ `STAG4000.PRO` | 215 | 211 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 98.14% | 0 | 1 | 3 |
+| **Total (game code)** | 1089 | 1069 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 98.16% | 0 | 12 | 8 |
 | PsyQ libraries (not counted) | 557 | | | | | |
 <!-- /PROGRESS:TABLE -->
 
