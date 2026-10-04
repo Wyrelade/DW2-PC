@@ -282,6 +282,11 @@ dlabel D_80068470
     /* 511C 8006847C 80810680 */ .word Stg11_CardTaskDraw
     /* 5120 80068480 44200200 */ .word 0x00022044
     /* 5124 80068484 00000000 */ .word 0x00000000
+enddlabel D_80068470
+
+nonmatching Stg11_TaskDescs
+
+dlabel Stg11_TaskDescs
     /* 5128 80068488 88810680 */ .word D_80068188
     /* 512C 8006848C 70840680 */ .word D_80068470
     /* 5130 80068490 A0810680 */ .word D_800681A0
@@ -290,7 +295,7 @@ dlabel D_80068470
     /* 513C 8006849C 18820680 */ .word Stg11_VsPartyDesc
     /* 5140 800684A0 BC810680 */ .word D_800681BC
     /* 5144 800684A4 4141415C */ .word 0x5C414141
-enddlabel D_80068470
+enddlabel Stg11_TaskDescs
 
 nonmatching Stg11_VsParty
 

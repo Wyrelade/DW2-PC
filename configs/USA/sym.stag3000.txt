@@ -194,3 +194,4 @@ Stg30_ResultParts = 0x80073700;
 Stg30_SkillLearnTextPos = 0x80073730;
 Stg30_JoinPromptTextPos = 0x800737B8;
 Stg30_MemoryCapacity = 0x800737C0;
+Stg30_TaskDescs = 0x80073370; // task descriptor row, Task_DescTable entry

@@ -131,3 +131,4 @@ Stg35_CloseUpRotY = 0x8006A690;
 Stg35_CloseUpVpz = 0x8006A69C;
 Stg35_CloseUpVry = 0x8006A6B0;
 Stg35_SkillGroup0 = 0x8006A6DC;
+Stg35_TaskDescs = 0x8006A5C8; // task descriptor row, Task_DescTable entry

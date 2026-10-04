@@ -266,3 +266,4 @@ Stg40_SpecialFloorValues = 0x800729B4;
 Stg40_HazardRevealChance = 0x80072A58;
 Stg40_BugNestRevealChance = 0x80072A78;
 Stg40_RootState = 0x80072B60;
+Stg40_TaskDescs = 0x8007290C; // task descriptor row, Task_DescTable entry

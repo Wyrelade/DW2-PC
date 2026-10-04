@@ -94,11 +94,16 @@ dlabel D_80065230
     /* 1EDC 8006523C 00000000 */ .word 0x00000000
     /* 1EE0 80065240 0C000000 */ .word 0x0000000C
     /* 1EE4 80065244 00000000 */ .word 0x00000000
+enddlabel D_80065230
+
+nonmatching Stg10_TaskDescs
+
+dlabel Stg10_TaskDescs
     /* 1EE8 80065248 D4510680 */ .word D_800651D4
     /* 1EEC 8006524C F0510680 */ .word D_800651F0
     /* 1EF0 80065250 30520680 */ .word D_80065230
     /* 1EF4 80065254 08520680 */ .word D_80065208
-enddlabel D_80065230
+enddlabel Stg10_TaskDescs
 
 nonmatching D_80065258
 

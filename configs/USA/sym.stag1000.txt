@@ -47,3 +47,4 @@ MDEC_in_sync = 0x80064B8C; // type:func
 MDEC_out_sync = 0x80064C20; // type:func
 DecDCTvlcSize2 = 0x80064D50; // type:func
 DecDCTvlc2 = 0x80064D80; // type:func
+Stg10_TaskDescs = 0x80065248; // task descriptor row, Task_DescTable entry

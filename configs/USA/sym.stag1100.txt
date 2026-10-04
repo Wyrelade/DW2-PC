@@ -71,3 +71,4 @@ Stg11_VsPromptPos = 0x80068204;
 Stg11_VsRowMasks = 0x8006820C;
 Stg11_CardMenuDesc = 0x800681E0;
 Stg11_VsPartyDesc = 0x80068218;
+Stg11_TaskDescs = 0x80068488; // task descriptor row, Task_DescTable entry

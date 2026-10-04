@@ -190,3 +190,4 @@ Stg20_RCannonAmmo = 0x800705B4;
 Stg20_BeetlePartsTextPos = 0x800705DC;
 Stg20_UpgradeTextPos = 0x800706A4;
 Stg20_MenuState = 0x800709B0;
+Stg20_TaskDescs = 0x800703F8; // task descriptor row, Task_DescTable entry

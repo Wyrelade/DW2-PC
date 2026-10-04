@@ -709,6 +709,11 @@ dlabel D_800703E0
     /* D08C 800703EC C8B70680 */ .word Stg20_WalkerDraw
     /* D090 800703F0 78000000 */ .word 0x00000078
     /* D094 800703F4 04000000 */ .word 0x00000004
+enddlabel D_800703E0
+
+nonmatching Stg20_TaskDescs
+
+dlabel Stg20_TaskDescs
     /* D098 800703F8 6CFD0680 */ .word D_8006FD6C
     /* D09C 800703FC 6CFC0680 */ .word D_8006FC6C
     /* D0A0 80070400 E0030780 */ .word D_800703E0
@@ -738,7 +743,7 @@ dlabel D_800703E0
     /* D100 80070460 8C060780 */ .word D_8007068C
     /* D104 80070464 EC060780 */ .word D_800706EC
     /* D108 80070468 34070780 */ .word D_80070734
-enddlabel D_800703E0
+enddlabel Stg20_TaskDescs
 
 nonmatching D_8007046C
 

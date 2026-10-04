@@ -91,3 +91,4 @@ Stg00_HitReactUpdate = 0x80067120; // type:func
 Stg00_HitReactHop1Motion = 0x80068EEC;
 Stg00_HitReactHop2Motion = 0x80068EF8;
 Stg00_HitReactPushMotion = 0x80068F04;
+Stg00_TaskDescs = 0x80068F68; // task descriptor row, Task_DescTable entry

@@ -1,0 +1,47 @@
+// Data words that point inside a label (symbol + addend). Words that point at a label start
+// get their symbol from the sym files; only targets without their own label are listed here.
+// Ovl_LoadAddr: the split rodata copy (the C definition is the one linked) points at the bin.
+rom:0x800 reloc:MIPS_32 symbol:Ovl_LoadArea
+// libcd command / interrupt name tables (D_8004E6EC, D_8004E76C) and rcsid pointers into PsyQ strings
+rom:0x3EEEC reloc:MIPS_32 symbol:D_800106F4 addend:0x114 // 8004E6EC = 0x80010808
+rom:0x3EEF0 reloc:MIPS_32 symbol:D_800106F4 addend:0x10C // 8004E6F0 = 0x80010800
+rom:0x3EEF4 reloc:MIPS_32 symbol:D_800106F4 addend:0x100 // 8004E6F4 = 0x800107F4
+rom:0x3EEF8 reloc:MIPS_32 symbol:D_800106F4 addend:0xF8 // 8004E6F8 = 0x800107EC
+rom:0x3EEFC reloc:MIPS_32 symbol:D_800106F4 addend:0xEC // 8004E6FC = 0x800107E0
+rom:0x3EF00 reloc:MIPS_32 symbol:D_800106F4 addend:0xE0 // 8004E700 = 0x800107D4
+rom:0x3EF04 reloc:MIPS_32 symbol:D_800106F4 addend:0xD4 // 8004E704 = 0x800107C8
+rom:0x3EF08 reloc:MIPS_32 symbol:D_800106F4 addend:0xC8 // 8004E708 = 0x800107BC
+rom:0x3EF0C reloc:MIPS_32 symbol:D_800106F4 addend:0xC0 // 8004E70C = 0x800107B4
+rom:0x3EF10 reloc:MIPS_32 symbol:D_800106F4 addend:0xB4 // 8004E710 = 0x800107A8
+rom:0x3EF14 reloc:MIPS_32 symbol:D_800106F4 addend:0xA8 // 8004E714 = 0x8001079C
+rom:0x3EF18 reloc:MIPS_32 symbol:D_800106F4 addend:0xA0 // 8004E718 = 0x80010794
+rom:0x3EF1C reloc:MIPS_32 symbol:D_800106F4 addend:0x94 // 8004E71C = 0x80010788
+rom:0x3EF20 reloc:MIPS_32 symbol:D_800106F4 addend:0x84 // 8004E720 = 0x80010778
+rom:0x3EF24 reloc:MIPS_32 symbol:D_800106F4 addend:0x78 // 8004E724 = 0x8001076C
+rom:0x3EF28 reloc:MIPS_32 symbol:D_800106F4 addend:0x74 // 8004E728 = 0x80010768
+rom:0x3EF2C reloc:MIPS_32 symbol:D_800106F4 addend:0x68 // 8004E72C = 0x8001075C
+rom:0x3EF30 reloc:MIPS_32 symbol:D_800106F4 addend:0x5C // 8004E730 = 0x80010750
+rom:0x3EF34 reloc:MIPS_32 symbol:D_800106F4 addend:0x74 // 8004E734 = 0x80010768
+rom:0x3EF38 reloc:MIPS_32 symbol:D_800106F4 addend:0x50 // 8004E738 = 0x80010744
+rom:0x3EF3C reloc:MIPS_32 symbol:D_800106F4 addend:0x44 // 8004E73C = 0x80010738
+rom:0x3EF40 reloc:MIPS_32 symbol:D_800106F4 addend:0x38 // 8004E740 = 0x8001072C
+rom:0x3EF44 reloc:MIPS_32 symbol:D_800106F4 addend:0x2C // 8004E744 = 0x80010720
+rom:0x3EF48 reloc:MIPS_32 symbol:D_800106F4 addend:0x74 // 8004E748 = 0x80010768
+rom:0x3EF4C reloc:MIPS_32 symbol:D_800106F4 addend:0x74 // 8004E74C = 0x80010768
+rom:0x3EF50 reloc:MIPS_32 symbol:D_800106F4 addend:0x74 // 8004E750 = 0x80010768
+rom:0x3EF54 reloc:MIPS_32 symbol:D_800106F4 addend:0x74 // 8004E754 = 0x80010768
+rom:0x3EF58 reloc:MIPS_32 symbol:D_800106F4 addend:0x20 // 8004E758 = 0x80010714
+rom:0x3EF5C reloc:MIPS_32 symbol:D_800106F4 addend:0x74 // 8004E75C = 0x80010768
+rom:0x3EF60 reloc:MIPS_32 symbol:D_800106F4 addend:0x74 // 8004E760 = 0x80010768
+rom:0x3EF64 reloc:MIPS_32 symbol:D_800106F4 addend:0x74 // 8004E764 = 0x80010768
+rom:0x3EF68 reloc:MIPS_32 symbol:D_800106F4 addend:0x74 // 8004E768 = 0x80010768
+rom:0x3EF6C reloc:MIPS_32 symbol:D_800106F4 addend:0x154 // 8004E76C = 0x80010848
+rom:0x3EF70 reloc:MIPS_32 symbol:D_800106F4 addend:0x148 // 8004E770 = 0x8001083C
+rom:0x3EF74 reloc:MIPS_32 symbol:D_800106F4 addend:0x13C // 8004E774 = 0x80010830
+rom:0x3EF78 reloc:MIPS_32 symbol:D_800106F4 addend:0x130 // 8004E778 = 0x80010824
+rom:0x3EF7C reloc:MIPS_32 symbol:D_800106F4 addend:0x128 // 8004E77C = 0x8001081C
+rom:0x3EF80 reloc:MIPS_32 symbol:D_800106F4 addend:0x11C // 8004E780 = 0x80010810
+rom:0x3EF84 reloc:MIPS_32 symbol:D_800106F4 addend:0x74 // 8004E784 = 0x80010768
+rom:0x3EF88 reloc:MIPS_32 symbol:D_800106F4 addend:0x74 // 8004E788 = 0x80010768
+rom:0x3F1BC reloc:MIPS_32 symbol:D_80010904 addend:0x8 // 8004E9BC = 0x8001090C
+rom:0x40360 reloc:MIPS_32 symbol:D_80010984 addend:0x10 // 8004FB60 = 0x80010994

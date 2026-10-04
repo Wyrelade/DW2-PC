@@ -206,6 +206,11 @@ dlabel D_8006A5B0
     /* 725C 8006A5BC E0760680 */ .word Stg35_RoundBannerDraw
     /* 7260 8006A5C0 08000000 */ .word 0x00000008
     /* 7264 8006A5C4 00000000 */ .word 0x00000000
+enddlabel D_8006A5B0
+
+nonmatching Stg35_TaskDescs
+
+dlabel Stg35_TaskDescs
     /* 7268 8006A5C8 94A40680 */ .word D_8006A494
     /* 726C 8006A5CC C4A40680 */ .word D_8006A4C4
     /* 7270 8006A5D0 4CA40680 */ .word D_8006A44C
@@ -220,7 +225,7 @@ dlabel D_8006A5B0
     /* 7294 8006A5F4 30A60680 */ .word D_8006A630
     /* 7298 8006A5F8 B0A50680 */ .word D_8006A5B0
     /* 729C 8006A5FC 3CAA0680 */ .word D_8006AA3C
-enddlabel D_8006A5B0
+enddlabel Stg35_TaskDescs
 
 nonmatching Stg35_XaTrackStart
 

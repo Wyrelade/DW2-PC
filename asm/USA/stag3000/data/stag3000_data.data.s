@@ -482,6 +482,11 @@ dlabel D_80073358
     /* 10004 80073364 D0FF0680 */ .word Stg30_InterruptSelectDraw
     /* 10008 80073368 14000000 */ .word 0x00000014
     /* 1000C 8007336C 00000000 */ .word 0x00000000
+enddlabel D_80073358
+
+nonmatching Stg30_TaskDescs
+
+dlabel Stg30_TaskDescs
     /* 10010 80073370 A0310780 */ .word D_800731A0
     /* 10014 80073374 F8340780 */ .word D_800734F8
     /* 10018 80073378 18370780 */ .word D_80073718
@@ -502,7 +507,7 @@ dlabel D_80073358
     /* 10054 800733B4 F0330780 */ .word D_800733F0
     /* 10058 800733B8 A0370780 */ .word D_800737A0
     /* 1005C 800733BC C8370780 */ .word D_800737C8
-enddlabel D_80073358
+enddlabel Stg30_TaskDescs
 
 nonmatching Stg30_XaTrackStart
 

@@ -385,6 +385,11 @@ nonmatching Stg40_EnemyPaceTable
 dlabel Stg40_EnemyPaceTable
     /* F5A4 80072904 01000200 */ .word 0x00020001
     /* F5A8 80072908 00010100 */ .word 0x00010100
+enddlabel Stg40_EnemyPaceTable
+
+nonmatching Stg40_TaskDescs
+
+dlabel Stg40_TaskDescs
     /* F5AC 8007290C BC250780 */ .word D_800725BC
     /* F5B0 80072910 00000000 */ .word 0x00000000
     /* F5B4 80072914 98260780 */ .word D_80072698
@@ -399,7 +404,7 @@ dlabel Stg40_EnemyPaceTable
     /* F5D8 80072938 08270780 */ .word D_80072708
     /* F5DC 8007293C 5C270780 */ .word D_8007275C
     /* F5E0 80072940 C8260780 */ .word D_800726C8
-enddlabel Stg40_EnemyPaceTable
+enddlabel Stg40_TaskDescs
 
 nonmatching D_80072944
 
