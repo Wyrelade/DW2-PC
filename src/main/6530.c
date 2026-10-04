@@ -17,7 +17,7 @@ void Menu_ItemUseDraw(Actor *actor) {
     s32 k;
     s32 mask;
 
-    if (w->field_9C == 0) {
+    if (w->useRamp == 0) {
         return;
     }
     p = (s32 *)Cd_GetFileEntry(0x5130012);
@@ -28,11 +28,11 @@ void Menu_ItemUseDraw(Actor *actor) {
     do {
         obj = Cd_GetFileEntry(p[i]);
         mask = 1 << i;
-        if (((s32 *)Cd_GetFileEntry(0x5130013))[w->field_98 - 1] & mask) {
+        if (((s32 *)Cd_GetFileEntry(0x5130013))[w->useMode - 1] & mask) {
             switch (i) {
             case 0:
-            if (w->field_98 == 1 || w->field_98 == 3) {
-                Menu_SetPartsGridPos(obj, 2, &w->field_88, &w->field_8C);
+            if (w->useMode == 1 || w->useMode == 3) {
+                Menu_SetPartsGridPos(obj, 2, &w->useCursor, &w->useGridSize);
                 Gfx_SetPartsPalette(obj, 2, (actor->elapsed >> 2) & 3);
                 Gfx_HidePartsByMask(obj, 0);
             } else {
@@ -46,7 +46,7 @@ void Menu_ItemUseDraw(Actor *actor) {
             case 1:
             case 3:
                 k = 0;
-                if (w->field_98 == 5) {
+                if (w->useMode == 5) {
                     k = -1;
                 } else if (i == 3) {
                     k = 4;
@@ -57,7 +57,7 @@ void Menu_ItemUseDraw(Actor *actor) {
                 Gfx_HidePartsByMask(obj, 0);
                 break;
             }
-            Gfx_SetPartsScale(obj, 0x1000, w->field_9C);
+            Gfx_SetPartsScale(obj, 0x1000, w->useRamp);
             Gfx_DrawParts((s32)obj);
         }
         i++;
@@ -296,7 +296,7 @@ void Menu_ShowSelItemText(Actor *a0, MenuItemPickWork *o) {
 }
 
 void Menu_ItemInit(Actor *arg0, s16 arg1) {
-    arg0->work->field_64 = arg1;
+    arg0->work->menuMode = arg1;
 }
 
 void Menu_ItemTask(Actor *a0) {

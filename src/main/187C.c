@@ -150,7 +150,7 @@ TaskEntry *Task_FindNext(void) {
                     if (e->field_4 != Task_FindFilter.key1) break;
                 }
                 if (Task_FindFilter.key2 != -1) {
-                    if (e->field_8 != Task_FindFilter.key2) break;
+                    if (e->param != Task_FindFilter.key2) break;
                 }
                 Task_FindFilter.nextIndex = i + 1;
                 return (TaskEntry *)Task_List.entries[i];
@@ -486,10 +486,10 @@ void Bug_CompactMemBugs(void) {
     i = 0;
     j = i;
     do {
-        v = D_8005071C->field_BA9[i];
-        D_8005071C->field_BA9[i] = 0;
+        v = D_8005071C->memBugLevels[i];
+        D_8005071C->memBugLevels[i] = 0;
         if (v != 0) {
-            D_8005071C->field_BA9[j++] = v;
+            D_8005071C->memBugLevels[j++] = v;
         }
         i++;
     } while (i < 12);
@@ -590,22 +590,22 @@ s32 Item_UseOnBeetle(s32 a0, s32 a1, s32 a2, s32 a3) {
     case 0xE:
         k = rec->effectType - 0xC;
         b = D_8005071C;
-        c = b->field_BA5[k];
+        c = b->bugLevels[k];
         v = c;
         if (c != 0) {
             r = 2;
             if (rec->amount >= v) {
-                b->field_BA5[k] = 0;
+                b->bugLevels[k] = 0;
                 r = 1;
             }
         }
         break;
     case 0xF:
-        if (D_8005071C->field_BA8 != 0) {
+        if (D_8005071C->memBugCount != 0) {
             best = -1;
             max = 0;
-            for (j = 0; j < D_8005071C->field_BA8; j++) {
-                v = D_8005071C->field_BA9[j];
+            for (j = 0; j < D_8005071C->memBugCount; j++) {
+                v = D_8005071C->memBugLevels[j];
                 if (rec->amount >= v && max < v) {
                     best = j;
                     max = v;
@@ -615,28 +615,28 @@ s32 Item_UseOnBeetle(s32 a0, s32 a1, s32 a2, s32 a3) {
             if (best == -1) {
                 goto none;
             }
-            D_8005071C->field_BA8--;
-            D_8005071C->field_BA9[best] = 0;
+            D_8005071C->memBugCount--;
+            D_8005071C->memBugLevels[best] = 0;
             Bug_CompactMemBugs();
             Bug_LastZappedLevel = max;
             break;
         }
         break;
     case 0x10:
-        if (D_8005071C->field_BA5[0] + D_8005071C->field_BA5[1] + D_8005071C->field_BA5[2] + D_8005071C->field_BA8 != 0) {
+        if (D_8005071C->bugLevels[0] + D_8005071C->bugLevels[1] + D_8005071C->bugLevels[2] + D_8005071C->memBugCount != 0) {
             cnt = 0;
             for (i = 0; i < 3; i++) {
-                if (D_8005071C->field_BA5[i] != 0 && rec->amount >= D_8005071C->field_BA5[i]) {
-                    D_8005071C->field_BA5[i] = 0;
+                if (D_8005071C->bugLevels[i] != 0 && rec->amount >= D_8005071C->bugLevels[i]) {
+                    D_8005071C->bugLevels[i] = 0;
                     cnt++;
                 }
             }
-            n = D_8005071C->field_BA8;
+            n = D_8005071C->memBugCount;
             for (i = 0; i < n; i++) {
-                if (rec->amount >= D_8005071C->field_BA9[i]) {
-                    D_8005071C->field_BA9[i] = 0;
+                if (rec->amount >= D_8005071C->memBugLevels[i]) {
+                    D_8005071C->memBugLevels[i] = 0;
                     b = D_8005071C;
-                    b->field_BA8--;
+                    b->memBugCount--;
                     cnt++;
                 }
             }
@@ -707,13 +707,13 @@ s32 Item_UseStatBoost(s32 a0, s32 a1, s32 a2, s32 a3) {
     switch (rec->effectType) {
     case 9:
         d = rec->amount;
-        if (d > 0 && d + dg->field_E >= 100) {
+        if (d > 0 && d + dg->dp >= 100) {
             return 0;
         }
-        if (d < 0 && d + dg->field_E < 0) {
+        if (d < 0 && d + dg->dp < 0) {
             return 0;
         }
-        dg->field_E += rec->amount;
+        dg->dp += rec->amount;
         return 1;
     case 10:
         if (dg->exp == 99999999) {
@@ -733,13 +733,13 @@ s32 Item_UseStatBoost(s32 a0, s32 a1, s32 a2, s32 a3) {
         p = &dg->maxMp;
         break;
     case 6:
-        p = &dg->field_1C;
+        p = &dg->attack;
         break;
     case 7:
-        p = &dg->field_1E;
+        p = &dg->defense;
         break;
     case 8:
-        p = &dg->field_20;
+        p = &dg->speed;
         break;
     }
     if (*p == 999) {

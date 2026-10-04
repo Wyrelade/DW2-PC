@@ -459,7 +459,7 @@ void func_80070D14(u8 state) {
 
 void func_80070D68(Actor *a0, Stg30Ref **args) {
     ((Stg30Work734F8 *)a0->work)->ref = args[0];
-    a0->field_8 = args[0]->field_8;
+    a0->param = args[0]->field_8;
 }
 
 void func_80070D8C(Stg30TaskHead *a0) {
@@ -598,17 +598,17 @@ void func_8007118C(Actor *a0) {
     s32 t;
 
     if (a0->stateLevel0 != 2) {
-        p = (Stg30Part *)Cd_GetFileEntry(D_80073498[a0->field_8]);
+        p = (Stg30Part *)Cd_GetFileEntry(D_80073498[a0->param]);
         off = 0;
         for (q = p; q->fileId != 0; q++) {
             j = 0;
             m = q->groupMask;
             for (; j < 6; j++) {
                 if (m & D_800734B0[j]) {
-                    if (D_80073CC0.field_31C[a0->field_8] & D_800734C8[j]) {
-                        q->x = D_800734E0[a0->field_8].x + off;
+                    if (D_80073CC0.field_31C[a0->param] & D_800734C8[j]) {
+                        q->x = D_800734E0[a0->param].x + off;
                         off += 10;
-                        q->y = D_800734E0[a0->field_8].y;
+                        q->y = D_800734E0[a0->param].y;
                         q->visible = 1;
                     } else {
                         q->visible = 0;
@@ -634,7 +634,7 @@ void func_8007118C(Actor *a0) {
                 }
             }
         }
-        k = a0->field_8;
+        k = a0->param;
         if (k < 3) {
             Stg30DigiS *s = &D_80073CD8[k];
 
@@ -644,8 +644,8 @@ void func_8007118C(Actor *a0) {
             Gfx_SetPartsNumber((GfxPart *)p, 0x100, 3, s->mp);
             Gfx_SetPartsNumber((GfxPart *)p, 0x200, 2, s->level);
         }
-        d = &D_80073CD8[a0->field_8];
-        if (a0->field_8 < 3) {
+        d = &D_80073CD8[a0->param];
+        if (a0->param < 3) {
             func_80071044(p, 0x400, d->hp, d->maxHp);
             func_80071044(p, 0x4000, d->mp, d->maxMp);
         } else {
@@ -722,9 +722,9 @@ void func_80071538(DigiRosterEntry *e) {
     lv = e->level - (Digi_GetRank(e->digiId) * 10 + k);
     for (k = 0; k < 2; k++) {
         if (k == 0) {
-            p = (u16 *)&e->field_1C;
+            p = (u16 *)&e->attack;
         } else {
-            p = &e->field_1E;
+            p = &e->defense;
         }
         r = Rand_Next() & 3;
         c = Digi_GetStatGrowth(e->digiId, k + 2);
@@ -745,8 +745,8 @@ void func_80071538(DigiRosterEntry *e) {
         }
         *p = t;
     }
-    lv = e->field_20;
-    p = (u16 *)&e->field_20;
+    lv = e->speed;
+    p = (u16 *)&e->speed;
     r = Rand_Next() & 3;
     c = Digi_GetStatGrowth(e->digiId, 4);
     if (lv < 21) {
@@ -790,9 +790,9 @@ void func_8007191C(Actor *a0) {
                 D_80073CC0.field_34C[i] = 0;
             }
         }
-        Save_GameState.field_8 += w->pair.field_4;
-        if (Save_GameState.field_8 > 99999999) {
-            Save_GameState.field_8 = 99999999;
+        Save_GameState.bits += w->pair.field_4;
+        if (Save_GameState.bits > 99999999) {
+            Save_GameState.bits = 99999999;
         }
         Task_NextState0(a0);
         break;
@@ -868,7 +868,7 @@ void func_80071C14(Actor *a0) {
             Gfx_SetPartsNumber(p, 8, 2, D_80073CC0.entries[i].field_25);
             break;
         case 4:
-            Gfx_SetPartsNumber(p, 1, 8, Save_GameState.field_8);
+            Gfx_SetPartsNumber(p, 1, 8, Save_GameState.bits);
             break;
         }
         if (draw) {
@@ -1200,7 +1200,7 @@ void func_8007292C(Actor *a0) {
                     break;
                 }
                 for (t = Task_FindFirst(0x509, -1, -1); t != NULL; t = Task_FindNext()) {
-                    if (t->field_8 < 3) {
+                    if (t->param < 3) {
                         func_8006F640((Actor *)t, 0);
                         func_8006F664((Actor *)t);
                     }
@@ -1249,7 +1249,7 @@ void func_8007292C(Actor *a0) {
                         cnt++;
                     }
                 }
-                n = D_800737C0[D_8005E650 - 0x2F] - D_8005071C->field_BA8;
+                n = D_800737C0[D_8005E650 - 0x2F] - D_8005071C->memBugCount;
                 if (n > 0 && cnt < n) {
                     Task_SetState1(a0, 4);
                     break;

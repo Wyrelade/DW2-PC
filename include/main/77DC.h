@@ -5,7 +5,7 @@
 
 /* Functions src/main/77DC.c defines or declares, for the units after it. */
 extern void Gfx_HidePartsByMask(GfxPartMaskView *, s32);
-extern s32 GsSetRefView2(Ctx19214 *);
+extern s32 GsSetRefView2(GsRVIEW2 *);
 extern void SsSetTableSize(void *, s16, s16);
 extern void SsSetTickMode(s32);
 extern void SsStart2();

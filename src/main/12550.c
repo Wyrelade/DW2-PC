@@ -22,9 +22,9 @@ s32 Bug_GetMaxMemBugLevel(void) {
     s32 i;
     s32 v;
 
-    if (D_8005071C->field_BA8 != 0) {
-        for (i = 0; i < D_8005071C->field_BA8; i++) {
-            best = (best < (v = D_8005071C->field_BA9[i])) ? v : best;
+    if (D_8005071C->memBugCount != 0) {
+        for (i = 0; i < D_8005071C->memBugCount; i++) {
+            best = (best < (v = D_8005071C->memBugLevels[i])) ? v : best;
         }
     }
     return best;

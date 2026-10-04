@@ -92,12 +92,12 @@ void Digi_InitFromTable(s32 a0, s32 a1, DigiRosterEntry *e) {
     {
         DigiInitRow *row = &r[a1];
         e->level = row->level;
-        e->field_1C = row->field_13;
-        e->field_1E = row->field_14;
-        e->field_20 = row->field_16;
-        e->attr[0] = row->field_17;
-        e->attr[1] = row->field_18;
-        e->attr[2] = row->field_19;
+        e->attack = row->attack;
+        e->defense = row->defense;
+        e->speed = row->speed;
+        e->attr[0] = row->skill0;
+        e->attr[1] = row->skill1;
+        e->attr[2] = row->skill2;
     }
     e->maxLevel = Digi_CalcMaxLevel(e->level);
     if (e->level == 1) {
@@ -130,18 +130,18 @@ void Enemy_InitRosterEntry(s32 a0, s32 a1, DigiRosterEntry *e, Out1DDA8 *o) {
         }
         e->level = t->rows[a1].field_A;
         e->exp = t->rows[a1].field_6;
-        e->field_1C = t->rows[a1].field_B;
-        e->field_1E = t->rows[a1].field_C;
-        e->field_20 = t->rows[a1].field_E;
+        e->attack = t->rows[a1].field_B;
+        e->defense = t->rows[a1].field_C;
+        e->speed = t->rows[a1].field_E;
         e->attr[0] = t->rows[a1].field_F;
         e->attr[1] = t->rows[a1].field_10;
         e->attr[2] = t->rows[a1].field_11;
         for (i = 3; i < 12; i++) {
             e->attr[i] = 0;
         }
-        o->field_2 = t->rows[a1].field_F;
-        o->field_3 = t->rows[a1].field_10;
-        o->field_4 = t->rows[a1].field_11;
+        o->skill0 = t->rows[a1].field_F;
+        o->skill1 = t->rows[a1].field_10;
+        o->skill2 = t->rows[a1].field_11;
         o->field_9[0] = t->rows[a1].field_12[0][1];
         o->field_9[1] = t->rows[a1].field_12[1][1];
         o->field_9[2] = t->rows[a1].field_12[2][1];
@@ -538,11 +538,11 @@ s32 Skill_GetType(s32 id) {
 }
 
 s32 Skill_GetPartsEntry(s32 id) {
-    return Skill_FindById(id)->field_C;
+    return Skill_FindById(id)->partsEntry;
 }
 
 u8 Skill_GetMpCost(s32 id) {
-    return Skill_FindById(id)->field_4;
+    return Skill_FindById(id)->mpCost;
 }
 
 void func_8001EEA4(s32 id, s32 n, s16 *a, s16 *b) {
@@ -562,7 +562,7 @@ s32 Skill_GetTarget(s32 id) {
 }
 
 s16 Skill_GetPower(s32 id) {
-    return Skill_FindById(id)->field_8;
+    return Skill_FindById(id)->power;
 }
 
 u16 Skill_GetSpecialty(s32 id) {
@@ -576,7 +576,7 @@ u16 Skill_GetSpecialty(s32 id) {
 
 s32 *Skill_GetShotXa(s32 id) {
     EntED40 *e = Skill_FindById(id);
-    Skill_ShotXaFile = e->field_6;
+    Skill_ShotXaFile = e->shotXaFile;
     D_8005077C = e->field_5;
     return &Skill_ShotXaFile;
 }
@@ -591,7 +591,7 @@ s32 func_8001F044(s32 id) {
 }
 
 s32 Skill_GetStatusFlags(s32 id) {
-    return Skill_FindById(id)->field_18 & 0x3FFFFFF;
+    return Skill_FindById(id)->statusFlags & 0x3FFFFFF;
 }
 
 s32 Skill_GetCureFlags(s32 id) {
@@ -1113,7 +1113,7 @@ void Gfx_DrawTexModel(Actor *a0, s32 mode) {
             n = p->n;
             q = (ModelQuadGT4 *)p->e;
             if (n != 0) {
-                if (s->field_34 == 1) {
+                if (s->clutRow == 1) {
                     Gfx_AddQuadsGT4(q, n, s, 2);
                 } else {
                     Gfx_AddQuadsGT4(q, n, s, j);
@@ -1126,7 +1126,7 @@ void Gfx_DrawTexModel(Actor *a0, s32 mode) {
             n = p->n;
             r = (GfxModelTriGT3 *)((GfxModelTriSec *)p)->e;
             if (n != 0) {
-                if (s->field_34 == 1) {
+                if (s->clutRow == 1) {
                     Gfx_AddTrisGT3(r, n, s, 2);
                 } else {
                     Gfx_AddTrisGT3(r, n, s, j);
@@ -1421,11 +1421,11 @@ void Gfx_AddTrisGT3(GfxModelTriGT3 *t, s32 n, ActorModel *s, s32 mode) {
             p->c0.code = code;
             z = (sz[t->v[0]] + sz[t->v[1]] + sz[t->v[2]]) / 3;
             if (mode == 2) {
-                p->tpage = tex->tpage | s->field_36;
+                p->tpage = tex->tpage | s->tpageFlags;
             } else {
                 p->tpage = tex->tpage | t->tpage;
             }
-            p->clut = t->clut + (((tex->vramY + s->field_34) << 6) | ((tex->vramX >> 4) & 0x3F));
+            p->clut = t->clut + (((tex->vramY + s->clutRow) << 6) | ((tex->vramX >> 4) & 0x3F));
             p->u0 = t->u0 + tex->uOffset;
             p->u1 = t->u1 + tex->uOffset;
             p->u2 = t->u2 + tex->uOffset;
@@ -1497,11 +1497,11 @@ void Gfx_AddQuadsGT4(ModelQuadGT4 *t, s32 n, ActorModel *s, s32 mode) {
             p->c0.code = code;
             z = (sz[t->v[0]] + sz[t->v[1]] + sz[t->v[2]] + sz[t->v[3]]) / 4;
             if (mode == 2) {
-                p->tpage = tex->tpage | s->field_36;
+                p->tpage = tex->tpage | s->tpageFlags;
             } else {
                 p->tpage = tex->tpage | t->tpage;
             }
-            p->clut = t->clut + (((tex->vramY + s->field_34) << 6) | ((tex->vramX >> 4) & 0x3F));
+            p->clut = t->clut + (((tex->vramY + s->clutRow) << 6) | ((tex->vramX >> 4) & 0x3F));
             p->u0 = t->u0 + tex->uOffset;
             p->u1 = t->u1 + tex->uOffset;
             p->u2 = t->u2 + tex->uOffset;

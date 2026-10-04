@@ -198,7 +198,7 @@ void Save_ResetGameState(void) {
     Save_GameState.field_15 = 0x95;
     Save_GameState.field_16 = 0xB7;
     Save_GameState.field_17 = 0xFF;
-    Save_GameState.field_8 = 0x1F4;
+    Save_GameState.bits = 0x1F4;
     Save_GameState.field_D1 = 0x9E;
     Save_GameState.field_D2 = 0xD5;
     Save_GameState.field_D3 = 0x96;

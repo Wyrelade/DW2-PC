@@ -774,7 +774,7 @@ void Fx_ModelTask(Actor *arg0) {
         break;
     case 1: {
         ActorModel *s = arg0->model;
-        if (arg0->elapsed < work->field_18 && s->animDone >= 0)
+        if (arg0->elapsed < work->duration && s->animDone >= 0)
             break;
         Task_SetState0(arg0, 3);
         break;

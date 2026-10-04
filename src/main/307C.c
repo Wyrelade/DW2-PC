@@ -57,10 +57,10 @@ void Menu_NameEntryTask(Actor *a0) {
     TextOpenArgs arg;
     TextOpenArgs arg2;
 
-    switch (w->field_0) {
+    switch (w->mode) {
     default:
     case 0:
-        p = Save_RosterNames[w->field_4].name;
+        p = Save_RosterNames[w->rosterIndex].name;
         break;
     case 1:
         p = D_8005E634;
@@ -71,18 +71,18 @@ void Menu_NameEntryTask(Actor *a0) {
     }
     switch (a0->stateLevel0) {
     case 0:
-        Mem_FillWordsNeg1(&w->field_10, 5);
+        Mem_FillWordsNeg1(&w->gridText0, 5);
         {
             s32 j;
-            for (j = 0; j < w->field_8; j++) {
+            for (j = 0; j < w->maxLen; j++) {
                 p[j] = 0xFD;
             }
             p[j] = 0xFF;
         }
-        switch (w->field_0) {
+        switch (w->mode) {
         default:
         case 0:
-            src = Digi_GetDefaultName(Save_GameState.elems[w->field_4].digiId);
+            src = Digi_GetDefaultName(Save_GameState.elems[w->rosterIndex].digiId);
             for (i = 0; i < 14; i++) {
                 if (src[i] == 0xFF) {
                     break;
@@ -108,18 +108,18 @@ void Menu_NameEntryTask(Actor *a0) {
         }
         Snd_SaveCurrentId();
         Snd_PlayById(0x22, 1);
-        w->field_C = 6;
+        w->charTableOfs = 6;
         Task_NextState0(a0);
         break;
     case 1:
         switch (a0->stateLevel1) {
         case 0:
         default:
-            Text_Close(&w->field_10);
-            Text_Close(&w->field_14);
-            Text_Close(&w->field_18);
-            Text_Close(&w->field_20);
-            arg.text = (s32)Cd_GetFileEntry(w->field_C + 0x1FD00D4);
+            Text_Close(&w->gridText0);
+            Text_Close(&w->gridText1);
+            Text_Close(&w->gridText2);
+            Text_Close(&w->nameText);
+            arg.text = (s32)Cd_GetFileEntry(w->charTableOfs + 0x1FD00D4);
             arg.x = 0x28;
             arg.y = 0x42;
             arg.charAdvance = 0x13;
@@ -127,31 +127,31 @@ void Menu_NameEntryTask(Actor *a0) {
             arg.color = 0;
             arg.lineAdvance = 0x12;
             arg.charDelay = 0;
-            Text_Open(&w->field_10, &arg);
-            arg.text = (s32)Cd_GetFileEntry(w->field_C + 0x1FD00D5);
+            Text_Open(&w->gridText0, &arg);
+            arg.text = (s32)Cd_GetFileEntry(w->charTableOfs + 0x1FD00D5);
             arg.x += 0x65;
-            Text_Open(&w->field_14, &arg);
-            arg.text = (s32)Cd_GetFileEntry(w->field_C + 0x1FD00D6);
+            Text_Open(&w->gridText1, &arg);
+            arg.text = (s32)Cd_GetFileEntry(w->charTableOfs + 0x1FD00D6);
             arg.x += 0x65;
-            Text_Open(&w->field_18, &arg);
+            Text_Open(&w->gridText2, &arg);
             arg.x = 0x26;
             arg.text = (s32)p;
             arg.y = 0x20;
             arg.charAdvance = 0;
             arg.lineAdvance = 0;
             arg.charDelay = 0;
-            Text_Open(&w->field_20, &arg);
-            switch (w->field_0) {
+            Text_Open(&w->nameText, &arg);
+            switch (w->mode) {
             default:
             case 0:
-                arg2.text = (s32)Digi_GetDefaultName(Save_GameState.elems[w->field_4].digiId);
+                arg2.text = (s32)Digi_GetDefaultName(Save_GameState.elems[w->rosterIndex].digiId);
                 break;
             case 1:
                 arg2.text = (s32)Cd_GetFileEntry(0x1FD0074);
                 break;
             L34:
-                w->field_2C = 10;
-                w->field_2E = 7;
+                w->cursorX = 10;
+                w->cursorY = 7;
                 Snd_PlayById(0x12, 0);
                 goto keys_done;
             Lnone:
@@ -168,51 +168,51 @@ void Menu_NameEntryTask(Actor *a0) {
             arg2.charAdvance = 0;
             arg2.lineAdvance = 0;
             arg2.charDelay = 0;
-            Text_Open(&w->field_1C, &arg2);
+            Text_Open(&w->headerText, &arg2);
             Task_NextState1(a0);
         case 1:
             k = Pad_State[0].repeat;
             if (k & 0x2000) {
-                if (w->field_2C != 10) {
-                    if (++w->field_2C == 10) {
-                        w->field_2E = 7;
+                if (w->cursorX != 10) {
+                    if (++w->cursorX == 10) {
+                        w->cursorY = 7;
                     }
                     Snd_PlayById(0x12, 0);
                 }
             } else if (k & 0x8000) {
-                if (w->field_2C != 0) {
-                    w->field_2C--;
+                if (w->cursorX != 0) {
+                    w->cursorX--;
                     Snd_PlayById(0x12, 0);
                 }
             } else if (k & 0x1000) {
-                if (w->field_2E != 0) {
-                    w->field_2E--;
-                    if (w->field_2C == 10) {
-                        w->field_2C--;
+                if (w->cursorY != 0) {
+                    w->cursorY--;
+                    if (w->cursorX == 10) {
+                        w->cursorX--;
                     }
                     Snd_PlayById(0x12, 0);
                 }
             } else if (k & 0x4000) {
-                if (w->field_2E != 7) {
-                    w->field_2E++;
+                if (w->cursorY != 7) {
+                    w->cursorY++;
                     Snd_PlayById(0x12, 0);
                 }
             } else if (Pad_State[0].r1 > 0) {
-                if (w->field_24 != w->field_8) {
-                    w->field_24++;
+                if (w->namePos != w->maxLen) {
+                    w->namePos++;
                     Snd_PlayById(0x12, 0);
                 }
             } else if (Pad_State[0].l1 > 0) {
-                if (w->field_24 != 0) {
-                    w->field_24--;
+                if (w->namePos != 0) {
+                    w->namePos--;
                     Snd_PlayById(0x12, 0);
                 }
             } else if (Pad_State[0].triangle > 0) {
-                i = w->field_24;
+                i = w->namePos;
                 if (i != 0) {
                     do {
                         s32 n = i - 1;
-                        w->field_24 = n;
+                        w->namePos = n;
                         p[n] = 0xFD;
                         Snd_PlayById(0xB, 0);
                     } while (0);
@@ -220,20 +220,20 @@ void Menu_NameEntryTask(Actor *a0) {
             } else if (Pad_State[0].start > 0) {
                 goto L34;
             } else if (Pad_State[0].cross > 0) {
-                if (w->field_2C < 10 || w->field_2E < 4) {
-                    if (w->field_24 != w->field_8) {
-                        p[w->field_24] = Menu_NameEntryGetChar(a0);
-                        w->field_24++;
+                if (w->cursorX < 10 || w->cursorY < 4) {
+                    if (w->namePos != w->maxLen) {
+                        p[w->namePos] = Menu_NameEntryGetChar(a0);
+                        w->namePos++;
                         Snd_PlayById(0xE, 0);
                     }
-                } else if (w->field_2E == 7) {
-                    for (i = 0; i < w->field_8; i++) {
+                } else if (w->cursorY == 7) {
+                    for (i = 0; i < w->maxLen; i++) {
                         if (p[i] != 0xFD) {
                             break;
                         }
                     }
-                    j = w->field_8 - 1;
-                    if (i != w->field_8) {
+                    j = w->maxLen - 1;
+                    if (i != w->maxLen) {
                         for (; j >= 0; j--) {
                             if (p[j] != 0xFD) {
                                 break;
@@ -248,12 +248,12 @@ void Menu_NameEntryTask(Actor *a0) {
                 }
             }
         keys_done:
-            if (w->field_24 == w->field_8) {
-                w->field_2C = 10;
-                w->field_2E = 7;
+            if (w->namePos == w->maxLen) {
+                w->cursorX = 10;
+                w->cursorY = 7;
             }
             if (Pad_State[0].repeat & 0xF000) {
-                w->field_28 = 0;
+                w->blinkTimer = 0;
             }
             break;
         }
@@ -262,7 +262,7 @@ void Menu_NameEntryTask(Actor *a0) {
         if (Sys_GameMode[0] != 0x500) {
             Snd_RestoreSavedId();
         }
-        Text_CloseArray(&w->field_10, 5);
+        Text_CloseArray(&w->gridText0, 5);
         Task_NextState0(a0);
         break;
     }
@@ -279,10 +279,10 @@ void Menu_NameEntryDrawParts(Actor *a) {
     w->field_28 += Sys_State.frameDelta;
     for (p = base; p->fileId != 0; p++) {
         if (p->groupMask & 0x20) {
-            v = w->field_24;
+            v = w->namePos;
             p->y = -0x48;
             p->x = v * 9 - 0x71;
-            if (w->field_24 == w->field_8) {
+            if (w->namePos == w->field_8) {
                 p->visible = 0;
             } else {
                 p->visible = 1;
@@ -561,31 +561,31 @@ s32 Menu_MoveGridCursor(s32 a0, s32 a1, s32 a2) {
     saved = *(Copy138C0 *)p0;
 
     if (((ElmFlags138C0 *)Pad_State)[a2].field_3C & 0x8000) {
-        if (p0->field_0 > 0) {
-            p0->field_0 = p0->field_0 - 1;
+        if (p0->x > 0) {
+            p0->x = p0->x - 1;
             goto tail;
         }
     }
     if (((ElmFlags138C0 *)Pad_State)[a2].field_3C & 0x2000) {
-        if (p0->field_0 < p1->field_0 - 1) {
-            p0->field_0 = p0->field_0 + 1;
+        if (p0->x < p1->x - 1) {
+            p0->x = p0->x + 1;
             goto tail;
         }
     }
     if (((ElmFlags138C0 *)Pad_State)[a2].field_3C & 0x1000) {
-        if (p0->field_2 > 0) {
-            p0->field_2 = p0->field_2 - 1;
+        if (p0->y > 0) {
+            p0->y = p0->y - 1;
             goto tail;
         }
     }
     if (((ElmFlags138C0 *)Pad_State)[a2].field_3C & 0x4000) {
-        if (p0->field_2 < p1->field_2 - 1) {
-            p0->field_2 = p0->field_2 + 1;
+        if (p0->y < p1->y - 1) {
+            p0->y = p0->y + 1;
         }
     }
 
 tail:
-    if (saved.h[0] != p0->field_0 || saved.h[1] != p0->field_2) {
+    if (saved.h[0] != p0->x || saved.h[1] != p0->y) {
         changed = -1;
     }
     return changed;
@@ -668,7 +668,7 @@ void Menu_TopMenuTask(Actor *a0) {
     case 0:
     default:
         Menu_Ctx = (MenuCtx *)Mem_Alloc(0x364, 2);
-        Menu_Ctx->field_360 = 0;
+        Menu_Ctx->topMenuResult = 0;
         Menu_TopMenuResult = 0;
         *(Layout8C *)w->gridSize = *(Layout8C *)Cd_GetFileEntry(0x5130005);
         Menu_Ctx->flags = 0;
@@ -734,7 +734,7 @@ void Menu_TopMenuTask(Actor *a0) {
                 } else if (k == 6 && !(Menu_Ctx->flags & 8)) {
                     snd = 0x10;
                 } else if (k == 5) {
-                    Menu_Ctx->field_360 = 1;
+                    Menu_Ctx->topMenuResult = 1;
                     Task_SetState0(a0, 2);
                     snd = 0xA;
                 } else {
@@ -774,7 +774,7 @@ void Menu_TopMenuTask(Actor *a0) {
                 break;
             case 1:
                 if (*slot == 0) {
-                    if (Menu_Ctx->field_360 != 0) {
+                    if (Menu_Ctx->topMenuResult != 0) {
                         Task_SetState0(a0, 2);
                     } else {
                         Task_SetState1(a0, 0);
@@ -790,7 +790,7 @@ void Menu_TopMenuTask(Actor *a0) {
         case 0:
         default:
             Text_CloseArray(&w->option0Text, 8);
-            Menu_TopMenuResult = Menu_Ctx->field_360;
+            Menu_TopMenuResult = Menu_Ctx->topMenuResult;
             Task_NextState1(a0);
             Gfx_FadeOutToBlack(0x20);
             break;

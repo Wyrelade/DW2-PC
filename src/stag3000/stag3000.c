@@ -2,17 +2,17 @@
 #include "stag3000/stag3000.h"
 
 void func_80063898(Actor *a0, s32 a1) {
-    a0->field_8 = a1;
+    a0->param = a1;
 }
 
 void func_800638A0(Actor *a0) {
     switch (a0->stateLevel0) {
     case 0:
-        if (a0->field_8 == 1) Snd_PlayById(0x24, 0);
+        if (a0->param == 1) Snd_PlayById(0x24, 0);
         Task_NextState0(a0);
         break;
     case 1:
-        switch (a0->field_8) {
+        switch (a0->param) {
         case 0:
         default:
             if (a0->elapsed >= 0x100) Task_SetState0(a0, 3);
@@ -31,13 +31,13 @@ case 2: break;
 }
 
 void func_8006399C(Actor *a0) {
-    Stg30Part *p = (Stg30Part *)Cd_GetFileEntry(D_80072FC8[a0->field_8]);
+    Stg30Part *p = (Stg30Part *)Cd_GetFileEntry(D_80072FC8[a0->param]);
     Stg30Part *q;
 
     for (q = p; q->fileId != 0; q++) {
         q->palette = Math_CycleRange(a0->elapsed, 4, 0, 7);
     }
-    if (a0->field_8 == 3) {
+    if (a0->param == 3) {
         if (D_80073CC0.entries[0].field_0 != 0) {
             Gfx_HidePartsByMask((GfxPartMaskView *)p, 1);
         } else {

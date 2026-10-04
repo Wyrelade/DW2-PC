@@ -559,15 +559,15 @@ void func_80066808(Actor *arg0, Stg35Vec3 *arg1) {
     Stg35Work *w = (Stg35Work *)arg0->work;
     s32 n;
 
-    arg0->field_8 = i;
+    arg0->param = i;
     arg0->digiId = D_8006AA88.rec[i].digiId;
     w->field_14 = Digi_GetModelFile(arg0->digiId);
-    if (arg0->field_8 < 3) {
+    if (arg0->param < 3) {
         w->field_10 = 0x800;
     } else {
         w->field_10 = 0;
     }
-    n = arg0->field_8;
+    n = arg0->param;
     w->field_8 = 0;
     w->field_4 = (n % 3) * 0xA00 - 0xA00;
     w->field_C = (n / 3) * 0x2800 - 0x1400;
@@ -980,7 +980,7 @@ void func_800673E8(Actor *arg0) {
             Gfx_DrawTexModel(arg0, 0);
         }
         if (w->field_1C != 0) {
-            if (arg0->field_8 < 3) {
+            if (arg0->param < 3) {
                 c = w->field_20;
             } else {
                 c.r = w->field_20.g;
@@ -1006,7 +1006,7 @@ void func_800674F8(Actor *arg0) {
 }
 
 void func_80067508(Actor *arg0, s32 arg1) {
-    arg0->field_8 = arg1;
+    arg0->param = arg1;
 }
 
 INCLUDE_RODATA("asm/USA/stag3500/rodata", D_80063418);
@@ -1024,7 +1024,7 @@ void func_80067510(Actor *arg0) {
         {
             Stg35Masks masks = D_80063418;
 
-            func_800663CC(w->load, ~masks.v[arg0->field_8]);
+            func_800663CC(w->load, ~masks.v[arg0->param]);
         }
         Snd_PlayById(0x24, 0);
         Task_NextState0(arg0);
@@ -1162,13 +1162,13 @@ void func_8006799C(Actor *arg0) {
 
 void func_800679D0(Actor *arg0) {
     Stg35Work708 *w = (Stg35Work708 *)arg0->work;
-    s32 sel = 6 - w->field_54[arg0->field_8] / 4096;
+    s32 sel = 6 - w->field_54[arg0->param] / 4096;
     Stg35TextHandle *t;
     s32 i;
 
     for (i = 0; i < 7; i++) {
         t = &w->text[i];
-        if (arg0->field_8 == 0) {
+        if (arg0->param == 0) {
             func_80065760(t, 0, 0xB8, i * 14 + 0x49);
         } else {
             func_80065760(t, 0, 0x1C, i * 14 + 0x49);
@@ -1191,17 +1191,17 @@ void func_800679D0(Actor *arg0) {
 
 void func_80067B18(Actor *arg0, s32 arg1) {
     Stg35Work708 *w = (Stg35Work708 *)arg0->work;
-    s32 s = func_80065B88(0xC4, 0x7000, w->field_54[arg0->field_8]);
+    s32 s = func_80065B88(0xC4, 0x7000, w->field_54[arg0->param]);
     Stg35SpriteHandle *sp;
 
-    if (arg0->field_8 == 0) {
+    if (arg0->param == 0) {
         sp = &w->sprite[2];
     } else {
         sp = &w->sprite[3];
     }
     func_80065B48(sp, s);
     func_80065B60(sp, 0x60 - s);
-    if (w->field_54[arg0->field_8] >= 0x6000) {
+    if (w->field_54[arg0->param] >= 0x6000) {
         func_80065B1C(sp, 0, 0xA4, 0x19, 2);
         func_80065B1C(sp, 1, 0xA4, 0x19, 2);
         func_80065B1C(sp, 2, 0xA4, 0x19, 2);
@@ -1216,15 +1216,15 @@ void func_80067B18(Actor *arg0, s32 arg1) {
 
 void func_80067C74(Actor *arg0, s32 arg1) {
     Stg35Work708 *w = (Stg35Work708 *)arg0->work;
-    s32 s = func_80065B88(0x70, 0x6000, w->field_54[arg0->field_8]);
+    s32 s = func_80065B88(0x70, 0x6000, w->field_54[arg0->param]);
     Stg35SpriteHandle *sp;
 
-    if (arg0->field_8 == 0) {
+    if (arg0->param == 0) {
         sp = &w->sprite[0];
     } else {
         sp = &w->sprite[1];
     }
-    if (arg0->field_8 == 0) {
+    if (arg0->param == 0) {
         func_80065B3C(sp, s);
         func_80065B54(sp, -0x16 - s);
     } else {
@@ -1235,7 +1235,7 @@ void func_80067C74(Actor *arg0, s32 arg1) {
         func_80065B1C(sp, 1, 0xA4, 0x19, 2);
         func_80065B1C(sp, 2, 0xA4, 0x19, 2);
         func_80065B1C(sp, 3, 0xA4, 0x19, 2);
-    } else if (arg0->field_8 == 0) {
+    } else if (arg0->param == 0) {
         func_80065B1C(sp, 0, 0xFA, 0, 0);
         func_80065B1C(sp, 1, 0, 0, 0xFC);
         func_80065B1C(sp, 2, 0xFA, 0, 0);
@@ -1335,10 +1335,10 @@ void func_80067E48(Actor *arg0) {
             func_80066778(&w->load[2], 0x80, 1, order[5]);
             break;
         case 2: {
-            s32 *gauge = &w->field_54[arg0->field_8];
-            Stg35LoadHandle *load = &w->load[arg0->field_8 + 1];
+            s32 *gauge = &w->field_54[arg0->param];
+            Stg35LoadHandle *load = &w->load[arg0->param + 1];
             Stg35LoadHandle *base = w->load;
-            s32 pressed = Pad_State[arg0->field_8].pressed & 0xFFFF;
+            s32 pressed = Pad_State[arg0->param].pressed & 0xFFFF;
             s32 r;
 
             switch (arg0->stateLevel2) {
@@ -1382,10 +1382,10 @@ void func_80067E48(Actor *arg0) {
                 switch (arg0->stateLevel3) {
                 case 0:
                     arg0->elapsed = 0;
-                    w->field_54[arg0->field_8] = 0;
+                    w->field_54[arg0->param] = 0;
                     func_80066480(load, 2);
                     func_80066408(base, 2);
-                    if (arg0->field_8 == 0) {
+                    if (arg0->param == 0) {
                         func_80066408(base, 8);
                         func_80066408(base, 0x20);
                     } else {
@@ -1404,7 +1404,7 @@ void func_80067E48(Actor *arg0) {
                     func_80067B18(arg0, 0);
                     func_80067C74(arg0, 0);
                     func_800679D0(arg0);
-                    if (arg0->field_8 == 0) {
+                    if (arg0->param == 0) {
                         func_8006659C(&w->load[0], 0x20, 0x4F);
                         func_80066618(&w->load[0], 0x20, 0x2B - (w->field_54[0] / 0x1000) * 14);
                     } else {
@@ -1439,7 +1439,7 @@ void func_80067E48(Actor *arg0) {
                         Task_NextState4(arg0);
                     case 1:
                         r = Math_CycleRange(arg0->elapsed, 2, 0, 7);
-                        if (arg0->field_8 == 0) {
+                        if (arg0->param == 0) {
                             func_80066520(&w->load[0], 0x20, r);
                         } else {
                             func_80066520(&w->load[0], 0x10, r);
@@ -1450,7 +1450,7 @@ void func_80067E48(Actor *arg0) {
                         break;
                     case 2:
                         if (arg0->elapsed >= 0x3C) {
-                            s32 level = w->field_54[arg0->field_8] / 0x1000;
+                            s32 level = w->field_54[arg0->param] / 0x1000;
                             w->field_74 = level;
                             w->field_7C = w->field_5C[5 - level];
                             Task_NextState3(arg0);
@@ -1462,7 +1462,7 @@ void func_80067E48(Actor *arg0) {
                     for (i = 0; i < 7; i++) {
                         func_80065894(&w->text[i]);
                     }
-                    func_80065B48(&w->sprite[arg0->field_8 + 2], 0);
+                    func_80065B48(&w->sprite[arg0->param + 2], 0);
                     func_80066480(load, 6);
                     func_80066480(base, 0x3E);
                     if (w->field_74 == 6) {
@@ -1584,7 +1584,7 @@ void func_80068B10(s32 arg0, s32 *arg1) {
     if (e != NULL) {
         w = (Stg35Work708 *)e->work;
         Task_SetState1(e, 2);
-        e->field_8 = arg0;
+        e->param = arg0;
         for (i = 0; i < 6; i++) {
             w->field_5C[i] = arg1[i];
         }
@@ -1690,7 +1690,7 @@ void func_80068D34(Actor *arg0) {
                 break;
             case 3:
                 for (e = (Actor *)Task_FindFirst(0x707, -1, -1); e != NULL; e = (Actor *)Task_FindNext()) {
-                    if (e->field_8 == w->script[1]) {
+                    if (e->param == w->script[1]) {
                         func_800674D4(e, 1);
                         func_800674F8(e);
                     } else {
@@ -1701,7 +1701,7 @@ void func_80068D34(Actor *arg0) {
                 break;
             case 4:
                 for (e = (Actor *)Task_FindFirst(0x707, -1, -1); e != NULL; e = (Actor *)Task_FindNext()) {
-                    if (e->field_8 < 3) {
+                    if (e->param < 3) {
                         func_800674D4(e, 1);
                         func_800674F8(e);
                     }
@@ -1710,7 +1710,7 @@ void func_80068D34(Actor *arg0) {
                 break;
             case 5:
                 for (e = (Actor *)Task_FindFirst(0x707, -1, -1); e != NULL; e = (Actor *)Task_FindNext()) {
-                    if (e->field_8 >= 3) {
+                    if (e->param >= 3) {
                         func_800674D4(e, 1);
                         func_800674F8(e);
                     }

@@ -412,7 +412,7 @@ void func_8006CB58(Actor *a) {
                 Snd_PlayById(0xF, 0);
                 g = (Stg20GameState *)&Save_GameState;
                 g->field_DD4[id] = g->field_DD4[id] == 99 ? 99 : g->field_DD4[id] + 1;
-                Save_GameState.field_8 -= Item_GetPrice(id);
+                Save_GameState.bits -= Item_GetPrice(id);
                 Task_SetState1(a, 0);
             } else if (D_8005F70C > 0 || Flag_Test(0x10) != 0) {
                 Snd_PlayById(0xB, 0);
@@ -456,9 +456,9 @@ void func_8006CB58(Actor *a) {
             if (Flag_Test(0x10) != 0) {
                 if (Flag_Test(0x11) == 0) {
                     Snd_PlayById(0xF, 0);
-                    Save_GameState.field_8 += Item_GetPrice(id) / 2;
-                    if (Save_GameState.field_8 > 99999999) {
-                        Save_GameState.field_8 = 99999999;
+                    Save_GameState.bits += Item_GetPrice(id) / 2;
+                    if (Save_GameState.bits > 99999999) {
+                        Save_GameState.bits = 99999999;
                     }
                     Item_RemoveFromBag(idx);
                     func_8006C6F0(a);
@@ -1363,7 +1363,7 @@ void func_8006EE24(Actor *task) {
         goto text_update;
     f144:
         Snd_PlayById(0x14, 0);
-        Save_GameState.field_8 -= w->recs[w->index].price;
+        Save_GameState.bits -= w->recs[w->index].price;
         Save_GameState.itemCounts[D_800706D4[w->index]]++;
         func_8006EA90(task);
         w->dirty = st2;
@@ -1421,7 +1421,7 @@ Stg20FileRec *func_8006F360(s32 i) {
 }
 
 void func_8006F3D8(Actor *a, s32 v) {
-    a->field_8 = v;
+    a->param = v;
 }
 
 void func_8006F3E0(Actor *a) {
@@ -1441,7 +1441,7 @@ void func_8006F3E0(Actor *a) {
             w->target = (Actor *)Task_FindFirst(0x302, 0, -1);
             ok = 0;
             c = *func_80067504(w->target);
-            if (c.x == D_80070704[a->field_8].cell.x && c.y == D_80070704[a->field_8].cell.y) {
+            if (c.x == D_80070704[a->param].cell.x && c.y == D_80070704[a->param].cell.y) {
                 ok = func_80067568(w->target) != 0;
             }
             if (ok == 0) {
@@ -1451,7 +1451,7 @@ void func_8006F3E0(Actor *a) {
         break;
     case 1:
         c = *func_80067504(w->target);
-        if (c.x == D_80070704[a->field_8].cell.x && c.y == D_80070704[a->field_8].cell.y
+        if (c.x == D_80070704[a->param].cell.x && c.y == D_80070704[a->param].cell.y
             && func_80067568(w->target) != 0) {
             func_8006AD8C(w->target);
             D_800709B4 = 1;
@@ -1497,8 +1497,8 @@ void func_8006F3E0(Actor *a) {
             Task_NextState1(a);
         case 2:
             if (++a->stateLevel2 >= 0x19) {
-                Sys_State.nextGameMode = D_80070704[a->field_8].nextMode;
-                Sys_State.field_24 = D_80070704[a->field_8].field_8;
+                Sys_State.nextGameMode = D_80070704[a->param].nextMode;
+                Sys_State.field_24 = D_80070704[a->param].field_8;
             }
             break;
         }

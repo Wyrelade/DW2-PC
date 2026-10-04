@@ -1477,12 +1477,12 @@ s32 func_80066A4C(s32 id) {
 void func_80066A9C(s32 d) {
     GameState *g = &Save_GameState;
 
-    g->field_8 += d;
-    if (g->field_8 < 0) {
-        g->field_8 = 0;
+    g->bits += d;
+    if (g->bits < 0) {
+        g->bits = 0;
     }
-    if (g->field_8 > 99999999) {
-        g->field_8 = 99999999;
+    if (g->bits > 99999999) {
+        g->bits = 99999999;
     }
 }
 
@@ -2363,7 +2363,7 @@ void func_800688E4(Actor *a) {
 }
 
 void func_80068B3C(Actor *a, s32 v) {
-    a->field_8 = v;
+    a->param = v;
 }
 
 void func_80068B44(Actor *a) {
@@ -2412,7 +2412,7 @@ void func_80068C84(Actor *a) {
     s32 id;
 
     id = 0x3120003;
-    if (a->field_8 != 0) {
+    if (a->param != 0) {
         id = 0x3120001;
     }
     p = (Stg20Part *)Cd_GetFileEntry(id);
@@ -2575,7 +2575,7 @@ void func_80069068(Actor *a) {
                     func_80068D84(0x118);
                     break;
                 case 1:
-                    p = Digi_GetEvolutionTarget(d->digiId, d->field_E);
+                    p = Digi_GetEvolutionTarget(d->digiId, d->dp);
                     D_800709DC = p;
                     if (p == 0) {
                 case 2:
@@ -2696,7 +2696,7 @@ void func_8006964C(Actor *a) {
 
 void func_800697AC(Actor *a) {
     Stg20SkillWork *w = (Stg20SkillWork *)a->work;
-    Stg20Roster *e = &D_8005E704[a->field_8];
+    Stg20Roster *e = &D_8005E704[a->param];
     s32 cnt[4];
     s32 i;
     s32 j;
@@ -2772,7 +2772,7 @@ void func_80069AAC(Actor *a) {
     switch (a->stateLevel0) {
     case 0:
         Mem_FillWordsNeg1(w->texts, 0x13);
-        a->field_8 = D_800709E0;
+        a->param = D_800709E0;
         func_800697AC(a);
         Task_NextState0(a);
         break;
@@ -3009,7 +3009,7 @@ void func_8006A434(Actor *a) {
             w->pos[0] = 0;
             w->pos[1] = 0;
             w->pos[2] = 0;
-            a->field_8 = D_800709B0.field_48;
+            a->param = D_800709B0.field_48;
             Task_NextState1(a);
         case 1:
             f = Digi_GetModelFile(a->digiId);
@@ -3045,7 +3045,7 @@ void func_8006A434(Actor *a) {
             }
             w->visible = 1;
             Task_NextState0(a);
-            if (a->field_8 != 0) {
+            if (a->param != 0) {
                 Task_SetState1(a, 2);
             }
             break;
@@ -3073,7 +3073,7 @@ void func_8006A434(Actor *a) {
             }
             break;
         }
-        if (a->field_8 != 0) {
+        if (a->param != 0) {
             o->field_42 -= 0xB;
         } else {
             o->field_42 += 0xB;
@@ -3117,7 +3117,7 @@ void func_8006A744(Actor *a) {
             c.x = e->x;
             c.y = e->y;
             if (func_800636A8(&c) & 0x80) {
-                Task_FindFirst(0x302, 0, -1)->field_8 = 1;
+                Task_FindFirst(0x302, 0, -1)->param = 1;
                 w->mode = e->mode + 0x300;
                 w->arg = e->arg;
                 Task_NextState0(a);
@@ -3217,7 +3217,7 @@ void func_8006AB0C(Actor *a)
   s32 r;
   if ((((Stg20ModelTask *) a)->field_4 == 0) && (D_800709B4 == 0))
   {
-    switch (a->field_8)
+    switch (a->param)
     {
       case 0:
 

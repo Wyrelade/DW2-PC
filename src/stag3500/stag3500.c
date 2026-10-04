@@ -726,7 +726,7 @@ void func_80064CB8(Actor *arg0) {
                 default:
                     func_8006A080(func_80065E44(0) + 0xA);
                     for (e = (Actor *)Task_FindFirst(0x707, -1, -1); e != NULL; e = (Actor *)Task_FindNext()) {
-                        if (e->field_8 == func_80065E44(0)) {
+                        if (e->param == func_80065E44(0)) {
                             func_800674D4(e, 1);
                             func_800674F8(e);
                         } else {

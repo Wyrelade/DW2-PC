@@ -23,7 +23,7 @@ void Menu_ItemDraw(Actor *actor) {
     u16 m;
     Pair54 tmp;
 
-    if (w->field_68 == 0) {
+    if (w->fade == 0) {
         return;
     }
     p = (s32 *)Cd_GetFileEntry(0x5130019);
@@ -35,22 +35,22 @@ void Menu_ItemDraw(Actor *actor) {
         obj = Cd_GetFileEntry(p[i]);
         switch (i) {
         case 0:
-            tmp = w->field_54;
-            f = w->field_54.field_0 + 1;
+            tmp = w->itemCursor;
+            f = w->itemCursor.field_0 + 1;
             Gfx_SetPartsNumber(obj, 0x10, 2, f ? f : 1);
-            Gfx_SetPartsNumber(obj, 0x20, 2, w->field_58 ? w->field_58 : 1);
-            tmp.field_0 = w->field_54.field_0 - w->field_6E;
-            Menu_SetPartsGridPos(obj, 2, (s32 *)&tmp, &w->field_58);
+            Gfx_SetPartsNumber(obj, 0x20, 2, w->itemGridSize ? w->itemGridSize : 1);
+            tmp.field_0 = w->itemCursor.field_0 - w->scrollRow;
+            Menu_SetPartsGridPos(obj, 2, (s32 *)&tmp, &w->itemGridSize);
             Gfx_SetPartsPalette(obj, 2, (actor->elapsed >> 2) & 3);
-            k = Menu_BlinkOrHideParts(obj, 8, w->field_6E);
-            k |= Menu_BlinkOrHideParts(obj, 4, w->field_58 - w->field_6E - 2);
-            if (w->field_70 == 0) {
+            k = Menu_BlinkOrHideParts(obj, 8, w->scrollRow);
+            k |= Menu_BlinkOrHideParts(obj, 4, w->itemGridSize - w->scrollRow - 2);
+            if (w->hasItems == 0) {
                 k |= 0xE;
             }
             Gfx_HidePartsByMask(obj, k);
             break;
         case 1:
-            f = w->field_64;
+            f = w->menuMode;
             if (f < 3) {
                 m = 2;
             } else {
@@ -60,15 +60,15 @@ void Menu_ItemDraw(Actor *actor) {
             break;
         case 3:
             m = 0xFFFF;
-            if (w->field_64 == 3 || w->field_64 == 5) {
+            if (w->menuMode == 3 || w->menuMode == 5) {
                 m = 1;
-            } else if (w->field_64 == 4) {
+            } else if (w->menuMode == 4) {
                 m = 2;
             }
             Gfx_HidePartsByMask(obj, m);
             break;
         }
-        Gfx_SetPartsScale(obj, 0x1000, w->field_68);
+        Gfx_SetPartsScale(obj, 0x1000, w->fade);
         Gfx_DrawParts((s32)obj);
         i++;
     } while (p[i] != 0);
@@ -95,7 +95,7 @@ void func_80017214(Actor *a0) {
             if (g->state >= 3) {
                 id = 0x1FD0111;
             icon:
-                Text_OpenPacked(w->field_40, Cd_GetFileEntry(id), 0x81, Menu_DigiMsgPos);
+                Text_OpenPacked(w->msgText, Cd_GetFileEntry(id), 0x81, Menu_DigiMsgPos);
                 break;
             }
             g->state = w->pickedIndices[3] != 0 ? 1 : 2;
@@ -103,7 +103,7 @@ void func_80017214(Actor *a0) {
             d->kind = 1;
             d->record = (s32)g;
             d->pickState = g->state;
-            Text_OpenPacked(w->field_40, Cd_GetFileEntry(0x1FD0110), 0x81, Menu_DigiMsgPos);
+            Text_OpenPacked(w->msgText, Cd_GetFileEntry(0x1FD0110), 0x81, Menu_DigiMsgPos);
             Menu_Ctx->field_126 = -1;
             Menu_DigiListDrawRows((MenuDigiListRowsView *)w, 0);
             Snd_PlayById(0xE, 0);
@@ -116,7 +116,7 @@ void func_80017214(Actor *a0) {
             tmp.state = k;
             *(DigiRosterSwapRec *)e->record = *g;
             *g = tmp;
-            Text_OpenPacked(w->field_40, Cd_GetFileEntry(0x1FD0112), 0x81, Menu_DigiMsgPos);
+            Text_OpenPacked(w->msgText, Cd_GetFileEntry(0x1FD0112), 0x81, Menu_DigiMsgPos);
             Menu_Ctx->field_126 = -1;
             Menu_DigiListDrawRows((MenuDigiListRowsView *)w, 0);
             Snd_PlayById(0xE, 0);
@@ -127,7 +127,7 @@ void func_80017214(Actor *a0) {
                 id = 0x1FD011E;
                 goto icon;
             }
-            Text_OpenPacked(w->field_40, Cd_GetFileEntry(0x1FD011F), 0x81, Menu_DigiMsgPos);
+            Text_OpenPacked(w->msgText, Cd_GetFileEntry(0x1FD011F), 0x81, Menu_DigiMsgPos);
             Task_SetState1(a0, 5);
             return;
         case 2:
@@ -214,7 +214,7 @@ void Menu_UseItemOnDigi(Actor *a0) {
             st.packedStyle = 0x81;
             st.text = (s32)Cd_GetFileEntry(0x1FD00FD);
             st.strArg0 = Item_GetNameText(Menu_Ctx->itemId);
-            Text_OpenDesc(w->field_40, (TextDesc *)&st);
+            Text_OpenDesc(w->msgText, (TextDesc *)&st);
             Snd_PlayById(0x1D, 0);
             Task_SetState1(a0, 4);
         } else {
@@ -238,7 +238,7 @@ void Menu_PickUseItemDirect(Actor *a0) {
         st.text = (s32)Cd_GetFileEntry(0x1FD00A0);
         st.strArg0 = 0;
     }
-    Text_OpenDesc(w->field_40, (TextDesc *)&st);
+    Text_OpenDesc(w->msgText, (TextDesc *)&st);
 }
 
 void Menu_ConfirmSinglePick(Actor *a0) {
@@ -343,9 +343,9 @@ void Menu_BuildDigiList(MenuDigiListBuildWork *w) {
             break;
         default:
             r = &w->rows[w->rowCount - 1];
-            for (i = 0; i < D_8005071C->field_BA8; i++, r--) {
+            for (i = 0; i < D_8005071C->memBugCount; i++, r--) {
                 r->kind = 2;
-                r->field_1 = D_8005071C->field_BA9[i];
+                r->bugLevel = D_8005071C->memBugLevels[i];
             }
             break;
         }
@@ -434,7 +434,7 @@ void Menu_SetDigiListMode(Actor *a, s16 mode) {
         break;
     case 7:
     case 8:
-        { s16 t = Menu_Ctx->field_124 - 7; w->parity = (w->mode + t) & 1; }
+        { s16 t = Menu_Ctx->subMenuCursor - 7; w->parity = (w->mode + t) & 1; }
         break;
     }
 }
@@ -910,7 +910,7 @@ void Menu_DigiStatusTask(Actor *a) {
     }
 }
 
-extern s32 GsSetRefView2(Ctx19214 *);
+extern s32 GsSetRefView2(GsRVIEW2 *);
 
 void Menu_DigiStatusDraw(Actor *actor) {
     Wk19214 *work;
@@ -919,14 +919,14 @@ void Menu_DigiStatusDraw(Actor *actor) {
     s32 *p;
     void *obj;
     Nd19214 *node;
-    Ctx19214 ls;
+    GsRVIEW2 ls;
 
     work = (Wk19214 *)actor->work;
-    if (work->field_80 == 0) {
+    if (work->ramp == 0) {
         goto Ltail;
     }
     p = (s32 *)Cd_GetFileEntry(0x5130021);
-    rec = (Rec19214 *)work->field_84;
+    rec = (Rec19214 *)work->digimon;
     if (*p == 0) {
         goto Ltail;
     }
@@ -934,52 +934,52 @@ void Menu_DigiStatusDraw(Actor *actor) {
     do {
         obj = Cd_GetFileEntry(*list);
         list++;
-        Gfx_SetPartsNumber(obj, 0x2, 3, rec->field_14);
-        Gfx_SetPartsNumber(obj, 0x4, 3, rec->field_16);
-        Gfx_SetPartsNumber(obj, 0x8, 3, rec->field_18);
-        Gfx_SetPartsNumber(obj, 0x10, 3, rec->field_1A);
-        Gfx_SetPartsNumber(obj, 0x20, 2, rec->field_D);
-        Gfx_SetPartsNumber(obj, 0x40, 3, rec->field_1C);
-        Gfx_SetPartsNumber(obj, 0x80, 3, rec->field_1E);
-        Gfx_SetPartsNumber(obj, 0x100, 3, rec->field_20);
-        Gfx_SetPartsNumber(obj, 0x200, 8, rec->field_10);
-        Gfx_SetPartsNumber(obj, 0x400, 8, Digi_GetExpToNextLevel(rec->field_D, rec->field_F, rec->field_10));
-        Gfx_SetPartsScale((GfxPartScaleView *)obj, 0x1000, work->field_80);
+        Gfx_SetPartsNumber(obj, 0x2, 3, rec->maxHp);
+        Gfx_SetPartsNumber(obj, 0x4, 3, rec->hp);
+        Gfx_SetPartsNumber(obj, 0x8, 3, rec->maxMp);
+        Gfx_SetPartsNumber(obj, 0x10, 3, rec->mp);
+        Gfx_SetPartsNumber(obj, 0x20, 2, rec->level);
+        Gfx_SetPartsNumber(obj, 0x40, 3, rec->attack);
+        Gfx_SetPartsNumber(obj, 0x80, 3, rec->defense);
+        Gfx_SetPartsNumber(obj, 0x100, 3, rec->speed);
+        Gfx_SetPartsNumber(obj, 0x200, 8, rec->exp);
+        Gfx_SetPartsNumber(obj, 0x400, 8, Digi_GetExpToNextLevel(rec->level, rec->maxLevel, rec->exp));
+        Gfx_SetPartsScale((GfxPartScaleView *)obj, 0x1000, work->ramp);
         Gfx_DrawParts((s32)obj);
     } while (*list != 0);
 
 Ltail:
     work->field_148 = 0;
-    RotMatrixYXZ(&work->field_138, &work->field_EC);
-    work->field_100 = work->field_B0;
-    work->field_104 = work->field_B4;
-    work->field_108 = work->field_B8;
-    work->field_E8 = 0;
-    ls.field_0 = work->field_CC;
-    ls.field_4 = work->field_D0;
-    ls.field_8 = work->field_D4;
-    ls.field_C = work->field_D8;
-    ls.field_10 = work->field_DC;
-    ls.field_14 = work->field_E0;
-    ls.field_18 = 0;
-    ls.field_1C = &work->field_E8;
-    GsSetProjection(work->field_E4);
+    RotMatrixYXZ(&work->rot, &work->coordMatrix);
+    work->coordTx = work->posX;
+    work->coordTy = work->posY;
+    work->coordTz = work->posZ;
+    work->coord = 0;
+    ls.vpx = work->vpx;
+    ls.vpy = work->vpy;
+    ls.vpz = work->vpz;
+    ls.vrx = work->vrx;
+    ls.vry = work->vry;
+    ls.vrz = work->vrz;
+    ls.rz = 0;
+    ls.super = &work->coord;
+    GsSetProjection(work->projection);
     GsSetRefView2(&ls);
-    if (work->field_C8 == 0) {
+    if (work->modelPhase == 0) {
         return;
     }
-    if (work->field_14C == 0) {
+    if (work->modelScale == 0) {
         return;
     }
-    if (work->field_C8 == 1) {
+    if (work->modelPhase == 1) {
         Anim_SetModelAnim(actor, 0);
-        work->field_C8 = work->field_C8 + 1;
+        work->modelPhase = work->modelPhase + 1;
     }
     node = (Nd19214 *)actor->u38.ptr38;
-    node->field_58 = work->field_14C;
-    node->field_5C = work->field_14C;
-    node->field_60 = work->field_14C;
-    Gfx_AttachModel(actor, work->field_C0);
+    node->field_58 = work->modelScale;
+    node->field_5C = work->modelScale;
+    node->field_60 = work->modelScale;
+    Gfx_AttachModel(actor, work->modelFile);
     Anim_StepModelAnim(actor);
     Actor_UpdateTransform(actor);
     Gfx_CalcModelBoneMatrices(actor);
@@ -1284,7 +1284,7 @@ done:
 
 
 void Text_WinFrameInit(Actor *arg0, s32 arg1) {
-    arg0->field_8 = arg1;
+    arg0->param = arg1;
 }
 
 void Text_WinFrameTask(Actor *a0) {
@@ -1318,7 +1318,7 @@ void Text_WinFrameTask(Actor *a0) {
 
 void Text_WinFrameDraw(Actor *arg0) {
     ActorWork *w = arg0->work;
-    void *e = Cd_GetFileEntry(Text_WinFrameParts[arg0->field_8]);
+    void *e = Cd_GetFileEntry(Text_WinFrameParts[arg0->param]);
     Gfx_SetPartsScale(e, 0x1000, *(s16 *)w);
     Gfx_DrawParts((s32)e);
 }
@@ -1532,16 +1532,16 @@ void Snd_Init(void) {
 
     v0 = Mem_Alloc(Snd_SlotBufSizes[0] + Snd_SlotBufSizes[1] + Snd_SlotBufSizes[2], 4);
     e = (Ew54C48 *)Snd_Slots;
-    e[0].field_28 = v0;
+    e[0].headerBuf = v0;
     v0 += Snd_SlotBufSizes[0];
-    e[1].field_28 = v0;
+    e[1].headerBuf = v0;
     v0 += Snd_SlotBufSizes[1];
-    e[2].field_28 = v0;
+    e[2].headerBuf = v0;
     for (i = 0; i < 3; i++) {
-        e[i].field_4 = 0;
-        e[i].field_0 = -1;
-        e[i].field_A = 0;
-        e[i].field_8 = -1;
+        e[i].loadState = 0;
+        e[i].contentId = -1;
+        e[i].sepCount = 0;
+        e[i].vabId = -1;
     }
 
     Snd_SetSlotContent(0, 1);
@@ -3005,32 +3005,32 @@ void Gfx_DrawPartsEx(void *arg0, s32 arg1) {
             s3 |= 2;
         }
     }
-    if (s2->field_0 == 0) {
+    if (s2->fileId == 0) {
         return;
     }
     do {
-        s4 = Sys_State.otLayers.addr[s2->field_B];
-        if (s2->field_F != 0) {
-            if (s2->field_E != 0) {
+        s4 = Sys_State.otLayers.addr[s2->otLayer];
+        if (s2->visible != 0) {
+            if (s2->unscaled != 0) {
                 if (s3 != 0) {
-                    s2->field_24 = 0;
-                    s2->field_22 = 0;
-                    s2->field_20 = 0;
-                    s2->field_10 = 0x1000;
-                    s2->field_14 = 0x1000;
+                    s2->rotZ = 0;
+                    s2->rotY = 0;
+                    s2->rotX = 0;
+                    s2->scaleX = 0x1000;
+                    s2->scaleY = 0x1000;
                 } else {
                     Gfx_DrawPartSprites((GfxPartSprite *)s2, (GfxPartOTag *)s4);
                     goto Ladv;
                 }
             }
-            if (Gfx_PartRotCache.field_0 == *(s32 *)&s2->field_20 &&
-                Gfx_PartRotCache.field_4 == s2->field_24 &&
-                Gfx_PartRotCache.field_8 == s2->field_10 &&
-                Gfx_PartRotCache.field_C == s2->field_14) {
+            if (Gfx_PartRotCache.field_0 == *(s32 *)&s2->rotX &&
+                Gfx_PartRotCache.field_4 == s2->rotZ &&
+                Gfx_PartRotCache.field_8 == s2->scaleX &&
+                Gfx_PartRotCache.field_C == s2->scaleY) {
             } else {
-                *(Agg1D6B4 *)&Gfx_PartRotCache = *(Agg1D6B4 *)&s2->field_20;
-                Gfx_PartRotCache.field_8 = s2->field_10;
-                Gfx_PartRotCache.field_C = s2->field_14;
+                *(Agg1D6B4 *)&Gfx_PartRotCache = *(Agg1D6B4 *)&s2->rotX;
+                Gfx_PartRotCache.field_8 = s2->scaleX;
+                Gfx_PartRotCache.field_C = s2->scaleY;
                 RotMatrixYXZ(&Gfx_PartRotCache, (Obj209 *)&Gfx_PartRotCache.field_18);
                 ScaleMatrix((Obj209 *)&Gfx_PartRotCache.field_18, &Gfx_PartRotCache.field_8);
             }
@@ -3038,7 +3038,7 @@ void Gfx_DrawPartsEx(void *arg0, s32 arg1) {
         }
     Ladv:
         s2 = (Rec1D6B4 *)((u8 *)s2 + 0x28);
-    } while (s2->field_0 != 0);
+    } while (s2->fileId != 0);
 }
 
 void Gfx_DrawParts(s32 arg0) {

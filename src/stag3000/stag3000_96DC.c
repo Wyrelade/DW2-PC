@@ -96,7 +96,7 @@ void func_8006CB8C(Actor *a0) {
                 break;
             case 3:
                 for (t = Task_FindFirst(0x509, -1, -1); t != NULL; t = Task_FindNext()) {
-                    if (t->field_8 == w->pc[1]) {
+                    if (t->param == w->pc[1]) {
                         func_8006F640((Actor *)t, 1);
                         func_8006F664((Actor *)t);
                     } else {
@@ -107,7 +107,7 @@ void func_8006CB8C(Actor *a0) {
                 break;
             case 4:
                 for (t = Task_FindFirst(0x509, -1, -1); t != NULL; t = Task_FindNext()) {
-                    if (t->field_8 < 3) {
+                    if (t->param < 3) {
                         func_8006F640((Actor *)t, 1);
                         func_8006F664((Actor *)t);
                     }
@@ -116,7 +116,7 @@ void func_8006CB8C(Actor *a0) {
                 break;
             case 5:
                 for (t = Task_FindFirst(0x509, -1, -1); t != NULL; t = Task_FindNext()) {
-                    if (t->field_8 >= 3) {
+                    if (t->param >= 3) {
                         func_8006F640((Actor *)t, 1);
                         func_8006F664((Actor *)t);
                     }

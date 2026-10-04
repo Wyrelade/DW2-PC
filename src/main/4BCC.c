@@ -12,11 +12,11 @@ u8 *Menu_PartGridLabels;
 void Menu_SubMenuInit(Actor *arg0, s16 arg1) {
     ActorWork *w = arg0->work;
 
-    w->field_38 = arg1;
+    w->menuId = arg1;
     if (arg1 == 3) {
         Menu_Ctx->pickResult = 0;
     }
-    w->field_3C = 0;
+    w->optionsHidden = 0;
 }
 
 void Menu_SubMenuTask(Actor *a) {
@@ -62,7 +62,7 @@ void Menu_SubMenuTask(Actor *a) {
                 switch (w->menuId) {
                 case 7:
                 case 8:
-                    Menu_Ctx->field_124 = w->cursor[0];
+                    Menu_Ctx->subMenuCursor = w->cursor[0];
                     Task_NextState1(a);
                     break;
                 case 4:
@@ -171,7 +171,7 @@ void Menu_SubMenuDraw(Actor *actor) {
     s32 *list;
     void *obj;
 
-    if (w->field_40 == 0) {
+    if (w->subMenuRamp == 0) {
         return;
     }
     p = (s32 *)Cd_GetFileEntry(0x5130009);
@@ -181,7 +181,7 @@ void Menu_SubMenuDraw(Actor *actor) {
     list = p;
     do {
         obj = Cd_GetFileEntry(*list);
-        if (w->field_2C != 0 && w->field_3C == 0) {
+        if (w->field_2C != 0 && w->optionsHidden == 0) {
             Menu_SetPartsGridPos(obj, 2, &w->field_28, &w->field_2C);
             Gfx_SetPartsPalette(obj, 2, (actor->elapsed >> 2) & 3);
             Gfx_HidePartsByMask(obj, 0);
@@ -189,7 +189,7 @@ void Menu_SubMenuDraw(Actor *actor) {
             Gfx_HidePartsByMask(obj, 2);
         }
         list++;
-        Gfx_SetPartsScale(obj, 0x1000, w->field_40);
+        Gfx_SetPartsScale(obj, 0x1000, w->subMenuRamp);
         Gfx_DrawParts((s32)obj);
     } while (*list != 0);
 }
@@ -235,7 +235,7 @@ void Menu_StatusTask(Actor *a0) {
             if (Menu_Ctx->flags & 1) {
                 h = (Halves *)Cd_GetFileEntry(0x513000D);
                 for (i = 0; i < 4; i++) {
-                    v = (i == 3) ? Bug_GetMaxMemBugLevel() : D_8005071C->field_BA5[i];
+                    v = (i == 3) ? Bug_GetMaxMemBugLevel() : D_8005071C->bugLevels[i];
                     if (v != 0) {
                         id = v + 0x1FD00EC;
                         Text_OpenPacked(&w->field_58[i], (s32)Cd_GetFileEntry(i * 3 + id), 1, h[i]);
@@ -347,7 +347,7 @@ void Menu_UseBugZapItem(Actor *a0) {
     rec = (Sub17D84 *)Item_GetEffectRec(Menu_Ctx->itemId);
     pos = &Menu_ItemUseMsgPos;
     n = rec->digiId - 0xC;
-    m = D_8005071C->field_BA5[n];
+    m = D_8005071C->bugLevels[n];
     st.pos = *pos;
     st.color = 0;
     st.packedStyle = 0x81;
@@ -380,7 +380,7 @@ void Menu_UseBugZapItem(Actor *a0) {
         if (r == 2) {
             st.text = (s32)Cd_GetFileEntry(0x1FD00B4);
             st.strArg0 = Item_GetNameText(Menu_Ctx->itemId);
-        } else if (D_8005071C->field_BA8 != 0) {
+        } else if (D_8005071C->memBugCount != 0) {
             st.text = (s32)Cd_GetFileEntry(0x1FD00B5);
             st.strArg0 = 0;
         } else {
@@ -401,7 +401,7 @@ void Menu_UseBugZapItem(Actor *a0) {
             st.strArg0 = Item_GetNameText(Menu_Ctx->itemId);
         } else {
             st.strArg0 = 0;
-            if (D_8005071C->field_BA5[0] + D_8005071C->field_BA5[1] + D_8005071C->field_BA5[2] + D_8005071C->field_BA8 != 0) {
+            if (D_8005071C->bugLevels[0] + D_8005071C->bugLevels[1] + D_8005071C->bugLevels[2] + D_8005071C->memBugCount != 0) {
                 st.text = (s32)Cd_GetFileEntry(0x1FD00B7);
             } else {
                 st.text = (s32)Cd_GetFileEntry(0x1FD00B6);
@@ -453,7 +453,7 @@ void Menu_OpenBugTexts(Actor *a0, s32 a1) {
         if (i == 3) {
             v = Bug_GetMaxMemBugLevel();
         } else {
-            v = D_8005071C->field_BA5[i];
+            v = D_8005071C->bugLevels[i];
         }
         if (v != 0) {
             id = 0x1FD00EC;
@@ -474,12 +474,12 @@ void Menu_ShowPartSlotInfo(Actor *a0) {
     i = Menu_GridIndexColMajor(w->cursor, w->gridSize);
     Text_Close(&w->msgText);
     Text_Close(&w->field_54);
-    Text_Close(&w->field_58);
+    Text_Close(&w->labelText);
     id = Menu_PartGridSlots[i];
     if (id != 0xFF) {
         h.lo = 0xF;
         h.hi = 0x32;
-        Text_OpenPacked(&w->field_58, (s32)Cd_GetFileEntry(Menu_PartGridLabels[i] | 0x1FD0000), 0, h);
+        Text_OpenPacked(&w->labelText, (s32)Cd_GetFileEntry(Menu_PartGridLabels[i] | 0x1FD0000), 0, h);
         if (Save_GameStatePtr->slotItems[id] != 0) {
             Text_OpenPacked(&w->msgText, Item_GetDescText(Save_GameStatePtr->slotItems[id]), 0x80, Menu_ItemUseMsgPos);
             if (Save_GameStatePtr->slotStatus[id] != 0) {
@@ -496,11 +496,11 @@ void Menu_OpenUseItemTexts(Actor *a0) {
     MenuItemUseWork *w = (MenuItemUseWork *)a0->work;
     Halves h;
 
-    Text_Close(&w->field_58);
+    Text_Close(&w->labelText);
     Text_Close(&w->itemNameText);
     h.lo = 0xF;
     h.hi = 0x32;
-    Text_OpenPacked(&w->field_58, (s32)Cd_GetFileEntry(0x1FD009B), 0, h);
+    Text_OpenPacked(&w->labelText, (s32)Cd_GetFileEntry(0x1FD009B), 0, h);
     h.lo = 0xF;
     h.hi = 0x47;
     Text_OpenPacked(&w->itemNameText, Item_GetNameText(Menu_Ctx->itemId), 0, h);
@@ -539,7 +539,7 @@ void Menu_SetItemUseMode(Actor *a, s16 arg) {
     s32 mode;
     s32 k;
 
-    w->field_98 = arg;
+    w->useMode = arg;
     mode = arg;
     if (mode == 2) {
         k = ((u8 *)Item_GetEffectRec(Menu_Ctx->itemId))[1];
@@ -550,14 +550,14 @@ void Menu_SetItemUseMode(Actor *a, s16 arg) {
             goto def;
         }
         if (k < 17) {
-            w->field_98 = 4;
+            w->useMode = 4;
             return;
         }
     def:
-        w->field_98 = mode;
+        w->useMode = mode;
         return;
     three:
-        w->field_98 = 3;
+        w->useMode = 3;
     }
 }
 
@@ -583,7 +583,7 @@ void Menu_ItemUseTask(Actor *a0) {
             if (Math_RampToOne((s32)a0, &w->ramp) != 0) {
                 break;
             }
-            Text_PrintIdList(&w->field_70, (TextIdListEntry *)Cd_GetFileEntry(0x5130011), 2);
+            Text_PrintIdList(&w->listTexts, (TextIdListEntry *)Cd_GetFileEntry(0x5130011), 2);
             Menu_OpenItemNameTexts(a0, 1);
             if (Menu_Ctx->flags & 1) {
                 Menu_OpenBugTexts(a0, 1);
@@ -662,7 +662,7 @@ break;
             switch (r) {
             case 1:
                 Gfx_FadeOutToBlack(0x20);
-                Menu_Ctx->field_360 = r;
+                Menu_Ctx->topMenuResult = r;
                 Task_SetState0(a0, 2);
                 break;
             case -1:

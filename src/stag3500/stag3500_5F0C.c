@@ -514,7 +514,7 @@ void func_8006A168(s32 arg0) {
 }
 
 void func_8006A2D0(Actor *arg0, s32 arg1) {
-    arg0->field_8 = arg1;
+    arg0->param = arg1;
 }
 
 void func_8006A2D8(Actor *arg0) {
@@ -530,7 +530,7 @@ void func_8006A2D8(Actor *arg0) {
         func_800661A4(w, 0xD3F0008);
         masks[0] = 2;
         masks[1] = 4;
-        func_800663CC(w, ~masks[arg0->field_8]);
+        func_800663CC(w, ~masks[arg0->param]);
         Task_NextState0(arg0);
     case 1:
         func_80066520(w, 6, Math_PingPongRange(arg0->elapsed, 4, 0, 7));

@@ -156,15 +156,15 @@ void func_8006E888(Actor *a0, s32 *args) {
     s32 idx = args[1];
     s32 n;
 
-    a0->field_8 = idx;
+    a0->param = idx;
     a0->digiId = D_80073CC0.entries[idx].field_19;
     w->field_14 = Digi_GetModelFile(a0->digiId);
-    if (a0->field_8 < 3) {
+    if (a0->param < 3) {
         w->field_10 = 0x800;
     } else {
         w->field_10 = 0;
     }
-    n = a0->field_8;
+    n = a0->param;
     w->field_8 = 0;
     w->field_4 = (n % 3) * 0xA00 - 0xA00;
     w->field_C = (n / 3) * 0x2800 - 0x1400;
@@ -614,7 +614,7 @@ void func_8006F554(Actor *a0) {
             Gfx_DrawTexModel(a0, 0);
         }
         if (w->field_1C != 0) {
-            if (a0->field_8 < 3) {
+            if (a0->param < 3) {
                 c = w->color;
             } else {
                 c.r = w->color.g;

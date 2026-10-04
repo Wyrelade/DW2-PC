@@ -855,19 +855,19 @@ s32 Task_TryRun(void *arg0);
 void Task_Destroy(s32 *arg0);
 
 typedef struct {
-    /* 0x00 */ s32 field_0;
-    /* 0x04 */ s32 field_4;
-    /* 0x08 */ s32 field_8;
-    /* 0x0C */ s32 field_C;
-    /* 0x10 */ s32 field_10;
-    /* 0x14 */ s32 field_14;
-    /* 0x18 */ s32 field_18;
-    /* 0x1C */ s32 field_1C;
-    /* 0x20 */ s32 field_20;
-    /* 0x24 */ s32 field_24;
-    /* 0x28 */ s32 field_28;
-    /* 0x2C */ s16 field_2C;
-    /* 0x2E */ s16 field_2E;
+    /* 0x00 */ s32 mode;
+    /* 0x04 */ s32 rosterIndex;
+    /* 0x08 */ s32 maxLen;
+    /* 0x0C */ s32 charTableOfs;
+    /* 0x10 */ s32 gridText0;
+    /* 0x14 */ s32 gridText1;
+    /* 0x18 */ s32 gridText2;
+    /* 0x1C */ s32 headerText;
+    /* 0x20 */ s32 nameText;
+    /* 0x24 */ s32 namePos;
+    /* 0x28 */ s32 blinkTimer;
+    /* 0x2C */ s16 cursorX;
+    /* 0x2E */ s16 cursorY;
 } Wk12974;
 
 typedef struct {
@@ -880,8 +880,8 @@ extern Nm12974 Save_RosterNames[];
 
 /* file-local views for Menu_MoveGridCursor */
 typedef struct {
-    s16 field_0;
-    s16 field_2;
+    s16 x;
+    s16 y;
 } Coord138C0;
 
 typedef struct {
@@ -899,50 +899,50 @@ typedef struct {
 /* View of Actor.work used by Menu_DigiStatusDraw (fields 0x80..0x14C). */
 typedef struct {
     u8 _pad00[0x80];
-    /* 0x80 */ s32 field_80;
-    /* 0x84 */ s32 *field_84;
+    /* 0x80 */ s32 ramp;
+    /* 0x84 */ s32 *digimon;
     u8 _pad88[0xB0 - 0x88];
-    /* 0xB0 */ s32 field_B0;
-    /* 0xB4 */ s32 field_B4;
-    /* 0xB8 */ s32 field_B8;
+    /* 0xB0 */ s32 posX;
+    /* 0xB4 */ s32 posY;
+    /* 0xB8 */ s32 posZ;
     u8 _padBC[0xC0 - 0xBC];
-    /* 0xC0 */ s32 field_C0;
+    /* 0xC0 */ s32 modelFile;
     u8 _padC4[0xC8 - 0xC4];
-    /* 0xC8 */ s32 field_C8;
-    /* 0xCC */ s32 field_CC;
-    /* 0xD0 */ s32 field_D0;
-    /* 0xD4 */ s32 field_D4;
-    /* 0xD8 */ s32 field_D8;
-    /* 0xDC */ s32 field_DC;
-    /* 0xE0 */ s32 field_E0;
-    /* 0xE4 */ s32 field_E4;
-    /* 0xE8 */ s32 field_E8;
-    /* 0xEC */ s32 field_EC;
+    /* 0xC8 */ s32 modelPhase;
+    /* 0xCC */ s32 vpx;
+    /* 0xD0 */ s32 vpy;
+    /* 0xD4 */ s32 vpz;
+    /* 0xD8 */ s32 vrx;
+    /* 0xDC */ s32 vry;
+    /* 0xE0 */ s32 vrz;
+    /* 0xE4 */ s32 projection;
+    /* 0xE8 */ s32 coord;
+    /* 0xEC */ s32 coordMatrix;
     u8 _padF0[0x100 - 0xF0];
-    /* 0x100 */ s32 field_100;
-    /* 0x104 */ s32 field_104;
-    /* 0x108 */ s32 field_108;
+    /* 0x100 */ s32 coordTx;
+    /* 0x104 */ s32 coordTy;
+    /* 0x108 */ s32 coordTz;
     u8 _pad10C[0x138 - 0x10C];
-    /* 0x138 */ s32 field_138;
+    /* 0x138 */ s32 rot;
     u8 _pad13C[0x148 - 0x13C];
     /* 0x148 */ s32 field_148;
-    /* 0x14C */ s32 field_14C;
+    /* 0x14C */ s32 modelScale;
 } Wk19214;
 
 /* Record reached through Wk19214.field_84. */
 typedef struct {
     u8 _pad00[0x0D];
-    /* 0x0D */ u8 field_D;
+    /* 0x0D */ u8 level;
     u8 _padE;
-    /* 0x0F */ u8 field_F;
-    /* 0x10 */ s32 field_10;
-    /* 0x14 */ s16 field_14;
-    /* 0x16 */ s16 field_16;
-    /* 0x18 */ s16 field_18;
-    /* 0x1A */ s16 field_1A;
-    /* 0x1C */ s16 field_1C;
-    /* 0x1E */ s16 field_1E;
-    /* 0x20 */ s16 field_20;
+    /* 0x0F */ u8 maxLevel;
+    /* 0x10 */ s32 exp;
+    /* 0x14 */ s16 maxHp;
+    /* 0x16 */ s16 hp;
+    /* 0x18 */ s16 maxMp;
+    /* 0x1A */ s16 mp;
+    /* 0x1C */ s16 attack;
+    /* 0x1E */ s16 defense;
+    /* 0x20 */ s16 speed;
 } Rec19214;
 
 /* Node reached through Actor.u38.ptr38. */
@@ -955,24 +955,24 @@ typedef struct {
 
 /* Stack context passed to GsSetRefView2. */
 typedef struct {
-    /* 0x00 */ s32 field_0;
-    /* 0x04 */ s32 field_4;
-    /* 0x08 */ s32 field_8;
-    /* 0x0C */ s32 field_C;
-    /* 0x10 */ s32 field_10;
-    /* 0x14 */ s32 field_14;
-    /* 0x18 */ s32 field_18;
-    /* 0x1C */ s32 *field_1C;
-} Ctx19214;
+    /* 0x00 */ s32 vpx;
+    /* 0x04 */ s32 vpy;
+    /* 0x08 */ s32 vpz;
+    /* 0x0C */ s32 vrx;
+    /* 0x10 */ s32 vry;
+    /* 0x14 */ s32 vrz;
+    /* 0x18 */ s32 rz;
+    /* 0x1C */ s32 *super;
+} GsRVIEW2;
 
 /* File-local view of an SndSlot element with the fields Snd_Init stamps. */
 typedef struct {
-    /* 0x00 */ s32 field_0;
-    /* 0x04 */ s32 field_4;
-    /* 0x08 */ s16 field_8;
-    /* 0x0A */ s16 field_A;
+    /* 0x00 */ s32 contentId;
+    /* 0x04 */ s32 loadState;
+    /* 0x08 */ s16 vabId;
+    /* 0x0A */ s16 sepCount;
     u8 _padC[0x28 - 0xC];
-    /* 0x28 */ s32 field_28;
+    /* 0x28 */ s32 headerBuf;
 } Ew54C48; /* 0x2C */
 
 extern u8 Snd_SeqAttrTable[176 * 6 * 16];
@@ -981,18 +981,18 @@ extern s32 Text_BuiltinStrings[];
 
 /* File-local record walked by Gfx_DrawPartsEx (stride 0x28). */
 typedef struct {
-    /* 0x00 */ s32 field_0;
+    /* 0x00 */ s32 fileId;
     u8 _pad04[0xB - 4];
-    /* 0x0B */ u8 field_B;
+    /* 0x0B */ u8 otLayer;
     u8 _pad0C[0xE - 0xC];
-    /* 0x0E */ u8 field_E;
-    /* 0x0F */ u8 field_F;
-    /* 0x10 */ s32 field_10;
-    /* 0x14 */ s32 field_14;
+    /* 0x0E */ u8 unscaled;
+    /* 0x0F */ u8 visible;
+    /* 0x10 */ s32 scaleX;
+    /* 0x14 */ s32 scaleY;
     u8 _pad18[0x20 - 0x18];
-    /* 0x20 */ s16 field_20;
-    /* 0x22 */ s16 field_22;
-    /* 0x24 */ s16 field_24;
+    /* 0x20 */ s16 rotX;
+    /* 0x22 */ s16 rotY;
+    /* 0x24 */ s16 rotZ;
     /* 0x26 */ s16 field_26;
 } Rec1D6B4; /* 0x28 */
 

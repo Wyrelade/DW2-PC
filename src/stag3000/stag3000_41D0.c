@@ -322,9 +322,9 @@ void func_80067EC4(void) {
 
     for (i = 0; i < 3; i++) {
         if (D_80073CC0.entries[i].field_18 >= 3) {
-            D_80073CC0.entries[i].field_34 = Save_GameState.elems[i].field_1C;
-            D_80073CC0.entries[i].field_36 = Save_GameState.elems[i].field_1E;
-            D_80073CC0.entries[i].field_38 = Save_GameState.elems[i].field_20;
+            D_80073CC0.entries[i].field_34 = Save_GameState.elems[i].attack;
+            D_80073CC0.entries[i].field_36 = Save_GameState.elems[i].defense;
+            D_80073CC0.entries[i].field_38 = Save_GameState.elems[i].speed;
         }
     }
 }

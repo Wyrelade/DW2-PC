@@ -31,36 +31,36 @@ typedef struct {
     u8 _pad10[0x04];
     /* 0x14 */ u16 field_14;
     u8 _pad16[0x02];
-    /* 0x18 */ s32 field_18;
+    /* 0x18 */ s32 duration;
     u8 _pad1C[0x08];
-    /* 0x24 */ s32 field_24;
+    /* 0x24 */ s32 namePos;
     /* 0x28 */ s32 field_28;
     /* 0x2C */ s16 field_2C;
     /* 0x2E */ s16 field_2E;
     /* 0x30 */ s16 field_30;
     u8 _pad32[0x06];
-    /* 0x38 */ s16 field_38;
+    /* 0x38 */ s16 menuId;
     u8 _pad3A[0x02];
-    /* 0x3C */ s16 field_3C;
+    /* 0x3C */ s16 optionsHidden;
     u8 _pad3E[0x02];
-    /* 0x40 */ s32 field_40;
+    /* 0x40 */ s32 subMenuRamp;
     u8 _pad44[0x10];
-    /* 0x54 */ Pair54 field_54;
-    /* 0x58 */ s16 field_58;
+    /* 0x54 */ Pair54 itemCursor;
+    /* 0x58 */ s16 itemGridSize;
     u8 _pad5A[0x0A];
-    /* 0x64 */ s16 field_64;
+    /* 0x64 */ s16 menuMode;
     u8 _pad66[0x02];
-    /* 0x68 */ s32 field_68;
+    /* 0x68 */ s32 fade;
     /* 0x6C */ s16 field_6C;
-    /* 0x6E */ s16 field_6E;
-    /* 0x70 */ s16 field_70;
+    /* 0x6E */ s16 scrollRow;
+    /* 0x70 */ s16 hasItems;
     u8 _pad72[0x16];
-    /* 0x88 */ s32 field_88;
-    /* 0x8C */ s16 field_8C;
+    /* 0x88 */ s32 useCursor;
+    /* 0x8C */ s16 useGridSize;
     u8 _pad8E[0x0A];
-    /* 0x98 */ s16 field_98;
+    /* 0x98 */ s16 useMode;
     u8 _pad9A[0x02];
-    /* 0x9C */ s32 field_9C;
+    /* 0x9C */ s32 useRamp;
     u8 _padA0[0x04];
     /* 0xA4 */ s16 field_A4;
 } ActorWork;
@@ -281,8 +281,8 @@ typedef struct {
     /* 0x28 */ s32 field_28;
     /* 0x2C */ s32 blinkTimer;
     /* 0x30 */ s32 texAnimTimer;
-    /* 0x34 */ s16 field_34;
-    /* 0x36 */ s16 field_36;
+    /* 0x34 */ s16 clutRow;
+    /* 0x36 */ s16 tpageFlags;
     u8 _pad38[0x04];
     /* 0x3C */ s32 otIndex;
     /* 0x40 */ s32 otzShift;
@@ -339,7 +339,7 @@ typedef struct {
 typedef struct {
     /* 0x00 */ s32 id;
     u8 _pad04[0x04];
-    /* 0x08 */ s32 field_8;
+    /* 0x08 */ s32 param;
     /* 0x0C */ s32 digiId;
     /* 0x10 */ s32 stateLevel0;
     /* 0x14 */ s32 stateLevel1;
@@ -427,12 +427,12 @@ typedef struct {
     /* 0x0C */ u16 mp;
     u8 _pad0E[0x4];
     /* 0x12 */ u8 level;
-    /* 0x13 */ u8 field_13;
-    /* 0x14 */ u16 field_14;
-    /* 0x16 */ u8 field_16;
-    /* 0x17 */ u8 field_17;
-    /* 0x18 */ u8 field_18;
-    /* 0x19 */ u8 field_19;
+    /* 0x13 */ u8 attack;
+    /* 0x14 */ u16 defense;
+    /* 0x16 */ u8 speed;
+    /* 0x17 */ u8 skill0;
+    /* 0x18 */ u8 skill1;
+    /* 0x19 */ u8 skill2;
     u8 _pad1A[0x4];
 } DigiInitRow; /* 0x1E */
 
@@ -485,18 +485,18 @@ typedef struct {
             /* 0x03 */ u8 field_3;
         } b0;
     } u0;
-    /* 0x04 */ u8 field_4;
+    /* 0x04 */ u8 mpCost;
     /* 0x05 */ u8 field_5;
-    /* 0x06 */ s16 field_6;
-    /* 0x08 */ s16 field_8;
+    /* 0x06 */ s16 shotXaFile;
+    /* 0x08 */ s16 power;
     u8 _pad0A[0x02];
-    /* 0x0C */ s32 field_C;
+    /* 0x0C */ s32 partsEntry;
     union {
         /* 0x10 */ u32 field_10;
         /* 0x10 */ u8 field_10b;
     } u10;
     /* 0x14 */ u32 field_14;
-    /* 0x18 */ u32 field_18;
+    /* 0x18 */ u32 statusFlags;
     /* 0x1C */ u32 field_1C;
     /* 0x20 */ u32 field_20;
     /* 0x24 */ u32 nameOffset;
@@ -704,7 +704,7 @@ typedef struct {
 typedef struct {
     /* 0x00 */ s32 id;
     /* 0x04 */ s32 field_4;
-    /* 0x08 */ s32 field_8;
+    /* 0x08 */ s32 param;
     u8 _pad0C[0x20];
     /* 0x2C */ TextBox *work;
     u8 _pad30[4];
@@ -799,16 +799,16 @@ typedef struct {
     /* 0x01 */ u8 digiId;
     u8 _pad02[0xB];
     /* 0x0D */ u8 level;
-    /* 0x0E */ u8 field_E;
+    /* 0x0E */ u8 dp;
     /* 0x0F */ u8 maxLevel;
     /* 0x10 */ s32 exp;
     /* 0x14 */ u16 maxHp;
     /* 0x16 */ u16 hp;
     /* 0x18 */ u16 maxMp;
     /* 0x1A */ u16 mp;
-    /* 0x1C */ s16 field_1C;
-    /* 0x1E */ u16 field_1E;
-    /* 0x20 */ s16 field_20;
+    /* 0x1C */ s16 attack;
+    /* 0x1E */ u16 defense;
+    /* 0x20 */ s16 speed;
     /* 0x22 */ u8 attr[0x2A]; /* 0..2 copied from the init row, 3..11 cleared */
     /* 0x4C */ u8 name[14];
     u8 _pad5A[0x2];
@@ -819,7 +819,7 @@ typedef struct {
 typedef struct {
     u8 _pad00[0x04];
     /* 0x04 */ s32 playTime;
-    /* 0x08 */ s32 field_8;
+    /* 0x08 */ s32 bits;
     u8 _pad0C[0x08];
     /* 0x14 */ u8 field_14;
     /* 0x15 */ u8 field_15;
@@ -1187,13 +1187,13 @@ typedef struct {
     /* 0x114 */ u8 *pickedRecords[3];
     /* 0x120 */ s16 pickCount;
     /* 0x122 */ s16 pickConfirmed;
-    /* 0x124 */ s16 field_124;
+    /* 0x124 */ s16 subMenuCursor;
     /* 0x126 */ s16 field_126;
     /* 0x128 */ s32 field_128;
     u8 _pad12C[0x230];
     /* 0x35C */ s16 pickResult;
     /* 0x35E */ s16 confirmed;
-    /* 0x360 */ s16 field_360;
+    /* 0x360 */ s16 topMenuResult;
 } MenuCtx;
 
 /* Record initialised by SetDefDispEnv (four halfwords from the arguments, the
@@ -1277,9 +1277,9 @@ typedef struct {
 typedef struct {
     /* 0x000 */ u8 field_0;
     u8 _pad001[0xBA4];
-    /* 0xBA5 */ u8 field_BA5[3];
-    /* 0xBA8 */ u8 field_BA8;
-    /* 0xBA9 */ u8 field_BA9[12];
+    /* 0xBA5 */ u8 bugLevels[3];
+    /* 0xBA8 */ u8 memBugCount;
+    /* 0xBA9 */ u8 memBugLevels[12];
 } Blk5071C;
 
 /* Sound state block at D_80062D18 (splat splits it into small byte symbols);
@@ -1594,7 +1594,7 @@ typedef struct {
  * pairs at 0x50/0x54 and the entry table at 0x6C. */
 typedef struct {
     u8 _pad00[0x40];
-    /* 0x40 */ u8 field_40[0x10];
+    /* 0x40 */ u8 msgText[0x10];
     /* 0x50 */ s16 cursor[2];
     /* 0x54 */ s16 gridSize[2];
     u8 _pad58[0x0A];
@@ -1947,9 +1947,9 @@ typedef struct {
 /* Second output record of Enemy_InitRosterEntry. */
 typedef struct {
     /* 0x00 */ u16 field_0;
-    /* 0x02 */ u8 field_2;
-    /* 0x03 */ u8 field_3;
-    /* 0x04 */ u8 field_4;
+    /* 0x02 */ u8 skill0;
+    /* 0x03 */ u8 skill1;
+    /* 0x04 */ u8 skill2;
     /* 0x05 */ u8 field_5[4];
     /* 0x09 */ u8 field_9[4];
     /* 0x0D */ u8 field_D[4];
@@ -2180,10 +2180,10 @@ typedef struct {
     /* 0x00 */ s32 itemTexts[20];
     /* 0x50 */ s32 msgText;
     /* 0x54 */ s32 field_54;
-    /* 0x58 */ s32 field_58;
+    /* 0x58 */ s32 labelText;
     /* 0x5C */ s32 itemNameText;
     u8 _pad60[0x10];
-    /* 0x70 */ s32 field_70;
+    /* 0x70 */ s32 listTexts;
     u8 _pad74[0x14];
     /* 0x88 */ s16 cursor[2];
     /* 0x8C */ s16 gridSize[2];
@@ -2229,16 +2229,16 @@ typedef struct {
 
 typedef struct {
     u8 _pad00[0xE];
-    /* 0x0E */ u8 field_E;
+    /* 0x0E */ u8 dp;
     u8 _pad0F;
     /* 0x10 */ s32 exp;
     /* 0x14 */ s16 maxHp;
     /* 0x16 */ s16 hp;
     /* 0x18 */ s16 maxMp;
     /* 0x1A */ s16 mp;
-    /* 0x1C */ s16 field_1C;
-    /* 0x1E */ s16 field_1E;
-    /* 0x20 */ s16 field_20;
+    /* 0x1C */ s16 attack;
+    /* 0x1E */ s16 defense;
+    /* 0x20 */ s16 speed;
 } DigiRosterBoostView;
 
 /* Icon sheet layout (0x20 bytes) copied out by Gfx_FindOrLoadImageSlot; 0x18/0x1C are the
@@ -2440,7 +2440,7 @@ typedef struct {
 /* One list row of the Menu_BuildDigiList page (8 bytes). */
 typedef struct {
     /* 0x0 */ u8 kind;
-    /* 0x1 */ u8 field_1;
+    /* 0x1 */ u8 bugLevel;
     /* 0x2 */ u8 field_2;
     u8 _pad3;
     /* 0x4 */ void *entry;
