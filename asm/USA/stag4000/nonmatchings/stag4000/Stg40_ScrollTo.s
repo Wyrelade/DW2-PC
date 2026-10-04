@@ -3,8 +3,8 @@ nonmatching Stg40_ScrollTo, 0x58
 glabel Stg40_ScrollTo
     /* 1E08 80065168 0780023C */  lui        $v0, %hi(Stg40_FloorTask)
     /* 1E0C 8006516C 682B488C */  lw         $t0, %lo(Stg40_FloorTask)($v0)
-    /* 1E10 80065170 0780023C */  lui        $v0, %hi(D_80072B60)
-    /* 1E14 80065174 602B478C */  lw         $a3, %lo(D_80072B60)($v0)
+    /* 1E10 80065170 0780023C */  lui        $v0, %hi(Stg40_RootState)
+    /* 1E14 80065174 602B478C */  lw         $a3, %lo(Stg40_RootState)($v0)
     /* 1E18 80065178 E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* 1E1C 8006517C 1000BFAF */  sw         $ra, 0x10($sp)
     /* 1E20 80065180 2C00038D */  lw         $v1, 0x2C($t0)

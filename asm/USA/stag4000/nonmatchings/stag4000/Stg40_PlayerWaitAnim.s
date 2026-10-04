@@ -8,8 +8,8 @@ glabel Stg40_PlayerWaitAnim
     /* 6180 800694E0 21808000 */   addu      $s0, $a0, $zero
     /* 6184 800694E4 01000324 */  addiu      $v1, $zero, 0x1
     /* 6188 800694E8 06004314 */  bne        $v0, $v1, .L80069504
-    /* 618C 800694EC 0780023C */   lui       $v0, %hi(D_80072B60)
-    /* 6190 800694F0 602B428C */  lw         $v0, %lo(D_80072B60)($v0)
+    /* 618C 800694EC 0780023C */   lui       $v0, %hi(Stg40_RootState)
+    /* 6190 800694F0 602B428C */  lw         $v0, %lo(Stg40_RootState)($v0)
     /* 6194 800694F4 00000000 */  nop
     /* 6198 800694F8 38004590 */  lbu        $a1, 0x38($v0)
     /* 619C 800694FC 7745000C */  jal        Task_SetState1

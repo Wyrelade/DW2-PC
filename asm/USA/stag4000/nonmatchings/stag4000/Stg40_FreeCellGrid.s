@@ -1,8 +1,8 @@
 nonmatching Stg40_FreeCellGrid, 0x2C
 
 glabel Stg40_FreeCellGrid
-    /* CBC8 8006FF28 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* CBCC 8006FF2C 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* CBC8 8006FF28 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* CBCC 8006FF2C 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* CBD0 8006FF30 E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* CBD4 8006FF34 1000BFAF */  sw         $ra, 0x10($sp)
     /* CBD8 8006FF38 580E448C */  lw         $a0, 0xE58($v0)

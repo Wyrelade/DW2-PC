@@ -1,8 +1,8 @@
 nonmatching Stg40_PlayerFoundObject, 0x100
 
 glabel Stg40_PlayerFoundObject
-    /* 61FC 8006955C 0780023C */  lui        $v0, %hi(D_80072B60)
-    /* 6200 80069560 602B428C */  lw         $v0, %lo(D_80072B60)($v0)
+    /* 61FC 8006955C 0780023C */  lui        $v0, %hi(Stg40_RootState)
+    /* 6200 80069560 602B428C */  lw         $v0, %lo(Stg40_RootState)($v0)
     /* 6204 80069564 D8FFBD27 */  addiu      $sp, $sp, -0x28
     /* 6208 80069568 1000B0AF */  sw         $s0, 0x10($sp)
     /* 620C 8006956C 21808000 */  addu       $s0, $a0, $zero

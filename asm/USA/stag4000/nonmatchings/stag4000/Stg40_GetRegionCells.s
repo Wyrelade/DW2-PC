@@ -2,8 +2,8 @@ nonmatching Stg40_GetRegionCells, 0xB4
 
 glabel Stg40_GetRegionCells
     /* AB90 8006DEF0 21480000 */  addu       $t1, $zero, $zero
-    /* AB94 8006DEF4 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* AB98 8006DEF8 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* AB94 8006DEF4 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* AB98 8006DEF8 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* AB9C 8006DEFC 00000000 */  nop
     /* ABA0 8006DF00 540E438C */  lw         $v1, 0xE54($v0)
     /* ABA4 8006DF04 580E4E8C */  lw         $t6, 0xE58($v0)

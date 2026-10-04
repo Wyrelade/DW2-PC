@@ -1,8 +1,8 @@
 nonmatching Stg40_PlayerOpenChest, 0xD8
 
 glabel Stg40_PlayerOpenChest
-    /* 72B4 8006A614 0780023C */  lui        $v0, %hi(D_80072B60)
-    /* 72B8 8006A618 602B458C */  lw         $a1, %lo(D_80072B60)($v0)
+    /* 72B4 8006A614 0780023C */  lui        $v0, %hi(Stg40_RootState)
+    /* 72B8 8006A618 602B458C */  lw         $a1, %lo(Stg40_RootState)($v0)
     /* 72BC 8006A61C E0FFBD27 */  addiu      $sp, $sp, -0x20
     /* 72C0 8006A620 1000B0AF */  sw         $s0, 0x10($sp)
     /* 72C4 8006A624 21808000 */  addu       $s0, $a0, $zero

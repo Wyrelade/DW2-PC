@@ -1,8 +1,8 @@
 nonmatching Stg40_LabelFilledCells, 0x7C
 
 glabel Stg40_LabelFilledCells
-    /* D3F4 80070754 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* D3F8 80070758 1C07448C */  lw         $a0, %lo(D_8005071C)($v0)
+    /* D3F4 80070754 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* D3F8 80070758 1C07448C */  lw         $a0, %lo(Dung_StatePtr)($v0)
     /* D3FC 8007075C 00000000 */  nop
     /* D400 80070760 540E828C */  lw         $v0, 0xE54($a0)
     /* D404 80070764 00000000 */  nop
@@ -10,8 +10,8 @@ glabel Stg40_LabelFilledCells
     /* D40C 8007076C 02004284 */  lh         $v0, 0x2($v0)
     /* D410 80070770 00000000 */  nop
     /* D414 80070774 18006200 */  mult       $v1, $v0
-    /* D418 80070778 0780023C */  lui        $v0, %hi(D_80072B60)
-    /* D41C 8007077C 602B428C */  lw         $v0, %lo(D_80072B60)($v0)
+    /* D418 80070778 0780023C */  lui        $v0, %hi(Stg40_RootState)
+    /* D41C 8007077C 602B428C */  lw         $v0, %lo(Stg40_RootState)($v0)
     /* D420 80070780 580E848C */  lw         $a0, 0xE58($a0)
     /* D424 80070784 00004690 */  lbu        $a2, 0x0($v0)
     /* D428 80070788 12180000 */  mflo       $v1

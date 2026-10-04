@@ -2,8 +2,8 @@ nonmatching Stg40_PlayerShowStatusMsgs, 0xBC
 
 glabel Stg40_PlayerShowStatusMsgs
     /* 5D6C 800690CC E0FFBD27 */  addiu      $sp, $sp, -0x20
-    /* 5D70 800690D0 0780023C */  lui        $v0, %hi(D_80072B60)
-    /* 5D74 800690D4 602B458C */  lw         $a1, %lo(D_80072B60)($v0)
+    /* 5D70 800690D0 0780023C */  lui        $v0, %hi(Stg40_RootState)
+    /* 5D74 800690D4 602B458C */  lw         $a1, %lo(Stg40_RootState)($v0)
     /* 5D78 800690D8 1800BFAF */  sw         $ra, 0x18($sp)
     /* 5D7C 800690DC 6800A284 */  lh         $v0, 0x68($a1)
     /* 5D80 800690E0 6800A394 */  lhu        $v1, 0x68($a1)

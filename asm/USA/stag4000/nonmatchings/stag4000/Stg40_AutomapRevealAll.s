@@ -1,8 +1,8 @@
 nonmatching Stg40_AutomapRevealAll, 0xD4
 
 glabel Stg40_AutomapRevealAll
-    /* BD34 8006F094 0580043C */  lui        $a0, %hi(D_8005071C)
-    /* BD38 8006F098 1C07828C */  lw         $v0, %lo(D_8005071C)($a0)
+    /* BD34 8006F094 0580043C */  lui        $a0, %hi(Dung_StatePtr)
+    /* BD38 8006F098 1C07828C */  lw         $v0, %lo(Dung_StatePtr)($a0)
     /* BD3C 8006F09C D8FFBD27 */  addiu      $sp, $sp, -0x28
     /* BD40 8006F0A0 1400B1AF */  sw         $s1, 0x14($sp)
     /* BD44 8006F0A4 2000BFAF */  sw         $ra, 0x20($sp)
@@ -16,7 +16,7 @@ glabel Stg40_AutomapRevealAll
     /* BD64 8006F0C4 21004018 */  blez       $v0, .L8006F14C
     /* BD68 8006F0C8 21880000 */   addu      $s1, $zero, $zero
   .L8006F0CC:
-    /* BD6C 8006F0CC 1C07828C */  lw         $v0, %lo(D_8005071C)($a0)
+    /* BD6C 8006F0CC 1C07828C */  lw         $v0, %lo(Dung_StatePtr)($a0)
     /* BD70 8006F0D0 00000000 */  nop
     /* BD74 8006F0D4 540E428C */  lw         $v0, 0xE54($v0)
     /* BD78 8006F0D8 00000000 */  nop
@@ -24,13 +24,13 @@ glabel Stg40_AutomapRevealAll
     /* BD80 8006F0E0 00000000 */  nop
     /* BD84 8006F0E4 0F004018 */  blez       $v0, .L8006F124
     /* BD88 8006F0E8 21800000 */   addu      $s0, $zero, $zero
-    /* BD8C 8006F0EC 0580123C */  lui        $s2, %hi(D_8005071C)
+    /* BD8C 8006F0EC 0580123C */  lui        $s2, %hi(Dung_StatePtr)
     /* BD90 8006F0F0 21206002 */  addu       $a0, $s3, $zero
   .L8006F0F4:
     /* BD94 8006F0F4 21280002 */  addu       $a1, $s0, $zero
     /* BD98 8006F0F8 8BBD010C */  jal        Stg40_RevealCell
     /* BD9C 8006F0FC 21302002 */   addu      $a2, $s1, $zero
-    /* BDA0 8006F100 1C07428E */  lw         $v0, %lo(D_8005071C)($s2)
+    /* BDA0 8006F100 1C07428E */  lw         $v0, %lo(Dung_StatePtr)($s2)
     /* BDA4 8006F104 00000000 */  nop
     /* BDA8 8006F108 540E428C */  lw         $v0, 0xE54($v0)
     /* BDAC 8006F10C 00000000 */  nop
@@ -40,8 +40,8 @@ glabel Stg40_AutomapRevealAll
     /* BDBC 8006F11C F5FF4014 */  bnez       $v0, .L8006F0F4
     /* BDC0 8006F120 21206002 */   addu      $a0, $s3, $zero
   .L8006F124:
-    /* BDC4 8006F124 0580043C */  lui        $a0, %hi(D_8005071C)
-    /* BDC8 8006F128 1C07828C */  lw         $v0, %lo(D_8005071C)($a0)
+    /* BDC4 8006F124 0580043C */  lui        $a0, %hi(Dung_StatePtr)
+    /* BDC8 8006F128 1C07828C */  lw         $v0, %lo(Dung_StatePtr)($a0)
     /* BDCC 8006F12C 00000000 */  nop
     /* BDD0 8006F130 540E428C */  lw         $v0, 0xE54($v0)
     /* BDD4 8006F134 00000000 */  nop

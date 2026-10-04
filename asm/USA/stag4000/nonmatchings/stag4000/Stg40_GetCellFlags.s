@@ -1,8 +1,8 @@
 nonmatching Stg40_GetCellFlags, 0x58
 
 glabel Stg40_GetCellFlags
-    /* D080 800703E0 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* D084 800703E4 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* D080 800703E0 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* D084 800703E4 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* D088 800703E8 00000000 */  nop
     /* D08C 800703EC 540E438C */  lw         $v1, 0xE54($v0)
     /* D090 800703F0 580E488C */  lw         $t0, 0xE58($v0)

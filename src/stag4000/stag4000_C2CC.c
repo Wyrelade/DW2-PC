@@ -8,14 +8,14 @@
 
 void Stg40_RevealCell(Stg40AutomapWork *a0, s32 x, s32 y) {
     if (Stg40_GetCellFlags(x, y) & 0x8000) {
-        ((Stg40Cell *)D_8005071C->cells)[a0->cols * y + x].flags |= 0x2000;
+        ((Stg40Cell *)Dung_StatePtr->cells)[a0->cols * y + x].flags |= 0x2000;
         Stg40_AutomapSetCell(x, y, 1);
     }
 }
 
 void Stg40_AutomapRevealAround(Stg40AutomapWork *w) {
-    s32 x = D_8005071C->playerLoc->u0.pair.field_0;
-    s32 y = D_8005071C->playerLoc->u0.pair.field_2;
+    s32 x = Dung_StatePtr->playerLoc->u0.pair.field_0;
+    s32 y = Dung_StatePtr->playerLoc->u0.pair.field_2;
     s32 dx = w->lastPlayerX - x;
     s32 dy = w->lastPlayerY - y;
 
@@ -44,8 +44,8 @@ void Stg40_AutomapRevealAround(Stg40AutomapWork *w) {
         Stg40_RevealCell(w, x + 1, y + 1);
     }
     Stg40_RevealCell(w, x, y);
-    w->lastPlayerX = D_8005071C->playerLoc->u0.pair.field_0;
-    w->lastPlayerY = D_8005071C->playerLoc->u0.pair.field_2;
+    w->lastPlayerX = Dung_StatePtr->playerLoc->u0.pair.field_0;
+    w->lastPlayerY = Dung_StatePtr->playerLoc->u0.pair.field_2;
 }
 
 void Stg40_AutomapDrawWindow(Stg40AutomapWork *w, s32 x, s32 y, s32 cx, s32 cy, s32 cw, s32 ch, s32 scale, s32 shade) {
@@ -128,7 +128,7 @@ void Stg40_AutomapDrawModes(ActorWork *w) {
     s32 i;
 
     for (i = 0; i < 2; i++) {
-        if (i == D_80072B60->automapMode - 1) {
+        if (i == Stg40_RootState->automapMode - 1) {
             t->modeFade[i] = (t->modeFade[i] + 0x20 < 0x100) ? (u16)t->modeFade[i] + 0x20 : 0xFF;
         } else {
             t->modeFade[i] = (t->modeFade[i] - 0x20 >= 0) ? (u16)t->modeFade[i] - 0x20 : 0;
@@ -136,7 +136,7 @@ void Stg40_AutomapDrawModes(ActorWork *w) {
         if (t->modeFade[i] != 0) {
             switch (i) {
             case 0:
-                loc = D_8005071C->playerLoc;
+                loc = Dung_StatePtr->playerLoc;
                 Stg40_AutomapDrawWindow(t, 0x50, 0, loc->u0.pair.field_0, loc->u0.pair.field_2, 0x11, 0x11, 3, t->modeFade[0]);
                 break;
             case 1:
@@ -161,7 +161,7 @@ void Stg40_AutomapUpdate(Actor *a0) {
         Stg40_AutomapInitTex(w);
         Stg40_AutomapRedraw(w);
         Stg40_AutomapFlush(w);
-        D_80072B60->automapMode = 0;
+        Stg40_RootState->automapMode = 0;
         Task_NextState0(a0);
         break;
     case 1:
@@ -183,29 +183,29 @@ void Stg40_AutomapDraw(Actor *a0) {
     ActorWork *w = a0->work;
 
     if (Beetle_GetPart(0x12) <= 0) {
-        D_80072B60->automapMode = 0;
+        Stg40_RootState->automapMode = 0;
     }
     Stg40_AutomapDrawModes(w);
 }
 
 void Stg40_AllocCellGrid(void) {
-    Stg40FloorHeader *d = D_8005071C->floorHdr;
+    Stg40FloorHeader *d = Dung_StatePtr->floorHdr;
 
-    D_8005071C->cells = (ActorWork *)Mem_Alloc(d->cols * (d->rows << 2), 2);
+    Dung_StatePtr->cells = (ActorWork *)Mem_Alloc(d->cols * (d->rows << 2), 2);
 }
 
 void Stg40_FreeCellGrid(void) {
-    Mem_Free(D_8005071C->cells);
+    Mem_Free(Dung_StatePtr->cells);
 }
 
 u16 Stg40_ReadFloorBits(u16 *pal, u32 *bits, s32 x, s32 y) {
-    s32 w = D_8005071C->floorHdr->cols / 8;
+    s32 w = Dung_StatePtr->floorHdr->cols / 8;
 
     return pal[(bits[w * y + x / 8] >> ((x % 8) * 4)) & 0xF];
 }
 
 void Stg40_FillCellGrid(void) {
-    Stg40DungState *g = D_8005071C;
+    Stg40DungState *g = Dung_StatePtr;
     Stg40Cell *cell;
     Stg40FloorHeader *dims;
     Stg40DungFloor *map;
@@ -223,13 +223,13 @@ void Stg40_FillCellGrid(void) {
     u16 v;
 
     cell = (Stg40Cell *)g->cells;
-    map = (Stg40DungFloor *)D_80072B60->floorMap;
+    map = (Stg40DungFloor *)Stg40_RootState->floorMap;
     dims = g->floorHdr;
     cols = dims->cols;
     rows = dims->rows;
-    room = D_80072B60->layout;
+    room = Stg40_RootState->layout;
     bits = room->cellBits;
-    Stg40_FloorBitsPal[7] = D_800729B4[map->paletteIdx];
+    Stg40_FloorBitsPal[7] = Stg40_SpecialFloorValues[map->paletteIdx];
     for (y = 0; y < rows; y++) {
         for (x = 0; x < cols; x++) {
             v = Stg40_ReadFloorBits(Stg40_FloorBitsPal, bits, x, y);
@@ -260,7 +260,7 @@ void Stg40_FillCellGrid(void) {
         }
     }
 
-    cell = (Stg40Cell *)D_8005071C->cells;
+    cell = (Stg40Cell *)Dung_StatePtr->cells;
     for (y = 0; y < rows; y++) {
         for (x = 0; x < cols; x++) {
             if (cell->flags & 0xF) {
@@ -294,7 +294,7 @@ void Stg40_FillCellGrid(void) {
 }
 
 u16 Stg40_GetCellFlags(s32 x, s32 y) {
-    Stg40DungState *b = D_8005071C;
+    Stg40DungState *b = Dung_StatePtr;
     Stg40FloorHeader *d = b->floorHdr;
     Stg40Cell *cells = (Stg40Cell *)b->cells;
     s32 w = d->cols;
@@ -308,7 +308,7 @@ u16 Stg40_GetCellFlags(s32 x, s32 y) {
 }
 
 Stg40Cell *Stg40_GetCell(s32 x, s32 y) {
-    Stg40DungState *b = D_8005071C;
+    Stg40DungState *b = Dung_StatePtr;
     Stg40FloorHeader *d = b->floorHdr;
     s32 w = d->cols;
     s32 h = d->rows;
@@ -322,8 +322,8 @@ Stg40Cell *Stg40_GetCell(s32 x, s32 y) {
 
 void Stg40_FloodFillRoom(s32 buf, s32 p1, s32 x, s32 y, s32 fill)
 {
-    Stg40Cell *grid = (Stg40Cell *)D_8005071C->cells;
-    s32 width = D_8005071C->floorHdr->cols;
+    Stg40Cell *grid = (Stg40Cell *)Dung_StatePtr->cells;
+    s32 width = Dung_StatePtr->floorHdr->cols;
     s32 maxRun = 0;
     s32 count;
     s32 k;
@@ -367,7 +367,7 @@ void Stg40_FloodFillRoom(s32 buf, s32 p1, s32 x, s32 y, s32 fill)
 }
 
 s32 Stg40_FindUnlabeledRoom(void) {
-    Stg40DungState *b = D_8005071C;
+    Stg40DungState *b = Dung_StatePtr;
     Stg40Cell *c = (Stg40Cell *)b->cells;
     s32 h = b->floorHdr->rows;
     s32 w = b->floorHdr->cols;
@@ -385,9 +385,9 @@ s32 Stg40_FindUnlabeledRoom(void) {
 }
 
 void Stg40_LabelFilledCells(void) {
-    Stg40DungState *b = D_8005071C;
+    Stg40DungState *b = Dung_StatePtr;
     s32 n = b->floorHdr->cols * b->floorHdr->rows;
-    u8 v = D_80072B60->roomCount;
+    u8 v = Stg40_RootState->roomCount;
     Stg40Cell *c = (Stg40Cell *)b->cells;
     s32 i;
 
@@ -400,21 +400,21 @@ void Stg40_LabelFilledCells(void) {
 }
 
 void Stg40_LabelRooms(void) {
-    s32 w = D_8005071C->floorHdr->cols;
+    s32 w = Dung_StatePtr->floorHdr->cols;
     s32 buf = Mem_Alloc(0x3FF8, 2);
     s32 i;
 
-    D_80072B60->roomCount = 0;
+    Stg40_RootState->roomCount = 0;
     while ((D_80072BB8 = i = Stg40_FindUnlabeledRoom()) != -1) {
         Stg40_FloodFillRoom(buf, 0, i % w, i / w, 0x2000);
         Stg40_LabelFilledCells();
-        D_80072B60->roomCount++;
+        Stg40_RootState->roomCount++;
     }
     Mem_Free((ActorWork *)buf);
 }
 
 Stg40Cell *Stg40_GetCell2(s32 x, s32 y) {
-    Stg40DungState *b = D_8005071C;
+    Stg40DungState *b = Dung_StatePtr;
     Stg40FloorHeader *d = b->floorHdr;
     s32 w = d->cols;
     s32 h = d->rows;
@@ -427,7 +427,7 @@ Stg40Cell *Stg40_GetCell2(s32 x, s32 y) {
 }
 
 void Stg40_SetCellOccupied(s32 x, s32 y, s32 flag) {
-    Stg40DungState *b = D_8005071C;
+    Stg40DungState *b = Dung_StatePtr;
     Stg40FloorHeader *d = b->floorHdr;
     s32 w = d->cols;
     s32 h = d->rows;
@@ -440,7 +440,7 @@ void Stg40_SetCellOccupied(s32 x, s32 y, s32 flag) {
 }
 
 void Stg40_ClearCellOccupied(s32 x, s32 y) {
-    Stg40DungState *b = D_8005071C;
+    Stg40DungState *b = Dung_StatePtr;
     Stg40FloorHeader *d = b->floorHdr;
     s32 w = d->cols;
     s32 h = d->rows;
@@ -453,11 +453,11 @@ void Stg40_ClearCellOccupied(s32 x, s32 y) {
 }
 
 void Stg40_ApplyTrapCells(void) {
-    Stg40CellPoint *r = D_8005071C->trapCells;
+    Stg40CellPoint *r = Dung_StatePtr->trapCells;
     Stg40Cell *c;
     s32 i;
 
-    for (i = 0; i < D_8005071C->trapCount; r++, i++) {
+    for (i = 0; i < Dung_StatePtr->trapCount; r++, i++) {
         c = Stg40_GetCell2(r->x, r->y);
         c->flags &= 0xFFF0;
         c->flags |= r->kind + 7;
@@ -465,7 +465,7 @@ void Stg40_ApplyTrapCells(void) {
 }
 
 void Stg40_TurnQueueReset(void) {
-    Stg40TurnQueue *p = &D_8005071C->turnQueue;
+    Stg40TurnQueue *p = &Dung_StatePtr->turnQueue;
     s16 *q = p->ids;
     s32 i;
 
@@ -479,7 +479,7 @@ void Stg40_TurnQueueReset(void) {
 }
 
 s16 *Stg40_TurnQueueFind(s16 v) {
-    Stg40TurnQueue *f = &D_8005071C->turnQueue;
+    Stg40TurnQueue *f = &Dung_StatePtr->turnQueue;
     s16 *p = f->ids;
 
     while (*p != -2) {
@@ -492,7 +492,7 @@ s16 *Stg40_TurnQueueFind(s16 v) {
 }
 
 void Stg40_TurnQueueAdd(s32 v) {
-    Stg40TurnQueue *f = &D_8005071C->turnQueue;
+    Stg40TurnQueue *f = &Dung_StatePtr->turnQueue;
 
     if (Stg40_TurnQueueFind(v) == NULL && f->count < f->capacity) {
         f->ids[f->count] = v;
@@ -501,7 +501,7 @@ void Stg40_TurnQueueAdd(s32 v) {
 }
 
 void Stg40_TurnQueueRemove(s16 v) {
-    Stg40TurnQueue *f = &D_8005071C->turnQueue;
+    Stg40TurnQueue *f = &Dung_StatePtr->turnQueue;
     s16 *p = Stg40_TurnQueueFind(v);
     s16 *q;
 
@@ -518,14 +518,14 @@ void Stg40_TurnQueueRemove(s16 v) {
 }
 
 s16 Stg40_TurnQueueNext(void) {
-    Stg40TurnQueue *p = &D_8005071C->turnQueue;
+    Stg40TurnQueue *p = &Dung_StatePtr->turnQueue;
 
     p->cursor = (p->cursor + 1 < p->count) ? p->cursor + 1 : 0;
     return p->ids[p->cursor];
 }
 
 s16 Stg40_TurnQueueCurrent(void) {
-    Stg40TurnQueue *p = &D_8005071C->turnQueue;
+    Stg40TurnQueue *p = &Dung_StatePtr->turnQueue;
 
     return p->ids[p->cursor];
 }
@@ -535,27 +535,27 @@ void Stg40_LoadDungFile(s32 id) {
 
     p = (s32 *)Cd_GetFileOrNull(id);
     Stg40_RelocDungFile(p);
-    D_80072B60->dungFileId = id;
-    D_80072B60->floorTable = p;
-    D_80072B60->floorMap = p[D_8005071C->floor];
-    D_80072B60->floorCount = 0;
-    while (D_80072B60->floorTable[D_80072B60->floorCount] != 0) {
-        D_80072B60->floorCount++;
+    Stg40_RootState->dungFileId = id;
+    Stg40_RootState->floorTable = p;
+    Stg40_RootState->floorMap = p[Dung_StatePtr->floor];
+    Stg40_RootState->floorCount = 0;
+    while (Stg40_RootState->floorTable[Stg40_RootState->floorCount] != 0) {
+        Stg40_RootState->floorCount++;
     }
 }
 
 void Stg40_PickFloorLayout(void) {
     s32 i;
 
-    D_8005071C->floorLayout = Stg40_RandInt(8);
+    Dung_StatePtr->floorLayout = Stg40_RandInt(8);
     for (i = 7; i >= 0; i--) {
-        D_8005071C->revealedRooms[i] = 0;
+        Dung_StatePtr->revealedRooms[i] = 0;
     }
 }
 
 void Stg40_ApplyFloorLayout(void) {
-    Stg40B60 *b = D_80072B60;
-    Stg40DungState *g = D_8005071C;
+    Stg40B60 *b = Stg40_RootState;
+    Stg40DungState *g = Dung_StatePtr;
     Stg40DungFloor *m = (Stg40DungFloor *)b->floorMap;
     u8 *src;
     u8 *dst;
@@ -565,12 +565,12 @@ void Stg40_ApplyFloorLayout(void) {
     g->floorHdr->field_4 = 1;
     g->floorHdr->hazardLevel = m->hazardLevel;
     src = m->name;
-    dst = D_8005071C->floorHdr->name;
+    dst = Dung_StatePtr->floorHdr->name;
     memset(dst, 0xFF, 16);
-    D_8005071C->floorHdr->nameLen = 0;
+    Dung_StatePtr->floorHdr->nameLen = 0;
     while (*src != 0xFF) {
         *dst = *src;
-        D_8005071C->floorHdr->nameLen++;
+        Dung_StatePtr->floorHdr->nameLen++;
         src++;
         dst++;
     }
@@ -633,25 +633,25 @@ s32 Stg40_PickRandomPoint(Stg40CellPos *out, Stg40CellPoint *e, u8 key) {
 
 void Stg40_PickSpawnPoints(void) {
     Stg40CellPos buf[20];
-    Stg40CellPoint *list = D_80072B60->layout->spawnPoints;
+    Stg40CellPoint *list = Stg40_RootState->layout->spawnPoints;
     s32 r;
 
     r = Stg40_PickRandomPoint(buf, list, 0);
-    D_80072B60->startPos.x = buf[r].x;
-    D_80072B60->startPos.y = buf[r].y;
+    Stg40_RootState->startPos.x = buf[r].x;
+    Stg40_RootState->startPos.y = buf[r].y;
     r = Stg40_PickRandomPoint(buf, list, 1);
-    D_80072B60->gatePos.y = -1;
-    D_80072B60->gatePos.x = -1;
+    Stg40_RootState->gatePos.y = -1;
+    Stg40_RootState->gatePos.x = -1;
     if (r != -1) {
-        D_80072B60->gatePos.x = buf[r].x;
-        D_80072B60->gatePos.y = buf[r].y;
+        Stg40_RootState->gatePos.x = buf[r].x;
+        Stg40_RootState->gatePos.y = buf[r].y;
     }
     r = Stg40_PickRandomPoint(buf, list, 2);
-    D_80072B60->exitPos.y = -1;
-    D_80072B60->exitPos.x = -1;
+    Stg40_RootState->exitPos.y = -1;
+    Stg40_RootState->exitPos.x = -1;
     if (r != -1) {
-        D_80072B60->exitPos.x = buf[r].x;
-        D_80072B60->exitPos.y = buf[r].y;
+        Stg40_RootState->exitPos.x = buf[r].x;
+        Stg40_RootState->exitPos.y = buf[r].y;
     }
 }
 
@@ -692,10 +692,10 @@ void Stg40_ShowTrapEffectMsg(s32 a0, s32 a1) {
     }
     switch (a1) {
     case 0:
-        Stg40_MsgWinOpen(1, base, (s32)Save_GameStatePtr->field_D1, (s32)Stg40_NumToDigits(0, D_80072B60->damage));
+        Stg40_MsgWinOpen(1, base, (s32)Save_GameStatePtr->field_D1, (s32)Stg40_NumToDigits(0, Stg40_RootState->damage));
         break;
     case 1:
-        Stg40_MsgWinOpen(1, base + 1, (s32)Stg40_NumToDigits(0, D_80072B60->damage), 0);
+        Stg40_MsgWinOpen(1, base + 1, (s32)Stg40_NumToDigits(0, Stg40_RootState->damage), 0);
         break;
     case 2:
     case 3:
@@ -721,23 +721,23 @@ void Stg40_ApplyTrapEffect(s32 a0, s32 a1) {
 
     switch (a0) {
     case 0:
-        D_80072B60->damage = a1 * 400;
-        Stg40_DamageBeetle(D_80072B60->damage);
+        Stg40_RootState->damage = a1 * 400;
+        Stg40_DamageBeetle(Stg40_RootState->damage);
         break;
     case 1:
-        D_80072B60->damage = a1 * 10;
+        Stg40_RootState->damage = a1 * 10;
         Stg40_ListPartyDigi(3);
-        for (i = 0; i < D_80072B60->partyCount; i++) {
-            r = &Save_GameStatePtr->elems[D_80072B60->partyIdx[i]];
-            r->hp = ((s16)r->hp - D_80072B60->damage > 0) ? (u16)r->hp - (u16)D_80072B60->damage : 1;
+        for (i = 0; i < Stg40_RootState->partyCount; i++) {
+            r = &Save_GameStatePtr->elems[Stg40_RootState->partyIdx[i]];
+            r->hp = ((s16)r->hp - Stg40_RootState->damage > 0) ? (u16)r->hp - (u16)Stg40_RootState->damage : 1;
         }
         break;
     case 2:
-        D_8005071C->statusFlags = (D_8005071C->statusFlags | 2) & ~0x80;
-        D_8005071C->confusionTurn = Stg40_RandInt(4) + 1;
+        Dung_StatePtr->statusFlags = (Dung_StatePtr->statusFlags | 2) & ~0x80;
+        Dung_StatePtr->confusionTurn = Stg40_RandInt(4) + 1;
         break;
     case 3:
-        g = D_8005071C;
+        g = Dung_StatePtr;
         g->bindTurns = 0;
         g->statusFlags = (g->statusFlags | 1) & ~0x40;
         break;
@@ -790,9 +790,9 @@ s32 Stg40_TickStatusEffects(Actor *a0) {
     DigiRosterEntry *ent;
 
     sfx = 0;
-    st = (Stg40BA0View *)&D_8005071C->statusFlags;
-    stack = D_80072B60->statusCodes;
-    count = &D_80072B60->statusCount;
+    st = (Stg40BA0View *)&Dung_StatePtr->statusFlags;
+    stack = Stg40_RootState->statusCodes;
+    count = &Stg40_RootState->statusCount;
     p = &stack[7];
     for (i = 7; i >= 0; i--) {
         *p-- = 0;
@@ -812,11 +812,11 @@ s32 Stg40_TickStatusEffects(Actor *a0) {
         }
         st->statusFlags |= 0x80;
     }
-    if (D_8005071C->bitBugLevel != 0) {
+    if (Dung_StatePtr->bitBugLevel != 0) {
         slot = Stg40_PickRandomPart();
         if ((Stg40_RandPercent() < 5 && (st->statusFlags & 0x100)) || (Save_GameStatePtr->bits == 0 && slot == -1)) {
             stack[(*count)++] = 2;
-            D_8005071C->bitBugLevel = 0;
+            Dung_StatePtr->bitBugLevel = 0;
         } else {
             if (Save_GameStatePtr->bits != 0) {
                 s32 cost[4] = { 0, 20, 50, 100 };
@@ -830,16 +830,16 @@ s32 Stg40_TickStatusEffects(Actor *a0) {
                 Beetle_SetPartBroken(slot, 1);
                 stack[(*count)++] = 6;
                 sfx = 3;
-                D_80072B60->brokenPartText = Item_GetNameText(Save_GameStatePtr->slotItems[slot]);
+                Stg40_RootState->brokenPartText = Item_GetNameText(Save_GameStatePtr->slotItems[slot]);
             }
             Stg40_ObjStartFlash(a0, 2);
         }
         st->statusFlags |= 0x100;
     }
-    if (D_8005071C->energyBugLevel != 0) {
+    if (Dung_StatePtr->energyBugLevel != 0) {
         if (Stg40_RandPercent() < 2 && (st->statusFlags & 0x200)) {
             stack[(*count)++] = 3;
-            D_8005071C->energyBugLevel = 0;
+            Dung_StatePtr->energyBugLevel = 0;
         } else {
             s32 cost[4] = { 0, 2, 4, 6 };
             s16 v = Save_GameStatePtr->mp - cost[st->energyBugLevel];
@@ -853,22 +853,22 @@ s32 Stg40_TickStatusEffects(Actor *a0) {
         }
         st->statusFlags |= 0x200;
     }
-    if (D_8005071C->returnBugLevel != 0) {
+    if (Dung_StatePtr->returnBugLevel != 0) {
         s32 chance[4] = { 0, 50, 40, 30 };
         n = ((s32 (*)(s32))Stg40_ListPartyDigi)(1);
         if ((Stg40_RandPercent() < chance[st->returnBugLevel] && (st->statusFlags & 0x400)) || n < 2 ||
             Digi_CountByState(1) >= 24) {
             stack[(*count)++] = 4;
-            D_8005071C->returnBugLevel = 0;
+            Dung_StatePtr->returnBugLevel = 0;
         } else {
             n = ((s32 (*)(s32))Stg40_ListPartyDigi)(0);
             r = Stg40_RandPercent() / (100 / n);
             if (r > n - 1) {
                 r = n - 1;
             }
-            ent = &Save_GameStatePtr->elems[D_80072B60->partyIdx[r]];
+            ent = &Save_GameStatePtr->elems[Stg40_RootState->partyIdx[r]];
             ent->state = 1;
-            *(Stg40DigiName *)D_80072B60->lostDigiName = *(Stg40DigiName *)ent->name;
+            *(Stg40DigiName *)Stg40_RootState->lostDigiName = *(Stg40DigiName *)ent->name;
             Digi_SortRoster();
             for (i = 0; i < 3; i++) {
                 if (Save_GameStatePtr->elems[i].state < 2) {
@@ -882,7 +882,7 @@ s32 Stg40_TickStatusEffects(Actor *a0) {
         }
         st->statusFlags |= 0x400;
     }
-    if (D_8005071C->memBugCount != 0) {
+    if (Dung_StatePtr->memBugCount != 0) {
         st->statusFlags |= 0x800;
     }
     switch (sfx) {
@@ -899,11 +899,11 @@ s32 Stg40_TickStatusEffects(Actor *a0) {
         Snd_PlayById(8, 0);
         break;
     }
-    return D_80072B60->statusCount;
+    return Stg40_RootState->statusCount;
 }
 
 void Stg40_RollObjectReveal(void) {
-    Stg40Ent48 *e = D_8005071C->ents;
+    Stg40Ent48 *e = Dung_StatePtr->ents;
     s32 a;
     s32 b;
     s32 i;
@@ -913,12 +913,12 @@ void Stg40_RollObjectReveal(void) {
     a = a < 0 ? 0 : a;
     b = Stg40_GetPartLevel(14);
     b = b < 0 ? 0 : b;
-    for (i = 0; i < D_8005071C->entCount; e++, i++) {
+    for (i = 0; i < Dung_StatePtr->entCount; e++, i++) {
         if (e->flags & 0x8000) {
             switch (e->kind) {
             case 6:
             case 8:
-                v = D_80072A58[e->params[1] - 1 + a * 5];
+                v = Stg40_HazardRevealChance[e->params[1] - 1 + a * 5];
                 if (Stg40_RandPercent() < v) {
                     e->flags |= 0x1000;
                 }
@@ -927,7 +927,7 @@ void Stg40_RollObjectReveal(void) {
             case 10:
             case 11:
             case 12:
-                v = D_80072A78[e->params[1] - 1 + b * 3];
+                v = Stg40_BugNestRevealChance[e->params[1] - 1 + b * 3];
                 if (Stg40_RandPercent() < v) {
                     e->flags |= 0x1000;
                 }
@@ -941,7 +941,7 @@ Stg40Ent48 *Stg40_FindEntByDigiId(s32 id) {
     Stg40Ent48 *e;
     s32 i;
 
-    for (i = 0, e = D_8005071C->ents; i < 41; i++, e++) {
+    for (i = 0, e = Dung_StatePtr->ents; i < 41; i++, e++) {
         if (e->flags & 0x8000) {
             if ((id != 0 && id == e->digiId) || (id == 0 && (e->flags & 1))) {
                 return e;
@@ -957,35 +957,35 @@ void Stg40_TextObjCommand(s32 *arg) {
     s32 st;
 
     st = -1;
-    D_80072B60->cmdDigiId = *arg++;
-    D_80072B60->cmdArgs.field_0 = arg[0] - 1;
-    D_80072B60->cmdArgs.field_2 = arg[1] - 1;
-    D_80072B60->cmdBusy = 0;
-    D_80072B60->cmdActor = NULL;
-    e = Stg40_FindEntByDigiId(D_80072B60->cmdDigiId);
+    Stg40_RootState->cmdDigiId = *arg++;
+    Stg40_RootState->cmdArgs.field_0 = arg[0] - 1;
+    Stg40_RootState->cmdArgs.field_2 = arg[1] - 1;
+    Stg40_RootState->cmdBusy = 0;
+    Stg40_RootState->cmdActor = NULL;
+    e = Stg40_FindEntByDigiId(Stg40_RootState->cmdDigiId);
     if (e != NULL) {
         t = e->actor;
-        D_80072B60->cmdBusy = 1;
-        switch (D_80072B60->cmdArgs.field_0) {
+        Stg40_RootState->cmdBusy = 1;
+        switch (Stg40_RootState->cmdArgs.field_0) {
         default:
             st = 5;
             break;
         case 0x62:
-            if (D_80072B60->cmdArgs.field_2 == -1) {
+            if (Stg40_RootState->cmdArgs.field_2 == -1) {
                 st = 4;
-                D_80072B60->cmdActor = t;
+                Stg40_RootState->cmdActor = t;
             } else {
                 st = 6;
-                D_80072B60->cmdBusy = 0;
+                Stg40_RootState->cmdBusy = 0;
             }
             break;
         case 0x61:
-            e->targetHeading = (D_80072B60->cmdArgs.field_2 << 12) / 360;
-            D_80072B60->cmdBusy = 0;
+            e->targetHeading = (Stg40_RootState->cmdArgs.field_2 << 12) / 360;
+            Stg40_RootState->cmdBusy = 0;
             break;
         case 0x60:
             e->flags |= 0x200;
-            D_80072B60->cmdBusy = 0;
+            Stg40_RootState->cmdBusy = 0;
             break;
         }
         if (st != -1) {
@@ -995,11 +995,11 @@ void Stg40_TextObjCommand(s32 *arg) {
 }
 
 void Stg40_EndTextObjCmd(void) {
-    D_80072B60->cmdBusy = 0;
+    Stg40_RootState->cmdBusy = 0;
 }
 
 s16 Stg40_IsTextObjCmdBusy(void) {
-    return D_80072B60->cmdBusy;
+    return Stg40_RootState->cmdBusy;
 }
 
 s32 Stg40_CamIsMoving(void) {

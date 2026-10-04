@@ -1,8 +1,8 @@
 nonmatching Stg40_MapPosToWorld, 0x58
 
 glabel Stg40_MapPosToWorld
-    /* 2898 80065BF8 0780023C */  lui        $v0, %hi(D_80072B60)
-    /* 289C 80065BFC 602B438C */  lw         $v1, %lo(D_80072B60)($v0)
+    /* 2898 80065BF8 0780023C */  lui        $v0, %hi(Stg40_RootState)
+    /* 289C 80065BFC 602B438C */  lw         $v1, %lo(Stg40_RootState)($v0)
     /* 28A0 80065C00 00000000 */  nop
     /* 28A4 80065C04 3000628C */  lw         $v0, 0x30($v1)
     /* 28A8 80065C08 00000000 */  nop

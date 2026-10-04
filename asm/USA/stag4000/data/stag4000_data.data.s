@@ -268,9 +268,9 @@ dlabel Stg40_DirOffsets
     /* F484 800727E4 00000100 */ .word 0x00010000
 enddlabel Stg40_DirOffsets
 
-nonmatching D_800727E8
+nonmatching Stg40_ObstacleItemReqs
 
-dlabel D_800727E8
+dlabel Stg40_ObstacleItemReqs
     /* F488 800727E8 0B001700 */ .word 0x0017000B
     /* F48C 800727EC 2100FFFF */ .word 0xFFFF0021
     /* F490 800727F0 FFFF0000 */ .word 0x0000FFFF
@@ -299,7 +299,7 @@ dlabel D_800727E8
     /* F4EC 8007284C 2800FFFF */ .word 0xFFFF0028
     /* F4F0 80072850 FFFF0000 */ .word 0x0000FFFF
     /* F4F4 80072854 3D00FD01 */ .word 0x01FD003D
-enddlabel D_800727E8
+enddlabel Stg40_ObstacleItemReqs
 
 nonmatching Stg40_GiftGunReq
 
@@ -449,13 +449,13 @@ dlabel Stg40_FloorBitsPal
     /* F650 800729B0 00000000 */ .word 0x00000000
 enddlabel Stg40_FloorBitsPal
 
-nonmatching D_800729B4
+nonmatching Stg40_SpecialFloorValues
 
-dlabel D_800729B4
+dlabel Stg40_SpecialFloorValues
     /* F654 800729B4 04000300 */ .word 0x00030004
     /* F658 800729B8 07000600 */ .word 0x00060007
     /* F65C 800729BC 05000200 */ .word 0x00020005
-enddlabel D_800729B4
+enddlabel Stg40_SpecialFloorValues
 
 nonmatching Stg40_FillNeighbours
 
@@ -534,9 +534,9 @@ dlabel Stg40_RandomPartSlots
     /* F6F4 80072A54 0E0F1112 */ .word 0x12110F0E
 enddlabel Stg40_RandomPartSlots
 
-nonmatching D_80072A58
+nonmatching Stg40_HazardRevealChance
 
-dlabel D_80072A58
+dlabel Stg40_HazardRevealChance
     /* F6F8 80072A58 00000000 */ .word 0x00000000
     /* F6FC 80072A5C 00503200 */ .word 0x00325000
     /* F700 80072A60 00006450 */ .word 0x50640000
@@ -545,15 +545,15 @@ dlabel D_80072A58
     /* F70C 80072A6C 64646450 */ .word 0x50646464
     /* F710 80072A70 32646464 */ .word 0x64646432
     /* F714 80072A74 64500000 */ .word 0x00005064
-enddlabel D_80072A58
+enddlabel Stg40_HazardRevealChance
 
-nonmatching D_80072A78
+nonmatching Stg40_BugNestRevealChance
 
-dlabel D_80072A78
+dlabel Stg40_BugNestRevealChance
     /* F718 80072A78 00000050 */ .word 0x50000000
     /* F71C 80072A7C 32006450 */ .word 0x50640032
     /* F720 80072A80 32646450 */ .word 0x50646432
-enddlabel D_80072A78
+enddlabel Stg40_BugNestRevealChance
 
 nonmatching D_80072A84
 
@@ -635,12 +635,12 @@ dlabel D_80072AC0
     /* F7FC 80072B5C 00000000 */ .word 0x00000000
 enddlabel D_80072AC0
 
-nonmatching D_80072B60
+nonmatching Stg40_RootState
 
-dlabel D_80072B60
+dlabel Stg40_RootState
     /* F800 80072B60 00000000 */ .word 0x00000000
     /* F804 80072B64 00000000 */ .word 0x00000000
-enddlabel D_80072B60
+enddlabel Stg40_RootState
 
 nonmatching Stg40_FloorTask
 

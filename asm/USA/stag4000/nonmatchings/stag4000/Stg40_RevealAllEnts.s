@@ -1,8 +1,8 @@
 nonmatching Stg40_RevealAllEnts, 0x40
 
 glabel Stg40_RevealAllEnts
-    /* AF18 8006E278 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* AF1C 8006E27C 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* AF18 8006E278 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* AF1C 8006E27C 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* AF20 8006E280 21280000 */  addu       $a1, $zero, $zero
     /* AF24 8006E284 18004424 */  addiu      $a0, $v0, 0x18
   .L8006E288:

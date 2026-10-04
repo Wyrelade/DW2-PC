@@ -490,10 +490,10 @@ void Bug_CompactMemBugs(void) {
     i = 0;
     j = i;
     do {
-        v = D_8005071C->memBugLevels[i];
-        D_8005071C->memBugLevels[i] = 0;
+        v = Dung_StatePtr->memBugLevels[i];
+        Dung_StatePtr->memBugLevels[i] = 0;
         if (v != 0) {
-            D_8005071C->memBugLevels[j++] = v;
+            Dung_StatePtr->memBugLevels[j++] = v;
         }
         i++;
     } while (i < 12);
@@ -595,7 +595,7 @@ s32 Item_UseOnBeetle(s32 a0, s32 a1, s32 a2, s32 a3) {
     case 0xD:
     case 0xE:
         k = rec->effectType - 0xC;
-        b = D_8005071C;
+        b = Dung_StatePtr;
         c = b->bugLevels[k];
         v = c;
         if (c != 0) {
@@ -607,11 +607,11 @@ s32 Item_UseOnBeetle(s32 a0, s32 a1, s32 a2, s32 a3) {
         }
         break;
     case 0xF:
-        if (D_8005071C->memBugCount != 0) {
+        if (Dung_StatePtr->memBugCount != 0) {
             best = -1;
             max = 0;
-            for (j = 0; j < D_8005071C->memBugCount; j++) {
-                v = D_8005071C->memBugLevels[j];
+            for (j = 0; j < Dung_StatePtr->memBugCount; j++) {
+                v = Dung_StatePtr->memBugLevels[j];
                 if (rec->amount >= v && max < v) {
                     best = j;
                     max = v;
@@ -621,27 +621,27 @@ s32 Item_UseOnBeetle(s32 a0, s32 a1, s32 a2, s32 a3) {
             if (best == -1) {
                 goto none;
             }
-            D_8005071C->memBugCount--;
-            D_8005071C->memBugLevels[best] = 0;
+            Dung_StatePtr->memBugCount--;
+            Dung_StatePtr->memBugLevels[best] = 0;
             Bug_CompactMemBugs();
             Bug_LastZappedLevel = max;
             break;
         }
         break;
     case 0x10:
-        if (D_8005071C->bugLevels[0] + D_8005071C->bugLevels[1] + D_8005071C->bugLevels[2] + D_8005071C->memBugCount != 0) {
+        if (Dung_StatePtr->bugLevels[0] + Dung_StatePtr->bugLevels[1] + Dung_StatePtr->bugLevels[2] + Dung_StatePtr->memBugCount != 0) {
             cnt = 0;
             for (i = 0; i < 3; i++) {
-                if (D_8005071C->bugLevels[i] != 0 && rec->amount >= D_8005071C->bugLevels[i]) {
-                    D_8005071C->bugLevels[i] = 0;
+                if (Dung_StatePtr->bugLevels[i] != 0 && rec->amount >= Dung_StatePtr->bugLevels[i]) {
+                    Dung_StatePtr->bugLevels[i] = 0;
                     cnt++;
                 }
             }
-            n = D_8005071C->memBugCount;
+            n = Dung_StatePtr->memBugCount;
             for (i = 0; i < n; i++) {
-                if (rec->amount >= D_8005071C->memBugLevels[i]) {
-                    D_8005071C->memBugLevels[i] = 0;
-                    b = D_8005071C;
+                if (rec->amount >= Dung_StatePtr->memBugLevels[i]) {
+                    Dung_StatePtr->memBugLevels[i] = 0;
+                    b = Dung_StatePtr;
                     b->memBugCount--;
                     cnt++;
                 }

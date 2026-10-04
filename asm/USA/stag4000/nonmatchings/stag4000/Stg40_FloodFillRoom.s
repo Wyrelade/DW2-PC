@@ -4,8 +4,8 @@ glabel Stg40_FloodFillRoom
     /* D130 80070490 A8FFBD27 */  addiu      $sp, $sp, -0x58
     /* D134 80070494 5000BEAF */  sw         $fp, 0x50($sp)
     /* D138 80070498 21F0E000 */  addu       $fp, $a3, $zero
-    /* D13C 8007049C 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* D140 800704A0 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* D13C 8007049C 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* D140 800704A0 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* D144 800704A4 6800A78F */  lw         $a3, 0x68($sp)
     /* D148 800704A8 5400BFAF */  sw         $ra, 0x54($sp)
     /* D14C 800704AC 4C00B7AF */  sw         $s7, 0x4C($sp)

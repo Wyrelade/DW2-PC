@@ -1272,7 +1272,7 @@ typedef struct {
     /* 0x45 */ u8 xferPos;
 } PadPortSio;
 
-/* Block reached through D_8005071C; Bug_CompactMemBugs compacts the 12 slot bytes at
+/* Block reached through Dung_StatePtr; Bug_CompactMemBugs compacts the 12 slot bytes at
  * 0xBA9 (nonzero entries moved to the front, the rest cleared). */
 typedef struct {
     /* 0x000 */ u8 field_0;

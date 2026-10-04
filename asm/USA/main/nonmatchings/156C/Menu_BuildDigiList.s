@@ -206,8 +206,8 @@ glabel Menu_BuildDigiList
     /* 84C0 80017CC0 00000000 */   nop
     /* 84C4 80017CC4 21280000 */  addu       $a1, $zero, $zero
     /* 84C8 80017CC8 56002286 */  lh         $v0, 0x56($s1)
-    /* 84CC 80017CCC 0580033C */  lui        $v1, %hi(D_8005071C)
-    /* 84D0 80017CD0 1C07638C */  lw         $v1, %lo(D_8005071C)($v1)
+    /* 84CC 80017CCC 0580033C */  lui        $v1, %hi(Dung_StatePtr)
+    /* 84D0 80017CD0 1C07638C */  lw         $v1, %lo(Dung_StatePtr)($v1)
     /* 84D4 80017CD4 C0100200 */  sll        $v0, $v0, 3
     /* 84D8 80017CD8 64004224 */  addiu      $v0, $v0, 0x64
     /* 84DC 80017CDC A80B6390 */  lbu        $v1, 0xBA8($v1)
@@ -217,15 +217,15 @@ glabel Menu_BuildDigiList
     /* 84EC 80017CEC 02000324 */  addiu      $v1, $zero, 0x2
   .L80017CF0:
     /* 84F0 80017CF0 000003A2 */  sb         $v1, 0x0($s0)
-    /* 84F4 80017CF4 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* 84F8 80017CF8 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* 84F4 80017CF4 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* 84F8 80017CF8 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* 84FC 80017CFC 00000000 */  nop
     /* 8500 80017D00 21104500 */  addu       $v0, $v0, $a1
     /* 8504 80017D04 A90B4290 */  lbu        $v0, 0xBA9($v0)
     /* 8508 80017D08 00000000 */  nop
     /* 850C 80017D0C 010002A2 */  sb         $v0, 0x1($s0)
-    /* 8510 80017D10 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* 8514 80017D14 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* 8510 80017D10 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* 8514 80017D14 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* 8518 80017D18 0100A524 */  addiu      $a1, $a1, 0x1
     /* 851C 80017D1C A80B4290 */  lbu        $v0, 0xBA8($v0)
     /* 8520 80017D20 00000000 */  nop

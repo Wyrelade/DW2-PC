@@ -1,8 +1,8 @@
 nonmatching Stg40_TurnQueueReset, 0x54
 
 glabel Stg40_TurnQueueReset
-    /* D71C 80070A7C 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* D720 80070A80 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* D71C 80070A7C 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* D720 80070A80 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* D724 80070A84 21200000 */  addu       $a0, $zero, $zero
     /* D728 80070A88 FC0F4324 */  addiu      $v1, $v0, 0xFFC
     /* D72C 80070A8C 0A000224 */  addiu      $v0, $zero, 0xA

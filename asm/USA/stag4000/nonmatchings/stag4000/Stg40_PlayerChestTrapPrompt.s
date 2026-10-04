@@ -3,8 +3,8 @@ nonmatching Stg40_PlayerChestTrapPrompt, 0x17C
 glabel Stg40_PlayerChestTrapPrompt
     /* 7138 8006A498 E0FFBD27 */  addiu      $sp, $sp, -0x20
     /* 713C 8006A49C 1800B2AF */  sw         $s2, 0x18($sp)
-    /* 7140 8006A4A0 0780123C */  lui        $s2, %hi(D_80072B60)
-    /* 7144 8006A4A4 602B428E */  lw         $v0, %lo(D_80072B60)($s2)
+    /* 7140 8006A4A0 0780123C */  lui        $s2, %hi(Stg40_RootState)
+    /* 7144 8006A4A4 602B428E */  lw         $v0, %lo(Stg40_RootState)($s2)
     /* 7148 8006A4A8 1000B0AF */  sw         $s0, 0x10($sp)
     /* 714C 8006A4AC 21808000 */  addu       $s0, $a0, $zero
     /* 7150 8006A4B0 1400B1AF */  sw         $s1, 0x14($sp)
@@ -52,11 +52,11 @@ glabel Stg40_PlayerChestTrapPrompt
     /* 71E8 8006A548 01008490 */  lbu        $a0, 0x1($a0)
     /* 71EC 8006A54C 81C4010C */  jal        Stg40_GetTrapDisarmRank
     /* 71F0 8006A550 00000000 */   nop
-    /* 71F4 8006A554 602B438E */  lw         $v1, %lo(D_80072B60)($s2)
+    /* 71F4 8006A554 602B438E */  lw         $v1, %lo(Stg40_RootState)($s2)
     /* 71F8 8006A558 07000424 */  addiu      $a0, $zero, 0x7
     /* 71FC 8006A55C 77C5010C */  jal        Stg40_GetPartState
     /* 7200 8006A560 500062AC */   sw        $v0, 0x50($v1)
-    /* 7204 8006A564 602B438E */  lw         $v1, %lo(D_80072B60)($s2)
+    /* 7204 8006A564 602B438E */  lw         $v1, %lo(Stg40_RootState)($s2)
     /* 7208 8006A568 FD01043C */  lui        $a0, (0x1FD0040 >> 16)
     /* 720C 8006A56C 5000638C */  lw         $v1, 0x50($v1)
     /* 7210 8006A570 40008434 */  ori        $a0, $a0, (0x1FD0040 & 0xFFFF)

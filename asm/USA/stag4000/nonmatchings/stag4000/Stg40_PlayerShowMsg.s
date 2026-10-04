@@ -18,9 +18,9 @@ glabel Stg40_PlayerShowMsg
     /* 4E14 80068174 7745000C */  jal        Task_SetState1
     /* 4E18 80068178 0B000524 */   addiu     $a1, $zero, 0xB
     /* 4E1C 8006817C 01000424 */  addiu      $a0, $zero, 0x1
-    /* 4E20 80068180 0780023C */  lui        $v0, %hi(D_80072B60)
+    /* 4E20 80068180 0780023C */  lui        $v0, %hi(Stg40_RootState)
     /* 4E24 80068184 21282002 */  addu       $a1, $s1, $zero
-    /* 4E28 80068188 602B428C */  lw         $v0, %lo(D_80072B60)($v0)
+    /* 4E28 80068188 602B428C */  lw         $v0, %lo(Stg40_RootState)($v0)
     /* 4E2C 8006818C 21304002 */  addu       $a2, $s2, $zero
     /* 4E30 80068190 21386002 */  addu       $a3, $s3, $zero
     /* 4E34 80068194 849D010C */  jal        Stg40_MsgWinOpen

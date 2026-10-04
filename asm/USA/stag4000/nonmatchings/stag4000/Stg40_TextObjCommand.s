@@ -3,8 +3,8 @@ nonmatching Stg40_TextObjCommand, 0x130
 glabel Stg40_TextObjCommand
     /* EC5C 80071FBC E0FFBD27 */  addiu      $sp, $sp, -0x20
     /* EC60 80071FC0 1400B1AF */  sw         $s1, 0x14($sp)
-    /* EC64 80071FC4 0780113C */  lui        $s1, %hi(D_80072B60)
-    /* EC68 80071FC8 602B258E */  lw         $a1, %lo(D_80072B60)($s1)
+    /* EC64 80071FC4 0780113C */  lui        $s1, %hi(Stg40_RootState)
+    /* EC68 80071FC8 602B258E */  lw         $a1, %lo(Stg40_RootState)($s1)
     /* EC6C 80071FCC 21188000 */  addu       $v1, $a0, $zero
     /* EC70 80071FD0 1800BFAF */  sw         $ra, 0x18($sp)
     /* EC74 80071FD4 1000B0AF */  sw         $s0, 0x10($sp)
@@ -25,7 +25,7 @@ glabel Stg40_TextObjCommand
     /* ECB0 80072010 21304000 */  addu       $a2, $v0, $zero
     /* ECB4 80072014 3000C010 */  beqz       $a2, .L800720D8
     /* ECB8 80072018 01000224 */   addiu     $v0, $zero, 0x1
-    /* ECBC 8007201C 602B258E */  lw         $a1, %lo(D_80072B60)($s1)
+    /* ECBC 8007201C 602B258E */  lw         $a1, %lo(Stg40_RootState)($s1)
     /* ECC0 80072020 1400C48C */  lw         $a0, 0x14($a2)
     /* ECC4 80072024 7C01A384 */  lh         $v1, 0x17C($a1)
     /* ECC8 80072028 8001A2A4 */  sh         $v0, 0x180($a1)

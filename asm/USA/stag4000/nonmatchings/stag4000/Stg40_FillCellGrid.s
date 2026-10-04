@@ -2,12 +2,12 @@ nonmatching Stg40_FillCellGrid, 0x414
 
 glabel Stg40_FillCellGrid
     /* CC6C 8006FFCC C0FFBD27 */  addiu      $sp, $sp, -0x40
-    /* CC70 8006FFD0 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* CC74 8006FFD4 1C07448C */  lw         $a0, %lo(D_8005071C)($v0)
-    /* CC78 8006FFD8 0780023C */  lui        $v0, %hi(D_80072B60)
-    /* CC7C 8006FFDC 602B458C */  lw         $a1, %lo(D_80072B60)($v0)
-    /* CC80 8006FFE0 0780023C */  lui        $v0, %hi(D_800729B4)
-    /* CC84 8006FFE4 B4294224 */  addiu      $v0, $v0, %lo(D_800729B4)
+    /* CC70 8006FFD0 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* CC74 8006FFD4 1C07448C */  lw         $a0, %lo(Dung_StatePtr)($v0)
+    /* CC78 8006FFD8 0780023C */  lui        $v0, %hi(Stg40_RootState)
+    /* CC7C 8006FFDC 602B458C */  lw         $a1, %lo(Stg40_RootState)($v0)
+    /* CC80 8006FFE0 0780023C */  lui        $v0, %hi(Stg40_SpecialFloorValues)
+    /* CC84 8006FFE4 B4294224 */  addiu      $v0, $v0, %lo(Stg40_SpecialFloorValues)
     /* CC88 8006FFE8 3C00BFAF */  sw         $ra, 0x3C($sp)
     /* CC8C 8006FFEC 3800BEAF */  sw         $fp, 0x38($sp)
     /* CC90 8006FFF0 3400B7AF */  sw         $s7, 0x34($sp)
@@ -154,8 +154,8 @@ glabel Stg40_FillCellGrid
     /* CE88 800701E8 9EFF4014 */  bnez       $v0, .L80070064
     /* CE8C 800701EC 00000000 */   nop
   .L800701F0:
-    /* CE90 800701F0 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* CE94 800701F4 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* CE90 800701F0 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* CE94 800701F4 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* CE98 800701F8 1000A88F */  lw         $t0, 0x10($sp)
     /* CE9C 800701FC 580E518C */  lw         $s1, 0xE58($v0)
     /* CEA0 80070200 6B000019 */  blez       $t0, .L800703B0

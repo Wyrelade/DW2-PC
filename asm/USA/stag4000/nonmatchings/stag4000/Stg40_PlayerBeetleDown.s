@@ -47,12 +47,12 @@ glabel Stg40_PlayerBeetleDown
     /* 7F4C 8006B2AC 21304000 */  addu       $a2, $v0, $zero
     /* 7F50 8006B2B0 01000224 */  addiu      $v0, $zero, 0x1
     /* 7F54 8006B2B4 1600C214 */  bne        $a2, $v0, .L8006B310
-    /* 7F58 8006B2B8 0580053C */   lui       $a1, %hi(D_8005071C)
+    /* 7F58 8006B2B8 0580053C */   lui       $a1, %hi(Dung_StatePtr)
     /* 7F5C 8006B2BC 1F000424 */  addiu      $a0, $zero, 0x1F
-    /* 7F60 8006B2C0 1C07A38C */  lw         $v1, %lo(D_8005071C)($a1)
+    /* 7F60 8006B2C0 1C07A38C */  lw         $v1, %lo(Dung_StatePtr)($a1)
     /* 7F64 8006B2C4 03000224 */  addiu      $v0, $zero, 0x3
     /* 7F68 8006B2C8 010062A0 */  sb         $v0, 0x1($v1)
-    /* 7F6C 8006B2CC 1C07A28C */  lw         $v0, %lo(D_8005071C)($a1)
+    /* 7F6C 8006B2CC 1C07A28C */  lw         $v0, %lo(Dung_StatePtr)($a1)
     /* 7F70 8006B2D0 21280000 */  addu       $a1, $zero, $zero
     /* 7F74 8006B2D4 A369000C */  jal        Snd_PlayById
     /* 7F78 8006B2D8 070046A0 */   sb        $a2, 0x7($v0)

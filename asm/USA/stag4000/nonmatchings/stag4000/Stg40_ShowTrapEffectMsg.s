@@ -21,8 +21,8 @@ glabel Stg40_ShowTrapEffectMsg
     /* DFF0 80071350 08004000 */  jr         $v0
     /* DFF4 80071354 00000000 */   nop
   jlabel .L80071358
-    /* DFF8 80071358 0780023C */  lui        $v0, %hi(D_80072B60)
-    /* DFFC 8007135C 602B428C */  lw         $v0, %lo(D_80072B60)($v0)
+    /* DFF8 80071358 0780023C */  lui        $v0, %hi(Stg40_RootState)
+    /* DFFC 8007135C 602B428C */  lw         $v0, %lo(Stg40_RootState)($v0)
     /* E000 80071360 00000000 */  nop
     /* E004 80071364 5800458C */  lw         $a1, 0x58($v0)
     /* E008 80071368 579D010C */  jal        Stg40_NumToDigits
@@ -35,8 +35,8 @@ glabel Stg40_ShowTrapEffectMsg
     /* E024 80071384 05C50108 */  j          .L80071414
     /* E028 80071388 D100C624 */   addiu     $a2, $a2, 0xD1
   jlabel .L8007138C
-    /* E02C 8007138C 0780023C */  lui        $v0, %hi(D_80072B60)
-    /* E030 80071390 602B428C */  lw         $v0, %lo(D_80072B60)($v0)
+    /* E02C 8007138C 0780023C */  lui        $v0, %hi(Stg40_RootState)
+    /* E030 80071390 602B428C */  lw         $v0, %lo(Stg40_RootState)($v0)
     /* E034 80071394 00000000 */  nop
     /* E038 80071398 5800458C */  lw         $a1, 0x58($v0)
     /* E03C 8007139C 579D010C */  jal        Stg40_NumToDigits

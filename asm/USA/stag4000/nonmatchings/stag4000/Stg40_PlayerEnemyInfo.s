@@ -4,14 +4,14 @@ glabel Stg40_PlayerEnemyInfo
     /* 6934 80069C94 E0FFBD27 */  addiu      $sp, $sp, -0x20
     /* 6938 80069C98 1400B1AF */  sw         $s1, 0x14($sp)
     /* 693C 80069C9C 21888000 */  addu       $s1, $a0, $zero
-    /* 6940 80069CA0 0780023C */  lui        $v0, %hi(D_80072B60)
+    /* 6940 80069CA0 0780023C */  lui        $v0, %hi(Stg40_RootState)
     /* 6944 80069CA4 1800BFAF */  sw         $ra, 0x18($sp)
     /* 6948 80069CA8 1000B0AF */  sw         $s0, 0x10($sp)
     /* 694C 80069CAC 2C00238E */  lw         $v1, 0x2C($s1)
     /* 6950 80069CB0 02000424 */  addiu      $a0, $zero, 0x2
     /* 6954 80069CB4 2C00658C */  lw         $a1, 0x2C($v1)
     /* 6958 80069CB8 1800238E */  lw         $v1, 0x18($s1)
-    /* 695C 80069CBC 602B468C */  lw         $a2, %lo(D_80072B60)($v0)
+    /* 695C 80069CBC 602B468C */  lw         $a2, %lo(Stg40_RootState)($v0)
     /* 6960 80069CC0 37006410 */  beq        $v1, $a0, .L80069DA0
     /* 6964 80069CC4 03006228 */   slti      $v0, $v1, 0x3
     /* 6968 80069CC8 07004010 */  beqz       $v0, .L80069CE8
@@ -106,8 +106,8 @@ glabel Stg40_PlayerEnemyInfo
     /* 6AA8 80069E08 1800628C */  lw         $v0, 0x18($v1)
     /* 6AAC 80069E0C 00000000 */  nop
     /* 6AB0 80069E10 15004018 */  blez       $v0, .L80069E68
-    /* 6AB4 80069E14 0780023C */   lui       $v0, %hi(D_80072B60)
-    /* 6AB8 80069E18 602B448C */  lw         $a0, %lo(D_80072B60)($v0)
+    /* 6AB4 80069E14 0780023C */   lui       $v0, %hi(Stg40_RootState)
+    /* 6AB8 80069E18 602B448C */  lw         $a0, %lo(Stg40_RootState)($v0)
     /* 6ABC 80069E1C 00000000 */  nop
     /* 6AC0 80069E20 A800868C */  lw         $a2, 0xA8($a0)
     /* 6AC4 80069E24 00000000 */  nop
@@ -152,11 +152,11 @@ glabel Stg40_PlayerEnemyInfo
     /* 6B50 80069EB0 21202002 */  addu       $a0, $s1, $zero
     /* 6B54 80069EB4 7745000C */  jal        Task_SetState1
     /* 6B58 80069EB8 11000524 */   addiu     $a1, $zero, 0x11
-    /* 6B5C 80069EBC 0780043C */  lui        $a0, %hi(D_80072B60)
-    /* 6B60 80069EC0 602B838C */  lw         $v1, %lo(D_80072B60)($a0)
+    /* 6B5C 80069EBC 0780043C */  lui        $a0, %hi(Stg40_RootState)
+    /* 6B60 80069EC0 602B838C */  lw         $v1, %lo(Stg40_RootState)($a0)
     /* 6B64 80069EC4 01000224 */  addiu      $v0, $zero, 0x1
     /* 6B68 80069EC8 E40062A0 */  sb         $v0, 0xE4($v1)
-    /* 6B6C 80069ECC 602B838C */  lw         $v1, %lo(D_80072B60)($a0)
+    /* 6B6C 80069ECC 602B838C */  lw         $v1, %lo(Stg40_RootState)($a0)
     /* 6B70 80069ED0 00000000 */  nop
     /* 6B74 80069ED4 B0006290 */  lbu        $v0, 0xB0($v1)
     /* 6B78 80069ED8 DCA70108 */  j          .L80069F70

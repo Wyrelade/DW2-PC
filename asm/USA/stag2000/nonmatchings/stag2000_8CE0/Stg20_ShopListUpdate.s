@@ -239,11 +239,11 @@ glabel Stg20_ShopListUpdate
     /* 9B6C 8006CECC 9E87000C */  jal        Flag_Test
     /* 9B70 8006CED0 10000424 */   addiu     $a0, $zero, 0x10
     /* 9B74 8006CED4 1C004010 */  beqz       $v0, .L8006CF48
-    /* 9B78 8006CED8 0680023C */   lui       $v0, %hi(D_8005F70C)
+    /* 9B78 8006CED8 0680023C */   lui       $v0, %hi(Pad_Triangle)
     /* 9B7C 8006CEDC 9E87000C */  jal        Flag_Test
     /* 9B80 8006CEE0 11000424 */   addiu     $a0, $zero, 0x11
     /* 9B84 8006CEE4 18004014 */  bnez       $v0, .L8006CF48
-    /* 9B88 8006CEE8 0680023C */   lui       $v0, %hi(D_8005F70C)
+    /* 9B88 8006CEE8 0680023C */   lui       $v0, %hi(Pad_Triangle)
     /* 9B8C 8006CEEC 0F000424 */  addiu      $a0, $zero, 0xF
     /* 9B90 8006CEF0 A369000C */  jal        Snd_PlayById
     /* 9B94 8006CEF4 21280000 */   addu      $a1, $zero, $zero
@@ -269,7 +269,7 @@ glabel Stg20_ShopListUpdate
     /* 9BE0 8006CF40 30B40108 */  j          .L8006D0C0
     /* 9BE4 8006CF44 0800C3AC */   sw        $v1, 0x8($a2)
   .L8006CF48:
-    /* 9BE8 8006CF48 0CF7428C */  lw         $v0, %lo(D_8005F70C)($v0)
+    /* 9BE8 8006CF48 0CF7428C */  lw         $v0, %lo(Pad_Triangle)($v0)
     /* 9BEC 8006CF4C 00000000 */  nop
     /* 9BF0 8006CF50 0500401C */  bgtz       $v0, .L8006CF68
     /* 9BF4 8006CF54 0B000424 */   addiu     $a0, $zero, 0xB

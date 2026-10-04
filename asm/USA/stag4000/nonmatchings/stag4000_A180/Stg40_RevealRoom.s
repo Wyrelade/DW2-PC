@@ -3,8 +3,8 @@ nonmatching Stg40_RevealRoom, 0x238
 glabel Stg40_RevealRoom
     /* C094 8006F3F4 A8FFBD27 */  addiu      $sp, $sp, -0x58
     /* C098 8006F3F8 3000B0AF */  sw         $s0, 0x30($sp)
-    /* C09C 8006F3FC 0580103C */  lui        $s0, %hi(D_8005071C)
-    /* C0A0 8006F400 1C07028E */  lw         $v0, %lo(D_8005071C)($s0)
+    /* C09C 8006F3FC 0580103C */  lui        $s0, %hi(Dung_StatePtr)
+    /* C0A0 8006F400 1C07028E */  lw         $v0, %lo(Dung_StatePtr)($s0)
     /* C0A4 8006F404 5400BFAF */  sw         $ra, 0x54($sp)
     /* C0A8 8006F408 5000BEAF */  sw         $fp, 0x50($sp)
     /* C0AC 8006F40C 4C00B7AF */  sw         $s7, 0x4C($sp)
@@ -34,7 +34,7 @@ glabel Stg40_RevealRoom
     /* C10C 8006F46C 08008228 */  slti       $v0, $a0, 0x8
     /* C110 8006F470 0A004010 */  beqz       $v0, .L8006F49C
     /* C114 8006F474 80180400 */   sll       $v1, $a0, 2
-    /* C118 8006F478 1C07028E */  lw         $v0, %lo(D_8005071C)($s0)
+    /* C118 8006F478 1C07028E */  lw         $v0, %lo(Dung_StatePtr)($s0)
     /* C11C 8006F47C 00000000 */  nop
     /* C120 8006F480 21204300 */  addu       $a0, $v0, $v1
     /* C124 8006F484 5C0E838C */  lw         $v1, 0xE5C($a0)
@@ -44,7 +44,7 @@ glabel Stg40_RevealRoom
     /* C134 8006F494 25106500 */   or        $v0, $v1, $a1
     /* C138 8006F498 5C0E82AC */  sw         $v0, 0xE5C($a0)
   .L8006F49C:
-    /* C13C 8006F49C 1C07028E */  lw         $v0, %lo(D_8005071C)($s0)
+    /* C13C 8006F49C 1C07028E */  lw         $v0, %lo(Dung_StatePtr)($s0)
     /* C140 8006F4A0 2400A88F */  lw         $t0, 0x24($sp)
     /* C144 8006F4A4 580E578C */  lw         $s7, 0xE58($v0)
     /* C148 8006F4A8 54000019 */  blez       $t0, .L8006F5FC
@@ -75,8 +75,8 @@ glabel Stg40_RevealRoom
     /* C1A4 8006F504 00204234 */  ori        $v0, $v0, 0x2000
     /* C1A8 8006F508 E1BA010C */  jal        Stg40_AutomapSetCell
     /* C1AC 8006F50C 0000E2A4 */   sh        $v0, 0x0($a3)
-    /* C1B0 8006F510 0680023C */  lui        $v0, %hi(D_8006368C)
-    /* C1B4 8006F514 8C364A24 */  addiu      $t2, $v0, %lo(D_8006368C)
+    /* C1B0 8006F510 0680023C */  lui        $v0, %hi(Stg40_NeighborOffsets)
+    /* C1B4 8006F514 8C364A24 */  addiu      $t2, $v0, %lo(Stg40_NeighborOffsets)
     /* C1B8 8006F518 03004B89 */  lwl        $t3, 0x3($t2)
     /* C1BC 8006F51C 00004B99 */  lwr        $t3, 0x0($t2)
     /* C1C0 8006F520 07004889 */  lwl        $t0, 0x7($t2)

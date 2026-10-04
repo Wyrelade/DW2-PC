@@ -68,8 +68,8 @@ glabel Item_UseOnBeetle
     /* 2938 80012138 01001124 */  addiu      $s1, $zero, 0x1
   jlabel .L8001213C
     /* 293C 8001213C 01004292 */  lbu        $v0, 0x1($s2)
-    /* 2940 80012140 0580033C */  lui        $v1, %hi(D_8005071C)
-    /* 2944 80012144 1C07638C */  lw         $v1, %lo(D_8005071C)($v1)
+    /* 2940 80012140 0580033C */  lui        $v1, %hi(Dung_StatePtr)
+    /* 2944 80012144 1C07638C */  lw         $v1, %lo(Dung_StatePtr)($v1)
     /* 2948 80012148 F4FF4224 */  addiu      $v0, $v0, -0xC
     /* 294C 8001214C 21206200 */  addu       $a0, $v1, $v0
     /* 2950 80012150 A50B8290 */  lbu        $v0, 0xBA5($a0)
@@ -85,8 +85,8 @@ glabel Item_UseOnBeetle
     /* 2978 80012178 D4480008 */  j          .L80012350
     /* 297C 8001217C 01001124 */   addiu     $s1, $zero, 0x1
   jlabel .L80012180
-    /* 2980 80012180 0580033C */  lui        $v1, %hi(D_8005071C)
-    /* 2984 80012184 1C07638C */  lw         $v1, %lo(D_8005071C)($v1)
+    /* 2980 80012180 0580033C */  lui        $v1, %hi(Dung_StatePtr)
+    /* 2984 80012184 1C07638C */  lw         $v1, %lo(Dung_StatePtr)($v1)
     /* 2988 80012188 00000000 */  nop
     /* 298C 8001218C A80B6290 */  lbu        $v0, 0xBA8($v1)
     /* 2990 80012190 00000000 */  nop
@@ -108,8 +108,8 @@ glabel Item_UseOnBeetle
     /* 29CC 800121CC 21288000 */  addu       $a1, $a0, $zero
     /* 29D0 800121D0 21806000 */  addu       $s0, $v1, $zero
   .L800121D4:
-    /* 29D4 800121D4 0580033C */  lui        $v1, %hi(D_8005071C)
-    /* 29D8 800121D8 1C07638C */  lw         $v1, %lo(D_8005071C)($v1)
+    /* 29D4 800121D4 0580033C */  lui        $v1, %hi(Dung_StatePtr)
+    /* 29D8 800121D8 1C07638C */  lw         $v1, %lo(Dung_StatePtr)($v1)
     /* 29DC 800121DC 00000000 */  nop
     /* 29E0 800121E0 A80B6290 */  lbu        $v0, 0xBA8($v1)
     /* 29E4 800121E4 01008424 */  addiu      $a0, $a0, 0x1
@@ -120,15 +120,15 @@ glabel Item_UseOnBeetle
     /* 29F4 800121F4 FFFF0224 */  addiu      $v0, $zero, -0x1
     /* 29F8 800121F8 5400A210 */  beq        $a1, $v0, .L8001234C
     /* 29FC 800121FC 01001124 */   addiu     $s1, $zero, 0x1
-    /* 2A00 80012200 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* 2A04 80012204 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* 2A00 80012200 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* 2A04 80012204 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* 2A08 80012208 00000000 */  nop
     /* 2A0C 8001220C A80B4390 */  lbu        $v1, 0xBA8($v0)
     /* 2A10 80012210 00000000 */  nop
     /* 2A14 80012214 FFFF6324 */  addiu      $v1, $v1, -0x1
     /* 2A18 80012218 A80B43A0 */  sb         $v1, 0xBA8($v0)
-    /* 2A1C 8001221C 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* 2A20 80012220 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* 2A1C 8001221C 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* 2A20 80012220 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* 2A24 80012224 00000000 */  nop
     /* 2A28 80012228 21104500 */  addu       $v0, $v0, $a1
     /* 2A2C 8001222C C147000C */  jal        Bug_CompactMemBugs
@@ -137,8 +137,8 @@ glabel Item_UseOnBeetle
     /* 2A38 80012238 D5480008 */  j          .L80012354
     /* 2A3C 8001223C 21102002 */   addu      $v0, $s1, $zero
   jlabel .L80012240
-    /* 2A40 80012240 0580033C */  lui        $v1, %hi(D_8005071C)
-    /* 2A44 80012244 1C07638C */  lw         $v1, %lo(D_8005071C)($v1)
+    /* 2A40 80012240 0580033C */  lui        $v1, %hi(Dung_StatePtr)
+    /* 2A44 80012244 1C07638C */  lw         $v1, %lo(Dung_StatePtr)($v1)
     /* 2A48 80012248 00000000 */  nop
     /* 2A4C 8001224C A50B6290 */  lbu        $v0, 0xBA5($v1)
     /* 2A50 80012250 A60B6490 */  lbu        $a0, 0xBA6($v1)
@@ -152,8 +152,8 @@ glabel Item_UseOnBeetle
     /* 2A70 80012270 21800000 */   addu      $s0, $zero, $zero
     /* 2A74 80012274 21280002 */  addu       $a1, $s0, $zero
   .L80012278:
-    /* 2A78 80012278 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* 2A7C 8001227C 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* 2A78 80012278 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* 2A7C 8001227C 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* 2A80 80012280 00000000 */  nop
     /* 2A84 80012284 21204500 */  addu       $a0, $v0, $a1
     /* 2A88 80012288 A50B8290 */  lbu        $v0, 0xBA5($a0)
@@ -173,16 +173,16 @@ glabel Item_UseOnBeetle
     /* 2ABC 800122BC 0300A228 */  slti       $v0, $a1, 0x3
     /* 2AC0 800122C0 EDFF4014 */  bnez       $v0, .L80012278
     /* 2AC4 800122C4 00000000 */   nop
-    /* 2AC8 800122C8 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* 2ACC 800122CC 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* 2AC8 800122C8 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* 2ACC 800122CC 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* 2AD0 800122D0 00000000 */  nop
     /* 2AD4 800122D4 A80B4690 */  lbu        $a2, 0xBA8($v0)
     /* 2AD8 800122D8 00000000 */  nop
     /* 2ADC 800122DC 1700C010 */  beqz       $a2, .L8001233C
     /* 2AE0 800122E0 21280000 */   addu      $a1, $zero, $zero
   .L800122E4:
-    /* 2AE4 800122E4 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* 2AE8 800122E8 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* 2AE4 800122E4 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* 2AE8 800122E8 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* 2AEC 800122EC 00000000 */  nop
     /* 2AF0 800122F0 21204500 */  addu       $a0, $v0, $a1
     /* 2AF4 800122F4 02004286 */  lh         $v0, 0x2($s2)
@@ -192,8 +192,8 @@ glabel Item_UseOnBeetle
     /* 2B04 80012304 09004014 */  bnez       $v0, .L8001232C
     /* 2B08 80012308 00000000 */   nop
     /* 2B0C 8001230C A90B80A0 */  sb         $zero, 0xBA9($a0)
-    /* 2B10 80012310 0580033C */  lui        $v1, %hi(D_8005071C)
-    /* 2B14 80012314 1C07638C */  lw         $v1, %lo(D_8005071C)($v1)
+    /* 2B10 80012310 0580033C */  lui        $v1, %hi(Dung_StatePtr)
+    /* 2B14 80012314 1C07638C */  lw         $v1, %lo(Dung_StatePtr)($v1)
     /* 2B18 80012318 00000000 */  nop
     /* 2B1C 8001231C A80B6290 */  lbu        $v0, 0xBA8($v1)
     /* 2B20 80012320 01001026 */  addiu      $s0, $s0, 0x1

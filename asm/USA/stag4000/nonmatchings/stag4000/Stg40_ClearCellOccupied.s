@@ -1,8 +1,8 @@
 nonmatching Stg40_ClearCellOccupied, 0x68
 
 glabel Stg40_ClearCellOccupied
-    /* D614 80070974 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* D618 80070978 1C07478C */  lw         $a3, %lo(D_8005071C)($v0)
+    /* D614 80070974 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* D618 80070978 1C07478C */  lw         $a3, %lo(Dung_StatePtr)($v0)
     /* D61C 8007097C 00000000 */  nop
     /* D620 80070980 540EE28C */  lw         $v0, 0xE54($a3)
     /* D624 80070984 00000000 */  nop

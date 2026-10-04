@@ -2,11 +2,11 @@ nonmatching Stg40_ApplyFloorLayout, 0x100
 
 glabel Stg40_ApplyFloorLayout
     /* DA60 80070DC0 E0FFBD27 */  addiu      $sp, $sp, -0x20
-    /* DA64 80070DC4 0780023C */  lui        $v0, %hi(D_80072B60)
+    /* DA64 80070DC4 0780023C */  lui        $v0, %hi(Stg40_RootState)
     /* DA68 80070DC8 1800B2AF */  sw         $s2, 0x18($sp)
-    /* DA6C 80070DCC 0580123C */  lui        $s2, %hi(D_8005071C)
-    /* DA70 80070DD0 1C07448E */  lw         $a0, %lo(D_8005071C)($s2)
-    /* DA74 80070DD4 602B438C */  lw         $v1, %lo(D_80072B60)($v0)
+    /* DA6C 80070DCC 0580123C */  lui        $s2, %hi(Dung_StatePtr)
+    /* DA70 80070DD0 1C07448E */  lw         $a0, %lo(Dung_StatePtr)($s2)
+    /* DA74 80070DD4 602B438C */  lw         $v1, %lo(Stg40_RootState)($v0)
     /* DA78 80070DD8 1C00BFAF */  sw         $ra, 0x1C($sp)
     /* DA7C 80070DDC 1400B1AF */  sw         $s1, 0x14($sp)
     /* DA80 80070DE0 1000B0AF */  sw         $s0, 0x10($sp)
@@ -28,14 +28,14 @@ glabel Stg40_ApplyFloorLayout
     /* DAC0 80070E20 2E00A290 */  lbu        $v0, 0x2E($a1)
     /* DAC4 80070E24 10000624 */  addiu      $a2, $zero, 0x10
     /* DAC8 80070E28 0C0062A0 */  sb         $v0, 0xC($v1)
-    /* DACC 80070E2C 1C07428E */  lw         $v0, %lo(D_8005071C)($s2)
+    /* DACC 80070E2C 1C07428E */  lw         $v0, %lo(Dung_StatePtr)($s2)
     /* DAD0 80070E30 0000B18C */  lw         $s1, 0x0($a1)
     /* DAD4 80070E34 540E428C */  lw         $v0, 0xE54($v0)
     /* DAD8 80070E38 FF000524 */  addiu      $a1, $zero, 0xFF
     /* DADC 80070E3C 0E005024 */  addiu      $s0, $v0, 0xE
     /* DAE0 80070E40 219C000C */  jal        memset
     /* DAE4 80070E44 21200002 */   addu      $a0, $s0, $zero
-    /* DAE8 80070E48 1C07428E */  lw         $v0, %lo(D_8005071C)($s2)
+    /* DAE8 80070E48 1C07428E */  lw         $v0, %lo(Dung_StatePtr)($s2)
     /* DAEC 80070E4C 00000000 */  nop
     /* DAF0 80070E50 540E428C */  lw         $v0, 0xE54($v0)
     /* DAF4 80070E54 00000000 */  nop
@@ -48,7 +48,7 @@ glabel Stg40_ApplyFloorLayout
     /* DB10 80070E70 21204000 */  addu       $a0, $v0, $zero
   .L80070E74:
     /* DB14 80070E74 000003A2 */  sb         $v1, 0x0($s0)
-    /* DB18 80070E78 1C07A28C */  lw         $v0, %lo(D_8005071C)($a1)
+    /* DB18 80070E78 1C07A28C */  lw         $v0, %lo(Dung_StatePtr)($a1)
     /* DB1C 80070E7C 00000000 */  nop
     /* DB20 80070E80 540E438C */  lw         $v1, 0xE54($v0)
     /* DB24 80070E84 00000000 */  nop

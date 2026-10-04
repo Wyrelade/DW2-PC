@@ -2,21 +2,21 @@ nonmatching Stg40_InitDungeonEntry, 0x1E8
 
 glabel Stg40_InitDungeonEntry
     /* 4B4 80063814 E8FFBD27 */  addiu      $sp, $sp, -0x18
-    /* 4B8 80063818 0580043C */  lui        $a0, %hi(D_8005071C)
-    /* 4BC 8006381C 1C07828C */  lw         $v0, %lo(D_8005071C)($a0)
+    /* 4B8 80063818 0580043C */  lui        $a0, %hi(Dung_StatePtr)
+    /* 4BC 8006381C 1C07828C */  lw         $v0, %lo(Dung_StatePtr)($a0)
     /* 4C0 80063820 01000624 */  addiu      $a2, $zero, 0x1
     /* 4C4 80063824 1000BFAF */  sw         $ra, 0x10($sp)
     /* 4C8 80063828 000046A0 */  sb         $a2, 0x0($v0)
-    /* 4CC 8006382C 1C07828C */  lw         $v0, %lo(D_8005071C)($a0)
+    /* 4CC 8006382C 1C07828C */  lw         $v0, %lo(Dung_StatePtr)($a0)
     /* 4D0 80063830 00000000 */  nop
     /* 4D4 80063834 050040A0 */  sb         $zero, 0x5($v0)
-    /* 4D8 80063838 1C07828C */  lw         $v0, %lo(D_8005071C)($a0)
+    /* 4D8 80063838 1C07828C */  lw         $v0, %lo(Dung_StatePtr)($a0)
     /* 4DC 8006383C 00000000 */  nop
     /* 4E0 80063840 030040A0 */  sb         $zero, 0x3($v0)
-    /* 4E4 80063844 1C07828C */  lw         $v0, %lo(D_8005071C)($a0)
+    /* 4E4 80063844 1C07828C */  lw         $v0, %lo(Dung_StatePtr)($a0)
     /* 4E8 80063848 00000000 */  nop
     /* 4EC 8006384C 060040A0 */  sb         $zero, 0x6($v0)
-    /* 4F0 80063850 1C07828C */  lw         $v0, %lo(D_8005071C)($a0)
+    /* 4F0 80063850 1C07828C */  lw         $v0, %lo(Dung_StatePtr)($a0)
     /* 4F4 80063854 00000000 */  nop
     /* 4F8 80063858 070040A0 */  sb         $zero, 0x7($v0)
     /* 4FC 8006385C 0680023C */  lui        $v0, %hi(Sys_State)
@@ -25,7 +25,7 @@ glabel Stg40_InitDungeonEntry
     /* 508 80063868 2B030224 */  addiu      $v0, $zero, 0x32B
     /* 50C 8006386C 04006214 */  bne        $v1, $v0, .L80063880
     /* 510 80063870 00000000 */   nop
-    /* 514 80063874 1C07828C */  lw         $v0, %lo(D_8005071C)($a0)
+    /* 514 80063874 1C07828C */  lw         $v0, %lo(Dung_StatePtr)($a0)
     /* 518 80063878 00000000 */  nop
     /* 51C 8006387C 060046A0 */  sb         $a2, 0x6($v0)
   .L80063880:
@@ -34,11 +34,11 @@ glabel Stg40_InitDungeonEntry
     /* 528 80063888 05006210 */  beq        $v1, $v0, .L800638A0
     /* 52C 8006388C 00000000 */   nop
     /* 530 80063890 1800A294 */  lhu        $v0, 0x18($a1)
-    /* 534 80063894 1C07838C */  lw         $v1, %lo(D_8005071C)($a0)
+    /* 534 80063894 1C07838C */  lw         $v1, %lo(Dung_StatePtr)($a0)
     /* 538 80063898 2A8E0108 */  j          .L800638A8
     /* 53C 8006389C FFFD4224 */   addiu     $v0, $v0, -0x201
   .L800638A0:
-    /* 540 800638A0 1C07838C */  lw         $v1, %lo(D_8005071C)($a0)
+    /* 540 800638A0 1C07838C */  lw         $v1, %lo(Dung_StatePtr)($a0)
     /* 544 800638A4 2400A294 */  lhu        $v0, 0x24($a1)
   .L800638A8:
     /* 548 800638A8 00000000 */  nop
@@ -46,8 +46,8 @@ glabel Stg40_InitDungeonEntry
     /* 550 800638B0 200E043C */  lui        $a0, (0xE20000A >> 16)
     /* 554 800638B4 688E000C */  jal        Cd_GetFileEntry
     /* 558 800638B8 0A008434 */   ori       $a0, $a0, (0xE20000A & 0xFFFF)
-    /* 55C 800638BC 0580053C */  lui        $a1, %hi(D_8005071C)
-    /* 560 800638C0 1C07A68C */  lw         $a2, %lo(D_8005071C)($a1)
+    /* 55C 800638BC 0580053C */  lui        $a1, %hi(Dung_StatePtr)
+    /* 560 800638C0 1C07A68C */  lw         $a2, %lo(Dung_StatePtr)($a1)
     /* 564 800638C4 00000000 */  nop
     /* 568 800638C8 5810C484 */  lh         $a0, 0x1058($a2)
     /* 56C 800638CC 2128C000 */  addu       $a1, $a2, $zero
@@ -87,23 +87,23 @@ glabel Stg40_InitDungeonEntry
     /* 5F0 80063950 FFFFC624 */  addiu      $a2, $a2, -0x1
     /* 5F4 80063954 FDFFC104 */  bgez       $a2, .L8006394C
     /* 5F8 80063958 48006324 */   addiu     $v1, $v1, 0x48
-    /* 5FC 8006395C 0580033C */  lui        $v1, %hi(D_8005071C)
-    /* 600 80063960 1C07628C */  lw         $v0, %lo(D_8005071C)($v1)
+    /* 5FC 8006395C 0580033C */  lui        $v1, %hi(Dung_StatePtr)
+    /* 600 80063960 1C07628C */  lw         $v0, %lo(Dung_StatePtr)($v1)
     /* 604 80063964 21300000 */  addu       $a2, $zero, $zero
     /* 608 80063968 A80B40A0 */  sb         $zero, 0xBA8($v0)
     /* 60C 8006396C A70B40A0 */  sb         $zero, 0xBA7($v0)
     /* 610 80063970 A60B40A0 */  sb         $zero, 0xBA6($v0)
     /* 614 80063974 A50B40A0 */  sb         $zero, 0xBA5($v0)
   .L80063978:
-    /* 618 80063978 1C07628C */  lw         $v0, %lo(D_8005071C)($v1)
+    /* 618 80063978 1C07628C */  lw         $v0, %lo(Dung_StatePtr)($v1)
     /* 61C 8006397C 00000000 */  nop
     /* 620 80063980 21104600 */  addu       $v0, $v0, $a2
     /* 624 80063984 0100C624 */  addiu      $a2, $a2, 0x1
     /* 628 80063988 A90B40A0 */  sb         $zero, 0xBA9($v0)
     /* 62C 8006398C 0C00C228 */  slti       $v0, $a2, 0xC
     /* 630 80063990 F9FF4014 */  bnez       $v0, .L80063978
-    /* 634 80063994 0580023C */   lui       $v0, %hi(D_8005071C)
-    /* 638 80063998 1C07438C */  lw         $v1, %lo(D_8005071C)($v0)
+    /* 634 80063994 0580023C */   lui       $v0, %hi(Dung_StatePtr)
+    /* 638 80063998 1C07438C */  lw         $v1, %lo(Dung_StatePtr)($v0)
     /* 63C 8006399C 00000000 */  nop
     /* 640 800639A0 44106284 */  lh         $v0, 0x1044($v1)
     /* 644 800639A4 B98A000C */  jal        Digi_SortRoster

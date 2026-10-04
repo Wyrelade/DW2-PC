@@ -40,9 +40,9 @@ glabel Stg40_EnemyInfoUpdate
     /* 3F14 80067274 B94D000C */  jal        Math_RampToOne
     /* 3F18 80067278 21286002 */   addu      $a1, $s3, $zero
     /* 3F1C 8006727C 6C004014 */  bnez       $v0, .L80067430
-    /* 3F20 80067280 0780023C */   lui       $v0, %hi(D_80072B60)
+    /* 3F20 80067280 0780023C */   lui       $v0, %hi(Stg40_RootState)
     /* 3F24 80067284 0780043C */  lui        $a0, %hi(Stg40_EnemyInfoTextPos)
-    /* 3F28 80067288 602B438C */  lw         $v1, %lo(D_80072B60)($v0)
+    /* 3F28 80067288 602B438C */  lw         $v1, %lo(Stg40_RootState)($v0)
     /* 3F2C 8006728C 20279224 */  addiu      $s2, $a0, %lo(Stg40_EnemyInfoTextPos)
     /* 3F30 80067290 AC00628C */  lw         $v0, 0xAC($v1)
     /* 3F34 80067294 08006426 */  addiu      $a0, $s3, 0x8

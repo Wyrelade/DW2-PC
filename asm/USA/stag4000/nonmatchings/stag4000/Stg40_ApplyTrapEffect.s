@@ -15,12 +15,12 @@ glabel Stg40_ApplyTrapEffect
     /* E0F8 80071458 08004000 */  jr         $v0
     /* E0FC 8007145C 00000000 */   nop
   jlabel .L80071460
-    /* E100 80071460 0780023C */  lui        $v0, %hi(D_80072B60)
+    /* E100 80071460 0780023C */  lui        $v0, %hi(Stg40_RootState)
     /* E104 80071464 40200500 */  sll        $a0, $a1, 1
     /* E108 80071468 21208500 */  addu       $a0, $a0, $a1
     /* E10C 8007146C C0200400 */  sll        $a0, $a0, 3
     /* E110 80071470 21208500 */  addu       $a0, $a0, $a1
-    /* E114 80071474 602B428C */  lw         $v0, %lo(D_80072B60)($v0)
+    /* E114 80071474 602B428C */  lw         $v0, %lo(Stg40_RootState)($v0)
     /* E118 80071478 00210400 */  sll        $a0, $a0, 4
     /* E11C 8007147C 3DBA010C */  jal        Stg40_DamageBeetle
     /* E120 80071480 580044AC */   sw        $a0, 0x58($v0)
@@ -28,14 +28,14 @@ glabel Stg40_ApplyTrapEffect
     /* E128 80071488 00000000 */   nop
   jlabel .L8007148C
     /* E12C 8007148C 03000424 */  addiu      $a0, $zero, 0x3
-    /* E130 80071490 0780103C */  lui        $s0, %hi(D_80072B60)
+    /* E130 80071490 0780103C */  lui        $s0, %hi(Stg40_RootState)
     /* E134 80071494 80100500 */  sll        $v0, $a1, 2
     /* E138 80071498 21104500 */  addu       $v0, $v0, $a1
-    /* E13C 8007149C 602B038E */  lw         $v1, %lo(D_80072B60)($s0)
+    /* E13C 8007149C 602B038E */  lw         $v1, %lo(Stg40_RootState)($s0)
     /* E140 800714A0 40100200 */  sll        $v0, $v0, 1
     /* E144 800714A4 A1BA010C */  jal        Stg40_ListPartyDigi
     /* E148 800714A8 580062AC */   sw        $v0, 0x58($v1)
-    /* E14C 800714AC 602B038E */  lw         $v1, %lo(D_80072B60)($s0)
+    /* E14C 800714AC 602B038E */  lw         $v1, %lo(Stg40_RootState)($s0)
     /* E150 800714B0 00000000 */  nop
     /* E154 800714B4 40016284 */  lh         $v0, 0x140($v1)
     /* E158 800714B8 00000000 */  nop
@@ -77,8 +77,8 @@ glabel Stg40_ApplyTrapEffect
     /* E1DC 8007153C 73C50108 */  j          .L800715CC
     /* E1E0 80071540 00000000 */   nop
   jlabel .L80071544
-    /* E1E4 80071544 0580103C */  lui        $s0, %hi(D_8005071C)
-    /* E1E8 80071548 1C07058E */  lw         $a1, %lo(D_8005071C)($s0)
+    /* E1E4 80071544 0580103C */  lui        $s0, %hi(Dung_StatePtr)
+    /* E1E8 80071548 1C07058E */  lw         $a1, %lo(Dung_StatePtr)($s0)
     /* E1EC 8007154C 04000424 */  addiu      $a0, $zero, 0x4
     /* E1F0 80071550 A00BA28C */  lw         $v0, 0xBA0($a1)
     /* E1F4 80071554 7FFF0324 */  addiu      $v1, $zero, -0x81
@@ -86,13 +86,13 @@ glabel Stg40_ApplyTrapEffect
     /* E1FC 8007155C 24104300 */  and        $v0, $v0, $v1
     /* E200 80071560 71C4010C */  jal        Stg40_RandInt
     /* E204 80071564 A00BA2AC */   sw        $v0, 0xBA0($a1)
-    /* E208 80071568 1C07038E */  lw         $v1, %lo(D_8005071C)($s0)
+    /* E208 80071568 1C07038E */  lw         $v1, %lo(Dung_StatePtr)($s0)
     /* E20C 8007156C 01004224 */  addiu      $v0, $v0, 0x1
     /* E210 80071570 73C50108 */  j          .L800715CC
     /* E214 80071574 A40B62A0 */   sb        $v0, 0xBA4($v1)
   jlabel .L80071578
-    /* E218 80071578 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* E21C 8007157C 1C07448C */  lw         $a0, %lo(D_8005071C)($v0)
+    /* E218 80071578 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* E21C 8007157C 1C07448C */  lw         $a0, %lo(Dung_StatePtr)($v0)
     /* E220 80071580 00000000 */  nop
     /* E224 80071584 A00B828C */  lw         $v0, 0xBA0($a0)
     /* E228 80071588 BFFF0324 */  addiu      $v1, $zero, -0x41

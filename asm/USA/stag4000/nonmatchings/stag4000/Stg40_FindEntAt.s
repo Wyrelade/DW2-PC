@@ -5,8 +5,8 @@ glabel Stg40_FindEntAt
     /* AEA4 8006E204 2130E000 */  addu       $a2, $a3, $zero
     /* AEA8 8006E208 00240400 */  sll        $a0, $a0, 16
     /* AEAC 8006E20C 03240400 */  sra        $a0, $a0, 16
-    /* AEB0 8006E210 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* AEB4 8006E214 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* AEB0 8006E210 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* AEB4 8006E214 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* AEB8 8006E218 002C0500 */  sll        $a1, $a1, 16
     /* AEBC 8006E21C 032C0500 */  sra        $a1, $a1, 16
     /* AEC0 8006E220 18004324 */  addiu      $v1, $v0, 0x18

@@ -5,8 +5,8 @@ glabel Stg40_BeginTransition
     /* BA4 80063F04 2800B2AF */  sw         $s2, 0x28($sp)
     /* BA8 80063F08 21908000 */  addu       $s2, $a0, $zero
     /* BAC 80063F0C 2400B1AF */  sw         $s1, 0x24($sp)
-    /* BB0 80063F10 0580113C */  lui        $s1, %hi(D_8005071C)
-    /* BB4 80063F14 1C07248E */  lw         $a0, %lo(D_8005071C)($s1)
+    /* BB0 80063F10 0580113C */  lui        $s1, %hi(Dung_StatePtr)
+    /* BB4 80063F14 1C07248E */  lw         $a0, %lo(Dung_StatePtr)($s1)
     /* BB8 80063F18 2C00BFAF */  sw         $ra, 0x2C($sp)
     /* BBC 80063F1C 2000B0AF */  sw         $s0, 0x20($sp)
     /* BC0 80063F20 01008290 */  lbu        $v0, 0x1($a0)
@@ -30,15 +30,15 @@ glabel Stg40_BeginTransition
     /* C00 80063F60 03008434 */   ori       $a0, $a0, (0xE200003 & 0xFFFF)
     /* C04 80063F64 6AC8010C */  jal        Stg40_CamLoadScript
     /* C08 80063F68 21204000 */   addu      $a0, $v0, $zero
-    /* C0C 80063F6C 1C07238E */  lw         $v1, %lo(D_8005071C)($s1)
+    /* C0C 80063F6C 1C07238E */  lw         $v1, %lo(Dung_StatePtr)($s1)
     /* C10 80063F70 01000224 */  addiu      $v0, $zero, 0x1
     /* C14 80063F74 020062A0 */  sb         $v0, 0x2($v1)
-    /* C18 80063F78 1C07238E */  lw         $v1, %lo(D_8005071C)($s1)
+    /* C18 80063F78 1C07238E */  lw         $v1, %lo(Dung_StatePtr)($s1)
     /* C1C 80063F7C 00050224 */  addiu      $v0, $zero, 0x500
     /* C20 80063F80 000002AE */  sw         $v0, 0x0($s0)
     /* C24 80063F84 1810708C */  lw         $s0, 0x1018($v1)
-    /* C28 80063F88 0680023C */  lui        $v0, %hi(D_80063384)
-    /* C2C 80063F8C 84334924 */  addiu      $t1, $v0, %lo(D_80063384)
+    /* C28 80063F88 0680023C */  lui        $v0, %hi(Stg40_FloorSpecialtyByCell)
+    /* C2C 80063F8C 84334924 */  addiu      $t1, $v0, %lo(Stg40_FloorSpecialtyByCell)
     /* C30 80063F90 03002689 */  lwl        $a2, 0x3($t1)
     /* C34 80063F94 00002699 */  lwr        $a2, 0x0($t1)
     /* C38 80063F98 07002789 */  lwl        $a3, 0x7($t1)
@@ -61,12 +61,12 @@ glabel Stg40_BeginTransition
     /* C7C 80063FDC 1000A327 */  addiu      $v1, $sp, 0x10
     /* C80 80063FE0 0F004230 */  andi       $v0, $v0, 0xF
     /* C84 80063FE4 21186200 */  addu       $v1, $v1, $v0
-    /* C88 80063FE8 1C07248E */  lw         $a0, %lo(D_8005071C)($s1)
+    /* C88 80063FE8 1C07248E */  lw         $a0, %lo(Dung_StatePtr)($s1)
     /* C8C 80063FEC 00006290 */  lbu        $v0, 0x0($v1)
     /* C90 80063FF0 00000000 */  nop
     /* C94 80063FF4 3D1082A0 */  sb         $v0, 0x103D($a0)
     /* C98 80063FF8 1000028E */  lw         $v0, 0x10($s0)
-    /* C9C 80063FFC 1C07248E */  lw         $a0, %lo(D_8005071C)($s1)
+    /* C9C 80063FFC 1C07248E */  lw         $a0, %lo(Dung_StatePtr)($s1)
     /* CA0 80064000 0E004294 */  lhu        $v0, 0xE($v0)
     /* CA4 80064004 00000000 */  nop
     /* CA8 80064008 3E1082A4 */  sh         $v0, 0x103E($a0)
@@ -102,17 +102,17 @@ glabel Stg40_BeginTransition
     /* D1C 8006407C 9E87000C */  jal        Flag_Test
     /* D20 80064080 88000424 */   addiu     $a0, $zero, 0x88
     /* D24 80064084 09004010 */  beqz       $v0, .L800640AC
-    /* D28 80064088 0580023C */   lui       $v0, %hi(D_8005071C)
-    /* D2C 8006408C 1C07228E */  lw         $v0, %lo(D_8005071C)($s1)
+    /* D28 80064088 0580023C */   lui       $v0, %hi(Dung_StatePtr)
+    /* D2C 8006408C 1C07228E */  lw         $v0, %lo(Dung_StatePtr)($s1)
     /* D30 80064090 00000000 */  nop
     /* D34 80064094 4C104384 */  lh         $v1, 0x104C($v0)
     /* D38 80064098 00010224 */  addiu      $v0, $zero, 0x100
     /* D3C 8006409C 03006214 */  bne        $v1, $v0, .L800640AC
-    /* D40 800640A0 0580023C */   lui       $v0, %hi(D_8005071C)
+    /* D40 800640A0 0580023C */   lui       $v0, %hi(Dung_StatePtr)
     /* D44 800640A4 31900108 */  j          .L800640C4
     /* D48 800640A8 01010424 */   addiu     $a0, $zero, 0x101
   .L800640AC:
-    /* D4C 800640AC 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* D4C 800640AC 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* D50 800640B0 00000000 */  nop
     /* D54 800640B4 4C104484 */  lh         $a0, 0x104C($v0)
     /* D58 800640B8 4E104584 */  lh         $a1, 0x104E($v0)
@@ -147,7 +147,7 @@ glabel Stg40_BeginTransition
     /* DC0 80064120 03000524 */  addiu      $a1, $zero, 0x3
     /* DC4 80064124 7745000C */  jal        Task_SetState1
     /* DC8 80064128 000002AE */   sw        $v0, 0x0($s0)
-    /* DCC 8006412C 1C07238E */  lw         $v1, %lo(D_8005071C)($s1)
+    /* DCC 8006412C 1C07238E */  lw         $v1, %lo(Dung_StatePtr)($s1)
     /* DD0 80064130 00000000 */  nop
     /* DD4 80064134 03006290 */  lbu        $v0, 0x3($v1)
     /* DD8 80064138 01001024 */  addiu      $s0, $zero, 0x1
@@ -178,7 +178,7 @@ glabel Stg40_BeginTransition
     /* E30 80064190 04000424 */  addiu      $a0, $zero, 0x4
     /* E34 80064194 01030224 */  addiu      $v0, $zero, 0x301
     /* E38 80064198 000002AE */  sw         $v0, 0x0($s0)
-    /* E3C 8006419C 1C07228E */  lw         $v0, %lo(D_8005071C)($s1)
+    /* E3C 8006419C 1C07228E */  lw         $v0, %lo(Dung_StatePtr)($s1)
     /* E40 800641A0 0680033C */  lui        $v1, %hi(Sys_State)
     /* E44 800641A4 07004290 */  lbu        $v0, 0x7($v0)
     /* E48 800641A8 00000000 */  nop
@@ -189,7 +189,7 @@ glabel Stg40_BeginTransition
   .L800641BC:
     /* E5C 800641BC 21030224 */  addiu      $v0, $zero, 0x321
     /* E60 800641C0 000002AE */  sw         $v0, 0x0($s0)
-    /* E64 800641C4 1C07228E */  lw         $v0, %lo(D_8005071C)($s1)
+    /* E64 800641C4 1C07228E */  lw         $v0, %lo(Dung_StatePtr)($s1)
     /* E68 800641C8 0680033C */  lui        $v1, %hi(Sys_State)
     /* E6C 800641CC 07004290 */  lbu        $v0, 0x7($v0)
     /* E70 800641D0 00000000 */  nop
@@ -199,8 +199,8 @@ glabel Stg40_BeginTransition
   .L800641E0:
     /* E80 800641E0 240064AC */  sw         $a0, 0x24($v1)
   .L800641E4:
-    /* E84 800641E4 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* E88 800641E8 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* E84 800641E4 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* E88 800641E8 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* E8C 800641EC 00000000 */  nop
     /* E90 800641F0 07004290 */  lbu        $v0, 0x7($v0)
     /* E94 800641F4 00000000 */  nop

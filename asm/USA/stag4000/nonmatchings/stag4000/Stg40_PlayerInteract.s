@@ -38,7 +38,7 @@ glabel Stg40_PlayerInteract
     /* 5000 80068360 032C0500 */   sra       $a1, $a1, 16
     /* 5004 80068364 21804000 */  addu       $s0, $v0, $zero
     /* 5008 80068368 24000016 */  bnez       $s0, .L800683FC
-    /* 500C 8006836C 0780023C */   lui       $v0, %hi(D_80072B60)
+    /* 500C 8006836C 0780023C */   lui       $v0, %hi(Stg40_RootState)
     /* 5010 80068370 FD01103C */  lui        $s0, (0x1FD000F >> 16)
     /* 5014 80068374 0F001036 */  ori        $s0, $s0, (0x1FD000F & 0xFFFF)
     /* 5018 80068378 0B002292 */  lbu        $v0, 0xB($s1)
@@ -78,7 +78,7 @@ glabel Stg40_PlayerInteract
     /* 5098 800683F8 FFFF0224 */   addiu     $v0, $zero, -0x1
   .L800683FC:
     /* 509C 800683FC 1400038E */  lw         $v1, 0x14($s0)
-    /* 50A0 80068400 602B428C */  lw         $v0, %lo(D_80072B60)($v0)
+    /* 50A0 80068400 602B428C */  lw         $v0, %lo(Stg40_RootState)($v0)
     /* 50A4 80068404 00000000 */  nop
     /* 50A8 80068408 3C0043AC */  sw         $v1, 0x3C($v0)
     /* 50AC 8006840C 400050AC */  sw         $s0, 0x40($v0)
@@ -182,8 +182,8 @@ glabel Stg40_PlayerInteract
     /* 5204 80068564 4278000C */  jal        Item_CheckId
     /* 5208 80068568 21200000 */   addu      $a0, $zero, $zero
     /* 520C 8006856C 00111000 */  sll        $v0, $s0, 4
-    /* 5210 80068570 0780043C */  lui        $a0, %hi(D_800727E8)
-    /* 5214 80068574 E8278424 */  addiu      $a0, $a0, %lo(D_800727E8)
+    /* 5210 80068570 0780043C */  lui        $a0, %hi(Stg40_ObstacleItemReqs)
+    /* 5214 80068574 E8278424 */  addiu      $a0, $a0, %lo(Stg40_ObstacleItemReqs)
     /* 5218 80068578 48BA010C */  jal        Stg40_ListUsableItems
     /* 521C 8006857C 21204400 */   addu      $a0, $v0, $a0
     /* 5220 80068580 09004010 */  beqz       $v0, .L800685A8
@@ -200,11 +200,11 @@ glabel Stg40_PlayerInteract
   .L800685A8:
     /* 5248 800685A8 7745000C */  jal        Task_SetState1
     /* 524C 800685AC 11000524 */   addiu     $a1, $zero, 0x11
-    /* 5250 800685B0 0780023C */  lui        $v0, %hi(D_80072B60)
-    /* 5254 800685B4 602B438C */  lw         $v1, %lo(D_80072B60)($v0)
+    /* 5250 800685B0 0780023C */  lui        $v0, %hi(Stg40_RootState)
+    /* 5254 800685B4 602B438C */  lw         $v1, %lo(Stg40_RootState)($v0)
     /* 5258 800685B8 00000000 */  nop
     /* 525C 800685BC E40060A0 */  sb         $zero, 0xE4($v1)
-    /* 5260 800685C0 602B448C */  lw         $a0, %lo(D_80072B60)($v0)
+    /* 5260 800685C0 602B448C */  lw         $a0, %lo(Stg40_RootState)($v0)
     /* 5264 800685C4 7E0060A4 */  sh         $zero, 0x7E($v1)
     /* 5268 800685C8 B0008290 */  lbu        $v0, 0xB0($a0)
     /* 526C 800685CC 79A10108 */  j          .L800685E4

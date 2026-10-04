@@ -1,8 +1,8 @@
 nonmatching Stg40_PlayerTriggerTrap, 0x184
 
 glabel Stg40_PlayerTriggerTrap
-    /* 74E8 8006A848 0780023C */  lui        $v0, %hi(D_80072B60)
-    /* 74EC 8006A84C 602B438C */  lw         $v1, %lo(D_80072B60)($v0)
+    /* 74E8 8006A848 0780023C */  lui        $v0, %hi(Stg40_RootState)
+    /* 74EC 8006A84C 602B438C */  lw         $v1, %lo(Stg40_RootState)($v0)
     /* 74F0 8006A850 D8FFBD27 */  addiu      $sp, $sp, -0x28
     /* 74F4 8006A854 1000B0AF */  sw         $s0, 0x10($sp)
     /* 74F8 8006A858 21808000 */  addu       $s0, $a0, $zero
@@ -30,8 +30,8 @@ glabel Stg40_PlayerTriggerTrap
     /* 7550 8006A8B0 00000000 */   nop
   jlabel .L8006A8B4
     /* 7554 8006A8B4 A5C4010C */  jal        Stg40_RollTrapEffect
-    /* 7558 8006A8B8 0780123C */   lui       $s2, %hi(D_80072B60)
-    /* 755C 8006A8BC 602B438E */  lw         $v1, %lo(D_80072B60)($s2)
+    /* 7558 8006A8B8 0780123C */   lui       $s2, %hi(Stg40_RootState)
+    /* 755C 8006A8BC 602B438E */  lw         $v1, %lo(Stg40_RootState)($s2)
     /* 7560 8006A8C0 00000000 */  nop
     /* 7564 8006A8C4 540062AC */  sw         $v0, 0x54($v1)
     /* 7568 8006A8C8 10000324 */  addiu      $v1, $zero, 0x10
@@ -42,7 +42,7 @@ glabel Stg40_PlayerTriggerTrap
     /* 757C 8006A8DC 21200002 */  addu       $a0, $s0, $zero
     /* 7580 8006A8E0 209E010C */  jal        Stg40_ObjStartFlash
     /* 7584 8006A8E4 01000524 */   addiu     $a1, $zero, 0x1
-    /* 7588 8006A8E8 602B428E */  lw         $v0, %lo(D_80072B60)($s2)
+    /* 7588 8006A8E8 602B428E */  lw         $v0, %lo(Stg40_RootState)($s2)
     /* 758C 8006A8EC 01006592 */  lbu        $a1, 0x1($s3)
     /* 7590 8006A8F0 5400448C */  lw         $a0, 0x54($v0)
     /* 7594 8006A8F4 0BC5010C */  jal        Stg40_ApplyTrapEffect
@@ -70,8 +70,8 @@ glabel Stg40_PlayerTriggerTrap
     /* 75E0 8006A940 21200002 */   addu      $a0, $s0, $zero
     /* 75E4 8006A944 37B9010C */  jal        Stg40_ObjSetAnim
     /* 75E8 8006A948 28000524 */   addiu     $a1, $zero, 0x28
-    /* 75EC 8006A94C 0780023C */  lui        $v0, %hi(D_80072B60)
-    /* 75F0 8006A950 602B428C */  lw         $v0, %lo(D_80072B60)($v0)
+    /* 75EC 8006A94C 0780023C */  lui        $v0, %hi(Stg40_RootState)
+    /* 75F0 8006A950 602B428C */  lw         $v0, %lo(Stg40_RootState)($v0)
     /* 75F4 8006A954 00000000 */  nop
     /* 75F8 8006A958 5400458C */  lw         $a1, 0x54($v0)
     /* 75FC 8006A95C C4C4010C */  jal        Stg40_ShowTrapEffectMsg

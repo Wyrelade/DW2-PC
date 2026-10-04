@@ -3,8 +3,8 @@ nonmatching Stg40_PlayerShootObstacle, 0x1C8
 glabel Stg40_PlayerShootObstacle
     /* 77E8 8006AB48 D0FFBD27 */  addiu      $sp, $sp, -0x30
     /* 77EC 8006AB4C 2400B5AF */  sw         $s5, 0x24($sp)
-    /* 77F0 8006AB50 0780153C */  lui        $s5, %hi(D_80072B60)
-    /* 77F4 8006AB54 602BA38E */  lw         $v1, %lo(D_80072B60)($s5)
+    /* 77F0 8006AB50 0780153C */  lui        $s5, %hi(Stg40_RootState)
+    /* 77F4 8006AB54 602BA38E */  lw         $v1, %lo(Stg40_RootState)($s5)
     /* 77F8 8006AB58 1800B2AF */  sw         $s2, 0x18($sp)
     /* 77FC 8006AB5C 21908000 */  addu       $s2, $a0, $zero
     /* 7800 8006AB60 1400B1AF */  sw         $s1, 0x14($sp)
@@ -48,7 +48,7 @@ glabel Stg40_PlayerShootObstacle
     /* 788C 8006ABEC 21204002 */   addu      $a0, $s2, $zero
     /* 7890 8006ABF0 37B9010C */  jal        Stg40_ObjSetAnim
     /* 7894 8006ABF4 28000524 */   addiu     $a1, $zero, 0x28
-    /* 7898 8006ABF8 602BA28E */  lw         $v0, %lo(D_80072B60)($s5)
+    /* 7898 8006ABF8 602BA28E */  lw         $v0, %lo(Stg40_RootState)($s5)
     /* 789C 8006ABFC 00000000 */  nop
     /* 78A0 8006AC00 E0004490 */  lbu        $a0, 0xE0($v0)
     /* 78A4 8006AC04 3978000C */  jal        Item_GetLevel
@@ -110,7 +110,7 @@ glabel Stg40_PlayerShootObstacle
     /* 7970 8006ACD0 06000524 */   addiu     $a1, $zero, 0x6
     /* 7974 8006ACD4 0580023C */  lui        $v0, %hi(Save_GameStatePtr)
     /* 7978 8006ACD8 2007428C */  lw         $v0, %lo(Save_GameStatePtr)($v0)
-    /* 797C 8006ACDC 602BA38E */  lw         $v1, %lo(D_80072B60)($s5)
+    /* 797C 8006ACDC 602BA38E */  lw         $v1, %lo(Stg40_RootState)($s5)
     /* 7980 8006ACE0 00004290 */  lbu        $v0, 0x0($v0)
     /* 7984 8006ACE4 00000000 */  nop
     /* 7988 8006ACE8 7E0062A4 */  sh         $v0, 0x7E($v1)

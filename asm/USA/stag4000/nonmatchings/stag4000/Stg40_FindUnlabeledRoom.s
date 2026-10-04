@@ -1,8 +1,8 @@
 nonmatching Stg40_FindUnlabeledRoom, 0x8C
 
 glabel Stg40_FindUnlabeledRoom
-    /* D368 800706C8 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* D36C 800706CC 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* D368 800706C8 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* D36C 800706CC 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* D370 800706D0 00000000 */  nop
     /* D374 800706D4 540E438C */  lw         $v1, 0xE54($v0)
     /* D378 800706D8 580E448C */  lw         $a0, 0xE58($v0)

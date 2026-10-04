@@ -1,8 +1,8 @@
 nonmatching Stg40_ReadFloorBits, 0x78
 
 glabel Stg40_ReadFloorBits
-    /* CBF4 8006FF54 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* CBF8 8006FF58 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* CBF4 8006FF54 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* CBF8 8006FF58 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* CBFC 8006FF5C 00000000 */  nop
     /* CC00 8006FF60 540E428C */  lw         $v0, 0xE54($v0)
     /* CC04 8006FF64 00000000 */  nop

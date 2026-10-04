@@ -1,8 +1,8 @@
 nonmatching Stg40_SpawnEnemyParties, 0x2E0
 
 glabel Stg40_SpawnEnemyParties
-    /* A3D8 8006D738 0780023C */  lui        $v0, %hi(D_80072B60)
-    /* A3DC 8006D73C 602B428C */  lw         $v0, %lo(D_80072B60)($v0)
+    /* A3D8 8006D738 0780023C */  lui        $v0, %hi(Stg40_RootState)
+    /* A3DC 8006D73C 602B428C */  lw         $v0, %lo(Stg40_RootState)($v0)
     /* A3E0 8006D740 A0FFBD27 */  addiu      $sp, $sp, -0x60
     /* A3E4 8006D744 5C00BFAF */  sw         $ra, 0x5C($sp)
     /* A3E8 8006D748 5800B6AF */  sw         $s6, 0x58($sp)
@@ -24,9 +24,9 @@ glabel Stg40_SpawnEnemyParties
     /* A428 8006D788 0780023C */  lui        $v0, %hi(Stg40_EnemyAiTable)
     /* A42C 8006D78C F4285424 */  addiu      $s4, $v0, %lo(Stg40_EnemyAiTable)
     /* A430 8006D790 1800B627 */  addiu      $s6, $sp, 0x18
-    /* A434 8006D794 0580023C */  lui        $v0, %hi(D_8005071C)
+    /* A434 8006D794 0580023C */  lui        $v0, %hi(Dung_StatePtr)
   .L8006D798:
-    /* A438 8006D798 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* A438 8006D798 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* A43C 8006D79C 00000000 */  nop
     /* A440 8006D7A0 0E004284 */  lh         $v0, 0xE($v0)
     /* A444 8006D7A4 00000000 */  nop
@@ -65,8 +65,8 @@ glabel Stg40_SpawnEnemyParties
     /* A4B8 8006D818 021F0200 */  srl        $v1, $v0, 28
   .L8006D81C:
     /* A4BC 8006D81C 6F006010 */  beqz       $v1, .L8006D9DC
-    /* A4C0 8006D820 0780023C */   lui       $v0, %hi(D_80072B60)
-    /* A4C4 8006D824 602B428C */  lw         $v0, %lo(D_80072B60)($v0)
+    /* A4C0 8006D820 0780023C */   lui       $v0, %hi(Stg40_RootState)
+    /* A4C4 8006D824 602B428C */  lw         $v0, %lo(Stg40_RootState)($v0)
     /* A4C8 8006D828 00000000 */  nop
     /* A4CC 8006D82C 1000428C */  lw         $v0, 0x10($v0)
     /* A4D0 8006D830 00000000 */  nop
@@ -84,8 +84,8 @@ glabel Stg40_SpawnEnemyParties
     /* A500 8006D860 2138A000 */  addu       $a3, $a1, $zero
     /* A504 8006D864 38B5010C */  jal        Stg40_AddEntity
     /* A508 8006D868 1400A2AF */   sw        $v0, 0x14($sp)
-    /* A50C 8006D86C 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* A510 8006D870 1C07448C */  lw         $a0, %lo(D_8005071C)($v0)
+    /* A50C 8006D86C 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* A510 8006D870 1C07448C */  lw         $a0, %lo(Dung_StatePtr)($v0)
     /* A514 8006D874 00000000 */  nop
     /* A518 8006D878 0E008384 */  lh         $v1, 0xE($a0)
     /* A51C 8006D87C 00000000 */  nop
@@ -184,7 +184,7 @@ glabel Stg40_SpawnEnemyParties
     /* A680 8006D9E0 00006392 */  lbu        $v1, 0x0($s3)
     /* A684 8006D9E4 FF000224 */  addiu      $v0, $zero, 0xFF
     /* A688 8006D9E8 6BFF6214 */  bne        $v1, $v0, .L8006D798
-    /* A68C 8006D9EC 0580023C */   lui       $v0, %hi(D_8005071C)
+    /* A68C 8006D9EC 0580023C */   lui       $v0, %hi(Dung_StatePtr)
   .L8006D9F0:
     /* A690 8006D9F0 5C00BF8F */  lw         $ra, 0x5C($sp)
     /* A694 8006D9F4 5800B68F */  lw         $s6, 0x58($sp)

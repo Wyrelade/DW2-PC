@@ -6,10 +6,10 @@ glabel Stg40_TickStatusEffects
     /* E394 800716F4 21B08000 */  addu       $s6, $a0, $zero
     /* E398 800716F8 3000B4AF */  sw         $s4, 0x30($sp)
     /* E39C 800716FC 21A00000 */  addu       $s4, $zero, $zero
-    /* E3A0 80071700 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* E3A4 80071704 0780033C */  lui        $v1, %hi(D_80072B60)
-    /* E3A8 80071708 1C07448C */  lw         $a0, %lo(D_8005071C)($v0)
-    /* E3AC 8007170C 602B628C */  lw         $v0, %lo(D_80072B60)($v1)
+    /* E3A0 80071700 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* E3A4 80071704 0780033C */  lui        $v1, %hi(Stg40_RootState)
+    /* E3A8 80071708 1C07448C */  lw         $a0, %lo(Dung_StatePtr)($v0)
+    /* E3AC 8007170C 602B628C */  lw         $v0, %lo(Stg40_RootState)($v1)
     /* E3B0 80071710 07000524 */  addiu      $a1, $zero, 0x7
     /* E3B4 80071714 3C00BFAF */  sw         $ra, 0x3C($sp)
     /* E3B8 80071718 3400B5AF */  sw         $s5, 0x34($sp)
@@ -73,7 +73,7 @@ glabel Stg40_TickStatusEffects
     /* E490 800717F0 00000000 */  nop
     /* E494 800717F4 02004230 */  andi       $v0, $v0, 0x2
     /* E498 800717F8 1B004010 */  beqz       $v0, .L80071868
-    /* E49C 800717FC 0580023C */   lui       $v0, %hi(D_8005071C)
+    /* E49C 800717FC 0580023C */   lui       $v0, %hi(Dung_StatePtr)
     /* E4A0 80071800 60C4010C */  jal        Stg40_RandPercent
     /* E4A4 80071804 00000000 */   nop
     /* E4A8 80071808 0A004228 */  slti       $v0, $v0, 0xA
@@ -100,14 +100,14 @@ glabel Stg40_TickStatusEffects
     /* E4F8 80071858 00000000 */  nop
     /* E4FC 8007185C 80004234 */  ori        $v0, $v0, 0x80
     /* E500 80071860 000022AE */  sw         $v0, 0x0($s1)
-    /* E504 80071864 0580023C */  lui        $v0, %hi(D_8005071C)
+    /* E504 80071864 0580023C */  lui        $v0, %hi(Dung_StatePtr)
   .L80071868:
-    /* E508 80071868 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* E508 80071868 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* E50C 8007186C 00000000 */  nop
     /* E510 80071870 A50B4290 */  lbu        $v0, 0xBA5($v0)
     /* E514 80071874 00000000 */  nop
     /* E518 80071878 58004010 */  beqz       $v0, .L800719DC
-    /* E51C 8007187C 0580103C */   lui       $s0, %hi(D_8005071C)
+    /* E51C 8007187C 0580103C */   lui       $s0, %hi(Dung_StatePtr)
     /* E520 80071880 82C5010C */  jal        Stg40_PickRandomPart
     /* E524 80071884 00000000 */   nop
     /* E528 80071888 60C4010C */  jal        Stg40_RandPercent
@@ -140,8 +140,8 @@ glabel Stg40_TickStatusEffects
     /* E58C 800718EC 000043A6 */  sh         $v1, 0x0($s2)
     /* E590 800718F0 02000324 */  addiu      $v1, $zero, 0x2
     /* E594 800718F4 000043A0 */  sb         $v1, 0x0($v0)
-    /* E598 800718F8 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* E59C 800718FC 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* E598 800718F8 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* E59C 800718FC 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* E5A0 80071900 72C60108 */  j          .L800719C8
     /* E5A4 80071904 A50B40A0 */   sb        $zero, 0xBA5($v0)
   .L80071908:
@@ -188,8 +188,8 @@ glabel Stg40_TickStatusEffects
     /* E640 800719A0 2C004494 */  lhu        $a0, 0x2C($v0)
     /* E644 800719A4 1278000C */  jal        Item_GetNameText
     /* E648 800719A8 03001424 */   addiu     $s4, $zero, 0x3
-    /* E64C 800719AC 0780033C */  lui        $v1, %hi(D_80072B60)
-    /* E650 800719B0 602B638C */  lw         $v1, %lo(D_80072B60)($v1)
+    /* E64C 800719AC 0780033C */  lui        $v1, %hi(Stg40_RootState)
+    /* E650 800719B0 602B638C */  lw         $v1, %lo(Stg40_RootState)($v1)
     /* E654 800719B4 00000000 */  nop
     /* E658 800719B8 780062AC */  sw         $v0, 0x78($v1)
   .L800719BC:
@@ -201,14 +201,14 @@ glabel Stg40_TickStatusEffects
     /* E66C 800719CC 00000000 */  nop
     /* E670 800719D0 00014234 */  ori        $v0, $v0, 0x100
     /* E674 800719D4 000022AE */  sw         $v0, 0x0($s1)
-    /* E678 800719D8 0580103C */  lui        $s0, %hi(D_8005071C)
+    /* E678 800719D8 0580103C */  lui        $s0, %hi(Dung_StatePtr)
   .L800719DC:
-    /* E67C 800719DC 1C07028E */  lw         $v0, %lo(D_8005071C)($s0)
+    /* E67C 800719DC 1C07028E */  lw         $v0, %lo(Dung_StatePtr)($s0)
     /* E680 800719E0 00000000 */  nop
     /* E684 800719E4 A60B4290 */  lbu        $v0, 0xBA6($v0)
     /* E688 800719E8 00000000 */  nop
     /* E68C 800719EC 3A004010 */  beqz       $v0, .L80071AD8
-    /* E690 800719F0 0580023C */   lui       $v0, %hi(D_8005071C)
+    /* E690 800719F0 0580023C */   lui       $v0, %hi(Dung_StatePtr)
     /* E694 800719F4 60C4010C */  jal        Stg40_RandPercent
     /* E698 800719F8 00000000 */   nop
     /* E69C 800719FC 02004228 */  slti       $v0, $v0, 0x2
@@ -228,7 +228,7 @@ glabel Stg40_TickStatusEffects
     /* E6D4 80071A34 000043A6 */  sh         $v1, 0x0($s2)
     /* E6D8 80071A38 03000324 */  addiu      $v1, $zero, 0x3
     /* E6DC 80071A3C 000043A0 */  sb         $v1, 0x0($v0)
-    /* E6E0 80071A40 1C07028E */  lw         $v0, %lo(D_8005071C)($s0)
+    /* E6E0 80071A40 1C07028E */  lw         $v0, %lo(Dung_StatePtr)($s0)
     /* E6E4 80071A44 B1C60108 */  j          .L80071AC4
     /* E6E8 80071A48 A60B40A0 */   sb        $zero, 0xBA6($v0)
   .L80071A4C:
@@ -268,9 +268,9 @@ glabel Stg40_TickStatusEffects
     /* E768 80071AC8 00000000 */  nop
     /* E76C 80071ACC 00024234 */  ori        $v0, $v0, 0x200
     /* E770 80071AD0 000022AE */  sw         $v0, 0x0($s1)
-    /* E774 80071AD4 0580023C */  lui        $v0, %hi(D_8005071C)
+    /* E774 80071AD4 0580023C */  lui        $v0, %hi(Dung_StatePtr)
   .L80071AD8:
-    /* E778 80071AD8 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* E778 80071AD8 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* E77C 80071ADC 00000000 */  nop
     /* E780 80071AE0 A70B4290 */  lbu        $v0, 0xBA7($v0)
     /* E784 80071AE4 00000000 */  nop
@@ -322,8 +322,8 @@ glabel Stg40_TickStatusEffects
     /* E834 80071B94 000043A6 */  sh         $v1, 0x0($s2)
     /* E838 80071B98 04000324 */  addiu      $v1, $zero, 0x4
     /* E83C 80071B9C 000043A0 */  sb         $v1, 0x0($v0)
-    /* E840 80071BA0 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* E844 80071BA4 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* E840 80071BA0 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* E844 80071BA4 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* E848 80071BA8 38C70108 */  j          .L80071CE0
     /* E84C 80071BAC A70B40A0 */   sb        $zero, 0xBA7($v0)
   .L80071BB0:
@@ -344,8 +344,8 @@ glabel Stg40_TickStatusEffects
     /* E888 80071BE8 00000000 */   nop
     /* E88C 80071BEC 21188000 */  addu       $v1, $a0, $zero
   .L80071BF0:
-    /* E890 80071BF0 0780043C */  lui        $a0, %hi(D_80072B60)
-    /* E894 80071BF4 602B828C */  lw         $v0, %lo(D_80072B60)($a0)
+    /* E890 80071BF0 0780043C */  lui        $a0, %hi(Stg40_RootState)
+    /* E894 80071BF4 602B828C */  lw         $v0, %lo(Stg40_RootState)($a0)
     /* E898 80071BF8 40180300 */  sll        $v1, $v1, 1
     /* E89C 80071BFC 21104300 */  addu       $v0, $v0, $v1
     /* E8A0 80071C00 28014384 */  lh         $v1, 0x128($v0)
@@ -360,7 +360,7 @@ glabel Stg40_TickStatusEffects
     /* E8C4 80071C24 21186200 */  addu       $v1, $v1, $v0
     /* E8C8 80071C28 01000224 */  addiu      $v0, $zero, 0x1
     /* E8CC 80071C2C 000062A0 */  sb         $v0, 0x0($v1)
-    /* E8D0 80071C30 602B828C */  lw         $v0, %lo(D_80072B60)($a0)
+    /* E8D0 80071C30 602B828C */  lw         $v0, %lo(Stg40_RootState)($a0)
     /* E8D4 80071C34 4F006688 */  lwl        $a2, 0x4F($v1)
     /* E8D8 80071C38 4C006698 */  lwr        $a2, 0x4C($v1)
     /* E8DC 80071C3C 53006788 */  lwl        $a3, 0x53($v1)
@@ -412,8 +412,8 @@ glabel Stg40_TickStatusEffects
     /* E988 80071CE8 00044234 */  ori        $v0, $v0, 0x400
     /* E98C 80071CEC 000022AE */  sw         $v0, 0x0($s1)
   .L80071CF0:
-    /* E990 80071CF0 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* E994 80071CF4 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* E990 80071CF0 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* E994 80071CF4 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* E998 80071CF8 00000000 */  nop
     /* E99C 80071CFC A80B4290 */  lbu        $v0, 0xBA8($v0)
     /* E9A0 80071D00 00000000 */  nop
@@ -430,7 +430,7 @@ glabel Stg40_TickStatusEffects
     /* E9C8 80071D28 05004010 */  beqz       $v0, .L80071D40
     /* E9CC 80071D2C 01000224 */   addiu     $v0, $zero, 0x1
     /* E9D0 80071D30 0A008212 */  beq        $s4, $v0, .L80071D5C
-    /* E9D4 80071D34 0780023C */   lui       $v0, %hi(D_80072B60)
+    /* E9D4 80071D34 0780023C */   lui       $v0, %hi(Stg40_RootState)
     /* E9D8 80071D38 61C70108 */  j          .L80071D84
     /* E9DC 80071D3C 00000000 */   nop
   .L80071D40:
@@ -438,7 +438,7 @@ glabel Stg40_TickStatusEffects
     /* E9E4 80071D44 09008212 */  beq        $s4, $v0, .L80071D6C
     /* E9E8 80071D48 04000224 */   addiu     $v0, $zero, 0x4
     /* E9EC 80071D4C 09008212 */  beq        $s4, $v0, .L80071D74
-    /* E9F0 80071D50 0780023C */   lui       $v0, %hi(D_80072B60)
+    /* E9F0 80071D50 0780023C */   lui       $v0, %hi(Stg40_RootState)
     /* E9F4 80071D54 61C70108 */  j          .L80071D84
     /* E9F8 80071D58 00000000 */   nop
   .L80071D5C:
@@ -455,9 +455,9 @@ glabel Stg40_TickStatusEffects
   .L80071D78:
     /* EA18 80071D78 A369000C */  jal        Snd_PlayById
     /* EA1C 80071D7C 21280000 */   addu      $a1, $zero, $zero
-    /* EA20 80071D80 0780023C */  lui        $v0, %hi(D_80072B60)
+    /* EA20 80071D80 0780023C */  lui        $v0, %hi(Stg40_RootState)
   .L80071D84:
-    /* EA24 80071D84 602B428C */  lw         $v0, %lo(D_80072B60)($v0)
+    /* EA24 80071D84 602B428C */  lw         $v0, %lo(Stg40_RootState)($v0)
     /* EA28 80071D88 3C00BF8F */  lw         $ra, 0x3C($sp)
     /* EA2C 80071D8C 3800B68F */  lw         $s6, 0x38($sp)
     /* EA30 80071D90 3400B58F */  lw         $s5, 0x34($sp)

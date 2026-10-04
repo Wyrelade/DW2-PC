@@ -22,8 +22,8 @@ glabel Stg20_WalkerGetInput
     /* 77F4 8006AB54 07008210 */  beq        $a0, $v0, .L8006AB74
     /* 77F8 8006AB58 00000000 */   nop
   .L8006AB5C:
-    /* 77FC 8006AB5C 0680023C */  lui        $v0, %hi(D_8005F728)
-    /* 7800 8006AB60 28F74294 */  lhu        $v0, %lo(D_8005F728)($v0)
+    /* 77FC 8006AB5C 0680023C */  lui        $v0, %hi(Pad_Held)
+    /* 7800 8006AB60 28F74294 */  lhu        $v0, %lo(Pad_Held)($v0)
     /* 7804 8006AB64 00000000 */  nop
     /* 7808 8006AB68 280002AE */  sw         $v0, 0x28($s0)
     /* 780C 8006AB6C 3FAB0108 */  j          .L8006ACFC

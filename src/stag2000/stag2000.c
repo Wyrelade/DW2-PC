@@ -3222,7 +3222,7 @@ void Stg20_WalkerGetInput(Actor *a)
       case 0:
 
       default:
-        w->input = (w->held = D_8005F728);
+        w->input = (w->held = Pad_Held);
         break;
 
       case 1:

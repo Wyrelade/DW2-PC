@@ -19,8 +19,8 @@ glabel Stg40_PlayerAnimThenMsg
     /* 4D8C 800680EC 21200002 */  addu       $a0, $s0, $zero
     /* 4D90 800680F0 7745000C */  jal        Task_SetState1
     /* 4D94 800680F4 09000524 */   addiu     $a1, $zero, 0x9
-    /* 4D98 800680F8 0780023C */  lui        $v0, %hi(D_80072B60)
-    /* 4D9C 800680FC 602B428C */  lw         $v0, %lo(D_80072B60)($v0)
+    /* 4D98 800680F8 0780023C */  lui        $v0, %hi(Stg40_RootState)
+    /* 4D9C 800680FC 602B428C */  lw         $v0, %lo(Stg40_RootState)($v0)
     /* 4DA0 80068100 00000000 */  nop
     /* 4DA4 80068104 340051AC */  sw         $s1, 0x34($v0)
     /* 4DA8 80068108 380052AC */  sw         $s2, 0x38($v0)

@@ -18,8 +18,8 @@ glabel Stg40_RevealCell
     /* C304 8006F664 66072286 */  lh         $v0, 0x766($s1)
     /* C308 8006F668 00000000 */  nop
     /* C30C 8006F66C 18005000 */  mult       $v0, $s0
-    /* C310 8006F670 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* C314 8006F674 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* C310 8006F670 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* C314 8006F674 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* C318 8006F678 21280002 */  addu       $a1, $s0, $zero
     /* C31C 8006F67C 580E428C */  lw         $v0, 0xE58($v0)
     /* C320 8006F680 12380000 */  mflo       $a3

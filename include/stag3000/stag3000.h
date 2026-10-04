@@ -644,8 +644,8 @@ extern Stg30Rec73F6C D_80073F6C[];
 extern s32 Stg30_BannerParts[];
 extern Halves Stg30_SkillLearnTextPos[];
 extern s16 Stg30_BattleScript[];
-extern u16 D_8005F72A;  /* Pad_State[0].pressed as a scalar reloc */
-extern Stg30Glob5D5A0 D_8005D5A0;
+extern u16 Pad_Pressed;  /* Pad_State[0].pressed as a scalar reloc */
+extern Stg30Glob5D5A0 Dung_State;
 extern s32 Stg30_TurnOrder[12];
 extern Stg30Battle Stg30_Battle;
 extern s16 Stg30_CloseUpRotY[];  /* camera goal x per party slot (Stg30_CameraUpdate) */
@@ -660,7 +660,7 @@ extern s32 D_80074098;
 extern DigiRosterEntry D_8005F398;  /* Save_GameState.elems[35] as a scalar reloc */
 extern s32 D_8005F794;
 extern SysState Sys_State;
-extern u8 D_8005E5DD;  /* D_8005D5A0.field_103D as a scalar reloc */
+extern u8 D_8005E5DD;  /* Dung_State.field_103D as a scalar reloc */
 extern GameState Save_GameState;
 extern s32 Gfx_ZeroVector[];
 
@@ -778,7 +778,7 @@ extern Halves Stg30_SkillColumnLabelPos[];
 extern s32 D_80073CD4;  /* Stg30_Battle.entries[0].field_14 as a scalar reloc */
 extern void Stg30_SkillMenuRefreshText(Actor *a0);
 extern void Stg30_ItemMenuRefreshText(Actor *a0);
-extern s32 D_8005F6F4;  /* Pad_State[0].left as a scalar reloc */
+extern s32 Pad_Left;  /* Pad_State[0].left as a scalar reloc */
 extern s32 D_80073CC8;  /* Stg30_Battle.entries[0].field_8 as a scalar reloc */
 extern s32 Stg30_TargetFirst(s32 team, s32 flag, s32 mode);
 extern s32 Stg30_TargetPrev(s32 team, s32 cur, s32 flag, s32 mode);
@@ -838,7 +838,7 @@ typedef struct {
 extern Halves Stg30_JoinPromptTextPos[];
 extern u8 Stg30_MemoryCapacity[];
 extern u16 D_8005E650;  /* Save_GameState halfword at 0x30 as a scalar reloc (map id) */
-extern Blk5071C *D_8005071C;
+extern Blk5071C *Dung_StatePtr;
 extern u8 *Digi_GetDefaultName(s32);
 extern void Digi_SortRoster(void);
 extern void Flag_Set(s32, s32);
@@ -850,7 +850,7 @@ extern void Stg30_DimFightersExcept(s32 sel, s32 from, s32 to);
 extern void Stg30_UndimPartyFighters(void);
 extern s32 D_8007409C;
 extern s16 Stg30_JoinChance[][3];
-extern s16 D_8005E5E0;  /* D_8005D5A0.field_1040 as a scalar reloc */
+extern s16 D_8005E5E0;  /* Dung_State.field_1040 as a scalar reloc */
 extern s32 Sys_NextGameMode;  /* Sys_State.nextGameMode as a scalar reloc */
 extern s32 D_8005F790;  /* Sys_State.prevGameMode as a scalar reloc */
 extern s32 Anim_GetModelAnimFile(s32 arg0, s32 arg1);

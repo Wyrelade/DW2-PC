@@ -4,9 +4,9 @@ glabel Stg40_ListPartyDigi
     /* B724 8006EA84 21408000 */  addu       $t0, $a0, $zero
     /* B728 8006EA88 21300000 */  addu       $a2, $zero, $zero
     /* B72C 8006EA8C 0580023C */  lui        $v0, %hi(Save_GameStatePtr)
-    /* B730 8006EA90 0780033C */  lui        $v1, %hi(D_80072B60)
+    /* B730 8006EA90 0780033C */  lui        $v1, %hi(Stg40_RootState)
     /* B734 8006EA94 2007448C */  lw         $a0, %lo(Save_GameStatePtr)($v0)
-    /* B738 8006EA98 602B628C */  lw         $v0, %lo(D_80072B60)($v1)
+    /* B738 8006EA98 602B628C */  lw         $v0, %lo(Stg40_RootState)($v1)
     /* B73C 8006EA9C E4008724 */  addiu      $a3, $a0, 0xE4
     /* B740 8006EAA0 21284000 */  addu       $a1, $v0, $zero
     /* B744 8006EAA4 FA008424 */  addiu      $a0, $a0, 0xFA
@@ -67,8 +67,8 @@ glabel Stg40_ListPartyDigi
     /* B800 8006EB60 2400C228 */  slti       $v0, $a2, 0x24
     /* B804 8006EB64 D1FF4014 */  bnez       $v0, .L8006EAAC
     /* B808 8006EB68 5C00E724 */   addiu     $a3, $a3, 0x5C
-    /* B80C 8006EB6C 0780023C */  lui        $v0, %hi(D_80072B60)
-    /* B810 8006EB70 602B428C */  lw         $v0, %lo(D_80072B60)($v0)
+    /* B80C 8006EB6C 0780023C */  lui        $v0, %hi(Stg40_RootState)
+    /* B810 8006EB70 602B428C */  lw         $v0, %lo(Stg40_RootState)($v0)
     /* B814 8006EB74 00000000 */  nop
     /* B818 8006EB78 40014284 */  lh         $v0, 0x140($v0)
     /* B81C 8006EB7C 0800E003 */  jr         $ra

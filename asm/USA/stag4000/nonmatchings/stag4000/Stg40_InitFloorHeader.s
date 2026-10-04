@@ -1,8 +1,8 @@
 nonmatching Stg40_InitFloorHeader, 0x2C
 
 glabel Stg40_InitFloorHeader
-    /* 488 800637E8 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* 48C 800637EC 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* 488 800637E8 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* 48C 800637EC 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* 490 800637F0 00000000 */  nop
     /* 494 800637F4 340E4324 */  addiu      $v1, $v0, 0xE34
     /* 498 800637F8 540E43AC */  sw         $v1, 0xE54($v0)

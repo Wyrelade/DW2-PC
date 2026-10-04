@@ -1,8 +1,8 @@
 nonmatching Stg40_TurnQueueFind, 0x5C
 
 glabel Stg40_TurnQueueFind
-    /* D770 80070AD0 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* D774 80070AD4 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* D770 80070AD0 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* D774 80070AD4 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* D778 80070AD8 00000000 */  nop
     /* D77C 80070ADC FC0F4524 */  addiu      $a1, $v0, 0xFFC
     /* D780 80070AE0 FC0F4384 */  lh         $v1, 0xFFC($v0)

@@ -201,7 +201,7 @@ typedef struct {
     u8 _pad02[0x12];
 } Stg00DungEntry; /* size 0x14 */
 
-/* View of *D_8005071C (main Blk5071C) at bytes 3/4. */
+/* View of *Dung_StatePtr (main Blk5071C) at bytes 3/4. */
 typedef struct {
     u8 _pad0[0x03];
     /* 0x3 */ u8 floor;
@@ -270,7 +270,7 @@ extern u16 Pad_Repeat;
 extern s32 Pad_Circle;
 extern PadState Pad_State[];
 extern s32 Sys_NextGameMode;
-extern Stg00Blk5071C *D_8005071C;
+extern Stg00Blk5071C *Dung_StatePtr;
 extern s32 Stg00_LineupWinMasks[];
 extern s32 Stg00_GroupWinMasks[];
 extern Stg00Pos Stg00_LineupLayouts[][9];

@@ -17,7 +17,7 @@ void Stg40_InitDisplay(void) {
 }
 
 void Stg40_InitFloorHeader(void) {
-    Stg40DungState *b = D_8005071C;
+    Stg40DungState *b = Dung_StatePtr;
 
     b->floorHdr = &b->defaultFloorHdr;
     b->defaultFloorHdr.cols = 0x40;
@@ -29,32 +29,32 @@ void Stg40_InitDungeonEntry() { /* K&R: Stg40_SetupStage passes its work pointer
     s32 i;
     Stg40Ent48 *e;
 
-    D_8005071C->entryMode = 1;
-    D_8005071C->field_5 = 0;
-    D_8005071C->floor = 0;
-    D_8005071C->fromMode32B = 0;
-    D_8005071C->beetleDown = 0;
+    Dung_StatePtr->entryMode = 1;
+    Dung_StatePtr->field_5 = 0;
+    Dung_StatePtr->floor = 0;
+    Dung_StatePtr->fromMode32B = 0;
+    Dung_StatePtr->beetleDown = 0;
     if (Sys_State.prevGameMode == 0x32B) {
-        D_8005071C->fromMode32B = 1;
+        Dung_StatePtr->fromMode32B = 1;
     }
     if (Sys_State.gameMode != 0x200) {
-        D_8005071C->dungeonIdx = (u16)Sys_State.gameMode - 0x201;
+        Dung_StatePtr->dungeonIdx = (u16)Sys_State.gameMode - 0x201;
     } else {
-        D_8005071C->dungeonIdx = Sys_State.modeArg;
+        Dung_StatePtr->dungeonIdx = Sys_State.modeArg;
     }
     tbl = (Stg40Stage14 *)Cd_GetFileEntry(0xE20000A);
-    D_8005071C->dungeon = tbl[D_8005071C->dungeonIdx];
-    D_8005071C->floorTexId0 = tbl[D_8005071C->dungeonIdx].field_C;
-    D_8005071C->floorTexId1 = tbl[D_8005071C->dungeonIdx].field_10;
-    e = D_8005071C->ents;
+    Dung_StatePtr->dungeon = tbl[Dung_StatePtr->dungeonIdx];
+    Dung_StatePtr->floorTexId0 = tbl[Dung_StatePtr->dungeonIdx].field_C;
+    Dung_StatePtr->floorTexId1 = tbl[Dung_StatePtr->dungeonIdx].field_10;
+    e = Dung_StatePtr->ents;
     for (i = 0; i < 41; i++, e++) {
         e->flags = 0;
     }
-    D_8005071C->bitBugLevel = D_8005071C->energyBugLevel = D_8005071C->returnBugLevel = D_8005071C->memBugCount = 0;
+    Dung_StatePtr->bitBugLevel = Dung_StatePtr->energyBugLevel = Dung_StatePtr->returnBugLevel = Dung_StatePtr->memBugCount = 0;
     for (i = 0; i < 12; i++) {
-        D_8005071C->memBugLevels[i] = 0;
+        Dung_StatePtr->memBugLevels[i] = 0;
     }
-    D_8005071C->dungFileId = D_8005071C->dungeon.field_0;
+    Dung_StatePtr->dungFileId = Dung_StatePtr->dungeon.field_0;
     Digi_SortRoster();
     for (i = 0; i < 3; i++) {
         if (Save_GameStatePtr->elems[i].state < 2) {
@@ -71,7 +71,7 @@ void Stg40_BuildFloorMap(void) {
     Stg40_LabelRooms();
 }
 
-INCLUDE_RODATA("asm/USA/stag4000/rodata", D_80063360);
+INCLUDE_RODATA("asm/USA/stag4000/rodata", Stg40_BeetleDigiIds);
 void Stg40_SetupStage(Actor *a0) {
     ActorWork *work = a0->work;
     s32 *slots = (s32 *)a0->u34.children;
@@ -88,34 +88,34 @@ void Stg40_SetupStage(Actor *a0) {
     mode = D_8005F790 / 256;
     switch (mode) {
     default:
-        D_8005071C->entryMode = 0;
+        Dung_StatePtr->entryMode = 0;
         break;
     case 2:
-        D_8005071C->entryMode = 1;
+        Dung_StatePtr->entryMode = 1;
         break;
     case 5:
-        D_8005071C->entryMode = 2;
+        Dung_StatePtr->entryMode = 2;
         break;
     }
-    if (D_8005071C->entryMode == 0) {
+    if (Dung_StatePtr->entryMode == 0) {
         Stg40_InitDungeonEntry(work);
     }
-    Stg40_LoadDungFile(D_8005071C->dungFileId);
-    Stg40_LoadEventTiles(((Stg40DungFloor *)D_80072B60->floorMap)->eventTable);
-    if (D_8005071C->entryMode == 1) {
+    Stg40_LoadDungFile(Dung_StatePtr->dungFileId);
+    Stg40_LoadEventTiles(((Stg40DungFloor *)Stg40_RootState->floorMap)->eventTable);
+    if (Dung_StatePtr->entryMode == 1) {
         Stg40Ent48 *p;
         s32 i;
         Stg40Buf24 buf;
         s32 level;
 
-        blk = D_8005071C;
+        blk = Dung_StatePtr;
         blk->entCount = 0;
         blk->partyCount = 0;
         blk->chestCount = 0;
         blk->hazardCount = 0;
         blk->trapCount = 0;
-        D_80072B60->hazardTypeCount = 0;
-        D_80072B60->hazardMask = 0;
+        Stg40_RootState->hazardTypeCount = 0;
+        Stg40_RootState->hazardMask = 0;
         p = blk->ents;
         for (i = 0x28; i >= 0; i--) {
             p->flags = 0;
@@ -125,7 +125,7 @@ void Stg40_SetupStage(Actor *a0) {
         Stg40_PickFloorLayout(blk, p);
         Stg40_BuildFloorMap();
         Stg40_PickSpawnPoints();
-        buf = D_80063360;
+        buf = Stg40_BeetleDigiIds;
         level = Save_GameStatePtr->slotItems[0];
         level = (level != 0) ? (level - 0xEA) * 6 : 0;
         if (Save_GameStatePtr->field_36 != 0) {
@@ -139,12 +139,12 @@ void Stg40_SetupStage(Actor *a0) {
         if (Flag_Test(0x68) != 0) {
             level = 0x20B;
         }
-        Stg40_AddEntity(0, 0, level, 0, D_80072B60->startPos.x, D_80072B60->startPos.y);
-        if (D_80072B60->gatePos.x != -1) {
-            Stg40_AddEntity(2, 0, 0x258, 0, D_80072B60->gatePos.x, D_80072B60->gatePos.y);
+        Stg40_AddEntity(0, 0, level, 0, Stg40_RootState->startPos.x, Stg40_RootState->startPos.y);
+        if (Stg40_RootState->gatePos.x != -1) {
+            Stg40_AddEntity(2, 0, 0x258, 0, Stg40_RootState->gatePos.x, Stg40_RootState->gatePos.y);
         }
-        if (D_80072B60->exitPos.x != -1) {
-            Stg40_AddEntity(3, 0, 0x259, 0, D_80072B60->exitPos.x, D_80072B60->exitPos.y);
+        if (Stg40_RootState->exitPos.x != -1) {
+            Stg40_AddEntity(3, 0, 0x259, 0, Stg40_RootState->exitPos.x, Stg40_RootState->exitPos.y);
         }
         Stg40_SpawnEnemyParties();
         Stg40_SpawnChests();
@@ -155,8 +155,8 @@ void Stg40_SetupStage(Actor *a0) {
         Stg40_ClearVisitedBits();
         Stg40_TurnQueueReset();
     }
-    D_8005071C->freeze = 0;
-    D_8005071C->transitionReq = 0;
+    Dung_StatePtr->freeze = 0;
+    Dung_StatePtr->transitionReq = 0;
     if (reset != -1) {
         Stg40_BuildFloorMap();
         Stg40_ApplyTrapCells();
@@ -167,8 +167,8 @@ void Stg40_SetupStage(Actor *a0) {
     Task_Create(0x203, cur, (s32)Cd_GetFileEntry(0xE200000));
     cur = slots + 7;
     j = 0;
-    e = D_8005071C->ents;
-    if (D_8005071C->entCount > 0) {
+    e = Dung_StatePtr->ents;
+    if (Dung_StatePtr->entCount > 0) {
         do {
             if (e->flags & 0x8000) {
                 Task_Create(0x204, cur, (s32)e);
@@ -176,25 +176,25 @@ void Stg40_SetupStage(Actor *a0) {
             }
             e++;
             j++;
-        } while (j < D_8005071C->entCount);
+        } while (j < Dung_StatePtr->entCount);
     }
-    Task_Create(0x202, cur, (s32)&D_8005071C->floorTexId0);
+    Task_Create(0x202, cur, (s32)&Dung_StatePtr->floorTexId0);
     cur++;
     Task_Create(0x206, cur, 0);
     cur++;
     Task_Create(0x208, cur, 0);
-    if (D_8005071C->entryMode == 2) {
+    if (Dung_StatePtr->entryMode == 2) {
         Cd_QueueFile(0xE31);
         Cd_QueueFile(0xE30);
     }
-    D_8005071C->freeze = 1;
-    D_8005071C->floorHdr->field_4 = 1;
+    Dung_StatePtr->freeze = 1;
+    Dung_StatePtr->floorHdr->field_4 = 1;
 }
 
 void Stg40_RootInit(void) {
 }
 
-INCLUDE_RODATA("asm/USA/stag4000/rodata", D_80063384);
+INCLUDE_RODATA("asm/USA/stag4000/rodata", Stg40_FloorSpecialtyByCell);
 s32 Stg40_BeginTransition(Actor *arg0) {
     Blk13 sp10;
     Stg40Ent48 *e;
@@ -205,34 +205,34 @@ s32 Stg40_BeginTransition(Actor *arg0) {
     s32 ret;
     u8 **slot;
 
-    if (D_8005071C->transitionReq == 0) {
+    if (Dung_StatePtr->transitionReq == 0) {
         return 0;
     }
-    switch (D_8005071C->transitionReq) {
+    switch (Dung_StatePtr->transitionReq) {
     case 1:
     default:
         Stg40_CamLoadScript(Cd_GetFileEntry(0xE200003));
-        D_8005071C->freeze = 1;
+        Dung_StatePtr->freeze = 1;
         w->field_0 = 0x500;
-        e = D_8005071C->encounterList.field_0[0];
-        sp10 = D_80063384;
-        D_8005071C->floorSpecialty = sp10.b[Stg40_GetCellFlags(e->loc.u0.pair.field_0, e->loc.u0.pair.field_2) & 0xF];
+        e = Dung_StatePtr->encounterList.field_0[0];
+        sp10 = Stg40_FloorSpecialtyByCell;
+        Dung_StatePtr->floorSpecialty = sp10.b[Stg40_GetCellFlags(e->loc.u0.pair.field_0, e->loc.u0.pair.field_2) & 0xF];
         slot = &e->params;
-        D_8005071C->field_103E = ((Stg40EnemyParty *)e->params)->pointsPerLevel;
+        Dung_StatePtr->field_103E = ((Stg40EnemyParty *)e->params)->pointsPerLevel;
         q = ((Stg40EnemyParty *)*slot)->giftPoints / (s16)((Stg40EnemyParty *)*slot)->pointsPerLevel;
-        D_8005071C->giftLevel = q;
+        Dung_StatePtr->giftLevel = q;
         if ((s16)q >= 4) {
             q = 3;
         }
-        D_8005071C->giftLevel = q;
+        Dung_StatePtr->giftLevel = q;
         D_8005F794 = ((Stg40EnemyParty *)*slot)->setId;
         if (((Stg40EnemyParty *)*slot)->field_2 != 0) {
-            if (Flag_Test(0x88) != 0 && D_8005071C->dungeon.field_8 == 0x100) {
+            if (Flag_Test(0x88) != 0 && Dung_StatePtr->dungeon.field_8 == 0x100) {
                 a0v = 0x101;
                 a1v = 1;
             } else {
-                a0v = D_8005071C->dungeon.field_8;
-                a1v = D_8005071C->dungeon.field_A;
+                a0v = Dung_StatePtr->dungeon.field_8;
+                a1v = Dung_StatePtr->dungeon.field_A;
             }
         } else {
             a0v = 0x200;
@@ -251,22 +251,22 @@ s32 Stg40_BeginTransition(Actor *arg0) {
         w->field_0 = Sys_GameMode;
         Task_SetState1(arg0, 3);
         ret = 1;
-        D_8005071C->floor = D_8005071C->floor + ret;
+        Dung_StatePtr->floor = Dung_StatePtr->floor + ret;
         break;
 
     case 3:
     case 4:
-        if (D_8005071C->fromMode32B == 0) {
+        if (Dung_StatePtr->fromMode32B == 0) {
             w->field_0 = 0x301;
-            Sys_State.modeArg = D_8005071C->beetleDown ? 3 : 4;
+            Sys_State.modeArg = Dung_StatePtr->beetleDown ? 3 : 4;
         } else if (!Flag_Test(0x81)) {
             w->field_0 = 0x301;
-            Sys_State.modeArg = D_8005071C->beetleDown ? 3 : 4;
+            Sys_State.modeArg = Dung_StatePtr->beetleDown ? 3 : 4;
         } else {
             w->field_0 = 0x321;
-            Sys_State.modeArg = D_8005071C->beetleDown ? 2 : 3;
+            Sys_State.modeArg = Dung_StatePtr->beetleDown ? 2 : 3;
         }
-        if (D_8005071C->beetleDown != 0) {
+        if (Dung_StatePtr->beetleDown != 0) {
             Stg40_CamLoadScript(Cd_GetFileEntry(0xE200009));
         } else {
             Stg40_CamLoadScript(Cd_GetFileEntry(0xE200004));
@@ -289,17 +289,17 @@ void Stg40_RootUpdate(Actor *arg0) {
     case 0:
         Stg40_RootTask = arg0;
         Stg40_RootChildren = ctx;
-        D_80072B60 = (Stg40B60 *)Mem_Alloc(0x190, 2);
+        Stg40_RootState = (Stg40B60 *)Mem_Alloc(0x190, 2);
         Stg40_SetupStage(arg0);
         Task_NextState0(arg0);
-        D_80072B60->automapMode = 0;
-        Snd_SetSlotContent(1, D_8005071C->dungeon.field_2);
+        Stg40_RootState->automapMode = 0;
+        Snd_SetSlotContent(1, Dung_StatePtr->dungeon.field_2);
         work->field_8 = 0;
         break;
     case 1:
         if (work->field_8 == 0 && Snd_AnySlotLoading() == 0) {
             work->field_8 = 1;
-            Snd_PlayById(D_8005071C->dungeon.field_4, D_8005071C->dungeon.field_6);
+            Snd_PlayById(Dung_StatePtr->dungeon.field_4, Dung_StatePtr->dungeon.field_6);
             Snd_SetSlotContent(2, 0x19);
         }
         switch (arg0->stateLevel1) {
@@ -309,7 +309,7 @@ void Stg40_RootUpdate(Actor *arg0) {
             switch (st) {
             default:
             case 0:
-                a0v = D_8005071C->entryMode;
+                a0v = Dung_StatePtr->entryMode;
                 if (a0v >= 3) {
                     goto setSt;
                 }
@@ -327,21 +327,21 @@ void Stg40_RootUpdate(Actor *arg0) {
                 }
 
                 Task_NextState2(arg0);
-                D_8005071C->freeze = 1;
+                Dung_StatePtr->freeze = 1;
             done0:
-                D_8005071C->freeze = 1;
-                D_80072B60->automapMode = 0;
+                Dung_StatePtr->freeze = 1;
+                Stg40_RootState->automapMode = 0;
                 break;
             case 1:
                 if (Stg40_CamIsMoving() == 0) {
-                    bt = D_80072B60->playerActor;
+                    bt = Stg40_RootState->playerActor;
                     if (Stg40_CheckEventTile() != 0) {
                         Task_SetState1(bt, 0x1E);
                         Task_SetState1(arg0, 2);
                     } else if (Stg40_CheckEncounter() != 0) {
                         Task_SetState1(bt, 4);
-                        D_8005071C->transitionReq = st;
-                        D_8005071C->freeze = st;
+                        Dung_StatePtr->transitionReq = st;
+                        Dung_StatePtr->freeze = st;
                         Stg40_BeginTransition(arg0);
                     } else {
                         Task_SetState1(arg0, 1);
@@ -367,24 +367,24 @@ void Stg40_RootUpdate(Actor *arg0) {
             default:
             case 0:
                 Task_Create(0x209, &ctx->hudTask, 0);
-                D_8005071C->freeze = 0;
-                D_80072B60->automapMode = Save_GameStatePtr->field_0;
+                Dung_StatePtr->freeze = 0;
+                Stg40_RootState->automapMode = Save_GameStatePtr->field_0;
                 Task_NextState2(arg0);
                 break;
             case 1:
-                if (D_8005071C->freeze == 2) {
+                if (Dung_StatePtr->freeze == 2) {
                     Task_SetState0((Actor *)ctx->hudTask, 2);
-                    D_80072B60->automapMode = 0;
+                    Stg40_RootState->automapMode = 0;
                     Task_SetState1(arg0, 2);
                 } else if (Stg40_BeginTransition(arg0) == st) {
-                    D_80072B60->automapMode = 0;
+                    Stg40_RootState->automapMode = 0;
                 }
                 break;
             }
             break;
         case 2:
-            if (D_8005071C->freeze != 2) {
-                if (D_8005071C->freeze == 0) {
+            if (Dung_StatePtr->freeze != 2) {
+                if (Dung_StatePtr->freeze == 0) {
                     Task_SetState1(arg0, 1);
                 } else if (Stg40_BeginTransition(arg0) != 1) {
                     Task_SetState1(arg0, 1);
@@ -396,7 +396,7 @@ void Stg40_RootUpdate(Actor *arg0) {
             default:
             case 0:
                 Task_SetState0((Actor *)ctx->hudTask, 2);
-                D_80072B60->automapMode = 0;
+                Stg40_RootState->automapMode = 0;
                 Gfx_FadeOutToBlack(0x20);
                 Task_NextState2(arg0);
                 break;
@@ -414,26 +414,26 @@ void Stg40_RootUpdate(Actor *arg0) {
                     arg0->childCount = 0x38;
                     Gfx_FadeInFromBlack(0x20);
                     if (Menu_TopMenuResult == 1) {
-                        Task_SetState1(D_80072B60->playerActor, 0x1D);
+                        Task_SetState1(Stg40_RootState->playerActor, 0x1D);
                         Task_SetState2(arg0, 4);
                     } else {
                         Task_Create(0x209, &ctx->hudTask, 0);
-                        D_80072B60->automapMode = Save_GameStatePtr->field_0;
+                        Stg40_RootState->automapMode = Save_GameStatePtr->field_0;
                         Task_NextState2(arg0);
                     }
                 }
                 break;
             case 3:
                 if (arg0->stateLevel4++ >= 8) {
-                    D_8005071C->freeze = 0;
+                    Dung_StatePtr->freeze = 0;
                     Task_SetState1(arg0, 1);
                     Task_SetState2(arg0, 1);
                 }
                 break;
             case 4:
                 if (arg0->stateLevel4++ >= 8) {
-                    D_8005071C->transitionReq = 4;
-                    Task_SetState1(D_80072B60->playerActor, 0x17);
+                    Dung_StatePtr->transitionReq = 4;
+                    Task_SetState1(Stg40_RootState->playerActor, 0x17);
                     Stg40_BeginTransition(arg0);
                 }
                 break;
@@ -443,7 +443,7 @@ void Stg40_RootUpdate(Actor *arg0) {
             switch (arg0->stateLevel2) {
             default:
             case 0:
-                D_8005071C->freeze = 1;
+                Dung_StatePtr->freeze = 1;
                 Task_SetState0((Actor *)ctx->hudTask, 2);
                 Task_NextState2(arg0);
                 break;
@@ -470,7 +470,7 @@ void Stg40_RootDraw(void) {
 void Stg40_RootDestroy(Actor *a0) {
     Stg40_SyncVisitedBits(0);
     Stg40_FreeCellGrid();
-    Mem_Free((ActorWork *)D_80072B60);
+    Mem_Free((ActorWork *)Stg40_RootState);
     Task_DefaultDestroy(a0);
 }
 
@@ -600,7 +600,7 @@ void Stg40_LinkedModelDraw(Actor *a0) {
     }
 }
 
-INCLUDE_RODATA("asm/USA/stag4000/rodata", D_800633C4);
+INCLUDE_RODATA("asm/USA/stag4000/rodata", Stg40_ShadowCorners);
 void Stg40_DrawEntityShadow(Stg40Loc *loc) {
     struct {
         s16 x;
@@ -629,8 +629,8 @@ void Stg40_DrawEntityShadow(Stg40Loc *loc) {
     s32 centerY;
 
     if ((loc->posX & 0x3F) == 0 && (loc->posY & 0x3F) == 0) {
-        col = loc->posX / 64 - D_80072B60->viewX / 64 + 4;
-        row = loc->posY / 64 - D_80072B60->viewY / 64 + 4;
+        col = loc->posX / 64 - Stg40_RootState->viewX / 64 + 4;
+        row = loc->posY / 64 - Stg40_RootState->viewY / 64 + 4;
         if (col >= 0 && col < Stg40_FloorWork->gridCols - 1 && row >= 0 && row < Stg40_FloorWork->gridRows - 1) {
             w = Stg40_FloorWork;
             a = &w->verts[row][col];
@@ -653,15 +653,15 @@ void Stg40_DrawEntityShadow(Stg40Loc *loc) {
         return;
     }
     mtx = GsWSMATRIX;
-    quad = D_800633C4;
+    quad = Stg40_ShadowCorners;
     centerX = Sys_State.centerX.s;
     centerY = Sys_State.centerY.s;
     count = 0;
     PushMatrix();
     SetRotMatrix(&mtx);
     SetTransMatrix(&mtx);
-    dz = (loc->posY - D_80072B60->viewY) << 11;
-    xoff = (loc->posX - D_80072B60->viewX) * 40;
+    dz = (loc->posY - Stg40_RootState->viewY) << 11;
+    xoff = (loc->posX - Stg40_RootState->viewX) * 40;
     zoff = dz / 64;
     zoff = -zoff;
     vec.y = 0;

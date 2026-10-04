@@ -24,10 +24,10 @@ glabel Stg40_DrawEntityShadow
     /* 18C8 80064C28 77004014 */  bnez       $v0, .L80064E08
     /* 18CC 80064C2C 0680023C */   lui       $v0, %hi(GsWSMATRIX)
     /* 18D0 80064C30 02006104 */  bgez       $v1, .L80064C3C
-    /* 18D4 80064C34 0780023C */   lui       $v0, %hi(D_80072B60)
+    /* 18D4 80064C34 0780023C */   lui       $v0, %hi(Stg40_RootState)
     /* 18D8 80064C38 3F006324 */  addiu      $v1, $v1, 0x3F
   .L80064C3C:
-    /* 18DC 80064C3C 602B458C */  lw         $a1, %lo(D_80072B60)($v0)
+    /* 18DC 80064C3C 602B458C */  lw         $a1, %lo(Stg40_RootState)($v0)
     /* 18E0 80064C40 00000000 */  nop
     /* 18E4 80064C44 2C00A28C */  lw         $v0, 0x2C($a1)
     /* 18E8 80064C48 00000000 */  nop
@@ -164,8 +164,8 @@ glabel Stg40_DrawEntityShadow
     /* 1AE0 80064E40 1C008A8D */  lw         $t2, 0x1C($t4)
     /* 1AE4 80064E44 6000A9AF */  sw         $t1, 0x60($sp)
     /* 1AE8 80064E48 6400AAAF */  sw         $t2, 0x64($sp)
-    /* 1AEC 80064E4C 0680023C */  lui        $v0, %hi(D_800633C4)
-    /* 1AF0 80064E50 C4334C24 */  addiu      $t4, $v0, %lo(D_800633C4)
+    /* 1AEC 80064E4C 0680023C */  lui        $v0, %hi(Stg40_ShadowCorners)
+    /* 1AF0 80064E50 C4334C24 */  addiu      $t4, $v0, %lo(Stg40_ShadowCorners)
     /* 1AF4 80064E54 03008989 */  lwl        $t1, 0x3($t4)
     /* 1AF8 80064E58 00008999 */  lwr        $t1, 0x0($t4)
     /* 1AFC 80064E5C 07008A89 */  lwl        $t2, 0x7($t4)
@@ -196,8 +196,8 @@ glabel Stg40_DrawEntityShadow
     /* 1B60 80064EC0 21200002 */   addu      $a0, $s0, $zero
     /* 1B64 80064EC4 91B5000C */  jal        SetTransMatrix
     /* 1B68 80064EC8 21200002 */   addu      $a0, $s0, $zero
-    /* 1B6C 80064ECC 0780023C */  lui        $v0, %hi(D_80072B60)
-    /* 1B70 80064ED0 602B448C */  lw         $a0, %lo(D_80072B60)($v0)
+    /* 1B6C 80064ECC 0780023C */  lui        $v0, %hi(Stg40_RootState)
+    /* 1B70 80064ED0 602B448C */  lw         $a0, %lo(Stg40_RootState)($v0)
     /* 1B74 80064ED4 1000228E */  lw         $v0, 0x10($s1)
     /* 1B78 80064ED8 3000838C */  lw         $v1, 0x30($a0)
     /* 1B7C 80064EDC 2C00848C */  lw         $a0, 0x2C($a0)

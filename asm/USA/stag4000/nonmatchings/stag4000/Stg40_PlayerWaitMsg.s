@@ -9,8 +9,8 @@ glabel Stg40_PlayerWaitMsg
     /* 61C8 80069528 01000424 */   addiu     $a0, $zero, 0x1
     /* 61CC 8006952C 01000324 */  addiu      $v1, $zero, 0x1
     /* 61D0 80069530 06004314 */  bne        $v0, $v1, .L8006954C
-    /* 61D4 80069534 0780023C */   lui       $v0, %hi(D_80072B60)
-    /* 61D8 80069538 602B428C */  lw         $v0, %lo(D_80072B60)($v0)
+    /* 61D4 80069534 0780023C */   lui       $v0, %hi(Stg40_RootState)
+    /* 61D8 80069538 602B428C */  lw         $v0, %lo(Stg40_RootState)($v0)
     /* 61DC 8006953C 00000000 */  nop
     /* 61E0 80069540 38004590 */  lbu        $a1, 0x38($v0)
     /* 61E4 80069544 7745000C */  jal        Task_SetState1

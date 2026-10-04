@@ -1,8 +1,8 @@
 nonmatching Stg40_ApplyTrapCells, 0xA0
 
 glabel Stg40_ApplyTrapCells
-    /* D67C 800709DC 0580043C */  lui        $a0, %hi(D_8005071C)
-    /* D680 800709E0 1C07838C */  lw         $v1, %lo(D_8005071C)($a0)
+    /* D67C 800709DC 0580043C */  lui        $a0, %hi(Dung_StatePtr)
+    /* D680 800709E0 1C07838C */  lw         $v1, %lo(Dung_StatePtr)($a0)
     /* D684 800709E4 D8FFBD27 */  addiu      $sp, $sp, -0x28
     /* D688 800709E8 1400B1AF */  sw         $s1, 0x14($sp)
     /* D68C 800709EC 21880000 */  addu       $s1, $zero, $zero
@@ -26,7 +26,7 @@ glabel Stg40_ApplyTrapCells
     /* D6D0 80070A30 F0FF8430 */  andi       $a0, $a0, 0xFFF0
     /* D6D4 80070A34 000044A4 */  sh         $a0, 0x0($v0)
     /* D6D8 80070A38 00000392 */  lbu        $v1, 0x0($s0)
-    /* D6DC 80070A3C 1C07658E */  lw         $a1, %lo(D_8005071C)($s3)
+    /* D6DC 80070A3C 1C07658E */  lw         $a1, %lo(Dung_StatePtr)($s3)
     /* D6E0 80070A40 07006324 */  addiu      $v1, $v1, 0x7
     /* D6E4 80070A44 25208300 */  or         $a0, $a0, $v1
     /* D6E8 80070A48 000044A4 */  sh         $a0, 0x0($v0)

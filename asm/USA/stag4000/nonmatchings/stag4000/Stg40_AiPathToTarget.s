@@ -2,9 +2,9 @@ nonmatching Stg40_AiPathToTarget, 0xE0
 
 glabel Stg40_AiPathToTarget
     /* 8568 8006B8C8 2140A000 */  addu       $t0, $a1, $zero
-    /* 856C 8006B8CC 0780023C */  lui        $v0, %hi(D_80072B60)
+    /* 856C 8006B8CC 0780023C */  lui        $v0, %hi(Stg40_RootState)
     /* 8570 8006B8D0 18008624 */  addiu      $a2, $a0, 0x18
-    /* 8574 8006B8D4 602B458C */  lw         $a1, %lo(D_80072B60)($v0)
+    /* 8574 8006B8D4 602B458C */  lw         $a1, %lo(Stg40_RootState)($v0)
     /* 8578 8006B8D8 18008394 */  lhu        $v1, 0x18($a0)
     /* 857C 8006B8DC 7C01A294 */  lhu        $v0, 0x17C($a1)
     /* 8580 8006B8E0 7E01A494 */  lhu        $a0, 0x17E($a1)

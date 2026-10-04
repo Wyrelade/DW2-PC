@@ -9,8 +9,8 @@ glabel Stg40_RootDestroy
     /* 14EC 8006484C 21200000 */   addu      $a0, $zero, $zero
     /* 14F0 80064850 CABF010C */  jal        Stg40_FreeCellGrid
     /* 14F4 80064854 00000000 */   nop
-    /* 14F8 80064858 0780023C */  lui        $v0, %hi(D_80072B60)
-    /* 14FC 8006485C 602B448C */  lw         $a0, %lo(D_80072B60)($v0)
+    /* 14F8 80064858 0780023C */  lui        $v0, %hi(Stg40_RootState)
+    /* 14FC 8006485C 602B448C */  lw         $a0, %lo(Stg40_RootState)($v0)
     /* 1500 80064860 618B000C */  jal        Mem_Free
     /* 1504 80064864 00000000 */   nop
     /* 1508 80064868 5C44000C */  jal        Task_DefaultDestroy

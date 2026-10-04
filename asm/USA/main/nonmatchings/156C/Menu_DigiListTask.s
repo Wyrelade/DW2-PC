@@ -202,8 +202,8 @@ glabel Menu_DigiListTask
     /* 8B28 80018328 54002526 */   addiu     $a1, $s1, 0x54
     /* 8B2C 8001832C 36004014 */  bnez       $v0, .L80018408
     /* 8B30 80018330 0D000424 */   addiu     $a0, $zero, 0xD
-    /* 8B34 80018334 0680023C */  lui        $v0, %hi(D_8005F70C)
-    /* 8B38 80018338 0CF7428C */  lw         $v0, %lo(D_8005F70C)($v0)
+    /* 8B34 80018334 0680023C */  lui        $v0, %hi(Pad_Triangle)
+    /* 8B38 80018338 0CF7428C */  lw         $v0, %lo(Pad_Triangle)($v0)
     /* 8B3C 8001833C 00000000 */  nop
     /* 8B40 80018340 0E004018 */  blez       $v0, .L8001837C
     /* 8B44 80018344 05000224 */   addiu     $v0, $zero, 0x5

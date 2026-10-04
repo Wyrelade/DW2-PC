@@ -26,8 +26,8 @@ glabel Stg40_AutomapUpdate
     /* CAA8 8006FE08 21200002 */   addu      $a0, $s0, $zero
     /* CAAC 8006FE0C 63BC010C */  jal        Stg40_AutomapFlush
     /* CAB0 8006FE10 21200002 */   addu      $a0, $s0, $zero
-    /* CAB4 8006FE14 0780023C */  lui        $v0, %hi(D_80072B60)
-    /* CAB8 8006FE18 602B428C */  lw         $v0, %lo(D_80072B60)($v0)
+    /* CAB4 8006FE14 0780023C */  lui        $v0, %hi(Stg40_RootState)
+    /* CAB8 8006FE18 602B428C */  lw         $v0, %lo(Stg40_RootState)($v0)
     /* CABC 8006FE1C 21202002 */  addu       $a0, $s1, $zero
     /* CAC0 8006FE20 5145000C */  jal        Task_NextState0
     /* CAC4 8006FE24 7E0040A4 */   sh        $zero, 0x7E($v0)

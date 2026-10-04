@@ -3,13 +3,13 @@
 #include "stag4000/stag4000_funcs.h"
 
 void Stg40_ScrollFollow(Stg40Loc *loc) {
-    D_8005071C->scrollTarget = loc;
+    Dung_StatePtr->scrollTarget = loc;
     Task_SetState1(Stg40_FloorTask, 0);
 }
 
 void Stg40_ScrollTo(s32 a0, s32 a1, s32 a2) {
     Actor *t = Stg40_FloorTask;
-    Stg40B60 *b = D_80072B60;
+    Stg40B60 *b = Stg40_RootState;
     Stg40FloorScrollView *w = (Stg40FloorScrollView *)t->work;
 
     w->scrollGoalX = a0;
@@ -27,11 +27,11 @@ void Stg40_ScrollToFollow(Stg40Loc *loc, s32 a1) {
 
     w->scrollGoalX = loc->posX;
     w->scrollGoalY = loc->posY;
-    b = D_80072B60;
+    b = Stg40_RootState;
     w->scrollStartX = b->viewX;
     w->scrollStartY = b->viewY;
     w->scrollFrames = a1;
-    D_8005071C->scrollTarget = loc;
+    Dung_StatePtr->scrollTarget = loc;
     Task_SetState1(t, 2);
 }
 
@@ -39,7 +39,7 @@ s32 Stg40_IsScrollDone(void) {
     Stg40FloorScrollView *w = (Stg40FloorScrollView *)Stg40_FloorTask->work;
     s32 r = 0;
 
-    if (D_80072B60->viewX == w->scrollGoalX && D_80072B60->viewY == w->scrollGoalY) {
+    if (Stg40_RootState->viewX == w->scrollGoalX && Stg40_RootState->viewY == w->scrollGoalY) {
         r = -1;
     }
     return r;
@@ -53,7 +53,7 @@ void Stg40_ScrollStep(Actor *a0) {
     s32 k = n - a0->stateLevel2;
     s32 dx = (x0 - w->scrollStartX) * k / n;
     s32 dy = (y0 - w->scrollStartY) * k / n;
-    Stg40B60 *b = D_80072B60;
+    Stg40B60 *b = Stg40_RootState;
 
     b->viewX = x0 - dx;
     b->viewY = y0 - dy;
@@ -66,23 +66,23 @@ void Stg40_ScrollUpdate(Actor *a0) {
     switch (a0->stateLevel1) {
     case 0:
     default:
-        D_80072B60->viewX = D_8005071C->scrollTarget->posX;
-        D_80072B60->viewY = D_8005071C->scrollTarget->posY;
+        Stg40_RootState->viewX = Dung_StatePtr->scrollTarget->posX;
+        Stg40_RootState->viewY = Dung_StatePtr->scrollTarget->posY;
         break;
     case 1:
         if (a0->stateLevel2 < w->scrollFrames) {
             Stg40_ScrollStep(a0);
         } else {
-            D_80072B60->viewX = w->scrollGoalX;
-            D_80072B60->viewY = w->scrollGoalY;
+            Stg40_RootState->viewX = w->scrollGoalX;
+            Stg40_RootState->viewY = w->scrollGoalY;
         }
         break;
     case 2:
         if (a0->stateLevel2 < w->scrollFrames) {
             Stg40_ScrollStep(a0);
         } else {
-            D_80072B60->viewX = w->scrollGoalX;
-            D_80072B60->viewY = w->scrollGoalY;
+            Stg40_RootState->viewX = w->scrollGoalX;
+            Stg40_RootState->viewY = w->scrollGoalY;
             Task_SetState1(a0, 0);
         }
         break;
@@ -149,28 +149,28 @@ void Stg40_ProjectGrid(Stg40FloorWork *w) {
     SetRotMatrix(&mtx);
     SetTransMatrix(&mtx);
     rows = 0xA;
-    if (D_80072B60->viewY & 0x3F) {
+    if (Stg40_RootState->viewY & 0x3F) {
         rows = 0xB;
     }
     cols = 0xA;
-    if (D_80072B60->viewX & 0x3F) {
+    if (Stg40_RootState->viewX & 0x3F) {
         cols = 0xB;
     }
     n.lo = rows;
     w->gridCols = cols;
     w->gridRows = n.lo;
     vec.vy = 0;
-    t = (D_80072B60->viewY & 0x3F) << 11;
+    t = (Stg40_RootState->viewY & 0x3F) << 11;
     if (t < 0) {
         t += 0x3F;
     }
     vec.vz = ((u32)t >> 6) + 0x2400;
     step = 0x500;
-    if (D_8005071C->floorHdr->field_4 != 0) {
+    if (Dung_StatePtr->floorHdr->field_4 != 0) {
         step = -0x500;
     }
     for (row = 0; row < rows; row++) {
-        t = (D_80072B60->viewX & 0x3F) * 0xA00;
+        t = (Stg40_RootState->viewX & 0x3F) * 0xA00;
         if (t < 0) {
             t += 0x3F;
         }
@@ -235,24 +235,24 @@ void Stg40_FillTileCache(ActorWork *arg0)
     s32 lt400;
     s32 n;
 
-    e54 = D_8005071C->floorHdr;
-    grid = (Stg40Cell *)D_8005071C->cells;
+    e54 = Dung_StatePtr->floorHdr;
+    grid = (Stg40Cell *)Dung_StatePtr->cells;
     rowCount = 9;
     gridCols = e54->cols;
     gridRows = e54->rows;
-    if (D_80072B60->viewY & 0x3F) {
+    if (Stg40_RootState->viewY & 0x3F) {
         rowCount = 0xA;
     }
     colCount = 9;
-    if (D_80072B60->viewX & 0x3F) {
+    if (Stg40_RootState->viewX & 0x3F) {
         colCount = 0xA;
     }
-    mapRow = D_80072B60->viewY / 64 - 4;
+    mapRow = Stg40_RootState->viewY / 64 - 4;
     for (row = 0; row < rowCount; row++) {
         tp = ((Stg40FloorWork *)arg0)->tiles[row];
         v0p = ((Stg40FloorWork *)arg0)->verts[row];
         v1p = ((Stg40FloorWork *)arg0)->verts[row + 1];
-        mapCol = D_80072B60->viewX / 64 - 4;
+        mapCol = Stg40_RootState->viewX / 64 - 4;
         for (col = 0; col < colCount; col++) {
             tp->field_4 = Stg40_Max4(v0p[0].s[0].field_4, v0p[1].s[0].field_4, v1p[0].s[0].field_4, v1p[1].s[0].field_4);
             tp->otz = Stg40_Min4(v0p[0].s[1].field_4, v0p[1].s[1].field_4, v1p[0].s[1].field_4, v1p[1].s[1].field_4);
@@ -324,7 +324,7 @@ void Stg40_FillTileCache(ActorWork *arg0)
 }
 
 void Stg40_MapPosToWorld(s32 x, s32 z, s32 y, Stg40Vec3 *out) {
-    Stg40B60 *b = D_80072B60;
+    Stg40B60 *b = Stg40_RootState;
     s32 t;
 
     out->vz = -(((z - b->viewY) << 11) / 64);
@@ -349,7 +349,7 @@ s32 Stg40_DrawTileWalls(Stg40FloorWork *w, s32 pkt, s32 x, s32 y)
     s32 m;
     Stg40FT4 *src;
 
-    base = &Stg40_WallPrimIdx[(u16)D_8005071C->floorHdr->wallStyle * 5];
+    base = &Stg40_WallPrimIdx[(u16)Dung_StatePtr->floorHdr->wallStyle * 5];
 
     for (i = 0; i < 4; i++) {
         rec = &Stg40_WallSides[i];
@@ -446,8 +446,8 @@ void Stg40_DrawFloorTiles(Stg40FloorWork *w) {
     s32 x;
     s32 pkt;
 
-    rows = (D_80072B60->viewY & 0x3F) ? 10 : 9;
-    cols = (D_80072B60->viewX & 0x3F) ? 10 : 9;
+    rows = (Stg40_RootState->viewY & 0x3F) ? 10 : 9;
+    cols = (Stg40_RootState->viewX & 0x3F) ? 10 : 9;
     pkt = Sys_PacketCursor;
     for (y = 0; y < rows; y++) {
         for (x = 0; x < cols; x++) {
@@ -517,8 +517,8 @@ void Stg40_FloorUpdate(Actor *a0) {
     switch (a0->stateLevel0) {
     case 0:
     default:
-        D_80072B60->viewX = D_8005071C->scrollTarget->posX;
-        D_80072B60->viewY = D_8005071C->scrollTarget->posY;
+        Stg40_RootState->viewX = Dung_StatePtr->scrollTarget->posX;
+        Stg40_RootState->viewY = Dung_StatePtr->scrollTarget->posY;
         Task_NextState0(a0);
         break;
     case 1:
@@ -537,7 +537,7 @@ void Stg40_FloorDraw(Actor *a0) {
     s32 n = Beetle_GetPart(0x11);
     s32 *p;
 
-    if (n <= 0 || (D_8005071C->dungeonIdx == 0x10 && n == 0x75)) {
+    if (n <= 0 || (Dung_StatePtr->dungeonIdx == 0x10 && n == 0x75)) {
         f = 0;
     }
     if (f) {
@@ -563,7 +563,7 @@ void Stg40_HudUpdate(Actor *a0) {
         Mem_FillWordsNeg1(&w->labelText0, 3);
         w->scale = 0;
         s3->field_0 = 0;
-        n = D_8005071C->floorHdr->nameLen - 6;
+        n = Dung_StatePtr->floorHdr->nameLen - 6;
         sh = n;
         do {
             if (n >= 7) {
@@ -580,7 +580,7 @@ void Stg40_HudUpdate(Actor *a0) {
         case 0:
         default:
             if (Math_RampToOne(a0, &w->scale) == 0) {
-                fe = D_8005071C->floorHdr;
+                fe = Dung_StatePtr->floorHdr;
                 args.x = x;
                 args.y = 0x16;
                 args.bigFont = 0;
@@ -620,11 +620,11 @@ void Stg40_HudUpdate(Actor *a0) {
             break;
         }
         if (s3->field_0 != 0) {
-            if (D_8005071C->bitBugLevel == 0 && s3->field_0->stateLevel0 != 2) {
+            if (Dung_StatePtr->bitBugLevel == 0 && s3->field_0->stateLevel0 != 2) {
                 Task_SetState0(s3->field_0, 2);
             }
         } else {
-            if (D_8005071C->bitBugLevel != 0) {
+            if (Dung_StatePtr->bitBugLevel != 0) {
                 Task_Create(0x20A, (s32 *)s3, 0);
             }
         }
@@ -902,7 +902,7 @@ void Stg40_EnemyInfoUpdate(Actor *a0) {
         default:
             if (Math_RampToOne(a0, &w->field_0) == 0) {
                 pos = Stg40_EnemyInfoTextPos;
-                info = (Stg40EnemyParty *)D_80072B60->enemyList[D_80072B60->enemyIndex]->params;
+                info = (Stg40EnemyParty *)Stg40_RootState->enemyList[Stg40_RootState->enemyIndex]->params;
                 args.bigFont = 0;
                 args.color = 0;
                 args.charAdvance = 0;
@@ -965,7 +965,7 @@ void Stg40_EnemyInfoDraw(Actor *a0) {
     s32 i;
 
     if (w->field_0 != 0) {
-        info = (Stg40EnemyParty *)D_80072B60->enemyList[D_80072B60->enemyIndex]->params;
+        info = (Stg40EnemyParty *)Stg40_RootState->enemyList[Stg40_RootState->enemyIndex]->params;
         for (i = 0; i < 3; i++) {
             p = Cd_GetFileEntry(Stg40_EnemyInfoParts[i]);
             if (i >= info->digiCount) {
@@ -1180,11 +1180,11 @@ void Stg40_ObjInit(Actor *a0, Stg40Ent48 *e)
   loc->posY = loc->u0.pair.field_2 << 6;
   if (e->flags & 1)
   {
-    D_8005071C->scrollTarget = loc;
-    D_8005071C->playerLoc = loc;
+    Dung_StatePtr->scrollTarget = loc;
+    Dung_StatePtr->playerLoc = loc;
     new_var = w->ent;
-    D_80072B60->playerActor = a0;
-    D_80072B60->playerEnt = new_var;
+    Stg40_RootState->playerActor = a0;
+    Stg40_RootState->playerEnt = new_var;
     Stg40_TurnQueueAdd(e->turnId);
   }
   w->drawn = 0;
@@ -1265,13 +1265,13 @@ void Stg40_ObjDraw(Actor *a0) {
     if (e->digiId == -1) {
         return;
     }
-    dx = e->loc.posX - D_80072B60->viewX;
+    dx = e->loc.posX - Stg40_RootState->viewX;
     if (dx < 0) {
-        dx = D_80072B60->viewX - e->loc.posX;
+        dx = Stg40_RootState->viewX - e->loc.posX;
     }
-    dy = e->loc.posY - D_80072B60->viewY;
+    dy = e->loc.posY - Stg40_RootState->viewY;
     if (dy < 0) {
-        dy = D_80072B60->viewY - e->loc.posY;
+        dy = Stg40_RootState->viewY - e->loc.posY;
     }
     if (dx < 0x1C0 && dy < 0x1C0) {
         Cd_QueueFile(w->modelFile);
@@ -1280,7 +1280,7 @@ void Stg40_ObjDraw(Actor *a0) {
     if (dx < 0x140 && dy < 0x140) {
         vis = 1;
         r = Beetle_GetPart(0x11);
-        if (r <= 0 || (D_8005071C->dungeonIdx == 0x10 && r == 0x75)) {
+        if (r <= 0 || (Dung_StatePtr->dungeonIdx == 0x10 && r == 0x75)) {
             vis = 0;
         }
         if (e->flags & 1) {
@@ -1293,8 +1293,8 @@ void Stg40_ObjDraw(Actor *a0) {
             w->pendingAnim = -1;
         }
         x = (Stg40Xform *)a0->u38.ptr38;
-        x->posX = (s16)((e->loc.posX - D_80072B60->viewX) * 40);
-        x->posZ = (s16)-(((e->loc.posY - D_80072B60->viewY) << 11) / 64);
+        x->posX = (s16)((e->loc.posX - Stg40_RootState->viewX) * 40);
+        x->posZ = (s16)-(((e->loc.posY - Stg40_RootState->viewY) << 11) / 64);
         x->posY = -(s16)e->loc.height;
         x->rotY = e->heading;
         x->scaleX = e->scaleX;
@@ -1329,17 +1329,17 @@ void Stg40_ObjDraw(Actor *a0) {
 void Stg40_PlayerAnimThenMsg(Actor *a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6) {
     Stg40_ObjSetAnim(a0, a1);
     Task_SetState1(a0, 9);
-    D_80072B60->msgAnim = a2;
-    D_80072B60->msgNextState = a3;
-    D_80072B60->msgId = a4;
-    D_80072B60->msgArg0 = a5;
-    D_80072B60->msgArg1 = a6;
+    Stg40_RootState->msgAnim = a2;
+    Stg40_RootState->msgNextState = a3;
+    Stg40_RootState->msgId = a4;
+    Stg40_RootState->msgArg0 = a5;
+    Stg40_RootState->msgArg1 = a6;
 }
 
 void Stg40_PlayerShowMsg(Actor *a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) {
     Stg40_ObjSetAnim(a0, a1);
     Task_SetState1(a0, 0xB);
-    D_80072B60->msgNextState = a2;
+    Stg40_RootState->msgNextState = a2;
     Stg40_MsgWinOpen(1, a3, a4, a5);
 }
 
@@ -1349,17 +1349,17 @@ s32 Stg40_PlayerCheckEnemyInfo(Actor *a0) {
     s32 i;
 
     if (Pad_Square > 0 && self->roomId != 0xFF) {
-        e = D_8005071C->ents;
-        D_80072B60->enemyCount = 0;
-        D_80072B60->enemyIndex = 0;
-        for (i = 0; i < D_8005071C->entCount; e++, i++) {
+        e = Dung_StatePtr->ents;
+        Stg40_RootState->enemyCount = 0;
+        Stg40_RootState->enemyIndex = 0;
+        for (i = 0; i < Dung_StatePtr->entCount; e++, i++) {
             if ((e->flags & 0x8000) && e->kind == 1 && e->roomId == self->roomId) {
-                D_80072B60->enemyList[D_80072B60->enemyCount++] = e;
+                Stg40_RootState->enemyList[Stg40_RootState->enemyCount++] = e;
             }
         }
-        if (D_80072B60->enemyCount != 0) {
+        if (Stg40_RootState->enemyCount != 0) {
             Task_SetState1(a0, 0x1A);
-            D_80072B60->automapMode = 0;
+            Stg40_RootState->automapMode = 0;
             return -1;
         }
     }
@@ -1397,8 +1397,8 @@ s32 Stg40_PlayerInteract(Actor *a0)
         goto end;
     }
     child = found->actor;
-    D_80072B60->targetActor = child;
-    D_80072B60->targetEnt = found;
+    Stg40_RootState->targetActor = child;
+    Stg40_RootState->targetEnt = found;
     switch (found->kind) {
     default:
         Snd_PlayById(0x2E, 0);
@@ -1445,15 +1445,15 @@ s32 Stg40_PlayerInteract(Actor *a0)
             break;
         }
         Item_CheckId(0);
-        r3 = Stg40_ListUsableItems(&D_800727E8[idx]);
+        r3 = Stg40_ListUsableItems(&Stg40_ObstacleItemReqs[idx]);
         if (r3 != 0) {
             Stg40_PlayerShowMsg(a0, 0x28, 1, r3, 0, 0);
             goto end;
         }
         Task_SetState1(a0, 0x11);
-        D_80072B60->automapMode = 0;
-        D_80072B60->giftMenu = 0;
-        D_80072B60->selItem = D_80072B60->itemIds[0];
+        Stg40_RootState->automapMode = 0;
+        Stg40_RootState->giftMenu = 0;
+        Stg40_RootState->selItem = Stg40_RootState->itemIds[0];
         goto end;
     }
     Task_SetState1(a0, 0xC);
@@ -1494,15 +1494,15 @@ s32 Stg40_PlayerTryMove(Stg40Ent48 *e) {
     if (k < 0) {
         return 0;
     }
-    if (D_8005071C->statusFlags & 2) {
-        oct = (oct + D_8005071C->confusionTurn) & 7;
+    if (Dung_StatePtr->statusFlags & 2) {
+        oct = (oct + Dung_StatePtr->confusionTurn) & 7;
     }
     e->targetHeading = (oct << 16) >> 7;
     e->octant = oct;
     if (Pad_State[0].l1 != 0 && (oct & 1) == 0) {
         return 0;
     }
-    if (D_8005F710 != 0) {
+    if (Pad_R1 != 0) {
         return 0;
     }
     dir = oct + 1;
@@ -1546,12 +1546,12 @@ s32 Stg40_PlayerTryMove(Stg40Ent48 *e) {
             ny = loc->u0.pair.field_2 + ((s16 *)Stg40_DirOffsets)[((d + 1) << 1) | 1];
         }
     }
-    if (D_8005071C->statusFlags & 1) {
+    if (Dung_StatePtr->statusFlags & 1) {
         return 1;
     }
     if (nx != -1) {
         Stg40Ent48 *te = Stg40_FindEntAt(nx, ny);
-        Stg40B60 *b = D_80072B60;
+        Stg40B60 *b = Stg40_RootState;
 
         b->targetEnt = te;
         b->targetActor = te->actor;
@@ -1571,7 +1571,7 @@ s32 Stg40_PlayerTryMove(Stg40Ent48 *e) {
 }
 
 Stg40Ent48 *Stg40_FindObjAtSameTile(Stg40Ent48 *a0) {
-    Stg40DungState *b = D_8005071C;
+    Stg40DungState *b = Dung_StatePtr;
     Stg40Ent48 *e = b->ents;
     Stg40Ent48 *r = NULL;
     s32 i;
@@ -1615,8 +1615,8 @@ s32 Stg40_PlayerCheckStepHazard(Actor *task) {
     other = Stg40_FindObjAtSameTile(ent);
     if (other != NULL) {
         child = other->actor;
-        D_80072B60->targetActor = child;
-        D_80072B60->targetEnt = other;
+        Stg40_RootState->targetActor = child;
+        Stg40_RootState->targetEnt = other;
         switch (other->kind) {
         default:
             break;
@@ -1652,13 +1652,13 @@ s32 Stg40_PlayerCheckTileEvent(Actor *a0) {
         return 0;
     }
     t = f->actor;
-    b = D_80072B60;
+    b = Stg40_RootState;
     b->targetActor = t;
     b->targetEnt = f;
     switch (f->kind) {
     case 2:
     case 3:
-        D_8005071C->transitionReq = (f->kind != 2) ? 3 : 2;
+        Dung_StatePtr->transitionReq = (f->kind != 2) ? 3 : 2;
         Task_SetState1(a0, 0x17);
         r = 1;
         break;
@@ -1776,7 +1776,7 @@ void Stg40_PlayerEndTurn(Actor *a0) {
 }
 
 void Stg40_PlayerShowStatusMsgs(Actor *a0) {
-    Stg40B60 *b = D_80072B60;
+    Stg40B60 *b = Stg40_RootState;
     s32 arg = 0;
     s32 k;
 
@@ -1804,16 +1804,16 @@ void Stg40_PlayerInput(Actor *a0) {
     s32 n;
 
     Stg40_ObjSetAnimIfNew(a0, 0x28);
-    if (D_8005071C->freeze != 0) {
+    if (Dung_StatePtr->freeze != 0) {
         return;
     }
     if (Pad_Circle > 0 && Stg40_RootTask->stateLevel0 == 1 && Stg40_RootTask->stateLevel1 == 1 && Stg40_RootTask->stateLevel2 == 1) {
         Task_SetState1(Stg40_RootTask, 4);
-        D_8005071C->freeze = 1;
+        Dung_StatePtr->freeze = 1;
         return;
     }
     if (Stg40_PlayerTryMove(w->ent) == 1) {
-        if (D_8005071C->statusFlags & 1) {
+        if (Dung_StatePtr->statusFlags & 1) {
             Stg40_PlayerShowMsg(a0, 0x28, 6, 0x1FD001D, 0, 0);
         } else {
             Task_SetState1(a0, 2);
@@ -1824,7 +1824,7 @@ void Stg40_PlayerInput(Actor *a0) {
         v = Save_GameStatePtr->field_0 + 1;
         n = (v < 3) ? v : 0;
         Save_GameStatePtr->field_0 = n;
-        D_80072B60->automapMode = Save_GameStatePtr->field_0;
+        Stg40_RootState->automapMode = Save_GameStatePtr->field_0;
     }
 }
 
@@ -1843,7 +1843,7 @@ void Stg40_PlayerResumeAfterBattle(Actor *a0) {
         }
         break;
     case 2:
-        if (D_8005071C->freeze == 0) {
+        if (Dung_StatePtr->freeze == 0) {
             if (Stg40_TurnQueueCurrent() == e->turnId) {
                 Task_SetState1(a0, 1);
             } else {
@@ -1859,16 +1859,16 @@ void Stg40_PlayerAnimThenMsgUpdate(Actor *a0) {
     case 0:
     default:
         if (Stg40_ObjWaitAnimOrSkip(a0) == 1) {
-            if (D_80072B60->msgAnim != -1) {
-                Stg40_ObjSetAnim(a0, D_80072B60->msgAnim);
+            if (Stg40_RootState->msgAnim != -1) {
+                Stg40_ObjSetAnim(a0, Stg40_RootState->msgAnim);
             }
-            Stg40_MsgWinOpen(1, D_80072B60->msgId, D_80072B60->msgArg0, D_80072B60->msgArg1);
+            Stg40_MsgWinOpen(1, Stg40_RootState->msgId, Stg40_RootState->msgArg0, Stg40_RootState->msgArg1);
             Task_NextState2(a0);
         }
         break;
     case 1:
         if (Stg40_MsgWinCloseIfDone(1) == 1) {
-            Task_SetState1(a0, (u8)D_80072B60->msgNextState);
+            Task_SetState1(a0, (u8)Stg40_RootState->msgNextState);
         }
         break;
     }
@@ -1876,18 +1876,18 @@ void Stg40_PlayerAnimThenMsgUpdate(Actor *a0) {
 
 void Stg40_PlayerWaitAnim(Actor *a0) {
     if (Stg40_ObjWaitAnimOrSkip(a0) == 1) {
-        Task_SetState1(a0, (u8)D_80072B60->msgNextState);
+        Task_SetState1(a0, (u8)Stg40_RootState->msgNextState);
     }
 }
 
 void Stg40_PlayerWaitMsg(Actor *a0) {
     if (Stg40_MsgWinCloseIfDone(1) == 1) {
-        Task_SetState1(a0, (u8)D_80072B60->msgNextState);
+        Task_SetState1(a0, (u8)Stg40_RootState->msgNextState);
     }
 }
 
 void Stg40_PlayerFoundObject(Actor *a0) {
-    Stg40B60 *b = D_80072B60;
+    Stg40B60 *b = Stg40_RootState;
     Stg40Ent48 *e = b->targetEnt;
     Actor *t = b->targetActor;
 
@@ -1933,8 +1933,8 @@ void Stg40_PlayerHurtAnim(Actor *a0) {
 }
 
 void Stg40_PlayerDestroyMine(Actor *a0) {
-    Stg40Ent48 *e = D_80072B60->targetEnt;
-    Actor *t = D_80072B60->targetActor;
+    Stg40Ent48 *e = Stg40_RootState->targetEnt;
+    Actor *t = Stg40_RootState->targetActor;
     s32 msg;
     s32 r;
     s32 n;
@@ -1970,8 +1970,8 @@ void Stg40_PlayerDestroyMine(Actor *a0) {
 }
 
 void Stg40_PlayerSporeDamage(Actor *a0) {
-    Stg40Ent48 *e = D_80072B60->targetEnt;
-    Actor *t = D_80072B60->targetActor;
+    Stg40Ent48 *e = Stg40_RootState->targetEnt;
+    Actor *t = Stg40_RootState->targetActor;
 
     switch (a0->stateLevel2) {
     case 0:
@@ -1979,15 +1979,15 @@ void Stg40_PlayerSporeDamage(Actor *a0) {
         Stg40_ObjSetAnim(a0, 0x2C);
         Stg40_ObjStartFlash(a0, 2);
         Task_SetState1(t, 4);
-        D_80072B60->damage = e->params[1] * 200;
-        Stg40_DamageBeetle(D_80072B60->damage);
+        Stg40_RootState->damage = e->params[1] * 200;
+        Stg40_DamageBeetle(Stg40_RootState->damage);
         Snd_PlayById(0x33, 0);
         Task_NextState2(a0);
         break;
     case 1:
         if (Stg40_ObjWaitAnimOrSkip(a0) == 1) {
             Stg40_ObjSetAnim(a0, 0x28);
-            Stg40_MsgWinOpen(1, 0x1FD001F, (s32)Save_GameStatePtr->field_D1, (s32)Stg40_NumToDigits(0, D_80072B60->damage));
+            Stg40_MsgWinOpen(1, 0x1FD001F, (s32)Save_GameStatePtr->field_D1, (s32)Stg40_NumToDigits(0, Stg40_RootState->damage));
             Task_NextState2(a0);
         }
         break;
@@ -2008,8 +2008,8 @@ void Stg40_PlayerBugInvade(Actor *arg0)
     s32 r;
     s32 n;
 
-    e = D_80072B60->targetEnt;
-    t = D_80072B60->targetActor;
+    e = Stg40_RootState->targetEnt;
+    t = Stg40_RootState->targetActor;
     idx = e->kind - 9;
     bit = 0x100 << idx;
     switch (arg0->stateLevel2) {
@@ -2026,34 +2026,34 @@ void Stg40_PlayerBugInvade(Actor *arg0)
         r = 0;
         switch (e->kind) {
         default:
-            if (((Stg40BA5View *)D_8005071C)->field_BA5[idx] == 0) {
-                ((Stg40BA5View *)D_8005071C)->field_BA5[idx] = e->params[1];
+            if (((Stg40BA5View *)Dung_StatePtr)->field_BA5[idx] == 0) {
+                ((Stg40BA5View *)Dung_StatePtr)->field_BA5[idx] = e->params[1];
                 r = -1;
             }
             break;
         case 9:
-            if (D_8005071C->bitBugLevel == 0) {
+            if (Dung_StatePtr->bitBugLevel == 0) {
                 if (Save_GameStatePtr->bits != 0 || Stg40_PickRandomPart() != -1) {
                     r = -1;
-                    ((Stg40BA5View *)D_8005071C)->field_BA5[e->kind - 9] = e->params[1];
+                    ((Stg40BA5View *)Dung_StatePtr)->field_BA5[e->kind - 9] = e->params[1];
                 }
             }
             break;
         case 0xB:
-            if (D_8005071C->returnBugLevel != 0 || ((s32 (*)(s32))Stg40_ListPartyDigi)(1) < 2 || Digi_CountByState(1) >= 0x18) {
+            if (Dung_StatePtr->returnBugLevel != 0 || ((s32 (*)(s32))Stg40_ListPartyDigi)(1) < 2 || Digi_CountByState(1) >= 0x18) {
                 r = 0;
             } else {
                 r = -1;
-                ((Stg40BA5View *)D_8005071C)->field_BA5[e->kind - 9] = e->params[1];
+                ((Stg40BA5View *)Dung_StatePtr)->field_BA5[e->kind - 9] = e->params[1];
             }
             break;
         case 0xC:
             n = ((s32 (*)(void))Beetle_GetDigiCapacity)();
             n -= ((s32 (*)(s32))Stg40_ListPartyDigi)(0);
-            if (n != D_8005071C->memBugCount) {
-                D_8005071C->memBugLevels[D_8005071C->memBugCount] = e->params[1];
+            if (n != Dung_StatePtr->memBugCount) {
+                Dung_StatePtr->memBugLevels[Dung_StatePtr->memBugCount] = e->params[1];
                 r = -1;
-                D_8005071C->memBugCount++;
+                Dung_StatePtr->memBugCount++;
             }
             break;
         }
@@ -2061,7 +2061,7 @@ void Stg40_PlayerBugInvade(Actor *arg0)
             Stg40_MsgWinOpen(1, e->kind + 0x1FD0022, (s32)Save_GameStatePtr + 0xD1, 0);
             Task_SetState2(arg0, 3);
         } else {
-            D_8005071C->statusFlags &= ~bit;
+            Dung_StatePtr->statusFlags &= ~bit;
             Stg40_ObjSetAnim(arg0, 0x2A);
             Stg40_ObjStartFlash(arg0, 2);
             Task_NextState2(arg0);
@@ -2085,7 +2085,7 @@ void Stg40_PlayerBugInvade(Actor *arg0)
 
 void Stg40_PlayerEnemyInfo(Actor *a0) {
     Stg40Ent48 *e = ((Stg40ActWork *)a0->work)->ent;
-    Stg40B60 *g = D_80072B60;
+    Stg40B60 *g = Stg40_RootState;
     Stg40Ent48 *t;
     s32 r;
     s32 n;
@@ -2116,9 +2116,9 @@ void Stg40_PlayerEnemyInfo(Actor *a0) {
         if (Pad_State[0].triangle > 0) {
             Snd_PlayById(0xB, 0);
             Task_SetState2(a0, 0x64);
-        } else if (Pad_State[0].square > 0 && D_80072B60->enemyCount >= 2) {
-            n = D_80072B60->enemyIndex + 1;
-            D_80072B60->enemyIndex = (n < D_80072B60->enemyCount) ? n : 0;
+        } else if (Pad_State[0].square > 0 && Stg40_RootState->enemyCount >= 2) {
+            n = Stg40_RootState->enemyIndex + 1;
+            Stg40_RootState->enemyIndex = (n < Stg40_RootState->enemyCount) ? n : 0;
             Task_SetState2(a0, 1);
         } else if (Pad_Cross > 0) {
             r = Stg40_ListUsableItems(&Stg40_GiftGunReq);
@@ -2127,8 +2127,8 @@ void Stg40_PlayerEnemyInfo(Actor *a0) {
                 Task_SetState2(a0, 0x3C);
             } else {
                 Task_SetState1(a0, 0x11);
-                D_80072B60->giftMenu = 1;
-                D_80072B60->selItem = D_80072B60->itemIds[0];
+                Stg40_RootState->giftMenu = 1;
+                Stg40_RootState->selItem = Stg40_RootState->itemIds[0];
             }
         }
         break;
@@ -2155,8 +2155,8 @@ void Stg40_PlayerEnemyInfo(Actor *a0) {
 void Stg40_PlayerShootGift(Actor *actor) {
     s32 state = actor->stateLevel2;
     Stg40Ent48 *self = ((Stg40ActWork *)actor->work)->ent;
-    Stg40Ent48 *target = D_80072B60->targetEnt;
-    Stg40Loc *loc = &D_80072B60->shotLoc;
+    Stg40Ent48 *target = Stg40_RootState->targetEnt;
+    Stg40Loc *loc = &Stg40_RootState->shotLoc;
 
     switch (state) {
     case 0:
@@ -2166,20 +2166,20 @@ void Stg40_PlayerShootGift(Actor *actor) {
         Stg40_ObjSetAnim(actor, 0x29);
         angle = ratan2(self->loc.posX - target->loc.posX,
                        target->loc.posY - self->loc.posY);
-        D_80072B60->shotAngle = angle & 0xFFF;
-        D_80072B60->shotStepX = -rsin(D_80072B60->shotAngle);
-        D_80072B60->shotStepY = rcos(D_80072B60->shotAngle);
-        D_80072B60->shotX = self->loc.u0.pair.field_0 << 14;
-        D_80072B60->shotY = self->loc.u0.pair.field_2 << 14;
-        D_80072B60->shotTargetX = target->loc.u0.pair.field_0 << 14;
-        D_80072B60->shotTargetY = target->loc.u0.pair.field_2 << 14;
+        Stg40_RootState->shotAngle = angle & 0xFFF;
+        Stg40_RootState->shotStepX = -rsin(Stg40_RootState->shotAngle);
+        Stg40_RootState->shotStepY = rcos(Stg40_RootState->shotAngle);
+        Stg40_RootState->shotX = self->loc.u0.pair.field_0 << 14;
+        Stg40_RootState->shotY = self->loc.u0.pair.field_2 << 14;
+        Stg40_RootState->shotTargetX = target->loc.u0.pair.field_0 << 14;
+        Stg40_RootState->shotTargetY = target->loc.u0.pair.field_2 << 14;
         Task_NextState2(actor);
         break;
     }
     case 1:
-        if ((s16)self->targetHeading != D_80072B60->shotAngle) {
+        if ((s16)self->targetHeading != Stg40_RootState->shotAngle) {
             s32 h = (s16)self->targetHeading;
-            s32 diff = (s16)((u16)D_80072B60->shotAngle - ((u16)self->targetHeading - 0x1000));
+            s32 diff = (s16)((u16)Stg40_RootState->shotAngle - ((u16)self->targetHeading - 0x1000));
             s32 d;
             s32 t;
 
@@ -2193,9 +2193,9 @@ void Stg40_PlayerShootGift(Actor *actor) {
             }
             t = self->targetHeading & 0xFFF;
             self->targetHeading = t;
-            d = D_80072B60->shotAngle - t;
-            if ((d >= 0) ? (d < 0x40) : (t - D_80072B60->shotAngle < 0x40)) {
-                self->targetHeading = D_80072B60->shotAngle;
+            d = Stg40_RootState->shotAngle - t;
+            if ((d >= 0) ? (d < 0x40) : (t - Stg40_RootState->shotAngle < 0x40)) {
+                self->targetHeading = Stg40_RootState->shotAngle;
             }
             self->heading = self->targetHeading;
         } else {
@@ -2219,21 +2219,21 @@ void Stg40_PlayerShootGift(Actor *actor) {
         s32 ax;
         s32 ay;
 
-        D_80072B60->shotX += D_80072B60->shotStepX;
-        D_80072B60->shotY += D_80072B60->shotStepY;
-        loc->posX = D_80072B60->shotX >> 8;
-        loc->posY = D_80072B60->shotY >> 8;
+        Stg40_RootState->shotX += Stg40_RootState->shotStepX;
+        Stg40_RootState->shotY += Stg40_RootState->shotStepY;
+        loc->posX = Stg40_RootState->shotX >> 8;
+        loc->posY = Stg40_RootState->shotY >> 8;
         Stg40_ScrollFollow(loc);
-        ax = D_80072B60->shotStepX;
+        ax = Stg40_RootState->shotStepX;
         ax = (ax >= 0) ? ax : -ax;
-        if ((D_80072B60->shotTargetX - D_80072B60->shotX >= 0)
-                ? (ax >= D_80072B60->shotTargetX - D_80072B60->shotX)
-                : (ax >= D_80072B60->shotX - D_80072B60->shotTargetX)) {
-            ay = D_80072B60->shotStepY;
+        if ((Stg40_RootState->shotTargetX - Stg40_RootState->shotX >= 0)
+                ? (ax >= Stg40_RootState->shotTargetX - Stg40_RootState->shotX)
+                : (ax >= Stg40_RootState->shotX - Stg40_RootState->shotTargetX)) {
+            ay = Stg40_RootState->shotStepY;
             ay = (ay >= 0) ? ay : -ay;
-            if ((D_80072B60->shotTargetY - D_80072B60->shotY >= 0)
-                    ? (ay >= D_80072B60->shotTargetY - D_80072B60->shotY)
-                    : (ay >= D_80072B60->shotY - D_80072B60->shotTargetY)) {
+            if ((Stg40_RootState->shotTargetY - Stg40_RootState->shotY >= 0)
+                    ? (ay >= Stg40_RootState->shotTargetY - Stg40_RootState->shotY)
+                    : (ay >= Stg40_RootState->shotY - Stg40_RootState->shotTargetY)) {
                 Stg40_ScrollFollow(&target->loc);
                 Task_NextState2(actor);
                 Snd_PlayById(0x1B, 0);
@@ -2251,7 +2251,7 @@ void Stg40_PlayerShootGift(Actor *actor) {
         info = (Stg40EnemyParty *)target->params;
         msg = 0x1FD0050;
         if (info->giftsTaken < 9) {
-            s32 r = Item_GetCategory(D_80072B60->selItem);
+            s32 r = Item_GetCategory(Stg40_RootState->selItem);
             s32 kind;
 
             if (r >= 0x25) {
@@ -2267,14 +2267,14 @@ void Stg40_PlayerShootGift(Actor *actor) {
                     s32 idx;
 
                     info->giftsTaken++;
-                    idx = Item_GetLevel(D_80072B60->selItem);
+                    idx = Item_GetLevel(Stg40_RootState->selItem);
                     msg = 0x1FD004F;
                     info->giftPoints += Stg40_GiftPointsByLevel[idx - 1];
                 }
             }
         }
         Stg40_MsgWinOpen(1, msg, Digi_GetDefaultName(info->digiIds[0]),
-                      Item_GetNameText(D_80072B60->selItem));
+                      Item_GetNameText(Stg40_RootState->selItem));
         goto next;
     }
     case 6:
@@ -2291,13 +2291,13 @@ void Stg40_PlayerShootGift(Actor *actor) {
             break;
         }
         Task_SetState1(actor, 6);
-        D_80072B60->automapMode = Save_GameStatePtr->field_0;
+        Stg40_RootState->automapMode = Save_GameStatePtr->field_0;
         break;
     }
 }
 
 void Stg40_PlayerChestTrapPrompt(Actor *a0) {
-    u8 *d = D_80072B60->targetEnt->params;
+    u8 *d = Stg40_RootState->targetEnt->params;
     s32 r;
     s32 msg;
 
@@ -2320,9 +2320,9 @@ void Stg40_PlayerChestTrapPrompt(Actor *a0) {
         } else if (d[1] == 0) {
             Task_SetState1(a0, 0x14);
         } else {
-            D_80072B60->trapDisarmRank = Stg40_GetTrapDisarmRank(d[1]);
+            Stg40_RootState->trapDisarmRank = Stg40_GetTrapDisarmRank(d[1]);
             r = Stg40_GetPartState(7);
-            msg = D_80072B60->trapDisarmRank + 0x1FD0040;
+            msg = Stg40_RootState->trapDisarmRank + 0x1FD0040;
             if (r == -1) {
                 msg = 0x1FD0045;
             }
@@ -2347,7 +2347,7 @@ void Stg40_PlayerChestTrapPrompt(Actor *a0) {
 }
 
 void Stg40_PlayerOpenChest(Actor *a0) {
-    Stg40B60 *b = D_80072B60;
+    Stg40B60 *b = Stg40_RootState;
     Actor *t = b->targetActor;
     u8 *d = b->targetEnt->params;
 
@@ -2375,8 +2375,8 @@ void Stg40_PlayerOpenChest(Actor *a0) {
 }
 
 void Stg40_PlayerTakeChestItem(Actor *a0) {
-    Actor *t = D_80072B60->targetActor;
-    u8 *d = D_80072B60->targetEnt->params;
+    Actor *t = Stg40_RootState->targetActor;
+    u8 *d = Stg40_RootState->targetEnt->params;
 
     switch (a0->stateLevel2) {
     case 0:
@@ -2405,19 +2405,19 @@ void Stg40_PlayerTakeChestItem(Actor *a0) {
 }
 
 void Stg40_PlayerTriggerTrap(Actor *a0) {
-    Stg40Ent48 *e = D_80072B60->targetEnt;
-    Actor *t = D_80072B60->targetActor;
+    Stg40Ent48 *e = Stg40_RootState->targetEnt;
+    Actor *t = Stg40_RootState->targetActor;
     s32 nc = e->kind != 4;
     u8 *d = e->params;
 
     switch (a0->stateLevel2) {
     case 0:
     default:
-        D_80072B60->trapEffect = Stg40_RollTrapEffect();
-        if (D_80072B60->trapEffect != 0x10) {
+        Stg40_RootState->trapEffect = Stg40_RollTrapEffect();
+        if (Stg40_RootState->trapEffect != 0x10) {
             Stg40_ObjSetAnim(a0, 0x2C);
             Stg40_ObjStartFlash(a0, 1);
-            Stg40_ApplyTrapEffect(D_80072B60->trapEffect, d[1]);
+            Stg40_ApplyTrapEffect(Stg40_RootState->trapEffect, d[1]);
         }
         if (nc) {
             Task_SetState1(t, 4);
@@ -2429,7 +2429,7 @@ void Stg40_PlayerTriggerTrap(Actor *a0) {
     case 1:
         if (Stg40_ObjWaitAnimOrSkip(a0) == 1) {
             Stg40_ObjSetAnim(a0, 0x28);
-            Stg40_ShowTrapEffectMsg(nc, D_80072B60->trapEffect);
+            Stg40_ShowTrapEffectMsg(nc, Stg40_RootState->trapEffect);
             Task_NextState2(a0);
         }
         break;
@@ -2451,7 +2451,7 @@ void Stg40_PlayerTriggerTrap(Actor *a0) {
     }
 }
 
-INCLUDE_RODATA("asm/USA/stag4000/rodata", D_80063438);
+INCLUDE_RODATA("asm/USA/stag4000/rodata", Stg40_PlayerExitFadeColor);
 void Stg40_PlayerExitFloor(Actor *a0) {
     Stg40ActWork *w = (Stg40ActWork *)a0->work;
     Stg40Ent48 *e = w->ent;
@@ -2461,7 +2461,7 @@ void Stg40_PlayerExitFloor(Actor *a0) {
         case 0:
         default:
         {
-            u8 k = D_8005071C->transitionReq;
+            u8 k = Dung_StatePtr->transitionReq;
             if (k == 2) {
                 Snd_PlayById(0x23, 0);
                 w->pendingLinkedModel = 0;
@@ -2474,7 +2474,7 @@ void Stg40_PlayerExitFloor(Actor *a0) {
             }
             m->clutRow = 1;
             m->tpageFlags = 0x20;
-            m->fadeColor = D_80063438;
+            m->fadeColor = Stg40_PlayerExitFadeColor;
             Stg40_ObjSetAnim(a0, 0x28);
             e->flags |= 0x80;
             w->flashKind = 0;
@@ -2505,8 +2505,8 @@ void Stg40_PlayerExitFloor(Actor *a0) {
 }
 
 void Stg40_PlayerShootObstacle(Actor *a0) {
-    Stg40Ent48 *e = D_80072B60->targetEnt;
-    Actor *t = D_80072B60->targetActor;
+    Stg40Ent48 *e = Stg40_RootState->targetEnt;
+    Actor *t = Stg40_RootState->targetActor;
     s32 k = e->kind - 6;
     s32 msg;
 
@@ -2520,7 +2520,7 @@ void Stg40_PlayerShootObstacle(Actor *a0) {
     case 1:
         if (Stg40_ObjWaitAnimOrSkip(a0) == 1) {
             Stg40_ObjSetAnim(a0, 0x28);
-            if (Item_GetLevel(D_80072B60->selItem) >= e->params[1]) {
+            if (Item_GetLevel(Stg40_RootState->selItem) >= e->params[1]) {
                 Task_SetState1(t, 6);
                 msg = Stg40_ShootMsgIds[k * 2];
                 Task_SetState2(a0, 3);
@@ -2534,13 +2534,13 @@ void Stg40_PlayerShootObstacle(Actor *a0) {
     case 2:
         if (Stg40_MsgWinCloseIfDone(1) == 1) {
             Task_SetState1(a0, 6);
-            D_80072B60->automapMode = Save_GameStatePtr->field_0;
+            Stg40_RootState->automapMode = Save_GameStatePtr->field_0;
         }
         break;
     case 3:
         if (Stg40_MsgWinCloseIfDone(1) == 1 && e->flags == 0) {
             Task_SetState1(a0, 6);
-            D_80072B60->automapMode = Save_GameStatePtr->field_0;
+            Stg40_RootState->automapMode = Save_GameStatePtr->field_0;
         }
         break;
     }
@@ -2557,17 +2557,17 @@ void Stg40_ItemMenuRefresh(void) {
     s32 *p;
 
     s3 = 0;
-    s0 = D_80072B60->cursor - D_80072B60->scrollTop;
+    s0 = Stg40_RootState->cursor - Stg40_RootState->scrollTop;
     dst = Stg40_ItemMenuGetTextIds();
     p = dst;
     if (s0 >= 6) {
-        D_80072B60->scrollTop = D_80072B60->cursor - 5;
+        Stg40_RootState->scrollTop = Stg40_RootState->cursor - 5;
     }
     if (s0 < 0) {
-        D_80072B60->scrollTop = D_80072B60->cursor;
+        Stg40_RootState->scrollTop = Stg40_RootState->cursor;
     }
-    e1 = D_80072B60->itemCount;
-    e3 = D_80072B60->scrollTop;
+    e1 = Stg40_RootState->itemCount;
+    e3 = Stg40_RootState->scrollTop;
     s1 = e1;
     v1 = e3 + 6;
     if (s1 >= v1) {
@@ -2575,36 +2575,36 @@ void Stg40_ItemMenuRefresh(void) {
     }
     s0 = e3;
     while (s0 < s1) {
-        *p = Item_GetNameText(D_80072B60->itemIds[s0]);
+        *p = Item_GetNameText(Stg40_RootState->itemIds[s0]);
         s0++;
         p++;
     }
-    s3 |= D_80072B60->scrollTop != 0;
-    if (s1 < D_80072B60->itemCount) {
+    s3 |= Stg40_RootState->scrollTop != 0;
+    if (s1 < Stg40_RootState->itemCount) {
         s3 |= 2;
     }
-    Stg40_ItemMenuSetCursor(D_80072B60->cursor - D_80072B60->scrollTop, s1 - D_80072B60->scrollTop, s3);
-    dst[6] = Item_GetDescText(D_80072B60->itemIds[D_80072B60->cursor]);
+    Stg40_ItemMenuSetCursor(Stg40_RootState->cursor - Stg40_RootState->scrollTop, s1 - Stg40_RootState->scrollTop, s3);
+    dst[6] = Item_GetDescText(Stg40_RootState->itemIds[Stg40_RootState->cursor]);
     s1 = e1;
 }
 
 void Stg40_ItemMenuMoveCursor(void) {
-    s32 old = D_80072B60->cursor;
+    s32 old = Stg40_RootState->cursor;
     s32 n;
 
     if (Pad_Repeat & 0x1000) {
         if (old != 0) {
-            D_80072B60->cursor = old - 1;
+            Stg40_RootState->cursor = old - 1;
         }
     }
     if (Pad_Repeat & 0x4000) {
-        n = D_80072B60->cursor + 1;
-        if (n < D_80072B60->itemCount) {
-            D_80072B60->cursor = n;
+        n = Stg40_RootState->cursor + 1;
+        if (n < Stg40_RootState->itemCount) {
+            Stg40_RootState->cursor = n;
         }
     }
-    if (old != D_80072B60->cursor) {
-        Snd_PlayById(D_80072B60->giftMenu ? 0xD : 0xC, 0);
+    if (old != Stg40_RootState->cursor) {
+        Snd_PlayById(Stg40_RootState->giftMenu ? 0xD : 0xC, 0);
         Stg40_ItemMenuRefresh();
     }
 }
@@ -2617,10 +2617,10 @@ void Stg40_PlayerItemMenu(Actor *a0) {
     switch (a0->stateLevel2) {
     case 0:
     default:
-        D_80072B60->cursor = 0;
-        D_80072B60->scrollTop = 0;
+        Stg40_RootState->cursor = 0;
+        Stg40_RootState->scrollTop = 0;
         Stg40_ObjSetAnim(a0, 0x28);
-        arg = D_80072B60->giftMenu != 0;
+        arg = Stg40_RootState->giftMenu != 0;
         Task_Create(0x20B, &Stg40_RootChildren->itemMenuTask, (s32)&arg);
         Snd_PlayById(0x37, 0);
         Stg40_ItemMenuRefresh();
@@ -2637,15 +2637,15 @@ void Stg40_PlayerItemMenu(Actor *a0) {
             Snd_PlayById(0xB, 0);
             Task_SetState2(a0, 4);
         } else if (Pad_State[0].cross > 0) {
-            D_80072B60->selItem = D_80072B60->itemIds[D_80072B60->cursor];
+            Stg40_RootState->selItem = Stg40_RootState->itemIds[Stg40_RootState->cursor];
             for (i = 0, bag = Save_GameStatePtr->bagItems; i < 0x30; i++, bag++) {
-                if (*bag == D_80072B60->selItem) {
+                if (*bag == Stg40_RootState->selItem) {
                     *bag = 0;
                     Item_CompactBag();
                     break;
                 }
             }
-            if (D_80072B60->giftMenu != 0) {
+            if (Stg40_RootState->giftMenu != 0) {
                 Stg40_ScrollToFollow(&((Stg40ActWork *)a0->work)->ent->loc, 8);
                 Snd_PlayById(0xE, 0);
             } else {
@@ -2659,7 +2659,7 @@ void Stg40_PlayerItemMenu(Actor *a0) {
         break;
     case 3:
         if (Stg40_RootChildren->itemMenuTask == 0) {
-            if (D_80072B60->giftMenu == 0) {
+            if (Stg40_RootState->giftMenu == 0) {
                 Task_SetState1(a0, 0x12);
             } else {
                 Task_SetState1(a0, 0x1B);
@@ -2668,9 +2668,9 @@ void Stg40_PlayerItemMenu(Actor *a0) {
         break;
     case 4:
         if (Stg40_RootChildren->itemMenuTask == 0) {
-            if (D_80072B60->giftMenu == 0) {
+            if (Stg40_RootState->giftMenu == 0) {
                 Task_SetState1(a0, 1);
-                D_80072B60->automapMode = Save_GameStatePtr->field_0;
+                Stg40_RootState->automapMode = Save_GameStatePtr->field_0;
             } else {
                 Task_SetState1(a0, 0x1A);
                 Task_SetState2(a0, 2);
@@ -2701,8 +2701,8 @@ void Stg40_PlayerBeetleDown(Actor *a0) {
         if (r != 1) {
             return;
         }
-        D_8005071C->transitionReq = 3;
-        D_8005071C->beetleDown = r;
+        Dung_StatePtr->transitionReq = 3;
+        Dung_StatePtr->beetleDown = r;
         Snd_PlayById(0x1F, 0);
         break;
     case 3:
@@ -2722,13 +2722,13 @@ void Stg40_PlayerRunEvent(Actor *a0) {
     case 0:
     default:
         Stg40_ObjSetAnim(a0, 0x28);
-        D_80072B60->cmdDigiId = 0;
-        D_80072B60->eventText = -1;
-        Text_OpenMsgClearChoice(&D_80072B60->eventText, Flag_SelectBranch(D_80072B60->eventEntry));
+        Stg40_RootState->cmdDigiId = 0;
+        Stg40_RootState->eventText = -1;
+        Text_OpenMsgClearChoice(&Stg40_RootState->eventText, Flag_SelectBranch(Stg40_RootState->eventEntry));
         Task_NextState2(a0);
         break;
     case 1:
-        if (Text_IsFinished(D_80072B60->eventText)) {
+        if (Text_IsFinished(Stg40_RootState->eventText)) {
             Task_NextState2(a0);
         }
         break;
@@ -2738,7 +2738,7 @@ void Stg40_PlayerRunEvent(Actor *a0) {
         if (Stg40_CheckEncounter()) {
             Task_SetState1(a0, 4);
         } else {
-            D_8005071C->freeze = 0;
+            Dung_StatePtr->freeze = 0;
         }
         break;
     }
@@ -2775,8 +2775,8 @@ void Stg40_PlayerUpdate(Actor *a0) {
         break;
     case 4:
         if (a0->stateLevel2 != 1) {
-            D_8005071C->transitionReq = 1;
-            D_8005071C->freeze = 1;
+            Dung_StatePtr->transitionReq = 1;
+            Dung_StatePtr->freeze = 1;
             Task_NextState2(a0);
         }
         break;

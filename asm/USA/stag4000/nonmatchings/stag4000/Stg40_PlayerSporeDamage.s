@@ -3,8 +3,8 @@ nonmatching Stg40_PlayerSporeDamage, 0x14C
 glabel Stg40_PlayerSporeDamage
     /* 64D0 80069830 D8FFBD27 */  addiu      $sp, $sp, -0x28
     /* 64D4 80069834 1C00B3AF */  sw         $s3, 0x1C($sp)
-    /* 64D8 80069838 0780133C */  lui        $s3, %hi(D_80072B60)
-    /* 64DC 8006983C 602B628E */  lw         $v0, %lo(D_80072B60)($s3)
+    /* 64D8 80069838 0780133C */  lui        $s3, %hi(Stg40_RootState)
+    /* 64DC 8006983C 602B628E */  lw         $v0, %lo(Stg40_RootState)($s3)
     /* 64E0 80069840 1400B1AF */  sw         $s1, 0x14($sp)
     /* 64E4 80069844 21888000 */  addu       $s1, $a0, $zero
     /* 64E8 80069848 1000B0AF */  sw         $s0, 0x10($sp)
@@ -39,7 +39,7 @@ glabel Stg40_PlayerSporeDamage
     /* 6558 800698B8 21208200 */  addu       $a0, $a0, $v0
     /* 655C 800698BC C0200400 */  sll        $a0, $a0, 3
     /* 6560 800698C0 21208200 */  addu       $a0, $a0, $v0
-    /* 6564 800698C4 602B628E */  lw         $v0, %lo(D_80072B60)($s3)
+    /* 6564 800698C4 602B628E */  lw         $v0, %lo(Stg40_RootState)($s3)
     /* 6568 800698C8 C0200400 */  sll        $a0, $a0, 3
     /* 656C 800698CC 3DBA010C */  jal        Stg40_DamageBeetle
     /* 6570 800698D0 580044AC */   sw        $a0, 0x58($v0)
@@ -55,7 +55,7 @@ glabel Stg40_PlayerSporeDamage
     /* 6594 800698F4 21202002 */   addu      $a0, $s1, $zero
     /* 6598 800698F8 37B9010C */  jal        Stg40_ObjSetAnim
     /* 659C 800698FC 28000524 */   addiu     $a1, $zero, 0x28
-    /* 65A0 80069900 602B628E */  lw         $v0, %lo(D_80072B60)($s3)
+    /* 65A0 80069900 602B628E */  lw         $v0, %lo(Stg40_RootState)($s3)
     /* 65A4 80069904 00000000 */  nop
     /* 65A8 80069908 5800458C */  lw         $a1, 0x58($v0)
     /* 65AC 8006990C 579D010C */  jal        Stg40_NumToDigits

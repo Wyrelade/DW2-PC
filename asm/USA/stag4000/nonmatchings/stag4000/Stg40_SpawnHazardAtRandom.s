@@ -1,8 +1,8 @@
 nonmatching Stg40_SpawnHazardAtRandom, 0x80
 
 glabel Stg40_SpawnHazardAtRandom
-    /* AC44 8006DFA4 0780023C */  lui        $v0, %hi(D_80072B60)
-    /* AC48 8006DFA8 602B428C */  lw         $v0, %lo(D_80072B60)($v0)
+    /* AC44 8006DFA4 0780023C */  lui        $v0, %hi(Stg40_RootState)
+    /* AC48 8006DFA8 602B428C */  lw         $v0, %lo(Stg40_RootState)($v0)
     /* AC4C 8006DFAC E0FFBD27 */  addiu      $sp, $sp, -0x20
     /* AC50 8006DFB0 1000B0AF */  sw         $s0, 0x10($sp)
     /* AC54 8006DFB4 21808000 */  addu       $s0, $a0, $zero

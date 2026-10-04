@@ -1,8 +1,8 @@
 nonmatching Stg40_SetCellOccupied, 0x78
 
 glabel Stg40_SetCellOccupied
-    /* D59C 800708FC 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* D5A0 80070900 1C07488C */  lw         $t0, %lo(D_8005071C)($v0)
+    /* D59C 800708FC 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* D5A0 80070900 1C07488C */  lw         $t0, %lo(Dung_StatePtr)($v0)
     /* D5A4 80070904 00000000 */  nop
     /* D5A8 80070908 540E028D */  lw         $v0, 0xE54($t0)
     /* D5AC 8007090C 00000000 */  nop

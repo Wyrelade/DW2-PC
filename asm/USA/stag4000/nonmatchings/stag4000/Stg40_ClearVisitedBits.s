@@ -1,8 +1,8 @@
 nonmatching Stg40_ClearVisitedBits, 0x2C
 
 glabel Stg40_ClearVisitedBits
-    /* B9FC 8006ED5C 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* BA00 8006ED60 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* B9FC 8006ED5C 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* BA00 8006ED60 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* BA04 8006ED64 7F010324 */  addiu      $v1, $zero, 0x17F
     /* BA08 8006ED68 7C0E4224 */  addiu      $v0, $v0, 0xE7C
   .L8006ED6C:

@@ -2,9 +2,9 @@ nonmatching Stg40_IsScrollDone, 0x48
 
 glabel Stg40_IsScrollDone
     /* 1ED0 80065230 0780023C */  lui        $v0, %hi(Stg40_FloorTask)
-    /* 1ED4 80065234 0780033C */  lui        $v1, %hi(D_80072B60)
+    /* 1ED4 80065234 0780033C */  lui        $v1, %hi(Stg40_RootState)
     /* 1ED8 80065238 682B428C */  lw         $v0, %lo(Stg40_FloorTask)($v0)
-    /* 1EDC 8006523C 602B668C */  lw         $a2, %lo(D_80072B60)($v1)
+    /* 1EDC 8006523C 602B668C */  lw         $a2, %lo(Stg40_RootState)($v1)
     /* 1EE0 80065240 2C00448C */  lw         $a0, 0x2C($v0)
     /* 1EE4 80065244 2C00C38C */  lw         $v1, 0x2C($a2)
     /* 1EE8 80065248 901E828C */  lw         $v0, 0x1E90($a0)

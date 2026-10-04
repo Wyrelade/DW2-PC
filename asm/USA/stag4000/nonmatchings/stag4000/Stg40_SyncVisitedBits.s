@@ -1,8 +1,8 @@
 nonmatching Stg40_SyncVisitedBits, 0x2E4
 
 glabel Stg40_SyncVisitedBits
-    /* BA28 8006ED88 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* BA2C 8006ED8C 1C07438C */  lw         $v1, %lo(D_8005071C)($v0)
+    /* BA28 8006ED88 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* BA2C 8006ED8C 1C07438C */  lw         $v1, %lo(Dung_StatePtr)($v0)
     /* BA30 8006ED90 00000000 */  nop
     /* BA34 8006ED94 540E628C */  lw         $v0, 0xE54($v1)
     /* BA38 8006ED98 21408000 */  addu       $t0, $a0, $zero

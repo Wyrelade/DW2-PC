@@ -3,8 +3,8 @@ nonmatching Stg40_LoadEventTiles, 0xC0
 glabel Stg40_LoadEventTiles
     /* B2AC 8006E60C E0FFBD27 */  addiu      $sp, $sp, -0x20
     /* B2B0 8006E610 1400B1AF */  sw         $s1, 0x14($sp)
-    /* B2B4 8006E614 0780113C */  lui        $s1, %hi(D_80072B60)
-    /* B2B8 8006E618 602B228E */  lw         $v0, %lo(D_80072B60)($s1)
+    /* B2B4 8006E614 0780113C */  lui        $s1, %hi(Stg40_RootState)
+    /* B2B8 8006E618 602B228E */  lw         $v0, %lo(Stg40_RootState)($s1)
     /* B2BC 8006E61C 1800BFAF */  sw         $ra, 0x18($sp)
     /* B2C0 8006E620 1000B0AF */  sw         $s0, 0x10($sp)
     /* B2C4 8006E624 24008010 */  beqz       $a0, .L8006E6B8
@@ -18,7 +18,7 @@ glabel Stg40_LoadEventTiles
   .L8006E644:
     /* B2E4 8006E644 7A79000C */  jal        Flag_GetEntryPosList
     /* B2E8 8006E648 21200002 */   addu      $a0, $s0, $zero
-    /* B2EC 8006E64C 602B258E */  lw         $a1, %lo(D_80072B60)($s1)
+    /* B2EC 8006E64C 602B258E */  lw         $a1, %lo(Stg40_RootState)($s1)
     /* B2F0 8006E650 00004390 */  lbu        $v1, 0x0($v0)
     /* B2F4 8006E654 6C01A48C */  lw         $a0, 0x16C($a1)
     /* B2F8 8006E658 FFFF6324 */  addiu      $v1, $v1, -0x1

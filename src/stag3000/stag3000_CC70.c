@@ -79,8 +79,8 @@ void Stg30_InitBattle(void) {
     Mem_Zero(&Stg30_Battle, 0x3E0);
     Stg30_Battle.interruptActive = 1;
     if ((Sys_State.prevGameMode & 0xFF00) == 0x300) {
-        D_8005D5A0.floorTile = 0;
-        D_8005D5A0.field_1040 = 0;
+        Dung_State.floorTile = 0;
+        Dung_State.field_1040 = 0;
         Stg30_Battle.entries[0].fromCity = 1;
     }
     if (Sys_State.modeArg == 0x97 && Flag_Test(0x88)) {
@@ -1249,7 +1249,7 @@ void Stg30_JoinPromptUpdate(Actor *a0) {
                         cnt++;
                     }
                 }
-                n = Stg30_MemoryCapacity[D_8005E650 - 0x2F] - D_8005071C->memBugCount;
+                n = Stg30_MemoryCapacity[D_8005E650 - 0x2F] - Dung_StatePtr->memBugCount;
                 if (n > 0 && cnt < n) {
                     Task_SetState1(a0, 4);
                     break;

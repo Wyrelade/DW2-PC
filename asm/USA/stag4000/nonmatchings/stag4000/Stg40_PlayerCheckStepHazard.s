@@ -50,9 +50,9 @@ glabel Stg40_PlayerCheckStepHazard
     /* 57A4 80068B04 21202002 */   addu      $a0, $s1, $zero
     /* 57A8 80068B08 21204000 */  addu       $a0, $v0, $zero
     /* 57AC 80068B0C 17008010 */  beqz       $a0, .L80068B6C
-    /* 57B0 80068B10 0780023C */   lui       $v0, %hi(D_80072B60)
+    /* 57B0 80068B10 0780023C */   lui       $v0, %hi(Stg40_RootState)
     /* 57B4 80068B14 1400838C */  lw         $v1, 0x14($a0)
-    /* 57B8 80068B18 602B428C */  lw         $v0, %lo(D_80072B60)($v0)
+    /* 57B8 80068B18 602B428C */  lw         $v0, %lo(Stg40_RootState)($v0)
     /* 57BC 80068B1C 00000000 */  nop
     /* 57C0 80068B20 3C0043AC */  sw         $v1, 0x3C($v0)
     /* 57C4 80068B24 400044AC */  sw         $a0, 0x40($v0)

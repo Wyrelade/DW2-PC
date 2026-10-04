@@ -22,8 +22,8 @@ glabel Stg40_HudUpdate
   .L80066768:
     /* 3408 80066768 2270000C */  jal        Mem_FillWordsNeg1
     /* 340C 8006676C 03000524 */   addiu     $a1, $zero, 0x3
-    /* 3410 80066770 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* 3414 80066774 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* 3410 80066770 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* 3414 80066774 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* 3418 80066778 0C0020AE */  sw         $zero, 0xC($s1)
     /* 341C 8006677C 000060AE */  sw         $zero, 0x0($s3)
     /* 3420 80066780 540E428C */  lw         $v0, 0xE54($v0)
@@ -62,9 +62,9 @@ glabel Stg40_HudUpdate
     /* 3498 800667F8 B94D000C */  jal        Math_RampToOne
     /* 349C 800667FC 0C002526 */   addiu     $a1, $s1, 0xC
     /* 34A0 80066800 77004014 */  bnez       $v0, .L800669E0
-    /* 34A4 80066804 0580023C */   lui       $v0, %hi(D_8005071C)
+    /* 34A4 80066804 0580023C */   lui       $v0, %hi(Dung_StatePtr)
     /* 34A8 80066808 08002426 */  addiu      $a0, $s1, 0x8
-    /* 34AC 8006680C 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* 34AC 8006680C 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* 34B0 80066810 1000A527 */  addiu      $a1, $sp, 0x10
     /* 34B4 80066814 540E438C */  lw         $v1, 0xE54($v0)
     /* 34B8 80066818 12000224 */  addiu      $v0, $zero, 0x12
@@ -195,8 +195,8 @@ glabel Stg40_HudUpdate
     /* 3680 800669E0 0000648E */  lw         $a0, 0x0($s3)
     /* 3684 800669E4 00000000 */  nop
     /* 3688 800669E8 0D008010 */  beqz       $a0, .L80066A20
-    /* 368C 800669EC 0580023C */   lui       $v0, %hi(D_8005071C)
-    /* 3690 800669F0 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* 368C 800669EC 0580023C */   lui       $v0, %hi(Dung_StatePtr)
+    /* 3690 800669F0 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* 3694 800669F4 00000000 */  nop
     /* 3698 800669F8 A50B4290 */  lbu        $v0, 0xBA5($v0)
     /* 369C 800669FC 00000000 */  nop
@@ -209,7 +209,7 @@ glabel Stg40_HudUpdate
     /* 36B8 80066A18 AB9A0108 */  j          .L80066AAC
     /* 36BC 80066A1C 00000000 */   nop
   .L80066A20:
-    /* 36C0 80066A20 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* 36C0 80066A20 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* 36C4 80066A24 00000000 */  nop
     /* 36C8 80066A28 A50B4290 */  lbu        $v0, 0xBA5($v0)
     /* 36CC 80066A2C 00000000 */  nop

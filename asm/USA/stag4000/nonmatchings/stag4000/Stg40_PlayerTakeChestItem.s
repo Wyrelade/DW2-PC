@@ -1,8 +1,8 @@
 nonmatching Stg40_PlayerTakeChestItem, 0x15C
 
 glabel Stg40_PlayerTakeChestItem
-    /* 738C 8006A6EC 0780023C */  lui        $v0, %hi(D_80072B60)
-    /* 7390 8006A6F0 602B428C */  lw         $v0, %lo(D_80072B60)($v0)
+    /* 738C 8006A6EC 0780023C */  lui        $v0, %hi(Stg40_RootState)
+    /* 7390 8006A6F0 602B428C */  lw         $v0, %lo(Stg40_RootState)($v0)
     /* 7394 8006A6F4 D8FFBD27 */  addiu      $sp, $sp, -0x28
     /* 7398 8006A6F8 1C00B3AF */  sw         $s3, 0x1C($sp)
     /* 739C 8006A6FC 21988000 */  addu       $s3, $a0, $zero

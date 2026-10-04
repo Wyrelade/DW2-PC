@@ -3,9 +3,9 @@ nonmatching Stg40_RollObjectReveal, 0x19C
 glabel Stg40_RollObjectReveal
     /* EA54 80071DB4 C8FFBD27 */  addiu      $sp, $sp, -0x38
     /* EA58 80071DB8 1C00B3AF */  sw         $s3, 0x1C($sp)
-    /* EA5C 80071DBC 0580133C */  lui        $s3, %hi(D_8005071C)
+    /* EA5C 80071DBC 0580133C */  lui        $s3, %hi(Dung_StatePtr)
     /* EA60 80071DC0 1400B1AF */  sw         $s1, 0x14($sp)
-    /* EA64 80071DC4 1C07718E */  lw         $s1, %lo(D_8005071C)($s3)
+    /* EA64 80071DC4 1C07718E */  lw         $s1, %lo(Dung_StatePtr)($s3)
     /* EA68 80071DC8 0D000424 */  addiu      $a0, $zero, 0xD
     /* EA6C 80071DCC 3000BFAF */  sw         $ra, 0x30($sp)
     /* EA70 80071DD0 2C00B7AF */  sw         $s7, 0x2C($sp)
@@ -28,19 +28,19 @@ glabel Stg40_RollObjectReveal
     /* EAB0 80071E10 21188002 */   addu      $v1, $s4, $zero
     /* EAB4 80071E14 21180000 */  addu       $v1, $zero, $zero
   .L80071E18:
-    /* EAB8 80071E18 1C07628E */  lw         $v0, %lo(D_8005071C)($s3)
+    /* EAB8 80071E18 1C07628E */  lw         $v0, %lo(Dung_StatePtr)($s3)
     /* EABC 80071E1C 21A06000 */  addu       $s4, $v1, $zero
     /* EAC0 80071E20 0C004284 */  lh         $v0, 0xC($v0)
     /* EAC4 80071E24 00000000 */  nop
     /* EAC8 80071E28 3E004018 */  blez       $v0, .L80071F24
     /* EACC 80071E2C 21980000 */   addu      $s3, $zero, $zero
-    /* EAD0 80071E30 0780023C */  lui        $v0, %hi(D_80072A58)
-    /* EAD4 80071E34 582A5724 */  addiu      $s7, $v0, %lo(D_80072A58)
+    /* EAD0 80071E30 0780023C */  lui        $v0, %hi(Stg40_HazardRevealChance)
+    /* EAD4 80071E34 582A5724 */  addiu      $s7, $v0, %lo(Stg40_HazardRevealChance)
     /* EAD8 80071E38 80101000 */  sll        $v0, $s0, 2
     /* EADC 80071E3C 21105000 */  addu       $v0, $v0, $s0
     /* EAE0 80071E40 FFFF5524 */  addiu      $s5, $v0, -0x1
-    /* EAE4 80071E44 0780023C */  lui        $v0, %hi(D_80072A78)
-    /* EAE8 80071E48 782A5624 */  addiu      $s6, $v0, %lo(D_80072A78)
+    /* EAE4 80071E44 0780023C */  lui        $v0, %hi(Stg40_BugNestRevealChance)
+    /* EAE8 80071E48 782A5624 */  addiu      $s6, $v0, %lo(Stg40_BugNestRevealChance)
     /* EAEC 80071E4C 28003126 */  addiu      $s1, $s1, 0x28
   .L80071E50:
     /* EAF0 80071E50 0000428E */  lw         $v0, 0x0($s2)
@@ -94,8 +94,8 @@ glabel Stg40_RollObjectReveal
   .L80071F00:
     /* EBA0 80071F00 48003126 */  addiu      $s1, $s1, 0x48
   .L80071F04:
-    /* EBA4 80071F04 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* EBA8 80071F08 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* EBA4 80071F04 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* EBA8 80071F08 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* EBAC 80071F0C 00000000 */  nop
     /* EBB0 80071F10 0C004284 */  lh         $v0, 0xC($v0)
     /* EBB4 80071F14 01007326 */  addiu      $s3, $s3, 0x1

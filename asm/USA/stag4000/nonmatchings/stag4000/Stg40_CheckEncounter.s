@@ -1,8 +1,8 @@
 nonmatching Stg40_CheckEncounter, 0x160
 
 glabel Stg40_CheckEncounter
-    /* AFD0 8006E330 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* AFD4 8006E334 1C07448C */  lw         $a0, %lo(D_8005071C)($v0)
+    /* AFD0 8006E330 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* AFD4 8006E334 1C07448C */  lw         $a0, %lo(Dung_StatePtr)($v0)
     /* AFD8 8006E338 D8FFBD27 */  addiu      $sp, $sp, -0x28
     /* AFDC 8006E33C 2000B4AF */  sw         $s4, 0x20($sp)
     /* AFE0 8006E340 21A00000 */  addu       $s4, $zero, $zero
@@ -29,8 +29,8 @@ glabel Stg40_CheckEncounter
     /* B030 8006E390 1400438C */  lw         $v1, 0x14($v0)
     /* B034 8006E394 04000224 */  addiu      $v0, $zero, 0x4
     /* B038 8006E398 1F006210 */  beq        $v1, $v0, .L8006E418
-    /* B03C 8006E39C 0780023C */   lui       $v0, %hi(D_80072B60)
-    /* B040 8006E3A0 602B428C */  lw         $v0, %lo(D_80072B60)($v0)
+    /* B03C 8006E39C 0780023C */   lui       $v0, %hi(Stg40_RootState)
+    /* B040 8006E3A0 602B428C */  lw         $v0, %lo(Stg40_RootState)($v0)
     /* B044 8006E3A4 00000000 */  nop
     /* B048 8006E3A8 0400458C */  lw         $a1, 0x4($v0)
     /* B04C 8006E3AC AEB8010C */  jal        Stg40_IsEntAdjacent
@@ -63,8 +63,8 @@ glabel Stg40_CheckEncounter
     /* B0B4 8006E414 000003AE */  sw         $v1, 0x0($s0)
   .L8006E418:
     /* B0B8 8006E418 01009426 */  addiu      $s4, $s4, 0x1
-    /* B0BC 8006E41C 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* B0C0 8006E420 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* B0BC 8006E41C 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* B0C0 8006E420 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* B0C4 8006E424 48007326 */  addiu      $s3, $s3, 0x48
     /* B0C8 8006E428 0C004284 */  lh         $v0, 0xC($v0)
     /* B0CC 8006E42C 00000000 */  nop
@@ -75,8 +75,8 @@ glabel Stg40_CheckEncounter
     /* B0DC 8006E43C 20002286 */  lh         $v0, 0x20($s1)
     /* B0E0 8006E440 00000000 */  nop
     /* B0E4 8006E444 09004010 */  beqz       $v0, .L8006E46C
-    /* B0E8 8006E448 0780023C */   lui       $v0, %hi(D_80072B60)
-    /* B0EC 8006E44C 602B428C */  lw         $v0, %lo(D_80072B60)($v0)
+    /* B0E8 8006E448 0780023C */   lui       $v0, %hi(Stg40_RootState)
+    /* B0EC 8006E44C 602B428C */  lw         $v0, %lo(Stg40_RootState)($v0)
     /* B0F0 8006E450 00000000 */  nop
     /* B0F4 8006E454 0400438C */  lw         $v1, 0x4($v0)
     /* B0F8 8006E458 00000000 */  nop

@@ -37,7 +37,7 @@ glabel Menu_StatusTask
     /* 5200 80014A00 03004010 */  beqz       $v0, .L80014A10
     /* 5204 80014A04 00000000 */   nop
     /* 5208 80014A08 86004410 */  beq        $v0, $a0, .L80014C24
-    /* 520C 80014A0C 0680023C */   lui       $v0, %hi(D_8005F70C)
+    /* 520C 80014A0C 0680023C */   lui       $v0, %hi(Pad_Triangle)
   .L80014A10:
     /* 5210 80014A10 2120A002 */  addu       $a0, $s5, $zero
     /* 5214 80014A14 B94D000C */  jal        Math_RampToOne
@@ -126,8 +126,8 @@ glabel Menu_StatusTask
     /* 5354 80014B54 DC520008 */  j          .L80014B70
     /* 5358 80014B58 00000000 */   nop
   .L80014B5C:
-    /* 535C 80014B5C 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* 5360 80014B60 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* 535C 80014B5C 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* 5360 80014B60 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* 5364 80014B64 00000000 */  nop
     /* 5368 80014B68 21105000 */  addu       $v0, $v0, $s0
     /* 536C 80014B6C A50B4290 */  lbu        $v0, 0xBA5($v0)
@@ -181,7 +181,7 @@ glabel Menu_StatusTask
     /* 541C 80014C1C 1B530008 */  j          .L80014C6C
     /* 5420 80014C20 00000000 */   nop
   .L80014C24:
-    /* 5424 80014C24 0CF7428C */  lw         $v0, %lo(D_8005F70C)($v0)
+    /* 5424 80014C24 0CF7428C */  lw         $v0, %lo(Pad_Triangle)($v0)
     /* 5428 80014C28 00000000 */  nop
     /* 542C 80014C2C 1A004018 */  blez       $v0, .L80014C98
     /* 5430 80014C30 0B000424 */   addiu     $a0, $zero, 0xB

@@ -1,8 +1,8 @@
 nonmatching Stg40_ScrollFollow, 0x34
 
 glabel Stg40_ScrollFollow
-    /* 1DD4 80065134 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* 1DD8 80065138 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* 1DD4 80065134 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* 1DD8 80065138 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* 1DDC 8006513C E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* 1DE0 80065140 1000BFAF */  sw         $ra, 0x10($sp)
     /* 1DE4 80065144 641044AC */  sw         $a0, 0x1064($v0)

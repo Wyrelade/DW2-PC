@@ -194,8 +194,8 @@ glabel Stg30_JoinPromptUpdate
     /* F884 80072BE4 50E66394 */  lhu        $v1, %lo(D_8005E650)($v1)
     /* F888 80072BE8 C0374224 */  addiu      $v0, $v0, %lo(Stg30_MemoryCapacity)
     /* F88C 80072BEC 21186200 */  addu       $v1, $v1, $v0
-    /* F890 80072BF0 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* F894 80072BF4 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* F890 80072BF0 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* F894 80072BF4 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* F898 80072BF8 D1FF6390 */  lbu        $v1, -0x2F($v1)
     /* F89C 80072BFC A80B4290 */  lbu        $v0, 0xBA8($v0)
     /* F8A0 80072C00 00000000 */  nop

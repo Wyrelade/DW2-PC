@@ -2,9 +2,9 @@ nonmatching Stg40_TurnQueueRemove, 0xA4
 
 glabel Stg40_TurnQueueRemove
     /* D844 80070BA4 E8FFBD27 */  addiu      $sp, $sp, -0x18
-    /* D848 80070BA8 0580023C */  lui        $v0, %hi(D_8005071C)
+    /* D848 80070BA8 0580023C */  lui        $v0, %hi(Dung_StatePtr)
     /* D84C 80070BAC 00240400 */  sll        $a0, $a0, 16
-    /* D850 80070BB0 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* D850 80070BB0 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* D854 80070BB4 03240400 */  sra        $a0, $a0, 16
     /* D858 80070BB8 1400BFAF */  sw         $ra, 0x14($sp)
     /* D85C 80070BBC 1000B0AF */  sw         $s0, 0x10($sp)

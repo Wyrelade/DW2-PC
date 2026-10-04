@@ -64,11 +64,11 @@ glabel Stg40_PlayerUpdate
     /* 8190 8006B4F0 1800028E */  lw         $v0, 0x18($s0)
     /* 8194 8006B4F4 01000524 */  addiu      $a1, $zero, 0x1
     /* 8198 8006B4F8 58004510 */  beq        $v0, $a1, .L8006B65C
-    /* 819C 8006B4FC 0580023C */   lui       $v0, %hi(D_8005071C)
-    /* 81A0 8006B500 1C07438C */  lw         $v1, %lo(D_8005071C)($v0)
+    /* 819C 8006B4FC 0580023C */   lui       $v0, %hi(Dung_StatePtr)
+    /* 81A0 8006B500 1C07438C */  lw         $v1, %lo(Dung_StatePtr)($v0)
     /* 81A4 8006B504 00000000 */  nop
     /* 81A8 8006B508 010065A0 */  sb         $a1, 0x1($v1)
-    /* 81AC 8006B50C 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* 81AC 8006B50C 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* 81B0 8006B510 21200002 */  addu       $a0, $s0, $zero
     /* 81B4 8006B514 6045000C */  jal        Task_NextState2
     /* 81B8 8006B518 020045A0 */   sb        $a1, 0x2($v0)

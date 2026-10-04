@@ -194,13 +194,13 @@ glabel Stg20_PartsUpgradeUpdate
     /* BD84 8006F0E4 9E87000C */  jal        Flag_Test
     /* BD88 8006F0E8 10000424 */   addiu     $a0, $zero, 0x10
     /* BD8C 8006F0EC 05004010 */  beqz       $v0, .L8006F104
-    /* BD90 8006F0F0 0680023C */   lui       $v0, %hi(D_8005F70C)
+    /* BD90 8006F0F0 0680023C */   lui       $v0, %hi(Pad_Triangle)
     /* BD94 8006F0F4 9E87000C */  jal        Flag_Test
     /* BD98 8006F0F8 11000424 */   addiu     $a0, $zero, 0x11
     /* BD9C 8006F0FC 11004010 */  beqz       $v0, .L8006F144
-    /* BDA0 8006F100 0680023C */   lui       $v0, %hi(D_8005F70C)
+    /* BDA0 8006F100 0680023C */   lui       $v0, %hi(Pad_Triangle)
   .L8006F104:
-    /* BDA4 8006F104 0CF7428C */  lw         $v0, %lo(D_8005F70C)($v0)
+    /* BDA4 8006F104 0CF7428C */  lw         $v0, %lo(Pad_Triangle)($v0)
     /* BDA8 8006F108 00000000 */  nop
     /* BDAC 8006F10C 0500401C */  bgtz       $v0, .L8006F124
     /* BDB0 8006F110 0B000424 */   addiu     $a0, $zero, 0xB

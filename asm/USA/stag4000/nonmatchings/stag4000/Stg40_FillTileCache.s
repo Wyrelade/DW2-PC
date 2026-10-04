@@ -2,10 +2,10 @@ nonmatching Stg40_FillTileCache, 0x368
 
 glabel Stg40_FillTileCache
     /* 2530 80065890 A8FFBD27 */  addiu      $sp, $sp, -0x58
-    /* 2534 80065894 0780023C */  lui        $v0, %hi(D_80072B60)
-    /* 2538 80065898 602B458C */  lw         $a1, %lo(D_80072B60)($v0)
-    /* 253C 8006589C 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* 2540 800658A0 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* 2534 80065894 0780023C */  lui        $v0, %hi(Stg40_RootState)
+    /* 2538 80065898 602B458C */  lw         $a1, %lo(Stg40_RootState)($v0)
+    /* 253C 8006589C 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* 2540 800658A0 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* 2544 800658A4 09000824 */  addiu      $t0, $zero, 0x9
     /* 2548 800658A8 5400BFAF */  sw         $ra, 0x54($sp)
     /* 254C 800658AC 5000BEAF */  sw         $fp, 0x50($sp)
@@ -63,10 +63,10 @@ glabel Stg40_FillTileCache
   .L80065970:
     /* 2610 80065970 5800A98F */  lw         $t1, 0x58($sp)
     /* 2614 80065974 2C00A88F */  lw         $t0, 0x2C($sp)
-    /* 2618 80065978 0780023C */  lui        $v0, %hi(D_80072B60)
+    /* 2618 80065978 0780023C */  lui        $v0, %hi(Stg40_RootState)
     /* 261C 8006597C 21882801 */  addu       $s1, $t1, $t0
     /* 2620 80065980 2800A88F */  lw         $t0, 0x28($sp)
-    /* 2624 80065984 602B428C */  lw         $v0, %lo(D_80072B60)($v0)
+    /* 2624 80065984 602B428C */  lw         $v0, %lo(Stg40_RootState)($v0)
     /* 2628 80065988 21282801 */  addu       $a1, $t1, $t0
     /* 262C 8006598C 2400A88F */  lw         $t0, 0x24($sp)
     /* 2630 80065990 2C00428C */  lw         $v0, 0x2C($v0)

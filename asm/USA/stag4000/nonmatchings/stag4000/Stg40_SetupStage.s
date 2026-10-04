@@ -28,23 +28,23 @@ glabel Stg40_SetupStage
     /* 730 80063A90 06006410 */  beq        $v1, $a0, .L80063AAC
     /* 734 80063A94 05000224 */   addiu     $v0, $zero, 0x5
     /* 738 80063A98 09006210 */  beq        $v1, $v0, .L80063AC0
-    /* 73C 80063A9C 0580023C */   lui       $v0, %hi(D_8005071C)
-    /* 740 80063AA0 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* 73C 80063A9C 0580023C */   lui       $v0, %hi(Dung_StatePtr)
+    /* 740 80063AA0 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* 744 80063AA4 B38E0108 */  j          .L80063ACC
     /* 748 80063AA8 000040A0 */   sb        $zero, 0x0($v0)
   .L80063AAC:
-    /* 74C 80063AAC 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* 750 80063AB0 1C07438C */  lw         $v1, %lo(D_8005071C)($v0)
+    /* 74C 80063AAC 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* 750 80063AB0 1C07438C */  lw         $v1, %lo(Dung_StatePtr)($v0)
     /* 754 80063AB4 01000224 */  addiu      $v0, $zero, 0x1
     /* 758 80063AB8 B38E0108 */  j          .L80063ACC
     /* 75C 80063ABC 000062A0 */   sb        $v0, 0x0($v1)
   .L80063AC0:
-    /* 760 80063AC0 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* 760 80063AC0 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* 764 80063AC4 00000000 */  nop
     /* 768 80063AC8 000044A0 */  sb         $a0, 0x0($v0)
   .L80063ACC:
-    /* 76C 80063ACC 0580103C */  lui        $s0, %hi(D_8005071C)
-    /* 770 80063AD0 1C07028E */  lw         $v0, %lo(D_8005071C)($s0)
+    /* 76C 80063ACC 0580103C */  lui        $s0, %hi(Dung_StatePtr)
+    /* 770 80063AD0 1C07028E */  lw         $v0, %lo(Dung_StatePtr)($s0)
     /* 774 80063AD4 00000000 */  nop
     /* 778 80063AD8 00004290 */  lbu        $v0, 0x0($v0)
     /* 77C 80063ADC 00000000 */  nop
@@ -53,26 +53,26 @@ glabel Stg40_SetupStage
     /* 788 80063AE8 058E010C */  jal        Stg40_InitDungeonEntry
     /* 78C 80063AEC 21202002 */   addu      $a0, $s1, $zero
   .L80063AF0:
-    /* 790 80063AF0 1C07028E */  lw         $v0, %lo(D_8005071C)($s0)
+    /* 790 80063AF0 1C07028E */  lw         $v0, %lo(Dung_StatePtr)($s0)
     /* 794 80063AF4 00000000 */  nop
     /* 798 80063AF8 0800448C */  lw         $a0, 0x8($v0)
     /* 79C 80063AFC 30C3010C */  jal        Stg40_LoadDungFile
-    /* 7A0 80063B00 0780113C */   lui       $s1, %hi(D_80072B60)
-    /* 7A4 80063B04 602B228E */  lw         $v0, %lo(D_80072B60)($s1)
+    /* 7A0 80063B00 0780113C */   lui       $s1, %hi(Stg40_RootState)
+    /* 7A4 80063B04 602B228E */  lw         $v0, %lo(Stg40_RootState)($s1)
     /* 7A8 80063B08 00000000 */  nop
     /* 7AC 80063B0C 1000428C */  lw         $v0, 0x10($v0)
     /* 7B0 80063B10 00000000 */  nop
     /* 7B4 80063B14 0400448C */  lw         $a0, 0x4($v0)
     /* 7B8 80063B18 83B9010C */  jal        Stg40_LoadEventTiles
     /* 7BC 80063B1C 00000000 */   nop
-    /* 7C0 80063B20 1C07048E */  lw         $a0, %lo(D_8005071C)($s0)
+    /* 7C0 80063B20 1C07048E */  lw         $a0, %lo(Dung_StatePtr)($s0)
     /* 7C4 80063B24 00000000 */  nop
     /* 7C8 80063B28 00008390 */  lbu        $v1, 0x0($a0)
     /* 7CC 80063B2C 01000224 */  addiu      $v0, $zero, 0x1
     /* 7D0 80063B30 97006214 */  bne        $v1, $v0, .L80063D90
-    /* 7D4 80063B34 0580133C */   lui       $s3, %hi(D_8005071C)
+    /* 7D4 80063B34 0580133C */   lui       $s3, %hi(Dung_StatePtr)
     /* 7D8 80063B38 18008524 */  addiu      $a1, $a0, 0x18
-    /* 7DC 80063B3C 602B228E */  lw         $v0, %lo(D_80072B60)($s1)
+    /* 7DC 80063B3C 602B228E */  lw         $v0, %lo(Stg40_RootState)($s1)
     /* 7E0 80063B40 28000324 */  addiu      $v1, $zero, 0x28
     /* 7E4 80063B44 0C0080A4 */  sh         $zero, 0xC($a0)
     /* 7E8 80063B48 0E0080A4 */  sh         $zero, 0xE($a0)
@@ -92,8 +92,8 @@ glabel Stg40_SetupStage
     /* 81C 80063B7C 00000000 */   nop
     /* 820 80063B80 1FC4010C */  jal        Stg40_PickSpawnPoints
     /* 824 80063B84 00000000 */   nop
-    /* 828 80063B88 0680023C */  lui        $v0, %hi(D_80063360)
-    /* 82C 80063B8C 60334324 */  addiu      $v1, $v0, %lo(D_80063360)
+    /* 828 80063B88 0680023C */  lui        $v0, %hi(Stg40_BeetleDigiIds)
+    /* 82C 80063B8C 60334324 */  addiu      $v1, $v0, %lo(Stg40_BeetleDigiIds)
     /* 830 80063B90 03006230 */  andi       $v0, $v1, 0x3
     /* 834 80063B94 17004010 */  beqz       $v0, .L80063BF4
     /* 838 80063B98 1800A427 */   addiu     $a0, $sp, 0x18
@@ -180,8 +180,8 @@ glabel Stg40_SetupStage
     /* 958 80063CB8 21200000 */   addu      $a0, $zero, $zero
     /* 95C 80063CBC 0B021024 */  addiu      $s0, $zero, 0x20B
   .L80063CC0:
-    /* 960 80063CC0 0780113C */  lui        $s1, %hi(D_80072B60)
-    /* 964 80063CC4 602B228E */  lw         $v0, %lo(D_80072B60)($s1)
+    /* 960 80063CC0 0780113C */  lui        $s1, %hi(Stg40_RootState)
+    /* 964 80063CC4 602B228E */  lw         $v0, %lo(Stg40_RootState)($s1)
     /* 968 80063CC8 21288000 */  addu       $a1, $a0, $zero
     /* 96C 80063CCC 20004384 */  lh         $v1, 0x20($v0)
     /* 970 80063CD0 21300002 */  addu       $a2, $s0, $zero
@@ -190,7 +190,7 @@ glabel Stg40_SetupStage
     /* 97C 80063CDC 21388000 */  addu       $a3, $a0, $zero
     /* 980 80063CE0 38B5010C */  jal        Stg40_AddEntity
     /* 984 80063CE4 1400A2AF */   sw        $v0, 0x14($sp)
-    /* 988 80063CE8 602B238E */  lw         $v1, %lo(D_80072B60)($s1)
+    /* 988 80063CE8 602B238E */  lw         $v1, %lo(Stg40_RootState)($s1)
     /* 98C 80063CEC 00000000 */  nop
     /* 990 80063CF0 24006284 */  lh         $v0, 0x24($v1)
     /* 994 80063CF4 FFFF1024 */  addiu      $s0, $zero, -0x1
@@ -203,7 +203,7 @@ glabel Stg40_SetupStage
     /* 9B0 80063D10 2138A000 */  addu       $a3, $a1, $zero
     /* 9B4 80063D14 38B5010C */  jal        Stg40_AddEntity
     /* 9B8 80063D18 1400A2AF */   sw        $v0, 0x14($sp)
-    /* 9BC 80063D1C 602B238E */  lw         $v1, %lo(D_80072B60)($s1)
+    /* 9BC 80063D1C 602B238E */  lw         $v1, %lo(Stg40_RootState)($s1)
   .L80063D20:
     /* 9C0 80063D20 00000000 */  nop
     /* 9C4 80063D24 28006284 */  lh         $v0, 0x28($v1)
@@ -219,7 +219,7 @@ glabel Stg40_SetupStage
     /* 9EC 80063D4C 1400A2AF */   sw        $v0, 0x14($sp)
   .L80063D50:
     /* 9F0 80063D50 CEB5010C */  jal        Stg40_SpawnEnemyParties
-    /* 9F4 80063D54 0580133C */   lui       $s3, %hi(D_8005071C)
+    /* 9F4 80063D54 0580133C */   lui       $s3, %hi(Dung_StatePtr)
     /* 9F8 80063D58 86B6010C */  jal        Stg40_SpawnChests
     /* 9FC 80063D5C 00000000 */   nop
     /* A00 80063D60 77B7010C */  jal        Stg40_SpawnFixedHazards
@@ -235,10 +235,10 @@ glabel Stg40_SetupStage
     /* A28 80063D88 9FC2010C */  jal        Stg40_TurnQueueReset
     /* A2C 80063D8C 00000000 */   nop
   .L80063D90:
-    /* A30 80063D90 1C07628E */  lw         $v0, %lo(D_8005071C)($s3)
+    /* A30 80063D90 1C07628E */  lw         $v0, %lo(Dung_StatePtr)($s3)
     /* A34 80063D94 00000000 */  nop
     /* A38 80063D98 020040A0 */  sb         $zero, 0x2($v0)
-    /* A3C 80063D9C 1C07628E */  lw         $v0, %lo(D_8005071C)($s3)
+    /* A3C 80063D9C 1C07628E */  lw         $v0, %lo(Dung_StatePtr)($s3)
     /* A40 80063DA0 00000000 */  nop
     /* A44 80063DA4 010040A0 */  sb         $zero, 0x1($v0)
     /* A48 80063DA8 FFFF0224 */  addiu      $v0, $zero, -0x1
@@ -263,7 +263,7 @@ glabel Stg40_SetupStage
     /* A90 80063DF0 1F44000C */  jal        Task_Create
     /* A94 80063DF4 21304000 */   addu      $a2, $v0, $zero
     /* A98 80063DF8 1C005026 */  addiu      $s0, $s2, 0x1C
-    /* A9C 80063DFC 1C07628E */  lw         $v0, %lo(D_8005071C)($s3)
+    /* A9C 80063DFC 1C07628E */  lw         $v0, %lo(Dung_StatePtr)($s3)
     /* AA0 80063E00 21900000 */  addu       $s2, $zero, $zero
     /* AA4 80063E04 0C004384 */  lh         $v1, 0xC($v0)
     /* AA8 80063E08 00000000 */  nop
@@ -280,7 +280,7 @@ glabel Stg40_SetupStage
     /* AD0 80063E30 21302002 */   addu      $a2, $s1, $zero
     /* AD4 80063E34 04001026 */  addiu      $s0, $s0, 0x4
   .L80063E38:
-    /* AD8 80063E38 1C07628E */  lw         $v0, %lo(D_8005071C)($s3)
+    /* AD8 80063E38 1C07628E */  lw         $v0, %lo(Dung_StatePtr)($s3)
     /* ADC 80063E3C 00000000 */  nop
     /* AE0 80063E40 0C004284 */  lh         $v0, 0xC($v0)
     /* AE4 80063E44 01005226 */  addiu      $s2, $s2, 0x1
@@ -290,8 +290,8 @@ glabel Stg40_SetupStage
   .L80063E54:
     /* AF4 80063E54 02020424 */  addiu      $a0, $zero, 0x202
     /* AF8 80063E58 21280002 */  addu       $a1, $s0, $zero
-    /* AFC 80063E5C 0580113C */  lui        $s1, %hi(D_8005071C)
-    /* B00 80063E60 1C07268E */  lw         $a2, %lo(D_8005071C)($s1)
+    /* AFC 80063E5C 0580113C */  lui        $s1, %hi(Dung_StatePtr)
+    /* B00 80063E60 1C07268E */  lw         $a2, %lo(Dung_StatePtr)($s1)
     /* B04 80063E64 04001026 */  addiu      $s0, $s0, 0x4
     /* B08 80063E68 1F44000C */  jal        Task_Create
     /* B0C 80063E6C 5C10C624 */   addiu     $a2, $a2, 0x105C
@@ -303,7 +303,7 @@ glabel Stg40_SetupStage
     /* B24 80063E84 04000526 */  addiu      $a1, $s0, 0x4
     /* B28 80063E88 1F44000C */  jal        Task_Create
     /* B2C 80063E8C 21300000 */   addu      $a2, $zero, $zero
-    /* B30 80063E90 1C07228E */  lw         $v0, %lo(D_8005071C)($s1)
+    /* B30 80063E90 1C07228E */  lw         $v0, %lo(Dung_StatePtr)($s1)
     /* B34 80063E94 00000000 */  nop
     /* B38 80063E98 00004390 */  lbu        $v1, 0x0($v0)
     /* B3C 80063E9C 02000224 */  addiu      $v0, $zero, 0x2
@@ -314,10 +314,10 @@ glabel Stg40_SetupStage
     /* B50 80063EB0 FD8E000C */  jal        Cd_QueueFile
     /* B54 80063EB4 300E0424 */   addiu     $a0, $zero, 0xE30
   .L80063EB8:
-    /* B58 80063EB8 1C07238E */  lw         $v1, %lo(D_8005071C)($s1)
+    /* B58 80063EB8 1C07238E */  lw         $v1, %lo(Dung_StatePtr)($s1)
     /* B5C 80063EBC 01000224 */  addiu      $v0, $zero, 0x1
     /* B60 80063EC0 020062A0 */  sb         $v0, 0x2($v1)
-    /* B64 80063EC4 1C07228E */  lw         $v0, %lo(D_8005071C)($s1)
+    /* B64 80063EC4 1C07228E */  lw         $v0, %lo(Dung_StatePtr)($s1)
     /* B68 80063EC8 00000000 */  nop
     /* B6C 80063ECC 540E438C */  lw         $v1, 0xE54($v0)
     /* B70 80063ED0 01000224 */  addiu      $v0, $zero, 0x1

@@ -1,8 +1,8 @@
 nonmatching Stg40_PlayerDestroyMine, 0x11C
 
 glabel Stg40_PlayerDestroyMine
-    /* 63B4 80069714 0780023C */  lui        $v0, %hi(D_80072B60)
-    /* 63B8 80069718 602B428C */  lw         $v0, %lo(D_80072B60)($v0)
+    /* 63B4 80069714 0780023C */  lui        $v0, %hi(Stg40_RootState)
+    /* 63B8 80069718 602B428C */  lw         $v0, %lo(Stg40_RootState)($v0)
     /* 63BC 8006971C D8FFBD27 */  addiu      $sp, $sp, -0x28
     /* 63C0 80069720 1400B1AF */  sw         $s1, 0x14($sp)
     /* 63C4 80069724 21888000 */  addu       $s1, $a0, $zero

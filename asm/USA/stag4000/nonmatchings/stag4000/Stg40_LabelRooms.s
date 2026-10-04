@@ -3,8 +3,8 @@ nonmatching Stg40_LabelRooms, 0xD4
 glabel Stg40_LabelRooms
     /* D470 800707D0 D0FFBD27 */  addiu      $sp, $sp, -0x30
     /* D474 800707D4 F83F0424 */  addiu      $a0, $zero, 0x3FF8
-    /* D478 800707D8 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* D47C 800707DC 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* D478 800707D8 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* D47C 800707DC 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* D480 800707E0 02000524 */  addiu      $a1, $zero, 0x2
     /* D484 800707E4 2800B4AF */  sw         $s4, 0x28($sp)
     /* D488 800707E8 0780143C */  lui        $s4, %hi(D_80072BB8)
@@ -19,8 +19,8 @@ glabel Stg40_LabelRooms
     /* D4AC 8007080C 00005084 */  lh         $s0, 0x0($v0)
     /* D4B0 80070810 CF8B000C */  jal        Mem_Alloc
     /* D4B4 80070814 00201224 */   addiu     $s2, $zero, 0x2000
-    /* D4B8 80070818 0780033C */  lui        $v1, %hi(D_80072B60)
-    /* D4BC 8007081C 602B638C */  lw         $v1, %lo(D_80072B60)($v1)
+    /* D4B8 80070818 0780033C */  lui        $v1, %hi(Stg40_RootState)
+    /* D4BC 8007081C 602B638C */  lw         $v1, %lo(Stg40_RootState)($v1)
     /* D4C0 80070820 21884000 */  addu       $s1, $v0, $zero
     /* D4C4 80070824 000060AC */  sw         $zero, 0x0($v1)
   .L80070828:
@@ -37,8 +37,8 @@ glabel Stg40_LabelRooms
     /* D4F0 80070850 1000B2AF */   sw        $s2, 0x10($sp)
     /* D4F4 80070854 D5C1010C */  jal        Stg40_LabelFilledCells
     /* D4F8 80070858 00000000 */   nop
-    /* D4FC 8007085C 0780023C */  lui        $v0, %hi(D_80072B60)
-    /* D500 80070860 602B438C */  lw         $v1, %lo(D_80072B60)($v0)
+    /* D4FC 8007085C 0780023C */  lui        $v0, %hi(Stg40_RootState)
+    /* D500 80070860 602B438C */  lw         $v1, %lo(Stg40_RootState)($v0)
     /* D504 80070864 00000000 */  nop
     /* D508 80070868 0000628C */  lw         $v0, 0x0($v1)
     /* D50C 8007086C 00000000 */  nop

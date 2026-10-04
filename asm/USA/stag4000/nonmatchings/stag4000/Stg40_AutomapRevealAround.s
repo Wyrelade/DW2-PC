@@ -3,8 +3,8 @@ nonmatching Stg40_AutomapRevealAround, 0x1B0
 glabel Stg40_AutomapRevealAround
     /* C35C 8006F6BC D0FFBD27 */  addiu      $sp, $sp, -0x30
     /* C360 8006F6C0 2800B6AF */  sw         $s6, 0x28($sp)
-    /* C364 8006F6C4 0580163C */  lui        $s6, %hi(D_8005071C)
-    /* C368 8006F6C8 1C07C28E */  lw         $v0, %lo(D_8005071C)($s6)
+    /* C364 8006F6C4 0580163C */  lui        $s6, %hi(Dung_StatePtr)
+    /* C368 8006F6C8 1C07C28E */  lw         $v0, %lo(Dung_StatePtr)($s6)
     /* C36C 8006F6CC 2C00BFAF */  sw         $ra, 0x2C($sp)
     /* C370 8006F6D0 2400B5AF */  sw         $s5, 0x24($sp)
     /* C374 8006F6D4 2000B4AF */  sw         $s4, 0x20($sp)
@@ -92,7 +92,7 @@ glabel Stg40_AutomapRevealAround
     /* C4A8 8006F808 21282002 */  addu       $a1, $s1, $zero
     /* C4AC 8006F80C 8BBD010C */  jal        Stg40_RevealCell
     /* C4B0 8006F810 21304002 */   addu      $a2, $s2, $zero
-    /* C4B4 8006F814 1C07C38E */  lw         $v1, %lo(D_8005071C)($s6)
+    /* C4B4 8006F814 1C07C38E */  lw         $v1, %lo(Dung_StatePtr)($s6)
     /* C4B8 8006F818 00000000 */  nop
     /* C4BC 8006F81C 6810628C */  lw         $v0, 0x1068($v1)
     /* C4C0 8006F820 00000000 */  nop

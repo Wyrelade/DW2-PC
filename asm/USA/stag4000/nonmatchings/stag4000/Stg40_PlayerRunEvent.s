@@ -18,23 +18,23 @@ glabel Stg40_PlayerRunEvent
     /* 7FF4 8006B354 21202002 */  addu       $a0, $s1, $zero
     /* 7FF8 8006B358 37B9010C */  jal        Stg40_ObjSetAnim
     /* 7FFC 8006B35C 28000524 */   addiu     $a1, $zero, 0x28
-    /* 8000 8006B360 0780103C */  lui        $s0, %hi(D_80072B60)
-    /* 8004 8006B364 602B028E */  lw         $v0, %lo(D_80072B60)($s0)
+    /* 8000 8006B360 0780103C */  lui        $s0, %hi(Stg40_RootState)
+    /* 8004 8006B364 602B028E */  lw         $v0, %lo(Stg40_RootState)($s0)
     /* 8008 8006B368 00000000 */  nop
     /* 800C 8006B36C 7001448C */  lw         $a0, 0x170($v0)
     /* 8010 8006B370 FFFF0324 */  addiu      $v1, $zero, -0x1
     /* 8014 8006B374 780140AC */  sw         $zero, 0x178($v0)
     /* 8018 8006B378 4579000C */  jal        Flag_SelectBranch
     /* 801C 8006B37C 740143AC */   sw        $v1, 0x174($v0)
-    /* 8020 8006B380 602B048E */  lw         $a0, %lo(D_80072B60)($s0)
+    /* 8020 8006B380 602B048E */  lw         $a0, %lo(Stg40_RootState)($s0)
     /* 8024 8006B384 21284000 */  addu       $a1, $v0, $zero
     /* 8028 8006B388 0E70000C */  jal        Text_OpenMsgClearChoice
     /* 802C 8006B38C 74018424 */   addiu     $a0, $a0, 0x174
     /* 8030 8006B390 EEAC0108 */  j          .L8006B3B8
     /* 8034 8006B394 00000000 */   nop
   .L8006B398:
-    /* 8038 8006B398 0780023C */  lui        $v0, %hi(D_80072B60)
-    /* 803C 8006B39C 602B428C */  lw         $v0, %lo(D_80072B60)($v0)
+    /* 8038 8006B398 0780023C */  lui        $v0, %hi(Stg40_RootState)
+    /* 803C 8006B39C 602B428C */  lw         $v0, %lo(Stg40_RootState)($v0)
     /* 8040 8006B3A0 00000000 */  nop
     /* 8044 8006B3A4 7401448C */  lw         $a0, 0x174($v0)
     /* 8048 8006B3A8 826F000C */  jal        Text_IsFinished
@@ -61,8 +61,8 @@ glabel Stg40_PlayerRunEvent
     /* 8094 8006B3F4 03AD0108 */  j          .L8006B40C
     /* 8098 8006B3F8 00000000 */   nop
   .L8006B3FC:
-    /* 809C 8006B3FC 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* 80A0 8006B400 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* 809C 8006B3FC 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* 80A0 8006B400 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* 80A4 8006B404 00000000 */  nop
     /* 80A8 8006B408 020040A0 */  sb         $zero, 0x2($v0)
   .L8006B40C:

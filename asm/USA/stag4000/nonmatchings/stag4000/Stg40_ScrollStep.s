@@ -24,8 +24,8 @@ glabel Stg40_ScrollStep
     /* 1F68 800652C8 00000000 */  nop
     /* 1F6C 800652CC 1A004300 */  div        $zero, $v0, $v1
     /* 1F70 800652D0 12180000 */  mflo       $v1
-    /* 1F74 800652D4 0780023C */  lui        $v0, %hi(D_80072B60)
-    /* 1F78 800652D8 602B428C */  lw         $v0, %lo(D_80072B60)($v0)
+    /* 1F74 800652D4 0780023C */  lui        $v0, %hi(Stg40_RootState)
+    /* 1F78 800652D8 602B428C */  lw         $v0, %lo(Stg40_RootState)($v0)
     /* 1F7C 800652DC 23400901 */  subu       $t0, $t0, $t1
     /* 1F80 800652E0 2C0048AC */  sw         $t0, 0x2C($v0)
     /* 1F84 800652E4 2338E300 */  subu       $a3, $a3, $v1

@@ -18,11 +18,11 @@ s32 Stg40_AddEntity(kind, a1, a2, a3, x, y)
     s32 n;
     s16 h;
 
-    e = &D_8005071C->ents[D_8005071C->entCount];
-    if (D_8005071C->entCount >= 41) {
+    e = &Dung_StatePtr->ents[Dung_StatePtr->entCount];
+    if (Dung_StatePtr->entCount >= 41) {
         return -1;
     }
-    e->turnId = D_8005071C->entCount;
+    e->turnId = Dung_StatePtr->entCount;
     e->field_6 = 0;
     e->flags = 0xC000;
     e->kind = kind;
@@ -44,20 +44,20 @@ s32 Stg40_AddEntity(kind, a1, a2, a3, x, y)
     case 0:
         flag = 1;
         e->flags |= flag;
-        e->params = (u8 *)&D_8005071C->statusFlags;
-        D_80072B60->playerEnt = e;
-        D_8005071C->statusFlags = 0;
-        D_8005071C->confusionTurn = 0;
+        e->params = (u8 *)&Dung_StatePtr->statusFlags;
+        Stg40_RootState->playerEnt = e;
+        Dung_StatePtr->statusFlags = 0;
+        Dung_StatePtr->confusionTurn = 0;
         break;
     case 1:
         flag = 1;
-        e->params = D_8005071C->parties[D_8005071C->partyCount++];
+        e->params = Dung_StatePtr->parties[Dung_StatePtr->partyCount++];
         e->flags |= 2;
         break;
     case 4:
         flag = 1;
-        n = D_8005071C->chestCount++;
-        e->params = D_8005071C->chests[n + 1];
+        n = Dung_StatePtr->chestCount++;
+        e->params = Dung_StatePtr->chests[n + 1];
         e->flags |= 4;
         break;
     case 5:
@@ -69,8 +69,8 @@ s32 Stg40_AddEntity(kind, a1, a2, a3, x, y)
     case 11:
     case 12:
         flag = 0;
-        n = D_8005071C->hazardCount++;
-        e->params = D_8005071C->hazards[n];
+        n = Dung_StatePtr->hazardCount++;
+        e->params = Dung_StatePtr->hazards[n];
         e->flags |= 4;
         break;
     case 2:
@@ -80,7 +80,7 @@ s32 Stg40_AddEntity(kind, a1, a2, a3, x, y)
         break;
     }
     Stg40_SetCellOccupied(x, y, flag);
-    D_8005071C->entCount++;
+    Dung_StatePtr->entCount++;
     return 0;
 }
 
@@ -96,8 +96,8 @@ void Stg40_SpawnEnemyParties(void) {
     s32 c;
     Stg40DungFloor *map;
 
-    for (r = D_80072B60->layout->enemyParties; r->x != 0xFF; r++) {
-        if (D_8005071C->partyCount >= 10) {
+    for (r = Stg40_RootState->layout->enemyParties; r->x != 0xFF; r++) {
+        if (Dung_StatePtr->partyCount >= 10) {
             break;
         }
         switch (Stg40_RandInt(4)) {
@@ -116,11 +116,11 @@ void Stg40_SpawnEnemyParties(void) {
             break;
         }
         if (k != 0) {
-            id = k[((Stg40DungFloor *)D_80072B60->floorMap)->enemySets];
+            id = k[((Stg40DungFloor *)Stg40_RootState->floorMap)->enemySets];
             Enemy_GetSetSummary(id, &out);
             c = out.field_0;
             Stg40_AddEntity(1, 0, c, 0, r->x, r->y);
-            s = (Stg40EnemyParty *)D_8005071C->parties[D_8005071C->partyCount - 1];
+            s = (Stg40EnemyParty *)Dung_StatePtr->parties[Dung_StatePtr->partyCount - 1];
             s->setId = id;
             s->field_2 = out.field_10 != 0;
             s->likedGift = out.field_C;
@@ -156,13 +156,13 @@ void Stg40_SpawnEnemyParties(void) {
 }
 
 void Stg40_SpawnChests(void) {
-    Stg40MapPos *pos = ((Stg40DungFloor *)D_80072B60->floorMap)->chests;
+    Stg40MapPos *pos = ((Stg40DungFloor *)Stg40_RootState->floorMap)->chests;
     Stg40Drop *r;
     s32 k;
     u8 *d;
 
-    for (r = D_80072B60->layout->chests; r->x != 0xFF; r++) {
-        if (D_8005071C->chestCount >= 12) {
+    for (r = Stg40_RootState->layout->chests; r->x != 0xFF; r++) {
+        if (Dung_StatePtr->chestCount >= 12) {
             break;
         }
         switch (Stg40_RandInt(4)) {
@@ -183,7 +183,7 @@ void Stg40_SpawnChests(void) {
         if (k != 0) {
             Stg40_AddEntity(4, 0, 0x276, 0, r->x, r->y);
             k--;
-            d = D_8005071C->chests[D_8005071C->chestCount];
+            d = Dung_StatePtr->chests[Dung_StatePtr->chestCount];
             d[0] = pos[k].field_0;
             d[1] = pos[k].field_1;
         }
@@ -262,26 +262,26 @@ s32 Stg40_SpawnHazard(a0, a1, a2, a3)
         m = 5;
         m = (lvl < m) ? lvl : m;
         lvl = m;
-        if (D_8005071C->trapCount >= 100) {
+        if (Dung_StatePtr->trapCount >= 100) {
             return -1;
         }
-        r = &D_8005071C->trapCells[D_8005071C->trapCount];
+        r = &Dung_StatePtr->trapCells[Dung_StatePtr->trapCount];
         r->x = a2;
         r->y = a3;
         r->kind = lvl;
-        D_8005071C->trapCount++;
+        Dung_StatePtr->trapCount++;
         return 0;
     }
-    if (!(bit & D_80072B60->hazardMask)) {
-        if (D_80072B60->hazardTypeCount >= 12) {
+    if (!(bit & Stg40_RootState->hazardMask)) {
+        if (Stg40_RootState->hazardTypeCount >= 12) {
             return -1;
         }
-        D_80072B60->hazardMask |= bit;
-        D_80072B60->hazardTypeCount++;
+        Stg40_RootState->hazardMask |= bit;
+        Stg40_RootState->hazardTypeCount++;
     }
-    if (D_8005071C->hazardCount < 16) {
+    if (Dung_StatePtr->hazardCount < 16) {
         Stg40_AddEntity(kind, a0, model, 0, a2, a3);
-        d = D_8005071C->hazards[D_8005071C->hazardCount - 1];
+        d = Dung_StatePtr->hazards[Dung_StatePtr->hazardCount - 1];
         d[0] = a0;
         d[1] = lvl;
         return 0;
@@ -294,7 +294,7 @@ void Stg40_SpawnFixedHazards(void) {
     s32 kind;
     s32 val;
 
-    for (e = D_80072B60->layout->hazards; e->x != 0xFF; e++) {
+    for (e = Stg40_RootState->layout->hazards; e->x != 0xFF; e++) {
         switch (Stg40_RandInt(4)) {
         case 0:
         default:
@@ -315,13 +315,13 @@ void Stg40_SpawnFixedHazards(void) {
             break;
         }
         if (kind != 0) {
-            Stg40_SpawnHazard(kind, val + D_8005071C->floorHdr->hazardLevel, e->x, e->y);
+            Stg40_SpawnHazard(kind, val + Dung_StatePtr->floorHdr->hazardLevel, e->x, e->y);
         }
     }
 }
 
 s32 Stg40_GetRegionCells(u8 (*tbl)[2], s32 v) {
-    Stg40DungState *b = D_8005071C;
+    Stg40DungState *b = Dung_StatePtr;
     Stg40Cell *cells = (Stg40Cell *)b->cells;
     s32 h = b->floorHdr->rows;
     s32 w = b->floorHdr->cols;
@@ -344,7 +344,7 @@ s32 Stg40_GetRegionCells(u8 (*tbl)[2], s32 v) {
 }
 
 void Stg40_SpawnHazardAtRandom(u8 (*tbl)[2], s32 a1, s32 a2) {
-    s32 n = Stg40_GetRegionCells(tbl, Stg40_RandInt(D_80072B60->roomCount));
+    s32 n = Stg40_GetRegionCells(tbl, Stg40_RandInt(Stg40_RootState->roomCount));
 
     if (n != 0) {
         n = Stg40_RandInt(n);
@@ -354,7 +354,7 @@ void Stg40_SpawnHazardAtRandom(u8 (*tbl)[2], s32 a1, s32 a2) {
 
 INCLUDE_RODATA("asm/USA/stag4000/rodata", Stg40_RandomHazardKinds);
 void Stg40_SpawnRandomHazards(void) {
-    Stg40DungFloor *m = (Stg40DungFloor *)D_80072B60->floorMap;
+    Stg40DungFloor *m = (Stg40DungFloor *)Stg40_RootState->floorMap;
     Stg40Ids5 ids = Stg40_RandomHazardKinds;
     Stg40MapGen *g = m->hazardGroups;
     s32 buf;
@@ -363,7 +363,7 @@ void Stg40_SpawnRandomHazards(void) {
     s32 n;
     s32 v;
 
-    if (D_80072B60->roomCount == 0) {
+    if (Stg40_RootState->roomCount == 0) {
         return;
     }
     buf = Mem_Alloc(0x1800, 2);
@@ -406,7 +406,7 @@ void Stg40_SpawnRandomHazards(void) {
 }
 
 Stg40Ent48 *Stg40_FindEntAt(s16 x, s16 y) {
-    Stg40Ent48 *e = D_8005071C->ents;
+    Stg40Ent48 *e = Dung_StatePtr->ents;
     Stg40Ent48 *r = NULL;
     s32 i;
 
@@ -421,7 +421,7 @@ Stg40Ent48 *Stg40_FindEntAt(s16 x, s16 y) {
 
 void Stg40_RevealAllEnts(void) {
     s32 i;
-    Stg40Ent48 *e = D_8005071C->ents;
+    Stg40Ent48 *e = Dung_StatePtr->ents;
 
     for (i = 0; i < 41; i++, e++) {
         if (e->flags & 0x8000) {
@@ -448,15 +448,15 @@ s32 Stg40_IsEntAdjacent(Stg40Ent48 *a, Stg40Ent48 *b) {
 }
 
 s32 Stg40_CheckEncounter(void) {
-    Stg40List *l = &D_8005071C->encounterList;
-    Stg40Ent48 *e = D_8005071C->ents;
+    Stg40List *l = &Dung_StatePtr->encounterList;
+    Stg40Ent48 *e = Dung_StatePtr->ents;
     s32 i;
     s32 r;
 
     l->field_20 = 0;
-    for (i = 0; i < D_8005071C->entCount; i++, e++) {
+    for (i = 0; i < Dung_StatePtr->entCount; i++, e++) {
         if ((e->flags & 0x8002) == 0x8002 && e->actor->stateLevel1 != 4) {
-            r = Stg40_IsEntAdjacent(e, D_80072B60->playerEnt);
+            r = Stg40_IsEntAdjacent(e, Stg40_RootState->playerEnt);
             if (r == 1) {
                 l->field_0[l->field_20++] = e;
                 e->flags |= 0x100;
@@ -466,7 +466,7 @@ s32 Stg40_CheckEncounter(void) {
         }
     }
     if (l->field_20 != 0) {
-        D_80072B60->playerEnt->flags |= 0x100;
+        Stg40_RootState->playerEnt->flags |= 0x100;
     }
     return l->field_20;
 }
@@ -532,12 +532,12 @@ void Stg40_LoadEventTiles(s32 a0) {
     Blk12 *e;
     Stg40B60 *b;
 
-    D_80072B60->eventTileCount = 0;
+    Stg40_RootState->eventTileCount = 0;
     if (a0 != 0) {
         Flag_SetTableFile(a0);
         for (n = Flag_FirstPassingEntry(); n != -1; n = Flag_NextPassingEntry()) {
             e = Flag_GetEntryPosList(n);
-            b = D_80072B60;
+            b = Stg40_RootState;
             b->eventTiles[b->eventTileCount].u0.pair.field_0 = e->data[0] - 1;
             b->eventTiles[b->eventTileCount].u0.pair.field_2 = e->data[1] - 1;
             b->eventTiles[b->eventTileCount].field_4 = n;
@@ -549,17 +549,17 @@ void Stg40_LoadEventTiles(s32 a0) {
 s32 Stg40_CheckEventTile(void) {
     u32 i = 0;
     s32 r = 0;
-    Stg40B60Ent *e = D_80072B60->eventTiles;
+    Stg40B60Ent *e = Stg40_RootState->eventTiles;
 
-    for (; i < D_80072B60->eventTileCount; e++) {
-        Stg40B60 *b = D_80072B60;
+    for (; i < Stg40_RootState->eventTileCount; e++) {
+        Stg40B60 *b = Stg40_RootState;
         i++;
         if (b->playerEnt->loc.u0.tileXY == e->u0.field_0) {
             b->eventEntry = e->field_4;
             e->u0.pair.field_2 = -1;
             e->u0.pair.field_0 = -1;
             r = -1;
-            D_8005071C->freeze = 2;
+            Dung_StatePtr->freeze = 2;
             break;
         }
     }
@@ -636,7 +636,7 @@ s32 Stg40_ListUsableItems(Stg40Shop *a) {
     u16 *bag;
     u16 *items;
 
-    D_80072B60->itemCount = 0;
+    Stg40_RootState->itemCount = 0;
     switch (Stg40_GetBeetlePart(a->field_0)) {
     case -1:
         ret = a->field_C;
@@ -651,13 +651,13 @@ s32 Stg40_ListUsableItems(Stg40Shop *a) {
             if (key != -1) {
                 for (i = 0, bag = items; i < 0x30; i++, bag++) {
                     if (*bag != 0 && key == Item_GetCategory(*bag)) {
-                        D_80072B60->itemIds[D_80072B60->itemCount] = *bag;
-                        D_80072B60->itemCount++;
+                        Stg40_RootState->itemIds[Stg40_RootState->itemCount] = *bag;
+                        Stg40_RootState->itemCount++;
                     }
                 }
             }
         }
-        if (D_80072B60->itemCount == 0) {
+        if (Stg40_RootState->itemCount == 0) {
             ret = a->field_C + 2;
         } else {
             ret = 0;
@@ -673,8 +673,8 @@ s16 Stg40_ListPartyDigi(s32 mode) {
     s32 *pi;
     s32 i;
 
-    D_80072B60->partyCount = 0;
-    b = D_80072B60;
+    Stg40_RootState->partyCount = 0;
+    b = Stg40_RootState;
     for (i = 0; i < 36; e++, i++) {
         if (e->state >= 2) {
             switch (mode) {
@@ -700,7 +700,7 @@ s16 Stg40_ListPartyDigi(s32 mode) {
             }
         }
     }
-    i = D_80072B60->partyCount;
+    i = Stg40_RootState->partyCount;
     return i;
 }
 
@@ -756,7 +756,7 @@ void Stg40_AutomapRedraw(Stg40AutomapWork *a0) {
 
 void Stg40_ClearVisitedBits(void) {
     s32 i;
-    u8 *p = D_8005071C->visitedBits;
+    u8 *p = Dung_StatePtr->visitedBits;
 
     i = 0x17F;
     do {
@@ -772,9 +772,9 @@ void Stg40_SyncVisitedBits(s32 arg0) {
     Stg40Cell *c;
     s32 i;
 
-    p = D_8005071C->visitedBits;
-    c = (Stg40Cell *)D_8005071C->cells;
-    n = D_8005071C->floorHdr->cols * D_8005071C->floorHdr->rows / 8;
+    p = Dung_StatePtr->visitedBits;
+    c = (Stg40Cell *)Dung_StatePtr->cells;
+    n = Dung_StatePtr->floorHdr->cols * Dung_StatePtr->floorHdr->rows / 8;
 
     for (i = 0; i < n; i++) {
         if (arg0 == 0) {
@@ -827,8 +827,8 @@ void Stg40_AutomapRevealAll(void) {
     s32 x;
     s32 y;
 
-    for (y = 0; y < D_8005071C->floorHdr->rows; y++) {
-        for (x = 0; x < D_8005071C->floorHdr->cols; x++) {
+    for (y = 0; y < Dung_StatePtr->floorHdr->rows; y++) {
+        for (x = 0; x < Dung_StatePtr->floorHdr->cols; x++) {
             Stg40_RevealCell(t, x, y);
         }
     }
@@ -919,14 +919,14 @@ void Stg40_AutomapReleaseTex(Stg40ImgWork *a0) {
 }
 
 s16 Stg40_AutomapInitDims(Stg40AutomapWork *a0) {
-    Stg40DungState *b = D_8005071C;
+    Stg40DungState *b = Dung_StatePtr;
 
     a0->cols = b->floorHdr->cols;
     a0->rows = b->floorHdr->rows;
     return a0->field_76A = a0->cols / 8;
 }
 
-INCLUDE_RODATA("asm/USA/stag4000/rodata", D_8006368C);
+INCLUDE_RODATA("asm/USA/stag4000/rodata", Stg40_NeighborOffsets);
 void Stg40_RevealRoom(Stg40AutomapWork *w, s32 x, s32 y)
 {
     s32 group;
@@ -941,7 +941,7 @@ void Stg40_RevealRoom(Stg40AutomapWork *w, s32 x, s32 y)
     s32 col;
     s32 t;
 
-    dims = D_8005071C->floorHdr;
+    dims = Dung_StatePtr->floorHdr;
     dim1 = dims->cols;
     count = dims->rows;
     kind = Stg40_GetCell(x, y)->roomId;
@@ -951,20 +951,20 @@ void Stg40_RevealRoom(Stg40AutomapWork *w, s32 x, s32 y)
     group = kind >> 5;
     mask = 1 << (kind % 32);
     if (group < 8) {
-        t = D_8005071C->revealedRooms[group];
+        t = Dung_StatePtr->revealedRooms[group];
         if (t & mask) {
             return;
         }
-        D_8005071C->revealedRooms[group] |= mask;
+        Dung_StatePtr->revealedRooms[group] |= mask;
     }
-    grid = (Stg40Cell *)D_8005071C->cells;
+    grid = (Stg40Cell *)Dung_StatePtr->cells;
     for (row = 0; row < count; row++) {
         for (col = 0; col < dim1; col++) {
             if (grid[col + row * dim1].roomId == kind) {
                 grid[col + row * dim1].flags |= 0x2000;
                 Stg40_AutomapSetCell(col, row, 1);
                 {
-                    Stg40Offs8 o = D_8006368C;
+                    Stg40Offs8 o = Stg40_NeighborOffsets;
 
                     for (n = 0; n < 4; n++) {
                         s32 nx = col + o.v[n * 2];

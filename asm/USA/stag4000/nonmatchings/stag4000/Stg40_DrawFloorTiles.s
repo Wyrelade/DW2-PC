@@ -1,8 +1,8 @@
 nonmatching Stg40_DrawFloorTiles, 0x10C
 
 glabel Stg40_DrawFloorTiles
-    /* 2EAC 8006620C 0780023C */  lui        $v0, %hi(D_80072B60)
-    /* 2EB0 80066210 602B438C */  lw         $v1, %lo(D_80072B60)($v0)
+    /* 2EAC 8006620C 0780023C */  lui        $v0, %hi(Stg40_RootState)
+    /* 2EB0 80066210 602B438C */  lw         $v1, %lo(Stg40_RootState)($v0)
     /* 2EB4 80066214 D0FFBD27 */  addiu      $sp, $sp, -0x30
     /* 2EB8 80066218 2400B5AF */  sw         $s5, 0x24($sp)
     /* 2EBC 8006621C 21A88000 */  addu       $s5, $a0, $zero

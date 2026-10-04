@@ -1,8 +1,8 @@
 nonmatching Stg40_SpawnFixedHazards, 0x114
 
 glabel Stg40_SpawnFixedHazards
-    /* AA7C 8006DDDC 0780023C */  lui        $v0, %hi(D_80072B60)
-    /* AA80 8006DDE0 602B428C */  lw         $v0, %lo(D_80072B60)($v0)
+    /* AA7C 8006DDDC 0780023C */  lui        $v0, %hi(Stg40_RootState)
+    /* AA80 8006DDE0 602B428C */  lw         $v0, %lo(Stg40_RootState)($v0)
     /* AA84 8006DDE4 E0FFBD27 */  addiu      $sp, $sp, -0x20
     /* AA88 8006DDE8 1800BFAF */  sw         $ra, 0x18($sp)
     /* AA8C 8006DDEC 1400B1AF */  sw         $s1, 0x14($sp)
@@ -58,8 +58,8 @@ glabel Stg40_SpawnFixedHazards
     /* AB3C 8006DE9C 0F006330 */  andi       $v1, $v1, 0xF
   .L8006DEA0:
     /* AB40 8006DEA0 09008010 */  beqz       $a0, .L8006DEC8
-    /* AB44 8006DEA4 0580023C */   lui       $v0, %hi(D_8005071C)
-    /* AB48 8006DEA8 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* AB44 8006DEA4 0580023C */   lui       $v0, %hi(Dung_StatePtr)
+    /* AB48 8006DEA8 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* AB4C 8006DEAC 00000000 */  nop
     /* AB50 8006DEB0 540E428C */  lw         $v0, 0xE54($v0)
     /* AB54 8006DEB4 00000692 */  lbu        $a2, 0x0($s0)

@@ -17,8 +17,8 @@ glabel Stg40_PlayerAnimThenMsgUpdate
     /* 60DC 8006943C 21202002 */   addu      $a0, $s1, $zero
     /* 60E0 80069440 01000324 */  addiu      $v1, $zero, 0x1
     /* 60E4 80069444 1D004314 */  bne        $v0, $v1, .L800694BC
-    /* 60E8 80069448 0780103C */   lui       $s0, %hi(D_80072B60)
-    /* 60EC 8006944C 602B028E */  lw         $v0, %lo(D_80072B60)($s0)
+    /* 60E8 80069448 0780103C */   lui       $s0, %hi(Stg40_RootState)
+    /* 60EC 8006944C 602B028E */  lw         $v0, %lo(Stg40_RootState)($s0)
     /* 60F0 80069450 00000000 */  nop
     /* 60F4 80069454 3400458C */  lw         $a1, 0x34($v0)
     /* 60F8 80069458 FFFF0224 */  addiu      $v0, $zero, -0x1
@@ -27,7 +27,7 @@ glabel Stg40_PlayerAnimThenMsgUpdate
     /* 6104 80069464 37B9010C */  jal        Stg40_ObjSetAnim
     /* 6108 80069468 21202002 */   addu      $a0, $s1, $zero
   .L8006946C:
-    /* 610C 8006946C 602B028E */  lw         $v0, %lo(D_80072B60)($s0)
+    /* 610C 8006946C 602B028E */  lw         $v0, %lo(Stg40_RootState)($s0)
     /* 6110 80069470 00000000 */  nop
     /* 6114 80069474 4400458C */  lw         $a1, 0x44($v0)
     /* 6118 80069478 4800468C */  lw         $a2, 0x48($v0)
@@ -42,8 +42,8 @@ glabel Stg40_PlayerAnimThenMsgUpdate
     /* 6138 80069498 C19D010C */  jal        Stg40_MsgWinCloseIfDone
     /* 613C 8006949C 01000424 */   addiu     $a0, $zero, 0x1
     /* 6140 800694A0 06005014 */  bne        $v0, $s0, .L800694BC
-    /* 6144 800694A4 0780023C */   lui       $v0, %hi(D_80072B60)
-    /* 6148 800694A8 602B428C */  lw         $v0, %lo(D_80072B60)($v0)
+    /* 6144 800694A4 0780023C */   lui       $v0, %hi(Stg40_RootState)
+    /* 6148 800694A8 602B428C */  lw         $v0, %lo(Stg40_RootState)($v0)
     /* 614C 800694AC 00000000 */  nop
     /* 6150 800694B0 38004590 */  lbu        $a1, 0x38($v0)
     /* 6154 800694B4 7745000C */  jal        Task_SetState1

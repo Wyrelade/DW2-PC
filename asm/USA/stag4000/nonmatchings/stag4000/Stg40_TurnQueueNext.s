@@ -1,8 +1,8 @@
 nonmatching Stg40_TurnQueueNext, 0x4C
 
 glabel Stg40_TurnQueueNext
-    /* D8E8 80070C48 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* D8EC 80070C4C 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* D8E8 80070C48 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* D8EC 80070C4C 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* D8F0 80070C50 00000000 */  nop
     /* D8F4 80070C54 FC0F4424 */  addiu      $a0, $v0, 0xFFC
     /* D8F8 80070C58 1A008284 */  lh         $v0, 0x1A($a0)

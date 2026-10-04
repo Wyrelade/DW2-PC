@@ -10,9 +10,9 @@ glabel Stg40_EnemyUpdate
     /* 8C68 8006BFC8 1C00B1AF */  sw         $s1, 0x1C($sp)
     /* 8C6C 8006BFCC 1800B0AF */  sw         $s0, 0x18($sp)
     /* 8C70 8006BFD0 2C00748E */  lw         $s4, 0x2C($s3)
-    /* 8C74 8006BFD4 0780023C */  lui        $v0, %hi(D_80072B60)
+    /* 8C74 8006BFD4 0780023C */  lui        $v0, %hi(Stg40_RootState)
     /* 8C78 8006BFD8 2C00908E */  lw         $s0, 0x2C($s4)
-    /* 8C7C 8006BFDC 602B428C */  lw         $v0, %lo(D_80072B60)($v0)
+    /* 8C7C 8006BFDC 602B428C */  lw         $v0, %lo(Stg40_RootState)($v0)
     /* 8C80 8006BFE0 18000486 */  lh         $a0, 0x18($s0)
     /* 8C84 8006BFE4 1A000586 */  lh         $a1, 0x1A($s0)
     /* 8C88 8006BFE8 0400528C */  lw         $s2, 0x4($v0)
@@ -103,8 +103,8 @@ glabel Stg40_EnemyUpdate
     /* 8DC4 8006C124 21206002 */  addu       $a0, $s3, $zero
     /* 8DC8 8006C128 3AB9010C */  jal        Stg40_ObjSetAnimIfNew
     /* 8DCC 8006C12C 28000524 */   addiu     $a1, $zero, 0x28
-    /* 8DD0 8006C130 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* 8DD4 8006C134 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* 8DD0 8006C130 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* 8DD4 8006C134 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* 8DD8 8006C138 00000000 */  nop
     /* 8DDC 8006C13C 02004290 */  lbu        $v0, 0x2($v0)
     /* 8DE0 8006C140 00000000 */  nop
@@ -366,9 +366,9 @@ glabel Stg40_EnemyUpdate
     /* 9194 8006C4F4 000002AE */  sw         $v0, 0x0($s0)
     /* 9198 8006C4F8 20000224 */  addiu      $v0, $zero, 0x20
     /* 919C 8006C4FC 360042A6 */  sh         $v0, 0x36($s2)
-    /* 91A0 8006C500 0680023C */  lui        $v0, %hi(D_800634FC)
+    /* 91A0 8006C500 0680023C */  lui        $v0, %hi(Stg40_EnemyFadeColor)
     /* 91A4 8006C504 340051A6 */  sh         $s1, 0x34($s2)
-    /* 91A8 8006C508 FC344824 */  addiu      $t0, $v0, %lo(D_800634FC)
+    /* 91A8 8006C508 FC344824 */  addiu      $t0, $v0, %lo(Stg40_EnemyFadeColor)
     /* 91AC 8006C50C 03000989 */  lwl        $t1, 0x3($t0)
     /* 91B0 8006C510 00000999 */  lwr        $t1, 0x0($t0)
     /* 91B4 8006C514 00000000 */  nop
@@ -429,8 +429,8 @@ glabel Stg40_EnemyUpdate
     /* 9278 8006C5D8 21288000 */  addu       $a1, $a0, $zero
     /* 927C 8006C5DC FDBA010C */  jal        Stg40_AutomapMoveMarker
     /* 9280 8006C5E0 1000A2AF */   sw        $v0, 0x10($sp)
-    /* 9284 8006C5E4 0780023C */  lui        $v0, %hi(D_80072B60)
-    /* 9288 8006C5E8 602B438C */  lw         $v1, %lo(D_80072B60)($v0)
+    /* 9284 8006C5E4 0780023C */  lui        $v0, %hi(Stg40_RootState)
+    /* 9288 8006C5E8 602B438C */  lw         $v1, %lo(Stg40_RootState)($v0)
     /* 928C 8006C5EC 000000AE */  sw         $zero, 0x0($s0)
     /* 9290 8006C5F0 8401628C */  lw         $v0, 0x184($v1)
     /* 9294 8006C5F4 00000000 */  nop

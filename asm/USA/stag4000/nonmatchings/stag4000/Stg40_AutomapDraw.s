@@ -8,8 +8,8 @@ glabel Stg40_AutomapDraw
     /* CB40 8006FEA0 4689000C */  jal        Beetle_GetPart
     /* CB44 8006FEA4 12000424 */   addiu     $a0, $zero, 0x12
     /* CB48 8006FEA8 0400401C */  bgtz       $v0, .L8006FEBC
-    /* CB4C 8006FEAC 0780023C */   lui       $v0, %hi(D_80072B60)
-    /* CB50 8006FEB0 602B428C */  lw         $v0, %lo(D_80072B60)($v0)
+    /* CB4C 8006FEAC 0780023C */   lui       $v0, %hi(Stg40_RootState)
+    /* CB50 8006FEB0 602B428C */  lw         $v0, %lo(Stg40_RootState)($v0)
     /* CB54 8006FEB4 00000000 */  nop
     /* CB58 8006FEB8 7E0040A4 */  sh         $zero, 0x7E($v0)
   .L8006FEBC:

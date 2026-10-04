@@ -20533,11 +20533,11 @@ dlabel Snd_CurrentId
     /* 40F18 80050718 FFFFFFFF */ .word 0xFFFFFFFF
 enddlabel Snd_CurrentId
 
-nonmatching D_8005071C
+nonmatching Dung_StatePtr
 
-dlabel D_8005071C
-    /* 40F1C 8005071C A0D50580 */ .word D_8005D5A0
-enddlabel D_8005071C
+dlabel Dung_StatePtr
+    /* 40F1C 8005071C A0D50580 */ .word Dung_State
+enddlabel Dung_StatePtr
 
 nonmatching Save_GameStatePtr
 
@@ -33918,9 +33918,9 @@ dlabel Flag_EntryIter
     /* 4DD9C 8005D59C 00000000 */ .word 0x00000000
 enddlabel Flag_EntryIter
 
-nonmatching D_8005D5A0
+nonmatching Dung_State
 
-dlabel D_8005D5A0
+dlabel Dung_State
     /* 4DDA0 8005D5A0 00000000 */ .word 0x00000000
     /* 4DDA4 8005D5A4 00000000 */ .word 0x00000000
     /* 4DDA8 8005D5A8 00000000 */ .word 0x00000000
@@ -34977,7 +34977,7 @@ dlabel D_8005D5A0
     /* 4EE14 8005E614 00000000 */ .word 0x00000000
     /* 4EE18 8005E618 00000000 */ .word 0x00000000
     /* 4EE1C 8005E61C 00000000 */ .word 0x00000000
-enddlabel D_8005D5A0
+enddlabel Dung_State
 
 nonmatching Save_GameState
 
@@ -36139,11 +36139,11 @@ dlabel Pad_State
     /* 4FEF0 8005F6F0 00000000 */ .word 0x00000000
 enddlabel Pad_State
 
-nonmatching D_8005F6F4
+nonmatching Pad_Left
 
-dlabel D_8005F6F4
+dlabel Pad_Left
     /* 4FEF4 8005F6F4 00000000 */ .word 0x00000000
-enddlabel D_8005F6F4
+enddlabel Pad_Left
 
 nonmatching D_8005F6F8
 
@@ -36165,9 +36165,9 @@ dlabel Pad_Cross
     /* 4FF08 8005F708 00000000 */ .word 0x00000000
 enddlabel Pad_Cross
 
-nonmatching D_8005F70C
+nonmatching Pad_Triangle
 
-dlabel D_8005F70C
+dlabel Pad_Triangle
     /* 4FF0C 8005F70C 00000000 */ .word 0x00000000
     /* 4FF10 8005F710 00000000 */ .word 0x00000000
     /* 4FF14 8005F714 00000000 */ .word 0x00000000
@@ -36176,7 +36176,7 @@ dlabel D_8005F70C
     /* 4FF20 8005F720 00000000 */ .word 0x00000000
     /* 4FF24 8005F724 00000000 */ .word 0x00000000
     /* 4FF28 8005F728 00000000 */ .word 0x00000000
-enddlabel D_8005F70C
+enddlabel Pad_Triangle
 
 nonmatching Pad_Repeat
 

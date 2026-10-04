@@ -2,8 +2,8 @@ nonmatching Stg40_FindObjAtSameTile, 0x74
 
 glabel Stg40_FindObjAtSameTile
     /* 5680 800689E0 21300000 */  addu       $a2, $zero, $zero
-    /* 5684 800689E4 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* 5688 800689E8 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* 5684 800689E4 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* 5688 800689E8 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* 568C 800689EC 2138C000 */  addu       $a3, $a2, $zero
     /* 5690 800689F0 0C004384 */  lh         $v1, 0xC($v0)
     /* 5694 800689F4 00000000 */  nop

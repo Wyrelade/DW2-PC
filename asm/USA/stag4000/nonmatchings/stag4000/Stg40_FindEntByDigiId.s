@@ -1,8 +1,8 @@
 nonmatching Stg40_FindEntByDigiId, 0x6C
 
 glabel Stg40_FindEntByDigiId
-    /* EBF0 80071F50 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* EBF4 80071F54 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* EBF0 80071F50 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* EBF4 80071F54 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* EBF8 80071F58 21300000 */  addu       $a2, $zero, $zero
     /* EBFC 80071F5C 18004324 */  addiu      $v1, $v0, 0x18
   .L80071F60:

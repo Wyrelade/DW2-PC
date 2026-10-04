@@ -118,8 +118,8 @@ glabel Stg30_TargetSelectUpdate
     /* 3BE4 80066F44 36006214 */  bne        $v1, $v0, .L80067020
     /* 3BE8 80066F48 0680023C */   lui       $v0, %hi(Pad_State)
   .L80066F4C:
-    /* 3BEC 80066F4C 0680023C */  lui        $v0, %hi(D_8005F6F4)
-    /* 3BF0 80066F50 F4F6428C */  lw         $v0, %lo(D_8005F6F4)($v0)
+    /* 3BEC 80066F4C 0680023C */  lui        $v0, %hi(Pad_Left)
+    /* 3BF0 80066F50 F4F6428C */  lw         $v0, %lo(Pad_Left)($v0)
     /* 3BF4 80066F54 00000000 */  nop
     /* 3BF8 80066F58 17004018 */  blez       $v0, .L80066FB8
     /* 3BFC 80066F5C 0680023C */   lui       $v0, %hi(Pad_State)

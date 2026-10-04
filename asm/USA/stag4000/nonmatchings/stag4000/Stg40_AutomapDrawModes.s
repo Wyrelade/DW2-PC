@@ -10,8 +10,8 @@ glabel Stg40_AutomapDrawModes
     /* C90C 8006FC6C 21804002 */  addu       $s0, $s2, $zero
     /* C910 8006FC70 3400BFAF */  sw         $ra, 0x34($sp)
   .L8006FC74:
-    /* C914 8006FC74 0780023C */  lui        $v0, %hi(D_80072B60)
-    /* C918 8006FC78 602B428C */  lw         $v0, %lo(D_80072B60)($v0)
+    /* C914 8006FC74 0780023C */  lui        $v0, %hi(Stg40_RootState)
+    /* C918 8006FC78 602B428C */  lw         $v0, %lo(Stg40_RootState)($v0)
     /* C91C 8006FC7C 00000000 */  nop
     /* C920 8006FC80 7E004284 */  lh         $v0, 0x7E($v0)
     /* C924 8006FC84 00000000 */  nop
@@ -52,8 +52,8 @@ glabel Stg40_AutomapDrawModes
     /* C9A0 8006FD00 61BF0108 */  j          .L8006FD84
     /* C9A4 8006FD04 02001026 */   addiu     $s0, $s0, 0x2
   .L8006FD08:
-    /* C9A8 8006FD08 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* C9AC 8006FD0C 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* C9A8 8006FD08 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* C9AC 8006FD0C 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* C9B0 8006FD10 21204002 */  addu       $a0, $s2, $zero
     /* C9B4 8006FD14 6810428C */  lw         $v0, 0x1068($v0)
     /* C9B8 8006FD18 50000524 */  addiu      $a1, $zero, 0x50

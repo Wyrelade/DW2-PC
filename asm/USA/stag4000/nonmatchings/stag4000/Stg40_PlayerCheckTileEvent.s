@@ -24,9 +24,9 @@ glabel Stg40_PlayerCheckTileEvent
     /* 5878 80068BD8 21204000 */  addu       $a0, $v0, $zero
     /* 587C 80068BDC 1A008010 */  beqz       $a0, .L80068C48
     /* 5880 80068BE0 21100000 */   addu      $v0, $zero, $zero
-    /* 5884 80068BE4 0780023C */  lui        $v0, %hi(D_80072B60)
+    /* 5884 80068BE4 0780023C */  lui        $v0, %hi(Stg40_RootState)
     /* 5888 80068BE8 1400838C */  lw         $v1, 0x14($a0)
-    /* 588C 80068BEC 602B428C */  lw         $v0, %lo(D_80072B60)($v0)
+    /* 588C 80068BEC 602B428C */  lw         $v0, %lo(Stg40_RootState)($v0)
     /* 5890 80068BF0 00000000 */  nop
     /* 5894 80068BF4 3C0043AC */  sw         $v1, 0x3C($v0)
     /* 5898 80068BF8 400044AC */  sw         $a0, 0x40($v0)
@@ -37,8 +37,8 @@ glabel Stg40_PlayerCheckTileEvent
     /* 58AC 80068C0C 02006228 */   slti      $v0, $v1, 0x2
     /* 58B0 80068C10 0D004014 */  bnez       $v0, .L80068C48
     /* 58B4 80068C14 21102002 */   addu      $v0, $s1, $zero
-    /* 58B8 80068C18 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* 58BC 80068C1C 1C07458C */  lw         $a1, %lo(D_8005071C)($v0)
+    /* 58B8 80068C18 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* 58BC 80068C1C 1C07458C */  lw         $a1, %lo(Dung_StatePtr)($v0)
     /* 58C0 80068C20 02000224 */  addiu      $v0, $zero, 0x2
     /* 58C4 80068C24 02006210 */  beq        $v1, $v0, .L80068C30
     /* 58C8 80068C28 02000424 */   addiu     $a0, $zero, 0x2

@@ -17,7 +17,7 @@ glabel Stg40_PlayerResumeAfterBattle
     /* 6000 80069360 21202002 */   addu      $a0, $s1, $zero
     /* 6004 80069364 02000224 */  addiu      $v0, $zero, 0x2
     /* 6008 80069368 10000212 */  beq        $s0, $v0, .L800693AC
-    /* 600C 8006936C 0580023C */   lui       $v0, %hi(D_8005071C)
+    /* 600C 8006936C 0580023C */   lui       $v0, %hi(Dung_StatePtr)
   .L80069370:
     /* 6010 80069370 37B9010C */  jal        Stg40_ObjSetAnim
     /* 6014 80069374 2D000524 */   addiu     $a1, $zero, 0x2D
@@ -36,7 +36,7 @@ glabel Stg40_PlayerResumeAfterBattle
     /* 6044 800693A4 FDA40108 */  j          .L800693F4
     /* 6048 800693A8 00000000 */   nop
   .L800693AC:
-    /* 604C 800693AC 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* 604C 800693AC 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* 6050 800693B0 00000000 */  nop
     /* 6054 800693B4 02004290 */  lbu        $v0, 0x2($v0)
     /* 6058 800693B8 00000000 */  nop

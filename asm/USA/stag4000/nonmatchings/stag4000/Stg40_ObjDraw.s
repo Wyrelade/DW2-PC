@@ -16,8 +16,8 @@ glabel Stg40_ObjDraw
     /* 4A84 80067DE4 04006386 */  lh         $v1, 0x4($s3)
     /* 4A88 80067DE8 FFFF0224 */  addiu      $v0, $zero, -0x1
     /* 4A8C 80067DEC A8006210 */  beq        $v1, $v0, .L80068090
-    /* 4A90 80067DF0 0780023C */   lui       $v0, %hi(D_80072B60)
-    /* 4A94 80067DF4 602B448C */  lw         $a0, %lo(D_80072B60)($v0)
+    /* 4A90 80067DF0 0780023C */   lui       $v0, %hi(Stg40_RootState)
+    /* 4A94 80067DF4 602B448C */  lw         $a0, %lo(Stg40_RootState)($v0)
     /* 4A98 80067DF8 2400638E */  lw         $v1, 0x24($s3)
     /* 4A9C 80067DFC 2C00828C */  lw         $v0, 0x2C($a0)
     /* 4AA0 80067E00 00000000 */  nop
@@ -56,8 +56,8 @@ glabel Stg40_ObjDraw
     /* 4B14 80067E74 11000424 */   addiu     $a0, $zero, 0x11
     /* 4B18 80067E78 21204000 */  addu       $a0, $v0, $zero
     /* 4B1C 80067E7C 09008018 */  blez       $a0, .L80067EA4
-    /* 4B20 80067E80 0580023C */   lui       $v0, %hi(D_8005071C)
-    /* 4B24 80067E84 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* 4B20 80067E80 0580023C */   lui       $v0, %hi(Dung_StatePtr)
+    /* 4B24 80067E84 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* 4B28 80067E88 00000000 */  nop
     /* 4B2C 80067E8C 58104384 */  lh         $v1, 0x1058($v0)
     /* 4B30 80067E90 10000224 */  addiu      $v0, $zero, 0x10
@@ -83,15 +83,15 @@ glabel Stg40_ObjDraw
     /* 4B74 80067ED4 30004586 */  lh         $a1, 0x30($s2)
     /* 4B78 80067ED8 FFFF1024 */  addiu      $s0, $zero, -0x1
     /* 4B7C 80067EDC 0700B010 */  beq        $a1, $s0, .L80067EFC
-    /* 4B80 80067EE0 0780023C */   lui       $v0, %hi(D_80072B60)
+    /* 4B80 80067EE0 0780023C */   lui       $v0, %hi(Stg40_RootState)
     /* 4B84 80067EE4 6A7C000C */  jal        Anim_SetModelAnim
     /* 4B88 80067EE8 21208002 */   addu      $a0, $s4, $zero
     /* 4B8C 80067EEC 30004296 */  lhu        $v0, 0x30($s2)
     /* 4B90 80067EF0 300050A6 */  sh         $s0, 0x30($s2)
     /* 4B94 80067EF4 320042A6 */  sh         $v0, 0x32($s2)
-    /* 4B98 80067EF8 0780023C */  lui        $v0, %hi(D_80072B60)
+    /* 4B98 80067EF8 0780023C */  lui        $v0, %hi(Stg40_RootState)
   .L80067EFC:
-    /* 4B9C 80067EFC 602B448C */  lw         $a0, %lo(D_80072B60)($v0)
+    /* 4B9C 80067EFC 602B448C */  lw         $a0, %lo(Stg40_RootState)($v0)
     /* 4BA0 80067F00 2400638E */  lw         $v1, 0x24($s3)
     /* 4BA4 80067F04 2C00828C */  lw         $v0, 0x2C($a0)
     /* 4BA8 80067F08 3800858E */  lw         $a1, 0x38($s4)

@@ -333,7 +333,7 @@ typedef struct {
     u8 _pad60[0x14];
     s32 done;
 } Stg20WalkWork;
-extern u16 D_8005F728; /* Pad_State[0].held as a scalar reloc */
+extern u16 Pad_Held; /* Pad_State[0].held as a scalar reloc */
 extern s32 Rand_Next();
 
 extern void Mem_FillWordsNeg1(s32 *arg0, s32 arg1);
@@ -809,7 +809,7 @@ extern Stg20MenuSub D_800709B8;
 extern s32 Skill_GetNameText(s32);
 extern Halves Stg20_BeetleMenuPartsPos;
 extern Halves Stg20_BeetleMenuUpgradePos;
-extern s32 D_8005F70C; /* Pad_State[0].triangle as a scalar reloc */
+extern s32 Pad_Triangle; /* Pad_State[0].triangle as a scalar reloc */
 extern void Item_RemoveFromBag(s32 i);
 
 /* Digimon info page work: 13 texts and the roster entry shown (Stg20_LabInfoUpdate). */

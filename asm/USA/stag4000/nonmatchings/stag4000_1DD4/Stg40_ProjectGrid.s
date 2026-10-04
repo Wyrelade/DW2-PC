@@ -50,8 +50,8 @@ glabel Stg40_ProjectGrid
     /* 21B4 80065514 21200002 */   addu      $a0, $s0, $zero
     /* 21B8 80065518 91B5000C */  jal        SetTransMatrix
     /* 21BC 8006551C 21200002 */   addu      $a0, $s0, $zero
-    /* 21C0 80065520 0780023C */  lui        $v0, %hi(D_80072B60)
-    /* 21C4 80065524 602B438C */  lw         $v1, %lo(D_80072B60)($v0)
+    /* 21C0 80065520 0780023C */  lui        $v0, %hi(Stg40_RootState)
+    /* 21C4 80065524 602B438C */  lw         $v1, %lo(Stg40_RootState)($v0)
     /* 21C8 80065528 00000000 */  nop
     /* 21CC 8006552C 3000628C */  lw         $v0, 0x30($v1)
     /* 21D0 80065530 0A000824 */  addiu      $t0, $zero, 0xA
@@ -84,8 +84,8 @@ glabel Stg40_ProjectGrid
     /* 2234 80065594 3F004224 */  addiu      $v0, $v0, 0x3F
   .L80065598:
     /* 2238 80065598 82110200 */  srl        $v0, $v0, 6
-    /* 223C 8006559C 0580033C */  lui        $v1, %hi(D_8005071C)
-    /* 2240 800655A0 1C07638C */  lw         $v1, %lo(D_8005071C)($v1)
+    /* 223C 8006559C 0580033C */  lui        $v1, %hi(Dung_StatePtr)
+    /* 2240 800655A0 1C07638C */  lw         $v1, %lo(Dung_StatePtr)($v1)
     /* 2244 800655A4 00244224 */  addiu      $v0, $v0, 0x2400
     /* 2248 800655A8 1400A2A7 */  sh         $v0, 0x14($sp)
     /* 224C 800655AC 540E628C */  lw         $v0, 0xE54($v1)
@@ -102,8 +102,8 @@ glabel Stg40_ProjectGrid
     /* 2274 800655D4 21980000 */   addu      $s3, $zero, $zero
     /* 2278 800655D8 21F06002 */  addu       $fp, $s3, $zero
   .L800655DC:
-    /* 227C 800655DC 0780023C */  lui        $v0, %hi(D_80072B60)
-    /* 2280 800655E0 602B428C */  lw         $v0, %lo(D_80072B60)($v0)
+    /* 227C 800655DC 0780023C */  lui        $v0, %hi(Stg40_RootState)
+    /* 2280 800655E0 602B428C */  lw         $v0, %lo(Stg40_RootState)($v0)
     /* 2284 800655E4 00000000 */  nop
     /* 2288 800655E8 2C00438C */  lw         $v1, 0x2C($v0)
     /* 228C 800655EC 00000000 */  nop

@@ -2,9 +2,9 @@ nonmatching Stg40_AiPathFlee, 0x230
 
 glabel Stg40_AiPathFlee
     /* 8338 8006B698 F0FFBD27 */  addiu      $sp, $sp, -0x10
-    /* 833C 8006B69C 0780023C */  lui        $v0, %hi(D_80072B60)
+    /* 833C 8006B69C 0780023C */  lui        $v0, %hi(Stg40_RootState)
     /* 8340 8006B6A0 18008624 */  addiu      $a2, $a0, 0x18
-    /* 8344 8006B6A4 602B428C */  lw         $v0, %lo(D_80072B60)($v0)
+    /* 8344 8006B6A4 602B428C */  lw         $v0, %lo(Stg40_RootState)($v0)
     /* 8348 8006B6A8 18008994 */  lhu        $t1, 0x18($a0)
     /* 834C 8006B6AC 0400438C */  lw         $v1, 0x4($v0)
     /* 8350 8006B6B0 0200C894 */  lhu        $t0, 0x2($a2)

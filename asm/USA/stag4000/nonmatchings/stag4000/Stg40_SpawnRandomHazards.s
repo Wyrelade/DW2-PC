@@ -1,8 +1,8 @@
 nonmatching Stg40_SpawnRandomHazards, 0x1DC
 
 glabel Stg40_SpawnRandomHazards
-    /* ACC4 8006E024 0780033C */  lui        $v1, %hi(D_80072B60)
-    /* ACC8 8006E028 602B628C */  lw         $v0, %lo(D_80072B60)($v1)
+    /* ACC4 8006E024 0780033C */  lui        $v1, %hi(Stg40_RootState)
+    /* ACC8 8006E028 602B628C */  lw         $v0, %lo(Stg40_RootState)($v1)
     /* ACCC 8006E02C B0FFBD27 */  addiu      $sp, $sp, -0x50
     /* ACD0 8006E030 4C00BFAF */  sw         $ra, 0x4C($sp)
     /* ACD4 8006E034 4800BEAF */  sw         $fp, 0x48($sp)

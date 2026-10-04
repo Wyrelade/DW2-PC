@@ -140,8 +140,8 @@ glabel Sys_Main
     /* 13F6C 8002376C 0C0000AE */   sw        $zero, 0xC($s0)
     /* 13F70 80023770 21A02002 */  addu       $s4, $s1, $zero
     /* 13F74 80023774 21880002 */  addu       $s1, $s0, $zero
-    /* 13F78 80023778 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* 13F7C 8002377C 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* 13F78 80023778 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* 13F7C 8002377C 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* 13F80 80023780 01001324 */  addiu      $s3, $zero, 0x1
     /* 13F84 80023784 5B71000C */  jal        Gfx_FadeSetBlack
     /* 13F88 80023788 000040A0 */   sb        $zero, 0x0($v0)

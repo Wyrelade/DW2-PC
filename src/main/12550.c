@@ -9,7 +9,7 @@
 
 /* Small data this unit defines (retail reaches it with %gp_rel here). The bytes
  * live in the data asm; these tentative definitions are COMMON and bind to it. */
-Blk5071C *D_8005071C;
+Blk5071C *Dung_StatePtr;
 
 /* Unnamed: empty stub, no callers, no table ref. */
 void func_80021D50(void) {
@@ -24,9 +24,9 @@ s32 Bug_GetMaxMemBugLevel(void) {
     s32 i;
     s32 v;
 
-    if (D_8005071C->memBugCount != 0) {
-        for (i = 0; i < D_8005071C->memBugCount; i++) {
-            best = (best < (v = D_8005071C->memBugLevels[i])) ? v : best;
+    if (Dung_StatePtr->memBugCount != 0) {
+        for (i = 0; i < Dung_StatePtr->memBugCount; i++) {
+            best = (best < (v = Dung_StatePtr->memBugLevels[i])) ? v : best;
         }
     }
     return best;

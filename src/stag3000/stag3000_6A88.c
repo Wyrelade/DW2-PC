@@ -107,10 +107,10 @@ s32 Stg30_CompareSpecialty(s32 a, s32 b) {
 }
 
 s32 Stg30_GetFloorSpecialty(void) {
-    if (D_8005D5A0.floorTile == 0) {
+    if (Dung_State.floorTile == 0) {
         return 5;
     }
-    return D_8005D5A0.floorTile - 2;
+    return Dung_State.floorTile - 2;
 }
 
 s32 Stg30_ApplySkillStatus(s32 attacker, s32 target, s32 tech, s16 *p4, s16 *p5) {

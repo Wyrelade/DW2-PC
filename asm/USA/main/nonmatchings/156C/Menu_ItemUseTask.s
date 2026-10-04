@@ -171,8 +171,8 @@ glabel Menu_ItemUseTask
     /* 6378 80015B78 8C000526 */   addiu     $a1, $s0, 0x8C
     /* 637C 80015B7C 13004014 */  bnez       $v0, .L80015BCC
     /* 6380 80015B80 0D000424 */   addiu     $a0, $zero, 0xD
-    /* 6384 80015B84 0680023C */  lui        $v0, %hi(D_8005F70C)
-    /* 6388 80015B88 0CF7428C */  lw         $v0, %lo(D_8005F70C)($v0)
+    /* 6384 80015B84 0680023C */  lui        $v0, %hi(Pad_Triangle)
+    /* 6388 80015B88 0CF7428C */  lw         $v0, %lo(Pad_Triangle)($v0)
     /* 638C 80015B8C 00000000 */  nop
     /* 6390 80015B90 06004018 */  blez       $v0, .L80015BAC
     /* 6394 80015B94 0B000424 */   addiu     $a0, $zero, 0xB

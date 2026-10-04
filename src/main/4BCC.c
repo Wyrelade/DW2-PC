@@ -235,7 +235,7 @@ void Menu_StatusTask(Actor *a0) {
             if (Menu_Ctx->flags & 1) {
                 h = (Halves *)Cd_GetFileEntry(0x513000D);
                 for (i = 0; i < 4; i++) {
-                    v = (i == 3) ? Bug_GetMaxMemBugLevel() : D_8005071C->bugLevels[i];
+                    v = (i == 3) ? Bug_GetMaxMemBugLevel() : Dung_StatePtr->bugLevels[i];
                     if (v != 0) {
                         id = v + 0x1FD00EC;
                         Text_OpenPacked(&w->bugTexts[i], (s32)Cd_GetFileEntry(i * 3 + id), 1, h[i]);
@@ -347,7 +347,7 @@ void Menu_UseBugZapItem(Actor *a0) {
     rec = (Sub17D84 *)Item_GetEffectRec(Menu_Ctx->itemId);
     pos = &Menu_ItemUseMsgPos;
     n = rec->digiId - 0xC;
-    m = D_8005071C->bugLevels[n];
+    m = Dung_StatePtr->bugLevels[n];
     st.pos = *pos;
     st.color = 0;
     st.packedStyle = 0x81;
@@ -380,7 +380,7 @@ void Menu_UseBugZapItem(Actor *a0) {
         if (r == 2) {
             st.text = (s32)Cd_GetFileEntry(0x1FD00B4);
             st.strArg0 = Item_GetNameText(Menu_Ctx->itemId);
-        } else if (D_8005071C->memBugCount != 0) {
+        } else if (Dung_StatePtr->memBugCount != 0) {
             st.text = (s32)Cd_GetFileEntry(0x1FD00B5);
             st.strArg0 = 0;
         } else {
@@ -401,7 +401,7 @@ void Menu_UseBugZapItem(Actor *a0) {
             st.strArg0 = Item_GetNameText(Menu_Ctx->itemId);
         } else {
             st.strArg0 = 0;
-            if (D_8005071C->bugLevels[0] + D_8005071C->bugLevels[1] + D_8005071C->bugLevels[2] + D_8005071C->memBugCount != 0) {
+            if (Dung_StatePtr->bugLevels[0] + Dung_StatePtr->bugLevels[1] + Dung_StatePtr->bugLevels[2] + Dung_StatePtr->memBugCount != 0) {
                 st.text = (s32)Cd_GetFileEntry(0x1FD00B7);
             } else {
                 st.text = (s32)Cd_GetFileEntry(0x1FD00B6);
@@ -453,7 +453,7 @@ void Menu_OpenBugTexts(Actor *a0, s32 a1) {
         if (i == 3) {
             v = Bug_GetMaxMemBugLevel();
         } else {
-            v = D_8005071C->bugLevels[i];
+            v = Dung_StatePtr->bugLevels[i];
         }
         if (v != 0) {
             id = 0x1FD00EC;

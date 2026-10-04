@@ -1,9 +1,9 @@
 nonmatching Stg40_AiPathChase, 0x214
 
 glabel Stg40_AiPathChase
-    /* 8648 8006B9A8 0780023C */  lui        $v0, %hi(D_80072B60)
+    /* 8648 8006B9A8 0780023C */  lui        $v0, %hi(Stg40_RootState)
     /* 864C 8006B9AC 18008924 */  addiu      $t1, $a0, 0x18
-    /* 8650 8006B9B0 602B428C */  lw         $v0, %lo(D_80072B60)($v0)
+    /* 8650 8006B9B0 602B428C */  lw         $v0, %lo(Stg40_RootState)($v0)
     /* 8654 8006B9B4 18008694 */  lhu        $a2, 0x18($a0)
     /* 8658 8006B9B8 0400428C */  lw         $v0, 0x4($v0)
     /* 865C 8006B9BC 02002495 */  lhu        $a0, 0x2($t1)

@@ -22,7 +22,7 @@ void Stg30_BannerUpdate(Actor *a0) {
             if (a0->elapsed >= 0x80) Task_SetState0(a0, 3);
             break;
         case 3:
-            if (a0->elapsed >= 0x12D && (D_8005F72A & 0x840)) Task_SetState0(a0, 3);
+            if (a0->elapsed >= 0x12D && (Pad_Pressed & 0x840)) Task_SetState0(a0, 3);
             break;
         }
         break;

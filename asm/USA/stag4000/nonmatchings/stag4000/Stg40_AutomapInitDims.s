@@ -1,8 +1,8 @@
 nonmatching Stg40_AutomapInitDims, 0x44
 
 glabel Stg40_AutomapInitDims
-    /* C050 8006F3B0 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* C054 8006F3B4 1C07438C */  lw         $v1, %lo(D_8005071C)($v0)
+    /* C050 8006F3B0 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* C054 8006F3B4 1C07438C */  lw         $v1, %lo(Dung_StatePtr)($v0)
     /* C058 8006F3B8 00000000 */  nop
     /* C05C 8006F3BC 540E628C */  lw         $v0, 0xE54($v1)
     /* C060 8006F3C0 00000000 */  nop

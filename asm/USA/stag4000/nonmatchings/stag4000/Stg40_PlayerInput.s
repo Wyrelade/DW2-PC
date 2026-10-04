@@ -11,8 +11,8 @@ glabel Stg40_PlayerInput
     /* 5E44 800691A4 2C00328E */  lw         $s2, 0x2C($s1)
     /* 5E48 800691A8 3AB9010C */  jal        Stg40_ObjSetAnimIfNew
     /* 5E4C 800691AC 28000524 */   addiu     $a1, $zero, 0x28
-    /* 5E50 800691B0 0580133C */  lui        $s3, %hi(D_8005071C)
-    /* 5E54 800691B4 1C07628E */  lw         $v0, %lo(D_8005071C)($s3)
+    /* 5E50 800691B0 0580133C */  lui        $s3, %hi(Dung_StatePtr)
+    /* 5E54 800691B4 1C07628E */  lw         $v0, %lo(Dung_StatePtr)($s3)
     /* 5E58 800691B8 00000000 */  nop
     /* 5E5C 800691BC 02004290 */  lbu        $v0, 0x2($v0)
     /* 5E60 800691C0 00000000 */  nop
@@ -38,7 +38,7 @@ glabel Stg40_PlayerInput
     /* 5EB0 80069210 00000000 */   nop
     /* 5EB4 80069214 7745000C */  jal        Task_SetState1
     /* 5EB8 80069218 04000524 */   addiu     $a1, $zero, 0x4
-    /* 5EBC 8006921C 1C07628E */  lw         $v0, %lo(D_8005071C)($s3)
+    /* 5EBC 8006921C 1C07628E */  lw         $v0, %lo(Dung_StatePtr)($s3)
     /* 5EC0 80069220 C4A40108 */  j          .L80069310
     /* 5EC4 80069224 020050A0 */   sb        $s0, 0x2($v0)
   .L80069228:
@@ -47,8 +47,8 @@ glabel Stg40_PlayerInput
     /* 5ED0 80069230 00000000 */   nop
     /* 5ED4 80069234 01000324 */  addiu      $v1, $zero, 0x1
     /* 5ED8 80069238 15004314 */  bne        $v0, $v1, .L80069290
-    /* 5EDC 8006923C 0580023C */   lui       $v0, %hi(D_8005071C)
-    /* 5EE0 80069240 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* 5EDC 8006923C 0580023C */   lui       $v0, %hi(Dung_StatePtr)
+    /* 5EE0 80069240 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* 5EE4 80069244 00000000 */  nop
     /* 5EE8 80069248 A00B428C */  lw         $v0, 0xBA0($v0)
     /* 5EEC 8006924C 00000000 */  nop
@@ -96,10 +96,10 @@ glabel Stg40_PlayerInput
     /* 5F8C 800692EC 21200000 */   addu      $a0, $zero, $zero
     /* 5F90 800692F0 21206000 */  addu       $a0, $v1, $zero
   .L800692F4:
-    /* 5F94 800692F4 0780023C */  lui        $v0, %hi(D_80072B60)
+    /* 5F94 800692F4 0780023C */  lui        $v0, %hi(Stg40_RootState)
     /* 5F98 800692F8 0000A4A0 */  sb         $a0, 0x0($a1)
     /* 5F9C 800692FC 2007C38C */  lw         $v1, %lo(Save_GameStatePtr)($a2)
-    /* 5FA0 80069300 602B448C */  lw         $a0, %lo(D_80072B60)($v0)
+    /* 5FA0 80069300 602B448C */  lw         $a0, %lo(Stg40_RootState)($v0)
     /* 5FA4 80069304 00006290 */  lbu        $v0, 0x0($v1)
     /* 5FA8 80069308 00000000 */  nop
     /* 5FAC 8006930C 7E0082A4 */  sh         $v0, 0x7E($a0)

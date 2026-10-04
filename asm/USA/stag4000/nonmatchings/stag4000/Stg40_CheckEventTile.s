@@ -2,8 +2,8 @@ nonmatching Stg40_CheckEventTile, 0x98
 
 glabel Stg40_CheckEventTile
     /* B36C 8006E6CC 21380000 */  addu       $a3, $zero, $zero
-    /* B370 8006E6D0 0780043C */  lui        $a0, %hi(D_80072B60)
-    /* B374 8006E6D4 602B838C */  lw         $v1, %lo(D_80072B60)($a0)
+    /* B370 8006E6D0 0780043C */  lui        $a0, %hi(Stg40_RootState)
+    /* B374 8006E6D4 602B838C */  lw         $v1, %lo(Stg40_RootState)($a0)
     /* B378 8006E6D8 2140E000 */  addu       $t0, $a3, $zero
     /* B37C 8006E6DC 6C01628C */  lw         $v0, 0x16C($v1)
     /* B380 8006E6E0 00000000 */  nop
@@ -11,11 +11,11 @@ glabel Stg40_CheckEventTile
     /* B388 8006E6E8 44016624 */   addiu     $a2, $v1, 0x144
     /* B38C 8006E6EC 21508000 */  addu       $t2, $a0, $zero
     /* B390 8006E6F0 FFFF0924 */  addiu      $t1, $zero, -0x1
-    /* B394 8006E6F4 05800B3C */  lui        $t3, %hi(D_8005071C)
+    /* B394 8006E6F4 05800B3C */  lui        $t3, %hi(Dung_StatePtr)
     /* B398 8006E6F8 02000C24 */  addiu      $t4, $zero, 0x2
     /* B39C 8006E6FC 46016524 */  addiu      $a1, $v1, 0x146
   .L8006E700:
-    /* B3A0 8006E700 602B448D */  lw         $a0, %lo(D_80072B60)($t2)
+    /* B3A0 8006E700 602B448D */  lw         $a0, %lo(Stg40_RootState)($t2)
     /* B3A4 8006E704 00000000 */  nop
     /* B3A8 8006E708 0400828C */  lw         $v0, 0x4($a0)
     /* B3AC 8006E70C 00000000 */  nop
@@ -25,7 +25,7 @@ glabel Stg40_CheckEventTile
     /* B3BC 8006E71C 09006214 */  bne        $v1, $v0, .L8006E744
     /* B3C0 8006E720 0100E724 */   addiu     $a3, $a3, 0x1
     /* B3C4 8006E724 0200A28C */  lw         $v0, 0x2($a1)
-    /* B3C8 8006E728 1C07638D */  lw         $v1, %lo(D_8005071C)($t3)
+    /* B3C8 8006E728 1C07638D */  lw         $v1, %lo(Dung_StatePtr)($t3)
     /* B3CC 8006E72C FFFF0824 */  addiu      $t0, $zero, -0x1
     /* B3D0 8006E730 700182AC */  sw         $v0, 0x170($a0)
     /* B3D4 8006E734 0000A9A4 */  sh         $t1, 0x0($a1)

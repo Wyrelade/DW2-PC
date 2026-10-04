@@ -17,8 +17,8 @@ glabel Menu_UseBugZapItem
     /* 57AC 80014FAC 00000000 */   nop
     /* 57B0 80014FB0 08009327 */  addiu      $s3, $gp, %gp_rel(Menu_ItemUseMsgPos)
     /* 57B4 80014FB4 01004490 */  lbu        $a0, 0x1($v0)
-    /* 57B8 80014FB8 0580033C */  lui        $v1, %hi(D_8005071C)
-    /* 57BC 80014FBC 1C07638C */  lw         $v1, %lo(D_8005071C)($v1)
+    /* 57B8 80014FB8 0580033C */  lui        $v1, %hi(Dung_StatePtr)
+    /* 57BC 80014FBC 1C07638C */  lw         $v1, %lo(Dung_StatePtr)($v1)
     /* 57C0 80014FC0 F4FF9024 */  addiu      $s0, $a0, -0xC
     /* 57C4 80014FC4 21187000 */  addu       $v1, $v1, $s0
     /* 57C8 80014FC8 A50B7290 */  lbu        $s2, 0xBA5($v1)
@@ -110,8 +110,8 @@ glabel Menu_UseBugZapItem
     /* 5910 80015110 98540008 */  j          .L80015260
     /* 5914 80015114 1400A2AF */   sw        $v0, 0x14($sp)
   .L80015118:
-    /* 5918 80015118 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* 591C 8001511C 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* 5918 80015118 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* 591C 8001511C 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* 5920 80015120 00000000 */  nop
     /* 5924 80015124 A80B4290 */  lbu        $v0, 0xBA8($v0)
     /* 5928 80015128 00000000 */  nop
@@ -180,8 +180,8 @@ glabel Menu_UseBugZapItem
     /* 5A0C 8001520C 98540008 */  j          .L80015260
     /* 5A10 80015210 1400A2AF */   sw        $v0, 0x14($sp)
   .L80015214:
-    /* 5A14 80015214 0580043C */  lui        $a0, %hi(D_8005071C)
-    /* 5A18 80015218 1C07848C */  lw         $a0, %lo(D_8005071C)($a0)
+    /* 5A14 80015214 0580043C */  lui        $a0, %hi(Dung_StatePtr)
+    /* 5A18 80015218 1C07848C */  lw         $a0, %lo(Dung_StatePtr)($a0)
     /* 5A1C 8001521C 1400A0AF */  sw         $zero, 0x14($sp)
     /* 5A20 80015220 A50B8290 */  lbu        $v0, 0xBA5($a0)
     /* 5A24 80015224 A60B8390 */  lbu        $v1, 0xBA6($a0)

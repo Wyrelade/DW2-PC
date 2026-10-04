@@ -10,10 +10,10 @@ glabel Stg40_LoadDungFile
     /* D978 80070CD8 21804000 */  addu       $s0, $v0, $zero
     /* D97C 80070CDC B8C3010C */  jal        Stg40_RelocDungFile
     /* D980 80070CE0 21200002 */   addu      $a0, $s0, $zero
-    /* D984 80070CE4 0780023C */  lui        $v0, %hi(D_80072B60)
-    /* D988 80070CE8 0580033C */  lui        $v1, %hi(D_8005071C)
-    /* D98C 80070CEC 602B448C */  lw         $a0, %lo(D_80072B60)($v0)
-    /* D990 80070CF0 1C07628C */  lw         $v0, %lo(D_8005071C)($v1)
+    /* D984 80070CE4 0780023C */  lui        $v0, %hi(Stg40_RootState)
+    /* D988 80070CE8 0580033C */  lui        $v1, %hi(Dung_StatePtr)
+    /* D98C 80070CEC 602B448C */  lw         $a0, %lo(Stg40_RootState)($v0)
+    /* D990 80070CF0 1C07628C */  lw         $v0, %lo(Dung_StatePtr)($v1)
     /* D994 80070CF4 1C0091AC */  sw         $s1, 0x1C($a0)
     /* D998 80070CF8 0C0090AC */  sw         $s0, 0xC($a0)
     /* D99C 80070CFC 03004290 */  lbu        $v0, 0x3($v0)

@@ -1,8 +1,8 @@
 nonmatching Stg30_GetFloorSpecialty, 0x28
 
 glabel Stg30_GetFloorSpecialty
-    /* 6DB8 8006A118 0680023C */  lui        $v0, %hi(D_8005D5A0)
-    /* 6DBC 8006A11C A0D54324 */  addiu      $v1, $v0, %lo(D_8005D5A0)
+    /* 6DB8 8006A118 0680023C */  lui        $v0, %hi(Dung_State)
+    /* 6DBC 8006A11C A0D54324 */  addiu      $v1, $v0, %lo(Dung_State)
     /* 6DC0 8006A120 3D106290 */  lbu        $v0, 0x103D($v1)
     /* 6DC4 8006A124 00000000 */  nop
     /* 6DC8 8006A128 03004014 */  bnez       $v0, .L8006A138

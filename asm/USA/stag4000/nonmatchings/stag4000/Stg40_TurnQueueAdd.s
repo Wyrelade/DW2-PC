@@ -4,9 +4,9 @@ glabel Stg40_TurnQueueAdd
     /* D7CC 80070B2C E0FFBD27 */  addiu      $sp, $sp, -0x20
     /* D7D0 80070B30 1400B1AF */  sw         $s1, 0x14($sp)
     /* D7D4 80070B34 21888000 */  addu       $s1, $a0, $zero
-    /* D7D8 80070B38 0580023C */  lui        $v0, %hi(D_8005071C)
+    /* D7D8 80070B38 0580023C */  lui        $v0, %hi(Dung_StatePtr)
     /* D7DC 80070B3C 00241100 */  sll        $a0, $s1, 16
-    /* D7E0 80070B40 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* D7E0 80070B40 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* D7E4 80070B44 03240400 */  sra        $a0, $a0, 16
     /* D7E8 80070B48 1800BFAF */  sw         $ra, 0x18($sp)
     /* D7EC 80070B4C 1000B0AF */  sw         $s0, 0x10($sp)

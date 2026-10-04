@@ -3,10 +3,10 @@ nonmatching Stg40_AiPathChaseInRoom, 0x230
 glabel Stg40_AiPathChaseInRoom
     /* 885C 8006BBBC C0FFBD27 */  addiu      $sp, $sp, -0x40
     /* 8860 8006BBC0 2150A000 */  addu       $t2, $a1, $zero
-    /* 8864 8006BBC4 0780023C */  lui        $v0, %hi(D_80072B60)
+    /* 8864 8006BBC4 0780023C */  lui        $v0, %hi(Stg40_RootState)
     /* 8868 8006BBC8 3000B4AF */  sw         $s4, 0x30($sp)
     /* 886C 8006BBCC 21A00000 */  addu       $s4, $zero, $zero
-    /* 8870 8006BBD0 602B428C */  lw         $v0, %lo(D_80072B60)($v0)
+    /* 8870 8006BBD0 602B428C */  lw         $v0, %lo(Stg40_RootState)($v0)
     /* 8874 8006BBD4 18008724 */  addiu      $a3, $a0, 0x18
     /* 8878 8006BBD8 3800BFAF */  sw         $ra, 0x38($sp)
     /* 887C 8006BBDC 3400B5AF */  sw         $s5, 0x34($sp)

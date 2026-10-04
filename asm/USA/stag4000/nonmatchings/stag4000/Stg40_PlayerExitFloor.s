@@ -16,12 +16,12 @@ glabel Stg40_PlayerExitFloor
     /* 769C 8006A9FC 2C006210 */  beq        $v1, $v0, .L8006AAB0
     /* 76A0 8006AA00 02006228 */   slti      $v0, $v1, 0x2
     /* 76A4 8006AA04 04004014 */  bnez       $v0, .L8006AA18
-    /* 76A8 8006AA08 0580023C */   lui       $v0, %hi(D_8005071C)
+    /* 76A8 8006AA08 0580023C */   lui       $v0, %hi(Dung_StatePtr)
     /* 76AC 8006AA0C 02000224 */  addiu      $v0, $zero, 0x2
     /* 76B0 8006AA10 33006210 */  beq        $v1, $v0, .L8006AAE0
-    /* 76B4 8006AA14 0580023C */   lui       $v0, %hi(D_8005071C)
+    /* 76B4 8006AA14 0580023C */   lui       $v0, %hi(Dung_StatePtr)
   .L8006AA18:
-    /* 76B8 8006AA18 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* 76B8 8006AA18 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* 76BC 8006AA1C 00000000 */  nop
     /* 76C0 8006AA20 01004390 */  lbu        $v1, 0x1($v0)
     /* 76C4 8006AA24 02000224 */  addiu      $v0, $zero, 0x2
@@ -47,8 +47,8 @@ glabel Stg40_PlayerExitFloor
     /* 7708 8006AA68 340002A6 */  sh         $v0, 0x34($s0)
     /* 770C 8006AA6C 20000224 */  addiu      $v0, $zero, 0x20
     /* 7710 8006AA70 360002A6 */  sh         $v0, 0x36($s0)
-    /* 7714 8006AA74 0680023C */  lui        $v0, %hi(D_80063438)
-    /* 7718 8006AA78 38344924 */  addiu      $t1, $v0, %lo(D_80063438)
+    /* 7714 8006AA74 0680023C */  lui        $v0, %hi(Stg40_PlayerExitFadeColor)
+    /* 7718 8006AA78 38344924 */  addiu      $t1, $v0, %lo(Stg40_PlayerExitFadeColor)
     /* 771C 8006AA7C 03002689 */  lwl        $a2, 0x3($t1)
     /* 7720 8006AA80 00002699 */  lwr        $a2, 0x0($t1)
     /* 7724 8006AA84 00000000 */  nop

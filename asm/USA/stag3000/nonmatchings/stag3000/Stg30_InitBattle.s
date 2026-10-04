@@ -19,8 +19,8 @@ glabel Stg30_InitBattle
     /* CED8 80070238 00FF6330 */  andi       $v1, $v1, 0xFF00
     /* CEDC 8007023C 06006214 */  bne        $v1, $v0, .L80070258
     /* CEE0 80070240 D40304AE */   sw        $a0, 0x3D4($s0)
-    /* CEE4 80070244 0680023C */  lui        $v0, %hi(D_8005D5A0)
-    /* CEE8 80070248 A0D54224 */  addiu      $v0, $v0, %lo(D_8005D5A0)
+    /* CEE4 80070244 0680023C */  lui        $v0, %hi(Dung_State)
+    /* CEE8 80070248 A0D54224 */  addiu      $v0, $v0, %lo(Dung_State)
     /* CEEC 8007024C 3D1040A0 */  sb         $zero, 0x103D($v0)
     /* CEF0 80070250 401040A4 */  sh         $zero, 0x1040($v0)
     /* CEF4 80070254 C03C44AE */  sw         $a0, %lo(Stg30_Battle)($s2)

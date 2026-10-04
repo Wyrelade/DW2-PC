@@ -13,10 +13,10 @@ glabel Stg40_PlayerCheckEnemyInfo
     /* 4E80 800681E0 0A004391 */  lbu        $v1, 0xA($t2)
     /* 4E84 800681E4 00000000 */  nop
     /* 4E88 800681E8 37006210 */  beq        $v1, $v0, .L800682C8
-    /* 4E8C 800681EC 0580023C */   lui       $v0, %hi(D_8005071C)
-    /* 4E90 800681F0 0780033C */  lui        $v1, %hi(D_80072B60)
-    /* 4E94 800681F4 1C07458C */  lw         $a1, %lo(D_8005071C)($v0)
-    /* 4E98 800681F8 602B638C */  lw         $v1, %lo(D_80072B60)($v1)
+    /* 4E8C 800681EC 0580023C */   lui       $v0, %hi(Dung_StatePtr)
+    /* 4E90 800681F0 0780033C */  lui        $v1, %hi(Stg40_RootState)
+    /* 4E94 800681F4 1C07458C */  lw         $a1, %lo(Dung_StatePtr)($v0)
+    /* 4E98 800681F8 602B638C */  lw         $v1, %lo(Stg40_RootState)($v1)
     /* 4E9C 800681FC 21380000 */  addu       $a3, $zero, $zero
     /* 4EA0 80068200 A80060AC */  sw         $zero, 0xA8($v1)
     /* 4EA4 80068204 AC0060AC */  sw         $zero, 0xAC($v1)
@@ -58,8 +58,8 @@ glabel Stg40_PlayerCheckEnemyInfo
     /* 4F2C 8006828C E6FF4014 */  bnez       $v0, .L80068228
     /* 4F30 80068290 4800C624 */   addiu     $a2, $a2, 0x48
   .L80068294:
-    /* 4F34 80068294 0780103C */  lui        $s0, %hi(D_80072B60)
-    /* 4F38 80068298 602B028E */  lw         $v0, %lo(D_80072B60)($s0)
+    /* 4F34 80068294 0780103C */  lui        $s0, %hi(Stg40_RootState)
+    /* 4F38 80068298 602B028E */  lw         $v0, %lo(Stg40_RootState)($s0)
     /* 4F3C 8006829C 00000000 */  nop
     /* 4F40 800682A0 A800428C */  lw         $v0, 0xA8($v0)
     /* 4F44 800682A4 00000000 */  nop
@@ -67,7 +67,7 @@ glabel Stg40_PlayerCheckEnemyInfo
     /* 4F4C 800682AC 21100000 */   addu      $v0, $zero, $zero
     /* 4F50 800682B0 7745000C */  jal        Task_SetState1
     /* 4F54 800682B4 1A000524 */   addiu     $a1, $zero, 0x1A
-    /* 4F58 800682B8 602B038E */  lw         $v1, %lo(D_80072B60)($s0)
+    /* 4F58 800682B8 602B038E */  lw         $v1, %lo(Stg40_RootState)($s0)
     /* 4F5C 800682BC FFFF0224 */  addiu      $v0, $zero, -0x1
     /* 4F60 800682C0 B3A00108 */  j          .L800682CC
     /* 4F64 800682C4 7E0060A4 */   sh        $zero, 0x7E($v1)

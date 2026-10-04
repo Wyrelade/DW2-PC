@@ -6,7 +6,7 @@
 
 /* STAG4000 (Ovl_FileIds id 1, gameMode 0x2xx). */
 
-/* View of *D_8005071C (main Blk5071C) as this overlay uses it. */
+/* View of *Dung_StatePtr (main Blk5071C) as this overlay uses it. */
 typedef struct {
     /* 0x00 */ s16 cols;
     /* 0x02 */ s16 rows;
@@ -184,7 +184,7 @@ typedef struct {
     /* 0x08 */ Stg40DungLayout *layouts[8];
     /* 0x28 */ u16 wallStyle;
     u8 _pad2A[0x02];
-    /* 0x2C */ s16 paletteIdx;      /* index into D_800729B4 */
+    /* 0x2C */ s16 paletteIdx;      /* index into Stg40_SpecialFloorValues */
     /* 0x2E */ u8 hazardLevel;
     /* 0x2F */ u8 enemySets[5];     /* 1-based ids picked by Stg40_SpawnEnemyParties */
     /* 0x34 */ Stg40MapPos chests[8];
@@ -373,7 +373,7 @@ typedef struct {
     /* 0x3A */ u8 field_3A;
 } Stg40ModelView;
 
-/* 4-byte colour (copied whole from D_80063438 by Stg40_PlayerExitFloor). */
+/* 4-byte colour (copied whole from Stg40_PlayerExitFadeColor by Stg40_PlayerExitFloor). */
 typedef struct {
     /* 0x0 */ u8 r;
     /* 0x1 */ u8 g;
@@ -678,11 +678,11 @@ typedef struct {
 } Stg40E764;
 
 /* main exe */
-extern Stg40DungState *D_8005071C;
+extern Stg40DungState *Dung_StatePtr;
 
 /* 13-byte const table copied to a stack local (Stg40_BeginTransition). */
 typedef struct { u8 b[13]; } Blk13;
-extern Blk13 D_80063384;
+extern Blk13 Stg40_FloorSpecialtyByCell;
 extern s32 Sys_GameMode;
 extern s32 D_8005F794;
 extern GameStateView *Save_GameStatePtr;
@@ -732,7 +732,7 @@ extern s32 Flag_Test(s32 arg0);
 
 /* overlay data */
 extern s32 D_80072944;
-extern Stg40B60 *D_80072B60;
+extern Stg40B60 *Stg40_RootState;
 extern Actor *Stg40_FloorTask;
 extern Actor *Stg40_ItemMenuTask;
 extern s32 *Stg40_MsgWinTexts;
@@ -748,8 +748,8 @@ extern u8 Stg40_DigitBufs[][8];
 extern s32 Stg40_StatusMsgIds[];
 extern s32 D_80072BB8;
 extern u8 Stg40_RandomPartSlots[];
-extern u8 D_80072A58[];
-extern u8 D_80072A78[];
+extern u8 Stg40_HazardRevealChance[];
+extern u8 Stg40_BugNestRevealChance[];
 extern u8 *memset(u8 *s, s32 c, s32 n);
 extern void Gfx_HidePartsByMask(GfxPartMaskView *, s32);
 extern s32 Stg40_EnemyInfoParts[];
@@ -780,7 +780,7 @@ typedef struct {
 } Stg40Quad;
 
 extern u8 Stg40_ShadowPrimIdx;          /* tile template index into Stg40FloorWork.field_143C */
-extern Stg40Quad D_800633C4;
+extern Stg40Quad Stg40_ShadowCorners;
 extern void GsSetProjection(s32);
 extern void GsInitCoordinate2(Coord1F668 *, Coord1F668 *);
 extern s32 GsSetRefView2(Stg40RView *);
@@ -867,8 +867,8 @@ s32 Stg40_GetTrapDisarmRank(s32 i);
 s32 Stg40_GetPartState(); /* defined (void); Stg40_PlayerChestTrapPrompt passes 7 (forwarded to Stg40_GetBeetlePart) */
 s32 Stg40_MsgWinGetChoice(s32 i);
 extern Stg40Model25DC Stg40_LinkedModelTable[];
-extern Stg40Col D_80063438;
-extern Stg40Col D_800634FC;
+extern Stg40Col Stg40_PlayerExitFadeColor;
+extern Stg40Col Stg40_EnemyFadeColor;
 s32 Stg40_ListUsableItems(Stg40Shop *a);
 void Stg40_GateUpdate(Actor *a0); /* void: Stg40_FixtureUpdate returns its leftover v0 through a cast */
 s32 Stg40_ChestUpdate(Actor *a0);
@@ -890,7 +890,7 @@ extern s32 Stg40_FillNeighbours[8]; /* 4 neighbour (dx, dy) pairs */
 typedef struct {
     s16 v[8];
 } Stg40Offs8;
-extern Stg40Offs8 D_8006368C;
+extern Stg40Offs8 Stg40_NeighborOffsets;
 
 /* Ordering-table link word (24-bit next pointer, 8-bit length). */
 typedef struct {
@@ -918,7 +918,7 @@ typedef struct {
     s16 y;
 } Stg40XY16;
 extern Stg40XY16 Stg40_DirOffsets[];
-extern Stg40Shop D_800727E8[];
+extern Stg40Shop Stg40_ObstacleItemReqs[];
 extern s32 Item_CheckId(s32 arg0);
 extern Stg40Ent48 *Stg40_FindEntAt(s16 x, s16 y);
 
@@ -1009,7 +1009,7 @@ extern void Text_SetOtLayer(s32 a0, s32 a1);
 extern s32 Stg40_ItemMenuParts[];
 
 extern s32 Pad_Circle; /* Pad_State[0].circle as a scalar reloc */
-extern s32 D_8005F710; /* Pad_State[0].r1 as a scalar reloc */
+extern s32 Pad_R1; /* Pad_State[0].r1 as a scalar reloc */
 extern s32 Pad_Select; /* Pad_State[0].select as a scalar reloc */
 extern Actor *Stg40_RootTask;
 s32 Stg40_PlayerInteract(Actor *a0);
@@ -1115,14 +1115,14 @@ typedef struct {
 extern Stg40RootTasks *Stg40_RootChildren;
 extern s32 Sys_NextGameMode;  /* Sys_State.nextGameMode as a scalar reloc */
 extern u16 Stg40_FloorBitsPal[10];
-extern u16 D_800729B4[6];
+extern u16 Stg40_SpecialFloorValues[6];
 extern s32 D_8005F790;  /* Sys_State.prevGameMode as a scalar reloc */
 
-/* Base levels by slot item (D_80063360, Stg40_SetupStage). */
+/* Base levels by slot item (Stg40_BeetleDigiIds, Stg40_SetupStage). */
 typedef struct {
     s16 field_0[18];
 } Stg40Buf24;
-extern Stg40Buf24 D_80063360;
+extern Stg40Buf24 Stg40_BeetleDigiIds;
 extern s32 Menu_TopMenuResult;
 extern void Item_CompactBag(void);
 extern void Task_SetState3(Actor *arg0, u32 arg1);

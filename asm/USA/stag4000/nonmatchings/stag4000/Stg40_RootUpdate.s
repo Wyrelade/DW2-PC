@@ -27,14 +27,14 @@ glabel Stg40_RootUpdate
     /* F44 800642A4 CF8B000C */  jal        Mem_Alloc
     /* F48 800642A8 A42A52AC */   sw        $s2, %lo(Stg40_RootChildren)($v0)
     /* F4C 800642AC 21202002 */  addu       $a0, $s1, $zero
-    /* F50 800642B0 0780103C */  lui        $s0, %hi(D_80072B60)
+    /* F50 800642B0 0780103C */  lui        $s0, %hi(Stg40_RootState)
     /* F54 800642B4 8D8E010C */  jal        Stg40_SetupStage
-    /* F58 800642B8 602B02AE */   sw        $v0, %lo(D_80072B60)($s0)
+    /* F58 800642B8 602B02AE */   sw        $v0, %lo(Stg40_RootState)($s0)
     /* F5C 800642BC 5145000C */  jal        Task_NextState0
     /* F60 800642C0 21202002 */   addu      $a0, $s1, $zero
-    /* F64 800642C4 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* F68 800642C8 602B038E */  lw         $v1, %lo(D_80072B60)($s0)
-    /* F6C 800642CC 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* F64 800642C4 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* F68 800642C8 602B038E */  lw         $v1, %lo(Stg40_RootState)($s0)
+    /* F6C 800642CC 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* F70 800642D0 7E0060A4 */  sh         $zero, 0x7E($v1)
     /* F74 800642D4 46104584 */  lh         $a1, 0x1046($v0)
     /* F78 800642D8 7D69000C */  jal        Snd_SetSlotContent
@@ -49,8 +49,8 @@ glabel Stg40_RootUpdate
     /* F98 800642F8 C068000C */  jal        Snd_AnySlotLoading
     /* F9C 800642FC 00000000 */   nop
     /* FA0 80064300 0A004014 */  bnez       $v0, .L8006432C
-    /* FA4 80064304 0580023C */   lui       $v0, %hi(D_8005071C)
-    /* FA8 80064308 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* FA4 80064304 0580023C */   lui       $v0, %hi(Dung_StatePtr)
+    /* FA8 80064308 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* FAC 8006430C 080070AE */  sw         $s0, 0x8($s3)
     /* FB0 80064310 48104484 */  lh         $a0, 0x1048($v0)
     /* FB4 80064314 4A104584 */  lh         $a1, 0x104A($v0)
@@ -78,12 +78,12 @@ glabel Stg40_RootUpdate
     /* 1004 80064364 28000412 */  beq        $s0, $a0, .L80064408
     /* 1008 80064368 0200022A */   slti      $v0, $s0, 0x2
     /* 100C 8006436C 04004014 */  bnez       $v0, .L80064380
-    /* 1010 80064370 0580023C */   lui       $v0, %hi(D_8005071C)
+    /* 1010 80064370 0580023C */   lui       $v0, %hi(Dung_StatePtr)
     /* 1014 80064374 02000224 */  addiu      $v0, $zero, 0x2
     /* 1018 80064378 26010212 */  beq        $s0, $v0, .L80064814
-    /* 101C 8006437C 0580023C */   lui       $v0, %hi(D_8005071C)
+    /* 101C 8006437C 0580023C */   lui       $v0, %hi(Dung_StatePtr)
   .L80064380:
-    /* 1020 80064380 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* 1020 80064380 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* 1024 80064384 00000000 */  nop
     /* 1028 80064388 00004390 */  lbu        $v1, 0x0($v0)
     /* 102C 8006438C 00000000 */  nop
@@ -97,7 +97,7 @@ glabel Stg40_RootUpdate
     /* 1048 800643A8 7745000C */  jal        Task_SetState1
     /* 104C 800643AC 01000524 */   addiu     $a1, $zero, 0x1
     /* 1050 800643B0 FE900108 */  j          .L800643F8
-    /* 1054 800643B4 0580023C */   lui       $v0, %hi(D_8005071C)
+    /* 1054 800643B4 0580023C */   lui       $v0, %hi(Dung_StatePtr)
   .L800643B8:
     /* 1058 800643B8 03006414 */  bne        $v1, $a0, .L800643C8
     /* 105C 800643BC 200E043C */   lui       $a0, (0xE200006 >> 16)
@@ -112,13 +112,13 @@ glabel Stg40_RootUpdate
     /* 1078 800643D8 21204000 */   addu      $a0, $v0, $zero
     /* 107C 800643DC 6045000C */  jal        Task_NextState2
     /* 1080 800643E0 21202002 */   addu      $a0, $s1, $zero
-    /* 1084 800643E4 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* 1088 800643E8 1C07438C */  lw         $v1, %lo(D_8005071C)($v0)
+    /* 1084 800643E4 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* 1088 800643E8 1C07438C */  lw         $v1, %lo(Dung_StatePtr)($v0)
     /* 108C 800643EC 01000224 */  addiu      $v0, $zero, 0x1
     /* 1090 800643F0 020062A0 */  sb         $v0, 0x2($v1)
-    /* 1094 800643F4 0580023C */  lui        $v0, %hi(D_8005071C)
+    /* 1094 800643F4 0580023C */  lui        $v0, %hi(Dung_StatePtr)
   .L800643F8:
-    /* 1098 800643F8 1C07438C */  lw         $v1, %lo(D_8005071C)($v0)
+    /* 1098 800643F8 1C07438C */  lw         $v1, %lo(Dung_StatePtr)($v0)
     /* 109C 800643FC 01000224 */  addiu      $v0, $zero, 0x1
     /* 10A0 80064400 62910108 */  j          .L80064588
     /* 10A4 80064404 020062A0 */   sb        $v0, 0x2($v1)
@@ -127,8 +127,8 @@ glabel Stg40_RootUpdate
     /* 10AC 8006440C 00000000 */   nop
     /* 10B0 80064410 20004014 */  bnez       $v0, .L80064494
     /* 10B4 80064414 06000324 */   addiu     $v1, $zero, 0x6
-    /* 10B8 80064418 0780023C */  lui        $v0, %hi(D_80072B60)
-    /* 10BC 8006441C 602B428C */  lw         $v0, %lo(D_80072B60)($v0)
+    /* 10B8 80064418 0780023C */  lui        $v0, %hi(Stg40_RootState)
+    /* 10BC 8006441C 602B428C */  lw         $v0, %lo(Stg40_RootState)($v0)
     /* 10C0 80064420 00000000 */  nop
     /* 10C4 80064424 0800528C */  lw         $s2, 0x8($v0)
     /* 10C8 80064428 B3B9010C */  jal        Stg40_CheckEventTile
@@ -149,11 +149,11 @@ glabel Stg40_RootUpdate
     /* 1100 80064460 21204002 */   addu      $a0, $s2, $zero
     /* 1104 80064464 7745000C */  jal        Task_SetState1
     /* 1108 80064468 04000524 */   addiu     $a1, $zero, 0x4
-    /* 110C 8006446C 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* 1110 80064470 1C07438C */  lw         $v1, %lo(D_8005071C)($v0)
+    /* 110C 8006446C 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* 1110 80064470 1C07438C */  lw         $v1, %lo(Dung_StatePtr)($v0)
     /* 1114 80064474 00000000 */  nop
     /* 1118 80064478 010070A0 */  sb         $s0, 0x1($v1)
-    /* 111C 8006447C 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* 111C 8006447C 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* 1120 80064480 21202002 */  addu       $a0, $s1, $zero
     /* 1124 80064484 C08F010C */  jal        Stg40_BeginTransition
     /* 1128 80064488 020050A0 */   sb        $s0, 0x2($v0)
@@ -185,25 +185,25 @@ glabel Stg40_RootUpdate
     /* 1188 800644E8 03000012 */  beqz       $s0, .L800644F8
     /* 118C 800644EC 01000224 */   addiu     $v0, $zero, 0x1
     /* 1190 800644F0 10000212 */  beq        $s0, $v0, .L80064534
-    /* 1194 800644F4 0580023C */   lui       $v0, %hi(D_8005071C)
+    /* 1194 800644F4 0580023C */   lui       $v0, %hi(Dung_StatePtr)
   .L800644F8:
     /* 1198 800644F8 09020424 */  addiu      $a0, $zero, 0x209
     /* 119C 800644FC 08004526 */  addiu      $a1, $s2, 0x8
     /* 11A0 80064500 1F44000C */  jal        Task_Create
     /* 11A4 80064504 21300000 */   addu      $a2, $zero, $zero
-    /* 11A8 80064508 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* 11AC 8006450C 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
-    /* 11B0 80064510 0780033C */  lui        $v1, %hi(D_80072B60)
+    /* 11A8 80064508 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* 11AC 8006450C 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
+    /* 11B0 80064510 0780033C */  lui        $v1, %hi(Stg40_RootState)
     /* 11B4 80064514 020040A0 */  sb         $zero, 0x2($v0)
     /* 11B8 80064518 0580023C */  lui        $v0, %hi(Save_GameStatePtr)
     /* 11BC 8006451C 2007428C */  lw         $v0, %lo(Save_GameStatePtr)($v0)
-    /* 11C0 80064520 602B638C */  lw         $v1, %lo(D_80072B60)($v1)
+    /* 11C0 80064520 602B638C */  lw         $v1, %lo(Stg40_RootState)($v1)
     /* 11C4 80064524 00004290 */  lbu        $v0, 0x0($v0)
     /* 11C8 80064528 21202002 */  addu       $a0, $s1, $zero
     /* 11CC 8006452C 03920108 */  j          .L8006480C
     /* 11D0 80064530 7E0062A4 */   sh        $v0, 0x7E($v1)
   .L80064534:
-    /* 11D4 80064534 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* 11D4 80064534 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* 11D8 80064538 00000000 */  nop
     /* 11DC 8006453C 02004390 */  lbu        $v1, 0x2($v0)
     /* 11E0 80064540 02000224 */  addiu      $v0, $zero, 0x2
@@ -213,8 +213,8 @@ glabel Stg40_RootUpdate
     /* 11F0 80064550 7045000C */  jal        Task_SetState0
     /* 11F4 80064554 21284000 */   addu      $a1, $v0, $zero
     /* 11F8 80064558 21202002 */  addu       $a0, $s1, $zero
-    /* 11FC 8006455C 0780023C */  lui        $v0, %hi(D_80072B60)
-    /* 1200 80064560 602B428C */  lw         $v0, %lo(D_80072B60)($v0)
+    /* 11FC 8006455C 0780023C */  lui        $v0, %hi(Stg40_RootState)
+    /* 1200 80064560 602B428C */  lw         $v0, %lo(Stg40_RootState)($v0)
     /* 1204 80064564 02000524 */  addiu      $a1, $zero, 0x2
     /* 1208 80064568 7745000C */  jal        Task_SetState1
     /* 120C 8006456C 7E0040A4 */   sh        $zero, 0x7E($v0)
@@ -226,13 +226,13 @@ glabel Stg40_RootUpdate
     /* 1220 80064580 A4005014 */  bne        $v0, $s0, .L80064814
     /* 1224 80064584 00000000 */   nop
   .L80064588:
-    /* 1228 80064588 0780023C */  lui        $v0, %hi(D_80072B60)
-    /* 122C 8006458C 602B428C */  lw         $v0, %lo(D_80072B60)($v0)
+    /* 1228 80064588 0780023C */  lui        $v0, %hi(Stg40_RootState)
+    /* 122C 8006458C 602B428C */  lw         $v0, %lo(Stg40_RootState)($v0)
     /* 1230 80064590 05920108 */  j          .L80064814
     /* 1234 80064594 7E0040A4 */   sh        $zero, 0x7E($v0)
   jlabel .L80064598
-    /* 1238 80064598 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* 123C 8006459C 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* 1238 80064598 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* 123C 8006459C 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* 1240 800645A0 00000000 */  nop
     /* 1244 800645A4 02004390 */  lbu        $v1, 0x2($v0)
     /* 1248 800645A8 02000224 */  addiu      $v0, $zero, 0x2
@@ -269,8 +269,8 @@ glabel Stg40_RootUpdate
     /* 12B4 80064614 0800448E */  lw         $a0, 0x8($s2)
     /* 12B8 80064618 7045000C */  jal        Task_SetState0
     /* 12BC 8006461C 02000524 */   addiu     $a1, $zero, 0x2
-    /* 12C0 80064620 0780023C */  lui        $v0, %hi(D_80072B60)
-    /* 12C4 80064624 602B428C */  lw         $v0, %lo(D_80072B60)($v0)
+    /* 12C0 80064620 0780023C */  lui        $v0, %hi(Stg40_RootState)
+    /* 12C4 80064624 602B428C */  lw         $v0, %lo(Stg40_RootState)($v0)
     /* 12C8 80064628 20000424 */  addiu      $a0, $zero, 0x20
     /* 12CC 8006462C 3C71000C */  jal        Gfx_FadeOutToBlack
     /* 12D0 80064630 7E0040A4 */   sh        $zero, 0x7E($v0)
@@ -309,8 +309,8 @@ glabel Stg40_RootUpdate
     /* 134C 800646AC 01000224 */  addiu      $v0, $zero, 0x1
     /* 1350 800646B0 0C006214 */  bne        $v1, $v0, .L800646E4
     /* 1354 800646B4 09020424 */   addiu     $a0, $zero, 0x209
-    /* 1358 800646B8 0780023C */  lui        $v0, %hi(D_80072B60)
-    /* 135C 800646BC 602B428C */  lw         $v0, %lo(D_80072B60)($v0)
+    /* 1358 800646B8 0780023C */  lui        $v0, %hi(Stg40_RootState)
+    /* 135C 800646BC 602B428C */  lw         $v0, %lo(Stg40_RootState)($v0)
     /* 1360 800646C0 00000000 */  nop
     /* 1364 800646C4 0800448C */  lw         $a0, 0x8($v0)
     /* 1368 800646C8 7745000C */  jal        Task_SetState1
@@ -324,10 +324,10 @@ glabel Stg40_RootUpdate
     /* 1384 800646E4 08004526 */  addiu      $a1, $s2, 0x8
     /* 1388 800646E8 1F44000C */  jal        Task_Create
     /* 138C 800646EC 21300000 */   addu      $a2, $zero, $zero
-    /* 1390 800646F0 0780033C */  lui        $v1, %hi(D_80072B60)
+    /* 1390 800646F0 0780033C */  lui        $v1, %hi(Stg40_RootState)
     /* 1394 800646F4 0580023C */  lui        $v0, %hi(Save_GameStatePtr)
     /* 1398 800646F8 2007428C */  lw         $v0, %lo(Save_GameStatePtr)($v0)
-    /* 139C 800646FC 602B638C */  lw         $v1, %lo(D_80072B60)($v1)
+    /* 139C 800646FC 602B638C */  lw         $v1, %lo(Stg40_RootState)($v1)
     /* 13A0 80064700 00004290 */  lbu        $v0, 0x0($v0)
     /* 13A4 80064704 21202002 */  addu       $a0, $s1, $zero
     /* 13A8 80064708 03920108 */  j          .L8006480C
@@ -341,8 +341,8 @@ glabel Stg40_RootUpdate
     /* 13C4 80064724 3B006014 */  bnez       $v1, .L80064814
     /* 13C8 80064728 200022AE */   sw        $v0, 0x20($s1)
     /* 13CC 8006472C 21202002 */  addu       $a0, $s1, $zero
-    /* 13D0 80064730 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* 13D4 80064734 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* 13D0 80064730 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* 13D4 80064734 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* 13D8 80064738 01000524 */  addiu      $a1, $zero, 0x1
     /* 13DC 8006473C 7745000C */  jal        Task_SetState1
     /* 13E0 80064740 020040A0 */   sb        $zero, 0x2($v0)
@@ -359,12 +359,12 @@ glabel Stg40_RootUpdate
     /* 1408 80064768 08006328 */  slti       $v1, $v1, 0x8
     /* 140C 8006476C 29006014 */  bnez       $v1, .L80064814
     /* 1410 80064770 200022AE */   sw        $v0, 0x20($s1)
-    /* 1414 80064774 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* 1418 80064778 1C07438C */  lw         $v1, %lo(D_8005071C)($v0)
+    /* 1414 80064774 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* 1418 80064778 1C07438C */  lw         $v1, %lo(Dung_StatePtr)($v0)
     /* 141C 8006477C 04000224 */  addiu      $v0, $zero, 0x4
     /* 1420 80064780 010062A0 */  sb         $v0, 0x1($v1)
-    /* 1424 80064784 0780023C */  lui        $v0, %hi(D_80072B60)
-    /* 1428 80064788 602B428C */  lw         $v0, %lo(D_80072B60)($v0)
+    /* 1424 80064784 0780023C */  lui        $v0, %hi(Stg40_RootState)
+    /* 1428 80064788 602B428C */  lw         $v0, %lo(Stg40_RootState)($v0)
     /* 142C 8006478C 00000000 */  nop
     /* 1430 80064790 0800448C */  lw         $a0, 0x8($v0)
     /* 1434 80064794 7745000C */  jal        Task_SetState1
@@ -379,12 +379,12 @@ glabel Stg40_RootUpdate
     /* 1454 800647B4 0E006410 */  beq        $v1, $a0, .L800647F0
     /* 1458 800647B8 02006228 */   slti      $v0, $v1, 0x2
     /* 145C 800647BC 04004014 */  bnez       $v0, .L800647D0
-    /* 1460 800647C0 0580023C */   lui       $v0, %hi(D_8005071C)
+    /* 1460 800647C0 0580023C */   lui       $v0, %hi(Dung_StatePtr)
     /* 1464 800647C4 02000224 */  addiu      $v0, $zero, 0x2
     /* 1468 800647C8 12006210 */  beq        $v1, $v0, .L80064814
-    /* 146C 800647CC 0580023C */   lui       $v0, %hi(D_8005071C)
+    /* 146C 800647CC 0580023C */   lui       $v0, %hi(Dung_StatePtr)
   .L800647D0:
-    /* 1470 800647D0 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
+    /* 1470 800647D0 1C07428C */  lw         $v0, %lo(Dung_StatePtr)($v0)
     /* 1474 800647D4 00000000 */  nop
     /* 1478 800647D8 020044A0 */  sb         $a0, 0x2($v0)
     /* 147C 800647DC 0800448E */  lw         $a0, 0x8($s2)

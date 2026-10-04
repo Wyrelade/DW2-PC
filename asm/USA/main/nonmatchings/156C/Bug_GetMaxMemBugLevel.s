@@ -1,7 +1,7 @@
 nonmatching Bug_GetMaxMemBugLevel, 0x68
 
 glabel Bug_GetMaxMemBugLevel
-    /* 12560 80021D60 2400858F */  lw         $a1, %gp_rel(D_8005071C)($gp)
+    /* 12560 80021D60 2400858F */  lw         $a1, %gp_rel(Dung_StatePtr)($gp)
     /* 12564 80021D64 00000000 */  nop
     /* 12568 80021D68 A80BA290 */  lbu        $v0, 0xBA8($a1)
     /* 1256C 80021D6C 00000000 */  nop
@@ -20,7 +20,7 @@ glabel Bug_GetMaxMemBugLevel
     /* 1259C 80021D9C 00000000 */   nop
     /* 125A0 80021DA0 2118C000 */  addu       $v1, $a2, $zero
   .L80021DA4:
-    /* 125A4 80021DA4 2400858F */  lw         $a1, %gp_rel(D_8005071C)($gp)
+    /* 125A4 80021DA4 2400858F */  lw         $a1, %gp_rel(Dung_StatePtr)($gp)
     /* 125A8 80021DA8 00000000 */  nop
     /* 125AC 80021DAC A80BA290 */  lbu        $v0, 0xBA8($a1)
     /* 125B0 80021DB0 01008424 */  addiu      $a0, $a0, 0x1

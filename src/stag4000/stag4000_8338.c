@@ -6,8 +6,8 @@
 s32 Stg40_AiPathFlee(Stg40Ent48 *e, Pair54 *out) {
     Stg40Loc *loc = &e->loc;
     Pair54 c[3];
-    s16 dx = D_80072B60->playerEnt->loc.u0.pair.field_0 - loc->u0.pair.field_0;
-    s16 dy = D_80072B60->playerEnt->loc.u0.pair.field_2 - loc->u0.pair.field_2;
+    s16 dx = Stg40_RootState->playerEnt->loc.u0.pair.field_0 - loc->u0.pair.field_0;
+    s16 dy = Stg40_RootState->playerEnt->loc.u0.pair.field_2 - loc->u0.pair.field_2;
     s32 n;
     s32 i;
 
@@ -57,8 +57,8 @@ s32 Stg40_AiPathFlee(Stg40Ent48 *e, Pair54 *out) {
 
 s32 Stg40_AiPathToTarget(Stg40Ent48 *e, Pair54 *out) {
     Pair54 *p = &e->loc.u0.pair;
-    s16 dx = D_80072B60->cmdArgs.field_0 - p->field_0;
-    s16 dy = D_80072B60->cmdArgs.field_2 - p->field_2;
+    s16 dx = Stg40_RootState->cmdArgs.field_0 - p->field_0;
+    s16 dy = Stg40_RootState->cmdArgs.field_2 - p->field_2;
 
     if (dx == 0 && dy == 0) {
         return 0;
@@ -76,8 +76,8 @@ s32 Stg40_AiPathToTarget(Stg40Ent48 *e, Pair54 *out) {
 s32 Stg40_AiPathChase(Stg40Ent48 *e, Pair54 *out) {
     Stg40Loc *loc = &e->loc;
     Pair54 c[3];
-    s16 dx = D_80072B60->playerEnt->loc.u0.pair.field_0 - loc->u0.pair.field_0;
-    s16 dy = D_80072B60->playerEnt->loc.u0.pair.field_2 - loc->u0.pair.field_2;
+    s16 dx = Stg40_RootState->playerEnt->loc.u0.pair.field_0 - loc->u0.pair.field_0;
+    s16 dy = Stg40_RootState->playerEnt->loc.u0.pair.field_2 - loc->u0.pair.field_2;
     s32 n;
     s32 i;
 
@@ -122,8 +122,8 @@ s32 Stg40_AiPathChaseInRoom(Stg40Ent48 *e, Pair54 *out) {
     s32 m = 0;
     Stg40Loc *loc = &e->loc;
     Pair54 c[3];
-    s16 dx = D_80072B60->playerEnt->loc.u0.pair.field_0 - loc->u0.pair.field_0;
-    s16 dy = D_80072B60->playerEnt->loc.u0.pair.field_2 - loc->u0.pair.field_2;
+    s16 dx = Stg40_RootState->playerEnt->loc.u0.pair.field_0 - loc->u0.pair.field_0;
+    s16 dy = Stg40_RootState->playerEnt->loc.u0.pair.field_2 - loc->u0.pair.field_2;
 
     if (dx != 0) {
         if (dy != 0) {
@@ -207,11 +207,11 @@ s32 Stg40_AiTryStep(Stg40Ent48 *e, s32 mode) {
     return 1;
 }
 
-INCLUDE_RODATA("asm/USA/stag4000/rodata", D_800634FC);
+INCLUDE_RODATA("asm/USA/stag4000/rodata", Stg40_EnemyFadeColor);
 void Stg40_EnemyUpdate(Actor *a0) {
     Stg40ActWork *w = (Stg40ActWork *)a0->work;
     Stg40Ent48 *e = w->ent;
-    Stg40Ent48 *other = D_80072B60->playerEnt;
+    Stg40Ent48 *other = Stg40_RootState->playerEnt;
     Stg40ModelFade *m;
     s32 lvl2;
     s32 n;
@@ -254,7 +254,7 @@ void Stg40_EnemyUpdate(Actor *a0) {
         break;
     case 1:
         Stg40_ObjSetAnimIfNew(a0, 0x28);
-        if (D_8005071C->freeze != 0) {
+        if (Dung_StatePtr->freeze != 0) {
             break;
         }
         if (e->roomId != other->roomId) {
@@ -376,7 +376,7 @@ void Stg40_EnemyUpdate(Actor *a0) {
                 e->flags |= 0x80;
                 m->tpageFlags = 0x20;
                 m->clutRow = lvl2;
-                m->fadeColor = D_800634FC;
+                m->fadeColor = Stg40_EnemyFadeColor;
                 Snd_PlayById(0x1F, 0);
                 w->pendingLinkedModel = lvl2;
                 break;
@@ -408,8 +408,8 @@ void Stg40_EnemyUpdate(Actor *a0) {
         Stg40_ClearCellOccupied(e->loc.u0.pair.field_0, e->loc.u0.pair.field_2);
         Stg40_AutomapMoveMarker(-1, -1, e->loc.u0.pair.field_0, e->loc.u0.pair.field_2, e->kind);
         e->flags = 0;
-        if (a0 == D_80072B60->cmdActor) {
-            D_80072B60->cmdActor = NULL;
+        if (a0 == Stg40_RootState->cmdActor) {
+            Stg40_RootState->cmdActor = NULL;
             Stg40_EndTextObjCmd();
         }
         Task_SetState0(a0, 3);

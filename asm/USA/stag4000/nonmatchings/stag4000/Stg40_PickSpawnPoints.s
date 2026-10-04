@@ -3,8 +3,8 @@ nonmatching Stg40_PickSpawnPoints, 0x104
 glabel Stg40_PickSpawnPoints
     /* DD1C 8007107C 88FFBD27 */  addiu      $sp, $sp, -0x78
     /* DD20 80071080 6C00B3AF */  sw         $s3, 0x6C($sp)
-    /* DD24 80071084 0780133C */  lui        $s3, %hi(D_80072B60)
-    /* DD28 80071088 602B628E */  lw         $v0, %lo(D_80072B60)($s3)
+    /* DD24 80071084 0780133C */  lui        $s3, %hi(Stg40_RootState)
+    /* DD28 80071088 602B628E */  lw         $v0, %lo(Stg40_RootState)($s3)
     /* DD2C 8007108C 7000BFAF */  sw         $ra, 0x70($sp)
     /* DD30 80071090 6800B2AF */  sw         $s2, 0x68($sp)
     /* DD34 80071094 6400B1AF */  sw         $s1, 0x64($sp)
@@ -19,7 +19,7 @@ glabel Stg40_PickSpawnPoints
     /* DD58 800710B8 21200002 */  addu       $a0, $s0, $zero
     /* DD5C 800710BC 80100200 */  sll        $v0, $v0, 2
     /* DD60 800710C0 21100202 */  addu       $v0, $s0, $v0
-    /* DD64 800710C4 602B678E */  lw         $a3, %lo(D_80072B60)($s3)
+    /* DD64 800710C4 602B678E */  lw         $a3, %lo(Stg40_RootState)($s3)
     /* DD68 800710C8 00004394 */  lhu        $v1, 0x0($v0)
     /* DD6C 800710CC 21284002 */  addu       $a1, $s2, $zero
     /* DD70 800710D0 2000E3A4 */  sh         $v1, 0x20($a3)
@@ -29,7 +29,7 @@ glabel Stg40_PickSpawnPoints
     /* DD80 800710E0 2200E2A4 */   sh        $v0, 0x22($a3)
     /* DD84 800710E4 21184000 */  addu       $v1, $v0, $zero
     /* DD88 800710E8 FFFF0224 */  addiu      $v0, $zero, -0x1
-    /* DD8C 800710EC 602B648E */  lw         $a0, %lo(D_80072B60)($s3)
+    /* DD8C 800710EC 602B648E */  lw         $a0, %lo(Stg40_RootState)($s3)
     /* DD90 800710F0 FFFF1124 */  addiu      $s1, $zero, -0x1
     /* DD94 800710F4 260082A4 */  sh         $v0, 0x26($a0)
     /* DD98 800710F8 09007110 */  beq        $v1, $s1, .L80071120
@@ -47,7 +47,7 @@ glabel Stg40_PickSpawnPoints
     /* DDC4 80071124 21284002 */  addu       $a1, $s2, $zero
     /* DDC8 80071128 FBC3010C */  jal        Stg40_PickRandomPoint
     /* DDCC 8007112C 02000624 */   addiu     $a2, $zero, 0x2
-    /* DDD0 80071130 602B648E */  lw         $a0, %lo(D_80072B60)($s3)
+    /* DDD0 80071130 602B648E */  lw         $a0, %lo(Stg40_RootState)($s3)
     /* DDD4 80071134 21184000 */  addu       $v1, $v0, $zero
     /* DDD8 80071138 2A0091A4 */  sh         $s1, 0x2A($a0)
     /* DDDC 8007113C 09007110 */  beq        $v1, $s1, .L80071164

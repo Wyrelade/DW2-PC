@@ -1,8 +1,8 @@
 nonmatching Stg40_GetCell2, 0x58
 
 glabel Stg40_GetCell2
-    /* D544 800708A4 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* D548 800708A8 1C07488C */  lw         $t0, %lo(D_8005071C)($v0)
+    /* D544 800708A4 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* D548 800708A8 1C07488C */  lw         $t0, %lo(Dung_StatePtr)($v0)
     /* D54C 800708AC 00000000 */  nop
     /* D550 800708B0 540E028D */  lw         $v0, 0xE54($t0)
     /* D554 800708B4 00000000 */  nop

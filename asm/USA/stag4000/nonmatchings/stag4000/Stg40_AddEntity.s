@@ -4,9 +4,9 @@ glabel Stg40_AddEntity
     /* A180 8006D4E0 E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* A184 8006D4E4 21588000 */  addu       $t3, $a0, $zero
     /* A188 8006D4E8 2160C000 */  addu       $t4, $a2, $zero
-    /* A18C 8006D4EC 0580023C */  lui        $v0, %hi(D_8005071C)
+    /* A18C 8006D4EC 0580023C */  lui        $v0, %hi(Dung_StatePtr)
     /* A190 8006D4F0 2800AA8F */  lw         $t2, 0x28($sp)
-    /* A194 8006D4F4 1C07448C */  lw         $a0, %lo(D_8005071C)($v0)
+    /* A194 8006D4F4 1C07448C */  lw         $a0, %lo(Dung_StatePtr)($v0)
     /* A198 8006D4F8 2C00A98F */  lw         $t1, 0x2C($sp)
     /* A19C 8006D4FC 21300000 */  addu       $a2, $zero, $zero
     /* A1A0 8006D500 1000BFAF */  sw         $ra, 0x10($sp)
@@ -77,12 +77,12 @@ glabel Stg40_AddEntity
   jlabel .L8006D5F8
     /* A298 8006D5F8 01000624 */  addiu      $a2, $zero, 0x1
     /* A29C 8006D5FC 0000028D */  lw         $v0, 0x0($t0)
-    /* A2A0 8006D600 0780043C */  lui        $a0, %hi(D_80072B60)
+    /* A2A0 8006D600 0780043C */  lui        $a0, %hi(Stg40_RootState)
     /* A2A4 8006D604 25104600 */  or         $v0, $v0, $a2
     /* A2A8 8006D608 000002AD */  sw         $v0, 0x0($t0)
-    /* A2AC 8006D60C 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* A2B0 8006D610 1C07438C */  lw         $v1, %lo(D_8005071C)($v0)
-    /* A2B4 8006D614 602B848C */  lw         $a0, %lo(D_80072B60)($a0)
+    /* A2AC 8006D60C 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* A2B0 8006D610 1C07438C */  lw         $v1, %lo(Dung_StatePtr)($v0)
+    /* A2B4 8006D614 602B848C */  lw         $a0, %lo(Stg40_RootState)($a0)
     /* A2B8 8006D618 A00B6224 */  addiu      $v0, $v1, 0xBA0
     /* A2BC 8006D61C 100002AD */  sw         $v0, 0x10($t0)
     /* A2C0 8006D620 040088AC */  sw         $t0, 0x4($a0)
@@ -90,8 +90,8 @@ glabel Stg40_AddEntity
     /* A2C8 8006D628 BEB50108 */  j          .L8006D6F8
     /* A2CC 8006D62C A40B60A0 */   sb        $zero, 0xBA4($v1)
   jlabel .L8006D630
-    /* A2D0 8006D630 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* A2D4 8006D634 1C07448C */  lw         $a0, %lo(D_8005071C)($v0)
+    /* A2D0 8006D630 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* A2D4 8006D634 1C07448C */  lw         $a0, %lo(Dung_StatePtr)($v0)
     /* A2D8 8006D638 00000000 */  nop
     /* A2DC 8006D63C 0E008394 */  lhu        $v1, 0xE($a0)
     /* A2E0 8006D640 01000624 */  addiu      $a2, $zero, 0x1
@@ -110,8 +110,8 @@ glabel Stg40_AddEntity
     /* A314 8006D674 BEB50108 */  j          .L8006D6F8
     /* A318 8006D678 000003AD */   sw        $v1, 0x0($t0)
   jlabel .L8006D67C
-    /* A31C 8006D67C 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* A320 8006D680 1C07448C */  lw         $a0, %lo(D_8005071C)($v0)
+    /* A31C 8006D67C 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* A320 8006D680 1C07448C */  lw         $a0, %lo(Dung_StatePtr)($v0)
     /* A324 8006D684 00000000 */  nop
     /* A328 8006D688 10008294 */  lhu        $v0, 0x10($a0)
     /* A32C 8006D68C 01000624 */  addiu      $a2, $zero, 0x1
@@ -122,8 +122,8 @@ glabel Stg40_AddEntity
     /* A340 8006D6A0 B4B50108 */  j          .L8006D6D0
     /* A344 8006D6A4 100083A4 */   sh        $v1, 0x10($a0)
   jlabel .L8006D6A8
-    /* A348 8006D6A8 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* A34C 8006D6AC 1C07448C */  lw         $a0, %lo(D_8005071C)($v0)
+    /* A348 8006D6A8 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* A34C 8006D6AC 1C07448C */  lw         $a0, %lo(Dung_StatePtr)($v0)
     /* A350 8006D6B0 00000000 */  nop
     /* A354 8006D6B4 12008294 */  lhu        $v0, 0x12($a0)
     /* A358 8006D6B8 21300000 */  addu       $a2, $zero, $zero
@@ -150,8 +150,8 @@ glabel Stg40_AddEntity
     /* A3A0 8006D700 03240400 */  sra        $a0, $a0, 16
     /* A3A4 8006D704 3FC2010C */  jal        Stg40_SetCellOccupied
     /* A3A8 8006D708 032C0500 */   sra       $a1, $a1, 16
-    /* A3AC 8006D70C 0580023C */  lui        $v0, %hi(D_8005071C)
-    /* A3B0 8006D710 1C07448C */  lw         $a0, %lo(D_8005071C)($v0)
+    /* A3AC 8006D70C 0580023C */  lui        $v0, %hi(Dung_StatePtr)
+    /* A3B0 8006D710 1C07448C */  lw         $a0, %lo(Dung_StatePtr)($v0)
     /* A3B4 8006D714 00000000 */  nop
     /* A3B8 8006D718 0C008394 */  lhu        $v1, 0xC($a0)
     /* A3BC 8006D71C 21100000 */  addu       $v0, $zero, $zero
