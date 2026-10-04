@@ -84,22 +84,22 @@ dlabel jtbl_80063410
 enddlabel jtbl_80063410
 
 .align 2
-nonmatching D_80063454
+nonmatching Stg11_TransferFileName
 
-dlabel D_80063454
+dlabel Stg11_TransferFileName
     /* F4 80063454 */ .asciz "BISLPSP028001"
     /* 4249534C505350303238303031000000 */
 .align 2
-enddlabel D_80063454
+enddlabel Stg11_TransferFileName
 
 .align 2
-nonmatching D_80063464
+nonmatching Stg11_SaveFileName
 
-dlabel D_80063464
+dlabel Stg11_SaveFileName
     /* 104 80063464 */ .asciz "BASLUS-01193 DMW2"
     /* 4241534C55532D303131393320444D5732000000 */
 .align 2
-enddlabel D_80063464
+enddlabel Stg11_SaveFileName
 
 .align 3
 nonmatching jtbl_80063478
@@ -131,9 +131,9 @@ dlabel jtbl_800634AC
     /* 160 800634C0 FC6F0680 */ .word .L80066FFC
 enddlabel jtbl_800634AC
 
-nonmatching D_800634C4
+nonmatching Stg11_CardTitle
 
-dlabel D_800634C4
+dlabel Stg11_CardTitle
     /* 164 800634C4 82638289 */ .word 0x89826382
     /* 168 800634C8 82878289 */ .word 0x89828782
     /* 16C 800634CC 828D828F */ .word 0x8F828D82
@@ -142,7 +142,7 @@ dlabel D_800634C4
     /* 178 800634D8 828C8284 */ .word 0x84828C82
     /* 17C 800634DC 82510000 */ .word 0x00005182
     /* 180 800634E0 00000000 */ .word 0x00000000
-enddlabel D_800634C4
+enddlabel Stg11_CardTitle
 
 nonmatching jtbl_800634E4
 

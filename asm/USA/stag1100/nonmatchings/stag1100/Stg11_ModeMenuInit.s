@@ -1,0 +1,14 @@
+nonmatching Stg11_ModeMenuInit, 0x28
+
+glabel Stg11_ModeMenuInit
+    /* 534 80063894 2C00838C */  lw         $v1, 0x2C($a0)
+    /* 538 80063898 0780023C */  lui        $v0, %hi(Stg11_LoadDone)
+    /* 53C 8006389C C88540A4 */  sh         $zero, %lo(Stg11_LoadDone)($v0)
+    /* 540 800638A0 200065A4 */  sh         $a1, 0x20($v1)
+    /* 544 800638A4 002C0500 */  sll        $a1, $a1, 16
+    /* 548 800638A8 032C0500 */  sra        $a1, $a1, 16
+    /* 54C 800638AC 0400A538 */  xori       $a1, $a1, 0x4
+    /* 550 800638B0 0100A52C */  sltiu      $a1, $a1, 0x1
+    /* 554 800638B4 0800E003 */  jr         $ra
+    /* 558 800638B8 240065A4 */   sh        $a1, 0x24($v1)
+endlabel Stg11_ModeMenuInit

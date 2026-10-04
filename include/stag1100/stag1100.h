@@ -15,7 +15,7 @@ typedef struct {
     u8 data[0x80];
 } Stg11Icon;
 
-/* Save/load work area of the task held in D_800685D0 (Actor.work). */
+/* Save/load work area of the task held in Stg11_CardTask (Actor.work). */
 typedef struct {
     /* 0x00 */ s32 field_0;
     /* 0x04 */ s32 field_4;
@@ -98,7 +98,7 @@ typedef struct {
 
 /* Task work passed as the second argument of the menu handlers (Actor.work of the menu task). */
 /* Five 0x20-byte party rows in Stg11MenuWork at 0x98, built from a
-   Stg11CardRec by func_80063D28. */
+   Stg11CardRec by Stg11_ConvertCardDigi. */
 typedef struct {
     /* 0x00 */ s16 field_0;
     /* 0x02 */ s16 field_2;
@@ -116,7 +116,7 @@ typedef struct {
 } Stg11MenuRow; /* size 0x20 */
 
 /* 0x100-byte digimon record stored in the save work card area
-   (func_8006770C() area + 0x1D880, five records). */
+   (Stg11_CardGetTransferBuf() area + 0x1D880, five records). */
 typedef struct {
     /* 0x00 */ u8 bytes[0x80];
     /* 0x80 */ u32 field_80;
@@ -138,7 +138,7 @@ typedef struct {
     /* 0xCA */ u8 skills[0x36];
 } Stg11CardRec; /* size 0x100 */
 
-/* View of the func_8006770C() area holding the card records. */
+/* View of the Stg11_CardGetTransferBuf() area holding the card records. */
 typedef struct {
     u8 _pad0[0x1D880];
     /* 0x1D880 */ Stg11CardRec cards[5];
@@ -187,7 +187,7 @@ typedef struct {
     /* 0x138 */ s16 field_138;
 } Stg11MenuWork;
 
-/* Work of the stage root task (func_800638BC). */
+/* Work of the stage root task (Stg11_ModeMenuUpdate). */
 typedef struct {
     /* 0x00 */ s32 texts[4];
     /* 0x10 */ s16 field_10[2];
@@ -222,7 +222,7 @@ typedef struct {
     /* 0x2 */ s16 y;
 } Stg11Pos;
 
-/* Work of the party-select list task (func_80066C48, drawn by func_80067124). */
+/* Work of the party-select list task (Stg11_VsPartyUpdate, drawn by Stg11_VsPartyDraw). */
 typedef struct {
     /* 0x00 */ s32 field_0[0x14];
     /* 0x50 */ Stg11Pos field_50;
@@ -242,7 +242,7 @@ typedef struct {
     /* 0x1A2 */ s16 field_1A2[3];
 } Stg11Work66C04;
 
-/* D_800684A8: a save's GameState pointer followed by the three chosen party entries. */
+/* Stg11_VsParty: a save's GameState pointer followed by the three chosen party entries. */
 typedef struct {
     /* 0x00 */ GameStateView *field_0;
     /* 0x04 */ DigiRosterEntry field_4[3];
@@ -304,35 +304,35 @@ extern void Task_SetState1(Actor *arg0, u32 arg1);
 extern u8 *memset(u8 *s, s32 c, s32 n);
 extern u8 *strcpy(u8 *dst, u8 *src);
 
-extern Halves D_800681D4;
-extern Halves D_800681D8;
-extern s16 D_800685C8;
-extern Actor *D_800685D0;
-extern Stg11SaveWork *D_800685D4;
-extern Stg11Party D_800684A8;
+extern Halves Stg11_PromptPos;
+extern Halves Stg11_StatusPos;
+extern s16 Stg11_LoadDone;
+extern Actor *Stg11_CardTask;
+extern Stg11SaveWork *Stg11_CardWork;
+extern Stg11Party Stg11_VsParty;
 
-s32 func_80067818(void);
-void func_800677AC(u8 arg0, s32 arg1);
+s32 Stg11_CardGetResult(void);
+void Stg11_CardStartOp(u8 arg0, s32 arg1);
 
 extern void Task_NextState2(Actor *arg0);
 extern void Task_SetState2(Actor *arg0, u32 arg1);
 extern s32 Text_WaitYesNo(s32 arg0);
-extern u8 D_80063454[];
-extern u8 D_80063464[];
-void func_800648E4(Stg11MenuWork *arg0, s32 arg1);
-void func_800648B4(Actor *arg0, Stg11MenuWork *arg1);
-void func_8006495C(Stg11MenuWork *arg0, s32 arg1, s32 arg2);
-s32 func_800649F8(Actor *arg0, Stg11MenuWork *arg1);
-void func_80064000(Actor *arg0, Stg11MenuWork *arg1);
-void func_80064304(Actor *arg0, Stg11MenuWork *arg1);
-void func_8006448C(Actor *arg0, Stg11MenuWork *arg1);
-void func_80067838(u8 *arg0, u8 arg1);
-u8 *func_800676F4(void);
-u8 *func_8006770C(void);
-void func_80067724(u8 *arg0);
-s32 func_80067880(s32 arg0);
-s32 func_800678F0(Stg11SaveWork *arg0);
-void func_800673FC(void);
+extern u8 Stg11_TransferFileName[];
+extern u8 Stg11_SaveFileName[];
+void Stg11_SetStatusMsg(Stg11MenuWork *arg0, s32 arg1);
+void Stg11_CloseSlotText(Actor *arg0, Stg11MenuWork *arg1);
+void Stg11_SetPromptMsg(Stg11MenuWork *arg0, s32 arg1, s32 arg2);
+s32 Stg11_WatchCardRemoved(Actor *arg0, Stg11MenuWork *arg1);
+void Stg11_ScanTransferCards(Actor *arg0, Stg11MenuWork *arg1);
+void Stg11_OpenTransferText(Actor *arg0, Stg11MenuWork *arg1);
+void Stg11_TransferSelected(Actor *arg0, Stg11MenuWork *arg1);
+void Stg11_CardSetFileName(u8 *arg0, u8 arg1);
+u8 *Stg11_CardGetDataBuf(void);
+u8 *Stg11_CardGetTransferBuf(void);
+void Stg11_CardSetTitle(u8 *arg0);
+s32 Stg11_CardGetProgress(s32 arg0);
+s32 Stg11_CardChecksum(Stg11SaveWork *arg0);
+void Stg11_CardInitHeader(void);
 extern u8 *Digi_GetDefaultName(s32);
 extern void Gpu_AllocPacketBufs(s32 a0);
 extern void Sys_SetFrameRate30(void);
@@ -349,9 +349,9 @@ extern s32 Snd_AnySlotLoading(void);
 extern void Task_NextState1(Actor *arg0);
 extern SysState D_8005F770;
 extern s16 D_80050780;
-extern Halves D_800681DC;
-s32 func_80067B54(Stg11SaveWork *arg0, s32 arg1, s32 arg2);
-s32 func_80067938(Stg11SaveWork *arg0, s32 arg1, s32 arg2);
+extern Halves Stg11_TransferCountPos;
+s32 Stg11_CardAsyncOp(Stg11SaveWork *arg0, s32 arg1, s32 arg2);
+s32 Stg11_CardFileOp(Stg11SaveWork *arg0, s32 arg1, s32 arg2);
 extern s32 Math_CycleRange(s32, s32, s32, s32);
 extern void Gfx_DrawParts(void *);
 extern void Menu_SetPartsGridPos(void *, s32, s32 *, s16 *);
@@ -385,14 +385,14 @@ extern void Text_SetInputPad(s32 a0, s32 a1);
 extern s32 Digi_GetRank(s32 id);
 extern u8 Digi_GetLearnedSkill(s32 id);
 extern s32 Digi_CalcMaxLevel(s32 x);
-extern u16 D_8006820C[];
-extern Stg11IconImage D_80068244;
-extern Stg11Icon D_80068330;
-extern Stg11Icon D_800683F0;
-extern u8 D_800634C4[];
-extern Halves D_800681B8;
-extern Layout8C D_800681F8;
-extern Halves D_80068204;
+extern u16 Stg11_VsRowMasks[];
+extern Stg11IconImage Stg11_CardIconImage;
+extern Stg11Icon Stg11_CardIcon2;
+extern Stg11Icon Stg11_CardIcon3;
+extern u8 Stg11_CardTitle[];
+extern Halves Stg11_ModeHelpPos;
+extern Layout8C Stg11_VsPartyLayout;
+extern Halves Stg11_VsPromptPos;
 extern Halves D_80068208;
 
 

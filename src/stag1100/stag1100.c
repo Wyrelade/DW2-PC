@@ -1,7 +1,7 @@
 #include "common.h"
 #include "stag1100/stag1100.h"
 
-void func_8006358C(Actor *arg0) {
+void Stg11_RootUpdate(Actor *arg0) {
     Stg11MainWork *w = (Stg11MainWork *)arg0->work;
     s32 *slot = (s32 *)arg0->u34.children;
 
@@ -48,13 +48,13 @@ void func_8006358C(Actor *arg0) {
     }
 }
 
-void func_8006374C(Actor *arg0) {
+void Stg11_BgUpdate(Actor *arg0) {
     if (arg0->stateLevel0 == 0) {
         Task_NextState0(arg0);
     }
 }
 
-void func_8006377C(Actor *arg0) {
+void Stg11_BgDraw(Actor *arg0) {
     GfxPart *list = (GfxPart *)Cd_GetFileEntry(0x459000C);
     GfxPart *p;
 
@@ -86,14 +86,14 @@ void func_8006377C(Actor *arg0) {
     Gfx_DrawParts(list);
 }
 
-void func_80063894(Actor *arg0, s16 arg1) {
+void Stg11_ModeMenuInit(Actor *arg0, s16 arg1) {
     Stg11Work63894 *w = (Stg11Work63894 *)arg0->work;
-    D_800685C8 = 0;
+    Stg11_LoadDone = 0;
     w->field_20 = arg1;
     w->field_24 = arg1 == 4;
 }
 
-void func_800638BC(Actor *arg0) {
+void Stg11_ModeMenuUpdate(Actor *arg0) {
     Stg11Work63894 *w = (Stg11Work63894 *)arg0->work;
     s32 *slot = (s32 *)arg0->u34.children;
     Stg11TaskEntry *tasks;
@@ -113,7 +113,7 @@ void func_800638BC(Actor *arg0) {
         default:
             if (Math_RampToOne(arg0, &w->field_28) == 0) {
                 Text_PrintIdList(w->texts, (TextIdListEntry *)Cd_GetFileEntrySubPtr(0xD280001, w->field_20 - 1), 2);
-                Text_OpenPacked(&w->texts[3], (s32)Cd_GetFileEntry(w->field_20 + 0x1FD01A2), 0x81, D_800681B8);
+                Text_OpenPacked(&w->texts[3], (s32)Cd_GetFileEntry(w->field_20 + 0x1FD01A2), 0x81, Stg11_ModeHelpPos);
                 Task_NextState1(arg0);
             }
             break;
@@ -143,8 +143,8 @@ void func_800638BC(Actor *arg0) {
                 break;
             case 1:
                 if (*slot == 0) {
-                    if (D_800685C8 == 0) {
-                        Text_OpenPacked(&w->texts[3], (s32)Cd_GetFileEntry(w->field_20 + 0x1FD01A2), 0x81, D_800681B8);
+                    if (Stg11_LoadDone == 0) {
+                        Text_OpenPacked(&w->texts[3], (s32)Cd_GetFileEntry(w->field_20 + 0x1FD01A2), 0x81, Stg11_ModeHelpPos);
                         Task_SetState1(arg0, 1);
                     } else {
                         Task_SetState0(arg0, 2);
@@ -173,7 +173,7 @@ void func_800638BC(Actor *arg0) {
     }
 }
 
-void func_80063C08(Actor *arg0) {
+void Stg11_ModeMenuDraw(Actor *arg0) {
     Stg11Work63894 *w = (Stg11Work63894 *)arg0->work;
     s32 *list;
     s32 i;
@@ -199,7 +199,7 @@ void func_80063C08(Actor *arg0) {
 void func_80063D20(void) {
 }
 
-void func_80063D28(Stg11MenuRow *arg0, Stg11CardRec *arg1) {
+void Stg11_ConvertCardDigi(Stg11MenuRow *arg0, Stg11CardRec *arg1) {
     s16 *skillTbl = (s16 *)Cd_GetFileEntry(0xD28000E);
     Stg11SpeciesRec *t = (Stg11SpeciesRec *)Cd_GetFileEntry(0xD280010);
     s32 i;
@@ -250,8 +250,8 @@ void func_80063D28(Stg11MenuRow *arg0, Stg11CardRec *arg1) {
     }
 }
 
-void func_80064000(Actor *arg0, Stg11MenuWork *arg1) {
-    Stg11CardRec *p = (Stg11CardRec *)func_8006770C();
+void Stg11_ScanTransferCards(Actor *arg0, Stg11MenuWork *arg1) {
+    Stg11CardRec *p = (Stg11CardRec *)Stg11_CardGetTransferBuf();
     s16 *tbl = (s16 *)Cd_GetFileEntry(0xD28000F);
     Stg11MenuRow *c = arg1->field_98;
     Stg11CardRec *rec;
@@ -300,7 +300,7 @@ void func_80064000(Actor *arg0, Stg11MenuWork *arg1) {
                 if (c->field_2 == 0) {
                     n++;
                 }
-                func_80063D28(c, rec);
+                Stg11_ConvertCardDigi(c, rec);
             }
         }
     }
@@ -309,7 +309,7 @@ void func_80064000(Actor *arg0, Stg11MenuWork *arg1) {
     }
 }
 
-void func_80064304(Actor *arg0, Stg11MenuWork *arg1) {
+void Stg11_OpenTransferText(Actor *arg0, Stg11MenuWork *arg1) {
     Halves *pos = (Halves *)Cd_GetFileEntry(0xD28000C);
     Stg11MenuRow *row = arg1->field_98;
     TextDescHalves st;
@@ -334,12 +334,12 @@ void func_80064304(Actor *arg0, Stg11MenuWork *arg1) {
             Text_OpenDesc(&arg1->field_38[i * 2 + 1], (TextDesc *)&st);
         }
     }
-    st.pos = D_800681DC;
+    st.pos = Stg11_TransferCountPos;
     st.text = (s32)Cd_GetFileEntry(arg1->field_138 + 0x1FD01BD);
     Text_OpenDesc(&arg1->field_C, (TextDesc *)&st);
 }
 
-void func_8006448C(Actor *arg0, Stg11MenuWork *arg1) {
+void Stg11_TransferSelected(Actor *arg0, Stg11MenuWork *arg1) {
     Stg11MenuRow *c = &arg1->field_98[Menu_GridIndexColMajor(arg1->cursor, arg1->u6C.gridSize)];
     Stg11DigiEntry *e = (Stg11DigiEntry *)D_80050720->elems;
     u8 *src;
@@ -387,12 +387,12 @@ void func_8006448C(Actor *arg0, Stg11MenuWork *arg1) {
     e->field_4A = c->field_1E;
     arg1->field_138--;
     c->field_2 = 1;
-    func_80064304(arg0, arg1);
-    func_8006495C(arg1, 0x110, 1);
+    Stg11_OpenTransferText(arg0, arg1);
+    Stg11_SetPromptMsg(arg1, 0x110, 1);
     Snd_PlayById(0xE, 0);
 }
 
-void func_800646C0(Actor *arg0, Stg11MenuWork *arg1) {
+void Stg11_OpenSlotText(Actor *arg0, Stg11MenuWork *arg1) {
     Stg11SaveList *list = arg1->field_90;
     Halves *pos = (Halves *)Cd_GetFileEntry(0xD28000B);
     TextDescHalves st;
@@ -426,18 +426,18 @@ void func_800646C0(Actor *arg0, Stg11MenuWork *arg1) {
     }
 }
 
-void func_800648B4(Actor *arg0, Stg11MenuWork *arg1) {
+void Stg11_CloseSlotText(Actor *arg0, Stg11MenuWork *arg1) {
     Text_CloseArray(arg1->field_10, 9);
     arg1->field_86 = 0;
 }
 
-void func_800648E4(Stg11MenuWork *arg0, s32 arg1) {
+void Stg11_SetStatusMsg(Stg11MenuWork *arg0, s32 arg1) {
     TextDescHalves st;
 
     if (arg1 == 0) {
         Text_Close(&arg0->field_8);
     } else {
-        st.pos = D_800681D8;
+        st.pos = Stg11_StatusPos;
         st.packedStyle = 0x80;
         st.color = 0;
         st.text = (s32)Cd_GetFileEntry(arg1 + 0x1FD0000);
@@ -445,13 +445,13 @@ void func_800648E4(Stg11MenuWork *arg0, s32 arg1) {
     }
 }
 
-void func_8006495C(Stg11MenuWork *arg0, s32 arg1, s32 arg2) {
+void Stg11_SetPromptMsg(Stg11MenuWork *arg0, s32 arg1, s32 arg2) {
     TextDescHalves st;
 
     if (arg1 == 0) {
         Text_Close(&arg0->field_4);
     } else {
-        st.pos = D_800681D4;
+        st.pos = Stg11_PromptPos;
         st.packedStyle = arg2 - 0x80;
         st.color = 0;
         st.text = (s32)Cd_GetFileEntry(arg1 + 0x1FD0000);
@@ -459,30 +459,30 @@ void func_8006495C(Stg11MenuWork *arg0, s32 arg1, s32 arg2) {
     }
 }
 
-s32 func_800649D4(Stg11MenuWork *arg0) {
+s32 Stg11_IsPromptFinished(Stg11MenuWork *arg0) {
     return Text_IsFinished(arg0->field_4);
 }
 
-s32 func_800649F8(Actor *arg0, Stg11MenuWork *arg1) {
+s32 Stg11_WatchCardRemoved(Actor *arg0, Stg11MenuWork *arg1) {
     s32 r = 0;
-    s32 v = func_80067818();
+    s32 v = Stg11_CardGetResult();
 
     if (v != -1) {
         if (v == 0) {
             Task_SetState1(arg0, 3);
             r = -1;
         } else {
-            func_800677AC(4, arg1->field_84);
+            Stg11_CardStartOp(4, arg1->field_84);
         }
     }
     return r;
 }
 
-void func_80064A6C(Actor *arg0, Stg11MenuWork *arg1) {
+void Stg11_StateWaitCancel(Actor *arg0, Stg11MenuWork *arg1) {
     if (arg0->stateLevel2 == 0) {
-        func_800677AC(4, arg1->field_84);
+        Stg11_CardStartOp(4, arg1->field_84);
     }
-    if (func_800649F8(arg0, arg1) == 0) {
+    if (Stg11_WatchCardRemoved(arg0, arg1) == 0) {
         arg0->stateLevel2 = 1;
         if (D_8005F6F0[arg1->field_7E].triangle > 0) {
             Snd_PlayById(0xB, 0);
@@ -491,13 +491,13 @@ void func_80064A6C(Actor *arg0, Stg11MenuWork *arg1) {
     }
 }
 
-void func_80064B00(Actor *arg0, Stg11MenuWork *arg1) {
+void Stg11_StateCardError(Actor *arg0, Stg11MenuWork *arg1) {
     s32 msg;
 
     switch (arg0->stateLevel2) {
     case 0:
         msg = 0;
-        switch (func_80067818()) {
+        switch (Stg11_CardGetResult()) {
         case 1:
             msg = arg1->field_7A == 0 ? 0x16D : 0x16E;
             break;
@@ -523,9 +523,9 @@ void func_80064B00(Actor *arg0, Stg11MenuWork *arg1) {
             msg = arg1->field_80 != 0 ? 0x1B1 : 0x186;
             break;
         }
-        func_800648E4(arg1, msg);
-        func_800648B4(arg0, arg1);
-        func_800677AC(4, arg1->field_84);
+        Stg11_SetStatusMsg(arg1, msg);
+        Stg11_CloseSlotText(arg0, arg1);
+        Stg11_CardStartOp(4, arg1->field_84);
         Task_NextState2(arg0);
         break;
     case 1:
@@ -536,48 +536,48 @@ void func_80064B00(Actor *arg0, Stg11MenuWork *arg1) {
         }
         break;
     }
-    func_800649F8(arg0, arg1);
+    Stg11_WatchCardRemoved(arg0, arg1);
 }
 
-void func_80064C64(Actor *arg0, Stg11MenuWork *arg1) {
+void Stg11_StateCheckCard(Actor *arg0, Stg11MenuWork *arg1) {
     switch (arg0->stateLevel2) {
     case 0:
-        func_8006495C(arg1, arg1->field_88, 1);
+        Stg11_SetPromptMsg(arg1, arg1->field_88, 1);
         arg1->field_88 = 0;
         arg1->field_86 = 0;
-        func_800648B4(arg0, arg1);
+        Stg11_CloseSlotText(arg0, arg1);
         Task_SetState2(arg0, 0xA);
     case 10:
-        func_800677AC(2, arg1->field_84);
+        Stg11_CardStartOp(2, arg1->field_84);
         Task_NextState2(arg0);
         break;
     case 11:
-        switch (func_80067818()) {
+        switch (Stg11_CardGetResult()) {
         case -1:
             break;
         case 2:
-            func_800648E4(arg1, arg1->field_80 ? 0x1AD : 0x16B);
+            Stg11_SetStatusMsg(arg1, arg1->field_80 ? 0x1AD : 0x16B);
             Task_SetState2(arg0, 0x14);
             break;
         case 0:
-            func_800648E4(arg1, arg1->field_84 + (arg1->field_80 ? 0x1AE : 0x180));
+            Stg11_SetStatusMsg(arg1, arg1->field_84 + (arg1->field_80 ? 0x1AE : 0x180));
             Task_SetState2(arg0, 0xA);
             break;
         }
         break;
     case 20:
-        func_800677AC(4, arg1->field_84);
+        Stg11_CardStartOp(4, arg1->field_84);
         Task_NextState2(arg0);
         break;
     case 21:
-        switch (func_80067818()) {
+        switch (Stg11_CardGetResult()) {
         case -1:
             break;
         case 2:
             Task_SetState2(arg0, 0x1E);
             break;
         case 0:
-            func_800648E4(arg1, arg1->field_84 + (arg1->field_80 ? 0x1AE : 0x180));
+            Stg11_SetStatusMsg(arg1, arg1->field_84 + (arg1->field_80 ? 0x1AE : 0x180));
             Task_SetState2(arg0, 0xA);
             break;
         case 1:
@@ -593,11 +593,11 @@ void func_80064C64(Actor *arg0, Stg11MenuWork *arg1) {
         }
         break;
     case 30:
-        func_800677AC(5, arg1->field_84);
+        Stg11_CardStartOp(5, arg1->field_84);
         Task_NextState2(arg0);
         break;
     case 31:
-        switch (func_80067818()) {
+        switch (Stg11_CardGetResult()) {
         case -1:
             break;
         case 9:
@@ -625,18 +625,18 @@ void func_80064C64(Actor *arg0, Stg11MenuWork *arg1) {
     }
 }
 
-void func_80064EF0(Actor *arg0, Stg11MenuWork *arg1) {
+void Stg11_StateAskFormat(Actor *arg0, Stg11MenuWork *arg1) {
     s32 r;
 
     if (arg0->stateLevel2 == 0) {
-        func_800677AC(4, arg1->field_84);
+        Stg11_CardStartOp(4, arg1->field_84);
     }
-    if (func_800649F8(arg0, arg1) == 0) {
+    if (Stg11_WatchCardRemoved(arg0, arg1) == 0) {
         switch (arg0->stateLevel2) {
         case 0:
         default:
-            func_800648E4(arg1, 0x16D);
-            func_8006495C(arg1, 0x177, 1);
+            Stg11_SetStatusMsg(arg1, 0x16D);
+            Stg11_SetPromptMsg(arg1, 0x177, 1);
             Task_NextState2(arg0);
             break;
         case 1:
@@ -653,19 +653,19 @@ void func_80064EF0(Actor *arg0, Stg11MenuWork *arg1) {
     }
 }
 
-void func_80064FD0(Actor *arg0, Stg11MenuWork *arg1) {
+void Stg11_StateFormat(Actor *arg0, Stg11MenuWork *arg1) {
     s32 r;
 
     switch (arg0->stateLevel2) {
     case 0:
-        func_800648E4(arg1, 0x193);
-        func_8006495C(arg1, 0, 0);
-        func_800677AC(6, arg1->field_84);
+        Stg11_SetStatusMsg(arg1, 0x193);
+        Stg11_SetPromptMsg(arg1, 0, 0);
+        Stg11_CardStartOp(6, arg1->field_84);
         Task_NextState2(arg0);
         break;
     case 1:
         arg1->field_94 = 0;
-        r = func_80067818();
+        r = Stg11_CardGetResult();
         switch (r) {
         case 0:
             Task_SetState1(arg0, 3);
@@ -683,18 +683,18 @@ void func_80064FD0(Actor *arg0, Stg11MenuWork *arg1) {
     }
 }
 
-void func_800650A8(Actor *arg0, Stg11MenuWork *arg1) {
+void Stg11_StateAskCreate(Actor *arg0, Stg11MenuWork *arg1) {
     s32 r;
 
     if (arg0->stateLevel2 == 0) {
-        func_800677AC(4, arg1->field_84);
+        Stg11_CardStartOp(4, arg1->field_84);
     }
-    if (func_800649F8(arg0, arg1) == 0) {
+    if (Stg11_WatchCardRemoved(arg0, arg1) == 0) {
         switch (arg0->stateLevel2) {
         case 0:
         default:
-            func_800648E4(arg1, 0x16E);
-            func_8006495C(arg1, 0x176, 1);
+            Stg11_SetStatusMsg(arg1, 0x16E);
+            Stg11_SetPromptMsg(arg1, 0x176, 1);
             Task_NextState2(arg0);
             break;
         case 1:
@@ -711,21 +711,21 @@ void func_800650A8(Actor *arg0, Stg11MenuWork *arg1) {
     }
 }
 
-void func_80065188(Actor *arg0, Stg11MenuWork *arg1) {
+void Stg11_StateCreateFile(Actor *arg0, Stg11MenuWork *arg1) {
     switch (arg0->stateLevel2) {
     case 0:
-        func_800673FC();
-        func_800677AC(7, arg1->field_84);
-        func_800648E4(arg1, 0x184);
-        func_8006495C(arg1, 0, 0);
+        Stg11_CardInitHeader();
+        Stg11_CardStartOp(7, arg1->field_84);
+        Stg11_SetStatusMsg(arg1, 0x184);
+        Stg11_SetPromptMsg(arg1, 0, 0);
         Task_NextState2(arg0);
         break;
     case 1:
         arg1->field_94 = 0;
-        switch (func_80067818()) {
+        switch (Stg11_CardGetResult()) {
         case -1:
             arg1->field_94 = 2;
-            arg1->field_96 = func_80067880(0x80);
+            arg1->field_96 = Stg11_CardGetProgress(0x80);
             break;
         case 0:
             Task_SetState1(arg0, 3);
@@ -734,17 +734,17 @@ void func_80065188(Actor *arg0, Stg11MenuWork *arg1) {
             Task_SetState1(arg0, 2);
             break;
         case 9:
-            func_800677AC(8, arg1->field_84);
+            Stg11_CardStartOp(8, arg1->field_84);
             Task_NextState2(arg0);
             break;
         }
         break;
     case 2:
         arg1->field_94 = 0;
-        switch (func_80067818()) {
+        switch (Stg11_CardGetResult()) {
         case -1:
             arg1->field_94 = 2;
-            arg1->field_96 = func_80067880(0x80);
+            arg1->field_96 = Stg11_CardGetProgress(0x80);
             break;
         case 0:
         case 0xF:
@@ -761,7 +761,7 @@ void func_80065188(Actor *arg0, Stg11MenuWork *arg1) {
     }
 }
 
-void func_80065318(Actor *arg0, Stg11MenuWork *arg1) {
+void Stg11_StateReadFile(Actor *arg0, Stg11MenuWork *arg1) {
     Stg11SaveList *list;
     Stg11SaveSlot *slot;
     s32 i;
@@ -769,17 +769,17 @@ void func_80065318(Actor *arg0, Stg11MenuWork *arg1) {
 
     switch (arg0->stateLevel2) {
     case 0:
-        func_800677AC(9, arg1->field_84);
-        func_800648E4(arg1, arg1->field_80 ? 0x1B0 : 0x185);
-        func_8006495C(arg1, 0, 0);
+        Stg11_CardStartOp(9, arg1->field_84);
+        Stg11_SetStatusMsg(arg1, arg1->field_80 ? 0x1B0 : 0x185);
+        Stg11_SetPromptMsg(arg1, 0, 0);
         Task_NextState2(arg0);
         break;
     case 1:
         arg1->field_94 = 0;
-        switch (func_80067818()) {
+        switch (Stg11_CardGetResult()) {
         case -1:
             arg1->field_94 = 2;
-            arg1->field_96 = func_80067880(0x80);
+            arg1->field_96 = Stg11_CardGetProgress(0x80);
             break;
         case 0:
         case 15:
@@ -791,7 +791,7 @@ void func_80065318(Actor *arg0, Stg11MenuWork *arg1) {
             Task_SetState1(arg0, 2);
             break;
         case 14:
-            func_800673FC();
+            Stg11_CardInitHeader();
             Task_SetState1(arg0, 7);
             break;
         case 13:
@@ -819,7 +819,7 @@ void func_80065318(Actor *arg0, Stg11MenuWork *arg1) {
     }
 }
 
-void func_800654E4(Actor *arg0, Stg11MenuWork *arg1) {
+void Stg11_StateSelectSlot(Actor *arg0, Stg11MenuWork *arg1) {
     Stg11SaveList *list = arg1->field_90;
     Stg11SaveSlot *slot;
     DigiRosterEntry *e;
@@ -831,15 +831,15 @@ void func_800654E4(Actor *arg0, Stg11MenuWork *arg1) {
     s32 n;
 
     if (arg0->stateLevel2 == 0) {
-        func_800677AC(4, arg1->field_84);
+        Stg11_CardStartOp(4, arg1->field_84);
     }
-    if (func_800649F8(arg0, arg1) != 0) {
+    if (Stg11_WatchCardRemoved(arg0, arg1) != 0) {
         return;
     }
     switch (arg0->stateLevel2) {
     case 0:
     default:
-        func_800648E4(arg1, 0);
+        Stg11_SetStatusMsg(arg1, 0);
         msg = 0x170;
         if (arg1->field_7A == 0) {
             msg = 0x172;
@@ -847,9 +847,9 @@ void func_800654E4(Actor *arg0, Stg11MenuWork *arg1) {
         if (arg1->field_7C != 0) {
             msg = 0x1A8;
         }
-        func_8006495C(arg1, msg, 1);
+        Stg11_SetPromptMsg(arg1, msg, 1);
         arg1->field_86 = 1;
-        func_800646C0(arg0, arg1);
+        Stg11_OpenSlotText(arg0, arg1);
         Task_NextState2(arg0);
         break;
     case 1:
@@ -860,11 +860,11 @@ void func_800654E4(Actor *arg0, Stg11MenuWork *arg1) {
                     if (list->used[idx] == 0) {
                         list->used[idx] = D_8005F770.prevGameMode;
                         *(list->slots + idx) = *(Stg11SaveSlot *)D_80050720;
-                        func_800646C0(arg0, arg1);
+                        Stg11_OpenSlotText(arg0, arg1);
                         Task_SetState1(arg0, 8);
                         Snd_PlayById(0xE, 0);
                     } else {
-                        func_8006495C(arg1, 0x175, 1);
+                        Stg11_SetPromptMsg(arg1, 0x175, 1);
                         Task_NextState2(arg0);
                         Snd_PlayById(0xE, 0);
                     }
@@ -874,24 +874,24 @@ void func_800654E4(Actor *arg0, Stg11MenuWork *arg1) {
                     } else {
                         if (arg1->field_7C == 0) {
                             *(Stg11SaveSlot *)D_80050720 = *(list->slots + idx);
-                            D_800685C8 = 1;
+                            Stg11_LoadDone = 1;
                             D_8005F770.prevGameMode = list->used[idx];
                             Task_SetState0(arg0, 2);
                             Snd_PlayById(0xE, 0);
                         } else {
                             slot = &list->slots[idx];
                             e = slot->u.gs.elems;
-                            D_800684A8.field_0 = &slot->u.gs;
+                            Stg11_VsParty.field_0 = &slot->u.gs;
                             for (n = i = 0; i < 3; i++, e++) {
-                                D_800684A8.field_4[i].state = 0;
+                                Stg11_VsParty.field_4[i].state = 0;
                                 if (e->state >= 3) {
-                                    D_800684A8.field_4[n] = *e;
+                                    Stg11_VsParty.field_4[n] = *e;
                                     n++;
                                 }
                             }
                             if (n < 3) {
                                 Snd_PlayById(0x10, 0);
-                                func_8006495C(arg1, 0x1AB, 1);
+                                Stg11_SetPromptMsg(arg1, 0x1AB, 1);
                             } else {
                                 Snd_PlayById(0xE, 0);
                                 Task_SetState1(arg0, 0xB);
@@ -912,7 +912,7 @@ void func_800654E4(Actor *arg0, Stg11MenuWork *arg1) {
             if (arg1->field_7C != 0) {
                 msg = 0x1A8;
             }
-            func_8006495C(arg1, msg, 0);
+            Stg11_SetPromptMsg(arg1, msg, 0);
         }
         break;
     case 2:
@@ -922,7 +922,7 @@ void func_800654E4(Actor *arg0, Stg11MenuWork *arg1) {
                 idx2 = Menu_GridIndexColMajor(arg1->cursor, arg1->u6C.gridSize);
                 list->used[idx2] = D_8005F770.prevGameMode;
                 *(list->slots + idx2) = *(Stg11SaveSlot *)D_80050720;
-                func_800646C0(arg0, arg1);
+                Stg11_OpenSlotText(arg0, arg1);
                 Task_SetState1(arg0, 8);
             }
         } else {
@@ -930,26 +930,26 @@ void func_800654E4(Actor *arg0, Stg11MenuWork *arg1) {
             if (arg1->field_7A == 0) {
                 msg = 0x172;
             }
-            func_8006495C(arg1, msg, 1);
+            Stg11_SetPromptMsg(arg1, msg, 1);
             Task_SetState2(arg0, 1);
         }
         break;
     }
 }
 
-void func_80065A3C(Actor *arg0, Stg11MenuWork *arg1) {
+void Stg11_StateWriteSave(Actor *arg0, Stg11MenuWork *arg1) {
     switch (arg0->stateLevel2) {
     case 0:
-        func_800677AC(8, arg1->field_84);
-        func_8006495C(arg1, 0x173, 1);
+        Stg11_CardStartOp(8, arg1->field_84);
+        Stg11_SetPromptMsg(arg1, 0x173, 1);
         Task_NextState2(arg0);
         break;
     case 1:
         arg1->field_94 = 0;
-        switch (func_80067818()) {
+        switch (Stg11_CardGetResult()) {
         case -1:
             arg1->field_94 = 2;
-            arg1->field_96 = func_80067880(0x80);
+            arg1->field_96 = Stg11_CardGetProgress(0x80);
             break;
         case 0:
         case 0xF:
@@ -961,14 +961,14 @@ void func_80065A3C(Actor *arg0, Stg11MenuWork *arg1) {
             Task_SetState1(arg0, 2);
             break;
         case 0xC:
-            func_800677AC(4, arg1->field_84);
-            func_8006495C(arg1, 0x174, 1);
+            Stg11_CardStartOp(4, arg1->field_84);
+            Stg11_SetPromptMsg(arg1, 0x174, 1);
             Task_NextState2(arg0);
             break;
         }
         break;
     case 2:
-        if (func_800649F8(arg0, arg1) == 0) {
+        if (Stg11_WatchCardRemoved(arg0, arg1) == 0) {
             if (arg0->stateLevel3++ >= 0x3C) {
                 Task_SetState1(arg0, 7);
             }
@@ -977,7 +977,7 @@ void func_80065A3C(Actor *arg0, Stg11MenuWork *arg1) {
     }
 }
 
-void func_80065BA0(Actor *arg0, Stg11MenuWork *arg1) {
+void Stg11_StateVsPartySelect(Actor *arg0, Stg11MenuWork *arg1) {
     s32 *slot = (s32 *)arg0->u34.children;
     DigiRosterEntry *d;
     u8 *src;
@@ -985,14 +985,14 @@ void func_80065BA0(Actor *arg0, Stg11MenuWork *arg1) {
     s32 i;
 
     if (arg0->stateLevel2 == 0) {
-        func_800677AC(4, arg1->field_84);
+        Stg11_CardStartOp(4, arg1->field_84);
     }
-    if (func_800649F8(arg0, arg1) != 0) {
+    if (Stg11_WatchCardRemoved(arg0, arg1) != 0) {
         if (*slot != 0) {
             Task_SetState0((Actor *)*slot, 2);
         }
         Text_PrintIdList((s32 *)arg1, (TextIdListEntry *)Cd_GetFileEntrySubPtr(0xD280006, arg1->field_78 - 1), 0);
-        func_800648B4(arg0, arg1);
+        Stg11_CloseSlotText(arg0, arg1);
         arg1->field_8C = 0x1000;
         return;
     }
@@ -1014,13 +1014,13 @@ void func_80065BA0(Actor *arg0, Stg11MenuWork *arg1) {
             if (D_80050780 != 0) {
                 d = &D_80050720->elems[arg1->field_7E * 3];
                 for (i = 0; i < 3; i++) {
-                    *d = D_800684A8.field_4[i];
+                    *d = Stg11_VsParty.field_4[i];
                     if (d->state != 0) {
                         d->state = i + 3;
                     }
                     d++;
                 }
-                src = D_800684A8.field_0->field_14;
+                src = Stg11_VsParty.field_0->field_14;
                 dst = D_80050720->elems[arg1->field_7E + 6].name;
                 while (*src != 0xFF) {
                     *dst++ = *src++;
@@ -1041,13 +1041,13 @@ void func_80065BA0(Actor *arg0, Stg11MenuWork *arg1) {
     }
 }
 
-void func_80065E64(Actor *arg0, Stg11MenuWork *arg1) {
+void Stg11_StateTransferList(Actor *arg0, Stg11MenuWork *arg1) {
     s32 r;
 
     if (arg0->stateLevel2 == 0) {
-        func_800677AC(4, arg1->field_84);
+        Stg11_CardStartOp(4, arg1->field_84);
     }
-    if (func_800649F8(arg0, arg1) != 0) {
+    if (Stg11_WatchCardRemoved(arg0, arg1) != 0) {
         Text_CloseArray(arg1->field_38, 11);
         Text_Close(&arg1->field_C);
         return;
@@ -1057,25 +1057,25 @@ void func_80065E64(Actor *arg0, Stg11MenuWork *arg1) {
     default:
         arg1->field_86 = 2;
         arg1->u6C.gridSize[1] = 5;
-        func_800648E4(arg1, 0);
-        func_80064000(arg0, arg1);
-        func_80064304(arg0, arg1);
+        Stg11_SetStatusMsg(arg1, 0);
+        Stg11_ScanTransferCards(arg0, arg1);
+        Stg11_OpenTransferText(arg0, arg1);
         Task_NextState2(arg0);
         break;
     case 1:
-        func_8006495C(arg1, 0x1B6, 0);
+        Stg11_SetPromptMsg(arg1, 0x1B6, 0);
         Task_NextState2(arg0);
         break;
     case 2:
         if (Menu_MoveGridCursor(arg1->cursor, arg1->u6C.gridSize, arg1->field_7E) == 0) {
             if (D_8005F6F0[arg1->field_7E].cross > 0) {
-                func_8006448C(arg0, arg1);
+                Stg11_TransferSelected(arg0, arg1);
             } else if (D_8005F6F0[arg1->field_7E].triangle > 0) {
-                func_8006495C(arg1, 0x1B8, 1);
+                Stg11_SetPromptMsg(arg1, 0x1B8, 1);
                 Task_NextState2(arg0);
             }
         } else {
-            func_8006495C(arg1, 0x1B6, 0);
+            Stg11_SetPromptMsg(arg1, 0x1B6, 0);
             Snd_PlayById(0xD, 0);
         }
         break;
@@ -1092,9 +1092,9 @@ void func_80065E64(Actor *arg0, Stg11MenuWork *arg1) {
     }
 }
 
-INCLUDE_RODATA("asm/USA/stag1100/rodata", D_80063454);
-INCLUDE_RODATA("asm/USA/stag1100/rodata", D_80063464);
-void func_80066028(Actor *arg0, s16 arg1) {
+INCLUDE_RODATA("asm/USA/stag1100/rodata", Stg11_TransferFileName);
+INCLUDE_RODATA("asm/USA/stag1100/rodata", Stg11_SaveFileName);
+void Stg11_CardMenuInit(Actor *arg0, s16 arg1) {
     Stg11MenuWork *w = (Stg11MenuWork *)arg0->work;
 
     w->field_78 = arg1;
@@ -1104,15 +1104,15 @@ void func_80066028(Actor *arg0, s16 arg1) {
     w->field_7C = w->field_78 >= 5 && w->field_78 <= 8;
     w->field_80 = w->field_78 == 9 || w->field_78 == 10;
     if (w->field_78 == 9 || w->field_78 == 10) {
-        func_80067838(D_80063454, 1);
+        Stg11_CardSetFileName(Stg11_TransferFileName, 1);
     } else {
-        func_80067838(D_80063464, 0);
+        Stg11_CardSetFileName(Stg11_SaveFileName, 0);
     }
-    w->field_90 = (Stg11SaveList *)func_800676F4();
+    w->field_90 = (Stg11SaveList *)Stg11_CardGetDataBuf();
     w->field_94 = 0;
 }
 
-void func_800660F0(Actor *arg0) {
+void Stg11_CardMenuUpdate(Actor *arg0) {
     Stg11MenuWork *w = (Stg11MenuWork *)arg0->work;
 
     switch (arg0->stateLevel0) {
@@ -1129,45 +1129,45 @@ void func_800660F0(Actor *arg0) {
             if (Math_RampToOne(arg0, &w->field_8C) == 0) {
                 Text_PrintIdList((s32 *)w, (TextIdListEntry *)Cd_GetFileEntrySubPtr(0xD280006, w->field_78 - 1), 2);
                 w->field_88 = 0;
-                func_800648E4(w, w->field_80 ? 0x1AD : 0x16B);
+                Stg11_SetStatusMsg(w, w->field_80 ? 0x1AD : 0x16B);
                 Task_SetState1(arg0, 3);
             }
             break;
         case 3:
-            func_80064C64(arg0, w);
+            Stg11_StateCheckCard(arg0, w);
             break;
         case 2:
-            func_80064B00(arg0, w);
+            Stg11_StateCardError(arg0, w);
             break;
         case 1:
-            func_80064A6C(arg0, w);
+            Stg11_StateWaitCancel(arg0, w);
             break;
         case 4:
-            func_800650A8(arg0, w);
+            Stg11_StateAskCreate(arg0, w);
             break;
         case 5:
-            func_80065188(arg0, w);
+            Stg11_StateCreateFile(arg0, w);
             break;
         case 6:
-            func_80065318(arg0, w);
+            Stg11_StateReadFile(arg0, w);
             break;
         case 7:
-            func_800654E4(arg0, w);
+            Stg11_StateSelectSlot(arg0, w);
             break;
         case 8:
-            func_80065A3C(arg0, w);
+            Stg11_StateWriteSave(arg0, w);
             break;
         case 9:
-            func_80064EF0(arg0, w);
+            Stg11_StateAskFormat(arg0, w);
             break;
         case 10:
-            func_80064FD0(arg0, w);
+            Stg11_StateFormat(arg0, w);
             break;
         case 11:
-            func_80065BA0(arg0, w);
+            Stg11_StateVsPartySelect(arg0, w);
             break;
         case 12:
-            func_80065E64(arg0, w);
+            Stg11_StateTransferList(arg0, w);
             break;
         }
         break;

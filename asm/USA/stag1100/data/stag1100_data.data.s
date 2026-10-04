@@ -8,7 +8,7 @@ nonmatching D_80068188
 
 dlabel D_80068188
     /* 4E28 80068188 00000000 */ .word 0x00000000
-    /* 4E2C 8006818C 8C350680 */ .word func_8006358C
+    /* 4E2C 8006818C 8C350680 */ .word Stg11_RootUpdate
     /* 4E30 80068190 70110180 */ .word Task_DefaultDestroy
     /* 4E34 80068194 00000000 */ .word 0x00000000
     /* 4E38 80068198 04000000 */ .word 0x00000004
@@ -19,74 +19,74 @@ nonmatching D_800681A0
 
 dlabel D_800681A0
     /* 4E40 800681A0 00000000 */ .word 0x00000000
-    /* 4E44 800681A4 4C370680 */ .word func_8006374C
+    /* 4E44 800681A4 4C370680 */ .word Stg11_BgUpdate
     /* 4E48 800681A8 70110180 */ .word Task_DefaultDestroy
-    /* 4E4C 800681AC 7C370680 */ .word func_8006377C
+    /* 4E4C 800681AC 7C370680 */ .word Stg11_BgDraw
     /* 4E50 800681B0 00000000 */ .word 0x00000000
     /* 4E54 800681B4 00000000 */ .word 0x00000000
 enddlabel D_800681A0
 
-nonmatching D_800681B8
+nonmatching Stg11_ModeHelpPos
 
-dlabel D_800681B8
+dlabel Stg11_ModeHelpPos
     /* 4E58 800681B8 */ .short 0x0010
     /* 4E5A 800681BA */ .short 0x00BA
-enddlabel D_800681B8
+enddlabel Stg11_ModeHelpPos
 
 nonmatching D_800681BC
 
 dlabel D_800681BC
-    /* 4E5C 800681BC 94380680 */ .word func_80063894
-    /* 4E60 800681C0 BC380680 */ .word func_800638BC
+    /* 4E5C 800681BC 94380680 */ .word Stg11_ModeMenuInit
+    /* 4E60 800681C0 BC380680 */ .word Stg11_ModeMenuUpdate
     /* 4E64 800681C4 70110180 */ .word Task_DefaultDestroy
-    /* 4E68 800681C8 083C0680 */ .word func_80063C08
+    /* 4E68 800681C8 083C0680 */ .word Stg11_ModeMenuDraw
     /* 4E6C 800681CC 2C000000 */ .word 0x0000002C
     /* 4E70 800681D0 04000000 */ .word 0x00000004
 enddlabel D_800681BC
 
-nonmatching D_800681D4
+nonmatching Stg11_PromptPos
 
-dlabel D_800681D4
+dlabel Stg11_PromptPos
     /* 4E74 800681D4 1000BA00 */ .word 0x00BA0010
-enddlabel D_800681D4
+enddlabel Stg11_PromptPos
 
-nonmatching D_800681D8
+nonmatching Stg11_StatusPos
 
-dlabel D_800681D8
+dlabel Stg11_StatusPos
     /* 4E78 800681D8 56004E00 */ .word 0x004E0056
-enddlabel D_800681D8
+enddlabel Stg11_StatusPos
 
-nonmatching D_800681DC
+nonmatching Stg11_TransferCountPos
 
-dlabel D_800681DC
+dlabel Stg11_TransferCountPos
     /* 4E7C 800681DC 6100A400 */ .word 0x00A40061
-enddlabel D_800681DC
+enddlabel Stg11_TransferCountPos
 
-nonmatching D_800681E0
+nonmatching Stg11_CardMenuDesc
 
-dlabel D_800681E0
-    /* 4E80 800681E0 28600680 */ .word func_80066028
-    /* 4E84 800681E4 F0600680 */ .word func_800660F0
+dlabel Stg11_CardMenuDesc
+    /* 4E80 800681E0 28600680 */ .word Stg11_CardMenuInit
+    /* 4E84 800681E4 F0600680 */ .word Stg11_CardMenuUpdate
     /* 4E88 800681E8 70110180 */ .word Task_DefaultDestroy
-    /* 4E8C 800681EC 7C630680 */ .word func_8006637C
+    /* 4E8C 800681EC 7C630680 */ .word Stg11_CardMenuDraw
     /* 4E90 800681F0 3C010000 */ .word 0x0000013C
     /* 4E94 800681F4 04000000 */ .word 0x00000004
-enddlabel D_800681E0
+enddlabel Stg11_CardMenuDesc
 
-nonmatching D_800681F8
+nonmatching Stg11_VsPartyLayout
 
-dlabel D_800681F8
+dlabel Stg11_VsPartyLayout
     /* 4E98 800681F8 01000100 */ .word 0x00010001
     /* 4E9C 800681FC C4FFBEFF */ .word 0xFFBEFFC4
     /* 4EA0 80068200 00002100 */ .word 0x00210000
-enddlabel D_800681F8
+enddlabel Stg11_VsPartyLayout
 
-nonmatching D_80068204
+nonmatching Stg11_VsPromptPos
 
-dlabel D_80068204
+dlabel Stg11_VsPromptPos
     /* 4EA4 80068204 */ .short 0x0010
     /* 4EA6 80068206 */ .short 0x00BA
-enddlabel D_80068204
+enddlabel Stg11_VsPromptPos
 
 nonmatching D_80068208
 
@@ -95,21 +95,21 @@ dlabel D_80068208
     /* 4EAA 8006820A */ .short 0x009E
 enddlabel D_80068208
 
-nonmatching D_8006820C
+nonmatching Stg11_VsRowMasks
 
-dlabel D_8006820C
+dlabel Stg11_VsRowMasks
     /* 4EAC 8006820C 040E040E */ .word 0x0E040E04
     /* 4EB0 80068210 040C040A */ .word 0x0A040C04
     /* 4EB4 80068214 04060000 */ .word 0x00000604
-enddlabel D_8006820C
+enddlabel Stg11_VsRowMasks
 
-nonmatching D_80068218
+nonmatching Stg11_VsPartyDesc
 
-dlabel D_80068218
-    /* 4EB8 80068218 046C0680 */ .word func_80066C04
-    /* 4EBC 8006821C 486C0680 */ .word func_80066C48
+dlabel Stg11_VsPartyDesc
+    /* 4EB8 80068218 046C0680 */ .word Stg11_VsPartyInit
+    /* 4EBC 8006821C 486C0680 */ .word Stg11_VsPartyUpdate
     /* 4EC0 80068220 70110180 */ .word Task_DefaultDestroy
-    /* 4EC4 80068224 24710680 */ .word func_80067124
+    /* 4EC4 80068224 24710680 */ .word Stg11_VsPartyDraw
     /* 4EC8 80068228 A8010000 */ .word 0x000001A8
     /* 4ECC 8006822C 04000000 */ .word 0x00000004
     /* 4ED0 80068230 10000000 */ .word 0x00000010
@@ -117,11 +117,11 @@ dlabel D_80068218
     /* 4ED8 80068238 2C000000 */ .word 0x0000002C
     /* 4EDC 8006823C 0000E001 */ .word 0x01E00000
     /* 4EE0 80068240 10000100 */ .word 0x00010010
-enddlabel D_80068218
+enddlabel Stg11_VsPartyDesc
 
-nonmatching D_80068244
+nonmatching Stg11_CardIconImage
 
-dlabel D_80068244
+dlabel Stg11_CardIconImage
     /* 4EE4 80068244 0000C028 */ .word 0x28C00000
     /* 4EE8 80068248 21046308 */ .word 0x08630421
     /* 4EEC 8006824C F00DF601 */ .word 0x01F60DF0
@@ -181,11 +181,11 @@ dlabel D_80068244
     /* 4FC4 80068324 8C000000 */ .word 0x0000008C
     /* 4FC8 80068328 80020000 */ .word 0x00000280
     /* 4FCC 8006832C 04001000 */ .word 0x00100004
-enddlabel D_80068244
+enddlabel Stg11_CardIconImage
 
-nonmatching D_80068330
+nonmatching Stg11_CardIcon2
 
-dlabel D_80068330
+dlabel Stg11_CardIcon2
     /* 4FD0 80068330 F0FFFFFF */ .word 0xFFFFFFF0
     /* 4FD4 80068334 FFFFFF0F */ .word 0x0FFFFFFF
     /* 4FD8 80068338 FFFFFFFF */ .word 0xFFFFFFFF
@@ -234,11 +234,11 @@ dlabel D_80068330
     /* 5084 800683E4 8C000000 */ .word 0x0000008C
     /* 5088 800683E8 80020000 */ .word 0x00000280
     /* 508C 800683EC 04001000 */ .word 0x00100004
-enddlabel D_80068330
+enddlabel Stg11_CardIcon2
 
-nonmatching D_800683F0
+nonmatching Stg11_CardIcon3
 
-dlabel D_800683F0
+dlabel Stg11_CardIcon3
     /* 5090 800683F0 F0FFFFFF */ .word 0xFFFFFFF0
     /* 5094 800683F4 FFFFFF0F */ .word 0x0FFFFFFF
     /* 5098 800683F8 FFFFFFFF */ .word 0xFFFFFFFF
@@ -271,30 +271,30 @@ dlabel D_800683F0
     /* 5104 80068464 99399399 */ .word 0x99933999
     /* 5108 80068468 70835539 */ .word 0x39558370
     /* 510C 8006846C 33339909 */ .word 0x09993333
-enddlabel D_800683F0
+enddlabel Stg11_CardIcon3
 
 nonmatching D_80068470
 
 dlabel D_80068470
-    /* 5110 80068470 50800680 */ .word func_80068050
-    /* 5114 80068474 58800680 */ .word func_80068058
-    /* 5118 80068478 60810680 */ .word func_80068160
-    /* 511C 8006847C 80810680 */ .word func_80068180
+    /* 5110 80068470 50800680 */ .word Stg11_CardTaskInit
+    /* 5114 80068474 58800680 */ .word Stg11_CardTaskUpdate
+    /* 5118 80068478 60810680 */ .word Stg11_CardTaskDestroy
+    /* 511C 8006847C 80810680 */ .word Stg11_CardTaskDraw
     /* 5120 80068480 44200200 */ .word 0x00022044
     /* 5124 80068484 00000000 */ .word 0x00000000
     /* 5128 80068488 88810680 */ .word D_80068188
     /* 512C 8006848C 70840680 */ .word D_80068470
     /* 5130 80068490 A0810680 */ .word D_800681A0
     /* 5134 80068494 BC810680 */ .word D_800681BC
-    /* 5138 80068498 E0810680 */ .word D_800681E0
-    /* 513C 8006849C 18820680 */ .word D_80068218
+    /* 5138 80068498 E0810680 */ .word Stg11_CardMenuDesc
+    /* 513C 8006849C 18820680 */ .word Stg11_VsPartyDesc
     /* 5140 800684A0 BC810680 */ .word D_800681BC
     /* 5144 800684A4 4141415C */ .word 0x5C414141
 enddlabel D_80068470
 
-nonmatching D_800684A8
+nonmatching Stg11_VsParty
 
-dlabel D_800684A8
+dlabel Stg11_VsParty
     /* 5148 800684A8 00000000 */ .word 0x00000000
     /* 514C 800684AC 00000000 */ .word 0x00000000
     /* 5150 800684B0 00000000 */ .word 0x00000000
@@ -367,25 +367,25 @@ dlabel D_800684A8
     /* 525C 800685BC 00000000 */ .word 0x00000000
     /* 5260 800685C0 00000000 */ .word 0x00000000
     /* 5264 800685C4 00000000 */ .word 0x00000000
-enddlabel D_800684A8
+enddlabel Stg11_VsParty
 
-nonmatching D_800685C8
+nonmatching Stg11_LoadDone
 
-dlabel D_800685C8
+dlabel Stg11_LoadDone
     /* 5268 800685C8 */ .short 0x0000
     /* 526A 800685CA */ .short 0x0000
     /* 526C 800685CC */ .short 0x0000
     /* 526E 800685CE */ .short 0x0000
-enddlabel D_800685C8
+enddlabel Stg11_LoadDone
 
-nonmatching D_800685D0
+nonmatching Stg11_CardTask
 
-dlabel D_800685D0
+dlabel Stg11_CardTask
     /* 5270 800685D0 00000000 */ .word 0x00000000
-enddlabel D_800685D0
+enddlabel Stg11_CardTask
 
-nonmatching D_800685D4
+nonmatching Stg11_CardWork
 
-dlabel D_800685D4
+dlabel Stg11_CardWork
     /* 5274 800685D4 00000000 */ .word 0x00000000
-enddlabel D_800685D4
+enddlabel Stg11_CardWork
