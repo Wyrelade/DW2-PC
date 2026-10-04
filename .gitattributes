@@ -14,3 +14,9 @@ tools/asm-differ/** linguist-vendored
 tools/windows/** linguist-vendored
 tools/linux/** linguist-vendored
 tools/macos/** linguist-vendored
+
+# Sony PsyQ SDK library code, kept as asm. Not game code, so out of the language stats too.
+asm/USA/main/nonmatchings/psyq/** linguist-vendored
+asm/USA/main/data/395F0.data.s linguist-vendored
+asm/USA/main/data/38110.data.s linguist-vendored
+asm/USA/main/data/505D8.data.s linguist-vendored
