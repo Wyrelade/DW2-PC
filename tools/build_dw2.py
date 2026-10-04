@@ -105,7 +105,10 @@ MASPSX_AS_FLAGS = [
 # unit or a unit/file.c; the file entry wins. psyq.c stays -G0: it is INCLUDE_ASM
 # library code, and with -G > 0 cc1 writes C function text after the top-level asm,
 # which would move its one C stub.
-UNIT_G = {"main": "8", "main/psyq.c": "0", "main/156C.c": "0"}
+UNIT_G = {"main": "8", "main/psyq.c": "0", "main/156C.c": "0",
+          # -G4: retail .bss holds an 8-byte 77DC object (the OT layout word after
+          # Gpu_OtBufs[2]); under -G8 it would be .sbss. Code is identical with -G4.
+          "main/77DC.c": "4"}
 UNIT_ASPSX = {"main": "2.81"}
 # Extra cc1 flags per unit or unit/file (one flag set per translation unit).
 UNIT_CC1 = {
@@ -130,10 +133,11 @@ def unit_flags(unit, name=None):
     # maspsx decides gp-relative access like aspsx: only for symbols this file defines
     # (.comm/.lcomm/.sdata), and it hands GNU as -G0. Each small variable is defined by
     # the one unit that reaches it with %gp_rel: maspsx lays its tentative definitions out
-    # in .sbss (global labels, --global-sbss), initialised ones are .sdata.
+    # in .sbss (global labels, --global-sbss), initialised ones are .sdata. Retail aligns
+    # each .bss object like .sbss ones (8-byte and larger on 8), hence --bss-align.
     flags = [f for f in MASPSX_FLAGS if not f.startswith("--aspsx-version")]
     flags.append("--aspsx-version=" + UNIT_ASPSX.get(unit, "2.77"))
-    return cc1, flags + ["--global-sbss"], as_flags
+    return cc1, flags + ["--global-sbss", "--bss-align"], as_flags
 
 
 def binutils_dir():

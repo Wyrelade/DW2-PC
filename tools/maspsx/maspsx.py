@@ -24,6 +24,8 @@ def main() -> None:
     parser.add_argument("--div-branch-nopad", action="store_true")
     # .comm symbols placed in .sbss get a .globl label (other objects reach them by name)
     parser.add_argument("--global-sbss", action="store_true")
+    # .bss entries get the same size-based alignment as .sbss ones (8-byte objects .align 3)
+    parser.add_argument("--bss-align", action="store_true")
     # decomp.me debugging
     parser.add_argument("--print-output", action="store_true")
     parser.add_argument("--print-input", action="store_true")
@@ -134,6 +136,7 @@ def main() -> None:
         use_comm_for_lcomm=args.use_comm_for_lcomm,
         div_branch_nopad=args.div_branch_nopad,
         global_sbss=args.global_sbss,
+        bss_align=args.bss_align,
     )
     try:
         out_lines = maspsx_processor.process_lines()

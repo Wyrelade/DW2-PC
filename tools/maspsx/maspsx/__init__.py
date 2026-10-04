@@ -423,9 +423,11 @@ class MaspsxProcessor:
         use_comm_for_lcomm=False,
         div_branch_nopad=False,
         global_sbss=False,
+        bss_align=False,
     ):
         self.lines = [x.strip() for x in lines]
         self.global_sbss = global_sbss
+        self.bss_align = bss_align
 
         self.sdata_limit = sdata_limit
 
@@ -466,7 +468,7 @@ class MaspsxProcessor:
                 # TODO: worry about alignment later
                 continue
 
-            if line.startswith(".globl") or line.startswith(".global"):
+            if line.startswith(".globl") or line.startswith(".global") or line.startswith(".set"):
                 continue
 
             if line.startswith(".section"):
@@ -606,7 +608,7 @@ class MaspsxProcessor:
                     res.append(f"\t.comm {symbol},{size}")
                     continue
 
-                if section == "sbss":
+                if section == "sbss" or self.bss_align:
                     if size >= 8:
                         res.append("\t.align 3")
                     elif size >= 4:
@@ -625,6 +627,10 @@ class MaspsxProcessor:
                         f"\t.space {size}",
                     ]
                 )
+
+            if section == "bss" and self.bss_align and entries:
+                # the object's .bss ends 8-aligned, so the next one starts aligned
+                res.append("\t.align 3")
 
         return res
 

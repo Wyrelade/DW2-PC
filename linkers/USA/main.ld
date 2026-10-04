@@ -113,7 +113,7 @@ SECTIONS
         build/USA/src/main/13584.c.o(.bss);
         build/USA/src/main/147FC.c.o(.bss);
         build/USA/src/main/psyq.c.o(.bss);
-        build/USA/asm/USA/main/data/40F98.data.s.o(.data);
+        build/USA/asm/USA/main/data/505D8.data.s.o(.data);
         build/USA/assets/Ovl_LoadArea.bin.o(.data);
         . = ALIGN(., 4);
         main_BSS_END = .;

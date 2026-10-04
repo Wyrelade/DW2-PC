@@ -836,13 +836,17 @@ typedef struct {
     /* 0xD4 */ u8 field_D4;
     u8 _padD5[0x0F];
     /* 0xE4 */ DigiRosterEntry elems[0x24];
-} GameState;
+    u8 _padDD4[0x1004 - 0xDD4];
+    /* 0x1004 */ u8 eventFlags[0x44]; /* the EventFlags block, also the symbol Flag_Bits */
+    u8 _pad1048[0x10];
+} GameState; /* size 0x1058: the whole block Save_ResetGameState zeroes */
 
 /* Table cleared by Task_ClearList: a count word followed by 100 entries. */
 typedef struct {
     /* 0x00 */ s32 count;
     /* 0x04 */ s32 entries[100];
-} TaskList;
+    u8 _pad194[0xC];
+} TaskList; /* size 0x1A0 */
 
 /* Doubly-linked node reached at (arg0 - 0xC) by Mem_Free; field_0 is the
    sibling pointer, field_4 links to a neighbour whose field_0 points back. */
@@ -1287,7 +1291,12 @@ typedef struct {
     /* 0xBA5 */ u8 bugLevels[3];
     /* 0xBA8 */ u8 memBugCount;
     /* 0xBA9 */ u8 memBugLevels[12];
-} DungState;
+    u8 _padBB5[0x103D - 0xBB5];
+    /* 0x103D */ u8 field_103D; /* STAG3000 reads it as the symbol D_8005E5DD */
+    u8 _pad103E[0x2];
+    /* 0x1040 */ s16 field_1040; /* STAG3000 reads it as the symbol D_8005E5E0 */
+    u8 _pad1042[0x1080 - 0x1042];
+} DungState; /* size 0x1080: Save_GameState follows, 8-aligned */
 
 /* Sound state block at D_80062D18 (splat splits it into small byte symbols);
  * note2pitch2 indexes the D_80062D08 table with field_7 * 16 + field_C. */

@@ -8,6 +8,10 @@ MemBlock *Mem_HeapStart = (MemBlock *)0x80075000;
 s32 D_80050758;
 s32 Cd_PreloadCount;
 u8 Bug_LastZappedLevel;
+/* .bss (game.h order) */
+TaskList Task_List;
+TaskFindFilter Task_FindFilter;
+s32 Cd_PreloadIds[0x40];
 
 /* Task callbacks the descriptors below name (defined further down). */
 void Task_DefaultDestroy(Actor *arg0);

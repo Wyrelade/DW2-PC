@@ -19,6 +19,8 @@ void Fx_ModelInit(Actor *arg0, Block1C *arg1);
 void Fx_ModelTask(Actor *arg0);
 void Fx_ModelDraw(Actor *arg0);
 
+/* .bss: the header of the sector being read (Cd_CheckNextSector). */
+u8 Cd_SectorHeader[0x10];
 CdReadState Cd_ReadState = { 0 };
 TaskDesc D_80048DD8 = { (TaskInitFn)Fx_ModelInit, Fx_ModelTask, Task_DefaultDestroy, Fx_ModelDraw, 0x1C, 0 };
 

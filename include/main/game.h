@@ -27,6 +27,26 @@ extern s32 Sys_FlipPending;
 extern s32 Rand_Index;
 extern s32 D_80050794;
 
+/* Uninitialised globals over the small-data size (.bss), in retail order, same rule. */
+extern TaskList Task_List;
+extern TaskFindFilter Task_FindFilter;
+extern s32 Cd_PreloadIds[];
+extern u8 Snd_SeqAttrTable[176 * 6 * 16];
+extern SndSlot Snd_Slots[3];
+extern TextStack Text_ReturnStack;
+extern GpuOtBuf Gpu_OtBufs[];
+extern s32 D_8005CD58[2];
+extern GfxTexSlot Gfx_TexSlots[];
+extern FlagEntryState Flag_EntryIter;
+extern DungState Dung_State;
+extern GameState Save_GameState;
+extern Elm678 Pad_PortButtons[];
+extern u8 Pad_RecvBufs[];
+extern PadState Pad_State[];
+extern SysState Sys_State;
+extern CdCacheEntry Cd_FileCache[0x50];
+extern u8 Cd_SectorHeader[];
+
 extern CdCacheEntry Cd_FileCache[0x50];
 extern SndSlot Snd_Slots[3];
 extern s32 Cd_PollRead(void);

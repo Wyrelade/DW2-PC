@@ -12,6 +12,17 @@ Halves Menu_DigiListCursorTextPos = { 0x21, 0x9E };
 Halves Menu_SkillMsgPos = { 0x10, 0xBA };
 s32 Snd_CurrentId = -1;
 s32 Snd_SavedId;
+/* .bss (game.h order) */
+u8 Snd_SeqAttrTable[176 * 6 * 16];
+SndSlot Snd_Slots[3];
+TextStack Text_ReturnStack;
+/* The two ordering tables. Gpu_OtBufEnds is the symbol for the second one (code reads
+ * Gpu_OtBufEnds[i] as the end of table i). */
+GpuOtBuf Gpu_OtBufs[2];
+DATA_LABEL(Gpu_OtBufEnds, Gpu_OtBufs, 0x4030);
+/* OT layout mode (index into Gpu_OtLayerLens); code reads it as Gpu_OtBufs[2].entries[0]. */
+s32 D_8005CD58[2];
+GfxTexSlot Gfx_TexSlots[0x40];
 
 /* Task callbacks the descriptors below name (defined further down; the digi list descriptor's
  * draw and the item draw at the top of this file). */

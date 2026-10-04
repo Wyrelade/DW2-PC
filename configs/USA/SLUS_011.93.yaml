@@ -102,8 +102,15 @@ segments:
       - [0x40F74, .sbss, 77DC]
       - [0x40F78, .sbss, E280]
       - [0x40F84, .sbss, 13584]
-      # .bss from 0x80050798 (game, then PsyQ): zeros in the image, still data asm
-      - {start: 0x40F98, type: data, name: 40F98, linker_section_order: .bss}
+      - [0x40F98, .bss, 187C]    # .bss from 0x80050798: zeros in the image, objects 8-aligned
+      - [0x41248, .bss, 77DC]
+      - [0x4DD60, .bss, E280]
+      - [0x4DDA0, .bss, 12550]
+      - [0x4EE20, .bss, 12654]
+      - [0x4FE78, .bss, 13584]
+      - [0x505C8, .bss, 147FC]
+      # PsyQ .bss from 0x8005FDD8, still data asm
+      - {start: 0x505D8, type: data, name: 505D8, linker_section_order: .bss}
       # 0x80063360: overlay load area; the image holds leftover bytes here
       - {start: 0x53B60, type: bin, name: Ovl_LoadArea, linker_section_order: .bss}
   - [0x9F000]

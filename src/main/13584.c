@@ -34,6 +34,34 @@ s32 Sys_FlipPending;
 s32 Rand_Index;
 /* Unreferenced: pads .sbss to the start of .bss. */
 s32 D_80050794;
+/* .bss (game.h order). Code and overlays reach fields of Pad_State and Sys_State by their
+ * own symbols. */
+Elm678 Pad_PortButtons[2];
+u8 Pad_RecvBufs[0x48];
+PadState Pad_State[2];
+DATA_LABEL(Pad_Left, Pad_State, 0x4);
+DATA_LABEL(Pad_Circle, Pad_State, 0x10);
+DATA_LABEL(Pad_Cross, Pad_State, 0x14);
+DATA_LABEL(Pad_Square, Pad_State, 0x18);
+DATA_LABEL(Pad_Triangle, Pad_State, 0x1C);
+DATA_LABEL(Pad_R1, Pad_State, 0x20);
+DATA_LABEL(Pad_R2, Pad_State, 0x24);
+DATA_LABEL(Pad_Select, Pad_State, 0x30);
+DATA_LABEL(D_8005F724, Pad_State, 0x34);
+DATA_LABEL(Pad_Held, Pad_State, 0x38);
+DATA_LABEL(Pad_Pressed, Pad_State, 0x3A);
+DATA_LABEL(Pad_Repeat, Pad_State, 0x3C);
+SysState Sys_State;
+DATA_LABEL(Sys_FrameDelta, Sys_State, 0x8);
+DATA_LABEL(Sys_DrawPass, Sys_State, 0x14);
+DATA_LABEL(Sys_GameMode, Sys_State, 0x18);
+DATA_LABEL(Sys_NextGameMode, Sys_State, 0x1C);
+DATA_LABEL(D_8005F790, Sys_State, 0x20);
+DATA_LABEL(D_8005F794, Sys_State, 0x24);
+DATA_LABEL(Sys_PacketCursor, Sys_State, 0x2C);
+DATA_LABEL(D_8005F8B4, Sys_State, 0x144);
+DATA_LABEL(D_8005F8C0, Sys_State, 0x150);
+CdCacheEntry Cd_FileCache[0x50];
 
 /* Rand_Next's table of 0x1000 random halfwords. */
 INCLUDE_BIN(Rand_Table, "assets/main/rand_table.bin");

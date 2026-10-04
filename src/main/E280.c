@@ -11,6 +11,8 @@
 s32 Skill_ShotXaFile;
 s32 D_8005077C;
 s32 D_80050780;
+/* .bss */
+FlagEntryState Flag_EntryIter;
 
 /* Task callbacks the descriptor below names (defined further down). */
 void func_8001EC00(Actor *arg0, s32 *arg1);
