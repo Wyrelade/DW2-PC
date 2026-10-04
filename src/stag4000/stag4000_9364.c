@@ -425,15 +425,22 @@ s32 func_8006D0E8(Actor *a0) {
     }
 }
 
-INCLUDE_RODATA("asm/USA/stag4000/rodata", jtbl_800635CC);
-#ifdef NORMALIZED
+/* The default case tests field_0 & 0x1000 and returns field_E either way. The test does
+ * nothing, but retail's codegen has it: the compiler merges the two identical arms only
+ * after register allocation, and that is what leaves `e` in v1 and the branch deleted the
+ * way retail has it. Every form without the test allocates differently (see the learnings). */
 s32 func_8006D418(Actor *a0) {
     Stg40ActWork *w = (Stg40ActWork *)a0->work;
+    Stg40Ent48 *e;
 
     switch (w->field_2C->field_8) {
     case 5:
     default:
-        return w->field_2C->field_E;
+        e = w->field_2C;
+        if (e->field_0 & 0x1000) {
+            return e->field_E;
+        }
+        return e->field_E;
     case 6:
         return func_8006CD1C(a0);
     case 7:
@@ -452,7 +459,3 @@ s32 func_8006D418(Actor *a0) {
         return ((s32 (*)(Actor *))func_8006C6C4)(a0);
     }
 }
-#else
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000_9364", func_8006D418);
-s32 func_8006D418(Actor *a0);
-#endif
