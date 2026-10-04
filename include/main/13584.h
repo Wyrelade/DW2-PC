@@ -41,7 +41,7 @@ void Cd_QueueFile(s32 id);
 void Cd_ServiceQueue(void);
 void Cd_LoadFileSync(s32 arg0);
 s32 Cd_GetFileSync(s32 arg0);
-void Cd_FreeFile(void);
+void Cd_FreeFile(s32);
 void Cd_LockFile(s32 a0);
 void Cd_UnlockFile(s32 a0);
 void Cd_FreeUnlockedFiles(void);

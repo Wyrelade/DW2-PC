@@ -120,11 +120,11 @@ void Gfx_DrawPartsEx(void *arg0, s32 arg1);
 void Gfx_DrawParts(s32 arg0);
 void func_8001D8A4(s32 arg0);
 DigiBaseData *Digi_FindBaseData();
-u8 func_8001D910(void);
-u8 Digi_GetType(void);
-s32 Digi_GetRank(void);
-s32 Digi_GetSpecialty(void);
-u8 Digi_GetLearnedSkill(void);
+u8 func_8001D910(s32);
+u8 Digi_GetType(s32);
+s32 Digi_GetRank(s32);
+s32 Digi_GetSpecialty(s32);
+u8 Digi_GetLearnedSkill(s32);
 s32 Digi_GetStatGrowth(s32 id, s32 k);
 
 #endif /* MAIN_77DC_H */

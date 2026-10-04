@@ -186,12 +186,12 @@ s32 Item_GetCategory(s32 id) {
     return Item_FindById(id)->u0.b0.category;
 }
 
-s32 Item_GetLevel(void) {
-    return Item_FindById()->u0.b0.field_3 & 0xF;
+s32 Item_GetLevel(s32 itemId) {
+    return Item_FindById(itemId)->u0.b0.field_3 & 0xF;
 }
 
-s32 Item_CheckId(void) {
-    return Item_FindById() != 0 ? 0 : -1;
+s32 Item_CheckId(s32 itemId) {
+    return Item_FindById(itemId) != 0 ? 0 : -1;
 }
 
 s32 func_8001E134(void) {
@@ -202,12 +202,12 @@ s32 func_8001E158(void) {
     return (Item_FindById()->u0.field_0 >> 28) & 3;
 }
 
-s32 Item_GetPrice(void) {
-    return Item_FindById()->u4.field_4 & 0xFFFFFF;
+s32 Item_GetPrice(s32 itemId) {
+    return Item_FindById(itemId)->u4.field_4 & 0xFFFFFF;
 }
 
-u8 Item_GetBodyMask(void) {
-    return Item_FindById()->u4.b4.bodyMask;
+u8 Item_GetBodyMask(s32 itemId) {
+    return Item_FindById(itemId)->u4.b4.bodyMask;
 }
 
 s32 Item_GetTableIndex(s32 id) {
@@ -315,18 +315,18 @@ s32 Flag_GetTableBase(void) {
     return Cd_GetFileOrNull(Flag_EntryIter.fileId);
 }
 
-Blk12 *func_8001E5E8(void) {
-    FlagBranchEntry *e = Flag_GetEntry();
+Blk12 *func_8001E5E8(s32 index) {
+    FlagBranchEntry *e = Flag_GetEntry(index);
     Blk12 *base = (Blk12 *)Cd_GetFileEntry((Flag_EntryIter.fileId << 16) | 1);
     return &base[e->blockIndex];
 }
 
-s16 func_8001E634(void) {
-    return Flag_GetEntry()->field_0;
+s16 func_8001E634(s32 index) {
+    return Flag_GetEntry(index)->field_0;
 }
 
-s16 func_8001E658(void) {
-    return Flag_GetEntry()->field_2;
+s16 func_8001E658(s32 index) {
+    return Flag_GetEntry(index)->field_2;
 }
 
 s32 Digi_GetDataFileId(s32 arg0) {

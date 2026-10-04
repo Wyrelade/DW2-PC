@@ -603,8 +603,8 @@ s32 Cd_GetFileSync(s32 arg0) {
     return Cd_FindCachedFile(arg0)->data;
 }
 
-void Cd_FreeFile(void) {
-    CdCacheEntry *p = Cd_FindCachedFile();
+void Cd_FreeFile(s32 fileId) {
+    CdCacheEntry *p = Cd_FindCachedFile(fileId);
     if (p != 0) {
         if (p->state == 3) {
             Mem_Free(p->data);

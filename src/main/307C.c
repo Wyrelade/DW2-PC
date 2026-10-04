@@ -454,8 +454,8 @@ void Text_PrintList(s32 *a0, Halves *a1, s32 *a2, u32 a3) {
     }
 }
 
-s32 Text_WaitYesNo() {
-    s32 result = Text_IsFinished();
+s32 Text_WaitYesNo(s32 box) {
+    s32 result = Text_IsFinished(box);
     if (result != 0) {
         result = Flag_Test(0x11) == 0 ? 1 : -1;
     }

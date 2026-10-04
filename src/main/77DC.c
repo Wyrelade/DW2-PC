@@ -3067,24 +3067,24 @@ fail:
     return 0;
 }
 
-u8 func_8001D910(void) {
-    return Digi_FindBaseData()->field_3;
+u8 func_8001D910(s32 digiId) {
+    return Digi_FindBaseData(digiId)->field_3;
 }
 
-u8 Digi_GetType(void) {
-    return Digi_FindBaseData()->u4.attrsLo & 0xF;
+u8 Digi_GetType(s32 digiId) {
+    return Digi_FindBaseData(digiId)->u4.attrsLo & 0xF;
 }
 
-s32 Digi_GetRank(void) {
-    return (Digi_FindBaseData()->u4.field_4h >> 4) & 0xF;
+s32 Digi_GetRank(s32 digiId) {
+    return (Digi_FindBaseData(digiId)->u4.field_4h >> 4) & 0xF;
 }
 
-s32 Digi_GetSpecialty(void) {
-    return (Digi_FindBaseData()->u4.field_4h >> 8) & 0xF;
+s32 Digi_GetSpecialty(s32 digiId) {
+    return (Digi_FindBaseData(digiId)->u4.field_4h >> 8) & 0xF;
 }
 
-u8 Digi_GetLearnedSkill(void) {
-    return Digi_FindBaseData()->learnedSkill;
+u8 Digi_GetLearnedSkill(s32 digiId) {
+    return Digi_FindBaseData(digiId)->learnedSkill;
 }
 
 s32 Digi_GetStatGrowth(s32 id, s32 k) {
