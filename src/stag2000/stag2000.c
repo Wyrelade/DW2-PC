@@ -63,7 +63,7 @@ void Stg20_MapBgUpdate(Actor *a) {
             }
         }
         w->field_2C = 0;
-        w->field_30 = 0;
+        w->geomY = 0;
         Task_NextState0(a);
         break;
     case 1:
@@ -77,8 +77,8 @@ void Stg20_MapBgUpdate(Actor *a) {
                 a->elapsed = 0;
                 Task_NextState2(a);
             case 1:
-                w->field_2C += Stg20_ShakeOffsets[((Stg20BlinkTask *)a)->field_24 & 3].x;
-                w->field_30 += Stg20_ShakeOffsets[((Stg20BlinkTask *)a)->field_24 & 3].y;
+                w->field_2C += Stg20_ShakeOffsets[((Stg20BlinkTask *)a)->frameCount & 3].x;
+                w->geomY += Stg20_ShakeOffsets[((Stg20BlinkTask *)a)->frameCount & 3].y;
                 if (a->elapsed >= 0x78) {
                     Task_SetState1(a, 0);
                 }
@@ -111,10 +111,10 @@ void Stg20_MapBgDraw(Actor *a) {
 
     e = Stg20_FindWalkerByDigiId(0x1F4);
     if (e != 0) {
-        if (w->field_34 >= 5) {
+        if (w->settleFrames >= 5) {
             n = 1;
         } else {
-            w->field_34++;
+            w->settleFrames++;
             n = 0x14;
         }
         for (j = 0; j < n; j++) {
@@ -126,16 +126,16 @@ void Stg20_MapBgDraw(Actor *a) {
                 w->field_2C -= (s16)(t->screenX - 0x18) >> 3;
             }
             if (t->screenY < -0x18) {
-                w->field_30 += (s16)(-t->screenY - 0x18) >> 3;
+                w->geomY += (s16)(-t->screenY - 0x18) >> 3;
             } else if (t->screenY > 0x18) {
-                w->field_30 -= (s16)(t->screenY - 0x18) >> 3;
+                w->geomY -= (s16)(t->screenY - 0x18) >> 3;
             }
-            if (w->field_30 > 0x20) {
-                w->field_30 = 0x20;
+            if (w->geomY > 0x20) {
+                w->geomY = 0x20;
             }
             gx = w->field_2C / 2 - 0xA0;
-            gy = w->field_30 / 2;
-            SetGeomOffset(w->field_2C, w->field_30);
+            gy = w->geomY / 2;
+            SetGeomOffset(w->field_2C, w->geomY);
         }
     }
     ot = (GfxPartOTag *)Sys_State.otLayers.addr[6];
@@ -173,8 +173,8 @@ void Stg20_MapBgDraw(Actor *a) {
         }
     }
     Sys_PacketCursor = (s32)p;
-    if (Stg20_GetMapInfo()->field_1C != 0) {
-        parts = (GfxPart *)Cd_GetFileEntry(Stg20_GetMapInfo()->field_1C);
+    if (Stg20_GetMapInfo()->overlayParts != 0) {
+        parts = (GfxPart *)Cd_GetFileEntry(Stg20_GetMapInfo()->overlayParts);
         for (q = parts; q->fileId != 0; q++) {
             if (q->groupMask & 4) {
                 q->palette = Math_CycleRange(a->elapsed, 8, 0, 7);
@@ -312,16 +312,16 @@ void Stg20_LabDnaDigivolve(Actor *a) {
             if (slot[1] != 0) {
                 Task_SetState0((Actor *)slot[1], 2);
             }
-            Stg20_MenuState.field_10 = 0;
+            Stg20_MenuState.excludeFirst = 0;
             Task_Create(0x30C, &slot[3], 0);
             Stg20_MsgWinShowSysMsg(0x117);
-            Stg20_MenuState.field_20 = 1;
+            Stg20_MenuState.pickStep = 1;
             Task_Create(0x30E, &slot[4], 0);
             Task_NextState3(a);
         case 1:
             if (((Actor *)slot[3])->stateLevel0 == 2) {
                 Task_SetState0((Actor *)slot[4], 2);
-                if (D_800709B8.field_0 != 0) {
+                if (D_800709B8.result != 0) {
                     Task_SetState1(a, 0);
                 } else {
                     Task_NextState2(a);
@@ -334,23 +334,23 @@ void Stg20_LabDnaDigivolve(Actor *a) {
         switch (a->stateLevel3) {
         case 0:
         default:
-            Stg20_MenuState.field_40 = Save_GameState.elems[Stg20_MenuState.field_1C].digiId;
-            Stg20_MenuState.field_44 = 0;
-            Stg20_MenuState.field_48 = 0;
+            Stg20_MenuState.modelDigiId = Save_GameState.elems[Stg20_MenuState.pickedIndex].digiId;
+            Stg20_MenuState.modelNoGrow = 0;
+            Stg20_MenuState.modelSlide = 0;
             Task_Create(0x30A, &slot[1], 0);
             Task_NextState3(a);
         case 1:
             if (slot[5] == 0) {
                 Task_Create(0x30D, &slot[5], 0);
             }
-            Stg20_MenuState.field_24 = 2;
-            Stg20_MenuState.field_28 = Stg20_MenuState.field_1C;
+            Stg20_MenuState.infoMode = 2;
+            Stg20_MenuState.infoRosterIndex = Stg20_MenuState.pickedIndex;
             Task_Create(0x30F, &slot[3], 0);
             Task_NextState3(a);
             break;
         case 2:
             if (((Actor *)slot[3])->stateLevel0 == 2) {
-                switch (Stg20_MenuState.field_8) {
+                switch (Stg20_MenuState.result) {
                 case 0:
                     Task_NextState2(a);
                     break;
@@ -360,7 +360,7 @@ void Stg20_LabDnaDigivolve(Actor *a) {
                     break;
                 case 2:
                     Task_SetState2(a, 3);
-                    Stg20_MenuState.field_34 = Stg20_MenuState.field_28;
+                    Stg20_MenuState.dnaParent0 = Stg20_MenuState.infoRosterIndex;
                     break;
                 }
             }
@@ -371,7 +371,7 @@ void Stg20_LabDnaDigivolve(Actor *a) {
         switch (a->stateLevel3) {
         case 0:
         default:
-            Stg20_MenuState.field_30 = Stg20_MenuState.field_1C;
+            Stg20_MenuState.skillRosterIndex = Stg20_MenuState.pickedIndex;
             Task_Create(0x310, &slot[3], 0);
             Task_NextState3(a);
         case 1:
@@ -390,22 +390,22 @@ void Stg20_LabDnaDigivolve(Actor *a) {
             if (slot[2] != 0) {
                 Task_SetState0((Actor *)slot[2], 2);
             }
-            Stg20_MenuState.field_10 = 1;
+            Stg20_MenuState.excludeFirst = 1;
             Task_Create(0x30C, &slot[3], 0);
-            Stg20_MsgWinShowDigiMsg(0x11C, Save_GameState.elems[Stg20_MenuState.field_34].digiId);
-            Stg20_MenuState.field_20 = 2;
+            Stg20_MsgWinShowDigiMsg(0x11C, Save_GameState.elems[Stg20_MenuState.dnaParent0].digiId);
+            Stg20_MenuState.pickStep = 2;
             Task_Create(0x30E, &slot[4], 0);
             Task_NextState3(a);
         case 1:
             if (((Actor *)slot[3])->stateLevel0 == 2) {
                 Task_SetState0((Actor *)slot[4], 2);
-                if (Stg20_MenuState.field_8 != 0) {
+                if (Stg20_MenuState.result != 0) {
                     if (slot[1] != 0) {
                         Task_SetState0((Actor *)slot[1], 2);
                     }
                     Task_SetState2(a, 0);
                 } else {
-                    Stg20_MenuState.field_38 = Stg20_MenuState.field_1C;
+                    Stg20_MenuState.dnaParent1 = Stg20_MenuState.pickedIndex;
                     Task_NextState2(a);
                 }
             }
@@ -416,23 +416,23 @@ void Stg20_LabDnaDigivolve(Actor *a) {
         switch (a->stateLevel3) {
         case 0:
         default:
-            Stg20_MenuState.field_40 = Save_GameState.elems[Stg20_MenuState.field_38].digiId;
-            Stg20_MenuState.field_44 = 0;
-            Stg20_MenuState.field_48 = 1;
+            Stg20_MenuState.modelDigiId = Save_GameState.elems[Stg20_MenuState.dnaParent1].digiId;
+            Stg20_MenuState.modelNoGrow = 0;
+            Stg20_MenuState.modelSlide = 1;
             Task_Create(0x30A, &slot[2], 0);
             Task_NextState3(a);
         case 1:
             if (slot[5] == 0) {
                 Task_Create(0x30D, &slot[5], 0);
             }
-            Stg20_MenuState.field_24 = 3;
-            Stg20_MenuState.field_28 = Stg20_MenuState.field_38;
+            Stg20_MenuState.infoMode = 3;
+            Stg20_MenuState.infoRosterIndex = Stg20_MenuState.dnaParent1;
             Task_Create(0x30F, &slot[3], 0);
             Task_NextState3(a);
             break;
         case 2:
             if (((Actor *)slot[3])->stateLevel0 == 2) {
-                switch (D_800709B8.field_0) {
+                switch (D_800709B8.result) {
                 case 0:
                     Task_NextState2(a);
                     break;
@@ -453,7 +453,7 @@ void Stg20_LabDnaDigivolve(Actor *a) {
         switch (a->stateLevel3) {
         case 0:
         default:
-            Stg20_MenuState.field_30 = Stg20_MenuState.field_1C;
+            Stg20_MenuState.skillRosterIndex = Stg20_MenuState.pickedIndex;
             Task_Create(0x310, &slot[3], 0);
             Task_NextState3(a);
         case 1:
@@ -469,8 +469,8 @@ void Stg20_LabDnaDigivolve(Actor *a) {
         case 0:
         default:
             ok = 1;
-            buf[0] = Digi_GetModelFile(Stg20_MenuState.field_2C);
-            buf[1] = Anim_GetModelAnimFile(Stg20_MenuState.field_2C, 0);
+            buf[0] = Digi_GetModelFile(Stg20_MenuState.evoTargetId);
+            buf[1] = Anim_GetModelAnimFile(Stg20_MenuState.evoTargetId, 0);
             buf[2] = 0xDD8;
             buf[3] = 0xDD7;
             buf[4] = 0x25B;
@@ -507,7 +507,7 @@ void Stg20_LabDnaDigivolve(Actor *a) {
                 Task_SetState0((Actor *)slot[8], 2);
                 Task_SetState1((Actor *)w->menu, 2);
                 w->timer = 0x5A;
-                w->field_C = 1;
+                w->busy = 1;
                 Task_NextState3(a);
                 break;
             }
@@ -516,10 +516,10 @@ void Stg20_LabDnaDigivolve(Actor *a) {
             if (--w->timer != 0) {
                 break;
             }
-            args.field_4 = 0xDD8;
-            args.field_0 = 0xDD7;
-            args.field_14 = 0;
-            args.field_18 = 0x78;
+            args.animFileId = 0xDD8;
+            args.modelFileId = 0xDD7;
+            args.rotY = 0;
+            args.duration = 0x78;
             args.z = 0;
             args.y = 0;
             args.x = 0;
@@ -530,9 +530,9 @@ void Stg20_LabDnaDigivolve(Actor *a) {
             break;
         case 3:
             if (((Actor *)w->menu)->stateLevel2 == 3) {
-                Stg20_MenuState.field_40 = Stg20_MenuState.field_2C;
-                Stg20_MenuState.field_44 = 1;
-                Stg20_MenuState.field_48 = 0;
+                Stg20_MenuState.modelDigiId = Stg20_MenuState.evoTargetId;
+                Stg20_MenuState.modelNoGrow = 1;
+                Stg20_MenuState.modelSlide = 0;
                 Task_Create(0x30A, &slot[1], 0);
                 Task_SetState0((Actor *)slot[2], 3);
                 Task_NextState3(a);
@@ -542,16 +542,16 @@ void Stg20_LabDnaDigivolve(Actor *a) {
             if (((Actor *)w->menu)->stateLevel1 != 0) {
                 break;
             }
-            p = (Stg20Digi *)&D_8005E704[Stg20_MenuState.field_34];
-            q = (Stg20Digi *)&D_8005E704[Stg20_MenuState.field_38];
-            t = Digi_GetRank(Stg20_MenuState.field_2C);
-            w->field_C = 0;
+            p = (Stg20Digi *)&D_8005E704[Stg20_MenuState.dnaParent0];
+            q = (Stg20Digi *)&D_8005E704[Stg20_MenuState.dnaParent1];
+            t = Digi_GetRank(Stg20_MenuState.evoTargetId);
+            w->busy = 0;
             Snd_PlayById(0x101, 1);
             Mem_Zero(&nd, 0x5C);
             nd.state = 1;
             nd.level = t * 10 + 1;
-            nd.digiId = Stg20_MenuState.field_2C;
-            nd.field_E = (p->field_E > q->field_E ? p->field_E : q->field_E) + 1;
+            nd.digiId = Stg20_MenuState.evoTargetId;
+            nd.dp = (p->dp > q->dp ? p->dp : q->dp) + 1;
             if (p->level > q->level) {
                 ml = p->level + q->level / 5;
             } else {
@@ -594,54 +594,54 @@ void Stg20_LabDnaDigivolve(Actor *a) {
                 break;
             }
             nd.mp = nd.maxMp = v / 100;
-            if (p->field_1C > q->field_1C) {
-                hi = p->field_1C;
-                lo = q->field_1C;
+            if (p->attack > q->attack) {
+                hi = p->attack;
+                lo = q->attack;
             } else {
-                lo = p->field_1C;
-                hi = q->field_1C;
+                lo = p->attack;
+                hi = q->attack;
             }
             switch (t) {
             case 0:
             default:
-                nd.field_1C = (hi * 40 + lo * 30) / 100;
+                nd.attack = (hi * 40 + lo * 30) / 100;
                 break;
             case 1:
-                nd.field_1C = (hi * 50 + lo * 30) / 100;
+                nd.attack = (hi * 50 + lo * 30) / 100;
                 break;
             case 2:
-                nd.field_1C = (hi * 50 + lo * 40) / 100;
+                nd.attack = (hi * 50 + lo * 40) / 100;
                 break;
             }
-            if (p->field_1E > q->field_1E) {
-                hi = p->field_1E;
-                lo = q->field_1E;
+            if (p->defense > q->defense) {
+                hi = p->defense;
+                lo = q->defense;
             } else {
-                lo = p->field_1E;
-                hi = q->field_1E;
+                lo = p->defense;
+                hi = q->defense;
             }
             switch (t) {
             case 0:
             default:
-                nd.field_1E = (hi * 40 + lo * 30) / 100;
+                nd.defense = (hi * 40 + lo * 30) / 100;
                 break;
             case 1:
-                nd.field_1E = (hi * 50 + lo * 30) / 100;
+                nd.defense = (hi * 50 + lo * 30) / 100;
                 break;
             case 2:
-                nd.field_1E = (hi * 50 + lo * 40) / 100;
+                nd.defense = (hi * 50 + lo * 40) / 100;
                 break;
             }
             switch (t) {
             case 0:
             default:
-                nd.field_20 = (p->field_20 + q->field_20) * 30 / 100;
+                nd.speed = (p->speed + q->speed) * 30 / 100;
                 break;
             case 1:
-                nd.field_20 = (p->field_20 + q->field_20) * 45 / 100;
+                nd.speed = (p->speed + q->speed) * 45 / 100;
                 break;
             case 2:
-                nd.field_20 = (p->field_20 + q->field_20) / 2;
+                nd.speed = (p->speed + q->speed) / 2;
                 break;
             }
             best = 0;
@@ -710,18 +710,18 @@ void Stg20_LabDnaDigivolve(Actor *a) {
         switch (a->stateLevel3) {
         case 0:
         default:
-            Stg20_MenuState.field_1C = Stg20_MenuState.field_4C;
+            Stg20_MenuState.pickedIndex = Stg20_MenuState.dnaNewSlot;
             if (slot[5] == 0) {
                 Task_Create(0x30D, &slot[5], 0);
             }
-            Stg20_MenuState.field_24 = 4;
-            Stg20_MenuState.field_28 = Stg20_MenuState.field_1C;
+            Stg20_MenuState.infoMode = 4;
+            Stg20_MenuState.infoRosterIndex = Stg20_MenuState.pickedIndex;
             Task_Create(0x30F, &slot[3], 0);
             Task_NextState3(a);
             break;
         case 2:
             if (((Actor *)slot[3])->stateLevel0 == 2) {
-                switch (D_800709B8.field_0) {
+                switch (D_800709B8.result) {
                 case 1:
                 case 2:
                 case 3:
@@ -743,7 +743,7 @@ void Stg20_LabDnaDigivolve(Actor *a) {
         switch (a->stateLevel3) {
         case 0:
         default:
-            Stg20_MenuState.field_30 = Stg20_MenuState.field_1C;
+            Stg20_MenuState.skillRosterIndex = Stg20_MenuState.pickedIndex;
             Task_Create(0x310, &slot[3], 0);
             Task_NextState3(a);
         case 1:
@@ -776,16 +776,16 @@ void Stg20_LabDigivolve(Actor *a) {
             if (slot[1] != 0) {
                 Task_SetState0((Actor *)slot[1], 2);
             }
-            Stg20_MenuState.field_10 = 0;
+            Stg20_MenuState.excludeFirst = 0;
             Task_Create(0x30C, &slot[3], 0);
             Stg20_MsgWinShowSysMsg(0x116);
-            Stg20_MenuState.field_20 = 0;
+            Stg20_MenuState.pickStep = 0;
             Task_Create(0x30E, &slot[4], 0);
             Task_NextState3(a);
         case 1:
             if (((Actor *)slot[3])->stateLevel0 == 2) {
                 Task_SetState0((Actor *)slot[4], 2);
-                if (D_800709B8.field_0 != 0) {
+                if (D_800709B8.result != 0) {
                     Task_SetState1(a, 0);
                 } else {
                     Task_NextState2(a);
@@ -798,23 +798,23 @@ void Stg20_LabDigivolve(Actor *a) {
         switch (a->stateLevel3) {
         case 0:
         default:
-            Stg20_MenuState.field_40 = Save_GameState.elems[Stg20_MenuState.field_1C].digiId;
-            Stg20_MenuState.field_44 = 0;
-            Stg20_MenuState.field_48 = 0;
+            Stg20_MenuState.modelDigiId = Save_GameState.elems[Stg20_MenuState.pickedIndex].digiId;
+            Stg20_MenuState.modelNoGrow = 0;
+            Stg20_MenuState.modelSlide = 0;
             Task_Create(0x30A, &slot[1], 0);
             Task_NextState3(a);
         case 1:
             if (slot[5] == 0) {
                 Task_Create(0x30D, &slot[5], 0);
             }
-            Stg20_MenuState.field_24 = 0;
-            Stg20_MenuState.field_28 = Stg20_MenuState.field_1C;
+            Stg20_MenuState.infoMode = 0;
+            Stg20_MenuState.infoRosterIndex = Stg20_MenuState.pickedIndex;
             Task_Create(0x30F, &slot[3], 0);
             Task_NextState3(a);
             break;
         case 2:
             if (((Actor *)slot[3])->stateLevel0 == 2) {
-                switch (D_800709B8.field_0) {
+                switch (D_800709B8.result) {
                 case 0:
                     Task_NextState2(a);
                     break;
@@ -835,7 +835,7 @@ void Stg20_LabDigivolve(Actor *a) {
         switch (a->stateLevel3) {
         case 0:
         default:
-            Stg20_MenuState.field_30 = Stg20_MenuState.field_1C;
+            Stg20_MenuState.skillRosterIndex = Stg20_MenuState.pickedIndex;
             Task_Create(0x310, &slot[3], 0);
             Task_NextState3(a);
         case 1:
@@ -851,8 +851,8 @@ void Stg20_LabDigivolve(Actor *a) {
         case 0:
         default:
             ok = 1;
-            buf[0] = Digi_GetModelFile(Stg20_MenuState.field_2C);
-            buf[1] = Anim_GetModelAnimFile(Stg20_MenuState.field_2C, 0);
+            buf[0] = Digi_GetModelFile(Stg20_MenuState.evoTargetId);
+            buf[1] = Anim_GetModelAnimFile(Stg20_MenuState.evoTargetId, 0);
             buf[2] = 0xDDB;
             buf[3] = 0xDD9;
             buf[4] = 0x3D0;
@@ -884,17 +884,17 @@ void Stg20_LabDigivolve(Actor *a) {
                 }
                 Task_SetState0((Actor *)slot[8], 2);
                 Task_SetState1((Actor *)w->menu, 1);
-                w->field_C = 1;
+                w->busy = 1;
                 Task_NextState4(a);
                 w->timer = 0x5A;
             case 2:
                 if (--w->timer != 0) {
                     break;
                 }
-                args.field_4 = 0xDDB;
-                args.field_0 = 0xDD9;
-                args.field_14 = 0;
-                args.field_18 = 0x78;
+                args.animFileId = 0xDDB;
+                args.modelFileId = 0xDD9;
+                args.rotY = 0;
+                args.duration = 0x78;
                 args.z = 0;
                 args.y = 0;
                 args.x = 0;
@@ -905,19 +905,19 @@ void Stg20_LabDigivolve(Actor *a) {
             break;
         case 2:
             if (((Actor *)w->menu)->stateLevel2 == 3) {
-                Stg20_MenuState.field_40 = Stg20_MenuState.field_2C;
-                Stg20_MenuState.field_44 = 1;
-                Stg20_MenuState.field_48 = 0;
+                Stg20_MenuState.modelDigiId = Stg20_MenuState.evoTargetId;
+                Stg20_MenuState.modelNoGrow = 1;
+                Stg20_MenuState.modelSlide = 0;
                 Task_Create(0x30A, &slot[1], 0);
                 Task_NextState3(a);
             }
             break;
         case 3:
             if (((Actor *)w->menu)->stateLevel1 == 0) {
-                w->field_C = 0;
+                w->busy = 0;
                 Snd_PlayById(0x101, 1);
-                e = (Stg20DigiBoost *)&D_8005E704[Stg20_MenuState.field_28];
-                e->digiId = Stg20_MenuState.field_2C;
+                e = (Stg20DigiBoost *)&D_8005E704[Stg20_MenuState.infoRosterIndex];
+                e->digiId = Stg20_MenuState.evoTargetId;
                 e->maxHp += 30;
                 v = e->maxHp;
                 if (v >= 1000) {
@@ -945,14 +945,14 @@ void Stg20_LabDigivolve(Actor *a) {
             if (slot[5] == 0) {
                 Task_Create(0x30D, &slot[5], 0);
             }
-            Stg20_MenuState.field_24 = 1;
-            Stg20_MenuState.field_28 = Stg20_MenuState.field_1C;
+            Stg20_MenuState.infoMode = 1;
+            Stg20_MenuState.infoRosterIndex = Stg20_MenuState.pickedIndex;
             Task_Create(0x30F, &slot[3], 0);
             Task_NextState3(a);
             break;
         case 2:
             if (((Actor *)slot[3])->stateLevel0 == 2) {
-                switch (D_800709B8.field_0) {
+                switch (D_800709B8.result) {
                 case 1:
                 case 2:
                 case 3:
@@ -970,7 +970,7 @@ void Stg20_LabDigivolve(Actor *a) {
         switch (a->stateLevel3) {
         case 0:
         default:
-            Stg20_MenuState.field_30 = Stg20_MenuState.field_1C;
+            Stg20_MenuState.skillRosterIndex = Stg20_MenuState.pickedIndex;
             Task_Create(0x310, &slot[3], 0);
             Task_NextState3(a);
         case 1:
@@ -989,10 +989,10 @@ void Stg20_DigiLabUpdate(Actor *a) {
 
     switch (a->stateLevel0) {
     case 0:
-        Stg20_MenuState.field_C = 0;
+        Stg20_MenuState.labMode = 0;
         Task_Create(0x30D, &slot[5], 0);
         w->menu = Task_FindFirst(0x308, -1, -1);
-        Stg20_MenuState.field_0 = 0;
+        Stg20_MenuState.menuAllowed = 0;
         Task_NextState0(a);
         break;
     case 1:
@@ -1008,10 +1008,10 @@ void Stg20_DigiLabUpdate(Actor *a) {
                 Task_NextState2(a);
             case 1:
                 if (slot[3] == 0) {
-                    if (Stg20_MenuState.field_8 != 0) {
+                    if (Stg20_MenuState.result != 0) {
                         Task_NextState0(a);
                     } else {
-                        if (Stg20_MenuState.field_C != 0) {
+                        if (Stg20_MenuState.labMode != 0) {
                             Task_NextState1(a);
                         }
                         Task_NextState1(a);
@@ -1111,9 +1111,9 @@ void Stg20_ItemShopUpdate(Actor *a) {
                 Task_NextState2(a);
             case 1:
                 if (slot[2] == 0) {
-                    if (Stg20_MenuState.field_8 != 0) {
+                    if (Stg20_MenuState.result != 0) {
                         Task_NextState0(a);
-                    } else if (Stg20_MenuState.field_50 == 0) {
+                    } else if (Stg20_MenuState.menuChoice == 0) {
                         Task_SetState1(a, 1);
                     } else {
                         Task_SetState1(a, 2);
@@ -1172,8 +1172,8 @@ void Stg20_ItemShopUpdate(Actor *a) {
 void Stg20_RefillBeetleHpEp(void) {
     Stg20GameState *g = (Stg20GameState *)&Save_GameState;
 
-    g->field_26 = g->field_24 = Stg20_EngineHpTbl[g->field_2C[1] - 1];
-    g->field_2A = g->field_28 = Stg20_BatteryEpTbl[g->field_2C[3] - 0x35];
+    g->maxHp = g->hp = Stg20_EngineHpTbl[g->slotItems[1] - 1];
+    g->maxMp = g->mp = Stg20_BatteryEpTbl[g->slotItems[3] - 0x35];
 }
 
 void Stg20_BeetleShopUpdate(Actor *a) {
@@ -1200,9 +1200,9 @@ void Stg20_BeetleShopUpdate(Actor *a) {
                 Task_NextState2(a);
             case 1:
                 if (slot[2] == 0) {
-                    if (Stg20_MenuState.field_8 != 0) {
+                    if (Stg20_MenuState.result != 0) {
                         Task_NextState0(a);
-                    } else if (Stg20_MenuState.field_50 == 0) {
+                    } else if (Stg20_MenuState.menuChoice == 0) {
                         Task_SetState0((Actor *)slot[1], 3);
                         Task_SetState1(a, 1);
                     } else {
@@ -1282,24 +1282,24 @@ void Stg20_StageMain(Actor *a) {
         Gpu_ClearScreens();
         Gfx_FadeInFromBlack(0x1E);
         Task_Create(9, &slot[0], 0);
-        Flag_SetTableFile(Stg20_GetMapInfo()->field_20);
+        Flag_SetTableFile(Stg20_GetMapInfo()->flagTableFile);
         Task_Create(0x308, &slot[5], 0);
         if (Sys_State.gameMode < 0x32A) {
-            st = &((Stg20Start *)Stg20_GetMapInfo()->field_8)[Sys_State.modeArg];
+            st = &((Stg20Start *)Stg20_GetMapInfo()->startRecs)[Sys_State.modeArg];
             sp.id = 0x1F4;
             sp.blk[0].x = st->x;
             sp.blk[0].y = st->y;
             sp.blk[1].x = 0;
             sp.blk[1].y = 0;
-            sp.field_2 = st->dir;
+            sp.facing = st->dir;
             Task_Create(0x302, &slot[4], (s32)&sp);
-            if (Stg20_GetMapInfo()->field_20 != 0) {
+            if (Stg20_GetMapInfo()->flagTableFile != 0) {
                 n = 0;
                 for (id = Flag_FirstPassingEntry(); id != -1; id = Flag_NextPassingEntry()) {
                     src = (Stg20BytePair *)Flag_GetEntryPosList(id);
                     sp.id = Flag_GetEntryDigiId(id);
-                    sp.field_2 = Flag_GetEntryDir(id);
-                    sp.field_1C = id;
+                    sp.facing = Flag_GetEntryDir(id);
+                    sp.flagEntry = id;
                     for (k = 0; k < 6; k++) {
                         sp.blk[k].x = src[k].x != 0xFF ? src[k].x : 0;
                         sp.blk[k].y = src[k].y != 0xFF ? src[k].y : 0;
@@ -1309,7 +1309,7 @@ void Stg20_StageMain(Actor *a) {
                 }
             }
             Task_Create(0x304, &slot[26], 0);
-            Task_Create(0x301, &slot[2], Stg20_GetMapInfo()->field_4);
+            Task_Create(0x301, &slot[2], Stg20_GetMapInfo()->bgFileId);
             switch (Sys_GameMode[0]) {
             case 0x31D:
                 Task_Create(0x31C, &slot[27], 0);
@@ -1325,9 +1325,9 @@ void Stg20_StageMain(Actor *a) {
                 break;
             }
         } else if (Sys_State.gameMode < 0x32F) {
-            w->field_C = 1;
-            Stg20_MenuState.field_0 = 1;
-            Task_Create(0x305, &slot[2], Stg20_GetMapInfo()->field_4);
+            w->areaSelect = 1;
+            Stg20_MenuState.menuAllowed = 1;
+            Task_Create(0x305, &slot[2], Stg20_GetMapInfo()->bgFileId);
             Task_Create(0x306, &slot[3], 0);
         } else {
             if (Sys_State.gameMode < 0x330) {
@@ -1341,10 +1341,10 @@ void Stg20_StageMain(Actor *a) {
         }
         Gfx_InitLights();
         ((Stg20MainWork *)a->work)->field_0 = -1;
-        Stg20_MenuState.field_4 = 0;
-        if (Stg20_GetMapInfo()->field_14 != 0) {
+        Stg20_MenuState.talkActive = 0;
+        if (Stg20_GetMapInfo()->sndSlotContent != 0) {
             Snd_UnloadSlot(2);
-            Snd_SetSlotContent(1, Stg20_GetMapInfo()->field_14);
+            Snd_SetSlotContent(1, Stg20_GetMapInfo()->sndSlotContent);
         }
         Task_NextState0(a);
         break;
@@ -1366,17 +1366,17 @@ void Stg20_StageMain(Actor *a) {
                 break;
             }
             if (w->bgmOn == 0 && Snd_AnySlotLoading() == 0) {
-                if (Stg20_GetMapInfo()->field_16 != -1) {
-                    Snd_PlayById(Stg20_GetMapInfo()->field_16, 1);
+                if (Stg20_GetMapInfo()->bgmId != -1) {
+                    Snd_PlayById(Stg20_GetMapInfo()->bgmId, 1);
                 }
                 w->bgmOn = 1;
             }
-            if (((Stg20BlinkTask *)a)->field_24 == 10) {
+            if (((Stg20BlinkTask *)a)->frameCount == 10) {
                 Cd_QueueFile(0x312);
                 Cd_QueueFile(0x315);
                 Cd_QueueFile(0x325);
             }
-            if (((Stg20BlinkTask *)a)->field_24 == 15
+            if (((Stg20BlinkTask *)a)->frameCount == 15
                 && ((Sys_State.gameMode == 0x307 && Flag_Test(0x320) == 0)
                     || (Sys_GameMode[0] == 0x301 && Flag_Test(0x3E8) == 1 && Flag_Test(0x5DD) == 1
                         && Flag_Test(0x320) == 1 && Flag_Test(0x2336) == 1)
@@ -1391,12 +1391,12 @@ void Stg20_StageMain(Actor *a) {
                 Cd_QueueFile(0x314);
                 Cd_QueueFile(0x25C);
             }
-            if (Pad_Circle > 0 && Stg20_MenuState.field_4 == 0 && Sys_GameMode[0] < 0x32F
-                && Stg20_MenuState.field_0 != 0 && Snd_AnySlotLoading() == 0) {
+            if (Pad_Circle > 0 && Stg20_MenuState.talkActive == 0 && Sys_GameMode[0] < 0x32F
+                && Stg20_MenuState.menuAllowed != 0 && Snd_AnySlotLoading() == 0) {
                 Task_Create(0xB, &slot[1], 0);
                 a->childCount = 2;
                 Task_NextState1(a);
-                if (w->field_C != 0) {
+                if (w->areaSelect != 0) {
                     Stg20_AreaSelectShowName((Actor *)slot[3], 0);
                 }
             }
@@ -1404,7 +1404,7 @@ void Stg20_StageMain(Actor *a) {
         case 1:
             if (slot[1] == 0) {
                 a->childCount = 0x1C;
-                if (w->field_C != 0 && Menu_TopMenuResult != 0) {
+                if (w->areaSelect != 0 && Menu_TopMenuResult != 0) {
                     Gfx_FadeSetBlack();
                     Sys_State.nextGameMode = 0x601;
                     Task_NextState0(a);
@@ -1412,7 +1412,7 @@ void Stg20_StageMain(Actor *a) {
                     Gfx_FadeInFromBlack(0x20);
                     Task_SetState1(a, 0);
                 }
-                if (w->field_C != 0) {
+                if (w->areaSelect != 0) {
                     Stg20_AreaSelectShowName((Actor *)slot[3], 1);
                 }
             }
@@ -1429,10 +1429,10 @@ Stg20MapFile *Stg20_GetMapInfo(void) {
     if (f->loaded == 0) {
         base = Cd_GetFileOrNull(0x309);
         f->loaded = 1;
-        f->field_C += base;
-        f->field_8 += base;
+        f->exits += base;
+        f->startRecs += base;
         f->bits += base;
-        f->field_18 = f->field_18 != 0 ? f->field_18 + base : 0;
+        f->stepSndBits = f->stepSndBits != 0 ? f->stepSndBits + base : 0;
     }
     return f;
 }
@@ -1508,7 +1508,7 @@ s32 Stg20_TestSpecialFlag(s32 id) {
     case 9000:
         n = Item_GetBagCapacity();
         for (j = 0; j < n; j++) {
-            if (((Stg20GameState *)&Save_GameState)->field_66[j] == 0) {
+            if (((Stg20GameState *)&Save_GameState)->bagItems[j] == 0) {
                 return 1;
             }
         }
@@ -1537,7 +1537,7 @@ s32 Stg20_TestSpecialFlag(s32 id) {
     case 9023:
         for (n = 0; n < 3; n++) {
             if (((Stg20GameRoster *)&Save_GameState)->elems[n].state == n + 3
-                && ((Stg20GameRoster *)&Save_GameState)->elems[n].field_16 != 0) {
+                && ((Stg20GameRoster *)&Save_GameState)->elems[n].hp != 0) {
                 return 0;
             }
         }
@@ -1744,8 +1744,8 @@ void Stg20_SetSpecialFlag(s32 id, s32 on) {
         break;
     case 0x23B3:
         for (j = 0; j < Item_GetBagCapacity(); j++) {
-            if (((Stg20GameState *)&Save_GameState)->field_66[j] == 0xC2) {
-                ((Stg20GameState *)&Save_GameState)->field_66[j] = 0;
+            if (((Stg20GameState *)&Save_GameState)->bagItems[j] == 0xC2) {
+                ((Stg20GameState *)&Save_GameState)->bagItems[j] = 0;
                 Item_SortList();
                 break;
             }
@@ -1753,10 +1753,10 @@ void Stg20_SetSpecialFlag(s32 id, s32 on) {
         break;
     case 0x23B2:
     case 0x23B4:
-        ((Stg20GameState *)&Save_GameState)->field_28 = ((Stg20GameState *)&Save_GameState)->field_2A;
-        ((Stg20GameState *)&Save_GameState)->field_24 = ((Stg20GameState *)&Save_GameState)->field_26;
+        ((Stg20GameState *)&Save_GameState)->mp = ((Stg20GameState *)&Save_GameState)->maxMp;
+        ((Stg20GameState *)&Save_GameState)->hp = ((Stg20GameState *)&Save_GameState)->maxHp;
         for (i = 0; i < 0x13; i++) {
-            ((Stg20GameState *)&Save_GameState)->field_52[i] = 0;
+            ((Stg20GameState *)&Save_GameState)->slotStatus[i] = 0;
         }
         for (i = 0; i < 0x24; i++) {
             if (Save_GameState.elems[i].state != 0) {
@@ -1774,40 +1774,40 @@ void Stg20_SetSpecialFlag(s32 id, s32 on) {
         Flag_Set(0x264, 1);
         break;
     case 0x23B7:
-        ((Stg20GameState *)&Save_GameState)->field_DD4[0xDA]++;
+        ((Stg20GameState *)&Save_GameState)->storageCounts[0xDA]++;
         break;
     case 0x23B8:
-        ((Stg20GameState *)&Save_GameState)->field_DD4[0xBF]++;
+        ((Stg20GameState *)&Save_GameState)->storageCounts[0xBF]++;
         break;
     case 0x23B9:
-        ((Stg20GameState *)&Save_GameState)->field_DD4[0xD6]++;
+        ((Stg20GameState *)&Save_GameState)->storageCounts[0xD6]++;
         break;
     case 0x23BA:
-        ((Stg20GameState *)&Save_GameState)->field_DD4[0xC0]++;
+        ((Stg20GameState *)&Save_GameState)->storageCounts[0xC0]++;
         break;
     case 0x23BB:
-        ((Stg20GameState *)&Save_GameState)->field_DD4[0xDF]++;
+        ((Stg20GameState *)&Save_GameState)->storageCounts[0xDF]++;
         break;
     case 0x23BC:
-        ((Stg20GameState *)&Save_GameState)->field_DD4[0xE0]++;
+        ((Stg20GameState *)&Save_GameState)->storageCounts[0xE0]++;
         break;
     case 0x23BD:
-        ((Stg20GameState *)&Save_GameState)->field_DD4[0xD3]++;
+        ((Stg20GameState *)&Save_GameState)->storageCounts[0xD3]++;
         break;
     case 0x23BE:
-        ((Stg20GameState *)&Save_GameState)->field_DD4[0xD8]++;
+        ((Stg20GameState *)&Save_GameState)->storageCounts[0xD8]++;
         break;
     case 0x23BF:
-        ((Stg20GameState *)&Save_GameState)->field_DD4[0x49]++;
+        ((Stg20GameState *)&Save_GameState)->storageCounts[0x49]++;
         break;
     case 0x23C0:
-        ((Stg20GameState *)&Save_GameState)->field_DD4[0x4F]++;
+        ((Stg20GameState *)&Save_GameState)->storageCounts[0x4F]++;
         break;
     case 0x23C1:
-        ((Stg20GameState *)&Save_GameState)->field_DD4[0x2E]++;
+        ((Stg20GameState *)&Save_GameState)->storageCounts[0x2E]++;
         break;
     case 0x23C2:
-        ((Stg20GameState *)&Save_GameState)->field_DD4[0x34]++;
+        ((Stg20GameState *)&Save_GameState)->storageCounts[0x34]++;
         break;
     }
 }
@@ -1870,7 +1870,7 @@ void Stg20_SnapToCell(Actor *a, s32 doX, s32 doZ) {
 }
 
 void Stg20_SetMoveParams(Actor *a, s32 i) {
-    Stg20Vec3 *v = &((Stg20Rot *)a->u38.ptr38)->field_84;
+    Stg20Vec3 *v = &((Stg20Rot *)a->u38.ptr38)->axisMotion2;
 
     if (v->field_0 == 0) {
         v->field_0 = Stg20_MoveParams[i].field_0;
@@ -1894,7 +1894,7 @@ s32 Stg20_IsCellBlocked(Actor *a, s32 dir) {
         return 0;
     }
     mask = 0xBF;
-    if (((Stg20ModelTask *)a)->field_4 == 0) {
+    if (((Stg20ModelTask *)a)->walkerKind == 0) {
         mask = 0x7F;
     }
     return Stg20_GetGridCell(Stg20_GetCellInDir(a, dir)) & mask;
@@ -1927,7 +1927,7 @@ found:
 
 void Stg20_TickOccupantMarks(Actor *a, Stg20Marks *m) {
     s32 i;
-    s32 flag = ((Stg20ModelTask *)a)->field_4 == 0;
+    s32 flag = ((Stg20ModelTask *)a)->walkerKind == 0;
 
     for (i = 0; i < 5; i++) {
         if (m->timer[i] != 0) {
@@ -2029,7 +2029,7 @@ void Stg20_AreaSelectUpdate(Actor *a) {
     switch (a->stateLevel0) {
     case 0:
         if (Sys_State.prevGameMode == 0x602) {
-            Sys_State.modeArg = ((Stg20GameState *)&Save_GameState)->field_1;
+            Sys_State.modeArg = ((Stg20GameState *)&Save_GameState)->areaSelectArg;
         }
         Mem_FillWordsNeg1(&w->text, 1);
         w->index = 0;
@@ -2048,7 +2048,7 @@ void Stg20_AreaSelectUpdate(Actor *a) {
         }
         w->recs[n].id = -1;
         w->redraw = 1;
-        ((Stg20GameState *)&Save_GameState)->field_1 = D_8005F794;
+        ((Stg20GameState *)&Save_GameState)->areaSelectArg = D_8005F794;
         Task_NextState0(a);
         break;
     case 1:
@@ -2128,7 +2128,7 @@ void Stg20_AreaSelectShowName(Actor *a, s32 open) {
     if (open == 0) {
         Text_Close(&w->text);
     } else {
-        Text_OpenPacked(&w->text, w->recs[w->index].field_0, 0, Stg20_AreaNamePos);
+        Text_OpenPacked(&w->text, w->recs[w->index].text, 0, Stg20_AreaNamePos);
     }
 }
 
@@ -2170,12 +2170,12 @@ void Stg20_LabModeSelUpdate(Actor *a)
     else
       if (Pad_State[0].triangle <= 0)
     {
- do { if (Pad_State[0].cross > 0) { Stg20_MenuState.field_8 = 0; Stg20_MenuState.field_C = w->sel; Snd_PlayById(0xA, 0); Task_NextState0(a); } } while (0);
+ do { if (Pad_State[0].cross > 0) { Stg20_MenuState.result = 0; Stg20_MenuState.labMode = w->sel; Snd_PlayById(0xA, 0); Task_NextState0(a); } } while (0);
     }
     else
     {
-      Stg20_MenuState.field_8 = 1;
-      Stg20_MenuState.field_C = w->sel;
+      Stg20_MenuState.result = 1;
+      Stg20_MenuState.labMode = w->sel;
       Snd_PlayById(0xB, 0);
       Task_NextState0(a);
     }
@@ -2200,7 +2200,7 @@ void Stg20_LabModeSelDraw(Actor *a) {
         if (q->groupMask & 2) {
             q->x = w->field_0 * 0x36 - 0x8E;
             q->y = -0x60;
-            q->visible = ((t->field_24 >> 4) ^ 1) & 1;
+            q->visible = ((t->frameCount >> 4) ^ 1) & 1;
         }
     }
     Gfx_DrawParts((s32)p);
@@ -2231,9 +2231,9 @@ void Stg20_LabRosterFillSlots(Actor *a) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        w->slots[i].used = Save_GameState.elems[i + Stg20_MenuState.field_14].state != 0;
+        w->slots[i].used = Save_GameState.elems[i + Stg20_MenuState.rosterTop].state != 0;
         w->slots[i].enabled = 1;
-        w->slots[i].slot = i + Stg20_MenuState.field_14;
+        w->slots[i].slot = i + Stg20_MenuState.rosterTop;
     }
 }
 
@@ -2256,44 +2256,44 @@ void Stg20_LabRosterUpdate(Actor *a) {
         Task_NextState0(a);
         break;
     tri:
-        Stg20_MenuState.field_8 = 1;
-        Stg20_MenuState.field_1C = Stg20_MenuState.field_14 + Stg20_MenuState.field_18;
+        Stg20_MenuState.result = 1;
+        Stg20_MenuState.pickedIndex = Stg20_MenuState.rosterTop + Stg20_MenuState.rosterCursor;
         Snd_PlayById(0xB, 0);
         Task_NextState0(a);
         goto done;
     ok:
-        Stg20_MenuState.field_8 = 0;
-        Stg20_MenuState.field_1C = idx;
+        Stg20_MenuState.result = 0;
+        Stg20_MenuState.pickedIndex = idx;
         Snd_PlayById(0xE, 0);
         Task_NextState0(a);
         goto done;
     case 1:
         snd = 0;
         if (Pad_State[0].repeat & 0x1000) {
-            if (Stg20_MenuState.field_18 != 0) {
+            if (Stg20_MenuState.rosterCursor != 0) {
                 w->timer = 0;
                 snd = 1;
-                Stg20_MenuState.field_18--;
-            } else if (Stg20_MenuState.field_14 != 0) {
-                Stg20_MenuState.field_14--;
+                Stg20_MenuState.rosterCursor--;
+            } else if (Stg20_MenuState.rosterTop != 0) {
+                Stg20_MenuState.rosterTop--;
                 snd = 1;
             }
             Stg20_LabRosterFillSlots(a);
         } else if (Pad_State[0].repeat & 0x4000) {
-            if (Stg20_MenuState.field_18 != 3) {
+            if (Stg20_MenuState.rosterCursor != 3) {
                 w->timer = 0;
                 snd = 1;
-                Stg20_MenuState.field_18++;
-            } else if (Stg20_MenuState.field_14 + 4 < w->count) {
-                Stg20_MenuState.field_14++;
+                Stg20_MenuState.rosterCursor++;
+            } else if (Stg20_MenuState.rosterTop + 4 < w->count) {
+                Stg20_MenuState.rosterTop++;
                 snd = 1;
             }
             Stg20_LabRosterFillSlots(a);
         } else if (Pad_State[0].triangle > 0) {
             goto tri;
         } else if (Pad_State[0].cross > 0) {
-            idx = Stg20_MenuState.field_14 + Stg20_MenuState.field_18;
-            if ((Stg20_MenuState.field_10 != 0 && Stg20_MenuState.field_34 == idx) || Save_GameState.elems[idx].state == 0) {
+            idx = Stg20_MenuState.rosterTop + Stg20_MenuState.rosterCursor;
+            if ((Stg20_MenuState.excludeFirst != 0 && Stg20_MenuState.dnaParent0 == idx) || Save_GameState.elems[idx].state == 0) {
                 Snd_PlayById(0x10, 0);
             } else {
                 goto ok;
@@ -2329,14 +2329,14 @@ void Stg20_LabRosterDraw(Actor *a) {
         for (q = p; q->fileId != 0; q++) {
             if (q->groupMask & 2) {
                 q->x = 0x1D;
-                q->y = Stg20_MenuState.field_18 * 0x22 - 0x3E;
+                q->y = Stg20_MenuState.rosterCursor * 0x22 - 0x3E;
                 q->visible = ((w->timer >> 4) ^ 1) & 1;
             }
             if (q->groupMask & 4) {
-                q->visible = Stg20_MenuState.field_14 != 0;
+                q->visible = Stg20_MenuState.rosterTop != 0;
             }
             if (q->groupMask & 8) {
-                q->visible = Stg20_MenuState.field_14 + 4 < w->count;
+                q->visible = Stg20_MenuState.rosterTop + 4 < w->count;
             }
         }
         Gfx_DrawParts((s32)p);
@@ -2346,17 +2346,17 @@ void Stg20_LabRosterDraw(Actor *a) {
             for (s = r; s->fileId != 0; s++) {
                 do {
                     if (s->groupMask & 2) {
-                        s->visible = Stg20_MenuState.field_18 != i;
+                        s->visible = Stg20_MenuState.rosterCursor != i;
                     }
                 } while (0);
                 if (s->groupMask & 4) {
-                    s->visible = Stg20_MenuState.field_18 == i;
+                    s->visible = Stg20_MenuState.rosterCursor == i;
                 }
                 if (s->groupMask & 8) {
                     s->visible = w->slots[i].used != 0;
                 }
             }
-            Gfx_SetPartsNumber(r, 8, 2, ros[i + Stg20_MenuState.field_14].level);
+            Gfx_SetPartsNumber(r, 8, 2, ros[i + Stg20_MenuState.rosterTop].level);
             Gfx_DrawParts((s32)r);
         }
     } while (0);
@@ -2377,8 +2377,8 @@ void Stg20_MsgWinUpdate(Actor *a) {
         Task_NextState0(a);
         break;
     case 1:
-        if (w->field_18 != 0) {
-            args.text = w->field_4;
+        if (w->msgPending != 0) {
+            args.text = w->msgText;
             args.bigFont = 1;
             args.color = 0;
             args.pos.x = 0x10;
@@ -2389,11 +2389,11 @@ void Stg20_MsgWinUpdate(Actor *a) {
             args.strArg0 = (s32)w->name;
             Text_Open(w, &args);
             Flag_Set(0x10, 0);
-            w->field_1C = -1;
-            w->field_18 = 0;
+            w->choice = -1;
+            w->msgPending = 0;
         }
-        if (w->field_1C == -1 && Flag_Test(0x10) != 0) {
-            w->field_1C = Flag_Test(0x11);
+        if (w->choice == -1 && Flag_Test(0x10) != 0) {
+            w->choice = Flag_Test(0x11);
         }
         break;
     case 2:
@@ -2436,8 +2436,8 @@ void Stg20_MsgWinShowSkillDesc(s32 id) {
     if (e != NULL) {
         Stg20TextWork *w = (Stg20TextWork *)e->work;
 
-        w->field_4 = Skill_GetDescText(id);
-        w->field_18 = 1;
+        w->msgText = Skill_GetDescText(id);
+        w->msgPending = 1;
     }
 }
 
@@ -2447,8 +2447,8 @@ void Stg20_MsgWinShowSysMsg(s32 id) {
     if (e != NULL) {
         Stg20TextWork *w = (Stg20TextWork *)e->work;
 
-        w->field_4 = (s32)Cd_GetFileEntry(id + 0x1FD0000);
-        w->field_18 = 1;
+        w->msgText = (s32)Cd_GetFileEntry(id + 0x1FD0000);
+        w->msgPending = 1;
     }
 }
 
@@ -2463,8 +2463,8 @@ void Stg20_MsgWinShowDigiMsg(s32 text, s32 digi) {
         for (i = 0; i < 0xE; i++) {
             w->name[i] = name[i];
         }
-        w->field_4 = (s32)Cd_GetFileEntry(text + 0x1FD0000);
-        w->field_18 = 1;
+        w->msgText = (s32)Cd_GetFileEntry(text + 0x1FD0000);
+        w->msgPending = 1;
     }
 }
 
@@ -2472,7 +2472,7 @@ s32 Stg20_MsgWinGetChoice(void) {
     TaskEntry *e = Task_FindFirst(0x30D, -1, -1);
 
     if (e != NULL) {
-        return ((Stg20TextWork *)e->work)->field_1C;
+        return ((Stg20TextWork *)e->work)->choice;
     }
     return 0;
 }
@@ -2506,7 +2506,7 @@ void Stg20_LabCaptionDraw(void) {
 
     for (q = p; q->fileId != 0; q++) {
         if (q->groupMask & 6) {
-            switch (Stg20_MenuState.field_20) {
+            switch (Stg20_MenuState.pickStep) {
             case 0:
             default:
                 q->visible = 0;
@@ -2642,26 +2642,26 @@ void Stg20_LabInfoUpdate(Actor *a) {
         case 1:
             do {
                 if (Pad_State[0].circle > 0) {
-                    D_800709B8.field_0 = 0;
+                    D_800709B8.result = 0;
                     Task_NextState0(a);
                     break;
                 }
                 if (Pad_State[0].triangle > 0) {
                     Snd_PlayById(0xB, 0);
-                    D_800709B8.field_0 = 1;
+                    D_800709B8.result = 1;
                     Task_NextState0(a);
                     break;
                 }
-                if (Stg20_MenuState.field_24 == 1) {
+                if (Stg20_MenuState.infoMode == 1) {
                     break;
                 }
                 switch (Stg20_MsgWinGetChoice()) {
                 case 0:
-                    Stg20_MenuState.field_8 = 2;
+                    Stg20_MenuState.result = 2;
                     Task_NextState0(a);
                     break;
                 case 1:
-                    Stg20_MenuState.field_8 = 3;
+                    Stg20_MenuState.result = 3;
                     Task_NextState0(a);
                     break;
                 }
@@ -2680,17 +2680,17 @@ void Stg20_LabInfoDraw(Actor *a) {
     Stg20StatusWork *w = (Stg20StatusWork *)a->work;
     GfxPart *p = (GfxPart *)Cd_GetFileEntry(0xD120008);
 
-    Gfx_SetPartsNumber(p, 2, 3, w->digi->field_14);
-    Gfx_SetPartsNumber(p, 4, 3, w->digi->field_16);
-    Gfx_SetPartsNumber(p, 8, 3, w->digi->field_18);
-    Gfx_SetPartsNumber(p, 0x10, 3, w->digi->field_1A);
+    Gfx_SetPartsNumber(p, 2, 3, w->digi->maxHp);
+    Gfx_SetPartsNumber(p, 4, 3, w->digi->hp);
+    Gfx_SetPartsNumber(p, 8, 3, w->digi->maxMp);
+    Gfx_SetPartsNumber(p, 0x10, 3, w->digi->mp);
     Gfx_SetPartsNumber(p, 0x20, 2, w->digi->level);
-    Gfx_SetPartsNumber(p, 0x40, 3, w->digi->field_1C);
-    Gfx_SetPartsNumber(p, 0x80, 3, w->digi->field_1E);
-    Gfx_SetPartsNumber(p, 0x100, 3, w->digi->field_20);
+    Gfx_SetPartsNumber(p, 0x40, 3, w->digi->attack);
+    Gfx_SetPartsNumber(p, 0x80, 3, w->digi->defense);
+    Gfx_SetPartsNumber(p, 0x100, 3, w->digi->speed);
     Gfx_SetPartsNumber(p, 0x200, 8, w->digi->exp);
     Gfx_SetPartsNumber(p, 0x400, 8, Digi_GetExpToNextLevel(w->digi->level, w->digi->maxLevel, w->digi->exp));
-    Gfx_SetPartsNumber(p, 0x800, 2, w->digi->field_E);
+    Gfx_SetPartsNumber(p, 0x800, 2, w->digi->dp);
     Gfx_DrawParts((s32)p);
 }
 
@@ -2828,7 +2828,7 @@ void Stg20_LabSkillsUpdate(Actor *a) {
         if (snd != 0) {
             Snd_PlayById(0xD, 0);
         }
-        if (redraw != 0 || ((Stg20BlinkTask *)a)->field_24 == 1) {
+        if (redraw != 0 || ((Stg20BlinkTask *)a)->frameCount == 1) {
             Stg20_LabSkillsSetText(a);
         }
         break;
@@ -2905,8 +2905,8 @@ void Stg20_LabPairUpdate(Actor *a) {
     switch (a->stateLevel0) {
     case 0:
         Mem_FillWordsNeg1(w, 2);
-        Stg20_OpenText(w, (s32)Save_RosterNames[Stg20_MenuState.field_34].name, 0, &Stg20_LabPairNamePos[0], 0);
-        Stg20_OpenText(&w[1], (s32)Save_RosterNames[Stg20_MenuState.field_38].name, 0, &Stg20_LabPairNamePos[1], 0);
+        Stg20_OpenText(w, (s32)Save_RosterNames[Stg20_MenuState.dnaParent0].name, 0, &Stg20_LabPairNamePos[0], 0);
+        Stg20_OpenText(&w[1], (s32)Save_RosterNames[Stg20_MenuState.dnaParent1].name, 0, &Stg20_LabPairNamePos[1], 0);
         Task_NextState0(a);
         break;
     case 1:
@@ -2975,7 +2975,7 @@ void Stg20_LabJogBgUpdate(Actor *a) {
         Actor_InitTransform(a, Gfx_ZeroVector, 0);
         Gfx_AttachModel(a, 0xD14)->otIndex = 5;
         Gfx_ResetModelBones(a);
-        ((Stg20Rot *)a->u38.ptr38)->field_42 = 0x200;
+        ((Stg20Rot *)a->u38.ptr38)->rotY = 0x200;
         Task_NextState0(a);
     }
 }
@@ -3004,12 +3004,12 @@ void Stg20_LabDigiModelUpdate(Actor *a) {
         switch (a->stateLevel1) {
         case 0:
         default:
-            a->digiId = Stg20_MenuState.field_40;
+            a->digiId = Stg20_MenuState.modelDigiId;
             w->modelId = Digi_GetModelFile(a->digiId);
             w->pos[0] = 0;
             w->pos[1] = 0;
             w->pos[2] = 0;
-            a->param = Stg20_MenuState.field_48;
+            a->param = Stg20_MenuState.modelSlide;
             Task_NextState1(a);
         case 1:
             f = Digi_GetModelFile(a->digiId);
@@ -3039,9 +3039,9 @@ void Stg20_LabDigiModelUpdate(Actor *a) {
             w->field_25 = 0;
             w->field_24 = 0;
             if (D_800709F4 == 0) {
-                o->field_60 = 0;
-                o->field_5C = 0;
-                o->field_58 = 0;
+                o->scaleZ = 0;
+                o->scaleY = 0;
+                o->scaleX = 0;
             }
             w->visible = 1;
             Task_NextState0(a);
@@ -3057,32 +3057,32 @@ void Stg20_LabDigiModelUpdate(Actor *a) {
         default:
             break;
         case 1:
-            if (o->field_30 > -0x640) {
-                o->field_30 -= 0x20;
+            if (o->posX > -0x640) {
+                o->posX -= 0x20;
             } else {
-                o->field_30 = -0x640;
+                o->posX = -0x640;
                 Task_SetState1(a, 0);
             }
             break;
         case 2:
-            if (o->field_30 < 0x640) {
-                o->field_30 += 0x20;
+            if (o->posX < 0x640) {
+                o->posX += 0x20;
             } else {
-                o->field_30 = 0x640;
+                o->posX = 0x640;
                 Task_SetState1(a, 0);
             }
             break;
         }
         if (a->param != 0) {
-            o->field_42 -= 0xB;
+            o->rotY -= 0xB;
         } else {
-            o->field_42 += 0xB;
+            o->rotY += 0xB;
         }
-        if (o->field_58 != 0x1000) {
-            v = o->field_58 + 0x100;
-            o->field_58 = v;
-            o->field_60 = v;
-            o->field_5C = v;
+        if (o->scaleX != 0x1000) {
+            v = o->scaleX + 0x100;
+            o->scaleX = v;
+            o->scaleZ = v;
+            o->scaleY = v;
         }
         break;
     case 2:
@@ -3113,7 +3113,7 @@ void Stg20_MapExitUpdate(Actor *a) {
         Task_NextState0(a);
         break;
     case 1:
-        for (e = (Stg20Exit *)Stg20_GetMapInfo()->field_C; e->x != 0; e++) {
+        for (e = (Stg20Exit *)Stg20_GetMapInfo()->exits; e->x != 0; e++) {
             c.x = e->x;
             c.y = e->y;
             if (Stg20_GetGridCell(&c) & 0x80) {
@@ -3165,21 +3165,21 @@ void Stg20_WalkerWarpToCell(Actor *a, Stg20Pos2 *pos) {
     }
     w->x = pos->x;
     w->y = pos->y;
-    w->field_8 = w->field_A = 1;
-    w->field_74 = 0;
-    w->field_5C = 0;
-    w->field_18 = 0;
+    w->endX = w->endY = 1;
+    w->done = 0;
+    w->wait = 0;
+    w->index = 0;
 }
 
 s32 Stg20_WalkerIsPathDone(Actor *a) {
-    return ((Stg20ModelWork *)a->work)->field_74;
+    return ((Stg20ModelWork *)a->work)->done;
 }
 
 void Stg20_WalkerSetAnim(Actor *a, s32 anim) {
     Stg20ModelTask *t = (Stg20ModelTask *)a;
     Stg20ModelWork *w = t->work;
 
-    if (t->field_4 >= 0 && w->anim != anim) {
+    if (t->walkerKind >= 0 && w->anim != anim) {
         w->anim = anim;
         Anim_SetModelAnim(a, anim);
     }
@@ -3190,18 +3190,18 @@ void Stg20_WalkerInit(Actor *a, Stg20Spawn *s) {
     s32 i;
 
     a->digiId = s->id;
-    w->field_0 = s->field_2;
-    w->field_1C = s->field_1C;
+    w->facing = s->facing;
+    w->flagEntry = s->flagEntry;
     for (i = 0; i < 6; i++) {
         w->blk[i] = s->blk[i];
     }
-    ((Stg20ModelTask *)a)->field_4 = 1;
+    ((Stg20ModelTask *)a)->walkerKind = 1;
     if (s->id == 0x1F2) {
-        ((Stg20ModelTask *)a)->field_4 = -3;
+        ((Stg20ModelTask *)a)->walkerKind = -3;
     } else if (s->id == 0x1F3) {
-        ((Stg20ModelTask *)a)->field_4 = -2;
+        ((Stg20ModelTask *)a)->walkerKind = -2;
     } else if (s->id == 0x1F4) {
-        ((Stg20ModelTask *)a)->field_4 = 0;
+        ((Stg20ModelTask *)a)->walkerKind = 0;
     }
     w->visible = 1;
     if (s->id >= 0x1F1 && s->id <= 0x1F3) {
@@ -3215,7 +3215,7 @@ void Stg20_WalkerGetInput(Actor *a)
   Stg20Cell *c;
   Stg20Cell *p;
   s32 r;
-  if ((((Stg20ModelTask *) a)->field_4 == 0) && (Stg20_TalkActive == 0))
+  if ((((Stg20ModelTask *) a)->walkerKind == 0) && (Stg20_TalkActive == 0))
   {
     switch (a->param)
     {
@@ -3255,7 +3255,7 @@ s32 Stg20_InputToDir(Actor *a) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        if (((Stg20FlagWork *)a->work)->field_24 & m) {
+        if (((Stg20FlagWork *)a->work)->input & m) {
             return (i + 2) % 4;
         }
         m <<= 1;
@@ -3264,7 +3264,7 @@ s32 Stg20_InputToDir(Actor *a) {
 }
 
 void Stg20_WalkerFaceDir(Actor *a, s32 i) {
-    ((Stg20Rot *)a->u38.ptr38)->field_42 = Stg20_DirAngles[i];
+    ((Stg20Rot *)a->u38.ptr38)->rotY = Stg20_DirAngles[i];
 }
 
 void Stg20_WalkerHalt(Actor *a) {
@@ -3273,10 +3273,10 @@ void Stg20_WalkerHalt(Actor *a) {
 
     w->x = c.x;
     w->y = c.y;
-    w->field_8 = w->field_A = 1;
-    w->field_74 = 1;
-    w->field_5C = 0;
-    w->field_18 = 0;
+    w->endX = w->endY = 1;
+    w->done = 1;
+    w->wait = 0;
+    w->index = 0;
 }
 
 void Stg20_WalkerUpdate(Actor *a) {
@@ -3298,15 +3298,15 @@ void Stg20_WalkerUpdate(Actor *a) {
     s32 snd;
     Stg20Rot *r;
 
-    if (((Stg20ModelTask *)a)->field_4 == 0) {
-        Stg20_MenuState.field_0 = 0;
+    if (((Stg20ModelTask *)a)->walkerKind == 0) {
+        Stg20_MenuState.menuAllowed = 0;
     }
     switch (a->stateLevel0) {
     case 0:
         pos[0] = (w->blk[0].x - 0xB) * 0x600;
         pos[1] = 0;
         pos[2] = -((w->blk[0].y - 0xB) * 0x600);
-        Actor_InitTransform(a, pos, (w->field_0 << 10) & 0xFC00);
+        Actor_InitTransform(a, pos, (w->facing << 10) & 0xFC00);
         if (w->visible != 0) {
             w->modelId = Digi_GetModelFile(a->digiId);
             Gfx_AttachModel(a, w->modelId)->otIndex = 3;
@@ -3319,14 +3319,14 @@ void Stg20_WalkerUpdate(Actor *a) {
                 if (a->digiId == 0x2E) {
                     v = -0x480;
                 }
-                r->field_34 = v;
+                r->posY = v;
                 break;
             case 0x318:
                 v = 0;
                 if (a->digiId == 0x14) {
                     v = -0x480;
                 }
-                r->field_34 = v;
+                r->posY = v;
                 break;
             }
         }
@@ -3336,7 +3336,7 @@ void Stg20_WalkerUpdate(Actor *a) {
     case 2:
         break;
     case 1:
-        if (((Stg20ModelTask *)a)->field_4 < -1) {
+        if (((Stg20ModelTask *)a)->walkerKind < -1) {
             switch (a->stateLevel1) {
             case 0:
             default:
@@ -3346,7 +3346,7 @@ void Stg20_WalkerUpdate(Actor *a) {
                 }
                 c = *Stg20_GetActorCell(p);
                 if (w->blk[0].x == c.x && w->blk[0].y == c.y && Stg20_IsOnCellCenter(p) != 0) {
-                    Text_OpenMsgClearChoice(&w->text, Flag_SelectBranch(w->field_1C));
+                    Text_OpenMsgClearChoice(&w->text, Flag_SelectBranch(w->flagEntry));
                     w->target = p;
                     Stg20_WalkerHalt(p);
                     Task_SetState1(p, 0);
@@ -3359,10 +3359,10 @@ void Stg20_WalkerUpdate(Actor *a) {
                 if (Text_IsFinished(w->text) != 0) {
                     Text_Close(&w->text);
                     if (Flag_Test(0x10) != 0) {
-                        Text_OpenMsgClearChoice(&w->text, Flag_SelectBranch(w->field_1C));
+                        Text_OpenMsgClearChoice(&w->text, Flag_SelectBranch(w->flagEntry));
                         break;
                     }
-                    if (((Stg20ModelTask *)a)->field_4 == -2) {
+                    if (((Stg20ModelTask *)a)->walkerKind == -2) {
                         Task_SetState0(a, 3);
                     } else {
                         Task_SetState1(a, 0);
@@ -3399,9 +3399,9 @@ void Stg20_WalkerUpdate(Actor *a) {
                     } else {
                         Stg20_WalkerFaceDir(a, Stg20_InputToDir(a));
                     }
-                } else if (((Stg20ModelTask *)a)->field_4 == 0) {
+                } else if (((Stg20ModelTask *)a)->walkerKind == 0) {
                     if (w->timer < Sys_State.frameCount && (w->input & 0x40)) {
-                        dir = (((Stg20Rot *)a->u38.ptr38)->field_42 & 0xFFF) / 0x400;
+                        dir = (((Stg20Rot *)a->u38.ptr38)->rotY & 0xFFF) / 0x400;
                         if (Stg20_IsCellBlocked(a, dir) & 0x40) {
                             e = (Actor *)Task_FindFirst(0x302, 1, -1);
                             found = 0;
@@ -3422,22 +3422,22 @@ void Stg20_WalkerUpdate(Actor *a) {
                             }
                         }
                     }
-                    if (((Stg20ModelTask *)a)->field_4 == 0 && a->stateLevel2 == 1) {
-                        Stg20_MenuState.field_0 = 1;
+                    if (((Stg20ModelTask *)a)->walkerKind == 0 && a->stateLevel2 == 1) {
+                        Stg20_MenuState.menuAllowed = 1;
                     }
                 }
                 break;
             case 2:
-                if (((Stg20ModelTask *)a)->field_4 == 0) {
+                if (((Stg20ModelTask *)a)->walkerKind == 0) {
                     q = w->target;
                     ew = (Stg20NpcWork *)q->work;
-                    Stg20_MenuState.field_4 = 1;
+                    Stg20_MenuState.talkActive = 1;
                     Stg20_AddOccupantMark(a, &w->marks, -1, 5);
                     Stg20_WalkerSetAnim(a, 0x20);
                     Task_SetState1(q, 0);
                     Task_SetState2(q, 2);
                     ew->target = a;
-                    ((Stg20Rot *)q->u38.ptr38)->field_42 = ((Stg20Rot *)a->u38.ptr38)->field_42 + 0x800;
+                    ((Stg20Rot *)q->u38.ptr38)->rotY = ((Stg20Rot *)a->u38.ptr38)->rotY + 0x800;
                     Stg20_WalkerHalt(a);
                     Task_SetState1(a, 0);
                     Task_SetState2(a, 1);
@@ -3446,7 +3446,7 @@ void Stg20_WalkerUpdate(Actor *a) {
                     case 0:
                     default:
                         Stg20_WalkerSetAnim(a, 0x20);
-                        Text_OpenMsgClearChoice(&w->text, Flag_SelectBranch(w->field_1C));
+                        Text_OpenMsgClearChoice(&w->text, Flag_SelectBranch(w->flagEntry));
                         Task_NextState3(a);
                         break;
                     case 1:
@@ -3493,14 +3493,14 @@ void Stg20_WalkerUpdate(Actor *a) {
                 Stg20_AddOccupantMark(a, &w->marks, w->dir, 0x14);
                 Task_NextState2(a);
             case 1:
-                if ((w->input & 0x10) || Stg20_TalkActive != 0 || ((Stg20ModelTask *)a)->field_4 != 0) {
+                if ((w->input & 0x10) || Stg20_TalkActive != 0 || ((Stg20ModelTask *)a)->walkerKind != 0) {
                     Stg20_WalkerSetAnim(a, 0x1F);
                     Stg20_SetMoveParams(a, 0);
                 } else {
                     Stg20_WalkerSetAnim(a, 0x25);
                     Stg20_SetMoveParams(a, 1);
                 }
-                if (((Stg20ModelTask *)a)->field_4 == 0) {
+                if (((Stg20ModelTask *)a)->walkerKind == 0) {
                     ok = 0;
                     w->counter++;
                     if ((w->input & 0x10) || Stg20_TalkActive != 0) {
@@ -3512,11 +3512,11 @@ void Stg20_WalkerUpdate(Actor *a) {
                     }
                     if (ok != 0) {
                         snd = 0x27;
-                        if (Stg20_GetMapInfo()->field_18 != 0) {
+                        if (Stg20_GetMapInfo()->stepSndBits != 0) {
                             c = *Stg20_GetActorCell(a);
                             idx = c.y * 3 + c.x / 8;
                             mask = 1 << (s16)(c.x % 8);
-                            if (((u8 *)Stg20_GetMapInfo()->field_18)[idx] & mask) {
+                            if (((u8 *)Stg20_GetMapInfo()->stepSndBits)[idx] & mask) {
                                 snd = 0x28;
                             }
                         }
@@ -3619,7 +3619,7 @@ void Stg20_XaStreamUpdate(Actor *a) {
             }
             break;
         case 1:
-            if ((((Stg20BlinkTask *)a)->field_24 & 0x1F) == 0) {
+            if ((((Stg20BlinkTask *)a)->frameCount & 0x1F) == 0) {
                 switch (CdSync(1, res2)) {
                 case 5:
                     Task_SetState0(a, 3);
@@ -3706,7 +3706,7 @@ void Stg20_ItemShopMenuUpdate(Actor *a) {
 
     case 1:
         do {
-            s32 *p = &D_800709B8.field_48;
+            s32 *p = &D_800709B8.menuChoice;
 
             if (Pad_State[0].right > 0) {
                 if (*p != 0) {
@@ -3749,7 +3749,7 @@ void Stg20_ItemShopMenuDraw(Actor *a) {
     for (q = p; q->fileId != 0; q++) {
         if (q->groupMask & 2) {
             q->palette = Math_CycleRange(a->elapsed, 4, 0, 3);
-            q->x = Stg20_MenuState.field_50 != 0 ? -0x6C : -0x90;
+            q->x = Stg20_MenuState.menuChoice != 0 ? -0x6C : -0x90;
             q->y = -0x62;
         }
     }
@@ -3773,7 +3773,7 @@ void Stg20_BeetleShopMenuUpdate(Actor *a) {
     case 1:
         do {
             /* D_80070A00 reached as D_800709B8.field_48; field_0 is p[-18] */
-            s32 *p = &D_800709B8.field_48;
+            s32 *p = &D_800709B8.menuChoice;
 
             if (Pad_State[0].right > 0) {
                 if (*p != 0) {

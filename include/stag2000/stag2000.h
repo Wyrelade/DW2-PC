@@ -14,10 +14,10 @@ typedef struct {
 /* Work of task 0x30D (Stg20_MsgWinClear closes it with Text_Close, Stg20_MsgWinGetChoice reads 0x1C). */
 typedef struct {
     u8 _pad00[0x04];
-    /* 0x04 */ s32 field_4;
+    /* 0x04 */ s32 msgText;
     u8 _pad08[0x10];
-    /* 0x18 */ s32 field_18;
-    /* 0x1C */ s32 field_1C;
+    /* 0x18 */ s32 msgPending;
+    /* 0x1C */ s32 choice;
 } Stg20TextWork;
 
 /* Three words copied into a task work by Stg20_XaStreamInit. */
@@ -32,13 +32,13 @@ typedef struct {
     u8 _pad00[0x2C];
     /* 0x2C */ s32 anim;
     u8 _pad30[0x44];
-    /* 0x74 */ s32 field_74;
+    /* 0x74 */ s32 done;
 } Stg20ModelWork;
 
 /* Actor viewed with the word at 0x04 (Stg20_WalkerSetAnim reads it before the work). */
 typedef struct {
     /* 0x00 */ s32 id;
-    /* 0x04 */ s32 field_4;
+    /* 0x04 */ s32 walkerKind;
     u8 _pad08[0x24];
     /* 0x2C */ Stg20ModelWork *work;
 } Stg20ModelTask;
@@ -46,23 +46,23 @@ typedef struct {
 /* Work holding a 0x43-entry s16 list at 0x60 (Stg20_PartsListHas, Stg20_PartsListRemove). */
 typedef struct {
     u8 _pad00[0x60];
-    /* 0x60 */ s16 field_60[0x43];
+    /* 0x60 */ s16 inv[0x43];
 } Stg20ListWork;
 
 /* Actor.u38.ptr38 viewed with the s16 at 0x42 (Stg20_WalkerFaceDir). */
 typedef struct {
     u8 _pad00[0x30];
-    /* 0x30 */ s32 field_30;
-    /* 0x34 */ s32 field_34;
-    /* 0x38 */ s32 field_38;
+    /* 0x30 */ s32 posX;
+    /* 0x34 */ s32 posY;
+    /* 0x38 */ s32 posZ;
     u8 _pad3C[0x06];
-    /* 0x42 */ s16 field_42;
+    /* 0x42 */ s16 rotY;
     u8 _pad44[0x14];
-    /* 0x58 */ s32 field_58;
-    /* 0x5C */ s32 field_5C;
-    /* 0x60 */ s32 field_60;
+    /* 0x58 */ s32 scaleX;
+    /* 0x5C */ s32 scaleY;
+    /* 0x60 */ s32 scaleZ;
     u8 _pad64[0x20];
-    /* 0x84 */ Stg20Vec3 field_84;
+    /* 0x84 */ Stg20Vec3 axisMotion2;
 } Stg20Rot;
 
 /* Map position: two s16 indices into Stg20_MapGrid (Stg20_GetGridCell). */
@@ -74,17 +74,17 @@ typedef struct {
 /* Save_GameState viewed with the u16 list at 0x2C scanned by Stg20_IsPartInstalled. */
 typedef struct {
     u8 _pad00[0x01];
-    /* 0x01 */ u8 field_1;
+    /* 0x01 */ u8 areaSelectArg;
     u8 _pad02[0x22];
-    /* 0x24 */ u16 field_24;
-    /* 0x26 */ u16 field_26;
-    /* 0x28 */ u16 field_28;
-    /* 0x2A */ u16 field_2A;
-    /* 0x2C */ u16 field_2C[0x13];
-    /* 0x52 */ u8 field_52[0x14];
-    /* 0x66 */ u16 field_66[0x30];
+    /* 0x24 */ u16 hp;
+    /* 0x26 */ u16 maxHp;
+    /* 0x28 */ u16 mp;
+    /* 0x2A */ u16 maxMp;
+    /* 0x2C */ u16 slotItems[0x13];
+    /* 0x52 */ u8 slotStatus[0x14];
+    /* 0x66 */ u16 bagItems[0x30];
     u8 _padC6[0xD0E];
-    /* 0xDD4 */ u16 field_DD4[1];
+    /* 0xDD4 */ u16 storageCounts[1];
 } Stg20GameState;
 
 /* overlay data */
@@ -143,7 +143,7 @@ extern Stg20Cell *Stg20_GetCellInDir(Actor *a, s32 dir);
 
 /* Text work with records (Stg20_AreaSelectShowName). */
 typedef struct {
-    /* 0x00 */ s32 field_0;
+    /* 0x00 */ s32 text;
     u8 _pad04[0x14];
 } Stg20TextRec; /* size 0x18 */
 
@@ -175,19 +175,19 @@ typedef struct {
 /* Work with a direction flag word at 0x24 (Stg20_InputToDir). */
 typedef struct {
     u8 _pad00[0x24];
-    /* 0x24 */ s32 field_24;
+    /* 0x24 */ s32 input;
 } Stg20FlagWork;
 
 /* GsSetRefView2 block + coordinate at the head of a camera work (Stg20_CameraDraw). */
 typedef struct {
-    /* 0x00 */ s32 field_0;
-    /* 0x04 */ s32 field_4;
-    /* 0x08 */ s32 field_8;
-    /* 0x0C */ s32 field_C;
-    /* 0x10 */ s32 field_10;
-    /* 0x14 */ s32 field_14;
-    /* 0x18 */ s32 field_18;
-    /* 0x1C */ Coord1F668 *field_1C;
+    /* 0x00 */ s32 vpx;
+    /* 0x04 */ s32 vpy;
+    /* 0x08 */ s32 vpz;
+    /* 0x0C */ s32 vrx;
+    /* 0x10 */ s32 vry;
+    /* 0x14 */ s32 vrz;
+    /* 0x18 */ s32 rz;
+    /* 0x1C */ Coord1F668 *super;
 } Stg20RefView;
 
 typedef struct {
@@ -213,14 +213,14 @@ typedef struct {
     u8 _pad00[0x04];
     /* 0x04 */ s16 x;
     /* 0x06 */ s16 y;
-    /* 0x08 */ s16 field_8;
-    /* 0x0A */ s16 field_A;
+    /* 0x08 */ s16 endX;
+    /* 0x0A */ s16 endY;
     u8 _pad0C[0x0C];
-    /* 0x18 */ s32 field_18;
+    /* 0x18 */ s32 index;
     u8 _pad1C[0x40];
-    /* 0x5C */ s32 field_5C;
+    /* 0x5C */ s32 wait;
     u8 _pad60[0x14];
-    /* 0x74 */ s32 field_74;
+    /* 0x74 */ s32 done;
 } Stg20CursorWork;
 
 /* 0x28-stride parts record viewed with the byte at 0x0E (Stg20_MsgWinDraw). */
@@ -254,36 +254,36 @@ typedef struct {
 } Stg20SlotWork;
 
 typedef struct {
-    /* 0x00 */ s32 field_0;
-    /* 0x04 */ s32 field_4;
-    /* 0x08 */ s32 field_8;
-    /* 0x0C */ s32 field_C;
-    /* 0x10 */ s32 field_10;
-    /* 0x14 */ s32 field_14;
-    /* 0x18 */ s32 field_18;
-    /* 0x1C */ s32 field_1C;
-    /* 0x20 */ s32 field_20;
-    /* 0x24 */ s32 field_24;
-    /* 0x28 */ s32 field_28;
-    /* 0x2C */ s32 field_2C;
-    /* 0x30 */ s32 field_30;
-    /* 0x34 */ s32 field_34;
-    /* 0x38 */ s32 field_38;
+    /* 0x00 */ s32 menuAllowed;
+    /* 0x04 */ s32 talkActive;
+    /* 0x08 */ s32 result;
+    /* 0x0C */ s32 labMode;
+    /* 0x10 */ s32 excludeFirst;
+    /* 0x14 */ s32 rosterTop;
+    /* 0x18 */ s32 rosterCursor;
+    /* 0x1C */ s32 pickedIndex;
+    /* 0x20 */ s32 pickStep;
+    /* 0x24 */ s32 infoMode;
+    /* 0x28 */ s32 infoRosterIndex;
+    /* 0x2C */ s32 evoTargetId;
+    /* 0x30 */ s32 skillRosterIndex;
+    /* 0x34 */ s32 dnaParent0;
+    /* 0x38 */ s32 dnaParent1;
     u8 _pad3C[0x04];
-    /* 0x40 */ s32 field_40;
-    /* 0x44 */ s32 field_44;
-    /* 0x48 */ s32 field_48;
-    /* 0x4C */ s32 field_4C;
-    /* 0x50 */ s32 field_50;
-    /* 0x54 */ s32 field_54;
+    /* 0x40 */ s32 modelDigiId;
+    /* 0x44 */ s32 modelNoGrow;
+    /* 0x48 */ s32 modelSlide;
+    /* 0x4C */ s32 dnaNewSlot;
+    /* 0x50 */ s32 menuChoice;
+    /* 0x54 */ s32 sellMode;
 } Stg20MenuState;
 
 /* 0x18-byte record of file 0xD28xxxx (Stg20_GetMapDest). */
 typedef struct {
     u8 _pad00[0x04];
-    /* 0x04 */ s32 field_4;
+    /* 0x04 */ s32 text;
     u8 _pad08[0x0B];
-    /* 0x13 */ u8 field_13;
+    /* 0x13 */ u8 relocated;
     u8 _pad14[0x04];
 } Stg20FileRec; /* size 0x18 */
 
@@ -353,32 +353,32 @@ typedef struct {
 /* Map file 0x309xxxx header; offsets relocated by the file base on first use (Stg20_GetMapInfo). */
 typedef struct {
     /* 0x00 */ s32 loaded;
-    /* 0x04 */ s32 field_4;
-    /* 0x08 */ s32 field_8;
-    /* 0x0C */ s32 field_C;
+    /* 0x04 */ s32 bgFileId;
+    /* 0x08 */ s32 startRecs;
+    /* 0x0C */ s32 exits;
     /* 0x10 */ u8 *bits;
-    /* 0x14 */ s16 field_14;
-    /* 0x16 */ s16 field_16;
-    /* 0x18 */ s32 field_18;
-    /* 0x1C */ s32 field_1C;
-    /* 0x20 */ s32 field_20;
+    /* 0x14 */ s16 sndSlotContent;
+    /* 0x16 */ s16 bgmId;
+    /* 0x18 */ s32 stepSndBits;
+    /* 0x1C */ s32 overlayParts;
+    /* 0x20 */ s32 flagTableFile;
 } Stg20MapFile;
 
 /* Work of task 0x30D viewed with the 14-byte name at 0x08 (Stg20_MsgWinShowDigiMsg). */
 typedef struct {
     u8 _pad00[0x04];
-    /* 0x04 */ s32 field_4;
+    /* 0x04 */ s32 msgText;
     /* 0x08 */ u8 name[0x0E];
     u8 _pad16[0x02];
-    /* 0x18 */ s32 field_18;
-    /* 0x1C */ s32 field_1C;
+    /* 0x18 */ s32 msgPending;
+    /* 0x1C */ s32 choice;
 } Stg20NameWork;
 
 extern Stg20MapFile *Stg20_GetMapInfo(void);
 /* Actor viewed with the word at 0x24 (Stg20_LabModeSelDraw). */
 typedef struct {
     u8 _pad00[0x24];
-    /* 0x24 */ u32 field_24;
+    /* 0x24 */ u32 frameCount;
     u8 _pad28[0x04];
     /* 0x2C */ Stg20Work *work;
 } Stg20BlinkTask;
@@ -386,15 +386,15 @@ typedef struct {
 /* Spawn record (Stg20_WalkerInit). */
 typedef struct {
     /* 0x00 */ s16 id;
-    /* 0x02 */ s16 field_2;
+    /* 0x02 */ s16 facing;
     /* 0x04 */ Stg20Cell blk[6];
-    /* 0x1C */ s32 field_1C;
+    /* 0x1C */ s32 flagEntry;
 } Stg20Spawn;
 
 typedef struct {
-    /* 0x00 */ s32 field_0;
+    /* 0x00 */ s32 facing;
     /* 0x04 */ Stg20Cell blk[6];
-    /* 0x1C */ s32 field_1C;
+    /* 0x1C */ s32 flagEntry;
     u8 _pad20[0x44];
     /* 0x64 */ s32 visible;
 } Stg20SpawnWork;
@@ -417,7 +417,7 @@ typedef struct {
 /* Work with a row index at 0x30 (Stg20_PartsUpgradeDraw). */
 typedef struct {
     u8 _pad00[0x30];
-    /* 0x30 */ s32 field_30;
+    /* 0x30 */ s32 index;
 } Stg20RowWork;
 
 /* Map position as two words (Stg20_WalkerWarpToCell). */
@@ -480,24 +480,24 @@ typedef struct {
     /* 0x00 */ s32 fileId;
     /* 0x04 */ s32 ids[10];
     /* 0x2C */ s32 field_2C;
-    /* 0x30 */ s32 field_30;
-    /* 0x34 */ s32 field_34;
+    /* 0x30 */ s32 geomY;
+    /* 0x34 */ s32 settleFrames;
 } Stg20LoadWork;
 
 /* Roster entry viewed with signed stats (Stg20_LabInfoDraw). */
 typedef struct {
     u8 _pad00[0x0D];
     /* 0x0D */ u8 level;
-    /* 0x0E */ u8 field_E;
+    /* 0x0E */ u8 dp;
     /* 0x0F */ u8 maxLevel;
     /* 0x10 */ s32 exp;
-    /* 0x14 */ s16 field_14;
-    /* 0x16 */ s16 field_16;
-    /* 0x18 */ s16 field_18;
-    /* 0x1A */ s16 field_1A;
-    /* 0x1C */ s16 field_1C;
-    /* 0x1E */ s16 field_1E;
-    /* 0x20 */ s16 field_20;
+    /* 0x14 */ s16 maxHp;
+    /* 0x16 */ s16 hp;
+    /* 0x18 */ s16 maxMp;
+    /* 0x1A */ s16 mp;
+    /* 0x1C */ s16 attack;
+    /* 0x1E */ s16 defense;
+    /* 0x20 */ s16 speed;
 } Stg20DigiStats;
 
 typedef struct {
@@ -510,11 +510,11 @@ typedef struct {
     /* 0x00 */ s32 hdr[7];
     /* 0x1C */ s32 descText;
     /* 0x20 */ s32 texts[10];
-    /* 0x48 */ s32 field_48;
-    /* 0x4C */ s32 field_4C;
-    /* 0x50 */ s32 field_50;
-    /* 0x54 */ s32 field_54;
-    /* 0x58 */ s32 field_58;
+    /* 0x48 */ s32 bodyType;
+    /* 0x4C */ s32 cannonCount;
+    /* 0x50 */ s32 frameMode;
+    /* 0x54 */ s32 hideMask0;
+    /* 0x58 */ s32 hideMask1;
     /* 0x5C */ s32 dirty;
     /* 0x60 */ s16 inv[0x43];
     u8 _padE6[0x02];
@@ -522,8 +522,8 @@ typedef struct {
     /* 0xEC */ s16 items[0x43];
     /* 0x172 */ u8 colors[0x43];
     u8 _pad1B5[0x03];
-    /* 0x1B8 */ s32 field_1B8;
-    /* 0x1BC */ s32 field_1BC;
+    /* 0x1B8 */ s32 listShown;
+    /* 0x1BC */ s32 cursorShown;
     /* 0x1C0 */ s32 cursor;
     /* 0x1C4 */ s32 top;
 } Stg20ItemListWork;
@@ -579,9 +579,9 @@ typedef struct {
     /* 0x50 */ u8 field_50;
     /* 0x51 */ u8 field_51;
     u8 _pad52[0x06];
-    /* 0x58 */ s32 field_58;
-    /* 0x5C */ s32 field_5C;
-    /* 0x60 */ s32 field_60;
+    /* 0x58 */ s32 ownedCount;
+    /* 0x5C */ s32 msgId;
+    /* 0x60 */ s32 promptId;
 } Stg20ShopListWork;
 extern Stg20ShopList Stg20_ShopItems;
 extern u16 D_8005E686[0x30];
@@ -595,7 +595,7 @@ typedef struct {
     u8 _pad00[0x04];
     /* 0x04 */ TaskEntry *menu;
     /* 0x08 */ s32 timer;
-    /* 0x0C */ s32 field_C;
+    /* 0x0C */ s32 busy;
 } Stg20CtrlWork;
 extern s32 Stg20_ByteListHas(u8 *s, s32 c);
 extern s32 Stg20_IsPartInstalled(s32 id);
@@ -653,11 +653,11 @@ typedef struct {
 typedef struct {
     u8 _pad00[0x40];
     /* 0x40 */ s32 row;
-    /* 0x44 */ s32 field_44;
+    /* 0x44 */ s32 page;
     u8 _pad48[0x04];
-    /* 0x4C */ s32 field_4C;
+    /* 0x4C */ s32 pages;
     u8 _pad50[0x08];
-    /* 0x58 */ s32 field_58;
+    /* 0x58 */ s32 ownedCount;
 } Stg20ShopWork;
 extern Halves Stg20_LabRosterTextPos[4][4];
 extern s32 Digi_GetRank(s32);
@@ -747,18 +747,18 @@ extern s32 Cd_GetFileState(s32 arg0);
 typedef struct {
     /* 0x00 */ Stg20Cell cell;
     /* 0x04 */ s32 nextMode;
-    /* 0x08 */ s32 field_8;
+    /* 0x08 */ s32 modeArg;
 } Stg20Warp; /* size 0xC */
 
 /* Task 7 creation args (Stg20_WarpPadUpdate). */
 typedef struct {
-    /* 0x00 */ s32 field_0;
-    /* 0x04 */ s32 field_4;
+    /* 0x00 */ s32 modelFileId;
+    /* 0x04 */ s32 animFileId;
     /* 0x08 */ s32 x;
     /* 0x0C */ s32 y;
     /* 0x10 */ s32 z;
-    /* 0x14 */ s32 field_14;
-    /* 0x18 */ s32 field_18;
+    /* 0x14 */ s32 rotY;
+    /* 0x18 */ s32 duration;
 } Stg20WarpFx;
 
 extern Stg20Warp Stg20_WarpPads[];
@@ -771,7 +771,7 @@ extern Stg20FileRec *Stg20_GetMapDest(s32 i);
 typedef struct {
     /* 0x00 */ u8 state;
     u8 _pad01[0x15];
-    /* 0x16 */ s16 field_16;
+    /* 0x16 */ s16 hp;
     u8 _pad18[0x44];
 } Stg20RosterHp; /* size 0x5C */
 
@@ -800,10 +800,10 @@ extern u8 D_8005E631;  /* Save_GameState byte 0x11 as a scalar reloc */
 
 /* Stg20_MenuState viewed from its field_8 (Stg20_ShopListUpdate addresses Stg20_MenuState.field_54 as 0x4C from it). */
 typedef struct {
-    /* 0x00 */ s32 field_0;
+    /* 0x00 */ s32 result;
     u8 _pad04[0x44];
-    /* 0x48 */ s32 field_48; /* = D_80070A00 (Stg20_BeetleShopMenuUpdate addresses field_0 as -0x48 from it) */
-    /* 0x4C */ s32 field_4C;
+    /* 0x48 */ s32 menuChoice; /* = D_80070A00 (Stg20_BeetleShopMenuUpdate addresses result as -0x48 from it) */
+    /* 0x4C */ s32 sellMode;
 } Stg20MenuSub;
 extern Stg20MenuSub D_800709B8;
 extern s32 Skill_GetNameText(s32);
@@ -875,7 +875,7 @@ typedef struct {
     /* 0x00 */ s32 field_0;
     /* 0x04 */ s32 bgmOn;
     /* 0x08 */ s32 field_8;
-    /* 0x0C */ s32 field_C;
+    /* 0x0C */ s32 areaSelect;
 } Stg20MainWork;
 
 /* 4-byte start position record at Stg20MapFile.field_8 (Stg20_StageMain). */
@@ -911,9 +911,9 @@ extern s32 Actor_ApplyAxisMotion(ContC40 *a0, s32 i);
 
 /* Work of the map walker/NPC model task (Stg20_WalkerUpdate). */
 typedef struct {
-    /* 0x00 */ s32 field_0;
+    /* 0x00 */ s32 facing;
     /* 0x04 */ Stg20Cell blk[6];
-    /* 0x1C */ s32 field_1C;
+    /* 0x1C */ s32 flagEntry;
     /* 0x20 */ s32 modelId;
     /* 0x24 */ s32 input;
     /* 0x28 */ s32 held;
@@ -942,16 +942,16 @@ typedef struct {
     /* 0x01 */ u8 digiId;
     u8 _pad02[0x0B];
     /* 0x0D */ u8 level;
-    /* 0x0E */ u8 field_E;
+    /* 0x0E */ u8 dp;
     /* 0x0F */ u8 maxLevel;
     /* 0x10 */ s32 exp;
     /* 0x14 */ s16 maxHp;
     /* 0x16 */ s16 hp;
     /* 0x18 */ s16 maxMp;
     /* 0x1A */ s16 mp;
-    /* 0x1C */ s16 field_1C;
-    /* 0x1E */ s16 field_1E;
-    /* 0x20 */ s16 field_20;
+    /* 0x1C */ s16 attack;
+    /* 0x1E */ s16 defense;
+    /* 0x20 */ s16 speed;
     /* 0x22 */ u8 skills[12];
     /* 0x2E */ u8 learned[0x19];
     /* 0x47 */ u8 parent0;

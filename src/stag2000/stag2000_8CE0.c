@@ -14,7 +14,7 @@ void Stg20_BeetleShopMenuDraw(Actor *a) {
     for (q = p; q->fileId != 0; q++) {
         if (q->groupMask & 2) {
             q->palette = Math_CycleRange(a->elapsed, 4, 0, 3);
-            q->x = Stg20_MenuState.field_50 != 0 ? -0x57 : -0x90;
+            q->x = Stg20_MenuState.menuChoice != 0 ? -0x57 : -0x90;
             q->y = -0x62;
         }
     }
@@ -34,7 +34,7 @@ s32 Stg20_IsPartInstalled(s32 id) {
     s32 i;
 
     for (i = 0; i < 0x13; i++) {
-        if (((Stg20GameState *)&Save_GameState)->field_2C[i] == id) {
+        if (((Stg20GameState *)&Save_GameState)->slotItems[i] == id) {
             return 1;
         }
     }
@@ -112,11 +112,11 @@ s32 Stg20_CountOwnedItem(s32 id) {
 
     n = 0;
     for (i = 0; i < 0x30; i++) {
-        if (((Stg20GameState *)&Save_GameState)->field_66[i] == id) {
+        if (((Stg20GameState *)&Save_GameState)->bagItems[i] == id) {
             n++;
         }
     }
-    n += ((Stg20GameState *)&Save_GameState)->field_DD4[id];
+    n += ((Stg20GameState *)&Save_GameState)->storageCounts[id];
     r = 99;
     if (n < 100) {
         r = n;
@@ -272,14 +272,14 @@ void Stg20_ShopListRefresh(Actor *a) {
         }
         if (Stg20_ShopSellMode == 0) {
             if (id != 0) {
-                w->field_58 = Stg20_CountOwnedItem(id);
+                w->ownedCount = Stg20_CountOwnedItem(id);
             } else {
-                w->field_58 = 0;
+                w->ownedCount = 0;
             }
         }
         Text_Close(&w->text14);
-        if (w->field_5C != 0) {
-            args.text = (s32)Cd_GetFileEntry(w->field_5C + 0x1FD0000);
+        if (w->msgId != 0) {
+            args.text = (s32)Cd_GetFileEntry(w->msgId + 0x1FD0000);
             args.bigFont = 1;
             args.color = 0;
             args.charAdvance = 0;
@@ -290,8 +290,8 @@ void Stg20_ShopListRefresh(Actor *a) {
             Text_Open(&w->text14, &args);
         }
         Text_Close(&w->text18);
-        if (w->field_60 != 0) {
-            args.text = (s32)Cd_GetFileEntry(w->field_60 + 0x1FD0000);
+        if (w->promptId != 0) {
+            args.text = (s32)Cd_GetFileEntry(w->promptId + 0x1FD0000);
             args.bigFont = 1;
             args.color = 0;
             args.charAdvance = 0;
@@ -320,12 +320,12 @@ void Stg20_ShopListUpdate(Actor *a) {
         Mem_FillWordsNeg1(w->hdr, 0xF);
         Task_Create(0x30D, slot, 0);
         Text_OpenById(&w->hdr[0], 0x12D, 4, *(Halves *)&Stg20_ShopListTextPos[0]);
-        Text_OpenById(&w->hdr[1], Stg20_MenuState.field_54 + 0x12B, 4, *(Halves *)&Stg20_ShopListTextPos[1]);
+        Text_OpenById(&w->hdr[1], Stg20_MenuState.sellMode + 0x12B, 4, *(Halves *)&Stg20_ShopListTextPos[1]);
         Text_OpenById(&w->hdr[2], 0xFA, 0, *(Halves *)&Stg20_ShopListTextPos[2]);
-        if (Stg20_MenuState.field_54 == 0) {
+        if (Stg20_MenuState.sellMode == 0) {
             Text_OpenById(&w->hdr[3], 0x12E, 0, *(Halves *)&Stg20_ShopListTextPos[3]);
         }
-        if (Stg20_MenuState.field_54 == 0) {
+        if (Stg20_MenuState.sellMode == 0) {
             Stg20_LoadShopBuyList(a, Sys_State.modeArg);
         } else {
             Stg20_LoadShopSellList(a);
@@ -347,8 +347,8 @@ void Stg20_ShopListUpdate(Actor *a) {
                 break;
             }
             do {
-                w->field_5C = 0x138;
-                w->field_60 = 0;
+                w->msgId = 0x138;
+                w->promptId = 0;
             } while (0);
             m = &D_800709B8;
             if ((Pad_State->repeat & 0x1000) && w->cursor != 0) {
@@ -373,11 +373,11 @@ void Stg20_ShopListUpdate(Actor *a) {
             } else if (Pad_State->triangle > 0) {
                 goto cancel;
             } else if (pad->cross > 0) {
-                if (m->field_4C == 0) {
+                if (m->sellMode == 0) {
                     item = Stg20_ShopItems.items[w->cursor + w->page * 8];
                     if (item != 0) {
                         if (Item_GetPrice(item) > D_8005E628) {
-                            w->field_5C = 0x139;
+                            w->msgId = 0x139;
                             w->dirty = 1;
                             Snd_PlayById(0x10, 0);
                         } else {
@@ -400,8 +400,8 @@ void Stg20_ShopListUpdate(Actor *a) {
             switch (a->stateLevel2) {
             case 0:
             default:
-                w->field_5C = Stg20_GetPartFitMsg(id);
-                w->field_60 = 0x137;
+                w->msgId = Stg20_GetPartFitMsg(id);
+                w->promptId = 0x137;
                 w->dirty = 1;
                 Flag_Set(0x10, 0);
                 Task_NextState2(a);
@@ -411,7 +411,7 @@ void Stg20_ShopListUpdate(Actor *a) {
             if (Flag_Test(0x10) != 0 && Flag_Test(0x11) == 0) {
                 Snd_PlayById(0xF, 0);
                 g = (Stg20GameState *)&Save_GameState;
-                g->field_DD4[id] = g->field_DD4[id] == 99 ? 99 : g->field_DD4[id] + 1;
+                g->storageCounts[id] = g->storageCounts[id] == 99 ? 99 : g->storageCounts[id] + 1;
                 Save_GameState.bits -= Item_GetPrice(id);
                 Task_SetState1(a, 0);
             } else if (D_8005F70C > 0 || Flag_Test(0x10) != 0) {
@@ -430,7 +430,7 @@ void Stg20_ShopListUpdate(Actor *a) {
             Snd_PlayById(0xD, 0);
             break;
         cancel:
-            m->field_0 = 1;
+            m->result = 1;
             Task_SetState0(a, 3);
             Snd_PlayById(0xB, 0);
             break;
@@ -445,8 +445,8 @@ void Stg20_ShopListUpdate(Actor *a) {
             switch (a->stateLevel2) {
             case 0:
             default:
-                w->field_5C = 0x13A;
-                w->field_60 = 0;
+                w->msgId = 0x13A;
+                w->promptId = 0;
                 w->dirty = 1;
                 Flag_Set(0x10, 0);
                 Task_NextState2(a);
@@ -492,19 +492,19 @@ void Stg20_ShopListDraw(Actor *a) {
             q->y = w->row * 12 - 0x49;
             break;
         case 0x20:
-            q->visible = w->field_44 != 0;
+            q->visible = w->page != 0;
             break;
         case 0x40:
-            q->visible = w->field_44 != w->field_4C;
+            q->visible = w->page != w->pages;
             break;
         }
     }
-    Gfx_SetPartsNumber(p, 4, 2, w->field_44 + 1);
-    Gfx_SetPartsNumber(p, 8, 2, w->field_4C + 1);
+    Gfx_SetPartsNumber(p, 4, 2, w->page + 1);
+    Gfx_SetPartsNumber(p, 8, 2, w->pages + 1);
     Gfx_DrawParts((s32)p);
     if (Stg20_ShopSellMode == 0) {
         p = (GfxPart *)Cd_GetFileEntry(0xDD60003);
-        Gfx_SetPartsNumber(p, 2, 2, w->field_58);
+        Gfx_SetPartsNumber(p, 2, 2, w->ownedCount);
         Gfx_DrawParts((s32)p);
     }
 }
@@ -534,12 +534,12 @@ void Stg20_PartsListToBag(Actor *a) {
     s32 n;
 
     for (i = 0x2F; i >= 0; i--) {
-        ((Stg20GameState *)&Save_GameState)->field_66[i] = 0;
+        ((Stg20GameState *)&Save_GameState)->bagItems[i] = 0;
     }
     n = 0;
     for (i = 0; i < 0x43; i++) {
-        if (w->field_60[i] != 0) {
-            ((Stg20GameState *)&Save_GameState)->field_66[n++] = w->field_60[i];
+        if (w->inv[i] != 0) {
+            ((Stg20GameState *)&Save_GameState)->bagItems[n++] = w->inv[i];
         }
     }
     Item_SortList();
@@ -552,18 +552,18 @@ void Stg20_GatherPartsList(Actor *a) {
 
     n = 0;
     for (i = 0; i < 0x30; i++) {
-        if (((Stg20GameState *)&Save_GameState)->field_66[i] != 0) {
-            w->field_60[n++] = ((Stg20GameState *)&Save_GameState)->field_66[i];
+        if (((Stg20GameState *)&Save_GameState)->bagItems[i] != 0) {
+            w->inv[n++] = ((Stg20GameState *)&Save_GameState)->bagItems[i];
         }
     }
     for (i = 1; i < 0x13; i++) {
-        if (((Stg20GameState *)&Save_GameState)->field_2C[i] != 0) {
-            w->field_60[n++] = ((Stg20GameState *)&Save_GameState)->field_2C[i];
+        if (((Stg20GameState *)&Save_GameState)->slotItems[i] != 0) {
+            w->inv[n++] = ((Stg20GameState *)&Save_GameState)->slotItems[i];
         }
     }
     for (i = 1; i < 0x13; i++) {
-        ((Stg20GameState *)&Save_GameState)->field_2C[i] = 0;
-        ((Stg20GameState *)&Save_GameState)->field_52[i] = 0;
+        ((Stg20GameState *)&Save_GameState)->slotItems[i] = 0;
+        ((Stg20GameState *)&Save_GameState)->slotStatus[i] = 0;
     }
 }
 
@@ -572,7 +572,7 @@ s32 Stg20_PartsListHas(Actor *a, s32 v) {
     s32 i;
 
     for (i = 0; i < 0x43; i++) {
-        if (w->field_60[i] == v) {
+        if (w->inv[i] == v) {
             return 1;
         }
     }
@@ -584,8 +584,8 @@ void Stg20_PartsListRemove(Actor *a, s32 v) {
     s32 i;
 
     for (i = 0; i < 0x43; i++) {
-        if (w->field_60[i] == v) {
-            w->field_60[i] = 0;
+        if (w->inv[i] == v) {
+            w->inv[i] = 0;
             return;
         }
     }
@@ -632,19 +632,19 @@ void Stg20_FilterPartsList(Actor *a, s32 mode) {
             }
         } else {
             ok = 0;
-            if (g->field_2C[8] == 0) {
+            if (g->slotItems[8] == 0) {
                 ok = Item_GetCategory(id) == 7;
             }
-            if (g->field_2C[9] == 0 && Item_GetCategory(id) == 8) {
+            if (g->slotItems[9] == 0 && Item_GetCategory(id) == 8) {
                 ok = 1;
             }
-            if (g->field_2C[10] == 0 && Item_GetCategory(id) == 9) {
+            if (g->slotItems[10] == 0 && Item_GetCategory(id) == 9) {
                 ok = 1;
             }
-            if (g->field_2C[11] == 0 && Item_GetCategory(id) == 10) {
+            if (g->slotItems[11] == 0 && Item_GetCategory(id) == 10) {
                 ok = 1;
             }
-            if (g->field_2C[12] == 0 && Item_GetCategory(id) == 11) {
+            if (g->slotItems[12] == 0 && Item_GetCategory(id) == 11) {
                 ok = 1;
             }
             if (ok == 0) {
@@ -655,7 +655,7 @@ void Stg20_FilterPartsList(Actor *a, s32 mode) {
         n++;
     }
     w->count = n;
-    mask = 1 << w->field_48;
+    mask = 1 << w->bodyType;
     cnt = 0;
     for (i = 0; i < 0x43; i++) {
         if (w->items[i] != 0) {
@@ -714,86 +714,86 @@ void Stg20_CalcBeetleHideMasks(Actor *a) {
     s32 mask;
     s32 shift;
 
-    w->field_54 = 0;
-    w->field_58 = 0;
+    w->hideMask0 = 0;
+    w->hideMask1 = 0;
     mask = 0x3FF;
-    if (((Stg20GameState *)&Save_GameState)->field_2C[1] != 0) {
-        shift = (((Stg20GameState *)&Save_GameState)->field_2C[1] - 1) / 5;
-        w->field_54 |= mask - (1 << shift);
+    if (((Stg20GameState *)&Save_GameState)->slotItems[1] != 0) {
+        shift = (((Stg20GameState *)&Save_GameState)->slotItems[1] - 1) / 5;
+        w->hideMask0 |= mask - (1 << shift);
     } else {
-        w->field_54 |= mask;
+        w->hideMask0 |= mask;
     }
     mask = 0x1F8000;
-    if (((Stg20GameState *)&Save_GameState)->field_2C[2] != 0) {
-        shift = ((Stg20GameState *)&Save_GameState)->field_2C[2] - 0x2F;
-        w->field_54 |= mask - (0x8000 << shift);
+    if (((Stg20GameState *)&Save_GameState)->slotItems[2] != 0) {
+        shift = ((Stg20GameState *)&Save_GameState)->slotItems[2] - 0x2F;
+        w->hideMask0 |= mask - (0x8000 << shift);
     } else {
-        w->field_54 |= mask;
+        w->hideMask0 |= mask;
     }
     mask = 0x7C00;
-    if (((Stg20GameState *)&Save_GameState)->field_2C[3] != 0) {
-        shift = (((Stg20GameState *)&Save_GameState)->field_2C[3] - 0x35) / 5;
-        w->field_54 |= mask - (0x400 << shift);
+    if (((Stg20GameState *)&Save_GameState)->slotItems[3] != 0) {
+        shift = (((Stg20GameState *)&Save_GameState)->slotItems[3] - 0x35) / 5;
+        w->hideMask0 |= mask - (0x400 << shift);
     } else {
-        w->field_54 |= mask;
+        w->hideMask0 |= mask;
     }
     mask = 0x7E00000;
-    if (((Stg20GameState *)&Save_GameState)->field_2C[4] != 0) {
-        shift = ((Stg20GameState *)&Save_GameState)->field_2C[4] - 0x4A;
-        w->field_54 |= mask - (0x200000 << shift);
+    if (((Stg20GameState *)&Save_GameState)->slotItems[4] != 0) {
+        shift = ((Stg20GameState *)&Save_GameState)->slotItems[4] - 0x4A;
+        w->hideMask0 |= mask - (0x200000 << shift);
     } else {
-        w->field_54 |= mask;
+        w->hideMask0 |= mask;
     }
     mask = 0x3E;
-    if (((Stg20GameState *)&Save_GameState)->field_2C[5] != 0) {
-        shift = ((Stg20GameState *)&Save_GameState)->field_2C[5] - 0x50;
-        w->field_58 |= mask - (2 << shift);
+    if (((Stg20GameState *)&Save_GameState)->slotItems[5] != 0) {
+        shift = ((Stg20GameState *)&Save_GameState)->slotItems[5] - 0x50;
+        w->hideMask1 |= mask - (2 << shift);
     } else {
-        w->field_58 |= mask;
+        w->hideMask1 |= mask;
     }
     mask = 0x7C0;
-    if (((Stg20GameState *)&Save_GameState)->field_2C[6] != 0) {
-        shift = ((Stg20GameState *)&Save_GameState)->field_2C[6] - 0x55;
-        w->field_58 |= mask - (0x40 << shift);
+    if (((Stg20GameState *)&Save_GameState)->slotItems[6] != 0) {
+        shift = ((Stg20GameState *)&Save_GameState)->slotItems[6] - 0x55;
+        w->hideMask1 |= mask - (0x40 << shift);
     } else {
-        w->field_58 |= mask;
+        w->hideMask1 |= mask;
     }
     mask = 0x1F0000;
-    if (((Stg20GameState *)&Save_GameState)->field_2C[7] != 0) {
-        shift = ((Stg20GameState *)&Save_GameState)->field_2C[7] - 0x5A;
-        w->field_58 |= mask - (0x10000 << shift);
+    if (((Stg20GameState *)&Save_GameState)->slotItems[7] != 0) {
+        shift = ((Stg20GameState *)&Save_GameState)->slotItems[7] - 0x5A;
+        w->hideMask1 |= mask - (0x10000 << shift);
     } else {
-        w->field_58 |= mask;
+        w->hideMask1 |= mask;
     }
-    if (((Stg20GameState *)&Save_GameState)->field_2C[8] == 0) {
-        w->field_58 |= 0x800;
+    if (((Stg20GameState *)&Save_GameState)->slotItems[8] == 0) {
+        w->hideMask1 |= 0x800;
     }
-    if (((Stg20GameState *)&Save_GameState)->field_2C[9] == 0) {
-        w->field_58 |= 0x8000;
+    if (((Stg20GameState *)&Save_GameState)->slotItems[9] == 0) {
+        w->hideMask1 |= 0x8000;
     }
-    if (((Stg20GameState *)&Save_GameState)->field_2C[10] == 0) {
-        w->field_58 |= 0x4000;
+    if (((Stg20GameState *)&Save_GameState)->slotItems[10] == 0) {
+        w->hideMask1 |= 0x4000;
     }
-    if (((Stg20GameState *)&Save_GameState)->field_2C[11] == 0) {
-        w->field_58 |= 0x1000;
+    if (((Stg20GameState *)&Save_GameState)->slotItems[11] == 0) {
+        w->hideMask1 |= 0x1000;
     }
-    if (((Stg20GameState *)&Save_GameState)->field_2C[12] == 0) {
-        w->field_58 |= 0x2000;
+    if (((Stg20GameState *)&Save_GameState)->slotItems[12] == 0) {
+        w->hideMask1 |= 0x2000;
     }
-    if (((Stg20GameState *)&Save_GameState)->field_2C[13] == 0) {
-        w->field_58 |= 0x2000000;
+    if (((Stg20GameState *)&Save_GameState)->slotItems[13] == 0) {
+        w->hideMask1 |= 0x2000000;
     }
-    if (((Stg20GameState *)&Save_GameState)->field_2C[14] == 0) {
-        w->field_58 |= 0x4000000;
+    if (((Stg20GameState *)&Save_GameState)->slotItems[14] == 0) {
+        w->hideMask1 |= 0x4000000;
     }
-    if (((Stg20GameState *)&Save_GameState)->field_2C[15] == 0) {
-        w->field_58 |= 0x8000000;
+    if (((Stg20GameState *)&Save_GameState)->slotItems[15] == 0) {
+        w->hideMask1 |= 0x8000000;
     }
-    if (((Stg20GameState *)&Save_GameState)->field_2C[17] == 0) {
-        w->field_58 |= 0x200000;
+    if (((Stg20GameState *)&Save_GameState)->slotItems[17] == 0) {
+        w->hideMask1 |= 0x200000;
     }
-    if (((Stg20GameState *)&Save_GameState)->field_2C[18] == 0) {
-        w->field_58 |= 0x400000;
+    if (((Stg20GameState *)&Save_GameState)->slotItems[18] == 0) {
+        w->hideMask1 |= 0x400000;
     }
 }
 
@@ -812,17 +812,17 @@ void Stg20_BeetlePartsUpdate(Actor *a) {
         Mem_FillWordsNeg1(w->hdr, 0x12);
         Text_OpenPacked(&w->hdr[0], (s32)&Save_GameState.field_D1, 0, Stg20_BeetlePartsTextPos[0]);
         Task_Create(0x30D, slot, 1);
-        if (((Stg20GameState *)&Save_GameState)->field_2C[0] == 0xEA) {
-            w->field_48 = 0;
-        } else if (((Stg20GameState *)&Save_GameState)->field_2C[0] == 0xEB) {
-            w->field_48 = 1;
+        if (((Stg20GameState *)&Save_GameState)->slotItems[0] == 0xEA) {
+            w->bodyType = 0;
+        } else if (((Stg20GameState *)&Save_GameState)->slotItems[0] == 0xEB) {
+            w->bodyType = 1;
         } else {
-            w->field_48 = 2;
+            w->bodyType = 2;
         }
         Stg20_GatherPartsList(a);
-        w->field_54 = 0x7FFFFFF;
-        w->field_58 = 0x7FFFFE;
-        w->field_4C = w->field_48 + 3;
+        w->hideMask0 = 0x7FFFFFF;
+        w->hideMask1 = 0x7FFFFE;
+        w->cannonCount = w->bodyType + 3;
         Task_NextState0(a);
         break;
     case 2:
@@ -835,9 +835,9 @@ void Stg20_BeetlePartsUpdate(Actor *a) {
             case 0:
             default:
                 Text_OpenById(&w->hdr[1], 0x13E, 0, Stg20_BeetlePartsTextPos[1]);
-                Text_OpenById(&w->hdr[2], w->field_48 + 0x13F, 0, Stg20_BeetlePartsTextPos[2]);
-                Stg20_OpenMsgOrDesc(&w->descText, w->field_48 + 0x13B, Stg20_BeetlePartsTextPos[7], 0);
-                w->field_50 = 1;
+                Text_OpenById(&w->hdr[2], w->bodyType + 0x13F, 0, Stg20_BeetlePartsTextPos[2]);
+                Stg20_OpenMsgOrDesc(&w->descText, w->bodyType + 0x13B, Stg20_BeetlePartsTextPos[7], 0);
+                w->frameMode = 1;
                 Task_NextState2(a);
             case 1:
                 break;
@@ -859,7 +859,7 @@ void Stg20_BeetlePartsUpdate(Actor *a) {
                 Text_OpenPacked(&w->hdr[3], Item_GetNameText(0x77), 0, Stg20_BeetlePartsTextPos[3]);
                 Text_OpenPacked(&w->hdr[4], Item_GetNameText(Stg20_PartsListHas(a, 0x73) != 0 ? 0x73 : 0x74), 0, Stg20_BeetlePartsTextPos[4]);
                 Stg20_OpenMsgOrDesc(&w->descText, 0x143, Stg20_BeetlePartsTextPos[7], 0);
-                w->field_50 = 3;
+                w->frameMode = 3;
                 Task_NextState2(a);
             case 1:
                 break;
@@ -870,13 +870,13 @@ void Stg20_BeetlePartsUpdate(Actor *a) {
             } else {
                 v = 0;
             }
-            g->field_2C[17] = v;
+            g->slotItems[17] = v;
             u = 0;
             g = (Stg20GameState *)&Save_GameState;
             if (a->elapsed & 0x10) {
                 u = 0x77;
             }
-            g->field_2C[18] = u;
+            g->slotItems[18] = u;
             if (D_8005F704 > 0) {
                 Snd_PlayById(0x14, 0);
                 Text_Close(&w->hdr[1]);
@@ -884,12 +884,12 @@ void Stg20_BeetlePartsUpdate(Actor *a) {
                 Text_Close(&w->hdr[3]);
                 Text_Close(&w->hdr[4]);
                 Text_Close(&w->descText);
-                g->field_2C[17] = Stg20_PartsListHas(a, 0x75) != 0 ? 0x75 : 0x76;
-                g->field_2C[18] = 0x77;
-                g->field_2C[16] = Stg20_PartsListHas(a, 0x73) != 0 ? 0x73 : 0x74;
-                Stg20_PartsListRemove(a, g->field_2C[17]);
-                Stg20_PartsListRemove(a, g->field_2C[18]);
-                Stg20_PartsListRemove(a, g->field_2C[16]);
+                g->slotItems[17] = Stg20_PartsListHas(a, 0x75) != 0 ? 0x75 : 0x76;
+                g->slotItems[18] = 0x77;
+                g->slotItems[16] = Stg20_PartsListHas(a, 0x73) != 0 ? 0x73 : 0x74;
+                Stg20_PartsListRemove(a, g->slotItems[17]);
+                Stg20_PartsListRemove(a, g->slotItems[18]);
+                Stg20_PartsListRemove(a, g->slotItems[16]);
                 Task_NextState1(a);
             }
             break;
@@ -917,23 +917,23 @@ void Stg20_BeetlePartsUpdate(Actor *a) {
                 Text_OpenById(&w->hdr[1], st + 0x158, 0, Stg20_BeetlePartsTextPos[1]);
                 Text_OpenById(&w->hdr[2], 0x14F, 0, Stg20_BeetlePartsTextPos[2]);
                 Stg20_OpenMsgOrDesc(&w->descText, st + 0x142, Stg20_BeetlePartsTextPos[7], 0);
-                w->field_50 = 1;
-                w->field_1B8 = 1;
+                w->frameMode = 1;
+                w->listShown = 1;
                 w->dirty = 1;
                 w->top = 0;
                 w->cursor = 0;
-                w->field_1BC = 0;
+                w->cursorShown = 0;
                 Task_NextState2(a);
             case 1:
                 if (D_8005F704 > 0) {
                     Snd_PlayById(0x13, 0);
                     w->dirty = 1;
-                    w->field_1BC = 1;
+                    w->cursorShown = 1;
                     Task_NextState2(a);
                 }
                 break;
             case 2:
-                ((Stg20GameState *)&Save_GameState)->field_2C[Stg20_PartsPageSlot[idx]] = (a->elapsed & 0x10) ? w->items[w->cursor + w->top] : 0;
+                ((Stg20GameState *)&Save_GameState)->slotItems[Stg20_PartsPageSlot[idx]] = (a->elapsed & 0x10) ? w->items[w->cursor + w->top] : 0;
                 if (Pad_State[0].repeat & 0x1000) {
                     if (w->cursor != 0) {
                         w->cursor--;
@@ -962,8 +962,8 @@ void Stg20_BeetlePartsUpdate(Actor *a) {
                         break;
                     }
                     Snd_PlayById(0x14, 0);
-                    ((Stg20GameState *)&Save_GameState)->field_2C[Stg20_PartsPageSlot[idx]] = w->items[w->cursor + w->top];
-                    Stg20_PartsListRemove(a, ((Stg20GameState *)&Save_GameState)->field_2C[Stg20_PartsPageSlot[idx]]);
+                    ((Stg20GameState *)&Save_GameState)->slotItems[Stg20_PartsPageSlot[idx]] = w->items[w->cursor + w->top];
+                    Stg20_PartsListRemove(a, ((Stg20GameState *)&Save_GameState)->slotItems[Stg20_PartsPageSlot[idx]]);
                     Task_NextState1(a);
                 }
                 break;
@@ -981,11 +981,11 @@ void Stg20_BeetlePartsUpdate(Actor *a) {
             switch (a->stateLevel2) {
             case 0:
             default:
-                if (w->field_48 == 0 && m >= 3) {
+                if (w->bodyType == 0 && m >= 3) {
                     Task_NextState1(a);
                     break;
                 }
-                if (w->field_48 == 1 && m >= 4) {
+                if (w->bodyType == 1 && m >= 4) {
                     Task_NextState1(a);
                     break;
                 }
@@ -997,18 +997,18 @@ void Stg20_BeetlePartsUpdate(Actor *a) {
                 Text_OpenById(&w->hdr[1], m + 0x164, 0, Stg20_BeetlePartsTextPos[1]);
                 Text_OpenById(&w->hdr[2], 0x14F, 0, Stg20_BeetlePartsTextPos[2]);
                 Stg20_OpenMsgOrDesc(&w->descText, m + 0x155, Stg20_BeetlePartsTextPos[7], 0);
-                w->field_50 = 1;
-                w->field_1B8 = 1;
+                w->frameMode = 1;
+                w->listShown = 1;
                 w->dirty = 1;
                 w->top = 0;
                 w->cursor = 0;
-                w->field_1BC = 0;
+                w->cursorShown = 0;
                 Task_NextState2(a);
             case 1:
                 if (D_8005F704 > 0) {
                     Snd_PlayById(0x13, 0);
                     w->dirty = 1;
-                    w->field_1BC = 1;
+                    w->cursorShown = 1;
                     Task_NextState2(a);
                 }
                 break;
@@ -1024,7 +1024,7 @@ void Stg20_BeetlePartsUpdate(Actor *a) {
                 break;
             blink:
                 if (k != -1) {
-                    ((Stg20GameState *)&Save_GameState)->field_2C[k + 8] = (a->elapsed & 0x10) ? item : 0;
+                    ((Stg20GameState *)&Save_GameState)->slotItems[k + 8] = (a->elapsed & 0x10) ? item : 0;
                 }
                 if (Pad_State[0].repeat & 0x1000) {
                     if (w->cursor != 0) {
@@ -1036,7 +1036,7 @@ void Stg20_BeetlePartsUpdate(Actor *a) {
                     }
                     w->dirty = 1;
                     if (k != -1) {
-                        ((Stg20GameState *)&Save_GameState)->field_2C[k + 8] = 0;
+                        ((Stg20GameState *)&Save_GameState)->slotItems[k + 8] = 0;
                     }
                 } else if (Pad_State[0].repeat & 0x4000) {
                     if (w->cursor != 9) {
@@ -1047,7 +1047,7 @@ void Stg20_BeetlePartsUpdate(Actor *a) {
                         Snd_PlayById(0xD, 0);
                     }
                     if (k != -1) {
-                        ((Stg20GameState *)&Save_GameState)->field_2C[k + 8] = 0;
+                        ((Stg20GameState *)&Save_GameState)->slotItems[k + 8] = 0;
                     }
                     w->dirty = 1;
                 } else if (Pad_State[0].cross > 0) {
@@ -1055,7 +1055,7 @@ void Stg20_BeetlePartsUpdate(Actor *a) {
                         goto deny;
                     }
                     Snd_PlayById(0x14, 0);
-                    ((Stg20GameState *)&Save_GameState)->field_2C[k + 8] = item;
+                    ((Stg20GameState *)&Save_GameState)->slotItems[k + 8] = item;
                     Stg20_PartsListRemove(a, item);
                     Task_NextState1(a);
                 }
@@ -1071,7 +1071,7 @@ void Stg20_BeetlePartsUpdate(Actor *a) {
                 for (i = 0; i < 10; i++) {
                     Text_Close(&w->texts[i]);
                 }
-                w->field_1B8 = 0;
+                w->listShown = 0;
                 Stg20_OpenMsgOrDesc(&w->descText, 0x14E, Stg20_BeetlePartsTextPos[7], 0);
                 Task_NextState2(a);
             case 1:
@@ -1098,15 +1098,15 @@ void Stg20_BeetlePartsDraw(Actor *a) {
     GfxPart *q;
 
     Stg20_CalcBeetleHideMasks(a);
-    p = (GfxPart *)Cd_GetFileEntry(Stg20_BodyDiagramParts[0][w->field_48]);
-    Gfx_HidePartsByMask((GfxPartMaskView *)p, w->field_54);
+    p = (GfxPart *)Cd_GetFileEntry(Stg20_BodyDiagramParts[0][w->bodyType]);
+    Gfx_HidePartsByMask((GfxPartMaskView *)p, w->hideMask0);
     Gfx_DrawParts((s32)p);
-    p = (GfxPart *)Cd_GetFileEntry(Stg20_BodyDiagramParts[1][w->field_48]);
-    Gfx_HidePartsByMask((GfxPartMaskView *)p, w->field_58);
+    p = (GfxPart *)Cd_GetFileEntry(Stg20_BodyDiagramParts[1][w->bodyType]);
+    Gfx_HidePartsByMask((GfxPartMaskView *)p, w->hideMask1);
     Gfx_DrawParts((s32)p);
     p = (GfxPart *)Cd_GetFileEntry(0xC93000A);
     for (q = p; q->fileId != 0; q++) {
-        switch (w->field_50) {
+        switch (w->frameMode) {
         case 0:
         default:
             q->visible = (q->groupMask & 0x78) == 0;
@@ -1127,11 +1127,11 @@ void Stg20_BeetlePartsDraw(Actor *a) {
     }
     Gfx_DrawParts((s32)p);
     Gfx_DrawParts((s32)Cd_GetFileEntry(0xC930009));
-    if (w->field_1B8 != 0) {
+    if (w->listShown != 0) {
         p = (GfxPart *)Cd_GetFileEntry(0xC93000B);
         for (q = p; q->fileId != 0; q++) {
             if (q->groupMask & 2) {
-                q->visible = w->field_1BC != 0;
+                q->visible = w->cursorShown != 0;
                 q->x = 0x26;
                 q->y = w->cursor * 12 - 0x50;
                 q->palette = Math_CycleRange(a->elapsed, 4, 0, 3);
@@ -1189,7 +1189,7 @@ void Stg20_BuildUpgradeList(Actor *a) {
         w->recs[i].name[0x17] = 0xFF;
     }
     for (i = 0; i < 6; i++) {
-        id = ((Stg20GameState *)&Save_GameState)->field_2C[Stg20_UpgradeSlots[i]];
+        id = ((Stg20GameState *)&Save_GameState)->slotItems[Stg20_UpgradeSlots[i]];
         w->recs[i].item = id;
         if (id != 0) {
             name = (u8 *)Item_GetNameText(id);
@@ -1402,7 +1402,7 @@ void Stg20_PartsUpgradeDraw(Actor *a) {
         if (q->groupMask & 2) {
             q->palette = Math_CycleRange(a->elapsed, 4, 0, 3);
             q->x = -0x56;
-            q->y = w->field_30 * 12 - 0x34;
+            q->y = w->index * 12 - 0x34;
         }
     }
     Gfx_DrawParts((s32)p);
@@ -1411,11 +1411,11 @@ void Stg20_PartsUpgradeDraw(Actor *a) {
 Stg20FileRec *Stg20_GetMapDest(s32 i) {
     Stg20FileRec *r = (Stg20FileRec *)Cd_GetFileEntry(Sys_GameMode[0] + 0xD28FCD6);
 
-    if (r[i].field_13 == 0) {
+    if (r[i].relocated == 0) {
         s32 base = Cd_GetFileOrNull(0xD29);
 
-        r[i].field_13 = 1;
-        r[i].field_4 += base;
+        r[i].relocated = 1;
+        r[i].text += base;
     }
     return &r[i];
 }
@@ -1460,18 +1460,18 @@ void Stg20_WarpPadUpdate(Actor *a) {
         break;
     case 2:
         o = (Stg20Rot *)w->target->u38.ptr38;
-        o->field_42 += 0x177;
-        o->field_5C += 0x190;
-        if (o->field_58 > 100) {
-            o->field_58 -= 100;
+        o->rotY += 0x177;
+        o->scaleY += 0x190;
+        if (o->scaleX > 100) {
+            o->scaleX -= 100;
         } else {
-            o->field_58 = 0;
+            o->scaleX = 0;
         }
-        v = o->field_60;
+        v = o->scaleZ;
         if (v > 100) {
-            o->field_60 -= 100;
+            o->scaleZ -= 100;
         } else {
-            o->field_60 = 0;
+            o->scaleZ = 0;
         }
         switch (a->stateLevel1) {
         case 0:
@@ -1479,13 +1479,13 @@ void Stg20_WarpPadUpdate(Actor *a) {
             Snd_PlayById(0x32, 0);
             o = (Stg20Rot *)w->target->u38.ptr38;
             slot = (s32 *)a->u34.children;
-            args.field_4 = 0xE45;
-            args.field_0 = 0xE46;
-            args.field_14 = 0;
-            args.field_18 = 0x78;
-            args.x = o->field_30;
-            args.y = o->field_34;
-            args.z = o->field_38;
+            args.animFileId = 0xE45;
+            args.modelFileId = 0xE46;
+            args.rotY = 0;
+            args.duration = 0x78;
+            args.x = o->posX;
+            args.y = o->posY;
+            args.z = o->posZ;
             Task_Create(7, slot, (s32)&args);
             Task_NextState1(a);
             a->elapsed = 0;
@@ -1498,7 +1498,7 @@ void Stg20_WarpPadUpdate(Actor *a) {
         case 2:
             if (++a->stateLevel2 >= 0x19) {
                 Sys_State.nextGameMode = Stg20_WarpPads[a->param].nextMode;
-                Sys_State.modeArg = Stg20_WarpPads[a->param].field_8;
+                Sys_State.modeArg = Stg20_WarpPads[a->param].modeArg;
             }
             break;
         }
@@ -1515,23 +1515,23 @@ void Stg20_CameraUpdate(Actor *a) {
         GsInitCoordinate2(0, &w->coord);
         if (Sys_GameMode[0] < 0x32F) {
             w->proj = 0x5A0;
-            w->view.field_4 = -0x5D00;
-            w->view.field_0 = 0;
-            w->view.field_8 = -0x5A00;
-            w->view.field_C = 0;
-            w->view.field_10 = 0;
-            w->view.field_14 = 0;
+            w->view.vpy = -0x5D00;
+            w->view.vpx = 0;
+            w->view.vpz = -0x5A00;
+            w->view.vrx = 0;
+            w->view.vry = 0;
+            w->view.vrz = 0;
         } else {
             w->proj = 0x5DC;
-            w->view.field_4 = -0xFA0;
-            w->view.field_8 = -0x3578;
-            w->view.field_0 = 0;
-            w->view.field_C = 0;
-            w->view.field_10 = -0x3E8;
-            w->view.field_14 = 0;
+            w->view.vpy = -0xFA0;
+            w->view.vpz = -0x3578;
+            w->view.vpx = 0;
+            w->view.vrx = 0;
+            w->view.vry = -0x3E8;
+            w->view.vrz = 0;
         }
-        w->view.field_18 = 0;
-        w->view.field_1C = &w->coord;
+        w->view.rz = 0;
+        w->view.super = &w->coord;
         w->rot[2] = 0;
         w->rot[1] = 0;
         w->rot[0] = 0;
@@ -1546,19 +1546,19 @@ void Stg20_CameraUpdate(Actor *a) {
         switch (a->stateLevel1) {
         case 0:
         default:
-            w->view.field_4 = -0xFA0;
-            w->view.field_8 = -0x3578;
+            w->view.vpy = -0xFA0;
+            w->view.vpz = -0x3578;
             w->speed = 0;
             return;
         case 1:
             switch (a->stateLevel2) {
             case 0:
             default:
-                if (w->view.field_4 >= -0x270F) {
-                    w->view.field_4 -= 0x1F4;
+                if (w->view.vpy >= -0x270F) {
+                    w->view.vpy -= 0x1F4;
                     break;
                 }
-                w->view.field_4 = -0x2710;
+                w->view.vpy = -0x2710;
                 Task_NextState2(a);
                 w->timer = 0x7B;
             case 1:
@@ -1571,8 +1571,8 @@ void Stg20_CameraUpdate(Actor *a) {
                 Gfx_FadeOutToWhite(0x14);
             case 2:
                 w->speed += 0x840;
-                w->view.field_8 += 0x390;
-                w->view.field_4 += 0x29A;
+                w->view.vpz += 0x390;
+                w->view.vpy += 0x29A;
                 if (--w->timer != 0) {
                     break;
                 }
@@ -1581,8 +1581,8 @@ void Stg20_CameraUpdate(Actor *a) {
                 Gfx_FadeInFromWhite(0x14);
             case 3:
                 w->speed -= 0x1080;
-                w->view.field_8 -= 0x390;
-                w->view.field_4 -= 0x10A;
+                w->view.vpz -= 0x390;
+                w->view.vpy -= 0x10A;
                 if (--w->timer != 0) {
                     break;
                 }
@@ -1605,11 +1605,11 @@ void Stg20_CameraUpdate(Actor *a) {
             switch (a->stateLevel2) {
             case 0:
             default:
-                if (w->view.field_4 >= -0x270F) {
-                    w->view.field_4 -= 0x1F4;
+                if (w->view.vpy >= -0x270F) {
+                    w->view.vpy -= 0x1F4;
                     break;
                 }
-                w->view.field_4 = -0x2710;
+                w->view.vpy = -0x2710;
                 Task_NextState2(a);
                 w->timer = 0x7B;
             case 1:
@@ -1622,8 +1622,8 @@ void Stg20_CameraUpdate(Actor *a) {
                 Gfx_FadeOutToWhite(0x14);
             case 2:
                 w->speed += 0x840;
-                w->view.field_8 += 0x390;
-                w->view.field_4 += 0x29A;
+                w->view.vpz += 0x390;
+                w->view.vpy += 0x29A;
                 if (--w->timer != 0) {
                     break;
                 }
@@ -1632,8 +1632,8 @@ void Stg20_CameraUpdate(Actor *a) {
                 Gfx_FadeInFromWhite(0x14);
             case 3:
                 w->speed -= 0x840;
-                w->view.field_8 -= 0x390;
-                w->view.field_4 -= 0x10A;
+                w->view.vpz -= 0x390;
+                w->view.vpy -= 0x10A;
                 if (--w->timer != 0) {
                     break;
                 }
@@ -1648,18 +1648,18 @@ void Stg20_CameraUpdate(Actor *a) {
             }
             e = (Actor *)Task_FindFirst(0x30A, -1, 0);
             if (e != NULL) {
-                ((Stg20Rot *)e->u38.ptr38)->field_42 += w->speed / 256;
+                ((Stg20Rot *)e->u38.ptr38)->rotY += w->speed / 256;
             }
             e = (Actor *)Task_FindFirst(0x30A, -1, 1);
             if (e != NULL) {
-                ((Stg20Rot *)e->u38.ptr38)->field_42 -= w->speed / 256;
+                ((Stg20Rot *)e->u38.ptr38)->rotY -= w->speed / 256;
             }
             break;
         }
         if (Stg20_LabIsDna[0] == 0) {
             e = (Actor *)Task_FindFirst(7, -1, -1);
             if (e != NULL) {
-                ((Stg20Rot *)e->u38.ptr38)->field_42 = w->rot[1];
+                ((Stg20Rot *)e->u38.ptr38)->rotY = w->rot[1];
             }
         }
         break;
