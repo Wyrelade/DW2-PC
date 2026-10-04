@@ -13,6 +13,199 @@ Halves Menu_SkillMsgPos;
 s32 Snd_CurrentId;
 s32 Snd_SavedId;
 
+/* Task callbacks the descriptors below name (defined further down; the digi list descriptor's
+ * draw and the item draw at the top of this file). */
+void Task_DefaultDestroy(Actor *arg0);
+void Menu_SetDigiListMode(Actor *a, s16 mode);
+void Menu_DigiListTask(Actor *a0);
+void Menu_DigiListDraw(Actor *actor);
+void Menu_DigiStatusInit(Actor *a0, s16 a1);
+void Menu_DigiStatusTask(Actor *a);
+void Menu_DigiStatusDraw(Actor *actor);
+void Menu_SkillListInit(Actor *arg0, s16 arg1);
+void Menu_SkillListTask(Actor *a0);
+void Menu_SkillListDraw(Actor *actor);
+void Task_SpawnListInit(Actor *arg0, s32 *arg1);
+void Task_SpawnListFromFile(Actor *a0);
+void Text_WinFrameInit(Actor *arg0, s32 arg1);
+void Text_WinFrameTask(Actor *a0);
+void Text_WinFrameDraw(Actor *arg0);
+void Text_LoadFontsTask(Actor *a0);
+void Text_UpdateAllBoxes(Actor *a0);
+
+MenuGridLayout Menu_DigiListGrid = { { 1, 1 }, { -60, -66, 0, 0x21 } };
+/* Sub tasks the digimon list opens: { task id, Task_Create argument }. */
+Pair61900 Menu_DigiListSubTasks[] = { { 0x11, 1 }, { 0x12, 1 }, { 0x10, 6 }, { 0x10, 8 } };
+Halves Menu_DigiListTitlePos[] = { { 0x0E, 0x32 }, { 0x15, 0x32 } };
+u16 Menu_DigiListRowMasks[] = { 0x0E04, 0x0E04, 0x0C04, 0x0A04, 0x0604 };
+TaskDesc D_80040F4C = {
+    (TaskInitFn)Menu_SetDigiListMode, Menu_DigiListTask, Task_DefaultDestroy, Menu_DigiListDraw, 0x1A8, 4,
+};
+Prm1C Menu_DigiStatusView = { { 0, -0x180, -0x1E00, 0, 0, 0, 0x230 } };
+TaskDesc D_80040F80 = {
+    (TaskInitFn)Menu_DigiStatusInit, Menu_DigiStatusTask, Task_DefaultDestroy, Menu_DigiStatusDraw, 0x150, 4,
+};
+u16 Menu_SkillPaneMasks[] = { 0xAC, 0xCA, 0xB2, 0x12A };
+TaskDesc D_80040FA0 = {
+    (TaskInitFn)Menu_SkillListInit, Menu_SkillListTask, Task_DefaultDestroy, Menu_SkillListDraw, 0x128, 4,
+};
+TaskDesc D_80040FB8 = {
+    (TaskInitFn)Task_SpawnListInit, Task_SpawnListFromFile, Task_DefaultDestroy, 0, 4, 0xA0,
+};
+/* Window frame part resources (Cd_GetFileEntry ids). */
+s32 Text_WinFrameParts[] = { 0x03120001, 0x03120003, 0x03120000, 0x03120004 };
+TaskDesc D_80040FE0 = {
+    (TaskInitFn)Text_WinFrameInit, Text_WinFrameTask, Task_DefaultDestroy, Text_WinFrameDraw, 2, 0,
+};
+
+/* Sound banks (SndBankDesc): VB file, VH file, then the SEQ/SEP entries, 0-ended. Each entry
+ * is (resource file id << 16) | sub-entry index. */
+u32 D_80040FF8[] = { 0x00E50000, 0x00E60000, 0x00E60001, 0x00E60002, 0x00E60003, 0x00E60004, 0x00000000 };
+u32 D_80041014[] = { 0x07BE0000, 0x07BF0000, 0x07BF0001, 0x00000000 };
+u32 D_80041024[] = { 0x07C00000, 0x07C10000, 0x07C10001, 0x00000000 };
+u32 D_80041034[] = { 0x07C20000, 0x07C30000, 0x07C30001, 0x00000000 };
+u32 D_80041044[] = { 0x07C40000, 0x07C50000, 0x07C50001, 0x00000000 };
+u32 D_80041054[] = { 0x07C60000, 0x07C70000, 0x07C70001, 0x00000000 };
+u32 D_80041064[] = { 0x07C80000, 0x07C90000, 0x07C90001, 0x00000000 };
+u32 D_80041074[] = { 0x07CA0000, 0x07CB0000, 0x07CB0001, 0x00000000 };
+u32 D_80041084[] = { 0x07CC0000, 0x07CD0000, 0x07CD0001, 0x00000000 };
+u32 D_80041094[] = { 0x07CE0000, 0x07CF0000, 0x07CF0001, 0x00000000 };
+u32 D_800410A4[] = { 0x07D00000, 0x07D10000, 0x07D10001, 0x00000000 };
+u32 D_800410B4[] = { 0x07D20000, 0x07D30000, 0x07D30001, 0x00000000 };
+u32 D_800410C4[] = { 0x0D180000, 0x0D190000, 0x0D190001, 0x00000000 };
+u32 D_800410D4[] = { 0x0E330000, 0x0E350000, 0x0E350001, 0x00000000 };
+u32 D_800410E4[] = { 0x0D1C0000, 0x0D1D0000, 0x0D1D0001, 0x00000000 };
+u32 D_800410F4[] = { 0x00E30000, 0x00E40000, 0x00E40001, 0x00000000 };
+u32 D_80041104[] = { 0x02670000, 0x02680000, 0x02680001, 0x00000000 };
+u32 D_80041114[] = { 0x02DD0000, 0x02DE0000, 0x02DE0001, 0x00000000 };
+u32 D_80041124[] = { 0x02DF0000, 0x02E00000, 0x02E00001, 0x00000000 };
+u32 D_80041134[] = { 0x02E90000, 0x02EA0000, 0x02EA0001, 0x00000000 };
+u32 D_80041144[] = { 0x02EB0000, 0x02EC0000, 0x02EC0001, 0x00000000 };
+u32 D_80041154[] = { 0x02ED0000, 0x02EE0000, 0x02EE0001, 0x00000000 };
+u32 D_80041164[] = { 0x02EF0000, 0x02F00000, 0x02F00001, 0x00000000 };
+u32 D_80041174[] = { 0x0D4A0000, 0x0D4B0000, 0x0D4B0001, 0x00000000 };
+u32 D_80041184[] = { 0x07BD0000, 0x07BC0000, 0x07BC0001, 0x00000000 };
+SndBankDesc *Snd_BankDescs[] = {
+    0,
+    (SndBankDesc *)D_80040FF8, (SndBankDesc *)D_80041014, (SndBankDesc *)D_80041024,
+    (SndBankDesc *)D_80041034, (SndBankDesc *)D_80041044, (SndBankDesc *)D_80041054,
+    (SndBankDesc *)D_80041064, (SndBankDesc *)D_80041074, (SndBankDesc *)D_80041084,
+    (SndBankDesc *)D_80041094, (SndBankDesc *)D_800410A4, (SndBankDesc *)D_800410B4,
+    (SndBankDesc *)D_800410C4, (SndBankDesc *)D_800410D4, (SndBankDesc *)D_800410E4,
+    (SndBankDesc *)D_800410F4, (SndBankDesc *)D_80041104, (SndBankDesc *)D_80041114,
+    (SndBankDesc *)D_80041124, (SndBankDesc *)D_80041134, (SndBankDesc *)D_80041144,
+    (SndBankDesc *)D_80041154, (SndBankDesc *)D_80041164, (SndBankDesc *)D_80041174,
+    (SndBankDesc *)D_80041184,
+};
+s32 Snd_SlotBufSizes[3] = { 0x114D0, 0x13FE4, 0xBF44 };
+
+/* Text dictionary: words the text engine substitutes for codes 6.. (glyph codes, 0xFF ends). */
+u8 D_80041208[] = { 0x0D, 0x2C, 0x2A, 0x2C, 0x30, 0x32, 0x31, 0xFF }; /* "Digimon" */
+u8 D_80041210[] = { 0x3C, 0x32, 0x38, 0xFF }; /* "you" */
+u8 D_80041214[] = { 0x37, 0x2B, 0x28, 0xFF }; /* "the" */
+u8 D_80041218[] = { 0x0D, 0x2C, 0x2A, 0x2C, 0x49, 0x0B, 0x28, 0x28, 0x37, 0x2F, 0x28, 0xFF }; /* "Digi-Beetle" */
+u8 D_80041224[] = { 0x0D, 0x32, 0x30, 0x24, 0x2C, 0x31, 0xFF }; /* "Domain" */
+u8 D_8004122C[] = { 0x10, 0x38, 0x24, 0x35, 0x27, 0xFF }; /* "Guard" */
+u8 D_80041234[] = { 0x1D, 0x24, 0x30, 0x28, 0x35, 0xFF }; /* "Tamer" */
+u8 D_8004123C[] = { 0x2B, 0x28, 0x35, 0x28, 0xFF }; /* "here" */
+u8 D_80041244[] = { 0x2B, 0x24, 0x39, 0x28, 0xFF }; /* "have" */
+u8 D_8004124C[] = { 0x14, 0x31, 0x2C, 0x2A, 0x2B, 0x37, 0x36, 0xFF }; /* "Knights" */
+u8 D_80041254[] = { 0x24, 0x31, 0x27, 0xFF }; /* "and" */
+u8 D_80041258[] = { 0x37, 0x2B, 0x2C, 0x31, 0x2A, 0xFF }; /* "thing" */
+u8 D_80041260[] = { 0x1C, 0x28, 0x26, 0x38, 0x35, 0x2C, 0x37, 0x3C, 0xFF }; /* "Security" */
+u8 D_8004126C[] = { 0x37, 0x2B, 0x24, 0x37, 0xFF }; /* "that" */
+u8 D_80041274[] = { 0x0B, 0x28, 0x35, 0x37, 0x35, 0x24, 0x31, 0xFF }; /* "Bertran" */
+u8 D_8004127C[] = { 0x1D, 0x32, 0x38, 0x35, 0x31, 0x24, 0x30, 0x28, 0x31, 0x37, 0xFF }; /* "Tournament" */
+u8 D_80041288[] = { 0x0C, 0x35, 0x2C, 0x30, 0x36, 0x32, 0x31, 0xFF }; /* "Crimson" */
+u8 D_80041290[] = { 0x1F, 0x28, 0x31, 0x27, 0x32, 0x35, 0xFF }; /* "Vendor" */
+u8 D_80041298[] = { 0x36, 0x32, 0x30, 0x28, 0x37, 0x2B, 0x2C, 0x31, 0x2A, 0xFF }; /* "something" */
+u8 D_800412A4[] = { 0x12, 0x37, 0x28, 0x30, 0xFF }; /* "Item" */
+u8 D_800412AC[] = { 0x0F, 0x24, 0x2F, 0x26, 0x32, 0x31, 0xFF }; /* "Falcon" */
+u8 D_800412B4[] = { 0x29, 0x32, 0x35, 0xFF }; /* "for" */
+u8 D_800412B8[] = { 0x1D, 0x2B, 0x24, 0x37, 0x56, 0x36, 0xFF }; /* "That's" */
+u8 D_800412C0[] = { 0x0C, 0x32, 0x30, 0x30, 0x24, 0x31, 0x27, 0x28, 0x35, 0xFF }; /* "Commander" */
+u8 D_800412CC[] = { 0x0B, 0x2F, 0x32, 0x32, 0x27, 0xFF }; /* "Blood" */
+u8 D_800412D4[] = { 0x15, 0x28, 0x24, 0x27, 0x28, 0x35, 0xFF }; /* "Leader" */
+u8 D_800412DC[] = { 0x0A, 0x37, 0x37, 0x28, 0x31, 0x27, 0x24, 0x31, 0x37, 0xFF }; /* "Attendant" */
+u8 D_800412E8[] = { 0x0C, 0x28, 0x26, 0x2C, 0x2F, 0x2C, 0x24, 0xFF }; /* "Cecilia" */
+u8 D_800412F0[] = { 0x24, 0x2F, 0x2F, 0xFF }; /* "all" */
+u8 D_800412F4[] = { 0x30, 0x2C, 0x36, 0x36, 0x2C, 0x32, 0x31, 0xFF }; /* "mission" */
+u8 D_800412FC[] = { 0x37, 0x2B, 0x2C, 0x36, 0xFF }; /* "this" */
+u8 D_80041304[] = { 0x16, 0x24, 0x36, 0x37, 0x28, 0x35, 0x1D, 0x3C, 0x35, 0x24, 0x31, 0x31, 0x32, 0x30, 0x32, 0x31, 0xFF }; /* "MasterTyrannomon" */
+u8 D_80041318[] = { 0x0A, 0x35, 0x26, 0x2B, 0x2C, 0x39, 0x28, 0xFF }; /* "Archive" */
+u8 D_80041320[] = { 0x0B, 0x2F, 0x24, 0x26, 0x2E, 0xFF }; /* "Black" */
+u8 D_80041328[] = { 0x12, 0x56, 0x2F, 0x2F, 0xFF }; /* "I'll" */
+u8 D_80041330[] = { 0x24, 0x35, 0x28, 0xFF }; /* "are" */
+u8 D_80041334[] = { 0x1C, 0x3A, 0x32, 0x35, 0x27, 0xFF }; /* "Sword" */
+u8 D_8004133C[] = { 0x35, 0x2C, 0x2A, 0x2B, 0x37, 0xFF }; /* "right" */
+u8 D_80041344[] = { 0x27, 0x2C, 0x2A, 0x2C, 0x39, 0x32, 0x2F, 0x39, 0x28, 0xFF }; /* "digivolve" */
+u8 D_80041350[] = { 0x28, 0x31, 0x37, 0x28, 0x35, 0xFF }; /* "enter" */
+u8 D_80041358[] = { 0x20, 0x2B, 0x24, 0x37, 0xFF }; /* "What" */
+u8 D_80041360[] = { 0x3A, 0x2C, 0x2F, 0x2F, 0xFF }; /* "will" */
+u8 D_80041368[] = { 0x26, 0x32, 0x30, 0x28, 0xFF }; /* "come" */
+u8 D_80041370[] = { 0x22, 0x32, 0x38, 0xFF }; /* "You" */
+u8 D_80041374[] = { 0x0C, 0x32, 0x2F, 0x2C, 0x36, 0x28, 0x38, 0x30, 0xFF }; /* "Coliseum" */
+u8 D_80041380[] = { 0x24, 0x25, 0x32, 0x38, 0x37, 0xFF }; /* "about" */
+u8 D_80041388[] = { 0x27, 0x32, 0x31, 0x56, 0x37, 0xFF }; /* "don't" */
+u8 D_80041390[] = { 0x24, 0x31, 0x3C, 0x37, 0x2B, 0x2C, 0x31, 0x2A, 0xFF }; /* "anything" */
+u8 D_8004139C[] = { 0x1F, 0x24, 0x31, 0x27, 0x24, 0x35, 0xFF }; /* "Vandar" */
+u8 D_800413A4[] = { 0x19, 0x24, 0x35, 0x37, 0x36, 0xFF }; /* "Parts" */
+u8 D_800413AC[] = { 0x3A, 0x2B, 0x28, 0x35, 0x28, 0xFF }; /* "where" */
+u8 D_800413B4[] = { 0x1D, 0x2B, 0x28, 0xFF }; /* "The" */
+u8 D_800413B8[] = { 0x2E, 0x31, 0x32, 0x3A, 0xFF }; /* "know" */
+u8 D_800413C0[] = { 0x15, 0x28, 0x32, 0x30, 0x32, 0x31, 0xFF }; /* "Leomon" */
+u8 D_800413C8[] = { 0x3A, 0x24, 0x31, 0x37, 0xFF }; /* "want" */
+u8 D_800413D0[] = { 0x18, 0x2F, 0x27, 0x30, 0x24, 0x31, 0xFF }; /* "Oldman" */
+u8 D_800413D8[] = { 0x2F, 0x2C, 0x2E, 0x28, 0xFF }; /* "like" */
+u8 D_800413E0[] = { 0x31, 0x28, 0x28, 0x27, 0xFF }; /* "need" */
+u8 D_800413E8[] = { 0x0C, 0x2B, 0x2C, 0x28, 0x29, 0xFF }; /* "Chief" */
+u8 D_800413F0[] = { 0x3A, 0x2C, 0x37, 0x2B, 0xFF }; /* "with" */
+u8 D_800413F8[] = { 0x1D, 0x2B, 0x24, 0x31, 0x2E, 0xFF }; /* "Thank" */
+u8 D_80041400[] = { 0x36, 0x37, 0x35, 0x24, 0x31, 0x2A, 0x28, 0xFF }; /* "strange" */
+u8 D_80041408[] = { 0x12, 0x36, 0x2F, 0x24, 0x31, 0x27, 0xFF }; /* "Island" */
+u8 D_80041410[] = { 0x26, 0x24, 0x31, 0xFF }; /* "can" */
+u8 D_80041414[] = { 0x35, 0x28, 0x24, 0x2F, 0x2F, 0x3C, 0xFF }; /* "really" */
+u8 D_8004141C[] = { 0x0B, 0x2F, 0x38, 0x28, 0xFF }; /* "Blue" */
+u8 D_80041424[] = { 0x37, 0x2C, 0x30, 0x28, 0xFF }; /* "time" */
+/* Sound effect per text sfx code. */
+s16 Text_SfxIds[] = { 0x19, 0x1A, 0x21, 0x2B, 0x20, 0x2A, 0x1F, 0x17, 0x08 };
+u8 *Text_BuiltinStrings[] = {
+    D_80041208, D_80041210, D_80041214, D_80041218, D_80041224, D_8004122C,
+    D_80041234, D_8004123C, D_80041244, D_8004124C, D_80041254, D_80041258,
+    D_80041260, D_8004126C, D_80041274, D_8004127C, D_80041288, D_80041290,
+    D_80041298, D_800412A4, D_800412AC, D_800412B4, D_800412B8, D_800412C0,
+    D_800412CC, D_800412D4, D_800412DC, D_800412E8, D_800412F0, D_800412F4,
+    D_800412FC, D_80041304, D_80041318, D_80041320, D_80041328, D_80041330,
+    D_80041334, D_8004133C, D_80041344, D_80041350, D_80041358, D_80041360,
+    D_80041368, D_80041370, D_80041374, D_80041380, D_80041388, D_80041390,
+    D_8004139C, D_800413A4, D_800413AC, D_800413B4, D_800413B8, D_800413C0,
+    D_800413C8, D_800413D0, D_800413D8, D_800413E0, D_800413E8, D_800413F0,
+    D_800413F8, D_80041400, D_80041408, D_80041410, D_80041414, D_8004141C,
+    D_80041424,
+};
+TaskDesc D_8004154C = { 0, Text_LoadFontsTask, Task_DefaultDestroy, Text_UpdateAllBoxes, 0xA34, 0xD8 };
+FadeState Gfx_FadeState = { 1, 0, 0 };
+/* Ordering table layout per mode: layer lengths and offsets (8 layers). */
+s32 Gpu_OtLayerLens[][8] = {
+    { 15, 15, 15, 4, 15, 15, 15, 0 },
+    { 15, 15, 15, 5, 15, 5, 15, 0 },
+    { 15, 5, 15, 5, 15, 15, 15, 0 },
+    { 15, 6, 15, 5, 15, 6, 15, 0 },
+};
+s32 Gpu_OtLayerOffsets[][8] = {
+    { 0, 2, 4, 6, 0x1006, 0x1008, 0x100A, 0 },
+    { 0, 2, 4, 6, 0x806, 0x808, 0x1008, 0 },
+    { 0, 2, 0x802, 0x804, 0x1004, 0x1006, 0x1008, 0 },
+    { 0, 2, 0x402, 0x404, 0xC04, 0xC06, 0x1006, 0 },
+};
+ActorWork *Gpu_PrimBufs[3] = { 0 };
+/* Gfx_DrawPartsEx's cached rotation/scale and the matrix built from it (identity at boot). */
+GfxPartRotCache Gfx_PartRotCache = {
+    0, 0, { 0 }, 0x1000, 0x1000, 0x1000, { 0 },
+    { { { 0x1000, 0, 0 }, { 0, 0x1000, 0 }, { 0, 0, 0x1000 } }, { 0, 0, 0 } },
+};
+DATA_LABEL(Gfx_PartRotMatrix, Gfx_PartRotCache, 0x18);
+
 void Menu_ItemDraw(Actor *actor) {
     ActorWork *w = actor->work;
     s32 *p;
@@ -2100,7 +2293,7 @@ void Text_UpdateAllBoxes(Actor *a0) {
                         }
                         break;
                     default:
-                        s = (u8 *)Text_BuiltinStrings[k - 6] - 1;
+                        s = Text_BuiltinStrings[k - 6] - 1;
                         break;
                     }
                     line--;

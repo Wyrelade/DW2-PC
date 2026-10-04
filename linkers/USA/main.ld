@@ -68,7 +68,7 @@ SECTIONS
         build/USA/src/main/12654.c.o(.data);
         build/USA/src/main/13584.c.o(.data);
         build/USA/src/main/psyq.c.o(.data);
-        build/USA/asm/USA/main/data/3171C.data.s.o(.data);
+        build/USA/asm/USA/main/data/31EB4.data.s.o(.data);
         build/USA/assets/Ovl_LoadArea.bin.o(.data);
         . = ALIGN(., 4);
         main_DATA_END = .;

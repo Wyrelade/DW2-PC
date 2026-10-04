@@ -977,7 +977,7 @@ typedef struct {
 
 extern u8 Snd_SeqAttrTable[176 * 6 * 16];
 extern s16 Text_SfxIds[];
-extern s32 Text_BuiltinStrings[];
+extern u8 *Text_BuiltinStrings[];
 
 /* File-local record walked by Gfx_DrawPartsEx (stride 0x28). */
 typedef struct {
@@ -1003,8 +1003,9 @@ typedef struct {
     u8 _pad06[2];
     /* 0x08 */ s32 scaleX;
     /* 0x0C */ s32 scaleY;
-    u8 _pad10[0x18 - 0x10];
-    /* 0x18 */ s32 matrix;
+    /* 0x10 */ s32 scaleZ; /* scaleX..scaleZ: the VECTOR ScaleMatrix reads */
+    u8 _pad14[4];
+    /* 0x18 */ Mat1F668 matrix; /* also reached as the symbol Gfx_PartRotMatrix */
 } GfxPartRotCache;
 
 /* 2-byte-aligned aggregate forcing the lwl/lwr + swl/swr block copy. */
