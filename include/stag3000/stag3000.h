@@ -410,8 +410,8 @@ typedef struct {
     u8 _pad0000[0x103D];
     /* 0x103D */ u8 floorTile;
     u8 _pad103E[0x02];
-    /* 0x1040 */ s16 field_1040;
-} Stg30Glob5D5A0;
+    /* 0x1040 */ s16 giftLevel;
+} Stg30DungState;
 
 /* Stg30_Battle viewed as a 0x18-byte head followed by six DigiRosterEntry (the same
    bytes Stg30BattleEntry reads at 0x18..: field_18 = state, field_19 = digiId, ...). */
@@ -645,7 +645,7 @@ extern s32 Stg30_BannerParts[];
 extern Halves Stg30_SkillLearnTextPos[];
 extern s16 Stg30_BattleScript[];
 extern u16 Pad_Pressed;  /* Pad_State[0].pressed as a scalar reloc */
-extern Stg30Glob5D5A0 Dung_State;
+extern Stg30DungState Dung_State;
 extern s32 Stg30_TurnOrder[12];
 extern Stg30Battle Stg30_Battle;
 extern s16 Stg30_CloseUpRotY[];  /* camera goal x per party slot (Stg30_CameraUpdate) */
@@ -838,7 +838,7 @@ typedef struct {
 extern Halves Stg30_JoinPromptTextPos[];
 extern u8 Stg30_MemoryCapacity[];
 extern u16 D_8005E650;  /* Save_GameState halfword at 0x30 as a scalar reloc (map id) */
-extern Blk5071C *Dung_StatePtr;
+extern DungState *Dung_StatePtr;
 extern u8 *Digi_GetDefaultName(s32);
 extern void Digi_SortRoster(void);
 extern void Flag_Set(s32, s32);

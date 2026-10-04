@@ -343,7 +343,7 @@ void Sys_Main(void) {
     Sys_State.modeArg = 0;
     Sys_State.field_C = 0;
     Save_ResetGameState();
-    Dung_StatePtr->field_0 = 0;
+    Dung_StatePtr->entryMode = 0;
     Gfx_FadeSetBlack();
     Gfx_DrawFade();
     slot = 0;

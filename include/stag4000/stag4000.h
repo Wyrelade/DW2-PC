@@ -6,7 +6,7 @@
 
 /* STAG4000 (Ovl_FileIds id 1, gameMode 0x2xx). */
 
-/* View of *Dung_StatePtr (main Blk5071C) as this overlay uses it. */
+/* View of *Dung_StatePtr (main DungState) as this overlay uses it. */
 typedef struct {
     /* 0x00 */ s16 cols;
     /* 0x02 */ s16 rows;

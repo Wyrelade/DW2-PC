@@ -556,7 +556,7 @@ s32 Item_UseOnBeetle(s32 a0, s32 a1, s32 a2, s32 a3) {
     s32 n;
     s32 cnt;
     s32 k;
-    Blk5071C *b;
+    DungState *b;
 
     rec = (ItemEffect *)Item_GetEffectRec(a0);
     r = 0;

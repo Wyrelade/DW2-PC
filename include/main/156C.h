@@ -1275,12 +1275,12 @@ typedef struct {
 /* Block reached through Dung_StatePtr; Bug_CompactMemBugs compacts the 12 slot bytes at
  * 0xBA9 (nonzero entries moved to the front, the rest cleared). */
 typedef struct {
-    /* 0x000 */ u8 field_0;
+    /* 0x000 */ u8 entryMode;
     u8 _pad001[0xBA4];
     /* 0xBA5 */ u8 bugLevels[3];
     /* 0xBA8 */ u8 memBugCount;
     /* 0xBA9 */ u8 memBugLevels[12];
-} Blk5071C;
+} DungState;
 
 /* Sound state block at D_80062D18 (splat splits it into small byte symbols);
  * note2pitch2 indexes the D_80062D08 table with field_7 * 16 + field_C. */

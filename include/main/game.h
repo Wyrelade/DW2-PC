@@ -173,7 +173,7 @@ extern void SetFarColor(s32, s32, s32);
 extern void SetGeomOffset(s32, s32);
 extern s16 D_8006197E;
 extern s16 D_8006197C;
-extern Blk5071C *Dung_StatePtr;
+extern DungState *Dung_StatePtr;
 extern char D_8001031C[];
 extern void checkRECT(char *, RECT *);
 extern s8 D_80010974[];

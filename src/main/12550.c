@@ -9,7 +9,7 @@
 
 /* Small data this unit defines (retail reaches it with %gp_rel here). The bytes
  * live in the data asm; these tentative definitions are COMMON and bind to it. */
-Blk5071C *Dung_StatePtr;
+DungState *Dung_StatePtr;
 
 /* Unnamed: empty stub, no callers, no table ref. */
 void func_80021D50(void) {
