@@ -2,6 +2,57 @@
 #include "stag3500/stag3500.h"
 #include "stag3500/stag3500_funcs.h"
 
+/* Task callbacks this unit defines further down (the descriptors come first). */
+void Stg35_FighterInit(Actor *arg0, Stg35Vec3 *arg1);
+void Stg35_FighterTask(Actor *arg0);
+void Stg35_FighterDestroy(Actor *arg0);
+void Stg35_FighterDraw(Actor *arg0);
+void Stg35_RoundBannerInit(Actor *arg0, s32 arg1);
+void Stg35_RoundBannerTask(Actor *arg0);
+void Stg35_RoundBannerDestroy(Actor *arg0);
+void Stg35_RoundBannerDraw(Actor *arg0);
+void Stg35_XaPlayInit(Actor *arg0, Stg35Vec3 *arg1);
+void Stg35_XaPlayTask(Actor *arg0);
+void Stg35_XaPlayDestroy(Actor *arg0);
+void Stg35_BattleHudTask(Actor *arg0);
+void Stg35_BattleHudDestroy(Actor *arg0);
+void Stg35_BattleHudDraw(Actor *arg0);
+void Stg35_BattleScriptTask(Actor *arg0);
+
+s32 Stg35_GaugeDefPercent[] = { 25, 22, 20, 18, 16, 15, 14 };
+s32 Stg35_DefaultTargets[] = { 3, 4, 5, 0, 1, 2 };
+Elem12 Stg35_HitReactHop1Motion = { -0x18000, 0x2666, 0x320000 };
+Elem12 Stg35_HitReactHop2Motion = { -0x14000, 0x2666, 0x320000 };
+Elem12 Stg35_HitReactPushMotion = { 0x18000, -0x2000, 0x320000 };
+TaskDesc Stg35_FighterDesc = {
+    (TaskInitFn)Stg35_FighterInit, Stg35_FighterTask, Stg35_FighterDestroy, Stg35_FighterDraw, 0x3C, 0x10,
+};
+TaskDesc Stg35_RoundBannerDesc = {
+    (TaskInitFn)Stg35_RoundBannerInit, Stg35_RoundBannerTask, Stg35_RoundBannerDestroy, Stg35_RoundBannerDraw, 8, 0,
+};
+/* Task_DescTable[7]: task ids 0x700-0x70D. */
+TaskDesc *Stg35_TaskDescs[] = {
+    &Stg35_RootDesc, &Stg35_VsMenuDesc, &Stg35_BgDesc, &Stg35_MatchupDesc, &Stg35_FightBgDesc,
+    &Stg35_BattleDesc, &Stg35_CameraDesc, &Stg35_FighterDesc, &Stg35_BattleHudDesc,
+    &Stg35_BattleScriptDesc, &Stg35_ActionLoadDesc, &Stg35_XaPlayDesc, &Stg35_RoundBannerDesc,
+    &Stg35_WinBannerDesc,
+};
+s32 Stg35_XaTrackStart[] = { 0, 0x546, 0xB22, 0x10FE, 0x1770, 0x1F0E };
+s32 Stg35_XaTrackLength[] = { 0x2EE, 0x3A2, 0x456, 0x50A, 0x5BE, 0x672 };
+TaskDesc Stg35_XaPlayDesc = {
+    (TaskInitFn)Stg35_XaPlayInit, Stg35_XaPlayTask, Stg35_XaPlayDestroy, 0, 0x14, 0,
+};
+Stg35XY Stg35_HpBarPosP1[] = { { -129, 150 }, { -129, 172 }, { -129, 194 } };
+Stg35XY Stg35_HpBarPosP2[] = { { 17, 150 }, { 17, 172 }, { 17, 194 } };
+TaskDesc Stg35_BattleHudDesc = {
+    0, Stg35_BattleHudTask, Stg35_BattleHudDestroy, Stg35_BattleHudDraw, 0xC8, 0,
+};
+TaskDesc Stg35_BattleScriptDesc = { 0, Stg35_BattleScriptTask, Task_DefaultDestroy, 0, 4, 0x14 };
+
+s32 Stg35_TurnOrder[12];
+Stg35Battle Stg35_Battle;
+s16 Stg35_BattleScript[0xC8];
+
 void Stg35_BattleDestroy(Actor *arg0) {
     Gpu_InitDoubleBuffer(0x140, 0xF0, 0, 0);
     Task_DefaultDestroy(arg0);
@@ -169,8 +220,8 @@ s32 Stg35_ScaleBarLen(s32 arg0, s32 arg1, s32 arg2) {
 }
 
 s32 Stg35_ApplySkillDamage(s32 arg0, s32 arg1, s32 arg2) {
-    Stg35BattleDigi *rec0 = &D_8006AA98[arg0];
-    Stg35BattleDigi *rec1 = &D_8006AA98[arg1];
+    Stg35BattleDigi *rec0 = &Stg35_Battle.rec[arg0];
+    Stg35BattleDigi *rec1 = &Stg35_Battle.rec[arg1];
     s32 a;
     s32 b;
     s32 prod;

@@ -1,6 +1,44 @@
 #include "common.h"
 #include "stag3500/stag3500.h"
 
+/* Task callbacks this unit defines further down (the descriptors come first), and
+ * Stg35_BattleDestroy (stag3500_2334.c). */
+void Stg35_BgUpdate(Actor *arg0);
+void Stg35_BgDestroy(Actor *arg0);
+void Stg35_BgDraw(Actor *arg0);
+void Stg35_FightBgUpdate(Actor *arg0);
+void Stg35_FightBgDraw(Actor *arg0);
+void Stg35_ActionLoadInit(Actor *arg0, s32 *arg1);
+void Stg35_ActionLoadUpdate(Actor *arg0);
+void Stg35_ActionLoadDestroy(Actor *arg0);
+void Stg35_RootUpdate(Actor *arg0);
+void Stg35_VsMenuUpdate(Actor *arg0);
+void Stg35_VsMenuDestroy(Actor *arg0);
+void Stg35_VsMenuDraw(Actor *arg0);
+void Stg35_MatchupUpdate(Actor *arg0);
+void Stg35_MatchupDestroy(Actor *arg0);
+void Stg35_MatchupDraw(Actor *arg0);
+void Stg35_BattleUpdate(Actor *arg0);
+void Stg35_BattleDestroy(Actor *arg0);
+
+TaskDesc Stg35_BgDesc = { 0, Stg35_BgUpdate, Stg35_BgDestroy, Stg35_BgDraw, 4, 0 };
+TaskDesc Stg35_FightBgDesc = { 0, Stg35_FightBgUpdate, Task_DefaultDestroy, Stg35_FightBgDraw, 0, 0 };
+TaskDesc Stg35_ActionLoadDesc = {
+    (TaskInitFn)Stg35_ActionLoadInit, Stg35_ActionLoadUpdate, Stg35_ActionLoadDestroy, 0, 0x320, 0,
+};
+TaskDesc Stg35_RootDesc = { 0, Stg35_RootUpdate, Task_DefaultDestroy, 0, 0, 4 };
+s32 Stg35_VsMenuPromptMsgs[] = { 0x1B3, 0x1C4, 0x1B4 };
+s32 Stg35_VsMenuPhaseMasks[] = { 0x2C, 0x4A, 0x32 };
+TaskDesc Stg35_VsMenuDesc = { 0, Stg35_VsMenuUpdate, Stg35_VsMenuDestroy, Stg35_VsMenuDraw, 0x44, 8 };
+Stg35XY Stg35_MatchupLabelPos[] = {
+    { 177, 28 }, { 18, 137 }, { 177, 45 }, { 18, 154 }, { 177, 66 }, { 18, 175 },
+};
+s16 Stg35_MatchupLabelMsgs[] = { 441, 442, 443, 443, 444, 444 };
+Stg35XY Stg35_MatchupPartyPos[] = { { 213, 78 }, { 54, 187 } };
+Stg35XY Stg35_MatchupTamerPos[] = { { 222, 45 }, { 63, 154 } };
+TaskDesc Stg35_MatchupDesc = { 0, Stg35_MatchupUpdate, Stg35_MatchupDestroy, Stg35_MatchupDraw, 0x3C, 4 };
+TaskDesc Stg35_BattleDesc = { 0, Stg35_BattleUpdate, Stg35_BattleDestroy, 0, 0x10, 0x50 };
+
 void Stg35_BgUpdate(Actor *arg0) {
     Stg35PartsHandle *w = (Stg35PartsHandle *)arg0->work;
 

@@ -564,7 +564,6 @@ extern s16 Stg35_MatchupLabelMsgs[];
 extern Stg35XY Stg35_MatchupPartyPos[];
 extern Stg35XY Stg35_MatchupTamerPos[];
 extern s32 Stg35_GaugeDefPercent[];
-extern Stg35BattleDigi D_8006AA98[];
 extern Elem12 Stg35_HitReactHop1Motion;
 extern Elem12 Stg35_HitReactHop2Motion;
 extern Elem12 Stg35_HitReactPushMotion;
@@ -584,5 +583,22 @@ typedef struct {
     /* 0x0 */ s32 v[3];
 } Stg35Masks;
 extern const Stg35Masks Stg35_RoundBannerMasks;
+
+/* Task descriptors (Stg35_TaskDescs rows). */
+extern TaskDesc Stg35_BgDesc;
+extern TaskDesc Stg35_FightBgDesc;
+extern TaskDesc Stg35_ActionLoadDesc;
+extern TaskDesc Stg35_RootDesc;
+extern TaskDesc Stg35_VsMenuDesc;
+extern TaskDesc Stg35_MatchupDesc;
+extern TaskDesc Stg35_BattleDesc;
+extern TaskDesc Stg35_FighterDesc;
+extern TaskDesc Stg35_RoundBannerDesc;
+extern TaskDesc Stg35_XaPlayDesc;
+extern TaskDesc Stg35_BattleHudDesc;
+extern TaskDesc Stg35_BattleScriptDesc;
+extern TaskDesc Stg35_CameraDesc;
+extern TaskDesc Stg35_WinBannerDesc;
+extern TaskDesc *Stg35_TaskDescs[];
 
 #endif
