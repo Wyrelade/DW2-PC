@@ -15,11 +15,6 @@
       "padnop"
     ]
   },
-  "func_8001204C": {
-    "passes": [
-      "web_realloc"
-    ]
-  },
   "func_80020FD0": {
     "passes": [
       "const_unhoist",
@@ -35,11 +30,6 @@
   "stag4000:func_8006D418": {
     "passes": [
       "web_realloc"
-    ]
-  },
-  "stag2000:func_8006C6F0": {
-    "passes": [
-      "sched_match"
     ]
   },
   "stag3000:func_80065594": {

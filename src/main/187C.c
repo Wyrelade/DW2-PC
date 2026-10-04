@@ -536,8 +536,6 @@ s32 Item_GetUseKind(s32 arg0) {
     return r;
 }
 
-INCLUDE_RODATA("asm/USA/main/rodata", jtbl_80010004);
-#ifdef NORMALIZED
 s32 func_8001204C(s32 a0, s32 a1, s32 a2, s32 a3) {
     ItemEffect *rec;
     s32 r;
@@ -551,6 +549,8 @@ s32 func_8001204C(s32 a0, s32 a1, s32 a2, s32 a3) {
     s32 max;
     s32 n;
     s32 cnt;
+    s32 k;
+    Blk5071C *b;
 
     rec = (ItemEffect *)Item_GetEffectRec(a0);
     r = 0;
@@ -588,12 +588,14 @@ s32 func_8001204C(s32 a0, s32 a1, s32 a2, s32 a3) {
     case 0xC:
     case 0xD:
     case 0xE:
-        c = D_8005071C->field_BA5[rec->effectType - 0xC];
+        k = rec->effectType - 0xC;
+        b = D_8005071C;
+        c = b->field_BA5[k];
         v = c;
         if (c != 0) {
             r = 2;
             if (rec->amount >= v) {
-                D_8005071C->field_BA5[rec->effectType - 0xC] = 0;
+                b->field_BA5[k] = 0;
                 r = 1;
             }
         }
@@ -633,7 +635,8 @@ s32 func_8001204C(s32 a0, s32 a1, s32 a2, s32 a3) {
             for (i = 0; i < n; i++) {
                 if (rec->amount >= D_8005071C->field_BA9[i]) {
                     D_8005071C->field_BA9[i] = 0;
-                    D_8005071C->field_BA8--;
+                    b = D_8005071C;
+                    b->field_BA8--;
                     cnt++;
                 }
             }
@@ -648,10 +651,6 @@ s32 func_8001204C(s32 a0, s32 a1, s32 a2, s32 a3) {
     }
     return r;
 }
-#else
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_8001204C);
-s32 func_8001204C(s32 a0, s32 a1, s32 a2, s32 a3);
-#endif
 
 
 s32 Item_ApplyToDigi(s32 a0, s32 a1, s32 a2, s32 a3) {
