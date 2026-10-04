@@ -36,8 +36,8 @@ tree.
 > legal dump of your own disc.
 >
 > `asm/` and `linkers/` are splat output. They are still committed today so the progress CI
-> can build without a disc. That covers the PsyQ library asm, the `.data` sections and a few
-> `.rodata` tables that are not C yet. They will move out of the repo (see
+> can build without a disc. That covers the PsyQ library asm, the `.data` sections and one
+> `.rodata` string pool that belongs to `.data` tables. They will move out of the repo (see
 > [issue #6](https://github.com/Wyrelade/Digimon-World-2-Decomp/issues/6)).
 
 ## Status
