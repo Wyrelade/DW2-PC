@@ -43,7 +43,7 @@ options:
   rodata_string_guesser_level: 2
   data_string_guesser_level: 2
 
-  ld_bss_is_noload: True
+  ld_bss_is_noload: False
 
 # Stage overlay: loaded by Ovl_Load (main exe) to 0x80063360, over the main exe's
 # .data there. Text range found by scanning for the first prologue / last `jr ra`.
@@ -58,5 +58,8 @@ segments:
       - [0x0, rodata, stag2000_rodata]
       - [0x2B0, c, stag2000]
       - [0x8CE0, c, stag2000_8CE0]
-      - [0xC8EC, data, stag2000_data]
+      - [0xC8EC, .data, stag2000]
+      - [0xD184, .data, stag2000_8CE0]
+      - [0xD408, .bss, stag2000]
+      - [0xD6A8, .bss, stag2000_8CE0]
   - [0xDBEE]

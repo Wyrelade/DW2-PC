@@ -24,15 +24,9 @@ SECTIONS
         build/USA/asm/USA/stag2000/data/stag2000_rodata.rodata.s.o(.data);
         build/USA/src/stag2000/stag2000.c.o(.data);
         build/USA/src/stag2000/stag2000_8CE0.c.o(.data);
-        build/USA/asm/USA/stag2000/data/stag2000_data.data.s.o(.data);
         . = ALIGN(., 4);
         stag2000_DATA_END = .;
         stag2000_DATA_SIZE = ABSOLUTE(stag2000_DATA_END - stag2000_DATA_START);
-    }
-    stag2000_bss_VRAM = ADDR(.stag2000_bss);
-    .stag2000_bss (NOLOAD) : SUBALIGN(4)
-    {
-        FILL(0x00000000);
         stag2000_BSS_START = .;
         build/USA/asm/USA/stag2000/data/stag2000_rodata.rodata.s.o(.bss);
         build/USA/src/stag2000/stag2000.c.o(.bss);

@@ -119,6 +119,7 @@ extern u16 Stg20_EngineHpTbl[];
 extern u16 Stg20_BatteryEpTbl[];
 extern s32 Stg20_TalkActive;
 extern Stg20Cell Stg20_CellTmp;
+extern s32 D_800709AC; /* unreferenced, between Stg20_CellTmp and Stg20_MenuState in .bss */
 extern Stg20Cell Stg20_DirCellDelta[4];
 extern Stg20Vec3 Stg20_MoveParams[];
 extern const CVECTOR Stg20_JogBgWireColor;
@@ -964,5 +965,37 @@ extern void Stg20_MsgWinShowDigiMsg(s32 text, s32 digi);
 extern s32 D_800709E0;
 extern Stg20Cell Stg20_LabSkillsTextPos[10];
 extern void Stg20_LabSkillsSetText(Actor *a);
+
+/* Task descriptors (Stg20_TaskDescs rows). */
+extern TaskDesc Stg20_MapBgDesc;
+extern TaskDesc Stg20_StaticBgDesc;
+extern TaskDesc Stg20_DigiLabDesc;
+extern TaskDesc Stg20_ItemShopDesc;
+extern TaskDesc Stg20_BeetleShopDesc;
+extern TaskDesc Stg20_StageMainDesc;
+extern TaskDesc Stg20_AreaSelectDesc;
+extern TaskDesc Stg20_LabModeSelDesc;
+extern TaskDesc Stg20_LabRosterDesc;
+extern TaskDesc Stg20_MsgWinDesc;
+extern TaskDesc Stg20_LabCaptionDesc;
+extern TaskDesc Stg20_LabInfoDesc;
+extern TaskDesc Stg20_LabSkillsDesc;
+extern TaskDesc Stg20_LabPairDesc;
+extern TaskDesc Stg20_ShadowDesc;
+extern TaskDesc Stg20_LabJogBgDesc;
+extern TaskDesc Stg20_LabDigiModelDesc;
+extern TaskDesc Stg20_MapExitDesc;
+extern TaskDesc Stg20_WalkerDesc;
+extern TaskDesc Stg20_XaStreamDesc;
+extern TaskDesc Stg20_ShopBgDesc;
+extern TaskDesc Stg20_ShopBitsDesc;
+extern TaskDesc Stg20_ItemShopMenuDesc;
+extern TaskDesc Stg20_BeetleShopMenuDesc;
+extern TaskDesc Stg20_ShopListDesc;
+extern TaskDesc Stg20_BeetlePartsDesc;
+extern TaskDesc Stg20_PartsUpgradeDesc;
+extern TaskDesc Stg20_WarpPadDesc;
+extern TaskDesc Stg20_CameraDesc;
+extern TaskDesc *Stg20_TaskDescs[];
 
 #endif

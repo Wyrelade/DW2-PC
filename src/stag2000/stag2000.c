@@ -1,6 +1,307 @@
 #include "common.h"
 #include "stag2000/stag2000.h"
 
+/* Task callbacks the descriptors below need (defined further down; the last two in
+ * stag2000_8CE0.c). Not stag2000_funcs.h: Stg20_LabInfoUpdate calls Stg20_GetDnaResult
+ * before its definition, and its u8 prototype would change that call. */
+void Stg20_MapBgInit(Actor *a, s32 v);
+void Stg20_MapBgUpdate(Actor *a);
+void Stg20_MapBgDraw(Actor *a);
+void Stg20_StaticBgInit(Actor *a, s32 v);
+void Stg20_StaticBgUpdate(Actor *a);
+void Stg20_StaticBgDraw(Actor *a);
+void Stg20_DigiLabUpdate(Actor *a);
+void Stg20_DigiLabDraw(Actor *a);
+void Stg20_ItemShopUpdate(Actor *a);
+void Stg20_BeetleShopUpdate(Actor *a);
+void Stg20_StageMain(Actor *a);
+void Stg20_AreaSelectUpdate(Actor *a);
+void Stg20_AreaSelectDraw(Actor *a);
+void Stg20_LabModeSelUpdate(Actor *a);
+void Stg20_LabModeSelDraw(Actor *a);
+void Stg20_LabRosterUpdate(Actor *a);
+void Stg20_LabRosterDraw(Actor *a);
+void Stg20_MsgWinInit(Actor *a, s32 v);
+void Stg20_MsgWinUpdate(Actor *a);
+void Stg20_MsgWinDestroy(Actor *a);
+void Stg20_MsgWinDraw(Actor *a);
+void Stg20_LabCaptionUpdate(Actor *a);
+void Stg20_LabCaptionDraw(void);
+void Stg20_LabInfoUpdate(Actor *a);
+void Stg20_LabInfoDraw(Actor *a);
+void Stg20_LabSkillsUpdate(Actor *a);
+void Stg20_LabSkillsDraw(Actor *a);
+void Stg20_LabPairUpdate(Actor *a);
+void Stg20_LabPairDraw(void);
+void Stg20_ShadowInit(Actor *a, s32 v);
+void Stg20_ShadowUpdate(Actor *a);
+void Stg20_ShadowDraw(Actor *a);
+void Stg20_LabJogBgUpdate(Actor *a);
+void Stg20_LabJogBgDraw(Actor *a);
+void Stg20_LabDigiModelUpdate(Actor *a);
+void Stg20_LabDigiModelDraw(Actor *a);
+void Stg20_MapExitUpdate(Actor *a);
+void Stg20_WalkerInit(Actor *a, Stg20Spawn *s);
+void Stg20_WalkerUpdate(Actor *a);
+void Stg20_WalkerDraw(Actor *a);
+void Stg20_XaStreamInit(Actor *a, Stg20Vec3 *v);
+void Stg20_XaStreamUpdate(Actor *a);
+void Stg20_XaStreamDestroy(Actor *a);
+void Stg20_ShopBgUpdate(Actor *a);
+void Stg20_ShopBgDraw(Actor *a);
+void Stg20_ShopBitsUpdate(Actor *a);
+void Stg20_ShopBitsDestroy(Actor *a);
+void Stg20_ShopBitsDraw(void);
+void Stg20_ItemShopMenuUpdate(Actor *a);
+void Stg20_ItemShopMenuDestroy(Actor *a);
+void Stg20_ItemShopMenuDraw(Actor *a);
+void Stg20_BeetleShopMenuUpdate(Actor *a);
+void Stg20_BeetleShopMenuDestroy(Actor *a);
+void Stg20_BeetleShopMenuDraw(Actor *a);
+
+Stg20Pos2 Stg20_ShakeOffsets[4] = { { -1, -1 }, { 0, 2 }, { 2, -2 }, { 0, 2 } };
+TaskDesc Stg20_MapBgDesc = {
+    (TaskInitFn)Stg20_MapBgInit, Stg20_MapBgUpdate, Task_DefaultDestroy, Stg20_MapBgDraw, 0x38, 0,
+};
+TaskDesc Stg20_StaticBgDesc = {
+    (TaskInitFn)Stg20_StaticBgInit, Stg20_StaticBgUpdate, Task_DefaultDestroy, Stg20_StaticBgDraw, 0x40, 0,
+};
+TaskDesc Stg20_DigiLabDesc = { 0, Stg20_DigiLabUpdate, Task_DefaultDestroy, Stg20_DigiLabDraw, 0x14, 0x24 };
+TaskDesc Stg20_ItemShopDesc = { 0, Stg20_ItemShopUpdate, Task_DefaultDestroy, 0, 0, 0x10 };
+/* by engine level */
+u16 Stg20_EngineHpTbl[] = {
+    800, 900, 1000, 1100, 1200, 1200, 1300, 1400, 1500, 1600, 1600, 1700,
+    1800, 1900, 2000, 2000, 2100, 2200, 2300, 2400, 2400, 2500, 2600, 2700,
+    2800, 2800, 2900, 3000, 3100, 3200, 3200, 3300, 3400, 3500, 3600, 3600,
+    3700, 3800, 3900, 4000, 4000, 4100, 4200, 4300, 4400, 9999,
+};
+/* by battery level */
+u16 Stg20_BatteryEpTbl[] = {
+    100, 200, 300, 400, 500, 1000, 1200, 1400, 1600, 1800, 2000, 2200,
+    2400, 2600, 2800, 3000, 3200, 3400, 3600, 3800, 9999,
+};
+TaskDesc Stg20_BeetleShopDesc = { 0, Stg20_BeetleShopUpdate, Task_DefaultDestroy, 0, 0, 0xC };
+TaskDesc Stg20_StageMainDesc = { 0, Stg20_StageMain, Task_DefaultDestroy, 0, 0x10, 0x70 };
+/* New-game save blocks (Stg20_ApplyStartPreset). */
+Stg20StartBlock Stg20_StartPreset0 = { {
+    0x320, 0x320, 0x64, 0x64, 0xEA, 1, 0x2F, 0x35, 0x4A, 0, 0, 0x5A,
+    0x5F, 0, 0, 0, 0, 0, 0, 0, 0x73, 0x75, 0x77, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0x78, 0x78, 0x7B,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0x203, 1, 0xFF,
+    0, 0, 0x300, 0x102, 0xFF00, 0, 0, 0, 0, 0, 0,
+} };
+Stg20StartBlock Stg20_StartPreset1 = { {
+    0xC80, 0xC80, 0xAF0, 0xAF0, 0xEB, 0x1E, 0x31, 0x43, 0x4D, 0, 0x55, 0x5A,
+    0x5F, 0x60, 0x63, 0, 0, 0x6C, 0x6F, 0, 0x73, 0x75, 0x77, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0x78, 0x78, 0x78,
+    0x78, 0x78, 0x78, 0x78, 0x78, 0x78, 0x78, 0x7B, 0x7B, 0x7B, 0x7B, 0x7B,
+    0x7B, 0x7B, 0x7B, 0x7B, 0x7B, 0xA6, 0xA7, 0xC1, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0xA2CB, 0xCDB9, 0xFFB9,
+    0, 0, 0x2300, 0x2738, 0x32, 0xFF01, 0, 0, 0, 0, 0,
+} };
+/* "AKAGI", "NAOMI", "DINOGON" in the game's glyph codes (0x0A 'A', 0xFF end). */
+u8 Stg20_PresetDigiNames[3][8] = {
+    { 0x0A, 0x14, 0x0A, 0x10, 0x12, 0xFF },
+    { 0x17, 0x0A, 0x18, 0x16, 0x12, 0xFF },
+    { 0x0D, 0x12, 0x17, 0x18, 0x10, 0x18, 0x17, 0xFF },
+};
+Stg20Vec3 Stg20_MoveParams[] = { { 0, 0x7AE, 0x2666 }, { 0, 0x170A, 0x828F } };
+Stg20Cell Stg20_DirCellDelta[4] = { { 0, 1 }, { -1, 0 }, { 0, -1 }, { 1, 0 } };
+s32 Stg20_AreaIconHideMasks[] = { 0x1E0, 0x1D0, 0x1B0, 0x170, 0xF0 };
+s32 Stg20_AreaScreenPartsIds[] = { 0x03D80002, 0x0DF50002, 0x0DF70002, 0x0CD90003, 0x05140003 };
+TaskDesc Stg20_AreaSelectDesc = { 0, Stg20_AreaSelectUpdate, Task_DefaultDestroy, Stg20_AreaSelectDraw, 0x2DC, 0 };
+TaskDesc Stg20_LabModeSelDesc = { 0, Stg20_LabModeSelUpdate, Task_DefaultDestroy, Stg20_LabModeSelDraw, 0xC, 0 };
+Halves Stg20_LabRosterTextPos[4][4] = {
+    { { 194, 60 }, { 95, 48 }, { 194, 48 }, { 95, 60 } },
+    { { 194, 94 }, { 95, 82 }, { 194, 82 }, { 95, 94 } },
+    { { 194, 128 }, { 95, 116 }, { 194, 116 }, { 95, 128 } },
+    { { 194, 162 }, { 95, 150 }, { 194, 150 }, { 95, 162 } },
+};
+s32 Stg20_LabRosterPanelIds[4] = { 0x0D120003, 0x0D120004, 0x0D120005, 0x0D120006 };
+TaskDesc Stg20_LabRosterDesc = { 0, Stg20_LabRosterUpdate, Task_DefaultDestroy, Stg20_LabRosterDraw, 0x78, 0 };
+TaskDesc Stg20_MsgWinDesc = {
+    (TaskInitFn)Stg20_MsgWinInit, Stg20_MsgWinUpdate, Stg20_MsgWinDestroy, Stg20_MsgWinDraw, 0x20, 0,
+};
+Halves Stg20_LabCaptionPos[3] = { { 0x1E, 0x18 }, { 0x13, 0x18 }, { 0x24, 0x30 } };
+TaskDesc Stg20_LabCaptionDesc = {
+    0, Stg20_LabCaptionUpdate, Task_DefaultDestroy, (TaskFn)Stg20_LabCaptionDraw, 8, 0,
+};
+Stg20Cell Stg20_LabInfoTextPos[13] = {
+    { 18, 24 }, { 9, 49 }, { 54, 61 }, { 70, 73 }, { 70, 85 }, { 36, 153 }, { 36, 165 },
+    { 9, 61 }, { 212, 49 }, { 212, 129 }, { 9, 141 }, { 204, 24 }, { 275, 49 },
+};
+u8 Stg20_DigivolveRuleTbl[4][4] = { { 0, 0, 0, 2 }, { 1, 0, 0, 2 }, { 1, 1, 0, 2 }, { 1, 1, 1, 2 } };
+TaskDesc Stg20_LabInfoDesc = { 0, Stg20_LabInfoUpdate, Task_DefaultDestroy, Stg20_LabInfoDraw, 0x60, 0 };
+Halves Stg20_LabSkillsCursorPos[] = { { 0xFF71, 0xFFCB }, { 0xFF8E, 6 }, { 0xFFF9, 0xFFCB }, { 0x16, 6 } };
+Stg20Cell Stg20_LabSkillsTextPos[10] = {
+    { 21, 57 }, { 50, 116 }, { 157, 57 }, { 186, 116 }, { 21, 69 },
+    { 50, 128 }, { 157, 69 }, { 186, 128 }, { 18, 24 }, { 204, 24 },
+};
+s32 Stg20_LabSkillsColHideMasks[4] = { 0xAC, 0xCA, 0xB2, 0x12A };
+s32 Stg20_LabSkillsArrowBlinkMasks[4] = { 0xA, 0xA0, 0xA00, 0xA000 };
+TaskDesc Stg20_LabSkillsDesc = { 0, Stg20_LabSkillsUpdate, Task_DefaultDestroy, Stg20_LabSkillsDraw, 0xAC, 0 };
+Stg20Cell Stg20_LabPairNamePos[2] = { { 18, 24 }, { 213, 24 } };
+TaskDesc Stg20_LabPairDesc = { 0, Stg20_LabPairUpdate, Task_DefaultDestroy, (TaskFn)Stg20_LabPairDraw, 8, 0 };
+u8 Stg20_DnaTypeIndexTbl[3][3] = { { 0, 0, 2 }, { 0, 1, 1 }, { 2, 1, 2 } };
+/* DNA digivolution result digimon ids by parent type pair and parent stages. */
+u8 Stg20_DnaResultTbl[][3][8][8] = {
+    {
+        {
+            { 0xBC, 0xBC, 0xBC, 0xBF, 0x44, 0x44, 0x12, 0xC5 },
+            { 0xBC, 0xBF, 0xBF, 0xBF, 0xBF, 0xBF, 0xBF, 0xC5 },
+            { 0xBC, 0xBF, 0x2E, 0x2E, 0x2E, 0x11, 0xC5, 0xC5 },
+            { 0xBF, 0xBF, 0x2E, 0xBF, 0xBF, 0xBF, 0xBF, 0xBF },
+            { 0x44, 0xBF, 0x2E, 0xBF, 0x1F, 0x1F, 0x1F, 0xC5 },
+            { 0x44, 0xBF, 0x11, 0xBF, 0x1F, 0x11, 0x11, 0x44 },
+            { 0x12, 0xBF, 0xC5, 0xBF, 0x1F, 0x11, 0x12, 0x12 },
+            { 0xC5, 0xC5, 0xC5, 0xBF, 0xC5, 0x44, 0x12, 0xC5 },
+        },
+        {
+            { 0x09, 0x4C, 0x8F, 0xC6, 0x24, 0x51, 0x2F, 0x23 },
+            { 0x4C, 0x43, 0x43, 0x43, 0x66, 0x66, 0x66, 0x23 },
+            { 0x8F, 0x43, 0xB8, 0xB8, 0xB8, 0x4E, 0x5B, 0x5B },
+            { 0xC6, 0x43, 0xB8, 0x32, 0xC6, 0x32, 0x5F, 0x5F },
+            { 0x24, 0x66, 0xB8, 0xC6, 0xC7, 0x3A, 0xC2, 0x0A },
+            { 0x51, 0x66, 0x4E, 0x32, 0x3A, 0x5E, 0x26, 0x4F },
+            { 0x2F, 0x66, 0x5B, 0x5F, 0xC2, 0x26, 0x08, 0x45 },
+            { 0x23, 0x23, 0x5B, 0x5F, 0x0A, 0x4F, 0x45, 0x0A },
+        },
+        {
+            { 0x7B, 0xBD, 0x68, 0x37, 0x71, 0x71, 0xCB, 0xCA },
+            { 0xBD, 0x43, 0x43, 0x43, 0x66, 0x66, 0x66, 0x3D },
+            { 0x68, 0x43, 0xBA, 0xC8, 0xC9, 0x71, 0xCA, 0xCA },
+            { 0x37, 0x43, 0xC8, 0xC0, 0x37, 0xC0, 0x37, 0xC0 },
+            { 0x71, 0x66, 0xC9, 0x37, 0x1B, 0x0D, 0x38, 0x3D },
+            { 0x71, 0x66, 0x71, 0xC0, 0x0D, 0x71, 0x71, 0x71 },
+            { 0xCB, 0x66, 0xCA, 0x37, 0x38, 0x71, 0x58, 0x58 },
+            { 0xCA, 0x3D, 0xCA, 0xC0, 0x3D, 0x71, 0x58, 0x3D },
+        },
+    },
+    {
+        {
+            { 0x6F, 0x6F, 0x6F, 0x2D, 0x47, 0x47, 0x03, 0x39 },
+            { 0x6F, 0x6F, 0x6F, 0x6F, 0x6F, 0x6F, 0x6F, 0xB6 },
+            { 0x6F, 0x6F, 0x6F, 0x6F, 0x6F, 0xCE, 0x39, 0x39 },
+            { 0x2D, 0x6F, 0x6F, 0x2D, 0x2D, 0x2D, 0x91, 0x2D },
+            { 0x47, 0x6F, 0x6F, 0x2D, 0x62, 0x54, 0x54, 0xB6 },
+            { 0x47, 0x6F, 0xCE, 0x2D, 0x54, 0xCE, 0x47, 0xCE },
+            { 0x03, 0x6F, 0x39, 0x91, 0x54, 0x47, 0x03, 0x03 },
+            { 0x39, 0xB6, 0x39, 0x2D, 0xB6, 0xCE, 0x03, 0xB6 },
+        },
+        {
+            { 0x13, 0x13, 0x13, 0x07, 0x17, 0xCF, 0x05, 0xD2 },
+            { 0x13, 0x13, 0x13, 0x13, 0x13, 0x13, 0x13, 0xD2 },
+            { 0x13, 0x13, 0x13, 0x13, 0x13, 0x21, 0x1C, 0x1C },
+            { 0x07, 0x13, 0x13, 0x15, 0x80, 0x6A, 0x80, 0x07 },
+            { 0x17, 0x13, 0x13, 0x80, 0x14, 0x30, 0xE9, 0xD1 },
+            { 0xCF, 0x13, 0x21, 0x6A, 0x30, 0x16, 0x4B, 0x34 },
+            { 0x05, 0x13, 0x1C, 0x80, 0xE9, 0x4B, 0x05, 0x05 },
+            { 0xD2, 0xD2, 0x1C, 0x07, 0xD1, 0x34, 0x05, 0xD1 },
+        },
+        {
+            { 0xB5, 0xB5, 0xB5, 0xBB, 0x0E, 0xD4, 0x0C, 0x18 },
+            { 0xB5, 0xB5, 0xB5, 0xB5, 0xB5, 0xB5, 0xB5, 0x18 },
+            { 0xB5, 0xB5, 0xB5, 0xB5, 0xB5, 0x0E, 0xB9, 0xB9 },
+            { 0xBB, 0xB5, 0xB5, 0xBB, 0xBB, 0xB4, 0xB4, 0xB4 },
+            { 0x0E, 0xB5, 0xB5, 0xBB, 0xD3, 0x3F, 0x28, 0xB9 },
+            { 0xD4, 0xB5, 0x0E, 0xB4, 0x3F, 0xB7, 0xB7, 0xD4 },
+            { 0x0C, 0xB5, 0xB9, 0xB4, 0x28, 0xB7, 0x0C, 0x7C },
+            { 0x18, 0x18, 0xB9, 0xB4, 0xB9, 0xD4, 0x7C, 0x18 },
+        },
+    },
+    {
+        {
+            { 0x7A, 0x7A, 0x7A, 0x4A, 0x67, 0x67, 0x84, 0xDA },
+            { 0x7A, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0xDA },
+            { 0x7A, 0x20, 0xDB, 0xDB, 0xDB, 0x50, 0x6D, 0x6D },
+            { 0x4A, 0x20, 0xDB, 0x4A, 0x4A, 0x4A, 0x4A, 0x4A },
+            { 0x67, 0x20, 0xDB, 0x4A, 0xD9, 0x83, 0x60, 0x6D },
+            { 0x67, 0x20, 0x50, 0x4A, 0x83, 0x50, 0x50, 0x67 },
+            { 0x84, 0x20, 0x6D, 0x4A, 0x60, 0x50, 0x04, 0x84 },
+            { 0xDA, 0xDA, 0x6D, 0x4A, 0x6D, 0x67, 0x84, 0xDA },
+        },
+        {
+            { 0x5C, 0x49, 0x8B, 0x89, 0x48, 0x48, 0x86, 0xDD },
+            { 0x49, 0x33, 0x33, 0x33, 0x33, 0x33, 0x33, 0x6E },
+            { 0x8B, 0x33, 0xDE, 0x19, 0x4D, 0x22, 0xDC, 0xDC },
+            { 0x89, 0x33, 0x19, 0x89, 0x89, 0x89, 0x89, 0x89 },
+            { 0x48, 0x33, 0x4D, 0x89, 0x06, 0x25, 0x64, 0x6E },
+            { 0x48, 0x33, 0x22, 0x89, 0x25, 0x22, 0x22, 0x48 },
+            { 0x86, 0x33, 0xDC, 0x89, 0x64, 0x22, 0x85, 0x65 },
+            { 0xDD, 0x6E, 0xDC, 0x89, 0x6E, 0x48, 0x65, 0xDD },
+        },
+        {
+            { 0x8D, 0x1C, 0xE3, 0xE2, 0x46, 0x46, 0x8E, 0x70 },
+            { 0x1C, 0xE2, 0xE2, 0xE2, 0xE2, 0xE2, 0xE2, 0x77 },
+            { 0xE3, 0xE2, 0x79, 0x79, 0x79, 0x2A, 0xE0, 0xE0 },
+            { 0xE2, 0xE2, 0x79, 0xE2, 0xE2, 0xE2, 0xE2, 0xE2 },
+            { 0x46, 0xE2, 0x79, 0xE2, 0x42, 0xDF, 0x5A, 0x77 },
+            { 0x46, 0xE2, 0x2A, 0xE2, 0xDF, 0x2A, 0x2A, 0x46 },
+            { 0x8E, 0xE2, 0xE0, 0xE2, 0x5A, 0x2A, 0x36, 0x1A },
+            { 0x70, 0x77, 0xE0, 0xE2, 0x77, 0x46, 0x1A, 0xE1 },
+        },
+    },
+};
+TaskDesc Stg20_ShadowDesc = {
+    (TaskInitFn)Stg20_ShadowInit, Stg20_ShadowUpdate, Task_DefaultDestroy, Stg20_ShadowDraw, 4, 0,
+};
+TaskDesc Stg20_LabJogBgDesc = { 0, Stg20_LabJogBgUpdate, Task_DefaultDestroy, Stg20_LabJogBgDraw, 0, 0 };
+TaskDesc Stg20_LabDigiModelDesc = {
+    0, Stg20_LabDigiModelUpdate, Task_DefaultDestroy, Stg20_LabDigiModelDraw, 0x3C, 0,
+};
+TaskDesc Stg20_MapExitDesc = { 0, Stg20_MapExitUpdate, Task_DefaultDestroy, 0, 8, 0 };
+s16 Stg20_DirAngles[4] = { 0, 1024, 2048, -1024 };
+TaskDesc Stg20_WalkerDesc = {
+    (TaskInitFn)Stg20_WalkerInit, Stg20_WalkerUpdate, Task_DefaultDestroy, Stg20_WalkerDraw, 0x78, 4,
+};
+/* Task_DescTable[3]: task ids 0x300-0x31C. */
+TaskDesc *Stg20_TaskDescs[] = {
+    &Stg20_StageMainDesc, &Stg20_MapBgDesc, &Stg20_WalkerDesc, &Stg20_ShadowDesc, &Stg20_MapExitDesc,
+    &Stg20_StaticBgDesc, &Stg20_AreaSelectDesc, &Stg20_DigiLabDesc, &Stg20_CameraDesc, &Stg20_LabJogBgDesc,
+    &Stg20_LabDigiModelDesc, &Stg20_LabModeSelDesc, &Stg20_LabRosterDesc, &Stg20_MsgWinDesc,
+    &Stg20_LabCaptionDesc, &Stg20_LabInfoDesc, &Stg20_LabSkillsDesc, &Stg20_LabPairDesc, &Stg20_ShopBgDesc,
+    &Stg20_XaStreamDesc, &Stg20_ItemShopDesc, &Stg20_ShopBitsDesc, &Stg20_ItemShopMenuDesc,
+    &Stg20_ShopListDesc, &Stg20_BeetleShopMenuDesc, &Stg20_BeetleShopDesc, &Stg20_BeetlePartsDesc,
+    &Stg20_PartsUpgradeDesc, &Stg20_WarpPadDesc,
+};
+TaskDesc Stg20_XaStreamDesc = {
+    (TaskInitFn)Stg20_XaStreamInit, Stg20_XaStreamUpdate, Stg20_XaStreamDestroy, 0, 0x14, 0,
+};
+TaskDesc Stg20_ShopBgDesc = { 0, Stg20_ShopBgUpdate, Task_DefaultDestroy, Stg20_ShopBgDraw, 0, 0 };
+TaskDesc Stg20_ShopBitsDesc = {
+    0, Stg20_ShopBitsUpdate, Stg20_ShopBitsDestroy, (TaskFn)Stg20_ShopBitsDraw, 4, 0,
+};
+TaskDesc Stg20_ItemShopMenuDesc = {
+    0, Stg20_ItemShopMenuUpdate, Stg20_ItemShopMenuDestroy, Stg20_ItemShopMenuDraw, 8, 0,
+};
+TaskDesc Stg20_BeetleShopMenuDesc = {
+    0, Stg20_BeetleShopMenuUpdate, Stg20_BeetleShopMenuDestroy, Stg20_BeetleShopMenuDraw, 8, 0,
+};
+
+u8 Stg20_MapGrid[24][24];
+Stg20Cell Stg20_CellTmp;
+s32 D_800709AC;
+Stg20MenuState Stg20_MenuState;
+/* Code that reads single Stg20_MenuState fields through symbols of their own. */
+DATA_LABEL(Stg20_TalkActive, Stg20_MenuState, 0x04);
+DATA_LABEL(D_800709B8, Stg20_MenuState, 0x08);
+DATA_LABEL(D_800709BC, Stg20_MenuState, 0x0C);
+DATA_LABEL(D_800709D0, Stg20_MenuState, 0x20);
+DATA_LABEL(D_800709D4, Stg20_MenuState, 0x24);
+DATA_LABEL(D_800709D8, Stg20_MenuState, 0x28);
+DATA_LABEL(Stg20_EvoTargetId, Stg20_MenuState, 0x2C);
+DATA_LABEL(D_800709E0, Stg20_MenuState, 0x30);
+DATA_LABEL(D_800709E4, Stg20_MenuState, 0x34);
+DATA_LABEL(Stg20_LabIsDna, Stg20_MenuState, 0x3C);
+DATA_LABEL(D_800709F4, Stg20_MenuState, 0x44);
+DATA_LABEL(Stg20_DnaNewSlot, Stg20_MenuState, 0x4C);
+DATA_LABEL(D_80070A00, Stg20_MenuState, 0x50);
+DATA_LABEL(Stg20_ShopSellMode, Stg20_MenuState, 0x54);
+
 void Stg20_BuildMapGrid(Actor *a) {
     s32 x, y;
     u8 *p;
