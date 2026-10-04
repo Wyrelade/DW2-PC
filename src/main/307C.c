@@ -8,6 +8,30 @@ s32 Menu_TopMenuResult;
 MenuCtx *Menu_Ctx;
 s32 Ovl_CurrentId;
 
+/* Task callbacks the descriptors below name (defined further down). */
+void Task_DefaultDestroy(Actor *arg0);
+void Menu_NameEntryInit(Actor *a, MenuNameEntryArg *v);
+void Menu_NameEntryTask(Actor *a0);
+void Menu_NameEntryDrawParts(Actor *a);
+void Sys_GameModeTask(Actor *a0);
+void Task_DefaultDestroy2(void);
+void Menu_TopMenuInit(Actor *arg0, s16 arg1);
+void Menu_TopMenuTask(Actor *a0);
+void Menu_TopMenuDraw(Actor *actor);
+
+/* Name entry character grid: row stride and first column of each of the 3 pages. */
+s32 Menu_NameEntryRowStride[] = { 6, 6, 3 };
+s32 Menu_NameEntryPageCol[] = { 0, 5, 10 };
+TaskDesc D_80040E50 = {
+    (TaskInitFn)Menu_NameEntryInit, Menu_NameEntryTask, Task_DefaultDestroy, Menu_NameEntryDrawParts, 0x30, 0,
+};
+/* CD file id of each overlay (Ovl_Load), indexed by overlay id. */
+s32 Ovl_FileIds[] = { 0x190, 0x19A, 0x192, 0x191, 0x193, 0xD1E, 0xD4D };
+TaskDesc D_80040E84 = { 0, Sys_GameModeTask, (TaskFn)Task_DefaultDestroy2, 0, 0, 4 };
+TaskDesc D_80040E9C = {
+    (TaskInitFn)Menu_TopMenuInit, Menu_TopMenuTask, Task_DefaultDestroy, Menu_TopMenuDraw, 0x38, 4,
+};
+
 u8 Menu_NameEntryGetChar(Actor *a0) {
     ActorWork *w;
     s32 base;

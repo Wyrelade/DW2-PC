@@ -9,6 +9,18 @@
 Halves Menu_ItemMsgPos;
 Halves Menu_ItemNamePos;
 
+/* Task callbacks the descriptor below names (the item draw is the first function of 77DC.c). */
+void Task_DefaultDestroy(Actor *arg0);
+void Menu_ItemInit(Actor *arg0, s16 arg1);
+void Menu_ItemTask(Actor *a0);
+void Menu_ItemDraw(Actor *actor);
+
+/* Sub tasks the item menu opens: { task id, Task_Create argument }. */
+Pair61900 Menu_ItemSubTasks[] = { { 0x0E, 2 }, { 0x10, 3 } };
+TaskDesc D_80040F04 = {
+    (TaskInitFn)Menu_ItemInit, Menu_ItemTask, Task_DefaultDestroy, Menu_ItemDraw, 0x744, 4,
+};
+
 void Menu_ItemUseDraw(Actor *actor) {
     ActorWork *w = actor->work;
     s32 *p;

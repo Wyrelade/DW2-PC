@@ -77,6 +77,9 @@ segments:
       - [0x14C74, c, psyq]      # PsyQ 4.7 libraries (PadGetState ..), asm only, not counted
       - [0x314F0, .data, 156C]   # .data starts after _card_read (main task row, Task_DescTable)
       - [0x31570, .data, 187C]
-      - [0x31638, data, 31638]
+      - [0x31638, .data, 307C]
+      - [0x316B4, .data, 4BCC]
+      - [0x316FC, .data, 6530]
+      - [0x3171C, data, 3171C]
       - [0x53B60, bin, Ovl_LoadArea] # 0x80063360: overlay load area; the image holds leftover bytes here
   - [0x9F000]

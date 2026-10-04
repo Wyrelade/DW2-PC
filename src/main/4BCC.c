@@ -9,6 +9,29 @@ Halves Menu_ItemUseMsgPos;
 u8 *Menu_PartGridSlots;
 u8 *Menu_PartGridLabels;
 
+/* Task callbacks the descriptors below name (defined further down; the item use draw is
+ * the first function of 6530.c). */
+void Task_DefaultDestroy(Actor *arg0);
+void Menu_SubMenuInit(Actor *arg0, s16 arg1);
+void Menu_SubMenuTask(Actor *a);
+void Menu_SubMenuDraw(Actor *actor);
+void Menu_StatusInit(Actor *arg0, s16 arg1);
+void Menu_StatusTask(Actor *a0);
+void Menu_StatusDraw(Actor *actor);
+void Menu_SetItemUseMode(Actor *a, s16 arg);
+void Menu_ItemUseTask(Actor *a0);
+void Menu_ItemUseDraw(Actor *actor);
+
+TaskDesc D_80040EB4 = {
+    (TaskInitFn)Menu_SubMenuInit, Menu_SubMenuTask, Task_DefaultDestroy, Menu_SubMenuDraw, 0x44, 4,
+};
+TaskDesc D_80040ECC = {
+    (TaskInitFn)Menu_StatusInit, Menu_StatusTask, Task_DefaultDestroy, Menu_StatusDraw, 0xB0, 4,
+};
+TaskDesc D_80040EE4 = {
+    (TaskInitFn)Menu_SetItemUseMode, Menu_ItemUseTask, Task_DefaultDestroy, Menu_ItemUseDraw, 0xA0, 4,
+};
+
 void Menu_SubMenuInit(Actor *arg0, s16 arg1) {
     ActorWork *w = arg0->work;
 
