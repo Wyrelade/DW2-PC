@@ -773,7 +773,7 @@ extern s16 D_80073E02;  /* Stg30_Battle.entries[3].field_2E as a scalar reloc */
 extern s16 D_80073E5E;  /* Stg30_Battle.entries[4].field_2E */
 extern s16 D_80073EBA;  /* Stg30_Battle.entries[5].field_2E */
 extern PadState Pad_State[];
-extern Halves Stg30_SkillMenuTitlePos;
+extern const Halves Stg30_SkillMenuTitlePos;
 extern Halves Stg30_SkillColumnLabelPos[];
 extern s32 D_80073CD4;  /* Stg30_Battle.entries[0].field_14 as a scalar reloc */
 extern void Stg30_SkillMenuRefreshText(Actor *a0);
@@ -784,7 +784,7 @@ extern s32 Stg30_TargetFirst(s32 team, s32 flag, s32 mode);
 extern s32 Stg30_TargetPrev(s32 team, s32 cur, s32 flag, s32 mode);
 extern s32 Stg30_TargetNext(s32 team, s32 cur, s32 flag, s32 mode);
 extern s32 Stg30_ItemToSkillId(s32 c);
-extern Halves Stg30_ItemMenuTitlePos;
+extern const Halves Stg30_ItemMenuTitlePos;
 extern Halves Stg30_ItemColumnLabelPos[];
 extern s32 Stg30_ItemMenuArrowBlinkMasks[];
 extern s32 Stg30_ItemMenuColHideMasks[];
@@ -821,7 +821,7 @@ typedef struct {
 
 
 extern u8 Save_PlayerName[];
-extern Halves Stg30_TamerNameTextPos;
+extern const Halves Stg30_TamerNameTextPos;
 
 /* Save_GameState viewed with the words Stg30_JoinPromptUpdate reads (0x30 map id, 0x4A, 0x61). */
 typedef struct {

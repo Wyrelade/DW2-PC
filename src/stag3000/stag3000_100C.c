@@ -272,7 +272,7 @@ void Stg30_CommandInputTask(Actor *a0) {
     }
 }
 
-INCLUDE_RODATA("asm/USA/stag3000/rodata", Stg30_TamerNameTextPos);
+const Halves Stg30_TamerNameTextPos = { 0x16, 0x30 };
 void Stg30_CommandMenuUpdate(Actor *a0) {
     Stg30Work73078 *w = (Stg30Work73078 *)a0->work;
     Halves pos;
@@ -519,7 +519,7 @@ void Stg30_OpenItemText(void *a0, s32 id, s32 color, Stg30XY pos, s32 name, s32 
     Text_Open(a0, &args);
 }
 
-INCLUDE_RODATA("asm/USA/stag3000/rodata", Stg30_ItemDescTextPos);
+const Stg30XY Stg30_ItemDescTextPos = { 0x5D, 0x96 };
 void Stg30_ItemMenuRefreshText(Actor *a0) {
     Stg30ItemMenuWork *w = (Stg30ItemMenuWork *)a0->work;
     s32 i;
@@ -572,7 +572,7 @@ void Stg30_ItemMenuInit(Actor *a0, s32 *args) {
     ((Stg30WorkWord *)a0->work)->field_0 = args[0];
 }
 
-INCLUDE_RODATA("asm/USA/stag3000/rodata", Stg30_ItemMenuTitlePos);
+const Halves Stg30_ItemMenuTitlePos = { 0x14, 0x96 };
 void Stg30_ItemMenuUpdate(Actor *a0) {
     Stg30ItemMenuWork *w = (Stg30ItemMenuWork *)a0->work;
     Stg30BeetleWeapons *g;
@@ -954,7 +954,7 @@ void Stg30_OpenSkillText(void *a0, s32 id, s32 color, Stg30XY pos, s32 name, s32
     Text_Open(a0, &args);
 }
 
-INCLUDE_RODATA("asm/USA/stag3000/rodata", Stg30_SkillDescTextPos);
+const Stg30XY Stg30_SkillDescTextPos = { 0x45, 0x96 };
 void Stg30_SkillMenuRefreshText(Actor *a0) {
     Stg30SkillMenuWork *w = (Stg30SkillMenuWork *)a0->work;
     s32 i;
@@ -989,7 +989,7 @@ void Stg30_SkillMenuRefreshText(Actor *a0) {
     }
 }
 
-INCLUDE_RODATA("asm/USA/stag3000/rodata", Stg30_SkillMenuTitlePos);
+const Halves Stg30_SkillMenuTitlePos = { 0x14, 0x96 };
 void Stg30_SkillMenuUpdate(Actor *a0) {
     Stg30SkillMenuWork *w = (Stg30SkillMenuWork *)a0->work;
     s16 *row;
