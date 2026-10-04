@@ -34,6 +34,7 @@ SECTIONS
         build/USA/src/main/12550.c.o(.rodata);
         build/USA/src/main/12654.c.o(.rodata);
         build/USA/src/main/13584.c.o(.rodata);
+        build/USA/src/main/147FC.c.o(.rodata);
         build/USA/src/main/psyq.c.o(.rodata);
         . = ALIGN(., 4);
         main_RODATA_END = .;
@@ -50,6 +51,7 @@ SECTIONS
         build/USA/src/main/12550.c.o(.text);
         build/USA/src/main/12654.c.o(.text);
         build/USA/src/main/13584.c.o(.text);
+        build/USA/src/main/147FC.c.o(.text);
         build/USA/src/main/psyq.c.o(.text);
         . = ALIGN(., 4);
         main_TEXT_END = .;
@@ -67,8 +69,10 @@ SECTIONS
         build/USA/src/main/12550.c.o(.data);
         build/USA/src/main/12654.c.o(.data);
         build/USA/src/main/13584.c.o(.data);
-        build/USA/src/main/psyq.c.o(.data);
         build/USA/asm/USA/main/data/38110.data.s.o(.data);
+        build/USA/src/main/147FC.c.o(.data);
+        build/USA/src/main/psyq.c.o(.data);
+        build/USA/asm/USA/main/data/395F0.data.s.o(.data);
         build/USA/assets/Ovl_LoadArea.bin.o(.data);
         . = ALIGN(., 4);
         main_DATA_END = .;
@@ -91,6 +95,7 @@ SECTIONS
         build/USA/src/main/12550.c.o(.bss);
         build/USA/src/main/12654.c.o(.bss);
         build/USA/src/main/13584.c.o(.bss);
+        build/USA/src/main/147FC.c.o(.bss);
         build/USA/src/main/psyq.c.o(.bss);
         . = ALIGN(., 4);
         main_BSS_END = .;
