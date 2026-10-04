@@ -2,12 +2,12 @@
 #include "stag2000/stag2000.h"
 #include "stag2000/stag2000_funcs.h"
 
-void func_8006C040(Actor *a) {
+void Stg20_BeetleShopMenuDestroy(Actor *a) {
     Text_CloseArray((s32 *)a->work, 2);
     Task_DefaultDestroy(a);
 }
 
-void func_8006C074(Actor *a) {
+void Stg20_BeetleShopMenuDraw(Actor *a) {
     GfxPart *p = (GfxPart *)Cd_GetFileEntry(0xC930008);
     GfxPart *q;
 
@@ -21,7 +21,7 @@ void func_8006C074(Actor *a) {
     Gfx_DrawParts((s32)p);
 }
 
-s32 func_8006C14C(u8 *s, s32 c) {
+s32 Stg20_ByteListHas(u8 *s, s32 c) {
     for (; *s != 0; s++) {
         if (*s == c) {
             return 1;
@@ -30,7 +30,7 @@ s32 func_8006C14C(u8 *s, s32 c) {
     return 0;
 }
 
-s32 func_8006C18C(s32 id) {
+s32 Stg20_IsPartInstalled(s32 id) {
     s32 i;
 
     for (i = 0; i < 0x13; i++) {
@@ -41,62 +41,62 @@ s32 func_8006C18C(s32 id) {
     return 0;
 }
 
-s32 func_8006C1C4(s32 id) {
-    if (func_8006C18C(id)) {
+s32 Stg20_GetPartFitMsg(s32 id) {
+    if (Stg20_IsPartInstalled(id)) {
         return 0x132;
     }
-    if (func_8006C14C(D_800704FC, id)) {
+    if (Stg20_ByteListHas(D_800704FC, id)) {
         return 0x131;
     }
-    if (func_8006C14C(D_80070530, id)) {
+    if (Stg20_ByteListHas(D_80070530, id)) {
         if (D_8005E65C != 0) {
             return 0x12F;
         }
         return 0x130;
     }
-    if (func_8006C14C(D_80070548, id)) {
+    if (Stg20_ByteListHas(D_80070548, id)) {
         if (D_8005E65E != 0) {
             return 0x12F;
         }
         return 0x133;
     }
-    if (func_8006C14C(D_800705A4, id)) {
+    if (Stg20_ByteListHas(D_800705A4, id)) {
         if (D_8005E662 != 0) {
             return 0x12F;
         }
         return 0x135;
     }
-    if (func_8006C14C(D_800705B4, id)) {
+    if (Stg20_ByteListHas(D_800705B4, id)) {
         if (D_8005E660 != 0) {
             return 0x12F;
         }
         return 0x136;
     }
-    if (func_8006C14C(D_80070554, id)) {
+    if (Stg20_ByteListHas(D_80070554, id)) {
         if (D_8005E64C == 0xEC) {
             return 0x131;
         }
         return 0x134;
     }
-    if (func_8006C14C(D_80070570, id)) {
+    if (Stg20_ByteListHas(D_80070570, id)) {
         if (D_8005E64C == 0xEA) {
             return 0x131;
         }
         return 0x134;
     }
-    if (func_8006C14C(D_80070588, id)) {
+    if (Stg20_ByteListHas(D_80070588, id)) {
         if (D_8005E64C == 0xEB) {
             return 0x131;
         }
         return 0x134;
     }
-    if (func_8006C14C(D_80070580, id)) {
+    if (Stg20_ByteListHas(D_80070580, id)) {
         if (D_8005E64C != 0xEC) {
             return 0x131;
         }
         return 0x134;
     }
-    if (func_8006C14C(D_80070594, id)) {
+    if (Stg20_ByteListHas(D_80070594, id)) {
         if (D_8005E64C != 0xEA) {
             return 0x131;
         }
@@ -105,7 +105,7 @@ s32 func_8006C1C4(s32 id) {
     return 0;
 }
 
-s32 func_8006C3B8(s32 id) {
+s32 Stg20_CountOwnedItem(s32 id) {
     s32 n;
     s32 i;
     s32 r;
@@ -124,14 +124,14 @@ s32 func_8006C3B8(s32 id) {
     return r;
 }
 
-void func_8006C420(u8 *out, s32 v) {
+void Stg20_FormatPrice(u8 *out, s32 v) {
     u8 d[5];
     s32 n;
     s32 i;
     s32 lead;
 
     n = Item_GetPrice(v);
-    if (D_80070A04 != 0) {
+    if (Stg20_ShopSellMode != 0) {
         n /= 2;
     }
     n = n < 0 ? 0 : n;
@@ -148,7 +148,7 @@ void func_8006C420(u8 *out, s32 v) {
     }
 }
 
-void func_8006C514(Actor *a, s32 id) {
+void Stg20_LoadShopBuyList(Actor *a, s32 id) {
     Stg20ShopListWork *w = (Stg20ShopListWork *)a->work;
     s32 i;
     s32 j;
@@ -157,35 +157,35 @@ void func_8006C514(Actor *a, s32 id) {
 
     w->count = 0;
     for (i = 0; i < 50; i++) {
-        D_80070A08.items[i] = 0;
+        Stg20_ShopItems.items[i] = 0;
         for (j = 0; j < 25; j++) {
-            D_80070A08.names[i][j] = 0xFD;
+            Stg20_ShopItems.names[i][j] = 0xFD;
         }
-        D_80070A08.names[i][24] = 0xFF;
+        Stg20_ShopItems.names[i][24] = 0xFF;
     }
     for (i = 0; i < 50; i++) {
         if (list[i] == 0) {
             break;
         }
-        D_80070A08.items[i] = list[i];
+        Stg20_ShopItems.items[i] = list[i];
         name = (u8 *)Item_GetNameText(list[i]);
         for (j = 0; j < 10; j++) {
             if (*name == 0xFF) {
                 break;
             }
-            D_80070A08.names[i][j] = *name++;
+            Stg20_ShopItems.names[i][j] = *name++;
         }
-        func_8006C420(&D_80070A08.names[i][14], list[i]);
-        D_80070A08.names[i][19] = 0xB;
-        D_80070A08.names[i][20] = 0x12;
-        D_80070A08.names[i][21] = 0x1D;
-        D_80070A08.names[i][22] = 0x36;
+        Stg20_FormatPrice(&Stg20_ShopItems.names[i][14], list[i]);
+        Stg20_ShopItems.names[i][19] = 0xB;
+        Stg20_ShopItems.names[i][20] = 0x12;
+        Stg20_ShopItems.names[i][21] = 0x1D;
+        Stg20_ShopItems.names[i][22] = 0x36;
         w->count++;
     }
     w->pages = w->count != 0 ? (w->count - 1) / 8 : 0;
 }
 
-void func_8006C6F0(Actor *a) {
+void Stg20_LoadShopSellList(Actor *a) {
     Stg20ShopListWork *w = (Stg20ShopListWork *)a->work;
     s32 i;
     s32 j;
@@ -195,35 +195,35 @@ void func_8006C6F0(Actor *a) {
 
     w->count = 0;
     for (i = 0; i < 50; i++) {
-        D_80070A08.items[i] = 0;
+        Stg20_ShopItems.items[i] = 0;
         for (j = 0; j < 25; j++) {
-            D_80070A08.names[i][j] = 0xFD;
+            Stg20_ShopItems.names[i][j] = 0xFD;
         }
-        D_80070A08.names[i][24] = 0xFF;
+        Stg20_ShopItems.names[i][24] = 0xFF;
     }
     for (i = 0, k = 0; i < 0x30; k++, i++) {
         if (list[i] == 0) {
             break;
         }
-        D_80070A08.items[k] = list[i];
+        Stg20_ShopItems.items[k] = list[i];
         name = (u8 *)Item_GetNameText(list[i]);
         for (j = 0; j < 10; j++) {
             if (*name == 0xFF) {
                 break;
             }
-            D_80070A08.names[k][j] = *name++;
+            Stg20_ShopItems.names[k][j] = *name++;
         }
-        func_8006C420(&D_80070A08.names[k][14], list[i]);
-        D_80070A08.names[k][19] = 0xB;
-        D_80070A08.names[k][20] = 0x12;
-        D_80070A08.names[k][21] = 0x1D;
-        D_80070A08.names[k][22] = 0x36;
+        Stg20_FormatPrice(&Stg20_ShopItems.names[k][14], list[i]);
+        Stg20_ShopItems.names[k][19] = 0xB;
+        Stg20_ShopItems.names[k][20] = 0x12;
+        Stg20_ShopItems.names[k][21] = 0x1D;
+        Stg20_ShopItems.names[k][22] = 0x36;
         w->count++;
     }
     w->pages = w->count != 0 ? (w->count - 1) / 8 : 0;
 }
 
-void func_8006C8BC(Actor *a) {
+void Stg20_ShopListRefresh(Actor *a) {
     Stg20ShopListWork *w = (Stg20ShopListWork *)a->work;
     Stg20TextArgs args;
     s32 page;
@@ -248,16 +248,16 @@ void func_8006C8BC(Actor *a) {
             Text_Close(&w->texts[i]);
         }
         for (i = 0; i < 8; i++) {
-            if (D_80070A08.items[i + base] == 0) {
+            if (Stg20_ShopItems.items[i + base] == 0) {
                 break;
             }
-            args.text = (s32)D_80070A08.names[i + base];
+            args.text = (s32)Stg20_ShopItems.names[i + base];
             args.pos.y = 0x30 + i * 12;
             w->field_50 = 9;
             w->field_51 = 0xFF;
             Text_Open(&w->texts[i], &args);
         }
-        id = D_80070A08.items[w->cursor + w->page * 8];
+        id = Stg20_ShopItems.items[w->cursor + w->page * 8];
         Text_Close(&w->descText);
         if (id != 0) {
             args.text = Item_GetDescText(id);
@@ -270,9 +270,9 @@ void func_8006C8BC(Actor *a) {
             args.charDelay = 0;
             Text_Open(&w->descText, &args);
         }
-        if (D_80070A04 == 0) {
+        if (Stg20_ShopSellMode == 0) {
             if (id != 0) {
-                w->field_58 = func_8006C3B8(id);
+                w->field_58 = Stg20_CountOwnedItem(id);
             } else {
                 w->field_58 = 0;
             }
@@ -305,7 +305,7 @@ void func_8006C8BC(Actor *a) {
     }
 }
 
-void func_8006CB58(Actor *a) {
+void Stg20_ShopListUpdate(Actor *a) {
     Stg20ShopListWork *w = (Stg20ShopListWork *)a->work;
     s32 *slot = (s32 *)a->u34.children;
     s32 id;
@@ -326,9 +326,9 @@ void func_8006CB58(Actor *a) {
             Text_OpenById(&w->hdr[3], 0x12E, 0, *(Halves *)&D_800704E4[3]);
         }
         if (D_800709B0.field_54 == 0) {
-            func_8006C514(a, Sys_State.modeArg);
+            Stg20_LoadShopBuyList(a, Sys_State.modeArg);
         } else {
-            func_8006C6F0(a);
+            Stg20_LoadShopSellList(a);
         }
         Task_NextState0(a);
         break;
@@ -374,7 +374,7 @@ void func_8006CB58(Actor *a) {
                 goto cancel;
             } else if (pad->cross > 0) {
                 if (m->field_4C == 0) {
-                    item = D_80070A08.items[w->cursor + w->page * 8];
+                    item = Stg20_ShopItems.items[w->cursor + w->page * 8];
                     if (item != 0) {
                         if (Item_GetPrice(item) > D_8005E628) {
                             w->field_5C = 0x139;
@@ -385,7 +385,7 @@ void func_8006CB58(Actor *a) {
                         }
                     }
                 } else {
-                    item = D_80070A08.items[w->cursor + w->page * 8];
+                    item = Stg20_ShopItems.items[w->cursor + w->page * 8];
                     if (item != 0) {
                         if (Item_GetPrice(item) != 0) {
                             goto sell;
@@ -396,11 +396,11 @@ void func_8006CB58(Actor *a) {
             }
             break;
         case 1:
-            id = D_80070A08.items[w->cursor + w->page * 8];
+            id = Stg20_ShopItems.items[w->cursor + w->page * 8];
             switch (a->stateLevel2) {
             case 0:
             default:
-                w->field_5C = func_8006C1C4(id);
+                w->field_5C = Stg20_GetPartFitMsg(id);
                 w->field_60 = 0x137;
                 w->dirty = 1;
                 Flag_Set(0x10, 0);
@@ -441,7 +441,7 @@ void func_8006CB58(Actor *a) {
             break;
         case 2:
             idx = w->cursor + w->page * 8;
-            id = D_80070A08.items[idx];
+            id = Stg20_ShopItems.items[idx];
             switch (a->stateLevel2) {
             case 0:
             default:
@@ -461,23 +461,23 @@ void func_8006CB58(Actor *a) {
                         Save_GameState.bits = 99999999;
                     }
                     Item_RemoveFromBag(idx);
-                    func_8006C6F0(a);
+                    Stg20_LoadShopSellList(a);
                 }
                 Task_SetState1(a, 0);
             }
             break;
         }
-        func_8006C8BC(a);
+        Stg20_ShopListRefresh(a);
         break;
     }
 }
 
-void func_8006D0F0(Actor *a) {
+void Stg20_ShopListDestroy(Actor *a) {
     Text_CloseArray((s32 *)a->work, 0xF);
     Task_DefaultDestroy(a);
 }
 
-void func_8006D124(Actor *a) {
+void Stg20_ShopListDraw(Actor *a) {
     Stg20ShopWork *w = (Stg20ShopWork *)a->work;
     GfxPart *p;
     GfxPart *q;
@@ -502,14 +502,14 @@ void func_8006D124(Actor *a) {
     Gfx_SetPartsNumber(p, 4, 2, w->field_44 + 1);
     Gfx_SetPartsNumber(p, 8, 2, w->field_4C + 1);
     Gfx_DrawParts((s32)p);
-    if (D_80070A04 == 0) {
+    if (Stg20_ShopSellMode == 0) {
         p = (GfxPart *)Cd_GetFileEntry(0xDD60003);
         Gfx_SetPartsNumber(p, 2, 2, w->field_58);
         Gfx_DrawParts((s32)p);
     }
 }
 
-void func_8006D2C0(void *t, s32 id, Halves pos, s32 arg) {
+void Stg20_OpenMsgOrDesc(void *t, s32 id, Halves pos, s32 arg) {
     Stg20TextArgs args;
 
     if (id < 1000) {
@@ -528,7 +528,7 @@ void func_8006D2C0(void *t, s32 id, Halves pos, s32 arg) {
     Text_Open(t, &args);
 }
 
-void func_8006D350(Actor *a) {
+void Stg20_PartsListToBag(Actor *a) {
     Stg20ListWork *w = (Stg20ListWork *)a->work;
     s32 i;
     s32 n;
@@ -545,7 +545,7 @@ void func_8006D350(Actor *a) {
     Item_SortList();
 }
 
-void func_8006D3CC(Actor *a) {
+void Stg20_GatherPartsList(Actor *a) {
     Stg20ListWork *w = (Stg20ListWork *)a->work;
     s32 i;
     s32 n;
@@ -567,7 +567,7 @@ void func_8006D3CC(Actor *a) {
     }
 }
 
-s32 func_8006D484(Actor *a, s32 v) {
+s32 Stg20_PartsListHas(Actor *a, s32 v) {
     Stg20ListWork *w = (Stg20ListWork *)a->work;
     s32 i;
 
@@ -579,7 +579,7 @@ s32 func_8006D484(Actor *a, s32 v) {
     return 0;
 }
 
-void func_8006D4BC(Actor *a, s32 v) {
+void Stg20_PartsListRemove(Actor *a, s32 v) {
     Stg20ListWork *w = (Stg20ListWork *)a->work;
     s32 i;
 
@@ -591,7 +591,7 @@ void func_8006D4BC(Actor *a, s32 v) {
     }
 }
 
-void func_8006D4F4(s16 *list, s32 n, s32 v) {
+void Stg20_InsertDescS16(s16 *list, s32 n, s32 v) {
     s32 i;
     s32 t;
 
@@ -605,7 +605,7 @@ void func_8006D4F4(s16 *list, s32 n, s32 v) {
     list[i] = v;
 }
 
-void func_8006D53C(Actor *a, s32 mode) {
+void Stg20_FilterPartsList(Actor *a, s32 mode) {
     Stg20ItemListWork *w = (Stg20ItemListWork *)a->work;
     Stg20GameState *g;
     s32 i;
@@ -651,7 +651,7 @@ void func_8006D53C(Actor *a, s32 mode) {
                 continue;
             }
         }
-        func_8006D4F4(w->items, n, id);
+        Stg20_InsertDescS16(w->items, n, id);
         n++;
     }
     w->count = n;
@@ -683,7 +683,7 @@ void func_8006D53C(Actor *a, s32 mode) {
     }
 }
 
-void func_8006D7DC(Actor *a) {
+void Stg20_PartsListRefresh(Actor *a) {
     Stg20ItemListWork *w = (Stg20ItemListWork *)a->work;
     s32 i;
     s32 id;
@@ -703,13 +703,13 @@ void func_8006D7DC(Actor *a) {
             Text_Close(&w->descText);
             id = w->items[w->top + w->cursor];
             if (id != 0) {
-                func_8006D2C0(&w->descText, id + 1000, D_800705DC[7], 0);
+                Stg20_OpenMsgOrDesc(&w->descText, id + 1000, D_800705DC[7], 0);
             }
         }
     }
 }
 
-void func_8006D93C(Actor *a) {
+void Stg20_CalcBeetleHideMasks(Actor *a) {
     Stg20ItemListWork *w = (Stg20ItemListWork *)a->work;
     s32 mask;
     s32 shift;
@@ -797,7 +797,7 @@ void func_8006D93C(Actor *a) {
     }
 }
 
-void func_8006DCCC(Actor *a) {
+void Stg20_BeetlePartsUpdate(Actor *a) {
     Stg20ItemListWork *w = (Stg20ItemListWork *)a->work;
     s32 *slot = (s32 *)a->u34.children;
     Stg20GameState *g;
@@ -819,7 +819,7 @@ void func_8006DCCC(Actor *a) {
         } else {
             w->field_48 = 2;
         }
-        func_8006D3CC(a);
+        Stg20_GatherPartsList(a);
         w->field_54 = 0x7FFFFFF;
         w->field_58 = 0x7FFFFE;
         w->field_4C = w->field_48 + 3;
@@ -836,7 +836,7 @@ void func_8006DCCC(Actor *a) {
             default:
                 Text_OpenById(&w->hdr[1], 0x13E, 0, D_800705DC[1]);
                 Text_OpenById(&w->hdr[2], w->field_48 + 0x13F, 0, D_800705DC[2]);
-                func_8006D2C0(&w->descText, w->field_48 + 0x13B, D_800705DC[7], 0);
+                Stg20_OpenMsgOrDesc(&w->descText, w->field_48 + 0x13B, D_800705DC[7], 0);
                 w->field_50 = 1;
                 Task_NextState2(a);
             case 1:
@@ -855,10 +855,10 @@ void func_8006DCCC(Actor *a) {
             case 0:
             default:
                 Text_OpenById(&w->hdr[1], 0x142, 0, D_800705DC[1]);
-                Text_OpenPacked(&w->hdr[2], Item_GetNameText(func_8006D484(a, 0x75) != 0 ? 0x75 : 0x76), 0, D_800705DC[2]);
+                Text_OpenPacked(&w->hdr[2], Item_GetNameText(Stg20_PartsListHas(a, 0x75) != 0 ? 0x75 : 0x76), 0, D_800705DC[2]);
                 Text_OpenPacked(&w->hdr[3], Item_GetNameText(0x77), 0, D_800705DC[3]);
-                Text_OpenPacked(&w->hdr[4], Item_GetNameText(func_8006D484(a, 0x73) != 0 ? 0x73 : 0x74), 0, D_800705DC[4]);
-                func_8006D2C0(&w->descText, 0x143, D_800705DC[7], 0);
+                Text_OpenPacked(&w->hdr[4], Item_GetNameText(Stg20_PartsListHas(a, 0x73) != 0 ? 0x73 : 0x74), 0, D_800705DC[4]);
+                Stg20_OpenMsgOrDesc(&w->descText, 0x143, D_800705DC[7], 0);
                 w->field_50 = 3;
                 Task_NextState2(a);
             case 1:
@@ -866,7 +866,7 @@ void func_8006DCCC(Actor *a) {
             }
             g = (Stg20GameState *)&Save_GameState;
             if (a->elapsed & 0x10) {
-                v = func_8006D484(a, 0x75) != 0 ? 0x75 : 0x76;
+                v = Stg20_PartsListHas(a, 0x75) != 0 ? 0x75 : 0x76;
             } else {
                 v = 0;
             }
@@ -884,12 +884,12 @@ void func_8006DCCC(Actor *a) {
                 Text_Close(&w->hdr[3]);
                 Text_Close(&w->hdr[4]);
                 Text_Close(&w->descText);
-                g->field_2C[17] = func_8006D484(a, 0x75) != 0 ? 0x75 : 0x76;
+                g->field_2C[17] = Stg20_PartsListHas(a, 0x75) != 0 ? 0x75 : 0x76;
                 g->field_2C[18] = 0x77;
-                g->field_2C[16] = func_8006D484(a, 0x73) != 0 ? 0x73 : 0x74;
-                func_8006D4BC(a, g->field_2C[17]);
-                func_8006D4BC(a, g->field_2C[18]);
-                func_8006D4BC(a, g->field_2C[16]);
+                g->field_2C[16] = Stg20_PartsListHas(a, 0x73) != 0 ? 0x73 : 0x74;
+                Stg20_PartsListRemove(a, g->field_2C[17]);
+                Stg20_PartsListRemove(a, g->field_2C[18]);
+                Stg20_PartsListRemove(a, g->field_2C[16]);
                 Task_NextState1(a);
             }
             break;
@@ -909,14 +909,14 @@ void func_8006DCCC(Actor *a) {
             switch (a->stateLevel2) {
             case 0:
             default:
-                func_8006D53C(a, D_80070624[idx]);
+                Stg20_FilterPartsList(a, Stg20_PartsPageCategory[idx]);
                 if (w->count == 0) {
                     Task_NextState1(a);
                     break;
                 }
                 Text_OpenById(&w->hdr[1], st + 0x158, 0, D_800705DC[1]);
                 Text_OpenById(&w->hdr[2], 0x14F, 0, D_800705DC[2]);
-                func_8006D2C0(&w->descText, st + 0x142, D_800705DC[7], 0);
+                Stg20_OpenMsgOrDesc(&w->descText, st + 0x142, D_800705DC[7], 0);
                 w->field_50 = 1;
                 w->field_1B8 = 1;
                 w->dirty = 1;
@@ -933,7 +933,7 @@ void func_8006DCCC(Actor *a) {
                 }
                 break;
             case 2:
-                ((Stg20GameState *)&Save_GameState)->field_2C[D_8007064C[idx]] = (a->elapsed & 0x10) ? w->items[w->cursor + w->top] : 0;
+                ((Stg20GameState *)&Save_GameState)->field_2C[Stg20_PartsPageSlot[idx]] = (a->elapsed & 0x10) ? w->items[w->cursor + w->top] : 0;
                 if (Pad_State[0].repeat & 0x1000) {
                     if (w->cursor != 0) {
                         w->cursor--;
@@ -962,13 +962,13 @@ void func_8006DCCC(Actor *a) {
                         break;
                     }
                     Snd_PlayById(0x14, 0);
-                    ((Stg20GameState *)&Save_GameState)->field_2C[D_8007064C[idx]] = w->items[w->cursor + w->top];
-                    func_8006D4BC(a, ((Stg20GameState *)&Save_GameState)->field_2C[D_8007064C[idx]]);
+                    ((Stg20GameState *)&Save_GameState)->field_2C[Stg20_PartsPageSlot[idx]] = w->items[w->cursor + w->top];
+                    Stg20_PartsListRemove(a, ((Stg20GameState *)&Save_GameState)->field_2C[Stg20_PartsPageSlot[idx]]);
                     Task_NextState1(a);
                 }
                 break;
             }
-            func_8006D7DC(a);
+            Stg20_PartsListRefresh(a);
             break;
         }
         case 12:
@@ -989,14 +989,14 @@ void func_8006DCCC(Actor *a) {
                     Task_NextState1(a);
                     break;
                 }
-                func_8006D53C(a, 0x63);
+                Stg20_FilterPartsList(a, 0x63);
                 if (w->count == 0) {
                     Task_NextState1(a);
                     break;
                 }
                 Text_OpenById(&w->hdr[1], m + 0x164, 0, D_800705DC[1]);
                 Text_OpenById(&w->hdr[2], 0x14F, 0, D_800705DC[2]);
-                func_8006D2C0(&w->descText, m + 0x155, D_800705DC[7], 0);
+                Stg20_OpenMsgOrDesc(&w->descText, m + 0x155, D_800705DC[7], 0);
                 w->field_50 = 1;
                 w->field_1B8 = 1;
                 w->dirty = 1;
@@ -1056,12 +1056,12 @@ void func_8006DCCC(Actor *a) {
                     }
                     Snd_PlayById(0x14, 0);
                     ((Stg20GameState *)&Save_GameState)->field_2C[k + 8] = item;
-                    func_8006D4BC(a, item);
+                    Stg20_PartsListRemove(a, item);
                     Task_NextState1(a);
                 }
                 break;
             }
-            func_8006D7DC(a);
+            Stg20_PartsListRefresh(a);
             break;
         }
         case 17:
@@ -1072,13 +1072,13 @@ void func_8006DCCC(Actor *a) {
                     Text_Close(&w->texts[i]);
                 }
                 w->field_1B8 = 0;
-                func_8006D2C0(&w->descText, 0x14E, D_800705DC[7], 0);
+                Stg20_OpenMsgOrDesc(&w->descText, 0x14E, D_800705DC[7], 0);
                 Task_NextState2(a);
             case 1:
                 break;
             }
             if (D_8005F704 > 0) {
-                func_8006D350(a);
+                Stg20_PartsListToBag(a);
                 Task_SetState0(a, 3);
             }
             break;
@@ -1087,21 +1087,21 @@ void func_8006DCCC(Actor *a) {
     }
 }
 
-void func_8006E720(Actor *a) {
+void Stg20_BeetlePartsDestroy(Actor *a) {
     Text_CloseArray((s32 *)a->work, 0x12);
     Task_DefaultDestroy(a);
 }
 
-void func_8006E754(Actor *a) {
+void Stg20_BeetlePartsDraw(Actor *a) {
     Stg20ItemListWork *w = (Stg20ItemListWork *)a->work;
     GfxPart *p;
     GfxPart *q;
 
-    func_8006D93C(a);
-    p = (GfxPart *)Cd_GetFileEntry(D_80070674[0][w->field_48]);
+    Stg20_CalcBeetleHideMasks(a);
+    p = (GfxPart *)Cd_GetFileEntry(Stg20_BodyDiagramParts[0][w->field_48]);
     Gfx_HidePartsByMask((GfxPartMaskView *)p, w->field_54);
     Gfx_DrawParts((s32)p);
-    p = (GfxPart *)Cd_GetFileEntry(D_80070674[1][w->field_48]);
+    p = (GfxPart *)Cd_GetFileEntry(Stg20_BodyDiagramParts[1][w->field_48]);
     Gfx_HidePartsByMask((GfxPartMaskView *)p, w->field_58);
     Gfx_DrawParts((s32)p);
     p = (GfxPart *)Cd_GetFileEntry(0xC93000A);
@@ -1147,7 +1147,7 @@ void func_8006E754(Actor *a) {
     }
 }
 
-s32 func_8006E9E8(s32 item)
+s32 Stg20_CanUpgradePart(s32 item)
 {
     if (item < 0x2F) {
         if (item == 0x2E) return 0;
@@ -1168,7 +1168,7 @@ s32 func_8006E9E8(s32 item)
     return 1;
 }
 
-void func_8006EA90(Actor *a) {
+void Stg20_BuildUpgradeList(Actor *a) {
     Stg20ItemWork *w = (Stg20ItemWork *)a->work;
     u8 digits[5];
     s32 i;
@@ -1189,7 +1189,7 @@ void func_8006EA90(Actor *a) {
         w->recs[i].name[0x17] = 0xFF;
     }
     for (i = 0; i < 6; i++) {
-        id = ((Stg20GameState *)&Save_GameState)->field_2C[D_800706D4[i]];
+        id = ((Stg20GameState *)&Save_GameState)->field_2C[Stg20_UpgradeSlots[i]];
         w->recs[i].item = id;
         if (id != 0) {
             name = (u8 *)Item_GetNameText(id);
@@ -1197,7 +1197,7 @@ void func_8006EA90(Actor *a) {
             while (*name != 0xFF) {
                 w->recs[i].name[j++] = *name++;
             }
-            if (func_8006E9E8(id) != 0) {
+            if (Stg20_CanUpgradePart(id) != 0) {
                 w->recs[i].price = Item_GetPrice(id + 1) - Item_GetPrice(id);
             } else {
                 w->recs[i].price = 0;
@@ -1229,7 +1229,7 @@ void func_8006EA90(Actor *a) {
     }
 }
 
-void func_8006ED24(Actor *a) {
+void Stg20_UpgradeListRefresh(Actor *a) {
     Stg20ItemWork *w = (Stg20ItemWork *)a->work;
     s32 i;
 
@@ -1245,7 +1245,7 @@ void func_8006ED24(Actor *a) {
     }
 }
 
-void func_8006EE24(Actor *task) {
+void Stg20_PartsUpgradeUpdate(Actor *task) {
     Stg20ItemWork *w = (Stg20ItemWork *) task->work;
     s32 state = task->stateLevel0;
     s32 children = task->u34.children;
@@ -1268,7 +1268,7 @@ void func_8006EE24(Actor *task) {
         Text_OpenById(&w->hdr[2], 0xDE, 0, D_800706A4[2]);
         Text_OpenPacked(&w->hdr[3], (s32) &D_8005E6F1, 0, D_800706A4[3]);
         Task_Create(0x30D, (s32 *) children, 0);
-        func_8006EA90(task);
+        Stg20_BuildUpgradeList(task);
         w->dirty = 1;
         w->msg = 0x17C;
         Task_NextState0(task);
@@ -1330,7 +1330,7 @@ void func_8006EE24(Actor *task) {
         Task_NextState1(task);
         } while (0);
     f070:
-        func_8006ED24(task);
+        Stg20_UpgradeListRefresh(task);
         goto text_update;
     f080:
         state = task->stateLevel2;
@@ -1364,8 +1364,8 @@ void func_8006EE24(Actor *task) {
     f144:
         Snd_PlayById(0x14, 0);
         Save_GameState.bits -= w->recs[w->index].price;
-        Save_GameState.itemCounts[D_800706D4[w->index]]++;
-        func_8006EA90(task);
+        Save_GameState.itemCounts[Stg20_UpgradeSlots[w->index]]++;
+        Stg20_BuildUpgradeList(task);
         w->dirty = st2;
         w->msg = 0x17F;
         Task_NextState2(task);
@@ -1384,16 +1384,16 @@ void func_8006EE24(Actor *task) {
         if (w->msg == 0) {
             return;
         }
-        func_8006D2C0(&w->msgText, w->msg, D_800706A4[11], w->msgArg);
+        Stg20_OpenMsgOrDesc(&w->msgText, w->msg, D_800706A4[11], w->msgArg);
     }
 }
 
-void func_8006F258(Actor *a) {
+void Stg20_PartsUpgradeDestroy(Actor *a) {
     Text_CloseArray((s32 *)a->work, 0xC);
     Task_DefaultDestroy(a);
 }
 
-void func_8006F28C(Actor *a) {
+void Stg20_PartsUpgradeDraw(Actor *a) {
     Stg20RowWork *w = (Stg20RowWork *)a->work;
     GfxPart *p = (GfxPart *)Cd_GetFileEntry(0xC930000);
     GfxPart *q;
@@ -1408,7 +1408,7 @@ void func_8006F28C(Actor *a) {
     Gfx_DrawParts((s32)p);
 }
 
-Stg20FileRec *func_8006F360(s32 i) {
+Stg20FileRec *Stg20_GetMapDest(s32 i) {
     Stg20FileRec *r = (Stg20FileRec *)Cd_GetFileEntry(Sys_GameMode[0] + 0xD28FCD6);
 
     if (r[i].field_13 == 0) {
@@ -1420,11 +1420,11 @@ Stg20FileRec *func_8006F360(s32 i) {
     return &r[i];
 }
 
-void func_8006F3D8(Actor *a, s32 v) {
+void Stg20_WarpPadInit(Actor *a, s32 v) {
     a->param = v;
 }
 
-void func_8006F3E0(Actor *a) {
+void Stg20_WarpPadUpdate(Actor *a) {
     Stg20LinkWork *w = (Stg20LinkWork *)a->work;
     Stg20Cell c;
     Stg20WarpFx args;
@@ -1440,9 +1440,9 @@ void func_8006F3E0(Actor *a) {
             Cd_QueueFile(0xE46);
             w->target = (Actor *)Task_FindFirst(0x302, 0, -1);
             ok = 0;
-            c = *func_80067504(w->target);
-            if (c.x == D_80070704[a->param].cell.x && c.y == D_80070704[a->param].cell.y) {
-                ok = func_80067568(w->target) != 0;
+            c = *Stg20_GetActorCell(w->target);
+            if (c.x == Stg20_WarpPads[a->param].cell.x && c.y == Stg20_WarpPads[a->param].cell.y) {
+                ok = Stg20_IsOnCellCenter(w->target) != 0;
             }
             if (ok == 0) {
                 Task_NextState0(a);
@@ -1450,11 +1450,11 @@ void func_8006F3E0(Actor *a) {
         }
         break;
     case 1:
-        c = *func_80067504(w->target);
-        if (c.x == D_80070704[a->param].cell.x && c.y == D_80070704[a->param].cell.y
-            && func_80067568(w->target) != 0) {
-            func_8006AD8C(w->target);
-            D_800709B4 = 1;
+        c = *Stg20_GetActorCell(w->target);
+        if (c.x == Stg20_WarpPads[a->param].cell.x && c.y == Stg20_WarpPads[a->param].cell.y
+            && Stg20_IsOnCellCenter(w->target) != 0) {
+            Stg20_WalkerHalt(w->target);
+            Stg20_TalkActive = 1;
             Task_NextState0(a);
         }
         break;
@@ -1497,8 +1497,8 @@ void func_8006F3E0(Actor *a) {
             Task_NextState1(a);
         case 2:
             if (++a->stateLevel2 >= 0x19) {
-                Sys_State.nextGameMode = D_80070704[a->param].nextMode;
-                Sys_State.modeArg = D_80070704[a->param].field_8;
+                Sys_State.nextGameMode = Stg20_WarpPads[a->param].nextMode;
+                Sys_State.modeArg = Stg20_WarpPads[a->param].field_8;
             }
             break;
         }
@@ -1506,7 +1506,7 @@ void func_8006F3E0(Actor *a) {
     }
 }
 
-void func_8006F730(Actor *a) {
+void Stg20_CameraUpdate(Actor *a) {
     Stg20CamWork *w = (Stg20CamWork *)a->work;
     Actor *e;
 
@@ -1656,7 +1656,7 @@ void func_8006F730(Actor *a) {
             }
             break;
         }
-        if (D_800709EC[0] == 0) {
+        if (Stg20_LabIsDna[0] == 0) {
             e = (Actor *)Task_FindFirst(7, -1, -1);
             if (e != NULL) {
                 ((Stg20Rot *)e->u38.ptr38)->field_42 = w->rot[1];
@@ -1666,7 +1666,7 @@ void func_8006F730(Actor *a) {
     }
 }
 
-void func_8006FBF0(Actor *a) {
+void Stg20_CameraDraw(Actor *a) {
     Stg20CamWork *w = (Stg20CamWork *)a->work;
 
     RotMatrixYXZ(w->rot, &w->coord.coord);

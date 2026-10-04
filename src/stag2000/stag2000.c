@@ -1,11 +1,11 @@
 #include "common.h"
 #include "stag2000/stag2000.h"
 
-void func_80063610(Actor *a) {
+void Stg20_BuildMapGrid(Actor *a) {
     s32 x, y;
     u8 *p;
     s32 bit = 0;
-    p = func_80066714()->bits;
+    p = Stg20_GetMapInfo()->bits;
     p--;
     for (x = 0; x < 0x18; x++) {
         for (y = 0; y < 0x18; y++) {
@@ -15,19 +15,19 @@ void func_80063610(Actor *a) {
                 p++;
             }
             if (*p & bit) {
-                D_80070768[y][x] = 1;
+                Stg20_MapGrid[y][x] = 1;
             } else {
-                D_80070768[y][x] = 0;
+                Stg20_MapGrid[y][x] = 0;
             }
         }
     }
 }
 
-s32 func_800636A8(Stg20Cell *c) {
-    return D_80070768[c->x][c->y];
+s32 Stg20_GetGridCell(Stg20Cell *c) {
+    return Stg20_MapGrid[c->x][c->y];
 }
 
-void func_800636D8(Stg20Cell *c, s32 set, s32 flag) {
+void Stg20_MarkGridOccupant(Stg20Cell *c, s32 set, s32 flag) {
     s32 bit = 0x40;
     s32 m;
 
@@ -35,19 +35,19 @@ void func_800636D8(Stg20Cell *c, s32 set, s32 flag) {
         bit = 0x80;
     }
     if (set) {
-        D_80070768[c->x][c->y] |= bit;
+        Stg20_MapGrid[c->x][c->y] |= bit;
     } else {
         m = 0xFF;
-        D_80070768[c->x][c->y] &= m - bit;
+        Stg20_MapGrid[c->x][c->y] &= m - bit;
     }
 }
 
-void func_80063760(Actor *a, s32 v) {
+void Stg20_MapBgInit(Actor *a, s32 v) {
     ((Stg20Work *)a->work)->field_0 = v;
-    func_80063610(a);
+    Stg20_BuildMapGrid(a);
 }
 
-void func_80063784(Actor *a) {
+void Stg20_MapBgUpdate(Actor *a) {
     Stg20LoadWork *w = (Stg20LoadWork *)a->work;
     s32 *tbl;
     s32 i;
@@ -77,8 +77,8 @@ void func_80063784(Actor *a) {
                 a->elapsed = 0;
                 Task_NextState2(a);
             case 1:
-                w->field_2C += D_8006FC4C[((Stg20BlinkTask *)a)->field_24 & 3].x;
-                w->field_30 += D_8006FC4C[((Stg20BlinkTask *)a)->field_24 & 3].y;
+                w->field_2C += Stg20_ShakeOffsets[((Stg20BlinkTask *)a)->field_24 & 3].x;
+                w->field_30 += Stg20_ShakeOffsets[((Stg20BlinkTask *)a)->field_24 & 3].y;
                 if (a->elapsed >= 0x78) {
                     Task_SetState1(a, 0);
                 }
@@ -92,7 +92,7 @@ void func_80063784(Actor *a) {
     }
 }
 
-void func_800638E8(Actor *a) {
+void Stg20_MapBgDraw(Actor *a) {
     s32 gx = 0;
     s32 gy = 0;
     Stg20LoadWork *w = (Stg20LoadWork *)a->work;
@@ -109,7 +109,7 @@ void func_800638E8(Actor *a) {
     s16 x;
     s32 sx;
 
-    e = func_8006A8C0(0x1F4);
+    e = Stg20_FindWalkerByDigiId(0x1F4);
     if (e != 0) {
         if (w->field_34 >= 5) {
             n = 1;
@@ -173,8 +173,8 @@ void func_800638E8(Actor *a) {
         }
     }
     Sys_PacketCursor = (s32)p;
-    if (func_80066714()->field_1C != 0) {
-        parts = (GfxPart *)Cd_GetFileEntry(func_80066714()->field_1C);
+    if (Stg20_GetMapInfo()->field_1C != 0) {
+        parts = (GfxPart *)Cd_GetFileEntry(Stg20_GetMapInfo()->field_1C);
         for (q = parts; q->fileId != 0; q++) {
             if (q->groupMask & 4) {
                 q->palette = Math_CycleRange(a->elapsed, 8, 0, 7);
@@ -186,7 +186,7 @@ void func_800638E8(Actor *a) {
     }
 }
 
-void func_80063C84(void) {
+void Stg20_StartBgShake(void) {
     Actor *a = (Actor *)Task_FindFirst(0x301, -1, -1);
 
     if (a != NULL && a->stateLevel0 == 1) {
@@ -194,11 +194,11 @@ void func_80063C84(void) {
     }
 }
 
-void func_80063CD0(Actor *a, s32 v) {
+void Stg20_StaticBgInit(Actor *a, s32 v) {
     ((Stg20Work *)a->work)->field_0 = v;
 }
 
-void func_80063CDC(Actor *a) {
+void Stg20_StaticBgUpdate(Actor *a) {
     Stg20LoadWork *w = (Stg20LoadWork *)a->work;
     s32 *tbl;
     s32 i;
@@ -246,7 +246,7 @@ void func_80063CDC(Actor *a) {
     }
 }
 
-void func_80063E38(Actor *a)
+void Stg20_StaticBgDraw(Actor *a)
 {
   Stg20LoadWork *w = (Stg20LoadWork *) a->work;
   GfxPartPkt *p = (GfxPartPkt *) Sys_State.packet.addr;
@@ -279,7 +279,7 @@ void func_80063E38(Actor *a)
   Sys_PacketCursor = (s32) p;
 }
 
-void func_80064008(Actor *a) {
+void Stg20_LabDnaDigivolve(Actor *a) {
     Stg20CtrlWork *w = (Stg20CtrlWork *)a->work;
     s32 *slot = (s32 *)a->u34.children;
     s32 buf[9];
@@ -302,7 +302,7 @@ void func_80064008(Actor *a) {
     s32 k;
     s32 f;
 
-    D_800709EC[0] = 1;
+    Stg20_LabIsDna[0] = 1;
     switch (a->stateLevel2) {
     case 0:
     default:
@@ -314,7 +314,7 @@ void func_80064008(Actor *a) {
             }
             D_800709B0.field_10 = 0;
             Task_Create(0x30C, &slot[3], 0);
-            func_80068D84(0x117);
+            Stg20_MsgWinShowSysMsg(0x117);
             D_800709B0.field_20 = 1;
             Task_Create(0x30E, &slot[4], 0);
             Task_NextState3(a);
@@ -392,7 +392,7 @@ void func_80064008(Actor *a) {
             }
             D_800709B0.field_10 = 1;
             Task_Create(0x30C, &slot[3], 0);
-            func_80068DD8(0x11C, Save_GameState.elems[D_800709B0.field_34].digiId);
+            Stg20_MsgWinShowDigiMsg(0x11C, Save_GameState.elems[D_800709B0.field_34].digiId);
             D_800709B0.field_20 = 2;
             Task_Create(0x30E, &slot[4], 0);
             Task_NextState3(a);
@@ -685,7 +685,7 @@ void func_80064008(Actor *a) {
                 }
             }
             Save_GameState.elems[k] = *(DigiRosterEntry *)&nd;
-            D_800709FC = k;
+            Stg20_DnaNewSlot = k;
             Task_NextState2(a);
             break;
         }
@@ -695,7 +695,7 @@ void func_80064008(Actor *a) {
         case 0:
         default:
             buf[4] = 0;
-            buf[5] = D_800709FC;
+            buf[5] = Stg20_DnaNewSlot;
             Task_Create(0x16, &slot[7], (s32)&buf[4]);
             Task_NextState3(a);
             break;
@@ -756,7 +756,7 @@ void func_80064008(Actor *a) {
     }
 }
 
-void func_800650BC(Actor *a) {
+void Stg20_LabDigivolve(Actor *a) {
     Stg20CtrlWork *w = (Stg20CtrlWork *)a->work;
     s32 *slot = (s32 *)a->u34.children;
     s32 buf[5];
@@ -766,7 +766,7 @@ void func_800650BC(Actor *a) {
     Stg20DigiBoost *e;
     s16 v;
 
-    D_800709EC[0] = 0;
+    Stg20_LabIsDna[0] = 0;
     switch (a->stateLevel2) {
     case 0:
     default:
@@ -778,7 +778,7 @@ void func_800650BC(Actor *a) {
             }
             D_800709B0.field_10 = 0;
             Task_Create(0x30C, &slot[3], 0);
-            func_80068D84(0x116);
+            Stg20_MsgWinShowSysMsg(0x116);
             D_800709B0.field_20 = 0;
             Task_Create(0x30E, &slot[4], 0);
             Task_NextState3(a);
@@ -983,7 +983,7 @@ void func_800650BC(Actor *a) {
     }
 }
 
-void func_80065774(Actor *a) {
+void Stg20_DigiLabUpdate(Actor *a) {
     Stg20CtrlWork *w = (Stg20CtrlWork *)a->work;
     s32 *slot = (s32 *)a->u34.children;
 
@@ -1004,7 +1004,7 @@ void func_80065774(Actor *a) {
             default:
                 Task_SetState0((Actor *)w->menu, 0);
                 Task_Create(0x30B, &slot[3], 0);
-                func_80068D84(0x115);
+                Stg20_MsgWinShowSysMsg(0x115);
                 Task_NextState2(a);
             case 1:
                 if (slot[3] == 0) {
@@ -1021,10 +1021,10 @@ void func_80065774(Actor *a) {
             }
             break;
         case 1:
-            func_800650BC(a);
+            Stg20_LabDigivolve(a);
             break;
         case 2:
-            func_80064008(a);
+            Stg20_LabDnaDigivolve(a);
             break;
         }
         break;
@@ -1045,7 +1045,7 @@ void func_80065774(Actor *a) {
     }
 }
 
-void func_80065960(Actor *a) {
+void Stg20_DigiLabDraw(Actor *a) {
     Stg20ScrollWork *w = (Stg20ScrollWork *)a->work;
     GfxPart *p = (GfxPart *)Cd_GetFileEntry(0xD12000B);
     GfxPart *q;
@@ -1090,7 +1090,7 @@ void func_80065960(Actor *a) {
     Gfx_DrawParts((s32)p);
 }
 
-void func_80065AF4(Actor *a) {
+void Stg20_ItemShopUpdate(Actor *a) {
     s32 *slot = (s32 *)a->u34.children;
 
     switch (a->stateLevel0) {
@@ -1126,7 +1126,7 @@ void func_80065AF4(Actor *a) {
             switch (a->stateLevel2) {
             case 0:
             default:
-                D_80070A04 = 0;
+                Stg20_ShopSellMode = 0;
                 Task_Create(0x317, &slot[3], 0);
                 Task_NextState2(a);
             case 1:
@@ -1140,7 +1140,7 @@ void func_80065AF4(Actor *a) {
             switch (a->stateLevel2) {
             case 0:
             default:
-                D_80070A04 = 1;
+                Stg20_ShopSellMode = 1;
                 Task_Create(0x317, &slot[3], 0);
                 Task_NextState2(a);
             case 1:
@@ -1169,14 +1169,14 @@ void func_80065AF4(Actor *a) {
     }
 }
 
-void func_80065D1C(void) {
+void Stg20_RefillBeetleHpEp(void) {
     Stg20GameState *g = (Stg20GameState *)&Save_GameState;
 
     g->field_26 = g->field_24 = D_8006FCCC[g->field_2C[1] - 1];
     g->field_2A = g->field_28 = D_8006FD28[g->field_2C[3] - 0x35];
 }
 
-void func_80065D74(Actor *a) {
+void Stg20_BeetleShopUpdate(Actor *a) {
     s32 *slot = (s32 *)a->u34.children;
 
     switch (a->stateLevel0) {
@@ -1244,7 +1244,7 @@ void func_80065D74(Actor *a) {
         switch (a->stateLevel1) {
         case 0:
         default:
-            func_80065D1C();
+            Stg20_RefillBeetleHpEp();
             Gfx_FadeOutToBlack(0xA);
             Task_NextState1(a);
         case 1:
@@ -1258,7 +1258,7 @@ void func_80065D74(Actor *a) {
     }
 }
 
-void func_80065FB8(Actor *a) {
+void Stg20_StageMain(Actor *a) {
     Stg20MainWork *w = (Stg20MainWork *)a->work;
     s32 *slot = (s32 *)a->u34.children;
     Stg20Spawn sp;
@@ -1282,10 +1282,10 @@ void func_80065FB8(Actor *a) {
         Gpu_ClearScreens();
         Gfx_FadeInFromBlack(0x1E);
         Task_Create(9, &slot[0], 0);
-        Flag_SetTableFile(func_80066714()->field_20);
+        Flag_SetTableFile(Stg20_GetMapInfo()->field_20);
         Task_Create(0x308, &slot[5], 0);
         if (Sys_State.gameMode < 0x32A) {
-            st = &((Stg20Start *)func_80066714()->field_8)[Sys_State.modeArg];
+            st = &((Stg20Start *)Stg20_GetMapInfo()->field_8)[Sys_State.modeArg];
             sp.id = 0x1F4;
             sp.blk[0].x = st->x;
             sp.blk[0].y = st->y;
@@ -1293,7 +1293,7 @@ void func_80065FB8(Actor *a) {
             sp.blk[1].y = 0;
             sp.field_2 = st->dir;
             Task_Create(0x302, &slot[4], (s32)&sp);
-            if (func_80066714()->field_20 != 0) {
+            if (Stg20_GetMapInfo()->field_20 != 0) {
                 n = 0;
                 for (id = Flag_FirstPassingEntry(); id != -1; id = Flag_NextPassingEntry()) {
                     src = (Stg20BytePair *)Flag_GetEntryPosList(id);
@@ -1309,7 +1309,7 @@ void func_80065FB8(Actor *a) {
                 }
             }
             Task_Create(0x304, &slot[26], 0);
-            Task_Create(0x301, &slot[2], func_80066714()->field_4);
+            Task_Create(0x301, &slot[2], Stg20_GetMapInfo()->field_4);
             switch (Sys_GameMode[0]) {
             case 0x31D:
                 Task_Create(0x31C, &slot[27], 0);
@@ -1327,7 +1327,7 @@ void func_80065FB8(Actor *a) {
         } else if (Sys_State.gameMode < 0x32F) {
             w->field_C = 1;
             D_800709B0.field_0 = 1;
-            Task_Create(0x305, &slot[2], func_80066714()->field_4);
+            Task_Create(0x305, &slot[2], Stg20_GetMapInfo()->field_4);
             Task_Create(0x306, &slot[3], 0);
         } else {
             if (Sys_State.gameMode < 0x330) {
@@ -1342,9 +1342,9 @@ void func_80065FB8(Actor *a) {
         Gfx_InitLights();
         ((Stg20MainWork *)a->work)->field_0 = -1;
         D_800709B0.field_4 = 0;
-        if (func_80066714()->field_14 != 0) {
+        if (Stg20_GetMapInfo()->field_14 != 0) {
             Snd_UnloadSlot(2);
-            Snd_SetSlotContent(1, func_80066714()->field_14);
+            Snd_SetSlotContent(1, Stg20_GetMapInfo()->field_14);
         }
         Task_NextState0(a);
         break;
@@ -1366,8 +1366,8 @@ void func_80065FB8(Actor *a) {
                 break;
             }
             if (w->bgmOn == 0 && Snd_AnySlotLoading() == 0) {
-                if (func_80066714()->field_16 != -1) {
-                    Snd_PlayById(func_80066714()->field_16, 1);
+                if (Stg20_GetMapInfo()->field_16 != -1) {
+                    Snd_PlayById(Stg20_GetMapInfo()->field_16, 1);
                 }
                 w->bgmOn = 1;
             }
@@ -1397,7 +1397,7 @@ void func_80065FB8(Actor *a) {
                 a->childCount = 2;
                 Task_NextState1(a);
                 if (w->field_C != 0) {
-                    func_80068134((Actor *)slot[3], 0);
+                    Stg20_AreaSelectShowName((Actor *)slot[3], 0);
                 }
             }
             break;
@@ -1413,7 +1413,7 @@ void func_80065FB8(Actor *a) {
                     Task_SetState1(a, 0);
                 }
                 if (w->field_C != 0) {
-                    func_80068134((Actor *)slot[3], 1);
+                    Stg20_AreaSelectShowName((Actor *)slot[3], 1);
                 }
             }
             break;
@@ -1422,7 +1422,7 @@ void func_80065FB8(Actor *a) {
     }
 }
 
-Stg20MapFile *func_80066714(void) {
+Stg20MapFile *Stg20_GetMapInfo(void) {
     Stg20MapFile *f = (Stg20MapFile *)Cd_GetFileEntry(((Stg20Mode *)Sys_GameMode)->lo + 0x308FFFF);
     s32 base;
 
@@ -1437,17 +1437,17 @@ Stg20MapFile *func_80066714(void) {
     return f;
 }
 
-void func_800667AC(s32 arg0) {
+void Stg20_ApplyStartPreset(s32 arg0) {
     s32 i;
     s32 j;
 
     if (arg0 == 0) {
-        ((Stg20GameInit *)&Save_GameState)->start = D_8006FD84;
+        ((Stg20GameInit *)&Save_GameState)->start = Stg20_StartPreset0;
         Save_GameState.elems[0].state = 0;
         Save_GameState.elems[1].state = 0;
         Save_GameState.elems[2].state = 0;
     } else {
-        ((Stg20GameInit *)&Save_GameState)->start = D_8006FE44;
+        ((Stg20GameInit *)&Save_GameState)->start = Stg20_StartPreset1;
         Digi_InitFromTable(0x99, 0, &Save_GameState.elems[0]);
         Save_GameState.elems[0].state = 3;
         Digi_InitFromTable(0x99, 1, &Save_GameState.elems[1]);
@@ -1457,13 +1457,13 @@ void func_800667AC(s32 arg0) {
         Digi_SortRoster();
         for (i = 0; i < 3; i++) {
             for (j = 0; j < 8; j++) {
-                Save_GameState.elems[i].name[j] = D_8006FF04[i][j];
+                Save_GameState.elems[i].name[j] = Stg20_PresetDigiNames[i][j];
             }
         }
     }
 }
 
-s32 func_80066A4C(s32 id) {
+s32 Stg20_OwnsDigi(s32 id) {
     s32 i;
 
     for (i = 0; i < 0x24; i++) {
@@ -1474,7 +1474,7 @@ s32 func_80066A4C(s32 id) {
     return 0;
 }
 
-void func_80066A9C(s32 d) {
+void Stg20_AddBits(s32 d) {
     GameState *g = &Save_GameState;
 
     g->bits += d;
@@ -1486,7 +1486,7 @@ void func_80066A9C(s32 d) {
     }
 }
 
-void func_80066AE0(s32 id) {
+void Stg20_RemoveOwnedDigi(s32 id) {
     s32 i;
 
     for (i = 0; i < 0x24; i++) {
@@ -1498,7 +1498,7 @@ void func_80066AE0(s32 id) {
     Digi_SortRoster();
 }
 
-s32 func_80066B48(s32 id) {
+s32 Stg20_TestSpecialFlag(s32 id) {
     s32 i;
     s32 n;
     s32 free;
@@ -1529,11 +1529,11 @@ s32 func_80066B48(s32 id) {
         }
         return n < 12;
     case 9003:
-        return func_80066A4C(0xDA);
+        return Stg20_OwnsDigi(0xDA);
     case 9004:
-        return func_80066A4C(0xD1);
+        return Stg20_OwnsDigi(0xD1);
     case 9005:
-        return func_80066A4C(0x43);
+        return Stg20_OwnsDigi(0x43);
     case 9023:
         for (n = 0; n < 3; n++) {
             if (((Stg20GameRoster *)&Save_GameState)->elems[n].state == n + 3
@@ -1614,7 +1614,7 @@ s32 func_80066B48(s32 id) {
     return 0;
 }
 
-void func_80066F34(s32 id, s32 on) {
+void Stg20_SetSpecialFlag(s32 id, s32 on) {
     s32 i;
     s32 j;
 
@@ -1632,76 +1632,76 @@ void func_80066F34(s32 id, s32 on) {
         D_8005E66E = 0x76;
         break;
     case 0x238E:
-        func_800667AC(0);
+        Stg20_ApplyStartPreset(0);
         break;
     case 0x238F:
-        func_800667AC(1);
+        Stg20_ApplyStartPreset(1);
         break;
     case 0x2390:
-        func_80066A9C(2000);
+        Stg20_AddBits(2000);
         break;
     case 0x2391:
-        func_80066A9C(1000);
+        Stg20_AddBits(1000);
         break;
     case 0x2392:
-        func_80066AE0(0x54);
+        Stg20_RemoveOwnedDigi(0x54);
         Digi_AddNew(0xBF);
         break;
     case 0x2393:
-        func_80066AE0(0xC5);
+        Stg20_RemoveOwnedDigi(0xC5);
         Digi_AddNew(0xC0);
         break;
     case 0x2394:
-        func_80066AE0(0xB);
+        Stg20_RemoveOwnedDigi(0xB);
         Digi_AddNew(0xC1);
         break;
     case 0x2395:
-        func_80066AE0(0x16);
+        Stg20_RemoveOwnedDigi(0x16);
         Digi_AddNew(0xC2);
         break;
     case 0x2396:
-        func_80066AE0(0x4F);
+        Stg20_RemoveOwnedDigi(0x4F);
         Digi_AddNew(0xC3);
         break;
     case 0x2397:
-        func_80066AE0(0x85);
+        Stg20_RemoveOwnedDigi(0x85);
         Digi_AddNew(0xC4);
         break;
     case 0x2398:
-        func_80066AE0(0xEA);
+        Stg20_RemoveOwnedDigi(0xEA);
         Digi_AddNew(0xC5);
         break;
     case 0x2399:
-        func_80066AE0(0xCC);
+        Stg20_RemoveOwnedDigi(0xCC);
         Digi_AddNew(0xC6);
         break;
     case 0x239A:
-        func_80066AE0(0x1A);
+        Stg20_RemoveOwnedDigi(0x1A);
         Digi_AddNew(0xC7);
         break;
     case 0x23AA:
-        func_80066A9C(-500);
+        Stg20_AddBits(-500);
         break;
     case 0x23AB:
-        func_80066A9C(-1000);
+        Stg20_AddBits(-1000);
         break;
     case 0x23AC:
-        func_80066A9C(-1500);
+        Stg20_AddBits(-1500);
         break;
     case 0x23AD:
-        func_80066A9C(-2000);
+        Stg20_AddBits(-2000);
         break;
     case 0x23AE:
-        func_80066A9C(-2500);
+        Stg20_AddBits(-2500);
         break;
     case 0x23AF:
-        func_80066A9C(-3000);
+        Stg20_AddBits(-3000);
         break;
     case 0x23B0:
-        func_80066A9C(-3500);
+        Stg20_AddBits(-3500);
         break;
     case 0x23B1:
-        func_80066A9C(-4000);
+        Stg20_AddBits(-4000);
         break;
     case 0x239C:
         D_8005E632 = 1;
@@ -1812,7 +1812,7 @@ void func_80066F34(s32 id, s32 on) {
     }
 }
 
-void func_80067480(void *t, s32 text, s32 id, Stg20Cell *pos, s32 color) {
+void Stg20_OpenText(void *t, s32 text, s32 id, Stg20Cell *pos, s32 color) {
     Stg20TextArgs args;
 
     if (id == 0) {
@@ -1829,15 +1829,15 @@ void func_80067480(void *t, s32 text, s32 id, Stg20Cell *pos, s32 color) {
     Text_Open(t, &args);
 }
 
-Stg20Cell *func_80067504(Actor *a) {
+Stg20Cell *Stg20_GetActorCell(Actor *a) {
     ActorTransformView *t = a->u38.ptr38;
 
-    D_800709A8.x = (t->posX + 0x4500) / 0x600;
-    D_800709A8.y = 0x16 - (t->posZ + 0x4500) / 0x600;
-    return &D_800709A8;
+    Stg20_CellTmp.x = (t->posX + 0x4500) / 0x600;
+    Stg20_CellTmp.y = 0x16 - (t->posZ + 0x4500) / 0x600;
+    return &Stg20_CellTmp;
 }
 
-s32 func_80067568(Actor *a) {
+s32 Stg20_IsOnCellCenter(Actor *a) {
     ActorTransformView *t = a->u38.ptr38;
     s32 m = 0xE6;
     s32 r;
@@ -1858,7 +1858,7 @@ s32 func_80067568(Actor *a) {
     return 0;
 }
 
-void func_80067604(Actor *a, s32 doX, s32 doZ) {
+void Stg20_SnapToCell(Actor *a, s32 doX, s32 doZ) {
     ActorTransformView *t = a->u38.ptr38;
 
     if (doX) {
@@ -1869,45 +1869,45 @@ void func_80067604(Actor *a, s32 doX, s32 doZ) {
     }
 }
 
-void func_800676A8(Actor *a, s32 i) {
+void Stg20_SetMoveParams(Actor *a, s32 i) {
     Stg20Vec3 *v = &((Stg20Rot *)a->u38.ptr38)->field_84;
 
     if (v->field_0 == 0) {
-        v->field_0 = D_8006FF1C[i].field_0;
+        v->field_0 = Stg20_MoveParams[i].field_0;
     }
-    v->field_4 = D_8006FF1C[i].field_4;
-    v->field_8 = D_8006FF1C[i].field_8;
+    v->field_4 = Stg20_MoveParams[i].field_4;
+    v->field_8 = Stg20_MoveParams[i].field_8;
 }
 
-Stg20Cell *func_80067714(Actor *a, s32 dir) {
-    Stg20Cell *c = func_80067504(a);
+Stg20Cell *Stg20_GetCellInDir(Actor *a, s32 dir) {
+    Stg20Cell *c = Stg20_GetActorCell(a);
 
-    c->x += D_8006FF34[dir].x;
-    c->y += D_8006FF34[dir].y;
+    c->x += Stg20_DirCellDelta[dir].x;
+    c->y += Stg20_DirCellDelta[dir].y;
     return c;
 }
 
-s32 func_80067770(Actor *a, s32 dir) {
+s32 Stg20_IsCellBlocked(Actor *a, s32 dir) {
     s32 mask;
 
-    if (D_800709B4 != 0) {
+    if (Stg20_TalkActive != 0) {
         return 0;
     }
     mask = 0xBF;
     if (((Stg20ModelTask *)a)->field_4 == 0) {
         mask = 0x7F;
     }
-    return func_800636A8(func_80067714(a, dir)) & mask;
+    return Stg20_GetGridCell(Stg20_GetCellInDir(a, dir)) & mask;
 }
 
-void func_800677C8(Actor *a, Stg20Marks *m, s32 dir, s32 timer) {
+void Stg20_AddOccupantMark(Actor *a, Stg20Marks *m, s32 dir, s32 timer) {
     Stg20Cell *c;
     s32 i;
 
     if (dir == -1) {
-        c = func_80067504(a);
+        c = Stg20_GetActorCell(a);
     } else {
-        c = func_80067714(a, dir);
+        c = Stg20_GetCellInDir(a, dir);
     }
     for (i = 0; i < 5; i++) {
         if (m->cell[i].x == c->x && m->cell[i].y == c->y) {
@@ -1925,22 +1925,22 @@ found:
     m->timer[i] = timer;
 }
 
-void func_800678A8(Actor *a, Stg20Marks *m) {
+void Stg20_TickOccupantMarks(Actor *a, Stg20Marks *m) {
     s32 i;
     s32 flag = ((Stg20ModelTask *)a)->field_4 == 0;
 
     for (i = 0; i < 5; i++) {
         if (m->timer[i] != 0) {
             if (--m->timer[i] == 0) {
-                func_800636D8(&m->cell[i], 0, flag);
+                Stg20_MarkGridOccupant(&m->cell[i], 0, flag);
             } else {
-                func_800636D8(&m->cell[i], 1, flag);
+                Stg20_MarkGridOccupant(&m->cell[i], 1, flag);
             }
         }
     }
 }
 
-s32 func_80067928(Stg20Cell *c, s32 x, s32 y, s32 flag) {
+s32 Stg20_CellDistWeighted(Stg20Cell *c, s32 x, s32 y, s32 flag) {
     s32 dx = c->x - x;
     s32 dy;
 
@@ -1959,7 +1959,7 @@ s32 func_80067928(Stg20Cell *c, s32 x, s32 y, s32 flag) {
     return dx + dy;
 }
 
-s32 func_80067978(Actor *a, s32 dir) {
+s32 Stg20_AreaSelectFindDir(Actor *a, s32 dir) {
     Stg20NavWork *w = (Stg20NavWork *)a->work;
     Stg20Cell c;
     s32 best;
@@ -1979,7 +1979,7 @@ s32 func_80067978(Actor *a, s32 dir) {
         switch (dir) {
         case 0:
             if (c.y < r->cell.y) {
-                d = func_80067928(&c, r->cell.x, r->cell.y, 1);
+                d = Stg20_CellDistWeighted(&c, r->cell.x, r->cell.y, 1);
                 if (d < best) {
                     best = d;
                     found = i;
@@ -1988,7 +1988,7 @@ s32 func_80067978(Actor *a, s32 dir) {
             break;
         case 1:
             if (c.x > r->cell.x) {
-                d = func_80067928(&c, r->cell.x, r->cell.y, 0);
+                d = Stg20_CellDistWeighted(&c, r->cell.x, r->cell.y, 0);
                 if (d < best) {
                     best = d;
                     found = i;
@@ -1997,7 +1997,7 @@ s32 func_80067978(Actor *a, s32 dir) {
             break;
         case 2:
             if (c.y > r->cell.y) {
-                d = func_80067928(&c, r->cell.x, r->cell.y, 1);
+                d = Stg20_CellDistWeighted(&c, r->cell.x, r->cell.y, 1);
                 if (d < best) {
                     best = d;
                     found = i;
@@ -2006,7 +2006,7 @@ s32 func_80067978(Actor *a, s32 dir) {
             break;
         case 3:
             if (c.x < r->cell.x) {
-                d = func_80067928(&c, r->cell.x, r->cell.y, 0);
+                d = Stg20_CellDistWeighted(&c, r->cell.x, r->cell.y, 0);
                 if (d < best) {
                     best = d;
                     found = i;
@@ -2019,7 +2019,7 @@ s32 func_80067978(Actor *a, s32 dir) {
 }
 
 INCLUDE_RODATA("asm/USA/stag2000/rodata", D_80063564);
-void func_80067B20(Actor *a) {
+void Stg20_AreaSelectUpdate(Actor *a) {
     Stg20NavWork *w = (Stg20NavWork *)a->work;
     Stg20PickRec *r;
     s32 i;
@@ -2034,7 +2034,7 @@ void func_80067B20(Actor *a) {
         Mem_FillWordsNeg1(&w->text, 1);
         w->index = 0;
         for (i = 0, n = 0; ; i++) {
-            r = (Stg20PickRec *)func_8006F360(i);
+            r = (Stg20PickRec *)Stg20_GetMapDest(i);
             if (i == Sys_State.modeArg) {
                 w->index = n;
             }
@@ -2053,7 +2053,7 @@ void func_80067B20(Actor *a) {
         break;
     case 1:
         do {
-            if (Pad_State[0].down > 0) {                k = func_80067978(a, 0);                if (k != -1) {                    Snd_PlayById(0x12, 0);                    w->index = k;                }                w->redraw = 1;            } else if (Pad_State[0].left > 0) {                k = func_80067978(a, 1);                if (k != -1) {                    Snd_PlayById(0x12, 0);                    w->index = k;                }                w->redraw = 1;            } else if (Pad_State[0].up > 0) {                k = func_80067978(a, 2);                if (k != -1) {                    Snd_PlayById(0x12, 0);                    w->index = k;                }                w->redraw = 1;            } else if (Pad_State[0].right > 0) {                k = func_80067978(a, 3);                if (k != -1) {                    Snd_PlayById(0x12, 0);                    w->index = k;                }                w->redraw = 1;            } else if (Pad_State[0].cross > 0) {                if (w->recs[w->index].mode != 0x301) {                    goto play;                }                if (w->recs[w->index].arg != 2 || Flag_Test(0x12) != 0) {                play:                    Snd_PlayById(0xE, 0);                    Task_NextState0(a);                }            }            if (w->redraw != 0) {                w->redraw = 0;                Text_Close(&w->text);                Text_OpenPacked(&w->text, w->recs[w->index].text, 0, D_80063564);            }        } while (0);
+            if (Pad_State[0].down > 0) {                k = Stg20_AreaSelectFindDir(a, 0);                if (k != -1) {                    Snd_PlayById(0x12, 0);                    w->index = k;                }                w->redraw = 1;            } else if (Pad_State[0].left > 0) {                k = Stg20_AreaSelectFindDir(a, 1);                if (k != -1) {                    Snd_PlayById(0x12, 0);                    w->index = k;                }                w->redraw = 1;            } else if (Pad_State[0].up > 0) {                k = Stg20_AreaSelectFindDir(a, 2);                if (k != -1) {                    Snd_PlayById(0x12, 0);                    w->index = k;                }                w->redraw = 1;            } else if (Pad_State[0].right > 0) {                k = Stg20_AreaSelectFindDir(a, 3);                if (k != -1) {                    Snd_PlayById(0x12, 0);                    w->index = k;                }                w->redraw = 1;            } else if (Pad_State[0].cross > 0) {                if (w->recs[w->index].mode != 0x301) {                    goto play;                }                if (w->recs[w->index].arg != 2 || Flag_Test(0x12) != 0) {                play:                    Snd_PlayById(0xE, 0);                    Task_NextState0(a);                }            }            if (w->redraw != 0) {                w->redraw = 0;                Text_Close(&w->text);                Text_OpenPacked(&w->text, w->recs[w->index].text, 0, D_80063564);            }        } while (0);
         break;
     case 2:
         switch (a->stateLevel1) {
@@ -2073,7 +2073,7 @@ void func_80067B20(Actor *a) {
     }
 }
 
-void func_80067E9C(Actor *a) {
+void Stg20_AreaSelectDraw(Actor *a) {
     Stg20NavWork *w = (Stg20NavWork *)a->work;
     s32 i;
     GfxPart *p;
@@ -2122,7 +2122,7 @@ void func_80067E9C(Actor *a) {
     Gfx_DrawParts((s32)p);
 }
 
-void func_80068134(Actor *a, s32 open) {
+void Stg20_AreaSelectShowName(Actor *a, s32 open) {
     Stg20PickWork *w = (Stg20PickWork *)a->work;
 
     if (open == 0) {
@@ -2134,7 +2134,7 @@ void func_80068134(Actor *a, s32 open) {
 
 INCLUDE_RODATA("asm/USA/stag2000/rodata", D_80063568);
 INCLUDE_RODATA("asm/USA/stag2000/rodata", D_8006356C);
-void func_800681A0(Actor *a)
+void Stg20_LabModeSelUpdate(Actor *a)
 {
   Stg20YesNoWork *w = (Stg20YesNoWork *) a->work;
   switch (a->stateLevel0)
@@ -2190,7 +2190,7 @@ void func_800681A0(Actor *a)
 
 }
 
-void func_80068364(Actor *a) {
+void Stg20_LabModeSelDraw(Actor *a) {
     Stg20BlinkTask *t = (Stg20BlinkTask *)a;
     Stg20Work *w = t->work;
     GfxPart *p = (GfxPart *)Cd_GetFileEntry(0xD120000);
@@ -2206,7 +2206,7 @@ void func_80068364(Actor *a) {
     Gfx_DrawParts((s32)p);
 }
 
-void func_80068420(Actor *a, s32 i) {
+void Stg20_LabRosterSetText(Actor *a, s32 i) {
     Stg20SlotWork *w = (Stg20SlotWork *)a->work;
     Stg20Slot *s = &w->slots[i];
     Halves *pos = D_8006FF9C[i];
@@ -2226,7 +2226,7 @@ void func_80068420(Actor *a, s32 i) {
     }
 }
 
-void func_800685C4(Actor *a) {
+void Stg20_LabRosterFillSlots(Actor *a) {
     Stg20SlotWork *w = (Stg20SlotWork *)a->work;
     s32 i;
 
@@ -2237,7 +2237,7 @@ void func_800685C4(Actor *a) {
     }
 }
 
-void func_8006863C(Actor *a) {
+void Stg20_LabRosterUpdate(Actor *a) {
     Stg20SlotWork *w = (Stg20SlotWork *)a->work;
     s32 i;
     s32 j;
@@ -2252,7 +2252,7 @@ void func_8006863C(Actor *a) {
                 w->count++;
             }
         }
-        func_800685C4(a);
+        Stg20_LabRosterFillSlots(a);
         Task_NextState0(a);
         break;
     tri:
@@ -2278,7 +2278,7 @@ void func_8006863C(Actor *a) {
                 D_800709B0.field_14--;
                 snd = 1;
             }
-            func_800685C4(a);
+            Stg20_LabRosterFillSlots(a);
         } else if (Pad_State[0].repeat & 0x4000) {
             if (D_800709B0.field_18 != 3) {
                 w->timer = 0;
@@ -2288,7 +2288,7 @@ void func_8006863C(Actor *a) {
                 D_800709B0.field_14++;
                 snd = 1;
             }
-            func_800685C4(a);
+            Stg20_LabRosterFillSlots(a);
         } else if (Pad_State[0].triangle > 0) {
             goto tri;
         } else if (Pad_State[0].cross > 0) {
@@ -2304,7 +2304,7 @@ void func_8006863C(Actor *a) {
             Snd_PlayById(0xD, 0);
         }
         for (i = 0; i < 4; i++) {
-            func_80068420(a, i);
+            Stg20_LabRosterSetText(a, i);
         }
         break;
     case 2:
@@ -2314,7 +2314,7 @@ void func_8006863C(Actor *a) {
     }
 }
 
-void func_800688E4(Actor *a) {
+void Stg20_LabRosterDraw(Actor *a) {
     Stg20Roster *ros;
     Stg20SlotWork *w = (Stg20SlotWork *)a->work;
     GfxPart *p;
@@ -2362,11 +2362,11 @@ void func_800688E4(Actor *a) {
     } while (0);
 }
 
-void func_80068B3C(Actor *a, s32 v) {
+void Stg20_MsgWinInit(Actor *a, s32 v) {
     a->param = v;
 }
 
-void func_80068B44(Actor *a) {
+void Stg20_MsgWinUpdate(Actor *a) {
     Stg20NameWork *w = (Stg20NameWork *)a->work;
     Stg20TextArgs args;
 
@@ -2401,12 +2401,12 @@ void func_80068B44(Actor *a) {
     }
 }
 
-void func_80068C50(Actor *a) {
+void Stg20_MsgWinDestroy(Actor *a) {
     Text_CloseArray((s32 *)a->work, 1);
     Task_DefaultDestroy(a);
 }
 
-void func_80068C84(Actor *a) {
+void Stg20_MsgWinDraw(Actor *a) {
     Stg20Part *p;
     Stg20Part *q;
     s32 id;
@@ -2422,7 +2422,7 @@ void func_80068C84(Actor *a) {
     Gfx_DrawParts((s32)p);
 }
 
-void func_80068CF8(void) {
+void Stg20_MsgWinClear(void) {
     TaskEntry *e = Task_FindFirst(0x30D, -1, -1);
 
     if (e != NULL) {
@@ -2430,7 +2430,7 @@ void func_80068CF8(void) {
     }
 }
 
-void func_80068D34(s32 id) {
+void Stg20_MsgWinShowSkillDesc(s32 id) {
     TaskEntry *e = Task_FindFirst(0x30D, -1, -1);
 
     if (e != NULL) {
@@ -2441,7 +2441,7 @@ void func_80068D34(s32 id) {
     }
 }
 
-void func_80068D84(s32 id) {
+void Stg20_MsgWinShowSysMsg(s32 id) {
     TaskEntry *e = Task_FindFirst(0x30D, -1, -1);
 
     if (e != NULL) {
@@ -2452,7 +2452,7 @@ void func_80068D84(s32 id) {
     }
 }
 
-void func_80068DD8(s32 text, s32 digi) {
+void Stg20_MsgWinShowDigiMsg(s32 text, s32 digi) {
     TaskEntry *e = Task_FindFirst(0x30D, -1, -1);
 
     if (e != NULL) {
@@ -2468,7 +2468,7 @@ void func_80068DD8(s32 text, s32 digi) {
     }
 }
 
-s32 func_80068E6C(void) {
+s32 Stg20_MsgWinGetChoice(void) {
     TaskEntry *e = Task_FindFirst(0x30D, -1, -1);
 
     if (e != NULL) {
@@ -2477,7 +2477,7 @@ s32 func_80068E6C(void) {
     return 0;
 }
 
-void func_80068EB0(Actor *a) {
+void Stg20_LabCaptionUpdate(Actor *a) {
     s32 *w = (s32 *)a->work;
 
     switch (a->stateLevel0) {
@@ -2500,7 +2500,7 @@ void func_80068EB0(Actor *a) {
     }
 }
 
-void func_80068FB8(void) {
+void Stg20_LabCaptionDraw(void) {
     GfxPart *p = (GfxPart *)Cd_GetFileEntry(0xD120001);
     GfxPart *q;
 
@@ -2523,7 +2523,7 @@ void func_80068FB8(void) {
     Gfx_DrawParts((s32)p);
 }
 
-void func_80069068(Actor *a) {
+void Stg20_LabInfoUpdate(Actor *a) {
     Stg20InfoWork *w = (Stg20InfoWork *)a->work;
     DigiRosterEntry *d;
     s32 t;
@@ -2545,23 +2545,23 @@ void func_80069068(Actor *a) {
         switch (a->stateLevel1) {
         case 0:
         default:
-            func_80067480(&w->texts[0], (s32)w->digi->name, 0, &D_80070040[0], 0);
-            func_80067480(&w->texts[1], (s32)Digi_GetDefaultName(w->digi->digiId), 0, &D_80070040[1], 0);
-            func_80067480(&w->texts[2], 0, Digi_GetType(w->digi->digiId) + 0xC3, &D_80070040[2], 0);
-            func_80067480(&w->texts[3], 0, Digi_GetRank(w->digi->digiId) + 0xC6, &D_80070040[3], 0);
-            func_80067480(&w->texts[4], 0, Digi_GetSpecialty(w->digi->digiId) + 0xCA, &D_80070040[4], 0);
+            Stg20_OpenText(&w->texts[0], (s32)w->digi->name, 0, &D_80070040[0], 0);
+            Stg20_OpenText(&w->texts[1], (s32)Digi_GetDefaultName(w->digi->digiId), 0, &D_80070040[1], 0);
+            Stg20_OpenText(&w->texts[2], 0, Digi_GetType(w->digi->digiId) + 0xC3, &D_80070040[2], 0);
+            Stg20_OpenText(&w->texts[3], 0, Digi_GetRank(w->digi->digiId) + 0xC6, &D_80070040[3], 0);
+            Stg20_OpenText(&w->texts[4], 0, Digi_GetSpecialty(w->digi->digiId) + 0xCA, &D_80070040[4], 0);
             if (w->digi->attr[0x25] != 0) {
-                func_80067480(&w->texts[5], (s32)Digi_GetDefaultName(w->digi->attr[0x25]), 0, &D_80070040[5], 0);
+                Stg20_OpenText(&w->texts[5], (s32)Digi_GetDefaultName(w->digi->attr[0x25]), 0, &D_80070040[5], 0);
             }
             if (w->digi->attr[0x26] != 0) {
-                func_80067480(&w->texts[6], (s32)Digi_GetDefaultName(w->digi->attr[0x26]), 0, &D_80070040[6], 0);
+                Stg20_OpenText(&w->texts[6], (s32)Digi_GetDefaultName(w->digi->attr[0x26]), 0, &D_80070040[6], 0);
             }
-            func_80067480(&w->texts[7], 0, 0x105, &D_80070040[7], 0);
-            func_80067480(&w->texts[8], 0, 0x106, &D_80070040[8], 0);
-            func_80067480(&w->texts[9], 0, 0x107, &D_80070040[9], 0);
-            func_80067480(&w->texts[10], 0, 0xBF, &D_80070040[10], 0);
-            func_80067480(&w->texts[11], 0, 0xD0, &D_80070040[11], 0);
-            func_80067480(&w->texts[12], 0, 0x9D, &D_80070040[12], 0);
+            Stg20_OpenText(&w->texts[7], 0, 0x105, &D_80070040[7], 0);
+            Stg20_OpenText(&w->texts[8], 0, 0x106, &D_80070040[8], 0);
+            Stg20_OpenText(&w->texts[9], 0, 0x107, &D_80070040[9], 0);
+            Stg20_OpenText(&w->texts[10], 0, 0xBF, &D_80070040[10], 0);
+            Stg20_OpenText(&w->texts[11], 0, 0xD0, &D_80070040[11], 0);
+            Stg20_OpenText(&w->texts[12], 0, 0x9D, &D_80070040[12], 0);
             switch (D_800709D4) {
             case 0:
                 t = Digi_GetRank(w->digi->digiId);
@@ -2570,30 +2570,30 @@ void func_80069068(Actor *a) {
                 if (lv >= 4) {
                     lv = 3;
                 }
-                switch (D_80070074[lv][t]) {
+                switch (Stg20_DigivolveRuleTbl[lv][t]) {
                 case 0:
-                    func_80068D84(0x118);
+                    Stg20_MsgWinShowSysMsg(0x118);
                     break;
                 case 1:
                     p = Digi_GetEvolutionTarget(d->digiId, d->dp);
-                    D_800709DC = p;
+                    Stg20_EvoTargetId = p;
                     if (p == 0) {
                 case 2:
-                        func_80068D84(0x11D);
+                        Stg20_MsgWinShowSysMsg(0x11D);
                     } else {
-                        func_80068DD8(0x119, p);
+                        Stg20_MsgWinShowDigiMsg(0x119, p);
                     }
                     break;
                 }
                 break;
             case 1:
-                func_80068DD8(0x126, D_800709DC);
+                Stg20_MsgWinShowDigiMsg(0x126, Stg20_EvoTargetId);
                 break;
             case 2:
                 if (Digi_GetRank(w->digi->digiId) != 0) {
-                    func_80068D84(0x11B);
+                    Stg20_MsgWinShowSysMsg(0x11B);
                 } else {
-                    func_80068D84(0x11A);
+                    Stg20_MsgWinShowSysMsg(0x11A);
                 }
                 break;
             case 3:
@@ -2624,17 +2624,17 @@ void func_80069068(Actor *a) {
                 }
                 if (ok != 0) {
                     if (Digi_GetRank(w->digi->digiId) == 0) {
-                        func_80068D84(0x11A);
+                        Stg20_MsgWinShowSysMsg(0x11A);
                     } else {
-                        D_800709DC = func_8006A190(id0, id1);
-                        func_80068DD8(0x128, D_800709DC);
+                        Stg20_EvoTargetId = Stg20_GetDnaResult(id0, id1);
+                        Stg20_MsgWinShowDigiMsg(0x128, Stg20_EvoTargetId);
                     }
                 } else {
-                    func_80068D84(0x12A);
+                    Stg20_MsgWinShowSysMsg(0x12A);
                 }
                 break;
             case 4:
-                func_80068DD8(0x129, D_800709DC);
+                Stg20_MsgWinShowDigiMsg(0x129, Stg20_EvoTargetId);
                 break;
             }
             Task_NextState1(a);
@@ -2655,7 +2655,7 @@ void func_80069068(Actor *a) {
                 if (D_800709B0.field_24 == 1) {
                     break;
                 }
-                switch (func_80068E6C()) {
+                switch (Stg20_MsgWinGetChoice()) {
                 case 0:
                     D_800709B0.field_8 = 2;
                     Task_NextState0(a);
@@ -2676,7 +2676,7 @@ void func_80069068(Actor *a) {
     }
 }
 
-void func_8006964C(Actor *a) {
+void Stg20_LabInfoDraw(Actor *a) {
     Stg20StatusWork *w = (Stg20StatusWork *)a->work;
     GfxPart *p = (GfxPart *)Cd_GetFileEntry(0xD120008);
 
@@ -2694,7 +2694,7 @@ void func_8006964C(Actor *a) {
     Gfx_DrawParts((s32)p);
 }
 
-void func_800697AC(Actor *a) {
+void Stg20_LabSkillsGroup(Actor *a) {
     Stg20SkillWork *w = (Stg20SkillWork *)a->work;
     Stg20Roster *e = &D_8005E704[a->param];
     s32 cnt[4];
@@ -2723,7 +2723,7 @@ void func_800697AC(Actor *a) {
     }
 }
 
-void func_800698F4(Actor *a) {
+void Stg20_LabSkillsSetText(Actor *a) {
     Stg20SkillWork *w = (Stg20SkillWork *)a->work;
     Stg20TextArgs args;
     s32 i;
@@ -2753,15 +2753,15 @@ void func_800698F4(Actor *a) {
     if (s != 0) {
         if (w->skill != s) {
             w->skill = s;
-            func_80068D34(s);
+            Stg20_MsgWinShowSkillDesc(s);
         }
     } else {
         w->skill = 0;
-        func_80068CF8();
+        Stg20_MsgWinClear();
     }
 }
 
-void func_80069AAC(Actor *a) {
+void Stg20_LabSkillsUpdate(Actor *a) {
     Stg20SkillWork *w = (Stg20SkillWork *)a->work;
     s32 snd;
     s32 redraw;
@@ -2773,17 +2773,17 @@ void func_80069AAC(Actor *a) {
     case 0:
         Mem_FillWordsNeg1(w->texts, 0x13);
         a->param = D_800709E0;
-        func_800697AC(a);
+        Stg20_LabSkillsGroup(a);
         Task_NextState0(a);
         break;
     case 1:
         if (a->stateLevel1 == 0) {
-            func_80067480(&w->texts[0], 0, 0xA, &D_800700AC[0], 4);
-            func_80067480(&w->texts[1], 0, 0xB, &D_800700AC[1], 4);
-            func_80067480(&w->texts[2], 0, 0xC, &D_800700AC[2], 4);
-            func_80067480(&w->texts[3], 0, 0xD, &D_800700AC[3], 4);
-            func_80067480(&w->texts[4], (s32)Save_RosterNames[D_800709E0].name, 0, &D_800700AC[8], 0);
-            func_80067480(&w->texts[5], 0, 0xD1, &D_800700AC[9], 0);
+            Stg20_OpenText(&w->texts[0], 0, 0xA, &D_800700AC[0], 4);
+            Stg20_OpenText(&w->texts[1], 0, 0xB, &D_800700AC[1], 4);
+            Stg20_OpenText(&w->texts[2], 0, 0xC, &D_800700AC[2], 4);
+            Stg20_OpenText(&w->texts[3], 0, 0xD, &D_800700AC[3], 4);
+            Stg20_OpenText(&w->texts[4], (s32)Save_RosterNames[D_800709E0].name, 0, &D_800700AC[8], 0);
+            Stg20_OpenText(&w->texts[5], 0, 0xD1, &D_800700AC[9], 0);
             Task_NextState1(a);
         }
         redraw = snd = 0;
@@ -2829,18 +2829,18 @@ void func_80069AAC(Actor *a) {
             Snd_PlayById(0xD, 0);
         }
         if (redraw != 0 || ((Stg20BlinkTask *)a)->field_24 == 1) {
-            func_800698F4(a);
+            Stg20_LabSkillsSetText(a);
         }
         break;
     case 2:
         Text_CloseArray(w->texts, 0x13);
-        func_80068CF8();
+        Stg20_MsgWinClear();
         Task_NextState0(a);
         break;
     }
 }
 
-void func_80069D98(Actor *a) {
+void Stg20_LabSkillsDraw(Actor *a) {
     Stg20SkillWork *w = (Stg20SkillWork *)a->work;
     GfxPart *p;
     GfxPart *q;
@@ -2899,14 +2899,14 @@ void func_80069D98(Actor *a) {
     Gfx_DrawParts((s32)p);
 }
 
-void func_8006A000(Actor *a) {
+void Stg20_LabPairUpdate(Actor *a) {
     s32 *w = (s32 *)a->work;
 
     switch (a->stateLevel0) {
     case 0:
         Mem_FillWordsNeg1(w, 2);
-        func_80067480(w, (s32)Save_RosterNames[D_800709B0.field_34].name, 0, &D_8007010C[0], 0);
-        func_80067480(&w[1], (s32)Save_RosterNames[D_800709B0.field_38].name, 0, &D_8007010C[1], 0);
+        Stg20_OpenText(w, (s32)Save_RosterNames[D_800709B0.field_34].name, 0, &D_8007010C[0], 0);
+        Stg20_OpenText(&w[1], (s32)Save_RosterNames[D_800709B0.field_38].name, 0, &D_8007010C[1], 0);
         Task_NextState0(a);
         break;
     case 1:
@@ -2918,31 +2918,31 @@ void func_8006A000(Actor *a) {
     }
 }
 
-void func_8006A118(void) {
+void Stg20_LabPairDraw(void) {
     Gfx_DrawParts((s32)Cd_GetFileEntry(0xD120007));
 }
 
-s32 func_8006A144(s32 a, s32 b) {
+s32 Stg20_GetDnaTypeIndex(s32 a, s32 b) {
     a = Digi_GetType(a);
     b = Digi_GetType(b);
-    return D_8007012C[a][b];
+    return Stg20_DnaTypeIndexTbl[a][b];
 }
 
-u8 func_8006A190(s32 a, s32 b) {
-    s32 s4 = func_8006A144(a, b);
+u8 Stg20_GetDnaResult(s32 a, s32 b) {
+    s32 s4 = Stg20_GetDnaTypeIndex(a, b);
     s32 r1 = Digi_GetRank(a);
     s32 r2 = Digi_GetRank(b);
     s32 m = (r1 < r2 ? r1 : r2) - 1;
     s32 r3 = func_8001D910(a);
     s32 r4 = func_8001D910(b);
-    return D_80070138[s4][m][r3][r4];
+    return Stg20_DnaResultTbl[s4][m][r3][r4];
 }
 
-void func_8006A248(Actor *a, s32 v) {
+void Stg20_ShadowInit(Actor *a, s32 v) {
     ((Stg20Work *)a->work)->field_0 = v;
 }
 
-void func_8006A254(Actor *a) {
+void Stg20_ShadowUpdate(Actor *a) {
     Actor *t;
 
     switch (a->stateLevel0) {
@@ -2963,14 +2963,14 @@ void func_8006A254(Actor *a) {
     }
 }
 
-void func_8006A320(Actor *a) {
+void Stg20_ShadowDraw(Actor *a) {
     Gfx_AttachModel(a, 0x2F7);
     Actor_UpdateTransform(a);
     Gfx_CalcModelBoneMatrices(a);
     Gfx_DrawTexModel(a, 1);
 }
 
-void func_8006A364(Actor *a) {
+void Stg20_LabJogBgUpdate(Actor *a) {
     if (a->stateLevel0 == 0) {
         Actor_InitTransform(a, Gfx_ZeroVector, 0);
         Gfx_AttachModel(a, 0xD14)->otIndex = 5;
@@ -2981,7 +2981,7 @@ void func_8006A364(Actor *a) {
 }
 
 INCLUDE_RODATA("asm/USA/stag2000/rodata", D_80063584);
-void func_8006A3D0(Actor *a) {
+void Stg20_LabJogBgDraw(Actor *a) {
     CVECTOR c;
 
     Gfx_AttachModel(a, 0xD14);
@@ -2991,7 +2991,7 @@ void func_8006A3D0(Actor *a) {
     Gfx_DrawWireModel(a, 1, &c);
 }
 
-void func_8006A434(Actor *a) {
+void Stg20_LabDigiModelUpdate(Actor *a) {
     Stg20Rot *o = (Stg20Rot *)a->u38.ptr38;
     Stg20DrawWork *w = (Stg20DrawWork *)a->work;
     Stg20ModelTint *t;
@@ -3091,7 +3091,7 @@ void func_8006A434(Actor *a) {
     }
 }
 
-void func_8006A6DC(Actor *a) {
+void Stg20_LabDigiModelDraw(Actor *a) {
     Stg20DrawWork *w = (Stg20DrawWork *)a->work;
 
     if (w->visible != 0) {
@@ -3103,7 +3103,7 @@ void func_8006A6DC(Actor *a) {
     }
 }
 
-void func_8006A744(Actor *a) {
+void Stg20_MapExitUpdate(Actor *a) {
     Stg20ExitWork *w = (Stg20ExitWork *)a->work;
     Stg20Exit *e;
     Stg20Cell c;
@@ -3113,10 +3113,10 @@ void func_8006A744(Actor *a) {
         Task_NextState0(a);
         break;
     case 1:
-        for (e = (Stg20Exit *)func_80066714()->field_C; e->x != 0; e++) {
+        for (e = (Stg20Exit *)Stg20_GetMapInfo()->field_C; e->x != 0; e++) {
             c.x = e->x;
             c.y = e->y;
-            if (func_800636A8(&c) & 0x80) {
+            if (Stg20_GetGridCell(&c) & 0x80) {
                 Task_FindFirst(0x302, 0, -1)->param = 1;
                 w->mode = e->mode + 0x300;
                 w->arg = e->arg;
@@ -3142,7 +3142,7 @@ void func_8006A744(Actor *a) {
     }
 }
 
-Actor *func_8006A8C0(s32 id) {
+Actor *Stg20_FindWalkerByDigiId(s32 id) {
     Actor *e;
 
     for (e = (Actor *)Task_FindFirst(0x302, -1, -1); e != NULL; e = (Actor *)Task_FindNext()) {
@@ -3153,10 +3153,10 @@ Actor *func_8006A8C0(s32 id) {
     return NULL;
 }
 
-void func_8006A920(Actor *a, Stg20Pos2 *pos) {
+void Stg20_WalkerWarpToCell(Actor *a, Stg20Pos2 *pos) {
     Stg20CursorWork *w = (Stg20CursorWork *)a->work;
     ActorTransformView *t = a->u38.ptr38;
-    Stg20Cell c = *func_80067504(a);
+    Stg20Cell c = *Stg20_GetActorCell(a);
 
     if (c.x != pos->x && c.y != pos->y) {
         t->posX = (pos->x - 11) * 0x600;
@@ -3171,11 +3171,11 @@ void func_8006A920(Actor *a, Stg20Pos2 *pos) {
     w->field_18 = 0;
 }
 
-s32 func_8006A9F8(Actor *a) {
+s32 Stg20_WalkerIsPathDone(Actor *a) {
     return ((Stg20ModelWork *)a->work)->field_74;
 }
 
-void func_8006AA0C(Actor *a, s32 anim) {
+void Stg20_WalkerSetAnim(Actor *a, s32 anim) {
     Stg20ModelTask *t = (Stg20ModelTask *)a;
     Stg20ModelWork *w = t->work;
 
@@ -3185,7 +3185,7 @@ void func_8006AA0C(Actor *a, s32 anim) {
     }
 }
 
-void func_8006AA4C(Actor *a, Stg20Spawn *s) {
+void Stg20_WalkerInit(Actor *a, Stg20Spawn *s) {
     Stg20SpawnWork *w = (Stg20SpawnWork *)a->work;
     s32 i;
 
@@ -3209,13 +3209,13 @@ void func_8006AA4C(Actor *a, Stg20Spawn *s) {
     }
 }
 
-void func_8006AB0C(Actor *a)
+void Stg20_WalkerGetInput(Actor *a)
 {
   Stg20WalkWork *w = (Stg20WalkWork *) a->work;
   Stg20Cell *c;
   Stg20Cell *p;
   s32 r;
-  if ((((Stg20ModelTask *) a)->field_4 == 0) && (D_800709B4 == 0))
+  if ((((Stg20ModelTask *) a)->field_4 == 0) && (Stg20_TalkActive == 0))
   {
     switch (a->param)
     {
@@ -3241,7 +3241,7 @@ void func_8006AB0C(Actor *a)
     }
     else
     {
- do { c = func_80067504(a); if (((c->x == w->path[w->index].x) && (c->y == w->path[w->index].y)) && (func_80067568(a) != 0)) { w->index++; switch (w->path[w->index].x) { case 1: w->done = 1; case 0: w->index = 0; break; } r = Rand_Next(); w->input = 0; w->wait = ((u16) (((u16) r) % 60)) + 15; } else { p = &w->path[w->index]; if (c->y != p->y) { if (c->y < p->y) { w->input = 0x4000; } else { w->input = 0x1000; } } if (c->x != p->x) { if (c->x < p->x) { w->input = 0x2000; } else { w->input = 0x8000; } } } } while (0);
+ do { c = Stg20_GetActorCell(a); if (((c->x == w->path[w->index].x) && (c->y == w->path[w->index].y)) && (Stg20_IsOnCellCenter(a) != 0)) { w->index++; switch (w->path[w->index].x) { case 1: w->done = 1; case 0: w->index = 0; break; } r = Rand_Next(); w->input = 0; w->wait = ((u16) (((u16) r) % 60)) + 15; } else { p = &w->path[w->index]; if (c->y != p->y) { if (c->y < p->y) { w->input = 0x4000; } else { w->input = 0x1000; } } if (c->x != p->x) { if (c->x < p->x) { w->input = 0x2000; } else { w->input = 0x8000; } } } } while (0);
     }
   }
   else
@@ -3250,7 +3250,7 @@ void func_8006AB0C(Actor *a)
   }
 }
 
-s32 func_8006AD14(Actor *a) {
+s32 Stg20_InputToDir(Actor *a) {
     u16 m = 0x1000;
     s32 i;
 
@@ -3263,13 +3263,13 @@ s32 func_8006AD14(Actor *a) {
     return -1;
 }
 
-void func_8006AD6C(Actor *a, s32 i) {
-    ((Stg20Rot *)a->u38.ptr38)->field_42 = D_800703D8[i];
+void Stg20_WalkerFaceDir(Actor *a, s32 i) {
+    ((Stg20Rot *)a->u38.ptr38)->field_42 = Stg20_DirAngles[i];
 }
 
-void func_8006AD8C(Actor *a) {
+void Stg20_WalkerHalt(Actor *a) {
     Stg20CursorWork *w = (Stg20CursorWork *)a->work;
-    Stg20Cell c = *func_80067504(a);
+    Stg20Cell c = *Stg20_GetActorCell(a);
 
     w->x = c.x;
     w->y = c.y;
@@ -3279,7 +3279,7 @@ void func_8006AD8C(Actor *a) {
     w->field_18 = 0;
 }
 
-void func_8006ADF8(Actor *a) {
+void Stg20_WalkerUpdate(Actor *a) {
     Stg20NpcWork *w = (Stg20NpcWork *)a->work;
     s32 pos[3];
     Stg20Cell c;
@@ -3310,7 +3310,7 @@ void func_8006ADF8(Actor *a) {
         if (w->visible != 0) {
             w->modelId = Digi_GetModelFile(a->digiId);
             Gfx_AttachModel(a, w->modelId)->otIndex = 3;
-            func_8006AA0C(a, 0x1E);
+            Stg20_WalkerSetAnim(a, 0x1E);
             Task_Create(0x303, (s32 *)a->u34.children, (s32)a);
             r = (Stg20Rot *)a->u38.ptr38;
             switch (Sys_GameMode[0]) {
@@ -3344,14 +3344,14 @@ void func_8006ADF8(Actor *a) {
                 if (p == NULL) {
                     break;
                 }
-                c = *func_80067504(p);
-                if (w->blk[0].x == c.x && w->blk[0].y == c.y && func_80067568(p) != 0) {
+                c = *Stg20_GetActorCell(p);
+                if (w->blk[0].x == c.x && w->blk[0].y == c.y && Stg20_IsOnCellCenter(p) != 0) {
                     Text_OpenMsgClearChoice(&w->text, Flag_SelectBranch(w->field_1C));
                     w->target = p;
-                    func_8006AD8C(p);
+                    Stg20_WalkerHalt(p);
                     Task_SetState1(p, 0);
                     Task_NextState1(a);
-                    D_800709B4 = 1;
+                    Stg20_TalkActive = 1;
                 }
                 break;
             case 1:
@@ -3368,14 +3368,14 @@ void func_8006ADF8(Actor *a) {
                         Task_SetState1(a, 0);
                     }
                     Task_SetState1(w->target, 0);
-                    D_800709B4 = 0;
+                    Stg20_TalkActive = 0;
                 }
                 break;
             }
             break;
         }
         if (w->visible != 0) {
-            func_8006AB0C(a);
+            Stg20_WalkerGetInput(a);
         } else {
             w->input = 0;
         }
@@ -3386,28 +3386,28 @@ void func_8006ADF8(Actor *a) {
             case 0:
             default:
                 Actor_StopAxisMotion(a, 2);
-                func_8006AA0C(a, 0x1E);
-                func_80067604(a, 1, 1);
+                Stg20_WalkerSetAnim(a, 0x1E);
+                Stg20_SnapToCell(a, 1, 1);
                 Task_NextState2(a);
             case 1:
-                func_800677C8(a, &w->marks, -1, 5);
+                Stg20_AddOccupantMark(a, &w->marks, -1, 5);
                 if (w->input & 0xF000) {
-                    if (func_80067770(a, func_8006AD14(a)) == 0) {
-                        func_800677C8(a, &w->marks, func_8006AD14(a), 0x14);
+                    if (Stg20_IsCellBlocked(a, Stg20_InputToDir(a)) == 0) {
+                        Stg20_AddOccupantMark(a, &w->marks, Stg20_InputToDir(a), 0x14);
                         Task_SetState1(a, 1);
                         w->counter = 0;
                     } else {
-                        func_8006AD6C(a, func_8006AD14(a));
+                        Stg20_WalkerFaceDir(a, Stg20_InputToDir(a));
                     }
                 } else if (((Stg20ModelTask *)a)->field_4 == 0) {
                     if (w->timer < Sys_State.frameCount && (w->input & 0x40)) {
                         dir = (((Stg20Rot *)a->u38.ptr38)->field_42 & 0xFFF) / 0x400;
-                        if (func_80067770(a, dir) & 0x40) {
+                        if (Stg20_IsCellBlocked(a, dir) & 0x40) {
                             e = (Actor *)Task_FindFirst(0x302, 1, -1);
                             found = 0;
-                            c = *func_80067714(a, dir);
+                            c = *Stg20_GetCellInDir(a, dir);
                             while (e != NULL) {
-                                c2 = *func_80067504(e);
+                                c2 = *Stg20_GetActorCell(e);
                                 if (c2.x == c.x && c2.y == c.y) {
                                     if (e->stateLevel1 == 0) {
                                         w->target = e;
@@ -3432,20 +3432,20 @@ void func_8006ADF8(Actor *a) {
                     q = w->target;
                     ew = (Stg20NpcWork *)q->work;
                     D_800709B0.field_4 = 1;
-                    func_800677C8(a, &w->marks, -1, 5);
-                    func_8006AA0C(a, 0x20);
+                    Stg20_AddOccupantMark(a, &w->marks, -1, 5);
+                    Stg20_WalkerSetAnim(a, 0x20);
                     Task_SetState1(q, 0);
                     Task_SetState2(q, 2);
                     ew->target = a;
                     ((Stg20Rot *)q->u38.ptr38)->field_42 = ((Stg20Rot *)a->u38.ptr38)->field_42 + 0x800;
-                    func_8006AD8C(a);
+                    Stg20_WalkerHalt(a);
                     Task_SetState1(a, 0);
                     Task_SetState2(a, 1);
                 } else {
                     switch (a->stateLevel3) {
                     case 0:
                     default:
-                        func_8006AA0C(a, 0x20);
+                        Stg20_WalkerSetAnim(a, 0x20);
                         Text_OpenMsgClearChoice(&w->text, Flag_SelectBranch(w->field_1C));
                         Task_NextState3(a);
                         break;
@@ -3459,7 +3459,7 @@ void func_8006ADF8(Actor *a) {
                                 ((Stg20NpcWork *)w->target->work)->timer = Sys_State.frameCount + 0x1E;
                                 Task_SetState1(w->target, 0);
                                 Task_SetState2(a, 0);
-                                D_800709B4 = 0;
+                                Stg20_TalkActive = 0;
                             }
                         }
                         break;
@@ -3471,7 +3471,7 @@ void func_8006ADF8(Actor *a) {
             }
             if (w->anim < 0x25) {
                 if (w->anim >= 0x22 && a->model->animDone != 0) {
-                    func_8006AA0C(a, 0x1E);
+                    Stg20_WalkerSetAnim(a, 0x1E);
                 }
             }
             break;
@@ -3479,31 +3479,31 @@ void func_8006ADF8(Actor *a) {
             switch (a->stateLevel2) {
             case 0:
             default:
-                d2 = func_8006AD14(a);
+                d2 = Stg20_InputToDir(a);
                 if (d2 == -1) {
                     Task_SetState1(a, 0);
                     break;
                 }
-                func_8006AD6C(a, d2);
+                Stg20_WalkerFaceDir(a, d2);
                 w->dir = d2;
-                if (func_80067770(a, func_8006AD14(a)) != 0) {
+                if (Stg20_IsCellBlocked(a, Stg20_InputToDir(a)) != 0) {
                     Task_SetState1(a, 0);
                     break;
                 }
-                func_800677C8(a, &w->marks, w->dir, 0x14);
+                Stg20_AddOccupantMark(a, &w->marks, w->dir, 0x14);
                 Task_NextState2(a);
             case 1:
-                if ((w->input & 0x10) || D_800709B4 != 0 || ((Stg20ModelTask *)a)->field_4 != 0) {
-                    func_8006AA0C(a, 0x1F);
-                    func_800676A8(a, 0);
+                if ((w->input & 0x10) || Stg20_TalkActive != 0 || ((Stg20ModelTask *)a)->field_4 != 0) {
+                    Stg20_WalkerSetAnim(a, 0x1F);
+                    Stg20_SetMoveParams(a, 0);
                 } else {
-                    func_8006AA0C(a, 0x25);
-                    func_800676A8(a, 1);
+                    Stg20_WalkerSetAnim(a, 0x25);
+                    Stg20_SetMoveParams(a, 1);
                 }
                 if (((Stg20ModelTask *)a)->field_4 == 0) {
                     ok = 0;
                     w->counter++;
-                    if ((w->input & 0x10) || D_800709B4 != 0) {
+                    if ((w->input & 0x10) || Stg20_TalkActive != 0) {
                         if (w->counter >= 13) {
                             ok = 1;
                         }
@@ -3512,11 +3512,11 @@ void func_8006ADF8(Actor *a) {
                     }
                     if (ok != 0) {
                         snd = 0x27;
-                        if (func_80066714()->field_18 != 0) {
-                            c = *func_80067504(a);
+                        if (Stg20_GetMapInfo()->field_18 != 0) {
+                            c = *Stg20_GetActorCell(a);
                             idx = c.y * 3 + c.x / 8;
                             mask = 1 << (s16)(c.x % 8);
-                            if (((u8 *)func_80066714()->field_18)[idx] & mask) {
+                            if (((u8 *)Stg20_GetMapInfo()->field_18)[idx] & mask) {
                                 snd = 0x28;
                             }
                         }
@@ -3525,9 +3525,9 @@ void func_8006ADF8(Actor *a) {
                     }
                 }
                 Actor_ApplyAxisMotion(a, 2);
-                func_800677C8(a, &w->marks, -1, 5);
-                if (func_80067568(a) != 0) {
-                    if ((w->input & 0xF000) && func_80067770(a, func_8006AD14(a)) == 0) {
+                Stg20_AddOccupantMark(a, &w->marks, -1, 5);
+                if (Stg20_IsOnCellCenter(a) != 0) {
+                    if ((w->input & 0xF000) && Stg20_IsCellBlocked(a, Stg20_InputToDir(a)) == 0) {
                         Task_SetState1(a, 1);
                     } else {
                         Task_SetState1(a, 0);
@@ -3536,23 +3536,23 @@ void func_8006ADF8(Actor *a) {
                 switch (w->dir) {
                 case 0:
                 case 2:
-                    func_80067604(a, 1, 0);
+                    Stg20_SnapToCell(a, 1, 0);
                     break;
                 case 1:
                 case 3:
-                    func_80067604(a, 0, 1);
+                    Stg20_SnapToCell(a, 0, 1);
                     break;
                 }
                 break;
             }
             break;
         }
-        func_800678A8(a, &w->marks);
+        Stg20_TickOccupantMarks(a, &w->marks);
         break;
     }
 }
 
-void func_8006B7C8(Actor *a) {
+void Stg20_WalkerDraw(Actor *a) {
     Stg20Draw2Work *w = (Stg20Draw2Work *)a->work;
 
     if (w->visible != 0) {
@@ -3566,11 +3566,11 @@ void func_8006B7C8(Actor *a) {
     }
 }
 
-void func_8006B840(Actor *a, Stg20Vec3 *v) {
+void Stg20_XaStreamInit(Actor *a, Stg20Vec3 *v) {
     *(Stg20Vec3 *)a->work = *v;
 }
 
-void func_8006B860(Actor *a) {
+void Stg20_XaStreamUpdate(Actor *a) {
     Stg20XaWork *w = (Stg20XaWork *)a->work;
     u8 filter[8];
     u8 mode[8];
@@ -3639,18 +3639,18 @@ void func_8006B860(Actor *a) {
     }
 }
 
-void func_8006BA5C(Actor *a) {
+void Stg20_XaStreamDestroy(Actor *a) {
     CdControlF(9, 0);
     Task_DefaultDestroy(a);
 }
 
-void func_8006BA90(Actor *a) {
+void Stg20_ShopBgUpdate(Actor *a) {
     if (a->stateLevel0 == 0) {
         Task_NextState0(a);
     }
 }
 
-void func_8006BAC0(Actor *a) {
+void Stg20_ShopBgDraw(Actor *a) {
     GfxPart *p;
     GfxPart *q;
 
@@ -3668,7 +3668,7 @@ void func_8006BAC0(Actor *a) {
 }
 
 INCLUDE_RODATA("asm/USA/stag2000/rodata", D_80063588);
-void func_8006BB7C(Actor *a) {
+void Stg20_ShopBitsUpdate(Actor *a) {
     s32 *w = (s32 *)a->work;
 
     if (a->stateLevel0 == 0) {
@@ -3678,12 +3678,12 @@ void func_8006BB7C(Actor *a) {
     }
 }
 
-void func_8006BBF0(Actor *a) {
+void Stg20_ShopBitsDestroy(Actor *a) {
     Text_CloseArray((s32 *)a->work, 1);
     Task_DefaultDestroy(a);
 }
 
-void func_8006BC24(void) {
+void Stg20_ShopBitsDraw(void) {
     GfxPart *p = (GfxPart *)Cd_GetFileEntry(0xDD60000);
 
     Gfx_SetPartsNumber(p, 2, 8, D_8005E628);
@@ -3692,7 +3692,7 @@ void func_8006BC24(void) {
 
 INCLUDE_RODATA("asm/USA/stag2000/rodata", D_8006358C);
 INCLUDE_RODATA("asm/USA/stag2000/rodata", D_80063590);
-void func_8006BC6C(Actor *a) {
+void Stg20_ItemShopMenuUpdate(Actor *a) {
     s32 state = a->stateLevel0;
     s32 *w = (s32 *)a->work;
 
@@ -3737,12 +3737,12 @@ void func_8006BC6C(Actor *a) {
     }
 }
 
-void func_8006BDD0(Actor *a) {
+void Stg20_ItemShopMenuDestroy(Actor *a) {
     Text_CloseArray((s32 *)a->work, 2);
     Task_DefaultDestroy(a);
 }
 
-void func_8006BE04(Actor *a) {
+void Stg20_ItemShopMenuDraw(Actor *a) {
     GfxPart *p = (GfxPart *)Cd_GetFileEntry(0xDD60004);
     GfxPart *q;
 
@@ -3758,7 +3758,7 @@ void func_8006BE04(Actor *a) {
 
 INCLUDE_RODATA("asm/USA/stag2000/rodata", D_80063594);
 INCLUDE_RODATA("asm/USA/stag2000/rodata", D_80063598);
-void func_8006BEDC(Actor *a) {
+void Stg20_BeetleShopMenuUpdate(Actor *a) {
     s32 state = a->stateLevel0;
     s32 *w = (s32 *)a->work;
 
