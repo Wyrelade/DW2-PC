@@ -49,16 +49,6 @@
       "padnop"
     ]
   },
-  "Gfx_AddQuadsGT4": {
-    "passes": [
-      "reg_realloc_inj",
-      "arg_unrename",
-      "web_realloc",
-      "save_slot",
-      "block_iso_wide",
-      "padnop"
-    ]
-  },
   "func_80020FD0": {
     "passes": [
       "const_unhoist",
