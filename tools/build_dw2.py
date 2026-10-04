@@ -489,22 +489,22 @@ def write_sym_script(path, syms):
 
 
 def auto_scripts(unit, drop):
-    """The splat undefined_{syms,funcs}_auto lists of a unit, without the names in `drop`
-    (those come from another ELF of this build instead of the retail numbers)."""
+    """The splat undefined_{syms,funcs}_auto lists of a unit as PROVIDE()s, without the names
+    in `drop` (those come from another ELF of this build instead of the retail numbers).
+    splat also lists names the asm defines as labels; a plain assignment would override the
+    label with the retail number, PROVIDE only fills in names no object defines."""
     paths = []
     for kind in ("syms", "funcs"):
         p = "linkers/USA/undefined_%s_auto.%s.txt" % (kind, unit)
         if not os.path.exists(os.path.join(ROOT, p)):
             continue
-        if drop:
-            q = os.path.join(CONFIG["build_dir"], "undefined_%s_auto.%s.txt" % (kind, unit))
-            with open(os.path.join(ROOT, q), "w") as f:
-                for line in open(os.path.join(ROOT, p)):
-                    m = re.match(r"\s*(\w+)\s*=", line)
-                    if not (m and m.group(1) in drop):
-                        f.write(line)
-            p = q
-        paths.append(p)
+        q = os.path.join(CONFIG["build_dir"], "undefined_%s_auto.%s.txt" % (kind, unit))
+        with open(os.path.join(ROOT, q), "w") as f:
+            for line in open(os.path.join(ROOT, p)):
+                m = re.match(r"\s*(\w+)\s*=\s*([^;]+);", line)
+                if m and m.group(1) not in drop:
+                    f.write("PROVIDE(%s = %s);\n" % (m.group(1), m.group(2).strip()))
+        paths.append(q)
     return paths
 
 

@@ -20681,8 +20681,15 @@ nonmatching Sys_LastVSyncTime
 dlabel Sys_LastVSyncTime
     /* 40F38 80050738 00000000 */ .word 0x00000000
     /* 40F3C 8005073C 00000100 */ .word 0x00010000
-    /* 40F40 80050740 00000000 */ .word 0x00000000
+    /* 40F40 80050740 */ .byte 0x00
 enddlabel Sys_LastVSyncTime
+
+nonmatching D_80050741
+
+dlabel D_80050741
+    /* 40F41 80050741 */ .byte 0x00
+    /* 40F42 80050742 */ .short 0x0000
+enddlabel D_80050741
 
 nonmatching Gfx_ZeroSVector
 
@@ -20760,8 +20767,13 @@ nonmatching D_8005077C
 
 dlabel D_8005077C
     /* 40F7C 8005077C 00000000 */ .word 0x00000000
-    /* 40F80 80050780 00000000 */ .word 0x00000000
 enddlabel D_8005077C
+
+nonmatching D_80050780
+
+dlabel D_80050780
+    /* 40F80 80050780 00000000 */ .word 0x00000000
+enddlabel D_80050780
 
 nonmatching Mem_HeapSize
 
@@ -35071,7 +35083,19 @@ dlabel Dung_State
     /* 4EDD0 8005E5D0 00000000 */ .word 0x00000000
     /* 4EDD4 8005E5D4 00000000 */ .word 0x00000000
     /* 4EDD8 8005E5D8 00000000 */ .word 0x00000000
-    /* 4EDDC 8005E5DC 00000000 */ .word 0x00000000
+    /* 4EDDC 8005E5DC */ .byte 0x00
+enddlabel Dung_State
+
+nonmatching D_8005E5DD
+
+dlabel D_8005E5DD
+    /* 4EDDD 8005E5DD */ .byte 0x00
+    /* 4EDDE 8005E5DE */ .short 0x0000
+enddlabel D_8005E5DD
+
+nonmatching D_8005E5E0
+
+dlabel D_8005E5E0
     /* 4EDE0 8005E5E0 00000000 */ .word 0x00000000
     /* 4EDE4 8005E5E4 00000000 */ .word 0x00000000
     /* 4EDE8 8005E5E8 00000000 */ .word 0x00000000
@@ -35088,19 +35112,34 @@ dlabel Dung_State
     /* 4EE14 8005E614 00000000 */ .word 0x00000000
     /* 4EE18 8005E618 00000000 */ .word 0x00000000
     /* 4EE1C 8005E61C 00000000 */ .word 0x00000000
-enddlabel Dung_State
+enddlabel D_8005E5E0
 
 nonmatching Save_GameState
 
 dlabel Save_GameState
     /* 4EE20 8005E620 00000000 */ .word 0x00000000
     /* 4EE24 8005E624 00000000 */ .word 0x00000000
+enddlabel Save_GameState
+
+nonmatching D_8005E628
+
+dlabel D_8005E628
     /* 4EE28 8005E628 00000000 */ .word 0x00000000
     /* 4EE2C 8005E62C 00000000 */ .word 0x00000000
     /* 4EE30 8005E630 */ .byte 0x00
+enddlabel D_8005E628
+
+nonmatching D_8005E631
+
+dlabel D_8005E631
     /* 4EE31 8005E631 */ .byte 0x00
+enddlabel D_8005E631
+
+nonmatching D_8005E632
+
+dlabel D_8005E632
     /* 4EE32 8005E632 */ .byte 0x00
-enddlabel Save_GameState
+enddlabel D_8005E632
 
 nonmatching D_8005E633
 
@@ -35117,21 +35156,71 @@ dlabel Save_PlayerName
     /* 4EE40 8005E640 00000000 */ .word 0x00000000
     /* 4EE44 8005E644 00000000 */ .word 0x00000000
     /* 4EE48 8005E648 00000000 */ .word 0x00000000
-    /* 4EE4C 8005E64C 00000000 */ .word 0x00000000
+enddlabel Save_PlayerName
+
+nonmatching D_8005E64C
+
+dlabel D_8005E64C
+    /* 4EE4C 8005E64C */ .short 0x0000
+enddlabel D_8005E64C
+
+nonmatching D_8005E64E
+
+dlabel D_8005E64E
+    /* 4EE4E 8005E64E */ .short 0x0000
+enddlabel D_8005E64E
+
+nonmatching D_8005E650
+
+dlabel D_8005E650
     /* 4EE50 8005E650 00000000 */ .word 0x00000000
     /* 4EE54 8005E654 00000000 */ .word 0x00000000
     /* 4EE58 8005E658 00000000 */ .word 0x00000000
-    /* 4EE5C 8005E65C 00000000 */ .word 0x00000000
-    /* 4EE60 8005E660 00000000 */ .word 0x00000000
+enddlabel D_8005E650
+
+nonmatching D_8005E65C
+
+dlabel D_8005E65C
+    /* 4EE5C 8005E65C */ .short 0x0000
+enddlabel D_8005E65C
+
+nonmatching D_8005E65E
+
+dlabel D_8005E65E
+    /* 4EE5E 8005E65E */ .short 0x0000
+enddlabel D_8005E65E
+
+nonmatching D_8005E660
+
+dlabel D_8005E660
+    /* 4EE60 8005E660 */ .short 0x0000
+enddlabel D_8005E660
+
+nonmatching D_8005E662
+
+dlabel D_8005E662
+    /* 4EE62 8005E662 */ .short 0x0000
     /* 4EE64 8005E664 00000000 */ .word 0x00000000
     /* 4EE68 8005E668 00000000 */ .word 0x00000000
-    /* 4EE6C 8005E66C 00000000 */ .word 0x00000000
+    /* 4EE6C 8005E66C */ .short 0x0000
+enddlabel D_8005E662
+
+nonmatching D_8005E66E
+
+dlabel D_8005E66E
+    /* 4EE6E 8005E66E */ .short 0x0000
     /* 4EE70 8005E670 00000000 */ .word 0x00000000
     /* 4EE74 8005E674 00000000 */ .word 0x00000000
     /* 4EE78 8005E678 00000000 */ .word 0x00000000
     /* 4EE7C 8005E67C 00000000 */ .word 0x00000000
     /* 4EE80 8005E680 00000000 */ .word 0x00000000
-    /* 4EE84 8005E684 00000000 */ .word 0x00000000
+    /* 4EE84 8005E684 */ .short 0x0000
+enddlabel D_8005E66E
+
+nonmatching D_8005E686
+
+dlabel D_8005E686
+    /* 4EE86 8005E686 */ .short 0x0000
     /* 4EE88 8005E688 00000000 */ .word 0x00000000
     /* 4EE8C 8005E68C 00000000 */ .word 0x00000000
     /* 4EE90 8005E690 00000000 */ .word 0x00000000
@@ -35155,7 +35244,7 @@ dlabel Save_PlayerName
     /* 4EED8 8005E6D8 00000000 */ .word 0x00000000
     /* 4EEDC 8005E6DC 00000000 */ .word 0x00000000
     /* 4EEE0 8005E6E0 00000000 */ .word 0x00000000
-enddlabel Save_PlayerName
+enddlabel D_8005E686
 
 nonmatching D_8005E6E4
 
@@ -35183,6 +35272,11 @@ dlabel D_8005E6F1
     /* 4EEF8 8005E6F8 00000000 */ .word 0x00000000
     /* 4EEFC 8005E6FC 00000000 */ .word 0x00000000
     /* 4EF00 8005E700 00000000 */ .word 0x00000000
+enddlabel D_8005E6F1
+
+nonmatching D_8005E704
+
+dlabel D_8005E704
     /* 4EF04 8005E704 00000000 */ .word 0x00000000
     /* 4EF08 8005E708 00000000 */ .word 0x00000000
     /* 4EF0C 8005E70C 00000000 */ .word 0x00000000
@@ -35202,7 +35296,7 @@ dlabel D_8005E6F1
     /* 4EF44 8005E744 00000000 */ .word 0x00000000
     /* 4EF48 8005E748 00000000 */ .word 0x00000000
     /* 4EF4C 8005E74C 00000000 */ .word 0x00000000
-enddlabel D_8005E6F1
+enddlabel D_8005E704
 
 nonmatching Save_RosterNames
 
@@ -35276,6 +35370,11 @@ dlabel Save_RosterNames
     /* 4F058 8005E858 00000000 */ .word 0x00000000
     /* 4F05C 8005E85C 00000000 */ .word 0x00000000
     /* 4F060 8005E860 00000000 */ .word 0x00000000
+enddlabel Save_RosterNames
+
+nonmatching D_8005E864
+
+dlabel D_8005E864
     /* 4F064 8005E864 00000000 */ .word 0x00000000
     /* 4F068 8005E868 00000000 */ .word 0x00000000
     /* 4F06C 8005E86C 00000000 */ .word 0x00000000
@@ -35345,6 +35444,11 @@ dlabel Save_RosterNames
     /* 4F16C 8005E96C 00000000 */ .word 0x00000000
     /* 4F170 8005E970 00000000 */ .word 0x00000000
     /* 4F174 8005E974 00000000 */ .word 0x00000000
+enddlabel D_8005E864
+
+nonmatching D_8005E978
+
+dlabel D_8005E978
     /* 4F178 8005E978 00000000 */ .word 0x00000000
     /* 4F17C 8005E97C 00000000 */ .word 0x00000000
     /* 4F180 8005E980 00000000 */ .word 0x00000000
@@ -35993,6 +36097,11 @@ dlabel Save_RosterNames
     /* 4FB8C 8005F38C 00000000 */ .word 0x00000000
     /* 4FB90 8005F390 00000000 */ .word 0x00000000
     /* 4FB94 8005F394 00000000 */ .word 0x00000000
+enddlabel D_8005E978
+
+nonmatching D_8005F398
+
+dlabel D_8005F398
     /* 4FB98 8005F398 00000000 */ .word 0x00000000
     /* 4FB9C 8005F39C 00000000 */ .word 0x00000000
     /* 4FBA0 8005F3A0 00000000 */ .word 0x00000000
@@ -36156,7 +36265,7 @@ dlabel Save_RosterNames
     /* 4FE18 8005F618 00000000 */ .word 0x00000000
     /* 4FE1C 8005F61C 00000000 */ .word 0x00000000
     /* 4FE20 8005F620 00000000 */ .word 0x00000000
-enddlabel Save_RosterNames
+enddlabel D_8005F398
 
 nonmatching Flag_Bits
 
@@ -36310,8 +36419,13 @@ nonmatching Pad_Select
 
 dlabel Pad_Select
     /* 4FF20 8005F720 00000000 */ .word 0x00000000
-    /* 4FF24 8005F724 00000000 */ .word 0x00000000
 enddlabel Pad_Select
+
+nonmatching D_8005F724
+
+dlabel D_8005F724
+    /* 4FF24 8005F724 00000000 */ .word 0x00000000
+enddlabel D_8005F724
 
 nonmatching Pad_Held
 
@@ -36359,10 +36473,15 @@ dlabel Pad_Repeat
     /* 4FF64 8005F764 */ .short 0x0000
     /* 4FF66 8005F766 */ .short 0x0000
     /* 4FF68 8005F768 */ .short 0x0000
+enddlabel Pad_Repeat
+
+nonmatching D_8005F76A
+
+dlabel D_8005F76A
     /* 4FF6A 8005F76A */ .short 0x0000
     /* 4FF6C 8005F76C */ .short 0x0000
     /* 4FF6E 8005F76E */ .short 0x0000
-enddlabel Pad_Repeat
+enddlabel D_8005F76A
 
 nonmatching Sys_State
 
@@ -36405,10 +36524,20 @@ nonmatching Sys_NextGameMode
 
 dlabel Sys_NextGameMode
     /* 4FF8C 8005F78C 00000000 */ .word 0x00000000
+enddlabel Sys_NextGameMode
+
+nonmatching D_8005F790
+
+dlabel D_8005F790
     /* 4FF90 8005F790 00000000 */ .word 0x00000000
+enddlabel D_8005F790
+
+nonmatching D_8005F794
+
+dlabel D_8005F794
     /* 4FF94 8005F794 00000000 */ .word 0x00000000
     /* 4FF98 8005F798 00000000 */ .word 0x00000000
-enddlabel Sys_NextGameMode
+enddlabel D_8005F794
 
 nonmatching Sys_PacketCursor
 
@@ -36488,12 +36617,22 @@ dlabel D_8005F7A0
     /* 500A8 8005F8A8 00000000 */ .word 0x00000000
     /* 500AC 8005F8AC 00000000 */ .word 0x00000000
     /* 500B0 8005F8B0 00000000 */ .word 0x00000000
+enddlabel D_8005F7A0
+
+nonmatching D_8005F8B4
+
+dlabel D_8005F8B4
     /* 500B4 8005F8B4 00000000 */ .word 0x00000000
     /* 500B8 8005F8B8 00000000 */ .word 0x00000000
     /* 500BC 8005F8BC 00000000 */ .word 0x00000000
+enddlabel D_8005F8B4
+
+nonmatching D_8005F8C0
+
+dlabel D_8005F8C0
     /* 500C0 8005F8C0 00000000 */ .word 0x00000000
     /* 500C4 8005F8C4 00000000 */ .word 0x00000000
-enddlabel D_8005F7A0
+enddlabel D_8005F8C0
 
 nonmatching Cd_FileCache
 
