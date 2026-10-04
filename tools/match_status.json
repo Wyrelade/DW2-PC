@@ -312,7 +312,7 @@
  "Menu_MoveGridCursorP1": "natural",
  "Menu_NameEntryDrawParts": "natural",
  "Menu_NameEntryGetChar": "natural",
- "Menu_NameEntryTask": "normalized",
+ "Menu_NameEntryTask": "natural",
  "Menu_OpenItemNameTexts": "natural",
  "Menu_PickItemToUse": "natural",
  "Menu_PickUseItemDirect": "natural",
