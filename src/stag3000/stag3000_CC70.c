@@ -11,7 +11,7 @@
 #include "stag3000/stag3000_C918_funcs.h"
 
 void Stg30_InterruptSelectDraw(Actor *a0) {
-    Stg30Work73358 *w = (Stg30Work73358 *)a0->work;
+    Stg30InterruptSelectWork *w = (Stg30InterruptSelectWork *)a0->work;
     Stg30Part *p;
     Stg30Part *q;
     Stg30Part *r;
@@ -20,10 +20,10 @@ void Stg30_InterruptSelectDraw(Actor *a0) {
     if (a0->stateLevel0 == 1 && a0->stateLevel1 == 0) {
         p = (Stg30Part *)Cd_GetFileEntry(0x1A10008);
         for (q = p; q->fileId != 0; q++) {
-            q->field_10 = w->field_0;
-            q->field_14 = w->field_2;
-            q->palette = w->field_4;
-            if (w->field_C == 0) {
+            q->field_10 = w->scaleX;
+            q->field_14 = w->scaleY;
+            q->palette = w->palette;
+            if (w->choice == 0) {
                 switch (q->groupMask) {
                 case 0x10:
                     q->visible = 0;
@@ -57,16 +57,16 @@ void Stg30_InterruptSelectDraw(Actor *a0) {
         }
         Gfx_DrawParts((EntA0 *)p);
     }
-    if (Stg30_Battle.field_3D4 != 0) {
+    if (Stg30_Battle.interruptActive != 0) {
         p = (Stg30Part *)Cd_GetFileEntry(0x1A1000B);
-        k = w->field_10;
-        if (Stg30_Battle.field_2AC[k].field_0 != 3) {
+        k = w->slot;
+        if (Stg30_Battle.turns[k].field_0 != 3) {
             k += 3;
         }
         for (r = p; r->fileId != 0; r++) {
             if (r->groupMask & Stg30_InterruptCursorMasks[k]) {
                 r->visible = 1;
-                r->palette = w->field_8;
+                r->palette = w->cursorPalette;
             } else {
                 r->visible = 0;
             }
@@ -77,11 +77,11 @@ void Stg30_InterruptSelectDraw(Actor *a0) {
 
 void Stg30_InitBattle(void) {
     Mem_Zero(&Stg30_Battle, 0x3E0);
-    Stg30_Battle.field_3D4 = 1;
+    Stg30_Battle.interruptActive = 1;
     if ((Sys_State.prevGameMode & 0xFF00) == 0x300) {
-        D_8005D5A0.field_103D = 0;
+        D_8005D5A0.floorTile = 0;
         D_8005D5A0.field_1040 = 0;
-        Stg30_Battle.entries[0].field_0 = 1;
+        Stg30_Battle.entries[0].fromCity = 1;
     }
     if (Sys_State.modeArg == 0x97 && Flag_Test(0x88)) {
         Sys_State.modeArg++;
@@ -94,7 +94,7 @@ void Stg30_XaPlayInit(Actor *a0, Vec3 *args) {
 }
 
 void Stg30_XaPlayTask(Stg30TaskHead *a0) {
-    Stg30Work733F0 *w = (Stg30Work733F0 *)a0->work;
+    Stg30CdWork *w = (Stg30CdWork *)a0->work;
     u8 param[8];
     u8 mode[8];
     u8 loc[8];
@@ -110,14 +110,14 @@ void Stg30_XaPlayTask(Stg30TaskHead *a0) {
         case 0:
         default:
             lba = Cd_GetFileLba(w->file) + Stg30_XaTrackStart[w->track - 1];
-            w->field_C = lba;
-            w->field_10 = lba + Stg30_XaTrackLength[w->track - 1];
+            w->start = lba;
+            w->end = lba + Stg30_XaTrackLength[w->track - 1];
             param[0] = 1;
             param[1] = w->channel;
             CdControl(0xD, param, 0);
             mode[0] = 0xC8;
             CdControlB(0xE, mode, 0);
-            CdIntToPos(w->field_C, loc);
+            CdIntToPos(w->start, loc);
             CdControlF(0x15, loc);
             Task_NextState1((Actor *)a0);
             break;
@@ -139,7 +139,7 @@ void Stg30_XaPlayTask(Stg30TaskHead *a0) {
         switch (a0->stateLevel1) {
         case 0:
         default:
-            CdIntToPos(w->field_C, res);
+            CdIntToPos(w->start, res);
             if (CdControl(0x1B, res, 0) == 1) {
                 Task_NextState1((Actor *)a0);
             }
@@ -153,7 +153,7 @@ void Stg30_XaPlayTask(Stg30TaskHead *a0) {
                 Task_SetState0((Actor *)a0, 3);
                 break;
             case 2:
-                if (CdLastCom() == 0x11 && CdPosToInt(&res2[5]) >= w->field_10) {
+                if (CdLastCom() == 0x11 && CdPosToInt(&res2[5]) >= w->end) {
                     Task_SetState0((Actor *)a0, 3);
                 } else {
                     CdControlF(0x11, 0);
@@ -267,7 +267,7 @@ void Stg30_CameraUpdate(Actor *arg0) {
                 Stg30CamGoal g;
 
                 i = arg0->stateLevel1 - 2;
-                h = func_8001E79C(Stg30_Battle.entries[i].field_19);
+                h = func_8001E79C(Stg30_Battle.entries[i].digiId);
                 h = h < 0x300 ? 0 : h - 0x300;
                 h /= 256;
                 g.field_14 = (i % 3) * 0xA00 - 0xA00;
@@ -437,14 +437,14 @@ void Stg30_CameraDraw(Actor *a0) {
     w->field_1C.coord.t[1] = w->field_70;
     w->field_1C.coord.t[2] = w->field_74;
     w->field_1C.flg = 0;
-    rv.field_0 = w->field_0;
-    rv.field_4 = w->field_4;
-    rv.field_8 = w->field_8;
-    rv.field_C = w->field_C;
-    rv.field_10 = w->field_10;
-    rv.field_14 = w->field_14;
-    rv.field_18 = 0;
-    rv.field_1C = &w->field_1C;
+    rv.vpx = w->field_0;
+    rv.vpy = w->field_4;
+    rv.vpz = w->field_8;
+    rv.vrx = w->field_C;
+    rv.vry = w->field_10;
+    rv.vrz = w->field_14;
+    rv.rz = 0;
+    rv.super = &w->field_1C;
     GsSetProjection(w->field_18);
     GsSetRefView2(&rv);
 }
@@ -459,7 +459,7 @@ void Stg30_SetCameraShot(u8 state) {
 
 void Stg30_FighterHudInit(Actor *a0, Stg30Ref **args) {
     ((Stg30Work734F8 *)a0->work)->ref = args[0];
-    a0->param = args[0]->field_8;
+    a0->param = args[0]->param;
 }
 
 void Stg30_FighterHudUpdate(Stg30TaskHead *a0) {
@@ -497,7 +497,7 @@ void Stg30_FighterHudUpdate(Stg30TaskHead *a0) {
             Task_NextState1((Actor *)a0);
             break;
         case 2:
-            v = Stg30_Battle.field_2AC[a0->field_8].field_0;
+            v = Stg30_Battle.turns[a0->field_8].field_0;
             if (v != 0) {
                 if (w->field_8 != 0) {
                     w->field_8 -= 4;
@@ -605,7 +605,7 @@ void Stg30_FighterHudDraw(Actor *a0) {
             m = q->groupMask;
             for (; j < 6; j++) {
                 if (m & Stg30_StatusIconGroups[j]) {
-                    if (Stg30_Battle.field_31C[a0->param] & Stg30_StatusIconFlags[j]) {
+                    if (Stg30_Battle.statusFlags[a0->param] & Stg30_StatusIconFlags[j]) {
                         q->x = Stg30_StatusIconPos[a0->param].x + off;
                         off += 10;
                         q->y = Stg30_StatusIconPos[a0->param].y;
@@ -656,7 +656,7 @@ void Stg30_FighterHudDraw(Actor *a0) {
 }
 
 void Stg30_ResultInit(Actor *a0, Stg30Pair *args) {
-    ((Stg30Work73718 *)a0->work)->pair = *args;
+    ((Stg30ResultWork *)a0->work)->pair = *args;
 }
 
 u8 *Stg30_NumToDigits(u8 *out, s32 n) {
@@ -768,7 +768,7 @@ void Stg30_LevelUpStats(DigiRosterEntry *e) {
 }
 
 void Stg30_ResultUpdate(Actor *a0) {
-    Stg30Work73718 *w = (Stg30Work73718 *)a0->work;
+    Stg30ResultWork *w = (Stg30ResultWork *)a0->work;
     Stg30TextArgs args;
     Stg30TextRec *r;
     s32 i;
@@ -778,16 +778,16 @@ void Stg30_ResultUpdate(Actor *a0) {
     case 0:
         Mem_FillWordsNeg1(w->text, 14);
         for (i = 0; i < 3; i++) {
-            if (Stg30_Battle.entries[i].field_2E != 0) {
-                Stg30_Battle.entries[i].field_28 += w->pair.field_0;
+            if (Stg30_Battle.entries[i].hp != 0) {
+                Stg30_Battle.entries[i].exp += w->pair.field_0;
             }
-            w->field_18[i] = Digi_GetExpToNextLevel(Stg30_Battle.entries[i].field_25, Stg30_Battle.entries[i].field_27,
-                                                   Stg30_Battle.entries[i].field_28);
-            if (w->field_18[i] == 0 && Stg30_Battle.entries[i].field_2E != 0) {
-                Stg30_Battle.field_34C[i] = 1;
+            w->expToNext[i] = Digi_GetExpToNextLevel(Stg30_Battle.entries[i].level, Stg30_Battle.entries[i].maxLevel,
+                                                   Stg30_Battle.entries[i].exp);
+            if (w->expToNext[i] == 0 && Stg30_Battle.entries[i].hp != 0) {
+                Stg30_Battle.leveledUp[i] = 1;
                 Stg30_LevelUpStats(&((Stg30StateDigis *)&Stg30_Battle)->digis[i]);
             } else {
-                Stg30_Battle.field_34C[i] = 0;
+                Stg30_Battle.leveledUp[i] = 0;
             }
         }
         Save_GameState.bits += w->pair.field_4;
@@ -802,7 +802,7 @@ void Stg30_ResultUpdate(Actor *a0) {
         default:
             for (j = 0; j < 14; j++) {
                 r = &Stg30_ResultTextLayout[j];
-                if (r->slot == 9 || Stg30_Battle.entries[r->slot].field_19 != 0) {
+                if (r->slot == 9 || Stg30_Battle.entries[r->slot].digiId != 0) {
                     if (r->src < 3) {
                         args.text = (s32)D_80073D24[r->src].name;
                     } else {
@@ -837,12 +837,12 @@ void Stg30_ResultUpdate(Actor *a0) {
 }
 
 void Stg30_ResultDestroy(Actor *a0) {
-    Text_CloseArray(((Stg30Work73718 *)a0->work)->text, 14);
+    Text_CloseArray(((Stg30ResultWork *)a0->work)->text, 14);
     Task_DefaultDestroy(a0);
 }
 
 void Stg30_ResultDraw(Actor *a0) {
-    Stg30Work73718 *w = (Stg30Work73718 *)a0->work;
+    Stg30ResultWork *w = (Stg30ResultWork *)a0->work;
     GfxPart *p;
     s32 i;
     s32 draw;
@@ -854,18 +854,18 @@ void Stg30_ResultDraw(Actor *a0) {
         case 0:
         case 1:
         case 2:
-            if (Stg30_Battle.entries[i].field_19 == 0) {
+            if (Stg30_Battle.entries[i].digiId == 0) {
                 draw = 0;
                 break;
             }
-            if (Stg30_Battle.field_34C[i] != 0) {
+            if (Stg30_Battle.leveledUp[i] != 0) {
                 Gfx_HidePartsByMask((GfxPartMaskView *)p, 0);
             } else {
                 Gfx_HidePartsByMask((GfxPartMaskView *)p, 0x10);
             }
-            Gfx_SetPartsNumber(p, 1, 8, Stg30_Battle.entries[i].field_28);
-            Gfx_SetPartsNumber(p, 4, 8, w->field_18[i]);
-            Gfx_SetPartsNumber(p, 8, 2, Stg30_Battle.entries[i].field_25);
+            Gfx_SetPartsNumber(p, 1, 8, Stg30_Battle.entries[i].exp);
+            Gfx_SetPartsNumber(p, 4, 8, w->expToNext[i]);
+            Gfx_SetPartsNumber(p, 8, 2, Stg30_Battle.entries[i].level);
             break;
         case 4:
             Gfx_SetPartsNumber(p, 1, 8, Save_GameState.bits);
@@ -877,13 +877,13 @@ void Stg30_ResultDraw(Actor *a0) {
     }
 }
 
-void Stg30_SkillLearnInit(Actor *a0, Stg30Init737A0 *args) {
+void Stg30_SkillLearnInit(Actor *a0, Stg30SkillLearnArgs *args) {
     Stg30Work737A0 *w = (Stg30Work737A0 *)a0->work;
     s32 i;
 
-    w->field_0 = args->field_0;
+    w->field_0 = args->slot;
     for (i = 0; i < 12; i++) {
-        w->field_74[0][i] = args->field_4[i];
+        w->field_74[0][i] = args->skillIds[i];
     }
     Snd_PlayById(0x2B, 0);
 }
@@ -969,9 +969,9 @@ void Stg30_SkillLearnUpdate(Actor *a0) {
     switch (a0->stateLevel0) {
     case 0:
         Mem_FillWordsNeg1(w->field_4, 0x1C);
-        a0->digiId = Stg30_Battle.entries[w->field_0].field_19;
+        a0->digiId = Stg30_Battle.entries[w->field_0].digiId;
         for (i = 0; i < 12; i++) {
-            w->field_74[1][i] = Stg30_Battle.entries[w->field_0].field_3A[i];
+            w->field_74[1][i] = Stg30_Battle.entries[w->field_0].skillIds[i];
         }
         w->field_B8[0] = 0;
         w->field_B8[1] = 0;
@@ -1102,7 +1102,7 @@ void Stg30_SkillLearnUpdate(Actor *a0) {
     case 2:
         Text_CloseArray(w->field_4, 0x1C);
         for (k = 0; k < 12; k++) {
-            Stg30_Battle.entries[w->field_0].field_3A[k] = w->field_74[1][k];
+            Stg30_Battle.entries[w->field_0].skillIds[k] = w->field_74[1][k];
         }
         Task_NextState0(a0);
         break;
@@ -1152,8 +1152,8 @@ void Stg30_SkillLearnDraw(Actor *a0) {
 void Stg30_JoinPromptInit(Actor *a0, s32 *args) {
     s32 idx = args[0];
 
-    ((Stg30Work737C8 *)a0->work)->index = idx;
-    a0->digiId = Stg30_Battle.entries[idx].field_19;
+    ((Stg30JoinPromptWork *)a0->work)->index = idx;
+    a0->digiId = Stg30_Battle.entries[idx].digiId;
 }
 
 void Stg30_JoinCreateDigi(Actor *a0, s32 a1) {
@@ -1166,7 +1166,7 @@ void Stg30_JoinCreateDigi(Actor *a0, s32 a1) {
 }
 
 void Stg30_JoinPromptUpdate(Actor *a0) {
-    Stg30Work737C8 *w = (Stg30Work737C8 *)a0->work;
+    Stg30JoinPromptWork *w = (Stg30JoinPromptWork *)a0->work;
     Stg30GameRoster *g;
     TaskEntry *t;
     Stg30Pair args;
@@ -1181,7 +1181,7 @@ void Stg30_JoinPromptUpdate(Actor *a0) {
     switch (a0->stateLevel0) {
     case 0:
         Mem_FillWordsNeg1(w->text, 2);
-        w->field_C = (Actor *)Task_FindFirst(0x509, -1, w->index);
+        w->fighter = (Actor *)Task_FindFirst(0x509, -1, w->index);
         Task_NextState0(a0);
         break;
     case 1:
@@ -1189,7 +1189,7 @@ void Stg30_JoinPromptUpdate(Actor *a0) {
         case 0:
         default:
             ((void (*)(s32))Stg30_SetCameraShot)(w->index + 2);
-            Stg30_FighterSetVisible(w->field_C, 1);
+            Stg30_FighterSetVisible(w->fighter, 1);
             a0->elapsed = 0;
             Task_NextState1(a0);
         case 1:
@@ -1211,8 +1211,8 @@ void Stg30_JoinPromptUpdate(Actor *a0) {
                 if (a0->elapsed < 0x78) {
                     break;
                 }
-                Task_SetState0(w->field_C, 2);
-                Task_SetState1(w->field_C, 0xB);
+                Task_SetState0(w->fighter, 2);
+                Task_SetState1(w->fighter, 0xB);
                 Task_NextState1(a0);
                 break;
             }
@@ -1221,7 +1221,7 @@ void Stg30_JoinPromptUpdate(Actor *a0) {
             switch (a0->stateLevel2) {
             case 0:
             default:
-                w->field_10 = 1;
+                w->windowVisible = 1;
                 Text_OpenPacked(&w->text[0], (s32)Digi_GetDefaultName(a0->digiId), 0, Stg30_JoinPromptTextPos[0]);
                 Text_OpenPacked(&w->text[1], (s32)Cd_GetFileEntry(0x1FD018D), 0x81, Stg30_JoinPromptTextPos[1]);
                 Flag_Set(0x10, 0);
@@ -1266,7 +1266,7 @@ void Stg30_JoinPromptUpdate(Actor *a0) {
                     Task_SetState1(a0, 6);
                     break;
                 }
-                if (g->field_61 != 0) {
+                if (g->dmTransferBroken != 0) {
                     Task_SetState1(a0, 7);
                     break;
                 }
@@ -1296,7 +1296,7 @@ void Stg30_JoinPromptUpdate(Actor *a0) {
             switch (a0->stateLevel2) {
             case 0:
             default:
-                w->field_10 = 0;
+                w->windowVisible = 0;
                 Text_Close(&w->text[0]);
                 Text_Close(&w->text[1]);
                 Stg30_JoinCreateDigi(a0, 0);
@@ -1334,7 +1334,7 @@ void Stg30_JoinPromptUpdate(Actor *a0) {
                 Task_SetState1(a0, 8);
                 break;
             case 2:
-                w->field_10 = 0;
+                w->windowVisible = 0;
                 Text_Close(&w->text[0]);
                 Text_Close(&w->text[1]);
                 Stg30_JoinCreateDigi(a0, 1);
@@ -1391,7 +1391,7 @@ void Stg30_JoinPromptUpdate(Actor *a0) {
 }
 
 void Stg30_JoinPromptDraw(Actor *a0) {
-    if (((Stg30Work737C8 *)a0->work)->field_10 != 0) {
+    if (((Stg30JoinPromptWork *)a0->work)->windowVisible != 0) {
         Gfx_DrawParts(Cd_GetFileEntry(0x1A10017));
     }
 }

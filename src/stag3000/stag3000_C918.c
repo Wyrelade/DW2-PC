@@ -15,15 +15,15 @@ void Stg30_InterruptSelectTask(Actor *a0)
   switch (a0->stateLevel0)
   {
     case 0:
-      if (Stg30_Battle.field_2AC[2].field_0 == 3)
+      if (Stg30_Battle.turns[2].field_0 == 3)
     {
       w->field_10 = 2;
     }
-      if (Stg30_Battle.field_2AC[1].field_0 == 3)
+      if (Stg30_Battle.turns[1].field_0 == 3)
     {
       w->field_10 = 1;
     }
-      if (Stg30_Battle.field_2AC[0].field_0 == 3)
+      if (Stg30_Battle.turns[0].field_0 == 3)
     {
       w->field_10 = 0;
     }
@@ -117,7 +117,7 @@ void Stg30_InterruptSelectTask(Actor *a0)
         break;
 
       case 1:
-        Stg30_Battle.field_3D4 = a0->stateLevel1;
+        Stg30_Battle.interruptActive = a0->stateLevel1;
         do
       {
         if (Pad_State[0].right > 0)
@@ -145,7 +145,7 @@ void Stg30_InterruptSelectTask(Actor *a0)
         }
         if (Pad_State[0].cross > 0)
         {
-          if (Stg30_Battle.field_2AC[w->field_10].field_0 != 3)
+          if (Stg30_Battle.turns[w->field_10].field_0 != 3)
           {
             break;
           }
@@ -168,8 +168,8 @@ void Stg30_InterruptSelectTask(Actor *a0)
       break;
 
     case 2:
-      Stg30_Battle.field_3D0 = w->field_10;
-      Stg30_Battle.field_3D4 = 0;
+      Stg30_Battle.interruptSlot = w->field_10;
+      Stg30_Battle.interruptActive = 0;
       Task_NextState0(a0);
       break;
 

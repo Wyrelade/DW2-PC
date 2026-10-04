@@ -11,11 +11,11 @@ s32 Stg30_CalcCannonDamage(s32 idx, s32 id, s32 lvl) {
     s32 k = (lvl + 1) * 20;
     s32 pow = Skill_GetPower(id);
     s32 el = Skill_GetSpecialty(id);
-    s32 def = Stg30_Battle.entries[idx].field_36;
-    s32 el2 = Digi_GetSpecialty(Stg30_Battle.entries[idx].field_19);
+    s32 def = Stg30_Battle.entries[idx].defense;
+    s32 el2 = Digi_GetSpecialty(Stg30_Battle.entries[idx].digiId);
     s32 r;
 
-    if (Stg30_Battle.field_2AC[idx].field_0 == 5) {
+    if (Stg30_Battle.turns[idx].field_0 == 5) {
         def = def * 192 / 128;
     }
     switch (Stg30_CompareSpecialty(el, el2)) {
@@ -33,7 +33,7 @@ s32 Stg30_CalcCannonDamage(s32 idx, s32 id, s32 lvl) {
         def = def * 154 / 128;
     }
     r = k * pow / (def * 2);
-    if (Stg30_Battle.field_31C[idx] & 1) {
+    if (Stg30_Battle.statusFlags[idx] & 1) {
         r += 10;
     }
     return r;
@@ -211,7 +211,7 @@ s32 Stg30_ApplyItemEffect(s32 target, s32 tech, s16 *p3, s16 *p4) {
     case 0x118:
         if (type == 0) {
             d->defense = d->defense * 120 / 100;
-            Stg30_Battle.field_346[target] = 1;
+            Stg30_Battle.buffed[target] = 1;
             *p4 = 0x16;
         }
         *p3 = 4;
@@ -219,7 +219,7 @@ s32 Stg30_ApplyItemEffect(s32 target, s32 tech, s16 *p3, s16 *p4) {
     case 0x119:
         if (type == 0) {
             d->defense = d->defense * 80 / 100;
-            Stg30_Battle.field_340[target] = 1;
+            Stg30_Battle.debuffed[target] = 1;
             *p4 = 0xA;
         }
         *p3 = 4;
@@ -227,7 +227,7 @@ s32 Stg30_ApplyItemEffect(s32 target, s32 tech, s16 *p3, s16 *p4) {
     case 0x11A:
         if (type == 0) {
             d->attack = d->attack * 120 / 100;
-            Stg30_Battle.field_346[target] = 1;
+            Stg30_Battle.buffed[target] = 1;
             *p4 = 0x15;
         }
         *p3 = 4;
@@ -235,7 +235,7 @@ s32 Stg30_ApplyItemEffect(s32 target, s32 tech, s16 *p3, s16 *p4) {
     case 0x11B:
         if (type == 0) {
             d->attack = d->attack * 80 / 100;
-            Stg30_Battle.field_340[target] = 1;
+            Stg30_Battle.debuffed[target] = 1;
             *p4 = 9;
         }
         *p3 = 4;
@@ -243,7 +243,7 @@ s32 Stg30_ApplyItemEffect(s32 target, s32 tech, s16 *p3, s16 *p4) {
     case 0x11C:
         if (type == 1) {
             d->defense = d->defense * 120 / 100;
-            Stg30_Battle.field_346[target] = 1;
+            Stg30_Battle.buffed[target] = 1;
             *p4 = 0x16;
         }
         *p3 = 4;
@@ -251,7 +251,7 @@ s32 Stg30_ApplyItemEffect(s32 target, s32 tech, s16 *p3, s16 *p4) {
     case 0x11D:
         if (type == 1) {
             d->defense = d->defense * 80 / 100;
-            Stg30_Battle.field_340[target] = 1;
+            Stg30_Battle.debuffed[target] = 1;
             *p4 = 0xA;
         }
         *p3 = 4;
@@ -259,7 +259,7 @@ s32 Stg30_ApplyItemEffect(s32 target, s32 tech, s16 *p3, s16 *p4) {
     case 0x11E:
         if (type == 1) {
             d->attack = d->attack * 120 / 100;
-            Stg30_Battle.field_346[target] = 1;
+            Stg30_Battle.buffed[target] = 1;
             *p4 = 0x15;
         }
         *p3 = 4;
@@ -267,7 +267,7 @@ s32 Stg30_ApplyItemEffect(s32 target, s32 tech, s16 *p3, s16 *p4) {
     case 0x11F:
         if (type == 1) {
             d->attack = d->attack * 80 / 100;
-            Stg30_Battle.field_340[target] = 1;
+            Stg30_Battle.debuffed[target] = 1;
             *p4 = 9;
         }
         *p3 = 4;
@@ -275,7 +275,7 @@ s32 Stg30_ApplyItemEffect(s32 target, s32 tech, s16 *p3, s16 *p4) {
     case 0x120:
         if (type == 2) {
             d->defense = d->defense * 120 / 100;
-            Stg30_Battle.field_346[target] = 1;
+            Stg30_Battle.buffed[target] = 1;
             *p4 = 0x16;
         }
         *p3 = 4;
@@ -283,7 +283,7 @@ s32 Stg30_ApplyItemEffect(s32 target, s32 tech, s16 *p3, s16 *p4) {
     case 0x121:
         if (type == 2) {
             d->defense = d->defense * 80 / 100;
-            Stg30_Battle.field_340[target] = 1;
+            Stg30_Battle.debuffed[target] = 1;
             *p4 = 0xA;
         }
         *p3 = 4;
@@ -291,7 +291,7 @@ s32 Stg30_ApplyItemEffect(s32 target, s32 tech, s16 *p3, s16 *p4) {
     case 0x122:
         if (type == 2) {
             d->attack = d->attack * 120 / 100;
-            Stg30_Battle.field_346[target] = 1;
+            Stg30_Battle.buffed[target] = 1;
             *p4 = 0x15;
         }
         *p3 = 4;
@@ -299,7 +299,7 @@ s32 Stg30_ApplyItemEffect(s32 target, s32 tech, s16 *p3, s16 *p4) {
     case 0x123:
         if (type == 2) {
             d->attack = d->attack * 80 / 100;
-            Stg30_Battle.field_340[target] = 1;
+            Stg30_Battle.debuffed[target] = 1;
             *p4 = 9;
         }
         *p3 = 4;
@@ -333,13 +333,13 @@ void Stg30_BuildItemScript(void) {
     s32 cnt;
     s16 tech;
 
-    act = &Stg30_Battle.field_2AC[6];
+    act = &Stg30_Battle.turns[6];
     tech = act->field_6;
     mode = 1;
     out = Stg30_BattleScript;
     for (i = 0; i < Item_GetBagCapacity(); i++) {
-        if (((Stg30GameIds *)&Save_GameState)->field_66[i] == Stg30_Battle.field_3AC) {
-            ((Stg30GameIds *)&Save_GameState)->field_66[i] = 0;
+        if (((Stg30GameIds *)&Save_GameState)->bagItems[i] == Stg30_Battle.itemId) {
+            ((Stg30GameIds *)&Save_GameState)->bagItems[i] = 0;
             Item_SortList();
             break;
         }
@@ -364,7 +364,7 @@ void Stg30_BuildItemScript(void) {
             i = 0;
             cnt = 0;
             for (; i < 3; i++) {
-                if (Stg30_Battle.entries[i].field_2E != 0) {
+                if (Stg30_Battle.entries[i].hp != 0) {
                     tgt[cnt++] = i;
                 }
             }
@@ -374,7 +374,7 @@ void Stg30_BuildItemScript(void) {
             i = 0;
             cnt = 0;
             for (; i < 3; i++) {
-                if (Stg30_Battle.entries[i].field_19 != 0 && Stg30_Battle.entries[i].field_2E == 0) {
+                if (Stg30_Battle.entries[i].digiId != 0 && Stg30_Battle.entries[i].hp == 0) {
                     tgt[cnt++] = i;
                 }
             }
@@ -391,7 +391,7 @@ void Stg30_BuildItemScript(void) {
         default:
             cnt = 0;
             for (i = 3; i < 6; i++) {
-                if (Stg30_Battle.entries[i].field_2E != 0) {
+                if (Stg30_Battle.entries[i].hp != 0) {
                     tgt[cnt++] = i;
                 }
             }
@@ -400,7 +400,7 @@ void Stg30_BuildItemScript(void) {
         case 3:
             cnt = 0;
             for (i = 3; i < 6; i++) {
-                if (Stg30_Battle.entries[i].field_19 != 0 && Stg30_Battle.entries[i].field_2E == 0) {
+                if (Stg30_Battle.entries[i].digiId != 0 && Stg30_Battle.entries[i].hp == 0) {
                     tgt[cnt++] = i;
                 }
             }
@@ -417,7 +417,7 @@ void Stg30_BuildItemScript(void) {
         default:
             cnt = 0;
             for (i = 0; i < 6; i++) {
-                if (Stg30_Battle.entries[i].field_2E != 0) {
+                if (Stg30_Battle.entries[i].hp != 0) {
                     tgt[cnt++] = i;
                 }
             }
@@ -426,7 +426,7 @@ void Stg30_BuildItemScript(void) {
         case 3:
             cnt = 0;
             for (i = 0; i < 6; i++) {
-                if (Stg30_Battle.entries[i].field_19 != 0 && Stg30_Battle.entries[i].field_2E == 0) {
+                if (Stg30_Battle.entries[i].digiId != 0 && Stg30_Battle.entries[i].hp == 0) {
                     tgt[cnt++] = i;
                 }
             }
@@ -450,7 +450,7 @@ void Stg30_BuildItemScript(void) {
     *out++ = 0x15;
     *out++ = 0x16;
     *out++ = 0x11;
-    *out++ = Stg30_Battle.field_3B2;
+    *out++ = Stg30_Battle.itemColumn;
     *out++ = 0x12;
     *out++ = 0x17;
     *out++ = tech;
@@ -470,8 +470,8 @@ void Stg30_BuildItemScript(void) {
         *out++ = z[i];
         switch (kind[i]) {
         case 0:
-            if (Stg30_Battle.entries[tgt[i]].field_2E != 0) {
-                *out++ = (Stg30_Battle.field_2AC[tgt[i]].field_0 != 5) ? 11 : 10;
+            if (Stg30_Battle.entries[tgt[i]].hp != 0) {
+                *out++ = (Stg30_Battle.turns[tgt[i]].field_0 != 5) ? 11 : 10;
             } else {
                 *out++ = 0xC;
             }
@@ -513,6 +513,6 @@ void Stg30_BuildItemScript(void) {
     }
     *out = 0x18;
     for (i = 0; i < 6; i++) {
-        Stg30_Battle.field_3B8[i] = tgt[i];
+        Stg30_Battle.lastTargets[i] = tgt[i];
     }
 }

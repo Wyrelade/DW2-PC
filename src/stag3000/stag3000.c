@@ -38,7 +38,7 @@ void Stg30_BannerDraw(Actor *a0) {
         q->palette = Math_CycleRange(a0->elapsed, 4, 0, 7);
     }
     if (a0->param == 3) {
-        if (Stg30_Battle.entries[0].field_0 != 0) {
+        if (Stg30_Battle.entries[0].fromCity != 0) {
             Gfx_HidePartsByMask((GfxPartMaskView *)p, 1);
         } else {
             Gfx_HidePartsByMask((GfxPartMaskView *)p, 2);
@@ -49,7 +49,7 @@ void Stg30_BannerDraw(Actor *a0) {
 
 void Stg30_FightBgUpdate(Actor *a0) {
     if (a0->stateLevel0 == 0) {
-        if (Stg30_Battle.entries[0].field_0 != 0) {
+        if (Stg30_Battle.entries[0].fromCity != 0) {
             a0->digiId = Stg30_SpecialFightBgModel;
         } else {
             a0->digiId = Stg30_FightBgModels[Stg30_FightBgByFloorElem[D_8005E5DD]];
@@ -143,7 +143,7 @@ void Stg30_ActionLoadUpdate(Actor *a0) {
                 break;
             case 9:
                 if (p[1] != 6) {
-                    w->field_2E8 = Stg30_Battle.entries[p[1]].field_19;
+                    w->field_2E8 = Stg30_Battle.entries[p[1]].digiId;
                     w->field_320 = 0;
                 } else {
                     w->field_320 = 1;
@@ -153,31 +153,31 @@ void Stg30_ActionLoadUpdate(Actor *a0) {
                 break;
             case 10:
                 w->field_304[k] = 1;
-                w->field_2EC[k] = Stg30_Battle.entries[p[1]].field_19;
+                w->field_2EC[k] = Stg30_Battle.entries[p[1]].digiId;
                 p += 3;
                 k++;
                 break;
             case 11:
                 w->field_304[k] = 2;
-                w->field_2EC[k] = Stg30_Battle.entries[p[1]].field_19;
+                w->field_2EC[k] = Stg30_Battle.entries[p[1]].digiId;
                 p += 3;
                 k++;
                 break;
             case 12:
                 w->field_304[k] = 3;
-                w->field_2EC[k] = Stg30_Battle.entries[p[1]].field_19;
+                w->field_2EC[k] = Stg30_Battle.entries[p[1]].digiId;
                 p += 3;
                 k++;
                 break;
             case 13:
                 w->field_304[k] = 0;
-                w->field_2EC[k] = Stg30_Battle.entries[p[1]].field_19;
+                w->field_2EC[k] = Stg30_Battle.entries[p[1]].digiId;
                 p += 3;
                 k++;
                 break;
             case 8:
                 w->field_304[k] = 4;
-                w->field_2EC[k] = Stg30_Battle.entries[p[1]].field_19;
+                w->field_2EC[k] = Stg30_Battle.entries[p[1]].digiId;
                 p += 3;
                 k++;
                 break;

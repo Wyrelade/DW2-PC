@@ -25,7 +25,7 @@ void Stg30_LevelUpStats(DigiRosterEntry *e);
 void Stg30_ResultUpdate(Actor *a0);
 void Stg30_ResultDestroy(Actor *a0);
 void Stg30_ResultDraw(Actor *a0);
-void Stg30_SkillLearnInit(Actor *a0, Stg30Init737A0 *args);
+void Stg30_SkillLearnInit(Actor *a0, Stg30SkillLearnArgs *args);
 void Stg30_SkillLearnRefreshList(Actor *a0);
 void Stg30_SkillLearnRefreshButtons(Actor *a0);
 void Stg30_SkillLearnCompact(Actor *a0, s32 row);

@@ -28,8 +28,8 @@ s32 Stg30_TargetFirst(s32 team, s32 flag, s32 mode) {
     s32 lo = team * 3;
 
     for (i = lo; i < lo + 3; i++) {
-        if (Stg30_Battle.entries[i].field_19 != 0 && (mode == 3 || Stg30_Battle.entries[i].field_2E != 0)) {
-            if (flag == 0 || !(Stg30_Battle.field_31C[i] & 0x10000)) {
+        if (Stg30_Battle.entries[i].digiId != 0 && (mode == 3 || Stg30_Battle.entries[i].hp != 0)) {
+            if (flag == 0 || !(Stg30_Battle.statusFlags[i] & 0x10000)) {
                 return i;
             }
         }
@@ -42,8 +42,8 @@ s32 Stg30_TargetPrev(s32 team, s32 cur, s32 flag, s32 mode) {
     s32 lo = team * 3;
 
     for (i = cur - 1; i >= lo; i--) {
-        if (Stg30_Battle.entries[i].field_19 != 0 && (mode == 3 || Stg30_Battle.entries[i].field_2E != 0)) {
-            if (flag == 0 || !(Stg30_Battle.field_31C[i] & 0x10000)) {
+        if (Stg30_Battle.entries[i].digiId != 0 && (mode == 3 || Stg30_Battle.entries[i].hp != 0)) {
+            if (flag == 0 || !(Stg30_Battle.statusFlags[i] & 0x10000)) {
                 return i;
             }
         }
@@ -55,8 +55,8 @@ s32 Stg30_TargetNext(s32 team, s32 cur, s32 flag, s32 mode) {
     s32 i;
 
     for (i = cur + 1; i < team * 3 + 3; i++) {
-        if (Stg30_Battle.entries[i].field_19 != 0 && (mode == 3 || Stg30_Battle.entries[i].field_2E != 0)) {
-            if (flag == 0 || !(Stg30_Battle.field_31C[i] & 0x10000)) {
+        if (Stg30_Battle.entries[i].digiId != 0 && (mode == 3 || Stg30_Battle.entries[i].hp != 0)) {
+            if (flag == 0 || !(Stg30_Battle.statusFlags[i] & 0x10000)) {
                 return i;
             }
         }
@@ -119,12 +119,12 @@ void Stg30_SaveFighterStates(void) {
 
     for (i = 0; i < 6; i++) {
         Stg30_FighterStateBackup.digis[i] = ((Stg30StateDigis *)&Stg30_Battle)->digis[i];
-        Stg30_FighterStateBackup.field_228[i] = Stg30_Battle.field_31C[i];
-        Stg30_FighterStateBackup.field_240[i] = Stg30_Battle.field_340[i];
-        Stg30_FighterStateBackup.field_246[i] = Stg30_Battle.field_346[i];
-        Stg30_FighterStateBackup.field_24C[i] = Stg30_Battle.field_356[i];
-        Stg30_FighterStateBackup.field_258[i] = Stg30_Battle.field_362[i];
-        Stg30_FighterStateBackup.field_264[i] = Stg30_Battle.field_36E[i];
+        Stg30_FighterStateBackup.statusFlags[i] = Stg30_Battle.statusFlags[i];
+        Stg30_FighterStateBackup.debuffed[i] = Stg30_Battle.debuffed[i];
+        Stg30_FighterStateBackup.buffed[i] = Stg30_Battle.buffed[i];
+        Stg30_FighterStateBackup.attackCur[i] = Stg30_Battle.attackCur[i];
+        Stg30_FighterStateBackup.defenseCur[i] = Stg30_Battle.defenseCur[i];
+        Stg30_FighterStateBackup.speedCur[i] = Stg30_Battle.speedCur[i];
     }
 }
 
@@ -133,12 +133,12 @@ void Stg30_RestoreFighterStates(void) {
 
     for (i = 0; i < 6; i++) {
         ((Stg30StateDigis *)&Stg30_Battle)->digis[i] = Stg30_FighterStateBackup.digis[i];
-        Stg30_Battle.field_31C[i] = Stg30_FighterStateBackup.field_228[i];
-        Stg30_Battle.field_340[i] = Stg30_FighterStateBackup.field_240[i];
-        Stg30_Battle.field_346[i] = Stg30_FighterStateBackup.field_246[i];
-        Stg30_Battle.field_356[i] = Stg30_FighterStateBackup.field_24C[i];
-        Stg30_Battle.field_362[i] = Stg30_FighterStateBackup.field_258[i];
-        Stg30_Battle.field_36E[i] = Stg30_FighterStateBackup.field_264[i];
+        Stg30_Battle.statusFlags[i] = Stg30_FighterStateBackup.statusFlags[i];
+        Stg30_Battle.debuffed[i] = Stg30_FighterStateBackup.debuffed[i];
+        Stg30_Battle.buffed[i] = Stg30_FighterStateBackup.buffed[i];
+        Stg30_Battle.attackCur[i] = Stg30_FighterStateBackup.attackCur[i];
+        Stg30_Battle.defenseCur[i] = Stg30_FighterStateBackup.defenseCur[i];
+        Stg30_Battle.speedCur[i] = Stg30_FighterStateBackup.speedCur[i];
     }
 }
 
@@ -157,7 +157,7 @@ void Stg30_FighterInit(Actor *a0, s32 *args) {
     s32 n;
 
     a0->param = idx;
-    a0->digiId = Stg30_Battle.entries[idx].field_19;
+    a0->digiId = Stg30_Battle.entries[idx].digiId;
     w->field_14 = Digi_GetModelFile(a0->digiId);
     if (a0->param < 3) {
         w->field_10 = 0x800;
@@ -645,7 +645,7 @@ void Stg30_FightMsgInit(Stg30TaskHead *a0, s32 *args) {
 }
 
 void Stg30_FightMsgUpdate(Stg30TaskHead *a0) {
-    Stg30Work732E8 *w = (Stg30Work732E8 *)a0->work;
+    Stg30FightMsgWork *w = (Stg30FightMsgWork *)a0->work;
     s32 snd;
 
     switch (a0->stateLevel0) {
@@ -674,13 +674,13 @@ void Stg30_FightMsgUpdate(Stg30TaskHead *a0) {
         switch (a0->stateLevel1) {
         case 0:
         default:
-            if (w->field_4 != 7) {
-                w->field_4++;
+            if (w->palette != 7) {
+                w->palette++;
             }
-            w->field_0 += 0x200;
-            if (w->field_0 >= 0x1000) {
-                w->field_0 = 0x1000;
-                w->field_4 = 7;
+            w->scale += 0x200;
+            if (w->scale >= 0x1000) {
+                w->scale = 0x1000;
+                w->palette = 7;
                 Task_NextState1((Actor *)a0);
             }
             break;
@@ -701,8 +701,8 @@ void Stg30_FightMsgUpdate(Stg30TaskHead *a0) {
         }
         break;
     case 2:
-        if (w->field_4 != 0) {
-            w->field_4--;
+        if (w->palette != 0) {
+            w->palette--;
         } else {
             Task_SetState0((Actor *)a0, 3);
         }
@@ -711,7 +711,7 @@ void Stg30_FightMsgUpdate(Stg30TaskHead *a0) {
 }
 
 void Stg30_FightMsgDraw(Stg30TaskHead *a0) {
-    Stg30Work732E8 *w = (Stg30Work732E8 *)a0->work;
+    Stg30FightMsgWork *w = (Stg30FightMsgWork *)a0->work;
     Stg30Part *p = (Stg30Part *)Cd_GetFileEntry(Stg30_FightMsgParts[a0->field_8]);
     Stg30Part *q;
     s32 vis;
@@ -720,8 +720,8 @@ void Stg30_FightMsgDraw(Stg30TaskHead *a0) {
         vis = q->groupMask == a0->field_4;
         q->field_E = 0;
         q->visible = vis;
-        q->field_10 = w->field_0;
-        q->palette = w->field_4;
+        q->field_10 = w->scale;
+        q->palette = w->palette;
     }
     Gfx_DrawParts((EntA0 *)p);
 }
@@ -742,13 +742,13 @@ void Stg30_PopupUpdate(Actor *a0) {
         switch (a0->stateLevel1) {
         case 0:
         default:
-            w->field_10++;
-            w->field_C += 0x200;
-            if (w->field_10 != 7) {
+            w->palette++;
+            w->scale += 0x200;
+            if (w->palette != 7) {
                 break;
             }
             a0->elapsed = 0;
-            w->field_C = 0x1000;
+            w->scale = 0x1000;
             Task_NextState1(a0);
         case 1:
             t = w->pos.x;
@@ -757,15 +757,15 @@ void Stg30_PopupUpdate(Actor *a0) {
                     break;
                 }
             } else {
-                w->field_10 = Math_CycleRange(a0->elapsed, 2, 8, 0xF);
+                w->palette = Math_CycleRange(a0->elapsed, 2, 8, 0xF);
                 if (a0->elapsed < 0x90) {
                     break;
                 }
-                w->field_10 = t;
+                w->palette = t;
             }
             Task_NextState1(a0);
         case 2:
-            if (--w->field_10 < 0) {
+            if (--w->palette < 0) {
                 Task_SetState0(a0, 3);
             }
             break;
@@ -808,13 +808,13 @@ void Stg30_PopupDraw(Actor *a0) {
     }
     if (draw) {
         for (q = p; q->fileId != 0; q++) {
-            if (w->field_C != 0x1000) {
+            if (w->scale != 0x1000) {
                 q->field_E = 0;
-                q->field_10 = w->field_C;
+                q->field_10 = w->scale;
             } else {
                 q->field_E = 1;
             }
-            q->palette = w->field_10;
+            q->palette = w->palette;
         }
         Gfx_DrawParts((EntA0 *)p);
     }
@@ -834,13 +834,13 @@ void Stg30_PopupDraw(Actor *a0) {
         p = (Stg30Part *)Cd_GetFileEntry(id);
         Gfx_HidePartsByMask((GfxPartMaskView *)p, ~(1 << ((u8)w->pos.z - 1)));
         for (q = p; q->fileId != 0; q++) {
-            if (w->field_C != 0x1000) {
+            if (w->scale != 0x1000) {
                 q->field_E = 0;
-                q->field_10 = w->field_C;
+                q->field_10 = w->scale;
             } else {
                 q->field_E = 1;
             }
-            q->palette = w->field_10;
+            q->palette = w->palette;
         }
         Gfx_DrawParts((EntA0 *)p);
     }

@@ -67,9 +67,9 @@ void Stg30_CommandInputTask(Actor *a0) {
             case 0:
             default:
                 Stg30_SetCameraShot(1);
-                Stg30_Battle.entries[0].field_8 = 6;
+                Stg30_Battle.entries[0].inputSlot = 6;
                 Task_Create(0x504, p, 0);
-                Stg30_Battle.field_2AC[6].field_0 = 0;
+                Stg30_Battle.turns[6].field_0 = 0;
                 for (i = 0; i < 6; i++) {
                     t = Task_FindFirst(0x509, -1, i);
                     if (t != NULL) {
@@ -81,7 +81,7 @@ void Stg30_CommandInputTask(Actor *a0) {
                 if (*p != 0) {
                     break;
                 }
-                switch (Stg30_Battle.entries[0].field_10) {
+                switch (Stg30_Battle.entries[0].menuChoice) {
                 case 0:
                 default:
                     Task_SetState1(a0, 2);
@@ -91,24 +91,24 @@ void Stg30_CommandInputTask(Actor *a0) {
                     Task_SetState1(a0, 1);
                     break;
                 case 2:
-                    if (Stg30_Battle.field_3DC != 0) {
-                        Stg30_Battle.entries[0].field_4 = 2;
+                    if (Stg30_Battle.isBossFight != 0) {
+                        Stg30_Battle.entries[0].escapeResult = 2;
                     } else {
                         a = 0;
                         b = 0;
                         n = 0;
                         for (j = 0; j < 3; j++) {
-                            if (Stg30_Battle.entries[j].field_2E != 0) {
+                            if (Stg30_Battle.entries[j].hp != 0) {
                                 n++;
-                                a += Stg30_Battle.entries[j].field_38;
+                                a += Stg30_Battle.entries[j].speed;
                             }
                         }
                         a /= n;
                         n = 0;
                         for (j = 3; j < 6; j++) {
-                            if (Stg30_Battle.entries[j].field_2E != 0) {
+                            if (Stg30_Battle.entries[j].hp != 0) {
                                 n++;
-                                b += Stg30_Battle.entries[j].field_38;
+                                b += Stg30_Battle.entries[j].speed;
                             }
                         }
                         b /= n;
@@ -153,13 +153,13 @@ void Stg30_CommandInputTask(Actor *a0) {
                     if (*p != 0) {
                         break;
                     }
-                    if (Stg30_Battle.entries[0].field_14 != 0) {
+                    if (Stg30_Battle.entries[0].cancelled != 0) {
                         Stg30_UndimPartyFighters();
-                        Stg30_Battle.field_2AC[6].field_0 = 0;
+                        Stg30_Battle.turns[6].field_0 = 0;
                         Task_SetState2(a0, 0);
                         break;
                     }
-                    Stg30_Battle.field_2AC[6].field_4 = Stg30_Battle.entries[0].field_C;
+                    Stg30_Battle.turns[6].field_4 = Stg30_Battle.entries[0].chosenTarget;
                     w->field_0 = Stg30_TargetFirst(0, 0, 0);
                     Task_SetState1(a0, 2);
                     break;
@@ -180,22 +180,22 @@ void Stg30_CommandInputTask(Actor *a0) {
                 if (*p != 0) {
                     break;
                 }
-                if (Stg30_Battle.entries[0].field_14 != 0) {
+                if (Stg30_Battle.entries[0].cancelled != 0) {
                     if (w->field_0 != Stg30_TargetFirst(0, 0, 0)) {
                         r = Stg30_TargetPrev(0, w->field_0, 0, 0);
                         w->field_0 = r;
-                        Stg30_Battle.field_2AC[r].field_0 = 0;
+                        Stg30_Battle.turns[r].field_0 = 0;
                         Task_SetState1(a0, 2);
                         break;
                     }
                     Task_SetState1(a0, 0);
                     break;
                 }
-                if (Stg30_Battle.entries[0].field_10 == 0) {
+                if (Stg30_Battle.entries[0].menuChoice == 0) {
                     Task_NextState2(a0);
                     break;
                 }
-                Stg30_Battle.field_2AC[w->field_0].field_0 = 5;
+                Stg30_Battle.turns[w->field_0].field_0 = 5;
                 Task_SetState2(a0, 4);
                 break;
             case 2:
@@ -229,12 +229,12 @@ void Stg30_CommandInputTask(Actor *a0) {
                     if (*p != 0) {
                         break;
                     }
-                    if (Stg30_Battle.entries[0].field_14 != 0) {
+                    if (Stg30_Battle.entries[0].cancelled != 0) {
                         Stg30_DimFightersExcept(w->field_0, 0, 2);
                         Task_SetState2(a0, 2);
                         break;
                     }
-                    Stg30_Battle.field_2AC[w->field_0].field_4 = Stg30_Battle.entries[0].field_C;
+                    Stg30_Battle.turns[w->field_0].field_4 = Stg30_Battle.entries[0].chosenTarget;
                     Task_NextState2(a0);
                     break;
                 }
@@ -318,9 +318,9 @@ void Stg30_CommandMenuUpdate(Actor *a0) {
                     break;
                 }
                 if (Pad_State[0].down > 0) {
-                    if (Stg30_Battle.entries[0].field_8 == 6) {
+                    if (Stg30_Battle.entries[0].inputSlot == 6) {
                         if (Stg30_CommandMenuCursor == 2) break;
-                        if (Stg30_Battle.entries[0].field_0 != 0) break;
+                        if (Stg30_Battle.entries[0].fromCity != 0) break;
                         Stg30_CommandMenuCursor++;
                         Snd_PlayById(0xC, 0);
                         break;
@@ -331,23 +331,23 @@ void Stg30_CommandMenuUpdate(Actor *a0) {
                     break;
                 }
                 if (Pad_State[0].cross > 0) {
-                    Stg30_Battle.entries[0].field_14 = 0;
-                    Stg30_Battle.entries[0].field_10 = Stg30_CommandMenuCursor;
+                    Stg30_Battle.entries[0].cancelled = 0;
+                    Stg30_Battle.entries[0].menuChoice = Stg30_CommandMenuCursor;
                     Snd_PlayById(0xA, 0);
                     Task_NextState0(a0);
                     break;
                 }
-                if (Stg30_Battle.entries[0].field_8 == 6) break;
+                if (Stg30_Battle.entries[0].inputSlot == 6) break;
                 if (Pad_State[0].triangle > 0) {
-                    Stg30_Battle.entries[0].field_14 = 1;
+                    Stg30_Battle.entries[0].cancelled = 1;
                     Snd_PlayById(0xB, 0);
                     Task_NextState0(a0);
                 }
             } while (0);
-            if (Stg30_Battle.entries[0].field_8 == 6) {
+            if (Stg30_Battle.entries[0].inputSlot == 6) {
                 Text_OpenPacked(w->text, (s32)Save_PlayerName, 0x10, Stg30_TamerNameTextPos);
                 for (k = 0; k < 3; k++) {
-                    if (Stg30_Battle.entries[0].field_0 != 0 && k != 0) {
+                    if (Stg30_Battle.entries[0].fromCity != 0 && k != 0) {
                         s32 *text = &w->text[k + 1];
                         s32 id = k + 2;
 
@@ -372,7 +372,7 @@ void Stg30_CommandMenuUpdate(Actor *a0) {
                 }
             } else {
                 if (w->text[0] == -1) {
-                    args.text = (s32)((Stg30StateDigis *)&Stg30_Battle)->digis[Stg30_Battle.entries[0].field_8].name;
+                    args.text = (s32)((Stg30StateDigis *)&Stg30_Battle)->digis[Stg30_Battle.entries[0].inputSlot].name;
                     args.color = 4;
                     args.x = 0x16;
                     args.bigFont = 0;
@@ -451,7 +451,7 @@ void Stg30_ItemMenuBuildLists(Actor *a0) {
         i = 0;
         n = i;
         for (; i < 0x30; i++) {
-            id = ((Stg30GameIds *)&Save_GameState)->field_66[i];
+            id = ((Stg30GameIds *)&Save_GameState)->bagItems[i];
             if (id == 0) {
                 break;
             }
@@ -471,7 +471,7 @@ void Stg30_ItemMenuBuildLists(Actor *a0) {
         i = 0;
         n = i;
         for (; i < 0x30; i++) {
-            id = ((Stg30GameIds *)&Save_GameState)->field_66[i];
+            id = ((Stg30GameIds *)&Save_GameState)->bagItems[i];
             if (id == 0) {
                 break;
             }
@@ -487,7 +487,7 @@ void Stg30_ItemMenuBuildLists(Actor *a0) {
         i = 0;
         n = i;
         for (; i < 0x30; i++) {
-            id = ((Stg30GameIds *)&Save_GameState)->field_66[i];
+            id = ((Stg30GameIds *)&Save_GameState)->bagItems[i];
             if (id == 0) {
                 break;
             }
@@ -681,13 +681,13 @@ void Stg30_ItemMenuUpdate(Actor *a0) {
                     break;
                 }
                 id = Stg30_ItemToSkillId(item);
-                Stg30_Battle.field_3AC = item;
-                Stg30_Battle.entries[0].field_14 = 0;
-                Stg30_Battle.field_3B2 = *pc;
-                Stg30_Battle.field_2AC[Stg30_Battle.entries[0].field_8].field_0 = Skill_GetType(id) + 1;
-                Stg30_Battle.field_2AC[Stg30_Battle.entries[0].field_8].field_6 = id;
-                Stg30_Battle.field_2AC[Stg30_Battle.entries[0].field_8].field_8 = Stg30_GetSkillEffectKind(id);
-                Stg30_Battle.field_2AC[Stg30_Battle.entries[0].field_8].field_4 = Skill_GetTarget(id);
+                Stg30_Battle.itemId = item;
+                Stg30_Battle.entries[0].cancelled = 0;
+                Stg30_Battle.itemColumn = *pc;
+                Stg30_Battle.turns[Stg30_Battle.entries[0].inputSlot].field_0 = Skill_GetType(id) + 1;
+                Stg30_Battle.turns[Stg30_Battle.entries[0].inputSlot].field_6 = id;
+                Stg30_Battle.turns[Stg30_Battle.entries[0].inputSlot].field_8 = Stg30_GetSkillEffectKind(id);
+                Stg30_Battle.turns[Stg30_Battle.entries[0].inputSlot].field_4 = Skill_GetTarget(id);
                 Snd_PlayById(0xE, 0);
                 Task_NextState0(a0);
             } while (0);
@@ -868,12 +868,12 @@ void Stg30_SkillMenuBuildLists(void) {
     s32 flag;
     s32 m;
 
-    d = (Stg30IdSet *)&((Stg30StateDigis *)&Stg30_Battle)->digis[Stg30_Battle.entries[0].field_8];
+    d = (Stg30IdSet *)&((Stg30StateDigis *)&Stg30_Battle)->digis[Stg30_Battle.entries[0].inputSlot];
     for (i = 0; i < 4; i++) {
         cnt[i] = 0;
-        Stg30_SkillMenuLists[i].field_D[13] = 0;
+        Stg30_SkillMenuLists[i].skillIds[13] = 0;
         for (j = 0; j < 12; j++) {
-            Stg30_SkillMenuLists[i].field_D[j] = 0;
+            Stg30_SkillMenuLists[i].skillIds[j] = 0;
         }
     }
     for (i = 0; i < 12; i++) {
@@ -881,22 +881,22 @@ void Stg30_SkillMenuBuildLists(void) {
         if (j != 0) {
             k = Skill_GetType(j);
             cost = Skill_GetMpCost(j);
-            Stg30_SkillMenuLists[k].field_D[cnt[k]] = j;
-            Stg30_SkillMenuLists[k].field_0[cnt[k]] = (d->field_1A < cost) * 2;
+            Stg30_SkillMenuLists[k].skillIds[cnt[k]] = j;
+            Stg30_SkillMenuLists[k].disabled[cnt[k]] = (d->mp < cost) * 2;
             cnt[k]++;
         }
     }
     for (i = 0; i < 4; i++) {
-        Stg30_SkillMenuLists[i].field_D[13] = cnt[i];
+        Stg30_SkillMenuLists[i].skillIds[13] = cnt[i];
     }
-    if (Stg30_Battle.field_31C[Stg30_Battle.entries[0].field_8] & 8) {
+    if (Stg30_Battle.statusFlags[Stg30_Battle.entries[0].inputSlot] & 8) {
         b[1] = 0;
         b[0] = 0;
         a[1] = 0;
         a[0] = 0;
         for (i = 0; i < 4; i++) {
             for (j = 0; j < cnt[i]; j++) {
-                id = Stg30_SkillMenuLists[i].field_D[j];
+                id = Stg30_SkillMenuLists[i].skillIds[j];
                 m = Skill_GetPower(id);
                 cost = Skill_GetMpCost(id);
                 if (a[0] < m) {
@@ -912,15 +912,15 @@ void Stg30_SkillMenuBuildLists(void) {
             }
         }
         if (a[0] != 0) {
-            Stg30_SkillMenuLists[a[1]].field_0[a[2]] = 2;
+            Stg30_SkillMenuLists[a[1]].disabled[a[2]] = 2;
         }
         if (b[0] != 0) {
-            Stg30_SkillMenuLists[b[1]].field_0[b[2]] = 2;
+            Stg30_SkillMenuLists[b[1]].disabled[b[2]] = 2;
         }
     }
     flag = 0;
     for (i = 3; i < 6; i++) {
-        if (Stg30_Battle.entries[i].field_2E != 0 && !(Stg30_Battle.field_31C[i] & 0x10000)) {
+        if (Stg30_Battle.entries[i].hp != 0 && !(Stg30_Battle.statusFlags[i] & 0x10000)) {
             flag = 1;
             break;
         }
@@ -928,8 +928,8 @@ void Stg30_SkillMenuBuildLists(void) {
     if (!flag) {
         for (i = 0; i < 4; i++) {
             for (j = 0; j < cnt[i]; j++) {
-                if (Skill_GetTarget(Stg30_SkillMenuLists[i].field_D[j]) == 5) {
-                    Stg30_SkillMenuLists[i].field_0[j] = 2;
+                if (Skill_GetTarget(Stg30_SkillMenuLists[i].skillIds[j]) == 5) {
+                    Stg30_SkillMenuLists[i].disabled[j] = 2;
                 }
             }
         }
@@ -962,20 +962,20 @@ void Stg30_SkillMenuRefreshText(Actor *a0) {
     s32 item;
 
     for (i = 0; i < 4; i++) {
-        Stg30Rec1B *rec = &Stg30_SkillMenuLists[i];
+        Stg30SkillList *rec = &Stg30_SkillMenuLists[i];
         for (j = 0; j < 3; j++) {
             s32 off = j + Stg30_SkillMenuScroll[i];
-            if (rec->field_D[off] != 0) {
+            if (rec->skillIds[off] != 0) {
                 s32 k = j + 6;
                 s32 color;
                 Stg30XY pos = Stg30_SkillListTextPos[i];
                 pos.y += j * 0xB;
                 color = (Stg30_SkillMenuColumn ^ i) != 0;
-                Stg30_OpenSkillText(&w->texts[i * 3 + k], rec->field_D[off], color + rec->field_0[off], pos, 1, 0);
+                Stg30_OpenSkillText(&w->texts[i * 3 + k], rec->skillIds[off], color + rec->disabled[off], pos, 1, 0);
             }
         }
     }
-    item = Stg30_SkillMenuLists[Stg30_SkillMenuColumn].field_D[Stg30_SkillMenuRow[Stg30_SkillMenuColumn] + Stg30_SkillMenuScroll[Stg30_SkillMenuColumn]];
+    item = Stg30_SkillMenuLists[Stg30_SkillMenuColumn].skillIds[Stg30_SkillMenuRow[Stg30_SkillMenuColumn] + Stg30_SkillMenuScroll[Stg30_SkillMenuColumn]];
     if (item != 0) {
         if (w->field_48 != item) {
             w->field_48 = item;
@@ -1059,17 +1059,17 @@ void Stg30_SkillMenuUpdate(Actor *a0) {
                         Snd_PlayById(0xD, 0);
                         break;
                     }
-                    if (Stg30_SkillMenuLists[cat].field_D[*row + *top + 1] == 0) break;
+                    if (Stg30_SkillMenuLists[cat].skillIds[*row + *top + 1] == 0) break;
                     *top += 1;
                     Snd_PlayById(0xD, 0);
                     break;
                 }
                 if (Pad_State[0].cross > 0) {
-                    if (Stg30_SkillMenuLists[cat].field_D[*row + *top] != 0 && Stg30_SkillMenuLists[cat].field_0[*row + *top] == 0) {
-                        Stg30_Battle.entries[0].field_14 = 0;
-                        Stg30_Battle.field_2AC[Stg30_Battle.entries[0].field_8].field_0 = cat + 1;
-                        Stg30_Battle.field_2AC[Stg30_Battle.entries[0].field_8].field_6 = Stg30_SkillMenuLists[cat].field_D[*row + *top];
-                        Stg30_Battle.field_2AC[Stg30_Battle.entries[0].field_8].field_8 = Stg30_GetSkillEffectKind(Stg30_SkillMenuLists[cat].field_D[*row + *top]);
+                    if (Stg30_SkillMenuLists[cat].skillIds[*row + *top] != 0 && Stg30_SkillMenuLists[cat].disabled[*row + *top] == 0) {
+                        Stg30_Battle.entries[0].cancelled = 0;
+                        Stg30_Battle.turns[Stg30_Battle.entries[0].inputSlot].field_0 = cat + 1;
+                        Stg30_Battle.turns[Stg30_Battle.entries[0].inputSlot].field_6 = Stg30_SkillMenuLists[cat].skillIds[*row + *top];
+                        Stg30_Battle.turns[Stg30_Battle.entries[0].inputSlot].field_8 = Stg30_GetSkillEffectKind(Stg30_SkillMenuLists[cat].skillIds[*row + *top]);
                         Snd_PlayById(0xE, 0);
                         Task_NextState0(a0);
                         break;
@@ -1147,7 +1147,7 @@ void Stg30_SkillMenuDraw(Actor *a0) {
                 m |= bit;
                 bit <<= 1;
             }
-            if (Stg30_SkillMenuLists[i].field_D[0xD] < 4 || Stg30_SkillMenuLists[i].field_D[0xD] == Stg30_SkillMenuScroll[i] + 3) {
+            if (Stg30_SkillMenuLists[i].skillIds[0xD] < 4 || Stg30_SkillMenuLists[i].skillIds[0xD] == Stg30_SkillMenuScroll[i] + 3) {
                 m |= bit;
                 bit <<= 1;
                 m |= bit;
@@ -1194,9 +1194,9 @@ void Stg30_TargetSelectUpdate(Actor *a0) {
 
     switch (a0->stateLevel0) {
     case 0:
-        w->field_18 = Stg30_Battle.field_2AC[Stg30_Battle.entries[0].field_8].field_6;
+        w->field_18 = Stg30_Battle.turns[Stg30_Battle.entries[0].inputSlot].field_6;
         w->field_8 = Skill_GetTarget(w->field_18);
-        w->field_14 = Stg30_Battle.field_2AC[Stg30_Battle.entries[0].field_8].field_8;
+        w->field_14 = Stg30_Battle.turns[Stg30_Battle.entries[0].inputSlot].field_8;
         switch (w->field_8) {
         case 0:
         case 3:
@@ -1239,8 +1239,8 @@ void Stg30_TargetSelectUpdate(Actor *a0) {
             w->field_C = v;
             break;
         case 9:
-            Stg30_Battle.entries[0].field_C = 0;
-            Stg30_Battle.entries[0].field_14 = 0;
+            Stg30_Battle.entries[0].chosenTarget = 0;
+            Stg30_Battle.entries[0].cancelled = 0;
             Task_SetState0(a0, 3);
             return;
         }
@@ -1276,8 +1276,8 @@ void Stg30_TargetSelectUpdate(Actor *a0) {
             }
         }
             if (Pad_State[0].cross > 0) {
-                Stg30_Battle.entries[0].field_C = w->field_4;
-                Stg30_Battle.entries[0].field_14 = 0;
+                Stg30_Battle.entries[0].chosenTarget = w->field_4;
+                Stg30_Battle.entries[0].cancelled = 0;
                 Snd_PlayById(0xE, 0);
                 Task_SetState0(a0, 3);
                 break;
@@ -1307,7 +1307,7 @@ void Stg30_TargetSelectUpdate(Actor *a0) {
             case 2:
                 for (i = 0; i < 3; i++) {
                     t = Task_FindFirst(0x509, -1, i);
-                    if (t != NULL && Stg30_Battle.entries[i].field_2E != 0) {
+                    if (t != NULL && Stg30_Battle.entries[i].hp != 0) {
                         Task_SetState01((Actor *)t, 2, 8);
                     } else {
                         Task_SetState01((Actor *)t, 2, 7);
@@ -1317,7 +1317,7 @@ void Stg30_TargetSelectUpdate(Actor *a0) {
             case 6:
                 for (i = 3; i < 6; i++) {
                     t = Task_FindFirst(0x509, -1, i);
-                    if (t != NULL && Stg30_Battle.entries[i].field_2E != 0) {
+                    if (t != NULL && Stg30_Battle.entries[i].hp != 0) {
                         Task_SetState01((Actor *)t, 2, 8);
                     } else {
                         Task_SetState01((Actor *)t, 2, 7);
@@ -1327,7 +1327,7 @@ void Stg30_TargetSelectUpdate(Actor *a0) {
             case 8:
                 for (i = 0; i < 6; i++) {
                     t = Task_FindFirst(0x509, -1, i);
-                    if (t != NULL && Stg30_Battle.entries[i].field_2E != 0) {
+                    if (t != NULL && Stg30_Battle.entries[i].hp != 0) {
                         Task_SetState01((Actor *)t, 2, 8);
                     } else {
                         Task_SetState01((Actor *)t, 2, 7);
@@ -1371,34 +1371,34 @@ void Stg30_TargetSelectDraw(Actor *a0) {
         break;
     case 2:
         m = Stg30_TargetAllAlliesMask;
-        if (Stg30_Battle.entries[2].field_2E == 0) m |= 8;
-        if (Stg30_Battle.entries[1].field_2E == 0) m |= 4;
-        if (Stg30_Battle.entries[0].field_2E == 0) m |= 2;
+        if (Stg30_Battle.entries[2].hp == 0) m |= 8;
+        if (Stg30_Battle.entries[1].hp == 0) m |= 4;
+        if (Stg30_Battle.entries[0].hp == 0) m |= 2;
         Gfx_HidePartsByMask((GfxPartMaskView *)p, m);
         break;
     case 6:
         m = Stg30_TargetAllEnemiesMask;
-        if (Stg30_Battle.entries[5].field_2E == 0) m |= 0x40;
-        if (Stg30_Battle.entries[4].field_2E == 0) m |= 0x20;
-        if (Stg30_Battle.entries[3].field_2E == 0) m |= 0x10;
+        if (Stg30_Battle.entries[5].hp == 0) m |= 0x40;
+        if (Stg30_Battle.entries[4].hp == 0) m |= 0x20;
+        if (Stg30_Battle.entries[3].hp == 0) m |= 0x10;
         Gfx_HidePartsByMask((GfxPartMaskView *)p, m);
         break;
     case 8:
         m = -0x7F;
         if (func_8001F0E4(w->field_18) & 0x2000) {
-            if (Stg30_Battle.entries[0].field_19 == 0) m = -0x7D;
-            if (Stg30_Battle.entries[1].field_19 == 0) m |= 4;
-            if (Stg30_Battle.entries[2].field_19 == 0) m |= 8;
-            if (Stg30_Battle.entries[3].field_19 == 0) m |= 0x10;
-            if (Stg30_Battle.entries[4].field_19 == 0) m |= 0x20;
-            if (Stg30_Battle.entries[5].field_19 == 0) m |= 0x40;
+            if (Stg30_Battle.entries[0].digiId == 0) m = -0x7D;
+            if (Stg30_Battle.entries[1].digiId == 0) m |= 4;
+            if (Stg30_Battle.entries[2].digiId == 0) m |= 8;
+            if (Stg30_Battle.entries[3].digiId == 0) m |= 0x10;
+            if (Stg30_Battle.entries[4].digiId == 0) m |= 0x20;
+            if (Stg30_Battle.entries[5].digiId == 0) m |= 0x40;
         } else {
-            if (Stg30_Battle.entries[0].field_2E == 0) m = -0x7D;
-            if (Stg30_Battle.entries[1].field_2E == 0) m |= 4;
-            if (Stg30_Battle.entries[2].field_2E == 0) m |= 8;
-            if (Stg30_Battle.entries[3].field_2E == 0) m |= 0x10;
-            if (Stg30_Battle.entries[4].field_2E == 0) m |= 0x20;
-            if (Stg30_Battle.entries[5].field_2E == 0) m |= 0x40;
+            if (Stg30_Battle.entries[0].hp == 0) m = -0x7D;
+            if (Stg30_Battle.entries[1].hp == 0) m |= 4;
+            if (Stg30_Battle.entries[2].hp == 0) m |= 8;
+            if (Stg30_Battle.entries[3].hp == 0) m |= 0x10;
+            if (Stg30_Battle.entries[4].hp == 0) m |= 0x20;
+            if (Stg30_Battle.entries[5].hp == 0) m |= 0x40;
         }
         Gfx_HidePartsByMask((GfxPartMaskView *)p, m);
         break;

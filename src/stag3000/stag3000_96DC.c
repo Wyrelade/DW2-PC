@@ -19,14 +19,14 @@ void Stg30_BuildGuardScript(s32 idx) {
     *p++ = 0;
     p[0] = 0x78;
     p[1] = 0x18;
-    Stg30_Battle.entries[idx].field_32 += Stg30_Battle.entries[idx].field_30 / 10;
-    if (Stg30_Battle.entries[idx].field_30 < Stg30_Battle.entries[idx].field_32) {
-        Stg30_Battle.entries[idx].field_32 = Stg30_Battle.entries[idx].field_30;
+    Stg30_Battle.entries[idx].mp += Stg30_Battle.entries[idx].maxMp / 10;
+    if (Stg30_Battle.entries[idx].maxMp < Stg30_Battle.entries[idx].mp) {
+        Stg30_Battle.entries[idx].mp = Stg30_Battle.entries[idx].maxMp;
     }
 }
 
 s32 Stg30_PrepareAction(s32 idx) {
-    switch (Stg30_Battle.field_2AC[idx].field_0) {
+    switch (Stg30_Battle.turns[idx].field_0) {
     case 1:
     case 2:
     case 3:
@@ -156,7 +156,7 @@ void Stg30_BattleScriptTask(Actor *a0) {
             case 12:
                 Stg30_SetDigiAction((Actor *)Task_FindFirst(0x509, -1, w->pc[1]), 5, w->pc[2]);
                 if (w->pc[1] >= 3) {
-                    Stg30_Battle.field_3D8 = w->pc[1];
+                    Stg30_Battle.joinCandidate = w->pc[1];
                 }
                 w->pc += 3;
                 break;
@@ -184,12 +184,12 @@ void Stg30_BattleScriptTask(Actor *a0) {
                 }
                 break;
             case 20:
-                if (Stg30_Battle.field_2AC[3].field_0 == 3) {
-                    Stg30_Battle.field_3D0 = 3;
-                } else if (Stg30_Battle.field_2AC[4].field_0 == 3) {
-                    Stg30_Battle.field_3D0 = 4;
-                } else if (Stg30_Battle.field_2AC[5].field_0 == 3) {
-                    Stg30_Battle.field_3D0 = 5;
+                if (Stg30_Battle.turns[3].field_0 == 3) {
+                    Stg30_Battle.interruptSlot = 3;
+                } else if (Stg30_Battle.turns[4].field_0 == 3) {
+                    Stg30_Battle.interruptSlot = 4;
+                } else if (Stg30_Battle.turns[5].field_0 == 3) {
+                    Stg30_Battle.interruptSlot = 5;
                 }
                 w->pc += 1;
                 break;
@@ -197,9 +197,9 @@ void Stg30_BattleScriptTask(Actor *a0) {
                 a[0] = w->pc[1];
                 a[1] = w->pc[2];
                 Task_Create(0x50C, &sl->field_0, (s32)a);
-                if (Stg30_Battle.field_3B0 != 0) {
+                if (Stg30_Battle.statusMsg != 0) {
                     b[0] = 8;
-                    b[2] = Stg30_Battle.field_3B0;
+                    b[2] = Stg30_Battle.statusMsg;
                     Task_Create(0x50D, &sl->field_8, (s32)b);
                 }
                 w->pc += 3;

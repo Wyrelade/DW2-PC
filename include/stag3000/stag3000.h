@@ -23,9 +23,9 @@ typedef struct {
 
 /* Work of task D_800732E8 (Stg30_FightMsgDraw): a word and a palette byte. */
 typedef struct {
-    /* 0x00 */ s32 field_0;
-    /* 0x04 */ s32 field_4;
-} Stg30Work732E8; /* size 0x8 */
+    /* 0x00 */ s32 scale;
+    /* 0x04 */ s32 palette;
+} Stg30FightMsgWork; /* size 0x8 */
 
 /* 0x28-byte parts record as Stg30_FightMsgDraw writes it (GfxPart shape plus 0x0E/0x10). */
 typedef struct {
@@ -73,14 +73,14 @@ typedef struct {
 
 /* Stack block passed to GsSetRefView2. */
 typedef struct {
-    /* 0x00 */ s32 field_0;
-    /* 0x04 */ s32 field_4;
-    /* 0x08 */ s32 field_8;
-    /* 0x0C */ s32 field_C;
-    /* 0x10 */ s32 field_10;
-    /* 0x14 */ s32 field_14;
-    /* 0x18 */ s32 field_18;
-    /* 0x1C */ Coord1F668 *field_1C;
+    /* 0x00 */ s32 vpx;
+    /* 0x04 */ s32 vpy;
+    /* 0x08 */ s32 vpz;
+    /* 0x0C */ s32 vrx;
+    /* 0x10 */ s32 vry;
+    /* 0x14 */ s32 vrz;
+    /* 0x18 */ s32 rz;
+    /* 0x1C */ Coord1F668 *super;
 } Stg30RefView;
 
 /* Work of task D_8007343C (camera, Stg30_CameraDraw). */
@@ -131,17 +131,17 @@ typedef struct {
 
 /* Work of task D_80073358 (Stg30_InterruptSelectTask, Stg30_InterruptSelectDraw). */
 typedef struct {
-    /* 0x00 */ s16 field_0;
-    /* 0x02 */ s16 field_2;
-    /* 0x04 */ u8 field_4;
+    /* 0x00 */ s16 scaleX;
+    /* 0x02 */ s16 scaleY;
+    /* 0x04 */ u8 palette;
     u8 _pad05[0x03];
-    /* 0x08 */ u8 field_8;
+    /* 0x08 */ u8 cursorPalette;
     u8 _pad09[0x03];
-    /* 0x0C */ s32 field_C;
-    /* 0x10 */ s32 field_10;
-} Stg30Work73358; /* size 0x14 */
+    /* 0x0C */ s32 choice;
+    /* 0x10 */ s32 slot;
+} Stg30InterruptSelectWork; /* size 0x14 */
 
-/* Stg30Work73358 with the words at 0x04 / 0x08 as Stg30_InterruptSelectTask writes them. */
+/* Stg30InterruptSelectWork with the words at 0x04 / 0x08 as Stg30_InterruptSelectTask writes them. */
 typedef struct {
     /* 0x00 */ s16 field_0;
     /* 0x02 */ s16 field_2;
@@ -159,21 +159,21 @@ typedef struct {
     /* 0x04 */ u8 channel;
     u8 _pad05[0x03];
     /* 0x08 */ s32 track;
-    /* 0x0C */ s32 field_C;
-    /* 0x10 */ s32 field_10;
-} Stg30Work733F0; /* size 0x14 */
+    /* 0x0C */ s32 start;
+    /* 0x10 */ s32 end;
+} Stg30CdWork; /* size 0x14 */
 
 /* Work of tasks D_80073328 (init Stg30_PopupInit) and D_800733F0 (init Stg30_XaPlayInit). */
 typedef struct {
     /* 0x00 */ Vec3 pos;
-    /* 0x0C */ s32 field_C;
-    /* 0x10 */ s32 field_10;
+    /* 0x0C */ s32 scale;
+    /* 0x10 */ s32 palette;
 } Stg30WorkVec3; /* size 0x14 */
 
 /* Init arg of task D_800734F8: a pointer whose field_8 is copied to Actor.field_8. */
 typedef struct {
     u8 _pad00[0x08];
-    /* 0x08 */ s32 field_8;
+    /* 0x08 */ s32 param;
 } Stg30Ref;
 
 /* Work of task D_800734F8 (Stg30_FighterHudInit, Stg30_FighterHudDestroy). */
@@ -196,54 +196,54 @@ typedef struct {
     /* 0x00 */ Stg30Pair pair;
     /* 0x08 */ u8 buf0[8];
     /* 0x10 */ u8 buf1[8];
-    /* 0x18 */ s32 field_18[3];
+    /* 0x18 */ s32 expToNext[3];
     /* 0x24 */ s32 text[14];
-} Stg30Work73718;
+} Stg30ResultWork;
 
 /* Work of task D_800737C8 (Stg30_JoinPromptInit, Stg30_JoinPromptDraw). */
 typedef struct {
     /* 0x00 */ s32 index;
     /* 0x04 */ s32 text[2];
-    /* 0x0C */ Actor *field_C;
-    /* 0x10 */ s32 field_10;
-} Stg30Work737C8;
+    /* 0x0C */ Actor *fighter;
+    /* 0x10 */ s32 windowVisible;
+} Stg30JoinPromptWork;
 
-/* 0x5C-stride entries at the head of Stg30_Battle (index = Stg30Work737C8.index). */
+/* 0x5C-stride entries at the head of Stg30_Battle (index = Stg30JoinPromptWork.index). */
 typedef struct {
-    /* 0x00 */ s32 field_0;
-    /* 0x04 */ s32 field_4;
-    /* 0x08 */ s32 field_8;
-    /* 0x0C */ s32 field_C;
-    /* 0x10 */ s32 field_10;
-    /* 0x14 */ s32 field_14;
-    /* 0x18 */ u8 field_18;
-    /* 0x19 */ u8 field_19;
+    /* 0x00 */ s32 fromCity;
+    /* 0x04 */ s32 escapeResult;
+    /* 0x08 */ s32 inputSlot;
+    /* 0x0C */ s32 chosenTarget;
+    /* 0x10 */ s32 menuChoice;
+    /* 0x14 */ s32 cancelled;
+    /* 0x18 */ u8 state;
+    /* 0x19 */ u8 digiId;
     u8 _pad1A[0x0B];
-    /* 0x25 */ u8 field_25;
+    /* 0x25 */ u8 level;
     u8 _pad26[0x01];
-    /* 0x27 */ u8 field_27;
-    /* 0x28 */ s32 field_28;
-    /* 0x2C */ s16 field_2C;
-    /* 0x2E */ s16 field_2E;
-    /* 0x30 */ s16 field_30;
-    /* 0x32 */ s16 field_32;
-    /* 0x34 */ s16 field_34;
-    /* 0x36 */ s16 field_36;
-    /* 0x38 */ s16 field_38;
-    /* 0x3A */ u8 field_3A[12];
+    /* 0x27 */ u8 maxLevel;
+    /* 0x28 */ s32 exp;
+    /* 0x2C */ s16 maxHp;
+    /* 0x2E */ s16 hp;
+    /* 0x30 */ s16 maxMp;
+    /* 0x32 */ s16 mp;
+    /* 0x34 */ s16 attack;
+    /* 0x36 */ s16 defense;
+    /* 0x38 */ s16 speed;
+    /* 0x3A */ u8 skillIds[12];
     u8 _pad46[0x16];
-} Stg30Entry5C; /* size 0x5C */
+} Stg30BattleEntry; /* size 0x5C */
 
 /* 0x12-byte record of Stg30_Battle.field_240 (arg2 of Stg30_AiCanUseAction): byte lists
    indexed by the same slot i at 0x02, 0x05, 0x09 and 0x0D. */
 typedef struct {
-    /* 0x00 */ s16 field_0;
-    /* 0x02 */ u8 field_2[3];
-    /* 0x05 */ u8 field_5[4];
-    /* 0x09 */ u8 field_9[4];
-    /* 0x0D */ u8 field_D[4];
+    /* 0x00 */ s16 bits;
+    /* 0x02 */ u8 skillIds[3];
+    /* 0x05 */ u8 conditions[4];
+    /* 0x09 */ u8 actionKinds[4];
+    /* 0x0D */ u8 targetModes[4];
     u8 _pad11[0x01];
-} Stg30ByteLists; /* size 0x12 */
+} Stg30EnemyAi; /* size 0x12 */
 
 /* 16-byte record of the Stg30_Battle.field_2AC array. */
 typedef struct {
@@ -259,37 +259,37 @@ typedef struct {
 
 /* Stg30_Battle: overlay state block (Stg30_InitBattle clears 0x3E0 bytes from here). */
 typedef struct {
-    /* 0x000 */ Stg30Entry5C entries[6];
+    /* 0x000 */ Stg30BattleEntry entries[6];
     u8 _pad228[0x18];
-    /* 0x240 */ Stg30ByteLists field_240[6];
-    /* 0x2AC */ Stg30Sub10 field_2AC[7];
-    /* 0x31C */ s32 field_31C[6];
-    /* 0x334 */ u8 field_334[6];
+    /* 0x240 */ Stg30EnemyAi enemyAi[6];
+    /* 0x2AC */ Stg30Sub10 turns[7];
+    /* 0x31C */ s32 statusFlags[6];
+    /* 0x334 */ u8 killBuildup[6];
     u8 _pad33A[0x06];
-    /* 0x340 */ u8 field_340[6];
-    /* 0x346 */ u8 field_346[6];
-    /* 0x34C */ u8 field_34C[3];
-    /* 0x34F */ u8 field_34F[6];  /* per-slot flag bytes (4 = no status recovery) */
+    /* 0x340 */ u8 debuffed[6];
+    /* 0x346 */ u8 buffed[6];
+    /* 0x34C */ u8 leveledUp[3];
+    /* 0x34F */ u8 preventFlags[6];  /* per-slot flag bytes (4 = no status recovery) */
     u8 _pad355[0x01];
-    /* 0x356 */ s16 field_356[6];
-    /* 0x362 */ s16 field_362[6];
-    /* 0x36E */ s16 field_36E[6];
-    /* 0x37A */ s16 field_37A[6];
-    /* 0x386 */ s16 field_386[6];
-    /* 0x392 */ s16 field_392[6];
-    /* 0x39E */ s16 field_39E[6];
+    /* 0x356 */ s16 attackCur[6];
+    /* 0x362 */ s16 defenseCur[6];
+    /* 0x36E */ s16 speedCur[6];
+    /* 0x37A */ s16 attackBase[6];
+    /* 0x386 */ s16 defenseBase[6];
+    /* 0x392 */ s16 speedBase[6];
+    /* 0x39E */ s16 powerBuff[6];
     u8 _pad3AA[0x02];
-    /* 0x3AC */ s32 field_3AC;
-    /* 0x3B0 */ s16 field_3B0;
-    /* 0x3B2 */ s16 field_3B2;
-    /* 0x3B4 */ s16 field_3B4;
+    /* 0x3AC */ s32 itemId;
+    /* 0x3B0 */ s16 statusMsg;
+    /* 0x3B2 */ s16 itemColumn;
+    /* 0x3B4 */ s16 actionTaken;
     u8 _pad3B6[0x02];
-    /* 0x3B8 */ s32 field_3B8[6];
-    /* 0x3D0 */ s32 field_3D0;
-    /* 0x3D4 */ s32 field_3D4;
-    /* 0x3D8 */ s32 field_3D8;
-    /* 0x3DC */ s32 field_3DC;
-} Stg30State; /* size 0x3E0 */
+    /* 0x3B8 */ s32 lastTargets[6];
+    /* 0x3D0 */ s32 interruptSlot;
+    /* 0x3D4 */ s32 interruptActive;
+    /* 0x3D8 */ s32 joinCandidate;
+    /* 0x3DC */ s32 isBossFight;
+} Stg30Battle; /* size 0x3E0 */
 
 /* arg0 of Stg30_ShowAllFighters / Stg30_ResetAllFightersHome / Stg30_ShowPartyFighters: a pointer at 0x34 to a
    six-actor list at 0x2C. */
@@ -359,29 +359,29 @@ typedef struct {
 
 /* 0x1B-byte records of Stg30_SkillMenuLists (Stg30_SkillMenuRefreshText). */
 typedef struct {
-    /* 0x00 */ u8 field_0[0x0D];
-    /* 0x0D */ u8 field_D[0x0E];
-} Stg30Rec1B;
+    /* 0x00 */ u8 disabled[0x0D];
+    /* 0x0D */ u8 skillIds[0x0E];
+} Stg30SkillList;
 
 /* Save_GameState viewed through the u16 id list at 0x66 (Stg30_ItemMenuBuildLists). */
 typedef struct {
     u8 _pad00[0x66];
-    /* 0x66 */ u16 field_66[0x30];
+    /* 0x66 */ u16 bagItems[0x30];
 } Stg30GameIds;
 
 /* 16-byte records of D_80073F6C (indexed by a Stg30_TurnOrder slot; Stg30_RetargetAction). */
 typedef struct {
-    /* 0x00 */ s32 field_0;
-    /* 0x04 */ s16 field_4;
-    /* 0x06 */ s16 field_6;
+    /* 0x00 */ s32 turnType;
+    /* 0x04 */ s16 target;
+    /* 0x06 */ s16 skillId;
     u8 _pad08[0x08];
 } Stg30Rec73F6C; /* size 0x10 */
 
 /* Init arg of task D_800737A0. */
 typedef struct {
-    /* 0x00 */ s32 field_0;
-    /* 0x04 */ s16 field_4[12];
-} Stg30Init737A0;
+    /* 0x00 */ s32 slot;
+    /* 0x04 */ s16 skillIds[12];
+} Stg30SkillLearnArgs;
 
 /* Two s16 passed by value to Stg30_OpenItemText / Stg30_OpenSkillText (Text_Open x/y). */
 typedef struct {
@@ -398,23 +398,23 @@ typedef struct {
     u8 _pad02[0x0B];
     /* 0x0D */ u8 level;
     u8 _pad0E[0x0C];
-    /* 0x1A */ s16 field_1A;
+    /* 0x1A */ s16 mp;
     u8 _pad1C[0x06];
     /* 0x22 */ u8 ids[12];
-    /* 0x2E */ u8 field_2E[0x18];
-    /* 0x46 */ u8 field_46;
+    /* 0x2E */ u8 learnableSkills[0x18];
+    /* 0x46 */ u8 pendingSkill;
 } Stg30IdSet;
 
 /* Main-exe global read at 0x103D by Stg30_GetFloorSpecialty. */
 typedef struct {
     u8 _pad0000[0x103D];
-    /* 0x103D */ u8 field_103D;
+    /* 0x103D */ u8 floorTile;
     u8 _pad103E[0x02];
     /* 0x1040 */ s16 field_1040;
 } Stg30Glob5D5A0;
 
 /* Stg30_Battle viewed as a 0x18-byte head followed by six DigiRosterEntry (the same
-   bytes Stg30Entry5C reads at 0x18..: field_18 = state, field_19 = digiId, ...). */
+   bytes Stg30BattleEntry reads at 0x18..: field_18 = state, field_19 = digiId, ...). */
 typedef struct {
     u8 _pad000[0x18];
     /* 0x018 */ DigiRosterEntry digis[6];
@@ -423,13 +423,13 @@ typedef struct {
 /* Stg30_FighterStateBackup: saved copy of the Stg30_Battle roster (Stg30_SaveFighterStates / Stg30_RestoreFighterStates). */
 typedef struct {
     /* 0x000 */ DigiRosterEntry digis[6];
-    /* 0x228 */ s32 field_228[6];
-    /* 0x240 */ u8 field_240[6];
-    /* 0x246 */ u8 field_246[6];
-    /* 0x24C */ s16 field_24C[6];
-    /* 0x258 */ s16 field_258[6];
-    /* 0x264 */ s16 field_264[6];
-} Stg30Save73A50; /* size 0x270 */
+    /* 0x228 */ s32 statusFlags[6];
+    /* 0x240 */ u8 debuffed[6];
+    /* 0x246 */ u8 buffed[6];
+    /* 0x24C */ s16 attackCur[6];
+    /* 0x258 */ s16 defenseCur[6];
+    /* 0x264 */ s16 speedCur[6];
+} Stg30FighterBackup; /* size 0x270 */
 
 /* Seven target words Stg30_CamEaseToward eases a Stg30Work7343C camera toward. */
 typedef struct {
@@ -576,7 +576,7 @@ typedef struct {
     /* 0x36E */ s16 field_386[6];  /* Stg30_Battle.field_386 */
 } Stg30CombatCD8;
 
-/* Roster entry viewed as the byte table at 0x21 indexed by Stg30ByteLists.field_9. */
+/* Roster entry viewed as the byte table at 0x21 indexed by Stg30EnemyAi.field_9. */
 typedef struct {
     u8 _pad00[0x16];
     /* 0x16 */ s16 hp;
@@ -587,7 +587,7 @@ typedef struct {
 /* D_80073CD8 battle block: roster, then the byte lists and Sub10 records. */
 typedef struct {
     /* 0x000 */ Stg30DigiB21 digis[6];
-    /* 0x228 */ Stg30ByteLists lists[6];
+    /* 0x228 */ Stg30EnemyAi lists[6];
     /* 0x294 */ Stg30Sub10 sub[7];
 } Stg30SlotBlk;
 
@@ -619,7 +619,7 @@ extern u8 Stg30_OrderLabelMsgs[];
 extern Halves Stg30_OrderLabelPos[];
 extern void Mem_FillWordsNeg1(s32 *arg0, s32 arg1);
 
-extern Stg30Save73A50 Stg30_FighterStateBackup;
+extern Stg30FighterBackup Stg30_FighterStateBackup;
 extern s32 Stg30_CommandMenuCursor;
 extern u8 Stg30_CursorBlinkPalettes[];
 extern s32 Stg30_ResultParts[];
@@ -632,7 +632,7 @@ extern Stg30XY Stg30_SkillListTextPos[];
 extern s16 Stg30_SkillMenuColumn;
 extern s16 Stg30_SkillMenuRow[];
 extern s16 Stg30_SkillMenuScroll[];
-extern Stg30Rec1B Stg30_SkillMenuLists[];
+extern Stg30SkillList Stg30_SkillMenuLists[];
 extern const Stg30XY Stg30_SkillDescTextPos;
 extern s32 Stg30_InterruptCursorMasks[];
 extern s32 Stg30_XaTrackStart[];
@@ -647,7 +647,7 @@ extern s16 Stg30_BattleScript[];
 extern u16 D_8005F72A;  /* Pad_State[0].pressed as a scalar reloc */
 extern Stg30Glob5D5A0 D_8005D5A0;
 extern s32 Stg30_TurnOrder[12];
-extern Stg30State Stg30_Battle;
+extern Stg30Battle Stg30_Battle;
 extern s16 Stg30_CloseUpRotY[];  /* camera goal x per party slot (Stg30_CameraUpdate) */
 extern s16 Stg30_CloseUpVpz[];  /* camera goal tables indexed by digimon height step */
 extern s16 Stg30_CloseUpVry[];
@@ -830,7 +830,7 @@ typedef struct {
     u8 _pad32[0x18];
     /* 0x4A */ u16 field_4A;
     u8 _pad4C[0x15];
-    /* 0x61 */ u8 field_61;
+    /* 0x61 */ u8 dmTransferBroken;
     u8 _pad62[0x82];
     /* 0xE4 */ DigiRosterEntry elems[0x24];
 } Stg30GameRoster;
