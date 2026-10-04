@@ -858,7 +858,7 @@ extern void Gfx_FadeInFromBlack(s32 arg0);
 extern void Gfx_FadeSetBlack(void);
 extern void Gfx_InitLights(void);
 extern void func_8001E28C(s32 arg0);
-extern s32 func_8001E480(s32 id);
+extern s32 func_8001E480(void); /* main defines it void; its tail call leaves Flag_NextPassingEntry's result in v0 */
 extern Blk12 *func_8001E5E8(s32 id);
 extern s16 func_8001E634(s32 id);
 extern s16 func_8001E658(s32 id);

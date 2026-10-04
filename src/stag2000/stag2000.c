@@ -1258,7 +1258,6 @@ void func_80065D74(Actor *a) {
     }
 }
 
-#ifdef NORMALIZED
 void func_80065FB8(Actor *a) {
     Stg20MainWork *w = (Stg20MainWork *)a->work;
     s32 *slot = (s32 *)a->u34.children;
@@ -1294,9 +1293,9 @@ void func_80065FB8(Actor *a) {
             sp.blk[1].y = 0;
             sp.field_2 = st->dir;
             Task_Create(0x302, &slot[4], (s32)&sp);
-            n = 0;
             if (func_80066714()->field_20 != 0) {
-                for (id = func_8001E480(0x304); id != -1; id = Flag_NextPassingEntry()) {
+                n = 0;
+                for (id = func_8001E480(); id != -1; id = Flag_NextPassingEntry()) {
                     src = (Stg20BytePair *)func_8001E5E8(id);
                     sp.id = func_8001E634(id);
                     sp.field_2 = func_8001E658(id);
@@ -1422,10 +1421,6 @@ void func_80065FB8(Actor *a) {
         break;
     }
 }
-#else
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80065FB8);
-void func_80065FB8(Actor *a);
-#endif
 
 Stg20MapFile *func_80066714(void) {
     Stg20MapFile *f = (Stg20MapFile *)Cd_GetFileEntry(((Stg20Mode *)D_8005F788)->lo + 0x308FFFF);
