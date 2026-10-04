@@ -11,6 +11,19 @@
 s32 Skill_ShotXaFile;
 s32 D_8005077C;
 
+/* Task callbacks the descriptor below names (defined further down). */
+void func_8001EC00(Actor *arg0, s32 *arg1);
+void func_8001EC10(Actor *arg0);
+void func_8001ECE4(Actor *arg0);
+
+TaskDesc D_800416B4 = { (TaskInitFn)func_8001EC00, func_8001EC10, Task_DefaultDestroy, func_8001ECE4, 8, 0 };
+/* The three flat lights Gfx_InitLights sets: direction, then color. */
+Blk16 Gfx_FlatLights[] = {
+    { 0, 0x3200, 0, 0x80, 0x80, 0x80 },
+    { -0x3200, 0, 0, 0x37, 0x37, 0x37 },
+    { 0x3200, 0, 0, 0x37, 0x37, 0x37 },
+};
+
 u8 Digi_GetEvolutionTarget(s32 id, s32 val) {
     DigiBaseData *e = Digi_FindBaseData(id);
     s32 i;

@@ -13,6 +13,9 @@
  * live in the data asm; these tentative definitions are COMMON and bind to it. */
 GameStateView *Save_GameStatePtr;
 
+/* Digimon a Digi-Beetle can carry, by its part 2 item id - 0x2F (Beetle_GetDigiCapacity). */
+u8 Beetle_PartDigiCapacity[] = { 4, 5, 6, 7, 8, 12 };
+
 s32 Mem_TestBit(u8 *arg0, s32 arg1) {
     s32 i = arg1 >> 3;
     s32 m = 1 << (arg1 & 7);
