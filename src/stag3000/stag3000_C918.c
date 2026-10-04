@@ -9,21 +9,21 @@
 #include "stag3000/stag3000_9F8C_funcs.h"
 #include "stag3000/stag3000_AF5C_funcs.h"
 
-void func_8006FC78(Actor *a0)
+void Stg30_InterruptSelectTask(Actor *a0)
 {
   Stg30Work73358W *w = (Stg30Work73358W *) a0->work;
   switch (a0->stateLevel0)
   {
     case 0:
-      if (D_80073CC0.field_2AC[2].field_0 == 3)
+      if (Stg30_Battle.field_2AC[2].field_0 == 3)
     {
       w->field_10 = 2;
     }
-      if (D_80073CC0.field_2AC[1].field_0 == 3)
+      if (Stg30_Battle.field_2AC[1].field_0 == 3)
     {
       w->field_10 = 1;
     }
-      if (D_80073CC0.field_2AC[0].field_0 == 3)
+      if (Stg30_Battle.field_2AC[0].field_0 == 3)
     {
       w->field_10 = 0;
     }
@@ -117,7 +117,7 @@ void func_8006FC78(Actor *a0)
         break;
 
       case 1:
-        D_80073CC0.field_3D4 = a0->stateLevel1;
+        Stg30_Battle.field_3D4 = a0->stateLevel1;
         do
       {
         if (Pad_State[0].right > 0)
@@ -145,7 +145,7 @@ void func_8006FC78(Actor *a0)
         }
         if (Pad_State[0].cross > 0)
         {
-          if (D_80073CC0.field_2AC[w->field_10].field_0 != 3)
+          if (Stg30_Battle.field_2AC[w->field_10].field_0 != 3)
           {
             break;
           }
@@ -168,8 +168,8 @@ void func_8006FC78(Actor *a0)
       break;
 
     case 2:
-      D_80073CC0.field_3D0 = w->field_10;
-      D_80073CC0.field_3D4 = 0;
+      Stg30_Battle.field_3D0 = w->field_10;
+      Stg30_Battle.field_3D4 = 0;
       Task_NextState0(a0);
       break;
 

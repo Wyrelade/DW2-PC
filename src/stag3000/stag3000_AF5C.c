@@ -8,7 +8,7 @@
 #include "stag3000/stag3000_96DC_funcs.h"
 #include "stag3000/stag3000_9F8C_funcs.h"
 
-s32 func_8006E2BC(s32 id) {
+s32 Stg30_GetSkillEffectKind(s32 id) {
     s32 r = Skill_GetPower(id);
 
     if (r > 0) {
@@ -23,13 +23,13 @@ s32 func_8006E2BC(s32 id) {
     return 2;
 }
 
-s32 func_8006E31C(s32 team, s32 flag, s32 mode) {
+s32 Stg30_TargetFirst(s32 team, s32 flag, s32 mode) {
     s32 i;
     s32 lo = team * 3;
 
     for (i = lo; i < lo + 3; i++) {
-        if (D_80073CC0.entries[i].field_19 != 0 && (mode == 3 || D_80073CC0.entries[i].field_2E != 0)) {
-            if (flag == 0 || !(D_80073CC0.field_31C[i] & 0x10000)) {
+        if (Stg30_Battle.entries[i].field_19 != 0 && (mode == 3 || Stg30_Battle.entries[i].field_2E != 0)) {
+            if (flag == 0 || !(Stg30_Battle.field_31C[i] & 0x10000)) {
                 return i;
             }
         }
@@ -37,13 +37,13 @@ s32 func_8006E31C(s32 team, s32 flag, s32 mode) {
     return lo;
 }
 
-s32 func_8006E3D0(s32 team, s32 cur, s32 flag, s32 mode) {
+s32 Stg30_TargetPrev(s32 team, s32 cur, s32 flag, s32 mode) {
     s32 i;
     s32 lo = team * 3;
 
     for (i = cur - 1; i >= lo; i--) {
-        if (D_80073CC0.entries[i].field_19 != 0 && (mode == 3 || D_80073CC0.entries[i].field_2E != 0)) {
-            if (flag == 0 || !(D_80073CC0.field_31C[i] & 0x10000)) {
+        if (Stg30_Battle.entries[i].field_19 != 0 && (mode == 3 || Stg30_Battle.entries[i].field_2E != 0)) {
+            if (flag == 0 || !(Stg30_Battle.field_31C[i] & 0x10000)) {
                 return i;
             }
         }
@@ -51,12 +51,12 @@ s32 func_8006E3D0(s32 team, s32 cur, s32 flag, s32 mode) {
     return cur;
 }
 
-s32 func_8006E47C(s32 team, s32 cur, s32 flag, s32 mode) {
+s32 Stg30_TargetNext(s32 team, s32 cur, s32 flag, s32 mode) {
     s32 i;
 
     for (i = cur + 1; i < team * 3 + 3; i++) {
-        if (D_80073CC0.entries[i].field_19 != 0 && (mode == 3 || D_80073CC0.entries[i].field_2E != 0)) {
-            if (flag == 0 || !(D_80073CC0.field_31C[i] & 0x10000)) {
+        if (Stg30_Battle.entries[i].field_19 != 0 && (mode == 3 || Stg30_Battle.entries[i].field_2E != 0)) {
+            if (flag == 0 || !(Stg30_Battle.field_31C[i] & 0x10000)) {
                 return i;
             }
         }
@@ -64,85 +64,85 @@ s32 func_8006E47C(s32 team, s32 cur, s32 flag, s32 mode) {
     return cur;
 }
 
-void func_8006E530(void) {
+void Stg30_TurnOrderClear(void) {
     s32 v = -1;
     s32 i;
 
     for (i = 11; i >= 0; i--) {
-        D_80073A20[i] = v;
+        Stg30_TurnOrder[i] = v;
     }
 }
 
-void func_8006E55C(s32 idx, s32 v) {
+void Stg30_TurnOrderInsert(s32 idx, s32 v) {
     s32 i;
 
     for (i = 10; i >= idx; i--) {
-        D_80073A20[i + 1] = D_80073A20[i];
+        Stg30_TurnOrder[i + 1] = Stg30_TurnOrder[i];
     }
-    D_80073A20[idx] = v;
+    Stg30_TurnOrder[idx] = v;
 }
 
-void func_8006E5B4(s32 i) {
+void Stg30_TurnOrderRemove(s32 i) {
     for (; i < 11; i++) {
-        D_80073A20[i] = D_80073A20[i + 1];
+        Stg30_TurnOrder[i] = Stg30_TurnOrder[i + 1];
     }
 }
 
-s32 func_8006E5F8(s32 v) {
+s32 Stg30_TurnOrderFind(s32 v) {
     s32 i;
 
     for (i = 0; i < 12; i++) {
-        if (v == D_80073A20[i]) {
+        if (v == Stg30_TurnOrder[i]) {
             return i;
         }
     }
     return -1;
 }
 
-s32 func_8006E634(void) {
+s32 Stg30_TurnOrderFreeIndex(void) {
     s32 i;
 
     for (i = 0; i < 12; i++) {
-        if (D_80073A20[i] == -1) {
+        if (Stg30_TurnOrder[i] == -1) {
             return i;
         }
     }
     return i - 1;
 }
 
-s32 func_8006E674(s32 i) {
-    return D_80073A20[i];
+s32 Stg30_TurnOrderGet(s32 i) {
+    return Stg30_TurnOrder[i];
 }
 
-void func_8006E690(void) {
+void Stg30_SaveFighterStates(void) {
     s32 i;
 
     for (i = 0; i < 6; i++) {
-        D_80073A50.digis[i] = ((Stg30StateDigis *)&D_80073CC0)->digis[i];
-        D_80073A50.field_228[i] = D_80073CC0.field_31C[i];
-        D_80073A50.field_240[i] = D_80073CC0.field_340[i];
-        D_80073A50.field_246[i] = D_80073CC0.field_346[i];
-        D_80073A50.field_24C[i] = D_80073CC0.field_356[i];
-        D_80073A50.field_258[i] = D_80073CC0.field_362[i];
-        D_80073A50.field_264[i] = D_80073CC0.field_36E[i];
+        Stg30_FighterStateBackup.digis[i] = ((Stg30StateDigis *)&Stg30_Battle)->digis[i];
+        Stg30_FighterStateBackup.field_228[i] = Stg30_Battle.field_31C[i];
+        Stg30_FighterStateBackup.field_240[i] = Stg30_Battle.field_340[i];
+        Stg30_FighterStateBackup.field_246[i] = Stg30_Battle.field_346[i];
+        Stg30_FighterStateBackup.field_24C[i] = Stg30_Battle.field_356[i];
+        Stg30_FighterStateBackup.field_258[i] = Stg30_Battle.field_362[i];
+        Stg30_FighterStateBackup.field_264[i] = Stg30_Battle.field_36E[i];
     }
 }
 
-void func_8006E770(void) {
+void Stg30_RestoreFighterStates(void) {
     s32 i;
 
     for (i = 0; i < 6; i++) {
-        ((Stg30StateDigis *)&D_80073CC0)->digis[i] = D_80073A50.digis[i];
-        D_80073CC0.field_31C[i] = D_80073A50.field_228[i];
-        D_80073CC0.field_340[i] = D_80073A50.field_240[i];
-        D_80073CC0.field_346[i] = D_80073A50.field_246[i];
-        D_80073CC0.field_356[i] = D_80073A50.field_24C[i];
-        D_80073CC0.field_362[i] = D_80073A50.field_258[i];
-        D_80073CC0.field_36E[i] = D_80073A50.field_264[i];
+        ((Stg30StateDigis *)&Stg30_Battle)->digis[i] = Stg30_FighterStateBackup.digis[i];
+        Stg30_Battle.field_31C[i] = Stg30_FighterStateBackup.field_228[i];
+        Stg30_Battle.field_340[i] = Stg30_FighterStateBackup.field_240[i];
+        Stg30_Battle.field_346[i] = Stg30_FighterStateBackup.field_246[i];
+        Stg30_Battle.field_356[i] = Stg30_FighterStateBackup.field_24C[i];
+        Stg30_Battle.field_362[i] = Stg30_FighterStateBackup.field_258[i];
+        Stg30_Battle.field_36E[i] = Stg30_FighterStateBackup.field_264[i];
     }
 }
 
-void func_8006E850(Actor *a0, s32 anim) {
+void Stg30_FighterSetAnim(Actor *a0, s32 anim) {
     Stg30Work732B8 *w = (Stg30Work732B8 *)a0->work;
 
     if (w->anim != anim) {
@@ -151,13 +151,13 @@ void func_8006E850(Actor *a0, s32 anim) {
     }
 }
 
-void func_8006E888(Actor *a0, s32 *args) {
+void Stg30_FighterInit(Actor *a0, s32 *args) {
     Stg30Work732B8 *w = (Stg30Work732B8 *)a0->work;
     s32 idx = args[1];
     s32 n;
 
     a0->param = idx;
-    a0->digiId = D_80073CC0.entries[idx].field_19;
+    a0->digiId = Stg30_Battle.entries[idx].field_19;
     w->field_14 = Digi_GetModelFile(a0->digiId);
     if (a0->param < 3) {
         w->field_10 = 0x800;
@@ -171,7 +171,7 @@ void func_8006E888(Actor *a0, s32 *args) {
     w->field_38 = args[2];
 }
 
-void func_8006E978(Actor *a0, s32 k) {
+void Stg30_SpawnSkillCastFx(Actor *a0, s32 k) {
     Stg30Work732B8 *w = (Stg30Work732B8 *)a0->work;
     Stg30FxArgs args;
     s32 *slots;
@@ -216,7 +216,7 @@ void func_8006E978(Actor *a0, s32 k) {
     }
 }
 
-void func_8006EB24(Actor *a0) {
+void Stg30_SpawnSkillHitFx(Actor *a0) {
     Stg30Work732B8 *w = (Stg30Work732B8 *)a0->work;
     Stg30FxArgs args;
     s32 *slots;
@@ -250,11 +250,11 @@ void func_8006EB24(Actor *a0) {
     }
 }
 
-void func_8006EC5C(Actor *a0) {
+void Stg30_PlayHitReactSound(Actor *a0) {
     Snd_PlayById(func_8001E8D0(a0->digiId) == 0 ? 0x204 : 0x205, 0);
 }
 
-void func_8006EC94(Actor *arg0, s32 arg1) {
+void Stg30_HitReactUpdate(Actor *arg0, s32 arg1) {
     Stg30Xform *t = (Stg30Xform *)arg0->u38.ptr38;
 
     if (arg0->stateLevel3 == 0 && arg0->stateLevel4 == 0) {
@@ -269,13 +269,13 @@ void func_8006EC94(Actor *arg0, s32 arg1) {
         switch (arg0->stateLevel4) {
         case 0:
         default:
-            Actor_SetAxisMotion(arg0, 2, &D_800732AC);
+            Actor_SetAxisMotion(arg0, 2, &Stg30_HitReactPushMotion);
             if (!Anim_HasModelAnim(arg0, 0x14)) {
                 Task_NextState3(arg0);
                 break;
             }
-            func_8006E850(arg0, 0x14);
-            Actor_SetAxisMotion(arg0, 1, &D_80073294);
+            Stg30_FighterSetAnim(arg0, 0x14);
+            Actor_SetAxisMotion(arg0, 1, &Stg30_HitReactHop1Motion);
             Task_NextState4(arg0);
             return;
         case 1:
@@ -291,13 +291,13 @@ void func_8006EC94(Actor *arg0, s32 arg1) {
         switch (arg0->stateLevel4) {
         case 0:
         default:
-            func_8006EC5C(arg0);
+            Stg30_PlayHitReactSound(arg0);
             if (!Anim_HasModelAnim(arg0, 0x15)) {
                 Task_NextState3(arg0);
                 break;
             }
-            func_8006E850(arg0, 0x15);
-            Actor_SetAxisMotion(arg0, 1, &D_800732A0);
+            Stg30_FighterSetAnim(arg0, 0x15);
+            Actor_SetAxisMotion(arg0, 1, &Stg30_HitReactHop2Motion);
             Task_NextState4(arg0);
             return;
         case 1:
@@ -313,8 +313,8 @@ void func_8006EC94(Actor *arg0, s32 arg1) {
         switch (arg0->stateLevel4) {
         case 0:
         default:
-            func_8006EC5C(arg0);
-            func_8006E850(arg0, 0x16);
+            Stg30_PlayHitReactSound(arg0);
+            Stg30_FighterSetAnim(arg0, 0x16);
             Task_NextState4(arg0);
             break;
         case 1:
@@ -331,7 +331,7 @@ void func_8006EC94(Actor *arg0, s32 arg1) {
         switch (arg0->stateLevel4) {
         case 0:
         default:
-            func_8006E850(arg0, 0x5A);
+            Stg30_FighterSetAnim(arg0, 0x5A);
             Task_NextState4(arg0);
             break;
         case 1:
@@ -345,7 +345,7 @@ void func_8006EC94(Actor *arg0, s32 arg1) {
         switch (arg0->stateLevel4) {
         case 0:
         default:
-            func_8006E850(arg0, 0x64);
+            Stg30_FighterSetAnim(arg0, 0x64);
             Task_NextState4(arg0);
             break;
         case 1:
@@ -358,7 +358,7 @@ void func_8006EC94(Actor *arg0, s32 arg1) {
     }
 }
 
-void func_8006EF50(Actor *arg0) {
+void Stg30_FighterTask(Actor *arg0) {
     Stg30Work732B8 *w = (Stg30Work732B8 *)arg0->work;
     Stg30ModelTint *m = (Stg30ModelTint *)arg0->model;
     Stg30WorkWord a1;
@@ -373,7 +373,7 @@ void func_8006EF50(Actor *arg0) {
         Actor_InitTransform(arg0, &w->field_4, (u16)w->field_10);
         ((Stg30ModelTint *)Gfx_AttachModel(arg0, w->field_14))->otIndex = 3;
         w->anim = -1;
-        func_8006E850(arg0, 0);
+        Stg30_FighterSetAnim(arg0, 0);
         a1.field_0 = (s32)arg0;
         Task_Create(6, &((s32 *)arg0->u34.children)[4], (s32)&a1);
         a2 = (s32)arg0;
@@ -385,7 +385,7 @@ void func_8006EF50(Actor *arg0) {
         w->color.r = w->color.g = w->color.b = 0;
         w->field_28 = 1;
         if (w->field_38 != 0) {
-            func_8006E850(arg0, 0x64);
+            Stg30_FighterSetAnim(arg0, 0x64);
         }
         Task_NextState0(arg0);
         break;
@@ -395,7 +395,7 @@ void func_8006EF50(Actor *arg0) {
         switch (arg0->stateLevel1) {
         case 0:
         default:
-            func_8006E850(arg0, 0);
+            Stg30_FighterSetAnim(arg0, 0);
             Task_SetState0(arg0, 1);
             break;
         case 6:
@@ -403,7 +403,7 @@ void func_8006EF50(Actor *arg0) {
             case 0:
             default:
                 w->field_2C = arg0->stateLevel4;
-                func_8006EB24(arg0);
+                Stg30_SpawnSkillHitFx(arg0);
                 arg0->elapsed = 0;
                 Task_NextState2(arg0);
                 break;
@@ -418,7 +418,7 @@ void func_8006EF50(Actor *arg0) {
             switch (arg0->stateLevel2) {
             case 0:
             default:
-                func_8006E850(arg0, 0x5A);
+                Stg30_FighterSetAnim(arg0, 0x5A);
                 Task_NextState2(arg0);
                 break;
             case 1:
@@ -433,12 +433,12 @@ void func_8006EF50(Actor *arg0) {
             case 0:
             default:
                 w->field_2C = arg0->stateLevel4;
-                func_8006EB24(arg0);
+                Stg30_SpawnSkillHitFx(arg0);
                 if (w->anim == 0) {
                     Task_SetState0(arg0, 1);
                     break;
                 }
-                func_8006E850(arg0, 0x5A);
+                Stg30_FighterSetAnim(arg0, 0x5A);
                 Task_NextState2(arg0);
                 break;
             case 1:
@@ -451,23 +451,23 @@ void func_8006EF50(Actor *arg0) {
         case 1:
             w->field_2C = arg0->stateLevel4;
             k = Skill_GetCastAnim(w->field_2C);
-            func_8006E978(arg0, k);
+            Stg30_SpawnSkillCastFx(arg0, k);
             switch (k) {
             case 0:
             default:
-                func_8006E850(arg0, 0x32);
+                Stg30_FighterSetAnim(arg0, 0x32);
                 break;
             case 1:
-                func_8006E850(arg0, 0x3C);
+                Stg30_FighterSetAnim(arg0, 0x3C);
                 break;
             case 2:
-                func_8006E850(arg0, 0x46);
+                Stg30_FighterSetAnim(arg0, 0x46);
                 break;
             }
             Task_SetState0(arg0, 1);
             break;
         case 2:
-            func_8006E850(arg0, 0x50);
+            Stg30_FighterSetAnim(arg0, 0x50);
             Task_SetState0(arg0, 1);
             break;
         case 3:
@@ -475,8 +475,8 @@ void func_8006EF50(Actor *arg0) {
             case 0:
             default:
                 w->field_2C = arg0->stateLevel4;
-                func_8006EB24(arg0);
-                func_8006E850(arg0, 0xA);
+                Stg30_SpawnSkillHitFx(arg0);
+                Stg30_FighterSetAnim(arg0, 0xA);
                 Task_NextState2(arg0);
                 break;
             case 1:
@@ -492,18 +492,18 @@ void func_8006EF50(Actor *arg0) {
             case 0:
             default:
                 w->field_2C = arg0->stateLevel4;
-                func_8006EB24(arg0);
+                Stg30_SpawnSkillHitFx(arg0);
                 Task_NextState2(arg0);
             case 1:
-                func_8006EC94(arg0, arg0->stateLevel1 - 4);
+                Stg30_HitReactUpdate(arg0, arg0->stateLevel1 - 4);
                 break;
             }
             break;
         case 13:
             w->field_2C = arg0->stateLevel4;
-            func_8006EB24(arg0);
+            Stg30_SpawnSkillHitFx(arg0);
             if (arg0->model->animId != 0) {
-                func_8006E850(arg0, 0);
+                Stg30_FighterSetAnim(arg0, 0);
             }
             Task_SetState0(arg0, 1);
             break;
@@ -596,12 +596,12 @@ void func_8006EF50(Actor *arg0) {
     }
 }
 
-void func_8006F530(Actor *a0) {
+void Stg30_FighterDestroy(Actor *a0) {
     a0->childCount = 5;
     Task_DefaultDestroy(a0);
 }
 
-void func_8006F554(Actor *a0) {
+void Stg30_FighterDraw(Actor *a0) {
     Stg30Work732B8 *w = (Stg30Work732B8 *)a0->work;
     CVECTOR c;
 
@@ -626,7 +626,7 @@ void func_8006F554(Actor *a0) {
     }
 }
 
-void func_8006F640(Actor *a0, s32 a1) {
+void Stg30_FighterSetVisible(Actor *a0, s32 a1) {
     ((Stg30Work732B8 *)a0->work)->field_28 = a1;
     if (a1 != 0) {
         a0->childCount = 5;
@@ -635,16 +635,16 @@ void func_8006F640(Actor *a0, s32 a1) {
     }
 }
 
-void func_8006F664(Actor *a0) {
+void Stg30_FighterQueueHomeReset(Actor *a0) {
     ((Stg30Work732B8 *)a0->work)->field_30 = 2;
 }
 
-void func_8006F674(Stg30TaskHead *a0, s32 *args) {
+void Stg30_FightMsgInit(Stg30TaskHead *a0, s32 *args) {
     a0->field_8 = args[0];
     a0->field_4 = args[1] ? 2 : 4;
 }
 
-void func_8006F69C(Stg30TaskHead *a0) {
+void Stg30_FightMsgUpdate(Stg30TaskHead *a0) {
     Stg30Work732E8 *w = (Stg30Work732E8 *)a0->work;
     s32 snd;
 
@@ -710,9 +710,9 @@ void func_8006F69C(Stg30TaskHead *a0) {
     }
 }
 
-void func_8006F820(Stg30TaskHead *a0) {
+void Stg30_FightMsgDraw(Stg30TaskHead *a0) {
     Stg30Work732E8 *w = (Stg30Work732E8 *)a0->work;
-    Stg30Part *p = (Stg30Part *)Cd_GetFileEntry(D_800732D0[a0->field_8]);
+    Stg30Part *p = (Stg30Part *)Cd_GetFileEntry(Stg30_FightMsgParts[a0->field_8]);
     Stg30Part *q;
     s32 vis;
 
@@ -726,11 +726,11 @@ void func_8006F820(Stg30TaskHead *a0) {
     Gfx_DrawParts((EntA0 *)p);
 }
 
-void func_8006F8CC(Actor *a0, Vec3 *args) {
+void Stg30_PopupInit(Actor *a0, Vec3 *args) {
     ((Stg30WorkVec3 *)a0->work)->pos = *args;
 }
 
-void func_8006F8EC(Actor *a0) {
+void Stg30_PopupUpdate(Actor *a0) {
     Stg30WorkVec3 *w = (Stg30WorkVec3 *)a0->work;
     s32 t;
 
@@ -776,7 +776,7 @@ void func_8006F8EC(Actor *a0) {
     }
 }
 
-void func_8006FA28(Actor *a0) {
+void Stg30_PopupDraw(Actor *a0) {
     Stg30WorkVec3 *w = (Stg30WorkVec3 *)a0->work;
     Stg30Part *p = NULL;
     Stg30Part *q;
@@ -793,14 +793,14 @@ void func_8006FA28(Actor *a0) {
     case 6:
     case 7:
         p = (Stg30Part *)Cd_GetFileEntry(0xD2D0000);
-        Gfx_HidePartsByMask((GfxPartMaskView *)p, D_80073300[w->pos.x - 4]);
+        Gfx_HidePartsByMask((GfxPartMaskView *)p, Stg30_PopupItemMasks[w->pos.x - 4]);
         break;
     case 1:
     case 2:
     case 3:
         p = (Stg30Part *)Cd_GetFileEntry(0x1A10000);
-        Gfx_SetPartsNumber((GfxPart *)p, D_8007331C[w->pos.x - 1], 3, w->pos.y);
-        Gfx_HidePartsByMask((GfxPartMaskView *)p, D_80073310[w->pos.x - 1]);
+        Gfx_SetPartsNumber((GfxPart *)p, Stg30_PopupNumParts[w->pos.x - 1], 3, w->pos.y);
+        Gfx_HidePartsByMask((GfxPartMaskView *)p, Stg30_PopupNumMasks[w->pos.x - 1]);
         break;
     case 8:
         draw = 0;

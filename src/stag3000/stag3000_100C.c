@@ -2,7 +2,7 @@
 #include "stag3000/stag3000.h"
 #include "stag3000/stag3000_funcs.h"
 
-void func_8006436C(Actor *a0) {
+void Stg30_ActionLoadDestroy(Actor *a0) {
     Stg30Work73040 *w = (Stg30Work73040 *)a0->work;
     s32 i;
 
@@ -13,7 +13,7 @@ void func_8006436C(Actor *a0) {
     }
 }
 
-void func_800643E0(s32 sel, s32 from, s32 to) {
+void Stg30_DimFightersExcept(s32 sel, s32 from, s32 to) {
     s32 i;
     TaskEntry *t;
 
@@ -29,7 +29,7 @@ void func_800643E0(s32 sel, s32 from, s32 to) {
     }
 }
 
-void func_80064480(void) {
+void Stg30_UndimPartyFighters(void) {
     s32 i;
     TaskEntry *t;
 
@@ -41,7 +41,7 @@ void func_80064480(void) {
     }
 }
 
-void func_800644D4(Actor *a0) {
+void Stg30_CommandInputTask(Actor *a0) {
     Stg30WorkWord *w = (Stg30WorkWord *)a0->work;
     s32 *p = (s32 *)a0->u34.children;
     TaskEntry *t;
@@ -66,10 +66,10 @@ void func_800644D4(Actor *a0) {
             switch (a0->stateLevel2) {
             case 0:
             default:
-                func_80070D14(1);
-                D_80073CC0.entries[0].field_8 = 6;
+                Stg30_SetCameraShot(1);
+                Stg30_Battle.entries[0].field_8 = 6;
                 Task_Create(0x504, p, 0);
-                D_80073CC0.field_2AC[6].field_0 = 0;
+                Stg30_Battle.field_2AC[6].field_0 = 0;
                 for (i = 0; i < 6; i++) {
                     t = Task_FindFirst(0x509, -1, i);
                     if (t != NULL) {
@@ -81,34 +81,34 @@ void func_800644D4(Actor *a0) {
                 if (*p != 0) {
                     break;
                 }
-                switch (D_80073CC0.entries[0].field_10) {
+                switch (Stg30_Battle.entries[0].field_10) {
                 case 0:
                 default:
                     Task_SetState1(a0, 2);
-                    w->field_0 = func_8006E31C(0, 0, 0);
+                    w->field_0 = Stg30_TargetFirst(0, 0, 0);
                     break;
                 case 1:
                     Task_SetState1(a0, 1);
                     break;
                 case 2:
-                    if (D_80073CC0.field_3DC != 0) {
-                        D_80073CC0.entries[0].field_4 = 2;
+                    if (Stg30_Battle.field_3DC != 0) {
+                        Stg30_Battle.entries[0].field_4 = 2;
                     } else {
                         a = 0;
                         b = 0;
                         n = 0;
                         for (j = 0; j < 3; j++) {
-                            if (D_80073CC0.entries[j].field_2E != 0) {
+                            if (Stg30_Battle.entries[j].field_2E != 0) {
                                 n++;
-                                a += D_80073CC0.entries[j].field_38;
+                                a += Stg30_Battle.entries[j].field_38;
                             }
                         }
                         a /= n;
                         n = 0;
                         for (j = 3; j < 6; j++) {
-                            if (D_80073CC0.entries[j].field_2E != 0) {
+                            if (Stg30_Battle.entries[j].field_2E != 0) {
                                 n++;
-                                b += D_80073CC0.entries[j].field_38;
+                                b += Stg30_Battle.entries[j].field_38;
                             }
                         }
                         b /= n;
@@ -129,7 +129,7 @@ void func_800644D4(Actor *a0) {
             switch (a0->stateLevel2) {
             case 0:
             default:
-                func_80070D14(8);
+                Stg30_SetCameraShot(8);
                 Task_Create(0x506, p, 0);
                 Task_NextState2(a0);
             case 1:
@@ -153,14 +153,14 @@ void func_800644D4(Actor *a0) {
                     if (*p != 0) {
                         break;
                     }
-                    if (D_80073CC0.entries[0].field_14 != 0) {
-                        func_80064480();
-                        D_80073CC0.field_2AC[6].field_0 = 0;
+                    if (Stg30_Battle.entries[0].field_14 != 0) {
+                        Stg30_UndimPartyFighters();
+                        Stg30_Battle.field_2AC[6].field_0 = 0;
                         Task_SetState2(a0, 0);
                         break;
                     }
-                    D_80073CC0.field_2AC[6].field_4 = D_80073CC0.entries[0].field_C;
-                    w->field_0 = func_8006E31C(0, 0, 0);
+                    Stg30_Battle.field_2AC[6].field_4 = Stg30_Battle.entries[0].field_C;
+                    w->field_0 = Stg30_TargetFirst(0, 0, 0);
                     Task_SetState1(a0, 2);
                     break;
                 }
@@ -171,8 +171,8 @@ void func_800644D4(Actor *a0) {
             switch (a0->stateLevel2) {
             case 0:
             default:
-                func_800643E0(w->field_0, 0, 2);
-                ((void (*)(s32))func_80070D14)(w->field_0 + 2);
+                Stg30_DimFightersExcept(w->field_0, 0, 2);
+                ((void (*)(s32))Stg30_SetCameraShot)(w->field_0 + 2);
                 D_80073CC8 = w->field_0;
                 Task_Create(0x504, p, 0);
                 Task_NextState2(a0);
@@ -180,29 +180,29 @@ void func_800644D4(Actor *a0) {
                 if (*p != 0) {
                     break;
                 }
-                if (D_80073CC0.entries[0].field_14 != 0) {
-                    if (w->field_0 != func_8006E31C(0, 0, 0)) {
-                        r = func_8006E3D0(0, w->field_0, 0, 0);
+                if (Stg30_Battle.entries[0].field_14 != 0) {
+                    if (w->field_0 != Stg30_TargetFirst(0, 0, 0)) {
+                        r = Stg30_TargetPrev(0, w->field_0, 0, 0);
                         w->field_0 = r;
-                        D_80073CC0.field_2AC[r].field_0 = 0;
+                        Stg30_Battle.field_2AC[r].field_0 = 0;
                         Task_SetState1(a0, 2);
                         break;
                     }
                     Task_SetState1(a0, 0);
                     break;
                 }
-                if (D_80073CC0.entries[0].field_10 == 0) {
+                if (Stg30_Battle.entries[0].field_10 == 0) {
                     Task_NextState2(a0);
                     break;
                 }
-                D_80073CC0.field_2AC[w->field_0].field_0 = 5;
+                Stg30_Battle.field_2AC[w->field_0].field_0 = 5;
                 Task_SetState2(a0, 4);
                 break;
             case 2:
                 switch (a0->stateLevel3) {
                 case 0:
                 default:
-                    ((void (*)(s32))func_80070D14)(w->field_0 + 2);
+                    ((void (*)(s32))Stg30_SetCameraShot)(w->field_0 + 2);
                     D_80073CC8 = w->field_0;
                     Task_Create(0x507, p, 0);
                     Task_NextState3(a0);
@@ -229,19 +229,19 @@ void func_800644D4(Actor *a0) {
                     if (*p != 0) {
                         break;
                     }
-                    if (D_80073CC0.entries[0].field_14 != 0) {
-                        func_800643E0(w->field_0, 0, 2);
+                    if (Stg30_Battle.entries[0].field_14 != 0) {
+                        Stg30_DimFightersExcept(w->field_0, 0, 2);
                         Task_SetState2(a0, 2);
                         break;
                     }
-                    D_80073CC0.field_2AC[w->field_0].field_4 = D_80073CC0.entries[0].field_C;
+                    Stg30_Battle.field_2AC[w->field_0].field_4 = Stg30_Battle.entries[0].field_C;
                     Task_NextState2(a0);
                     break;
                 }
                 break;
             case 4:
                 n = w->field_0;
-                w->field_0 = func_8006E47C(0, n, 0, 0);
+                w->field_0 = Stg30_TargetNext(0, n, 0, 0);
                 if (w->field_0 == n) {
                     Task_NextState1(a0);
                 } else {
@@ -260,7 +260,7 @@ void func_800644D4(Actor *a0) {
                         Task_SetState01((Actor *)t, 2, 9);
                     }
                 }
-                func_80070D14(1);
+                Stg30_SetCameraShot(1);
                 Task_NextState2(a0);
             case 1:
                 Task_SetState0(a0, 3);
@@ -273,7 +273,7 @@ void func_800644D4(Actor *a0) {
 }
 
 INCLUDE_RODATA("asm/USA/stag3000/rodata", D_800633E8);
-void func_80064B30(Actor *a0) {
+void Stg30_CommandMenuUpdate(Actor *a0) {
     Stg30Work73078 *w = (Stg30Work73078 *)a0->work;
     Halves pos;
     TextOpenArgs args;
@@ -283,7 +283,7 @@ void func_80064B30(Actor *a0) {
 
     switch (a0->stateLevel0) {
     case 0:
-        D_800737E0 = 0;
+        Stg30_CommandMenuCursor = 0;
         Mem_FillWordsNeg1(w->text, 4);
         Task_NextState0(a0);
         break;
@@ -312,49 +312,49 @@ void func_80064B30(Actor *a0) {
         case 1:
             do {
                 if (Pad_State[0].up > 0) {
-                    if (D_800737E0 == 0) break;
-                    D_800737E0--;
+                    if (Stg30_CommandMenuCursor == 0) break;
+                    Stg30_CommandMenuCursor--;
                     Snd_PlayById(0xC, 0);
                     break;
                 }
                 if (Pad_State[0].down > 0) {
-                    if (D_80073CC0.entries[0].field_8 == 6) {
-                        if (D_800737E0 == 2) break;
-                        if (D_80073CC0.entries[0].field_0 != 0) break;
-                        D_800737E0++;
+                    if (Stg30_Battle.entries[0].field_8 == 6) {
+                        if (Stg30_CommandMenuCursor == 2) break;
+                        if (Stg30_Battle.entries[0].field_0 != 0) break;
+                        Stg30_CommandMenuCursor++;
                         Snd_PlayById(0xC, 0);
                         break;
                     }
-                    if (D_800737E0 == 1) break;
-                    D_800737E0++;
+                    if (Stg30_CommandMenuCursor == 1) break;
+                    Stg30_CommandMenuCursor++;
                     Snd_PlayById(0xC, 0);
                     break;
                 }
                 if (Pad_State[0].cross > 0) {
-                    D_80073CC0.entries[0].field_14 = 0;
-                    D_80073CC0.entries[0].field_10 = D_800737E0;
+                    Stg30_Battle.entries[0].field_14 = 0;
+                    Stg30_Battle.entries[0].field_10 = Stg30_CommandMenuCursor;
                     Snd_PlayById(0xA, 0);
                     Task_NextState0(a0);
                     break;
                 }
-                if (D_80073CC0.entries[0].field_8 == 6) break;
+                if (Stg30_Battle.entries[0].field_8 == 6) break;
                 if (Pad_State[0].triangle > 0) {
-                    D_80073CC0.entries[0].field_14 = 1;
+                    Stg30_Battle.entries[0].field_14 = 1;
                     Snd_PlayById(0xB, 0);
                     Task_NextState0(a0);
                 }
             } while (0);
-            if (D_80073CC0.entries[0].field_8 == 6) {
+            if (Stg30_Battle.entries[0].field_8 == 6) {
                 Text_OpenPacked(w->text, (s32)Save_PlayerName, 0x10, D_800633E8);
                 for (k = 0; k < 3; k++) {
-                    if (D_80073CC0.entries[0].field_0 != 0 && k != 0) {
+                    if (Stg30_Battle.entries[0].field_0 != 0 && k != 0) {
                         s32 *text = &w->text[k + 1];
                         s32 id = k + 2;
 
                         pos.lo = 0x16;
                         pos.hi = k * 11 + 0x3C;
                         Text_OpenById(text, id, 3, pos);
-                    } else if (D_800737E0 == k) {
+                    } else if (Stg30_CommandMenuCursor == k) {
                         s32 *text = &w->text[k + 1];
                         s32 id = k + 2;
 
@@ -372,7 +372,7 @@ void func_80064B30(Actor *a0) {
                 }
             } else {
                 if (w->text[0] == -1) {
-                    args.text = (s32)((Stg30StateDigis *)&D_80073CC0)->digis[D_80073CC0.entries[0].field_8].name;
+                    args.text = (s32)((Stg30StateDigis *)&Stg30_Battle)->digis[Stg30_Battle.entries[0].field_8].name;
                     args.color = 4;
                     args.x = 0x16;
                     args.bigFont = 0;
@@ -387,7 +387,7 @@ void func_80064B30(Actor *a0) {
 
                     pos.hi = i * 11 + 0x3C;
                     pos.lo = 0x16;
-                    Text_OpenById(text, i + 5, D_800737E0 != i, pos);
+                    Text_OpenById(text, i + 5, Stg30_CommandMenuCursor != i, pos);
                 }
             }
             break;
@@ -415,12 +415,12 @@ void func_80064B30(Actor *a0) {
     }
 }
 
-void func_80064FBC(Actor *a0) {
+void Stg30_CommandMenuDestroy(Actor *a0) {
     Text_CloseArray(((Stg30Work73078 *)a0->work)->text, 4);
     Task_DefaultDestroy(a0);
 }
 
-void func_80064FF4(Actor *a0) {
+void Stg30_CommandMenuDraw(Actor *a0) {
     Stg30Work73078 *w = (Stg30Work73078 *)a0->work;
     Stg30Part *p;
     Stg30Part *q;
@@ -430,7 +430,7 @@ void func_80064FF4(Actor *a0) {
     for (q = p; q->fileId != 0; q++) {
         if (q->groupMask & 2) {
             q->x = -0x92;
-            q->y = D_800737E0 * 11 - 0x33;
+            q->y = Stg30_CommandMenuCursor * 11 - 0x33;
             while (1) {
                 if (a0->elapsed < 0x18) break;
                 a0->elapsed = a0->elapsed - 0x18;
@@ -441,7 +441,7 @@ void func_80064FF4(Actor *a0) {
     Gfx_DrawParts((EntA0 *)p);
 }
 
-void func_80065100(Actor *a0) {
+void Stg30_ItemMenuBuildLists(Actor *a0) {
     Stg30Work730D0 *w = (Stg30Work730D0 *)a0->work;
     s32 i;
     s32 n;
@@ -501,7 +501,7 @@ void func_80065100(Actor *a0) {
     }
 }
 
-void func_800652C8(void *a0, s32 id, s32 color, Stg30XY pos, s32 name, s32 delay) {
+void Stg30_OpenItemText(void *a0, s32 id, s32 color, Stg30XY pos, s32 name, s32 delay) {
     TextOpenArgs args;
 
     if (name == 0) {
@@ -520,7 +520,7 @@ void func_800652C8(void *a0, s32 id, s32 color, Stg30XY pos, s32 name, s32 delay
 }
 
 INCLUDE_RODATA("asm/USA/stag3000/rodata", D_800633EC);
-void func_80065354(Actor *a0) {
+void Stg30_ItemMenuRefreshText(Actor *a0) {
     Stg30Work730D0 *w = (Stg30Work730D0 *)a0->work;
     s32 i;
     s32 j;
@@ -530,20 +530,20 @@ void func_80065354(Actor *a0) {
     for (i = 0; i < 3; i++) {
         u8 *row = w->field_58[i];
         for (j = 0; j < 3; j++) {
-            u8 *p = &row[j + D_800737F8[i]];
+            u8 *p = &row[j + Stg30_ItemMenuScroll[i]];
             if (*p != 0) {
                 Stg30XY pos = D_80073090[i];
                 pos.y += j * 0xB;
-                func_800652C8(&w->texts[i][j], *p, (D_800737E8 ^ i) != 0, pos, 1, 0);
+                Stg30_OpenItemText(&w->texts[i][j], *p, (Stg30_ItemMenuColumn ^ i) != 0, pos, 1, 0);
             }
         }
     }
     
-    item = w->field_58[D_800737E8][D_800737F0[D_800737E8] + D_800737F8[D_800737E8]];
+    item = w->field_58[Stg30_ItemMenuColumn][Stg30_ItemMenuRow[Stg30_ItemMenuColumn] + Stg30_ItemMenuScroll[Stg30_ItemMenuColumn]];
     if (item != 0) {
         if (w->field_F4 != item) {
             w->field_F4 = item;
-            func_800652C8(&w->field_8, item, 0, D_800633EC, 0, 3);
+            Stg30_OpenItemText(&w->field_8, item, 0, D_800633EC, 0, 3);
         }
     } else {
         w->field_F4 = -1;
@@ -552,7 +552,7 @@ void func_80065354(Actor *a0) {
     }
 }
 
-s32 func_80065540(s32 c) {
+s32 Stg30_ItemToSkillId(s32 c) {
     if (c >= 0xE1) {
         return c + 0x2E;
     }
@@ -568,12 +568,12 @@ s32 func_80065540(s32 c) {
     return c + 0x85;
 }
 
-void func_80065584(Actor *a0, s32 *args) {
+void Stg30_ItemMenuInit(Actor *a0, s32 *args) {
     ((Stg30WorkWord *)a0->work)->field_0 = args[0];
 }
 
 INCLUDE_RODATA("asm/USA/stag3000/rodata", D_800633F0);
-void func_80065594(Actor *a0) {
+void Stg30_ItemMenuUpdate(Actor *a0) {
     Stg30Work730D0 *w = (Stg30Work730D0 *)a0->work;
     Stg30GameFlags *g;
     s32 item;
@@ -604,15 +604,15 @@ void func_80065594(Actor *a0) {
         if (g->field_5B != 0) {
             w->field_4C[2] = 1;
         }
-        D_800737E8 = 0;
-        D_800737F0[0] = 0;
-        D_800737F0[1] = 0;
-        D_800737F0[2] = 0;
-        D_800737F8[0] = 0;
-        D_800737F8[1] = 0;
-        D_800737F8[2] = 0;
+        Stg30_ItemMenuColumn = 0;
+        Stg30_ItemMenuRow[0] = 0;
+        Stg30_ItemMenuRow[1] = 0;
+        Stg30_ItemMenuRow[2] = 0;
+        Stg30_ItemMenuScroll[0] = 0;
+        Stg30_ItemMenuScroll[1] = 0;
+        Stg30_ItemMenuScroll[2] = 0;
         w->field_3C = 0;
-        func_80065100(a0);
+        Stg30_ItemMenuBuildLists(a0);
         Task_NextState0(a0);
         break;
     case 1:
@@ -627,20 +627,20 @@ void func_80065594(Actor *a0) {
             break;
         case 1:
             do {
-                s32 cat = D_800737E8;
-                s16 *row = &D_800737F0[cat];
-                s16 *top = &D_800737F8[cat];
-                s16 *pc = &D_800737E8;
+                s32 cat = Stg30_ItemMenuColumn;
+                s16 *row = &Stg30_ItemMenuRow[cat];
+                s16 *top = &Stg30_ItemMenuScroll[cat];
+                s16 *pc = &Stg30_ItemMenuColumn;
 
                 if (Pad_State[0].left > 0) {
                     if (cat == 0) break;
-                    D_800737E8--;
+                    Stg30_ItemMenuColumn--;
                     Snd_PlayById(0xD, 0);
                     break;
                 }
                 if (Pad_State[0].right > 0) {
                     if (cat == 2) break;
-                    D_800737E8++;
+                    Stg30_ItemMenuColumn++;
                     Snd_PlayById(0xD, 0);
                     break;
                 }
@@ -675,31 +675,31 @@ void func_80065594(Actor *a0) {
                     break;
                 }
                 if (Pad_State[0].cross <= 0) break;
-                item = w->field_58[D_800737E8][D_800737F0[D_800737E8] + D_800737F8[D_800737E8]];
-                if (w->field_40[D_800737E8] == 0 || w->field_4C[D_800737E8] != 0 || item == 0) {
+                item = w->field_58[Stg30_ItemMenuColumn][Stg30_ItemMenuRow[Stg30_ItemMenuColumn] + Stg30_ItemMenuScroll[Stg30_ItemMenuColumn]];
+                if (w->field_40[Stg30_ItemMenuColumn] == 0 || w->field_4C[Stg30_ItemMenuColumn] != 0 || item == 0) {
                     Snd_PlayById(0x10, 0);
                     break;
                 }
-                id = func_80065540(item);
-                D_80073CC0.field_3AC = item;
-                D_80073CC0.entries[0].field_14 = 0;
-                D_80073CC0.field_3B2 = *pc;
-                D_80073CC0.field_2AC[D_80073CC0.entries[0].field_8].field_0 = Skill_GetType(id) + 1;
-                D_80073CC0.field_2AC[D_80073CC0.entries[0].field_8].field_6 = id;
-                D_80073CC0.field_2AC[D_80073CC0.entries[0].field_8].field_8 = func_8006E2BC(id);
-                D_80073CC0.field_2AC[D_80073CC0.entries[0].field_8].field_4 = Skill_GetTarget(id);
+                id = Stg30_ItemToSkillId(item);
+                Stg30_Battle.field_3AC = item;
+                Stg30_Battle.entries[0].field_14 = 0;
+                Stg30_Battle.field_3B2 = *pc;
+                Stg30_Battle.field_2AC[Stg30_Battle.entries[0].field_8].field_0 = Skill_GetType(id) + 1;
+                Stg30_Battle.field_2AC[Stg30_Battle.entries[0].field_8].field_6 = id;
+                Stg30_Battle.field_2AC[Stg30_Battle.entries[0].field_8].field_8 = Stg30_GetSkillEffectKind(id);
+                Stg30_Battle.field_2AC[Stg30_Battle.entries[0].field_8].field_4 = Skill_GetTarget(id);
                 Snd_PlayById(0xE, 0);
                 Task_NextState0(a0);
             } while (0);
             for (i = 0; i < 3; i++) {
-                if (D_800737E8 == i) {
+                if (Stg30_ItemMenuColumn == i) {
                     c = 4;
                 } else {
                     c = 5;
                 }
                 Text_OpenById(&w->field_C[i], i + 7, c, D_8007309C[i]);
             }
-            func_80065354(a0);
+            Stg30_ItemMenuRefreshText(a0);
             break;
         }
         break;
@@ -721,7 +721,7 @@ void func_80065594(Actor *a0) {
     }
 }
 
-void func_80065A98(Actor *a0) {
+void Stg30_ItemMenuDraw(Actor *a0) {
     Stg30Work730D0 *w = (Stg30Work730D0 *)a0->work;
     Stg30Part *p;
     Stg30Part *q;
@@ -801,12 +801,12 @@ void func_80065A98(Actor *a0) {
         m = 0;
         bit = 2;
         for (i = 0; i < 3; i++) {
-            if (D_800737F8[i] == 0) {
+            if (Stg30_ItemMenuScroll[i] == 0) {
                 m |= bit;
                 bit <<= 1;
                 m |= bit;
                 bit <<= 1;
-            } else if (D_800737E8 != i) {
+            } else if (Stg30_ItemMenuColumn != i) {
                 m |= bit;
                 bit <<= 2;
             } else {
@@ -814,12 +814,12 @@ void func_80065A98(Actor *a0) {
                 m |= bit;
                 bit <<= 1;
             }
-            if (w->field_E8[i] < 4 || w->field_E8[i] == D_800737F8[i] + 3) {
+            if (w->field_E8[i] < 4 || w->field_E8[i] == Stg30_ItemMenuScroll[i] + 3) {
                 m |= bit;
                 bit <<= 1;
                 m |= bit;
                 bit <<= 1;
-            } else if (D_800737E8 != i) {
+            } else if (Stg30_ItemMenuColumn != i) {
                 m |= bit;
                 bit <<= 2;
             } else {
@@ -829,7 +829,7 @@ void func_80065A98(Actor *a0) {
             }
         }
         Gfx_HidePartsByMask((GfxPartMaskView *)p2, m);
-        m2 = ~m & D_800730A8[D_800737E8];
+        m2 = ~m & D_800730A8[Stg30_ItemMenuColumn];
         for (q = p2; q->fileId != 0; q++) {
             if (q->groupMask & m2) {
                 q->palette = Math_PingPongRange(a0->elapsed, 4, 0, 3);
@@ -839,12 +839,12 @@ void func_80065A98(Actor *a0) {
     }
     p3 = (Stg30Part *)Cd_GetFileEntry(0x1A10014);
     Gfx_SetPartsScale((GfxPartScaleView *)p3, 0x1000, w->field_3C);
-    Gfx_HidePartsByMask((GfxPartMaskView *)p3, D_800730B8[D_800737E8]);
+    Gfx_HidePartsByMask((GfxPartMaskView *)p3, D_800730B8[Stg30_ItemMenuColumn]);
     for (s = p3; s->fileId != 0; s++) {
         if (s->groupMask & 0x4000) {
-            if (w->field_40[D_800737E8] != 0 && w->field_4C[D_800737E8] == 0) {
-                s->x = D_800730C4[D_800737E8].x;
-                s->y = D_800730C4[D_800737E8].y + D_800737F0[D_800737E8] * 11;
+            if (w->field_40[Stg30_ItemMenuColumn] != 0 && w->field_4C[Stg30_ItemMenuColumn] == 0) {
+                s->x = D_800730C4[Stg30_ItemMenuColumn].x;
+                s->y = D_800730C4[Stg30_ItemMenuColumn].y + Stg30_ItemMenuRow[Stg30_ItemMenuColumn] * 11;
                 s->palette = Math_PingPongRange(a0->elapsed, 4, 0, 3);
                 s->visible = 1;
             } else {
@@ -855,7 +855,7 @@ void func_80065A98(Actor *a0) {
     Gfx_DrawParts((EntA0 *)p3);
 }
 
-void func_80066000(void) {
+void Stg30_SkillMenuBuildLists(void) {
     s32 cnt[4];
     s32 a[3];
     s32 b[3];
@@ -868,12 +868,12 @@ void func_80066000(void) {
     s32 flag;
     s32 m;
 
-    d = (Stg30IdSet *)&((Stg30StateDigis *)&D_80073CC0)->digis[D_80073CC0.entries[0].field_8];
+    d = (Stg30IdSet *)&((Stg30StateDigis *)&Stg30_Battle)->digis[Stg30_Battle.entries[0].field_8];
     for (i = 0; i < 4; i++) {
         cnt[i] = 0;
-        D_80073820[i].field_D[13] = 0;
+        Stg30_SkillMenuLists[i].field_D[13] = 0;
         for (j = 0; j < 12; j++) {
-            D_80073820[i].field_D[j] = 0;
+            Stg30_SkillMenuLists[i].field_D[j] = 0;
         }
     }
     for (i = 0; i < 12; i++) {
@@ -881,22 +881,22 @@ void func_80066000(void) {
         if (j != 0) {
             k = Skill_GetType(j);
             cost = Skill_GetMpCost(j);
-            D_80073820[k].field_D[cnt[k]] = j;
-            D_80073820[k].field_0[cnt[k]] = (d->field_1A < cost) * 2;
+            Stg30_SkillMenuLists[k].field_D[cnt[k]] = j;
+            Stg30_SkillMenuLists[k].field_0[cnt[k]] = (d->field_1A < cost) * 2;
             cnt[k]++;
         }
     }
     for (i = 0; i < 4; i++) {
-        D_80073820[i].field_D[13] = cnt[i];
+        Stg30_SkillMenuLists[i].field_D[13] = cnt[i];
     }
-    if (D_80073CC0.field_31C[D_80073CC0.entries[0].field_8] & 8) {
+    if (Stg30_Battle.field_31C[Stg30_Battle.entries[0].field_8] & 8) {
         b[1] = 0;
         b[0] = 0;
         a[1] = 0;
         a[0] = 0;
         for (i = 0; i < 4; i++) {
             for (j = 0; j < cnt[i]; j++) {
-                id = D_80073820[i].field_D[j];
+                id = Stg30_SkillMenuLists[i].field_D[j];
                 m = Skill_GetPower(id);
                 cost = Skill_GetMpCost(id);
                 if (a[0] < m) {
@@ -912,15 +912,15 @@ void func_80066000(void) {
             }
         }
         if (a[0] != 0) {
-            D_80073820[a[1]].field_0[a[2]] = 2;
+            Stg30_SkillMenuLists[a[1]].field_0[a[2]] = 2;
         }
         if (b[0] != 0) {
-            D_80073820[b[1]].field_0[b[2]] = 2;
+            Stg30_SkillMenuLists[b[1]].field_0[b[2]] = 2;
         }
     }
     flag = 0;
     for (i = 3; i < 6; i++) {
-        if (D_80073CC0.entries[i].field_2E != 0 && !(D_80073CC0.field_31C[i] & 0x10000)) {
+        if (Stg30_Battle.entries[i].field_2E != 0 && !(Stg30_Battle.field_31C[i] & 0x10000)) {
             flag = 1;
             break;
         }
@@ -928,15 +928,15 @@ void func_80066000(void) {
     if (!flag) {
         for (i = 0; i < 4; i++) {
             for (j = 0; j < cnt[i]; j++) {
-                if (Skill_GetTarget(D_80073820[i].field_D[j]) == 5) {
-                    D_80073820[i].field_0[j] = 2;
+                if (Skill_GetTarget(Stg30_SkillMenuLists[i].field_D[j]) == 5) {
+                    Stg30_SkillMenuLists[i].field_0[j] = 2;
                 }
             }
         }
     }
 }
 
-void func_800663F8(void *a0, s32 id, s32 color, Stg30XY pos, s32 name, s32 delay) {
+void Stg30_OpenSkillText(void *a0, s32 id, s32 color, Stg30XY pos, s32 name, s32 delay) {
     TextOpenArgs args;
 
     if (name == 0) {
@@ -955,31 +955,31 @@ void func_800663F8(void *a0, s32 id, s32 color, Stg30XY pos, s32 name, s32 delay
 }
 
 INCLUDE_RODATA("asm/USA/stag3000/rodata", D_800633F4);
-void func_80066484(Actor *a0) {
+void Stg30_SkillMenuRefreshText(Actor *a0) {
     Stg30Work73138 *w = (Stg30Work73138 *)a0->work;
     s32 i;
     s32 j;
     s32 item;
 
     for (i = 0; i < 4; i++) {
-        Stg30Rec1B *rec = &D_80073820[i];
+        Stg30Rec1B *rec = &Stg30_SkillMenuLists[i];
         for (j = 0; j < 3; j++) {
-            s32 off = j + D_80073810[i];
+            s32 off = j + Stg30_SkillMenuScroll[i];
             if (rec->field_D[off] != 0) {
                 s32 k = j + 6;
                 s32 color;
                 Stg30XY pos = D_800730E8[i];
                 pos.y += j * 0xB;
-                color = (D_80073800 ^ i) != 0;
-                func_800663F8(&w->texts[i * 3 + k], rec->field_D[off], color + rec->field_0[off], pos, 1, 0);
+                color = (Stg30_SkillMenuColumn ^ i) != 0;
+                Stg30_OpenSkillText(&w->texts[i * 3 + k], rec->field_D[off], color + rec->field_0[off], pos, 1, 0);
             }
         }
     }
-    item = D_80073820[D_80073800].field_D[D_80073808[D_80073800] + D_80073810[D_80073800]];
+    item = Stg30_SkillMenuLists[Stg30_SkillMenuColumn].field_D[Stg30_SkillMenuRow[Stg30_SkillMenuColumn] + Stg30_SkillMenuScroll[Stg30_SkillMenuColumn]];
     if (item != 0) {
         if (w->field_48 != item) {
             w->field_48 = item;
-            func_800663F8(&w->texts[5], item, 0, D_800633F4, 0, 3);
+            Stg30_OpenSkillText(&w->texts[5], item, 0, D_800633F4, 0, 3);
         }
         w->field_50 = Skill_GetMpCost(item);
     } else {
@@ -990,7 +990,7 @@ void func_80066484(Actor *a0) {
 }
 
 INCLUDE_RODATA("asm/USA/stag3000/rodata", D_800633F8);
-void func_80066698(Actor *a0) {
+void Stg30_SkillMenuUpdate(Actor *a0) {
     Stg30Work73138 *w = (Stg30Work73138 *)a0->work;
     s16 *row;
     s16 *top;
@@ -1001,18 +1001,18 @@ void func_80066698(Actor *a0) {
     switch (a0->stateLevel0) {
     case 0:
         Mem_FillWordsNeg1(w->texts, 0x12);
-        func_80066000();
+        Stg30_SkillMenuBuildLists();
         w->field_48 = -1;
-        D_80073800 = 0;
+        Stg30_SkillMenuColumn = 0;
         w->field_4C = 0;
-        D_80073808[0] = 0;
-        D_80073808[1] = 0;
-        D_80073808[2] = 0;
-        D_80073808[3] = 0;
-        D_80073810[0] = 0;
-        D_80073810[1] = 0;
-        D_80073810[2] = 0;
-        D_80073810[3] = 0;
+        Stg30_SkillMenuRow[0] = 0;
+        Stg30_SkillMenuRow[1] = 0;
+        Stg30_SkillMenuRow[2] = 0;
+        Stg30_SkillMenuRow[3] = 0;
+        Stg30_SkillMenuScroll[0] = 0;
+        Stg30_SkillMenuScroll[1] = 0;
+        Stg30_SkillMenuScroll[2] = 0;
+        Stg30_SkillMenuScroll[3] = 0;
         Task_NextState0(a0);
         break;
     case 1:
@@ -1026,19 +1026,19 @@ void func_80066698(Actor *a0) {
             }
             break;
         case 1:
-            cat = D_80073800;
-            row = &D_80073808[cat];
-            top = &D_80073810[cat];
+            cat = Stg30_SkillMenuColumn;
+            row = &Stg30_SkillMenuRow[cat];
+            top = &Stg30_SkillMenuScroll[cat];
             do {
                 if (Pad_State[0].left > 0) {
                     if (cat == 0) break;
-                    D_80073800--;
+                    Stg30_SkillMenuColumn--;
                     Snd_PlayById(0xD, 0);
                     break;
                 }
                 if (Pad_State[0].right > 0) {
                     if (cat == 3) break;
-                    D_80073800++;
+                    Stg30_SkillMenuColumn++;
                     Snd_PlayById(0xD, 0);
                     break;
                 }
@@ -1059,17 +1059,17 @@ void func_80066698(Actor *a0) {
                         Snd_PlayById(0xD, 0);
                         break;
                     }
-                    if (D_80073820[cat].field_D[*row + *top + 1] == 0) break;
+                    if (Stg30_SkillMenuLists[cat].field_D[*row + *top + 1] == 0) break;
                     *top += 1;
                     Snd_PlayById(0xD, 0);
                     break;
                 }
                 if (Pad_State[0].cross > 0) {
-                    if (D_80073820[cat].field_D[*row + *top] != 0 && D_80073820[cat].field_0[*row + *top] == 0) {
-                        D_80073CC0.entries[0].field_14 = 0;
-                        D_80073CC0.field_2AC[D_80073CC0.entries[0].field_8].field_0 = cat + 1;
-                        D_80073CC0.field_2AC[D_80073CC0.entries[0].field_8].field_6 = D_80073820[cat].field_D[*row + *top];
-                        D_80073CC0.field_2AC[D_80073CC0.entries[0].field_8].field_8 = func_8006E2BC(D_80073820[cat].field_D[*row + *top]);
+                    if (Stg30_SkillMenuLists[cat].field_D[*row + *top] != 0 && Stg30_SkillMenuLists[cat].field_0[*row + *top] == 0) {
+                        Stg30_Battle.entries[0].field_14 = 0;
+                        Stg30_Battle.field_2AC[Stg30_Battle.entries[0].field_8].field_0 = cat + 1;
+                        Stg30_Battle.field_2AC[Stg30_Battle.entries[0].field_8].field_6 = Stg30_SkillMenuLists[cat].field_D[*row + *top];
+                        Stg30_Battle.field_2AC[Stg30_Battle.entries[0].field_8].field_8 = Stg30_GetSkillEffectKind(Stg30_SkillMenuLists[cat].field_D[*row + *top]);
                         Snd_PlayById(0xE, 0);
                         Task_NextState0(a0);
                         break;
@@ -1083,10 +1083,10 @@ void func_80066698(Actor *a0) {
                     Task_NextState0(a0);
                 }
             } while (0);
-            func_80066484(a0);
+            Stg30_SkillMenuRefreshText(a0);
             Text_OpenById(w, 0x179, 4, D_800633F8);
             for (i = 0; i < 4; i++) {
-                if (D_80073800 == i) {
+                if (Stg30_SkillMenuColumn == i) {
                     c = 4;
                 } else {
                     c = 5;
@@ -1114,7 +1114,7 @@ void func_80066698(Actor *a0) {
     }
 }
 
-void func_80066AE0(Actor *a0) {
+void Stg30_SkillMenuDraw(Actor *a0) {
     Stg30Work73138 *w = (Stg30Work73138 *)a0->work;
     GfxPart *p;
     GfxPart *q;
@@ -1134,12 +1134,12 @@ void func_80066AE0(Actor *a0) {
         m = 0;
         bit = 2;
         for (i = 0; i < 4; i++) {
-            if (D_80073810[i] == 0) {
+            if (Stg30_SkillMenuScroll[i] == 0) {
                 m |= bit;
                 bit <<= 1;
                 m |= bit;
                 bit <<= 1;
-            } else if (D_80073800 != i) {
+            } else if (Stg30_SkillMenuColumn != i) {
                 m |= bit;
                 bit <<= 2;
             } else {
@@ -1147,12 +1147,12 @@ void func_80066AE0(Actor *a0) {
                 m |= bit;
                 bit <<= 1;
             }
-            if (D_80073820[i].field_D[0xD] < 4 || D_80073820[i].field_D[0xD] == D_80073810[i] + 3) {
+            if (Stg30_SkillMenuLists[i].field_D[0xD] < 4 || Stg30_SkillMenuLists[i].field_D[0xD] == Stg30_SkillMenuScroll[i] + 3) {
                 m |= bit;
                 bit <<= 1;
                 m |= bit;
                 bit <<= 1;
-            } else if (D_80073800 != i) {
+            } else if (Stg30_SkillMenuColumn != i) {
                 m |= bit;
                 bit <<= 2;
             } else {
@@ -1162,7 +1162,7 @@ void func_80066AE0(Actor *a0) {
             }
         }
         Gfx_HidePartsByMask((GfxPartMaskView *)p, m);
-        m2 = ~m & D_80073108[D_80073800];
+        m2 = ~m & D_80073108[Stg30_SkillMenuColumn];
         for (q = p; q->fileId != 0; q++) {
             if (q->groupMask & m2) {
                 q->palette = Math_PingPongRange(a0->elapsed, 4, 0, 3);
@@ -1175,16 +1175,16 @@ void func_80066AE0(Actor *a0) {
     Gfx_SetPartsNumber(p2, 0x1000, 3, w->field_50);
     for (q2 = p2; q2->fileId != 0; q2++) {
         if (q2->groupMask & 0x4000) {
-            q2->x = D_80073118[D_80073800].x;
-            q2->y = D_80073118[D_80073800].y + D_80073808[D_80073800] * 11;
+            q2->x = D_80073118[Stg30_SkillMenuColumn].x;
+            q2->y = D_80073118[Stg30_SkillMenuColumn].y + Stg30_SkillMenuRow[Stg30_SkillMenuColumn] * 11;
             q2->palette = Math_PingPongRange(a0->elapsed, 4, 0, 3);
         }
     }
-    Gfx_HidePartsByMask((GfxPartMaskView *)p2, D_80073128[D_80073800]);
+    Gfx_HidePartsByMask((GfxPartMaskView *)p2, D_80073128[Stg30_SkillMenuColumn]);
     Gfx_DrawParts((EntA0 *)p2);
 }
 
-void func_80066DB0(Actor *a0) {
+void Stg30_TargetSelectUpdate(Actor *a0) {
     Stg30Work73170 *w = (Stg30Work73170 *)a0->work;
     TaskEntry *t;
     s32 i;
@@ -1194,9 +1194,9 @@ void func_80066DB0(Actor *a0) {
 
     switch (a0->stateLevel0) {
     case 0:
-        w->field_18 = D_80073CC0.field_2AC[D_80073CC0.entries[0].field_8].field_6;
+        w->field_18 = Stg30_Battle.field_2AC[Stg30_Battle.entries[0].field_8].field_6;
         w->field_8 = Skill_GetTarget(w->field_18);
-        w->field_14 = D_80073CC0.field_2AC[D_80073CC0.entries[0].field_8].field_8;
+        w->field_14 = Stg30_Battle.field_2AC[Stg30_Battle.entries[0].field_8].field_8;
         switch (w->field_8) {
         case 0:
         case 3:
@@ -1212,7 +1212,7 @@ void func_80066DB0(Actor *a0) {
             w->field_C = 0;
             w->field_10 = 2;
             w->field_1C = 0;
-            w->field_4 = func_8006E31C(0, 1, w->field_14);
+            w->field_4 = Stg30_TargetFirst(0, 1, w->field_14);
             break;
         case 2:
             v = 7;
@@ -1224,7 +1224,7 @@ void func_80066DB0(Actor *a0) {
             w->field_C = 3;
             w->field_10 = 5;
             w->field_1C = 1;
-            w->field_4 = func_8006E31C(1, 1, w->field_14);
+            w->field_4 = Stg30_TargetFirst(1, 1, w->field_14);
             break;
         case 6:
             v = 8;
@@ -1239,8 +1239,8 @@ void func_80066DB0(Actor *a0) {
             w->field_C = v;
             break;
         case 9:
-            D_80073CC0.entries[0].field_C = 0;
-            D_80073CC0.entries[0].field_14 = 0;
+            Stg30_Battle.entries[0].field_C = 0;
+            Stg30_Battle.entries[0].field_14 = 0;
             Task_SetState0(a0, 3);
             return;
         }
@@ -1253,9 +1253,9 @@ void func_80066DB0(Actor *a0) {
             if (D_8005F6F4 > 0) {
                 old = w->field_4;
                 if (w->field_1C != 0) {
-                    w->field_4 = func_8006E3D0(w->field_1C, old, 1, w->field_14);
+                    w->field_4 = Stg30_TargetPrev(w->field_1C, old, 1, w->field_14);
                 } else {
-                    w->field_4 = func_8006E47C(0, old, 1, w->field_14);
+                    w->field_4 = Stg30_TargetNext(0, old, 1, w->field_14);
                 }
                 if (w->field_4 != old) {
                     changed = 1;
@@ -1265,9 +1265,9 @@ void func_80066DB0(Actor *a0) {
             if (Pad_State[0].right > 0) {
                 old = w->field_4;
                 if (w->field_1C != 0) {
-                    w->field_4 = func_8006E47C(w->field_1C, old, 1, w->field_14);
+                    w->field_4 = Stg30_TargetNext(w->field_1C, old, 1, w->field_14);
                 } else {
-                    w->field_4 = func_8006E3D0(0, old, 1, w->field_14);
+                    w->field_4 = Stg30_TargetPrev(0, old, 1, w->field_14);
                 }
                 if (w->field_4 != old) {
                     changed = 1;
@@ -1276,8 +1276,8 @@ void func_80066DB0(Actor *a0) {
             }
         }
             if (Pad_State[0].cross > 0) {
-                D_80073CC0.entries[0].field_C = w->field_4;
-                D_80073CC0.entries[0].field_14 = 0;
+                Stg30_Battle.entries[0].field_C = w->field_4;
+                Stg30_Battle.entries[0].field_14 = 0;
                 Snd_PlayById(0xE, 0);
                 Task_SetState0(a0, 3);
                 break;
@@ -1307,7 +1307,7 @@ void func_80066DB0(Actor *a0) {
             case 2:
                 for (i = 0; i < 3; i++) {
                     t = Task_FindFirst(0x509, -1, i);
-                    if (t != NULL && D_80073CC0.entries[i].field_2E != 0) {
+                    if (t != NULL && Stg30_Battle.entries[i].field_2E != 0) {
                         Task_SetState01((Actor *)t, 2, 8);
                     } else {
                         Task_SetState01((Actor *)t, 2, 7);
@@ -1317,7 +1317,7 @@ void func_80066DB0(Actor *a0) {
             case 6:
                 for (i = 3; i < 6; i++) {
                     t = Task_FindFirst(0x509, -1, i);
-                    if (t != NULL && D_80073CC0.entries[i].field_2E != 0) {
+                    if (t != NULL && Stg30_Battle.entries[i].field_2E != 0) {
                         Task_SetState01((Actor *)t, 2, 8);
                     } else {
                         Task_SetState01((Actor *)t, 2, 7);
@@ -1327,7 +1327,7 @@ void func_80066DB0(Actor *a0) {
             case 8:
                 for (i = 0; i < 6; i++) {
                     t = Task_FindFirst(0x509, -1, i);
-                    if (t != NULL && D_80073CC0.entries[i].field_2E != 0) {
+                    if (t != NULL && Stg30_Battle.entries[i].field_2E != 0) {
                         Task_SetState01((Actor *)t, 2, 8);
                     } else {
                         Task_SetState01((Actor *)t, 2, 7);
@@ -1339,16 +1339,16 @@ void func_80066DB0(Actor *a0) {
         switch (w->field_8) {
         case 1:
         case 5:
-            ((void (*)(s32))func_80070D14)(w->field_4 + 2);
+            ((void (*)(s32))Stg30_SetCameraShot)(w->field_4 + 2);
             break;
         case 2:
-            func_80070D14(8);
+            Stg30_SetCameraShot(8);
             break;
         case 6:
-            func_80070D14(9);
+            Stg30_SetCameraShot(9);
             break;
         case 8:
-            func_80070D14(0x18);
+            Stg30_SetCameraShot(0x18);
             break;
         }
         break;
@@ -1357,7 +1357,7 @@ void func_80066DB0(Actor *a0) {
     }
 }
 
-void func_800672B0(Actor *a0) {
+void Stg30_TargetSelectDraw(Actor *a0) {
     Stg30Work73170 *w = (Stg30Work73170 *)a0->work;
     GfxPart *p = (GfxPart *)Cd_GetFileEntry(0x1A1000A);
     GfxPart *q;
@@ -1371,34 +1371,34 @@ void func_800672B0(Actor *a0) {
         break;
     case 2:
         m = D_8007316C;
-        if (D_80073CC0.entries[2].field_2E == 0) m |= 8;
-        if (D_80073CC0.entries[1].field_2E == 0) m |= 4;
-        if (D_80073CC0.entries[0].field_2E == 0) m |= 2;
+        if (Stg30_Battle.entries[2].field_2E == 0) m |= 8;
+        if (Stg30_Battle.entries[1].field_2E == 0) m |= 4;
+        if (Stg30_Battle.entries[0].field_2E == 0) m |= 2;
         Gfx_HidePartsByMask((GfxPartMaskView *)p, m);
         break;
     case 6:
         m = D_80073168;
-        if (D_80073CC0.entries[5].field_2E == 0) m |= 0x40;
-        if (D_80073CC0.entries[4].field_2E == 0) m |= 0x20;
-        if (D_80073CC0.entries[3].field_2E == 0) m |= 0x10;
+        if (Stg30_Battle.entries[5].field_2E == 0) m |= 0x40;
+        if (Stg30_Battle.entries[4].field_2E == 0) m |= 0x20;
+        if (Stg30_Battle.entries[3].field_2E == 0) m |= 0x10;
         Gfx_HidePartsByMask((GfxPartMaskView *)p, m);
         break;
     case 8:
         m = -0x7F;
         if (func_8001F0E4(w->field_18) & 0x2000) {
-            if (D_80073CC0.entries[0].field_19 == 0) m = -0x7D;
-            if (D_80073CC0.entries[1].field_19 == 0) m |= 4;
-            if (D_80073CC0.entries[2].field_19 == 0) m |= 8;
-            if (D_80073CC0.entries[3].field_19 == 0) m |= 0x10;
-            if (D_80073CC0.entries[4].field_19 == 0) m |= 0x20;
-            if (D_80073CC0.entries[5].field_19 == 0) m |= 0x40;
+            if (Stg30_Battle.entries[0].field_19 == 0) m = -0x7D;
+            if (Stg30_Battle.entries[1].field_19 == 0) m |= 4;
+            if (Stg30_Battle.entries[2].field_19 == 0) m |= 8;
+            if (Stg30_Battle.entries[3].field_19 == 0) m |= 0x10;
+            if (Stg30_Battle.entries[4].field_19 == 0) m |= 0x20;
+            if (Stg30_Battle.entries[5].field_19 == 0) m |= 0x40;
         } else {
-            if (D_80073CC0.entries[0].field_2E == 0) m = -0x7D;
-            if (D_80073CC0.entries[1].field_2E == 0) m |= 4;
-            if (D_80073CC0.entries[2].field_2E == 0) m |= 8;
-            if (D_80073CC0.entries[3].field_2E == 0) m |= 0x10;
-            if (D_80073CC0.entries[4].field_2E == 0) m |= 0x20;
-            if (D_80073CC0.entries[5].field_2E == 0) m |= 0x40;
+            if (Stg30_Battle.entries[0].field_2E == 0) m = -0x7D;
+            if (Stg30_Battle.entries[1].field_2E == 0) m |= 4;
+            if (Stg30_Battle.entries[2].field_2E == 0) m |= 8;
+            if (Stg30_Battle.entries[3].field_2E == 0) m |= 0x10;
+            if (Stg30_Battle.entries[4].field_2E == 0) m |= 0x20;
+            if (Stg30_Battle.entries[5].field_2E == 0) m |= 0x40;
         }
         Gfx_HidePartsByMask((GfxPartMaskView *)p, m);
         break;

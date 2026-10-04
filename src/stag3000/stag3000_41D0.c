@@ -3,7 +3,7 @@
 #include "stag3000/stag3000_funcs.h"
 #include "stag3000/stag3000_100C_funcs.h"
 
-void func_80067530(Actor *a0, s32 a1, s32 a2) {
+void Stg30_SetDigiAction(Actor *a0, s32 a1, s32 a2) {
     a0->stateLevel0 = 2;
     a0->stateLevel1 = a1;
     a0->stateLevel2 = 0;
@@ -11,45 +11,45 @@ void func_80067530(Actor *a0, s32 a1, s32 a2) {
     a0->stateLevel4 = a2;
 }
 
-void func_8006754C(Stg30ListOwner *a0) {
+void Stg30_ShowPartyFighters(Stg30ListOwner *a0) {
     s32 i;
     Stg30ActorList *l = a0->list;
 
     for (i = 0; i < 6; i++) {
         if (l->actors[i] != NULL) {
             if (i < 3) {
-                func_8006F640(l->actors[i], 1);
-                func_8006F664(l->actors[i]);
+                Stg30_FighterSetVisible(l->actors[i], 1);
+                Stg30_FighterQueueHomeReset(l->actors[i]);
             } else {
-                func_8006F640(l->actors[i], 0);
+                Stg30_FighterSetVisible(l->actors[i], 0);
             }
         }
     }
 }
 
-void func_800675CC(Stg30ListOwner *a0) {
+void Stg30_ShowAllFighters(Stg30ListOwner *a0) {
     s32 i;
     Stg30ActorList *l = a0->list;
 
     for (i = 0; i < 6; i++) {
         if (l->actors[i] != NULL) {
-            func_8006F640(l->actors[i], 1);
+            Stg30_FighterSetVisible(l->actors[i], 1);
         }
     }
 }
 
-void func_80067624(Stg30ListOwner *a0) {
+void Stg30_ResetAllFightersHome(Stg30ListOwner *a0) {
     s32 i;
     Stg30ActorList *l = a0->list;
 
     for (i = 0; i < 6; i++) {
         if (l->actors[i] != NULL) {
-            func_8006F664(l->actors[i]);
+            Stg30_FighterQueueHomeReset(l->actors[i]);
         }
     }
 }
 
-s32 func_8006767C(Stg30IdSet *a0, s16 *a1, u8 id) {
+s32 Stg30_HasSkillOrNew(Stg30IdSet *a0, s16 *a1, u8 id) {
     s32 i;
 
     for (i = 0; i < 12; i++) {
@@ -63,11 +63,11 @@ s32 func_8006767C(Stg30IdSet *a0, s16 *a1, u8 id) {
     return 0;
 }
 
-s32 func_800676C4(s32 a0, u8 a1) {
+s32 Stg30_RankCanLearnSkill(s32 a0, u8 a1) {
     return a0 >= Skill_GetRank(a1);
 }
 
-void func_800676F4(Actor *a0) {
+void Stg30_BattleWonUpdate(Actor *a0) {
     Stg30ActorList *l = (Stg30ActorList *)a0->u34.children;
     Stg30Pair sum;
     Stg30Init737A0 args;
@@ -98,15 +98,15 @@ void func_800676F4(Actor *a0) {
             Snd_PlayById(0x201, 1);
         }
         Task_Create(0x505, &l->field_24, 2);
-        func_80070D14(0x19);
-        func_8006754C((Stg30ListOwner *)a0);
+        Stg30_SetCameraShot(0x19);
+        Stg30_ShowPartyFighters((Stg30ListOwner *)a0);
         a0->elapsed = 0;
         Task_NextState2(a0);
     case 1:
         done = 0;
         for (i = 0; i < 3; i++) {
-            if (D_80073CC0.entries[i].field_2E != 0) {
-                f = Anim_GetModelAnimFile(D_80073CC0.entries[i].field_19, 8);
+            if (Stg30_Battle.entries[i].field_2E != 0) {
+                f = Anim_GetModelAnimFile(Stg30_Battle.entries[i].field_19, 8);
                 Cd_QueueFile(f);
                 if (Cd_GetFileState(f) != 3) {
                     done = 1;
@@ -121,7 +121,7 @@ void func_800676F4(Actor *a0) {
             break;
         }
         for (i = 0; i < 3; i++) {
-            if (D_80073CC0.entries[i].field_2E != 0) {
+            if (Stg30_Battle.entries[i].field_2E != 0) {
                 Task_SetState01(l->actors[i], 2, 2);
             }
         }
@@ -137,13 +137,13 @@ void func_800676F4(Actor *a0) {
         if (a0->elapsed < 0xF0) {
             break;
         }
-        if (D_80073CC0.entries[0].field_0 == 0) {
+        if (Stg30_Battle.entries[0].field_0 == 0) {
             sum.field_4 = 0;
             sum.field_0 = 0;
             for (t = 3; t < 6; t++) {
-                if (D_80073CC0.entries[t].field_19 != 0) {
-                    sum.field_4 += D_80073CC0.field_240[t].field_0;
-                    sum.field_0 += D_80073CC0.entries[t].field_28;
+                if (Stg30_Battle.entries[t].field_19 != 0) {
+                    sum.field_4 += Stg30_Battle.field_240[t].field_0;
+                    sum.field_0 += Stg30_Battle.entries[t].field_28;
                 }
             }
             Task_Create(0x502, &l->field_28, (s32)&sum);
@@ -163,20 +163,20 @@ void func_800676F4(Actor *a0) {
         case 1:
         case 2:
         case 3:
-            if (D_80073CC0.field_34C[a0->stateLevel3 - 1] == 0) {
+            if (Stg30_Battle.field_34C[a0->stateLevel3 - 1] == 0) {
                 Task_NextState3(a0);
                 break;
             }
             switch (a0->stateLevel4) {
             case 0:
             default:
-                e = (Stg30IdSet *)&((Stg30StateDigis *)&D_80073CC0)->digis[a0->stateLevel3 - 1];
+                e = (Stg30IdSet *)&((Stg30StateDigis *)&Stg30_Battle)->digis[a0->stateLevel3 - 1];
                 Mem_Zero(&args, 0x1C);
                 args.field_0 = a0->stateLevel3 - 1;
                 flag = 0;
                 cnt = 0;
                 if (e->field_46 != 0) {
-                    if (!func_8006767C(e, args.field_4, e->field_46)) {
+                    if (!Stg30_HasSkillOrNew(e, args.field_4, e->field_46)) {
                         args.field_4[cnt++] = e->field_46;
                         flag = 1;
                     }
@@ -187,7 +187,7 @@ void func_800676F4(Actor *a0) {
                     j = 0;
                     n = 0;
                     for (; j < 0x18; j++) {
-                        if (e->field_2E[j] != 0 && func_800676C4(stage, e->field_2E[j])) {
+                        if (e->field_2E[j] != 0 && Stg30_RankCanLearnSkill(stage, e->field_2E[j])) {
                             idx[n] = j;
                             ids[n] = e->field_2E[j];
                             n++;
@@ -201,7 +201,7 @@ void func_800676F4(Actor *a0) {
                             k = n / (4 - m) + 1;
                         }
                         for (j = 0; j < k; j++) {
-                            if (func_8006767C(e, args.field_4, ids[j])) {
+                            if (Stg30_HasSkillOrNew(e, args.field_4, ids[j])) {
                                 e->field_2E[idx[j]] = 0;
                             } else {
                                 flag = 1;
@@ -236,9 +236,9 @@ void func_800676F4(Actor *a0) {
         }
         st = D_8005E5E0;
         if (st != 0) {
-            stage2 = Digi_GetRank(D_80073CC0.entries[D_80073CC0.field_3D8].field_19);
+            stage2 = Digi_GetRank(Stg30_Battle.entries[Stg30_Battle.field_3D8].field_19);
             if ((Rand_Next() & 0x7F) < D_80073188[stage2][st - 1]) {
-                arg = D_80073CC0.field_3D8;
+                arg = Stg30_Battle.field_3D8;
                 Task_Create(0x513, &l->field_28, (s32)&arg);
             }
         }
@@ -278,16 +278,16 @@ void func_800676F4(Actor *a0) {
     }
 }
 
-void func_80067DB4(Stg30ListOwner *a0) {
+void Stg30_BattleLostUpdate(Stg30ListOwner *a0) {
     Stg30ActorList *l = a0->list;
 
     switch (a0->stateLevel2) {
     case 0:
     default:
         Snd_PlayById(0x203, 1);
-        func_8006754C(a0);
+        Stg30_ShowPartyFighters(a0);
         Task_Create(0x505, &l->field_24, 3);
-        func_80070D14(0x19);
+        Stg30_SetCameraShot(0x19);
         Task_NextState2((Actor *)a0);
     case 1:
         if (l->field_24 != 0) {
@@ -302,7 +302,7 @@ void func_80067DB4(Stg30ListOwner *a0) {
             Task_NextState3((Actor *)a0);
         case 1:
             if (Sys_State.fadeLevel == 0xFF) {
-                if (D_80073CC0.entries[0].field_0 != 0) {
+                if (Stg30_Battle.entries[0].field_0 != 0) {
                     Sys_State.modeArg = 2;
                     Sys_State.nextGameMode = Sys_State.prevGameMode;
                 } else {
@@ -317,19 +317,19 @@ void func_80067DB4(Stg30ListOwner *a0) {
     }
 }
 
-void func_80067EC4(void) {
+void Stg30_ResetPartyStats(void) {
     s32 i;
 
     for (i = 0; i < 3; i++) {
-        if (D_80073CC0.entries[i].field_18 >= 3) {
-            D_80073CC0.entries[i].field_34 = Save_GameState.elems[i].attack;
-            D_80073CC0.entries[i].field_36 = Save_GameState.elems[i].defense;
-            D_80073CC0.entries[i].field_38 = Save_GameState.elems[i].speed;
+        if (Stg30_Battle.entries[i].field_18 >= 3) {
+            Stg30_Battle.entries[i].field_34 = Save_GameState.elems[i].attack;
+            Stg30_Battle.entries[i].field_36 = Save_GameState.elems[i].defense;
+            Stg30_Battle.entries[i].field_38 = Save_GameState.elems[i].speed;
         }
     }
 }
 
-void func_80067F2C(Actor *a0) {
+void Stg30_BattleUpdate(Actor *a0) {
     Stg30Work731A0 *w = (Stg30Work731A0 *)a0->work;
     Stg30ActorList *l = (Stg30ActorList *)a0->u34.children;
     s32 args[3];
@@ -356,10 +356,10 @@ void func_80067F2C(Actor *a0) {
         switch (a0->stateLevel1) {
         case 0:
         default:
-            func_800701FC();
+            Stg30_InitBattle();
             Task_NextState1(a0);
         case 1:
-            if (D_80073CC0.entries[0].field_0 != 0) {
+            if (Stg30_Battle.entries[0].field_0 != 0) {
                 switch (a0->stateLevel2) {
                 case 0:
                 default:
@@ -396,30 +396,30 @@ void func_80067F2C(Actor *a0) {
             Cd_QueueFile(0x22B);
             Cd_QueueFile(0x45E);
             for (i = 0; i < 3; i++) {
-                Mem_Zero(&((Stg30StateDigis *)&D_80073CC0)->digis[i], 0x5C);
+                Mem_Zero(&((Stg30StateDigis *)&Stg30_Battle)->digis[i], 0x5C);
                 if (Save_GameState.elems[i].state >= 3) {
-                    ((Stg30StateDigis *)&D_80073CC0)->digis[i] = Save_GameState.elems[i];
+                    ((Stg30StateDigis *)&Stg30_Battle)->digis[i] = Save_GameState.elems[i];
                     args[1] = i;
-                    args[2] = D_80073CC0.entries[i].field_2E == 0;
+                    args[2] = Stg30_Battle.entries[i].field_2E == 0;
                     Task_Create(0x509, (s32 *)&l->actors[i], (s32)args);
                 }
             }
             for (i = 3; i < 6; i++) {
-                Mem_Zero(&((Stg30StateDigis *)&D_80073CC0)->digis[i], 0x5C);
-                Enemy_InitRosterEntry(Sys_State.modeArg, i - 3, &((Stg30StateDigis *)&D_80073CC0)->digis[i],
-                              (Out1DDA8 *)&D_80073CC0.field_240[i]);
-                if (D_80073CC0.entries[i].field_19 != 0) {
+                Mem_Zero(&((Stg30StateDigis *)&Stg30_Battle)->digis[i], 0x5C);
+                Enemy_InitRosterEntry(Sys_State.modeArg, i - 3, &((Stg30StateDigis *)&Stg30_Battle)->digis[i],
+                              (Out1DDA8 *)&Stg30_Battle.field_240[i]);
+                if (Stg30_Battle.entries[i].field_19 != 0) {
                     args[1] = i;
                     args[2] = 0;
                     Task_Create(0x509, (s32 *)&l->actors[i], (s32)args);
                 }
             }
             Enemy_GetSetSummary((void *)D_8005F794, &out);
-            D_80073CC0.field_3DC = out.field_14;
+            Stg30_Battle.field_3DC = out.field_14;
             for (n1 = 0; n1 < 6; n1++) {
-                D_80073CC0.field_37A[n1] = D_80073CC0.field_356[n1] = D_80073CC0.entries[n1].field_34;
-                D_80073CC0.field_386[n1] = D_80073CC0.field_362[n1] = D_80073CC0.entries[n1].field_36;
-                D_80073CC0.field_392[n1] = D_80073CC0.field_36E[n1] = D_80073CC0.entries[n1].field_38;
+                Stg30_Battle.field_37A[n1] = Stg30_Battle.field_356[n1] = Stg30_Battle.entries[n1].field_34;
+                Stg30_Battle.field_386[n1] = Stg30_Battle.field_362[n1] = Stg30_Battle.entries[n1].field_36;
+                Stg30_Battle.field_392[n1] = Stg30_Battle.field_36E[n1] = Stg30_Battle.entries[n1].field_38;
             }
             w->field_0 = 0;
             Task_NextState0(a0);
@@ -442,19 +442,19 @@ void func_80067F2C(Actor *a0) {
             case 0:
             default:
                 for (n2 = 0; n2 < 7; n2++) {
-                    D_80073CC0.field_2AC[n2].field_F = 0;
-                    D_80073CC0.field_2AC[n2].field_E = 0;
-                    D_80073CC0.field_2AC[n2].field_6 = 0;
-                    D_80073CC0.field_2AC[n2].field_4 = 0;
-                    D_80073CC0.field_2AC[n2].field_0 = 0;
+                    Stg30_Battle.field_2AC[n2].field_F = 0;
+                    Stg30_Battle.field_2AC[n2].field_E = 0;
+                    Stg30_Battle.field_2AC[n2].field_6 = 0;
+                    Stg30_Battle.field_2AC[n2].field_4 = 0;
+                    Stg30_Battle.field_2AC[n2].field_0 = 0;
                 }
                 for (n3 = 0; n3 < 6; n3++) {
-                    D_80073CC0.entries[n3].field_34 = D_80073CC0.field_356[n3];
-                    D_80073CC0.entries[n3].field_36 = D_80073CC0.field_362[n3];
-                    D_80073CC0.entries[n3].field_38 = D_80073CC0.field_36E[n3];
+                    Stg30_Battle.entries[n3].field_34 = Stg30_Battle.field_356[n3];
+                    Stg30_Battle.entries[n3].field_36 = Stg30_Battle.field_362[n3];
+                    Stg30_Battle.entries[n3].field_38 = Stg30_Battle.field_36E[n3];
                 }
-                func_80067624((Stg30ListOwner *)a0);
-                func_800675CC((Stg30ListOwner *)a0);
+                Stg30_ResetAllFightersHome((Stg30ListOwner *)a0);
+                Stg30_ShowAllFighters((Stg30ListOwner *)a0);
                 Task_Create(0x50B, &l->field_C, 0);
                 Task_NextState2(a0);
                 break;
@@ -475,7 +475,7 @@ void func_80067F2C(Actor *a0) {
                         if (l->field_24 != 0) {
                             break;
                         }
-                        func_80067EC4();
+                        Stg30_ResetPartyStats();
                         Gfx_FadeOutToBlack(0xF);
                         Task_NextState3(a0);
                     case 2:
@@ -500,9 +500,9 @@ void func_80067F2C(Actor *a0) {
                             break;
                         }
                         for (n4 = 0; n4 < 3; n4++) {
-                            D_80073CC0.field_2AC[n4].field_6 = 0;
-                            D_80073CC0.field_2AC[n4].field_4 = 0;
-                            D_80073CC0.field_2AC[n4].field_0 = 0;
+                            Stg30_Battle.field_2AC[n4].field_6 = 0;
+                            Stg30_Battle.field_2AC[n4].field_4 = 0;
+                            Stg30_Battle.field_2AC[n4].field_0 = 0;
                         }
                         D_80073CC4 = 0;
                         break;
@@ -520,15 +520,15 @@ void func_80067F2C(Actor *a0) {
                     if (l->field_24 != 0) {
                         break;
                     }
-                    D_80073CC0.field_3D4 = 0;
-                    if (D_80073CC0.field_2AC[6].field_0 != 0) {
+                    Stg30_Battle.field_3D4 = 0;
+                    if (Stg30_Battle.field_2AC[6].field_0 != 0) {
                         Task_NextState3(a0);
                     } else {
                         Task_SetState3(a0, 0xFF);
                     }
                     break;
                 case 2:
-                    func_8006DB90();
+                    Stg30_BuildItemScript();
                     Task_Create(0x50F, &l->field_48, 0);
                     Task_NextState3(a0);
                 case 3:
@@ -537,10 +537,10 @@ void func_80067F2C(Actor *a0) {
                     }
                     sum = 0;
                     for (n5 = 3; n5 < 6; n5++) {
-                        sum += D_80073CC0.entries[n5].field_2E;
+                        sum += Stg30_Battle.entries[n5].field_2E;
                     }
                     if (sum == 0) {
-                        func_80067EC4();
+                        Stg30_ResetPartyStats();
                         Task_SetState1(a0, 4);
                         break;
                     }
@@ -555,10 +555,10 @@ void func_80067F2C(Actor *a0) {
                 if (a0->elapsed < 0x3C) {
                     break;
                 }
-                func_80069594();
-                func_800696E8();
+                Stg30_AiChooseEnemyTurns();
+                Stg30_BuildTurnOrder();
                 for (n6 = 5; n6 >= 0; n6--) {
-                    D_80073CC0.field_2AC[n6].field_C = 0;
+                    Stg30_Battle.field_2AC[n6].field_C = 0;
                 }
                 Task_NextState1(a0);
                 break;
@@ -568,44 +568,44 @@ void func_80067F2C(Actor *a0) {
             switch (a0->stateLevel2) {
             case 0:
             default:
-                D_80073CC0.field_3B4 = 0;
-                D_80073CC0.field_3D4 = 0;
-                D_80073CC0.field_34F[0] = 0;
-                D_80073CC0.field_34F[1] = 0;
-                D_80073CC0.field_34F[2] = 0;
-                D_80073CC0.field_34F[3] = 0;
-                D_80073CC0.field_34F[4] = 0;
-                D_80073CC0.field_34F[5] = 0;
+                Stg30_Battle.field_3B4 = 0;
+                Stg30_Battle.field_3D4 = 0;
+                Stg30_Battle.field_34F[0] = 0;
+                Stg30_Battle.field_34F[1] = 0;
+                Stg30_Battle.field_34F[2] = 0;
+                Stg30_Battle.field_34F[3] = 0;
+                Stg30_Battle.field_34F[4] = 0;
+                Stg30_Battle.field_34F[5] = 0;
                 w->field_4 = 0;
                 Task_NextState2(a0);
             case 1:
-                if (D_80073CC0.entries[func_8006E674(0)].field_2E == 0) {
+                if (Stg30_Battle.entries[Stg30_TurnOrderGet(0)].field_2E == 0) {
                     Task_SetState2(a0, 4);
                     break;
                 }
-                func_8006E690();
-                if (!func_80069A44(func_8006E674(0))) {
+                Stg30_SaveFighterStates();
+                if (!Stg30_UpdateTurnStatus(Stg30_TurnOrderGet(0))) {
                     Task_SetState2(a0, 4);
                     break;
                 }
-                func_80069DE8();
+                Stg30_RetargetAction();
                 w->field_8 = 0;
-                D_80073CC0.field_3D0 = -1;
-                if (func_8006CB28(func_8006E674(0))) {
+                Stg30_Battle.field_3D0 = -1;
+                if (Stg30_PrepareAction(Stg30_TurnOrderGet(0))) {
                     Task_Create(0x50F, &l->field_48, 1);
                 }
                 Task_NextState2(a0);
             case 2:
-                if (D_80073CC0.field_3D0 != -1) {
+                if (Stg30_Battle.field_3D0 != -1) {
                     switch (a0->stateLevel3) {
                     case 0:
                     default:
-                        func_8006E770();
+                        Stg30_RestoreFighterStates();
                         Task_Destroy(&l->field_48);
-                        D_80073CC0.field_2AC[D_80073CC0.field_3D0].field_4 = func_8006E674(0);
-                        func_8006E55C(0, D_80073CC0.field_3D0);
-                        D_80073CC0.field_3B0 = 0;
-                        if (func_8006CB28(func_8006E674(0))) {
+                        Stg30_Battle.field_2AC[Stg30_Battle.field_3D0].field_4 = Stg30_TurnOrderGet(0);
+                        Stg30_TurnOrderInsert(0, Stg30_Battle.field_3D0);
+                        Stg30_Battle.field_3B0 = 0;
+                        if (Stg30_PrepareAction(Stg30_TurnOrderGet(0))) {
                             Task_Create(0x50F, &l->field_48, 1);
                         }
                         Task_NextState3(a0);
@@ -613,15 +613,15 @@ void func_80067F2C(Actor *a0) {
                         if (l->field_48 != 0) {
                             break;
                         }
-                        D_80073CC0.field_2AC[func_8006E674(0)].field_0 = 0;
-                        func_8006E5B4(0);
-                        if (D_80073CC0.entries[func_8006E674(0)].field_2E == 0) {
+                        Stg30_Battle.field_2AC[Stg30_TurnOrderGet(0)].field_0 = 0;
+                        Stg30_TurnOrderRemove(0);
+                        if (Stg30_Battle.entries[Stg30_TurnOrderGet(0)].field_2E == 0) {
                             Task_NextState2(a0);
                             Task_NextState2(a0);
                             break;
                         }
-                        D_80073CC0.field_3B0 = 0;
-                        if (func_8006CB28(func_8006E674(0))) {
+                        Stg30_Battle.field_3B0 = 0;
+                        if (Stg30_PrepareAction(Stg30_TurnOrderGet(0))) {
                             Task_Create(0x50F, &l->field_48, 1);
                         }
                         Task_NextState3(a0);
@@ -641,51 +641,51 @@ void func_80067F2C(Actor *a0) {
                 Task_NextState2(a0);
                 break;
             case 3:
-                if (D_80073CC0.field_3B4 != 0 && D_80073CC0.field_2AC[func_8006E674(0)].field_0 == 1 &&
-                    D_80073CC0.field_2AC[func_8006E674(0)].field_E == 0) {
+                if (Stg30_Battle.field_3B4 != 0 && Stg30_Battle.field_2AC[Stg30_TurnOrderGet(0)].field_0 == 1 &&
+                    Stg30_Battle.field_2AC[Stg30_TurnOrderGet(0)].field_E == 0) {
                     for (i = 0; i < 6; i++) {
-                        if (D_80073CC0.field_3B8[i] == -1) {
+                        if (Stg30_Battle.field_3B8[i] == -1) {
                             continue;
                         }
-                        if (D_80073CC0.entries[D_80073CC0.field_3B8[i]].field_2E == 0) {
+                        if (Stg30_Battle.entries[Stg30_Battle.field_3B8[i]].field_2E == 0) {
                             continue;
                         }
-                        j = func_8006E5F8(D_80073CC0.field_3B8[i]);
+                        j = Stg30_TurnOrderFind(Stg30_Battle.field_3B8[i]);
                         if (j == -1) {
                             continue;
                         }
-                        k = func_8006E674(j);
-                        if (D_80073CC0.field_2AC[k].field_0 != 2) {
+                        k = Stg30_TurnOrderGet(j);
+                        if (Stg30_Battle.field_2AC[k].field_0 != 2) {
                             continue;
                         }
-                        func_8006E5B4(j);
-                        func_8006E55C(1, k);
-                        if (func_8006E674(0) < 3 && D_80073CC0.field_3B8[i] < 3) {
-                            D_80073CC0.field_2AC[k].field_4 = func_800692A4(0, 1, D_80073CC0.field_3B8[i]);
-                        } else if (func_8006E674(0) >= 3 && D_80073CC0.field_3B8[i] >= 3) {
-                            D_80073CC0.field_2AC[k].field_4 = func_800692A4(0, 7, D_80073CC0.field_3B8[i]);
+                        Stg30_TurnOrderRemove(j);
+                        Stg30_TurnOrderInsert(1, k);
+                        if (Stg30_TurnOrderGet(0) < 3 && Stg30_Battle.field_3B8[i] < 3) {
+                            Stg30_Battle.field_2AC[k].field_4 = Stg30_PickTarget(0, 1, Stg30_Battle.field_3B8[i]);
+                        } else if (Stg30_TurnOrderGet(0) >= 3 && Stg30_Battle.field_3B8[i] >= 3) {
+                            Stg30_Battle.field_2AC[k].field_4 = Stg30_PickTarget(0, 7, Stg30_Battle.field_3B8[i]);
                         } else {
-                            D_80073CC0.field_2AC[k].field_4 = func_8006E674(0);
+                            Stg30_Battle.field_2AC[k].field_4 = Stg30_TurnOrderGet(0);
                         }
                         w->field_8 = 1;
                     }
                 }
                 Task_NextState2(a0);
             case 4:
-                m = func_8006E674(0);
-                if (m != func_8006E674(1)) {
-                    if (D_80073CC0.field_2AC[func_8006E674(0)].field_0 != 5) {
-                        D_80073CC0.field_2AC[func_8006E674(0)].field_0 = 0;
+                m = Stg30_TurnOrderGet(0);
+                if (m != Stg30_TurnOrderGet(1)) {
+                    if (Stg30_Battle.field_2AC[Stg30_TurnOrderGet(0)].field_0 != 5) {
+                        Stg30_Battle.field_2AC[Stg30_TurnOrderGet(0)].field_0 = 0;
                     }
                 }
                 flag = 0;
                 do {
                     alive = 0;
                     for (n7 = 0; n7 < 3; n7++) {
-                        if (D_80073CC0.entries[n7].field_2E != 0) {
+                        if (Stg30_Battle.entries[n7].field_2E != 0) {
                             alive = 1;
                         } else {
-                            D_80073CC0.field_31C[n7] = 0;
+                            Stg30_Battle.field_31C[n7] = 0;
                         }
                     }
                     if (!alive) {
@@ -695,10 +695,10 @@ void func_80067F2C(Actor *a0) {
                     }
                     alive = 0;
                     for (n7 = 3; n7 < 6; n7++) {
-                        if (D_80073CC0.entries[n7].field_2E != 0) {
+                        if (Stg30_Battle.entries[n7].field_2E != 0) {
                             alive = 1;
                         } else {
-                            D_80073CC0.field_31C[n7] = 0;
+                            Stg30_Battle.field_31C[n7] = 0;
                         }
                     }
                     if (!alive) {
@@ -707,33 +707,33 @@ void func_80067F2C(Actor *a0) {
                     }
                 } while (0);
                 if (flag) {
-                    func_80067EC4();
+                    Stg30_ResetPartyStats();
                     break;
                 }
-                func_8006E5B4(0);
-                v = func_8006E674(0);
+                Stg30_TurnOrderRemove(0);
+                v = Stg30_TurnOrderGet(0);
                 if (v != -1) {
                     if (w->field_8 == 0) {
-                        if (D_80073CC0.field_2AC[v].field_0 == 2) {
-                            D_80073CC0.field_2AC[v].field_0 = 1;
+                        if (Stg30_Battle.field_2AC[v].field_0 == 2) {
+                            Stg30_Battle.field_2AC[v].field_0 = 1;
                         }
                     }
                     Task_SetState2(a0, 1);
                     break;
                 }
                 Task_SetState1(a0, 1);
-                D_80073CC0.field_3D4 = 1;
+                Stg30_Battle.field_3D4 = 1;
                 for (n7 = 5; n7 >= 0; n7--) {
-                    D_80073CC0.field_2AC[n7].field_0 = 0;
+                    Stg30_Battle.field_2AC[n7].field_0 = 0;
                 }
                 break;
             }
             break;
         case 3:
-            func_80067DB4((Stg30ListOwner *)a0);
+            Stg30_BattleLostUpdate((Stg30ListOwner *)a0);
             break;
         case 4:
-            func_800676F4(a0);
+            Stg30_BattleWonUpdate(a0);
             break;
         }
         break;

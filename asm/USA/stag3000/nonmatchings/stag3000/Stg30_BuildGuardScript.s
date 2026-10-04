@@ -1,0 +1,64 @@
+nonmatching Stg30_BuildGuardScript, 0xEC
+
+glabel Stg30_BuildGuardScript
+    /* 96DC 8006CA3C 0780053C */  lui        $a1, %hi(Stg30_BattleScript)
+    /* 96E0 8006CA40 9038A224 */  addiu      $v0, $a1, %lo(Stg30_BattleScript)
+    /* 96E4 8006CA44 02004224 */  addiu      $v0, $v0, 0x2
+    /* 96E8 8006CA48 02000324 */  addiu      $v1, $zero, 0x2
+    /* 96EC 8006CA4C 9038A3A4 */  sh         $v1, %lo(Stg30_BattleScript)($a1)
+    /* 96F0 8006CA50 0A008324 */  addiu      $v1, $a0, 0xA
+    /* 96F4 8006CA54 000043A4 */  sh         $v1, 0x0($v0)
+    /* 96F8 8006CA58 02004224 */  addiu      $v0, $v0, 0x2
+    /* 96FC 8006CA5C 03000324 */  addiu      $v1, $zero, 0x3
+    /* 9700 8006CA60 000043A4 */  sh         $v1, 0x0($v0)
+    /* 9704 8006CA64 02004224 */  addiu      $v0, $v0, 0x2
+    /* 9708 8006CA68 000044A4 */  sh         $a0, 0x0($v0)
+    /* 970C 8006CA6C 02004224 */  addiu      $v0, $v0, 0x2
+    /* 9710 8006CA70 0E000324 */  addiu      $v1, $zero, 0xE
+    /* 9714 8006CA74 000043A4 */  sh         $v1, 0x0($v0)
+    /* 9718 8006CA78 02004224 */  addiu      $v0, $v0, 0x2
+    /* 971C 8006CA7C 04000324 */  addiu      $v1, $zero, 0x4
+    /* 9720 8006CA80 000043A4 */  sh         $v1, 0x0($v0)
+    /* 9724 8006CA84 02004224 */  addiu      $v0, $v0, 0x2
+    /* 9728 8006CA88 01000324 */  addiu      $v1, $zero, 0x1
+    /* 972C 8006CA8C 000043A4 */  sh         $v1, 0x0($v0)
+    /* 9730 8006CA90 02004224 */  addiu      $v0, $v0, 0x2
+    /* 9734 8006CA94 000040A4 */  sh         $zero, 0x0($v0)
+    /* 9738 8006CA98 02004224 */  addiu      $v0, $v0, 0x2
+    /* 973C 8006CA9C 6666053C */  lui        $a1, (0x66666667 >> 16)
+    /* 9740 8006CAA0 78000324 */  addiu      $v1, $zero, 0x78
+    /* 9744 8006CAA4 000043A4 */  sh         $v1, 0x0($v0)
+    /* 9748 8006CAA8 18000324 */  addiu      $v1, $zero, 0x18
+    /* 974C 8006CAAC 020043A4 */  sh         $v1, 0x2($v0)
+    /* 9750 8006CAB0 0780033C */  lui        $v1, %hi(Stg30_Battle)
+    /* 9754 8006CAB4 C03C6324 */  addiu      $v1, $v1, %lo(Stg30_Battle)
+    /* 9758 8006CAB8 40100400 */  sll        $v0, $a0, 1
+    /* 975C 8006CABC 21104400 */  addu       $v0, $v0, $a0
+    /* 9760 8006CAC0 C0100200 */  sll        $v0, $v0, 3
+    /* 9764 8006CAC4 23104400 */  subu       $v0, $v0, $a0
+    /* 9768 8006CAC8 80100200 */  sll        $v0, $v0, 2
+    /* 976C 8006CACC 21304300 */  addu       $a2, $v0, $v1
+    /* 9770 8006CAD0 3000C494 */  lhu        $a0, 0x30($a2)
+    /* 9774 8006CAD4 6766A534 */  ori        $a1, $a1, (0x66666667 & 0xFFFF)
+    /* 9778 8006CAD8 00240400 */  sll        $a0, $a0, 16
+    /* 977C 8006CADC 03140400 */  sra        $v0, $a0, 16
+    /* 9780 8006CAE0 18004500 */  mult       $v0, $a1
+    /* 9784 8006CAE4 C3270400 */  sra        $a0, $a0, 31
+    /* 9788 8006CAE8 3200C294 */  lhu        $v0, 0x32($a2)
+    /* 978C 8006CAEC 10380000 */  mfhi       $a3
+    /* 9790 8006CAF0 83180700 */  sra        $v1, $a3, 2
+    /* 9794 8006CAF4 23186400 */  subu       $v1, $v1, $a0
+    /* 9798 8006CAF8 21104300 */  addu       $v0, $v0, $v1
+    /* 979C 8006CAFC 3200C2A4 */  sh         $v0, 0x32($a2)
+    /* 97A0 8006CB00 00140200 */  sll        $v0, $v0, 16
+    /* 97A4 8006CB04 3000C384 */  lh         $v1, 0x30($a2)
+    /* 97A8 8006CB08 03140200 */  sra        $v0, $v0, 16
+    /* 97AC 8006CB0C 2A186200 */  slt        $v1, $v1, $v0
+    /* 97B0 8006CB10 3000C294 */  lhu        $v0, 0x30($a2)
+    /* 97B4 8006CB14 02006010 */  beqz       $v1, .L8006CB20
+    /* 97B8 8006CB18 00000000 */   nop
+    /* 97BC 8006CB1C 3200C2A4 */  sh         $v0, 0x32($a2)
+  .L8006CB20:
+    /* 97C0 8006CB20 0800E003 */  jr         $ra
+    /* 97C4 8006CB24 00000000 */   nop
+endlabel Stg30_BuildGuardScript

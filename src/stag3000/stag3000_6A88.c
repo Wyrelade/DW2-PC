@@ -5,8 +5,8 @@
 #include "stag3000/stag3000_41D0_funcs.h"
 #include "stag3000/stag3000_5980_funcs.h"
 
-void func_80069DE8(void) {
-    s32 idx = func_8006E674(0);
+void Stg30_RetargetAction(void) {
+    s32 idx = Stg30_TurnOrderGet(0);
     Stg30Rec73F6C *e = &D_80073F6C[idx];
     s32 fl = func_8001F044(e->field_6);
     s32 lo;
@@ -35,7 +35,7 @@ void func_80069DE8(void) {
         }
         for (i = 0; i < 100; i++) {
             t = (u16)Rand_Next() % n + lo;
-            if (D_80073CC0.entries[t].field_2E != 0) {
+            if (Stg30_Battle.entries[t].field_2E != 0) {
                 break;
             }
         }
@@ -51,14 +51,14 @@ void func_80069DE8(void) {
         best = idx;
         cnt = 0;
         for (k = 0; k < 6; k++) {
-            if (D_80073CC0.entries[k].field_19 != 0 && D_80073CC0.entries[k].field_2E == 0) {
+            if (Stg30_Battle.entries[k].field_19 != 0 && Stg30_Battle.entries[k].field_2E == 0) {
                 list[cnt++] = k;
             }
         }
         max = 0;
         for (k = 0; k < cnt; k++) {
-            if (max < D_80073CC0.entries[list[k]].field_32) {
-                max = D_80073CC0.entries[list[k]].field_32;
+            if (max < Stg30_Battle.entries[list[k]].field_32) {
+                max = Stg30_Battle.entries[list[k]].field_32;
                 best = list[k];
             }
         }
@@ -66,7 +66,7 @@ void func_80069DE8(void) {
     }
 }
 
-s32 func_8006A030(s32 a, s32 b) {
+s32 Stg30_CompareSpecialty(s32 a, s32 b) {
     if (a == 5) {
         return 0;
     }
@@ -106,14 +106,14 @@ s32 func_8006A030(s32 a, s32 b) {
     return 0;
 }
 
-s32 func_8006A118(void) {
+s32 Stg30_GetFloorSpecialty(void) {
     if (D_8005D5A0.field_103D == 0) {
         return 5;
     }
     return D_8005D5A0.field_103D - 2;
 }
 
-s32 func_8006A140(s32 attacker, s32 target, s32 tech, s16 *p4, s16 *p5) {
+s32 Stg30_ApplySkillStatus(s32 attacker, s32 target, s32 tech, s16 *p4, s16 *p5) {
     s32 revived;
     s32 flags;
     u32 already;
@@ -125,148 +125,148 @@ s32 func_8006A140(s32 attacker, s32 target, s32 tech, s16 *p4, s16 *p5) {
 
     revived = 0;
     flags = Skill_GetStatusFlags(tech);
-    already = D_80073CC0.field_31C[target] & 1;
+    already = Stg30_Battle.field_31C[target] & 1;
     if (flags & 1) {
         if ((u16)((u16)Rand_Next() % 3) == 0) {
-            D_80073CC0.field_31C[target] |= 1;
+            Stg30_Battle.field_31C[target] |= 1;
         }
     }
     if (flags & 2) {
         if ((u16)((u16)Rand_Next() % 3) != 0) {
-            D_80073CC0.field_31C[target] |= 1;
+            Stg30_Battle.field_31C[target] |= 1;
         }
     }
     if (flags & 4) {
-        if (D_80073CC0.field_2AC[attacker].field_0 == 2) {
-            D_80073CC0.field_31C[target] |= 1;
+        if (Stg30_Battle.field_2AC[attacker].field_0 == 2) {
+            Stg30_Battle.field_31C[target] |= 1;
         }
     }
     if (!already) {
-        if (D_80073CC0.field_31C[target] & 1) {
+        if (Stg30_Battle.field_31C[target] & 1) {
             *p5 = 1;
         }
     }
-    already = (u32)D_80073CC0.field_31C[target] >> 1;
+    already = (u32)Stg30_Battle.field_31C[target] >> 1;
     already &= 1;
     if (flags & 0x10) {
         if ((u16)((u16)Rand_Next() % 3) == 0) {
-            D_80073CC0.field_31C[target] |= 2;
+            Stg30_Battle.field_31C[target] |= 2;
         }
     }
     if (flags & 0x20) {
         if ((u16)((u16)Rand_Next() % 3) != 0) {
-            D_80073CC0.field_31C[target] |= 2;
+            Stg30_Battle.field_31C[target] |= 2;
         }
     }
     if (flags & 0x40) {
-        if (D_80073CC0.field_2AC[attacker].field_0 == 2) {
-            D_80073CC0.field_31C[target] |= 2;
+        if (Stg30_Battle.field_2AC[attacker].field_0 == 2) {
+            Stg30_Battle.field_31C[target] |= 2;
         }
     }
     if (flags & 0x80) {
-        if (D_80073CC0.field_2AC[attacker].field_0 == 3) {
-            D_80073CC0.field_31C[target] |= 2;
+        if (Stg30_Battle.field_2AC[attacker].field_0 == 3) {
+            Stg30_Battle.field_31C[target] |= 2;
         }
     }
     if (!already) {
-        if (D_80073CC0.field_31C[target] & 2) {
+        if (Stg30_Battle.field_31C[target] & 2) {
             *p5 = 3;
         }
     }
-    if (D_80073CC0.field_3DC == 0 || target < 3) {
-        already = (u32)D_80073CC0.field_31C[target] >> 2;
+    if (Stg30_Battle.field_3DC == 0 || target < 3) {
+        already = (u32)Stg30_Battle.field_31C[target] >> 2;
     already &= 1;
         if (flags & 0x100) {
             if ((u16)((u16)Rand_Next() % 3) == 0) {
-                D_80073CC0.field_31C[target] |= 4;
+                Stg30_Battle.field_31C[target] |= 4;
             }
         }
         if (flags & 0x200) {
             if ((u16)((u16)Rand_Next() % 3) != 0) {
-                D_80073CC0.field_31C[target] |= 4;
+                Stg30_Battle.field_31C[target] |= 4;
             }
         }
         if (flags & 0x400) {
-            if (D_80073CC0.field_2AC[attacker].field_0 == 2) {
-                D_80073CC0.field_31C[target] |= 4;
+            if (Stg30_Battle.field_2AC[attacker].field_0 == 2) {
+                Stg30_Battle.field_31C[target] |= 4;
             }
         }
         if (!already) {
-            if (D_80073CC0.field_31C[target] & 4) {
+            if (Stg30_Battle.field_31C[target] & 4) {
                 *p5 = 5;
             }
         }
     }
     if (flags & 0x1000000) {
-        if (D_80073CC0.entries[target].field_2E == 0) {
-            D_80073CC0.field_31C[target] |= 0x8000;
-            D_80073CC0.entries[target].field_2E = 1;
-            D_80073CC0.field_34F[target] |= 0xA;
+        if (Stg30_Battle.entries[target].field_2E == 0) {
+            Stg30_Battle.field_31C[target] |= 0x8000;
+            Stg30_Battle.entries[target].field_2E = 1;
+            Stg30_Battle.field_34F[target] |= 0xA;
             *p4 = 3;
             *p5 = 0x119;
         }
     }
     if (flags & 0x1000) {
-        D_80073CC0.field_31C[target] |= 8;
+        Stg30_Battle.field_31C[target] |= 8;
         *p5 = 0xC;
     }
     if (flags & 0x4000) {
-        D_80073CC0.field_31C[target] |= 0x20;
+        Stg30_Battle.field_31C[target] |= 0x20;
     }
     if (flags & 0x8000) {
-        D_80073CC0.field_31C[target] |= 0x40;
+        Stg30_Battle.field_31C[target] |= 0x40;
         *p5 = 0x10B;
     }
     if (flags & 0x10000) {
-        D_80073CC0.field_31C[target] |= 0x80;
+        Stg30_Battle.field_31C[target] |= 0x80;
         *p5 = 0x1B;
     }
     if (flags & 0x20000) {
-        D_80073CC0.field_31C[target] |= 0x800;
+        Stg30_Battle.field_31C[target] |= 0x800;
         *p5 = 0x103;
     }
     if (flags & 0x40000) {
-        D_80073CC0.field_31C[target] |= 0x400;
+        Stg30_Battle.field_31C[target] |= 0x400;
         *p5 = 0x101;
     }
     if (flags & 0x80000) {
-        D_80073CC0.field_31C[target] |= 0x100;
+        Stg30_Battle.field_31C[target] |= 0x100;
         *p5 = 0x1D;
     }
     if (flags & 0x100000) {
-        D_80073CC0.field_31C[target] |= 0x200;
+        Stg30_Battle.field_31C[target] |= 0x200;
         *p5 = 0x1F;
     }
     if (flags & 0x200000) {
-        D_80073CC0.field_31C[target] |= 0x1000;
+        Stg30_Battle.field_31C[target] |= 0x1000;
         *p5 = 0x105;
     }
     if (flags & 0x400000) {
-        D_80073CC0.field_31C[target] |= 0x2000;
+        Stg30_Battle.field_31C[target] |= 0x2000;
         *p5 = 0x107;
     }
     if (flags & 0x800000) {
-        D_80073CC0.field_31C[target] |= 0x4000;
+        Stg30_Battle.field_31C[target] |= 0x4000;
         *p5 = 0x109;
     }
     if (flags & 0x2000000) {
-        D_80073CC0.field_31C[target] |= 0x10000;
+        Stg30_Battle.field_31C[target] |= 0x10000;
         *p5 = 0x10C;
     }
-    if (!(D_80073CC0.field_34F[target] & 4)) {
+    if (!(Stg30_Battle.field_34F[target] & 4)) {
         flags = Skill_GetCureFlags(tech);
         if (flags & 0x20000) {
             revived = 1;
-            D_80073CC0.entries[target].field_2E = D_80073CC0.entries[target].field_2C;
+            Stg30_Battle.entries[target].field_2E = Stg30_Battle.entries[target].field_2C;
             *p4 = 3;
             *p5 = 0x18;
         }
         for (cure = 1, i = 0; i < 17; cure <<= 1, i++) {
-            old = D_80073CC0.field_31C[target];
-            mask = D_80073210[i];
+            old = Stg30_Battle.field_31C[target];
+            mask = Stg30_CureStatusMasks[i];
             hit = old & mask;
             if (flags & cure) {
-                D_80073CC0.field_31C[target] = old & ~mask;
+                Stg30_Battle.field_31C[target] = old & ~mask;
                 if (hit) {
                     *p5 = D_80073254[i];
                 }
@@ -276,7 +276,7 @@ s32 func_8006A140(s32 attacker, s32 target, s32 tech, s16 *p4, s16 *p5) {
     return revived;
 }
 
-void func_8006A968(s16 *max, s16 *b, s16 *c) {
+void Stg30_StatDebuff(s16 *max, s16 *b, s16 *c) {
     s16 half = *max / 2;
 
     *c = *c * 90 / 128;
@@ -289,7 +289,7 @@ void func_8006A968(s16 *max, s16 *b, s16 *c) {
     }
 }
 
-void func_8006AA18(s16 *max, s16 *b, s16 *c) {
+void Stg30_StatBuff(s16 *max, s16 *b, s16 *c) {
     s16 lim;
     s16 t;
 
@@ -305,9 +305,9 @@ void func_8006AA18(s16 *max, s16 *b, s16 *c) {
     }
 }
 
-s32 func_8006AAA8(s32 attacker, s32 target, s32 tech, s16 *p4, s16 *p5) {
-    Stg30DigiS *a = &((Stg30StateS *)&D_80073CC0)->digis[attacker];
-    Stg30DigiS *t = &((Stg30StateS *)&D_80073CC0)->digis[target];
+s32 Stg30_ApplySkillDamage(s32 attacker, s32 target, s32 tech, s16 *p4, s16 *p5) {
+    Stg30DigiS *a = &((Stg30StateS *)&Stg30_Battle)->digis[attacker];
+    Stg30DigiS *t = &((Stg30StateS *)&Stg30_Battle)->digis[target];
     s32 type[2];
     s32 revived;
     s32 flags1;
@@ -338,95 +338,95 @@ s32 func_8006AAA8(s32 attacker, s32 target, s32 tech, s16 *p4, s16 *p5) {
     revived = 0;
     type[1] = Digi_GetType(t->digiId);
     if (prevent & 2) {
-        D_80073CC0.field_34F[target] |= 2;
+        Stg30_Battle.field_34F[target] |= 2;
         *p5 = 0xF;
     }
     if (prevent & 4) {
-        D_80073CC0.field_34F[target] |= 4;
+        Stg30_Battle.field_34F[target] |= 4;
         *p5 = 0x11;
     }
     if (prevent & 8) {
-        idx = func_8006E5F8(target);
+        idx = Stg30_TurnOrderFind(target);
         if (idx != -1) {
-            switch (D_80073CC0.field_2AC[target].field_0) {
+            switch (Stg30_Battle.field_2AC[target].field_0) {
             case 2:
             case 3:
-                func_8006E5B4(idx);
+                Stg30_TurnOrderRemove(idx);
                 *p5 = 0x118;
                 break;
             }
         }
     }
     if (prevent & 0x10) {
-        D_80073CC0.field_34F[target] |= 8;
+        Stg30_Battle.field_34F[target] |= 8;
         *p5 = 0x19;
     }
     if (flags2 & 0x200) {
-        D_80073CC0.field_31C[target] |= D_80073CC0.field_31C[attacker];
+        Stg30_Battle.field_31C[target] |= Stg30_Battle.field_31C[attacker];
     }
     if (buff & 1) {
-        func_8006A968(&D_80073CC0.field_37A[target], &t->attack, &D_80073CC0.field_356[target]);
+        Stg30_StatDebuff(&Stg30_Battle.field_37A[target], &t->attack, &Stg30_Battle.field_356[target]);
         *p5 = 9;
-        D_80073CC0.field_340[target] = 1;
+        Stg30_Battle.field_340[target] = 1;
     }
     if (buff & 2) {
-        func_8006AA18(&D_80073CC0.field_37A[target], &t->attack, &D_80073CC0.field_356[target]);
+        Stg30_StatBuff(&Stg30_Battle.field_37A[target], &t->attack, &Stg30_Battle.field_356[target]);
         *p5 = 0x15;
-        D_80073CC0.field_346[target] = 1;
+        Stg30_Battle.field_346[target] = 1;
     }
     if (buff & 4) {
-        func_8006A968(&D_80073CC0.field_386[target], &t->defense, &D_80073CC0.field_362[target]);
+        Stg30_StatDebuff(&Stg30_Battle.field_386[target], &t->defense, &Stg30_Battle.field_362[target]);
         *p5 = 0xA;
-        D_80073CC0.field_340[target] = 1;
+        Stg30_Battle.field_340[target] = 1;
     }
     if (buff & 8) {
-        func_8006AA18(&D_80073CC0.field_386[target], &t->defense, &D_80073CC0.field_362[target]);
+        Stg30_StatBuff(&Stg30_Battle.field_386[target], &t->defense, &Stg30_Battle.field_362[target]);
         *p5 = 0x16;
-        D_80073CC0.field_346[target] = 1;
+        Stg30_Battle.field_346[target] = 1;
     }
     if (buff & 0x10) {
-        func_8006A968(&D_80073CC0.field_392[target], &t->speed, &D_80073CC0.field_36E[target]);
+        Stg30_StatDebuff(&Stg30_Battle.field_392[target], &t->speed, &Stg30_Battle.field_36E[target]);
         *p5 = 0xB;
-        D_80073CC0.field_340[target] = 1;
+        Stg30_Battle.field_340[target] = 1;
     }
     if (buff & 0x20) {
-        func_8006AA18(&D_80073CC0.field_392[target], &t->speed, &D_80073CC0.field_36E[target]);
+        Stg30_StatBuff(&Stg30_Battle.field_392[target], &t->speed, &Stg30_Battle.field_36E[target]);
         *p5 = 0x17;
-        D_80073CC0.field_346[target] = 1;
+        Stg30_Battle.field_346[target] = 1;
     }
-    if ((buff & 0x100) && D_80073CC0.field_340[target] != 0) {
-        t->attack = D_80073CC0.field_37A[target];
-        t->defense = D_80073CC0.field_386[target];
-        t->speed = D_80073CC0.field_392[target];
-        D_80073CC0.field_340[target] = 0;
+    if ((buff & 0x100) && Stg30_Battle.field_340[target] != 0) {
+        t->attack = Stg30_Battle.field_37A[target];
+        t->defense = Stg30_Battle.field_386[target];
+        t->speed = Stg30_Battle.field_392[target];
+        Stg30_Battle.field_340[target] = 0;
     }
-    if ((buff & 0x200) && D_80073CC0.field_346[target] != 0) {
-        t->attack = D_80073CC0.field_37A[target];
-        t->defense = D_80073CC0.field_386[target];
-        t->speed = D_80073CC0.field_392[target];
-        D_80073CC0.field_340[target] = 0;
+    if ((buff & 0x200) && Stg30_Battle.field_346[target] != 0) {
+        t->attack = Stg30_Battle.field_37A[target];
+        t->defense = Stg30_Battle.field_386[target];
+        t->speed = Stg30_Battle.field_392[target];
+        Stg30_Battle.field_340[target] = 0;
     }
     if ((buff & 0x400) && type[1] == 1) {
-        func_8006A968(&D_80073CC0.field_37A[target], &t->attack, &D_80073CC0.field_356[target]);
-        func_8006A968(&D_80073CC0.field_386[target], &t->defense, &D_80073CC0.field_362[target]);
+        Stg30_StatDebuff(&Stg30_Battle.field_37A[target], &t->attack, &Stg30_Battle.field_356[target]);
+        Stg30_StatDebuff(&Stg30_Battle.field_386[target], &t->defense, &Stg30_Battle.field_362[target]);
         *p5 = 0x14;
-        D_80073CC0.field_340[target] = 1;
+        Stg30_Battle.field_340[target] = 1;
     }
     if ((buff & 0x800) && type[1] == 2) {
-        func_8006A968(&D_80073CC0.field_37A[target], &t->attack, &D_80073CC0.field_356[target]);
-        func_8006A968(&D_80073CC0.field_386[target], &t->defense, &D_80073CC0.field_362[target]);
+        Stg30_StatDebuff(&Stg30_Battle.field_37A[target], &t->attack, &Stg30_Battle.field_356[target]);
+        Stg30_StatDebuff(&Stg30_Battle.field_386[target], &t->defense, &Stg30_Battle.field_362[target]);
         *p5 = 0x14;
-        D_80073CC0.field_340[target] = 1;
+        Stg30_Battle.field_340[target] = 1;
     }
     if ((buff & 0x1000) && type[1] == 0) {
-        func_8006A968(&((Stg30CombatCD8 *)D_80073CD8)->field_37A[target], &t->attack, &((Stg30CombatCD8 *)D_80073CD8)->field_356[target]);
-        func_8006A968(&((Stg30CombatCD8 *)D_80073CD8)->field_386[target], &t->defense, &((Stg30CombatCD8 *)D_80073CD8)->field_362[target]);
+        Stg30_StatDebuff(&((Stg30CombatCD8 *)D_80073CD8)->field_37A[target], &t->attack, &((Stg30CombatCD8 *)D_80073CD8)->field_356[target]);
+        Stg30_StatDebuff(&((Stg30CombatCD8 *)D_80073CD8)->field_386[target], &t->defense, &((Stg30CombatCD8 *)D_80073CD8)->field_362[target]);
         *p5 = 0x14;
         ((Stg30CombatCD8 *)D_80073CD8)->field_340[target] = 1;
     }
     do {
-        if (D_80073CC0.field_2AC[attacker].field_0 == 2 && (flags1 & 1)) {
-            hit = D_80073CC0.field_2AC[attacker].field_C;
+        if (Stg30_Battle.field_2AC[attacker].field_0 == 2 && (flags1 & 1)) {
+            hit = Stg30_Battle.field_2AC[attacker].field_C;
             dmg = hit / 2 + hit;
             t->hp = (dmg < t->hp) ? t->hp - dmg : 0;
             break;
@@ -453,19 +453,19 @@ s32 func_8006AAA8(s32 attacker, s32 target, s32 tech, s16 *p4, s16 *p5) {
             }
             break;
         }
-        revived = func_8006A140(attacker, target, tech, p4, p5);
+        revived = Stg30_ApplySkillStatus(attacker, target, tech, p4, p5);
         atk = Skill_GetPower(tech);
-        if (atk == 0 || (D_80073CC0.field_34F[target] & 8)) {
+        if (atk == 0 || (Stg30_Battle.field_34F[target] & 8)) {
             break;
         }
         if (atk < 0) {
-            if (D_80073CC0.field_31C[attacker] & 0x8000) {
+            if (Stg30_Battle.field_31C[attacker] & 0x8000) {
                 dmg = 0;
                 revived = 1;
                 break;
             }
             dmg = 0;
-            if (!(D_80073CC0.field_34F[target] & 2)) {
+            if (!(Stg30_Battle.field_34F[target] & 2)) {
                 t->hp -= atk;
                 if (t->maxHp < t->hp) {
                     t->hp = t->maxHp;
@@ -475,31 +475,31 @@ s32 func_8006AAA8(s32 attacker, s32 target, s32 tech, s16 *p4, s16 *p5) {
             break;
         }
         if (flags1 & 0x10) {
-            if (D_80073CC0.field_39E[attacker] < 70) {
-                D_80073CC0.field_39E[attacker] += 5;
+            if (Stg30_Battle.field_39E[attacker] < 70) {
+                Stg30_Battle.field_39E[attacker] += 5;
             } else {
-                D_80073CC0.field_39E[attacker] = 70;
+                Stg30_Battle.field_39E[attacker] = 70;
             }
-            atk += D_80073CC0.field_39E[attacker];
+            atk += Stg30_Battle.field_39E[attacker];
         } else {
-            D_80073CC0.field_39E[attacker] = 0;
+            Stg30_Battle.field_39E[attacker] = 0;
         }
-        if ((flags1 & 0x20) && D_80073CC0.field_2AC[attacker].field_0 == 2) {
+        if ((flags1 & 0x20) && Stg30_Battle.field_2AC[attacker].field_0 == 2) {
             atk += atk / 2;
         }
-        if ((flags1 & 0x40) && (D_80073CC0.field_31C[attacker] & 1)) {
+        if ((flags1 & 0x40) && (Stg30_Battle.field_31C[attacker] & 1)) {
             atk += atk / 2;
         }
-        if ((flags1 & 0x80) && D_80073CC0.field_2AC[target].field_0 == 3) {
+        if ((flags1 & 0x80) && Stg30_Battle.field_2AC[target].field_0 == 3) {
             atk += atk / 2;
         }
-        if ((flags1 & 0x100) && D_80073CC0.field_2AC[target].field_0 == 2) {
+        if ((flags1 & 0x100) && Stg30_Battle.field_2AC[target].field_0 == 2) {
             atk += atk / 2;
         }
-        if ((flags1 & 0x200) && (D_80073CC0.field_2AC[target].field_0 == 2 || D_80073CC0.field_2AC[target].field_0 == 3)) {
+        if ((flags1 & 0x200) && (Stg30_Battle.field_2AC[target].field_0 == 2 || Stg30_Battle.field_2AC[target].field_0 == 3)) {
             atk += atk / 2;
         }
-        if ((flags1 & 0x400) && D_80073CC0.field_3D0 != -1 && D_80073CC0.field_2AC[attacker].field_C > 0) {
+        if ((flags1 & 0x400) && Stg30_Battle.field_3D0 != -1 && Stg30_Battle.field_2AC[attacker].field_C > 0) {
             atk += atk / 2;
         }
         power = atk;
@@ -507,7 +507,7 @@ s32 func_8006AAA8(s32 attacker, s32 target, s32 tech, s16 *p4, s16 *p5) {
         el = Skill_GetSpecialty(tech);
         def = t->defense;
         tEl = Digi_GetSpecialty(t->digiId);
-        st = D_80073CC0.field_31C[attacker];
+        st = Stg30_Battle.field_31C[attacker];
         if (st & 0x400) {
             el = 0;
         }
@@ -523,10 +523,10 @@ s32 func_8006AAA8(s32 attacker, s32 target, s32 tech, s16 *p4, s16 *p5) {
         if (st & 0x4000) {
             el = 4;
         }
-        if (D_80073CC0.field_2AC[target].field_0 == 5) {
+        if (Stg30_Battle.field_2AC[target].field_0 == 5) {
             def = def * 150 / 100;
         }
-        switch (func_800699F8(type[0], type[1])) {
+        switch (Stg30_CompareTypes(type[0], type[1])) {
         case 1:
             aAtk = aAtk * 120 / 100;
             break;
@@ -534,7 +534,7 @@ s32 func_8006AAA8(s32 attacker, s32 target, s32 tech, s16 *p4, s16 *p5) {
             aAtk = aAtk * 80 / 100;
             break;
         }
-        switch (func_8006A030(el, tEl)) {
+        switch (Stg30_CompareSpecialty(el, tEl)) {
         case 1:
             power = power * 120 / 100;
             break;
@@ -542,14 +542,14 @@ s32 func_8006AAA8(s32 attacker, s32 target, s32 tech, s16 *p4, s16 *p5) {
             power = power * 80 / 100;
             break;
         }
-        if (el != 5 && el == func_8006A118()) {
+        if (el != 5 && el == Stg30_GetFloorSpecialty()) {
             power = power * 120 / 100;
         }
-        if (tEl != 5 && tEl == func_8006A118()) {
+        if (tEl != 5 && tEl == Stg30_GetFloorSpecialty()) {
             def = def * 120 / 100;
         }
         dmg = aAtk * power / (def * 2);
-        if (D_80073CC0.field_31C[target] & 1) {
+        if (Stg30_Battle.field_31C[target] & 1) {
             dmg += 10;
         }
         if (dmg < t->hp) {
@@ -562,24 +562,24 @@ s32 func_8006AAA8(s32 attacker, s32 target, s32 tech, s16 *p4, s16 *p5) {
             *p5 = 0x13;
         }
         if (attacker != target) {
-            if (D_80073CC0.field_31C[target] & 0x40) {
-                D_80073CC0.field_31C[attacker] |= 1;
+            if (Stg30_Battle.field_31C[target] & 0x40) {
+                Stg30_Battle.field_31C[attacker] |= 1;
             }
-            if (D_80073CC0.field_31C[attacker] & 0x80) {
-                D_80073CC0.field_31C[target] |= 1;
+            if (Stg30_Battle.field_31C[attacker] & 0x80) {
+                Stg30_Battle.field_31C[target] |= 1;
                 *p5 = 1;
             }
-            if (D_80073CC0.field_31C[attacker] & 0x100) {
-                D_80073CC0.field_31C[target] |= 2;
+            if (Stg30_Battle.field_31C[attacker] & 0x100) {
+                Stg30_Battle.field_31C[target] |= 2;
                 *p5 = 3;
             }
-            if ((D_80073CC0.field_3DC == 0 || target < 3) && (D_80073CC0.field_31C[attacker] & 0x200)) {
-                D_80073CC0.field_31C[target] |= 4;
+            if ((Stg30_Battle.field_3DC == 0 || target < 3) && (Stg30_Battle.field_31C[attacker] & 0x200)) {
+                Stg30_Battle.field_31C[target] |= 4;
                 *p5 = 5;
             }
         }
     } while (0);
-    if ((flags1 & 2) && func_800699F8(type[0], type[1]) == -1) {
+    if ((flags1 & 2) && Stg30_CompareTypes(type[0], type[1]) == -1) {
         hp = t->hp + dmg;
         if (t->maxHp < hp) {
             hp = t->maxHp;
@@ -597,7 +597,7 @@ s32 func_8006AAA8(s32 attacker, s32 target, s32 tech, s16 *p4, s16 *p5) {
         *p5 = 0x201;
     }
     if (flags1 & 0x4000) {
-        gain = Skill_GetMpCost(D_80073CC0.field_2AC[target].field_6);
+        gain = Skill_GetMpCost(Stg30_Battle.field_2AC[target].field_6);
         a->mp = (a->mp + gain > a->maxMp) ? a->maxMp : a->mp + gain;
         *p5 = 0x201;
     }
@@ -612,7 +612,7 @@ s32 func_8006AAA8(s32 attacker, s32 target, s32 tech, s16 *p4, s16 *p5) {
         *p5 = 0x120;
     }
     if (flags2 & 0x10) {
-        if (++D_80073CC0.field_334[target] >= 3) {
+        if (++Stg30_Battle.field_334[target] >= 3) {
             t->hp = 0;
             dmg = 999;
         }
@@ -623,16 +623,16 @@ s32 func_8006AAA8(s32 attacker, s32 target, s32 tech, s16 *p4, s16 *p5) {
     return dmg;
 }
 
-s32 func_8006B950(s32 idx, s16 *tgt, s32 n, s32 id) {
+s32 Stg30_SkillHitCheck(s32 idx, s16 *tgt, s32 n, s32 id) {
     s32 hp;
     s32 min;
     s32 i;
     s32 v;
     s32 chance;
     s32 t;
-    hp = D_80073CC0.entries[idx].field_38;
+    hp = Stg30_Battle.entries[idx].field_38;
     min = 0x270F;
-    if ((D_80073CC0.field_3DC != 0) && (idx < 3)) {
+    if ((Stg30_Battle.field_3DC != 0) && (idx < 3)) {
         if (id == 0xA8) {
             return 0;
         }
@@ -649,22 +649,22 @@ s32 func_8006B950(s32 idx, s16 *tgt, s32 n, s32 id) {
             return 0;
         }
     }
-    if ((n == 1) && (D_80073CC0.field_31C[tgt[0]] & 0x10000)) {
+    if ((n == 1) && (Stg30_Battle.field_31C[tgt[0]] & 0x10000)) {
         return 0;
     }
     if (func_8001F0E4(id) & 4) {
-        return D_80073CC0.field_2AC[idx].field_0 == 2;
+        return Stg30_Battle.field_2AC[idx].field_0 == 2;
     }
-    if (D_80073CC0.field_34F[idx] & 0x10) {
+    if (Stg30_Battle.field_34F[idx] & 0x10) {
         return (Rand_Next() & 3) == 0;
     }
-    if (D_80073CC0.field_31C[idx] & 2) {
+    if (Stg30_Battle.field_31C[idx] & 2) {
         if (Rand_Next() & 1) {
             return 0;
         }
     }
-    if ((n == 1) && (D_80073CC0.field_2AC[tgt[0]].field_0 == 2)) {
-        if (func_8001F020(D_80073CC0.field_2AC[tgt[0]].field_6) & 0x10) {
+    if ((n == 1) && (Stg30_Battle.field_2AC[tgt[0]].field_0 == 2)) {
+        if (func_8001F020(Stg30_Battle.field_2AC[tgt[0]].field_6) & 0x10) {
             if (Rand_Next() & 1) {
                 return 0;
             }
@@ -672,7 +672,7 @@ s32 func_8006B950(s32 idx, s16 *tgt, s32 n, s32 id) {
     }
     for (i = 0; i < n; i++) {
         v = tgt[i];
-        t = D_80073CC0.entries[v].field_38;
+        t = Stg30_Battle.entries[v].field_38;
         v = t;
         if (v >= min) {
             v = min;
@@ -689,14 +689,14 @@ s32 func_8006B950(s32 idx, s16 *tgt, s32 n, s32 id) {
     return (Rand_Next() & 0x7F) >= chance;
 }
 
-void func_8006BBD8(s32 idx) {
+void Stg30_BuildSkillScript(s32 idx) {
     s16 kind = 1;
-    Stg30Sub10 *rec = &D_80073CC0.field_2AC[idx];
+    Stg30Sub10 *rec = &Stg30_Battle.field_2AC[idx];
     s16 targets[6];
     s32 results[6];
     s16 hitKind[6];
     s16 msg[6];
-    s16 *out = D_80073890;
+    s16 *out = Stg30_BattleScript;
     s32 id;
     s32 num;
     s32 i;
@@ -707,16 +707,16 @@ void func_8006BBD8(s32 idx) {
     s16 *mp;
 
     id = (u16)rec->field_6;
-    D_80073CC0.field_3B4 = 1;
+    Stg30_Battle.field_3B4 = 1;
     attr = func_8001F020((s16)id);
     if (attr & 1) {
-        D_80073CC0.field_2AC[idx].field_E = 1;
+        Stg30_Battle.field_2AC[idx].field_E = 1;
     }
     if (attr & 2) {
-        D_80073CC0.field_2AC[idx].field_F = 1;
+        Stg30_Battle.field_2AC[idx].field_F = 1;
     }
     if (attr & 0x40) {
-        D_80073CC0.entries[idx].field_36 /= 2;
+        Stg30_Battle.entries[idx].field_36 /= 2;
     }
     for (i = 0; i < 6; i++) {
         results[i] = 0;
@@ -735,7 +735,7 @@ void func_8006BBD8(s32 idx) {
         } else if (Skill_GetCureFlags((s16)id) & 0x20000) {
             num = 1;
             targets[0] = rec->field_4;
-        } else if (D_80073CC0.entries[rec->field_4].field_2E != 0) {
+        } else if (Stg30_Battle.entries[rec->field_4].field_2E != 0) {
             targets[0] = rec->field_4;
             num = 1;
         }
@@ -747,7 +747,7 @@ void func_8006BBD8(s32 idx) {
         case 2:
         default:
             for (i = 0, n = 0; i < 3; i++) {
-                if (D_80073CC0.entries[i].field_2E != 0) {
+                if (Stg30_Battle.entries[i].field_2E != 0) {
                     targets[n++] = i;
                 }
             }
@@ -755,7 +755,7 @@ void func_8006BBD8(s32 idx) {
             break;
         case 3:
             for (i = 0, n = 0; i < 3; i++) {
-                if (D_80073CC0.entries[i].field_19 != 0 && D_80073CC0.entries[i].field_2E == 0) {
+                if (Stg30_Battle.entries[i].field_19 != 0 && Stg30_Battle.entries[i].field_2E == 0) {
                     targets[n++] = i;
                 }
             }
@@ -772,7 +772,7 @@ void func_8006BBD8(s32 idx) {
         default:
             n = 0;
             for (i = 3; i < 6; i++) {
-                if (D_80073CC0.entries[i].field_2E != 0) {
+                if (Stg30_Battle.entries[i].field_2E != 0) {
                     targets[n++] = i;
                 }
             }
@@ -781,7 +781,7 @@ void func_8006BBD8(s32 idx) {
         case 3:
             n = 0;
             for (i = 3; i < 6; i++) {
-                if (D_80073CC0.entries[i].field_19 != 0 && D_80073CC0.entries[i].field_2E == 0) {
+                if (Stg30_Battle.entries[i].field_19 != 0 && Stg30_Battle.entries[i].field_2E == 0) {
                     targets[n++] = i;
                 }
             }
@@ -798,7 +798,7 @@ void func_8006BBD8(s32 idx) {
         default:
             n = 0;
             for (i = 0; i < 6; i++) {
-                if (D_80073CC0.entries[i].field_2E != 0) {
+                if (Stg30_Battle.entries[i].field_2E != 0) {
                     targets[n++] = i;
                 }
             }
@@ -807,7 +807,7 @@ void func_8006BBD8(s32 idx) {
         case 3:
             n = 0;
             for (i = 0; i < 6; i++) {
-                if (D_80073CC0.entries[i].field_19 != 0 && D_80073CC0.entries[i].field_2E == 0) {
+                if (Stg30_Battle.entries[i].field_19 != 0 && Stg30_Battle.entries[i].field_2E == 0) {
                     targets[n++] = i;
                 }
             }
@@ -817,58 +817,58 @@ void func_8006BBD8(s32 idx) {
         kind = 2;
         break;
     }
-    if (num == 0 || (rec->field_8 == 0 && func_8006B950(idx, targets, num, (s16)id) == 0)) {
+    if (num == 0 || (rec->field_8 == 0 && Stg30_SkillHitCheck(idx, targets, num, (s16)id) == 0)) {
         D_80074074 = 0;
     }
-    if (D_80073CC0.field_3B4 != 0) {
+    if (Stg30_Battle.field_3B4 != 0) {
         if (rec->field_0 == 3) {
             flags = func_8001F180((s16)id);
             if (flags & 1) {
-                if (D_80073CC0.field_3DC == 0 || idx >= 3) {
+                if (Stg30_Battle.field_3DC == 0 || idx >= 3) {
                     if (Rand_Next() & 7) {
-                        func_8006E5B4(1);
+                        Stg30_TurnOrderRemove(1);
                     }
                 }
             }
             if (flags & 4) {
-                s32 slot = func_8006E674(1);
+                s32 slot = Stg30_TurnOrderGet(1);
 
                 if (slot != -1) {
-                    D_80073CC0.entries[slot].field_34 = D_80073CC0.entries[slot].field_34 * 38 / 128;
+                    Stg30_Battle.entries[slot].field_34 = Stg30_Battle.entries[slot].field_34 * 38 / 128;
                     msg[0] = 0x111;
                 }
             }
             if (flags & 8) {
-                s32 slot = func_8006E674(1);
+                s32 slot = Stg30_TurnOrderGet(1);
 
                 if (slot != -1) {
-                    D_80073CC0.entries[slot].field_34 = D_80073CC0.entries[slot].field_34 * 77 / 128;
+                    Stg30_Battle.entries[slot].field_34 = Stg30_Battle.entries[slot].field_34 * 77 / 128;
                     msg[0] = 0x111;
                 }
             }
             if (flags & 0x10) {
-                s32 slot = func_8006E674(1);
+                s32 slot = Stg30_TurnOrderGet(1);
 
                 if (slot != -1) {
-                    D_80073CC0.field_34F[slot] = 0x10;
+                    Stg30_Battle.field_34F[slot] = 0x10;
                 }
             }
             if (flags & 0x40) {
-                s32 slot = func_8006E674(1);
+                s32 slot = Stg30_TurnOrderGet(1);
 
                 if (slot != -1) {
-                    func_8006E5B4(1);
-                    func_8006E55C(func_8006E634(), slot);
+                    Stg30_TurnOrderRemove(1);
+                    Stg30_TurnOrderInsert(Stg30_TurnOrderFreeIndex(), slot);
                 }
             }
         }
         if ((s16)id == 0xF1 || (s16)id == 0xF4) {
-            D_80073CC0.field_3B0 = 0x11E;
+            Stg30_Battle.field_3B0 = 0x11E;
         } else if ((s16)id == 0xDD) {
-            D_80073CC0.field_3B0 = 0x202;
+            Stg30_Battle.field_3B0 = 0x202;
         }
         for (i = 0; i < num; i++) {
-            results[i] = func_8006AAA8(idx, targets[i], (s16)id, &hitKind[i], &msg[i]);
+            results[i] = Stg30_ApplySkillDamage(idx, targets[i], (s16)id, &hitKind[i], &msg[i]);
         }
         *out++ = 2;
         *out++ = idx + 0xA;
@@ -876,18 +876,18 @@ void func_8006BBD8(s32 idx) {
         *out++ = idx;
         *out++ = 0x15;
         *out++ = 0xE;
-        *out++ = D_80073CC0.field_2AC[idx].field_0 - 1;
+        *out++ = Stg30_Battle.field_2AC[idx].field_0 - 1;
         *out++ = 1;
-        if (D_80073CC0.field_2AC[idx].field_F == 0 && D_80073CC0.field_3D0 == -1 && rec->field_0 != 2) {
+        if (Stg30_Battle.field_2AC[idx].field_F == 0 && Stg30_Battle.field_3D0 == -1 && rec->field_0 != 2) {
             if (idx >= 3) {
-                if (D_80073CC0.field_2AC[0].field_0 == 3 || D_80073CC0.field_2AC[1].field_0 == 3 ||
-                    D_80073CC0.field_2AC[2].field_0 == 3) {
+                if (Stg30_Battle.field_2AC[0].field_0 == 3 || Stg30_Battle.field_2AC[1].field_0 == 3 ||
+                    Stg30_Battle.field_2AC[2].field_0 == 3) {
                     *out++ = 0;
                     *out++ = 0x3C;
                     *out++ = 0x13;
                 }
-            } else if (D_80073CC0.field_2AC[3].field_0 == 3 || D_80073CC0.field_2AC[4].field_0 == 3 ||
-                       D_80073CC0.field_2AC[5].field_0 == 3) {
+            } else if (Stg30_Battle.field_2AC[3].field_0 == 3 || Stg30_Battle.field_2AC[4].field_0 == 3 ||
+                       Stg30_Battle.field_2AC[5].field_0 == 3) {
                 *out++ = 0;
                 *out++ = 0x3C;
                 *out++ = 0x14;
@@ -919,8 +919,8 @@ void func_8006BBD8(s32 idx) {
             *out++ = msg[i];
             switch (hitKind[i]) {
             case 0:
-                if (D_80073CC0.entries[targets[i]].field_2E != 0) {
-                    *out++ = (D_80073CC0.field_2AC[targets[i]].field_0 != 5) ? 0xB : 0xA;
+                if (Stg30_Battle.entries[targets[i]].field_2E != 0) {
+                    *out++ = (Stg30_Battle.field_2AC[targets[i]].field_0 != 5) ? 0xB : 0xA;
                 } else {
                     *out++ = 0xC;
                 }
@@ -972,22 +972,22 @@ void func_8006BBD8(s32 idx) {
         *out++ = 0xB4;
     }
     *out = 0x18;
-    if (D_80073CC0.field_3B4 == 0) {
+    if (Stg30_Battle.field_3B4 == 0) {
         return;
     }
     for (i = 0; i < 6; i++) {
         s32 tgt = targets[i];
 
-        D_80073CC0.field_3B8[i] = tgt;
+        Stg30_Battle.field_3B8[i] = tgt;
         if (tgt != -1) {
-            D_80073CC0.field_2AC[tgt].field_C = results[i];
+            Stg30_Battle.field_2AC[tgt].field_C = results[i];
         }
     }
     cost = Skill_GetMpCost((s16)id);
     if (rec->field_0 == 2 && (func_8001F0E4((s16)id) & 0x1000)) {
-        mp = &D_80073CC0.entries[targets[0]].field_32;
+        mp = &Stg30_Battle.entries[targets[0]].field_32;
     } else {
-        mp = &D_80073CC0.entries[idx].field_32;
+        mp = &Stg30_Battle.entries[idx].field_32;
     }
     *mp -= cost;
     if (*mp < 0) {
@@ -995,27 +995,27 @@ void func_8006BBD8(s32 idx) {
     }
     do {
         if ((s16)id == 0x4D || (s16)id == 0xFB) {
-            if (D_80073CC0.entries[targets[0]].field_2E == 0) {
-                D_80073CC0.field_2AC[idx].field_6 = 0xFB;
+            if (Stg30_Battle.entries[targets[0]].field_2E == 0) {
+                Stg30_Battle.field_2AC[idx].field_6 = 0xFB;
                 if (idx < 3) {
-                    D_80073CC0.field_2AC[idx].field_4 = func_800692A4(0x4D, 1, idx);
+                    Stg30_Battle.field_2AC[idx].field_4 = Stg30_PickTarget(0x4D, 1, idx);
                 } else {
-                    D_80073CC0.field_2AC[idx].field_4 = func_800692A4(0x4D, 7, idx);
+                    Stg30_Battle.field_2AC[idx].field_4 = Stg30_PickTarget(0x4D, 7, idx);
                 }
-                if (D_80073CC0.field_2AC[idx].field_4 != idx) {
-                    func_8006E55C(1, idx);
+                if (Stg30_Battle.field_2AC[idx].field_4 != idx) {
+                    Stg30_TurnOrderInsert(1, idx);
                 }
                 break;
             }
         }
-        if ((s16)id == 0x68 && Skill_GetMpCost(0x68) <= D_80073CC0.entries[idx].field_32) {
+        if ((s16)id == 0x68 && Skill_GetMpCost(0x68) <= Stg30_Battle.entries[idx].field_32) {
             if (idx < 3) {
-                D_80073CC0.field_2AC[idx].field_4 = func_800692A4(0x4D, 1, idx);
+                Stg30_Battle.field_2AC[idx].field_4 = Stg30_PickTarget(0x4D, 1, idx);
             } else {
-                D_80073CC0.field_2AC[idx].field_4 = func_800692A4(0x4D, 7, idx);
+                Stg30_Battle.field_2AC[idx].field_4 = Stg30_PickTarget(0x4D, 7, idx);
             }
-            if (D_80073CC0.field_2AC[idx].field_4 != idx) {
-                func_8006E55C(1, idx);
+            if (Stg30_Battle.field_2AC[idx].field_4 != idx) {
+                Stg30_TurnOrderInsert(1, idx);
             }
             break;
         }
@@ -1024,14 +1024,14 @@ void func_8006BBD8(s32 idx) {
                 D_80073278 = (u16)((u16)Rand_Next() % 3) + 1;
             }
             if (--D_80073278 != 0) {
-                if (Skill_GetMpCost(0xDC) <= D_80073CC0.entries[idx].field_32) {
+                if (Skill_GetMpCost(0xDC) <= Stg30_Battle.entries[idx].field_32) {
                     if (idx < 3) {
-                        D_80073CC0.field_2AC[idx].field_4 = func_800692A4(0x4D, 1, idx);
+                        Stg30_Battle.field_2AC[idx].field_4 = Stg30_PickTarget(0x4D, 1, idx);
                     } else {
-                        D_80073CC0.field_2AC[idx].field_4 = func_800692A4(0x4D, 7, idx);
+                        Stg30_Battle.field_2AC[idx].field_4 = Stg30_PickTarget(0x4D, 7, idx);
                     }
-                    if (D_80073CC0.field_2AC[idx].field_4 != idx) {
-                        func_8006E55C(1, idx);
+                    if (Stg30_Battle.field_2AC[idx].field_4 != idx) {
+                        Stg30_TurnOrderInsert(1, idx);
                     }
                 } else {
                     D_80073278 = 0;

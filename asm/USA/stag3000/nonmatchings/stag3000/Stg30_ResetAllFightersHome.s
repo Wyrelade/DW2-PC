@@ -1,0 +1,28 @@
+nonmatching Stg30_ResetAllFightersHome, 0x58
+
+glabel Stg30_ResetAllFightersHome
+    /* 42C4 80067624 E0FFBD27 */  addiu      $sp, $sp, -0x20
+    /* 42C8 80067628 1400B1AF */  sw         $s1, 0x14($sp)
+    /* 42CC 8006762C 21880000 */  addu       $s1, $zero, $zero
+    /* 42D0 80067630 1800BFAF */  sw         $ra, 0x18($sp)
+    /* 42D4 80067634 1000B0AF */  sw         $s0, 0x10($sp)
+    /* 42D8 80067638 3400908C */  lw         $s0, 0x34($a0)
+  .L8006763C:
+    /* 42DC 8006763C 00000000 */  nop
+    /* 42E0 80067640 2C00048E */  lw         $a0, 0x2C($s0)
+    /* 42E4 80067644 00000000 */  nop
+    /* 42E8 80067648 03008010 */  beqz       $a0, .L80067658
+    /* 42EC 8006764C 00000000 */   nop
+    /* 42F0 80067650 99BD010C */  jal        Stg30_FighterQueueHomeReset
+    /* 42F4 80067654 00000000 */   nop
+  .L80067658:
+    /* 42F8 80067658 01003126 */  addiu      $s1, $s1, 0x1
+    /* 42FC 8006765C 0600222A */  slti       $v0, $s1, 0x6
+    /* 4300 80067660 F6FF4014 */  bnez       $v0, .L8006763C
+    /* 4304 80067664 04001026 */   addiu     $s0, $s0, 0x4
+    /* 4308 80067668 1800BF8F */  lw         $ra, 0x18($sp)
+    /* 430C 8006766C 1400B18F */  lw         $s1, 0x14($sp)
+    /* 4310 80067670 1000B08F */  lw         $s0, 0x10($sp)
+    /* 4314 80067674 0800E003 */  jr         $ra
+    /* 4318 80067678 2000BD27 */   addiu     $sp, $sp, 0x20
+endlabel Stg30_ResetAllFightersHome

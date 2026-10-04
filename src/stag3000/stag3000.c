@@ -1,11 +1,11 @@
 #include "common.h"
 #include "stag3000/stag3000.h"
 
-void func_80063898(Actor *a0, s32 a1) {
+void Stg30_BannerInit(Actor *a0, s32 a1) {
     a0->param = a1;
 }
 
-void func_800638A0(Actor *a0) {
+void Stg30_BannerUpdate(Actor *a0) {
     switch (a0->stateLevel0) {
     case 0:
         if (a0->param == 1) Snd_PlayById(0x24, 0);
@@ -30,15 +30,15 @@ case 2: break;
     }
 }
 
-void func_8006399C(Actor *a0) {
-    Stg30Part *p = (Stg30Part *)Cd_GetFileEntry(D_80072FC8[a0->param]);
+void Stg30_BannerDraw(Actor *a0) {
+    Stg30Part *p = (Stg30Part *)Cd_GetFileEntry(Stg30_BannerParts[a0->param]);
     Stg30Part *q;
 
     for (q = p; q->fileId != 0; q++) {
         q->palette = Math_CycleRange(a0->elapsed, 4, 0, 7);
     }
     if (a0->param == 3) {
-        if (D_80073CC0.entries[0].field_0 != 0) {
+        if (Stg30_Battle.entries[0].field_0 != 0) {
             Gfx_HidePartsByMask((GfxPartMaskView *)p, 1);
         } else {
             Gfx_HidePartsByMask((GfxPartMaskView *)p, 2);
@@ -47,12 +47,12 @@ void func_8006399C(Actor *a0) {
     Gfx_DrawParts((EntA0 *)p);
 }
 
-void func_80063A6C(Actor *a0) {
+void Stg30_FightBgUpdate(Actor *a0) {
     if (a0->stateLevel0 == 0) {
-        if (D_80073CC0.entries[0].field_0 != 0) {
+        if (Stg30_Battle.entries[0].field_0 != 0) {
             a0->digiId = D_80073008;
         } else {
-            a0->digiId = D_80072FF0[D_8007300C[D_8005E5DD]];
+            a0->digiId = Stg30_FightBgModels[D_8007300C[D_8005E5DD]];
         }
         Actor_InitTransform(a0, Gfx_ZeroVector, 0);
         Gfx_AttachModel(a0, a0->digiId)->otIndex = 5;
@@ -61,18 +61,18 @@ void func_80063A6C(Actor *a0) {
     }
 }
 
-void func_80063B28(Actor *a0) {
+void Stg30_FightBgDraw(Actor *a0) {
     Gfx_AttachModel(a0, a0->digiId);
     Actor_UpdateTransform(a0);
     Gfx_CalcModelBoneMatrices(a0);
     Gfx_DrawTexModel(a0, 1);
 }
 
-void func_80063B70(Actor *a0, s32 *args) {
+void Stg30_ActionLoadInit(Actor *a0, s32 *args) {
     ((Stg30WorkWord *)a0->work)->field_0 = args[0];
 }
 
-void func_80063B80(Actor *a0, s32 file, s32 lba) {
+void Stg30_ActionLoadAddSorted(Actor *a0, s32 file, s32 lba) {
     Stg30Work73040 *w = (Stg30Work73040 *)a0->work;
     s32 found = 0;
     s32 i;
@@ -95,7 +95,7 @@ void func_80063B80(Actor *a0, s32 file, s32 lba) {
     w->count++;
 }
 
-void func_80063C44(Actor *a0) {
+void Stg30_ActionLoadUpdate(Actor *a0) {
     Stg30Work73040 *w = (Stg30Work73040 *)a0->work;
     s16 *p;
     s32 k;
@@ -143,7 +143,7 @@ void func_80063C44(Actor *a0) {
                 break;
             case 9:
                 if (p[1] != 6) {
-                    w->field_2E8 = D_80073CC0.entries[p[1]].field_19;
+                    w->field_2E8 = Stg30_Battle.entries[p[1]].field_19;
                     w->field_320 = 0;
                 } else {
                     w->field_320 = 1;
@@ -153,31 +153,31 @@ void func_80063C44(Actor *a0) {
                 break;
             case 10:
                 w->field_304[k] = 1;
-                w->field_2EC[k] = D_80073CC0.entries[p[1]].field_19;
+                w->field_2EC[k] = Stg30_Battle.entries[p[1]].field_19;
                 p += 3;
                 k++;
                 break;
             case 11:
                 w->field_304[k] = 2;
-                w->field_2EC[k] = D_80073CC0.entries[p[1]].field_19;
+                w->field_2EC[k] = Stg30_Battle.entries[p[1]].field_19;
                 p += 3;
                 k++;
                 break;
             case 12:
                 w->field_304[k] = 3;
-                w->field_2EC[k] = D_80073CC0.entries[p[1]].field_19;
+                w->field_2EC[k] = Stg30_Battle.entries[p[1]].field_19;
                 p += 3;
                 k++;
                 break;
             case 13:
                 w->field_304[k] = 0;
-                w->field_2EC[k] = D_80073CC0.entries[p[1]].field_19;
+                w->field_2EC[k] = Stg30_Battle.entries[p[1]].field_19;
                 p += 3;
                 k++;
                 break;
             case 8:
                 w->field_304[k] = 4;
-                w->field_2EC[k] = D_80073CC0.entries[p[1]].field_19;
+                w->field_2EC[k] = Stg30_Battle.entries[p[1]].field_19;
                 p += 3;
                 k++;
                 break;
@@ -252,10 +252,10 @@ void func_80063C44(Actor *a0) {
         }
         w->count = 0;
         for (i = 0; i < w->field_2DC; i++) {
-            func_80063B80(a0, w->field_1E8[i], Cd_GetFileLba(w->field_1E8[i]));
+            Stg30_ActionLoadAddSorted(a0, w->field_1E8[i], Cd_GetFileLba(w->field_1E8[i]));
         }
         for (i = 0; i < w->field_2E0; i++) {
-            func_80063B80(a0, w->field_260[i], Cd_GetFileLba(w->field_260[i]));
+            Stg30_ActionLoadAddSorted(a0, w->field_260[i], Cd_GetFileLba(w->field_260[i]));
         }
         Task_NextState1(a0);
         w->field_4 = 0;

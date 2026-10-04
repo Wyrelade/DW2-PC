@@ -1,0 +1,41 @@
+nonmatching Stg30_OpenSkillText, 0x8C
+
+glabel Stg30_OpenSkillText
+    /* 3098 800663F8 B0FFBD27 */  addiu      $sp, $sp, -0x50
+    /* 309C 800663FC 4400B1AF */  sw         $s1, 0x44($sp)
+    /* 30A0 80066400 21888000 */  addu       $s1, $a0, $zero
+    /* 30A4 80066404 6000A28F */  lw         $v0, 0x60($sp)
+    /* 30A8 80066408 2120A000 */  addu       $a0, $a1, $zero
+    /* 30AC 8006640C 4000B0AF */  sw         $s0, 0x40($sp)
+    /* 30B0 80066410 2180C000 */  addu       $s0, $a2, $zero
+    /* 30B4 80066414 4800BFAF */  sw         $ra, 0x48($sp)
+    /* 30B8 80066418 05004014 */  bnez       $v0, .L80066430
+    /* 30BC 8006641C 5C00A7AF */   sw        $a3, 0x5C($sp)
+    /* 30C0 80066420 757B000C */  jal        Skill_GetDescText
+    /* 30C4 80066424 00000000 */   nop
+    /* 30C8 80066428 0F990108 */  j          .L8006643C
+    /* 30CC 8006642C 2400A2AF */   sw        $v0, 0x24($sp)
+  .L80066430:
+    /* 30D0 80066430 617B000C */  jal        Skill_GetNameText
+    /* 30D4 80066434 00000000 */   nop
+    /* 30D8 80066438 2400A2AF */  sw         $v0, 0x24($sp)
+  .L8006643C:
+    /* 30DC 8006643C 1000A0AF */  sw         $zero, 0x10($sp)
+    /* 30E0 80066440 1400B0AF */  sw         $s0, 0x14($sp)
+    /* 30E4 80066444 5C00A297 */  lhu        $v0, 0x5C($sp)
+    /* 30E8 80066448 21202002 */  addu       $a0, $s1, $zero
+    /* 30EC 8006644C 1800A2A7 */  sh         $v0, 0x18($sp)
+    /* 30F0 80066450 5E00A397 */  lhu        $v1, 0x5E($sp)
+    /* 30F4 80066454 6400A28F */  lw         $v0, 0x64($sp)
+    /* 30F8 80066458 1000A527 */  addiu      $a1, $sp, 0x10
+    /* 30FC 8006645C 1C00A0AF */  sw         $zero, 0x1C($sp)
+    /* 3100 80066460 2000A0AF */  sw         $zero, 0x20($sp)
+    /* 3104 80066464 2800A2AF */  sw         $v0, 0x28($sp)
+    /* 3108 80066468 096F000C */  jal        Text_Open
+    /* 310C 8006646C 1A00A3A7 */   sh        $v1, 0x1A($sp)
+    /* 3110 80066470 4800BF8F */  lw         $ra, 0x48($sp)
+    /* 3114 80066474 4400B18F */  lw         $s1, 0x44($sp)
+    /* 3118 80066478 4000B08F */  lw         $s0, 0x40($sp)
+    /* 311C 8006647C 0800E003 */  jr         $ra
+    /* 3120 80066480 5000BD27 */   addiu     $sp, $sp, 0x50
+endlabel Stg30_OpenSkillText
