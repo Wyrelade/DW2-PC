@@ -408,7 +408,7 @@ typedef struct {
 /* Main-exe global read at 0x103D by Stg30_GetFloorSpecialty. */
 typedef struct {
     u8 _pad0000[0x103D];
-    /* 0x103D */ u8 floorTile;
+    /* 0x103D */ u8 floorSpecialty;
     u8 _pad103E[0x02];
     /* 0x1040 */ s16 giftLevel;
 } Stg30DungState;

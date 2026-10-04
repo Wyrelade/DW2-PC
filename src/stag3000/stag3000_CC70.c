@@ -79,7 +79,7 @@ void Stg30_InitBattle(void) {
     Mem_Zero(&Stg30_Battle, 0x3E0);
     Stg30_Battle.interruptActive = 1;
     if ((Sys_State.prevGameMode & 0xFF00) == 0x300) {
-        Dung_State.floorTile = 0;
+        Dung_State.floorSpecialty = 0;
         Dung_State.giftLevel = 0;
         Stg30_Battle.entries[0].fromCity = 1;
     }
