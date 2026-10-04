@@ -1,6 +1,10 @@
 # PsyQ 4.7 library functions in SLUS_011.93 (PRINTVER: libgte libapi libpad libgpu libgs libcd
 # libc2 libetc libsnd libspu libmcrd libcard). Range: PadGetState 0x80024474 .. end of .text.
 # Excluded from progress. Overlay entries are unit:name.
+# PsyQ libsn startup (SNMAIN __SN_ENTRY_POINT) at the start of .text: bss clear, sp from
+# _ramsize, heap = end of bss masked with sll/srl 3, trapping addi a0,a0,4 in the InitHeap slot,
+# ra saved to a temp, gp/fp set, jal main, break 1. Hand asm, not game code.
+Sys_Start 0x80010D7C
 PadGetState 0x80024474
 PadStartCom 0x80024544
 PadStopCom 0x80024610
