@@ -516,7 +516,37 @@ void func_800652C8(void *a0, s32 id, s32 color, Stg30XY pos, s32 name, s32 delay
 }
 
 INCLUDE_RODATA("asm/USA/stag3000/rodata", D_800633EC);
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000_100C", func_80065354);
+void func_80065354(Actor *a0) {
+    Stg30Work730D0 *w = (Stg30Work730D0 *)a0->work;
+    s32 i;
+    s32 j;
+    s32 item;
+    s32 cat;
+
+    for (i = 0; i < 3; i++) {
+        u8 *row = w->field_58[i];
+        for (j = 0; j < 3; j++) {
+            u8 *p = &row[j + D_800737F8[i]];
+            if (*p != 0) {
+                Stg30XY pos = D_80073090[i];
+                pos.y += j * 0xB;
+                func_800652C8(&w->texts[i][j], *p, (D_800737E8 ^ i) != 0, pos, 1, 0);
+            }
+        }
+    }
+    
+    item = w->field_58[D_800737E8][D_800737F0[D_800737E8] + D_800737F8[D_800737E8]];
+    if (item != 0) {
+        if (w->field_F4 != item) {
+            w->field_F4 = item;
+            func_800652C8(&w->field_8, item, 0, D_800633EC, 0, 3);
+        }
+    } else {
+        w->field_F4 = -1;
+        Text_Close(&w->field_8);
+        w->field_F4 = 0;
+    }
+}
 
 s32 func_80065540(s32 c) {
     if (c >= 0xE1) {
@@ -929,7 +959,39 @@ void func_800663F8(void *a0, s32 id, s32 color, Stg30XY pos, s32 name, s32 delay
 }
 
 INCLUDE_RODATA("asm/USA/stag3000/rodata", D_800633F4);
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000_100C", func_80066484);
+void func_80066484(Actor *a0) {
+    Stg30Work73138 *w = (Stg30Work73138 *)a0->work;
+    s32 i;
+    s32 j;
+    s32 item;
+
+    for (i = 0; i < 4; i++) {
+        Stg30Rec1B *rec = &D_80073820[i];
+        for (j = 0; j < 3; j++) {
+            s32 off = j + D_80073810[i];
+            if (rec->field_D[off] != 0) {
+                s32 k = j + 6;
+                s32 color;
+                Stg30XY pos = D_800730E8[i];
+                pos.y += j * 0xB;
+                color = (D_80073800 ^ i) != 0;
+                func_800663F8(&w->texts[i * 3 + k], rec->field_D[off], color + rec->field_0[off], pos, 1, 0);
+            }
+        }
+    }
+    item = D_80073820[D_80073800].field_D[D_80073808[D_80073800] + D_80073810[D_80073800]];
+    if (item != 0) {
+        if (w->field_48 != item) {
+            w->field_48 = item;
+            func_800663F8(&w->texts[5], item, 0, D_800633F4, 0, 3);
+        }
+        w->field_50 = func_8001EE80(item);
+    } else {
+        w->field_48 = -1;
+        Text_Close(&w->texts[5]);
+        w->field_50 = 0;
+    }
+}
 
 INCLUDE_RODATA("asm/USA/stag3000/rodata", D_800633F8);
 void func_80066698(Actor *a0) {
