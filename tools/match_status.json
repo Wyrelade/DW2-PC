@@ -156,7 +156,7 @@
  "GetRCnt": "asm",
  "GetVideoMode": "asm",
  "Gfx_AddFlatQuad3D": "natural",
- "Gfx_AddQuadsGT4": "normalized",
+ "Gfx_AddQuadsGT4": "natural",
  "Gfx_AnimateModelTex": "natural",
  "Gfx_AttachModel": "natural",
  "Gfx_CalcModelBoneMatrices": "natural",
