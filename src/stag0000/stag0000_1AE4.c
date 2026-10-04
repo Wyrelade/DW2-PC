@@ -212,8 +212,8 @@ void Stg00_DigiViewSpawnModel(Actor *arg0) {
     Stg00TaskArgs5 args;
     TextOpenArgs t;
 
-    while ((id = Digi_GetModelListId(w->field_10)) == -1) {
-        w->field_10 = 0;
+    while ((id = Digi_GetModelListId(w->modelListIdx)) == -1) {
+        w->modelListIdx = 0;
     }
     Task_Destroy(slot);
     args.digiId = id;
@@ -222,9 +222,9 @@ void Stg00_DigiViewSpawnModel(Actor *arg0) {
     args.posY = 0;
     args.posZ = 0;
     Task_Create(0x105, slot, (s32)&args);
-    Text_Close(&w->field_14);
-    Text_Close(&w->field_18);
-    t.text = (s32)Digi_GetDefaultName(Digi_GetModelListId(w->field_10));
+    Text_Close(&w->nameText);
+    Text_Close(&w->nameTextSmall);
+    t.text = (s32)Digi_GetDefaultName(Digi_GetModelListId(w->modelListIdx));
     t.bigFont = 1;
     t.color = 0;
     t.x = 0x10;
@@ -232,12 +232,12 @@ void Stg00_DigiViewSpawnModel(Actor *arg0) {
     t.charDelay = 0xE;
     t.charAdvance = 0;
     t.lineAdvance = 0;
-    Text_Open(&w->field_14, &t);
+    Text_Open(&w->nameText, &t);
     t.y = 0xC6;
     t.charDelay = 8;
     t.bigFont = 0;
     t.charAdvance = 9;
-    Text_Open(&w->field_18, &t);
+    Text_Open(&w->nameTextSmall, &t);
 }
 
 void Stg00_DigiViewTask(Actor *arg0)
@@ -323,7 +323,7 @@ void Stg00_DigiViewTask(Actor *arg0)
 
         if (D_8005F700 > 0)
       {
-        ((Stg00ActorTimer *) arg0)->field_24 = 0;
+        ((Stg00ActorTimer *) arg0)->frameCount = 0;
         Task_NextState1(arg0);
       }
         break;
@@ -685,9 +685,9 @@ void Stg00_LineupSpawnModels(Actor *arg0) {
         Task_Destroy(slot);
         args.digiId = w->digiIds[i + w->scrollTop];
         args.facing = 0x400;
-        args.posX = Stg00_LineupLayouts[w->layout][i].field_0;
+        args.posX = Stg00_LineupLayouts[w->layout][i].posX;
         args.posY = 0;
-        args.posZ = Stg00_LineupLayouts[w->layout][i].field_2;
+        args.posZ = Stg00_LineupLayouts[w->layout][i].posZ;
         Task_Create(0x105, slot, (s32)&args);
         slot++;
     }
@@ -806,7 +806,7 @@ void Stg00_LineupTask(Actor *arg0) {
 
 void Stg00_LineupDraw(Actor *arg0) {
     EntA0 *e = Cd_GetFileEntry(0x1890000);
-    Gfx_HidePartsByMask(e, D_80068E84[((Stg00PartsWork *)arg0->work)->field_C]);
+    Gfx_HidePartsByMask(e, D_80068E84[((Stg00PartsWork *)arg0->work)->winVariant]);
     Gfx_DrawParts(e);
 }
 
@@ -927,7 +927,7 @@ void Stg00_GroupViewTask(Actor *arg0) {
 
     switch (arg0->stateLevel0) {
     case 0:
-        ((Stg00ViewWork *)arg0->work)->field_0 = 2;
+        ((Stg00ViewWork *)arg0->work)->videoMode = 2;
         Gpu_AllocPacketBufs(0x25800);
         Stg00_GroupViewSetVideoMode(arg0);
         Stg00_SpawnRandomGroup(arg0);
@@ -961,10 +961,10 @@ void Stg00_GroupViewTask(Actor *arg0) {
             }
         }
         if (D_8005F708 > 0) {
-            if (++w->field_8 == 7) {
-                w->field_8 = 0;
+            if (++w->camPreset == 7) {
+                w->camPreset = 0;
             }
-            switch (w->field_8) {
+            switch (w->camPreset) {
             case 0:
             default:
                 Stg00_CamMoveOrigin(cam, 0xA00, 0, -0x1400);
@@ -988,10 +988,10 @@ void Stg00_GroupViewTask(Actor *arg0) {
             }
         }
         if (D_8005F720 > 0) {
-            if (w->field_0 != 3) {
-                w->field_0++;
+            if (w->videoMode != 3) {
+                w->videoMode++;
             } else {
-                w->field_0 = 0;
+                w->videoMode = 0;
             }
             Stg00_GroupViewSetVideoMode(arg0);
         }
@@ -999,8 +999,8 @@ void Stg00_GroupViewTask(Actor *arg0) {
             Stg00_SpawnRandomGroup(arg0);
         }
         if (Pad_State[0].circle > 0) {
-            if (++w->field_C == 4) {
-                w->field_C = 0;
+            if (++w->winVariant == 4) {
+                w->winVariant = 0;
             }
         }
         if (D_8005F714 > 0) {

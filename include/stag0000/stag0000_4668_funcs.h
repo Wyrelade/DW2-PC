@@ -19,7 +19,7 @@ void Stg00_WindowTestTask(Actor *arg0);
 void Stg00_WindowTestDraw(Actor *arg0);
 void Stg00_SoundTestTask(Actor *arg0);
 void Stg00_SoundTestDraw(void);
-void Stg00_CameraInit(Actor *arg0, Stg00Blk1C *arg1);
+void Stg00_CameraInit(Actor *arg0, Stg00CameraArg *arg1);
 void Stg00_CameraTask(Actor *arg0);
 void Stg00_CameraDraw(Actor *arg0);
 TaskEntry *Stg00_FindCamera(void);

@@ -5,18 +5,18 @@
 
 void Stg00_GroupViewDraw(Actor *arg0) {
     EntA0 *e = Cd_GetFileEntry(0x1890000);
-    Gfx_HidePartsByMask(e, Stg00_GroupWinMasks[((Stg00PartsWork *)arg0->work)->field_C]);
+    Gfx_HidePartsByMask(e, Stg00_GroupWinMasks[((Stg00PartsWork *)arg0->work)->winVariant]);
     Gfx_DrawParts(e);
 }
 
 void Stg00_DigiModelInit(Actor *arg0, Stg00ModelArg *arg1) {
     Stg00ModelWork *w;
 
-    arg0->digiId = arg1->field_0;
+    arg0->digiId = arg1->digiId;
     w = (Stg00ModelWork *)arg0->work;
-    w->field_14 = Digi_GetModelFile(arg1->field_0);
-    w->field_4 = arg1->field_4;
-    w->field_10 = arg1->field_10;
+    w->modelFile = Digi_GetModelFile(arg1->digiId);
+    w->homePos = arg1->pos;
+    w->facing = arg1->facing;
 }
 
 void Stg00_SpawnSkillCastFx(Actor *arg0, s32 arg1) {
@@ -128,10 +128,10 @@ void func_80067120(Actor *arg0, s32 arg1, s32 arg2) {
             Task_NextState4(arg0);
             return;
         case 1:
-            if (t->field_34 > 0) {
+            if (t->posY > 0) {
                 Actor_StopAxisMotion(arg0, 1);
-                t->field_34 = 0;
-                t->field_4C = 0;
+                t->posY = 0;
+                t->moveDeltaY = 0;
                 Task_NextState3(arg0);
             }
             return;
@@ -149,10 +149,10 @@ void func_80067120(Actor *arg0, s32 arg1, s32 arg2) {
             Task_NextState4(arg0);
             return;
         case 1:
-            if (t->field_34 > 0) {
+            if (t->posY > 0) {
                 Actor_StopAxisMotion(arg0, 1);
-                t->field_34 = 0;
-                t->field_4C = 0;
+                t->posY = 0;
+                t->moveDeltaY = 0;
                 Task_NextState3(arg0);
             }
             return;
@@ -212,11 +212,11 @@ void func_80067120(Actor *arg0, s32 arg1, s32 arg2) {
 }
 
 void Stg00_ResetToHomePos(Actor *arg0) {
-    Stg00Work73FC *w = (Stg00Work73FC *)arg0->work;
+    Stg00ModelHomeView *w = (Stg00ModelHomeView *)arg0->work;
     ActorTransformView *t = arg0->u38.ptr38;
-    t->posX = w->field_4;
-    t->posY = w->field_8;
-    t->posZ = w->field_C;
+    t->posX = w->homeX;
+    t->posY = w->homeY;
+    t->posZ = w->homeZ;
 }
 
 void Stg00_DigiModelTask(Actor *arg0) {
@@ -233,7 +233,7 @@ void Stg00_DigiModelTask(Actor *arg0) {
         Actor_InitTransform(arg0, (s32 *)&w->homePos, (u16)w->facing);
         Gfx_AttachModel(arg0, w->modelFile)->otIndex = 3;
         Anim_SetModelAnim(arg0, 0);
-        a1.field_0 = (s32)arg0;
+        a1.owner = (s32)arg0;
         Task_Create(6, (s32 *)arg0->u34.children, (s32)&a1);
         w->drawTex = 1;
         w->drawWire = 0;

@@ -181,13 +181,13 @@ s32 Stg00_RelocDungFile(u32 *arg0) {
             h = (Stg00DungFloor *)*arg0;
             h->field_0 += base;
             for (i = 0; i < 8; i++) {
-                Stg00RelocEnt **pe = &h->layouts[i];
-                Stg00RelocEnt *e = (Stg00RelocEnt *)((u32)*pe + base);
+                Stg00DungLayout **pe = &h->layouts[i];
+                Stg00DungLayout *e = (Stg00DungLayout *)((u32)*pe + base);
                 *pe = e;
                 Stg00_RelocPtr(&e->field_0, base);
                 Stg00_RelocPtr(&e->field_4, base);
                 Stg00_RelocPtr(&e->field_8, base);
-                Stg00_RelocPtr(&e->field_C, base);
+                Stg00_RelocPtr(&e->cmdList, base);
                 Stg00_RelocPtr(&e->field_10, base);
             }
         }
@@ -206,7 +206,7 @@ void Stg00_LoadDungFile(Actor *arg0, Stg00SelWork *arg1, s32 arg2) {
 }
 
 void Stg00_DungSelPickDungeon(Actor *arg0, Stg00SelWork *arg1) {
-    Stg00SelEnt *e;
+    Stg00DungEntry *e;
 
     if (D_8005F72C & 0x8000) {
         if (arg1->dungeonIdx > 0) {
@@ -221,8 +221,8 @@ void Stg00_DungSelPickDungeon(Actor *arg0, Stg00SelWork *arg1) {
     if (D_8005F700 > 0) {
         arg1->floor = 0;
         arg1->lastFloor = -1;
-        e = (Stg00SelEnt *)Cd_GetFileEntry(0xE20000A);
-        Stg00_LoadDungFile(arg0, arg1, e[arg1->dungeonIdx].field_0);
+        e = (Stg00DungEntry *)Cd_GetFileEntry(0xE20000A);
+        Stg00_LoadDungFile(arg0, arg1, e[arg1->dungeonIdx].dungFileId);
         Task_SetState1(arg0, 1);
     }
 }
@@ -385,8 +385,8 @@ void Stg00_DungSelPickFlag(Actor *arg0, Stg00SelWork *arg1) {
     } else if (Pad_State[0].circle > 0) {
         func_80064E44();
         D_8005F78C = arg1->dungeonIdx + 0x201;
-        D_8005071C->field_3 = arg1->floor;
-        D_8005071C->field_4 = arg1->layout;
+        D_8005071C->floor = arg1->floor;
+        D_8005071C->floorLayout = arg1->layout;
         Flag_Set(arg1->flagIdx + 0x76C, 1);
         Task_SetState0(arg0, 2);
     }
@@ -470,7 +470,7 @@ s32 func_80064B08(Stg00DungFloor *arg0, s32 arg1) {
             result |= tbl.bits[i][val];
         }
     }
-    cmd = (Stg00RelocCmd *)arg0->layouts[arg1]->field_C;
+    cmd = (Stg00RelocCmd *)arg0->layouts[arg1]->cmdList;
     while (cmd->field_0.tag != 0xFF) {
         for (i = 0; i < 4; i++) {
             switch (i) {

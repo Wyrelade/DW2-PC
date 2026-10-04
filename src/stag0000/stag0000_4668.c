@@ -7,15 +7,15 @@
 void Stg00_DigiModelDraw(Actor *arg0) {
     Stg00ModelWork *w = (Stg00ModelWork *)arg0->work;
 
-    Gfx_AttachModel(arg0, w->field_14);
+    Gfx_AttachModel(arg0, w->modelFile);
     Anim_StepModelAnim(arg0);
     Actor_UpdateTransform(arg0);
     Gfx_CalcModelBoneMatrices(arg0);
-    if (w->field_20 != 0) {
+    if (w->drawTex != 0) {
         Gfx_DrawTexModel(arg0, 0);
     }
-    if (w->field_24 != 0) {
-        Gfx_DrawWireModel(arg0, 0, &w->field_28);
+    if (w->drawWire != 0) {
+        Gfx_DrawWireModel(arg0, 0, &w->wireColor);
     }
 }
 
@@ -35,30 +35,30 @@ void Stg00_PopupTask(Actor *arg0) {
         switch (arg0->stateLevel1) {
         case 0:
         default:
-            w->field_10++;
-            w->field_C += 0x200;
-            if (w->field_10 != 7) {
+            w->palette++;
+            w->scale += 0x200;
+            if (w->palette != 7) {
                 break;
             }
             arg0->elapsed = 0;
-            w->field_C = 0x1000;
+            w->scale = 0x1000;
             Task_NextState1(arg0);
         case 1:
-            v = w->field_0;
+            v = w->kind;
             if (v != 7) {
                 if (arg0->elapsed < 0x28) {
                     break;
                 }
             } else {
-                w->field_10 = Math_CycleRange(arg0->elapsed, 2, 8, 0xF);
+                w->palette = Math_CycleRange(arg0->elapsed, 2, 8, 0xF);
                 if (arg0->elapsed < 0x90) {
                     break;
                 }
-                w->field_10 = v;
+                w->palette = v;
             }
             Task_NextState1(arg0);
         case 2:
-            if (--w->field_10 < 0) {
+            if (--w->palette < 0) {
                 Task_SetState0(arg0, 3);
             }
             break;
@@ -102,12 +102,12 @@ void Stg00_PopupDraw(Actor *arg0) {
     if (draw) {
         for (p = (Stg00PartScale *)e; p->fileId != 0; p++) {
             if (w->scale != 0x1000) {
-                p->field_E = 0;
-                p->field_10 = w->scale;
+                p->unscaled = 0;
+                p->scaleX = w->scale;
             } else {
-                p->field_E = 1;
+                p->unscaled = 1;
             }
-            p->field_C = w->palette;
+            p->palette = w->palette;
         }
         Gfx_DrawParts(e);
     }
@@ -128,12 +128,12 @@ void Stg00_PopupDraw(Actor *arg0) {
         Gfx_HidePartsByMask(e, ~(1 << ((u8)w->subPart - 1)));
         for (p = (Stg00PartScale *)e; p->fileId != 0; p++) {
             if (w->scale != 0x1000) {
-                p->field_E = 0;
-                p->field_10 = w->scale;
+                p->unscaled = 0;
+                p->scaleX = w->scale;
             } else {
-                p->field_E = 1;
+                p->unscaled = 1;
             }
-            p->field_C = w->palette;
+            p->palette = w->palette;
         }
         Gfx_DrawParts(e);
     }
@@ -158,14 +158,14 @@ void Stg00_XaPlayTask(Actor *arg0) {
         switch (arg0->stateLevel1) {
         case 0:
         default:
-            w->field_C = Cd_GetFileLba(w->field_0) + Stg00_XaTrackStart[w->field_8 - 1];
-            w->field_10 = w->field_C + Stg00_XaTrackLength[w->field_8 - 1];
+            w->startSector = Cd_GetFileLba(w->fileId) + Stg00_XaTrackStart[w->track - 1];
+            w->endSector = w->startSector + Stg00_XaTrackLength[w->track - 1];
             param[0] = 1;
-            param[1] = w->field_4;
+            param[1] = w->xaChannel;
             CdControl(0xD, param, 0);
             mode[0] = 0xC8;
             CdControlB(0xE, mode, 0);
-            CdIntToPos(w->field_C, loc);
+            CdIntToPos(w->startSector, loc);
             CdControlF(0x15, (s32)loc);
             Task_NextState1(arg0);
             break;
@@ -187,19 +187,19 @@ void Stg00_XaPlayTask(Actor *arg0) {
         switch (arg0->stateLevel1) {
         case 0:
         default:
-            CdIntToPos(w->field_C, res);
+            CdIntToPos(w->startSector, res);
             if (CdControl(0x1B, res, 0) == 1) {
                 Task_NextState1(arg0);
             }
             break;
         case 1:
-            if ((((Stg00ActorTimer *)arg0)->field_24 & 0x1F) == 0) {
+            if ((((Stg00ActorTimer *)arg0)->frameCount & 0x1F) == 0) {
                 switch (CdSync(1, res2)) {
                 case 5:
                     Task_SetState0(arg0, 3);
                     break;
                 case 2:
-                    if (CdLastCom() == 0x11 && CdPosToInt(&res2[5]) >= w->field_10) {
+                    if (CdLastCom() == 0x11 && CdPosToInt(&res2[5]) >= w->endSector) {
                         Task_SetState0(arg0, 3);
                     } else {
                         CdControlF(0x11, 0);
@@ -317,27 +317,27 @@ void Stg00_WindowTestDraw(Actor *arg0) {
     Gfx_HidePartsByMask(e, Stg00_WindowTestMasks[w->cursor]);
     p = (Stg00Part *)e;
     while (p->fileId != 0) {
-        if (p->partMask & Stg00_WindowTestParts[w->cursor].field_8) {
-            p->field_E = 0;
+        if (p->partMask & Stg00_WindowTestParts[w->cursor].spinMask) {
+            p->unscaled = 0;
             if (w->holdDelay != 0) {
                 w->holdDelay--;
             } else {
-                p->field_20 += 0x20;
+                p->rotX += 0x20;
             }
         }
         if (p->partMask & Stg00_WindowTestParts[w->cursor].field_0) {
-            if ((p->field_20 + 0x400) & 0x800) {
-                p->field_F = 0;
+            if ((p->rotX + 0x400) & 0x800) {
+                p->visible = 0;
             }
         }
         if (p->partMask & Stg00_WindowTestParts[w->cursor].field_4) {
-            if ((p->field_20 - 0x418) & 0x800) {
-                p->field_F = 0;
+            if ((p->rotX - 0x418) & 0x800) {
+                p->visible = 0;
             }
         }
-        if (p->partMask & Stg00_WindowTestParts[w->cursor].field_C) {
-            p->field_E = 1;
-            p->field_20 = 0;
+        if (p->partMask & Stg00_WindowTestParts[w->cursor].resetMask) {
+            p->unscaled = 1;
+            p->rotX = 0;
         }
         p++;
     }
@@ -444,8 +444,8 @@ void Stg00_SoundTestTask(Actor *arg0) {
 void Stg00_SoundTestDraw(void) {
 }
 
-void Stg00_CameraInit(Actor *arg0, Stg00Blk1C *arg1) {
-    *(Stg00Blk1C *)arg0->work = *arg1;
+void Stg00_CameraInit(Actor *arg0, Stg00CameraArg *arg1) {
+    *(Stg00CameraArg *)arg0->work = *arg1;
 }
 
 void Stg00_CameraTask(Actor *arg0) {

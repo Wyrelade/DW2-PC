@@ -28,14 +28,14 @@ typedef struct {
 
 typedef struct {
     /* 0x00 */ s32 field_0[7];
-} Stg00Blk1C;
+} Stg00CameraArg;
 
 typedef struct {
     u8 _pad00[0x04];
-    /* 0x04 */ s32 field_4;
-    /* 0x08 */ s32 field_8;
-    /* 0x0C */ s32 field_C;
-} Stg00Work73FC;
+    /* 0x04 */ s32 homeX;
+    /* 0x08 */ s32 homeY;
+    /* 0x0C */ s32 homeZ;
+} Stg00ModelHomeView;
 
 extern SysState Sys_State;
 extern u8 **Stg00_SoundBanks[];
@@ -100,7 +100,7 @@ typedef struct {
 /* Actor.work of the parts-drawing tasks (Stg00_LineupDraw / Stg00_GroupViewDraw). */
 typedef struct {
     u8 _pad00[0x0C];
-    /* 0x0C */ s32 field_C;
+    /* 0x0C */ s32 winVariant;
 } Stg00PartsWork;
 
 /* Stack block passed to GsSetRefView2. */
@@ -117,20 +117,20 @@ typedef struct {
 
 /* Init arg of the model task (Stg00_DigiModelInit). */
 typedef struct {
-    /* 0x00 */ s32 field_0;
-    /* 0x04 */ Vec3 field_4;
-    /* 0x10 */ s32 field_10;
+    /* 0x00 */ s32 digiId;
+    /* 0x04 */ Vec3 pos;
+    /* 0x10 */ s32 facing;
 } Stg00ModelArg;
 
 typedef struct {
     /* 0x00 */ s32 field_0;
-    /* 0x04 */ Vec3 field_4;
-    /* 0x10 */ s32 field_10;
-    /* 0x14 */ s32 field_14;
+    /* 0x04 */ Vec3 homePos;
+    /* 0x10 */ s32 facing;
+    /* 0x14 */ s32 modelFile;
     u8 _pad18[0x08];
-    /* 0x20 */ s32 field_20;
-    /* 0x24 */ s32 field_24;
-    /* 0x28 */ CVECTOR field_28;
+    /* 0x20 */ s32 drawTex;
+    /* 0x24 */ s32 drawWire;
+    /* 0x28 */ CVECTOR wireColor;
 } Stg00ModelWork;
 
 /* Actor.work whose first word selects the display mode. */
@@ -143,11 +143,11 @@ typedef struct {
     /* 0x00 */ u32 field_0;
     /* 0x04 */ u32 field_4;
     /* 0x08 */ u32 field_8;
-    /* 0x0C */ u32 field_C;
+    /* 0x0C */ u32 cmdList;
     /* 0x10 */ u32 field_10;
-} Stg00RelocEnt;
+} Stg00DungLayout;
 
-/* 8-byte record of the list at Stg00RelocEnt.field_C (tag 0xFF ends it). */
+/* 8-byte record of the list at Stg00DungLayout.field_C (tag 0xFF ends it). */
 typedef struct {
     /* 0x00 */ union {
         u8 tag;
@@ -169,7 +169,7 @@ typedef struct {
 typedef struct {
     /* 0x00 */ u32 field_0;
     u8 _pad04[0x04];
-    /* 0x08 */ Stg00RelocEnt *layouts[8];
+    /* 0x08 */ Stg00DungLayout *layouts[8];
     u8 _pad28[0x06];
     /* 0x2E */ s16 field_2E;
     u8 _pad30[0x04];
@@ -197,15 +197,15 @@ typedef struct {
 } Stg00SelWork;
 
 typedef struct {
-    /* 0x00 */ s16 field_0;
+    /* 0x00 */ s16 dungFileId;
     u8 _pad02[0x12];
-} Stg00SelEnt; /* size 0x14 */
+} Stg00DungEntry; /* size 0x14 */
 
 /* View of *D_8005071C (main Blk5071C) at bytes 3/4. */
 typedef struct {
     u8 _pad0[0x03];
-    /* 0x3 */ u8 field_3;
-    /* 0x4 */ u8 field_4;
+    /* 0x3 */ u8 floor;
+    /* 0x4 */ u8 floorLayout;
 } Stg00Blk5071C;
 
 /* Task_Create arg blocks. */
@@ -228,8 +228,8 @@ typedef struct {
 } Stg00TaskArgs5;
 
 typedef struct {
-    /* 0x0 */ s16 field_0;
-    /* 0x2 */ s16 field_2;
+    /* 0x0 */ s16 posX;
+    /* 0x2 */ s16 posZ;
 } Stg00Pos;
 
 /* Sorted list work (Stg00_LineupBuildList / Stg00_LineupSpawnModels). */
@@ -244,9 +244,9 @@ typedef struct {
 
 typedef struct {
     u8 _pad00[0x10];
-    /* 0x10 */ s32 field_10;
-    /* 0x14 */ s32 field_14;
-    /* 0x18 */ s32 field_18;
+    /* 0x10 */ s32 modelListIdx;
+    /* 0x14 */ s32 nameText;
+    /* 0x18 */ s32 nameTextSmall;
 } Stg00NameWork;
 
 typedef struct {
@@ -359,10 +359,10 @@ u8 *Stg00_GetSoundLabel(s32 arg0, s32 arg1);
 
 /* Actor.work of the fade task (Stg00_PopupTask). */
 typedef struct {
-    /* 0x00 */ s32 field_0;
+    /* 0x00 */ s32 kind;
     u8 _pad04[0x08];
-    /* 0x0C */ s32 field_C;
-    /* 0x10 */ s32 field_10;
+    /* 0x0C */ s32 scale;
+    /* 0x10 */ s32 palette;
 } Stg00FadeWork;
 
 /* Actor.work of the counter task (Stg00_WindowTestTask) and parts task (Stg00_WindowTestDraw). */
@@ -426,30 +426,30 @@ typedef struct {
 typedef struct {
     /* 0x00 */ s32 fileId;
     u8 _pad04[0x0A];
-    /* 0x0E */ u8 field_E;
-    /* 0x0F */ u8 field_F;
+    /* 0x0E */ u8 unscaled;
+    /* 0x0F */ u8 visible;
     u8 _pad10[0x0C];
     /* 0x1C */ s32 partMask;
-    /* 0x20 */ s16 field_20;
+    /* 0x20 */ s16 rotX;
     u8 _pad22[0x06];
 } Stg00Part; /* size 0x28 */
 
 typedef struct {
     /* 0x00 */ s32 field_0;
     /* 0x04 */ s32 field_4;
-    /* 0x08 */ s32 field_8;
-    /* 0x0C */ s32 field_C;
+    /* 0x08 */ s32 spinMask;
+    /* 0x0C */ s32 resetMask;
 } Stg00PartMasks;
 
 /* 0x28-stride zero-terminated part list (colour/scale view). */
 typedef struct {
     /* 0x00 */ s32 fileId;
     u8 _pad04[0x08];
-    /* 0x0C */ u8 field_C;
+    /* 0x0C */ u8 palette;
     u8 _pad0D[0x01];
-    /* 0x0E */ u8 field_E;
+    /* 0x0E */ u8 unscaled;
     u8 _pad0F[0x01];
-    /* 0x10 */ s32 field_10;
+    /* 0x10 */ s32 scaleX;
     u8 _pad14[0x14];
 } Stg00PartScale; /* size 0x28 */
 
@@ -469,31 +469,31 @@ typedef struct {
 } Stg00TaskArgs3;
 
 typedef struct {
-    /* 0x00 */ s32 field_0;
+    /* 0x00 */ s32 owner;
 } Stg00TaskArg1;
 
 /* Actor.work of the CD stream task (Stg00_XaPlayTask). */
 typedef struct {
-    /* 0x00 */ s32 field_0;
-    /* 0x04 */ u8 field_4;
+    /* 0x00 */ s32 fileId;
+    /* 0x04 */ u8 xaChannel;
     u8 _pad05[0x03];
-    /* 0x08 */ s32 field_8;
-    /* 0x0C */ s32 field_C;
-    /* 0x10 */ s32 field_10;
+    /* 0x08 */ s32 track;
+    /* 0x0C */ s32 startSector;
+    /* 0x10 */ s32 endSector;
 } Stg00CdWork;
 
 /* Actor viewed with the frame counter at 0x24 as a word. */
 typedef struct {
     u8 _pad00[0x24];
-    /* 0x24 */ s32 field_24;
+    /* 0x24 */ s32 frameCount;
 } Stg00ActorTimer;
 
 /* Actor.u38 transform viewed with the vertical speed words. */
 typedef struct {
     u8 _pad00[0x34];
-    /* 0x34 */ s32 field_34;
+    /* 0x34 */ s32 posY;
     u8 _pad38[0x14];
-    /* 0x4C */ s32 field_4C;
+    /* 0x4C */ s32 moveDeltaY;
 } Stg00Xform;
 
 /* Actor.work of the sound test task (Stg00_SoundTestTask). */
@@ -524,10 +524,10 @@ typedef struct {
 
 /* Actor.work of the random-pose viewer (Stg00_GroupViewTask). */
 typedef struct {
-    /* 0x00 */ s32 field_0;
+    /* 0x00 */ s32 videoMode;
     /* 0x04 */ s32 field_4;
-    /* 0x08 */ s32 field_8;
-    /* 0x0C */ s32 field_C;
+    /* 0x08 */ s32 camPreset;
+    /* 0x0C */ s32 winVariant;
 } Stg00ViewWork;
 
 /* Stg00ModelWork with the fields Stg00_DigiModelTask touches. */
