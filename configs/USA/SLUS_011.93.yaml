@@ -48,7 +48,7 @@ options:
   rodata_string_guesser_level: 2
   data_string_guesser_level: 2
 
-  ld_bss_is_noload: True
+  ld_bss_is_noload: False   # main's .bss is in the exe image (zeros), like the overlays
 
 segments:
   - name: header
@@ -88,5 +88,22 @@ segments:
       - [0x38110, data, 38110]   # PsyQ data-only object (rcos/sin_1 tables)
       - [0x395B8, .data, 147FC]
       - [0x395F0, data, 395F0]   # PsyQ .data
-      - [0x53B60, bin, Ovl_LoadArea] # 0x80063360: overlay load area; the image holds leftover bytes here
+      - [0x40EF8, .sdata, 187C]  # .sdata from 0x800506F8 (= _gp)
+      - [0x40EFC, .sdata, 307C]
+      - [0x40F00, .sdata, 4BCC]
+      - [0x40F04, .sdata, 6530]
+      - [0x40F0C, .sdata, 77DC]
+      - [0x40F1C, .sdata, 12550]
+      - [0x40F20, .sdata, 12654]
+      - [0x40F24, .sdata, 13584]
+      - [0x40F58, .sbss, 187C]   # .sbss from 0x80050758 (crt0 clears from here)
+      - [0x40F64, .sbss, 307C]
+      - [0x40F6C, .sbss, 4BCC]
+      - [0x40F74, .sbss, 77DC]
+      - [0x40F78, .sbss, E280]
+      - [0x40F84, .sbss, 13584]
+      # .bss from 0x80050798 (game, then PsyQ): zeros in the image, still data asm
+      - {start: 0x40F98, type: data, name: 40F98, linker_section_order: .bss}
+      # 0x80063360: overlay load area; the image holds leftover bytes here
+      - {start: 0x53B60, type: bin, name: Ovl_LoadArea, linker_section_order: .bss}
   - [0x9F000]

@@ -3,9 +3,9 @@
 #include "main/187C.h"
 #include "main/307C.h"
 
-/* Small data this unit defines (retail reaches it with %gp_rel here). The bytes
- * live in the data asm; these tentative definitions are COMMON and bind to it. */
-Halves Menu_ItemUseMsgPos;
+/* Small data this unit defines: initialised ones go to .sdata, the rest to .sbss in
+ * game.h's order. Retail reaches them with %gp_rel here. */
+Halves Menu_ItemUseMsgPos = { 0x10, 0xBA };
 u8 *Menu_PartGridSlots;
 u8 *Menu_PartGridLabels;
 

@@ -9,9 +9,8 @@
 #include "main/105BC.h"
 #include "main/12550.h"
 
-/* Small data this unit defines (retail reaches it with %gp_rel here). The bytes
- * live in the data asm; these tentative definitions are COMMON and bind to it. */
-GameStateView *Save_GameStatePtr;
+/* Small data this unit defines (.sdata). Retail reaches it with %gp_rel here. */
+GameStateView *Save_GameStatePtr = (GameStateView *)&Save_GameState;
 
 /* Digimon a Digi-Beetle can carry, by its part 2 item id - 0x2F (Beetle_GetDigiCapacity). */
 u8 Beetle_PartDigiCapacity[] = { 4, 5, 6, 7, 8, 12 };

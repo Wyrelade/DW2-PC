@@ -1,8 +1,11 @@
 #include "common.h"
 #include "main/game.h"
 
-/* Small data this unit defines (retail reaches it with %gp_rel here). The bytes
- * live in the data asm; these tentative definitions are COMMON and bind to it. */
+/* Small data this unit defines: initialised ones go to .sdata, the rest to .sbss in
+ * game.h's order. Retail reaches the ones this unit uses with %gp_rel. */
+/* Heap start: the fixed end of the overlay load area (memory map). */
+MemBlock *Mem_HeapStart = (MemBlock *)0x80075000;
+s32 D_80050758;
 s32 Cd_PreloadCount;
 u8 Bug_LastZappedLevel;
 

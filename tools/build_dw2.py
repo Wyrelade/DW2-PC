@@ -128,11 +128,12 @@ def unit_flags(unit, name=None):
     cc1 = CC1_FLAGS[:CC1_FLAGS.index("-G0")] + ["-G" + g] + CC1_FLAGS[CC1_FLAGS.index("-G0") + 1:] + extra
     as_flags = [("-G" + g) if f == "-G0" else f for f in MASPSX_AS_FLAGS]
     # maspsx decides gp-relative access like aspsx: only for symbols this file defines
-    # (.comm/.lcomm/.sdata), and it hands GNU as -G0. Tentative definitions stay COMMON
-    # (--use-comm-section), so they bind to the data asm's labels instead of taking space.
+    # (.comm/.lcomm/.sdata), and it hands GNU as -G0. Each small variable is defined by
+    # the one unit that reaches it with %gp_rel: maspsx lays its tentative definitions out
+    # in .sbss (global labels, --global-sbss), initialised ones are .sdata.
     flags = [f for f in MASPSX_FLAGS if not f.startswith("--aspsx-version")]
     flags.append("--aspsx-version=" + UNIT_ASPSX.get(unit, "2.77"))
-    return cc1, flags + ["--use-comm-section"], as_flags
+    return cc1, flags + ["--global-sbss"], as_flags
 
 
 def binutils_dir():

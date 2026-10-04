@@ -5,12 +5,12 @@
 #include "main/4BCC.h"
 #include "main/6530.h"
 
-/* Small data this unit defines (retail reaches it with %gp_rel here). The bytes
- * live in the data asm; these tentative definitions are COMMON and bind to it. */
-Halves Menu_DigiMsgPos;
-Halves Menu_DigiListCursorTextPos;
-Halves Menu_SkillMsgPos;
-s32 Snd_CurrentId;
+/* Small data this unit defines: initialised ones go to .sdata, the rest to .sbss in
+ * game.h's order. Retail reaches them with %gp_rel here. */
+Halves Menu_DigiMsgPos = { 0x10, 0xBA };
+Halves Menu_DigiListCursorTextPos = { 0x21, 0x9E };
+Halves Menu_SkillMsgPos = { 0x10, 0xBA };
+s32 Snd_CurrentId = -1;
 s32 Snd_SavedId;
 
 /* Task callbacks the descriptors below name (defined further down; the digi list descriptor's

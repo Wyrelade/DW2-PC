@@ -4,10 +4,9 @@
 #include "main/307C.h"
 #include "main/4BCC.h"
 
-/* Small data this unit defines (retail reaches it with %gp_rel here). The bytes
- * live in the data asm; these tentative definitions are COMMON and bind to it. */
-Halves Menu_ItemMsgPos;
-Halves Menu_ItemNamePos;
+/* Small data this unit defines (.sdata). Retail reaches it with %gp_rel here. */
+Halves Menu_ItemMsgPos = { 0x10, 0xBA };
+Halves Menu_ItemNamePos = { 0x67, 0x32 };
 
 /* Task callbacks the descriptor below names (the item draw is the first function of 77DC.c). */
 void Task_DefaultDestroy(Actor *arg0);

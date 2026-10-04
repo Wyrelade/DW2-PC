@@ -6,10 +6,11 @@
 #include "main/6530.h"
 #include "main/77DC.h"
 
-/* Small data this unit defines (retail reaches it with %gp_rel here). The bytes
- * live in the data asm; these tentative definitions are COMMON and bind to it. */
+/* Small data this unit defines (.sbss in game.h's order). Retail reaches the first two
+ * with %gp_rel here; D_80050780 is only used by overlays. */
 s32 Skill_ShotXaFile;
 s32 D_8005077C;
+s32 D_80050780;
 
 /* Task callbacks the descriptor below names (defined further down). */
 void func_8001EC00(Actor *arg0, s32 *arg1);

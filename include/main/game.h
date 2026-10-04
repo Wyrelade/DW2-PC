@@ -7,6 +7,26 @@
 #include "common.h"
 #include "main/156C.h"
 
+/* Small uninitialised globals (.sbss), in retail order. cc1 writes a unit's tentative
+ * definitions (.comm) in first-declaration order, so this block sets their layout. Each
+ * one is defined by the unit that reaches it with %gp_rel. */
+extern s32 D_80050758; /* first .sbss word: crt0 clears from here to Ovl_LoadArea */
+extern s32 Cd_PreloadCount;
+extern u8 Bug_LastZappedLevel;
+extern s32 Menu_TopMenuResult;
+extern MenuCtx *Menu_Ctx;
+extern u8 *Menu_PartGridSlots;
+extern u8 *Menu_PartGridLabels;
+extern s32 Snd_SavedId;
+extern s32 Skill_ShotXaFile;
+extern s32 D_8005077C;
+extern s32 D_80050780;
+extern s32 Mem_HeapSize;
+extern MemBlock *Mem_HeapHead;
+extern s32 Sys_FlipPending;
+extern s32 Rand_Index;
+extern s32 D_80050794;
+
 extern CdCacheEntry Cd_FileCache[0x50];
 extern SndSlot Snd_Slots[3];
 extern s32 Cd_PollRead(void);
@@ -174,6 +194,7 @@ extern void SetGeomOffset(s32, s32);
 extern s16 D_8006197E;
 extern s16 D_8006197C;
 extern DungState *Dung_StatePtr;
+extern DungState Dung_State;
 extern char D_8001031C[];
 extern void checkRECT(char *, RECT *);
 extern s8 D_80010974[];
@@ -800,7 +821,7 @@ extern u16 D_80062A4E[];
 extern u16 D_80062A50[];
 extern u16 D_80062A52[];
 extern MemBlock *Mem_HeapStart;
-extern s32 Sys_BootImageRect;
+extern RECT Sys_BootImageRect;
 extern s32 Sys_LastVSyncTime;
 extern void Sys_VSyncHandler(void);
 extern void MemCardInit(void);

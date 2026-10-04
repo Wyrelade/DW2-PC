@@ -2,11 +2,11 @@
 #include "main/game.h"
 #include "main/187C.h"
 
-/* Small data this unit defines (retail reaches it with %gp_rel here). The bytes
- * live in the data asm; these tentative definitions are COMMON and bind to it. */
+/* Small data this unit defines: initialised ones go to .sdata, the rest to .sbss in
+ * game.h's order. Retail reaches them with %gp_rel here. */
 s32 Menu_TopMenuResult;
 MenuCtx *Menu_Ctx;
-s32 Ovl_CurrentId;
+s32 Ovl_CurrentId = -1;
 
 /* Task callbacks the descriptors below name (defined further down). */
 void Task_DefaultDestroy(Actor *arg0);

@@ -73,15 +73,31 @@ SECTIONS
         build/USA/src/main/147FC.c.o(.data);
         build/USA/src/main/psyq.c.o(.data);
         build/USA/asm/USA/main/data/395F0.data.s.o(.data);
-        build/USA/assets/Ovl_LoadArea.bin.o(.data);
         . = ALIGN(., 4);
         main_DATA_END = .;
         main_DATA_SIZE = ABSOLUTE(main_DATA_END - main_DATA_START);
-    }
-    main_bss_VRAM = ADDR(.main_bss);
-    .main_bss (NOLOAD) : SUBALIGN(4)
-    {
-        FILL(0x00000000);
+        main_SDATA_START = .;
+        build/USA/src/main/187C.c.o(.sdata);
+        build/USA/src/main/307C.c.o(.sdata);
+        build/USA/src/main/4BCC.c.o(.sdata);
+        build/USA/src/main/6530.c.o(.sdata);
+        build/USA/src/main/77DC.c.o(.sdata);
+        build/USA/src/main/12550.c.o(.sdata);
+        build/USA/src/main/12654.c.o(.sdata);
+        build/USA/src/main/13584.c.o(.sdata);
+        . = ALIGN(., 4);
+        main_SDATA_END = .;
+        main_SDATA_SIZE = ABSOLUTE(main_SDATA_END - main_SDATA_START);
+        main_SBSS_START = .;
+        build/USA/src/main/187C.c.o(.sbss);
+        build/USA/src/main/307C.c.o(.sbss);
+        build/USA/src/main/4BCC.c.o(.sbss);
+        build/USA/src/main/77DC.c.o(.sbss);
+        build/USA/src/main/E280.c.o(.sbss);
+        build/USA/src/main/13584.c.o(.sbss);
+        . = ALIGN(., 4);
+        main_SBSS_END = .;
+        main_SBSS_SIZE = ABSOLUTE(main_SBSS_END - main_SBSS_START);
         main_BSS_START = .;
         build/USA/asm/USA/main/data/800.rodata.s.o(.bss);
         build/USA/src/main/156C.c.o(.bss);
@@ -97,6 +113,8 @@ SECTIONS
         build/USA/src/main/13584.c.o(.bss);
         build/USA/src/main/147FC.c.o(.bss);
         build/USA/src/main/psyq.c.o(.bss);
+        build/USA/asm/USA/main/data/40F98.data.s.o(.data);
+        build/USA/assets/Ovl_LoadArea.bin.o(.data);
         . = ALIGN(., 4);
         main_BSS_END = .;
         main_BSS_SIZE = ABSOLUTE(main_BSS_END - main_BSS_START);

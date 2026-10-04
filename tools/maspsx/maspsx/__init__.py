@@ -422,8 +422,10 @@ class MaspsxProcessor:
         use_comm_section=False,
         use_comm_for_lcomm=False,
         div_branch_nopad=False,
+        global_sbss=False,
     ):
         self.lines = [x.strip() for x in lines]
+        self.global_sbss = global_sbss
 
         self.sdata_limit = sdata_limit
 
@@ -453,6 +455,8 @@ class MaspsxProcessor:
     def preprocess_lines(self) -> None:
         in_sdata = False
         uses_size = False
+        # top-level asm (e.g. an .incbin) may switch sections and return with .previous
+        prev_in_sdata = False
 
         for line in self.lines:
             if line == "":
@@ -462,7 +466,15 @@ class MaspsxProcessor:
                 # TODO: worry about alignment later
                 continue
 
-            if line.startswith(".globl"):
+            if line.startswith(".globl") or line.startswith(".global"):
+                continue
+
+            if line.startswith(".section"):
+                prev_in_sdata = in_sdata
+                in_sdata = line.split()[1].rstrip(",") == ".sdata"
+                continue
+            if line.startswith(".previous"):
+                in_sdata, prev_in_sdata = prev_in_sdata, in_sdata
                 continue
 
             if line.startswith(".text"):
@@ -602,8 +614,8 @@ class MaspsxProcessor:
                     elif size >= 2:
                         res.append("\t.align 1")
 
-                # only mark bss symbols as global
-                if section == "bss":
+                # only mark bss symbols as global (and .comm sbss ones with global_sbss)
+                if section == "bss" or (self.global_sbss and symbol in self.comm_symbols):
                     res.append(
                         f"\t.globl {symbol}",
                     )

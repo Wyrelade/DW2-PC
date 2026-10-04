@@ -10,16 +10,30 @@
 #include "main/12550.h"
 #include "main/12654.h"
 
-/* Small data this unit defines (retail reaches it with %gp_rel here). The bytes
- * live in the data asm; these tentative definitions are COMMON and bind to it. */
-s32 Sys_VSyncsSinceFlip;
-s32 Sys_BootImageRect;
-s32 Sys_LastVSyncTime;
-s32 Cd_QueueActive;
+/* Small data this unit defines: initialised ones go to .sdata, the rest to .sbss in
+ * game.h's order. Retail reaches the ones this unit uses with %gp_rel. The others sit here
+ * in retail order (12654 reads Digi_StateSortRank, 105BC Gfx_ZeroSVector, 187C/77DC
+ * Gfx_NeutralRgb, STAG1000 D_80050741). */
+DigiSortRank Digi_StateSortRank[1] = { { 0, 5, 4, 1, 2, 3 } };
+s32 Sys_VSyncsSinceFlip = 0;
+RECT Sys_BootImageRect = { 0, 0, 320, 480 };
+s32 Sys_LastVSyncTime = 0;
+/* Unreferenced. */
+s32 D_8005073C = 0x10000;
+u8 D_80050740 = 0;
+u8 D_80050741 = 0;
+s16 D_80050742 = 0;
+GfxQuadVert Gfx_ZeroSVector[1] = { 0 };
+Halves Gfx_NeutralRgb = { 0x8080, 0x80 }; /* RGB 0x80, 0x80, 0x80 */
+s32 Cd_QueueActive = 0;
+/* Unreferenced: the number of CD files (Cd_FileLba entries). */
+s32 D_80050754 = 0xE5B;
 s32 Mem_HeapSize;
 MemBlock *Mem_HeapHead;
 s32 Sys_FlipPending;
 s32 Rand_Index;
+/* Unreferenced: pads .sbss to the start of .bss. */
+s32 D_80050794;
 
 /* Rand_Next's table of 0x1000 random halfwords. */
 INCLUDE_BIN(Rand_Table, "assets/main/rand_table.bin");
