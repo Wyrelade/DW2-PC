@@ -149,7 +149,7 @@ extern volatile u32 *D_800653A0;
 extern u8 Stg10_VlcTablePacked[];
 extern s32 Stg10_StrWidth;
 extern s32 Stg10_StrHeight;
-extern s32 Stg10_VramClearRect2;
+extern RECT Stg10_VramClearRect2;
 extern volatile u32 *D_8006539C;
 extern u32 *Stg10_StrRingBuf;
 extern u32 *Stg10_VlcBuf0;

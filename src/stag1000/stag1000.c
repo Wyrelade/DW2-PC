@@ -4,6 +4,45 @@
 /* small: STAG1000.PRO has 0x11C bytes free in its last disc sector */
 SHIFT_TEST_PAD(0x10);
 
+/* Task callbacks this unit defines further down (the descriptors come first). */
+void Stg10_StageSetup(Actor *a0);
+void Stg10_TitleUpdate(Actor *a0);
+void Stg10_TitleDraw(Actor *a0);
+void Stg10_EndScreenUpdate(Actor *arg0);
+void Stg10_EndScreenDraw(Actor *arg0);
+void Stg10_MovieInit(s32 arg0, s32 *arg1);
+void Stg10_MovieUpdate(Actor *a0);
+void Stg10_MovieDestroy(Actor *arg0);
+
+/* Unreferenced. */
+s32 D_800651B4[3] = { 0 };
+RECT Stg10_VramClearRect = { 0, 0, 0x400, 0x200 };
+/* by game mode 0x402.. */
+s16 Stg10_MovieFileIds[] = { 0x282, 0xE2F, 0x510, 0x511, 0xE28, 0xD4E };
+TaskDesc Stg10_StageSetupDesc = { 0, Stg10_StageSetup, Task_DefaultDestroy, 0, 0, 0xC };
+s32 Stg10_AttractCount = 0;
+TaskDesc Stg10_TitleDesc = { 0, Stg10_TitleUpdate, Task_DefaultDestroy, Stg10_TitleDraw, 0x14, 0 };
+TaskDesc Stg10_EndScreenDesc = { 0, Stg10_EndScreenUpdate, Task_DefaultDestroy, Stg10_EndScreenDraw, 4, 0 };
+s32 Stg10_StrWidth = 0;
+s32 Stg10_StrHeight = 0;
+RECT Stg10_VramClearRect2 = { 0, 0, 0x400, 0x200 };
+TaskDesc Stg10_MovieDesc = {
+    (TaskInitFn)Stg10_MovieInit, Stg10_MovieUpdate, Stg10_MovieDestroy, 0, 0xC, 0,
+};
+/* Task_DescTable[4]: task ids 0x400-0x403. */
+TaskDesc *Stg10_TaskDescs[] = { &Stg10_StageSetupDesc, &Stg10_TitleDesc, &Stg10_MovieDesc, &Stg10_EndScreenDesc };
+
+u32 *Stg10_StrRingBuf;
+u32 *Stg10_VlcBuf0;
+u32 *Stg10_VlcBuf1;
+u32 *Stg10_ImgBuf0;
+u32 *Stg10_ImgBuf1;
+s32 Stg10_StrEndFlag;
+s32 Stg10_MovieFileId;
+s32 Stg10_MovieEndFrame;
+StrDecEnv Stg10_DecEnv;
+u32 *Stg10_VlcTable;
+
 void Stg10_StageSetup(Actor *a0) {
     s32 args[2];
     s32 *slot = (s32 *)a0->u34.children;

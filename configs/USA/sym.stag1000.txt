@@ -48,3 +48,7 @@ MDEC_out_sync = 0x80064C20; // type:func
 DecDCTvlcSize2 = 0x80064D50; // type:func
 DecDCTvlc2 = 0x80064D80; // type:func
 Stg10_TaskDescs = 0x80065248; // task descriptor row, Task_DescTable entry
+Stg10_StageSetupDesc = 0x800651D4;
+Stg10_TitleDesc = 0x800651F0;
+Stg10_EndScreenDesc = 0x80065208;
+Stg10_MovieDesc = 0x80065230;

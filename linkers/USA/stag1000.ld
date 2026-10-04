@@ -25,17 +25,11 @@ SECTIONS
         stag1000_DATA_START = .;
         build/USA/asm/USA/stag1000/data/stag1000_rodata.rodata.s.o(.data);
         build/USA/src/stag1000/stag1000.c.o(.data);
-        build/USA/src/stag1000/stag1000_libpress.c.o(.data);
+        build/USA/asm/USA/stag1000/data/stag1000_libpress.data.s.o(.data);
         build/USA/src/stag1000/stag1000_tail.c.o(.data);
-        build/USA/asm/USA/stag1000/data/stag1000_data.data.s.o(.data);
         . = ALIGN(., 4);
         stag1000_DATA_END = .;
         stag1000_DATA_SIZE = ABSOLUTE(stag1000_DATA_END - stag1000_DATA_START);
-    }
-    stag1000_bss_VRAM = ADDR(.stag1000_bss);
-    .stag1000_bss (NOLOAD) : SUBALIGN(4)
-    {
-        FILL(0x00000000);
         stag1000_BSS_START = .;
         build/USA/asm/USA/stag1000/data/stag1000_rodata.rodata.s.o(.bss);
         build/USA/src/stag1000/stag1000.c.o(.bss);

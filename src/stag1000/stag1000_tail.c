@@ -1,6 +1,9 @@
 #include "common.h"
 #include "stag1000/stag1000.h"
 
+/* Packed MDEC VLC decode table (unpacked by Stg10_BuildVlcTable). */
+INCLUDE_BIN(Stg10_VlcTablePacked, "assets/stag1000/vlc_table_packed.bin");
+
 void Stg10_BuildVlcTable(u8 *dst) {
     u8 *src;
     u8 *p;
