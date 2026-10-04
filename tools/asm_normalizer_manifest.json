@@ -8,18 +8,6 @@
       "padnop"
     ]
   },
-  "func_80020FD0": {
-    "passes": [
-      "const_unhoist",
-      "giv_unreduce",
-      "reg_realloc_inj",
-      "arg_unrename",
-      "web_realloc",
-      "save_slot",
-      "block_iso_wide",
-      "padnop"
-    ]
-  },
   "stag4000:func_8006D418": {
     "passes": [
       "web_realloc"

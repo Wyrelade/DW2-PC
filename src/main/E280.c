@@ -1373,7 +1373,6 @@ void Gfx_CalcNormalColors(Vert6Pmv *v, ModelProjView *o) {
     }
 }
 
-#ifdef NORMALIZED
 void func_80020FD0(GfxModelTriGT3 *t, s32 n, ActorModel *s, s32 mode) {
     s32 sxy[3];
     s32 opz;
@@ -1386,7 +1385,6 @@ void func_80020FD0(GfxModelTriGT3 *t, s32 n, ActorModel *s, s32 mode) {
     PolyGT3_20FD0 *p;
     s32 i;
     s32 z;
-    SysState *g;
 
     xy = s->screenXY;
     col = (CVECTOR *)s->vertColors;
@@ -1397,54 +1395,56 @@ void func_80020FD0(GfxModelTriGT3 *t, s32 n, ActorModel *s, s32 mode) {
     if (mode == 1) {
         code = 0x34;
     }
-    g = &D_8005F770;
-    p = (PolyGT3_20FD0 *)g->packet.work;
+    p = (PolyGT3_20FD0 *)D_8005F770.packet.work;
     for (i = 0; i < n; i++, t++) {
-        sxy[0] = xy[t->v[0]];
-        sxy[1] = xy[t->v[1]];
-        sxy[2] = xy[t->v[2]];
-        gte_ldsxy3(sxy[0], sxy[1], sxy[2]);
-        gte_nclip();
-        if (sxy[0] == sxy[1] || sxy[0] == sxy[2] || sxy[1] == sxy[2]) {
-            continue;
-        }
-        gte_stopz(&opz);
-        if (opz <= 0) {
-            continue;
-        }
-        p->tag.len = 9;
-        p->c0.code = 0x34;
-        p->xy0 = sxy[0];
-        p->xy1 = sxy[1];
-        p->xy2 = sxy[2];
-        p->c0 = col[t->c[0]];
-        p->c1 = col[t->c[1]];
-        p->c2 = col[t->c[2]];
-        p->c0.code = code;
-        z = (sz[t->v[0]] + sz[t->v[1]] + sz[t->v[2]]) / 3;
-        if (mode == 2) {
-            p->tpage = tex->tpage | s->field_36;
-        } else {
-            p->tpage = tex->tpage | t->tpage;
-        }
-        p->clut = t->clut + (((tex->vramY + s->field_34) << 6) | ((tex->vramX >> 4) & 0x3F));
-        p->u0 = t->u0 + tex->uOffset;
-        p->u1 = t->u1 + tex->uOffset;
-        p->u2 = t->u2 + tex->uOffset;
-        p->v0 = t->v0;
-        p->v1 = t->v1;
-        p->v2 = t->v2;
-        p->tag.addr = ((GfxModelOTag *)&g->otLayers.s[idx][z])->addr;
-        ((GfxModelOTag *)&g->otLayers.s[idx][z])->addr = (u32)p;
-        p++;
-        z = t->v[2];
+        do {
+            sxy[0] = xy[t->v[0]];
+            sxy[1] = xy[t->v[1]];
+            sxy[2] = xy[t->v[2]];
+            gte_ldsxy3(sxy[0], sxy[1], sxy[2]);
+            gte_nclip();
+            if (sxy[0] == sxy[1]) {
+                break;
+            }
+            if (sxy[0] == sxy[2]) {
+                break;
+            }
+            if (sxy[1] == sxy[2]) {
+                break;
+            }
+            gte_stopz(&opz);
+            if (opz <= 0) {
+                break;
+            }
+            p->tag.len = 9;
+            p->c0.code = 0x34;
+            p->xy0 = sxy[0];
+            p->xy1 = sxy[1];
+            p->xy2 = sxy[2];
+            p->c0 = col[t->c[0]];
+            p->c1 = col[t->c[1]];
+            p->c2 = col[t->c[2]];
+            p->c0.code = code;
+            z = (sz[t->v[0]] + sz[t->v[1]] + sz[t->v[2]]) / 3;
+            if (mode == 2) {
+                p->tpage = tex->tpage | s->field_36;
+            } else {
+                p->tpage = tex->tpage | t->tpage;
+            }
+            p->clut = t->clut + (((tex->vramY + s->field_34) << 6) | ((tex->vramX >> 4) & 0x3F));
+            p->u0 = t->u0 + tex->uOffset;
+            p->u1 = t->u1 + tex->uOffset;
+            p->u2 = t->u2 + tex->uOffset;
+            p->v0 = t->v0;
+            p->v1 = t->v1;
+            p->v2 = t->v2;
+            p->tag.addr = ((GfxModelOTag *)&D_8005F770.otLayers.s[idx][z])->addr;
+            ((GfxModelOTag *)&D_8005F770.otLayers.s[idx][z])->addr = (u32)p;
+            p++;
+        } while (0);
     }
     D_8005F770.packet.addr = (s32)p;
 }
-#else
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", func_80020FD0);
-void func_80020FD0(GfxModelTriGT3 *t, s32 n, ActorModel *s, s32 mode);
-#endif
 
 
 void Gfx_AddQuadsGT4(ModelQuadGT4 *t, s32 n, ActorModel *s, s32 mode) {
