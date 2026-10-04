@@ -338,10 +338,10 @@ extern s32 Rand_Next();
 
 extern void Mem_FillWordsNeg1(s32 *arg0, s32 arg1);
 extern void Text_OpenById(void *a0, s32 a1, s32 a2, Halves a3);
-extern s32 Actor_ProjectToScreen(Actor *);
+extern s32 Actor_ProjectToScreen(ContC40 *a0);
 extern s32 Cd_GetFileOrNull(s32 arg0);
 extern void Item_SortList(void);
-extern void Text_Open(void *, Stg20TextArgs *);
+extern void Text_Open(void *arg0, TextOpenArgs *arg1);
 extern void func_800636D8(Stg20Cell *c, s32 set, s32 flag);
 
 /* ---- added by p35 agent v ---- */
@@ -906,8 +906,8 @@ extern s32 Flag_SelectBranch(s32 arg0);
 extern void Text_OpenMsgClearChoice(void *arg0, s32 arg1);
 extern s32 Text_IsFinished(s32 id);
 extern s32 Flag_GetTableBase(void);
-extern void Actor_StopAxisMotion(Actor *a, s32 axis);
-extern s32 Actor_ApplyAxisMotion(Actor *a, s32 i);
+extern void Actor_StopAxisMotion(Ctx38 *arg0, s32 arg1);
+extern s32 Actor_ApplyAxisMotion(ContC40 *a0, s32 i);
 
 /* Work of the map walker/NPC model task (func_8006ADF8). */
 typedef struct {

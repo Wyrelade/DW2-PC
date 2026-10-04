@@ -959,7 +959,7 @@ void func_80070974(s32 x, s32 y);
 void func_800708FC(s32 x, s32 y, s32 flag);
 extern void Task_SetState2(Actor *arg0, u32 arg1);
 void func_80065278(Actor *a0);
-extern s32 *Gfx_ReserveTexSlot(void);
+extern s32 Gfx_ReserveTexSlot(void);
 extern u16 D_80072948[];
 extern s32 Flag_SelectBranch(s32 arg0);
 extern void Text_OpenMsgClearChoice(void *arg0, s32 arg1);
@@ -1001,8 +1001,8 @@ typedef struct {
 
 extern void Mem_FillWordsNeg1(s32 *arg0, s32 arg1);
 extern void Text_CloseArray(s32 *arg0, s32 arg1);
-extern s32 Math_RampToOne(Actor *arg0, s32 *arg1);
-extern s32 Math_RampToZero(Actor *arg0, s32 *arg1);
+extern s32 Math_RampToOne(s32 arg0, s32 *arg1);
+extern s32 Math_RampToZero(s32 arg0, s32 *arg1);
 extern void Text_OpenById(void *a0, s32 a1, s32 a2, Halves a3);
 extern void Text_SetOtLayer(s32 a0, s32 a1);
 
@@ -1130,7 +1130,7 @@ void func_800651C0(Stg40Loc *loc, s32 a1);
 void func_8006AE74(void);
 
 /* p36 agent g */
-extern void Enemy_GetSetSummary(s32 id, Out1DB68 *out);
+extern void Enemy_GetSetSummary(void *a0, Out1DB68 *out);
 extern u8 D_800728F4[];
 extern u8 D_80072904[];
 s32 func_80065230(void);

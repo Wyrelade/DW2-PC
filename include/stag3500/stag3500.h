@@ -400,7 +400,7 @@ extern s32 D_8006A55C[];
 extern Stg35Rec6 *D_8006AA24[6];
 extern s32 Gfx_ZeroVector[];
 
-extern void Actor_InitTransform(Actor *, s32 *, s32);
+extern void Actor_InitTransform(ContC40 *a0, s32 *a1, u16 a2);
 extern void Gfx_ResetModelBones(Actor *);
 extern void Task_SetState1(Actor *arg0, u32 arg1);
 extern void Cd_FreeFile(s32 fileId);
@@ -415,13 +415,13 @@ extern void func_80065930(Stg35SpriteHandle *arg0);
 extern void func_800674D4(Actor *arg0, s32 arg1);
 extern void func_800674F8(Actor *arg0);
 
-extern void Text_Close(Stg35TextObj *);
+extern void Text_Close(s32 *slot);
 extern void Mem_Zero(void *a0, s32 a1);
 extern void Task_DefaultDestroy(Actor *arg0);
 extern void func_800661B0(Stg35LoadHandle *arg0);
 extern void func_8006926C(s32 arg0);
 extern s32 Mem_Alloc(s32, s32);
-extern void Mem_Free(void *);
+extern void Mem_Free(ActorWork *arg0);
 extern s32 Skill_GetNameText(s32 arg0);
 extern s32 func_8001E8D0(s32 id);
 extern s32 CdControlF(s32, s32);
@@ -523,8 +523,8 @@ extern void GsInitCoordinate2(Coord1F668 *, Coord1F668 *);
 extern void Anim_StepModelAnim(Actor *);
 extern s32 Anim_GetModelAnimFile(s32 arg0, s32 arg1);
 extern s32 Anim_HasModelAnim(Actor *a0, s32 n);
-extern void Actor_StopAxisMotion(Actor *arg0, s32 arg1);
-extern void Actor_SetAxisMotion(Actor *arg0, s32 arg1, Elem12 *arg2);
+extern void Actor_StopAxisMotion(Ctx38 *arg0, s32 arg1);
+extern void Actor_SetAxisMotion(Ctx38 *arg0, s32 arg1, Elem12 *arg2);
 extern s32 Digi_GetModelFile(s32 id);
 extern u8 *Digi_GetDefaultName(s32);
 extern s32 Math_PingPongRange(s32 v, s32 div, s32 lo, s32 hi);
@@ -545,7 +545,7 @@ extern s32 CdSync(s32 mode, u8 *result);    /* the main C stub is void(void) */
 extern s32 CdLastCom(void);                 /* main: u8 */
 extern s32 func_8001E79C(s32 id);           /* main: s16 */
 extern s32 func_8001E7C0(s32 id);           /* main: s16 */
-extern void func_8001E7E4(s32 a0, Row6 *a1);
+extern void func_8001E7E4(s32 a0, void *a1);
 extern void func_8001EEA4(s32 id, s32 n, s16 *a, s16 *b);
 extern s32 func_8001EE10(s32 id);
 extern s32 Skill_GetPartsEntry(s32 id);
