@@ -207,7 +207,7 @@
  "Gpu_ResetPrimBuf": "natural",
  "Gpu_RestoreExequeCb": "asm",
  "Gpu_SetBgClearColor": "natural",
- "Gpu_SetLayerOtPtrs": "normalized",
+ "Gpu_SetLayerOtPtrs": "natural",
  "Gpu_SkipEmptyOtEntries": "natural",
  "GsGetLs": "asm",
  "GsGetLw": "asm",
