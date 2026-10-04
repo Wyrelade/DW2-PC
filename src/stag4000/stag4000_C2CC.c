@@ -5,6 +5,44 @@
 #include "stag4000/stag4000_8338_funcs.h"
 #include "stag4000/stag4000_9364_funcs.h"
 #include "stag4000/stag4000_A180_funcs.h"
+#include "stag4000/stag4000_C2CC_funcs.h"
+
+TaskDesc Stg40_AutomapDesc = {
+    (TaskInitFn)Stg40_AutomapInit, Stg40_AutomapUpdate, Stg40_AutomapDestroy, Stg40_AutomapDraw, 0xB70, 4,
+};
+u16 Stg40_FloorBitsPal[10] = { 2, 1, 4, 3, 7, 6, 5 };
+u16 Stg40_SpecialFloorValues[6] = { 4, 3, 7, 6, 5, 2 };
+s32 Stg40_FillNeighbours[8] = { 0, -1, 0, 1, -1, 0, 1, 0 };
+s16 Stg40_TrapPartSlots[] = { 0x0D, 0x0E, 0x0B, 0x0C, 0x08, 0x0A, 0x09, 0x11, 0x12, 0x05, 0x06, 0x0F };
+u8 Stg40_TrapDisarmRanks[][6] = {
+    { 4, 4, 4, 4, 4, 4 },
+    { 0, 1, 2, 3, 4, 4 },
+    { 0, 0, 1, 2, 3, 4 },
+    { 0, 0, 0, 1, 2, 3 },
+    { 0, 0, 0, 0, 1, 2 },
+    { 0, 0, 0, 0, 0, 1 },
+};
+s32 Stg40_TrapDisarmChance[] = { 100, 80, 50, 25, 0 };
+u8 Stg40_TrapEffectTable[] = { 0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
+u8 Stg40_RandomPartSlots[] = { 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 17, 18 };
+u8 Stg40_HazardRevealChance[] = {
+    0, 0, 0, 0, 0,
+    80, 50, 0, 0, 0,
+    100, 80, 50, 0, 0,
+    100, 100, 80, 50, 0,
+    100, 100, 100, 80, 50,
+    100, 100, 100, 100, 80,
+};
+u8 Stg40_BugNestRevealChance[] = { 0, 0, 0, 80, 50, 0, 100, 80, 50, 100, 100, 80 };
+TaskDesc Stg40_CameraDesc = {
+    (TaskInitFn)Stg40_CameraInit, Stg40_CameraUpdate, Task_DefaultDestroy, (TaskFn)Stg40_CameraDraw, 0x274, 0,
+};
+/* Unreferenced: 8-byte module alignment (see stag4000.h .bss). */
+s32 D_80072A9C = 0;
+
+s32 D_80072BB8;
+s32 D_80072BBC;
+Actor *Stg40_CameraTask;
 
 void Stg40_RevealCell(Stg40AutomapWork *a0, s32 x, s32 y) {
     if (Stg40_GetCellFlags(x, y) & 0x8000) {

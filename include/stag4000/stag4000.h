@@ -732,21 +732,12 @@ extern s32 Flag_Test(s32 arg0);
 
 /* overlay data */
 extern s32 D_80072944;
-extern Stg40B60 *Stg40_RootState;
-extern Actor *Stg40_FloorTask;
-extern Actor *Stg40_ItemMenuTask;
-extern s32 *Stg40_MsgWinTexts;
-extern Actor *Stg40_CameraTask;
-extern Actor *Stg40_MsgWinTask;
-extern Stg40TileGrid *Stg40_AutomapWork;
 extern u8 Stg40_TrapEffectTable[];
 extern s16 Stg40_TrapPartSlots[];
 extern s16 Stg40_PadDirTable[];
 extern u8 Stg40_TrapDisarmRanks[][6];
 extern s32 Stg40_TrapDisarmChance[];
-extern u8 Stg40_DigitBufs[][8];
 extern s32 Stg40_StatusMsgIds[];
-extern s32 D_80072BB8;
 extern u8 Stg40_RandomPartSlots[];
 extern u8 Stg40_HazardRevealChance[];
 extern u8 Stg40_BugNestRevealChance[];
@@ -1011,7 +1002,6 @@ extern s32 Stg40_ItemMenuParts[];
 extern s32 Pad_Circle; /* Pad_State[0].circle as a scalar reloc */
 extern s32 Pad_R1; /* Pad_State[0].r1 as a scalar reloc */
 extern s32 Pad_Select; /* Pad_State[0].select as a scalar reloc */
-extern Actor *Stg40_RootTask;
 s32 Stg40_PlayerInteract(Actor *a0);
 s32 Stg40_PlayerCheckEnemyInfo(Actor *a0);
 
@@ -1055,7 +1045,6 @@ typedef struct {
     /* 0x08 */ s32 texts[12];    /* text handles */
 } Stg40EnemyInfoWork;
 
-extern Actor *Stg40_EnemyInfoTask;
 extern u16 Stg40_EnemyInfoTextPos[];
 extern u8 *Digi_GetDefaultName(s32);
 extern s32 Digi_GetType(s32);
@@ -1100,7 +1089,6 @@ void Stg40_PlayerInput(Actor *a0);
 void Stg40_PlayerTriggerTrap(Actor *a0);
 void Stg40_PlayerShootObstacle(Actor *a0);
 
-extern Stg40FloorWork *Stg40_FloorWork;
 
 /* Object behind Stg40_RootChildren: a Task_Create slot at 0x10 (Stg40_PlayerItemMenu). */
 typedef struct {
@@ -1112,7 +1100,6 @@ typedef struct {
     /* 0x14 */ s32 enemyInfoTask;       /* child task (Actor *) (Stg40_PlayerEnemyInfo) */
 } Stg40RootTasks;
 
-extern Stg40RootTasks *Stg40_RootChildren;
 extern s32 Sys_NextGameMode;  /* Sys_State.nextGameMode as a scalar reloc */
 extern u16 Stg40_FloorBitsPal[10];
 extern u16 Stg40_SpecialFloorValues[6];
@@ -1143,5 +1130,49 @@ s32 Stg40_PickRandomPart(void);
 void Beetle_SetPartBroken(s32 i, s32 v);
 extern s32 Digi_CountByState(s32 mode);
 extern u8 Beetle_GetDigiCapacity(void);
+
+/* Task descriptors (Stg40_TaskDescs rows). */
+extern TaskDesc Stg40_RootDesc;
+extern TaskDesc Stg40_LinkedModelDesc;
+extern TaskDesc Stg40_FloorDesc;
+extern TaskDesc Stg40_HudDesc;
+extern TaskDesc Stg40_BitsWinDesc;
+extern TaskDesc Stg40_ItemMenuDesc;
+extern TaskDesc Stg40_EnemyInfoDesc;
+extern TaskDesc Stg40_MsgWinDesc;
+extern TaskDesc Stg40_ObjDesc;
+extern TaskDesc Stg40_AutomapDesc;
+extern TaskDesc Stg40_CameraDesc;
+extern TaskDesc *Stg40_TaskDescs[];
+
+/* .bss of each unit, in retail order. STAG4000.PRO carries its .bss in the file, after all
+ * .data. cc1 writes a unit's uninitialised globals in first-declaration order, so this list
+ * sets the layout. D_ entries are unreferenced: retail started each module's sections on an
+ * 8-byte boundary, these fill those gaps. */
+/* stag4000.c */
+extern Actor *Stg40_RootTask;
+extern Stg40RootTasks *Stg40_RootChildren;
+extern u8 D_80072AA8[0x18];
+extern u8 D_80072AC0[0xA0];
+extern Stg40B60 *Stg40_RootState;
+extern s32 D_80072B64;
+/* stag4000_1DD4.c */
+extern Actor *Stg40_FloorTask;
+extern Stg40FloorWork *Stg40_FloorWork;
+extern Actor *Stg40_ItemMenuTask;
+extern s32 D_80072B74;
+extern Actor *Stg40_EnemyInfoTask;
+extern s32 D_80072B7C;
+extern Actor *Stg40_MsgWinTask;
+extern s32 *Stg40_MsgWinTexts;
+extern s32 D_80072B88[2];
+extern u8 Stg40_DigitBufs[4][8];
+/* stag4000_A180.c */
+extern Stg40TileGrid *Stg40_AutomapWork;
+extern s32 D_80072BB4;
+/* stag4000_C2CC.c */
+extern s32 D_80072BB8;
+extern s32 D_80072BBC;
+extern Actor *Stg40_CameraTask;
 
 #endif

@@ -1,6 +1,38 @@
 #include "common.h"
 #include "stag4000/stag4000.h"
 
+/* Task callbacks this unit defines further down (the descriptors come first). Not
+ * stag4000_funcs.h: Stg40_SetupStage calls Stg40_InitDungeonEntry before its K&R definition. */
+void Stg40_RootInit(void);
+void Stg40_RootUpdate(Actor *arg0);
+void Stg40_RootDestroy(Actor *a0);
+void Stg40_RootDraw(void);
+void Stg40_LinkedModelInit(Actor *a0, Stg40LinkedModelArg *a1);
+void Stg40_LinkedModelUpdate(Actor *a0);
+void Stg40_LinkedModelDraw(Actor *a0);
+
+/* Unreferenced. */
+s32 D_800725B0[] = { 0x020E0000, 0x020F0000, -1 };
+TaskDesc Stg40_RootDesc = {
+    (TaskInitFn)Stg40_RootInit, Stg40_RootUpdate, Stg40_RootDestroy, (TaskFn)Stg40_RootDraw, 0x14, 0xE0,
+};
+/* Unreferenced. */
+u8 *D_800725D4[] = { D_80072AA8, D_80072AC0 };
+Stg40LinkedModelDef Stg40_LinkedModelTable[] = {
+    { 0x27E, 0 }, { 0x27F, 0 }, { 0x280, 0 }, { 0x281, 0 }, { 0x282, 0 }, { 0x283, 0 },
+    { 0x284, 0 }, { 0x285, 0 }, { 0x27D, 1 }, { 0x27C, 1 }, { 0x27B, 1 },
+};
+TaskDesc Stg40_LinkedModelDesc = {
+    (TaskInitFn)Stg40_LinkedModelInit, Stg40_LinkedModelUpdate, Task_DefaultDestroy, Stg40_LinkedModelDraw, 0x2C, 0,
+};
+
+Actor *Stg40_RootTask;
+Stg40RootTasks *Stg40_RootChildren;
+u8 D_80072AA8[0x18];
+u8 D_80072AC0[0xA0];
+Stg40B60 *Stg40_RootState;
+s32 D_80072B64;
+
 void Stg40_InitDisplay(void) {
     Blk16 *l;
     Stg40Rgb *c;

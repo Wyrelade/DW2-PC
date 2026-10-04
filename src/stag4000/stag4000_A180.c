@@ -5,6 +5,22 @@
 #include "stag4000/stag4000_8338_funcs.h"
 #include "stag4000/stag4000_9364_funcs.h"
 
+u8 Stg40_EnemyAiTable[] = {
+    0x02, 0x00, 0x02, 0x01, 0x04, 0x02, 0x03, 0x02, 0x07, 0x02, 0x06, 0x02, 0x05, 0x02, 0x02, 0x03,
+};
+u8 Stg40_EnemyPaceTable[] = { 1, 0, 2, 0, 0, 1, 1, 0 };
+/* Task_DescTable[2]: task ids 0x200-0x20D. */
+TaskDesc *Stg40_TaskDescs[] = {
+    &Stg40_RootDesc, 0, &Stg40_FloorDesc, &Stg40_CameraDesc, &Stg40_ObjDesc, 0, &Stg40_AutomapDesc,
+    &Stg40_LinkedModelDesc, &Stg40_MsgWinDesc, &Stg40_HudDesc, &Stg40_BitsWinDesc, &Stg40_ItemMenuDesc,
+    &Stg40_EnemyInfoDesc, &Stg40_HudDesc,
+};
+s32 D_80072944 = 0;
+INCLUDE_BIN(Stg40_AutomapClut, "assets/stag4000/automap_clut.bin");
+
+Stg40TileGrid *Stg40_AutomapWork;
+s32 D_80072BB4;
+
 s32 Stg40_AddEntity(kind, a1, a2, a3, x, y)
     s32 kind;
     s32 a1;

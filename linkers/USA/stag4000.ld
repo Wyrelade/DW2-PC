@@ -36,15 +36,9 @@ SECTIONS
         build/USA/src/stag4000/stag4000_9364.c.o(.data);
         build/USA/src/stag4000/stag4000_A180.c.o(.data);
         build/USA/src/stag4000/stag4000_C2CC.c.o(.data);
-        build/USA/asm/USA/stag4000/data/stag4000_data.data.s.o(.data);
         . = ALIGN(., 4);
         stag4000_DATA_END = .;
         stag4000_DATA_SIZE = ABSOLUTE(stag4000_DATA_END - stag4000_DATA_START);
-    }
-    stag4000_bss_VRAM = ADDR(.stag4000_bss);
-    .stag4000_bss (NOLOAD) : SUBALIGN(4)
-    {
-        FILL(0x00000000);
         stag4000_BSS_START = .;
         build/USA/asm/USA/stag4000/data/stag4000_rodata.rodata.s.o(.bss);
         build/USA/src/stag4000/stag4000.c.o(.bss);

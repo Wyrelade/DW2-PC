@@ -1,6 +1,96 @@
 #include "common.h"
 #include "stag4000/stag4000.h"
 #include "stag4000/stag4000_funcs.h"
+#include "stag4000/stag4000_1DD4_funcs.h"
+
+u8 Stg40_FloorPrimIdx[] = {
+    0x04, 0x02, 0x06, 0x03, 0x05, 0x00, 0x01, 0x00, 0x0B, 0x09, 0x0D, 0x0A, 0x0C, 0x07, 0x08, 0x07,
+    0x12, 0x10, 0x14, 0x11, 0x13, 0x0E, 0x0F, 0x0E, 0x33, 0x31, 0x35, 0x32, 0x34, 0x2F, 0x30, 0x2F,
+    0x33, 0x31, 0x35, 0x32, 0x34, 0x2F, 0x30, 0x2F, 0x3A, 0x38, 0x3C, 0x39, 0x3B, 0x36, 0x37, 0x36,
+    0x16, 0x19, 0x15, 0x17, 0x18, 0x3D, 0x3E, 0x3F, 0x40, 0x41,
+};
+u8 Stg40_ShadowPrimIdx = 0x1A;
+u8 Stg40_WallPrimIdx[] = {
+    0x1B, 0x1E, 0x1C, 0x1F, 0x1D, 0x25, 0x28, 0x26, 0x29, 0x27,
+    0x20, 0x23, 0x21, 0x24, 0x22, 0x2A, 0x2D, 0x2B, 0x2E, 0x2C,
+};
+Stg40WallSide Stg40_WallSides[] = {
+    { 0x0800, 0, 0, 0, 1, 0, 0, 0, 64 },
+    { 0x0400, 2, 1, 1, 0, 1, 0, 1, 127 },
+    { 0x0200, 4, 0, 1, 0, 0, 0, 0, 64 },
+    { 0x0100, 6, 1, 0, 1, 1, 1, 0, 127 },
+};
+TaskDesc Stg40_FloorDesc = {
+    (TaskInitFn)Stg40_FloorInit, Stg40_FloorUpdate, Task_DefaultDestroy, Stg40_FloorDraw, 0x1EA4, 0,
+};
+Stg40TextPos Stg40_HudLabels[] = {
+    { 0x76, { 0xC4, 0x16 } },
+    { 0x77, { 0xC4, 0x22 } },
+};
+s32 Stg40_HudParts[] = { 0x07D40000, 0x07D40001 };
+TaskDesc Stg40_HudDesc = { 0, Stg40_HudUpdate, Task_DefaultDestroy, Stg40_HudDraw, 0x18, 4 };
+Stg40TextPos Stg40_BitsLabelText = { 0x80, { 0xC4, 0x3A } };
+TaskDesc Stg40_BitsWinDesc = { 0, Stg40_BitsWinUpdate, Task_DefaultDestroy, Stg40_BitsWinDraw, 0xC, 0 };
+s32 Stg40_ItemMenuParts[] = { 0x07D40003, 0x07D40007 };
+TaskDesc Stg40_ItemMenuDesc = {
+    (TaskInitFn)Stg40_ItemMenuInit, Stg40_ItemMenuUpdate, Task_DefaultDestroy, Stg40_ItemMenuDraw, 0x48, 0,
+};
+/* (x, y) pairs */
+u16 Stg40_EnemyInfoTextPos[] = {
+    0x0F, 0xC5, 0x0F, 0xB6, 0x37, 0xC5, 0x0F, 0xD1,
+    0x73, 0xC5, 0x73, 0xB6, 0x9B, 0xC5, 0x73, 0xD1,
+    0xD7, 0xC5, 0xD7, 0xB6, 0xFF, 0xC5, 0xD7, 0xD1,
+};
+s32 Stg40_EnemyInfoParts[] = { 0x07D40004, 0x07D40005, 0x07D40006 };
+TaskDesc Stg40_EnemyInfoDesc = {
+    (TaskInitFn)Stg40_EnemyInfoInit, Stg40_EnemyInfoUpdate, Task_DefaultDestroy, Stg40_EnemyInfoDraw, 0x38, 0,
+};
+TaskDesc Stg40_MsgWinDesc = {
+    (TaskInitFn)Stg40_MsgWinInit, Stg40_MsgWinUpdate, Task_DefaultDestroy, (TaskFn)Stg40_MsgWinDraw, 0x28, 0,
+};
+u8 Stg40_FlashPattern[] = { 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0xFF, 0 };
+Stg40Col Stg40_FlashColors[] = {
+    { 0xFF, 0xFF, 0xFF, 0 },
+    { 0xFF, 0, 0, 0 },
+    { 0xFF, 0, 0xFF, 0 },
+};
+TaskDesc Stg40_ObjDesc = {
+    (TaskInitFn)Stg40_ObjInit, Stg40_ObjUpdate, Task_DefaultDestroy, Stg40_ObjDraw, 0x3C, 4,
+};
+Stg40XY16 Stg40_DirOffsets[] = {
+    { 1, 1 }, { 0, 1 }, { -1, 1 }, { -1, 0 }, { -1, -1 }, { 0, -1 }, { 1, -1 }, { 1, 0 }, { 1, 1 }, { 0, 1 },
+};
+Stg40ItemReq Stg40_ObstacleItemReqs[] = {
+    { 0x0B, { 0x17, 0x21, -1, -1 }, {0}, 0x01FD0024 },
+    { 0x0B, { 0x20, 0x21, -1, -1 }, {0}, 0x01FD0024 },
+    { 0, { -1, -1, -1, -1 }, {0}, 0 },
+    { 0x0C, { 0x18, 0x28, -1, -1 }, {0}, 0x01FD003D },
+    { 0x0C, { 0x25, 0x28, -1, -1 }, {0}, 0x01FD003D },
+    { 0x0C, { 0x26, 0x28, -1, -1 }, {0}, 0x01FD003D },
+    { 0x0C, { 0x27, 0x28, -1, -1 }, {0}, 0x01FD003D },
+};
+Stg40ItemReq Stg40_GiftGunReq = { 8, { 0x22, 0x23, 0x24, 0x1B }, {0}, 0x01FD0051 };
+s32 Stg40_StatusMsgIds[] = {
+    0x01FD001E, 0x01FD001C, 0x01FD002F, 0x01FD0030, 0x01FD0031, 0x01FD0032, 0x01FD0033, 0x01FD0034,
+};
+u8 Stg40_GiftTakeChance[] = { 96, 92, 88, 84, 80, 76, 72, 68, 64 };
+u8 Stg40_GiftPointsByLevel[] = { 10, 20, 40, 80, 160 };
+s32 Stg40_ShootMsgIds[] = {
+    0x01FD0020, 0x01FD0021, 0x01FD0022, 0x01FD0023, 0, 0, 0x01FD0035,
+    0x01FD0039, 0x01FD0036, 0x01FD003A, 0x01FD0037, 0x01FD003B, 0x01FD0038, 0x01FD003C,
+};
+s16 Stg40_PadDirTable[] = { -1, 0, 4, -1, 6, 7, 5, -1, 2, 1, 3, -1, -1, -1, -1, -1 };
+
+Actor *Stg40_FloorTask;
+Stg40FloorWork *Stg40_FloorWork;
+Actor *Stg40_ItemMenuTask;
+s32 D_80072B74;
+Actor *Stg40_EnemyInfoTask;
+s32 D_80072B7C;
+Actor *Stg40_MsgWinTask;
+s32 *Stg40_MsgWinTexts;
+s32 D_80072B88[2];
+u8 Stg40_DigitBufs[4][8];
 
 void Stg40_ScrollFollow(Stg40Loc *loc) {
     Dung_StatePtr->scrollTarget = loc;
