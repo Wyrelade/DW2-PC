@@ -1,11 +1,4 @@
 {
-  "Gpu_SetLayerOtPtrs": {
-    "passes": [
-      "web_realloc",
-      "sched_match",
-      "padnop"
-    ]
-  },
   "Anim_HasModelAnim": {
     "passes": [
       "nodb",

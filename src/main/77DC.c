@@ -2552,19 +2552,14 @@ draw:
     D_8005F770.packet.work = (ActorWork *)q;
 }
 
-#ifdef NORMALIZED
 void Gpu_SetLayerOtPtrs(void) {
     s32 i;
 
     for (i = 0; i < 8; i++) {
-        D_8005F770.otLayerLen[i] = D_80041570[D_8005CCF8.field_60][i];
-        D_8005F770.otLayers.s[i] = &Gpu_OtBufs[D_8005F770.bufIndex].entries[D_800415F0[D_8005CCF8.field_60][i]];
+        D_8005F770.otLayerLen[i] = D_80041570[Gpu_OtBufs[2].entries[0]][i];
+        D_8005F770.otLayers.s[i] = &Gpu_OtBufs[D_8005F770.bufIndex].entries[D_800415F0[Gpu_OtBufs[2].entries[0]][i]];
     }
 }
-#else
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Gpu_SetLayerOtPtrs);
-void Gpu_SetLayerOtPtrs(void);
-#endif
 
 void func_8001C800(s32 arg0) {
     Gpu_OtBufs[2].entries[0] = arg0;
