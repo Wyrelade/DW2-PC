@@ -121,8 +121,8 @@ extern s32 Stg20_TalkActive;
 extern Stg20Cell Stg20_CellTmp;
 extern Stg20Cell Stg20_DirCellDelta[4];
 extern Stg20Vec3 Stg20_MoveParams[];
-extern CVECTOR Stg20_JogBgWireColor;
-extern Halves Stg20_AreaNamePos;
+extern const CVECTOR Stg20_JogBgWireColor;
+extern const Halves Stg20_AreaNamePos;
 extern s32 Gfx_ZeroVector[];
 
 extern void Task_SetState1(Actor *arg0, u32 arg1);
@@ -307,7 +307,7 @@ typedef struct {
     u8 _pad24[0x8];
 } Stg20TextArgs;
 
-extern Halves Stg20_BitsLabelPos;
+extern const Halves Stg20_BitsLabelPos;
 extern Stg20MenuState Stg20_MenuState;
 extern s32 Sys_GameMode[];
 
@@ -317,8 +317,8 @@ typedef struct {
     /* 0x04 */ s32 texts[2];
 } Stg20YesNoWork;
 extern s32 D_800709BC; /* Stg20_MenuState.field_C as a scalar reloc */
-extern Halves Stg20_LabDigivolveTextPos;
-extern Halves Stg20_LabDnaTextPos;
+extern const Halves Stg20_LabDigivolveTextPos;
+extern const Halves Stg20_LabDnaTextPos;
 
 /* Stg20_WalkerGetInput waypoint walker */
 typedef struct {
@@ -532,8 +532,8 @@ extern Halves Stg20_BeetlePartsTextPos[];
 extern s32 Item_GetNameText(s32);
 extern void Stg20_OpenMsgOrDesc(void *t, s32 id, Halves pos, s32 arg);
 extern Stg20Pos2 Stg20_ShakeOffsets[4];
-extern Halves Stg20_ShopMenuBuyPos;
-extern Halves Stg20_ShopMenuSellPos;
+extern const Halves Stg20_ShopMenuBuyPos;
+extern const Halves Stg20_ShopMenuSellPos;
 extern PadState Pad_State[];
 extern s32 Digi_GetExpToNextLevel(s32, s32, s32);
 extern void Snd_PlayById(s32, s32);
@@ -807,8 +807,8 @@ typedef struct {
 } Stg20MenuSub;
 extern Stg20MenuSub D_800709B8;
 extern s32 Skill_GetNameText(s32);
-extern Halves Stg20_BeetleMenuPartsPos;
-extern Halves Stg20_BeetleMenuUpgradePos;
+extern const Halves Stg20_BeetleMenuPartsPos;
+extern const Halves Stg20_BeetleMenuUpgradePos;
 extern s32 Pad_Triangle; /* Pad_State[0].triangle as a scalar reloc */
 extern void Item_RemoveFromBag(s32 i);
 

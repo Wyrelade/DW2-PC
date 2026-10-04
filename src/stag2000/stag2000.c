@@ -2018,7 +2018,7 @@ s32 Stg20_AreaSelectFindDir(Actor *a, s32 dir) {
     return found;
 }
 
-INCLUDE_RODATA("asm/USA/stag2000/rodata", Stg20_AreaNamePos);
+const Halves Stg20_AreaNamePos = { 0xC6, 0x12 };
 void Stg20_AreaSelectUpdate(Actor *a) {
     Stg20NavWork *w = (Stg20NavWork *)a->work;
     Stg20PickRec *r;
@@ -2132,8 +2132,8 @@ void Stg20_AreaSelectShowName(Actor *a, s32 open) {
     }
 }
 
-INCLUDE_RODATA("asm/USA/stag2000/rodata", Stg20_LabDigivolveTextPos);
-INCLUDE_RODATA("asm/USA/stag2000/rodata", Stg20_LabDnaTextPos);
+const Halves Stg20_LabDigivolveTextPos = { 0x1B, 0x18 };
+const Halves Stg20_LabDnaTextPos = { 0x51, 0x18 };
 void Stg20_LabModeSelUpdate(Actor *a)
 {
   Stg20YesNoWork *w = (Stg20YesNoWork *) a->work;
@@ -2980,7 +2980,7 @@ void Stg20_LabJogBgUpdate(Actor *a) {
     }
 }
 
-INCLUDE_RODATA("asm/USA/stag2000/rodata", Stg20_JogBgWireColor);
+const CVECTOR Stg20_JogBgWireColor = { 0xFF, 0x64, 0x00, 0x00 };
 void Stg20_LabJogBgDraw(Actor *a) {
     CVECTOR c;
 
@@ -3667,7 +3667,7 @@ void Stg20_ShopBgDraw(Actor *a) {
     Gfx_DrawParts((s32)p);
 }
 
-INCLUDE_RODATA("asm/USA/stag2000/rodata", Stg20_BitsLabelPos);
+const Halves Stg20_BitsLabelPos = { 0xBD, 0x17 };
 void Stg20_ShopBitsUpdate(Actor *a) {
     s32 *w = (s32 *)a->work;
 
@@ -3690,8 +3690,8 @@ void Stg20_ShopBitsDraw(void) {
     Gfx_DrawParts((s32)p);
 }
 
-INCLUDE_RODATA("asm/USA/stag2000/rodata", Stg20_ShopMenuBuyPos);
-INCLUDE_RODATA("asm/USA/stag2000/rodata", Stg20_ShopMenuSellPos);
+const Halves Stg20_ShopMenuBuyPos = { 0x1B, 0x17 };
+const Halves Stg20_ShopMenuSellPos = { 0x3F, 0x17 };
 void Stg20_ItemShopMenuUpdate(Actor *a) {
     s32 state = a->stateLevel0;
     s32 *w = (s32 *)a->work;
@@ -3756,8 +3756,8 @@ void Stg20_ItemShopMenuDraw(Actor *a) {
     Gfx_DrawParts((s32)p);
 }
 
-INCLUDE_RODATA("asm/USA/stag2000/rodata", Stg20_BeetleMenuPartsPos);
-INCLUDE_RODATA("asm/USA/stag2000/rodata", Stg20_BeetleMenuUpgradePos);
+const Halves Stg20_BeetleMenuPartsPos = { 0x1B, 0x17 };
+const Halves Stg20_BeetleMenuUpgradePos = { 0x54, 0x17 };
 void Stg20_BeetleShopMenuUpdate(Actor *a) {
     s32 state = a->stateLevel0;
     s32 *w = (s32 *)a->work;
