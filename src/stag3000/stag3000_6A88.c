@@ -5,6 +5,12 @@
 #include "stag3000/stag3000_41D0_funcs.h"
 #include "stag3000/stag3000_5980_funcs.h"
 
+s32 Stg30_CureStatusMasks[] = {
+    1, 2, 4, 8, 0x10, 0x20, 0x40, 0x80, 0x800, 0x400, 0x100, 0x200, 0x1000, 0x2000, 0x4000, 0x8000, 0x10000,
+};
+s16 Stg30_CureStatusLabels[] = { 2, 4, 6, 0xD, 0, 0, 5, 0x1C, 5, 3, 0x1E, 0x20, 7, 9, 0xB, 0x19, 0, 0 };
+s32 Stg30_RepeatSkillCount = 0;
+
 void Stg30_RetargetAction(void) {
     s32 idx = Stg30_TurnOrderGet(0);
     Stg30Rec73F6C *e = &D_80073F6C[idx];

@@ -1,6 +1,29 @@
 #include "common.h"
 #include "stag3000/stag3000.h"
 
+/* Task callbacks the descriptors below need (defined further down; the last one in
+ * stag3000_100C.c). */
+void Stg30_BannerInit(Actor *a0, s32 a1);
+void Stg30_BannerUpdate(Actor *a0);
+void Stg30_BannerDraw(Actor *a0);
+void Stg30_FightBgUpdate(Actor *a0);
+void Stg30_FightBgDraw(Actor *a0);
+void Stg30_ActionLoadInit(Actor *a0, s32 *args);
+void Stg30_ActionLoadUpdate(Actor *a0);
+void Stg30_ActionLoadDestroy(Actor *a0);
+
+s32 Stg30_BannerParts[] = { 0x01A10001, 0x01A10012, 0x01A1001F, 0x01A10013 };
+TaskDesc Stg30_BannerDesc = {
+    (TaskInitFn)Stg30_BannerInit, Stg30_BannerUpdate, Task_DefaultDestroy, Stg30_BannerDraw, 0, 0,
+};
+s32 Stg30_FightBgModels[] = { 0xE2D, 0xE2A, 0xE2C, 0xE29, 0xE2E, 0xE2B };
+s32 Stg30_SpecialFightBgModel = 0xD77;
+s32 Stg30_FightBgByFloorElem[] = { 5, 5, 0, 1, 2, 3, 4 };
+TaskDesc Stg30_FightBgDesc = { 0, Stg30_FightBgUpdate, Task_DefaultDestroy, Stg30_FightBgDraw, 0, 0 };
+TaskDesc Stg30_ActionLoadDesc = {
+    (TaskInitFn)Stg30_ActionLoadInit, Stg30_ActionLoadUpdate, Stg30_ActionLoadDestroy, 0, 0x324, 0,
+};
+
 void Stg30_BannerInit(Actor *a0, s32 a1) {
     a0->param = a1;
 }

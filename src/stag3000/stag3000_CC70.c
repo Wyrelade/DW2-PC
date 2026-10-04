@@ -10,6 +10,121 @@
 #include "stag3000/stag3000_AF5C_funcs.h"
 #include "stag3000/stag3000_C918_funcs.h"
 
+/* Task callbacks the descriptors below need (defined further down; the first in
+ * stag3000_C918.c). */
+void Stg30_InterruptSelectTask(Actor *a0);
+void Stg30_InterruptSelectDraw(Actor *a0);
+void Stg30_XaPlayInit(Actor *a0, Vec3 *args);
+void Stg30_XaPlayTask(Stg30TaskHead *a0);
+void Stg30_XaPlayDestroy(Actor *a0);
+void Stg30_CameraUpdate(Actor *arg0);
+void Stg30_CameraDraw(Actor *a0);
+void Stg30_FighterHudInit(Actor *a0, Stg30Ref **args);
+void Stg30_FighterHudUpdate(Stg30TaskHead *a0);
+void Stg30_FighterHudDestroy(Actor *a0);
+void Stg30_FighterHudDraw(Actor *a0);
+void Stg30_ResultInit(Actor *a0, Stg30Pair *args);
+void Stg30_ResultUpdate(Actor *a0);
+void Stg30_ResultDestroy(Actor *a0);
+void Stg30_ResultDraw(Actor *a0);
+void Stg30_SkillLearnInit(Actor *a0, Stg30SkillLearnArgs *args);
+void Stg30_SkillLearnUpdate(Actor *a0);
+void Stg30_SkillLearnDraw(Actor *a0);
+void Stg30_JoinPromptInit(Actor *a0, s32 *args);
+void Stg30_JoinPromptUpdate(Actor *a0);
+void Stg30_JoinPromptDraw(Actor *a0);
+
+s32 Stg30_InterruptCursorMasks[] = { 2, 4, 8, 0x10, 0x20, 0x40 };
+TaskDesc Stg30_InterruptSelectDesc = {
+    0, Stg30_InterruptSelectTask, Task_DefaultDestroy, Stg30_InterruptSelectDraw, 0x14, 0,
+};
+/* Task_DescTable[5]: task ids 0x500-0x513. */
+TaskDesc *Stg30_TaskDescs[] = {
+    &Stg30_BattleDesc, &Stg30_FighterHudDesc, &Stg30_ResultDesc, &Stg30_CameraDesc, &Stg30_CommandMenuDesc,
+    &Stg30_BannerDesc, &Stg30_ItemMenuDesc, &Stg30_SkillMenuDesc, &Stg30_TargetSelectDesc, &Stg30_FighterDesc,
+    &Stg30_FightBgDesc, &Stg30_CommandInputDesc, &Stg30_FightMsgDesc, &Stg30_PopupDesc,
+    &Stg30_ActionLoadDesc, &Stg30_BattleScriptDesc, &Stg30_InterruptSelectDesc, &Stg30_XaPlayDesc,
+    &Stg30_SkillLearnDesc, &Stg30_JoinPromptDesc,
+};
+s32 Stg30_XaTrackStart[] = { 0, 0x546, 0xB22, 0x10FE, 0x1770, 0x1F0E };
+s32 Stg30_XaTrackLength[] = { 0x2EE, 0x3A2, 0x456, 0x474, 0x528, 0x672 };
+TaskDesc Stg30_XaPlayDesc = {
+    (TaskInitFn)Stg30_XaPlayInit, (TaskFn)Stg30_XaPlayTask, Stg30_XaPlayDestroy, 0, 0x14, 0,
+};
+s16 Stg30_CloseUpRotY[] = { 682, 0, -682, 1365, 2048, 2730 };
+s16 Stg30_CloseUpVpz[] = { 7495, 7595, 8620, 9064, 9944, 11496, 12728, 14424, 17096 };
+s16 Stg30_CloseUpVry[] = { -304, -304, -572, -596, -728, -832, -888, -1008, -1176 };
+TaskDesc Stg30_CameraDesc = { 0, Stg30_CameraUpdate, Task_DefaultDestroy, Stg30_CameraDraw, 0x84, 0 };
+s32 Stg30_FighterHudFadeDelay[] = { 5, 11, 17, 5, 11, 17 };
+Stg30XY Stg30_FighterHudNamePos[] = { { 17, 215 }, { 116, 215 }, { 215, 215 }, { 17, 16 }, { 116, 16 }, { 215, 16 } };
+u8 Stg30_OrderLabelMsgs[] = { 0xA, 0xB, 0xC, 0xD, 6 };
+Halves Stg30_OrderLabelPos[] = { { 0x12, 0xAB }, { 0x75, 0xAB }, { 0xD8, 0xAB } };
+s32 Stg30_FighterHudParts[] = { 0x01A10023, 0x01A10024, 0x01A10025, 0x01A10020, 0x01A10021, 0x01A10022 };
+s32 Stg30_StatusIconGroups[] = { 4, 8, 0x10, 0x40000, 0x80000, 0x100000 };
+s32 Stg30_StatusIconFlags[] = { 1, 2, 4, 8, 0x10000, 0x8000 };
+Stg30XY Stg30_StatusIconPos[] = { { -99, 85 }, { 0, 85 }, { 99, 85 }, { -99, -90 }, { 0, -90 }, { 99, -90 } };
+TaskDesc Stg30_FighterHudDesc = {
+    (TaskInitFn)Stg30_FighterHudInit, (TaskFn)Stg30_FighterHudUpdate, Stg30_FighterHudDestroy,
+    Stg30_FighterHudDraw, 0x14, 0,
+};
+/* Level-up stat gain tables. */
+u16 Stg30_HpMpGrowth[6][3][4] = {
+    { { -1, 0, 1, 2 }, { -1, 0, 0, 1 }, { -2, -1, 0, 1 } },
+    { { -1, 0, 1, 1 }, { -1, 0, 0, 1 }, { -1, -1, 0, 1 } },
+    { { 0, 0, 1, 1 }, { -1, 0, 0, 1 }, { -1, -1, 0, 0 } },
+    { { 0, 0, 0, 1 }, { -1, 0, 0, 1 }, { -1, 0, 0, 0 } },
+    { { 0, 0, 1, 1 }, { 0, 0, 1, 1 }, { 0, 0, 1, 1 } },
+    { { 0, 0, 0, 1 }, { 0, 0, 0, 1 }, { 0, 0, 0, 1 } },
+};
+u16 Stg30_AtkDefGrowth[5][3][4] = {
+    { { -1, 0, 1, 1 }, { -1, 0, 0, 1 }, { -1, -1, 0, 1 } },
+    { { 0, 0, 1, 1 }, { -1, 0, 0, 1 }, { -1, -1, 0, 0 } },
+    { { 0, 0, 1, 1 }, { -1, 0, 0, 1 }, { -1, -1, 0, 0 } },
+    { { 0, 0, 0, 1 }, { -1, 0, 0, 1 }, { -1, 0, 0, 0 } },
+    { { 0, 0, 0, 1 }, { 0, 0, 0, 1 }, { 0, 0, 0, 1 } },
+};
+u16 Stg30_SpeedGrowth[5][3][4] = {
+    { { -1, 0, 1, 1 }, { -1, 0, 0, 1 }, { -1, -1, 0, 1 } },
+    { { 0, 0, 1, 1 }, { -1, 0, 0, 1 }, { -1, -1, 0, 0 } },
+    { { 0, 0, 0, 1 }, { -1, 0, 0, 1 }, { -1, 0, 0, 0 } },
+    { { 0, 0, 0, 1 }, { 0, 0, 0, 1 }, { 0, 0, 0, 1 } },
+    { { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 } },
+};
+Stg30TextRec Stg30_ResultTextLayout[] = {
+    { 0, 0x5A, 0, 0, { 134, 60 } },
+    { 1, 0x5A, 0, 0, { 134, 96 } },
+    { 2, 0x5A, 0, 0, { 134, 132 } },
+    { 0, 0x5B, 0, 0, { 134, 73 } },
+    { 1, 0x5B, 0, 0, { 134, 109 } },
+    { 2, 0x5B, 0, 0, { 134, 145 } },
+    { 9, 0x5D, 4, 0, { 37, 19 } },
+    { 9, 0x5E, 0, 1, { 36, 32 } },
+    { 0, 0x0, 0, 0, { 37, 58 } },
+    { 1, 0x1, 0, 0, { 37, 94 } },
+    { 2, 0x2, 0, 0, { 37, 130 } },
+    { 9, 0x5F, 0, 0, { 37, 210 } },
+    { 9, 0x5F, 0, 0, { 37, 170 } },
+    { 9, 0x60, 0, 1, { 36, 183 } },
+};
+s32 Stg30_ResultParts[] = { 0x01A1000C, 0x01A1000D, 0x01A1000E, 0x01A10010, 0x01A1000F, 0x01A10011 };
+TaskDesc Stg30_ResultDesc = {
+    (TaskInitFn)Stg30_ResultInit, Stg30_ResultUpdate, Stg30_ResultDestroy, Stg30_ResultDraw, 0x5C, 0,
+};
+Halves Stg30_SkillLearnTextPos[] = {
+    { 0x23, 0x13 }, { 0x22, 0x20 }, { 0x23, 0x4E }, { 0xAB, 0x4E }, { 0x23, 0x5A }, { 0x23, 0x65 }, { 0x23, 0x70 },
+    { 0x23, 0x7B }, { 0x23, 0x86 }, { 0x23, 0x91 }, { 0x23, 0x9C }, { 0x23, 0xA7 }, { 0x23, 0xB2 }, { 0x23, 0xBD },
+    { 0xAB, 0x5A }, { 0xAB, 0x65 }, { 0xAB, 0x70 }, { 0xAB, 0x7B }, { 0xAB, 0x86 }, { 0xAB, 0x91 }, { 0xAB, 0x9C },
+    { 0xAB, 0xA7 }, { 0xAB, 0xB2 }, { 0xAB, 0xBD }, { 0x29, 0x3A }, { 0x5B, 0x3A }, { 0x9E, 0x3A }, { 0x20, 0xD1 },
+};
+TaskDesc Stg30_SkillLearnDesc = {
+    (TaskInitFn)Stg30_SkillLearnInit, Stg30_SkillLearnUpdate, Task_DefaultDestroy, Stg30_SkillLearnDraw, 0xCC, 0,
+};
+Halves Stg30_JoinPromptTextPos[] = { { 0x24, 0xB2 }, { 0x23, 0xBF } };
+u8 Stg30_MemoryCapacity[] = { 4, 5, 6, 7, 8, 0xC };
+TaskDesc Stg30_JoinPromptDesc = {
+    (TaskInitFn)Stg30_JoinPromptInit, Stg30_JoinPromptUpdate, Task_DefaultDestroy, Stg30_JoinPromptDraw, 0x14, 4,
+};
+
 void Stg30_InterruptSelectDraw(Actor *a0) {
     Stg30InterruptSelectWork *w = (Stg30InterruptSelectWork *)a0->work;
     Stg30Part *p;

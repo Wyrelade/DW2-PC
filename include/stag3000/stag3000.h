@@ -765,7 +765,7 @@ extern u16 Stg30_StatusWearOff3Labels[];
 extern s32 Skill_GetCastAnim(s32 id);
 extern u16 Stg30_HpMpGrowth[6][3][4];
 extern u16 Stg30_AtkDefGrowth[5][3][4];
-extern u16 Stg30_SpeedGrowth[4][3][4];
+extern u16 Stg30_SpeedGrowth[5][3][4];
 extern s32 Digi_GetRank(s32 id);
 extern s32 Digi_GetStatGrowth(s32 id, s32 k);
 extern s32 Digi_GetType(s32 id);
@@ -923,5 +923,28 @@ extern s32 Stg30_SkillHitCheck(s32 idx, s16 *tgt, s32 n, s32 id);
 extern s16 D_80074070;
 extern s16 D_80074074;
 extern s32 Stg30_RepeatSkillCount;
+
+/* Task descriptors (Stg30_TaskDescs rows). */
+extern TaskDesc Stg30_BannerDesc;
+extern TaskDesc Stg30_FightBgDesc;
+extern TaskDesc Stg30_ActionLoadDesc;
+extern TaskDesc Stg30_CommandInputDesc;
+extern TaskDesc Stg30_CommandMenuDesc;
+extern TaskDesc Stg30_ItemMenuDesc;
+extern TaskDesc Stg30_SkillMenuDesc;
+extern TaskDesc Stg30_TargetSelectDesc;
+extern TaskDesc Stg30_BattleDesc;
+extern TaskDesc Stg30_BattleScriptDesc;
+extern TaskDesc Stg30_FighterDesc;
+extern TaskDesc Stg30_FightMsgDesc;
+extern TaskDesc Stg30_PopupDesc;
+extern TaskDesc Stg30_InterruptSelectDesc;
+extern TaskDesc Stg30_XaPlayDesc;
+extern TaskDesc Stg30_CameraDesc;
+extern TaskDesc Stg30_FighterHudDesc;
+extern TaskDesc Stg30_ResultDesc;
+extern TaskDesc Stg30_SkillLearnDesc;
+extern TaskDesc Stg30_JoinPromptDesc;
+extern TaskDesc *Stg30_TaskDescs[];
 
 #endif

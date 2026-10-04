@@ -6,6 +6,10 @@
 #include "stag3000/stag3000_5980_funcs.h"
 #include "stag3000/stag3000_6A88_funcs.h"
 
+void Stg30_BattleScriptTask(Actor *a0);
+
+TaskDesc Stg30_BattleScriptDesc = { 0, Stg30_BattleScriptTask, Task_DefaultDestroy, 0, 4, 0x18 };
+
 void Stg30_BuildGuardScript(s32 idx) {
     s16 *p = Stg30_BattleScript;
 

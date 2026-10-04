@@ -48,7 +48,7 @@ SECTIONS
         build/USA/src/stag3000/stag3000_AF5C.c.o(.data);
         build/USA/src/stag3000/stag3000_C918.c.o(.data);
         build/USA/src/stag3000/stag3000_CC70.c.o(.data);
-        build/USA/asm/USA/stag3000/data/stag3000_data.data.s.o(.data);
+        build/USA/asm/USA/stag3000/data/stag3000_commons.data.s.o(.data);
         . = ALIGN(., 4);
         stag3000_DATA_END = .;
         stag3000_DATA_SIZE = ABSOLUTE(stag3000_DATA_END - stag3000_DATA_START);

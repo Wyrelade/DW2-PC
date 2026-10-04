@@ -2,6 +2,45 @@
 #include "stag3000/stag3000.h"
 #include "stag3000/stag3000_funcs.h"
 
+/* Task callbacks the descriptors below need (defined further down). */
+void Stg30_CommandInputTask(Actor *a0);
+void Stg30_CommandMenuUpdate(Actor *a0);
+void Stg30_CommandMenuDestroy(Actor *a0);
+void Stg30_CommandMenuDraw(Actor *a0);
+void Stg30_ItemMenuInit(Actor *a0, s32 *args);
+void Stg30_ItemMenuUpdate(Actor *a0);
+void Stg30_ItemMenuDraw(Actor *a0);
+void Stg30_SkillMenuUpdate(Actor *a0);
+void Stg30_SkillMenuDraw(Actor *a0);
+void Stg30_TargetSelectUpdate(Actor *a0);
+void Stg30_TargetSelectDraw(Actor *a0);
+
+TaskDesc Stg30_CommandInputDesc = { 0, Stg30_CommandInputTask, Task_DefaultDestroy, 0, 4, 4 };
+u8 Stg30_CursorBlinkPalettes[] = { 0, 1, 2, 3, 2, 1, 0xFF };
+TaskDesc Stg30_CommandMenuDesc = {
+    0, Stg30_CommandMenuUpdate, Stg30_CommandMenuDestroy, Stg30_CommandMenuDraw, 0x14, 0,
+};
+Stg30XY Stg30_ItemListTextPos[] = { { 21, 59 }, { 50, 108 }, { 156, 59 } };
+Halves Stg30_ItemColumnLabelPos[] = { { 0x15, 0x30 }, { 0x32, 0x61 }, { 0x9C, 0x30 } };
+s32 Stg30_ItemMenuArrowBlinkMasks[] = { 0xA, 0xA0, 0xA00, 0xA000 };
+s32 Stg30_ItemMenuColHideMasks[] = { 0xAC, 0x12A, 0xB2 };
+Stg30XY Stg30_ItemMenuCursorPos[] = { { -147, -52 }, { -118, -3 }, { -11, -52 } };
+TaskDesc Stg30_ItemMenuDesc = {
+    (TaskInitFn)Stg30_ItemMenuInit, Stg30_ItemMenuUpdate, Task_DefaultDestroy, Stg30_ItemMenuDraw, 0xF8, 0,
+};
+Stg30XY Stg30_SkillListTextPos[] = { { 21, 59 }, { 50, 108 }, { 156, 59 }, { 185, 108 } };
+Halves Stg30_SkillColumnLabelPos[] = { { 0x15, 0x30 }, { 0x32, 0x61 }, { 0x9C, 0x30 }, { 0xB9, 0x61 } };
+s32 Stg30_SkillMenuArrowBlinkMasks[] = { 0xA, 0xA0, 0xA00, 0xA000 };
+Stg30XY Stg30_SkillMenuCursorPos[] = { { -147, -52 }, { -118, -3 }, { -11, -52 }, { 18, -3 } };
+s32 Stg30_SkillMenuColHideMasks[] = { 0xAC, 0xCA, 0xB2, 0x12A };
+TaskDesc Stg30_SkillMenuDesc = { 0, Stg30_SkillMenuUpdate, Task_DefaultDestroy, Stg30_SkillMenuDraw, 0x54, 0 };
+s32 Stg30_TargetCursorMasks[] = { ~0x2, ~0x4, ~0x8, ~0x10, ~0x20, ~0x40 };
+s32 Stg30_TargetAllEnemiesMask = ~0x70;
+s32 Stg30_TargetAllAlliesMask = ~0xE;
+TaskDesc Stg30_TargetSelectDesc = {
+    0, Stg30_TargetSelectUpdate, Task_DefaultDestroy, Stg30_TargetSelectDraw, 0x20, 0,
+};
+
 void Stg30_ActionLoadDestroy(Actor *a0) {
     Stg30ActionLoadWork *w = (Stg30ActionLoadWork *)a0->work;
     s32 i;

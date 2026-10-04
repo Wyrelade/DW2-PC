@@ -8,6 +8,36 @@
 #include "stag3000/stag3000_96DC_funcs.h"
 #include "stag3000/stag3000_9F8C_funcs.h"
 
+/* Task callbacks the descriptors below need (defined further down). */
+void Stg30_FighterInit(Actor *a0, s32 *args);
+void Stg30_FighterTask(Actor *arg0);
+void Stg30_FighterDestroy(Actor *a0);
+void Stg30_FighterDraw(Actor *a0);
+void Stg30_FightMsgInit(Stg30TaskHead *a0, s32 *args);
+void Stg30_FightMsgUpdate(Stg30TaskHead *a0);
+void Stg30_FightMsgDraw(Stg30TaskHead *a0);
+void Stg30_PopupInit(Actor *a0, Vec3 *args);
+void Stg30_PopupUpdate(Actor *a0);
+void Stg30_PopupDraw(Actor *a0);
+
+Elem12 Stg30_HitReactHop1Motion = { -0x18000, 0x2666, 0x320000 };
+Elem12 Stg30_HitReactHop2Motion = { -0x14000, 0x2666, 0x320000 };
+Elem12 Stg30_HitReactPushMotion = { 0x18000, -0x2000, 0x320000 };
+TaskDesc Stg30_FighterDesc = {
+    (TaskInitFn)Stg30_FighterInit, Stg30_FighterTask, Stg30_FighterDestroy, Stg30_FighterDraw, 0x3C, 0x14,
+};
+s32 Stg30_FightMsgParts[] = { 0x01A10002, 0x01A10003, 0x01A10004, 0x01A10005, 0x01A10006, 0x01A10007 };
+TaskDesc Stg30_FightMsgDesc = {
+    (TaskInitFn)Stg30_FightMsgInit, (TaskFn)Stg30_FightMsgUpdate, Task_DefaultDestroy, (TaskFn)Stg30_FightMsgDraw,
+    8, 0,
+};
+s32 Stg30_PopupItemMasks[] = { 0xB, 0xD, 0xE, 0x7 };
+s32 Stg30_PopupNumMasks[] = { 0x16, 0xD, 0xB };
+s32 Stg30_PopupNumParts[] = { 8, 0x10, 0x10 };
+TaskDesc Stg30_PopupDesc = {
+    (TaskInitFn)Stg30_PopupInit, Stg30_PopupUpdate, Task_DefaultDestroy, Stg30_PopupDraw, 0x14, 0,
+};
+
 s32 Stg30_GetSkillEffectKind(s32 id) {
     s32 r = Skill_GetPower(id);
 

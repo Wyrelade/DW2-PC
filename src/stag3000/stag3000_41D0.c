@@ -3,6 +3,13 @@
 #include "stag3000/stag3000_funcs.h"
 #include "stag3000/stag3000_100C_funcs.h"
 
+/* Task callbacks of the battle descriptor (the second in stag3000_5980.c). */
+void Stg30_BattleUpdate(Actor *a0);
+void Stg30_BattleDestroy(Actor *a0);
+
+s16 Stg30_JoinChance[][3] = { { 32, 80, 128 }, { 28, 70, 112 }, { 24, 60, 96 }, { 20, 50, 80 } };
+TaskDesc Stg30_BattleDesc = { 0, Stg30_BattleUpdate, Stg30_BattleDestroy, 0, 0xC, 0x4C };
+
 void Stg30_SetDigiAction(Actor *a0, s32 a1, s32 a2) {
     a0->stateLevel0 = 2;
     a0->stateLevel1 = a1;
