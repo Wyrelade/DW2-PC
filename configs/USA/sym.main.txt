@@ -1036,3 +1036,5 @@ D_80062D29 = 0x80062D29;
 D_80062D2A = 0x80062D2A;
 D_800630AA = 0x800630AA;
 D_800632CF = 0x800632CF;
+D_8004FC10 = 0x8004FC10; // crt0 stack size word
+D_80050758 = 0x80050758; // first .bss word (crt0 clears from here, saves $ra here)

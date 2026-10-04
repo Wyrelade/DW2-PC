@@ -19349,9 +19349,14 @@ dlabel Sys_VideoMode
     /* 40404 8004FC04 00000000 */ .word 0x00000000
     /* 40408 8004FC08 00000000 */ .word 0x00000000
     /* 4040C 8004FC0C 00000000 */ .word 0x00000000
+enddlabel Sys_VideoMode
+
+nonmatching D_8004FC10
+
+dlabel D_8004FC10
     /* 40410 8004FC10 00800000 */ .word 0x00008000
     /* 40414 8004FC14 00008000 */ .word 0x00800000
-enddlabel Sys_VideoMode
+enddlabel D_8004FC10
 
 nonmatching D_8004FC18
 
@@ -20709,8 +20714,13 @@ nonmatching Cd_QueueActive
 dlabel Cd_QueueActive
     /* 40F50 80050750 00000000 */ .word 0x00000000
     /* 40F54 80050754 5B0E0000 */ .word 0x00000E5B
-    /* 40F58 80050758 00000000 */ .word 0x00000000
 enddlabel Cd_QueueActive
+
+nonmatching D_80050758
+
+dlabel D_80050758
+    /* 40F58 80050758 00000000 */ .word 0x00000000
+enddlabel D_80050758
 
 nonmatching Cd_PreloadCount
 

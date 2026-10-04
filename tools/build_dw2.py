@@ -24,6 +24,7 @@ import hashlib
 import os
 import platform
 import re
+import struct
 import subprocess
 import sys
 
@@ -40,6 +41,7 @@ CONFIG = {
     "elf": "build/USA/main.elf",
     "out": "build/USA/out/SLUS_011.93",
     "include": "include",
+    "entry": "Sys_Start",   # crt0 entry (PS-X EXE header pc0)
 }
 
 # Stage overlays: (unit, retail SHA-1). Target dumps/disc/AAA/3.PRO/<UNIT>.PRO,
@@ -618,6 +620,31 @@ def assemble_bins(ld_script, as_bin):
     return 0
 
 
+def gp_label():
+    """Name of the main symbol at the yaml's gp_value (sym.main.txt), or None."""
+    yml = open(os.path.join(ROOT, "configs/USA/SLUS_011.93.yaml")).read()
+    m = re.search(r"^\s*gp_value:\s*(0x[0-9A-Fa-f]+)", yml, re.M)
+    if not m:
+        return None
+    gp = int(m.group(1), 16)
+    for line in open(os.path.join(ROOT, "configs/USA/sym.main.txt")):
+        s = re.match(r"\s*(\w+)\s*=\s*(0x[0-9A-Fa-f]+)", line)
+        if s and int(s.group(2), 16) == gp:
+            return s.group(1)
+    return None
+
+
+def fix_exe_header(path, syms):
+    """Fill the PS-X EXE header fields that depend on the link: initial pc (entry symbol),
+    text address and text size. splat's header.s holds the retail numbers; computing them
+    keeps a build that moves code bootable (the retail build gets the same values)."""
+    img = bytearray(open(path, "rb").read())
+    struct.pack_into("<I", img, 0x10, syms[CONFIG["entry"]])
+    struct.pack_into("<I", img, 0x18, syms["main_VRAM"])
+    struct.pack_into("<I", img, 0x1C, len(img) - 0x800)
+    open(path, "wb").write(bytes(img))
+
+
 def link_main(ld_bin, objcopy_bin, skip_verify, ovl_syms=None, quiet=False):
     """ovl_syms: values of the overlay symbols main refers to, from this build's overlay
     ELFs (second link); None links with the retail numbers of the splat auto lists."""
@@ -626,17 +653,22 @@ def link_main(ld_bin, objcopy_bin, skip_verify, ovl_syms=None, quiet=False):
     ld_script = CONFIG["ld_script"]
     if assemble_bins(ld_script, tool("as")) != 0:
         return 1
+    lines = open(os.path.join(ROOT, ld_script)).read().split("\n")
     if "main" in RODATA_IN_C:
         # game .rodata comes from the C objects; the asm rodata object keeps only the
         # PsyQ items, which retail places after the game units: link it last
-        lines = open(os.path.join(ROOT, ld_script)).read().split("\n")
         asm = [l for l in lines if "/asm/USA/main/data/" in l and l.strip().endswith(".rodata.s.o(.rodata);")]
         assert len(asm) == 1, asm
         lines.remove(asm[0])
         last = max(i for i, l in enumerate(lines) if l.strip().endswith(".c.o(.rodata);"))
         lines.insert(last + 1, asm[0])
-        ld_script = os.path.join(CONFIG["build_dir"], "main.rodata_in_c.ld")
-        open(os.path.join(ROOT, ld_script), "w").write("\n".join(lines))
+    # splat writes _gp as the yaml's gp_value; retail $gp is the address of the first small
+    # data object, so bind it to that label and let it move with the data
+    gp_sym = gp_label()
+    lines = [("    _gp = %s;" % gp_sym) if gp_sym and l.strip().startswith("_gp = 0x") else l
+             for l in lines]
+    ld_script = os.path.join(CONFIG["build_dir"], "main.link.ld")
+    open(os.path.join(ROOT, ld_script), "w").write("\n".join(lines))
     cmd = [ld_bin, "-EL"]
     if ovl_syms:
         p = os.path.join(CONFIG["build_dir"], "ovl_syms.main.ld")
@@ -659,6 +691,7 @@ def link_main(ld_bin, objcopy_bin, skip_verify, ovl_syms=None, quiet=False):
     if run([objcopy_bin, "-O", "binary", CONFIG["elf"], CONFIG["out"]]) != 0:
         print("BUILD FAILED: objcopy")
         return 1
+    fix_exe_header(os.path.join(ROOT, CONFIG["out"]), elf_globals(os.path.join(ROOT, CONFIG["elf"])))
 
     if skip_verify:
         if not quiet:
