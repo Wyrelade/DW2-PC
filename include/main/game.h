@@ -998,21 +998,21 @@ typedef struct {
 
 
 typedef struct {
-    /* 0x00 */ s32 field_0;
-    /* 0x04 */ s16 field_4;
+    /* 0x00 */ s32 rotXY;
+    /* 0x04 */ s16 rotZ;
     u8 _pad06[2];
-    /* 0x08 */ s32 field_8;
-    /* 0x0C */ s32 field_C;
+    /* 0x08 */ s32 scaleX;
+    /* 0x0C */ s32 scaleY;
     u8 _pad10[0x18 - 0x10];
-    /* 0x18 */ s32 field_18;
-} G4167C;
+    /* 0x18 */ s32 matrix;
+} GfxPartRotCache;
 
 /* 2-byte-aligned aggregate forcing the lwl/lwr + swl/swr block copy. */
 typedef struct {
     s16 h[4];
 } Agg1D6B4;
 
-extern G4167C Gfx_PartRotCache;
+extern GfxPartRotCache Gfx_PartRotCache;
 extern Mat1F668 Gfx_PartRotMatrix;
 
 

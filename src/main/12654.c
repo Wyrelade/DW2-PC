@@ -38,10 +38,10 @@ s32 Flag_Test(s32 arg0) {
         return Mem_TestBit(Flag_Bits.flags800, arg0 - 0x320);
     }
     if (arg0 < 0x44C) {
-        return Flag_Bits.field_40 >= arg0 - 0x3E8;
+        return Flag_Bits.progress >= arg0 - 0x3E8;
     }
     if (arg0 < 0x640) {
-        return Flag_Bits.field_40 < arg0 - 0x5DC;
+        return Flag_Bits.progress < arg0 - 0x5DC;
     }
     if (arg0 < 0x8BD) {
         for (i = 0; i < 0x30; i++) {
@@ -128,7 +128,7 @@ void Flag_Set(s32 id, s32 val) {
     } else if (id < 1000) {
         Mem_WriteBit(Flag_Bits.flags800, id - 800, val);
     } else if (id < 2000) {
-        Flag_Bits.field_40 = id - 1900;
+        Flag_Bits.progress = id - 1900;
     } else if (id < 0x8BD) {
         Save_GameState.field_C4 = id - 2000;
         Item_SortList();

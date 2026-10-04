@@ -1697,7 +1697,7 @@ typedef struct {
  * read by Gpu_SetLayerOtPtrs. */
 typedef struct {
     u8 _pad0[0x60];
-    /* 0x60 */ s32 field_60;
+    /* 0x60 */ s32 otLayout;
 } Mode5CCF8;
 
 /* 0x1C-byte parameter block copied from Menu_DigiStatusView into MenuDigiStatusInitWork.field_CC. */
@@ -1898,7 +1898,7 @@ typedef struct {
 
 /* 12-byte record in the Menu_SkillListDraw work view (s16 at +2 compared against field_94). */
 typedef struct {
-    /* 0x0 */ s16 field_0;
+    /* 0x0 */ s16 cols;
     /* 0x2 */ s16 rows;
     u8 _pad4[0x8];
 } Rec19BF4;
@@ -1927,21 +1927,21 @@ typedef struct {
     /* 0x00 */ u16 digiId;
     /* 0x02 */ u16 hp;
     /* 0x04 */ u16 mp;
-    /* 0x06 */ s16 field_6;
+    /* 0x06 */ s16 exp;
     /* 0x08 */ u16 field_8;
-    /* 0x0A */ u8 field_A;
+    /* 0x0A */ u8 level;
     /* 0x0B */ u8 field_B;
     /* 0x0C */ u16 field_C;
     /* 0x0E */ u8 field_E;
-    /* 0x0F */ u8 field_F;
-    /* 0x10 */ u8 field_10;
-    /* 0x11 */ u8 field_11;
+    /* 0x0F */ u8 attr0;
+    /* 0x10 */ u8 attr1;
+    /* 0x11 */ u8 attr2;
     /* 0x12 */ u8 field_12[4][3];
-} Row1DDA8; /* 0x1E */
+} EnemySetDigiRow; /* 0x1E */
 
 typedef struct {
     u8 _pad00[0x8];
-    /* 0x08 */ Row1DDA8 rows[1];
+    /* 0x08 */ EnemySetDigiRow rows[1];
 } Tbl1DDA8;
 
 /* Second output record of Enemy_InitRosterEntry. */
@@ -2675,7 +2675,7 @@ typedef struct {
     /* 0x20 */ u8 flags600[0x8];    /* ids 600..699 */
     /* 0x28 */ u8 flags700[0x8];    /* ids 700..799 */
     /* 0x30 */ u8 flags800[0x10];   /* ids 800..999 */
-    /* 0x40 */ s32 field_40;        /* ids 1000..1999: value id - 1900 */
+    /* 0x40 */ s32 progress;        /* ids 1000..1999: value id - 1900 */
 } EventFlags; /* size 0x44 */
 extern EventFlags Flag_Bits;
 

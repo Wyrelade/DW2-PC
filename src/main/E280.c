@@ -128,20 +128,20 @@ void Enemy_InitRosterEntry(s32 a0, s32 a1, DigiRosterEntry *e, Out1DDA8 *o) {
         for (i = 0; i < 14; i++) {
             e->name[i] = name[i];
         }
-        e->level = t->rows[a1].field_A;
-        e->exp = t->rows[a1].field_6;
+        e->level = t->rows[a1].level;
+        e->exp = t->rows[a1].exp;
         e->attack = t->rows[a1].field_B;
         e->defense = t->rows[a1].field_C;
         e->speed = t->rows[a1].field_E;
-        e->attr[0] = t->rows[a1].field_F;
-        e->attr[1] = t->rows[a1].field_10;
-        e->attr[2] = t->rows[a1].field_11;
+        e->attr[0] = t->rows[a1].attr0;
+        e->attr[1] = t->rows[a1].attr1;
+        e->attr[2] = t->rows[a1].attr2;
         for (i = 3; i < 12; i++) {
             e->attr[i] = 0;
         }
-        o->skill0 = t->rows[a1].field_F;
-        o->skill1 = t->rows[a1].field_10;
-        o->skill2 = t->rows[a1].field_11;
+        o->skill0 = t->rows[a1].attr0;
+        o->skill1 = t->rows[a1].attr1;
+        o->skill2 = t->rows[a1].attr2;
         o->field_9[0] = t->rows[a1].field_12[0][1];
         o->field_9[1] = t->rows[a1].field_12[1][1];
         o->field_9[2] = t->rows[a1].field_12[2][1];

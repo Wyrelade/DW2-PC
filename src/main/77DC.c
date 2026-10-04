@@ -1219,7 +1219,7 @@ void Menu_SkillListDraw(Actor *actor) {
             if (w->field_AC[k].field_0 != 0) {
                 tmp = w->cursors[k];
                 tmp.field_2 = w->cursors[k].field_2 - w->scroll[k];
-                Menu_SetPartsGridPos(obj, 0x4000, (s32 *)&tmp, &w->grids[k].field_0);
+                Menu_SetPartsGridPos(obj, 0x4000, (s32 *)&tmp, &w->grids[k].cols);
                 Gfx_SetPartsPalette(obj, 0x4000, (actor->elapsed >> 2) & 3);
             } else {
                 v |= 0x4000;
@@ -3023,16 +3023,16 @@ void Gfx_DrawPartsEx(void *arg0, s32 arg1) {
                     goto Ladv;
                 }
             }
-            if (Gfx_PartRotCache.field_0 == *(s32 *)&s2->rotX &&
-                Gfx_PartRotCache.field_4 == s2->rotZ &&
-                Gfx_PartRotCache.field_8 == s2->scaleX &&
-                Gfx_PartRotCache.field_C == s2->scaleY) {
+            if (Gfx_PartRotCache.rotXY == *(s32 *)&s2->rotX &&
+                Gfx_PartRotCache.rotZ == s2->rotZ &&
+                Gfx_PartRotCache.scaleX == s2->scaleX &&
+                Gfx_PartRotCache.scaleY == s2->scaleY) {
             } else {
                 *(Agg1D6B4 *)&Gfx_PartRotCache = *(Agg1D6B4 *)&s2->rotX;
-                Gfx_PartRotCache.field_8 = s2->scaleX;
-                Gfx_PartRotCache.field_C = s2->scaleY;
-                RotMatrixYXZ(&Gfx_PartRotCache, (Obj209 *)&Gfx_PartRotCache.field_18);
-                ScaleMatrix((Obj209 *)&Gfx_PartRotCache.field_18, &Gfx_PartRotCache.field_8);
+                Gfx_PartRotCache.scaleX = s2->scaleX;
+                Gfx_PartRotCache.scaleY = s2->scaleY;
+                RotMatrixYXZ(&Gfx_PartRotCache, (Obj209 *)&Gfx_PartRotCache.matrix);
+                ScaleMatrix((Obj209 *)&Gfx_PartRotCache.matrix, &Gfx_PartRotCache.scaleX);
             }
             Gfx_DrawPartQuadsRot(s2, &Gfx_PartRotMatrix, s4, s3);
         }

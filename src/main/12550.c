@@ -59,5 +59,5 @@ void Save_ClearEventFlags(void) {
         p->d[0] = 0;
         p = (SaveEventFlags *)((u8 *)p - 1);
     } while (--i >= 0);
-    Flag_Bits.field_40 = 0;
+    Flag_Bits.progress = 0;
 }
