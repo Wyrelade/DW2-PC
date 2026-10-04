@@ -12,6 +12,8 @@ INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", Pad_InitDriverHooks);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", Pad_ResetPortState);
 
+/* Unnamed: Psy-Q code: libpad internal (game-named Pad_* family): top-level SIO step, calls
+ * Pad_ConsumeSendCmd/func_80025034/func_8002533C. */
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_8002485C);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", Pad_ConsumeSendCmd);
@@ -22,18 +24,27 @@ INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", Pad_AllocActPower);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", Pad_GetPortBlock);
 
+/* Unnamed: Psy-Q code: libpad internal: config-mode command sender (Pad_CmdConfigMode +
+ * Pad_SendInfoCmd); uncalled. */
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_80024CB8);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", Pad_HandleReply);
 
+/* Unnamed: Psy-Q code: libpad internal: per-port state update after a transfer (retry counters
+ * 0x4A/0x49, optional hook D_80048E1C). */
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_80025034);
 
+/* Unnamed: Psy-Q code: libpad internal predicate on a port block (0xE6 / 0x46 == 0xFF);
+ * uncalled. */
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_80025114);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", Pad_VBlankIrqVerify);
 
+/* Unnamed: Psy-Q code: libpad internal: SIO runner (Pad_SioRunStep + func_8002533C); uncalled. */
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_800251AC);
 
+/* Unnamed: Psy-Q code: libpad internal: SIO byte exchange with timeout
+ * (Pad_SetTimeout/Pad_IsTimedOut/Pad_WaitSioRx). */
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_8002533C);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", Pad_SioRunStep);
@@ -42,6 +53,8 @@ INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", Pad_SioXferDataByte);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", Pad_SioExchangeByte);
 
+/* Unnamed: Psy-Q code: libpad internal: ack IRQ7 (I_STAT = ~0x80), wait SIO stat bit7 with
+ * timeout, then SIO_CTRL |= 0x10 (ack). */
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_80025C00);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", Pad_WaitSioRx);
@@ -70,12 +83,15 @@ INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", Pad_CmdQueryAct);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", Pad_CmdQueryComb);
 
+/* Unnamed: Psy-Q code: libpad internal: port block init (0x37 = 0x4B, clears 0x2C/0x36), called
+ * by Pad_SendQueryInfoCmd. */
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_800265FC);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", Pad_SetTimeout);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", Pad_IsTimedOut);
 
+/* Unnamed: Psy-Q code: libpad internal: SIO step using Pad_SioXferDataByte; uncalled. */
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_800266D0);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", Pad_SioStepSendCmd);
@@ -156,8 +172,14 @@ INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", SetDrawArea);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", SetDrawOffset);
 
+/* Unnamed: Psy-Q code, maybe SetDrawEnv2: libgpu: DR_ENV builder
+ * (get_cs/get_ce/get_ofs/get_mode/get_tw, bg always FillRect 0x02); no callers; twin of
+ * func_800284C4, which twin is SetDrawEnv vs SetDrawEnv2 not certain. */
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_800282CC);
 
+/* Unnamed: Psy-Q code, maybe SetDrawEnv: libgpu: DR_ENV builder called by
+ * PutDrawEnv/DrawOTagEnv; bg clear uses a tile poly 0x60 when x or w is not 64-aligned, else
+ * FillRect 0x02; SetDrawEnv vs SetDrawEnv2 not certain. */
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_800284C4);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", get_mode);
@@ -251,10 +273,17 @@ INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", SetDrawMode);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", GsInitGraph);
 
+/* Unnamed: Psy-Q code: libgs internal called only by GsInitGraph: ResetGraph + DRAWENV/DISPENV
+ * setup, PutDrawEnv, GetVideoMode, PutDispEnv; SDK helper name unknown. */
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_8002ACC8);
 
+/* Unnamed: Psy-Q code, maybe GsInitGraph2: libgs: same 5-arg signature as GsInitGraph
+ * (x,y,intmode,dith,vrammode), fills the env globals without ResetGraph, then func_8002AE4C; no
+ * callers. */
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_8002ADE4);
 
+/* Unnamed: Psy-Q code: libgs internal (w,h): stores screen w/h, aspect (h<<14)/w, builds
+ * identity matrices into GsIDMATRIX-like globals; called by GsInitGraph and func_8002ADE4. */
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_8002AE4C);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", GsSortClear);
@@ -283,6 +312,8 @@ INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", GsSetLightMode);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", GsSetAmbient);
 
+/* Unnamed: Psy-Q code: libgs internal called by GsInitGraph: InitGeom(); SetFarColor(0,0,0);
+ * SetGeomOffset(0,0); clears 2 globals; name unknown. */
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_8002BB84);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", GsGetTimInfo);
@@ -307,8 +338,12 @@ INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", sin_1);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", rcos);
 
+/* Unnamed: Psy-Q code: libgte/libgs math internal (constant 0x5D50AD, shift-add iteration), only
+ * caller func_8002CDB8. */
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_8002CC64);
 
+/* Unnamed: Psy-Q code: libgte/libgs math: normalises arg with Gte_CountLeadingZeros, calls
+ * func_8002CC64 and rescales (sqrt-like); called by GsSetRefView2. */
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_8002CDB8);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_8002CE54);
@@ -353,6 +388,9 @@ INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", RotMatrixYXZ);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", ratan2);
 
+/* Unnamed: Psy-Q code, maybe _patch_gte: libgte internal, first call of InitGeom: B0(0x56)
+ * GetC0Table, compares/copies the handwritten template func_8002DB70 into the exception handler
+ * at +0x28, FlushCache. */
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_8002DAC4);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_8002DB70);
@@ -365,6 +403,8 @@ INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", StSetRing);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", CdInit);
 
+/* Unnamed: Psy-Q code, maybe CdReset: libcd internal used only by CdInit: CD_init() then
+ * CD_initvol(), returns 1 on success; no mode arg, so not the known CdReset(mode) body. */
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_8002DC94);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", def_cbsync);
@@ -379,14 +419,22 @@ INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", CdPosToInt);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", CdRead2);
 
+/* Unnamed: Psy-Q code: libcd stream: ready callback installed by CdRead2, body is just
+ * StCdInterrupt(); name unknown. */
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_8002DE68);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", StClearRing);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", StUnSetRing);
 
+/* Unnamed: Psy-Q code: libcd stream internal: data/DMA-end callback installed by CdRead2 via
+ * CdDataCallback; advances ring index D_80061B20, copies last CdlLOC, calls optional user cb
+ * D_80061B50. */
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_8002DF74);
 
+/* Unnamed: Psy-Q code, maybe StGetBackloc: libcd stream: if not busy, loc =
+ * CdIntToPos(CdPosToInt(last pos)+1), returns a ring global; no callers; return semantics
+ * unverified. */
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_8002E000);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", StSetStream);
@@ -425,6 +473,8 @@ INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", CD_init);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", CD_datasync);
 
+/* Unnamed: Psy-Q code: libcd internal setter D_8004E970 = a0 (between CD_datasync and the intr
+ * callback); no callers. */
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_8003024C);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", Cd_IntrCallback);
@@ -457,8 +507,12 @@ INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", CD_getsector);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", CdDataCallback);
 
+/* Unnamed: Psy-Q code: libcd: alternate ready-callback setter (swap D_80061BA4, return old);
+ * StUnSetRing uses it when D_8004E6E8==1. */
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_80030A64);
 
+/* Unnamed: Psy-Q code: libcd: alternate data-callback setter DMACallback(3, cb), duplicate of
+ * CdDataCallback; StUnSetRing uses it when D_8004E6E8==1. */
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_80030A84);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", VSync);
@@ -539,8 +593,12 @@ INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", _SsSndCrescendo);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", _SsSndPause);
 
+/* Unnamed: Psy-Q code: libsnd internal: (s16 sep, s16 seq) wrapper of func_80031DA4, called by
+ * SsSeqCalledTbyT for each playing score. */
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_80031D74);
 
+/* Unnamed: Psy-Q code: libsnd internal: per-score tick/delta countdown, loops _SsGetSeqData
+ * until the delta is consumed. */
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_80031DA4);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", Snd_SeqEndOfTrack);
@@ -685,6 +743,8 @@ INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", SsSetTableSize);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", SsSetTickMode);
 
+/* Unnamed: Psy-Q code: libsnd: byte-identical copy of SsSepSetVol (sep, seq, voll, volr) placed
+ * before SsSeqSetVol; uncalled, SDK name unknown. */
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_80035B54);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", SsSeqSetVol);
@@ -725,8 +785,12 @@ INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", _SsVmKeyOn);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", _SsVmKeyOff);
 
+/* Unnamed: Psy-Q code: libsnd: (vab, prog, note, -, voll, volr) -> _SsVmKeyOn(0x21, ...) with
+ * pan from voll/volr; uncalled key-on utility, exact SDK name not certain. */
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_80037620);
 
+/* Unnamed: Psy-Q code: libsnd: (vab, prog, note) -> _SsVmKeyOff(0x21, ...); uncalled key-off
+ * pair of func_80037620. */
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_8003770C);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", _SsVmAlloc);
@@ -751,6 +815,8 @@ INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", _SsVmPBVoice);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", _SsVmPitchBend);
 
+/* Unnamed: Psy-Q code: libsnd internal: _SsVmVSetUp(a0,a1) then voice table
+ * D_80062CFC[a1].field_01 = a2; called by _SsContExpression. */
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_80038B74);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", _SsVmSetSeqVol);
@@ -769,10 +835,16 @@ INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", SsVabClose);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", SsVabOpenHead);
 
+/* Unnamed: Psy-Q code: libsnd internal: SpuMalloc allocation callback passed by SsVabOpenHead to
+ * _SsVabOpenHeadWithMode (on failure clears the slot and transfer state). */
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_80039A78);
 
+/* Unnamed: Psy-Q code, maybe SsVabOpenHeadSticky: libsnd: _SsVabOpenHeadWithMode(addr, vabid,
+ * fixed-addr cb, sbaddr); byte twin of func_80039B18; Sticky vs FakeHead order not certain. */
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_80039AE4);
 
+/* Unnamed: Psy-Q code, maybe SsVabFakeHead: libsnd: byte-identical twin of func_80039AE4; Sticky
+ * vs FakeHead order not certain. */
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_80039B18);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", Snd_VabFixedAddrAlloc);
@@ -799,6 +871,8 @@ INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", _spu_FwriteByIO);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", _spu_FiDMA);
 
+/* Unnamed: Psy-Q code: libspu internal: SPU-to-RAM DMA read (reg 0x1A6 = addr, 0x1AA |= 0x30,
+ * DMA4 MADR/BCR, CHCR 0x01000200); uncalled, name unknown. */
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_8003A6D0);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", _spu_t);
@@ -901,12 +975,17 @@ INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", Pad_SetInitialized);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", Pad_IsInitialized);
 
+/* Unnamed: Psy-Q code: libapi pad2 layer: patches BIOS pad (func_8003D964/D8EC), ChangeClearPAD,
+ * installs IRQ handler func_8003D770, PAD_init; uncalled (InitPAD2/PAD_init2-like, not certain). */
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_8003D620);
 
+/* Unnamed: Psy-Q code: libapi pad2 layer: same as func_8003D620 but via InitPAD; uncalled. */
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_8003D6B0);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", Pad_Start);
 
+/* Unnamed: Psy-Q code: libapi internal: SysDeqIntRP/SysEnqIntRP(1, node{func_8003D7E8,
+ * func_8003D850}) inside a critical section. */
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_8003D770);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_8003D7E8);
@@ -919,10 +998,16 @@ INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", StartPAD);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", PAD_init);
 
+/* Unnamed: Psy-Q code: libapi internal: two trampolines jumping through BIOS pointers
+ * jtbl_80062F18/1C saved by func_8003D8EC; called by Pad_Start. */
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_8003D8C4);
 
+/* Unnamed: Psy-Q code: libapi internal: B0(0x57) GetB0Table, saves B0+0x884/0x894 pad pointers,
+ * zeroes 11 words at +0x594, FlushCache (BIOS pad patch). */
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_8003D8EC);
 
+/* Unnamed: Psy-Q code: libapi internal: B0(0x57), zeroes 9 words at B0 table +0x62C, FlushCache
+ * (BIOS pad patch). */
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_8003D964);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", InitCARD);
@@ -931,6 +1016,8 @@ INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", StartCARD);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", StopCARD);
 
+/* Unnamed: Psy-Q code: libapi card patch: B0(0x57), zeroes word at +0x1988, FlushCache; called
+ * by Card_Init. */
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_8003DA04);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_8003DA48);
@@ -939,12 +1026,20 @@ INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_8003DA74);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_8003DAB8);
 
+/* Unnamed: Psy-Q code: libapi card patch: B0(0x56) C0 table, copies template func_8003DAB8 into
+ * the handler, stores 0x0000DFFC pointer; called by Card_Init. */
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_8003DAE0);
 
+/* Unnamed: Psy-Q code: libapi card patch: B0(0x57), copies 0x14-byte template into B0+0x9C8;
+ * called by Card_Init. */
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_8003DB74);
 
+/* Unnamed: Psy-Q code: libapi card patch: copies template func_8003DA48..func_8003DAB8 to
+ * 0x0000DF80 (low RAM); called by Card_Init. */
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_8003DBE4);
 
+/* Unnamed: Psy-Q code: libapi card patch undo: B0(0x56), writes the 3-nop template D_8003DC94
+ * back at C0+0x70; called by Card_Stop. */
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_8003DC24);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", Card_SaveCallback);
@@ -1011,8 +1106,12 @@ INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", close);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", nextfile);
 
+/* Unnamed: Psy-Q code: libcard/libmcrd internal: directory walker using firstfile + strcmp on
+ * D_80062FE8, stores callback D_80062FE0; called by MemCardGetDirentry. */
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_8003F5C4);
 
+/* Unnamed: Psy-Q code: libcard/libmcrd internal: nextfile-side walker paired with func_8003F5C4
+ * (callback via D_80062FE0). */
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_8003F760);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", firstfile);
@@ -1055,10 +1154,13 @@ INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", Card_OnHwTimeout);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", Card_OnHwNewCard);
 
+/* Unnamed: Psy-Q code: libmcrd: same body as MemCardInit (Card_Init, Card_Start, _bu_init) in
+ * another object; uncalled. */
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_8003FBC4);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", Card_OpenEvents);
 
+/* Unnamed: Psy-Q code: libmcrd: same body as MemCardEnd (Card_Stop); uncalled. */
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_8003FDD0);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", Card_CloseEvents);
