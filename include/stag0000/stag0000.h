@@ -562,6 +562,7 @@ extern s32 D_8005F724;
 extern s32 Sys_FrameDelta;
 extern s32 Sys_GameMode;
 extern s32 Sys_PacketCursor;
+extern TaskDesc Stg00_ScrollViewDesc;
 extern s32 Stg00_ScrollTileTex[];
 extern s32 Stg00_WindowTestMasks[];
 extern Stg00PartMasks Stg00_WindowTestParts[];
@@ -631,6 +632,22 @@ void Stg00_CamMoveViewPoint(Actor *arg0, s32 arg1, s32 arg2, s32 arg3);
 void Stg00_CamMoveRefPoint(Actor *arg0, s32 arg1, s32 arg2, s32 arg3);
 void Stg00_CamMoveOrigin(Actor *arg0, s32 arg1, s32 arg2, s32 arg3);
 void Stg00_CamRotate(Actor *arg0, s32 arg1, s32 arg2, s32 arg3);
+
+/* Task descriptors (Stg00_TaskDescs rows). */
+extern TaskDesc Stg00_StageSetupDesc;
+extern TaskDesc Stg00_DungSelDesc;
+extern TaskDesc Stg00_FightBgDesc;
+extern TaskDesc Stg00_DigiViewDesc;
+extern TaskDesc Stg00_LineupDesc;
+extern TaskDesc Stg00_VideoModeDesc;
+extern TaskDesc Stg00_GroupViewDesc;
+extern TaskDesc Stg00_DigiModelDesc;
+extern TaskDesc Stg00_PopupDesc;
+extern TaskDesc Stg00_XaPlayDesc;
+extern TaskDesc Stg00_WindowTestDesc;
+extern TaskDesc Stg00_SoundTestDesc;
+extern TaskDesc Stg00_CameraDesc;
+extern TaskDesc *Stg00_TaskDescs[];
 
 /* ---- functions ---- */
 

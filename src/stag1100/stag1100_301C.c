@@ -14,9 +14,9 @@ TaskDesc Stg11_VsPartyDesc = {
 INCLUDE_BIN(Stg11_CardIconTim1, "assets/stag1100/card_icon1.tim");
 INCLUDE_BIN(Stg11_CardIconTim2, "assets/stag1100/card_icon2.tim");
 INCLUDE_BIN(Stg11_CardIconTim3, "assets/stag1100/card_icon3.tim");
-BIN_LABEL(Stg11_CardIconImage, Stg11_CardIconTim1, 0x14);
-BIN_LABEL(Stg11_CardIcon2, Stg11_CardIconTim2, 0x40);
-BIN_LABEL(Stg11_CardIcon3, Stg11_CardIconTim3, 0x40);
+DATA_LABEL(Stg11_CardIconImage, Stg11_CardIconTim1, 0x14);
+DATA_LABEL(Stg11_CardIcon2, Stg11_CardIconTim2, 0x40);
+DATA_LABEL(Stg11_CardIcon3, Stg11_CardIconTim3, 0x40);
 TaskDesc Stg11_CardTaskDesc = {
     (TaskInitFn)Stg11_CardTaskInit, Stg11_CardTaskUpdate, Stg11_CardTaskDestroy, (TaskFn)Stg11_CardTaskDraw,
     0x22044, 0,

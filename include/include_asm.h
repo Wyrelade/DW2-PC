@@ -95,13 +95,15 @@ __asm__(".include \"include/labels.inc\"\n");
         "    .incbin \"" PATH "\"\n" \
         ".previous" \
     )
-/* BIN_LABEL: a global label OFFSET bytes into an INCLUDE_BIN (code that refers to a part
- * of the content, e.g. the CLUT of a TIM, by its own symbol). */
-#define BIN_LABEL(NAME, BIN, OFFSET) \
-    __asm__(".global " #NAME "\n.set " #NAME ", " #BIN " + " #OFFSET)
+/* DATA_LABEL: a global symbol OFFSET bytes into a data object or INCLUDE_BIN, for code that
+ * refers to that spot by a symbol of its own type: a part of opaque content (the CLUT of a
+ * TIM), or an object the code reads as a plain array (cc1 only keeps the retail codegen
+ * when the code indexes an array-typed symbol, not a cast of the object's address). */
+#define DATA_LABEL(NAME, OBJECT, OFFSET) \
+    __asm__(".global " #NAME "\n.set " #NAME ", " #OBJECT " + " #OFFSET)
 #else
 #define INCLUDE_BIN(NAME, PATH)
-#define BIN_LABEL(NAME, BIN, OFFSET)
+#define DATA_LABEL(NAME, OBJECT, OFFSET)
 #endif
 
 /* ASM_SOURCE: a function that was hand-written assembly in the original build, restored as

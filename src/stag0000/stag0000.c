@@ -1,6 +1,24 @@
 #include "common.h"
 #include "stag0000/stag0000.h"
 
+/* Task callbacks this unit defines further down (the descriptors come first). */
+void Stg00_StageSetup(Actor *arg0);
+void Stg00_ScrollViewTask(Actor *arg0);
+void Stg00_ScrollViewDraw(Actor *arg0);
+void Stg00_DungSelInit(void);
+void Stg00_DungSelTask(Actor *arg0);
+void Stg00_DungSelDestroy(Actor *arg0);
+void Stg00_DungSelDraw(void);
+
+TaskDesc Stg00_StageSetupDesc = { 0, Stg00_StageSetup, Task_DefaultDestroy, 0, 4, 0x20 };
+TaskDesc Stg00_ScrollViewDesc = { 0, Stg00_ScrollViewTask, Task_DefaultDestroy, Stg00_ScrollViewDraw, 8, 0 };
+/* Stg00_ScrollViewDraw reads this descriptor and the 14 words after it as texture ids
+ * (a debug view; the table it meant is not in the overlay). */
+DATA_LABEL(Stg00_ScrollTileTex, Stg00_ScrollViewDesc, 0);
+TaskDesc Stg00_DungSelDesc = {
+    (TaskInitFn)Stg00_DungSelInit, Stg00_DungSelTask, Stg00_DungSelDestroy, (TaskFn)Stg00_DungSelDraw, 0x94, 0,
+};
+
 void Stg00_StageSetup(Actor *arg0) {
     s32 *slot = (s32 *)arg0->u34.children;
     Stg00TaskArgs a1;

@@ -7,3 +7,4 @@ assets/stag1100/card_icon1.tim       dumps/disc/AAA/3.PRO/STAG1100.PRO    0x4ED0
 assets/stag1100/card_icon2.tim       dumps/disc/AAA/3.PRO/STAG1100.PRO    0x4F90  0xC0
 assets/stag1100/card_icon3.tim       dumps/disc/AAA/3.PRO/STAG1100.PRO    0x5050  0xC0
 assets/stag4000/automap_clut.bin     dumps/disc/AAA/3.PRO/STAG4000.PRO    0xF5E8  0x40
+assets/stag0000/font_glyphs.bin      dumps/disc/AAA/3.PRO/STAG0000.PRO    0x5770  0x200

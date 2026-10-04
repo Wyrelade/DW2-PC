@@ -6,8 +6,6 @@ Game code must be C. Allowed:
     (INCLUDE_ASM / INCLUDE_RODATA of the split library asm).
   * The crt0 startup, hand asm in the original: ASM_SOURCE("src/main/asm/crt0", ...)
     and the .s files in src/main/asm/crt0/.
-  * stag0000 D_800634A8: cc1's string pool for the stag0000 .data pointer tables.
-    It goes away when those tables become C (.data split, issue #6).
 
 Usage: python3 tools/check_asm_guard.py   (exit 1 on a violation)
 """
@@ -19,9 +17,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 PSYQ_FILES = {"src/main/psyq.c", "src/stag1000/stag1000_libpress.c"}
 CRT0_DIR = "src/main/asm/crt0"
-ALLOWED = {
-    ("src/stag0000/stag0000_4668.c", "INCLUDE_RODATA", "D_800634A8"),
-}
+ALLOWED = set()
 MACRO = re.compile(r"\b(INCLUDE_ASM|INCLUDE_RODATA|ASM_SOURCE)\s*\(\s*\"([^\"]*)\"\s*,\s*(\w+)\s*\)")
 
 

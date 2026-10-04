@@ -30,15 +30,9 @@ SECTIONS
         build/USA/src/stag0000/stag0000_1AE4.c.o(.data);
         build/USA/src/stag0000/stag0000_39F0.c.o(.data);
         build/USA/src/stag0000/stag0000_4668.c.o(.data);
-        build/USA/asm/USA/stag0000/data/stag0000_data.data.s.o(.data);
         . = ALIGN(., 4);
         stag0000_DATA_END = .;
         stag0000_DATA_SIZE = ABSOLUTE(stag0000_DATA_END - stag0000_DATA_START);
-    }
-    stag0000_bss_VRAM = ADDR(.stag0000_bss);
-    .stag0000_bss (NOLOAD) : SUBALIGN(4)
-    {
-        FILL(0x00000000);
         stag0000_BSS_START = .;
         build/USA/asm/USA/stag0000/data/stag0000_rodata.rodata.s.o(.bss);
         build/USA/src/stag0000/stag0000.c.o(.bss);

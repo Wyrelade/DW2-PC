@@ -252,7 +252,7 @@ typedef struct {
 /* Memory card icon image: CLUT then the first icon frame. The three icon frames are
    TIM files (16x16 4bpp with CLUT, 0xC0 bytes each) linked into .data with INCLUDE_BIN;
    the code refers to the CLUT block of the first (from its CLUT data on, this struct)
-   and to the pixels of the other two (BIN_LABEL in stag1100_301C.c). */
+   and to the pixels of the other two (DATA_LABEL in stag1100_301C.c). */
 typedef struct {
     /* 0x00 */ Stg11Clut clut;
     u8 _pad20[0xC];

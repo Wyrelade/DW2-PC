@@ -4,6 +4,40 @@
 #include "stag0000/stag0000_1AE4_funcs.h"
 #include "stag0000/stag0000_39F0_funcs.h"
 
+/* Task callbacks this unit defines further down (the descriptors come first). */
+void Stg00_PopupInit(Actor *arg0, Stg00Vec3 *arg1);
+void Stg00_PopupTask(Actor *arg0);
+void Stg00_PopupDraw(Actor *arg0);
+void Stg00_XaPlayInit(Actor *arg0, Stg00Vec3 *arg1);
+void Stg00_XaPlayTask(Actor *arg0);
+void Stg00_XaPlayDestroy(Actor *arg0);
+void Stg00_WindowTestTask(Actor *arg0);
+void Stg00_WindowTestDraw(Actor *arg0);
+void Stg00_SoundTestTask(Actor *arg0);
+void Stg00_SoundTestDraw(void);
+void Stg00_CameraInit(Actor *arg0, Stg00CameraArg *arg1);
+void Stg00_CameraTask(Actor *arg0);
+void Stg00_CameraDraw(Actor *arg0);
+
+s32 Stg00_PopupItemMasks[] = { 0xB, 0xD, 0xE, 0x7 };
+s32 Stg00_PopupNumMasks[] = { 0x16, 0xD, 0xB };
+s32 Stg00_PopupNumParts[] = { 8, 0x10, 0x10 };
+TaskDesc Stg00_PopupDesc = {
+    (TaskInitFn)Stg00_PopupInit, Stg00_PopupTask, Task_DefaultDestroy, Stg00_PopupDraw, 0x14, 0,
+};
+/* Task_DescTable[1]: task ids 0x100-0x10D. */
+TaskDesc *Stg00_TaskDescs[] = {
+    &Stg00_StageSetupDesc, &Stg00_WindowTestDesc, &Stg00_VideoModeDesc, &Stg00_DigiViewDesc,
+    &Stg00_GroupViewDesc, &Stg00_DigiModelDesc, &Stg00_FightBgDesc, &Stg00_SoundTestDesc,
+    &Stg00_LineupDesc, &Stg00_CameraDesc, &Stg00_DungSelDesc, &Stg00_PopupDesc,
+    &Stg00_XaPlayDesc, &Stg00_ScrollViewDesc,
+};
+s32 Stg00_XaTrackStart[] = { 0, 0x546, 0xB22, 0x10FE, 0x1770, 0x1F0E };
+s32 Stg00_XaTrackLength[] = { 0x2EE, 0x3A2, 0x456, 0x474, 0x528, 0x672 };
+TaskDesc Stg00_XaPlayDesc = {
+    (TaskInitFn)Stg00_XaPlayInit, Stg00_XaPlayTask, Stg00_XaPlayDestroy, 0, 0x14, 0,
+};
+
 void Stg00_DigiModelDraw(Actor *arg0) {
     Stg00ModelWork *w = (Stg00ModelWork *)arg0->work;
 
@@ -138,7 +172,70 @@ void Stg00_PopupDraw(Actor *arg0) {
         Gfx_DrawParts(e);
     }
 }
-INCLUDE_RODATA("asm/USA/stag0000/rodata", D_800634A8);
+
+/* Sound test banks: bank name, then its sound files. cc1 writes each table's strings to
+ * .rodata right here, last entry first (the retail pool at 0x800634A8). */
+u8 *D_80068FE8[] = {
+    "COMM00", "BGM_0000", "BGM_0015", "BOX_OPEN", "BUG_0000", "BUG_0001", "BUG_0002", "BUG_0003",
+    "BUG_0004", "BUG_0005", "COUNT000", "CURSOR00", "CURSOR01", "CURSOR02", "CURSOR03", "CURSOR04",
+    "CURSOR05", "CURSOR06", "CURSOR07", "CURSOR08", "CURSOR09", "CURSOR10", "DEBAGU00", "DEBAGU01",
+    "ENEMYOFF", "EXITGATE", "ITEMGET0", "ITEMGET1", "ITEMHIT0", "ITEMLOSE", "ITEMUSE0", "ITEMUSE1",
+    "ITEMUSE2", "JISIN000", "LIFT0000", "NAME0001", "NEXTGATE", "PLATE000", "PLATE001", "PLATE002",
+    "PLAYER00", "PLAYER01", "PLAYER02", "SIREN000", "TAIMLVUP", "TANK0000", "TANK0001", "TANK0002",
+    "TANK0003", "TANK0004", "TITLE000", "TRANS000", "TRAP0000", "TRAP0001", "TRAP0002", "TRAP0003",
+    "WINDOW00", "WINDOW01", "WINDOW02", "WINDOW03", 0,
+};
+u8 *D_800690DC[] = { "MAP001", "BGM_0014", 0 };
+u8 *D_800690E8[] = { "MAP002", "BGM_0019", "JOGRESS2", 0 };
+u8 *D_800690F8[] = { "MAP003", "BGM_0003", "JOGRESS1", 0 };
+u8 *D_80069108[] = { "MAP004", "BGM_001A", "JOGRESS3", 0 };
+u8 *D_80069118[] = { "MAP005", "BGM_0005", 0 };
+u8 *D_80069124[] = { "MAP006", "BGM_0002", 0 };
+u8 *D_80069130[] = { "MAP007", "BGM_0009", "JOGRESS4", 0 };
+u8 *D_80069140[] = { "MAP008", "BGM_000A", 0 };
+u8 *D_8006914C[] = { "MAP009", "BGM_000B", "JOGRESS6", 0 };
+u8 *D_8006915C[] = { "MAP010", "BGM_000D", 0 };
+u8 *D_80069168[] = { "MAP011", "BGM_0008", "JOGRESS5", 0 };
+u8 *D_80069178[] = { "MAP012", "BGM_0006", 0 };
+u8 *D_80069184[] = { "SAVE00", "SAVE0000", 0 };
+u8 *D_80069190[] = { "SHOP00", "SHOP0000", 0 };
+u8 *D_8006919C[] = { "BOSS00", "BOSS0000", "WF00_000", 0 };
+u8 *D_800691AC[] = { "BOSS01", "BOSS0001", "WF00_001", 0 };
+u8 *D_800691BC[] = { "BOSS02", "BOSS0002", "WF02_000", 0 };
+u8 *D_800691CC[] = { "BOSS03", "BOSS0003", "WF03_000", 0 };
+u8 *D_800691DC[] = { "BOSS04", "BOSS0004", "WF04_000", 0 };
+u8 *D_800691EC[] = { "BOSS05", "BOSS0005", "WF04_001", 0 };
+u8 *D_800691FC[] = { "BOSS06", "BOSS0006", "WF20_000", 0 };
+u8 *D_8006920C[] = { "BOSS07", "BOSS0007", "BOSS0008", "WF21_000", 0 };
+u8 *D_80069220[] = { "VS2P00", "BUTTON00", "VSDEMO00", "VSMAIN00", "VSMENU00", 0 };
+u8 *D_80069238[] = { "SE_D00", "BAT_T000", "BAT_T001", "BAT_T002", "BAT_T004", "DOWN_000", "DOWN_001", "ENCOUNT0", 0 };
+/* Unreferenced: the byte between the last string and .text (garbage in retail). */
+const u8 D_80063A73 = 0x25;
+u8 **Stg00_SoundBanks[] = {
+    D_80068FE8, D_800690DC, D_800690E8, D_800690F8, D_80069108, D_80069118, D_80069124,
+    D_80069130, D_80069140, D_8006914C, D_8006915C, D_80069168, D_80069178, D_80069184,
+    D_80069190, D_8006919C, D_800691AC, D_800691BC, D_800691CC, D_800691DC, D_800691EC,
+    D_800691FC, D_8006920C, D_80069220, D_80069238, 0,
+};
+s32 Stg00_WindowTestMasks[] = { 0xA2C, 0x8B2, 0x2CA };
+Stg00PartMasks Stg00_WindowTestParts[] = {
+    { 0x80, 0x100, 0x180, 0x1E00 },
+    { 0x200, 0x400, 0x600, 0x1980 },
+    { 0x800, 0x1000, 0x1800, 0x780 },
+};
+TaskDesc Stg00_WindowTestDesc = { 0, Stg00_WindowTestTask, Task_DefaultDestroy, Stg00_WindowTestDraw, 0x10, 0 };
+/* "SOUNDTEST  VAB SEQ" in the game's glyph encoding (0x0A 'A', 0xFE space, 0xFF end). */
+u8 Stg00_SoundTestTitle[] = {
+    0x1C, 0x18, 0x1E, 0x17, 0x0D, 0x1D, 0x0E, 0x1C, 0x1D, 0xFE, 0xFE, 0x1F, 0x0A, 0x0B, 0xFE, 0x1C, 0x0E, 0x1A, 0xFF,
+};
+TaskDesc Stg00_SoundTestDesc = {
+    0, Stg00_SoundTestTask, Task_DefaultDestroy, (TaskFn)Stg00_SoundTestDraw, 0x1C, 0,
+};
+TaskDesc Stg00_CameraDesc = {
+    (TaskInitFn)Stg00_CameraInit, Stg00_CameraTask, Task_DefaultDestroy, Stg00_CameraDraw, 0x88, 0,
+};
+
+u8 Stg00_SoundLabelBuf[2][10];
 
 void Stg00_XaPlayInit(Actor *arg0, Stg00Vec3 *arg1) {
     *(Stg00Vec3 *)arg0->work = *arg1;
