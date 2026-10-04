@@ -30,6 +30,7 @@ SECTIONS
         build/USA/src/main/6530.c.o(.rodata);
         build/USA/src/main/77DC.c.o(.rodata);
         build/USA/src/main/E280.c.o(.rodata);
+        build/USA/src/main/105BC.c.o(.rodata);
         build/USA/src/main/12550.c.o(.rodata);
         build/USA/src/main/12654.c.o(.rodata);
         build/USA/src/main/13584.c.o(.rodata);
@@ -45,6 +46,7 @@ SECTIONS
         build/USA/src/main/6530.c.o(.text);
         build/USA/src/main/77DC.c.o(.text);
         build/USA/src/main/E280.c.o(.text);
+        build/USA/src/main/105BC.c.o(.text);
         build/USA/src/main/12550.c.o(.text);
         build/USA/src/main/12654.c.o(.text);
         build/USA/src/main/13584.c.o(.text);
@@ -61,6 +63,7 @@ SECTIONS
         build/USA/src/main/6530.c.o(.data);
         build/USA/src/main/77DC.c.o(.data);
         build/USA/src/main/E280.c.o(.data);
+        build/USA/src/main/105BC.c.o(.data);
         build/USA/src/main/12550.c.o(.data);
         build/USA/src/main/12654.c.o(.data);
         build/USA/src/main/13584.c.o(.data);
@@ -83,6 +86,7 @@ SECTIONS
         build/USA/src/main/6530.c.o(.bss);
         build/USA/src/main/77DC.c.o(.bss);
         build/USA/src/main/E280.c.o(.bss);
+        build/USA/src/main/105BC.c.o(.bss);
         build/USA/src/main/12550.c.o(.bss);
         build/USA/src/main/12654.c.o(.bss);
         build/USA/src/main/13584.c.o(.bss);

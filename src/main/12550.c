@@ -6,6 +6,7 @@
 #include "main/6530.h"
 #include "main/77DC.h"
 #include "main/E280.h"
+#include "main/105BC.h"
 
 /* Small data this unit defines (retail reaches it with %gp_rel here). The bytes
  * live in the data asm; these tentative definitions are COMMON and bind to it. */

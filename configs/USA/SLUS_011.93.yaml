@@ -69,6 +69,7 @@ segments:
       - [0x6530, c, 6530]
       - [0x77DC, c, 77DC]
       - [0xE280, c, E280]
+      - [0x105BC, c, 105BC]      # from Gfx_AttachModel: sys.c (rcsid D_800101E4)
       - [0x12550, c, 12550]      # from func_80021D50: event flag reset (defines D_8005071C)
       - [0x12654, c, 12654]      # from Mem_TestBit: flags, save, item bag, roster
       - [0x13584, c, 13584]      # from Mem_Free: heap, pad, vsync, Sys_Main, rand, cd cache
