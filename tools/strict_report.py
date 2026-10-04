@@ -179,6 +179,7 @@ def resolve_data_relocs(v, addr, rodata=(0, 0), fname=None):
         m = re.match(r"^(?:D|jtbl|func)_([0-9A-F]{8})$", sym)
         return int(m.group(1), 16) if m else None
 
+    orig = [w[0] for w in v]
     for i, w in enumerate(v):
         if len(w) < 3:
             continue
@@ -207,7 +208,14 @@ def resolve_data_relocs(v, addr, rodata=(0, 0), fname=None):
         elif typ in ("R_MIPS_LO16", "R_MIPS_GPREL16"):
             slo = word & 0xFFFF
             slo = slo - 0x10000 if slo & 0x8000 else slo
-            full = (b + slo) & 0xFFFFFFFF
+            # AHL: the high part of the addend sits in the paired HI16 (sym+0x8000 forms)
+            hi = 0
+            if typ == "R_MIPS_LO16":
+                j = next((k for k in range(i - 1, -1, -1)
+                          if len(v[k]) > 2 and v[k][2] == ("R_MIPS_HI16", sym)), None)
+                if j is not None:
+                    hi = (orig[j] & 0xFFFF) << 16
+            full = (b + hi + slo) & 0xFFFFFFFF
             w[0] = word & ~0xFFFF
         else:
             full = (b + word) & 0xFFFFFFFF
