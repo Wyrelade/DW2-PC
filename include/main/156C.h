@@ -3251,6 +3251,14 @@ typedef struct {
     /* 0xA30 */ s32 waitTimer;
 } TextBoxWork;
 
+/* Text_UpdateAllBoxes's child task slots (Actor u34.children). */
+typedef struct {
+    /* 0x00 */ Actor *unk0;
+    /* 0x04 */ Actor *box[0x32];  /* one per text box row */
+    /* 0xCC */ Actor *num[2];     /* number display tasks */
+    /* 0xD4 */ Actor *task;
+} TextBoxKids;
+
 
 /* POLY_FT4 packet; the colour word is copied with lwl/lwr. */
 typedef struct {

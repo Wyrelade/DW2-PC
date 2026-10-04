@@ -35,20 +35,6 @@
       "web_realloc"
     ]
   },
-  "Text_UpdateAllBoxes": {
-    "passes": [
-      "nodiv",
-      "sreg_perm",
-      "save_slot",
-      "web_realloc",
-      "sched_match",
-      "block_iso",
-      "zst_place",
-      "sreg_const_use",
-      "delay_fill",
-      "padnop"
-    ]
-  },
   "func_80020FD0": {
     "passes": [
       "const_unhoist",
@@ -59,13 +45,6 @@
       "save_slot",
       "block_iso_wide",
       "padnop"
-    ]
-  },
-  "stag2000:func_80067568": {
-    "passes": [
-      "web_realloc",
-      "taken_fill",
-      "selfmove_nop"
     ]
   },
   "stag4000:func_8006D418": {

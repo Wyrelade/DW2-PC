@@ -1756,15 +1756,26 @@ Stg20Cell *func_80067504(Actor *a) {
     return &D_800709A8;
 }
 
-#ifdef NORMALIZED
 s32 func_80067568(Actor *a) {
     ActorTransformView *t = a->u38.ptr38;
-    s32 m = 0xE6; s32 r; s32 v; v = (t->posX + 0x12C73) % 0x600; if (v > m) goto zero; r = 1; v = (t->posZ + 0x12C73) % 0x600; if (v > m) { zero: r = 0; } return r;
+    s32 m = 0xE6;
+    s32 r;
+    s32 v;
+
+    do {
+        v = (t->posX + 0x12C73) % 0x600;
+        if (v > m) {
+            break;
+        }
+        r = 1;
+        v = (t->posZ + 0x12C73) % 0x600;
+        if (v > m) {
+            break;
+        }
+        return r;
+    } while (0);
+    return 0;
 }
-#else
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80067568);
-s32 func_80067568(Actor *a);
-#endif
 
 void func_80067604(Actor *a, s32 doX, s32 doZ) {
     ActorTransformView *t = a->u38.ptr38;

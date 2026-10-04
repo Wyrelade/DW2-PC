@@ -1604,9 +1604,6 @@ extern void func_80071FBC(s32 *);
 extern s32 func_800720FC(void);
 extern void func_80063C84(void);
 
-INCLUDE_RODATA("asm/USA/main/rodata", jtbl_8001014C);
-INCLUDE_RODATA("asm/USA/main/rodata", jtbl_80010194);
-#ifdef NORMALIZED
 void Text_UpdateAllBoxes(Actor *a0) {
     GfxTexSlot *font[2];
     Pair54 glyph;
@@ -1615,7 +1612,7 @@ void Text_UpdateAllBoxes(Actor *a0) {
     s32 num[2];
     s32 nums[3];
     TextBoxWork *wk;
-    Actor **slots;
+    TextBoxKids *slots;
     s32 row;
     TextGlyphPoly *pkt;
     s32 *ot;
@@ -1637,22 +1634,19 @@ void Text_UpdateAllBoxes(Actor *a0) {
     s32 stop;
     s32 line;
     s32 c;
-    s32 v;
     s32 vf;
     u8 k9;
     s32 k4;
-    s32 id;
     u8 k;
     s32 j;
     s32 *np;
     u8 isF6;
     u8 mode2;
     Obj6A8C0 *h;
-    PadState *e;
     PadState *tb;
 
     pkt = (TextGlyphPoly *)D_8005F770.packet.addr;
-    slots = (Actor **)a0->u34.children;
+    slots = (TextBoxKids *)a0->u34.children;
     wk = (TextBoxWork *)a0->work;
     tb = D_8005F6F0;
     row = 0;
@@ -1668,11 +1662,10 @@ void Text_UpdateAllBoxes(Actor *a0) {
             nF4b = 0;
             nF4a = 0;
             s = (u8 *)r->text;
-            nF4c = 0;
+            nF4c = line = 0;
             pos = *(Pair54 *)&r->x;
             nF4d = 0;
             ot = D_8005F770.otLayers.u[r->otIndex];
-            line = 0;
             page = 0;
             r->color = r->baseColor;
             if (r->waitingInput == 0 && r->charDelay != 0) {
@@ -1692,9 +1685,9 @@ void Text_UpdateAllBoxes(Actor *a0) {
                 font[1] = Gfx_FindOrLoadTexSlot(0x1100000);
             } else {
                 glyph.field_0 = 7;
+                glyph.field_2 = 9;
                 cell.field_0 = 7;
                 cols = 0x11;
-                glyph.field_2 = 9;
                 cell.field_2 = 0xA;
                 font[0] = Gfx_FindOrLoadTexSlot(0x13A0000);
                 font[1] = Gfx_FindOrLoadTexSlot(0x13A0000);
@@ -1741,12 +1734,13 @@ void Text_UpdateAllBoxes(Actor *a0) {
                     break;
                 case 0xFB:
                     if (r->cmdFBDone == nFB) {
-                        stop = 1;
                         if (tb[r->padIndex].cross > 0) {
+                            stop = 1;
                             r->cmdFBDone = nFB + 1;
                             r->waitingInput = 0;
                             Snd_PlayById(0x13, 0);
                         } else {
+                            stop = 1;
                             wk->blinkTimer += D_8005F770.frameDelta;
                             if (wk->blinkTimer >= 0x18) {
                                 wk->blinkTimer -= 0x18;
@@ -1767,22 +1761,22 @@ void Text_UpdateAllBoxes(Actor *a0) {
                             Snd_PlayById((*s & 1) ? 0x38 : 0x37, 0);
                             switch (*s) {
                             case 0:
-                                Task_Create(4, (s32 *)&slots[row + 1], 0);
+                                Task_Create(4, (s32 *)&slots->box[row], 0);
                                 r->x = -0x90;
                                 r->y = 0x34;
                                 break;
                             case 2:
-                                Task_Create(4, (s32 *)&slots[row + 1], 1);
+                                Task_Create(4, (s32 *)&slots->box[row], 1);
                                 r->x = -0x90;
                                 r->y = 0x42;
                                 break;
                             case 6:
-                                Task_Create(4, (s32 *)&slots[row + 1], 3);
+                                Task_Create(4, (s32 *)&slots->box[row], 3);
                                 r->x = -0x90;
                                 r->y = 0x42;
                                 break;
                             case 4:
-                                Task_Create(4, (s32 *)&slots[row + 1], 2);
+                                Task_Create(4, (s32 *)&slots->box[row], 2);
                                 r->x = -0x90;
                                 r->y = 0x12;
                                 break;
@@ -1790,8 +1784,8 @@ void Text_UpdateAllBoxes(Actor *a0) {
                             case 3:
                             case 5:
                             case 7:
-                                if (slots[row + 1] != 0) {
-                                    Task_SetState0(slots[row + 1], 2);
+                                if (slots->box[row] != 0) {
+                                    Task_SetState0(slots->box[row], 2);
                                 }
                                 Task_NextState1(a0);
                                 break;
@@ -1800,14 +1794,14 @@ void Text_UpdateAllBoxes(Actor *a0) {
                             Task_NextState1(a0);
                             break;
                         case 1:
-                            if (slots[row + 1]->stateLevel1 == 1) {
+                            if (slots->box[row]->stateLevel1 == 1) {
                                 r->waitingInput = 0;
                                 r->cmdFADone++;
                                 Task_SetState1(a0, 0);
                             }
                             break;
                         case 2:
-                            if (slots[row + 1] == 0) {
+                            if (slots->box[row] == 0) {
                                 r->waitingInput = 0;
                                 r->cmdFADone++;
                                 Task_SetState1(a0, 0);
@@ -1822,8 +1816,8 @@ void Text_UpdateAllBoxes(Actor *a0) {
                     k9 = *s;
                     if (k9 & 1) {
                         if (r->cmdF9Done == nF9) {
-                            if (slots[((k9 >> 1) & 1) + 0x33] != 0) {
-                                Task_SetState0(slots[((k9 >> 1) & 1) + 0x33], 2);
+                            if (slots->num[(k9 >> 1) & 1] != 0) {
+                                Task_SetState0(slots->num[(k9 >> 1) & 1], 2);
                             }
                             r->cmdF9Done++;
                             Snd_PlayById(0x3A, 0);
@@ -1834,10 +1828,10 @@ void Text_UpdateAllBoxes(Actor *a0) {
                         num[0] = *s++ * 100;
                         num[0] += *s++ * 10;
                         num[0] += *s;
-                        if (slots[num[1] + 0x33] != 0) {
-                            func_80011B58(slots[num[1] + 0x33], num[0]);
+                        if (slots->num[num[1]] != 0) {
+                            func_80011B58(slots->num[num[1]], num[0]);
                         } else {
-                            Task_Create(5, (s32 *)&slots[num[1] + 0x33], (s32)num);
+                            Task_Create(5, (s32 *)&slots->num[num[1]], (s32)num);
                         }
                         r->cmdF9Done++;
                         Snd_PlayById(0x39, 0);
@@ -1862,14 +1856,13 @@ void Text_UpdateAllBoxes(Actor *a0) {
                         case 0:
                             stop = 1;
                             r->waitingInput = 1;
-                            e = &tb[r->padIndex];
-                            if (e->pressed & 0x6000) {
+                            if (tb[r->padIndex].pressed & 0x6000) {
                                 goto set1;
                             }
-                            if (e->pressed & 0x9000) {
+                            if (tb[r->padIndex].pressed & 0x9000) {
                                 goto set0;
                             }
-                            if (e->cross > 0) {
+                            if (tb[r->padIndex].cross > 0) {
                                 r->waitingInput = 0;
                                 r->choicesDone++;
                                 Flag_Set(0x10, 1);
@@ -1904,8 +1897,7 @@ void Text_UpdateAllBoxes(Actor *a0) {
                         switch (a0->stateLevel1) {
                         case 0:
                         default:
-                            np = nums;
-                            for (j = 0; j < 3; j++) {
+                            for (j = 0, np = nums; j < 3; j++) {
                                 *np = *s++ * 100;
                                 *np += *s++ * 10;
                                 *np += *s++;
@@ -1945,12 +1937,13 @@ void Text_UpdateAllBoxes(Actor *a0) {
                     break;
                 case 0xF5:
                     if (r->pausesDone == nF5) {
-                        stop = 1;
                         if (wk->waitTimer == 0x1E) {
+                            stop = 1;
                             r->pausesDone = nF5 + 1;
                             r->waitingInput = 0;
                             wk->waitTimer = 0;
                         } else {
+                            stop = 1;
                             wk->waitTimer++;
                             r->waitingInput = 1;
                         }
@@ -1998,13 +1991,13 @@ void Text_UpdateAllBoxes(Actor *a0) {
                             default:
                                 num[0] = k4 & 0xF;
                                 num[1] = 0;
-                                Task_Create(0x16, (s32 *)&slots[0x35], (s32)num);
+                                Task_Create(0x16, (s32 *)&slots->task, (s32)num);
                                 a0->stateLevel1++;
                                 r->waitingInput = 1;
                                 break;
                             case 1:
                                 s += 2;
-                                if (slots[0x35] == 0) {
+                                if (slots->task == 0) {
                                     a0->stateLevel1 = 0;
                                     r->waitingInput = 0;
                                     r->cmdF4TaskDone++;
@@ -2068,8 +2061,8 @@ void Text_UpdateAllBoxes(Actor *a0) {
                         n = *s++ * 100;
                         n += *s++ * 10;
                         n += *s;
-                        line--;
                         Text_PushReturn((s32)(s + 1));
+                        line--;
                         s = (u8 *)Item_GetNameText(n) - 1;
                     }
                     break;
@@ -2080,8 +2073,8 @@ void Text_UpdateAllBoxes(Actor *a0) {
                         n = *s++ * 100;
                         n += *s++ * 10;
                         n += *s;
-                        line--;
                         Text_PushReturn((s32)(s + 1));
+                        line--;
                         s = Digi_GetDefaultName(n) - 1;
                     }
                     break;
@@ -2101,8 +2094,9 @@ void Text_UpdateAllBoxes(Actor *a0) {
                     case 3:
                     case 4:
                         {
+                            s32 *args = &r->strArg0;
                             s32 jj = k - 1;
-                            s = (u8 *)(&r->strArg0)[jj] - 1;
+                            s = (u8 *)args[jj] - 1;
                         }
                         break;
                     default:
@@ -2173,10 +2167,6 @@ void Text_UpdateAllBoxes(Actor *a0) {
     } while (++row < 0x32);
     D_8005F770.packet.addr = (s32)pkt;
 }
-#else
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Text_UpdateAllBoxes);
-void Text_UpdateAllBoxes(Actor *a0);
-#endif
 
 
 void Text_Close(s32 *slot) {
