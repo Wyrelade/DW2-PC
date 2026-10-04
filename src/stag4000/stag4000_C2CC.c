@@ -48,7 +48,79 @@ void func_8006F6BC(Stg40TileWork *w) {
     w->field_76E = D_8005071C->field_1068->u0.pair.field_2;
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000_C2CC", func_8006F86C);
+void func_8006F86C(Stg40TileWork *w, s32 x, s32 y, s32 cx, s32 cy, s32 cw, s32 ch, s32 scale, s32 shade) {
+    Stg40FT4 a;
+    Stg40FT4 b;
+    Stg40FT4 *p = (Stg40FT4 *)D_8005F770.packet.addr;
+    s32 *ot = D_8005F770.otLayers.s[1];
+    s32 maxX = w->field_766;
+    s32 maxY = w->field_768;
+    s32 left;
+    s32 right;
+    s32 top;
+    s32 bottom;
+    s32 width;
+    s32 height;
+
+    cw = (cw - 1) / 2;
+    ch = (ch - 1) / 2;
+    left = cx - cw;
+    if (left < 0) {
+        left = 0;
+    }
+    if (maxX + 1 >= cx + cw + 2) {
+        right = cx + cw + 2;
+    } else {
+        right = maxX + 1;
+    }
+    top = cy - ch;
+    if (top < 0) {
+        top = 0;
+    }
+    if (maxY + 1 >= cy + ch + 2) {
+        bottom = cy + ch + 2;
+    } else {
+        bottom = maxY + 1;
+    }
+    a.tag.b.len = 9;
+    a.code = 0x2C;
+    a.r0 = shade;
+    a.g0 = shade;
+    a.b0 = shade;
+    a.tpage = 0x20 | ((w->slot->vramY & 0x100) >> 4) | ((w->slot->vramX & 0x3FF) >> 6) | (((u16)w->slot->vramY & 0x200) << 2);
+    a.clut = ((u16)w->clut.y << 6) | (((u16)w->clut.x >> 4) & 0x3F);
+    a.code = 0x2E;
+    width = right - left;
+    height = bottom - top;
+    a.u0 = w->slot->uOffset + left + 3;
+    a.v0 = top;
+    a.u1 = w->slot->uOffset + left + 3 + width;
+    a.v1 = top;
+    a.u2 = w->slot->uOffset + left + 3;
+    a.v2 = top + height;
+    a.u3 = w->slot->uOffset + left + 3 + width;
+    a.v3 = top + height;
+    a.x0 = x + (left - cx) * scale;
+    a.y0 = y + (top - cy) * scale;
+    a.x1 = x + (right - cx) * scale;
+    a.y1 = y + (top - cy) * scale;
+    a.x2 = x + (left - cx) * scale;
+    a.y2 = y + ((top + height) - cy) * scale;
+    a.x3 = x + (right - cx) * scale;
+    a.y3 = y + ((top + height) - cy) * scale;
+    b = a;
+    b.tpage = 0x40 | ((w->slot->vramY & 0x100) >> 4) | ((w->slot->vramX & 0x3FF) >> 6) | (((u16)w->slot->vramY & 0x200) << 2);
+    b.clut = (((u16)w->clut.y + 1) << 6) | (((u16)w->clut.x >> 4) & 0x3F);
+    *p = a;
+    p->tag.word = (p->tag.word & 0xFF000000) | (*ot & 0xFFFFFF);
+    *ot = (*ot & 0xFF000000) | ((s32)p & 0xFFFFFF);
+    p++;
+    *p = b;
+    p->tag.word = (p->tag.word & 0xFF000000) | (*ot & 0xFFFFFF);
+    *ot = (*ot & 0xFF000000) | ((s32)p & 0xFFFFFF);
+    p++;
+    D_8005F79C = (s32)p;
+}
 
 void func_8006FC54(ActorWork *w) {
     Stg40TileWork *t = (Stg40TileWork *)w;

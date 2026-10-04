@@ -417,9 +417,11 @@ typedef struct {
 /* Tile image work: pixel data at 0x40, its VRAM rect, a dirty flag (func_8006F18C / func_8006F3B0). */
 typedef struct {
     u8 _pad000[0x40];
-    /* 0x040 */ u32 data[(0x750 - 0x40) / 4];
+    /* 0x040 */ u32 data[(0x748 - 0x40) / 4];
+    /* 0x748 */ RECT clut;
     /* 0x750 */ RECT rect;
-    u8 _pad758[0x08];
+    /* 0x758 */ GfxTexSlot *slot;
+    u8 _pad75C[0x04];
     /* 0x760 */ s16 field_760;
     /* 0x762 */ s16 field_762[2];
     /* 0x766 */ s16 field_766;
@@ -428,17 +430,6 @@ typedef struct {
     /* 0x76C */ s16 field_76C;     /* last drawn player cell x (func_8006F6BC) */
     /* 0x76E */ s16 field_76E;     /* last drawn player cell y */
 } Stg40TileWork;
-
-/* Stg40TileWork viewed with the Stg40ImgWork CLUT rect and texture slot (func_8006F86C). */
-typedef struct {
-    u8 _pad000[0x748];
-    /* 0x748 */ RECT clut;
-    u8 _pad750[0x08];
-    /* 0x758 */ GfxTexSlot *slot;
-    u8 _pad75C[0x0A];
-    /* 0x766 */ s16 field_766;
-    /* 0x768 */ s16 field_768;
-} Stg40TileBlit;
 
 /* Element of Stg40B60.field_144 (stride 8, 5 entries; func_8006E6CC). */
 typedef struct {
