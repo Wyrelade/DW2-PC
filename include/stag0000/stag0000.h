@@ -181,7 +181,7 @@ typedef struct {
 typedef struct {
     /* 0x00 */ u32 bits[5][6];
 } Stg00BitTbl; /* size 0x78 */
-extern Stg00BitTbl Stg00_LayoutMaskBits;
+extern const Stg00BitTbl Stg00_LayoutMaskBits;
 
 /* Actor.work of the select task (Stg00_DungSelTask and its states). */
 typedef struct {

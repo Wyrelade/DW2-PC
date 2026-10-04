@@ -439,7 +439,13 @@ void Stg00_DungSelDestroy(Actor *arg0) {
     Task_DefaultDestroy(arg0);
 }
 
-INCLUDE_RODATA("asm/USA/stag0000/rodata", Stg00_LayoutMaskBits);
+const Stg00BitTbl Stg00_LayoutMaskBits = {{
+    { 0x00000000, 0x00000020, 0x00000040, 0x00000080, 0x00000100, 0x00000200 },
+    { 0x00000000, 0x00100000, 0x00200000, 0x00400000, 0x00400000, 0x00400000 },
+    { 0x00000000, 0x00800000, 0x01000000, 0x02000000, 0x02000000, 0x02000000 },
+    { 0x00000000, 0x20000000, 0x40000000, 0x80000000, 0x80000000, 0x80000000 },
+    { 0x00000000, 0x04000000, 0x08000000, 0x10000000, 0x10000000, 0x10000000 },
+}};
 s32 Stg00_CalcLayoutMask(Stg00DungFloor *arg0, s32 arg1) {
     s32 result = 0;
     Stg00BitTbl tbl = Stg00_LayoutMaskBits;
