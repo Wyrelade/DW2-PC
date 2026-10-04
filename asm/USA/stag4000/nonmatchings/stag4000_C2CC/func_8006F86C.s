@@ -254,8 +254,8 @@ glabel func_8006F86C
     /* C8D8 8006FC38 5800B28F */  lw         $s2, 0x58($sp)
     /* C8DC 8006FC3C 5400B18F */  lw         $s1, 0x54($sp)
     /* C8E0 8006FC40 5000B08F */  lw         $s0, 0x50($sp)
-    /* C8E4 8006FC44 0680023C */  lui        $v0, %hi(D_8005F79C)
-    /* C8E8 8006FC48 9CF74AAC */  sw         $t2, %lo(D_8005F79C)($v0)
+    /* C8E4 8006FC44 0680023C */  lui        $v0, %hi(Sys_PacketCursor)
+    /* C8E8 8006FC48 9CF74AAC */  sw         $t2, %lo(Sys_PacketCursor)($v0)
     /* C8EC 8006FC4C 0800E003 */  jr         $ra
     /* C8F0 8006FC50 6800BD27 */   addiu     $sp, $sp, 0x68
 endlabel func_8006F86C

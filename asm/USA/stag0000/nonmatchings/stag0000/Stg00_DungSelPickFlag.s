@@ -1,8 +1,8 @@
 nonmatching Stg00_DungSelPickFlag, 0x114
 
 glabel Stg00_DungSelPickFlag
-    /* 155C 800648BC 0680023C */  lui        $v0, %hi(D_8005F72C)
-    /* 1560 800648C0 2CF74294 */  lhu        $v0, %lo(D_8005F72C)($v0)
+    /* 155C 800648BC 0680023C */  lui        $v0, %hi(Pad_Repeat)
+    /* 1560 800648C0 2CF74294 */  lhu        $v0, %lo(Pad_Repeat)($v0)
     /* 1564 800648C4 E0FFBD27 */  addiu      $sp, $sp, -0x20
     /* 1568 800648C8 1400B1AF */  sw         $s1, 0x14($sp)
     /* 156C 800648CC 21888000 */  addu       $s1, $a0, $zero
@@ -17,8 +17,8 @@ glabel Stg00_DungSelPickFlag
     /* 1590 800648F0 FFFF6224 */   addiu     $v0, $v1, -0x1
     /* 1594 800648F4 0A0002A6 */  sh         $v0, 0xA($s0)
   .L800648F8:
-    /* 1598 800648F8 0680023C */  lui        $v0, %hi(D_8005F72C)
-    /* 159C 800648FC 2CF74294 */  lhu        $v0, %lo(D_8005F72C)($v0)
+    /* 1598 800648F8 0680023C */  lui        $v0, %hi(Pad_Repeat)
+    /* 159C 800648FC 2CF74294 */  lhu        $v0, %lo(Pad_Repeat)($v0)
     /* 15A0 80064900 00000000 */  nop
     /* 15A4 80064904 00204230 */  andi       $v0, $v0, 0x2000
     /* 15A8 80064908 09004010 */  beqz       $v0, .L80064930
@@ -49,11 +49,11 @@ glabel Stg00_DungSelPickFlag
     /* 1600 80064960 00000000 */   nop
     /* 1604 80064964 9193010C */  jal        func_80064E44
     /* 1608 80064968 00000000 */   nop
-    /* 160C 8006496C 0680033C */  lui        $v1, %hi(D_8005F78C)
+    /* 160C 8006496C 0680033C */  lui        $v1, %hi(Sys_NextGameMode)
     /* 1610 80064970 00000286 */  lh         $v0, 0x0($s0)
     /* 1614 80064974 0580043C */  lui        $a0, %hi(D_8005071C)
     /* 1618 80064978 01024224 */  addiu      $v0, $v0, 0x201
-    /* 161C 8006497C 8CF762AC */  sw         $v0, %lo(D_8005F78C)($v1)
+    /* 161C 8006497C 8CF762AC */  sw         $v0, %lo(Sys_NextGameMode)($v1)
     /* 1620 80064980 1C07838C */  lw         $v1, %lo(D_8005071C)($a0)
     /* 1624 80064984 02000292 */  lbu        $v0, 0x2($s0)
     /* 1628 80064988 00000000 */  nop

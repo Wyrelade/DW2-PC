@@ -398,8 +398,8 @@ glabel func_8006424C
     /* 1498 800647F8 06004014 */  bnez       $v0, .L80064814
     /* 149C 800647FC 21202002 */   addu      $a0, $s1, $zero
     /* 14A0 80064800 0000638E */  lw         $v1, 0x0($s3)
-    /* 14A4 80064804 0680023C */  lui        $v0, %hi(D_8005F78C)
-    /* 14A8 80064808 8CF743AC */  sw         $v1, %lo(D_8005F78C)($v0)
+    /* 14A4 80064804 0680023C */  lui        $v0, %hi(Sys_NextGameMode)
+    /* 14A8 80064808 8CF743AC */  sw         $v1, %lo(Sys_NextGameMode)($v0)
   .L8006480C:
     /* 14AC 8006480C 6045000C */  jal        Task_NextState2
     /* 14B0 80064810 00000000 */   nop

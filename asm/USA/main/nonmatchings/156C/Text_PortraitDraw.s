@@ -198,8 +198,8 @@ glabel Text_PortraitDraw
     /* 233C 80011B3C 4800B28F */  lw         $s2, 0x48($sp)
     /* 2340 80011B40 4400B18F */  lw         $s1, 0x44($sp)
     /* 2344 80011B44 4000B08F */  lw         $s0, 0x40($sp)
-    /* 2348 80011B48 0680023C */  lui        $v0, %hi(D_8005F79C)
-    /* 234C 80011B4C 9CF74BAC */  sw         $t3, %lo(D_8005F79C)($v0)
+    /* 2348 80011B48 0680023C */  lui        $v0, %hi(Sys_PacketCursor)
+    /* 234C 80011B4C 9CF74BAC */  sw         $t3, %lo(Sys_PacketCursor)($v0)
     /* 2350 80011B50 0800E003 */  jr         $ra
     /* 2354 80011B54 6000BD27 */   addiu     $sp, $sp, 0x60
 endlabel Text_PortraitDraw

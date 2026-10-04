@@ -145,7 +145,7 @@ void Stg00_ScrollViewDraw(Actor *arg0) {
 
     for (i = 0; i < 4; i++) {
         for (j = 0; j < 20; j++) {
-            t = (GfxPartTexSlot *)Gfx_FindOrLoadTexSlot(D_80068AA0[j % 10 + (i % 2) * 10]);
+            t = (GfxPartTexSlot *)Gfx_FindOrLoadTexSlot(Stg00_ScrollTileTex[j % 10 + (i % 2) * 10]);
             x = w->scrollX - 0xA0;
             y = w->scrollY - 0x78;
             Stg00_InitTileSprt((Stg00Sprt *)&p->s, t, j * 64 + x, i * 256 + y);
@@ -159,7 +159,7 @@ void Stg00_ScrollViewDraw(Actor *arg0) {
             p = (GfxPartPkt *)(&p->t + 1);
         }
     }
-    D_8005F79C = (s32)p;
+    Sys_PacketCursor = (s32)p;
 }
 
 void Stg00_RelocPtr(u32 *arg0, u32 arg1) {
@@ -208,17 +208,17 @@ void Stg00_LoadDungFile(Actor *arg0, Stg00SelWork *arg1, s32 arg2) {
 void Stg00_DungSelPickDungeon(Actor *arg0, Stg00SelWork *arg1) {
     Stg00DungEntry *e;
 
-    if (D_8005F72C & 0x8000) {
+    if (Pad_Repeat & 0x8000) {
         if (arg1->dungeonIdx > 0) {
             arg1->dungeonIdx--;
         }
     }
-    if (D_8005F72C & 0x2000) {
+    if (Pad_Repeat & 0x2000) {
         if (arg1->dungeonIdx + 1 < 0x23) {
             arg1->dungeonIdx++;
         }
     }
-    if (D_8005F700 > 0) {
+    if (Pad_Circle > 0) {
         arg1->floor = 0;
         arg1->lastFloor = -1;
         e = (Stg00DungEntry *)Cd_GetFileEntry(0xE20000A);
@@ -233,22 +233,22 @@ void Stg00_DungSelPickFloor(Actor *arg0, Stg00SelWork *arg1_) {
     s32 j;
     s32 bit;
 
-    if (D_8005F72C & 0x8000) {
+    if (Pad_Repeat & 0x8000) {
         if (arg1->floor > 0) {
             arg1->floor--;
         }
     }
-    if (D_8005F72C & 0x2000) {
+    if (Pad_Repeat & 0x2000) {
         if (arg1->floor + 1 < arg1->floorCount) {
             arg1->floor++;
         }
     }
-    if (D_8005F72C & 0x1000) {
+    if (Pad_Repeat & 0x1000) {
         if (arg1->layout > 0) {
             arg1->layout--;
         }
     }
-    if (D_8005F72C & 0x4000) {
+    if (Pad_Repeat & 0x4000) {
         if (arg1->layout + 1 < 8) {
             arg1->layout++;
         }
@@ -370,12 +370,12 @@ void Stg00_DungSelPickFloor(Actor *arg0, Stg00SelWork *arg1_) {
 }
 
 void Stg00_DungSelPickFlag(Actor *arg0, Stg00SelWork *arg1) {
-    if (D_8005F72C & 0x8000) {
+    if (Pad_Repeat & 0x8000) {
         if (arg1->flagIdx > 0) {
             arg1->flagIdx--;
         }
     }
-    if (D_8005F72C & 0x2000) {
+    if (Pad_Repeat & 0x2000) {
         if (arg1->flagIdx + 1 < 0x1E) {
             arg1->flagIdx++;
         }
@@ -384,7 +384,7 @@ void Stg00_DungSelPickFlag(Actor *arg0, Stg00SelWork *arg1) {
         Task_SetState1(arg0, 1);
     } else if (Pad_State[0].circle > 0) {
         func_80064E44();
-        D_8005F78C = arg1->dungeonIdx + 0x201;
+        Sys_NextGameMode = arg1->dungeonIdx + 0x201;
         D_8005071C->floor = arg1->floor;
         D_8005071C->floorLayout = arg1->layout;
         Flag_Set(arg1->flagIdx + 0x76C, 1);
@@ -439,10 +439,10 @@ void Stg00_DungSelDestroy(Actor *arg0) {
     Task_DefaultDestroy(arg0);
 }
 
-INCLUDE_RODATA("asm/USA/stag0000/rodata", D_80063378);
+INCLUDE_RODATA("asm/USA/stag0000/rodata", Stg00_LayoutMaskBits);
 s32 func_80064B08(Stg00DungFloor *arg0, s32 arg1) {
     s32 result = 0;
-    Stg00BitTbl tbl = D_80063378;
+    Stg00BitTbl tbl = Stg00_LayoutMaskBits;
     s32 i;
     s32 code;
     s32 val;

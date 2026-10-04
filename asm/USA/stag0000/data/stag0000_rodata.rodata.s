@@ -16,9 +16,9 @@ dlabel jtbl_80063360
     /* 14 80063374 903C0680 */ .word .L80063C90
 enddlabel jtbl_80063360
 
-nonmatching D_80063378
+nonmatching Stg00_LayoutMaskBits
 
-dlabel D_80063378
+dlabel Stg00_LayoutMaskBits
     /* 18 80063378 00000000 */ .word 0x00000000
     /* 1C 8006337C 20000000 */ .word 0x00000020
     /* 20 80063380 40000000 */ .word 0x00000040
@@ -49,7 +49,7 @@ dlabel D_80063378
     /* 84 800633E4 00000010 */ .word 0x10000000
     /* 88 800633E8 00000010 */ .word 0x10000000
     /* 8C 800633EC 00000010 */ .word 0x10000000
-enddlabel D_80063378
+enddlabel Stg00_LayoutMaskBits
 
 .align 3
 nonmatching jtbl_800633F0

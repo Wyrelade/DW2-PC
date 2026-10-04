@@ -172,7 +172,7 @@ void func_800638E8(Actor *a) {
             } while (0);
         }
     }
-    D_8005F79C = (s32)p;
+    Sys_PacketCursor = (s32)p;
     if (func_80066714()->field_1C != 0) {
         parts = (GfxPart *)Cd_GetFileEntry(func_80066714()->field_1C);
         for (q = parts; q->fileId != 0; q++) {
@@ -276,7 +276,7 @@ void func_80063E38(Actor *a)
     i++;
   }
 
-  D_8005F79C = (s32) p;
+  Sys_PacketCursor = (s32) p;
 }
 
 void func_80064008(Actor *a) {
@@ -1391,7 +1391,7 @@ void func_80065FB8(Actor *a) {
                 Cd_QueueFile(0x314);
                 Cd_QueueFile(0x25C);
             }
-            if (D_8005F700 > 0 && D_800709B0.field_4 == 0 && Sys_GameMode[0] < 0x32F
+            if (Pad_Circle > 0 && D_800709B0.field_4 == 0 && Sys_GameMode[0] < 0x32F
                 && D_800709B0.field_0 != 0 && Snd_AnySlotLoading() == 0) {
                 Task_Create(0xB, &slot[1], 0);
                 a->childCount = 2;

@@ -27,8 +27,8 @@ glabel func_8006620C
     /* 2F04 80066264 09001424 */   addiu     $s4, $zero, 0x9
     /* 2F08 80066268 0A001424 */  addiu      $s4, $zero, 0xA
   .L8006626C:
-    /* 2F0C 8006626C 0680023C */  lui        $v0, %hi(D_8005F79C)
-    /* 2F10 80066270 9CF7458C */  lw         $a1, %lo(D_8005F79C)($v0)
+    /* 2F0C 8006626C 0680023C */  lui        $v0, %hi(Sys_PacketCursor)
+    /* 2F10 80066270 9CF7458C */  lw         $a1, %lo(Sys_PacketCursor)($v0)
     /* 2F14 80066274 1C00C012 */  beqz       $s6, .L800662E8
     /* 2F18 80066278 21900000 */   addu      $s2, $zero, $zero
     /* 2F1C 8006627C 21984002 */  addu       $s3, $s2, $zero
@@ -71,8 +71,8 @@ glabel func_8006620C
     /* 2F9C 800662FC 1800B28F */  lw         $s2, 0x18($sp)
     /* 2FA0 80066300 1400B18F */  lw         $s1, 0x14($sp)
     /* 2FA4 80066304 1000B08F */  lw         $s0, 0x10($sp)
-    /* 2FA8 80066308 0680023C */  lui        $v0, %hi(D_8005F79C)
-    /* 2FAC 8006630C 9CF745AC */  sw         $a1, %lo(D_8005F79C)($v0)
+    /* 2FA8 80066308 0680023C */  lui        $v0, %hi(Sys_PacketCursor)
+    /* 2FAC 8006630C 9CF745AC */  sw         $a1, %lo(Sys_PacketCursor)($v0)
     /* 2FB0 80066310 0800E003 */  jr         $ra
     /* 2FB4 80066314 3000BD27 */   addiu     $sp, $sp, 0x30
 endlabel func_8006620C

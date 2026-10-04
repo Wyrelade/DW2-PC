@@ -71,13 +71,13 @@ glabel Stg10_TitleUpdate
     /* 338 80063698 EC51428C */  lw         $v0, %lo(Stg10_AttractCount)($v0)
     /* 33C 8006369C 00000000 */  nop
     /* 340 800636A0 03004014 */  bnez       $v0, .L800636B0
-    /* 344 800636A4 0680033C */   lui       $v1, %hi(D_8005F78C)
+    /* 344 800636A4 0680033C */   lui       $v1, %hi(Sys_NextGameMode)
     /* 348 800636A8 AD8D0108 */  j          .L800636B4
     /* 34C 800636AC 03040224 */   addiu     $v0, $zero, 0x403
   .L800636B0:
     /* 350 800636B0 02040224 */  addiu      $v0, $zero, 0x402
   .L800636B4:
-    /* 354 800636B4 8CF762AC */  sw         $v0, %lo(D_8005F78C)($v1)
+    /* 354 800636B4 8CF762AC */  sw         $v0, %lo(Sys_NextGameMode)($v1)
     /* 358 800636B8 0680043C */  lui        $a0, %hi(Stg10_AttractCount)
     /* 35C 800636BC EC51828C */  lw         $v0, %lo(Stg10_AttractCount)($a0)
     /* 360 800636C0 14000324 */  addiu      $v1, $zero, 0x14

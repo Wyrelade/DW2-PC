@@ -6,8 +6,8 @@ glabel func_80064B08
     /* 17B0 80064B10 2160A000 */  addu       $t4, $a1, $zero
     /* 17B4 80064B14 21380000 */  addu       $a3, $zero, $zero
     /* 17B8 80064B18 2118A003 */  addu       $v1, $sp, $zero
-    /* 17BC 80064B1C 0680023C */  lui        $v0, %hi(D_80063378)
-    /* 17C0 80064B20 78334224 */  addiu      $v0, $v0, %lo(D_80063378)
+    /* 17BC 80064B1C 0680023C */  lui        $v0, %hi(Stg00_LayoutMaskBits)
+    /* 17C0 80064B20 78334224 */  addiu      $v0, $v0, %lo(Stg00_LayoutMaskBits)
     /* 17C4 80064B24 70004424 */  addiu      $a0, $v0, 0x70
   .L80064B28:
     /* 17C8 80064B28 00004D8C */  lw         $t5, 0x0($v0)

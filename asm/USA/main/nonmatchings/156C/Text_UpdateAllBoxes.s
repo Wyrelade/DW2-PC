@@ -1238,8 +1238,8 @@ glabel Text_UpdateAllBoxes
     /* C36C 8001BB6C B000B28F */  lw         $s2, 0xB0($sp)
     /* C370 8001BB70 AC00B18F */  lw         $s1, 0xAC($sp)
     /* C374 8001BB74 A800B08F */  lw         $s0, 0xA8($sp)
-    /* C378 8001BB78 0680023C */  lui        $v0, %hi(D_8005F79C)
-    /* C37C 8001BB7C 9CF748AC */  sw         $t0, %lo(D_8005F79C)($v0)
+    /* C378 8001BB78 0680023C */  lui        $v0, %hi(Sys_PacketCursor)
+    /* C37C 8001BB7C 9CF748AC */  sw         $t0, %lo(Sys_PacketCursor)($v0)
     /* C380 8001BB80 0800E003 */  jr         $ra
     /* C384 8001BB84 D000BD27 */   addiu     $sp, $sp, 0xD0
 endlabel Text_UpdateAllBoxes

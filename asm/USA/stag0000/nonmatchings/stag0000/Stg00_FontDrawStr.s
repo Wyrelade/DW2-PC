@@ -139,8 +139,8 @@ glabel Stg00_FontDrawStr
   .L8006535C:
     /* 1FFC 8006535C 0400B18F */  lw         $s1, 0x4($sp)
     /* 2000 80065360 0000B08F */  lw         $s0, 0x0($sp)
-    /* 2004 80065364 0680023C */  lui        $v0, %hi(D_8005F79C)
-    /* 2008 80065368 9CF74AAC */  sw         $t2, %lo(D_8005F79C)($v0)
+    /* 2004 80065364 0680023C */  lui        $v0, %hi(Sys_PacketCursor)
+    /* 2008 80065368 9CF74AAC */  sw         $t2, %lo(Sys_PacketCursor)($v0)
     /* 200C 8006536C 0800E003 */  jr         $ra
     /* 2010 80065370 0800BD27 */   addiu     $sp, $sp, 0x8
 endlabel Stg00_FontDrawStr

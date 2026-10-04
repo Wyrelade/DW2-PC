@@ -34,8 +34,8 @@ glabel Sys_GameModeTask
     /* 3BF8 800133F8 0E4D0008 */  j          .L80013438
     /* 3BFC 800133FC 00000000 */   nop
   .L80013400:
-    /* 3C00 80013400 0680023C */  lui        $v0, %hi(D_8005F78C)
-    /* 3C04 80013404 8CF7428C */  lw         $v0, %lo(D_8005F78C)($v0)
+    /* 3C00 80013400 0680023C */  lui        $v0, %hi(Sys_NextGameMode)
+    /* 3C04 80013404 8CF7428C */  lw         $v0, %lo(Sys_NextGameMode)($v0)
     /* 3C08 80013408 00000000 */  nop
     /* 3C0C 8001340C 0A004010 */  beqz       $v0, .L80013438
     /* 3C10 80013410 21202002 */   addu      $a0, $s1, $zero

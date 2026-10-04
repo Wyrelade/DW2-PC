@@ -128,8 +128,8 @@ glabel Stg00_DigiViewTask
     /* 2570 800658D0 C2FF4014 */  bnez       $v0, .L800657DC
     /* 2574 800658D4 00000000 */   nop
   .L800658D8:
-    /* 2578 800658D8 0680023C */  lui        $v0, %hi(D_8005F700)
-    /* 257C 800658DC 00F7428C */  lw         $v0, %lo(D_8005F700)($v0)
+    /* 2578 800658D8 0680023C */  lui        $v0, %hi(Pad_Circle)
+    /* 257C 800658DC 00F7428C */  lw         $v0, %lo(Pad_Circle)($v0)
     /* 2580 800658E0 00000000 */  nop
     /* 2584 800658E4 32014018 */  blez       $v0, .L80065DB0
     /* 2588 800658E8 0680023C */   lui       $v0, %hi(D_8005F724)
@@ -147,12 +147,12 @@ glabel Stg00_DigiViewTask
     /* 25B4 80065914 00000000 */  nop
     /* 25B8 80065918 54008314 */  bne        $a0, $v1, .L80065A6C
     /* 25BC 8006591C 00000000 */   nop
-    /* 25C0 80065920 0680023C */  lui        $v0, %hi(D_8005F72C)
-    /* 25C4 80065924 2CF74294 */  lhu        $v0, %lo(D_8005F72C)($v0)
+    /* 25C0 80065920 0680023C */  lui        $v0, %hi(Pad_Repeat)
+    /* 25C4 80065924 2CF74294 */  lhu        $v0, %lo(Pad_Repeat)($v0)
     /* 25C8 80065928 00000000 */  nop
     /* 25CC 8006592C 00104230 */  andi       $v0, $v0, 0x1000
     /* 25D0 80065930 0E004010 */  beqz       $v0, .L8006596C
-    /* 25D4 80065934 0680023C */   lui       $v0, %hi(D_8005F72C)
+    /* 25D4 80065934 0680023C */   lui       $v0, %hi(Pad_Repeat)
     /* 25D8 80065938 6400028E */  lw         $v0, 0x64($s0)
     /* 25DC 8006593C 00000000 */  nop
     /* 25E0 80065940 04004010 */  beqz       $v0, .L80065954
@@ -167,9 +167,9 @@ glabel Stg00_DigiViewTask
     /* 2600 80065960 FFFF4224 */   addiu     $v0, $v0, -0x1
     /* 2604 80065964 5C0002AE */  sw         $v0, 0x5C($s0)
   .L80065968:
-    /* 2608 80065968 0680023C */  lui        $v0, %hi(D_8005F72C)
+    /* 2608 80065968 0680023C */  lui        $v0, %hi(Pad_Repeat)
   .L8006596C:
-    /* 260C 8006596C 2CF74294 */  lhu        $v0, %lo(D_8005F72C)($v0)
+    /* 260C 8006596C 2CF74294 */  lhu        $v0, %lo(Pad_Repeat)($v0)
     /* 2610 80065970 00000000 */  nop
     /* 2614 80065974 00404230 */  andi       $v0, $v0, 0x4000
     /* 2618 80065978 11004010 */  beqz       $v0, .L800659C0
@@ -192,8 +192,8 @@ glabel Stg00_DigiViewTask
     /* 2658 800659B8 01006224 */   addiu     $v0, $v1, 0x1
     /* 265C 800659BC 5C0002AE */  sw         $v0, 0x5C($s0)
   .L800659C0:
-    /* 2660 800659C0 0680023C */  lui        $v0, %hi(D_8005F72C)
-    /* 2664 800659C4 2CF74294 */  lhu        $v0, %lo(D_8005F72C)($v0)
+    /* 2660 800659C0 0680023C */  lui        $v0, %hi(Pad_Repeat)
+    /* 2664 800659C4 2CF74294 */  lhu        $v0, %lo(Pad_Repeat)($v0)
     /* 2668 800659C8 00000000 */  nop
     /* 266C 800659CC 00804230 */  andi       $v0, $v0, 0x8000
     /* 2670 800659D0 25004010 */  beqz       $v0, .L80065A68
@@ -298,14 +298,14 @@ glabel Stg00_DigiViewTask
     /* 27CC 80065B2C 0800038E */  lw         $v1, 0x8($s0)
     /* 27D0 80065B30 01000224 */  addiu      $v0, $zero, 0x1
     /* 27D4 80065B34 0E006214 */  bne        $v1, $v0, .L80065B70
-    /* 27D8 80065B38 0680023C */   lui       $v0, %hi(D_8005F708)
+    /* 27D8 80065B38 0680023C */   lui       $v0, %hi(Pad_Square)
     /* 27DC 80065B3C DA960108 */  j          .L80065B68
     /* 27E0 80065B40 080000AE */   sw        $zero, 0x8($s0)
   .L80065B44:
     /* 27E4 80065B44 0400428C */  lw         $v0, 0x4($v0)
     /* 27E8 80065B48 00000000 */  nop
     /* 27EC 80065B4C 08004018 */  blez       $v0, .L80065B70
-    /* 27F0 80065B50 0680023C */   lui       $v0, %hi(D_8005F708)
+    /* 27F0 80065B50 0680023C */   lui       $v0, %hi(Pad_Square)
     /* 27F4 80065B54 0800028E */  lw         $v0, 0x8($s0)
     /* 27F8 80065B58 00000000 */  nop
     /* 27FC 80065B5C 03004014 */  bnez       $v0, .L80065B6C
@@ -314,9 +314,9 @@ glabel Stg00_DigiViewTask
   .L80065B68:
     /* 2808 80065B68 280060AE */  sw         $zero, 0x28($s3)
   .L80065B6C:
-    /* 280C 80065B6C 0680023C */  lui        $v0, %hi(D_8005F708)
+    /* 280C 80065B6C 0680023C */  lui        $v0, %hi(Pad_Square)
   .L80065B70:
-    /* 2810 80065B70 08F7428C */  lw         $v0, %lo(D_8005F708)($v0)
+    /* 2810 80065B70 08F7428C */  lw         $v0, %lo(Pad_Square)($v0)
     /* 2814 80065B74 00000000 */  nop
     /* 2818 80065B78 08004018 */  blez       $v0, .L80065B9C
     /* 281C 80065B7C 04000324 */   addiu     $v1, $zero, 0x4
@@ -329,8 +329,8 @@ glabel Stg00_DigiViewTask
   .L80065B98:
     /* 2838 80065B98 040000AE */  sw         $zero, 0x4($s0)
   .L80065B9C:
-    /* 283C 80065B9C 0680023C */  lui        $v0, %hi(D_8005F700)
-    /* 2840 80065BA0 00F7428C */  lw         $v0, %lo(D_8005F700)($v0)
+    /* 283C 80065B9C 0680023C */  lui        $v0, %hi(Pad_Circle)
+    /* 2840 80065BA0 00F7428C */  lw         $v0, %lo(Pad_Circle)($v0)
     /* 2844 80065BA4 00000000 */  nop
     /* 2848 80065BA8 81004018 */  blez       $v0, .L80065DB0
     /* 284C 80065BAC 0680023C */   lui       $v0, %hi(D_8005F724)
@@ -457,17 +457,17 @@ glabel Stg00_DigiViewTask
     /* 29F8 80065D58 02000524 */  addiu      $a1, $zero, 0x2
     /* 29FC 80065D5C 7D45000C */  jal        Task_SetState01
     /* 2A00 80065D60 FF000624 */   addiu     $a2, $zero, 0xFF
-    /* 2A04 80065D64 0780033C */  lui        $v1, %hi(D_80068DD8)
+    /* 2A04 80065D64 0780033C */  lui        $v1, %hi(Stg00_DigiViewPage2Anims)
     /* 2A08 80065D68 0400028E */  lw         $v0, 0x4($s0)
     /* 2A0C 80065D6C 63970108 */  j          .L80065D8C
-    /* 2A10 80065D70 D88D6324 */   addiu     $v1, $v1, %lo(D_80068DD8)
+    /* 2A10 80065D70 D88D6324 */   addiu     $v1, $v1, %lo(Stg00_DigiViewPage2Anims)
   .L80065D74:
     /* 2A14 80065D74 02000524 */  addiu      $a1, $zero, 0x2
     /* 2A18 80065D78 7D45000C */  jal        Task_SetState01
     /* 2A1C 80065D7C FF000624 */   addiu     $a2, $zero, 0xFF
-    /* 2A20 80065D80 0780033C */  lui        $v1, %hi(D_80068DF4)
+    /* 2A20 80065D80 0780033C */  lui        $v1, %hi(Stg00_DigiViewPage3Anims)
     /* 2A24 80065D84 0400028E */  lw         $v0, 0x4($s0)
-    /* 2A28 80065D88 F48D6324 */  addiu      $v1, $v1, %lo(D_80068DF4)
+    /* 2A28 80065D88 F48D6324 */  addiu      $v1, $v1, %lo(Stg00_DigiViewPage3Anims)
   .L80065D8C:
     /* 2A2C 80065D8C 80100200 */  sll        $v0, $v0, 2
     /* 2A30 80065D90 21104300 */  addu       $v0, $v0, $v1

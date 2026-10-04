@@ -139,7 +139,7 @@ void Stg00_FontDrawStr(s32 arg0, s32 arg1, u8 *arg2)
         arg2++;
         x += 8;
     }
-    D_8005F79C = (s32) poly;
+    Sys_PacketCursor = (s32) poly;
 }
 
 void Stg00_FontDrawSheet(void) {
@@ -321,7 +321,7 @@ void Stg00_DigiViewTask(Actor *arg0)
         }
       }
 
-        if (D_8005F700 > 0)
+        if (Pad_Circle > 0)
       {
         ((Stg00ActorTimer *) arg0)->frameCount = 0;
         Task_NextState1(arg0);
@@ -331,7 +331,7 @@ void Stg00_DigiViewTask(Actor *arg0)
       case 1:
         if ((work->page == 1) && (work->panel == 1))
       {
-        if (D_8005F72C & 0x1000)
+        if (Pad_Repeat & 0x1000)
         {
           work->lastDirUp = work->panel;
           if (work->skillRow != 0)
@@ -344,7 +344,7 @@ void Stg00_DigiViewTask(Actor *arg0)
             work->skillScroll -= 1;
           }
         }
-        if (D_8005F72C & 0x4000)
+        if (Pad_Repeat & 0x4000)
         {
           work->lastDirUp = 0;
           if (work->skillRow != 0xD)
@@ -357,7 +357,7 @@ void Stg00_DigiViewTask(Actor *arg0)
             work->skillScroll += 1;
           }
         }
-        if (D_8005F72C & 0x8000)
+        if (Pad_Repeat & 0x8000)
         {
           for (k = 0; k < 0xE; k++)
           {
@@ -442,7 +442,7 @@ void Stg00_DigiViewTask(Actor *arg0)
         }
         while (0);
       }
-        if (D_8005F708 > 0)
+        if (Pad_Square > 0)
       {
         work->page += 1;
         if (work->page == 4)
@@ -451,7 +451,7 @@ void Stg00_DigiViewTask(Actor *arg0)
         }
         work->pageCursor = 0;
       }
-        if (D_8005F700 > 0)
+        if (Pad_Circle > 0)
       {
         if (work->panel != 0)
         {
@@ -540,12 +540,12 @@ void Stg00_DigiViewTask(Actor *arg0)
 
             case 2:
               Task_SetState01(s1, 2, 0xFF);
-              Task_SetState2(s1, D_80068DD8[work->pageCursor][0]);
+              Task_SetState2(s1, Stg00_DigiViewPage2Anims[work->pageCursor][0]);
               break;
 
             case 3:
               Task_SetState01(s1, 2, 0xFF);
-              Task_SetState2(s1, D_80068DF4[work->pageCursor][0]);
+              Task_SetState2(s1, Stg00_DigiViewPage3Anims[work->pageCursor][0]);
               break;
 
           }
@@ -765,7 +765,7 @@ void Stg00_LineupTask(Actor *arg0) {
                 Stg00_CamMoveRefPoint(cam, 0, 0x20, 0);
             }
         }
-        if (D_8005F720 > 0) {
+        if (Pad_Select > 0) {
             if (((Stg00ModeWork *)w)->videoMode != 3) {
                 ((Stg00ModeWork *)w)->videoMode++;
             } else {
@@ -780,13 +780,13 @@ void Stg00_LineupTask(Actor *arg0) {
             }
             redraw = 1;
         }
-        if (D_8005F72C & 0x20) {
+        if (Pad_Repeat & 0x20) {
             if (w->scrollTop != 0) {
                 w->scrollTop--;
                 redraw = 1;
             }
         }
-        if (D_8005F72C & 0x80) {
+        if (Pad_Repeat & 0x80) {
             if (w->scrollTop + 9 != w->count) {
                 w->scrollTop++;
                 redraw = 1;
@@ -795,8 +795,8 @@ void Stg00_LineupTask(Actor *arg0) {
         if (redraw) {
             Stg00_LineupSpawnModels(arg0);
         }
-        if (D_8005F714 > 0) {
-            D_8005F78C = 0x102;
+        if (Pad_R2 > 0) {
+            Sys_NextGameMode = 0x102;
         }
         break;
     case 2:
@@ -806,7 +806,7 @@ void Stg00_LineupTask(Actor *arg0) {
 
 void Stg00_LineupDraw(Actor *arg0) {
     EntA0 *e = Cd_GetFileEntry(0x1890000);
-    Gfx_HidePartsByMask(e, D_80068E84[((Stg00PartsWork *)arg0->work)->winVariant]);
+    Gfx_HidePartsByMask(e, Stg00_LineupWinMasks[((Stg00PartsWork *)arg0->work)->winVariant]);
     Gfx_DrawParts(e);
 }
 
@@ -855,7 +855,7 @@ void Stg00_VideoModeTask(Actor *arg0) {
             break;
         }
         w2 = (Stg00ModeWork *)arg0->work;
-        if (D_8005F720 > 0) {
+        if (Pad_Select > 0) {
             if (w2->videoMode != 3) {
                 w2->videoMode++;
             } else {
@@ -960,7 +960,7 @@ void Stg00_GroupViewTask(Actor *arg0) {
                 Stg00_CamMoveRefPoint(cam, 0, 0x20, 0);
             }
         }
-        if (D_8005F708 > 0) {
+        if (Pad_Square > 0) {
             if (++w->camPreset == 7) {
                 w->camPreset = 0;
             }
@@ -987,7 +987,7 @@ void Stg00_GroupViewTask(Actor *arg0) {
                 break;
             }
         }
-        if (D_8005F720 > 0) {
+        if (Pad_Select > 0) {
             if (w->videoMode != 3) {
                 w->videoMode++;
             } else {
@@ -1003,8 +1003,8 @@ void Stg00_GroupViewTask(Actor *arg0) {
                 w->winVariant = 0;
             }
         }
-        if (D_8005F714 > 0) {
-            D_8005F78C = 0x102;
+        if (Pad_R2 > 0) {
+            Sys_NextGameMode = 0x102;
         }
         break;
     case 2:

@@ -251,8 +251,8 @@ glabel Gfx_AddQuadsGT4
     /* 11EC8 800216C8 2000B28F */  lw         $s2, 0x20($sp)
     /* 11ECC 800216CC 1C00B18F */  lw         $s1, 0x1C($sp)
     /* 11ED0 800216D0 1800B08F */  lw         $s0, 0x18($sp)
-    /* 11ED4 800216D4 0680023C */  lui        $v0, %hi(D_8005F79C)
-    /* 11ED8 800216D8 9CF74CAC */  sw         $t4, %lo(D_8005F79C)($v0)
+    /* 11ED4 800216D4 0680023C */  lui        $v0, %hi(Sys_PacketCursor)
+    /* 11ED8 800216D8 9CF74CAC */  sw         $t4, %lo(Sys_PacketCursor)($v0)
     /* 11EDC 800216DC 0800E003 */  jr         $ra
     /* 11EE0 800216E0 3800BD27 */   addiu     $sp, $sp, 0x38
 endlabel Gfx_AddQuadsGT4

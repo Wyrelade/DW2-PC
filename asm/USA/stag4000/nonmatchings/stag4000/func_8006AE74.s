@@ -2,22 +2,22 @@ nonmatching func_8006AE74, 0xC0
 
 glabel func_8006AE74
     /* 7B14 8006AE74 0780023C */  lui        $v0, %hi(D_80072B60)
-    /* 7B18 8006AE78 0680033C */  lui        $v1, %hi(D_8005F72C)
-    /* 7B1C 8006AE7C 2CF76394 */  lhu        $v1, %lo(D_8005F72C)($v1)
+    /* 7B18 8006AE78 0680033C */  lui        $v1, %hi(Pad_Repeat)
+    /* 7B1C 8006AE7C 2CF76394 */  lhu        $v1, %lo(Pad_Repeat)($v1)
     /* 7B20 8006AE80 602B448C */  lw         $a0, %lo(D_80072B60)($v0)
     /* 7B24 8006AE84 E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* 7B28 8006AE88 1000BFAF */  sw         $ra, 0x10($sp)
     /* 7B2C 8006AE8C 00106330 */  andi       $v1, $v1, 0x1000
     /* 7B30 8006AE90 E2008590 */  lbu        $a1, 0xE2($a0)
     /* 7B34 8006AE94 05006010 */  beqz       $v1, .L8006AEAC
-    /* 7B38 8006AE98 0680023C */   lui       $v0, %hi(D_8005F72C)
+    /* 7B38 8006AE98 0680023C */   lui       $v0, %hi(Pad_Repeat)
     /* 7B3C 8006AE9C 0200A010 */  beqz       $a1, .L8006AEA8
     /* 7B40 8006AEA0 FFFFA224 */   addiu     $v0, $a1, -0x1
     /* 7B44 8006AEA4 E20082A0 */  sb         $v0, 0xE2($a0)
   .L8006AEA8:
-    /* 7B48 8006AEA8 0680023C */  lui        $v0, %hi(D_8005F72C)
+    /* 7B48 8006AEA8 0680023C */  lui        $v0, %hi(Pad_Repeat)
   .L8006AEAC:
-    /* 7B4C 8006AEAC 2CF74294 */  lhu        $v0, %lo(D_8005F72C)($v0)
+    /* 7B4C 8006AEAC 2CF74294 */  lhu        $v0, %lo(Pad_Repeat)($v0)
     /* 7B50 8006AEB0 00000000 */  nop
     /* 7B54 8006AEB4 00404230 */  andi       $v0, $v0, 0x4000
     /* 7B58 8006AEB8 0A004010 */  beqz       $v0, .L8006AEE4

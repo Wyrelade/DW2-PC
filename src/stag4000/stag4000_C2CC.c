@@ -119,7 +119,7 @@ void func_8006F86C(Stg40TileWork *w, s32 x, s32 y, s32 cx, s32 cy, s32 cw, s32 c
     p->tag.word = (p->tag.word & 0xFF000000) | (*ot & 0xFFFFFF);
     *ot = (*ot & 0xFF000000) | ((s32)p & 0xFFFFFF);
     p++;
-    D_8005F79C = (s32)p;
+    Sys_PacketCursor = (s32)p;
 }
 
 void func_8006FC54(ActorWork *w) {

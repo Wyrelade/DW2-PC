@@ -123,8 +123,8 @@ glabel Gfx_DrawWireTris
     /* 122A0 80021AA0 0800B28F */  lw         $s2, 0x8($sp)
     /* 122A4 80021AA4 0400B18F */  lw         $s1, 0x4($sp)
     /* 122A8 80021AA8 0000B08F */  lw         $s0, 0x0($sp)
-    /* 122AC 80021AAC 0680023C */  lui        $v0, %hi(D_8005F79C)
-    /* 122B0 80021AB0 9CF74AAC */  sw         $t2, %lo(D_8005F79C)($v0)
+    /* 122AC 80021AAC 0680023C */  lui        $v0, %hi(Sys_PacketCursor)
+    /* 122B0 80021AB0 9CF74AAC */  sw         $t2, %lo(Sys_PacketCursor)($v0)
     /* 122B4 80021AB4 0800E003 */  jr         $ra
     /* 122B8 80021AB8 2000BD27 */   addiu     $sp, $sp, 0x20
 endlabel Gfx_DrawWireTris

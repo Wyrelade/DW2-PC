@@ -687,7 +687,7 @@ typedef struct {
 
 extern GfxTexSlot *Gfx_FindOrLoadTexSlot(s32);
 extern Halves Gfx_NeutralRgb;
-extern s32 D_8005F79C;
+extern s32 Sys_PacketCursor;
 
 extern s32 D_8006FFDC[4];
 
@@ -868,7 +868,7 @@ extern void Snd_SetSlotContent(s32 idx, s32 v);
 extern void Mem_Zero(void *a0, s32 a1);
 extern s32 Snd_AnySlotLoading(void);
 extern s32 Menu_TopMenuResult;
-extern s32 D_8005F700; /* Pad_State[0].circle as a scalar reloc */
+extern s32 Pad_Circle; /* Pad_State[0].circle as a scalar reloc */
 
 /* Work of the stage main task (func_80065FB8). */
 typedef struct {

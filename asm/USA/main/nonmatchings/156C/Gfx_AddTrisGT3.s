@@ -211,8 +211,8 @@ glabel Gfx_AddTrisGT3
     /* 11AF0 800212F0 2000B28F */  lw         $s2, 0x20($sp)
     /* 11AF4 800212F4 1C00B18F */  lw         $s1, 0x1C($sp)
     /* 11AF8 800212F8 1800B08F */  lw         $s0, 0x18($sp)
-    /* 11AFC 800212FC 0680023C */  lui        $v0, %hi(D_8005F79C)
-    /* 11B00 80021300 9CF74BAC */  sw         $t3, %lo(D_8005F79C)($v0)
+    /* 11AFC 800212FC 0680023C */  lui        $v0, %hi(Sys_PacketCursor)
+    /* 11B00 80021300 9CF74BAC */  sw         $t3, %lo(Sys_PacketCursor)($v0)
     /* 11B04 80021304 0800E003 */  jr         $ra
     /* 11B08 80021308 3800BD27 */   addiu     $sp, $sp, 0x38
 endlabel Gfx_AddTrisGT3

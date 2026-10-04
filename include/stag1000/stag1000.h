@@ -95,7 +95,7 @@ extern void Gfx_HidePartsByMask(GfxPartMaskView *, s32);
 extern void ResetCallback(void);
 extern u8 D_80050741;
 extern PadState Pad_State[];
-extern s32 D_8005F78C;
+extern s32 Sys_NextGameMode;
 extern SysState Sys_State;
 extern u8 StCdIntrFlag;              /* s32 in the main exe; read as a byte here (StCdIntrFlag) */
 extern s32 CdControl(s32, u8 *, u8 *);

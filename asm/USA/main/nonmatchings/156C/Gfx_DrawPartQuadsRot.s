@@ -24,9 +24,9 @@ glabel Gfx_DrawPartQuadsRot
     /* D954 8001D154 FFFF043C */  lui        $a0, (0xFFFF0000 >> 16)
     /* D958 8001D158 E072000C */  jal        Gfx_FindOrLoadTexSlot
     /* D95C 8001D15C 24204400 */   and       $a0, $v0, $a0
-    /* D960 8001D160 0680033C */  lui        $v1, %hi(D_8005F79C)
+    /* D960 8001D160 0680033C */  lui        $v1, %hi(Sys_PacketCursor)
     /* D964 8001D164 21A84000 */  addu       $s5, $v0, $zero
-    /* D968 8001D168 9CF7768C */  lw         $s6, %lo(D_8005F79C)($v1)
+    /* D968 8001D168 9CF7768C */  lw         $s6, %lo(Sys_PacketCursor)($v1)
     /* D96C 8001D16C 0000C393 */  lbu        $v1, 0x0($fp)
     /* D970 8001D170 FF000224 */  addiu      $v0, $zero, 0xFF
     /* D974 8001D174 D5006210 */  beq        $v1, $v0, .L8001D4CC
@@ -262,8 +262,8 @@ glabel Gfx_DrawPartQuadsRot
     /* DCCC 8001D4CC 6400BF8F */  lw         $ra, 0x64($sp)
     /* DCD0 8001D4D0 6000BE8F */  lw         $fp, 0x60($sp)
     /* DCD4 8001D4D4 5C00B78F */  lw         $s7, 0x5C($sp)
-    /* DCD8 8001D4D8 0680023C */  lui        $v0, %hi(D_8005F79C)
-    /* DCDC 8001D4DC 9CF756AC */  sw         $s6, %lo(D_8005F79C)($v0)
+    /* DCD8 8001D4D8 0680023C */  lui        $v0, %hi(Sys_PacketCursor)
+    /* DCDC 8001D4DC 9CF756AC */  sw         $s6, %lo(Sys_PacketCursor)($v0)
     /* DCE0 8001D4E0 5800B68F */  lw         $s6, 0x58($sp)
     /* DCE4 8001D4E4 5400B58F */  lw         $s5, 0x54($sp)
     /* DCE8 8001D4E8 5000B48F */  lw         $s4, 0x50($sp)

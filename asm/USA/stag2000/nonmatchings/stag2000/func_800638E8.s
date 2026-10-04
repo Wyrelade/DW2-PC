@@ -195,9 +195,9 @@ glabel func_800638E8
     /* 84C 80063BAC 0A00A22A */  slti       $v0, $s5, 0xA
     /* 850 80063BB0 B3FF4014 */  bnez       $v0, .L80063A80
     /* 854 80063BB4 40009426 */   addiu     $s4, $s4, 0x40
-    /* 858 80063BB8 0680023C */  lui        $v0, %hi(D_8005F79C)
+    /* 858 80063BB8 0680023C */  lui        $v0, %hi(Sys_PacketCursor)
     /* 85C 80063BBC C599010C */  jal        func_80066714
-    /* 860 80063BC0 9CF750AC */   sw        $s0, %lo(D_8005F79C)($v0)
+    /* 860 80063BC0 9CF750AC */   sw        $s0, %lo(Sys_PacketCursor)($v0)
     /* 864 80063BC4 1C00428C */  lw         $v0, 0x1C($v0)
     /* 868 80063BC8 00000000 */  nop
     /* 86C 80063BCC 21004010 */  beqz       $v0, .L80063C54

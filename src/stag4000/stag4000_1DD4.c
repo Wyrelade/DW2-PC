@@ -448,7 +448,7 @@ void func_8006620C(Stg40W667C *w) {
 
     rows = (D_80072B60->field_30 & 0x3F) ? 10 : 9;
     cols = (D_80072B60->field_2C & 0x3F) ? 10 : 9;
-    pkt = D_8005F79C;
+    pkt = Sys_PacketCursor;
     for (y = 0; y < rows; y++) {
         for (x = 0; x < cols; x++) {
             pkt = func_80065F94(w, pkt, x, y);
@@ -457,7 +457,7 @@ void func_8006620C(Stg40W667C *w) {
             }
         }
     }
-    D_8005F79C = pkt;
+    Sys_PacketCursor = pkt;
 }
 
 void func_80066318(Actor *a0, s32 *ids) {
@@ -1348,7 +1348,7 @@ s32 func_800681BC(Actor *a0) {
     Stg40Ent48 *e;
     s32 i;
 
-    if (D_8005F708 > 0 && self->field_A != 0xFF) {
+    if (Pad_Square > 0 && self->field_A != 0xFF) {
         e = D_8005071C->field_18;
         D_80072B60->field_A8 = 0;
         D_80072B60->field_AC = 0;
@@ -1807,7 +1807,7 @@ void func_80069188(Actor *a0) {
     if (D_8005071C->field_2 != 0) {
         return;
     }
-    if (D_8005F700 > 0 && D_80072AA0->stateLevel0 == 1 && D_80072AA0->stateLevel1 == 1 && D_80072AA0->stateLevel2 == 1) {
+    if (Pad_Circle > 0 && D_80072AA0->stateLevel0 == 1 && D_80072AA0->stateLevel1 == 1 && D_80072AA0->stateLevel2 == 1) {
         Task_SetState1(D_80072AA0, 4);
         D_8005071C->field_2 = 1;
         return;
@@ -1820,7 +1820,7 @@ void func_80069188(Actor *a0) {
         }
         return;
     }
-    if (func_800682DC(a0) == 0 && func_800681BC(a0) == 0 && Beetle_GetPart(0x12) > 0 && D_8005F720 > 0) {
+    if (func_800682DC(a0) == 0 && func_800681BC(a0) == 0 && Beetle_GetPart(0x12) > 0 && Pad_Select > 0) {
         v = Save_GameStatePtr->field_0 + 1;
         n = (v < 3) ? v : 0;
         Save_GameStatePtr->field_0 = n;
@@ -2592,12 +2592,12 @@ void func_8006AE74(void) {
     s32 old = D_80072B60->field_E2;
     s32 n;
 
-    if (D_8005F72C & 0x1000) {
+    if (Pad_Repeat & 0x1000) {
         if (old != 0) {
             D_80072B60->field_E2 = old - 1;
         }
     }
-    if (D_8005F72C & 0x4000) {
+    if (Pad_Repeat & 0x4000) {
         n = D_80072B60->field_E2 + 1;
         if (n < D_80072B60->field_E1) {
             D_80072B60->field_E2 = n;

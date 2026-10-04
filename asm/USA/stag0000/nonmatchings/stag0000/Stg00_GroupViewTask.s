@@ -132,8 +132,8 @@ glabel Stg00_GroupViewTask
     /* 385C 80066BBC B8FF4014 */  bnez       $v0, .L80066AA0
     /* 3860 80066BC0 00000000 */   nop
   .L80066BC4:
-    /* 3864 80066BC4 0680023C */  lui        $v0, %hi(D_8005F708)
-    /* 3868 80066BC8 08F7428C */  lw         $v0, %lo(D_8005F708)($v0)
+    /* 3864 80066BC4 0680023C */  lui        $v0, %hi(Pad_Square)
+    /* 3868 80066BC8 08F7428C */  lw         $v0, %lo(Pad_Square)($v0)
     /* 386C 80066BCC 00000000 */  nop
     /* 3870 80066BD0 2E004018 */  blez       $v0, .L80066C8C
     /* 3874 80066BD4 07000324 */   addiu     $v1, $zero, 0x7
@@ -192,8 +192,8 @@ glabel Stg00_GroupViewTask
     /* 3924 80066C84 80A2010C */  jal        Stg00_CamMoveOrigin
     /* 3928 80066C88 00000000 */   nop
   .L80066C8C:
-    /* 392C 80066C8C 0680023C */  lui        $v0, %hi(D_8005F720)
-    /* 3930 80066C90 20F7428C */  lw         $v0, %lo(D_8005F720)($v0)
+    /* 392C 80066C8C 0680023C */  lui        $v0, %hi(Pad_Select)
+    /* 3930 80066C90 20F7428C */  lw         $v0, %lo(Pad_Select)($v0)
     /* 3934 80066C94 00000000 */  nop
     /* 3938 80066C98 0A004018 */  blez       $v0, .L80066CC4
     /* 393C 80066C9C 03000224 */   addiu     $v0, $zero, 0x3
@@ -229,13 +229,13 @@ glabel Stg00_GroupViewTask
     /* 39A4 80066D04 0C0062AE */   sw        $v0, 0xC($s3)
     /* 39A8 80066D08 0C0060AE */  sw         $zero, 0xC($s3)
   .L80066D0C:
-    /* 39AC 80066D0C 0680023C */  lui        $v0, %hi(D_8005F714)
-    /* 39B0 80066D10 14F7428C */  lw         $v0, %lo(D_8005F714)($v0)
+    /* 39AC 80066D0C 0680023C */  lui        $v0, %hi(Pad_R2)
+    /* 39B0 80066D10 14F7428C */  lw         $v0, %lo(Pad_R2)($v0)
     /* 39B4 80066D14 00000000 */  nop
     /* 39B8 80066D18 03004018 */  blez       $v0, .L80066D28
-    /* 39BC 80066D1C 0680033C */   lui       $v1, %hi(D_8005F78C)
+    /* 39BC 80066D1C 0680033C */   lui       $v1, %hi(Sys_NextGameMode)
     /* 39C0 80066D20 02010224 */  addiu      $v0, $zero, 0x102
-    /* 39C4 80066D24 8CF762AC */  sw         $v0, %lo(D_8005F78C)($v1)
+    /* 39C4 80066D24 8CF762AC */  sw         $v0, %lo(Sys_NextGameMode)($v1)
   .L80066D28:
     /* 39C8 80066D28 2C00BF8F */  lw         $ra, 0x2C($sp)
     /* 39CC 80066D2C 2800B68F */  lw         $s6, 0x28($sp)

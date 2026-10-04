@@ -851,7 +851,7 @@ extern void func_80064480(void);
 extern s32 D_8007409C;
 extern s16 D_80073188[][3];
 extern s16 D_8005E5E0;  /* D_8005D5A0.field_1040 as a scalar reloc */
-extern s32 D_8005F78C;  /* Sys_State.nextGameMode as a scalar reloc */
+extern s32 Sys_NextGameMode;  /* Sys_State.nextGameMode as a scalar reloc */
 extern s32 D_8005F790;  /* Sys_State.prevGameMode as a scalar reloc */
 extern s32 Anim_GetModelAnimFile(s32 arg0, s32 arg1);
 extern void Cd_QueueFile(s32);

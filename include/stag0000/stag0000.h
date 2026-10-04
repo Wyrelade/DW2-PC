@@ -181,7 +181,7 @@ typedef struct {
 typedef struct {
     /* 0x00 */ u32 bits[5][6];
 } Stg00BitTbl; /* size 0x78 */
-extern Stg00BitTbl D_80063378;
+extern Stg00BitTbl Stg00_LayoutMaskBits;
 
 /* Actor.work of the select task (Stg00_DungSelTask and its states). */
 typedef struct {
@@ -266,12 +266,12 @@ typedef struct {
 
 extern Halves Gfx_NeutralRgb;
 extern s32 Gfx_ZeroVector[];
-extern u16 D_8005F72C;
-extern s32 D_8005F700;
+extern u16 Pad_Repeat;
+extern s32 Pad_Circle;
 extern PadState Pad_State[];
-extern s32 D_8005F78C;
+extern s32 Sys_NextGameMode;
 extern Stg00Blk5071C *D_8005071C;
-extern s32 D_80068E84[];
+extern s32 Stg00_LineupWinMasks[];
 extern s32 Stg00_GroupWinMasks[];
 extern Stg00Pos Stg00_LineupLayouts[][9];
 extern u8 Stg00_SoundLabelBuf[2][10];
@@ -344,8 +344,8 @@ extern void Text_CloseArray(s32 *arg0, s32 arg1);
 extern void Stg00_DigiViewSpawnModel(Actor *arg0);
 extern void Task_SetState2(Actor *arg0, u32 arg1);
 extern void Task_SetState4(Actor *arg0, u32 arg1);
-extern u8 D_80068DD8[][4];
-extern u8 D_80068DF4[][4];
+extern u8 Stg00_DigiViewPage2Anims[][4];
+extern u8 Stg00_DigiViewPage3Anims[][4];
 
 void Stg00_RelocPtr(u32 *arg0, u32 arg1);
 void Stg00_DungSelPickFloor(Actor *arg0, Stg00SelWork *arg1);
@@ -555,14 +555,14 @@ typedef struct {
 } Stg00ModelFade;
 
 /* ---- externs ---- */
-extern s32 D_8005F708;
-extern s32 D_8005F714;
-extern s32 D_8005F720;
+extern s32 Pad_Square;
+extern s32 Pad_R2;
+extern s32 Pad_Select;
 extern s32 D_8005F724;
 extern s32 Sys_FrameDelta;
 extern s32 Sys_GameMode;
-extern s32 D_8005F79C;
-extern s32 D_80068AA0[];
+extern s32 Sys_PacketCursor;
+extern s32 Stg00_ScrollTileTex[];
 extern s32 Stg00_WindowTestMasks[];
 extern Stg00PartMasks Stg00_WindowTestParts[];
 extern s32 Stg00_PopupItemMasks[];

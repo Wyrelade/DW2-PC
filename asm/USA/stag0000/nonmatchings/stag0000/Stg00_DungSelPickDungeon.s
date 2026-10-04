@@ -1,8 +1,8 @@
 nonmatching Stg00_DungSelPickDungeon, 0xDC
 
 glabel Stg00_DungSelPickDungeon
-    /* E80 800641E0 0680023C */  lui        $v0, %hi(D_8005F72C)
-    /* E84 800641E4 2CF74294 */  lhu        $v0, %lo(D_8005F72C)($v0)
+    /* E80 800641E0 0680023C */  lui        $v0, %hi(Pad_Repeat)
+    /* E84 800641E4 2CF74294 */  lhu        $v0, %lo(Pad_Repeat)($v0)
     /* E88 800641E8 E0FFBD27 */  addiu      $sp, $sp, -0x20
     /* E8C 800641EC 1400B1AF */  sw         $s1, 0x14($sp)
     /* E90 800641F0 21888000 */  addu       $s1, $a0, $zero
@@ -17,12 +17,12 @@ glabel Stg00_DungSelPickDungeon
     /* EB4 80064214 FFFF6224 */   addiu     $v0, $v1, -0x1
     /* EB8 80064218 000002A6 */  sh         $v0, 0x0($s0)
   .L8006421C:
-    /* EBC 8006421C 0680023C */  lui        $v0, %hi(D_8005F72C)
-    /* EC0 80064220 2CF74294 */  lhu        $v0, %lo(D_8005F72C)($v0)
+    /* EBC 8006421C 0680023C */  lui        $v0, %hi(Pad_Repeat)
+    /* EC0 80064220 2CF74294 */  lhu        $v0, %lo(Pad_Repeat)($v0)
     /* EC4 80064224 00000000 */  nop
     /* EC8 80064228 00204230 */  andi       $v0, $v0, 0x2000
     /* ECC 8006422C 09004010 */  beqz       $v0, .L80064254
-    /* ED0 80064230 0680023C */   lui       $v0, %hi(D_8005F700)
+    /* ED0 80064230 0680023C */   lui       $v0, %hi(Pad_Circle)
     /* ED4 80064234 00000286 */  lh         $v0, 0x0($s0)
     /* ED8 80064238 00000396 */  lhu        $v1, 0x0($s0)
     /* EDC 8006423C 01004224 */  addiu      $v0, $v0, 0x1
@@ -31,9 +31,9 @@ glabel Stg00_DungSelPickDungeon
     /* EE8 80064248 01006224 */   addiu     $v0, $v1, 0x1
     /* EEC 8006424C 000002A6 */  sh         $v0, 0x0($s0)
   .L80064250:
-    /* EF0 80064250 0680023C */  lui        $v0, %hi(D_8005F700)
+    /* EF0 80064250 0680023C */  lui        $v0, %hi(Pad_Circle)
   .L80064254:
-    /* EF4 80064254 00F7428C */  lw         $v0, %lo(D_8005F700)($v0)
+    /* EF4 80064254 00F7428C */  lw         $v0, %lo(Pad_Circle)($v0)
     /* EF8 80064258 00000000 */  nop
     /* EFC 8006425C 12004018 */  blez       $v0, .L800642A8
     /* F00 80064260 200E043C */   lui       $a0, (0xE20000A >> 16)

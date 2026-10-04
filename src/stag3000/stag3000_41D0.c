@@ -264,7 +264,7 @@ void func_800676F4(Actor *a0) {
             }
             if (Flag_Test(0x2DD)) {
                 Flag_Set(0x2DD, 0);
-                D_8005F78C = 0x406;
+                Sys_NextGameMode = 0x406;
             } else {
                 Sys_State.modeArg = 2;
                 Sys_State.nextGameMode = Sys_State.prevGameMode;

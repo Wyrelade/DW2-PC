@@ -448,10 +448,10 @@ glabel func_800676F4
     /* 49EC 80067D4C DD020424 */  addiu      $a0, $zero, 0x2DD
     /* 49F0 80067D50 7188000C */  jal        Flag_Set
     /* 49F4 80067D54 21280000 */   addu      $a1, $zero, $zero
-    /* 49F8 80067D58 0680033C */  lui        $v1, %hi(D_8005F78C)
+    /* 49F8 80067D58 0680033C */  lui        $v1, %hi(Sys_NextGameMode)
     /* 49FC 80067D5C 06040224 */  addiu      $v0, $zero, 0x406
     /* 4A00 80067D60 5F9F0108 */  j          .L80067D7C
-    /* 4A04 80067D64 8CF762AC */   sw        $v0, %lo(D_8005F78C)($v1)
+    /* 4A04 80067D64 8CF762AC */   sw        $v0, %lo(Sys_NextGameMode)($v1)
   .L80067D68:
     /* 4A08 80067D68 70F74224 */  addiu      $v0, $v0, %lo(Sys_State)
     /* 4A0C 80067D6C 2000448C */  lw         $a0, 0x20($v0)

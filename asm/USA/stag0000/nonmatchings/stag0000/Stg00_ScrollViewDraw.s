@@ -4,9 +4,9 @@ glabel Stg00_ScrollViewDraw
     /* B3C 80063E9C C8FFBD27 */  addiu      $sp, $sp, -0x38
     /* B40 80063EA0 2400B5AF */  sw         $s5, 0x24($sp)
     /* B44 80063EA4 21A80000 */  addu       $s5, $zero, $zero
-    /* B48 80063EA8 0780023C */  lui        $v0, %hi(D_80068AA0)
+    /* B48 80063EA8 0780023C */  lui        $v0, %hi(Stg00_ScrollTileTex)
     /* B4C 80063EAC 3000BEAF */  sw         $fp, 0x30($sp)
-    /* B50 80063EB0 A08A5E24 */  addiu      $fp, $v0, %lo(D_80068AA0)
+    /* B50 80063EB0 A08A5E24 */  addiu      $fp, $v0, %lo(Stg00_ScrollTileTex)
     /* B54 80063EB4 2000B4AF */  sw         $s4, 0x20($sp)
     /* B58 80063EB8 FF00143C */  lui        $s4, (0xFFFFFF >> 16)
     /* B5C 80063EBC FFFF9436 */  ori        $s4, $s4, (0xFFFFFF & 0xFFFF)
@@ -111,8 +111,8 @@ glabel Stg00_ScrollViewDraw
     /* CE0 80064040 2000B48F */  lw         $s4, 0x20($sp)
     /* CE4 80064044 1C00B38F */  lw         $s3, 0x1C($sp)
     /* CE8 80064048 1800B28F */  lw         $s2, 0x18($sp)
-    /* CEC 8006404C 0680023C */  lui        $v0, %hi(D_8005F79C)
-    /* CF0 80064050 9CF751AC */  sw         $s1, %lo(D_8005F79C)($v0)
+    /* CEC 8006404C 0680023C */  lui        $v0, %hi(Sys_PacketCursor)
+    /* CF0 80064050 9CF751AC */  sw         $s1, %lo(Sys_PacketCursor)($v0)
     /* CF4 80064054 1400B18F */  lw         $s1, 0x14($sp)
     /* CF8 80064058 1000B08F */  lw         $s0, 0x10($sp)
     /* CFC 8006405C 0800E003 */  jr         $ra

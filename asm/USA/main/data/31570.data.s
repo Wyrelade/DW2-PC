@@ -36178,9 +36178,9 @@ dlabel D_8005F70C
     /* 4FF28 8005F728 00000000 */ .word 0x00000000
 enddlabel D_8005F70C
 
-nonmatching D_8005F72C
+nonmatching Pad_Repeat
 
-dlabel D_8005F72C
+dlabel Pad_Repeat
     /* 4FF2C 8005F72C */ .short 0x0000
     /* 4FF2E 8005F72E */ .short 0x0000
     /* 4FF30 8005F730 */ .short 0x0000
@@ -36215,7 +36215,7 @@ dlabel D_8005F72C
     /* 4FF6A 8005F76A */ .short 0x0000
     /* 4FF6C 8005F76C */ .short 0x0000
     /* 4FF6E 8005F76E */ .short 0x0000
-enddlabel D_8005F72C
+enddlabel Pad_Repeat
 
 nonmatching Sys_State
 
@@ -36254,20 +36254,20 @@ dlabel Sys_GameMode
     /* 4FF88 8005F788 00000000 */ .word 0x00000000
 enddlabel Sys_GameMode
 
-nonmatching D_8005F78C
+nonmatching Sys_NextGameMode
 
-dlabel D_8005F78C
+dlabel Sys_NextGameMode
     /* 4FF8C 8005F78C 00000000 */ .word 0x00000000
     /* 4FF90 8005F790 00000000 */ .word 0x00000000
     /* 4FF94 8005F794 00000000 */ .word 0x00000000
     /* 4FF98 8005F798 00000000 */ .word 0x00000000
-enddlabel D_8005F78C
+enddlabel Sys_NextGameMode
 
-nonmatching D_8005F79C
+nonmatching Sys_PacketCursor
 
-dlabel D_8005F79C
+dlabel Sys_PacketCursor
     /* 4FF9C 8005F79C 00000000 */ .word 0x00000000
-enddlabel D_8005F79C
+enddlabel Sys_PacketCursor
 
 nonmatching D_8005F7A0
 

@@ -19,8 +19,8 @@ glabel Gpu_FreePrimBufs
     /* D16C 8001C96C 1800BF8F */  lw         $ra, 0x18($sp)
     /* D170 8001C970 1400B18F */  lw         $s1, 0x14($sp)
     /* D174 8001C974 1000B08F */  lw         $s0, 0x10($sp)
-    /* D178 8001C978 0680023C */  lui        $v0, %hi(D_8005F79C)
-    /* D17C 8001C97C 9CF740AC */  sw         $zero, %lo(D_8005F79C)($v0)
+    /* D178 8001C978 0680023C */  lui        $v0, %hi(Sys_PacketCursor)
+    /* D17C 8001C97C 9CF740AC */  sw         $zero, %lo(Sys_PacketCursor)($v0)
     /* D180 8001C980 0800E003 */  jr         $ra
     /* D184 8001C984 2000BD27 */   addiu     $sp, $sp, 0x20
 endlabel Gpu_FreePrimBufs

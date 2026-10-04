@@ -165,8 +165,8 @@ glabel Gfx_DrawWireQuads
     /* 12534 80021D34 1800B28F */  lw         $s2, 0x18($sp)
     /* 12538 80021D38 1400B18F */  lw         $s1, 0x14($sp)
     /* 1253C 80021D3C 1000B08F */  lw         $s0, 0x10($sp)
-    /* 12540 80021D40 0680023C */  lui        $v0, %hi(D_8005F79C)
-    /* 12544 80021D44 9CF748AC */  sw         $t0, %lo(D_8005F79C)($v0)
+    /* 12540 80021D40 0680023C */  lui        $v0, %hi(Sys_PacketCursor)
+    /* 12544 80021D44 9CF748AC */  sw         $t0, %lo(Sys_PacketCursor)($v0)
     /* 12548 80021D48 0800E003 */  jr         $ra
     /* 1254C 80021D4C 2800BD27 */   addiu     $sp, $sp, 0x28
 endlabel Gfx_DrawWireQuads

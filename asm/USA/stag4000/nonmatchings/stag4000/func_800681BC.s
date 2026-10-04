@@ -2,11 +2,11 @@ nonmatching func_800681BC, 0x120
 
 glabel func_800681BC
     /* 4E5C 800681BC E8FFBD27 */  addiu      $sp, $sp, -0x18
-    /* 4E60 800681C0 0680023C */  lui        $v0, %hi(D_8005F708)
+    /* 4E60 800681C0 0680023C */  lui        $v0, %hi(Pad_Square)
     /* 4E64 800681C4 1400BFAF */  sw         $ra, 0x14($sp)
     /* 4E68 800681C8 1000B0AF */  sw         $s0, 0x10($sp)
     /* 4E6C 800681CC 2C00838C */  lw         $v1, 0x2C($a0)
-    /* 4E70 800681D0 08F7428C */  lw         $v0, %lo(D_8005F708)($v0)
+    /* 4E70 800681D0 08F7428C */  lw         $v0, %lo(Pad_Square)($v0)
     /* 4E74 800681D4 2C006A8C */  lw         $t2, 0x2C($v1)
     /* 4E78 800681D8 3B004018 */  blez       $v0, .L800682C8
     /* 4E7C 800681DC FF000224 */   addiu     $v0, $zero, 0xFF

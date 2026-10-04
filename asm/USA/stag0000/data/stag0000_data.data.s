@@ -15,16 +15,16 @@ dlabel D_80068A88
     /* 573C 80068A9C 20000000 */ .word 0x00000020
 enddlabel D_80068A88
 
-nonmatching D_80068AA0
+nonmatching Stg00_ScrollTileTex
 
-dlabel D_80068AA0
+dlabel Stg00_ScrollTileTex
     /* 5740 80068AA0 00000000 */ .word 0x00000000
     /* 5744 80068AA4 043D0680 */ .word Stg00_ScrollViewTask
     /* 5748 80068AA8 70110180 */ .word Task_DefaultDestroy
     /* 574C 80068AAC 9C3E0680 */ .word Stg00_ScrollViewDraw
     /* 5750 80068AB0 08000000 */ .word 0x00000008
     /* 5754 80068AB4 00000000 */ .word 0x00000000
-enddlabel D_80068AA0
+enddlabel Stg00_ScrollTileTex
 
 nonmatching D_80068AB8
 
@@ -252,9 +252,9 @@ dlabel Stg00_DigiViewPages
 enddlabel Stg00_DigiViewPages
 
 .align 2
-nonmatching D_80068DD8
+nonmatching Stg00_DigiViewPage2Anims
 
-dlabel D_80068DD8
+dlabel Stg00_DigiViewPage2Anims
     /* 5A78 80068DD8 */ .asciz "("
     /* 28000000 */
 .align 2
@@ -282,15 +282,15 @@ dlabel D_80068DD8
     /* 5A90 80068DF0 */ .asciz "."
     /* 2E000000 */
 .align 2
-enddlabel D_80068DD8
+enddlabel Stg00_DigiViewPage2Anims
 
-nonmatching D_80068DF4
+nonmatching Stg00_DigiViewPage3Anims
 
-dlabel D_80068DF4
+dlabel Stg00_DigiViewPage3Anims
     /* 5A94 80068DF4 1E000000 */ .word 0x0000001E
     /* 5A98 80068DF8 1F000000 */ .word 0x0000001F
     /* 5A9C 80068DFC 20000000 */ .word 0x00000020
-enddlabel D_80068DF4
+enddlabel Stg00_DigiViewPage3Anims
 
 nonmatching D_80068E00
 
@@ -335,14 +335,14 @@ dlabel Stg00_LineupLayouts
     /* 5B20 80068E80 000F000F */ .word 0x0F000F00
 enddlabel Stg00_LineupLayouts
 
-nonmatching D_80068E84
+nonmatching Stg00_LineupWinMasks
 
-dlabel D_80068E84
+dlabel Stg00_LineupWinMasks
     /* 5B24 80068E84 06000000 */ .word 0x00000006
     /* 5B28 80068E88 02000000 */ .word 0x00000002
     /* 5B2C 80068E8C 04000000 */ .word 0x00000004
     /* 5B30 80068E90 00000000 */ .word 0x00000000
-enddlabel D_80068E84
+enddlabel Stg00_LineupWinMasks
 
 nonmatching D_80068E94
 
@@ -468,7 +468,7 @@ dlabel D_80068F50
     /* 5C30 80068F90 B88A0680 */ .word D_80068AB8
     /* 5C34 80068F94 508F0680 */ .word D_80068F50
     /* 5C38 80068F98 D08F0680 */ .word D_80068FD0
-    /* 5C3C 80068F9C A08A0680 */ .word D_80068AA0
+    /* 5C3C 80068F9C A08A0680 */ .word Stg00_ScrollTileTex
 enddlabel D_80068F50
 
 nonmatching Stg00_XaTrackStart

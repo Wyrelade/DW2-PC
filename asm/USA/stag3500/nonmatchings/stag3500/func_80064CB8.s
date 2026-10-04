@@ -676,9 +676,9 @@ glabel func_80064CB8
     /* 22EC 8006564C 180082AE */  sw         $v0, 0x18($s4)
     /* 22F0 80065650 10004228 */  slti       $v0, $v0, 0x10
     /* 22F4 80065654 05004014 */  bnez       $v0, .L8006566C
-    /* 22F8 80065658 0680033C */   lui       $v1, %hi(D_8005F78C)
+    /* 22F8 80065658 0680033C */   lui       $v1, %hi(Sys_NextGameMode)
     /* 22FC 8006565C 01070224 */  addiu      $v0, $zero, 0x701
-    /* 2300 80065660 8CF762AC */  sw         $v0, %lo(D_8005F78C)($v1)
+    /* 2300 80065660 8CF762AC */  sw         $v0, %lo(Sys_NextGameMode)($v1)
   .L80065664:
     /* 2304 80065664 5945000C */  jal        Task_NextState1
     /* 2308 80065668 21208002 */   addu      $a0, $s4, $zero

@@ -82,9 +82,9 @@ void Stg10_TitleUpdate(Actor *a0) {
             default:
                 if (a0->elapsed >= 600) {
                     if (Stg10_AttractCount == 0) {
-                        D_8005F78C = 0x403;
+                        Sys_NextGameMode = 0x403;
                     } else {
-                        D_8005F78C = 0x402;
+                        Sys_NextGameMode = 0x402;
                     }
                     if (++Stg10_AttractCount == 20) {
                         Stg10_AttractCount = 0;
@@ -322,7 +322,7 @@ void Stg10_EndScreenUpdate(Actor *arg0) {
             break;
         case 2:
             if (--w->count == 0) {
-                D_8005F78C = 0x407;
+                Sys_NextGameMode = 0x407;
                 Task_NextState1(arg0);
             }
             break;

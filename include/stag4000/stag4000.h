@@ -719,7 +719,7 @@ extern void Gfx_FadeInFromBlack(s32 arg0);
 extern void Gpu_AllocPacketBufs(s32 a0);
 extern void Text_Open(void *, TextOpenArgs *);
 extern GfxTexSlot *Gfx_FindOrLoadTexSlot(s32);
-extern u16 D_8005F72C;
+extern u16 Pad_Repeat;
 extern void Snd_PlayById(s32, s32);
 extern void Task_NextState2(Actor *arg0);
 extern s32 Cd_GetFileOrNull(s32 arg0);
@@ -754,14 +754,14 @@ extern u8 *memset(u8 *s, s32 c, s32 n);
 extern void Gfx_HidePartsByMask(GfxPartMaskView *, s32);
 extern s32 D_80072750[];
 void func_8006EBF4(s32 x, s32 y, s32 ox, s32 oy, s32 dir);
-extern s32 D_8005F79C;
+extern s32 Sys_PacketCursor;
 extern GameStateView Save_GameState;
 extern s32 D_800726C0[];
 extern void Gfx_FadeOutToBlack(s32 arg0);
 extern s32 Item_GetNameText(s32 arg0);
 extern s32 Item_AddToBag(s32 id);
 extern void Item_SortList(void);
-extern s32 D_8005F708;
+extern s32 Pad_Square;
 extern s32 Digi_GetModelFile(s32 id);
 extern s32 Anim_GetModelAnimFile(s32 arg0, s32 arg1);
 void func_80070B2C(s32 a0);
@@ -1008,9 +1008,9 @@ extern void Text_SetOtLayer(s32 a0, s32 a1);
 
 extern s32 D_80072700[];
 
-extern s32 D_8005F700; /* Pad_State[0].circle as a scalar reloc */
+extern s32 Pad_Circle; /* Pad_State[0].circle as a scalar reloc */
 extern s32 D_8005F710; /* Pad_State[0].r1 as a scalar reloc */
-extern s32 D_8005F720; /* Pad_State[0].select as a scalar reloc */
+extern s32 Pad_Select; /* Pad_State[0].select as a scalar reloc */
 extern Actor *D_80072AA0;
 s32 func_800682DC(Actor *a0);
 s32 func_800681BC(Actor *a0);
@@ -1113,7 +1113,7 @@ typedef struct {
 } Stg40AA4;
 
 extern Stg40AA4 *D_80072AA4;
-extern s32 D_8005F78C;  /* Sys_State.nextGameMode as a scalar reloc */
+extern s32 Sys_NextGameMode;  /* Sys_State.nextGameMode as a scalar reloc */
 extern u16 D_800729A0[10];
 extern u16 D_800729B4[6];
 extern s32 D_8005F790;  /* Sys_State.prevGameMode as a scalar reloc */

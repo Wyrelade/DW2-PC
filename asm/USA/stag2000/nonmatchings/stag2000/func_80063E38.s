@@ -114,8 +114,8 @@ glabel func_80063E38
     /* C84 80063FE4 2000B48F */  lw         $s4, 0x20($sp)
     /* C88 80063FE8 1C00B38F */  lw         $s3, 0x1C($sp)
     /* C8C 80063FEC 1800B28F */  lw         $s2, 0x18($sp)
-    /* C90 80063FF0 0680023C */  lui        $v0, %hi(D_8005F79C)
-    /* C94 80063FF4 9CF751AC */  sw         $s1, %lo(D_8005F79C)($v0)
+    /* C90 80063FF0 0680023C */  lui        $v0, %hi(Sys_PacketCursor)
+    /* C94 80063FF4 9CF751AC */  sw         $s1, %lo(Sys_PacketCursor)($v0)
     /* C98 80063FF8 1400B18F */  lw         $s1, 0x14($sp)
     /* C9C 80063FFC 1000B08F */  lw         $s0, 0x10($sp)
     /* CA0 80064000 0800E003 */  jr         $ra

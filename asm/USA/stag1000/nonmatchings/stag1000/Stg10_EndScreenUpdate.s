@@ -56,9 +56,9 @@ glabel Stg10_EndScreenUpdate
     /* A94 80063DF4 FFFF4224 */  addiu      $v0, $v0, -0x1
     /* A98 80063DF8 06004014 */  bnez       $v0, .L80063E14
     /* A9C 80063DFC 0000A2AC */   sw        $v0, 0x0($a1)
-    /* AA0 80063E00 0680033C */  lui        $v1, %hi(D_8005F78C)
+    /* AA0 80063E00 0680033C */  lui        $v1, %hi(Sys_NextGameMode)
     /* AA4 80063E04 07040224 */  addiu      $v0, $zero, 0x407
-    /* AA8 80063E08 8CF762AC */  sw         $v0, %lo(D_8005F78C)($v1)
+    /* AA8 80063E08 8CF762AC */  sw         $v0, %lo(Sys_NextGameMode)($v1)
   .L80063E0C:
     /* AAC 80063E0C 5945000C */  jal        Task_NextState1
     /* AB0 80063E10 21200002 */   addu      $a0, $s0, $zero

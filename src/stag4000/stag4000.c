@@ -449,7 +449,7 @@ void func_8006424C(Actor *arg0) {
                 break;
             case 1:
                 if (func_80072114() == 0) {
-                    D_8005F78C = work->field_0;
+                    Sys_NextGameMode = work->field_0;
                     Task_NextState2(arg0);
                 }
                 break;
@@ -634,7 +634,7 @@ void func_80064BD8(Stg40Loc *loc) {
             w = D_80072B6C;
             a = &w->field_0[row][col];
             b = &w->field_0[row + 1][col];
-            pkt = (Stg40FT4 *)D_8005F79C;
+            pkt = (Stg40FT4 *)Sys_PacketCursor;
             *pkt = w->field_143C[D_8007265A];
             pkt->x0 = a[0].s[0].x;
             pkt->y0 = a[0].s[0].y;
@@ -685,7 +685,7 @@ void func_80064BD8(Stg40Loc *loc) {
         count += ((out[i].x < 0 ? -out[i].x : out[i].x) < centerX) && ((out[i].y < 0 ? -out[i].y : out[i].y) < centerY);
     }
     if (count != 0) {
-        pkt = (Stg40FT4 *)D_8005F79C;
+        pkt = (Stg40FT4 *)Sys_PacketCursor;
         *pkt = D_80072B6C->field_143C[D_8007265A];
         pkt->x0 = out[0].x;
         pkt->y0 = out[0].y;

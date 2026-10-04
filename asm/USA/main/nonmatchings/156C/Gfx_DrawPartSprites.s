@@ -15,9 +15,9 @@ glabel Gfx_DrawPartSprites
     /* D6C8 8001CEC8 FFFF043C */  lui        $a0, (0xFFFF0000 >> 16)
     /* D6CC 8001CECC E072000C */  jal        Gfx_FindOrLoadTexSlot
     /* D6D0 8001CED0 24204400 */   and       $a0, $v0, $a0
-    /* D6D4 8001CED4 0680033C */  lui        $v1, %hi(D_8005F79C)
+    /* D6D4 8001CED4 0680033C */  lui        $v1, %hi(Sys_PacketCursor)
     /* D6D8 8001CED8 21404000 */  addu       $t0, $v0, $zero
-    /* D6DC 8001CEDC 9CF7678C */  lw         $a3, %lo(D_8005F79C)($v1)
+    /* D6DC 8001CEDC 9CF7678C */  lw         $a3, %lo(Sys_PacketCursor)($v1)
     /* D6E0 8001CEE0 00000392 */  lbu        $v1, 0x0($s0)
     /* D6E4 8001CEE4 FF000224 */  addiu      $v0, $zero, 0xFF
     /* D6E8 8001CEE8 7E006210 */  beq        $v1, $v0, .L8001D0E4
@@ -159,8 +159,8 @@ glabel Gfx_DrawPartSprites
     /* D8E8 8001D0E8 1800B28F */  lw         $s2, 0x18($sp)
     /* D8EC 8001D0EC 1400B18F */  lw         $s1, 0x14($sp)
     /* D8F0 8001D0F0 1000B08F */  lw         $s0, 0x10($sp)
-    /* D8F4 8001D0F4 0680023C */  lui        $v0, %hi(D_8005F79C)
-    /* D8F8 8001D0F8 9CF747AC */  sw         $a3, %lo(D_8005F79C)($v0)
+    /* D8F4 8001D0F4 0680023C */  lui        $v0, %hi(Sys_PacketCursor)
+    /* D8F8 8001D0F8 9CF747AC */  sw         $a3, %lo(Sys_PacketCursor)($v0)
     /* D8FC 8001D0FC 0800E003 */  jr         $ra
     /* D900 8001D100 2000BD27 */   addiu     $sp, $sp, 0x20
 endlabel Gfx_DrawPartSprites
