@@ -17,13 +17,13 @@ typedef struct {
 
 /* Save/load work area of the task held in Stg11_CardTask (Actor.work). */
 typedef struct {
-    /* 0x00 */ s32 field_0;
-    /* 0x04 */ s32 field_4;
-    /* 0x08 */ s32 field_8;
-    /* 0x0C */ u8 field_C[0x15];
-    /* 0x21 */ u8 field_21;
+    /* 0x00 */ s32 port;
+    /* 0x04 */ s32 result;
+    /* 0x08 */ s32 retryCount;
+    /* 0x0C */ u8 fileName[0x15];
+    /* 0x21 */ u8 isTransferFile;
     u8 _pad22[0x02];
-    /* 0x24 */ s32 field_24[2][2];
+    /* 0x24 */ s32 portResult[2][2];
     union {
         /* 0x34 */ u16 sum[0x2000];
         /* memory card block header + data */
@@ -31,20 +31,20 @@ typedef struct {
             /* 0x34 */ u8 magic[2];
             /* 0x36 */ u8 iconFlag;
             /* 0x37 */ u8 blocks;
-            /* 0x38 */ u8 field_38[0x40];
-            /* 0x78 */ u8 field_78[0x1C];
+            /* 0x38 */ u8 title[0x40];
+            /* 0x78 */ u8 reserved[0x1C];
             /* 0x94 */ Stg11Clut clut;
             /* 0xB4 */ Stg11Icon icons[3];
-            /* 0x234 */ u8 field_234[0x3DFC];
-            /* 0x4030 */ u16 field_4030;
-            /* 0x4032 */ u16 field_4032;
+            /* 0x234 */ u8 data[0x3DFC];
+            /* 0x4030 */ u16 version;
+            /* 0x4032 */ u16 checksum;
         } s;
     } u34;
-    /* 0x4034 */ u8 field_4034[0x1E000];
-    /* 0x22034 */ s32 field_22034;
-    /* 0x22038 */ s32 field_22038;
-    /* 0x2203C */ s32 field_2203C;
-    /* 0x22040 */ s32 field_22040;
+    /* 0x4034 */ u8 transferBuf[0x1E000];
+    /* 0x22034 */ s32 curOp;
+    /* 0x22038 */ s32 progressTotal;
+    /* 0x2203C */ s32 progressDone;
+    /* 0x22040 */ s32 opStarted;
 } Stg11SaveWork;
 
 /* One save slot image (stride 0x1058): a GameStateView copy plus trailer. */
@@ -73,19 +73,19 @@ typedef struct {
     /* 0x01 */ u8 digiId;
     u8 _pad02[0xB];
     /* 0x0D */ u8 level;
-    /* 0x0E */ u8 field_E;
-    /* 0x0F */ u8 field_F;
+    /* 0x0E */ u8 dp;
+    /* 0x0F */ u8 maxLevel;
     /* 0x10 */ s32 exp;
     /* 0x14 */ u16 maxHp;
     /* 0x16 */ u16 hp;
     /* 0x18 */ u16 maxMp;
     /* 0x1A */ u16 mp;
-    /* 0x1C */ s16 field_1C;
-    /* 0x1E */ u16 field_1E;
-    /* 0x20 */ s16 field_20;
+    /* 0x1C */ s16 attack;
+    /* 0x1E */ u16 defense;
+    /* 0x20 */ s16 speed;
     /* 0x22 */ u8 skills[0x27];
-    /* 0x49 */ u8 field_49;
-    /* 0x4A */ u16 field_4A;
+    /* 0x49 */ u8 isTransferred;
+    /* 0x4A */ u16 transferUid;
     /* 0x4C */ u8 name[14];
     u8 _pad5A[0x2];
 } Stg11DigiEntry; /* size 0x5C */
@@ -100,19 +100,19 @@ typedef struct {
 /* Five 0x20-byte party rows in Stg11MenuWork at 0x98, built from a
    Stg11CardRec by Stg11_ConvertCardDigi. */
 typedef struct {
-    /* 0x00 */ s16 field_0;
-    /* 0x02 */ s16 field_2;
+    /* 0x00 */ s16 digiId;
+    /* 0x02 */ s16 transferState;
     /* 0x04 */ s16 skillCount;
     /* 0x06 */ u8 skills[8];
     /* 0x0E */ u8 level;
-    /* 0x0F */ u8 field_F;
+    /* 0x0F */ u8 maxLevel;
     /* 0x10 */ s32 exp;
     /* 0x14 */ s16 hp;
     /* 0x16 */ s16 mp;
-    /* 0x18 */ s16 field_18;
-    /* 0x1A */ s16 field_1A;
-    /* 0x1C */ s16 field_1C;
-    /* 0x1E */ u16 field_1E;
+    /* 0x18 */ s16 attack;
+    /* 0x1A */ s16 defense;
+    /* 0x1C */ s16 speed;
+    /* 0x1E */ u16 uid;
 } Stg11MenuRow; /* size 0x20 */
 
 /* 0x100-byte digimon record stored in the save work card area
@@ -122,15 +122,15 @@ typedef struct {
     /* 0x80 */ u32 field_80;
     u8 _pad84[0xC];
     /* 0x90 */ u16 uid;
-    /* 0x92 */ u16 field_92;
+    /* 0x92 */ u16 hp;
     u8 _pad94[0x2];
-    /* 0x96 */ u16 field_96;
+    /* 0x96 */ u16 mp;
     u8 _pad98[0x2];
-    /* 0x9A */ u16 field_9A;
-    /* 0x9C */ u16 field_9C;
+    /* 0x9A */ u16 attack;
+    /* 0x9C */ u16 defense;
     u8 _pad9E[0x2];
-    /* 0xA0 */ u16 field_A0;
-    /* 0xA2 */ u16 field_A2;
+    /* 0xA0 */ u16 speed;
+    /* 0xA2 */ u16 speciesId;
     u8 _padA4[0x19];
     /* 0xBD */ u8 field_BD;
     u8 _padBE[0xB];
@@ -152,55 +152,55 @@ typedef struct {
     /* 0x04 */ s16 base;
     /* 0x06 */ s16 hpMax;
     /* 0x08 */ s16 statMax;
-    /* 0x0A */ s16 field_A;
+    /* 0x0A */ s16 speedMax;
 } Stg11SpeciesRec;
 
 typedef struct {
     u8 _pad00[0x04];
-    /* 0x04 */ s32 field_4;
-    /* 0x08 */ s32 field_8;
-    /* 0x0C */ s32 field_C;
-    /* 0x10 */ s32 field_10[9];
+    /* 0x04 */ s32 promptText;
+    /* 0x08 */ s32 statusText;
+    /* 0x0C */ s32 transferCountText;
+    /* 0x10 */ s32 slotTexts[9];
     u8 _pad34[0x04];
-    /* 0x38 */ s32 field_38[11];
+    /* 0x38 */ s32 transferTexts[11];
     u8 _pad64[0x04];
     /* 0x68 */ s16 cursor[2];
     /* 0x6C */ union {
         Layout8C layout;
         s16 gridSize[2];
     } u6C;
-    /* 0x78 */ s16 field_78;
-    /* 0x7A */ s16 field_7A;
-    /* 0x7C */ s16 field_7C;
-    /* 0x7E */ s16 field_7E;
-    /* 0x80 */ s16 field_80;
+    /* 0x78 */ s16 menuKind;
+    /* 0x7A */ s16 isLoad;
+    /* 0x7C */ s16 isVsLoad;
+    /* 0x7E */ s16 padIndex;
+    /* 0x80 */ s16 isTransfer;
     u8 _pad82[0x02];
-    /* 0x84 */ s16 field_84;
-    /* 0x86 */ s16 field_86;
-    /* 0x88 */ s16 field_88;
+    /* 0x84 */ s16 cardPort;
+    /* 0x86 */ s16 listMode;
+    /* 0x88 */ s16 pendingPromptMsg;
     u8 _pad8A[0x02];
-    /* 0x8C */ s32 field_8C;
-    /* 0x90 */ Stg11SaveList *field_90;
-    /* 0x94 */ s16 field_94;
-    /* 0x96 */ s16 field_96;
-    /* 0x98 */ Stg11MenuRow field_98[5];
-    /* 0x138 */ s16 field_138;
+    /* 0x8C */ s32 fade;
+    /* 0x90 */ Stg11SaveList *saveList;
+    /* 0x94 */ s16 progressMode;
+    /* 0x96 */ s16 progress;
+    /* 0x98 */ Stg11MenuRow transferRows[5];
+    /* 0x138 */ s16 transferRemaining;
 } Stg11MenuWork;
 
 /* Work of the stage root task (Stg11_ModeMenuUpdate). */
 typedef struct {
     /* 0x00 */ s32 texts[4];
-    /* 0x10 */ s16 field_10[2];
+    /* 0x10 */ s16 cursor[2];
     /* 0x14 */ union {
         Layout8C layout;
         s16 gridSize[2];
-    } field_14;
-    /* 0x20 */ s16 field_20;
+    } menu;
+    /* 0x20 */ s16 mode;
     u8 _pad22[0x02];
-    /* 0x24 */ s16 field_24;
+    /* 0x24 */ s16 padIndex;
     u8 _pad26[0x02];
-    /* 0x28 */ s32 field_28;
-} Stg11Work63894;
+    /* 0x28 */ s32 fade;
+} Stg11ModeMenuWork;
 
 /* Per-cell task launch entry (Cd_GetFileEntrySubPtr(0xD280003, ...)). */
 typedef struct {
@@ -208,13 +208,13 @@ typedef struct {
     /* 0x2 */ s16 arg;
 } Stg11TaskEntry;
 
-/* Party-select slot (stride 8) in Stg11Work66C04. */
+/* Party-select slot (stride 8) in Stg11VsPartyWork. */
 typedef struct {
-    /* 0x0 */ u8 field_0;
+    /* 0x0 */ u8 kind;
     u8 _pad1[0x1];
-    /* 0x2 */ u8 field_2;
+    /* 0x2 */ u8 rowState;
     u8 _pad3[0x1];
-    /* 0x4 */ DigiRosterEntry *field_4;
+    /* 0x4 */ DigiRosterEntry *entry;
 } Stg11Slot;
 
 typedef struct {
@@ -224,28 +224,28 @@ typedef struct {
 
 /* Work of the party-select list task (Stg11_VsPartyUpdate, drawn by Stg11_VsPartyDraw). */
 typedef struct {
-    /* 0x00 */ s32 field_0[0x14];
-    /* 0x50 */ Stg11Pos field_50;
+    /* 0x00 */ s32 texts[0x14];
+    /* 0x50 */ Stg11Pos cursor;
     /* 0x54 */ union {
         Layout8C layout;
         s16 grid[6];
-    } field_54;
-    /* 0x60 */ s16 field_60;
+    } menu;
+    /* 0x60 */ s16 kind;
     u8 _pad62[0x02];
-    /* 0x64 */ s16 field_64;
-    /* 0x66 */ s16 field_66;
-    /* 0x68 */ s16 field_68;
-    /* 0x6A */ s16 field_6A;
-    /* 0x6C */ Stg11Slot field_6C[0x26];
+    /* 0x64 */ s16 padIndex;
+    /* 0x66 */ s16 scrollTop;
+    /* 0x68 */ s16 isRosterList;
+    /* 0x6A */ s16 rosterCount;
+    /* 0x6C */ Stg11Slot rows[0x26];
     /* 0x19C */ s32 scale;
-    /* 0x1A0 */ s16 field_1A0;
-    /* 0x1A2 */ s16 field_1A2[3];
-} Stg11Work66C04;
+    /* 0x1A0 */ s16 pickCount;
+    /* 0x1A2 */ s16 pickedRows[3];
+} Stg11VsPartyWork;
 
 /* Stg11_VsParty: a save's GameState pointer followed by the three chosen party entries. */
 typedef struct {
-    /* 0x00 */ GameStateView *field_0;
-    /* 0x04 */ DigiRosterEntry field_4[3];
+    /* 0x00 */ GameStateView *gameState;
+    /* 0x04 */ DigiRosterEntry members[3];
     u8 _pad118[0x08];
 } Stg11Party;
 
@@ -362,7 +362,7 @@ extern void Gfx_SetPartsNumber(GfxPart *, s32, s32, s32);
 extern s32 Menu_GridIndexColMajor(s16 *arg0, s16 *arg1);
 extern s32 Menu_MoveGridCursor(s16 *cursor, s16 *gridSize, s32 pad);
 typedef struct {
-    /* 0x0 */ s32 field_0;
+    /* 0x0 */ s32 bgmStarted;
 } Stg11MainWork;
 
 extern s32 MemCardSync(s32 wait, s32 *a1, s32 *a2);

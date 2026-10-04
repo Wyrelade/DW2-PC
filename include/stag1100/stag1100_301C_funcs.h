@@ -4,8 +4,8 @@
 /* Functions src/stag1100/stag1100_301C.c defines or declares, for the units after it
  * (in the single file the definition was the prototype for later code). */
 void Stg11_CardMenuDraw(Actor *arg0);
-void Stg11_VsPartyBuildList(Stg11Work66C04 *arg0);
-void Stg11_VsPartyOpenRowText(Stg11Work66C04 *arg0, u8 arg1);
+void Stg11_VsPartyBuildList(Stg11VsPartyWork *arg0);
+void Stg11_VsPartyOpenRowText(Stg11VsPartyWork *arg0, u8 arg1);
 void Stg11_VsPartyPick(Actor *arg0);
 void Stg11_VsPartyUnpick(Actor *arg0);
 void Stg11_VsPartyInit(Actor *arg0, s16 arg1);

@@ -19,36 +19,36 @@ void Stg11_CardMenuDraw(Actor *arg0) {
     u32 t;
     s32 h;
 
-    if (w->field_8C != 0) {
+    if (w->fade != 0) {
         ids = (s32 *)Cd_GetFileEntry(0xD280007);
         for (i = 0; ids[i] != 0; i++) {
             parts = (GfxPart *)Cd_GetFileEntry(ids[i]);
             switch (i) {
             case 0:
                 tbl = (s32 *)Cd_GetFileEntry(0xD280008);
-                bit = (w->field_86 == 2) << 4;
-                Gfx_HidePartsByMask((GfxPartMaskView *)parts, tbl[w->field_78 - 1] & ~bit);
+                bit = (w->listMode == 2) << 4;
+                Gfx_HidePartsByMask((GfxPartMaskView *)parts, tbl[w->menuKind - 1] & ~bit);
                 break;
             case 1:
                 tbl = (s32 *)Cd_GetFileEntry(0xD280009);
-                m1 = tbl[w->field_86];
-                if (w->field_94 == 0) {
+                m1 = tbl[w->listMode];
+                if (w->progressMode == 0) {
                     m1 |= 0x20;
                 }
                 Gfx_HidePartsByMask((GfxPartMaskView *)parts, m1);
-                if (w->field_86 == 1) {
+                if (w->listMode == 1) {
                     Menu_SetPartsGridPos(parts, 2, (s32 *)w->cursor, w->u6C.gridSize);
                     Gfx_SetPartsPalette(parts, 2, (arg0->elapsed >> 2) & 3);
                 }
-                if (w->field_86 == 2) {
+                if (w->listMode == 2) {
                     Menu_SetPartsGridPos(parts, 0x10, (s32 *)w->cursor, w->u6C.gridSize);
                 }
                 break;
             default:
                 tblA = (s32 *)Cd_GetFileEntry(0xD28000A);
-                list = w->field_90;
+                list = w->saveList;
                 mask = -1;
-                if (w->field_86 == 1) {
+                if (w->listMode == 1) {
                     mask = tblA[1];
                     slot = &list->slots[i - 2];
                     if (list->used[i - 2] != 0) {
@@ -67,11 +67,11 @@ void Stg11_CardMenuDraw(Actor *arg0) {
                 Gfx_HidePartsByMask((GfxPartMaskView *)parts, mask);
                 break;
             }
-            Gfx_SetPartsScale((GfxPartScaleView *)parts, 0x1000, w->field_8C);
+            Gfx_SetPartsScale((GfxPartScaleView *)parts, 0x1000, w->fade);
             Gfx_DrawParts(parts);
         }
     }
-    if (w->field_94 != 0) {
+    if (w->progressMode != 0) {
         p = (Stg11PolyG4 *)Sys_State.packet.addr;
         ot = Sys_State.otLayers.u[0];
         p->tag.b.len = 8;
@@ -91,11 +91,11 @@ void Stg11_CardMenuDraw(Actor *arg0) {
         p->code &= ~2;
         p->x0 = 0x12;
         p->y0 = 0x2A;
-        p->x1 = w->field_96 + 0x12;
+        p->x1 = w->progress + 0x12;
         p->y1 = 0x2A;
         p->x2 = 0x12;
         p->y2 = 0x35;
-        p->x3 = w->field_96 + 0x12;
+        p->x3 = w->progress + 0x12;
         p->y3 = 0x35;
         p->tag.word = (p->tag.word & 0xFF000000) | (*ot & 0xFFFFFF);
         *ot = (*ot & 0xFF000000) | ((u32)p & 0xFFFFFF);
@@ -103,45 +103,45 @@ void Stg11_CardMenuDraw(Actor *arg0) {
     }
 }
 
-void Stg11_VsPartyBuildList(Stg11Work66C04 *arg0) {
-    Stg11Slot *s = arg0->field_6C;
+void Stg11_VsPartyBuildList(Stg11VsPartyWork *arg0) {
+    Stg11Slot *s = arg0->rows;
     Stg11Party *pt = &Stg11_VsParty;
     DigiRosterEntry *e;
     s32 i;
     s32 n;
 
     for (i = 0; i < 0x26; i++) {
-        s[i].field_2 = 0;
-        s[i].field_0 = 0;
+        s[i].rowState = 0;
+        s[i].kind = 0;
     }
-    arg0->field_54.grid[0] = 1;
-    arg0->field_54.grid[1] = 0;
-    n = arg0->field_60 < 3 ? 3 : 0x24;
-    if (arg0->field_60 < 3) {
-        e = pt->field_4;
+    arg0->menu.grid[0] = 1;
+    arg0->menu.grid[1] = 0;
+    n = arg0->kind < 3 ? 3 : 0x24;
+    if (arg0->kind < 3) {
+        e = pt->members;
     } else {
-        e = pt->field_0->elems;
+        e = pt->gameState->elems;
     }
     for (i = 0; i < n; i++, e++) {
         if (e->state == 0) {
             break;
         }
-        s->field_0 = 1;
-        s->field_4 = e;
-        s->field_2 = arg0->field_60 < 3 ? i + 3 : 2;
+        s->kind = 1;
+        s->entry = e;
+        s->rowState = arg0->kind < 3 ? i + 3 : 2;
         s++;
-        arg0->field_54.grid[1]++;
+        arg0->menu.grid[1]++;
     }
-    arg0->field_6A = 0;
-    e = pt->field_0->elems;
+    arg0->rosterCount = 0;
+    e = pt->gameState->elems;
     for (i = 0; i < 0x24; i++, e++) {
         if (e->state != 0) {
-            arg0->field_6A++;
+            arg0->rosterCount++;
         }
     }
 }
 
-void Stg11_VsPartyOpenRowText(Stg11Work66C04 *arg0, u8 arg1) {
+void Stg11_VsPartyOpenRowText(Stg11VsPartyWork *arg0, u8 arg1) {
     TextDesc st;
     Stg11Slot *s;
     s32 i;
@@ -150,82 +150,82 @@ void Stg11_VsPartyOpenRowText(Stg11Work66C04 *arg0, u8 arg1) {
     st.packedStyle = arg1;
     st.color = 0;
     for (i = 0; i < 16; i++) {
-        Text_Close(&arg0->field_0[i]);
+        Text_Close(&arg0->texts[i]);
     }
-    s = &arg0->field_6C[arg0->field_66];
+    s = &arg0->rows[arg0->scrollTop];
     for (i = 0; i < 4; s++, i++) {
-        if (s->field_0 != 0) if (s->field_0 == 1) {
+        if (s->kind != 0) if (s->kind == 1) {
             st.x = 0x6D;
             st.y = i * 0x21 + 0x3E;
             st.text = (s32)Cd_GetFileEntry(0x1FD0082);
-            Text_OpenDesc(&arg0->field_0[i * 4], &st);
+            Text_OpenDesc(&arg0->texts[i * 4], &st);
             st.x = 0xD0;
             st.y = i * 0x21 + 0x3E;
             st.text = (s32)Cd_GetFileEntry(0x1FD00BB);
-            Text_OpenDesc(&arg0->field_0[i * 4 + 1], &st);
+            Text_OpenDesc(&arg0->texts[i * 4 + 1], &st);
             st.y = i * 0x21 + 0x32;
             st.x = 0x6D;
-            st.text = (s32)s->field_4->name;
-            Text_OpenDesc(&arg0->field_0[i * 4 + 2], &st);
+            st.text = (s32)s->entry->name;
+            Text_OpenDesc(&arg0->texts[i * 4 + 2], &st);
             st.x = 0xD0;
             st.y = i * 0x21 + 0x32;
-            st.text = (s32)Digi_GetDefaultName(s->field_4->digiId);
-            Text_OpenDesc(&arg0->field_0[i * 4 + 3], &st);
+            st.text = (s32)Digi_GetDefaultName(s->entry->digiId);
+            Text_OpenDesc(&arg0->texts[i * 4 + 3], &st);
         }
     }
 }
 
 void Stg11_VsPartyPick(Actor *arg0) {
-    Stg11Work66C04 *w = (Stg11Work66C04 *)arg0->work;
+    Stg11VsPartyWork *w = (Stg11VsPartyWork *)arg0->work;
     s32 idx;
     Stg11Slot *s;
     s32 i;
     DigiRosterEntry *d;
 
-    idx = Menu_GridIndexColMajor((s16 *)&w->field_50, w->field_54.grid);
-    s = &w->field_6C[idx];
-    if (s->field_2 != 2) {
+    idx = Menu_GridIndexColMajor((s16 *)&w->cursor, w->menu.grid);
+    s = &w->rows[idx];
+    if (s->rowState != 2) {
         Snd_PlayById(0x10, 0);
         return;
     }
-    s->field_2 = w->field_1A0 + 3;
-    w->field_1A2[w->field_1A0++] = idx;
+    s->rowState = w->pickCount + 3;
+    w->pickedRows[w->pickCount++] = idx;
     Snd_PlayById(0xE, 0);
-    if (w->field_1A0 < 3) {
+    if (w->pickCount < 3) {
         Task_SetState1(arg0, 1);
         return;
     }
     for (i = 0; i < 3; i++) {
-        d = w->field_6C[w->field_1A2[i]].field_4;
-        Stg11_VsParty.field_4[i] = *d;
+        d = w->rows[w->pickedRows[i]].entry;
+        Stg11_VsParty.members[i] = *d;
     }
     Task_SetState0(arg0, 2);
 }
 
 void Stg11_VsPartyUnpick(Actor *arg0) {
-    Stg11Work66C04 *w = (Stg11Work66C04 *)arg0->work;
+    Stg11VsPartyWork *w = (Stg11VsPartyWork *)arg0->work;
 
-    if (w->field_1A0 == 0) {
+    if (w->pickCount == 0) {
         Snd_PlayById(0xB, 0);
         Task_SetState0(arg0, 2);
     } else {
-        w->field_1A0--;
-        (w->field_6C + w->field_1A2[w->field_1A0])->field_2 = 2;
-        w->field_1A2[w->field_1A0] = 0;
+        w->pickCount--;
+        (w->rows + w->pickedRows[w->pickCount])->rowState = 2;
+        w->pickedRows[w->pickCount] = 0;
         Snd_PlayById(0xB, 0);
         Task_SetState1(arg0, 1);
     }
 }
 
 void Stg11_VsPartyInit(Actor *arg0, s16 arg1) {
-    Stg11Work66C04 *w = (Stg11Work66C04 *)arg0->work;
-    w->field_60 = arg1;
-    w->field_64 = (arg1 - 1) % 2;
-    w->field_68 = w->field_60 >= 3;
+    Stg11VsPartyWork *w = (Stg11VsPartyWork *)arg0->work;
+    w->kind = arg1;
+    w->padIndex = (arg1 - 1) % 2;
+    w->isRosterList = w->kind >= 3;
 }
 
 void Stg11_VsPartyUpdate(Actor *arg0) {
-    Stg11Work66C04 *w = (Stg11Work66C04 *)arg0->work;
+    Stg11VsPartyWork *w = (Stg11VsPartyWork *)arg0->work;
     s32 *slot;
     s32 r;
     s32 r3;
@@ -234,12 +234,12 @@ void Stg11_VsPartyUpdate(Actor *arg0) {
     switch (arg0->stateLevel0) {
     case 0:
     default:
-        w->field_54.layout = Stg11_VsPartyLayout;
-        w->field_66 = 0;
-        w->field_50.y = 0;
-        w->field_50.x = 0;
+        w->menu.layout = Stg11_VsPartyLayout;
+        w->scrollTop = 0;
+        w->cursor.y = 0;
+        w->cursor.x = 0;
         Stg11_VsPartyBuildList(w);
-        Mem_FillWordsNeg1(w->field_0, 0x14);
+        Mem_FillWordsNeg1(w->texts, 0x14);
         Task_NextState0(arg0);
         break;
     case 1:
@@ -252,11 +252,11 @@ void Stg11_VsPartyUpdate(Actor *arg0) {
             }
             break;
         case 1:
-            switch (w->field_60) {
+            switch (w->kind) {
             case 1:
             case 2:
             default:
-                if (w->field_6A >= 4) {
+                if (w->rosterCount >= 4) {
                     Task_SetState1(arg0, 3);
                 } else {
                     Task_SetState1(arg0, 4);
@@ -264,26 +264,26 @@ void Stg11_VsPartyUpdate(Actor *arg0) {
                 break;
             case 3:
             case 4:
-                Text_OpenPacked(&w->field_0[0x10], (s32)Cd_GetFileEntry(w->field_1A0 + 0x1FD0109), 0x80, Stg11_VsPromptPos);
-                Text_OpenPacked(&w->field_0[0x12], (s32)Cd_GetFileEntry(0x1FD00FA), 0, D_80068208);
+                Text_OpenPacked(&w->texts[0x10], (s32)Cd_GetFileEntry(w->pickCount + 0x1FD0109), 0x80, Stg11_VsPromptPos);
+                Text_OpenPacked(&w->texts[0x12], (s32)Cd_GetFileEntry(0x1FD00FA), 0, D_80068208);
                 Task_NextState1(arg0);
                 break;
             }
             break;
         case 2:
-            if (Menu_MoveGridCursor((s16 *)&w->field_50, w->field_54.grid, w->field_64) == 0) {
-                if (Pad_State[w->field_64].triangle > 0) {
+            if (Menu_MoveGridCursor((s16 *)&w->cursor, w->menu.grid, w->padIndex) == 0) {
+                if (Pad_State[w->padIndex].triangle > 0) {
                     Stg11_VsPartyUnpick(arg0);
-                } else if (Pad_State[w->field_64].cross > 0) {
+                } else if (Pad_State[w->padIndex].cross > 0) {
                     Stg11_VsPartyPick(arg0);
                 }
             } else {
                 Snd_PlayById(0xD, 0);
-                if (w->field_50.y - w->field_66 >= 4) {
-                    w->field_66 = w->field_50.y - 3;
+                if (w->cursor.y - w->scrollTop >= 4) {
+                    w->scrollTop = w->cursor.y - 3;
                     Stg11_VsPartyOpenRowText(w, 0);
-                } else if (w->field_50.y < w->field_66) {
-                    w->field_66 = w->field_50.y;
+                } else if (w->cursor.y < w->scrollTop) {
+                    w->scrollTop = w->cursor.y;
                     Stg11_VsPartyOpenRowText(w, 0);
                 }
                 Task_SetState1(arg0, 1);
@@ -293,12 +293,12 @@ void Stg11_VsPartyUpdate(Actor *arg0) {
             switch (arg0->stateLevel2) {
             case 0:
             default:
-                Text_OpenPacked(&w->field_0[0x10], (s32)Cd_GetFileEntry(0x1FD01A9), 0x81, Stg11_VsPromptPos);
-                Text_SetInputPad(w->field_0[0x10], w->field_64);
+                Text_OpenPacked(&w->texts[0x10], (s32)Cd_GetFileEntry(0x1FD01A9), 0x81, Stg11_VsPromptPos);
+                Text_SetInputPad(w->texts[0x10], w->padIndex);
                 Task_NextState2(arg0);
                 break;
             case 1:
-                r3 = Text_WaitYesNo(w->field_0[0x10]);
+                r3 = Text_WaitYesNo(w->texts[0x10]);
                 if (r3 != 0) {
                     if (r3 == 1) {
                         Task_SetState1(arg0, 5);
@@ -313,12 +313,12 @@ void Stg11_VsPartyUpdate(Actor *arg0) {
             switch (arg0->stateLevel2) {
             case 0:
             default:
-                Text_OpenPacked(&w->field_0[0x10], (s32)Cd_GetFileEntry(0x1FD01AA), 0x81, Stg11_VsPromptPos);
-                Text_SetInputPad(w->field_0[0x10], w->field_64);
+                Text_OpenPacked(&w->texts[0x10], (s32)Cd_GetFileEntry(0x1FD01AA), 0x81, Stg11_VsPromptPos);
+                Text_SetInputPad(w->texts[0x10], w->padIndex);
                 Task_NextState2(arg0);
                 break;
             case 1:
-                r = Text_WaitYesNo(w->field_0[0x10]);
+                r = Text_WaitYesNo(w->texts[0x10]);
                 if (r != 0) {
                     if (r == 1) {
                         D_80050780 = r;
@@ -334,12 +334,12 @@ void Stg11_VsPartyUpdate(Actor *arg0) {
             switch (arg0->stateLevel2) {
             case 0:
             default:
-                Text_CloseArray(w->field_0, 0x14);
+                Text_CloseArray(w->texts, 0x14);
                 Task_NextState2(arg0);
                 break;
             case 1:
                 if (Math_RampToZero(arg0, &w->scale) == 0) {
-                    Task_Create(0x605, slot, w->field_64 + 3);
+                    Task_Create(0x605, slot, w->padIndex + 3);
                     Task_NextState2(arg0);
                 }
                 break;
@@ -360,7 +360,7 @@ void Stg11_VsPartyUpdate(Actor *arg0) {
             if (*slot2 != 0) {
                 Task_SetState0((Actor *)*slot2, 2);
             }
-            Text_CloseArray(w->field_0, 0x14);
+            Text_CloseArray(w->texts, 0x14);
             Task_NextState1(arg0);
             break;
         case 1:
@@ -379,7 +379,7 @@ void Stg11_VsPartyUpdate(Actor *arg0) {
 }
 
 void Stg11_VsPartyDraw(Actor *arg0) {
-    Stg11Work66C04 *w = (Stg11Work66C04 *)arg0->work;
+    Stg11VsPartyWork *w = (Stg11VsPartyWork *)arg0->work;
     s32 *ids;
     GfxPart *parts;
     Stg11Slot *e;
@@ -398,40 +398,40 @@ void Stg11_VsPartyDraw(Actor *arg0) {
     for (i = 0; ids[i] != 0; i++) {
         parts = (GfxPart *)Cd_GetFileEntry(ids[i]);
         if (i == 0) {
-            if (w->field_68 != 0) {
-                p = w->field_50;
-                p.y = w->field_50.y - w->field_66;
-                Menu_SetPartsGridPos(parts, 2, (s32 *)&p, w->field_54.grid);
+            if (w->isRosterList != 0) {
+                p = w->cursor;
+                p.y = w->cursor.y - w->scrollTop;
+                Menu_SetPartsGridPos(parts, 2, (s32 *)&p, w->menu.grid);
                 Gfx_SetPartsPalette(parts, 2, (arg0->elapsed >> 2) & 3);
-                mask = (w->field_66 < 1) << 2;
-                if (w->field_54.grid[1] - w->field_66 - 4 <= 0) {
+                mask = (w->scrollTop < 1) << 2;
+                if (w->menu.grid[1] - w->scrollTop - 4 <= 0) {
                     mask |= 8;
                 }
                 Gfx_HidePartsByMask((GfxPartMaskView *)parts, mask);
-                Gfx_SetPartsNumber(parts, 0x10, 2, w->field_50.y + 1);
-                Gfx_SetPartsNumber(parts, 0x20, 2, w->field_54.grid[1]);
+                Gfx_SetPartsNumber(parts, 0x10, 2, w->cursor.y + 1);
+                Gfx_SetPartsNumber(parts, 0x20, 2, w->menu.grid[1]);
             } else {
                 Gfx_HidePartsByMask((GfxPartMaskView *)parts, -1);
             }
         } else {
-            top = w->field_66 - 1;
-            e = &w->field_6C[top + i];
+            top = w->scrollTop - 1;
+            e = &w->rows[top + i];
             k = i - 1;
-            if (k >= w->field_54.grid[1]) {
+            if (k >= w->menu.grid[1]) {
                 Gfx_HidePartsByMask((GfxPartMaskView *)parts, -1);
             } else {
                 Gfx_HidePartsByMask((GfxPartMaskView *)parts, 0);
                 pal = 2;
-                if (w->field_68 != 0 && k == w->field_50.y - w->field_66) {
+                if (w->isRosterList != 0 && k == w->cursor.y - w->scrollTop) {
                     pal = 1;
                 }
-                switch (e->field_0) {
+                switch (e->kind) {
                 case 0:
                     Gfx_HidePartsByMask((GfxPartMaskView *)parts, pal | 0xFE4);
                     break;
                 case 1:
-                    cell = e->field_4;
-                    Gfx_HidePartsByMask((GfxPartMaskView *)parts, pal | Stg11_VsRowMasks[e->field_2 - 1]);
+                    cell = e->entry;
+                    Gfx_HidePartsByMask((GfxPartMaskView *)parts, pal | Stg11_VsRowMasks[e->rowState - 1]);
                     Gfx_SetPartsNumber(parts, 0x20, 3, (s16)cell->maxHp);
                     Gfx_SetPartsNumber(parts, 0x40, 3, (s16)cell->hp);
                     Gfx_SetPartsNumber(parts, 0x80, 3, (s16)cell->maxMp);
@@ -454,33 +454,33 @@ void Stg11_CardInitHeader(void) {
     Stg11SaveWork *w = (Stg11SaveWork *)Stg11_CardTask->work;
     struct Stg11CardBlock *h = &w->u34.s;
     struct Stg11CardBlock *h2 = h;
-    u8 *data = w->u34.s.field_234;
+    u8 *data = w->u34.s.data;
 
     h->magic[0] = 'S';
     h->magic[1] = 'C';
     h->iconFlag = 0x13;
     h->blocks = 2;
     Stg11_CardSetTitle(Stg11_CardTitle);
-    memset(h->field_78, 0, 0x1C);
+    memset(h->reserved, 0, 0x1C);
     h->clut = Stg11_CardIconImage.clut;
     h->icons[0] = Stg11_CardIconImage.icon;
     h2->icons[1] = Stg11_CardIcon2;
     h2->icons[2] = Stg11_CardIcon3;
     memset(data, 0, 0x3DFC);
-    h->field_4030 = 0x102;
+    h->version = 0x102;
 }
 
 u8 *Stg11_CardGetDataBuf(void) {
-    return ((Stg11SaveWork *)Stg11_CardTask->work)->u34.s.field_234;
+    return ((Stg11SaveWork *)Stg11_CardTask->work)->u34.s.data;
 }
 
 u8 *Stg11_CardGetTransferBuf(void) {
-    return ((Stg11SaveWork *)Stg11_CardTask->work)->field_4034;
+    return ((Stg11SaveWork *)Stg11_CardTask->work)->transferBuf;
 }
 
 void Stg11_CardSetTitle(u8 *arg0) {
     s32 i = 0;
-    u8 *d = ((Stg11SaveWork *)Stg11_CardTask->work)->u34.s.field_38;
+    u8 *d = ((Stg11SaveWork *)Stg11_CardTask->work)->u34.s.title;
     u8 c;
 
     memset(d, i, 0x40);
@@ -499,33 +499,33 @@ loop:
 void Stg11_CardStartOp(u8 arg0, s32 arg1) {
     Stg11SaveWork *w = (Stg11SaveWork *)Stg11_CardTask->work;
     Task_SetState1(Stg11_CardTask, arg0);
-    w->field_0 = arg1;
-    w->field_24[arg1][0] = -1;
-    w->field_4 = -1;
-    w->field_22038 = -1;
-    w->field_22040 = 0;
+    w->port = arg1;
+    w->portResult[arg1][0] = -1;
+    w->result = -1;
+    w->progressTotal = -1;
+    w->opStarted = 0;
 }
 
 s32 Stg11_CardGetResult(void) {
-    return ((Stg11SaveWork *)Stg11_CardTask->work)->field_4;
+    return ((Stg11SaveWork *)Stg11_CardTask->work)->result;
 }
 
 void Stg11_CardSetFileName(u8 *arg0, u8 arg1) {
     Stg11SaveWork *w = (Stg11SaveWork *)Stg11_CardTask->work;
-    strcpy(w->field_C, arg0);
-    w->field_21 = arg1;
+    strcpy(w->fileName, arg0);
+    w->isTransferFile = arg1;
 }
 
 s32 Stg11_CardGetProgress(s32 arg0) {
     Stg11SaveWork *w = (Stg11SaveWork *)Stg11_CardTask->work;
-    s32 d = w->field_22038;
+    s32 d = w->progressTotal;
     s32 r;
 
     if (d != 0) {
         if (d < 0) {
             r = 0;
         } else {
-            r = arg0 * w->field_2203C / d;
+            r = arg0 * w->progressDone / d;
         }
     } else {
         r = arg0;
@@ -560,20 +560,20 @@ s32 Stg11_CardFileOp(Stg11SaveWork *arg0, s32 arg1, s32 arg2) {
     if (MemCardSync(1, &cmd, &st) == -1) {
         switch (arg1) {
         case 6:
-            st = MemCardCreateFile(chan, (s32)Stg11_CardWork->field_C, 2);
+            st = MemCardCreateFile(chan, (s32)Stg11_CardWork->fileName, 2);
             switch (st) {
             case 1:
                 r = 0;
                 break;
             case 4:
                 r = -1;
-                if (++arg0->field_8 >= 5) {
+                if (++arg0->retryCount >= 5) {
                     r = 1;
                 }
                 break;
             default:
                 r = -1;
-                if (++arg0->field_8 >= 5) {
+                if (++arg0->retryCount >= 5) {
                     r = 6;
                 }
                 break;
@@ -587,7 +587,7 @@ s32 Stg11_CardFileOp(Stg11SaveWork *arg0, s32 arg1, s32 arg2) {
             }
             break;
         case 7:
-            st = MemCardOpen(chan, (s32)Stg11_CardWork->field_C, 1);
+            st = MemCardOpen(chan, (s32)Stg11_CardWork->fileName, 1);
             switch (st) {
             case 0:
                 r = 9;
@@ -598,13 +598,13 @@ s32 Stg11_CardFileOp(Stg11SaveWork *arg0, s32 arg1, s32 arg2) {
                 break;
             case 2:
                 r = -1;
-                if (++arg0->field_8 >= 5) {
+                if (++arg0->retryCount >= 5) {
                     r = 0xB;
                 }
                 break;
             case 4:
                 r = -1;
-                if (++arg0->field_8 >= 5) {
+                if (++arg0->retryCount >= 5) {
                     r = 1;
                 }
                 break;
@@ -620,7 +620,7 @@ s32 Stg11_CardFileOp(Stg11SaveWork *arg0, s32 arg1, s32 arg2) {
             switch (st) {
             case 2:
             default:
-                if (++arg0->field_8 >= 5) {
+                if (++arg0->retryCount >= 5) {
                     r = 7;
                 }
                 break;
@@ -646,43 +646,43 @@ s32 Stg11_CardAsyncOp(Stg11SaveWork *arg0, s32 arg1, s32 arg2) {
 
     switch (MemCardSync(1, &cmd, &st)) {
     default:
-        if (arg0->field_2203C < arg0->field_22038) {
-            arg0->field_2203C++;
+        if (arg0->progressDone < arg0->progressTotal) {
+            arg0->progressDone++;
         }
         break;
     case -1:
-        arg0->field_22038 = 1;
-        arg0->field_2203C = 0;
-        arg0->field_22040 = 1;
+        arg0->progressTotal = 1;
+        arg0->progressDone = 0;
+        arg0->opStarted = 1;
         switch (arg1) {
         case 1:
             MemCardExist(chan);
             break;
         case 2:
-            arg0->field_22038 = 0x26;
+            arg0->progressTotal = 0x26;
             MemCardAccept(chan);
             break;
         case 3:
-            arg0->field_22038 = 0x83;
-            arg0->u34.s.field_4032 = Stg11_CardChecksum(arg0);
-            MemCardWriteFile(chan, (s32)arg0->field_C, (s32)&arg0->u34, 0, 0x4000);
+            arg0->progressTotal = 0x83;
+            arg0->u34.s.checksum = Stg11_CardChecksum(arg0);
+            MemCardWriteFile(chan, (s32)arg0->fileName, (s32)&arg0->u34, 0, 0x4000);
             break;
         case 4:
-            if (arg0->field_21 == 0) {
-                arg0->field_22038 = 0x81;
-                MemCardReadFile(chan, (s32)arg0->field_C, (s32)&arg0->u34, 0, 0x4000);
+            if (arg0->isTransferFile == 0) {
+                arg0->progressTotal = 0x81;
+                MemCardReadFile(chan, (s32)arg0->fileName, (s32)&arg0->u34, 0, 0x4000);
             } else {
-                arg0->field_22038 = 0x3C8;
-                MemCardReadFile(chan, (s32)arg0->field_C, (s32)arg0->field_4034, 0, 0x1E000);
+                arg0->progressTotal = 0x3C8;
+                MemCardReadFile(chan, (s32)arg0->fileName, (s32)arg0->transferBuf, 0, 0x1E000);
             }
             break;
         }
         break;
     case 1:
-        if (arg0->field_22040 == 0) {
+        if (arg0->opStarted == 0) {
             return -1;
         }
-        arg0->field_2203C = arg0->field_22038;
+        arg0->progressDone = arg0->progressTotal;
         switch (arg1) {
         case 1:
             if (cmd == arg1) {
@@ -711,13 +711,13 @@ s32 Stg11_CardAsyncOp(Stg11SaveWork *arg0, s32 arg1, s32 arg2) {
                 case 2:
                 default:
                     r = -1;
-                    if (++arg0->field_8 >= 5) {
+                    if (++arg0->retryCount >= 5) {
                         r = 0xB;
                     }
                     break;
                 case 4:
                     r = -1;
-                    if (++arg0->field_8 >= 5) {
+                    if (++arg0->retryCount >= 5) {
                         r = 1;
                     }
                     break;
@@ -737,7 +737,7 @@ s32 Stg11_CardAsyncOp(Stg11SaveWork *arg0, s32 arg1, s32 arg2) {
                 case 4:
                 default:
                     r = -1;
-                    if (++arg0->field_8 >= 5) {
+                    if (++arg0->retryCount >= 5) {
                         r = 5;
                     }
                     break;
@@ -755,9 +755,9 @@ s32 Stg11_CardAsyncOp(Stg11SaveWork *arg0, s32 arg1, s32 arg2) {
                 switch (st) {
                 case 0:
                     r = 0xD;
-                    if (arg0->field_21 == 0) {
-                        sum = arg0->u34.s.field_4032;
-                        if (sum == Stg11_CardChecksum(arg0) && arg0->u34.s.field_4030 == 0x102) {
+                    if (arg0->isTransferFile == 0) {
+                        sum = arg0->u34.s.checksum;
+                        if (sum == Stg11_CardChecksum(arg0) && arg0->u34.s.version == 0x102) {
                             r = 0xD;
                         } else {
                             r = 0xE;
@@ -774,7 +774,7 @@ s32 Stg11_CardAsyncOp(Stg11SaveWork *arg0, s32 arg1, s32 arg2) {
                 case 4:
                 default:
                     r = -1;
-                    if (++arg0->field_8 >= 5) {
+                    if (++arg0->retryCount >= 5) {
                         r = 4;
                     }
                     break;
@@ -799,23 +799,23 @@ void Stg11_CardRunOp(Actor *arg0, s32 arg1) {
         break;
     case 0:
     default:
-        w->field_24[w->field_0][0] = -1;
-        w->field_8 = 0;
+        w->portResult[w->port][0] = -1;
+        w->retryCount = 0;
         Task_SetState2(arg0, 10);
         break;
     case 10:
-        p = &w->field_24[w->field_0][0];
+        p = &w->portResult[w->port][0];
         if (arg1 < 5) {
-            *p = Stg11_CardAsyncOp(w, arg1, w->field_0);
+            *p = Stg11_CardAsyncOp(w, arg1, w->port);
         } else {
-            *p = Stg11_CardFileOp(w, arg1, w->field_0);
+            *p = Stg11_CardFileOp(w, arg1, w->port);
         }
         if (*p != -1) {
             Task_SetState2(arg0, 1);
         }
         break;
     }
-    w->field_4 = w->field_24[w->field_0][0];
+    w->result = w->portResult[w->port][0];
 }
 
 void Stg11_CardTaskInit(void) {
@@ -863,7 +863,7 @@ void Stg11_CardTaskUpdate(Actor *arg0) {
     case 2:
         break;
     }
-    w->field_22034 = arg0->stateLevel1;
+    w->curOp = arg0->stateLevel1;
 }
 
 void Stg11_CardTaskDestroy(Actor *arg0) {
