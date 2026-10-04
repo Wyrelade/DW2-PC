@@ -208,7 +208,7 @@ def rewrite_unit(mapping, pat):
                 _write(p, new_text)
                 changed.append((os.path.relpath(p, ROOT), n))
     for old, new in mapping.items():
-        for s in glob.glob(os.path.join(ROOT, "asm", "USA", UNIT, "nonmatchings", UNIT, old + ".s")):
+        for s in glob.glob(os.path.join(ROOT, "asm", "USA", UNIT, "nonmatchings", "*", old + ".s")):
             os.replace(s, os.path.join(os.path.dirname(s), new + ".s"))
     return changed
 
