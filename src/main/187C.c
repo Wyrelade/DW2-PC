@@ -6,6 +6,33 @@
 s32 Cd_PreloadCount;
 u8 Bug_LastZappedLevel;
 
+/* Task callbacks the descriptors below name (defined further down). */
+void Task_DefaultDestroy(Actor *arg0);
+void Text_PortraitInit(Actor *arg0, s32 *arg1);
+void Text_PortraitTask(Actor *a0);
+void Text_PortraitDraw(Actor *a0);
+void Gfx_TexSlotTaskInit(Actor *arg0);
+void Gfx_TexSlotTaskKill(Actor *arg0);
+
+/* Portrait quad mesh: 3x3 grid points (x scaled by the portrait width, y). */
+Pair54 Text_PortraitQuadGrid[3][3] = {
+    { { 0x2E, -90 }, { 0x51, -96 }, { 0x79, -103 } },
+    { { 0x3A, -55 }, { 0x5C, -56 }, { 0x87, -57 } },
+    { { 0x44, -26 }, { 0x65, -21 }, { 0x95, -13 } },
+};
+TaskDesc D_80040D94 = {
+    (TaskInitFn)Text_PortraitInit, Text_PortraitTask, Task_DefaultDestroy, Text_PortraitDraw, 0x18, 0,
+};
+/* Image ids Gfx_FindOrLoadImageSlot keeps in the face texture slots, -1 ends the list. */
+s16 Gfx_FaceImageIds[] = {
+    0x003, 0x014, 0x01F, 0x02D, 0x02E, 0x030, 0x075, 0x07C, 0x095, 0x096, 0x097, 0x0D9,
+    0x0F7, 0x0F9, 0x0FA, 0x0FB, 0x0FE, 0x194, 0x195, 0x196, 0x197, 0x198, 0x199, 0x19E,
+    0x19F, 0x1A2, 0x1A3, 0x1A4, 0x1A5, 0x1A6, 0x1A7, 0x1A8, 0x1A9, 0x1AA, 0x1AB, 0x1AC,
+    0x1AD, 0x1AE, 0x1AF, 0x1B0, 0x1B1, 0x1B2, 0x1B3, 0x1B4, 0x1B5, 0x1B6, 0x1B7, 0x1B8,
+    0x1BC, 0x1BD, 0x1C2, 0x1F4, 0x212, 0x192, 0x191, 0x190, -1,
+};
+TaskDesc D_80040E20 = { 0, Gfx_TexSlotTaskInit, Gfx_TexSlotTaskKill, 0, 0x94, 0 };
+
 void Task_Create(u32 id, s32 *slot, s32 arg) {
     TaskDesc *d;
     ActorAllocView *o;

@@ -810,7 +810,7 @@ extern CoordMatrix D_80061A48;
 extern CoordMatrix D_800619E8;
 extern void GsGetLw();
 extern Halves Gfx_NeutralRgb;
-extern Pair54 Text_PortraitQuadGrid[][3];
+extern Pair54 Text_PortraitQuadGrid[3][3];
 extern u8 D_800632E0[0x80];
 extern CardDirFrame D_800630A0[15];
 extern s32 D_80063280[20];

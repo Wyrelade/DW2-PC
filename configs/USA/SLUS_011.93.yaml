@@ -76,6 +76,7 @@ segments:
       - [0x13584, c, 13584]      # from Mem_Free: heap, pad, vsync, Sys_Main, rand, cd cache
       - [0x14C74, c, psyq]      # PsyQ 4.7 libraries (PadGetState ..), asm only, not counted
       - [0x314F0, .data, 156C]   # .data starts after _card_read (main task row, Task_DescTable)
-      - [0x31570, data, 31570]
+      - [0x31570, .data, 187C]
+      - [0x31638, data, 31638]
       - [0x53B60, bin, Ovl_LoadArea] # 0x80063360: overlay load area; the image holds leftover bytes here
   - [0x9F000]
