@@ -653,7 +653,6 @@ void Anim_SetModelAnimFile(Actor *arg0, s32 arg1, s32 arg2) {
     p->animDone = 0;
 }
 
-#ifdef NORMALIZED
 s32 Anim_HasModelAnim(Actor *a0, s32 n) {
     ActorModel *sub = a0->model;
     s32 id;
@@ -661,24 +660,19 @@ s32 Anim_HasModelAnim(Actor *a0, s32 n) {
     s32 *p;
 
     if (n < 10) {
+        id = Anim_GetModelAnimFile(a0->digiId, 0);
         k = 0;
-        n = k;
-        id = Anim_GetModelAnimFile(a0->digiId, k);
     } else if (n < 20) {
         id = Anim_GetModelAnimFile(a0->digiId, 1);
-        n -= 10;
+        k = n - 10;
     } else {
         id = Anim_GetModelAnimFile(a0->digiId, 2);
-        n -= 20;
+        k = n - 20;
     }
     p = (s32 *)(Cd_GetFileOrNull(id) + ((sub->boneCount + 1) << 2));
     sub->animTable = p;
-    return p[n] != 0;
+    return p[k] != 0;
 }
-#else
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Anim_HasModelAnim);
-s32 Anim_HasModelAnim(Actor *a0, s32 n);
-#endif
 
 void Anim_StepModelAnim(Actor *a) {
     ActorModel *s = a->model;

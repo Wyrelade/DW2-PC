@@ -1,13 +1,4 @@
 {
-  "Anim_HasModelAnim": {
-    "passes": [
-      "nodb",
-      "copy_swap",
-      "fallthrough_fill",
-      "delay_fill",
-      "padnop"
-    ]
-  },
   "stag4000:func_8006D418": {
     "passes": [
       "web_realloc"
