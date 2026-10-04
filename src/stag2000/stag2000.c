@@ -92,7 +92,99 @@ void func_80063784(Actor *a) {
     }
 }
 
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_800638E8);
+void func_800638E8(Actor *a) {
+    s32 gx = 0;
+    s32 gy = 0;
+    Stg20LoadWork *w = (Stg20LoadWork *)a->work;
+    Actor *e;
+    AllocC40 *t;
+    GfxPartPkt *p;
+    GfxPartOTag *ot;
+    GfxPartTexSlot *tex;
+    GfxPart *parts;
+    GfxPart *q;
+    s32 n;
+    s32 j;
+    s32 i;
+    s16 x;
+    s32 sx;
+
+    e = func_8006A8C0(0x1F4);
+    if (e != 0) {
+        if (w->field_34 >= 5) {
+            n = 1;
+        } else {
+            w->field_34++;
+            n = 0x14;
+        }
+        for (j = 0; j < n; j++) {
+            t = ((ContC40 *)e)->transform;
+            Actor_ProjectToScreen(e);
+            if (t->screenX < -0x18) {
+                w->field_2C += (s16)(-t->screenX - 0x18) >> 3;
+            } else if (t->screenX > 0x18) {
+                w->field_2C -= (s16)(t->screenX - 0x18) >> 3;
+            }
+            if (t->screenY < -0x18) {
+                w->field_30 += (s16)(-t->screenY - 0x18) >> 3;
+            } else if (t->screenY > 0x18) {
+                w->field_30 -= (s16)(t->screenY - 0x18) >> 3;
+            }
+            if (w->field_30 > 0x20) {
+                w->field_30 = 0x20;
+            }
+            gx = w->field_2C / 2 - 0xA0;
+            gy = w->field_30 / 2;
+            SetGeomOffset(w->field_2C, w->field_30);
+        }
+    }
+    ot = (GfxPartOTag *)D_8005F770.otLayers.addr[6];
+    p = (GfxPartPkt *)D_8005F770.packet.addr;
+    for (sx = gx - 0xA0, i = 0; i < 10; i++) {
+        if (w->ids[i] != 0) {
+            tex = (GfxPartTexSlot *)Gfx_FindOrLoadTexSlot(w->ids[i]);
+            do {
+                p->s.c = *(Col1CE9C *)&D_8005074C;
+                p->s.tag.len = 4;
+                p->s.c.code = 0x64;
+                x = sx + i * 64;
+                p->s.x0 = x;
+                if (p->s.x0 < -0xE0) {
+                    break;
+                }
+                if (p->s.x0 > 0xA0) {
+                    break;
+                }
+                p->s.u0 = tex->u;
+                p->s.w = 0x40;
+                p->s.y0 = gy - 0x80;
+                p->s.v0 = 0;
+                p->s.h = 0xFF;
+                p->s.clut = (tex->index + 0x1E0) << 6;
+                p->s.tag.addr = ot->addr;
+                ot->addr = (u32)p;
+                p = (GfxPartPkt *)(&p->s + 1);
+                p->t.tag.len = 1;
+                p->t.code = 0xE1000600 | (tex->tpage & 0x9FF);
+                p->t.tag.addr = ot->addr;
+                ot->addr = (u32)p;
+                p = (GfxPartPkt *)(&p->t + 1);
+            } while (0);
+        }
+    }
+    D_8005F79C = (s32)p;
+    if (func_80066714()->field_1C != 0) {
+        parts = (GfxPart *)Cd_GetFileEntry(func_80066714()->field_1C);
+        for (q = parts; q->fileId != 0; q++) {
+            if (q->groupMask & 4) {
+                q->palette = Math_CycleRange(a->elapsed, 8, 0, 7);
+            }
+            q->x = gx + 0xA0;
+            q->y = gy;
+        }
+        Gfx_DrawParts((s32)parts);
+    }
+}
 
 void func_80063C84(void) {
     Actor *a = (Actor *)Task_FindFirst(0x301, -1, -1);
