@@ -9,3 +9,6 @@ assets/stag1100/card_icon3.tim       dumps/disc/AAA/3.PRO/STAG1100.PRO    0x5050
 assets/stag4000/automap_clut.bin     dumps/disc/AAA/3.PRO/STAG4000.PRO    0xF5E8  0x40
 assets/stag0000/font_glyphs.bin      dumps/disc/AAA/3.PRO/STAG0000.PRO    0x5770  0x200
 assets/stag1000/vlc_table_packed.bin dumps/disc/AAA/3.PRO/STAG1000.PRO    0x2078  0xE10
+assets/main/rand_table.bin           dumps/disc/SLUS_011.93               0x31F04 0x2000
+assets/main/cd_file_lba.bin          dumps/disc/SLUS_011.93               0x33F94 0x396C
+assets/main/cd_file_sectors.bin      dumps/disc/SLUS_011.93               0x37900 0x810

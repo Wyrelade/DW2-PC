@@ -21,6 +21,20 @@ MemBlock *Mem_HeapHead;
 s32 Sys_FlipPending;
 s32 Rand_Index;
 
+/* Rand_Next's table of 0x1000 random halfwords. */
+INCLUDE_BIN(Rand_Table, "assets/main/rand_table.bin");
+/* Gfx_ZeroVector and the matrices sit in this unit's data in retail order (E280 and 105BC
+ * use them). */
+s32 Gfx_ZeroVector[4] = { 0 };
+Blk20 Gfx_IdentityMatrix = { { { { 0x1000, 0, 0 }, { 0, 0x1000, 0 }, { 0, 0, 0x1000 } } }, { 0 }, { 0, 0, 0 } };
+/* Unreferenced: the same with x, y, then x and y scaled by 2. */
+Blk20 D_80043734 = { { { { 0x2000, 0, 0 }, { 0, 0x1000, 0 }, { 0, 0, 0x1000 } } }, { 0 }, { 0, 0, 0 } };
+Blk20 D_80043754 = { { { { 0x1000, 0, 0 }, { 0, 0x2000, 0 }, { 0, 0, 0x1000 } } }, { 0 }, { 0, 0, 0 } };
+Blk20 D_80043774 = { { { { 0x2000, 0, 0 }, { 0, 0x2000, 0 }, { 0, 0, 0x1000 } } }, { 0 }, { 0, 0, 0 } };
+/* CD file table: start LBA and size in sectors per file id (disc layout). */
+INCLUDE_BIN(Cd_FileLba, "assets/main/cd_file_lba.bin");
+INCLUDE_BIN(Cd_FileSectors, "assets/main/cd_file_sectors.bin");
+
 void Mem_Free(ActorWork *arg0) {
     MemFreeBlock *n = (MemFreeBlock *)((u8 *)arg0 - 0xC);
     MemFreeBlock *m = n->prev;
