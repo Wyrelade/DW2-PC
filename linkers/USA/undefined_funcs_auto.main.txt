@@ -1,0 +1,9 @@
+Stg20_StartBgShake = 0x80063C84;
+Stg20_TestSpecialFlag = 0x80066B48;
+Stg20_SetSpecialFlag = 0x80066F34;
+Stg20_FindWalkerByDigiId = 0x8006A8C0;
+Stg20_WalkerWarpToCell = 0x8006A920;
+Stg20_WalkerIsPathDone = 0x8006A9F8;
+Stg20_WalkerSetAnim = 0x8006AA0C;
+Stg40_TextObjCommand = 0x80071FBC;
+Stg40_IsTextObjCmdBusy = 0x800720FC;

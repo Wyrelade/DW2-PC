@@ -388,7 +388,7 @@ extern void Actor_InitTransform(ContC40 *a0, s32 *a1, u16 a2);
 extern void GsInitCoordinate2(Coord1F668 *, Coord1F668 *);
 
 extern void Item_SortList(void);
-extern void func_80066F34(s32, s32);
+extern void Stg20_SetSpecialFlag(s32, s32);
 extern s32 D_80048E88;
 extern s32 D_80048E68;
 extern s32 D_80048E6C;

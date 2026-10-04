@@ -1596,13 +1596,13 @@ void Text_LoadFontsTask(Actor *a0) {
 }
 
 extern GfxTexSlot *Gfx_FindOrLoadTexSlot(s32);
-extern Obj6A8C0 *func_8006A8C0(s32);
-extern void func_8006A920(void *, s32 *);
-extern s32 func_8006A9F8(void *);
-extern void func_8006AA0C(Obj6A8C0 *, s32);
-extern void func_80071FBC(s32 *);
-extern s32 func_800720FC(void);
-extern void func_80063C84(void);
+extern Obj6A8C0 *Stg20_FindWalkerByDigiId(s32);
+extern void Stg20_WalkerWarpToCell(void *, s32 *);
+extern s32 Stg20_WalkerIsPathDone(void *);
+extern void Stg20_WalkerSetAnim(Obj6A8C0 *, s32);
+extern void Stg40_TextObjCommand(s32 *);
+extern s32 Stg40_IsTextObjCmdBusy(void);
+extern void Stg20_StartBgShake(void);
 
 void Text_UpdateAllBoxes(Actor *a0) {
     GfxTexSlot *font[2];
@@ -1904,11 +1904,11 @@ void Text_UpdateAllBoxes(Actor *a0) {
                                 np++;
                             }
                             if (mode2) {
-                                func_80071FBC(nums);
+                                Stg40_TextObjCommand(nums);
                             } else {
-                                h = func_8006A8C0(nums[0]);
+                                h = Stg20_FindWalkerByDigiId(nums[0]);
                                 wk->moveActor = h;
-                                func_8006A920(h, &nums[1]);
+                                Stg20_WalkerWarpToCell(h, &nums[1]);
                             }
                             r->waitingInput = 1;
                             Task_NextState1(a0);
@@ -1917,12 +1917,12 @@ void Text_UpdateAllBoxes(Actor *a0) {
                             break;
                         }
                         if (mode2 == 0) {
-                            if (isF6 == 0 || func_8006A9F8(wk->moveActor) != 0) {
+                            if (isF6 == 0 || Stg20_WalkerIsPathDone(wk->moveActor) != 0) {
                                 goto advF6;
                             }
                             goto nextF6;
                         }
-                        if (func_800720FC() != 0) {
+                        if (Stg40_IsTextObjCmdBusy() != 0) {
                             goto nextF6;
                         }
                     advF6:
@@ -1959,9 +1959,9 @@ void Text_UpdateAllBoxes(Actor *a0) {
                             s32 d0, d1;
                             d0 = *s++;
                             d1 = *s++;
-                            h = func_8006A8C0(d0 * 100 + d1 * 10 + *s);
+                            h = Stg20_FindWalkerByDigiId(d0 * 100 + d1 * 10 + *s);
                             if (h != 0) {
-                                func_8006AA0C(h, k4 + 0x1E);
+                                Stg20_WalkerSetAnim(h, k4 + 0x1E);
                             }
                             r->cmdF4ObjDone++;
                         } else {
@@ -1975,7 +1975,7 @@ void Text_UpdateAllBoxes(Actor *a0) {
                             n += *s++ * 10;
                             do {} while (0);
                             k4 = (k4 - 0x10) << 10;
-                            h = func_8006A8C0(n + *s);
+                            h = Stg20_FindWalkerByDigiId(n + *s);
                             if (h != 0) {
                                 h->transform->rotY = k4;
                             }
@@ -2019,7 +2019,7 @@ void Text_UpdateAllBoxes(Actor *a0) {
                             }
                             r->soundsDone++;
                             if (k4 == 4) {
-                                func_80063C84();
+                                Stg20_StartBgShake();
                             }
                         }
                         s--;

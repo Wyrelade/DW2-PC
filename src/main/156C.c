@@ -10,9 +10,10 @@ extern TaskDesc **Task_DescTable[];
 
 ASM_SOURCE("src/main/asm/crt0", func_80010D6C);
 
-/* Overlay load address: every STAGxxxx.PRO is read to and runs from here. */
-extern u8 D_80063360[];
-u8 *const Ovl_LoadAddr = D_80063360;
+/* Overlay load address: every STAGxxxx.PRO is read to and runs from here. Ovl_LoadArea
+ * starts right after main's .bss (the image's bytes there are leftovers, kept as a bin). */
+extern u8 Ovl_LoadArea[];
+u8 *const Ovl_LoadAddr = Ovl_LoadArea;
 /* Unnamed: empty stub, only caller Sys_Main (first call, before ResetCallback), no table ref;
  * role unknown. */
 void func_80010D74(void) {

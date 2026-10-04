@@ -21,7 +21,7 @@ s32 Mem_TestBit(u8 *arg0, s32 arg1) {
 }
 
 extern s32 Mem_TestBit(u8 *, s32);
-extern s32 func_80066B48(s32);
+extern s32 Stg20_TestSpecialFlag(s32);
 
 s32 Flag_Test(s32 arg0) {
     s32 i;
@@ -67,7 +67,7 @@ s32 Flag_Test(s32 arg0) {
         return 0;
     }
     if (Ovl_GetCurrentId() == 2) {
-        return func_80066B48(arg0);
+        return Stg20_TestSpecialFlag(arg0);
     }
     return 0;
 }
@@ -149,7 +149,7 @@ void Flag_Set(s32 id, s32 val) {
         }
     } else if (id < 10000) {
         if (Ovl_GetCurrentId() == 2) {
-            func_80066F34(id, val);
+            Stg20_SetSpecialFlag(id, val);
         }
     }
 }

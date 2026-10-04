@@ -5,7 +5,7 @@
 
 /* Functions src/main/12654.c defines or declares, for the units after it. */
 extern s32 Mem_TestBit(u8 *, s32);
-extern s32 func_80066B48(s32);
+extern s32 Stg20_TestSpecialFlag(s32);
 s32 Mem_TestBit(u8 *arg0, s32 arg1);
 s32 Flag_Test(s32 arg0);
 s32 Flag_TestConds(Ent22038 *p);

@@ -1,0 +1,12 @@
+// Overlay symbols the main exe refers to (all overlays load at Ovl_LoadArea, 0x80063360).
+// Main-only: overlay splits read sym.main.txt, which must hold nothing at or above 0x80063360.
+// The values are the retail addresses; the build relinks main with the overlay ELFs' values.
+Stg20_StartBgShake = 0x80063C84; // type:func
+Stg20_TestSpecialFlag = 0x80066B48; // type:func
+Stg20_SetSpecialFlag = 0x80066F34; // type:func
+Stg20_FindWalkerByDigiId = 0x8006A8C0; // type:func
+Stg20_WalkerWarpToCell = 0x8006A920; // type:func
+Stg20_WalkerIsPathDone = 0x8006A9F8; // type:func
+Stg20_WalkerSetAnim = 0x8006AA0C; // type:func
+Stg40_TextObjCommand = 0x80071FBC; // type:func
+Stg40_IsTextObjCmdBusy = 0x800720FC; // type:func

@@ -23,6 +23,7 @@ import argparse
 import hashlib
 import os
 import platform
+import re
 import subprocess
 import sys
 
@@ -455,25 +456,109 @@ def main():
         print("objects built (asm=%d, c=%d)" % (n_asm, n_c))
         return 0
 
-    rc = 0 if args.overlays_only else link_main(ld_bin, objcopy_bin, args.skip_verify)
+    # Main and the overlays refer to each other by name: link main with the retail numbers
+    # for its overlay references, the overlays against that main.elf, then main again with
+    # the overlay ELFs' values. Main's layout does not depend on those values, so two links
+    # settle (and a build that moves code still resolves every cross reference).
+    rc = 0
+    if not args.overlays_only and link_main(ld_bin, objcopy_bin, True, quiet=True) != 0:
+        return 1
+    main_syms = main_exports()
     for unit, want in OVERLAYS:
-        if link_overlay(unit, want, ld_bin, objcopy_bin, args.skip_verify) != 0:
+        if link_overlay(unit, want, ld_bin, objcopy_bin, args.skip_verify, main_syms) != 0:
             rc = 1
+    if not args.overlays_only and link_main(ld_bin, objcopy_bin, args.skip_verify,
+                                            ovl_syms=overlay_exports()) != 0:
+        rc = 1
     return rc
 
 
-def link_overlay(unit, want, ld_bin, objcopy_bin, skip_verify):
-    """Link one stage overlay with its own splat script; skipped when not split yet."""
+def elf_globals(elf, defined_only=False):
+    """{name: value} of the global symbols of an ELF; defined_only drops the absolute ones
+    (linker script assignments such as the auto lists)."""
+    out = subprocess.run([tool("objdump"), "-t", elf], cwd=ROOT, capture_output=True, text=True).stdout
+    return dict((m.group(3), int(m.group(1), 16)) for m in
+                re.finditer(r"^([0-9a-f]{8}) g.{6} (\S+)\s+[0-9a-f]+\s+(\S+)$", out, re.M)
+                if not (defined_only and m.group(2) == "*ABS*"))
+
+
+def write_sym_script(path, syms):
+    with open(os.path.join(ROOT, path), "w") as f:
+        for n in sorted(syms):
+            f.write("%s = 0x%08X;\n" % (n, syms[n]))
+
+
+def auto_scripts(unit, drop):
+    """The splat undefined_{syms,funcs}_auto lists of a unit, without the names in `drop`
+    (those come from another ELF of this build instead of the retail numbers)."""
+    paths = []
+    for kind in ("syms", "funcs"):
+        p = "linkers/USA/undefined_%s_auto.%s.txt" % (kind, unit)
+        if not os.path.exists(os.path.join(ROOT, p)):
+            continue
+        if drop:
+            q = os.path.join(CONFIG["build_dir"], "undefined_%s_auto.%s.txt" % (kind, unit))
+            with open(os.path.join(ROOT, q), "w") as f:
+                for line in open(os.path.join(ROOT, p)):
+                    m = re.match(r"\s*(\w+)\s*=", line)
+                    if not (m and m.group(1) in drop):
+                        f.write(line)
+            p = q
+        paths.append(p)
+    return paths
+
+
+# splat's per-segment linker symbols; every image has its own
+SEGMENT_SYM = re.compile(r"^(_gp|\w+_(ROM_START|ROM_END|VRAM|VRAM_END|"
+                         r"(TEXT|DATA|RODATA|BSS)_(START|END|SIZE)))$")
+
+
+def main_exports():
+    """Main's global symbols for the overlay links (overlays refer to main by name, so they
+    follow main when it moves). Main's own references into the overlay area are left out."""
+    elf = os.path.join(ROOT, CONFIG["elf"])
+    if not os.path.exists(elf):
+        return {}
+    g = elf_globals(elf)
+    base = g.get("Ovl_LoadArea", 0x80063360)
+    return dict((n, v) for n, v in g.items()
+                if not SEGMENT_SYM.match(n) and not base <= v < 0x80200000)
+
+
+def overlay_exports():
+    """Values of the overlay symbols main refers to (Task_DescTable rows, overlay functions
+    main calls), taken from the overlay ELFs of this build."""
+    want = set()
+    for p in auto_scripts("main", ()):
+        for line in open(os.path.join(ROOT, p)):
+            m = re.match(r"\s*(\w+)\s*=", line)
+            if m:
+                want.add(m.group(1))
+    got = {}
+    for unit, _sha in OVERLAYS:
+        elf = os.path.join(ROOT, CONFIG["build_dir"], unit + ".elf")
+        if os.path.exists(elf):
+            for n, v in elf_globals(elf, defined_only=True).items():
+                if n in want:
+                    got[n] = v
+    return got
+
+
+def link_overlay(unit, want, ld_bin, objcopy_bin, skip_verify, main_syms=None):
+    """Link one stage overlay with its own splat script; skipped when not split yet.
+    main_syms: main's symbols from this build's main.elf (instead of the retail numbers)."""
     ld_script = "linkers/USA/%s.ld" % unit
     if not os.path.exists(os.path.join(ROOT, ld_script)):
         return 0
     elf = os.path.join(CONFIG["build_dir"], unit + ".elf")
     out = os.path.join(os.path.dirname(CONFIG["out"]), unit.upper() + ".PRO").replace("\\", "/")
     cmd = [ld_bin, "-EL"]
-    for kind in ("syms", "funcs"):
-        p = "linkers/USA/undefined_%s_auto.%s.txt" % (kind, unit)
-        if os.path.exists(os.path.join(ROOT, p)):
-            cmd += ["-T", p]
+    if main_syms:
+        p = os.path.join(CONFIG["build_dir"], "main_syms.%s.ld" % unit)
+        write_sym_script(p, main_syms)
+        cmd += ["-T", p]
+    for p in auto_scripts(unit, set(main_syms or ())):
+        cmd += ["-T", p]
     cmd += ["-T", ld_script, "-Map", os.path.join(CONFIG["build_dir"], unit + ".map"),
             "-o", elf, "--no-check-sections"]
     if run(cmd) != 0:
@@ -506,10 +591,41 @@ def link_overlay(unit, want, ld_bin, objcopy_bin, skip_verify):
     return 0
 
 
-def link_main(ld_bin, objcopy_bin, skip_verify):
+def assemble_bins(ld_script, as_bin):
+    """Assemble the splat `bin` subsegments a linker script names (build/USA/assets/X.bin.o).
+
+    The bytes are opaque game content extracted from the disc by splat into assets/ (not
+    committed). Each object holds the file in .data under a global label named after the
+    segment, so code can refer to the start of the area by that name."""
+    for line in open(os.path.join(ROOT, ld_script)).read().split("\n"):
+        line = line.strip()
+        if not (line.startswith("build/") and ".bin.o(" in line):
+            continue
+        obj = line[:line.index("(")]
+        name = os.path.basename(obj)[:-len(".bin.o")]
+        src = os.path.join(ROOT, "assets", name + ".bin")
+        if not os.path.exists(src):
+            print("BUILD FAILED: %s missing (run splat on the yaml to extract it)" % os.path.relpath(src, ROOT))
+            return 1
+        stub = os.path.join(ROOT, obj[:-2] + ".s")
+        os.makedirs(os.path.dirname(stub), exist_ok=True)
+        with open(stub, "w") as f:
+            f.write('.section .data, "wa"\n.global %s\n%s:\n.incbin "%s"\n'
+                    % (name, name, src.replace("\\", "/")))
+        if run([as_bin] + AS_FLAGS + ["-o", os.path.join(ROOT, obj), stub]) != 0:
+            print("BUILD FAILED: assembling %s" % os.path.relpath(stub, ROOT))
+            return 1
+    return 0
+
+
+def link_main(ld_bin, objcopy_bin, skip_verify, ovl_syms=None, quiet=False):
+    """ovl_syms: values of the overlay symbols main refers to, from this build's overlay
+    ELFs (second link); None links with the retail numbers of the splat auto lists."""
     # Link: symbol script first so the auto hardware/kernel syms resolve.
     os.makedirs(os.path.join(ROOT, CONFIG["build_dir"]), exist_ok=True)
     ld_script = CONFIG["ld_script"]
+    if assemble_bins(ld_script, tool("as")) != 0:
+        return 1
     if "main" in RODATA_IN_C:
         # game .rodata comes from the C objects; the asm rodata object keeps only the
         # PsyQ items, which retail places after the game units: link it last
@@ -521,9 +637,14 @@ def link_main(ld_bin, objcopy_bin, skip_verify):
         lines.insert(last + 1, asm[0])
         ld_script = os.path.join(CONFIG["build_dir"], "main.rodata_in_c.ld")
         open(os.path.join(ROOT, ld_script), "w").write("\n".join(lines))
-    cmd = [
-        ld_bin, "-EL",
-        "-T", CONFIG["sym_script"],
+    cmd = [ld_bin, "-EL"]
+    if ovl_syms:
+        p = os.path.join(CONFIG["build_dir"], "ovl_syms.main.ld")
+        write_sym_script(p, ovl_syms)
+        cmd += ["-T", p]
+    for p in auto_scripts("main", set(ovl_syms or ())):
+        cmd += ["-T", p]
+    cmd += [
         "-T", ld_script,
         "-Map", os.path.join(CONFIG["build_dir"], "main.map"),
         "-o", CONFIG["elf"],
@@ -540,7 +661,8 @@ def link_main(ld_bin, objcopy_bin, skip_verify):
         return 1
 
     if skip_verify:
-        print("%s: built (verify skipped)" % CONFIG["out"])
+        if not quiet:
+            print("%s: built (verify skipped)" % CONFIG["out"])
         return 0
 
     # Verify against the retail target.
