@@ -125,6 +125,8 @@ TaskDesc Stg30_JoinPromptDesc = {
     (TaskInitFn)Stg30_JoinPromptInit, Stg30_JoinPromptUpdate, Task_DefaultDestroy, Stg30_JoinPromptDraw, 0x14, 4,
 };
 
+s32 Stg30_CamShotVariant;
+
 void Stg30_InterruptSelectDraw(Actor *a0) {
     Stg30InterruptSelectWork *w = (Stg30InterruptSelectWork *)a0->work;
     Stg30Part *p;

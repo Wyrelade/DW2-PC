@@ -11,6 +11,8 @@ s32 Stg30_CureStatusMasks[] = {
 s16 Stg30_CureStatusLabels[] = { 2, 4, 6, 0xD, 0, 0, 5, 0x1C, 5, 3, 0x1E, 0x20, 7, 9, 0xB, 0x19, 0, 0 };
 s32 Stg30_RepeatSkillCount = 0;
 
+s16 Stg30_BattleScript[0xC8];
+
 void Stg30_RetargetAction(void) {
     s32 idx = Stg30_TurnOrderGet(0);
     Stg30Rec73F6C *e = &D_80073F6C[idx];

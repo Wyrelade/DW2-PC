@@ -38,6 +38,25 @@ TaskDesc Stg30_PopupDesc = {
     (TaskInitFn)Stg30_PopupInit, Stg30_PopupUpdate, Task_DefaultDestroy, Stg30_PopupDraw, 0x14, 0,
 };
 
+s32 Stg30_TurnOrder[12];
+Stg30FighterBackup Stg30_FighterStateBackup;
+Stg30Battle Stg30_Battle;
+/* Code that reads parts of Stg30_Battle through symbols of their own. */
+DATA_LABEL(D_80073CC4, Stg30_Battle, 0x004);
+DATA_LABEL(D_80073CC8, Stg30_Battle, 0x008);
+DATA_LABEL(D_80073CD4, Stg30_Battle, 0x014);
+DATA_LABEL(D_80073CD8, Stg30_Battle, 0x018);
+DATA_LABEL(D_80073D24, Stg30_Battle, 0x064);
+DATA_LABEL(D_80073E02, Stg30_Battle, 0x142);
+DATA_LABEL(D_80073E5E, Stg30_Battle, 0x19E);
+DATA_LABEL(D_80073EBA, Stg30_Battle, 0x1FA);
+DATA_LABEL(D_80073F6C, Stg30_Battle, 0x2AC);
+DATA_LABEL(D_80074070, Stg30_Battle, 0x3B0);
+DATA_LABEL(D_80074074, Stg30_Battle, 0x3B4);
+DATA_LABEL(D_80074094, Stg30_Battle, 0x3D4);
+DATA_LABEL(D_80074098, Stg30_Battle, 0x3D8);
+DATA_LABEL(D_8007409C, Stg30_Battle, 0x3DC);
+
 s32 Stg30_GetSkillEffectKind(s32 id) {
     s32 r = Skill_GetPower(id);
 

@@ -41,6 +41,22 @@ TaskDesc Stg30_TargetSelectDesc = {
     0, Stg30_TargetSelectUpdate, Task_DefaultDestroy, Stg30_TargetSelectDraw, 0x20, 0,
 };
 
+s32 Stg30_CommandMenuCursor;
+u8 D_800737E4[4];
+s16 Stg30_ItemMenuColumn;
+u8 D_800737EA[6];
+s16 Stg30_ItemMenuRow[3];
+u8 D_800737F6[2];
+s16 Stg30_ItemMenuScroll[3];
+u8 D_800737FE[2];
+s16 Stg30_SkillMenuColumn;
+u8 D_80073802[6];
+s16 Stg30_SkillMenuRow[4];
+s16 Stg30_SkillMenuScroll[4];
+u8 D_80073818[8];
+Stg30SkillList Stg30_SkillMenuLists[4];
+u8 D_8007388C[4];
+
 void Stg30_ActionLoadDestroy(Actor *a0) {
     Stg30ActionLoadWork *w = (Stg30ActionLoadWork *)a0->work;
     s32 i;

@@ -591,6 +591,8 @@ def link_overlay(unit, want, ld_bin, objcopy_bin, skip_verify, main_syms=None, b
     if run([objcopy_bin, "-O", "binary", elf, out]) != 0:
         print("BUILD FAILED: objcopy %s" % unit)
         return 1
+    if patch_image_bytes(unit, elf, os.path.join(ROOT, out)) != 0:
+        return 1
     if skip_verify:
         print("%s: built (verify skipped)" % out)
         return 0
@@ -676,6 +678,36 @@ def extract_bins(allow_missing):
         os.makedirs(os.path.dirname(dst), exist_ok=True)
         with open(dst, "wb") as f:
             f.write(data)
+    return 0
+
+
+def patch_image_bytes(unit, elf, image):
+    """Copy the padding bytes configs/USA/image_bytes.txt lists for this unit from the disc
+    into the linked image, at their symbol's place (a C .bss is zero; retail's padding is not)."""
+    listing = os.path.join(ROOT, "configs/USA/image_bytes.txt")
+    if not os.path.exists(listing):
+        return 0
+    rows = [l.split("#", 1)[0].split() for l in open(listing)]
+    rows = [r for r in rows if r and r[0] == unit]
+    if not rows:
+        return 0
+    syms = elf_globals(elf)
+    base = syms.get(unit + "_VRAM")
+    data = bytearray(open(image, "rb").read())
+    for _unit, sym, size, source, offset in rows:
+        size, offset = int(size, 0), int(offset, 0)
+        src = os.path.join(ROOT, source)
+        if not os.path.exists(src):
+            print("  warning: %s missing, %s left zero" % (source, sym))
+            continue
+        if sym not in syms or base is None:
+            print("BUILD FAILED: %s: symbol %s not in %s" % (unit, sym, elf))
+            return 1
+        at = syms[sym] - base
+        with open(src, "rb") as f:
+            f.seek(offset)
+            data[at:at + size] = f.read(size)
+    open(image, "wb").write(bytes(data))
     return 0
 
 

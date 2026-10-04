@@ -1,0 +1,9 @@
+# Non-zero bytes the retail overlay images hold in the padding between uninitialised
+# globals (leftover text). A C .bss is all zeros, so tools/build_dw2.py copies these bytes
+# from the user's disc into the linked image at the named padding symbol (shift-safe: the
+# symbol's address comes from the ELF). Nothing here is game data, only where it is.
+#
+# unit      symbol       size  source file                          offset
+stag3000    D_800737E4   4     dumps/disc/AAA/3.PRO/STAG3000.PRO    0x10484
+stag3000    D_800737FE   2     dumps/disc/AAA/3.PRO/STAG3000.PRO    0x1049E
+stag3000    D_8007388C   4     dumps/disc/AAA/3.PRO/STAG3000.PRO    0x1052C

@@ -619,20 +619,11 @@ extern u8 Stg30_OrderLabelMsgs[];
 extern Halves Stg30_OrderLabelPos[];
 extern void Mem_FillWordsNeg1(s32 *arg0, s32 arg1);
 
-extern Stg30FighterBackup Stg30_FighterStateBackup;
-extern s32 Stg30_CommandMenuCursor;
 extern u8 Stg30_CursorBlinkPalettes[];
 extern s32 Stg30_ResultParts[];
 extern Stg30XY Stg30_ItemListTextPos[];
-extern s16 Stg30_ItemMenuColumn;
-extern s16 Stg30_ItemMenuRow[];
-extern s16 Stg30_ItemMenuScroll[];
 extern const Stg30XY Stg30_ItemDescTextPos;
 extern Stg30XY Stg30_SkillListTextPos[];
-extern s16 Stg30_SkillMenuColumn;
-extern s16 Stg30_SkillMenuRow[];
-extern s16 Stg30_SkillMenuScroll[];
-extern Stg30SkillList Stg30_SkillMenuLists[];
 extern const Stg30XY Stg30_SkillDescTextPos;
 extern s32 Stg30_InterruptCursorMasks[];
 extern s32 Stg30_XaTrackStart[];
@@ -643,15 +634,11 @@ extern s32 Stg30_PopupNumParts[];
 extern Stg30Rec73F6C D_80073F6C[];
 extern s32 Stg30_BannerParts[];
 extern Halves Stg30_SkillLearnTextPos[];
-extern s16 Stg30_BattleScript[];
 extern u16 Pad_Pressed;  /* Pad_State[0].pressed as a scalar reloc */
 extern Stg30DungState Dung_State;
-extern s32 Stg30_TurnOrder[12];
-extern Stg30Battle Stg30_Battle;
 extern s16 Stg30_CloseUpRotY[];  /* camera goal x per party slot (Stg30_CameraUpdate) */
 extern s16 Stg30_CloseUpVpz[];  /* camera goal tables indexed by digimon height step */
 extern s16 Stg30_CloseUpVry[];
-extern s32 Stg30_CamShotVariant;    /* random camera variant (0..3) */
 extern s32 Stg30_FightBgModels[];
 extern s32 Stg30_SpecialFightBgModel;
 extern s32 Stg30_FightBgByFloorElem[];
@@ -946,5 +933,34 @@ extern TaskDesc Stg30_ResultDesc;
 extern TaskDesc Stg30_SkillLearnDesc;
 extern TaskDesc Stg30_JoinPromptDesc;
 extern TaskDesc *Stg30_TaskDescs[];
+
+/* .bss of each unit, in retail order. STAG3000.PRO carries its .bss in the file, after all
+ * .data. cc1 writes a unit's uninitialised globals in first-declaration order, so this list
+ * sets the layout. D_ entries are unreferenced padding; three of them hold leftover non-zero
+ * bytes in retail, which the build copies from the disc (configs/USA/image_bytes.txt). */
+/* stag3000_100C.c */
+extern s32 Stg30_CommandMenuCursor;
+extern u8 D_800737E4[4];
+extern s16 Stg30_ItemMenuColumn;
+extern u8 D_800737EA[6];
+extern s16 Stg30_ItemMenuRow[3];
+extern u8 D_800737F6[2];
+extern s16 Stg30_ItemMenuScroll[3];
+extern u8 D_800737FE[2];
+extern s16 Stg30_SkillMenuColumn;
+extern u8 D_80073802[6];
+extern s16 Stg30_SkillMenuRow[4];
+extern s16 Stg30_SkillMenuScroll[4];
+extern u8 D_80073818[8];
+extern Stg30SkillList Stg30_SkillMenuLists[4];
+extern u8 D_8007388C[4];
+/* stag3000_6A88.c */
+extern s16 Stg30_BattleScript[0xC8];
+/* stag3000_AF5C.c */
+extern s32 Stg30_TurnOrder[12];
+extern Stg30FighterBackup Stg30_FighterStateBackup;
+extern Stg30Battle Stg30_Battle;
+/* stag3000_CC70.c */
+extern s32 Stg30_CamShotVariant; /* random camera variant (0..3) */
 
 #endif
