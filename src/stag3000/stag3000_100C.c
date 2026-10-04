@@ -573,18 +573,13 @@ void func_80065584(Actor *a0, s32 *args) {
 }
 
 INCLUDE_RODATA("asm/USA/stag3000/rodata", D_800633F0);
-#ifdef NORMALIZED
 void func_80065594(Actor *a0) {
     Stg30Work730D0 *w = (Stg30Work730D0 *)a0->work;
     Stg30GameFlags *g;
-    s16 *row;
-    s16 *top;
-    s32 cat;
     s32 item;
     s32 id;
     s32 i;
     s32 c;
-    s16 *pc;
 
     switch (a0->stateLevel0) {
     case 0:
@@ -631,11 +626,12 @@ void func_80065594(Actor *a0) {
             }
             break;
         case 1:
-            cat = D_800737E8;
-            row = &D_800737F0[cat];
-            top = &D_800737F8[cat];
-            pc = &D_800737E8;
             do {
+                s32 cat = D_800737E8;
+                s16 *row = &D_800737F0[cat];
+                s16 *top = &D_800737F8[cat];
+                s16 *pc = &D_800737E8;
+
                 if (D_8005F6F0[0].left > 0) {
                     if (cat == 0) break;
                     D_800737E8--;
@@ -724,10 +720,6 @@ void func_80065594(Actor *a0) {
         break;
     }
 }
-#else
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000_100C", func_80065594);
-void func_80065594(Actor *a0);
-#endif
 
 void func_80065A98(Actor *a0) {
     Stg30Work730D0 *w = (Stg30Work730D0 *)a0->work;

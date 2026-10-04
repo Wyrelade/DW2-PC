@@ -25,11 +25,6 @@
       "web_realloc"
     ]
   },
-  "stag3000:func_80065594": {
-    "passes": [
-      "web_realloc"
-    ]
-  },
   "stag2000:func_80065FB8": {
     "passes": [
       "slot_migrate"
