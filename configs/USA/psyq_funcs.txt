@@ -139,7 +139,7 @@ GsSetDrawBuffClip 0x8002B2B4
 GsSetOffset 0x8002B334
 GsInitCoordinate2 0x8002B424
 GsSetLsMatrix 0x8002B494
-func_8002B4C4 0x8002B4C4
+GsInit3D 0x8002B4C4
 GsSetProjection 0x8002B544
 GsSetFlatLight 0x8002B564
 Gfx_SetLightColorMatrix 0x8002BA1C
@@ -160,10 +160,10 @@ sin_1 0x8002CB30
 rcos 0x8002CBC4
 func_8002CC64 0x8002CC64
 func_8002CDB8 0x8002CDB8
-func_8002CE5C 0x8002CE5C
+InitGeom 0x8002CE5C
 SquareRoot0 0x8002CEE4
 ApplyMatrixLV 0x8002CF74
-func_8002D0D4 0x8002D0D4
+PushMatrix 0x8002D0D4
 PopMatrix 0x8002D178
 MulMatrix 0x8002D224
 MulMatrix2 0x8002D334
@@ -203,7 +203,7 @@ StFreeRing 0x8002E0F4
 Cd_ClearStreamSlots 0x8002E1A4
 StGetNext 0x8002E1E4
 StSetMask 0x8002E2A4
-func_8002E2C4 0x8002E2C4
+StCdInterrupt 0x8002E2C4
 Mem_CopyWords 0x8002EBE0
 Cd_StartDma 0x8002EC0C
 getintr 0x8002EDB4
@@ -280,7 +280,7 @@ _SsReadDeltaValue 0x80032494
 _SsSndNextSep 0x80032544
 _SsSndReplay 0x80032644
 _SsClose 0x800326A4
-func_80032820 0x80032820
+SsSeqClose 0x80032820
 SsSepClose 0x80032844
 _SsInit 0x80032874
 SsInit 0x80032914
@@ -544,22 +544,22 @@ Card_Format 0x800401E4
 Card_CreateFile 0x800405B4
 strncpy 0x80040C74
 _card_read 0x80040CE4
-# STAG1000.PRO: libpress 4.6 (DecDCTReset .. DecDCTvlc), func_800646C0 .. func_80064D80
-stag1000:func_800646C0
-stag1000:func_800646F4
-stag1000:func_80064780
-stag1000:func_80064818
-stag1000:func_80064894
-stag1000:func_800648B4
-stag1000:func_800648F0
-stag1000:func_80064938
-stag1000:func_8006495C
-stag1000:func_80064980
-stag1000:func_80064A70
-stag1000:func_80064B00
-stag1000:func_80064B8C
-stag1000:func_80064C20
+# STAG1000.PRO: libpress 4.6 (DecDCTReset .. DecDCTvlc2), 0x800646C0 .. 0x80064D80
+stag1000:DecDCTReset
+stag1000:DecDCTGetEnv
+stag1000:DecDCTPutEnv
+stag1000:DecDCTin
+stag1000:DecDCTout
+stag1000:DecDCTinSync
+stag1000:DecDCToutSync
+stag1000:DecDCTinCallback
+stag1000:DecDCToutCallback
+stag1000:MDEC_reset
+stag1000:MDEC_in
+stag1000:MDEC_out
+stag1000:MDEC_in_sync
+stag1000:MDEC_out_sync
 stag1000:func_80064CB4
 stag1000:func_80064CCC
-stag1000:func_80064D50
-stag1000:func_80064D80
+stag1000:DecDCTvlcSize2
+stag1000:DecDCTvlc2

@@ -166,6 +166,7 @@ def rewrite_tree(mapping):
     files += glob.glob(os.path.join(ROOT, "configs", "USA", "sym.stag*.txt"))
     files.append(os.path.join(ROOT, "tools", "asm_normalizer_manifest.json"))
     files.append(os.path.join(ROOT, "tools", "difficult_functions"))
+    files.append(os.path.join(ROOT, "configs", "USA", "psyq_funcs.txt"))
     changed = []
     for p in files:
         if not os.path.exists(p):
@@ -200,7 +201,8 @@ def rewrite_unit(mapping, pat):
                 changed.append((os.path.relpath(p, ROOT), n))
     upat = re.compile(r"(?<![\w$.])%s:(%s)(?!\w)" % (UNIT, "|".join(re.escape(o) for o in mapping)))
     for p in (os.path.join(ROOT, "tools", "asm_normalizer_manifest.json"),
-              os.path.join(ROOT, "tools", "difficult_functions")):
+              os.path.join(ROOT, "tools", "difficult_functions"),
+              os.path.join(ROOT, "configs", "USA", "psyq_funcs.txt")):
         if os.path.exists(p):
             text = open(p, encoding="latin1", newline="").read()
             new_text, n = upat.subn(lambda m: "%s:%s" % (UNIT, mapping[m.group(1)]), text)
