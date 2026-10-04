@@ -473,7 +473,7 @@ extern MemBlock *Mem_HeapHead;
 extern s32 Cd_PreloadIds[];
 extern s32 Cd_PreloadCount;
 extern s32 Ovl_FileIds[];
-extern u8 *Ovl_LoadAddr; /* overlay load address (0x80063360) */
+extern u8 *const Ovl_LoadAddr; /* overlay load address (0x80063360) */
 extern void Snd_StopById(s32);
 extern void Snd_StopById(s32);
 extern void SsSepSetVol(s16 a0, s16 a1, s16 a2, s16 a3);

@@ -10,7 +10,9 @@ extern TaskDesc **Task_DescTable[];
 
 ASM_SOURCE("src/main/asm/crt0", func_80010D6C);
 
-INCLUDE_RODATA("asm/USA/main/rodata", Ovl_LoadAddr);
+/* Overlay load address: every STAGxxxx.PRO is read to and runs from here. */
+extern u8 D_80063360[];
+u8 *const Ovl_LoadAddr = D_80063360;
 /* Unnamed: empty stub, only caller Sys_Main (first call, before ResetCallback), no table ref;
  * role unknown. */
 void func_80010D74(void) {
