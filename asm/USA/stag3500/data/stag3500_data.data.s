@@ -139,9 +139,9 @@ dlabel D_8006A528
     /* 71DC 8006A53C 50000000 */ .word 0x00000050
 enddlabel D_8006A528
 
-nonmatching D_8006A540
+nonmatching Stg35_GaugeDefPercent
 
-dlabel D_8006A540
+dlabel Stg35_GaugeDefPercent
     /* 71E0 8006A540 19000000 */ .word 0x00000019
     /* 71E4 8006A544 16000000 */ .word 0x00000016
     /* 71E8 8006A548 14000000 */ .word 0x00000014
@@ -149,7 +149,7 @@ dlabel D_8006A540
     /* 71F0 8006A550 10000000 */ .word 0x00000010
     /* 71F4 8006A554 0F000000 */ .word 0x0000000F
     /* 71F8 8006A558 0E000000 */ .word 0x0000000E
-enddlabel D_8006A540
+enddlabel Stg35_GaugeDefPercent
 
 nonmatching Stg35_DefaultTargets
 
@@ -293,33 +293,33 @@ dlabel D_8006A678
     /* 732C 8006A68C 14000000 */ .word 0x00000014
 enddlabel D_8006A678
 
-nonmatching D_8006A690
+nonmatching Stg35_CloseUpRotY
 
-dlabel D_8006A690
+dlabel Stg35_CloseUpRotY
     /* 7330 8006A690 AA020000 */ .word 0x000002AA
     /* 7334 8006A694 56FD5505 */ .word 0x0555FD56
     /* 7338 8006A698 0008AA0A */ .word 0x0AAA0800
-enddlabel D_8006A690
+enddlabel Stg35_CloseUpRotY
 
-nonmatching D_8006A69C
+nonmatching Stg35_CloseUpVpz
 
-dlabel D_8006A69C
+dlabel Stg35_CloseUpVpz
     /* 733C 8006A69C 471DAB1D */ .word 0x1DAB1D47
     /* 7340 8006A6A0 AC216823 */ .word 0x236821AC
     /* 7344 8006A6A4 D826E82C */ .word 0x2CE826D8
     /* 7348 8006A6A8 B8315838 */ .word 0x385831B8
     /* 734C 8006A6AC C8420000 */ .word 0x000042C8
-enddlabel D_8006A69C
+enddlabel Stg35_CloseUpVpz
 
-nonmatching D_8006A6B0
+nonmatching Stg35_CloseUpVry
 
-dlabel D_8006A6B0
+dlabel Stg35_CloseUpVry
     /* 7350 8006A6B0 D0FED0FE */ .word 0xFED0FED0
     /* 7354 8006A6B4 C4FDACFD */ .word 0xFDACFDC4
     /* 7358 8006A6B8 28FDC0FC */ .word 0xFCC0FD28
     /* 735C 8006A6BC 88FC10FC */ .word 0xFC10FC88
     /* 7360 8006A6C0 68FB0000 */ .word 0x0000FB68
-enddlabel D_8006A6B0
+enddlabel Stg35_CloseUpVry
 
 nonmatching D_8006A6C4
 
@@ -332,9 +332,9 @@ dlabel D_8006A6C4
     /* 7378 8006A6D8 00000000 */ .word 0x00000000
 enddlabel D_8006A6C4
 
-nonmatching D_8006A6DC
+nonmatching Stg35_SkillGroup0
 
-dlabel D_8006A6DC
+dlabel Stg35_SkillGroup0
     /* 737C 8006A6DC 07002300 */ .word 0x00230007
     /* 7380 8006A6E0 01001F00 */ .word 0x001F0001
     /* 7384 8006A6E4 23000000 */ .word 0x00000023
@@ -371,7 +371,7 @@ dlabel D_8006A6DC
     /* 7400 8006A760 65001400 */ .word 0x00140065
     /* 7404 8006A764 00000000 */ .word 0x00000000
     /* 7408 8006A768 00000000 */ .word 0x00000000
-enddlabel D_8006A6DC
+enddlabel Stg35_SkillGroup0
 
 nonmatching D_8006A76C
 
@@ -575,7 +575,7 @@ enddlabel D_8006A9DC
 nonmatching Stg35_SkillGroups
 
 dlabel Stg35_SkillGroups
-    /* 76C4 8006AA24 DCA60680 */ .word D_8006A6DC
+    /* 76C4 8006AA24 DCA60680 */ .word Stg35_SkillGroup0
     /* 76C8 8006AA28 6CA70680 */ .word D_8006A76C
     /* 76CC 8006AA2C 1CA80680 */ .word D_8006A81C
     /* 76D0 8006AA30 ACA80680 */ .word D_8006A8AC

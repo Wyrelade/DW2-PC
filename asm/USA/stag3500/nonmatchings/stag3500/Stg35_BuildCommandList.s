@@ -75,8 +75,8 @@ glabel Stg35_BuildCommandList
     /* 6F18 8006A278 DCFF4014 */  bnez       $v0, .L8006A1EC
     /* 6F1C 8006A27C 21889002 */   addu      $s1, $s4, $s0
     /* 6F20 8006A280 0B006016 */  bnez       $s3, .L8006A2B0
-    /* 6F24 8006A284 0780023C */   lui       $v0, %hi(D_8006A6DC)
-    /* 6F28 8006A288 DCA64224 */  addiu      $v0, $v0, %lo(D_8006A6DC)
+    /* 6F24 8006A284 0780023C */   lui       $v0, %hi(Stg35_SkillGroup0)
+    /* 6F28 8006A288 DCA64224 */  addiu      $v0, $v0, %lo(Stg35_SkillGroup0)
     /* 6F2C 8006A28C 06004390 */  lbu        $v1, 0x6($v0)
     /* 6F30 8006A290 00000000 */  nop
     /* 6F34 8006A294 0C0043A2 */  sb         $v1, 0xC($s2)

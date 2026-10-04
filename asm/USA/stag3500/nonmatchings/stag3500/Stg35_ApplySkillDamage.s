@@ -35,8 +35,8 @@ glabel Stg35_ApplySkillDamage
     /* 28FC 80065C5C 1E007186 */  lh         $s1, 0x1E($s3)
     /* 2900 80065C60 28A3010C */  jal        Stg35_HudPeekGaugeLevel
     /* 2904 80065C64 00000000 */   nop
-    /* 2908 80065C68 0780033C */  lui        $v1, %hi(D_8006A540)
-    /* 290C 80065C6C 40A56324 */  addiu      $v1, $v1, %lo(D_8006A540)
+    /* 2908 80065C68 0780033C */  lui        $v1, %hi(Stg35_GaugeDefPercent)
+    /* 290C 80065C6C 40A56324 */  addiu      $v1, $v1, %lo(Stg35_GaugeDefPercent)
     /* 2910 80065C70 80100200 */  sll        $v0, $v0, 2
     /* 2914 80065C74 21104300 */  addu       $v0, $v0, $v1
     /* 2918 80065C78 0000428C */  lw         $v0, 0x0($v0)

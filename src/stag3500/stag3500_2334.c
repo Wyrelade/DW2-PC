@@ -186,7 +186,7 @@ s32 Stg35_ApplySkillDamage(s32 arg0, s32 arg1, s32 arg2) {
     Skill_GetSpecialty(arg2);
     c = rec1->field_1E;
     idx = Stg35_HudPeekGaugeLevel(arg1 >= 3);
-    d = D_8006A540[idx];
+    d = Stg35_GaugeDefPercent[idx];
     num = a * b;
     prod = c * d;
     c = prod / 100;

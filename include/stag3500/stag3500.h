@@ -395,7 +395,7 @@ typedef struct {
 
 extern s32 Stg35_TurnOrder[];
 extern Stg35Battle Stg35_Battle;
-extern Stg35Rec6 D_8006A6DC[];
+extern Stg35Rec6 Stg35_SkillGroup0[];
 extern s32 Stg35_DefaultTargets[];
 extern Stg35Rec6 *Stg35_SkillGroups[6];
 extern s32 Gfx_ZeroVector[];
@@ -563,7 +563,7 @@ extern Stg35XY Stg35_MatchupLabelPos[];
 extern s16 Stg35_MatchupLabelMsgs[];
 extern Stg35XY Stg35_MatchupPartyPos[];
 extern Stg35XY Stg35_MatchupTamerPos[];
-extern s32 D_8006A540[];
+extern s32 Stg35_GaugeDefPercent[];
 extern Stg35Rec5C D_8006AA98[];
 extern Elem12 Stg35_HitReactHop1Motion;
 extern Elem12 Stg35_HitReactHop2Motion;
@@ -572,9 +572,9 @@ extern s32 Stg35_XaTrackStart[];
 extern s32 Stg35_XaTrackLength[];
 extern Stg35XY Stg35_HpBarPosP1[];
 extern Stg35XY Stg35_HpBarPosP2[];
-extern s16 D_8006A690[];
-extern s16 D_8006A69C[];
-extern s16 D_8006A6B0[];
+extern s16 Stg35_CloseUpRotY[];
+extern s16 Stg35_CloseUpVpz[];
+extern s16 Stg35_CloseUpVry[];
 extern s16 Stg35_BattleScript[];              /* battle script buffer (bss) */
 extern s32 Stg35_CamShotVariant;
 

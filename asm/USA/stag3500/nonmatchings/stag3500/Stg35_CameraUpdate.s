@@ -144,15 +144,15 @@ glabel Stg35_CameraUpdate
     /* 68AC 80069C0C C0120200 */  sll        $v0, $v0, 11
     /* 68B0 80069C10 00EC4224 */  addiu      $v0, $v0, -0x1400
     /* 68B4 80069C14 4800A2AF */  sw         $v0, 0x48($sp)
-    /* 68B8 80069C18 0780023C */  lui        $v0, %hi(D_8006A690)
-    /* 68BC 80069C1C 90A64224 */  addiu      $v0, $v0, %lo(D_8006A690)
+    /* 68B8 80069C18 0780023C */  lui        $v0, %hi(Stg35_CloseUpRotY)
+    /* 68BC 80069C1C 90A64224 */  addiu      $v0, $v0, %lo(Stg35_CloseUpRotY)
     /* 68C0 80069C20 21104202 */  addu       $v0, $s2, $v0
     /* 68C4 80069C24 03220500 */  sra        $a0, $a1, 8
     /* 68C8 80069C28 00004384 */  lh         $v1, 0x0($v0)
     /* 68CC 80069C2C D0F30224 */  addiu      $v0, $zero, -0xC30
     /* 68D0 80069C30 3800A2AF */  sw         $v0, 0x38($sp)
-    /* 68D4 80069C34 0780023C */  lui        $v0, %hi(D_8006A69C)
-    /* 68D8 80069C38 9CA64224 */  addiu      $v0, $v0, %lo(D_8006A69C)
+    /* 68D4 80069C34 0780023C */  lui        $v0, %hi(Stg35_CloseUpVpz)
+    /* 68D8 80069C38 9CA64224 */  addiu      $v0, $v0, %lo(Stg35_CloseUpVpz)
     /* 68DC 80069C3C 3400A0AF */  sw         $zero, 0x34($sp)
     /* 68E0 80069C40 3000A3AF */  sw         $v1, 0x30($sp)
     /* 68E4 80069C44 40180400 */  sll        $v1, $a0, 1
@@ -160,8 +160,8 @@ glabel Stg35_CameraUpdate
     /* 68EC 80069C4C 00004284 */  lh         $v0, 0x0($v0)
     /* 68F0 80069C50 3000A527 */  addiu      $a1, $sp, 0x30
     /* 68F4 80069C54 3C00A2AF */  sw         $v0, 0x3C($sp)
-    /* 68F8 80069C58 0780023C */  lui        $v0, %hi(D_8006A6B0)
-    /* 68FC 80069C5C B0A64224 */  addiu      $v0, $v0, %lo(D_8006A6B0)
+    /* 68F8 80069C58 0780023C */  lui        $v0, %hi(Stg35_CloseUpVry)
+    /* 68FC 80069C5C B0A64224 */  addiu      $v0, $v0, %lo(Stg35_CloseUpVry)
     /* 6900 80069C60 21186200 */  addu       $v1, $v1, $v0
     /* 6904 80069C64 00006284 */  lh         $v0, 0x0($v1)
     /* 6908 80069C68 21200002 */  addu       $a0, $s0, $zero

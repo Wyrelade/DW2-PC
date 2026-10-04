@@ -254,11 +254,11 @@ void Stg35_CameraUpdate(Actor *arg0) {
                 h /= 256;
                 t[5] = (i % 3) * 0xA00 - 0xA00;
                 t[6] = (i / 3) * 0x2800 - 0x1400;
-                t[0] = D_8006A690[i];
+                t[0] = Stg35_CloseUpRotY[i];
                 t[1] = 0;
                 t[2] = -0xC30;
-                t[3] = D_8006A69C[h];
-                t[4] = D_8006A6B0[h];
+                t[3] = Stg35_CloseUpVpz[h];
+                t[4] = Stg35_CloseUpVry[h];
                 Stg35_CamEaseToward(w, t);
             }
             break;
@@ -507,9 +507,9 @@ void Stg35_BuildCommandList(s32 arg0) {
         }
     }
     if (!found) {
-        b->field_C[0] = D_8006A6DC[1].field_0;
-        b->field_1E[0] = D_8006A6DC[1].field_2;
-        b->field_12[0] = D_8006A6DC[1].field_4;
+        b->field_C[0] = Stg35_SkillGroup0[1].field_0;
+        b->field_1E[0] = Stg35_SkillGroup0[1].field_2;
+        b->field_12[0] = Stg35_SkillGroup0[1].field_4;
     }
 }
 
