@@ -1,10 +1,9 @@
 #include "common.h"
 #include "main/156C.h"
 
-/* Start of main .text: crt0 (hand asm), the task runner and Task_Run (C with an
- * inline stack switch in the original, restored as asm). Built with -G0: under -G8
+/* Start of main .text: crt0 (hand asm) and the task runner. Built with -G0: under -G8
  * cc1 writes C function text after all top-level asm, which would move the C
- * functions behind Task_Run. Nothing here reads small data. */
+ * functions behind the crt0 asm. Nothing here reads small data. */
 
 extern s32 Task_Run(s32);
 extern TaskDesc **Task_DescTable[];
@@ -48,7 +47,6 @@ void Task_Destroy(s32 *arg0) {
     }
 }
 
-#ifdef NON_MATCHING
 extern s32 Sys_DrawPass;
 extern s32 Sys_FrameDelta;
 
@@ -63,7 +61,7 @@ typedef struct {
     /* 0x28 */ s32 elapsed;
 } TaskRunObj;
 
-/* Task_Run's view of an TaskDesc: the callbacks after Task_Create's init. */
+/* Task_Run's view of a TaskDesc: the callbacks after Task_Create's init. */
 typedef struct {
     /* 0x00 */ void (*init)(ActorAllocView *, s32);
     /* 0x04 */ void (*update)(TaskRunObj *);
@@ -71,31 +69,51 @@ typedef struct {
     /* 0x0C */ void (*draw)(TaskRunObj *);
 } TaskRunDesc;
 
-/* The original switches sp to the scratchpad (old sp saved at 0x1F8003FC, callback
- * runs with sp = 0x1F8003F8) around the field_4 and field_C calls, then restores it.
- * The stack switch has no effect on behaviour, so C just calls the callbacks. */
+/* The update and draw callbacks run on a stack in the scratchpad: the old sp is saved at
+ * 0x1F8003FC and the callback runs with sp = 0x1F8003F8. Plain C cannot move sp, so the
+ * switch is two small asm statements (the original did the same). They do nothing for
+ * behaviour, so a non-matching build drops them. */
+#define SCRATCH_STACK_TOP 0x1F8003FC
+#ifdef NON_MATCHING
+#define SCRATCH_STACK_ENTER(top)
+#define SCRATCH_STACK_LEAVE()
+#else
+#define SCRATCH_STACK_ENTER(top) __asm__ volatile( \
+    "move $8, %0\n\tsw $29, 0($8)\n\taddiu $8, $8, -4\n\tmove $29, $8" : : "r"(top) : "$8", "memory")
+#define SCRATCH_STACK_LEAVE() __asm__ volatile("addiu $29, $29, 4\n\tlw $29, 0($29)" : : : "memory")
+#endif
+
 s32 Task_Run(s32 arg0) {
     TaskRunObj *t = (TaskRunObj *)arg0;
     TaskRunDesc *d = (TaskRunDesc *)Task_DescTable[t->id >> 8][t->id & 0xFF];
 
-    if (Sys_DrawPass == 0) {
+    if (Sys_DrawPass != 0) {
+        if (d->draw != 0 && t->frameCount != 0) {
+            if (t->state == 0) {
+                goto children;
+            }
+            if (t->state != 3) {
+                SCRATCH_STACK_ENTER(SCRATCH_STACK_TOP);
+                d->draw(t);
+                SCRATCH_STACK_LEAVE();
+            }
+        }
+        if (t->state != 0) {
+            s32 *c = &t->frameCount;
+            *c += 1;
+            c = &t->elapsed;
+            *c += Sys_FrameDelta;
+        }
+    } else {
         if (t->state == 3) {
             d->destroy(t);
             return 0;
         }
-        d->update(t);                      /* on the scratchpad stack */
-    } else {
-        if (d->draw != 0 && t->frameCount != 0 && t->state != 0 && t->state != 3) {
-            d->draw(t);                  /* on the scratchpad stack */
-        }
-        if (t->state != 0) {
-            t->frameCount++;
-            t->elapsed += Sys_FrameDelta;
-        }
+        SCRATCH_STACK_ENTER(SCRATCH_STACK_TOP);
+        d->update(t);
+        SCRATCH_STACK_LEAVE();
     }
+children:
     Task_RunChildren((TaskChildrenView *)t);
     return (s32)t;
 }
-#else
-ASM_SOURCE("src/main/asm/game", Task_Run);
-#endif
