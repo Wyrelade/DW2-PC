@@ -32,8 +32,13 @@ tree.
 | License (project code) | CC0 1.0 |
 
 > **You must own the game.** This repository contains no ROMs, disc images, or copyrighted
-> assets. Everything under `rom/ assets/ asm/ linkers/ build/` is regenerated from *your own*
-> disc and is gitignored. Obtain a legal dump of your own disc.
+> assets. `rom/ assets/ build/` are made from *your own* disc and are gitignored. Obtain a
+> legal dump of your own disc.
+>
+> `asm/` and `linkers/` are splat output. They are still committed today so the progress CI
+> can build without a disc. That covers the PsyQ library asm, the `.data` sections and a few
+> `.rodata` tables that are not C yet. They will move out of the repo (see
+> [issue #6](https://github.com/Wyrelade/Digimon-World-2-Decomp/issues/6)).
 
 ## Status
 
