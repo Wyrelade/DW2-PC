@@ -13,7 +13,7 @@ void Stg30_SetDigiAction(Actor *a0, s32 a1, s32 a2) {
 
 void Stg30_ShowPartyFighters(Stg30ListOwner *a0) {
     s32 i;
-    Stg30ActorList *l = a0->list;
+    Stg30BattleChildren *l = a0->list;
 
     for (i = 0; i < 6; i++) {
         if (l->actors[i] != NULL) {
@@ -29,7 +29,7 @@ void Stg30_ShowPartyFighters(Stg30ListOwner *a0) {
 
 void Stg30_ShowAllFighters(Stg30ListOwner *a0) {
     s32 i;
-    Stg30ActorList *l = a0->list;
+    Stg30BattleChildren *l = a0->list;
 
     for (i = 0; i < 6; i++) {
         if (l->actors[i] != NULL) {
@@ -40,7 +40,7 @@ void Stg30_ShowAllFighters(Stg30ListOwner *a0) {
 
 void Stg30_ResetAllFightersHome(Stg30ListOwner *a0) {
     s32 i;
-    Stg30ActorList *l = a0->list;
+    Stg30BattleChildren *l = a0->list;
 
     for (i = 0; i < 6; i++) {
         if (l->actors[i] != NULL) {
@@ -68,7 +68,7 @@ s32 Stg30_RankCanLearnSkill(s32 a0, u8 a1) {
 }
 
 void Stg30_BattleWonUpdate(Actor *a0) {
-    Stg30ActorList *l = (Stg30ActorList *)a0->u34.children;
+    Stg30BattleChildren *l = (Stg30BattleChildren *)a0->u34.children;
     Stg30Pair sum;
     Stg30SkillLearnArgs args;
     u8 ids[24];
@@ -97,7 +97,7 @@ void Stg30_BattleWonUpdate(Actor *a0) {
         } else {
             Snd_PlayById(0x201, 1);
         }
-        Task_Create(0x505, &l->field_24, 2);
+        Task_Create(0x505, &l->bannerTask, 2);
         Stg30_SetCameraShot(0x19);
         Stg30_ShowPartyFighters((Stg30ListOwner *)a0);
         a0->elapsed = 0;
@@ -146,7 +146,7 @@ void Stg30_BattleWonUpdate(Actor *a0) {
                     sum.field_0 += Stg30_Battle.entries[t].exp;
                 }
             }
-            Task_Create(0x502, &l->field_28, (s32)&sum);
+            Task_Create(0x502, &l->resultTask, (s32)&sum);
             Task_NextState2(a0);
             break;
         }
@@ -156,7 +156,7 @@ void Stg30_BattleWonUpdate(Actor *a0) {
         switch (a0->stateLevel3) {
         case 0:
         default:
-            if (l->field_28 != 0) {
+            if (l->resultTask != 0) {
                 break;
             }
             Task_NextState3(a0);
@@ -215,11 +215,11 @@ void Stg30_BattleWonUpdate(Actor *a0) {
                     Task_NextState3(a0);
                     break;
                 }
-                Task_Create(0x512, &l->field_28, (s32)&args);
+                Task_Create(0x512, &l->resultTask, (s32)&args);
                 Task_NextState4(a0);
                 break;
             case 1:
-                if (l->field_28 == 0) {
+                if (l->resultTask == 0) {
                     Task_NextState3(a0);
                 }
                 break;
@@ -231,7 +231,7 @@ void Stg30_BattleWonUpdate(Actor *a0) {
         }
         break;
     case 4:
-        if (l->field_28 != 0) {
+        if (l->resultTask != 0) {
             break;
         }
         st = D_8005E5E0;
@@ -239,13 +239,13 @@ void Stg30_BattleWonUpdate(Actor *a0) {
             stage2 = Digi_GetRank(Stg30_Battle.entries[Stg30_Battle.joinCandidate].digiId);
             if ((Rand_Next() & 0x7F) < Stg30_JoinChance[stage2][st - 1]) {
                 arg = Stg30_Battle.joinCandidate;
-                Task_Create(0x513, &l->field_28, (s32)&arg);
+                Task_Create(0x513, &l->resultTask, (s32)&arg);
             }
         }
         Task_NextState2(a0);
         break;
     case 5:
-        if (l->field_28 != 0) {
+        if (l->resultTask != 0) {
             break;
         }
         if ((D_8005F790 & 0xFF00) == 0x200) {
@@ -279,18 +279,18 @@ void Stg30_BattleWonUpdate(Actor *a0) {
 }
 
 void Stg30_BattleLostUpdate(Stg30ListOwner *a0) {
-    Stg30ActorList *l = a0->list;
+    Stg30BattleChildren *l = a0->list;
 
     switch (a0->stateLevel2) {
     case 0:
     default:
         Snd_PlayById(0x203, 1);
         Stg30_ShowPartyFighters(a0);
-        Task_Create(0x505, &l->field_24, 3);
+        Task_Create(0x505, &l->bannerTask, 3);
         Stg30_SetCameraShot(0x19);
         Task_NextState2((Actor *)a0);
     case 1:
-        if (l->field_24 != 0) {
+        if (l->bannerTask != 0) {
             break;
         }
         Task_NextState2((Actor *)a0);
@@ -330,8 +330,8 @@ void Stg30_ResetPartyStats(void) {
 }
 
 void Stg30_BattleUpdate(Actor *a0) {
-    Stg30Work731A0 *w = (Stg30Work731A0 *)a0->work;
-    Stg30ActorList *l = (Stg30ActorList *)a0->u34.children;
+    Stg30BattleWork *w = (Stg30BattleWork *)a0->work;
+    Stg30BattleChildren *l = (Stg30BattleChildren *)a0->u34.children;
     s32 args[3];
     Out1DB68 out;
     TaskEntry *t;
@@ -386,9 +386,9 @@ void Stg30_BattleUpdate(Actor *a0) {
             Gpu_ClearScreens();
             Gfx_FadeInFromBlack(0x40);
             Task_Create(9, &l->field_0, 0);
-            Task_Create(0x503, &l->field_10, 0);
-            Task_Create(0x50A, &l->field_14, 0);
-            Task_Create(0x505, &l->field_24, 0);
+            Task_Create(0x503, &l->cameraTask, 0);
+            Task_Create(0x50A, &l->fightBgTask, 0);
+            Task_Create(0x505, &l->bannerTask, 0);
             Cd_QueueFile(0x1FD);
             Cd_QueueFile(0x25B);
             Cd_QueueFile(0xC6C);
@@ -442,11 +442,11 @@ void Stg30_BattleUpdate(Actor *a0) {
             case 0:
             default:
                 for (n2 = 0; n2 < 7; n2++) {
-                    Stg30_Battle.turns[n2].field_F = 0;
-                    Stg30_Battle.turns[n2].field_E = 0;
-                    Stg30_Battle.turns[n2].field_6 = 0;
-                    Stg30_Battle.turns[n2].field_4 = 0;
-                    Stg30_Battle.turns[n2].field_0 = 0;
+                    Stg30_Battle.turns[n2].noInterrupt = 0;
+                    Stg30_Battle.turns[n2].noCounter = 0;
+                    Stg30_Battle.turns[n2].skillId = 0;
+                    Stg30_Battle.turns[n2].target = 0;
+                    Stg30_Battle.turns[n2].turnType = 0;
                 }
                 for (n3 = 0; n3 < 6; n3++) {
                     Stg30_Battle.entries[n3].attack = Stg30_Battle.attackCur[n3];
@@ -455,12 +455,12 @@ void Stg30_BattleUpdate(Actor *a0) {
                 }
                 Stg30_ResetAllFightersHome((Stg30ListOwner *)a0);
                 Stg30_ShowAllFighters((Stg30ListOwner *)a0);
-                Task_Create(0x50B, &l->field_C, 0);
+                Task_Create(0x50B, &l->commandTask, 0);
                 Task_NextState2(a0);
                 break;
             case 1:
                 Cd_QueueFile(0x22B);
-                if (l->field_C != 0) {
+                if (l->commandTask != 0) {
                     break;
                 }
                 if (D_80073CC4 == 1) {
@@ -469,10 +469,10 @@ void Stg30_BattleUpdate(Actor *a0) {
                     default:
                         out.field_0 = 5;
                         out.field_4 = 1;
-                        Task_Create(0x50C, &l->field_24, (s32)&out);
+                        Task_Create(0x50C, &l->bannerTask, (s32)&out);
                         Task_NextState3(a0);
                     case 1:
-                        if (l->field_24 != 0) {
+                        if (l->bannerTask != 0) {
                             break;
                         }
                         Stg30_ResetPartyStats();
@@ -493,16 +493,16 @@ void Stg30_BattleUpdate(Actor *a0) {
                     default:
                         out.field_0 = 5;
                         out.field_4 = 0;
-                        Task_Create(0x50C, &l->field_24, (s32)&out);
+                        Task_Create(0x50C, &l->bannerTask, (s32)&out);
                         Task_NextState3(a0);
                     case 1:
-                        if (l->field_24 != 0) {
+                        if (l->bannerTask != 0) {
                             break;
                         }
                         for (n4 = 0; n4 < 3; n4++) {
-                            Stg30_Battle.turns[n4].field_6 = 0;
-                            Stg30_Battle.turns[n4].field_4 = 0;
-                            Stg30_Battle.turns[n4].field_0 = 0;
+                            Stg30_Battle.turns[n4].skillId = 0;
+                            Stg30_Battle.turns[n4].target = 0;
+                            Stg30_Battle.turns[n4].turnType = 0;
                         }
                         D_80073CC4 = 0;
                         break;
@@ -514,14 +514,14 @@ void Stg30_BattleUpdate(Actor *a0) {
             case 2:
                 switch (a0->stateLevel3) {
                 case 0:
-                    Task_Create(0x505, &l->field_24, 1);
+                    Task_Create(0x505, &l->bannerTask, 1);
                     Task_NextState3(a0);
                 case 1:
-                    if (l->field_24 != 0) {
+                    if (l->bannerTask != 0) {
                         break;
                     }
                     Stg30_Battle.interruptActive = 0;
-                    if (Stg30_Battle.turns[6].field_0 != 0) {
+                    if (Stg30_Battle.turns[6].turnType != 0) {
                         Task_NextState3(a0);
                     } else {
                         Task_SetState3(a0, 0xFF);
@@ -529,10 +529,10 @@ void Stg30_BattleUpdate(Actor *a0) {
                     break;
                 case 2:
                     Stg30_BuildItemScript();
-                    Task_Create(0x50F, &l->field_48, 0);
+                    Task_Create(0x50F, &l->scriptTask, 0);
                     Task_NextState3(a0);
                 case 3:
-                    if (l->field_48 != 0) {
+                    if (l->scriptTask != 0) {
                         break;
                     }
                     sum = 0;
@@ -558,7 +558,7 @@ void Stg30_BattleUpdate(Actor *a0) {
                 Stg30_AiChooseEnemyTurns();
                 Stg30_BuildTurnOrder();
                 for (n6 = 5; n6 >= 0; n6--) {
-                    Stg30_Battle.turns[n6].field_C = 0;
+                    Stg30_Battle.turns[n6].hpDelta = 0;
                 }
                 Task_NextState1(a0);
                 break;
@@ -589,10 +589,10 @@ void Stg30_BattleUpdate(Actor *a0) {
                     break;
                 }
                 Stg30_RetargetAction();
-                w->field_8 = 0;
+                w->counterQueued = 0;
                 Stg30_Battle.interruptSlot = -1;
                 if (Stg30_PrepareAction(Stg30_TurnOrderGet(0))) {
-                    Task_Create(0x50F, &l->field_48, 1);
+                    Task_Create(0x50F, &l->scriptTask, 1);
                 }
                 Task_NextState2(a0);
             case 2:
@@ -601,19 +601,19 @@ void Stg30_BattleUpdate(Actor *a0) {
                     case 0:
                     default:
                         Stg30_RestoreFighterStates();
-                        Task_Destroy(&l->field_48);
-                        Stg30_Battle.turns[Stg30_Battle.interruptSlot].field_4 = Stg30_TurnOrderGet(0);
+                        Task_Destroy(&l->scriptTask);
+                        Stg30_Battle.turns[Stg30_Battle.interruptSlot].target = Stg30_TurnOrderGet(0);
                         Stg30_TurnOrderInsert(0, Stg30_Battle.interruptSlot);
                         Stg30_Battle.statusMsg = 0;
                         if (Stg30_PrepareAction(Stg30_TurnOrderGet(0))) {
-                            Task_Create(0x50F, &l->field_48, 1);
+                            Task_Create(0x50F, &l->scriptTask, 1);
                         }
                         Task_NextState3(a0);
                     case 1:
-                        if (l->field_48 != 0) {
+                        if (l->scriptTask != 0) {
                             break;
                         }
-                        Stg30_Battle.turns[Stg30_TurnOrderGet(0)].field_0 = 0;
+                        Stg30_Battle.turns[Stg30_TurnOrderGet(0)].turnType = 0;
                         Stg30_TurnOrderRemove(0);
                         if (Stg30_Battle.entries[Stg30_TurnOrderGet(0)].hp == 0) {
                             Task_NextState2(a0);
@@ -622,11 +622,11 @@ void Stg30_BattleUpdate(Actor *a0) {
                         }
                         Stg30_Battle.statusMsg = 0;
                         if (Stg30_PrepareAction(Stg30_TurnOrderGet(0))) {
-                            Task_Create(0x50F, &l->field_48, 1);
+                            Task_Create(0x50F, &l->scriptTask, 1);
                         }
                         Task_NextState3(a0);
                     case 2:
-                        if (l->field_48 != 0) {
+                        if (l->scriptTask != 0) {
                             break;
                         }
                         Task_NextState2(a0);
@@ -635,14 +635,14 @@ void Stg30_BattleUpdate(Actor *a0) {
                     }
                     break;
                 }
-                if (l->field_48 != 0) {
+                if (l->scriptTask != 0) {
                     break;
                 }
                 Task_NextState2(a0);
                 break;
             case 3:
-                if (Stg30_Battle.actionTaken != 0 && Stg30_Battle.turns[Stg30_TurnOrderGet(0)].field_0 == 1 &&
-                    Stg30_Battle.turns[Stg30_TurnOrderGet(0)].field_E == 0) {
+                if (Stg30_Battle.actionTaken != 0 && Stg30_Battle.turns[Stg30_TurnOrderGet(0)].turnType == 1 &&
+                    Stg30_Battle.turns[Stg30_TurnOrderGet(0)].noCounter == 0) {
                     for (i = 0; i < 6; i++) {
                         if (Stg30_Battle.lastTargets[i] == -1) {
                             continue;
@@ -655,27 +655,27 @@ void Stg30_BattleUpdate(Actor *a0) {
                             continue;
                         }
                         k = Stg30_TurnOrderGet(j);
-                        if (Stg30_Battle.turns[k].field_0 != 2) {
+                        if (Stg30_Battle.turns[k].turnType != 2) {
                             continue;
                         }
                         Stg30_TurnOrderRemove(j);
                         Stg30_TurnOrderInsert(1, k);
                         if (Stg30_TurnOrderGet(0) < 3 && Stg30_Battle.lastTargets[i] < 3) {
-                            Stg30_Battle.turns[k].field_4 = Stg30_PickTarget(0, 1, Stg30_Battle.lastTargets[i]);
+                            Stg30_Battle.turns[k].target = Stg30_PickTarget(0, 1, Stg30_Battle.lastTargets[i]);
                         } else if (Stg30_TurnOrderGet(0) >= 3 && Stg30_Battle.lastTargets[i] >= 3) {
-                            Stg30_Battle.turns[k].field_4 = Stg30_PickTarget(0, 7, Stg30_Battle.lastTargets[i]);
+                            Stg30_Battle.turns[k].target = Stg30_PickTarget(0, 7, Stg30_Battle.lastTargets[i]);
                         } else {
-                            Stg30_Battle.turns[k].field_4 = Stg30_TurnOrderGet(0);
+                            Stg30_Battle.turns[k].target = Stg30_TurnOrderGet(0);
                         }
-                        w->field_8 = 1;
+                        w->counterQueued = 1;
                     }
                 }
                 Task_NextState2(a0);
             case 4:
                 m = Stg30_TurnOrderGet(0);
                 if (m != Stg30_TurnOrderGet(1)) {
-                    if (Stg30_Battle.turns[Stg30_TurnOrderGet(0)].field_0 != 5) {
-                        Stg30_Battle.turns[Stg30_TurnOrderGet(0)].field_0 = 0;
+                    if (Stg30_Battle.turns[Stg30_TurnOrderGet(0)].turnType != 5) {
+                        Stg30_Battle.turns[Stg30_TurnOrderGet(0)].turnType = 0;
                     }
                 }
                 flag = 0;
@@ -713,9 +713,9 @@ void Stg30_BattleUpdate(Actor *a0) {
                 Stg30_TurnOrderRemove(0);
                 v = Stg30_TurnOrderGet(0);
                 if (v != -1) {
-                    if (w->field_8 == 0) {
-                        if (Stg30_Battle.turns[v].field_0 == 2) {
-                            Stg30_Battle.turns[v].field_0 = 1;
+                    if (w->counterQueued == 0) {
+                        if (Stg30_Battle.turns[v].turnType == 2) {
+                            Stg30_Battle.turns[v].turnType = 1;
                         }
                     }
                     Task_SetState2(a0, 1);
@@ -724,7 +724,7 @@ void Stg30_BattleUpdate(Actor *a0) {
                 Task_SetState1(a0, 1);
                 Stg30_Battle.interruptActive = 1;
                 for (n7 = 5; n7 >= 0; n7--) {
-                    Stg30_Battle.turns[n7].field_0 = 0;
+                    Stg30_Battle.turns[n7].turnType = 0;
                 }
                 break;
             }

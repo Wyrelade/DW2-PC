@@ -3,12 +3,12 @@
 #include "stag3000/stag3000_funcs.h"
 
 void Stg30_ActionLoadDestroy(Actor *a0) {
-    Stg30Work73040 *w = (Stg30Work73040 *)a0->work;
+    Stg30ActionLoadWork *w = (Stg30ActionLoadWork *)a0->work;
     s32 i;
 
-    for (i = 0; i < w->field_2E0; i++) {
-        if (w->field_260[i] != 0) {
-            Cd_FreeFile(w->field_260[i]);
+    for (i = 0; i < w->tempCount; i++) {
+        if (w->tempFiles[i] != 0) {
+            Cd_FreeFile(w->tempFiles[i]);
         }
     }
 }
@@ -69,7 +69,7 @@ void Stg30_CommandInputTask(Actor *a0) {
                 Stg30_SetCameraShot(1);
                 Stg30_Battle.entries[0].inputSlot = 6;
                 Task_Create(0x504, p, 0);
-                Stg30_Battle.turns[6].field_0 = 0;
+                Stg30_Battle.turns[6].turnType = 0;
                 for (i = 0; i < 6; i++) {
                     t = Task_FindFirst(0x509, -1, i);
                     if (t != NULL) {
@@ -155,11 +155,11 @@ void Stg30_CommandInputTask(Actor *a0) {
                     }
                     if (Stg30_Battle.entries[0].cancelled != 0) {
                         Stg30_UndimPartyFighters();
-                        Stg30_Battle.turns[6].field_0 = 0;
+                        Stg30_Battle.turns[6].turnType = 0;
                         Task_SetState2(a0, 0);
                         break;
                     }
-                    Stg30_Battle.turns[6].field_4 = Stg30_Battle.entries[0].chosenTarget;
+                    Stg30_Battle.turns[6].target = Stg30_Battle.entries[0].chosenTarget;
                     w->field_0 = Stg30_TargetFirst(0, 0, 0);
                     Task_SetState1(a0, 2);
                     break;
@@ -184,7 +184,7 @@ void Stg30_CommandInputTask(Actor *a0) {
                     if (w->field_0 != Stg30_TargetFirst(0, 0, 0)) {
                         r = Stg30_TargetPrev(0, w->field_0, 0, 0);
                         w->field_0 = r;
-                        Stg30_Battle.turns[r].field_0 = 0;
+                        Stg30_Battle.turns[r].turnType = 0;
                         Task_SetState1(a0, 2);
                         break;
                     }
@@ -195,7 +195,7 @@ void Stg30_CommandInputTask(Actor *a0) {
                     Task_NextState2(a0);
                     break;
                 }
-                Stg30_Battle.turns[w->field_0].field_0 = 5;
+                Stg30_Battle.turns[w->field_0].turnType = 5;
                 Task_SetState2(a0, 4);
                 break;
             case 2:
@@ -234,7 +234,7 @@ void Stg30_CommandInputTask(Actor *a0) {
                         Task_SetState2(a0, 2);
                         break;
                     }
-                    Stg30_Battle.turns[w->field_0].field_4 = Stg30_Battle.entries[0].chosenTarget;
+                    Stg30_Battle.turns[w->field_0].target = Stg30_Battle.entries[0].chosenTarget;
                     Task_NextState2(a0);
                     break;
                 }
@@ -442,12 +442,12 @@ void Stg30_CommandMenuDraw(Actor *a0) {
 }
 
 void Stg30_ItemMenuBuildLists(Actor *a0) {
-    Stg30Work730D0 *w = (Stg30Work730D0 *)a0->work;
+    Stg30ItemMenuWork *w = (Stg30ItemMenuWork *)a0->work;
     s32 i;
     s32 n;
     s32 id;
 
-    if (w->field_40[0] != 0 && w->field_4C[0] == 0) {
+    if (w->columnEnabled[0] != 0 && w->columnBroken[0] == 0) {
         i = 0;
         n = i;
         for (; i < 0x30; i++) {
@@ -459,15 +459,15 @@ void Stg30_ItemMenuBuildLists(Actor *a0) {
             case 0x14:
             case 0x1D:
             case 0x1E:
-                w->field_58[0][n++] = id;
+                w->itemLists[0][n++] = id;
                 break;
             }
         }
-        w->field_E8[0] = n;
+        w->itemCounts[0] = n;
     } else {
-        w->field_E8[0] = 0;
+        w->itemCounts[0] = 0;
     }
-    if (w->field_40[1] != 0 && w->field_4C[1] == 0) {
+    if (w->columnEnabled[1] != 0 && w->columnBroken[1] == 0) {
         i = 0;
         n = i;
         for (; i < 0x30; i++) {
@@ -476,14 +476,14 @@ void Stg30_ItemMenuBuildLists(Actor *a0) {
                 break;
             }
             if (Item_GetCategory(id) == 0x1A) {
-                w->field_58[1][n++] = id;
+                w->itemLists[1][n++] = id;
             }
         }
-        w->field_E8[1] = n;
+        w->itemCounts[1] = n;
     } else {
-        w->field_E8[1] = 0;
+        w->itemCounts[1] = 0;
     }
-    if (w->field_40[2] != 0 && w->field_4C[2] == 0) {
+    if (w->columnEnabled[2] != 0 && w->columnBroken[2] == 0) {
         i = 0;
         n = i;
         for (; i < 0x30; i++) {
@@ -492,12 +492,12 @@ void Stg30_ItemMenuBuildLists(Actor *a0) {
                 break;
             }
             if (Item_GetCategory(id) == 0x19) {
-                w->field_58[2][n++] = id;
+                w->itemLists[2][n++] = id;
             }
         }
-        w->field_E8[2] = n;
+        w->itemCounts[2] = n;
     } else {
-        w->field_E8[2] = 0;
+        w->itemCounts[2] = 0;
     }
 }
 
@@ -521,14 +521,14 @@ void Stg30_OpenItemText(void *a0, s32 id, s32 color, Stg30XY pos, s32 name, s32 
 
 INCLUDE_RODATA("asm/USA/stag3000/rodata", Stg30_ItemDescTextPos);
 void Stg30_ItemMenuRefreshText(Actor *a0) {
-    Stg30Work730D0 *w = (Stg30Work730D0 *)a0->work;
+    Stg30ItemMenuWork *w = (Stg30ItemMenuWork *)a0->work;
     s32 i;
     s32 j;
     s32 item;
     s32 cat;
 
     for (i = 0; i < 3; i++) {
-        u8 *row = w->field_58[i];
+        u8 *row = w->itemLists[i];
         for (j = 0; j < 3; j++) {
             u8 *p = &row[j + Stg30_ItemMenuScroll[i]];
             if (*p != 0) {
@@ -539,16 +539,16 @@ void Stg30_ItemMenuRefreshText(Actor *a0) {
         }
     }
     
-    item = w->field_58[Stg30_ItemMenuColumn][Stg30_ItemMenuRow[Stg30_ItemMenuColumn] + Stg30_ItemMenuScroll[Stg30_ItemMenuColumn]];
+    item = w->itemLists[Stg30_ItemMenuColumn][Stg30_ItemMenuRow[Stg30_ItemMenuColumn] + Stg30_ItemMenuScroll[Stg30_ItemMenuColumn]];
     if (item != 0) {
-        if (w->field_F4 != item) {
-            w->field_F4 = item;
-            Stg30_OpenItemText(&w->field_8, item, 0, Stg30_ItemDescTextPos, 0, 3);
+        if (w->shownItem != item) {
+            w->shownItem = item;
+            Stg30_OpenItemText(&w->descText, item, 0, Stg30_ItemDescTextPos, 0, 3);
         }
     } else {
-        w->field_F4 = -1;
-        Text_Close(&w->field_8);
-        w->field_F4 = 0;
+        w->shownItem = -1;
+        Text_Close(&w->descText);
+        w->shownItem = 0;
     }
 }
 
@@ -574,8 +574,8 @@ void Stg30_ItemMenuInit(Actor *a0, s32 *args) {
 
 INCLUDE_RODATA("asm/USA/stag3000/rodata", Stg30_ItemMenuTitlePos);
 void Stg30_ItemMenuUpdate(Actor *a0) {
-    Stg30Work730D0 *w = (Stg30Work730D0 *)a0->work;
-    Stg30GameFlags *g;
+    Stg30ItemMenuWork *w = (Stg30ItemMenuWork *)a0->work;
+    Stg30BeetleWeapons *g;
     s32 item;
     s32 id;
     s32 i;
@@ -585,24 +585,24 @@ void Stg30_ItemMenuUpdate(Actor *a0) {
     case 0:
         Mem_FillWordsNeg1(&w->field_4, 0xE);
         Text_OpenById(&w->field_4, 0x178, 0, Stg30_ItemMenuTitlePos);
-        g = (Stg30GameFlags *)&Save_GameState;
-        if (g->field_3C != 0) {
-            w->field_40[0] = 1;
+        g = (Stg30BeetleWeapons *)&Save_GameState;
+        if (g->gunPart != 0) {
+            w->columnEnabled[0] = 1;
         }
-        if (g->field_40 != 0) {
-            w->field_40[1] = 1;
+        if (g->rCannonPart != 0) {
+            w->columnEnabled[1] = 1;
         }
-        if (g->field_3E != 0) {
-            w->field_40[2] = 1;
+        if (g->zCannonPart != 0) {
+            w->columnEnabled[2] = 1;
         }
-        if (g->field_5A != 0) {
-            w->field_4C[0] = 1;
+        if (g->gunBroken != 0) {
+            w->columnBroken[0] = 1;
         }
-        if (g->field_5C != 0) {
-            w->field_4C[1] = 1;
+        if (g->rCannonBroken != 0) {
+            w->columnBroken[1] = 1;
         }
-        if (g->field_5B != 0) {
-            w->field_4C[2] = 1;
+        if (g->zCannonBroken != 0) {
+            w->columnBroken[2] = 1;
         }
         Stg30_ItemMenuColumn = 0;
         Stg30_ItemMenuRow[0] = 0;
@@ -611,7 +611,7 @@ void Stg30_ItemMenuUpdate(Actor *a0) {
         Stg30_ItemMenuScroll[0] = 0;
         Stg30_ItemMenuScroll[1] = 0;
         Stg30_ItemMenuScroll[2] = 0;
-        w->field_3C = 0;
+        w->openScale = 0;
         Stg30_ItemMenuBuildLists(a0);
         Task_NextState0(a0);
         break;
@@ -619,9 +619,9 @@ void Stg30_ItemMenuUpdate(Actor *a0) {
         switch (a0->stateLevel1) {
         case 0:
         default:
-            w->field_3C += 0x555;
-            if (w->field_3C >= 0x1000) {
-                w->field_3C = 0x1000;
+            w->openScale += 0x555;
+            if (w->openScale >= 0x1000) {
+                w->openScale = 0x1000;
                 Task_NextState1(a0);
             }
             break;
@@ -644,7 +644,7 @@ void Stg30_ItemMenuUpdate(Actor *a0) {
                     Snd_PlayById(0xD, 0);
                     break;
                 }
-                if (w->field_40[cat] != 0 && w->field_4C[cat] == 0) {
+                if (w->columnEnabled[cat] != 0 && w->columnBroken[cat] == 0) {
                     if (Pad_State[0].repeat & 0x1000) {
                         if (*row != 0) {
                             *row -= 1;
@@ -662,7 +662,7 @@ void Stg30_ItemMenuUpdate(Actor *a0) {
                             Snd_PlayById(0xD, 0);
                             break;
                         }
-                        if (w->field_58[cat][*row + *top + 1] == 0) break;
+                        if (w->itemLists[cat][*row + *top + 1] == 0) break;
                         *top += 1;
                         Snd_PlayById(0xD, 0);
                         break;
@@ -675,8 +675,8 @@ void Stg30_ItemMenuUpdate(Actor *a0) {
                     break;
                 }
                 if (Pad_State[0].cross <= 0) break;
-                item = w->field_58[Stg30_ItemMenuColumn][Stg30_ItemMenuRow[Stg30_ItemMenuColumn] + Stg30_ItemMenuScroll[Stg30_ItemMenuColumn]];
-                if (w->field_40[Stg30_ItemMenuColumn] == 0 || w->field_4C[Stg30_ItemMenuColumn] != 0 || item == 0) {
+                item = w->itemLists[Stg30_ItemMenuColumn][Stg30_ItemMenuRow[Stg30_ItemMenuColumn] + Stg30_ItemMenuScroll[Stg30_ItemMenuColumn]];
+                if (w->columnEnabled[Stg30_ItemMenuColumn] == 0 || w->columnBroken[Stg30_ItemMenuColumn] != 0 || item == 0) {
                     Snd_PlayById(0x10, 0);
                     break;
                 }
@@ -684,10 +684,10 @@ void Stg30_ItemMenuUpdate(Actor *a0) {
                 Stg30_Battle.itemId = item;
                 Stg30_Battle.entries[0].cancelled = 0;
                 Stg30_Battle.itemColumn = *pc;
-                Stg30_Battle.turns[Stg30_Battle.entries[0].inputSlot].field_0 = Skill_GetType(id) + 1;
-                Stg30_Battle.turns[Stg30_Battle.entries[0].inputSlot].field_6 = id;
-                Stg30_Battle.turns[Stg30_Battle.entries[0].inputSlot].field_8 = Stg30_GetSkillEffectKind(id);
-                Stg30_Battle.turns[Stg30_Battle.entries[0].inputSlot].field_4 = Skill_GetTarget(id);
+                Stg30_Battle.turns[Stg30_Battle.entries[0].inputSlot].turnType = Skill_GetType(id) + 1;
+                Stg30_Battle.turns[Stg30_Battle.entries[0].inputSlot].skillId = id;
+                Stg30_Battle.turns[Stg30_Battle.entries[0].inputSlot].effectKind = Stg30_GetSkillEffectKind(id);
+                Stg30_Battle.turns[Stg30_Battle.entries[0].inputSlot].target = Skill_GetTarget(id);
                 Snd_PlayById(0xE, 0);
                 Task_NextState0(a0);
             } while (0);
@@ -697,7 +697,7 @@ void Stg30_ItemMenuUpdate(Actor *a0) {
                 } else {
                     c = 5;
                 }
-                Text_OpenById(&w->field_C[i], i + 7, c, Stg30_ItemColumnLabelPos[i]);
+                Text_OpenById(&w->columnTitles[i], i + 7, c, Stg30_ItemColumnLabelPos[i]);
             }
             Stg30_ItemMenuRefreshText(a0);
             break;
@@ -710,9 +710,9 @@ void Stg30_ItemMenuUpdate(Actor *a0) {
             Text_CloseArray(&w->field_4, 0xE);
             Task_NextState1(a0);
         case 1:
-            w->field_3C -= 0x555;
-            if (w->field_3C <= 0) {
-                w->field_3C = 0;
+            w->openScale -= 0x555;
+            if (w->openScale <= 0) {
+                w->openScale = 0;
                 Task_NextState0(a0);
             }
             break;
@@ -722,7 +722,7 @@ void Stg30_ItemMenuUpdate(Actor *a0) {
 }
 
 void Stg30_ItemMenuDraw(Actor *a0) {
-    Stg30Work730D0 *w = (Stg30Work730D0 *)a0->work;
+    Stg30ItemMenuWork *w = (Stg30ItemMenuWork *)a0->work;
     Stg30Part *p;
     Stg30Part *q;
     Stg30Part *s;
@@ -740,27 +740,27 @@ void Stg30_ItemMenuDraw(Actor *a0) {
         switch (r->groupMask) {
         case 0x2:
         case 0x4:
-            if (w->field_40[0] == 0 || w->field_4C[0] != 0) {
+            if (w->columnEnabled[0] == 0 || w->columnBroken[0] != 0) {
                 r->visible = 1;
             }
             break;
         case 0x8:
         case 0x10:
-            if (w->field_40[0] == 0) {
+            if (w->columnEnabled[0] == 0) {
                 r->visible = 1;
-            } else if (w->field_4C[0] != 0) {
+            } else if (w->columnBroken[0] != 0) {
                 r->visible = 1;
             }
             break;
         case 0x20:
         case 0x40:
-            if (w->field_40[1] == 0 || w->field_4C[1] != 0) {
+            if (w->columnEnabled[1] == 0 || w->columnBroken[1] != 0) {
                 r->visible = 1;
             }
             break;
         case 0x80:
         case 0x100:
-            if (w->field_40[1] == 0 || w->field_4C[1] != 0) {
+            if (w->columnEnabled[1] == 0 || w->columnBroken[1] != 0) {
                 r->visible = 1;
             }
             break;
@@ -768,13 +768,13 @@ void Stg30_ItemMenuDraw(Actor *a0) {
         case 0x400:
         case 0x800:
         case 0x1000:
-            if (w->field_40[2] == 0 || w->field_4C[2] != 0) {
+            if (w->columnEnabled[2] == 0 || w->columnBroken[2] != 0) {
                 r->visible = 1;
             }
             break;
         }
         if (r->visible != 0) {
-            r->field_E = 0;
+            r->unscaled = 0;
             switch (r->groupMask) {
             case 0x2:
             case 0x8:
@@ -782,7 +782,7 @@ void Stg30_ItemMenuDraw(Actor *a0) {
             case 0x80:
             case 0x200:
             case 0x800:
-                r->field_24 = 0x9F;
+                r->rotZ = 0x9F;
                 break;
             case 0x4:
             case 0x10:
@@ -790,13 +790,13 @@ void Stg30_ItemMenuDraw(Actor *a0) {
             case 0x100:
             case 0x400:
             case 0x1000:
-                r->field_24 = -0x9F;
+                r->rotZ = -0x9F;
                 break;
             }
         }
     }
     Gfx_DrawParts((EntA0 *)p);
-    if (w->field_3C == 0x1000) {
+    if (w->openScale == 0x1000) {
         p2 = (Stg30Part *)Cd_GetFileEntry(0x1A10015);
         m = 0;
         bit = 2;
@@ -814,7 +814,7 @@ void Stg30_ItemMenuDraw(Actor *a0) {
                 m |= bit;
                 bit <<= 1;
             }
-            if (w->field_E8[i] < 4 || w->field_E8[i] == Stg30_ItemMenuScroll[i] + 3) {
+            if (w->itemCounts[i] < 4 || w->itemCounts[i] == Stg30_ItemMenuScroll[i] + 3) {
                 m |= bit;
                 bit <<= 1;
                 m |= bit;
@@ -838,11 +838,11 @@ void Stg30_ItemMenuDraw(Actor *a0) {
         Gfx_DrawParts((EntA0 *)p2);
     }
     p3 = (Stg30Part *)Cd_GetFileEntry(0x1A10014);
-    Gfx_SetPartsScale((GfxPartScaleView *)p3, 0x1000, w->field_3C);
+    Gfx_SetPartsScale((GfxPartScaleView *)p3, 0x1000, w->openScale);
     Gfx_HidePartsByMask((GfxPartMaskView *)p3, Stg30_ItemMenuColHideMasks[Stg30_ItemMenuColumn]);
     for (s = p3; s->fileId != 0; s++) {
         if (s->groupMask & 0x4000) {
-            if (w->field_40[Stg30_ItemMenuColumn] != 0 && w->field_4C[Stg30_ItemMenuColumn] == 0) {
+            if (w->columnEnabled[Stg30_ItemMenuColumn] != 0 && w->columnBroken[Stg30_ItemMenuColumn] == 0) {
                 s->x = Stg30_ItemMenuCursorPos[Stg30_ItemMenuColumn].x;
                 s->y = Stg30_ItemMenuCursorPos[Stg30_ItemMenuColumn].y + Stg30_ItemMenuRow[Stg30_ItemMenuColumn] * 11;
                 s->palette = Math_PingPongRange(a0->elapsed, 4, 0, 3);
@@ -956,7 +956,7 @@ void Stg30_OpenSkillText(void *a0, s32 id, s32 color, Stg30XY pos, s32 name, s32
 
 INCLUDE_RODATA("asm/USA/stag3000/rodata", Stg30_SkillDescTextPos);
 void Stg30_SkillMenuRefreshText(Actor *a0) {
-    Stg30Work73138 *w = (Stg30Work73138 *)a0->work;
+    Stg30SkillMenuWork *w = (Stg30SkillMenuWork *)a0->work;
     s32 i;
     s32 j;
     s32 item;
@@ -977,21 +977,21 @@ void Stg30_SkillMenuRefreshText(Actor *a0) {
     }
     item = Stg30_SkillMenuLists[Stg30_SkillMenuColumn].skillIds[Stg30_SkillMenuRow[Stg30_SkillMenuColumn] + Stg30_SkillMenuScroll[Stg30_SkillMenuColumn]];
     if (item != 0) {
-        if (w->field_48 != item) {
-            w->field_48 = item;
+        if (w->shownSkill != item) {
+            w->shownSkill = item;
             Stg30_OpenSkillText(&w->texts[5], item, 0, Stg30_SkillDescTextPos, 0, 3);
         }
-        w->field_50 = Skill_GetMpCost(item);
+        w->mpCost = Skill_GetMpCost(item);
     } else {
-        w->field_48 = -1;
+        w->shownSkill = -1;
         Text_Close(&w->texts[5]);
-        w->field_50 = 0;
+        w->mpCost = 0;
     }
 }
 
 INCLUDE_RODATA("asm/USA/stag3000/rodata", Stg30_SkillMenuTitlePos);
 void Stg30_SkillMenuUpdate(Actor *a0) {
-    Stg30Work73138 *w = (Stg30Work73138 *)a0->work;
+    Stg30SkillMenuWork *w = (Stg30SkillMenuWork *)a0->work;
     s16 *row;
     s16 *top;
     s32 cat;
@@ -1002,9 +1002,9 @@ void Stg30_SkillMenuUpdate(Actor *a0) {
     case 0:
         Mem_FillWordsNeg1(w->texts, 0x12);
         Stg30_SkillMenuBuildLists();
-        w->field_48 = -1;
+        w->shownSkill = -1;
         Stg30_SkillMenuColumn = 0;
-        w->field_4C = 0;
+        w->openScale = 0;
         Stg30_SkillMenuRow[0] = 0;
         Stg30_SkillMenuRow[1] = 0;
         Stg30_SkillMenuRow[2] = 0;
@@ -1019,9 +1019,9 @@ void Stg30_SkillMenuUpdate(Actor *a0) {
         switch (a0->stateLevel1) {
         case 0:
         default:
-            w->field_4C += 0x555;
-            if (w->field_4C >= 0x1000) {
-                w->field_4C = 0x1000;
+            w->openScale += 0x555;
+            if (w->openScale >= 0x1000) {
+                w->openScale = 0x1000;
                 Task_NextState1(a0);
             }
             break;
@@ -1067,9 +1067,9 @@ void Stg30_SkillMenuUpdate(Actor *a0) {
                 if (Pad_State[0].cross > 0) {
                     if (Stg30_SkillMenuLists[cat].skillIds[*row + *top] != 0 && Stg30_SkillMenuLists[cat].disabled[*row + *top] == 0) {
                         Stg30_Battle.entries[0].cancelled = 0;
-                        Stg30_Battle.turns[Stg30_Battle.entries[0].inputSlot].field_0 = cat + 1;
-                        Stg30_Battle.turns[Stg30_Battle.entries[0].inputSlot].field_6 = Stg30_SkillMenuLists[cat].skillIds[*row + *top];
-                        Stg30_Battle.turns[Stg30_Battle.entries[0].inputSlot].field_8 = Stg30_GetSkillEffectKind(Stg30_SkillMenuLists[cat].skillIds[*row + *top]);
+                        Stg30_Battle.turns[Stg30_Battle.entries[0].inputSlot].turnType = cat + 1;
+                        Stg30_Battle.turns[Stg30_Battle.entries[0].inputSlot].skillId = Stg30_SkillMenuLists[cat].skillIds[*row + *top];
+                        Stg30_Battle.turns[Stg30_Battle.entries[0].inputSlot].effectKind = Stg30_GetSkillEffectKind(Stg30_SkillMenuLists[cat].skillIds[*row + *top]);
                         Snd_PlayById(0xE, 0);
                         Task_NextState0(a0);
                         break;
@@ -1103,9 +1103,9 @@ void Stg30_SkillMenuUpdate(Actor *a0) {
             Text_CloseArray(w->texts, 0x12);
             Task_NextState1(a0);
         case 1:
-            w->field_4C -= 0x555;
-            if (w->field_4C <= 0) {
-                w->field_4C = 0;
+            w->openScale -= 0x555;
+            if (w->openScale <= 0) {
+                w->openScale = 0;
                 Task_NextState0(a0);
             }
             break;
@@ -1115,7 +1115,7 @@ void Stg30_SkillMenuUpdate(Actor *a0) {
 }
 
 void Stg30_SkillMenuDraw(Actor *a0) {
-    Stg30Work73138 *w = (Stg30Work73138 *)a0->work;
+    Stg30SkillMenuWork *w = (Stg30SkillMenuWork *)a0->work;
     GfxPart *p;
     GfxPart *q;
     s32 m;
@@ -1129,7 +1129,7 @@ void Stg30_SkillMenuDraw(Actor *a0) {
         if (a0->elapsed < 0x18) break;
         a0->elapsed = a0->elapsed - 0x18;
     }
-    if (w->field_4C == 0x1000) {
+    if (w->openScale == 0x1000) {
         p = (GfxPart *)Cd_GetFileEntry(0x1A1001A);
         m = 0;
         bit = 2;
@@ -1171,8 +1171,8 @@ void Stg30_SkillMenuDraw(Actor *a0) {
         Gfx_DrawParts((EntA0 *)p);
     }
     p2 = (GfxPart *)Cd_GetFileEntry(0x1A10019);
-    Gfx_SetPartsScale((GfxPartScaleView *)p2, 0x1000, w->field_4C);
-    Gfx_SetPartsNumber(p2, 0x1000, 3, w->field_50);
+    Gfx_SetPartsScale((GfxPartScaleView *)p2, 0x1000, w->openScale);
+    Gfx_SetPartsNumber(p2, 0x1000, 3, w->mpCost);
     for (q2 = p2; q2->fileId != 0; q2++) {
         if (q2->groupMask & 0x4000) {
             q2->x = Stg30_SkillMenuCursorPos[Stg30_SkillMenuColumn].x;
@@ -1185,7 +1185,7 @@ void Stg30_SkillMenuDraw(Actor *a0) {
 }
 
 void Stg30_TargetSelectUpdate(Actor *a0) {
-    Stg30Work73170 *w = (Stg30Work73170 *)a0->work;
+    Stg30TargetSelectWork *w = (Stg30TargetSelectWork *)a0->work;
     TaskEntry *t;
     s32 i;
     s32 old;
@@ -1194,49 +1194,49 @@ void Stg30_TargetSelectUpdate(Actor *a0) {
 
     switch (a0->stateLevel0) {
     case 0:
-        w->field_18 = Stg30_Battle.turns[Stg30_Battle.entries[0].inputSlot].field_6;
-        w->field_8 = Skill_GetTarget(w->field_18);
-        w->field_14 = Stg30_Battle.turns[Stg30_Battle.entries[0].inputSlot].field_8;
-        switch (w->field_8) {
+        w->skillId = Stg30_Battle.turns[Stg30_Battle.entries[0].inputSlot].skillId;
+        w->targetMode = Skill_GetTarget(w->skillId);
+        w->effectKind = Stg30_Battle.turns[Stg30_Battle.entries[0].inputSlot].effectKind;
+        switch (w->targetMode) {
         case 0:
         case 3:
         case 4:
         case 7:
         default:
             v = D_80073CC8;
-            w->field_4 = v;
-            w->field_10 = v;
-            w->field_C = v;
+            w->target = v;
+            w->lastSlot = v;
+            w->firstSlot = v;
             break;
         case 1:
-            w->field_C = 0;
-            w->field_10 = 2;
-            w->field_1C = 0;
-            w->field_4 = Stg30_TargetFirst(0, 1, w->field_14);
+            w->firstSlot = 0;
+            w->lastSlot = 2;
+            w->team = 0;
+            w->target = Stg30_TargetFirst(0, 1, w->effectKind);
             break;
         case 2:
             v = 7;
-            w->field_4 = v;
-            w->field_10 = v;
-            w->field_C = v;
+            w->target = v;
+            w->lastSlot = v;
+            w->firstSlot = v;
             break;
         case 5:
-            w->field_C = 3;
-            w->field_10 = 5;
-            w->field_1C = 1;
-            w->field_4 = Stg30_TargetFirst(1, 1, w->field_14);
+            w->firstSlot = 3;
+            w->lastSlot = 5;
+            w->team = 1;
+            w->target = Stg30_TargetFirst(1, 1, w->effectKind);
             break;
         case 6:
             v = 8;
-            w->field_4 = v;
-            w->field_10 = v;
-            w->field_C = v;
+            w->target = v;
+            w->lastSlot = v;
+            w->firstSlot = v;
             break;
         case 8:
             v = 9;
-            w->field_4 = v;
-            w->field_10 = v;
-            w->field_C = v;
+            w->target = v;
+            w->lastSlot = v;
+            w->firstSlot = v;
             break;
         case 9:
             Stg30_Battle.entries[0].chosenTarget = 0;
@@ -1249,34 +1249,34 @@ void Stg30_TargetSelectUpdate(Actor *a0) {
     case 1:
         changed = 0;
         do {
-        if (w->field_8 == 1 || w->field_8 == 5) {
+        if (w->targetMode == 1 || w->targetMode == 5) {
             if (D_8005F6F4 > 0) {
-                old = w->field_4;
-                if (w->field_1C != 0) {
-                    w->field_4 = Stg30_TargetPrev(w->field_1C, old, 1, w->field_14);
+                old = w->target;
+                if (w->team != 0) {
+                    w->target = Stg30_TargetPrev(w->team, old, 1, w->effectKind);
                 } else {
-                    w->field_4 = Stg30_TargetNext(0, old, 1, w->field_14);
+                    w->target = Stg30_TargetNext(0, old, 1, w->effectKind);
                 }
-                if (w->field_4 != old) {
+                if (w->target != old) {
                     changed = 1;
                     Snd_PlayById(0x12, 0);
                 }
             }
             if (Pad_State[0].right > 0) {
-                old = w->field_4;
-                if (w->field_1C != 0) {
-                    w->field_4 = Stg30_TargetNext(w->field_1C, old, 1, w->field_14);
+                old = w->target;
+                if (w->team != 0) {
+                    w->target = Stg30_TargetNext(w->team, old, 1, w->effectKind);
                 } else {
-                    w->field_4 = Stg30_TargetPrev(0, old, 1, w->field_14);
+                    w->target = Stg30_TargetPrev(0, old, 1, w->effectKind);
                 }
-                if (w->field_4 != old) {
+                if (w->target != old) {
                     changed = 1;
                     Snd_PlayById(0x12, 0);
                 }
             }
         }
             if (Pad_State[0].cross > 0) {
-                Stg30_Battle.entries[0].chosenTarget = w->field_4;
+                Stg30_Battle.entries[0].chosenTarget = w->target;
                 Stg30_Battle.entries[0].cancelled = 0;
                 Snd_PlayById(0xE, 0);
                 Task_SetState0(a0, 3);
@@ -1288,15 +1288,15 @@ void Stg30_TargetSelectUpdate(Actor *a0) {
                 Task_SetState0(a0, 3);
             }
         } while (0);
-        if (changed || w->field_0 == 0) {
-            w->field_0 = 1;
-            switch (w->field_8) {
+        if (changed || w->highlightDone == 0) {
+            w->highlightDone = 1;
+            switch (w->targetMode) {
             case 1:
             case 5:
-                for (i = w->field_C; i <= w->field_10; i++) {
+                for (i = w->firstSlot; i <= w->lastSlot; i++) {
                     t = Task_FindFirst(0x509, -1, i);
                     if (t != NULL) {
-                        if (w->field_4 == i) {
+                        if (w->target == i) {
                             Task_SetState01((Actor *)t, 2, 8);
                         } else {
                             Task_SetState01((Actor *)t, 2, 7);
@@ -1336,10 +1336,10 @@ void Stg30_TargetSelectUpdate(Actor *a0) {
                 break;
             }
         }
-        switch (w->field_8) {
+        switch (w->targetMode) {
         case 1:
         case 5:
-            ((void (*)(s32))Stg30_SetCameraShot)(w->field_4 + 2);
+            ((void (*)(s32))Stg30_SetCameraShot)(w->target + 2);
             break;
         case 2:
             Stg30_SetCameraShot(8);
@@ -1358,16 +1358,16 @@ void Stg30_TargetSelectUpdate(Actor *a0) {
 }
 
 void Stg30_TargetSelectDraw(Actor *a0) {
-    Stg30Work73170 *w = (Stg30Work73170 *)a0->work;
+    Stg30TargetSelectWork *w = (Stg30TargetSelectWork *)a0->work;
     GfxPart *p = (GfxPart *)Cd_GetFileEntry(0x1A1000A);
     GfxPart *q;
     s32 m;
 
-    switch (w->field_8) {
+    switch (w->targetMode) {
     case 0:
     case 1:
     case 5:
-        Gfx_HidePartsByMask((GfxPartMaskView *)p, Stg30_TargetCursorMasks[w->field_4]);
+        Gfx_HidePartsByMask((GfxPartMaskView *)p, Stg30_TargetCursorMasks[w->target]);
         break;
     case 2:
         m = Stg30_TargetAllAlliesMask;
@@ -1385,7 +1385,7 @@ void Stg30_TargetSelectDraw(Actor *a0) {
         break;
     case 8:
         m = -0x7F;
-        if (func_8001F0E4(w->field_18) & 0x2000) {
+        if (func_8001F0E4(w->skillId) & 0x2000) {
             if (Stg30_Battle.entries[0].digiId == 0) m = -0x7D;
             if (Stg30_Battle.entries[1].digiId == 0) m |= 4;
             if (Stg30_Battle.entries[2].digiId == 0) m |= 8;

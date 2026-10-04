@@ -20,8 +20,8 @@ void Stg30_InterruptSelectDraw(Actor *a0) {
     if (a0->stateLevel0 == 1 && a0->stateLevel1 == 0) {
         p = (Stg30Part *)Cd_GetFileEntry(0x1A10008);
         for (q = p; q->fileId != 0; q++) {
-            q->field_10 = w->scaleX;
-            q->field_14 = w->scaleY;
+            q->scaleX = w->scaleX;
+            q->scaleY = w->scaleY;
             q->palette = w->palette;
             if (w->choice == 0) {
                 switch (q->groupMask) {
@@ -60,7 +60,7 @@ void Stg30_InterruptSelectDraw(Actor *a0) {
     if (Stg30_Battle.interruptActive != 0) {
         p = (Stg30Part *)Cd_GetFileEntry(0x1A1000B);
         k = w->slot;
-        if (Stg30_Battle.turns[k].field_0 != 3) {
+        if (Stg30_Battle.turns[k].turnType != 3) {
             k += 3;
         }
         for (r = p; r->fileId != 0; r++) {
@@ -145,7 +145,7 @@ void Stg30_XaPlayTask(Stg30TaskHead *a0) {
             }
             break;
         case 1:
-            if (a0->field_24 & 0x1F) {
+            if (a0->frameCount & 0x1F) {
                 break;
             }
             switch (CdSync(1, res2)) {
@@ -192,31 +192,31 @@ s32 Stg30_CamEaseStep(s32 a, s32 b) {
     return r;
 }
 
-void Stg30_CamEaseToward(Stg30Work7343C *w, Stg30CamGoal *g) {
+void Stg30_CamEaseToward(Stg30CamWork *w, Stg30CamGoal *g) {
     s32 i;
 
     for (i = 0; i < Sys_State.frameDelta; i++) {
-        w->field_7E += Stg30_CamEaseStep(g->field_0, w->field_7E);
-        w->field_0 += Stg30_CamEaseStep(g->field_4, w->field_0);
-        w->field_4 += Stg30_CamEaseStep(g->field_8, w->field_4);
-        w->field_8 += Stg30_CamEaseStep(g->field_C, w->field_8);
-        w->field_10 += Stg30_CamEaseStep(g->field_10, w->field_10);
-        w->field_6C += Stg30_CamEaseStep(g->field_14, w->field_6C);
-        w->field_74 += Stg30_CamEaseStep(g->field_18, w->field_74);
+        w->rotY += Stg30_CamEaseStep(g->rotY, w->rotY);
+        w->vpx += Stg30_CamEaseStep(g->vpx, w->vpx);
+        w->vpy += Stg30_CamEaseStep(g->vpy, w->vpy);
+        w->vpz += Stg30_CamEaseStep(g->vpz, w->vpz);
+        w->vry += Stg30_CamEaseStep(g->vry, w->vry);
+        w->originX += Stg30_CamEaseStep(g->originX, w->originX);
+        w->originZ += Stg30_CamEaseStep(g->originZ, w->originZ);
     }
 }
 
 void Stg30_CameraUpdate(Actor *arg0) {
-    Stg30Work7343C *w = (Stg30Work7343C *)arg0->work;
+    Stg30CamWork *w = (Stg30CamWork *)arg0->work;
     s32 i;
     s32 h;
 
     switch (arg0->stateLevel0) {
     case 0:
-        GsInitCoordinate2(0, &w->field_1C);
-        w->field_4 = -0x4E20;
-        w->field_10 = 0x12C;
-        w->field_18 = 0x5DC;
+        GsInitCoordinate2(0, &w->coord);
+        w->vpy = -0x4E20;
+        w->vry = 0x12C;
+        w->projection = 0x5DC;
         Task_NextState0(arg0);
         break;
     case 1:
@@ -226,18 +226,18 @@ void Stg30_CameraUpdate(Actor *arg0) {
             switch (arg0->stateLevel2) {
             case 0:
             default:
-                w->field_4 += 0xE9;
-                w->field_8 -= 0x15E;
-                w->field_7E += 0x44;
-                if (w->field_7E > 0x1000) {
-                    w->field_7E = 0;
+                w->vpy += 0xE9;
+                w->vpz -= 0x15E;
+                w->rotY += 0x44;
+                if (w->rotY > 0x1000) {
+                    w->rotY = 0;
                     Task_NextState2(arg0);
                 }
                 break;
             case 1:
-                w->field_10 -= 0x21;
+                w->vry -= 0x21;
                 if (++arg0->stateLevel3 == 0x1E) {
-                    w->field_10 = -0x2BC;
+                    w->vry = -0x2BC;
                     Task_NextState1(arg0);
                 }
                 break;
@@ -247,13 +247,13 @@ void Stg30_CameraUpdate(Actor *arg0) {
             {
                 Stg30CamGoal g;
 
-                g.field_8 = -0x169B;
-                g.field_C = -0x5366;
-                g.field_14 = 0;
-                g.field_18 = 0;
-                g.field_0 = 0;
-                g.field_4 = 0;
-                g.field_10 = -0x2BC;
+                g.vpy = -0x169B;
+                g.vpz = -0x5366;
+                g.originX = 0;
+                g.originZ = 0;
+                g.rotY = 0;
+                g.vpx = 0;
+                g.vry = -0x2BC;
                 Stg30_CamEaseToward(w, &g);
             }
             break;
@@ -270,13 +270,13 @@ void Stg30_CameraUpdate(Actor *arg0) {
                 h = func_8001E79C(Stg30_Battle.entries[i].digiId);
                 h = h < 0x300 ? 0 : h - 0x300;
                 h /= 256;
-                g.field_14 = (i % 3) * 0xA00 - 0xA00;
-                g.field_18 = (i / 3) * 0x2800 - 0x1400;
-                g.field_0 = Stg30_CloseUpRotY[i];
-                g.field_4 = 0;
-                g.field_8 = -0xC30;
-                g.field_C = Stg30_CloseUpVpz[h];
-                g.field_10 = Stg30_CloseUpVry[h];
+                g.originX = (i % 3) * 0xA00 - 0xA00;
+                g.originZ = (i / 3) * 0x2800 - 0x1400;
+                g.rotY = Stg30_CloseUpRotY[i];
+                g.vpx = 0;
+                g.vpy = -0xC30;
+                g.vpz = Stg30_CloseUpVpz[h];
+                g.vry = Stg30_CloseUpVry[h];
                 Stg30_CamEaseToward(w, &g);
             }
             break;
@@ -284,13 +284,13 @@ void Stg30_CameraUpdate(Actor *arg0) {
             {
                 Stg30CamGoal g;
 
-                g.field_18 = -0x1400;
-                g.field_0 = 0x238;
-                g.field_8 = -0x91C;
-                g.field_C = 0x33FC;
-                g.field_14 = 0;
-                g.field_4 = 0;
-                g.field_10 = -0x36C;
+                g.originZ = -0x1400;
+                g.rotY = 0x238;
+                g.vpy = -0x91C;
+                g.vpz = 0x33FC;
+                g.originX = 0;
+                g.vpx = 0;
+                g.vry = -0x36C;
                 Stg30_CamEaseToward(w, &g);
             }
             break;
@@ -298,49 +298,49 @@ void Stg30_CameraUpdate(Actor *arg0) {
             {
                 Stg30CamGoal g;
 
-                g.field_18 = 0x1400;
-                g.field_0 = 0x5C7;
-                g.field_8 = -0x91C;
-                g.field_C = 0x33FC;
-                g.field_14 = 0;
-                g.field_4 = 0;
-                g.field_10 = -0x36C;
+                g.originZ = 0x1400;
+                g.rotY = 0x5C7;
+                g.vpy = -0x91C;
+                g.vpz = 0x33FC;
+                g.originX = 0;
+                g.vpx = 0;
+                g.vry = -0x36C;
                 Stg30_CamEaseToward(w, &g);
             }
             break;
         case 22:
-            w->field_74 = -0x1E00;
-            w->field_4 = -0x1F40;
-            w->field_6C = 0;
-            w->field_7E = 0;
-            w->field_0 = 0;
-            w->field_8 = 0x4E20;
-            w->field_C = 0;
-            w->field_10 = 0;
-            w->field_14 = 0;
+            w->originZ = -0x1E00;
+            w->vpy = -0x1F40;
+            w->originX = 0;
+            w->rotY = 0;
+            w->vpx = 0;
+            w->vpz = 0x4E20;
+            w->vrx = 0;
+            w->vry = 0;
+            w->vrz = 0;
             break;
         case 23:
-            w->field_74 = 0x1E00;
-            w->field_7E = 0x800;
-            w->field_4 = -0x1F40;
-            w->field_6C = 0;
-            w->field_0 = 0;
-            w->field_8 = 0x4E20;
-            w->field_C = 0;
-            w->field_10 = 0;
-            w->field_14 = 0;
+            w->originZ = 0x1E00;
+            w->rotY = 0x800;
+            w->vpy = -0x1F40;
+            w->originX = 0;
+            w->vpx = 0;
+            w->vpz = 0x4E20;
+            w->vrx = 0;
+            w->vry = 0;
+            w->vrz = 0;
             break;
         case 24:
             {
                 Stg30CamGoal g;
 
-                g.field_0 = -0x400;
-                g.field_8 = -0x50FB;
-                g.field_C = -0x6EC6;
-                g.field_14 = 0;
-                g.field_18 = 0;
-                g.field_4 = 0;
-                g.field_10 = -0x29C;
+                g.rotY = -0x400;
+                g.vpy = -0x50FB;
+                g.vpz = -0x6EC6;
+                g.originX = 0;
+                g.originZ = 0;
+                g.vpx = 0;
+                g.vry = -0x29C;
                 Stg30_CamEaseToward(w, &g);
             }
             break;
@@ -358,32 +358,32 @@ void Stg30_CameraUpdate(Actor *arg0) {
             case 1:
                 break;
             }
-            w->field_4 = -0x514;
-            w->field_8 = 0x2EE0;
-            w->field_10 = -0x578;
-            w->field_0 = 0;
-            w->field_C = 0;
-            w->field_14 = 0;
-            w->field_7E = 0xAA;
-            w->field_6C = (arg0->stateLevel1 - 10) * 0xA00 - 0xC80;
-            w->field_74 = -0x1400;
+            w->vpy = -0x514;
+            w->vpz = 0x2EE0;
+            w->vry = -0x578;
+            w->vpx = 0;
+            w->vrx = 0;
+            w->vrz = 0;
+            w->rotY = 0xAA;
+            w->originX = (arg0->stateLevel1 - 10) * 0xA00 - 0xC80;
+            w->originZ = -0x1400;
             switch (Stg30_CamShotVariant) {
             case 1:
-                w->field_7E = 0x38;
-                w->field_6C = (arg0->stateLevel1 - 10) * 0xA00 - 0xA00;
-                w->field_8 = 0x34BC;
+                w->rotY = 0x38;
+                w->originX = (arg0->stateLevel1 - 10) * 0xA00 - 0xA00;
+                w->vpz = 0x34BC;
                 break;
             case 2:
-                w->field_4 = -0x1914;
-                w->field_6C = (arg0->stateLevel1 - 10) * 0xA00 - 0xA00;
-                w->field_74 = -0xF00;
-                w->field_8 = 0x34BC;
+                w->vpy = -0x1914;
+                w->originX = (arg0->stateLevel1 - 10) * 0xA00 - 0xA00;
+                w->originZ = -0xF00;
+                w->vpz = 0x34BC;
                 break;
             }
             if (arg0->stateLevel1 >= 13) {
-                w->field_7E = 0x800 - w->field_7E;
-                w->field_6C -= 0x1E00;
-                w->field_74 = -w->field_74;
+                w->rotY = 0x800 - w->rotY;
+                w->originX -= 0x1E00;
+                w->originZ = -w->originZ;
             }
             break;
         case 16:
@@ -392,33 +392,33 @@ void Stg30_CameraUpdate(Actor *arg0) {
         case 19:
         case 20:
         case 21:
-            w->field_4 = -0x5DC;
-            w->field_8 = 0x2EE0;
-            w->field_0 = 0;
-            w->field_C = 0;
-            w->field_10 = -0x640;
-            w->field_14 = 0;
+            w->vpy = -0x5DC;
+            w->vpz = 0x2EE0;
+            w->vpx = 0;
+            w->vrx = 0;
+            w->vry = -0x640;
+            w->vrz = 0;
             if (arg0->stateLevel1 < 19) {
-                w->field_7E = 0xAA;
-                w->field_6C = (arg0->stateLevel1 - 16) * 0xA00 - 0xA00;
-                w->field_74 = -0x1400;
+                w->rotY = 0xAA;
+                w->originX = (arg0->stateLevel1 - 16) * 0xA00 - 0xA00;
+                w->originZ = -0x1400;
             } else {
-                w->field_7E = 0x755;
-                w->field_6C = (arg0->stateLevel1 - 19) * 0xA00 - 0xA00;
-                w->field_74 = 0x1400;
+                w->rotY = 0x755;
+                w->originX = (arg0->stateLevel1 - 19) * 0xA00 - 0xA00;
+                w->originZ = 0x1400;
             }
             break;
         case 25:
-            w->field_74 = -0x1400;
-            w->field_7E = 0x238;
-            w->field_4 = -0x1388;
-            w->field_8 = 0x3A98;
-            w->field_6C = 0;
-            w->field_70 = 0;
-            w->field_0 = 0;
-            w->field_C = 0;
-            w->field_10 = -0x3E8;
-            w->field_14 = 0;
+            w->originZ = -0x1400;
+            w->rotY = 0x238;
+            w->vpy = -0x1388;
+            w->vpz = 0x3A98;
+            w->originX = 0;
+            w->originY = 0;
+            w->vpx = 0;
+            w->vrx = 0;
+            w->vry = -0x3E8;
+            w->vrz = 0;
             break;
         }
         break;
@@ -429,23 +429,23 @@ void Stg30_CameraUpdate(Actor *arg0) {
 }
 
 void Stg30_CameraDraw(Actor *a0) {
-    Stg30Work7343C *w = (Stg30Work7343C *)a0->work;
+    Stg30CamWork *w = (Stg30CamWork *)a0->work;
     Stg30RefView rv;
 
-    RotMatrixYXZ(&w->field_7C, &w->field_1C.coord);
-    w->field_1C.coord.t[0] = w->field_6C;
-    w->field_1C.coord.t[1] = w->field_70;
-    w->field_1C.coord.t[2] = w->field_74;
-    w->field_1C.flg = 0;
-    rv.vpx = w->field_0;
-    rv.vpy = w->field_4;
-    rv.vpz = w->field_8;
-    rv.vrx = w->field_C;
-    rv.vry = w->field_10;
-    rv.vrz = w->field_14;
+    RotMatrixYXZ(&w->rotX, &w->coord.coord);
+    w->coord.coord.t[0] = w->originX;
+    w->coord.coord.t[1] = w->originY;
+    w->coord.coord.t[2] = w->originZ;
+    w->coord.flg = 0;
+    rv.vpx = w->vpx;
+    rv.vpy = w->vpy;
+    rv.vpz = w->vpz;
+    rv.vrx = w->vrx;
+    rv.vry = w->vry;
+    rv.vrz = w->vrz;
     rv.rz = 0;
-    rv.super = &w->field_1C;
-    GsSetProjection(w->field_18);
+    rv.super = &w->coord;
+    GsSetProjection(w->projection);
     GsSetRefView2(&rv);
 }
 
@@ -458,18 +458,18 @@ void Stg30_SetCameraShot(u8 state) {
 }
 
 void Stg30_FighterHudInit(Actor *a0, Stg30Ref **args) {
-    ((Stg30Work734F8 *)a0->work)->ref = args[0];
+    ((Stg30FighterHudWork *)a0->work)->ref = args[0];
     a0->param = args[0]->param;
 }
 
 void Stg30_FighterHudUpdate(Stg30TaskHead *a0) {
-    Stg30Work734F8 *w = (Stg30Work734F8 *)a0->work;
+    Stg30FighterHudWork *w = (Stg30FighterHudWork *)a0->work;
     TextOpenArgs args;
     s32 v;
 
     switch (a0->stateLevel0) {
     case 0:
-        w->field_8 = 12;
+        w->labelSlide = 12;
         Mem_FillWordsNeg1(w->text, 2);
         Task_NextState0((Actor *)a0);
         break;
@@ -477,19 +477,19 @@ void Stg30_FighterHudUpdate(Stg30TaskHead *a0) {
         switch (a0->stateLevel1) {
         case 0:
         default:
-            if (a0->field_24 > Stg30_FighterHudFadeDelay[a0->field_8] && w->field_4 != 0x1000) {
-                w->field_4 += 0x100;
+            if (a0->frameCount > Stg30_FighterHudFadeDelay[a0->param] && w->openScale != 0x1000) {
+                w->openScale += 0x100;
             }
-            if (w->field_4 == 0x1000) {
+            if (w->openScale == 0x1000) {
                 Task_NextState1((Actor *)a0);
             }
             break;
         case 1:
-            args.text = (s32)D_80073D24[a0->field_8].name;
+            args.text = (s32)D_80073D24[a0->param].name;
             args.bigFont = 0;
             args.color = 0;
-            args.x = Stg30_FighterHudNamePos[a0->field_8].x;
-            args.y = Stg30_FighterHudNamePos[a0->field_8].y;
+            args.x = Stg30_FighterHudNamePos[a0->param].x;
+            args.y = Stg30_FighterHudNamePos[a0->param].y;
             args.charDelay = 8;
             args.charAdvance = 0;
             args.lineAdvance = 0;
@@ -497,15 +497,15 @@ void Stg30_FighterHudUpdate(Stg30TaskHead *a0) {
             Task_NextState1((Actor *)a0);
             break;
         case 2:
-            v = Stg30_Battle.turns[a0->field_8].field_0;
+            v = Stg30_Battle.turns[a0->param].turnType;
             if (v != 0) {
-                if (w->field_8 != 0) {
-                    w->field_8 -= 4;
+                if (w->labelSlide != 0) {
+                    w->labelSlide -= 4;
                 } else {
-                    Text_OpenById(&w->text[1], Stg30_OrderLabelMsgs[v - 1], 0, Stg30_OrderLabelPos[a0->field_8]);
+                    Text_OpenById(&w->text[1], Stg30_OrderLabelMsgs[v - 1], 0, Stg30_OrderLabelPos[a0->param]);
                 }
-            } else if (w->field_8 != 12) {
-                w->field_8 += 4;
+            } else if (w->labelSlide != 12) {
+                w->labelSlide += 4;
                 Text_Close(&w->text[1]);
             }
             break;
@@ -534,7 +534,7 @@ void Stg30_FighterHudUpdate(Stg30TaskHead *a0) {
 }
 
 void Stg30_FighterHudDestroy(Actor *a0) {
-    Text_CloseArray(((Stg30Work734F8 *)a0->work)->text, 2);
+    Text_CloseArray(((Stg30FighterHudWork *)a0->work)->text, 2);
     Task_DefaultDestroy(a0);
 }
 
@@ -587,7 +587,7 @@ void Stg30_SetGaugeParts(Stg30Part *p, s32 unit, s32 num, s32 den) {
 }
 
 void Stg30_FighterHudDraw(Actor *a0) {
-    Stg30Work734F8 *w = (Stg30Work734F8 *)a0->work;
+    Stg30FighterHudWork *w = (Stg30FighterHudWork *)a0->work;
     Stg30Part *p;
     Stg30Part *q;
     Stg30DigiS *d;
@@ -617,20 +617,20 @@ void Stg30_FighterHudDraw(Actor *a0) {
             }
         }
         for (q = p; q->fileId != 0; q++) {
-            t = w->field_4;
+            t = w->openScale;
             if (t != 0x1000) {
-                q->field_E = 0;
-                q->field_14 = w->field_4;
+                q->unscaled = 0;
+                q->scaleY = w->openScale;
             } else {
-                q->field_E = 1;
-                q->field_14 = t;
+                q->unscaled = 1;
+                q->scaleY = t;
             }
             if (q->groupMask & 1) {
-                if (w->field_8 == 12) {
+                if (w->labelSlide == 12) {
                     q->visible = 0;
                 } else {
                     q->visible = 1;
-                    q->y = w->field_8 + 0x55;
+                    q->y = w->labelSlide + 0x55;
                 }
             }
         }
@@ -878,18 +878,18 @@ void Stg30_ResultDraw(Actor *a0) {
 }
 
 void Stg30_SkillLearnInit(Actor *a0, Stg30SkillLearnArgs *args) {
-    Stg30Work737A0 *w = (Stg30Work737A0 *)a0->work;
+    Stg30SkillLearnWork *w = (Stg30SkillLearnWork *)a0->work;
     s32 i;
 
-    w->field_0 = args->slot;
+    w->slot = args->slot;
     for (i = 0; i < 12; i++) {
-        w->field_74[0][i] = args->skillIds[i];
+        w->skillLists[0][i] = args->skillIds[i];
     }
     Snd_PlayById(0x2B, 0);
 }
 
 void Stg30_SkillLearnRefreshList(Actor *a0) {
-    Stg30Work737A0 *w = (Stg30Work737A0 *)a0->work;
+    Stg30SkillLearnWork *w = (Stg30SkillLearnWork *)a0->work;
     s32 row;
     s32 col;
     s32 k;
@@ -899,62 +899,62 @@ void Stg30_SkillLearnRefreshList(Actor *a0) {
     s32 scroll;
 
     for (row = 0; row < 2; row++) {
-        scroll = w->field_B0[row];
+        scroll = w->scroll[row];
         for (col = 0; col < 10; col++) {
             k = row * 10 + col;
             slot = &w->texts[k];
             Text_Close(slot);
-            item = w->field_74[row][col + scroll];
+            item = w->skillLists[row][col + scroll];
             if (item != 0) {
                 Text_OpenPacked(slot, Skill_GetNameText(item), 0, Stg30_SkillLearnTextPos[k + 4]);
             }
         }
     }
-    Text_Close(&w->field_70);
-    id = w->field_74[w->field_A4][w->field_B0[w->field_A4] + w->field_A8[w->field_A4]];
-    if (id != 0 && w->field_C8 == 0) {
-        Text_OpenPacked(&w->field_70, Skill_GetDescText(id), 0, Stg30_SkillLearnTextPos[27]);
-        w->field_C0 = Skill_GetMpCost(id);
+    Text_Close(&w->descText);
+    id = w->skillLists[w->column][w->scroll[w->column] + w->cursorRow[w->column]];
+    if (id != 0 && w->buttonRowActive == 0) {
+        Text_OpenPacked(&w->descText, Skill_GetDescText(id), 0, Stg30_SkillLearnTextPos[27]);
+        w->mpCost = Skill_GetMpCost(id);
     } else {
-        w->field_C0 = 0;
+        w->mpCost = 0;
     }
 }
 
 void Stg30_SkillLearnRefreshButtons(Actor *a0) {
-    Stg30Work737A0 *w = (Stg30Work737A0 *)a0->work;
+    Stg30SkillLearnWork *w = (Stg30SkillLearnWork *)a0->work;
     s32 i;
 
     for (i = 0; i < 3; i++) {
         Text_Close(&w->text[i]);
-        if (w->field_C8 == 0 || w->field_C4 != i || !(a0->elapsed & 0x10)) {
+        if (w->buttonRowActive == 0 || w->buttonIndex != i || !(a0->elapsed & 0x10)) {
             s32 c;
-            if (w->field_C4 == i) c = 4; else c = 5;
+            if (w->buttonIndex == i) c = 4; else c = 5;
             Text_OpenById(&w->text[i], i + 0x188, c, Stg30_SkillLearnTextPos[i + 24]);
         }
     }
 }
 
 void Stg30_SkillLearnCompact(Actor *a0, s32 row) {
-    Stg30Work737A0 *w = (Stg30Work737A0 *)a0->work;
+    Stg30SkillLearnWork *w = (Stg30SkillLearnWork *)a0->work;
     s32 i;
     s32 n;
 
     i = 0;
     n = i;
     for (; i < 12; i++) {
-        if (w->field_74[row][i] != 0) {
-            w->field_74[row][n] = w->field_74[row][i];
+        if (w->skillLists[row][i] != 0) {
+            w->skillLists[row][n] = w->skillLists[row][i];
             if (i != n) {
-                w->field_74[row][i] = 0;
+                w->skillLists[row][i] = 0;
             }
             n++;
         }
     }
-    w->field_B8[row] = n;
+    w->count[row] = n;
 }
 
 void Stg30_SkillLearnUpdate(Actor *a0) {
-    Stg30Work737A0 *w = (Stg30Work737A0 *)a0->work;
+    Stg30SkillLearnWork *w = (Stg30SkillLearnWork *)a0->work;
     s32 *cur;
     s32 *scr;
     s32 *cnt;
@@ -968,59 +968,59 @@ void Stg30_SkillLearnUpdate(Actor *a0) {
 
     switch (a0->stateLevel0) {
     case 0:
-        Mem_FillWordsNeg1(w->field_4, 0x1C);
-        a0->digiId = Stg30_Battle.entries[w->field_0].digiId;
+        Mem_FillWordsNeg1(w->labelTexts, 0x1C);
+        a0->digiId = Stg30_Battle.entries[w->slot].digiId;
         for (i = 0; i < 12; i++) {
-            w->field_74[1][i] = Stg30_Battle.entries[w->field_0].skillIds[i];
+            w->skillLists[1][i] = Stg30_Battle.entries[w->slot].skillIds[i];
         }
-        w->field_B8[0] = 0;
-        w->field_B8[1] = 0;
+        w->count[0] = 0;
+        w->count[1] = 0;
         for (i = 0; i < 12; i++) {
-            if (w->field_74[0][i] != 0) {
-                w->field_B8[0]++;
+            if (w->skillLists[0][i] != 0) {
+                w->count[0]++;
             }
-            if (w->field_74[1][i] != 0) {
-                w->field_B8[1]++;
+            if (w->skillLists[1][i] != 0) {
+                w->count[1]++;
             }
         }
-        Text_OpenPacked(&w->field_4[0], (s32)D_80073D24[w->field_0].name, 0x10, Stg30_SkillLearnTextPos[0]);
-        Text_OpenPacked(&w->field_4[1], (s32)Cd_GetFileEntry(0x1FD0187), 0x80, Stg30_SkillLearnTextPos[1]);
-        Text_OpenById(&w->field_4[2], 0x18B, 4, Stg30_SkillLearnTextPos[2]);
-        Text_OpenById(&w->field_4[3], 0x18C, 4, Stg30_SkillLearnTextPos[3]);
-        ((void (*)(s32))Stg30_SetCameraShot)(w->field_0 + 2);
+        Text_OpenPacked(&w->labelTexts[0], (s32)D_80073D24[w->slot].name, 0x10, Stg30_SkillLearnTextPos[0]);
+        Text_OpenPacked(&w->labelTexts[1], (s32)Cd_GetFileEntry(0x1FD0187), 0x80, Stg30_SkillLearnTextPos[1]);
+        Text_OpenById(&w->labelTexts[2], 0x18B, 4, Stg30_SkillLearnTextPos[2]);
+        Text_OpenById(&w->labelTexts[3], 0x18C, 4, Stg30_SkillLearnTextPos[3]);
+        ((void (*)(s32))Stg30_SetCameraShot)(w->slot + 2);
         Task_NextState0(a0);
         break;
     case 1:
         switch (a0->stateLevel1) {
         case 0:
         default:
-            w->field_C8 = 1;
+            w->buttonRowActive = 1;
             do {
                 if (Pad_State[0].right > 0) {
-                    if (w->field_C4 != 2) {
-                        w->field_C4++;
+                    if (w->buttonIndex != 2) {
+                        w->buttonIndex++;
                         Snd_PlayById(0xC, 0);
                     }
                 } else if (Pad_State[0].left > 0) {
-                    if (w->field_C4 != 0) {
-                        w->field_C4--;
+                    if (w->buttonIndex != 0) {
+                        w->buttonIndex--;
                         Snd_PlayById(0xC, 0);
                     }
                 } else if (Pad_State[0].cross > 0) {
-                    switch (w->field_C4) {
+                    switch (w->buttonIndex) {
                     case 0:
                         for (n = 0; n < 12; n++) {
-                            if (w->field_74[1][n] == 0) {
+                            if (w->skillLists[1][n] == 0) {
                                 break;
                             }
                         }
                         if (n < 12) {
                             for (j = 0; n < 12; n++) {
-                                if (w->field_74[0][j] == 0) {
+                                if (w->skillLists[0][j] == 0) {
                                     break;
                                 }
-                                w->field_74[1][n] = w->field_74[0][j];
-                                w->field_74[0][j++] = 0;
+                                w->skillLists[1][n] = w->skillLists[0][j];
+                                w->skillLists[0][j++] = 0;
                             }
                         }
                         Stg30_SkillLearnCompact(a0, 0);
@@ -1043,20 +1043,20 @@ void Stg30_SkillLearnUpdate(Actor *a0) {
             } while (0);
             break;
         case 1:
-            w->field_C8 = 0;
+            w->buttonRowActive = 0;
             do {
-                row = w->field_A4;
-                cur = &w->field_A8[row];
-                scr = &w->field_B0[row];
-                cnt = &w->field_B8[row];
+                row = w->column;
+                cur = &w->cursorRow[row];
+                scr = &w->scroll[row];
+                cnt = &w->count[row];
                 if (Pad_State[0].right > 0) {
                     if (row == 0) {
-                        w->field_A4 = 1;
+                        w->column = 1;
                         Snd_PlayById(0xD, 0);
                     }
                 } else if (Pad_State[0].left > 0) {
                     if (row != 0) {
-                        w->field_A4 = 0;
+                        w->column = 0;
                         Snd_PlayById(0xD, 0);
                     }
                 } else if (Pad_State[0].repeat & 0x1000) {
@@ -1079,15 +1079,15 @@ void Stg30_SkillLearnUpdate(Actor *a0) {
                     Task_SetState1(a0, 0);
                     Snd_PlayById(0xB, 0);
                 } else if (Pad_State[0].cross > 0) {
-                    v = w->field_74[row][*cur + *scr];
+                    v = w->skillLists[row][*cur + *scr];
                     other = row ^ 1;
-                    if (v == 0 || w->field_B8[other] == 12) {
+                    if (v == 0 || w->count[other] == 12) {
                         Snd_PlayById(0x10, 0);
-                    } else if (row != 0 && w->field_B8[row] == 1) {
+                    } else if (row != 0 && w->count[row] == 1) {
                         Snd_PlayById(0x10, 0);
                     } else {
-                        w->field_74[other][w->field_B8[other]] = v;
-                        w->field_74[w->field_A4][*cur + *scr] = 0;
+                        w->skillLists[other][w->count[other]] = v;
+                        w->skillLists[w->column][*cur + *scr] = 0;
                         Stg30_SkillLearnCompact(a0, 0);
                         Stg30_SkillLearnCompact(a0, 1);
                         Snd_PlayById(0xE, 0);
@@ -1100,9 +1100,9 @@ void Stg30_SkillLearnUpdate(Actor *a0) {
         Stg30_SkillLearnRefreshButtons(a0);
         break;
     case 2:
-        Text_CloseArray(w->field_4, 0x1C);
+        Text_CloseArray(w->labelTexts, 0x1C);
         for (k = 0; k < 12; k++) {
-            Stg30_Battle.entries[w->field_0].skillIds[k] = w->field_74[1][k];
+            Stg30_Battle.entries[w->slot].skillIds[k] = w->skillLists[1][k];
         }
         Task_NextState0(a0);
         break;
@@ -1110,7 +1110,7 @@ void Stg30_SkillLearnUpdate(Actor *a0) {
 }
 
 void Stg30_SkillLearnDraw(Actor *a0) {
-    Stg30Work737A0 *w = (Stg30Work737A0 *)a0->work;
+    Stg30SkillLearnWork *w = (Stg30SkillLearnWork *)a0->work;
     GfxPart *p;
     GfxPart *q;
     s32 m;
@@ -1122,27 +1122,27 @@ void Stg30_SkillLearnDraw(Actor *a0) {
     p = (GfxPart *)Cd_GetFileEntry(0x1A1001D);
     for (q = p; q->fileId != 0; q++) {
         if (q->groupMask & 0x4000) {
-            if (w->field_C8 != 0) {
+            if (w->buttonRowActive != 0) {
                 q->visible = 0;
             } else {
                 q->visible = 1;
-                q->x = w->field_A4 != 0 ? 3 : -0x85;
-                q->y = w->field_A8[w->field_A4] * 11 - 0x15;
+                q->x = w->column != 0 ? 3 : -0x85;
+                q->y = w->cursorRow[w->column] * 11 - 0x15;
                 q->palette = Math_PingPongRange(a0->elapsed, 4, 0, 3);
             }
         }
     }
-    Gfx_SetPartsNumber(p, 0x800, 3, w->field_C0);
+    Gfx_SetPartsNumber(p, 0x800, 3, w->mpCost);
     Gfx_DrawParts((EntA0 *)p);
     p = (GfxPart *)Cd_GetFileEntry(0x1A1001E);
-    m = (w->field_B0[0] == 0) << 1;
-    if (w->field_B0[0] + 10 >= w->field_B8[0]) {
+    m = (w->scroll[0] == 0) << 1;
+    if (w->scroll[0] + 10 >= w->count[0]) {
         m |= 8;
     }
-    if (w->field_B0[1] == 0) {
+    if (w->scroll[1] == 0) {
         m |= 0x20;
     }
-    if (w->field_B0[1] + 10 >= w->field_B8[1]) {
+    if (w->scroll[1] + 10 >= w->count[1]) {
         m |= 0x80;
     }
     Gfx_HidePartsByMask((GfxPartMaskView *)p, m);

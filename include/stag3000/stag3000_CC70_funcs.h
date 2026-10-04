@@ -11,7 +11,7 @@ void Stg30_XaPlayInit(Actor *a0, Vec3 *args);
 void Stg30_XaPlayTask(Stg30TaskHead *a0);
 void Stg30_XaPlayDestroy(Actor *a0);
 s32 Stg30_CamEaseStep(s32 a, s32 b);
-void Stg30_CamEaseToward(Stg30Work7343C *w, Stg30CamGoal *g);
+void Stg30_CamEaseToward(Stg30CamWork *w, Stg30CamGoal *g);
 void Stg30_CameraUpdate(Actor *arg0);
 void Stg30_CameraDraw(Actor *a0);
 void Stg30_SetCameraShot(u8 state);

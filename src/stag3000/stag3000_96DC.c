@@ -26,7 +26,7 @@ void Stg30_BuildGuardScript(s32 idx) {
 }
 
 s32 Stg30_PrepareAction(s32 idx) {
-    switch (Stg30_Battle.turns[idx].field_0) {
+    switch (Stg30_Battle.turns[idx].turnType) {
     case 1:
     case 2:
     case 3:
@@ -172,11 +172,11 @@ void Stg30_BattleScriptTask(Actor *a0) {
                 switch (a0->stateLevel1) {
                 case 0:
                 default:
-                    Task_Create(0x510, &sl->field_C, 0);
+                    Task_Create(0x510, &sl->interruptTask, 0);
                     Task_NextState1(a0);
                 case 1:
                     cont = 0;
-                    if (sl->field_C == 0) {
+                    if (sl->interruptTask == 0) {
                         w->pc += 1;
                         Task_SetState1(a0, 0);
                     }
@@ -184,11 +184,11 @@ void Stg30_BattleScriptTask(Actor *a0) {
                 }
                 break;
             case 20:
-                if (Stg30_Battle.turns[3].field_0 == 3) {
+                if (Stg30_Battle.turns[3].turnType == 3) {
                     Stg30_Battle.interruptSlot = 3;
-                } else if (Stg30_Battle.turns[4].field_0 == 3) {
+                } else if (Stg30_Battle.turns[4].turnType == 3) {
                     Stg30_Battle.interruptSlot = 4;
-                } else if (Stg30_Battle.turns[5].field_0 == 3) {
+                } else if (Stg30_Battle.turns[5].turnType == 3) {
                     Stg30_Battle.interruptSlot = 5;
                 }
                 w->pc += 1;
@@ -236,11 +236,11 @@ void Stg30_BattleScriptTask(Actor *a0) {
                 break;
             case 21:
                 h[0] = (s32)Stg30_BattleScript;
-                Task_Create(0x50E, (s32 *)&sl->field_10, (s32)h);
+                Task_Create(0x50E, (s32 *)&sl->actionLoadTask, (s32)h);
                 w->pc += 1;
                 break;
             case 22:
-                if (sl->field_10->stateLevel0 != 1) {
+                if (sl->actionLoadTask->stateLevel0 != 1) {
                     cont = 0;
                 } else {
                     w->pc += 1;
@@ -254,14 +254,14 @@ void Stg30_BattleScriptTask(Actor *a0) {
                     g[0] = q[0];
                     g[1] = q[1];
                     g[2] = w->pc[2];
-                    Task_Create(0x511, (s32 *)&sl->field_14, (s32)g);
+                    Task_Create(0x511, (s32 *)&sl->xaTask, (s32)g);
                     Task_NextState1(a0);
                 case 1:
-                    if (sl->field_14->stateLevel0 != 1) {
+                    if (sl->xaTask->stateLevel0 != 1) {
                         cont = 0;
                         break;
                     }
-                    Task_SetState0(sl->field_14, 2);
+                    Task_SetState0(sl->xaTask, 2);
                     w->pc += 3;
                     Task_SetState1(a0, 0);
                     break;

@@ -15,17 +15,17 @@ void Stg30_InterruptSelectTask(Actor *a0)
   switch (a0->stateLevel0)
   {
     case 0:
-      if (Stg30_Battle.turns[2].field_0 == 3)
+      if (Stg30_Battle.turns[2].turnType == 3)
     {
-      w->field_10 = 2;
+      w->slot = 2;
     }
-      if (Stg30_Battle.turns[1].field_0 == 3)
+      if (Stg30_Battle.turns[1].turnType == 3)
     {
-      w->field_10 = 1;
+      w->slot = 1;
     }
-      if (Stg30_Battle.turns[0].field_0 == 3)
+      if (Stg30_Battle.turns[0].turnType == 3)
     {
-      w->field_10 = 0;
+      w->slot = 0;
     }
       Task_NextState0(a0);
       break;
@@ -42,35 +42,35 @@ void Stg30_InterruptSelectTask(Actor *a0)
 
         default:
           D_80074094 = 0;
-          w->field_4 = 7;
-          w->field_0 = 0;
-          w->field_2 = 0x334;
+          w->palette = 7;
+          w->scaleX = 0;
+          w->scaleY = 0x334;
           Task_NextState2(a0);
 
         case 1:
-          w->field_0 += 0x400;
-          if (w->field_0 == 0x1000)
+          w->scaleX += 0x400;
+          if (w->scaleX == 0x1000)
         {
           Task_NextState2(a0);
           case 2:
-            w->field_2 += 0x200;
+            w->scaleY += 0x200;
 
-          if (w->field_2 >= 0x1000)
+          if (w->scaleY >= 0x1000)
           {
-            w->field_2 = 0x1000;
+            w->scaleY = 0x1000;
             Task_NextState2(a0);
             case 3:
               do
             {
               if (Pad_State[0].right > 0)
               {
-                w->field_C = 1;
+                w->choice = 1;
                 Snd_PlayById(0x12, 0);
                 break;
               }
               if (Pad_State[0].left > 0)
               {
-                w->field_C = 0;
+                w->choice = 0;
                 Snd_PlayById(0x12, 0);
                 break;
               }
@@ -87,9 +87,9 @@ void Stg30_InterruptSelectTask(Actor *a0)
           break;
 
         case 4:
-          if (w->field_4 == 7)
+          if (w->palette == 7)
         {
-          if (w->field_C != 0)
+          if (w->choice != 0)
           {
             Task_SetState0(a0, 3);
           }
@@ -104,15 +104,15 @@ void Stg30_InterruptSelectTask(Actor *a0)
 
         if (a0->stateLevel2 == 4)
       {
-        if (w->field_4 != 7)
+        if (w->palette != 7)
         {
-          w->field_4++;
+          w->palette++;
         }
       }
       else
-        if (w->field_4 != 0)
+        if (w->palette != 0)
       {
-        w->field_4--;
+        w->palette--;
       }
         break;
 
@@ -122,30 +122,30 @@ void Stg30_InterruptSelectTask(Actor *a0)
       {
         if (Pad_State[0].right > 0)
         {
-          if (w->field_10 == 2)
+          if (w->slot == 2)
           {
             if (1)
             {
             }
             break;
           }
-          w->field_10++;
+          w->slot++;
           Snd_PlayById(0x12, 0);
           break;
         }
         if (Pad_State[0].left > 0)
         {
-          if (w->field_10 == 0)
+          if (w->slot == 0)
           {
             break;
           }
-          w->field_10--;
+          w->slot--;
           Snd_PlayById(0x12, 0);
           break;
         }
         if (Pad_State[0].cross > 0)
         {
-          if (Stg30_Battle.turns[w->field_10].field_0 != 3)
+          if (Stg30_Battle.turns[w->slot].turnType != 3)
           {
             break;
           }
@@ -160,7 +160,7 @@ void Stg30_InterruptSelectTask(Actor *a0)
         }
       }
       while (0);
-        w->field_8 = Math_PingPongRange(a0->elapsed, 2, 0, 3);
+        w->cursorPalette = Math_PingPongRange(a0->elapsed, 2, 0, 3);
         break;
 
     }
@@ -168,7 +168,7 @@ void Stg30_InterruptSelectTask(Actor *a0)
       break;
 
     case 2:
-      Stg30_Battle.interruptSlot = w->field_10;
+      Stg30_Battle.interruptSlot = w->slot;
       Stg30_Battle.interruptActive = 0;
       Task_NextState0(a0);
       break;

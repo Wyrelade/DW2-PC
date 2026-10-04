@@ -137,7 +137,7 @@ s32 Stg30_ApplySkillStatus(s32 attacker, s32 target, s32 tech, s16 *p4, s16 *p5)
         }
     }
     if (flags & 4) {
-        if (Stg30_Battle.turns[attacker].field_0 == 2) {
+        if (Stg30_Battle.turns[attacker].turnType == 2) {
             Stg30_Battle.statusFlags[target] |= 1;
         }
     }
@@ -159,12 +159,12 @@ s32 Stg30_ApplySkillStatus(s32 attacker, s32 target, s32 tech, s16 *p4, s16 *p5)
         }
     }
     if (flags & 0x40) {
-        if (Stg30_Battle.turns[attacker].field_0 == 2) {
+        if (Stg30_Battle.turns[attacker].turnType == 2) {
             Stg30_Battle.statusFlags[target] |= 2;
         }
     }
     if (flags & 0x80) {
-        if (Stg30_Battle.turns[attacker].field_0 == 3) {
+        if (Stg30_Battle.turns[attacker].turnType == 3) {
             Stg30_Battle.statusFlags[target] |= 2;
         }
     }
@@ -187,7 +187,7 @@ s32 Stg30_ApplySkillStatus(s32 attacker, s32 target, s32 tech, s16 *p4, s16 *p5)
             }
         }
         if (flags & 0x400) {
-            if (Stg30_Battle.turns[attacker].field_0 == 2) {
+            if (Stg30_Battle.turns[attacker].turnType == 2) {
                 Stg30_Battle.statusFlags[target] |= 4;
             }
         }
@@ -348,7 +348,7 @@ s32 Stg30_ApplySkillDamage(s32 attacker, s32 target, s32 tech, s16 *p4, s16 *p5)
     if (prevent & 8) {
         idx = Stg30_TurnOrderFind(target);
         if (idx != -1) {
-            switch (Stg30_Battle.turns[target].field_0) {
+            switch (Stg30_Battle.turns[target].turnType) {
             case 2:
             case 3:
                 Stg30_TurnOrderRemove(idx);
@@ -419,14 +419,14 @@ s32 Stg30_ApplySkillDamage(s32 attacker, s32 target, s32 tech, s16 *p4, s16 *p5)
         Stg30_Battle.debuffed[target] = 1;
     }
     if ((buff & 0x1000) && type[1] == 0) {
-        Stg30_StatDebuff(&((Stg30CombatCD8 *)D_80073CD8)->field_37A[target], &t->attack, &((Stg30CombatCD8 *)D_80073CD8)->field_356[target]);
-        Stg30_StatDebuff(&((Stg30CombatCD8 *)D_80073CD8)->field_386[target], &t->defense, &((Stg30CombatCD8 *)D_80073CD8)->field_362[target]);
+        Stg30_StatDebuff(&((Stg30CombatCD8 *)D_80073CD8)->attackBase[target], &t->attack, &((Stg30CombatCD8 *)D_80073CD8)->attackCur[target]);
+        Stg30_StatDebuff(&((Stg30CombatCD8 *)D_80073CD8)->defenseBase[target], &t->defense, &((Stg30CombatCD8 *)D_80073CD8)->defenseCur[target]);
         *p5 = 0x14;
-        ((Stg30CombatCD8 *)D_80073CD8)->field_340[target] = 1;
+        ((Stg30CombatCD8 *)D_80073CD8)->debuffed[target] = 1;
     }
     do {
-        if (Stg30_Battle.turns[attacker].field_0 == 2 && (flags1 & 1)) {
-            hit = Stg30_Battle.turns[attacker].field_C;
+        if (Stg30_Battle.turns[attacker].turnType == 2 && (flags1 & 1)) {
+            hit = Stg30_Battle.turns[attacker].hpDelta;
             dmg = hit / 2 + hit;
             t->hp = (dmg < t->hp) ? t->hp - dmg : 0;
             break;
@@ -484,22 +484,22 @@ s32 Stg30_ApplySkillDamage(s32 attacker, s32 target, s32 tech, s16 *p4, s16 *p5)
         } else {
             Stg30_Battle.powerBuff[attacker] = 0;
         }
-        if ((flags1 & 0x20) && Stg30_Battle.turns[attacker].field_0 == 2) {
+        if ((flags1 & 0x20) && Stg30_Battle.turns[attacker].turnType == 2) {
             atk += atk / 2;
         }
         if ((flags1 & 0x40) && (Stg30_Battle.statusFlags[attacker] & 1)) {
             atk += atk / 2;
         }
-        if ((flags1 & 0x80) && Stg30_Battle.turns[target].field_0 == 3) {
+        if ((flags1 & 0x80) && Stg30_Battle.turns[target].turnType == 3) {
             atk += atk / 2;
         }
-        if ((flags1 & 0x100) && Stg30_Battle.turns[target].field_0 == 2) {
+        if ((flags1 & 0x100) && Stg30_Battle.turns[target].turnType == 2) {
             atk += atk / 2;
         }
-        if ((flags1 & 0x200) && (Stg30_Battle.turns[target].field_0 == 2 || Stg30_Battle.turns[target].field_0 == 3)) {
+        if ((flags1 & 0x200) && (Stg30_Battle.turns[target].turnType == 2 || Stg30_Battle.turns[target].turnType == 3)) {
             atk += atk / 2;
         }
-        if ((flags1 & 0x400) && Stg30_Battle.interruptSlot != -1 && Stg30_Battle.turns[attacker].field_C > 0) {
+        if ((flags1 & 0x400) && Stg30_Battle.interruptSlot != -1 && Stg30_Battle.turns[attacker].hpDelta > 0) {
             atk += atk / 2;
         }
         power = atk;
@@ -523,7 +523,7 @@ s32 Stg30_ApplySkillDamage(s32 attacker, s32 target, s32 tech, s16 *p4, s16 *p5)
         if (st & 0x4000) {
             el = 4;
         }
-        if (Stg30_Battle.turns[target].field_0 == 5) {
+        if (Stg30_Battle.turns[target].turnType == 5) {
             def = def * 150 / 100;
         }
         switch (Stg30_CompareTypes(type[0], type[1])) {
@@ -597,7 +597,7 @@ s32 Stg30_ApplySkillDamage(s32 attacker, s32 target, s32 tech, s16 *p4, s16 *p5)
         *p5 = 0x201;
     }
     if (flags1 & 0x4000) {
-        gain = Skill_GetMpCost(Stg30_Battle.turns[target].field_6);
+        gain = Skill_GetMpCost(Stg30_Battle.turns[target].skillId);
         a->mp = (a->mp + gain > a->maxMp) ? a->maxMp : a->mp + gain;
         *p5 = 0x201;
     }
@@ -653,7 +653,7 @@ s32 Stg30_SkillHitCheck(s32 idx, s16 *tgt, s32 n, s32 id) {
         return 0;
     }
     if (func_8001F0E4(id) & 4) {
-        return Stg30_Battle.turns[idx].field_0 == 2;
+        return Stg30_Battle.turns[idx].turnType == 2;
     }
     if (Stg30_Battle.preventFlags[idx] & 0x10) {
         return (Rand_Next() & 3) == 0;
@@ -663,8 +663,8 @@ s32 Stg30_SkillHitCheck(s32 idx, s16 *tgt, s32 n, s32 id) {
             return 0;
         }
     }
-    if ((n == 1) && (Stg30_Battle.turns[tgt[0]].field_0 == 2)) {
-        if (func_8001F020(Stg30_Battle.turns[tgt[0]].field_6) & 0x10) {
+    if ((n == 1) && (Stg30_Battle.turns[tgt[0]].turnType == 2)) {
+        if (func_8001F020(Stg30_Battle.turns[tgt[0]].skillId) & 0x10) {
             if (Rand_Next() & 1) {
                 return 0;
             }
@@ -691,7 +691,7 @@ s32 Stg30_SkillHitCheck(s32 idx, s16 *tgt, s32 n, s32 id) {
 
 void Stg30_BuildSkillScript(s32 idx) {
     s16 kind = 1;
-    Stg30Sub10 *rec = &Stg30_Battle.turns[idx];
+    Stg30Turn *rec = &Stg30_Battle.turns[idx];
     s16 targets[6];
     s32 results[6];
     s16 hitKind[6];
@@ -706,14 +706,14 @@ void Stg30_BuildSkillScript(s32 idx) {
     s32 cost;
     s16 *mp;
 
-    id = (u16)rec->field_6;
+    id = (u16)rec->skillId;
     Stg30_Battle.actionTaken = 1;
     attr = func_8001F020((s16)id);
     if (attr & 1) {
-        Stg30_Battle.turns[idx].field_E = 1;
+        Stg30_Battle.turns[idx].noCounter = 1;
     }
     if (attr & 2) {
-        Stg30_Battle.turns[idx].field_F = 1;
+        Stg30_Battle.turns[idx].noInterrupt = 1;
     }
     if (attr & 0x40) {
         Stg30_Battle.entries[idx].defense /= 2;
@@ -721,22 +721,22 @@ void Stg30_BuildSkillScript(s32 idx) {
     for (i = 0; i < 6; i++) {
         results[i] = 0;
         targets[i] = -1;
-        hitKind[i] = rec->field_8;
+        hitKind[i] = rec->effectKind;
         msg[i] = 0;
     }
     num = 0;
-    switch (rec->field_4) {
+    switch (rec->target) {
     default:
         if (func_8001F044((s16)id) & 8) {
-            if (idx != rec->field_4) {
-                targets[0] = rec->field_4;
+            if (idx != rec->target) {
+                targets[0] = rec->target;
                 num = 1;
             }
         } else if (Skill_GetCureFlags((s16)id) & 0x20000) {
             num = 1;
-            targets[0] = rec->field_4;
-        } else if (Stg30_Battle.entries[rec->field_4].hp != 0) {
-            targets[0] = rec->field_4;
+            targets[0] = rec->target;
+        } else if (Stg30_Battle.entries[rec->target].hp != 0) {
+            targets[0] = rec->target;
             num = 1;
         }
         break;
@@ -817,11 +817,11 @@ void Stg30_BuildSkillScript(s32 idx) {
         kind = 2;
         break;
     }
-    if (num == 0 || (rec->field_8 == 0 && Stg30_SkillHitCheck(idx, targets, num, (s16)id) == 0)) {
+    if (num == 0 || (rec->effectKind == 0 && Stg30_SkillHitCheck(idx, targets, num, (s16)id) == 0)) {
         D_80074074 = 0;
     }
     if (Stg30_Battle.actionTaken != 0) {
-        if (rec->field_0 == 3) {
+        if (rec->turnType == 3) {
             flags = func_8001F180((s16)id);
             if (flags & 1) {
                 if (Stg30_Battle.isBossFight == 0 || idx >= 3) {
@@ -876,18 +876,18 @@ void Stg30_BuildSkillScript(s32 idx) {
         *out++ = idx;
         *out++ = 0x15;
         *out++ = 0xE;
-        *out++ = Stg30_Battle.turns[idx].field_0 - 1;
+        *out++ = Stg30_Battle.turns[idx].turnType - 1;
         *out++ = 1;
-        if (Stg30_Battle.turns[idx].field_F == 0 && Stg30_Battle.interruptSlot == -1 && rec->field_0 != 2) {
+        if (Stg30_Battle.turns[idx].noInterrupt == 0 && Stg30_Battle.interruptSlot == -1 && rec->turnType != 2) {
             if (idx >= 3) {
-                if (Stg30_Battle.turns[0].field_0 == 3 || Stg30_Battle.turns[1].field_0 == 3 ||
-                    Stg30_Battle.turns[2].field_0 == 3) {
+                if (Stg30_Battle.turns[0].turnType == 3 || Stg30_Battle.turns[1].turnType == 3 ||
+                    Stg30_Battle.turns[2].turnType == 3) {
                     *out++ = 0;
                     *out++ = 0x3C;
                     *out++ = 0x13;
                 }
-            } else if (Stg30_Battle.turns[3].field_0 == 3 || Stg30_Battle.turns[4].field_0 == 3 ||
-                       Stg30_Battle.turns[5].field_0 == 3) {
+            } else if (Stg30_Battle.turns[3].turnType == 3 || Stg30_Battle.turns[4].turnType == 3 ||
+                       Stg30_Battle.turns[5].turnType == 3) {
                 *out++ = 0;
                 *out++ = 0x3C;
                 *out++ = 0x14;
@@ -920,7 +920,7 @@ void Stg30_BuildSkillScript(s32 idx) {
             switch (hitKind[i]) {
             case 0:
                 if (Stg30_Battle.entries[targets[i]].hp != 0) {
-                    *out++ = (Stg30_Battle.turns[targets[i]].field_0 != 5) ? 0xB : 0xA;
+                    *out++ = (Stg30_Battle.turns[targets[i]].turnType != 5) ? 0xB : 0xA;
                 } else {
                     *out++ = 0xC;
                 }
@@ -980,11 +980,11 @@ void Stg30_BuildSkillScript(s32 idx) {
 
         Stg30_Battle.lastTargets[i] = tgt;
         if (tgt != -1) {
-            Stg30_Battle.turns[tgt].field_C = results[i];
+            Stg30_Battle.turns[tgt].hpDelta = results[i];
         }
     }
     cost = Skill_GetMpCost((s16)id);
-    if (rec->field_0 == 2 && (func_8001F0E4((s16)id) & 0x1000)) {
+    if (rec->turnType == 2 && (func_8001F0E4((s16)id) & 0x1000)) {
         mp = &Stg30_Battle.entries[targets[0]].mp;
     } else {
         mp = &Stg30_Battle.entries[idx].mp;
@@ -996,13 +996,13 @@ void Stg30_BuildSkillScript(s32 idx) {
     do {
         if ((s16)id == 0x4D || (s16)id == 0xFB) {
             if (Stg30_Battle.entries[targets[0]].hp == 0) {
-                Stg30_Battle.turns[idx].field_6 = 0xFB;
+                Stg30_Battle.turns[idx].skillId = 0xFB;
                 if (idx < 3) {
-                    Stg30_Battle.turns[idx].field_4 = Stg30_PickTarget(0x4D, 1, idx);
+                    Stg30_Battle.turns[idx].target = Stg30_PickTarget(0x4D, 1, idx);
                 } else {
-                    Stg30_Battle.turns[idx].field_4 = Stg30_PickTarget(0x4D, 7, idx);
+                    Stg30_Battle.turns[idx].target = Stg30_PickTarget(0x4D, 7, idx);
                 }
-                if (Stg30_Battle.turns[idx].field_4 != idx) {
+                if (Stg30_Battle.turns[idx].target != idx) {
                     Stg30_TurnOrderInsert(1, idx);
                 }
                 break;
@@ -1010,11 +1010,11 @@ void Stg30_BuildSkillScript(s32 idx) {
         }
         if ((s16)id == 0x68 && Skill_GetMpCost(0x68) <= Stg30_Battle.entries[idx].mp) {
             if (idx < 3) {
-                Stg30_Battle.turns[idx].field_4 = Stg30_PickTarget(0x4D, 1, idx);
+                Stg30_Battle.turns[idx].target = Stg30_PickTarget(0x4D, 1, idx);
             } else {
-                Stg30_Battle.turns[idx].field_4 = Stg30_PickTarget(0x4D, 7, idx);
+                Stg30_Battle.turns[idx].target = Stg30_PickTarget(0x4D, 7, idx);
             }
-            if (Stg30_Battle.turns[idx].field_4 != idx) {
+            if (Stg30_Battle.turns[idx].target != idx) {
                 Stg30_TurnOrderInsert(1, idx);
             }
             break;
@@ -1026,11 +1026,11 @@ void Stg30_BuildSkillScript(s32 idx) {
             if (--Stg30_RepeatSkillCount != 0) {
                 if (Skill_GetMpCost(0xDC) <= Stg30_Battle.entries[idx].mp) {
                     if (idx < 3) {
-                        Stg30_Battle.turns[idx].field_4 = Stg30_PickTarget(0x4D, 1, idx);
+                        Stg30_Battle.turns[idx].target = Stg30_PickTarget(0x4D, 1, idx);
                     } else {
-                        Stg30_Battle.turns[idx].field_4 = Stg30_PickTarget(0x4D, 7, idx);
+                        Stg30_Battle.turns[idx].target = Stg30_PickTarget(0x4D, 7, idx);
                     }
-                    if (Stg30_Battle.turns[idx].field_4 != idx) {
+                    if (Stg30_Battle.turns[idx].target != idx) {
                         Stg30_TurnOrderInsert(1, idx);
                     }
                 } else {

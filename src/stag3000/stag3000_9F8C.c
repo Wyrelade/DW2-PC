@@ -15,7 +15,7 @@ s32 Stg30_CalcCannonDamage(s32 idx, s32 id, s32 lvl) {
     s32 el2 = Digi_GetSpecialty(Stg30_Battle.entries[idx].digiId);
     s32 r;
 
-    if (Stg30_Battle.turns[idx].field_0 == 5) {
+    if (Stg30_Battle.turns[idx].turnType == 5) {
         def = def * 192 / 128;
     }
     switch (Stg30_CompareSpecialty(el, el2)) {
@@ -325,7 +325,7 @@ void Stg30_BuildItemScript(void) {
     s32 res[6];
     s16 kind[8];
     s16 z[8];
-    Stg30Sub10 *act;
+    Stg30Turn *act;
     s16 *out;
     s32 i;
     s32 n;
@@ -334,7 +334,7 @@ void Stg30_BuildItemScript(void) {
     s16 tech;
 
     act = &Stg30_Battle.turns[6];
-    tech = act->field_6;
+    tech = act->skillId;
     mode = 1;
     out = Stg30_BattleScript;
     for (i = 0; i < Item_GetBagCapacity(); i++) {
@@ -347,12 +347,12 @@ void Stg30_BuildItemScript(void) {
     for (i = 0; i < 6; i++) {
         res[i] = 0;
         tgt[i] = -1;
-        kind[i] = act->field_8;
+        kind[i] = act->effectKind;
         z[i] = 0;
     }
-    switch (act->field_4) {
+    switch (act->target) {
     default:
-        tgt[0] = act->field_4;
+        tgt[0] = act->target;
         n = 1;
         break;
     case 7:
@@ -437,7 +437,7 @@ void Stg30_BuildItemScript(void) {
         break;
     }
     for (i = 0; i < n; i++) {
-        kind[i] = act->field_8;
+        kind[i] = act->effectKind;
         res[i] = Stg30_ApplyItemEffect(tgt[i], tech, &kind[i], &z[i]);
     }
     *out++ = 2;
@@ -466,12 +466,12 @@ void Stg30_BuildItemScript(void) {
         *out++ = (i == 0) ? 0x1E : 0xC;
         *out++ = 0x10;
         *out++ = res[i];
-        *out++ = (kind[i] < 3) ? act->field_8 + 1 : 8;
+        *out++ = (kind[i] < 3) ? act->effectKind + 1 : 8;
         *out++ = z[i];
         switch (kind[i]) {
         case 0:
             if (Stg30_Battle.entries[tgt[i]].hp != 0) {
-                *out++ = (Stg30_Battle.turns[tgt[i]].field_0 != 5) ? 11 : 10;
+                *out++ = (Stg30_Battle.turns[tgt[i]].turnType != 5) ? 11 : 10;
             } else {
                 *out++ = 0xC;
             }

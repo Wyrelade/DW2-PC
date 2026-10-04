@@ -143,7 +143,7 @@ void Stg30_RestoreFighterStates(void) {
 }
 
 void Stg30_FighterSetAnim(Actor *a0, s32 anim) {
-    Stg30Work732B8 *w = (Stg30Work732B8 *)a0->work;
+    Stg30FighterWork *w = (Stg30FighterWork *)a0->work;
 
     if (w->anim != anim) {
         w->anim = anim;
@@ -152,28 +152,28 @@ void Stg30_FighterSetAnim(Actor *a0, s32 anim) {
 }
 
 void Stg30_FighterInit(Actor *a0, s32 *args) {
-    Stg30Work732B8 *w = (Stg30Work732B8 *)a0->work;
+    Stg30FighterWork *w = (Stg30FighterWork *)a0->work;
     s32 idx = args[1];
     s32 n;
 
     a0->param = idx;
     a0->digiId = Stg30_Battle.entries[idx].digiId;
-    w->field_14 = Digi_GetModelFile(a0->digiId);
+    w->modelFile = Digi_GetModelFile(a0->digiId);
     if (a0->param < 3) {
-        w->field_10 = 0x800;
+        w->facing = 0x800;
     } else {
-        w->field_10 = 0;
+        w->facing = 0;
     }
     n = a0->param;
-    w->field_8 = 0;
-    w->field_4 = (n % 3) * 0xA00 - 0xA00;
-    w->field_C = (n / 3) * 0x2800 - 0x1400;
+    w->homeY = 0;
+    w->homeX = (n % 3) * 0xA00 - 0xA00;
+    w->homeZ = (n / 3) * 0x2800 - 0x1400;
     w->field_38 = args[2];
 }
 
 void Stg30_SpawnSkillCastFx(Actor *a0, s32 k) {
-    Stg30Work732B8 *w = (Stg30Work732B8 *)a0->work;
-    Stg30FxArgs args;
+    Stg30FighterWork *w = (Stg30FighterWork *)a0->work;
+    Stg30SpawnArgs args;
     s32 *slots;
     s16 a[4];
     s16 b[4];
@@ -182,30 +182,30 @@ void Stg30_SpawnSkillCastFx(Actor *a0, s32 k) {
     s32 i;
 
     slots = (s32 *)a0->u34.children;
-    Skill_GetFxSet(w->field_2C, 0, a, b);
+    Skill_GetFxSet(w->skillId, 0, a, b);
     Digi_GetCastFxOffsets(a0->digiId, rows);
     r = &rows[k];
     for (i = 0; i < 3; i++) {
         if (a[i] != 0) {
             args.field_0 = a[i];
             args.field_4 = b[i];
-            args.field_14 = w->field_10;
-            args.field_8 = w->field_4;
-            args.field_C = w->field_8;
-            args.field_10 = w->field_C;
+            args.facing = w->facing;
+            args.posX = w->homeX;
+            args.posY = w->homeY;
+            args.posZ = w->homeZ;
             args.field_18 = 0x78;
             switch (i) {
             case 0:
-                args.field_C += -0x280 - func_8001E79C(a0->digiId);
+                args.posY += -0x280 - func_8001E79C(a0->digiId);
                 break;
             case 1:
-                args.field_C -= r->data[1];
-                if (args.field_14 == 0) {
-                    args.field_8 += r->data[0];
-                    args.field_10 += -0x100 - r->data[2];
+                args.posY -= r->data[1];
+                if (args.facing == 0) {
+                    args.posX += r->data[0];
+                    args.posZ += -0x100 - r->data[2];
                 } else {
-                    args.field_8 -= r->data[0];
-                    args.field_10 += 0x100 + r->data[2];
+                    args.posX -= r->data[0];
+                    args.posZ += 0x100 + r->data[2];
                 }
                 break;
             case 2:
@@ -217,30 +217,30 @@ void Stg30_SpawnSkillCastFx(Actor *a0, s32 k) {
 }
 
 void Stg30_SpawnSkillHitFx(Actor *a0) {
-    Stg30Work732B8 *w = (Stg30Work732B8 *)a0->work;
-    Stg30FxArgs args;
+    Stg30FighterWork *w = (Stg30FighterWork *)a0->work;
+    Stg30SpawnArgs args;
     s32 *slots;
     s16 a[4];
     s16 b[4];
     s32 i;
 
     slots = (s32 *)a0->u34.children;
-    Skill_GetFxSet(w->field_2C, 1, a, b);
+    Skill_GetFxSet(w->skillId, 1, a, b);
     for (i = 0; i < 3; i++) {
         if (a[i] != 0) {
             args.field_0 = a[i];
             args.field_4 = b[i];
-            args.field_14 = w->field_10;
-            args.field_8 = w->field_4;
-            args.field_C = w->field_8;
-            args.field_10 = w->field_C;
+            args.facing = w->facing;
+            args.posX = w->homeX;
+            args.posY = w->homeY;
+            args.posZ = w->homeZ;
             args.field_18 = 0x3C;
             switch (i) {
             case 0:
-                args.field_C += -0x280 - func_8001E79C(a0->digiId);
+                args.posY += -0x280 - func_8001E79C(a0->digiId);
                 break;
             case 1:
-                args.field_C -= func_8001E7C0(a0->digiId);
+                args.posY -= func_8001E7C0(a0->digiId);
                 break;
             case 2:
                 break;
@@ -279,10 +279,10 @@ void Stg30_HitReactUpdate(Actor *arg0, s32 arg1) {
             Task_NextState4(arg0);
             return;
         case 1:
-            if (t->field_34 > 0) {
+            if (t->posY > 0) {
                 Actor_StopAxisMotion(arg0, 1);
-                t->field_34 = 0;
-                t->field_4C = 0;
+                t->posY = 0;
+                t->moveDeltaY = 0;
                 Task_NextState3(arg0);
             }
             return;
@@ -301,10 +301,10 @@ void Stg30_HitReactUpdate(Actor *arg0, s32 arg1) {
             Task_NextState4(arg0);
             return;
         case 1:
-            if (t->field_34 > 0) {
+            if (t->posY > 0) {
                 Actor_StopAxisMotion(arg0, 1);
-                t->field_34 = 0;
-                t->field_4C = 0;
+                t->posY = 0;
+                t->moveDeltaY = 0;
                 Task_NextState3(arg0);
             }
             return;
@@ -359,7 +359,7 @@ void Stg30_HitReactUpdate(Actor *arg0, s32 arg1) {
 }
 
 void Stg30_FighterTask(Actor *arg0) {
-    Stg30Work732B8 *w = (Stg30Work732B8 *)arg0->work;
+    Stg30FighterWork *w = (Stg30FighterWork *)arg0->work;
     Stg30ModelTint *m = (Stg30ModelTint *)arg0->model;
     Stg30WorkWord a1;
     s32 a2;
@@ -370,8 +370,8 @@ void Stg30_FighterTask(Actor *arg0) {
 
     switch (arg0->stateLevel0) {
     case 0:
-        Actor_InitTransform(arg0, &w->field_4, (u16)w->field_10);
-        ((Stg30ModelTint *)Gfx_AttachModel(arg0, w->field_14))->otIndex = 3;
+        Actor_InitTransform(arg0, &w->homeX, (u16)w->facing);
+        ((Stg30ModelTint *)Gfx_AttachModel(arg0, w->modelFile))->otIndex = 3;
         w->anim = -1;
         Stg30_FighterSetAnim(arg0, 0);
         a1.field_0 = (s32)arg0;
@@ -379,11 +379,11 @@ void Stg30_FighterTask(Actor *arg0) {
         a2 = (s32)arg0;
         Task_Create(0x501, (s32 *)arg0->u34.children, (s32)&a2);
         m0 = (Stg30ModelTint *)arg0->model;
-        w->field_18 = 1;
-        w->field_1C = 0;
-        m0->field_38 = m0->field_39 = m0->field_3A = 0x80;
+        w->drawTex = 1;
+        w->drawWire = 0;
+        m0->flatR = m0->flatG = m0->flatB = 0x80;
         w->color.r = w->color.g = w->color.b = 0;
-        w->field_28 = 1;
+        w->visible = 1;
         if (w->field_38 != 0) {
             Stg30_FighterSetAnim(arg0, 0x64);
         }
@@ -402,7 +402,7 @@ void Stg30_FighterTask(Actor *arg0) {
             switch (arg0->stateLevel2) {
             case 0:
             default:
-                w->field_2C = arg0->stateLevel4;
+                w->skillId = arg0->stateLevel4;
                 Stg30_SpawnSkillHitFx(arg0);
                 arg0->elapsed = 0;
                 Task_NextState2(arg0);
@@ -432,7 +432,7 @@ void Stg30_FighterTask(Actor *arg0) {
             switch (arg0->stateLevel2) {
             case 0:
             default:
-                w->field_2C = arg0->stateLevel4;
+                w->skillId = arg0->stateLevel4;
                 Stg30_SpawnSkillHitFx(arg0);
                 if (w->anim == 0) {
                     Task_SetState0(arg0, 1);
@@ -449,8 +449,8 @@ void Stg30_FighterTask(Actor *arg0) {
             }
             break;
         case 1:
-            w->field_2C = arg0->stateLevel4;
-            k = Skill_GetCastAnim(w->field_2C);
+            w->skillId = arg0->stateLevel4;
+            k = Skill_GetCastAnim(w->skillId);
             Stg30_SpawnSkillCastFx(arg0, k);
             switch (k) {
             case 0:
@@ -474,7 +474,7 @@ void Stg30_FighterTask(Actor *arg0) {
             switch (arg0->stateLevel2) {
             case 0:
             default:
-                w->field_2C = arg0->stateLevel4;
+                w->skillId = arg0->stateLevel4;
                 Stg30_SpawnSkillHitFx(arg0);
                 Stg30_FighterSetAnim(arg0, 0xA);
                 Task_NextState2(arg0);
@@ -491,7 +491,7 @@ void Stg30_FighterTask(Actor *arg0) {
             switch (arg0->stateLevel2) {
             case 0:
             default:
-                w->field_2C = arg0->stateLevel4;
+                w->skillId = arg0->stateLevel4;
                 Stg30_SpawnSkillHitFx(arg0);
                 Task_NextState2(arg0);
             case 1:
@@ -500,7 +500,7 @@ void Stg30_FighterTask(Actor *arg0) {
             }
             break;
         case 13:
-            w->field_2C = arg0->stateLevel4;
+            w->skillId = arg0->stateLevel4;
             Stg30_SpawnSkillHitFx(arg0);
             if (arg0->model->animId != 0) {
                 Stg30_FighterSetAnim(arg0, 0);
@@ -508,72 +508,72 @@ void Stg30_FighterTask(Actor *arg0) {
             Task_SetState0(arg0, 1);
             break;
         case 7:
-            w->field_18 = 1;
-            w->field_1C = 1;
+            w->drawTex = 1;
+            w->drawWire = 1;
             m->field_34 = 1;
-            m->field_36 = 0x20;
-            if (m->field_38 > 8) {
-                m->field_38 -= 8;
+            m->tpageBits = 0x20;
+            if (m->flatR > 8) {
+                m->flatR -= 8;
             } else {
-                m->field_38 = 0;
+                m->flatR = 0;
             }
-            m->field_39 = m->field_3A = m->field_38;
+            m->flatG = m->flatB = m->flatR;
             if (w->color.g < 0xEF) {
                 w->color.g += 0x10;
             } else {
                 w->color.g = 0xFF;
             }
-            if (m->field_38 == 0 && w->color.g == 0xFF) {
+            if (m->flatR == 0 && w->color.g == 0xFF) {
                 m->field_34 = 0;
-                m->field_36 = 0;
-                w->field_18 = 0;
+                m->tpageBits = 0;
+                w->drawTex = 0;
                 Task_SetState0(arg0, 1);
             }
             break;
         case 8:
-            w->field_18 = 1;
-            w->field_1C = 1;
+            w->drawTex = 1;
+            w->drawWire = 1;
             m->field_34 = 1;
-            m->field_36 = 0x20;
-            if (m->field_38 < 0x78) {
-                m->field_38 += 8;
+            m->tpageBits = 0x20;
+            if (m->flatR < 0x78) {
+                m->flatR += 8;
             } else {
-                m->field_38 = 0x80;
+                m->flatR = 0x80;
             }
-            m->field_39 = m->field_3A = m->field_38;
+            m->flatG = m->flatB = m->flatR;
             if (w->color.g > 0x10) {
                 w->color.g -= 0x10;
             } else {
                 w->color.g = 0;
             }
-            if (m->field_38 == 0x80 && w->color.g == 0) {
+            if (m->flatR == 0x80 && w->color.g == 0) {
                 m->field_34 = 0;
-                m->field_36 = 0;
-                w->field_1C = 0;
+                m->tpageBits = 0;
+                w->drawWire = 0;
                 Task_SetState0(arg0, 1);
             }
             break;
         case 10:
-            w->field_28 = 0;
+            w->visible = 0;
             break;
         case 9:
-            m->field_38 = m->field_39 = m->field_3A = 0x80;
+            m->flatR = m->flatG = m->flatB = 0x80;
             m->field_34 = 0;
-            m->field_36 = 0;
-            w->field_18 = 1;
-            w->field_1C = 0;
-            w->field_28 = 1;
+            m->tpageBits = 0;
+            w->drawTex = 1;
+            w->drawWire = 0;
+            w->visible = 1;
             Task_SetState0(arg0, 1);
             break;
         }
         break;
     }
-    if (w->field_28 != 0) {
+    if (w->visible != 0) {
         arg0->childCount = 5;
     } else {
         arg0->childCount = 4;
     }
-    if (w->field_24 != D_80074094) {
+    if (w->lastHudFlag != D_80074094) {
         ch = (Actor **)arg0->u34.children;
         if (D_80074094 != 0) {
             if (ch[0]->stateLevel0 == 2) {
@@ -584,14 +584,14 @@ void Stg30_FighterTask(Actor *arg0) {
                 Task_SetState0(ch[0], 2);
             }
         }
-        w->field_24 = D_80074094;
+        w->lastHudFlag = D_80074094;
     }
-    if (w->field_30 != 0 && --w->field_30 == 1) {
+    if (w->homeResetTimer != 0 && --w->homeResetTimer == 1) {
         t = (Stg30Xform *)arg0->u38.ptr38;
-        t->field_30 = w->field_4;
-        t->field_38 = w->field_C;
-        t->field_50 = 0;
-        t->field_48 = 0;
+        t->posX = w->homeX;
+        t->posZ = w->homeZ;
+        t->moveDeltaZ = 0;
+        t->moveDeltaX = 0;
         Actor_StopAxisMotion(arg0, 2);
     }
 }
@@ -602,18 +602,18 @@ void Stg30_FighterDestroy(Actor *a0) {
 }
 
 void Stg30_FighterDraw(Actor *a0) {
-    Stg30Work732B8 *w = (Stg30Work732B8 *)a0->work;
+    Stg30FighterWork *w = (Stg30FighterWork *)a0->work;
     CVECTOR c;
 
-    if (w->field_28 != 0) {
-        Gfx_AttachModel(a0, w->field_14);
+    if (w->visible != 0) {
+        Gfx_AttachModel(a0, w->modelFile);
         Anim_StepModelAnim(a0);
         Actor_UpdateTransform(a0);
         Gfx_CalcModelBoneMatrices(a0);
-        if (w->field_18 != 0) {
+        if (w->drawTex != 0) {
             Gfx_DrawTexModel(a0, 0);
         }
-        if (w->field_1C != 0) {
+        if (w->drawWire != 0) {
             if (a0->param < 3) {
                 c = w->color;
             } else {
@@ -627,7 +627,7 @@ void Stg30_FighterDraw(Actor *a0) {
 }
 
 void Stg30_FighterSetVisible(Actor *a0, s32 a1) {
-    ((Stg30Work732B8 *)a0->work)->field_28 = a1;
+    ((Stg30FighterWork *)a0->work)->visible = a1;
     if (a1 != 0) {
         a0->childCount = 5;
     } else {
@@ -636,12 +636,12 @@ void Stg30_FighterSetVisible(Actor *a0, s32 a1) {
 }
 
 void Stg30_FighterQueueHomeReset(Actor *a0) {
-    ((Stg30Work732B8 *)a0->work)->field_30 = 2;
+    ((Stg30FighterWork *)a0->work)->homeResetTimer = 2;
 }
 
 void Stg30_FightMsgInit(Stg30TaskHead *a0, s32 *args) {
-    a0->field_8 = args[0];
-    a0->field_4 = args[1] ? 2 : 4;
+    a0->param = args[0];
+    a0->partGroup = args[1] ? 2 : 4;
 }
 
 void Stg30_FightMsgUpdate(Stg30TaskHead *a0) {
@@ -650,7 +650,7 @@ void Stg30_FightMsgUpdate(Stg30TaskHead *a0) {
 
     switch (a0->stateLevel0) {
     case 0:
-        switch (a0->field_8) {
+        switch (a0->param) {
         case 0:
         case 1:
         case 2:
@@ -660,7 +660,7 @@ void Stg30_FightMsgUpdate(Stg30TaskHead *a0) {
             snd = 0x25;
             break;
         case 5:
-            if (a0->field_4 == 2) {
+            if (a0->partGroup == 2) {
                 snd = 0x26;
             } else {
                 snd = 0x1C;
@@ -712,15 +712,15 @@ void Stg30_FightMsgUpdate(Stg30TaskHead *a0) {
 
 void Stg30_FightMsgDraw(Stg30TaskHead *a0) {
     Stg30FightMsgWork *w = (Stg30FightMsgWork *)a0->work;
-    Stg30Part *p = (Stg30Part *)Cd_GetFileEntry(Stg30_FightMsgParts[a0->field_8]);
+    Stg30Part *p = (Stg30Part *)Cd_GetFileEntry(Stg30_FightMsgParts[a0->param]);
     Stg30Part *q;
     s32 vis;
 
     for (q = p; q->fileId != 0; q++) {
-        vis = q->groupMask == a0->field_4;
-        q->field_E = 0;
+        vis = q->groupMask == a0->partGroup;
+        q->unscaled = 0;
         q->visible = vis;
-        q->field_10 = w->scale;
+        q->scaleX = w->scale;
         q->palette = w->palette;
     }
     Gfx_DrawParts((EntA0 *)p);
@@ -809,10 +809,10 @@ void Stg30_PopupDraw(Actor *a0) {
     if (draw) {
         for (q = p; q->fileId != 0; q++) {
             if (w->scale != 0x1000) {
-                q->field_E = 0;
-                q->field_10 = w->scale;
+                q->unscaled = 0;
+                q->scaleX = w->scale;
             } else {
-                q->field_E = 1;
+                q->unscaled = 1;
             }
             q->palette = w->palette;
         }
@@ -835,10 +835,10 @@ void Stg30_PopupDraw(Actor *a0) {
         Gfx_HidePartsByMask((GfxPartMaskView *)p, ~(1 << ((u8)w->pos.z - 1)));
         for (q = p; q->fileId != 0; q++) {
             if (w->scale != 0x1000) {
-                q->field_E = 0;
-                q->field_10 = w->scale;
+                q->unscaled = 0;
+                q->scaleX = w->scale;
             } else {
-                q->field_E = 1;
+                q->unscaled = 1;
             }
             q->palette = w->palette;
         }

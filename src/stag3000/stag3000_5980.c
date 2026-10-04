@@ -229,13 +229,13 @@ void Stg30_AiChooseEnemyTurns(void) {
     for (col = 3; col < 6; col++) {
         Stg30DigiB21 *d = &((Stg30SlotBlk *)D_80073CD8)->digis[col];
         Stg30EnemyAi *p = &((Stg30SlotBlk *)D_80073CD8)->lists[col];
-        Stg30Sub10 *out = &((Stg30SlotBlk *)D_80073CD8)->sub[col];
+        Stg30Turn *out = &((Stg30SlotBlk *)D_80073CD8)->sub[col];
         s32 i;
 
         if (d->hp != 0) {
-            out->field_0 = 0;
-            out->field_4 = 0;
-            out->field_6 = 0;
+            out->turnType = 0;
+            out->target = 0;
+            out->skillId = 0;
             for (i = 0; i < 4; i++) {
                 if (p->actionKinds[i] == 0) {
                     break;
@@ -244,14 +244,14 @@ void Stg30_AiChooseEnemyTurns(void) {
                     if (Stg30_AiCheckCondition(p->conditions[i], col)) {
                         s32 v;
                         if (p->actionKinds[i] == 4) {
-                            out->field_0 = 5;
+                            out->turnType = 5;
                             break;
                         }
                         v = (&d->b21[0])[p->actionKinds[i]];
-                        out->field_6 = v;
-                        out->field_4 = Stg30_PickTarget(v, p->targetModes[i], col);
-                        out->field_0 = Skill_GetType(out->field_6) + 1;
-                        out->field_8 = Stg30_GetSkillEffectKind(out->field_6);
+                        out->skillId = v;
+                        out->target = Stg30_PickTarget(v, p->targetModes[i], col);
+                        out->turnType = Skill_GetType(out->skillId) + 1;
+                        out->effectKind = Stg30_GetSkillEffectKind(out->skillId);
                         break;
                     }
                 }
@@ -272,9 +272,9 @@ void Stg30_BuildTurnOrder(void) {
     s32 j;
 
     for (i = 0; i < 6; i++) {
-        if (Stg30_Battle.entries[i].hp != 0 && Stg30_Battle.turns[i].field_0 != 0) {
+        if (Stg30_Battle.entries[i].hp != 0 && Stg30_Battle.turns[i].turnType != 0) {
             bonus = 0;
-            if (Stg30_Battle.turns[i].field_0 == 1 && (func_8001F020(Stg30_Battle.turns[i].field_6) & 8)) {
+            if (Stg30_Battle.turns[i].turnType == 1 && (func_8001F020(Stg30_Battle.turns[i].skillId) & 8)) {
                 bonus = Stg30_Battle.entries[i].speed;
             }
             spd[i] = Stg30_Battle.entries[i].speed + bonus + (u16)((u16)Rand_Next() % 11);
@@ -303,7 +303,7 @@ void Stg30_BuildTurnOrder(void) {
         slot = Stg30_TurnOrderFind(i);
         k = Stg30_TurnOrderGet(slot);
         if (slot != -1) {
-            switch (Stg30_Battle.turns[i].field_0) {
+            switch (Stg30_Battle.turns[i].turnType) {
             case 2:
                 Stg30_TurnOrderRemove(slot);
                 Stg30_TurnOrderInsert(Stg30_TurnOrderFreeIndex(), i);
@@ -319,8 +319,8 @@ void Stg30_BuildTurnOrder(void) {
         }
     }
     for (i = 0; i < 6; i++) {
-        if (Stg30_Battle.entries[i].digiId != 0 && Stg30_Battle.turns[i].field_6 != 0 &&
-            (func_8001F020(Stg30_Battle.turns[i].field_6) & 0x20)) {
+        if (Stg30_Battle.entries[i].digiId != 0 && Stg30_Battle.turns[i].skillId != 0 &&
+            (func_8001F020(Stg30_Battle.turns[i].skillId) & 0x20)) {
             slot2 = Stg30_TurnOrderFind(i);
             if (slot2 != -1) {
                 Stg30_TurnOrderRemove(slot2);
@@ -328,8 +328,8 @@ void Stg30_BuildTurnOrder(void) {
             }
         }
     }
-    if (Stg30_Battle.turns[Stg30_TurnOrderGet(0)].field_0 == 2) {
-        Stg30_Battle.turns[Stg30_TurnOrderGet(0)].field_0 = 1;
+    if (Stg30_Battle.turns[Stg30_TurnOrderGet(0)].turnType == 2) {
+        Stg30_Battle.turns[Stg30_TurnOrderGet(0)].turnType = 1;
     }
 }
 
@@ -380,10 +380,10 @@ s32 Stg30_UpdateTurnStatus(s32 idx) {
             }
         }
         if (n == 0) {
-            Stg30_Battle.turns[idx].field_0 = 0;
-            Stg30_Battle.turns[idx].field_4 = 0;
-            Stg30_Battle.turns[idx].field_6 = 0;
-            Stg30_Battle.turns[idx].field_8 = 0;
+            Stg30_Battle.turns[idx].turnType = 0;
+            Stg30_Battle.turns[idx].target = 0;
+            Stg30_Battle.turns[idx].skillId = 0;
+            Stg30_Battle.turns[idx].effectKind = 0;
             return 0;
         }
         tech = buf[(u16)Rand_Next() % n];
@@ -424,10 +424,10 @@ s32 Stg30_UpdateTurnStatus(s32 idx) {
                 break;
             }
         } while ((n == 1 || n == 5) && Stg30_Battle.entries[t].hp == 0);
-        Stg30_Battle.turns[idx].field_0 = 1;
-        Stg30_Battle.turns[idx].field_6 = tech;
-        Stg30_Battle.turns[idx].field_4 = t;
-        Stg30_Battle.turns[idx].field_8 = Stg30_GetSkillEffectKind(tech);
+        Stg30_Battle.turns[idx].turnType = 1;
+        Stg30_Battle.turns[idx].skillId = tech;
+        Stg30_Battle.turns[idx].target = t;
+        Stg30_Battle.turns[idx].effectKind = Stg30_GetSkillEffectKind(tech);
     }
     return 1;
 }

@@ -73,7 +73,7 @@ void Stg30_ActionLoadInit(Actor *a0, s32 *args) {
 }
 
 void Stg30_ActionLoadAddSorted(Actor *a0, s32 file, s32 lba) {
-    Stg30Work73040 *w = (Stg30Work73040 *)a0->work;
+    Stg30ActionLoadWork *w = (Stg30ActionLoadWork *)a0->work;
     s32 found = 0;
     s32 i;
     s32 j;
@@ -96,7 +96,7 @@ void Stg30_ActionLoadAddSorted(Actor *a0, s32 file, s32 lba) {
 }
 
 void Stg30_ActionLoadUpdate(Actor *a0) {
-    Stg30Work73040 *w = (Stg30Work73040 *)a0->work;
+    Stg30ActionLoadWork *w = (Stg30ActionLoadWork *)a0->work;
     s16 *p;
     s32 k;
     s32 i;
@@ -111,7 +111,7 @@ void Stg30_ActionLoadUpdate(Actor *a0) {
     switch (a0->stateLevel1) {
     case 0:
     default:
-        p = w->field_0;
+        p = w->script;
         k = 0;
         while (*p != 0x18) {
             switch (*p) {
@@ -143,125 +143,125 @@ void Stg30_ActionLoadUpdate(Actor *a0) {
                 break;
             case 9:
                 if (p[1] != 6) {
-                    w->field_2E8 = Stg30_Battle.entries[p[1]].digiId;
-                    w->field_320 = 0;
+                    w->casterDigiId = Stg30_Battle.entries[p[1]].digiId;
+                    w->itemAction = 0;
                 } else {
-                    w->field_320 = 1;
+                    w->itemAction = 1;
                 }
-                w->field_31C = p[2];
+                w->skillId = p[2];
                 p += 3;
                 break;
             case 10:
-                w->field_304[k] = 1;
-                w->field_2EC[k] = Stg30_Battle.entries[p[1]].digiId;
+                w->targetReactKinds[k] = 1;
+                w->targetDigiIds[k] = Stg30_Battle.entries[p[1]].digiId;
                 p += 3;
                 k++;
                 break;
             case 11:
-                w->field_304[k] = 2;
-                w->field_2EC[k] = Stg30_Battle.entries[p[1]].digiId;
+                w->targetReactKinds[k] = 2;
+                w->targetDigiIds[k] = Stg30_Battle.entries[p[1]].digiId;
                 p += 3;
                 k++;
                 break;
             case 12:
-                w->field_304[k] = 3;
-                w->field_2EC[k] = Stg30_Battle.entries[p[1]].digiId;
+                w->targetReactKinds[k] = 3;
+                w->targetDigiIds[k] = Stg30_Battle.entries[p[1]].digiId;
                 p += 3;
                 k++;
                 break;
             case 13:
-                w->field_304[k] = 0;
-                w->field_2EC[k] = Stg30_Battle.entries[p[1]].digiId;
+                w->targetReactKinds[k] = 0;
+                w->targetDigiIds[k] = Stg30_Battle.entries[p[1]].digiId;
                 p += 3;
                 k++;
                 break;
             case 8:
-                w->field_304[k] = 4;
-                w->field_2EC[k] = Stg30_Battle.entries[p[1]].digiId;
+                w->targetReactKinds[k] = 4;
+                w->targetDigiIds[k] = Stg30_Battle.entries[p[1]].digiId;
                 p += 3;
                 k++;
                 break;
             }
         }
-        Cd_QueueFile(Skill_GetPartsEntry(w->field_31C) >> 16);
+        Cd_QueueFile(Skill_GetPartsEntry(w->skillId) >> 16);
         Task_NextState1(a0);
         break;
     case 1:
-        w->field_2DC = 0;
-        w->field_2E0 = 0;
-        if (w->field_320 == 0) {
-            w->field_1E8[w->field_2DC++] = Digi_GetModelFile(w->field_2E8);
-            w->field_1E8[w->field_2DC++] = Anim_GetModelAnimFile(w->field_2E8, 0);
-            w->field_260[w->field_2E0++] = Anim_GetModelAnimFile(w->field_2E8, Skill_GetCastAnim(w->field_31C) + 5);
+        w->keptCount = 0;
+        w->tempCount = 0;
+        if (w->itemAction == 0) {
+            w->keptFiles[w->keptCount++] = Digi_GetModelFile(w->casterDigiId);
+            w->keptFiles[w->keptCount++] = Anim_GetModelAnimFile(w->casterDigiId, 0);
+            w->tempFiles[w->tempCount++] = Anim_GetModelAnimFile(w->casterDigiId, Skill_GetCastAnim(w->skillId) + 5);
         }
         for (i = 0; i < 6; i++) {
-            if (w->field_2EC[i] != 0) {
-                w->field_1E8[w->field_2DC++] = Digi_GetModelFile(w->field_2EC[i]);
-                w->field_1E8[w->field_2DC++] = Anim_GetModelAnimFile(w->field_2EC[i], 0);
-                switch (w->field_304[i]) {
+            if (w->targetDigiIds[i] != 0) {
+                w->keptFiles[w->keptCount++] = Digi_GetModelFile(w->targetDigiIds[i]);
+                w->keptFiles[w->keptCount++] = Anim_GetModelAnimFile(w->targetDigiIds[i], 0);
+                switch (w->targetReactKinds[i]) {
                 case 0:
                     break;
                 case 1:
-                    w->field_260[w->field_2E0++] = Anim_GetModelAnimFile(w->field_2EC[i], 1);
+                    w->tempFiles[w->tempCount++] = Anim_GetModelAnimFile(w->targetDigiIds[i], 1);
                     break;
                 case 3:
-                    w->field_260[w->field_2E0++] = Anim_GetModelAnimFile(w->field_2EC[i], 2);
-                    w->field_1E8[w->field_2DC++] = Anim_GetModelAnimFile(w->field_2EC[i], 0xA);
+                    w->tempFiles[w->tempCount++] = Anim_GetModelAnimFile(w->targetDigiIds[i], 2);
+                    w->keptFiles[w->keptCount++] = Anim_GetModelAnimFile(w->targetDigiIds[i], 0xA);
                     break;
                 case 2:
-                    w->field_260[w->field_2E0++] = Anim_GetModelAnimFile(w->field_2EC[i], 2);
+                    w->tempFiles[w->tempCount++] = Anim_GetModelAnimFile(w->targetDigiIds[i], 2);
                 case 4:
-                    w->field_260[w->field_2E0++] = Anim_GetModelAnimFile(w->field_2EC[i], 9);
+                    w->tempFiles[w->tempCount++] = Anim_GetModelAnimFile(w->targetDigiIds[i], 9);
                     break;
                 }
             }
         }
-        if (w->field_31C != 0) {
+        if (w->skillId != 0) {
             for (k = 0; k < 2; k++) {
-                Skill_GetFxSet(w->field_31C, k, a, b);
+                Skill_GetFxSet(w->skillId, k, a, b);
                 for (j = 0; j < 3; j++) {
                     if (a[j] != 0) {
-                        w->field_260[w->field_2E0++] = a[j];
+                        w->tempFiles[w->tempCount++] = a[j];
                     }
                     if (b[j] != 0) {
-                        w->field_260[w->field_2E0++] = b[j];
+                        w->tempFiles[w->tempCount++] = b[j];
                     }
                 }
             }
         }
-        if (w->field_320 != 0) {
-            w->field_1E8[w->field_2DC++] = 0xD2D;
-            w->field_1E8[w->field_2DC++] = 0xD2B;
+        if (w->itemAction != 0) {
+            w->keptFiles[w->keptCount++] = 0xD2D;
+            w->keptFiles[w->keptCount++] = 0xD2B;
         }
-        w->field_1E8[w->field_2DC++] = 0x1A1;
-        w->field_1E8[w->field_2DC++] = 0x13B;
-        w->field_1E8[w->field_2DC++] = 0x1A0;
-        w->field_1E8[w->field_2DC++] = 0x22B;
-        w->field_1E8[w->field_2DC++] = 0xCB9;
+        w->keptFiles[w->keptCount++] = 0x1A1;
+        w->keptFiles[w->keptCount++] = 0x13B;
+        w->keptFiles[w->keptCount++] = 0x1A0;
+        w->keptFiles[w->keptCount++] = 0x22B;
+        w->keptFiles[w->keptCount++] = 0xCB9;
         Task_NextState1(a0);
         break;
     case 2:
-        if (w->field_320 == 0) {
-            if (Cd_GetFileState(Skill_GetPartsEntry(w->field_31C) >> 16) != 3) {
+        if (w->itemAction == 0) {
+            if (Cd_GetFileState(Skill_GetPartsEntry(w->skillId) >> 16) != 3) {
                 break;
             }
-            w->field_1E8[w->field_2DC++] = 0x1EF;
-            for (q = (Stg30Part *)Cd_GetFileEntry(Skill_GetPartsEntry(w->field_31C)); q->fileId != 0; q++) {
-                w->field_260[w->field_2E0++] = q->fileId >> 16;
+            w->keptFiles[w->keptCount++] = 0x1EF;
+            for (q = (Stg30Part *)Cd_GetFileEntry(Skill_GetPartsEntry(w->skillId)); q->fileId != 0; q++) {
+                w->tempFiles[w->tempCount++] = q->fileId >> 16;
             }
         }
         w->count = 0;
-        for (i = 0; i < w->field_2DC; i++) {
-            Stg30_ActionLoadAddSorted(a0, w->field_1E8[i], Cd_GetFileLba(w->field_1E8[i]));
+        for (i = 0; i < w->keptCount; i++) {
+            Stg30_ActionLoadAddSorted(a0, w->keptFiles[i], Cd_GetFileLba(w->keptFiles[i]));
         }
-        for (i = 0; i < w->field_2E0; i++) {
-            Stg30_ActionLoadAddSorted(a0, w->field_260[i], Cd_GetFileLba(w->field_260[i]));
+        for (i = 0; i < w->tempCount; i++) {
+            Stg30_ActionLoadAddSorted(a0, w->tempFiles[i], Cd_GetFileLba(w->tempFiles[i]));
         }
         Task_NextState1(a0);
-        w->field_4 = 0;
+        w->loadTimer = 0;
         break;
     case 3:
-        if (++w->field_4 < 300) {
+        if (++w->loadTimer < 300) {
             for (i = 0; i < w->count; i++) {
                 Cd_QueueFile(w->files[i]);
                 if (Cd_GetFileState(w->files[i]) != 3) {
