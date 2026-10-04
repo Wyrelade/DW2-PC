@@ -440,5 +440,97 @@ void func_80064ADC(Actor *arg0) {
 }
 
 INCLUDE_RODATA("asm/USA/stag0000/rodata", D_80063378);
-INCLUDE_RODATA("asm/USA/stag0000/rodata", jtbl_800633F0);
-INCLUDE_ASM("asm/USA/stag0000/nonmatchings/stag0000", func_80064B08);
+s32 func_80064B08(Stg00RelocHdr *arg0, s32 arg1) {
+    s32 result = 0;
+    Stg00BitTbl tbl = D_80063378;
+    s32 i;
+    s32 code;
+    s32 val;
+    s32 n;
+    Stg00RelocCmd *cmd;
+
+    for (i = 0; i < 8; i++) {
+        code = arg0->field_34[i].field_0;
+        if (code != 0) {
+            result |= 1;
+        }
+    }
+    for (i = 0; i < 5; i++) {
+        u32 chk = arg0->field_54[i].chk;
+        code = (chk & 0xF) + ((chk >> 4) & 0xF) + ((chk >> 8) & 0xF) + ((chk >> 12) & 0xF);
+        if (code != 0) {
+            u32 sel = arg0->field_54[i].sel;
+            val = sel & 0xF;
+            result |= tbl.bits[i][val];
+            val = (sel >> 4) & 0xF;
+            result |= tbl.bits[i][val];
+            val = (sel >> 8) & 0xF;
+            result |= tbl.bits[i][val];
+            val = (sel >> 12) & 0xF;
+            result |= tbl.bits[i][val];
+        }
+    }
+    cmd = (Stg00RelocCmd *)arg0->field_8[arg1]->field_C;
+    while (cmd->field_0.tag != 0xFF) {
+        for (i = 0; i < 4; i++) {
+            switch (i) {
+            case 0:
+            default:
+                code = cmd->field_0.bits >> 16;
+                code &= 0xF;
+                val = cmd->field_0.bits >> 20;
+                val &= 0xF;
+                break;
+            case 1:
+                code = cmd->field_0.bits >> 24;
+                code &= 0xF;
+                val = cmd->field_0.bits >> 28;
+                break;
+            case 2:
+                code = cmd->field_4 & 0xF;
+                val = cmd->field_4 >> 4;
+                val &= 0xF;
+                break;
+            case 3:
+                code = cmd->field_4 >> 8;
+                code &= 0xF;
+                val = cmd->field_4 >> 12;
+                val &= 0xF;
+                break;
+            }
+            val += arg0->field_2E;
+            switch (code - 2) {
+            case 0:
+                n = val >= 5 ? 5 : val;
+                result |= 0x8000 << (n - 1);
+                break;
+            case 1:
+                n = val >= 5 ? 5 : val;
+                result |= 0x400 << (n - 1);
+                break;
+            case 2:
+                n = val >= 5 ? 5 : val;
+                result |= 0x20 << (n - 1);
+                break;
+            case 3:
+                n = val >= 3 ? 3 : val;
+                result |= 0x100000 << (n - 1);
+                break;
+            case 4:
+                n = val >= 3 ? 3 : val;
+                result |= 0x800000 << (n - 1);
+                break;
+            case 5:
+                n = val >= 3 ? 3 : val;
+                result |= 0x20000000 << (n - 1);
+                break;
+            case 6:
+                n = val >= 3 ? 3 : val;
+                result |= 0x4000000 << (n - 1);
+                break;
+            }
+        }
+        cmd++;
+    }
+    return result;
+}
