@@ -548,7 +548,7 @@ typedef struct {
 } EntA0;
 
 EntA0 *Cd_GetFileEntry();
-s32 Cd_GetFileOrNull();
+s32 Cd_GetFileOrNull(s32 arg0);
 s32 func_8001EE34();
 
 /* Record returned by the Cd_FindCachedFile lookup. */
