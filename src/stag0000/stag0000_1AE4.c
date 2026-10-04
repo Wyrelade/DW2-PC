@@ -87,12 +87,12 @@ void Stg00_FontFree(void) {
 
 void Stg00_FontDrawStr(s32 arg0, s32 arg1, u8 *arg2)
 {
-    Stg00PolyFT4 *poly = (Stg00PolyFT4 *) D_8005F770.packet.addr;
-    Stg00OTag *ot = (Stg00OTag *) D_8005F770.otLayers.s[0];
+    Stg00PolyFT4 *poly = (Stg00PolyFT4 *) Sys_State.packet.addr;
+    Stg00OTag *ot = (Stg00OTag *) Sys_State.otLayers.s[0];
     Stg00Work *work = Stg00_FontWork;
     u8 ch;
     s32 x;
-    s32 y = arg1 - D_8005F770.centerY.s;
+    s32 y = arg1 - Sys_State.centerY.s;
     Stg00TexSlot *tex;
     u16 clut;
     u16 tpage;
@@ -100,7 +100,7 @@ void Stg00_FontDrawStr(s32 arg0, s32 arg1, u8 *arg2)
 
     clut = ((work->field_8C2 + work->field_8D4) << 6) | ((work->field_8C0 >> 4) & 0x3F);
     tex = (Stg00TexSlot *) work->field_8D0;
-    x = arg0 - D_8005F770.centerX.s;
+    x = arg0 - Sys_State.centerX.s;
     tpage = (1 << 5) | ((tex->y & 0x100) >> 4) | ((tex->x & 0x3FF) >> 6) | ((tex->y & 0x200) << 2);
     while ((ch = *arg2) != 0) {
         if ((u32) (ch - 0x20) < 0x50) {
@@ -143,8 +143,8 @@ void Stg00_FontDrawStr(s32 arg0, s32 arg1, u8 *arg2)
 }
 
 void Stg00_FontDrawSheet(void) {
-    Stg00PolyFT4 *p = (Stg00PolyFT4 *)D_8005F770.packet.work;
-    u32 *ot = D_8005F770.otLayers.u[0];
+    Stg00PolyFT4 *p = (Stg00PolyFT4 *)Sys_State.packet.work;
+    u32 *ot = Sys_State.otLayers.u[0];
     Stg00Work *w;
     Stg00TexSlot *t;
     s32 h;
@@ -178,7 +178,7 @@ void Stg00_FontDrawSheet(void) {
     p->tag.word = (p->tag.word & 0xFF000000) | (*ot & 0xFFFFFF);
     *ot = (*ot & 0xFF000000) | ((u32)p & 0xFFFFFF);
     p++;
-    D_8005F770.packet.work = (ActorWork *)p;
+    Sys_State.packet.work = (ActorWork *)p;
 }
 
 void Stg00_FontPrintBuf(s32 arg0, s32 arg1) {
@@ -186,12 +186,12 @@ void Stg00_FontPrintBuf(s32 arg0, s32 arg1) {
 }
 
 void Stg00_FontPrintBufCentered(s32 arg0, s32 arg1) {
-    Stg00_FontDrawStr(arg0 + D_8005F770.centerX.s, arg1 + D_8005F770.centerY.s, Stg00_FontTextBuf);
+    Stg00_FontDrawStr(arg0 + Sys_State.centerX.s, arg1 + Sys_State.centerY.s, Stg00_FontTextBuf);
 }
 
 void Stg00_FightBgTask(Actor *arg0) {
     if (arg0->stateLevel0 == 0) {
-        Actor_InitTransform(arg0, D_80043704, 0);
+        Actor_InitTransform(arg0, Gfx_ZeroVector, 0);
         Gfx_AttachModel(arg0, 0x78)->otIndex = 5;
         Gfx_ResetModelBones(arg0);
         Task_NextState0(arg0);
@@ -281,41 +281,41 @@ void Stg00_DigiViewTask(Actor *arg0)
 
       default:
         cam = (Actor *) Stg00_FindCamera();
-        for (i = 0; i < D_8005F770.frameDelta; i++)
+        for (i = 0; i < Sys_State.frameDelta; i++)
       {
-        if (D_8005F6F0[0].right)
+        if (Pad_State[0].right)
         {
           Stg00_CamRotate(cam, 0, 0x20, 0);
         }
         else
-          if (D_8005F6F0[0].left)
+          if (Pad_State[0].left)
         {
           Stg00_CamRotate(cam, 0, -0x20, 0);
         }
-        if (D_8005F6F0[0].up)
+        if (Pad_State[0].up)
         {
           Stg00_CamMoveViewPoint(cam, 0, 0, -0x20);
         }
         else
-          if (D_8005F6F0[0].down)
+          if (Pad_State[0].down)
         {
           Stg00_CamMoveViewPoint(cam, 0, 0, 0x20);
         }
-        if (D_8005F6F0[0].triangle)
+        if (Pad_State[0].triangle)
         {
           Stg00_CamMoveViewPoint(cam, 0, -0x20, 0);
         }
         else
-          if (D_8005F6F0[0].cross)
+          if (Pad_State[0].cross)
         {
           Stg00_CamMoveViewPoint(cam, 0, 0x20, 0);
         }
-        if (D_8005F6F0[0].r1)
+        if (Pad_State[0].r1)
         {
           Stg00_CamMoveRefPoint(cam, 0, -0x20, 0);
         }
         else
-          if (D_8005F6F0[0].l1)
+          if (Pad_State[0].l1)
         {
           Stg00_CamMoveRefPoint(cam, 0, 0x20, 0);
         }
@@ -387,7 +387,7 @@ void Stg00_DigiViewTask(Actor *arg0)
 
         }
       }
-        if (D_8005F6F0[0].up > 0)
+        if (Pad_State[0].up > 0)
       {
         if (((Work65E24Slots *) work)->words[work->field_8] != 0)
         {
@@ -396,7 +396,7 @@ void Stg00_DigiViewTask(Actor *arg0)
         }
       }
       else
-        if (D_8005F6F0[0].down > 0)
+        if (Pad_State[0].down > 0)
       {
         if (work->field_8 == 0)
         {
@@ -418,7 +418,7 @@ void Stg00_DigiViewTask(Actor *arg0)
           }
         }
       }
-        if (D_8005F6F0[0].right > 0)
+        if (Pad_State[0].right > 0)
       {
         if (work->field_8 == 1)
         {
@@ -430,7 +430,7 @@ void Stg00_DigiViewTask(Actor *arg0)
       {
         do
         {
-          if (D_8005F6F0[0].left > 0)
+          if (Pad_State[0].left > 0)
           {
             if (work->field_8 == 0)
             {
@@ -741,27 +741,27 @@ void Stg00_LineupTask(Actor *arg0) {
     case 1:
         w = (Stg00ListWork *)arg0->work;
         cam = (Actor *)Stg00_FindCamera();
-        for (i = 0; i < D_8005F770.frameDelta; i++) {
-            if (D_8005F6F0[0].right) {
+        for (i = 0; i < Sys_State.frameDelta; i++) {
+            if (Pad_State[0].right) {
                 Stg00_CamRotate(cam, 0, 0x20, 0);
-            } else if (D_8005F6F0[0].left) {
+            } else if (Pad_State[0].left) {
                 Stg00_CamRotate(cam, 0, -0x20, 0);
             }
-            if (D_8005F6F0[0].up) {
+            if (Pad_State[0].up) {
                 Stg00_CamMoveViewPoint(cam, 0, 0, -0x20);
                 Stg00_CamMoveRefPoint(cam, 0, 0, -0x20);
-            } else if (D_8005F6F0[0].down) {
+            } else if (Pad_State[0].down) {
                 Stg00_CamMoveViewPoint(cam, 0, 0, 0x20);
                 Stg00_CamMoveRefPoint(cam, 0, 0, 0x20);
             }
-            if (D_8005F6F0[0].triangle) {
+            if (Pad_State[0].triangle) {
                 Stg00_CamMoveViewPoint(cam, 0, -0x20, 0);
-            } else if (D_8005F6F0[0].cross) {
+            } else if (Pad_State[0].cross) {
                 Stg00_CamMoveViewPoint(cam, 0, 0x20, 0);
             }
-            if (D_8005F6F0[0].r1) {
+            if (Pad_State[0].r1) {
                 Stg00_CamMoveRefPoint(cam, 0, -0x20, 0);
-            } else if (D_8005F6F0[0].l1) {
+            } else if (Pad_State[0].l1) {
                 Stg00_CamMoveRefPoint(cam, 0, 0x20, 0);
             }
         }
@@ -936,27 +936,27 @@ void Stg00_GroupViewTask(Actor *arg0) {
     case 1:
         w = (Stg00ViewWork *)arg0->work;
         cam = (Actor *)Stg00_FindCamera();
-        for (i = 0; i < D_8005F770.frameDelta; i++) {
-            if (D_8005F6F0[0].right) {
+        for (i = 0; i < Sys_State.frameDelta; i++) {
+            if (Pad_State[0].right) {
                 Stg00_CamRotate(cam, 0, 0x20, 0);
-            } else if (D_8005F6F0[0].left) {
+            } else if (Pad_State[0].left) {
                 Stg00_CamRotate(cam, 0, -0x20, 0);
             }
-            if (D_8005F6F0[0].up) {
+            if (Pad_State[0].up) {
                 Stg00_CamMoveViewPoint(cam, 0, 0, -0x20);
                 Stg00_CamMoveRefPoint(cam, 0, 0, -0x20);
-            } else if (D_8005F6F0[0].down) {
+            } else if (Pad_State[0].down) {
                 Stg00_CamMoveViewPoint(cam, 0, 0, 0x20);
                 Stg00_CamMoveRefPoint(cam, 0, 0, 0x20);
             }
-            if (D_8005F6F0[0].triangle) {
+            if (Pad_State[0].triangle) {
                 Stg00_CamMoveViewPoint(cam, 0, -0x20, 0);
-            } else if (D_8005F6F0[0].cross) {
+            } else if (Pad_State[0].cross) {
                 Stg00_CamMoveViewPoint(cam, 0, 0x20, 0);
             }
-            if (D_8005F6F0[0].r1) {
+            if (Pad_State[0].r1) {
                 Stg00_CamMoveRefPoint(cam, 0, -0x20, 0);
-            } else if (D_8005F6F0[0].l1) {
+            } else if (Pad_State[0].l1) {
                 Stg00_CamMoveRefPoint(cam, 0, 0x20, 0);
             }
         }
@@ -995,10 +995,10 @@ void Stg00_GroupViewTask(Actor *arg0) {
             }
             Stg00_GroupViewSetVideoMode(arg0);
         }
-        if (D_8005F6F0[0].start > 0) {
+        if (Pad_State[0].start > 0) {
             Stg00_SpawnRandomGroup(arg0);
         }
-        if (D_8005F6F0[0].circle > 0) {
+        if (Pad_State[0].circle > 0) {
             if (++w->field_C == 4) {
                 w->field_C = 0;
             }

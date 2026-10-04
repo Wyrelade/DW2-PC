@@ -1,8 +1,8 @@
 nonmatching Cd_ClearFileCache, 0x40
 
 glabel Cd_ClearFileCache
-    /* 14238 80023A38 0680023C */  lui        $v0, %hi(D_8005F8C8)
-    /* 1423C 80023A3C C8F84424 */  addiu      $a0, $v0, %lo(D_8005F8C8)
+    /* 14238 80023A38 0680023C */  lui        $v0, %hi(Cd_FileCache)
+    /* 1423C 80023A3C C8F84424 */  addiu      $a0, $v0, %lo(Cd_FileCache)
     /* 14240 80023A40 21280000 */  addu       $a1, $zero, $zero
     /* 14244 80023A44 08008324 */  addiu      $v1, $a0, 0x8
   .L80023A48:

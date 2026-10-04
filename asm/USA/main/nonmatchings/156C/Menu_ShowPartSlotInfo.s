@@ -23,7 +23,7 @@ glabel Menu_ShowPartSlotInfo
     /* 5D3C 8001553C 58001226 */  addiu      $s2, $s0, 0x58
     /* 5D40 80015540 E26E000C */  jal        Text_Close
     /* 5D44 80015544 21204002 */   addu      $a0, $s2, $zero
-    /* 5D48 80015548 7400828F */  lw         $v0, %gp_rel(D_8005076C)($gp)
+    /* 5D48 80015548 7400828F */  lw         $v0, %gp_rel(Menu_PartGridSlots)($gp)
     /* 5D4C 8001554C 00000000 */  nop
     /* 5D50 80015550 21105100 */  addu       $v0, $v0, $s1
     /* 5D54 80015554 00005090 */  lbu        $s0, 0x0($v0)
@@ -31,7 +31,7 @@ glabel Menu_ShowPartSlotInfo
     /* 5D5C 8001555C 3A000212 */  beq        $s0, $v0, .L80015648
     /* 5D60 80015560 0F000224 */   addiu     $v0, $zero, 0xF
     /* 5D64 80015564 1000A2A7 */  sh         $v0, 0x10($sp)
-    /* 5D68 80015568 7800828F */  lw         $v0, %gp_rel(D_80050770)($gp)
+    /* 5D68 80015568 7800828F */  lw         $v0, %gp_rel(Menu_PartGridLabels)($gp)
     /* 5D6C 8001556C 32000324 */  addiu      $v1, $zero, 0x32
     /* 5D70 80015570 1200A3A7 */  sh         $v1, 0x12($sp)
     /* 5D74 80015574 21105100 */  addu       $v0, $v0, $s1
@@ -47,8 +47,8 @@ glabel Menu_ShowPartSlotInfo
     /* 5D9C 8001559C 003C0700 */  sll        $a3, $a3, 16
     /* 5DA0 800155A0 3E4D000C */  jal        Text_OpenPacked
     /* 5DA4 800155A4 25384700 */   or        $a3, $v0, $a3
-    /* 5DA8 800155A8 0580033C */  lui        $v1, %hi(D_80050720)
-    /* 5DAC 800155AC 2007638C */  lw         $v1, %lo(D_80050720)($v1)
+    /* 5DA8 800155A8 0580033C */  lui        $v1, %hi(Save_GameStatePtr)
+    /* 5DAC 800155AC 2007638C */  lw         $v1, %lo(Save_GameStatePtr)($v1)
     /* 5DB0 800155B0 40101000 */  sll        $v0, $s0, 1
     /* 5DB4 800155B4 21186200 */  addu       $v1, $v1, $v0
     /* 5DB8 800155B8 2C006294 */  lhu        $v0, 0x2C($v1)
@@ -61,12 +61,12 @@ glabel Menu_ShowPartSlotInfo
     /* 5DD4 800155D4 21284000 */  addu       $a1, $v0, $zero
     /* 5DD8 800155D8 80000624 */  addiu      $a2, $zero, 0x80
     /* 5DDC 800155DC 0A008797 */  lhu        $a3, %gp_rel(D_80050702)($gp)
-    /* 5DE0 800155E0 08008297 */  lhu        $v0, %gp_rel(D_80050700)($gp)
+    /* 5DE0 800155E0 08008297 */  lhu        $v0, %gp_rel(Menu_ItemUseMsgPos)($gp)
     /* 5DE4 800155E4 003C0700 */  sll        $a3, $a3, 16
     /* 5DE8 800155E8 3E4D000C */  jal        Text_OpenPacked
     /* 5DEC 800155EC 25384700 */   or        $a3, $v0, $a3
-    /* 5DF0 800155F0 0580023C */  lui        $v0, %hi(D_80050720)
-    /* 5DF4 800155F4 2007428C */  lw         $v0, %lo(D_80050720)($v0)
+    /* 5DF0 800155F0 0580023C */  lui        $v0, %hi(Save_GameStatePtr)
+    /* 5DF4 800155F4 2007428C */  lw         $v0, %lo(Save_GameStatePtr)($v0)
     /* 5DF8 800155F8 00000000 */  nop
     /* 5DFC 800155FC 21105000 */  addu       $v0, $v0, $s0
     /* 5E00 80015600 52004290 */  lbu        $v0, 0x52($v0)

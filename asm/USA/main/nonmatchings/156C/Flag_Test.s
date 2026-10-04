@@ -7,8 +7,8 @@ glabel Flag_Test
     /* 12684 80021E84 5802022A */  slti       $v0, $s0, 0x258
     /* 12688 80021E88 07004010 */  beqz       $v0, .L80021EA8
     /* 1268C 80021E8C 1400BFAF */   sw        $ra, 0x14($sp)
-    /* 12690 80021E90 0680043C */  lui        $a0, %hi(D_8005F624)
-    /* 12694 80021E94 24F68424 */  addiu      $a0, $a0, %lo(D_8005F624)
+    /* 12690 80021E90 0680043C */  lui        $a0, %hi(Flag_Bits)
+    /* 12694 80021E94 24F68424 */  addiu      $a0, $a0, %lo(Flag_Bits)
     /* 12698 80021E98 9587000C */  jal        Mem_TestBit
     /* 1269C 80021E9C 21280002 */   addu      $a1, $s0, $zero
     /* 126A0 80021EA0 0A880008 */  j          .L80022028
@@ -62,8 +62,8 @@ glabel Flag_Test
     /* 12748 80021F48 0D004010 */  beqz       $v0, .L80021F80
     /* 1274C 80021F4C 21380000 */   addu      $a3, $zero, $zero
     /* 12750 80021F50 30F80326 */  addiu      $v1, $s0, -0x7D0
-    /* 12754 80021F54 0680023C */  lui        $v0, %hi(D_8005E620)
-    /* 12758 80021F58 20E64624 */  addiu      $a2, $v0, %lo(D_8005E620)
+    /* 12754 80021F54 0680023C */  lui        $v0, %hi(Save_GameState)
+    /* 12758 80021F58 20E64624 */  addiu      $a2, $v0, %lo(Save_GameState)
   .L80021F5C:
     /* 1275C 80021F5C 6600C294 */  lhu        $v0, 0x66($a2)
     /* 12760 80021F60 00000000 */  nop
@@ -77,8 +77,8 @@ glabel Flag_Test
   .L80021F80:
     /* 12780 80021F80 B80B022A */  slti       $v0, $s0, 0xBB8
     /* 12784 80021F84 08004010 */  beqz       $v0, .L80021FA8
-    /* 12788 80021F88 0680023C */   lui       $v0, %hi(D_8005E620)
-    /* 1278C 80021F8C 20E64224 */  addiu      $v0, $v0, %lo(D_8005E620)
+    /* 12788 80021F88 0680023C */   lui       $v0, %hi(Save_GameState)
+    /* 1278C 80021F8C 20E64224 */  addiu      $v0, $v0, %lo(Save_GameState)
     /* 12790 80021F90 30F80326 */  addiu      $v1, $s0, -0x7D0
     /* 12794 80021F94 40180300 */  sll        $v1, $v1, 1
     /* 12798 80021F98 21186200 */  addu       $v1, $v1, $v0
@@ -90,8 +90,8 @@ glabel Flag_Test
     /* 127AC 80021FAC 13004010 */  beqz       $v0, .L80021FFC
     /* 127B0 80021FB0 48F40326 */   addiu     $v1, $s0, -0xBB8
     /* 127B4 80021FB4 21380000 */  addu       $a3, $zero, $zero
-    /* 127B8 80021FB8 0680023C */  lui        $v0, %hi(D_8005E620)
-    /* 127BC 80021FBC 20E64624 */  addiu      $a2, $v0, %lo(D_8005E620)
+    /* 127B8 80021FB8 0680023C */  lui        $v0, %hi(Save_GameState)
+    /* 127BC 80021FBC 20E64624 */  addiu      $a2, $v0, %lo(Save_GameState)
   .L80021FC0:
     /* 127C0 80021FC0 E500C290 */  lbu        $v0, 0xE5($a2)
     /* 127C4 80021FC4 00000000 */  nop

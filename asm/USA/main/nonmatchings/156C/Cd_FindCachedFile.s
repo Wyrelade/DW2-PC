@@ -1,8 +1,8 @@
 nonmatching Cd_FindCachedFile, 0x38
 
 glabel Cd_FindCachedFile
-    /* 14278 80023A78 0680023C */  lui        $v0, %hi(D_8005F8C8)
-    /* 1427C 80023A7C C8F84324 */  addiu      $v1, $v0, %lo(D_8005F8C8)
+    /* 14278 80023A78 0680023C */  lui        $v0, %hi(Cd_FileCache)
+    /* 1427C 80023A7C C8F84324 */  addiu      $v1, $v0, %lo(Cd_FileCache)
     /* 14280 80023A80 21280000 */  addu       $a1, $zero, $zero
   .L80023A84:
     /* 14284 80023A84 0400628C */  lw         $v0, 0x4($v1)

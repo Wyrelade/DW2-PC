@@ -20,8 +20,8 @@ glabel func_80066B48
     /* 3824 80066B84 21284000 */  addu       $a1, $v0, $zero
     /* 3828 80066B88 E500A018 */  blez       $a1, .L80066F20
     /* 382C 80066B8C 21180000 */   addu      $v1, $zero, $zero
-    /* 3830 80066B90 0680023C */  lui        $v0, %hi(D_8005E620)
-    /* 3834 80066B94 20E64424 */  addiu      $a0, $v0, %lo(D_8005E620)
+    /* 3830 80066B90 0680023C */  lui        $v0, %hi(Save_GameState)
+    /* 3834 80066B94 20E64424 */  addiu      $a0, $v0, %lo(Save_GameState)
   .L80066B98:
     /* 3838 80066B98 66008294 */  lhu        $v0, 0x66($a0)
     /* 383C 80066B9C 00000000 */  nop
@@ -36,8 +36,8 @@ glabel func_80066B48
     /* 385C 80066BBC 21280000 */  addu       $a1, $zero, $zero
     /* 3860 80066BC0 2130A000 */  addu       $a2, $a1, $zero
     /* 3864 80066BC4 2120A000 */  addu       $a0, $a1, $zero
-    /* 3868 80066BC8 0680023C */  lui        $v0, %hi(D_8005E620)
-    /* 386C 80066BCC 20E64324 */  addiu      $v1, $v0, %lo(D_8005E620)
+    /* 3868 80066BC8 0680023C */  lui        $v0, %hi(Save_GameState)
+    /* 386C 80066BCC 20E64324 */  addiu      $v1, $v0, %lo(Save_GameState)
   .L80066BD0:
     /* 3870 80066BD0 E4006290 */  lbu        $v0, 0xE4($v1)
     /* 3874 80066BD4 00000000 */  nop
@@ -75,8 +75,8 @@ glabel func_80066B48
     /* 38E0 80066C40 00000000 */   nop
   jlabel .L80066C44
     /* 38E4 80066C44 21280000 */  addu       $a1, $zero, $zero
-    /* 38E8 80066C48 0680023C */  lui        $v0, %hi(D_8005E620)
-    /* 38EC 80066C4C 20E64424 */  addiu      $a0, $v0, %lo(D_8005E620)
+    /* 38E8 80066C48 0680023C */  lui        $v0, %hi(Save_GameState)
+    /* 38EC 80066C4C 20E64424 */  addiu      $a0, $v0, %lo(Save_GameState)
   .L80066C50:
     /* 38F0 80066C50 E4008390 */  lbu        $v1, 0xE4($a0)
     /* 38F4 80066C54 0300A224 */  addiu      $v0, $a1, 0x3
@@ -123,18 +123,18 @@ glabel func_80066B48
     /* 3980 80066CE0 C99B0108 */  j          .L80066F24
     /* 3984 80066CE4 0100422C */   sltiu     $v0, $v0, 0x1
   jlabel .L80066CE8
-    /* 3988 80066CE8 0680023C */  lui        $v0, %hi(D_8005F770)
-    /* 398C 80066CEC 70F74424 */  addiu      $a0, $v0, %lo(D_8005F770)
+    /* 3988 80066CE8 0680023C */  lui        $v0, %hi(Sys_State)
+    /* 398C 80066CEC 70F74424 */  addiu      $a0, $v0, %lo(Sys_State)
     /* 3990 80066CF0 1800838C */  lw         $v1, 0x18($a0)
     /* 3994 80066CF4 01030224 */  addiu      $v0, $zero, 0x301
     /* 3998 80066CF8 05006214 */  bne        $v1, $v0, .L80066D10
-    /* 399C 80066CFC 0680023C */   lui       $v0, %hi(D_8005F770)
+    /* 399C 80066CFC 0680023C */   lui       $v0, %hi(Sys_State)
     /* 39A0 80066D00 2400838C */  lw         $v1, 0x24($a0)
     /* 39A4 80066D04 03000224 */  addiu      $v0, $zero, 0x3
     /* 39A8 80066D08 DDFF6210 */  beq        $v1, $v0, .L80066C80
-    /* 39AC 80066D0C 0680023C */   lui       $v0, %hi(D_8005F770)
+    /* 39AC 80066D0C 0680023C */   lui       $v0, %hi(Sys_State)
   .L80066D10:
-    /* 39B0 80066D10 70F74424 */  addiu      $a0, $v0, %lo(D_8005F770)
+    /* 39B0 80066D10 70F74424 */  addiu      $a0, $v0, %lo(Sys_State)
     /* 39B4 80066D14 1800838C */  lw         $v1, 0x18($a0)
     /* 39B8 80066D18 21030224 */  addiu      $v0, $zero, 0x321
     /* 39BC 80066D1C 81006214 */  bne        $v1, $v0, .L80066F24
@@ -146,18 +146,18 @@ glabel func_80066B48
     /* 39D4 80066D34 C99B0108 */  j          .L80066F24
     /* 39D8 80066D38 21100000 */   addu      $v0, $zero, $zero
   jlabel .L80066D3C
-    /* 39DC 80066D3C 0680023C */  lui        $v0, %hi(D_8005F770)
-    /* 39E0 80066D40 70F74424 */  addiu      $a0, $v0, %lo(D_8005F770)
+    /* 39DC 80066D3C 0680023C */  lui        $v0, %hi(Sys_State)
+    /* 39E0 80066D40 70F74424 */  addiu      $a0, $v0, %lo(Sys_State)
     /* 39E4 80066D44 1800838C */  lw         $v1, 0x18($a0)
     /* 39E8 80066D48 01030224 */  addiu      $v0, $zero, 0x301
     /* 39EC 80066D4C 05006214 */  bne        $v1, $v0, .L80066D64
-    /* 39F0 80066D50 0680023C */   lui       $v0, %hi(D_8005F770)
+    /* 39F0 80066D50 0680023C */   lui       $v0, %hi(Sys_State)
     /* 39F4 80066D54 2400838C */  lw         $v1, 0x24($a0)
     /* 39F8 80066D58 04000224 */  addiu      $v0, $zero, 0x4
     /* 39FC 80066D5C C8FF6210 */  beq        $v1, $v0, .L80066C80
-    /* 3A00 80066D60 0680023C */   lui       $v0, %hi(D_8005F770)
+    /* 3A00 80066D60 0680023C */   lui       $v0, %hi(Sys_State)
   .L80066D64:
-    /* 3A04 80066D64 70F74424 */  addiu      $a0, $v0, %lo(D_8005F770)
+    /* 3A04 80066D64 70F74424 */  addiu      $a0, $v0, %lo(Sys_State)
     /* 3A08 80066D68 1800838C */  lw         $v1, 0x18($a0)
     /* 3A0C 80066D6C 21030224 */  addiu      $v0, $zero, 0x321
     /* 3A10 80066D70 6C006214 */  bne        $v1, $v0, .L80066F24

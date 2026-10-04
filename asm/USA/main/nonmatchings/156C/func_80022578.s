@@ -10,8 +10,8 @@ glabel func_80022578
     /* 12D90 80022590 D1FF4324 */  addiu      $v1, $v0, -0x2F
     /* 12D94 80022594 0600622C */  sltiu      $v0, $v1, 0x6
     /* 12D98 80022598 04004010 */  beqz       $v0, .L800225AC
-    /* 12D9C 8002259C 0480023C */   lui       $v0, %hi(D_800416FC)
-    /* 12DA0 800225A0 FC164224 */  addiu      $v0, $v0, %lo(D_800416FC)
+    /* 12D9C 8002259C 0480023C */   lui       $v0, %hi(Beetle_PartDigiCapacity)
+    /* 12DA0 800225A0 FC164224 */  addiu      $v0, $v0, %lo(Beetle_PartDigiCapacity)
     /* 12DA4 800225A4 21106200 */  addu       $v0, $v1, $v0
     /* 12DA8 800225A8 00005090 */  lbu        $s0, 0x0($v0)
   .L800225AC:

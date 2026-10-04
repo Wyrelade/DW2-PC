@@ -8,7 +8,7 @@ void Stg10_StageSetup(Actor *a0) {
     if (a0->stateLevel0 != 0) {
         return;
     }
-    switch (D_8005F770.gameMode) {
+    switch (Sys_State.gameMode) {
     case 0x401:
     default:
         Gpu_AllocPacketBufs(0x25800);
@@ -42,9 +42,9 @@ void Stg10_StageSetup(Actor *a0) {
         ResetGraph(1);
         ClearImage2((s32)&Stg10_VramClearRect, 0, 0, 0);
         DrawSync(0);
-        D_8005F770.bufIndex = 0;
+        Sys_State.bufIndex = 0;
         Snd_StopAll();
-        args[0] = Stg10_MovieFileIds[D_8005F770.gameMode - 0x402];
+        args[0] = Stg10_MovieFileIds[Sys_State.gameMode - 0x402];
         args[1] = Cd_GetFileSectors(args[0]) / 10 - 10;
         Task_Create(0x402, slot + 2, (s32)args);
         break;
@@ -73,7 +73,7 @@ void Stg10_TitleUpdate(Actor *a0) {
         case 0:
         default:
             w->menuOpen = 0;
-            if (D_8005F6F0[0].start > 0) {
+            if (Pad_State[0].start > 0) {
                 Snd_PlayById(0x11, 0);
                 Task_NextState1(a0);
             }
@@ -103,7 +103,7 @@ void Stg10_TitleUpdate(Actor *a0) {
                 PadState *p;
 
                 do {
-                    pad = D_8005F6F0;
+                    pad = Pad_State;
                     if (pad[0].down > 0 && w->cursor != 2) {
                         v = w->cursor + 1;
                         goto snd;
@@ -127,7 +127,7 @@ void Stg10_TitleUpdate(Actor *a0) {
         case 2:
             do {
                 w->padWarning = 1;
-                if (D_8005F6F0[0].start > 0) {
+                if (Pad_State[0].start > 0) {
                     w->padWarning = 0;
                     Task_SetState1(a0, 1);
                 }
@@ -148,16 +148,16 @@ void Stg10_TitleUpdate(Actor *a0) {
                 case 0:
                 default:
                     Save_ResetGameState();
-                    D_8005F770.nextGameMode = 0x307;
-                    D_8005F770.field_24 = 4;
+                    Sys_State.nextGameMode = 0x307;
+                    Sys_State.field_24 = 4;
                     break;
                 case 1:
-                    D_8005F770.nextGameMode = 0x602;
-                    D_8005F770.field_24 = 0;
+                    Sys_State.nextGameMode = 0x602;
+                    Sys_State.field_24 = 0;
                     break;
                 case 2:
-                    D_8005F770.nextGameMode = 0x701;
-                    D_8005F770.field_24 = 0;
+                    Sys_State.nextGameMode = 0x701;
+                    Sys_State.field_24 = 0;
                     break;
                 snd:
                     w->cursor = v;
@@ -196,7 +196,7 @@ void Stg10_TitleDraw(Actor *a0) {
             if (p->partMask & 0x400) {
                 p->scrollX = p->scrollX < 0x1CF ? 0x398 : p->scrollX - 2;
             }
-            if (D_8005F770.frameCount & 1) {
+            if (Sys_State.frameCount & 1) {
                 if (p->partMask & 0x800) {
                     p->scrollX = p->scrollX < -0x2CE ? 0 : p->scrollX - 1;
                 }
@@ -316,7 +316,7 @@ void Stg10_EndScreenUpdate(Actor *arg0) {
             }
             Task_NextState1(arg0);
         case 1:
-            if (D_8005F6F0[0].cross > 0 || D_8005F6F0[0].start > 0) {
+            if (Pad_State[0].cross > 0 || Pad_State[0].start > 0) {
                 Task_NextState1(arg0);
             }
             break;
@@ -355,15 +355,15 @@ void Stg10_MovieInit(s32 arg0, s32 *arg1) {
 void Stg10_StrSetDefDecEnv(StrDecEnv *dec, s16 x0, s16 y0, s16 x1, s16 y1) {
     dec->vlcbuf[0] = Stg10_VlcBuf0;
     dec->vlcbuf[1] = Stg10_VlcBuf1;
-    dec->vlcid = D_8005F770.bufIndex ^ 1;
+    dec->vlcid = Sys_State.bufIndex ^ 1;
     dec->imgbuf[0] = Stg10_ImgBuf0;
     dec->imgbuf[1] = Stg10_ImgBuf1;
-    dec->imgid = D_8005F770.bufIndex ^ 1;
+    dec->imgid = Sys_State.bufIndex ^ 1;
     dec->rect[0].x = x0;
     dec->rect[0].y = y0;
     dec->rect[1].x = x1;
     dec->rect[1].y = y1;
-    dec->rectid = D_8005F770.bufIndex ^ 1;
+    dec->rectid = Sys_State.bufIndex ^ 1;
     dec->slice.x = x0;
     dec->slice.y = y0;
     dec->slice.w = 0x18;
@@ -515,25 +515,25 @@ void Stg10_MovieUpdate(Actor *a0) {
         Stg10_StrNextVlc(&Stg10_DecEnv);
         Stg10_StrSync(&Stg10_DecEnv, 0);
         if (Stg10_StrEndFlag == 1 || D_8005F724 > 0) {
-            switch (D_8005F770.gameMode) {
+            switch (Sys_State.gameMode) {
             case 0x404:
-                D_8005F770.nextGameMode = 0x325;
-                D_8005F770.field_24 = 2;
+                Sys_State.nextGameMode = 0x325;
+                Sys_State.field_24 = 2;
                 break;
             case 0x405:
-                D_8005F770.nextGameMode = 0x327;
-                D_8005F770.field_24 = 2;
+                Sys_State.nextGameMode = 0x327;
+                Sys_State.field_24 = 2;
                 break;
             case 0x406:
-                D_8005F770.nextGameMode = 0x408;
+                Sys_State.nextGameMode = 0x408;
                 break;
             case 0x407:
-                D_8005F770.nextGameMode = 0x301;
-                D_8005F770.field_24 = 2;
+                Sys_State.nextGameMode = 0x301;
+                Sys_State.field_24 = 2;
                 break;
             default:
-                D_8005F770.nextGameMode = 0x401;
-                D_8005F770.field_24 = 0;
+                Sys_State.nextGameMode = 0x401;
+                Sys_State.field_24 = 0;
                 break;
             }
         }

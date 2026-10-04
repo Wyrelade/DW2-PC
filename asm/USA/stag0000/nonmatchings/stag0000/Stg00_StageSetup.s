@@ -13,8 +13,8 @@ glabel Stg00_StageSetup
     /* 738 80063A98 09000424 */  addiu      $a0, $zero, 0x9
     /* 73C 80063A9C 1F44000C */  jal        Task_Create
     /* 740 80063AA0 21300000 */   addu      $a2, $zero, $zero
-    /* 744 80063AA4 0680023C */  lui        $v0, %hi(D_8005F788)
-    /* 748 80063AA8 88F7428C */  lw         $v0, %lo(D_8005F788)($v0)
+    /* 744 80063AA4 0680023C */  lui        $v0, %hi(Sys_GameMode)
+    /* 748 80063AA8 88F7428C */  lw         $v0, %lo(Sys_GameMode)($v0)
     /* 74C 80063AAC 00000000 */  nop
     /* 750 80063AB0 FFFE4324 */  addiu      $v1, $v0, -0x101
     /* 754 80063AB4 0600622C */  sltiu      $v0, $v1, 0x6

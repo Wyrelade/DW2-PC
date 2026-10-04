@@ -1,8 +1,8 @@
 nonmatching Cd_ReadFileAsync, 0xB0
 
 glabel Cd_ReadFileAsync
-    /* 14A60 80024260 0580023C */  lui        $v0, %hi(D_80048DB8)
-    /* 14A64 80024264 B88D428C */  lw         $v0, %lo(D_80048DB8)($v0)
+    /* 14A60 80024260 0580023C */  lui        $v0, %hi(Cd_ReadState)
+    /* 14A64 80024264 B88D428C */  lw         $v0, %lo(Cd_ReadState)($v0)
     /* 14A68 80024268 D8FFBD27 */  addiu      $sp, $sp, -0x28
     /* 14A6C 8002426C 1800B0AF */  sw         $s0, 0x18($sp)
     /* 14A70 80024270 21808000 */  addu       $s0, $a0, $zero
@@ -23,8 +23,8 @@ glabel Cd_ReadFileAsync
     /* 14AA4 800242A4 E48F000C */  jal        Cd_GetFileSectors
     /* 14AA8 800242A8 21200002 */   addu      $a0, $s0, $zero
     /* 14AAC 800242AC 21200002 */  addu       $a0, $s0, $zero
-    /* 14AB0 800242B0 0580113C */  lui        $s1, %hi(D_80048DB8)
-    /* 14AB4 800242B4 B88D3026 */  addiu      $s0, $s1, %lo(D_80048DB8)
+    /* 14AB0 800242B0 0580113C */  lui        $s1, %hi(Cd_ReadState)
+    /* 14AB4 800242B4 B88D3026 */  addiu      $s0, $s1, %lo(Cd_ReadState)
     /* 14AB8 800242B8 040002AE */  sw         $v0, 0x4($s0)
     /* 14ABC 800242BC 080012AE */  sw         $s2, 0x8($s0)
     /* 14AC0 800242C0 100002AE */  sw         $v0, 0x10($s0)
@@ -32,12 +32,12 @@ glabel Cd_ReadFileAsync
     /* 14AC8 800242C8 EB8F000C */  jal        Cd_GetFileLba
     /* 14ACC 800242CC 180012AE */   sw        $s2, 0x18($s0)
     /* 14AD0 800242D0 0280043C */  lui        $a0, %hi(Cd_ReadSyncCallback)
-    /* 14AD4 800242D4 B88D238E */  lw         $v1, %lo(D_80048DB8)($s1)
+    /* 14AD4 800242D4 B88D238E */  lw         $v1, %lo(Cd_ReadState)($s1)
     /* 14AD8 800242D8 E8408424 */  addiu      $a0, $a0, %lo(Cd_ReadSyncCallback)
     /* 14ADC 800242DC 1C0002AE */  sw         $v0, 0x1C($s0)
     /* 14AE0 800242E0 01006324 */  addiu      $v1, $v1, 0x1
     /* 14AE4 800242E4 45C1000C */  jal        CdSyncCallback
-    /* 14AE8 800242E8 B88D23AE */   sw        $v1, %lo(D_80048DB8)($s1)
+    /* 14AE8 800242E8 B88D23AE */   sw        $v1, %lo(Cd_ReadState)($s1)
     /* 14AEC 800242EC 02000424 */  addiu      $a0, $zero, 0x2
     /* 14AF0 800242F0 A4C1000C */  jal        CdControlF
     /* 14AF4 800242F4 1000A527 */   addiu     $a1, $sp, 0x10

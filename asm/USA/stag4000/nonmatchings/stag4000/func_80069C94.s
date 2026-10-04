@@ -77,7 +77,7 @@ glabel func_80069C94
     /* 6A40 80069DA0 1C00228E */  lw         $v0, 0x1C($s1)
     /* 6A44 80069DA4 00000000 */  nop
     /* 6A48 80069DA8 0B004014 */  bnez       $v0, .L80069DD8
-    /* 6A4C 80069DAC 0680023C */   lui       $v0, %hi(D_8005F6F0)
+    /* 6A4C 80069DAC 0680023C */   lui       $v0, %hi(Pad_State)
     /* 6A50 80069DB0 8C94010C */  jal        func_80065230
     /* 6A54 80069DB4 00000000 */   nop
     /* 6A58 80069DB8 06004010 */  beqz       $v0, .L80069DD4
@@ -88,9 +88,9 @@ glabel func_80069C94
     /* 6A6C 80069DCC 8A45000C */  jal        Task_SetState3
     /* 6A70 80069DD0 01000524 */   addiu     $a1, $zero, 0x1
   .L80069DD4:
-    /* 6A74 80069DD4 0680023C */  lui        $v0, %hi(D_8005F6F0)
+    /* 6A74 80069DD4 0680023C */  lui        $v0, %hi(Pad_State)
   .L80069DD8:
-    /* 6A78 80069DD8 F0F64324 */  addiu      $v1, $v0, %lo(D_8005F6F0)
+    /* 6A78 80069DD8 F0F64324 */  addiu      $v1, $v0, %lo(Pad_State)
     /* 6A7C 80069DDC 1C00628C */  lw         $v0, 0x1C($v1)
     /* 6A80 80069DE0 00000000 */  nop
     /* 6A84 80069DE4 08004018 */  blez       $v0, .L80069E08
@@ -194,8 +194,8 @@ glabel func_80069C94
     /* 6BE8 80069F48 1400428C */  lw         $v0, 0x14($v0)
     /* 6BEC 80069F4C 00000000 */  nop
     /* 6BF0 80069F50 07004014 */  bnez       $v0, .L80069F70
-    /* 6BF4 80069F54 0580023C */   lui       $v0, %hi(D_80050720)
-    /* 6BF8 80069F58 2007428C */  lw         $v0, %lo(D_80050720)($v0)
+    /* 6BF4 80069F54 0580023C */   lui       $v0, %hi(Save_GameStatePtr)
+    /* 6BF8 80069F58 2007428C */  lw         $v0, %lo(Save_GameStatePtr)($v0)
     /* 6BFC 80069F5C 21202002 */  addu       $a0, $s1, $zero
     /* 6C00 80069F60 00004290 */  lbu        $v0, 0x0($v0)
     /* 6C04 80069F64 01000524 */  addiu      $a1, $zero, 0x1

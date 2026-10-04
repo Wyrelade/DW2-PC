@@ -177,7 +177,7 @@ s32 func_80069870(s32 arg0, s32 arg1) {
 void func_800698C8(Stg35CamWork *w, s32 *t) {
     s32 i;
 
-    for (i = 0; i < D_8005F770.frameDelta; i++) {
+    for (i = 0; i < Sys_State.frameDelta; i++) {
         w->field_7E += func_80069870(t[0], w->field_7E);
         w->field_0 += func_80069870(t[1], w->field_0);
         w->field_4 += func_80069870(t[2], w->field_4);

@@ -1,7 +1,7 @@
 nonmatching Beetle_GetPart, 0x34
 
 glabel Beetle_GetPart
-    /* 12D18 80022518 2800858F */  lw         $a1, %gp_rel(D_80050720)($gp)
+    /* 12D18 80022518 2800858F */  lw         $a1, %gp_rel(Save_GameStatePtr)($gp)
     /* 12D1C 8002251C 00000000 */  nop
     /* 12D20 80022520 2110A400 */  addu       $v0, $a1, $a0
     /* 12D24 80022524 52004390 */  lbu        $v1, 0x52($v0)

@@ -51,8 +51,8 @@ void func_8006F6BC(Stg40TileWork *w) {
 void func_8006F86C(Stg40TileWork *w, s32 x, s32 y, s32 cx, s32 cy, s32 cw, s32 ch, s32 scale, s32 shade) {
     Stg40FT4 a;
     Stg40FT4 b;
-    Stg40FT4 *p = (Stg40FT4 *)D_8005F770.packet.addr;
-    s32 *ot = D_8005F770.otLayers.s[1];
+    Stg40FT4 *p = (Stg40FT4 *)Sys_State.packet.addr;
+    s32 *ot = Sys_State.otLayers.s[1];
     s32 maxX = w->field_766;
     s32 maxY = w->field_768;
     s32 left;
@@ -692,7 +692,7 @@ void func_80071310(s32 a0, s32 a1) {
     }
     switch (a1) {
     case 0:
-        func_80067610(1, base, (s32)D_80050720->field_D1, (s32)func_8006755C(0, D_80072B60->field_58));
+        func_80067610(1, base, (s32)Save_GameStatePtr->field_D1, (s32)func_8006755C(0, D_80072B60->field_58));
         break;
     case 1:
         func_80067610(1, base + 1, (s32)func_8006755C(0, D_80072B60->field_58), 0);
@@ -707,7 +707,7 @@ void func_80071310(s32 a0, s32 a1) {
     default:
         {
             s32 k = D_800729E0[a1 - 4];
-            func_80067610(1, base + 4, Item_GetNameText(D_80050720->slotItems[k]), 0);
+            func_80067610(1, base + 4, Item_GetNameText(Save_GameStatePtr->slotItems[k]), 0);
         }
         break;
     }
@@ -728,7 +728,7 @@ void func_8007142C(s32 a0, s32 a1) {
         D_80072B60->field_58 = a1 * 10;
         func_8006EA84(3);
         for (i = 0; i < D_80072B60->field_140; i++) {
-            r = &D_80050720->elems[D_80072B60->field_128[i]];
+            r = &Save_GameStatePtr->elems[D_80072B60->field_128[i]];
             r->hp = ((s16)r->hp - D_80072B60->field_58 > 0) ? (u16)r->hp - (u16)D_80072B60->field_58 : 1;
         }
         break;
@@ -743,7 +743,7 @@ void func_8007142C(s32 a0, s32 a1) {
         break;
     default:
         k = D_800729E0[a0 - 4];
-        D_80050720->slotStatus[k] = 1;
+        Save_GameStatePtr->slotStatus[k] = 1;
         break;
     case 16:
         break;
@@ -814,23 +814,23 @@ s32 func_800716EC(Actor *a0) {
     }
     if (D_8005071C->field_BA5 != 0) {
         slot = func_80071608();
-        if ((func_80071180() < 5 && (st->field_0 & 0x100)) || (D_80050720->field_8 == 0 && slot == -1)) {
+        if ((func_80071180() < 5 && (st->field_0 & 0x100)) || (Save_GameStatePtr->field_8 == 0 && slot == -1)) {
             stack[(*count)++] = 2;
             D_8005071C->field_BA5 = 0;
         } else {
-            if (D_80050720->field_8 != 0) {
+            if (Save_GameStatePtr->field_8 != 0) {
                 s32 cost[4] = { 0, 20, 50, 100 };
-                s32 v = D_80050720->field_8 -= cost[st->field_5];
+                s32 v = Save_GameStatePtr->field_8 -= cost[st->field_5];
                 if (v < 0) {
                     v = 0;
                 }
-                D_80050720->field_8 = v;
+                Save_GameStatePtr->field_8 = v;
                 sfx = 4;
             } else {
                 Beetle_SetPartBroken(slot, 1);
                 stack[(*count)++] = 6;
                 sfx = 3;
-                D_80072B60->field_78 = Item_GetNameText(D_80050720->slotItems[slot]);
+                D_80072B60->field_78 = Item_GetNameText(Save_GameStatePtr->slotItems[slot]);
             }
             func_80067880(a0, 2);
         }
@@ -842,12 +842,12 @@ s32 func_800716EC(Actor *a0) {
             D_8005071C->field_BA6 = 0;
         } else {
             s32 cost[4] = { 0, 2, 4, 6 };
-            s16 v = D_80050720->mp - cost[st->field_6];
-            D_80050720->mp = v;
+            s16 v = Save_GameStatePtr->mp - cost[st->field_6];
+            Save_GameStatePtr->mp = v;
             if (v < 0) {
                 v = 0;
             }
-            D_80050720->mp = v;
+            Save_GameStatePtr->mp = v;
             func_80067880(a0, 2);
             sfx = 2;
         }
@@ -866,15 +866,15 @@ s32 func_800716EC(Actor *a0) {
             if (r > n - 1) {
                 r = n - 1;
             }
-            ent = &D_80050720->elems[D_80072B60->field_128[r]];
+            ent = &Save_GameStatePtr->elems[D_80072B60->field_128[r]];
             ent->state = 1;
             *(Stg40Agg14 *)D_80072B60->field_6A = *(Stg40Agg14 *)ent->name;
             Digi_SortRoster();
             for (i = 0; i < 3; i++) {
-                if (D_80050720->elems[i].state < 2) {
+                if (Save_GameStatePtr->elems[i].state < 2) {
                     break;
                 }
-                D_80050720->elems[i].state = i + 3;
+                Save_GameStatePtr->elems[i].state = i + 3;
             }
             stack[(*count)++] = 7;
             func_80067880(a0, 2);

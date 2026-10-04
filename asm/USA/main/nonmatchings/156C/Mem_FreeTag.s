@@ -3,7 +3,7 @@ nonmatching Mem_FreeTag, 0x74
 glabel Mem_FreeTag
     /* 135EC 80022DEC E0FFBD27 */  addiu      $sp, $sp, -0x20
     /* 135F0 80022DF0 1000B0AF */  sw         $s0, 0x10($sp)
-    /* 135F4 80022DF4 9000908F */  lw         $s0, %gp_rel(D_80050788)($gp)
+    /* 135F4 80022DF4 9000908F */  lw         $s0, %gp_rel(Mem_HeapHead)($gp)
     /* 135F8 80022DF8 1800B2AF */  sw         $s2, 0x18($sp)
     /* 135FC 80022DFC 1C00BFAF */  sw         $ra, 0x1C($sp)
     /* 13600 80022E00 1400B1AF */  sw         $s1, 0x14($sp)

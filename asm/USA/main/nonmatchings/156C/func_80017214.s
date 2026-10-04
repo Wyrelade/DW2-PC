@@ -45,7 +45,7 @@ glabel func_80017214
     /* 7AB0 800172B0 21284000 */  addu       $a1, $v0, $zero
     /* 7AB4 800172B4 81000624 */  addiu      $a2, $zero, 0x81
     /* 7AB8 800172B8 16008797 */  lhu        $a3, %gp_rel(D_8005070E)($gp)
-    /* 7ABC 800172BC 14008297 */  lhu        $v0, %gp_rel(D_8005070C)($gp)
+    /* 7ABC 800172BC 14008297 */  lhu        $v0, %gp_rel(Menu_DigiMsgPos)($gp)
     /* 7AC0 800172C0 003C0700 */  sll        $a3, $a3, 16
     /* 7AC4 800172C4 3E4D000C */  jal        Text_OpenPacked
     /* 7AC8 800172C8 25384700 */   or        $a3, $v0, $a3
@@ -146,7 +146,7 @@ glabel func_80017214
     /* 7C28 80017428 21284000 */  addu       $a1, $v0, $zero
     /* 7C2C 8001742C 81000624 */  addiu      $a2, $zero, 0x81
     /* 7C30 80017430 16008797 */  lhu        $a3, %gp_rel(D_8005070E)($gp)
-    /* 7C34 80017434 14008297 */  lhu        $v0, %gp_rel(D_8005070C)($gp)
+    /* 7C34 80017434 14008297 */  lhu        $v0, %gp_rel(Menu_DigiMsgPos)($gp)
     /* 7C38 80017438 003C0700 */  sll        $a3, $a3, 16
     /* 7C3C 8001743C 3E4D000C */  jal        Text_OpenPacked
     /* 7C40 80017440 25384700 */   or        $a3, $v0, $a3
@@ -180,7 +180,7 @@ glabel func_80017214
     /* 7CA8 800174A8 21284000 */  addu       $a1, $v0, $zero
     /* 7CAC 800174AC 81000624 */  addiu      $a2, $zero, 0x81
     /* 7CB0 800174B0 16008797 */  lhu        $a3, %gp_rel(D_8005070E)($gp)
-    /* 7CB4 800174B4 14008297 */  lhu        $v0, %gp_rel(D_8005070C)($gp)
+    /* 7CB4 800174B4 14008297 */  lhu        $v0, %gp_rel(Menu_DigiMsgPos)($gp)
     /* 7CB8 800174B8 003C0700 */  sll        $a3, $a3, 16
     /* 7CBC 800174BC 3E4D000C */  jal        Text_OpenPacked
     /* 7CC0 800174C0 25384700 */   or        $a3, $v0, $a3

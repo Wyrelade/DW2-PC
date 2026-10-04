@@ -71,8 +71,8 @@ glabel func_80063CDC
     /* A6C 80063DCC 5945000C */  jal        Task_NextState1
     /* A70 80063DD0 21202002 */   addu      $a0, $s1, $zero
   .L80063DD4:
-    /* A74 80063DD4 0680023C */  lui        $v0, %hi(D_8005F770)
-    /* A78 80063DD8 70F74524 */  addiu      $a1, $v0, %lo(D_8005F770)
+    /* A74 80063DD4 0680023C */  lui        $v0, %hi(Sys_State)
+    /* A78 80063DD8 70F74524 */  addiu      $a1, $v0, %lo(Sys_State)
     /* A7C 80063DDC 1000A38C */  lw         $v1, 0x10($a1)
     /* A80 80063DE0 FF000224 */  addiu      $v0, $zero, 0xFF
     /* A84 80063DE4 0F006214 */  bne        $v1, $v0, .L80063E24

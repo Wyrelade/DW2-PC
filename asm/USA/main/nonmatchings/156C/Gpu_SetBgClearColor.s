@@ -3,8 +3,8 @@ nonmatching Gpu_SetBgClearColor, 0x38
 glabel Gpu_SetBgClearColor
     /* C994 8001C194 21380000 */  addu       $a3, $zero, $zero
     /* C998 8001C198 01000824 */  addiu      $t0, $zero, 0x1
-    /* C99C 8001C19C 0680023C */  lui        $v0, %hi(D_8005F770)
-    /* C9A0 8001C1A0 70F74324 */  addiu      $v1, $v0, %lo(D_8005F770)
+    /* C99C 8001C19C 0680023C */  lui        $v0, %hi(Sys_State)
+    /* C9A0 8001C1A0 70F74324 */  addiu      $v1, $v0, %lo(Sys_State)
   .L8001C1A4:
     /* C9A4 8001C1A4 480068A0 */  sb         $t0, 0x48($v1)
     /* C9A8 8001C1A8 490064A0 */  sb         $a0, 0x49($v1)

@@ -11,8 +11,8 @@ glabel Text_LoadFontsTask
     /* B174 8001A974 00000000 */   nop
     /* B178 8001A978 E072000C */  jal        Gfx_FindOrLoadTexSlot
     /* B17C 8001A97C 3A01043C */   lui       $a0, (0x13A0000 >> 16)
-    /* B180 8001A980 0680023C */  lui        $v0, %hi(D_8005F788)
-    /* B184 8001A984 88F7428C */  lw         $v0, %lo(D_8005F788)($v0)
+    /* B180 8001A980 0680023C */  lui        $v0, %hi(Sys_GameMode)
+    /* B184 8001A984 88F7428C */  lw         $v0, %lo(Sys_GameMode)($v0)
     /* B188 8001A988 00050324 */  addiu      $v1, $zero, 0x500
     /* B18C 8001A98C 000F4230 */  andi       $v0, $v0, 0xF00
     /* B190 8001A990 07004310 */  beq        $v0, $v1, .L8001A9B0

@@ -2,8 +2,8 @@ nonmatching func_8006C18C, 0x38
 
 glabel func_8006C18C
     /* 8E2C 8006C18C 21280000 */  addu       $a1, $zero, $zero
-    /* 8E30 8006C190 0680023C */  lui        $v0, %hi(D_8005E620)
-    /* 8E34 8006C194 20E64324 */  addiu      $v1, $v0, %lo(D_8005E620)
+    /* 8E30 8006C190 0680023C */  lui        $v0, %hi(Save_GameState)
+    /* 8E34 8006C194 20E64324 */  addiu      $v1, $v0, %lo(Save_GameState)
   .L8006C198:
     /* 8E38 8006C198 2C006294 */  lhu        $v0, 0x2C($v1)
     /* 8E3C 8006C19C 00000000 */  nop

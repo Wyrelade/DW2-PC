@@ -2,16 +2,16 @@ nonmatching Sys_VSyncHandler, 0xCC
 
 glabel Sys_VSyncHandler
     /* 13C84 80023484 E8FFBD27 */  addiu      $sp, $sp, -0x18
-    /* 13C88 80023488 0680023C */  lui        $v0, %hi(D_8005F770)
+    /* 13C88 80023488 0680023C */  lui        $v0, %hi(Sys_State)
     /* 13C8C 8002348C 1000B0AF */  sw         $s0, 0x10($sp)
-    /* 13C90 80023490 70F75024 */  addiu      $s0, $v0, %lo(D_8005F770)
+    /* 13C90 80023490 70F75024 */  addiu      $s0, $v0, %lo(Sys_State)
     /* 13C94 80023494 1400BFAF */  sw         $ra, 0x14($sp)
     /* 13C98 80023498 0400028E */  lw         $v0, 0x4($s0)
-    /* 13C9C 8002349C 9400848F */  lw         $a0, %gp_rel(D_8005078C)($gp)
+    /* 13C9C 8002349C 9400848F */  lw         $a0, %gp_rel(Sys_FlipPending)($gp)
     /* 13CA0 800234A0 2B180200 */  sltu       $v1, $zero, $v0
     /* 13CA4 800234A4 20008010 */  beqz       $a0, .L80023528
     /* 13CA8 800234A8 23184300 */   subu      $v1, $v0, $v1
-    /* 13CAC 800234AC 3400828F */  lw         $v0, %gp_rel(D_8005072C)($gp)
+    /* 13CAC 800234AC 3400828F */  lw         $v0, %gp_rel(Sys_VSyncsSinceFlip)($gp)
     /* 13CB0 800234B0 00000000 */  nop
     /* 13CB4 800234B4 2A104300 */  slt        $v0, $v0, $v1
     /* 13CB8 800234B8 1B004014 */  bnez       $v0, .L80023528
@@ -38,15 +38,15 @@ glabel Sys_VSyncHandler
     /* 13D0C 8002350C 2800048E */  lw         $a0, 0x28($s0)
     /* 13D10 80023510 1672000C */  jal        Gpu_DrawOt
     /* 13D14 80023514 01008438 */   xori      $a0, $a0, 0x1
-    /* 13D18 80023518 940080AF */  sw         $zero, %gp_rel(D_8005078C)($gp)
-    /* 13D1C 8002351C 340080AF */  sw         $zero, %gp_rel(D_8005072C)($gp)
+    /* 13D18 80023518 940080AF */  sw         $zero, %gp_rel(Sys_FlipPending)($gp)
+    /* 13D1C 8002351C 340080AF */  sw         $zero, %gp_rel(Sys_VSyncsSinceFlip)($gp)
     /* 13D20 80023520 4E8D0008 */  j          .L80023538
     /* 13D24 80023524 00000000 */   nop
   .L80023528:
-    /* 13D28 80023528 3400828F */  lw         $v0, %gp_rel(D_8005072C)($gp)
+    /* 13D28 80023528 3400828F */  lw         $v0, %gp_rel(Sys_VSyncsSinceFlip)($gp)
     /* 13D2C 8002352C 00000000 */  nop
     /* 13D30 80023530 01004224 */  addiu      $v0, $v0, 0x1
-    /* 13D34 80023534 340082AF */  sw         $v0, %gp_rel(D_8005072C)($gp)
+    /* 13D34 80023534 340082AF */  sw         $v0, %gp_rel(Sys_VSyncsSinceFlip)($gp)
   .L80023538:
     /* 13D38 80023538 15C6000C */  jal        SsSeqCalledTbyT
     /* 13D3C 8002353C 00000000 */   nop

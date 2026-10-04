@@ -12,8 +12,8 @@ glabel func_8001EC10
     /* F430 8001EC30 28004010 */  beqz       $v0, .L8001ECD4
     /* F434 8001EC34 00000000 */   nop
     /* F438 8001EC38 2600C014 */  bnez       $a2, .L8001ECD4
-    /* F43C 8001EC3C 0480053C */   lui       $a1, %hi(D_80043704)
-    /* F440 8001EC40 0437A524 */  addiu      $a1, $a1, %lo(D_80043704)
+    /* F43C 8001EC3C 0480053C */   lui       $a1, %hi(Gfx_ZeroVector)
+    /* F440 8001EC40 0437A524 */  addiu      $a1, $a1, %lo(Gfx_ZeroVector)
     /* F444 8001EC44 1083000C */  jal        Actor_InitTransform
     /* F448 8001EC48 21300000 */   addu      $a2, $zero, $zero
     /* F44C 8001EC4C 21200002 */  addu       $a0, $s0, $zero

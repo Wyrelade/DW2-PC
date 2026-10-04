@@ -6,11 +6,11 @@ glabel Cd_ReadSyncCallback
     /* 148F0 800240F0 1400BFAF */  sw         $ra, 0x14($sp)
     /* 148F4 800240F4 10008514 */  bne        $a0, $a1, .L80024138
     /* 148F8 800240F8 1000B0AF */   sw        $s0, 0x10($sp)
-    /* 148FC 800240FC 0580073C */  lui        $a3, %hi(D_80048DB8)
-    /* 14900 80024100 B88DE38C */  lw         $v1, %lo(D_80048DB8)($a3)
+    /* 148FC 800240FC 0580073C */  lui        $a3, %hi(Cd_ReadState)
+    /* 14900 80024100 B88DE38C */  lw         $v1, %lo(Cd_ReadState)($a3)
     /* 14904 80024104 04000224 */  addiu      $v0, $zero, 0x4
     /* 14908 80024108 06006214 */  bne        $v1, $v0, .L80024124
-    /* 1490C 8002410C B88DE624 */   addiu     $a2, $a3, %lo(D_80048DB8)
+    /* 1490C 8002410C B88DE624 */   addiu     $a2, $a3, %lo(Cd_ReadState)
     /* 14910 80024110 09000424 */  addiu      $a0, $zero, 0x9
     /* 14914 80024114 A4C1000C */  jal        CdControlF
     /* 14918 80024118 21280000 */   addu      $a1, $zero, $zero
@@ -21,15 +21,15 @@ glabel Cd_ReadSyncCallback
     /* 14928 80024128 1800C58C */  lw         $a1, 0x18($a2)
     /* 1492C 8002412C 1000C28C */  lw         $v0, 0x10($a2)
     /* 14930 80024130 82900008 */  j          .L80024208
-    /* 14934 80024134 B88DE0AC */   sw        $zero, %lo(D_80048DB8)($a3)
+    /* 14934 80024134 B88DE0AC */   sw        $zero, %lo(Cd_ReadState)($a3)
   .L80024138:
     /* 14938 80024138 02000224 */  addiu      $v0, $zero, 0x2
     /* 1493C 8002413C 34008214 */  bne        $a0, $v0, .L80024210
-    /* 14940 80024140 0580103C */   lui       $s0, %hi(D_80048DB8)
-    /* 14944 80024144 B88D038E */  lw         $v1, %lo(D_80048DB8)($s0)
+    /* 14940 80024140 0580103C */   lui       $s0, %hi(Cd_ReadState)
+    /* 14944 80024144 B88D038E */  lw         $v1, %lo(Cd_ReadState)($s0)
     /* 14948 80024148 00000000 */  nop
     /* 1494C 8002414C 13006410 */  beq        $v1, $a0, .L8002419C
-    /* 14950 80024150 B88D0626 */   addiu     $a2, $s0, %lo(D_80048DB8)
+    /* 14950 80024150 B88D0626 */   addiu     $a2, $s0, %lo(Cd_ReadState)
     /* 14954 80024154 03006228 */  slti       $v0, $v1, 0x3
     /* 14958 80024158 05004010 */  beqz       $v0, .L80024170
     /* 1495C 8002415C 01000224 */   addiu     $v0, $zero, 0x1
@@ -59,20 +59,20 @@ glabel Cd_ReadSyncCallback
   .L800241B0:
     /* 149B0 800241B0 A4C1000C */  jal        CdControlF
     /* 149B4 800241B4 00000000 */   nop
-    /* 149B8 800241B8 B88D028E */  lw         $v0, %lo(D_80048DB8)($s0)
+    /* 149B8 800241B8 B88D028E */  lw         $v0, %lo(Cd_ReadState)($s0)
     /* 149BC 800241BC 00000000 */  nop
     /* 149C0 800241C0 01004224 */  addiu      $v0, $v0, 0x1
     /* 149C4 800241C4 84900008 */  j          .L80024210
-    /* 149C8 800241C8 B88D02AE */   sw        $v0, %lo(D_80048DB8)($s0)
+    /* 149C8 800241C8 B88D02AE */   sw        $v0, %lo(Cd_ReadState)($s0)
   .L800241CC:
     /* 149CC 800241CC 84900008 */  j          .L80024210
-    /* 149D0 800241D0 B88D02AE */   sw        $v0, %lo(D_80048DB8)($s0)
+    /* 149D0 800241D0 B88D02AE */   sw        $v0, %lo(Cd_ReadState)($s0)
   .L800241D4:
     /* 149D4 800241D4 0400C28C */  lw         $v0, 0x4($a2)
     /* 149D8 800241D8 00000000 */  nop
     /* 149DC 800241DC 06004014 */  bnez       $v0, .L800241F8
     /* 149E0 800241E0 00000000 */   nop
-    /* 149E4 800241E4 B88D05AE */  sw         $a1, %lo(D_80048DB8)($s0)
+    /* 149E4 800241E4 B88D05AE */  sw         $a1, %lo(Cd_ReadState)($s0)
     /* 149E8 800241E8 45C1000C */  jal        CdSyncCallback
     /* 149EC 800241EC 21200000 */   addu      $a0, $zero, $zero
     /* 149F0 800241F0 84900008 */  j          .L80024210
@@ -81,7 +81,7 @@ glabel Cd_ReadSyncCallback
     /* 149F8 800241F8 1400C48C */  lw         $a0, 0x14($a2)
     /* 149FC 800241FC 1800C58C */  lw         $a1, 0x18($a2)
     /* 14A00 80024200 1000C28C */  lw         $v0, 0x10($a2)
-    /* 14A04 80024204 B88D00AE */  sw         $zero, %lo(D_80048DB8)($s0)
+    /* 14A04 80024204 B88D00AE */  sw         $zero, %lo(Cd_ReadState)($s0)
   .L80024208:
     /* 14A08 80024208 9890000C */  jal        Cd_ReadFileAsync
     /* 14A0C 8002420C 0400C2AC */   sw        $v0, 0x4($a2)

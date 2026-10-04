@@ -52,9 +52,9 @@ glabel Gfx_AnimateModelTex
   jlabel .L8001FA64
     /* 10264 8001FA64 04001524 */  addiu      $s5, $zero, 0x4
   .L8001FA68:
-    /* 10268 8001FA68 0680023C */  lui        $v0, %hi(D_8005F778)
+    /* 10268 8001FA68 0680023C */  lui        $v0, %hi(Sys_FrameDelta)
     /* 1026C 8001FA6C 2C00238E */  lw         $v1, 0x2C($s1)
-    /* 10270 8001FA70 78F7428C */  lw         $v0, %lo(D_8005F778)($v0)
+    /* 10270 8001FA70 78F7428C */  lw         $v0, %lo(Sys_FrameDelta)($v0)
     /* 10274 8001FA74 00000000 */  nop
     /* 10278 8001FA78 23186200 */  subu       $v1, $v1, $v0
     /* 1027C 8001FA7C 05006104 */  bgez       $v1, .L8001FA94
@@ -65,9 +65,9 @@ glabel Gfx_AnimateModelTex
     /* 1028C 8001FA8C 04001524 */  addiu      $s5, $zero, 0x4
     /* 10290 8001FA90 2C0020AE */  sw         $zero, 0x2C($s1)
   .L8001FA94:
-    /* 10294 8001FA94 0680023C */  lui        $v0, %hi(D_8005F778)
+    /* 10294 8001FA94 0680023C */  lui        $v0, %hi(Sys_FrameDelta)
     /* 10298 8001FA98 3000238E */  lw         $v1, 0x30($s1)
-    /* 1029C 8001FA9C 78F7428C */  lw         $v0, %lo(D_8005F778)($v0)
+    /* 1029C 8001FA9C 78F7428C */  lw         $v0, %lo(Sys_FrameDelta)($v0)
     /* 102A0 8001FAA0 00000000 */  nop
     /* 102A4 8001FAA4 21186200 */  addu       $v1, $v1, $v0
     /* 102A8 8001FAA8 300023AE */  sw         $v1, 0x30($s1)
@@ -88,8 +88,8 @@ glabel Gfx_AnimateModelTex
   .L8001FADC:
     /* 102DC 8001FADC C3100200 */  sra        $v0, $v0, 3
     /* 102E0 8001FAE0 40B00200 */  sll        $s6, $v0, 1
-    /* 102E4 8001FAE4 0680023C */  lui        $v0, %hi(D_8005F770)
-    /* 102E8 8001FAE8 70F74224 */  addiu      $v0, $v0, %lo(D_8005F770)
+    /* 102E4 8001FAE4 0680023C */  lui        $v0, %hi(Sys_State)
+    /* 102E8 8001FAE8 70F74224 */  addiu      $v0, $v0, %lo(Sys_State)
     /* 102EC 8001FAEC 2C00538C */  lw         $s3, 0x2C($v0)
     /* 102F0 8001FAF0 21900000 */  addu       $s2, $zero, $zero
     /* 102F4 8001FAF4 FF001724 */  addiu      $s7, $zero, 0xFF
@@ -168,8 +168,8 @@ glabel Gfx_AnimateModelTex
   .L8001FBFC:
     /* 103FC 8001FBFC 01001226 */  addiu      $s2, $s0, 0x1
     /* 10400 8001FC00 21A80000 */  addu       $s5, $zero, $zero
-    /* 10404 8001FC04 0680023C */  lui        $v0, %hi(D_8005F770)
-    /* 10408 8001FC08 70F75724 */  addiu      $s7, $v0, %lo(D_8005F770)
+    /* 10404 8001FC04 0680023C */  lui        $v0, %hi(Sys_State)
+    /* 10408 8001FC08 70F75724 */  addiu      $s7, $v0, %lo(Sys_State)
     /* 1040C 8001FC0C 1800B627 */  addiu      $s6, $sp, 0x18
     /* 10410 8001FC10 05005126 */  addiu      $s1, $s2, 0x5
   .L8001FC14:

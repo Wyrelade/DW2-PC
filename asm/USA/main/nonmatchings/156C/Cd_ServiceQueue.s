@@ -1,7 +1,7 @@
 nonmatching Cd_ServiceQueue, 0xF4
 
 glabel Cd_ServiceQueue
-    /* 14474 80023C74 5800828F */  lw         $v0, %gp_rel(D_80050750)($gp)
+    /* 14474 80023C74 5800828F */  lw         $v0, %gp_rel(Cd_QueueActive)($gp)
     /* 14478 80023C78 D0FFBD27 */  addiu      $sp, $sp, -0x30
     /* 1447C 80023C7C 2800BFAF */  sw         $ra, 0x28($sp)
     /* 14480 80023C80 2400B5AF */  sw         $s5, 0x24($sp)
@@ -14,13 +14,13 @@ glabel Cd_ServiceQueue
     /* 1449C 80023C9C 8890000C */  jal        Cd_PollRead
     /* 144A0 80023CA0 00000000 */   nop
     /* 144A4 80023CA4 27004014 */  bnez       $v0, .L80023D44
-    /* 144A8 80023CA8 0680023C */   lui       $v0, %hi(D_8005F8C8)
-    /* 144AC 80023CAC C8F85124 */  addiu      $s1, $v0, %lo(D_8005F8C8)
+    /* 144A8 80023CA8 0680023C */   lui       $v0, %hi(Cd_FileCache)
+    /* 144AC 80023CAC C8F85124 */  addiu      $s1, $v0, %lo(Cd_FileCache)
     /* 144B0 80023CB0 21280000 */  addu       $a1, $zero, $zero
     /* 144B4 80023CB4 2198A000 */  addu       $s3, $a1, $zero
     /* 144B8 80023CB8 2190A000 */  addu       $s2, $a1, $zero
     /* 144BC 80023CBC 02001524 */  addiu      $s5, $zero, 0x2
-    /* 144C0 80023CC0 0680143C */  lui        $s4, %hi(D_8005F770)
+    /* 144C0 80023CC0 0680143C */  lui        $s4, %hi(Sys_State)
     /* 144C4 80023CC4 08003026 */  addiu      $s0, $s1, 0x8
   .L80023CC8:
     /* 144C8 80023CC8 FCFF048E */  lw         $a0, -0x4($s0)
@@ -34,7 +34,7 @@ glabel Cd_ServiceQueue
     /* 144E8 80023CE8 0E007514 */  bne        $v1, $s5, .L80023D24
     /* 144EC 80023CEC 03000224 */   addiu     $v0, $zero, 0x3
     /* 144F0 80023CF0 000022A6 */  sh         $v0, 0x0($s1)
-    /* 144F4 80023CF4 70F7828E */  lw         $v0, %lo(D_8005F770)($s4)
+    /* 144F4 80023CF4 70F7828E */  lw         $v0, %lo(Sys_State)($s4)
     /* 144F8 80023CF8 488F0008 */  j          .L80023D20
     /* 144FC 80023CFC 01001324 */   addiu     $s3, $zero, 0x1
   .L80023D00:
@@ -44,7 +44,7 @@ glabel Cd_ServiceQueue
     /* 1450C 80023D0C 9890000C */  jal        Cd_ReadFileAsync
     /* 14510 80023D10 00000000 */   nop
     /* 14514 80023D14 000035A6 */  sh         $s5, 0x0($s1)
-    /* 14518 80023D18 70F7828E */  lw         $v0, %lo(D_8005F770)($s4)
+    /* 14518 80023D18 70F7828E */  lw         $v0, %lo(Sys_State)($s4)
     /* 1451C 80023D1C 21286002 */  addu       $a1, $s3, $zero
   .L80023D20:
     /* 14520 80023D20 000002AE */  sw         $v0, 0x0($s0)
@@ -56,7 +56,7 @@ glabel Cd_ServiceQueue
     /* 14534 80023D34 10003126 */   addiu     $s1, $s1, 0x10
     /* 14538 80023D38 02006016 */  bnez       $s3, .L80023D44
     /* 1453C 80023D3C 00000000 */   nop
-    /* 14540 80023D40 580080AF */  sw         $zero, %gp_rel(D_80050750)($gp)
+    /* 14540 80023D40 580080AF */  sw         $zero, %gp_rel(Cd_QueueActive)($gp)
   .L80023D44:
     /* 14544 80023D44 2800BF8F */  lw         $ra, 0x28($sp)
     /* 14548 80023D48 2400B58F */  lw         $s5, 0x24($sp)

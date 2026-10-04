@@ -10,7 +10,7 @@
 
 /* Small data this unit defines (retail reaches it with %gp_rel here). The bytes
  * live in the data asm; these tentative definitions are COMMON and bind to it. */
-GameStateView *D_80050720;
+GameStateView *Save_GameStatePtr;
 
 s32 Mem_TestBit(u8 *arg0, s32 arg1) {
     s32 i = arg1 >> 3;
@@ -26,39 +26,39 @@ s32 Flag_Test(s32 arg0) {
     s32 i;
 
     if (arg0 < 0x258) {
-        return Mem_TestBit(D_8005F624.flags0, arg0);
+        return Mem_TestBit(Flag_Bits.flags0, arg0);
     }
     if (arg0 < 0x2BC) {
-        return Mem_TestBit(D_8005F624.flags600, arg0 - 0x258);
+        return Mem_TestBit(Flag_Bits.flags600, arg0 - 0x258);
     }
     if (arg0 < 0x320) {
-        return Mem_TestBit(D_8005F624.flags700, arg0 - 0x2BC);
+        return Mem_TestBit(Flag_Bits.flags700, arg0 - 0x2BC);
     }
     if (arg0 < 0x3E8) {
-        return Mem_TestBit(D_8005F624.flags800, arg0 - 0x320);
+        return Mem_TestBit(Flag_Bits.flags800, arg0 - 0x320);
     }
     if (arg0 < 0x44C) {
-        return D_8005F624.field_40 >= arg0 - 0x3E8;
+        return Flag_Bits.field_40 >= arg0 - 0x3E8;
     }
     if (arg0 < 0x640) {
-        return D_8005F624.field_40 < arg0 - 0x5DC;
+        return Flag_Bits.field_40 < arg0 - 0x5DC;
     }
     if (arg0 < 0x8BD) {
         for (i = 0; i < 0x30; i++) {
-            if (((V66_21E78 *)&D_8005E620)->a[i] == arg0 - 0x7D0) {
+            if (((V66_21E78 *)&Save_GameState)->a[i] == arg0 - 0x7D0) {
                 return 1;
             }
         }
         return 0;
     }
     if (arg0 < 0xBB8) {
-        return ((VDD4_21E78 *)&D_8005E620)->a[arg0 - 0x7D0] != 0;
+        return ((VDD4_21E78 *)&Save_GameState)->a[arg0 - 0x7D0] != 0;
     }
     if (arg0 < 0xFA0) {
         s32 key = arg0 - 0xBB8;
         for (i = 0; i < 0x24; i++) {
-            if (((EntV_21E78 *)&D_8005E620)->elems[i].field_1 == key) {
-                if (((EntV_21E78 *)&D_8005E620)->elems[i].field_0 >= 2) {
+            if (((EntV_21E78 *)&Save_GameState)->elems[i].field_1 == key) {
+                if (((EntV_21E78 *)&Save_GameState)->elems[i].field_0 >= 2) {
                     return 1;
                 }
             }
@@ -103,37 +103,37 @@ void Mem_WriteBit(u8 *arg0, s32 arg1, s32 arg2) {
 void Digi_AddNew(s32 arg0) {
     s32 i;
     for (i = 0; i < 0x24; i++) {
-        if (D_8005E620.elems[i].state == 0) {
+        if (Save_GameState.elems[i].state == 0) {
             break;
         }
     }
-    Digi_InitFromTable(arg0, 0, &D_8005E620.elems[i]);
+    Digi_InitFromTable(arg0, 0, &Save_GameState.elems[i]);
     Digi_SortRoster();
     for (i = 0; i < 3; i++) {
-        D_8005E620.elems[i].state =
-            (D_8005E620.elems[i].state >= 2) ? (i + 3) : 0;
+        Save_GameState.elems[i].state =
+            (Save_GameState.elems[i].state >= 2) ? (i + 3) : 0;
     }
 }
 
 void Flag_Set(s32 id, s32 val) {
     if (id < 600) {
         if (id == 0x10 && val == 0) {
-            Mem_WriteBit(D_8005F624.flags0, 0x11, 0);
+            Mem_WriteBit(Flag_Bits.flags0, 0x11, 0);
         }
-        Mem_WriteBit(D_8005F624.flags0, id, val);
+        Mem_WriteBit(Flag_Bits.flags0, id, val);
     } else if (id < 700) {
-        Mem_WriteBit(D_8005F624.flags600, id - 600, val);
+        Mem_WriteBit(Flag_Bits.flags600, id - 600, val);
     } else if (id < 800) {
-        Mem_WriteBit(D_8005F624.flags700, id - 700, val);
+        Mem_WriteBit(Flag_Bits.flags700, id - 700, val);
     } else if (id < 1000) {
-        Mem_WriteBit(D_8005F624.flags800, id - 800, val);
+        Mem_WriteBit(Flag_Bits.flags800, id - 800, val);
     } else if (id < 2000) {
-        D_8005F624.field_40 = id - 1900;
+        Flag_Bits.field_40 = id - 1900;
     } else if (id < 0x8BD) {
-        D_8005E620.field_C4 = id - 2000;
+        Save_GameState.field_C4 = id - 2000;
         Item_SortList();
     } else if (id < 3000) {
-        ((VDD4_21E78 *)&D_8005E620)->a[id - 2000]++;
+        ((VDD4_21E78 *)&Save_GameState)->a[id - 2000]++;
     } else if (id < 4000) {
         switch (id - 3000) {
         case 3:
@@ -191,24 +191,24 @@ s32 Math_PingPongRange(s32 v, s32 div, s32 lo, s32 hi) {
 
 
 void Save_ResetGameState(void) {
-    Mem_Zero(D_80050720, 0x1058);
-    D_80050720->field_0 = 1;
+    Mem_Zero(Save_GameStatePtr, 0x1058);
+    Save_GameStatePtr->field_0 = 1;
     Save_ClearEventFlags();
-    D_8005E620.field_14 = 0x8F;
-    D_8005E620.field_15 = 0x95;
-    D_8005E620.field_16 = 0xB7;
-    D_8005E620.field_17 = 0xFF;
-    D_8005E620.field_8 = 0x1F4;
-    D_8005E620.field_D1 = 0x9E;
-    D_8005E620.field_D2 = 0xD5;
-    D_8005E620.field_D3 = 0x96;
-    D_8005E620.field_D4 = 0xFF;
-    D_8005E620.playTime = 0;
+    Save_GameState.field_14 = 0x8F;
+    Save_GameState.field_15 = 0x95;
+    Save_GameState.field_16 = 0xB7;
+    Save_GameState.field_17 = 0xFF;
+    Save_GameState.field_8 = 0x1F4;
+    Save_GameState.field_D1 = 0x9E;
+    Save_GameState.field_D2 = 0xD5;
+    Save_GameState.field_D3 = 0x96;
+    Save_GameState.field_D4 = 0xFF;
+    Save_GameState.playTime = 0;
 }
 
 
 void Beetle_SetPart(s32 i, s32 v, s32 flag) {
-    GameStateView *p = D_80050720;
+    GameStateView *p = Save_GameStatePtr;
 
     p->slotItems[i] = v;
     p->slotStatus[i] = (v != 0) ? flag : 1;
@@ -216,7 +216,7 @@ void Beetle_SetPart(s32 i, s32 v, s32 flag) {
 
 
 s32 Beetle_GetPart(s32 i) {
-    GameStateView *p = D_80050720;
+    GameStateView *p = Save_GameStatePtr;
     if (p->slotStatus[i] == 1) {
         return -1;
     }
@@ -225,7 +225,7 @@ s32 Beetle_GetPart(s32 i) {
 
 
 void Beetle_SetPartBroken(s32 i, s32 v) {
-    GameStateView *p = D_80050720;
+    GameStateView *p = Save_GameStatePtr;
 
     p->slotStatus[i] = (p->slotItems[i] != 0) ? v : 0;
 }
@@ -235,7 +235,7 @@ u8 func_80022578(void) {
     u8 result = 0;
     s32 v = Beetle_GetPart(2) - 0x2F;
     if ((u32)v < 6) {
-        result = D_800416FC[v];
+        result = Beetle_PartDigiCapacity[v];
     }
     return result;
 }
@@ -248,7 +248,7 @@ s32 Item_FindFreeBagSlot(void) {
     r = -1;
     n = Item_GetBagCapacity();
     for (i = 0; i < n; i++) {
-        if (D_80050720->bagItems[i] == 0) {
+        if (Save_GameStatePtr->bagItems[i] == 0) {
             r = i;
             goto done;
         }
@@ -264,7 +264,7 @@ void Item_CompactBag(void) {
     s32 i;
     s32 v;
 
-    src = D_80050720->bagItems;
+    src = Save_GameStatePtr->bagItems;
     dst = src;
     for (i = 0; i < 0x30; i++, src++) {
         v = *src;
@@ -280,7 +280,7 @@ void Item_CompactBag(void) {
 
 
 void Item_SortList(void) {
-    u16 *base = D_80050720->bagItems;
+    u16 *base = Save_GameStatePtr->bagItems;
     u16 *pi;
     s32 i;
     s32 j;
@@ -319,20 +319,20 @@ void Item_SortList(void) {
 s32 Item_AddToBag(s32 id) {
     s32 i = Item_FindFreeBagSlot();
     if (i != -1) {
-        D_80050720->bagItems[i] = id;
+        Save_GameStatePtr->bagItems[i] = id;
     }
     return i;
 }
 
 
 void Item_RemoveFromBag(s32 i) {
-    D_80050720->bagItems[i] = 0;
+    Save_GameStatePtr->bagItems[i] = 0;
     Item_CompactBag();
 }
 
 
 s32 Item_GetBagCapacity(void) {
-    u16 v = D_80050720->slot4Item;
+    u16 v = Save_GameStatePtr->slot4Item;
     s32 r = v - 0x49;
     s32 ret = 8;
     if ((u32)(v - 0x4B) < 5) {
@@ -345,7 +345,7 @@ s32 Item_GetBagCapacity(void) {
 s32 Digi_CountByState(s32 mode) {
     s32 n = 0;
     s32 i;
-    DigiRosterEntry *e = D_80050720->elems;
+    DigiRosterEntry *e = Save_GameStatePtr->elems;
 
     for (i = 0; i < 0x24; i++, e++) {
         switch (mode) {
@@ -370,7 +370,7 @@ s32 Digi_CountByState(s32 mode) {
 s32 Digi_ListByState(s32 mode, DigiRosterEntry **list) {
     s32 n = 0;
     s32 i;
-    DigiRosterEntry *e = D_80050720->elems;
+    DigiRosterEntry *e = Save_GameStatePtr->elems;
 
     for (i = 0; i < 0x24; i++, e++) {
         switch (mode) {
@@ -407,7 +407,7 @@ void Digi_CompactRoster(void) {
     DigiRosterEntry *dst;
     s32 i;
 
-    src = D_80050720->elems;
+    src = Save_GameStatePtr->elems;
     dst = src;
     for (i = 0; i < 0x24; i++, src++) {
         tmp = *src;
@@ -423,8 +423,8 @@ void Digi_CompactRoster(void) {
 
 
 void Digi_SortRoster(void) {
-    DigiSortRank tbl = D_80050724[0];
-    DigiRosterEntry *base = D_80050720->elems;
+    DigiSortRank tbl = Digi_StateSortRank[0];
+    DigiRosterEntry *base = Save_GameStatePtr->elems;
     DigiRosterEntry tmp;
     s32 i;
     s32 j;

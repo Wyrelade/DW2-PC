@@ -277,13 +277,13 @@ void Stg00_WindowTestTask(Actor *arg0) {
         Task_NextState0(arg0);
         break;
     case 1:
-        if (D_8005F6F0[0].up > 0) {
+        if (Pad_State[0].up > 0) {
             if (w->field_0 == 0) {
                 break;
             }
             w->field_0--;
             w->field_4 = 0x3C;
-        } else if (D_8005F6F0[0].down > 0) {
+        } else if (Pad_State[0].down > 0) {
             if (w->field_0 == 2) {
                 break;
             }
@@ -366,37 +366,37 @@ void Stg00_SoundTestTask(Actor *arg0) {
         switch (arg0->stateLevel1) {
         case 0:
         default:
-            if (D_8005F6F0[0].right > 0) {
+            if (Pad_State[0].right > 0) {
                 w->field_C++;
                 if (w->field_C == Stg00_CountSoundBanks()) {
                     w->field_C = 0;
                 }
                 w->field_10 = 0;
-            } else if (D_8005F6F0[0].left > 0) {
+            } else if (Pad_State[0].left > 0) {
                 if (w->field_C == 0) {
                     w->field_C = Stg00_CountSoundBanks() - 1;
                 } else {
                     w->field_C--;
                 }
                 w->field_10 = 0;
-            } else if (D_8005F6F0[0].up > 0) {
+            } else if (Pad_State[0].up > 0) {
                 w->field_10++;
                 if (w->field_10 == Stg00_CountBankSounds(w->field_C)) {
                     w->field_10 = 0;
                 }
-            } else if (D_8005F6F0[0].down > 0) {
+            } else if (Pad_State[0].down > 0) {
                 if (w->field_10 == 0) {
                     w->field_10 = Stg00_CountBankSounds(w->field_C) - 1;
                 } else {
                     w->field_10--;
                 }
-            } else if (D_8005F6F0[0].circle > 0) {
+            } else if (Pad_State[0].circle > 0) {
                 if (w->field_14 == w->field_C) {
                     Snd_PlayById(w->field_10, 0);
                 } else {
                     goto load;
                 }
-            } else if (D_8005F6F0[0].cross > 0) {
+            } else if (Pad_State[0].cross > 0) {
                 Snd_StopAll();
             }
         text:

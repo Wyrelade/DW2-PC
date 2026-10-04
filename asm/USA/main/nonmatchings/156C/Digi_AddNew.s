@@ -3,9 +3,9 @@ nonmatching Digi_AddNew, 0xAC
 glabel Digi_AddNew
     /* 12918 80022118 E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* 1291C 8002211C 21180000 */  addu       $v1, $zero, $zero
-    /* 12920 80022120 0680023C */  lui        $v0, %hi(D_8005E620)
+    /* 12920 80022120 0680023C */  lui        $v0, %hi(Save_GameState)
     /* 12924 80022124 1000B0AF */  sw         $s0, 0x10($sp)
-    /* 12928 80022128 20E65024 */  addiu      $s0, $v0, %lo(D_8005E620)
+    /* 12928 80022128 20E65024 */  addiu      $s0, $v0, %lo(Save_GameState)
     /* 1292C 8002212C 21280002 */  addu       $a1, $s0, $zero
     /* 12930 80022130 1400BFAF */  sw         $ra, 0x14($sp)
   .L80022134:

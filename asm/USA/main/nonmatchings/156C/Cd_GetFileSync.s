@@ -12,8 +12,8 @@ glabel Cd_GetFileSync
     /* 145D0 80023DD0 00008384 */  lh         $v1, 0x0($a0)
     /* 145D4 80023DD4 00000000 */  nop
     /* 145D8 80023DD8 04006214 */  bne        $v1, $v0, .L80023DEC
-    /* 145DC 80023DDC 0680023C */   lui       $v0, %hi(D_8005F770)
-    /* 145E0 80023DE0 70F7428C */  lw         $v0, %lo(D_8005F770)($v0)
+    /* 145DC 80023DDC 0680023C */   lui       $v0, %hi(Sys_State)
+    /* 145E0 80023DE0 70F7428C */  lw         $v0, %lo(Sys_State)($v0)
     /* 145E4 80023DE4 818F0008 */  j          .L80023E04
     /* 145E8 80023DE8 080082AC */   sw        $v0, 0x8($a0)
   .L80023DEC:

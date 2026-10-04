@@ -126,7 +126,7 @@ glabel Menu_ItemTask
     /* 73A0 80016BA0 21284000 */  addu       $a1, $v0, $zero
     /* 73A4 80016BA4 80000624 */  addiu      $a2, $zero, 0x80
     /* 73A8 80016BA8 0E008797 */  lhu        $a3, %gp_rel(D_80050706)($gp)
-    /* 73AC 80016BAC 0C008297 */  lhu        $v0, %gp_rel(D_80050704)($gp)
+    /* 73AC 80016BAC 0C008297 */  lhu        $v0, %gp_rel(Menu_ItemMsgPos)($gp)
     /* 73B0 80016BB0 003C0700 */  sll        $a3, $a3, 16
     /* 73B4 80016BB4 3E4D000C */  jal        Text_OpenPacked
     /* 73B8 80016BB8 25384700 */   or        $a3, $v0, $a3
@@ -161,8 +161,8 @@ glabel Menu_ItemTask
     /* 7420 80016C20 9D5B0008 */  j          .L80016E74
     /* 7424 80016C24 21204002 */   addu      $a0, $s2, $zero
   .L80016C28:
-    /* 7428 80016C28 0680023C */  lui        $v0, %hi(D_8005F6F0)
-    /* 742C 80016C2C F0F64324 */  addiu      $v1, $v0, %lo(D_8005F6F0)
+    /* 7428 80016C28 0680023C */  lui        $v0, %hi(Pad_State)
+    /* 742C 80016C2C F0F64324 */  addiu      $v1, $v0, %lo(Pad_State)
     /* 7430 80016C30 1C00628C */  lw         $v0, 0x1C($v1)
     /* 7434 80016C34 00000000 */  nop
     /* 7438 80016C38 06004018 */  blez       $v0, .L80016C54
@@ -238,9 +238,9 @@ glabel Menu_ItemTask
     /* 752C 80016D2C C54D000C */  jal        Math_RampToZero
     /* 7530 80016D30 68000526 */   addiu     $a1, $s0, 0x68
     /* 7534 80016D34 A3004014 */  bnez       $v0, .L80016FC4
-    /* 7538 80016D38 0480033C */   lui       $v1, %hi(D_80040EFC)
+    /* 7538 80016D38 0480033C */   lui       $v1, %hi(Menu_ItemSubTasks)
     /* 753C 80016D3C 66000286 */  lh         $v0, 0x66($s0)
-    /* 7540 80016D40 FC0E6324 */  addiu      $v1, $v1, %lo(D_80040EFC)
+    /* 7540 80016D40 FC0E6324 */  addiu      $v1, $v1, %lo(Menu_ItemSubTasks)
     /* 7544 80016D44 80100200 */  sll        $v0, $v0, 2
     /* 7548 80016D48 21104300 */  addu       $v0, $v0, $v1
     /* 754C 80016D4C 00004484 */  lh         $a0, 0x0($v0)
@@ -332,7 +332,7 @@ glabel Menu_ItemTask
     /* 768C 80016E8C 05006010 */  beqz       $v1, .L80016EA4
     /* 7690 80016E90 01000224 */   addiu     $v0, $zero, 0x1
     /* 7694 80016E94 0C006210 */  beq        $v1, $v0, .L80016EC8
-    /* 7698 80016E98 0680023C */   lui       $v0, %hi(D_8005F6F0)
+    /* 7698 80016E98 0680023C */   lui       $v0, %hi(Pad_State)
     /* 769C 80016E9C F15B0008 */  j          .L80016FC4
     /* 76A0 80016EA0 00000000 */   nop
   .L80016EA4:
@@ -347,7 +347,7 @@ glabel Menu_ItemTask
     /* 76C0 80016EC0 F15B0008 */  j          .L80016FC4
     /* 76C4 80016EC4 00000000 */   nop
   .L80016EC8:
-    /* 76C8 80016EC8 F0F64324 */  addiu      $v1, $v0, %lo(D_8005F6F0)
+    /* 76C8 80016EC8 F0F64324 */  addiu      $v1, $v0, %lo(Pad_State)
     /* 76CC 80016ECC 1C00628C */  lw         $v0, 0x1C($v1)
     /* 76D0 80016ED0 00000000 */  nop
     /* 76D4 80016ED4 0D00401C */  bgtz       $v0, .L80016F0C
@@ -383,7 +383,7 @@ glabel Menu_ItemTask
     /* 773C 80016F3C 21284000 */  addu       $a1, $v0, $zero
     /* 7740 80016F40 81000624 */  addiu      $a2, $zero, 0x81
     /* 7744 80016F44 0E008797 */  lhu        $a3, %gp_rel(D_80050706)($gp)
-    /* 7748 80016F48 0C008297 */  lhu        $v0, %gp_rel(D_80050704)($gp)
+    /* 7748 80016F48 0C008297 */  lhu        $v0, %gp_rel(Menu_ItemMsgPos)($gp)
     /* 774C 80016F4C 003C0700 */  sll        $a3, $a3, 16
     /* 7750 80016F50 3E4D000C */  jal        Text_OpenPacked
     /* 7754 80016F54 25384700 */   or        $a3, $v0, $a3

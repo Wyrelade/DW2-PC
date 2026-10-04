@@ -683,11 +683,11 @@ extern Stg40Blk5071C *D_8005071C;
 /* 13-byte const table copied to a stack local (func_80063F00). */
 typedef struct { u8 b[13]; } Blk13;
 extern Blk13 D_80063384;
-extern s32 D_8005F788;
+extern s32 Sys_GameMode;
 extern s32 D_8005F794;
-extern GameStateView *D_80050720;
-extern s32 D_80050948[];
-extern s32 D_8005075C;
+extern GameStateView *Save_GameStatePtr;
+extern s32 Cd_PreloadIds[];
+extern s32 Cd_PreloadCount;
 extern s32 D_8005F704;
 extern void LoadImage(RECT *rect, u32 *p);
 extern void Gfx_ReleaseTexSlot(s32 *arg0);
@@ -727,7 +727,7 @@ extern void Flag_SetTableFile(s32 arg0);
 extern s32 Flag_FirstPassingEntry(void); /* main defines it void; its tail call leaves Flag_NextPassingEntry's result in v0 */
 extern Blk12 *func_8001E5E8(); /* main defines it (void); the overlay passes the entry index */
 extern s32 Flag_NextPassingEntry(void);
-extern PadState D_8005F6F0[];
+extern PadState Pad_State[];
 extern s32 Flag_Test(s32 arg0);
 
 /* overlay data */
@@ -755,7 +755,7 @@ extern void Gfx_HidePartsByMask(GfxPartMaskView *, s32);
 extern s32 D_80072750[];
 void func_8006EBF4(s32 x, s32 y, s32 ox, s32 oy, s32 dir);
 extern s32 D_8005F79C;
-extern GameStateView D_8005E620;
+extern GameStateView Save_GameState;
 extern s32 D_800726C0[];
 extern void Gfx_FadeOutToBlack(s32 arg0);
 extern s32 Item_GetNameText(s32 arg0);
@@ -767,7 +767,7 @@ extern s32 Anim_GetModelAnimFile(s32 arg0, s32 arg1);
 void func_80070B2C(s32 a0);
 Stg40Ent48 *func_80071F50(s32 id);
 extern void RotMatrixYXZ(void *, Mat1F668 *);
-extern Mat1F668 D_80061A08;
+extern Mat1F668 GsWSMATRIX;
 extern void func_8002D0D4(void);
 extern void SetRotMatrix(Mat1F668 *m);
 extern void SetTransMatrix(Mat1F668 *m);
@@ -972,7 +972,7 @@ void func_80071310(s32 a0, s32 a1);
 typedef struct {
     /* 0x0 */ s32 field_0;         /* text handle */
     /* 0x4 */ s32 field_4;         /* scale ramp */
-    /* 0x8 */ s32 field_8;         /* shown value, follows D_80050720->field_8 */
+    /* 0x8 */ s32 field_8;         /* shown value, follows Save_GameStatePtr->field_8 */
 } Stg40W6BE4;
 
 typedef struct {
@@ -1008,9 +1008,9 @@ extern void Text_SetOtLayer(s32 a0, s32 a1);
 
 extern s32 D_80072700[];
 
-extern s32 D_8005F700; /* D_8005F6F0[0].circle as a scalar reloc */
-extern s32 D_8005F710; /* D_8005F6F0[0].r1 as a scalar reloc */
-extern s32 D_8005F720; /* D_8005F6F0[0].select as a scalar reloc */
+extern s32 D_8005F700; /* Pad_State[0].circle as a scalar reloc */
+extern s32 D_8005F710; /* Pad_State[0].r1 as a scalar reloc */
+extern s32 D_8005F720; /* Pad_State[0].select as a scalar reloc */
 extern Actor *D_80072AA0;
 s32 func_800682DC(Actor *a0);
 s32 func_800681BC(Actor *a0);
@@ -1031,7 +1031,7 @@ extern s32 D_8007289C[];
 extern Stg40Ids5 D_80063664;
 void func_8006DFA4(u8 (*tbl)[2], s32 a1, s32 a2);
 
-extern SysState D_8005F770;
+extern SysState Sys_State;
 extern void Digi_SortRoster(void);
 
 /* Task_Create arg block of task 0x207 (func_80067BA8). */
@@ -1113,17 +1113,17 @@ typedef struct {
 } Stg40AA4;
 
 extern Stg40AA4 *D_80072AA4;
-extern s32 D_8005F78C;  /* D_8005F770.nextGameMode as a scalar reloc */
+extern s32 D_8005F78C;  /* Sys_State.nextGameMode as a scalar reloc */
 extern u16 D_800729A0[10];
 extern u16 D_800729B4[6];
-extern s32 D_8005F790;  /* D_8005F770.prevGameMode as a scalar reloc */
+extern s32 D_8005F790;  /* Sys_State.prevGameMode as a scalar reloc */
 
 /* Base levels by slot item (D_80063360, func_80063A34). */
 typedef struct {
     s16 field_0[18];
 } Stg40Buf24;
 extern Stg40Buf24 D_80063360;
-extern s32 D_80050764;
+extern s32 Menu_TopMenuResult;
 extern void Item_CompactBag(void);
 extern void Task_SetState3(Actor *arg0, u32 arg1);
 void func_800651C0(Stg40Loc *loc, s32 a1);

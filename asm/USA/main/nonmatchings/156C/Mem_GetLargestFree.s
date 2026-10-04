@@ -1,7 +1,7 @@
 nonmatching Mem_GetLargestFree, 0x68
 
 glabel Mem_GetLargestFree
-    /* 13844 80023044 9000848F */  lw         $a0, %gp_rel(D_80050788)($gp)
+    /* 13844 80023044 9000848F */  lw         $a0, %gp_rel(Mem_HeapHead)($gp)
     /* 13848 80023048 00000000 */  nop
     /* 1384C 8002304C 0800838C */  lw         $v1, 0x8($a0)
     /* 13850 80023050 01000224 */  addiu      $v0, $zero, 0x1

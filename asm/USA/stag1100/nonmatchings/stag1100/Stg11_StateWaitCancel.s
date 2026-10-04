@@ -19,10 +19,10 @@ glabel Stg11_StateWaitCancel
     /* 1744 80064AA4 21280002 */   addu      $a1, $s0, $zero
     /* 1748 80064AA8 10004014 */  bnez       $v0, .L80064AEC
     /* 174C 80064AAC 01000224 */   addiu     $v0, $zero, 0x1
-    /* 1750 80064AB0 0680033C */  lui        $v1, %hi(D_8005F6F0)
+    /* 1750 80064AB0 0680033C */  lui        $v1, %hi(Pad_State)
     /* 1754 80064AB4 180022AE */  sw         $v0, 0x18($s1)
     /* 1758 80064AB8 7E000286 */  lh         $v0, 0x7E($s0)
-    /* 175C 80064ABC F0F66324 */  addiu      $v1, $v1, %lo(D_8005F6F0)
+    /* 175C 80064ABC F0F66324 */  addiu      $v1, $v1, %lo(Pad_State)
     /* 1760 80064AC0 80110200 */  sll        $v0, $v0, 6
     /* 1764 80064AC4 21104300 */  addu       $v0, $v0, $v1
     /* 1768 80064AC8 1C00428C */  lw         $v0, 0x1C($v0)

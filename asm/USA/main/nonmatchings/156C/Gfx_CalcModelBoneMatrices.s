@@ -4,7 +4,7 @@ nonmatching Gfx_CalcModelBoneMatrices, 0x440
 glabel Gfx_CalcModelBoneMatrices
     /* 108D0 800200D0 B0FFBD27 */  addiu      $sp, $sp, -0x50
     /* 108D4 800200D4 01000624 */  addiu      $a2, $zero, 0x1
-    /* 108D8 800200D8 0680023C */  lui        $v0, %hi(D_80061A08)
+    /* 108D8 800200D8 0680023C */  lui        $v0, %hi(GsWSMATRIX)
     /* 108DC 800200DC 4C00B3AF */  sw         $s3, 0x4C($sp)
     /* 108E0 800200E0 4800B2AF */  sw         $s2, 0x48($sp)
     /* 108E4 800200E4 4400B1AF */  sw         $s1, 0x44($sp)
@@ -13,7 +13,7 @@ glabel Gfx_CalcModelBoneMatrices
     /* 108F0 800200F0 3800838C */  lw         $v1, 0x38($a0)
     /* 108F4 800200F4 78002B8F */  lw         $t3, 0x78($t9)
     /* 108F8 800200F8 801F0F3C */  lui        $t7, (0x1F800040 >> 16)
-    /* 108FC 800200FC 081A5324 */  addiu      $s3, $v0, %lo(D_80061A08)
+    /* 108FC 800200FC 081A5324 */  addiu      $s3, $v0, %lo(GsWSMATRIX)
     /* 10900 80020100 0000708E */  lw         $s0, 0x0($s3)
     /* 10904 80020104 0400718E */  lw         $s1, 0x4($s3)
     /* 10908 80020108 0800728E */  lw         $s2, 0x8($s3)

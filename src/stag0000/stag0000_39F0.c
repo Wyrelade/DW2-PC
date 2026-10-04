@@ -297,7 +297,7 @@ void Stg00_DigiModelTask(Actor *arg0) {
         case 6:
         case 7:
             w = (Stg00ModelWorkX *)arg0->work;
-            w->field_1C += D_8005F778;
+            w->field_1C += Sys_FrameDelta;
             while (w->field_1C >= 2) {
                 w->field_1C -= 2;
                 func_80067120(arg0, arg0->stateLevel1 - 6, 0);
@@ -410,7 +410,7 @@ void Stg00_DigiModelTask(Actor *arg0) {
                 }
             case 3:
                 w = (Stg00ModelWorkX *)arg0->work;
-                w->field_1C += D_8005F778;
+                w->field_1C += Sys_FrameDelta;
                 while (w->field_1C >= 2) {
                     w->field_1C -= 2;
                     func_80067120(arg0, 0, 1);

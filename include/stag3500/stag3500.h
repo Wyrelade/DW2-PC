@@ -232,13 +232,13 @@ typedef struct {
     u8 _pad5A[0x02];
 } Stg35Rec5C; /* size 0x5C */
 
-/* D_8005E620 (main GameState) viewed with the party slots as Stg35Rec5C. */
+/* Save_GameState (main GameState) viewed with the party slots as Stg35Rec5C. */
 typedef struct {
     u8 _pad00[0xE4];
     /* 0xE4 */ Stg35Rec5C elems[0x24];
 } Stg35GameState;
 
-extern Stg35GameState D_8005E620;
+extern Stg35GameState Save_GameState;
 
 /* 6-byte entries of the lists pointed to by D_8006AA24 (end at field_0 == 0). */
 typedef struct {
@@ -398,7 +398,7 @@ extern Stg35Battle D_8006AA88;
 extern Stg35Rec6 D_8006A6DC[];
 extern s32 D_8006A55C[];
 extern Stg35Rec6 *D_8006AA24[6];
-extern s32 D_80043704[];
+extern s32 Gfx_ZeroVector[];
 
 extern void Actor_InitTransform(Actor *, s32 *, s32);
 extern void Gfx_ResetModelBones(Actor *);
@@ -553,8 +553,8 @@ extern s32 *Skill_GetShotXa(s32 id);
 extern s32 Skill_GetPower(s32 id);           /* main: s16 */
 extern u16 Skill_GetSpecialty(s32 id);
 
-extern SysState D_8005F770;
-extern PadState D_8005F6F0[];
+extern SysState Sys_State;
+extern PadState Pad_State[];
 extern s16 D_80050780;
 
 extern s32 D_8006A4AC[];

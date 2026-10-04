@@ -6,9 +6,9 @@ glabel Gpu_ClearScreens
     /* C90C 8001C10C 21880000 */  addu       $s1, $zero, $zero
     /* C910 8001C110 2000B2AF */  sw         $s2, 0x20($sp)
     /* C914 8001C114 1000B227 */  addiu      $s2, $sp, 0x10
-    /* C918 8001C118 0680023C */  lui        $v0, %hi(D_8005F770)
+    /* C918 8001C118 0680023C */  lui        $v0, %hi(Sys_State)
     /* C91C 8001C11C 1800B0AF */  sw         $s0, 0x18($sp)
-    /* C920 8001C120 70F75024 */  addiu      $s0, $v0, %lo(D_8005F770)
+    /* C920 8001C120 70F75024 */  addiu      $s0, $v0, %lo(Sys_State)
     /* C924 8001C124 2400BFAF */  sw         $ra, 0x24($sp)
   .L8001C128:
     /* C928 8001C128 EB00038A */  lwl        $v1, 0xEB($s0)

@@ -3,8 +3,8 @@ nonmatching Stg00_FontDrawStr, 0x224
 glabel Stg00_FontDrawStr
     /* 1DF0 80065150 F8FFBD27 */  addiu      $sp, $sp, -0x8
     /* 1DF4 80065154 2160C000 */  addu       $t4, $a2, $zero
-    /* 1DF8 80065158 0680083C */  lui        $t0, %hi(D_8005F770)
-    /* 1DFC 8006515C 70F70825 */  addiu      $t0, $t0, %lo(D_8005F770)
+    /* 1DF8 80065158 0680083C */  lui        $t0, %hi(Sys_State)
+    /* 1DFC 8006515C 70F70825 */  addiu      $t0, $t0, %lo(Sys_State)
     /* 1E00 80065160 07800E3C */  lui        $t6, %hi(Stg00_FontWork)
     /* 1E04 80065164 0400B1AF */  sw         $s1, 0x4($sp)
     /* 1E08 80065168 0000B0AF */  sw         $s0, 0x0($sp)

@@ -4,15 +4,15 @@ glabel Pad_Update
     /* 13A9C 8002329C D8FFBD27 */  addiu      $sp, $sp, -0x28
     /* 13AA0 800232A0 1C00B3AF */  sw         $s3, 0x1C($sp)
     /* 13AA4 800232A4 21980000 */  addu       $s3, $zero, $zero
-    /* 13AA8 800232A8 0680023C */  lui        $v0, %hi(D_8005F678)
+    /* 13AA8 800232A8 0680023C */  lui        $v0, %hi(Pad_PortButtons)
     /* 13AAC 800232AC 1000B0AF */  sw         $s0, 0x10($sp)
-    /* 13AB0 800232B0 78F65024 */  addiu      $s0, $v0, %lo(D_8005F678)
-    /* 13AB4 800232B4 0680023C */  lui        $v0, %hi(D_8005F6F0)
+    /* 13AB0 800232B0 78F65024 */  addiu      $s0, $v0, %lo(Pad_PortButtons)
+    /* 13AB4 800232B4 0680023C */  lui        $v0, %hi(Pad_State)
     /* 13AB8 800232B8 1400B1AF */  sw         $s1, 0x14($sp)
-    /* 13ABC 800232BC F0F65124 */  addiu      $s1, $v0, %lo(D_8005F6F0)
-    /* 13AC0 800232C0 0680023C */  lui        $v0, %hi(D_8005F6A8)
+    /* 13ABC 800232BC F0F65124 */  addiu      $s1, $v0, %lo(Pad_State)
+    /* 13AC0 800232C0 0680023C */  lui        $v0, %hi(Pad_RecvBufs)
     /* 13AC4 800232C4 1800B2AF */  sw         $s2, 0x18($sp)
-    /* 13AC8 800232C8 A8F65224 */  addiu      $s2, $v0, %lo(D_8005F6A8)
+    /* 13AC8 800232C8 A8F65224 */  addiu      $s2, $v0, %lo(Pad_RecvBufs)
     /* 13ACC 800232CC 2000BFAF */  sw         $ra, 0x20($sp)
   .L800232D0:
     /* 13AD0 800232D0 00004292 */  lbu        $v0, 0x0($s2)

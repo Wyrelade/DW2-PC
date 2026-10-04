@@ -6,18 +6,18 @@ glabel Gpu_AllocPacketBufs
     /* D1B8 8001C9B8 21808000 */  addu       $s0, $a0, $zero
     /* D1BC 8001C9BC 02000524 */  addiu      $a1, $zero, 0x2
     /* D1C0 8001C9C0 1800B2AF */  sw         $s2, 0x18($sp)
-    /* D1C4 8001C9C4 0480123C */  lui        $s2, %hi(D_80041670)
+    /* D1C4 8001C9C4 0480123C */  lui        $s2, %hi(Gpu_PrimBufs)
     /* D1C8 8001C9C8 1400B1AF */  sw         $s1, 0x14($sp)
-    /* D1CC 8001C9CC 70165126 */  addiu      $s1, $s2, %lo(D_80041670)
+    /* D1CC 8001C9CC 70165126 */  addiu      $s1, $s2, %lo(Gpu_PrimBufs)
     /* D1D0 8001C9D0 1C00BFAF */  sw         $ra, 0x1C($sp)
     /* D1D4 8001C9D4 CF8B000C */  jal        Mem_Alloc
     /* D1D8 8001C9D8 080030AE */   sw        $s0, 0x8($s1)
     /* D1DC 8001C9DC 21200002 */  addu       $a0, $s0, $zero
     /* D1E0 8001C9E0 02000524 */  addiu      $a1, $zero, 0x2
     /* D1E4 8001C9E4 CF8B000C */  jal        Mem_Alloc
-    /* D1E8 8001C9E8 701642AE */   sw        $v0, %lo(D_80041670)($s2)
-    /* D1EC 8001C9EC 0680043C */  lui        $a0, %hi(D_8005F770)
-    /* D1F0 8001C9F0 70F78424 */  addiu      $a0, $a0, %lo(D_8005F770)
+    /* D1E8 8001C9E8 701642AE */   sw        $v0, %lo(Gpu_PrimBufs)($s2)
+    /* D1EC 8001C9EC 0680043C */  lui        $a0, %hi(Sys_State)
+    /* D1F0 8001C9F0 70F78424 */  addiu      $a0, $a0, %lo(Sys_State)
     /* D1F4 8001C9F4 2800838C */  lw         $v1, 0x28($a0)
     /* D1F8 8001C9F8 040022AE */  sw         $v0, 0x4($s1)
     /* D1FC 8001C9FC 80180300 */  sll        $v1, $v1, 2

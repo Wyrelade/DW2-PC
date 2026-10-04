@@ -1,7 +1,7 @@
 nonmatching Item_GetBagCapacity, 0x30
 
 glabel Item_GetBagCapacity
-    /* 1301C 8002281C 2800828F */  lw         $v0, %gp_rel(D_80050720)($gp)
+    /* 1301C 8002281C 2800828F */  lw         $v0, %gp_rel(Save_GameStatePtr)($gp)
     /* 13020 80022820 00000000 */  nop
     /* 13024 80022824 34004294 */  lhu        $v0, 0x34($v0)
     /* 13028 80022828 00000000 */  nop

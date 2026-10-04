@@ -46,7 +46,7 @@ glabel Menu_SkillListTask
     /* A0A8 800198A8 21208002 */   addu      $a0, $s4, $zero
     /* A0AC 800198AC 02000224 */  addiu      $v0, $zero, 0x2
     /* A0B0 800198B0 5E006210 */  beq        $v1, $v0, .L80019A2C
-    /* A0B4 800198B4 0680023C */   lui       $v0, %hi(D_8005F6F0)
+    /* A0B4 800198B4 0680023C */   lui       $v0, %hi(Pad_State)
   .L800198B8:
     /* A0B8 800198B8 B94D000C */  jal        Math_RampToOne
     /* A0BC 800198BC A8006526 */   addiu     $a1, $s3, 0xA8
@@ -110,7 +110,7 @@ glabel Menu_SkillListTask
     /* A1A0 800199A0 AE005084 */  lh         $s0, 0xAE($v0)
     /* A1A4 800199A4 80000224 */  addiu      $v0, $zero, 0x80
     /* A1A8 800199A8 1F00888B */  lwl        $t0, %gp_rel(D_80050717)($gp)
-    /* A1AC 800199AC 1C00889B */  lwr        $t0, %gp_rel(D_80050714)($gp)
+    /* A1AC 800199AC 1C00889B */  lwr        $t0, %gp_rel(Menu_SkillMsgPos)($gp)
     /* A1B0 800199B0 00000000 */  nop
     /* A1B4 800199B4 2700A8AB */  swl        $t0, 0x27($sp)
     /* A1B8 800199B8 2400A8BB */  swr        $t0, 0x24($sp)
@@ -143,12 +143,12 @@ glabel Menu_SkillListTask
     /* A224 80019A24 E8660008 */  j          .L80019BA0
     /* A228 80019A28 00000000 */   nop
   .L80019A2C:
-    /* A22C 80019A2C F0F65124 */  addiu      $s1, $v0, %lo(D_8005F6F0)
+    /* A22C 80019A2C F0F65124 */  addiu      $s1, $v0, %lo(Pad_State)
     /* A230 80019A30 0400238E */  lw         $v1, 0x4($s1)
     /* A234 80019A34 00000000 */  nop
     /* A238 80019A38 0500601C */  bgtz       $v1, .L80019A50
     /* A23C 80019A3C 00000000 */   nop
-    /* A240 80019A40 F0F6428C */  lw         $v0, %lo(D_8005F6F0)($v0)
+    /* A240 80019A40 F0F6428C */  lw         $v0, %lo(Pad_State)($v0)
     /* A244 80019A44 00000000 */  nop
     /* A248 80019A48 11004018 */  blez       $v0, .L80019A90
     /* A24C 80019A4C 00000000 */   nop

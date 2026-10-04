@@ -9,7 +9,7 @@ glabel Gfx_DrawWireModel
     /* 10F78 80020778 21B0C000 */  addu       $s6, $a2, $zero
     /* 10F7C 8002077C 2000B4AF */  sw         $s4, 0x20($sp)
     /* 10F80 80020780 21A00000 */  addu       $s4, $zero, $zero
-    /* 10F84 80020784 0680033C */  lui        $v1, %hi(D_8005F770)
+    /* 10F84 80020784 0680033C */  lui        $v1, %hi(Sys_State)
     /* 10F88 80020788 3000BFAF */  sw         $ra, 0x30($sp)
     /* 10F8C 8002078C 2400B5AF */  sw         $s5, 0x24($sp)
     /* 10F90 80020790 1C00B3AF */  sw         $s3, 0x1C($sp)
@@ -17,7 +17,7 @@ glabel Gfx_DrawWireModel
     /* 10F98 80020798 1400B1AF */  sw         $s1, 0x14($sp)
     /* 10F9C 8002079C 1000B0AF */  sw         $s0, 0x10($sp)
     /* 10FA0 800207A0 3C00938C */  lw         $s3, 0x3C($a0)
-    /* 10FA4 800207A4 70F76324 */  addiu      $v1, $v1, %lo(D_8005F770)
+    /* 10FA4 800207A4 70F76324 */  addiu      $v1, $v1, %lo(Sys_State)
     /* 10FA8 800207A8 3C00628E */  lw         $v0, 0x3C($s3)
     /* 10FAC 800207AC 7800758E */  lw         $s5, 0x78($s3)
     /* 10FB0 800207B0 80100200 */  sll        $v0, $v0, 2

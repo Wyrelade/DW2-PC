@@ -29,8 +29,8 @@ glabel func_80068DC0
     /* 5AC0 80068E20 00000000 */  nop
     /* 5AC4 80068E24 02004228 */  slti       $v0, $v0, 0x2
     /* 5AC8 80068E28 37004010 */  beqz       $v0, .L80068F08
-    /* 5ACC 80068E2C 0580023C */   lui       $v0, %hi(D_80050720)
-    /* 5AD0 80068E30 2007448C */  lw         $a0, %lo(D_80050720)($v0)
+    /* 5ACC 80068E2C 0580023C */   lui       $v0, %hi(Save_GameStatePtr)
+    /* 5AD0 80068E30 2007448C */  lw         $a0, %lo(Save_GameStatePtr)($v0)
     /* 5AD4 80068E34 00000000 */  nop
     /* 5AD8 80068E38 28008284 */  lh         $v0, 0x28($a0)
     /* 5ADC 80068E3C 28008394 */  lhu        $v1, 0x28($a0)
@@ -54,25 +54,25 @@ glabel func_80068DC0
     /* 5B1C 80068E7C 9E87000C */  jal        Flag_Test
     /* 5B20 80068E80 68000424 */   addiu     $a0, $zero, 0x68
     /* 5B24 80068E84 09004010 */  beqz       $v0, .L80068EAC
-    /* 5B28 80068E88 0580023C */   lui       $v0, %hi(D_80050720)
-    /* 5B2C 80068E8C 2007438C */  lw         $v1, %lo(D_80050720)($v0)
+    /* 5B28 80068E88 0580023C */   lui       $v0, %hi(Save_GameStatePtr)
+    /* 5B2C 80068E8C 2007438C */  lw         $v1, %lo(Save_GameStatePtr)($v0)
     /* 5B30 80068E90 00000000 */  nop
     /* 5B34 80068E94 28006284 */  lh         $v0, 0x28($v1)
     /* 5B38 80068E98 00000000 */  nop
     /* 5B3C 80068E9C 0A004014 */  bnez       $v0, .L80068EC8
-    /* 5B40 80068EA0 0580023C */   lui       $v0, %hi(D_80050720)
+    /* 5B40 80068EA0 0580023C */   lui       $v0, %hi(Save_GameStatePtr)
     /* 5B44 80068EA4 01000224 */  addiu      $v0, $zero, 0x1
     /* 5B48 80068EA8 280062A4 */  sh         $v0, 0x28($v1)
   .L80068EAC:
-    /* 5B4C 80068EAC 0580023C */  lui        $v0, %hi(D_80050720)
-    /* 5B50 80068EB0 2007428C */  lw         $v0, %lo(D_80050720)($v0)
+    /* 5B4C 80068EAC 0580023C */  lui        $v0, %hi(Save_GameStatePtr)
+    /* 5B50 80068EB0 2007428C */  lw         $v0, %lo(Save_GameStatePtr)($v0)
     /* 5B54 80068EB4 00000000 */  nop
     /* 5B58 80068EB8 28004284 */  lh         $v0, 0x28($v0)
     /* 5B5C 80068EBC 00000000 */  nop
     /* 5B60 80068EC0 07004010 */  beqz       $v0, .L80068EE0
-    /* 5B64 80068EC4 0580023C */   lui       $v0, %hi(D_80050720)
+    /* 5B64 80068EC4 0580023C */   lui       $v0, %hi(Save_GameStatePtr)
   .L80068EC8:
-    /* 5B68 80068EC8 2007428C */  lw         $v0, %lo(D_80050720)($v0)
+    /* 5B68 80068EC8 2007428C */  lw         $v0, %lo(Save_GameStatePtr)($v0)
     /* 5B6C 80068ECC 00000000 */  nop
     /* 5B70 80068ED0 24004284 */  lh         $v0, 0x24($v0)
     /* 5B74 80068ED4 00000000 */  nop

@@ -56,7 +56,7 @@ glabel Menu_OpenUseItemTexts
     /* 5F38 80015738 21284000 */  addu       $a1, $v0, $zero
     /* 5F3C 8001573C 80000624 */  addiu      $a2, $zero, 0x80
     /* 5F40 80015740 0A008797 */  lhu        $a3, %gp_rel(D_80050702)($gp)
-    /* 5F44 80015744 08008297 */  lhu        $v0, %gp_rel(D_80050700)($gp)
+    /* 5F44 80015744 08008297 */  lhu        $v0, %gp_rel(Menu_ItemUseMsgPos)($gp)
     /* 5F48 80015748 003C0700 */  sll        $a3, $a3, 16
     /* 5F4C 8001574C 3E4D000C */  jal        Text_OpenPacked
     /* 5F50 80015750 25384700 */   or        $a3, $v0, $a3

@@ -24,7 +24,7 @@ glabel func_8006FFD0
     /* CCC0 80070020 21388000 */   addu      $a3, $a0, $zero
     /* CCC4 80070024 04000A24 */  addiu      $t2, $zero, 0x4
     /* CCC8 80070028 10000924 */  addiu      $t1, $zero, 0x10
-    /* CCCC 8007002C 0680063C */  lui        $a2, %hi(D_8005F770)
+    /* CCCC 8007002C 0680063C */  lui        $a2, %hi(Sys_State)
     /* CCD0 80070030 01000824 */  addiu      $t0, $zero, 0x1
     /* CCD4 80070034 0F008524 */  addiu      $a1, $a0, 0xF
   .L80070038:
@@ -58,7 +58,7 @@ glabel func_8006FFD0
     /* CD3C 8007009C 46C00108 */  j          .L80070118
     /* CD40 800700A0 0000A0A0 */   sb        $zero, 0x0($a1)
   .L800700A4:
-    /* CD44 800700A4 70F7C28C */  lw         $v0, %lo(D_8005F770)($a2)
+    /* CD44 800700A4 70F7C28C */  lw         $v0, %lo(Sys_State)($a2)
     /* CD48 800700A8 42C00108 */  j          .L80070108
     /* CD4C 800700AC 42100200 */   srl       $v0, $v0, 1
   .L800700B0:
@@ -79,11 +79,11 @@ glabel func_8006FFD0
     /* CD84 800700E4 46C00108 */  j          .L80070118
     /* CD88 800700E8 0000A8A0 */   sb        $t0, 0x0($a1)
   .L800700EC:
-    /* CD8C 800700EC 70F7C28C */  lw         $v0, %lo(D_8005F770)($a2)
+    /* CD8C 800700EC 70F7C28C */  lw         $v0, %lo(Sys_State)($a2)
     /* CD90 800700F0 42C00108 */  j          .L80070108
     /* CD94 800700F4 42100200 */   srl       $v0, $v0, 1
   .L800700F8:
-    /* CD98 800700F8 70F7C28C */  lw         $v0, %lo(D_8005F770)($a2)
+    /* CD98 800700F8 70F7C28C */  lw         $v0, %lo(Sys_State)($a2)
     /* CD9C 800700FC 00000000 */  nop
     /* CDA0 80070100 42100200 */  srl        $v0, $v0, 1
     /* CDA4 80070104 01004238 */  xori       $v0, $v0, 0x1

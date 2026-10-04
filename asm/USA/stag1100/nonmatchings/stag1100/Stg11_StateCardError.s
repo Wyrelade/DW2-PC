@@ -76,9 +76,9 @@ glabel Stg11_StateCardError
     /* 1898 80064BF8 11930108 */  j          .L80064C44
     /* 189C 80064BFC 21204002 */   addu      $a0, $s2, $zero
   .L80064C00:
-    /* 18A0 80064C00 0680023C */  lui        $v0, %hi(D_8005F6F0)
+    /* 18A0 80064C00 0680023C */  lui        $v0, %hi(Pad_State)
     /* 18A4 80064C04 7E002386 */  lh         $v1, 0x7E($s1)
-    /* 18A8 80064C08 F0F64224 */  addiu      $v0, $v0, %lo(D_8005F6F0)
+    /* 18A8 80064C08 F0F64224 */  addiu      $v0, $v0, %lo(Pad_State)
     /* 18AC 80064C0C 80190300 */  sll        $v1, $v1, 6
     /* 18B0 80064C10 21186200 */  addu       $v1, $v1, $v0
     /* 18B4 80064C14 1C00628C */  lw         $v0, 0x1C($v1)

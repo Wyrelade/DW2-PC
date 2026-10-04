@@ -9,7 +9,7 @@ void func_80068CE0(Actor *a0) {
 
     for (i = 0; i < 3; i++) {
         if (((Stg30StateDigis *)&D_80073CC0)->digis[i].state >= 3) {
-            D_8005E620.elems[i] = ((Stg30StateDigis *)&D_80073CC0)->digis[i];
+            Save_GameState.elems[i] = ((Stg30StateDigis *)&D_80073CC0)->digis[i];
         }
     }
     Gpu_InitDoubleBuffer(0x140, 0xF0, 0, 0);

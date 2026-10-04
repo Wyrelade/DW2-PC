@@ -1,8 +1,8 @@
 nonmatching Stg00_InitTileSprt, 0x68
 
 glabel Stg00_InitTileSprt
-    /* AD4 80063E34 0580023C */  lui        $v0, %hi(D_8005074C)
-    /* AD8 80063E38 4C074B24 */  addiu      $t3, $v0, %lo(D_8005074C)
+    /* AD4 80063E34 0580023C */  lui        $v0, %hi(Gfx_NeutralRgb)
+    /* AD8 80063E38 4C074B24 */  addiu      $t3, $v0, %lo(Gfx_NeutralRgb)
     /* ADC 80063E3C 03006889 */  lwl        $t0, 0x3($t3)
     /* AE0 80063E40 00006899 */  lwr        $t0, 0x0($t3)
     /* AE4 80063E44 00000000 */  nop

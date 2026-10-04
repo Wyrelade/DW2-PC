@@ -41,8 +41,8 @@ glabel func_8007142C
     /* E158 800714B8 00000000 */  nop
     /* E15C 800714BC 43004018 */  blez       $v0, .L800715CC
     /* E160 800714C0 21300000 */   addu      $a2, $zero, $zero
-    /* E164 800714C4 0580023C */  lui        $v0, %hi(D_80050720)
-    /* E168 800714C8 2007488C */  lw         $t0, %lo(D_80050720)($v0)
+    /* E164 800714C4 0580023C */  lui        $v0, %hi(Save_GameStatePtr)
+    /* E168 800714C8 2007488C */  lw         $t0, %lo(Save_GameStatePtr)($v0)
     /* E16C 800714CC 21286000 */  addu       $a1, $v1, $zero
     /* E170 800714D0 2138A000 */  addu       $a3, $a1, $zero
   .L800714D4:
@@ -107,9 +107,9 @@ glabel func_8007142C
     /* E248 800715A8 FCFF8224 */  addiu      $v0, $a0, -0x4
     /* E24C 800715AC 40100200 */  sll        $v0, $v0, 1
     /* E250 800715B0 21104300 */  addu       $v0, $v0, $v1
-    /* E254 800715B4 0580033C */  lui        $v1, %hi(D_80050720)
+    /* E254 800715B4 0580033C */  lui        $v1, %hi(Save_GameStatePtr)
     /* E258 800715B8 00004484 */  lh         $a0, 0x0($v0)
-    /* E25C 800715BC 2007628C */  lw         $v0, %lo(D_80050720)($v1)
+    /* E25C 800715BC 2007628C */  lw         $v0, %lo(Save_GameStatePtr)($v1)
     /* E260 800715C0 01000324 */  addiu      $v1, $zero, 0x1
     /* E264 800715C4 21104400 */  addu       $v0, $v0, $a0
     /* E268 800715C8 520043A0 */  sb         $v1, 0x52($v0)

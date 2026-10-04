@@ -36,8 +36,8 @@ glabel Gfx_ReserveTexSlot
     /* D618 8001CE18 21306200 */  addu       $a2, $v1, $v0
     /* D61C 8001CE1C FEFF0224 */  addiu      $v0, $zero, -0x2
     /* D620 8001CE20 0000C2AC */  sw         $v0, 0x0($a2)
-    /* D624 8001CE24 0680023C */  lui        $v0, %hi(D_8005F770)
-    /* D628 8001CE28 70F7438C */  lw         $v1, %lo(D_8005F770)($v0)
+    /* D624 8001CE24 0680023C */  lui        $v0, %hi(Sys_State)
+    /* D628 8001CE28 70F7438C */  lw         $v1, %lo(Sys_State)($v0)
     /* D62C 8001CE2C 1400C28C */  lw         $v0, 0x14($a2)
     /* D630 8001CE30 1C00C48C */  lw         $a0, 0x1C($a2)
     /* D634 8001CE34 0800C0AC */  sw         $zero, 0x8($a2)

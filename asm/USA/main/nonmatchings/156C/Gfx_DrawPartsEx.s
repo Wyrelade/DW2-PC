@@ -14,8 +14,8 @@ glabel Gfx_DrawPartsEx
     /* DEDC 8001D6DC 1400B1AF */  sw         $s1, 0x14($sp)
     /* DEE0 8001D6E0 0B00A010 */  beqz       $a1, .L8001D710
     /* DEE4 8001D6E4 1000B0AF */   sw        $s0, 0x10($sp)
-    /* DEE8 8001D6E8 0680033C */  lui        $v1, %hi(D_8005F770)
-    /* DEEC 8001D6EC 70F76324 */  addiu      $v1, $v1, %lo(D_8005F770)
+    /* DEE8 8001D6E8 0680033C */  lui        $v1, %hi(Sys_State)
+    /* DEEC 8001D6EC 70F76324 */  addiu      $v1, $v1, %lo(Sys_State)
     /* DEF0 8001D6F0 1001628C */  lw         $v0, 0x110($v1)
     /* DEF4 8001D6F4 1401638C */  lw         $v1, 0x114($v1)
     /* DEF8 8001D6F8 40014238 */  xori       $v0, $v0, 0x140
@@ -28,10 +28,10 @@ glabel Gfx_DrawPartsEx
     /* DF10 8001D710 0000428E */  lw         $v0, 0x0($s2)
     /* DF14 8001D714 00000000 */  nop
     /* DF18 8001D718 4F004010 */  beqz       $v0, .L8001D858
-    /* DF1C 8001D71C 0680023C */   lui       $v0, %hi(D_8005F770)
-    /* DF20 8001D720 70F75724 */  addiu      $s7, $v0, %lo(D_8005F770)
-    /* DF24 8001D724 0480153C */  lui        $s5, %hi(D_8004167C)
-    /* DF28 8001D728 7C16B126 */  addiu      $s1, $s5, %lo(D_8004167C)
+    /* DF1C 8001D71C 0680023C */   lui       $v0, %hi(Sys_State)
+    /* DF20 8001D720 70F75724 */  addiu      $s7, $v0, %lo(Sys_State)
+    /* DF24 8001D724 0480153C */  lui        $s5, %hi(Gfx_PartRotCache)
+    /* DF28 8001D728 7C16B126 */  addiu      $s1, $s5, %lo(Gfx_PartRotCache)
     /* DF2C 8001D72C 18003626 */  addiu      $s6, $s1, 0x18
     /* DF30 8001D730 14005026 */  addiu      $s0, $s2, 0x14
   .L8001D734:
@@ -60,7 +60,7 @@ glabel Gfx_DrawPartsEx
     /* DF88 8001D788 FCFF02AE */  sw         $v0, -0x4($s0)
     /* DF8C 8001D78C 000002AE */  sw         $v0, 0x0($s0)
   .L8001D790:
-    /* DF90 8001D790 7C16A38E */  lw         $v1, %lo(D_8004167C)($s5)
+    /* DF90 8001D790 7C16A38E */  lw         $v1, %lo(Gfx_PartRotCache)($s5)
     /* DF94 8001D794 0C00028E */  lw         $v0, 0xC($s0)
     /* DF98 8001D798 00000000 */  nop
     /* DF9C 8001D79C 10006214 */  bne        $v1, $v0, .L8001D7E0
@@ -81,7 +81,7 @@ glabel Gfx_DrawPartsEx
     /* DFD8 8001D7D8 15006210 */  beq        $v1, $v0, .L8001D830
     /* DFDC 8001D7DC 21204002 */   addu      $a0, $s2, $zero
   .L8001D7E0:
-    /* DFE0 8001D7E0 7C16AB26 */  addiu      $t3, $s5, %lo(D_8004167C)
+    /* DFE0 8001D7E0 7C16AB26 */  addiu      $t3, $s5, %lo(Gfx_PartRotCache)
     /* DFE4 8001D7E4 0F00088A */  lwl        $t0, 0xF($s0)
     /* DFE8 8001D7E8 0C00089A */  lwr        $t0, 0xC($s0)
     /* DFEC 8001D7EC 1300098A */  lwl        $t1, 0x13($s0)
@@ -102,8 +102,8 @@ glabel Gfx_DrawPartsEx
     /* E028 8001D828 08002526 */   addiu     $a1, $s1, 0x8
     /* E02C 8001D82C 21204002 */  addu       $a0, $s2, $zero
   .L8001D830:
-    /* E030 8001D830 0480053C */  lui        $a1, %hi(D_80041694)
-    /* E034 8001D834 9416A524 */  addiu      $a1, $a1, %lo(D_80041694)
+    /* E030 8001D830 0480053C */  lui        $a1, %hi(Gfx_PartRotMatrix)
+    /* E034 8001D834 9416A524 */  addiu      $a1, $a1, %lo(Gfx_PartRotMatrix)
     /* E038 8001D838 21308002 */  addu       $a2, $s4, $zero
     /* E03C 8001D83C 4174000C */  jal        Gfx_DrawPartQuadsRot
     /* E040 8001D840 21386002 */   addu      $a3, $s3, $zero

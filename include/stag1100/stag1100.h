@@ -90,7 +90,7 @@ typedef struct {
     u8 _pad5A[0x2];
 } Stg11DigiEntry; /* size 0x5C */
 
-/* D_80050720 viewed with Stg11DigiEntry roster entries. */
+/* Save_GameStatePtr viewed with Stg11DigiEntry roster entries. */
 typedef struct {
     u8 _pad00[0xE4];
     /* 0xE4 */ Stg11DigiEntry elems[0x24];
@@ -291,7 +291,7 @@ typedef struct {
     /* 0x22 */ s16 y3;
 } Stg11PolyG4; /* size 0x24 */
 
-extern PadState D_8005F6F0[];
+extern PadState Pad_State[];
 extern void Snd_PlayById(s32, s32);
 extern void Text_Close(s32 *);
 extern void Text_CloseArray(s32 *arg0, s32 arg1);
@@ -347,7 +347,7 @@ extern void Snd_UnloadSlot(s32);
 extern void Snd_SetSlotContent(s32, s32);
 extern s32 Snd_AnySlotLoading(void);
 extern void Task_NextState1(Actor *arg0);
-extern SysState D_8005F770;
+extern SysState Sys_State;
 extern s16 D_80050780;
 extern Halves Stg11_TransferCountPos;
 s32 Stg11_CardAsyncOp(Stg11SaveWork *arg0, s32 arg1, s32 arg2);
@@ -374,7 +374,7 @@ extern s32 MemCardAccept(s32 arg0);
 extern s32 MemCardReadFile(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4);
 extern s32 MemCardWriteFile(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4);
 extern void Card_CloseFile(void);
-extern GameStateView *D_80050720;
+extern GameStateView *Save_GameStatePtr;
 extern void Mem_FillWordsNeg1(s32 *arg0, s32 arg1);
 extern s32 Math_RampToOne(Actor *arg0, s32 *arg1);
 extern s32 Math_RampToZero(Actor *arg0, s32 *arg1);

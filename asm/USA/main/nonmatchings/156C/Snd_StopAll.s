@@ -4,9 +4,9 @@ glabel Snd_StopAll
     /* AB40 8001A340 D0FFBD27 */  addiu      $sp, $sp, -0x30
     /* AB44 8001A344 2400B5AF */  sw         $s5, 0x24($sp)
     /* AB48 8001A348 21A80000 */  addu       $s5, $zero, $zero
-    /* AB4C 8001A34C 0580023C */  lui        $v0, %hi(D_80054C48)
+    /* AB4C 8001A34C 0580023C */  lui        $v0, %hi(Snd_Slots)
     /* AB50 8001A350 2000B4AF */  sw         $s4, 0x20($sp)
-    /* AB54 8001A354 484C5424 */  addiu      $s4, $v0, %lo(D_80054C48)
+    /* AB54 8001A354 484C5424 */  addiu      $s4, $v0, %lo(Snd_Slots)
     /* AB58 8001A358 2800BFAF */  sw         $ra, 0x28($sp)
     /* AB5C 8001A35C 1C00B3AF */  sw         $s3, 0x1C($sp)
     /* AB60 8001A360 1800B2AF */  sw         $s2, 0x18($sp)

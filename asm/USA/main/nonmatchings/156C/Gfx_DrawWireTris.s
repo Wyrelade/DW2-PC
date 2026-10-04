@@ -7,8 +7,8 @@ glabel Gfx_DrawWireTris
     /* 120D8 800218D8 2188A000 */  addu       $s1, $a1, $zero
     /* 120DC 800218DC 0800B2AF */  sw         $s2, 0x8($sp)
     /* 120E0 800218E0 2190E000 */  addu       $s2, $a3, $zero
-    /* 120E4 800218E4 0680023C */  lui        $v0, %hi(D_8005F770)
-    /* 120E8 800218E8 70F74324 */  addiu      $v1, $v0, %lo(D_8005F770)
+    /* 120E4 800218E4 0680023C */  lui        $v0, %hi(Sys_State)
+    /* 120E8 800218E8 70F74324 */  addiu      $v1, $v0, %lo(Sys_State)
     /* 120EC 800218EC 1800B6AF */  sw         $s6, 0x18($sp)
     /* 120F0 800218F0 1400B5AF */  sw         $s5, 0x14($sp)
     /* 120F4 800218F4 1000B4AF */  sw         $s4, 0x10($sp)

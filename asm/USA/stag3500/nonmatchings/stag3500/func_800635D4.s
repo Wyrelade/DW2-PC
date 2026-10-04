@@ -8,8 +8,8 @@ glabel func_800635D4
     /* 284 800635E4 1000028E */  lw         $v0, 0x10($s0)
     /* 288 800635E8 00000000 */  nop
     /* 28C 800635EC 0F004014 */  bnez       $v0, .L8006362C
-    /* 290 800635F0 0480053C */   lui       $a1, %hi(D_80043704)
-    /* 294 800635F4 0437A524 */  addiu      $a1, $a1, %lo(D_80043704)
+    /* 290 800635F0 0480053C */   lui       $a1, %hi(Gfx_ZeroVector)
+    /* 294 800635F4 0437A524 */  addiu      $a1, $a1, %lo(Gfx_ZeroVector)
     /* 298 800635F8 770D0224 */  addiu      $v0, $zero, 0xD77
     /* 29C 800635FC 21300000 */  addu       $a2, $zero, $zero
     /* 2A0 80063600 1083000C */  jal        Actor_InitTransform

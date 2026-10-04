@@ -9,7 +9,7 @@ glabel Item_FindFreeBagSlot
     /* 12DD8 800225D8 21284000 */  addu       $a1, $v0, $zero
     /* 12DDC 800225DC 0D00A018 */  blez       $a1, .L80022614
     /* 12DE0 800225E0 21180000 */   addu      $v1, $zero, $zero
-    /* 12DE4 800225E4 2800848F */  lw         $a0, %gp_rel(D_80050720)($gp)
+    /* 12DE4 800225E4 2800848F */  lw         $a0, %gp_rel(Save_GameStatePtr)($gp)
   .L800225E8:
     /* 12DE8 800225E8 00000000 */  nop
     /* 12DEC 800225EC 66008294 */  lhu        $v0, 0x66($a0)

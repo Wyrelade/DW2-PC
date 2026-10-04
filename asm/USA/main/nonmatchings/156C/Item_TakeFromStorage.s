@@ -37,8 +37,8 @@ glabel Item_TakeFromStorage
     /* 6D30 80016530 21284000 */  addu       $a1, $v0, $zero
     /* 6D34 80016534 0C00A018 */  blez       $a1, .L80016568
     /* 6D38 80016538 21180000 */   addu      $v1, $zero, $zero
-    /* 6D3C 8001653C 0580043C */  lui        $a0, %hi(D_80050720)
-    /* 6D40 80016540 2007848C */  lw         $a0, %lo(D_80050720)($a0)
+    /* 6D3C 8001653C 0580043C */  lui        $a0, %hi(Save_GameStatePtr)
+    /* 6D40 80016540 2007848C */  lw         $a0, %lo(Save_GameStatePtr)($a0)
   .L80016544:
     /* 6D44 80016544 00000000 */  nop
     /* 6D48 80016548 66008294 */  lhu        $v0, 0x66($a0)
@@ -59,15 +59,15 @@ glabel Item_TakeFromStorage
     /* 6D80 80016580 21284000 */  addu       $a1, $v0, $zero
     /* 6D84 80016584 81000624 */  addiu      $a2, $zero, 0x81
     /* 6D88 80016588 0E008797 */  lhu        $a3, %gp_rel(D_80050706)($gp)
-    /* 6D8C 8001658C 0C008297 */  lhu        $v0, %gp_rel(D_80050704)($gp)
+    /* 6D8C 8001658C 0C008297 */  lhu        $v0, %gp_rel(Menu_ItemMsgPos)($gp)
     /* 6D90 80016590 003C0700 */  sll        $a3, $a3, 16
     /* 6D94 80016594 3E4D000C */  jal        Text_OpenPacked
     /* 6D98 80016598 25384700 */   or        $a3, $v0, $a3
     /* 6D9C 8001659C B5590008 */  j          .L800166D4
     /* 6DA0 800165A0 10000424 */   addiu     $a0, $zero, 0x10
   .L800165A4:
-    /* 6DA4 800165A4 0580033C */  lui        $v1, %hi(D_80050720)
-    /* 6DA8 800165A8 2007638C */  lw         $v1, %lo(D_80050720)($v1)
+    /* 6DA4 800165A4 0580033C */  lui        $v1, %hi(Save_GameStatePtr)
+    /* 6DA8 800165A8 2007638C */  lw         $v1, %lo(Save_GameStatePtr)($v1)
     /* 6DAC 800165AC 00002496 */  lhu        $a0, 0x0($s1)
     /* 6DB0 800165B0 21106200 */  addu       $v0, $v1, $v0
     /* 6DB4 800165B4 660044A4 */  sh         $a0, 0x66($v0)
@@ -81,7 +81,7 @@ glabel Item_TakeFromStorage
     /* 6DD4 800165D4 D40D62A4 */  sh         $v0, 0xDD4($v1)
     /* 6DD8 800165D8 81000224 */  addiu      $v0, $zero, 0x81
     /* 6DDC 800165DC 0F00888B */  lwl        $t0, %gp_rel(D_80050707)($gp)
-    /* 6DE0 800165E0 0C00889B */  lwr        $t0, %gp_rel(D_80050704)($gp)
+    /* 6DE0 800165E0 0C00889B */  lwr        $t0, %gp_rel(Menu_ItemMsgPos)($gp)
     /* 6DE4 800165E4 00000000 */  nop
     /* 6DE8 800165E8 1F00A8AB */  swl        $t0, 0x1F($sp)
     /* 6DEC 800165EC 1C00A8BB */  swr        $t0, 0x1C($sp)

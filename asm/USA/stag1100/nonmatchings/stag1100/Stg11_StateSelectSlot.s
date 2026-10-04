@@ -66,9 +66,9 @@ glabel Stg11_StateSelectSlot
     /* 2268 800655C8 21284002 */   addu      $a1, $s2, $zero
     /* 226C 800655CC C5004014 */  bnez       $v0, .L800658E4
     /* 2270 800655D0 0D000424 */   addiu     $a0, $zero, 0xD
-    /* 2274 800655D4 0680023C */  lui        $v0, %hi(D_8005F6F0)
+    /* 2274 800655D4 0680023C */  lui        $v0, %hi(Pad_State)
     /* 2278 800655D8 7E000386 */  lh         $v1, 0x7E($s0)
-    /* 227C 800655DC F0F64224 */  addiu      $v0, $v0, %lo(D_8005F6F0)
+    /* 227C 800655DC F0F64224 */  addiu      $v0, $v0, %lo(Pad_State)
     /* 2280 800655E0 80190300 */  sll        $v1, $v1, 6
     /* 2284 800655E4 21186200 */  addu       $v1, $v1, $v0
     /* 2288 800655E8 1400628C */  lw         $v0, 0x14($v1)
@@ -96,8 +96,8 @@ glabel Stg11_StateSelectSlot
     /* 22E0 80065640 C0100200 */  sll        $v0, $v0, 3
     /* 22E4 80065644 21105100 */  addu       $v0, $v0, $s1
     /* 22E8 80065648 0C004424 */  addiu      $a0, $v0, 0xC
-    /* 22EC 8006564C 0580023C */  lui        $v0, %hi(D_80050720)
-    /* 22F0 80065650 2007438C */  lw         $v1, %lo(D_80050720)($v0)
+    /* 22EC 8006564C 0580023C */  lui        $v0, %hi(Save_GameStatePtr)
+    /* 22F0 80065650 2007438C */  lw         $v1, %lo(Save_GameStatePtr)($v0)
     /* 22F4 80065654 0680023C */  lui        $v0, %hi(D_8005F790)
     /* 22F8 80065658 90F7428C */  lw         $v0, %lo(D_8005F790)($v0)
     /* 22FC 8006565C 50106524 */  addiu      $a1, $v1, 0x1050
@@ -145,8 +145,8 @@ glabel Stg11_StateSelectSlot
     /* 2398 800656F8 00000000 */  nop
     /* 239C 800656FC 2C004014 */  bnez       $v0, .L800657B0
     /* 23A0 80065700 40110600 */   sll       $v0, $a2, 5
-    /* 23A4 80065704 0580023C */  lui        $v0, %hi(D_80050720)
-    /* 23A8 80065708 2007478C */  lw         $a3, %lo(D_80050720)($v0)
+    /* 23A4 80065704 0580023C */  lui        $v0, %hi(Save_GameStatePtr)
+    /* 23A8 80065708 2007478C */  lw         $a3, %lo(Save_GameStatePtr)($v0)
     /* 23AC 8006570C 40110600 */  sll        $v0, $a2, 5
     /* 23B0 80065710 21104600 */  addu       $v0, $v0, $a2
     /* 23B4 80065714 80100200 */  sll        $v0, $v0, 2
@@ -304,8 +304,8 @@ glabel Stg11_StateSelectSlot
     /* 25E4 80065944 68000426 */   addiu     $a0, $s0, 0x68
     /* 25E8 80065948 9C4E000C */  jal        Menu_GridIndexColMajor
     /* 25EC 8006594C 6C000526 */   addiu     $a1, $s0, 0x6C
-    /* 25F0 80065950 0580033C */  lui        $v1, %hi(D_80050720)
-    /* 25F4 80065954 2007658C */  lw         $a1, %lo(D_80050720)($v1)
+    /* 25F0 80065950 0580033C */  lui        $v1, %hi(Save_GameStatePtr)
+    /* 25F4 80065954 2007658C */  lw         $a1, %lo(Save_GameStatePtr)($v1)
     /* 25F8 80065958 40190200 */  sll        $v1, $v0, 5
     /* 25FC 8006595C 21186200 */  addu       $v1, $v1, $v0
     /* 2600 80065960 80180300 */  sll        $v1, $v1, 2

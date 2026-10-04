@@ -3,8 +3,8 @@
 
 /* Small data this unit defines (retail reaches it with %gp_rel here). The bytes
  * live in the data asm; these tentative definitions are COMMON and bind to it. */
-s32 D_8005075C;
-u8 D_80050760;
+s32 Cd_PreloadCount;
+u8 Bug_LastZappedLevel;
 
 void Task_Create(u32 id, s32 *slot, s32 arg) {
     TaskDesc *d;
@@ -243,9 +243,9 @@ void func_80011644(void) {
     s32 *p;
     s32 i;
 
-    p = D_80050948;
+    p = Cd_PreloadIds;
     Cd_QueueFile(0x19A);
-    for (i = 0; i < D_8005075C; i++) {
+    for (i = 0; i < Cd_PreloadCount; i++) {
         Cd_QueueFile(*p);
         p++;
     }
@@ -369,20 +369,20 @@ void Text_PortraitDraw(Actor *a0) {
         s = -1;
     }
 
-    p = (Ft4_11854 *)D_8005F770.packet.work;
+    p = (Ft4_11854 *)Sys_State.packet.work;
     for (j = 0; j < 2; j++) {
         for (i = 0; i < 2; i++) {
-            p->c = *(Col1A9C8 *)&D_8005074C;
+            p->c = *(Col1A9C8 *)&Gfx_NeutralRgb;
             p->tag.len = 9;
             p->c.code = 0x2C;
-            p->x0 = D_80040D70[j][i].field_0 * s;
-            p->x1 = D_80040D70[j][i + 1].field_0 * s;
-            p->x2 = D_80040D70[j + 1][i].field_0 * s;
-            p->x3 = D_80040D70[j + 1][i + 1].field_0 * s;
-            p->y0 = D_80040D70[j][i].field_2;
-            p->y1 = D_80040D70[j][i + 1].field_2;
-            p->y2 = D_80040D70[j + 1][i].field_2;
-            p->y3 = D_80040D70[j + 1][i + 1].field_2;
+            p->x0 = Text_PortraitQuadGrid[j][i].field_0 * s;
+            p->x1 = Text_PortraitQuadGrid[j][i + 1].field_0 * s;
+            p->x2 = Text_PortraitQuadGrid[j + 1][i].field_0 * s;
+            p->x3 = Text_PortraitQuadGrid[j + 1][i + 1].field_0 * s;
+            p->y0 = Text_PortraitQuadGrid[j][i].field_2;
+            p->y1 = Text_PortraitQuadGrid[j][i + 1].field_2;
+            p->y2 = Text_PortraitQuadGrid[j + 1][i].field_2;
+            p->y3 = Text_PortraitQuadGrid[j + 1][i + 1].field_2;
             u = pos.x + (tex.uBase + i * 20);
             p->u0 = p->u2 = u;
             p->u1 = p->u3 = u + 20;
@@ -391,12 +391,12 @@ void Text_PortraitDraw(Actor *a0) {
             p->v2 = p->v3 = v + 20;
             p->tpage = tex.tpage;
             p->clut = ((tex.vramY + clut.y) << 6) | (((tex.vramX + clut.x) >> 4) & 0x3F);
-            p->tag.addr = ((PTag11854 *)D_8005F770.otLayers.s[0])->addr;
-            ((PTag11854 *)D_8005F770.otLayers.s[0])->addr = (u32)p;
+            p->tag.addr = ((PTag11854 *)Sys_State.otLayers.s[0])->addr;
+            ((PTag11854 *)Sys_State.otLayers.s[0])->addr = (u32)p;
             p++;
         }
     }
-    D_8005F770.packet.addr = (s32)p;
+    Sys_State.packet.addr = (s32)p;
 }
 
 void Text_PortraitSetImage(Actor *arg0, s32 arg1) {
@@ -447,8 +447,8 @@ void Gfx_FindOrLoadImageSlot(s32 id, GfxImageInfo *out, GfxVramPos *pos, GfxVram
         i = bi;
     }
 load:
-    for (k = 0; D_80040DAC[k] != -1; k++) {
-        if (D_80040DAC[k] == id) {
+    for (k = 0; Gfx_FaceImageIds[k] != -1; k++) {
+        if (Gfx_FaceImageIds[k] == id) {
             break;
         }
     }
@@ -468,9 +468,9 @@ load:
     r2.w = ((TimBlkData *)p)->w;
     r2.h = ((TimBlkData *)p)->h;
     LoadImage(&r2, ((TimBlkData *)p)->data);
-    t->slot[i].id = D_80040DAC[k];
+    t->slot[i].id = Gfx_FaceImageIds[k];
 found:
-    t->slot[i].t = D_8005F770.vsyncWait;
+    t->slot[i].t = Sys_State.vsyncWait;
     *out = *t->sheet;
     pos->x = i % 3 * 40;
     pos->y = i / 3 * 40;
@@ -568,11 +568,11 @@ s32 Item_UseOnBeetle(s32 a0, s32 a1, s32 a2, s32 a3) {
     case 0xA:
     default:
         if (rec->effectType == 0) {
-            p = &D_80050720->hp;
-            q = &D_80050720->maxHp;
+            p = &Save_GameStatePtr->hp;
+            q = &Save_GameStatePtr->maxHp;
         } else {
-            p = &D_80050720->mp;
-            q = &D_80050720->maxMp;
+            p = &Save_GameStatePtr->mp;
+            q = &Save_GameStatePtr->maxMp;
         }
         if (*p >= *q) {
             return r;
@@ -618,7 +618,7 @@ s32 Item_UseOnBeetle(s32 a0, s32 a1, s32 a2, s32 a3) {
             D_8005071C->field_BA8--;
             D_8005071C->field_BA9[best] = 0;
             Bug_CompactMemBugs();
-            D_80050760 = max;
+            Bug_LastZappedLevel = max;
             break;
         }
         break;
@@ -757,7 +757,7 @@ s32 Item_UseStatBoost(s32 a0, s32 a1, s32 a2, s32 a3) {
 
 
 s32 Item_UseRecoverAll(s32 a0, s32 a1) {
-    DigiRosterEntry *e = D_80050720->elems;
+    DigiRosterEntry *e = Save_GameStatePtr->elems;
     ItemRecoverEffect *c = (ItemRecoverEffect *)Item_GetEffectRec(a0);
     s32 n = 0;
     s32 i;

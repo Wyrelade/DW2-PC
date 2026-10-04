@@ -34,7 +34,7 @@ s32 func_8006C18C(s32 id) {
     s32 i;
 
     for (i = 0; i < 0x13; i++) {
-        if (((Stg20GameState *)&D_8005E620)->field_2C[i] == id) {
+        if (((Stg20GameState *)&Save_GameState)->field_2C[i] == id) {
             return 1;
         }
     }
@@ -112,11 +112,11 @@ s32 func_8006C3B8(s32 id) {
 
     n = 0;
     for (i = 0; i < 0x30; i++) {
-        if (((Stg20GameState *)&D_8005E620)->field_66[i] == id) {
+        if (((Stg20GameState *)&Save_GameState)->field_66[i] == id) {
             n++;
         }
     }
-    n += ((Stg20GameState *)&D_8005E620)->field_DD4[id];
+    n += ((Stg20GameState *)&Save_GameState)->field_DD4[id];
     r = 99;
     if (n < 100) {
         r = n;
@@ -326,7 +326,7 @@ void func_8006CB58(Actor *a) {
             Text_OpenById(&w->hdr[3], 0x12E, 0, *(Halves *)&D_800704E4[3]);
         }
         if (D_800709B0.field_54 == 0) {
-            func_8006C514(a, D_8005F770.field_24);
+            func_8006C514(a, Sys_State.field_24);
         } else {
             func_8006C6F0(a);
         }
@@ -351,26 +351,26 @@ void func_8006CB58(Actor *a) {
                 w->field_60 = 0;
             } while (0);
             m = &D_800709B8;
-            if ((D_8005F6F0->repeat & 0x1000) && w->cursor != 0) {
+            if ((Pad_State->repeat & 0x1000) && w->cursor != 0) {
                 goto up;
             }
-            if ((D_8005F6F0->repeat & 0x4000) && w->cursor != 7) {
+            if ((Pad_State->repeat & 0x4000) && w->cursor != 7) {
                 goto down;
             }
-            pad = D_8005F6F0;
+            pad = Pad_State;
             if (pad->right > 0) {
                 if (w->page != w->pages) {
                     w->page++;
                     w->dirty = 1;
                     Snd_PlayById(0xD, 0);
                 }
-            } else if (D_8005F6F0->left > 0) {
+            } else if (Pad_State->left > 0) {
                 if (w->page != 0) {
                     w->page--;
                     w->dirty = 1;
                     Snd_PlayById(0xD, 0);
                 }
-            } else if (D_8005F6F0->triangle > 0) {
+            } else if (Pad_State->triangle > 0) {
                 goto cancel;
             } else if (pad->cross > 0) {
                 if (m->field_4C == 0) {
@@ -410,9 +410,9 @@ void func_8006CB58(Actor *a) {
             }
             if (Flag_Test(0x10) != 0 && Flag_Test(0x11) == 0) {
                 Snd_PlayById(0xF, 0);
-                g = (Stg20GameState *)&D_8005E620;
+                g = (Stg20GameState *)&Save_GameState;
                 g->field_DD4[id] = g->field_DD4[id] == 99 ? 99 : g->field_DD4[id] + 1;
-                D_8005E620.field_8 -= Item_GetPrice(id);
+                Save_GameState.field_8 -= Item_GetPrice(id);
                 Task_SetState1(a, 0);
             } else if (D_8005F70C > 0 || Flag_Test(0x10) != 0) {
                 Snd_PlayById(0xB, 0);
@@ -456,9 +456,9 @@ void func_8006CB58(Actor *a) {
             if (Flag_Test(0x10) != 0) {
                 if (Flag_Test(0x11) == 0) {
                     Snd_PlayById(0xF, 0);
-                    D_8005E620.field_8 += Item_GetPrice(id) / 2;
-                    if (D_8005E620.field_8 > 99999999) {
-                        D_8005E620.field_8 = 99999999;
+                    Save_GameState.field_8 += Item_GetPrice(id) / 2;
+                    if (Save_GameState.field_8 > 99999999) {
+                        Save_GameState.field_8 = 99999999;
                     }
                     Item_RemoveFromBag(idx);
                     func_8006C6F0(a);
@@ -534,12 +534,12 @@ void func_8006D350(Actor *a) {
     s32 n;
 
     for (i = 0x2F; i >= 0; i--) {
-        ((Stg20GameState *)&D_8005E620)->field_66[i] = 0;
+        ((Stg20GameState *)&Save_GameState)->field_66[i] = 0;
     }
     n = 0;
     for (i = 0; i < 0x43; i++) {
         if (w->field_60[i] != 0) {
-            ((Stg20GameState *)&D_8005E620)->field_66[n++] = w->field_60[i];
+            ((Stg20GameState *)&Save_GameState)->field_66[n++] = w->field_60[i];
         }
     }
     Item_SortList();
@@ -552,18 +552,18 @@ void func_8006D3CC(Actor *a) {
 
     n = 0;
     for (i = 0; i < 0x30; i++) {
-        if (((Stg20GameState *)&D_8005E620)->field_66[i] != 0) {
-            w->field_60[n++] = ((Stg20GameState *)&D_8005E620)->field_66[i];
+        if (((Stg20GameState *)&Save_GameState)->field_66[i] != 0) {
+            w->field_60[n++] = ((Stg20GameState *)&Save_GameState)->field_66[i];
         }
     }
     for (i = 1; i < 0x13; i++) {
-        if (((Stg20GameState *)&D_8005E620)->field_2C[i] != 0) {
-            w->field_60[n++] = ((Stg20GameState *)&D_8005E620)->field_2C[i];
+        if (((Stg20GameState *)&Save_GameState)->field_2C[i] != 0) {
+            w->field_60[n++] = ((Stg20GameState *)&Save_GameState)->field_2C[i];
         }
     }
     for (i = 1; i < 0x13; i++) {
-        ((Stg20GameState *)&D_8005E620)->field_2C[i] = 0;
-        ((Stg20GameState *)&D_8005E620)->field_52[i] = 0;
+        ((Stg20GameState *)&Save_GameState)->field_2C[i] = 0;
+        ((Stg20GameState *)&Save_GameState)->field_52[i] = 0;
     }
 }
 
@@ -620,7 +620,7 @@ void func_8006D53C(Actor *a, s32 mode) {
         w->colors[i] = 1;
     }
     i = n = 0;
-    g = (Stg20GameState *)&D_8005E620;
+    g = (Stg20GameState *)&Save_GameState;
     for (; i < 0x43; i++) {
         id = w->inv[i];
         if (id == 0) {
@@ -717,82 +717,82 @@ void func_8006D93C(Actor *a) {
     w->field_54 = 0;
     w->field_58 = 0;
     mask = 0x3FF;
-    if (((Stg20GameState *)&D_8005E620)->field_2C[1] != 0) {
-        shift = (((Stg20GameState *)&D_8005E620)->field_2C[1] - 1) / 5;
+    if (((Stg20GameState *)&Save_GameState)->field_2C[1] != 0) {
+        shift = (((Stg20GameState *)&Save_GameState)->field_2C[1] - 1) / 5;
         w->field_54 |= mask - (1 << shift);
     } else {
         w->field_54 |= mask;
     }
     mask = 0x1F8000;
-    if (((Stg20GameState *)&D_8005E620)->field_2C[2] != 0) {
-        shift = ((Stg20GameState *)&D_8005E620)->field_2C[2] - 0x2F;
+    if (((Stg20GameState *)&Save_GameState)->field_2C[2] != 0) {
+        shift = ((Stg20GameState *)&Save_GameState)->field_2C[2] - 0x2F;
         w->field_54 |= mask - (0x8000 << shift);
     } else {
         w->field_54 |= mask;
     }
     mask = 0x7C00;
-    if (((Stg20GameState *)&D_8005E620)->field_2C[3] != 0) {
-        shift = (((Stg20GameState *)&D_8005E620)->field_2C[3] - 0x35) / 5;
+    if (((Stg20GameState *)&Save_GameState)->field_2C[3] != 0) {
+        shift = (((Stg20GameState *)&Save_GameState)->field_2C[3] - 0x35) / 5;
         w->field_54 |= mask - (0x400 << shift);
     } else {
         w->field_54 |= mask;
     }
     mask = 0x7E00000;
-    if (((Stg20GameState *)&D_8005E620)->field_2C[4] != 0) {
-        shift = ((Stg20GameState *)&D_8005E620)->field_2C[4] - 0x4A;
+    if (((Stg20GameState *)&Save_GameState)->field_2C[4] != 0) {
+        shift = ((Stg20GameState *)&Save_GameState)->field_2C[4] - 0x4A;
         w->field_54 |= mask - (0x200000 << shift);
     } else {
         w->field_54 |= mask;
     }
     mask = 0x3E;
-    if (((Stg20GameState *)&D_8005E620)->field_2C[5] != 0) {
-        shift = ((Stg20GameState *)&D_8005E620)->field_2C[5] - 0x50;
+    if (((Stg20GameState *)&Save_GameState)->field_2C[5] != 0) {
+        shift = ((Stg20GameState *)&Save_GameState)->field_2C[5] - 0x50;
         w->field_58 |= mask - (2 << shift);
     } else {
         w->field_58 |= mask;
     }
     mask = 0x7C0;
-    if (((Stg20GameState *)&D_8005E620)->field_2C[6] != 0) {
-        shift = ((Stg20GameState *)&D_8005E620)->field_2C[6] - 0x55;
+    if (((Stg20GameState *)&Save_GameState)->field_2C[6] != 0) {
+        shift = ((Stg20GameState *)&Save_GameState)->field_2C[6] - 0x55;
         w->field_58 |= mask - (0x40 << shift);
     } else {
         w->field_58 |= mask;
     }
     mask = 0x1F0000;
-    if (((Stg20GameState *)&D_8005E620)->field_2C[7] != 0) {
-        shift = ((Stg20GameState *)&D_8005E620)->field_2C[7] - 0x5A;
+    if (((Stg20GameState *)&Save_GameState)->field_2C[7] != 0) {
+        shift = ((Stg20GameState *)&Save_GameState)->field_2C[7] - 0x5A;
         w->field_58 |= mask - (0x10000 << shift);
     } else {
         w->field_58 |= mask;
     }
-    if (((Stg20GameState *)&D_8005E620)->field_2C[8] == 0) {
+    if (((Stg20GameState *)&Save_GameState)->field_2C[8] == 0) {
         w->field_58 |= 0x800;
     }
-    if (((Stg20GameState *)&D_8005E620)->field_2C[9] == 0) {
+    if (((Stg20GameState *)&Save_GameState)->field_2C[9] == 0) {
         w->field_58 |= 0x8000;
     }
-    if (((Stg20GameState *)&D_8005E620)->field_2C[10] == 0) {
+    if (((Stg20GameState *)&Save_GameState)->field_2C[10] == 0) {
         w->field_58 |= 0x4000;
     }
-    if (((Stg20GameState *)&D_8005E620)->field_2C[11] == 0) {
+    if (((Stg20GameState *)&Save_GameState)->field_2C[11] == 0) {
         w->field_58 |= 0x1000;
     }
-    if (((Stg20GameState *)&D_8005E620)->field_2C[12] == 0) {
+    if (((Stg20GameState *)&Save_GameState)->field_2C[12] == 0) {
         w->field_58 |= 0x2000;
     }
-    if (((Stg20GameState *)&D_8005E620)->field_2C[13] == 0) {
+    if (((Stg20GameState *)&Save_GameState)->field_2C[13] == 0) {
         w->field_58 |= 0x2000000;
     }
-    if (((Stg20GameState *)&D_8005E620)->field_2C[14] == 0) {
+    if (((Stg20GameState *)&Save_GameState)->field_2C[14] == 0) {
         w->field_58 |= 0x4000000;
     }
-    if (((Stg20GameState *)&D_8005E620)->field_2C[15] == 0) {
+    if (((Stg20GameState *)&Save_GameState)->field_2C[15] == 0) {
         w->field_58 |= 0x8000000;
     }
-    if (((Stg20GameState *)&D_8005E620)->field_2C[17] == 0) {
+    if (((Stg20GameState *)&Save_GameState)->field_2C[17] == 0) {
         w->field_58 |= 0x200000;
     }
-    if (((Stg20GameState *)&D_8005E620)->field_2C[18] == 0) {
+    if (((Stg20GameState *)&Save_GameState)->field_2C[18] == 0) {
         w->field_58 |= 0x400000;
     }
 }
@@ -810,11 +810,11 @@ void func_8006DCCC(Actor *a) {
     switch (a->stateLevel0) {
     case 0:
         Mem_FillWordsNeg1(w->hdr, 0x12);
-        Text_OpenPacked(&w->hdr[0], (s32)&D_8005E620.field_D1, 0, D_800705DC[0]);
+        Text_OpenPacked(&w->hdr[0], (s32)&Save_GameState.field_D1, 0, D_800705DC[0]);
         Task_Create(0x30D, slot, 1);
-        if (((Stg20GameState *)&D_8005E620)->field_2C[0] == 0xEA) {
+        if (((Stg20GameState *)&Save_GameState)->field_2C[0] == 0xEA) {
             w->field_48 = 0;
-        } else if (((Stg20GameState *)&D_8005E620)->field_2C[0] == 0xEB) {
+        } else if (((Stg20GameState *)&Save_GameState)->field_2C[0] == 0xEB) {
             w->field_48 = 1;
         } else {
             w->field_48 = 2;
@@ -864,7 +864,7 @@ void func_8006DCCC(Actor *a) {
             case 1:
                 break;
             }
-            g = (Stg20GameState *)&D_8005E620;
+            g = (Stg20GameState *)&Save_GameState;
             if (a->elapsed & 0x10) {
                 v = func_8006D484(a, 0x75) != 0 ? 0x75 : 0x76;
             } else {
@@ -872,7 +872,7 @@ void func_8006DCCC(Actor *a) {
             }
             g->field_2C[17] = v;
             u = 0;
-            g = (Stg20GameState *)&D_8005E620;
+            g = (Stg20GameState *)&Save_GameState;
             if (a->elapsed & 0x10) {
                 u = 0x77;
             }
@@ -933,8 +933,8 @@ void func_8006DCCC(Actor *a) {
                 }
                 break;
             case 2:
-                ((Stg20GameState *)&D_8005E620)->field_2C[D_8007064C[idx]] = (a->elapsed & 0x10) ? w->items[w->cursor + w->top] : 0;
-                if (D_8005F6F0[0].repeat & 0x1000) {
+                ((Stg20GameState *)&Save_GameState)->field_2C[D_8007064C[idx]] = (a->elapsed & 0x10) ? w->items[w->cursor + w->top] : 0;
+                if (Pad_State[0].repeat & 0x1000) {
                     if (w->cursor != 0) {
                         w->cursor--;
                     } else if (w->top != 0) {
@@ -945,7 +945,7 @@ void func_8006DCCC(Actor *a) {
                     }
                     Snd_PlayById(0xD, 0);
                     w->dirty = 1;
-                } else if (D_8005F6F0[0].repeat & 0x4000) {
+                } else if (Pad_State[0].repeat & 0x4000) {
                     if (w->cursor != 9) {
                         w->cursor++;
                     } else if (w->top + 9 < w->count - 1) {
@@ -956,14 +956,14 @@ void func_8006DCCC(Actor *a) {
                     }
                     Snd_PlayById(0xD, 0);
                     w->dirty = 1;
-                } else if (D_8005F6F0[0].cross > 0) {
+                } else if (Pad_State[0].cross > 0) {
                     if (w->colors[w->top + w->cursor] != 0) {
                         Snd_PlayById(0x10, 0);
                         break;
                     }
                     Snd_PlayById(0x14, 0);
-                    ((Stg20GameState *)&D_8005E620)->field_2C[D_8007064C[idx]] = w->items[w->cursor + w->top];
-                    func_8006D4BC(a, ((Stg20GameState *)&D_8005E620)->field_2C[D_8007064C[idx]]);
+                    ((Stg20GameState *)&Save_GameState)->field_2C[D_8007064C[idx]] = w->items[w->cursor + w->top];
+                    func_8006D4BC(a, ((Stg20GameState *)&Save_GameState)->field_2C[D_8007064C[idx]]);
                     Task_NextState1(a);
                 }
                 break;
@@ -1024,9 +1024,9 @@ void func_8006DCCC(Actor *a) {
                 break;
             blink:
                 if (k != -1) {
-                    ((Stg20GameState *)&D_8005E620)->field_2C[k + 8] = (a->elapsed & 0x10) ? item : 0;
+                    ((Stg20GameState *)&Save_GameState)->field_2C[k + 8] = (a->elapsed & 0x10) ? item : 0;
                 }
-                if (D_8005F6F0[0].repeat & 0x1000) {
+                if (Pad_State[0].repeat & 0x1000) {
                     if (w->cursor != 0) {
                         w->cursor--;
                         Snd_PlayById(0xD, 0);
@@ -1036,9 +1036,9 @@ void func_8006DCCC(Actor *a) {
                     }
                     w->dirty = 1;
                     if (k != -1) {
-                        ((Stg20GameState *)&D_8005E620)->field_2C[k + 8] = 0;
+                        ((Stg20GameState *)&Save_GameState)->field_2C[k + 8] = 0;
                     }
-                } else if (D_8005F6F0[0].repeat & 0x4000) {
+                } else if (Pad_State[0].repeat & 0x4000) {
                     if (w->cursor != 9) {
                         w->cursor++;
                         Snd_PlayById(0xD, 0);
@@ -1047,15 +1047,15 @@ void func_8006DCCC(Actor *a) {
                         Snd_PlayById(0xD, 0);
                     }
                     if (k != -1) {
-                        ((Stg20GameState *)&D_8005E620)->field_2C[k + 8] = 0;
+                        ((Stg20GameState *)&Save_GameState)->field_2C[k + 8] = 0;
                     }
                     w->dirty = 1;
-                } else if (D_8005F6F0[0].cross > 0) {
+                } else if (Pad_State[0].cross > 0) {
                     if (k == -1) {
                         goto deny;
                     }
                     Snd_PlayById(0x14, 0);
-                    ((Stg20GameState *)&D_8005E620)->field_2C[k + 8] = item;
+                    ((Stg20GameState *)&Save_GameState)->field_2C[k + 8] = item;
                     func_8006D4BC(a, item);
                     Task_NextState1(a);
                 }
@@ -1189,7 +1189,7 @@ void func_8006EA90(Actor *a) {
         w->recs[i].name[0x17] = 0xFF;
     }
     for (i = 0; i < 6; i++) {
-        id = ((Stg20GameState *)&D_8005E620)->field_2C[D_800706D4[i]];
+        id = ((Stg20GameState *)&Save_GameState)->field_2C[D_800706D4[i]];
         w->recs[i].item = id;
         if (id != 0) {
             name = (u8 *)Item_GetNameText(id);
@@ -1291,14 +1291,14 @@ void func_8006EE24(Actor *task) {
         if (sub != 0 && sub == state) {
             goto f080;
         }
-        if (D_8005F6F0[0].repeat & 0x1000) {
+        if (Pad_State[0].repeat & 0x1000) {
             if (w->index == 0) {
                 goto efec;
             }
             w->index = w->index - 1;
             goto beep;
         }
-        if (D_8005F6F0[0].repeat & 0x4000) {
+        if (Pad_State[0].repeat & 0x4000) {
             if (w->index == 5) {
                 goto efec;
             }
@@ -1311,10 +1311,10 @@ void func_8006EE24(Actor *task) {
             goto f070;
         }
         do {
-        if (D_8005F6F0[0].triangle > 0) {
+        if (Pad_State[0].triangle > 0) {
             goto triangle;
         }
-        if (D_8005F6F0[0].cross <= 0) {
+        if (Pad_State[0].cross <= 0) {
             goto f070;
         }
         if (w->recs[w->index].item == 0) {
@@ -1363,8 +1363,8 @@ void func_8006EE24(Actor *task) {
         goto text_update;
     f144:
         Snd_PlayById(0x14, 0);
-        D_8005E620.field_8 -= w->recs[w->index].price;
-        D_8005E620.itemCounts[D_800706D4[w->index]]++;
+        Save_GameState.field_8 -= w->recs[w->index].price;
+        Save_GameState.itemCounts[D_800706D4[w->index]]++;
         func_8006EA90(task);
         w->dirty = st2;
         w->msg = 0x17F;
@@ -1409,7 +1409,7 @@ void func_8006F28C(Actor *a) {
 }
 
 Stg20FileRec *func_8006F360(s32 i) {
-    Stg20FileRec *r = (Stg20FileRec *)Cd_GetFileEntry(D_8005F788[0] + 0xD28FCD6);
+    Stg20FileRec *r = (Stg20FileRec *)Cd_GetFileEntry(Sys_GameMode[0] + 0xD28FCD6);
 
     if (r[i].field_13 == 0) {
         s32 base = Cd_GetFileOrNull(0xD29);
@@ -1497,8 +1497,8 @@ void func_8006F3E0(Actor *a) {
             Task_NextState1(a);
         case 2:
             if (++a->stateLevel2 >= 0x19) {
-                D_8005F770.nextGameMode = D_80070704[a->field_8].nextMode;
-                D_8005F770.field_24 = D_80070704[a->field_8].field_8;
+                Sys_State.nextGameMode = D_80070704[a->field_8].nextMode;
+                Sys_State.field_24 = D_80070704[a->field_8].field_8;
             }
             break;
         }
@@ -1513,7 +1513,7 @@ void func_8006F730(Actor *a) {
     switch (a->stateLevel0) {
     case 0:
         GsInitCoordinate2(0, &w->coord);
-        if (D_8005F788[0] < 0x32F) {
+        if (Sys_GameMode[0] < 0x32F) {
             w->proj = 0x5A0;
             w->view.field_4 = -0x5D00;
             w->view.field_0 = 0;
@@ -1540,7 +1540,7 @@ void func_8006F730(Actor *a) {
     case 2:
         break;
     case 1:
-        if (D_8005F788[0] < 0x32F) {
+        if (Sys_GameMode[0] < 0x32F) {
             break;
         }
         switch (a->stateLevel1) {

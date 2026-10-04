@@ -17,7 +17,7 @@ glabel Menu_UseItemDirect
     /* 56D8 80014ED8 FD01043C */  lui        $a0, (0x1FD00FD >> 16)
     /* 56DC 80014EDC FD008434 */  ori        $a0, $a0, (0x1FD00FD & 0xFFFF)
     /* 56E0 80014EE0 0B00888B */  lwl        $t0, %gp_rel(D_80050703)($gp)
-    /* 56E4 80014EE4 0800889B */  lwr        $t0, %gp_rel(D_80050700)($gp)
+    /* 56E4 80014EE4 0800889B */  lwr        $t0, %gp_rel(Menu_ItemUseMsgPos)($gp)
     /* 56E8 80014EE8 00000000 */  nop
     /* 56EC 80014EEC 1F00A8AB */  swl        $t0, 0x1F($sp)
     /* 56F0 80014EF0 1C00A8BB */  swr        $t0, 0x1C($sp)
@@ -47,7 +47,7 @@ glabel Menu_UseItemDirect
     /* 574C 80014F4C 21284000 */  addu       $a1, $v0, $zero
     /* 5750 80014F50 81000624 */  addiu      $a2, $zero, 0x81
     /* 5754 80014F54 0A008797 */  lhu        $a3, %gp_rel(D_80050702)($gp)
-    /* 5758 80014F58 08008297 */  lhu        $v0, %gp_rel(D_80050700)($gp)
+    /* 5758 80014F58 08008297 */  lhu        $v0, %gp_rel(Menu_ItemUseMsgPos)($gp)
     /* 575C 80014F5C 003C0700 */  sll        $a3, $a3, 16
     /* 5760 80014F60 3E4D000C */  jal        Text_OpenPacked
     /* 5764 80014F64 25384700 */   or        $a3, $v0, $a3

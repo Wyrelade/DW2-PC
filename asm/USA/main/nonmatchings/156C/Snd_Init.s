@@ -2,8 +2,8 @@ nonmatching Snd_Init, 0x160
 
 glabel Snd_Init
     /* AF5C 8001A75C E0FFBD27 */  addiu      $sp, $sp, -0x20
-    /* AF60 8001A760 0580043C */  lui        $a0, %hi(D_80050A48)
-    /* AF64 8001A764 480A8424 */  addiu      $a0, $a0, %lo(D_80050A48)
+    /* AF60 8001A760 0580043C */  lui        $a0, %hi(Snd_SeqAttrTable)
+    /* AF64 8001A764 480A8424 */  addiu      $a0, $a0, %lo(Snd_SeqAttrTable)
     /* AF68 8001A768 06000524 */  addiu      $a1, $zero, 0x6
     /* AF6C 8001A76C 10000624 */  addiu      $a2, $zero, 0x10
     /* AF70 8001A770 1800BFAF */  sw         $ra, 0x18($sp)
@@ -13,7 +13,7 @@ glabel Snd_Init
     /* AF80 8001A780 81D6000C */  jal        SsSetTickMode
     /* AF84 8001A784 00100424 */   addiu     $a0, $zero, 0x1000
     /* AF88 8001A788 B1D4000C */  jal        SsStart2
-    /* AF8C 8001A78C 0480103C */   lui       $s0, %hi(D_800411FC)
+    /* AF8C 8001A78C 0480103C */   lui       $s0, %hi(Snd_SlotBufSizes)
     /* AF90 8001A790 7F000424 */  addiu      $a0, $zero, 0x7F
     /* AF94 8001A794 09D4000C */  jal        SsSetMVol
     /* AF98 8001A798 21288000 */   addu      $a1, $a0, $zero
@@ -31,9 +31,9 @@ glabel Snd_Init
     /* AFC8 8001A7C8 F9D8000C */  jal        SsUtSetReverbDepth
     /* AFCC 8001A7CC 21288000 */   addu      $a1, $a0, $zero
     /* AFD0 8001A7D0 5DD9000C */  jal        SsUtReverbOn
-    /* AFD4 8001A7D4 FC111126 */   addiu     $s1, $s0, %lo(D_800411FC)
+    /* AFD4 8001A7D4 FC111126 */   addiu     $s1, $s0, %lo(Snd_SlotBufSizes)
     /* AFD8 8001A7D8 04000524 */  addiu      $a1, $zero, 0x4
-    /* AFDC 8001A7DC FC11048E */  lw         $a0, %lo(D_800411FC)($s0)
+    /* AFDC 8001A7DC FC11048E */  lw         $a0, %lo(Snd_SlotBufSizes)($s0)
     /* AFE0 8001A7E0 0400228E */  lw         $v0, 0x4($s1)
     /* AFE4 8001A7E4 0800238E */  lw         $v1, 0x8($s1)
     /* AFE8 8001A7E8 21208200 */  addu       $a0, $a0, $v0
@@ -41,11 +41,11 @@ glabel Snd_Init
     /* AFF0 8001A7F0 21208300 */   addu      $a0, $a0, $v1
     /* AFF4 8001A7F4 21300000 */  addu       $a2, $zero, $zero
     /* AFF8 8001A7F8 FFFF0724 */  addiu      $a3, $zero, -0x1
-    /* AFFC 8001A7FC 0580033C */  lui        $v1, %hi(D_80054C48)
-    /* B000 8001A800 484C6324 */  addiu      $v1, $v1, %lo(D_80054C48)
+    /* AFFC 8001A7FC 0580033C */  lui        $v1, %hi(Snd_Slots)
+    /* B000 8001A800 484C6324 */  addiu      $v1, $v1, %lo(Snd_Slots)
     /* B004 8001A804 21286000 */  addu       $a1, $v1, $zero
     /* B008 8001A808 2800A2AC */  sw         $v0, 0x28($a1)
-    /* B00C 8001A80C FC11038E */  lw         $v1, %lo(D_800411FC)($s0)
+    /* B00C 8001A80C FC11038E */  lw         $v1, %lo(Snd_SlotBufSizes)($s0)
     /* B010 8001A810 0400248E */  lw         $a0, 0x4($s1)
     /* B014 8001A814 21104300 */  addu       $v0, $v0, $v1
     /* B018 8001A818 5400A2AC */  sw         $v0, 0x54($a1)
@@ -63,8 +63,8 @@ glabel Snd_Init
     /* B044 8001A844 21200000 */  addu       $a0, $zero, $zero
     /* B048 8001A848 7D69000C */  jal        Snd_SetSlotContent
     /* B04C 8001A84C 01000524 */   addiu     $a1, $zero, 0x1
-    /* B050 8001A850 0580023C */  lui        $v0, %hi(D_80054C48)
-    /* B054 8001A854 484C5024 */  addiu      $s0, $v0, %lo(D_80054C48)
+    /* B050 8001A850 0580023C */  lui        $v0, %hi(Snd_Slots)
+    /* B054 8001A854 484C5024 */  addiu      $s0, $v0, %lo(Snd_Slots)
   .L8001A858:
     /* B058 8001A858 0768000C */  jal        Snd_ServiceSlotLoads
     /* B05C 8001A85C 00000000 */   nop
@@ -76,8 +76,8 @@ glabel Snd_Init
     /* B074 8001A874 01000424 */   addiu     $a0, $zero, 0x1
     /* B078 8001A878 7D69000C */  jal        Snd_SetSlotContent
     /* B07C 8001A87C 0E000524 */   addiu     $a1, $zero, 0xE
-    /* B080 8001A880 0580023C */  lui        $v0, %hi(D_80054C48)
-    /* B084 8001A884 484C5024 */  addiu      $s0, $v0, %lo(D_80054C48)
+    /* B080 8001A880 0580023C */  lui        $v0, %hi(Snd_Slots)
+    /* B084 8001A884 484C5024 */  addiu      $s0, $v0, %lo(Snd_Slots)
   .L8001A888:
     /* B088 8001A888 0768000C */  jal        Snd_ServiceSlotLoads
     /* B08C 8001A88C 00000000 */   nop

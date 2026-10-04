@@ -8,8 +8,8 @@ glabel Menu_NameEntryDrawParts
     /* 38AC 800130AC A101043C */  lui        $a0, (0x1A10018 >> 16)
     /* 38B0 800130B0 688E000C */  jal        Cd_GetFileEntry
     /* 38B4 800130B4 18008434 */   ori       $a0, $a0, (0x1A10018 & 0xFFFF)
-    /* 38B8 800130B8 0680043C */  lui        $a0, %hi(D_8005F778)
-    /* 38BC 800130BC 78F7848C */  lw         $a0, %lo(D_8005F778)($a0)
+    /* 38B8 800130B8 0680043C */  lui        $a0, %hi(Sys_FrameDelta)
+    /* 38BC 800130BC 78F7848C */  lw         $a0, %lo(Sys_FrameDelta)($a0)
     /* 38C0 800130C0 2800038E */  lw         $v1, 0x28($s0)
     /* 38C4 800130C4 00000000 */  nop
     /* 38C8 800130C8 21186400 */  addu       $v1, $v1, $a0

@@ -34,7 +34,7 @@ glabel Menu_UseItemOnDigi
     /* 7FF4 800177F4 FD008434 */  ori        $a0, $a0, (0x1FD00FD & 0xFFFF)
     /* 7FF8 800177F8 81000224 */  addiu      $v0, $zero, 0x81
     /* 7FFC 800177FC 1700888B */  lwl        $t0, %gp_rel(D_8005070F)($gp)
-    /* 8000 80017800 1400889B */  lwr        $t0, %gp_rel(D_8005070C)($gp)
+    /* 8000 80017800 1400889B */  lwr        $t0, %gp_rel(Menu_DigiMsgPos)($gp)
     /* 8004 80017804 00000000 */  nop
     /* 8008 80017808 1F00A8AB */  swl        $t0, 0x1F($sp)
     /* 800C 8001780C 1C00A8BB */  swr        $t0, 0x1C($sp)

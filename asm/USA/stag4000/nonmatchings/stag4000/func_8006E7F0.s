@@ -1,8 +1,8 @@
 nonmatching func_8006E7F0, 0x30
 
 glabel func_8006E7F0
-    /* B490 8006E7F0 0580023C */  lui        $v0, %hi(D_80050720)
-    /* B494 8006E7F4 2007438C */  lw         $v1, %lo(D_80050720)($v0)
+    /* B490 8006E7F0 0580023C */  lui        $v0, %hi(Save_GameStatePtr)
+    /* B494 8006E7F4 2007438C */  lw         $v1, %lo(Save_GameStatePtr)($v0)
     /* B498 8006E7F8 40100400 */  sll        $v0, $a0, 1
     /* B49C 8006E7FC 21106200 */  addu       $v0, $v1, $v0
     /* B4A0 8006E800 21186400 */  addu       $v1, $v1, $a0

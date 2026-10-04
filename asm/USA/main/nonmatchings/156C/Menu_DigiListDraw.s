@@ -26,8 +26,8 @@ glabel Menu_DigiListDraw
     /* 9114 80018914 00000000 */  nop
     /* 9118 80018918 AC004010 */  beqz       $v0, .L80018BCC
     /* 911C 8001891C 21A00000 */   addu      $s4, $zero, $zero
-    /* 9120 80018920 0480023C */  lui        $v0, %hi(D_80040F40)
-    /* 9124 80018924 400F5724 */  addiu      $s7, $v0, %lo(D_80040F40)
+    /* 9120 80018920 0480023C */  lui        $v0, %hi(Menu_DigiListRowMasks)
+    /* 9124 80018924 400F5724 */  addiu      $s7, $v0, %lo(Menu_DigiListRowMasks)
     /* 9128 80018928 21A88000 */  addu       $s5, $a0, $zero
   .L8001892C:
     /* 912C 8001892C 0000A48E */  lw         $a0, 0x0($s5)

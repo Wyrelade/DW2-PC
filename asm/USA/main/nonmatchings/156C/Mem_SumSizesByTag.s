@@ -1,7 +1,7 @@
 nonmatching Mem_SumSizesByTag, 0x5C
 
 glabel Mem_SumSizesByTag
-    /* 137E8 80022FE8 9000858F */  lw         $a1, %gp_rel(D_80050788)($gp)
+    /* 137E8 80022FE8 9000858F */  lw         $a1, %gp_rel(Mem_HeapHead)($gp)
     /* 137EC 80022FEC 00000000 */  nop
     /* 137F0 80022FF0 0800A38C */  lw         $v1, 0x8($a1)
     /* 137F4 80022FF4 01000224 */  addiu      $v0, $zero, 0x1

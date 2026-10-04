@@ -12,8 +12,8 @@ glabel func_8006A254
     /* 6F14 8006A274 26004010 */  beqz       $v0, .L8006A310
     /* 6F18 8006A278 00000000 */   nop
     /* 6F1C 8006A27C 24006014 */  bnez       $v1, .L8006A310
-    /* 6F20 8006A280 0480053C */   lui       $a1, %hi(D_80043704)
-    /* 6F24 8006A284 0437A524 */  addiu      $a1, $a1, %lo(D_80043704)
+    /* 6F20 8006A280 0480053C */   lui       $a1, %hi(Gfx_ZeroVector)
+    /* 6F24 8006A284 0437A524 */  addiu      $a1, $a1, %lo(Gfx_ZeroVector)
     /* 6F28 8006A288 1083000C */  jal        Actor_InitTransform
     /* 6F2C 8006A28C 21300000 */   addu      $a2, $zero, $zero
     /* 6F30 8006A290 21200002 */  addu       $a0, $s0, $zero

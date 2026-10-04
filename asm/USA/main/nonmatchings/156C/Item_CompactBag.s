@@ -1,7 +1,7 @@
 nonmatching Item_CompactBag, 0x84
 
 glabel Item_CompactBag
-    /* 12E28 80022628 2800828F */  lw         $v0, %gp_rel(D_80050720)($gp)
+    /* 12E28 80022628 2800828F */  lw         $v0, %gp_rel(Save_GameStatePtr)($gp)
     /* 12E2C 8002262C D8FFBD27 */  addiu      $sp, $sp, -0x28
     /* 12E30 80022630 2000B4AF */  sw         $s4, 0x20($sp)
     /* 12E34 80022634 21A00000 */  addu       $s4, $zero, $zero

@@ -30,36 +30,36 @@ glabel Menu_StatusDraw
     /* 5520 80014D20 26006016 */  bnez       $s3, .L80014DBC
     /* 5524 80014D24 21884000 */   addu      $s1, $v0, $zero
     /* 5528 80014D28 21202002 */  addu       $a0, $s1, $zero
-    /* 552C 80014D2C 0580023C */  lui        $v0, %hi(D_80050720)
-    /* 5530 80014D30 2007428C */  lw         $v0, %lo(D_80050720)($v0)
+    /* 552C 80014D2C 0580023C */  lui        $v0, %hi(Save_GameStatePtr)
+    /* 5530 80014D30 2007428C */  lw         $v0, %lo(Save_GameStatePtr)($v0)
     /* 5534 80014D34 02000524 */  addiu      $a1, $zero, 0x2
     /* 5538 80014D38 0800478C */  lw         $a3, 0x8($v0)
     /* 553C 80014D3C 6D75000C */  jal        Gfx_SetPartsNumber
     /* 5540 80014D40 08000624 */   addiu     $a2, $zero, 0x8
     /* 5544 80014D44 21202002 */  addu       $a0, $s1, $zero
-    /* 5548 80014D48 0580023C */  lui        $v0, %hi(D_80050720)
-    /* 554C 80014D4C 2007428C */  lw         $v0, %lo(D_80050720)($v0)
+    /* 5548 80014D48 0580023C */  lui        $v0, %hi(Save_GameStatePtr)
+    /* 554C 80014D4C 2007428C */  lw         $v0, %lo(Save_GameStatePtr)($v0)
     /* 5550 80014D50 04000524 */  addiu      $a1, $zero, 0x4
     /* 5554 80014D54 26004784 */  lh         $a3, 0x26($v0)
     /* 5558 80014D58 6D75000C */  jal        Gfx_SetPartsNumber
     /* 555C 80014D5C 2130A000 */   addu      $a2, $a1, $zero
     /* 5560 80014D60 21202002 */  addu       $a0, $s1, $zero
-    /* 5564 80014D64 0580023C */  lui        $v0, %hi(D_80050720)
-    /* 5568 80014D68 2007428C */  lw         $v0, %lo(D_80050720)($v0)
+    /* 5564 80014D64 0580023C */  lui        $v0, %hi(Save_GameStatePtr)
+    /* 5568 80014D68 2007428C */  lw         $v0, %lo(Save_GameStatePtr)($v0)
     /* 556C 80014D6C 08000524 */  addiu      $a1, $zero, 0x8
     /* 5570 80014D70 24004784 */  lh         $a3, 0x24($v0)
     /* 5574 80014D74 6D75000C */  jal        Gfx_SetPartsNumber
     /* 5578 80014D78 04000624 */   addiu     $a2, $zero, 0x4
     /* 557C 80014D7C 21202002 */  addu       $a0, $s1, $zero
-    /* 5580 80014D80 0580023C */  lui        $v0, %hi(D_80050720)
-    /* 5584 80014D84 2007428C */  lw         $v0, %lo(D_80050720)($v0)
+    /* 5580 80014D80 0580023C */  lui        $v0, %hi(Save_GameStatePtr)
+    /* 5584 80014D84 2007428C */  lw         $v0, %lo(Save_GameStatePtr)($v0)
     /* 5588 80014D88 10000524 */  addiu      $a1, $zero, 0x10
     /* 558C 80014D8C 2A004784 */  lh         $a3, 0x2A($v0)
     /* 5590 80014D90 6D75000C */  jal        Gfx_SetPartsNumber
     /* 5594 80014D94 04000624 */   addiu     $a2, $zero, 0x4
     /* 5598 80014D98 21202002 */  addu       $a0, $s1, $zero
-    /* 559C 80014D9C 0580023C */  lui        $v0, %hi(D_80050720)
-    /* 55A0 80014DA0 2007428C */  lw         $v0, %lo(D_80050720)($v0)
+    /* 559C 80014D9C 0580023C */  lui        $v0, %hi(Save_GameStatePtr)
+    /* 55A0 80014DA0 2007428C */  lw         $v0, %lo(Save_GameStatePtr)($v0)
     /* 55A4 80014DA4 20000524 */  addiu      $a1, $zero, 0x20
     /* 55A8 80014DA8 28004784 */  lh         $a3, 0x28($v0)
     /* 55AC 80014DAC 6D75000C */  jal        Gfx_SetPartsNumber

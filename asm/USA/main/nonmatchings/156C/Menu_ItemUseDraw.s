@@ -85,29 +85,29 @@ glabel Menu_ItemUseDraw
     /* 665C 80015E5C 4175000C */  jal        Gfx_HidePartsByMask
     /* 6660 80015E60 00000000 */   nop
     /* 6664 80015E64 21200002 */  addu       $a0, $s0, $zero
-    /* 6668 80015E68 0580023C */  lui        $v0, %hi(D_80050720)
-    /* 666C 80015E6C 2007428C */  lw         $v0, %lo(D_80050720)($v0)
+    /* 6668 80015E68 0580023C */  lui        $v0, %hi(Save_GameStatePtr)
+    /* 666C 80015E6C 2007428C */  lw         $v0, %lo(Save_GameStatePtr)($v0)
     /* 6670 80015E70 04000524 */  addiu      $a1, $zero, 0x4
     /* 6674 80015E74 26004784 */  lh         $a3, 0x26($v0)
     /* 6678 80015E78 6D75000C */  jal        Gfx_SetPartsNumber
     /* 667C 80015E7C 2130A000 */   addu      $a2, $a1, $zero
     /* 6680 80015E80 21200002 */  addu       $a0, $s0, $zero
-    /* 6684 80015E84 0580023C */  lui        $v0, %hi(D_80050720)
-    /* 6688 80015E88 2007428C */  lw         $v0, %lo(D_80050720)($v0)
+    /* 6684 80015E84 0580023C */  lui        $v0, %hi(Save_GameStatePtr)
+    /* 6688 80015E88 2007428C */  lw         $v0, %lo(Save_GameStatePtr)($v0)
     /* 668C 80015E8C 08000524 */  addiu      $a1, $zero, 0x8
     /* 6690 80015E90 24004784 */  lh         $a3, 0x24($v0)
     /* 6694 80015E94 6D75000C */  jal        Gfx_SetPartsNumber
     /* 6698 80015E98 04000624 */   addiu     $a2, $zero, 0x4
     /* 669C 80015E9C 21200002 */  addu       $a0, $s0, $zero
-    /* 66A0 80015EA0 0580023C */  lui        $v0, %hi(D_80050720)
-    /* 66A4 80015EA4 2007428C */  lw         $v0, %lo(D_80050720)($v0)
+    /* 66A0 80015EA0 0580023C */  lui        $v0, %hi(Save_GameStatePtr)
+    /* 66A4 80015EA4 2007428C */  lw         $v0, %lo(Save_GameStatePtr)($v0)
     /* 66A8 80015EA8 10000524 */  addiu      $a1, $zero, 0x10
     /* 66AC 80015EAC 2A004784 */  lh         $a3, 0x2A($v0)
     /* 66B0 80015EB0 6D75000C */  jal        Gfx_SetPartsNumber
     /* 66B4 80015EB4 04000624 */   addiu     $a2, $zero, 0x4
     /* 66B8 80015EB8 21200002 */  addu       $a0, $s0, $zero
-    /* 66BC 80015EBC 0580023C */  lui        $v0, %hi(D_80050720)
-    /* 66C0 80015EC0 2007428C */  lw         $v0, %lo(D_80050720)($v0)
+    /* 66BC 80015EBC 0580023C */  lui        $v0, %hi(Save_GameStatePtr)
+    /* 66C0 80015EC0 2007428C */  lw         $v0, %lo(Save_GameStatePtr)($v0)
     /* 66C4 80015EC4 20000524 */  addiu      $a1, $zero, 0x20
     /* 66C8 80015EC8 28004784 */  lh         $a3, 0x28($v0)
     /* 66CC 80015ECC 6D75000C */  jal        Gfx_SetPartsNumber

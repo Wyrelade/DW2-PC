@@ -26,8 +26,8 @@ glabel func_8006D53C
     /* A230 8006D590 02006324 */   addiu     $v1, $v1, 0x2
     /* A234 8006D594 21A80000 */  addu       $s5, $zero, $zero
     /* A238 8006D598 2188A002 */  addu       $s1, $s5, $zero
-    /* A23C 8006D59C 0680023C */  lui        $v0, %hi(D_8005E620)
-    /* A240 8006D5A0 20E65324 */  addiu      $s3, $v0, %lo(D_8005E620)
+    /* A23C 8006D59C 0680023C */  lui        $v0, %hi(Save_GameState)
+    /* A240 8006D5A0 20E65324 */  addiu      $s3, $v0, %lo(Save_GameState)
     /* A244 8006D5A4 40101100 */  sll        $v0, $s1, 1
   .L8006D5A8:
     /* A248 8006D5A8 21108202 */  addu       $v0, $s4, $v0

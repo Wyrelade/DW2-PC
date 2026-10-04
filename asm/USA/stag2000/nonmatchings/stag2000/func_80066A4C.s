@@ -2,8 +2,8 @@ nonmatching func_80066A4C, 0x50
 
 glabel func_80066A4C
     /* 36EC 80066A4C 21280000 */  addu       $a1, $zero, $zero
-    /* 36F0 80066A50 0680023C */  lui        $v0, %hi(D_8005E620)
-    /* 36F4 80066A54 20E64324 */  addiu      $v1, $v0, %lo(D_8005E620)
+    /* 36F0 80066A50 0680023C */  lui        $v0, %hi(Save_GameState)
+    /* 36F4 80066A54 20E64324 */  addiu      $v1, $v0, %lo(Save_GameState)
   .L80066A58:
     /* 36F8 80066A58 E4006290 */  lbu        $v0, 0xE4($v1)
     /* 36FC 80066A5C 00000000 */  nop

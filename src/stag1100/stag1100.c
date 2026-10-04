@@ -17,8 +17,8 @@ void Stg11_RootUpdate(Actor *arg0) {
         Task_Create(0x601, slot + 2, 0);
         Task_Create(0x602, slot + 3, 0);
         D_80050780 = 0;
-        Task_Create(0x603, slot + 1, D_8005F770.gameMode - 0x600);
-        if (D_8005F770.gameMode != 0x603 && D_8005F770.gameMode != 0x604) {
+        Task_Create(0x603, slot + 1, Sys_State.gameMode - 0x600);
+        if (Sys_State.gameMode != 0x603 && Sys_State.gameMode != 0x604) {
             Snd_StopAll();
             Snd_UnloadSlot(2);
             Snd_SetSlotContent(1, 0xE);
@@ -35,9 +35,9 @@ void Stg11_RootUpdate(Actor *arg0) {
                 Snd_PlayById(0x100, 1);
             }
             if (slot[1] == 0) {
-                D_8005F770.nextGameMode = D_8005F770.prevGameMode;
-                if (D_8005F770.gameMode == 0x605) {
-                    D_8005F770.field_24 = 1;
+                Sys_State.nextGameMode = Sys_State.prevGameMode;
+                if (Sys_State.gameMode == 0x605) {
+                    Sys_State.field_24 = 1;
                 }
                 Task_NextState1(arg0);
             }
@@ -119,12 +119,12 @@ void Stg11_ModeMenuUpdate(Actor *arg0) {
             break;
         case 1:
             if (Menu_MoveGridCursor(w->field_10, w->field_14.gridSize, w->field_24) == 0) {
-                if (D_8005F6F0[w->field_24].cross > 0) {
+                if (Pad_State[w->field_24].cross > 0) {
                     if (tasks[Menu_GridIndexColMajor(w->field_10, w->field_14.gridSize)].id != -1) {
                         Snd_PlayById(0xA, 0);
                         Task_NextState1(arg0);
                     }
-                } else if (D_8005F6F0[w->field_24].triangle > 0) {
+                } else if (Pad_State[w->field_24].triangle > 0) {
                     Snd_PlayById(0xB, 0);
                     Task_SetState0(arg0, 2);
                 }
@@ -265,11 +265,11 @@ void Stg11_ScanTransferCards(Actor *arg0, Stg11MenuWork *arg1) {
     arg1->field_138 = 0x18;
     maxLv = 0;
     for (i = 0; i < 0x24; i++) {
-        if (D_80050720->elems[i].state == 1) {
+        if (Save_GameStatePtr->elems[i].state == 1) {
             arg1->field_138--;
         }
-        if (D_80050720->elems[i].state != 0 && maxLv < Digi_GetRank(D_80050720->elems[i].digiId)) {
-            maxLv = Digi_GetRank(D_80050720->elems[i].digiId);
+        if (Save_GameStatePtr->elems[i].state != 0 && maxLv < Digi_GetRank(Save_GameStatePtr->elems[i].digiId)) {
+            maxLv = Digi_GetRank(Save_GameStatePtr->elems[i].digiId);
         }
     }
     n = 0;
@@ -290,7 +290,7 @@ void Stg11_ScanTransferCards(Actor *arg0, Stg11MenuWork *arg1) {
             if (j == i) {
                 c->field_0 = tbl[rec->field_A2];
                 for (j = 0; j < 0x24; j++) {
-                    if (((Stg11GameState *)D_80050720)->elems[j].state != 0 && ((Stg11GameState *)D_80050720)->elems[j].field_49 != 0 && ((Stg11GameState *)D_80050720)->elems[j].field_4A == rec->uid) {
+                    if (((Stg11GameState *)Save_GameStatePtr)->elems[j].state != 0 && ((Stg11GameState *)Save_GameStatePtr)->elems[j].field_49 != 0 && ((Stg11GameState *)Save_GameStatePtr)->elems[j].field_4A == rec->uid) {
                         c->field_2 = 1;
                     }
                 }
@@ -341,7 +341,7 @@ void Stg11_OpenTransferText(Actor *arg0, Stg11MenuWork *arg1) {
 
 void Stg11_TransferSelected(Actor *arg0, Stg11MenuWork *arg1) {
     Stg11MenuRow *c = &arg1->field_98[Menu_GridIndexColMajor(arg1->cursor, arg1->u6C.gridSize)];
-    Stg11DigiEntry *e = (Stg11DigiEntry *)D_80050720->elems;
+    Stg11DigiEntry *e = (Stg11DigiEntry *)Save_GameStatePtr->elems;
     u8 *src;
     u8 *dst;
     s32 i;
@@ -484,7 +484,7 @@ void Stg11_StateWaitCancel(Actor *arg0, Stg11MenuWork *arg1) {
     }
     if (Stg11_WatchCardRemoved(arg0, arg1) == 0) {
         arg0->stateLevel2 = 1;
-        if (D_8005F6F0[arg1->field_7E].triangle > 0) {
+        if (Pad_State[arg1->field_7E].triangle > 0) {
             Snd_PlayById(0xB, 0);
             Task_SetState0(arg0, 2);
         }
@@ -529,7 +529,7 @@ void Stg11_StateCardError(Actor *arg0, Stg11MenuWork *arg1) {
         Task_NextState2(arg0);
         break;
     case 1:
-        if (D_8005F6F0[arg1->field_7E].triangle > 0) {
+        if (Pad_State[arg1->field_7E].triangle > 0) {
             Snd_PlayById(0xB, 0);
             Task_SetState0(arg0, 2);
             return;
@@ -619,7 +619,7 @@ void Stg11_StateCheckCard(Actor *arg0, Stg11MenuWork *arg1) {
         }
         break;
     }
-    if (D_8005F6F0[arg1->field_7E].triangle > 0) {
+    if (Pad_State[arg1->field_7E].triangle > 0) {
         Snd_PlayById(0xB, 0);
         Task_SetState0(arg0, 2);
     }
@@ -854,12 +854,12 @@ void Stg11_StateSelectSlot(Actor *arg0, Stg11MenuWork *arg1) {
         break;
     case 1:
         if (Menu_MoveGridCursor(arg1->cursor, arg1->u6C.gridSize, arg1->field_7E) == 0) {
-            if (D_8005F6F0[arg1->field_7E].cross > 0) {
+            if (Pad_State[arg1->field_7E].cross > 0) {
                 idx = Menu_GridIndexColMajor(arg1->cursor, arg1->u6C.gridSize);
                 if (arg1->field_7A == 0) {
                     if (list->used[idx] == 0) {
-                        list->used[idx] = D_8005F770.prevGameMode;
-                        *(list->slots + idx) = *(Stg11SaveSlot *)D_80050720;
+                        list->used[idx] = Sys_State.prevGameMode;
+                        *(list->slots + idx) = *(Stg11SaveSlot *)Save_GameStatePtr;
                         Stg11_OpenSlotText(arg0, arg1);
                         Task_SetState1(arg0, 8);
                         Snd_PlayById(0xE, 0);
@@ -873,9 +873,9 @@ void Stg11_StateSelectSlot(Actor *arg0, Stg11MenuWork *arg1) {
                         Snd_PlayById(0x10, 0);
                     } else {
                         if (arg1->field_7C == 0) {
-                            *(Stg11SaveSlot *)D_80050720 = *(list->slots + idx);
+                            *(Stg11SaveSlot *)Save_GameStatePtr = *(list->slots + idx);
                             Stg11_LoadDone = 1;
-                            D_8005F770.prevGameMode = list->used[idx];
+                            Sys_State.prevGameMode = list->used[idx];
                             Task_SetState0(arg0, 2);
                             Snd_PlayById(0xE, 0);
                         } else {
@@ -899,7 +899,7 @@ void Stg11_StateSelectSlot(Actor *arg0, Stg11MenuWork *arg1) {
                         }
                     }
                 }
-            } else if (D_8005F6F0[arg1->field_7E].triangle > 0) {
+            } else if (Pad_State[arg1->field_7E].triangle > 0) {
                 Snd_PlayById(0xB, 0);
                 Task_SetState0(arg0, 2);
             }
@@ -920,8 +920,8 @@ void Stg11_StateSelectSlot(Actor *arg0, Stg11MenuWork *arg1) {
         if (r != -1) {
             if (r == 1) {
                 idx2 = Menu_GridIndexColMajor(arg1->cursor, arg1->u6C.gridSize);
-                list->used[idx2] = D_8005F770.prevGameMode;
-                *(list->slots + idx2) = *(Stg11SaveSlot *)D_80050720;
+                list->used[idx2] = Sys_State.prevGameMode;
+                *(list->slots + idx2) = *(Stg11SaveSlot *)Save_GameStatePtr;
                 Stg11_OpenSlotText(arg0, arg1);
                 Task_SetState1(arg0, 8);
             }
@@ -1012,7 +1012,7 @@ void Stg11_StateVsPartySelect(Actor *arg0, Stg11MenuWork *arg1) {
     case 2:
         if (*slot == 0) {
             if (D_80050780 != 0) {
-                d = &D_80050720->elems[arg1->field_7E * 3];
+                d = &Save_GameStatePtr->elems[arg1->field_7E * 3];
                 for (i = 0; i < 3; i++) {
                     *d = Stg11_VsParty.field_4[i];
                     if (d->state != 0) {
@@ -1021,7 +1021,7 @@ void Stg11_StateVsPartySelect(Actor *arg0, Stg11MenuWork *arg1) {
                     d++;
                 }
                 src = Stg11_VsParty.field_0->field_14;
-                dst = D_80050720->elems[arg1->field_7E + 6].name;
+                dst = Save_GameStatePtr->elems[arg1->field_7E + 6].name;
                 while (*src != 0xFF) {
                     *dst++ = *src++;
                 }
@@ -1068,9 +1068,9 @@ void Stg11_StateTransferList(Actor *arg0, Stg11MenuWork *arg1) {
         break;
     case 2:
         if (Menu_MoveGridCursor(arg1->cursor, arg1->u6C.gridSize, arg1->field_7E) == 0) {
-            if (D_8005F6F0[arg1->field_7E].cross > 0) {
+            if (Pad_State[arg1->field_7E].cross > 0) {
                 Stg11_TransferSelected(arg0, arg1);
-            } else if (D_8005F6F0[arg1->field_7E].triangle > 0) {
+            } else if (Pad_State[arg1->field_7E].triangle > 0) {
                 Stg11_SetPromptMsg(arg1, 0x1B8, 1);
                 Task_NextState2(arg0);
             }

@@ -98,8 +98,8 @@ glabel func_8006EE24
     /* BC28 8006EF88 3D005010 */  beq        $v0, $s0, .L8006F080
     /* BC2C 8006EF8C 00000000 */   nop
   .L8006EF90:
-    /* BC30 8006EF90 0680023C */  lui        $v0, %hi(D_8005F6F0)
-    /* BC34 8006EF94 F0F64424 */  addiu      $a0, $v0, %lo(D_8005F6F0)
+    /* BC30 8006EF90 0680023C */  lui        $v0, %hi(Pad_State)
+    /* BC34 8006EF94 F0F64424 */  addiu      $a0, $v0, %lo(Pad_State)
     /* BC38 8006EF98 3C008394 */  lhu        $v1, 0x3C($a0)
     /* BC3C 8006EF9C 00000000 */  nop
     /* BC40 8006EFA0 00106230 */  andi       $v0, $v1, 0x1000
@@ -221,8 +221,8 @@ glabel func_8006EE24
     /* BDE4 8006F144 14000424 */  addiu      $a0, $zero, 0x14
     /* BDE8 8006F148 A369000C */  jal        Snd_PlayById
     /* BDEC 8006F14C 21280000 */   addu      $a1, $zero, $zero
-    /* BDF0 8006F150 0680043C */  lui        $a0, %hi(D_8005E620)
-    /* BDF4 8006F154 20E68424 */  addiu      $a0, $a0, %lo(D_8005E620)
+    /* BDF0 8006F150 0680043C */  lui        $a0, %hi(Save_GameState)
+    /* BDF4 8006F154 20E68424 */  addiu      $a0, $a0, %lo(Save_GameState)
     /* BDF8 8006F158 3000238E */  lw         $v1, 0x30($s1)
     /* BDFC 8006F15C 0800828C */  lw         $v0, 0x8($a0)
     /* BE00 8006F160 40190300 */  sll        $v1, $v1, 5

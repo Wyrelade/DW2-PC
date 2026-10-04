@@ -122,9 +122,9 @@ glabel Stg11_VsPartyUpdate
     /* 3AA4 80066E04 54000526 */   addiu     $a1, $s0, 0x54
     /* 3AA8 80066E08 16004014 */  bnez       $v0, .L80066E64
     /* 3AAC 80066E0C 0D000424 */   addiu     $a0, $zero, 0xD
-    /* 3AB0 80066E10 0680023C */  lui        $v0, %hi(D_8005F6F0)
+    /* 3AB0 80066E10 0680023C */  lui        $v0, %hi(Pad_State)
     /* 3AB4 80066E14 64000386 */  lh         $v1, 0x64($s0)
-    /* 3AB8 80066E18 F0F64224 */  addiu      $v0, $v0, %lo(D_8005F6F0)
+    /* 3AB8 80066E18 F0F64224 */  addiu      $v0, $v0, %lo(Pad_State)
     /* 3ABC 80066E1C 80190300 */  sll        $v1, $v1, 6
     /* 3AC0 80066E20 21186200 */  addu       $v1, $v1, $v0
     /* 3AC4 80066E24 1C00628C */  lw         $v0, 0x1C($v1)

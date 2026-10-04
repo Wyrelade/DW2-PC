@@ -1,8 +1,8 @@
 nonmatching func_80065D1C, 0x58
 
 glabel func_80065D1C
-    /* 29BC 80065D1C 0680043C */  lui        $a0, %hi(D_8005E620)
-    /* 29C0 80065D20 20E68424 */  addiu      $a0, $a0, %lo(D_8005E620)
+    /* 29BC 80065D1C 0680043C */  lui        $a0, %hi(Save_GameState)
+    /* 29C0 80065D20 20E68424 */  addiu      $a0, $a0, %lo(Save_GameState)
     /* 29C4 80065D24 0780033C */  lui        $v1, %hi(D_8006FCCC)
     /* 29C8 80065D28 2E008294 */  lhu        $v0, 0x2E($a0)
     /* 29CC 80065D2C CCFC6324 */  addiu      $v1, $v1, %lo(D_8006FCCC)

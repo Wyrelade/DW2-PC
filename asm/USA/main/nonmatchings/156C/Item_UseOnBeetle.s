@@ -27,15 +27,15 @@ glabel Item_UseOnBeetle
     /* 28A4 800120A4 00000000 */  nop
     /* 28A8 800120A8 07004014 */  bnez       $v0, .L800120C8
     /* 28AC 800120AC 00000000 */   nop
-    /* 28B0 800120B0 0580023C */  lui        $v0, %hi(D_80050720)
-    /* 28B4 800120B4 2007428C */  lw         $v0, %lo(D_80050720)($v0)
+    /* 28B0 800120B0 0580023C */  lui        $v0, %hi(Save_GameStatePtr)
+    /* 28B4 800120B4 2007428C */  lw         $v0, %lo(Save_GameStatePtr)($v0)
     /* 28B8 800120B8 00000000 */  nop
     /* 28BC 800120BC 24004424 */  addiu      $a0, $v0, 0x24
     /* 28C0 800120C0 37480008 */  j          .L800120DC
     /* 28C4 800120C4 26004324 */   addiu     $v1, $v0, 0x26
   .L800120C8:
-    /* 28C8 800120C8 0580023C */  lui        $v0, %hi(D_80050720)
-    /* 28CC 800120CC 2007428C */  lw         $v0, %lo(D_80050720)($v0)
+    /* 28C8 800120C8 0580023C */  lui        $v0, %hi(Save_GameStatePtr)
+    /* 28CC 800120CC 2007428C */  lw         $v0, %lo(Save_GameStatePtr)($v0)
     /* 28D0 800120D0 00000000 */  nop
     /* 28D4 800120D4 28004424 */  addiu      $a0, $v0, 0x28
     /* 28D8 800120D8 2A004324 */  addiu      $v1, $v0, 0x2A
@@ -133,7 +133,7 @@ glabel Item_UseOnBeetle
     /* 2A28 80012228 21104500 */  addu       $v0, $v0, $a1
     /* 2A2C 8001222C C147000C */  jal        Bug_CompactMemBugs
     /* 2A30 80012230 A90B40A0 */   sb        $zero, 0xBA9($v0)
-    /* 2A34 80012234 680090A3 */  sb         $s0, %gp_rel(D_80050760)($gp)
+    /* 2A34 80012234 680090A3 */  sb         $s0, %gp_rel(Bug_LastZappedLevel)($gp)
     /* 2A38 80012238 D5480008 */  j          .L80012354
     /* 2A3C 8001223C 21102002 */   addu      $v0, $s1, $zero
   jlabel .L80012240

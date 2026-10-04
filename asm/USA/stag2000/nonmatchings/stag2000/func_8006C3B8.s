@@ -3,8 +3,8 @@ nonmatching func_8006C3B8, 0x68
 glabel func_8006C3B8
     /* 9058 8006C3B8 21300000 */  addu       $a2, $zero, $zero
     /* 905C 8006C3BC 2128C000 */  addu       $a1, $a2, $zero
-    /* 9060 8006C3C0 0680023C */  lui        $v0, %hi(D_8005E620)
-    /* 9064 8006C3C4 20E64324 */  addiu      $v1, $v0, %lo(D_8005E620)
+    /* 9060 8006C3C0 0680023C */  lui        $v0, %hi(Save_GameState)
+    /* 9064 8006C3C4 20E64324 */  addiu      $v1, $v0, %lo(Save_GameState)
   .L8006C3C8:
     /* 9068 8006C3C8 66006294 */  lhu        $v0, 0x66($v1)
     /* 906C 8006C3CC 00000000 */  nop
@@ -16,8 +16,8 @@ glabel func_8006C3B8
     /* 9080 8006C3E0 3000A228 */  slti       $v0, $a1, 0x30
     /* 9084 8006C3E4 F8FF4014 */  bnez       $v0, .L8006C3C8
     /* 9088 8006C3E8 02006324 */   addiu     $v1, $v1, 0x2
-    /* 908C 8006C3EC 0680033C */  lui        $v1, %hi(D_8005E620)
-    /* 9090 8006C3F0 20E66324 */  addiu      $v1, $v1, %lo(D_8005E620)
+    /* 908C 8006C3EC 0680033C */  lui        $v1, %hi(Save_GameState)
+    /* 9090 8006C3F0 20E66324 */  addiu      $v1, $v1, %lo(Save_GameState)
     /* 9094 8006C3F4 40100400 */  sll        $v0, $a0, 1
     /* 9098 8006C3F8 21104300 */  addu       $v0, $v0, $v1
     /* 909C 8006C3FC D40D4294 */  lhu        $v0, 0xDD4($v0)

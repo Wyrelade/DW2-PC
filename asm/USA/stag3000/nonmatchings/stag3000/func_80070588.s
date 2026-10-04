@@ -6,8 +6,8 @@ glabel func_80070588
     /* D230 80070590 21808000 */  addu       $s0, $a0, $zero
     /* D234 80070594 1800B2AF */  sw         $s2, 0x18($sp)
     /* D238 80070598 2190A000 */  addu       $s2, $a1, $zero
-    /* D23C 8007059C 0680023C */  lui        $v0, %hi(D_8005F770)
-    /* D240 800705A0 70F74324 */  addiu      $v1, $v0, %lo(D_8005F770)
+    /* D23C 8007059C 0680023C */  lui        $v0, %hi(Sys_State)
+    /* D240 800705A0 70F74324 */  addiu      $v1, $v0, %lo(Sys_State)
     /* D244 800705A4 2000BFAF */  sw         $ra, 0x20($sp)
     /* D248 800705A8 1C00B3AF */  sw         $s3, 0x1C($sp)
     /* D24C 800705AC 1400B1AF */  sw         $s1, 0x14($sp)

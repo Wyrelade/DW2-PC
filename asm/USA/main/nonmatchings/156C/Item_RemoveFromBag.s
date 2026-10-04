@@ -2,7 +2,7 @@ nonmatching Item_RemoveFromBag, 0x2C
 
 glabel Item_RemoveFromBag
     /* 12FF0 800227F0 E8FFBD27 */  addiu      $sp, $sp, -0x18
-    /* 12FF4 800227F4 2800828F */  lw         $v0, %gp_rel(D_80050720)($gp)
+    /* 12FF4 800227F4 2800828F */  lw         $v0, %gp_rel(Save_GameStatePtr)($gp)
     /* 12FF8 800227F8 40200400 */  sll        $a0, $a0, 1
     /* 12FFC 800227FC 1000BFAF */  sw         $ra, 0x10($sp)
     /* 13000 80022800 21104400 */  addu       $v0, $v0, $a0

@@ -1,8 +1,8 @@
 nonmatching Cd_FindFreeCacheSlot, 0x38
 
 glabel Cd_FindFreeCacheSlot
-    /* 142B0 80023AB0 0680023C */  lui        $v0, %hi(D_8005F8C8)
-    /* 142B4 80023AB4 C8F84324 */  addiu      $v1, $v0, %lo(D_8005F8C8)
+    /* 142B0 80023AB0 0680023C */  lui        $v0, %hi(Cd_FileCache)
+    /* 142B4 80023AB4 C8F84324 */  addiu      $v1, $v0, %lo(Cd_FileCache)
     /* 142B8 80023AB8 21200000 */  addu       $a0, $zero, $zero
   .L80023ABC:
     /* 142BC 80023ABC 0400628C */  lw         $v0, 0x4($v1)

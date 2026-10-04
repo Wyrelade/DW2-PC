@@ -33,8 +33,8 @@ glabel func_80063A6C
     /* 77C 80063ADC 0C0002AE */  sw         $v0, 0xC($s0)
   .L80063AE0:
     /* 780 80063AE0 21200002 */  addu       $a0, $s0, $zero
-    /* 784 80063AE4 0480053C */  lui        $a1, %hi(D_80043704)
-    /* 788 80063AE8 0437A524 */  addiu      $a1, $a1, %lo(D_80043704)
+    /* 784 80063AE4 0480053C */  lui        $a1, %hi(Gfx_ZeroVector)
+    /* 788 80063AE8 0437A524 */  addiu      $a1, $a1, %lo(Gfx_ZeroVector)
     /* 78C 80063AEC 1083000C */  jal        Actor_InitTransform
     /* 790 80063AF0 21300000 */   addu      $a2, $zero, $zero
     /* 794 80063AF4 0C00058E */  lw         $a1, 0xC($s0)

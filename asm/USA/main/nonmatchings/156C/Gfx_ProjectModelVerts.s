@@ -5,8 +5,8 @@ glabel Gfx_ProjectModelVerts
     /* 11EE4 800216E4 F8FFBD27 */  addiu      $sp, $sp, -0x8
     /* 11EE8 800216E8 00008E84 */  lh         $t6, 0x0($a0)
     /* 11EEC 800216EC 06008424 */  addiu      $a0, $a0, 0x6
-    /* 11EF0 800216F0 0680023C */  lui        $v0, %hi(D_8005F770)
-    /* 11EF4 800216F4 70F74224 */  addiu      $v0, $v0, %lo(D_8005F770)
+    /* 11EF0 800216F0 0680023C */  lui        $v0, %hi(Sys_State)
+    /* 11EF4 800216F4 70F74224 */  addiu      $v0, $v0, %lo(Sys_State)
     /* 11EF8 800216F8 6C00A78C */  lw         $a3, 0x6C($a1)
     /* 11EFC 800216FC 1001438C */  lw         $v1, 0x110($v0)
     /* 11F00 80021700 7000A88C */  lw         $t0, 0x70($a1)

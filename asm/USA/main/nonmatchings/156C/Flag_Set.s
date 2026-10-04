@@ -11,17 +11,17 @@ glabel Flag_Set
     /* 129E0 800221E0 1800BFAF */   sw        $ra, 0x18($sp)
     /* 129E4 800221E4 10000224 */  addiu      $v0, $zero, 0x10
     /* 129E8 800221E8 09000216 */  bne        $s0, $v0, .L80022210
-    /* 129EC 800221EC 0680043C */   lui       $a0, %hi(D_8005F624)
+    /* 129EC 800221EC 0680043C */   lui       $a0, %hi(Flag_Bits)
     /* 129F0 800221F0 08002016 */  bnez       $s1, .L80022214
-    /* 129F4 800221F4 24F68424 */   addiu     $a0, $a0, %lo(D_8005F624)
-    /* 129F8 800221F8 0680043C */  lui        $a0, %hi(D_8005F624)
-    /* 129FC 800221FC 24F68424 */  addiu      $a0, $a0, %lo(D_8005F624)
+    /* 129F4 800221F4 24F68424 */   addiu     $a0, $a0, %lo(Flag_Bits)
+    /* 129F8 800221F8 0680043C */  lui        $a0, %hi(Flag_Bits)
+    /* 129FC 800221FC 24F68424 */  addiu      $a0, $a0, %lo(Flag_Bits)
     /* 12A00 80022200 11000524 */  addiu      $a1, $zero, 0x11
     /* 12A04 80022204 3488000C */  jal        Mem_WriteBit
     /* 12A08 80022208 21300000 */   addu      $a2, $zero, $zero
-    /* 12A0C 8002220C 0680043C */  lui        $a0, %hi(D_8005F624)
+    /* 12A0C 8002220C 0680043C */  lui        $a0, %hi(Flag_Bits)
   .L80022210:
-    /* 12A10 80022210 24F68424 */  addiu      $a0, $a0, %lo(D_8005F624)
+    /* 12A10 80022210 24F68424 */  addiu      $a0, $a0, %lo(Flag_Bits)
   .L80022214:
     /* 12A14 80022214 98880008 */  j          .L80022260
     /* 12A18 80022218 21280002 */   addu      $a1, $s0, $zero
@@ -69,8 +69,8 @@ glabel Flag_Set
   .L800222A8:
     /* 12AA8 800222A8 B80B022A */  slti       $v0, $s0, 0xBB8
     /* 12AAC 800222AC 0A004010 */  beqz       $v0, .L800222D8
-    /* 12AB0 800222B0 0680023C */   lui       $v0, %hi(D_8005E620)
-    /* 12AB4 800222B4 20E64224 */  addiu      $v0, $v0, %lo(D_8005E620)
+    /* 12AB0 800222B0 0680023C */   lui       $v0, %hi(Save_GameState)
+    /* 12AB4 800222B4 20E64224 */  addiu      $v0, $v0, %lo(Save_GameState)
     /* 12AB8 800222B8 30F80326 */  addiu      $v1, $s0, -0x7D0
     /* 12ABC 800222BC 40180300 */  sll        $v1, $v1, 1
     /* 12AC0 800222C0 21186200 */  addu       $v1, $v1, $v0

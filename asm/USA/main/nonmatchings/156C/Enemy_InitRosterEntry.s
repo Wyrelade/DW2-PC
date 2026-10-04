@@ -11,9 +11,9 @@ glabel Enemy_InitRosterEntry
     /* E5C4 8001DDC4 2000BFAF */  sw         $ra, 0x20($sp)
     /* E5C8 8001DDC8 C676000C */  jal        Enemy_FindSetById
     /* E5CC 8001DDCC 1C00B3AF */   sw        $s3, 0x1C($sp)
-    /* E5D0 8001DDD0 0680033C */  lui        $v1, %hi(D_8005F788)
+    /* E5D0 8001DDD0 0680033C */  lui        $v1, %hi(Sys_GameMode)
     /* E5D4 8001DDD4 21984000 */  addu       $s3, $v0, $zero
-    /* E5D8 8001DDD8 88F7638C */  lw         $v1, %lo(D_8005F788)($v1)
+    /* E5D8 8001DDD8 88F7638C */  lw         $v1, %lo(Sys_GameMode)($v1)
     /* E5DC 8001DDDC 00050224 */  addiu      $v0, $zero, 0x500
     /* E5E0 8001DDE0 00FF6330 */  andi       $v1, $v1, 0xFF00
     /* E5E4 8001DDE4 09006214 */  bne        $v1, $v0, .L8001DE0C

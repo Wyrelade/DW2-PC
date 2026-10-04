@@ -26,8 +26,8 @@ glabel Item_BuildMenuList
     /* 67BC 80015FBC 00140200 */  sll        $v0, $v0, 16
     /* 67C0 80015FC0 10004018 */  blez       $v0, .L80016004
     /* 67C4 80015FC4 76006326 */   addiu     $v1, $s3, 0x76
-    /* 67C8 80015FC8 0580043C */  lui        $a0, %hi(D_80050720)
-    /* 67CC 80015FCC 2007848C */  lw         $a0, %lo(D_80050720)($a0)
+    /* 67C8 80015FC8 0580043C */  lui        $a0, %hi(Save_GameStatePtr)
+    /* 67CC 80015FCC 2007848C */  lw         $a0, %lo(Save_GameStatePtr)($a0)
   .L80015FD0:
     /* 67D0 80015FD0 00000000 */  nop
     /* 67D4 80015FD4 66008294 */  lhu        $v0, 0x66($a0)
@@ -84,8 +84,8 @@ glabel Item_BuildMenuList
     /* 6888 80016088 1F005514 */  bne        $v0, $s5, .L80016108
     /* 688C 8001608C 00000000 */   nop
   .L80016090:
-    /* 6890 80016090 0580023C */  lui        $v0, %hi(D_80050720)
-    /* 6894 80016094 2007428C */  lw         $v0, %lo(D_80050720)($v0)
+    /* 6890 80016090 0580023C */  lui        $v0, %hi(Save_GameStatePtr)
+    /* 6894 80016094 2007428C */  lw         $v0, %lo(Save_GameStatePtr)($v0)
     /* 6898 80016098 40181000 */  sll        $v1, $s0, 1
     /* 689C 8001609C 21184300 */  addu       $v1, $v0, $v1
     /* 68A0 800160A0 D40D6294 */  lhu        $v0, 0xDD4($v1)

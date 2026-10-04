@@ -26,7 +26,7 @@ glabel Menu_TopMenuTask
     /* 4458 80013C58 1305043C */  lui        $a0, (0x5130005 >> 16)
     /* 445C 80013C5C 700082AF */  sw         $v0, %gp_rel(Menu_Ctx)($gp)
     /* 4460 80013C60 600340A4 */  sh         $zero, 0x360($v0)
-    /* 4464 80013C64 6C0080AF */  sw         $zero, %gp_rel(D_80050764)($gp)
+    /* 4464 80013C64 6C0080AF */  sw         $zero, %gp_rel(Menu_TopMenuResult)($gp)
     /* 4468 80013C68 688E000C */  jal        Cd_GetFileEntry
     /* 446C 80013C6C 05008434 */   ori       $a0, $a0, (0x5130005 & 0xFFFF)
     /* 4470 80013C70 7000848F */  lw         $a0, %gp_rel(Menu_Ctx)($gp)
@@ -42,9 +42,9 @@ glabel Menu_TopMenuTask
     /* 4498 80013C98 280008BA */  swr        $t0, 0x28($s0)
     /* 449C 80013C9C 2F0009AA */  swl        $t1, 0x2F($s0)
     /* 44A0 80013CA0 2C0009BA */  swr        $t1, 0x2C($s0)
-    /* 44A4 80013CA4 0680023C */  lui        $v0, %hi(D_8005F788)
+    /* 44A4 80013CA4 0680023C */  lui        $v0, %hi(Sys_GameMode)
     /* 44A8 80013CA8 000080AC */  sw         $zero, 0x0($a0)
-    /* 44AC 80013CAC 88F7438C */  lw         $v1, %lo(D_8005F788)($v0)
+    /* 44AC 80013CAC 88F7438C */  lw         $v1, %lo(Sys_GameMode)($v0)
     /* 44B0 80013CB0 00000000 */  nop
     /* 44B4 80013CB4 02006104 */  bgez       $v1, .L80013CC0
     /* 44B8 80013CB8 21106000 */   addu      $v0, $v1, $zero
@@ -200,8 +200,8 @@ glabel Menu_TopMenuTask
     /* 46E4 80013EE4 21282002 */   addu      $a1, $s1, $zero
     /* 46E8 80013EE8 54004014 */  bnez       $v0, .L8001403C
     /* 46EC 80013EEC 0C000424 */   addiu     $a0, $zero, 0xC
-    /* 46F0 80013EF0 0680023C */  lui        $v0, %hi(D_8005F6F0)
-    /* 46F4 80013EF4 F0F64324 */  addiu      $v1, $v0, %lo(D_8005F6F0)
+    /* 46F0 80013EF0 0680023C */  lui        $v0, %hi(Pad_State)
+    /* 46F4 80013EF4 F0F64324 */  addiu      $v1, $v0, %lo(Pad_State)
     /* 46F8 80013EF8 1400628C */  lw         $v0, 0x14($v1)
     /* 46FC 80013EFC 00000000 */  nop
     /* 4700 80013F00 46004018 */  blez       $v0, .L8001401C
@@ -375,7 +375,7 @@ glabel Menu_TopMenuTask
     /* 494C 8001414C 00000000 */  nop
     /* 4950 80014150 60034284 */  lh         $v0, 0x360($v0)
     /* 4954 80014154 00000000 */  nop
-    /* 4958 80014158 6C0082AF */  sw         $v0, %gp_rel(D_80050764)($gp)
+    /* 4958 80014158 6C0082AF */  sw         $v0, %gp_rel(Menu_TopMenuResult)($gp)
     /* 495C 8001415C 5945000C */  jal        Task_NextState1
     /* 4960 80014160 21206002 */   addu      $a0, $s3, $zero
     /* 4964 80014164 3C71000C */  jal        Gfx_FadeOutToBlack

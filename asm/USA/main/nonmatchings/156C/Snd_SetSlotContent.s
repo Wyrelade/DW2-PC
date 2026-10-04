@@ -4,8 +4,8 @@ glabel Snd_SetSlotContent
     /* ADF4 8001A5F4 E0FFBD27 */  addiu      $sp, $sp, -0x20
     /* ADF8 8001A5F8 1400B1AF */  sw         $s1, 0x14($sp)
     /* ADFC 8001A5FC 21888000 */  addu       $s1, $a0, $zero
-    /* AE00 8001A600 0580023C */  lui        $v0, %hi(D_80054C48)
-    /* AE04 8001A604 484C4224 */  addiu      $v0, $v0, %lo(D_80054C48)
+    /* AE00 8001A600 0580023C */  lui        $v0, %hi(Snd_Slots)
+    /* AE04 8001A604 484C4224 */  addiu      $v0, $v0, %lo(Snd_Slots)
     /* AE08 8001A608 40181100 */  sll        $v1, $s1, 1
     /* AE0C 8001A60C 21187100 */  addu       $v1, $v1, $s1
     /* AE10 8001A610 80180300 */  sll        $v1, $v1, 2

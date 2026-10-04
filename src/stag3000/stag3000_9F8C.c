@@ -338,8 +338,8 @@ void func_8006DB90(void) {
     mode = 1;
     out = D_80073890;
     for (i = 0; i < Item_GetBagCapacity(); i++) {
-        if (((Stg30GameIds *)&D_8005E620)->field_66[i] == D_80073CC0.field_3AC) {
-            ((Stg30GameIds *)&D_8005E620)->field_66[i] = 0;
+        if (((Stg30GameIds *)&Save_GameState)->field_66[i] == D_80073CC0.field_3AC) {
+            ((Stg30GameIds *)&Save_GameState)->field_66[i] = 0;
             Item_SortList();
             break;
         }

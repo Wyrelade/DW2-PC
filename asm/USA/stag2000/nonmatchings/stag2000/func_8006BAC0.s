@@ -1,8 +1,8 @@
 nonmatching func_8006BAC0, 0xBC
 
 glabel func_8006BAC0
-    /* 8760 8006BAC0 0680023C */  lui        $v0, %hi(D_8005F788)
-    /* 8764 8006BAC4 88F7428C */  lw         $v0, %lo(D_8005F788)($v0)
+    /* 8760 8006BAC0 0680023C */  lui        $v0, %hi(Sys_GameMode)
+    /* 8764 8006BAC4 88F7428C */  lw         $v0, %lo(Sys_GameMode)($v0)
     /* 8768 8006BAC8 D8FFBD27 */  addiu      $sp, $sp, -0x28
     /* 876C 8006BACC 2000B4AF */  sw         $s4, 0x20($sp)
     /* 8770 8006BAD0 21A08000 */  addu       $s4, $a0, $zero

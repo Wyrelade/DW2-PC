@@ -21,8 +21,8 @@ glabel Snd_PlayById
     /* AECC 8001A6CC 031A1200 */  sra        $v1, $s2, 8
   .L8001A6D0:
     /* AED0 8001A6D0 C3801200 */  sra        $s0, $s2, 3
-    /* AED4 8001A6D4 0580043C */  lui        $a0, %hi(D_80054C48)
-    /* AED8 8001A6D8 484C8424 */  addiu      $a0, $a0, %lo(D_80054C48)
+    /* AED4 8001A6D4 0580043C */  lui        $a0, %hi(Snd_Slots)
+    /* AED8 8001A6D8 484C8424 */  addiu      $a0, $a0, %lo(Snd_Slots)
     /* AEDC 8001A6DC 1E001032 */  andi       $s0, $s0, 0x1E
     /* AEE0 8001A6E0 40100300 */  sll        $v0, $v1, 1
     /* AEE4 8001A6E4 21104300 */  addu       $v0, $v0, $v1

@@ -363,7 +363,7 @@ typedef struct {
     /* 0x0D */ u8 field_D[0x0E];
 } Stg30Rec1B;
 
-/* D_8005E620 viewed through the u16 id list at 0x66 (func_80065100). */
+/* Save_GameState viewed through the u16 id list at 0x66 (func_80065100). */
 typedef struct {
     u8 _pad00[0x66];
     /* 0x66 */ u16 field_66[0x30];
@@ -644,7 +644,7 @@ extern Stg30Rec73F6C D_80073F6C[];
 extern s32 D_80072FC8[];
 extern Halves D_80073730[];
 extern s16 D_80073890[];
-extern u16 D_8005F72A;  /* D_8005F6F0[0].pressed as a scalar reloc */
+extern u16 D_8005F72A;  /* Pad_State[0].pressed as a scalar reloc */
 extern Stg30Glob5D5A0 D_8005D5A0;
 extern s32 D_80073A20[12];
 extern Stg30State D_80073CC0;
@@ -657,12 +657,12 @@ extern s32 D_80073008;
 extern s32 D_8007300C[];
 extern s32 D_800732D0[];
 extern s32 D_80074098;
-extern DigiRosterEntry D_8005F398;  /* D_8005E620.elems[35] as a scalar reloc */
+extern DigiRosterEntry D_8005F398;  /* Save_GameState.elems[35] as a scalar reloc */
 extern s32 D_8005F794;
-extern SysState D_8005F770;
+extern SysState Sys_State;
 extern u8 D_8005E5DD;  /* D_8005D5A0.field_103D as a scalar reloc */
-extern GameState D_8005E620;
-extern s32 D_80043704[];
+extern GameState Save_GameState;
+extern s32 Gfx_ZeroVector[];
 
 /* main exe */
 extern void Task_DefaultDestroy(Actor *);
@@ -772,13 +772,13 @@ extern s32 Digi_GetType(s32 id);
 extern s16 D_80073E02;  /* D_80073CC0.entries[3].field_2E as a scalar reloc */
 extern s16 D_80073E5E;  /* D_80073CC0.entries[4].field_2E */
 extern s16 D_80073EBA;  /* D_80073CC0.entries[5].field_2E */
-extern PadState D_8005F6F0[];
+extern PadState Pad_State[];
 extern Halves D_800633F8;
 extern Halves D_800730F8[];
 extern s32 D_80073CD4;  /* D_80073CC0.entries[0].field_14 as a scalar reloc */
 extern void func_80066484(Actor *a0);
 extern void func_80065354(Actor *a0);
-extern s32 D_8005F6F4;  /* D_8005F6F0[0].left as a scalar reloc */
+extern s32 D_8005F6F4;  /* Pad_State[0].left as a scalar reloc */
 extern s32 D_80073CC8;  /* D_80073CC0.entries[0].field_8 as a scalar reloc */
 extern s32 func_8006E31C(s32 team, s32 flag, s32 mode);
 extern s32 func_8006E3D0(s32 team, s32 cur, s32 flag, s32 mode);
@@ -805,9 +805,9 @@ extern void func_8006AA18(s16 *max, s16 *b, s16 *c);
 extern s32 func_8006A140(s32 attacker, s32 target, s32 tech, s16 *p4, s16 *p5);
 extern s32 D_80073210[];
 extern s16 D_80073254[];
-extern u16 D_8005E65E;  /* D_8005E620 halfword at 0x3E as a scalar reloc (Z-cannon level) */
+extern u16 D_8005E65E;  /* Save_GameState halfword at 0x3E as a scalar reloc (Z-cannon level) */
 
-/* D_8005E620 viewed with the item-menu enable words/bytes func_80065594 reads. */
+/* Save_GameState viewed with the item-menu enable words/bytes func_80065594 reads. */
 typedef struct {
     u8 _pad00[0x3C];
     /* 0x3C */ u16 field_3C;
@@ -823,7 +823,7 @@ typedef struct {
 extern u8 D_8005E634[];
 extern Halves D_800633E8;
 
-/* D_8005E620 viewed with the words func_8007292C reads (0x30 map id, 0x4A, 0x61). */
+/* Save_GameState viewed with the words func_8007292C reads (0x30 map id, 0x4A, 0x61). */
 typedef struct {
     u8 _pad00[0x30];
     /* 0x30 */ u16 field_30;
@@ -837,7 +837,7 @@ typedef struct {
 
 extern Halves D_800737B8[];
 extern u8 D_800737C0[];
-extern u16 D_8005E650;  /* D_8005E620 halfword at 0x30 as a scalar reloc (map id) */
+extern u16 D_8005E650;  /* Save_GameState halfword at 0x30 as a scalar reloc (map id) */
 extern Blk5071C *D_8005071C;
 extern u8 *Digi_GetDefaultName(s32);
 extern void Digi_SortRoster(void);
@@ -851,8 +851,8 @@ extern void func_80064480(void);
 extern s32 D_8007409C;
 extern s16 D_80073188[][3];
 extern s16 D_8005E5E0;  /* D_8005D5A0.field_1040 as a scalar reloc */
-extern s32 D_8005F78C;  /* D_8005F770.nextGameMode as a scalar reloc */
-extern s32 D_8005F790;  /* D_8005F770.prevGameMode as a scalar reloc */
+extern s32 D_8005F78C;  /* Sys_State.nextGameMode as a scalar reloc */
+extern s32 D_8005F790;  /* Sys_State.prevGameMode as a scalar reloc */
 extern s32 Anim_GetModelAnimFile(s32 arg0, s32 arg1);
 extern void Cd_QueueFile(s32);
 extern s32 Cd_GetFileState(s32 arg0);

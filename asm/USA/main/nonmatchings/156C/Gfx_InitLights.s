@@ -4,9 +4,9 @@ glabel Gfx_InitLights
     /* 1010C 8001F90C E0FFBD27 */  addiu      $sp, $sp, -0x20
     /* 10110 8001F910 1000B0AF */  sw         $s0, 0x10($sp)
     /* 10114 8001F914 21800000 */  addu       $s0, $zero, $zero
-    /* 10118 8001F918 0480023C */  lui        $v0, %hi(D_800416CC)
+    /* 10118 8001F918 0480023C */  lui        $v0, %hi(Gfx_FlatLights)
     /* 1011C 8001F91C 1400B1AF */  sw         $s1, 0x14($sp)
-    /* 10120 8001F920 CC165124 */  addiu      $s1, $v0, %lo(D_800416CC)
+    /* 10120 8001F920 CC165124 */  addiu      $s1, $v0, %lo(Gfx_FlatLights)
     /* 10124 8001F924 1800BFAF */  sw         $ra, 0x18($sp)
   .L8001F928:
     /* 10128 8001F928 21200002 */  addu       $a0, $s0, $zero

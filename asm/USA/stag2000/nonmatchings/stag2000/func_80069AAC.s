@@ -78,8 +78,8 @@ glabel func_80069AAC
     /* 6868 80069BC8 C0280500 */  sll        $a1, $a1, 3
     /* 686C 80069BCC 2328A200 */  subu       $a1, $a1, $v0
     /* 6870 80069BD0 80280500 */  sll        $a1, $a1, 2
-    /* 6874 80069BD4 0680023C */  lui        $v0, %hi(D_8005E750)
-    /* 6878 80069BD8 50E74224 */  addiu      $v0, $v0, %lo(D_8005E750)
+    /* 6874 80069BD4 0680023C */  lui        $v0, %hi(Save_RosterNames)
+    /* 6878 80069BD8 50E74224 */  addiu      $v0, $v0, %lo(Save_RosterNames)
     /* 687C 80069BDC 209D010C */  jal        func_80067480
     /* 6880 80069BE0 2128A200 */   addu      $a1, $a1, $v0
     /* 6884 80069BE4 14004426 */  addiu      $a0, $s2, 0x14
@@ -94,8 +94,8 @@ glabel func_80069AAC
   .L80069C08:
     /* 68A8 80069C08 21802002 */  addu       $s0, $s1, $zero
     /* 68AC 80069C0C 4C00448E */  lw         $a0, 0x4C($s2)
-    /* 68B0 80069C10 0680083C */  lui        $t0, %hi(D_8005F6F0)
-    /* 68B4 80069C14 F0F60725 */  addiu      $a3, $t0, %lo(D_8005F6F0)
+    /* 68B0 80069C10 0680083C */  lui        $t0, %hi(Pad_State)
+    /* 68B4 80069C14 F0F60725 */  addiu      $a3, $t0, %lo(Pad_State)
     /* 68B8 80069C18 80100400 */  sll        $v0, $a0, 2
     /* 68BC 80069C1C 50004324 */  addiu      $v1, $v0, 0x50
     /* 68C0 80069C20 21284302 */  addu       $a1, $s2, $v1
@@ -109,7 +109,7 @@ glabel func_80069AAC
     /* 68E0 80069C40 3EA70108 */  j          .L80069CF8
     /* 68E4 80069C44 4C0042AE */   sw        $v0, 0x4C($s2)
   .L80069C48:
-    /* 68E8 80069C48 F0F6028D */  lw         $v0, %lo(D_8005F6F0)($t0)
+    /* 68E8 80069C48 F0F6028D */  lw         $v0, %lo(Pad_State)($t0)
     /* 68EC 80069C4C 00000000 */  nop
     /* 68F0 80069C50 05004018 */  blez       $v0, .L80069C68
     /* 68F4 80069C54 03000224 */   addiu     $v0, $zero, 0x3

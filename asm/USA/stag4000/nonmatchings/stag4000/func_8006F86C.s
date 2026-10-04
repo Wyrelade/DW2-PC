@@ -6,10 +6,10 @@ glabel func_8006F86C
     /* C514 8006F874 5000B0AF */  sw         $s0, 0x50($sp)
     /* C518 8006F878 2180A000 */  addu       $s0, $a1, $zero
     /* C51C 8006F87C 5400B1AF */  sw         $s1, 0x54($sp)
-    /* C520 8006F880 0680043C */  lui        $a0, %hi(D_8005F770)
+    /* C520 8006F880 0680043C */  lui        $a0, %hi(Sys_State)
     /* C524 8006F884 7C00A58F */  lw         $a1, 0x7C($sp)
     /* C528 8006F888 8000A88F */  lw         $t0, 0x80($sp)
-    /* C52C 8006F88C 70F78424 */  addiu      $a0, $a0, %lo(D_8005F770)
+    /* C52C 8006F88C 70F78424 */  addiu      $a0, $a0, %lo(Sys_State)
     /* C530 8006F890 6400B5AF */  sw         $s5, 0x64($sp)
     /* C534 8006F894 6000B4AF */  sw         $s4, 0x60($sp)
     /* C538 8006F898 5C00B3AF */  sw         $s3, 0x5C($sp)

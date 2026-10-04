@@ -40,10 +40,10 @@ glabel Menu_DigiStatusInit
     /* 9488 80018C88 FD8E000C */  jal        Cd_QueueFile
     /* 948C 80018C8C 00000000 */   nop
     /* 9490 80018C90 21202002 */  addu       $a0, $s1, $zero
-    /* 9494 80018C94 0480023C */  lui        $v0, %hi(D_80040F64)
+    /* 9494 80018C94 0480023C */  lui        $v0, %hi(Menu_DigiStatusView)
     /* 9498 80018C98 C80000AE */  sw         $zero, 0xC8($s0)
     /* 949C 80018C9C 4C0100AE */  sw         $zero, 0x14C($s0)
-    /* 94A0 80018CA0 640F4A24 */  addiu      $t2, $v0, %lo(D_80040F64)
+    /* 94A0 80018CA0 640F4A24 */  addiu      $t2, $v0, %lo(Menu_DigiStatusView)
     /* 94A4 80018CA4 0000478D */  lw         $a3, 0x0($t2)
     /* 94A8 80018CA8 0400488D */  lw         $t0, 0x4($t2)
     /* 94AC 80018CAC 0800498D */  lw         $t1, 0x8($t2)

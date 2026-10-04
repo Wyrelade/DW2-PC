@@ -1,8 +1,8 @@
 nonmatching Gfx_DrawFade, 0x1DC
 
 glabel Gfx_DrawFade
-    /* CD84 8001C584 0680023C */  lui        $v0, %hi(D_8005F770)
-    /* CD88 8001C588 70F74324 */  addiu      $v1, $v0, %lo(D_8005F770)
+    /* CD84 8001C584 0680023C */  lui        $v0, %hi(Sys_State)
+    /* CD88 8001C588 70F74324 */  addiu      $v1, $v0, %lo(Sys_State)
     /* CD8C 8001C58C 2C00628C */  lw         $v0, 0x2C($v1)
     /* CD90 8001C590 00000000 */  nop
     /* CD94 8001C594 70004010 */  beqz       $v0, .L8001C758
@@ -60,8 +60,8 @@ glabel Gfx_DrawFade
     /* CE48 8001C648 43004010 */  beqz       $v0, .L8001C758
     /* CE4C 8001C64C 00000000 */   nop
   .L8001C650:
-    /* CE50 8001C650 0680023C */  lui        $v0, %hi(D_8005F770)
-    /* CE54 8001C654 70F74A24 */  addiu      $t2, $v0, %lo(D_8005F770)
+    /* CE50 8001C650 0680023C */  lui        $v0, %hi(Sys_State)
+    /* CE54 8001C654 70F74A24 */  addiu      $t2, $v0, %lo(Sys_State)
     /* CE58 8001C658 05000224 */  addiu      $v0, $zero, 0x5
     /* CE5C 8001C65C 2C00448D */  lw         $a0, 0x2C($t2)
     /* CE60 8001C660 3801478D */  lw         $a3, 0x138($t2)

@@ -7,7 +7,7 @@ glabel Digi_ListByState
     /* 1311C 8002291C 04008A28 */  slti       $t2, $a0, 0x4
     /* 13120 80022920 02000924 */  addiu      $t1, $zero, 0x2
     /* 13124 80022924 04000B24 */  addiu      $t3, $zero, 0x4
-    /* 13128 80022928 2800828F */  lw         $v0, %gp_rel(D_80050720)($gp)
+    /* 13128 80022928 2800828F */  lw         $v0, %gp_rel(Save_GameStatePtr)($gp)
     /* 1312C 8002292C 2130A000 */  addu       $a2, $a1, $zero
     /* 13130 80022930 E4004324 */  addiu      $v1, $v0, 0xE4
   .L80022934:

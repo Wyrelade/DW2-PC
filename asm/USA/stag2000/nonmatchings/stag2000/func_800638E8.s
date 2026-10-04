@@ -111,8 +111,8 @@ glabel func_800638E8
     /* 704 80063A64 FFFF5236 */  ori        $s2, $s2, (0xFFFFFF & 0xFFFF)
     /* 708 80063A68 00FF163C */  lui        $s6, (0xFF000000 >> 16)
     /* 70C 80063A6C 60FFD427 */  addiu      $s4, $fp, -0xA0
-    /* 710 80063A70 0680023C */  lui        $v0, %hi(D_8005F770)
-    /* 714 80063A74 70F74224 */  addiu      $v0, $v0, %lo(D_8005F770)
+    /* 710 80063A70 0680023C */  lui        $v0, %hi(Sys_State)
+    /* 714 80063A74 70F74224 */  addiu      $v0, $v0, %lo(Sys_State)
     /* 718 80063A78 5001518C */  lw         $s1, 0x150($v0)
     /* 71C 80063A7C 2C00508C */  lw         $s0, 0x2C($v0)
   .L80063A80:
@@ -125,8 +125,8 @@ glabel func_800638E8
     /* 738 80063A98 E072000C */  jal        Gfx_FindOrLoadTexSlot
     /* 73C 80063A9C 00000000 */   nop
     /* 740 80063AA0 04000526 */  addiu      $a1, $s0, 0x4
-    /* 744 80063AA4 0580033C */  lui        $v1, %hi(D_8005074C)
-    /* 748 80063AA8 4C076824 */  addiu      $t0, $v1, %lo(D_8005074C)
+    /* 744 80063AA4 0580033C */  lui        $v1, %hi(Gfx_NeutralRgb)
+    /* 748 80063AA8 4C076824 */  addiu      $t0, $v1, %lo(Gfx_NeutralRgb)
     /* 74C 80063AAC 03000989 */  lwl        $t1, 0x3($t0)
     /* 750 80063AB0 00000999 */  lwr        $t1, 0x0($t0)
     /* 754 80063AB4 00000000 */  nop

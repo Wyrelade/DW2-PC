@@ -62,9 +62,9 @@ glabel func_80069830
     /* 65B0 80069910 21200000 */   addu      $a0, $zero, $zero
     /* 65B4 80069914 01000424 */  addiu      $a0, $zero, 0x1
     /* 65B8 80069918 FD01053C */  lui        $a1, (0x1FD001F >> 16)
-    /* 65BC 8006991C 0580033C */  lui        $v1, %hi(D_80050720)
+    /* 65BC 8006991C 0580033C */  lui        $v1, %hi(Save_GameStatePtr)
     /* 65C0 80069920 1F00A534 */  ori        $a1, $a1, (0x1FD001F & 0xFFFF)
-    /* 65C4 80069924 2007668C */  lw         $a2, %lo(D_80050720)($v1)
+    /* 65C4 80069924 2007668C */  lw         $a2, %lo(Save_GameStatePtr)($v1)
     /* 65C8 80069928 21384000 */  addu       $a3, $v0, $zero
     /* 65CC 8006992C 849D010C */  jal        func_80067610
     /* 65D0 80069930 D100C624 */   addiu     $a2, $a2, 0xD1

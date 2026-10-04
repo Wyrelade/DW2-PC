@@ -7,10 +7,10 @@ glabel Gfx_ResetModelBones
     /* FDF4 8001F5F4 7800A48C */  lw         $a0, 0x78($a1)
     /* FDF8 8001F5F8 19004018 */  blez       $v0, .L8001F660
     /* FDFC 8001F5FC 21180000 */   addu      $v1, $zero, $zero
-    /* FE00 8001F600 0480063C */  lui        $a2, %hi(D_80043714)
+    /* FE00 8001F600 0480063C */  lui        $a2, %hi(Gfx_IdentityMatrix)
   .L8001F604:
     /* FE04 8001F604 01006324 */  addiu      $v1, $v1, 0x1
-    /* FE08 8001F608 1437CA24 */  addiu      $t2, $a2, %lo(D_80043714)
+    /* FE08 8001F608 1437CA24 */  addiu      $t2, $a2, %lo(Gfx_IdentityMatrix)
     /* FE0C 8001F60C 0000478D */  lw         $a3, 0x0($t2)
     /* FE10 8001F610 0400488D */  lw         $t0, 0x4($t2)
     /* FE14 8001F614 0800498D */  lw         $t1, 0x8($t2)

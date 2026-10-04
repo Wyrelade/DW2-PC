@@ -29,10 +29,10 @@ void func_8006FFD0(Actor *a0) {
                     q->visible = 0;
                     break;
                 case 4:
-                    q->visible = ((u32)D_8005F770.frameCount >> 1) & 1;
+                    q->visible = ((u32)Sys_State.frameCount >> 1) & 1;
                     break;
                 case 8:
-                    q->visible = (((u32)D_8005F770.frameCount >> 1) ^ 1) & 1;
+                    q->visible = (((u32)Sys_State.frameCount >> 1) ^ 1) & 1;
                     break;
                 default:
                     q->visible = 1;
@@ -44,10 +44,10 @@ void func_8006FFD0(Actor *a0) {
                     q->visible = 0;
                     break;
                 case 0x10:
-                    q->visible = ((u32)D_8005F770.frameCount >> 1) & 1;
+                    q->visible = ((u32)Sys_State.frameCount >> 1) & 1;
                     break;
                 case 0x20:
-                    q->visible = (((u32)D_8005F770.frameCount >> 1) ^ 1) & 1;
+                    q->visible = (((u32)Sys_State.frameCount >> 1) ^ 1) & 1;
                     break;
                 default:
                     q->visible = 1;
@@ -78,13 +78,13 @@ void func_8006FFD0(Actor *a0) {
 void func_800701FC(void) {
     Mem_Zero(&D_80073CC0, 0x3E0);
     D_80073CC0.field_3D4 = 1;
-    if ((D_8005F770.prevGameMode & 0xFF00) == 0x300) {
+    if ((Sys_State.prevGameMode & 0xFF00) == 0x300) {
         D_8005D5A0.field_103D = 0;
         D_8005D5A0.field_1040 = 0;
         D_80073CC0.entries[0].field_0 = 1;
     }
-    if (D_8005F770.field_24 == 0x97 && Flag_Test(0x88)) {
-        D_8005F770.field_24++;
+    if (Sys_State.field_24 == 0x97 && Flag_Test(0x88)) {
+        Sys_State.field_24++;
     }
     D_80074098 = 4;
 }
@@ -195,7 +195,7 @@ s32 func_80070530(s32 a, s32 b) {
 void func_80070588(Stg30Work7343C *w, Stg30CamGoal *g) {
     s32 i;
 
-    for (i = 0; i < D_8005F770.frameDelta; i++) {
+    for (i = 0; i < Sys_State.frameDelta; i++) {
         w->field_7E += func_80070530(g->field_0, w->field_7E);
         w->field_0 += func_80070530(g->field_4, w->field_0);
         w->field_4 += func_80070530(g->field_8, w->field_4);
@@ -790,9 +790,9 @@ void func_8007191C(Actor *a0) {
                 D_80073CC0.field_34C[i] = 0;
             }
         }
-        D_8005E620.field_8 += w->pair.field_4;
-        if (D_8005E620.field_8 > 99999999) {
-            D_8005E620.field_8 = 99999999;
+        Save_GameState.field_8 += w->pair.field_4;
+        if (Save_GameState.field_8 > 99999999) {
+            Save_GameState.field_8 = 99999999;
         }
         Task_NextState0(a0);
         break;
@@ -868,7 +868,7 @@ void func_80071C14(Actor *a0) {
             Gfx_SetPartsNumber(p, 8, 2, D_80073CC0.entries[i].field_25);
             break;
         case 4:
-            Gfx_SetPartsNumber(p, 1, 8, D_8005E620.field_8);
+            Gfx_SetPartsNumber(p, 1, 8, Save_GameState.field_8);
             break;
         }
         if (draw) {
@@ -996,17 +996,17 @@ void func_800720E4(Actor *a0) {
         default:
             w->field_C8 = 1;
             do {
-                if (D_8005F6F0[0].right > 0) {
+                if (Pad_State[0].right > 0) {
                     if (w->field_C4 != 2) {
                         w->field_C4++;
                         Snd_PlayById(0xC, 0);
                     }
-                } else if (D_8005F6F0[0].left > 0) {
+                } else if (Pad_State[0].left > 0) {
                     if (w->field_C4 != 0) {
                         w->field_C4--;
                         Snd_PlayById(0xC, 0);
                     }
-                } else if (D_8005F6F0[0].cross > 0) {
+                } else if (Pad_State[0].cross > 0) {
                     switch (w->field_C4) {
                     case 0:
                         for (n = 0; n < 12; n++) {
@@ -1049,17 +1049,17 @@ void func_800720E4(Actor *a0) {
                 cur = &w->field_A8[row];
                 scr = &w->field_B0[row];
                 cnt = &w->field_B8[row];
-                if (D_8005F6F0[0].right > 0) {
+                if (Pad_State[0].right > 0) {
                     if (row == 0) {
                         w->field_A4 = 1;
                         Snd_PlayById(0xD, 0);
                     }
-                } else if (D_8005F6F0[0].left > 0) {
+                } else if (Pad_State[0].left > 0) {
                     if (row != 0) {
                         w->field_A4 = 0;
                         Snd_PlayById(0xD, 0);
                     }
-                } else if (D_8005F6F0[0].repeat & 0x1000) {
+                } else if (Pad_State[0].repeat & 0x1000) {
                     if (*cur != 0) {
                         *cur -= 1;
                         Snd_PlayById(0xD, 0);
@@ -1067,7 +1067,7 @@ void func_800720E4(Actor *a0) {
                         *scr -= 1;
                         Snd_PlayById(0xD, 0);
                     }
-                } else if (D_8005F6F0[0].repeat & 0x4000) {
+                } else if (Pad_State[0].repeat & 0x4000) {
                     if (*cur != 9) {
                         *cur += 1;
                         Snd_PlayById(0xD, 0);
@@ -1075,10 +1075,10 @@ void func_800720E4(Actor *a0) {
                         *scr += 1;
                         Snd_PlayById(0xD, 0);
                     }
-                } else if (D_8005F6F0[0].triangle > 0) {
+                } else if (Pad_State[0].triangle > 0) {
                     Task_SetState1(a0, 0);
                     Snd_PlayById(0xB, 0);
-                } else if (D_8005F6F0[0].cross > 0) {
+                } else if (Pad_State[0].cross > 0) {
                     v = w->field_74[row][*cur + *scr];
                     other = row ^ 1;
                     if (v == 0 || w->field_B8[other] == 12) {
@@ -1245,7 +1245,7 @@ void func_8007292C(Actor *a0) {
             default:
                 cnt = 0;
                 for (j = 0; j < 0x24; j++) {
-                    if (D_8005E620.elems[j].state >= 2) {
+                    if (Save_GameState.elems[j].state >= 2) {
                         cnt++;
                     }
                 }
@@ -1261,7 +1261,7 @@ void func_8007292C(Actor *a0) {
                 if (D_8005F704 <= 0) {
                     break;
                 }
-                g = (Stg30GameRoster *)&D_8005E620;
+                g = (Stg30GameRoster *)&Save_GameState;
                 if (g->field_4A == 0) {
                     Task_SetState1(a0, 6);
                     break;

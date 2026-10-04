@@ -7,8 +7,8 @@ glabel Gpu_DrawOt
     /* D064 8001C864 80100200 */  sll        $v0, $v0, 2
     /* D068 8001C868 23104400 */  subu       $v0, $v0, $a0
     /* D06C 8001C86C 00110200 */  sll        $v0, $v0, 4
-    /* D070 8001C870 0680033C */  lui        $v1, %hi(D_80058D28)
-    /* D074 8001C874 288D6324 */  addiu      $v1, $v1, %lo(D_80058D28)
+    /* D070 8001C870 0680033C */  lui        $v1, %hi(Gpu_OtBufEnds)
+    /* D074 8001C874 288D6324 */  addiu      $v1, $v1, %lo(Gpu_OtBufEnds)
     /* D078 8001C878 21104300 */  addu       $v0, $v0, $v1
     /* D07C 8001C87C 1000BFAF */  sw         $ra, 0x10($sp)
     /* D080 8001C880 9D9E000C */  jal        DrawOTag

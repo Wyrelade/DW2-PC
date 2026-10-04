@@ -1,7 +1,7 @@
 nonmatching Item_SortList, 0xFC
 
 glabel Item_SortList
-    /* 12EAC 800226AC 2800828F */  lw         $v0, %gp_rel(D_80050720)($gp)
+    /* 12EAC 800226AC 2800828F */  lw         $v0, %gp_rel(Save_GameStatePtr)($gp)
     /* 12EB0 800226B0 D0FFBD27 */  addiu      $sp, $sp, -0x30
     /* 12EB4 800226B4 2400B5AF */  sw         $s5, 0x24($sp)
     /* 12EB8 800226B8 21A80000 */  addu       $s5, $zero, $zero

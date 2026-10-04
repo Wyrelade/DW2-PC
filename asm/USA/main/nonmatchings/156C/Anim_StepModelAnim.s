@@ -24,7 +24,7 @@ glabel Anim_StepModelAnim
     /* FB6C 8001F36C 0000A28C */  lw         $v0, 0x0($a1)
     /* FB70 8001F370 00000000 */  nop
     /* FB74 8001F374 29004014 */  bnez       $v0, .L8001F41C
-    /* FB78 8001F378 0680023C */   lui       $v0, %hi(D_8005F778)
+    /* FB78 8001F378 0680023C */   lui       $v0, %hi(Sys_FrameDelta)
     /* FB7C 8001F37C 01000324 */  addiu      $v1, $zero, 0x1
     /* FB80 8001F380 0000A3AC */  sw         $v1, 0x0($a1)
     /* FB84 8001F384 6400048E */  lw         $a0, 0x64($s0)
@@ -69,10 +69,10 @@ glabel Anim_StepModelAnim
     /* FC10 8001F410 F5FF4014 */  bnez       $v0, .L8001F3E8
     /* FC14 8001F414 00000000 */   nop
   .L8001F418:
-    /* FC18 8001F418 0680023C */  lui        $v0, %hi(D_8005F778)
+    /* FC18 8001F418 0680023C */  lui        $v0, %hi(Sys_FrameDelta)
   .L8001F41C:
     /* FC1C 8001F41C 5C00038E */  lw         $v1, 0x5C($s0)
-    /* FC20 8001F420 78F7428C */  lw         $v0, %lo(D_8005F778)($v0)
+    /* FC20 8001F420 78F7428C */  lw         $v0, %lo(Sys_FrameDelta)($v0)
     /* FC24 8001F424 00000000 */  nop
     /* FC28 8001F428 21186200 */  addu       $v1, $v1, $v0
     /* FC2C 8001F42C 5C0003AE */  sw         $v1, 0x5C($s0)

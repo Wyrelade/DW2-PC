@@ -2,16 +2,16 @@ nonmatching Gpu_SetLayerOtPtrs, 0xA0
 
 glabel Gpu_SetLayerOtPtrs
     /* CF60 8001C760 21380000 */  addu       $a3, $zero, $zero
-    /* CF64 8001C764 0480023C */  lui        $v0, %hi(D_80041570)
-    /* CF68 8001C768 70154C24 */  addiu      $t4, $v0, %lo(D_80041570)
+    /* CF64 8001C764 0480023C */  lui        $v0, %hi(Gpu_OtLayerLens)
+    /* CF68 8001C768 70154C24 */  addiu      $t4, $v0, %lo(Gpu_OtLayerLens)
     /* CF6C 8001C76C 0580023C */  lui        $v0, %hi(Gpu_OtBufs)
     /* CF70 8001C770 F84C4B24 */  addiu      $t3, $v0, %lo(Gpu_OtBufs)
     /* CF74 8001C774 0680023C */  lui        $v0, %hi(D_8005CCF8)
     /* CF78 8001C778 F8CC4824 */  addiu      $t0, $v0, %lo(D_8005CCF8)
-    /* CF7C 8001C77C 0480023C */  lui        $v0, %hi(D_800415F0)
-    /* CF80 8001C780 F0154A24 */  addiu      $t2, $v0, %lo(D_800415F0)
-    /* CF84 8001C784 0680023C */  lui        $v0, %hi(D_8005F770)
-    /* CF88 8001C788 70F74924 */  addiu      $t1, $v0, %lo(D_8005F770)
+    /* CF7C 8001C77C 0480023C */  lui        $v0, %hi(Gpu_OtLayerOffsets)
+    /* CF80 8001C780 F0154A24 */  addiu      $t2, $v0, %lo(Gpu_OtLayerOffsets)
+    /* CF84 8001C784 0680023C */  lui        $v0, %hi(Sys_State)
+    /* CF88 8001C788 70F74924 */  addiu      $t1, $v0, %lo(Sys_State)
     /* CF8C 8001C78C 21302001 */  addu       $a2, $t1, $zero
   .L8001C790:
     /* CF90 8001C790 6000028D */  lw         $v0, 0x60($t0)

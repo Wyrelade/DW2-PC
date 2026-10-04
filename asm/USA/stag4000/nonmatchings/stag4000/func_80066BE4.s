@@ -19,8 +19,8 @@ glabel func_80066BE4
     /* 38BC 80066C1C 21200002 */  addu       $a0, $s0, $zero
     /* 38C0 80066C20 2270000C */  jal        Mem_FillWordsNeg1
     /* 38C4 80066C24 01000524 */   addiu     $a1, $zero, 0x1
-    /* 38C8 80066C28 0580023C */  lui        $v0, %hi(D_80050720)
-    /* 38CC 80066C2C 2007428C */  lw         $v0, %lo(D_80050720)($v0)
+    /* 38C8 80066C28 0580023C */  lui        $v0, %hi(Save_GameStatePtr)
+    /* 38CC 80066C2C 2007428C */  lw         $v0, %lo(Save_GameStatePtr)($v0)
     /* 38D0 80066C30 040000AE */  sw         $zero, 0x4($s0)
     /* 38D4 80066C34 0800428C */  lw         $v0, 0x8($v0)
     /* 38D8 80066C38 21202002 */  addu       $a0, $s1, $zero
@@ -34,7 +34,7 @@ glabel func_80066BE4
     /* 38F4 80066C54 03004010 */  beqz       $v0, .L80066C64
     /* 38F8 80066C58 00000000 */   nop
     /* 38FC 80066C5C 14004410 */  beq        $v0, $a0, .L80066CB0
-    /* 3900 80066C60 0580023C */   lui       $v0, %hi(D_80050720)
+    /* 3900 80066C60 0580023C */   lui       $v0, %hi(Save_GameStatePtr)
   .L80066C64:
     /* 3904 80066C64 21202002 */  addu       $a0, $s1, $zero
     /* 3908 80066C68 B94D000C */  jal        Math_RampToOne
@@ -56,7 +56,7 @@ glabel func_80066BE4
     /* 3948 80066CA8 4F9B0108 */  j          .L80066D3C
     /* 394C 80066CAC 00000000 */   nop
   .L80066CB0:
-    /* 3950 80066CB0 2007428C */  lw         $v0, %lo(D_80050720)($v0)
+    /* 3950 80066CB0 2007428C */  lw         $v0, %lo(Save_GameStatePtr)($v0)
     /* 3954 80066CB4 0800048E */  lw         $a0, 0x8($s0)
     /* 3958 80066CB8 0800438C */  lw         $v1, 0x8($v0)
     /* 395C 80066CBC 00000000 */  nop
@@ -70,8 +70,8 @@ glabel func_80066BE4
   .L80066CDC:
     /* 397C 80066CDC 080003AE */  sw         $v1, 0x8($s0)
   .L80066CE0:
-    /* 3980 80066CE0 0580023C */  lui        $v0, %hi(D_80050720)
-    /* 3984 80066CE4 2007428C */  lw         $v0, %lo(D_80050720)($v0)
+    /* 3980 80066CE0 0580023C */  lui        $v0, %hi(Save_GameStatePtr)
+    /* 3984 80066CE4 2007428C */  lw         $v0, %lo(Save_GameStatePtr)($v0)
     /* 3988 80066CE8 0800048E */  lw         $a0, 0x8($s0)
     /* 398C 80066CEC 0800438C */  lw         $v1, 0x8($v0)
     /* 3990 80066CF0 00000000 */  nop

@@ -36,7 +36,7 @@ glabel Gfx_FindOrLoadImageSlot
     /* 2464 80011C64 0400628C */  lw         $v0, 0x4($v1)
     /* 2468 80011C68 00000000 */  nop
     /* 246C 80011C6C 16004010 */  beqz       $v0, .L80011CC8
-    /* 2470 80011C70 0480043C */   lui       $a0, %hi(D_80040DAC)
+    /* 2470 80011C70 0480043C */   lui       $a0, %hi(Gfx_FaceImageIds)
     /* 2474 80011C74 01001026 */  addiu      $s0, $s0, 0x1
     /* 2478 80011C78 1200022A */  slti       $v0, $s0, 0x12
     /* 247C 80011C7C F9FF4014 */  bnez       $v0, .L80011C64
@@ -59,14 +59,14 @@ glabel Gfx_FindOrLoadImageSlot
     /* 24B8 80011CB8 F6FF4014 */  bnez       $v0, .L80011C94
     /* 24BC 80011CBC 08008424 */   addiu     $a0, $a0, 0x8
     /* 24C0 80011CC0 2180C000 */  addu       $s0, $a2, $zero
-    /* 24C4 80011CC4 0480043C */  lui        $a0, %hi(D_80040DAC)
+    /* 24C4 80011CC4 0480043C */  lui        $a0, %hi(Gfx_FaceImageIds)
   .L80011CC8:
-    /* 24C8 80011CC8 AC0D8384 */  lh         $v1, %lo(D_80040DAC)($a0)
+    /* 24C8 80011CC8 AC0D8384 */  lh         $v1, %lo(Gfx_FaceImageIds)($a0)
     /* 24CC 80011CCC FFFF0224 */  addiu      $v0, $zero, -0x1
     /* 24D0 80011CD0 0B006210 */  beq        $v1, $v0, .L80011D00
     /* 24D4 80011CD4 21980000 */   addu      $s3, $zero, $zero
     /* 24D8 80011CD8 21284000 */  addu       $a1, $v0, $zero
-    /* 24DC 80011CDC AC0D8324 */  addiu      $v1, $a0, %lo(D_80040DAC)
+    /* 24DC 80011CDC AC0D8324 */  addiu      $v1, $a0, %lo(Gfx_FaceImageIds)
     /* 24E0 80011CE0 00006284 */  lh         $v0, 0x0($v1)
   .L80011CE4:
     /* 24E4 80011CE4 00000000 */  nop
@@ -143,8 +143,8 @@ glabel Gfx_FindOrLoadImageSlot
     /* 25F4 80011DF4 CB9D000C */  jal        LoadImage
     /* 25F8 80011DF8 1E00A2A7 */   sh        $v0, 0x1E($sp)
     /* 25FC 80011DFC C0201000 */  sll        $a0, $s0, 3
-    /* 2600 80011E00 0480033C */  lui        $v1, %hi(D_80040DAC)
-    /* 2604 80011E04 AC0D6324 */  addiu      $v1, $v1, %lo(D_80040DAC)
+    /* 2600 80011E00 0480033C */  lui        $v1, %hi(Gfx_FaceImageIds)
+    /* 2604 80011E04 AC0D6324 */  addiu      $v1, $v1, %lo(Gfx_FaceImageIds)
     /* 2608 80011E08 40101300 */  sll        $v0, $s3, 1
     /* 260C 80011E0C 21104300 */  addu       $v0, $v0, $v1
     /* 2610 80011E10 00004284 */  lh         $v0, 0x0($v0)

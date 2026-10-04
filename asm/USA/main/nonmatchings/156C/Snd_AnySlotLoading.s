@@ -3,8 +3,8 @@ nonmatching Snd_AnySlotLoading, 0x40
 glabel Snd_AnySlotLoading
     /* AB00 8001A300 21280000 */  addu       $a1, $zero, $zero
     /* AB04 8001A304 2120A000 */  addu       $a0, $a1, $zero
-    /* AB08 8001A308 0580023C */  lui        $v0, %hi(D_80054C48)
-    /* AB0C 8001A30C 484C4324 */  addiu      $v1, $v0, %lo(D_80054C48)
+    /* AB08 8001A308 0580023C */  lui        $v0, %hi(Snd_Slots)
+    /* AB0C 8001A30C 484C4324 */  addiu      $v1, $v0, %lo(Snd_Slots)
   .L8001A310:
     /* AB10 8001A310 0400628C */  lw         $v0, 0x4($v1)
     /* AB14 8001A314 00000000 */  nop

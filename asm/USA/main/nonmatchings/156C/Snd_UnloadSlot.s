@@ -4,8 +4,8 @@ glabel Snd_UnloadSlot
     /* ACA8 8001A4A8 D0FFBD27 */  addiu      $sp, $sp, -0x30
     /* ACAC 8001A4AC 2400B5AF */  sw         $s5, 0x24($sp)
     /* ACB0 8001A4B0 21A88000 */  addu       $s5, $a0, $zero
-    /* ACB4 8001A4B4 0580023C */  lui        $v0, %hi(D_80054C48)
-    /* ACB8 8001A4B8 484C4524 */  addiu      $a1, $v0, %lo(D_80054C48)
+    /* ACB4 8001A4B4 0580023C */  lui        $v0, %hi(Snd_Slots)
+    /* ACB8 8001A4B8 484C4524 */  addiu      $a1, $v0, %lo(Snd_Slots)
     /* ACBC 8001A4BC 40101500 */  sll        $v0, $s5, 1
     /* ACC0 8001A4C0 1000B0AF */  sw         $s0, 0x10($sp)
     /* ACC4 8001A4C4 21805500 */  addu       $s0, $v0, $s5
@@ -61,8 +61,8 @@ glabel Snd_UnloadSlot
     /* AD84 8001A584 E6FF4014 */  bnez       $v0, .L8001A520
     /* AD88 8001A588 21800000 */   addu      $s0, $zero, $zero
   .L8001A58C:
-    /* AD8C 8001A58C 0580023C */  lui        $v0, %hi(D_80054C48)
-    /* AD90 8001A590 484C4224 */  addiu      $v0, $v0, %lo(D_80054C48)
+    /* AD8C 8001A58C 0580023C */  lui        $v0, %hi(Snd_Slots)
+    /* AD90 8001A590 484C4224 */  addiu      $v0, $v0, %lo(Snd_Slots)
     /* AD94 8001A594 40801500 */  sll        $s0, $s5, 1
     /* AD98 8001A598 21801502 */  addu       $s0, $s0, $s5
     /* AD9C 8001A59C 80801000 */  sll        $s0, $s0, 2

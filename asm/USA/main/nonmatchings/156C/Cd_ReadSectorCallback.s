@@ -10,8 +10,8 @@ glabel Cd_ReadSectorCallback
     /* 14874 80024074 00000000 */   nop
     /* 14878 80024078 10004014 */  bnez       $v0, .L800240BC
     /* 1487C 8002407C 0580033C */   lui       $v1, %hi(D_80048DBC)
-    /* 14880 80024080 0580103C */  lui        $s0, %hi(D_80048DB8)
-    /* 14884 80024084 B88D1026 */  addiu      $s0, $s0, %lo(D_80048DB8)
+    /* 14880 80024080 0580103C */  lui        $s0, %hi(Cd_ReadState)
+    /* 14884 80024084 B88D1026 */  addiu      $s0, $s0, %lo(Cd_ReadState)
     /* 14888 80024088 0800048E */  lw         $a0, 0x8($s0)
     /* 1488C 8002408C 45C2000C */  jal        CdGetSector
     /* 14890 80024090 00020524 */   addiu     $a1, $zero, 0x200

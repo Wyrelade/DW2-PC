@@ -116,13 +116,13 @@ glabel func_80066DB0
     /* 3BDC 80066F3C 21900000 */   addu      $s2, $zero, $zero
     /* 3BE0 80066F40 05000224 */  addiu      $v0, $zero, 0x5
     /* 3BE4 80066F44 36006214 */  bne        $v1, $v0, .L80067020
-    /* 3BE8 80066F48 0680023C */   lui       $v0, %hi(D_8005F6F0)
+    /* 3BE8 80066F48 0680023C */   lui       $v0, %hi(Pad_State)
   .L80066F4C:
     /* 3BEC 80066F4C 0680023C */  lui        $v0, %hi(D_8005F6F4)
     /* 3BF0 80066F50 F4F6428C */  lw         $v0, %lo(D_8005F6F4)($v0)
     /* 3BF4 80066F54 00000000 */  nop
     /* 3BF8 80066F58 17004018 */  blez       $v0, .L80066FB8
-    /* 3BFC 80066F5C 0680023C */   lui       $v0, %hi(D_8005F6F0)
+    /* 3BFC 80066F5C 0680023C */   lui       $v0, %hi(Pad_State)
     /* 3C00 80066F60 1C00248E */  lw         $a0, 0x1C($s1)
     /* 3C04 80066F64 0400308E */  lw         $s0, 0x4($s1)
     /* 3C08 80066F68 06008010 */  beqz       $a0, .L80066F84
@@ -147,12 +147,12 @@ glabel func_80066DB0
     /* 3C4C 80066FAC A369000C */  jal        Snd_PlayById
     /* 3C50 80066FB0 21280000 */   addu      $a1, $zero, $zero
   .L80066FB4:
-    /* 3C54 80066FB4 0680023C */  lui        $v0, %hi(D_8005F6F0)
+    /* 3C54 80066FB4 0680023C */  lui        $v0, %hi(Pad_State)
   .L80066FB8:
-    /* 3C58 80066FB8 F0F6428C */  lw         $v0, %lo(D_8005F6F0)($v0)
+    /* 3C58 80066FB8 F0F6428C */  lw         $v0, %lo(Pad_State)($v0)
     /* 3C5C 80066FBC 00000000 */  nop
     /* 3C60 80066FC0 17004018 */  blez       $v0, .L80067020
-    /* 3C64 80066FC4 0680023C */   lui       $v0, %hi(D_8005F6F0)
+    /* 3C64 80066FC4 0680023C */   lui       $v0, %hi(Pad_State)
     /* 3C68 80066FC8 1C00248E */  lw         $a0, 0x1C($s1)
     /* 3C6C 80066FCC 0400308E */  lw         $s0, 0x4($s1)
     /* 3C70 80066FD0 06008010 */  beqz       $a0, .L80066FEC
@@ -177,9 +177,9 @@ glabel func_80066DB0
     /* 3CB4 80067014 A369000C */  jal        Snd_PlayById
     /* 3CB8 80067018 21280000 */   addu      $a1, $zero, $zero
   .L8006701C:
-    /* 3CBC 8006701C 0680023C */  lui        $v0, %hi(D_8005F6F0)
+    /* 3CBC 8006701C 0680023C */  lui        $v0, %hi(Pad_State)
   .L80067020:
-    /* 3CC0 80067020 F0F64324 */  addiu      $v1, $v0, %lo(D_8005F6F0)
+    /* 3CC0 80067020 F0F64324 */  addiu      $v1, $v0, %lo(Pad_State)
     /* 3CC4 80067024 1400628C */  lw         $v0, 0x14($v1)
     /* 3CC8 80067028 00000000 */  nop
     /* 3CCC 8006702C B9FF401C */  bgtz       $v0, .L80066F14

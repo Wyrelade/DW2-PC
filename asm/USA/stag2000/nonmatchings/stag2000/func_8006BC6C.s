@@ -48,11 +48,11 @@ glabel func_8006BC6C
   .L8006BD18:
     /* 89B8 8006BD18 0780053C */  lui        $a1, %hi(D_80070A00)
     /* 89BC 8006BD1C 000AA724 */  addiu      $a3, $a1, %lo(D_80070A00)
-    /* 89C0 8006BD20 0680023C */  lui        $v0, %hi(D_8005F6F0)
-    /* 89C4 8006BD24 F0F6438C */  lw         $v1, %lo(D_8005F6F0)($v0)
+    /* 89C0 8006BD20 0680023C */  lui        $v0, %hi(Pad_State)
+    /* 89C4 8006BD24 F0F6438C */  lw         $v1, %lo(Pad_State)($v0)
     /* 89C8 8006BD28 00000000 */  nop
     /* 89CC 8006BD2C 07006018 */  blez       $v1, .L8006BD4C
-    /* 89D0 8006BD30 F0F64424 */   addiu     $a0, $v0, %lo(D_8005F6F0)
+    /* 89D0 8006BD30 F0F64424 */   addiu     $a0, $v0, %lo(Pad_State)
     /* 89D4 8006BD34 000AA28C */  lw         $v0, %lo(D_80070A00)($a1)
     /* 89D8 8006BD38 00000000 */  nop
     /* 89DC 8006BD3C 1F004014 */  bnez       $v0, .L8006BDBC

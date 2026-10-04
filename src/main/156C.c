@@ -11,7 +11,7 @@ extern TaskDesc **Task_DescTable[];
 
 ASM_SOURCE("src/main/asm/crt0", func_80010D6C);
 
-INCLUDE_RODATA("asm/USA/main/rodata", D_80010000);
+INCLUDE_RODATA("asm/USA/main/rodata", Ovl_LoadAddr);
 void func_80010D74(void) {
 }
 
@@ -47,8 +47,8 @@ void Task_Destroy(s32 *arg0) {
 }
 
 #ifdef NON_MATCHING
-extern s32 D_8005F784;
-extern s32 D_8005F778;
+extern s32 Sys_DrawPass;
+extern s32 Sys_FrameDelta;
 
 /* Task_Run's view of a task: the type id (index into Task_DescTable), the state set by
  * Task_SetState0 (3 = being destroyed) and the two counters it advances. */
@@ -76,7 +76,7 @@ s32 Task_Run(s32 arg0) {
     TaskRunObj *t = (TaskRunObj *)arg0;
     TaskRunDesc *d = (TaskRunDesc *)Task_DescTable[t->id >> 8][t->id & 0xFF];
 
-    if (D_8005F784 == 0) {
+    if (Sys_DrawPass == 0) {
         if (t->state == 3) {
             d->field_8(t);
             return 0;
@@ -88,7 +88,7 @@ s32 Task_Run(s32 arg0) {
         }
         if (t->state != 0) {
             t->field_24++;
-            t->field_28 += D_8005F778;
+            t->field_28 += Sys_FrameDelta;
         }
     }
     Task_RunChildren((TaskChildrenView *)t);

@@ -5,8 +5,8 @@ glabel func_8006F360
     /* C004 8006F364 1000B0AF */  sw         $s0, 0x10($sp)
     /* C008 8006F368 21808000 */  addu       $s0, $a0, $zero
     /* C00C 8006F36C 280D033C */  lui        $v1, (0xD28FCD6 >> 16)
-    /* C010 8006F370 0680023C */  lui        $v0, %hi(D_8005F788)
-    /* C014 8006F374 88F7448C */  lw         $a0, %lo(D_8005F788)($v0)
+    /* C010 8006F370 0680023C */  lui        $v0, %hi(Sys_GameMode)
+    /* C014 8006F374 88F7448C */  lw         $a0, %lo(Sys_GameMode)($v0)
     /* C018 8006F378 D6FC6334 */  ori        $v1, $v1, (0xD28FCD6 & 0xFFFF)
     /* C01C 8006F37C 1400BFAF */  sw         $ra, 0x14($sp)
     /* C020 8006F380 688E000C */  jal        Cd_GetFileEntry

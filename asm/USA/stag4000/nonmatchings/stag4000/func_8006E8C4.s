@@ -2,8 +2,8 @@ nonmatching func_8006E8C4, 0x30
 
 glabel func_8006E8C4
     /* B564 8006E8C4 21300000 */  addu       $a2, $zero, $zero
-    /* B568 8006E8C8 0580023C */  lui        $v0, %hi(D_80050720)
-    /* B56C 8006E8CC 2007438C */  lw         $v1, %lo(D_80050720)($v0)
+    /* B568 8006E8C8 0580023C */  lui        $v0, %hi(Save_GameStatePtr)
+    /* B56C 8006E8CC 2007438C */  lw         $v1, %lo(Save_GameStatePtr)($v0)
     /* B570 8006E8D0 40100400 */  sll        $v0, $a0, 1
     /* B574 8006E8D4 21106200 */  addu       $v0, $v1, $v0
     /* B578 8006E8D8 2C004294 */  lhu        $v0, 0x2C($v0)

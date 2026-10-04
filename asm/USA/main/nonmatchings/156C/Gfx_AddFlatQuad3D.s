@@ -25,8 +25,8 @@ glabel Gfx_AddFlatQuad3D
     /* FEBC 8001F6BC 21280002 */   addu      $a1, $s0, $zero
     /* FEC0 8001F6C0 25AD000C */  jal        GsSetLsMatrix
     /* FEC4 8001F6C4 21200002 */   addu      $a0, $s0, $zero
-    /* FEC8 8001F6C8 0680023C */  lui        $v0, %hi(D_8005F770)
-    /* FECC 8001F6CC 70F75724 */  addiu      $s7, $v0, %lo(D_8005F770)
+    /* FEC8 8001F6C8 0680023C */  lui        $v0, %hi(Sys_State)
+    /* FECC 8001F6CC 70F75724 */  addiu      $s7, $v0, %lo(Sys_State)
     /* FED0 8001F6D0 80881100 */  sll        $s1, $s1, 2
     /* FED4 8001F6D4 21883702 */  addu       $s1, $s1, $s7
     /* FED8 8001F6D8 2C00F38E */  lw         $s3, 0x2C($s7)

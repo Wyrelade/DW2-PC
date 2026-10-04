@@ -40,17 +40,17 @@ glabel Stg00_LineupTask
     /* 3044 800663A4 2C00928E */  lw         $s2, 0x2C($s4)
     /* 3048 800663A8 4CA2010C */  jal        Stg00_FindCamera
     /* 304C 800663AC 21980000 */   addu      $s3, $zero, $zero
-    /* 3050 800663B0 0680033C */  lui        $v1, %hi(D_8005F770)
-    /* 3054 800663B4 70F76424 */  addiu      $a0, $v1, %lo(D_8005F770)
+    /* 3050 800663B0 0680033C */  lui        $v1, %hi(Sys_State)
+    /* 3054 800663B4 70F76424 */  addiu      $a0, $v1, %lo(Sys_State)
     /* 3058 800663B8 0800838C */  lw         $v1, 0x8($a0)
     /* 305C 800663BC 00000000 */  nop
     /* 3060 800663C0 4D006018 */  blez       $v1, .L800664F8
     /* 3064 800663C4 21804000 */   addu      $s0, $v0, $zero
-    /* 3068 800663C8 0680153C */  lui        $s5, %hi(D_8005F6F0)
-    /* 306C 800663CC F0F6B126 */  addiu      $s1, $s5, %lo(D_8005F6F0)
+    /* 3068 800663C8 0680153C */  lui        $s5, %hi(Pad_State)
+    /* 306C 800663CC F0F6B126 */  addiu      $s1, $s5, %lo(Pad_State)
     /* 3070 800663D0 21B08000 */  addu       $s6, $a0, $zero
   .L800663D4:
-    /* 3074 800663D4 F0F6A28E */  lw         $v0, %lo(D_8005F6F0)($s5)
+    /* 3074 800663D4 F0F6A28E */  lw         $v0, %lo(Pad_State)($s5)
     /* 3078 800663D8 00000000 */  nop
     /* 307C 800663DC 04004010 */  beqz       $v0, .L800663F0
     /* 3080 800663E0 21200002 */   addu      $a0, $s0, $zero

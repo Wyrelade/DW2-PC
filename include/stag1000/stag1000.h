@@ -75,7 +75,7 @@ typedef union {
 /* main exe */
 extern void DMACallback();
 extern void printf();
-extern s32 D_8005F724;             /* D_8005F6F0[0].start as a scalar reloc */
+extern s32 D_8005F724;             /* Pad_State[0].start as a scalar reloc */
 extern void Gpu_AllocPacketBufs(s32 a0);
 extern void Sys_SetFrameRate30(void);
 extern void Sys_SetFrameRate60(void);
@@ -94,9 +94,9 @@ extern s32 Math_CycleRange(s32, s32, s32, s32);
 extern void Gfx_HidePartsByMask(GfxPartMaskView *, s32);
 extern void ResetCallback(void);
 extern u8 D_80050741;
-extern PadState D_8005F6F0[];
+extern PadState Pad_State[];
 extern s32 D_8005F78C;
-extern SysState D_8005F770;
+extern SysState Sys_State;
 extern u8 D_80061B04;              /* s32 in the main exe; read as a byte here (StCdIntrFlag) */
 extern s32 CdControl(s32, u8 *, u8 *);
 extern s32 CdRead2(s32);           /* void in the main exe; returns CdControl's result */

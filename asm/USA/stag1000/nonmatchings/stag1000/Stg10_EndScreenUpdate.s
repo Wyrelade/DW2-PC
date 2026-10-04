@@ -38,8 +38,8 @@ glabel Stg10_EndScreenUpdate
     /* A54 80063DB4 5945000C */  jal        Task_NextState1
     /* A58 80063DB8 21200002 */   addu      $a0, $s0, $zero
   .L80063DBC:
-    /* A5C 80063DBC 0680023C */  lui        $v0, %hi(D_8005F6F0)
-    /* A60 80063DC0 F0F64324 */  addiu      $v1, $v0, %lo(D_8005F6F0)
+    /* A5C 80063DBC 0680023C */  lui        $v0, %hi(Pad_State)
+    /* A60 80063DC0 F0F64324 */  addiu      $v1, $v0, %lo(Pad_State)
     /* A64 80063DC4 1400628C */  lw         $v0, 0x14($v1)
     /* A68 80063DC8 00000000 */  nop
     /* A6C 80063DCC 0F00401C */  bgtz       $v0, .L80063E0C

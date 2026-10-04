@@ -1,8 +1,8 @@
 nonmatching Stg00_FontDrawSheet, 0x180
 
 glabel Stg00_FontDrawSheet
-    /* 2014 80065374 0680083C */  lui        $t0, %hi(D_8005F770)
-    /* 2018 80065378 70F70825 */  addiu      $t0, $t0, %lo(D_8005F770)
+    /* 2014 80065374 0680083C */  lui        $t0, %hi(Sys_State)
+    /* 2018 80065378 70F70825 */  addiu      $t0, $t0, %lo(Sys_State)
     /* 201C 8006537C 09000224 */  addiu      $v0, $zero, 0x9
     /* 2020 80065380 2C00058D */  lw         $a1, 0x2C($t0)
     /* 2024 80065384 3801098D */  lw         $t1, 0x138($t0)

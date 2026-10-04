@@ -33,8 +33,8 @@ glabel func_8006B20C
     /* 7F18 8006B278 25004314 */  bne        $v0, $v1, .L8006B310
     /* 7F1C 8006B27C FD01053C */   lui       $a1, (0x1FD0054 >> 16)
     /* 7F20 8006B280 21206000 */  addu       $a0, $v1, $zero
-    /* 7F24 8006B284 0580023C */  lui        $v0, %hi(D_80050720)
-    /* 7F28 8006B288 2007468C */  lw         $a2, %lo(D_80050720)($v0)
+    /* 7F24 8006B284 0580023C */  lui        $v0, %hi(Save_GameStatePtr)
+    /* 7F28 8006B288 2007468C */  lw         $a2, %lo(Save_GameStatePtr)($v0)
     /* 7F2C 8006B28C 5400A534 */  ori        $a1, $a1, (0x1FD0054 & 0xFFFF)
     /* 7F30 8006B290 21380000 */  addu       $a3, $zero, $zero
     /* 7F34 8006B294 849D010C */  jal        func_80067610

@@ -19,8 +19,8 @@ glabel Task_Run
     lw         $v0, 0x0($v0)
     sll        $v1, $v1, 2
     addu       $v1, $v1, $v0
-    lui        $v0, %hi(D_8005F784)
-    lw         $v0, %lo(D_8005F784)($v0)
+    lui        $v0, %hi(Sys_DrawPass)
+    lw         $v0, %lo(Sys_DrawPass)($v0)
     lw         $a0, 0x0($v1)
     beqz       $v0, .L8001100C
      addiu      $v0, $zero, 0x3
@@ -53,13 +53,13 @@ glabel Task_Run
     lw         $v0, 0x10($s0)
     nop
     beqz       $v0, .L80011060
-     lui        $v1, %hi(D_8005F778)
+     lui        $v1, %hi(Sys_FrameDelta)
     lw         $v0, 0x24($s0)
     nop
     addiu      $v0, $v0, 0x1
     sw         $v0, 0x24($s0)
     lw         $v0, 0x28($s0)
-    lw         $v1, %lo(D_8005F778)($v1)
+    lw         $v1, %lo(Sys_FrameDelta)($v1)
     nop
     addu       $v0, $v0, $v1
     j          .L80011060

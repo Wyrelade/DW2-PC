@@ -19,8 +19,8 @@ glabel Menu_NameEntryGetChar
   .L800128B8:
     /* 30B8 800128B8 688E000C */  jal        Cd_GetFileEntry
     /* 30BC 800128BC 2120B000 */   addu      $a0, $a1, $s0
-    /* 30C0 800128C0 0480033C */  lui        $v1, %hi(D_80040E38)
-    /* 30C4 800128C4 380E6324 */  addiu      $v1, $v1, %lo(D_80040E38)
+    /* 30C0 800128C0 0480033C */  lui        $v1, %hi(Menu_NameEntryRowStride)
+    /* 30C4 800128C4 380E6324 */  addiu      $v1, $v1, %lo(Menu_NameEntryRowStride)
     /* 30C8 800128C8 80201000 */  sll        $a0, $s0, 2
     /* 30CC 800128CC 21188300 */  addu       $v1, $a0, $v1
     /* 30D0 800128D0 2E002586 */  lh         $a1, 0x2E($s1)
@@ -29,8 +29,8 @@ glabel Menu_NameEntryGetChar
     /* 30DC 800128DC 1800A300 */  mult       $a1, $v1
     /* 30E0 800128E0 1800BF8F */  lw         $ra, 0x18($sp)
     /* 30E4 800128E4 1000B08F */  lw         $s0, 0x10($sp)
-    /* 30E8 800128E8 0480033C */  lui        $v1, %hi(D_80040E44)
-    /* 30EC 800128EC 440E6324 */  addiu      $v1, $v1, %lo(D_80040E44)
+    /* 30E8 800128E8 0480033C */  lui        $v1, %hi(Menu_NameEntryPageCol)
+    /* 30EC 800128EC 440E6324 */  addiu      $v1, $v1, %lo(Menu_NameEntryPageCol)
     /* 30F0 800128F0 21208300 */  addu       $a0, $a0, $v1
     /* 30F4 800128F4 2C002386 */  lh         $v1, 0x2C($s1)
     /* 30F8 800128F8 0000848C */  lw         $a0, 0x0($a0)

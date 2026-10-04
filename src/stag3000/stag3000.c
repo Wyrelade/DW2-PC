@@ -54,7 +54,7 @@ void func_80063A6C(Actor *a0) {
         } else {
             a0->digiId = D_80072FF0[D_8007300C[D_8005E5DD]];
         }
-        Actor_InitTransform(a0, D_80043704, 0);
+        Actor_InitTransform(a0, Gfx_ZeroVector, 0);
         Gfx_AttachModel(a0, a0->digiId)->otIndex = 5;
         Gfx_ResetModelBones(a0);
         Task_NextState0(a0);

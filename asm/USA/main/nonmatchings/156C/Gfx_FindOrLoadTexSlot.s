@@ -21,7 +21,7 @@ glabel Gfx_FindOrLoadTexSlot
     /* D3C0 8001CBC0 03004510 */  beq        $v0, $a1, .L8001CBD0
     /* D3C4 8001CBC4 00000000 */   nop
     /* D3C8 8001CBC8 3A005310 */  beq        $v0, $s3, .L8001CCB4
-    /* D3CC 8001CBCC 0680023C */   lui       $v0, %hi(D_8005F770)
+    /* D3CC 8001CBCC 0680023C */   lui       $v0, %hi(Sys_State)
   .L8001CBD0:
     /* D3D0 8001CBD0 01006324 */  addiu      $v1, $v1, 0x1
     /* D3D4 8001CBD4 40006228 */  slti       $v0, $v1, 0x40
@@ -74,9 +74,9 @@ glabel Gfx_FindOrLoadTexSlot
     /* D478 8001CC78 0680023C */  lui        $v0, %hi(Gfx_TexSlots)
     /* D47C 8001CC7C 60CD4224 */  addiu      $v0, $v0, %lo(Gfx_TexSlots)
     /* D480 8001CC80 21806200 */  addu       $s0, $v1, $v0
-    /* D484 8001CC84 0680023C */  lui        $v0, %hi(D_8005F770)
+    /* D484 8001CC84 0680023C */  lui        $v0, %hi(Sys_State)
     /* D488 8001CC88 000013AE */  sw         $s3, 0x0($s0)
-    /* D48C 8001CC8C 70F7438C */  lw         $v1, %lo(D_8005F770)($v0)
+    /* D48C 8001CC8C 70F7438C */  lw         $v1, %lo(Sys_State)($v0)
     /* D490 8001CC90 1400028E */  lw         $v0, 0x14($s0)
     /* D494 8001CC94 080005AE */  sw         $a1, 0x8($s0)
     /* D498 8001CC98 02004230 */  andi       $v0, $v0, 0x2
@@ -87,7 +87,7 @@ glabel Gfx_FindOrLoadTexSlot
     /* D4AC 8001CCAC 32730008 */  j          .L8001CCC8
     /* D4B0 8001CCB0 80110200 */   sll       $v0, $v0, 6
   .L8001CCB4:
-    /* D4B4 8001CCB4 70F7438C */  lw         $v1, %lo(D_8005F770)($v0)
+    /* D4B4 8001CCB4 70F7438C */  lw         $v1, %lo(Sys_State)($v0)
     /* D4B8 8001CCB8 21108000 */  addu       $v0, $a0, $zero
     /* D4BC 8001CCBC 44730008 */  j          .L8001CD10
     /* D4C0 8001CCC0 040043AC */   sw        $v1, 0x4($v0)

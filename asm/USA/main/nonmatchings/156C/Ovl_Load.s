@@ -16,8 +16,8 @@ glabel Ovl_Load
     /* 3B38 80013338 6C8F000C */  jal        Cd_GetFileSync
     /* 3B3C 8001333C 00000000 */   nop
     /* 3B40 80013340 0000048E */  lw         $a0, 0x0($s0)
-    /* 3B44 80013344 0180103C */  lui        $s0, %hi(D_80010000)
-    /* 3B48 80013348 0000108E */  lw         $s0, %lo(D_80010000)($s0)
+    /* 3B44 80013344 0180103C */  lui        $s0, %hi(Ovl_LoadAddr)
+    /* 3B48 80013348 0000108E */  lw         $s0, %lo(Ovl_LoadAddr)($s0)
     /* 3B4C 8001334C E48F000C */  jal        Cd_GetFileSectors
     /* 3B50 80013350 21884000 */   addu      $s1, $v0, $zero
     /* 3B54 80013354 21200002 */  addu       $a0, $s0, $zero

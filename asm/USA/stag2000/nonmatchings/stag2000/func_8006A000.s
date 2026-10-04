@@ -36,9 +36,9 @@ glabel func_8006A000
     /* 6D18 8006A078 0780113C */  lui        $s1, %hi(D_8007010C)
     /* 6D1C 8006A07C 0C013126 */  addiu      $s1, $s1, %lo(D_8007010C)
     /* 6D20 8006A080 21382002 */  addu       $a3, $s1, $zero
-    /* 6D24 8006A084 0680103C */  lui        $s0, %hi(D_8005E750)
+    /* 6D24 8006A084 0680103C */  lui        $s0, %hi(Save_RosterNames)
     /* 6D28 8006A088 3400428E */  lw         $v0, 0x34($s2)
-    /* 6D2C 8006A08C 50E71026 */  addiu      $s0, $s0, %lo(D_8005E750)
+    /* 6D2C 8006A08C 50E71026 */  addiu      $s0, $s0, %lo(Save_RosterNames)
     /* 6D30 8006A090 1000A0AF */  sw         $zero, 0x10($sp)
     /* 6D34 8006A094 40280200 */  sll        $a1, $v0, 1
     /* 6D38 8006A098 2128A200 */  addu       $a1, $a1, $v0

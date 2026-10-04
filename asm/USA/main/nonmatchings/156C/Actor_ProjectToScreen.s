@@ -11,8 +11,8 @@ glabel Actor_ProjectToScreen
     /* 11210 80020A10 140085AC */  sw         $a1, 0x14($a0)
     /* 11214 80020A14 180086AC */  sw         $a2, 0x18($a0)
     /* 11218 80020A18 1C0087AC */  sw         $a3, 0x1C($a0)
-    /* 1121C 80020A1C 0680053C */  lui        $a1, %hi(D_80061A08)
-    /* 11220 80020A20 081AA524 */  addiu      $a1, $a1, %lo(D_80061A08)
+    /* 1121C 80020A1C 0680053C */  lui        $a1, %hi(GsWSMATRIX)
+    /* 11220 80020A20 081AA524 */  addiu      $a1, $a1, %lo(GsWSMATRIX)
     /* 11224 80020A24 0000AC8C */  lw         $t4, 0x0($a1)
     /* 11228 80020A28 0400AD8C */  lw         $t5, 0x4($a1)
     /* 1122C 80020A2C 0000CC48 */  ctc2       $t4, $0 /* handwritten instruction */
@@ -72,8 +72,8 @@ glabel Actor_ProjectToScreen
     /* 11304 80020B04 00004CA4 */  sh         $t4, 0x0($v0)
     /* 11308 80020B08 06004DA4 */  sh         $t5, 0x6($v0)
     /* 1130C 80020B0C 0C004EA4 */  sh         $t6, 0xC($v0)
-    /* 11310 80020B10 0680063C */  lui        $a2, %hi(D_80061A08)
-    /* 11314 80020B14 081AC624 */  addiu      $a2, $a2, %lo(D_80061A08)
+    /* 11310 80020B10 0680063C */  lui        $a2, %hi(GsWSMATRIX)
+    /* 11314 80020B14 081AC624 */  addiu      $a2, $a2, %lo(GsWSMATRIX)
     /* 11318 80020B18 1400CC8C */  lw         $t4, 0x14($a2)
     /* 1131C 80020B1C 1800CD8C */  lw         $t5, 0x18($a2)
     /* 11320 80020B20 0028CC48 */  ctc2       $t4, $5 /* handwritten instruction */
@@ -109,8 +109,8 @@ glabel Actor_ProjectToScreen
     /* 11398 80020B98 1C00AE8F */  lw         $t6, 0x1C($sp)
     /* 1139C 80020B9C 0030CD48 */  ctc2       $t5, $6 /* handwritten instruction */
     /* 113A0 80020BA0 0038CE48 */  ctc2       $t6, $7 /* handwritten instruction */
-    /* 113A4 80020BA4 0580073C */  lui        $a3, %hi(D_80050744)
-    /* 113A8 80020BA8 4407E724 */  addiu      $a3, $a3, %lo(D_80050744)
+    /* 113A4 80020BA4 0580073C */  lui        $a3, %hi(Gfx_ZeroSVector)
+    /* 113A8 80020BA8 4407E724 */  addiu      $a3, $a3, %lo(Gfx_ZeroSVector)
     /* 113AC 80020BAC 0000E0C8 */  lwc2       $0, 0x0($a3)
     /* 113B0 80020BB0 0400E1C8 */  lwc2       $1, 0x4($a3)
     /* 113B4 80020BB4 00000000 */  nop

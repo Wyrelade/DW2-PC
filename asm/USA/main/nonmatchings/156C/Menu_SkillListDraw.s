@@ -27,8 +27,8 @@ glabel Menu_SkillListDraw
     /* A450 80019C50 70004010 */  beqz       $v0, .L80019E14
     /* A454 80019C54 21A00000 */   addu      $s4, $zero, $zero
     /* A458 80019C58 01001524 */  addiu      $s5, $zero, 0x1
-    /* A45C 80019C5C 0480023C */  lui        $v0, %hi(D_80040F98)
-    /* A460 80019C60 980F5724 */  addiu      $s7, $v0, %lo(D_80040F98)
+    /* A45C 80019C5C 0480023C */  lui        $v0, %hi(Menu_SkillPaneMasks)
+    /* A460 80019C60 980F5724 */  addiu      $s7, $v0, %lo(Menu_SkillPaneMasks)
     /* A464 80019C64 21988000 */  addu       $s3, $a0, $zero
   .L80019C68:
     /* A468 80019C68 0000648E */  lw         $a0, 0x0($s3)

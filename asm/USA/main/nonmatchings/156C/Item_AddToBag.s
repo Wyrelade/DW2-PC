@@ -10,7 +10,7 @@ glabel Item_AddToBag
     /* 12FC0 800227C0 FFFF0224 */  addiu      $v0, $zero, -0x1
     /* 12FC4 800227C4 05008210 */  beq        $a0, $v0, .L800227DC
     /* 12FC8 800227C8 40180400 */   sll       $v1, $a0, 1
-    /* 12FCC 800227CC 2800828F */  lw         $v0, %gp_rel(D_80050720)($gp)
+    /* 12FCC 800227CC 2800828F */  lw         $v0, %gp_rel(Save_GameStatePtr)($gp)
     /* 12FD0 800227D0 00000000 */  nop
     /* 12FD4 800227D4 21104300 */  addu       $v0, $v0, $v1
     /* 12FD8 800227D8 660050A4 */  sh         $s0, 0x66($v0)

@@ -24,8 +24,8 @@ glabel Gfx_AddQuadsGT4
     /* 11B58 80021358 3E001024 */   addiu     $s0, $zero, 0x3E
     /* 11B5C 8002135C 3C001024 */  addiu      $s0, $zero, 0x3C
   .L80021360:
-    /* 11B60 80021360 0680023C */  lui        $v0, %hi(D_8005F770)
-    /* 11B64 80021364 70F74324 */  addiu      $v1, $v0, %lo(D_8005F770)
+    /* 11B60 80021360 0680023C */  lui        $v0, %hi(Sys_State)
+    /* 11B64 80021364 70F74324 */  addiu      $v1, $v0, %lo(Sys_State)
     /* 11B68 80021368 2C006C8C */  lw         $t4, 0x2C($v1)
     /* 11B6C 8002136C D100601A */  blez       $s3, .L800216B4
     /* 11B70 80021370 21280000 */   addu      $a1, $zero, $zero

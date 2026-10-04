@@ -18,15 +18,15 @@ glabel Menu_OpenItemNameTexts
     /* 5ACC 800152CC 688E000C */  jal        Cd_GetFileEntry
     /* 5AD0 800152D0 98008434 */   ori       $a0, $a0, (0x1FD0098 & 0xFFFF)
     /* 5AD4 800152D4 21284000 */  addu       $a1, $v0, $zero
-    /* 5AD8 800152D8 7400828F */  lw         $v0, %gp_rel(D_8005076C)($gp)
+    /* 5AD8 800152D8 7400828F */  lw         $v0, %gp_rel(Menu_PartGridSlots)($gp)
     /* 5ADC 800152DC 00000000 */  nop
     /* 5AE0 800152E0 21105100 */  addu       $v0, $v0, $s1
     /* 5AE4 800152E4 00005090 */  lbu        $s0, 0x0($v0)
     /* 5AE8 800152E8 FF000224 */  addiu      $v0, $zero, 0xFF
     /* 5AEC 800152EC 14000212 */  beq        $s0, $v0, .L80015340
     /* 5AF0 800152F0 21980000 */   addu      $s3, $zero, $zero
-    /* 5AF4 800152F4 0580023C */  lui        $v0, %hi(D_80050720)
-    /* 5AF8 800152F8 2007428C */  lw         $v0, %lo(D_80050720)($v0)
+    /* 5AF4 800152F4 0580023C */  lui        $v0, %hi(Save_GameStatePtr)
+    /* 5AF8 800152F8 2007428C */  lw         $v0, %lo(Save_GameStatePtr)($v0)
     /* 5AFC 800152FC 40181000 */  sll        $v1, $s0, 1
     /* 5B00 80015300 21184300 */  addu       $v1, $v0, $v1
     /* 5B04 80015304 2C006294 */  lhu        $v0, 0x2C($v1)
@@ -35,8 +35,8 @@ glabel Menu_OpenItemNameTexts
     /* 5B10 80015310 00000000 */   nop
     /* 5B14 80015314 1278000C */  jal        Item_GetNameText
     /* 5B18 80015318 21204000 */   addu      $a0, $v0, $zero
-    /* 5B1C 8001531C 0580033C */  lui        $v1, %hi(D_80050720)
-    /* 5B20 80015320 2007638C */  lw         $v1, %lo(D_80050720)($v1)
+    /* 5B1C 8001531C 0580033C */  lui        $v1, %hi(Save_GameStatePtr)
+    /* 5B20 80015320 2007638C */  lw         $v1, %lo(Save_GameStatePtr)($v1)
     /* 5B24 80015324 00000000 */  nop
     /* 5B28 80015328 21187000 */  addu       $v1, $v1, $s0
     /* 5B2C 8001532C 52006390 */  lbu        $v1, 0x52($v1)

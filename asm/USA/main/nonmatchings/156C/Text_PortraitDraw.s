@@ -66,12 +66,12 @@ glabel Text_PortraitDraw
     /* 2138 80011938 01000C24 */   addiu     $t4, $zero, 0x1
     /* 213C 8001193C FFFF0C24 */  addiu      $t4, $zero, -0x1
   .L80011940:
-    /* 2140 80011940 0680033C */  lui        $v1, %hi(D_8005F770)
-    /* 2144 80011944 70F76324 */  addiu      $v1, $v1, %lo(D_8005F770)
+    /* 2140 80011940 0680033C */  lui        $v1, %hi(Sys_State)
+    /* 2144 80011944 70F76324 */  addiu      $v1, $v1, %lo(Sys_State)
     /* 2148 80011948 2C006B8C */  lw         $t3, 0x2C($v1)
     /* 214C 8001194C 21C80000 */  addu       $t9, $zero, $zero
-    /* 2150 80011950 0480023C */  lui        $v0, %hi(D_80040D70)
-    /* 2154 80011954 700D5824 */  addiu      $t8, $v0, %lo(D_80040D70)
+    /* 2150 80011950 0480023C */  lui        $v0, %hi(Text_PortraitQuadGrid)
+    /* 2154 80011954 700D5824 */  addiu      $t8, $v0, %lo(Text_PortraitQuadGrid)
     /* 2158 80011958 21886000 */  addu       $s1, $v1, $zero
     /* 215C 8001195C FF000F3C */  lui        $t7, (0xFFFFFF >> 16)
     /* 2160 80011960 FFFFEF35 */  ori        $t7, $t7, (0xFFFFFF & 0xFFFF)
@@ -83,8 +83,8 @@ glabel Text_PortraitDraw
     /* 2174 80011974 0E006925 */  addiu      $t1, $t3, 0xE
   .L80011978:
     /* 2178 80011978 09000224 */  addiu      $v0, $zero, 0x9
-    /* 217C 8001197C 0580153C */  lui        $s5, %hi(D_8005074C)
-    /* 2180 80011980 4C07B526 */  addiu      $s5, $s5, %lo(D_8005074C)
+    /* 217C 8001197C 0580153C */  lui        $s5, %hi(Gfx_NeutralRgb)
+    /* 2180 80011980 4C07B526 */  addiu      $s5, $s5, %lo(Gfx_NeutralRgb)
     /* 2184 80011984 0300B28A */  lwl        $s2, 0x3($s5)
     /* 2188 80011988 0000B29A */  lwr        $s2, 0x0($s5)
     /* 218C 8001198C 00000000 */  nop

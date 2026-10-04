@@ -15,7 +15,7 @@ glabel Menu_UseBugZapItem
     /* 57A4 80014FA4 2C00918E */  lw         $s1, 0x2C($s4)
     /* 57A8 80014FA8 D747000C */  jal        Item_GetEffectRec
     /* 57AC 80014FAC 00000000 */   nop
-    /* 57B0 80014FB0 08009327 */  addiu      $s3, $gp, %gp_rel(D_80050700)
+    /* 57B0 80014FB0 08009327 */  addiu      $s3, $gp, %gp_rel(Menu_ItemUseMsgPos)
     /* 57B4 80014FB4 01004490 */  lbu        $a0, 0x1($v0)
     /* 57B8 80014FB8 0580033C */  lui        $v1, %hi(D_8005071C)
     /* 57BC 80014FBC 1C07638C */  lw         $v1, %lo(D_8005071C)($v1)
@@ -24,7 +24,7 @@ glabel Menu_UseBugZapItem
     /* 57C8 80014FC8 A50B7290 */  lbu        $s2, 0xBA5($v1)
     /* 57CC 80014FCC 81000324 */  addiu      $v1, $zero, 0x81
     /* 57D0 80014FD0 0B00888B */  lwl        $t0, %gp_rel(D_80050703)($gp)
-    /* 57D4 80014FD4 0800889B */  lwr        $t0, %gp_rel(D_80050700)($gp)
+    /* 57D4 80014FD4 0800889B */  lwr        $t0, %gp_rel(Menu_ItemUseMsgPos)($gp)
     /* 57D8 80014FD8 00000000 */  nop
     /* 57DC 80014FDC 1F00A8AB */  swl        $t0, 0x1F($sp)
     /* 57E0 80014FE0 1C00A8BB */  swr        $t0, 0x1C($sp)
@@ -130,8 +130,8 @@ glabel Menu_UseBugZapItem
     /* 5958 80015158 EC006334 */  ori        $v1, $v1, (0x1FD00EC & 0xFFFF)
     /* 595C 8001515C 1000A2AF */  sw         $v0, 0x10($sp)
     /* 5960 80015160 40101000 */  sll        $v0, $s0, 1
-    /* 5964 80015164 0580043C */  lui        $a0, %hi(D_80050760)
-    /* 5968 80015168 60078490 */  lbu        $a0, %lo(D_80050760)($a0)
+    /* 5964 80015164 0580043C */  lui        $a0, %hi(Bug_LastZappedLevel)
+    /* 5968 80015168 60078490 */  lbu        $a0, %lo(Bug_LastZappedLevel)($a0)
     /* 596C 8001516C 21105000 */  addu       $v0, $v0, $s0
     /* 5970 80015170 21208300 */  addu       $a0, $a0, $v1
     /* 5974 80015174 21204400 */  addu       $a0, $v0, $a0
@@ -160,7 +160,7 @@ glabel Menu_UseBugZapItem
     /* 59C4 800151C4 81000624 */  addiu      $a2, $zero, 0x81
     /* 59C8 800151C8 02006796 */  lhu        $a3, 0x2($s3)
   .L800151CC:
-    /* 59CC 800151CC 08008297 */  lhu        $v0, %gp_rel(D_80050700)($gp)
+    /* 59CC 800151CC 08008297 */  lhu        $v0, %gp_rel(Menu_ItemUseMsgPos)($gp)
     /* 59D0 800151D0 003C0700 */  sll        $a3, $a3, 16
     /* 59D4 800151D4 3E4D000C */  jal        Text_OpenPacked
     /* 59D8 800151D8 25384700 */   or        $a3, $v0, $a3

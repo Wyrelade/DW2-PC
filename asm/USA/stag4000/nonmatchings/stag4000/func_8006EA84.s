@@ -3,9 +3,9 @@ nonmatching func_8006EA84, 0x100
 glabel func_8006EA84
     /* B724 8006EA84 21408000 */  addu       $t0, $a0, $zero
     /* B728 8006EA88 21300000 */  addu       $a2, $zero, $zero
-    /* B72C 8006EA8C 0580023C */  lui        $v0, %hi(D_80050720)
+    /* B72C 8006EA8C 0580023C */  lui        $v0, %hi(Save_GameStatePtr)
     /* B730 8006EA90 0780033C */  lui        $v1, %hi(D_80072B60)
-    /* B734 8006EA94 2007448C */  lw         $a0, %lo(D_80050720)($v0)
+    /* B734 8006EA94 2007448C */  lw         $a0, %lo(Save_GameStatePtr)($v0)
     /* B738 8006EA98 602B628C */  lw         $v0, %lo(D_80072B60)($v1)
     /* B73C 8006EA9C E4008724 */  addiu      $a3, $a0, 0xE4
     /* B740 8006EAA0 21284000 */  addu       $a1, $v0, $zero

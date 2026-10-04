@@ -24,8 +24,8 @@ glabel func_800690CC
     /* 5DB8 80069118 FEFFC224 */  addiu      $v0, $a2, -0x2
     /* 5DBC 8006911C 0400422C */  sltiu      $v0, $v0, 0x4
     /* 5DC0 80069120 04004010 */  beqz       $v0, .L80069134
-    /* 5DC4 80069124 0580023C */   lui       $v0, %hi(D_80050720)
-    /* 5DC8 80069128 2007428C */  lw         $v0, %lo(D_80050720)($v0)
+    /* 5DC4 80069124 0580023C */   lui       $v0, %hi(Save_GameStatePtr)
+    /* 5DC8 80069128 2007428C */  lw         $v0, %lo(Save_GameStatePtr)($v0)
     /* 5DCC 8006912C 00000000 */  nop
     /* 5DD0 80069130 D1004724 */  addiu      $a3, $v0, 0xD1
   .L80069134:

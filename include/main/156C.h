@@ -193,7 +193,7 @@ typedef struct {
     /* 0x1A0 */ s16 picks[16];
 } MenuPickWork;
 
-/* A 0x20 block copied verbatim from the const table D_80043714. */
+/* A 0x20 block copied verbatim from the const table Gfx_IdentityMatrix. */
 typedef struct {
     /* 0x0 */ s16 m[3][3];
 } Mat12; /* size 0x12 */
@@ -562,7 +562,7 @@ typedef struct {
 
 CdCacheEntry *Cd_FindCachedFile();
 
-/* 3-entry table at D_80054C48, stride 0x2C, searched by Snd_AnySlotLoading. */
+/* 3-entry table at Snd_Slots, stride 0x2C, searched by Snd_AnySlotLoading. */
 typedef struct {
     /* 0x00 */ s32 contentId;
     /* 0x04 */ s32 loadState;
@@ -597,7 +597,7 @@ typedef struct {
     /* 0x04 */ s32 data[9];
 } TextStack;
 
-/* Global struct D_80048DB8: field_0 is a small state (Cd_PollRead), field_4 a
+/* Global struct Cd_ReadState: field_0 is a small state (Cd_PollRead), field_4 a
    countdown and field_8 an advancing buffer pointer (Cd_ReadSectorCallback; note the
    symbol D_80048DBC aliases field_4), field_1C a counter compared/bumped by
    Cd_CheckNextSector. */
@@ -711,7 +711,7 @@ typedef struct {
     /* 0x34 */ Actor **children;
 } TaskEntry;
 
-/* 0x10-stride record; D_800416CC array, per-slot init by Gfx_InitLights. */
+/* 0x10-stride record; Gfx_FlatLights array, per-slot init by Gfx_InitLights. */
 typedef struct {
     /* 0x00 */ s32 x;
     /* 0x04 */ s32 y;
@@ -792,7 +792,7 @@ typedef struct {
     /* 0x0000 */ s32 entries[0x100C];
 } GpuOtBuf;
 
-/* Element of the D_8005E620.elems[] array (stride 0x5C); only the leading
+/* Element of the Save_GameState.elems[] array (stride 0x5C); only the leading
    status byte is touched by Digi_AddNew. */
 typedef struct {
     /* 0x00 */ u8 state;
@@ -814,7 +814,7 @@ typedef struct {
     u8 _pad5A[0x2];
 } DigiRosterEntry; /* size 0x5C */
 
-/* Global at D_8005E620: a 0xE4-byte header followed by an array of 0x24
+/* Global at Save_GameState: a 0xE4-byte header followed by an array of 0x24
    DigiRosterEntry slots (Digi_AddNew scans and updates their status bytes). */
 typedef struct {
     u8 _pad00[0x04];
@@ -1700,7 +1700,7 @@ typedef struct {
     /* 0x60 */ s32 field_60;
 } Mode5CCF8;
 
-/* 0x1C-byte parameter block copied from D_80040F64 into MenuDigiStatusInitWork.field_CC. */
+/* 0x1C-byte parameter block copied from Menu_DigiStatusView into MenuDigiStatusInitWork.field_CC. */
 typedef struct {
     s32 w[7];
 } Prm1C;
@@ -1845,7 +1845,7 @@ typedef struct {
     /* 0xAC */ s16 digiCount;
 } Wk14CBC;
 
-/* Object behind the D_80050720 pointer (Menu_StatusDraw). */
+/* Object behind the Save_GameStatePtr pointer (Menu_StatusDraw). */
 typedef struct {
     /* 0x00 */ u8 field_0;
     u8 _pad01[0x07];
@@ -2115,15 +2115,15 @@ typedef struct MemBlock {
     /* 0x8 */ s32 tag;
 } MemBlock;
 
-/* 6-byte rank table at D_80050724, indexed by DigiRosterEntry.field_0 (Digi_SortRoster). */
+/* 6-byte rank table at Digi_StateSortRank, indexed by DigiRosterEntry.field_0 (Digi_SortRoster). */
 typedef struct {
     u8 sortRank[6];
 } DigiSortRank;
 
-/* D_8005F770: the global frame/display state (Sys_Main, Sys_VSyncHandler,
+/* Sys_State: the global frame/display state (Sys_Main, Sys_VSyncHandler,
  * Gpu_InitDoubleBuffer, Gpu_SetLayerOtPtrs, Gfx_DrawFade). Double-buffered draw and
  * display environments, frame counters, the game-mode request, the primitive packet
- * cursor (D_80041670[bufIndex]) and the eight ordering-table layers of the current
+ * cursor (Gpu_PrimBufs[bufIndex]) and the eight ordering-table layers of the current
  * buffer. Unions keep each access at the C type the code reads it with. */
 typedef struct {
     /* 0x000 */ s32 frameCount;
@@ -2152,12 +2152,12 @@ typedef struct {
         s32 s;
         u16 lo;
     } centerY;                           /* half screen height */
-    /* 0x118 */ s32 otLayerLen[8];        /* D_80041570[mode][i] */
+    /* 0x118 */ s32 otLayerLen[8];        /* Gpu_OtLayerLens[mode][i] */
     /* 0x138 */ union {
         s32 *s[8];
         u32 *u[8];
         s32 addr[8];
-    } otLayers;                          /* &Gpu_OtBufs[bufIndex] + D_800415F0[mode][i] */
+    } otLayers;                          /* &Gpu_OtBufs[bufIndex] + Gpu_OtLayerOffsets[mode][i] */
 } SysState; /* size 0x158 */
 /* Load header filled by GsGetTimInfo (Sys_Main reads field_C). */
 typedef struct {
@@ -2282,7 +2282,7 @@ typedef struct {
 
 void Gfx_FindOrLoadImageSlot(s32 id, GfxImageInfo *out, GfxVramPos *pos, GfxVramPos *clut);
 
-/* Sound-bank record in the D_80041194 pointer table (high halves of field_0 /
+/* Sound-bank record in the Snd_BankDescs pointer table (high halves of field_0 /
  * field_4 are resource ids, field_8 is a zero-ended list). */
 typedef struct {
     /* 0x00 */ u32 vbFile;
@@ -2659,7 +2659,7 @@ typedef struct {
 } BiosDcb;
 
 
-/* file-local view over D_8005E620 for Save_ClearEventFlags */
+/* file-local view over Save_GameState for Save_ClearEventFlags */
 typedef struct {
     u8 _p[0x1004];
     /* 0x1004 */ u8 a[0x20];
@@ -2668,7 +2668,7 @@ typedef struct {
     /* 0x1034 */ u8 d[0x10];
 } SaveEventFlags;
 
-/* Event flags at D_8005F624 (D_8005E620 + 0x1004). Flag_Set / Flag_Test map flag
+/* Event flags at Flag_Bits (Save_GameState + 0x1004). Flag_Set / Flag_Test map flag
  * ids onto bit arrays by range (ids 0..599 run past flags0 into the next arrays). */
 typedef struct {
     /* 0x00 */ u8 flags0[0x20];     /* ids 0..599 */
@@ -2677,7 +2677,7 @@ typedef struct {
     /* 0x30 */ u8 flags800[0x10];   /* ids 800..999 */
     /* 0x40 */ s32 field_40;        /* ids 1000..1999: value id - 1900 */
 } EventFlags; /* size 0x44 */
-extern EventFlags D_8005F624;
+extern EventFlags Flag_Bits;
 
 
 /* 4-byte unaligned tag and the 0x20-byte records at D_80061B38 (func_8002DF74). */
@@ -2902,7 +2902,7 @@ typedef struct {
     /* 0x12 */ s8 b2;
 } Cd4FC48;
 
-/* Screen fade packet Gfx_DrawFade writes at D_8005F770.packet: a flat
+/* Screen fade packet Gfx_DrawFade writes at Sys_State.packet: a flat
  * semi-transparent quad (POLY_F4 layout) followed by a draw-mode word pair. */
 typedef struct {
     /* 0x00 */ GfxPartOTag t;
@@ -2940,7 +2940,7 @@ s32 _SsVmPitchBend(s16 a0, s16 a1, s16 a2, s32 a3);
 
 /* Gfx_AnimateModelTex: 10-byte fixed part (field_1C list of ActorModel, 0xFF/0xFE ended),
  * 0x2A-byte animated part that follows a 0xFE marker, the position block at
- * ActorModel 0x44 and the D_8005F770 fields it reads. */
+ * ActorModel 0x44 and the Sys_State fields it reads. */
 typedef struct {
     /* 0x0 */ u8 dstX;
     /* 0x1 */ u8 dstY;
@@ -3243,7 +3243,7 @@ typedef struct {
 
 
 /* Text_UpdateAllBoxes (text renderer): the actor work block is 50 TextBox text boxes
- * followed by three counters; D_8005F770 viewed through the fields it reads. */
+ * followed by three counters; Sys_State viewed through the fields it reads. */
 typedef struct {
     /* 0x000 */ TextBox rec[50];
     /* 0xA28 */ s32 blinkTimer;

@@ -23,7 +23,7 @@ glabel Stg11_RootUpdate
     /* 278 800635D8 6C72000C */  jal        Gpu_AllocPacketBufs
     /* 27C 800635DC 00588434 */   ori       $a0, $a0, (0x25800 & 0xFFFF)
     /* 280 800635E0 5C8E000C */  jal        Sys_SetFrameRate30
-    /* 284 800635E4 0680103C */   lui       $s0, %hi(D_8005F770)
+    /* 284 800635E4 0680103C */   lui       $s0, %hi(Sys_State)
     /* 288 800635E8 40010424 */  addiu      $a0, $zero, 0x140
     /* 28C 800635EC F0000524 */  addiu      $a1, $zero, 0xF0
     /* 290 800635F0 21300000 */  addu       $a2, $zero, $zero
@@ -34,7 +34,7 @@ glabel Stg11_RootUpdate
     /* 2A4 80063604 6570000C */  jal        Gpu_SetBgClearColor
     /* 2A8 80063608 21308000 */   addu      $a2, $a0, $zero
     /* 2AC 8006360C 4170000C */  jal        Gpu_ClearScreens
-    /* 2B0 80063610 70F71026 */   addiu     $s0, $s0, %lo(D_8005F770)
+    /* 2B0 80063610 70F71026 */   addiu     $s0, $s0, %lo(Sys_State)
     /* 2B4 80063614 3271000C */  jal        Gfx_FadeInFromBlack
     /* 2B8 80063618 20000424 */   addiu     $a0, $zero, 0x20
     /* 2BC 8006361C 09000424 */  addiu      $a0, $zero, 0x9
@@ -98,8 +98,8 @@ glabel Stg11_RootUpdate
     /* 394 800636F4 0400228E */  lw         $v0, 0x4($s1)
     /* 398 800636F8 00000000 */  nop
     /* 39C 800636FC 0B004014 */  bnez       $v0, .L8006372C
-    /* 3A0 80063700 0680023C */   lui       $v0, %hi(D_8005F770)
-    /* 3A4 80063704 70F74424 */  addiu      $a0, $v0, %lo(D_8005F770)
+    /* 3A0 80063700 0680023C */   lui       $v0, %hi(Sys_State)
+    /* 3A4 80063704 70F74424 */  addiu      $a0, $v0, %lo(Sys_State)
     /* 3A8 80063708 2000828C */  lw         $v0, 0x20($a0)
     /* 3AC 8006370C 1800838C */  lw         $v1, 0x18($a0)
     /* 3B0 80063710 1C0082AC */  sw         $v0, 0x1C($a0)

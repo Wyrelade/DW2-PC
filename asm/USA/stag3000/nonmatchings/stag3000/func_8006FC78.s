@@ -98,11 +98,11 @@ glabel func_8006FC78
     /* CA6C 8006FDCC 6045000C */  jal        Task_NextState2
     /* CA70 8006FDD0 21202002 */   addu      $a0, $s1, $zero
   jlabel .L8006FDD4
-    /* CA74 8006FDD4 0680023C */  lui        $v0, %hi(D_8005F6F0)
-    /* CA78 8006FDD8 F0F6438C */  lw         $v1, %lo(D_8005F6F0)($v0)
+    /* CA74 8006FDD4 0680023C */  lui        $v0, %hi(Pad_State)
+    /* CA78 8006FDD8 F0F6438C */  lw         $v1, %lo(Pad_State)($v0)
     /* CA7C 8006FDDC 00000000 */  nop
     /* CA80 8006FDE0 1900601C */  bgtz       $v1, .L8006FE48
-    /* CA84 8006FDE4 F0F64424 */   addiu     $a0, $v0, %lo(D_8005F6F0)
+    /* CA84 8006FDE4 F0F64424 */   addiu     $a0, $v0, %lo(Pad_State)
     /* CA88 8006FDE8 0400828C */  lw         $v0, 0x4($a0)
     /* CA8C 8006FDEC 00000000 */  nop
     /* CA90 8006FDF0 1800401C */  bgtz       $v0, .L8006FE54
@@ -165,11 +165,11 @@ glabel func_8006FC78
   .L8006FEB4:
     /* CB54 8006FEB4 C03C4524 */  addiu      $a1, $v0, %lo(D_80073CC0)
     /* CB58 8006FEB8 D403A3AC */  sw         $v1, 0x3D4($a1)
-    /* CB5C 8006FEBC 0680023C */  lui        $v0, %hi(D_8005F6F0)
-    /* CB60 8006FEC0 F0F6438C */  lw         $v1, %lo(D_8005F6F0)($v0)
+    /* CB5C 8006FEBC 0680023C */  lui        $v0, %hi(Pad_State)
+    /* CB60 8006FEC0 F0F6438C */  lw         $v1, %lo(Pad_State)($v0)
     /* CB64 8006FEC4 00000000 */  nop
     /* CB68 8006FEC8 08006018 */  blez       $v1, .L8006FEEC
-    /* CB6C 8006FECC F0F64424 */   addiu     $a0, $v0, %lo(D_8005F6F0)
+    /* CB6C 8006FECC F0F64424 */   addiu     $a0, $v0, %lo(Pad_State)
     /* CB70 8006FED0 1000038E */  lw         $v1, 0x10($s0)
     /* CB74 8006FED4 02000224 */  addiu      $v0, $zero, 0x2
     /* CB78 8006FED8 2A006210 */  beq        $v1, $v0, .L8006FF84

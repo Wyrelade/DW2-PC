@@ -6,8 +6,8 @@
 
 /* Small data this unit defines (retail reaches it with %gp_rel here). The bytes
  * live in the data asm; these tentative definitions are COMMON and bind to it. */
-Halves D_80050704;
-Halves D_80050708;
+Halves Menu_ItemMsgPos;
+Halves Menu_ItemNamePos;
 
 void Menu_ItemUseDraw(Actor *actor) {
     ActorWork *w = actor->work;
@@ -38,10 +38,10 @@ void Menu_ItemUseDraw(Actor *actor) {
             } else {
                 Gfx_HidePartsByMask(obj, 2);
             }
-            Gfx_SetPartsNumber(obj, 4, 4, D_80050720->maxHp);
-            Gfx_SetPartsNumber(obj, 8, 4, D_80050720->hp);
-            Gfx_SetPartsNumber(obj, 0x10, 4, D_80050720->maxMp);
-            Gfx_SetPartsNumber(obj, 0x20, 4, D_80050720->mp);
+            Gfx_SetPartsNumber(obj, 4, 4, Save_GameStatePtr->maxHp);
+            Gfx_SetPartsNumber(obj, 8, 4, Save_GameStatePtr->hp);
+            Gfx_SetPartsNumber(obj, 0x10, 4, Save_GameStatePtr->maxMp);
+            Gfx_SetPartsNumber(obj, 0x20, 4, Save_GameStatePtr->mp);
                 break;
             case 1:
             case 3:
@@ -81,7 +81,7 @@ void Item_BuildMenuList(MenuItemWork *w) {
         w->itemCount = Item_GetBagCapacity();
         p = w->cells;
         for (; i < w->itemCount;) {
-            c->itemId = D_80050720->bagItems[i];
+            c->itemId = Save_GameStatePtr->bagItems[i];
             p->count = 0;
             p->bagSlot = i++;
             p++;
@@ -101,9 +101,9 @@ void Item_BuildMenuList(MenuItemWork *w) {
             } else if (Item_GetCategory(id) != 0x1F) {
                 continue;
             }
-            if (D_80050720->storageCounts[id] != 0) {
+            if (Save_GameStatePtr->storageCounts[id] != 0) {
                 c->itemId = id;
-                q->count = D_80050720->storageCounts[id];
+                q->count = Save_GameStatePtr->storageCounts[id];
                 q->count = q->count >= 100 ? 99 : q->count;
                 q->count = w->menuMode == 5 ? 0 : q->count;
                 q++;
@@ -167,9 +167,9 @@ void Item_MoveToStorage(Actor *a0, MenuItemWork *w) {
         snd = 0x10;
     } else {
         id = c->itemId;
-        D_80050720->storageCounts[id] += (D_80050720->storageCounts[id] + 1 < 100);
+        Save_GameStatePtr->storageCounts[id] += (Save_GameStatePtr->storageCounts[id] + 1 < 100);
         Item_RemoveFromBag(c->bagSlot);
-        st.pos = D_80050704;
+        st.pos = Menu_ItemMsgPos;
         st.packedStyle = 0x81;
         st.color = 0;
         st.strArg0 = Item_GetNameText(id);
@@ -199,17 +199,17 @@ void Item_TakeFromStorage(Actor *a0, MenuItemWork *w) {
     } else {
         n = Item_GetBagCapacity();
         for (i = 0; i < n; i++) {
-            if (D_80050720->bagItems[i] == 0) {
+            if (Save_GameStatePtr->bagItems[i] == 0) {
                 break;
             }
         }
         if (i == n) {
-            Text_OpenPacked(&w->msgTextSlot, (s32)Cd_GetFileEntry(0x1FD0124), 0x81, D_80050704);
+            Text_OpenPacked(&w->msgTextSlot, (s32)Cd_GetFileEntry(0x1FD0124), 0x81, Menu_ItemMsgPos);
             snd = 0x10;
         } else {
-            D_80050720->bagItems[i] = c->itemId;
-            D_80050720->storageCounts[c->itemId]--;
-            st.pos = D_80050704;
+            Save_GameStatePtr->bagItems[i] = c->itemId;
+            Save_GameStatePtr->storageCounts[c->itemId]--;
+            st.pos = Menu_ItemMsgPos;
             st.packedStyle = 0x81;
             st.color = 0;
             st.strArg0 = Item_GetNameText(c->itemId);
@@ -289,9 +289,9 @@ void Menu_ShowSelItemText(Actor *a0, MenuItemPickWork *o) {
     id = o->cells[idx].itemId;
     if (id != 0) {
         if (o->menuMode != 5) {
-            Text_OpenPacked(&o->nameText, Item_GetNameText(id), 0, D_80050708);
+            Text_OpenPacked(&o->nameText, Item_GetNameText(id), 0, Menu_ItemNamePos);
         }
-        Text_OpenPacked(o->descText, Item_GetDescText(id), 0x80, D_80050704);
+        Text_OpenPacked(o->descText, Item_GetDescText(id), 0x80, Menu_ItemMsgPos);
     }
 }
 
@@ -350,7 +350,7 @@ void Menu_ItemTask(Actor *a0) {
                         goto full;
                     }
                 }
-                Text_OpenPacked(&w->msgTextSlot, (s32)Cd_GetFileEntry(((s32)((u16)w->menuMode << 16) >> 16) + 0x1FD011D), 0x80, D_80050704);
+                Text_OpenPacked(&w->msgTextSlot, (s32)Cd_GetFileEntry(((s32)((u16)w->menuMode << 16) >> 16) + 0x1FD011D), 0x80, Menu_ItemMsgPos);
                 break;
             }
             Task_NextState1(a0);
@@ -366,10 +366,10 @@ void Menu_ItemTask(Actor *a0) {
                     Menu_DrawItemGrid(w, 0);
                 }
                 Task_SetState1(a0, 1);
-            } else if (D_8005F6F0[0].triangle > 0) {
+            } else if (Pad_State[0].triangle > 0) {
                 Snd_PlayById(0xB, 0);
                 Task_SetState0(a0, 2);
-            } else if (D_8005F6F0[0].cross > 0) {
+            } else if (Pad_State[0].cross > 0) {
                 switch (w->menuMode) {
                 case 1:
                     Menu_PickItemToUse(a0, (MenuItemPickWork *)w);
@@ -398,7 +398,7 @@ void Menu_ItemTask(Actor *a0) {
                 if (Math_RampToZero((s32)a0, &w->fade) != 0) {
                     break;
                 }
-                Task_Create(D_80040EFC[w->nextTaskIdx].field_0, slot, D_80040EFC[w->nextTaskIdx].field_2);
+                Task_Create(Menu_ItemSubTasks[w->nextTaskIdx].field_0, slot, Menu_ItemSubTasks[w->nextTaskIdx].field_2);
                 Task_NextState2(a0);
                 break;
             case 2:
@@ -447,7 +447,7 @@ void Menu_ItemTask(Actor *a0) {
                 }
                 break;
             case 1:
-                if (D_8005F6F0[0].triangle > 0 || D_8005F6F0[0].cross > 0 || a0->stateLevel4++ >= 0x1F) {
+                if (Pad_State[0].triangle > 0 || Pad_State[0].cross > 0 || a0->stateLevel4++ >= 0x1F) {
                     Task_SetState0(a0, 2);
                 }
                 break;
@@ -460,7 +460,7 @@ void Menu_ItemTask(Actor *a0) {
         full:
             id = 0x1FD0127;
         msg:
-            Text_OpenPacked(&w->msgTextSlot, (s32)Cd_GetFileEntry(id), 0x81, D_80050704);
+            Text_OpenPacked(&w->msgTextSlot, (s32)Cd_GetFileEntry(id), 0x81, Menu_ItemMsgPos);
             Task_SetState1(a0, 5);
             break;
         }

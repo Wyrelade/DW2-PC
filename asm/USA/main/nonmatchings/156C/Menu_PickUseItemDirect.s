@@ -10,7 +10,7 @@ glabel Menu_PickUseItemDirect
     /* 809C 8001789C 6807638C */  lw         $v1, %lo(Menu_Ctx)($v1)
     /* 80A0 800178A0 21300000 */  addu       $a2, $zero, $zero
     /* 80A4 800178A4 1700888B */  lwl        $t0, %gp_rel(D_8005070F)($gp)
-    /* 80A8 800178A8 1400889B */  lwr        $t0, %gp_rel(D_8005070C)($gp)
+    /* 80A8 800178A8 1400889B */  lwr        $t0, %gp_rel(Menu_DigiMsgPos)($gp)
     /* 80AC 800178AC 00000000 */  nop
     /* 80B0 800178B0 1F00A8AB */  swl        $t0, 0x1F($sp)
     /* 80B4 800178B4 1C00A8BB */  swr        $t0, 0x1C($sp)

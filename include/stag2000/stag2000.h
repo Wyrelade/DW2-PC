@@ -71,7 +71,7 @@ typedef struct {
     /* 0x02 */ s16 y;
 } Stg20Cell;
 
-/* D_8005E620 viewed with the u16 list at 0x2C scanned by func_8006C18C. */
+/* Save_GameState viewed with the u16 list at 0x2C scanned by func_8006C18C. */
 typedef struct {
     u8 _pad00[0x01];
     /* 0x01 */ u8 field_1;
@@ -92,8 +92,8 @@ extern s16 D_800703D8[4];
 extern u8 D_80070768[24][24];
 
 /* main exe */
-extern GameState D_8005E620;
-extern s32 D_8005E628;             /* D_8005E620.field_8 as a scalar reloc */
+extern GameState Save_GameState;
+extern s32 D_8005E628;             /* Save_GameState.field_8 as a scalar reloc */
 extern u8 D_8005E6F1;
 extern void Task_DefaultDestroy(Actor *);
 extern void Task_NextState0(Actor *);
@@ -123,7 +123,7 @@ extern Stg20Cell D_8006FF34[4];
 extern Stg20Vec3 D_8006FF1C[];
 extern CVECTOR D_80063584;
 extern Halves D_80063564;
-extern s32 D_80043704[];
+extern s32 Gfx_ZeroVector[];
 
 extern void Task_SetState1(Actor *arg0, u32 arg1);
 extern TaskEntry *Task_FindNext(void);
@@ -309,7 +309,7 @@ typedef struct {
 
 extern Halves D_80063588;
 extern Stg20MenuState D_800709B0;
-extern s32 D_8005F788[];
+extern s32 Sys_GameMode[];
 
 /* func_800681A0 yes/no prompt */
 typedef struct {
@@ -333,7 +333,7 @@ typedef struct {
     u8 _pad60[0x14];
     s32 done;
 } Stg20WalkWork;
-extern u16 D_8005F728; /* D_8005F6F0[0].held as a scalar reloc */
+extern u16 D_8005F728; /* Pad_State[0].held as a scalar reloc */
 extern s32 Rand_Next();
 
 extern void Mem_FillWordsNeg1(s32 *arg0, s32 arg1);
@@ -345,7 +345,7 @@ extern void Text_Open(void *, Stg20TextArgs *);
 extern void func_800636D8(Stg20Cell *c, s32 set, s32 flag);
 
 /* ---- added by p35 agent v ---- */
-/* D_8005F788 (game mode word) viewed as its low byte (func_80066714). */
+/* Sys_GameMode (game mode word) viewed as its low byte (func_80066714). */
 typedef struct {
     /* 0x00 */ u8 lo;
 } Stg20Mode;
@@ -446,7 +446,7 @@ typedef struct {
     /* 0x100 */ s32 msgArg;
 } Stg20ItemWork;
 
-/* D_8005E620.elems[] viewed from its own symbol with the 12 skill bytes at 0x22 (func_800697AC). */
+/* Save_GameState.elems[] viewed from its own symbol with the 12 skill bytes at 0x22 (func_800697AC). */
 typedef struct {
     u8 _pad00[0x0D];
     /* 0x0D */ u8 level;
@@ -455,7 +455,7 @@ typedef struct {
     u8 _pad2E[0x2E];
 } Stg20Roster; /* size 0x5C */
 
-/* D_8005E620.elems[].name viewed from its own symbol (stride 0x5C, func_8006A000). */
+/* Save_GameState.elems[].name viewed from its own symbol (stride 0x5C, func_8006A000). */
 typedef struct {
     /* 0x00 */ u8 name[0x5C];
 } Stg20RosterName;
@@ -534,16 +534,16 @@ extern void func_8006D2C0(void *t, s32 id, Halves pos, s32 arg);
 extern Stg20Pos2 D_8006FC4C[4];
 extern Halves D_8006358C;
 extern Halves D_80063590;
-extern PadState D_8005F6F0[];
+extern PadState Pad_State[];
 extern s32 Digi_GetExpToNextLevel(s32, s32, s32);
 extern void Snd_PlayById(s32, s32);
 extern void Task_SetState0(Actor *, u32);
 extern void Task_NextState2(Actor *);
 
 extern Stg20Roster D_8005E704[];
-extern Stg20RosterName D_8005E750[];
+extern Stg20RosterName Save_RosterNames[];
 extern Stg20Cell D_8007010C[2];
-extern SysState D_8005F770;
+extern SysState Sys_State;
 extern s32 Skill_GetType(s32);
 extern void SetGeomOffset(s32, s32);
 extern void Task_NextState1(Actor *);
@@ -585,7 +585,7 @@ typedef struct {
 } Stg20ShopListWork;
 extern Stg20ShopList D_80070A08;
 extern u16 D_8005E686[0x30];
-/* D_8005E620.field_66 as a scalar reloc */
+/* Save_GameState.field_66 as a scalar reloc */
 extern void func_8006C420(u8 *out, s32 v);
 extern void Task_Create(u32, s32 *, s32);
 extern void func_80068D84(s32 id);
@@ -610,13 +610,13 @@ extern u8 D_80070594[];
 extern u8 D_800705A4[];
 extern u8 D_800705B4[];
 extern u16 D_8005E64C;
-/* D_8005E620.field_2C[0] as a scalar reloc */
+/* Save_GameState.field_2C[0] as a scalar reloc */
 extern u16 D_8005E65C;
-/* D_8005E620.field_2C[8] */
+/* Save_GameState.field_2C[8] */
 extern u16 D_8005E65E;
-/* D_8005E620.field_2C[9] */
+/* Save_GameState.field_2C[9] */
 extern u16 D_8005E660;
-/* D_8005E620.field_2C[10] */
+/* Save_GameState.field_2C[10] */
 extern u16 D_8005E662;
 extern s32 Cd_GetFileLba(s32 arg0);
 extern s32 CdControl(s32, u8 *, u8 *);
@@ -686,7 +686,7 @@ typedef struct {
 } Stg20NavWork;
 
 extern GfxTexSlot *Gfx_FindOrLoadTexSlot(s32);
-extern Halves D_8005074C;
+extern Halves Gfx_NeutralRgb;
 extern s32 D_8005F79C;
 
 extern s32 D_8006FFDC[4];
@@ -709,12 +709,12 @@ extern s32 D_8006FF58[];
 extern Stg20Cell D_800704E4[6];
 extern s32 func_8006C3B8(s32 id);
 
-/* 0xBE-byte new-game block copied to D_8005E620+0x24 (func_800667AC). */
+/* 0xBE-byte new-game block copied to Save_GameState+0x24 (func_800667AC). */
 typedef struct {
     /* 0x00 */ u16 data[0x5F];
 } Stg20StartBlock;
 
-/* D_8005E620 viewed with the start block at 0x24. */
+/* Save_GameState viewed with the start block at 0x24. */
 typedef struct {
     u8 _pad00[0x24];
     /* 0x24 */ Stg20StartBlock start;
@@ -764,7 +764,7 @@ typedef struct {
 extern Stg20Warp D_80070704[];
 extern void func_8006AD8C(Actor *a);
 
-extern u8 D_8005F794; /* D_8005F770.field_24 low byte as a scalar reloc */
+extern u8 D_8005F794; /* Sys_State.field_24 low byte as a scalar reloc */
 extern Stg20FileRec *func_8006F360(s32 i);
 
 /* Roster entry viewed with a signed word at 0x16 (func_80066B48). */
@@ -775,15 +775,15 @@ typedef struct {
     u8 _pad18[0x44];
 } Stg20RosterHp; /* size 0x5C */
 
-/* D_8005E620 viewed with the roster at 0xE4 as Stg20RosterHp (func_80066B48). */
+/* Save_GameState viewed with the roster at 0xE4 as Stg20RosterHp (func_80066B48). */
 typedef struct {
     u8 _pad00[0xE4];
     /* 0xE4 */ Stg20RosterHp elems[0x24];
 } Stg20GameRoster;
 
-extern u16 D_8005E64E; /* D_8005E620.field_2C[1] as a scalar reloc */
-extern u8 D_8005E632;  /* D_8005E620 byte 0x12 as a scalar reloc */
-extern s32 D_8005F790; /* D_8005F770.prevGameMode as a scalar reloc */
+extern u16 D_8005E64E; /* Save_GameState.field_2C[1] as a scalar reloc */
+extern u8 D_8005E632;  /* Save_GameState byte 0x12 as a scalar reloc */
+extern s32 D_8005F790; /* Sys_State.prevGameMode as a scalar reloc */
 extern s32 Item_GetBagCapacity(void);
 extern s32 func_80066A4C(s32 id);
 
@@ -794,8 +794,8 @@ extern void Gfx_FadeInFromWhite(s32);
 extern s32 D_800709EC[];
 
 extern void Digi_AddNew(s32);
-extern u16 D_8005E66E; /* D_8005E620.field_66[4] as a scalar reloc */
-extern u8 D_8005E631;  /* D_8005E620 byte 0x11 as a scalar reloc */
+extern u16 D_8005E66E; /* Save_GameState.field_66[4] as a scalar reloc */
+extern u8 D_8005E631;  /* Save_GameState byte 0x11 as a scalar reloc */
 
 
 /* D_800709B0 viewed from its field_8 (func_8006CB58 addresses D_800709B0.field_54 as 0x4C from it). */
@@ -809,7 +809,7 @@ extern Stg20MenuSub D_800709B8;
 extern s32 Skill_GetNameText(s32);
 extern Halves D_80063594;
 extern Halves D_80063598;
-extern s32 D_8005F70C; /* D_8005F6F0[0].triangle as a scalar reloc */
+extern s32 D_8005F70C; /* Pad_State[0].triangle as a scalar reloc */
 extern void Item_RemoveFromBag(s32 i);
 
 /* Digimon info page work: 13 texts and the roster entry shown (func_80069068). */
@@ -867,8 +867,8 @@ extern void Snd_UnloadSlot(s32 idx);
 extern void Snd_SetSlotContent(s32 idx, s32 v);
 extern void Mem_Zero(void *a0, s32 a1);
 extern s32 Snd_AnySlotLoading(void);
-extern s32 D_80050764;
-extern s32 D_8005F700; /* D_8005F6F0[0].circle as a scalar reloc */
+extern s32 Menu_TopMenuResult;
+extern s32 D_8005F700; /* Pad_State[0].circle as a scalar reloc */
 
 /* Work of the stage main task (func_80065FB8). */
 typedef struct {
@@ -928,7 +928,7 @@ typedef struct {
     /* 0x70 */ s32 timer;
 } Stg20NpcWork;
 
-extern s32 D_8005F704; /* D_8005F6F0[0].cross as a scalar reloc */
+extern s32 D_8005F704; /* Pad_State[0].cross as a scalar reloc */
 extern s32 D_80070624[10];
 extern s32 D_8007064C[10];
 

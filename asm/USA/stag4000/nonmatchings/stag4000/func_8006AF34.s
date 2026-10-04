@@ -60,8 +60,8 @@ glabel func_8006AF34
   jlabel .L8006B008
     /* 7CA8 8006B008 9DAB010C */  jal        func_8006AE74
     /* 7CAC 8006B00C 00000000 */   nop
-    /* 7CB0 8006B010 0680023C */  lui        $v0, %hi(D_8005F6F0)
-    /* 7CB4 8006B014 F0F64324 */  addiu      $v1, $v0, %lo(D_8005F6F0)
+    /* 7CB0 8006B010 0680023C */  lui        $v0, %hi(Pad_State)
+    /* 7CB4 8006B014 F0F64324 */  addiu      $v1, $v0, %lo(Pad_State)
     /* 7CB8 8006B018 1C00628C */  lw         $v0, 0x1C($v1)
     /* 7CBC 8006B01C 00000000 */  nop
     /* 7CC0 8006B020 0C004018 */  blez       $v0, .L8006B054
@@ -92,8 +92,8 @@ glabel func_8006AF34
     /* 7D1C 8006B07C B0004290 */  lbu        $v0, 0xB0($v0)
     /* 7D20 8006B080 00000000 */  nop
     /* 7D24 8006B084 E00062A0 */  sb         $v0, 0xE0($v1)
-    /* 7D28 8006B088 0580023C */  lui        $v0, %hi(D_80050720)
-    /* 7D2C 8006B08C 2007428C */  lw         $v0, %lo(D_80050720)($v0)
+    /* 7D28 8006B088 0580023C */  lui        $v0, %hi(Save_GameStatePtr)
+    /* 7D2C 8006B08C 2007428C */  lw         $v0, %lo(Save_GameStatePtr)($v0)
     /* 7D30 8006B090 602B838C */  lw         $v1, %lo(D_80072B60)($a0)
     /* 7D34 8006B094 66004424 */  addiu      $a0, $v0, 0x66
     /* 7D38 8006B098 E0006390 */  lbu        $v1, 0xE0($v1)
@@ -178,8 +178,8 @@ glabel func_8006AF34
     /* 7E54 8006B1B4 21202002 */   addu      $a0, $s1, $zero
     /* 7E58 8006B1B8 7745000C */  jal        Task_SetState1
     /* 7E5C 8006B1BC 01000524 */   addiu     $a1, $zero, 0x1
-    /* 7E60 8006B1C0 0580023C */  lui        $v0, %hi(D_80050720)
-    /* 7E64 8006B1C4 2007428C */  lw         $v0, %lo(D_80050720)($v0)
+    /* 7E60 8006B1C0 0580023C */  lui        $v0, %hi(Save_GameStatePtr)
+    /* 7E64 8006B1C4 2007428C */  lw         $v0, %lo(Save_GameStatePtr)($v0)
     /* 7E68 8006B1C8 602B038E */  lw         $v1, %lo(D_80072B60)($s0)
     /* 7E6C 8006B1CC 00004290 */  lbu        $v0, 0x0($v0)
     /* 7E70 8006B1D0 7EAC0108 */  j          .L8006B1F8

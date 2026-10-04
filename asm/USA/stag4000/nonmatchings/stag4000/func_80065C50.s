@@ -16,9 +16,9 @@ glabel func_80065C50
     /* 2920 80065C80 80100200 */  sll        $v0, $v0, 2
     /* 2924 80065C84 21306200 */  addu       $a2, $v1, $v0
     /* 2928 80065C88 21C80000 */  addu       $t9, $zero, $zero
-    /* 292C 80065C8C 0680023C */  lui        $v0, %hi(D_8005F770)
+    /* 292C 80065C8C 0680023C */  lui        $v0, %hi(Sys_State)
     /* 2930 80065C90 0C00B3AF */  sw         $s3, 0xC($sp)
-    /* 2934 80065C94 70F75324 */  addiu      $s3, $v0, %lo(D_8005F770)
+    /* 2934 80065C94 70F75324 */  addiu      $s3, $v0, %lo(Sys_State)
     /* 2938 80065C98 FF000F3C */  lui        $t7, (0xFFFFFF >> 16)
     /* 293C 80065C9C FFFFEF35 */  ori        $t7, $t7, (0xFFFFFF & 0xFFFF)
     /* 2940 80065CA0 0400B1AF */  sw         $s1, 0x4($sp)

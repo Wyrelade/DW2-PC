@@ -25,12 +25,12 @@ glabel Stg11_ScanTransferCards
     /* CF4 80064054 21A8A202 */  addu       $s5, $s5, $v0
     /* CF8 80064058 18000224 */  addiu      $v0, $zero, 0x18
     /* CFC 8006405C 21900000 */  addu       $s2, $zero, $zero
-    /* D00 80064060 0580133C */  lui        $s3, %hi(D_80050720)
+    /* D00 80064060 0580133C */  lui        $s3, %hi(Save_GameStatePtr)
     /* D04 80064064 21884002 */  addu       $s1, $s2, $zero
     /* D08 80064068 3801C2A7 */  sh         $v0, 0x138($fp)
     /* D0C 8006406C 1800A0A7 */  sh         $zero, 0x18($sp)
   .L80064070:
-    /* D10 80064070 2007628E */  lw         $v0, %lo(D_80050720)($s3)
+    /* D10 80064070 2007628E */  lw         $v0, %lo(Save_GameStatePtr)($s3)
     /* D14 80064074 00000000 */  nop
     /* D18 80064078 21105100 */  addu       $v0, $v0, $s1
     /* D1C 8006407C E4004390 */  lbu        $v1, 0xE4($v0)
@@ -42,7 +42,7 @@ glabel Stg11_ScanTransferCards
     /* D34 80064094 FFFF4224 */  addiu      $v0, $v0, -0x1
     /* D38 80064098 3801C2A7 */  sh         $v0, 0x138($fp)
   .L8006409C:
-    /* D3C 8006409C 2007628E */  lw         $v0, %lo(D_80050720)($s3)
+    /* D3C 8006409C 2007628E */  lw         $v0, %lo(Save_GameStatePtr)($s3)
     /* D40 800640A0 00000000 */  nop
     /* D44 800640A4 21185100 */  addu       $v1, $v0, $s1
     /* D48 800640A8 E4006290 */  lbu        $v0, 0xE4($v1)
@@ -57,7 +57,7 @@ glabel Stg11_ScanTransferCards
     /* D6C 800640CC 2A800202 */  slt        $s0, $s0, $v0
     /* D70 800640D0 08000012 */  beqz       $s0, .L800640F4
     /* D74 800640D4 00000000 */   nop
-    /* D78 800640D8 2007628E */  lw         $v0, %lo(D_80050720)($s3)
+    /* D78 800640D8 2007628E */  lw         $v0, %lo(Save_GameStatePtr)($s3)
     /* D7C 800640DC 00000000 */  nop
     /* D80 800640E0 21105100 */  addu       $v0, $v0, $s1
     /* D84 800640E4 E5004490 */  lbu        $a0, 0xE5($v0)
@@ -134,9 +134,9 @@ glabel Stg11_ScanTransferCards
     /* E8C 800641EC 2000A524 */   addiu     $a1, $a1, 0x20
   .L800641F0:
     /* E90 800641F0 2B009214 */  bne        $a0, $s2, .L800642A0
-    /* E94 800641F4 0580063C */   lui       $a2, %hi(D_80050720)
+    /* E94 800641F4 0580063C */   lui       $a2, %hi(Save_GameStatePtr)
     /* E98 800641F8 12002296 */  lhu        $v0, 0x12($s1)
-    /* E9C 800641FC 2007C58C */  lw         $a1, %lo(D_80050720)($a2)
+    /* E9C 800641FC 2007C58C */  lw         $a1, %lo(Save_GameStatePtr)($a2)
     /* EA0 80064200 1000A68F */  lw         $a2, 0x10($sp)
     /* EA4 80064204 40100200 */  sll        $v0, $v0, 1
     /* EA8 80064208 21104600 */  addu       $v0, $v0, $a2

@@ -4,8 +4,8 @@ glabel GsSetRefView2
     /* 1C964 8002C164 48FFBD27 */  addiu      $sp, $sp, -0xB8
     /* 1C968 8002C168 A800B2AF */  sw         $s2, 0xA8($sp)
     /* 1C96C 8002C16C 21908000 */  addu       $s2, $a0, $zero
-    /* 1C970 8002C170 0680043C */  lui        $a0, %hi(D_80061A08)
-    /* 1C974 8002C174 081A8424 */  addiu      $a0, $a0, %lo(D_80061A08)
+    /* 1C970 8002C170 0680043C */  lui        $a0, %hi(GsWSMATRIX)
+    /* 1C974 8002C174 081A8424 */  addiu      $a0, $a0, %lo(GsWSMATRIX)
     /* 1C978 8002C178 B000BFAF */  sw         $ra, 0xB0($sp)
     /* 1C97C 8002C17C AC00B3AF */  sw         $s3, 0xAC($sp)
     /* 1C980 8002C180 A400B1AF */  sw         $s1, 0xA4($sp)
@@ -177,8 +177,8 @@ glabel GsSetRefView2
     /* 1CBE8 8002C3E8 03340600 */  sra        $a2, $a2, 16
     /* 1CBEC 8002C3EC 31AF000C */  jal        Math_MakeAxisRotMatrix
     /* 1CBF0 8002C3F0 78000724 */   addiu     $a3, $zero, 0x78
-    /* 1CBF4 8002C3F4 0680043C */  lui        $a0, %hi(D_80061A08)
-    /* 1CBF8 8002C3F8 081A8424 */  addiu      $a0, $a0, %lo(D_80061A08)
+    /* 1CBF4 8002C3F4 0680043C */  lui        $a0, %hi(GsWSMATRIX)
+    /* 1CBF8 8002C3F8 081A8424 */  addiu      $a0, $a0, %lo(GsWSMATRIX)
     /* 1CBFC 8002C3FC 89B4000C */  jal        MulMatrix
     /* 1CC00 8002C400 21280002 */   addu      $a1, $s0, $zero
     /* 1CC04 8002C404 84002012 */  beqz       $s1, .L8002C618
@@ -325,13 +325,13 @@ glabel GsSetRefView2
     /* 1CDFC 8002C5FC 03340600 */  sra        $a2, $a2, 16
     /* 1CE00 8002C600 31AF000C */  jal        Math_MakeAxisRotMatrix
     /* 1CE04 8002C604 79000724 */   addiu     $a3, $zero, 0x79
-    /* 1CE08 8002C608 0680043C */  lui        $a0, %hi(D_80061A08)
-    /* 1CE0C 8002C60C 081A8424 */  addiu      $a0, $a0, %lo(D_80061A08)
+    /* 1CE08 8002C608 0680043C */  lui        $a0, %hi(GsWSMATRIX)
+    /* 1CE0C 8002C60C 081A8424 */  addiu      $a0, $a0, %lo(GsWSMATRIX)
     /* 1CE10 8002C610 89B4000C */  jal        MulMatrix
     /* 1CE14 8002C614 21280002 */   addu      $a1, $s0, $zero
   .L8002C618:
-    /* 1CE18 8002C618 0680113C */  lui        $s1, %hi(D_80061A08)
-    /* 1CE1C 8002C61C 081A3126 */  addiu      $s1, $s1, %lo(D_80061A08)
+    /* 1CE18 8002C618 0680113C */  lui        $s1, %hi(GsWSMATRIX)
+    /* 1CE1C 8002C61C 081A3126 */  addiu      $s1, $s1, %lo(GsWSMATRIX)
     /* 1CE20 8002C620 21202002 */  addu       $a0, $s1, $zero
     /* 1CE24 8002C624 0000428E */  lw         $v0, 0x0($s2)
     /* 1CE28 8002C628 9000B327 */  addiu      $s3, $sp, 0x90

@@ -3,8 +3,8 @@ nonmatching Text_UpdateAllBoxes, 0x11C0
 glabel Text_UpdateAllBoxes
     /* B1C8 8001A9C8 30FFBD27 */  addiu      $sp, $sp, -0xD0
     /* B1CC 8001A9CC 04000724 */  addiu      $a3, $zero, 0x4
-    /* B1D0 8001A9D0 0680083C */  lui        $t0, %hi(D_8005F770)
-    /* B1D4 8001A9D4 70F70825 */  addiu      $t0, $t0, %lo(D_8005F770)
+    /* B1D0 8001A9D0 0680083C */  lui        $t0, %hi(Sys_State)
+    /* B1D4 8001A9D4 70F70825 */  addiu      $t0, $t0, %lo(Sys_State)
     /* B1D8 8001A9D8 CC00BFAF */  sw         $ra, 0xCC($sp)
     /* B1DC 8001A9DC C800BEAF */  sw         $fp, 0xC8($sp)
     /* B1E0 8001A9E0 C400B7AF */  sw         $s7, 0xC4($sp)
@@ -48,9 +48,9 @@ glabel Text_UpdateAllBoxes
     /* B274 8001AA74 00000000 */  nop
     /* B278 8001AA78 2B00A8AB */  swl        $t0, 0x2B($sp)
     /* B27C 8001AA7C 2800A8BB */  swr        $t0, 0x28($sp)
-    /* B280 8001AA80 0680083C */  lui        $t0, %hi(D_8005F770)
+    /* B280 8001AA80 0680083C */  lui        $t0, %hi(Sys_State)
     /* B284 8001AA84 3100C292 */  lbu        $v0, 0x31($s6)
-    /* B288 8001AA88 70F70825 */  addiu      $t0, $t0, %lo(D_8005F770)
+    /* B288 8001AA88 70F70825 */  addiu      $t0, $t0, %lo(Sys_State)
     /* B28C 8001AA8C 8800A0A3 */  sb         $zero, 0x88($sp)
     /* B290 8001AA90 80100200 */  sll        $v0, $v0, 2
     /* B294 8001AA94 21104800 */  addu       $v0, $v0, $t0
@@ -68,8 +68,8 @@ glabel Text_UpdateAllBoxes
     /* B2C4 8001AAC4 0600C286 */  lh         $v0, 0x6($s6)
     /* B2C8 8001AAC8 00000000 */  nop
     /* B2CC 8001AACC 13004010 */  beqz       $v0, .L8001AB1C
-    /* B2D0 8001AAD0 0680093C */   lui       $t1, %hi(D_8005F770)
-    /* B2D4 8001AAD4 70F72925 */  addiu      $t1, $t1, %lo(D_8005F770)
+    /* B2D0 8001AAD0 0680093C */   lui       $t1, %hi(Sys_State)
+    /* B2D4 8001AAD4 70F72925 */  addiu      $t1, $t1, %lo(Sys_State)
     /* B2D8 8001AAD8 2100C292 */  lbu        $v0, 0x21($s6)
     /* B2DC 8001AADC 08002391 */  lbu        $v1, 0x8($t1)
     /* B2E0 8001AAE0 00000000 */  nop
@@ -201,9 +201,9 @@ glabel Text_UpdateAllBoxes
     /* B4B4 8001ACB4 6800AA8F */  lw         $t2, 0x68($sp)
     /* B4B8 8001ACB8 00000000 */  nop
     /* B4BC 8001ACBC 29004A14 */  bne        $v0, $t2, .L8001AD64
-    /* B4C0 8001ACC0 0680073C */   lui       $a3, %hi(D_8005F6F0)
+    /* B4C0 8001ACC0 0680073C */   lui       $a3, %hi(Pad_State)
     /* B4C4 8001ACC4 30004292 */  lbu        $v0, 0x30($s2)
-    /* B4C8 8001ACC8 F0F6E724 */  addiu      $a3, $a3, %lo(D_8005F6F0)
+    /* B4C8 8001ACC8 F0F6E724 */  addiu      $a3, $a3, %lo(Pad_State)
     /* B4CC 8001ACCC 80110200 */  sll        $v0, $v0, 6
     /* B4D0 8001ACD0 21104700 */  addu       $v0, $v0, $a3
     /* B4D4 8001ACD4 1400428C */  lw         $v0, 0x14($v0)
@@ -219,8 +219,8 @@ glabel Text_UpdateAllBoxes
     /* B4FC 8001ACFC 596B0008 */  j          .L8001AD64
     /* B500 8001AD00 00000000 */   nop
   .L8001AD04:
-    /* B504 8001AD04 0680093C */  lui        $t1, %hi(D_8005F770)
-    /* B508 8001AD08 70F72925 */  addiu      $t1, $t1, %lo(D_8005F770)
+    /* B504 8001AD04 0680093C */  lui        $t1, %hi(Sys_State)
+    /* B508 8001AD08 70F72925 */  addiu      $t1, $t1, %lo(Sys_State)
     /* B50C 8001AD0C 4800A88F */  lw         $t0, 0x48($sp)
     /* B510 8001AD10 0800228D */  lw         $v0, 0x8($t1)
     /* B514 8001AD14 280A038D */  lw         $v1, 0xA28($t0)
@@ -493,9 +493,9 @@ glabel Text_UpdateAllBoxes
     /* B8D4 8001B0D4 00000000 */   nop
   .L8001B0D8:
     /* B8D8 8001B0D8 01001424 */  addiu      $s4, $zero, 0x1
-    /* B8DC 8001B0DC 0680093C */  lui        $t1, %hi(D_8005F6F0)
+    /* B8DC 8001B0DC 0680093C */  lui        $t1, %hi(Pad_State)
     /* B8E0 8001B0E0 30004292 */  lbu        $v0, 0x30($s2)
-    /* B8E4 8001B0E4 F0F62925 */  addiu      $t1, $t1, %lo(D_8005F6F0)
+    /* B8E4 8001B0E4 F0F62925 */  addiu      $t1, $t1, %lo(Pad_State)
     /* B8E8 8001B0E8 270054A2 */  sb         $s4, 0x27($s2)
     /* B8EC 8001B0EC 80110200 */  sll        $v0, $v0, 6
     /* B8F0 8001B0F0 21204900 */  addu       $a0, $v0, $t1
@@ -549,8 +549,8 @@ glabel Text_UpdateAllBoxes
     /* B99C 8001B19C BC6E0008 */  j          .L8001BAF0
     /* B9A0 8001B1A0 2800A2A7 */   sh        $v0, 0x28($sp)
   jlabel .L8001B1A4
-    /* B9A4 8001B1A4 0680083C */  lui        $t0, %hi(D_8005F770)
-    /* B9A8 8001B1A8 70F70825 */  addiu      $t0, $t0, %lo(D_8005F770)
+    /* B9A4 8001B1A4 0680083C */  lui        $t0, %hi(Sys_State)
+    /* B9A8 8001B1A8 70F70825 */  addiu      $t0, $t0, %lo(Sys_State)
     /* B9AC 8001B1AC 00002292 */  lbu        $v0, 0x0($s1)
     /* B9B0 8001B1B0 1800038D */  lw         $v1, 0x18($t0)
     /* B9B4 8001B1B4 F6004238 */  xori       $v0, $v0, 0xF6
@@ -844,8 +844,8 @@ glabel Text_UpdateAllBoxes
     /* BDC4 8001B5C4 0F001032 */   andi      $s0, $s0, 0xF
     /* BDC8 8001B5C8 07000224 */  addiu      $v0, $zero, 0x7
     /* BDCC 8001B5CC 07000212 */  beq        $s0, $v0, .L8001B5EC
-    /* BDD0 8001B5D0 0480033C */   lui       $v1, %hi(D_8004142C)
-    /* BDD4 8001B5D4 2C146324 */  addiu      $v1, $v1, %lo(D_8004142C)
+    /* BDD0 8001B5D0 0480033C */   lui       $v1, %hi(Text_SfxIds)
+    /* BDD4 8001B5D4 2C146324 */  addiu      $v1, $v1, %lo(Text_SfxIds)
     /* BDD8 8001B5D8 40101000 */  sll        $v0, $s0, 1
     /* BDDC 8001B5DC 21104300 */  addu       $v0, $v0, $v1
     /* BDE0 8001B5E0 00004484 */  lh         $a0, 0x0($v0)
@@ -893,44 +893,44 @@ glabel Text_UpdateAllBoxes
     /* BE74 8001B674 05006214 */  bne        $v1, $v0, .L8001B68C
     /* BE78 8001B678 FD000224 */   addiu     $v0, $zero, 0xFD
     /* BE7C 8001B67C 05060224 */  addiu      $v0, $zero, 0x605
-    /* BE80 8001B680 06800A3C */  lui        $t2, %hi(D_8005F770)
+    /* BE80 8001B680 06800A3C */  lui        $t2, %hi(Sys_State)
     /* BE84 8001B684 BB6D0008 */  j          .L8001B6EC
-    /* BE88 8001B688 70F74A25 */   addiu     $t2, $t2, %lo(D_8005F770)
+    /* BE88 8001B688 70F74A25 */   addiu     $t2, $t2, %lo(Sys_State)
   .L8001B68C:
     /* BE8C 8001B68C 06006214 */  bne        $v1, $v0, .L8001B6A8
     /* BE90 8001B690 FE000224 */   addiu     $v0, $zero, 0xFE
     /* BE94 8001B694 00050224 */  addiu      $v0, $zero, 0x500
-    /* BE98 8001B698 0680073C */  lui        $a3, %hi(D_8005F770)
-    /* BE9C 8001B69C 70F7E724 */  addiu      $a3, $a3, %lo(D_8005F770)
+    /* BE98 8001B698 0680073C */  lui        $a3, %hi(Sys_State)
+    /* BE9C 8001B69C 70F7E724 */  addiu      $a3, $a3, %lo(Sys_State)
     /* BEA0 8001B6A0 BC6D0008 */  j          .L8001B6F0
     /* BEA4 8001B6A4 1C00E2AC */   sw        $v0, 0x1C($a3)
   .L8001B6A8:
     /* BEA8 8001B6A8 06006214 */  bne        $v1, $v0, .L8001B6C4
     /* BEAC 8001B6AC FF000224 */   addiu     $v0, $zero, 0xFF
     /* BEB0 8001B6B0 04040224 */  addiu      $v0, $zero, 0x404
-    /* BEB4 8001B6B4 0680083C */  lui        $t0, %hi(D_8005F770)
-    /* BEB8 8001B6B8 70F70825 */  addiu      $t0, $t0, %lo(D_8005F770)
+    /* BEB4 8001B6B4 0680083C */  lui        $t0, %hi(Sys_State)
+    /* BEB8 8001B6B8 70F70825 */  addiu      $t0, $t0, %lo(Sys_State)
     /* BEBC 8001B6BC BC6D0008 */  j          .L8001B6F0
     /* BEC0 8001B6C0 1C0002AD */   sw        $v0, 0x1C($t0)
   .L8001B6C4:
     /* BEC4 8001B6C4 06006214 */  bne        $v1, $v0, .L8001B6E0
-    /* BEC8 8001B6C8 06800A3C */   lui       $t2, %hi(D_8005F770)
+    /* BEC8 8001B6C8 06800A3C */   lui       $t2, %hi(Sys_State)
     /* BECC 8001B6CC 05040224 */  addiu      $v0, $zero, 0x405
-    /* BED0 8001B6D0 0680093C */  lui        $t1, %hi(D_8005F770)
-    /* BED4 8001B6D4 70F72925 */  addiu      $t1, $t1, %lo(D_8005F770)
+    /* BED0 8001B6D0 0680093C */  lui        $t1, %hi(Sys_State)
+    /* BED4 8001B6D4 70F72925 */  addiu      $t1, $t1, %lo(Sys_State)
     /* BED8 8001B6D8 BC6D0008 */  j          .L8001B6F0
     /* BEDC 8001B6DC 1C0022AD */   sw        $v0, 0x1C($t1)
   .L8001B6E0:
     /* BEE0 8001B6E0 00002292 */  lbu        $v0, 0x0($s1)
-    /* BEE4 8001B6E4 70F74A25 */  addiu      $t2, $t2, %lo(D_8005F770)
+    /* BEE4 8001B6E4 70F74A25 */  addiu      $t2, $t2, %lo(Sys_State)
     /* BEE8 8001B6E8 00034224 */  addiu      $v0, $v0, 0x300
   .L8001B6EC:
     /* BEEC 8001B6EC 1C0042AD */  sw         $v0, 0x1C($t2)
   .L8001B6F0:
     /* BEF0 8001B6F0 01003126 */  addiu      $s1, $s1, 0x1
-    /* BEF4 8001B6F4 0680073C */  lui        $a3, %hi(D_8005F770)
+    /* BEF4 8001B6F4 0680073C */  lui        $a3, %hi(Sys_State)
     /* BEF8 8001B6F8 00002292 */  lbu        $v0, 0x0($s1)
-    /* BEFC 8001B6FC 70F7E724 */  addiu      $a3, $a3, %lo(D_8005F770)
+    /* BEFC 8001B6FC 70F7E724 */  addiu      $a3, $a3, %lo(Sys_State)
     /* BF00 8001B700 BC6E0008 */  j          .L8001BAF0
     /* BF04 8001B704 2400E2AC */   sw        $v0, 0x24($a3)
   jlabel .L8001B708
@@ -993,15 +993,15 @@ glabel Text_UpdateAllBoxes
     /* BFE0 8001B7E0 10006014 */  bnez       $v1, .L8001B824
     /* BFE4 8001B7E4 FFFF6224 */   addiu     $v0, $v1, -0x1
     /* BFE8 8001B7E8 08006010 */  beqz       $v1, .L8001B80C
-    /* BFEC 8001B7EC 0480023C */   lui       $v0, %hi(D_80041440)
+    /* BFEC 8001B7EC 0480023C */   lui       $v0, %hi(Text_BuiltinStrings)
     /* BFF0 8001B7F0 0F6E0008 */  j          .L8001B83C
-    /* BFF4 8001B7F4 40144224 */   addiu     $v0, $v0, %lo(D_80041440)
+    /* BFF4 8001B7F4 40144224 */   addiu     $v0, $v0, %lo(Text_BuiltinStrings)
   .L8001B7F8:
     /* BFF8 8001B7F8 05000224 */  addiu      $v0, $zero, 0x5
     /* BFFC 8001B7FC 06006210 */  beq        $v1, $v0, .L8001B818
-    /* C000 8001B800 0480023C */   lui       $v0, %hi(D_80041440)
+    /* C000 8001B800 0480023C */   lui       $v0, %hi(Text_BuiltinStrings)
     /* C004 8001B804 0E6E0008 */  j          .L8001B838
-    /* C008 8001B808 40144224 */   addiu     $v0, $v0, %lo(D_80041440)
+    /* C008 8001B808 40144224 */   addiu     $v0, $v0, %lo(Text_BuiltinStrings)
   .L8001B80C:
     /* C00C 8001B80C 0680023C */  lui        $v0, %hi(D_8005E633)
     /* C010 8001B810 156E0008 */  j          .L8001B854
@@ -1058,8 +1058,8 @@ glabel Text_UpdateAllBoxes
     /* C0B0 8001B8B0 12200000 */  mflo       $a0
     /* C0B4 8001B8B4 10280000 */  mfhi       $a1
     /* C0B8 8001B8B8 09000224 */  addiu      $v0, $zero, 0x9
-    /* C0BC 8001B8BC 0580073C */  lui        $a3, %hi(D_8005074C)
-    /* C0C0 8001B8C0 4C07E724 */  addiu      $a3, $a3, %lo(D_8005074C)
+    /* C0BC 8001B8BC 0580073C */  lui        $a3, %hi(Gfx_NeutralRgb)
+    /* C0C0 8001B8C0 4C07E724 */  addiu      $a3, $a3, %lo(Gfx_NeutralRgb)
     /* C0C4 8001B8C4 0300E888 */  lwl        $t0, 0x3($a3)
     /* C0C8 8001B8C8 0000E898 */  lwr        $t0, 0x0($a3)
     /* C0CC 8001B8CC 00000000 */  nop
@@ -1129,14 +1129,14 @@ glabel Text_UpdateAllBoxes
     /* C1CC 8001B9CC 25186200 */  or         $v1, $v1, $v0
     /* C1D0 8001B9D0 ECFF63A6 */  sh         $v1, -0x14($s3)
     /* C1D4 8001B9D4 0000A28C */  lw         $v0, 0x0($a1)
-    /* C1D8 8001B9D8 0680073C */  lui        $a3, %hi(D_8005F770)
+    /* C1D8 8001B9D8 0680073C */  lui        $a3, %hi(Sys_State)
     /* C1DC 8001B9DC 10004294 */  lhu        $v0, 0x10($v0)
-    /* C1E0 8001B9E0 70F7E724 */  addiu      $a3, $a3, %lo(D_8005F770)
+    /* C1E0 8001B9E0 70F7E724 */  addiu      $a3, $a3, %lo(Sys_State)
     /* C1E4 8001B9E4 F4FF62A6 */  sh         $v0, -0xC($s3)
     /* C1E8 8001B9E8 1001E38C */  lw         $v1, 0x110($a3)
     /* C1EC 8001B9EC 40010224 */  addiu      $v0, $zero, 0x140
     /* C1F0 8001B9F0 0D006214 */  bne        $v1, $v0, .L8001BA28
-    /* C1F4 8001B9F4 0680083C */   lui       $t0, %hi(D_8005F770)
+    /* C1F4 8001B9F4 0680083C */   lui       $t0, %hi(Sys_State)
     /* C1F8 8001B9F8 E6FF6296 */  lhu        $v0, -0x1A($s3)
     /* C1FC 8001B9FC EEFF6396 */  lhu        $v1, -0x12($s3)
     /* C200 8001BA00 40100200 */  sll        $v0, $v0, 1
@@ -1150,7 +1150,7 @@ glabel Text_UpdateAllBoxes
     /* C220 8001BA20 F6FF62A6 */  sh         $v0, -0xA($s3)
     /* C224 8001BA24 FEFF63A6 */  sh         $v1, -0x2($s3)
   .L8001BA28:
-    /* C228 8001BA28 70F70825 */  addiu      $t0, $t0, %lo(D_8005F770)
+    /* C228 8001BA28 70F70825 */  addiu      $t0, $t0, %lo(Sys_State)
     /* C22C 8001BA2C 1401038D */  lw         $v1, 0x114($t0)
     /* C230 8001BA30 F0000224 */  addiu      $v0, $zero, 0xF0
     /* C234 8001BA34 0D006214 */  bne        $v1, $v0, .L8001BA6C

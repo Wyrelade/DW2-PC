@@ -102,9 +102,9 @@ glabel Stg11_ModeMenuUpdate
     /* 6D4 80063A34 21284002 */   addu      $a1, $s2, $zero
     /* 6D8 80063A38 1F004014 */  bnez       $v0, .L80063AB8
     /* 6DC 80063A3C 0C000424 */   addiu     $a0, $zero, 0xC
-    /* 6E0 80063A40 0680023C */  lui        $v0, %hi(D_8005F6F0)
+    /* 6E0 80063A40 0680023C */  lui        $v0, %hi(Pad_State)
     /* 6E4 80063A44 24000386 */  lh         $v1, 0x24($s0)
-    /* 6E8 80063A48 F0F64224 */  addiu      $v0, $v0, %lo(D_8005F6F0)
+    /* 6E8 80063A48 F0F64224 */  addiu      $v0, $v0, %lo(Pad_State)
     /* 6EC 80063A4C 80190300 */  sll        $v1, $v1, 6
     /* 6F0 80063A50 21186200 */  addu       $v1, $v1, $v0
     /* 6F4 80063A54 1400628C */  lw         $v0, 0x14($v1)

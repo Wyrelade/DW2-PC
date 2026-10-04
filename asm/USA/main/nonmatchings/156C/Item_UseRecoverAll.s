@@ -3,8 +3,8 @@ nonmatching Item_UseRecoverAll, 0x138
 glabel Item_UseRecoverAll
     /* 2E40 80012640 E0FFBD27 */  addiu      $sp, $sp, -0x20
     /* 2E44 80012644 1000B0AF */  sw         $s0, 0x10($sp)
-    /* 2E48 80012648 0580103C */  lui        $s0, %hi(D_80050720)
-    /* 2E4C 8001264C 2007108E */  lw         $s0, %lo(D_80050720)($s0)
+    /* 2E48 80012648 0580103C */  lui        $s0, %hi(Save_GameStatePtr)
+    /* 2E4C 8001264C 2007108E */  lw         $s0, %lo(Save_GameStatePtr)($s0)
     /* 2E50 80012650 1800BFAF */  sw         $ra, 0x18($sp)
     /* 2E54 80012654 D747000C */  jal        Item_GetEffectRec
     /* 2E58 80012658 1400B1AF */   sw        $s1, 0x14($sp)

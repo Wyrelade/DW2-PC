@@ -45,7 +45,7 @@ glabel Stg11_StateCheckCard
     /* 199C 80064CFC 69006018 */  blez       $v1, .L80064EA4
     /* 19A0 80064D00 02000224 */   addiu     $v0, $zero, 0x2
     /* 19A4 80064D04 68006214 */  bne        $v1, $v0, .L80064EA8
-    /* 19A8 80064D08 0680023C */   lui       $v0, %hi(D_8005F6F0)
+    /* 19A8 80064D08 0680023C */   lui       $v0, %hi(Pad_State)
     /* 19AC 80064D0C 80000286 */  lh         $v0, 0x80($s0)
     /* 19B0 80064D10 00000000 */  nop
     /* 19B4 80064D14 02004010 */  beqz       $v0, .L80064D20
@@ -58,7 +58,7 @@ glabel Stg11_StateCheckCard
     /* 19CC 80064D2C 8545000C */  jal        Task_SetState2
     /* 19D0 80064D30 14000524 */   addiu     $a1, $zero, 0x14
     /* 19D4 80064D34 AA930108 */  j          .L80064EA8
-    /* 19D8 80064D38 0680023C */   lui       $v0, %hi(D_8005F6F0)
+    /* 19D8 80064D38 0680023C */   lui       $v0, %hi(Pad_State)
   .L80064D3C:
     /* 19DC 80064D3C 80000286 */  lh         $v0, 0x80($s0)
     /* 19E0 80064D40 84000586 */  lh         $a1, 0x84($s0)
@@ -99,7 +99,7 @@ glabel Stg11_StateCheckCard
     /* 1A54 80064DB4 8545000C */  jal        Task_SetState2
     /* 1A58 80064DB8 1E000524 */   addiu     $a1, $zero, 0x1E
     /* 1A5C 80064DBC AA930108 */  j          .L80064EA8
-    /* 1A60 80064DC0 0680023C */   lui       $v0, %hi(D_8005F6F0)
+    /* 1A60 80064DC0 0680023C */   lui       $v0, %hi(Pad_State)
   .L80064DC4:
     /* 1A64 80064DC4 80000286 */  lh         $v0, 0x80($s0)
     /* 1A68 80064DC8 84000586 */  lh         $a1, 0x84($s0)
@@ -123,7 +123,7 @@ glabel Stg11_StateCheckCard
     /* 1AA4 80064E04 6045000C */  jal        Task_NextState2
     /* 1AA8 80064E08 21202002 */   addu      $a0, $s1, $zero
     /* 1AAC 80064E0C AA930108 */  j          .L80064EA8
-    /* 1AB0 80064E10 0680023C */   lui       $v0, %hi(D_8005F6F0)
+    /* 1AB0 80064E10 0680023C */   lui       $v0, %hi(Pad_State)
   jlabel .L80064E14
     /* 1AB4 80064E14 069E010C */  jal        Stg11_CardGetResult
     /* 1AB8 80064E18 00000000 */   nop
@@ -134,7 +134,7 @@ glabel Stg11_StateCheckCard
     /* 1ACC 80064E2C 07004010 */  beqz       $v0, .L80064E4C
     /* 1AD0 80064E30 FFFF0224 */   addiu     $v0, $zero, -0x1
     /* 1AD4 80064E34 1C006210 */  beq        $v1, $v0, .L80064EA8
-    /* 1AD8 80064E38 0680023C */   lui       $v0, %hi(D_8005F6F0)
+    /* 1AD8 80064E38 0680023C */   lui       $v0, %hi(Pad_State)
     /* 1ADC 80064E3C 12006010 */  beqz       $v1, .L80064E88
     /* 1AE0 80064E40 21202002 */   addu      $a0, $s1, $zero
     /* 1AE4 80064E44 A7930108 */  j          .L80064E9C
@@ -161,17 +161,17 @@ glabel Stg11_StateCheckCard
     /* 1B28 80064E88 8545000C */  jal        Task_SetState2
     /* 1B2C 80064E8C 0A000524 */   addiu     $a1, $zero, 0xA
     /* 1B30 80064E90 AA930108 */  j          .L80064EA8
-    /* 1B34 80064E94 0680023C */   lui       $v0, %hi(D_8005F6F0)
+    /* 1B34 80064E94 0680023C */   lui       $v0, %hi(Pad_State)
   .L80064E98:
     /* 1B38 80064E98 02000524 */  addiu      $a1, $zero, 0x2
   .L80064E9C:
     /* 1B3C 80064E9C 7745000C */  jal        Task_SetState1
     /* 1B40 80064EA0 00000000 */   nop
   jlabel .L80064EA4
-    /* 1B44 80064EA4 0680023C */  lui        $v0, %hi(D_8005F6F0)
+    /* 1B44 80064EA4 0680023C */  lui        $v0, %hi(Pad_State)
   .L80064EA8:
     /* 1B48 80064EA8 7E000386 */  lh         $v1, 0x7E($s0)
-    /* 1B4C 80064EAC F0F64224 */  addiu      $v0, $v0, %lo(D_8005F6F0)
+    /* 1B4C 80064EAC F0F64224 */  addiu      $v0, $v0, %lo(Pad_State)
     /* 1B50 80064EB0 80190300 */  sll        $v1, $v1, 6
     /* 1B54 80064EB4 21186200 */  addu       $v1, $v1, $v0
     /* 1B58 80064EB8 1C00628C */  lw         $v0, 0x1C($v1)

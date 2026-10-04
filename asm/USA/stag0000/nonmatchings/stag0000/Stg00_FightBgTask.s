@@ -8,8 +8,8 @@ glabel Stg00_FightBgTask
     /* 2208 80065568 1000028E */  lw         $v0, 0x10($s0)
     /* 220C 8006556C 00000000 */  nop
     /* 2210 80065570 0D004014 */  bnez       $v0, .L800655A8
-    /* 2214 80065574 0480053C */   lui       $a1, %hi(D_80043704)
-    /* 2218 80065578 0437A524 */  addiu      $a1, $a1, %lo(D_80043704)
+    /* 2214 80065574 0480053C */   lui       $a1, %hi(Gfx_ZeroVector)
+    /* 2218 80065578 0437A524 */  addiu      $a1, $a1, %lo(Gfx_ZeroVector)
     /* 221C 8006557C 1083000C */  jal        Actor_InitTransform
     /* 2220 80065580 21300000 */   addu      $a2, $zero, $zero
     /* 2224 80065584 21200002 */  addu       $a0, $s0, $zero

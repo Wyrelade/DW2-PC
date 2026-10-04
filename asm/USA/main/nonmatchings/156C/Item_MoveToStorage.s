@@ -24,8 +24,8 @@ glabel Item_MoveToStorage
     /* 6BE4 800163E4 10000424 */   addiu     $a0, $zero, 0x10
   .L800163E8:
     /* 6BE8 800163E8 0000B094 */  lhu        $s0, 0x0($a1)
-    /* 6BEC 800163EC 0580033C */  lui        $v1, %hi(D_80050720)
-    /* 6BF0 800163F0 2007638C */  lw         $v1, %lo(D_80050720)($v1)
+    /* 6BEC 800163EC 0580033C */  lui        $v1, %hi(Save_GameStatePtr)
+    /* 6BF0 800163F0 2007638C */  lw         $v1, %lo(Save_GameStatePtr)($v1)
     /* 6BF4 800163F4 40101000 */  sll        $v0, $s0, 1
     /* 6BF8 800163F8 21186200 */  addu       $v1, $v1, $v0
     /* 6BFC 800163FC D40D6494 */  lhu        $a0, 0xDD4($v1)
@@ -40,7 +40,7 @@ glabel Item_MoveToStorage
     /* 6C20 80016420 21200002 */  addu       $a0, $s0, $zero
     /* 6C24 80016424 81000224 */  addiu      $v0, $zero, 0x81
     /* 6C28 80016428 0F00868B */  lwl        $a2, %gp_rel(D_80050707)($gp)
-    /* 6C2C 8001642C 0C00869B */  lwr        $a2, %gp_rel(D_80050704)($gp)
+    /* 6C2C 8001642C 0C00869B */  lwr        $a2, %gp_rel(Menu_ItemMsgPos)($gp)
     /* 6C30 80016430 00000000 */  nop
     /* 6C34 80016434 1F00A6AB */  swl        $a2, 0x1F($sp)
     /* 6C38 80016438 1C00A6BB */  swr        $a2, 0x1C($sp)

@@ -6,8 +6,8 @@ glabel Gpu_SkipEmptyOtEntries
     /* D0A0 8001C8A0 80100200 */  sll        $v0, $v0, 2
     /* D0A4 8001C8A4 23104400 */  subu       $v0, $v0, $a0
     /* D0A8 8001C8A8 00110200 */  sll        $v0, $v0, 4
-    /* D0AC 8001C8AC 0680033C */  lui        $v1, %hi(D_80058D28)
-    /* D0B0 8001C8B0 288D6324 */  addiu      $v1, $v1, %lo(D_80058D28)
+    /* D0AC 8001C8AC 0680033C */  lui        $v1, %hi(Gpu_OtBufEnds)
+    /* D0B0 8001C8B0 288D6324 */  addiu      $v1, $v1, %lo(Gpu_OtBufEnds)
     /* D0B4 8001C8B4 21204300 */  addu       $a0, $v0, $v1
     /* D0B8 8001C8B8 FCFF8424 */  addiu      $a0, $a0, -0x4
     /* D0BC 8001C8BC FF00063C */  lui        $a2, (0xFFFFFF >> 16)

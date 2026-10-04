@@ -17,8 +17,8 @@ glabel func_8006F730
     /* C404 8006F764 21200000 */   addu      $a0, $zero, $zero
     /* C408 8006F768 09AD000C */  jal        GsInitCoordinate2
     /* C40C 8006F76C 20000526 */   addiu     $a1, $s0, 0x20
-    /* C410 8006F770 0680023C */  lui        $v0, %hi(D_8005F788)
-    /* C414 8006F774 88F7428C */  lw         $v0, %lo(D_8005F788)($v0)
+    /* C410 8006F770 0680023C */  lui        $v0, %hi(Sys_GameMode)
+    /* C414 8006F774 88F7428C */  lw         $v0, %lo(Sys_GameMode)($v0)
     /* C418 8006F778 00000000 */  nop
     /* C41C 8006F77C 2F034228 */  slti       $v0, $v0, 0x32F
     /* C420 8006F780 0A004010 */  beqz       $v0, .L8006F7AC
@@ -56,8 +56,8 @@ glabel func_8006F730
     /* C498 8006F7F8 F7BE0108 */  j          .L8006FBDC
     /* C49C 8006F7FC 00000000 */   nop
   .L8006F800:
-    /* C4A0 8006F800 0680023C */  lui        $v0, %hi(D_8005F788)
-    /* C4A4 8006F804 88F7428C */  lw         $v0, %lo(D_8005F788)($v0)
+    /* C4A0 8006F800 0680023C */  lui        $v0, %hi(Sys_GameMode)
+    /* C4A4 8006F804 88F7428C */  lw         $v0, %lo(Sys_GameMode)($v0)
     /* C4A8 8006F808 00000000 */  nop
     /* C4AC 8006F80C 2F034228 */  slti       $v0, $v0, 0x32F
     /* C4B0 8006F810 F2004014 */  bnez       $v0, .L8006FBDC

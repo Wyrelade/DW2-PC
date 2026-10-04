@@ -4,9 +4,9 @@ glabel func_80071C14
     /* E8B4 80071C14 C8FFBD27 */  addiu      $sp, $sp, -0x38
     /* E8B8 80071C18 1400B1AF */  sw         $s1, 0x14($sp)
     /* E8BC 80071C1C 21880000 */  addu       $s1, $zero, $zero
-    /* E8C0 80071C20 0680023C */  lui        $v0, %hi(D_8005E620)
+    /* E8C0 80071C20 0680023C */  lui        $v0, %hi(Save_GameState)
     /* E8C4 80071C24 2C00B7AF */  sw         $s7, 0x2C($sp)
-    /* E8C8 80071C28 20E65724 */  addiu      $s7, $v0, %lo(D_8005E620)
+    /* E8C8 80071C28 20E65724 */  addiu      $s7, $v0, %lo(Save_GameState)
     /* E8CC 80071C2C 0780023C */  lui        $v0, %hi(D_80073CC0)
     /* E8D0 80071C30 2800B6AF */  sw         $s6, 0x28($sp)
     /* E8D4 80071C34 C03C5624 */  addiu      $s6, $v0, %lo(D_80073CC0)

@@ -36,8 +36,8 @@ glabel func_8006E920
   .L8006E998:
     /* B638 8006E998 2198C002 */  addu       $s3, $s6, $zero
   .L8006E99C:
-    /* B63C 8006E99C 0580023C */  lui        $v0, %hi(D_80050720)
-    /* B640 8006E9A0 2007428C */  lw         $v0, %lo(D_80050720)($v0)
+    /* B63C 8006E99C 0580023C */  lui        $v0, %hi(Save_GameStatePtr)
+    /* B640 8006E9A0 2007428C */  lw         $v0, %lo(Save_GameStatePtr)($v0)
     /* B644 8006E9A4 02007286 */  lh         $s2, 0x2($s3)
     /* B648 8006E9A8 66004424 */  addiu      $a0, $v0, 0x66
     /* B64C 8006E9AC FFFF0224 */  addiu      $v0, $zero, -0x1

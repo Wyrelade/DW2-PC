@@ -7,9 +7,9 @@
 
 /* Small data this unit defines (retail reaches it with %gp_rel here). The bytes
  * live in the data asm; these tentative definitions are COMMON and bind to it. */
-Halves D_8005070C;
-Halves D_80050710;
-Halves D_80050714;
+Halves Menu_DigiMsgPos;
+Halves Menu_DigiListCursorTextPos;
+Halves Menu_SkillMsgPos;
 s32 Snd_CurrentId;
 s32 Snd_SavedId;
 
@@ -86,7 +86,7 @@ void func_80017214(Actor *a0) {
     s32 n;
 
     e = &w->rows[Menu_GridIndexColMajor(w->cursor, w->gridSize)];
-    n = D_8005F6F0[0].cross;
+    n = Pad_State[0].cross;
     g = (DigiRosterSwapRec *)Menu_Ctx->field_128;
     if (n > 0) {
         switch (e->kind) {
@@ -95,7 +95,7 @@ void func_80017214(Actor *a0) {
             if (g->state >= 3) {
                 id = 0x1FD0111;
             icon:
-                Text_OpenPacked(w->field_40, Cd_GetFileEntry(id), 0x81, D_8005070C);
+                Text_OpenPacked(w->field_40, Cd_GetFileEntry(id), 0x81, Menu_DigiMsgPos);
                 break;
             }
             g->state = w->pickedIndices[3] != 0 ? 1 : 2;
@@ -103,7 +103,7 @@ void func_80017214(Actor *a0) {
             d->kind = 1;
             d->record = (s32)g;
             d->pickState = g->state;
-            Text_OpenPacked(w->field_40, Cd_GetFileEntry(0x1FD0110), 0x81, D_8005070C);
+            Text_OpenPacked(w->field_40, Cd_GetFileEntry(0x1FD0110), 0x81, Menu_DigiMsgPos);
             Menu_Ctx->field_126 = -1;
             Menu_DigiListDrawRows((MenuDigiListRowsView *)w, 0);
             Snd_PlayById(0xE, 0);
@@ -116,7 +116,7 @@ void func_80017214(Actor *a0) {
             tmp.state = k;
             *(DigiRosterSwapRec *)e->record = *g;
             *g = tmp;
-            Text_OpenPacked(w->field_40, Cd_GetFileEntry(0x1FD0112), 0x81, D_8005070C);
+            Text_OpenPacked(w->field_40, Cd_GetFileEntry(0x1FD0112), 0x81, Menu_DigiMsgPos);
             Menu_Ctx->field_126 = -1;
             Menu_DigiListDrawRows((MenuDigiListRowsView *)w, 0);
             Snd_PlayById(0xE, 0);
@@ -127,7 +127,7 @@ void func_80017214(Actor *a0) {
                 id = 0x1FD011E;
                 goto icon;
             }
-            Text_OpenPacked(w->field_40, Cd_GetFileEntry(0x1FD011F), 0x81, D_8005070C);
+            Text_OpenPacked(w->field_40, Cd_GetFileEntry(0x1FD011F), 0x81, Menu_DigiMsgPos);
             Task_SetState1(a0, 5);
             return;
         case 2:
@@ -142,7 +142,7 @@ void func_800174F8(Actor *a0) {
     MenuDigiPickRow *e = &w->rows[Menu_GridIndexColMajor(w->cursor, w->gridSize)];
     s32 k;
 
-    if (D_8005F6F0[0].cross > 0) {
+    if (Pad_State[0].cross > 0) {
         k = 0x10;
         if (e->kind == 1) {
             Menu_Ctx->field_128 = e->record;
@@ -161,7 +161,7 @@ void Menu_ConfirmMultiPick(Actor *a0) {
     MenuDigiPickRow *e = &w->rows[k];
     s32 i;
 
-    if (D_8005F6F0[0].cross > 0) {
+    if (Pad_State[0].cross > 0) {
         if (e->pickState != 2) {
             Snd_PlayById(0x10, 0);
             return;
@@ -207,9 +207,9 @@ void Menu_UseItemOnDigi(Actor *a0) {
     MenuDigiPickRow *e = &w->rows[Menu_GridIndexColMajor(w->cursor, w->gridSize)];
     TextDescHalves st;
 
-    if (D_8005F6F0[0].cross > 0) {
+    if (Pad_State[0].cross > 0) {
         if (e->kind == 1 && Item_Use(Menu_Ctx->itemId, Menu_Ctx->bagSlot, 0, e->record) != 0) {
-            st.pos = D_8005070C;
+            st.pos = Menu_DigiMsgPos;
             st.color = 0;
             st.packedStyle = 0x81;
             st.text = (s32)Cd_GetFileEntry(0x1FD00FD);
@@ -227,7 +227,7 @@ void Menu_PickUseItemDirect(Actor *a0) {
     MenuDigiPickWork *w = (MenuDigiPickWork *)a0->work;
     TextDescHalves st;
 
-    st.pos = D_8005070C;
+    st.pos = Menu_DigiMsgPos;
     st.color = 0;
     st.packedStyle = 0x81;
     if (Item_Use(Menu_Ctx->itemId, Menu_Ctx->bagSlot, 0, 0) != 0) {
@@ -246,7 +246,7 @@ void Menu_ConfirmSinglePick(Actor *a0) {
     s32 k;
     s32 c;
 
-    if (D_8005F6F0[0].cross > 0) {
+    if (Pad_State[0].cross > 0) {
         k = Menu_GridIndexColMajor(w->cursor, w->gridSize);
         if ((c = w->rows[k].kind) == 1) {
             Menu_Ctx->selRecord = (u8 *)w->rows[k].record;
@@ -263,7 +263,7 @@ void Menu_ConfirmSinglePick(Actor *a0) {
 
 void Menu_BuildDigiList(MenuDigiListBuildWork *w) {
     MenuDigiListBuildRow *r = w->rows;
-    DigiRosterEntry *el = D_80050720->elems;
+    DigiRosterEntry *el = Save_GameStatePtr->elems;
     s32 n = 0;
     s32 i;
     s32 ok;
@@ -450,7 +450,7 @@ void Menu_DigiListTask(Actor *a0) {
     switch (a0->stateLevel0) {
     case 0:
     default:
-        w->grid = D_80040F1C;
+        w->grid = Menu_DigiListGrid;
         w->scrollTop = 0;
         w->cursor[1] = 0;
         w->cursor[0] = 0;
@@ -471,11 +471,11 @@ void Menu_DigiListTask(Actor *a0) {
         case 1:
             switch (w->mode) {
             default:
-                Text_OpenPacked(&w->promptText, (s32)Cd_GetFileEntry(0x1FD00D3), 0x80, D_8005070C);
+                Text_OpenPacked(&w->promptText, (s32)Cd_GetFileEntry(0x1FD00D3), 0x80, Menu_DigiMsgPos);
                 Task_NextState1(a0);
                 break;
             case 3:
-                Text_OpenPacked(&w->promptText, (s32)Cd_GetFileEntry(0x1FD009E), 0x80, D_8005070C);
+                Text_OpenPacked(&w->promptText, (s32)Cd_GetFileEntry(0x1FD009E), 0x80, Menu_DigiMsgPos);
                 Task_NextState1(a0);
                 break;
             case 4:
@@ -483,31 +483,31 @@ void Menu_DigiListTask(Actor *a0) {
                 Task_SetState1(a0, 4);
                 break;
             case 5:
-                Text_OpenPacked(&w->promptText, (s32)Cd_GetFileEntry(w->pickCount + 0x1FD0109), 0x80, D_8005070C);
+                Text_OpenPacked(&w->promptText, (s32)Cd_GetFileEntry(w->pickCount + 0x1FD0109), 0x80, Menu_DigiMsgPos);
                 Task_NextState1(a0);
                 break;
             case 6:
-                Text_OpenPacked(&w->promptText, (s32)Cd_GetFileEntry(0x1FD010C), 0x80, D_8005070C);
+                Text_OpenPacked(&w->promptText, (s32)Cd_GetFileEntry(0x1FD010C), 0x80, Menu_DigiMsgPos);
                 Task_SetState1(a0, 5);
                 break;
             case 7:
             case 8:
-                Text_OpenPacked(&w->promptText, (s32)Cd_GetFileEntry(w->mode + 0x1FD0107), 0x80, D_8005070C);
+                Text_OpenPacked(&w->promptText, (s32)Cd_GetFileEntry(w->mode + 0x1FD0107), 0x80, Menu_DigiMsgPos);
                 id = 0x1FD0072;
                 if (w->parity != 0) {
                     id = 0x1FD009A;
                 }
-                Text_OpenPacked(&w->field_44, (s32)Cd_GetFileEntry(id), 0, D_80040F38[w->parity]);
+                Text_OpenPacked(&w->field_44, (s32)Cd_GetFileEntry(id), 0, Menu_DigiListTitlePos[w->parity]);
                 Task_NextState1(a0);
                 break;
             }
             if (w->showCursor != 0) {
-                Text_OpenPacked(&w->field_48, (s32)Cd_GetFileEntry(0x1FD00FA), 0, D_80050710);
+                Text_OpenPacked(&w->field_48, (s32)Cd_GetFileEntry(0x1FD00FA), 0, Menu_DigiListCursorTextPos);
             }
             break;
         case 2:
             if (Menu_MoveGridCursorP1((s32)w->cursor, (s32)w->grid.gridSize) == 0) {
-                if (D_8005F6F0[0].triangle > 0) {
+                if (Pad_State[0].triangle > 0) {
                     if (w->mode != 5) {
                         Snd_PlayById(0xB, 0);
                         Task_SetState0(a0, 2);
@@ -561,7 +561,7 @@ void Menu_DigiListTask(Actor *a0) {
                 Task_NextState2(a0);
                 break;
             case 2:
-                Task_Create(D_80040F28[w->field_62].field_0, slot, D_80040F28[w->field_62].field_2);
+                Task_Create(Menu_DigiListSubTasks[w->field_62].field_0, slot, Menu_DigiListSubTasks[w->field_62].field_2);
                 Task_NextState2(a0);
                 break;
             case 3:
@@ -611,7 +611,7 @@ void Menu_DigiListTask(Actor *a0) {
                 }
                 break;
             case 1:
-                if (D_8005F6F0[0].triangle > 0 || D_8005F6F0[0].cross > 0 || a0->stateLevel4++ >= 0x1F) {
+                if (Pad_State[0].triangle > 0 || Pad_State[0].cross > 0 || a0->stateLevel4++ >= 0x1F) {
                     Task_SetState0(a0, 2);
                 }
                 break;
@@ -626,10 +626,10 @@ void Menu_DigiListTask(Actor *a0) {
             case 6:
             default:
                 if (r == 1) {
-                    Text_OpenPacked(&w->promptText, (s32)Cd_GetFileEntry(0x1FD010D), 0x81, D_8005070C);
+                    Text_OpenPacked(&w->promptText, (s32)Cd_GetFileEntry(0x1FD010D), 0x81, Menu_DigiMsgPos);
                     for (i = 0; i < 0x24; i++) {
-                        if (D_80050720->elems[i].state >= 3) {
-                            D_80050720->elems[i].state = 2;
+                        if (Save_GameStatePtr->elems[i].state >= 3) {
+                            Save_GameStatePtr->elems[i].state = 2;
                         }
                     }
                     for (i = 0; i < Menu_Ctx->pickCount; i++) {
@@ -645,7 +645,7 @@ void Menu_DigiListTask(Actor *a0) {
             case 8:
                 if (r == 1) {
                     p = (u8 *)Menu_Ctx->field_128;
-                    Text_OpenPacked(&w->promptText, (s32)Cd_GetFileEntry(0x1FD0113), 0x81, D_8005070C);
+                    Text_OpenPacked(&w->promptText, (s32)Cd_GetFileEntry(0x1FD0113), 0x81, Menu_DigiMsgPos);
                     *p = 0;
                     Menu_Ctx->field_126 = -1;
                     Snd_PlayById(0xE, 0);
@@ -736,7 +736,7 @@ void Menu_DigiListDraw(Actor *actor) {
                 break;
             case 1:
                 e = (DigiRosterListView *)r->digi;
-                Gfx_HidePartsByMask(obj, f | D_80040F40[r->field_2 - 1]);
+                Gfx_HidePartsByMask(obj, f | Menu_DigiListRowMasks[r->field_2 - 1]);
                 Gfx_SetPartsNumber(obj, 0x20, 3, e->maxHp);
                 Gfx_SetPartsNumber(obj, 0x40, 3, e->hp);
                 Gfx_SetPartsNumber(obj, 0x80, 3, e->maxMp);
@@ -788,7 +788,7 @@ void Menu_DigiStatusInit(Actor *a0, s16 a1) {
     Cd_QueueFile(w->animFile);
     w->modelPhase = 0;
     w->modelScale = 0;
-    w->view = D_80040F64;
+    w->view = Menu_DigiStatusView;
     GsInitCoordinate2(0, (Coord1F668 *)&w->coord);
     w->field_148 = 1;
     w->rotSpeedY = 11;
@@ -864,20 +864,20 @@ void Menu_DigiStatusTask(Actor *a) {
             s = w->rotSpeed;
             a->childCount = 1;
             p[1] += s[1];
-            if (D_8005F6F0[0].left != 0) {
+            if (Pad_State[0].left != 0) {
                 s[1] = (s[1] - 5 < -0x22) ? -0x22 : s[1] - 5;
             }
-            if (D_8005F6F0[0].right != 0) {
+            if (Pad_State[0].right != 0) {
                 s[1] = (s[1] + 5 >= 0x23) ? 0x22 : s[1] + 5;
             }
-            if (D_8005F6F0[0].down != 0) {
+            if (Pad_State[0].down != 0) {
                 p[0] = (p[0] + 0xB > 0) ? 0 : p[0] + 0xB;
             }
-            if (D_8005F6F0[0].up != 0) {
+            if (Pad_State[0].up != 0) {
                 p[0] = (p[0] - 0xB < -0x2AA) ? -0x2AA : p[0] - 0xB;
             }
             GsSetOffset(-0xA0, p[0] * 80 / 682 + 180);
-            d = D_8005F6F0;
+            d = Pad_State;
             if (d->triangle > 0 || d->circle > 0) {
                 Task_SetState0(a, 2);
                 if (d->circle > 0) {
@@ -1125,7 +1125,7 @@ void Menu_SkillListTask(Actor *a0) {
             Text_Close(&w->numberText);
             if (k < w->records[i].count) {
                 id = w->records[i].arr[w->slot54[i].row];
-                st.pos = D_80050714;
+                st.pos = Menu_SkillMsgPos;
                 st.packedStyle = 0x80;
                 st.color = 0;
                 st.text = Skill_GetDescText(id);
@@ -1139,8 +1139,8 @@ void Menu_SkillListTask(Actor *a0) {
             Task_NextState1(a0);
             break;
         case 2:
-            t = D_8005F6F0[0].left;
-            if (t > 0 || D_8005F6F0[0].right > 0) {
+            t = Pad_State[0].left;
+            if (t > 0 || Pad_State[0].right > 0) {
                 n = w->curTab;
                 if (t > 0) {
                     n--;
@@ -1158,9 +1158,9 @@ void Menu_SkillListTask(Actor *a0) {
                     Menu_SkillListOpenNames(w, 0);
                     Snd_PlayById(0xD, 0);
                     Task_SetState1(a0, 1);
-                } else if (D_8005F6F0[0].triangle > 0 || D_8005F6F0[0].circle > 0) {
+                } else if (Pad_State[0].triangle > 0 || Pad_State[0].circle > 0) {
                     Task_SetState0(a0, 2);
-                    if (D_8005F6F0[0].circle > 0) {
+                    if (Pad_State[0].circle > 0) {
                         Menu_Ctx->confirmed = -1;
                         Snd_PlayById(0xE, 0);
                     } else {
@@ -1215,7 +1215,7 @@ void Menu_SkillListDraw(Actor *actor) {
         switch (i) {
         case 0:
             k = w->activePane;
-            v = D_80040F98[k];
+            v = Menu_SkillPaneMasks[k];
             if (w->field_AC[k].field_0 != 0) {
                 tmp = w->cursors[k];
                 tmp.field_2 = w->cursors[k].field_2 - w->scroll[k];
@@ -1318,7 +1318,7 @@ void Text_WinFrameTask(Actor *a0) {
 
 void Text_WinFrameDraw(Actor *arg0) {
     ActorWork *w = arg0->work;
-    void *e = Cd_GetFileEntry(D_80040FD0[arg0->field_8]);
+    void *e = Cd_GetFileEntry(Text_WinFrameParts[arg0->field_8]);
     Gfx_SetPartsScale(e, 0x1000, *(s16 *)w);
     Gfx_DrawParts((s32)e);
 }
@@ -1334,7 +1334,7 @@ void Snd_ServiceSlotLoads(void) {
     s32 j;
 
     for (i = 0; i < 3; i++) {
-        e = &D_80054C48[i];
+        e = &Snd_Slots[i];
         switch (e->loadState) {
         case 0:
             break;
@@ -1343,15 +1343,15 @@ void Snd_ServiceSlotLoads(void) {
                 e->loadState = 0;
                 break;
             }
-            e->vbFileId = D_80041194[e->contentId]->vbFile >> 16;
-            e->vhFileId = D_80041194[e->contentId]->vhFile >> 16;
+            e->vbFileId = Snd_BankDescs[e->contentId]->vbFile >> 16;
+            e->vhFileId = Snd_BankDescs[e->contentId]->vhFile >> 16;
             Cd_QueueFile(e->vhFileId);
             e->loadState++;
             break;
         case 2:
             if (Cd_GetFileState(e->vhFileId) == 3) {
                 src = (s32 *)Cd_GetFileSync(e->vhFileId);
-                n = D_800411FC[i];
+                n = Snd_SlotBufSizes[i];
                 dst = e->headerBuf;
                 if ((u32)src + n > 0x801FFFFF) {
                     n = 0x801FFFFC - (u32)src;
@@ -1368,13 +1368,13 @@ void Snd_ServiceSlotLoads(void) {
             e->loadState++;
             break;
         case 4:
-            e->vabId = SsVabOpenHead(Mem_GetOffsetEntry(D_80041194[e->contentId]->vhFile, e->headerBuf), i);
+            e->vabId = SsVabOpenHead(Mem_GetOffsetEntry(Snd_BankDescs[e->contentId]->vhFile, e->headerBuf), i);
             e->loadState++;
             break;
         case 5:
             if (Cd_GetFileState(e->vbFileId) == 3) {
                 Cd_LockFile(e->vbFileId);
-                e->vabId = SsVabTransBody((s32)Cd_GetFileEntry(D_80041194[e->contentId]->vbFile), e->vabId);
+                e->vabId = SsVabTransBody((s32)Cd_GetFileEntry(Snd_BankDescs[e->contentId]->vbFile), e->vabId);
                 e->loadState++;
             }
             break;
@@ -1383,7 +1383,7 @@ void Snd_ServiceSlotLoads(void) {
             e->loadState++;
         case 7:
             j = e->sepCount;
-            p = *(j + D_80041194[e->contentId]->sepOffsets);
+            p = *(j + Snd_BankDescs[e->contentId]->sepOffsets);
             if (p != 0) {
                 e->sepIds[j] = SsSepOpen(Mem_GetOffsetEntry(p, e->headerBuf), e->vabId, 0x10);
                 e->sepCount++;
@@ -1405,7 +1405,7 @@ void Snd_ServiceSlotLoads(void) {
 s32 Snd_AnySlotLoading(void) {
     s32 found = 0;
     s32 i = 0;
-    SndSlot *p = D_80054C48;
+    SndSlot *p = Snd_Slots;
     for (; i < 3; i++, p++) {
         if (p->loadState != 0) found = 1;
         if (found) break;
@@ -1420,7 +1420,7 @@ void Snd_StopAll(void) {
     s32 k;
 
     for (i = 0; i < 3; i++) {
-        p = &D_80054C48[i];
+        p = &Snd_Slots[i];
         if (p->vabId != -1) {
             for (j = 0; j < p->sepCount; j++) {
                 for (k = 0; k < 0x10; k++) {
@@ -1442,8 +1442,8 @@ void Snd_StopById(s32 id) {
         i = id >> 8;
         j = (id >> 4) & 0xF;
         k = id & 0xF;
-        if (D_80054C48[i].loadState == 0) {
-            SsSepStop(D_80054C48[i].sepIds[j], k);
+        if (Snd_Slots[i].loadState == 0) {
+            SsSepStop(Snd_Slots[i].sepIds[j], k);
         }
         if (Snd_CurrentId == id) {
             Snd_CurrentId = -1;
@@ -1455,27 +1455,27 @@ void Snd_UnloadSlot(s32 idx) {
     s32 i;
     s32 k;
 
-    if (D_80054C48[idx].vabId == -1) {
+    if (Snd_Slots[idx].vabId == -1) {
         return;
     }
-    for (i = 0; i < D_80054C48[idx].sepCount; i++) {
+    for (i = 0; i < Snd_Slots[idx].sepCount; i++) {
         for (k = 0; k < 0x10; k++) {
-            SsSepStop(D_80054C48[idx].sepIds[i], k);
+            SsSepStop(Snd_Slots[idx].sepIds[i], k);
         }
-        SsSepClose(D_80054C48[idx].sepIds[i]);
+        SsSepClose(Snd_Slots[idx].sepIds[i]);
     }
-    SsVabClose(D_80054C48[idx].vabId);
-    D_80054C48[idx].loadState = 0;
-    D_80054C48[idx].contentId = -1;
-    D_80054C48[idx].sepCount = 0;
-    D_80054C48[idx].vabId = -1;
+    SsVabClose(Snd_Slots[idx].vabId);
+    Snd_Slots[idx].loadState = 0;
+    Snd_Slots[idx].contentId = -1;
+    Snd_Slots[idx].sepCount = 0;
+    Snd_Slots[idx].vabId = -1;
 }
 
 void Snd_SetSlotContent(s32 idx, s32 v) {
-    if (D_80054C48[idx].contentId != v) {
+    if (Snd_Slots[idx].contentId != v) {
         Snd_UnloadSlot(idx);
-        D_80054C48[idx].loadState = 1;
-        D_80054C48[idx].contentId = v;
+        Snd_Slots[idx].loadState = 1;
+        Snd_Slots[idx].contentId = v;
         if (Snd_CurrentId != -1 && idx == ((Snd_CurrentId & 0xF00) >> 8)) {
             Snd_StopById(Snd_CurrentId);
         }
@@ -1493,9 +1493,9 @@ void Snd_PlayById(s32 id, s32 set) {
         i = id >> 8;
         j = (id >> 4) & 0xF;
         k = id & 0xF;
-        SsSepStop(D_80054C48[i].sepIds[j], k);
-        SsSepSetVol(D_80054C48[i].sepIds[j], k, 0x7F, 0x7F);
-        SsSepPlay(D_80054C48[i].sepIds[j], k, 1, 1);
+        SsSepStop(Snd_Slots[i].sepIds[j], k);
+        SsSepSetVol(Snd_Slots[i].sepIds[j], k, 0x7F, 0x7F);
+        SsSepPlay(Snd_Slots[i].sepIds[j], k, 1, 1);
         if (set != 0) {
             Snd_CurrentId = id;
         }
@@ -1520,7 +1520,7 @@ void Snd_Init(void) {
     s32 i;
     Ew54C48 *e;
 
-    SsSetTableSize(D_80050A48, 6, 0x10);
+    SsSetTableSize(Snd_SeqAttrTable, 6, 0x10);
     SsSetTickMode(0x1000);
     SsStart2();
     SsSetMVol(0x7F, 0x7F);
@@ -1530,12 +1530,12 @@ void Snd_Init(void) {
     SsUtSetReverbDepth(0, 0);
     SsUtReverbOn();
 
-    v0 = Mem_Alloc(D_800411FC[0] + D_800411FC[1] + D_800411FC[2], 4);
-    e = (Ew54C48 *)D_80054C48;
+    v0 = Mem_Alloc(Snd_SlotBufSizes[0] + Snd_SlotBufSizes[1] + Snd_SlotBufSizes[2], 4);
+    e = (Ew54C48 *)Snd_Slots;
     e[0].field_28 = v0;
-    v0 += D_800411FC[0];
+    v0 += Snd_SlotBufSizes[0];
     e[1].field_28 = v0;
-    v0 += D_800411FC[1];
+    v0 += Snd_SlotBufSizes[1];
     e[2].field_28 = v0;
     for (i = 0; i < 3; i++) {
         e[i].field_4 = 0;
@@ -1548,13 +1548,13 @@ void Snd_Init(void) {
     do {
         Snd_ServiceSlotLoads();
         Cd_ServiceQueue();
-    } while (D_80054C48[0].loadState != 0);
+    } while (Snd_Slots[0].loadState != 0);
 
     Snd_SetSlotContent(1, 0xE);
     do {
         Snd_ServiceSlotLoads();
         Cd_ServiceQueue();
-    } while (D_80054C48[1].loadState != 0);
+    } while (Snd_Slots[1].loadState != 0);
 }
 
 void Snd_SaveCurrentId(void) {
@@ -1588,7 +1588,7 @@ void Text_LoadFontsTask(Actor *a0) {
         return;
     }
     Gfx_FindOrLoadTexSlot(0x13A0000);
-    if ((D_8005F788[0] & 0xF00) != 0x500) {
+    if ((Sys_GameMode[0] & 0xF00) != 0x500) {
         Gfx_FindOrLoadTexSlot(0x1100000);
         Task_Create(0xA, a0->u34.children, 0);
     }
@@ -1645,10 +1645,10 @@ void Text_UpdateAllBoxes(Actor *a0) {
     Obj6A8C0 *h;
     PadState *tb;
 
-    pkt = (TextGlyphPoly *)D_8005F770.packet.addr;
+    pkt = (TextGlyphPoly *)Sys_State.packet.addr;
     slots = (TextBoxKids *)a0->u34.children;
     wk = (TextBoxWork *)a0->work;
-    tb = D_8005F6F0;
+    tb = Pad_State;
     row = 0;
     do {
         if (wk->rec[row].inUse != 0) {
@@ -1665,11 +1665,11 @@ void Text_UpdateAllBoxes(Actor *a0) {
             nF4c = line = 0;
             pos = *(Pair54 *)&r->x;
             nF4d = 0;
-            ot = D_8005F770.otLayers.u[r->otIndex];
+            ot = Sys_State.otLayers.u[r->otIndex];
             page = 0;
             r->color = r->baseColor;
             if (r->waitingInput == 0 && r->charDelay != 0) {
-                r->delayTimer += D_8005F770.frameDelta;
+                r->delayTimer += Sys_State.frameDelta;
                 if (r->delayTimer >= r->charDelay) {
                     r->visibleChars++;
                     r->delayTimer -= r->charDelay;
@@ -1741,7 +1741,7 @@ void Text_UpdateAllBoxes(Actor *a0) {
                             Snd_PlayById(0x13, 0);
                         } else {
                             stop = 1;
-                            wk->blinkTimer += D_8005F770.frameDelta;
+                            wk->blinkTimer += Sys_State.frameDelta;
                             if (wk->blinkTimer >= 0x18) {
                                 wk->blinkTimer -= 0x18;
                             }
@@ -1891,7 +1891,7 @@ void Text_UpdateAllBoxes(Actor *a0) {
                 case 0xF6:
                 case 0xF7:
                     isF6 = *s == 0xF6;
-                    mode2 = D_8005F770.gameMode / 256 == 2;
+                    mode2 = Sys_State.gameMode / 256 == 2;
                     s++;
                     if (r->cmdF6Done == nF6) {
                         switch (a0->stateLevel1) {
@@ -2015,7 +2015,7 @@ void Text_UpdateAllBoxes(Actor *a0) {
                         k4 &= 0xF;
                         if (r->soundsDone == nF4d) {
                             if (k4 != 7) {
-                                Snd_PlayById(D_8004142C[k4], 0);
+                                Snd_PlayById(Text_SfxIds[k4], 0);
                             }
                             r->soundsDone++;
                             if (k4 == 4) {
@@ -2040,18 +2040,18 @@ void Text_UpdateAllBoxes(Actor *a0) {
                     }
                     if (++a0->stateLevel2 >= 0x19) {
                         if (*s == 0xFC) {
-                            D_8005F770.nextGameMode = 0x605;
+                            Sys_State.nextGameMode = 0x605;
                         } else if (*s == 0xFD) {
-                            D_8005F770.nextGameMode = 0x500;
+                            Sys_State.nextGameMode = 0x500;
                         } else if (*s == 0xFE) {
-                            D_8005F770.nextGameMode = 0x404;
+                            Sys_State.nextGameMode = 0x404;
                         } else if (*s == 0xFF) {
-                            D_8005F770.nextGameMode = 0x405;
+                            Sys_State.nextGameMode = 0x405;
                         } else {
-                            D_8005F770.nextGameMode = *s + 0x300;
+                            Sys_State.nextGameMode = *s + 0x300;
                         }
                         s++;
-                        D_8005F770.field_24 = *s;
+                        Sys_State.field_24 = *s;
                     }
                     break;
                 case 0xF2:
@@ -2084,10 +2084,10 @@ void Text_UpdateAllBoxes(Actor *a0) {
                     Text_PushReturn((s32)(s + 1));
                     switch (k) {
                     case 0:
-                        s = &D_8005E620.field_14 - 1; /* text before the player name */
+                        s = &Save_GameState.field_14 - 1; /* text before the player name */
                         break;
                     case 5:
-                        s = &D_8005E620.field_D1 - 1; /* text before the name at 0xD1 */
+                        s = &Save_GameState.field_D1 - 1; /* text before the name at 0xD1 */
                         break;
                     case 1:
                     case 2:
@@ -2100,7 +2100,7 @@ void Text_UpdateAllBoxes(Actor *a0) {
                         }
                         break;
                     default:
-                        s = (u8 *)D_80041440[k - 6] - 1;
+                        s = (u8 *)Text_BuiltinStrings[k - 6] - 1;
                         break;
                     }
                     line--;
@@ -2122,7 +2122,7 @@ void Text_UpdateAllBoxes(Actor *a0) {
                             page = 0;
                         }
                     }
-                    pkt->c = *(Col1A9C8 *)&D_8005074C;
+                    pkt->c = *(Col1A9C8 *)&Gfx_NeutralRgb;
                     pkt->tag.b.len = 9;
                     pkt->c.code = 0x2C;
                     pkt->x0 = pkt->x2 = pos.field_0;
@@ -2135,13 +2135,13 @@ void Text_UpdateAllBoxes(Actor *a0) {
                     pkt->v2 = pkt->v3 = pkt->v0 + glyph.field_2;
                     pkt->clut = ((font[page]->vramY + (r->color + 0xF8)) << 6) | ((font[page]->vramX >> 4) & 0x3F);
                     pkt->tpage = font[page]->tpage;
-                    if (D_8005F770.centerX.s == 0x140) {
+                    if (Sys_State.centerX.s == 0x140) {
                         pkt->x0 *= 2;
                         pkt->x1 *= 2;
                         pkt->x2 *= 2;
                         pkt->x3 *= 2;
                     }
-                    if (D_8005F770.centerY.s == 0xF0) {
+                    if (Sys_State.centerY.s == 0xF0) {
                         pkt->y0 *= 2;
                         pkt->y1 *= 2;
                         pkt->y2 *= 2;
@@ -2165,7 +2165,7 @@ void Text_UpdateAllBoxes(Actor *a0) {
             } while (r->charDelay == 0 || ++line < r->visibleChars);
         }
     } while (++row < 0x32);
-    D_8005F770.packet.addr = (s32)pkt;
+    Sys_State.packet.addr = (s32)pkt;
 }
 
 
@@ -2353,7 +2353,7 @@ void Gpu_ClearScreens(void) {
     s32 i;
 
     for (i = 0; i < 2; i++) {
-        r = D_8005F770.disp[i].disp;
+        r = Sys_State.disp[i].disp;
         ResetGraph(1);
         ClearImage2((s32)&r, 0, 0, 0);
         DrawSync(0);
@@ -2364,20 +2364,20 @@ void Gpu_ClearScreens(void) {
 void Gpu_SetBgClearColor(s32 a0, s32 a1, s32 a2) {
     s32 i;
     for (i = 0; i < 2; i++) {
-        D_8005F770.draw[i].isbg = 1;
-        D_8005F770.draw[i].r0 = a0;
-        D_8005F770.draw[i].g0 = a1;
-        D_8005F770.draw[i].b0 = a2;
+        Sys_State.draw[i].isbg = 1;
+        Sys_State.draw[i].r0 = a0;
+        Sys_State.draw[i].g0 = a1;
+        Sys_State.draw[i].b0 = a2;
     }
 }
 
 void Gpu_DisableBgClear(void) {
-    D_8005F770.draw[0].isbg = 0;
-    D_8005F770.draw[1].isbg = 0;
+    Sys_State.draw[0].isbg = 0;
+    Sys_State.draw[1].isbg = 0;
 }
 
 void Gpu_InitDoubleBuffer(s32 w, s32 h, s32 mode, s32 inter) {
-    SysState *g = &D_8005F770;
+    SysState *g = &Sys_State;
     s32 n = 0;
     s32 hw = w / 2;
     s32 hh = h / 2;
@@ -2446,7 +2446,7 @@ void Gfx_FadeInFromBlack(s32 arg0) {
     Gfx_FadeState.additive = 0;
     Gfx_FadeState.mode = 2;
     Gfx_FadeState.speed = arg0;
-    D_8005F770.fadeLevel = arg0 + 0xFF;
+    Sys_State.fadeLevel = arg0 + 0xFF;
 }
 
 void Gfx_FadeOutToBlack(s32 arg0) {
@@ -2459,7 +2459,7 @@ void Gfx_FadeInFromWhite(s32 arg0) {
     Gfx_FadeState.additive = 1;
     Gfx_FadeState.mode = 2;
     Gfx_FadeState.speed = arg0;
-    D_8005F770.fadeLevel = arg0 + 0xFF;
+    Sys_State.fadeLevel = arg0 + 0xFF;
 }
 
 void Gfx_FadeOutToWhite(s32 arg0) {
@@ -2487,55 +2487,55 @@ void Gfx_DrawFade(void) {
     u8 c;
     s32 abr;
 
-    if (D_8005F770.packet.work == 0) {
+    if (Sys_State.packet.work == 0) {
         return;
     }
     for (;;) {
         switch (Gfx_FadeState.mode) {
         default:
         case 0:
-            D_8005F770.fadeLevel = 0;
+            Sys_State.fadeLevel = 0;
             return;
         case 1:
-            D_8005F770.fadeLevel = 0xFF;
+            Sys_State.fadeLevel = 0xFF;
             goto check;
         case 2:
-            D_8005F770.fadeLevel -= Gfx_FadeState.speed;
-            if (D_8005F770.fadeLevel > 0) {
+            Sys_State.fadeLevel -= Gfx_FadeState.speed;
+            if (Sys_State.fadeLevel > 0) {
                 goto draw;
             }
-            D_8005F770.fadeLevel = 0;
+            Sys_State.fadeLevel = 0;
             Gfx_FadeState.mode = 0;
             continue;
         case 3:
-            D_8005F770.fadeLevel += Gfx_FadeState.speed;
-            if (D_8005F770.fadeLevel < 0xFF) {
+            Sys_State.fadeLevel += Gfx_FadeState.speed;
+            if (Sys_State.fadeLevel < 0xFF) {
                 goto check;
             }
-            D_8005F770.fadeLevel = 0xFF;
+            Sys_State.fadeLevel = 0xFF;
             Gfx_FadeState.mode = 1;
             continue;
         }
     }
 check:
-    if (D_8005F770.fadeLevel == 0) {
+    if (Sys_State.fadeLevel == 0) {
         return;
     }
 draw:
     abr = 2;
-    q = (GfxFadeMode *)D_8005F770.packet.work;
+    q = (GfxFadeMode *)Sys_State.packet.work;
     p = (GfxFadePkt *)q;
-    ot = (GfxPartOTag *)D_8005F770.otLayers.s[0];
+    ot = (GfxPartOTag *)Sys_State.otLayers.s[0];
     p->t.len = 5;
     p->code = 0x2A;
-    c = D_8005F770.fadeLevel;
+    c = Sys_State.fadeLevel;
     p->g = c;
     p->b = c;
     p->r = c;
-    w = D_8005F770.centerX.lo;
+    w = Sys_State.centerX.lo;
     p->x0 = p->x2 = -w;
     p->x1 = p->x3 = w;
-    h = D_8005F770.centerY.lo;
+    h = Sys_State.centerY.lo;
     p->y0 = p->y1 = -h;
     p->y2 = p->y3 = h;
     p->t.addr = ot->addr;
@@ -2549,15 +2549,15 @@ draw:
     p->m.t.addr = ot->addr;
     ot->addr = (u32)q;
     q = (GfxFadeMode *)(p + 1);
-    D_8005F770.packet.work = (ActorWork *)q;
+    Sys_State.packet.work = (ActorWork *)q;
 }
 
 void Gpu_SetLayerOtPtrs(void) {
     s32 i;
 
     for (i = 0; i < 8; i++) {
-        D_8005F770.otLayerLen[i] = D_80041570[Gpu_OtBufs[2].entries[0]][i];
-        D_8005F770.otLayers.s[i] = &Gpu_OtBufs[D_8005F770.bufIndex].entries[D_800415F0[Gpu_OtBufs[2].entries[0]][i]];
+        Sys_State.otLayerLen[i] = Gpu_OtLayerLens[Gpu_OtBufs[2].entries[0]][i];
+        Sys_State.otLayers.s[i] = &Gpu_OtBufs[Sys_State.bufIndex].entries[Gpu_OtLayerOffsets[Gpu_OtBufs[2].entries[0]][i]];
     }
 }
 
@@ -2570,13 +2570,13 @@ void Gpu_ClearOt(s32 arg0) {
 }
 
 s32 Gpu_DrawOt(s32 arg0) {
-    s32 *p = (s32 *)&D_80058D28[arg0];
+    s32 *p = (s32 *)&Gpu_OtBufEnds[arg0];
     return DrawOTag(&p[-1]);
 }
 
 void Gpu_SkipEmptyOtEntries(s32 arg0) {
-    u32 *ot = (u32 *)&D_80058D28[arg0];
-    u32 *end = (u32 *)&D_80058D28[arg0 - 1];
+    u32 *ot = (u32 *)&Gpu_OtBufEnds[arg0];
+    u32 *end = (u32 *)&Gpu_OtBufEnds[arg0 - 1];
     u32 *p;
     u32 *q;
     u32 m;
@@ -2600,26 +2600,26 @@ s32 func_8001C92C(void) {
 }
 
 void Gpu_FreePrimBufs(void) {
-    if (D_80041670[0] != 0) {
-        Mem_Free(D_80041670[0]);
-        D_80041670[0] = 0;
-        Mem_Free(D_80041670[1]);
-        D_80041670[1] = 0;
+    if (Gpu_PrimBufs[0] != 0) {
+        Mem_Free(Gpu_PrimBufs[0]);
+        Gpu_PrimBufs[0] = 0;
+        Mem_Free(Gpu_PrimBufs[1]);
+        Gpu_PrimBufs[1] = 0;
     }
-    D_8005F770.packet.addr = 0;
+    Sys_State.packet.addr = 0;
 }
 
 void Gpu_ResetPrimBuf(void) {
-    D_8005F770.packet.work = D_80041670[D_8005F770.bufIndex];
+    Sys_State.packet.work = Gpu_PrimBufs[Sys_State.bufIndex];
 }
 
 extern s32 Mem_Alloc(s32, s32);
 
 void Gpu_AllocPacketBufs(s32 a0) {
-    D_80041670[2] = (ActorWork *)a0;
-    D_80041670[0] = (ActorWork *)Mem_Alloc(a0, 2);
-    D_80041670[1] = (ActorWork *)Mem_Alloc(a0, 2);
-    D_8005F770.packet.work = D_80041670[D_8005F770.bufIndex];
+    Gpu_PrimBufs[2] = (ActorWork *)a0;
+    Gpu_PrimBufs[0] = (ActorWork *)Mem_Alloc(a0, 2);
+    Gpu_PrimBufs[1] = (ActorWork *)Mem_Alloc(a0, 2);
+    Sys_State.packet.work = Gpu_PrimBufs[Sys_State.bufIndex];
 }
 
 GfxTexSlot *Gfx_GetTexSlot(s32 arg0) {
@@ -2695,7 +2695,7 @@ GfxTexSlot *Gfx_FindOrLoadTexSlot(s32 id) {
             continue;
         }
         if (p->fileId == id) {
-            p->lastUsed = D_8005F770.frameCount;
+            p->lastUsed = Sys_State.frameCount;
             return p;
         }
     }
@@ -2727,7 +2727,7 @@ GfxTexSlot *Gfx_FindOrLoadTexSlot(s32 id) {
     }
     e = &Gfx_TexSlots[idx];
     e->fileId = id;
-    e->lastUsed = D_8005F770.frameCount;
+    e->lastUsed = Sys_State.frameCount;
     e->colorMode = tp;
     t = e->index & 2;
     e->uOffset = t == 0;
@@ -2774,7 +2774,7 @@ s32 Gfx_ReserveTexSlot(void) {
     }
     p = &Gfx_TexSlots[best];
     p->fileId = -2;
-    p->lastUsed = D_8005F770.frameCount;
+    p->lastUsed = Sys_State.frameCount;
     p->colorMode = 0;
     p->uOffset = ((p->index & 2) == 0) << 7;
     p->tpage = ((p->vramY & 0x100) >> 4) | ((p->vramX & 0x3FF) >> 6) | ((p->vramY & 0x200) << 2);
@@ -2796,7 +2796,7 @@ void Gfx_DrawPartSprites(GfxPartSprite *s, GfxPartOTag *ot) {
 
     e = (GfxPartCell *)Cd_GetFileEntry(s->fileId);
     t = (GfxPartTexSlot *)Gfx_FindOrLoadTexSlot(s->fileId & 0xFFFF0000);
-    p = (GfxPartPkt *)D_8005F770.packet.addr;
+    p = (GfxPartPkt *)Sys_State.packet.addr;
     for (; e->u != 0xFF; e++) {
         if (e->frame != s->partGroup) {
             continue;
@@ -2835,7 +2835,7 @@ void Gfx_DrawPartSprites(GfxPartSprite *s, GfxPartOTag *ot) {
         ot->addr = (u32)p;
         p = (GfxPartPkt *)(&p->t + 1);
     }
-    D_8005F770.packet.addr = (s32)p;
+    Sys_State.packet.addr = (s32)p;
 }
 
 
@@ -2851,7 +2851,7 @@ void Gfx_DrawPartQuadsRot(void *arg0, void *arg1, s32 arg2, s32 arg3) {
 
     e = (GfxPartCell *)Cd_GetFileEntry(((GfxPartSprite *)arg0)->fileId);
     t = (GfxPartTexSlot *)Gfx_FindOrLoadTexSlot(((GfxPartSprite *)arg0)->fileId & 0xFFFF0000);
-    p = (GfxPartPolyFT4 *)D_8005F770.packet.addr;
+    p = (GfxPartPolyFT4 *)Sys_State.packet.addr;
     for (; e->u != 0xFF; e++) {
         if (e->frame != ((GfxPartSprite *)arg0)->partGroup) {
             continue;
@@ -2917,7 +2917,7 @@ void Gfx_DrawPartQuadsRot(void *arg0, void *arg1, s32 arg2, s32 arg3) {
         ((GfxPartOTag *)arg2)->addr = (u32)p;
         p++;
     }
-    D_8005F770.packet.addr = (s32)p;
+    Sys_State.packet.addr = (s32)p;
 }
 
 
@@ -2998,9 +2998,9 @@ void Gfx_DrawPartsEx(void *arg0, s32 arg1) {
     s32 s4;
 
     if (arg1 != 0) {
-        s32 f114 = D_8005F770.centerY.s;
+        s32 f114 = Sys_State.centerY.s;
         s3 = 0;
-        s3 = (D_8005F770.centerX.s ^ 0x140) == s3;
+        s3 = (Sys_State.centerX.s ^ 0x140) == s3;
         if (f114 == 0xF0) {
             s3 |= 2;
         }
@@ -3009,7 +3009,7 @@ void Gfx_DrawPartsEx(void *arg0, s32 arg1) {
         return;
     }
     do {
-        s4 = D_8005F770.otLayers.addr[s2->field_B];
+        s4 = Sys_State.otLayers.addr[s2->field_B];
         if (s2->field_F != 0) {
             if (s2->field_E != 0) {
                 if (s3 != 0) {
@@ -3023,18 +3023,18 @@ void Gfx_DrawPartsEx(void *arg0, s32 arg1) {
                     goto Ladv;
                 }
             }
-            if (D_8004167C.field_0 == *(s32 *)&s2->field_20 &&
-                D_8004167C.field_4 == s2->field_24 &&
-                D_8004167C.field_8 == s2->field_10 &&
-                D_8004167C.field_C == s2->field_14) {
+            if (Gfx_PartRotCache.field_0 == *(s32 *)&s2->field_20 &&
+                Gfx_PartRotCache.field_4 == s2->field_24 &&
+                Gfx_PartRotCache.field_8 == s2->field_10 &&
+                Gfx_PartRotCache.field_C == s2->field_14) {
             } else {
-                *(Agg1D6B4 *)&D_8004167C = *(Agg1D6B4 *)&s2->field_20;
-                D_8004167C.field_8 = s2->field_10;
-                D_8004167C.field_C = s2->field_14;
-                RotMatrixYXZ(&D_8004167C, (Obj209 *)&D_8004167C.field_18);
-                ScaleMatrix((Obj209 *)&D_8004167C.field_18, &D_8004167C.field_8);
+                *(Agg1D6B4 *)&Gfx_PartRotCache = *(Agg1D6B4 *)&s2->field_20;
+                Gfx_PartRotCache.field_8 = s2->field_10;
+                Gfx_PartRotCache.field_C = s2->field_14;
+                RotMatrixYXZ(&Gfx_PartRotCache, (Obj209 *)&Gfx_PartRotCache.field_18);
+                ScaleMatrix((Obj209 *)&Gfx_PartRotCache.field_18, &Gfx_PartRotCache.field_8);
             }
-            Gfx_DrawPartQuadsRot(s2, &D_80041694, s4, s3);
+            Gfx_DrawPartQuadsRot(s2, &Gfx_PartRotMatrix, s4, s3);
         }
     Ladv:
         s2 = (Rec1D6B4 *)((u8 *)s2 + 0x28);

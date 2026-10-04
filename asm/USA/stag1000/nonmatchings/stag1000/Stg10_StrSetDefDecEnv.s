@@ -3,10 +3,10 @@ nonmatching Stg10_StrSetDefDecEnv, 0x88
 glabel Stg10_StrSetDefDecEnv
     /* B50 80063EB0 0680023C */  lui        $v0, %hi(Stg10_VlcBuf0)
     /* B54 80063EB4 0680033C */  lui        $v1, %hi(Stg10_VlcBuf1)
-    /* B58 80063EB8 0680093C */  lui        $t1, %hi(D_8005F770)
+    /* B58 80063EB8 0680093C */  lui        $t1, %hi(Sys_State)
     /* B5C 80063EBC EC61428C */  lw         $v0, %lo(Stg10_VlcBuf0)($v0)
     /* B60 80063EC0 F061638C */  lw         $v1, %lo(Stg10_VlcBuf1)($v1)
-    /* B64 80063EC4 70F72925 */  addiu      $t1, $t1, %lo(D_8005F770)
+    /* B64 80063EC4 70F72925 */  addiu      $t1, $t1, %lo(Sys_State)
     /* B68 80063EC8 000082AC */  sw         $v0, 0x0($a0)
     /* B6C 80063ECC 0680023C */  lui        $v0, %hi(Stg10_ImgBuf0)
     /* B70 80063ED0 040083AC */  sw         $v1, 0x4($a0)

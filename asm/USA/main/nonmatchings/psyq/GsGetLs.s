@@ -179,8 +179,8 @@ glabel GsGetLs
     /* 1C82C 8002C02C E5FF201E */  bgtz       $s1, .L8002BFC4
     /* 1C830 8002C030 000062AC */   sw        $v0, 0x0($v1)
   .L8002C034:
-    /* 1C834 8002C034 0680043C */  lui        $a0, %hi(D_80061A08)
-    /* 1C838 8002C038 081A8424 */  addiu      $a0, $a0, %lo(D_80061A08)
+    /* 1C834 8002C034 0680043C */  lui        $a0, %hi(GsWSMATRIX)
+    /* 1C838 8002C038 081A8424 */  addiu      $a0, $a0, %lo(GsWSMATRIX)
     /* 1C83C 8002C03C 19B0000C */  jal        GsMulCoord2
     /* 1C840 8002C040 21284002 */   addu      $a1, $s2, $zero
     /* 1C844 8002C044 1C00BF8F */  lw         $ra, 0x1C($sp)

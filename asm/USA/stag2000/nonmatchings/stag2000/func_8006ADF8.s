@@ -63,9 +63,9 @@ glabel func_8006ADF8
     /* 7B80 8006AEE0 3400458E */  lw         $a1, 0x34($s2)
     /* 7B84 8006AEE4 1F44000C */  jal        Task_Create
     /* 7B88 8006AEE8 21304002 */   addu      $a2, $s2, $zero
-    /* 7B8C 8006AEEC 0680023C */  lui        $v0, %hi(D_8005F788)
+    /* 7B8C 8006AEEC 0680023C */  lui        $v0, %hi(Sys_GameMode)
     /* 7B90 8006AEF0 0F030324 */  addiu      $v1, $zero, 0x30F
-    /* 7B94 8006AEF4 88F7448C */  lw         $a0, %lo(D_8005F788)($v0)
+    /* 7B94 8006AEF4 88F7448C */  lw         $a0, %lo(Sys_GameMode)($v0)
     /* 7B98 8006AEF8 3800458E */  lw         $a1, 0x38($s2)
     /* 7B9C 8006AEFC 05008310 */  beq        $a0, $v1, .L8006AF14
     /* 7BA0 8006AF00 18030224 */   addiu     $v0, $zero, 0x318
@@ -279,9 +279,9 @@ glabel func_8006ADF8
     /* 7E90 8006B1F0 0400428E */  lw         $v0, 0x4($s2)
     /* 7E94 8006B1F4 00000000 */  nop
     /* 7E98 8006B1F8 A7004014 */  bnez       $v0, .L8006B498
-    /* 7E9C 8006B1FC 0680023C */   lui       $v0, %hi(D_8005F770)
+    /* 7E9C 8006B1FC 0680023C */   lui       $v0, %hi(Sys_State)
     /* 7EA0 8006B200 7000638E */  lw         $v1, 0x70($s3)
-    /* 7EA4 8006B204 70F7428C */  lw         $v0, %lo(D_8005F770)($v0)
+    /* 7EA4 8006B204 70F7428C */  lw         $v0, %lo(Sys_State)($v0)
     /* 7EA8 8006B208 00000000 */  nop
     /* 7EAC 8006B20C 2A186200 */  slt        $v1, $v1, $v0
     /* 7EB0 8006B210 41006010 */  beqz       $v1, .L8006B318
@@ -442,9 +442,9 @@ glabel func_8006ADF8
     /* 80F8 8006B458 26AD0108 */  j          .L8006B498
     /* 80FC 8006B45C 00000000 */   nop
   .L8006B460:
-    /* 8100 8006B460 0680023C */  lui        $v0, %hi(D_8005F770)
+    /* 8100 8006B460 0680023C */  lui        $v0, %hi(Sys_State)
     /* 8104 8006B464 6800638E */  lw         $v1, 0x68($s3)
-    /* 8108 8006B468 70F7428C */  lw         $v0, %lo(D_8005F770)($v0)
+    /* 8108 8006B468 70F7428C */  lw         $v0, %lo(Sys_State)($v0)
     /* 810C 8006B46C 2C00638C */  lw         $v1, 0x2C($v1)
     /* 8110 8006B470 1E004224 */  addiu      $v0, $v0, 0x1E
     /* 8114 8006B474 700062AC */  sw         $v0, 0x70($v1)

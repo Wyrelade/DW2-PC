@@ -67,8 +67,8 @@ glabel func_8007191C
     /* E6A8 80071A08 E0FF4014 */  bnez       $v0, .L8007198C
     /* E6AC 80071A0C 5C001026 */   addiu     $s0, $s0, 0x5C
     /* E6B0 80071A10 F505053C */  lui        $a1, (0x5F5E0FF >> 16)
-    /* E6B4 80071A14 0680023C */  lui        $v0, %hi(D_8005E620)
-    /* E6B8 80071A18 20E64424 */  addiu      $a0, $v0, %lo(D_8005E620)
+    /* E6B4 80071A14 0680023C */  lui        $v0, %hi(Save_GameState)
+    /* E6B8 80071A18 20E64424 */  addiu      $a0, $v0, %lo(Save_GameState)
     /* E6BC 80071A1C 0800828C */  lw         $v0, 0x8($a0)
     /* E6C0 80071A20 0400438E */  lw         $v1, 0x4($s2)
     /* E6C4 80071A24 FFE0A534 */  ori        $a1, $a1, (0x5F5E0FF & 0xFFFF)

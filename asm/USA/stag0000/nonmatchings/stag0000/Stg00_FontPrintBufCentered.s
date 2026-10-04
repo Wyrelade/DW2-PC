@@ -2,8 +2,8 @@ nonmatching Stg00_FontPrintBufCentered, 0x3C
 
 glabel Stg00_FontPrintBufCentered
     /* 21BC 8006551C E8FFBD27 */  addiu      $sp, $sp, -0x18
-    /* 21C0 80065520 0680023C */  lui        $v0, %hi(D_8005F770)
-    /* 21C4 80065524 70F74224 */  addiu      $v0, $v0, %lo(D_8005F770)
+    /* 21C0 80065520 0680023C */  lui        $v0, %hi(Sys_State)
+    /* 21C4 80065524 70F74224 */  addiu      $v0, $v0, %lo(Sys_State)
     /* 21C8 80065528 0780063C */  lui        $a2, %hi(Stg00_FontTextBuf)
     /* 21CC 8006552C 1000BFAF */  sw         $ra, 0x10($sp)
     /* 21D0 80065530 1001438C */  lw         $v1, 0x110($v0)

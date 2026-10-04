@@ -30,8 +30,8 @@ glabel Menu_NameEntryTask
     /* 31D8 800129D8 C0180300 */  sll        $v1, $v1, 3
     /* 31DC 800129DC 23186200 */  subu       $v1, $v1, $v0
     /* 31E0 800129E0 80180300 */  sll        $v1, $v1, 2
-    /* 31E4 800129E4 0680023C */  lui        $v0, %hi(D_8005E750)
-    /* 31E8 800129E8 50E74224 */  addiu      $v0, $v0, %lo(D_8005E750)
+    /* 31E4 800129E4 0680023C */  lui        $v0, %hi(Save_RosterNames)
+    /* 31E8 800129E8 50E74224 */  addiu      $v0, $v0, %lo(Save_RosterNames)
     /* 31EC 800129EC 814A0008 */  j          .L80012A04
     /* 31F0 800129F0 21A86200 */   addu      $s5, $v1, $v0
   .L800129F4:
@@ -54,7 +54,7 @@ glabel Menu_NameEntryTask
   .L80012A2C:
     /* 322C 80012A2C 02000224 */  addiu      $v0, $zero, 0x2
     /* 3230 80012A30 8401C212 */  beq        $s6, $v0, .L80013044
-    /* 3234 80012A34 0680023C */   lui       $v0, %hi(D_8005F788)
+    /* 3234 80012A34 0680023C */   lui       $v0, %hi(Sys_GameMode)
     /* 3238 80012A38 1C4C0008 */  j          .L80013070
     /* 323C 80012A3C 00000000 */   nop
   .L80012A40:
@@ -87,9 +87,9 @@ glabel Menu_NameEntryTask
     /* 32A0 80012AA0 27006210 */  beq        $v1, $v0, .L80012B40
     /* 32A4 80012AA4 10000224 */   addiu     $v0, $zero, 0x10
   .L80012AA8:
-    /* 32A8 80012AA8 0680043C */  lui        $a0, %hi(D_8005E620)
+    /* 32A8 80012AA8 0680043C */  lui        $a0, %hi(Save_GameState)
     /* 32AC 80012AAC 0400838E */  lw         $v1, 0x4($s4)
-    /* 32B0 80012AB0 20E68424 */  addiu      $a0, $a0, %lo(D_8005E620)
+    /* 32B0 80012AB0 20E68424 */  addiu      $a0, $a0, %lo(Save_GameState)
     /* 32B4 80012AB4 40100300 */  sll        $v0, $v1, 1
     /* 32B8 80012AB8 21104300 */  addu       $v0, $v0, $v1
     /* 32BC 80012ABC C0100200 */  sll        $v0, $v0, 3
@@ -153,7 +153,7 @@ glabel Menu_NameEntryTask
     /* 3390 80012B90 03004010 */  beqz       $v0, .L80012BA0
     /* 3394 80012B94 10009026 */   addiu     $s0, $s4, 0x10
     /* 3398 80012B98 79005610 */  beq        $v0, $s6, .L80012D80
-    /* 339C 80012B9C 0680023C */   lui       $v0, %hi(D_8005F6F0)
+    /* 339C 80012B9C 0680023C */   lui       $v0, %hi(Pad_State)
   .L80012BA0:
     /* 33A0 80012BA0 E26E000C */  jal        Text_Close
     /* 33A4 80012BA4 21200002 */   addu      $a0, $s0, $zero
@@ -226,13 +226,13 @@ glabel Menu_NameEntryTask
     /* 34B0 80012CB0 13007610 */  beq        $v1, $s6, .L80012D00
     /* 34B4 80012CB4 02006228 */   slti      $v0, $v1, 0x2
     /* 34B8 80012CB8 04004014 */  bnez       $v0, .L80012CCC
-    /* 34BC 80012CBC 0680043C */   lui       $a0, %hi(D_8005E620)
+    /* 34BC 80012CBC 0680043C */   lui       $a0, %hi(Save_GameState)
     /* 34C0 80012CC0 02000224 */  addiu      $v0, $zero, 0x2
     /* 34C4 80012CC4 19006210 */  beq        $v1, $v0, .L80012D2C
     /* 34C8 80012CC8 00000000 */   nop
   .L80012CCC:
     /* 34CC 80012CCC 0400838E */  lw         $v1, 0x4($s4)
-    /* 34D0 80012CD0 20E68424 */  addiu      $a0, $a0, %lo(D_8005E620)
+    /* 34D0 80012CD0 20E68424 */  addiu      $a0, $a0, %lo(Save_GameState)
     /* 34D4 80012CD4 40100300 */  sll        $v0, $v1, 1
     /* 34D8 80012CD8 21104300 */  addu       $v0, $v0, $v1
     /* 34DC 80012CDC C0100200 */  sll        $v0, $v0, 3
@@ -281,9 +281,9 @@ glabel Menu_NameEntryTask
     /* 3570 80012D70 5800A0AF */   sw        $zero, 0x58($sp)
     /* 3574 80012D74 5945000C */  jal        Task_NextState1
     /* 3578 80012D78 2120E002 */   addu      $a0, $s7, $zero
-    /* 357C 80012D7C 0680023C */  lui        $v0, %hi(D_8005F6F0)
+    /* 357C 80012D7C 0680023C */  lui        $v0, %hi(Pad_State)
   .L80012D80:
-    /* 3580 80012D80 F0F64424 */  addiu      $a0, $v0, %lo(D_8005F6F0)
+    /* 3580 80012D80 F0F64424 */  addiu      $a0, $v0, %lo(Pad_State)
     /* 3584 80012D84 3C008394 */  lhu        $v1, 0x3C($a0)
     /* 3588 80012D88 00000000 */  nop
     /* 358C 80012D8C 00206230 */  andi       $v0, $v1, 0x2000
@@ -482,7 +482,7 @@ glabel Menu_NameEntryTask
     /* 383C 8001303C 1C4C0008 */  j          .L80013070
     /* 3840 80013040 280080AE */   sw        $zero, 0x28($s4)
   .L80013044:
-    /* 3844 80013044 88F7438C */  lw         $v1, %lo(D_8005F788)($v0)
+    /* 3844 80013044 88F7438C */  lw         $v1, %lo(Sys_GameMode)($v0)
     /* 3848 80013048 00050224 */  addiu      $v0, $zero, 0x500
     /* 384C 8001304C 03006210 */  beq        $v1, $v0, .L8001305C
     /* 3850 80013050 00000000 */   nop

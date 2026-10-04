@@ -36,17 +36,17 @@ glabel Stg00_GroupViewTask
     /* 3710 80066A70 2C00938E */  lw         $s3, 0x2C($s4)
     /* 3714 80066A74 4CA2010C */  jal        Stg00_FindCamera
     /* 3718 80066A78 21900000 */   addu      $s2, $zero, $zero
-    /* 371C 80066A7C 0680033C */  lui        $v1, %hi(D_8005F770)
-    /* 3720 80066A80 70F76424 */  addiu      $a0, $v1, %lo(D_8005F770)
+    /* 371C 80066A7C 0680033C */  lui        $v1, %hi(Sys_State)
+    /* 3720 80066A80 70F76424 */  addiu      $a0, $v1, %lo(Sys_State)
     /* 3724 80066A84 0800838C */  lw         $v1, 0x8($a0)
     /* 3728 80066A88 00000000 */  nop
     /* 372C 80066A8C 4D006018 */  blez       $v1, .L80066BC4
     /* 3730 80066A90 21804000 */   addu      $s0, $v0, $zero
-    /* 3734 80066A94 0680153C */  lui        $s5, %hi(D_8005F6F0)
-    /* 3738 80066A98 F0F6B126 */  addiu      $s1, $s5, %lo(D_8005F6F0)
+    /* 3734 80066A94 0680153C */  lui        $s5, %hi(Pad_State)
+    /* 3738 80066A98 F0F6B126 */  addiu      $s1, $s5, %lo(Pad_State)
     /* 373C 80066A9C 21B08000 */  addu       $s6, $a0, $zero
   .L80066AA0:
-    /* 3740 80066AA0 F0F6A28E */  lw         $v0, %lo(D_8005F6F0)($s5)
+    /* 3740 80066AA0 F0F6A28E */  lw         $v0, %lo(Pad_State)($s5)
     /* 3744 80066AA4 00000000 */  nop
     /* 3748 80066AA8 04004010 */  beqz       $v0, .L80066ABC
     /* 374C 80066AAC 21200002 */   addu      $a0, $s0, $zero
@@ -209,8 +209,8 @@ glabel Stg00_GroupViewTask
     /* 395C 80066CBC 0A9A010C */  jal        Stg00_GroupViewSetVideoMode
     /* 3960 80066CC0 21208002 */   addu      $a0, $s4, $zero
   .L80066CC4:
-    /* 3964 80066CC4 0680023C */  lui        $v0, %hi(D_8005F6F0)
-    /* 3968 80066CC8 F0F65024 */  addiu      $s0, $v0, %lo(D_8005F6F0)
+    /* 3964 80066CC4 0680023C */  lui        $v0, %hi(Pad_State)
+    /* 3968 80066CC8 F0F65024 */  addiu      $s0, $v0, %lo(Pad_State)
     /* 396C 80066CCC 3400028E */  lw         $v0, 0x34($s0)
     /* 3970 80066CD0 00000000 */  nop
     /* 3974 80066CD4 03004018 */  blez       $v0, .L80066CE4

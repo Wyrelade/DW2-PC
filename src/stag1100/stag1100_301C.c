@@ -72,8 +72,8 @@ void Stg11_CardMenuDraw(Actor *arg0) {
         }
     }
     if (w->field_94 != 0) {
-        p = (Stg11PolyG4 *)D_8005F770.packet.addr;
-        ot = D_8005F770.otLayers.u[0];
+        p = (Stg11PolyG4 *)Sys_State.packet.addr;
+        ot = Sys_State.otLayers.u[0];
         p->tag.b.len = 8;
         p->code = 0x38;
         p->r0 = 0xD;
@@ -99,7 +99,7 @@ void Stg11_CardMenuDraw(Actor *arg0) {
         p->y3 = 0x35;
         p->tag.word = (p->tag.word & 0xFF000000) | (*ot & 0xFFFFFF);
         *ot = (*ot & 0xFF000000) | ((u32)p & 0xFFFFFF);
-        D_8005F770.packet.addr = (s32)(p + 1);
+        Sys_State.packet.addr = (s32)(p + 1);
     }
 }
 
@@ -272,9 +272,9 @@ void Stg11_VsPartyUpdate(Actor *arg0) {
             break;
         case 2:
             if (Menu_MoveGridCursor((s16 *)&w->field_50, w->field_54.grid, w->field_64) == 0) {
-                if (D_8005F6F0[w->field_64].triangle > 0) {
+                if (Pad_State[w->field_64].triangle > 0) {
                     Stg11_VsPartyUnpick(arg0);
-                } else if (D_8005F6F0[w->field_64].cross > 0) {
+                } else if (Pad_State[w->field_64].cross > 0) {
                     Stg11_VsPartyPick(arg0);
                 }
             } else {

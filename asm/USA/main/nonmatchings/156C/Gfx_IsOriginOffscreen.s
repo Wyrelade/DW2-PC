@@ -3,8 +3,8 @@ nonmatching Gfx_IsOriginOffscreen, 0x94
 
 glabel Gfx_IsOriginOffscreen
     /* 12038 80021838 F0FFBD27 */  addiu      $sp, $sp, -0x10
-    /* 1203C 8002183C 0480043C */  lui        $a0, %hi(D_80043704)
-    /* 12040 80021840 04378424 */  addiu      $a0, $a0, %lo(D_80043704)
+    /* 1203C 8002183C 0480043C */  lui        $a0, %hi(Gfx_ZeroVector)
+    /* 12040 80021840 04378424 */  addiu      $a0, $a0, %lo(Gfx_ZeroVector)
     /* 12044 80021844 000080C8 */  lwc2       $0, 0x0($a0)
     /* 12048 80021848 040081C8 */  lwc2       $1, 0x4($a0)
     /* 1204C 8002184C 00000000 */  nop

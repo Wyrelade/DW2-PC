@@ -65,9 +65,9 @@ glabel Stg11_StateTransferList
     /* 2BE4 80065F44 6C000526 */   addiu     $a1, $s0, 0x6C
     /* 2BE8 80065F48 1A004014 */  bnez       $v0, .L80065FB4
     /* 2BEC 80065F4C 21200002 */   addu      $a0, $s0, $zero
-    /* 2BF0 80065F50 0680023C */  lui        $v0, %hi(D_8005F6F0)
+    /* 2BF0 80065F50 0680023C */  lui        $v0, %hi(Pad_State)
     /* 2BF4 80065F54 7E000386 */  lh         $v1, 0x7E($s0)
-    /* 2BF8 80065F58 F0F64224 */  addiu      $v0, $v0, %lo(D_8005F6F0)
+    /* 2BF8 80065F58 F0F64224 */  addiu      $v0, $v0, %lo(Pad_State)
     /* 2BFC 80065F5C 80190300 */  sll        $v1, $v1, 6
     /* 2C00 80065F60 21186200 */  addu       $v1, $v1, $v0
     /* 2C04 80065F64 1400628C */  lw         $v0, 0x14($v1)

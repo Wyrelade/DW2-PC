@@ -52,9 +52,9 @@ glabel func_8006EA90
   .L8006EB48:
     /* B7E8 8006EB48 80101200 */  sll        $v0, $s2, 2
     /* B7EC 8006EB4C 21105E00 */  addu       $v0, $v0, $fp
-    /* B7F0 8006EB50 06800C3C */  lui        $t4, %hi(D_8005E620)
+    /* B7F0 8006EB50 06800C3C */  lui        $t4, %hi(Save_GameState)
     /* B7F4 8006EB54 0000428C */  lw         $v0, 0x0($v0)
-    /* B7F8 8006EB58 20E68C25 */  addiu      $t4, $t4, %lo(D_8005E620)
+    /* B7F8 8006EB58 20E68C25 */  addiu      $t4, $t4, %lo(Save_GameState)
     /* B7FC 8006EB5C 40100200 */  sll        $v0, $v0, 1
     /* B800 8006EB60 21104C00 */  addu       $v0, $v0, $t4
     /* B804 8006EB64 2C005094 */  lhu        $s0, 0x2C($v0)

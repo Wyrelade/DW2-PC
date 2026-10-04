@@ -87,13 +87,13 @@ glabel Stg11_StateVsPartySelect
     /* 2974 80065CD4 0780023C */  lui        $v0, %hi(Stg11_VsParty)
     /* 2978 80065CD8 A8844624 */  addiu      $a2, $v0, %lo(Stg11_VsParty)
     /* 297C 80065CDC 7E002386 */  lh         $v1, 0x7E($s1)
-    /* 2980 80065CE0 0580043C */  lui        $a0, %hi(D_80050720)
+    /* 2980 80065CE0 0580043C */  lui        $a0, %hi(Save_GameStatePtr)
     /* 2984 80065CE4 00110300 */  sll        $v0, $v1, 4
     /* 2988 80065CE8 21104300 */  addu       $v0, $v0, $v1
     /* 298C 80065CEC 80100200 */  sll        $v0, $v0, 2
     /* 2990 80065CF0 21104300 */  addu       $v0, $v0, $v1
     /* 2994 80065CF4 80100200 */  sll        $v0, $v0, 2
-    /* 2998 80065CF8 2007838C */  lw         $v1, %lo(D_80050720)($a0)
+    /* 2998 80065CF8 2007838C */  lw         $v1, %lo(Save_GameStatePtr)($a0)
     /* 299C 80065CFC E4004224 */  addiu      $v0, $v0, 0xE4
     /* 29A0 80065D00 21186200 */  addu       $v1, $v1, $v0
   .L80065D04:
@@ -130,7 +130,7 @@ glabel Stg11_StateVsPartySelect
     /* 2A14 80065D74 E3FF4014 */  bnez       $v0, .L80065D04
     /* 2A18 80065D78 5C00C624 */   addiu     $a2, $a2, 0x5C
     /* 2A1C 80065D7C 0780023C */  lui        $v0, %hi(Stg11_VsParty)
-    /* 2A20 80065D80 0580043C */  lui        $a0, %hi(D_80050720)
+    /* 2A20 80065D80 0580043C */  lui        $a0, %hi(Save_GameStatePtr)
     /* 2A24 80065D84 A884458C */  lw         $a1, %lo(Stg11_VsParty)($v0)
     /* 2A28 80065D88 7E002386 */  lh         $v1, 0x7E($s1)
     /* 2A2C 80065D8C 00000000 */  nop
@@ -138,7 +138,7 @@ glabel Stg11_StateVsPartySelect
     /* 2A34 80065D94 21104300 */  addu       $v0, $v0, $v1
     /* 2A38 80065D98 C0100200 */  sll        $v0, $v0, 3
     /* 2A3C 80065D9C 23104300 */  subu       $v0, $v0, $v1
-    /* 2A40 80065DA0 2007838C */  lw         $v1, %lo(D_80050720)($a0)
+    /* 2A40 80065DA0 2007838C */  lw         $v1, %lo(Save_GameStatePtr)($a0)
     /* 2A44 80065DA4 80100200 */  sll        $v0, $v0, 2
     /* 2A48 80065DA8 21104300 */  addu       $v0, $v0, $v1
     /* 2A4C 80065DAC 58034424 */  addiu      $a0, $v0, 0x358

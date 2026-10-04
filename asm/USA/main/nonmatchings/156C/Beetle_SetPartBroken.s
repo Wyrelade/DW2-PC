@@ -2,7 +2,7 @@ nonmatching Beetle_SetPartBroken, 0x2C
 
 glabel Beetle_SetPartBroken
     /* 12D4C 8002254C 21300000 */  addu       $a2, $zero, $zero
-    /* 12D50 80022550 2800838F */  lw         $v1, %gp_rel(D_80050720)($gp)
+    /* 12D50 80022550 2800838F */  lw         $v1, %gp_rel(Save_GameStatePtr)($gp)
     /* 12D54 80022554 40100400 */  sll        $v0, $a0, 1
     /* 12D58 80022558 21106200 */  addu       $v0, $v1, $v0
     /* 12D5C 8002255C 2C004294 */  lhu        $v0, 0x2C($v0)

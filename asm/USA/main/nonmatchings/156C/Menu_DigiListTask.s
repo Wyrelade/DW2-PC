@@ -18,8 +18,8 @@ glabel Menu_DigiListTask
     /* 8880 80018080 00000000 */   nop
   .L80018084:
     /* 8884 80018084 21202002 */  addu       $a0, $s1, $zero
-    /* 8888 80018088 0480023C */  lui        $v0, %hi(D_80040F1C)
-    /* 888C 8001808C 1C0F4B24 */  addiu      $t3, $v0, %lo(D_80040F1C)
+    /* 8888 80018088 0480023C */  lui        $v0, %hi(Menu_DigiListGrid)
+    /* 888C 8001808C 1C0F4B24 */  addiu      $t3, $v0, %lo(Menu_DigiListGrid)
     /* 8890 80018090 03006889 */  lwl        $t0, 0x3($t3)
     /* 8894 80018094 00006899 */  lwr        $t0, 0x0($t3)
     /* 8898 80018098 07006989 */  lwl        $t1, 0x7($t3)
@@ -89,7 +89,7 @@ glabel Menu_DigiListTask
     /* 8988 80018188 40002426 */  addiu      $a0, $s1, 0x40
     /* 898C 8001818C 21284000 */  addu       $a1, $v0, $zero
     /* 8990 80018190 16008797 */  lhu        $a3, %gp_rel(D_8005070E)($gp)
-    /* 8994 80018194 14008297 */  lhu        $v0, %gp_rel(D_8005070C)($gp)
+    /* 8994 80018194 14008297 */  lhu        $v0, %gp_rel(Menu_DigiMsgPos)($gp)
     /* 8998 80018198 B3600008 */  j          .L800182CC
     /* 899C 8001819C 80000624 */   addiu     $a2, $zero, 0x80
   jlabel .L800181A0
@@ -99,7 +99,7 @@ glabel Menu_DigiListTask
     /* 89AC 800181AC 40002426 */  addiu      $a0, $s1, 0x40
     /* 89B0 800181B0 21284000 */  addu       $a1, $v0, $zero
     /* 89B4 800181B4 16008797 */  lhu        $a3, %gp_rel(D_8005070E)($gp)
-    /* 89B8 800181B8 14008297 */  lhu        $v0, %gp_rel(D_8005070C)($gp)
+    /* 89B8 800181B8 14008297 */  lhu        $v0, %gp_rel(Menu_DigiMsgPos)($gp)
     /* 89BC 800181BC B3600008 */  j          .L800182CC
     /* 89C0 800181C0 80000624 */   addiu     $a2, $zero, 0x80
   jlabel .L800181C4
@@ -119,7 +119,7 @@ glabel Menu_DigiListTask
     /* 89F4 800181F4 40002426 */  addiu      $a0, $s1, 0x40
     /* 89F8 800181F8 21284000 */  addu       $a1, $v0, $zero
     /* 89FC 800181FC 16008797 */  lhu        $a3, %gp_rel(D_8005070E)($gp)
-    /* 8A00 80018200 14008297 */  lhu        $v0, %gp_rel(D_8005070C)($gp)
+    /* 8A00 80018200 14008297 */  lhu        $v0, %gp_rel(Menu_DigiMsgPos)($gp)
     /* 8A04 80018204 B3600008 */  j          .L800182CC
     /* 8A08 80018208 80000624 */   addiu     $a2, $zero, 0x80
   jlabel .L8001820C
@@ -130,7 +130,7 @@ glabel Menu_DigiListTask
     /* 8A1C 8001821C 21284000 */  addu       $a1, $v0, $zero
     /* 8A20 80018220 80000624 */  addiu      $a2, $zero, 0x80
     /* 8A24 80018224 16008797 */  lhu        $a3, %gp_rel(D_8005070E)($gp)
-    /* 8A28 80018228 14008297 */  lhu        $v0, %gp_rel(D_8005070C)($gp)
+    /* 8A28 80018228 14008297 */  lhu        $v0, %gp_rel(Menu_DigiMsgPos)($gp)
     /* 8A2C 8001822C 003C0700 */  sll        $a3, $a3, 16
     /* 8A30 80018230 3E4D000C */  jal        Text_OpenPacked
     /* 8A34 80018234 25384700 */   or        $a3, $v0, $a3
@@ -149,7 +149,7 @@ glabel Menu_DigiListTask
     /* 8A64 80018264 21284000 */  addu       $a1, $v0, $zero
     /* 8A68 80018268 80000624 */  addiu      $a2, $zero, 0x80
     /* 8A6C 8001826C 16008797 */  lhu        $a3, %gp_rel(D_8005070E)($gp)
-    /* 8A70 80018270 14008297 */  lhu        $v0, %gp_rel(D_8005070C)($gp)
+    /* 8A70 80018270 14008297 */  lhu        $v0, %gp_rel(Menu_DigiMsgPos)($gp)
     /* 8A74 80018274 003C0700 */  sll        $a3, $a3, 16
     /* 8A78 80018278 3E4D000C */  jal        Text_OpenPacked
     /* 8A7C 8001827C 25384700 */   or        $a3, $v0, $a3
@@ -166,9 +166,9 @@ glabel Menu_DigiListTask
     /* 8AA4 800182A4 44002426 */  addiu      $a0, $s1, 0x44
     /* 8AA8 800182A8 21284000 */  addu       $a1, $v0, $zero
     /* 8AAC 800182AC 21300000 */  addu       $a2, $zero, $zero
-    /* 8AB0 800182B0 0480033C */  lui        $v1, %hi(D_80040F38)
+    /* 8AB0 800182B0 0480033C */  lui        $v1, %hi(Menu_DigiListTitlePos)
     /* 8AB4 800182B4 A6012286 */  lh         $v0, 0x1A6($s1)
-    /* 8AB8 800182B8 380F6324 */  addiu      $v1, $v1, %lo(D_80040F38)
+    /* 8AB8 800182B8 380F6324 */  addiu      $v1, $v1, %lo(Menu_DigiListTitlePos)
     /* 8ABC 800182BC 80100200 */  sll        $v0, $v0, 2
     /* 8AC0 800182C0 21104300 */  addu       $v0, $v0, $v1
     /* 8AC4 800182C4 02004794 */  lhu        $a3, 0x2($v0)
@@ -190,7 +190,7 @@ glabel Menu_DigiListTask
     /* 8AFC 800182FC 21284000 */  addu       $a1, $v0, $zero
     /* 8B00 80018300 21300000 */  addu       $a2, $zero, $zero
     /* 8B04 80018304 1A008797 */  lhu        $a3, %gp_rel(D_80050712)($gp)
-    /* 8B08 80018308 18008297 */  lhu        $v0, %gp_rel(D_80050710)($gp)
+    /* 8B08 80018308 18008297 */  lhu        $v0, %gp_rel(Menu_DigiListCursorTextPos)($gp)
     /* 8B0C 8001830C 003C0700 */  sll        $a3, $a3, 16
     /* 8B10 80018310 3E4D000C */  jal        Text_OpenPacked
     /* 8B14 80018314 25384700 */   or        $a3, $v0, $a3
@@ -312,9 +312,9 @@ glabel Menu_DigiListTask
     /* 8CAC 800184AC 29620008 */  j          .L800188A4
     /* 8CB0 800184B0 00000000 */   nop
   .L800184B4:
-    /* 8CB4 800184B4 0480033C */  lui        $v1, %hi(D_80040F28)
+    /* 8CB4 800184B4 0480033C */  lui        $v1, %hi(Menu_DigiListSubTasks)
     /* 8CB8 800184B8 62002286 */  lh         $v0, 0x62($s1)
-    /* 8CBC 800184BC 280F6324 */  addiu      $v1, $v1, %lo(D_80040F28)
+    /* 8CBC 800184BC 280F6324 */  addiu      $v1, $v1, %lo(Menu_DigiListSubTasks)
     /* 8CC0 800184C0 80100200 */  sll        $v0, $v0, 2
     /* 8CC4 800184C4 21104300 */  addu       $v0, $v0, $v1
     /* 8CC8 800184C8 00004484 */  lh         $a0, 0x0($v0)
@@ -411,7 +411,7 @@ glabel Menu_DigiListTask
     /* 8E10 80018610 05006010 */  beqz       $v1, .L80018628
     /* 8E14 80018614 01000224 */   addiu     $v0, $zero, 0x1
     /* 8E18 80018618 0C006210 */  beq        $v1, $v0, .L8001864C
-    /* 8E1C 8001861C 0680023C */   lui       $v0, %hi(D_8005F6F0)
+    /* 8E1C 8001861C 0680023C */   lui       $v0, %hi(Pad_State)
     /* 8E20 80018620 29620008 */  j          .L800188A4
     /* 8E24 80018624 00000000 */   nop
   .L80018628:
@@ -426,7 +426,7 @@ glabel Menu_DigiListTask
     /* 8E44 80018644 29620008 */  j          .L800188A4
     /* 8E48 80018648 00000000 */   nop
   .L8001864C:
-    /* 8E4C 8001864C F0F64324 */  addiu      $v1, $v0, %lo(D_8005F6F0)
+    /* 8E4C 8001864C F0F64324 */  addiu      $v1, $v0, %lo(Pad_State)
     /* 8E50 80018650 1C00628C */  lw         $v0, 0x1C($v1)
     /* 8E54 80018654 00000000 */  nop
     /* 8E58 80018658 0D00401C */  bgtz       $v0, .L80018690
@@ -470,7 +470,7 @@ glabel Menu_DigiListTask
     /* 8EE4 800186E4 21284000 */  addu       $a1, $v0, $zero
     /* 8EE8 800186E8 81000624 */  addiu      $a2, $zero, 0x81
     /* 8EEC 800186EC 16008797 */  lhu        $a3, %gp_rel(D_8005070E)($gp)
-    /* 8EF0 800186F0 14008297 */  lhu        $v0, %gp_rel(D_8005070C)($gp)
+    /* 8EF0 800186F0 14008297 */  lhu        $v0, %gp_rel(Menu_DigiMsgPos)($gp)
     /* 8EF4 800186F4 003C0700 */  sll        $a3, $a3, 16
     /* 8EF8 800186F8 3E4D000C */  jal        Text_OpenPacked
     /* 8EFC 800186FC 25384700 */   or        $a3, $v0, $a3
@@ -478,8 +478,8 @@ glabel Menu_DigiListTask
     /* 8F04 80018704 02000624 */  addiu      $a2, $zero, 0x2
     /* 8F08 80018708 21288000 */  addu       $a1, $a0, $zero
   .L8001870C:
-    /* 8F0C 8001870C 0580023C */  lui        $v0, %hi(D_80050720)
-    /* 8F10 80018710 2007428C */  lw         $v0, %lo(D_80050720)($v0)
+    /* 8F0C 8001870C 0580023C */  lui        $v0, %hi(Save_GameStatePtr)
+    /* 8F10 80018710 2007428C */  lw         $v0, %lo(Save_GameStatePtr)($v0)
     /* 8F14 80018714 00000000 */  nop
     /* 8F18 80018718 21184500 */  addu       $v1, $v0, $a1
     /* 8F1C 8001871C E4006290 */  lbu        $v0, 0xE4($v1)
@@ -544,7 +544,7 @@ glabel Menu_DigiListTask
     /* 8FF4 800187F4 21284000 */  addu       $a1, $v0, $zero
     /* 8FF8 800187F8 81000624 */  addiu      $a2, $zero, 0x81
     /* 8FFC 800187FC 16008797 */  lhu        $a3, %gp_rel(D_8005070E)($gp)
-    /* 9000 80018800 14008297 */  lhu        $v0, %gp_rel(D_8005070C)($gp)
+    /* 9000 80018800 14008297 */  lhu        $v0, %gp_rel(Menu_DigiMsgPos)($gp)
     /* 9004 80018804 003C0700 */  sll        $a3, $a3, 16
     /* 9008 80018808 3E4D000C */  jal        Text_OpenPacked
     /* 900C 8001880C 25384700 */   or        $a3, $v0, $a3

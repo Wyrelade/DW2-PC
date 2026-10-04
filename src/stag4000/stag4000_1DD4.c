@@ -122,8 +122,8 @@ s32 func_80065424(s32 a, s32 b, s32 c, s32 d) {
 void func_8006545C(Stg40W667C *w) {
     Stg40Vec3 vec;
     Mat1F668 mtx;
-    s32 centerX = D_8005F770.centerX.s;
-    s32 centerY = D_8005F770.centerY.s;
+    s32 centerX = Sys_State.centerX.s;
+    s32 centerY = Sys_State.centerY.s;
     s32 rows;
     s32 shiftX;
     s32 shiftY;
@@ -141,10 +141,10 @@ void func_8006545C(Stg40W667C *w) {
         s16 lo;
     } n;
 
-    mtx = D_80061A08;
+    mtx = GsWSMATRIX;
     shiftX = centerX != 0x140;
     shiftY = centerY != 0xF0;
-    shiftZ = D_8005F770.otLayerLen[3] - 2;
+    shiftZ = Sys_State.otLayerLen[3] - 2;
     func_8002D0D4();
     SetRotMatrix(&mtx);
     SetTransMatrix(&mtx);
@@ -372,7 +372,7 @@ s32 func_80065C50(Stg40W667C *w, s32 pkt, s32 x, s32 y)
         if (k == 0 && (tile->field_3 & 0x80)) {
             k = 4;
         }
-        ot = &D_8005F770.otLayers.u[3][w->field_0[y + rec->field_8][x + rec->field_7].field_1C];
+        ot = &Sys_State.otLayers.u[3][w->field_0[y + rec->field_8][x + rec->field_7].field_1C];
         src = &w->field_143C[base[k]];
         *(Stg40FT4 *)pkt = *src;
         ((Stg40FT4 *)pkt)->x0 = a->s[1].x;
@@ -571,8 +571,8 @@ void func_80066720(Actor *a0) {
             }
         } while (0);
         w->field_10 = ~(1 << sh);
-        w->field_12 = D_80050720->hp;
-        w->field_14 = D_80050720->mp;
+        w->field_12 = Save_GameStatePtr->hp;
+        w->field_14 = Save_GameStatePtr->mp;
         Task_NextState0(a0);
         break;
     case 1:
@@ -599,22 +599,22 @@ void func_80066720(Actor *a0) {
             }
             break;
         case 1:
-            if (w->field_12 > D_80050720->hp) {
-                w->field_12 = (w->field_12 - 0x21 < D_80050720->hp) ? D_80050720->hp : (u16)w->field_12 - 0x21;
+            if (w->field_12 > Save_GameStatePtr->hp) {
+                w->field_12 = (w->field_12 - 0x21 < Save_GameStatePtr->hp) ? Save_GameStatePtr->hp : (u16)w->field_12 - 0x21;
             }
-            if (w->field_12 < D_80050720->hp) {
-                w->field_12 = (D_80050720->hp < w->field_12 + 0x21) ? D_80050720->hp : (u16)w->field_12 + 0x21;
+            if (w->field_12 < Save_GameStatePtr->hp) {
+                w->field_12 = (Save_GameStatePtr->hp < w->field_12 + 0x21) ? Save_GameStatePtr->hp : (u16)w->field_12 + 0x21;
             }
-            if (D_80050720->hp == 0) {
+            if (Save_GameStatePtr->hp == 0) {
                 w->field_12 = 0;
             }
-            if (w->field_14 > D_80050720->mp) {
-                w->field_14 = (w->field_14 - 1 < D_80050720->mp) ? D_80050720->mp : (u16)w->field_14 - 1;
+            if (w->field_14 > Save_GameStatePtr->mp) {
+                w->field_14 = (w->field_14 - 1 < Save_GameStatePtr->mp) ? Save_GameStatePtr->mp : (u16)w->field_14 - 1;
             }
-            if (w->field_14 < D_80050720->mp) {
-                w->field_14 = (D_80050720->mp < w->field_14 + 1) ? D_80050720->mp : (u16)w->field_14 + 1;
+            if (w->field_14 < Save_GameStatePtr->mp) {
+                w->field_14 = (Save_GameStatePtr->mp < w->field_14 + 1) ? Save_GameStatePtr->mp : (u16)w->field_14 + 1;
             }
-            if (D_80050720->mp == 0) {
+            if (Save_GameStatePtr->mp == 0) {
                 w->field_14 = 0;
             }
             break;
@@ -661,9 +661,9 @@ void func_80066AD0(Actor *a0) {
             switch (i) {
             case 0:
             default:
-                Gfx_SetPartsNumber((GfxPart *)p, 2, 4, D_8005E620.maxHp);
+                Gfx_SetPartsNumber((GfxPart *)p, 2, 4, Save_GameState.maxHp);
                 Gfx_SetPartsNumber((GfxPart *)p, 4, 4, w->field_12);
-                Gfx_SetPartsNumber((GfxPart *)p, 8, 4, D_8005E620.maxMp);
+                Gfx_SetPartsNumber((GfxPart *)p, 8, 4, Save_GameState.maxMp);
                 Gfx_SetPartsNumber((GfxPart *)p, 0x10, 4, w->field_14);
                 break;
             case 1:
@@ -684,7 +684,7 @@ void func_80066BE4(Actor *a0) {
     default:
         Mem_FillWordsNeg1(&w->field_0, 1);
         w->field_4 = 0;
-        w->field_8 = D_80050720->field_8;
+        w->field_8 = Save_GameStatePtr->field_8;
         Task_NextState0(a0);
         break;
     case 1:
@@ -698,11 +698,11 @@ void func_80066BE4(Actor *a0) {
             }
             break;
         case 1:
-            if (D_80050720->field_8 < w->field_8) {
-                w->field_8 = (w->field_8 - 10 < D_80050720->field_8) ? D_80050720->field_8 : w->field_8 - 10;
+            if (Save_GameStatePtr->field_8 < w->field_8) {
+                w->field_8 = (w->field_8 - 10 < Save_GameStatePtr->field_8) ? Save_GameStatePtr->field_8 : w->field_8 - 10;
             }
-            if (w->field_8 < D_80050720->field_8) {
-                w->field_8 = (w->field_8 + 10 > D_80050720->field_8) ? D_80050720->field_8 : w->field_8 + 10;
+            if (w->field_8 < Save_GameStatePtr->field_8) {
+                w->field_8 = (w->field_8 + 10 > Save_GameStatePtr->field_8) ? Save_GameStatePtr->field_8 : w->field_8 + 10;
             }
             break;
         }
@@ -1480,15 +1480,15 @@ s32 func_80068604(Stg40Ent48 *e) {
     if (loc->field_1C != 0) {
         return 0;
     }
-    bits = (D_8005F6F0[0].right != 0) << 2;
-    if (D_8005F6F0[0].left != 0) {
+    bits = (Pad_State[0].right != 0) << 2;
+    if (Pad_State[0].left != 0) {
         bits |= 8;
     }
     dir = bits;
-    if (D_8005F6F0[0].up != 0) {
+    if (Pad_State[0].up != 0) {
         dir |= 2;
     }
-    idx = dir | (D_8005F6F0[0].down != 0);
+    idx = dir | (Pad_State[0].down != 0);
     k = D_800728D4[idx];
     oct = (s16)k;
     if (k < 0) {
@@ -1499,7 +1499,7 @@ s32 func_80068604(Stg40Ent48 *e) {
     }
     e->field_E = (oct << 16) >> 7;
     e->field_B = oct;
-    if (D_8005F6F0[0].l1 != 0 && (oct & 1) == 0) {
+    if (Pad_State[0].l1 != 0 && (oct & 1) == 0) {
         return 0;
     }
     if (D_8005F710 != 0) {
@@ -1602,7 +1602,7 @@ s32 func_80068A54(Actor *task) {
         n = dir - 7;
         if (func_8006E858(5) < n) {
             n *= 50;
-            gs = D_80050720;
+            gs = Save_GameStatePtr;
             hp = gs->hp - n;
             if (hp < 0) {
                 hp = ret;
@@ -1717,7 +1717,7 @@ void func_80068DC0(Actor *a0) {
     if (w->field_2C->field_18.field_8 >= 2) {
         return;
     }
-    D_80050720->mp = (D_80050720->mp - 1 < 0) ? 0 : (u16)D_80050720->mp - 1;
+    Save_GameStatePtr->mp = (Save_GameStatePtr->mp - 1 < 0) ? 0 : (u16)Save_GameStatePtr->mp - 1;
     if (func_80068A54(a0) != 0) {
         return;
     }
@@ -1725,10 +1725,10 @@ void func_80068DC0(Actor *a0) {
         Task_SetState1(a0, 8);
         return;
     }
-    if (Flag_Test(0x68) && D_80050720->mp == 0) {
-        D_80050720->mp = 1;
+    if (Flag_Test(0x68) && Save_GameStatePtr->mp == 0) {
+        Save_GameStatePtr->mp = 1;
     }
-    if (D_80050720->mp == 0 || D_80050720->hp == 0) {
+    if (Save_GameStatePtr->mp == 0 || Save_GameStatePtr->hp == 0) {
         Task_SetState1(a0, 0x1C);
     } else if (func_80068B8C(a0) == 0) {
         Task_SetState1(a0, 3);
@@ -1761,10 +1761,10 @@ void func_80068FBC(Actor *a0) {
 }
 
 void func_80068FFC(Actor *a0) {
-    if (Flag_Test(0x68) && D_80050720->mp == 0) {
-        D_80050720->mp = 1;
+    if (Flag_Test(0x68) && Save_GameStatePtr->mp == 0) {
+        Save_GameStatePtr->mp = 1;
     }
-    if (D_80050720->mp == 0 || D_80050720->hp == 0) {
+    if (Save_GameStatePtr->mp == 0 || Save_GameStatePtr->hp == 0) {
         Task_SetState1(a0, 0x1C);
     } else if (func_80068B8C(a0) == 0) {
         func_80070C48();
@@ -1787,7 +1787,7 @@ void func_800690CC(Actor *a0) {
     b->field_68--;
     k = b->field_60[b->field_68];
     if (k >= 2 && k < 6) {
-        arg = (s32)D_80050720->field_D1;
+        arg = (s32)Save_GameStatePtr->field_D1;
     }
     if (k == 6) {
         arg = b->field_78;
@@ -1821,10 +1821,10 @@ void func_80069188(Actor *a0) {
         return;
     }
     if (func_800682DC(a0) == 0 && func_800681BC(a0) == 0 && Beetle_GetPart(0x12) > 0 && D_8005F720 > 0) {
-        v = D_80050720->field_0 + 1;
+        v = Save_GameStatePtr->field_0 + 1;
         n = (v < 3) ? v : 0;
-        D_80050720->field_0 = n;
-        D_80072B60->field_7E = D_80050720->field_0;
+        Save_GameStatePtr->field_0 = n;
+        D_80072B60->field_7E = Save_GameStatePtr->field_0;
     }
 }
 
@@ -1987,7 +1987,7 @@ void func_80069830(Actor *a0) {
     case 1:
         if (func_8006E588(a0) == 1) {
             func_8006E4DC(a0, 0x28);
-            func_80067610(1, 0x1FD001F, (s32)D_80050720->field_D1, (s32)func_8006755C(0, D_80072B60->field_58));
+            func_80067610(1, 0x1FD001F, (s32)Save_GameStatePtr->field_D1, (s32)func_8006755C(0, D_80072B60->field_58));
             Task_NextState2(a0);
         }
         break;
@@ -2033,7 +2033,7 @@ void func_8006997C(Actor *arg0)
             break;
         case 9:
             if (D_8005071C->field_BA5 == 0) {
-                if (D_80050720->field_8 != 0 || func_80071608() != -1) {
+                if (Save_GameStatePtr->field_8 != 0 || func_80071608() != -1) {
                     r = -1;
                     ((Stg40BA5View *)D_8005071C)->field_BA5[e->field_8 - 9] = e->field_10[1];
                 }
@@ -2058,7 +2058,7 @@ void func_8006997C(Actor *arg0)
             break;
         }
         if (r == 0) {
-            func_80067610(1, e->field_8 + 0x1FD0022, (s32)D_80050720 + 0xD1, 0);
+            func_80067610(1, e->field_8 + 0x1FD0022, (s32)Save_GameStatePtr + 0xD1, 0);
             Task_SetState2(arg0, 3);
         } else {
             D_8005071C->field_BA0 &= ~bit;
@@ -2113,10 +2113,10 @@ void func_80069C94(Actor *a0) {
                 Task_SetState3(a0, 1);
             }
         }
-        if (D_8005F6F0[0].triangle > 0) {
+        if (Pad_State[0].triangle > 0) {
             Snd_PlayById(0xB, 0);
             Task_SetState2(a0, 0x64);
-        } else if (D_8005F6F0[0].square > 0 && D_80072B60->field_A8 >= 2) {
+        } else if (Pad_State[0].square > 0 && D_80072B60->field_A8 >= 2) {
             n = D_80072B60->field_AC + 1;
             D_80072B60->field_AC = (n < D_80072B60->field_A8) ? n : 0;
             Task_SetState2(a0, 1);
@@ -2145,7 +2145,7 @@ void func_80069C94(Actor *a0) {
         break;
     case 0x65:
         if (D_80072AA4->field_14 == 0) {
-            g->field_7E = D_80050720->field_0;
+            g->field_7E = Save_GameStatePtr->field_0;
             Task_SetState1(a0, 1);
         }
         break;
@@ -2291,7 +2291,7 @@ void func_80069F84(Actor *actor) {
             break;
         }
         Task_SetState1(actor, 6);
-        D_80072B60->field_7E = D_80050720->field_0;
+        D_80072B60->field_7E = Save_GameStatePtr->field_0;
         break;
     }
 }
@@ -2534,13 +2534,13 @@ void func_8006AB48(Actor *a0) {
     case 2:
         if (func_80067704(1) == 1) {
             Task_SetState1(a0, 6);
-            D_80072B60->field_7E = D_80050720->field_0;
+            D_80072B60->field_7E = Save_GameStatePtr->field_0;
         }
         break;
     case 3:
         if (func_80067704(1) == 1 && e->field_0 == 0) {
             Task_SetState1(a0, 6);
-            D_80072B60->field_7E = D_80050720->field_0;
+            D_80072B60->field_7E = Save_GameStatePtr->field_0;
         }
         break;
     }
@@ -2633,12 +2633,12 @@ void func_8006AF34(Actor *a0) {
         break;
     case 2:
         func_8006AE74();
-        if (D_8005F6F0[0].triangle > 0) {
+        if (Pad_State[0].triangle > 0) {
             Snd_PlayById(0xB, 0);
             Task_SetState2(a0, 4);
-        } else if (D_8005F6F0[0].cross > 0) {
+        } else if (Pad_State[0].cross > 0) {
             D_80072B60->field_E0 = D_80072B60->field_B0[D_80072B60->field_E2];
-            for (i = 0, bag = D_80050720->bagItems; i < 0x30; i++, bag++) {
+            for (i = 0, bag = Save_GameStatePtr->bagItems; i < 0x30; i++, bag++) {
                 if (*bag == D_80072B60->field_E0) {
                     *bag = 0;
                     Item_CompactBag();
@@ -2670,7 +2670,7 @@ void func_8006AF34(Actor *a0) {
         if (D_80072AA4->field_10 == 0) {
             if (D_80072B60->field_E4 == 0) {
                 Task_SetState1(a0, 1);
-                D_80072B60->field_7E = D_80050720->field_0;
+                D_80072B60->field_7E = Save_GameStatePtr->field_0;
             } else {
                 Task_SetState1(a0, 0x1A);
                 Task_SetState2(a0, 2);
@@ -2694,7 +2694,7 @@ void func_8006B20C(Actor *a0) {
         if (func_8006E588(a0) != 1) {
             return;
         }
-        func_80067610(1, 0x1FD0054, (s32)D_80050720->field_D1, 0);
+        func_80067610(1, 0x1FD0054, (s32)Save_GameStatePtr->field_D1, 0);
         break;
     case 2:
         r = func_80067704(1);

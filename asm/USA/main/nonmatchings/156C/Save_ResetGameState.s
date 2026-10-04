@@ -2,16 +2,16 @@ nonmatching Save_ResetGameState, 0x84
 
 glabel Save_ResetGameState
     /* 12C68 80022468 E8FFBD27 */  addiu      $sp, $sp, -0x18
-    /* 12C6C 8002246C 2800848F */  lw         $a0, %gp_rel(D_80050720)($gp)
+    /* 12C6C 8002246C 2800848F */  lw         $a0, %gp_rel(Save_GameStatePtr)($gp)
     /* 12C70 80022470 1000BFAF */  sw         $ra, 0x10($sp)
     /* 12C74 80022474 E38B000C */  jal        Mem_Zero
     /* 12C78 80022478 58100524 */   addiu     $a1, $zero, 0x1058
-    /* 12C7C 8002247C 2800838F */  lw         $v1, %gp_rel(D_80050720)($gp)
+    /* 12C7C 8002247C 2800838F */  lw         $v1, %gp_rel(Save_GameStatePtr)($gp)
     /* 12C80 80022480 01000224 */  addiu      $v0, $zero, 0x1
     /* 12C84 80022484 7287000C */  jal        Save_ClearEventFlags
     /* 12C88 80022488 000062A0 */   sb        $v0, 0x0($v1)
-    /* 12C8C 8002248C 0680023C */  lui        $v0, %hi(D_8005E620)
-    /* 12C90 80022490 20E64224 */  addiu      $v0, $v0, %lo(D_8005E620)
+    /* 12C8C 8002248C 0680023C */  lui        $v0, %hi(Save_GameState)
+    /* 12C90 80022490 20E64224 */  addiu      $v0, $v0, %lo(Save_GameState)
     /* 12C94 80022494 8F000324 */  addiu      $v1, $zero, 0x8F
     /* 12C98 80022498 140043A0 */  sb         $v1, 0x14($v0)
     /* 12C9C 8002249C 95000324 */  addiu      $v1, $zero, 0x95

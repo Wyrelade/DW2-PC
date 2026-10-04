@@ -51,8 +51,8 @@ glabel func_80067DB4
     /* 4B00 80067E60 6645000C */  jal        Task_NextState3
     /* 4B04 80067E64 21200002 */   addu      $a0, $s0, $zero
   .L80067E68:
-    /* 4B08 80067E68 0680023C */  lui        $v0, %hi(D_8005F770)
-    /* 4B0C 80067E6C 70F74424 */  addiu      $a0, $v0, %lo(D_8005F770)
+    /* 4B08 80067E68 0680023C */  lui        $v0, %hi(Sys_State)
+    /* 4B0C 80067E6C 70F74424 */  addiu      $a0, $v0, %lo(Sys_State)
     /* 4B10 80067E70 1000838C */  lw         $v1, 0x10($a0)
     /* 4B14 80067E74 FF000224 */  addiu      $v0, $zero, 0xFF
     /* 4B18 80067E78 0D006214 */  bne        $v1, $v0, .L80067EB0

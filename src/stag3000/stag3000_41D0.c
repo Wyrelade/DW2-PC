@@ -266,8 +266,8 @@ void func_800676F4(Actor *a0) {
                 Flag_Set(0x2DD, 0);
                 D_8005F78C = 0x406;
             } else {
-                D_8005F770.field_24 = 2;
-                D_8005F770.nextGameMode = D_8005F770.prevGameMode;
+                Sys_State.field_24 = 2;
+                Sys_State.nextGameMode = Sys_State.prevGameMode;
             }
             Task_NextState3(a0);
             break;
@@ -301,12 +301,12 @@ void func_80067DB4(Stg30ListOwner *a0) {
             Gfx_FadeOutToBlack(0xF);
             Task_NextState3((Actor *)a0);
         case 1:
-            if (D_8005F770.fadeLevel == 0xFF) {
+            if (Sys_State.fadeLevel == 0xFF) {
                 if (D_80073CC0.entries[0].field_0 != 0) {
-                    D_8005F770.field_24 = 2;
-                    D_8005F770.nextGameMode = D_8005F770.prevGameMode;
+                    Sys_State.field_24 = 2;
+                    Sys_State.nextGameMode = Sys_State.prevGameMode;
                 } else {
-                    D_8005F770.nextGameMode = 0x401;
+                    Sys_State.nextGameMode = 0x401;
                 }
                 Task_NextState3((Actor *)a0);
             }
@@ -322,9 +322,9 @@ void func_80067EC4(void) {
 
     for (i = 0; i < 3; i++) {
         if (D_80073CC0.entries[i].field_18 >= 3) {
-            D_80073CC0.entries[i].field_34 = D_8005E620.elems[i].field_1C;
-            D_80073CC0.entries[i].field_36 = D_8005E620.elems[i].field_1E;
-            D_80073CC0.entries[i].field_38 = D_8005E620.elems[i].field_20;
+            D_80073CC0.entries[i].field_34 = Save_GameState.elems[i].field_1C;
+            D_80073CC0.entries[i].field_36 = Save_GameState.elems[i].field_1E;
+            D_80073CC0.entries[i].field_38 = Save_GameState.elems[i].field_20;
         }
     }
 }
@@ -397,8 +397,8 @@ void func_80067F2C(Actor *a0) {
             Cd_QueueFile(0x45E);
             for (i = 0; i < 3; i++) {
                 Mem_Zero(&((Stg30StateDigis *)&D_80073CC0)->digis[i], 0x5C);
-                if (D_8005E620.elems[i].state >= 3) {
-                    ((Stg30StateDigis *)&D_80073CC0)->digis[i] = D_8005E620.elems[i];
+                if (Save_GameState.elems[i].state >= 3) {
+                    ((Stg30StateDigis *)&D_80073CC0)->digis[i] = Save_GameState.elems[i];
                     args[1] = i;
                     args[2] = D_80073CC0.entries[i].field_2E == 0;
                     Task_Create(0x509, (s32 *)&l->actors[i], (s32)args);
@@ -406,7 +406,7 @@ void func_80067F2C(Actor *a0) {
             }
             for (i = 3; i < 6; i++) {
                 Mem_Zero(&((Stg30StateDigis *)&D_80073CC0)->digis[i], 0x5C);
-                Enemy_InitRosterEntry(D_8005F770.field_24, i - 3, &((Stg30StateDigis *)&D_80073CC0)->digis[i],
+                Enemy_InitRosterEntry(Sys_State.field_24, i - 3, &((Stg30StateDigis *)&D_80073CC0)->digis[i],
                               (Out1DDA8 *)&D_80073CC0.field_240[i]);
                 if (D_80073CC0.entries[i].field_19 != 0) {
                     args[1] = i;
@@ -482,7 +482,7 @@ void func_80067F2C(Actor *a0) {
                         if (++a0->stateLevel4 < 0x10) {
                             break;
                         }
-                        D_8005F770.nextGameMode = D_8005F770.prevGameMode;
+                        Sys_State.nextGameMode = Sys_State.prevGameMode;
                         break;
                     }
                     break;

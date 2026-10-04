@@ -12,9 +12,9 @@ glabel Stg11_TransferSelected
     /* 114C 800644AC 1400B1AF */  sw         $s1, 0x14($sp)
     /* 1150 800644B0 9C4E000C */  jal        Menu_GridIndexColMajor
     /* 1154 800644B4 1000B0AF */   sw        $s0, 0x10($sp)
-    /* 1158 800644B8 0580033C */  lui        $v1, %hi(D_80050720)
+    /* 1158 800644B8 0580033C */  lui        $v1, %hi(Save_GameStatePtr)
     /* 115C 800644BC 40110200 */  sll        $v0, $v0, 5
-    /* 1160 800644C0 2007638C */  lw         $v1, %lo(D_80050720)($v1)
+    /* 1160 800644C0 2007638C */  lw         $v1, %lo(Save_GameStatePtr)($v1)
     /* 1164 800644C4 98004224 */  addiu      $v0, $v0, 0x98
     /* 1168 800644C8 E4007024 */  addiu      $s0, $v1, 0xE4
     /* 116C 800644CC 38014386 */  lh         $v1, 0x138($s2)

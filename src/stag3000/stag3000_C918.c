@@ -62,19 +62,19 @@ void func_8006FC78(Actor *a0)
             case 3:
               do
             {
-              if (D_8005F6F0[0].right > 0)
+              if (Pad_State[0].right > 0)
               {
                 w->field_C = 1;
                 Snd_PlayById(0x12, 0);
                 break;
               }
-              if (D_8005F6F0[0].left > 0)
+              if (Pad_State[0].left > 0)
               {
                 w->field_C = 0;
                 Snd_PlayById(0x12, 0);
                 break;
               }
-              if (D_8005F6F0[0].cross > 0)
+              if (Pad_State[0].cross > 0)
               {
                 Task_NextState2(a0);
                 Snd_PlayById(0xE, 0);
@@ -120,7 +120,7 @@ void func_8006FC78(Actor *a0)
         D_80073CC0.field_3D4 = a0->stateLevel1;
         do
       {
-        if (D_8005F6F0[0].right > 0)
+        if (Pad_State[0].right > 0)
         {
           if (w->field_10 == 2)
           {
@@ -133,7 +133,7 @@ void func_8006FC78(Actor *a0)
           Snd_PlayById(0x12, 0);
           break;
         }
-        if (D_8005F6F0[0].left > 0)
+        if (Pad_State[0].left > 0)
         {
           if (w->field_10 == 0)
           {
@@ -143,7 +143,7 @@ void func_8006FC78(Actor *a0)
           Snd_PlayById(0x12, 0);
           break;
         }
-        if (D_8005F6F0[0].cross > 0)
+        if (Pad_State[0].cross > 0)
         {
           if (D_80073CC0.field_2AC[w->field_10].field_0 != 3)
           {
@@ -153,7 +153,7 @@ void func_8006FC78(Actor *a0)
           Task_NextState0(a0);
           break;
         }
-        if (D_8005F6F0[0].triangle > 0)
+        if (Pad_State[0].triangle > 0)
         {
           Task_SetState1(a0, 0);
           Snd_PlayById(0xB, 0);

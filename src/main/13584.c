@@ -11,14 +11,14 @@
 
 /* Small data this unit defines (retail reaches it with %gp_rel here). The bytes
  * live in the data asm; these tentative definitions are COMMON and bind to it. */
-s32 D_8005072C;
-s32 D_80050730;
-s32 D_80050738;
-s32 D_80050750;
-s32 D_80050784;
-MemBlock *D_80050788;
-s32 D_8005078C;
-s32 D_80050790;
+s32 Sys_VSyncsSinceFlip;
+s32 Sys_BootImageRect;
+s32 Sys_LastVSyncTime;
+s32 Cd_QueueActive;
+s32 Mem_HeapSize;
+MemBlock *Mem_HeapHead;
+s32 Sys_FlipPending;
+s32 Rand_Index;
 
 void Mem_Free(ActorWork *arg0) {
     MemFreeBlock *n = (MemFreeBlock *)((u8 *)arg0 - 0xC);
@@ -36,7 +36,7 @@ void Mem_Free(ActorWork *arg0) {
 }
 
 void Mem_FreeTag(s32 tag) {
-    MemBlock *b = D_80050788;
+    MemBlock *b = Mem_HeapHead;
 
     if (b->tag != 1) {
         do {
@@ -52,8 +52,8 @@ void Mem_FreeTag(s32 tag) {
 void Mem_InitHeap(MemBlock *heap, s32 size) {
     MemBlock *end;
 
-    D_80050784 = size;
-    D_80050788 = heap;
+    Mem_HeapSize = size;
+    Mem_HeapHead = heap;
     end = (MemBlock *)((u8 *)heap + size) - 1;
     heap->prev = NULL;
     heap->next = end;
@@ -66,7 +66,7 @@ void Mem_InitHeap(MemBlock *heap, s32 size) {
 
 s32 Mem_TryAlloc(s32 arg0, s32 tag) {
     u32 size = ((u32)(arg0 + 3) >> 2) << 2;
-    MemBlock *b = D_80050788;
+    MemBlock *b = Mem_HeapHead;
     MemBlock *n;
     u32 avail;
     u32 lim = size + 0x14;
@@ -116,7 +116,7 @@ void Mem_Zero(void *a0, s32 a1) {
 }
 
 void Mem_SumSizesByTag(s32 *tbl) {
-    MemBlock *b = D_80050788;
+    MemBlock *b = Mem_HeapHead;
 
     if (b->tag != 1) {
         do {
@@ -128,7 +128,7 @@ void Mem_SumSizesByTag(s32 *tbl) {
 
 
 u32 Mem_GetLargestFree(void) {
-    MemBlock *b = D_80050788;
+    MemBlock *b = Mem_HeapHead;
     u32 best = 0;
     u32 sz;
 
@@ -146,7 +146,7 @@ u32 Mem_GetLargestFree(void) {
 
 
 void Pad_Init(void) {
-    PadInitDirect(D_8005F6A8, D_8005F6A8 + 0x22);
+    PadInitDirect(Pad_RecvBufs, Pad_RecvBufs + 0x22);
     PadStartCom();
 }
 
@@ -191,20 +191,20 @@ void Pad_PollPort(PadBuf *a0, s32 i) {
     switch (PadGetState(i << 4)) {
     case 2:
     case 6:
-        switch (D_8005F678[i].initialized) {
+        switch (Pad_PortButtons[i].initialized) {
         case 0:
         default:
-            Pad_ResetButtons((PadButtons *)&D_8005F678[i]);
-            D_8005F678[i].initialized = 1;
+            Pad_ResetButtons((PadButtons *)&Pad_PortButtons[i]);
+            Pad_PortButtons[i].initialized = 1;
             break;
         case 1:
-            Pad_UpdateButtons(&D_8005F678[i], a0);
+            Pad_UpdateButtons(&Pad_PortButtons[i], a0);
             break;
         }
         break;
     case 0:
     default:
-        D_8005F678[i].initialized = 0;
+        Pad_PortButtons[i].initialized = 0;
         break;
     }
 }
@@ -221,56 +221,56 @@ s32 Pad_GetButtonState(s32 arg0, s32 arg1, s32 arg2) {
 
 void Pad_Update(void) {
     s32 i;
-    PadBuf *a8 = (PadBuf *)D_8005F6A8;
+    PadBuf *a8 = (PadBuf *)Pad_RecvBufs;
 
     for (i = 0; i < 2; i++) {
         if (a8[i].status != 0) {
-            D_8005F678[i].initialized = 0;
-            D_8005F678[i].held = 0;
-            D_8005F678[i].pressed = 0;
-            D_8005F678[i].repeat = 0;
-            D_8005F6F0[i].connected = 0;
+            Pad_PortButtons[i].initialized = 0;
+            Pad_PortButtons[i].held = 0;
+            Pad_PortButtons[i].pressed = 0;
+            Pad_PortButtons[i].repeat = 0;
+            Pad_State[i].connected = 0;
         } else if ((a8[i].padType >> 4) == 4) {
             Pad_PollPort(&a8[i], i);
-            D_8005F6F0[i].connected = 1;
+            Pad_State[i].connected = 1;
         } else {
-            D_8005F678[i].held = 0;
-            D_8005F678[i].pressed = 0;
-            D_8005F678[i].repeat = 0;
-            D_8005F6F0[i].connected = 0;
+            Pad_PortButtons[i].held = 0;
+            Pad_PortButtons[i].pressed = 0;
+            Pad_PortButtons[i].repeat = 0;
+            Pad_State[i].connected = 0;
         }
-        D_8005F6F0[i].up = Pad_GetButtonState(D_8005F678[i].pressed, D_8005F678[i].held, 0x1000);
-        D_8005F6F0[i].down = Pad_GetButtonState(D_8005F678[i].pressed, D_8005F678[i].held, 0x4000);
-        D_8005F6F0[i].right = Pad_GetButtonState(D_8005F678[i].pressed, D_8005F678[i].held, 0x2000);
-        D_8005F6F0[i].left = Pad_GetButtonState(D_8005F678[i].pressed, D_8005F678[i].held, 0x8000);
-        D_8005F6F0[i].circle = Pad_GetButtonState(D_8005F678[i].pressed, D_8005F678[i].held, 0x20);
-        D_8005F6F0[i].cross = Pad_GetButtonState(D_8005F678[i].pressed, D_8005F678[i].held, 0x40);
-        D_8005F6F0[i].triangle = Pad_GetButtonState(D_8005F678[i].pressed, D_8005F678[i].held, 0x10);
-        D_8005F6F0[i].square = Pad_GetButtonState(D_8005F678[i].pressed, D_8005F678[i].held, 0x80);
-        D_8005F6F0[i].l1 = Pad_GetButtonState(D_8005F678[i].pressed, D_8005F678[i].held, 0x4);
-        D_8005F6F0[i].l2 = Pad_GetButtonState(D_8005F678[i].pressed, D_8005F678[i].held, 0x1);
-        D_8005F6F0[i].r1 = Pad_GetButtonState(D_8005F678[i].pressed, D_8005F678[i].held, 0x8);
-        D_8005F6F0[i].r2 = Pad_GetButtonState(D_8005F678[i].pressed, D_8005F678[i].held, 0x2);
-        D_8005F6F0[i].select = Pad_GetButtonState(D_8005F678[i].pressed, D_8005F678[i].held, 0x100);
-        D_8005F6F0[i].start = Pad_GetButtonState(D_8005F678[i].pressed, D_8005F678[i].held, 0x800);
-        D_8005F6F0[i].held = D_8005F678[i].held;
-        D_8005F6F0[i].pressed = D_8005F678[i].pressed;
-        D_8005F6F0[i].repeat = D_8005F678[i].repeat;
+        Pad_State[i].up = Pad_GetButtonState(Pad_PortButtons[i].pressed, Pad_PortButtons[i].held, 0x1000);
+        Pad_State[i].down = Pad_GetButtonState(Pad_PortButtons[i].pressed, Pad_PortButtons[i].held, 0x4000);
+        Pad_State[i].right = Pad_GetButtonState(Pad_PortButtons[i].pressed, Pad_PortButtons[i].held, 0x2000);
+        Pad_State[i].left = Pad_GetButtonState(Pad_PortButtons[i].pressed, Pad_PortButtons[i].held, 0x8000);
+        Pad_State[i].circle = Pad_GetButtonState(Pad_PortButtons[i].pressed, Pad_PortButtons[i].held, 0x20);
+        Pad_State[i].cross = Pad_GetButtonState(Pad_PortButtons[i].pressed, Pad_PortButtons[i].held, 0x40);
+        Pad_State[i].triangle = Pad_GetButtonState(Pad_PortButtons[i].pressed, Pad_PortButtons[i].held, 0x10);
+        Pad_State[i].square = Pad_GetButtonState(Pad_PortButtons[i].pressed, Pad_PortButtons[i].held, 0x80);
+        Pad_State[i].l1 = Pad_GetButtonState(Pad_PortButtons[i].pressed, Pad_PortButtons[i].held, 0x4);
+        Pad_State[i].l2 = Pad_GetButtonState(Pad_PortButtons[i].pressed, Pad_PortButtons[i].held, 0x1);
+        Pad_State[i].r1 = Pad_GetButtonState(Pad_PortButtons[i].pressed, Pad_PortButtons[i].held, 0x8);
+        Pad_State[i].r2 = Pad_GetButtonState(Pad_PortButtons[i].pressed, Pad_PortButtons[i].held, 0x2);
+        Pad_State[i].select = Pad_GetButtonState(Pad_PortButtons[i].pressed, Pad_PortButtons[i].held, 0x100);
+        Pad_State[i].start = Pad_GetButtonState(Pad_PortButtons[i].pressed, Pad_PortButtons[i].held, 0x800);
+        Pad_State[i].held = Pad_PortButtons[i].held;
+        Pad_State[i].pressed = Pad_PortButtons[i].pressed;
+        Pad_State[i].repeat = Pad_PortButtons[i].repeat;
     }
 }
 
 void Sys_VSyncHandler(void) {
-    s32 t = D_8005F770.vsyncWait - (D_8005F770.vsyncWait != 0);
+    s32 t = Sys_State.vsyncWait - (Sys_State.vsyncWait != 0);
 
-    if (D_8005078C != 0 && D_8005072C >= t) {
-        D_8005F770.bufIndex = (D_8005F770.bufIndex == 0);
-        PutDispEnv(&D_8005F770.disp[D_8005F770.bufIndex]);
-        PutDrawEnv(&D_8005F770.draw[D_8005F770.bufIndex]);
-        Gpu_DrawOt(D_8005F770.bufIndex ^ 1);
-        D_8005078C = 0;
-        D_8005072C = 0;
+    if (Sys_FlipPending != 0 && Sys_VSyncsSinceFlip >= t) {
+        Sys_State.bufIndex = (Sys_State.bufIndex == 0);
+        PutDispEnv(&Sys_State.disp[Sys_State.bufIndex]);
+        PutDrawEnv(&Sys_State.draw[Sys_State.bufIndex]);
+        Gpu_DrawOt(Sys_State.bufIndex ^ 1);
+        Sys_FlipPending = 0;
+        Sys_VSyncsSinceFlip = 0;
     } else {
-        D_8005072C++;
+        Sys_VSyncsSinceFlip++;
     }
     SsSeqCalledTbyT();
 }
@@ -303,24 +303,24 @@ void Sys_Main(void) {
     SsInit();
     func_8002CE5C();
     Gpu_InitDoubleBuffer(0x140, 0x280, 1, 0);
-    PutDrawEnv(&D_8005F770.draw[0]);
-    PutDispEnv(&D_8005F770.disp[0]);
+    PutDrawEnv(&Sys_State.draw[0]);
+    PutDispEnv(&Sys_State.disp[0]);
     VSync(0);
-    GsGetTimInfo((u32 *)(D_80010000 + 4), &tim);
+    GsGetTimInfo((u32 *)(Ovl_LoadAddr + 4), &tim);
     VSync(0);
-    LoadImage((s32)&D_80050730, (s32)tim.paddr);
+    LoadImage((s32)&Sys_BootImageRect, (s32)tim.paddr);
     DrawSync(0);
     VSync(0);
     SetDispMask(1);
     CdInit();
     CdSetDebug(0);
     SetGraphDebug(0);
-    Mem_InitHeap(D_800506F8, 0x801FF000 - (s32)D_800506F8);
+    Mem_InitHeap(Mem_HeapStart, 0x801FF000 - (s32)Mem_HeapStart);
     Cd_ClearFileCache();
     Snd_Init();
-    D_8005F770.frameCount = 0;
-    D_8005F770.vsyncWait = 0;
-    D_8005F770.bufIndex = 1;
+    Sys_State.frameCount = 0;
+    Sys_State.vsyncWait = 0;
+    Sys_State.bufIndex = 1;
     Gpu_FreePrimBufs();
     Gpu_SetOtLayout(0);
     Gpu_SetLayerOtPtrs();
@@ -337,11 +337,11 @@ void Sys_Main(void) {
     Gfx_InitTexSlots();
     Gpu_ClearOt(0);
     Gpu_ClearOt(1);
-    D_8005F770.frameCount = 1;
-    D_8005F770.gameMode = 0x402;
-    D_8005F770.nextGameMode = 0x402;
-    D_8005F770.field_24 = 0;
-    D_8005F770.field_C = 0;
+    Sys_State.frameCount = 1;
+    Sys_State.gameMode = 0x402;
+    Sys_State.nextGameMode = 0x402;
+    Sys_State.field_24 = 0;
+    Sys_State.field_C = 0;
     Save_ResetGameState();
     D_8005071C->field_0 = 0;
     Gfx_FadeSetBlack();
@@ -355,12 +355,12 @@ void Sys_Main(void) {
             Gpu_ClearOt(0);
             Gpu_ClearOt(1);
             {
-                s32 cur = D_8005F770.gameMode;
-                s32 next = D_8005F770.nextGameMode;
+                s32 cur = Sys_State.gameMode;
+                s32 next = Sys_State.nextGameMode;
 
-                D_8005F770.nextGameMode = 0;
-                D_8005F770.prevGameMode = cur;
-                D_8005F770.gameMode = next;
+                Sys_State.nextGameMode = 0;
+                Sys_State.prevGameMode = cur;
+                Sys_State.gameMode = next;
             }
             for (i = 0; i < 0x11; i++) {
                 Flag_Set(i, 0);
@@ -368,28 +368,28 @@ void Sys_Main(void) {
             Task_Create(1, &slot, 0);
         }
         Gfx_DrawFade();
-        D_8005F770.drawPass = 0;
+        Sys_State.drawPass = 0;
         slot = Task_TryRun((void *)slot);
-        D_8005F770.drawPass = 1;
+        Sys_State.drawPass = 1;
         slot = Task_TryRun((void *)slot);
-        Gpu_SkipEmptyOtEntries(D_8005F770.bufIndex);
+        Gpu_SkipEmptyOtEntries(Sys_State.bufIndex);
         DrawSync(0);
-        D_8005078C = 1;
-        while (*(volatile s32 *)&D_8005078C != 0) {
+        Sys_FlipPending = 1;
+        while (*(volatile s32 *)&Sys_FlipPending != 0) {
         }
         Gpu_ResetPrimBuf();
         Gpu_SetLayerOtPtrs();
-        Gpu_ClearOt(D_8005F770.bufIndex);
+        Gpu_ClearOt(Sys_State.bufIndex);
         t = VSync(-1);
-        u = D_80050738;
-        D_80050738 = t;
+        u = Sys_LastVSyncTime;
+        Sys_LastVSyncTime = t;
         d = t - u;
-        D_8005F770.frameDelta = d;
-        D_8005E620.playTime += d;
+        Sys_State.frameDelta = d;
+        Save_GameState.playTime += d;
         if (d > 6) {
-            D_8005F770.frameDelta = 6;
+            Sys_State.frameDelta = 6;
         }
-        D_8005F770.frameCount++;
+        Sys_State.frameCount++;
         Pad_Update();
         Rand_Step();
         Cd_ServiceQueue();
@@ -399,39 +399,39 @@ void Sys_Main(void) {
 
 
 void Rand_Seed(s32 a0) {
-    D_80050790 = a0 & 0xFFF;
+    Rand_Index = a0 & 0xFFF;
 }
 
 
 void Rand_Step(void) {
-    D_80050790 = (D_80050790 + 1) & 0xFFF;
+    Rand_Index = (Rand_Index + 1) & 0xFFF;
 }
 
 
 s32 Rand_Next(void) {
     Rand_Step();
-    return D_80041704[D_80050790];
+    return Rand_Table[Rand_Index];
 }
 
 
 u16 Rand_GetAt(u32 arg0) {
-    return D_80041704[arg0 & 0xFFF];
+    return Rand_Table[arg0 & 0xFFF];
 }
 
 void Sys_SetFrameRate60(void) {
-    D_8005F770.vsyncWait = 0;
+    Sys_State.vsyncWait = 0;
 }
 
 void Sys_SetFrameRate30(void) {
-    D_8005F770.vsyncWait = 2;
+    Sys_State.vsyncWait = 2;
 }
 
 void Sys_SetFrameRate20(void) {
-    D_8005F770.vsyncWait = 3;
+    Sys_State.vsyncWait = 3;
 }
 
 void Sys_SetFrameRate15(void) {
-    D_8005F770.vsyncWait = 4;
+    Sys_State.vsyncWait = 4;
 }
 
 EntA0 *Cd_GetFileEntry(u32 arg0) {
@@ -461,7 +461,7 @@ s32 Cd_GetFileOrNull(s32 arg0) {
 
 void Cd_ClearFileCache(void) {
     s32 i;
-    CdCacheEntry *p = D_8005F8C8;
+    CdCacheEntry *p = Cd_FileCache;
     for (i = 0; i < 0x50; i++, p++) {
         p->fileId = 0;
         p->data = 0;
@@ -475,7 +475,7 @@ CdCacheEntry *Cd_FindCachedFile(arg0)
 s32 arg0;
 {
     s32 i;
-    CdCacheEntry *p = D_8005F8C8;
+    CdCacheEntry *p = Cd_FileCache;
     for (i = 0; i < 0x50; i++, p++) {
         if (p->fileId == arg0) return p;
     }
@@ -484,7 +484,7 @@ s32 arg0;
 
 CdCacheEntry *Cd_FindFreeCacheSlot(void) {
     s32 i;
-    CdCacheEntry *p = D_8005F8C8;
+    CdCacheEntry *p = Cd_FileCache;
     for (i = 0; i < 0x50; i++, p++) {
         if (p->fileId == 0) return p;
     }
@@ -492,8 +492,8 @@ CdCacheEntry *Cd_FindFreeCacheSlot(void) {
 }
 
 CdLruEntry *Cd_FindLruCachedFile(void) {
-    s32 min = D_8005F770.frameCount;
-    CdCacheEntry *p = D_8005F8C8;
+    s32 min = Sys_State.frameCount;
+    CdCacheEntry *p = Cd_FileCache;
     CdCacheEntry *best = 0;
     s32 i;
     for (i = 0; i < 0x50; i++, p++) {
@@ -511,7 +511,7 @@ s32 Cd_GetFileState(s32 arg0) {
     CdCacheEntry *e = Cd_FindCachedFile(arg0);
 
     if (e != 0) {
-        e->lastUsed = D_8005F770.frameCount;
+        e->lastUsed = Sys_State.frameCount;
         return e->state;
     }
     return 0;
@@ -531,7 +531,7 @@ void Cd_QueueFile(s32 id) {
     CdCacheEntry *p = Cd_FindCachedFile(id);
 
     if (p != NULL) {
-        p->lastUsed = D_8005F770.frameCount;
+        p->lastUsed = Sys_State.frameCount;
         return;
     }
     p = Cd_FindFreeCacheSlot();
@@ -539,7 +539,7 @@ void Cd_QueueFile(s32 id) {
     p->data = Mem_Alloc(Cd_GetFileSectors(id) << 11, 3);
     p->state = 1;
     p->lastUsed = 0;
-    D_80050750 = 1;
+    Cd_QueueActive = 1;
 }
 
 
@@ -549,13 +549,13 @@ void Cd_ServiceQueue(void) {
     s32 i;
     CdCacheEntry *p;
 
-    if (D_80050750 == 0) {
+    if (Cd_QueueActive == 0) {
         return;
     }
     if (Cd_PollRead() != 0) {
         return;
     }
-    p = D_8005F8C8;
+    p = Cd_FileCache;
     started = 0;
     busy = 0;
     for (i = 0; i < 0x50; i++, p++) {
@@ -565,7 +565,7 @@ void Cd_ServiceQueue(void) {
         if (p->state != 1) {
             if (p->state == 2) {
                 p->state = 3;
-                p->lastUsed = D_8005F770.frameCount;
+                p->lastUsed = Sys_State.frameCount;
                 busy = 1;
             }
         } else {
@@ -573,13 +573,13 @@ void Cd_ServiceQueue(void) {
             if (started == 0) {
                 Cd_ReadFileAsync(p->fileId, p->data);
                 p->state = 2;
-                p->lastUsed = D_8005F770.frameCount;
+                p->lastUsed = Sys_State.frameCount;
                 started = busy;
             }
         }
     }
     if (busy == 0) {
-        D_80050750 = 0;
+        Cd_QueueActive = 0;
     }
 }
 
@@ -594,7 +594,7 @@ void Cd_LoadFileSync(s32 arg0) {
 s32 Cd_GetFileSync(s32 arg0) {
     CdCacheEntry *p = Cd_FindCachedFile(arg0);
     if (p != 0 && p->state == 3) {
-        p->lastUsed = D_8005F770.frameCount;
+        p->lastUsed = Sys_State.frameCount;
     } else {
         while (Cd_PollRead() != 0) {
         }
@@ -637,12 +637,12 @@ void Cd_UnlockFile(s32 a0) {
 void Cd_FreeUnlockedFiles(void) {
     s32 i;
     for (i = 0; i < 0x50; i++) {
-        if (D_8005F8C8[i].fileId != 0 && D_8005F8C8[i].locked == 0) {
-            Mem_Free(D_8005F8C8[i].data);
-            D_8005F8C8[i].fileId = 0;
-            D_8005F8C8[i].data = 0;
-            D_8005F8C8[i].lastUsed = 0;
-            D_8005F8C8[i].state = 0;
+        if (Cd_FileCache[i].fileId != 0 && Cd_FileCache[i].locked == 0) {
+            Mem_Free(Cd_FileCache[i].data);
+            Cd_FileCache[i].fileId = 0;
+            Cd_FileCache[i].data = 0;
+            Cd_FileCache[i].lastUsed = 0;
+            Cd_FileCache[i].state = 0;
         }
     }
 }
@@ -665,10 +665,10 @@ void Cd_GetFilePos(s32 arg0, void *arg1) {
 
 s32 Cd_CheckNextSector(void) {
     s32 x;
-    CdGetSector(D_8005FDC8, 3);
-    x = CdPosToInt(D_8005FDC8);
-    if (x == D_80048DB8.nextLba) {
-        D_80048DB8.nextLba = x + 1;
+    CdGetSector(Cd_SectorHeader, 3);
+    x = CdPosToInt(Cd_SectorHeader);
+    if (x == Cd_ReadState.nextLba) {
+        Cd_ReadState.nextLba = x + 1;
         return 0;
     }
     return -1;
@@ -676,14 +676,14 @@ s32 Cd_CheckNextSector(void) {
 
 void Cd_ReadSectorCallback(s32 a0) {
     if (a0 == 1 && Cd_CheckNextSector() == 0) {
-        CdGetSector((void *)D_80048DB8.dest, 0x200);
-        D_80048DB8.dest += 0x800;
-        D_80048DB8.sectorsLeft -= 1;
-        if (D_80048DB8.sectorsLeft != 0) {
+        CdGetSector((void *)Cd_ReadState.dest, 0x200);
+        Cd_ReadState.dest += 0x800;
+        Cd_ReadState.sectorsLeft -= 1;
+        if (Cd_ReadState.sectorsLeft != 0) {
             return;
         }
     } else {
-        D_80048DB8.sectorsLeft = -1;
+        Cd_ReadState.sectorsLeft = -1;
     }
     CdReadyCallback(0);
     CdControlF(9, 0);
@@ -691,36 +691,36 @@ void Cd_ReadSectorCallback(s32 a0) {
 
 void Cd_ReadSyncCallback(s32 ev) {
     if (ev == 5) {
-        if (D_80048DB8.state == 4) {
+        if (Cd_ReadState.state == 4) {
             CdControlF(9, 0);
         } else {
-            D_80048DB8.state = 0;
-            D_80048DB8.sectorsLeft = D_80048DB8.sectorCount;
-            Cd_ReadFileAsync(D_80048DB8.fileId, D_80048DB8.buf);
+            Cd_ReadState.state = 0;
+            Cd_ReadState.sectorsLeft = Cd_ReadState.sectorCount;
+            Cd_ReadFileAsync(Cd_ReadState.fileId, Cd_ReadState.buf);
         }
     } else if (ev == 2) {
-        switch (D_80048DB8.state) {
+        switch (Cd_ReadState.state) {
         case 1:
-            D_80048DB8.cdMode = 0xA0;
-            CdControlF(14, &D_80048DB8.cdMode);
-            D_80048DB8.state++;
+            Cd_ReadState.cdMode = 0xA0;
+            CdControlF(14, &Cd_ReadState.cdMode);
+            Cd_ReadState.state++;
             break;
         case 2:
             CdReadyCallback((s32)Cd_ReadSectorCallback);
             CdControlF(6, 0);
-            D_80048DB8.state++;
+            Cd_ReadState.state++;
             break;
         case 3:
-            D_80048DB8.state = 4;
+            Cd_ReadState.state = 4;
             break;
         case 4:
-            if (D_80048DB8.sectorsLeft == 0) {
-                D_80048DB8.state = 5;
+            if (Cd_ReadState.sectorsLeft == 0) {
+                Cd_ReadState.state = 5;
                 CdSyncCallback(0);
             } else {
-                D_80048DB8.state = 0;
-                D_80048DB8.sectorsLeft = D_80048DB8.sectorCount;
-                Cd_ReadFileAsync(D_80048DB8.fileId, D_80048DB8.buf);
+                Cd_ReadState.state = 0;
+                Cd_ReadState.sectorsLeft = Cd_ReadState.sectorCount;
+                Cd_ReadFileAsync(Cd_ReadState.fileId, Cd_ReadState.buf);
             }
             break;
         }
@@ -728,11 +728,11 @@ void Cd_ReadSyncCallback(s32 ev) {
 }
 
 s32 Cd_PollRead(void) {
-    switch (D_80048DB8.state) {
+    switch (Cd_ReadState.state) {
     case 0:
         return 0;
     case 5:
-        D_80048DB8.state = 0;
+        Cd_ReadState.state = 0;
         return 2;
     }
     return 1;
@@ -742,18 +742,18 @@ void Cd_ReadFileAsync(s32 arg0, s32 arg1) {
     u8 sp10[8];
     s32 r;
 
-    if (D_80048DB8.state != 0) {
+    if (Cd_ReadState.state != 0) {
         while (Cd_PollRead() != 0) {}
     }
     Cd_GetFilePos(arg0, sp10);
     r = Cd_GetFileSectors(arg0);
-    D_80048DB8.sectorsLeft = r;
-    D_80048DB8.dest = arg1;
-    D_80048DB8.sectorCount = r;
-    D_80048DB8.fileId = arg0;
-    D_80048DB8.buf = arg1;
-    D_80048DB8.nextLba = Cd_GetFileLba(arg0);
-    D_80048DB8.state += 1;
+    Cd_ReadState.sectorsLeft = r;
+    Cd_ReadState.dest = arg1;
+    Cd_ReadState.sectorCount = r;
+    Cd_ReadState.fileId = arg0;
+    Cd_ReadState.buf = arg1;
+    Cd_ReadState.nextLba = Cd_GetFileLba(arg0);
+    Cd_ReadState.state += 1;
     CdSyncCallback(Cd_ReadSyncCallback);
     CdControlF(2, sp10);
 }

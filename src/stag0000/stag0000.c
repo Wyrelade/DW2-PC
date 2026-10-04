@@ -9,7 +9,7 @@ void Stg00_StageSetup(Actor *arg0) {
 
     if (arg0->stateLevel0 == 0) {
         Task_Create(9, &slot[5], 0);
-        switch (D_8005F788) {
+        switch (Sys_GameMode) {
         case 0x101:
         default:
             a1.field_0 = 0;
@@ -90,16 +90,16 @@ void Stg00_ScrollViewTask(Actor *arg0) {
         Task_NextState0(arg0);
         break;
     case 1:
-        if (D_8005F6F0[0].up) {
+        if (Pad_State[0].up) {
             w->field_4 += 4;
         }
-        if (D_8005F6F0[0].down) {
+        if (Pad_State[0].down) {
             w->field_4 -= 4;
         }
-        if (D_8005F6F0[0].right) {
+        if (Pad_State[0].right) {
             w->field_0 -= 4;
         }
-        if (D_8005F6F0[0].left) {
+        if (Pad_State[0].left) {
             w->field_0 += 4;
         }
         if (w->field_0 > 0) {
@@ -121,7 +121,7 @@ void Stg00_ScrollViewTask(Actor *arg0) {
 }
 
 void Stg00_InitTileSprt(Stg00Sprt *arg0, GfxPartTexSlot *arg1, s32 arg2, s32 arg3) {
-    arg0->c = *(Col1A9C8 *)&D_8005074C;
+    arg0->c = *(Col1A9C8 *)&Gfx_NeutralRgb;
     arg0->tag.len = 4;
     arg0->c.code = 0x64;
     arg0->x0 = arg2;
@@ -135,8 +135,8 @@ void Stg00_InitTileSprt(Stg00Sprt *arg0, GfxPartTexSlot *arg1, s32 arg2, s32 arg
 
 void Stg00_ScrollViewDraw(Actor *arg0) {
     Stg00ScrollWork *w = (Stg00ScrollWork *)arg0->work;
-    GfxPartOTag *ot = (GfxPartOTag *)D_8005F770.otLayers.addr[6];
-    GfxPartPkt *p = (GfxPartPkt *)D_8005F770.packet.addr;
+    GfxPartOTag *ot = (GfxPartOTag *)Sys_State.otLayers.addr[6];
+    GfxPartPkt *p = (GfxPartPkt *)Sys_State.packet.addr;
     GfxPartTexSlot *t;
     s32 i;
     s32 j;
@@ -253,11 +253,11 @@ void Stg00_DungSelPickFloor(Actor *arg0, Stg00SelWork *arg1_) {
             arg1->field_8++;
         }
     }
-    if (D_8005F6F0[0].cross > 0) {
+    if (Pad_State[0].cross > 0) {
         Task_SetState1(arg0, 0);
         return;
     }
-    if (D_8005F6F0[0].circle > 0) {
+    if (Pad_State[0].circle > 0) {
         Task_SetState1(arg0, 2);
         return;
     }
@@ -380,9 +380,9 @@ void Stg00_DungSelPickFlag(Actor *arg0, Stg00SelWork *arg1) {
             arg1->field_A++;
         }
     }
-    if (D_8005F6F0[0].cross > 0) {
+    if (Pad_State[0].cross > 0) {
         Task_SetState1(arg0, 1);
-    } else if (D_8005F6F0[0].circle > 0) {
+    } else if (Pad_State[0].circle > 0) {
         func_80064E44();
         D_8005F78C = arg1->field_0 + 0x201;
         D_8005071C->field_3 = arg1->field_2;

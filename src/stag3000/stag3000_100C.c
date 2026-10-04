@@ -311,13 +311,13 @@ void func_80064B30(Actor *a0) {
             break;
         case 1:
             do {
-                if (D_8005F6F0[0].up > 0) {
+                if (Pad_State[0].up > 0) {
                     if (D_800737E0 == 0) break;
                     D_800737E0--;
                     Snd_PlayById(0xC, 0);
                     break;
                 }
-                if (D_8005F6F0[0].down > 0) {
+                if (Pad_State[0].down > 0) {
                     if (D_80073CC0.entries[0].field_8 == 6) {
                         if (D_800737E0 == 2) break;
                         if (D_80073CC0.entries[0].field_0 != 0) break;
@@ -330,7 +330,7 @@ void func_80064B30(Actor *a0) {
                     Snd_PlayById(0xC, 0);
                     break;
                 }
-                if (D_8005F6F0[0].cross > 0) {
+                if (Pad_State[0].cross > 0) {
                     D_80073CC0.entries[0].field_14 = 0;
                     D_80073CC0.entries[0].field_10 = D_800737E0;
                     Snd_PlayById(0xA, 0);
@@ -338,7 +338,7 @@ void func_80064B30(Actor *a0) {
                     break;
                 }
                 if (D_80073CC0.entries[0].field_8 == 6) break;
-                if (D_8005F6F0[0].triangle > 0) {
+                if (Pad_State[0].triangle > 0) {
                     D_80073CC0.entries[0].field_14 = 1;
                     Snd_PlayById(0xB, 0);
                     Task_NextState0(a0);
@@ -451,7 +451,7 @@ void func_80065100(Actor *a0) {
         i = 0;
         n = i;
         for (; i < 0x30; i++) {
-            id = ((Stg30GameIds *)&D_8005E620)->field_66[i];
+            id = ((Stg30GameIds *)&Save_GameState)->field_66[i];
             if (id == 0) {
                 break;
             }
@@ -471,7 +471,7 @@ void func_80065100(Actor *a0) {
         i = 0;
         n = i;
         for (; i < 0x30; i++) {
-            id = ((Stg30GameIds *)&D_8005E620)->field_66[i];
+            id = ((Stg30GameIds *)&Save_GameState)->field_66[i];
             if (id == 0) {
                 break;
             }
@@ -487,7 +487,7 @@ void func_80065100(Actor *a0) {
         i = 0;
         n = i;
         for (; i < 0x30; i++) {
-            id = ((Stg30GameIds *)&D_8005E620)->field_66[i];
+            id = ((Stg30GameIds *)&Save_GameState)->field_66[i];
             if (id == 0) {
                 break;
             }
@@ -585,7 +585,7 @@ void func_80065594(Actor *a0) {
     case 0:
         Mem_FillWordsNeg1(&w->field_4, 0xE);
         Text_OpenById(&w->field_4, 0x178, 0, D_800633F0);
-        g = (Stg30GameFlags *)&D_8005E620;
+        g = (Stg30GameFlags *)&Save_GameState;
         if (g->field_3C != 0) {
             w->field_40[0] = 1;
         }
@@ -632,20 +632,20 @@ void func_80065594(Actor *a0) {
                 s16 *top = &D_800737F8[cat];
                 s16 *pc = &D_800737E8;
 
-                if (D_8005F6F0[0].left > 0) {
+                if (Pad_State[0].left > 0) {
                     if (cat == 0) break;
                     D_800737E8--;
                     Snd_PlayById(0xD, 0);
                     break;
                 }
-                if (D_8005F6F0[0].right > 0) {
+                if (Pad_State[0].right > 0) {
                     if (cat == 2) break;
                     D_800737E8++;
                     Snd_PlayById(0xD, 0);
                     break;
                 }
                 if (w->field_40[cat] != 0 && w->field_4C[cat] == 0) {
-                    if (D_8005F6F0[0].repeat & 0x1000) {
+                    if (Pad_State[0].repeat & 0x1000) {
                         if (*row != 0) {
                             *row -= 1;
                             Snd_PlayById(0xD, 0);
@@ -656,7 +656,7 @@ void func_80065594(Actor *a0) {
                         Snd_PlayById(0xD, 0);
                         break;
                     }
-                    if (D_8005F6F0[0].repeat & 0x4000) {
+                    if (Pad_State[0].repeat & 0x4000) {
                         if (*row != 2) {
                             *row += 1;
                             Snd_PlayById(0xD, 0);
@@ -668,13 +668,13 @@ void func_80065594(Actor *a0) {
                         break;
                     }
                 }
-                if (D_8005F6F0[0].triangle > 0) {
+                if (Pad_State[0].triangle > 0) {
                     D_80073CD4 = 1;
                     Snd_PlayById(0xB, 0);
                     Task_NextState0(a0);
                     break;
                 }
-                if (D_8005F6F0[0].cross <= 0) break;
+                if (Pad_State[0].cross <= 0) break;
                 item = w->field_58[D_800737E8][D_800737F0[D_800737E8] + D_800737F8[D_800737E8]];
                 if (w->field_40[D_800737E8] == 0 || w->field_4C[D_800737E8] != 0 || item == 0) {
                     Snd_PlayById(0x10, 0);
@@ -1030,19 +1030,19 @@ void func_80066698(Actor *a0) {
             row = &D_80073808[cat];
             top = &D_80073810[cat];
             do {
-                if (D_8005F6F0[0].left > 0) {
+                if (Pad_State[0].left > 0) {
                     if (cat == 0) break;
                     D_80073800--;
                     Snd_PlayById(0xD, 0);
                     break;
                 }
-                if (D_8005F6F0[0].right > 0) {
+                if (Pad_State[0].right > 0) {
                     if (cat == 3) break;
                     D_80073800++;
                     Snd_PlayById(0xD, 0);
                     break;
                 }
-                if (D_8005F6F0[0].repeat & 0x1000) {
+                if (Pad_State[0].repeat & 0x1000) {
                     if (*row != 0) {
                         *row -= 1;
                         Snd_PlayById(0xD, 0);
@@ -1053,7 +1053,7 @@ void func_80066698(Actor *a0) {
                     Snd_PlayById(0xD, 0);
                     break;
                 }
-                if (D_8005F6F0[0].repeat & 0x4000) {
+                if (Pad_State[0].repeat & 0x4000) {
                     if (*row != 2) {
                         *row += 1;
                         Snd_PlayById(0xD, 0);
@@ -1064,7 +1064,7 @@ void func_80066698(Actor *a0) {
                     Snd_PlayById(0xD, 0);
                     break;
                 }
-                if (D_8005F6F0[0].cross > 0) {
+                if (Pad_State[0].cross > 0) {
                     if (D_80073820[cat].field_D[*row + *top] != 0 && D_80073820[cat].field_0[*row + *top] == 0) {
                         D_80073CC0.entries[0].field_14 = 0;
                         D_80073CC0.field_2AC[D_80073CC0.entries[0].field_8].field_0 = cat + 1;
@@ -1077,7 +1077,7 @@ void func_80066698(Actor *a0) {
                     Snd_PlayById(0x10, 0);
                     break;
                 }
-                if (D_8005F6F0[0].triangle > 0) {
+                if (Pad_State[0].triangle > 0) {
                     D_80073CD4 = 1;
                     Snd_PlayById(0xB, 0);
                     Task_NextState0(a0);
@@ -1262,7 +1262,7 @@ void func_80066DB0(Actor *a0) {
                     Snd_PlayById(0x12, 0);
                 }
             }
-            if (D_8005F6F0[0].right > 0) {
+            if (Pad_State[0].right > 0) {
                 old = w->field_4;
                 if (w->field_1C != 0) {
                     w->field_4 = func_8006E47C(w->field_1C, old, 1, w->field_14);
@@ -1275,14 +1275,14 @@ void func_80066DB0(Actor *a0) {
                 }
             }
         }
-            if (D_8005F6F0[0].cross > 0) {
+            if (Pad_State[0].cross > 0) {
                 D_80073CC0.entries[0].field_C = w->field_4;
                 D_80073CC0.entries[0].field_14 = 0;
                 Snd_PlayById(0xE, 0);
                 Task_SetState0(a0, 3);
                 break;
             }
-            if (D_8005F6F0[0].triangle > 0) {
+            if (Pad_State[0].triangle > 0) {
                 D_80073CD4 = 1;
                 Snd_PlayById(0xB, 0);
                 Task_SetState0(a0, 3);

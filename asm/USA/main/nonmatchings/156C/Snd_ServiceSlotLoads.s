@@ -4,17 +4,17 @@ glabel Snd_ServiceSlotLoads
     /* A81C 8001A01C D8FFBD27 */  addiu      $sp, $sp, -0x28
     /* A820 8001A020 1800B2AF */  sw         $s2, 0x18($sp)
     /* A824 8001A024 21900000 */  addu       $s2, $zero, $zero
-    /* A828 8001A028 0480023C */  lui        $v0, %hi(D_80041194)
+    /* A828 8001A028 0480023C */  lui        $v0, %hi(Snd_BankDescs)
     /* A82C 8001A02C 1C00B3AF */  sw         $s3, 0x1C($sp)
-    /* A830 8001A030 94115324 */  addiu      $s3, $v0, %lo(D_80041194)
+    /* A830 8001A030 94115324 */  addiu      $s3, $v0, %lo(Snd_BankDescs)
     /* A834 8001A034 2000B4AF */  sw         $s4, 0x20($sp)
     /* A838 8001A038 21A04002 */  addu       $s4, $s2, $zero
     /* A83C 8001A03C 2400BFAF */  sw         $ra, 0x24($sp)
     /* A840 8001A040 1400B1AF */  sw         $s1, 0x14($sp)
     /* A844 8001A044 1000B0AF */  sw         $s0, 0x10($sp)
   .L8001A048:
-    /* A848 8001A048 0580023C */  lui        $v0, %hi(D_80054C48)
-    /* A84C 8001A04C 484C4224 */  addiu      $v0, $v0, %lo(D_80054C48)
+    /* A848 8001A048 0580023C */  lui        $v0, %hi(Snd_Slots)
+    /* A84C 8001A04C 484C4224 */  addiu      $v0, $v0, %lo(Snd_Slots)
     /* A850 8001A050 21808202 */  addu       $s0, $s4, $v0
     /* A854 8001A054 0400038E */  lw         $v1, 0x4($s0)
     /* A858 8001A058 00000000 */  nop
@@ -62,8 +62,8 @@ glabel Snd_ServiceSlotLoads
     /* A8F8 8001A0F8 21384000 */  addu       $a3, $v0, $zero
     /* A8FC 8001A0FC 1F80043C */  lui        $a0, (0x801FFFFF >> 16)
     /* A900 8001A100 FFFF8434 */  ori        $a0, $a0, (0x801FFFFF & 0xFFFF)
-    /* A904 8001A104 0480033C */  lui        $v1, %hi(D_800411FC)
-    /* A908 8001A108 FC116324 */  addiu      $v1, $v1, %lo(D_800411FC)
+    /* A904 8001A104 0480033C */  lui        $v1, %hi(Snd_SlotBufSizes)
+    /* A908 8001A108 FC116324 */  addiu      $v1, $v1, %lo(Snd_SlotBufSizes)
     /* A90C 8001A10C 80101200 */  sll        $v0, $s2, 2
     /* A910 8001A110 21104300 */  addu       $v0, $v0, $v1
     /* A914 8001A114 0000458C */  lw         $a1, 0x0($v0)

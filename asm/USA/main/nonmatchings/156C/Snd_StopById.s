@@ -11,8 +11,8 @@ glabel Snd_StopById
     /* AC2C 8001A42C 031A1000 */  sra        $v1, $s0, 8
     /* AC30 8001A430 03111000 */  sra        $v0, $s0, 4
     /* AC34 8001A434 0F004430 */  andi       $a0, $v0, 0xF
-    /* AC38 8001A438 0580023C */  lui        $v0, %hi(D_80054C48)
-    /* AC3C 8001A43C 484C4624 */  addiu      $a2, $v0, %lo(D_80054C48)
+    /* AC38 8001A438 0580023C */  lui        $v0, %hi(Snd_Slots)
+    /* AC3C 8001A43C 484C4624 */  addiu      $a2, $v0, %lo(Snd_Slots)
     /* AC40 8001A440 40100300 */  sll        $v0, $v1, 1
     /* AC44 8001A444 21104300 */  addu       $v0, $v0, $v1
     /* AC48 8001A448 80100200 */  sll        $v0, $v0, 2

@@ -122,8 +122,8 @@ glabel func_80067F2C
     /* 4D8C 800680EC 0780023C */  lui        $v0, %hi(D_80073CD8)
     /* 4D90 800680F0 D83C4224 */  addiu      $v0, $v0, %lo(D_80073CD8)
     /* 4D94 800680F4 E8FF5224 */  addiu      $s2, $v0, -0x18
-    /* 4D98 800680F8 0680033C */  lui        $v1, %hi(D_8005E620)
-    /* 4D9C 800680FC 20E67124 */  addiu      $s1, $v1, %lo(D_8005E620)
+    /* 4D98 800680F8 0680033C */  lui        $v1, %hi(Save_GameState)
+    /* 4D9C 800680FC 20E67124 */  addiu      $s1, $v1, %lo(Save_GameState)
     /* 4DA0 80068100 21984000 */  addu       $s3, $v0, $zero
   .L80068104:
     /* 4DA4 80068104 21206002 */  addu       $a0, $s3, $zero
@@ -183,8 +183,8 @@ glabel func_80067F2C
     /* 4E70 800681D0 5C000524 */   addiu     $a1, $zero, 0x5C
     /* 4E74 800681D4 FDFF0526 */  addiu      $a1, $s0, -0x3
     /* 4E78 800681D8 21302002 */  addu       $a2, $s1, $zero
-    /* 4E7C 800681DC 0680093C */  lui        $t1, %hi(D_8005F770)
-    /* 4E80 800681E0 70F72925 */  addiu      $t1, $t1, %lo(D_8005F770)
+    /* 4E7C 800681DC 0680093C */  lui        $t1, %hi(Sys_State)
+    /* 4E80 800681E0 70F72925 */  addiu      $t1, $t1, %lo(Sys_State)
     /* 4E84 800681E4 2802D727 */  addiu      $s7, $fp, 0x228
     /* 4E88 800681E8 2400248D */  lw         $a0, 0x24($t1)
     /* 4E8C 800681EC 6A77000C */  jal        Enemy_InitRosterEntry
@@ -369,8 +369,8 @@ glabel func_80067F2C
     /* 5128 80068488 2000C2AE */  sw         $v0, 0x20($s6)
     /* 512C 8006848C 10004228 */  slti       $v0, $v0, 0x10
     /* 5130 80068490 07024014 */  bnez       $v0, .L80068CB0
-    /* 5134 80068494 0680023C */   lui       $v0, %hi(D_8005F770)
-    /* 5138 80068498 70F74224 */  addiu      $v0, $v0, %lo(D_8005F770)
+    /* 5134 80068494 0680023C */   lui       $v0, %hi(Sys_State)
+    /* 5138 80068498 70F74224 */  addiu      $v0, $v0, %lo(Sys_State)
     /* 513C 8006849C 2000438C */  lw         $v1, 0x20($v0)
     /* 5140 800684A0 2CA30108 */  j          .L80068CB0
     /* 5144 800684A4 1C0043AC */   sw        $v1, 0x1C($v0)

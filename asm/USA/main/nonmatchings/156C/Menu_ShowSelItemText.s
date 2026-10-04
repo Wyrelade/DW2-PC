@@ -36,7 +36,7 @@ glabel Menu_ShowSelItemText
     /* 7170 80016970 21284000 */  addu       $a1, $v0, $zero
     /* 7174 80016974 21300000 */  addu       $a2, $zero, $zero
     /* 7178 80016978 12008797 */  lhu        $a3, %gp_rel(D_8005070A)($gp)
-    /* 717C 8001697C 10008297 */  lhu        $v0, %gp_rel(D_80050708)($gp)
+    /* 717C 8001697C 10008297 */  lhu        $v0, %gp_rel(Menu_ItemNamePos)($gp)
     /* 7180 80016980 003C0700 */  sll        $a3, $a3, 16
     /* 7184 80016984 3E4D000C */  jal        Text_OpenPacked
     /* 7188 80016988 25384700 */   or        $a3, $v0, $a3
@@ -47,7 +47,7 @@ glabel Menu_ShowSelItemText
     /* 7198 80016998 21284000 */  addu       $a1, $v0, $zero
     /* 719C 8001699C 80000624 */  addiu      $a2, $zero, 0x80
     /* 71A0 800169A0 0E008797 */  lhu        $a3, %gp_rel(D_80050706)($gp)
-    /* 71A4 800169A4 0C008297 */  lhu        $v0, %gp_rel(D_80050704)($gp)
+    /* 71A4 800169A4 0C008297 */  lhu        $v0, %gp_rel(Menu_ItemMsgPos)($gp)
     /* 71A8 800169A8 003C0700 */  sll        $a3, $a3, 16
     /* 71AC 800169AC 3E4D000C */  jal        Text_OpenPacked
     /* 71B0 800169B0 25384700 */   or        $a3, $v0, $a3

@@ -12,12 +12,12 @@ glabel Menu_ItemUseTask
     /* 6134 80015934 688E000C */  jal        Cd_GetFileEntry
     /* 6138 80015938 14008434 */   ori       $a0, $a0, (0x5130014 & 0xFFFF)
     /* 613C 8001593C 1305043C */  lui        $a0, (0x5130015 >> 16)
-    /* 6140 80015940 740082AF */  sw         $v0, %gp_rel(D_8005076C)($gp)
+    /* 6140 80015940 740082AF */  sw         $v0, %gp_rel(Menu_PartGridSlots)($gp)
     /* 6144 80015944 688E000C */  jal        Cd_GetFileEntry
     /* 6148 80015948 15008434 */   ori       $a0, $a0, (0x5130015 & 0xFFFF)
     /* 614C 8001594C 1000238E */  lw         $v1, 0x10($s1)
     /* 6150 80015950 01000424 */  addiu      $a0, $zero, 0x1
-    /* 6154 80015954 780082AF */  sw         $v0, %gp_rel(D_80050770)($gp)
+    /* 6154 80015954 780082AF */  sw         $v0, %gp_rel(Menu_PartGridLabels)($gp)
     /* 6158 80015958 1B006410 */  beq        $v1, $a0, .L800159C8
     /* 615C 8001595C 02006228 */   slti      $v0, $v1, 0x2
     /* 6160 80015960 03004014 */  bnez       $v0, .L80015970
@@ -156,7 +156,7 @@ glabel Menu_ItemUseTask
     /* 6340 80015B40 21284000 */  addu       $a1, $v0, $zero
     /* 6344 80015B44 82000624 */  addiu      $a2, $zero, 0x82
     /* 6348 80015B48 0A008797 */  lhu        $a3, %gp_rel(D_80050702)($gp)
-    /* 634C 80015B4C 08008297 */  lhu        $v0, %gp_rel(D_80050700)($gp)
+    /* 634C 80015B4C 08008297 */  lhu        $v0, %gp_rel(Menu_ItemUseMsgPos)($gp)
     /* 6350 80015B50 003C0700 */  sll        $a3, $a3, 16
     /* 6354 80015B54 3E4D000C */  jal        Text_OpenPacked
     /* 6358 80015B58 25384700 */   or        $a3, $v0, $a3
@@ -204,7 +204,7 @@ glabel Menu_ItemUseTask
     /* 63F0 80015BF0 05006010 */  beqz       $v1, .L80015C08
     /* 63F4 80015BF4 01000224 */   addiu     $v0, $zero, 0x1
     /* 63F8 80015BF8 0C006210 */  beq        $v1, $v0, .L80015C2C
-    /* 63FC 80015BFC 0680023C */   lui       $v0, %hi(D_8005F6F0)
+    /* 63FC 80015BFC 0680023C */   lui       $v0, %hi(Pad_State)
     /* 6400 80015C00 46570008 */  j          .L80015D18
     /* 6404 80015C04 00000000 */   nop
   .L80015C08:
@@ -218,7 +218,7 @@ glabel Menu_ItemUseTask
     /* 6424 80015C24 46570008 */  j          .L80015D18
     /* 6428 80015C28 00000000 */   nop
   .L80015C2C:
-    /* 642C 80015C2C F0F64324 */  addiu      $v1, $v0, %lo(D_8005F6F0)
+    /* 642C 80015C2C F0F64324 */  addiu      $v1, $v0, %lo(Pad_State)
     /* 6430 80015C30 1C00628C */  lw         $v0, 0x1C($v1)
     /* 6434 80015C34 00000000 */  nop
     /* 6438 80015C38 0D00401C */  bgtz       $v0, .L80015C70

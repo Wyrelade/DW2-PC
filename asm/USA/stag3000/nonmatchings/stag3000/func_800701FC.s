@@ -11,8 +11,8 @@ glabel func_800701FC
     /* CEB8 80070218 1C00BFAF */  sw         $ra, 0x1C($sp)
     /* CEBC 8007021C E38B000C */  jal        Mem_Zero
     /* CEC0 80070220 1400B1AF */   sw        $s1, 0x14($sp)
-    /* CEC4 80070224 0680023C */  lui        $v0, %hi(D_8005F770)
-    /* CEC8 80070228 70F75124 */  addiu      $s1, $v0, %lo(D_8005F770)
+    /* CEC4 80070224 0680023C */  lui        $v0, %hi(Sys_State)
+    /* CEC8 80070228 70F75124 */  addiu      $s1, $v0, %lo(Sys_State)
     /* CECC 8007022C 01000424 */  addiu      $a0, $zero, 0x1
     /* CED0 80070230 2000238E */  lw         $v1, 0x20($s1)
     /* CED4 80070234 00030224 */  addiu      $v0, $zero, 0x300

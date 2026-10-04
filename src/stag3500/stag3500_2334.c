@@ -85,7 +85,7 @@ void func_80065930(Stg35SpriteHandle *arg0) {
     u32 *ot;
 
     if (s->field_1C != 0 && s->field_1E != 0) {
-        g = &D_8005F770;
+        g = &Sys_State;
         p = (Stg35PolyG4 *)g->packet.work;
         ot = g->otLayers.u[s->field_0];
         p->c0 = s->field_4[0];
@@ -1338,7 +1338,7 @@ void func_80067E48(Actor *arg0) {
             s32 *gauge = &w->field_54[arg0->field_8];
             Stg35LoadHandle *load = &w->load[arg0->field_8 + 1];
             Stg35LoadHandle *base = w->load;
-            s32 pressed = D_8005F6F0[arg0->field_8].pressed & 0xFFFF;
+            s32 pressed = Pad_State[arg0->field_8].pressed & 0xFFFF;
             s32 r;
 
             switch (arg0->stateLevel2) {

@@ -51,14 +51,14 @@ glabel Menu_StatusTask
     /* 5234 80014A34 564D000C */  jal        Text_PrintIdList
     /* 5238 80014A38 02000624 */   addiu     $a2, $zero, 0x2
     /* 523C 80014A3C 1305043C */  lui        $a0, (0x513000F >> 16)
-    /* 5240 80014A40 0580023C */  lui        $v0, %hi(D_80050720)
-    /* 5244 80014A44 2007428C */  lw         $v0, %lo(D_80050720)($v0)
+    /* 5240 80014A40 0580023C */  lui        $v0, %hi(Save_GameStatePtr)
+    /* 5244 80014A44 2007428C */  lw         $v0, %lo(Save_GameStatePtr)($v0)
     /* 5248 80014A48 0F008434 */  ori        $a0, $a0, (0x513000F & 0xFFFF)
     /* 524C 80014A4C 14004224 */  addiu      $v0, $v0, 0x14
     /* 5250 80014A50 688E000C */  jal        Cd_GetFileEntry
     /* 5254 80014A54 740082AE */   sw        $v0, 0x74($s4)
-    /* 5258 80014A58 0580053C */  lui        $a1, %hi(D_80050720)
-    /* 525C 80014A5C 2007A58C */  lw         $a1, %lo(D_80050720)($a1)
+    /* 5258 80014A58 0580053C */  lui        $a1, %hi(Save_GameStatePtr)
+    /* 525C 80014A5C 2007A58C */  lw         $a1, %lo(Save_GameStatePtr)($a1)
     /* 5260 80014A60 21800000 */  addu       $s0, $zero, $zero
     /* 5264 80014A64 1100A490 */  lbu        $a0, 0x11($a1)
     /* 5268 80014A68 1200A590 */  lbu        $a1, 0x12($a1)
@@ -75,8 +75,8 @@ glabel Menu_StatusTask
     /* 5294 80014A94 21204400 */   addu      $a0, $v0, $a0
     /* 5298 80014A98 80008526 */  addiu      $a1, $s4, 0x80
     /* 529C 80014A9C 780082AE */  sw         $v0, 0x78($s4)
-    /* 52A0 80014AA0 0580023C */  lui        $v0, %hi(D_80050720)
-    /* 52A4 80014AA4 2007428C */  lw         $v0, %lo(D_80050720)($v0)
+    /* 52A0 80014AA0 0580023C */  lui        $v0, %hi(Save_GameStatePtr)
+    /* 52A4 80014AA4 2007428C */  lw         $v0, %lo(Save_GameStatePtr)($v0)
     /* 52A8 80014AA8 AC008386 */  lh         $v1, 0xAC($s4)
     /* 52AC 80014AAC D1004224 */  addiu      $v0, $v0, 0xD1
     /* 52B0 80014AB0 0C006018 */  blez       $v1, .L80014AE4

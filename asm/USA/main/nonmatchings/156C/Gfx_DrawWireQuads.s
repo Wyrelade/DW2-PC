@@ -5,8 +5,8 @@ glabel Gfx_DrawWireQuads
     /* 122C0 80021AC0 21788000 */  addu       $t7, $a0, $zero
     /* 122C4 80021AC4 1000B0AF */  sw         $s0, 0x10($sp)
     /* 122C8 80021AC8 2180A000 */  addu       $s0, $a1, $zero
-    /* 122CC 80021ACC 0680023C */  lui        $v0, %hi(D_8005F770)
-    /* 122D0 80021AD0 70F74324 */  addiu      $v1, $v0, %lo(D_8005F770)
+    /* 122CC 80021ACC 0680023C */  lui        $v0, %hi(Sys_State)
+    /* 122D0 80021AD0 70F74324 */  addiu      $v1, $v0, %lo(Sys_State)
     /* 122D4 80021AD4 2000B4AF */  sw         $s4, 0x20($sp)
     /* 122D8 80021AD8 1C00B3AF */  sw         $s3, 0x1C($sp)
     /* 122DC 80021ADC 1800B2AF */  sw         $s2, 0x18($sp)

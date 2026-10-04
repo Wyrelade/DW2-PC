@@ -90,9 +90,9 @@ glabel func_800650BC
     /* 1E9C 800651FC 04002526 */  addiu      $a1, $s1, 0x4
     /* 1EA0 80065200 0780073C */  lui        $a3, %hi(D_800709B0)
     /* 1EA4 80065204 B009E724 */  addiu      $a3, $a3, %lo(D_800709B0)
-    /* 1EA8 80065208 0680063C */  lui        $a2, %hi(D_8005E620)
+    /* 1EA8 80065208 0680063C */  lui        $a2, %hi(Save_GameState)
     /* 1EAC 8006520C 1C00E38C */  lw         $v1, 0x1C($a3)
-    /* 1EB0 80065210 20E6C624 */  addiu      $a2, $a2, %lo(D_8005E620)
+    /* 1EB0 80065210 20E6C624 */  addiu      $a2, $a2, %lo(Save_GameState)
     /* 1EB4 80065214 40100300 */  sll        $v0, $v1, 1
     /* 1EB8 80065218 21104300 */  addu       $v0, $v0, $v1
     /* 1EBC 8006521C C0100200 */  sll        $v0, $v0, 3

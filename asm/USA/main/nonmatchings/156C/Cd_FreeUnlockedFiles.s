@@ -4,9 +4,9 @@ glabel Cd_FreeUnlockedFiles
     /* 146F8 80023EF8 E0FFBD27 */  addiu      $sp, $sp, -0x20
     /* 146FC 80023EFC 1400B1AF */  sw         $s1, 0x14($sp)
     /* 14700 80023F00 21880000 */  addu       $s1, $zero, $zero
-    /* 14704 80023F04 0680023C */  lui        $v0, %hi(D_8005F8C8)
+    /* 14704 80023F04 0680023C */  lui        $v0, %hi(Cd_FileCache)
     /* 14708 80023F08 1000B0AF */  sw         $s0, 0x10($sp)
-    /* 1470C 80023F0C C8F85024 */  addiu      $s0, $v0, %lo(D_8005F8C8)
+    /* 1470C 80023F0C C8F85024 */  addiu      $s0, $v0, %lo(Cd_FileCache)
     /* 14710 80023F10 1800BFAF */  sw         $ra, 0x18($sp)
   .L80023F14:
     /* 14714 80023F14 0400028E */  lw         $v0, 0x4($s0)

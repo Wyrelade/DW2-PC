@@ -40,8 +40,8 @@ glabel func_80063F38
     /* C60 80063FC0 0D006210 */  beq        $v1, $v0, .L80063FF8
     /* C64 80063FC4 00000000 */   nop
   .L80063FC8:
-    /* C68 80063FC8 0680023C */  lui        $v0, %hi(D_8005E620)
-    /* C6C 80063FCC 20E64224 */  addiu      $v0, $v0, %lo(D_8005E620)
+    /* C68 80063FC8 0680023C */  lui        $v0, %hi(Save_GameState)
+    /* C6C 80063FCC 20E64224 */  addiu      $v0, $v0, %lo(Save_GameState)
     /* C70 80063FD0 70014224 */  addiu      $v0, $v0, 0x170
   .L80063FD4:
     /* C74 80063FD4 E40040A0 */  sb         $zero, 0xE4($v0)
@@ -57,8 +57,8 @@ glabel func_80063F38
   .L80063FF8:
     /* C98 80063FF8 2C00B0AE */  sw         $s0, 0x2C($s5)
   .L80063FFC:
-    /* C9C 80063FFC 0680023C */  lui        $v0, %hi(D_8005E620)
-    /* CA0 80064000 20E64324 */  addiu      $v1, $v0, %lo(D_8005E620)
+    /* C9C 80063FFC 0680023C */  lui        $v0, %hi(Save_GameState)
+    /* CA0 80064000 20E64324 */  addiu      $v1, $v0, %lo(Save_GameState)
     /* CA4 80064004 E4006290 */  lbu        $v0, 0xE4($v1)
     /* CA8 80064008 00000000 */  nop
     /* CAC 8006400C 02004010 */  beqz       $v0, .L80064018
@@ -177,8 +177,8 @@ glabel func_80063F38
     /* E50 800641B0 21202002 */   addu      $a0, $s1, $zero
     /* E54 800641B4 21202002 */  addu       $a0, $s1, $zero
     /* E58 800641B8 02000524 */  addiu      $a1, $zero, 0x2
-    /* E5C 800641BC 0680103C */  lui        $s0, %hi(D_8005E620)
-    /* E60 800641C0 20E61026 */  addiu      $s0, $s0, %lo(D_8005E620)
+    /* E5C 800641BC 0680103C */  lui        $s0, %hi(Save_GameState)
+    /* E60 800641C0 20E61026 */  addiu      $s0, $s0, %lo(Save_GameState)
     /* E64 800641C4 F8000786 */  lh         $a3, 0xF8($s0)
     /* E68 800641C8 DE99010C */  jal        func_80066778
     /* E6C 800641CC 03000624 */   addiu     $a2, $zero, 0x3
@@ -220,8 +220,8 @@ glabel func_80063F38
     /* EF8 80064258 21202002 */   addu      $a0, $s1, $zero
     /* EFC 8006425C 21202002 */  addu       $a0, $s1, $zero
     /* F00 80064260 02000524 */  addiu      $a1, $zero, 0x2
-    /* F04 80064264 0680103C */  lui        $s0, %hi(D_8005E620)
-    /* F08 80064268 20E61026 */  addiu      $s0, $s0, %lo(D_8005E620)
+    /* F04 80064264 0680103C */  lui        $s0, %hi(Save_GameState)
+    /* F08 80064268 20E61026 */  addiu      $s0, $s0, %lo(Save_GameState)
     /* F0C 8006426C 0C020786 */  lh         $a3, 0x20C($s0)
     /* F10 80064270 DE99010C */  jal        func_80066778
     /* F14 80064274 03000624 */   addiu     $a2, $zero, 0x3
@@ -259,9 +259,9 @@ glabel func_80063F38
     /* F90 800642F0 3400A28E */  lw         $v0, 0x34($s5)
     /* F94 800642F4 00000000 */  nop
     /* F98 800642F8 16004010 */  beqz       $v0, .L80064354
-    /* F9C 800642FC 0680023C */   lui       $v0, %hi(D_8005E750)
+    /* F9C 800642FC 0680023C */   lui       $v0, %hi(Save_RosterNames)
     /* FA0 80064300 21880000 */  addu       $s1, $zero, $zero
-    /* FA4 80064304 50E75424 */  addiu      $s4, $v0, %lo(D_8005E750)
+    /* FA4 80064304 50E75424 */  addiu      $s4, $v0, %lo(Save_RosterNames)
     /* FA8 80064308 4E001324 */  addiu      $s3, $zero, 0x4E
     /* FAC 8006430C 14001224 */  addiu      $s2, $zero, 0x14
   .L80064310:
@@ -329,8 +329,8 @@ glabel func_80063F38
     /* 1090 800643F0 08910108 */  j          .L80064420
     /* 1094 800643F4 10006230 */   andi      $v0, $v1, 0x10
   .L800643F8:
-    /* 1098 800643F8 0680023C */  lui        $v0, %hi(D_8005F6F0)
-    /* 109C 800643FC F0F64224 */  addiu      $v0, $v0, %lo(D_8005F6F0)
+    /* 1098 800643F8 0680023C */  lui        $v0, %hi(Pad_State)
+    /* 109C 800643FC F0F64224 */  addiu      $v0, $v0, %lo(Pad_State)
     /* 10A0 80064400 3A004394 */  lhu        $v1, 0x3A($v0)
     /* 10A4 80064404 7A004294 */  lhu        $v0, 0x7A($v0)
     /* 10A8 80064408 06910108 */  j          .L80064418
@@ -385,7 +385,7 @@ glabel func_80063F38
     /* 1150 800644B0 03004010 */  beqz       $v0, .L800644C0
     /* 1154 800644B4 21880000 */   addu      $s1, $zero, $zero
     /* 1158 800644B8 15005010 */  beq        $v0, $s0, .L80064510
-    /* 115C 800644BC 0680023C */   lui       $v0, %hi(D_8005F770)
+    /* 115C 800644BC 0680023C */   lui       $v0, %hi(Sys_State)
   .L800644C0:
     /* 1160 800644C0 2180A002 */  addu       $s0, $s5, $zero
   .L800644C4:
@@ -408,9 +408,9 @@ glabel func_80063F38
     /* 11A0 80064500 10000424 */   addiu     $a0, $zero, 0x10
     /* 11A4 80064504 6045000C */  jal        Task_NextState2
     /* 11A8 80064508 2120C002 */   addu      $a0, $s6, $zero
-    /* 11AC 8006450C 0680023C */  lui        $v0, %hi(D_8005F770)
+    /* 11AC 8006450C 0680023C */  lui        $v0, %hi(Sys_State)
   .L80064510:
-    /* 11B0 80064510 70F74424 */  addiu      $a0, $v0, %lo(D_8005F770)
+    /* 11B0 80064510 70F74424 */  addiu      $a0, $v0, %lo(Sys_State)
     /* 11B4 80064514 1000838C */  lw         $v1, 0x10($a0)
     /* 11B8 80064518 FF000224 */  addiu      $v0, $zero, 0xFF
     /* 11BC 8006451C 1B006214 */  bne        $v1, $v0, .L8006458C

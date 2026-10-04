@@ -584,7 +584,7 @@ void func_8006E764(Stg40E764 *a0, s32 a1, s32 a2) {
 }
 
 void func_8006E7F0(s32 i, s32 item, u8 status) {
-    GameStateView *g = D_80050720;
+    GameStateView *g = Save_GameStatePtr;
 
     g->slotItems[i] = item;
     g->slotStatus[i] = item ? status : 1;
@@ -593,7 +593,7 @@ void func_8006E7F0(s32 i, s32 item, u8 status) {
 s32 func_8006E820(i)
     s32 i;
 {
-    GameStateView *g = D_80050720;
+    GameStateView *g = Save_GameStatePtr;
 
     if (g->slotStatus[i] == 1) {
         return -1;
@@ -602,7 +602,7 @@ s32 func_8006E820(i)
 }
 
 s32 func_8006E858(s32 slot) {
-    GameStateView *gs = D_80050720;
+    GameStateView *gs = Save_GameStatePtr;
     s32 r;
 
     if (gs->slotItems[slot] == 0) {
@@ -617,13 +617,13 @@ s32 func_8006E858(s32 slot) {
 }
 
 void func_8006E8C4(s32 i, u8 status) {
-    GameStateView *g = D_80050720;
+    GameStateView *g = Save_GameStatePtr;
 
     g->slotStatus[i] = g->slotItems[i] ? status : 0;
 }
 
 void func_8006E8F4(s32 n) {
-    GameStateView *g = D_80050720;
+    GameStateView *g = Save_GameStatePtr;
 
     g->hp = (g->hp - n < 0) ? 0 : g->hp - n;
 }
@@ -647,7 +647,7 @@ s32 func_8006E920(Stg40Shop *a) {
     default:
         for (j = 0; j < 4; j++) {
             key = a->field_2[j];
-            items = D_80050720->bagItems;
+            items = Save_GameStatePtr->bagItems;
             if (key != -1) {
                 for (i = 0, bag = items; i < 0x30; i++, bag++) {
                     if (*bag != 0 && key == Item_GetCategory(*bag)) {
@@ -668,7 +668,7 @@ s32 func_8006E920(Stg40Shop *a) {
 }
 
 s16 func_8006EA84(s32 mode) {
-    DigiRosterEntry *e = D_80050720->elems;
+    DigiRosterEntry *e = Save_GameStatePtr->elems;
     Stg40B60 *b;
     s32 *pi;
     s32 i;
@@ -864,7 +864,7 @@ void func_8006F1C8(Stg40ImgWork *a0) {
     p->clut[1] = g;
     h = (c / 2) & 0x1F;
     p->clut[0] = b | ((h << 5) | 0x8000) | h;
-    if (D_8005F6F0[0].start != 0) {
+    if (Pad_State[0].start != 0) {
         p->clut[6] = 0xA94A;
         p->clut[7] = 0xE318;
     } else {

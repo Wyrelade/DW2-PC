@@ -70,7 +70,7 @@ void Digi_InitFromTable(s32 a0, s32 a1, DigiRosterEntry *e) {
     u8 *name;
     s32 i;
 
-    if ((D_8005F788[0] & 0xFF00) == 0x500) {
+    if ((Sys_GameMode[0] & 0xFF00) == 0x500) {
         if (a1 == 0) {
             a1 = 1;
         } else if (a1 == 1) {
@@ -112,7 +112,7 @@ void Enemy_InitRosterEntry(s32 a0, s32 a1, DigiRosterEntry *e, Out1DDA8 *o) {
     u8 *name;
     s32 i;
 
-    if ((D_8005F788[0] & 0xFF00) == 0x500) {
+    if ((Sys_GameMode[0] & 0xFF00) == 0x500) {
         if (a1 == 0) {
             a1 = 1;
         } else if (a1 == 1) {
@@ -467,7 +467,7 @@ void func_8001EC10(Actor *arg0) {
 
     switch (state) {
     case 0:
-        Actor_InitTransform((ContC40 *)arg0, D_80043704, 0);
+        Actor_InitTransform((ContC40 *)arg0, Gfx_ZeroVector, 0);
         Gfx_AttachModel(arg0, 0x5B)->otIndex = 4;
         Gfx_ResetModelBones(arg0);
         Task_NextState0(arg0);
@@ -705,7 +705,7 @@ void Anim_StepModelAnim(Actor *a) {
             s->bonePoseTables[k] += (s32)data;
         }
     }
-    s->animTimer += D_8005F770.frameDelta;
+    s->animTimer += Sys_State.frameDelta;
     while (s->animTimer >= 2) {
         s->animTimer -= 2;
         e = s->bones;
@@ -749,7 +749,7 @@ void Gfx_ResetModelBones(Actor *a0) {
     s32 i = 0;
     while (i < sub->boneCount) {
         i++;
-        p->localMat = D_80043714;
+        p->localMat = Gfx_IdentityMatrix;
         p++;
     }
 }
@@ -768,7 +768,7 @@ void Gfx_AddFlatQuad3D(GfxQuadColor *col, GfxQuadVert *v, s32 flags, s32 idx) {
     GsInitCoordinate2(0, &coord);
     GsGetLs(&coord, &m);
     GsSetLsMatrix(&m);
-    g = &D_8005F770;
+    g = &Sys_State;
     p = (PolyF4_1F668 *)g->packet.work;
     ot = g->otLayers.s[idx];
     p->c = *col;
@@ -804,7 +804,7 @@ void Gfx_AddFlatQuad3D(GfxQuadColor *col, GfxQuadVert *v, s32 flags, s32 idx) {
 void Gfx_InitLights(void) {
     s32 i;
     for (i = 0; i < 3; i++) {
-        GsSetFlatLight(i, &D_800416CC[i]);
+        GsSetFlatLight(i, &Gfx_FlatLights[i]);
     }
     GsSetAmbient(0x4CC, 0x4CC, 0x4CC);
     GsSetLightMode(0);
@@ -854,7 +854,7 @@ void Gfx_AnimateModelTex(Actor *a0) {
                 k = 4;
                 break;
             }
-            if ((w->blinkTimer -= D_8005F770.frameDelta) < 0) {
+            if ((w->blinkTimer -= Sys_State.frameDelta) < 0) {
                 w->blinkTimer = 0;
             }
         } else {
@@ -862,13 +862,13 @@ void Gfx_AnimateModelTex(Actor *a0) {
             w->blinkTimer = 0;
         }
     }
-    w->texAnimTimer += D_8005F770.frameDelta;
+    w->texAnimTimer += Sys_State.frameDelta;
     while (1) {
         if (w->texAnimTimer < 0x18) break;
         w->texAnimTimer -= 0x18;
     }
     j = (w->texAnimTimer / 8) * 2;
-    prim = D_8005F770.packet.drMove;
+    prim = Sys_State.packet.drMove;
     for (i = 0; i < 10; i++, r++) {
         if (i < 2) {
             if (r->dstX == 0xFF) continue;
@@ -886,14 +886,14 @@ void Gfx_AnimateModelTex(Actor *a0) {
         rc.w = r->w;
         rc.h = r->h;
         SetDrawMove(prim, &rc, r->dstX + pos->vramX, r->dstY + pos->vramY);
-        AddPrim(D_8005F770.otLayers.u[6], (unsigned int *)prim);
+        AddPrim(Sys_State.otLayers.u[6], (unsigned int *)prim);
         prim++;
     }
     if (r->dstX == 0xFE) {
         q = (GfxModelTexAnim *)&(r++)->dstY;
         for (c = 0; c < 10; c++, q++) {
             if (q->dstX == 0xFF) break;
-            if (D_8005F770.frameDelta == 1) {
+            if (Sys_State.frameDelta == 1) {
                 q->timer += 1;
             } else {
                 q->timer += 2;
@@ -909,18 +909,18 @@ void Gfx_AnimateModelTex(Actor *a0) {
             rc2.w = q->w;
             rc2.h = q->h;
             SetDrawMove(prim, &rc2, q->dstX + pos->vramX, q->dstY + pos->vramY);
-            AddPrim(D_8005F770.otLayers.u[6], (unsigned int *)prim);
+            AddPrim(Sys_State.otLayers.u[6], (unsigned int *)prim);
             prim++;
             rc2.x = q->uv[m + 2] + pos->vramX;
             rc2.y = q->uv[m + 3] + pos->vramY;
             rc2.w = q->w2;
             rc2.h = q->h2;
             SetDrawMove(prim, &rc2, q->dstX2 + pos->vramX, q->dstY2 + pos->vramY);
-            AddPrim(D_8005F770.otLayers.u[6], (unsigned int *)prim);
+            AddPrim(Sys_State.otLayers.u[6], (unsigned int *)prim);
             prim++;
         }
     }
-    D_8005F770.packet.addr = (s32)prim;
+    Sys_State.packet.addr = (s32)prim;
 }
 INCLUDE_RODATA("asm/USA/main/rodata", D_800101E4);
 
@@ -1012,7 +1012,7 @@ void Gfx_CalcModelBoneMatrices(Actor *a0) {
     s = a0->model;
     o = a0->u38.ptr38;
     d = s->bones;
-    cam = D_80061A08;
+    cam = GsWSMATRIX;
     light = D_800619A8;
     sp = (GfxBoneScratchNode *)0x1F800000;
     sp[0].parent = 0;
@@ -1096,7 +1096,7 @@ void Gfx_DrawTexModel(Actor *a0, s32 mode) {
     i = 0;
     e = s->bones;
     s->texSlot = (struct GfxModelTexSlot *)Gfx_FindOrLoadTexSlot(s->fileId << 16);
-    s->otzShift = D_8005F770.otLayerLen[s->otIndex] - 2;
+    s->otzShift = Sys_State.otLayerLen[s->otIndex] - 2;
     for (; i < s->boneCount; i++, e++) {
         p = s->bonePolys[i];
         gte_SetRotMatrix(&e->viewMat);
@@ -1153,7 +1153,7 @@ void Gfx_DrawWireModel(Actor *a0, s32 mode, CVECTOR *col) {
     i = 0;
     s = a0->model;
     e = s->bones;
-    s->otzShift = D_8005F770.otLayerLen[s->otIndex] - 2;
+    s->otzShift = Sys_State.otLayerLen[s->otIndex] - 2;
     for (; i < s->boneCount; i++, e++) {
         p = s->bonePolys[i];
         gte_SetRotMatrix(&e->viewMat);
@@ -1218,7 +1218,7 @@ s32 Actor_ProjectToScreen(ContC40 *a0) {
     p = a0->transform;
     t = &p->t;
     *t = *(LongVec3 *)&p->posX;
-    gte_SetRotMatrix(&D_80061A08);
+    gte_SetRotMatrix(&GsWSMATRIX);
     gte_ldclmv(&p->m[0][0]);
     gte_rtir();
     gte_stclmv(&m.m[0][0]);
@@ -1228,13 +1228,13 @@ s32 Actor_ProjectToScreen(ContC40 *a0) {
     gte_ldclmv(&p->m[0][2]);
     gte_rtir();
     gte_stclmv(&m.m[0][2]);
-    gte_SetTransMatrix(&D_80061A08);
+    gte_SetTransMatrix(&GsWSMATRIX);
     gte_ldlv0(t);
     gte_rtv0tr();
     gte_stlvnl(m.t);
     gte_SetRotMatrix(&m);
     gte_SetTransMatrix(&m);
-    gte_ldv0(D_80050744);
+    gte_ldv0(Gfx_ZeroSVector);
     gte_rtps();
     gte_stsxy(&p->screenX);
     x = 0x160;
@@ -1389,7 +1389,7 @@ void Gfx_AddTrisGT3(GfxModelTriGT3 *t, s32 n, ActorModel *s, s32 mode) {
     if (mode == 1) {
         code = 0x34;
     }
-    p = (PolyGT3_20FD0 *)D_8005F770.packet.work;
+    p = (PolyGT3_20FD0 *)Sys_State.packet.work;
     for (i = 0; i < n; i++, t++) {
         do {
             sxy[0] = xy[t->v[0]];
@@ -1432,12 +1432,12 @@ void Gfx_AddTrisGT3(GfxModelTriGT3 *t, s32 n, ActorModel *s, s32 mode) {
             p->v0 = t->v0;
             p->v1 = t->v1;
             p->v2 = t->v2;
-            p->tag.addr = ((GfxModelOTag *)&D_8005F770.otLayers.s[idx][z])->addr;
-            ((GfxModelOTag *)&D_8005F770.otLayers.s[idx][z])->addr = (u32)p;
+            p->tag.addr = ((GfxModelOTag *)&Sys_State.otLayers.s[idx][z])->addr;
+            ((GfxModelOTag *)&Sys_State.otLayers.s[idx][z])->addr = (u32)p;
             p++;
         } while (0);
     }
-    D_8005F770.packet.addr = (s32)p;
+    Sys_State.packet.addr = (s32)p;
 }
 
 
@@ -1464,7 +1464,7 @@ void Gfx_AddQuadsGT4(ModelQuadGT4 *t, s32 n, ActorModel *s, s32 mode) {
     if (mode == 1) {
         code = 0x3C;
     }
-    g = &D_8005F770;
+    g = &Sys_State;
     p = (PolyGT4_2130C *)g->packet.work;
     for (i = 0; i < n; i++, t++) {
         do {
@@ -1515,7 +1515,7 @@ void Gfx_AddQuadsGT4(ModelQuadGT4 *t, s32 n, ActorModel *s, s32 mode) {
             p++;
         } while (0);
     }
-    D_8005F770.packet.addr = (s32)p;
+    Sys_State.packet.addr = (s32)p;
 }
 
 
@@ -1533,7 +1533,7 @@ s32 Gfx_ProjectModelVerts(Vert6Pmv *v, ModelProjView *o, s32 noCheck) {
 
     n = v->vx;
     v++;
-    scr = &D_8005F770;
+    scr = &Sys_State;
     sxy = (SxyPmv *)o->screenXY;
     z = o->vertOtz;
     zs = o->otzShift;
@@ -1573,7 +1573,7 @@ s32 Gfx_IsOriginOffscreen(void) {
     SxyIso sxy;
     s32 flag;
 
-    gte_ldv0(D_80043704);
+    gte_ldv0(Gfx_ZeroVector);
     gte_rtps();
     gte_stflg(&flag);
     if (flag < 0) {
@@ -1603,14 +1603,14 @@ void Gfx_DrawWireTris(ModelWireTri *t, s32 n, ModelProjView *o, CVECTOR *col) {
     Tpage21ABC *tp;
     s32 idx;
 
-    pk = (GfxModelOTag *)D_8005F770.packet.work;
+    pk = (GfxModelOTag *)Sys_State.packet.work;
     sxy = o->screenXY;
     sz = o->vertOtz;
     idx = o->otIndex;
     for (i = 0; i < n; i++, t++) {
         do {
             z = (sz[t->v[0]] + sz[t->v[1]] + sz[t->v[2]]) / 3;
-            ot = (u32 *)D_8005F770.otLayers.s[idx] + z;
+            ot = (u32 *)Sys_State.otLayers.s[idx] + z;
             l = (LINE_F4 *)pk;
             l->c = *col;
             l->tag.len = 6;
@@ -1630,7 +1630,7 @@ void Gfx_DrawWireTris(ModelWireTri *t, s32 n, ModelProjView *o, CVECTOR *col) {
             pk = (GfxModelOTag *)((Tpage21ABC *)pk + 1);
         } while (0);
     }
-    D_8005F770.packet.addr = (s32)pk;
+    Sys_State.packet.addr = (s32)pk;
 }
 
 void Gfx_DrawWireQuads(GfxModelQuad *q, s32 n, ModelProjView *o, CVECTOR *col) {
@@ -1648,14 +1648,14 @@ void Gfx_DrawWireQuads(GfxModelQuad *q, s32 n, ModelProjView *o, CVECTOR *col) {
     GfxModelQuad *last;
     s32 idx;
 
-    pk = (GfxModelOTag *)D_8005F770.packet.work;
+    pk = (GfxModelOTag *)Sys_State.packet.work;
     sxy = o->screenXY;
     sz = o->vertOtz;
     idx = o->otIndex;
     for (i = 0; i < n; i++, q++) {
         do {
             z = (sz[q->v[0]] + sz[q->v[1]] + sz[q->v[2]] + sz[q->v[3]]) / 4;
-            layer = D_8005F770.otLayers.s[idx];
+            layer = Sys_State.otLayers.s[idx];
             ot = (u32 *)layer;
             xy[0] = sxy[q->v[0]];
             xy[1] = sxy[q->v[1]];
@@ -1692,5 +1692,5 @@ void Gfx_DrawWireQuads(GfxModelQuad *q, s32 n, ModelProjView *o, CVECTOR *col) {
             pk = (GfxModelOTag *)((Tpage21ABC *)pk + 1);
         } while (0);
     }
-    D_8005F770.packet.addr = (s32)pk;
+    Sys_State.packet.addr = (s32)pk;
 }

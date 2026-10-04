@@ -2,12 +2,12 @@ nonmatching Digi_SortRoster, 0x2A0
 
 glabel Digi_SortRoster
     /* 132E4 80022AE4 78FFBD27 */  addiu      $sp, $sp, -0x88
-    /* 132E8 80022AE8 2800838F */  lw         $v1, %gp_rel(D_80050720)($gp)
-    /* 132EC 80022AEC 0580023C */  lui        $v0, %hi(D_80050724)
+    /* 132E8 80022AE8 2800838F */  lw         $v1, %gp_rel(Save_GameStatePtr)($gp)
+    /* 132EC 80022AEC 0580023C */  lui        $v0, %hi(Digi_StateSortRank)
     /* 132F0 80022AF0 8000BFAF */  sw         $ra, 0x80($sp)
     /* 132F4 80022AF4 7C00B1AF */  sw         $s1, 0x7C($sp)
     /* 132F8 80022AF8 7800B0AF */  sw         $s0, 0x78($sp)
-    /* 132FC 80022AFC 24075924 */  addiu      $t9, $v0, %lo(D_80050724)
+    /* 132FC 80022AFC 24075924 */  addiu      $t9, $v0, %lo(Digi_StateSortRank)
     /* 13300 80022B00 03002F8B */  lwl        $t7, 0x3($t9)
     /* 13304 80022B04 00002F9B */  lwr        $t7, 0x0($t9)
     /* 13308 80022B08 04003183 */  lb         $s1, 0x4($t9)

@@ -3,8 +3,8 @@ nonmatching func_80066714, 0x98
 glabel func_80066714
     /* 33B4 80066714 E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* 33B8 80066718 0803033C */  lui        $v1, (0x308FFFF >> 16)
-    /* 33BC 8006671C 0680023C */  lui        $v0, %hi(D_8005F788)
-    /* 33C0 80066720 88F74490 */  lbu        $a0, %lo(D_8005F788)($v0)
+    /* 33BC 8006671C 0680023C */  lui        $v0, %hi(Sys_GameMode)
+    /* 33C0 80066720 88F74490 */  lbu        $a0, %lo(Sys_GameMode)($v0)
     /* 33C4 80066724 FFFF6334 */  ori        $v1, $v1, (0x308FFFF & 0xFFFF)
     /* 33C8 80066728 1400BFAF */  sw         $ra, 0x14($sp)
     /* 33CC 8006672C 1000B0AF */  sw         $s0, 0x10($sp)

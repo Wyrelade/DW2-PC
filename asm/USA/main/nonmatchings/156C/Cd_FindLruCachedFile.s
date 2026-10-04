@@ -1,10 +1,10 @@
 nonmatching Cd_FindLruCachedFile, 0x88
 
 glabel Cd_FindLruCachedFile
-    /* 142E8 80023AE8 0680023C */  lui        $v0, %hi(D_8005F770)
-    /* 142EC 80023AEC 70F7478C */  lw         $a3, %lo(D_8005F770)($v0)
-    /* 142F0 80023AF0 0680023C */  lui        $v0, %hi(D_8005F8C8)
-    /* 142F4 80023AF4 C8F84524 */  addiu      $a1, $v0, %lo(D_8005F8C8)
+    /* 142E8 80023AE8 0680023C */  lui        $v0, %hi(Sys_State)
+    /* 142EC 80023AEC 70F7478C */  lw         $a3, %lo(Sys_State)($v0)
+    /* 142F0 80023AF0 0680023C */  lui        $v0, %hi(Cd_FileCache)
+    /* 142F4 80023AF4 C8F84524 */  addiu      $a1, $v0, %lo(Cd_FileCache)
     /* 142F8 80023AF8 21400000 */  addu       $t0, $zero, $zero
     /* 142FC 80023AFC 21300001 */  addu       $a2, $t0, $zero
     /* 14300 80023B00 03000924 */  addiu      $t1, $zero, 0x3

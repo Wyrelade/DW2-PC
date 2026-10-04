@@ -56,15 +56,15 @@ glabel Sys_Main
     /* 13E20 80023620 B8000426 */   addiu     $a0, $s0, 0xB8
     /* 13E24 80023624 ADC2000C */  jal        VSync
     /* 13E28 80023628 21200000 */   addu      $a0, $zero, $zero
-    /* 13E2C 8002362C 0180043C */  lui        $a0, %hi(D_80010000)
-    /* 13E30 80023630 0000848C */  lw         $a0, %lo(D_80010000)($a0)
+    /* 13E2C 8002362C 0180043C */  lui        $a0, %hi(Ovl_LoadAddr)
+    /* 13E30 80023630 0000848C */  lw         $a0, %lo(Ovl_LoadAddr)($a0)
     /* 13E34 80023634 2000A527 */  addiu      $a1, $sp, 0x20
     /* 13E38 80023638 F5AE000C */  jal        GsGetTimInfo
     /* 13E3C 8002363C 04008424 */   addiu     $a0, $a0, 0x4
     /* 13E40 80023640 ADC2000C */  jal        VSync
     /* 13E44 80023644 21200000 */   addu      $a0, $zero, $zero
     /* 13E48 80023648 2C00A58F */  lw         $a1, 0x2C($sp)
-    /* 13E4C 8002364C 38008427 */  addiu      $a0, $gp, %gp_rel(D_80050730)
+    /* 13E4C 8002364C 38008427 */  addiu      $a0, $gp, %gp_rel(Sys_BootImageRect)
     /* 13E50 80023650 CB9D000C */  jal        LoadImage
     /* 13E54 80023654 00000000 */   nop
     /* 13E58 80023658 209D000C */  jal        DrawSync
@@ -80,8 +80,8 @@ glabel Sys_Main
     /* 13E80 80023680 9E9C000C */  jal        SetGraphDebug
     /* 13E84 80023684 21200000 */   addu      $a0, $zero, $zero
     /* 13E88 80023688 1F80053C */  lui        $a1, (0x801FF000 >> 16)
-    /* 13E8C 8002368C 0580043C */  lui        $a0, %hi(D_800506F8)
-    /* 13E90 80023690 F806848C */  lw         $a0, %lo(D_800506F8)($a0)
+    /* 13E8C 8002368C 0580043C */  lui        $a0, %hi(Mem_HeapStart)
+    /* 13E90 80023690 F806848C */  lw         $a0, %lo(Mem_HeapStart)($a0)
     /* 13E94 80023694 00F0A534 */  ori        $a1, $a1, (0x801FF000 & 0xFFFF)
     /* 13E98 80023698 988B000C */  jal        Mem_InitHeap
     /* 13E9C 8002369C 2328A400 */   subu      $a1, $a1, $a0
@@ -123,15 +123,15 @@ glabel Sys_Main
     /* 13F28 80023728 F1C1000C */  jal        CdControlB
     /* 13F2C 8002372C 2130A000 */   addu      $a2, $a1, $zero
     /* 13F30 80023730 6444000C */  jal        Task_ClearList
-    /* 13F34 80023734 0680113C */   lui       $s1, %hi(D_8005F770)
+    /* 13F34 80023734 0680113C */   lui       $s1, %hi(Sys_State)
     /* 13F38 80023738 8F72000C */  jal        Gfx_InitTexSlots
-    /* 13F3C 8002373C 70F73026 */   addiu     $s0, $s1, %lo(D_8005F770)
+    /* 13F3C 8002373C 70F73026 */   addiu     $s0, $s1, %lo(Sys_State)
     /* 13F40 80023740 0672000C */  jal        Gpu_ClearOt
     /* 13F44 80023744 21200000 */   addu      $a0, $zero, $zero
     /* 13F48 80023748 0672000C */  jal        Gpu_ClearOt
     /* 13F4C 8002374C 01000424 */   addiu     $a0, $zero, 0x1
     /* 13F50 80023750 01000224 */  addiu      $v0, $zero, 0x1
-    /* 13F54 80023754 70F722AE */  sw         $v0, %lo(D_8005F770)($s1)
+    /* 13F54 80023754 70F722AE */  sw         $v0, %lo(Sys_State)($s1)
     /* 13F58 80023758 02040224 */  addiu      $v0, $zero, 0x402
     /* 13F5C 8002375C 180002AE */  sw         $v0, 0x18($s0)
     /* 13F60 80023760 1C0002AE */  sw         $v0, 0x1C($s0)
@@ -147,8 +147,8 @@ glabel Sys_Main
     /* 13F88 80023788 000040A0 */   sb        $zero, 0x0($v0)
     /* 13F8C 8002378C 6171000C */  jal        Gfx_DrawFade
     /* 13F90 80023790 00000000 */   nop
-    /* 13F94 80023794 0680023C */  lui        $v0, %hi(D_8005E620)
-    /* 13F98 80023798 20E65224 */  addiu      $s2, $v0, %lo(D_8005E620)
+    /* 13F94 80023794 0680023C */  lui        $v0, %hi(Save_GameState)
+    /* 13F98 80023798 20E65224 */  addiu      $s2, $v0, %lo(Save_GameState)
     /* 13F9C 8002379C 4400A0AF */  sw         $zero, 0x44($sp)
   .L800237A0:
     /* 13FA0 800237A0 4400A28F */  lw         $v0, 0x44($sp)
@@ -196,9 +196,9 @@ glabel Sys_Main
     /* 14040 80023840 4400A2AF */   sw        $v0, 0x44($sp)
     /* 14044 80023844 209D000C */  jal        DrawSync
     /* 14048 80023848 21200000 */   addu      $a0, $zero, $zero
-    /* 1404C 8002384C 940093AF */  sw         $s3, %gp_rel(D_8005078C)($gp)
+    /* 1404C 8002384C 940093AF */  sw         $s3, %gp_rel(Sys_FlipPending)($gp)
   .L80023850:
-    /* 14050 80023850 9400828F */  lw         $v0, %gp_rel(D_8005078C)($gp)
+    /* 14050 80023850 9400828F */  lw         $v0, %gp_rel(Sys_FlipPending)($gp)
     /* 14054 80023854 00000000 */  nop
     /* 14058 80023858 FDFF4014 */  bnez       $v0, .L80023850
     /* 1405C 8002385C 00000000 */   nop
@@ -211,9 +211,9 @@ glabel Sys_Main
     /* 14078 80023878 00000000 */   nop
     /* 1407C 8002387C ADC2000C */  jal        VSync
     /* 14080 80023880 FFFF0424 */   addiu     $a0, $zero, -0x1
-    /* 14084 80023884 4000838F */  lw         $v1, %gp_rel(D_80050738)($gp)
+    /* 14084 80023884 4000838F */  lw         $v1, %gp_rel(Sys_LastVSyncTime)($gp)
     /* 14088 80023888 0400448E */  lw         $a0, 0x4($s2)
-    /* 1408C 8002388C 400082AF */  sw         $v0, %gp_rel(D_80050738)($gp)
+    /* 1408C 8002388C 400082AF */  sw         $v0, %gp_rel(Sys_LastVSyncTime)($gp)
     /* 14090 80023890 23104300 */  subu       $v0, $v0, $v1
     /* 14094 80023894 21208200 */  addu       $a0, $a0, $v0
     /* 14098 80023898 080022AE */  sw         $v0, 0x8($s1)
@@ -223,11 +223,11 @@ glabel Sys_Main
     /* 140A8 800238A8 06000224 */  addiu      $v0, $zero, 0x6
     /* 140AC 800238AC 080022AE */  sw         $v0, 0x8($s1)
   .L800238B0:
-    /* 140B0 800238B0 70F7828E */  lw         $v0, %lo(D_8005F770)($s4)
+    /* 140B0 800238B0 70F7828E */  lw         $v0, %lo(Sys_State)($s4)
     /* 140B4 800238B4 00000000 */  nop
     /* 140B8 800238B8 01004224 */  addiu      $v0, $v0, 0x1
     /* 140BC 800238BC A78C000C */  jal        Pad_Update
-    /* 140C0 800238C0 70F782AE */   sw        $v0, %lo(D_8005F770)($s4)
+    /* 140C0 800238C0 70F782AE */   sw        $v0, %lo(Sys_State)($s4)
     /* 140C4 800238C4 3D8E000C */  jal        Rand_Step
     /* 140C8 800238C8 00000000 */   nop
     /* 140CC 800238CC 1D8F000C */  jal        Cd_ServiceQueue

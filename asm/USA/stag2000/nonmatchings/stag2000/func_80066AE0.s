@@ -4,8 +4,8 @@ glabel func_80066AE0
     /* 3780 80066AE0 E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* 3784 80066AE4 1000BFAF */  sw         $ra, 0x10($sp)
     /* 3788 80066AE8 21280000 */  addu       $a1, $zero, $zero
-    /* 378C 80066AEC 0680023C */  lui        $v0, %hi(D_8005E620)
-    /* 3790 80066AF0 20E64324 */  addiu      $v1, $v0, %lo(D_8005E620)
+    /* 378C 80066AEC 0680023C */  lui        $v0, %hi(Save_GameState)
+    /* 3790 80066AF0 20E64324 */  addiu      $v1, $v0, %lo(Save_GameState)
   .L80066AF4:
     /* 3794 80066AF4 E4006290 */  lbu        $v0, 0xE4($v1)
     /* 3798 80066AF8 00000000 */  nop

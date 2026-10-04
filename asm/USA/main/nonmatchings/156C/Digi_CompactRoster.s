@@ -3,7 +3,7 @@ nonmatching Digi_CompactRoster, 0xF0
 glabel Digi_CompactRoster
     /* 131F4 800229F4 A0FFBD27 */  addiu      $sp, $sp, -0x60
     /* 131F8 800229F8 21380000 */  addu       $a3, $zero, $zero
-    /* 131FC 800229FC 2800828F */  lw         $v0, %gp_rel(D_80050720)($gp)
+    /* 131FC 800229FC 2800828F */  lw         $v0, %gp_rel(Save_GameStatePtr)($gp)
     /* 13200 80022A00 5000A827 */  addiu      $t0, $sp, 0x50
     /* 13204 80022A04 E4004524 */  addiu      $a1, $v0, 0xE4
     /* 13208 80022A08 2130A000 */  addu       $a2, $a1, $zero

@@ -37,7 +37,7 @@ typedef struct {
     /* 0x0C */ s32 field_C;
 } Stg00Work73FC;
 
-extern SysState D_8005F770;
+extern SysState Sys_State;
 extern u8 **Stg00_SoundBanks[];
 extern u8 *Stg00_FontTextBuf;
 extern Stg00Work *Stg00_FontWork;
@@ -264,11 +264,11 @@ typedef struct {
     /* 0x2C */ s32 field_2C;
 } Stg00SpawnWork;
 
-extern Halves D_8005074C;
-extern s32 D_80043704[];
+extern Halves Gfx_NeutralRgb;
+extern s32 Gfx_ZeroVector[];
 extern u16 D_8005F72C;
 extern s32 D_8005F700;
-extern PadState D_8005F6F0[];
+extern PadState Pad_State[];
 extern s32 D_8005F78C;
 extern Stg00Blk5071C *D_8005071C;
 extern s32 D_80068E84[];
@@ -559,8 +559,8 @@ extern s32 D_8005F708;
 extern s32 D_8005F714;
 extern s32 D_8005F720;
 extern s32 D_8005F724;
-extern s32 D_8005F778;
-extern s32 D_8005F788;
+extern s32 Sys_FrameDelta;
+extern s32 Sys_GameMode;
 extern s32 D_8005F79C;
 extern s32 D_80068AA0[];
 extern s32 Stg00_WindowTestMasks[];

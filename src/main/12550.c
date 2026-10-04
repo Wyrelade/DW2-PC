@@ -36,28 +36,28 @@ void Save_ClearEventFlags(void) {
     SaveEventFlags *p;
 
     i = 0x1F;
-    p = (SaveEventFlags *)((u8 *)&D_8005E620 + i);
+    p = (SaveEventFlags *)((u8 *)&Save_GameState + i);
     do {
         p->a[0] = 0;
         p = (SaveEventFlags *)((u8 *)p - 1);
     } while (--i >= 0);
     i = 7;
-    p = (SaveEventFlags *)((u8 *)&D_8005E620 + i);
+    p = (SaveEventFlags *)((u8 *)&Save_GameState + i);
     do {
         p->b[0] = 0;
         p = (SaveEventFlags *)((u8 *)p - 1);
     } while (--i >= 0);
     i = 7;
-    p = (SaveEventFlags *)((u8 *)&D_8005E620 + i);
+    p = (SaveEventFlags *)((u8 *)&Save_GameState + i);
     do {
         p->c[0] = 0;
         p = (SaveEventFlags *)((u8 *)p - 1);
     } while (--i >= 0);
     i = 0xF;
-    p = (SaveEventFlags *)((u8 *)&D_8005E620 + i);
+    p = (SaveEventFlags *)((u8 *)&Save_GameState + i);
     do {
         p->d[0] = 0;
         p = (SaveEventFlags *)((u8 *)p - 1);
     } while (--i >= 0);
-    D_8005F624.field_40 = 0;
+    Flag_Bits.field_40 = 0;
 }

@@ -3,16 +3,16 @@ nonmatching Cd_CheckNextSector, 0x60
 glabel Cd_CheckNextSector
     /* 147FC 80023FFC E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* 14800 80024000 1000B0AF */  sw         $s0, 0x10($sp)
-    /* 14804 80024004 0680103C */  lui        $s0, %hi(D_8005FDC8)
-    /* 14808 80024008 C8FD1026 */  addiu      $s0, $s0, %lo(D_8005FDC8)
+    /* 14804 80024004 0680103C */  lui        $s0, %hi(Cd_SectorHeader)
+    /* 14808 80024008 C8FD1026 */  addiu      $s0, $s0, %lo(Cd_SectorHeader)
     /* 1480C 8002400C 21200002 */  addu       $a0, $s0, $zero
     /* 14810 80024010 1400BFAF */  sw         $ra, 0x14($sp)
     /* 14814 80024014 45C2000C */  jal        CdGetSector
     /* 14818 80024018 03000524 */   addiu     $a1, $zero, 0x3
     /* 1481C 8002401C 59B7000C */  jal        CdPosToInt
     /* 14820 80024020 21200002 */   addu      $a0, $s0, $zero
-    /* 14824 80024024 0580033C */  lui        $v1, %hi(D_80048DB8)
-    /* 14828 80024028 B88D6424 */  addiu      $a0, $v1, %lo(D_80048DB8)
+    /* 14824 80024024 0580033C */  lui        $v1, %hi(Cd_ReadState)
+    /* 14828 80024028 B88D6424 */  addiu      $a0, $v1, %lo(Cd_ReadState)
     /* 1482C 8002402C 1C00838C */  lw         $v1, 0x1C($a0)
     /* 14830 80024030 00000000 */  nop
     /* 14834 80024034 03004310 */  beq        $v0, $v1, .L80024044

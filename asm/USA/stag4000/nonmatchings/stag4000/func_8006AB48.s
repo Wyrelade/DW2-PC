@@ -108,8 +108,8 @@ glabel func_8006AB48
   .L8006ACCC:
     /* 796C 8006ACCC 7745000C */  jal        Task_SetState1
     /* 7970 8006ACD0 06000524 */   addiu     $a1, $zero, 0x6
-    /* 7974 8006ACD4 0580023C */  lui        $v0, %hi(D_80050720)
-    /* 7978 8006ACD8 2007428C */  lw         $v0, %lo(D_80050720)($v0)
+    /* 7974 8006ACD4 0580023C */  lui        $v0, %hi(Save_GameStatePtr)
+    /* 7978 8006ACD8 2007428C */  lw         $v0, %lo(Save_GameStatePtr)($v0)
     /* 797C 8006ACDC 602BA38E */  lw         $v1, %lo(D_80072B60)($s5)
     /* 7980 8006ACE0 00004290 */  lbu        $v0, 0x0($v0)
     /* 7984 8006ACE4 00000000 */  nop

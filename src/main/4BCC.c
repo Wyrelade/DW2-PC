@@ -5,9 +5,9 @@
 
 /* Small data this unit defines (retail reaches it with %gp_rel here). The bytes
  * live in the data asm; these tentative definitions are COMMON and bind to it. */
-Halves D_80050700;
-u8 *D_8005076C;
-u8 *D_80050770;
+Halves Menu_ItemUseMsgPos;
+u8 *Menu_PartGridSlots;
+u8 *Menu_PartGridLabels;
 
 void Menu_SubMenuInit(Actor *arg0, s16 arg1) {
     ActorWork *w = arg0->work;
@@ -52,7 +52,7 @@ void Menu_SubMenuTask(Actor *a) {
             break;
         case 1:
             if (((s32 (*)(s16 *, s16 *))Menu_MoveGridCursorP1)(w->cursor, w->u2C.gridSize) == 0) {
-            if (D_8005F6F0[0].cross > 0) {
+            if (Pad_State[0].cross > 0) {
                 idx = Menu_GridIndexColMajor(w->cursor, w->u2C.gridSize);
                 if (tbl[idx].field_0 == -1) {
                     break;
@@ -72,7 +72,7 @@ void Menu_SubMenuTask(Actor *a) {
                     Task_NextState1(a);
                     break;
                 }
-            } else if (D_8005F6F0[0].triangle > 0) {
+            } else if (Pad_State[0].triangle > 0) {
                 Snd_PlayById(0xB, 0);
                 Task_SetState0(a, 2);
             }
@@ -222,10 +222,10 @@ void Menu_StatusTask(Actor *a0) {
                 break;
             }
             Text_PrintIdList(w->labelTexts, (TextIdListEntry *)Cd_GetFileEntry(0x513000B), 2);
-            w->textArgs[0] = (s32)D_80050720->field_14;
+            w->textArgs[0] = (s32)Save_GameStatePtr->field_14;
             tbl = (s16 *)Cd_GetFileEntry(0x513000F);
-            w->textArgs[1] = (s32)Cd_GetFileEntry(tbl[D_80050720->field_11 * 11 + D_80050720->field_12] + 0x1FD0000);
-            w->textArgs[2] = (s32)D_80050720->field_D1;
+            w->textArgs[1] = (s32)Cd_GetFileEntry(tbl[Save_GameStatePtr->field_11 * 11 + Save_GameStatePtr->field_12] + 0x1FD0000);
+            w->textArgs[2] = (s32)Save_GameStatePtr->field_D1;
             p = &w->textArgs[3];
             for (i = 0; i < w->digiCount; i++) {
                 *p++ = (s32)w->digiList[i]->name;
@@ -250,7 +250,7 @@ void Menu_StatusTask(Actor *a0) {
             Task_NextState1(a0);
             break;
         case 1:
-            if (D_8005F6F0[0].triangle > 0) {
+            if (Pad_State[0].triangle > 0) {
                 Snd_PlayById(0xB, 0);
                 Task_SetState0(a0, 2);
             }
@@ -294,11 +294,11 @@ void Menu_StatusDraw(Actor *actor) {
     do {
         obj = (GfxPart *)Cd_GetFileEntry(*list);
         if (i == 0) {
-            Gfx_SetPartsNumber(obj, 2, 8, D_80050720->field_8);
-            Gfx_SetPartsNumber(obj, 4, 4, D_80050720->maxHp);
-            Gfx_SetPartsNumber(obj, 8, 4, D_80050720->hp);
-            Gfx_SetPartsNumber(obj, 0x10, 4, D_80050720->maxMp);
-            Gfx_SetPartsNumber(obj, 0x20, 4, D_80050720->mp);
+            Gfx_SetPartsNumber(obj, 2, 8, Save_GameStatePtr->field_8);
+            Gfx_SetPartsNumber(obj, 4, 4, Save_GameStatePtr->maxHp);
+            Gfx_SetPartsNumber(obj, 8, 4, Save_GameStatePtr->hp);
+            Gfx_SetPartsNumber(obj, 0x10, 4, Save_GameStatePtr->maxMp);
+            Gfx_SetPartsNumber(obj, 0x20, 4, Save_GameStatePtr->mp);
         } else if (i - 1 < w->digiCount) {
             rec = w->digiList[i - 1];
             Gfx_SetPartsNumber(obj, 2, 3, rec->maxHp);
@@ -322,7 +322,7 @@ void Menu_UseItemDirect(Actor *a0) {
     TextDescHalves st;
 
     if (Item_Use(Menu_Ctx->itemId, Menu_Ctx->bagSlot, 0, 0) != 0) {
-        st.pos = D_80050700;
+        st.pos = Menu_ItemUseMsgPos;
         st.color = 0;
         st.packedStyle = 0x81;
         st.text = (s32)Cd_GetFileEntry(0x1FD00FD);
@@ -330,7 +330,7 @@ void Menu_UseItemDirect(Actor *a0) {
         Text_OpenDesc(&w->msgText, (TextDesc *)&st);
         Snd_PlayById(0x1D, 0);
     } else {
-        Text_OpenPacked(&w->msgText, (s32)Cd_GetFileEntry(0x1FD00A0), 0x81, D_80050700);
+        Text_OpenPacked(&w->msgText, (s32)Cd_GetFileEntry(0x1FD00A0), 0x81, Menu_ItemUseMsgPos);
     }
 }
 
@@ -345,7 +345,7 @@ void Menu_UseBugZapItem(Actor *a0) {
     TextDescHalves st;
 
     rec = (Sub17D84 *)Item_GetEffectRec(Menu_Ctx->itemId);
-    pos = &D_80050700;
+    pos = &Menu_ItemUseMsgPos;
     n = rec->digiId - 0xC;
     m = D_8005071C->field_BA5[n];
     st.pos = *pos;
@@ -374,7 +374,7 @@ void Menu_UseBugZapItem(Actor *a0) {
     default:
         r = Item_Use(Menu_Ctx->itemId, Menu_Ctx->bagSlot, 0, 0);
         if (r == 0) {
-            Text_OpenPacked(&w->msgText, (s32)Cd_GetFileEntry(0x1FD00A0), 0x81, D_80050700);
+            Text_OpenPacked(&w->msgText, (s32)Cd_GetFileEntry(0x1FD00A0), 0x81, Menu_ItemUseMsgPos);
             goto end;
         }
         if (r == 2) {
@@ -386,7 +386,7 @@ void Menu_UseBugZapItem(Actor *a0) {
         } else {
             st.text = (s32)Cd_GetFileEntry(0x1FD00B3);
             r = 0x1FD00EC;
-            st.strArg0 = (s32)Cd_GetFileEntry(n * 3 + (D_80050760 + r));
+            st.strArg0 = (s32)Cd_GetFileEntry(n * 3 + (Bug_LastZappedLevel + r));
         }
         Text_OpenDesc(&w->msgText, (TextDesc *)&st);
         break;
@@ -425,11 +425,11 @@ void Menu_OpenItemNameTexts(Actor *a0, s32 a1) {
 
     for (i = 0; i < 20; i++) {
         img = (s32)Cd_GetFileEntry(0x1FD0098);
-        id = D_8005076C[i];
+        id = Menu_PartGridSlots[i];
         k = 0;
-        if (id != 0xFF && D_80050720->slotItems[id] != 0) {
-            img = Item_GetNameText(D_80050720->slotItems[id]);
-            if (D_80050720->slotStatus[id] != 0) {
+        if (id != 0xFF && Save_GameStatePtr->slotItems[id] != 0) {
+            img = Item_GetNameText(Save_GameStatePtr->slotItems[id]);
+            if (Save_GameStatePtr->slotStatus[id] != 0) {
                 k = 3;
             }
         }
@@ -475,14 +475,14 @@ void Menu_ShowPartSlotInfo(Actor *a0) {
     Text_Close(&w->msgText);
     Text_Close(&w->field_54);
     Text_Close(&w->field_58);
-    id = D_8005076C[i];
+    id = Menu_PartGridSlots[i];
     if (id != 0xFF) {
         h.lo = 0xF;
         h.hi = 0x32;
-        Text_OpenPacked(&w->field_58, (s32)Cd_GetFileEntry(D_80050770[i] | 0x1FD0000), 0, h);
-        if (D_80050720->slotItems[id] != 0) {
-            Text_OpenPacked(&w->msgText, Item_GetDescText(D_80050720->slotItems[id]), 0x80, D_80050700);
-            if (D_80050720->slotStatus[id] != 0) {
+        Text_OpenPacked(&w->field_58, (s32)Cd_GetFileEntry(Menu_PartGridLabels[i] | 0x1FD0000), 0, h);
+        if (Save_GameStatePtr->slotItems[id] != 0) {
+            Text_OpenPacked(&w->msgText, Item_GetDescText(Save_GameStatePtr->slotItems[id]), 0x80, Menu_ItemUseMsgPos);
+            if (Save_GameStatePtr->slotStatus[id] != 0) {
                 h.lo = 0x10;
                 h.hi = 0xCA;
                 Text_OpenPacked(&w->field_54, (s32)Cd_GetFileEntry(0x1FD0097), 0x80, h);
@@ -505,7 +505,7 @@ void Menu_OpenUseItemTexts(Actor *a0) {
     h.hi = 0x47;
     Text_OpenPacked(&w->itemNameText, Item_GetNameText(Menu_Ctx->itemId), 0, h);
     if (w->useMode == 3) {
-        Text_OpenPacked(&w->msgText, (s32)Cd_GetFileEntry(0x1FD00FB), 0x80, D_80050700);
+        Text_OpenPacked(&w->msgText, (s32)Cd_GetFileEntry(0x1FD00FB), 0x80, Menu_ItemUseMsgPos);
     }
 }
 
@@ -515,14 +515,14 @@ void Menu_UseItemOnTarget(Actor *a0) {
     s32 id;
     TextDescHalves st;
 
-    if (D_8005F6F0[0].cross > 0) {
-        id = D_8005076C[Menu_GridIndexColMajor(w->cursor, w->gridSize)];
+    if (Pad_State[0].cross > 0) {
+        id = Menu_PartGridSlots[Menu_GridIndexColMajor(w->cursor, w->gridSize)];
         if (id != 0xFF && Item_Use(Menu_Ctx->itemId, Menu_Ctx->bagSlot, id, 0) != 0) {
-            st.pos = D_80050700;
+            st.pos = Menu_ItemUseMsgPos;
             st.color = 0;
             st.packedStyle = 0x81;
             st.text = (s32)Cd_GetFileEntry(0x1FD00FC);
-            st.strArg0 = Item_GetNameText(D_80050720->slotItems[id]);
+            st.strArg0 = Item_GetNameText(Save_GameStatePtr->slotItems[id]);
             Text_OpenDesc(&w->msgText, (TextDesc *)&st);
             Menu_OpenItemNameTexts(a0, 0);
             Snd_PlayById(0x1D, 0);
@@ -567,8 +567,8 @@ void Menu_ItemUseTask(Actor *a0) {
     s32 id;
     s32 next;
 
-    D_8005076C = (u8 *)Cd_GetFileEntry(0x5130014);
-    D_80050770 = (u8 *)Cd_GetFileEntry(0x5130015);
+    Menu_PartGridSlots = (u8 *)Cd_GetFileEntry(0x5130014);
+    Menu_PartGridLabels = (u8 *)Cd_GetFileEntry(0x5130015);
     switch (a0->stateLevel0) {
     case 0:
     default:
@@ -625,14 +625,14 @@ id = 0x152;
  next = 4;
 break;
 }
-                Text_OpenPacked(&w->msgText, (s32)Cd_GetFileEntry(id | 0x1FD0000), 0x82, D_80050700);
+                Text_OpenPacked(&w->msgText, (s32)Cd_GetFileEntry(id | 0x1FD0000), 0x82, Menu_ItemUseMsgPos);
                 Task_SetState1(a0, next);
                 break;
             }
             break;
         case 2:
             if (Menu_MoveGridCursorP1((s32)w->cursor, (s32)w->gridSize) == 0) {
-                if (D_8005F6F0[0].triangle > 0) {
+                if (Pad_State[0].triangle > 0) {
                     Snd_PlayById(0xB, 0);
                     Task_SetState0(a0, 2);
                 } else if (w->useMode == 3) {
@@ -651,7 +651,7 @@ break;
                 }
                 break;
             case 1:
-                if (D_8005F6F0[0].triangle > 0 || D_8005F6F0[0].cross > 0 || a0->stateLevel4++ >= 0x1F) {
+                if (Pad_State[0].triangle > 0 || Pad_State[0].cross > 0 || a0->stateLevel4++ >= 0x1F) {
                     Task_SetState0(a0, 2);
                 }
                 break;

@@ -5,8 +5,8 @@ glabel func_80068CE0
     /* 5984 80068CE4 1000B0AF */  sw         $s0, 0x10($sp)
     /* 5988 80068CE8 21808000 */  addu       $s0, $a0, $zero
     /* 598C 80068CEC 21380000 */  addu       $a3, $zero, $zero
-    /* 5990 80068CF0 0680023C */  lui        $v0, %hi(D_8005E620)
-    /* 5994 80068CF4 20E64624 */  addiu      $a2, $v0, %lo(D_8005E620)
+    /* 5990 80068CF0 0680023C */  lui        $v0, %hi(Save_GameState)
+    /* 5994 80068CF4 20E64624 */  addiu      $a2, $v0, %lo(Save_GameState)
     /* 5998 80068CF8 0780023C */  lui        $v0, %hi(D_80073CC0)
     /* 599C 80068CFC C03C4424 */  addiu      $a0, $v0, %lo(D_80073CC0)
     /* 59A0 80068D00 1400BFAF */  sw         $ra, 0x14($sp)

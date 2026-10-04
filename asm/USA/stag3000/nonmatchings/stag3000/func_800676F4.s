@@ -444,7 +444,7 @@ glabel func_800676F4
     /* 49DC 80067D3C 9E87000C */  jal        Flag_Test
     /* 49E0 80067D40 DD020424 */   addiu     $a0, $zero, 0x2DD
     /* 49E4 80067D44 08004010 */  beqz       $v0, .L80067D68
-    /* 49E8 80067D48 0680023C */   lui       $v0, %hi(D_8005F770)
+    /* 49E8 80067D48 0680023C */   lui       $v0, %hi(Sys_State)
     /* 49EC 80067D4C DD020424 */  addiu      $a0, $zero, 0x2DD
     /* 49F0 80067D50 7188000C */  jal        Flag_Set
     /* 49F4 80067D54 21280000 */   addu      $a1, $zero, $zero
@@ -453,7 +453,7 @@ glabel func_800676F4
     /* 4A00 80067D60 5F9F0108 */  j          .L80067D7C
     /* 4A04 80067D64 8CF762AC */   sw        $v0, %lo(D_8005F78C)($v1)
   .L80067D68:
-    /* 4A08 80067D68 70F74224 */  addiu      $v0, $v0, %lo(D_8005F770)
+    /* 4A08 80067D68 70F74224 */  addiu      $v0, $v0, %lo(Sys_State)
     /* 4A0C 80067D6C 2000448C */  lw         $a0, 0x20($v0)
     /* 4A10 80067D70 02000324 */  addiu      $v1, $zero, 0x2
     /* 4A14 80067D74 240043AC */  sw         $v1, 0x24($v0)

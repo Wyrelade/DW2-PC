@@ -9,9 +9,9 @@ glabel Digi_InitFromTable
     /* E438 8001DC38 1C00BFAF */  sw         $ra, 0x1C($sp)
     /* E43C 8001DC3C C676000C */  jal        Enemy_FindSetById
     /* E440 8001DC40 1800B2AF */   sw        $s2, 0x18($sp)
-    /* E444 8001DC44 0680033C */  lui        $v1, %hi(D_8005F788)
+    /* E444 8001DC44 0680033C */  lui        $v1, %hi(Sys_GameMode)
     /* E448 8001DC48 21904000 */  addu       $s2, $v0, $zero
-    /* E44C 8001DC4C 88F7638C */  lw         $v1, %lo(D_8005F788)($v1)
+    /* E44C 8001DC4C 88F7638C */  lw         $v1, %lo(Sys_GameMode)($v1)
     /* E450 8001DC50 00050224 */  addiu      $v0, $zero, 0x500
     /* E454 8001DC54 00FF6330 */  andi       $v1, $v1, 0xFF00
     /* E458 8001DC58 08006214 */  bne        $v1, $v0, .L8001DC7C

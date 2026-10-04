@@ -49,8 +49,8 @@ glabel Menu_TopMenuDraw
     /* 4A80 80014280 21200002 */   addu      $a0, $s0, $zero
   .L80014284:
     /* 4A84 80014284 21200002 */  addu       $a0, $s0, $zero
-    /* 4A88 80014288 0580023C */  lui        $v0, %hi(D_80050720)
-    /* 4A8C 8001428C 2007428C */  lw         $v0, %lo(D_80050720)($v0)
+    /* 4A88 80014288 0580023C */  lui        $v0, %hi(Save_GameStatePtr)
+    /* 4A8C 8001428C 2007428C */  lw         $v0, %lo(Save_GameStatePtr)($v0)
     /* 4A90 80014290 00000000 */  nop
     /* 4A94 80014294 0800478C */  lw         $a3, 0x8($v0)
     /* 4A98 80014298 6D75000C */  jal        Gfx_SetPartsNumber

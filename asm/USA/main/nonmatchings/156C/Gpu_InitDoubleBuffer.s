@@ -8,9 +8,9 @@ glabel Gpu_InitDoubleBuffer
     /* C9F0 8001C1F0 2180A000 */  addu       $s0, $a1, $zero
     /* C9F4 8001C1F4 3000B6AF */  sw         $s6, 0x30($sp)
     /* C9F8 8001C1F8 21B00000 */  addu       $s6, $zero, $zero
-    /* C9FC 8001C1FC 0680023C */  lui        $v0, %hi(D_8005F770)
+    /* C9FC 8001C1FC 0680023C */  lui        $v0, %hi(Sys_State)
     /* CA00 8001C200 1C00B1AF */  sw         $s1, 0x1C($sp)
-    /* CA04 8001C204 70F75124 */  addiu      $s1, $v0, %lo(D_8005F770)
+    /* CA04 8001C204 70F75124 */  addiu      $s1, $v0, %lo(Sys_State)
     /* CA08 8001C208 C2171200 */  srl        $v0, $s2, 31
     /* CA0C 8001C20C 21104202 */  addu       $v0, $s2, $v0
     /* CA10 8001C210 2400B3AF */  sw         $s3, 0x24($sp)

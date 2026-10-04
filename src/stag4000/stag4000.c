@@ -34,13 +34,13 @@ void func_80063814() { /* K&R: func_80063A34 passes its work pointer */
     D_8005071C->field_3 = 0;
     D_8005071C->field_6 = 0;
     D_8005071C->field_7 = 0;
-    if (D_8005F770.prevGameMode == 0x32B) {
+    if (Sys_State.prevGameMode == 0x32B) {
         D_8005071C->field_6 = 1;
     }
-    if (D_8005F770.gameMode != 0x200) {
-        D_8005071C->field_1058 = (u16)D_8005F770.gameMode - 0x201;
+    if (Sys_State.gameMode != 0x200) {
+        D_8005071C->field_1058 = (u16)Sys_State.gameMode - 0x201;
     } else {
-        D_8005071C->field_1058 = D_8005F770.field_24;
+        D_8005071C->field_1058 = Sys_State.field_24;
     }
     tbl = (Stg40Stage14 *)Cd_GetFileEntry(0xE20000A);
     D_8005071C->field_1044 = tbl[D_8005071C->field_1058];
@@ -57,10 +57,10 @@ void func_80063814() { /* K&R: func_80063A34 passes its work pointer */
     D_8005071C->field_8 = D_8005071C->field_1044.field_0;
     Digi_SortRoster();
     for (i = 0; i < 3; i++) {
-        if (D_80050720->elems[i].state < 2) {
+        if (Save_GameStatePtr->elems[i].state < 2) {
             break;
         }
-        D_80050720->elems[i].state = i + 3;
+        Save_GameStatePtr->elems[i].state = i + 3;
     }
 }
 
@@ -126,10 +126,10 @@ void func_80063A34(Actor *a0) {
         func_800639FC();
         func_8007107C();
         buf = D_80063360;
-        level = D_80050720->slotItems[0];
+        level = Save_GameStatePtr->slotItems[0];
         level = (level != 0) ? (level - 0xEA) * 6 : 0;
-        if (D_80050720->field_36 != 0) {
-            level += D_80050720->field_36 - 0x4F;
+        if (Save_GameStatePtr->field_36 != 0) {
+            level += Save_GameStatePtr->field_36 - 0x4F;
         }
         if (level < 0x12) {
             level = buf.field_0[level];
@@ -248,7 +248,7 @@ s32 func_80063F00(Actor *arg0) {
 
     case 2:
         func_800721A8(Cd_GetFileEntry(0xE200004));
-        w->field_0 = D_8005F788;
+        w->field_0 = Sys_GameMode;
         Task_SetState1(arg0, 3);
         ret = 1;
         D_8005071C->field_3 = D_8005071C->field_3 + ret;
@@ -258,13 +258,13 @@ s32 func_80063F00(Actor *arg0) {
     case 4:
         if (D_8005071C->field_6 == 0) {
             w->field_0 = 0x301;
-            D_8005F770.field_24 = D_8005071C->field_7 ? 3 : 4;
+            Sys_State.field_24 = D_8005071C->field_7 ? 3 : 4;
         } else if (!Flag_Test(0x81)) {
             w->field_0 = 0x301;
-            D_8005F770.field_24 = D_8005071C->field_7 ? 3 : 4;
+            Sys_State.field_24 = D_8005071C->field_7 ? 3 : 4;
         } else {
             w->field_0 = 0x321;
-            D_8005F770.field_24 = D_8005071C->field_7 ? 2 : 3;
+            Sys_State.field_24 = D_8005071C->field_7 ? 2 : 3;
         }
         if (D_8005071C->field_7 != 0) {
             func_800721A8(Cd_GetFileEntry(0xE200009));
@@ -368,7 +368,7 @@ void func_8006424C(Actor *arg0) {
             case 0:
                 Task_Create(0x209, &ctx->field_8, 0);
                 D_8005071C->field_2 = 0;
-                D_80072B60->field_7E = D_80050720->field_0;
+                D_80072B60->field_7E = Save_GameStatePtr->field_0;
                 Task_NextState2(arg0);
                 break;
             case 1:
@@ -413,12 +413,12 @@ void func_8006424C(Actor *arg0) {
                 if (ctx->field_4 == 0) {
                     arg0->childCount = 0x38;
                     Gfx_FadeInFromBlack(0x20);
-                    if (D_80050764 == 1) {
+                    if (Menu_TopMenuResult == 1) {
                         Task_SetState1(D_80072B60->field_8, 0x1D);
                         Task_SetState2(arg0, 4);
                     } else {
                         Task_Create(0x209, &ctx->field_8, 0);
-                        D_80072B60->field_7E = D_80050720->field_0;
+                        D_80072B60->field_7E = Save_GameStatePtr->field_0;
                         Task_NextState2(arg0);
                     }
                 }
@@ -478,9 +478,9 @@ void func_80064880(void) {
     s32 i;
 
     for (i = 0x3F; i >= 0; i--) {
-        D_80050948[i] = 0;
+        Cd_PreloadIds[i] = 0;
     }
-    D_8005075C = 0;
+    Cd_PreloadCount = 0;
 }
 
 s32 func_800648AC(s32 val) {
@@ -492,25 +492,25 @@ s32 func_800648AC(s32 val) {
 
     i = 0;
     ret = 0;
-    list = &D_80050948[0];
-    if (D_8005075C > 0) {
+    list = &Cd_PreloadIds[0];
+    if (Cd_PreloadCount > 0) {
         p = list;
         do {
             if (*p == val) {
                 return 1;
             }
             i++;
-            if (i >= D_8005075C) {
+            if (i >= Cd_PreloadCount) {
                 break;
             }
             p++;
         } while (1);
     }
-    count = D_8005075C;
+    count = Cd_PreloadCount;
     if (count < 0x40) {
         ret = 1;
-        D_80050948[count] = val;
-        D_8005075C = count + 1;
+        Cd_PreloadIds[count] = val;
+        Cd_PreloadCount = count + 1;
     }
     return ret;
 }
@@ -644,17 +644,17 @@ void func_80064BD8(Stg40Loc *loc) {
             pkt->y2 = b[0].s[0].y;
             pkt->x3 = b[1].s[0].x;
             pkt->y3 = b[1].s[0].y;
-            pkt->tag.f.addr = ((Stg40OTag *)D_8005F770.otLayers.u[4])->addr;
-            ((Stg40OTag *)D_8005F770.otLayers.u[4])->addr = (u32)pkt;
+            pkt->tag.f.addr = ((Stg40OTag *)Sys_State.otLayers.u[4])->addr;
+            ((Stg40OTag *)Sys_State.otLayers.u[4])->addr = (u32)pkt;
             pkt++;
-            D_8005F770.packet.addr = (s32)pkt;
+            Sys_State.packet.addr = (s32)pkt;
         }
         return;
     }
-    mtx = D_80061A08;
+    mtx = GsWSMATRIX;
     quad = D_800633C4;
-    centerX = D_8005F770.centerX.s;
-    centerY = D_8005F770.centerY.s;
+    centerX = Sys_State.centerX.s;
+    centerY = Sys_State.centerY.s;
     count = 0;
     func_8002D0D4();
     SetRotMatrix(&mtx);
@@ -695,10 +695,10 @@ void func_80064BD8(Stg40Loc *loc) {
         pkt->y2 = out[2].y;
         pkt->x3 = out[3].x;
         pkt->y3 = out[3].y;
-        pkt->tag.f.addr = ((Stg40OTag *)D_8005F770.otLayers.u[4])->addr;
-        ((Stg40OTag *)D_8005F770.otLayers.u[4])->addr = (u32)pkt;
+        pkt->tag.f.addr = ((Stg40OTag *)Sys_State.otLayers.u[4])->addr;
+        ((Stg40OTag *)Sys_State.otLayers.u[4])->addr = (u32)pkt;
         pkt++;
-        D_8005F770.packet.addr = (s32)pkt;
+        Sys_State.packet.addr = (s32)pkt;
     }
     PopMatrix();
 }

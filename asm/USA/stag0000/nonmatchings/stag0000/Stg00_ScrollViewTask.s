@@ -18,8 +18,8 @@ glabel Stg00_ScrollViewTask
     /* 9DC 80063D3C 898F0108 */  j          .L80063E24
     /* 9E0 80063D40 00000000 */   nop
   .L80063D44:
-    /* 9E4 80063D44 0680053C */  lui        $a1, %hi(D_8005F6F0)
-    /* 9E8 80063D48 F0F6A424 */  addiu      $a0, $a1, %lo(D_8005F6F0)
+    /* 9E4 80063D44 0680053C */  lui        $a1, %hi(Pad_State)
+    /* 9E8 80063D48 F0F6A424 */  addiu      $a0, $a1, %lo(Pad_State)
     /* 9EC 80063D4C 0800828C */  lw         $v0, 0x8($a0)
     /* 9F0 80063D50 00000000 */  nop
     /* 9F4 80063D54 05004010 */  beqz       $v0, .L80063D6C
@@ -38,7 +38,7 @@ glabel Stg00_ScrollViewTask
     /* A24 80063D84 FCFF4224 */  addiu      $v0, $v0, -0x4
     /* A28 80063D88 040062AC */  sw         $v0, 0x4($v1)
   .L80063D8C:
-    /* A2C 80063D8C F0F6A28C */  lw         $v0, %lo(D_8005F6F0)($a1)
+    /* A2C 80063D8C F0F6A28C */  lw         $v0, %lo(Pad_State)($a1)
     /* A30 80063D90 00000000 */  nop
     /* A34 80063D94 05004010 */  beqz       $v0, .L80063DAC
     /* A38 80063D98 00000000 */   nop

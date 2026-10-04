@@ -1,7 +1,7 @@
 nonmatching Beetle_SetPart, 0x2C
 
 glabel Beetle_SetPart
-    /* 12CEC 800224EC 2800838F */  lw         $v1, %gp_rel(D_80050720)($gp)
+    /* 12CEC 800224EC 2800838F */  lw         $v1, %gp_rel(Save_GameStatePtr)($gp)
     /* 12CF0 800224F0 40100400 */  sll        $v0, $a0, 1
     /* 12CF4 800224F4 21106200 */  addu       $v0, $v1, $v0
     /* 12CF8 800224F8 21186400 */  addu       $v1, $v1, $a0

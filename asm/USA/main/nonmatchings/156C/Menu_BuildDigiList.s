@@ -9,8 +9,8 @@ glabel Menu_BuildDigiList
     /* 8200 80017A00 1C00B3AF */  sw         $s3, 0x1C($sp)
     /* 8204 80017A04 21980000 */  addu       $s3, $zero, $zero
     /* 8208 80017A08 21286002 */  addu       $a1, $s3, $zero
-    /* 820C 80017A0C 0580023C */  lui        $v0, %hi(D_80050720)
-    /* 8210 80017A10 2007428C */  lw         $v0, %lo(D_80050720)($v0)
+    /* 820C 80017A0C 0580023C */  lui        $v0, %hi(Save_GameStatePtr)
+    /* 8210 80017A10 2007428C */  lw         $v0, %lo(Save_GameStatePtr)($v0)
     /* 8214 80017A14 21180002 */  addu       $v1, $s0, $zero
     /* 8218 80017A18 2000BFAF */  sw         $ra, 0x20($sp)
     /* 821C 80017A1C 1800B2AF */  sw         $s2, 0x18($sp)
