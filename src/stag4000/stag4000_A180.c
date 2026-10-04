@@ -190,7 +190,7 @@ void Stg40_SpawnChests(void) {
     }
 }
 
-INCLUDE_RODATA("asm/USA/stag4000/rodata", Stg40_BugModelIds);
+const Stg40Ids4 Stg40_BugModelIds = { { 0x265, 0x268, 0x26B, 0x26E } };
 s32 Stg40_SpawnHazard(a0, a1, a2, a3)
     s32 a0;
     s32 a1;
@@ -352,7 +352,7 @@ void Stg40_SpawnHazardAtRandom(u8 (*tbl)[2], s32 a1, s32 a2) {
     }
 }
 
-INCLUDE_RODATA("asm/USA/stag4000/rodata", Stg40_RandomHazardKinds);
+const Stg40Ids5 Stg40_RandomHazardKinds = { { 4, 5, 6, 7, 8 } };
 void Stg40_SpawnRandomHazards(void) {
     Stg40DungFloor *m = (Stg40DungFloor *)Stg40_RootState->floorMap;
     Stg40Ids5 ids = Stg40_RandomHazardKinds;
@@ -926,7 +926,7 @@ s16 Stg40_AutomapInitDims(Stg40AutomapWork *a0) {
     return a0->field_76A = a0->cols / 8;
 }
 
-INCLUDE_RODATA("asm/USA/stag4000/rodata", Stg40_NeighborOffsets);
+const Stg40Offs8 Stg40_NeighborOffsets = { { -1, 0, 1, 0, 0, -1, 0, 1 } };
 void Stg40_RevealRoom(Stg40AutomapWork *w, s32 x, s32 y)
 {
     s32 group;

@@ -2451,7 +2451,7 @@ void Stg40_PlayerTriggerTrap(Actor *a0) {
     }
 }
 
-INCLUDE_RODATA("asm/USA/stag4000/rodata", Stg40_PlayerExitFadeColor);
+const Stg40Col Stg40_PlayerExitFadeColor = { 0x80, 0x80, 0x80, 0 };
 void Stg40_PlayerExitFloor(Actor *a0) {
     Stg40ActWork *w = (Stg40ActWork *)a0->work;
     Stg40Ent48 *e = w->ent;

@@ -71,7 +71,8 @@ void Stg40_BuildFloorMap(void) {
     Stg40_LabelRooms();
 }
 
-INCLUDE_RODATA("asm/USA/stag4000/rodata", Stg40_BeetleDigiIds);
+const Stg40BeetleIdTable Stg40_BeetleDigiIds = { { 0x1F8, 0x1FB, 0x1FE, 0x1F5, 0x202, 0x205, 0x1F9, 0x1FC, 0x1F6,
+      0x200, 0x203, 0x206, 0x1FA, 0x1FD, 0x1FF, 0x201, 0x204, 0x1F7 } };
 void Stg40_SetupStage(Actor *a0) {
     ActorWork *work = a0->work;
     s32 *slots = (s32 *)a0->u34.children;
@@ -194,7 +195,7 @@ void Stg40_SetupStage(Actor *a0) {
 void Stg40_RootInit(void) {
 }
 
-INCLUDE_RODATA("asm/USA/stag4000/rodata", Stg40_FloorSpecialtyByCell);
+const Blk13 Stg40_FloorSpecialtyByCell = { { 0, 0, 0, 3, 2, 6, 5, 4, 0, 0, 0, 0, 0 } };
 s32 Stg40_BeginTransition(Actor *arg0) {
     Blk13 sp10;
     Stg40Ent48 *e;
@@ -600,7 +601,7 @@ void Stg40_LinkedModelDraw(Actor *a0) {
     }
 }
 
-INCLUDE_RODATA("asm/USA/stag4000/rodata", Stg40_ShadowCorners);
+const Stg40Quad Stg40_ShadowCorners = { { -0x500, -0x400, 0x500, -0x400, -0x500, 0x400, 0x500, 0x400 } };
 void Stg40_DrawEntityShadow(Stg40Loc *loc) {
     struct {
         s16 x;

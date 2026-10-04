@@ -207,7 +207,7 @@ s32 Stg40_AiTryStep(Stg40Ent48 *e, s32 mode) {
     return 1;
 }
 
-INCLUDE_RODATA("asm/USA/stag4000/rodata", Stg40_EnemyFadeColor);
+const Stg40Col Stg40_EnemyFadeColor = { 0x80, 0x80, 0x80, 0 };
 void Stg40_EnemyUpdate(Actor *a0) {
     Stg40ActWork *w = (Stg40ActWork *)a0->work;
     Stg40Ent48 *e = w->ent;

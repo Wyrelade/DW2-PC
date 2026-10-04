@@ -682,7 +682,7 @@ extern Stg40DungState *Dung_StatePtr;
 
 /* 13-byte const table copied to a stack local (Stg40_BeginTransition). */
 typedef struct { u8 b[13]; } Blk13;
-extern Blk13 Stg40_FloorSpecialtyByCell;
+extern const Blk13 Stg40_FloorSpecialtyByCell;
 extern s32 Sys_GameMode;
 extern s32 D_8005F794;
 extern GameStateView *Save_GameStatePtr;
@@ -780,7 +780,7 @@ typedef struct {
 } Stg40Quad;
 
 extern u8 Stg40_ShadowPrimIdx;          /* tile template index into Stg40FloorWork.field_143C */
-extern Stg40Quad Stg40_ShadowCorners;
+extern const Stg40Quad Stg40_ShadowCorners;
 extern void GsSetProjection(s32);
 extern void GsInitCoordinate2(Coord1F668 *, Coord1F668 *);
 extern s32 GsSetRefView2(Stg40RView *);
@@ -867,8 +867,8 @@ s32 Stg40_GetTrapDisarmRank(s32 i);
 s32 Stg40_GetPartState(); /* defined (void); Stg40_PlayerChestTrapPrompt passes 7 (forwarded to Stg40_GetBeetlePart) */
 s32 Stg40_MsgWinGetChoice(s32 i);
 extern Stg40LinkedModelDef Stg40_LinkedModelTable[];
-extern Stg40Col Stg40_PlayerExitFadeColor;
-extern Stg40Col Stg40_EnemyFadeColor;
+extern const Stg40Col Stg40_PlayerExitFadeColor;
+extern const Stg40Col Stg40_EnemyFadeColor;
 s32 Stg40_ListUsableItems(Stg40ItemReq *a);
 void Stg40_GateUpdate(Actor *a0); /* void: Stg40_FixtureUpdate returns its leftover v0 through a cast */
 s32 Stg40_ChestUpdate(Actor *a0);
@@ -890,7 +890,7 @@ extern s32 Stg40_FillNeighbours[8]; /* 4 neighbour (dx, dy) pairs */
 typedef struct {
     s16 v[8];
 } Stg40Offs8;
-extern Stg40Offs8 Stg40_NeighborOffsets;
+extern const Stg40Offs8 Stg40_NeighborOffsets;
 
 /* Ordering-table link word (24-bit next pointer, 8-bit length). */
 typedef struct {
@@ -1028,7 +1028,7 @@ s32 Stg40_DeltaToOctant(s32 dx, s32 dy);
 
 extern s32 Stg40_ShootMsgIds[];
 
-extern Stg40Ids5 Stg40_RandomHazardKinds;
+extern const Stg40Ids5 Stg40_RandomHazardKinds;
 void Stg40_SpawnHazardAtRandom(u8 (*tbl)[2], s32 a1, s32 a2);
 
 extern SysState Sys_State;
@@ -1066,7 +1066,7 @@ typedef struct {
     s32 id[4];
 } Stg40Ids4;
 
-extern Stg40Ids4 Stg40_BugModelIds;
+extern const Stg40Ids4 Stg40_BugModelIds;
 
 extern u32 *D_8005F8C0;
 extern u32 *D_8005F8B4;
@@ -1122,7 +1122,7 @@ extern s32 D_8005F790;  /* Sys_State.prevGameMode as a scalar reloc */
 typedef struct {
     s16 digiIds[18];
 } Stg40BeetleIdTable;
-extern Stg40BeetleIdTable Stg40_BeetleDigiIds;
+extern const Stg40BeetleIdTable Stg40_BeetleDigiIds;
 extern s32 Menu_TopMenuResult;
 extern void Item_CompactBag(void);
 extern void Task_SetState3(Actor *arg0, u32 arg1);
