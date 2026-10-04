@@ -1,6 +1,6 @@
-nonmatching func_80032820, 0x24
+nonmatching SsSeqClose, 0x24
 
-glabel func_80032820
+glabel SsSeqClose
     /* 23020 80032820 E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* 23024 80032824 1000BFAF */  sw         $ra, 0x10($sp)
     /* 23028 80032828 00240400 */  sll        $a0, $a0, 16
@@ -10,4 +10,4 @@ glabel func_80032820
     /* 23038 80032838 1800BD27 */  addiu      $sp, $sp, 0x18
     /* 2303C 8003283C 0800E003 */  jr         $ra
     /* 23040 80032840 00000000 */   nop
-endlabel func_80032820
+endlabel SsSeqClose

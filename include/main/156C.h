@@ -1457,7 +1457,7 @@ typedef struct {
     /* 0xE */ u16 vagHi;
 } SndProgAtr;
 
-/* s16 pair at D_80061900 filled by func_8002B4C4 and handed to GsSetDrawBuffOffset. */
+/* s16 pair at D_80061900 filled by GsInit3D and handed to GsSetDrawBuffOffset. */
 typedef struct {
     /* 0x0 */ s16 field_0;
     /* 0x2 */ s16 field_2;

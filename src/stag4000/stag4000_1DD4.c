@@ -145,7 +145,7 @@ void func_8006545C(Stg40W667C *w) {
     shiftX = centerX != 0x140;
     shiftY = centerY != 0xF0;
     shiftZ = Sys_State.otLayerLen[3] - 2;
-    func_8002D0D4();
+    PushMatrix();
     SetRotMatrix(&mtx);
     SetTransMatrix(&mtx);
     rows = 0xA;

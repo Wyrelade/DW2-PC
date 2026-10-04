@@ -2438,7 +2438,7 @@ void Gpu_InitDoubleBuffer(s32 w, s32 h, s32 mode, s32 inter) {
         break;
     }
     Gfx_SetTexSlotCount(n);
-    func_8002B4C4();
+    GsInit3D();
     SetGeomOffset(0, 0);
 }
 

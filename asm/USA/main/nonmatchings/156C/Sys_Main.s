@@ -39,11 +39,11 @@ glabel Sys_Main
     /* 13DDC 800235DC 2138C000 */  addu       $a3, $a2, $zero
     /* 13DE0 800235E0 15AB000C */  jal        GsInitGraph
     /* 13DE4 800235E4 1000A0AF */   sw        $zero, 0x10($sp)
-    /* 13DE8 800235E8 31AD000C */  jal        func_8002B4C4
+    /* 13DE8 800235E8 31AD000C */  jal        GsInit3D
     /* 13DEC 800235EC A0F71026 */   addiu     $s0, $s0, %lo(D_8005F7A0)
     /* 13DF0 800235F0 45CA000C */  jal        SsInit
     /* 13DF4 800235F4 00000000 */   nop
-    /* 13DF8 800235F8 97B3000C */  jal        func_8002CE5C
+    /* 13DF8 800235F8 97B3000C */  jal        InitGeom
     /* 13DFC 800235FC 00000000 */   nop
     /* 13E00 80023600 40010424 */  addiu      $a0, $zero, 0x140
     /* 13E04 80023604 80020524 */  addiu      $a1, $zero, 0x280

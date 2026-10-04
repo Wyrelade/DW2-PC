@@ -1,6 +1,6 @@
-nonmatching func_80064780, 0x98
+nonmatching DecDCTPutEnv, 0x98
 
-glabel func_80064780
+glabel DecDCTPutEnv
     /* 1420 80064780 E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* 1424 80064784 1000B0AF */  sw         $s0, 0x10($sp)
     /* 1428 80064788 21808000 */  addu       $s0, $a0, $zero
@@ -30,15 +30,15 @@ glabel func_80064780
     /* 1480 800647E0 0400A524 */   addiu     $a1, $a1, 0x4
     /* 1484 800647E4 0680043C */  lui        $a0, %hi(D_80065258)
     /* 1488 800647E8 58528424 */  addiu      $a0, $a0, %lo(D_80065258)
-    /* 148C 800647EC 9C92010C */  jal        func_80064A70
+    /* 148C 800647EC 9C92010C */  jal        MDEC_in
     /* 1490 800647F0 20000524 */   addiu     $a1, $zero, 0x20
     /* 1494 800647F4 0680043C */  lui        $a0, %hi(D_800652DC)
     /* 1498 800647F8 DC528424 */  addiu      $a0, $a0, %lo(D_800652DC)
-    /* 149C 800647FC 9C92010C */  jal        func_80064A70
+    /* 149C 800647FC 9C92010C */  jal        MDEC_in
     /* 14A0 80064800 20000524 */   addiu     $a1, $zero, 0x20
     /* 14A4 80064804 21100002 */  addu       $v0, $s0, $zero
     /* 14A8 80064808 1400BF8F */  lw         $ra, 0x14($sp)
     /* 14AC 8006480C 1000B08F */  lw         $s0, 0x10($sp)
     /* 14B0 80064810 0800E003 */  jr         $ra
     /* 14B4 80064814 1800BD27 */   addiu     $sp, $sp, 0x18
-endlabel func_80064780
+endlabel DecDCTPutEnv

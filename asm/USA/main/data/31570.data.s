@@ -38885,11 +38885,11 @@ dlabel D_80061B00
     /* 52300 80061B00 00000000 */ .word 0x00000000
 enddlabel D_80061B00
 
-nonmatching D_80061B04
+nonmatching StCdIntrFlag
 
-dlabel D_80061B04
+dlabel StCdIntrFlag
     /* 52304 80061B04 00000000 */ .word 0x00000000
-enddlabel D_80061B04
+enddlabel StCdIntrFlag
 
 nonmatching D_80061B08
 

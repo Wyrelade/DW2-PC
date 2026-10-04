@@ -1,6 +1,6 @@
-nonmatching func_8002B4C4, 0x74
+nonmatching GsInit3D, 0x74
 
-glabel func_8002B4C4
+glabel GsInit3D
     /* 1BCC4 8002B4C4 E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* 1BCC8 8002B4C8 0680023C */  lui        $v0, %hi(D_80061990)
     /* 1BCCC 8002B4CC 9019428C */  lw         $v0, %lo(D_80061990)($v0)
@@ -30,7 +30,7 @@ glabel func_8002B4C4
     /* 1BD2C 8002B52C 1800BD27 */  addiu      $sp, $sp, 0x18
     /* 1BD30 8002B530 0800E003 */  jr         $ra
     /* 1BD34 8002B534 00000000 */   nop
-endlabel func_8002B4C4
+endlabel GsInit3D
     /* 1BD38 8002B538 00000000 */  nop
     /* 1BD3C 8002B53C 00000000 */  nop
     /* 1BD40 8002B540 00000000 */  nop

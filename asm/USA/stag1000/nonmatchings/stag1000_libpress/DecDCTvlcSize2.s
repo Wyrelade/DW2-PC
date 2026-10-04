@@ -1,7 +1,7 @@
 /* Handwritten function */
-nonmatching func_80064D50, 0x30
+nonmatching DecDCTvlcSize2, 0x30
 
-glabel func_80064D50
+glabel DecDCTvlcSize2
     /* 19F0 80064D50 0680083C */  lui        $t0, %hi(D_800653A8)
     /* 19F4 80064D54 A8530825 */  addiu      $t0, $t0, %lo(D_800653A8)
     /* 19F8 80064D58 FFFF8120 */  addi       $at, $a0, -0x1 /* handwritten instruction */
@@ -15,4 +15,4 @@ glabel func_80064D50
     /* 1A14 80064D74 FFFF2134 */  ori        $at, $at, (0xFFFFFF & 0xFFFF)
     /* 1A18 80064D78 0800E003 */  jr         $ra
     /* 1A1C 80064D7C 000001AD */   sw        $at, 0x0($t0)
-endlabel func_80064D50
+endlabel DecDCTvlcSize2

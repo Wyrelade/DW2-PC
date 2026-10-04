@@ -9,7 +9,7 @@ glabel Stg10_MovieDestroy
     /* 1030 80064390 1400BFAF */  sw         $ra, 0x14($sp)
     /* 1034 80064394 F1C1000C */  jal        CdControlB
     /* 1038 80064398 2130A000 */   addu      $a2, $a1, $zero
-    /* 103C 8006439C 5792010C */  jal        func_8006495C
+    /* 103C 8006439C 5792010C */  jal        DecDCToutCallback
     /* 1040 800643A0 21200000 */   addu      $a0, $zero, $zero
     /* 1044 800643A4 BDB7000C */  jal        StUnSetRing
     /* 1048 800643A8 00000000 */   nop

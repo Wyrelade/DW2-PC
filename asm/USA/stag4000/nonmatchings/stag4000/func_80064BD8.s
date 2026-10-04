@@ -189,7 +189,7 @@ glabel func_80064BD8
     /* 1B44 80064EA4 00000000 */  nop
     /* 1B48 80064EA8 7C00A9AF */  sw         $t1, 0x7C($sp)
     /* 1B4C 80064EAC 14015E8C */  lw         $fp, 0x114($v0)
-    /* 1B50 80064EB0 35B4000C */  jal        func_8002D0D4
+    /* 1B50 80064EB0 35B4000C */  jal        PushMatrix
     /* 1B54 80064EB4 21B00000 */   addu      $s6, $zero, $zero
     /* 1B58 80064EB8 4800B027 */  addiu      $s0, $sp, 0x48
     /* 1B5C 80064EBC 79B5000C */  jal        SetRotMatrix

@@ -43,7 +43,7 @@ glabel func_8006545C
     /* 2198 800654F8 2B100200 */  sltu       $v0, $zero, $v0
     /* 219C 800654FC 4000A2AF */  sw         $v0, 0x40($sp)
     /* 21A0 80065500 FEFF6324 */  addiu      $v1, $v1, -0x2
-    /* 21A4 80065504 35B4000C */  jal        func_8002D0D4
+    /* 21A4 80065504 35B4000C */  jal        PushMatrix
     /* 21A8 80065508 4400A3AF */   sw        $v1, 0x44($sp)
     /* 21AC 8006550C 1800B027 */  addiu      $s0, $sp, 0x18
     /* 21B0 80065510 79B5000C */  jal        SetRotMatrix

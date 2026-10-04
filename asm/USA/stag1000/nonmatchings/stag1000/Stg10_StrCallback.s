@@ -3,14 +3,14 @@ nonmatching Stg10_StrCallback, 0x150
 glabel Stg10_StrCallback
     /* E38 80064198 E0FFBD27 */  addiu      $sp, $sp, -0x20
     /* E3C 8006419C 1800B0AF */  sw         $s0, 0x18($sp)
-    /* E40 800641A0 0680103C */  lui        $s0, %hi(D_80061B04)
-    /* E44 800641A4 041B0292 */  lbu        $v0, %lo(D_80061B04)($s0)
+    /* E40 800641A0 0680103C */  lui        $s0, %hi(StCdIntrFlag)
+    /* E44 800641A4 041B0292 */  lbu        $v0, %lo(StCdIntrFlag)($s0)
     /* E48 800641A8 00000000 */  nop
     /* E4C 800641AC 04004010 */  beqz       $v0, .L800641C0
     /* E50 800641B0 1C00BFAF */   sw        $ra, 0x1C($sp)
-    /* E54 800641B4 B1B8000C */  jal        func_8002E2C4
+    /* E54 800641B4 B1B8000C */  jal        StCdInterrupt
     /* E58 800641B8 00000000 */   nop
-    /* E5C 800641BC 041B00A2 */  sb         $zero, %lo(D_80061B04)($s0)
+    /* E5C 800641BC 041B00A2 */  sb         $zero, %lo(StCdIntrFlag)($s0)
   .L800641C0:
     /* E60 800641C0 0680023C */  lui        $v0, %hi(Stg10_DecEnv)
     /* E64 800641C4 08624624 */  addiu      $a2, $v0, %lo(Stg10_DecEnv)
@@ -58,7 +58,7 @@ glabel Stg10_StrCallback
     /* F08 80064268 12280000 */  mflo       $a1
     /* F0C 8006426C C2170500 */  srl        $v0, $a1, 31
     /* F10 80064270 2128A200 */  addu       $a1, $a1, $v0
-    /* F14 80064274 2592010C */  jal        func_80064894
+    /* F14 80064274 2592010C */  jal        DecDCTout
     /* F18 80064278 43280500 */   sra       $a1, $a1, 1
     /* F1C 8006427C AD900108 */  j          .L800642B4
     /* F20 80064280 00000000 */   nop

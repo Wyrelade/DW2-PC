@@ -1,6 +1,6 @@
-nonmatching func_800646F4, 0x8C
+nonmatching DecDCTGetEnv, 0x8C
 
-glabel func_800646F4
+glabel DecDCTGetEnv
     /* 1394 800646F4 21308000 */  addu       $a2, $a0, $zero
     /* 1398 800646F8 0680053C */  lui        $a1, %hi(D_8006525C)
     /* 139C 800646FC 5C52A524 */  addiu      $a1, $a1, %lo(D_8006525C)
@@ -39,4 +39,4 @@ glabel func_800646F4
     /* 1414 80064774 0400C624 */   addiu     $a2, $a2, 0x4
     /* 1418 80064778 0800E003 */  jr         $ra
     /* 141C 8006477C 21108000 */   addu      $v0, $a0, $zero
-endlabel func_800646F4
+endlabel DecDCTGetEnv

@@ -1,6 +1,6 @@
-nonmatching func_8002E2C4, 0x91C
+nonmatching StCdInterrupt, 0x91C
 
-glabel func_8002E2C4
+glabel StCdInterrupt
     /* 1EAC4 8002E2C4 C0FFBD27 */  addiu      $sp, $sp, -0x40
     /* 1EAC8 8002E2C8 0680023C */  lui        $v0, %hi(D_80061B14)
     /* 1EACC 8002E2CC 141B428C */  lw         $v0, %lo(D_80061B14)($v0)
@@ -22,9 +22,9 @@ glabel func_8002E2C4
     /* 1EB0C 8002E30C 00000000 */   nop
     /* 1EB10 8002E310 0680023C */  lui        $v0, %hi(D_80061B28)
     /* 1EB14 8002E314 281B428C */  lw         $v0, %lo(D_80061B28)($v0)
-    /* 1EB18 8002E318 0680013C */  lui        $at, %hi(D_80061B04)
+    /* 1EB18 8002E318 0680013C */  lui        $at, %hi(StCdIntrFlag)
     /* 1EB1C 8002E31C 07004010 */  beqz       $v0, .L8002E33C
-    /* 1EB20 8002E320 041B24AC */   sw        $a0, %lo(D_80061B04)($at)
+    /* 1EB20 8002E320 041B24AC */   sw        $a0, %lo(StCdIntrFlag)($at)
     /* 1EB24 8002E324 0680023C */  lui        $v0, %hi(D_80061B18)
     /* 1EB28 8002E328 181B428C */  lw         $v0, %lo(D_80061B18)($v0)
     /* 1EB2C 8002E32C 00000000 */  nop
@@ -624,4 +624,4 @@ glabel func_8002E2C4
     /* 1F3D4 8002EBD4 4000BD27 */  addiu      $sp, $sp, 0x40
     /* 1F3D8 8002EBD8 0800E003 */  jr         $ra
     /* 1F3DC 8002EBDC 00000000 */   nop
-endlabel func_8002E2C4
+endlabel StCdInterrupt

@@ -269,7 +269,7 @@ INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", GsInitCoordinate2);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", GsSetLsMatrix);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_8002B4C4);
+INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", GsInit3D);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", GsSetProjection);
 
@@ -313,13 +313,13 @@ INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_8002CDB8);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_8002CE54);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_8002CE5C);
+INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", InitGeom);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", SquareRoot0);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", ApplyMatrixLV);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_8002D0D4);
+INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", PushMatrix);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", PopMatrix);
 
@@ -399,7 +399,7 @@ INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", StGetNext);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", StSetMask);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_8002E2C4);
+INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", StCdInterrupt);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", Mem_CopyWords);
 
@@ -555,7 +555,7 @@ INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", _SsSndReplay);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", _SsClose);
 
-INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", func_80032820);
+INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", SsSeqClose);
 
 INCLUDE_ASM("asm/USA/main/nonmatchings/psyq", SsSepClose);
 

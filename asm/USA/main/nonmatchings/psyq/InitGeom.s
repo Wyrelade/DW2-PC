@@ -1,7 +1,7 @@
 /* Handwritten function */
-nonmatching func_8002CE5C, 0x80
+nonmatching InitGeom, 0x80
 
-glabel func_8002CE5C
+glabel InitGeom
     /* 1D65C 8002CE5C 0580013C */  lui        $at, %hi(D_80049920)
     /* 1D660 8002CE60 20993FAC */  sw         $ra, %lo(D_80049920)($at)
     /* 1D664 8002CE64 B1B6000C */  jal        func_8002DAC4
@@ -34,6 +34,6 @@ glabel func_8002CE5C
     /* 1D6D0 8002CED0 00000000 */  nop
     /* 1D6D4 8002CED4 0800E003 */  jr         $ra
     /* 1D6D8 8002CED8 00000000 */   nop
-endlabel func_8002CE5C
+endlabel InitGeom
     /* 1D6DC 8002CEDC 00000000 */  nop
     /* 1D6E0 8002CEE0 00000000 */  nop

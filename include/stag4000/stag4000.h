@@ -768,7 +768,7 @@ void func_80070B2C(s32 a0);
 Stg40Ent48 *func_80071F50(s32 id);
 extern void RotMatrixYXZ(void *, Mat1F668 *);
 extern Mat1F668 GsWSMATRIX;
-extern void func_8002D0D4(void);
+extern void PushMatrix(void);
 extern void SetRotMatrix(Mat1F668 *m);
 extern void SetTransMatrix(Mat1F668 *m);
 extern s32 RotTransPers(Stg40Vec3 *v, s16 *out, s32 *dtz, s32 *flag);

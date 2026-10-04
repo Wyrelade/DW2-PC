@@ -1,6 +1,6 @@
-nonmatching func_80064980, 0xF0
+nonmatching MDEC_reset, 0xF0
 
-glabel func_80064980
+glabel MDEC_reset
     /* 1620 80064980 E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* 1624 80064984 21288000 */  addu       $a1, $a0, $zero
     /* 1628 80064988 0600A010 */  beqz       $a1, .L800649A4
@@ -27,11 +27,11 @@ glabel func_80064980
     /* 1678 800649D8 0680033C */  lui        $v1, %hi(D_8006539C)
     /* 167C 800649DC 9C53638C */  lw         $v1, %lo(D_8006539C)($v1)
     /* 1680 800649E0 0060023C */  lui        $v0, (0x60000000 >> 16)
-    /* 1684 800649E4 9C92010C */  jal        func_80064A70
+    /* 1684 800649E4 9C92010C */  jal        MDEC_in
     /* 1688 800649E8 000062AC */   sw        $v0, 0x0($v1)
     /* 168C 800649EC 0680043C */  lui        $a0, %hi(D_800652DC)
     /* 1690 800649F0 DC528424 */  addiu      $a0, $a0, %lo(D_800652DC)
-    /* 1694 800649F4 9C92010C */  jal        func_80064A70
+    /* 1694 800649F4 9C92010C */  jal        MDEC_in
     /* 1698 800649F8 20000524 */   addiu     $a1, $zero, 0x20
     /* 169C 800649FC 98920108 */  j          .L80064A60
     /* 16A0 80064A00 00000000 */   nop
@@ -65,4 +65,4 @@ glabel func_80064980
     /* 1704 80064A64 1800BD27 */  addiu      $sp, $sp, 0x18
     /* 1708 80064A68 0800E003 */  jr         $ra
     /* 170C 80064A6C 00000000 */   nop
-endlabel func_80064980
+endlabel MDEC_reset

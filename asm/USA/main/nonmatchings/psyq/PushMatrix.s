@@ -1,7 +1,7 @@
 /* Handwritten function */
-nonmatching func_8002D0D4, 0xA4
+nonmatching PushMatrix, 0xA4
 
-glabel func_8002D0D4
+glabel PushMatrix
     /* 1D8D4 8002D0D4 05800E3C */  lui        $t6, %hi(D_80049ABC)
     /* 1D8D8 8002D0D8 BC9ACE8D */  lw         $t6, %lo(D_80049ABC)($t6)
     /* 1D8DC 8002D0DC 00000000 */  nop
@@ -44,4 +44,4 @@ glabel func_8002D0D4
     /* 1D96C 8002D16C BC9A2EAC */  sw         $t6, %lo(D_80049ABC)($at)
     /* 1D970 8002D170 0800E003 */  jr         $ra
     /* 1D974 8002D174 00000000 */   nop
-endlabel func_8002D0D4
+endlabel PushMatrix

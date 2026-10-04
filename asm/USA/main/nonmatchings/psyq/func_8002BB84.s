@@ -3,7 +3,7 @@ nonmatching func_8002BB84, 0x4C
 glabel func_8002BB84
     /* 1C384 8002BB84 E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* 1C388 8002BB88 1000BFAF */  sw         $ra, 0x10($sp)
-    /* 1C38C 8002BB8C 97B3000C */  jal        func_8002CE5C
+    /* 1C38C 8002BB8C 97B3000C */  jal        InitGeom
     /* 1C390 8002BB90 00000000 */   nop
     /* 1C394 8002BB94 21200000 */  addu       $a0, $zero, $zero
     /* 1C398 8002BB98 21280000 */  addu       $a1, $zero, $zero

@@ -1,12 +1,12 @@
-nonmatching func_80064B00, 0x8C
+nonmatching MDEC_out, 0x8C
 
-glabel func_80064B00
+glabel MDEC_out
     /* 17A0 80064B00 E0FFBD27 */  addiu      $sp, $sp, -0x20
     /* 17A4 80064B04 1400B1AF */  sw         $s1, 0x14($sp)
     /* 17A8 80064B08 21888000 */  addu       $s1, $a0, $zero
     /* 17AC 80064B0C 1000B0AF */  sw         $s0, 0x10($sp)
     /* 17B0 80064B10 1800BFAF */  sw         $ra, 0x18($sp)
-    /* 17B4 80064B14 0893010C */  jal        func_80064C20
+    /* 17B4 80064B14 0893010C */  jal        MDEC_out_sync
     /* 17B8 80064B18 2180A000 */   addu      $s0, $a1, $zero
     /* 17BC 80064B1C 0680033C */  lui        $v1, %hi(D_800653A0)
     /* 17C0 80064B20 A053638C */  lw         $v1, %lo(D_800653A0)($v1)
@@ -36,4 +36,4 @@ glabel func_80064B00
     /* 1820 80064B80 1000B08F */  lw         $s0, 0x10($sp)
     /* 1824 80064B84 0800E003 */  jr         $ra
     /* 1828 80064B88 2000BD27 */   addiu     $sp, $sp, 0x20
-endlabel func_80064B00
+endlabel MDEC_out

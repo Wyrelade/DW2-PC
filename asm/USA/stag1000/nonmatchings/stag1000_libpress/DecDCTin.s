@@ -1,6 +1,6 @@
-nonmatching func_80064818, 0x7C
+nonmatching DecDCTin, 0x7C
 
-glabel func_80064818
+glabel DecDCTin
     /* 14B8 80064818 E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* 14BC 8006481C 0100A230 */  andi       $v0, $a1, 0x1
     /* 14C0 80064820 06004010 */  beqz       $v0, .L8006483C
@@ -30,10 +30,10 @@ glabel func_80064818
   .L80064874:
     /* 1514 80064874 000082AC */  sw         $v0, 0x0($a0)
     /* 1518 80064878 00008594 */  lhu        $a1, 0x0($a0)
-    /* 151C 8006487C 9C92010C */  jal        func_80064A70
+    /* 151C 8006487C 9C92010C */  jal        MDEC_in
     /* 1520 80064880 00000000 */   nop
     /* 1524 80064884 1000BF8F */  lw         $ra, 0x10($sp)
     /* 1528 80064888 1800BD27 */  addiu      $sp, $sp, 0x18
     /* 152C 8006488C 0800E003 */  jr         $ra
     /* 1530 80064890 00000000 */   nop
-endlabel func_80064818
+endlabel DecDCTin

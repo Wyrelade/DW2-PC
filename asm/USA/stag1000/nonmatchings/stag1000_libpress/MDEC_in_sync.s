@@ -1,6 +1,6 @@
-nonmatching func_80064B8C, 0x94
+nonmatching MDEC_in_sync, 0x94
 
-glabel func_80064B8C
+glabel MDEC_in_sync
     /* 182C 80064B8C E0FFBD27 */  addiu      $sp, $sp, -0x20
     /* 1830 80064B90 0680033C */  lui        $v1, %hi(D_8006539C)
     /* 1834 80064B94 9C53638C */  lw         $v1, %lo(D_8006539C)($v1)
@@ -41,4 +41,4 @@ glabel func_80064B8C
     /* 18B4 80064C14 2000BD27 */  addiu      $sp, $sp, 0x20
     /* 18B8 80064C18 0800E003 */  jr         $ra
     /* 18BC 80064C1C 00000000 */   nop
-endlabel func_80064B8C
+endlabel MDEC_in_sync

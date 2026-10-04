@@ -1,10 +1,10 @@
-nonmatching func_800648F0, 0x48
+nonmatching DecDCToutSync, 0x48
 
-glabel func_800648F0
+glabel DecDCToutSync
     /* 1590 800648F0 E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* 1594 800648F4 05008014 */  bnez       $a0, .L8006490C
     /* 1598 800648F8 1000BFAF */   sw        $ra, 0x10($sp)
-    /* 159C 800648FC 0893010C */  jal        func_80064C20
+    /* 159C 800648FC 0893010C */  jal        MDEC_out_sync
     /* 15A0 80064900 00000000 */   nop
     /* 15A4 80064904 4A920108 */  j          .L80064928
     /* 15A8 80064908 00000000 */   nop
@@ -21,4 +21,4 @@ glabel func_800648F0
     /* 15CC 8006492C 1800BD27 */  addiu      $sp, $sp, 0x18
     /* 15D0 80064930 0800E003 */  jr         $ra
     /* 15D4 80064934 00000000 */   nop
-endlabel func_800648F0
+endlabel DecDCToutSync

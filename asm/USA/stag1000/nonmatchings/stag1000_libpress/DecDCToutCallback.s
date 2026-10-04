@@ -1,6 +1,6 @@
-nonmatching func_8006495C, 0x24
+nonmatching DecDCToutCallback, 0x24
 
-glabel func_8006495C
+glabel DecDCToutCallback
     /* 15FC 8006495C E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* 1600 80064960 1000BFAF */  sw         $ra, 0x10($sp)
     /* 1604 80064964 21288000 */  addu       $a1, $a0, $zero
@@ -10,4 +10,4 @@ glabel func_8006495C
     /* 1614 80064974 1800BD27 */  addiu      $sp, $sp, 0x18
     /* 1618 80064978 0800E003 */  jr         $ra
     /* 161C 8006497C 00000000 */   nop
-endlabel func_8006495C
+endlabel DecDCToutCallback

@@ -7,9 +7,9 @@ glabel Stg10_StrInit
     /* C4C 80063FAC 1800B0AF */  sw         $s0, 0x18($sp)
     /* C50 80063FB0 2180A000 */  addu       $s0, $a1, $zero
     /* C54 80063FB4 2000BFAF */  sw         $ra, 0x20($sp)
-    /* C58 80063FB8 B091010C */  jal        func_800646C0
+    /* C58 80063FB8 B091010C */  jal        DecDCTReset
     /* C5C 80063FBC 21200000 */   addu      $a0, $zero, $zero
-    /* C60 80063FC0 5792010C */  jal        func_8006495C
+    /* C60 80063FC0 5792010C */  jal        DecDCToutCallback
     /* C64 80063FC4 21200002 */   addu      $a0, $s0, $zero
     /* C68 80063FC8 0680023C */  lui        $v0, %hi(Stg10_StrRingBuf)
     /* C6C 80063FCC E861448C */  lw         $a0, %lo(Stg10_StrRingBuf)($v0)

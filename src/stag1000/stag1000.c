@@ -382,8 +382,8 @@ void Stg10_StrKickCd(u8 *arg0) {
 }
 
 void Stg10_StrInit(u8 *arg0, void (*arg1)()) {
-    func_800646C0(0);
-    func_8006495C(arg1);
+    DecDCTReset(0);
+    DecDCToutCallback(arg1);
     StSetRing((s32)Stg10_StrRingBuf, 0x20);
     StSetStream(1, 1, -1, 0, 0);
     Stg10_StrKickCd(arg0);
@@ -423,7 +423,7 @@ s32 Stg10_StrNextVlc(StrDecEnv *dec) {
         }
     }
     dec->vlcid = dec->vlcid == 0;
-    func_80064D80(next, dec->vlcbuf[dec->vlcid], Stg10_VlcTable);
+    DecDCTvlc2(next, dec->vlcbuf[dec->vlcid], Stg10_VlcTable);
     StFreeRing(next);
     return 0;
 }
@@ -432,9 +432,9 @@ void Stg10_StrCallback(void) {
     RECT snap;
     s32 id;
 
-    if (D_80061B04 != 0) {
-        func_8002E2C4();
-        D_80061B04 = 0;
+    if (StCdIntrFlag != 0) {
+        StCdInterrupt();
+        StCdIntrFlag = 0;
     }
     id = Stg10_DecEnv.imgid;
     snap = Stg10_DecEnv.slice;
@@ -445,7 +445,7 @@ void Stg10_StrCallback(void) {
     }
     snap.y = 0x24;
     if (Stg10_DecEnv.slice.x < Stg10_DecEnv.rect[Stg10_DecEnv.rectid].x + Stg10_DecEnv.rect[Stg10_DecEnv.rectid].w) {
-        func_80064894(Stg10_DecEnv.imgbuf[Stg10_DecEnv.imgid], Stg10_DecEnv.slice.w * Stg10_DecEnv.slice.h / 2);
+        DecDCTout(Stg10_DecEnv.imgbuf[Stg10_DecEnv.imgid], Stg10_DecEnv.slice.w * Stg10_DecEnv.slice.h / 2);
     } else {
         Stg10_DecEnv.isdone = 1;
         Stg10_DecEnv.rectid = Stg10_DecEnv.rectid == 0;
@@ -472,7 +472,7 @@ void Stg10_StrSync(StrDecEnv *dec, s32 mode) {
 
 void Stg10_MovieDestroy(Actor *arg0) {
     CdControlB(9, 0, 0);
-    func_8006495C(0);
+    DecDCToutCallback(0);
     StUnSetRing();
     Mem_Free(Stg10_StrRingBuf);
     Mem_Free(Stg10_VlcBuf0);
@@ -509,8 +509,8 @@ void Stg10_MovieUpdate(Actor *a0) {
         Stg10_StrEndFlag = 0;
         Task_NextState0(a0);
     case 1:
-        func_80064818(Stg10_DecEnv.vlcbuf[Stg10_DecEnv.vlcid], 3);
-        func_80064894(Stg10_DecEnv.imgbuf[Stg10_DecEnv.imgid],
+        DecDCTin(Stg10_DecEnv.vlcbuf[Stg10_DecEnv.vlcid], 3);
+        DecDCTout(Stg10_DecEnv.imgbuf[Stg10_DecEnv.imgid],
                       Stg10_DecEnv.slice.w * Stg10_DecEnv.slice.h / 2);
         Stg10_StrNextVlc(&Stg10_DecEnv);
         Stg10_StrSync(&Stg10_DecEnv, 0);

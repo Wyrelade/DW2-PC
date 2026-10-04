@@ -299,9 +299,9 @@ void Sys_Main(void) {
     ClearImage((s32)&r, 0, 0, 0);
     DrawSync(0);
     GsInitGraph(0x140, 0xF0, 1, 1, 0);
-    func_8002B4C4();
+    GsInit3D();
     SsInit();
-    func_8002CE5C();
+    InitGeom();
     Gpu_InitDoubleBuffer(0x140, 0x280, 1, 0);
     PutDrawEnv(&Sys_State.draw[0]);
     PutDispEnv(&Sys_State.disp[0]);

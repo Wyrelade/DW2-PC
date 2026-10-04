@@ -656,7 +656,7 @@ void func_80064BD8(Stg40Loc *loc) {
     centerX = Sys_State.centerX.s;
     centerY = Sys_State.centerY.s;
     count = 0;
-    func_8002D0D4();
+    PushMatrix();
     SetRotMatrix(&mtx);
     SetTransMatrix(&mtx);
     dz = (loc->field_10 - D_80072B60->field_30) << 11;

@@ -21,7 +21,7 @@ glabel Stg10_StrNextVlc
     /* DF0 80064150 80100200 */  sll        $v0, $v0, 2
     /* DF4 80064154 21104202 */  addu       $v0, $s2, $v0
     /* DF8 80064158 0000458C */  lw         $a1, 0x0($v0)
-    /* DFC 8006415C 6093010C */  jal        func_80064D80
+    /* DFC 8006415C 6093010C */  jal        DecDCTvlc2
     /* E00 80064160 21200002 */   addu      $a0, $s0, $zero
     /* E04 80064164 3DB8000C */  jal        StFreeRing
     /* E08 80064168 21200002 */   addu      $a0, $s0, $zero

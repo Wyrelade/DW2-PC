@@ -97,7 +97,7 @@ extern u8 D_80050741;
 extern PadState Pad_State[];
 extern s32 D_8005F78C;
 extern SysState Sys_State;
-extern u8 D_80061B04;              /* s32 in the main exe; read as a byte here (StCdIntrFlag) */
+extern u8 StCdIntrFlag;              /* s32 in the main exe; read as a byte here (StCdIntrFlag) */
 extern s32 CdControl(s32, u8 *, u8 *);
 extern s32 CdRead2(s32);           /* void in the main exe; returns CdControl's result */
 extern void StSetRing(s32, s32);
@@ -122,7 +122,7 @@ extern void DrawSync();
 extern void LoadImage();
 extern void Gpu_ClearScreens(void);
 extern void func_8001D8A4(s32);
-extern void func_8002E2C4(void);
+extern void StCdInterrupt(void);
 
 /* this overlay */
 extern s32 Stg10_AttractCount;
@@ -163,14 +163,14 @@ extern StrDecEnv Stg10_DecEnv;
 extern u32 *Stg10_VlcTable;
 
 u32 *Stg10_StrNext(StrDecEnv *dec);
-void func_800646C0(s32 arg0);
-void func_80064894(u32 *buf, s32 size);
-void func_8006495C(void (*func)());
-void func_80064980(s32 arg0);
-void func_80064A70(u32 *buf, u32 size);
-void func_80064B00(u32 *buf, u32 size);
-s32 func_80064B8C(void);
-s32 func_80064C20(void);
+void DecDCTReset(s32 arg0);
+void DecDCTout(u32 *buf, s32 size);
+void DecDCToutCallback(void (*func)());
+void MDEC_reset(s32 arg0);
+void MDEC_in(u32 *buf, u32 size);
+void MDEC_out(u32 *buf, u32 size);
+s32 MDEC_in_sync(void);
+s32 MDEC_out_sync(void);
 s32 func_80064CB4(void);
 s32 func_80064CCC(char *msg);
 void Stg10_StrSetDefDecEnv(StrDecEnv *dec, s16 x0, s16 y0, s16 x1, s16 y1);
@@ -178,8 +178,8 @@ void Stg10_StrInit(u8 *arg0, void (*arg1)());
 s32 Stg10_StrNextVlc(StrDecEnv *dec);
 void Stg10_StrCallback(void);
 void Stg10_StrSync(StrDecEnv *dec, s32 mode);
-void func_80064818(u32 *buf, s32 mode);
+void DecDCTin(u32 *buf, s32 mode);
 void Stg10_BuildVlcTable(u8 *dst);
-void func_80064D80(u32 *, u32 *, u32 *);
+void DecDCTvlc2(u32 *, u32 *, u32 *);
 
 #endif

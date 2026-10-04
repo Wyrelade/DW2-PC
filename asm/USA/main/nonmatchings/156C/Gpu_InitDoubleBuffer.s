@@ -181,7 +181,7 @@ glabel Gpu_InitDoubleBuffer
   .L8001C484:
     /* CC84 8001C484 4B73000C */  jal        Gfx_SetTexSlotCount
     /* CC88 8001C488 2120C002 */   addu      $a0, $s6, $zero
-    /* CC8C 8001C48C 31AD000C */  jal        func_8002B4C4
+    /* CC8C 8001C48C 31AD000C */  jal        GsInit3D
     /* CC90 8001C490 00000000 */   nop
     /* CC94 8001C494 21200000 */  addu       $a0, $zero, $zero
     /* CC98 8001C498 A9B5000C */  jal        SetGeomOffset
