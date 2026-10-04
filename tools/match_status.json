@@ -163,7 +163,7 @@
  "Gfx_CalcNormalColors": "natural",
  "Gfx_DrawFade": "natural",
  "Gfx_DrawPartQuadsRot": "natural",
- "Gfx_DrawPartSprites": "normalized",
+ "Gfx_DrawPartSprites": "natural",
  "Gfx_DrawParts": "natural",
  "Gfx_DrawPartsEx": "natural",
  "Gfx_DrawTexModel": "natural",
