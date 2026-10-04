@@ -1178,7 +1178,7 @@ void Stg40_ObjInit(Actor *a0, Stg40Ent48 *e)
   loc->moving = 0;
   loc->posX = loc->u0.pair.field_0 << 6;
   loc->posY = loc->u0.pair.field_2 << 6;
-  if (e->field_0 & 1)
+  if (e->flags & 1)
   {
     D_8005071C->scrollTarget = loc;
     D_8005071C->playerLoc = loc;
@@ -1199,22 +1199,22 @@ void Stg40_ObjUpdate(Actor *a0) {
     case 0:
     default:
         Task_NextState0(a0);
-        if (w->ent->field_0 & 0x100) {
-            if (w->ent->field_0 & 1) {
+        if (w->ent->flags & 0x100) {
+            if (w->ent->flags & 1) {
                 Task_SetState1(a0, 5);
             }
-            if (w->ent->field_0 & 2) {
-                if (w->ent->field_0 & 0x800) {
+            if (w->ent->flags & 2) {
+                if (w->ent->flags & 0x800) {
                     Task_SetState1(a0, 4);
                 } else {
                     Task_SetState1(a0, 3);
                 }
             }
-            if (w->ent->field_0 & 0x200) {
+            if (w->ent->flags & 0x200) {
                 Task_SetState1(a0, 0);
-                w->ent->field_0 &= ~0x200;
+                w->ent->flags &= ~0x200;
             }
-            w->ent->field_0 &= ~0x900;
+            w->ent->flags &= ~0x900;
         }
         Actor_InitTransform(a0, &w->posX, w->rotY);
         w->pendingAnim = 0x28;
@@ -1224,13 +1224,13 @@ void Stg40_ObjUpdate(Actor *a0) {
         break;
     case 1:
         Stg40_ObjStepMove(w->ent);
-        if (w->ent->field_0 & 1) {
+        if (w->ent->flags & 1) {
             Stg40_PlayerUpdate(a0);
         }
-        if (w->ent->field_0 & 2) {
+        if (w->ent->flags & 2) {
             Stg40_EnemyUpdate(a0);
         }
-        if (w->ent->field_0 & 4) {
+        if (w->ent->flags & 4) {
             Stg40_FixtureUpdate(a0);
         }
         if (w->pendingLinkedModel != -1) {
@@ -1283,7 +1283,7 @@ void Stg40_ObjDraw(Actor *a0) {
         if (r <= 0 || (D_8005071C->dungeonIdx == 0x10 && r == 0x75)) {
             vis = 0;
         }
-        if (e->field_0 & 1) {
+        if (e->flags & 1) {
             vis = 1;
         }
         Gfx_AttachModel(a0, w->modelFile)->otIndex = 3;
@@ -1300,11 +1300,11 @@ void Stg40_ObjDraw(Actor *a0) {
         x->scaleX = e->scaleX;
         x->scaleY = e->scaleY;
         x->scaleZ = e->scaleZ;
-        if ((e->field_0 & 0x4000) && vis) {
-            if (!(e->field_0 & 0x80)) {
+        if ((e->flags & 0x4000) && vis) {
+            if (!(e->flags & 0x80)) {
                 Stg40_DrawEntityShadow(&e->loc);
             }
-            if (!(e->field_0 & 0x400)) {
+            if (!(e->flags & 0x400)) {
                 Anim_StepModelAnim(a0);
                 Actor_UpdateTransform(a0);
                 Gfx_CalcModelBoneMatrices(a0);
@@ -1353,7 +1353,7 @@ s32 Stg40_PlayerCheckEnemyInfo(Actor *a0) {
         D_80072B60->enemyCount = 0;
         D_80072B60->enemyIndex = 0;
         for (i = 0; i < D_8005071C->entCount; e++, i++) {
-            if ((e->field_0 & 0x8000) && e->kind == 1 && e->roomId == self->roomId) {
+            if ((e->flags & 0x8000) && e->kind == 1 && e->roomId == self->roomId) {
                 D_80072B60->enemyList[D_80072B60->enemyCount++] = e;
             }
         }
@@ -1414,7 +1414,7 @@ s32 Stg40_PlayerInteract(Actor *a0)
         return -1;
     case 8:
         snd = -1;
-        if (!(found->field_0 & 0x1000)) {
+        if (!(found->flags & 0x1000)) {
             break;
         }
         r = Stg40_GetBeetlePart(6);
@@ -1441,7 +1441,7 @@ s32 Stg40_PlayerInteract(Actor *a0)
     case 11:
     case 12:
         idx = found->kind - 6;
-        if (!(found->field_0 & 0x1000)) {
+        if (!(found->flags & 0x1000)) {
             break;
         }
         Item_CheckId(0);
@@ -1577,7 +1577,7 @@ Stg40Ent48 *Stg40_FindObjAtSameTile(Stg40Ent48 *a0) {
     s32 i;
 
     for (i = 0; i < b->entCount; i++, e++) {
-        if ((e->field_0 & 0x8000) && e != a0 && e->loc.u0.tileXY == a0->loc.u0.tileXY) {
+        if ((e->flags & 0x8000) && e != a0 && e->loc.u0.tileXY == a0->loc.u0.tileXY) {
             r = e;
             break;
         }
@@ -2476,7 +2476,7 @@ void Stg40_PlayerExitFloor(Actor *a0) {
             m->tpageFlags = 0x20;
             m->fadeColor = D_80063438;
             Stg40_ObjSetAnim(a0, 0x28);
-            e->field_0 |= 0x80;
+            e->flags |= 0x80;
             w->flashKind = 0;
             Task_NextState2(a0);
             break;
@@ -2538,7 +2538,7 @@ void Stg40_PlayerShootObstacle(Actor *a0) {
         }
         break;
     case 3:
-        if (Stg40_MsgWinCloseIfDone(1) == 1 && e->field_0 == 0) {
+        if (Stg40_MsgWinCloseIfDone(1) == 1 && e->flags == 0) {
             Task_SetState1(a0, 6);
             D_80072B60->automapMode = Save_GameStatePtr->field_0;
         }

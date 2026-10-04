@@ -46,7 +46,7 @@ typedef struct {
 
 /* Element of Stg40DungState.field_18 (stride 0x48, 41 entries; Stg40_RevealAllEnts). */
 typedef struct {
-    /* 0x00 */ s32 field_0;
+    /* 0x00 */ s32 flags;
     /* 0x04 */ s16 digiId;
     /* 0x06 */ u8 field_6;
     /* 0x07 */ u8 turnId;

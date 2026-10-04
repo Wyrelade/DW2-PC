@@ -48,7 +48,7 @@ void Stg40_InitDungeonEntry() { /* K&R: Stg40_SetupStage passes its work pointer
     D_8005071C->floorTexId1 = tbl[D_8005071C->dungeonIdx].field_10;
     e = D_8005071C->ents;
     for (i = 0; i < 41; i++, e++) {
-        e->field_0 = 0;
+        e->flags = 0;
     }
     D_8005071C->bitBugLevel = D_8005071C->energyBugLevel = D_8005071C->returnBugLevel = D_8005071C->memBugCount = 0;
     for (i = 0; i < 12; i++) {
@@ -118,7 +118,7 @@ void Stg40_SetupStage(Actor *a0) {
         D_80072B60->hazardMask = 0;
         p = blk->ents;
         for (i = 0x28; i >= 0; i--) {
-            p->field_0 = 0;
+            p->flags = 0;
             p++;
         }
         reset = -1;
@@ -170,7 +170,7 @@ void Stg40_SetupStage(Actor *a0) {
     e = D_8005071C->ents;
     if (D_8005071C->entCount > 0) {
         do {
-            if (e->field_0 & 0x8000) {
+            if (e->flags & 0x8000) {
                 Task_Create(0x204, cur, (s32)e);
                 cur++;
             }

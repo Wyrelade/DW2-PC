@@ -218,7 +218,7 @@ void Stg40_EnemyUpdate(Actor *a0) {
     s32 v;
 
     Stg40_SetCellOccupied(e->loc.u0.pair.field_0, e->loc.u0.pair.field_2, 1);
-    if (e->field_0 & 0x1000) {
+    if (e->flags & 0x1000) {
         Stg40_AutomapMoveMarker(e->loc.u0.pair.field_0, e->loc.u0.pair.field_2,
                       e->loc.prevTile.field_0, e->loc.prevTile.field_2, e->kind);
     }
@@ -249,7 +249,7 @@ void Stg40_EnemyUpdate(Actor *a0) {
             ((Stg40EnemyParty *)e->params)->stepCount = 0;
             e->loc.prevTile.field_0 = e->loc.u0.pair.field_0;
             e->loc.prevTile.field_2 = e->loc.u0.pair.field_2;
-            e->field_0 |= 0x1000;
+            e->flags |= 0x1000;
         }
         break;
     case 1:
@@ -333,7 +333,7 @@ void Stg40_EnemyUpdate(Actor *a0) {
                     break;
                 }
                 Task_NextState2(a0);
-                e->field_0 |= 0x80;
+                e->flags |= 0x80;
                 break;
             case 2:
                 v = e->scaleX - 0x51;
@@ -373,7 +373,7 @@ void Stg40_EnemyUpdate(Actor *a0) {
                     break;
                 }
                 Task_NextState2(a0);
-                e->field_0 |= 0x80;
+                e->flags |= 0x80;
                 m->tpageFlags = 0x20;
                 m->clutRow = lvl2;
                 m->fadeColor = D_800634FC;
@@ -407,7 +407,7 @@ void Stg40_EnemyUpdate(Actor *a0) {
         Stg40_TurnQueueRemove(e->turnId);
         Stg40_ClearCellOccupied(e->loc.u0.pair.field_0, e->loc.u0.pair.field_2);
         Stg40_AutomapMoveMarker(-1, -1, e->loc.u0.pair.field_0, e->loc.u0.pair.field_2, e->kind);
-        e->field_0 = 0;
+        e->flags = 0;
         if (a0 == D_80072B60->cmdActor) {
             D_80072B60->cmdActor = NULL;
             Stg40_EndTextObjCmd();

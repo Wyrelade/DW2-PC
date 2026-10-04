@@ -914,13 +914,13 @@ void Stg40_RollObjectReveal(void) {
     b = Stg40_GetPartLevel(14);
     b = b < 0 ? 0 : b;
     for (i = 0; i < D_8005071C->entCount; e++, i++) {
-        if (e->field_0 & 0x8000) {
+        if (e->flags & 0x8000) {
             switch (e->kind) {
             case 6:
             case 8:
                 v = D_80072A58[e->params[1] - 1 + a * 5];
                 if (Stg40_RandPercent() < v) {
-                    e->field_0 |= 0x1000;
+                    e->flags |= 0x1000;
                 }
                 break;
             case 9:
@@ -929,7 +929,7 @@ void Stg40_RollObjectReveal(void) {
             case 12:
                 v = D_80072A78[e->params[1] - 1 + b * 3];
                 if (Stg40_RandPercent() < v) {
-                    e->field_0 |= 0x1000;
+                    e->flags |= 0x1000;
                 }
                 break;
             }
@@ -942,8 +942,8 @@ Stg40Ent48 *Stg40_FindEntByDigiId(s32 id) {
     s32 i;
 
     for (i = 0, e = D_8005071C->ents; i < 41; i++, e++) {
-        if (e->field_0 & 0x8000) {
-            if ((id != 0 && id == e->digiId) || (id == 0 && (e->field_0 & 1))) {
+        if (e->flags & 0x8000) {
+            if ((id != 0 && id == e->digiId) || (id == 0 && (e->flags & 1))) {
                 return e;
             }
         }
@@ -984,7 +984,7 @@ void Stg40_TextObjCommand(s32 *arg) {
             D_80072B60->cmdBusy = 0;
             break;
         case 0x60:
-            e->field_0 |= 0x200;
+            e->flags |= 0x200;
             D_80072B60->cmdBusy = 0;
             break;
         }

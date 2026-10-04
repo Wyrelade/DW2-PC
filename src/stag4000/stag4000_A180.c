@@ -24,7 +24,7 @@ s32 Stg40_AddEntity(kind, a1, a2, a3, x, y)
     }
     e->turnId = D_8005071C->entCount;
     e->field_6 = 0;
-    e->field_0 = 0xC000;
+    e->flags = 0xC000;
     e->kind = kind;
     e->spawnKind = a1;
     e->digiId = a2;
@@ -43,7 +43,7 @@ s32 Stg40_AddEntity(kind, a1, a2, a3, x, y)
     switch (e->kind) {
     case 0:
         flag = 1;
-        e->field_0 |= flag;
+        e->flags |= flag;
         e->params = (u8 *)&D_8005071C->statusFlags;
         D_80072B60->playerEnt = e;
         D_8005071C->statusFlags = 0;
@@ -52,13 +52,13 @@ s32 Stg40_AddEntity(kind, a1, a2, a3, x, y)
     case 1:
         flag = 1;
         e->params = D_8005071C->parties[D_8005071C->partyCount++];
-        e->field_0 |= 2;
+        e->flags |= 2;
         break;
     case 4:
         flag = 1;
         n = D_8005071C->chestCount++;
         e->params = D_8005071C->chests[n + 1];
-        e->field_0 |= 4;
+        e->flags |= 4;
         break;
     case 5:
     case 6:
@@ -71,12 +71,12 @@ s32 Stg40_AddEntity(kind, a1, a2, a3, x, y)
         flag = 0;
         n = D_8005071C->hazardCount++;
         e->params = D_8005071C->hazards[n];
-        e->field_0 |= 4;
+        e->flags |= 4;
         break;
     case 2:
     case 3:
         flag = 0;
-        e->field_0 |= 4;
+        e->flags |= 4;
         break;
     }
     Stg40_SetCellOccupied(x, y, flag);
@@ -411,7 +411,7 @@ Stg40Ent48 *Stg40_FindEntAt(s16 x, s16 y) {
     s32 i;
 
     for (i = 0; i < 41; i++, e++) {
-        if (e->loc.u0.pair.field_0 == x && e->loc.u0.pair.field_2 == y && (e->field_0 & 0x8000)) {
+        if (e->loc.u0.pair.field_0 == x && e->loc.u0.pair.field_2 == y && (e->flags & 0x8000)) {
             r = e;
             break;
         }
@@ -424,8 +424,8 @@ void Stg40_RevealAllEnts(void) {
     Stg40Ent48 *e = D_8005071C->ents;
 
     for (i = 0; i < 41; i++, e++) {
-        if (e->field_0 & 0x8000) {
-            e->field_0 |= 0x5000;
+        if (e->flags & 0x8000) {
+            e->flags |= 0x5000;
         }
     }
 }
@@ -455,18 +455,18 @@ s32 Stg40_CheckEncounter(void) {
 
     l->field_20 = 0;
     for (i = 0; i < D_8005071C->entCount; i++, e++) {
-        if ((e->field_0 & 0x8002) == 0x8002 && e->actor->stateLevel1 != 4) {
+        if ((e->flags & 0x8002) == 0x8002 && e->actor->stateLevel1 != 4) {
             r = Stg40_IsEntAdjacent(e, D_80072B60->playerEnt);
             if (r == 1) {
                 l->field_0[l->field_20++] = e;
-                e->field_0 |= 0x100;
+                e->flags |= 0x100;
                 Task_SetState1(e->actor, 3);
-                e->field_0 |= (l->field_20 == r) ? 0x800 : 0;
+                e->flags |= (l->field_20 == r) ? 0x800 : 0;
             }
         }
     }
     if (l->field_20 != 0) {
-        D_80072B60->playerEnt->field_0 |= 0x100;
+        D_80072B60->playerEnt->flags |= 0x100;
     }
     return l->field_20;
 }
