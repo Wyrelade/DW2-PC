@@ -450,8 +450,8 @@ void Stg11_VsPartyDraw(Actor *arg0) {
 }
 
 /* Memory card title: "Digimon World 2" in Shift-JIS full-width letters. */
-const u8 Stg11_CardTitle[32] = "‚c‚‰‚‡‚‰‚‚‚Ž"
-                               "‚v‚‚’‚Œ‚„‚Q";
+const u8 Stg11_CardTitle[32] = "\x82\x63\x82\x89\x82\x87\x82\x89\x82\x8D\x82\x8F\x82\x8E"
+                               "\x82\x76\x82\x8F\x82\x92\x82\x8C\x82\x84\x82\x51";
 void Stg11_CardInitHeader(void) {
     Stg11SaveWork *w = (Stg11SaveWork *)Stg11_CardTask->work;
     struct Stg11CardBlock *h = &w->u34.s;

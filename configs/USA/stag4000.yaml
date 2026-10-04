@@ -30,6 +30,7 @@ options:
   section_order: [".rodata", ".text", ".data", ".sdata", ".sbss", ".bss"]
 
   symbol_addrs_path:
+    - configs/USA/sym.main.txt
     - configs/USA/sym.stag4000.txt
 
   undefined_funcs_auto_path: linkers/USA/undefined_funcs_auto.stag4000.txt

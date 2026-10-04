@@ -9,7 +9,7 @@
 # Digimon World 2 Decompilation
 
 <!-- PROGRESS:BADGE -->
-![matched](https://img.shields.io/badge/matched-1089%2F1089%20(100.00%25)-1f6feb)
+![matched](https://img.shields.io/badge/matched-1088%2F1088%20(100.00%25)-1f6feb)
 <!-- /PROGRESS:BADGE -->
 ![build](https://img.shields.io/badge/build-byte--identical-2ea043)
 ![platform](https://img.shields.io/badge/platform-PS1%20(SLUS--01193)-8957e5)
@@ -42,7 +42,7 @@ tree.
 
 ## Status
 
-**All 1089 game functions are matched C.** The C rebuilds the retail executable and all 7
+**All 1088 game functions are matched C.** The C rebuilds the retail executable and all 7
 stage overlays byte-identical. The work now is naming and cleanup (most of the main exe and
 the small overlays have real names; the battle, dungeon, city and VS overlays are next), then
 a non-matching build for modding and ports.
@@ -71,7 +71,7 @@ function with and without the post-processing and compares it against the target
 <!-- PROGRESS:TABLE -->
 | Component | Functions | Matched | Progress | Flags per function | Asm rewrites | Asm |
 |---|---:|---:|---|---:|---:|---:|
-| **Main executable** (`SLUS_011.93`, game code) | 369 | 369 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 100.00% | 0 | 0 | 0 |
+| **Main executable** (`SLUS_011.93`, game code) | 368 | 368 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 100.00% | 0 | 0 | 0 |
 | **Stage overlays** (`AAA/3.PRO`) | 720 | 720 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 100.00% | 0 | 0 | 0 |
 | &nbsp;&nbsp;└ `STAG0000.PRO` | 69 | 69 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 100.00% | 0 | 0 | 0 |
 | &nbsp;&nbsp;└ `STAG1000.PRO` | 17 | 17 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 100.00% | 0 | 0 | 0 |
@@ -80,7 +80,7 @@ function with and without the post-processing and compares it against the target
 | &nbsp;&nbsp;└ `STAG3000.PRO` | 123 | 123 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 100.00% | 0 | 0 | 0 |
 | &nbsp;&nbsp;└ `STAG3500.PRO` | 108 | 108 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 100.00% | 0 | 0 | 0 |
 | &nbsp;&nbsp;└ `STAG4000.PRO` | 215 | 215 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 100.00% | 0 | 0 | 0 |
-| **Total (game code)** | 1089 | 1089 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 100.00% | 0 | 0 | 0 |
+| **Total (game code)** | 1088 | 1088 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 100.00% | 0 | 0 | 0 |
 | PsyQ libraries (not counted) | 558 | | | | | |
 <!-- /PROGRESS:TABLE -->
 

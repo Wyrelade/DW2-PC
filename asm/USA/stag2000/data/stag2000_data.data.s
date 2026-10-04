@@ -1690,5 +1690,4 @@ dlabel Stg20_ShopItems
     /* DBE0 80070F40 00000000 */ .word 0x00000000
     /* DBE4 80070F44 00000000 */ .word 0x00000000
     /* DBE8 80070F48 00000000 */ .word 0x00000000
-    /* DBEC 80070F4C 0000 */ .short 0x0000  /* file is 0xDBEE bytes; splat drops the odd tail */
 enddlabel Stg20_ShopItems

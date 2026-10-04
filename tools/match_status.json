@@ -601,7 +601,6 @@
  "Task_Create": "natural",
  "Task_DefaultDestroy": "natural",
  "Task_DefaultDestroy2": "natural",
- "Task_DescTable": "natural",
  "Task_Destroy": "natural",
  "Task_FindFirst": "natural",
  "Task_FindNext": "natural",
