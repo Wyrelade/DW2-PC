@@ -56,7 +56,7 @@ void func_8006359C(void) {
 }
 
 void Stg10_TitleUpdate(Actor *a0) {
-    Stag1000Menu *w = (Stag1000Menu *)a0->work;
+    Stg10TitleWork *w = (Stg10TitleWork *)a0->work;
     s32 v;
 
     switch (a0->stateLevel0) {
@@ -64,7 +64,7 @@ void Stg10_TitleUpdate(Actor *a0) {
         do {
             Snd_PlayById(0x31, 1);
             w->field_0 = 0;
-            w->field_C = 1;
+            w->cursor = 1;
             Task_NextState0(a0);
         } while (0);
         break;
@@ -72,7 +72,7 @@ void Stg10_TitleUpdate(Actor *a0) {
         switch (a0->stateLevel1) {
         case 0:
         default:
-            w->field_8 = 0;
+            w->menuOpen = 0;
             if (D_8005F6F0[0].start > 0) {
                 Snd_PlayById(0x11, 0);
                 Task_NextState1(a0);
@@ -97,26 +97,26 @@ void Stg10_TitleUpdate(Actor *a0) {
             }
             break;
         case 1:
-            w->field_8 = 1;
+            w->menuOpen = 1;
             {
                 PadState *pad;
                 PadState *p;
 
                 do {
                     pad = D_8005F6F0;
-                    if (pad[0].down > 0 && w->field_C != 2) {
-                        v = w->field_C + 1;
+                    if (pad[0].down > 0 && w->cursor != 2) {
+                        v = w->cursor + 1;
                         goto snd;
                     }
                 } while (0);
                 p = pad;
-                if (pad[0].up > 0 && w->field_C != 0) {
-                    v = w->field_C - 1;
+                if (pad[0].up > 0 && w->cursor != 0) {
+                    v = w->cursor - 1;
                     goto snd;
                 }
                 if (p->start > 0 || p->cross > 0) {
                     Snd_PlayById(0x11, 0);
-                    if (w->field_C == 2 && (pad[0].connected == 0 || pad[1].connected == 0)) {
+                    if (w->cursor == 2 && (pad[0].connected == 0 || pad[1].connected == 0)) {
                         Task_NextState1(a0);
                     } else {
                         Task_NextState0(a0);
@@ -126,9 +126,9 @@ void Stg10_TitleUpdate(Actor *a0) {
             break;
         case 2:
             do {
-                w->field_10 = 1;
+                w->padWarning = 1;
                 if (D_8005F6F0[0].start > 0) {
-                    w->field_10 = 0;
+                    w->padWarning = 0;
                     Task_SetState1(a0, 1);
                 }
             } while (0);
@@ -144,7 +144,7 @@ void Stg10_TitleUpdate(Actor *a0) {
             Task_NextState2(a0);
         case 1:
             if (++a0->stateLevel4 >= 20) {
-                switch (w->field_C) {
+                switch (w->cursor) {
                 case 0:
                 default:
                     Save_ResetGameState();
@@ -160,7 +160,7 @@ void Stg10_TitleUpdate(Actor *a0) {
                     D_8005F770.field_24 = 0;
                     break;
                 snd:
-                    w->field_C = v;
+                    w->cursor = v;
                     Snd_PlayById(0xC, 0);
                     break;
                 case 3:
@@ -178,39 +178,39 @@ void Stg10_TitleUpdate(Actor *a0) {
 }
 
 void Stg10_TitleDraw(Actor *a0) {
-    Stag1000Menu *w = (Stag1000Menu *)a0->work;
-    Stag1000Part *list = (Stag1000Part *)Cd_GetFileEntry(0x1840000);
-    Stag1000Part *p = list;
+    Stg10TitleWork *w = (Stg10TitleWork *)a0->work;
+    Stg10TitlePart *list = (Stg10TitlePart *)Cd_GetFileEntry(0x1840000);
+    Stg10TitlePart *p = list;
 
     if (p->fileId != 0) {
         do {
             if (p->partMask & 0x2) {
-                p->field_6 = p->field_6 < -0x1D9 ? 0 : p->field_6 - 1;
+                p->scrollX = p->scrollX < -0x1D9 ? 0 : p->scrollX - 1;
             }
             if (p->partMask & 0x100) {
-                p->field_6 = p->field_6 < -0x1C9 ? 0 : p->field_6 - 2;
+                p->scrollX = p->scrollX < -0x1C9 ? 0 : p->scrollX - 2;
             }
             if (p->partMask & 0x200) {
-                p->field_6 = p->field_6 < 3 ? 0x1CC : p->field_6 - 2;
+                p->scrollX = p->scrollX < 3 ? 0x1CC : p->scrollX - 2;
             }
             if (p->partMask & 0x400) {
-                p->field_6 = p->field_6 < 0x1CF ? 0x398 : p->field_6 - 2;
+                p->scrollX = p->scrollX < 0x1CF ? 0x398 : p->scrollX - 2;
             }
             if (D_8005F770.frameCount & 1) {
                 if (p->partMask & 0x800) {
-                    p->field_6 = p->field_6 < -0x2CE ? 0 : p->field_6 - 1;
+                    p->scrollX = p->scrollX < -0x2CE ? 0 : p->scrollX - 1;
                 }
                 if (p->partMask & 0x1000) {
-                    p->field_6 = p->field_6 < 2 ? 0x2D0 : p->field_6 - 1;
+                    p->scrollX = p->scrollX < 2 ? 0x2D0 : p->scrollX - 1;
                 }
                 if (p->partMask & 0x2000) {
-                    p->field_6 = p->field_6 < 0x2D2 ? 0x5A0 : p->field_6 - 1;
+                    p->scrollX = p->scrollX < 0x2D2 ? 0x5A0 : p->scrollX - 1;
                 }
             }
             if (p->partMask & 0x3F00) {
                 p->palette = Math_CycleRange(a0->elapsed, 6, 0, 0xF);
             }
-            switch (w->field_8) {
+            switch (w->menuOpen) {
             case 0:
             default:
                 if (p->partMask & 0x10) {
@@ -223,8 +223,8 @@ void Stg10_TitleDraw(Actor *a0) {
                 }
                 break;
             case 1:
-                if (w->field_10 == 0) {
-                switch (w->field_C) {
+                if (w->padWarning == 0) {
+                switch (w->cursor) {
                 case 0:
                 default:
                     if (p->partMask & 0x20) {
@@ -337,11 +337,11 @@ void Stg10_EndScreenUpdate(Actor *arg0) {
 
 void Stg10_EndScreenDraw(Actor *arg0) {
     StgWork *w = (StgWork *)arg0->work;
-    StgFileEntry *e = (StgFileEntry *)Cd_GetFileEntry(0xD760000);
-    StgFileEntry *p;
+    Stg10EndPart *e = (Stg10EndPart *)Cd_GetFileEntry(0xD760000);
+    Stg10EndPart *p;
 
-    for (p = e; p->field_0 != 0; p++) {
-        p->field_C = w->byte;
+    for (p = e; p->fileId != 0; p++) {
+        p->palette = w->byte;
     }
     func_8001D8A4((s32)e);
 }

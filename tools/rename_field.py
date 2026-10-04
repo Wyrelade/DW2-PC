@@ -10,8 +10,9 @@ fields.txt lines:
 
 Field names repeat across structs (field_4 is in hundreds of them), so a text replace cannot
 tell which accesses belong to STRUCT. This tool renames the field in STRUCT's definition in
-include/main/156C.h, compiles src/main/156C.c and every stage overlay source that uses the
-main header (src/stagXXXX/*.c; cpp + cc1, with and without -DNON_MATCHING), and fixes exactly the lines the compiler reports as "structure has no member named `old'",
+the header or C file that defines it (include/**/*.h, src/*/*.c), compiles every game C unit
+(main + overlays, PsyQ TUs excluded; cpp + cc1, with and without -DNON_MATCHING), and fixes
+exactly the lines the compiler reports as "structure has no member named `old'",
 repeating until the file compiles clean. A batch must not rename the same old field name in
 two structs (the error would not say which one it means).
 
@@ -27,23 +28,30 @@ import tempfile
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "tools"))
-HDR = os.path.join(ROOT, "include", "main", "156C.h")
 SRC = os.path.join(ROOT, "src", "main", "187C.c")
-MAIN_SRCS = [os.path.join(ROOT, "src", "main", f) for f in ("156C.c", "187C.c", "4BCC.c", "12550.c", "12654.c", "13584.c")]
+PSYQ_TUS = ("psyq.c", "stag1000_libpress.c")
 
 
 def sources():
-    """Main game sources plus the overlay sources (they include main/156C.h through their headers)."""
+    """Every game C unit: main plus the stage overlays (they include the main headers)."""
     import glob
-    out = list(MAIN_SRCS)
-    for c in sorted(glob.glob(os.path.join(ROOT, "src", "stag*", "*.c"))):
-        out.append(c)
-    return out
+    return [c for c in sorted(glob.glob(os.path.join(ROOT, "src", "*", "*.c")))
+            if os.path.basename(c) not in PSYQ_TUS]
 
 
 def overlay_headers():
+    """Every header (a type rename is a whole-word rewrite in all of them)."""
     import glob
-    return sorted(glob.glob(os.path.join(ROOT, "include", "stag*", "*.h")))
+    return sorted(glob.glob(os.path.join(ROOT, "include", "**", "*.h"), recursive=True))
+
+
+def struct_home(name):
+    """The header (or C file) that defines `typedef struct|union {...} name;`."""
+    pat = re.compile(r"\}\s*%s\s*;" % re.escape(name))
+    hits = [p for p in overlay_headers() + sources() if pat.search(read(p))]
+    if len(hits) != 1:
+        sys.exit("struct %s defined in %d files: %s" % (name, len(hits), hits))
+    return hits[0]
 IDENT = re.compile(r"[A-Za-z_]\w*$")
 
 
@@ -60,7 +68,7 @@ def struct_span(text, name):
     """(start, end) of the `typedef struct|union {...} name;` block."""
     m = re.search(r"\}\s*%s\s*;" % re.escape(name), text)
     if not m:
-        sys.exit("struct %s not found in %s" % (name, HDR))
+        sys.exit("struct %s not found" % name)
     depth, i = 0, m.start()
     while i >= 0:
         c = text[i]
@@ -113,16 +121,20 @@ def main():
     dup = {o for o in olds if olds.count(o) > 1}
     if dup:
         sys.exit("same old field in two structs of one batch: %s" % ", ".join(sorted(dup)))
-    hdr = read(HDR)
-    for s, old, new in fields:
+    for s, old, new in fields:  # check the whole batch before touching a file
+        hdr = read(struct_home(s))
         a0, b0 = struct_span(hdr, s)
-        blk = hdr[a0:b0]
-        if not re.search(r"\b%s\b" % re.escape(old), blk):
+        code = re.sub(r"/\*.*?\*/|//[^\n]*", " ", hdr[a0:b0], flags=re.S)
+        if not re.search(r"\b%s\b" % re.escape(old), code):
             sys.exit("%s has no field %s" % (s, old))
-        if re.search(r"\b%s\b" % re.escape(new), blk):
+        if re.search(r"\b%s\b" % re.escape(new), code):
             sys.exit("%s already has a field %s" % (s, new))
-        hdr = hdr[:a0] + re.sub(r"\b%s\b" % re.escape(old), new, blk) + hdr[b0:]
-    write(HDR, hdr)
+    for s, old, new in fields:
+        home = struct_home(s)
+        hdr = read(home)
+        a0, b0 = struct_span(hdr, s)
+        hdr = hdr[:a0] + re.sub(r"\b%s\b" % re.escape(old), new, hdr[a0:b0]) + hdr[b0:]
+        write(home, hdr)
     ren = {o: n for _s, o, n in fields}
     fixed = 0
     global SRC
@@ -188,7 +200,7 @@ def main():
     if types:
         pat = re.compile(r"\b(%s)\b" % "|".join(re.escape(o) for o, _n in types))
         tmap = dict(types)
-        for p in [HDR] + sources() + overlay_headers():
+        for p in sources() + overlay_headers():
             write(p, pat.sub(lambda q: tmap[q.group(1)], read(p)))
     print("renamed %d fields (%d access lines fixed), %d types" % (len(fields), fixed, len(types)))
 

@@ -27,13 +27,13 @@ typedef struct {
     /* 0x12 */ u16 height;
 } StrHeader;
 
-/* Cd_GetFileEntry(0xD760000) record, stride 0x28, list ends at field_0 == 0. */
+/* Cd_GetFileEntry(0xD760000) record, stride 0x28, list ends at fileId == 0. */
 typedef struct {
-    /* 0x00 */ s32 field_0;
+    /* 0x00 */ s32 fileId;
     u8 _pad04[0x08];
-    /* 0x0C */ u8 field_C;
+    /* 0x0C */ u8 palette;
     u8 _pad0D[0x1B];
-} StgFileEntry; /* size 0x28 */
+} Stg10EndPart; /* size 0x28 */
 
 /* libpress DECDCTENV: quantization tables and DCT matrix (DecDCTGetEnv/PutEnv). */
 typedef struct {
@@ -44,18 +44,18 @@ typedef struct {
 
 /* Work of the title menu task (Stg10_TitleUpdate, Stg10_TitleDraw). */
 typedef struct {
-    /* 0x00 */ s32 field_0;
+    /* 0x00 */ s32 field_0;         /* only cleared at task start, never read */
     u8 _pad04[0x04];
-    /* 0x08 */ s32 field_8;
-    /* 0x0C */ s32 field_C;          /* menu cursor */
-    /* 0x10 */ s32 field_10;
-} Stag1000Menu;
+    /* 0x08 */ s32 menuOpen;
+    /* 0x0C */ s32 cursor;          /* 0 new game, 1 -> gameMode 0x602, 2 -> 0x701 (two pads) */
+    /* 0x10 */ s32 padWarning;
+} Stg10TitleWork;
 
 /* 0x28-stride part record of resource 0x1840000 (zero fileId ends the list). */
 typedef struct {
     /* 0x00 */ s32 fileId;
     u8 _pad04[0x2];
-    /* 0x06 */ s16 field_6;
+    /* 0x06 */ s16 scrollX;
     u8 _pad08[0x4];
     /* 0x0C */ u8 palette;
     u8 _pad0D[0x1];
@@ -64,7 +64,7 @@ typedef struct {
     u8 _pad10[0xC];
     /* 0x1C */ s32 partMask;
     u8 _pad20[0x8];
-} Stag1000Part; /* size 0x28 */
+} Stg10TitlePart; /* size 0x28 */
 
 /* The movie task's work area (Actor.work). */
 typedef union {
