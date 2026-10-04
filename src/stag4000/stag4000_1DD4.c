@@ -119,7 +119,100 @@ s32 func_80065424(s32 a, s32 b, s32 c, s32 d) {
     return d;
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000_1DD4", func_8006545C);
+void func_8006545C(Stg40W667C *w) {
+    Stg40Vec3 vec;
+    Mat1F668 mtx;
+    s32 centerX = D_8005F770.centerX.s;
+    s32 centerY = D_8005F770.centerY.s;
+    s32 rows;
+    s32 shiftX;
+    s32 shiftY;
+    s32 shiftZ;
+    s32 cols;
+    s32 step;
+    s32 row;
+    s32 col;
+    s32 t;
+    Stg40Vtx *v;
+    Stg40Vtx *below;
+    Stg40Vtx *p;
+    union {
+        s32 s;
+        s16 lo;
+    } n;
+
+    mtx = D_80061A08;
+    shiftX = centerX != 0x140;
+    shiftY = centerY != 0xF0;
+    shiftZ = D_8005F770.otLayerLen[3] - 2;
+    func_8002D0D4();
+    SetRotMatrix(&mtx);
+    SetTransMatrix(&mtx);
+    rows = 0xA;
+    if (D_80072B60->field_30 & 0x3F) {
+        rows = 0xB;
+    }
+    cols = 0xA;
+    if (D_80072B60->field_2C & 0x3F) {
+        cols = 0xB;
+    }
+    n.lo = rows;
+    w->field_13D0 = cols;
+    w->field_13D2 = n.lo;
+    vec.field_2 = 0;
+    t = (D_80072B60->field_30 & 0x3F) << 11;
+    if (t < 0) {
+        t += 0x3F;
+    }
+    vec.field_4 = ((u32)t >> 6) + 0x2400;
+    step = 0x500;
+    if (D_8005071C->field_E54->field_4 != 0) {
+        step = -0x500;
+    }
+    for (row = 0; row < rows; row++) {
+        t = (D_80072B60->field_2C & 0x3F) * 0xA00;
+        if (t < 0) {
+            t += 0x3F;
+        }
+        vec.field_0 = -(t >> 6) - 0x2D00;
+        v = w->field_0[row];
+        for (col = 0; col < cols; col++) {
+            v->s[0].field_4 = RotTransPers(&vec, &v->s[0].x, 0, 0);
+            v->s[0].x = v->s[0].x >> shiftX;
+            v->s[0].y = v->s[0].y >> shiftY;
+            v->s[0].field_4 = v->s[0].field_4 >> shiftZ;
+            v->s[0].flag = ((v->s[0].x < 0 ? -v->s[0].x : v->s[0].x) < centerX)
+                && ((v->s[0].y < 0 ? -v->s[0].y : v->s[0].y) < centerY);
+            vec.field_2 += step;
+            v->s[1].field_4 = RotTransPers(&vec, &v->s[1].x, 0, 0);
+            v->s[1].x = v->s[1].x >> shiftX;
+            v->s[1].y = v->s[1].y >> shiftY;
+            v->s[1].field_4 = v->s[1].field_4 >> shiftZ;
+            vec.field_2 -= step;
+            v->s[1].flag = ((v->s[1].x < 0 ? -v->s[1].x : v->s[1].x) < centerX)
+                && ((v->s[1].y < 0 ? -v->s[1].y : v->s[1].y) < centerY);
+            vec.field_0 += 0xA00;
+            v++;
+        }
+        vec.field_4 -= 0x800;
+    }
+
+    for (row = 0; row < rows; row++) {
+        p = w->field_0[row];
+        below = w->field_0[row + 1];
+        for (col = 0; col < cols; col++) {
+            if (col != cols - 1) {
+                p->field_18 = func_800653EC(p->s[0].field_4, p->s[1].field_4, p[1].s[0].field_4, p[1].s[1].field_4);
+            }
+            if (row != rows - 1) {
+                p->field_1C = func_800653EC(p->s[0].field_4, p->s[1].field_4, below->s[0].field_4, below->s[1].field_4);
+            }
+            p++;
+            below++;
+        }
+    }
+    PopMatrix();
+}
 
 void func_80065890(ActorWork *arg0)
 {
