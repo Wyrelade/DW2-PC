@@ -85,34 +85,34 @@ void Stg00_ScrollViewTask(Actor *arg0) {
 
     switch (arg0->stateLevel0) {
     case 0:
-        w->field_0 = 0;
-        w->field_4 = 0;
+        w->scrollX = 0;
+        w->scrollY = 0;
         Task_NextState0(arg0);
         break;
     case 1:
         if (Pad_State[0].up) {
-            w->field_4 += 4;
+            w->scrollY += 4;
         }
         if (Pad_State[0].down) {
-            w->field_4 -= 4;
+            w->scrollY -= 4;
         }
         if (Pad_State[0].right) {
-            w->field_0 -= 4;
+            w->scrollX -= 4;
         }
         if (Pad_State[0].left) {
-            w->field_0 += 4;
+            w->scrollX += 4;
         }
-        if (w->field_0 > 0) {
-            w->field_0 = 0;
+        if (w->scrollX > 0) {
+            w->scrollX = 0;
         }
-        if (w->field_0 < -0x3C0) {
-            w->field_0 = -0x3C0;
+        if (w->scrollX < -0x3C0) {
+            w->scrollX = -0x3C0;
         }
-        if (w->field_4 > 0) {
-            w->field_4 = 0;
+        if (w->scrollY > 0) {
+            w->scrollY = 0;
         }
-        if (w->field_4 < -0x300) {
-            w->field_4 = -0x300;
+        if (w->scrollY < -0x300) {
+            w->scrollY = -0x300;
         }
         break;
     case 2:
@@ -146,8 +146,8 @@ void Stg00_ScrollViewDraw(Actor *arg0) {
     for (i = 0; i < 4; i++) {
         for (j = 0; j < 20; j++) {
             t = (GfxPartTexSlot *)Gfx_FindOrLoadTexSlot(D_80068AA0[j % 10 + (i % 2) * 10]);
-            x = w->field_0 - 0xA0;
-            y = w->field_4 - 0x78;
+            x = w->scrollX - 0xA0;
+            y = w->scrollY - 0x78;
             Stg00_InitTileSprt((Stg00Sprt *)&p->s, t, j * 64 + x, i * 256 + y);
             p->s.tag.addr = ot->addr;
             ot->addr = (u32)p;
@@ -174,14 +174,14 @@ s32 Stg00_RelocDungFile(u32 *arg0) {
 
     while (*arg0 != 0) {
         if (*arg0 < base) {
-            Stg00RelocHdr *h;
+            Stg00DungFloor *h;
             s32 i;
 
             *arg0 += base;
-            h = (Stg00RelocHdr *)*arg0;
+            h = (Stg00DungFloor *)*arg0;
             h->field_0 += base;
             for (i = 0; i < 8; i++) {
-                Stg00RelocEnt **pe = &h->field_8[i];
+                Stg00RelocEnt **pe = &h->layouts[i];
                 Stg00RelocEnt *e = (Stg00RelocEnt *)((u32)*pe + base);
                 *pe = e;
                 Stg00_RelocPtr(&e->field_0, base);
@@ -200,29 +200,29 @@ s32 Stg00_RelocDungFile(u32 *arg0) {
 void Stg00_LoadDungFile(Actor *arg0, Stg00SelWork *arg1, s32 arg2) {
     u32 *f = (u32 *)Cd_GetFileOrNull(arg2);
 
-    arg1->field_6 = Stg00_RelocDungFile(f);
-    arg1->field_C = f;
-    arg1->field_10 = f[0];
+    arg1->floorCount = Stg00_RelocDungFile(f);
+    arg1->floorTable = f;
+    arg1->firstFloor = f[0];
 }
 
 void Stg00_DungSelPickDungeon(Actor *arg0, Stg00SelWork *arg1) {
     Stg00SelEnt *e;
 
     if (D_8005F72C & 0x8000) {
-        if (arg1->field_0 > 0) {
-            arg1->field_0--;
+        if (arg1->dungeonIdx > 0) {
+            arg1->dungeonIdx--;
         }
     }
     if (D_8005F72C & 0x2000) {
-        if (arg1->field_0 + 1 < 0x23) {
-            arg1->field_0++;
+        if (arg1->dungeonIdx + 1 < 0x23) {
+            arg1->dungeonIdx++;
         }
     }
     if (D_8005F700 > 0) {
-        arg1->field_2 = 0;
-        arg1->field_4 = -1;
+        arg1->floor = 0;
+        arg1->lastFloor = -1;
         e = (Stg00SelEnt *)Cd_GetFileEntry(0xE20000A);
-        Stg00_LoadDungFile(arg0, arg1, e[arg1->field_0].field_0);
+        Stg00_LoadDungFile(arg0, arg1, e[arg1->dungeonIdx].field_0);
         Task_SetState1(arg0, 1);
     }
 }
@@ -234,23 +234,23 @@ void Stg00_DungSelPickFloor(Actor *arg0, Stg00SelWork *arg1_) {
     s32 bit;
 
     if (D_8005F72C & 0x8000) {
-        if (arg1->field_2 > 0) {
-            arg1->field_2--;
+        if (arg1->floor > 0) {
+            arg1->floor--;
         }
     }
     if (D_8005F72C & 0x2000) {
-        if (arg1->field_2 + 1 < arg1->field_6) {
-            arg1->field_2++;
+        if (arg1->floor + 1 < arg1->floorCount) {
+            arg1->floor++;
         }
     }
     if (D_8005F72C & 0x1000) {
-        if (arg1->field_8 > 0) {
-            arg1->field_8--;
+        if (arg1->layout > 0) {
+            arg1->layout--;
         }
     }
     if (D_8005F72C & 0x4000) {
-        if (arg1->field_8 + 1 < 8) {
-            arg1->field_8++;
+        if (arg1->layout + 1 < 8) {
+            arg1->layout++;
         }
     }
     if (Pad_State[0].cross > 0) {
@@ -261,133 +261,133 @@ void Stg00_DungSelPickFloor(Actor *arg0, Stg00SelWork *arg1_) {
         Task_SetState1(arg0, 2);
         return;
     }
-    if (arg1->field_2 == arg1->field_4) {
+    if (arg1->floor == arg1->lastFloor) {
         return;
     }
     for (i = 0; i < 8; i++) {
-        arg1->field_14[i] = func_80064B08((Stg00RelocHdr *)arg1->field_C[arg1->field_2], i);
-        arg1->field_34[i] = 0;
+        arg1->layoutMasks[i] = func_80064B08((Stg00DungFloor *)arg1->floorTable[arg1->floor], i);
+        arg1->maskBitCounts[i] = 0;
         for (j = 0; j < 32; j++) {
             bit = 1 << j;
-            if (arg1->field_14[i] & bit) {
-                arg1->field_34[i]++;
+            if (arg1->layoutMasks[i] & bit) {
+                arg1->maskBitCounts[i]++;
             }
         }
-        arg1->field_44[i][7] = 0;
-        arg1->field_44[i][6] = 0;
-        arg1->field_44[i][5] = 0;
-        arg1->field_44[i][4] = 0;
-        arg1->field_44[i][3] = 0;
-        arg1->field_44[i][2] = 0;
-        arg1->field_44[i][1] = 0;
-        arg1->field_44[i][0] = 0;
-        if (arg1->field_14[i] & 1) {
-            arg1->field_44[i][0] = 1;
+        arg1->maskGroupCounts[i][7] = 0;
+        arg1->maskGroupCounts[i][6] = 0;
+        arg1->maskGroupCounts[i][5] = 0;
+        arg1->maskGroupCounts[i][4] = 0;
+        arg1->maskGroupCounts[i][3] = 0;
+        arg1->maskGroupCounts[i][2] = 0;
+        arg1->maskGroupCounts[i][1] = 0;
+        arg1->maskGroupCounts[i][0] = 0;
+        if (arg1->layoutMasks[i] & 1) {
+            arg1->maskGroupCounts[i][0] = 1;
         }
-        if (arg1->field_14[i] & 0x20) {
-            arg1->field_44[i][1]++;
+        if (arg1->layoutMasks[i] & 0x20) {
+            arg1->maskGroupCounts[i][1]++;
         }
-        if (arg1->field_14[i] & 0x40) {
-            arg1->field_44[i][1]++;
+        if (arg1->layoutMasks[i] & 0x40) {
+            arg1->maskGroupCounts[i][1]++;
         }
-        if (arg1->field_14[i] & 0x80) {
-            arg1->field_44[i][1]++;
+        if (arg1->layoutMasks[i] & 0x80) {
+            arg1->maskGroupCounts[i][1]++;
         }
-        if (arg1->field_14[i] & 0x100) {
-            arg1->field_44[i][1]++;
+        if (arg1->layoutMasks[i] & 0x100) {
+            arg1->maskGroupCounts[i][1]++;
         }
-        if (arg1->field_14[i] & 0x200) {
-            arg1->field_44[i][1]++;
+        if (arg1->layoutMasks[i] & 0x200) {
+            arg1->maskGroupCounts[i][1]++;
         }
-        if (arg1->field_14[i] & 0x400) {
-            arg1->field_44[i][2]++;
+        if (arg1->layoutMasks[i] & 0x400) {
+            arg1->maskGroupCounts[i][2]++;
         }
-        if (arg1->field_14[i] & 0x800) {
-            arg1->field_44[i][2]++;
+        if (arg1->layoutMasks[i] & 0x800) {
+            arg1->maskGroupCounts[i][2]++;
         }
-        if (arg1->field_14[i] & 0x1000) {
-            arg1->field_44[i][2]++;
+        if (arg1->layoutMasks[i] & 0x1000) {
+            arg1->maskGroupCounts[i][2]++;
         }
-        if (arg1->field_14[i] & 0x2000) {
-            arg1->field_44[i][2]++;
+        if (arg1->layoutMasks[i] & 0x2000) {
+            arg1->maskGroupCounts[i][2]++;
         }
-        if (arg1->field_14[i] & 0x4000) {
-            arg1->field_44[i][2]++;
+        if (arg1->layoutMasks[i] & 0x4000) {
+            arg1->maskGroupCounts[i][2]++;
         }
-        if (arg1->field_14[i] & 0x8000) {
-            arg1->field_44[i][3]++;
+        if (arg1->layoutMasks[i] & 0x8000) {
+            arg1->maskGroupCounts[i][3]++;
         }
-        if (arg1->field_14[i] & 0x10000) {
-            arg1->field_44[i][3]++;
+        if (arg1->layoutMasks[i] & 0x10000) {
+            arg1->maskGroupCounts[i][3]++;
         }
-        if (arg1->field_14[i] & 0x20000) {
-            arg1->field_44[i][3]++;
+        if (arg1->layoutMasks[i] & 0x20000) {
+            arg1->maskGroupCounts[i][3]++;
         }
-        if (arg1->field_14[i] & 0x40000) {
-            arg1->field_44[i][3]++;
+        if (arg1->layoutMasks[i] & 0x40000) {
+            arg1->maskGroupCounts[i][3]++;
         }
-        if (arg1->field_14[i] & 0x80000) {
-            arg1->field_44[i][3]++;
+        if (arg1->layoutMasks[i] & 0x80000) {
+            arg1->maskGroupCounts[i][3]++;
         }
-        if (arg1->field_14[i] & 0x100000) {
-            arg1->field_44[i][4]++;
+        if (arg1->layoutMasks[i] & 0x100000) {
+            arg1->maskGroupCounts[i][4]++;
         }
-        if (arg1->field_14[i] & 0x200000) {
-            arg1->field_44[i][4]++;
+        if (arg1->layoutMasks[i] & 0x200000) {
+            arg1->maskGroupCounts[i][4]++;
         }
-        if (arg1->field_14[i] & 0x400000) {
-            arg1->field_44[i][4]++;
+        if (arg1->layoutMasks[i] & 0x400000) {
+            arg1->maskGroupCounts[i][4]++;
         }
-        if (arg1->field_14[i] & 0x800000) {
-            arg1->field_44[i][5]++;
+        if (arg1->layoutMasks[i] & 0x800000) {
+            arg1->maskGroupCounts[i][5]++;
         }
-        if (arg1->field_14[i] & 0x1000000) {
-            arg1->field_44[i][5]++;
+        if (arg1->layoutMasks[i] & 0x1000000) {
+            arg1->maskGroupCounts[i][5]++;
         }
-        if (arg1->field_14[i] & 0x2000000) {
-            arg1->field_44[i][5]++;
+        if (arg1->layoutMasks[i] & 0x2000000) {
+            arg1->maskGroupCounts[i][5]++;
         }
-        if (arg1->field_14[i] & 0x4000000) {
-            arg1->field_44[i][6]++;
+        if (arg1->layoutMasks[i] & 0x4000000) {
+            arg1->maskGroupCounts[i][6]++;
         }
-        if (arg1->field_14[i] & 0x8000000) {
-            arg1->field_44[i][6]++;
+        if (arg1->layoutMasks[i] & 0x8000000) {
+            arg1->maskGroupCounts[i][6]++;
         }
-        if (arg1->field_14[i] & 0x10000000) {
-            arg1->field_44[i][6]++;
+        if (arg1->layoutMasks[i] & 0x10000000) {
+            arg1->maskGroupCounts[i][6]++;
         }
-        if (arg1->field_14[i] & 0x20000000) {
-            arg1->field_44[i][7]++;
+        if (arg1->layoutMasks[i] & 0x20000000) {
+            arg1->maskGroupCounts[i][7]++;
         }
-        if (arg1->field_14[i] & 0x40000000) {
-            arg1->field_44[i][7]++;
+        if (arg1->layoutMasks[i] & 0x40000000) {
+            arg1->maskGroupCounts[i][7]++;
         }
-        if (arg1->field_14[i] & 0x80000000) {
-            arg1->field_44[i][7]++;
+        if (arg1->layoutMasks[i] & 0x80000000) {
+            arg1->maskGroupCounts[i][7]++;
         }
     }
-    arg1->field_4 = arg1->field_2;
+    arg1->lastFloor = arg1->floor;
 }
 
 void Stg00_DungSelPickFlag(Actor *arg0, Stg00SelWork *arg1) {
     if (D_8005F72C & 0x8000) {
-        if (arg1->field_A > 0) {
-            arg1->field_A--;
+        if (arg1->flagIdx > 0) {
+            arg1->flagIdx--;
         }
     }
     if (D_8005F72C & 0x2000) {
-        if (arg1->field_A + 1 < 0x1E) {
-            arg1->field_A++;
+        if (arg1->flagIdx + 1 < 0x1E) {
+            arg1->flagIdx++;
         }
     }
     if (Pad_State[0].cross > 0) {
         Task_SetState1(arg0, 1);
     } else if (Pad_State[0].circle > 0) {
         func_80064E44();
-        D_8005F78C = arg1->field_0 + 0x201;
-        D_8005071C->field_3 = arg1->field_2;
-        D_8005071C->field_4 = arg1->field_8;
-        Flag_Set(arg1->field_A + 0x76C, 1);
+        D_8005F78C = arg1->dungeonIdx + 0x201;
+        D_8005071C->field_3 = arg1->floor;
+        D_8005071C->field_4 = arg1->layout;
+        Flag_Set(arg1->flagIdx + 0x76C, 1);
         Task_SetState0(arg0, 2);
     }
 }
@@ -407,9 +407,9 @@ void Stg00_DungSelTask(Actor *arg0) {
         Gfx_FadeInFromBlack(0x20);
         Stg00_FontInit();
         Stg00_FontSetColor(0);
-        w->field_0 = 0;
-        w->field_2 = 0;
-        w->field_6 = 0;
+        w->dungeonIdx = 0;
+        w->floor = 0;
+        w->floorCount = 0;
         Task_NextState0(arg0);
         break;
     case 1:
@@ -440,7 +440,7 @@ void Stg00_DungSelDestroy(Actor *arg0) {
 }
 
 INCLUDE_RODATA("asm/USA/stag0000/rodata", D_80063378);
-s32 func_80064B08(Stg00RelocHdr *arg0, s32 arg1) {
+s32 func_80064B08(Stg00DungFloor *arg0, s32 arg1) {
     s32 result = 0;
     Stg00BitTbl tbl = D_80063378;
     s32 i;
@@ -470,7 +470,7 @@ s32 func_80064B08(Stg00RelocHdr *arg0, s32 arg1) {
             result |= tbl.bits[i][val];
         }
     }
-    cmd = (Stg00RelocCmd *)arg0->field_8[arg1]->field_C;
+    cmd = (Stg00RelocCmd *)arg0->layouts[arg1]->field_C;
     while (cmd->field_0.tag != 0xFF) {
         for (i = 0; i < 4; i++) {
             switch (i) {

@@ -76,24 +76,24 @@ void Stg00_PopupDraw(Actor *arg0) {
     Stg00PartScale *p;
     s32 id;
 
-    switch (w->field_0) {
+    switch (w->kind) {
     case 0:
     default:
-        e = Cd_GetFileEntry(Skill_GetPartsEntry(w->field_4));
+        e = Cd_GetFileEntry(Skill_GetPartsEntry(w->value));
         break;
     case 4:
     case 5:
     case 6:
     case 7:
         e = Cd_GetFileEntry(0xD2D0000);
-        Gfx_HidePartsByMask(e, Stg00_PopupItemMasks[w->field_0 - 4]);
+        Gfx_HidePartsByMask(e, Stg00_PopupItemMasks[w->kind - 4]);
         break;
     case 1:
     case 2:
     case 3:
         e = Cd_GetFileEntry(0x1A10000);
-        Gfx_SetPartsNumber(e, Stg00_PopupNumParts[w->field_0 - 1], 3, w->field_4);
-        Gfx_HidePartsByMask(e, Stg00_PopupNumMasks[w->field_0 - 1]);
+        Gfx_SetPartsNumber(e, Stg00_PopupNumParts[w->kind - 1], 3, w->value);
+        Gfx_HidePartsByMask(e, Stg00_PopupNumMasks[w->kind - 1]);
         break;
     case 8:
         draw = 0;
@@ -101,18 +101,18 @@ void Stg00_PopupDraw(Actor *arg0) {
     }
     if (draw) {
         for (p = (Stg00PartScale *)e; p->fileId != 0; p++) {
-            if (w->field_C != 0x1000) {
+            if (w->scale != 0x1000) {
                 p->field_E = 0;
-                p->field_10 = w->field_C;
+                p->field_10 = w->scale;
             } else {
                 p->field_E = 1;
             }
-            p->field_C = w->field_10;
+            p->field_C = w->palette;
         }
         Gfx_DrawParts(e);
     }
-    if (w->field_8 != 0) {
-        switch (w->field_8 >> 8) {
+    if (w->subPart != 0) {
+        switch (w->subPart >> 8) {
         case 0:
         default:
             id = 0x1A10026;
@@ -125,15 +125,15 @@ void Stg00_PopupDraw(Actor *arg0) {
             break;
         }
         e = Cd_GetFileEntry(id);
-        Gfx_HidePartsByMask(e, ~(1 << ((u8)w->field_8 - 1)));
+        Gfx_HidePartsByMask(e, ~(1 << ((u8)w->subPart - 1)));
         for (p = (Stg00PartScale *)e; p->fileId != 0; p++) {
-            if (w->field_C != 0x1000) {
+            if (w->scale != 0x1000) {
                 p->field_E = 0;
-                p->field_10 = w->field_C;
+                p->field_10 = w->scale;
             } else {
                 p->field_E = 1;
             }
-            p->field_C = w->field_10;
+            p->field_C = w->palette;
         }
         Gfx_DrawParts(e);
     }
@@ -278,27 +278,27 @@ void Stg00_WindowTestTask(Actor *arg0) {
         break;
     case 1:
         if (Pad_State[0].up > 0) {
-            if (w->field_0 == 0) {
+            if (w->cursor == 0) {
                 break;
             }
-            w->field_0--;
-            w->field_4 = 0x3C;
+            w->cursor--;
+            w->holdDelay = 0x3C;
         } else if (Pad_State[0].down > 0) {
-            if (w->field_0 == 2) {
+            if (w->cursor == 2) {
                 break;
             }
-            w->field_0++;
-            w->field_4 = 0x3C;
+            w->cursor++;
+            w->holdDelay = 0x3C;
         } else {
             n = 5;
             for (i = 5; i >= 0; i--) {
                 if (i == 5) {
-                    w->field_8[n]++;
+                    w->counterDigits[n]++;
                 }
-                if (w->field_8[i] >= 10) {
-                    w->field_8[i] -= 10;
+                if (w->counterDigits[i] >= 10) {
+                    w->counterDigits[i] -= 10;
                     if (i != 0) {
-                        w->field_8[i - 1]++;
+                        w->counterDigits[i - 1]++;
                     }
                 }
             }
@@ -314,28 +314,28 @@ void Stg00_WindowTestDraw(Actor *arg0) {
     EntA0 *e = Cd_GetFileEntry(0x770000);
     Stg00Part *p;
 
-    Gfx_HidePartsByMask(e, Stg00_WindowTestMasks[w->field_0]);
+    Gfx_HidePartsByMask(e, Stg00_WindowTestMasks[w->cursor]);
     p = (Stg00Part *)e;
     while (p->fileId != 0) {
-        if (p->partMask & Stg00_WindowTestParts[w->field_0].field_8) {
+        if (p->partMask & Stg00_WindowTestParts[w->cursor].field_8) {
             p->field_E = 0;
-            if (w->field_4 != 0) {
-                w->field_4--;
+            if (w->holdDelay != 0) {
+                w->holdDelay--;
             } else {
                 p->field_20 += 0x20;
             }
         }
-        if (p->partMask & Stg00_WindowTestParts[w->field_0].field_0) {
+        if (p->partMask & Stg00_WindowTestParts[w->cursor].field_0) {
             if ((p->field_20 + 0x400) & 0x800) {
                 p->field_F = 0;
             }
         }
-        if (p->partMask & Stg00_WindowTestParts[w->field_0].field_4) {
+        if (p->partMask & Stg00_WindowTestParts[w->cursor].field_4) {
             if ((p->field_20 - 0x418) & 0x800) {
                 p->field_F = 0;
             }
         }
-        if (p->partMask & Stg00_WindowTestParts[w->field_0].field_C) {
+        if (p->partMask & Stg00_WindowTestParts[w->cursor].field_C) {
             p->field_E = 1;
             p->field_20 = 0;
         }
@@ -350,16 +350,16 @@ void Stg00_SoundTestTask(Actor *arg0) {
 
     switch (arg0->stateLevel0) {
     case 0:
-        Mem_FillWordsNeg1(&w->field_0, 3);
+        Mem_FillWordsNeg1(&w->titleText, 3);
         Snd_UnloadSlot(1);
         Snd_UnloadSlot(2);
-        w->field_14 = -1;
+        w->loadedBank = -1;
         Task_NextState0(arg0);
         break;
     load:
-        w->field_14 = w->field_C;
-        Snd_SetSlotContent(0, w->field_C + 1);
-        w->field_18 = w->field_10;
+        w->loadedBank = w->bank;
+        Snd_SetSlotContent(0, w->bank + 1);
+        w->pendingSound = w->sound;
         Task_SetState1(arg0, 1);
         goto text;
     case 1:
@@ -367,32 +367,32 @@ void Stg00_SoundTestTask(Actor *arg0) {
         case 0:
         default:
             if (Pad_State[0].right > 0) {
-                w->field_C++;
-                if (w->field_C == Stg00_CountSoundBanks()) {
-                    w->field_C = 0;
+                w->bank++;
+                if (w->bank == Stg00_CountSoundBanks()) {
+                    w->bank = 0;
                 }
-                w->field_10 = 0;
+                w->sound = 0;
             } else if (Pad_State[0].left > 0) {
-                if (w->field_C == 0) {
-                    w->field_C = Stg00_CountSoundBanks() - 1;
+                if (w->bank == 0) {
+                    w->bank = Stg00_CountSoundBanks() - 1;
                 } else {
-                    w->field_C--;
+                    w->bank--;
                 }
-                w->field_10 = 0;
+                w->sound = 0;
             } else if (Pad_State[0].up > 0) {
-                w->field_10++;
-                if (w->field_10 == Stg00_CountBankSounds(w->field_C)) {
-                    w->field_10 = 0;
+                w->sound++;
+                if (w->sound == Stg00_CountBankSounds(w->bank)) {
+                    w->sound = 0;
                 }
             } else if (Pad_State[0].down > 0) {
-                if (w->field_10 == 0) {
-                    w->field_10 = Stg00_CountBankSounds(w->field_C) - 1;
+                if (w->sound == 0) {
+                    w->sound = Stg00_CountBankSounds(w->bank) - 1;
                 } else {
-                    w->field_10--;
+                    w->sound--;
                 }
             } else if (Pad_State[0].circle > 0) {
-                if (w->field_14 == w->field_C) {
-                    Snd_PlayById(w->field_10, 0);
+                if (w->loadedBank == w->bank) {
+                    Snd_PlayById(w->sound, 0);
                 } else {
                     goto load;
                 }
@@ -408,8 +408,8 @@ void Stg00_SoundTestTask(Actor *arg0) {
             t.charDelay = 0;
             t.charAdvance = 0xE;
             t.lineAdvance = 0x14;
-            Text_Open(&w->field_0, &t);
-            t.text = (s32)Stg00_GetBankLabel(w->field_C);
+            Text_Open(&w->titleText, &t);
+            t.text = (s32)Stg00_GetBankLabel(w->bank);
             t.bigFont = 1;
             t.color = 0;
             t.x = 0x78;
@@ -417,8 +417,8 @@ void Stg00_SoundTestTask(Actor *arg0) {
             t.charDelay = 0;
             t.charAdvance = 0xE;
             t.lineAdvance = 0x14;
-            Text_Open(&w->field_4, &t);
-            t.text = (s32)Stg00_GetSoundIdLabel(w->field_C, w->field_10);
+            Text_Open(&w->bankText, &t);
+            t.text = (s32)Stg00_GetSoundIdLabel(w->bank, w->sound);
             t.bigFont = 1;
             t.color = 0;
             t.x = 0x78;
@@ -426,11 +426,11 @@ void Stg00_SoundTestTask(Actor *arg0) {
             t.charDelay = 0;
             t.charAdvance = 0xE;
             t.lineAdvance = 0x14;
-            Text_Open(&w->field_8, &t);
+            Text_Open(&w->soundText, &t);
             break;
         case 1:
             if (!Snd_AnySlotLoading()) {
-                Snd_PlayById(w->field_18, 0);
+                Snd_PlayById(w->pendingSound, 0);
                 Task_SetState1(arg0, 0);
             }
             break;
@@ -450,31 +450,31 @@ void Stg00_CameraInit(Actor *arg0, Stg00Blk1C *arg1) {
 
 void Stg00_CameraTask(Actor *arg0) {
     if (arg0->stateLevel0 == 0) {
-        Stg00ObjWork *w = (Stg00ObjWork *)arg0->work;
-        GsInitCoordinate2(NULL, &w->field_1C);
-        w->field_84 = 1;
+        Stg00CameraWork *w = (Stg00CameraWork *)arg0->work;
+        GsInitCoordinate2(NULL, &w->coord);
+        w->dirty = 1;
         Task_NextState0(arg0);
     }
 }
 
 void Stg00_CameraDraw(Actor *arg0) {
-    Stg00ObjWork *w = (Stg00ObjWork *)arg0->work;
+    Stg00CameraWork *w = (Stg00CameraWork *)arg0->work;
     Stg00RefView rv;
 
-    RotMatrixYXZ(&w->field_7C, &w->field_1C.coord);
-    w->field_1C.coord.t[0] = w->field_6C;
-    w->field_1C.coord.t[1] = w->field_70;
-    w->field_1C.coord.t[2] = w->field_74;
-    w->field_1C.flg = 0;
-    rv.field_0 = w->field_0;
-    rv.field_4 = w->field_4;
-    rv.field_8 = w->field_8;
-    rv.field_C = w->field_C;
-    rv.field_10 = w->field_10;
-    rv.field_14 = w->field_14;
-    rv.field_18 = 0;
-    rv.field_1C = &w->field_1C;
-    GsSetProjection(w->field_18);
+    RotMatrixYXZ(&w->rotX, &w->coord.coord);
+    w->coord.coord.t[0] = w->originX;
+    w->coord.coord.t[1] = w->originY;
+    w->coord.coord.t[2] = w->originZ;
+    w->coord.flg = 0;
+    rv.vpx = w->vpx;
+    rv.vpy = w->vpy;
+    rv.vpz = w->vpz;
+    rv.vrx = w->vrx;
+    rv.vry = w->vry;
+    rv.vrz = w->vrz;
+    rv.rz = 0;
+    rv.super = &w->coord;
+    GsSetProjection(w->projection);
     GsSetRefView2(&rv);
 }
 
@@ -484,48 +484,48 @@ TaskEntry *Stg00_FindCamera(void) {
 
 void Stg00_CamMoveViewPoint(Actor *arg0, s32 arg1, s32 arg2, s32 arg3) {
     if (arg0 != NULL) {
-        Stg00ObjWork *w = (Stg00ObjWork *)arg0->work;
-        w->field_84 = 1;
-        w->field_0 += arg1;
-        w->field_4 += arg2;
-        w->field_8 += arg3;
+        Stg00CameraWork *w = (Stg00CameraWork *)arg0->work;
+        w->dirty = 1;
+        w->vpx += arg1;
+        w->vpy += arg2;
+        w->vpz += arg3;
     }
 }
 
 void Stg00_CamMoveRefPoint(Actor *arg0, s32 arg1, s32 arg2, s32 arg3) {
     if (arg0 != NULL) {
-        Stg00ObjWork *w = (Stg00ObjWork *)arg0->work;
-        w->field_84 = 1;
-        w->field_C += arg1;
-        w->field_10 += arg2;
-        w->field_14 += arg3;
+        Stg00CameraWork *w = (Stg00CameraWork *)arg0->work;
+        w->dirty = 1;
+        w->vrx += arg1;
+        w->vry += arg2;
+        w->vrz += arg3;
     }
 }
 
 void Stg00_CamSetProjection(Actor *arg0, s32 arg1) {
     if (arg0 != NULL) {
-        Stg00ObjWork *w = (Stg00ObjWork *)arg0->work;
-        w->field_18 = arg1;
-        w->field_84 = 1;
+        Stg00CameraWork *w = (Stg00CameraWork *)arg0->work;
+        w->projection = arg1;
+        w->dirty = 1;
     }
 }
 
 void Stg00_CamMoveOrigin(Actor *arg0, s32 arg1, s32 arg2, s32 arg3) {
     if (arg0 != NULL) {
-        Stg00ObjWork *w = (Stg00ObjWork *)arg0->work;
-        w->field_84 = 1;
-        w->field_6C += arg1;
-        w->field_70 += arg2;
-        w->field_74 += arg3;
+        Stg00CameraWork *w = (Stg00CameraWork *)arg0->work;
+        w->dirty = 1;
+        w->originX += arg1;
+        w->originY += arg2;
+        w->originZ += arg3;
     }
 }
 
 void Stg00_CamRotate(Actor *arg0, s32 arg1, s32 arg2, s32 arg3) {
     if (arg0 != NULL) {
-        Stg00ObjWork *w = (Stg00ObjWork *)arg0->work;
-        w->field_84 = 1;
-        w->field_7C += arg1;
-        w->field_7E += arg2;
-        w->field_80 += arg3;
+        Stg00CameraWork *w = (Stg00CameraWork *)arg0->work;
+        w->dirty = 1;
+        w->rotX += arg1;
+        w->rotY += arg2;
+        w->rotZ += arg3;
     }
 }

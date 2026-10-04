@@ -10,14 +10,14 @@
 typedef struct {
     /* 0x000 */ u16 clut[0x60];
     /* 0x0C0 */ u16 buf[0x400];
-    /* 0x8C0 */ u16 field_8C0;      /* small RECT x (LoadImage) */
-    /* 0x8C2 */ u16 field_8C2;      /* small RECT y */
-    /* 0x8C4 */ s16 field_8C4;      /* small RECT w */
-    /* 0x8C6 */ s16 field_8C6;      /* small RECT h */
+    /* 0x8C0 */ u16 clutX;      /* small RECT x (LoadImage) */
+    /* 0x8C2 */ u16 clutY;      /* small RECT y */
+    /* 0x8C4 */ s16 clutW;      /* small RECT w */
+    /* 0x8C6 */ s16 clutH;      /* small RECT h */
     /* 0x8C8 */ RECT rectBig;
-    /* 0x8D0 */ s32 *field_8D0;
-    /* 0x8D4 */ s16 field_8D4;
-    /* 0x8D6 */ u8 field_8D6[0x102]; /* Stg00_FontTextBuf points here */
+    /* 0x8D0 */ s32 *texSlot;
+    /* 0x8D4 */ s16 color;
+    /* 0x8D6 */ u8 textBuf[0x102]; /* Stg00_FontTextBuf points here */
 } Stg00Work; /* size 0x9D8 */
 
 typedef struct {
@@ -60,24 +60,24 @@ void Stg00_FontDrawStr(s32 arg0, s32 arg1, u8 *arg2);
 
 /* Actor.work of the objects moved by Stg00_CamMoveViewPoint family (0x1C now a GsCOORDINATE2). */
 typedef struct {
-    /* 0x00 */ s32 field_0;
-    /* 0x04 */ s32 field_4;
-    /* 0x08 */ s32 field_8;
-    /* 0x0C */ s32 field_C;
-    /* 0x10 */ s32 field_10;
-    /* 0x14 */ s32 field_14;
-    /* 0x18 */ s32 field_18;
-    /* 0x1C */ Coord1F668 field_1C;
-    /* 0x6C */ s32 field_6C;
-    /* 0x70 */ s32 field_70;
-    /* 0x74 */ s32 field_74;
+    /* 0x00 */ s32 vpx;
+    /* 0x04 */ s32 vpy;
+    /* 0x08 */ s32 vpz;
+    /* 0x0C */ s32 vrx;
+    /* 0x10 */ s32 vry;
+    /* 0x14 */ s32 vrz;
+    /* 0x18 */ s32 projection;
+    /* 0x1C */ Coord1F668 coord;
+    /* 0x6C */ s32 originX;
+    /* 0x70 */ s32 originY;
+    /* 0x74 */ s32 originZ;
     u8 _pad78[0x04];
-    /* 0x7C */ s16 field_7C;
-    /* 0x7E */ s16 field_7E;
-    /* 0x80 */ s16 field_80;
+    /* 0x7C */ s16 rotX;
+    /* 0x7E */ s16 rotY;
+    /* 0x80 */ s16 rotZ;
     u8 _pad82[0x02];
-    /* 0x84 */ s32 field_84;
-} Stg00ObjWork;
+    /* 0x84 */ s32 dirty;
+} Stg00CameraWork;
 
 /* SPRT packet with the tag's length byte addressable. */
 typedef struct {
@@ -105,14 +105,14 @@ typedef struct {
 
 /* Stack block passed to GsSetRefView2. */
 typedef struct {
-    /* 0x00 */ s32 field_0;
-    /* 0x04 */ s32 field_4;
-    /* 0x08 */ s32 field_8;
-    /* 0x0C */ s32 field_C;
-    /* 0x10 */ s32 field_10;
-    /* 0x14 */ s32 field_14;
-    /* 0x18 */ s32 field_18;
-    /* 0x1C */ Coord1F668 *field_1C;
+    /* 0x00 */ s32 vpx;
+    /* 0x04 */ s32 vpy;
+    /* 0x08 */ s32 vpz;
+    /* 0x0C */ s32 vrx;
+    /* 0x10 */ s32 vry;
+    /* 0x14 */ s32 vrz;
+    /* 0x18 */ s32 rz;
+    /* 0x1C */ Coord1F668 *super;
 } Stg00RefView;
 
 /* Init arg of the model task (Stg00_DigiModelInit). */
@@ -135,7 +135,7 @@ typedef struct {
 
 /* Actor.work whose first word selects the display mode. */
 typedef struct {
-    /* 0x00 */ s32 field_0;
+    /* 0x00 */ s32 videoMode;
 } Stg00ModeWork;
 
 /* File-relative pointer tables fixed up by Stg00_RelocDungFile. */
@@ -169,13 +169,13 @@ typedef struct {
 typedef struct {
     /* 0x00 */ u32 field_0;
     u8 _pad04[0x04];
-    /* 0x08 */ Stg00RelocEnt *field_8[8];
+    /* 0x08 */ Stg00RelocEnt *layouts[8];
     u8 _pad28[0x06];
     /* 0x2E */ s16 field_2E;
     u8 _pad30[0x04];
     /* 0x34 */ Stg00RelocFlag field_34[8];
     /* 0x54 */ Stg00RelocPair field_54[5];
-} Stg00RelocHdr;
+} Stg00DungFloor;
 
 /* Bit table copied to the stack by func_80064B08 (5 groups of 6 words). */
 typedef struct {
@@ -185,15 +185,15 @@ extern Stg00BitTbl D_80063378;
 
 /* Actor.work of the select task (Stg00_DungSelTask and its states). */
 typedef struct {
-    /* 0x00 */ s16 field_0;
-    /* 0x02 */ s16 field_2;
-    /* 0x04 */ s16 field_4;
-    /* 0x06 */ s16 field_6;
-    /* 0x08 */ u8 field_8;
+    /* 0x00 */ s16 dungeonIdx;
+    /* 0x02 */ s16 floor;
+    /* 0x04 */ s16 lastFloor;
+    /* 0x06 */ s16 floorCount;
+    /* 0x08 */ u8 layout;
     u8 _pad09[0x01];
-    /* 0x0A */ s16 field_A;
-    /* 0x0C */ u32 *field_C;
-    /* 0x10 */ u32 field_10;
+    /* 0x0A */ s16 flagIdx;
+    /* 0x0C */ u32 *floorTable;
+    /* 0x10 */ u32 firstFloor;
 } Stg00SelWork;
 
 typedef struct {
@@ -220,11 +220,11 @@ typedef struct {
 } Stg00TaskArgs;
 
 typedef struct {
-    /* 0x00 */ s32 field_0;
-    /* 0x04 */ s32 field_4;
-    /* 0x08 */ s32 field_8;
-    /* 0x0C */ s32 field_C;
-    /* 0x10 */ s32 field_10;
+    /* 0x00 */ s32 digiId;
+    /* 0x04 */ s32 posX;
+    /* 0x08 */ s32 posY;
+    /* 0x0C */ s32 posZ;
+    /* 0x10 */ s32 facing;
 } Stg00TaskArgs5;
 
 typedef struct {
@@ -235,11 +235,11 @@ typedef struct {
 /* Sorted list work (Stg00_LineupBuildList / Stg00_LineupSpawnModels). */
 typedef struct {
     u8 _pad000[0x10];
-    /* 0x010 */ s32 field_10[200];
-    /* 0x330 */ s32 field_330[200];
-    /* 0x650 */ s32 field_650;
-    /* 0x654 */ s32 field_654;
-    /* 0x658 */ s32 field_658;
+    /* 0x010 */ s32 sortKeys[200];
+    /* 0x330 */ s32 digiIds[200];
+    /* 0x650 */ s32 count;
+    /* 0x654 */ s32 scrollTop;
+    /* 0x658 */ s32 layout;
 } Stg00ListWork;
 
 typedef struct {
@@ -250,18 +250,18 @@ typedef struct {
 } Stg00NameWork;
 
 typedef struct {
-    /* 0x00 */ s32 field_0;
-    /* 0x04 */ s32 field_4;
+    /* 0x00 */ s32 scrollX;
+    /* 0x04 */ s32 scrollY;
 } Stg00ScrollWork;
 
 typedef struct {
     u8 _pad00[0x04];
-    /* 0x04 */ s32 field_4;
-    /* 0x08 */ s32 field_8;
-    /* 0x0C */ s32 field_C;
-    /* 0x10 */ s32 field_10;
+    /* 0x04 */ s32 homeX;
+    /* 0x08 */ s32 homeY;
+    /* 0x0C */ s32 homeZ;
+    /* 0x10 */ s32 facing;
     u8 _pad14[0x18];
-    /* 0x2C */ s32 field_2C;
+    /* 0x2C */ s32 skillId;
 } Stg00SpawnWork;
 
 extern Halves Gfx_NeutralRgb;
@@ -311,29 +311,29 @@ extern u8 Stg00_DigiViewSkills[];
 
 /* Stg00_DigiViewPages record: parts file id at 0 (Stg00_DigiViewDraw). */
 typedef struct {
-    /* 0x0 */ s32 field_0;
-    /* 0x4 */ s32 field_4;
-} Ent68DB8; /* size 8 */
-extern Ent68DB8 Stg00_DigiViewPages[];
+    /* 0x0 */ s32 partsFileId;
+    /* 0x4 */ s32 maxRow;
+} Stg00DigiViewPage; /* size 8 */
+extern Stg00DigiViewPage Stg00_DigiViewPages[];
 
 /* Actor.work of Stg00_DigiViewDraw (also Stg00_DigiViewTask: the same dialog-cursor state). */
 typedef struct {
-    /* 0x00 */ s32 field_0;
-    /* 0x04 */ s32 field_4;
-    /* 0x08 */ s32 field_8;
-    /* 0x0C */ s32 field_C;
-    /* 0x10 */ s32 field_10;
-    /* 0x14 */ s32 field_14;
-    /* 0x18 */ s32 field_18;
-    /* 0x1C */ s32 field_1C[14]; /* text handles */
-    /* 0x54 */ s32 field_54;
-    /* 0x58 */ s32 field_58;
-    /* 0x5C */ s32 field_5C;
+    /* 0x00 */ s32 digiCursor;
+    /* 0x04 */ s32 pageCursor;
+    /* 0x08 */ s32 panel;
+    /* 0x0C */ s32 page;
+    /* 0x10 */ s32 modelListIdx;
+    /* 0x14 */ s32 nameText;
+    /* 0x18 */ s32 nameTextSmall;
+    /* 0x1C */ s32 skillTexts[14]; /* text handles */
+    /* 0x54 */ s32 drawTex;
+    /* 0x58 */ s32 lastDirUp;
+    /* 0x5C */ s32 skillScroll;
     /* 0x60 */ s32 field_60;
-    /* 0x64 */ s32 field_64;
-} Work65E24;
+    /* 0x64 */ s32 skillRow;
+} Stg00DigiViewWork;
 
-/* Work65E24's leading 4 words (field_0..field_C) viewed as a slot array,
+/* Stg00DigiViewWork's leading 4 words (field_0..field_C) viewed as a slot array,
  * indexed by field_8 (Stg00_DigiViewTask). */
 typedef union {
     /* 0x00 */ s32 words[4];
@@ -367,9 +367,9 @@ typedef struct {
 
 /* Actor.work of the counter task (Stg00_WindowTestTask) and parts task (Stg00_WindowTestDraw). */
 typedef struct {
-    /* 0x00 */ s32 field_0;
-    /* 0x04 */ s32 field_4;
-    /* 0x08 */ u8 field_8[6];
+    /* 0x00 */ s32 cursor;
+    /* 0x04 */ s32 holdDelay;
+    /* 0x08 */ u8 counterDigits[6];
 } Stg00CountWork;
 
 /* Texture slot behind Stg00Work.field_8D0. */
@@ -455,11 +455,11 @@ typedef struct {
 
 /* Actor.work of the panel task (Stg00_PopupDraw). */
 typedef struct {
-    /* 0x00 */ s32 field_0;
-    /* 0x04 */ s32 field_4;
-    /* 0x08 */ s32 field_8;
-    /* 0x0C */ s32 field_C;
-    /* 0x10 */ u8 field_10;
+    /* 0x00 */ s32 kind;
+    /* 0x04 */ s32 value;
+    /* 0x08 */ s32 subPart;
+    /* 0x0C */ s32 scale;
+    /* 0x10 */ u8 palette;
 } Stg00PanelWork;
 
 typedef struct {
@@ -498,28 +498,28 @@ typedef struct {
 
 /* Actor.work of the sound test task (Stg00_SoundTestTask). */
 typedef struct {
-    /* 0x00 */ s32 field_0;
-    /* 0x04 */ s32 field_4;
-    /* 0x08 */ s32 field_8;
-    /* 0x0C */ s32 field_C;
-    /* 0x10 */ s32 field_10;
-    /* 0x14 */ s32 field_14;
-    /* 0x18 */ s32 field_18;
+    /* 0x00 */ s32 titleText;
+    /* 0x04 */ s32 bankText;
+    /* 0x08 */ s32 soundText;
+    /* 0x0C */ s32 bank;
+    /* 0x10 */ s32 sound;
+    /* 0x14 */ s32 loadedBank;
+    /* 0x18 */ s32 pendingSound;
 } Stg00SndWork;
 
 /* Stg00SelWork with field_8 as s16 and the per-slot tables. */
 typedef struct {
-    /* 0x00 */ s16 field_0;
-    /* 0x02 */ s16 field_2;
-    /* 0x04 */ s16 field_4;
-    /* 0x06 */ s16 field_6;
-    /* 0x08 */ s16 field_8;
-    /* 0x0A */ s16 field_A;
-    /* 0x0C */ u32 *field_C;
-    /* 0x10 */ u32 field_10;
-    /* 0x14 */ s32 field_14[8];
-    /* 0x34 */ u16 field_34[8];
-    /* 0x44 */ u8 field_44[8][10];
+    /* 0x00 */ s16 dungeonIdx;
+    /* 0x02 */ s16 floor;
+    /* 0x04 */ s16 lastFloor;
+    /* 0x06 */ s16 floorCount;
+    /* 0x08 */ s16 layout;
+    /* 0x0A */ s16 flagIdx;
+    /* 0x0C */ u32 *floorTable;
+    /* 0x10 */ u32 firstFloor;
+    /* 0x14 */ s32 layoutMasks[8];
+    /* 0x34 */ u16 maskBitCounts[8];
+    /* 0x44 */ u8 maskGroupCounts[8][10];
 } Stg00SelWorkX;
 
 /* Actor.work of the random-pose viewer (Stg00_GroupViewTask). */
@@ -533,25 +533,25 @@ typedef struct {
 /* Stg00ModelWork with the fields Stg00_DigiModelTask touches. */
 typedef struct {
     /* 0x00 */ s32 field_0;
-    /* 0x04 */ Vec3 field_4;
-    /* 0x10 */ s32 field_10;
-    /* 0x14 */ s32 field_14;
+    /* 0x04 */ Vec3 homePos;
+    /* 0x10 */ s32 facing;
+    /* 0x14 */ s32 modelFile;
     u8 _pad18[0x04];
-    /* 0x1C */ s32 field_1C;
-    /* 0x20 */ s32 field_20;
-    /* 0x24 */ s32 field_24;
-    /* 0x28 */ CVECTOR field_28;
-    /* 0x2C */ s32 field_2C;
+    /* 0x1C */ s32 subFrame;
+    /* 0x20 */ s32 drawTex;
+    /* 0x24 */ s32 drawWire;
+    /* 0x28 */ CVECTOR wireColor;
+    /* 0x2C */ s32 skillId;
 } Stg00ModelWorkX;
 
 /* ActorModel viewed with the fade colour bytes at 0x38. */
 typedef struct {
     u8 _pad00[0x34];
     /* 0x34 */ s16 field_34;
-    /* 0x36 */ s16 field_36;
-    /* 0x38 */ u8 field_38;
-    /* 0x39 */ u8 field_39;
-    /* 0x3A */ u8 field_3A;
+    /* 0x36 */ s16 tpageBits;
+    /* 0x38 */ u8 flatR;
+    /* 0x39 */ u8 flatG;
+    /* 0x3A */ u8 flatB;
 } Stg00ModelFade;
 
 /* ---- externs ---- */
@@ -612,7 +612,7 @@ extern void Snd_StopAll(void);
 extern s32 Snd_AnySlotLoading(void);
 
 void Stg00_InitTileSprt(Stg00Sprt *arg0, GfxPartTexSlot *arg1, s32 arg2, s32 arg3);
-s32 func_80064B08(Stg00RelocHdr *arg0, s32 arg1);
+s32 func_80064B08(Stg00DungFloor *arg0, s32 arg1);
 void Stg00_LineupSetVideoMode(Actor *arg0);
 void Stg00_LineupBuildList(Actor *arg0);
 void Stg00_LineupSpawnModels(Actor *arg0);

@@ -266,7 +266,7 @@ typedef struct {
     /* 0x340 */ s32 field_340[6];
 } Stg35Battle; /* size 0x358 */
 
-/* Camera work (func_80069FD4), same layout as STAG0000 Stg00ObjWork. */
+/* Camera work (func_80069FD4), same layout as STAG0000 Stg00CameraWork. */
 typedef struct {
     /* 0x00 */ s32 field_0;
     /* 0x04 */ s32 field_4;

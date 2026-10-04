@@ -8,9 +8,9 @@ void func_80064E44(void) {
 void Stg00_FontSetColor(s16 arg0) {
     Stg00Work *w = Stg00_FontWork;
     if (arg0 < 6) {
-        w->field_8D4 = arg0;
+        w->color = arg0;
     } else {
-        w->field_8D4 = 0;
+        w->color = 0;
     }
 }
 
@@ -23,18 +23,18 @@ void Stg00_FontInit(void) {
     RECT *r;
 
     Stg00_FontWork = (Stg00Work *)Mem_Alloc(0x9D8, 2);
-    Stg00_FontTextBuf = Stg00_FontWork->field_8D6;
-    Stg00_FontWork->field_8D0 = Gfx_ReserveTexSlot();
+    Stg00_FontTextBuf = Stg00_FontWork->textBuf;
+    Stg00_FontWork->texSlot = Gfx_ReserveTexSlot();
     n = 0x200;
     src = Stg00_FontGlyphs;
     r = &Stg00_FontWork->rectBig;
-    r->x = ((Stg00TexSlot *)Stg00_FontWork->field_8D0)->x;
-    r->y = ((Stg00TexSlot *)Stg00_FontWork->field_8D0)->y;
+    r->x = ((Stg00TexSlot *)Stg00_FontWork->texSlot)->x;
+    r->y = ((Stg00TexSlot *)Stg00_FontWork->texSlot)->y;
     r->w = 0x10;
     r->h = 0x40;
-    r = (RECT *)&Stg00_FontWork->field_8C0;
-    r->x = ((Stg00TexSlot *)Stg00_FontWork->field_8D0)->x;
-    r->y = ((Stg00TexSlot *)Stg00_FontWork->field_8D0)->y + 0xF9;
+    r = (RECT *)&Stg00_FontWork->clutX;
+    r->x = ((Stg00TexSlot *)Stg00_FontWork->texSlot)->x;
+    r->y = ((Stg00TexSlot *)Stg00_FontWork->texSlot)->y + 0xF9;
     r->w = 0x10;
     r->h = 6;
     p = Stg00_FontWork->buf;
@@ -75,13 +75,13 @@ void Stg00_FontInit(void) {
     p[0x41] = 0x0F;
     p[0x21] = 0x3C00;
     p[0x51] = 0x3C00;
-    LoadImage((RECT *)&Stg00_FontWork->field_8C0, (u32 *)Stg00_FontWork->clut);
+    LoadImage((RECT *)&Stg00_FontWork->clutX, (u32 *)Stg00_FontWork->clut);
     LoadImage(&Stg00_FontWork->rectBig, (u32 *)Stg00_FontWork->buf);
     Stg00_FontSetColor(0);
 }
 
 void Stg00_FontFree(void) {
-    Gfx_ReleaseTexSlot(Stg00_FontWork->field_8D0);
+    Gfx_ReleaseTexSlot(Stg00_FontWork->texSlot);
     Mem_Free((ActorWork *)Stg00_FontWork);
 }
 
@@ -98,8 +98,8 @@ void Stg00_FontDrawStr(s32 arg0, s32 arg1, u8 *arg2)
     u16 tpage;
     s32 c;
 
-    clut = ((work->field_8C2 + work->field_8D4) << 6) | ((work->field_8C0 >> 4) & 0x3F);
-    tex = (Stg00TexSlot *) work->field_8D0;
+    clut = ((work->clutY + work->color) << 6) | ((work->clutX >> 4) & 0x3F);
+    tex = (Stg00TexSlot *) work->texSlot;
     x = arg0 - Sys_State.centerX.s;
     tpage = (1 << 5) | ((tex->y & 0x100) >> 4) | ((tex->x & 0x3FF) >> 6) | ((tex->y & 0x200) << 2);
     while ((ch = *arg2) != 0) {
@@ -116,13 +116,13 @@ void Stg00_FontDrawStr(s32 arg0, s32 arg1, u8 *arg2)
             poly->b0 = 0xFF;
             poly->tpage = tpage;
             poly->clut = clut;
-            poly->u0 = c % 8 * 8 + ((Stg00TexSlot *) Stg00_FontWork->field_8D0)->u;
+            poly->u0 = c % 8 * 8 + ((Stg00TexSlot *) Stg00_FontWork->texSlot)->u;
             poly->v0 = c / 8 * 8;
-            poly->u1 = ((Stg00TexSlot *) Stg00_FontWork->field_8D0)->u + c % 8 * 8 + 8;
+            poly->u1 = ((Stg00TexSlot *) Stg00_FontWork->texSlot)->u + c % 8 * 8 + 8;
             poly->v1 = c / 8 * 8;
-            poly->u2 = ((Stg00TexSlot *) Stg00_FontWork->field_8D0)->u + c % 8 * 8;
+            poly->u2 = ((Stg00TexSlot *) Stg00_FontWork->texSlot)->u + c % 8 * 8;
             poly->v2 = c / 8 * 8 + 8;
-            poly->u3 = ((Stg00TexSlot *) Stg00_FontWork->field_8D0)->u + c % 8 * 8 + 8;
+            poly->u3 = ((Stg00TexSlot *) Stg00_FontWork->texSlot)->u + c % 8 * 8 + 8;
             poly->v3 = c / 8 * 8 + 8;
             poly->x0 = x;
             poly->y0 = y;
@@ -155,16 +155,16 @@ void Stg00_FontDrawSheet(void) {
     p->g0 = 0xFF;
     p->b0 = 0xFF;
     w = Stg00_FontWork;
-    t = (Stg00TexSlot *)w->field_8D0;
+    t = (Stg00TexSlot *)w->texSlot;
     p->tpage = (0 << 7) | (1 << 5) | ((t->y & 0x100) >> 4) | ((t->x & 0x3FF) >> 6) | ((t->y & 0x200) << 2);
-    p->clut = (w->field_8C2 << 6) | ((w->field_8C0 >> 4) & 0x3F);
-    p->u0 = ((Stg00TexSlot *)w->field_8D0)->u;
+    p->clut = (w->clutY << 6) | ((w->clutX >> 4) & 0x3F);
+    p->u0 = ((Stg00TexSlot *)w->texSlot)->u;
     p->v0 = 0;
-    p->u1 = ((Stg00TexSlot *)Stg00_FontWork->field_8D0)->u + 0x40;
+    p->u1 = ((Stg00TexSlot *)Stg00_FontWork->texSlot)->u + 0x40;
     p->v1 = 0;
-    p->u2 = ((Stg00TexSlot *)Stg00_FontWork->field_8D0)->u;
+    p->u2 = ((Stg00TexSlot *)Stg00_FontWork->texSlot)->u;
     p->v2 = h = 0x40;
-    p->u3 = ((Stg00TexSlot *)Stg00_FontWork->field_8D0)->u + h;
+    p->u3 = ((Stg00TexSlot *)Stg00_FontWork->texSlot)->u + h;
     p->v3 = h;
     p->x0 = -0x20;
     p->y0 = -0x20;
@@ -216,11 +216,11 @@ void Stg00_DigiViewSpawnModel(Actor *arg0) {
         w->field_10 = 0;
     }
     Task_Destroy(slot);
-    args.field_0 = id;
-    args.field_10 = 0;
-    args.field_4 = 0;
-    args.field_8 = 0;
-    args.field_C = 0;
+    args.digiId = id;
+    args.facing = 0;
+    args.posX = 0;
+    args.posY = 0;
+    args.posZ = 0;
     Task_Create(0x105, slot, (s32)&args);
     Text_Close(&w->field_14);
     Text_Close(&w->field_18);
@@ -242,7 +242,7 @@ void Stg00_DigiViewSpawnModel(Actor *arg0) {
 
 void Stg00_DigiViewTask(Actor *arg0)
 {
-  Work65E24 *work;
+  Stg00DigiViewWork *work;
   Actor *cam;
   Actor *s1;
   s32 i;
@@ -251,7 +251,7 @@ void Stg00_DigiViewTask(Actor *arg0)
   s32 count;
   s32 v0;
   s32 v1;
-  work = (Work65E24 *) arg0->work;
+  work = (Stg00DigiViewWork *) arg0->work;
   if (arg0->stateLevel0 == 1)
   {
     goto state1;
@@ -264,12 +264,12 @@ void Stg00_DigiViewTask(Actor *arg0)
   {
     return;
   }
-  work->field_8 = 0;
-  work->field_0 = 0;
-  work->field_4 = 0;
-  work->field_C = 0;
-  work->field_54 = 1;
-  Mem_FillWordsNeg1(&work->field_14, 0x10);
+  work->panel = 0;
+  work->digiCursor = 0;
+  work->pageCursor = 0;
+  work->page = 0;
+  work->drawTex = 1;
+  Mem_FillWordsNeg1(&work->nameText, 0x10);
   Stg00_DigiViewSpawnModel(arg0);
   Task_NextState0(arg0);
   return;
@@ -329,59 +329,59 @@ void Stg00_DigiViewTask(Actor *arg0)
         break;
 
       case 1:
-        if ((work->field_C == 1) && (work->field_8 == 1))
+        if ((work->page == 1) && (work->panel == 1))
       {
         if (D_8005F72C & 0x1000)
         {
-          work->field_58 = work->field_8;
-          if (work->field_64 != 0)
+          work->lastDirUp = work->panel;
+          if (work->skillRow != 0)
           {
-            work->field_64 -= 1;
+            work->skillRow -= 1;
           }
           else
-            if (work->field_5C != 0)
+            if (work->skillScroll != 0)
           {
-            work->field_5C -= 1;
+            work->skillScroll -= 1;
           }
         }
         if (D_8005F72C & 0x4000)
         {
-          work->field_58 = 0;
-          if (work->field_64 != 0xD)
+          work->lastDirUp = 0;
+          if (work->skillRow != 0xD)
           {
-            work->field_64 += 1;
+            work->skillRow += 1;
           }
           else
-            if (Stg00_DigiViewSkills[work->field_5C + 0xE] != 0)
+            if (Stg00_DigiViewSkills[work->skillScroll + 0xE] != 0)
           {
-            work->field_5C += 1;
+            work->skillScroll += 1;
           }
         }
         if (D_8005F72C & 0x8000)
         {
           for (k = 0; k < 0xE; k++)
           {
-            if (work->field_58 != 0)
+            if (work->lastDirUp != 0)
             {
-              if (work->field_64 != 0)
+              if (work->skillRow != 0)
               {
-                work->field_64 -= 1;
+                work->skillRow -= 1;
               }
               else
-                if (work->field_5C != 0)
+                if (work->skillScroll != 0)
               {
-                work->field_5C -= 1;
+                work->skillScroll -= 1;
               }
             }
             else
-              if (work->field_64 != 0xD)
+              if (work->skillRow != 0xD)
             {
-              work->field_64 += 1;
+              work->skillRow += 1;
             }
             else
-              if (Stg00_DigiViewSkills[work->field_5C + 0xE] != 0)
+              if (Stg00_DigiViewSkills[work->skillScroll + 0xE] != 0)
             {
-              work->field_5C += 1;
+              work->skillScroll += 1;
             }
           }
 
@@ -389,29 +389,29 @@ void Stg00_DigiViewTask(Actor *arg0)
       }
         if (Pad_State[0].up > 0)
       {
-        if (((Work65E24Slots *) work)->words[work->field_8] != 0)
+        if (((Work65E24Slots *) work)->words[work->panel] != 0)
         {
-          ((Work65E24Slots *) work)->words[work->field_8] -= 1;
+          ((Work65E24Slots *) work)->words[work->panel] -= 1;
           goto clearElapsed1;
         }
       }
       else
         if (Pad_State[0].down > 0)
       {
-        if (work->field_8 == 0)
+        if (work->panel == 0)
         {
-          if (work->field_0 != 3)
+          if (work->digiCursor != 3)
           {
-            work->field_0 += 1;
+            work->digiCursor += 1;
             goto clearElapsed1;
           }
         }
         else
         {
-          Ent68DB8 *e = &Stg00_DigiViewPages[work->field_C];
-          if (work->field_4 != e->field_4)
+          Stg00DigiViewPage *e = &Stg00_DigiViewPages[work->page];
+          if (work->pageCursor != e->maxRow)
           {
-            work->field_4 += 1;
+            work->pageCursor += 1;
             clearElapsed1:
             arg0->elapsed = 0;
 
@@ -420,9 +420,9 @@ void Stg00_DigiViewTask(Actor *arg0)
       }
         if (Pad_State[0].right > 0)
       {
-        if (work->field_8 == 1)
+        if (work->panel == 1)
         {
-          work->field_8 = 0;
+          work->panel = 0;
           goto clearElapsed2;
         }
       }
@@ -432,9 +432,9 @@ void Stg00_DigiViewTask(Actor *arg0)
         {
           if (Pad_State[0].left > 0)
           {
-            if (work->field_8 == 0)
+            if (work->panel == 0)
             {
-              work->field_8 = 1;
+              work->panel = 1;
               clearElapsed2:
               arg0->elapsed = 0;
             }
@@ -444,25 +444,25 @@ void Stg00_DigiViewTask(Actor *arg0)
       }
         if (D_8005F708 > 0)
       {
-        work->field_C += 1;
-        if (work->field_C == 4)
+        work->page += 1;
+        if (work->page == 4)
         {
-          work->field_C = 0;
+          work->page = 0;
         }
-        work->field_4 = 0;
+        work->pageCursor = 0;
       }
         if (D_8005F700 > 0)
       {
-        if (work->field_8 != 0)
+        if (work->panel != 0)
         {
           goto findFirstSection;
         }
         count = 1;
-        if (work->field_0 == 0)
+        if (work->digiCursor == 0)
         {
           count = 8;
         }
-        if (work->field_0 == 3)
+        if (work->digiCursor == 3)
         {
           count = 8;
         }
@@ -471,7 +471,7 @@ void Stg00_DigiViewTask(Actor *arg0)
         {
           do
           {
-            v1 = ((Work65E24Slots *) work)->words[work->field_8];
+            v1 = ((Work65E24Slots *) work)->words[work->panel];
             if (v1 < 0)
             {
               goto rangeElse;
@@ -485,9 +485,9 @@ void Stg00_DigiViewTask(Actor *arg0)
               goto rangeThen;
             }
             rangeElse:
-            if (work->field_10 != 0)
+            if (work->modelListIdx != 0)
             {
-              v0 = work->field_10 - 1;
+              v0 = work->modelListIdx - 1;
             }
             else
             {
@@ -498,18 +498,18 @@ void Stg00_DigiViewTask(Actor *arg0)
             rangeThen:
             v0 = Digi_GetModelListCount() - 1;
 
-            v1 = work->field_10;
+            v1 = work->modelListIdx;
             if (v0 == v1)
             {
-              work->field_10 = 0;
+              work->modelListIdx = 0;
               goto useField10;
             }
             v0 = v1 + 1;
             storeAndUse:
-            work->field_10 = v0;
+            work->modelListIdx = v0;
 
             useField10:
-            Digi_GetModelListId(work->field_10);
+            Digi_GetModelListId(work->modelListIdx);
 
             j++;
           }
@@ -526,26 +526,26 @@ void Stg00_DigiViewTask(Actor *arg0)
 
         if (s1 != ((void *) 0))
         {
-          switch (work->field_C)
+          switch (work->page)
           {
             case 0:
-              Task_SetState01(s1, 2, ((Work65E24Slots *) work)->bytes[work->field_8 * 4]);
+              Task_SetState01(s1, 2, ((Work65E24Slots *) work)->bytes[work->panel * 4]);
               break;
 
             case 1:
-              Text_CloseArray(work->field_1C, 0xE);
+              Text_CloseArray(work->skillTexts, 0xE);
               Task_SetState01(s1, 2, 0xA);
-              Task_SetState4(s1, Stg00_DigiViewSkills[work->field_5C + work->field_64]);
+              Task_SetState4(s1, Stg00_DigiViewSkills[work->skillScroll + work->skillRow]);
               break;
 
             case 2:
               Task_SetState01(s1, 2, 0xFF);
-              Task_SetState2(s1, D_80068DD8[work->field_4][0]);
+              Task_SetState2(s1, D_80068DD8[work->pageCursor][0]);
               break;
 
             case 3:
               Task_SetState01(s1, 2, 0xFF);
-              Task_SetState2(s1, D_80068DF4[work->field_4][0]);
+              Task_SetState2(s1, D_80068DF4[work->pageCursor][0]);
               break;
 
           }
@@ -564,16 +564,16 @@ void Stg00_DigiViewTask(Actor *arg0)
     if (D_8005F724 > 0)
     {
       s32 *ch;
-      work = (Work65E24 *) arg0->work;
+      work = (Stg00DigiViewWork *) arg0->work;
       ch = (s32 *) arg0->u34.children;
-      if (work->field_54 != 0)
+      if (work->drawTex != 0)
       {
         Task_SetState01((Actor *) ch[0], 2, 8);
-        work->field_54 = 0;
+        work->drawTex = 0;
         return;
       }
       Task_SetState01((Actor *) ch[0], 2, 9);
-      work->field_54 = 1;
+      work->drawTex = 1;
     }
   }
 
@@ -581,7 +581,7 @@ void Stg00_DigiViewTask(Actor *arg0)
 
 void Stg00_DigiViewDraw(Actor *arg0) {
     s32 period;
-    Work65E24 *w = (Work65E24 *)arg0->work;
+    Stg00DigiViewWork *w = (Stg00DigiViewWork *)arg0->work;
     EntA0 *parts;
     TextOpenArgs args;
     s32 fp = 0;
@@ -608,28 +608,28 @@ void Stg00_DigiViewDraw(Actor *arg0) {
     }
     parts = Cd_GetFileEntry(0x10B0000);
     mask = 0;
-    if (fp && w->field_8 == 0) {
-        mask = 1 << (w->field_0 + 1);
+    if (fp && w->panel == 0) {
+        mask = 1 << (w->digiCursor + 1);
     }
     Gfx_HidePartsByMask(parts, mask);
-    Gfx_SetPartsNumber(parts, 0x20, 4, Digi_GetModelListId(w->field_10));
+    Gfx_SetPartsNumber(parts, 0x20, 4, Digi_GetModelListId(w->modelListIdx));
     Gfx_DrawParts(parts);
-    parts = Cd_GetFileEntry(Stg00_DigiViewPages[w->field_C].field_0);
+    parts = Cd_GetFileEntry(Stg00_DigiViewPages[w->page].partsFileId);
     parts2 = parts;
     mask = 0;
-    if (fp && w->field_8 == 1) {
-        mask = 1 << (w->field_4 + 1);
+    if (fp && w->panel == 1) {
+        mask = 1 << (w->pageCursor + 1);
     }
     Gfx_HidePartsByMask(parts2, mask);
     Gfx_DrawParts(parts2);
     for (i = 0; i < 0xE; i++) {
-        Text_Close(&w->field_1C[i]);
+        Text_Close(&w->skillTexts[i]);
     }
 
-    if (w->field_C != 1) {
+    if (w->page != 1) {
         return;
     }
-    s6 = w->field_5C;
+    s6 = w->skillScroll;
     i = 0;
     for (s5 = 0, s7 = 0x10; s5 <= 0; s5++, s7 += 0x6E) {
         s32 y;
@@ -641,22 +641,22 @@ void Stg00_DigiViewDraw(Actor *arg0) {
             args.charDelay = 0;
             args.charAdvance = 0;
             args.lineAdvance = 0;
-            if (w->field_60 == s5 && w->field_64 == col) {
-                if (fp && w->field_8 == 1) {
+            if (w->field_60 == s5 && w->skillRow == col) {
+                if (fp && w->panel == 1) {
                     continue;
                 }
                 args.color = 4;
             } else {
                 args.color = 0;
             }
-            Text_Open(&w->field_1C[i], &args);
+            Text_Open(&w->skillTexts[i], &args);
             i++;
         }
     }
 }
 
 void Stg00_LineupSetVideoMode(Actor *arg0) {
-    switch (((Stg00ModeWork *)arg0->work)->field_0) {
+    switch (((Stg00ModeWork *)arg0->work)->videoMode) {
     default:
         Gpu_InitDoubleBuffer(0x140, 0xF0, 0, 0);
         break;
@@ -683,11 +683,11 @@ void Stg00_LineupSpawnModels(Actor *arg0) {
 
     for (i = 0; i < 9; i++) {
         Task_Destroy(slot);
-        args.field_0 = w->field_330[i + w->field_654];
-        args.field_10 = 0x400;
-        args.field_4 = Stg00_LineupLayouts[w->field_658][i].field_0;
-        args.field_8 = 0;
-        args.field_C = Stg00_LineupLayouts[w->field_658][i].field_2;
+        args.digiId = w->digiIds[i + w->scrollTop];
+        args.facing = 0x400;
+        args.posX = Stg00_LineupLayouts[w->layout][i].field_0;
+        args.posY = 0;
+        args.posZ = Stg00_LineupLayouts[w->layout][i].field_2;
         Task_Create(0x105, slot, (s32)&args);
         slot++;
     }
@@ -704,21 +704,21 @@ void Stg00_LineupBuildList(Actor *arg0) {
     for (i = 0; (id = Digi_GetModelListId(i)) < 0x12D; i++) {
         v = func_8001E79C(id);
         j = 0;
-        if (w->field_650 != 0) {
-            for (k = j; k < w->field_650; k++) {
-                if (v < w->field_10[k]) {
+        if (w->count != 0) {
+            for (k = j; k < w->count; k++) {
+                if (v < w->sortKeys[k]) {
                     break;
                 }
             }
             j = k;
-            for (k = w->field_650; k >= j; k--) {
-                w->field_10[k] = w->field_10[k - 1];
-                w->field_330[k] = w->field_330[k - 1];
+            for (k = w->count; k >= j; k--) {
+                w->sortKeys[k] = w->sortKeys[k - 1];
+                w->digiIds[k] = w->digiIds[k - 1];
             }
         }
-        w->field_10[j] = v;
-        w->field_330[j] = id;
-        w->field_650++;
+        w->sortKeys[j] = v;
+        w->digiIds[j] = id;
+        w->count++;
     }
 }
 
@@ -730,7 +730,7 @@ void Stg00_LineupTask(Actor *arg0) {
 
     switch (arg0->stateLevel0) {
     case 0:
-        ((Stg00ModeWork *)arg0->work)->field_0 = 2;
+        ((Stg00ModeWork *)arg0->work)->videoMode = 2;
         Gpu_AllocPacketBufs(0x25800);
         Gfx_InitLights();
         Stg00_LineupSetVideoMode(arg0);
@@ -766,29 +766,29 @@ void Stg00_LineupTask(Actor *arg0) {
             }
         }
         if (D_8005F720 > 0) {
-            if (((Stg00ModeWork *)w)->field_0 != 3) {
-                ((Stg00ModeWork *)w)->field_0++;
+            if (((Stg00ModeWork *)w)->videoMode != 3) {
+                ((Stg00ModeWork *)w)->videoMode++;
             } else {
-                ((Stg00ModeWork *)w)->field_0 = 0;
+                ((Stg00ModeWork *)w)->videoMode = 0;
             }
             Stg00_LineupSetVideoMode(arg0);
         }
         redraw = 0;
         if (D_8005F724 > 0) {
-            if (++w->field_658 == 3) {
-                w->field_658 = 0;
+            if (++w->layout == 3) {
+                w->layout = 0;
             }
             redraw = 1;
         }
         if (D_8005F72C & 0x20) {
-            if (w->field_654 != 0) {
-                w->field_654--;
+            if (w->scrollTop != 0) {
+                w->scrollTop--;
                 redraw = 1;
             }
         }
         if (D_8005F72C & 0x80) {
-            if (w->field_654 + 9 != w->field_650) {
-                w->field_654++;
+            if (w->scrollTop + 9 != w->count) {
+                w->scrollTop++;
                 redraw = 1;
             }
         }
@@ -826,7 +826,7 @@ void Stg00_VideoModeTask(Actor *arg0) {
         }
         w = (Stg00ModeWork *)arg0->work;
         Sys_SetFrameRate60();
-        switch (w->field_0) {
+        switch (w->videoMode) {
         case 1:
         default:
             Gpu_InitDoubleBuffer(0x140, 0xF0, 0, 0);
@@ -856,10 +856,10 @@ void Stg00_VideoModeTask(Actor *arg0) {
         }
         w2 = (Stg00ModeWork *)arg0->work;
         if (D_8005F720 > 0) {
-            if (w2->field_0 != 3) {
-                w2->field_0++;
+            if (w2->videoMode != 3) {
+                w2->videoMode++;
             } else {
-                w2->field_0 = 0;
+                w2->videoMode = 0;
             }
             Task_SetState0(arg0, 2);
         }
@@ -871,7 +871,7 @@ void Stg00_VideoModeTask(Actor *arg0) {
 }
 
 void Stg00_GroupViewSetVideoMode(Actor *arg0) {
-    switch (((Stg00ModeWork *)arg0->work)->field_0) {
+    switch (((Stg00ModeWork *)arg0->work)->videoMode) {
     default:
         Gpu_InitDoubleBuffer(0x140, 0xF0, 0, 0);
         break;
@@ -908,11 +908,11 @@ void Stg00_SpawnRandomGroup(Actor *arg0) {
             do {
                 idx = (Rand_Next() & 0xFFFF) % Digi_GetModelListCount();
             } while (Digi_GetModelListId(idx) >= 0xF0);
-            args.field_0 = Digi_GetModelListId(idx);
-            args.field_10 = y;
-            args.field_4 = x;
-            args.field_8 = 0;
-            args.field_C = z;
+            args.digiId = Digi_GetModelListId(idx);
+            args.facing = y;
+            args.posX = x;
+            args.posY = 0;
+            args.posZ = z;
             Task_Create(0x105, &slot[k], (s32)&args);
         }
         z += 0x2800;

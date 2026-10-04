@@ -30,17 +30,17 @@ void Stg00_SpawnSkillCastFx(Actor *arg0, s32 arg1) {
     Row6 *r;
     s32 i;
 
-    func_8001EEA4(w->field_2C, 0, a, b);
+    func_8001EEA4(w->skillId, 0, a, b);
     func_8001E7E4(arg0->digiId, rows);
     r = &rows[arg1];
     for (i = 0; i < 3; i++) {
         if (a[i] != 0) {
             args.field_0 = a[i];
             args.field_4 = b[i];
-            args.field_14 = w->field_10;
-            args.field_8 = w->field_4;
-            args.field_C = w->field_8;
-            args.field_10 = w->field_C;
+            args.field_14 = w->facing;
+            args.field_8 = w->homeX;
+            args.field_C = w->homeY;
+            args.field_10 = w->homeZ;
             args.field_18 = 0x78;
             switch (i) {
             case 0:
@@ -62,7 +62,7 @@ void Stg00_SpawnSkillCastFx(Actor *arg0, s32 arg1) {
             Task_Create(7, &slot[i + 1], (s32)&args);
         }
     }
-    args2.field_4 = w->field_2C;
+    args2.field_4 = w->skillId;
     args2.field_0 = 0;
     args2.field_8 = 0;
     Task_Create(0x10B, &slot[4], (s32)&args2);
@@ -76,15 +76,15 @@ void func_80066FE8(Actor *arg0) {
     s16 b[3];
     s32 i;
 
-    func_8001EEA4(w->field_2C, 1, a, b);
+    func_8001EEA4(w->skillId, 1, a, b);
     for (i = 0; i < 3; i++) {
         if (a[i] != 0) {
             args.field_0 = a[i];
             args.field_4 = b[i];
-            args.field_14 = w->field_10;
-            args.field_8 = w->field_4;
-            args.field_C = w->field_8;
-            args.field_10 = w->field_C;
+            args.field_14 = w->facing;
+            args.field_8 = w->homeX;
+            args.field_C = w->homeY;
+            args.field_10 = w->homeZ;
             args.field_18 = 0x3C;
             switch (i) {
             case 0:
@@ -230,13 +230,13 @@ void Stg00_DigiModelTask(Actor *arg0) {
 
     switch (arg0->stateLevel0) {
     case 0:
-        Actor_InitTransform(arg0, (s32 *)&w->field_4, (u16)w->field_10);
-        Gfx_AttachModel(arg0, w->field_14)->otIndex = 3;
+        Actor_InitTransform(arg0, (s32 *)&w->homePos, (u16)w->facing);
+        Gfx_AttachModel(arg0, w->modelFile)->otIndex = 3;
         Anim_SetModelAnim(arg0, 0);
         a1.field_0 = (s32)arg0;
         Task_Create(6, (s32 *)arg0->u34.children, (s32)&a1);
-        w->field_20 = 1;
-        w->field_24 = 0;
+        w->drawTex = 1;
+        w->drawWire = 0;
         Task_NextState0(arg0);
         break;
     case 1:
@@ -297,9 +297,9 @@ void Stg00_DigiModelTask(Actor *arg0) {
         case 6:
         case 7:
             w = (Stg00ModelWorkX *)arg0->work;
-            w->field_1C += Sys_FrameDelta;
-            while (w->field_1C >= 2) {
-                w->field_1C -= 2;
+            w->subFrame += Sys_FrameDelta;
+            while (w->subFrame >= 2) {
+                w->subFrame -= 2;
                 func_80067120(arg0, arg0->stateLevel1 - 6, 0);
             }
             break;
@@ -308,23 +308,23 @@ void Stg00_DigiModelTask(Actor *arg0) {
             switch (arg0->stateLevel2) {
             case 0:
             default:
-                w->field_24 = 1;
+                w->drawWire = 1;
                 m->field_34 = 1;
-                m->field_36 = 0x20;
-                m->field_38 = m->field_39 = m->field_3A = 0x7C;
-                w->field_28.r = w->field_28.g = w->field_28.b = 0;
+                m->tpageBits = 0x20;
+                m->flatR = m->flatG = m->flatB = 0x7C;
+                w->wireColor.r = w->wireColor.g = w->wireColor.b = 0;
                 Task_NextState2(arg0);
                 break;
             case 1:
-                if (m->field_38 == 0) {
+                if (m->flatR == 0) {
                     m->field_34 = 0;
-                    m->field_36 = 0;
-                    w->field_20 = 0;
-                    w->field_28.g = 0xFF;
+                    m->tpageBits = 0;
+                    w->drawTex = 0;
+                    w->wireColor.g = 0xFF;
                     Task_SetState0(arg0, 1);
                 } else {
-                    m->field_39 = m->field_3A = (m->field_38 -= 4);
-                    w->field_28.g += 8;
+                    m->flatG = m->flatB = (m->flatR -= 4);
+                    w->wireColor.g += 8;
                 }
                 break;
             }
@@ -334,21 +334,21 @@ void Stg00_DigiModelTask(Actor *arg0) {
             switch (arg0->stateLevel2) {
             case 0:
             default:
-                w->field_20 = 1;
+                w->drawTex = 1;
                 m->field_34 = 1;
-                m->field_36 = 0x20;
-                m->field_38 = m->field_39 = m->field_3A = 0;
+                m->tpageBits = 0x20;
+                m->flatR = m->flatG = m->flatB = 0;
                 Task_NextState2(arg0);
                 break;
             case 1:
-                if (m->field_38 == 0x7C) {
+                if (m->flatR == 0x7C) {
                     m->field_34 = 0;
-                    m->field_36 = 0;
-                    w->field_24 = 0;
+                    m->tpageBits = 0;
+                    w->drawWire = 0;
                     Task_SetState0(arg0, 1);
                 } else {
-                    m->field_39 = m->field_3A = (m->field_38 += 4);
-                    w->field_28.g -= 8;
+                    m->flatG = m->flatB = (m->flatR += 4);
+                    w->wireColor.g -= 8;
                 }
                 break;
             }
@@ -360,9 +360,9 @@ void Stg00_DigiModelTask(Actor *arg0) {
                 switch (arg0->stateLevel3) {
                 case 0:
                 default:
-                    w->field_2C = arg0->stateLevel4;
+                    w->skillId = arg0->stateLevel4;
                     Stg00_ResetToHomePos(arg0);
-                    p = Skill_GetShotXa(w->field_2C);
+                    p = Skill_GetShotXa(w->skillId);
                     a3.field_0 = p[0];
                     a3.field_4 = p[1];
                     a3.field_8 = 1;
@@ -371,7 +371,7 @@ void Stg00_DigiModelTask(Actor *arg0) {
                 case 1:
                     if (((Actor *)slot[5])->stateLevel0 == 1) {
                         Task_NextState0((Actor *)slot[5]);
-                        k = func_8001EE10(w->field_2C);
+                        k = func_8001EE10(w->skillId);
                         Stg00_SpawnSkillCastFx(arg0, k);
                         switch (k) {
                         case 0:
@@ -404,15 +404,15 @@ void Stg00_DigiModelTask(Actor *arg0) {
                 }
                 func_80066FE8(arg0);
                 Task_NextState2(arg0);
-                if (Skill_GetPower(w->field_2C) == 0) {
+                if (Skill_GetPower(w->skillId) == 0) {
                     Task_NextState2(arg0);
                     break;
                 }
             case 3:
                 w = (Stg00ModelWorkX *)arg0->work;
-                w->field_1C += Sys_FrameDelta;
-                while (w->field_1C >= 2) {
-                    w->field_1C -= 2;
+                w->subFrame += Sys_FrameDelta;
+                while (w->subFrame >= 2) {
+                    w->subFrame -= 2;
                     func_80067120(arg0, 0, 1);
                 }
                 break;
