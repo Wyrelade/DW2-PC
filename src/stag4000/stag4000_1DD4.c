@@ -1368,7 +1368,114 @@ end:
     return -1;
 }
 
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000_1DD4", func_80068604);
+s32 func_80068604(Stg40Ent48 *e) {
+    Stg40Loc *loc = &e->field_18;
+    s32 bits;
+    s32 idx;
+    s32 oct;
+    s32 k;
+    s32 dir;
+    s16 d;
+    s32 nx;
+    s32 ny;
+    u16 f;
+    u16 fl;
+    u16 fr;
+    s16 *pl;
+    s16 *tbl;
+
+    if (loc->field_1C != 0) {
+        return 0;
+    }
+    bits = (D_8005F6F0[0].right != 0) << 2;
+    if (D_8005F6F0[0].left != 0) {
+        bits |= 8;
+    }
+    dir = bits;
+    if (D_8005F6F0[0].up != 0) {
+        dir |= 2;
+    }
+    idx = dir | (D_8005F6F0[0].down != 0);
+    k = D_800728D4[idx];
+    oct = (s16)k;
+    if (k < 0) {
+        return 0;
+    }
+    if (D_8005071C->field_BA0 & 2) {
+        oct = (oct + D_8005071C->field_BA4) & 7;
+    }
+    e->field_E = (oct << 16) >> 7;
+    e->field_B = oct;
+    if (D_8005F6F0[0].l1 != 0 && (oct & 1) == 0) {
+        return 0;
+    }
+    if (D_8005F710 != 0) {
+        return 0;
+    }
+    dir = oct + 1;
+    oct = dir;
+    if ((s16)e->field_E != e->field_C) {
+        return 0;
+    }
+    nx = ny = -1;
+    loc->field_1E &= 0xFFFE;
+    d = dir;
+    {
+        s16 *p = (s16 *)D_800727C0;
+
+        f = func_800703E0(loc->u0.pair.field_0 + p[d << 1], loc->u0.pair.field_2 + p[(d << 1) | 1]);
+    }
+    if (!(f & 0x8000) || (f & 0x30) == 0x20) {
+        return 0;
+    }
+    if (f & 0x10) {
+        loc->field_1E |= 1;
+        dir = loc->u0.pair.field_0;
+        nx = dir + ((s16 *)D_800727C0)[d << 1];
+        ny = loc->u0.pair.field_2 + ((s16 *)D_800727C0)[(d << 1) | 1];
+    }
+    if ((oct & 1) == 0) {
+        pl = &((s16 *)D_800727C0)[(d - 1) << 1];
+        fl = func_800703E0(loc->u0.pair.field_0 + pl[0],
+                           loc->u0.pair.field_2 + ((s16 *)D_800727C0)[((d - 1) << 1) | 1]);
+        fr = func_800703E0(loc->u0.pair.field_0 + ((s16 *)D_800727C0)[(d + 1) << 1],
+                           loc->u0.pair.field_2 + ((s16 *)D_800727C0)[((d + 1) << 1) | 1]);
+        if (!(fl & 0x8000) || (fl & 0x30) == 0x20 || !(fr & 0x8000) || (fr & 0x30) == 0x20) {
+            return 0;
+        }
+        if (fl & 0x10) {
+            loc->field_1E |= 1;
+            nx = loc->u0.pair.field_0 + pl[0];
+            ny = loc->u0.pair.field_2 + ((s16 *)D_800727C0)[((d - 1) << 1) | 1];
+        } else if (fr & 0x10) {
+            loc->field_1E |= 1;
+            nx = loc->u0.pair.field_0 + ((s16 *)D_800727C0)[(d + 1) << 1];
+            ny = loc->u0.pair.field_2 + ((s16 *)D_800727C0)[((d + 1) << 1) | 1];
+        }
+    }
+    if (D_8005071C->field_BA0 & 1) {
+        return 1;
+    }
+    if (nx != -1) {
+        Stg40Ent48 *te = func_8006E200(nx, ny);
+        Stg40B60 *b = D_80072B60;
+
+        b->field_40 = te;
+        b->field_3C = te->field_14;
+    }
+    loc->field_4.field_0 = loc->u0.pair.field_0;
+    loc->field_4.field_2 = loc->u0.pair.field_2;
+    tbl = (s16 *)D_800727C0;
+    loc->u0.pair.field_0 += tbl[(s16)oct << 1];
+    loc->u0.pair.field_2 += tbl[((s16)oct << 1) | 1];
+    loc->field_A = 0xC;
+    loc->field_8 = 0xC;
+    dir = loc->field_4.field_2;
+    func_80070974(loc->field_4.field_0, dir);
+    func_800708FC(loc->u0.pair.field_0, loc->u0.pair.field_2, 1);
+    loc->field_1C = 1;
+    return 1;
+}
 
 Stg40Ent48 *func_800689E0(Stg40Ent48 *a0) {
     Stg40Blk5071C *b = D_8005071C;
