@@ -8,77 +8,77 @@
 
 /* View of *D_8005071C (main Blk5071C) as this overlay uses it. */
 typedef struct {
-    /* 0x00 */ s16 field_0;
-    /* 0x02 */ s16 field_2;
+    /* 0x00 */ s16 cols;
+    /* 0x02 */ s16 rows;
     /* 0x04 */ s16 field_4;
     u8 _pad06[0x04];
-    /* 0x0A */ s16 field_A;
-    /* 0x0C */ u8 field_C;
-    /* 0x0D */ u8 field_D;      /* count of field_E bytes (Stg40_ApplyFloorLayout) */
-    /* 0x0E */ u8 field_E[16];
+    /* 0x0A */ s16 wallStyle;
+    /* 0x0C */ u8 hazardLevel;
+    /* 0x0D */ u8 nameLen;      /* count of name bytes (Stg40_ApplyFloorLayout) */
+    /* 0x0E */ u8 name[16];
     u8 _pad1E[0x02];
-} Stg40E34;
+} Stg40FloorHeader;
 
 typedef struct {
-    /* 0x00 */ s16 field_0[11];
-    /* 0x16 */ s16 field_16;       /* count used by Stg40_TurnQueueNext */
-    /* 0x18 */ s16 field_18;
-    /* 0x1A */ s16 field_1A;       /* index into field_0 */
-} Stg40FFC;
+    /* 0x00 */ s16 ids[11];
+    /* 0x16 */ s16 count;       /* count used by Stg40_TurnQueueNext */
+    /* 0x18 */ s16 capacity;
+    /* 0x1A */ s16 cursor;       /* index into ids */
+} Stg40TurnQueue;
 
 /* Map position block inside Stg40Ent48 (at 0x18); the x/y pair is also compared as one word
  * (Stg40_FindObjAtSameTile). Passed to Stg40_ScrollFollow / Stg40_ScrollToFollow. */
 typedef struct {
     union {
-        /* 0x00 */ s32 field_0;
+        /* 0x00 */ s32 tileXY;
         /* 0x00 */ Pair54 pair;
     } u0;
-    /* 0x04 */ Pair54 field_4;
-    /* 0x08 */ s16 field_8;
-    /* 0x0A */ s16 field_A;
-    /* 0x0C */ s32 field_C;
-    /* 0x10 */ s32 field_10;
-    /* 0x14 */ s32 field_14;
-    /* 0x18 */ s32 field_18;
-    /* 0x1C */ s16 field_1C;
-    /* 0x1E */ u16 field_1E;
+    /* 0x04 */ Pair54 prevTile;
+    /* 0x08 */ s16 moveFramesLeft;
+    /* 0x0A */ s16 moveFrames;
+    /* 0x0C */ s32 posX;
+    /* 0x10 */ s32 posY;
+    /* 0x14 */ s32 height;
+    /* 0x18 */ s32 fallSpeed;
+    /* 0x1C */ s16 moving;
+    /* 0x1E */ u16 moveFlags;
 } Stg40Loc;
 
-/* Element of Stg40Blk5071C.field_18 (stride 0x48, 41 entries; Stg40_RevealAllEnts). */
+/* Element of Stg40DungState.field_18 (stride 0x48, 41 entries; Stg40_RevealAllEnts). */
 typedef struct {
     /* 0x00 */ s32 field_0;
-    /* 0x04 */ s16 field_4;
+    /* 0x04 */ s16 digiId;
     /* 0x06 */ u8 field_6;
-    /* 0x07 */ u8 field_7;
-    /* 0x08 */ u8 field_8;         /* kind, switched on by Stg40_FixtureUpdate */
-    /* 0x09 */ u8 field_9;
-    /* 0x0A */ u8 field_A;
-    /* 0x0B */ u8 field_B;         /* heading octant (Stg40_ObjStepMove) */
-    /* 0x0C */ s16 field_C;        /* current heading, turns toward field_E */
-    /* 0x0E */ u16 field_E;
-    /* 0x10 */ u8 *field_10;
-    /* 0x14 */ Actor *field_14;
-    /* 0x18 */ Stg40Loc field_18;
-    /* 0x38 */ s32 field_38;
-    /* 0x3C */ s32 field_3C;
-    /* 0x40 */ s32 field_40;
+    /* 0x07 */ u8 turnId;
+    /* 0x08 */ u8 kind;         /* kind, switched on by Stg40_FixtureUpdate */
+    /* 0x09 */ u8 spawnKind;
+    /* 0x0A */ u8 roomId;
+    /* 0x0B */ u8 octant;         /* heading octant (Stg40_ObjStepMove) */
+    /* 0x0C */ s16 heading;        /* current heading, turns toward targetHeading */
+    /* 0x0E */ u16 targetHeading;
+    /* 0x10 */ u8 *params;
+    /* 0x14 */ Actor *actor;
+    /* 0x18 */ Stg40Loc loc;
+    /* 0x38 */ s32 scaleX;
+    /* 0x3C */ s32 scaleY;
+    /* 0x40 */ s32 scaleZ;
     u8 _pad44[0x04];
 } Stg40Ent48;
 
-/* x, y, value byte triple (Stg40Blk5071C.field_D08; Stg40_ApplyTrapCells, Stg40_PickRandomPoint). */
+/* x, y, value byte triple (Stg40DungState.field_D08; Stg40_ApplyTrapCells, Stg40_PickRandomPoint). */
 typedef struct {
-    /* 0x0 */ u8 field_0;
-    /* 0x1 */ u8 field_1;
-    /* 0x2 */ u8 field_2;
-} Stg40Rec3;
+    /* 0x0 */ u8 x;
+    /* 0x1 */ u8 y;
+    /* 0x2 */ u8 kind;
+} Stg40CellPoint;
 
 /* Output pair written by Stg40_PickRandomPoint. */
 typedef struct {
-    /* 0x0 */ s16 field_0;
-    /* 0x2 */ s16 field_2;
-} Stg40Pick;
+    /* 0x0 */ s16 x;
+    /* 0x2 */ s16 y;
+} Stg40CellPos;
 
-/* 4-byte record of Stg40MapRoom.field_8 (Stg40_SpawnChests): cell x, y, four 1-based picks into Stg40Map.field_34. */
+/* 4-byte record of Stg40DungLayout.field_8 (Stg40_SpawnChests): cell x, y, four 1-based picks into Stg40DungFloor.field_34. */
 typedef struct {
     /* 0x0 */ u32 x : 8;           /* 0xFF terminates the list */
     u32 y : 8;
@@ -88,7 +88,7 @@ typedef struct {
     u32 pick3 : 4;
 } Stg40Drop;
 
-/* Element of Stg40Map.field_34 (stride 4). */
+/* Element of Stg40DungFloor.field_34 (stride 4). */
 typedef struct {
     /* 0x0 */ u8 field_0;
     /* 0x1 */ u8 field_1;
@@ -110,35 +110,35 @@ typedef struct {
     u32 _rest : 16;
 } Stg40Spawn;
 
-/* Element picked from Stg40Map.field_8 into Stg40B60.field_14 (Stg40_PickSpawnPoints). */
+/* Element picked from Stg40DungFloor.field_8 into Stg40B60.field_14 (Stg40_PickSpawnPoints). */
 typedef struct {
-    /* 0x00 */ u32 *field_0;      /* 4-bit cell codes, 8 per word (Stg40_ReadFloorBits) */
-    /* 0x04 */ Stg40Rec3 *field_4;  /* 0xFF-terminated, passed to Stg40_PickRandomPoint */
-    /* 0x08 */ Stg40Drop *field_8;  /* 0xFF-terminated (Stg40_SpawnChests) */
-    /* 0x0C */ Stg40Spawn *field_C; /* 0xFF-terminated (Stg40_SpawnFixedHazards) */
-    /* 0x10 */ Stg40Drop *field_10; /* 0xFF-terminated (Stg40_SpawnEnemyParties) */
-} Stg40MapRoom;
+    /* 0x00 */ u32 *cellBits;      /* 4-bit cell codes, 8 per word (Stg40_ReadFloorBits) */
+    /* 0x04 */ Stg40CellPoint *spawnPoints;  /* 0xFF-terminated, passed to Stg40_PickRandomPoint */
+    /* 0x08 */ Stg40Drop *chests;  /* 0xFF-terminated (Stg40_SpawnChests) */
+    /* 0x0C */ Stg40Spawn *hazards; /* 0xFF-terminated (Stg40_SpawnFixedHazards) */
+    /* 0x10 */ Stg40Drop *enemyParties; /* 0xFF-terminated (Stg40_SpawnEnemyParties) */
+} Stg40DungLayout;
 
 /* Stg40Ent48.field_10 viewed as the info block Stg40_EnemyInfoDraw draws. */
 typedef struct {
-    /* 0x00 */ s16 field_0;
+    /* 0x00 */ s16 setId;
     /* 0x02 */ u8 field_2;
-    /* 0x03 */ u8 field_3;
+    /* 0x03 */ u8 likedGift;
     /* 0x04 */ u8 field_4;
-    /* 0x05 */ u8 field_5;
-    /* 0x06 */ u8 field_6;
-    /* 0x07 */ u8 field_7;
-    /* 0x08 */ u8 field_8;
-    /* 0x09 */ u8 field_9;
-    /* 0x0A */ u8 field_A;
-    /* 0x0B */ u8 field_B;          /* count of used field_16 entries */
-    /* 0x0C */ s16 field_C;
-    /* 0x0E */ u16 field_E;
-    /* 0x10 */ s16 field_10[3];     /* digimon ids (Stg40_EnemyInfoUpdate) */
-    /* 0x16 */ s16 field_16[3];
-} Stg40SlotInfo;
+    /* 0x05 */ u8 pathMode;
+    /* 0x06 */ u8 idleTicks;
+    /* 0x07 */ u8 stepsPerBurst;
+    /* 0x08 */ u8 idleCount;
+    /* 0x09 */ u8 stepCount;
+    /* 0x0A */ u8 giftsTaken;
+    /* 0x0B */ u8 digiCount;          /* count of used levels entries */
+    /* 0x0C */ s16 giftPoints;
+    /* 0x0E */ u16 pointsPerLevel;
+    /* 0x10 */ s16 digiIds[3];     /* digimon ids (Stg40_EnemyInfoUpdate) */
+    /* 0x16 */ s16 levels[3];
+} Stg40EnemyParty;
 
-/* Stg40MapRoom / Stg40Map as file offsets before Stg40_RelocDungFile relocates them. */
+/* Stg40DungLayout / Stg40DungFloor as file offsets before Stg40_RelocDungFile relocates them. */
 typedef struct {
     /* 0x00 */ u32 field_0[5];
 } Stg40MapRoomRel;
@@ -158,7 +158,7 @@ typedef struct {
     /* 0x14 */ s16 field_14;
 } Stg40W6AD0;
 
-/* Element of Stg40Map.field_54 (Stg40_SpawnRandomHazards): four random value nibbles, four random count nibbles. */
+/* Element of Stg40DungFloor.field_54 (Stg40_SpawnRandomHazards): four random value nibbles, four random count nibbles. */
 typedef struct {
     /* 0x0 */ u32 val0 : 4;
     u32 val1 : 4;
@@ -179,19 +179,19 @@ typedef struct {
 
 /* Map header behind Stg40B60.field_10 (Stg40_ApplyFloorLayout). */
 typedef struct {
-    /* 0x00 */ u8 *field_0;       /* 0xFF-terminated byte list */
-    /* 0x04 */ s32 field_4;       /* flag script (Stg40_LoadEventTiles) */
-    /* 0x08 */ Stg40MapRoom *field_8[8];
-    /* 0x28 */ u16 field_28;
+    /* 0x00 */ u8 *name;       /* 0xFF-terminated byte list */
+    /* 0x04 */ s32 eventTable;       /* flag script (Stg40_LoadEventTiles) */
+    /* 0x08 */ Stg40DungLayout *layouts[8];
+    /* 0x28 */ u16 wallStyle;
     u8 _pad2A[0x02];
-    /* 0x2C */ s16 field_2C;      /* index into D_800729B4 */
-    /* 0x2E */ u8 field_2E;
-    /* 0x2F */ u8 field_2F[5];     /* 1-based ids picked by Stg40_SpawnEnemyParties */
-    /* 0x34 */ Stg40MapPos field_34[8];
-    /* 0x54 */ Stg40MapGen field_54[5];
-} Stg40Map;
+    /* 0x2C */ s16 paletteIdx;      /* index into D_800729B4 */
+    /* 0x2E */ u8 hazardLevel;
+    /* 0x2F */ u8 enemySets[5];     /* 1-based ids picked by Stg40_SpawnEnemyParties */
+    /* 0x34 */ Stg40MapPos chests[8];
+    /* 0x54 */ Stg40MapGen hazardGroups[5];
+} Stg40DungFloor;
 
-/* Entries collected by Stg40_CheckEncounter (Stg40Blk5071C.field_1018). */
+/* Entries collected by Stg40_CheckEncounter (Stg40DungState.field_1018). */
 typedef struct {
     /* 0x00 */ Stg40Ent48 *field_0[8];
     /* 0x20 */ s16 field_20;       /* count */
@@ -209,79 +209,79 @@ typedef struct {
     /* 0x10 */ s32 field_10;
 } Stg40Stage14;
 
-/* Element of the grid behind Stg40Blk5071C.field_E58 (field_E54 dims; Stg40_GetCellFlags). */
+/* Element of the grid behind Stg40DungState.field_E58 (field_E54 dims; Stg40_GetCellFlags). */
 typedef struct {
-    /* 0x00 */ u16 field_0;
-    /* 0x02 */ u8 field_2;
-    /* 0x03 */ u8 field_3;
+    /* 0x00 */ u16 flags;
+    /* 0x02 */ u8 roomId;
+    /* 0x03 */ u8 wallBits;
 } Stg40Cell;
 
 typedef struct {
-    /* 0x000 */ u8 field_0;
-    /* 0x001 */ u8 field_1;
-    /* 0x002 */ u8 field_2;
-    /* 0x003 */ u8 field_3;
-    /* 0x004 */ u8 field_4;
+    /* 0x000 */ u8 entryMode;
+    /* 0x001 */ u8 transitionReq;
+    /* 0x002 */ u8 freeze;
+    /* 0x003 */ u8 floor;
+    /* 0x004 */ u8 floorLayout;
     /* 0x005 */ u8 field_5;
-    /* 0x006 */ u8 field_6;
-    /* 0x007 */ u8 field_7;
-    /* 0x008 */ s32 field_8;
-    /* 0x00C */ s16 field_C;       /* count of live field_18 entries (Stg40_FindObjAtSameTile) */
-    /* 0x00E */ s16 field_E;       /* count of field_BB8 records (Stg40_AddEntity) */
-    /* 0x010 */ s16 field_10;      /* count of field_CCE pairs (Stg40_SpawnChests) */
-    /* 0x012 */ s16 field_12;      /* count of field_CE8 pairs (Stg40_AddEntity) */
-    /* 0x014 */ s16 field_14;      /* count of live field_D08 entries (Stg40_ApplyTrapCells) */
+    /* 0x006 */ u8 fromMode32B;
+    /* 0x007 */ u8 beetleDown;
+    /* 0x008 */ s32 dungFileId;
+    /* 0x00C */ s16 entCount;       /* count of live ents entries (Stg40_FindObjAtSameTile) */
+    /* 0x00E */ s16 partyCount;       /* count of parties records (Stg40_AddEntity) */
+    /* 0x010 */ s16 chestCount;      /* count of chests pairs (Stg40_SpawnChests) */
+    /* 0x012 */ s16 hazardCount;      /* count of hazards pairs (Stg40_AddEntity) */
+    /* 0x014 */ s16 trapCount;      /* count of live trapCells entries (Stg40_ApplyTrapCells) */
     u8 _pad016[0x02];
-    /* 0x018 */ Stg40Ent48 field_18[41];
-    /* 0xBA0 */ s32 field_BA0;     /* bit 0 tested by Stg40_PlayerInput */
-    /* 0xBA4 */ u8 field_BA4;
-    /* 0xBA5 */ u8 field_BA5;
-    /* 0xBA6 */ u8 field_BA6;
-    /* 0xBA7 */ u8 field_BA7;
-    /* 0xBA8 */ u8 field_BA8;      /* count of field_BA9 */
-    /* 0xBA9 */ u8 field_BA9[12];
-    /* 0xBB5 */ u8 field_BB5;
+    /* 0x018 */ Stg40Ent48 ents[41];
+    /* 0xBA0 */ s32 statusFlags;     /* bit 0 tested by Stg40_PlayerInput */
+    /* 0xBA4 */ u8 confusionTurn;
+    /* 0xBA5 */ u8 bitBugLevel;
+    /* 0xBA6 */ u8 energyBugLevel;
+    /* 0xBA7 */ u8 returnBugLevel;
+    /* 0xBA8 */ u8 memBugCount;      /* count of memBugLevels */
+    /* 0xBA9 */ u8 memBugLevels[12];
+    /* 0xBB5 */ u8 bindTurns;
     u8 _padBB6[0x02];
-    /* 0xBB8 */ u8 field_BB8[9][0x1C]; /* per-entry data of kind 1 (Stg40_AddEntity) */
+    /* 0xBB8 */ u8 parties[9][0x1C]; /* per-entry data of kind 1 (Stg40_AddEntity) */
     u8 _padCB4[0xCCE - 0xCB4];
-    /* 0xCCE */ u8 field_CCE[12][2];
+    /* 0xCCE */ u8 chests[12][2];
     u8 _padCE6[0x02];
-    /* 0xCE8 */ u8 field_CE8[16][2]; /* per-entry data of kinds 5..12 (Stg40_AddEntity) */
-    /* 0xD08 */ Stg40Rec3 field_D08[100];
-    /* 0xE34 */ Stg40E34 field_E34;
-    /* 0xE54 */ Stg40E34 *field_E54;
-    /* 0xE58 */ ActorWork *field_E58;
-    /* 0xE5C */ s32 field_E5C[8];
-    /* 0xE7C */ u8 field_E7C[0x180];
-    /* 0xFFC */ Stg40FFC field_FFC;
-    /* 0x1018 */ Stg40List field_1018;
+    /* 0xCE8 */ u8 hazards[16][2]; /* per-entry data of kinds 5..12 (Stg40_AddEntity) */
+    /* 0xD08 */ Stg40CellPoint trapCells[100];
+    /* 0xE34 */ Stg40FloorHeader defaultFloorHdr;
+    /* 0xE54 */ Stg40FloorHeader *floorHdr;
+    /* 0xE58 */ ActorWork *cells;
+    /* 0xE5C */ s32 revealedRooms[8];
+    /* 0xE7C */ u8 visitedBits[0x180];
+    /* 0xFFC */ Stg40TurnQueue turnQueue;
+    /* 0x1018 */ Stg40List encounterList;
     u8 _pad103C[0x01];
-    /* 0x103D */ u8 field_103D;
+    /* 0x103D */ u8 floorSpecialty;
     /* 0x103E */ u16 field_103E;
-    /* 0x1040 */ s16 field_1040;
+    /* 0x1040 */ s16 giftLevel;
     u8 _pad1042[0x02];
-    /* 0x1044 */ Stg40Stage14 field_1044; /* row of file 0xE20000A picked by field_1058 */
-    /* 0x1058 */ s16 field_1058;
+    /* 0x1044 */ Stg40Stage14 dungeon; /* row of file 0xE20000A picked by dungeonIdx */
+    /* 0x1058 */ s16 dungeonIdx;
     u8 _pad105A[0x02];
-    /* 0x105C */ s32 field_105C;
-    /* 0x1060 */ s32 field_1060;
-    /* 0x1064 */ Stg40Loc *field_1064;
-    /* 0x1068 */ Stg40Loc *field_1068;
-} Stg40Blk5071C;
+    /* 0x105C */ s32 floorTexId0;
+    /* 0x1060 */ s32 floorTexId1;
+    /* 0x1064 */ Stg40Loc *scrollTarget;
+    /* 0x1068 */ Stg40Loc *playerLoc;
+} Stg40DungState;
 
 /* Work of the task behind Stg40_ItemMenuTask (init Stg40_ItemMenuInit). */
 typedef struct {
-    /* 0x00 */ s32 field_0[6];     /* text handles of the list rows */
-    /* 0x18 */ s32 field_18;       /* text handle of the description */
-    /* 0x1C */ s32 field_1C;       /* scale; 0 = hidden (Stg40_ItemMenuDraw) */
-    /* 0x20 */ s32 field_20;
-    /* 0x24 */ s32 field_24;
-    /* 0x28 */ s32 field_28[6];    /* row text ids (filled through Stg40_ItemMenuGetTextIds) */
-    /* 0x40 */ s32 field_40;       /* description text id */
-    /* 0x44 */ u8 field_44;
-    /* 0x45 */ u8 field_45;
-    /* 0x46 */ u8 field_46;
-} Stg40ObjWork;
+    /* 0x00 */ s32 rowTexts[6];     /* text handles of the list rows */
+    /* 0x18 */ s32 descText;       /* text handle of the description */
+    /* 0x1C */ s32 scale;       /* scale; 0 = hidden (Stg40_ItemMenuDraw) */
+    /* 0x20 */ s32 hasDesc;
+    /* 0x24 */ s32 refresh;
+    /* 0x28 */ s32 rowTextIds[6];    /* row text ids (filled through Stg40_ItemMenuGetTextIds) */
+    /* 0x40 */ s32 descTextId;       /* description text id */
+    /* 0x44 */ u8 rowCount;
+    /* 0x45 */ u8 arrowFlags;
+    /* 0x46 */ u8 cursorRow;
+} Stg40ItemMenuWork;
 
 /* Init args of Stg40_LinkedModelInit. */
 typedef struct {
@@ -297,59 +297,59 @@ typedef struct {
 
 /* Work of the task initialised by Stg40_LinkedModelInit. */
 typedef struct {
-    /* 0x00 */ s32 field_0;        /* model id */
-    /* 0x04 */ s32 field_4[3];     /* position (Actor_InitTransform) */
-    /* 0x10 */ s32 field_10;       /* rotation, read as u16 */
-    /* 0x14 */ s32 field_14;       /* model file */
-    /* 0x18 */ s32 field_18;       /* anim file */
+    /* 0x00 */ s32 digiId;        /* model id */
+    /* 0x04 */ s32 pos[3];     /* position (Actor_InitTransform) */
+    /* 0x10 */ s32 rotY;       /* rotation, read as u16 */
+    /* 0x14 */ s32 modelFile;       /* model file */
+    /* 0x18 */ s32 animFile;       /* anim file */
     u8 _pad1C[0x04];
-    /* 0x20 */ s32 field_20;
-    /* 0x24 */ u16 field_24;       /* index into Stg40_LinkedModelTable */
+    /* 0x20 */ s32 parent;
+    /* 0x24 */ u16 tableIndex;       /* index into Stg40_LinkedModelTable */
     u8 _pad26[0x02];
-    /* 0x28 */ s32 field_28;
-} Stg40InitWork;
+    /* 0x28 */ s32 offsetY;
+} Stg40LinkedModelWork;
 
 /* Actor.work of the objects driven by Stg40_ObjStartFlash / Stg40_ObjSetAnim. */
 typedef struct {
     u8 _pad00[0x04];
-    /* 0x04 */ s32 field_4;
-    /* 0x08 */ s32 field_8;
-    /* 0x0C */ s32 field_C;
-    /* 0x10 */ s32 field_10;
-    /* 0x14 */ s32 field_14;       /* model file */
-    /* 0x18 */ s32 field_18;       /* anim file */
+    /* 0x04 */ s32 posX;
+    /* 0x08 */ s32 posY;
+    /* 0x0C */ s32 posZ;
+    /* 0x10 */ s32 rotY;
+    /* 0x14 */ s32 modelFile;       /* model file */
+    /* 0x18 */ s32 animFile;       /* anim file */
     u8 _pad1C[0x04];
     /* 0x20 */ s16 field_20;
     /* 0x22 */ u8 field_22;
     /* 0x23 */ u8 field_23;
     /* 0x24 */ u8 field_24;
     u8 _pad25[0x01];
-    /* 0x26 */ u8 field_26;
-    /* 0x27 */ u8 field_27;
+    /* 0x26 */ u8 flashKind;
+    /* 0x27 */ u8 flashFrame;
     /* 0x28 */ u8 field_28;
     u8 _pad29[0x03];
-    /* 0x2C */ Stg40Ent48 *field_2C;
-    /* 0x30 */ s16 field_30;
-    /* 0x32 */ s16 field_32;
-    /* 0x34 */ s16 field_34;
-    /* 0x36 */ s16 field_36;       /* pending child task arg, -1 = none (Stg40_ObjUpdate) */
-    /* 0x38 */ s16 field_38;       /* last child task arg */
+    /* 0x2C */ Stg40Ent48 *ent;
+    /* 0x30 */ s16 pendingAnim;
+    /* 0x32 */ s16 curAnim;
+    /* 0x34 */ s16 drawn;
+    /* 0x36 */ s16 pendingLinkedModel;       /* pending child task arg, -1 = none (Stg40_ObjUpdate) */
+    /* 0x38 */ s16 linkedModel;       /* last child task arg */
 } Stg40ActWork;
 
 /* 0x90-byte transform block behind Actor.u38 (copied whole by Stg40_LinkedModelDraw). */
 typedef struct {
     u8 _pad00[0x30];
-    /* 0x30 */ s32 field_30;
-    /* 0x34 */ s32 field_34;
-    /* 0x38 */ s32 field_38;
+    /* 0x30 */ s32 posX;
+    /* 0x34 */ s32 posY;
+    /* 0x38 */ s32 posZ;
     u8 _pad3C[0x04];
-    /* 0x40 */ s16 field_40;
-    /* 0x42 */ s16 field_42;
-    /* 0x44 */ s16 field_44;
+    /* 0x40 */ s16 rotX;
+    /* 0x42 */ s16 rotY;
+    /* 0x44 */ s16 rotZ;
     u8 _pad46[0x12];
-    /* 0x58 */ s32 field_58;
-    /* 0x5C */ s32 field_5C;
-    /* 0x60 */ s32 field_60;
+    /* 0x58 */ s32 scaleX;
+    /* 0x5C */ s32 scaleY;
+    /* 0x60 */ s32 scaleZ;
     u8 _pad64[0x2C];
 } Stg40Xform;
 
@@ -384,9 +384,9 @@ typedef struct {
 /* Actor.model viewed with the fade fields Stg40_PlayerExitFloor sets. */
 typedef struct {
     u8 _pad00[0x34];
-    /* 0x34 */ s16 field_34;
-    /* 0x36 */ s16 field_36;
-    /* 0x38 */ Stg40Col field_38;
+    /* 0x34 */ s16 clutRow;
+    /* 0x36 */ s16 tpageFlags;
+    /* 0x38 */ Stg40Col fadeColor;
 } Stg40ModelFade;
 
 /* Image work: pixel data, its VRAM rect, a texture slot (Stg40_AutomapLoadClut / Stg40_AutomapReleaseTex). */
@@ -406,7 +406,7 @@ typedef struct {
     /* 0x75C */ s32 field_75C;     /* frame counter */
 } Stg40ImgClut;
 
-/* Stg40TileWork viewed as 4bpp pixels, 18 halfwords per row (Stg40_AutomapSetCell). */
+/* Stg40AutomapWork viewed as 4bpp pixels, 18 halfwords per row (Stg40_AutomapSetCell). */
 typedef struct {
     u8 _pad000[0x40];
     /* 0x040 */ u16 pix[50 * 18];
@@ -422,14 +422,14 @@ typedef struct {
     /* 0x750 */ RECT rect;
     /* 0x758 */ GfxTexSlot *slot;
     u8 _pad75C[0x04];
-    /* 0x760 */ s16 field_760;
-    /* 0x762 */ s16 field_762[2];
-    /* 0x766 */ s16 field_766;
-    /* 0x768 */ s16 field_768;
+    /* 0x760 */ s16 texDirty;
+    /* 0x762 */ s16 modeFade[2];
+    /* 0x766 */ s16 cols;
+    /* 0x768 */ s16 rows;
     /* 0x76A */ s16 field_76A;
-    /* 0x76C */ s16 field_76C;     /* last drawn player cell x (Stg40_AutomapRevealAround) */
-    /* 0x76E */ s16 field_76E;     /* last drawn player cell y */
-} Stg40TileWork;
+    /* 0x76C */ s16 lastPlayerX;     /* last drawn player cell x (Stg40_AutomapRevealAround) */
+    /* 0x76E */ s16 lastPlayerY;     /* last drawn player cell y */
+} Stg40AutomapWork;
 
 /* Element of Stg40B60.field_144 (stride 8, 5 entries; Stg40_CheckEventTile). */
 typedef struct {
@@ -441,70 +441,70 @@ typedef struct {
 } Stg40B60Ent;
 
 typedef struct {
-    /* 0x000 */ s32 field_0;
-    /* 0x004 */ Stg40Ent48 *field_4;
-    /* 0x008 */ Actor *field_8;
-    /* 0x00C */ s32 *field_C;      /* Cd_GetFileOrNull table (Stg40_LoadDungFile) */
-    /* 0x010 */ s32 field_10;      /* Stg40Map * (Stg40_ApplyFloorLayout) */
-    /* 0x014 */ Stg40MapRoom *field_14;
-    /* 0x018 */ s16 field_18;      /* count of non-zero field_C words */
+    /* 0x000 */ s32 roomCount;
+    /* 0x004 */ Stg40Ent48 *playerEnt;
+    /* 0x008 */ Actor *playerActor;
+    /* 0x00C */ s32 *floorTable;      /* Cd_GetFileOrNull table (Stg40_LoadDungFile) */
+    /* 0x010 */ s32 floorMap;      /* Stg40DungFloor * (Stg40_ApplyFloorLayout) */
+    /* 0x014 */ Stg40DungLayout *layout;
+    /* 0x018 */ s16 floorCount;      /* count of non-zero floorTable words */
     u8 _pad01A[0x02];
-    /* 0x01C */ s32 field_1C;
-    /* 0x020 */ Stg40Pick field_20;
-    /* 0x024 */ Stg40Pick field_24;
-    /* 0x028 */ Stg40Pick field_28;
-    /* 0x02C */ s32 field_2C;
-    /* 0x030 */ s32 field_30;
-    /* 0x034 */ s32 field_34;
-    /* 0x038 */ s32 field_38;
-    /* 0x03C */ Actor *field_3C;
-    /* 0x040 */ Stg40Ent48 *field_40;
-    /* 0x044 */ s32 field_44;
-    /* 0x048 */ s32 field_48;
-    /* 0x04C */ s32 field_4C;
-    /* 0x050 */ s32 field_50;
-    /* 0x054 */ s32 field_54;      /* Stg40_RollTrapEffect result (Stg40_PlayerTriggerTrap) */
-    /* 0x058 */ s32 field_58;
+    /* 0x01C */ s32 dungFileId;
+    /* 0x020 */ Stg40CellPos startPos;
+    /* 0x024 */ Stg40CellPos gatePos;
+    /* 0x028 */ Stg40CellPos exitPos;
+    /* 0x02C */ s32 viewX;
+    /* 0x030 */ s32 viewY;
+    /* 0x034 */ s32 msgAnim;
+    /* 0x038 */ s32 msgNextState;
+    /* 0x03C */ Actor *targetActor;
+    /* 0x040 */ Stg40Ent48 *targetEnt;
+    /* 0x044 */ s32 msgId;
+    /* 0x048 */ s32 msgArg0;
+    /* 0x04C */ s32 msgArg1;
+    /* 0x050 */ s32 trapDisarmRank;
+    /* 0x054 */ s32 trapEffect;      /* Stg40_RollTrapEffect result (Stg40_PlayerTriggerTrap) */
+    /* 0x058 */ s32 damage;
     u8 _pad05C[0x04];
-    /* 0x060 */ u8 field_60[8];    /* stack indexed by field_68 (Stg40_PlayerShowStatusMsgs) */
-    /* 0x068 */ s16 field_68;
-    /* 0x06A */ u8 field_6A[0x0E];
-    /* 0x078 */ s32 field_78;
+    /* 0x060 */ u8 statusCodes[8];    /* stack indexed by statusCount (Stg40_PlayerShowStatusMsgs) */
+    /* 0x068 */ s16 statusCount;
+    /* 0x06A */ u8 lostDigiName[0x0E];
+    /* 0x078 */ s32 brokenPartText;
     u8 _pad07C[0x02];
-    /* 0x07E */ s16 field_7E;
-    /* 0x080 */ Stg40Ent48 *field_80[10]; /* matching entries (Stg40_PlayerCheckEnemyInfo) */
-    /* 0x0A8 */ s32 field_A8;      /* count of field_80 */
-    /* 0x0AC */ s32 field_AC;      /* index into field_80 */
-    /* 0x0B0 */ u8 field_B0[0x30]; /* item ids listed by Stg40_ItemMenuRefresh */
-    /* 0x0E0 */ u8 field_E0;       /* item id counted by Stg40_PlayerShootObstacle */
-    /* 0x0E1 */ u8 field_E1;
-    /* 0x0E2 */ u8 field_E2;       /* cursor, 0..field_E1-1 (Stg40_ItemMenuMoveCursor) */
-    /* 0x0E3 */ u8 field_E3;       /* first visible row (Stg40_ItemMenuRefresh) */
-    /* 0x0E4 */ u8 field_E4;
+    /* 0x07E */ s16 automapMode;
+    /* 0x080 */ Stg40Ent48 *enemyList[10]; /* matching entries (Stg40_PlayerCheckEnemyInfo) */
+    /* 0x0A8 */ s32 enemyCount;      /* count of enemyList */
+    /* 0x0AC */ s32 enemyIndex;      /* index into enemyList */
+    /* 0x0B0 */ u8 itemIds[0x30]; /* item ids listed by Stg40_ItemMenuRefresh */
+    /* 0x0E0 */ u8 selItem;       /* item id counted by Stg40_PlayerShootObstacle */
+    /* 0x0E1 */ u8 itemCount;
+    /* 0x0E2 */ u8 cursor;       /* cursor, 0..itemCount-1 (Stg40_ItemMenuMoveCursor) */
+    /* 0x0E3 */ u8 scrollTop;       /* first visible row (Stg40_ItemMenuRefresh) */
+    /* 0x0E4 */ u8 giftMenu;
     u8 _pad0E5[0x03];
-    /* 0x0E8 */ s32 field_E8;      /* heading to the target (Stg40_PlayerShootGift) */
-    /* 0x0EC */ s32 field_EC;      /* step x */
-    /* 0x0F0 */ s32 field_F0;      /* step y */
-    /* 0x0F4 */ s32 field_F4;      /* position x << 14 */
-    /* 0x0F8 */ s32 field_F8;
-    /* 0x0FC */ s32 field_FC;      /* target x << 14 */
-    /* 0x100 */ s32 field_100;
+    /* 0x0E8 */ s32 shotAngle;      /* heading to the target (Stg40_PlayerShootGift) */
+    /* 0x0EC */ s32 shotStepX;      /* step x */
+    /* 0x0F0 */ s32 shotStepY;      /* step y */
+    /* 0x0F4 */ s32 shotX;      /* position x << 14 */
+    /* 0x0F8 */ s32 shotY;
+    /* 0x0FC */ s32 shotTargetX;      /* target x << 14 */
+    /* 0x100 */ s32 shotTargetY;
     u8 _pad104[0x04];
-    /* 0x108 */ Stg40Loc field_108;
-    /* 0x128 */ s16 field_128[12]; /* roster indices picked by Stg40_ListPartyDigi */
-    /* 0x140 */ s16 field_140;
+    /* 0x108 */ Stg40Loc shotLoc;
+    /* 0x128 */ s16 partyIdx[12]; /* roster indices picked by Stg40_ListPartyDigi */
+    /* 0x140 */ s16 partyCount;
     u8 _pad142[0x02];
-    /* 0x144 */ Stg40B60Ent field_144[5];
-    /* 0x16C */ u32 field_16C;
-    /* 0x170 */ s32 field_170;
-    /* 0x174 */ s32 field_174;     /* text handle (Stg40_PlayerRunEvent) */
-    /* 0x178 */ s32 field_178;
-    /* 0x17C */ Pair54 field_17C;  /* target cell (Stg40_AiPathToTarget) */
-    /* 0x180 */ s16 field_180;
+    /* 0x144 */ Stg40B60Ent eventTiles[5];
+    /* 0x16C */ u32 eventTileCount;
+    /* 0x170 */ s32 eventEntry;
+    /* 0x174 */ s32 eventText;     /* text handle (Stg40_PlayerRunEvent) */
+    /* 0x178 */ s32 cmdDigiId;
+    /* 0x17C */ Pair54 cmdArgs;  /* target cell (Stg40_AiPathToTarget) */
+    /* 0x180 */ s16 cmdBusy;
     u8 _pad182[0x02];
-    /* 0x184 */ Actor *field_184;
-    /* 0x188 */ s32 field_188;     /* spawned object mask (Stg40_SpawnHazard) */
-    /* 0x18C */ s16 field_18C;     /* spawned object count, max 12 */
+    /* 0x184 */ Actor *cmdActor;
+    /* 0x188 */ s32 hazardMask;     /* spawned object mask (Stg40_SpawnHazard) */
+    /* 0x18C */ s16 hazardTypeCount;     /* spawned object count, max 12 */
 } Stg40B60;
 
 /* Argument of Stg40_ListUsableItems: an event id, up to 4 item-category keys (-1 = unused), a result base. */
@@ -518,12 +518,12 @@ typedef struct {
 /* Work of the task behind Stg40_FloorTask. */
 typedef struct {
     u8 _pad0000[0x1E90];
-    /* 0x1E90 */ s32 field_1E90;
-    /* 0x1E94 */ s32 field_1E94;
-    /* 0x1E98 */ s32 field_1E98;
-    /* 0x1E9C */ s32 field_1E9C;
-    /* 0x1EA0 */ s32 field_1EA0;
-} Stg40B68Work;
+    /* 0x1E90 */ s32 scrollGoalX;
+    /* 0x1E94 */ s32 scrollGoalY;
+    /* 0x1E98 */ s32 scrollStartX;
+    /* 0x1E9C */ s32 scrollStartY;
+    /* 0x1EA0 */ s32 scrollFrames;
+} Stg40FloorScrollView;
 
 /* 0x20-byte block copied by Stg40_CamStartMove. */
 typedef struct {
@@ -540,35 +540,35 @@ typedef struct {
 
 /* GsRVIEW2-shaped view passed to GsSetRefView2 (Stg40_CameraUpdate). */
 typedef struct {
-    /* 0x00 */ s32 field_0[6];
-    /* 0x18 */ s32 field_18;
-    /* 0x1C */ Coord1F668 *field_1C;
+    /* 0x00 */ s32 vpvr[6];
+    /* 0x18 */ s32 rz;
+    /* 0x1C */ Coord1F668 *super;
 } Stg40RView;
 
 /* Work of the task initialised by Stg40_CameraInit (Stg40_CameraTask). */
 typedef struct {
-    /* 0x00 */ Block1C field_0;    /* view: words 0..5 = vp/vr, word 6 = projection */
-    /* 0x1C */ Coord1F668 field_1C;
-    /* 0x6C */ s32 field_6C;
-    /* 0x70 */ s32 field_70;
-    /* 0x74 */ s32 field_74;
+    /* 0x00 */ Block1C view;    /* view: words 0..5 = vp/vr, word 6 = projection */
+    /* 0x1C */ Coord1F668 coord;
+    /* 0x6C */ s32 originX;
+    /* 0x70 */ s32 originY;
+    /* 0x74 */ s32 originZ;
     u8 _pad78[0x04];
-    /* 0x7C */ s16 field_7C[4];     /* rotation (RotMatrixYXZ) */
-    /* 0x84 */ s32 field_84;
-    /* 0x88 */ Stg40Blk20 field_88;
-    /* 0xA8 */ s32 field_A8;
-    /* 0xAC */ s32 field_AC;
-    /* 0xB0 */ s32 field_B0;
-    /* 0xB4 */ Stg40Cmd *field_B4;
-    /* 0xB8 */ s32 field_B8;
-    /* 0xBC */ Stg40Cmd field_BC[1]; /* filled by Stg40_CamLoadScript up to a zero field_0 record; count unknown */
-} Stg40BC0Work;
+    /* 0x7C */ s16 rot[4];     /* rotation (RotMatrixYXZ) */
+    /* 0x84 */ s32 dirty;
+    /* 0x88 */ Stg40Blk20 moveGoal;
+    /* 0xA8 */ s32 moveFrames;
+    /* 0xAC */ s32 rotYEnd;
+    /* 0xB0 */ s32 rotYDelta;
+    /* 0xB4 */ Stg40Cmd *scriptPos;
+    /* 0xB8 */ s32 scriptLeft;
+    /* 0xBC */ Stg40Cmd script[1]; /* filled by Stg40_CamLoadScript up to a zero view record; count unknown */
+} Stg40CameraWork;
 
 /* Three halfwords written by Stg40_MapPosToWorld (SVECTOR-like). */
 typedef struct {
-    /* 0x0 */ s16 field_0;
-    /* 0x2 */ s16 field_2;
-    /* 0x4 */ s16 field_4;
+    /* 0x0 */ s16 vx;
+    /* 0x2 */ s16 vy;
+    /* 0x4 */ s16 vz;
 } Stg40Vec3;
 
 /* Three words at Cd_GetFileEntry(0xE200002): ambient r, g, b (Stg40_InitDisplay). */
@@ -578,13 +578,13 @@ typedef struct {
     /* 0x8 */ s32 b;
 } Stg40Rgb;
 
-/* Element of Stg40W667C.field_F20 (stride 0xC; Stg40_DrawFloorTiles / Stg40_DrawTileTop). */
+/* Element of Stg40FloorWork.field_F20 (stride 0xC; Stg40_DrawFloorTiles / Stg40_DrawTileTop). */
 typedef struct {
-    /* 0x0 */ u16 field_0;         /* 0 = untextured floor */
-    /* 0x2 */ u8 field_2;
-    /* 0x3 */ u8 field_3;          /* template index (low 7 bits) into Stg40_FloorPrimIdx */
+    /* 0x0 */ u16 flags;         /* 0 = untextured floor */
+    /* 0x2 */ u8 wallBits;
+    /* 0x3 */ u8 primIdx;          /* template index (low 7 bits) into Stg40_FloorPrimIdx */
     /* 0x4 */ s32 field_4;
-    /* 0x8 */ s32 field_8;         /* ordering table index of the flat quad */
+    /* 0x8 */ s32 otz;         /* ordering table index of the flat quad */
 } Stg40Tile;
 
 /* One projected corner (Stg40_DrawTileTop): screen x/y and a visibility weight. */
@@ -596,7 +596,7 @@ typedef struct {
     /* 0xA */ s16 flag;
 } Stg40VSet;
 
-/* Grid vertex of Stg40W667C.field_0 (stride 0x20): set 0 textured, set 1 flat. */
+/* Grid vertex of Stg40FloorWork.field_0 (stride 0x20): set 0 textured, set 1 flat. */
 typedef struct {
     /* 0x00 */ Stg40VSet s[2];
     /* 0x18 */ s32 field_18;
@@ -616,7 +616,7 @@ typedef union {
     } f;
 } Stg40Tag;
 
-/* POLY_FT4-shaped packet (0x28), copied whole from Stg40W667C.field_143C. */
+/* POLY_FT4-shaped packet (0x28), copied whole from Stg40FloorWork.field_143C. */
 typedef struct {
     /* 0x00 */ Stg40Tag tag;
     /* 0x04 */ u8 r0, g0, b0, code;
@@ -657,17 +657,17 @@ typedef struct {
 
 /* Actor.work of the task driven by Stg40_FloorDraw. */
 typedef struct {
-    /* 0x0000 */ Stg40Vtx field_0[11][11];
-    /* 0x0F20 */ Stg40Tile field_F20[10][10];
-    /* 0x13D0 */ s16 field_13D0;   /* columns built by Stg40_ProjectGrid */
-    /* 0x13D2 */ s16 field_13D2;   /* rows */
-    /* 0x13D4 */ GfxTexSlot *field_13D4[8]; /* texture slots (Stg40_FloorInit) */
-    /* 0x13F4 */ Stg40TexRec *field_13F4[8]; /* sprite tables of those textures */
-    /* 0x1414 */ s32 field_1414;   /* count of the three arrays above */
-    /* 0x1418 */ s32 field_1418[8]; /* texture ids, -1 terminated */
-    /* 0x1438 */ s32 field_1438;   /* count of field_143C */
-    /* 0x143C */ Stg40FT4 field_143C[27]; /* textured tile templates; [26] is semi-transparent */
-} Stg40W667C;
+    /* 0x0000 */ Stg40Vtx verts[11][11];
+    /* 0x0F20 */ Stg40Tile tiles[10][10];
+    /* 0x13D0 */ s16 gridCols;   /* columns built by Stg40_ProjectGrid */
+    /* 0x13D2 */ s16 gridRows;   /* rows */
+    /* 0x13D4 */ GfxTexSlot *texSlots[8]; /* texture slots (Stg40_FloorInit) */
+    /* 0x13F4 */ Stg40TexRec *texRecs[8]; /* sprite tables of those textures */
+    /* 0x1414 */ s32 texCount;   /* count of the three arrays above */
+    /* 0x1418 */ s32 texIds[8]; /* texture ids, -1 terminated */
+    /* 0x1438 */ s32 primCount;   /* count of prims */
+    /* 0x143C */ Stg40FT4 prims[27]; /* textured tile templates; [26] is semi-transparent */
+} Stg40FloorWork;
 
 /* arg0 of Stg40_ObjQueueFiles: a file-queue countdown (0x28) gated by 0x34. */
 typedef struct {
@@ -678,7 +678,7 @@ typedef struct {
 } Stg40E764;
 
 /* main exe */
-extern Stg40Blk5071C *D_8005071C;
+extern Stg40DungState *D_8005071C;
 
 /* 13-byte const table copied to a stack local (Stg40_BeginTransition). */
 typedef struct { u8 b[13]; } Blk13;
@@ -779,7 +779,7 @@ typedef struct {
     s16 v[8];
 } Stg40Quad;
 
-extern u8 Stg40_ShadowPrimIdx;          /* tile template index into Stg40W667C.field_143C */
+extern u8 Stg40_ShadowPrimIdx;          /* tile template index into Stg40FloorWork.field_143C */
 extern Stg40Quad D_800633C4;
 extern void GsSetProjection(s32);
 extern void GsInitCoordinate2(Coord1F668 *, Coord1F668 *);
@@ -788,11 +788,11 @@ void Stg40_CamNextCommand(Actor *a0);
 void Stg40_CamMoveStep(Actor *a0);
 void Stg40_DamageBeetle(s32 n);
 s32 Stg40_AddEntity(s32 kind, s32 a1, s32 a2, s32 a3, s32 x, s32 y); /* K&R definition (a3, x, y are s16) */
-void Stg40_AutomapDrawWindow(Stg40TileWork *w, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6, s32 a7, s32 a8);
+void Stg40_AutomapDrawWindow(Stg40AutomapWork *w, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6, s32 a7, s32 a8);
 u8 *Stg40_NumToDigits(s32 i, s32 v);
-s32 Stg40_DrawTileTop(Stg40W667C *w, s32 pkt, s32 x, s32 y);
-s32 Stg40_DrawTileWalls(Stg40W667C *w, s32 pkt, s32 x, s32 y);
-s32 Stg40_PickRandomPoint(Stg40Pick *out, Stg40Rec3 *e, u8 key);
+s32 Stg40_DrawTileTop(Stg40FloorWork *w, s32 pkt, s32 x, s32 y);
+s32 Stg40_DrawTileWalls(Stg40FloorWork *w, s32 pkt, s32 x, s32 y);
+s32 Stg40_PickRandomPoint(Stg40CellPos *out, Stg40CellPoint *e, u8 key);
 
 /* overlay functions */
 void Stg40_ClearVisitedBits(void);
@@ -829,18 +829,18 @@ void Stg40_SetLights(Blk16 *l, s32 r, s32 g, s32 b);
 u16 Stg40_GetCellFlags(s32 x, s32 y);
 void Stg40_AutomapSetCell(s32 idx, s32 row, s32 val);
 void Stg40_ScrollUpdate(Actor *a0);
-void Stg40_ProjectGrid(Stg40W667C *w);
+void Stg40_ProjectGrid(Stg40FloorWork *w);
 void Stg40_FillTileCache(ActorWork *w);
 s32 Stg40_PlayerTryMove(Stg40Ent48 *e);
 s16 Stg40_TurnQueueNext(void);
-void Stg40_AutomapInitTex(Stg40TileWork *w);
-void Stg40_AutomapRevealAround(Stg40TileWork *w);
+void Stg40_AutomapInitTex(Stg40AutomapWork *w);
+void Stg40_AutomapRevealAround(Stg40AutomapWork *w);
 void Stg40_AutomapCycleClut(Stg40ImgWork *a0);
-void Stg40_AutomapFlush(Stg40TileWork *a0);
-s16 Stg40_AutomapInitDims(Stg40TileWork *a0);
-void Stg40_AutomapRedraw(Stg40TileWork *a0);
+void Stg40_AutomapFlush(Stg40AutomapWork *a0);
+s16 Stg40_AutomapInitDims(Stg40AutomapWork *a0);
+void Stg40_AutomapRedraw(Stg40AutomapWork *a0);
 Stg40Cell *Stg40_GetCell2(s32 x, s32 y);
-void Stg40_DrawFloorTiles(Stg40W667C *w);
+void Stg40_DrawFloorTiles(Stg40FloorWork *w);
 s32 Stg40_RelocDungFile(s32 *p);
 void Stg40_RelocPtr(u32 *p, u32 n);
 void Stg40_ObjStartFlash(Actor *a0, u8 a1);
@@ -931,21 +931,21 @@ typedef struct {
     u8 _pad000[0xBA5];
     u8 field_BA5[3];
 } Stg40BA5View;
-/* Status flags at Stg40Blk5071C.field_BA0 and the bytes after them, through one pointer
+/* Status flags at Stg40DungState.field_BA0 and the bytes after them, through one pointer
  * (Stg40_TickStatusEffects). */
 typedef struct {
-    /* 0x00 */ s32 field_0;
-    /* 0x04 */ u8 field_4;
-    /* 0x05 */ u8 field_5;
-    /* 0x06 */ u8 field_6;
-    /* 0x07 */ u8 field_7;
+    /* 0x00 */ s32 statusFlags;
+    /* 0x04 */ u8 confusionTurn;
+    /* 0x05 */ u8 bitBugLevel;
+    /* 0x06 */ u8 energyBugLevel;
+    /* 0x07 */ u8 returnBugLevel;
     u8 _pad08[0x0D];
-    /* 0x15 */ u8 field_15;
+    /* 0x15 */ u8 bindTurns;
 } Stg40BA0View;
 /* 14-byte, 2-aligned record copied whole (DigiRosterEntry.name -> Stg40B60.field_6A). */
 typedef struct {
     /* 0x0 */ s16 field_0[7];
-} Stg40Agg14;
+} Stg40DigiName;
 void Stg40_FloodFillRoom(s32 buf, s32 a1, s32 x, s32 y, s32 flag);
 void Stg40_LabelFilledCells(void);
 
@@ -985,14 +985,14 @@ extern Stg40TextPos Stg40_HudLabels[];
 
 /* Actor.work of the HP/MP status task Stg40_HudUpdate. */
 typedef struct {
-    /* 0x00 */ s32 field_0;   /* text handle */
-    /* 0x04 */ s32 field_4;   /* text handle */
-    /* 0x08 */ s32 field_8;   /* text handle */
-    /* 0x0C */ s32 field_C;   /* scale ramp */
-    /* 0x10 */ s16 field_10;  /* part mask */
-    /* 0x12 */ s16 field_12;  /* cursor x */
-    /* 0x14 */ s16 field_14;  /* cursor y */
-} Stg40W6720;
+    /* 0x00 */ s32 labelText0;   /* text handle */
+    /* 0x04 */ s32 labelText1;   /* text handle */
+    /* 0x08 */ s32 nameText;   /* text handle */
+    /* 0x0C */ s32 scale;   /* scale ramp */
+    /* 0x10 */ s16 partMask;  /* part mask */
+    /* 0x12 */ s16 shownHp;  /* cursor x */
+    /* 0x14 */ s16 shownMp;  /* cursor y */
+} Stg40HudWork;
 
 /* Actor.u34.children container of Stg40_HudUpdate: a child task handle at 0. */
 typedef struct {
@@ -1015,8 +1015,8 @@ extern Actor *Stg40_RootTask;
 s32 Stg40_PlayerInteract(Actor *a0);
 s32 Stg40_PlayerCheckEnemyInfo(Actor *a0);
 
-void Stg40_RevealRoom(Stg40TileWork *w, s32 x, s32 y);
-void Stg40_RevealCell(Stg40TileWork *w, s32 x, s32 y);
+void Stg40_RevealRoom(Stg40AutomapWork *w, s32 x, s32 y);
+void Stg40_RevealCell(Stg40AutomapWork *w, s32 x, s32 y);
 
 s16 Stg40_ListPartyDigi(s32 mode);
 
@@ -1100,19 +1100,19 @@ void Stg40_PlayerInput(Actor *a0);
 void Stg40_PlayerTriggerTrap(Actor *a0);
 void Stg40_PlayerShootObstacle(Actor *a0);
 
-extern Stg40W667C *Stg40_FloorWork;
+extern Stg40FloorWork *Stg40_FloorWork;
 
 /* Object behind Stg40_RootChildren: a Task_Create slot at 0x10 (Stg40_PlayerItemMenu). */
 typedef struct {
     u8 _pad00[0x04];
-    /* 0x04 */ s32 field_4;        /* child task (Actor *) (Stg40_RootUpdate) */
-    /* 0x08 */ s32 field_8;        /* child task (Actor *) (Stg40_RootUpdate) */
+    /* 0x04 */ s32 menuTask;        /* child task (Actor *) (Stg40_RootUpdate) */
+    /* 0x08 */ s32 hudTask;        /* child task (Actor *) (Stg40_RootUpdate) */
     u8 _pad0C[0x04];
-    /* 0x10 */ s32 field_10;       /* child task (Actor *) */
-    /* 0x14 */ s32 field_14;       /* child task (Actor *) (Stg40_PlayerEnemyInfo) */
-} Stg40AA4;
+    /* 0x10 */ s32 itemMenuTask;       /* child task (Actor *) */
+    /* 0x14 */ s32 enemyInfoTask;       /* child task (Actor *) (Stg40_PlayerEnemyInfo) */
+} Stg40RootTasks;
 
-extern Stg40AA4 *Stg40_RootChildren;
+extern Stg40RootTasks *Stg40_RootChildren;
 extern s32 Sys_NextGameMode;  /* Sys_State.nextGameMode as a scalar reloc */
 extern u16 Stg40_FloorBitsPal[10];
 extern u16 D_800729B4[6];

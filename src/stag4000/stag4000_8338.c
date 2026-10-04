@@ -4,10 +4,10 @@
 #include "stag4000/stag4000_1DD4_funcs.h"
 
 s32 Stg40_AiPathFlee(Stg40Ent48 *e, Pair54 *out) {
-    Stg40Loc *loc = &e->field_18;
+    Stg40Loc *loc = &e->loc;
     Pair54 c[3];
-    s16 dx = D_80072B60->field_4->field_18.u0.pair.field_0 - loc->u0.pair.field_0;
-    s16 dy = D_80072B60->field_4->field_18.u0.pair.field_2 - loc->u0.pair.field_2;
+    s16 dx = D_80072B60->playerEnt->loc.u0.pair.field_0 - loc->u0.pair.field_0;
+    s16 dy = D_80072B60->playerEnt->loc.u0.pair.field_2 - loc->u0.pair.field_2;
     s32 n;
     s32 i;
 
@@ -18,7 +18,7 @@ s32 Stg40_AiPathFlee(Stg40Ent48 *e, Pair54 *out) {
         c[0].field_0 = dx >= 0 ? loc->u0.pair.field_0 - 1 : loc->u0.pair.field_0 + 1;
         c[0].field_2 = loc->u0.pair.field_2;
         if (dy == 0) {
-            switch (e->field_B) {
+            switch (e->octant) {
             case 0:
             case 1:
             case 7:
@@ -34,7 +34,7 @@ s32 Stg40_AiPathFlee(Stg40Ent48 *e, Pair54 *out) {
         c[0].field_2 = dy >= 0 ? loc->u0.pair.field_2 - 1 : loc->u0.pair.field_2 + 1;
         c[0].field_0 = loc->u0.pair.field_0;
         if (dx == 0) {
-            switch (e->field_B) {
+            switch (e->octant) {
             case 5:
             case 6:
             case 7:
@@ -56,9 +56,9 @@ s32 Stg40_AiPathFlee(Stg40Ent48 *e, Pair54 *out) {
 }
 
 s32 Stg40_AiPathToTarget(Stg40Ent48 *e, Pair54 *out) {
-    Pair54 *p = &e->field_18.u0.pair;
-    s16 dx = D_80072B60->field_17C.field_0 - p->field_0;
-    s16 dy = D_80072B60->field_17C.field_2 - p->field_2;
+    Pair54 *p = &e->loc.u0.pair;
+    s16 dx = D_80072B60->cmdArgs.field_0 - p->field_0;
+    s16 dy = D_80072B60->cmdArgs.field_2 - p->field_2;
 
     if (dx == 0 && dy == 0) {
         return 0;
@@ -74,10 +74,10 @@ s32 Stg40_AiPathToTarget(Stg40Ent48 *e, Pair54 *out) {
 }
 
 s32 Stg40_AiPathChase(Stg40Ent48 *e, Pair54 *out) {
-    Stg40Loc *loc = &e->field_18;
+    Stg40Loc *loc = &e->loc;
     Pair54 c[3];
-    s16 dx = D_80072B60->field_4->field_18.u0.pair.field_0 - loc->u0.pair.field_0;
-    s16 dy = D_80072B60->field_4->field_18.u0.pair.field_2 - loc->u0.pair.field_2;
+    s16 dx = D_80072B60->playerEnt->loc.u0.pair.field_0 - loc->u0.pair.field_0;
+    s16 dy = D_80072B60->playerEnt->loc.u0.pair.field_2 - loc->u0.pair.field_2;
     s32 n;
     s32 i;
 
@@ -101,29 +101,29 @@ s32 Stg40_AiPathChase(Stg40Ent48 *e, Pair54 *out) {
     }
     n = 0;
     for (i = 0; i < 3; i++) {
-        if (c[i].field_0 != loc->field_4.field_0 || c[i].field_2 != loc->field_4.field_2) {
+        if (c[i].field_0 != loc->prevTile.field_0 || c[i].field_2 != loc->prevTile.field_2) {
             out[n].field_0 = c[i].field_0;
             out[n].field_2 = c[i].field_2;
             n++;
         }
     }
     if (n != 3) {
-        out[n].field_0 = loc->field_4.field_0;
-        out[n].field_2 = loc->field_4.field_2;
+        out[n].field_0 = loc->prevTile.field_0;
+        out[n].field_2 = loc->prevTile.field_2;
         n++;
     }
     return n;
 }
 
 s32 Stg40_AiPathChaseInRoom(Stg40Ent48 *e, Pair54 *out) {
-    s16 k = e->field_10[4];
+    s16 k = e->params[4];
     s32 i;
     s32 n;
     s32 m = 0;
-    Stg40Loc *loc = &e->field_18;
+    Stg40Loc *loc = &e->loc;
     Pair54 c[3];
-    s16 dx = D_80072B60->field_4->field_18.u0.pair.field_0 - loc->u0.pair.field_0;
-    s16 dy = D_80072B60->field_4->field_18.u0.pair.field_2 - loc->u0.pair.field_2;
+    s16 dx = D_80072B60->playerEnt->loc.u0.pair.field_0 - loc->u0.pair.field_0;
+    s16 dy = D_80072B60->playerEnt->loc.u0.pair.field_2 - loc->u0.pair.field_2;
 
     if (dx != 0) {
         if (dy != 0) {
@@ -162,7 +162,7 @@ s32 Stg40_AiPathChaseInRoom(Stg40Ent48 *e, Pair54 *out) {
 s32 Stg40_AiTryStep(Stg40Ent48 *e, s32 mode) {
     Pair54 buf[3];
     Pair54 *sel = NULL;
-    Stg40Loc *loc = &e->field_18;
+    Stg40Loc *loc = &e->loc;
     s32 i;
     s32 n;
 
@@ -195,36 +195,36 @@ s32 Stg40_AiTryStep(Stg40Ent48 *e, s32 mode) {
     if (sel == NULL) {
         return 0;
     }
-    e->field_E = (Stg40_DeltaToOctant(sel->field_0 - loc->u0.pair.field_0, sel->field_2 - loc->u0.pair.field_2) << 16) >> 7;
-    loc->field_4.field_0 = loc->u0.pair.field_0;
-    loc->field_4.field_2 = loc->u0.pair.field_2;
+    e->targetHeading = (Stg40_DeltaToOctant(sel->field_0 - loc->u0.pair.field_0, sel->field_2 - loc->u0.pair.field_2) << 16) >> 7;
+    loc->prevTile.field_0 = loc->u0.pair.field_0;
+    loc->prevTile.field_2 = loc->u0.pair.field_2;
     loc->u0.pair.field_0 = sel->field_0;
     loc->u0.pair.field_2 = sel->field_2;
-    loc->field_8 = loc->field_A = 12;
-    Stg40_ClearCellOccupied(loc->field_4.field_0, loc->field_4.field_2);
+    loc->moveFramesLeft = loc->moveFrames = 12;
+    Stg40_ClearCellOccupied(loc->prevTile.field_0, loc->prevTile.field_2);
     Stg40_SetCellOccupied(loc->u0.pair.field_0, loc->u0.pair.field_2, 1);
-    loc->field_1C = 1;
+    loc->moving = 1;
     return 1;
 }
 
 INCLUDE_RODATA("asm/USA/stag4000/rodata", D_800634FC);
 void Stg40_EnemyUpdate(Actor *a0) {
     Stg40ActWork *w = (Stg40ActWork *)a0->work;
-    Stg40Ent48 *e = w->field_2C;
-    Stg40Ent48 *other = D_80072B60->field_4;
+    Stg40Ent48 *e = w->ent;
+    Stg40Ent48 *other = D_80072B60->playerEnt;
     Stg40ModelFade *m;
     s32 lvl2;
     s32 n;
     s32 v;
 
-    Stg40_SetCellOccupied(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2, 1);
+    Stg40_SetCellOccupied(e->loc.u0.pair.field_0, e->loc.u0.pair.field_2, 1);
     if (e->field_0 & 0x1000) {
-        Stg40_AutomapMoveMarker(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2,
-                      e->field_18.field_4.field_0, e->field_18.field_4.field_2, e->field_8);
+        Stg40_AutomapMoveMarker(e->loc.u0.pair.field_0, e->loc.u0.pair.field_2,
+                      e->loc.prevTile.field_0, e->loc.prevTile.field_2, e->kind);
     }
     if (a0->stateLevel1 != 4) {
-        Stg40SlotInfo *info = (Stg40SlotInfo *)e->field_10;
-        s32 t = info->field_C / (s16)info->field_E;
+        Stg40EnemyParty *info = (Stg40EnemyParty *)e->params;
+        s32 t = info->giftPoints / (s16)info->pointsPerLevel;
         s32 lvl;
         lvl = 3;
         if (t < 4) {
@@ -233,8 +233,8 @@ void Stg40_EnemyUpdate(Actor *a0) {
         v = lvl;
         if (v != 0) {
             v += 7;
-            if (w->field_38 != v) {
-                w->field_36 = v;
+            if (w->linkedModel != v) {
+                w->pendingLinkedModel = v;
             }
         }
     }
@@ -242,33 +242,33 @@ void Stg40_EnemyUpdate(Actor *a0) {
     case 0:
     default:
         Stg40_ObjSetAnimIfNew(a0, 0x28);
-        if (e->field_A == other->field_A) {
-            Stg40_TurnQueueAdd(e->field_7);
+        if (e->roomId == other->roomId) {
+            Stg40_TurnQueueAdd(e->turnId);
             Task_SetState1(a0, 1);
-            ((Stg40SlotInfo *)e->field_10)->field_8 = 0;
-            ((Stg40SlotInfo *)e->field_10)->field_9 = 0;
-            e->field_18.field_4.field_0 = e->field_18.u0.pair.field_0;
-            e->field_18.field_4.field_2 = e->field_18.u0.pair.field_2;
+            ((Stg40EnemyParty *)e->params)->idleCount = 0;
+            ((Stg40EnemyParty *)e->params)->stepCount = 0;
+            e->loc.prevTile.field_0 = e->loc.u0.pair.field_0;
+            e->loc.prevTile.field_2 = e->loc.u0.pair.field_2;
             e->field_0 |= 0x1000;
         }
         break;
     case 1:
         Stg40_ObjSetAnimIfNew(a0, 0x28);
-        if (D_8005071C->field_2 != 0) {
+        if (D_8005071C->freeze != 0) {
             break;
         }
-        if (e->field_A != other->field_A) {
-            Stg40_TurnQueueRemove(e->field_7);
+        if (e->roomId != other->roomId) {
+            Stg40_TurnQueueRemove(e->turnId);
             Task_SetState1(a0, 0);
             break;
         }
-        if (Stg40_TurnQueueCurrent() != e->field_7) {
+        if (Stg40_TurnQueueCurrent() != e->turnId) {
             break;
         }
-        ((Stg40SlotInfo *)e->field_10)->field_8++;
-        if (((Stg40SlotInfo *)e->field_10)->field_8 > ((Stg40SlotInfo *)e->field_10)->field_6) {
+        ((Stg40EnemyParty *)e->params)->idleCount++;
+        if (((Stg40EnemyParty *)e->params)->idleCount > ((Stg40EnemyParty *)e->params)->idleTicks) {
             Task_SetState1(a0, 2);
-            ((Stg40SlotInfo *)e->field_10)->field_8 = 0;
+            ((Stg40EnemyParty *)e->params)->idleCount = 0;
         } else {
             Stg40_TurnQueueNext();
         }
@@ -277,7 +277,7 @@ void Stg40_EnemyUpdate(Actor *a0) {
         switch (a0->stateLevel2) {
         case 0:
         default:
-            if (Stg40_AiTryStep(e, ((Stg40SlotInfo *)e->field_10)->field_5) == 1) {
+            if (Stg40_AiTryStep(e, ((Stg40EnemyParty *)e->params)->pathMode) == 1) {
                 Stg40_ObjSetAnimIfNew(a0, 0x29);
                 Task_SetState2(a0, 1);
             } else {
@@ -286,18 +286,18 @@ void Stg40_EnemyUpdate(Actor *a0) {
             }
             break;
         case 1:
-            if (w->field_2C->field_18.field_8 != 0) {
+            if (w->ent->loc.moveFramesLeft != 0) {
                 break;
             }
-            ((Stg40SlotInfo *)e->field_10)->field_9++;
-            if (((Stg40SlotInfo *)e->field_10)->field_9 >= ((Stg40SlotInfo *)e->field_10)->field_7) {
+            ((Stg40EnemyParty *)e->params)->stepCount++;
+            if (((Stg40EnemyParty *)e->params)->stepCount >= ((Stg40EnemyParty *)e->params)->stepsPerBurst) {
                 Task_SetState2(a0, 2);
             } else {
                 Task_SetState2(a0, 0);
             }
             break;
         case 2:
-            ((Stg40SlotInfo *)e->field_10)->field_9 = 0;
+            ((Stg40EnemyParty *)e->params)->stepCount = 0;
             Stg40_TurnQueueNext();
             if (Stg40_IsEntAdjacent(e, other) == 1) {
                 Task_SetState1(a0, 3);
@@ -314,8 +314,8 @@ void Stg40_EnemyUpdate(Actor *a0) {
         case 0:
         default:
             Stg40_ObjSetAnim(a0, 0x28);
-            e->field_E = (Stg40_DeltaToOctant(other->field_18.u0.pair.field_0 - e->field_18.u0.pair.field_0,
-                                         other->field_18.u0.pair.field_2 - e->field_18.u0.pair.field_2) << 16) >> 7;
+            e->targetHeading = (Stg40_DeltaToOctant(other->loc.u0.pair.field_0 - e->loc.u0.pair.field_0,
+                                         other->loc.u0.pair.field_2 - e->loc.u0.pair.field_2) << 16) >> 7;
             Task_SetState2(a0, 1);
             break;
         }
@@ -336,23 +336,23 @@ void Stg40_EnemyUpdate(Actor *a0) {
                 e->field_0 |= 0x80;
                 break;
             case 2:
-                v = e->field_38 - 0x51;
+                v = e->scaleX - 0x51;
                 if (v < 0) {
                     v = 0;
                 }
-                e->field_38 = v;
-                e->field_40 = v;
+                e->scaleX = v;
+                e->scaleZ = v;
                 n = a0->stateLevel3;
-                e->field_E += (n << 13) / 360;
+                e->targetHeading += (n << 13) / 360;
                 n++;
                 a0->stateLevel3 = n;
-                e->field_E &= 0xFFF;
-                e->field_C = e->field_E;
+                e->targetHeading &= 0xFFF;
+                e->heading = e->targetHeading;
                 if (++a0->stateLevel3 == 6) {
                     Snd_PlayById(0x17, 0);
-                    w->field_36 = 7;
+                    w->pendingLinkedModel = 7;
                 }
-                if (e->field_40 == 0) {
+                if (e->scaleZ == 0) {
                     Task_NextState2(a0);
                 }
                 break;
@@ -374,25 +374,25 @@ void Stg40_EnemyUpdate(Actor *a0) {
                 }
                 Task_NextState2(a0);
                 e->field_0 |= 0x80;
-                m->field_36 = 0x20;
-                m->field_34 = lvl2;
-                m->field_38 = D_800634FC;
+                m->tpageFlags = 0x20;
+                m->clutRow = lvl2;
+                m->fadeColor = D_800634FC;
                 Snd_PlayById(0x1F, 0);
-                w->field_36 = lvl2;
+                w->pendingLinkedModel = lvl2;
                 break;
             case 2: {
-                s32 v = e->field_38 - 0x51;
+                s32 v = e->scaleX - 0x51;
                 if (v < 0) {
                     v = 0;
                 }
-                e->field_38 = v;
-                e->field_40 = v;
-                if (m->field_38.r != 0xFF) {
-                    m->field_38.r++;
-                    m->field_38.g++;
-                    m->field_38.b++;
+                e->scaleX = v;
+                e->scaleZ = v;
+                if (m->fadeColor.r != 0xFF) {
+                    m->fadeColor.r++;
+                    m->fadeColor.g++;
+                    m->fadeColor.b++;
                 }
-                if (e->field_40 == 0) {
+                if (e->scaleZ == 0) {
                     Task_NextState2(a0);
                 }
                 break;
@@ -404,12 +404,12 @@ void Stg40_EnemyUpdate(Actor *a0) {
         }
         break;
     case 6:
-        Stg40_TurnQueueRemove(e->field_7);
-        Stg40_ClearCellOccupied(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2);
-        Stg40_AutomapMoveMarker(-1, -1, e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2, e->field_8);
+        Stg40_TurnQueueRemove(e->turnId);
+        Stg40_ClearCellOccupied(e->loc.u0.pair.field_0, e->loc.u0.pair.field_2);
+        Stg40_AutomapMoveMarker(-1, -1, e->loc.u0.pair.field_0, e->loc.u0.pair.field_2, e->kind);
         e->field_0 = 0;
-        if (a0 == D_80072B60->field_184) {
-            D_80072B60->field_184 = NULL;
+        if (a0 == D_80072B60->cmdActor) {
+            D_80072B60->cmdActor = NULL;
             Stg40_EndTextObjCmd();
         }
         Task_SetState0(a0, 3);
@@ -430,7 +430,7 @@ void Stg40_EnemyUpdate(Actor *a0) {
         case 2:
             break;
         case 1:
-            if (w->field_2C->field_18.field_8 != 0) {
+            if (w->ent->loc.moveFramesLeft != 0) {
                 break;
             }
             Task_SetState2(a0, 0);

@@ -3,86 +3,86 @@
 #include "stag4000/stag4000_funcs.h"
 
 void Stg40_ScrollFollow(Stg40Loc *loc) {
-    D_8005071C->field_1064 = loc;
+    D_8005071C->scrollTarget = loc;
     Task_SetState1(Stg40_FloorTask, 0);
 }
 
 void Stg40_ScrollTo(s32 a0, s32 a1, s32 a2) {
     Actor *t = Stg40_FloorTask;
     Stg40B60 *b = D_80072B60;
-    Stg40B68Work *w = (Stg40B68Work *)t->work;
+    Stg40FloorScrollView *w = (Stg40FloorScrollView *)t->work;
 
-    w->field_1E90 = a0;
-    w->field_1E94 = a1;
-    w->field_1E98 = b->field_2C;
-    w->field_1E9C = b->field_30;
-    w->field_1EA0 = a2;
+    w->scrollGoalX = a0;
+    w->scrollGoalY = a1;
+    w->scrollStartX = b->viewX;
+    w->scrollStartY = b->viewY;
+    w->scrollFrames = a2;
     Task_SetState1(t, 1);
 }
 
 void Stg40_ScrollToFollow(Stg40Loc *loc, s32 a1) {
     Actor *t = Stg40_FloorTask;
-    Stg40B68Work *w = (Stg40B68Work *)t->work;
+    Stg40FloorScrollView *w = (Stg40FloorScrollView *)t->work;
     Stg40B60 *b;
 
-    w->field_1E90 = loc->field_C;
-    w->field_1E94 = loc->field_10;
+    w->scrollGoalX = loc->posX;
+    w->scrollGoalY = loc->posY;
     b = D_80072B60;
-    w->field_1E98 = b->field_2C;
-    w->field_1E9C = b->field_30;
-    w->field_1EA0 = a1;
-    D_8005071C->field_1064 = loc;
+    w->scrollStartX = b->viewX;
+    w->scrollStartY = b->viewY;
+    w->scrollFrames = a1;
+    D_8005071C->scrollTarget = loc;
     Task_SetState1(t, 2);
 }
 
 s32 Stg40_IsScrollDone(void) {
-    Stg40B68Work *w = (Stg40B68Work *)Stg40_FloorTask->work;
+    Stg40FloorScrollView *w = (Stg40FloorScrollView *)Stg40_FloorTask->work;
     s32 r = 0;
 
-    if (D_80072B60->field_2C == w->field_1E90 && D_80072B60->field_30 == w->field_1E94) {
+    if (D_80072B60->viewX == w->scrollGoalX && D_80072B60->viewY == w->scrollGoalY) {
         r = -1;
     }
     return r;
 }
 
 void Stg40_ScrollStep(Actor *a0) {
-    Stg40B68Work *w = (Stg40B68Work *)a0->work;
-    s32 x0 = w->field_1E90;
-    s32 y0 = w->field_1E94;
-    s32 n = w->field_1EA0;
+    Stg40FloorScrollView *w = (Stg40FloorScrollView *)a0->work;
+    s32 x0 = w->scrollGoalX;
+    s32 y0 = w->scrollGoalY;
+    s32 n = w->scrollFrames;
     s32 k = n - a0->stateLevel2;
-    s32 dx = (x0 - w->field_1E98) * k / n;
-    s32 dy = (y0 - w->field_1E9C) * k / n;
+    s32 dx = (x0 - w->scrollStartX) * k / n;
+    s32 dy = (y0 - w->scrollStartY) * k / n;
     Stg40B60 *b = D_80072B60;
 
-    b->field_2C = x0 - dx;
-    b->field_30 = y0 - dy;
+    b->viewX = x0 - dx;
+    b->viewY = y0 - dy;
     a0->stateLevel2++;
 }
 
 void Stg40_ScrollUpdate(Actor *a0) {
-    Stg40B68Work *w = (Stg40B68Work *)a0->work;
+    Stg40FloorScrollView *w = (Stg40FloorScrollView *)a0->work;
 
     switch (a0->stateLevel1) {
     case 0:
     default:
-        D_80072B60->field_2C = D_8005071C->field_1064->field_C;
-        D_80072B60->field_30 = D_8005071C->field_1064->field_10;
+        D_80072B60->viewX = D_8005071C->scrollTarget->posX;
+        D_80072B60->viewY = D_8005071C->scrollTarget->posY;
         break;
     case 1:
-        if (a0->stateLevel2 < w->field_1EA0) {
+        if (a0->stateLevel2 < w->scrollFrames) {
             Stg40_ScrollStep(a0);
         } else {
-            D_80072B60->field_2C = w->field_1E90;
-            D_80072B60->field_30 = w->field_1E94;
+            D_80072B60->viewX = w->scrollGoalX;
+            D_80072B60->viewY = w->scrollGoalY;
         }
         break;
     case 2:
-        if (a0->stateLevel2 < w->field_1EA0) {
+        if (a0->stateLevel2 < w->scrollFrames) {
             Stg40_ScrollStep(a0);
         } else {
-            D_80072B60->field_2C = w->field_1E90;
-            D_80072B60->field_30 = w->field_1E94;
+            D_80072B60->viewX = w->scrollGoalX;
+            D_80072B60->viewY = w->scrollGoalY;
             Task_SetState1(a0, 0);
         }
         break;
@@ -119,7 +119,7 @@ s32 Stg40_Min4(s32 a, s32 b, s32 c, s32 d) {
     return d;
 }
 
-void Stg40_ProjectGrid(Stg40W667C *w) {
+void Stg40_ProjectGrid(Stg40FloorWork *w) {
     Stg40Vec3 vec;
     Mat1F668 mtx;
     s32 centerX = Sys_State.centerX.s;
@@ -149,33 +149,33 @@ void Stg40_ProjectGrid(Stg40W667C *w) {
     SetRotMatrix(&mtx);
     SetTransMatrix(&mtx);
     rows = 0xA;
-    if (D_80072B60->field_30 & 0x3F) {
+    if (D_80072B60->viewY & 0x3F) {
         rows = 0xB;
     }
     cols = 0xA;
-    if (D_80072B60->field_2C & 0x3F) {
+    if (D_80072B60->viewX & 0x3F) {
         cols = 0xB;
     }
     n.lo = rows;
-    w->field_13D0 = cols;
-    w->field_13D2 = n.lo;
-    vec.field_2 = 0;
-    t = (D_80072B60->field_30 & 0x3F) << 11;
+    w->gridCols = cols;
+    w->gridRows = n.lo;
+    vec.vy = 0;
+    t = (D_80072B60->viewY & 0x3F) << 11;
     if (t < 0) {
         t += 0x3F;
     }
-    vec.field_4 = ((u32)t >> 6) + 0x2400;
+    vec.vz = ((u32)t >> 6) + 0x2400;
     step = 0x500;
-    if (D_8005071C->field_E54->field_4 != 0) {
+    if (D_8005071C->floorHdr->field_4 != 0) {
         step = -0x500;
     }
     for (row = 0; row < rows; row++) {
-        t = (D_80072B60->field_2C & 0x3F) * 0xA00;
+        t = (D_80072B60->viewX & 0x3F) * 0xA00;
         if (t < 0) {
             t += 0x3F;
         }
-        vec.field_0 = -(t >> 6) - 0x2D00;
-        v = w->field_0[row];
+        vec.vx = -(t >> 6) - 0x2D00;
+        v = w->verts[row];
         for (col = 0; col < cols; col++) {
             v->s[0].field_4 = RotTransPers(&vec, &v->s[0].x, 0, 0);
             v->s[0].x = v->s[0].x >> shiftX;
@@ -183,23 +183,23 @@ void Stg40_ProjectGrid(Stg40W667C *w) {
             v->s[0].field_4 = v->s[0].field_4 >> shiftZ;
             v->s[0].flag = ((v->s[0].x < 0 ? -v->s[0].x : v->s[0].x) < centerX)
                 && ((v->s[0].y < 0 ? -v->s[0].y : v->s[0].y) < centerY);
-            vec.field_2 += step;
+            vec.vy += step;
             v->s[1].field_4 = RotTransPers(&vec, &v->s[1].x, 0, 0);
             v->s[1].x = v->s[1].x >> shiftX;
             v->s[1].y = v->s[1].y >> shiftY;
             v->s[1].field_4 = v->s[1].field_4 >> shiftZ;
-            vec.field_2 -= step;
+            vec.vy -= step;
             v->s[1].flag = ((v->s[1].x < 0 ? -v->s[1].x : v->s[1].x) < centerX)
                 && ((v->s[1].y < 0 ? -v->s[1].y : v->s[1].y) < centerY);
-            vec.field_0 += 0xA00;
+            vec.vx += 0xA00;
             v++;
         }
-        vec.field_4 -= 0x800;
+        vec.vz -= 0x800;
     }
 
     for (row = 0; row < rows; row++) {
-        p = w->field_0[row];
-        below = w->field_0[row + 1];
+        p = w->verts[row];
+        below = w->verts[row + 1];
         for (col = 0; col < cols; col++) {
             if (col != cols - 1) {
                 p->field_18 = Stg40_Max4(p->s[0].field_4, p->s[1].field_4, p[1].s[0].field_4, p[1].s[1].field_4);
@@ -221,7 +221,7 @@ void Stg40_FillTileCache(ActorWork *arg0)
     s32 colCount;
     s32 gridCols;
     s32 gridRows;
-    Stg40E34 *e54;
+    Stg40FloorHeader *e54;
     s32 mapRow;
     s32 row;
     s32 col;
@@ -235,39 +235,39 @@ void Stg40_FillTileCache(ActorWork *arg0)
     s32 lt400;
     s32 n;
 
-    e54 = D_8005071C->field_E54;
-    grid = (Stg40Cell *)D_8005071C->field_E58;
+    e54 = D_8005071C->floorHdr;
+    grid = (Stg40Cell *)D_8005071C->cells;
     rowCount = 9;
-    gridCols = e54->field_0;
-    gridRows = e54->field_2;
-    if (D_80072B60->field_30 & 0x3F) {
+    gridCols = e54->cols;
+    gridRows = e54->rows;
+    if (D_80072B60->viewY & 0x3F) {
         rowCount = 0xA;
     }
     colCount = 9;
-    if (D_80072B60->field_2C & 0x3F) {
+    if (D_80072B60->viewX & 0x3F) {
         colCount = 0xA;
     }
-    mapRow = D_80072B60->field_30 / 64 - 4;
+    mapRow = D_80072B60->viewY / 64 - 4;
     for (row = 0; row < rowCount; row++) {
-        tp = ((Stg40W667C *)arg0)->field_F20[row];
-        v0p = ((Stg40W667C *)arg0)->field_0[row];
-        v1p = ((Stg40W667C *)arg0)->field_0[row + 1];
-        mapCol = D_80072B60->field_2C / 64 - 4;
+        tp = ((Stg40FloorWork *)arg0)->tiles[row];
+        v0p = ((Stg40FloorWork *)arg0)->verts[row];
+        v1p = ((Stg40FloorWork *)arg0)->verts[row + 1];
+        mapCol = D_80072B60->viewX / 64 - 4;
         for (col = 0; col < colCount; col++) {
             tp->field_4 = Stg40_Max4(v0p[0].s[0].field_4, v0p[1].s[0].field_4, v1p[0].s[0].field_4, v1p[1].s[0].field_4);
-            tp->field_8 = Stg40_Min4(v0p[0].s[1].field_4, v0p[1].s[1].field_4, v1p[0].s[1].field_4, v1p[1].s[1].field_4);
+            tp->otz = Stg40_Min4(v0p[0].s[1].field_4, v0p[1].s[1].field_4, v1p[0].s[1].field_4, v1p[1].s[1].field_4);
             if (mapCol < 0 || mapRow < 0 || mapCol >= gridCols || mapRow >= gridRows) {
-                tp->field_0 = 0;
-                tp->field_2 = 0;
-                tp->field_3 = 0;
+                tp->flags = 0;
+                tp->wallBits = 0;
+                tp->primIdx = 0;
             } else {
                 r = Rand_GetAt(mapCol + (mapRow << 6));
-                tp->field_0 = grid[mapRow * gridCols + mapCol].field_0;
-                tp->field_2 = grid[mapRow * gridCols + mapCol].field_3;
-                k = tp->field_0 & 0xF;
+                tp->flags = grid[mapRow * gridCols + mapCol].flags;
+                tp->wallBits = grid[mapRow * gridCols + mapCol].wallBits;
+                k = tp->flags & 0xF;
                 switch (k) {
                 case 0:
-                    tp->field_3 = 0;
+                    tp->primIdx = 0;
                     break;
                 case 1:
                 case 2:
@@ -275,42 +275,42 @@ void Stg40_FillTileCache(ActorWork *arg0)
                     if (k == 1) {
                         n = 0x18;
                     }
-                    tp->field_3 = n;
-                    a = tp->field_3 + ((tp->field_0 >> 9) & 1);
-                    tp->field_3 = a;
-                    a = tp->field_3;
-                    if (tp->field_0 & 0x80) {
+                    tp->primIdx = n;
+                    a = tp->primIdx + ((tp->flags >> 9) & 1);
+                    tp->primIdx = a;
+                    a = tp->primIdx;
+                    if (tp->flags & 0x80) {
                         a += 2;
                     }
-                    tp->field_3 = a;
-                    a = tp->field_3;
-                    if (tp->field_0 & 0x800) {
+                    tp->primIdx = a;
+                    a = tp->primIdx;
+                    if (tp->flags & 0x800) {
                         a += 4;
                     }
-                    tp->field_3 = a;
-                    a = tp->field_3;
+                    tp->primIdx = a;
+                    a = tp->primIdx;
                     if ((u16)r < 0x200) {
                         a += 8;
                     }
-                    tp->field_3 = a;
-                    a = tp->field_3;
+                    tp->primIdx = a;
+                    a = tp->primIdx;
                     if ((u16)r < 0x400) {
                         a += 8;
                     }
-                    tp->field_3 = a;
-                    a = tp->field_3;
+                    tp->primIdx = a;
+                    a = tp->primIdx;
                     if ((u16)r < 0x400) {
                         a |= 0x80;
                     }
-                    tp->field_3 = a;
+                    tp->primIdx = a;
                     break;
                 default:
-                    tp->field_3 = (tp->field_0 & 0xF) + 0x2D;
-                    a = tp->field_3;
+                    tp->primIdx = (tp->flags & 0xF) + 0x2D;
+                    a = tp->primIdx;
                     if ((u16)r < 0x400) {
                         a |= 0x80;
                     }
-                    tp->field_3 = a;
+                    tp->primIdx = a;
                     break;
                 }
             }
@@ -327,15 +327,15 @@ void Stg40_MapPosToWorld(s32 x, s32 z, s32 y, Stg40Vec3 *out) {
     Stg40B60 *b = D_80072B60;
     s32 t;
 
-    out->field_4 = -(((z - b->field_30) << 11) / 64);
-    t = x - b->field_2C;
-    out->field_2 = -y;
-    out->field_0 = t * 40;
+    out->vz = -(((z - b->viewY) << 11) / 64);
+    t = x - b->viewX;
+    out->vy = -y;
+    out->vx = t * 40;
 }
 
-s32 Stg40_DrawTileWalls(Stg40W667C *w, s32 pkt, s32 x, s32 y)
+s32 Stg40_DrawTileWalls(Stg40FloorWork *w, s32 pkt, s32 x, s32 y)
 {
-    Stg40Tile *tile = &w->field_F20[y][x];
+    Stg40Tile *tile = &w->tiles[y][x];
     Stg40Rec10 *rec;
     u8 *base;
     s32 i;
@@ -349,15 +349,15 @@ s32 Stg40_DrawTileWalls(Stg40W667C *w, s32 pkt, s32 x, s32 y)
     s32 m;
     Stg40FT4 *src;
 
-    base = &Stg40_WallPrimIdx[(u16)D_8005071C->field_E54->field_A * 5];
+    base = &Stg40_WallPrimIdx[(u16)D_8005071C->floorHdr->wallStyle * 5];
 
     for (i = 0; i < 4; i++) {
         rec = &Stg40_WallSides[i];
-        if ((tile->field_0 & rec->field_0) == 0) {
+        if ((tile->flags & rec->field_0) == 0) {
             continue;
         }
-        a = &w->field_0[y + rec->field_4][x + rec->field_3];
-        b = &w->field_0[y + rec->field_6][x + rec->field_5];
+        a = &w->verts[y + rec->field_4][x + rec->field_3];
+        b = &w->verts[y + rec->field_6][x + rec->field_5];
         if (a->s[0].flag + b->s[0].flag + a->s[1].flag + b->s[1].flag == 0) {
             continue;
         }
@@ -368,12 +368,12 @@ s32 Stg40_DrawTileWalls(Stg40W667C *w, s32 pkt, s32 x, s32 y)
         if (n - (b->s[1].x - ax) * m > 0) {
             continue;
         }
-        k = (tile->field_2 >> rec->field_2) & 3;
-        if (k == 0 && (tile->field_3 & 0x80)) {
+        k = (tile->wallBits >> rec->field_2) & 3;
+        if (k == 0 && (tile->primIdx & 0x80)) {
             k = 4;
         }
-        ot = &Sys_State.otLayers.u[3][w->field_0[y + rec->field_8][x + rec->field_7].field_1C];
-        src = &w->field_143C[base[k]];
+        ot = &Sys_State.otLayers.u[3][w->verts[y + rec->field_8][x + rec->field_7].field_1C];
+        src = &w->prims[base[k]];
         *(Stg40FT4 *)pkt = *src;
         ((Stg40FT4 *)pkt)->x0 = a->s[1].x;
         ((Stg40FT4 *)pkt)->y0 = a->s[1].y;
@@ -393,19 +393,19 @@ s32 Stg40_DrawTileWalls(Stg40W667C *w, s32 pkt, s32 x, s32 y)
     return pkt;
 }
 
-s32 Stg40_DrawTileTop(Stg40W667C *w, s32 pkt, s32 x, s32 y) {
-    Stg40Vtx *a = &w->field_0[y][x];
-    Stg40Vtx *b = &w->field_0[y + 1][x];
-    Stg40Tile *t = &w->field_F20[y][x];
-    s32 k = t->field_0 == 0;
+s32 Stg40_DrawTileTop(Stg40FloorWork *w, s32 pkt, s32 x, s32 y) {
+    Stg40Vtx *a = &w->verts[y][x];
+    Stg40Vtx *b = &w->verts[y + 1][x];
+    Stg40Tile *t = &w->tiles[y][x];
+    s32 k = t->flags == 0;
     u32 *ot;
 
     if (a[0].s[k].flag + a[1].s[k].flag + b[0].s[k].flag + b[1].s[k].flag == 0) {
         return pkt;
     }
-    if (t->field_0 != 0) {
+    if (t->flags != 0) {
         ot = D_8005F8C0;
-        *(Stg40FT4 *)pkt = w->field_143C[Stg40_FloorPrimIdx[t->field_3 & 0x7F]];
+        *(Stg40FT4 *)pkt = w->prims[Stg40_FloorPrimIdx[t->primIdx & 0x7F]];
         ((Stg40FT4 *)pkt)->x0 = a[0].s[0].x;
         ((Stg40FT4 *)pkt)->y0 = a[0].s[0].y;
         ((Stg40FT4 *)pkt)->x1 = a[1].s[0].x;
@@ -418,7 +418,7 @@ s32 Stg40_DrawTileTop(Stg40W667C *w, s32 pkt, s32 x, s32 y) {
         *ot = (*ot & 0xFF000000) | ((u32)pkt & 0xFFFFFF);
         pkt += sizeof(Stg40FT4);
     } else {
-        ot = &D_8005F8B4[w->field_F20[y][x].field_8];
+        ot = &D_8005F8B4[w->tiles[y][x].otz];
         ((Stg40F4 *)pkt)->tag.b.len = 5;
         ((Stg40F4 *)pkt)->code = 0x28;
         ((Stg40F4 *)pkt)->r0 = 0;
@@ -439,20 +439,20 @@ s32 Stg40_DrawTileTop(Stg40W667C *w, s32 pkt, s32 x, s32 y) {
     return pkt;
 }
 
-void Stg40_DrawFloorTiles(Stg40W667C *w) {
+void Stg40_DrawFloorTiles(Stg40FloorWork *w) {
     s32 rows;
     s32 cols;
     s32 y;
     s32 x;
     s32 pkt;
 
-    rows = (D_80072B60->field_30 & 0x3F) ? 10 : 9;
-    cols = (D_80072B60->field_2C & 0x3F) ? 10 : 9;
+    rows = (D_80072B60->viewY & 0x3F) ? 10 : 9;
+    cols = (D_80072B60->viewX & 0x3F) ? 10 : 9;
     pkt = Sys_PacketCursor;
     for (y = 0; y < rows; y++) {
         for (x = 0; x < cols; x++) {
             pkt = Stg40_DrawTileTop(w, pkt, x, y);
-            if (w->field_F20[y][x].field_0 & 0xF00) {
+            if (w->tiles[y][x].flags & 0xF00) {
                 pkt = Stg40_DrawTileWalls(w, pkt, x, y);
             }
         }
@@ -461,7 +461,7 @@ void Stg40_DrawFloorTiles(Stg40W667C *w) {
 }
 
 void Stg40_FloorInit(Actor *a0, s32 *ids) {
-    Stg40W667C *w = (Stg40W667C *)a0->work;
+    Stg40FloorWork *w = (Stg40FloorWork *)a0->work;
     GfxTexSlot *slot;
     Stg40TexRec *e;
     Stg40FT4 *p;
@@ -470,22 +470,22 @@ void Stg40_FloorInit(Actor *a0, s32 *ids) {
 
     Stg40_FloorTask = a0;
     Stg40_FloorWork = w;
-    w->field_1414 = 0;
-    w->field_1438 = 0;
+    w->texCount = 0;
+    w->primCount = 0;
     for (i = 0; i < 2; i++) {
         slot = Gfx_FindOrLoadTexSlot(*ids);
         e = (Stg40TexRec *)Cd_GetFileEntry(*ids + 1);
-        w->field_13D4[w->field_1414] = slot;
-        w->field_13F4[w->field_1414] = e;
-        w->field_1418[w->field_1414] = *ids;
+        w->texSlots[w->texCount] = slot;
+        w->texRecs[w->texCount] = e;
+        w->texIds[w->texCount] = *ids;
         for (; e->u != 0xFF; e++) {
-            p = &w->field_143C[w->field_1438];
+            p = &w->prims[w->primCount];
             p->tag.b.len = 9;
             p->code = 0x2C;
             p->r0 = 0x7F;
             p->g0 = 0x7F;
             p->b0 = 0x7F;
-            if (w->field_1438 != 26) {
+            if (w->primCount != 26) {
                 p->code &= ~2;
                 p->tpage = ((slot->vramY & 0x100) >> 4) | ((slot->vramX & 0x3FF) >> 6) | ((slot->vramY & 0x200) << 2);
             } else {
@@ -501,13 +501,13 @@ void Stg40_FloorInit(Actor *a0, s32 *ids) {
             p->v2 = e->v + (e->h - 1);
             p->u3 = slot->uOffset + e->u + (e->w * 4 - 1);
             p->v3 = e->v + (e->h - 1);
-            w->field_1438++;
+            w->primCount++;
         }
         ids++;
-        w->field_1414++;
+        w->texCount++;
     }
-    w->field_1418[w->field_1414] = -1;
-    q = &w->field_143C[26];
+    w->texIds[w->texCount] = -1;
+    q = &w->prims[26];
     q->code |= 2;
 }
 
@@ -517,13 +517,13 @@ void Stg40_FloorUpdate(Actor *a0) {
     switch (a0->stateLevel0) {
     case 0:
     default:
-        D_80072B60->field_2C = D_8005071C->field_1064->field_C;
-        D_80072B60->field_30 = D_8005071C->field_1064->field_10;
+        D_80072B60->viewX = D_8005071C->scrollTarget->posX;
+        D_80072B60->viewY = D_8005071C->scrollTarget->posY;
         Task_NextState0(a0);
         break;
     case 1:
         Stg40_ScrollUpdate(a0);
-        Stg40_ProjectGrid((Stg40W667C *)w);
+        Stg40_ProjectGrid((Stg40FloorWork *)w);
         Stg40_FillTileCache(w);
         break;
     case 2:
@@ -532,27 +532,27 @@ void Stg40_FloorUpdate(Actor *a0) {
 }
 
 void Stg40_FloorDraw(Actor *a0) {
-    Stg40W667C *w = (Stg40W667C *)a0->work;
+    Stg40FloorWork *w = (Stg40FloorWork *)a0->work;
     s32 f = 1;
     s32 n = Beetle_GetPart(0x11);
     s32 *p;
 
-    if (n <= 0 || (D_8005071C->field_1058 == 0x10 && n == 0x75)) {
+    if (n <= 0 || (D_8005071C->dungeonIdx == 0x10 && n == 0x75)) {
         f = 0;
     }
     if (f) {
         Stg40_DrawFloorTiles(w);
     }
-    for (p = w->field_1418; *p != -1; p++) {
+    for (p = w->texIds; *p != -1; p++) {
         Gfx_FindOrLoadTexSlot(*p);
     }
 }
 
 void Stg40_HudUpdate(Actor *a0) {
-    Stg40W6720 *w = (Stg40W6720 *)a0->work;
+    Stg40HudWork *w = (Stg40HudWork *)a0->work;
     Stg40Slot34 *s3 = (Stg40Slot34 *)a0->u34.children;
     TextOpenArgs args;
-    Stg40E34 *fe;
+    Stg40FloorHeader *fe;
     s32 n;
     s32 x = 0x12;
     s32 sh;
@@ -560,27 +560,27 @@ void Stg40_HudUpdate(Actor *a0) {
     switch (a0->stateLevel0) {
     case 0:
     default:
-        Mem_FillWordsNeg1(&w->field_0, 3);
-        w->field_C = 0;
+        Mem_FillWordsNeg1(&w->labelText0, 3);
+        w->scale = 0;
         s3->field_0 = 0;
-        n = D_8005071C->field_E54->field_D - 6;
+        n = D_8005071C->floorHdr->nameLen - 6;
         sh = n;
         do {
             if (n >= 7) {
                 sh = 6;
             }
         } while (0);
-        w->field_10 = ~(1 << sh);
-        w->field_12 = Save_GameStatePtr->hp;
-        w->field_14 = Save_GameStatePtr->mp;
+        w->partMask = ~(1 << sh);
+        w->shownHp = Save_GameStatePtr->hp;
+        w->shownMp = Save_GameStatePtr->mp;
         Task_NextState0(a0);
         break;
     case 1:
         switch (a0->stateLevel1) {
         case 0:
         default:
-            if (Math_RampToOne(a0, &w->field_C) == 0) {
-                fe = D_8005071C->field_E54;
+            if (Math_RampToOne(a0, &w->scale) == 0) {
+                fe = D_8005071C->floorHdr;
                 args.x = x;
                 args.y = 0x16;
                 args.bigFont = 0;
@@ -588,43 +588,43 @@ void Stg40_HudUpdate(Actor *a0) {
                 args.charAdvance = 0;
                 args.lineAdvance = 0xC;
                 args.charDelay = 0;
-                args.text = (s32)fe->field_E;
-                Text_Open(&w->field_8, &args);
-                Text_SetOtLayer(w->field_8, 2);
-                Text_OpenById(&w->field_0, Stg40_HudLabels[0].id, 0, Stg40_HudLabels[0].pos);
-                Text_OpenById(&w->field_4, Stg40_HudLabels[1].id, 0, Stg40_HudLabels[1].pos);
-                Text_SetOtLayer(w->field_0, 2);
-                Text_SetOtLayer(w->field_4, 2);
+                args.text = (s32)fe->name;
+                Text_Open(&w->nameText, &args);
+                Text_SetOtLayer(w->nameText, 2);
+                Text_OpenById(&w->labelText0, Stg40_HudLabels[0].id, 0, Stg40_HudLabels[0].pos);
+                Text_OpenById(&w->labelText1, Stg40_HudLabels[1].id, 0, Stg40_HudLabels[1].pos);
+                Text_SetOtLayer(w->labelText0, 2);
+                Text_SetOtLayer(w->labelText1, 2);
                 Task_NextState1(a0);
             }
             break;
         case 1:
-            if (w->field_12 > Save_GameStatePtr->hp) {
-                w->field_12 = (w->field_12 - 0x21 < Save_GameStatePtr->hp) ? Save_GameStatePtr->hp : (u16)w->field_12 - 0x21;
+            if (w->shownHp > Save_GameStatePtr->hp) {
+                w->shownHp = (w->shownHp - 0x21 < Save_GameStatePtr->hp) ? Save_GameStatePtr->hp : (u16)w->shownHp - 0x21;
             }
-            if (w->field_12 < Save_GameStatePtr->hp) {
-                w->field_12 = (Save_GameStatePtr->hp < w->field_12 + 0x21) ? Save_GameStatePtr->hp : (u16)w->field_12 + 0x21;
+            if (w->shownHp < Save_GameStatePtr->hp) {
+                w->shownHp = (Save_GameStatePtr->hp < w->shownHp + 0x21) ? Save_GameStatePtr->hp : (u16)w->shownHp + 0x21;
             }
             if (Save_GameStatePtr->hp == 0) {
-                w->field_12 = 0;
+                w->shownHp = 0;
             }
-            if (w->field_14 > Save_GameStatePtr->mp) {
-                w->field_14 = (w->field_14 - 1 < Save_GameStatePtr->mp) ? Save_GameStatePtr->mp : (u16)w->field_14 - 1;
+            if (w->shownMp > Save_GameStatePtr->mp) {
+                w->shownMp = (w->shownMp - 1 < Save_GameStatePtr->mp) ? Save_GameStatePtr->mp : (u16)w->shownMp - 1;
             }
-            if (w->field_14 < Save_GameStatePtr->mp) {
-                w->field_14 = (Save_GameStatePtr->mp < w->field_14 + 1) ? Save_GameStatePtr->mp : (u16)w->field_14 + 1;
+            if (w->shownMp < Save_GameStatePtr->mp) {
+                w->shownMp = (Save_GameStatePtr->mp < w->shownMp + 1) ? Save_GameStatePtr->mp : (u16)w->shownMp + 1;
             }
             if (Save_GameStatePtr->mp == 0) {
-                w->field_14 = 0;
+                w->shownMp = 0;
             }
             break;
         }
         if (s3->field_0 != 0) {
-            if (D_8005071C->field_BA5 == 0 && s3->field_0->stateLevel0 != 2) {
+            if (D_8005071C->bitBugLevel == 0 && s3->field_0->stateLevel0 != 2) {
                 Task_SetState0(s3->field_0, 2);
             }
         } else {
-            if (D_8005071C->field_BA5 != 0) {
+            if (D_8005071C->bitBugLevel != 0) {
                 Task_Create(0x20A, (s32 *)s3, 0);
             }
         }
@@ -634,14 +634,14 @@ void Stg40_HudUpdate(Actor *a0) {
         case 0:
         default:
             n = 3;
-            Text_CloseArray(&w->field_0, n);
+            Text_CloseArray(&w->labelText0, n);
             if (s3->field_0 != 0) {
                 Task_SetState0(s3->field_0, 2);
             }
             Task_NextState1(a0);
             break;
         case 1:
-            if (Math_RampToZero(a0, &w->field_C) == 0) {
+            if (Math_RampToZero(a0, &w->scale) == 0) {
                 Task_SetState0(a0, 3);
             }
             break;
@@ -741,40 +741,40 @@ void Stg40_ItemMenuSetCursor(a0, a1, a2)
     u8 a1;
     u8 a2;
 {
-    Stg40ObjWork *w = (Stg40ObjWork *)Stg40_ItemMenuTask->work;
+    Stg40ItemMenuWork *w = (Stg40ItemMenuWork *)Stg40_ItemMenuTask->work;
 
-    w->field_46 = a0;
-    w->field_44 = a1;
-    w->field_45 = a2;
-    w->field_24 = -1;
+    w->cursorRow = a0;
+    w->rowCount = a1;
+    w->arrowFlags = a2;
+    w->refresh = -1;
 }
 
 s32 *Stg40_ItemMenuGetTextIds(void) {
-    return ((Stg40ObjWork *)Stg40_ItemMenuTask->work)->field_28;
+    return ((Stg40ItemMenuWork *)Stg40_ItemMenuTask->work)->rowTextIds;
 }
 
 void Stg40_ItemMenuInit(Actor *a0, s32 *a1) {
-    Stg40ObjWork *w = (Stg40ObjWork *)a0->work;
+    Stg40ItemMenuWork *w = (Stg40ItemMenuWork *)a0->work;
 
     Stg40_ItemMenuTask = a0;
-    w->field_20 = *a1;
+    w->hasDesc = *a1;
 }
 
 void Stg40_ItemMenuUpdate(Actor *a0) {
-    Stg40ObjWork *w = (Stg40ObjWork *)a0->work;
+    Stg40ItemMenuWork *w = (Stg40ItemMenuWork *)a0->work;
     TextOpenArgs args;
     s32 n;
     s32 i;
 
     n = 6;
-    if (w->field_20 != 0) {
+    if (w->hasDesc != 0) {
         n = 7;
     }
     switch (a0->stateLevel0) {
     case 0:
     default:
-        Mem_FillWordsNeg1(w->field_0, n);
-        w->field_1C = 0;
+        Mem_FillWordsNeg1(w->rowTexts, n);
+        w->scale = 0;
         Stg40_ItemMenuTask = a0;
         Task_NextState0(a0);
         break;
@@ -782,7 +782,7 @@ void Stg40_ItemMenuUpdate(Actor *a0) {
         switch (a0->stateLevel1) {
         case 0:
         default:
-            if (Math_RampToOne(a0, &w->field_1C) == 0) {
+            if (Math_RampToOne(a0, &w->scale) == 0) {
                 args.x = 0x1B;
                 args.y = 0x33;
                 args.bigFont = 0;
@@ -790,28 +790,28 @@ void Stg40_ItemMenuUpdate(Actor *a0) {
                 args.charAdvance = 0;
                 args.lineAdvance = 0xC;
                 args.charDelay = 0;
-                for (i = 0; i < w->field_44; i++) {
-                    args.text = w->field_28[i];
-                    Text_Open(&w->field_0[i], &args);
-                    Text_SetOtLayer(w->field_0[i], 2);
+                for (i = 0; i < w->rowCount; i++) {
+                    args.text = w->rowTextIds[i];
+                    Text_Open(&w->rowTexts[i], &args);
+                    Text_SetOtLayer(w->rowTexts[i], 2);
                     args.y += 0xC;
                 }
-                if (w->field_20 != 0) {
+                if (w->hasDesc != 0) {
                     args.bigFont = 1;
-                    args.text = w->field_40;
+                    args.text = w->descTextId;
                     args.x = 0x10;
                     args.y = 0x8A;
                     args.charAdvance = 0;
                     args.lineAdvance = 0;
-                    Text_Open(&w->field_18, &args);
-                    Text_SetOtLayer(w->field_18, 2);
+                    Text_Open(&w->descText, &args);
+                    Text_SetOtLayer(w->descText, 2);
                 }
-                w->field_24 = 0;
+                w->refresh = 0;
                 Task_NextState1(a0);
             }
             break;
         case 1:
-            if (w->field_24 != 0) {
+            if (w->refresh != 0) {
                 Task_SetState1(a0, 0);
             }
             break;
@@ -821,11 +821,11 @@ void Stg40_ItemMenuUpdate(Actor *a0) {
         switch (a0->stateLevel1) {
         case 0:
         default:
-            Text_CloseArray(w->field_0, n);
+            Text_CloseArray(w->rowTexts, n);
             Task_NextState1(a0);
             break;
         case 1:
-            if (Math_RampToZero(a0, &w->field_1C) == 0) {
+            if (Math_RampToZero(a0, &w->scale) == 0) {
                 Task_SetState0(a0, 3);
             }
             break;
@@ -835,16 +835,16 @@ void Stg40_ItemMenuUpdate(Actor *a0) {
 }
 
 void Stg40_ItemMenuDraw(Actor *a0) {
-    Stg40ObjWork *w = (Stg40ObjWork *)a0->work;
+    Stg40ItemMenuWork *w = (Stg40ItemMenuWork *)a0->work;
     GfxPart *p;
     GfxPart *q;
     s32 n;
     s32 i;
     s32 mask;
 
-    if (w->field_1C != 0) {
+    if (w->scale != 0) {
         n = 1;
-        if (w->field_20 != 0) {
+        if (w->hasDesc != 0) {
             n = 2;
         }
         for (i = 0; i < n; i++) {
@@ -852,14 +852,14 @@ void Stg40_ItemMenuDraw(Actor *a0) {
             switch (i) {
             case 0:
             default:
-                mask = ((w->field_45 & 1) == 0) << 2;
-                if (!(w->field_45 & 2)) {
+                mask = ((w->arrowFlags & 1) == 0) << 2;
+                if (!(w->arrowFlags & 2)) {
                     mask |= 8;
                 }
                 for (q = p; q->fileId != 0; q++) {
                     if (q->groupMask & 2) {
                         q->x = -0x90;
-                        q->y = w->field_46 * 12 - 0x46;
+                        q->y = w->cursorRow * 12 - 0x46;
                         q->palette = (a0->elapsed >> 2) & 3;
                     }
                     if (q->groupMask & 0xC) {
@@ -872,7 +872,7 @@ void Stg40_ItemMenuDraw(Actor *a0) {
                 Gfx_HidePartsByMask((GfxPartMaskView *)p, 0);
                 break;
             }
-            Gfx_SetPartsScale((GfxPartScaleView *)p, 0x1000, w->field_1C);
+            Gfx_SetPartsScale((GfxPartScaleView *)p, 0x1000, w->scale);
             Gfx_DrawParts((s32)p);
         }
     }
@@ -883,7 +883,7 @@ void Stg40_EnemyInfoInit(void) {
 
 void Stg40_EnemyInfoUpdate(Actor *a0) {
     Stg40W71F0 *w = (Stg40W71F0 *)a0->work;
-    Stg40SlotInfo *info;
+    Stg40EnemyParty *info;
     TextOpenArgs args;
     u16 *pos;
     s32 i;
@@ -902,17 +902,17 @@ void Stg40_EnemyInfoUpdate(Actor *a0) {
         default:
             if (Math_RampToOne(a0, &w->field_0) == 0) {
                 pos = Stg40_EnemyInfoTextPos;
-                info = (Stg40SlotInfo *)D_80072B60->field_80[D_80072B60->field_AC]->field_10;
+                info = (Stg40EnemyParty *)D_80072B60->enemyList[D_80072B60->enemyIndex]->params;
                 args.bigFont = 0;
                 args.color = 0;
                 args.charAdvance = 0;
                 args.lineAdvance = 0xC;
                 args.charDelay = 1;
                 Text_CloseArray(w->field_8, 12);
-                for (i = 0; i < info->field_B * 4; i++) {
+                for (i = 0; i < info->digiCount * 4; i++) {
                     args.x = *pos++;
                     args.y = *pos++;
-                    k = info->field_10[i / 4];
+                    k = info->digiIds[i / 4];
                     switch (i % 4) {
                     case 0:
                     default:
@@ -960,18 +960,18 @@ void Stg40_EnemyInfoUpdate(Actor *a0) {
 
 void Stg40_EnemyInfoDraw(Actor *a0) {
     ActorWork *w = a0->work;
-    Stg40SlotInfo *info;
+    Stg40EnemyParty *info;
     EntA0 *p;
     s32 i;
 
     if (w->field_0 != 0) {
-        info = (Stg40SlotInfo *)D_80072B60->field_80[D_80072B60->field_AC]->field_10;
+        info = (Stg40EnemyParty *)D_80072B60->enemyList[D_80072B60->enemyIndex]->params;
         for (i = 0; i < 3; i++) {
             p = Cd_GetFileEntry(Stg40_EnemyInfoParts[i]);
-            if (i >= info->field_B) {
+            if (i >= info->digiCount) {
                 Gfx_HidePartsByMask((GfxPartMaskView *)p, -1);
             } else {
-                Gfx_SetPartsNumber((GfxPart *)p, 2, 2, info->field_16[i]);
+                Gfx_SetPartsNumber((GfxPart *)p, 2, 2, info->levels[i]);
                 Gfx_HidePartsByMask((GfxPartMaskView *)p, 0);
                 Gfx_SetPartsScale((GfxPartScaleView *)p, 0x1000, w->field_0);
             }
@@ -1091,8 +1091,8 @@ void Stg40_SetLights(Blk16 *l, s32 r, s32 g, s32 b) {
 void Stg40_ObjStartFlash(Actor *a0, u8 a1) {
     Stg40ActWork *w = (Stg40ActWork *)a0->work;
 
-    w->field_26 = a1;
-    w->field_27 = 0;
+    w->flashKind = a1;
+    w->flashFrame = 0;
 }
 
 void Stg40_SetModelTint(Actor *a0, u8 on, u8 r, u8 g, u8 b) {
@@ -1114,38 +1114,38 @@ s32 Stg40_ObjAnimDone(Actor *a0) {
 
 s32 Stg40_ObjStepMove(Stg40Ent48 *e) {
     s32 d;
-    Stg40Loc *loc = &e->field_18;
+    Stg40Loc *loc = &e->loc;
     s32 x;
     s32 y;
     s32 dx;
     s32 dy;
     s32 c;
 
-    if ((s16)e->field_E != e->field_C) {
-        c = e->field_C;
-        if (((s16)(e->field_E - ((u16)e->field_C - 0x1000)) / 0x800) & 1) {
-            e->field_C = c - 0x100;
+    if ((s16)e->targetHeading != e->heading) {
+        c = e->heading;
+        if (((s16)(e->targetHeading - ((u16)e->heading - 0x1000)) / 0x800) & 1) {
+            e->heading = c - 0x100;
         } else {
-            e->field_C = c + 0x100;
+            e->heading = c + 0x100;
         }
-        e->field_C &= 0xFFF;
-        d = (s16)e->field_E - e->field_C;
-        if ((d >= 0) ? (d < 0x100) : ((e->field_C - (s16)e->field_E) < 0x100)) {
-            e->field_C = e->field_E;
+        e->heading &= 0xFFF;
+        d = (s16)e->targetHeading - e->heading;
+        if ((d >= 0) ? (d < 0x100) : ((e->heading - (s16)e->targetHeading) < 0x100)) {
+            e->heading = e->targetHeading;
         }
     }
-    e->field_B = (s16)e->field_E / 512;
-    if ((s16)e->field_E == e->field_C && loc->field_8 != 0 && --loc->field_8 == 0 && loc->field_1C == 1) {
-        loc->field_1C = 0;
+    e->octant = (s16)e->targetHeading / 512;
+    if ((s16)e->targetHeading == e->heading && loc->moveFramesLeft != 0 && --loc->moveFramesLeft == 0 && loc->moving == 1) {
+        loc->moving = 0;
     }
     x = loc->u0.pair.field_0 << 6;
-    dx = ((x - (loc->field_4.field_0 << 6)) * loc->field_8) / loc->field_A;
+    dx = ((x - (loc->prevTile.field_0 << 6)) * loc->moveFramesLeft) / loc->moveFrames;
     y = loc->u0.pair.field_2 << 6;
-    dy = ((y - (loc->field_4.field_2 << 6)) * loc->field_8) / loc->field_A;
-    loc->field_C = x - dx;
-    loc->field_10 = y - dy;
-    e->field_A = Stg40_GetCell(loc->u0.pair.field_0, loc->u0.pair.field_2)->field_2;
-    return loc->field_8 != 0;
+    dy = ((y - (loc->prevTile.field_2 << 6)) * loc->moveFramesLeft) / loc->moveFrames;
+    loc->posX = x - dx;
+    loc->posY = y - dy;
+    e->roomId = Stg40_GetCell(loc->u0.pair.field_0, loc->u0.pair.field_2)->roomId;
+    return loc->moveFramesLeft != 0;
 }
 
 void Stg40_ObjInit(Actor *a0, Stg40Ent48 *e)
@@ -1153,41 +1153,41 @@ void Stg40_ObjInit(Actor *a0, Stg40Ent48 *e)
   Stg40ActWork *w = (Stg40ActWork *) a0->work;
   Stg40Ent48 *new_var;
   Stg40Loc *loc;
-  w->field_2C = e;
-  e->field_14 = a0;
-  if (e->field_4 != (-1))
+  w->ent = e;
+  e->actor = a0;
+  if (e->digiId != (-1))
   {
-    a0->digiId = e->field_4;
-    w->field_14 = Digi_GetModelFile(a0->digiId);
-    w->field_18 = Anim_GetModelAnimFile(a0->digiId, 4);
-    w->field_C = 0;
-    w->field_8 = 0;
-    w->field_4 = 0;
-    w->field_10 = (s16) e->field_E;
+    a0->digiId = e->digiId;
+    w->modelFile = Digi_GetModelFile(a0->digiId);
+    w->animFile = Anim_GetModelAnimFile(a0->digiId, 4);
+    w->posZ = 0;
+    w->posY = 0;
+    w->posX = 0;
+    w->rotY = (s16) e->targetHeading;
     w->field_20 = 0;
     w->field_22 = (w->field_23 = (w->field_24 = 0x80));
-    w->field_26 = 0;
-    w->field_27 = 0;
+    w->flashKind = 0;
+    w->flashFrame = 0;
     w->field_28 = 0;
   }
-  loc = &e->field_18;
-  e->field_18.u0.pair.field_0 = (loc->field_4.field_0 = e->field_18.u0.pair.field_0);
-  loc->u0.pair.field_2 = (loc->field_4.field_2 = e->field_18.u0.pair.field_2);
-  loc->field_8 = 0;
-  loc->field_A = 1;
-  loc->field_1C = 0;
-  loc->field_C = loc->u0.pair.field_0 << 6;
-  loc->field_10 = loc->u0.pair.field_2 << 6;
+  loc = &e->loc;
+  e->loc.u0.pair.field_0 = (loc->prevTile.field_0 = e->loc.u0.pair.field_0);
+  loc->u0.pair.field_2 = (loc->prevTile.field_2 = e->loc.u0.pair.field_2);
+  loc->moveFramesLeft = 0;
+  loc->moveFrames = 1;
+  loc->moving = 0;
+  loc->posX = loc->u0.pair.field_0 << 6;
+  loc->posY = loc->u0.pair.field_2 << 6;
   if (e->field_0 & 1)
   {
-    D_8005071C->field_1064 = loc;
-    D_8005071C->field_1068 = loc;
-    new_var = w->field_2C;
-    D_80072B60->field_8 = a0;
-    D_80072B60->field_4 = new_var;
-    Stg40_TurnQueueAdd(e->field_7);
+    D_8005071C->scrollTarget = loc;
+    D_8005071C->playerLoc = loc;
+    new_var = w->ent;
+    D_80072B60->playerActor = a0;
+    D_80072B60->playerEnt = new_var;
+    Stg40_TurnQueueAdd(e->turnId);
   }
-  w->field_34 = 0;
+  w->drawn = 0;
 }
 
 void Stg40_ObjUpdate(Actor *a0) {
@@ -1199,50 +1199,50 @@ void Stg40_ObjUpdate(Actor *a0) {
     case 0:
     default:
         Task_NextState0(a0);
-        if (w->field_2C->field_0 & 0x100) {
-            if (w->field_2C->field_0 & 1) {
+        if (w->ent->field_0 & 0x100) {
+            if (w->ent->field_0 & 1) {
                 Task_SetState1(a0, 5);
             }
-            if (w->field_2C->field_0 & 2) {
-                if (w->field_2C->field_0 & 0x800) {
+            if (w->ent->field_0 & 2) {
+                if (w->ent->field_0 & 0x800) {
                     Task_SetState1(a0, 4);
                 } else {
                     Task_SetState1(a0, 3);
                 }
             }
-            if (w->field_2C->field_0 & 0x200) {
+            if (w->ent->field_0 & 0x200) {
                 Task_SetState1(a0, 0);
-                w->field_2C->field_0 &= ~0x200;
+                w->ent->field_0 &= ~0x200;
             }
-            w->field_2C->field_0 &= ~0x900;
+            w->ent->field_0 &= ~0x900;
         }
-        Actor_InitTransform(a0, &w->field_4, w->field_10);
-        w->field_30 = 0x28;
-        w->field_32 = -1;
-        w->field_36 = -1;
-        w->field_38 = -1;
+        Actor_InitTransform(a0, &w->posX, w->rotY);
+        w->pendingAnim = 0x28;
+        w->curAnim = -1;
+        w->pendingLinkedModel = -1;
+        w->linkedModel = -1;
         break;
     case 1:
-        Stg40_ObjStepMove(w->field_2C);
-        if (w->field_2C->field_0 & 1) {
+        Stg40_ObjStepMove(w->ent);
+        if (w->ent->field_0 & 1) {
             Stg40_PlayerUpdate(a0);
         }
-        if (w->field_2C->field_0 & 2) {
+        if (w->ent->field_0 & 2) {
             Stg40_EnemyUpdate(a0);
         }
-        if (w->field_2C->field_0 & 4) {
+        if (w->ent->field_0 & 4) {
             Stg40_FixtureUpdate(a0);
         }
-        if (w->field_36 != -1) {
+        if (w->pendingLinkedModel != -1) {
             slot = (s32 *)a0->u34.children;
             if (*slot != 0) {
                 Task_SetState0((Actor *)*slot, 3);
             } else {
                 arg.field_0 = a0;
-                arg.field_4 = w->field_36;
+                arg.field_4 = w->pendingLinkedModel;
                 Task_Create(0x207, slot, (s32)&arg);
-                w->field_38 = w->field_36;
-                w->field_36 = -1;
+                w->linkedModel = w->pendingLinkedModel;
+                w->pendingLinkedModel = -1;
             }
         }
         break;
@@ -1253,7 +1253,7 @@ void Stg40_ObjUpdate(Actor *a0) {
 
 void Stg40_ObjDraw(Actor *a0) {
     Stg40ActWork *w = (Stg40ActWork *)a0->work;
-    Stg40Ent48 *e = w->field_2C;
+    Stg40Ent48 *e = w->ent;
     Stg40Xform *x;
     s32 dx;
     s32 dy;
@@ -1261,48 +1261,48 @@ void Stg40_ObjDraw(Actor *a0) {
     s32 r;
     u8 k;
 
-    w->field_34 = 0;
-    if (e->field_4 == -1) {
+    w->drawn = 0;
+    if (e->digiId == -1) {
         return;
     }
-    dx = e->field_18.field_C - D_80072B60->field_2C;
+    dx = e->loc.posX - D_80072B60->viewX;
     if (dx < 0) {
-        dx = D_80072B60->field_2C - e->field_18.field_C;
+        dx = D_80072B60->viewX - e->loc.posX;
     }
-    dy = e->field_18.field_10 - D_80072B60->field_30;
+    dy = e->loc.posY - D_80072B60->viewY;
     if (dy < 0) {
-        dy = D_80072B60->field_30 - e->field_18.field_10;
+        dy = D_80072B60->viewY - e->loc.posY;
     }
     if (dx < 0x1C0 && dy < 0x1C0) {
-        Cd_QueueFile(w->field_14);
-        Cd_QueueFile(w->field_18);
+        Cd_QueueFile(w->modelFile);
+        Cd_QueueFile(w->animFile);
     }
     if (dx < 0x140 && dy < 0x140) {
         vis = 1;
         r = Beetle_GetPart(0x11);
-        if (r <= 0 || (D_8005071C->field_1058 == 0x10 && r == 0x75)) {
+        if (r <= 0 || (D_8005071C->dungeonIdx == 0x10 && r == 0x75)) {
             vis = 0;
         }
         if (e->field_0 & 1) {
             vis = 1;
         }
-        Gfx_AttachModel(a0, w->field_14)->otIndex = 3;
-        if (w->field_30 != -1) {
-            Anim_SetModelAnim(a0, w->field_30);
-            w->field_32 = w->field_30;
-            w->field_30 = -1;
+        Gfx_AttachModel(a0, w->modelFile)->otIndex = 3;
+        if (w->pendingAnim != -1) {
+            Anim_SetModelAnim(a0, w->pendingAnim);
+            w->curAnim = w->pendingAnim;
+            w->pendingAnim = -1;
         }
         x = (Stg40Xform *)a0->u38.ptr38;
-        x->field_30 = (s16)((e->field_18.field_C - D_80072B60->field_2C) * 40);
-        x->field_38 = (s16)-(((e->field_18.field_10 - D_80072B60->field_30) << 11) / 64);
-        x->field_34 = -(s16)e->field_18.field_14;
-        x->field_42 = e->field_C;
-        x->field_58 = e->field_38;
-        x->field_5C = e->field_3C;
-        x->field_60 = e->field_40;
+        x->posX = (s16)((e->loc.posX - D_80072B60->viewX) * 40);
+        x->posZ = (s16)-(((e->loc.posY - D_80072B60->viewY) << 11) / 64);
+        x->posY = -(s16)e->loc.height;
+        x->rotY = e->heading;
+        x->scaleX = e->scaleX;
+        x->scaleY = e->scaleY;
+        x->scaleZ = e->scaleZ;
         if ((e->field_0 & 0x4000) && vis) {
             if (!(e->field_0 & 0x80)) {
-                Stg40_DrawEntityShadow(&e->field_18);
+                Stg40_DrawEntityShadow(&e->loc);
             }
             if (!(e->field_0 & 0x400)) {
                 Anim_StepModelAnim(a0);
@@ -1311,17 +1311,17 @@ void Stg40_ObjDraw(Actor *a0) {
                 Gfx_DrawTexModel(a0, 0);
             }
         }
-        w->field_34 = 1;
+        w->drawn = 1;
     }
-    if (w->field_26 != 0) {
-        k = Stg40_FlashPattern[w->field_27];
+    if (w->flashKind != 0) {
+        k = Stg40_FlashPattern[w->flashFrame];
         if (k == 0xFF) {
-            w->field_26 = 0;
+            w->flashKind = 0;
             Stg40_SetModelTint(a0, 0, 0, 0, 0);
         } else {
-            Stg40_SetModelTint(a0, k, Stg40_FlashColors[w->field_26 - 1].r, Stg40_FlashColors[w->field_26 - 1].g,
-                          Stg40_FlashColors[w->field_26 - 1].b);
-            w->field_27++;
+            Stg40_SetModelTint(a0, k, Stg40_FlashColors[w->flashKind - 1].r, Stg40_FlashColors[w->flashKind - 1].g,
+                          Stg40_FlashColors[w->flashKind - 1].b);
+            w->flashFrame++;
         }
     }
 }
@@ -1329,37 +1329,37 @@ void Stg40_ObjDraw(Actor *a0) {
 void Stg40_PlayerAnimThenMsg(Actor *a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6) {
     Stg40_ObjSetAnim(a0, a1);
     Task_SetState1(a0, 9);
-    D_80072B60->field_34 = a2;
-    D_80072B60->field_38 = a3;
-    D_80072B60->field_44 = a4;
-    D_80072B60->field_48 = a5;
-    D_80072B60->field_4C = a6;
+    D_80072B60->msgAnim = a2;
+    D_80072B60->msgNextState = a3;
+    D_80072B60->msgId = a4;
+    D_80072B60->msgArg0 = a5;
+    D_80072B60->msgArg1 = a6;
 }
 
 void Stg40_PlayerShowMsg(Actor *a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) {
     Stg40_ObjSetAnim(a0, a1);
     Task_SetState1(a0, 0xB);
-    D_80072B60->field_38 = a2;
+    D_80072B60->msgNextState = a2;
     Stg40_MsgWinOpen(1, a3, a4, a5);
 }
 
 s32 Stg40_PlayerCheckEnemyInfo(Actor *a0) {
-    Stg40Ent48 *self = ((Stg40ActWork *)a0->work)->field_2C;
+    Stg40Ent48 *self = ((Stg40ActWork *)a0->work)->ent;
     Stg40Ent48 *e;
     s32 i;
 
-    if (Pad_Square > 0 && self->field_A != 0xFF) {
-        e = D_8005071C->field_18;
-        D_80072B60->field_A8 = 0;
-        D_80072B60->field_AC = 0;
-        for (i = 0; i < D_8005071C->field_C; e++, i++) {
-            if ((e->field_0 & 0x8000) && e->field_8 == 1 && e->field_A == self->field_A) {
-                D_80072B60->field_80[D_80072B60->field_A8++] = e;
+    if (Pad_Square > 0 && self->roomId != 0xFF) {
+        e = D_8005071C->ents;
+        D_80072B60->enemyCount = 0;
+        D_80072B60->enemyIndex = 0;
+        for (i = 0; i < D_8005071C->entCount; e++, i++) {
+            if ((e->field_0 & 0x8000) && e->kind == 1 && e->roomId == self->roomId) {
+                D_80072B60->enemyList[D_80072B60->enemyCount++] = e;
             }
         }
-        if (D_80072B60->field_A8 != 0) {
+        if (D_80072B60->enemyCount != 0) {
             Task_SetState1(a0, 0x1A);
-            D_80072B60->field_7E = 0;
+            D_80072B60->automapMode = 0;
             return -1;
         }
     }
@@ -1379,16 +1379,16 @@ s32 Stg40_PlayerInteract(Actor *a0)
     s32 r2;
     s32 r3;
 
-    e = ((Stg40ActWork *)a0->work)->field_2C;
+    e = ((Stg40ActWork *)a0->work)->ent;
     if (Pad_Cross <= 0) {
         return 0;
     }
-    found = Stg40_FindEntAt(e->field_18.u0.pair.field_0 + ((s16 *)Stg40_DirOffsets)[(e->field_B + 1) << 1],
-                          e->field_18.u0.pair.field_2 + ((s16 *)Stg40_DirOffsets)[((e->field_B + 1) << 1) | 1]);
+    found = Stg40_FindEntAt(e->loc.u0.pair.field_0 + ((s16 *)Stg40_DirOffsets)[(e->octant + 1) << 1],
+                          e->loc.u0.pair.field_2 + ((s16 *)Stg40_DirOffsets)[((e->octant + 1) << 1) | 1]);
     if (found == 0) {
         snd2 = 0x1FD000F;
-        r2 = Stg40_GetCellFlags(e->field_18.u0.pair.field_0 + ((s16 *)Stg40_DirOffsets)[(e->field_B + 1) << 1],
-                          e->field_18.u0.pair.field_2 + ((s16 *)Stg40_DirOffsets)[((e->field_B + 1) << 1) | 1]) & 0xF;
+        r2 = Stg40_GetCellFlags(e->loc.u0.pair.field_0 + ((s16 *)Stg40_DirOffsets)[(e->octant + 1) << 1],
+                          e->loc.u0.pair.field_2 + ((s16 *)Stg40_DirOffsets)[((e->octant + 1) << 1) | 1]) & 0xF;
         if (r2 >= 3) {
             snd2 = r2 + 0x1FD0194;
         }
@@ -1396,10 +1396,10 @@ s32 Stg40_PlayerInteract(Actor *a0)
         Stg40_PlayerAnimThenMsg(a0, 0x2D, 0x28, 6, snd2, 0, 0);
         goto end;
     }
-    child = found->field_14;
-    D_80072B60->field_3C = child;
-    D_80072B60->field_40 = found;
-    switch (found->field_8) {
+    child = found->actor;
+    D_80072B60->targetActor = child;
+    D_80072B60->targetEnt = found;
+    switch (found->kind) {
     default:
         Snd_PlayById(0x2E, 0);
         Stg40_PlayerAnimThenMsg(a0, 0x2D, 0x28, 6, 0x1FD000F, 0, 0);
@@ -1407,7 +1407,7 @@ s32 Stg40_PlayerInteract(Actor *a0)
     case 2:
     case 3:
         Snd_PlayById(0x2E, 0);
-        Stg40_PlayerAnimThenMsg(a0, 0x2D, 0x28, 6, (found->field_8 == 2) ? 0x1FD0195 : 0x1FD0196, 0, 0);
+        Stg40_PlayerAnimThenMsg(a0, 0x2D, 0x28, 6, (found->kind == 2) ? 0x1FD0195 : 0x1FD0196, 0, 0);
         return -1;
     case 4:
         Task_SetState1(a0, 0x13);
@@ -1423,7 +1423,7 @@ s32 Stg40_PlayerInteract(Actor *a0)
         } else if (r == 0) {
             snd = 0x1FD001A;
         } else {
-            lim = found->field_10[1];
+            lim = found->params[1];
             if (Stg40_GetPartLevel(6) < lim) {
                 snd = 0x1FD0018;
             }
@@ -1440,7 +1440,7 @@ s32 Stg40_PlayerInteract(Actor *a0)
     case 10:
     case 11:
     case 12:
-        idx = found->field_8 - 6;
+        idx = found->kind - 6;
         if (!(found->field_0 & 0x1000)) {
             break;
         }
@@ -1451,9 +1451,9 @@ s32 Stg40_PlayerInteract(Actor *a0)
             goto end;
         }
         Task_SetState1(a0, 0x11);
-        D_80072B60->field_7E = 0;
-        D_80072B60->field_E4 = 0;
-        D_80072B60->field_E0 = D_80072B60->field_B0[0];
+        D_80072B60->automapMode = 0;
+        D_80072B60->giftMenu = 0;
+        D_80072B60->selItem = D_80072B60->itemIds[0];
         goto end;
     }
     Task_SetState1(a0, 0xC);
@@ -1462,7 +1462,7 @@ end:
 }
 
 s32 Stg40_PlayerTryMove(Stg40Ent48 *e) {
-    Stg40Loc *loc = &e->field_18;
+    Stg40Loc *loc = &e->loc;
     s32 bits;
     s32 idx;
     s32 oct;
@@ -1477,7 +1477,7 @@ s32 Stg40_PlayerTryMove(Stg40Ent48 *e) {
     s16 *pl;
     s16 *tbl;
 
-    if (loc->field_1C != 0) {
+    if (loc->moving != 0) {
         return 0;
     }
     bits = (Pad_State[0].right != 0) << 2;
@@ -1494,11 +1494,11 @@ s32 Stg40_PlayerTryMove(Stg40Ent48 *e) {
     if (k < 0) {
         return 0;
     }
-    if (D_8005071C->field_BA0 & 2) {
-        oct = (oct + D_8005071C->field_BA4) & 7;
+    if (D_8005071C->statusFlags & 2) {
+        oct = (oct + D_8005071C->confusionTurn) & 7;
     }
-    e->field_E = (oct << 16) >> 7;
-    e->field_B = oct;
+    e->targetHeading = (oct << 16) >> 7;
+    e->octant = oct;
     if (Pad_State[0].l1 != 0 && (oct & 1) == 0) {
         return 0;
     }
@@ -1507,11 +1507,11 @@ s32 Stg40_PlayerTryMove(Stg40Ent48 *e) {
     }
     dir = oct + 1;
     oct = dir;
-    if ((s16)e->field_E != e->field_C) {
+    if ((s16)e->targetHeading != e->heading) {
         return 0;
     }
     nx = ny = -1;
-    loc->field_1E &= 0xFFFE;
+    loc->moveFlags &= 0xFFFE;
     d = dir;
     {
         s16 *p = (s16 *)Stg40_DirOffsets;
@@ -1522,7 +1522,7 @@ s32 Stg40_PlayerTryMove(Stg40Ent48 *e) {
         return 0;
     }
     if (f & 0x10) {
-        loc->field_1E |= 1;
+        loc->moveFlags |= 1;
         dir = loc->u0.pair.field_0;
         nx = dir + ((s16 *)Stg40_DirOffsets)[d << 1];
         ny = loc->u0.pair.field_2 + ((s16 *)Stg40_DirOffsets)[(d << 1) | 1];
@@ -1537,47 +1537,47 @@ s32 Stg40_PlayerTryMove(Stg40Ent48 *e) {
             return 0;
         }
         if (fl & 0x10) {
-            loc->field_1E |= 1;
+            loc->moveFlags |= 1;
             nx = loc->u0.pair.field_0 + pl[0];
             ny = loc->u0.pair.field_2 + ((s16 *)Stg40_DirOffsets)[((d - 1) << 1) | 1];
         } else if (fr & 0x10) {
-            loc->field_1E |= 1;
+            loc->moveFlags |= 1;
             nx = loc->u0.pair.field_0 + ((s16 *)Stg40_DirOffsets)[(d + 1) << 1];
             ny = loc->u0.pair.field_2 + ((s16 *)Stg40_DirOffsets)[((d + 1) << 1) | 1];
         }
     }
-    if (D_8005071C->field_BA0 & 1) {
+    if (D_8005071C->statusFlags & 1) {
         return 1;
     }
     if (nx != -1) {
         Stg40Ent48 *te = Stg40_FindEntAt(nx, ny);
         Stg40B60 *b = D_80072B60;
 
-        b->field_40 = te;
-        b->field_3C = te->field_14;
+        b->targetEnt = te;
+        b->targetActor = te->actor;
     }
-    loc->field_4.field_0 = loc->u0.pair.field_0;
-    loc->field_4.field_2 = loc->u0.pair.field_2;
+    loc->prevTile.field_0 = loc->u0.pair.field_0;
+    loc->prevTile.field_2 = loc->u0.pair.field_2;
     tbl = (s16 *)Stg40_DirOffsets;
     loc->u0.pair.field_0 += tbl[(s16)oct << 1];
     loc->u0.pair.field_2 += tbl[((s16)oct << 1) | 1];
-    loc->field_A = 0xC;
-    loc->field_8 = 0xC;
-    dir = loc->field_4.field_2;
-    Stg40_ClearCellOccupied(loc->field_4.field_0, dir);
+    loc->moveFrames = 0xC;
+    loc->moveFramesLeft = 0xC;
+    dir = loc->prevTile.field_2;
+    Stg40_ClearCellOccupied(loc->prevTile.field_0, dir);
     Stg40_SetCellOccupied(loc->u0.pair.field_0, loc->u0.pair.field_2, 1);
-    loc->field_1C = 1;
+    loc->moving = 1;
     return 1;
 }
 
 Stg40Ent48 *Stg40_FindObjAtSameTile(Stg40Ent48 *a0) {
-    Stg40Blk5071C *b = D_8005071C;
-    Stg40Ent48 *e = b->field_18;
+    Stg40DungState *b = D_8005071C;
+    Stg40Ent48 *e = b->ents;
     Stg40Ent48 *r = NULL;
     s32 i;
 
-    for (i = 0; i < b->field_C; i++, e++) {
-        if ((e->field_0 & 0x8000) && e != a0 && e->field_18.u0.field_0 == a0->field_18.u0.field_0) {
+    for (i = 0; i < b->entCount; i++, e++) {
+        if ((e->field_0 & 0x8000) && e != a0 && e->loc.u0.tileXY == a0->loc.u0.tileXY) {
             r = e;
             break;
         }
@@ -1587,7 +1587,7 @@ Stg40Ent48 *Stg40_FindObjAtSameTile(Stg40Ent48 *a0) {
 
 s32 Stg40_PlayerCheckStepHazard(Actor *task) {
     Stg40ActWork *w = (Stg40ActWork *)task->work;
-    Stg40Ent48 *ent = w->field_2C;
+    Stg40Ent48 *ent = w->ent;
     Stg40Ent48 *other;
     GameStateView *gs;
     u16 dir;
@@ -1598,7 +1598,7 @@ s32 Stg40_PlayerCheckStepHazard(Actor *task) {
     Actor *child;
 
     ret = 0;
-    if ((u32)((dir = Stg40_GetCellFlags(ent->field_18.u0.pair.field_0, ent->field_18.u0.pair.field_2) & 0xF) - 8) < 5) {
+    if ((u32)((dir = Stg40_GetCellFlags(ent->loc.u0.pair.field_0, ent->loc.u0.pair.field_2) & 0xF) - 8) < 5) {
         n = dir - 7;
         if (Stg40_GetPartLevel(5) < n) {
             n *= 50;
@@ -1614,10 +1614,10 @@ s32 Stg40_PlayerCheckStepHazard(Actor *task) {
     }
     other = Stg40_FindObjAtSameTile(ent);
     if (other != NULL) {
-        child = other->field_14;
-        D_80072B60->field_3C = child;
-        D_80072B60->field_40 = other;
-        switch (other->field_8) {
+        child = other->actor;
+        D_80072B60->targetActor = child;
+        D_80072B60->targetEnt = other;
+        switch (other->kind) {
         default:
             break;
         case 8:
@@ -1637,7 +1637,7 @@ s32 Stg40_PlayerCheckStepHazard(Actor *task) {
 }
 
 s32 Stg40_PlayerCheckTileEvent(Actor *a0) {
-    Stg40Ent48 *e = ((Stg40ActWork *)a0->work)->field_2C;
+    Stg40Ent48 *e = ((Stg40ActWork *)a0->work)->ent;
     s32 r = 0;
     Stg40Ent48 *f;
     Stg40B60 *b;
@@ -1651,14 +1651,14 @@ s32 Stg40_PlayerCheckTileEvent(Actor *a0) {
     if (f == NULL) {
         return 0;
     }
-    t = f->field_14;
+    t = f->actor;
     b = D_80072B60;
-    b->field_3C = t;
-    b->field_40 = f;
-    switch (f->field_8) {
+    b->targetActor = t;
+    b->targetEnt = f;
+    switch (f->kind) {
     case 2:
     case 3:
-        D_8005071C->field_1 = (f->field_8 != 2) ? 3 : 2;
+        D_8005071C->transitionReq = (f->kind != 2) ? 3 : 2;
         Task_SetState1(a0, 0x17);
         r = 1;
         break;
@@ -1667,22 +1667,22 @@ s32 Stg40_PlayerCheckTileEvent(Actor *a0) {
 }
 
 s32 Stg40_PlayerCheckSporeBounce(Actor *a0) {
-    Stg40Ent48 *e = ((Stg40ActWork *)a0->work)->field_2C;
-    Stg40Loc *l = &e->field_18;
+    Stg40Ent48 *e = ((Stg40ActWork *)a0->work)->ent;
+    Stg40Loc *l = &e->loc;
     s32 r = 0;
     s16 t;
 
-    if (l->field_8 == l->field_A / 2 && (l->field_1E & 1)) {
-        Stg40_ClearCellOccupied(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2);
-        t = e->field_18.u0.pair.field_0;
-        e->field_18.u0.pair.field_0 = e->field_18.field_4.field_0;
-        e->field_18.field_4.field_0 = t;
-        t = e->field_18.u0.pair.field_2;
-        e->field_18.u0.pair.field_2 = e->field_18.field_4.field_2;
-        e->field_18.field_4.field_2 = t;
-        e->field_18.field_8 = 0xC;
-        e->field_18.field_A = 0x18;
-        Stg40_SetCellOccupied(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2, 1);
+    if (l->moveFramesLeft == l->moveFrames / 2 && (l->moveFlags & 1)) {
+        Stg40_ClearCellOccupied(e->loc.u0.pair.field_0, e->loc.u0.pair.field_2);
+        t = e->loc.u0.pair.field_0;
+        e->loc.u0.pair.field_0 = e->loc.prevTile.field_0;
+        e->loc.prevTile.field_0 = t;
+        t = e->loc.u0.pair.field_2;
+        e->loc.u0.pair.field_2 = e->loc.prevTile.field_2;
+        e->loc.prevTile.field_2 = t;
+        e->loc.moveFramesLeft = 0xC;
+        e->loc.moveFrames = 0x18;
+        Stg40_SetCellOccupied(e->loc.u0.pair.field_0, e->loc.u0.pair.field_2, 1);
         Task_SetState1(a0, 0xF);
         r = -1;
     }
@@ -1690,11 +1690,11 @@ s32 Stg40_PlayerCheckSporeBounce(Actor *a0) {
 }
 
 void Stg40_PlayerWaitTurn(Actor *a0) {
-    Stg40Ent48 *e = ((Stg40ActWork *)a0->work)->field_2C;
+    Stg40Ent48 *e = ((Stg40ActWork *)a0->work)->ent;
 
     Stg40_ObjSetAnimIfNew(a0, 0x28);
-    if (Stg40_TurnQueueCurrent() == e->field_7) {
-        Stg40_ScrollFollow(&e->field_18);
+    if (Stg40_TurnQueueCurrent() == e->turnId) {
+        Stg40_ScrollFollow(&e->loc);
         if (Stg40_CheckEncounter()) {
             Task_SetState1(a0, 4);
         } else {
@@ -1705,16 +1705,16 @@ void Stg40_PlayerWaitTurn(Actor *a0) {
 
 void Stg40_PlayerMoveStep(Actor *a0) {
     Stg40ActWork *w = (Stg40ActWork *)a0->work;
-    Stg40Ent48 *e = w->field_2C;
+    Stg40Ent48 *e = w->ent;
 
     Stg40_ObjSetAnimIfNew(a0, 0x29);
-    if (e->field_18.field_8 == 0xB) {
+    if (e->loc.moveFramesLeft == 0xB) {
         Snd_PlayById(0x2C, 0);
     }
     if (Stg40_PlayerCheckSporeBounce(a0) != 0) {
         return;
     }
-    if (w->field_2C->field_18.field_8 >= 2) {
+    if (w->ent->loc.moveFramesLeft >= 2) {
         return;
     }
     Save_GameStatePtr->mp = (Save_GameStatePtr->mp - 1 < 0) ? 0 : (u16)Save_GameStatePtr->mp - 1;
@@ -1737,10 +1737,10 @@ void Stg40_PlayerMoveStep(Actor *a0) {
 
 void Stg40_PlayerMoveEnd(Actor *a0) {
     Stg40ActWork *w = (Stg40ActWork *)a0->work;
-    Stg40Ent48 *e = w->field_2C;
+    Stg40Ent48 *e = w->ent;
 
-    if (Stg40_TurnQueueNext() == e->field_7) {
-        if (Stg40_PlayerTryMove(w->field_2C) == 1) {
+    if (Stg40_TurnQueueNext() == e->turnId) {
+        if (Stg40_PlayerTryMove(w->ent) == 1) {
             Task_SetState1(a0, 2);
         } else {
             Task_SetState1(a0, 0);
@@ -1780,20 +1780,20 @@ void Stg40_PlayerShowStatusMsgs(Actor *a0) {
     s32 arg = 0;
     s32 k;
 
-    if (b->field_68 == 0) {
+    if (b->statusCount == 0) {
         Task_SetState1(a0, 7);
         return;
     }
-    b->field_68--;
-    k = b->field_60[b->field_68];
+    b->statusCount--;
+    k = b->statusCodes[b->statusCount];
     if (k >= 2 && k < 6) {
         arg = (s32)Save_GameStatePtr->field_D1;
     }
     if (k == 6) {
-        arg = b->field_78;
+        arg = b->brokenPartText;
     }
     if (k == 7) {
-        arg = (s32)b->field_6A;
+        arg = (s32)b->lostDigiName;
     }
     Stg40_PlayerShowMsg(a0, 0x28, 8, Stg40_StatusMsgIds[k], arg, 0);
 }
@@ -1804,16 +1804,16 @@ void Stg40_PlayerInput(Actor *a0) {
     s32 n;
 
     Stg40_ObjSetAnimIfNew(a0, 0x28);
-    if (D_8005071C->field_2 != 0) {
+    if (D_8005071C->freeze != 0) {
         return;
     }
     if (Pad_Circle > 0 && Stg40_RootTask->stateLevel0 == 1 && Stg40_RootTask->stateLevel1 == 1 && Stg40_RootTask->stateLevel2 == 1) {
         Task_SetState1(Stg40_RootTask, 4);
-        D_8005071C->field_2 = 1;
+        D_8005071C->freeze = 1;
         return;
     }
-    if (Stg40_PlayerTryMove(w->field_2C) == 1) {
-        if (D_8005071C->field_BA0 & 1) {
+    if (Stg40_PlayerTryMove(w->ent) == 1) {
+        if (D_8005071C->statusFlags & 1) {
             Stg40_PlayerShowMsg(a0, 0x28, 6, 0x1FD001D, 0, 0);
         } else {
             Task_SetState1(a0, 2);
@@ -1824,12 +1824,12 @@ void Stg40_PlayerInput(Actor *a0) {
         v = Save_GameStatePtr->field_0 + 1;
         n = (v < 3) ? v : 0;
         Save_GameStatePtr->field_0 = n;
-        D_80072B60->field_7E = Save_GameStatePtr->field_0;
+        D_80072B60->automapMode = Save_GameStatePtr->field_0;
     }
 }
 
 void Stg40_PlayerResumeAfterBattle(Actor *a0) {
-    Stg40Ent48 *e = ((Stg40ActWork *)a0->work)->field_2C;
+    Stg40Ent48 *e = ((Stg40ActWork *)a0->work)->ent;
 
     switch (a0->stateLevel2) {
     case 0:
@@ -1843,8 +1843,8 @@ void Stg40_PlayerResumeAfterBattle(Actor *a0) {
         }
         break;
     case 2:
-        if (D_8005071C->field_2 == 0) {
-            if (Stg40_TurnQueueCurrent() == e->field_7) {
+        if (D_8005071C->freeze == 0) {
+            if (Stg40_TurnQueueCurrent() == e->turnId) {
                 Task_SetState1(a0, 1);
             } else {
                 Task_SetState1(a0, 0);
@@ -1859,16 +1859,16 @@ void Stg40_PlayerAnimThenMsgUpdate(Actor *a0) {
     case 0:
     default:
         if (Stg40_ObjWaitAnimOrSkip(a0) == 1) {
-            if (D_80072B60->field_34 != -1) {
-                Stg40_ObjSetAnim(a0, D_80072B60->field_34);
+            if (D_80072B60->msgAnim != -1) {
+                Stg40_ObjSetAnim(a0, D_80072B60->msgAnim);
             }
-            Stg40_MsgWinOpen(1, D_80072B60->field_44, D_80072B60->field_48, D_80072B60->field_4C);
+            Stg40_MsgWinOpen(1, D_80072B60->msgId, D_80072B60->msgArg0, D_80072B60->msgArg1);
             Task_NextState2(a0);
         }
         break;
     case 1:
         if (Stg40_MsgWinCloseIfDone(1) == 1) {
-            Task_SetState1(a0, (u8)D_80072B60->field_38);
+            Task_SetState1(a0, (u8)D_80072B60->msgNextState);
         }
         break;
     }
@@ -1876,20 +1876,20 @@ void Stg40_PlayerAnimThenMsgUpdate(Actor *a0) {
 
 void Stg40_PlayerWaitAnim(Actor *a0) {
     if (Stg40_ObjWaitAnimOrSkip(a0) == 1) {
-        Task_SetState1(a0, (u8)D_80072B60->field_38);
+        Task_SetState1(a0, (u8)D_80072B60->msgNextState);
     }
 }
 
 void Stg40_PlayerWaitMsg(Actor *a0) {
     if (Stg40_MsgWinCloseIfDone(1) == 1) {
-        Task_SetState1(a0, (u8)D_80072B60->field_38);
+        Task_SetState1(a0, (u8)D_80072B60->msgNextState);
     }
 }
 
 void Stg40_PlayerFoundObject(Actor *a0) {
     Stg40B60 *b = D_80072B60;
-    Stg40Ent48 *e = b->field_40;
-    Actor *t = b->field_3C;
+    Stg40Ent48 *e = b->targetEnt;
+    Actor *t = b->targetActor;
 
     switch (a0->stateLevel2) {
     case 0:
@@ -1902,7 +1902,7 @@ void Stg40_PlayerFoundObject(Actor *a0) {
         if (Stg40_ObjWaitAnimOrSkip(a0) == 1) {
             Stg40_ObjSetAnim(a0, 0x28);
             Task_SetState1(t, 5);
-            Stg40_MsgWinOpen(1, 0x1FD0010, (s32)Cd_GetFileEntry(e->field_8 + 0x1FD0064), 0);
+            Stg40_MsgWinOpen(1, 0x1FD0010, (s32)Cd_GetFileEntry(e->kind + 0x1FD0064), 0);
             Task_NextState2(a0);
         }
         break;
@@ -1933,8 +1933,8 @@ void Stg40_PlayerHurtAnim(Actor *a0) {
 }
 
 void Stg40_PlayerDestroyMine(Actor *a0) {
-    Stg40Ent48 *e = D_80072B60->field_40;
-    Actor *t = D_80072B60->field_3C;
+    Stg40Ent48 *e = D_80072B60->targetEnt;
+    Actor *t = D_80072B60->targetActor;
     s32 msg;
     s32 r;
     s32 n;
@@ -1950,7 +1950,7 @@ void Stg40_PlayerDestroyMine(Actor *a0) {
         if (Stg40_ObjWaitAnimOrSkip(a0) == 1) {
             Stg40_ObjSetAnim(a0, 0x28);
             r = Beetle_GetPart(6);
-            n = e->field_10[1];
+            n = e->params[1];
             if (Item_GetLevel(r) >= n) {
                 Task_SetState1(t, 6);
                 msg = 0x1FD0017;
@@ -1970,8 +1970,8 @@ void Stg40_PlayerDestroyMine(Actor *a0) {
 }
 
 void Stg40_PlayerSporeDamage(Actor *a0) {
-    Stg40Ent48 *e = D_80072B60->field_40;
-    Actor *t = D_80072B60->field_3C;
+    Stg40Ent48 *e = D_80072B60->targetEnt;
+    Actor *t = D_80072B60->targetActor;
 
     switch (a0->stateLevel2) {
     case 0:
@@ -1979,15 +1979,15 @@ void Stg40_PlayerSporeDamage(Actor *a0) {
         Stg40_ObjSetAnim(a0, 0x2C);
         Stg40_ObjStartFlash(a0, 2);
         Task_SetState1(t, 4);
-        D_80072B60->field_58 = e->field_10[1] * 200;
-        Stg40_DamageBeetle(D_80072B60->field_58);
+        D_80072B60->damage = e->params[1] * 200;
+        Stg40_DamageBeetle(D_80072B60->damage);
         Snd_PlayById(0x33, 0);
         Task_NextState2(a0);
         break;
     case 1:
         if (Stg40_ObjWaitAnimOrSkip(a0) == 1) {
             Stg40_ObjSetAnim(a0, 0x28);
-            Stg40_MsgWinOpen(1, 0x1FD001F, (s32)Save_GameStatePtr->field_D1, (s32)Stg40_NumToDigits(0, D_80072B60->field_58));
+            Stg40_MsgWinOpen(1, 0x1FD001F, (s32)Save_GameStatePtr->field_D1, (s32)Stg40_NumToDigits(0, D_80072B60->damage));
             Task_NextState2(a0);
         }
         break;
@@ -2008,9 +2008,9 @@ void Stg40_PlayerBugInvade(Actor *arg0)
     s32 r;
     s32 n;
 
-    e = D_80072B60->field_40;
-    t = D_80072B60->field_3C;
-    idx = e->field_8 - 9;
+    e = D_80072B60->targetEnt;
+    t = D_80072B60->targetActor;
+    idx = e->kind - 9;
     bit = 0x100 << idx;
     switch (arg0->stateLevel2) {
     case 0:
@@ -2024,44 +2024,44 @@ void Stg40_PlayerBugInvade(Actor *arg0)
             return;
         }
         r = 0;
-        switch (e->field_8) {
+        switch (e->kind) {
         default:
             if (((Stg40BA5View *)D_8005071C)->field_BA5[idx] == 0) {
-                ((Stg40BA5View *)D_8005071C)->field_BA5[idx] = e->field_10[1];
+                ((Stg40BA5View *)D_8005071C)->field_BA5[idx] = e->params[1];
                 r = -1;
             }
             break;
         case 9:
-            if (D_8005071C->field_BA5 == 0) {
+            if (D_8005071C->bitBugLevel == 0) {
                 if (Save_GameStatePtr->bits != 0 || Stg40_PickRandomPart() != -1) {
                     r = -1;
-                    ((Stg40BA5View *)D_8005071C)->field_BA5[e->field_8 - 9] = e->field_10[1];
+                    ((Stg40BA5View *)D_8005071C)->field_BA5[e->kind - 9] = e->params[1];
                 }
             }
             break;
         case 0xB:
-            if (D_8005071C->field_BA7 != 0 || ((s32 (*)(s32))Stg40_ListPartyDigi)(1) < 2 || Digi_CountByState(1) >= 0x18) {
+            if (D_8005071C->returnBugLevel != 0 || ((s32 (*)(s32))Stg40_ListPartyDigi)(1) < 2 || Digi_CountByState(1) >= 0x18) {
                 r = 0;
             } else {
                 r = -1;
-                ((Stg40BA5View *)D_8005071C)->field_BA5[e->field_8 - 9] = e->field_10[1];
+                ((Stg40BA5View *)D_8005071C)->field_BA5[e->kind - 9] = e->params[1];
             }
             break;
         case 0xC:
             n = ((s32 (*)(void))Beetle_GetDigiCapacity)();
             n -= ((s32 (*)(s32))Stg40_ListPartyDigi)(0);
-            if (n != D_8005071C->field_BA8) {
-                D_8005071C->field_BA9[D_8005071C->field_BA8] = e->field_10[1];
+            if (n != D_8005071C->memBugCount) {
+                D_8005071C->memBugLevels[D_8005071C->memBugCount] = e->params[1];
                 r = -1;
-                D_8005071C->field_BA8++;
+                D_8005071C->memBugCount++;
             }
             break;
         }
         if (r == 0) {
-            Stg40_MsgWinOpen(1, e->field_8 + 0x1FD0022, (s32)Save_GameStatePtr + 0xD1, 0);
+            Stg40_MsgWinOpen(1, e->kind + 0x1FD0022, (s32)Save_GameStatePtr + 0xD1, 0);
             Task_SetState2(arg0, 3);
         } else {
-            D_8005071C->field_BA0 &= ~bit;
+            D_8005071C->statusFlags &= ~bit;
             Stg40_ObjSetAnim(arg0, 0x2A);
             Stg40_ObjStartFlash(arg0, 2);
             Task_NextState2(arg0);
@@ -2071,7 +2071,7 @@ void Stg40_PlayerBugInvade(Actor *arg0)
     case 2:
         if (Stg40_ObjWaitAnimOrSkip(arg0) == 1) {
             Stg40_ObjSetAnim(arg0, 0x28);
-            Stg40_MsgWinOpen(1, e->field_8 + 0x1FD001E, 0, 0);
+            Stg40_MsgWinOpen(1, e->kind + 0x1FD001E, 0, 0);
             Task_NextState2(arg0);
         }
         break;
@@ -2084,7 +2084,7 @@ void Stg40_PlayerBugInvade(Actor *arg0)
 }
 
 void Stg40_PlayerEnemyInfo(Actor *a0) {
-    Stg40Ent48 *e = ((Stg40ActWork *)a0->work)->field_2C;
+    Stg40Ent48 *e = ((Stg40ActWork *)a0->work)->ent;
     Stg40B60 *g = D_80072B60;
     Stg40Ent48 *t;
     s32 r;
@@ -2093,17 +2093,17 @@ void Stg40_PlayerEnemyInfo(Actor *a0) {
     switch (a0->stateLevel2) {
     case 0:
     default:
-        Task_Create(0x20C, &Stg40_RootChildren->field_14, 0);
+        Task_Create(0x20C, &Stg40_RootChildren->enemyInfoTask, 0);
         Stg40_ObjSetAnim(a0, 0x28);
         Task_NextState2(a0);
         break;
     case 1:
-        t = g->field_80[g->field_AC];
-        g->field_3C = t->field_14;
-        g->field_40 = t;
-        Stg40_ScrollToFollow(&t->field_18, 0x10);
-        Task_SetState0((Actor *)Stg40_RootChildren->field_14, 2);
-        Task_SetState1((Actor *)Stg40_RootChildren->field_14, 0x64);
+        t = g->enemyList[g->enemyIndex];
+        g->targetActor = t->actor;
+        g->targetEnt = t;
+        Stg40_ScrollToFollow(&t->loc, 0x10);
+        Task_SetState0((Actor *)Stg40_RootChildren->enemyInfoTask, 2);
+        Task_SetState1((Actor *)Stg40_RootChildren->enemyInfoTask, 0x64);
         Task_NextState2(a0);
         break;
     case 2:
@@ -2116,9 +2116,9 @@ void Stg40_PlayerEnemyInfo(Actor *a0) {
         if (Pad_State[0].triangle > 0) {
             Snd_PlayById(0xB, 0);
             Task_SetState2(a0, 0x64);
-        } else if (Pad_State[0].square > 0 && D_80072B60->field_A8 >= 2) {
-            n = D_80072B60->field_AC + 1;
-            D_80072B60->field_AC = (n < D_80072B60->field_A8) ? n : 0;
+        } else if (Pad_State[0].square > 0 && D_80072B60->enemyCount >= 2) {
+            n = D_80072B60->enemyIndex + 1;
+            D_80072B60->enemyIndex = (n < D_80072B60->enemyCount) ? n : 0;
             Task_SetState2(a0, 1);
         } else if (Pad_Cross > 0) {
             r = Stg40_ListUsableItems(&Stg40_GiftGunReq);
@@ -2127,8 +2127,8 @@ void Stg40_PlayerEnemyInfo(Actor *a0) {
                 Task_SetState2(a0, 0x3C);
             } else {
                 Task_SetState1(a0, 0x11);
-                D_80072B60->field_E4 = 1;
-                D_80072B60->field_E0 = D_80072B60->field_B0[0];
+                D_80072B60->giftMenu = 1;
+                D_80072B60->selItem = D_80072B60->itemIds[0];
             }
         }
         break;
@@ -2139,13 +2139,13 @@ void Stg40_PlayerEnemyInfo(Actor *a0) {
         }
         break;
     case 0x64:
-        Stg40_ScrollFollow(&e->field_18);
-        Task_SetState0((Actor *)Stg40_RootChildren->field_14, 2);
+        Stg40_ScrollFollow(&e->loc);
+        Task_SetState0((Actor *)Stg40_RootChildren->enemyInfoTask, 2);
         Task_NextState2(a0);
         break;
     case 0x65:
-        if (Stg40_RootChildren->field_14 == 0) {
-            g->field_7E = Save_GameStatePtr->field_0;
+        if (Stg40_RootChildren->enemyInfoTask == 0) {
+            g->automapMode = Save_GameStatePtr->field_0;
             Task_SetState1(a0, 1);
         }
         break;
@@ -2154,9 +2154,9 @@ void Stg40_PlayerEnemyInfo(Actor *a0) {
 
 void Stg40_PlayerShootGift(Actor *actor) {
     s32 state = actor->stateLevel2;
-    Stg40Ent48 *self = ((Stg40ActWork *)actor->work)->field_2C;
-    Stg40Ent48 *target = D_80072B60->field_40;
-    Stg40Loc *loc = &D_80072B60->field_108;
+    Stg40Ent48 *self = ((Stg40ActWork *)actor->work)->ent;
+    Stg40Ent48 *target = D_80072B60->targetEnt;
+    Stg40Loc *loc = &D_80072B60->shotLoc;
 
     switch (state) {
     case 0:
@@ -2164,22 +2164,22 @@ void Stg40_PlayerShootGift(Actor *actor) {
         s32 angle;
 
         Stg40_ObjSetAnim(actor, 0x29);
-        angle = ratan2(self->field_18.field_C - target->field_18.field_C,
-                       target->field_18.field_10 - self->field_18.field_10);
-        D_80072B60->field_E8 = angle & 0xFFF;
-        D_80072B60->field_EC = -rsin(D_80072B60->field_E8);
-        D_80072B60->field_F0 = rcos(D_80072B60->field_E8);
-        D_80072B60->field_F4 = self->field_18.u0.pair.field_0 << 14;
-        D_80072B60->field_F8 = self->field_18.u0.pair.field_2 << 14;
-        D_80072B60->field_FC = target->field_18.u0.pair.field_0 << 14;
-        D_80072B60->field_100 = target->field_18.u0.pair.field_2 << 14;
+        angle = ratan2(self->loc.posX - target->loc.posX,
+                       target->loc.posY - self->loc.posY);
+        D_80072B60->shotAngle = angle & 0xFFF;
+        D_80072B60->shotStepX = -rsin(D_80072B60->shotAngle);
+        D_80072B60->shotStepY = rcos(D_80072B60->shotAngle);
+        D_80072B60->shotX = self->loc.u0.pair.field_0 << 14;
+        D_80072B60->shotY = self->loc.u0.pair.field_2 << 14;
+        D_80072B60->shotTargetX = target->loc.u0.pair.field_0 << 14;
+        D_80072B60->shotTargetY = target->loc.u0.pair.field_2 << 14;
         Task_NextState2(actor);
         break;
     }
     case 1:
-        if ((s16)self->field_E != D_80072B60->field_E8) {
-            s32 h = (s16)self->field_E;
-            s32 diff = (s16)((u16)D_80072B60->field_E8 - ((u16)self->field_E - 0x1000));
+        if ((s16)self->targetHeading != D_80072B60->shotAngle) {
+            s32 h = (s16)self->targetHeading;
+            s32 diff = (s16)((u16)D_80072B60->shotAngle - ((u16)self->targetHeading - 0x1000));
             s32 d;
             s32 t;
 
@@ -2187,17 +2187,17 @@ void Stg40_PlayerShootGift(Actor *actor) {
                 diff += 0x7FF;
             }
             if ((diff >> 11) & 1) {
-                self->field_E = h - 0x40;
+                self->targetHeading = h - 0x40;
             } else {
-                self->field_E = h + 0x40;
+                self->targetHeading = h + 0x40;
             }
-            t = self->field_E & 0xFFF;
-            self->field_E = t;
-            d = D_80072B60->field_E8 - t;
-            if ((d >= 0) ? (d < 0x40) : (t - D_80072B60->field_E8 < 0x40)) {
-                self->field_E = D_80072B60->field_E8;
+            t = self->targetHeading & 0xFFF;
+            self->targetHeading = t;
+            d = D_80072B60->shotAngle - t;
+            if ((d >= 0) ? (d < 0x40) : (t - D_80072B60->shotAngle < 0x40)) {
+                self->targetHeading = D_80072B60->shotAngle;
             }
-            self->field_C = self->field_E;
+            self->heading = self->targetHeading;
         } else {
             Stg40_ObjSetAnim(actor, 0x28);
             goto next;
@@ -2219,22 +2219,22 @@ void Stg40_PlayerShootGift(Actor *actor) {
         s32 ax;
         s32 ay;
 
-        D_80072B60->field_F4 += D_80072B60->field_EC;
-        D_80072B60->field_F8 += D_80072B60->field_F0;
-        loc->field_C = D_80072B60->field_F4 >> 8;
-        loc->field_10 = D_80072B60->field_F8 >> 8;
+        D_80072B60->shotX += D_80072B60->shotStepX;
+        D_80072B60->shotY += D_80072B60->shotStepY;
+        loc->posX = D_80072B60->shotX >> 8;
+        loc->posY = D_80072B60->shotY >> 8;
         Stg40_ScrollFollow(loc);
-        ax = D_80072B60->field_EC;
+        ax = D_80072B60->shotStepX;
         ax = (ax >= 0) ? ax : -ax;
-        if ((D_80072B60->field_FC - D_80072B60->field_F4 >= 0)
-                ? (ax >= D_80072B60->field_FC - D_80072B60->field_F4)
-                : (ax >= D_80072B60->field_F4 - D_80072B60->field_FC)) {
-            ay = D_80072B60->field_F0;
+        if ((D_80072B60->shotTargetX - D_80072B60->shotX >= 0)
+                ? (ax >= D_80072B60->shotTargetX - D_80072B60->shotX)
+                : (ax >= D_80072B60->shotX - D_80072B60->shotTargetX)) {
+            ay = D_80072B60->shotStepY;
             ay = (ay >= 0) ? ay : -ay;
-            if ((D_80072B60->field_100 - D_80072B60->field_F8 >= 0)
-                    ? (ay >= D_80072B60->field_100 - D_80072B60->field_F8)
-                    : (ay >= D_80072B60->field_F8 - D_80072B60->field_100)) {
-                Stg40_ScrollFollow(&target->field_18);
+            if ((D_80072B60->shotTargetY - D_80072B60->shotY >= 0)
+                    ? (ay >= D_80072B60->shotTargetY - D_80072B60->shotY)
+                    : (ay >= D_80072B60->shotY - D_80072B60->shotTargetY)) {
+                Stg40_ScrollFollow(&target->loc);
                 Task_NextState2(actor);
                 Snd_PlayById(0x1B, 0);
             }
@@ -2242,16 +2242,16 @@ void Stg40_PlayerShootGift(Actor *actor) {
         break;
     }
     case 5: {
-        Stg40SlotInfo *info;
+        Stg40EnemyParty *info;
         s32 msg;
 
         if (actor->stateLevel4++ < 0x1F) {
             break;
         }
-        info = (Stg40SlotInfo *)target->field_10;
+        info = (Stg40EnemyParty *)target->params;
         msg = 0x1FD0050;
-        if (info->field_A < 9) {
-            s32 r = Item_GetCategory(D_80072B60->field_E0);
+        if (info->giftsTaken < 9) {
+            s32 r = Item_GetCategory(D_80072B60->selItem);
             s32 kind;
 
             if (r >= 0x25) {
@@ -2262,42 +2262,42 @@ void Stg40_PlayerShootGift(Actor *actor) {
             } else {
                 kind = 3;
             }
-            if (kind == 3 || kind == info->field_3) {
-                if (Stg40_RandPercent() < Stg40_GiftTakeChance[info->field_A]) {
+            if (kind == 3 || kind == info->likedGift) {
+                if (Stg40_RandPercent() < Stg40_GiftTakeChance[info->giftsTaken]) {
                     s32 idx;
 
-                    info->field_A++;
-                    idx = Item_GetLevel(D_80072B60->field_E0);
+                    info->giftsTaken++;
+                    idx = Item_GetLevel(D_80072B60->selItem);
                     msg = 0x1FD004F;
-                    info->field_C += Stg40_GiftPointsByLevel[idx - 1];
+                    info->giftPoints += Stg40_GiftPointsByLevel[idx - 1];
                 }
             }
         }
-        Stg40_MsgWinOpen(1, msg, Digi_GetDefaultName(info->field_10[0]),
-                      Item_GetNameText(D_80072B60->field_E0));
+        Stg40_MsgWinOpen(1, msg, Digi_GetDefaultName(info->digiIds[0]),
+                      Item_GetNameText(D_80072B60->selItem));
         goto next;
     }
     case 6:
         if (Stg40_MsgWinCloseIfDone(1) != 1) {
             break;
         }
-        Stg40_ScrollToFollow(&self->field_18, 8);
-        Task_SetState0((Actor *)Stg40_RootChildren->field_14, 2);
+        Stg40_ScrollToFollow(&self->loc, 8);
+        Task_SetState0((Actor *)Stg40_RootChildren->enemyInfoTask, 2);
     next:
         Task_NextState2(actor);
         break;
     case 7:
-        if (Stg40_RootChildren->field_14 == 0) {
+        if (Stg40_RootChildren->enemyInfoTask == 0) {
             break;
         }
         Task_SetState1(actor, 6);
-        D_80072B60->field_7E = Save_GameStatePtr->field_0;
+        D_80072B60->automapMode = Save_GameStatePtr->field_0;
         break;
     }
 }
 
 void Stg40_PlayerChestTrapPrompt(Actor *a0) {
-    u8 *d = D_80072B60->field_40->field_10;
+    u8 *d = D_80072B60->targetEnt->params;
     s32 r;
     s32 msg;
 
@@ -2320,9 +2320,9 @@ void Stg40_PlayerChestTrapPrompt(Actor *a0) {
         } else if (d[1] == 0) {
             Task_SetState1(a0, 0x14);
         } else {
-            D_80072B60->field_50 = Stg40_GetTrapDisarmRank(d[1]);
+            D_80072B60->trapDisarmRank = Stg40_GetTrapDisarmRank(d[1]);
             r = Stg40_GetPartState(7);
-            msg = D_80072B60->field_50 + 0x1FD0040;
+            msg = D_80072B60->trapDisarmRank + 0x1FD0040;
             if (r == -1) {
                 msg = 0x1FD0045;
             }
@@ -2348,8 +2348,8 @@ void Stg40_PlayerChestTrapPrompt(Actor *a0) {
 
 void Stg40_PlayerOpenChest(Actor *a0) {
     Stg40B60 *b = D_80072B60;
-    Actor *t = b->field_3C;
-    u8 *d = b->field_40->field_10;
+    Actor *t = b->targetActor;
+    u8 *d = b->targetEnt->params;
 
     switch (a0->stateLevel2) {
     case 0:
@@ -2365,7 +2365,7 @@ void Stg40_PlayerOpenChest(Actor *a0) {
     case 2:
         if (d[1] == 0 || d[1] == 0xFF) {
             Task_SetState1(a0, 0x15);
-        } else if (Stg40_RollTrapDisarm(b->field_50) == 1) {
+        } else if (Stg40_RollTrapDisarm(b->trapDisarmRank) == 1) {
             Task_SetState1(a0, 0x15);
         } else {
             Task_SetState1(a0, 0x16);
@@ -2375,8 +2375,8 @@ void Stg40_PlayerOpenChest(Actor *a0) {
 }
 
 void Stg40_PlayerTakeChestItem(Actor *a0) {
-    Actor *t = D_80072B60->field_3C;
-    u8 *d = D_80072B60->field_40->field_10;
+    Actor *t = D_80072B60->targetActor;
+    u8 *d = D_80072B60->targetEnt->params;
 
     switch (a0->stateLevel2) {
     case 0:
@@ -2405,31 +2405,31 @@ void Stg40_PlayerTakeChestItem(Actor *a0) {
 }
 
 void Stg40_PlayerTriggerTrap(Actor *a0) {
-    Stg40Ent48 *e = D_80072B60->field_40;
-    Actor *t = D_80072B60->field_3C;
-    s32 nc = e->field_8 != 4;
-    u8 *d = e->field_10;
+    Stg40Ent48 *e = D_80072B60->targetEnt;
+    Actor *t = D_80072B60->targetActor;
+    s32 nc = e->kind != 4;
+    u8 *d = e->params;
 
     switch (a0->stateLevel2) {
     case 0:
     default:
-        D_80072B60->field_54 = Stg40_RollTrapEffect();
-        if (D_80072B60->field_54 != 0x10) {
+        D_80072B60->trapEffect = Stg40_RollTrapEffect();
+        if (D_80072B60->trapEffect != 0x10) {
             Stg40_ObjSetAnim(a0, 0x2C);
             Stg40_ObjStartFlash(a0, 1);
-            Stg40_ApplyTrapEffect(D_80072B60->field_54, d[1]);
+            Stg40_ApplyTrapEffect(D_80072B60->trapEffect, d[1]);
         }
         if (nc) {
             Task_SetState1(t, 4);
         }
-        ((Stg40ActWork *)a0->work)->field_36 = d[1] + 1;
+        ((Stg40ActWork *)a0->work)->pendingLinkedModel = d[1] + 1;
         Snd_PlayById(0x34, 0);
         Task_NextState2(a0);
         break;
     case 1:
         if (Stg40_ObjWaitAnimOrSkip(a0) == 1) {
             Stg40_ObjSetAnim(a0, 0x28);
-            Stg40_ShowTrapEffectMsg(nc, D_80072B60->field_54);
+            Stg40_ShowTrapEffectMsg(nc, D_80072B60->trapEffect);
             Task_NextState2(a0);
         }
         break;
@@ -2454,30 +2454,30 @@ void Stg40_PlayerTriggerTrap(Actor *a0) {
 INCLUDE_RODATA("asm/USA/stag4000/rodata", D_80063438);
 void Stg40_PlayerExitFloor(Actor *a0) {
     Stg40ActWork *w = (Stg40ActWork *)a0->work;
-    Stg40Ent48 *e = w->field_2C;
+    Stg40Ent48 *e = w->ent;
     Stg40ModelFade *m = (Stg40ModelFade *)a0->model;
     s32 v;
     switch (a0->stateLevel2) {
         case 0:
         default:
         {
-            u8 k = D_8005071C->field_1;
+            u8 k = D_8005071C->transitionReq;
             if (k == 2) {
                 Snd_PlayById(0x23, 0);
-                w->field_36 = 0;
+                w->pendingLinkedModel = 0;
             } else {
                 if (k == 3)
                     Snd_PlayById(0x18, 0);
                 else
                     Snd_PlayById(0x1F, 0);
-                w->field_36 = 1;
+                w->pendingLinkedModel = 1;
             }
-            m->field_34 = 1;
-            m->field_36 = 0x20;
-            m->field_38 = D_80063438;
+            m->clutRow = 1;
+            m->tpageFlags = 0x20;
+            m->fadeColor = D_80063438;
             Stg40_ObjSetAnim(a0, 0x28);
             e->field_0 |= 0x80;
-            w->field_26 = 0;
+            w->flashKind = 0;
             Task_NextState2(a0);
             break;
         }
@@ -2491,23 +2491,23 @@ void Stg40_PlayerExitFloor(Actor *a0) {
             break;
     }
 
-    v = e->field_38 - 0x51;
+    v = e->scaleX - 0x51;
     if (v < 0) {
         v = 0;
     }
-    e->field_38 = v;
-    e->field_40 = v;
-    if (m->field_38.r != 0xFF) {
-        m->field_38.r++;
-        m->field_38.g++;
-        m->field_38.b++;
+    e->scaleX = v;
+    e->scaleZ = v;
+    if (m->fadeColor.r != 0xFF) {
+        m->fadeColor.r++;
+        m->fadeColor.g++;
+        m->fadeColor.b++;
     }
 }
 
 void Stg40_PlayerShootObstacle(Actor *a0) {
-    Stg40Ent48 *e = D_80072B60->field_40;
-    Actor *t = D_80072B60->field_3C;
-    s32 k = e->field_8 - 6;
+    Stg40Ent48 *e = D_80072B60->targetEnt;
+    Actor *t = D_80072B60->targetActor;
+    s32 k = e->kind - 6;
     s32 msg;
 
     switch (a0->stateLevel2) {
@@ -2520,7 +2520,7 @@ void Stg40_PlayerShootObstacle(Actor *a0) {
     case 1:
         if (Stg40_ObjWaitAnimOrSkip(a0) == 1) {
             Stg40_ObjSetAnim(a0, 0x28);
-            if (Item_GetLevel(D_80072B60->field_E0) >= e->field_10[1]) {
+            if (Item_GetLevel(D_80072B60->selItem) >= e->params[1]) {
                 Task_SetState1(t, 6);
                 msg = Stg40_ShootMsgIds[k * 2];
                 Task_SetState2(a0, 3);
@@ -2534,13 +2534,13 @@ void Stg40_PlayerShootObstacle(Actor *a0) {
     case 2:
         if (Stg40_MsgWinCloseIfDone(1) == 1) {
             Task_SetState1(a0, 6);
-            D_80072B60->field_7E = Save_GameStatePtr->field_0;
+            D_80072B60->automapMode = Save_GameStatePtr->field_0;
         }
         break;
     case 3:
         if (Stg40_MsgWinCloseIfDone(1) == 1 && e->field_0 == 0) {
             Task_SetState1(a0, 6);
-            D_80072B60->field_7E = Save_GameStatePtr->field_0;
+            D_80072B60->automapMode = Save_GameStatePtr->field_0;
         }
         break;
     }
@@ -2557,17 +2557,17 @@ void Stg40_ItemMenuRefresh(void) {
     s32 *p;
 
     s3 = 0;
-    s0 = D_80072B60->field_E2 - D_80072B60->field_E3;
+    s0 = D_80072B60->cursor - D_80072B60->scrollTop;
     dst = Stg40_ItemMenuGetTextIds();
     p = dst;
     if (s0 >= 6) {
-        D_80072B60->field_E3 = D_80072B60->field_E2 - 5;
+        D_80072B60->scrollTop = D_80072B60->cursor - 5;
     }
     if (s0 < 0) {
-        D_80072B60->field_E3 = D_80072B60->field_E2;
+        D_80072B60->scrollTop = D_80072B60->cursor;
     }
-    e1 = D_80072B60->field_E1;
-    e3 = D_80072B60->field_E3;
+    e1 = D_80072B60->itemCount;
+    e3 = D_80072B60->scrollTop;
     s1 = e1;
     v1 = e3 + 6;
     if (s1 >= v1) {
@@ -2575,36 +2575,36 @@ void Stg40_ItemMenuRefresh(void) {
     }
     s0 = e3;
     while (s0 < s1) {
-        *p = Item_GetNameText(D_80072B60->field_B0[s0]);
+        *p = Item_GetNameText(D_80072B60->itemIds[s0]);
         s0++;
         p++;
     }
-    s3 |= D_80072B60->field_E3 != 0;
-    if (s1 < D_80072B60->field_E1) {
+    s3 |= D_80072B60->scrollTop != 0;
+    if (s1 < D_80072B60->itemCount) {
         s3 |= 2;
     }
-    Stg40_ItemMenuSetCursor(D_80072B60->field_E2 - D_80072B60->field_E3, s1 - D_80072B60->field_E3, s3);
-    dst[6] = Item_GetDescText(D_80072B60->field_B0[D_80072B60->field_E2]);
+    Stg40_ItemMenuSetCursor(D_80072B60->cursor - D_80072B60->scrollTop, s1 - D_80072B60->scrollTop, s3);
+    dst[6] = Item_GetDescText(D_80072B60->itemIds[D_80072B60->cursor]);
     s1 = e1;
 }
 
 void Stg40_ItemMenuMoveCursor(void) {
-    s32 old = D_80072B60->field_E2;
+    s32 old = D_80072B60->cursor;
     s32 n;
 
     if (Pad_Repeat & 0x1000) {
         if (old != 0) {
-            D_80072B60->field_E2 = old - 1;
+            D_80072B60->cursor = old - 1;
         }
     }
     if (Pad_Repeat & 0x4000) {
-        n = D_80072B60->field_E2 + 1;
-        if (n < D_80072B60->field_E1) {
-            D_80072B60->field_E2 = n;
+        n = D_80072B60->cursor + 1;
+        if (n < D_80072B60->itemCount) {
+            D_80072B60->cursor = n;
         }
     }
-    if (old != D_80072B60->field_E2) {
-        Snd_PlayById(D_80072B60->field_E4 ? 0xD : 0xC, 0);
+    if (old != D_80072B60->cursor) {
+        Snd_PlayById(D_80072B60->giftMenu ? 0xD : 0xC, 0);
         Stg40_ItemMenuRefresh();
     }
 }
@@ -2617,11 +2617,11 @@ void Stg40_PlayerItemMenu(Actor *a0) {
     switch (a0->stateLevel2) {
     case 0:
     default:
-        D_80072B60->field_E2 = 0;
-        D_80072B60->field_E3 = 0;
+        D_80072B60->cursor = 0;
+        D_80072B60->scrollTop = 0;
         Stg40_ObjSetAnim(a0, 0x28);
-        arg = D_80072B60->field_E4 != 0;
-        Task_Create(0x20B, &Stg40_RootChildren->field_10, (s32)&arg);
+        arg = D_80072B60->giftMenu != 0;
+        Task_Create(0x20B, &Stg40_RootChildren->itemMenuTask, (s32)&arg);
         Snd_PlayById(0x37, 0);
         Stg40_ItemMenuRefresh();
         Task_NextState2(a0);
@@ -2637,16 +2637,16 @@ void Stg40_PlayerItemMenu(Actor *a0) {
             Snd_PlayById(0xB, 0);
             Task_SetState2(a0, 4);
         } else if (Pad_State[0].cross > 0) {
-            D_80072B60->field_E0 = D_80072B60->field_B0[D_80072B60->field_E2];
+            D_80072B60->selItem = D_80072B60->itemIds[D_80072B60->cursor];
             for (i = 0, bag = Save_GameStatePtr->bagItems; i < 0x30; i++, bag++) {
-                if (*bag == D_80072B60->field_E0) {
+                if (*bag == D_80072B60->selItem) {
                     *bag = 0;
                     Item_CompactBag();
                     break;
                 }
             }
-            if (D_80072B60->field_E4 != 0) {
-                Stg40_ScrollToFollow(&((Stg40ActWork *)a0->work)->field_2C->field_18, 8);
+            if (D_80072B60->giftMenu != 0) {
+                Stg40_ScrollToFollow(&((Stg40ActWork *)a0->work)->ent->loc, 8);
                 Snd_PlayById(0xE, 0);
             } else {
                 Snd_PlayById(0xA, 0);
@@ -2654,12 +2654,12 @@ void Stg40_PlayerItemMenu(Actor *a0) {
             Task_NextState2(a0);
         }
         if (a0->stateLevel2 != 2) {
-            Task_SetState0((Actor *)Stg40_RootChildren->field_10, 2);
+            Task_SetState0((Actor *)Stg40_RootChildren->itemMenuTask, 2);
         }
         break;
     case 3:
-        if (Stg40_RootChildren->field_10 == 0) {
-            if (D_80072B60->field_E4 == 0) {
+        if (Stg40_RootChildren->itemMenuTask == 0) {
+            if (D_80072B60->giftMenu == 0) {
                 Task_SetState1(a0, 0x12);
             } else {
                 Task_SetState1(a0, 0x1B);
@@ -2667,10 +2667,10 @@ void Stg40_PlayerItemMenu(Actor *a0) {
         }
         break;
     case 4:
-        if (Stg40_RootChildren->field_10 == 0) {
-            if (D_80072B60->field_E4 == 0) {
+        if (Stg40_RootChildren->itemMenuTask == 0) {
+            if (D_80072B60->giftMenu == 0) {
                 Task_SetState1(a0, 1);
-                D_80072B60->field_7E = Save_GameStatePtr->field_0;
+                D_80072B60->automapMode = Save_GameStatePtr->field_0;
             } else {
                 Task_SetState1(a0, 0x1A);
                 Task_SetState2(a0, 2);
@@ -2701,8 +2701,8 @@ void Stg40_PlayerBeetleDown(Actor *a0) {
         if (r != 1) {
             return;
         }
-        D_8005071C->field_1 = 3;
-        D_8005071C->field_7 = r;
+        D_8005071C->transitionReq = 3;
+        D_8005071C->beetleDown = r;
         Snd_PlayById(0x1F, 0);
         break;
     case 3:
@@ -2722,13 +2722,13 @@ void Stg40_PlayerRunEvent(Actor *a0) {
     case 0:
     default:
         Stg40_ObjSetAnim(a0, 0x28);
-        D_80072B60->field_178 = 0;
-        D_80072B60->field_174 = -1;
-        Text_OpenMsgClearChoice(&D_80072B60->field_174, Flag_SelectBranch(D_80072B60->field_170));
+        D_80072B60->cmdDigiId = 0;
+        D_80072B60->eventText = -1;
+        Text_OpenMsgClearChoice(&D_80072B60->eventText, Flag_SelectBranch(D_80072B60->eventEntry));
         Task_NextState2(a0);
         break;
     case 1:
-        if (Text_IsFinished(D_80072B60->field_174)) {
+        if (Text_IsFinished(D_80072B60->eventText)) {
             Task_NextState2(a0);
         }
         break;
@@ -2738,7 +2738,7 @@ void Stg40_PlayerRunEvent(Actor *a0) {
         if (Stg40_CheckEncounter()) {
             Task_SetState1(a0, 4);
         } else {
-            D_8005071C->field_2 = 0;
+            D_8005071C->freeze = 0;
         }
         break;
     }
@@ -2747,7 +2747,7 @@ void Stg40_PlayerRunEvent(Actor *a0) {
 void Stg40_PlayerUpdate(Actor *a0) {
     Stg40Ent48 *e;
 
-    Stg40_SetCellOccupied(((Stg40ActWork *)a0->work)->field_2C->field_18.u0.pair.field_0, ((Stg40ActWork *)a0->work)->field_2C->field_18.u0.pair.field_2, 1);
+    Stg40_SetCellOccupied(((Stg40ActWork *)a0->work)->ent->loc.u0.pair.field_0, ((Stg40ActWork *)a0->work)->ent->loc.u0.pair.field_2, 1);
     switch (a0->stateLevel1) {
     case 0:
     case 24:
@@ -2775,8 +2775,8 @@ void Stg40_PlayerUpdate(Actor *a0) {
         break;
     case 4:
         if (a0->stateLevel2 != 1) {
-            D_8005071C->field_1 = 1;
-            D_8005071C->field_2 = 1;
+            D_8005071C->transitionReq = 1;
+            D_8005071C->freeze = 1;
             Task_NextState2(a0);
         }
         break;
@@ -2843,6 +2843,6 @@ void Stg40_PlayerUpdate(Actor *a0) {
     case 29:
         break;
     }
-    e = ((Stg40ActWork *)a0->work)->field_2C;
-    Stg40_AutomapMoveMarker(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2, e->field_18.field_4.field_0, e->field_18.field_4.field_2, e->field_8);
+    e = ((Stg40ActWork *)a0->work)->ent;
+    Stg40_AutomapMoveMarker(e->loc.u0.pair.field_0, e->loc.u0.pair.field_2, e->loc.prevTile.field_0, e->loc.prevTile.field_2, e->kind);
 }

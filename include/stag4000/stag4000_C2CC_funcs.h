@@ -3,8 +3,8 @@
 
 /* Functions src/stag4000/stag4000_C2CC.c defines or declares, for the units after it
  * (in the single file the definition was the prototype for later code). */
-void Stg40_RevealCell(Stg40TileWork *a0, s32 x, s32 y);
-void Stg40_AutomapRevealAround(Stg40TileWork *w);
+void Stg40_RevealCell(Stg40AutomapWork *a0, s32 x, s32 y);
+void Stg40_AutomapRevealAround(Stg40AutomapWork *w);
 void Stg40_AutomapDrawModes(ActorWork *w);
 void Stg40_AutomapInit(void);
 void Stg40_AutomapUpdate(Actor *a0);
@@ -34,7 +34,7 @@ void Stg40_PickFloorLayout(void);
 void Stg40_ApplyFloorLayout(void);
 void Stg40_RelocPtr(u32 *p, u32 n);
 s32 Stg40_RelocDungFile(s32 *p);
-s32 Stg40_PickRandomPoint(Stg40Pick *out, Stg40Rec3 *e, u8 key);
+s32 Stg40_PickRandomPoint(Stg40CellPos *out, Stg40CellPoint *e, u8 key);
 void Stg40_PickSpawnPoints(void);
 s32 Stg40_RandPercent(void);
 s32 Stg40_RandInt(s32 n);

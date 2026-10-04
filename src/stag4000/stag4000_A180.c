@@ -18,46 +18,46 @@ s32 Stg40_AddEntity(kind, a1, a2, a3, x, y)
     s32 n;
     s16 h;
 
-    e = &D_8005071C->field_18[D_8005071C->field_C];
-    if (D_8005071C->field_C >= 41) {
+    e = &D_8005071C->ents[D_8005071C->entCount];
+    if (D_8005071C->entCount >= 41) {
         return -1;
     }
-    e->field_7 = D_8005071C->field_C;
+    e->turnId = D_8005071C->entCount;
     e->field_6 = 0;
     e->field_0 = 0xC000;
-    e->field_8 = kind;
-    e->field_9 = a1;
-    e->field_4 = a2;
+    e->kind = kind;
+    e->spawnKind = a1;
+    e->digiId = a2;
     h = (a3 << 12) / 360;
-    e->field_C = h;
-    e->field_E = h;
-    e->field_B = h / 512;
-    e->field_18.u0.pair.field_0 = x;
-    e->field_18.u0.pair.field_2 = y;
-    e->field_18.field_14 = 0;
+    e->heading = h;
+    e->targetHeading = h;
+    e->octant = h / 512;
+    e->loc.u0.pair.field_0 = x;
+    e->loc.u0.pair.field_2 = y;
+    e->loc.height = 0;
     if (a2 >= 500 && a2 <= 532) {
-        e->field_38 = e->field_3C = e->field_40 = 0xD99;
+        e->scaleX = e->scaleY = e->scaleZ = 0xD99;
     } else {
-        e->field_38 = e->field_3C = e->field_40 = 0x1000;
+        e->scaleX = e->scaleY = e->scaleZ = 0x1000;
     }
-    switch (e->field_8) {
+    switch (e->kind) {
     case 0:
         flag = 1;
         e->field_0 |= flag;
-        e->field_10 = (u8 *)&D_8005071C->field_BA0;
-        D_80072B60->field_4 = e;
-        D_8005071C->field_BA0 = 0;
-        D_8005071C->field_BA4 = 0;
+        e->params = (u8 *)&D_8005071C->statusFlags;
+        D_80072B60->playerEnt = e;
+        D_8005071C->statusFlags = 0;
+        D_8005071C->confusionTurn = 0;
         break;
     case 1:
         flag = 1;
-        e->field_10 = D_8005071C->field_BB8[D_8005071C->field_E++];
+        e->params = D_8005071C->parties[D_8005071C->partyCount++];
         e->field_0 |= 2;
         break;
     case 4:
         flag = 1;
-        n = D_8005071C->field_10++;
-        e->field_10 = D_8005071C->field_CCE[n + 1];
+        n = D_8005071C->chestCount++;
+        e->params = D_8005071C->chests[n + 1];
         e->field_0 |= 4;
         break;
     case 5:
@@ -69,8 +69,8 @@ s32 Stg40_AddEntity(kind, a1, a2, a3, x, y)
     case 11:
     case 12:
         flag = 0;
-        n = D_8005071C->field_12++;
-        e->field_10 = D_8005071C->field_CE8[n];
+        n = D_8005071C->hazardCount++;
+        e->params = D_8005071C->hazards[n];
         e->field_0 |= 4;
         break;
     case 2:
@@ -80,13 +80,13 @@ s32 Stg40_AddEntity(kind, a1, a2, a3, x, y)
         break;
     }
     Stg40_SetCellOccupied(x, y, flag);
-    D_8005071C->field_C++;
+    D_8005071C->entCount++;
     return 0;
 }
 
 void Stg40_SpawnEnemyParties(void) {
     Stg40Drop *r;
-    Stg40SlotInfo *s;
+    Stg40EnemyParty *s;
     Out1DB68 out;
     s32 k;
     s32 id;
@@ -94,10 +94,10 @@ void Stg40_SpawnEnemyParties(void) {
     s16 t;
     s32 m;
     s32 c;
-    Stg40Map *map;
+    Stg40DungFloor *map;
 
-    for (r = D_80072B60->field_14->field_10; r->x != 0xFF; r++) {
-        if (D_8005071C->field_E >= 10) {
+    for (r = D_80072B60->layout->enemyParties; r->x != 0xFF; r++) {
+        if (D_8005071C->partyCount >= 10) {
             break;
         }
         switch (Stg40_RandInt(4)) {
@@ -116,53 +116,53 @@ void Stg40_SpawnEnemyParties(void) {
             break;
         }
         if (k != 0) {
-            id = k[((Stg40Map *)D_80072B60->field_10)->field_2F];
+            id = k[((Stg40DungFloor *)D_80072B60->floorMap)->enemySets];
             Enemy_GetSetSummary(id, &out);
             c = out.field_0;
             Stg40_AddEntity(1, 0, c, 0, r->x, r->y);
-            s = (Stg40SlotInfo *)D_8005071C->field_BB8[D_8005071C->field_E - 1];
-            s->field_0 = id;
+            s = (Stg40EnemyParty *)D_8005071C->parties[D_8005071C->partyCount - 1];
+            s->setId = id;
             s->field_2 = out.field_10 != 0;
-            s->field_3 = out.field_C;
-            s->field_E = out.field_18;
-            t = s->field_E;
+            s->likedGift = out.field_C;
+            s->pointsPerLevel = out.field_18;
+            t = s->pointsPerLevel;
             if (t == 0) {
                 t = 1;
             }
-            s->field_E = t;
-            s->field_A = 0;
-            s->field_C = 0;
-            s->field_7 = Stg40_EnemyPaceTable[out.field_8 * 2];
-            s->field_6 = Stg40_EnemyPaceTable[out.field_8 * 2 + 1];
+            s->pointsPerLevel = t;
+            s->giftsTaken = 0;
+            s->giftPoints = 0;
+            s->stepsPerBurst = Stg40_EnemyPaceTable[out.field_8 * 2];
+            s->idleTicks = Stg40_EnemyPaceTable[out.field_8 * 2 + 1];
             s->field_4 = Stg40_EnemyAiTable[out.field_4 * 2];
-            m = s->field_5 = Stg40_EnemyAiTable[out.field_4 * 2 + 1];
+            m = s->pathMode = Stg40_EnemyAiTable[out.field_4 * 2 + 1];
             if (m == 2) {
                 if (s->field_4 != (Stg40_GetCellFlags(r->x, r->y) & 0xF)) {
                     s->field_4 = m;
-                    s->field_5 = 0;
+                    s->pathMode = 0;
                 }
             }
-            s->field_B = 0;
+            s->digiCount = 0;
             for (i = 0; i < 3; i++) {
                 if ((s16)out.digiIds[i] == 0) {
                     break;
                 }
-                s->field_10[i] = out.digiIds[i];
-                s->field_16[i] = out.levels[i];
-                s->field_B++;
+                s->digiIds[i] = out.digiIds[i];
+                s->levels[i] = out.levels[i];
+                s->digiCount++;
             }
         }
     }
 }
 
 void Stg40_SpawnChests(void) {
-    Stg40MapPos *pos = ((Stg40Map *)D_80072B60->field_10)->field_34;
+    Stg40MapPos *pos = ((Stg40DungFloor *)D_80072B60->floorMap)->chests;
     Stg40Drop *r;
     s32 k;
     u8 *d;
 
-    for (r = D_80072B60->field_14->field_8; r->x != 0xFF; r++) {
-        if (D_8005071C->field_10 >= 12) {
+    for (r = D_80072B60->layout->chests; r->x != 0xFF; r++) {
+        if (D_8005071C->chestCount >= 12) {
             break;
         }
         switch (Stg40_RandInt(4)) {
@@ -183,7 +183,7 @@ void Stg40_SpawnChests(void) {
         if (k != 0) {
             Stg40_AddEntity(4, 0, 0x276, 0, r->x, r->y);
             k--;
-            d = D_8005071C->field_CCE[D_8005071C->field_10];
+            d = D_8005071C->chests[D_8005071C->chestCount];
             d[0] = pos[k].field_0;
             d[1] = pos[k].field_1;
         }
@@ -206,7 +206,7 @@ s32 Stg40_SpawnHazard(a0, a1, a2, a3)
     s32 model;
     s32 id;
     s32 bit;
-    Stg40Rec3 *r;
+    Stg40CellPoint *r;
     u8 *d;
 
     lvl = a1;
@@ -262,26 +262,26 @@ s32 Stg40_SpawnHazard(a0, a1, a2, a3)
         m = 5;
         m = (lvl < m) ? lvl : m;
         lvl = m;
-        if (D_8005071C->field_14 >= 100) {
+        if (D_8005071C->trapCount >= 100) {
             return -1;
         }
-        r = &D_8005071C->field_D08[D_8005071C->field_14];
-        r->field_0 = a2;
-        r->field_1 = a3;
-        r->field_2 = lvl;
-        D_8005071C->field_14++;
+        r = &D_8005071C->trapCells[D_8005071C->trapCount];
+        r->x = a2;
+        r->y = a3;
+        r->kind = lvl;
+        D_8005071C->trapCount++;
         return 0;
     }
-    if (!(bit & D_80072B60->field_188)) {
-        if (D_80072B60->field_18C >= 12) {
+    if (!(bit & D_80072B60->hazardMask)) {
+        if (D_80072B60->hazardTypeCount >= 12) {
             return -1;
         }
-        D_80072B60->field_188 |= bit;
-        D_80072B60->field_18C++;
+        D_80072B60->hazardMask |= bit;
+        D_80072B60->hazardTypeCount++;
     }
-    if (D_8005071C->field_12 < 16) {
+    if (D_8005071C->hazardCount < 16) {
         Stg40_AddEntity(kind, a0, model, 0, a2, a3);
-        d = D_8005071C->field_CE8[D_8005071C->field_12 - 1];
+        d = D_8005071C->hazards[D_8005071C->hazardCount - 1];
         d[0] = a0;
         d[1] = lvl;
         return 0;
@@ -294,7 +294,7 @@ void Stg40_SpawnFixedHazards(void) {
     s32 kind;
     s32 val;
 
-    for (e = D_80072B60->field_14->field_C; e->x != 0xFF; e++) {
+    for (e = D_80072B60->layout->hazards; e->x != 0xFF; e++) {
         switch (Stg40_RandInt(4)) {
         case 0:
         default:
@@ -315,16 +315,16 @@ void Stg40_SpawnFixedHazards(void) {
             break;
         }
         if (kind != 0) {
-            Stg40_SpawnHazard(kind, val + D_8005071C->field_E54->field_C, e->x, e->y);
+            Stg40_SpawnHazard(kind, val + D_8005071C->floorHdr->hazardLevel, e->x, e->y);
         }
     }
 }
 
 s32 Stg40_GetRegionCells(u8 (*tbl)[2], s32 v) {
-    Stg40Blk5071C *b = D_8005071C;
-    Stg40Cell *cells = (Stg40Cell *)b->field_E58;
-    s32 h = b->field_E54->field_2;
-    s32 w = b->field_E54->field_0;
+    Stg40DungState *b = D_8005071C;
+    Stg40Cell *cells = (Stg40Cell *)b->cells;
+    s32 h = b->floorHdr->rows;
+    s32 w = b->floorHdr->cols;
     s32 n = 0;
     s32 x;
     s32 y;
@@ -333,7 +333,7 @@ s32 Stg40_GetRegionCells(u8 (*tbl)[2], s32 v) {
     for (y = 0; y < h; y++) {
         for (x = 0; x < w; x++) {
             c = &cells[y * w + x];
-            if (c->field_2 == v && !(c->field_0 & 0x40) && (c->field_0 & 0xF) < 8) {
+            if (c->roomId == v && !(c->flags & 0x40) && (c->flags & 0xF) < 8) {
                 tbl[n][0] = x;
                 tbl[n][1] = y;
                 n++;
@@ -344,7 +344,7 @@ s32 Stg40_GetRegionCells(u8 (*tbl)[2], s32 v) {
 }
 
 void Stg40_SpawnHazardAtRandom(u8 (*tbl)[2], s32 a1, s32 a2) {
-    s32 n = Stg40_GetRegionCells(tbl, Stg40_RandInt(D_80072B60->field_0));
+    s32 n = Stg40_GetRegionCells(tbl, Stg40_RandInt(D_80072B60->roomCount));
 
     if (n != 0) {
         n = Stg40_RandInt(n);
@@ -354,16 +354,16 @@ void Stg40_SpawnHazardAtRandom(u8 (*tbl)[2], s32 a1, s32 a2) {
 
 INCLUDE_RODATA("asm/USA/stag4000/rodata", Stg40_RandomHazardKinds);
 void Stg40_SpawnRandomHazards(void) {
-    Stg40Map *m = (Stg40Map *)D_80072B60->field_10;
+    Stg40DungFloor *m = (Stg40DungFloor *)D_80072B60->floorMap;
     Stg40Ids5 ids = Stg40_RandomHazardKinds;
-    Stg40MapGen *g = m->field_54;
+    Stg40MapGen *g = m->hazardGroups;
     s32 buf;
     s32 i;
     s32 j;
     s32 n;
     s32 v;
 
-    if (D_80072B60->field_0 == 0) {
+    if (D_80072B60->roomCount == 0) {
         return;
     }
     buf = Mem_Alloc(0x1800, 2);
@@ -406,12 +406,12 @@ void Stg40_SpawnRandomHazards(void) {
 }
 
 Stg40Ent48 *Stg40_FindEntAt(s16 x, s16 y) {
-    Stg40Ent48 *e = D_8005071C->field_18;
+    Stg40Ent48 *e = D_8005071C->ents;
     Stg40Ent48 *r = NULL;
     s32 i;
 
     for (i = 0; i < 41; i++, e++) {
-        if (e->field_18.u0.pair.field_0 == x && e->field_18.u0.pair.field_2 == y && (e->field_0 & 0x8000)) {
+        if (e->loc.u0.pair.field_0 == x && e->loc.u0.pair.field_2 == y && (e->field_0 & 0x8000)) {
             r = e;
             break;
         }
@@ -421,7 +421,7 @@ Stg40Ent48 *Stg40_FindEntAt(s16 x, s16 y) {
 
 void Stg40_RevealAllEnts(void) {
     s32 i;
-    Stg40Ent48 *e = D_8005071C->field_18;
+    Stg40Ent48 *e = D_8005071C->ents;
 
     for (i = 0; i < 41; i++, e++) {
         if (e->field_0 & 0x8000) {
@@ -434,39 +434,39 @@ s32 Stg40_IsEntAdjacent(Stg40Ent48 *a, Stg40Ent48 *b) {
     s16 dx;
     s16 dy;
 
-    if (a->field_18.u0.pair.field_0 - b->field_18.u0.pair.field_0 >= 0) {
-        dx = a->field_18.u0.pair.field_0 - b->field_18.u0.pair.field_0;
+    if (a->loc.u0.pair.field_0 - b->loc.u0.pair.field_0 >= 0) {
+        dx = a->loc.u0.pair.field_0 - b->loc.u0.pair.field_0;
     } else {
-        dx = b->field_18.u0.pair.field_0 - a->field_18.u0.pair.field_0;
+        dx = b->loc.u0.pair.field_0 - a->loc.u0.pair.field_0;
     }
-    if (a->field_18.u0.pair.field_2 - b->field_18.u0.pair.field_2 >= 0) {
-        dy = a->field_18.u0.pair.field_2 - b->field_18.u0.pair.field_2;
+    if (a->loc.u0.pair.field_2 - b->loc.u0.pair.field_2 >= 0) {
+        dy = a->loc.u0.pair.field_2 - b->loc.u0.pair.field_2;
     } else {
-        dy = b->field_18.u0.pair.field_2 - a->field_18.u0.pair.field_2;
+        dy = b->loc.u0.pair.field_2 - a->loc.u0.pair.field_2;
     }
     return dx < 2 && dy < 2;
 }
 
 s32 Stg40_CheckEncounter(void) {
-    Stg40List *l = &D_8005071C->field_1018;
-    Stg40Ent48 *e = D_8005071C->field_18;
+    Stg40List *l = &D_8005071C->encounterList;
+    Stg40Ent48 *e = D_8005071C->ents;
     s32 i;
     s32 r;
 
     l->field_20 = 0;
-    for (i = 0; i < D_8005071C->field_C; i++, e++) {
-        if ((e->field_0 & 0x8002) == 0x8002 && e->field_14->stateLevel1 != 4) {
-            r = Stg40_IsEntAdjacent(e, D_80072B60->field_4);
+    for (i = 0; i < D_8005071C->entCount; i++, e++) {
+        if ((e->field_0 & 0x8002) == 0x8002 && e->actor->stateLevel1 != 4) {
+            r = Stg40_IsEntAdjacent(e, D_80072B60->playerEnt);
             if (r == 1) {
                 l->field_0[l->field_20++] = e;
                 e->field_0 |= 0x100;
-                Task_SetState1(e->field_14, 3);
+                Task_SetState1(e->actor, 3);
                 e->field_0 |= (l->field_20 == r) ? 0x800 : 0;
             }
         }
     }
     if (l->field_20 != 0) {
-        D_80072B60->field_4->field_0 |= 0x100;
+        D_80072B60->playerEnt->field_0 |= 0x100;
     }
     return l->field_20;
 }
@@ -498,11 +498,11 @@ void Stg40_ObjSetAnim(a0, a1)
     Actor *a0;
     s16 a1;
 {
-    ((Stg40ActWork *)a0->work)->field_30 = a1;
+    ((Stg40ActWork *)a0->work)->pendingAnim = a1;
 }
 
 void Stg40_ObjSetAnimIfNew(Actor *a0, s32 a1) {
-    if (((Stg40ActWork *)a0->work)->field_32 != a1) {
+    if (((Stg40ActWork *)a0->work)->curAnim != a1) {
         Stg40_ObjSetAnim(a0, a1);
     }
 }
@@ -532,16 +532,16 @@ void Stg40_LoadEventTiles(s32 a0) {
     Blk12 *e;
     Stg40B60 *b;
 
-    D_80072B60->field_16C = 0;
+    D_80072B60->eventTileCount = 0;
     if (a0 != 0) {
         Flag_SetTableFile(a0);
         for (n = Flag_FirstPassingEntry(); n != -1; n = Flag_NextPassingEntry()) {
             e = Flag_GetEntryPosList(n);
             b = D_80072B60;
-            b->field_144[b->field_16C].u0.pair.field_0 = e->data[0] - 1;
-            b->field_144[b->field_16C].u0.pair.field_2 = e->data[1] - 1;
-            b->field_144[b->field_16C].field_4 = n;
-            b->field_16C++;
+            b->eventTiles[b->eventTileCount].u0.pair.field_0 = e->data[0] - 1;
+            b->eventTiles[b->eventTileCount].u0.pair.field_2 = e->data[1] - 1;
+            b->eventTiles[b->eventTileCount].field_4 = n;
+            b->eventTileCount++;
         }
     }
 }
@@ -549,17 +549,17 @@ void Stg40_LoadEventTiles(s32 a0) {
 s32 Stg40_CheckEventTile(void) {
     u32 i = 0;
     s32 r = 0;
-    Stg40B60Ent *e = D_80072B60->field_144;
+    Stg40B60Ent *e = D_80072B60->eventTiles;
 
-    for (; i < D_80072B60->field_16C; e++) {
+    for (; i < D_80072B60->eventTileCount; e++) {
         Stg40B60 *b = D_80072B60;
         i++;
-        if (b->field_4->field_18.u0.field_0 == e->u0.field_0) {
-            b->field_170 = e->field_4;
+        if (b->playerEnt->loc.u0.tileXY == e->u0.field_0) {
+            b->eventEntry = e->field_4;
             e->u0.pair.field_2 = -1;
             e->u0.pair.field_0 = -1;
             r = -1;
-            D_8005071C->field_2 = 2;
+            D_8005071C->freeze = 2;
             break;
         }
     }
@@ -636,7 +636,7 @@ s32 Stg40_ListUsableItems(Stg40Shop *a) {
     u16 *bag;
     u16 *items;
 
-    D_80072B60->field_E1 = 0;
+    D_80072B60->itemCount = 0;
     switch (Stg40_GetBeetlePart(a->field_0)) {
     case -1:
         ret = a->field_C;
@@ -651,13 +651,13 @@ s32 Stg40_ListUsableItems(Stg40Shop *a) {
             if (key != -1) {
                 for (i = 0, bag = items; i < 0x30; i++, bag++) {
                     if (*bag != 0 && key == Item_GetCategory(*bag)) {
-                        D_80072B60->field_B0[D_80072B60->field_E1] = *bag;
-                        D_80072B60->field_E1++;
+                        D_80072B60->itemIds[D_80072B60->itemCount] = *bag;
+                        D_80072B60->itemCount++;
                     }
                 }
             }
         }
-        if (D_80072B60->field_E1 == 0) {
+        if (D_80072B60->itemCount == 0) {
             ret = a->field_C + 2;
         } else {
             ret = 0;
@@ -673,7 +673,7 @@ s16 Stg40_ListPartyDigi(s32 mode) {
     s32 *pi;
     s32 i;
 
-    D_80072B60->field_140 = 0;
+    D_80072B60->partyCount = 0;
     b = D_80072B60;
     for (i = 0; i < 36; e++, i++) {
         if (e->state >= 2) {
@@ -682,25 +682,25 @@ s16 Stg40_ListPartyDigi(s32 mode) {
                 if ((s16)e->hp == 0) {
                     continue;
                 }
-                b->field_128[b->field_140++] = i;
+                b->partyIdx[b->partyCount++] = i;
                 break;
             case 2:
                 if ((s16)e->hp == 0) {
-                    b->field_128[b->field_140++] = i;
+                    b->partyIdx[b->partyCount++] = i;
                 }
                 break;
             case 3:
                 if ((s16)e->hp >= 2) {
-                    b->field_128[b->field_140++] = i;
+                    b->partyIdx[b->partyCount++] = i;
                 }
                 break;
             default:
-                b->field_128[b->field_140++] = *(pi = &i);
+                b->partyIdx[b->partyCount++] = *(pi = &i);
                 break;
             }
         }
     }
-    i = D_80072B60->field_140;
+    i = D_80072B60->partyCount;
     return i;
 }
 
@@ -741,9 +741,9 @@ void Stg40_AutomapMoveMarker(s32 x, s32 y, s32 ox, s32 oy, s32 dir) {
     }
 }
 
-void Stg40_AutomapRedraw(Stg40TileWork *a0) {
-    s32 h = a0->field_768;
-    s32 w = a0->field_766;
+void Stg40_AutomapRedraw(Stg40AutomapWork *a0) {
+    s32 h = a0->rows;
+    s32 w = a0->cols;
     s32 x;
     s32 y;
 
@@ -756,7 +756,7 @@ void Stg40_AutomapRedraw(Stg40TileWork *a0) {
 
 void Stg40_ClearVisitedBits(void) {
     s32 i;
-    u8 *p = D_8005071C->field_E7C;
+    u8 *p = D_8005071C->visitedBits;
 
     i = 0x17F;
     do {
@@ -772,45 +772,45 @@ void Stg40_SyncVisitedBits(s32 arg0) {
     Stg40Cell *c;
     s32 i;
 
-    p = D_8005071C->field_E7C;
-    c = (Stg40Cell *)D_8005071C->field_E58;
-    n = D_8005071C->field_E54->field_0 * D_8005071C->field_E54->field_2 / 8;
+    p = D_8005071C->visitedBits;
+    c = (Stg40Cell *)D_8005071C->cells;
+    n = D_8005071C->floorHdr->cols * D_8005071C->floorHdr->rows / 8;
 
     for (i = 0; i < n; i++) {
         if (arg0 == 0) {
             *p = 0;
-            *p = (c->field_0 >> 13) & 1;
+            *p = (c->flags >> 13) & 1;
             c++;
-            *p |= (c->field_0 & 0x2000) ? 2 : 0;
+            *p |= (c->flags & 0x2000) ? 2 : 0;
             c++;
-            *p |= (c->field_0 & 0x2000) ? 4 : 0;
+            *p |= (c->flags & 0x2000) ? 4 : 0;
             c++;
-            *p |= (c->field_0 & 0x2000) ? 8 : 0;
+            *p |= (c->flags & 0x2000) ? 8 : 0;
             c++;
-            *p |= (c->field_0 & 0x2000) ? 0x10 : 0;
+            *p |= (c->flags & 0x2000) ? 0x10 : 0;
             c++;
-            *p |= (c->field_0 & 0x2000) ? 0x20 : 0;
+            *p |= (c->flags & 0x2000) ? 0x20 : 0;
             c++;
-            *p |= (c->field_0 & 0x2000) ? 0x40 : 0;
+            *p |= (c->flags & 0x2000) ? 0x40 : 0;
             c++;
-            *p |= (c->field_0 & 0x2000) ? 0x80 : 0;
+            *p |= (c->flags & 0x2000) ? 0x80 : 0;
             c++;
         } else {
-            if (*p & 1) c->field_0 |= 0x2000; else c->field_0 &= ~0x2000;
+            if (*p & 1) c->flags |= 0x2000; else c->flags &= ~0x2000;
             c++;
-            if (*p & 2) c->field_0 |= 0x2000; else c->field_0 &= ~0x2000;
+            if (*p & 2) c->flags |= 0x2000; else c->flags &= ~0x2000;
             c++;
-            if (*p & 4) c->field_0 |= 0x2000; else c->field_0 &= ~0x2000;
+            if (*p & 4) c->flags |= 0x2000; else c->flags &= ~0x2000;
             c++;
-            if (*p & 8) c->field_0 |= 0x2000; else c->field_0 &= ~0x2000;
+            if (*p & 8) c->flags |= 0x2000; else c->flags &= ~0x2000;
             c++;
-            if (*p & 0x10) c->field_0 |= 0x2000; else c->field_0 &= ~0x2000;
+            if (*p & 0x10) c->flags |= 0x2000; else c->flags &= ~0x2000;
             c++;
-            if (*p & 0x20) c->field_0 |= 0x2000; else c->field_0 &= ~0x2000;
+            if (*p & 0x20) c->flags |= 0x2000; else c->flags &= ~0x2000;
             c++;
-            if (*p & 0x40) c->field_0 |= 0x2000; else c->field_0 &= ~0x2000;
+            if (*p & 0x40) c->flags |= 0x2000; else c->flags &= ~0x2000;
             c++;
-            if (*p & 0x80) c->field_0 |= 0x2000; else c->field_0 &= ~0x2000;
+            if (*p & 0x80) c->flags |= 0x2000; else c->flags &= ~0x2000;
             c++;
         }
         p++;
@@ -823,12 +823,12 @@ void Stg40_ResetVisitedCells(void) {
 }
 
 void Stg40_AutomapRevealAll(void) {
-    Stg40TileWork *t = (Stg40TileWork *)Stg40_AutomapWork;
+    Stg40AutomapWork *t = (Stg40AutomapWork *)Stg40_AutomapWork;
     s32 x;
     s32 y;
 
-    for (y = 0; y < D_8005071C->field_E54->field_2; y++) {
-        for (x = 0; x < D_8005071C->field_E54->field_0; x++) {
+    for (y = 0; y < D_8005071C->floorHdr->rows; y++) {
+        for (x = 0; x < D_8005071C->floorHdr->cols; x++) {
             Stg40_RevealCell(t, x, y);
         }
     }
@@ -838,10 +838,10 @@ void Stg40_AutomapLoadClut(Stg40ImgWork *a0) {
     LoadImage(&a0->rect, a0->data);
 }
 
-void Stg40_AutomapFlush(Stg40TileWork *a0) {
-    if (a0->field_760 != 0) {
+void Stg40_AutomapFlush(Stg40AutomapWork *a0) {
+    if (a0->texDirty != 0) {
         LoadImage(&a0->rect, a0->data);
-        a0->field_760 = 0;
+        a0->texDirty = 0;
     }
 }
 
@@ -874,7 +874,7 @@ void Stg40_AutomapCycleClut(Stg40ImgWork *a0) {
     Stg40_AutomapLoadClut(a0);
 }
 
-void Stg40_AutomapInitTex(Stg40TileWork *w) {
+void Stg40_AutomapInitTex(Stg40AutomapWork *w) {
     GfxTexSlot *s;
     RECT *r;
     u16 *d;
@@ -907,10 +907,10 @@ void Stg40_AutomapInitTex(Stg40TileWork *w) {
     for (i = 0; i < n; i++) {
         *d++ = 0;
     }
-    w->field_760 = -1;
+    w->texDirty = -1;
     Stg40_AutomapFlush(w);
     for (k = 1; k >= 0; k--) {
-        w->field_762[k] = 0;
+        w->modeFade[k] = 0;
     }
 }
 
@@ -918,16 +918,16 @@ void Stg40_AutomapReleaseTex(Stg40ImgWork *a0) {
     Gfx_ReleaseTexSlot(a0->field_758);
 }
 
-s16 Stg40_AutomapInitDims(Stg40TileWork *a0) {
-    Stg40Blk5071C *b = D_8005071C;
+s16 Stg40_AutomapInitDims(Stg40AutomapWork *a0) {
+    Stg40DungState *b = D_8005071C;
 
-    a0->field_766 = b->field_E54->field_0;
-    a0->field_768 = b->field_E54->field_2;
-    return a0->field_76A = a0->field_766 / 8;
+    a0->cols = b->floorHdr->cols;
+    a0->rows = b->floorHdr->rows;
+    return a0->field_76A = a0->cols / 8;
 }
 
 INCLUDE_RODATA("asm/USA/stag4000/rodata", D_8006368C);
-void Stg40_RevealRoom(Stg40TileWork *w, s32 x, s32 y)
+void Stg40_RevealRoom(Stg40AutomapWork *w, s32 x, s32 y)
 {
     s32 group;
     s32 row;
@@ -935,33 +935,33 @@ void Stg40_RevealRoom(Stg40TileWork *w, s32 x, s32 y)
     s32 mask;
     u8 kind;
     s32 dim1;
-    Stg40E34 *dims;
+    Stg40FloorHeader *dims;
     s32 count;
     Stg40Cell *grid;
     s32 col;
     s32 t;
 
-    dims = D_8005071C->field_E54;
-    dim1 = dims->field_0;
-    count = dims->field_2;
-    kind = Stg40_GetCell(x, y)->field_2;
+    dims = D_8005071C->floorHdr;
+    dim1 = dims->cols;
+    count = dims->rows;
+    kind = Stg40_GetCell(x, y)->roomId;
     if (kind == 0xFF) {
         return;
     }
     group = kind >> 5;
     mask = 1 << (kind % 32);
     if (group < 8) {
-        t = D_8005071C->field_E5C[group];
+        t = D_8005071C->revealedRooms[group];
         if (t & mask) {
             return;
         }
-        D_8005071C->field_E5C[group] |= mask;
+        D_8005071C->revealedRooms[group] |= mask;
     }
-    grid = (Stg40Cell *)D_8005071C->field_E58;
+    grid = (Stg40Cell *)D_8005071C->cells;
     for (row = 0; row < count; row++) {
         for (col = 0; col < dim1; col++) {
-            if (grid[col + row * dim1].field_2 == kind) {
-                grid[col + row * dim1].field_0 |= 0x2000;
+            if (grid[col + row * dim1].roomId == kind) {
+                grid[col + row * dim1].flags |= 0x2000;
                 Stg40_AutomapSetCell(col, row, 1);
                 {
                     Stg40Offs8 o = D_8006368C;
@@ -974,7 +974,7 @@ void Stg40_RevealRoom(Stg40TileWork *w, s32 x, s32 y)
                             do {
                                 do {
                                     t = nx + dim1 * ny;
-                                    grid[t].field_0 |= 0x2000;
+                                    grid[t].flags |= 0x2000;
                                     Stg40_AutomapSetCell(nx, ny, 1);
                                 } while (0);
                             } while (0);

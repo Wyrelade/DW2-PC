@@ -6,16 +6,16 @@
 
 void Stg40_GateUpdate(Actor *a0) {
     Stg40ActWork *w = (Stg40ActWork *)a0->work;
-    Stg40Ent48 *e = w->field_2C;
+    Stg40Ent48 *e = w->ent;
 
-    Stg40_SetCellOccupied(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2, 0);
-    if (Stg40_GetCellFlags(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2) & 0x2000) {
+    Stg40_SetCellOccupied(e->loc.u0.pair.field_0, e->loc.u0.pair.field_2, 0);
+    if (Stg40_GetCellFlags(e->loc.u0.pair.field_0, e->loc.u0.pair.field_2) & 0x2000) {
         e->field_0 |= 0x1000;
     }
     if (e->field_0 & 0x1000) {
-        Stg40_AutomapMoveMarker(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2, -1, -1, e->field_8);
+        Stg40_AutomapMoveMarker(e->loc.u0.pair.field_0, e->loc.u0.pair.field_2, -1, -1, e->kind);
     }
-    if (e->field_8 == 2) {
+    if (e->kind == 2) {
         Stg40_ObjQueueFiles((Stg40E764 *)w, 0xDF0, 0xDF1);
     } else {
         Stg40_ObjQueueFiles((Stg40E764 *)w, 0xDF2, 0xDF3);
@@ -57,22 +57,22 @@ void Stg40_ChestQueueModel(Stg40E764 *a0, s32 a1) {
 
 s32 Stg40_ChestUpdate(Actor *a0) {
     Stg40ActWork *w = (Stg40ActWork *)a0->work;
-    Stg40Ent48 *e = w->field_2C;
+    Stg40Ent48 *e = w->ent;
 
-    Stg40_SetCellOccupied(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2, 1);
-    if (Stg40_GetCellFlags(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2) & 0x2000) {
+    Stg40_SetCellOccupied(e->loc.u0.pair.field_0, e->loc.u0.pair.field_2, 1);
+    if (Stg40_GetCellFlags(e->loc.u0.pair.field_0, e->loc.u0.pair.field_2) & 0x2000) {
         e->field_0 |= 0x1000;
     }
     if (e->field_0 & 0x1000) {
-        Stg40_AutomapMoveMarker(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2, -1, -1, e->field_8);
+        Stg40_AutomapMoveMarker(e->loc.u0.pair.field_0, e->loc.u0.pair.field_2, -1, -1, e->kind);
     }
-    if (e->field_10[1] >= 1 && e->field_10[1] <= 5) {
-        Stg40_ChestQueueModel((Stg40E764 *)w, e->field_10[1] - 1);
+    if (e->params[1] >= 1 && e->params[1] <= 5) {
+        Stg40_ChestQueueModel((Stg40E764 *)w, e->params[1] - 1);
     }
     switch (a0->stateLevel1) {
     case 0:
     default:
-        if (e->field_10[1] == 0xFF) {
+        if (e->params[1] == 0xFF) {
             Stg40_ObjSetAnim(a0, 0x29);
         } else {
             Stg40_ObjSetAnim(a0, 0x28);
@@ -80,15 +80,15 @@ s32 Stg40_ChestUpdate(Actor *a0) {
         Task_SetState1(a0, 1);
         break;
     case 1:
-        if (e->field_10[1] == 0xFF) {
+        if (e->params[1] == 0xFF) {
             Stg40_ObjSetAnim(a0, 0x29);
         } else {
             Stg40_ObjSetAnim(a0, 0x28);
         }
         break;
     case 2:
-        Stg40_ClearCellOccupied(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2);
-        Stg40_AutomapMoveMarker(-1, -1, e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2, e->field_8);
+        Stg40_ClearCellOccupied(e->loc.u0.pair.field_0, e->loc.u0.pair.field_2);
+        Stg40_AutomapMoveMarker(-1, -1, e->loc.u0.pair.field_0, e->loc.u0.pair.field_2, e->kind);
         e->field_0 = 0;
         Task_SetState0(a0, 3);
         break;
@@ -131,13 +131,13 @@ s32 Stg40_ChestUpdate(Actor *a0) {
 
 s32 Stg40_MineUpdate(Actor *a0) {
     Stg40ActWork *w = (Stg40ActWork *)a0->work;
-    Stg40Ent48 *e = w->field_2C;
+    Stg40Ent48 *e = w->ent;
 
-    Stg40_SetCellOccupied(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2, 0);
+    Stg40_SetCellOccupied(e->loc.u0.pair.field_0, e->loc.u0.pair.field_2, 0);
     if (e->field_0 & 0x1000) {
-        Stg40_AutomapMoveMarker(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2, -1, -1, e->field_8);
+        Stg40_AutomapMoveMarker(e->loc.u0.pair.field_0, e->loc.u0.pair.field_2, -1, -1, e->kind);
     }
-    Stg40_ChestQueueModel((Stg40E764 *)w, e->field_10[1] - 1);
+    Stg40_ChestQueueModel((Stg40E764 *)w, e->params[1] - 1);
     switch (a0->stateLevel1) {
     case 0:
     case 3:
@@ -151,8 +151,8 @@ s32 Stg40_MineUpdate(Actor *a0) {
     case 1:
         break;
     case 2:
-        Stg40_ClearCellOccupied(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2);
-        Stg40_AutomapMoveMarker(-1, -1, e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2, e->field_8);
+        Stg40_ClearCellOccupied(e->loc.u0.pair.field_0, e->loc.u0.pair.field_2);
+        Stg40_AutomapMoveMarker(-1, -1, e->loc.u0.pair.field_0, e->loc.u0.pair.field_2, e->kind);
         e->field_0 = 0;
         Task_SetState0(a0, 3);
         break;
@@ -207,16 +207,16 @@ s32 Stg40_MineUpdate(Actor *a0) {
 
 s32 Stg40_SporeUpdate(Actor *a0) {
     Stg40ActWork *w = (Stg40ActWork *)a0->work;
-    Stg40Ent48 *e = w->field_2C;
+    Stg40Ent48 *e = w->ent;
     Stg40Cell *c;
 
-    c = Stg40_GetCell2(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2);
-    Stg40_SetCellOccupied(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2, 1);
-    c->field_0 |= 0x10;
+    c = Stg40_GetCell2(e->loc.u0.pair.field_0, e->loc.u0.pair.field_2);
+    Stg40_SetCellOccupied(e->loc.u0.pair.field_0, e->loc.u0.pair.field_2, 1);
+    c->flags |= 0x10;
     if (e->field_0 & 0x1000) {
-        Stg40_AutomapMoveMarker(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2, -1, -1, e->field_8);
+        Stg40_AutomapMoveMarker(e->loc.u0.pair.field_0, e->loc.u0.pair.field_2, -1, -1, e->kind);
     }
-    e->field_C = e->field_E += 0x155;
+    e->heading = e->targetHeading += 0x155;
     switch (a0->stateLevel1) {
     case 0:
     case 3:
@@ -230,9 +230,9 @@ s32 Stg40_SporeUpdate(Actor *a0) {
     case 1:
         break;
     case 2:
-        Stg40_ClearCellOccupied(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2);
-        Stg40_AutomapMoveMarker(-1, -1, e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2, e->field_8);
-        c->field_0 &= ~0x10;
+        Stg40_ClearCellOccupied(e->loc.u0.pair.field_0, e->loc.u0.pair.field_2);
+        Stg40_AutomapMoveMarker(-1, -1, e->loc.u0.pair.field_0, e->loc.u0.pair.field_2, e->kind);
+        c->flags &= ~0x10;
         e->field_0 = 0;
         Task_SetState0(a0, 3);
         break;
@@ -277,14 +277,14 @@ s32 Stg40_SporeUpdate(Actor *a0) {
 
 s32 Stg40_RockUpdate(Actor *a0) {
     Stg40ActWork *w = (Stg40ActWork *)a0->work;
-    Stg40Ent48 *e = w->field_2C;
+    Stg40Ent48 *e = w->ent;
 
-    Stg40_SetCellOccupied(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2, 1);
-    if (Stg40_GetCellFlags(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2) & 0x2000) {
+    Stg40_SetCellOccupied(e->loc.u0.pair.field_0, e->loc.u0.pair.field_2, 1);
+    if (Stg40_GetCellFlags(e->loc.u0.pair.field_0, e->loc.u0.pair.field_2) & 0x2000) {
         e->field_0 |= 0x1000;
     }
     if (e->field_0 & 0x1000) {
-        Stg40_AutomapMoveMarker(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2, -1, -1, e->field_8);
+        Stg40_AutomapMoveMarker(e->loc.u0.pair.field_0, e->loc.u0.pair.field_2, -1, -1, e->kind);
     }
     switch (a0->stateLevel1) {
     case 0:
@@ -299,8 +299,8 @@ s32 Stg40_RockUpdate(Actor *a0) {
     case 5:
         break;
     case 2:
-        Stg40_ClearCellOccupied(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2);
-        Stg40_AutomapMoveMarker(-1, -1, e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2, e->field_8);
+        Stg40_ClearCellOccupied(e->loc.u0.pair.field_0, e->loc.u0.pair.field_2);
+        Stg40_AutomapMoveMarker(-1, -1, e->loc.u0.pair.field_0, e->loc.u0.pair.field_2, e->kind);
         e->field_0 = 0;
         Task_SetState0(a0, 3);
         break;
@@ -324,25 +324,25 @@ s32 Stg40_RockUpdate(Actor *a0) {
 
 s32 Stg40_BugUpdate(Actor *a0) {
     Stg40ActWork *w = (Stg40ActWork *)a0->work;
-    Stg40Ent48 *e = w->field_2C;
+    Stg40Ent48 *e = w->ent;
 
-    Stg40_SetCellOccupied(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2, 0);
+    Stg40_SetCellOccupied(e->loc.u0.pair.field_0, e->loc.u0.pair.field_2, 0);
     if (e->field_0 & 0x1000) {
-        Stg40_AutomapMoveMarker(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2, -1, -1, e->field_8);
+        Stg40_AutomapMoveMarker(e->loc.u0.pair.field_0, e->loc.u0.pair.field_2, -1, -1, e->kind);
     }
     switch (a0->stateLevel1) {
     case 0:
     case 3:
     default:
-        e->field_18.field_14 = 0x2800;
+        e->loc.height = 0x2800;
         e->field_0 = (e->field_0 & 0x1000) ? (e->field_0 | 0x4400) : (e->field_0 & ~0x4000);
         Task_SetState1(a0, 1);
         break;
     case 1:
         break;
     case 2:
-        Stg40_ClearCellOccupied(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2);
-        Stg40_AutomapMoveMarker(-1, -1, e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2, e->field_8);
+        Stg40_ClearCellOccupied(e->loc.u0.pair.field_0, e->loc.u0.pair.field_2);
+        Stg40_AutomapMoveMarker(-1, -1, e->loc.u0.pair.field_0, e->loc.u0.pair.field_2, e->kind);
         e->field_0 = 0;
         Task_SetState0(a0, 3);
         break;
@@ -352,24 +352,24 @@ s32 Stg40_BugUpdate(Actor *a0) {
         default:
             e->field_0 = (e->field_0 | 0x5000) & ~0x400;
             Stg40_ObjSetAnim(a0, 0x28);
-            e->field_18.field_18 = 0;
-            e->field_18.field_14 = 0x2800;
+            e->loc.fallSpeed = 0;
+            e->loc.height = 0x2800;
             Snd_PlayById(4, 0);
             Task_NextState2(a0);
             break;
         case 1:
-            e->field_18.field_18 += 0x26;
-            e->field_18.field_14 -= e->field_18.field_18;
-            if (e->field_18.field_14 < 0x500) {
-                e->field_18.field_14 = 0x500;
-                e->field_18.field_18 = -(e->field_18.field_18 / 2);
+            e->loc.fallSpeed += 0x26;
+            e->loc.height -= e->loc.fallSpeed;
+            if (e->loc.height < 0x500) {
+                e->loc.height = 0x500;
+                e->loc.fallSpeed = -(e->loc.fallSpeed / 2);
                 Task_NextState2(a0);
             }
             break;
         case 2:
-            e->field_18.field_18 += 0x26;
-            e->field_18.field_14 -= e->field_18.field_18;
-            if (e->field_18.field_18 > 0) {
+            e->loc.fallSpeed += 0x26;
+            e->loc.height -= e->loc.fallSpeed;
+            if (e->loc.fallSpeed > 0) {
                 Stg40_ObjSetAnim(a0, 0x2B);
                 Task_NextState2(a0);
             }
@@ -392,25 +392,25 @@ s32 Stg40_BugUpdate(Actor *a0) {
         default:
             e->field_0 = (e->field_0 | 0x5000) & ~0x400;
             Stg40_ObjSetAnim(a0, 0x28);
-            e->field_18.field_18 = 0;
-            e->field_18.field_14 = 0x2800;
+            e->loc.fallSpeed = 0;
+            e->loc.height = 0x2800;
             Snd_PlayById(5, 0);
             Task_NextState2(a0);
             break;
         case 1:
-            e->field_18.field_18 += 0x26;
-            e->field_18.field_14 -= e->field_18.field_18;
-            if (e->field_18.field_14 < 0) {
-                e->field_18.field_14 = 0;
-                e->field_18.field_18 = -(e->field_18.field_18 / 2);
+            e->loc.fallSpeed += 0x26;
+            e->loc.height -= e->loc.fallSpeed;
+            if (e->loc.height < 0) {
+                e->loc.height = 0;
+                e->loc.fallSpeed = -(e->loc.fallSpeed / 2);
                 Task_NextState2(a0);
             }
             break;
         case 2:
-            e->field_18.field_18 += 0x26;
-            e->field_18.field_14 -= e->field_18.field_18;
-            if (e->field_18.field_14 < 0) {
-                e->field_18.field_14 = 0;
+            e->loc.fallSpeed += 0x26;
+            e->loc.height -= e->loc.fallSpeed;
+            if (e->loc.height < 0) {
+                e->loc.height = 0;
                 Stg40_ObjSetAnim(a0, 0x2B);
                 Task_NextState2(a0);
             }
@@ -433,14 +433,14 @@ s32 Stg40_FixtureUpdate(Actor *a0) {
     Stg40ActWork *w = (Stg40ActWork *)a0->work;
     Stg40Ent48 *e;
 
-    switch (w->field_2C->field_8) {
+    switch (w->ent->kind) {
     case 5:
     default:
-        e = w->field_2C;
+        e = w->ent;
         if (e->field_0 & 0x1000) {
-            return e->field_E;
+            return e->targetHeading;
         }
-        return e->field_E;
+        return e->targetHeading;
     case 6:
         return Stg40_SporeUpdate(a0);
     case 7:

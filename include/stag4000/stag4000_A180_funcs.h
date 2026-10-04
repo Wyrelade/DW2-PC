@@ -4,7 +4,7 @@
 /* Functions src/stag4000/stag4000_A180.c defines or declares, for the units after it
  * (in the single file the definition was the prototype for later code). */
 s32 Stg40_SpawnHazard();
-void Stg40_RevealRoom(Stg40TileWork *w, s32 x, s32 y);
+void Stg40_RevealRoom(Stg40AutomapWork *w, s32 x, s32 y);
 s32 Stg40_AddEntity();
 void Stg40_SpawnEnemyParties(void);
 void Stg40_SpawnChests(void);
@@ -33,16 +33,16 @@ s32 Stg40_ListUsableItems(Stg40Shop *a);
 s16 Stg40_ListPartyDigi(s32 mode);
 void Stg40_AutomapSetCell(s32 idx, s32 row, s32 val);
 void Stg40_AutomapMoveMarker(s32 x, s32 y, s32 ox, s32 oy, s32 dir);
-void Stg40_AutomapRedraw(Stg40TileWork *a0);
+void Stg40_AutomapRedraw(Stg40AutomapWork *a0);
 void Stg40_ClearVisitedBits(void);
 void Stg40_SyncVisitedBits(s32 arg0);
 void Stg40_ResetVisitedCells(void);
 void Stg40_AutomapRevealAll(void);
 void Stg40_AutomapLoadClut(Stg40ImgWork *a0);
-void Stg40_AutomapFlush(Stg40TileWork *a0);
+void Stg40_AutomapFlush(Stg40AutomapWork *a0);
 void Stg40_AutomapCycleClut(Stg40ImgWork *a0);
-void Stg40_AutomapInitTex(Stg40TileWork *w);
+void Stg40_AutomapInitTex(Stg40AutomapWork *w);
 void Stg40_AutomapReleaseTex(Stg40ImgWork *a0);
-s16 Stg40_AutomapInitDims(Stg40TileWork *a0);
+s16 Stg40_AutomapInitDims(Stg40AutomapWork *a0);
 
 #endif /* STAG4000_A180_FUNCS_H */
