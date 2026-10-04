@@ -122,7 +122,7 @@ void Stg40_SpawnEnemyParties(void) {
             Stg40_AddEntity(1, 0, c, 0, r->x, r->y);
             s = (Stg40EnemyParty *)Dung_StatePtr->parties[Dung_StatePtr->partyCount - 1];
             s->setId = id;
-            s->field_2 = out.field_10 != 0;
+            s->useDungeonBgm = out.field_10 != 0;
             s->likedGift = out.field_C;
             s->pointsPerLevel = out.field_18;
             t = s->pointsPerLevel;
@@ -134,11 +134,11 @@ void Stg40_SpawnEnemyParties(void) {
             s->giftPoints = 0;
             s->stepsPerBurst = Stg40_EnemyPaceTable[out.field_8 * 2];
             s->idleTicks = Stg40_EnemyPaceTable[out.field_8 * 2 + 1];
-            s->field_4 = Stg40_EnemyAiTable[out.field_4 * 2];
+            s->floorValue = Stg40_EnemyAiTable[out.field_4 * 2];
             m = s->pathMode = Stg40_EnemyAiTable[out.field_4 * 2 + 1];
             if (m == 2) {
-                if (s->field_4 != (Stg40_GetCellFlags(r->x, r->y) & 0xF)) {
-                    s->field_4 = m;
+                if (s->floorValue != (Stg40_GetCellFlags(r->x, r->y) & 0xF)) {
+                    s->floorValue = m;
                     s->pathMode = 0;
                 }
             }
@@ -156,7 +156,7 @@ void Stg40_SpawnEnemyParties(void) {
 }
 
 void Stg40_SpawnChests(void) {
-    Stg40MapPos *pos = ((Stg40DungFloor *)Stg40_RootState->floorMap)->chests;
+    Stg40ChestDef *pos = ((Stg40DungFloor *)Stg40_RootState->floorMap)->chests;
     Stg40Drop *r;
     s32 k;
     u8 *d;
@@ -184,8 +184,8 @@ void Stg40_SpawnChests(void) {
             Stg40_AddEntity(4, 0, 0x276, 0, r->x, r->y);
             k--;
             d = Dung_StatePtr->chests[Dung_StatePtr->chestCount];
-            d[0] = pos[k].field_0;
-            d[1] = pos[k].field_1;
+            d[0] = pos[k].itemId;
+            d[1] = pos[k].trapLevel;
         }
     }
 }
@@ -448,27 +448,27 @@ s32 Stg40_IsEntAdjacent(Stg40Ent48 *a, Stg40Ent48 *b) {
 }
 
 s32 Stg40_CheckEncounter(void) {
-    Stg40List *l = &Dung_StatePtr->encounterList;
+    Stg40EncounterList *l = &Dung_StatePtr->encounterList;
     Stg40Ent48 *e = Dung_StatePtr->ents;
     s32 i;
     s32 r;
 
-    l->field_20 = 0;
+    l->count = 0;
     for (i = 0; i < Dung_StatePtr->entCount; i++, e++) {
         if ((e->flags & 0x8002) == 0x8002 && e->actor->stateLevel1 != 4) {
             r = Stg40_IsEntAdjacent(e, Stg40_RootState->playerEnt);
             if (r == 1) {
-                l->field_0[l->field_20++] = e;
+                l->ents[l->count++] = e;
                 e->flags |= 0x100;
                 Task_SetState1(e->actor, 3);
-                e->flags |= (l->field_20 == r) ? 0x800 : 0;
+                e->flags |= (l->count == r) ? 0x800 : 0;
             }
         }
     }
-    if (l->field_20 != 0) {
+    if (l->count != 0) {
         Stg40_RootState->playerEnt->flags |= 0x100;
     }
-    return l->field_20;
+    return l->count;
 }
 
 s32 Stg40_DeltaToOctant(s32 dx, s32 dy) {
@@ -540,7 +540,7 @@ void Stg40_LoadEventTiles(s32 a0) {
             b = Stg40_RootState;
             b->eventTiles[b->eventTileCount].u0.pair.field_0 = e->data[0] - 1;
             b->eventTiles[b->eventTileCount].u0.pair.field_2 = e->data[1] - 1;
-            b->eventTiles[b->eventTileCount].field_4 = n;
+            b->eventTiles[b->eventTileCount].entry = n;
             b->eventTileCount++;
         }
     }
@@ -549,13 +549,13 @@ void Stg40_LoadEventTiles(s32 a0) {
 s32 Stg40_CheckEventTile(void) {
     u32 i = 0;
     s32 r = 0;
-    Stg40B60Ent *e = Stg40_RootState->eventTiles;
+    Stg40EventTile *e = Stg40_RootState->eventTiles;
 
     for (; i < Stg40_RootState->eventTileCount; e++) {
         Stg40B60 *b = Stg40_RootState;
         i++;
-        if (b->playerEnt->loc.u0.tileXY == e->u0.field_0) {
-            b->eventEntry = e->field_4;
+        if (b->playerEnt->loc.u0.tileXY == e->u0.tileXY) {
+            b->eventEntry = e->entry;
             e->u0.pair.field_2 = -1;
             e->u0.pair.field_0 = -1;
             r = -1;
@@ -566,21 +566,21 @@ s32 Stg40_CheckEventTile(void) {
     return r;
 }
 
-void Stg40_ObjQueueFiles(Stg40E764 *a0, s32 a1, s32 a2) {
-    if (a0->field_34 == 0) {
-        a0->field_28 = 0;
+void Stg40_ObjQueueFiles(Stg40ObjQueueView *a0, s32 a1, s32 a2) {
+    if (a0->drawn == 0) {
+        a0->requeueTimer = 0;
         return;
     }
-    if (a0->field_28 == 0) {
+    if (a0->requeueTimer == 0) {
         if (a1 != 0) {
             Cd_QueueFile(a1);
         }
         if (a2 != 0) {
             Cd_QueueFile(a2);
         }
-        a0->field_28 = 16;
+        a0->requeueTimer = 16;
     }
-    a0->field_28--;
+    a0->requeueTimer--;
 }
 
 void Stg40_SetBeetlePart(s32 i, s32 item, u8 status) {
@@ -628,7 +628,7 @@ void Stg40_DamageBeetle(s32 n) {
     g->hp = (g->hp - n < 0) ? 0 : g->hp - n;
 }
 
-s32 Stg40_ListUsableItems(Stg40Shop *a) {
+s32 Stg40_ListUsableItems(Stg40ItemReq *a) {
     s32 ret;
     s32 j;
     s32 i;
@@ -637,16 +637,16 @@ s32 Stg40_ListUsableItems(Stg40Shop *a) {
     u16 *items;
 
     Stg40_RootState->itemCount = 0;
-    switch (Stg40_GetBeetlePart(a->field_0)) {
+    switch (Stg40_GetBeetlePart(a->partSlot)) {
     case -1:
-        ret = a->field_C;
+        ret = a->msgBase;
         break;
     case 0:
-        ret = a->field_C + 1;
+        ret = a->msgBase + 1;
         break;
     default:
         for (j = 0; j < 4; j++) {
-            key = a->field_2[j];
+            key = a->itemCategories[j];
             items = Save_GameStatePtr->bagItems;
             if (key != -1) {
                 for (i = 0, bag = items; i < 0x30; i++, bag++) {
@@ -658,7 +658,7 @@ s32 Stg40_ListUsableItems(Stg40Shop *a) {
             }
         }
         if (Stg40_RootState->itemCount == 0) {
-            ret = a->field_C + 2;
+            ret = a->msgBase + 2;
         } else {
             ret = 0;
         }
@@ -709,7 +709,7 @@ void Stg40_AutomapSetCell(s32 idx, s32 row, s32 val) {
     s32 sh = (idx % 4) * 4;
     u16 *p = &t->pix[(row + 1) * 18 + idx / 4 + 1];
     *p = (*p & ~(0xF << sh)) | (val << sh);
-    t->field_760 = -1;
+    t->texDirty = -1;
 }
 
 void Stg40_AutomapMoveMarker(s32 x, s32 y, s32 ox, s32 oy, s32 dir) {
@@ -853,8 +853,8 @@ void Stg40_AutomapCycleClut(Stg40ImgWork *a0) {
     s32 g;
     s32 b;
 
-    p->field_75C++;
-    c = 15 - ((p->field_75C & 0xF) >> 1);
+    p->clutTimer++;
+    c = 15 - ((p->clutTimer & 0xF) >> 1);
     v = c & 0x1F;
     b = v << 10;
     g = (v << 5) | 0x8000;
@@ -884,8 +884,8 @@ void Stg40_AutomapInitTex(Stg40AutomapWork *w) {
     s32 j;
     s32 k;
 
-    ((Stg40ImgWork *)w)->field_758 = Gfx_ReserveTexSlot();
-    s = (GfxTexSlot *)((Stg40ImgWork *)w)->field_758;
+    ((Stg40ImgWork *)w)->slot = Gfx_ReserveTexSlot();
+    s = (GfxTexSlot *)((Stg40ImgWork *)w)->slot;
     r = &((Stg40ImgWork *)w)->rect;
     r->x = s->vramX;
     r->y = s->vramY + 0xFE;
@@ -915,7 +915,7 @@ void Stg40_AutomapInitTex(Stg40AutomapWork *w) {
 }
 
 void Stg40_AutomapReleaseTex(Stg40ImgWork *a0) {
-    Gfx_ReleaseTexSlot(a0->field_758);
+    Gfx_ReleaseTexSlot(a0->slot);
 }
 
 s16 Stg40_AutomapInitDims(Stg40AutomapWork *a0) {

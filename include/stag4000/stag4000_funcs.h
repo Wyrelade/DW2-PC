@@ -15,7 +15,7 @@ void Stg40_RootDraw(void);
 void Stg40_RootDestroy(Actor *a0);
 void Stg40_ClearPreloadList(void);
 void func_80064930(Actor *a0, s32 a1);
-void Stg40_LinkedModelInit(Actor *a0, Stg40InitArg *a1);
+void Stg40_LinkedModelInit(Actor *a0, Stg40LinkedModelArg *a1);
 void Stg40_LinkedModelUpdate(Actor *a0);
 void Stg40_LinkedModelDraw(Actor *a0);
 

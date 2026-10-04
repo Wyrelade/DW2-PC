@@ -25,7 +25,7 @@ void Stg40_InitFloorHeader(void) {
 }
 
 void Stg40_InitDungeonEntry() { /* K&R: Stg40_SetupStage passes its work pointer */
-    Stg40Stage14 *tbl;
+    Stg40DungEntry *tbl;
     s32 i;
     Stg40Ent48 *e;
 
@@ -42,10 +42,10 @@ void Stg40_InitDungeonEntry() { /* K&R: Stg40_SetupStage passes its work pointer
     } else {
         Dung_StatePtr->dungeonIdx = Sys_State.modeArg;
     }
-    tbl = (Stg40Stage14 *)Cd_GetFileEntry(0xE20000A);
+    tbl = (Stg40DungEntry *)Cd_GetFileEntry(0xE20000A);
     Dung_StatePtr->dungeon = tbl[Dung_StatePtr->dungeonIdx];
-    Dung_StatePtr->floorTexId0 = tbl[Dung_StatePtr->dungeonIdx].field_C;
-    Dung_StatePtr->floorTexId1 = tbl[Dung_StatePtr->dungeonIdx].field_10;
+    Dung_StatePtr->floorTexId0 = tbl[Dung_StatePtr->dungeonIdx].floorTexId0;
+    Dung_StatePtr->floorTexId1 = tbl[Dung_StatePtr->dungeonIdx].floorTexId1;
     e = Dung_StatePtr->ents;
     for (i = 0; i < 41; i++, e++) {
         e->flags = 0;
@@ -54,7 +54,7 @@ void Stg40_InitDungeonEntry() { /* K&R: Stg40_SetupStage passes its work pointer
     for (i = 0; i < 12; i++) {
         Dung_StatePtr->memBugLevels[i] = 0;
     }
-    Dung_StatePtr->dungFileId = Dung_StatePtr->dungeon.field_0;
+    Dung_StatePtr->dungFileId = Dung_StatePtr->dungeon.dungFileId;
     Digi_SortRoster();
     for (i = 0; i < 3; i++) {
         if (Save_GameStatePtr->elems[i].state < 2) {
@@ -105,7 +105,7 @@ void Stg40_SetupStage(Actor *a0) {
     if (Dung_StatePtr->entryMode == 1) {
         Stg40Ent48 *p;
         s32 i;
-        Stg40Buf24 buf;
+        Stg40BeetleIdTable buf;
         s32 level;
 
         blk = Dung_StatePtr;
@@ -132,7 +132,7 @@ void Stg40_SetupStage(Actor *a0) {
             level += Save_GameStatePtr->field_36 - 0x4F;
         }
         if (level < 0x12) {
-            level = buf.field_0[level];
+            level = buf.digiIds[level];
         } else {
             level = 0x1F8;
         }
@@ -214,11 +214,11 @@ s32 Stg40_BeginTransition(Actor *arg0) {
         Stg40_CamLoadScript(Cd_GetFileEntry(0xE200003));
         Dung_StatePtr->freeze = 1;
         w->field_0 = 0x500;
-        e = Dung_StatePtr->encounterList.field_0[0];
+        e = Dung_StatePtr->encounterList.ents[0];
         sp10 = Stg40_FloorSpecialtyByCell;
         Dung_StatePtr->floorSpecialty = sp10.b[Stg40_GetCellFlags(e->loc.u0.pair.field_0, e->loc.u0.pair.field_2) & 0xF];
         slot = &e->params;
-        Dung_StatePtr->field_103E = ((Stg40EnemyParty *)e->params)->pointsPerLevel;
+        Dung_StatePtr->partyPointsPerLevel = ((Stg40EnemyParty *)e->params)->pointsPerLevel;
         q = ((Stg40EnemyParty *)*slot)->giftPoints / (s16)((Stg40EnemyParty *)*slot)->pointsPerLevel;
         Dung_StatePtr->giftLevel = q;
         if ((s16)q >= 4) {
@@ -226,13 +226,13 @@ s32 Stg40_BeginTransition(Actor *arg0) {
         }
         Dung_StatePtr->giftLevel = q;
         D_8005F794 = ((Stg40EnemyParty *)*slot)->setId;
-        if (((Stg40EnemyParty *)*slot)->field_2 != 0) {
-            if (Flag_Test(0x88) != 0 && Dung_StatePtr->dungeon.field_8 == 0x100) {
+        if (((Stg40EnemyParty *)*slot)->useDungeonBgm != 0) {
+            if (Flag_Test(0x88) != 0 && Dung_StatePtr->dungeon.battleBgmId == 0x100) {
                 a0v = 0x101;
                 a1v = 1;
             } else {
-                a0v = Dung_StatePtr->dungeon.field_8;
-                a1v = Dung_StatePtr->dungeon.field_A;
+                a0v = Dung_StatePtr->dungeon.battleBgmId;
+                a1v = Dung_StatePtr->dungeon.battleBgmSet;
             }
         } else {
             a0v = 0x200;
@@ -293,13 +293,13 @@ void Stg40_RootUpdate(Actor *arg0) {
         Stg40_SetupStage(arg0);
         Task_NextState0(arg0);
         Stg40_RootState->automapMode = 0;
-        Snd_SetSlotContent(1, Dung_StatePtr->dungeon.field_2);
+        Snd_SetSlotContent(1, Dung_StatePtr->dungeon.sndSlotContent);
         work->field_8 = 0;
         break;
     case 1:
         if (work->field_8 == 0 && Snd_AnySlotLoading() == 0) {
             work->field_8 = 1;
-            Snd_PlayById(Dung_StatePtr->dungeon.field_4, Dung_StatePtr->dungeon.field_6);
+            Snd_PlayById(Dung_StatePtr->dungeon.bgmId, Dung_StatePtr->dungeon.bgmSet);
             Snd_SetSlotContent(2, 0x19);
         }
         switch (arg0->stateLevel1) {
@@ -521,16 +521,16 @@ void func_80064930(Actor *a0, s32 a1) {
     Task_SetState1(a0, (u8)a1);
 }
 
-void Stg40_LinkedModelInit(Actor *a0, Stg40InitArg *a1) {
+void Stg40_LinkedModelInit(Actor *a0, Stg40LinkedModelArg *a1) {
     Stg40LinkedModelWork *w = (Stg40LinkedModelWork *)a0->work;
 
-    w->parent = a1->field_0;
-    w->tableIndex = a1->field_4;
+    w->parent = a1->parent;
+    w->tableIndex = a1->tableIndex;
 }
 
 void Stg40_LinkedModelUpdate(Actor *a0) {
     Stg40LinkedModelWork *w = (Stg40LinkedModelWork *)a0->work;
-    Stg40Model25DC *ent;
+    Stg40LinkedModelDef *ent;
     ActorModel *m;
 
     switch (a0->stateLevel0) {
@@ -542,7 +542,7 @@ void Stg40_LinkedModelUpdate(Actor *a0) {
         w->pos[1] = 0;
         w->pos[0] = 0;
         w->rotY = 0;
-        a0->digiId = w->digiId = ent->field_0;
+        a0->digiId = w->digiId = ent->digiId;
         w->modelFile = Digi_GetModelFile(a0->digiId);
         w->animFile = Anim_GetModelAnimFile(a0->digiId, 4);
         Gfx_AttachModel(a0, w->modelFile)->otIndex = 3;
@@ -582,7 +582,7 @@ void Stg40_LinkedModelUpdate(Actor *a0) {
 
 void Stg40_LinkedModelDraw(Actor *a0) {
     Stg40ChildWork *w = (Stg40ChildWork *)a0->work;
-    Actor *p = w->field_20;
+    Actor *p = w->parent;
     Stg40Xform *x;
 
     if (((Stg40ActWork *)p->work)->drawn != 0) {
@@ -591,8 +591,8 @@ void Stg40_LinkedModelDraw(Actor *a0) {
         x->rotZ = 0;
         x->rotX = 0;
         x->rotY = 0;
-        x->posY += w->field_28;
-        Gfx_AttachModel(a0, w->field_14)->otIndex = 3;
+        x->posY += w->offsetY;
+        Gfx_AttachModel(a0, w->modelFile)->otIndex = 3;
         Anim_StepModelAnim(a0);
         Actor_UpdateTransform(a0);
         Gfx_CalcModelBoneMatrices(a0);

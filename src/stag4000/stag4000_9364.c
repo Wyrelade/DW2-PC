@@ -16,16 +16,16 @@ void Stg40_GateUpdate(Actor *a0) {
         Stg40_AutomapMoveMarker(e->loc.u0.pair.field_0, e->loc.u0.pair.field_2, -1, -1, e->kind);
     }
     if (e->kind == 2) {
-        Stg40_ObjQueueFiles((Stg40E764 *)w, 0xDF0, 0xDF1);
+        Stg40_ObjQueueFiles((Stg40ObjQueueView *)w, 0xDF0, 0xDF1);
     } else {
-        Stg40_ObjQueueFiles((Stg40E764 *)w, 0xDF2, 0xDF3);
+        Stg40_ObjQueueFiles((Stg40ObjQueueView *)w, 0xDF2, 0xDF3);
     }
     if (a0->stateLevel1 != 1 && (a0->stateLevel1 < 2 || (a0->stateLevel1 != 4 && a0->stateLevel1 != 9))) {
         Task_SetState1(a0, 1);
     }
 }
 
-void Stg40_ChestQueueModel(Stg40E764 *a0, s32 a1) {
+void Stg40_ChestQueueModel(Stg40ObjQueueView *a0, s32 a1) {
     s32 x;
     s32 y;
 
@@ -67,7 +67,7 @@ s32 Stg40_ChestUpdate(Actor *a0) {
         Stg40_AutomapMoveMarker(e->loc.u0.pair.field_0, e->loc.u0.pair.field_2, -1, -1, e->kind);
     }
     if (e->params[1] >= 1 && e->params[1] <= 5) {
-        Stg40_ChestQueueModel((Stg40E764 *)w, e->params[1] - 1);
+        Stg40_ChestQueueModel((Stg40ObjQueueView *)w, e->params[1] - 1);
     }
     switch (a0->stateLevel1) {
     case 0:
@@ -137,7 +137,7 @@ s32 Stg40_MineUpdate(Actor *a0) {
     if (e->flags & 0x1000) {
         Stg40_AutomapMoveMarker(e->loc.u0.pair.field_0, e->loc.u0.pair.field_2, -1, -1, e->kind);
     }
-    Stg40_ChestQueueModel((Stg40E764 *)w, e->params[1] - 1);
+    Stg40_ChestQueueModel((Stg40ObjQueueView *)w, e->params[1] - 1);
     switch (a0->stateLevel1) {
     case 0:
     case 3:

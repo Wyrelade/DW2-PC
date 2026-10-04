@@ -587,24 +587,24 @@ s32 Stg40_RelocDungFile(s32 *p) {
     u32 base = (u32)p;
     s32 n = 0;
     s32 i;
-    Stg40MapRel *m;
-    Stg40MapRoomRel *r;
+    Stg40DungFloorRel *m;
+    Stg40DungLayoutRel *r;
     u32 *q;
 
     while (*tbl != 0) {
         if (*tbl < base) {
             *tbl += base;
-            m = (Stg40MapRel *)*tbl;
-            m->field_0 += base;
+            m = (Stg40DungFloorRel *)*tbl;
+            m->name += base;
             for (i = 0; i < 8; i++) {
-                q = &m->field_8[i];
+                q = &m->layouts[i];
                 *q += base;
-                r = (Stg40MapRoomRel *)*q;
-                Stg40_RelocPtr(&r->field_0[0], base);
-                Stg40_RelocPtr(&r->field_0[1], base);
-                Stg40_RelocPtr(&r->field_0[2], base);
-                Stg40_RelocPtr(&r->field_0[3], base);
-                Stg40_RelocPtr(&r->field_0[4], base);
+                r = (Stg40DungLayoutRel *)*q;
+                Stg40_RelocPtr(&r->offsets[0], base);
+                Stg40_RelocPtr(&r->offsets[1], base);
+                Stg40_RelocPtr(&r->offsets[2], base);
+                Stg40_RelocPtr(&r->offsets[3], base);
+                Stg40_RelocPtr(&r->offsets[4], base);
             }
         }
         tbl++;
@@ -1017,13 +1017,13 @@ void Stg40_CamStartMove(Stg40Blk20 *blk, s32 a1, s32 a2, s32 a3) {
     Task_SetState1(t, 1);
 }
 
-void Stg40_CamLoadScript(Stg40Cmd *src) {
+void Stg40_CamLoadScript(Stg40CamCmd *src) {
     Stg40CameraWork *w = (Stg40CameraWork *)Stg40_CameraTask->work;
     s32 i;
 
     w->scriptPos = w->script;
     w->scriptLeft = 0;
-    for (i = 0; src->field_0 != 0; i++, src++) {
+    for (i = 0; src->frames != 0; i++, src++) {
         w->script[i] = *src;
         w->scriptLeft++;
     }
@@ -1031,11 +1031,11 @@ void Stg40_CamLoadScript(Stg40Cmd *src) {
 
 void Stg40_CamNextCommand(Actor *a0) {
     Stg40CameraWork *w = (Stg40CameraWork *)a0->work;
-    Stg40Cmd *c;
+    Stg40CamCmd *c;
 
     if (w->scriptLeft != 0) {
         c = w->scriptPos;
-        Stg40_CamStartMove(&c->field_C, c->field_0, c->field_4, c->field_8);
+        Stg40_CamStartMove(&c->goal, c->frames, c->rotYEnd, c->rotYDelta);
         w->scriptLeft--;
         w->scriptPos++;
     }
