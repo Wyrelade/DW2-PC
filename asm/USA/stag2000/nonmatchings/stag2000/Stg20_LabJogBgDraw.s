@@ -11,10 +11,10 @@ glabel Stg20_LabJogBgDraw
     /* 708C 8006A3EC 21200002 */   addu      $a0, $s0, $zero
     /* 7090 8006A3F0 3480000C */  jal        Gfx_CalcModelBoneMatrices
     /* 7094 8006A3F4 21200002 */   addu      $a0, $s0, $zero
-    /* 7098 8006A3F8 0680023C */  lui        $v0, %hi(D_80063584)
+    /* 7098 8006A3F8 0680023C */  lui        $v0, %hi(Stg20_JogBgWireColor)
     /* 709C 8006A3FC 21200002 */  addu       $a0, $s0, $zero
     /* 70A0 8006A400 01000524 */  addiu      $a1, $zero, 0x1
-    /* 70A4 8006A404 84354924 */  addiu      $t1, $v0, %lo(D_80063584)
+    /* 70A4 8006A404 84354924 */  addiu      $t1, $v0, %lo(Stg20_JogBgWireColor)
     /* 70A8 8006A408 03002389 */  lwl        $v1, 0x3($t1)
     /* 70AC 8006A40C 00002399 */  lwr        $v1, 0x0($t1)
     /* 70B0 8006A410 00000000 */  nop

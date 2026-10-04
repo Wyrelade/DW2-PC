@@ -181,15 +181,15 @@ glabel Stg20_AreaSelectUpdate
     /* 4A3C 80067D9C 000020AE */   sw        $zero, 0x0($s1)
     /* 4A40 80067DA0 21200002 */  addu       $a0, $s0, $zero
     /* 4A44 80067DA4 0800238E */  lw         $v1, 0x8($s1)
-    /* 4A48 80067DA8 0680063C */  lui        $a2, %hi(D_80063564)
+    /* 4A48 80067DA8 0680063C */  lui        $a2, %hi(Stg20_AreaNamePos)
     /* 4A4C 80067DAC 40100300 */  sll        $v0, $v1, 1
     /* 4A50 80067DB0 21104300 */  addu       $v0, $v0, $v1
     /* 4A54 80067DB4 C0100200 */  sll        $v0, $v0, 3
     /* 4A58 80067DB8 21102202 */  addu       $v0, $s1, $v0
-    /* 4A5C 80067DBC 6435C324 */  addiu      $v1, $a2, %lo(D_80063564)
+    /* 4A5C 80067DBC 6435C324 */  addiu      $v1, $a2, %lo(Stg20_AreaNamePos)
     /* 4A60 80067DC0 02006794 */  lhu        $a3, 0x2($v1)
     /* 4A64 80067DC4 1000458C */  lw         $a1, 0x10($v0)
-    /* 4A68 80067DC8 6435C294 */  lhu        $v0, %lo(D_80063564)($a2)
+    /* 4A68 80067DC8 6435C294 */  lhu        $v0, %lo(Stg20_AreaNamePos)($a2)
     /* 4A6C 80067DCC 21300000 */  addu       $a2, $zero, $zero
     /* 4A70 80067DD0 003C0700 */  sll        $a3, $a3, 16
     /* 4A74 80067DD4 3E4D000C */  jal        Text_OpenPacked

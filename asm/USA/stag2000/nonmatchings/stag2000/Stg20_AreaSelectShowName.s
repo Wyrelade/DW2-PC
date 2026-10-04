@@ -12,15 +12,15 @@ glabel Stg20_AreaSelectShowName
     /* 4DF4 80068154 00000000 */   nop
   .L80068158:
     /* 4DF8 80068158 0800C38C */  lw         $v1, 0x8($a2)
-    /* 4DFC 8006815C 0680053C */  lui        $a1, %hi(D_80063564)
+    /* 4DFC 8006815C 0680053C */  lui        $a1, %hi(Stg20_AreaNamePos)
     /* 4E00 80068160 40100300 */  sll        $v0, $v1, 1
     /* 4E04 80068164 21104300 */  addu       $v0, $v0, $v1
     /* 4E08 80068168 C0100200 */  sll        $v0, $v0, 3
-    /* 4E0C 8006816C 6435A324 */  addiu      $v1, $a1, %lo(D_80063564)
+    /* 4E0C 8006816C 6435A324 */  addiu      $v1, $a1, %lo(Stg20_AreaNamePos)
     /* 4E10 80068170 2110C200 */  addu       $v0, $a2, $v0
     /* 4E14 80068174 21300000 */  addu       $a2, $zero, $zero
     /* 4E18 80068178 02006794 */  lhu        $a3, 0x2($v1)
-    /* 4E1C 8006817C 6435A394 */  lhu        $v1, %lo(D_80063564)($a1)
+    /* 4E1C 8006817C 6435A394 */  lhu        $v1, %lo(Stg20_AreaNamePos)($a1)
     /* 4E20 80068180 1000458C */  lw         $a1, 0x10($v0)
     /* 4E24 80068184 003C0700 */  sll        $a3, $a3, 16
     /* 4E28 80068188 3E4D000C */  jal        Text_OpenPacked

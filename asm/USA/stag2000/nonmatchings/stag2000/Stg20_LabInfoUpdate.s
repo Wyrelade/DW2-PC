@@ -52,8 +52,8 @@ glabel Stg20_LabInfoUpdate
     /* 5DBC 8006911C 0680023C */   lui       $v0, %hi(Pad_State)
   .L80069120:
     /* 5DC0 80069120 21300000 */  addu       $a2, $zero, $zero
-    /* 5DC4 80069124 0780023C */  lui        $v0, %hi(D_80070040)
-    /* 5DC8 80069128 40005124 */  addiu      $s1, $v0, %lo(D_80070040)
+    /* 5DC4 80069124 0780023C */  lui        $v0, %hi(Stg20_LabInfoTextPos)
+    /* 5DC8 80069128 40005124 */  addiu      $s1, $v0, %lo(Stg20_LabInfoTextPos)
     /* 5DCC 8006912C 5C00058E */  lw         $a1, 0x5C($s0)
     /* 5DD0 80069130 21382002 */  addu       $a3, $s1, $zero
     /* 5DD4 80069134 1000A0AF */  sw         $zero, 0x10($sp)
@@ -365,8 +365,8 @@ glabel Stg20_LabInfoUpdate
     /* 623C 8006959C 1C00628C */  lw         $v0, 0x1C($v1)
     /* 6240 800695A0 00000000 */  nop
     /* 6244 800695A4 1500401C */  bgtz       $v0, .L800695FC
-    /* 6248 800695A8 0780023C */   lui       $v0, %hi(D_800709B0)
-    /* 624C 800695AC B0095024 */  addiu      $s0, $v0, %lo(D_800709B0)
+    /* 6248 800695A8 0780023C */   lui       $v0, %hi(Stg20_MenuState)
+    /* 624C 800695AC B0095024 */  addiu      $s0, $v0, %lo(Stg20_MenuState)
     /* 6250 800695B0 2400028E */  lw         $v0, 0x24($s0)
     /* 6254 800695B4 00000000 */  nop
     /* 6258 800695B8 1B005110 */  beq        $v0, $s1, .L80069628

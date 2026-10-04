@@ -43,8 +43,8 @@ glabel Stg20_LabSkillsUpdate
     /* 67DC 80069B3C 21204002 */  addu       $a0, $s2, $zero
     /* 67E0 80069B40 21280000 */  addu       $a1, $zero, $zero
     /* 67E4 80069B44 0A000624 */  addiu      $a2, $zero, 0xA
-    /* 67E8 80069B48 0780103C */  lui        $s0, %hi(D_800700AC)
-    /* 67EC 80069B4C AC001026 */  addiu      $s0, $s0, %lo(D_800700AC)
+    /* 67E8 80069B48 0780103C */  lui        $s0, %hi(Stg20_LabSkillsTextPos)
+    /* 67EC 80069B4C AC001026 */  addiu      $s0, $s0, %lo(Stg20_LabSkillsTextPos)
     /* 67F0 80069B50 21380002 */  addu       $a3, $s0, $zero
     /* 67F4 80069B54 04001124 */  addiu      $s1, $zero, 0x4
     /* 67F8 80069B58 209D010C */  jal        Stg20_OpenText

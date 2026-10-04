@@ -115,14 +115,14 @@ extern void Stg20_BuildMapGrid(Actor *);
 /* ---- added by p35 agent o ---- */
 extern u8 Stg20_DnaTypeIndexTbl[3][3];
 extern u8 Stg20_DnaResultTbl[][3][8][8];
-extern u16 D_8006FCCC[];
-extern u16 D_8006FD28[];
+extern u16 Stg20_EngineHpTbl[];
+extern u16 Stg20_BatteryEpTbl[];
 extern s32 Stg20_TalkActive;
 extern Stg20Cell Stg20_CellTmp;
 extern Stg20Cell Stg20_DirCellDelta[4];
 extern Stg20Vec3 Stg20_MoveParams[];
-extern CVECTOR D_80063584;
-extern Halves D_80063564;
+extern CVECTOR Stg20_JogBgWireColor;
+extern Halves Stg20_AreaNamePos;
 extern s32 Gfx_ZeroVector[];
 
 extern void Task_SetState1(Actor *arg0, u32 arg1);
@@ -307,8 +307,8 @@ typedef struct {
     u8 _pad24[0x8];
 } Stg20TextArgs;
 
-extern Halves D_80063588;
-extern Stg20MenuState D_800709B0;
+extern Halves Stg20_BitsLabelPos;
+extern Stg20MenuState Stg20_MenuState;
 extern s32 Sys_GameMode[];
 
 /* Stg20_LabModeSelUpdate yes/no prompt */
@@ -316,9 +316,9 @@ typedef struct {
     /* 0x00 */ s32 sel;
     /* 0x04 */ s32 texts[2];
 } Stg20YesNoWork;
-extern s32 D_800709BC; /* D_800709B0.field_C as a scalar reloc */
-extern Halves D_80063568;
-extern Halves D_8006356C;
+extern s32 D_800709BC; /* Stg20_MenuState.field_C as a scalar reloc */
+extern Halves Stg20_LabDigivolveTextPos;
+extern Halves Stg20_LabDnaTextPos;
 
 /* Stg20_WalkerGetInput waypoint walker */
 typedef struct {
@@ -528,12 +528,12 @@ typedef struct {
     /* 0x1C4 */ s32 top;
 } Stg20ItemListWork;
 
-extern Halves D_800705DC[];
+extern Halves Stg20_BeetlePartsTextPos[];
 extern s32 Item_GetNameText(s32);
 extern void Stg20_OpenMsgOrDesc(void *t, s32 id, Halves pos, s32 arg);
 extern Stg20Pos2 Stg20_ShakeOffsets[4];
-extern Halves D_8006358C;
-extern Halves D_80063590;
+extern Halves Stg20_ShopMenuBuyPos;
+extern Halves Stg20_ShopMenuSellPos;
 extern PadState Pad_State[];
 extern s32 Digi_GetExpToNextLevel(s32, s32, s32);
 extern void Snd_PlayById(s32, s32);
@@ -542,7 +542,7 @@ extern void Task_NextState2(Actor *);
 
 extern Stg20Roster D_8005E704[];
 extern Stg20RosterName Save_RosterNames[];
-extern Stg20Cell D_8007010C[2];
+extern Stg20Cell Stg20_LabPairNamePos[2];
 extern SysState Sys_State;
 extern s32 Skill_GetType(s32);
 extern void SetGeomOffset(s32, s32);
@@ -551,8 +551,8 @@ extern void Gfx_FadeOutToBlack(s32);
 extern void Stg20_OpenText(void *t, s32 text, s32 id, Stg20Cell *pos, s32 color);
 extern s32 Stg20_ShopSellMode;
 extern s32 D_800709D0;
-extern Halves D_8007001C[3];
-extern Halves D_800706A4[];
+extern Halves Stg20_LabCaptionPos[3];
+extern Halves Stg20_UpgradeTextPos[];
 extern s32 Item_GetPrice(s32);
 extern s32 Flag_Test(s32);
 extern void Flag_Set(s32, s32);
@@ -599,16 +599,16 @@ typedef struct {
 } Stg20CtrlWork;
 extern s32 Stg20_ByteListHas(u8 *s, s32 c);
 extern s32 Stg20_IsPartInstalled(s32 id);
-extern u8 D_800704FC[];
-extern u8 D_80070530[];
-extern u8 D_80070548[];
-extern u8 D_80070554[];
-extern u8 D_80070570[];
-extern u8 D_80070580[];
-extern u8 D_80070588[];
-extern u8 D_80070594[];
-extern u8 D_800705A4[];
-extern u8 D_800705B4[];
+extern u8 Stg20_PartsAnyBody[];
+extern u8 Stg20_ShooterGunAmmo[];
+extern u8 Stg20_ZCannonAmmo[];
+extern u8 Stg20_PartsAdmantOnly[];
+extern u8 Stg20_PartsSteelOnly[];
+extern u8 Stg20_PartsNotAdmant[];
+extern u8 Stg20_PartsTitanOnly[];
+extern u8 Stg20_PartsNotSteel[];
+extern u8 Stg20_MissileGunAmmo[];
+extern u8 Stg20_RCannonAmmo[];
 extern u16 D_8005E64C;
 /* Save_GameState.field_2C[0] as a scalar reloc */
 extern u16 D_8005E65C;
@@ -659,7 +659,7 @@ typedef struct {
     u8 _pad50[0x08];
     /* 0x58 */ s32 field_58;
 } Stg20ShopWork;
-extern Halves D_8006FF9C[4][4];
+extern Halves Stg20_LabRosterTextPos[4][4];
 extern s32 Digi_GetRank(s32);
 
 /* ---- added by p36 agent b ---- */
@@ -689,11 +689,11 @@ extern GfxTexSlot *Gfx_FindOrLoadTexSlot(s32);
 extern Halves Gfx_NeutralRgb;
 extern s32 Sys_PacketCursor;
 
-extern s32 D_8006FFDC[4];
+extern s32 Stg20_LabRosterPanelIds[4];
 
-extern Halves D_8007009C[];
-extern s32 D_800700D4[4];
-extern s32 D_800700E4[4];
+extern Halves Stg20_LabSkillsCursorPos[];
+extern s32 Stg20_LabSkillsColHideMasks[4];
+extern s32 Stg20_LabSkillsArrowBlinkMasks[4];
 extern void Gfx_HidePartsByMask(GfxPartMaskView *, s32);
 extern s32 Math_PingPongRange(s32 v, s32 div, s32 lo, s32 hi);
 
@@ -703,10 +703,10 @@ extern void Stg20_CalcBeetleHideMasks(Actor *a);
 extern s32 Stg20_UpgradeSlots[6];
 extern s32 Stg20_CanUpgradePart(s32 item);
 
-extern s32 D_8006FF44[];
-extern s32 D_8006FF58[];
+extern s32 Stg20_AreaIconHideMasks[];
+extern s32 Stg20_AreaScreenPartsIds[];
 
-extern Stg20Cell D_800704E4[6];
+extern Stg20Cell Stg20_ShopListTextPos[6];
 extern s32 Stg20_CountOwnedItem(s32 id);
 
 /* 0xBE-byte new-game block copied to Save_GameState+0x24 (Stg20_ApplyStartPreset). */
@@ -798,7 +798,7 @@ extern u16 D_8005E66E; /* Save_GameState.field_66[4] as a scalar reloc */
 extern u8 D_8005E631;  /* Save_GameState byte 0x11 as a scalar reloc */
 
 
-/* D_800709B0 viewed from its field_8 (Stg20_ShopListUpdate addresses D_800709B0.field_54 as 0x4C from it). */
+/* Stg20_MenuState viewed from its field_8 (Stg20_ShopListUpdate addresses Stg20_MenuState.field_54 as 0x4C from it). */
 typedef struct {
     /* 0x00 */ s32 field_0;
     u8 _pad04[0x44];
@@ -807,8 +807,8 @@ typedef struct {
 } Stg20MenuSub;
 extern Stg20MenuSub D_800709B8;
 extern s32 Skill_GetNameText(s32);
-extern Halves D_80063594;
-extern Halves D_80063598;
+extern Halves Stg20_BeetleMenuPartsPos;
+extern Halves Stg20_BeetleMenuUpgradePos;
 extern s32 D_8005F70C; /* Pad_State[0].triangle as a scalar reloc */
 extern void Item_RemoveFromBag(s32 i);
 
@@ -819,7 +819,7 @@ typedef struct {
     /* 0x5C */ DigiRosterEntry *digi;
 } Stg20InfoWork;
 
-extern Stg20Cell D_80070040[13];
+extern Stg20Cell Stg20_LabInfoTextPos[13];
 extern u8 Stg20_DigivolveRuleTbl[4][4];
 extern s32 D_800709D4;
 extern s32 D_800709D8;
@@ -962,7 +962,7 @@ typedef struct {
 extern void Stg20_MsgWinShowDigiMsg(s32 text, s32 digi);
 
 extern s32 D_800709E0;
-extern Stg20Cell D_800700AC[10];
+extern Stg20Cell Stg20_LabSkillsTextPos[10];
 extern void Stg20_LabSkillsSetText(Actor *a);
 
 #endif

@@ -20,20 +20,20 @@ glabel Stg20_BeetleShopMenuUpdate
     /* 8BBC 8006BF1C 21200002 */  addu       $a0, $s0, $zero
     /* 8BC0 8006BF20 DD000524 */  addiu      $a1, $zero, 0xDD
     /* 8BC4 8006BF24 21300000 */  addu       $a2, $zero, $zero
-    /* 8BC8 8006BF28 0680033C */  lui        $v1, %hi(D_80063594)
-    /* 8BCC 8006BF2C 94356224 */  addiu      $v0, $v1, %lo(D_80063594)
+    /* 8BC8 8006BF28 0680033C */  lui        $v1, %hi(Stg20_BeetleMenuPartsPos)
+    /* 8BCC 8006BF2C 94356224 */  addiu      $v0, $v1, %lo(Stg20_BeetleMenuPartsPos)
     /* 8BD0 8006BF30 02004794 */  lhu        $a3, 0x2($v0)
-    /* 8BD4 8006BF34 94356294 */  lhu        $v0, %lo(D_80063594)($v1)
+    /* 8BD4 8006BF34 94356294 */  lhu        $v0, %lo(Stg20_BeetleMenuPartsPos)($v1)
     /* 8BD8 8006BF38 003C0700 */  sll        $a3, $a3, 16
     /* 8BDC 8006BF3C F26F000C */  jal        Text_OpenById
     /* 8BE0 8006BF40 25384700 */   or        $a3, $v0, $a3
     /* 8BE4 8006BF44 04000426 */  addiu      $a0, $s0, 0x4
     /* 8BE8 8006BF48 DE000524 */  addiu      $a1, $zero, 0xDE
     /* 8BEC 8006BF4C 21300000 */  addu       $a2, $zero, $zero
-    /* 8BF0 8006BF50 0680033C */  lui        $v1, %hi(D_80063598)
-    /* 8BF4 8006BF54 98356224 */  addiu      $v0, $v1, %lo(D_80063598)
+    /* 8BF0 8006BF50 0680033C */  lui        $v1, %hi(Stg20_BeetleMenuUpgradePos)
+    /* 8BF4 8006BF54 98356224 */  addiu      $v0, $v1, %lo(Stg20_BeetleMenuUpgradePos)
     /* 8BF8 8006BF58 02004794 */  lhu        $a3, 0x2($v0)
-    /* 8BFC 8006BF5C 98356294 */  lhu        $v0, %lo(D_80063598)($v1)
+    /* 8BFC 8006BF5C 98356294 */  lhu        $v0, %lo(Stg20_BeetleMenuUpgradePos)($v1)
     /* 8C00 8006BF60 003C0700 */  sll        $a3, $a3, 16
     /* 8C04 8006BF64 F26F000C */  jal        Text_OpenById
     /* 8C08 8006BF68 25384700 */   or        $a3, $v0, $a3

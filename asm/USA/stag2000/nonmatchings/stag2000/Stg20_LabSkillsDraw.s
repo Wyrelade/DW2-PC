@@ -18,10 +18,10 @@ glabel Stg20_LabSkillsDraw
     /* 6A70 80069DD0 00000000 */  nop
     /* 6A74 80069DD4 2B004010 */  beqz       $v0, .L80069E84
     /* 6A78 80069DD8 21886002 */   addu      $s1, $s3, $zero
-    /* 6A7C 80069DDC 0780023C */  lui        $v0, %hi(D_800700D4)
-    /* 6A80 80069DE0 D4004724 */  addiu      $a3, $v0, %lo(D_800700D4)
-    /* 6A84 80069DE4 0780023C */  lui        $v0, %hi(D_8007009C)
-    /* 6A88 80069DE8 9C004624 */  addiu      $a2, $v0, %lo(D_8007009C)
+    /* 6A7C 80069DDC 0780023C */  lui        $v0, %hi(Stg20_LabSkillsColHideMasks)
+    /* 6A80 80069DE0 D4004724 */  addiu      $a3, $v0, %lo(Stg20_LabSkillsColHideMasks)
+    /* 6A84 80069DE4 0780023C */  lui        $v0, %hi(Stg20_LabSkillsCursorPos)
+    /* 6A88 80069DE8 9C004624 */  addiu      $a2, $v0, %lo(Stg20_LabSkillsCursorPos)
     /* 6A8C 80069DEC 06006526 */  addiu      $a1, $s3, 0x6
   .L80069DF0:
     /* 6A90 80069DF0 4C00428E */  lw         $v0, 0x4C($s2)
@@ -130,9 +130,9 @@ glabel Stg20_LabSkillsDraw
     /* 6C04 80069F64 21280002 */   addu      $a1, $s0, $zero
     /* 6C08 80069F68 21886002 */  addu       $s1, $s3, $zero
     /* 6C0C 80069F6C 27201000 */  nor        $a0, $zero, $s0
-    /* 6C10 80069F70 0780033C */  lui        $v1, %hi(D_800700E4)
+    /* 6C10 80069F70 0780033C */  lui        $v1, %hi(Stg20_LabSkillsArrowBlinkMasks)
     /* 6C14 80069F74 4C00428E */  lw         $v0, 0x4C($s2)
-    /* 6C18 80069F78 E4006324 */  addiu      $v1, $v1, %lo(D_800700E4)
+    /* 6C18 80069F78 E4006324 */  addiu      $v1, $v1, %lo(Stg20_LabSkillsArrowBlinkMasks)
     /* 6C1C 80069F7C 80100200 */  sll        $v0, $v0, 2
     /* 6C20 80069F80 21104300 */  addu       $v0, $v0, $v1
     /* 6C24 80069F84 0000428C */  lw         $v0, 0x0($v0)

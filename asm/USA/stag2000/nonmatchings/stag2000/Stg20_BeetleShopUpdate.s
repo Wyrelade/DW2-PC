@@ -70,8 +70,8 @@ glabel Stg20_BeetleShopUpdate
     /* 2B00 80065E60 0800028E */  lw         $v0, 0x8($s0)
     /* 2B04 80065E64 00000000 */  nop
     /* 2B08 80065E68 4E004014 */  bnez       $v0, .L80065FA4
-    /* 2B0C 80065E6C 0780023C */   lui       $v0, %hi(D_800709B0)
-    /* 2B10 80065E70 B0094324 */  addiu      $v1, $v0, %lo(D_800709B0)
+    /* 2B0C 80065E6C 0780023C */   lui       $v0, %hi(Stg20_MenuState)
+    /* 2B10 80065E70 B0094324 */  addiu      $v1, $v0, %lo(Stg20_MenuState)
     /* 2B14 80065E74 0800628C */  lw         $v0, 0x8($v1)
     /* 2B18 80065E78 00000000 */  nop
     /* 2B1C 80065E7C 05004010 */  beqz       $v0, .L80065E94

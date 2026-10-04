@@ -24,10 +24,10 @@ glabel Stg20_PartsUpgradeUpdate
     /* BB14 8006EE74 21202002 */  addu       $a0, $s1, $zero
     /* BB18 8006EE78 7A010524 */  addiu      $a1, $zero, 0x17A
     /* BB1C 8006EE7C 04000624 */  addiu      $a2, $zero, 0x4
-    /* BB20 8006EE80 0780023C */  lui        $v0, %hi(D_800706A4)
-    /* BB24 8006EE84 A4065024 */  addiu      $s0, $v0, %lo(D_800706A4)
+    /* BB20 8006EE80 0780023C */  lui        $v0, %hi(Stg20_UpgradeTextPos)
+    /* BB24 8006EE84 A4065024 */  addiu      $s0, $v0, %lo(Stg20_UpgradeTextPos)
     /* BB28 8006EE88 02000796 */  lhu        $a3, 0x2($s0)
-    /* BB2C 8006EE8C A4064294 */  lhu        $v0, %lo(D_800706A4)($v0)
+    /* BB2C 8006EE8C A4064294 */  lhu        $v0, %lo(Stg20_UpgradeTextPos)($v0)
     /* BB30 8006EE90 003C0700 */  sll        $a3, $a3, 16
     /* BB34 8006EE94 F26F000C */  jal        Text_OpenById
     /* BB38 8006EE98 25384700 */   or        $a3, $v0, $a3
@@ -274,8 +274,8 @@ glabel Stg20_PartsUpgradeUpdate
     /* BEAC 8006F20C 00000000 */  nop
     /* BEB0 8006F210 0900A010 */  beqz       $a1, .L8006F238
     /* BEB4 8006F214 21200002 */   addu      $a0, $s0, $zero
-    /* BEB8 8006F218 0780023C */  lui        $v0, %hi(D_800706A4)
-    /* BEBC 8006F21C A4064224 */  addiu      $v0, $v0, %lo(D_800706A4)
+    /* BEB8 8006F218 0780023C */  lui        $v0, %hi(Stg20_UpgradeTextPos)
+    /* BEBC 8006F21C A4064224 */  addiu      $v0, $v0, %lo(Stg20_UpgradeTextPos)
     /* BEC0 8006F220 0001278E */  lw         $a3, 0x100($s1)
     /* BEC4 8006F224 2E004694 */  lhu        $a2, 0x2E($v0)
     /* BEC8 8006F228 2C004294 */  lhu        $v0, 0x2C($v0)

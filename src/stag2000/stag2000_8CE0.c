@@ -14,7 +14,7 @@ void Stg20_BeetleShopMenuDraw(Actor *a) {
     for (q = p; q->fileId != 0; q++) {
         if (q->groupMask & 2) {
             q->palette = Math_CycleRange(a->elapsed, 4, 0, 3);
-            q->x = D_800709B0.field_50 != 0 ? -0x57 : -0x90;
+            q->x = Stg20_MenuState.field_50 != 0 ? -0x57 : -0x90;
             q->y = -0x62;
         }
     }
@@ -45,58 +45,58 @@ s32 Stg20_GetPartFitMsg(s32 id) {
     if (Stg20_IsPartInstalled(id)) {
         return 0x132;
     }
-    if (Stg20_ByteListHas(D_800704FC, id)) {
+    if (Stg20_ByteListHas(Stg20_PartsAnyBody, id)) {
         return 0x131;
     }
-    if (Stg20_ByteListHas(D_80070530, id)) {
+    if (Stg20_ByteListHas(Stg20_ShooterGunAmmo, id)) {
         if (D_8005E65C != 0) {
             return 0x12F;
         }
         return 0x130;
     }
-    if (Stg20_ByteListHas(D_80070548, id)) {
+    if (Stg20_ByteListHas(Stg20_ZCannonAmmo, id)) {
         if (D_8005E65E != 0) {
             return 0x12F;
         }
         return 0x133;
     }
-    if (Stg20_ByteListHas(D_800705A4, id)) {
+    if (Stg20_ByteListHas(Stg20_MissileGunAmmo, id)) {
         if (D_8005E662 != 0) {
             return 0x12F;
         }
         return 0x135;
     }
-    if (Stg20_ByteListHas(D_800705B4, id)) {
+    if (Stg20_ByteListHas(Stg20_RCannonAmmo, id)) {
         if (D_8005E660 != 0) {
             return 0x12F;
         }
         return 0x136;
     }
-    if (Stg20_ByteListHas(D_80070554, id)) {
+    if (Stg20_ByteListHas(Stg20_PartsAdmantOnly, id)) {
         if (D_8005E64C == 0xEC) {
             return 0x131;
         }
         return 0x134;
     }
-    if (Stg20_ByteListHas(D_80070570, id)) {
+    if (Stg20_ByteListHas(Stg20_PartsSteelOnly, id)) {
         if (D_8005E64C == 0xEA) {
             return 0x131;
         }
         return 0x134;
     }
-    if (Stg20_ByteListHas(D_80070588, id)) {
+    if (Stg20_ByteListHas(Stg20_PartsTitanOnly, id)) {
         if (D_8005E64C == 0xEB) {
             return 0x131;
         }
         return 0x134;
     }
-    if (Stg20_ByteListHas(D_80070580, id)) {
+    if (Stg20_ByteListHas(Stg20_PartsNotAdmant, id)) {
         if (D_8005E64C != 0xEC) {
             return 0x131;
         }
         return 0x134;
     }
-    if (Stg20_ByteListHas(D_80070594, id)) {
+    if (Stg20_ByteListHas(Stg20_PartsNotSteel, id)) {
         if (D_8005E64C != 0xEA) {
             return 0x131;
         }
@@ -285,8 +285,8 @@ void Stg20_ShopListRefresh(Actor *a) {
             args.charAdvance = 0;
             args.lineAdvance = 0;
             args.charDelay = 0;
-            args.pos.x = D_800704E4[4].x;
-            args.pos.y = D_800704E4[4].y;
+            args.pos.x = Stg20_ShopListTextPos[4].x;
+            args.pos.y = Stg20_ShopListTextPos[4].y;
             Text_Open(&w->text14, &args);
         }
         Text_Close(&w->text18);
@@ -297,8 +297,8 @@ void Stg20_ShopListRefresh(Actor *a) {
             args.charAdvance = 0;
             args.lineAdvance = 0;
             args.charDelay = 0;
-            args.pos.x = D_800704E4[5].x;
-            args.pos.y = D_800704E4[5].y;
+            args.pos.x = Stg20_ShopListTextPos[5].x;
+            args.pos.y = Stg20_ShopListTextPos[5].y;
             Text_Open(&w->text18, &args);
         }
         w->dirty = 0;
@@ -319,13 +319,13 @@ void Stg20_ShopListUpdate(Actor *a) {
     case 0:
         Mem_FillWordsNeg1(w->hdr, 0xF);
         Task_Create(0x30D, slot, 0);
-        Text_OpenById(&w->hdr[0], 0x12D, 4, *(Halves *)&D_800704E4[0]);
-        Text_OpenById(&w->hdr[1], D_800709B0.field_54 + 0x12B, 4, *(Halves *)&D_800704E4[1]);
-        Text_OpenById(&w->hdr[2], 0xFA, 0, *(Halves *)&D_800704E4[2]);
-        if (D_800709B0.field_54 == 0) {
-            Text_OpenById(&w->hdr[3], 0x12E, 0, *(Halves *)&D_800704E4[3]);
+        Text_OpenById(&w->hdr[0], 0x12D, 4, *(Halves *)&Stg20_ShopListTextPos[0]);
+        Text_OpenById(&w->hdr[1], Stg20_MenuState.field_54 + 0x12B, 4, *(Halves *)&Stg20_ShopListTextPos[1]);
+        Text_OpenById(&w->hdr[2], 0xFA, 0, *(Halves *)&Stg20_ShopListTextPos[2]);
+        if (Stg20_MenuState.field_54 == 0) {
+            Text_OpenById(&w->hdr[3], 0x12E, 0, *(Halves *)&Stg20_ShopListTextPos[3]);
         }
-        if (D_800709B0.field_54 == 0) {
+        if (Stg20_MenuState.field_54 == 0) {
             Stg20_LoadShopBuyList(a, Sys_State.modeArg);
         } else {
             Stg20_LoadShopSellList(a);
@@ -697,13 +697,13 @@ void Stg20_PartsListRefresh(Actor *a) {
             if (w->items[i + w->top] == 0) {
                 break;
             }
-            Text_OpenPacked(&w->texts[i], Item_GetNameText(w->items[i + w->top]), w->colors[i + w->top] << 2, D_800705DC[i + 8]);
+            Text_OpenPacked(&w->texts[i], Item_GetNameText(w->items[i + w->top]), w->colors[i + w->top] << 2, Stg20_BeetlePartsTextPos[i + 8]);
         }
         if (a->stateLevel2 == 2) {
             Text_Close(&w->descText);
             id = w->items[w->top + w->cursor];
             if (id != 0) {
-                Stg20_OpenMsgOrDesc(&w->descText, id + 1000, D_800705DC[7], 0);
+                Stg20_OpenMsgOrDesc(&w->descText, id + 1000, Stg20_BeetlePartsTextPos[7], 0);
             }
         }
     }
@@ -810,7 +810,7 @@ void Stg20_BeetlePartsUpdate(Actor *a) {
     switch (a->stateLevel0) {
     case 0:
         Mem_FillWordsNeg1(w->hdr, 0x12);
-        Text_OpenPacked(&w->hdr[0], (s32)&Save_GameState.field_D1, 0, D_800705DC[0]);
+        Text_OpenPacked(&w->hdr[0], (s32)&Save_GameState.field_D1, 0, Stg20_BeetlePartsTextPos[0]);
         Task_Create(0x30D, slot, 1);
         if (((Stg20GameState *)&Save_GameState)->field_2C[0] == 0xEA) {
             w->field_48 = 0;
@@ -834,9 +834,9 @@ void Stg20_BeetlePartsUpdate(Actor *a) {
             switch (a->stateLevel2) {
             case 0:
             default:
-                Text_OpenById(&w->hdr[1], 0x13E, 0, D_800705DC[1]);
-                Text_OpenById(&w->hdr[2], w->field_48 + 0x13F, 0, D_800705DC[2]);
-                Stg20_OpenMsgOrDesc(&w->descText, w->field_48 + 0x13B, D_800705DC[7], 0);
+                Text_OpenById(&w->hdr[1], 0x13E, 0, Stg20_BeetlePartsTextPos[1]);
+                Text_OpenById(&w->hdr[2], w->field_48 + 0x13F, 0, Stg20_BeetlePartsTextPos[2]);
+                Stg20_OpenMsgOrDesc(&w->descText, w->field_48 + 0x13B, Stg20_BeetlePartsTextPos[7], 0);
                 w->field_50 = 1;
                 Task_NextState2(a);
             case 1:
@@ -854,11 +854,11 @@ void Stg20_BeetlePartsUpdate(Actor *a) {
             switch (a->stateLevel2) {
             case 0:
             default:
-                Text_OpenById(&w->hdr[1], 0x142, 0, D_800705DC[1]);
-                Text_OpenPacked(&w->hdr[2], Item_GetNameText(Stg20_PartsListHas(a, 0x75) != 0 ? 0x75 : 0x76), 0, D_800705DC[2]);
-                Text_OpenPacked(&w->hdr[3], Item_GetNameText(0x77), 0, D_800705DC[3]);
-                Text_OpenPacked(&w->hdr[4], Item_GetNameText(Stg20_PartsListHas(a, 0x73) != 0 ? 0x73 : 0x74), 0, D_800705DC[4]);
-                Stg20_OpenMsgOrDesc(&w->descText, 0x143, D_800705DC[7], 0);
+                Text_OpenById(&w->hdr[1], 0x142, 0, Stg20_BeetlePartsTextPos[1]);
+                Text_OpenPacked(&w->hdr[2], Item_GetNameText(Stg20_PartsListHas(a, 0x75) != 0 ? 0x75 : 0x76), 0, Stg20_BeetlePartsTextPos[2]);
+                Text_OpenPacked(&w->hdr[3], Item_GetNameText(0x77), 0, Stg20_BeetlePartsTextPos[3]);
+                Text_OpenPacked(&w->hdr[4], Item_GetNameText(Stg20_PartsListHas(a, 0x73) != 0 ? 0x73 : 0x74), 0, Stg20_BeetlePartsTextPos[4]);
+                Stg20_OpenMsgOrDesc(&w->descText, 0x143, Stg20_BeetlePartsTextPos[7], 0);
                 w->field_50 = 3;
                 Task_NextState2(a);
             case 1:
@@ -914,9 +914,9 @@ void Stg20_BeetlePartsUpdate(Actor *a) {
                     Task_NextState1(a);
                     break;
                 }
-                Text_OpenById(&w->hdr[1], st + 0x158, 0, D_800705DC[1]);
-                Text_OpenById(&w->hdr[2], 0x14F, 0, D_800705DC[2]);
-                Stg20_OpenMsgOrDesc(&w->descText, st + 0x142, D_800705DC[7], 0);
+                Text_OpenById(&w->hdr[1], st + 0x158, 0, Stg20_BeetlePartsTextPos[1]);
+                Text_OpenById(&w->hdr[2], 0x14F, 0, Stg20_BeetlePartsTextPos[2]);
+                Stg20_OpenMsgOrDesc(&w->descText, st + 0x142, Stg20_BeetlePartsTextPos[7], 0);
                 w->field_50 = 1;
                 w->field_1B8 = 1;
                 w->dirty = 1;
@@ -994,9 +994,9 @@ void Stg20_BeetlePartsUpdate(Actor *a) {
                     Task_NextState1(a);
                     break;
                 }
-                Text_OpenById(&w->hdr[1], m + 0x164, 0, D_800705DC[1]);
-                Text_OpenById(&w->hdr[2], 0x14F, 0, D_800705DC[2]);
-                Stg20_OpenMsgOrDesc(&w->descText, m + 0x155, D_800705DC[7], 0);
+                Text_OpenById(&w->hdr[1], m + 0x164, 0, Stg20_BeetlePartsTextPos[1]);
+                Text_OpenById(&w->hdr[2], 0x14F, 0, Stg20_BeetlePartsTextPos[2]);
+                Stg20_OpenMsgOrDesc(&w->descText, m + 0x155, Stg20_BeetlePartsTextPos[7], 0);
                 w->field_50 = 1;
                 w->field_1B8 = 1;
                 w->dirty = 1;
@@ -1072,7 +1072,7 @@ void Stg20_BeetlePartsUpdate(Actor *a) {
                     Text_Close(&w->texts[i]);
                 }
                 w->field_1B8 = 0;
-                Stg20_OpenMsgOrDesc(&w->descText, 0x14E, D_800705DC[7], 0);
+                Stg20_OpenMsgOrDesc(&w->descText, 0x14E, Stg20_BeetlePartsTextPos[7], 0);
                 Task_NextState2(a);
             case 1:
                 break;
@@ -1236,11 +1236,11 @@ void Stg20_UpgradeListRefresh(Actor *a) {
     if (w->dirty != 0) {
         w->dirty = 0;
         for (i = 0; i < 6; i++) {
-            Text_OpenPacked(&w->texts[i], (s32)w->recs[i].name, 0, D_800706A4[i + 4]);
+            Text_OpenPacked(&w->texts[i], (s32)w->recs[i].name, 0, Stg20_UpgradeTextPos[i + 4]);
         }
         Text_Close(&w->descText);
         if (w->recs[w->index].item != 0) {
-            Text_OpenPacked(&w->descText, Item_GetDescText(w->recs[w->index].item), 0, D_800706A4[10]);
+            Text_OpenPacked(&w->descText, Item_GetDescText(w->recs[w->index].item), 0, Stg20_UpgradeTextPos[10]);
         }
     }
 }
@@ -1263,10 +1263,10 @@ void Stg20_PartsUpgradeUpdate(Actor *task) {
     }
     {
         Mem_FillWordsNeg1(w->hdr, 0xC);
-        Text_OpenById(&w->hdr[0], 0x17A, 4, D_800706A4[0]);
-        Text_OpenById(&w->hdr[1], 0x17B, 4, D_800706A4[1]);
-        Text_OpenById(&w->hdr[2], 0xDE, 0, D_800706A4[2]);
-        Text_OpenPacked(&w->hdr[3], (s32) &D_8005E6F1, 0, D_800706A4[3]);
+        Text_OpenById(&w->hdr[0], 0x17A, 4, Stg20_UpgradeTextPos[0]);
+        Text_OpenById(&w->hdr[1], 0x17B, 4, Stg20_UpgradeTextPos[1]);
+        Text_OpenById(&w->hdr[2], 0xDE, 0, Stg20_UpgradeTextPos[2]);
+        Text_OpenPacked(&w->hdr[3], (s32) &D_8005E6F1, 0, Stg20_UpgradeTextPos[3]);
         Task_Create(0x30D, (s32 *) children, 0);
         Stg20_BuildUpgradeList(task);
         w->dirty = 1;
@@ -1384,7 +1384,7 @@ void Stg20_PartsUpgradeUpdate(Actor *task) {
         if (w->msg == 0) {
             return;
         }
-        Stg20_OpenMsgOrDesc(&w->msgText, w->msg, D_800706A4[11], w->msgArg);
+        Stg20_OpenMsgOrDesc(&w->msgText, w->msg, Stg20_UpgradeTextPos[11], w->msgArg);
     }
 }
 

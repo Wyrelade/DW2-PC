@@ -31,10 +31,10 @@ glabel Stg20_LabPairUpdate
     /* 6D04 8006A064 02000524 */   addiu     $a1, $zero, 0x2
     /* 6D08 8006A068 21206002 */  addu       $a0, $s3, $zero
     /* 6D0C 8006A06C 21300000 */  addu       $a2, $zero, $zero
-    /* 6D10 8006A070 0780123C */  lui        $s2, %hi(D_800709B0)
-    /* 6D14 8006A074 B0095226 */  addiu      $s2, $s2, %lo(D_800709B0)
-    /* 6D18 8006A078 0780113C */  lui        $s1, %hi(D_8007010C)
-    /* 6D1C 8006A07C 0C013126 */  addiu      $s1, $s1, %lo(D_8007010C)
+    /* 6D10 8006A070 0780123C */  lui        $s2, %hi(Stg20_MenuState)
+    /* 6D14 8006A074 B0095226 */  addiu      $s2, $s2, %lo(Stg20_MenuState)
+    /* 6D18 8006A078 0780113C */  lui        $s1, %hi(Stg20_LabPairNamePos)
+    /* 6D1C 8006A07C 0C013126 */  addiu      $s1, $s1, %lo(Stg20_LabPairNamePos)
     /* 6D20 8006A080 21382002 */  addu       $a3, $s1, $zero
     /* 6D24 8006A084 0680103C */  lui        $s0, %hi(Save_RosterNames)
     /* 6D28 8006A088 3400428E */  lw         $v0, 0x34($s2)

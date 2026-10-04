@@ -47,8 +47,8 @@ glabel Stg20_LabDnaDigivolve
     /* D48 800640A8 0C030424 */  addiu      $a0, $zero, 0x30C
     /* D4C 800640AC 0C002526 */  addiu      $a1, $s1, 0xC
     /* D50 800640B0 21300000 */  addu       $a2, $zero, $zero
-    /* D54 800640B4 0780103C */  lui        $s0, %hi(D_800709B0)
-    /* D58 800640B8 B0091026 */  addiu      $s0, $s0, %lo(D_800709B0)
+    /* D54 800640B4 0780103C */  lui        $s0, %hi(Stg20_MenuState)
+    /* D58 800640B8 B0091026 */  addiu      $s0, $s0, %lo(Stg20_MenuState)
     /* D5C 800640BC 1F44000C */  jal        Task_Create
     /* D60 800640C0 100000AE */   sw        $zero, 0x10($s0)
     /* D64 800640C4 61A3010C */  jal        Stg20_MsgWinShowSysMsg
@@ -92,8 +92,8 @@ glabel Stg20_LabDnaDigivolve
     /* DF4 80064154 00000000 */   nop
   .L80064158:
     /* DF8 80064158 04002526 */  addiu      $a1, $s1, 0x4
-    /* DFC 8006415C 0780073C */  lui        $a3, %hi(D_800709B0)
-    /* E00 80064160 B009E724 */  addiu      $a3, $a3, %lo(D_800709B0)
+    /* DFC 8006415C 0780073C */  lui        $a3, %hi(Stg20_MenuState)
+    /* E00 80064160 B009E724 */  addiu      $a3, $a3, %lo(Stg20_MenuState)
     /* E04 80064164 0680063C */  lui        $a2, %hi(Save_GameState)
     /* E08 80064168 1C00E38C */  lw         $v1, 0x1C($a3)
     /* E0C 8006416C 20E6C624 */  addiu      $a2, $a2, %lo(Save_GameState)
@@ -123,8 +123,8 @@ glabel Stg20_LabDnaDigivolve
     /* E64 800641C4 0F030424 */  addiu      $a0, $zero, 0x30F
     /* E68 800641C8 0C002526 */  addiu      $a1, $s1, 0xC
     /* E6C 800641CC 21300000 */  addu       $a2, $zero, $zero
-    /* E70 800641D0 0780023C */  lui        $v0, %hi(D_800709B0)
-    /* E74 800641D4 B0094224 */  addiu      $v0, $v0, %lo(D_800709B0)
+    /* E70 800641D0 0780023C */  lui        $v0, %hi(Stg20_MenuState)
+    /* E74 800641D4 B0094224 */  addiu      $v0, $v0, %lo(Stg20_MenuState)
     /* E78 800641D8 1C00478C */  lw         $a3, 0x1C($v0)
     /* E7C 800641DC 02000324 */  addiu      $v1, $zero, 0x2
     /* E80 800641E0 240043AC */  sw         $v1, 0x24($v0)
@@ -136,8 +136,8 @@ glabel Stg20_LabDnaDigivolve
     /* E94 800641F4 1000448C */  lw         $a0, 0x10($v0)
     /* E98 800641F8 00000000 */  nop
     /* E9C 800641FC A4038314 */  bne        $a0, $v1, .L80065090
-    /* EA0 80064200 0780023C */   lui       $v0, %hi(D_800709B0)
-    /* EA4 80064204 B0095024 */  addiu      $s0, $v0, %lo(D_800709B0)
+    /* EA0 80064200 0780023C */   lui       $v0, %hi(Stg20_MenuState)
+    /* EA4 80064204 B0095024 */  addiu      $s0, $v0, %lo(Stg20_MenuState)
     /* EA8 80064208 0800038E */  lw         $v1, 0x8($s0)
     /* EAC 8006420C 00000000 */  nop
     /* EB0 80064210 0B006510 */  beq        $v1, $a1, .L80064240
@@ -175,8 +175,8 @@ glabel Stg20_LabDnaDigivolve
   .L8006427C:
     /* F1C 8006427C 10030424 */  addiu      $a0, $zero, 0x310
     /* F20 80064280 0C002526 */  addiu      $a1, $s1, 0xC
-    /* F24 80064284 0780023C */  lui        $v0, %hi(D_800709B0)
-    /* F28 80064288 B0094224 */  addiu      $v0, $v0, %lo(D_800709B0)
+    /* F24 80064284 0780023C */  lui        $v0, %hi(Stg20_MenuState)
+    /* F28 80064288 B0094224 */  addiu      $v0, $v0, %lo(Stg20_MenuState)
     /* F2C 8006428C 1C00438C */  lw         $v1, 0x1C($v0)
     /* F30 80064290 21300000 */  addu       $a2, $zero, $zero
     /* F34 80064294 1F44000C */  jal        Task_Create
@@ -213,8 +213,8 @@ glabel Stg20_LabDnaDigivolve
     /* FA0 80064300 0C030424 */  addiu      $a0, $zero, 0x30C
     /* FA4 80064304 0C002526 */  addiu      $a1, $s1, 0xC
     /* FA8 80064308 21300000 */  addu       $a2, $zero, $zero
-    /* FAC 8006430C 0780103C */  lui        $s0, %hi(D_800709B0)
-    /* FB0 80064310 B0091026 */  addiu      $s0, $s0, %lo(D_800709B0)
+    /* FAC 8006430C 0780103C */  lui        $s0, %hi(Stg20_MenuState)
+    /* FB0 80064310 B0091026 */  addiu      $s0, $s0, %lo(Stg20_MenuState)
     /* FB4 80064314 01000224 */  addiu      $v0, $zero, 0x1
     /* FB8 80064318 1F44000C */  jal        Task_Create
     /* FBC 8006431C 100002AE */   sw        $v0, 0x10($s0)
@@ -248,8 +248,8 @@ glabel Stg20_LabDnaDigivolve
     /* 1028 80064388 1000248E */  lw         $a0, 0x10($s1)
     /* 102C 8006438C 7045000C */  jal        Task_SetState0
     /* 1030 80064390 21284000 */   addu      $a1, $v0, $zero
-    /* 1034 80064394 0780023C */  lui        $v0, %hi(D_800709B0)
-    /* 1038 80064398 B0094324 */  addiu      $v1, $v0, %lo(D_800709B0)
+    /* 1034 80064394 0780023C */  lui        $v0, %hi(Stg20_MenuState)
+    /* 1038 80064398 B0094324 */  addiu      $v1, $v0, %lo(Stg20_MenuState)
     /* 103C 8006439C 0800628C */  lw         $v0, 0x8($v1)
     /* 1040 800643A0 00000000 */  nop
     /* 1044 800643A4 0A004010 */  beqz       $v0, .L800643D0
@@ -282,8 +282,8 @@ glabel Stg20_LabDnaDigivolve
     /* 10A4 80064404 00000000 */   nop
   .L80064408:
     /* 10A8 80064408 08002526 */  addiu      $a1, $s1, 0x8
-    /* 10AC 8006440C 0780073C */  lui        $a3, %hi(D_800709B0)
-    /* 10B0 80064410 B009E724 */  addiu      $a3, $a3, %lo(D_800709B0)
+    /* 10AC 8006440C 0780073C */  lui        $a3, %hi(Stg20_MenuState)
+    /* 10B0 80064410 B009E724 */  addiu      $a3, $a3, %lo(Stg20_MenuState)
     /* 10B4 80064414 0680063C */  lui        $a2, %hi(Save_GameState)
     /* 10B8 80064418 3800E38C */  lw         $v1, 0x38($a3)
     /* 10BC 8006441C 20E6C624 */  addiu      $a2, $a2, %lo(Save_GameState)
@@ -313,8 +313,8 @@ glabel Stg20_LabDnaDigivolve
     /* 1114 80064474 0F030424 */  addiu      $a0, $zero, 0x30F
     /* 1118 80064478 0C002526 */  addiu      $a1, $s1, 0xC
     /* 111C 8006447C 21300000 */  addu       $a2, $zero, $zero
-    /* 1120 80064480 0780023C */  lui        $v0, %hi(D_800709B0)
-    /* 1124 80064484 B0094224 */  addiu      $v0, $v0, %lo(D_800709B0)
+    /* 1120 80064480 0780023C */  lui        $v0, %hi(Stg20_MenuState)
+    /* 1124 80064484 B0094224 */  addiu      $v0, $v0, %lo(Stg20_MenuState)
     /* 1128 80064488 3800478C */  lw         $a3, 0x38($v0)
     /* 112C 8006448C 03000324 */  addiu      $v1, $zero, 0x3
     /* 1130 80064490 240043AC */  sw         $v1, 0x24($v0)
@@ -360,8 +360,8 @@ glabel Stg20_LabDnaDigivolve
   .L80064520:
     /* 11C0 80064520 10030424 */  addiu      $a0, $zero, 0x310
     /* 11C4 80064524 0C002526 */  addiu      $a1, $s1, 0xC
-    /* 11C8 80064528 0780023C */  lui        $v0, %hi(D_800709B0)
-    /* 11CC 8006452C B0094224 */  addiu      $v0, $v0, %lo(D_800709B0)
+    /* 11C8 80064528 0780023C */  lui        $v0, %hi(Stg20_MenuState)
+    /* 11CC 8006452C B0094224 */  addiu      $v0, $v0, %lo(Stg20_MenuState)
     /* 11D0 80064530 1C00438C */  lw         $v1, 0x1C($v0)
     /* 11D4 80064534 21300000 */  addu       $a2, $zero, $zero
     /* 11D8 80064538 1F44000C */  jal        Task_Create
@@ -404,8 +404,8 @@ glabel Stg20_LabDnaDigivolve
     /* 1258 800645B8 01001324 */  addiu      $s3, $zero, 0x1
     /* 125C 800645BC 21900000 */  addu       $s2, $zero, $zero
     /* 1260 800645C0 03001424 */  addiu      $s4, $zero, 0x3
-    /* 1264 800645C4 0780103C */  lui        $s0, %hi(D_800709B0)
-    /* 1268 800645C8 B0091026 */  addiu      $s0, $s0, %lo(D_800709B0)
+    /* 1264 800645C4 0780103C */  lui        $s0, %hi(Stg20_MenuState)
+    /* 1268 800645C8 B0091026 */  addiu      $s0, $s0, %lo(Stg20_MenuState)
     /* 126C 800645CC 2C00048E */  lw         $a0, 0x2C($s0)
     /* 1270 800645D0 C179000C */  jal        Digi_GetModelFile
     /* 1274 800645D4 1000B127 */   addiu     $s1, $sp, 0x10
@@ -525,8 +525,8 @@ glabel Stg20_LabDnaDigivolve
     /* 1420 80064780 0A030424 */   addiu     $a0, $zero, 0x30A
     /* 1424 80064784 04002526 */  addiu      $a1, $s1, 0x4
     /* 1428 80064788 21300000 */  addu       $a2, $zero, $zero
-    /* 142C 8006478C 0780023C */  lui        $v0, %hi(D_800709B0)
-    /* 1430 80064790 B0094224 */  addiu      $v0, $v0, %lo(D_800709B0)
+    /* 142C 8006478C 0780023C */  lui        $v0, %hi(Stg20_MenuState)
+    /* 1430 80064790 B0094224 */  addiu      $v0, $v0, %lo(Stg20_MenuState)
     /* 1434 80064794 2C00478C */  lw         $a3, 0x2C($v0)
     /* 1438 80064798 01000324 */  addiu      $v1, $zero, 0x1
     /* 143C 8006479C 440043AC */  sw         $v1, 0x44($v0)
@@ -544,8 +544,8 @@ glabel Stg20_LabDnaDigivolve
     /* 1468 800647C8 1400428C */  lw         $v0, 0x14($v0)
     /* 146C 800647CC 00000000 */  nop
     /* 1470 800647D0 2F024014 */  bnez       $v0, .L80065090
-    /* 1474 800647D4 0780103C */   lui       $s0, %hi(D_800709B0)
-    /* 1478 800647D8 B0091026 */  addiu      $s0, $s0, %lo(D_800709B0)
+    /* 1474 800647D4 0780103C */   lui       $s0, %hi(Stg20_MenuState)
+    /* 1478 800647D8 B0091026 */  addiu      $s0, $s0, %lo(Stg20_MenuState)
     /* 147C 800647DC 0680053C */  lui        $a1, %hi(D_8005E704)
     /* 1480 800647E0 04E7A524 */  addiu      $a1, $a1, %lo(D_8005E704)
     /* 1484 800647E4 3400038E */  lw         $v1, 0x34($s0)
@@ -1064,8 +1064,8 @@ glabel Stg20_LabDnaDigivolve
     /* 1BBC 80064F1C 1B006210 */  beq        $v1, $v0, .L80064F8C
     /* 1BC0 80064F20 00000000 */   nop
   .L80064F24:
-    /* 1BC4 80064F24 0780023C */  lui        $v0, %hi(D_800709B0)
-    /* 1BC8 80064F28 B0095024 */  addiu      $s0, $v0, %lo(D_800709B0)
+    /* 1BC4 80064F24 0780023C */  lui        $v0, %hi(Stg20_MenuState)
+    /* 1BC8 80064F28 B0095024 */  addiu      $s0, $v0, %lo(Stg20_MenuState)
     /* 1BCC 80064F2C 4C00028E */  lw         $v0, 0x4C($s0)
     /* 1BD0 80064F30 00000000 */  nop
     /* 1BD4 80064F34 1C0002AE */  sw         $v0, 0x1C($s0)
@@ -1147,8 +1147,8 @@ glabel Stg20_LabDnaDigivolve
   .L80065044:
     /* 1CE4 80065044 10030424 */  addiu      $a0, $zero, 0x310
     /* 1CE8 80065048 0C002526 */  addiu      $a1, $s1, 0xC
-    /* 1CEC 8006504C 0780023C */  lui        $v0, %hi(D_800709B0)
-    /* 1CF0 80065050 B0094224 */  addiu      $v0, $v0, %lo(D_800709B0)
+    /* 1CEC 8006504C 0780023C */  lui        $v0, %hi(Stg20_MenuState)
+    /* 1CF0 80065050 B0094224 */  addiu      $v0, $v0, %lo(Stg20_MenuState)
     /* 1CF4 80065054 1C00438C */  lw         $v1, 0x1C($v0)
     /* 1CF8 80065058 21300000 */  addu       $a2, $zero, $zero
     /* 1CFC 8006505C 1F44000C */  jal        Task_Create

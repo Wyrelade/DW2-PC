@@ -61,8 +61,8 @@ glabel Stg20_ItemShopUpdate
     /* 2860 80065BC0 0800028E */  lw         $v0, 0x8($s0)
     /* 2864 80065BC4 00000000 */  nop
     /* 2868 80065BC8 4F004014 */  bnez       $v0, .L80065D08
-    /* 286C 80065BCC 0780023C */   lui       $v0, %hi(D_800709B0)
-    /* 2870 80065BD0 B0094324 */  addiu      $v1, $v0, %lo(D_800709B0)
+    /* 286C 80065BCC 0780023C */   lui       $v0, %hi(Stg20_MenuState)
+    /* 2870 80065BD0 B0094324 */  addiu      $v1, $v0, %lo(Stg20_MenuState)
     /* 2874 80065BD4 0800628C */  lw         $v0, 0x8($v1)
     /* 2878 80065BD8 00000000 */  nop
     /* 287C 80065BDC 05004010 */  beqz       $v0, .L80065BF4

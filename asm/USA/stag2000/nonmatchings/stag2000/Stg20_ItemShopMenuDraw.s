@@ -18,8 +18,8 @@ glabel Stg20_ItemShopMenuDraw
     /* 8ADC 8006BE3C 00000000 */  nop
     /* 8AE0 8006BE40 1B004010 */  beqz       $v0, .L8006BEB0
     /* 8AE4 8006BE44 21884002 */   addu      $s1, $s2, $zero
-    /* 8AE8 8006BE48 0780023C */  lui        $v0, %hi(D_800709B0)
-    /* 8AEC 8006BE4C B0095424 */  addiu      $s4, $v0, %lo(D_800709B0)
+    /* 8AE8 8006BE48 0780023C */  lui        $v0, %hi(Stg20_MenuState)
+    /* 8AEC 8006BE4C B0095424 */  addiu      $s4, $v0, %lo(Stg20_MenuState)
     /* 8AF0 8006BE50 9EFF1324 */  addiu      $s3, $zero, -0x62
     /* 8AF4 8006BE54 06005026 */  addiu      $s0, $s2, 0x6
   .L8006BE58:

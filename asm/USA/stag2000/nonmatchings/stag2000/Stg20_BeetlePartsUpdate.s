@@ -26,10 +26,10 @@ glabel Stg20_BeetlePartsUpdate
     /* A9C4 8006DD24 F1E61026 */  addiu      $s0, $s0, %lo(D_8005E6F1)
     /* A9C8 8006DD28 21280002 */  addu       $a1, $s0, $zero
     /* A9CC 8006DD2C 21300000 */  addu       $a2, $zero, $zero
-    /* A9D0 8006DD30 0780033C */  lui        $v1, %hi(D_800705DC)
-    /* A9D4 8006DD34 DC056224 */  addiu      $v0, $v1, %lo(D_800705DC)
+    /* A9D0 8006DD30 0780033C */  lui        $v1, %hi(Stg20_BeetlePartsTextPos)
+    /* A9D4 8006DD34 DC056224 */  addiu      $v0, $v1, %lo(Stg20_BeetlePartsTextPos)
     /* A9D8 8006DD38 02004794 */  lhu        $a3, 0x2($v0)
-    /* A9DC 8006DD3C DC056294 */  lhu        $v0, %lo(D_800705DC)($v1)
+    /* A9DC 8006DD3C DC056294 */  lhu        $v0, %lo(Stg20_BeetlePartsTextPos)($v1)
     /* A9E0 8006DD40 003C0700 */  sll        $a3, $a3, 16
     /* A9E4 8006DD44 3E4D000C */  jal        Text_OpenPacked
     /* A9E8 8006DD48 25384700 */   or        $a3, $v0, $a3
@@ -90,8 +90,8 @@ glabel Stg20_BeetlePartsUpdate
     /* AAAC 8006DE0C 04004426 */  addiu      $a0, $s2, 0x4
     /* AAB0 8006DE10 3E010524 */  addiu      $a1, $zero, 0x13E
     /* AAB4 8006DE14 21300000 */  addu       $a2, $zero, $zero
-    /* AAB8 8006DE18 0780103C */  lui        $s0, %hi(D_800705DC)
-    /* AABC 8006DE1C DC051026 */  addiu      $s0, $s0, %lo(D_800705DC)
+    /* AAB8 8006DE18 0780103C */  lui        $s0, %hi(Stg20_BeetlePartsTextPos)
+    /* AABC 8006DE1C DC051026 */  addiu      $s0, $s0, %lo(Stg20_BeetlePartsTextPos)
     /* AAC0 8006DE20 06000796 */  lhu        $a3, 0x6($s0)
     /* AAC4 8006DE24 04000296 */  lhu        $v0, 0x4($s0)
     /* AAC8 8006DE28 003C0700 */  sll        $a3, $a3, 16
@@ -146,8 +146,8 @@ glabel Stg20_BeetlePartsUpdate
     /* AB80 8006DEE0 04004426 */  addiu      $a0, $s2, 0x4
     /* AB84 8006DEE4 42010524 */  addiu      $a1, $zero, 0x142
     /* AB88 8006DEE8 21300000 */  addu       $a2, $zero, $zero
-    /* AB8C 8006DEEC 0780023C */  lui        $v0, %hi(D_800705DC)
-    /* AB90 8006DEF0 DC055024 */  addiu      $s0, $v0, %lo(D_800705DC)
+    /* AB8C 8006DEEC 0780023C */  lui        $v0, %hi(Stg20_BeetlePartsTextPos)
+    /* AB90 8006DEF0 DC055024 */  addiu      $s0, $v0, %lo(Stg20_BeetlePartsTextPos)
     /* AB94 8006DEF4 06000796 */  lhu        $a3, 0x6($s0)
     /* AB98 8006DEF8 04000296 */  lhu        $v0, 0x4($s0)
     /* AB9C 8006DEFC 003C0700 */  sll        $a3, $a3, 16
@@ -312,8 +312,8 @@ glabel Stg20_BeetlePartsUpdate
     /* ADEC 8006E14C 04004426 */   addiu     $a0, $s2, 0x4
     /* ADF0 8006E150 58012526 */  addiu      $a1, $s1, 0x158
     /* ADF4 8006E154 21300000 */  addu       $a2, $zero, $zero
-    /* ADF8 8006E158 0780103C */  lui        $s0, %hi(D_800705DC)
-    /* ADFC 8006E15C DC051026 */  addiu      $s0, $s0, %lo(D_800705DC)
+    /* ADF8 8006E158 0780103C */  lui        $s0, %hi(Stg20_BeetlePartsTextPos)
+    /* ADFC 8006E15C DC051026 */  addiu      $s0, $s0, %lo(Stg20_BeetlePartsTextPos)
     /* AE00 8006E160 06000796 */  lhu        $a3, 0x6($s0)
     /* AE04 8006E164 04000296 */  lhu        $v0, 0x4($s0)
     /* AE08 8006E168 003C0700 */  sll        $a3, $a3, 16
@@ -484,8 +484,8 @@ glabel Stg20_BeetlePartsUpdate
     /* B06C 8006E3CC 04004426 */   addiu     $a0, $s2, 0x4
     /* B070 8006E3D0 64012526 */  addiu      $a1, $s1, 0x164
     /* B074 8006E3D4 21300000 */  addu       $a2, $zero, $zero
-    /* B078 8006E3D8 0780103C */  lui        $s0, %hi(D_800705DC)
-    /* B07C 8006E3DC DC051026 */  addiu      $s0, $s0, %lo(D_800705DC)
+    /* B078 8006E3D8 0780103C */  lui        $s0, %hi(Stg20_BeetlePartsTextPos)
+    /* B07C 8006E3DC DC051026 */  addiu      $s0, $s0, %lo(Stg20_BeetlePartsTextPos)
     /* B080 8006E3E0 06000796 */  lhu        $a3, 0x6($s0)
     /* B084 8006E3E4 04000296 */  lhu        $v0, 0x4($s0)
     /* B088 8006E3E8 003C0700 */  sll        $a3, $a3, 16
@@ -689,8 +689,8 @@ glabel Stg20_BeetlePartsUpdate
     /* B344 8006E6A4 1C004426 */  addiu      $a0, $s2, 0x1C
     /* B348 8006E6A8 4E010524 */  addiu      $a1, $zero, 0x14E
     /* B34C 8006E6AC 21380000 */  addu       $a3, $zero, $zero
-    /* B350 8006E6B0 0780023C */  lui        $v0, %hi(D_800705DC)
-    /* B354 8006E6B4 DC054224 */  addiu      $v0, $v0, %lo(D_800705DC)
+    /* B350 8006E6B0 0780023C */  lui        $v0, %hi(Stg20_BeetlePartsTextPos)
+    /* B354 8006E6B4 DC054224 */  addiu      $v0, $v0, %lo(Stg20_BeetlePartsTextPos)
     /* B358 8006E6B8 B80140AE */  sw         $zero, 0x1B8($s2)
     /* B35C 8006E6BC 1E004694 */  lhu        $a2, 0x1E($v0)
     /* B360 8006E6C0 1C004294 */  lhu        $v0, 0x1C($v0)

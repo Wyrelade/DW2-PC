@@ -11,8 +11,8 @@ glabel Stg20_LabCaptionDraw
     /* 5C74 80068FD4 00000000 */  nop
     /* 5C78 80068FD8 1D004010 */  beqz       $v0, .L80069050
     /* 5C7C 80068FDC 21388000 */   addu      $a3, $a0, $zero
-    /* 5C80 80068FE0 0780023C */  lui        $v0, %hi(D_800709B0)
-    /* 5C84 80068FE4 B0094A24 */  addiu      $t2, $v0, %lo(D_800709B0)
+    /* 5C80 80068FE0 0780023C */  lui        $v0, %hi(Stg20_MenuState)
+    /* 5C84 80068FE4 B0094A24 */  addiu      $t2, $v0, %lo(Stg20_MenuState)
     /* 5C88 80068FE8 01000924 */  addiu      $t1, $zero, 0x1
     /* 5C8C 80068FEC 02000824 */  addiu      $t0, $zero, 0x2
     /* 5C90 80068FF0 0F008624 */  addiu      $a2, $a0, 0xF

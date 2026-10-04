@@ -22,8 +22,8 @@ glabel Stg20_LabRosterDraw
     /* 55CC 8006892C 30004010 */  beqz       $v0, .L800689F0
     /* 55D0 80068930 21308000 */   addu      $a2, $a0, $zero
     /* 55D4 80068934 1D000824 */  addiu      $t0, $zero, 0x1D
-    /* 55D8 80068938 0780023C */  lui        $v0, %hi(D_800709B0)
-    /* 55DC 8006893C B0094724 */  addiu      $a3, $v0, %lo(D_800709B0)
+    /* 55D8 80068938 0780023C */  lui        $v0, %hi(Stg20_MenuState)
+    /* 55DC 8006893C B0094724 */  addiu      $a3, $v0, %lo(Stg20_MenuState)
     /* 55E0 80068940 0F008524 */  addiu      $a1, $a0, 0xF
   .L80068944:
     /* 55E4 80068944 0D00A28C */  lw         $v0, 0xD($a1)
@@ -77,11 +77,11 @@ glabel Stg20_LabRosterDraw
     /* 5694 800689F4 21800000 */   addu      $s0, $zero, $zero
     /* 5698 800689F8 0680023C */  lui        $v0, %hi(D_8005E704)
     /* 569C 800689FC 04E75524 */  addiu      $s5, $v0, %lo(D_8005E704)
-    /* 56A0 80068A00 0780023C */  lui        $v0, %hi(D_800709B0)
-    /* 56A4 80068A04 B0095424 */  addiu      $s4, $v0, %lo(D_800709B0)
+    /* 56A0 80068A00 0780023C */  lui        $v0, %hi(Stg20_MenuState)
+    /* 56A4 80068A04 B0095424 */  addiu      $s4, $v0, %lo(Stg20_MenuState)
     /* 56A8 80068A08 21982002 */  addu       $s3, $s1, $zero
-    /* 56AC 80068A0C 0780023C */  lui        $v0, %hi(D_8006FFDC)
-    /* 56B0 80068A10 DCFF5224 */  addiu      $s2, $v0, %lo(D_8006FFDC)
+    /* 56AC 80068A0C 0780023C */  lui        $v0, %hi(Stg20_LabRosterPanelIds)
+    /* 56B0 80068A10 DCFF5224 */  addiu      $s2, $v0, %lo(Stg20_LabRosterPanelIds)
   .L80068A14:
     /* 56B4 80068A14 0000448E */  lw         $a0, 0x0($s2)
     /* 56B8 80068A18 688E000C */  jal        Cd_GetFileEntry

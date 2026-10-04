@@ -44,8 +44,8 @@ glabel Stg20_LabDigivolve
     /* 1DF0 80065150 0C030424 */  addiu      $a0, $zero, 0x30C
     /* 1DF4 80065154 0C002526 */  addiu      $a1, $s1, 0xC
     /* 1DF8 80065158 21300000 */  addu       $a2, $zero, $zero
-    /* 1DFC 8006515C 0780103C */  lui        $s0, %hi(D_800709B0)
-    /* 1E00 80065160 B0091026 */  addiu      $s0, $s0, %lo(D_800709B0)
+    /* 1DFC 8006515C 0780103C */  lui        $s0, %hi(Stg20_MenuState)
+    /* 1E00 80065160 B0091026 */  addiu      $s0, $s0, %lo(Stg20_MenuState)
     /* 1E04 80065164 1F44000C */  jal        Task_Create
     /* 1E08 80065168 100000AE */   sw        $zero, 0x10($s0)
     /* 1E0C 8006516C 61A3010C */  jal        Stg20_MsgWinShowSysMsg
@@ -88,8 +88,8 @@ glabel Stg20_LabDigivolve
     /* 1E98 800651F8 00000000 */   nop
   .L800651FC:
     /* 1E9C 800651FC 04002526 */  addiu      $a1, $s1, 0x4
-    /* 1EA0 80065200 0780073C */  lui        $a3, %hi(D_800709B0)
-    /* 1EA4 80065204 B009E724 */  addiu      $a3, $a3, %lo(D_800709B0)
+    /* 1EA0 80065200 0780073C */  lui        $a3, %hi(Stg20_MenuState)
+    /* 1EA4 80065204 B009E724 */  addiu      $a3, $a3, %lo(Stg20_MenuState)
     /* 1EA8 80065208 0680063C */  lui        $a2, %hi(Save_GameState)
     /* 1EAC 8006520C 1C00E38C */  lw         $v1, 0x1C($a3)
     /* 1EB0 80065210 20E6C624 */  addiu      $a2, $a2, %lo(Save_GameState)
@@ -118,8 +118,8 @@ glabel Stg20_LabDigivolve
   .L80065268:
     /* 1F08 80065268 0F030424 */  addiu      $a0, $zero, 0x30F
     /* 1F0C 8006526C 0C002526 */  addiu      $a1, $s1, 0xC
-    /* 1F10 80065270 0780023C */  lui        $v0, %hi(D_800709B0)
-    /* 1F14 80065274 B0094224 */  addiu      $v0, $v0, %lo(D_800709B0)
+    /* 1F10 80065270 0780023C */  lui        $v0, %hi(Stg20_MenuState)
+    /* 1F14 80065274 B0094224 */  addiu      $v0, $v0, %lo(Stg20_MenuState)
     /* 1F18 80065278 1C00438C */  lw         $v1, 0x1C($v0)
     /* 1F1C 8006527C 21300000 */  addu       $a2, $zero, $zero
     /* 1F20 80065280 240040AC */  sw         $zero, 0x24($v0)
@@ -168,8 +168,8 @@ glabel Stg20_LabDigivolve
   .L80065318:
     /* 1FB8 80065318 10030424 */  addiu      $a0, $zero, 0x310
     /* 1FBC 8006531C 0C002526 */  addiu      $a1, $s1, 0xC
-    /* 1FC0 80065320 0780023C */  lui        $v0, %hi(D_800709B0)
-    /* 1FC4 80065324 B0094224 */  addiu      $v0, $v0, %lo(D_800709B0)
+    /* 1FC0 80065320 0780023C */  lui        $v0, %hi(Stg20_MenuState)
+    /* 1FC4 80065324 B0094224 */  addiu      $v0, $v0, %lo(Stg20_MenuState)
     /* 1FC8 80065328 1C00438C */  lw         $v1, 0x1C($v0)
     /* 1FCC 8006532C 21300000 */  addu       $a2, $zero, $zero
     /* 1FD0 80065330 1F44000C */  jal        Task_Create
@@ -208,8 +208,8 @@ glabel Stg20_LabDigivolve
   .L800653A8:
     /* 2048 800653A8 21900000 */  addu       $s2, $zero, $zero
     /* 204C 800653AC 03001524 */  addiu      $s5, $zero, 0x3
-    /* 2050 800653B0 0780103C */  lui        $s0, %hi(D_800709B0)
-    /* 2054 800653B4 B0091026 */  addiu      $s0, $s0, %lo(D_800709B0)
+    /* 2050 800653B0 0780103C */  lui        $s0, %hi(Stg20_MenuState)
+    /* 2054 800653B4 B0091026 */  addiu      $s0, $s0, %lo(Stg20_MenuState)
     /* 2058 800653B8 2C00048E */  lw         $a0, 0x2C($s0)
     /* 205C 800653BC C179000C */  jal        Digi_GetModelFile
     /* 2060 800653C0 1000B127 */   addiu     $s1, $sp, 0x10
@@ -311,8 +311,8 @@ glabel Stg20_LabDigivolve
     /* 21C4 80065524 8A006214 */  bne        $v1, $v0, .L80065750
     /* 21C8 80065528 0A030424 */   addiu     $a0, $zero, 0x30A
     /* 21CC 8006552C 04002526 */  addiu      $a1, $s1, 0x4
-    /* 21D0 80065530 0780023C */  lui        $v0, %hi(D_800709B0)
-    /* 21D4 80065534 B0094224 */  addiu      $v0, $v0, %lo(D_800709B0)
+    /* 21D0 80065530 0780023C */  lui        $v0, %hi(Stg20_MenuState)
+    /* 21D4 80065534 B0094224 */  addiu      $v0, $v0, %lo(Stg20_MenuState)
     /* 21D8 80065538 2C00438C */  lw         $v1, 0x2C($v0)
     /* 21DC 8006553C 21300000 */  addu       $a2, $zero, $zero
     /* 21E0 80065540 440052AC */  sw         $s2, 0x44($v0)
@@ -329,8 +329,8 @@ glabel Stg20_LabDigivolve
     /* 2208 80065568 01000524 */  addiu      $a1, $zero, 0x1
     /* 220C 8006556C A369000C */  jal        Snd_PlayById
     /* 2210 80065570 0C0000AE */   sw        $zero, 0xC($s0)
-    /* 2214 80065574 0780043C */  lui        $a0, %hi(D_800709B0)
-    /* 2218 80065578 B0098424 */  addiu      $a0, $a0, %lo(D_800709B0)
+    /* 2214 80065574 0780043C */  lui        $a0, %hi(Stg20_MenuState)
+    /* 2218 80065578 B0098424 */  addiu      $a0, $a0, %lo(Stg20_MenuState)
     /* 221C 8006557C 2800838C */  lw         $v1, 0x28($a0)
     /* 2220 80065580 00000000 */  nop
     /* 2224 80065584 40100300 */  sll        $v0, $v1, 1
@@ -396,8 +396,8 @@ glabel Stg20_LabDigivolve
   .L80065664:
     /* 2304 80065664 0C002526 */  addiu      $a1, $s1, 0xC
     /* 2308 80065668 21300000 */  addu       $a2, $zero, $zero
-    /* 230C 8006566C 0780023C */  lui        $v0, %hi(D_800709B0)
-    /* 2310 80065670 B0094224 */  addiu      $v0, $v0, %lo(D_800709B0)
+    /* 230C 8006566C 0780023C */  lui        $v0, %hi(Stg20_MenuState)
+    /* 2310 80065670 B0094224 */  addiu      $v0, $v0, %lo(Stg20_MenuState)
     /* 2314 80065674 1C00478C */  lw         $a3, 0x1C($v0)
     /* 2318 80065678 01000324 */  addiu      $v1, $zero, 0x1
     /* 231C 8006567C 240043AC */  sw         $v1, 0x24($v0)
@@ -442,8 +442,8 @@ glabel Stg20_LabDigivolve
   .L80065704:
     /* 23A4 80065704 10030424 */  addiu      $a0, $zero, 0x310
     /* 23A8 80065708 0C002526 */  addiu      $a1, $s1, 0xC
-    /* 23AC 8006570C 0780023C */  lui        $v0, %hi(D_800709B0)
-    /* 23B0 80065710 B0094224 */  addiu      $v0, $v0, %lo(D_800709B0)
+    /* 23AC 8006570C 0780023C */  lui        $v0, %hi(Stg20_MenuState)
+    /* 23B0 80065710 B0094224 */  addiu      $v0, $v0, %lo(Stg20_MenuState)
     /* 23B4 80065714 1C00438C */  lw         $v1, 0x1C($v0)
     /* 23B8 80065718 21300000 */  addu       $a2, $zero, $zero
     /* 23BC 8006571C 1F44000C */  jal        Task_Create

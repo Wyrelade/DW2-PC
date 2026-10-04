@@ -61,9 +61,9 @@ dlabel D_8006FCB4
     /* C968 8006FCC8 10000000 */ .word 0x00000010
 enddlabel D_8006FCB4
 
-nonmatching D_8006FCCC
+nonmatching Stg20_EngineHpTbl
 
-dlabel D_8006FCCC
+dlabel Stg20_EngineHpTbl
     /* C96C 8006FCCC 20038403 */ .word 0x03840320
     /* C970 8006FCD0 E8034C04 */ .word 0x044C03E8
     /* C974 8006FCD4 B004B004 */ .word 0x04B004B0
@@ -87,11 +87,11 @@ dlabel D_8006FCCC
     /* C9BC 8006FD1C A00F0410 */ .word 0x10040FA0
     /* C9C0 8006FD20 6810CC10 */ .word 0x10CC1068
     /* C9C4 8006FD24 30110F27 */ .word 0x270F1130
-enddlabel D_8006FCCC
+enddlabel Stg20_EngineHpTbl
 
-nonmatching D_8006FD28
+nonmatching Stg20_BatteryEpTbl
 
-dlabel D_8006FD28
+dlabel Stg20_BatteryEpTbl
     /* C9C8 8006FD28 6400C800 */ .word 0x00C80064
     /* C9CC 8006FD2C 2C019001 */ .word 0x0190012C
     /* C9D0 8006FD30 F401E803 */ .word 0x03E801F4
@@ -103,7 +103,7 @@ dlabel D_8006FD28
     /* C9E8 8006FD48 800C480D */ .word 0x0D480C80
     /* C9EC 8006FD4C 100ED80E */ .word 0x0ED80E10
     /* C9F0 8006FD50 0F270000 */ .word 0x0000270F
-enddlabel D_8006FD28
+enddlabel Stg20_BatteryEpTbl
 
 nonmatching D_8006FD54
 
@@ -264,25 +264,25 @@ dlabel Stg20_DirCellDelta
     /* CBE0 8006FF40 01000000 */ .word 0x00000001
 enddlabel Stg20_DirCellDelta
 
-nonmatching D_8006FF44
+nonmatching Stg20_AreaIconHideMasks
 
-dlabel D_8006FF44
+dlabel Stg20_AreaIconHideMasks
     /* CBE4 8006FF44 E0010000 */ .word 0x000001E0
     /* CBE8 8006FF48 D0010000 */ .word 0x000001D0
     /* CBEC 8006FF4C B0010000 */ .word 0x000001B0
     /* CBF0 8006FF50 70010000 */ .word 0x00000170
     /* CBF4 8006FF54 F0000000 */ .word 0x000000F0
-enddlabel D_8006FF44
+enddlabel Stg20_AreaIconHideMasks
 
-nonmatching D_8006FF58
+nonmatching Stg20_AreaScreenPartsIds
 
-dlabel D_8006FF58
+dlabel Stg20_AreaScreenPartsIds
     /* CBF8 8006FF58 0200D803 */ .word 0x03D80002
     /* CBFC 8006FF5C 0200F50D */ .word 0x0DF50002
     /* CC00 8006FF60 0200F70D */ .word 0x0DF70002
     /* CC04 8006FF64 0300D90C */ .word 0x0CD90003
     /* CC08 8006FF68 03001405 */ .word 0x05140003
-enddlabel D_8006FF58
+enddlabel Stg20_AreaScreenPartsIds
 
 nonmatching D_8006FF6C
 
@@ -306,9 +306,9 @@ dlabel D_8006FF84
     /* CC38 8006FF98 00000000 */ .word 0x00000000
 enddlabel D_8006FF84
 
-nonmatching D_8006FF9C
+nonmatching Stg20_LabRosterTextPos
 
-dlabel D_8006FF9C
+dlabel Stg20_LabRosterTextPos
     /* CC3C 8006FF9C C2003C00 */ .word 0x003C00C2
     /* CC40 8006FFA0 5F003000 */ .word 0x0030005F
     /* CC44 8006FFA4 C2003000 */ .word 0x003000C2
@@ -325,16 +325,16 @@ dlabel D_8006FF9C
     /* CC70 8006FFD0 5F009600 */ .word 0x0096005F
     /* CC74 8006FFD4 C2009600 */ .word 0x009600C2
     /* CC78 8006FFD8 5F00A200 */ .word 0x00A2005F
-enddlabel D_8006FF9C
+enddlabel Stg20_LabRosterTextPos
 
-nonmatching D_8006FFDC
+nonmatching Stg20_LabRosterPanelIds
 
-dlabel D_8006FFDC
+dlabel Stg20_LabRosterPanelIds
     /* CC7C 8006FFDC 0300120D */ .word 0x0D120003
     /* CC80 8006FFE0 0400120D */ .word 0x0D120004
     /* CC84 8006FFE4 0500120D */ .word 0x0D120005
     /* CC88 8006FFE8 0600120D */ .word 0x0D120006
-enddlabel D_8006FFDC
+enddlabel Stg20_LabRosterPanelIds
 
 nonmatching D_8006FFEC
 
@@ -358,16 +358,16 @@ dlabel D_80070004
     /* CCB8 80070018 00000000 */ .word 0x00000000
 enddlabel D_80070004
 
-nonmatching D_8007001C
+nonmatching Stg20_LabCaptionPos
 
-dlabel D_8007001C
+dlabel Stg20_LabCaptionPos
     /* CCBC 8007001C */ .short 0x001E
     /* CCBE 8007001E */ .short 0x0018
     /* CCC0 80070020 */ .short 0x0013
     /* CCC2 80070022 */ .short 0x0018
     /* CCC4 80070024 */ .short 0x0024
     /* CCC6 80070026 */ .short 0x0030
-enddlabel D_8007001C
+enddlabel Stg20_LabCaptionPos
 
 nonmatching D_80070028
 
@@ -380,9 +380,9 @@ dlabel D_80070028
     /* CCDC 8007003C 00000000 */ .word 0x00000000
 enddlabel D_80070028
 
-nonmatching D_80070040
+nonmatching Stg20_LabInfoTextPos
 
-dlabel D_80070040
+dlabel Stg20_LabInfoTextPos
     /* CCE0 80070040 12001800 */ .word 0x00180012
     /* CCE4 80070044 09003100 */ .word 0x00310009
     /* CCE8 80070048 36003D00 */ .word 0x003D0036
@@ -396,7 +396,7 @@ dlabel D_80070040
     /* CD08 80070068 09008D00 */ .word 0x008D0009
     /* CD0C 8007006C CC001800 */ .word 0x001800CC
     /* CD10 80070070 13013100 */ .word 0x00310113
-enddlabel D_80070040
+enddlabel Stg20_LabInfoTextPos
 
 nonmatching Stg20_DigivolveRuleTbl
 
@@ -418,18 +418,18 @@ dlabel D_80070084
     /* CD38 80070098 00000000 */ .word 0x00000000
 enddlabel D_80070084
 
-nonmatching D_8007009C
+nonmatching Stg20_LabSkillsCursorPos
 
-dlabel D_8007009C
+dlabel Stg20_LabSkillsCursorPos
     /* CD3C 8007009C 71FFCBFF */ .word 0xFFCBFF71
     /* CD40 800700A0 8EFF0600 */ .word 0x0006FF8E
     /* CD44 800700A4 F9FFCBFF */ .word 0xFFCBFFF9
     /* CD48 800700A8 16000600 */ .word 0x00060016
-enddlabel D_8007009C
+enddlabel Stg20_LabSkillsCursorPos
 
-nonmatching D_800700AC
+nonmatching Stg20_LabSkillsTextPos
 
-dlabel D_800700AC
+dlabel Stg20_LabSkillsTextPos
     /* CD4C 800700AC 15003900 */ .word 0x00390015
     /* CD50 800700B0 32007400 */ .word 0x00740032
     /* CD54 800700B4 9D003900 */ .word 0x0039009D
@@ -440,28 +440,28 @@ dlabel D_800700AC
     /* CD68 800700C8 BA008000 */ .word 0x008000BA
     /* CD6C 800700CC 12001800 */ .word 0x00180012
     /* CD70 800700D0 CC001800 */ .word 0x001800CC
-enddlabel D_800700AC
+enddlabel Stg20_LabSkillsTextPos
 
-nonmatching D_800700D4
+nonmatching Stg20_LabSkillsColHideMasks
 
-dlabel D_800700D4
+dlabel Stg20_LabSkillsColHideMasks
     /* CD74 800700D4 AC000000 */ .word 0x000000AC
     /* CD78 800700D8 CA000000 */ .word 0x000000CA
     /* CD7C 800700DC B2000000 */ .word 0x000000B2
     /* CD80 800700E0 2A010000 */ .word 0x0000012A
-enddlabel D_800700D4
+enddlabel Stg20_LabSkillsColHideMasks
 
 .align 2
-nonmatching D_800700E4
+nonmatching Stg20_LabSkillsArrowBlinkMasks
 
-dlabel D_800700E4
+dlabel Stg20_LabSkillsArrowBlinkMasks
     /* CD84 800700E4 */ .asciz "\n"
     /* 0A000000 */
 .align 2
     /* CD88 800700E8 A0000000 */ .word 0x000000A0
     /* CD8C 800700EC 000A0000 */ .word 0x00000A00
     /* CD90 800700F0 00A00000 */ .word 0x0000A000
-enddlabel D_800700E4
+enddlabel Stg20_LabSkillsArrowBlinkMasks
 
 nonmatching D_800700F4
 
@@ -474,12 +474,12 @@ dlabel D_800700F4
     /* CDA8 80070108 00000000 */ .word 0x00000000
 enddlabel D_800700F4
 
-nonmatching D_8007010C
+nonmatching Stg20_LabPairNamePos
 
-dlabel D_8007010C
+dlabel Stg20_LabPairNamePos
     /* CDAC 8007010C 12001800 */ .word 0x00180012
     /* CDB0 80070110 D5001800 */ .word 0x001800D5
-enddlabel D_8007010C
+enddlabel Stg20_LabPairNamePos
 
 nonmatching D_80070114
 
@@ -795,9 +795,9 @@ dlabel D_800704CC
     /* D180 800704E0 00000000 */ .word 0x00000000
 enddlabel D_800704CC
 
-nonmatching D_800704E4
+nonmatching Stg20_ShopListTextPos
 
-dlabel D_800704E4
+dlabel Stg20_ShopListTextPos
     /* D184 800704E4 */ .short 0x0028
     /* D186 800704E6 */ .short 0x0017
     /* D188 800704E8 */ .short 0x0082
@@ -810,95 +810,95 @@ dlabel D_800704E4
     /* D196 800704F6 */ .short 0x00BA
     /* D198 800704F8 */ .short 0x0010
     /* D19A 800704FA */ .short 0x00CA
-enddlabel D_800704E4
+enddlabel Stg20_ShopListTextPos
 
 .align 2
-nonmatching D_800704FC
+nonmatching Stg20_PartsAnyBody
 
-dlabel D_800704FC
+dlabel Stg20_PartsAnyBody
     /* D19C 800704FC */ .asciz "/0156789:;<=>JKLPQRUVWZ[\\_`abcdefghijklmnopqrstuvw"
     /* 2F303135363738393A3B3C3D3E4A4B4C5051525556575A5B5C5F606162636465666768696A6B6C6D6E6F70717273747576770000 */
 .align 2
-enddlabel D_800704FC
+enddlabel Stg20_PartsAnyBody
 
-nonmatching D_80070530
+nonmatching Stg20_ShooterGunAmmo
 
-dlabel D_80070530
+dlabel Stg20_ShooterGunAmmo
     /* D1D0 80070530 BCBDBEBF */ .word 0xBFBEBDBC
     /* D1D4 80070534 C0C1C2C3 */ .word 0xC3C2C1C0
     /* D1D8 80070538 C4C5C6C7 */ .word 0xC7C6C5C4
     /* D1DC 8007053C C8C9CACB */ .word 0xCBCAC9C8
     /* D1E0 80070540 CCCDCECF */ .word 0xCFCECDCC
     /* D1E4 80070544 00000000 */ .word 0x00000000
-enddlabel D_80070530
+enddlabel Stg20_ShooterGunAmmo
 
-nonmatching D_80070548
+nonmatching Stg20_ZCannonAmmo
 
-dlabel D_80070548
+dlabel Stg20_ZCannonAmmo
     /* D1E8 80070548 A6A7A8A9 */ .word 0xA9A8A7A6
     /* D1EC 8007054C AAABACAD */ .word 0xADACABAA
     /* D1F0 80070550 AEAF0000 */ .word 0x0000AFAE
-enddlabel D_80070548
+enddlabel Stg20_ZCannonAmmo
 
 .align 2
-nonmatching D_80070554
+nonmatching Stg20_PartsAdmantOnly
 
-dlabel D_80070554
+dlabel Stg20_PartsAdmantOnly
     /* D1F4 80070554 */ .asciz "$%&'()*+,-.34DEFGHINOTY^"
     /* 2425262728292A2B2C2D2E33344445464748494E4F54595E00000000 */
 .align 2
-enddlabel D_80070554
+enddlabel Stg20_PartsAdmantOnly
 
-nonmatching D_80070570
+nonmatching Stg20_PartsSteelOnly
 
-dlabel D_80070570
+dlabel Stg20_PartsSteelOnly
     /* D210 80070570 01020304 */ .word 0x04030201
     /* D214 80070574 05060708 */ .word 0x08070605
     /* D218 80070578 090A0B0C */ .word 0x0C0B0A09
     /* D21C 8007057C 0D0E0F00 */ .word 0x000F0E0D
-enddlabel D_80070570
+enddlabel Stg20_PartsSteelOnly
 
-nonmatching D_80070580
+nonmatching Stg20_PartsNotAdmant
 
-dlabel D_80070580
+dlabel Stg20_PartsNotAdmant
     /* D220 80070580 10111213 */ .word 0x13121110
     /* D224 80070584 14000000 */ .word 0x00000014
-enddlabel D_80070580
+enddlabel Stg20_PartsNotAdmant
 
-nonmatching D_80070588
+nonmatching Stg20_PartsTitanOnly
 
-dlabel D_80070588
+dlabel Stg20_PartsTitanOnly
     /* D228 80070588 15161718 */ .word 0x18171615
     /* D22C 8007058C 191A1B1C */ .word 0x1C1B1A19
     /* D230 80070590 1D1E0000 */ .word 0x00001E1D
-enddlabel D_80070588
+enddlabel Stg20_PartsTitanOnly
 
-nonmatching D_80070594
+nonmatching Stg20_PartsNotSteel
 
-dlabel D_80070594
+dlabel Stg20_PartsNotSteel
     /* D234 80070594 1F202122 */ .word 0x2221201F
     /* D238 80070598 23323F40 */ .word 0x403F3223
     /* D23C 8007059C 4142434D */ .word 0x4D434241
     /* D240 800705A0 53585D00 */ .word 0x005D5853
-enddlabel D_80070594
+enddlabel Stg20_PartsNotSteel
 
-nonmatching D_800705A4
+nonmatching Stg20_MissileGunAmmo
 
-dlabel D_800705A4
+dlabel Stg20_MissileGunAmmo
     /* D244 800705A4 88898A8B */ .word 0x8B8A8988
     /* D248 800705A8 8C8D8E8F */ .word 0x8F8E8D8C
     /* D24C 800705AC 90919293 */ .word 0x93929190
     /* D250 800705B0 94959600 */ .word 0x00969594
-enddlabel D_800705A4
+enddlabel Stg20_MissileGunAmmo
 
-nonmatching D_800705B4
+nonmatching Stg20_RCannonAmmo
 
-dlabel D_800705B4
+dlabel Stg20_RCannonAmmo
     /* D254 800705B4 B0B1B2B3 */ .word 0xB3B2B1B0
     /* D258 800705B8 B4B5B6B7 */ .word 0xB7B6B5B4
     /* D25C 800705BC B8B9BABB */ .word 0xBBBAB9B8
     /* D260 800705C0 00000000 */ .word 0x00000000
-enddlabel D_800705B4
+enddlabel Stg20_RCannonAmmo
 
 nonmatching D_800705C4
 
@@ -911,9 +911,9 @@ dlabel D_800705C4
     /* D278 800705D8 04000000 */ .word 0x00000004
 enddlabel D_800705C4
 
-nonmatching D_800705DC
+nonmatching Stg20_BeetlePartsTextPos
 
-dlabel D_800705DC
+dlabel Stg20_BeetlePartsTextPos
     /* D27C 800705DC */ .short 0x001C
     /* D27E 800705DE */ .short 0x0013
     /* D280 800705E0 */ .short 0x0068
@@ -950,7 +950,7 @@ dlabel D_800705DC
     /* D2BE 8007061E */ .short 0x0089
     /* D2C0 80070620 */ .short 0x00D1
     /* D2C2 80070622 */ .short 0x0095
-enddlabel D_800705DC
+enddlabel Stg20_BeetlePartsTextPos
 
 nonmatching Stg20_PartsPageCategory
 
@@ -1004,9 +1004,9 @@ dlabel D_8007068C
     /* D340 800706A0 04000000 */ .word 0x00000004
 enddlabel D_8007068C
 
-nonmatching D_800706A4
+nonmatching Stg20_UpgradeTextPos
 
-dlabel D_800706A4
+dlabel Stg20_UpgradeTextPos
     /* D344 800706A4 */ .short 0x0054
     /* D346 800706A6 */ .short 0x0039
     /* D348 800706A8 */ .short 0x00AF
@@ -1031,7 +1031,7 @@ dlabel D_800706A4
     /* D36E 800706CE */ .short 0x009C
     /* D370 800706D0 */ .short 0x0010
     /* D372 800706D2 */ .short 0x00BA
-enddlabel D_800706A4
+enddlabel Stg20_UpgradeTextPos
 
 nonmatching Stg20_UpgradeSlots
 
@@ -1253,11 +1253,11 @@ dlabel Stg20_CellTmp
     /* D64E 800709AE */ .short 0x0000
 enddlabel Stg20_CellTmp
 
-nonmatching D_800709B0
+nonmatching Stg20_MenuState
 
-dlabel D_800709B0
+dlabel Stg20_MenuState
     /* D650 800709B0 00000000 */ .word 0x00000000
-enddlabel D_800709B0
+enddlabel Stg20_MenuState
 
 nonmatching Stg20_TalkActive
 

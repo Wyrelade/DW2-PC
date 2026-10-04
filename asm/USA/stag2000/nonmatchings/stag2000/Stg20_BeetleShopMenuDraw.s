@@ -18,8 +18,8 @@ glabel Stg20_BeetleShopMenuDraw
     /* 8D4C 8006C0AC 00000000 */  nop
     /* 8D50 8006C0B0 1B004010 */  beqz       $v0, .L8006C120
     /* 8D54 8006C0B4 21884002 */   addu      $s1, $s2, $zero
-    /* 8D58 8006C0B8 0780023C */  lui        $v0, %hi(D_800709B0)
-    /* 8D5C 8006C0BC B0095424 */  addiu      $s4, $v0, %lo(D_800709B0)
+    /* 8D58 8006C0B8 0780023C */  lui        $v0, %hi(Stg20_MenuState)
+    /* 8D5C 8006C0BC B0095424 */  addiu      $s4, $v0, %lo(Stg20_MenuState)
     /* 8D60 8006C0C0 9EFF1324 */  addiu      $s3, $zero, -0x62
     /* 8D64 8006C0C4 06005026 */  addiu      $s0, $s2, 0x6
   .L8006C0C8:

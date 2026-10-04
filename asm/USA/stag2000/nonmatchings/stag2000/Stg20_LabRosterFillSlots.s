@@ -4,8 +4,8 @@ glabel Stg20_LabRosterFillSlots
     /* 5264 800685C4 21280000 */  addu       $a1, $zero, $zero
     /* 5268 800685C8 0680023C */  lui        $v0, %hi(Save_GameState)
     /* 526C 800685CC 20E64824 */  addiu      $t0, $v0, %lo(Save_GameState)
-    /* 5270 800685D0 0780023C */  lui        $v0, %hi(D_800709B0)
-    /* 5274 800685D4 B0094624 */  addiu      $a2, $v0, %lo(D_800709B0)
+    /* 5270 800685D0 0780023C */  lui        $v0, %hi(Stg20_MenuState)
+    /* 5274 800685D4 B0094624 */  addiu      $a2, $v0, %lo(Stg20_MenuState)
     /* 5278 800685D8 01000724 */  addiu      $a3, $zero, 0x1
     /* 527C 800685DC 2C00848C */  lw         $a0, 0x2C($a0)
   .L800685E0:

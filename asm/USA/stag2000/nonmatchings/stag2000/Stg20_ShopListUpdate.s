@@ -29,16 +29,16 @@ glabel Stg20_ShopListUpdate
     /* 985C 8006CBBC 21200002 */  addu       $a0, $s0, $zero
     /* 9860 8006CBC0 2D010524 */  addiu      $a1, $zero, 0x12D
     /* 9864 8006CBC4 04000624 */  addiu      $a2, $zero, 0x4
-    /* 9868 8006CBC8 0780023C */  lui        $v0, %hi(D_800704E4)
-    /* 986C 8006CBCC E4045124 */  addiu      $s1, $v0, %lo(D_800704E4)
+    /* 9868 8006CBC8 0780023C */  lui        $v0, %hi(Stg20_ShopListTextPos)
+    /* 986C 8006CBCC E4045124 */  addiu      $s1, $v0, %lo(Stg20_ShopListTextPos)
     /* 9870 8006CBD0 02002796 */  lhu        $a3, 0x2($s1)
-    /* 9874 8006CBD4 E4044294 */  lhu        $v0, %lo(D_800704E4)($v0)
+    /* 9874 8006CBD4 E4044294 */  lhu        $v0, %lo(Stg20_ShopListTextPos)($v0)
     /* 9878 8006CBD8 003C0700 */  sll        $a3, $a3, 16
     /* 987C 8006CBDC F26F000C */  jal        Text_OpenById
     /* 9880 8006CBE0 25384700 */   or        $a3, $v0, $a3
     /* 9884 8006CBE4 04000426 */  addiu      $a0, $s0, 0x4
-    /* 9888 8006CBE8 0780023C */  lui        $v0, %hi(D_800709B0)
-    /* 988C 8006CBEC B0095224 */  addiu      $s2, $v0, %lo(D_800709B0)
+    /* 9888 8006CBE8 0780023C */  lui        $v0, %hi(Stg20_MenuState)
+    /* 988C 8006CBEC B0095224 */  addiu      $s2, $v0, %lo(Stg20_MenuState)
     /* 9890 8006CBF0 04000624 */  addiu      $a2, $zero, 0x4
     /* 9894 8006CBF4 5400458E */  lw         $a1, 0x54($s2)
     /* 9898 8006CBF8 06002796 */  lhu        $a3, 0x6($s1)

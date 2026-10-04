@@ -122,11 +122,11 @@ glabel Stg20_AreaSelectDraw
     /* 4CEC 8006804C E0FF4014 */  bnez       $v0, .L80067FD0
     /* 4CF0 80068050 28001026 */   addiu     $s0, $s0, 0x28
   .L80068054:
-    /* 4CF4 80068054 0780033C */  lui        $v1, %hi(D_8006FF44)
+    /* 4CF4 80068054 0780033C */  lui        $v1, %hi(Stg20_AreaIconHideMasks)
     /* 4CF8 80068058 0680103C */  lui        $s0, %hi(Sys_State)
     /* 4CFC 8006805C 70F71026 */  addiu      $s0, $s0, %lo(Sys_State)
     /* 4D00 80068060 1800028E */  lw         $v0, 0x18($s0)
-    /* 4D04 80068064 44FF6324 */  addiu      $v1, $v1, %lo(D_8006FF44)
+    /* 4D04 80068064 44FF6324 */  addiu      $v1, $v1, %lo(Stg20_AreaIconHideMasks)
     /* 4D08 80068068 D6FC4224 */  addiu      $v0, $v0, -0x32A
     /* 4D0C 8006806C 80100200 */  sll        $v0, $v0, 2
     /* 4D10 80068070 21104300 */  addu       $v0, $v0, $v1
@@ -135,9 +135,9 @@ glabel Stg20_AreaSelectDraw
     /* 4D1C 8006807C 21204002 */   addu      $a0, $s2, $zero
     /* 4D20 80068080 2176000C */  jal        Gfx_DrawParts
     /* 4D24 80068084 21204002 */   addu      $a0, $s2, $zero
-    /* 4D28 80068088 0780033C */  lui        $v1, %hi(D_8006FF58)
+    /* 4D28 80068088 0780033C */  lui        $v1, %hi(Stg20_AreaScreenPartsIds)
     /* 4D2C 8006808C 1800028E */  lw         $v0, 0x18($s0)
-    /* 4D30 80068090 58FF6324 */  addiu      $v1, $v1, %lo(D_8006FF58)
+    /* 4D30 80068090 58FF6324 */  addiu      $v1, $v1, %lo(Stg20_AreaScreenPartsIds)
     /* 4D34 80068094 D6FC4224 */  addiu      $v0, $v0, -0x32A
     /* 4D38 80068098 80100200 */  sll        $v0, $v0, 2
     /* 4D3C 8006809C 21104300 */  addu       $v0, $v0, $v1

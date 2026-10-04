@@ -15,8 +15,8 @@ glabel Stg20_UpgradeListRefresh
     /* B9F0 8006ED50 2C004010 */  beqz       $v0, .L8006EE04
     /* B9F4 8006ED54 21980000 */   addu      $s3, $zero, $zero
     /* B9F8 8006ED58 340020AE */  sw         $zero, 0x34($s1)
-    /* B9FC 8006ED5C 0780023C */  lui        $v0, %hi(D_800706A4)
-    /* BA00 8006ED60 A4065424 */  addiu      $s4, $v0, %lo(D_800706A4)
+    /* B9FC 8006ED5C 0780023C */  lui        $v0, %hi(Stg20_UpgradeTextPos)
+    /* BA00 8006ED60 A4065424 */  addiu      $s4, $v0, %lo(Stg20_UpgradeTextPos)
     /* BA04 8006ED64 10001024 */  addiu      $s0, $zero, 0x10
     /* BA08 8006ED68 38001224 */  addiu      $s2, $zero, 0x38
     /* BA0C 8006ED6C 21203002 */  addu       $a0, $s1, $s0
@@ -51,8 +51,8 @@ glabel Stg20_UpgradeListRefresh
     /* BA7C 8006EDDC 21200002 */  addu       $a0, $s0, $zero
     /* BA80 8006EDE0 21284000 */  addu       $a1, $v0, $zero
     /* BA84 8006EDE4 21300000 */  addu       $a2, $zero, $zero
-    /* BA88 8006EDE8 0780023C */  lui        $v0, %hi(D_800706A4)
-    /* BA8C 8006EDEC A4064224 */  addiu      $v0, $v0, %lo(D_800706A4)
+    /* BA88 8006EDE8 0780023C */  lui        $v0, %hi(Stg20_UpgradeTextPos)
+    /* BA8C 8006EDEC A4064224 */  addiu      $v0, $v0, %lo(Stg20_UpgradeTextPos)
     /* BA90 8006EDF0 2A004794 */  lhu        $a3, 0x2A($v0)
     /* BA94 8006EDF4 28004294 */  lhu        $v0, 0x28($v0)
     /* BA98 8006EDF8 003C0700 */  sll        $a3, $a3, 16

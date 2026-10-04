@@ -169,26 +169,26 @@ dlabel jtbl_80063488
     /* 200 80063560 50740680 */ .word .L80067450
 enddlabel jtbl_80063488
 
-nonmatching D_80063564
+nonmatching Stg20_AreaNamePos
 
-dlabel D_80063564
+dlabel Stg20_AreaNamePos
     /* 204 80063564 */ .short 0x00C6
     /* 206 80063566 */ .short 0x0012
-enddlabel D_80063564
+enddlabel Stg20_AreaNamePos
 
-nonmatching D_80063568
+nonmatching Stg20_LabDigivolveTextPos
 
-dlabel D_80063568
+dlabel Stg20_LabDigivolveTextPos
     /* 208 80063568 */ .short 0x001B
     /* 20A 8006356A */ .short 0x0018
-enddlabel D_80063568
+enddlabel Stg20_LabDigivolveTextPos
 
-nonmatching D_8006356C
+nonmatching Stg20_LabDnaTextPos
 
-dlabel D_8006356C
+dlabel Stg20_LabDnaTextPos
     /* 20C 8006356C */ .short 0x0051
     /* 20E 8006356E */ .short 0x0018
-enddlabel D_8006356C
+enddlabel Stg20_LabDnaTextPos
 
 .align 3
 nonmatching jtbl_80063570
@@ -201,46 +201,46 @@ dlabel jtbl_80063570
     /* 220 80063580 64950680 */ .word .L80069564
 enddlabel jtbl_80063570
 
-nonmatching D_80063584
+nonmatching Stg20_JogBgWireColor
 
-dlabel D_80063584
+dlabel Stg20_JogBgWireColor
     /* 224 80063584 FF640000 */ .word 0x000064FF
-enddlabel D_80063584
+enddlabel Stg20_JogBgWireColor
 
-nonmatching D_80063588
+nonmatching Stg20_BitsLabelPos
 
-dlabel D_80063588
+dlabel Stg20_BitsLabelPos
     /* 228 80063588 */ .short 0x00BD
     /* 22A 8006358A */ .short 0x0017
-enddlabel D_80063588
+enddlabel Stg20_BitsLabelPos
 
-nonmatching D_8006358C
+nonmatching Stg20_ShopMenuBuyPos
 
-dlabel D_8006358C
+dlabel Stg20_ShopMenuBuyPos
     /* 22C 8006358C */ .short 0x001B
     /* 22E 8006358E */ .short 0x0017
-enddlabel D_8006358C
+enddlabel Stg20_ShopMenuBuyPos
 
-nonmatching D_80063590
+nonmatching Stg20_ShopMenuSellPos
 
-dlabel D_80063590
+dlabel Stg20_ShopMenuSellPos
     /* 230 80063590 */ .short 0x003F
     /* 232 80063592 */ .short 0x0017
-enddlabel D_80063590
+enddlabel Stg20_ShopMenuSellPos
 
-nonmatching D_80063594
+nonmatching Stg20_BeetleMenuPartsPos
 
-dlabel D_80063594
+dlabel Stg20_BeetleMenuPartsPos
     /* 234 80063594 */ .short 0x001B
     /* 236 80063596 */ .short 0x0017
-enddlabel D_80063594
+enddlabel Stg20_BeetleMenuPartsPos
 
-nonmatching D_80063598
+nonmatching Stg20_BeetleMenuUpgradePos
 
-dlabel D_80063598
+dlabel Stg20_BeetleMenuUpgradePos
     /* 238 80063598 */ .short 0x0054
     /* 23A 8006359A */ .short 0x0017
-enddlabel D_80063598
+enddlabel Stg20_BeetleMenuUpgradePos
 
 nonmatching jtbl_8006359C
 

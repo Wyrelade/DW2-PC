@@ -34,17 +34,17 @@ glabel Stg20_LabCaptionUpdate
     /* 5BC0 80068F20 03010524 */   addiu     $a1, $zero, 0x103
     /* 5BC4 80068F24 21202002 */  addu       $a0, $s1, $zero
     /* 5BC8 80068F28 02010524 */  addiu      $a1, $zero, 0x102
-    /* 5BCC 80068F2C 0780033C */  lui        $v1, %hi(D_8007001C)
-    /* 5BD0 80068F30 1C006224 */  addiu      $v0, $v1, %lo(D_8007001C)
+    /* 5BCC 80068F2C 0780033C */  lui        $v1, %hi(Stg20_LabCaptionPos)
+    /* 5BD0 80068F30 1C006224 */  addiu      $v0, $v1, %lo(Stg20_LabCaptionPos)
     /* 5BD4 80068F34 02004794 */  lhu        $a3, 0x2($v0)
-    /* 5BD8 80068F38 1C006294 */  lhu        $v0, %lo(D_8007001C)($v1)
+    /* 5BD8 80068F38 1C006294 */  lhu        $v0, %lo(Stg20_LabCaptionPos)($v1)
     /* 5BDC 80068F3C DFA30108 */  j          .L80068F7C
     /* 5BE0 80068F40 21300000 */   addu      $a2, $zero, $zero
   .L80068F44:
     /* 5BE4 80068F44 21202002 */  addu       $a0, $s1, $zero
     /* 5BE8 80068F48 21300000 */  addu       $a2, $zero, $zero
-    /* 5BEC 80068F4C 0780103C */  lui        $s0, %hi(D_8007001C)
-    /* 5BF0 80068F50 1C001026 */  addiu      $s0, $s0, %lo(D_8007001C)
+    /* 5BEC 80068F4C 0780103C */  lui        $s0, %hi(Stg20_LabCaptionPos)
+    /* 5BF0 80068F50 1C001026 */  addiu      $s0, $s0, %lo(Stg20_LabCaptionPos)
     /* 5BF4 80068F54 06000796 */  lhu        $a3, 0x6($s0)
     /* 5BF8 80068F58 04000296 */  lhu        $v0, 0x4($s0)
     /* 5BFC 80068F5C 003C0700 */  sll        $a3, $a3, 16

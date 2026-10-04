@@ -8,14 +8,14 @@ glabel Stg20_GetPartFitMsg
     /* 8E74 8006C1D4 21808000 */   addu      $s0, $a0, $zero
     /* 8E78 8006C1D8 73004014 */  bnez       $v0, .L8006C3A8
     /* 8E7C 8006C1DC 32010224 */   addiu     $v0, $zero, 0x132
-    /* 8E80 8006C1E0 0780043C */  lui        $a0, %hi(D_800704FC)
-    /* 8E84 8006C1E4 FC048424 */  addiu      $a0, $a0, %lo(D_800704FC)
+    /* 8E80 8006C1E0 0780043C */  lui        $a0, %hi(Stg20_PartsAnyBody)
+    /* 8E84 8006C1E4 FC048424 */  addiu      $a0, $a0, %lo(Stg20_PartsAnyBody)
     /* 8E88 8006C1E8 53B0010C */  jal        Stg20_ByteListHas
     /* 8E8C 8006C1EC 21280002 */   addu      $a1, $s0, $zero
     /* 8E90 8006C1F0 6D004014 */  bnez       $v0, .L8006C3A8
     /* 8E94 8006C1F4 31010224 */   addiu     $v0, $zero, 0x131
-    /* 8E98 8006C1F8 0780043C */  lui        $a0, %hi(D_80070530)
-    /* 8E9C 8006C1FC 30058424 */  addiu      $a0, $a0, %lo(D_80070530)
+    /* 8E98 8006C1F8 0780043C */  lui        $a0, %hi(Stg20_ShooterGunAmmo)
+    /* 8E9C 8006C1FC 30058424 */  addiu      $a0, $a0, %lo(Stg20_ShooterGunAmmo)
     /* 8EA0 8006C200 53B0010C */  jal        Stg20_ByteListHas
     /* 8EA4 8006C204 21280002 */   addu      $a1, $s0, $zero
     /* 8EA8 8006C208 07004010 */  beqz       $v0, .L8006C228
@@ -27,8 +27,8 @@ glabel Stg20_GetPartFitMsg
     /* 8EC0 8006C220 EAB00108 */  j          .L8006C3A8
     /* 8EC4 8006C224 30010224 */   addiu     $v0, $zero, 0x130
   .L8006C228:
-    /* 8EC8 8006C228 0780043C */  lui        $a0, %hi(D_80070548)
-    /* 8ECC 8006C22C 48058424 */  addiu      $a0, $a0, %lo(D_80070548)
+    /* 8EC8 8006C228 0780043C */  lui        $a0, %hi(Stg20_ZCannonAmmo)
+    /* 8ECC 8006C22C 48058424 */  addiu      $a0, $a0, %lo(Stg20_ZCannonAmmo)
     /* 8ED0 8006C230 53B0010C */  jal        Stg20_ByteListHas
     /* 8ED4 8006C234 21280002 */   addu      $a1, $s0, $zero
     /* 8ED8 8006C238 07004010 */  beqz       $v0, .L8006C258
@@ -40,8 +40,8 @@ glabel Stg20_GetPartFitMsg
     /* 8EF0 8006C250 EAB00108 */  j          .L8006C3A8
     /* 8EF4 8006C254 33010224 */   addiu     $v0, $zero, 0x133
   .L8006C258:
-    /* 8EF8 8006C258 0780043C */  lui        $a0, %hi(D_800705A4)
-    /* 8EFC 8006C25C A4058424 */  addiu      $a0, $a0, %lo(D_800705A4)
+    /* 8EF8 8006C258 0780043C */  lui        $a0, %hi(Stg20_MissileGunAmmo)
+    /* 8EFC 8006C25C A4058424 */  addiu      $a0, $a0, %lo(Stg20_MissileGunAmmo)
     /* 8F00 8006C260 53B0010C */  jal        Stg20_ByteListHas
     /* 8F04 8006C264 21280002 */   addu      $a1, $s0, $zero
     /* 8F08 8006C268 07004010 */  beqz       $v0, .L8006C288
@@ -53,8 +53,8 @@ glabel Stg20_GetPartFitMsg
     /* 8F20 8006C280 EAB00108 */  j          .L8006C3A8
     /* 8F24 8006C284 35010224 */   addiu     $v0, $zero, 0x135
   .L8006C288:
-    /* 8F28 8006C288 0780043C */  lui        $a0, %hi(D_800705B4)
-    /* 8F2C 8006C28C B4058424 */  addiu      $a0, $a0, %lo(D_800705B4)
+    /* 8F28 8006C288 0780043C */  lui        $a0, %hi(Stg20_RCannonAmmo)
+    /* 8F2C 8006C28C B4058424 */  addiu      $a0, $a0, %lo(Stg20_RCannonAmmo)
     /* 8F30 8006C290 53B0010C */  jal        Stg20_ByteListHas
     /* 8F34 8006C294 21280002 */   addu      $a1, $s0, $zero
     /* 8F38 8006C298 07004010 */  beqz       $v0, .L8006C2B8
@@ -66,8 +66,8 @@ glabel Stg20_GetPartFitMsg
     /* 8F50 8006C2B0 EAB00108 */  j          .L8006C3A8
     /* 8F54 8006C2B4 36010224 */   addiu     $v0, $zero, 0x136
   .L8006C2B8:
-    /* 8F58 8006C2B8 0780043C */  lui        $a0, %hi(D_80070554)
-    /* 8F5C 8006C2BC 54058424 */  addiu      $a0, $a0, %lo(D_80070554)
+    /* 8F58 8006C2B8 0780043C */  lui        $a0, %hi(Stg20_PartsAdmantOnly)
+    /* 8F5C 8006C2BC 54058424 */  addiu      $a0, $a0, %lo(Stg20_PartsAdmantOnly)
     /* 8F60 8006C2C0 53B0010C */  jal        Stg20_ByteListHas
     /* 8F64 8006C2C4 21280002 */   addu      $a1, $s0, $zero
     /* 8F68 8006C2C8 07004010 */  beqz       $v0, .L8006C2E8
@@ -79,8 +79,8 @@ glabel Stg20_GetPartFitMsg
     /* 8F80 8006C2E0 EAB00108 */  j          .L8006C3A8
     /* 8F84 8006C2E4 34010224 */   addiu     $v0, $zero, 0x134
   .L8006C2E8:
-    /* 8F88 8006C2E8 0780043C */  lui        $a0, %hi(D_80070570)
-    /* 8F8C 8006C2EC 70058424 */  addiu      $a0, $a0, %lo(D_80070570)
+    /* 8F88 8006C2E8 0780043C */  lui        $a0, %hi(Stg20_PartsSteelOnly)
+    /* 8F8C 8006C2EC 70058424 */  addiu      $a0, $a0, %lo(Stg20_PartsSteelOnly)
     /* 8F90 8006C2F0 53B0010C */  jal        Stg20_ByteListHas
     /* 8F94 8006C2F4 21280002 */   addu      $a1, $s0, $zero
     /* 8F98 8006C2F8 07004010 */  beqz       $v0, .L8006C318
@@ -92,8 +92,8 @@ glabel Stg20_GetPartFitMsg
     /* 8FB0 8006C310 EAB00108 */  j          .L8006C3A8
     /* 8FB4 8006C314 34010224 */   addiu     $v0, $zero, 0x134
   .L8006C318:
-    /* 8FB8 8006C318 0780043C */  lui        $a0, %hi(D_80070588)
-    /* 8FBC 8006C31C 88058424 */  addiu      $a0, $a0, %lo(D_80070588)
+    /* 8FB8 8006C318 0780043C */  lui        $a0, %hi(Stg20_PartsTitanOnly)
+    /* 8FBC 8006C31C 88058424 */  addiu      $a0, $a0, %lo(Stg20_PartsTitanOnly)
     /* 8FC0 8006C320 53B0010C */  jal        Stg20_ByteListHas
     /* 8FC4 8006C324 21280002 */   addu      $a1, $s0, $zero
     /* 8FC8 8006C328 07004010 */  beqz       $v0, .L8006C348
@@ -105,8 +105,8 @@ glabel Stg20_GetPartFitMsg
     /* 8FE0 8006C340 EAB00108 */  j          .L8006C3A8
     /* 8FE4 8006C344 34010224 */   addiu     $v0, $zero, 0x134
   .L8006C348:
-    /* 8FE8 8006C348 0780043C */  lui        $a0, %hi(D_80070580)
-    /* 8FEC 8006C34C 80058424 */  addiu      $a0, $a0, %lo(D_80070580)
+    /* 8FE8 8006C348 0780043C */  lui        $a0, %hi(Stg20_PartsNotAdmant)
+    /* 8FEC 8006C34C 80058424 */  addiu      $a0, $a0, %lo(Stg20_PartsNotAdmant)
     /* 8FF0 8006C350 53B0010C */  jal        Stg20_ByteListHas
     /* 8FF4 8006C354 21280002 */   addu      $a1, $s0, $zero
     /* 8FF8 8006C358 05004010 */  beqz       $v0, .L8006C370
@@ -116,8 +116,8 @@ glabel Stg20_GetPartFitMsg
     /* 9008 8006C368 E7B00108 */  j          .L8006C39C
     /* 900C 8006C36C EC000324 */   addiu     $v1, $zero, 0xEC
   .L8006C370:
-    /* 9010 8006C370 0780043C */  lui        $a0, %hi(D_80070594)
-    /* 9014 8006C374 94058424 */  addiu      $a0, $a0, %lo(D_80070594)
+    /* 9010 8006C370 0780043C */  lui        $a0, %hi(Stg20_PartsNotSteel)
+    /* 9014 8006C374 94058424 */  addiu      $a0, $a0, %lo(Stg20_PartsNotSteel)
     /* 9018 8006C378 53B0010C */  jal        Stg20_ByteListHas
     /* 901C 8006C37C 21280002 */   addu      $a1, $s0, $zero
     /* 9020 8006C380 03004014 */  bnez       $v0, .L8006C390

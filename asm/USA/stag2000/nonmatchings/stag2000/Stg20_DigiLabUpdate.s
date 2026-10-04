@@ -28,8 +28,8 @@ glabel Stg20_DigiLabUpdate
   .L800657D0:
     /* 2470 800657D0 14000526 */  addiu      $a1, $s0, 0x14
     /* 2474 800657D4 21300000 */  addu       $a2, $zero, $zero
-    /* 2478 800657D8 0780103C */  lui        $s0, %hi(D_800709B0)
-    /* 247C 800657DC B0090226 */  addiu      $v0, $s0, %lo(D_800709B0)
+    /* 2478 800657D8 0780103C */  lui        $s0, %hi(Stg20_MenuState)
+    /* 247C 800657DC B0090226 */  addiu      $v0, $s0, %lo(Stg20_MenuState)
     /* 2480 800657E0 1F44000C */  jal        Task_Create
     /* 2484 800657E4 0C0040AC */   sw        $zero, 0xC($v0)
     /* 2488 800657E8 08030424 */  addiu      $a0, $zero, 0x308
@@ -39,7 +39,7 @@ glabel Stg20_DigiLabUpdate
     /* 2498 800657F8 21202002 */  addu       $a0, $s1, $zero
     /* 249C 800657FC 040042AE */  sw         $v0, 0x4($s2)
     /* 24A0 80065800 5145000C */  jal        Task_NextState0
-    /* 24A4 80065804 B00900AE */   sw        $zero, %lo(D_800709B0)($s0)
+    /* 24A4 80065804 B00900AE */   sw        $zero, %lo(Stg20_MenuState)($s0)
     /* 24A8 80065808 52960108 */  j          .L80065948
     /* 24AC 8006580C 00000000 */   nop
   .L80065810:
@@ -74,8 +74,8 @@ glabel Stg20_DigiLabUpdate
     /* 2514 80065874 0C00028E */  lw         $v0, 0xC($s0)
     /* 2518 80065878 00000000 */  nop
     /* 251C 8006587C 32004014 */  bnez       $v0, .L80065948
-    /* 2520 80065880 0780023C */   lui       $v0, %hi(D_800709B0)
-    /* 2524 80065884 B0094324 */  addiu      $v1, $v0, %lo(D_800709B0)
+    /* 2520 80065880 0780023C */   lui       $v0, %hi(Stg20_MenuState)
+    /* 2524 80065884 B0094324 */  addiu      $v1, $v0, %lo(Stg20_MenuState)
     /* 2528 80065888 0800628C */  lw         $v0, 0x8($v1)
     /* 252C 8006588C 00000000 */  nop
     /* 2530 80065890 05004010 */  beqz       $v0, .L800658A8

@@ -196,11 +196,11 @@ glabel Stg20_StageMain
     /* 2F28 80066288 03000624 */   addiu     $a2, $zero, 0x3
   .L8006628C:
     /* 2F2C 8006628C 0C004010 */  beqz       $v0, .L800662C0
-    /* 2F30 80066290 0780023C */   lui       $v0, %hi(D_800709B0)
+    /* 2F30 80066290 0780023C */   lui       $v0, %hi(Stg20_MenuState)
     /* 2F34 80066294 01000324 */  addiu      $v1, $zero, 0x1
     /* 2F38 80066298 0C0043AE */  sw         $v1, 0xC($s2)
     /* 2F3C 8006629C C599010C */  jal        Stg20_GetMapInfo
-    /* 2F40 800662A0 B00943AC */   sw        $v1, %lo(D_800709B0)($v0)
+    /* 2F40 800662A0 B00943AC */   sw        $v1, %lo(Stg20_MenuState)($v0)
     /* 2F44 800662A4 05030424 */  addiu      $a0, $zero, 0x305
     /* 2F48 800662A8 0400468C */  lw         $a2, 0x4($v0)
     /* 2F4C 800662AC 1F44000C */  jal        Task_Create
@@ -429,8 +429,8 @@ glabel Stg20_StageMain
     /* 3278 800665D8 00F7428C */  lw         $v0, %lo(Pad_Circle)($v0)
     /* 327C 800665DC 00000000 */  nop
     /* 3280 800665E0 42004018 */  blez       $v0, .L800666EC
-    /* 3284 800665E4 0780033C */   lui       $v1, %hi(D_800709B0)
-    /* 3288 800665E8 B0096224 */  addiu      $v0, $v1, %lo(D_800709B0)
+    /* 3284 800665E4 0780033C */   lui       $v1, %hi(Stg20_MenuState)
+    /* 3288 800665E8 B0096224 */  addiu      $v0, $v1, %lo(Stg20_MenuState)
     /* 328C 800665EC 0400428C */  lw         $v0, 0x4($v0)
     /* 3290 800665F0 00000000 */  nop
     /* 3294 800665F4 3D004014 */  bnez       $v0, .L800666EC
@@ -440,7 +440,7 @@ glabel Stg20_StageMain
     /* 32A4 80066604 2F034228 */  slti       $v0, $v0, 0x32F
     /* 32A8 80066608 38004010 */  beqz       $v0, .L800666EC
     /* 32AC 8006660C 00000000 */   nop
-    /* 32B0 80066610 B009628C */  lw         $v0, %lo(D_800709B0)($v1)
+    /* 32B0 80066610 B009628C */  lw         $v0, %lo(Stg20_MenuState)($v1)
     /* 32B4 80066614 00000000 */  nop
     /* 32B8 80066618 34004010 */  beqz       $v0, .L800666EC
     /* 32BC 8006661C 00000000 */   nop

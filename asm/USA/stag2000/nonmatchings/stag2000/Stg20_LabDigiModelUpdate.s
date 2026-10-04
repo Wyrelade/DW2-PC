@@ -32,12 +32,12 @@ glabel Stg20_LabDigiModelUpdate
     /* 713C 8006A49C 12006510 */  beq        $v1, $a1, .L8006A4E8
     /* 7140 8006A4A0 02006228 */   slti      $v0, $v1, 0x2
     /* 7144 8006A4A4 04004014 */  bnez       $v0, .L8006A4B8
-    /* 7148 8006A4A8 0780103C */   lui       $s0, %hi(D_800709B0)
+    /* 7148 8006A4A8 0780103C */   lui       $s0, %hi(Stg20_MenuState)
     /* 714C 8006A4AC 02000224 */  addiu      $v0, $zero, 0x2
     /* 7150 8006A4B0 25006210 */  beq        $v1, $v0, .L8006A548
     /* 7154 8006A4B4 00000000 */   nop
   .L8006A4B8:
-    /* 7158 8006A4B8 B0091026 */  addiu      $s0, $s0, %lo(D_800709B0)
+    /* 7158 8006A4B8 B0091026 */  addiu      $s0, $s0, %lo(Stg20_MenuState)
     /* 715C 8006A4BC 4000048E */  lw         $a0, 0x40($s0)
     /* 7160 8006A4C0 C179000C */  jal        Digi_GetModelFile
     /* 7164 8006A4C4 0C0044AE */   sw        $a0, 0xC($s2)

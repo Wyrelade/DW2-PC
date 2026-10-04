@@ -20,20 +20,20 @@ glabel Stg20_ItemShopMenuUpdate
     /* 894C 8006BCAC 21200002 */  addu       $a0, $s0, $zero
     /* 8950 8006BCB0 2B010524 */  addiu      $a1, $zero, 0x12B
     /* 8954 8006BCB4 21300000 */  addu       $a2, $zero, $zero
-    /* 8958 8006BCB8 0680033C */  lui        $v1, %hi(D_8006358C)
-    /* 895C 8006BCBC 8C356224 */  addiu      $v0, $v1, %lo(D_8006358C)
+    /* 8958 8006BCB8 0680033C */  lui        $v1, %hi(Stg20_ShopMenuBuyPos)
+    /* 895C 8006BCBC 8C356224 */  addiu      $v0, $v1, %lo(Stg20_ShopMenuBuyPos)
     /* 8960 8006BCC0 02004794 */  lhu        $a3, 0x2($v0)
-    /* 8964 8006BCC4 8C356294 */  lhu        $v0, %lo(D_8006358C)($v1)
+    /* 8964 8006BCC4 8C356294 */  lhu        $v0, %lo(Stg20_ShopMenuBuyPos)($v1)
     /* 8968 8006BCC8 003C0700 */  sll        $a3, $a3, 16
     /* 896C 8006BCCC F26F000C */  jal        Text_OpenById
     /* 8970 8006BCD0 25384700 */   or        $a3, $v0, $a3
     /* 8974 8006BCD4 04000426 */  addiu      $a0, $s0, 0x4
     /* 8978 8006BCD8 2C010524 */  addiu      $a1, $zero, 0x12C
     /* 897C 8006BCDC 21300000 */  addu       $a2, $zero, $zero
-    /* 8980 8006BCE0 0680033C */  lui        $v1, %hi(D_80063590)
-    /* 8984 8006BCE4 90356224 */  addiu      $v0, $v1, %lo(D_80063590)
+    /* 8980 8006BCE0 0680033C */  lui        $v1, %hi(Stg20_ShopMenuSellPos)
+    /* 8984 8006BCE4 90356224 */  addiu      $v0, $v1, %lo(Stg20_ShopMenuSellPos)
     /* 8988 8006BCE8 02004794 */  lhu        $a3, 0x2($v0)
-    /* 898C 8006BCEC 90356294 */  lhu        $v0, %lo(D_80063590)($v1)
+    /* 898C 8006BCEC 90356294 */  lhu        $v0, %lo(Stg20_ShopMenuSellPos)($v1)
     /* 8990 8006BCF0 003C0700 */  sll        $a3, $a3, 16
     /* 8994 8006BCF4 F26F000C */  jal        Text_OpenById
     /* 8998 8006BCF8 25384700 */   or        $a3, $v0, $a3

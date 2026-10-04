@@ -19,8 +19,8 @@ glabel Stg20_LabRosterSetText
     /* 50FC 8006845C 2C00938C */  lw         $s3, 0x2C($a0)
     /* 5100 80068460 0680043C */  lui        $a0, %hi(Save_GameState)
     /* 5104 80068464 21A06202 */  addu       $s4, $s3, $v0
-    /* 5108 80068468 0780023C */  lui        $v0, %hi(D_8006FF9C)
-    /* 510C 8006846C 9CFF4224 */  addiu      $v0, $v0, %lo(D_8006FF9C)
+    /* 5108 80068468 0780023C */  lui        $v0, %hi(Stg20_LabRosterTextPos)
+    /* 510C 8006846C 9CFF4224 */  addiu      $v0, $v0, %lo(Stg20_LabRosterTextPos)
     /* 5110 80068470 21886200 */  addu       $s1, $v1, $v0
     /* 5114 80068474 0800838E */  lw         $v1, 0x8($s4)
     /* 5118 80068478 20E68424 */  addiu      $a0, $a0, %lo(Save_GameState)

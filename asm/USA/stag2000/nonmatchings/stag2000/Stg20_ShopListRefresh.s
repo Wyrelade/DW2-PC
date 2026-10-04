@@ -127,8 +127,8 @@ glabel Stg20_ShopListRefresh
     /* 972C 8006CA8C 21200002 */  addu       $a0, $s0, $zero
     /* 9730 8006CA90 1000A527 */  addiu      $a1, $sp, 0x10
     /* 9734 8006CA94 2400A2AF */  sw         $v0, 0x24($sp)
-    /* 9738 8006CA98 0780023C */  lui        $v0, %hi(D_800704E4)
-    /* 973C 8006CA9C E4044224 */  addiu      $v0, $v0, %lo(D_800704E4)
+    /* 9738 8006CA98 0780023C */  lui        $v0, %hi(Stg20_ShopListTextPos)
+    /* 973C 8006CA9C E4044224 */  addiu      $v0, $v0, %lo(Stg20_ShopListTextPos)
     /* 9740 8006CAA0 10004394 */  lhu        $v1, 0x10($v0)
     /* 9744 8006CAA4 12004694 */  lhu        $a2, 0x12($v0)
     /* 9748 8006CAA8 01000224 */  addiu      $v0, $zero, 0x1
@@ -153,8 +153,8 @@ glabel Stg20_ShopListRefresh
     /* 9790 8006CAF0 21200002 */  addu       $a0, $s0, $zero
     /* 9794 8006CAF4 1000A527 */  addiu      $a1, $sp, 0x10
     /* 9798 8006CAF8 2400A2AF */  sw         $v0, 0x24($sp)
-    /* 979C 8006CAFC 0780023C */  lui        $v0, %hi(D_800704E4)
-    /* 97A0 8006CB00 E4044224 */  addiu      $v0, $v0, %lo(D_800704E4)
+    /* 979C 8006CAFC 0780023C */  lui        $v0, %hi(Stg20_ShopListTextPos)
+    /* 97A0 8006CB00 E4044224 */  addiu      $v0, $v0, %lo(Stg20_ShopListTextPos)
     /* 97A4 8006CB04 14004394 */  lhu        $v1, 0x14($v0)
     /* 97A8 8006CB08 16004694 */  lhu        $a2, 0x16($v0)
     /* 97AC 8006CB0C 01000224 */  addiu      $v0, $zero, 0x1

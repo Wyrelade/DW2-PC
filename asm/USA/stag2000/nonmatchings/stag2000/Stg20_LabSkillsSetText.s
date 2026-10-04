@@ -24,8 +24,8 @@ glabel Stg20_LabSkillsSetText
     /* 65E0 80069940 21104202 */  addu       $v0, $s2, $v0
     /* 65E4 80069944 21800000 */  addu       $s0, $zero, $zero
     /* 65E8 80069948 4000A6AF */  sw         $a2, 0x40($sp)
-    /* 65EC 8006994C 0780063C */  lui        $a2, %hi(D_8007009C)
-    /* 65F0 80069950 9C00C624 */  addiu      $a2, $a2, %lo(D_8007009C)
+    /* 65EC 8006994C 0780063C */  lui        $a2, %hi(Stg20_LabSkillsCursorPos)
+    /* 65F0 80069950 9C00C624 */  addiu      $a2, $a2, %lo(Stg20_LabSkillsCursorPos)
     /* 65F4 80069954 2198E602 */  addu       $s3, $s7, $a2
     /* 65F8 80069958 21A8C003 */  addu       $s5, $fp, $zero
     /* 65FC 8006995C 6000428C */  lw         $v0, 0x60($v0)

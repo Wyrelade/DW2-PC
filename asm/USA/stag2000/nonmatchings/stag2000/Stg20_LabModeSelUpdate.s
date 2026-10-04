@@ -35,20 +35,20 @@ glabel Stg20_LabModeSelUpdate
     /* 4EB4 80068214 21200002 */  addu       $a0, $s0, $zero
     /* 4EB8 80068218 02010524 */  addiu      $a1, $zero, 0x102
     /* 4EBC 8006821C 21300000 */  addu       $a2, $zero, $zero
-    /* 4EC0 80068220 0680033C */  lui        $v1, %hi(D_80063568)
-    /* 4EC4 80068224 68356224 */  addiu      $v0, $v1, %lo(D_80063568)
+    /* 4EC0 80068220 0680033C */  lui        $v1, %hi(Stg20_LabDigivolveTextPos)
+    /* 4EC4 80068224 68356224 */  addiu      $v0, $v1, %lo(Stg20_LabDigivolveTextPos)
     /* 4EC8 80068228 02004794 */  lhu        $a3, 0x2($v0)
-    /* 4ECC 8006822C 68356294 */  lhu        $v0, %lo(D_80063568)($v1)
+    /* 4ECC 8006822C 68356294 */  lhu        $v0, %lo(Stg20_LabDigivolveTextPos)($v1)
     /* 4ED0 80068230 003C0700 */  sll        $a3, $a3, 16
     /* 4ED4 80068234 F26F000C */  jal        Text_OpenById
     /* 4ED8 80068238 25384700 */   or        $a3, $v0, $a3
     /* 4EDC 8006823C 08002426 */  addiu      $a0, $s1, 0x8
     /* 4EE0 80068240 03010524 */  addiu      $a1, $zero, 0x103
     /* 4EE4 80068244 21300000 */  addu       $a2, $zero, $zero
-    /* 4EE8 80068248 0680033C */  lui        $v1, %hi(D_8006356C)
-    /* 4EEC 8006824C 6C356224 */  addiu      $v0, $v1, %lo(D_8006356C)
+    /* 4EE8 80068248 0680033C */  lui        $v1, %hi(Stg20_LabDnaTextPos)
+    /* 4EEC 8006824C 6C356224 */  addiu      $v0, $v1, %lo(Stg20_LabDnaTextPos)
     /* 4EF0 80068250 02004794 */  lhu        $a3, 0x2($v0)
-    /* 4EF4 80068254 6C356294 */  lhu        $v0, %lo(D_8006356C)($v1)
+    /* 4EF4 80068254 6C356294 */  lhu        $v0, %lo(Stg20_LabDnaTextPos)($v1)
     /* 4EF8 80068258 003C0700 */  sll        $a3, $a3, 16
     /* 4EFC 8006825C F26F000C */  jal        Text_OpenById
     /* 4F00 80068260 25384700 */   or        $a3, $v0, $a3
@@ -91,9 +91,9 @@ glabel Stg20_LabModeSelUpdate
     /* 4F84 800682E4 1400628C */  lw         $v0, 0x14($v1)
     /* 4F88 800682E8 00000000 */  nop
     /* 4F8C 800682EC 17004018 */  blez       $v0, .L8006834C
-    /* 4F90 800682F0 0780023C */   lui       $v0, %hi(D_800709B0)
+    /* 4F90 800682F0 0780023C */   lui       $v0, %hi(Stg20_MenuState)
     /* 4F94 800682F4 0A000424 */  addiu      $a0, $zero, 0xA
-    /* 4F98 800682F8 B0094224 */  addiu      $v0, $v0, %lo(D_800709B0)
+    /* 4F98 800682F8 B0094224 */  addiu      $v0, $v0, %lo(Stg20_MenuState)
     /* 4F9C 800682FC 080040AC */  sw         $zero, 0x8($v0)
     /* 4FA0 80068300 0000238E */  lw         $v1, 0x0($s1)
     /* 4FA4 80068304 21280000 */  addu       $a1, $zero, $zero
@@ -102,8 +102,8 @@ glabel Stg20_LabModeSelUpdate
     /* 4FB0 80068310 D1A00108 */  j          .L80068344
     /* 4FB4 80068314 00000000 */   nop
   .L80068318:
-    /* 4FB8 80068318 0780023C */  lui        $v0, %hi(D_800709B0)
-    /* 4FBC 8006831C B0094224 */  addiu      $v0, $v0, %lo(D_800709B0)
+    /* 4FB8 80068318 0780023C */  lui        $v0, %hi(Stg20_MenuState)
+    /* 4FBC 8006831C B0094224 */  addiu      $v0, $v0, %lo(Stg20_MenuState)
     /* 4FC0 80068320 080045AC */  sw         $a1, 0x8($v0)
     /* 4FC4 80068324 0000238E */  lw         $v1, 0x0($s1)
     /* 4FC8 80068328 21280000 */  addu       $a1, $zero, $zero
