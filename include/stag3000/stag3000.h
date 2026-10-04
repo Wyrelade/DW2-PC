@@ -714,12 +714,12 @@ extern void Task_NextState1(Actor *);
 extern void Task_NextState2(Actor *);
 extern void Task_NextState3(Actor *);
 extern void Gfx_FadeOutToBlack(s32);
-extern void func_8001EEA4(s32 id, s32 n, s16 *a, s16 *b);
+extern void Skill_GetFxSet(s32 id, s32 n, s16 *a, s16 *b);
 extern s32 func_8001E79C(s32 id);  /* s16 in the main exe; used unextended here */
 extern s32 func_8001E7C0(s32 id);
 extern s32 Skill_GetType(s32 id);
 extern void Gfx_SetPartsNumber(GfxPart *, s32, s32, s32);
-extern void func_8001E7E4(s32 a0, void *a1);
+extern void Digi_GetCastFxOffsets(s32 a0, void *a1);
 extern s32 Math_PingPongRange(s32 v, s32 div, s32 lo, s32 hi);
 extern s32 Item_GetCategory(s32 id);
 extern void Text_OpenPacked(void *, s32, u32, Halves);
@@ -762,7 +762,7 @@ extern s32 D_800731B8[];
 extern u16 D_800731C8[];
 extern s32 D_800731D0[];
 extern u16 D_800731FC[];
-extern s32 func_8001EE10(s32 id);
+extern s32 Skill_GetCastAnim(s32 id);
 extern u16 D_80073510[6][3][4];
 extern u16 D_800735A0[5][3][4];
 extern u16 D_80073618[4][3][4];
@@ -820,7 +820,7 @@ typedef struct {
 } Stg30GameFlags;
 
 
-extern u8 D_8005E634[];
+extern u8 Save_PlayerName[];
 extern Halves D_800633E8;
 
 /* Save_GameState viewed with the words func_8007292C reads (0x30 map id, 0x4A, 0x61). */
@@ -856,7 +856,7 @@ extern s32 D_8005F790;  /* Sys_State.prevGameMode as a scalar reloc */
 extern s32 Anim_GetModelAnimFile(s32 arg0, s32 arg1);
 extern void Cd_QueueFile(s32);
 extern s32 Cd_GetFileState(s32 arg0);
-extern void func_80011644(void);
+extern void Cd_QueueStag4000Files(void);
 extern s32 func_8006767C(Stg30IdSet *a0, s16 *a1, u8 id);
 extern s32 func_800676C4(s32 a0, u8 a1);
 extern void func_80063B80(Actor *a0, s32 file, s32 lba);

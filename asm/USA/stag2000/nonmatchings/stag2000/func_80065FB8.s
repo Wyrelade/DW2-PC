@@ -103,13 +103,13 @@ glabel func_80065FB8
     /* 2DDC 8006613C 1000B527 */  addiu      $s5, $sp, 0x10
     /* 2DE0 80066140 FF001424 */  addiu      $s4, $zero, 0xFF
   .L80066144:
-    /* 2DE4 80066144 7A79000C */  jal        func_8001E5E8
+    /* 2DE4 80066144 7A79000C */  jal        Flag_GetEntryPosList
     /* 2DE8 80066148 21202002 */   addu      $a0, $s1, $zero
     /* 2DEC 8006614C 21202002 */  addu       $a0, $s1, $zero
-    /* 2DF0 80066150 8D79000C */  jal        func_8001E634
+    /* 2DF0 80066150 8D79000C */  jal        Flag_GetEntryDigiId
     /* 2DF4 80066154 21804000 */   addu      $s0, $v0, $zero
     /* 2DF8 80066158 21202002 */  addu       $a0, $s1, $zero
-    /* 2DFC 8006615C 9679000C */  jal        func_8001E658
+    /* 2DFC 8006615C 9679000C */  jal        Flag_GetEntryDir
     /* 2E00 80066160 1000A2A7 */   sh        $v0, 0x10($sp)
     /* 2E04 80066164 2120A002 */  addu       $a0, $s5, $zero
     /* 2E08 80066168 0C000526 */  addiu      $a1, $s0, 0xC

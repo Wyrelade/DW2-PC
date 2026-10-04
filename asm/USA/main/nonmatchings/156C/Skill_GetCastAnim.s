@@ -1,6 +1,6 @@
-nonmatching func_8001EE10, 0x24
+nonmatching Skill_GetCastAnim, 0x24
 
-glabel func_8001EE10
+glabel Skill_GetCastAnim
     /* F610 8001EE10 E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* F614 8001EE14 1000BFAF */  sw         $ra, 0x10($sp)
     /* F618 8001EE18 507B000C */  jal        Skill_FindById
@@ -10,4 +10,4 @@ glabel func_8001EE10
     /* F628 8001EE28 03004230 */  andi       $v0, $v0, 0x3
     /* F62C 8001EE2C 0800E003 */  jr         $ra
     /* F630 8001EE30 1800BD27 */   addiu     $sp, $sp, 0x18
-endlabel func_8001EE10
+endlabel Skill_GetCastAnim

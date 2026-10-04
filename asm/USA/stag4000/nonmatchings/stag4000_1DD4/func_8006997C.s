@@ -117,7 +117,7 @@ glabel func_8006997C
     /* 67C4 80069B24 E2A60108 */  j          .L80069B88
     /* 67C8 80069B28 9C0B43A0 */   sb        $v1, 0xB9C($v0)
   .L80069B2C:
-    /* 67CC 80069B2C 5E89000C */  jal        func_80022578
+    /* 67CC 80069B2C 5E89000C */  jal        Beetle_GetDigiCapacity
     /* 67D0 80069B30 00000000 */   nop
     /* 67D4 80069B34 21804000 */  addu       $s0, $v0, $zero
     /* 67D8 80069B38 A1BA010C */  jal        func_8006EA84

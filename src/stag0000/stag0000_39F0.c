@@ -30,8 +30,8 @@ void Stg00_SpawnSkillCastFx(Actor *arg0, s32 arg1) {
     Row6 *r;
     s32 i;
 
-    func_8001EEA4(w->skillId, 0, a, b);
-    func_8001E7E4(arg0->digiId, rows);
+    Skill_GetFxSet(w->skillId, 0, a, b);
+    Digi_GetCastFxOffsets(arg0->digiId, rows);
     r = &rows[arg1];
     for (i = 0; i < 3; i++) {
         if (a[i] != 0) {
@@ -68,7 +68,7 @@ void Stg00_SpawnSkillCastFx(Actor *arg0, s32 arg1) {
     Task_Create(0x10B, &slot[4], (s32)&args2);
 }
 
-void func_80066FE8(Actor *arg0) {
+void Stg00_SpawnSkillHitFx(Actor *arg0) {
     Stg00SpawnWork *w = (Stg00SpawnWork *)arg0->work;
     s32 *slot = (s32 *)arg0->u34.children;
     Stg00TaskArgs args;
@@ -76,7 +76,7 @@ void func_80066FE8(Actor *arg0) {
     s16 b[3];
     s32 i;
 
-    func_8001EEA4(w->skillId, 1, a, b);
+    Skill_GetFxSet(w->skillId, 1, a, b);
     for (i = 0; i < 3; i++) {
         if (a[i] != 0) {
             args.field_0 = a[i];
@@ -101,7 +101,7 @@ void func_80066FE8(Actor *arg0) {
     }
 }
 
-void func_80067120(Actor *arg0, s32 arg1, s32 arg2) {
+void Stg00_HitReactUpdate(Actor *arg0, s32 arg1, s32 arg2) {
     Stg00Xform *t = (Stg00Xform *)arg0->u38.ptr38;
 
     if (arg0->stateLevel3 == 0 && arg0->stateLevel4 == 0) {
@@ -117,14 +117,14 @@ void func_80067120(Actor *arg0, s32 arg1, s32 arg2) {
         case 0:
         default:
             if (arg2) {
-                Actor_SetAxisMotion(arg0, 2, &D_80068F04);
+                Actor_SetAxisMotion(arg0, 2, &Stg00_HitReactPushMotion);
             }
             if (!Anim_HasModelAnim(arg0, 0x14)) {
                 Task_NextState3(arg0);
                 break;
             }
             Anim_SetModelAnim(arg0, 0x14);
-            Actor_SetAxisMotion(arg0, 1, &D_80068EEC);
+            Actor_SetAxisMotion(arg0, 1, &Stg00_HitReactHop1Motion);
             Task_NextState4(arg0);
             return;
         case 1:
@@ -145,7 +145,7 @@ void func_80067120(Actor *arg0, s32 arg1, s32 arg2) {
                 break;
             }
             Anim_SetModelAnim(arg0, 0x15);
-            Actor_SetAxisMotion(arg0, 1, &D_80068EF8);
+            Actor_SetAxisMotion(arg0, 1, &Stg00_HitReactHop2Motion);
             Task_NextState4(arg0);
             return;
         case 1:
@@ -300,7 +300,7 @@ void Stg00_DigiModelTask(Actor *arg0) {
             w->subFrame += Sys_FrameDelta;
             while (w->subFrame >= 2) {
                 w->subFrame -= 2;
-                func_80067120(arg0, arg0->stateLevel1 - 6, 0);
+                Stg00_HitReactUpdate(arg0, arg0->stateLevel1 - 6, 0);
             }
             break;
         case 8:
@@ -371,7 +371,7 @@ void Stg00_DigiModelTask(Actor *arg0) {
                 case 1:
                     if (((Actor *)slot[5])->stateLevel0 == 1) {
                         Task_NextState0((Actor *)slot[5]);
-                        k = func_8001EE10(w->skillId);
+                        k = Skill_GetCastAnim(w->skillId);
                         Stg00_SpawnSkillCastFx(arg0, k);
                         switch (k) {
                         case 0:
@@ -402,7 +402,7 @@ void Stg00_DigiModelTask(Actor *arg0) {
                 if (arg0->elapsed < 0x1E) {
                     break;
                 }
-                func_80066FE8(arg0);
+                Stg00_SpawnSkillHitFx(arg0);
                 Task_NextState2(arg0);
                 if (Skill_GetPower(w->skillId) == 0) {
                     Task_NextState2(arg0);
@@ -413,7 +413,7 @@ void Stg00_DigiModelTask(Actor *arg0) {
                 w->subFrame += Sys_FrameDelta;
                 while (w->subFrame >= 2) {
                     w->subFrame -= 2;
-                    func_80067120(arg0, 0, 1);
+                    Stg00_HitReactUpdate(arg0, 0, 1);
                 }
                 break;
             case 4:

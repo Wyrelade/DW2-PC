@@ -414,7 +414,7 @@ glabel func_800676F4
     /* 4974 80067CD4 00FF4230 */  andi       $v0, $v0, 0xFF00
     /* 4978 80067CD8 03004314 */  bne        $v0, $v1, .L80067CE8
     /* 497C 80067CDC 00000000 */   nop
-    /* 4980 80067CE0 9145000C */  jal        func_80011644
+    /* 4980 80067CE0 9145000C */  jal        Cd_QueueStag4000Files
     /* 4984 80067CE4 00000000 */   nop
   .L80067CE8:
     /* 4988 80067CE8 6045000C */  jal        Task_NextState2

@@ -18,11 +18,11 @@ glabel Stg00_SpawnSkillCastFx
     /* 3AF4 80066E54 00000000 */  nop
     /* 3AF8 80066E58 2C00648E */  lw         $a0, 0x2C($s3)
     /* 3AFC 80066E5C 3400B48E */  lw         $s4, 0x34($s5)
-    /* 3B00 80066E60 A97B000C */  jal        func_8001EEA4
+    /* 3B00 80066E60 A97B000C */  jal        Skill_GetFxSet
     /* 3B04 80066E64 3800A727 */   addiu     $a3, $sp, 0x38
     /* 3B08 80066E68 4000B027 */  addiu      $s0, $sp, 0x40
     /* 3B0C 80066E6C 0C00A48E */  lw         $a0, 0xC($s5)
-    /* 3B10 80066E70 F979000C */  jal        func_8001E7E4
+    /* 3B10 80066E70 F979000C */  jal        Digi_GetCastFxOffsets
     /* 3B14 80066E74 21280002 */   addu      $a1, $s0, $zero
     /* 3B18 80066E78 40101100 */  sll        $v0, $s1, 1
     /* 3B1C 80066E7C 21105100 */  addu       $v0, $v0, $s1

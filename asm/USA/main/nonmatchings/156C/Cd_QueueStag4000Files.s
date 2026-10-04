@@ -1,6 +1,6 @@
-nonmatching func_80011644, 0x64
+nonmatching Cd_QueueStag4000Files, 0x64
 
-glabel func_80011644
+glabel Cd_QueueStag4000Files
     /* 1E44 80011644 E0FFBD27 */  addiu      $sp, $sp, -0x20
     /* 1E48 80011648 0580023C */  lui        $v0, %hi(Cd_PreloadIds)
     /* 1E4C 8001164C 1400B1AF */  sw         $s1, 0x14($sp)
@@ -28,4 +28,4 @@ glabel func_80011644
     /* 1E9C 8001169C 1000B08F */  lw         $s0, 0x10($sp)
     /* 1EA0 800116A0 0800E003 */  jr         $ra
     /* 1EA4 800116A4 2000BD27 */   addiu     $sp, $sp, 0x20
-endlabel func_80011644
+endlabel Cd_QueueStag4000Files

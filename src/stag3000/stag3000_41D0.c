@@ -249,7 +249,7 @@ void func_800676F4(Actor *a0) {
             break;
         }
         if ((D_8005F790 & 0xFF00) == 0x200) {
-            func_80011644();
+            Cd_QueueStag4000Files();
         }
         Task_NextState2(a0);
     case 6:

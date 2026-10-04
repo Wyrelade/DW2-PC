@@ -101,7 +101,7 @@ glabel Stg00_DungSelPickFloor
     /* 10B8 80064418 80100200 */  sll        $v0, $v0, 2
     /* 10BC 8006441C 21104300 */  addu       $v0, $v0, $v1
     /* 10C0 80064420 0000448C */  lw         $a0, 0x0($v0)
-    /* 10C4 80064424 C292010C */  jal        func_80064B08
+    /* 10C4 80064424 C292010C */  jal        Stg00_CalcLayoutMask
     /* 10C8 80064428 21288002 */   addu      $a1, $s4, $zero
     /* 10CC 8006442C 21200000 */  addu       $a0, $zero, $zero
     /* 10D0 80064430 140022AE */  sw         $v0, 0x14($s1)

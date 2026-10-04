@@ -15,7 +15,7 @@ glabel func_80066A9C
     /* 3768 80066AC8 2C00718E */  lw         $s1, 0x2C($s3)
     /* 376C 80066ACC 3400628E */  lw         $v0, 0x34($s3)
     /* 3770 80066AD0 2C00248E */  lw         $a0, 0x2C($s1)
-    /* 3774 80066AD4 A97B000C */  jal        func_8001EEA4
+    /* 3774 80066AD4 A97B000C */  jal        Skill_GetFxSet
     /* 3778 80066AD8 21904000 */   addu      $s2, $v0, $zero
   .L80066ADC:
     /* 377C 80066ADC 40181000 */  sll        $v1, $s0, 1

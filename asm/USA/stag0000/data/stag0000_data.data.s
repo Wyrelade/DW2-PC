@@ -386,29 +386,29 @@ dlabel D_80068ED4
     /* 5B88 80068EE8 18000000 */ .word 0x00000018
 enddlabel D_80068ED4
 
-nonmatching D_80068EEC
+nonmatching Stg00_HitReactHop1Motion
 
-dlabel D_80068EEC
+dlabel Stg00_HitReactHop1Motion
     /* 5B8C 80068EEC 0080FEFF */ .word 0xFFFE8000
     /* 5B90 80068EF0 66260000 */ .word 0x00002666
     /* 5B94 80068EF4 00003200 */ .word 0x00320000
-enddlabel D_80068EEC
+enddlabel Stg00_HitReactHop1Motion
 
-nonmatching D_80068EF8
+nonmatching Stg00_HitReactHop2Motion
 
-dlabel D_80068EF8
+dlabel Stg00_HitReactHop2Motion
     /* 5B98 80068EF8 00C0FEFF */ .word 0xFFFEC000
     /* 5B9C 80068EFC 66260000 */ .word 0x00002666
     /* 5BA0 80068F00 00003200 */ .word 0x00320000
-enddlabel D_80068EF8
+enddlabel Stg00_HitReactHop2Motion
 
-nonmatching D_80068F04
+nonmatching Stg00_HitReactPushMotion
 
-dlabel D_80068F04
+dlabel Stg00_HitReactPushMotion
     /* 5BA4 80068F04 00800100 */ .word 0x00018000
     /* 5BA8 80068F08 00E0FFFF */ .word 0xFFFFE000
     /* 5BAC 80068F0C 00003200 */ .word 0x00320000
-enddlabel D_80068F04
+enddlabel Stg00_HitReactPushMotion
 
 nonmatching D_80068F10
 

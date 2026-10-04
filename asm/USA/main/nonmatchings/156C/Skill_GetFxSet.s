@@ -1,6 +1,6 @@
-nonmatching func_8001EEA4, 0x98
+nonmatching Skill_GetFxSet, 0x98
 
-glabel func_8001EEA4
+glabel Skill_GetFxSet
     /* F6A4 8001EEA4 E0FFBD27 */  addiu      $sp, $sp, -0x20
     /* F6A8 8001EEA8 1000B0AF */  sw         $s0, 0x10($sp)
     /* F6AC 8001EEAC 2180A000 */  addu       $s0, $a1, $zero
@@ -40,4 +40,4 @@ glabel func_8001EEA4
     /* F730 8001EF30 1000B08F */  lw         $s0, 0x10($sp)
     /* F734 8001EF34 0800E003 */  jr         $ra
     /* F738 8001EF38 2000BD27 */   addiu     $sp, $sp, 0x20
-endlabel func_8001EEA4
+endlabel Skill_GetFxSet

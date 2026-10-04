@@ -1,6 +1,6 @@
-nonmatching func_80022578, 0x4C
+nonmatching Beetle_GetDigiCapacity, 0x4C
 
-glabel func_80022578
+glabel Beetle_GetDigiCapacity
     /* 12D78 80022578 E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* 12D7C 8002257C 1000B0AF */  sw         $s0, 0x10($sp)
     /* 12D80 80022580 21800000 */  addu       $s0, $zero, $zero
@@ -21,4 +21,4 @@ glabel func_80022578
     /* 12DB8 800225B8 1000B08F */  lw         $s0, 0x10($sp)
     /* 12DBC 800225BC 0800E003 */  jr         $ra
     /* 12DC0 800225C0 1800BD27 */   addiu     $sp, $sp, 0x18
-endlabel func_80022578
+endlabel Beetle_GetDigiCapacity

@@ -166,7 +166,7 @@ glabel func_80063758
     /* 644 800639A4 E80162AC */  sw         $v0, 0x1E8($v1)
     /* 648 800639A8 1C03448E */  lw         $a0, 0x31C($s2)
     /* 64C 800639AC 0100A524 */  addiu      $a1, $a1, 0x1
-    /* 650 800639B0 847B000C */  jal        func_8001EE10
+    /* 650 800639B0 847B000C */  jal        Skill_GetCastAnim
     /* 654 800639B4 DC0245AE */   sw        $a1, 0x2DC($s2)
     /* 658 800639B8 E802448E */  lw         $a0, 0x2E8($s2)
     /* 65C 800639BC CA79000C */  jal        Anim_GetModelAnimFile
@@ -269,7 +269,7 @@ glabel func_80063758
     /* 7C0 80063B20 1C03448E */  lw         $a0, 0x31C($s2)
     /* 7C4 80063B24 21280002 */  addu       $a1, $s0, $zero
     /* 7C8 80063B28 1000A627 */  addiu      $a2, $sp, 0x10
-    /* 7CC 80063B2C A97B000C */  jal        func_8001EEA4
+    /* 7CC 80063B2C A97B000C */  jal        Skill_GetFxSet
     /* 7D0 80063B30 1800A727 */   addiu     $a3, $sp, 0x18
     /* 7D4 80063B34 21380000 */  addu       $a3, $zero, $zero
     /* 7D8 80063B38 21302002 */  addu       $a2, $s1, $zero

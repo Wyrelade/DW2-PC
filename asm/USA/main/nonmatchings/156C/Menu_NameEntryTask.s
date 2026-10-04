@@ -35,9 +35,9 @@ glabel Menu_NameEntryTask
     /* 31EC 800129EC 814A0008 */  j          .L80012A04
     /* 31F0 800129F0 21A86200 */   addu      $s5, $v1, $v0
   .L800129F4:
-    /* 31F4 800129F4 0680023C */  lui        $v0, %hi(D_8005E634)
+    /* 31F4 800129F4 0680023C */  lui        $v0, %hi(Save_PlayerName)
     /* 31F8 800129F8 814A0008 */  j          .L80012A04
-    /* 31FC 800129FC 34E65524 */   addiu     $s5, $v0, %lo(D_8005E634)
+    /* 31FC 800129FC 34E65524 */   addiu     $s5, $v0, %lo(Save_PlayerName)
   .L80012A00:
     /* 3200 80012A00 F1E65524 */  addiu      $s5, $v0, %lo(D_8005E6F1)
   .L80012A04:

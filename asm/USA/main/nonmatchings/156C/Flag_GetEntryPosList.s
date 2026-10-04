@@ -1,6 +1,6 @@
-nonmatching func_8001E5E8, 0x4C
+nonmatching Flag_GetEntryPosList, 0x4C
 
-glabel func_8001E5E8
+glabel Flag_GetEntryPosList
     /* EDE8 8001E5E8 E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* EDEC 8001E5EC 1400BFAF */  sw         $ra, 0x14($sp)
     /* EDF0 8001E5F0 3379000C */  jal        Flag_GetEntry
@@ -20,4 +20,4 @@ glabel func_8001E5E8
     /* EE28 8001E628 21104300 */  addu       $v0, $v0, $v1
     /* EE2C 8001E62C 0800E003 */  jr         $ra
     /* EE30 8001E630 1800BD27 */   addiu     $sp, $sp, 0x18
-endlabel func_8001E5E8
+endlabel Flag_GetEntryPosList

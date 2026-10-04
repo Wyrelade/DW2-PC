@@ -345,7 +345,7 @@ void func_80064B30(Actor *a0) {
                 }
             } while (0);
             if (D_80073CC0.entries[0].field_8 == 6) {
-                Text_OpenPacked(w->text, (s32)D_8005E634, 0x10, D_800633E8);
+                Text_OpenPacked(w->text, (s32)Save_PlayerName, 0x10, D_800633E8);
                 for (k = 0; k < 3; k++) {
                     if (D_80073CC0.entries[0].field_0 != 0 && k != 0) {
                         s32 *text = &w->text[k + 1];

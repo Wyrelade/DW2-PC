@@ -121,7 +121,7 @@ extern void ClearImage2();
 extern void DrawSync();
 extern void LoadImage();
 extern void Gpu_ClearScreens(void);
-extern void func_8001D8A4(s32);
+extern void Gfx_DrawPartsNoResScale(s32);
 extern void StCdInterrupt(void);
 
 /* this overlay */

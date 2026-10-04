@@ -39,7 +39,7 @@ glabel Menu_BuildDigiList
     /* 8270 80017A70 07004014 */  bnez       $v0, .L80017A90
     /* 8274 80017A74 00000000 */   nop
   .L80017A78:
-    /* 8278 80017A78 5E89000C */  jal        func_80022578
+    /* 8278 80017A78 5E89000C */  jal        Beetle_GetDigiCapacity
     /* 827C 80017A7C 00000000 */   nop
     /* 8280 80017A80 DE5E0008 */  j          .L80017B78
     /* 8284 80017A84 560022A6 */   sh        $v0, 0x56($s1)
@@ -51,7 +51,7 @@ glabel Menu_BuildDigiList
     /* 8294 80017A94 00000000 */  nop
     /* 8298 80017A98 05004014 */  bnez       $v0, .L80017AB0
     /* 829C 80017A9C 18000224 */   addiu     $v0, $zero, 0x18
-    /* 82A0 80017AA0 5E89000C */  jal        func_80022578
+    /* 82A0 80017AA0 5E89000C */  jal        Beetle_GetDigiCapacity
     /* 82A4 80017AA4 00000000 */   nop
     /* 82A8 80017AA8 AD5E0008 */  j          .L80017AB4
     /* 82AC 80017AAC 560022A6 */   sh        $v0, 0x56($s1)

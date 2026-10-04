@@ -531,7 +531,7 @@ DigiBaseData *Digi_FindBaseData();
 FlagBranchEntry *Flag_GetEntry();
 DigiData *Digi_FindDataById();
 
-/* 6-byte record copied wholesale by func_8001E7E4 from a stride-6 table (base is
+/* 6-byte record copied wholesale by Digi_GetCastFxOffsets from a stride-6 table (base is
  * the Cd_GetFileEntry lookup, index is DigiData.field_22/24/26). 2-byte alignment
  * makes the copy an unaligned lwl/lwr word plus an lh half. */
 typedef struct {
@@ -722,7 +722,7 @@ typedef struct {
     u8 _pad0F;
 } Blk16;
 
-/* 0xC-stride record returned by the func_8001E5E8 getter (base is the
+/* 0xC-stride record returned by the Flag_GetEntryPosList getter (base is the
    Cd_GetFileEntry((Flag_EntryIter.field_0<<16)|1) lookup, index is FlagBranchEntry.field_4). */
 typedef struct {
     u8 data[0xC];
@@ -1590,7 +1590,7 @@ typedef struct {
     /* 0x4 */ s32 record;
 } MenuDigiPickRow;
 
-/* Actor work block while func_800174F8's menu is active: cursor pos/size
+/* Actor work block while Menu_DigiTransferPickSrc's menu is active: cursor pos/size
  * pairs at 0x50/0x54 and the entry table at 0x6C. */
 typedef struct {
     u8 _pad00[0x40];
@@ -3199,13 +3199,13 @@ typedef struct {
     u8 _pad03[0xD];
 } ModelWireTri; /* size 0x10 */
 
-/* 0x5C-byte record swapped between the menu slots and Menu_Ctx->field_128 (func_80017214). */
+/* 0x5C-byte record swapped between the menu slots and Menu_Ctx->field_128 (Menu_DigiTransferPlace). */
 typedef struct {
     /* 0x00 */ u8 state;
     u8 _pad1[0x3];
     s32 _pad4[0x16];
 } DigiRosterSwapRec;
-/* Non-small views of Menu_Ctx / D_8005F704 for func_80017214. */
+/* Non-small views of Menu_Ctx / D_8005F704 for Menu_DigiTransferPlace. */
 typedef struct {
     MenuCtx *p;
     s32 _r[3];

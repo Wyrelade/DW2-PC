@@ -725,7 +725,7 @@ extern void Task_NextState2(Actor *arg0);
 extern s32 Cd_GetFileOrNull(s32 arg0);
 extern void Flag_SetTableFile(s32 arg0);
 extern s32 Flag_FirstPassingEntry(void); /* main defines it void; its tail call leaves Flag_NextPassingEntry's result in v0 */
-extern Blk12 *func_8001E5E8(); /* main defines it (void); the overlay passes the entry index */
+extern Blk12 *Flag_GetEntryPosList(); /* main defines it (void); the overlay passes the entry index */
 extern s32 Flag_NextPassingEntry(void);
 extern PadState Pad_State[];
 extern s32 Flag_Test(s32 arg0);
@@ -1142,6 +1142,6 @@ extern Stg40Col D_8007279C[];
 s32 func_80071608(void);
 void Beetle_SetPartBroken(s32 i, s32 v);
 extern s32 Digi_CountByState(s32 mode);
-extern u8 func_80022578(void);
+extern u8 Beetle_GetDigiCapacity(void);
 
 #endif

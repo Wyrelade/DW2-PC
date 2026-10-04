@@ -375,7 +375,7 @@ s32 func_80069A44(s32 idx) {
             if (D_80073CC0.entries[idx].field_3A[i] == 0) {
                 break;
             }
-            if (func_8001EE10(D_80073CC0.entries[idx].field_3A[i]) == 0) {
+            if (Skill_GetCastAnim(D_80073CC0.entries[idx].field_3A[i]) == 0) {
                 buf[n++] = D_80073CC0.entries[idx].field_3A[i];
             }
         }

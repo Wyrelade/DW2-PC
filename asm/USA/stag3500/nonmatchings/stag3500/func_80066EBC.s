@@ -112,7 +112,7 @@ glabel func_80066EBC
     /* 3CEC 8006704C 00000000 */   nop
   jlabel .L80067050
     /* 3CF0 80067050 2000448E */  lw         $a0, 0x20($s2)
-    /* 3CF4 80067054 847B000C */  jal        func_8001EE10
+    /* 3CF4 80067054 847B000C */  jal        Skill_GetCastAnim
     /* 3CF8 80067058 2C0024AE */   sw        $a0, 0x2C($s1)
     /* 3CFC 8006705C 21204002 */  addu       $a0, $s2, $zero
     /* 3D00 80067060 21804000 */  addu       $s0, $v0, $zero

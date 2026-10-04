@@ -536,7 +536,7 @@ void func_8006E60C(s32 a0) {
     if (a0 != 0) {
         Flag_SetTableFile(a0);
         for (n = Flag_FirstPassingEntry(); n != -1; n = Flag_NextPassingEntry()) {
-            e = func_8001E5E8(n);
+            e = Flag_GetEntryPosList(n);
             b = D_80072B60;
             b->field_144[b->field_16C].u0.pair.field_0 = e->data[0] - 1;
             b->field_144[b->field_16C].u0.pair.field_2 = e->data[1] - 1;

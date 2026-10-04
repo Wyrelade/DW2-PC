@@ -164,7 +164,7 @@ glabel Stg00_DigiModelTask
     /* 42FC 8006765C 1C0002AE */  sw         $v0, 0x1C($s0)
     /* 4300 80067660 1400258E */  lw         $a1, 0x14($s1)
     /* 4304 80067664 21300000 */  addu       $a2, $zero, $zero
-    /* 4308 80067668 489C010C */  jal        func_80067120
+    /* 4308 80067668 489C010C */  jal        Stg00_HitReactUpdate
     /* 430C 8006766C FAFFA524 */   addiu     $a1, $a1, -0x6
     /* 4310 80067670 1C00028E */  lw         $v0, 0x1C($s0)
     /* 4314 80067674 00000000 */  nop
@@ -313,7 +313,7 @@ glabel Stg00_DigiModelTask
     /* 4520 80067880 5145000C */  jal        Task_NextState0
     /* 4524 80067884 00000000 */   nop
     /* 4528 80067888 2C00048E */  lw         $a0, 0x2C($s0)
-    /* 452C 8006788C 847B000C */  jal        func_8001EE10
+    /* 452C 8006788C 847B000C */  jal        Skill_GetCastAnim
     /* 4530 80067890 00000000 */   nop
     /* 4534 80067894 21202002 */  addu       $a0, $s1, $zero
     /* 4538 80067898 21804000 */  addu       $s0, $v0, $zero
@@ -356,7 +356,7 @@ glabel Stg00_DigiModelTask
     /* 45B8 80067918 1E004228 */  slti       $v0, $v0, 0x1E
     /* 45BC 8006791C 23004014 */  bnez       $v0, .L800679AC
     /* 45C0 80067920 00000000 */   nop
-    /* 45C4 80067924 FA9B010C */  jal        func_80066FE8
+    /* 45C4 80067924 FA9B010C */  jal        Stg00_SpawnSkillHitFx
     /* 45C8 80067928 21202002 */   addu      $a0, $s1, $zero
     /* 45CC 8006792C 6045000C */  jal        Task_NextState2
     /* 45D0 80067930 21202002 */   addu      $a0, $s1, $zero
@@ -387,7 +387,7 @@ glabel Stg00_DigiModelTask
     /* 4624 80067984 1C00028E */  lw         $v0, 0x1C($s0)
     /* 4628 80067988 01000624 */  addiu      $a2, $zero, 0x1
     /* 462C 8006798C FEFF4224 */  addiu      $v0, $v0, -0x2
-    /* 4630 80067990 489C010C */  jal        func_80067120
+    /* 4630 80067990 489C010C */  jal        Stg00_HitReactUpdate
     /* 4634 80067994 1C0002AE */   sw        $v0, 0x1C($s0)
     /* 4638 80067998 1C00028E */  lw         $v0, 0x1C($s0)
     /* 463C 8006799C 00000000 */  nop

@@ -831,14 +831,14 @@ extern SndVoiceField D_80062500[];
 extern s8 D_800632D0[16];
 extern char D_80010D64[];
 extern s32 _card_read(s32, s32, u8 *);
-extern void func_80017214(Actor *);
+extern void Menu_DigiTransferPlace(Actor *);
 extern s32 D_80049044;
 extern u16 D_80062D60[];
 extern MenuGridLayout Menu_DigiListGrid;
 extern Pair61900 Menu_DigiListSubTasks[];
 extern Halves Menu_DigiListTitlePos[];
 extern Halves Menu_DigiListCursorTextPos;
-extern void func_80017214(Actor *a0);
+extern void Menu_DigiTransferPlace(Actor *a0);
 extern Coord1F668 *D_80061A68[];
 extern Coord1F668 *D_80061A64[];
 extern void (*D_80061BF4[])(s16, s16, s16, VagAtr, s32, s32);
@@ -874,7 +874,7 @@ typedef struct {
     /* 0x00 */ u8 name[0x5C];
 } Nm12974;
 
-extern u8 D_8005E634[];
+extern u8 Save_PlayerName[];
 extern u8 D_8005E6F1[];
 extern Nm12974 Save_RosterNames[];
 

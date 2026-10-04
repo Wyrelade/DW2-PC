@@ -859,9 +859,9 @@ extern void Gfx_FadeSetBlack(void);
 extern void Gfx_InitLights(void);
 extern void Flag_SetTableFile(s32 arg0);
 extern s32 Flag_FirstPassingEntry(void); /* main defines it void; its tail call leaves Flag_NextPassingEntry's result in v0 */
-extern Blk12 *func_8001E5E8(s32 id);
-extern s16 func_8001E634(s32 id);
-extern s16 func_8001E658(s32 id);
+extern Blk12 *Flag_GetEntryPosList(s32 id);
+extern s16 Flag_GetEntryDigiId(s32 id);
+extern s16 Flag_GetEntryDir(s32 id);
 extern s32 Flag_NextPassingEntry(void);
 extern void Snd_UnloadSlot(s32 idx);
 extern void Snd_SetSlotContent(s32 idx, s32 v);

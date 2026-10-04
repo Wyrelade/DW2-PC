@@ -1,6 +1,6 @@
-nonmatching func_80067120, 0x2DC
+nonmatching Stg00_HitReactUpdate, 0x2DC
 
-glabel func_80067120
+glabel Stg00_HitReactUpdate
     /* 3DC0 80067120 D8FFBD27 */  addiu      $sp, $sp, -0x28
     /* 3DC4 80067124 1000B0AF */  sw         $s0, 0x10($sp)
     /* 3DC8 80067128 21808000 */  addu       $s0, $a0, $zero
@@ -52,9 +52,9 @@ glabel func_80067120
     /* 3E70 800671D0 05004012 */  beqz       $s2, .L800671E8
     /* 3E74 800671D4 21200002 */   addu      $a0, $s0, $zero
     /* 3E78 800671D8 02000524 */  addiu      $a1, $zero, 0x2
-    /* 3E7C 800671DC 0780063C */  lui        $a2, %hi(D_80068F04)
+    /* 3E7C 800671DC 0780063C */  lui        $a2, %hi(Stg00_HitReactPushMotion)
     /* 3E80 800671E0 AC83000C */  jal        Actor_SetAxisMotion
-    /* 3E84 800671E4 048FC624 */   addiu     $a2, $a2, %lo(D_80068F04)
+    /* 3E84 800671E4 048FC624 */   addiu     $a2, $a2, %lo(Stg00_HitReactPushMotion)
   .L800671E8:
     /* 3E88 800671E8 21200002 */  addu       $a0, $s0, $zero
     /* 3E8C 800671EC 9D7C000C */  jal        Anim_HasModelAnim
@@ -70,9 +70,9 @@ glabel func_80067120
     /* 3EB0 80067210 14000524 */   addiu     $a1, $zero, 0x14
     /* 3EB4 80067214 21200002 */  addu       $a0, $s0, $zero
     /* 3EB8 80067218 01000524 */  addiu      $a1, $zero, 0x1
-    /* 3EBC 8006721C 0780063C */  lui        $a2, %hi(D_80068EEC)
+    /* 3EBC 8006721C 0780063C */  lui        $a2, %hi(Stg00_HitReactHop1Motion)
     /* 3EC0 80067220 AC83000C */  jal        Actor_SetAxisMotion
-    /* 3EC4 80067224 EC8EC624 */   addiu     $a2, $a2, %lo(D_80068EEC)
+    /* 3EC4 80067224 EC8EC624 */   addiu     $a2, $a2, %lo(Stg00_HitReactHop1Motion)
     /* 3EC8 80067228 EC9C0108 */  j          .L800673B0
     /* 3ECC 8006722C 00000000 */   nop
   jlabel .L80067230
@@ -97,9 +97,9 @@ glabel func_80067120
     /* 3F10 80067270 15000524 */   addiu     $a1, $zero, 0x15
     /* 3F14 80067274 21200002 */  addu       $a0, $s0, $zero
     /* 3F18 80067278 01000524 */  addiu      $a1, $zero, 0x1
-    /* 3F1C 8006727C 0780063C */  lui        $a2, %hi(D_80068EF8)
+    /* 3F1C 8006727C 0780063C */  lui        $a2, %hi(Stg00_HitReactHop2Motion)
     /* 3F20 80067280 AC83000C */  jal        Actor_SetAxisMotion
-    /* 3F24 80067284 F88EC624 */   addiu     $a2, $a2, %lo(D_80068EF8)
+    /* 3F24 80067284 F88EC624 */   addiu     $a2, $a2, %lo(Stg00_HitReactHop2Motion)
     /* 3F28 80067288 EC9C0108 */  j          .L800673B0
     /* 3F2C 8006728C 00000000 */   nop
   .L80067290:
@@ -208,4 +208,4 @@ glabel func_80067120
     /* 4090 800673F0 1000B08F */  lw         $s0, 0x10($sp)
     /* 4094 800673F4 0800E003 */  jr         $ra
     /* 4098 800673F8 2800BD27 */   addiu     $sp, $sp, 0x28
-endlabel func_80067120
+endlabel Stg00_HitReactUpdate

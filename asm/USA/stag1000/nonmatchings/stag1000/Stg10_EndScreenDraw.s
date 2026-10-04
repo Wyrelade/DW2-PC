@@ -22,7 +22,7 @@ glabel Stg10_EndScreenDraw
     /* B08 80063E68 F9FF4014 */  bnez       $v0, .L80063E50
     /* B0C 80063E6C 00000000 */   nop
   .L80063E70:
-    /* B10 80063E70 2976000C */  jal        func_8001D8A4
+    /* B10 80063E70 2976000C */  jal        Gfx_DrawPartsNoResScale
     /* B14 80063E74 00000000 */   nop
     /* B18 80063E78 1400BF8F */  lw         $ra, 0x14($sp)
     /* B1C 80063E7C 1000B08F */  lw         $s0, 0x10($sp)

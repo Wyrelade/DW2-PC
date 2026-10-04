@@ -192,7 +192,7 @@ void func_80063C44(Actor *a0) {
         if (w->field_320 == 0) {
             w->field_1E8[w->field_2DC++] = Digi_GetModelFile(w->field_2E8);
             w->field_1E8[w->field_2DC++] = Anim_GetModelAnimFile(w->field_2E8, 0);
-            w->field_260[w->field_2E0++] = Anim_GetModelAnimFile(w->field_2E8, func_8001EE10(w->field_31C) + 5);
+            w->field_260[w->field_2E0++] = Anim_GetModelAnimFile(w->field_2E8, Skill_GetCastAnim(w->field_31C) + 5);
         }
         for (i = 0; i < 6; i++) {
             if (w->field_2EC[i] != 0) {
@@ -218,7 +218,7 @@ void func_80063C44(Actor *a0) {
         }
         if (w->field_31C != 0) {
             for (k = 0; k < 2; k++) {
-                func_8001EEA4(w->field_31C, k, a, b);
+                Skill_GetFxSet(w->field_31C, k, a, b);
                 for (j = 0; j < 3; j++) {
                     if (a[j] != 0) {
                         w->field_260[w->field_2E0++] = a[j];

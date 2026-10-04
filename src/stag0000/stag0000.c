@@ -265,7 +265,7 @@ void Stg00_DungSelPickFloor(Actor *arg0, Stg00SelWork *arg1_) {
         return;
     }
     for (i = 0; i < 8; i++) {
-        arg1->layoutMasks[i] = func_80064B08((Stg00DungFloor *)arg1->floorTable[arg1->floor], i);
+        arg1->layoutMasks[i] = Stg00_CalcLayoutMask((Stg00DungFloor *)arg1->floorTable[arg1->floor], i);
         arg1->maskBitCounts[i] = 0;
         for (j = 0; j < 32; j++) {
             bit = 1 << j;
@@ -440,7 +440,7 @@ void Stg00_DungSelDestroy(Actor *arg0) {
 }
 
 INCLUDE_RODATA("asm/USA/stag0000/rodata", Stg00_LayoutMaskBits);
-s32 func_80064B08(Stg00DungFloor *arg0, s32 arg1) {
+s32 Stg00_CalcLayoutMask(Stg00DungFloor *arg0, s32 arg1) {
     s32 result = 0;
     Stg00BitTbl tbl = Stg00_LayoutMaskBits;
     s32 i;

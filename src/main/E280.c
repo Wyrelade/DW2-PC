@@ -315,17 +315,17 @@ s32 Flag_GetTableBase(void) {
     return Cd_GetFileOrNull(Flag_EntryIter.fileId);
 }
 
-Blk12 *func_8001E5E8(s32 index) {
+Blk12 *Flag_GetEntryPosList(s32 index) {
     FlagBranchEntry *e = Flag_GetEntry(index);
     Blk12 *base = (Blk12 *)Cd_GetFileEntry((Flag_EntryIter.fileId << 16) | 1);
     return &base[e->blockIndex];
 }
 
-s16 func_8001E634(s32 index) {
+s16 Flag_GetEntryDigiId(s32 index) {
     return Flag_GetEntry(index)->field_0;
 }
 
-s16 func_8001E658(s32 index) {
+s16 Flag_GetEntryDir(s32 index) {
     return Flag_GetEntry(index)->field_2;
 }
 
@@ -380,7 +380,7 @@ s16 func_8001E7C0(s32 id) {
     return Digi_FindDataById(id)->field_20;
 }
 
-void func_8001E7E4(s32 a0, void *a1) {
+void Digi_GetCastFxOffsets(s32 a0, void *a1) {
     u8 *base;
     DigiData *e;
     base = (u8 *)Cd_GetFileEntry((Digi_GetDataFileId(a0) << 16) | 1);
@@ -529,7 +529,7 @@ s32 Skill_GetDescText(s32 arg0) {
     return Skill_FindById(arg0)->descOffset + base;
 }
 
-s32 func_8001EE10(s32 id) {
+s32 Skill_GetCastAnim(s32 id) {
     return Skill_FindById(id)->u0.h0.field_2 & 3;
 }
 
@@ -545,7 +545,7 @@ u8 Skill_GetMpCost(s32 id) {
     return Skill_FindById(id)->mpCost;
 }
 
-void func_8001EEA4(s32 id, s32 n, s16 *a, s16 *b) {
+void Skill_GetFxSet(s32 id, s32 n, s16 *a, s16 *b) {
     EntED40 *p = Skill_FindById(id);
     s32 i;
 

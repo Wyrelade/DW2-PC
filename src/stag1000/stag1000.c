@@ -297,7 +297,7 @@ void Stg10_TitleDraw(Actor *a0) {
             p++;
         } while (p->fileId != 0);
     }
-    func_8001D8A4((s32)list);
+    Gfx_DrawPartsNoResScale((s32)list);
 }
 
 void Stg10_EndScreenUpdate(Actor *arg0) {
@@ -343,7 +343,7 @@ void Stg10_EndScreenDraw(Actor *arg0) {
     for (p = e; p->fileId != 0; p++) {
         p->palette = w->byte;
     }
-    func_8001D8A4((s32)e);
+    Gfx_DrawPartsNoResScale((s32)e);
 }
 
 void Stg10_MovieInit(s32 arg0, s32 *arg1) {

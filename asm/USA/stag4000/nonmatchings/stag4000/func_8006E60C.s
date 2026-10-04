@@ -16,7 +16,7 @@ glabel func_8006E60C
     /* B2DC 8006E63C ABB90108 */  j          .L8006E6AC
     /* B2E0 8006E640 21804000 */   addu      $s0, $v0, $zero
   .L8006E644:
-    /* B2E4 8006E644 7A79000C */  jal        func_8001E5E8
+    /* B2E4 8006E644 7A79000C */  jal        Flag_GetEntryPosList
     /* B2E8 8006E648 21200002 */   addu      $a0, $s0, $zero
     /* B2EC 8006E64C 602B258E */  lw         $a1, %lo(D_80072B60)($s1)
     /* B2F0 8006E650 00004390 */  lbu        $v1, 0x0($v0)

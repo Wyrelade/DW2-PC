@@ -177,7 +177,7 @@ typedef struct {
     /* 0x54 */ Stg00RelocPair field_54[5];
 } Stg00DungFloor;
 
-/* Bit table copied to the stack by func_80064B08 (5 groups of 6 words). */
+/* Bit table copied to the stack by Stg00_CalcLayoutMask (5 groups of 6 words). */
 typedef struct {
     /* 0x00 */ u32 bits[5][6];
 } Stg00BitTbl; /* size 0x78 */
@@ -301,7 +301,7 @@ extern s32 Digi_GetModelListId(s32 idx);
 extern s32 func_8001E79C(s32 id);
 extern s32 func_8001E7C0(s32 id);
 extern s32 Digi_GetModelListCount(void);
-extern void func_8001EEA4(s32 id, s32 n, s16 *a, s16 *b);
+extern void Skill_GetFxSet(s32 id, s32 n, s16 *a, s16 *b);
 extern s32 Rand_Next();
 extern void Text_Close(s32 *);
 extern void Text_Open(void *, TextOpenArgs *);
@@ -570,9 +570,9 @@ extern s32 Stg00_PopupNumMasks[];
 extern s32 Stg00_PopupNumParts[];
 extern s32 Stg00_XaTrackStart[];
 extern s32 Stg00_XaTrackLength[];
-extern Elem12 D_80068EEC;
-extern Elem12 D_80068EF8;
-extern Elem12 D_80068F04;
+extern Elem12 Stg00_HitReactHop1Motion;
+extern Elem12 Stg00_HitReactHop2Motion;
+extern Elem12 Stg00_HitReactPushMotion;
 extern u8 Stg00_SoundTestTitle[];
 
 extern void Sys_SetFrameRate60(void);
@@ -586,9 +586,9 @@ extern void Gpu_AllocPacketBufs(s32 a0);
 extern void Gfx_InitLights(void);
 extern GfxTexSlot *Gfx_FindOrLoadTexSlot(s32);
 extern void Gfx_SetPartsNumber(GfxPart *p, s32 mask, s32 n, s32 val);
-extern void func_8001E7E4(s32 a0, void *a1);
+extern void Digi_GetCastFxOffsets(s32 a0, void *a1);
 extern s32 Skill_GetPartsEntry(s32);
-extern s32 func_8001EE10(s32 id);
+extern s32 Skill_GetCastAnim(s32 id);
 extern s32 Skill_GetPower(s32 id);
 extern s32 *Skill_GetShotXa(s32 id);
 extern s32 Cd_GetFileLba(s32 arg0);
@@ -612,15 +612,15 @@ extern void Snd_StopAll(void);
 extern s32 Snd_AnySlotLoading(void);
 
 void Stg00_InitTileSprt(Stg00Sprt *arg0, GfxPartTexSlot *arg1, s32 arg2, s32 arg3);
-s32 func_80064B08(Stg00DungFloor *arg0, s32 arg1);
+s32 Stg00_CalcLayoutMask(Stg00DungFloor *arg0, s32 arg1);
 void Stg00_LineupSetVideoMode(Actor *arg0);
 void Stg00_LineupBuildList(Actor *arg0);
 void Stg00_LineupSpawnModels(Actor *arg0);
 void Stg00_GroupViewSetVideoMode(Actor *arg0);
 void Stg00_SpawnRandomGroup(Actor *arg0);
 void Stg00_SpawnSkillCastFx(Actor *arg0, s32 arg1);
-void func_80066FE8(Actor *arg0);
-void func_80067120(Actor *arg0, s32 arg1, s32 arg2);
+void Stg00_SpawnSkillHitFx(Actor *arg0);
+void Stg00_HitReactUpdate(Actor *arg0, s32 arg1, s32 arg2);
 void Stg00_ResetToHomePos(Actor *arg0);
 u8 *Stg00_GetBankLabel(s32 arg0);
 u8 *Stg00_GetSoundIdLabel(s32 arg0, s32 arg1);

@@ -19,7 +19,7 @@ void Save_ResetGameState(void);
 void Beetle_SetPart(s32 i, s32 v, s32 flag);
 s32 Beetle_GetPart(s32 i);
 void Beetle_SetPartBroken(s32 i, s32 v);
-u8 func_80022578(void);
+u8 Beetle_GetDigiCapacity(void);
 s32 Item_FindFreeBagSlot(void);
 void Item_CompactBag(void);
 void Item_SortList(void);

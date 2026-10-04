@@ -34997,9 +34997,9 @@ dlabel D_8005E633
     /* 4EE33 8005E633 */ .byte 0x00
 enddlabel D_8005E633
 
-nonmatching D_8005E634
+nonmatching Save_PlayerName
 
-dlabel D_8005E634
+dlabel Save_PlayerName
     /* 4EE34 8005E634 00000000 */ .word 0x00000000
     /* 4EE38 8005E638 00000000 */ .word 0x00000000
     /* 4EE3C 8005E63C 00000000 */ .word 0x00000000
@@ -35044,7 +35044,7 @@ dlabel D_8005E634
     /* 4EED8 8005E6D8 00000000 */ .word 0x00000000
     /* 4EEDC 8005E6DC 00000000 */ .word 0x00000000
     /* 4EEE0 8005E6E0 00000000 */ .word 0x00000000
-enddlabel D_8005E634
+enddlabel Save_PlayerName
 
 nonmatching D_8005E6E4
 

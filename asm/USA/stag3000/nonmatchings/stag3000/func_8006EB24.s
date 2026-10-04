@@ -17,7 +17,7 @@ glabel func_8006EB24
     /* B7F8 8006EB58 00000000 */  nop
     /* B7FC 8006EB5C 2C00248E */  lw         $a0, 0x2C($s1)
     /* B800 8006EB60 3400748E */  lw         $s4, 0x34($s3)
-    /* B804 8006EB64 A97B000C */  jal        func_8001EEA4
+    /* B804 8006EB64 A97B000C */  jal        Skill_GetFxSet
     /* B808 8006EB68 3800A727 */   addiu     $a3, $sp, 0x38
   .L8006EB6C:
     /* B80C 8006EB6C 40181000 */  sll        $v1, $s0, 1

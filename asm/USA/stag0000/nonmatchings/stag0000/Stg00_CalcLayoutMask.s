@@ -1,6 +1,6 @@
-nonmatching func_80064B08, 0x33C
+nonmatching Stg00_CalcLayoutMask, 0x33C
 
-glabel func_80064B08
+glabel Stg00_CalcLayoutMask
     /* 17A8 80064B08 88FFBD27 */  addiu      $sp, $sp, -0x78
     /* 17AC 80064B0C 21588000 */  addu       $t3, $a0, $zero
     /* 17B0 80064B10 2160A000 */  addu       $t4, $a1, $zero
@@ -238,4 +238,4 @@ glabel func_80064B08
     /* 1AD8 80064E38 2110E000 */  addu       $v0, $a3, $zero
     /* 1ADC 80064E3C 0800E003 */  jr         $ra
     /* 1AE0 80064E40 7800BD27 */   addiu     $sp, $sp, 0x78
-endlabel func_80064B08
+endlabel Stg00_CalcLayoutMask

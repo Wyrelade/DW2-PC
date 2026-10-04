@@ -2048,7 +2048,7 @@ void func_8006997C(Actor *arg0)
             }
             break;
         case 0xC:
-            n = ((s32 (*)(void))func_80022578)();
+            n = ((s32 (*)(void))Beetle_GetDigiCapacity)();
             n -= ((s32 (*)(s32))func_8006EA84)(0);
             if (n != D_8005071C->field_BA8) {
                 D_8005071C->field_BA9[D_8005071C->field_BA8] = e->field_10[1];

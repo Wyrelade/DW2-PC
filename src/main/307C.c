@@ -63,7 +63,7 @@ void Menu_NameEntryTask(Actor *a0) {
         p = Save_RosterNames[w->rosterIndex].name;
         break;
     case 1:
-        p = D_8005E634;
+        p = Save_PlayerName;
         break;
     case 2:
         p = D_8005E6F1;

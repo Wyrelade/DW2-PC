@@ -308,7 +308,7 @@ glabel Stg10_TitleDraw
     /* 99C 80063CFC 0AFF4014 */  bnez       $v0, .L80063928
     /* 9A0 80063D00 28001026 */   addiu     $s0, $s0, 0x28
   .L80063D04:
-    /* 9A4 80063D04 2976000C */  jal        func_8001D8A4
+    /* 9A4 80063D04 2976000C */  jal        Gfx_DrawPartsNoResScale
     /* 9A8 80063D08 2120A002 */   addu      $a0, $s5, $zero
     /* 9AC 80063D0C 2C00BF8F */  lw         $ra, 0x2C($sp)
     /* 9B0 80063D10 2800B68F */  lw         $s6, 0x28($sp)

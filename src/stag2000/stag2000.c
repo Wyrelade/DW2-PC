@@ -1296,9 +1296,9 @@ void func_80065FB8(Actor *a) {
             if (func_80066714()->field_20 != 0) {
                 n = 0;
                 for (id = Flag_FirstPassingEntry(); id != -1; id = Flag_NextPassingEntry()) {
-                    src = (Stg20BytePair *)func_8001E5E8(id);
-                    sp.id = func_8001E634(id);
-                    sp.field_2 = func_8001E658(id);
+                    src = (Stg20BytePair *)Flag_GetEntryPosList(id);
+                    sp.id = Flag_GetEntryDigiId(id);
+                    sp.field_2 = Flag_GetEntryDir(id);
                     sp.field_1C = id;
                     for (k = 0; k < 6; k++) {
                         sp.blk[k].x = src[k].x != 0xFF ? src[k].x : 0;

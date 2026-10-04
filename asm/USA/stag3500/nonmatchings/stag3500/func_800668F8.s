@@ -18,11 +18,11 @@ glabel func_800668F8
     /* 35D0 80066930 2C00B38E */  lw         $s3, 0x2C($s5)
     /* 35D4 80066934 3400A28E */  lw         $v0, 0x34($s5)
     /* 35D8 80066938 2C00648E */  lw         $a0, 0x2C($s3)
-    /* 35DC 8006693C A97B000C */  jal        func_8001EEA4
+    /* 35DC 8006693C A97B000C */  jal        Skill_GetFxSet
     /* 35E0 80066940 21A04000 */   addu      $s4, $v0, $zero
     /* 35E4 80066944 4000B027 */  addiu      $s0, $sp, 0x40
     /* 35E8 80066948 0C00A48E */  lw         $a0, 0xC($s5)
-    /* 35EC 8006694C F979000C */  jal        func_8001E7E4
+    /* 35EC 8006694C F979000C */  jal        Digi_GetCastFxOffsets
     /* 35F0 80066950 21280002 */   addu      $a1, $s0, $zero
     /* 35F4 80066954 40101100 */  sll        $v0, $s1, 1
     /* 35F8 80066958 21105100 */  addu       $v0, $v0, $s1

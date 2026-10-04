@@ -239,7 +239,7 @@ void Task_SetState4(Actor *arg0, u32 arg1) {
     arg0->stateLevel4 = arg1 & 0xFF;
 }
 
-void func_80011644(void) {
+void Cd_QueueStag4000Files(void) {
     s32 *p;
     s32 i;
 

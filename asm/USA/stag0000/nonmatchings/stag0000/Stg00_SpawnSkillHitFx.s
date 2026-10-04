@@ -1,6 +1,6 @@
-nonmatching func_80066FE8, 0x138
+nonmatching Stg00_SpawnSkillHitFx, 0x138
 
-glabel func_80066FE8
+glabel Stg00_SpawnSkillHitFx
     /* 3C88 80066FE8 A8FFBD27 */  addiu      $sp, $sp, -0x58
     /* 3C8C 80066FEC 4C00B3AF */  sw         $s3, 0x4C($sp)
     /* 3C90 80066FF0 21988000 */  addu       $s3, $a0, $zero
@@ -17,7 +17,7 @@ glabel func_80066FE8
     /* 3CBC 8006701C 00000000 */  nop
     /* 3CC0 80067020 2C00248E */  lw         $a0, 0x2C($s1)
     /* 3CC4 80067024 3400748E */  lw         $s4, 0x34($s3)
-    /* 3CC8 80067028 A97B000C */  jal        func_8001EEA4
+    /* 3CC8 80067028 A97B000C */  jal        Skill_GetFxSet
     /* 3CCC 8006702C 3800A727 */   addiu     $a3, $sp, 0x38
   .L80067030:
     /* 3CD0 80067030 40181000 */  sll        $v1, $s0, 1
@@ -85,4 +85,4 @@ glabel func_80066FE8
     /* 3DB4 80067114 4000B08F */  lw         $s0, 0x40($sp)
     /* 3DB8 80067118 0800E003 */  jr         $ra
     /* 3DBC 8006711C 5800BD27 */   addiu     $sp, $sp, 0x58
-endlabel func_80066FE8
+endlabel Stg00_SpawnSkillHitFx

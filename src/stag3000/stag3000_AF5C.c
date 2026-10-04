@@ -182,8 +182,8 @@ void func_8006E978(Actor *a0, s32 k) {
     s32 i;
 
     slots = (s32 *)a0->u34.children;
-    func_8001EEA4(w->field_2C, 0, a, b);
-    func_8001E7E4(a0->digiId, rows);
+    Skill_GetFxSet(w->field_2C, 0, a, b);
+    Digi_GetCastFxOffsets(a0->digiId, rows);
     r = &rows[k];
     for (i = 0; i < 3; i++) {
         if (a[i] != 0) {
@@ -225,7 +225,7 @@ void func_8006EB24(Actor *a0) {
     s32 i;
 
     slots = (s32 *)a0->u34.children;
-    func_8001EEA4(w->field_2C, 1, a, b);
+    Skill_GetFxSet(w->field_2C, 1, a, b);
     for (i = 0; i < 3; i++) {
         if (a[i] != 0) {
             args.field_0 = a[i];
@@ -450,7 +450,7 @@ void func_8006EF50(Actor *arg0) {
             break;
         case 1:
             w->field_2C = arg0->stateLevel4;
-            k = func_8001EE10(w->field_2C);
+            k = Skill_GetCastAnim(w->field_2C);
             func_8006E978(arg0, k);
             switch (k) {
             case 0:

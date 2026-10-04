@@ -75,7 +75,7 @@ void Menu_ItemDraw(Actor *actor) {
 }
 
 
-void func_80017214(Actor *a0) {
+void Menu_DigiTransferPlace(Actor *a0) {
     MenuDigiPickWork *w = (MenuDigiPickWork *)a0->work;
     MenuDigiPickRow *e;
     DigiRosterSwapRec *g;
@@ -137,7 +137,7 @@ void func_80017214(Actor *a0) {
     }
 }
 
-void func_800174F8(Actor *a0) {
+void Menu_DigiTransferPickSrc(Actor *a0) {
     MenuDigiPickWork *w = (MenuDigiPickWork *)a0->work;
     MenuDigiPickRow *e = &w->rows[Menu_GridIndexColMajor(w->cursor, w->gridSize)];
     s32 k;
@@ -277,7 +277,7 @@ void Menu_BuildDigiList(MenuDigiListBuildWork *w) {
     w->gridCols = 1;
     switch (w->mode) {
     default:
-        w->rowCount = func_80022578();
+        w->rowCount = Beetle_GetDigiCapacity();
         break;
     case 2:
         w->rowCount = 0x18;
@@ -285,7 +285,7 @@ void Menu_BuildDigiList(MenuDigiListBuildWork *w) {
     case 7:
     case 8:
         if (w->parity == 0) {
-            w->rowCount = func_80022578();
+            w->rowCount = Beetle_GetDigiCapacity();
         } else {
             w->rowCount = 0x18;
         }
@@ -527,10 +527,10 @@ void Menu_DigiListTask(Actor *a0) {
                         Menu_ConfirmMultiPick(a0);
                         break;
                     case 7:
-                        func_800174F8(a0);
+                        Menu_DigiTransferPickSrc(a0);
                         break;
                     case 8:
-                        func_80017214(a0);
+                        Menu_DigiTransferPlace(a0);
                         break;
                     }
                 }
@@ -3045,7 +3045,7 @@ void Gfx_DrawParts(s32 arg0) {
     Gfx_DrawPartsEx(arg0, 1);
 }
 
-void func_8001D8A4(s32 arg0) {
+void Gfx_DrawPartsNoResScale(s32 arg0) {
     Gfx_DrawPartsEx(arg0, 0);
 }
 

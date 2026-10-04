@@ -253,12 +253,12 @@ glabel Menu_DigiListTask
     /* 8BE0 800183E0 29620008 */  j          .L800188A4
     /* 8BE4 800183E4 00000000 */   nop
   jlabel .L800183E8
-    /* 8BE8 800183E8 3E5D000C */  jal        func_800174F8
+    /* 8BE8 800183E8 3E5D000C */  jal        Menu_DigiTransferPickSrc
     /* 8BEC 800183EC 21204002 */   addu      $a0, $s2, $zero
     /* 8BF0 800183F0 29620008 */  j          .L800188A4
     /* 8BF4 800183F4 00000000 */   nop
   jlabel .L800183F8
-    /* 8BF8 800183F8 855C000C */  jal        func_80017214
+    /* 8BF8 800183F8 855C000C */  jal        Menu_DigiTransferPlace
     /* 8BFC 800183FC 21204002 */   addu      $a0, $s2, $zero
     /* 8C00 80018400 29620008 */  j          .L800188A4
     /* 8C04 80018404 00000000 */   nop

@@ -149,7 +149,7 @@ glabel func_8006EF50
     /* BE00 8006F160 5A000524 */   addiu     $a1, $zero, 0x5A
   jlabel .L8006F164
     /* BE04 8006F164 2000448E */  lw         $a0, 0x20($s2)
-    /* BE08 8006F168 847B000C */  jal        func_8001EE10
+    /* BE08 8006F168 847B000C */  jal        Skill_GetCastAnim
     /* BE0C 8006F16C 2C0024AE */   sw        $a0, 0x2C($s1)
     /* BE10 8006F170 21204002 */  addu       $a0, $s2, $zero
     /* BE14 8006F174 21804000 */  addu       $s0, $v0, $zero

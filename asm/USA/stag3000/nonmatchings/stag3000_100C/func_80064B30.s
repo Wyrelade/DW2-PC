@@ -167,8 +167,8 @@ glabel func_80064B30
     /* 1A18 80064D78 FFFF0224 */   addiu     $v0, $zero, -0x1
   .L80064D7C:
     /* 1A1C 80064D7C 04008426 */  addiu      $a0, $s4, 0x4
-    /* 1A20 80064D80 0680053C */  lui        $a1, %hi(D_8005E634)
-    /* 1A24 80064D84 34E6A524 */  addiu      $a1, $a1, %lo(D_8005E634)
+    /* 1A20 80064D80 0680053C */  lui        $a1, %hi(Save_PlayerName)
+    /* 1A24 80064D84 34E6A524 */  addiu      $a1, $a1, %lo(Save_PlayerName)
     /* 1A28 80064D88 10000624 */  addiu      $a2, $zero, 0x10
     /* 1A2C 80064D8C 21980000 */  addu       $s3, $zero, $zero
     /* 1A30 80064D90 16001524 */  addiu      $s5, $zero, 0x16

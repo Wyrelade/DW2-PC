@@ -28,7 +28,7 @@ void Task_SetState01(Actor *arg0, u32 arg1, u32 arg2);
 void Task_SetState2(Actor *arg0, u32 arg1);
 void Task_SetState3(Actor *arg0, u32 arg1);
 void Task_SetState4(Actor *arg0, u32 arg1);
-void func_80011644(void);
+void Cd_QueueStag4000Files(void);
 void func_800116A8(void);
 void Text_PortraitInit(Actor *arg0, s32 *arg1);
 void Text_PortraitTask(Actor *a0);

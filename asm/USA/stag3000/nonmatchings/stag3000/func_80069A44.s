@@ -120,7 +120,7 @@ glabel func_80069A44
     /* 6898 80069BF8 00000000 */  nop
     /* 689C 80069BFC 0C004010 */  beqz       $v0, .L80069C30
     /* 68A0 80069C00 00000000 */   nop
-    /* 68A4 80069C04 847B000C */  jal        func_8001EE10
+    /* 68A4 80069C04 847B000C */  jal        Skill_GetCastAnim
     /* 68A8 80069C08 21204000 */   addu      $a0, $v0, $zero
     /* 68AC 80069C0C 04004014 */  bnez       $v0, .L80069C20
     /* 68B0 80069C10 2118B203 */   addu      $v1, $sp, $s2
