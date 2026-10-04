@@ -473,7 +473,7 @@ glabel func_8006CB8C
     /* 9EC0 8006D220 0000228E */  lw         $v0, 0x0($s1)
     /* 9EC4 8006D224 00000000 */  nop
     /* 9EC8 8006D228 02004484 */  lh         $a0, 0x2($v0)
-    /* 9ECC 8006D22C FC7B000C */  jal        func_8001EFF0
+    /* 9ECC 8006D22C FC7B000C */  jal        Skill_GetShotXa
     /* 9ED0 8006D230 00000000 */   nop
     /* 9ED4 8006D234 0000438C */  lw         $v1, 0x0($v0)
     /* 9ED8 8006D238 00000000 */  nop

@@ -101,7 +101,7 @@ typedef struct {
 
 CdLruEntry *Cd_FindLruCachedFile();
 
-/* Entry returned by the func_8001E4CC table lookup (0x2C stride). */
+/* Entry returned by the Flag_GetEntry table lookup (0x2C stride). */
 typedef struct {
     /* 0x00 */ s16 field_0;
     /* 0x02 */ s16 field_2;
@@ -110,7 +110,7 @@ typedef struct {
     /* 0x14 */ s32 branchOffsets[6];
 } FlagBranchEntry;
 
-/* Global struct D_8005D560; field_0 is an id, 4/8 hold results, field_C walks the
+/* Global struct Flag_EntryIter; field_0 is an id, 4/8 hold results, field_C walks the
  * Cd_GetFileEntry entry table and field_10 holds the entry Flag_NextPassingEntry picked. */
 typedef struct {
     /* 0x00 */ s32 fileId;
@@ -153,7 +153,7 @@ typedef struct {
     /* 0x1C */ s32 vramY;
 } GfxTexSlot;
 
-/* A 0x1C-byte (7 word) block copied wholesale into ActorWork by func_80024310. */
+/* A 0x1C-byte (7 word) block copied wholesale into ActorWork by Fx_ModelInit. */
 typedef struct {
     s32 words[7];
 } Block1C;
@@ -351,7 +351,7 @@ typedef struct {
     /* 0x28 */ s32 elapsed;
     /* 0x2C */ ActorWork *work;
     /* 0x30 */ s32 childCount;
-    /* 0x34 read as a word by func_8001A958, or as the two bytes 0x36/0x37 elsewhere. */
+    /* 0x34 read as a word by Text_LoadFontsTask, or as the two bytes 0x36/0x37 elsewhere. */
     union {
         /* 0x34 */ s32 children;
         struct {
@@ -379,7 +379,7 @@ typedef struct {
     /* 0x138 */ s32 *field_138[8];
 } Actor;
 
-/* Entry returned by the func_8001D8C4 table lookup (0x12 stride); accessed
+/* Entry returned by the Digi_FindBaseData table lookup (0x12 stride); accessed
  * fields only. */
 typedef struct {
     /* 0x00 */ s16 id;
@@ -398,7 +398,7 @@ typedef struct {
     u8 _pad11;
 } EntD8C4;
 
-/* Record returned by func_8001DB18; func_8001DB68 unpacks it. field_0 is read as
+/* Record returned by Enemy_FindSetById; Enemy_GetSetSummary unpacks it. field_0 is read as
    a word (nibble fields at bits 8-11 / 12-15) and as an s16 at 0x2; field_4 as a
    byte at 0x4, an s16 at 0x6, and a word (nibbles at bits 8-11 / 12-15). */
 typedef struct {
@@ -417,7 +417,7 @@ typedef struct {
     u8 _pad13[0xB];
 } Ent1DB18;
 
-/* Stride-0x1E view of the Ent1DB18 array that func_8001DB68 walks (the record's
+/* Stride-0x1E view of the Ent1DB18 array that Enemy_GetSetSummary walks (the record's
    s32 unions force C to size Ent1DB18 as 0x20, but the on-disc stride is 0x1E, so
    the copy loop indexes this 2-aligned row instead). */
 typedef struct {
@@ -436,7 +436,7 @@ typedef struct {
     u8 _pad1A[0x4];
 } DigiInitRow; /* 0x1E */
 
-/* Record func_8001DB68 fills from an Ent1DB18. */
+/* Record Enemy_GetSetSummary fills from an Ent1DB18. */
 typedef struct {
     /* 0x00 */ s32 field_0;
     /* 0x04 */ s32 field_4;
@@ -449,7 +449,7 @@ typedef struct {
     /* 0x22 */ u16 levels[3];
 } Out1DB68;
 
-Ent1DB18 *func_8001DB18();
+Ent1DB18 *Enemy_FindSetById();
 
 
 /* Entry returned by the Digi_FindDataById table lookup (0x28 stride). */
@@ -470,7 +470,7 @@ typedef struct {
     /* 0x26 */ s16 field_26;
 } DigiData;
 
-/* Packed record returned by the func_8001ED40 lookup. Several 32-bit words hold
+/* Packed record returned by the Skill_FindById lookup. Several 32-bit words hold
  * bitfields read at multiple widths, so overlapping offsets use unions. */
 typedef struct {
     union {
@@ -527,8 +527,8 @@ typedef struct {
     /* 0x0C */ s32 descOffset;
 } ItemTableEntry;
 
-EntD8C4 *func_8001D8C4();
-FlagBranchEntry *func_8001E4CC();
+EntD8C4 *Digi_FindBaseData();
+FlagBranchEntry *Flag_GetEntry();
 DigiData *Digi_FindDataById();
 
 /* 6-byte record copied wholesale by func_8001E7E4 from a stride-6 table (base is
@@ -537,7 +537,7 @@ DigiData *Digi_FindDataById();
 typedef struct {
     /* 0x0 */ s16 data[3];
 } Row6;
-EntED40 *func_8001ED40();
+EntED40 *Skill_FindById();
 ItemTableEntry *Item_FindById();
 
 /* Base record returned by the Cd_GetFileEntry lookup. Stride 0x28 when indexed. */
@@ -549,7 +549,7 @@ typedef struct {
 
 EntA0 *Cd_GetFileEntry();
 s32 Cd_GetFileOrNull(s32 arg0);
-s32 func_8001EE34();
+s32 Skill_GetType();
 
 /* Record returned by the Cd_FindCachedFile lookup. */
 typedef struct {
@@ -723,18 +723,18 @@ typedef struct {
 } Blk16;
 
 /* 0xC-stride record returned by the func_8001E5E8 getter (base is the
-   Cd_GetFileEntry((D_8005D560.field_0<<16)|1) lookup, index is FlagBranchEntry.field_4). */
+   Cd_GetFileEntry((Flag_EntryIter.field_0<<16)|1) lookup, index is FlagBranchEntry.field_4). */
 typedef struct {
     u8 data[0xC];
 } Blk12;
 
-/* 0x18-stride record; the func_8001E298 getter family returns &base[index] where
-   base is the Cd_GetFileEntry((D_8005D560.field_0<<16)|2) lookup result. */
+/* 0x18-stride record; the Flag_GetEntryCondBlock getter family returns &base[index] where
+   base is the Cd_GetFileEntry((Flag_EntryIter.field_0<<16)|2) lookup result. */
 typedef struct {
     u8 data[0x18];
 } Blk18;
 
-/* Argument to the func_8001E298 getter family: a byte index lives at one of several
+/* Argument to the Flag_GetEntryCondBlock getter family: a byte index lives at one of several
    offsets (0x5/0x6/0xC) and selects a Blk18. */
 typedef struct {
     u8 _pad0[5];
@@ -744,7 +744,7 @@ typedef struct {
     /* 0xC */ u8 altSetIdx;
 } FlagEntryIdx;
 
-/* Per-channel bucket built by func_800194C8: a count at +0, then a count-indexed
+/* Per-channel bucket built by Menu_SkillListBuildTabs: a count at +0, then a count-indexed
    array of s16 slots. Stride 0x1A; four channels live at Actor194C8.records. */
 typedef struct {
     /* 0x00 */ s16 count;
@@ -757,7 +757,7 @@ typedef struct {
     /* 0x02 */ s16 row;
 } Slot4;
 
-/* View of the Actor block touched by func_800194C8. */
+/* View of the Actor block touched by Menu_SkillListBuildTabs. */
 typedef struct {
     /* 0x00 */ s32 textBoxes[18];
     /* 0x48 */ s32 descText;
@@ -933,7 +933,7 @@ typedef struct {
     /* 0x34 */ s32 children;
 } ActorAllocView;
 
-/* Object type descriptor from the D_80040D50[id >> 8][id & 0xFF] table
+/* Object type descriptor from the Task_DescTable[id >> 8][id & 0xFF] table
    (Task_Create): optional init callback and the two buffer sizes. */
 typedef struct {
     /* 0x00 */ void (*init)(ActorAllocView *, s32);
@@ -1175,7 +1175,7 @@ typedef struct {
     /* 0x0E */ u16 baud;
 } SioRegs;
 
-/* Object reached through Menu_Ctx; func_800143CC clears field_35C. */
+/* Object reached through Menu_Ctx; Menu_SubMenuInit clears field_35C. */
 typedef struct {
     /* 0x000 */ u32 flags;
     /* 0x004 */ u32 elapsed;
@@ -1272,7 +1272,7 @@ typedef struct {
     /* 0x45 */ u8 xferPos;
 } PadPortSio;
 
-/* Block reached through D_8005071C; func_80011F04 compacts the 12 slot bytes at
+/* Block reached through D_8005071C; Bug_CompactMemBugs compacts the 12 slot bytes at
  * 0xBA9 (nonzero entries moved to the front, the rest cleared). */
 typedef struct {
     /* 0x000 */ u8 field_0;
@@ -1334,7 +1334,7 @@ typedef struct {
 } VagAtr;
 
 
-/* Two-word state func_8001291C copies into the head of an ActorWork. */
+/* Two-word state Menu_NameEntryInit copies into the head of an ActorWork. */
 typedef struct {
     /* 0x0 */ s32 field_0;
     /* 0x4 */ s32 field_4;
@@ -1550,7 +1550,7 @@ typedef struct {
     /* 0x1018 */ s32 stack_top[0x14];
 } IntrEnv;
 
-/* Work block (Actor.work) of the actor state machine func_800116CC:
+/* Work block (Actor.work) of the actor state machine Text_PortraitTask:
  * field_8 = step counter, field_C = pose id, field_10 = delay, field_14 = sub. */
 typedef struct {
     u8 _pad00[0x8];
@@ -1800,7 +1800,7 @@ typedef struct {
 } TextDescHalves;
 
 /* 0x64-stride zero-terminated table (Cd_GetFileOrNull(0xC6F)) searched by
- * func_8001DB18 for the record whose leading id byte matches. */
+ * Enemy_FindSetById for the record whose leading id byte matches. */
 typedef struct {
     /* 0x00 */ u8 id;
     u8 _pad01[0x63];
@@ -1812,7 +1812,7 @@ typedef struct {
     /* 0x04 */ s32 mask;
 } Flags506C0;
 
-/* Record listed in Wk14CBC.field_A0 (func_80014CBC). */
+/* Record listed in Wk14CBC.field_A0 (Menu_StatusDraw). */
 typedef struct {
     u8 _pad00[0x0D];
     /* 0x0D */ u8 level;
@@ -1825,14 +1825,14 @@ typedef struct {
     /* 0x4C */ u8 name[14];
 } DigiRosterHudView;
 
-/* Three sprite slots cleared together by func_80014984. */
+/* Three sprite slots cleared together by Menu_StatusTask. */
 typedef struct {
     /* 0x0 */ s32 a;
     /* 0x4 */ s32 b;
     /* 0x8 */ s32 c;
 } Trip14984;
 
-/* Actor work block read by func_80014CBC. */
+/* Actor work block read by Menu_StatusDraw. */
 typedef struct {
     /* 0x00 */ s32 labelTexts[7];
     /* 0x1C */ Trip14984 digiTexts[3];
@@ -1845,7 +1845,7 @@ typedef struct {
     /* 0xAC */ s16 digiCount;
 } Wk14CBC;
 
-/* Object behind the D_80050720 pointer (func_80014CBC). */
+/* Object behind the D_80050720 pointer (Menu_StatusDraw). */
 typedef struct {
     /* 0x00 */ u8 field_0;
     u8 _pad01[0x07];
@@ -1896,20 +1896,20 @@ typedef struct {
     /* 0x6C */ MenuDigiListRow entries[1];
 } MenuDigiListRowsView;
 
-/* 12-byte record in the func_80019BF4 work view (s16 at +2 compared against field_94). */
+/* 12-byte record in the Menu_SkillListDraw work view (s16 at +2 compared against field_94). */
 typedef struct {
     /* 0x0 */ s16 field_0;
     /* 0x2 */ s16 rows;
     u8 _pad4[0x8];
 } Rec19BF4;
 
-/* 0x1A-byte record in the func_80019BF4 work view; only the leading s16 is read. */
+/* 0x1A-byte record in the Menu_SkillListDraw work view; only the leading s16 is read. */
 typedef struct {
     /* 0x00 */ s16 field_0;
     u8 _pad2[0x18];
 } Slot19BF4;
 
-/* View of Actor.work used by func_80019BF4 (four slots indexed by field_114). */
+/* View of Actor.work used by Menu_SkillListDraw (four slots indexed by field_114). */
 typedef struct {
     u8 _pad00[0x54];
     /* 0x54 */ Pair54 cursors[4];
@@ -1921,7 +1921,7 @@ typedef struct {
     /* 0x114 */ s32 activePane;
 } Wk19BF4;
 
-/* One 0x1E-byte row of the func_8001DB18 table as func_8001DDA8 reads it
+/* One 0x1E-byte row of the Enemy_FindSetById table as Enemy_InitRosterEntry reads it
    (rows start 8 bytes into the table; field_12 is a 4x3 byte matrix). */
 typedef struct {
     /* 0x00 */ u16 digiId;
@@ -1944,7 +1944,7 @@ typedef struct {
     /* 0x08 */ Row1DDA8 rows[1];
 } Tbl1DDA8;
 
-/* Second output record of func_8001DDA8. */
+/* Second output record of Enemy_InitRosterEntry. */
 typedef struct {
     /* 0x00 */ u16 field_0;
     /* 0x02 */ u8 field_2;
@@ -2513,7 +2513,7 @@ typedef struct {
 } SpuReverbRegs; /* size 0x44 */
 
 
-/* Work block of the page func_800188BC redraws (same page as MenuDigiListBuildWork: rows at
+/* Work block of the page Menu_DigiListDraw redraws (same page as MenuDigiListBuildWork: rows at
  * 0x6C, mode at 0x60, flag at 0x1A6); field_50 is the (col, row) cursor pair. */
 typedef struct {
     /* 0x0 */ u8 kind;
@@ -2539,7 +2539,7 @@ typedef struct {
     /* 0x1A6 */ s16 parity;
 } MenuDigiListDrawView;
 
-/* Record a func_800188BC row points at; four stat halfwords at 0x14. */
+/* Record a Menu_DigiListDraw row points at; four stat halfwords at 0x14. */
 typedef struct {
     u8 _pad00[0x14];
     /* 0x14 */ s16 maxHp;
@@ -2846,7 +2846,7 @@ typedef struct {
     /* 0x0E */ u16 vagHi;
 } Prog39B54;
 
-/* func_800153F4 view of an actor work block: four hud slot words at 0x60 (overlaps ActorWork fields 0x64..0x6C). */
+/* Menu_OpenBugTexts view of an actor work block: four hud slot words at 0x60 (overlaps ActorWork fields 0x64..0x6C). */
 typedef struct {
     u8 _pad00[0x60];
     /* 0x60 */ s32 slot[4];
@@ -3345,7 +3345,7 @@ typedef struct GfxBoneScratchNode {
 } GfxBoneScratchNode; /* size 0x44 */
 
 
-/* Textured triangle record func_80020FD0 walks: vertex, colour, uv indices, clut, tpage. */
+/* Textured triangle record Gfx_AddTrisGT3 walks: vertex, colour, uv indices, clut, tpage. */
 typedef struct {
     /* 0x00 */ u8 v[3];
     /* 0x03 */ u8 c[3];

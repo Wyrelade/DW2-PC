@@ -54,8 +54,8 @@ void Cd_ReadSectorCallback(s32 a0);
 void Cd_ReadSyncCallback(s32 ev);
 s32 Cd_PollRead(void);
 void Cd_ReadFileAsync(s32 arg0, s32 arg1);
-void func_80024310(Actor *arg0, Block1C *arg1);
-void func_80024350(Actor *arg0);
-void func_80024410(Actor *arg0);
+void Fx_ModelInit(Actor *arg0, Block1C *arg1);
+void Fx_ModelTask(Actor *arg0);
+void Fx_ModelDraw(Actor *arg0);
 
 #endif /* MAIN_13584_H */

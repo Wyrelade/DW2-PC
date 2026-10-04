@@ -7,7 +7,7 @@ glabel Digi_InitFromTable
     /* E430 8001DC30 1000B0AF */  sw         $s0, 0x10($sp)
     /* E434 8001DC34 2180C000 */  addu       $s0, $a2, $zero
     /* E438 8001DC38 1C00BFAF */  sw         $ra, 0x1C($sp)
-    /* E43C 8001DC3C C676000C */  jal        func_8001DB18
+    /* E43C 8001DC3C C676000C */  jal        Enemy_FindSetById
     /* E440 8001DC40 1800B2AF */   sw        $s2, 0x18($sp)
     /* E444 8001DC44 0680033C */  lui        $v1, %hi(D_8005F788)
     /* E448 8001DC48 21904000 */  addu       $s2, $v0, $zero
@@ -81,7 +81,7 @@ glabel Digi_InitFromTable
     /* E54C 8001DD4C 00000000 */  nop
     /* E550 8001DD50 230003A2 */  sb         $v1, 0x23($s0)
     /* E554 8001DD54 19004290 */  lbu        $v0, 0x19($v0)
-    /* E558 8001DD58 D67A000C */  jal        func_8001EB58
+    /* E558 8001DD58 D67A000C */  jal        Digi_CalcMaxLevel
     /* E55C 8001DD5C 240002A2 */   sb        $v0, 0x24($s0)
     /* E560 8001DD60 0D000392 */  lbu        $v1, 0xD($s0)
     /* E564 8001DD64 0F0002A2 */  sb         $v0, 0xF($s0)

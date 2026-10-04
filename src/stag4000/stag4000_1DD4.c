@@ -534,7 +534,7 @@ void func_800665E0(Actor *a0) {
 void func_8006667C(Actor *a0) {
     Stg40W667C *w = (Stg40W667C *)a0->work;
     s32 f = 1;
-    s32 n = func_80022518(0x11);
+    s32 n = Beetle_GetPart(0x11);
     s32 *p;
 
     if (n <= 0 || (D_8005071C->field_1058 == 0x10 && n == 0x75)) {
@@ -922,10 +922,10 @@ void func_800671F0(Actor *a0) {
                         args.text = (s32)Digi_GetDefaultName(k);
                         break;
                     case 2:
-                        args.text = (s32)Cd_GetFileEntry(func_8001D934(k) + 0x1FD00C3);
+                        args.text = (s32)Cd_GetFileEntry(Digi_GetType(k) + 0x1FD00C3);
                         break;
                     case 3:
-                        args.text = (s32)Cd_GetFileEntry(func_8001D958(k) + 0x1FD00C6);
+                        args.text = (s32)Cd_GetFileEntry(Digi_GetRank(k) + 0x1FD00C6);
                         break;
                     }
                     Text_Open(&w->field_8[i], &args);
@@ -1046,7 +1046,7 @@ s32 func_80067704(s32 i) {
 s32 func_80067750(s32 i) {
     s32 *p = &D_80072B84[i];
 
-    return func_800136A4(*p);
+    return Text_WaitYesNo(*p);
 }
 
 void func_80067784(void) {
@@ -1279,7 +1279,7 @@ void func_80067DB4(Actor *a0) {
     }
     if (dx < 0x140 && dy < 0x140) {
         vis = 1;
-        r = func_80022518(0x11);
+        r = Beetle_GetPart(0x11);
         if (r <= 0 || (D_8005071C->field_1058 == 0x10 && r == 0x75)) {
             vis = 0;
         }
@@ -1820,7 +1820,7 @@ void func_80069188(Actor *a0) {
         }
         return;
     }
-    if (func_800682DC(a0) == 0 && func_800681BC(a0) == 0 && func_80022518(0x12) > 0 && D_8005F720 > 0) {
+    if (func_800682DC(a0) == 0 && func_800681BC(a0) == 0 && Beetle_GetPart(0x12) > 0 && D_8005F720 > 0) {
         v = D_80050720->field_0 + 1;
         n = (v < 3) ? v : 0;
         D_80050720->field_0 = n;
@@ -1949,9 +1949,9 @@ void func_80069714(Actor *a0) {
     case 1:
         if (func_8006E588(a0) == 1) {
             func_8006E4DC(a0, 0x28);
-            r = func_80022518(6);
+            r = Beetle_GetPart(6);
             n = e->field_10[1];
-            if (func_8001E0E4(r) >= n) {
+            if (Item_GetLevel(r) >= n) {
                 Task_SetState1(t, 6);
                 msg = 0x1FD0017;
             } else {
@@ -2251,7 +2251,7 @@ void func_80069F84(Actor *actor) {
         info = (Stg40SlotInfo *)target->field_10;
         msg = 0x1FD0050;
         if (info->field_A < 9) {
-            s32 r = func_8001E0C0(D_80072B60->field_E0);
+            s32 r = Item_GetCategory(D_80072B60->field_E0);
             s32 kind;
 
             if (r >= 0x25) {
@@ -2267,7 +2267,7 @@ void func_80069F84(Actor *actor) {
                     s32 idx;
 
                     info->field_A++;
-                    idx = func_8001E0E4(D_80072B60->field_E0);
+                    idx = Item_GetLevel(D_80072B60->field_E0);
                     msg = 0x1FD004F;
                     info->field_C += D_80072894[idx - 1];
                 }
@@ -2520,7 +2520,7 @@ void func_8006AB48(Actor *a0) {
     case 1:
         if (func_8006E588(a0) == 1) {
             func_8006E4DC(a0, 0x28);
-            if (func_8001E0E4(D_80072B60->field_E0) >= e->field_10[1]) {
+            if (Item_GetLevel(D_80072B60->field_E0) >= e->field_10[1]) {
                 Task_SetState1(t, 6);
                 msg = D_8007289C[k * 2];
                 Task_SetState2(a0, 3);
@@ -2724,7 +2724,7 @@ void func_8006B320(Actor *a0) {
         func_8006E4DC(a0, 0x28);
         D_80072B60->field_178 = 0;
         D_80072B60->field_174 = -1;
-        func_8001C038(&D_80072B60->field_174, Flag_SelectBranch(D_80072B60->field_170));
+        Text_OpenMsgClearChoice(&D_80072B60->field_174, Flag_SelectBranch(D_80072B60->field_170));
         Task_NextState2(a0);
         break;
     case 1:

@@ -448,7 +448,7 @@ glabel Menu_DigiListTask
     /* 8E94 80018694 02000524 */   addiu     $a1, $zero, 0x2
   jlabel .L80018698
     /* 8E98 80018698 4000248E */  lw         $a0, 0x40($s1)
-    /* 8E9C 8001869C A94D000C */  jal        func_800136A4
+    /* 8E9C 8001869C A94D000C */  jal        Text_WaitYesNo
     /* 8EA0 800186A0 00000000 */   nop
     /* 8EA4 800186A4 21184000 */  addu       $v1, $v0, $zero
     /* 8EA8 800186A8 7E006010 */  beqz       $v1, .L800188A4

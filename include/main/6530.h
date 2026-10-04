@@ -12,7 +12,7 @@ void Item_TakeFromStorage(Actor *a0, MenuItemWork *w);
 void Menu_PickItemToUse(Actor *a0, MenuItemPickWork *o);
 void Menu_ItemGridSelect(Actor *a0, GridMenu *m);
 void Menu_ShowSelItemText(Actor *a0, MenuItemPickWork *o);
-void func_800169D0(Actor *arg0, s16 arg1);
+void Menu_ItemInit(Actor *arg0, s16 arg1);
 void Menu_ItemTask(Actor *a0);
 
 #endif /* MAIN_6530_H */

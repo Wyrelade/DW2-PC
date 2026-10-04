@@ -96,7 +96,7 @@ glabel Menu_DigiStatusTask
     /* 96DC 80018EDC 98005126 */   addiu     $s1, $s2, 0x98
     /* 96E0 80018EE0 880042AE */  sw         $v0, 0x88($s2)
     /* 96E4 80018EE4 01006492 */  lbu        $a0, 0x1($s3)
-    /* 96E8 80018EE8 4D76000C */  jal        func_8001D934
+    /* 96E8 80018EE8 4D76000C */  jal        Digi_GetType
     /* 96EC 80018EEC 21800000 */   addu      $s0, $zero, $zero
     /* 96F0 80018EF0 FD01043C */  lui        $a0, (0x1FD00C3 >> 16)
     /* 96F4 80018EF4 C3008434 */  ori        $a0, $a0, (0x1FD00C3 & 0xFFFF)
@@ -104,7 +104,7 @@ glabel Menu_DigiStatusTask
     /* 96FC 80018EFC 21204400 */   addu      $a0, $v0, $a0
     /* 9700 80018F00 8C0042AE */  sw         $v0, 0x8C($s2)
     /* 9704 80018F04 01006492 */  lbu        $a0, 0x1($s3)
-    /* 9708 80018F08 5676000C */  jal        func_8001D958
+    /* 9708 80018F08 5676000C */  jal        Digi_GetRank
     /* 970C 80018F0C 00000000 */   nop
     /* 9710 80018F10 FD01043C */  lui        $a0, (0x1FD00C6 >> 16)
     /* 9714 80018F14 C6008434 */  ori        $a0, $a0, (0x1FD00C6 & 0xFFFF)
@@ -112,7 +112,7 @@ glabel Menu_DigiStatusTask
     /* 971C 80018F1C 21204400 */   addu      $a0, $v0, $a0
     /* 9720 80018F20 900042AE */  sw         $v0, 0x90($s2)
     /* 9724 80018F24 01006492 */  lbu        $a0, 0x1($s3)
-    /* 9728 80018F28 6076000C */  jal        func_8001D980
+    /* 9728 80018F28 6076000C */  jal        Digi_GetSpecialty
     /* 972C 80018F2C 00000000 */   nop
     /* 9730 80018F30 FD01043C */  lui        $a0, (0x1FD00CA >> 16)
     /* 9734 80018F34 CA008434 */  ori        $a0, $a0, (0x1FD00CA & 0xFFFF)

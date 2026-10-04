@@ -372,12 +372,12 @@ glabel func_8006571C
     /* 28CC 80065C2C 19970108 */  j          .L80065C64
     /* 28D0 80065C30 FFFF4224 */   addiu     $v0, $v0, -0x1
   .L80065C34:
-    /* 28D4 80065C34 4E7A000C */  jal        func_8001E938
+    /* 28D4 80065C34 4E7A000C */  jal        Digi_GetModelListCount
     /* 28D8 80065C38 00000000 */   nop
     /* 28DC 80065C3C 19970108 */  j          .L80065C64
     /* 28E0 80065C40 FFFF4224 */   addiu     $v0, $v0, -0x1
   .L80065C44:
-    /* 28E4 80065C44 4E7A000C */  jal        func_8001E938
+    /* 28E4 80065C44 4E7A000C */  jal        Digi_GetModelListCount
     /* 28E8 80065C48 00000000 */   nop
     /* 28EC 80065C4C 1000038E */  lw         $v1, 0x10($s0)
     /* 28F0 80065C50 FFFF4224 */  addiu      $v0, $v0, -0x1
@@ -389,7 +389,7 @@ glabel func_8006571C
     /* 2904 80065C64 100002AE */  sw         $v0, 0x10($s0)
   .L80065C68:
     /* 2908 80065C68 1000048E */  lw         $a0, 0x10($s0)
-    /* 290C 80065C6C 3D7A000C */  jal        func_8001E8F4
+    /* 290C 80065C6C 3D7A000C */  jal        Digi_GetModelListId
     /* 2910 80065C70 01003126 */   addiu     $s1, $s1, 0x1
     /* 2914 80065C74 2A103202 */  slt        $v0, $s1, $s2
     /* 2918 80065C78 DCFF4014 */  bnez       $v0, .L80065BEC

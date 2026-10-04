@@ -102,7 +102,7 @@ glabel func_8006BBD8
     /* 89E8 8006BD48 6CAF0108 */  j          .L8006BDB0
     /* 89EC 8006BD4C 1800A3A7 */   sh        $v1, 0x18($sp)
   .L8006BD50:
-    /* 89F0 8006BD50 257C000C */  jal        func_8001F094
+    /* 89F0 8006BD50 257C000C */  jal        Skill_GetCureFlags
     /* 89F4 8006BD54 21202002 */   addu      $a0, $s1, $zero
     /* 89F8 8006BD58 0200033C */  lui        $v1, (0x20000 >> 16)
     /* 89FC 8006BD5C 24104300 */  and        $v0, $v0, $v1
@@ -827,7 +827,7 @@ glabel func_8006BBD8
     /* 9408 8006C768 02008424 */   addiu     $a0, $a0, 0x2
     /* 940C 8006C76C 00141600 */  sll        $v0, $s6, 16
     /* 9410 8006C770 03840200 */  sra        $s0, $v0, 16
-    /* 9414 8006C774 A07B000C */  jal        func_8001EE80
+    /* 9414 8006C774 A07B000C */  jal        Skill_GetMpCost
     /* 9418 8006C778 21200002 */   addu      $a0, $s0, $zero
     /* 941C 8006C77C 21884000 */  addu       $s1, $v0, $zero
     /* 9420 8006C780 0000C38F */  lw         $v1, 0x0($fp)
@@ -910,7 +910,7 @@ glabel func_8006BBD8
     /* 9534 8006C894 68000324 */  addiu      $v1, $zero, 0x68
     /* 9538 8006C898 1B004314 */  bne        $v0, $v1, .L8006C908
     /* 953C 8006C89C 00141600 */   sll       $v0, $s6, 16
-    /* 9540 8006C8A0 A07B000C */  jal        func_8001EE80
+    /* 9540 8006C8A0 A07B000C */  jal        Skill_GetMpCost
     /* 9544 8006C8A4 21206000 */   addu      $a0, $v1, $zero
     /* 9548 8006C8A8 0780033C */  lui        $v1, %hi(D_80073CC0)
     /* 954C 8006C8AC C03C7024 */  addiu      $s0, $v1, %lo(D_80073CC0)
@@ -967,7 +967,7 @@ glabel func_8006BBD8
   .L8006C96C:
     /* 960C 8006C96C 27004010 */  beqz       $v0, .L8006CA0C
     /* 9610 8006C970 783202AE */   sw        $v0, %lo(D_80073278)($s0)
-    /* 9614 8006C974 A07B000C */  jal        func_8001EE80
+    /* 9614 8006C974 A07B000C */  jal        Skill_GetMpCost
     /* 9618 8006C978 DC000424 */   addiu     $a0, $zero, 0xDC
     /* 961C 8006C97C 0780033C */  lui        $v1, %hi(D_80073CC0)
     /* 9620 8006C980 C03C7124 */  addiu      $s1, $v1, %lo(D_80073CC0)

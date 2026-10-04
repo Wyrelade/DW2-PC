@@ -442,7 +442,7 @@ glabel Text_UpdateAllBoxes
     /* B824 8001B024 00000000 */  nop
     /* B828 8001B028 05008010 */  beqz       $a0, .L8001B040
     /* B82C 8001B02C CC00A524 */   addiu     $a1, $a1, 0xCC
-    /* B830 8001B030 D646000C */  jal        func_80011B58
+    /* B830 8001B030 D646000C */  jal        Text_PortraitSetImage
     /* B834 8001B034 21286000 */   addu      $a1, $v1, $zero
     /* B838 8001B038 166C0008 */  j          .L8001B058
     /* B83C 8001B03C 39000424 */   addiu     $a0, $zero, 0x39

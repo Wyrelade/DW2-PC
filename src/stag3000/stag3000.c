@@ -183,7 +183,7 @@ void func_80063C44(Actor *a0) {
                 break;
             }
         }
-        Cd_QueueFile(func_8001EE5C(w->field_31C) >> 16);
+        Cd_QueueFile(Skill_GetPartsEntry(w->field_31C) >> 16);
         Task_NextState1(a0);
         break;
     case 1:
@@ -242,11 +242,11 @@ void func_80063C44(Actor *a0) {
         break;
     case 2:
         if (w->field_320 == 0) {
-            if (Cd_GetFileState(func_8001EE5C(w->field_31C) >> 16) != 3) {
+            if (Cd_GetFileState(Skill_GetPartsEntry(w->field_31C) >> 16) != 3) {
                 break;
             }
             w->field_1E8[w->field_2DC++] = 0x1EF;
-            for (q = (Stg30Part *)Cd_GetFileEntry(func_8001EE5C(w->field_31C)); q->fileId != 0; q++) {
+            for (q = (Stg30Part *)Cd_GetFileEntry(Skill_GetPartsEntry(w->field_31C)); q->fileId != 0; q++) {
                 w->field_260[w->field_2E0++] = q->fileId >> 16;
             }
         }

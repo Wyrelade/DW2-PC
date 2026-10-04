@@ -84,10 +84,10 @@ glabel func_8006EA90
     /* B85C 8006EBBC 21200002 */   addu      $a0, $s0, $zero
     /* B860 8006EBC0 12004010 */  beqz       $v0, .L8006EC0C
     /* B864 8006EBC4 00000000 */   nop
-    /* B868 8006EBC8 6078000C */  jal        func_8001E180
+    /* B868 8006EBC8 6078000C */  jal        Item_GetPrice
     /* B86C 8006EBCC 01000426 */   addiu     $a0, $s0, 0x1
     /* B870 8006EBD0 21200002 */  addu       $a0, $s0, $zero
-    /* B874 8006EBD4 6078000C */  jal        func_8001E180
+    /* B874 8006EBD4 6078000C */  jal        Item_GetPrice
     /* B878 8006EBD8 21804000 */   addu      $s0, $v0, $zero
     /* B87C 8006EBDC 23800202 */  subu       $s0, $s0, $v0
     /* B880 8006EBE0 04BB0108 */  j          .L8006EC10

@@ -200,7 +200,7 @@ glabel func_80066C48
     /* 3BC0 80066F20 00000000 */   nop
   .L80066F24:
     /* 3BC4 80066F24 4000048E */  lw         $a0, 0x40($s0)
-    /* 3BC8 80066F28 A94D000C */  jal        func_800136A4
+    /* 3BC8 80066F28 A94D000C */  jal        Text_WaitYesNo
     /* 3BCC 80066F2C 00000000 */   nop
     /* 3BD0 80066F30 76004010 */  beqz       $v0, .L8006710C
     /* 3BD4 80066F34 00000000 */   nop
@@ -244,7 +244,7 @@ glabel func_80066C48
     /* 3C60 80066FC0 00000000 */   nop
   .L80066FC4:
     /* 3C64 80066FC4 4000048E */  lw         $a0, 0x40($s0)
-    /* 3C68 80066FC8 A94D000C */  jal        func_800136A4
+    /* 3C68 80066FC8 A94D000C */  jal        Text_WaitYesNo
     /* 3C6C 80066FCC 00000000 */   nop
     /* 3C70 80066FD0 21184000 */  addu       $v1, $v0, $zero
     /* 3C74 80066FD4 4D006010 */  beqz       $v1, .L8006710C

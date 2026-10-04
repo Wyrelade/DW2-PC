@@ -13,7 +13,7 @@ void Task_Create(u32 id, s32 *slot, s32 arg) {
     if (*slot != 0) {
         Task_Destroy(slot);
     }
-    d = D_80040D50[id >> 8][id & 0xFF];
+    d = Task_DescTable[id >> 8][id & 0xFF];
     o = Task_AllocWithBuffers(d->workSize, d->auxSize);
     o->id = id;
     o->frameCount = 0;
@@ -255,13 +255,13 @@ void func_80011644(void) {
 void func_800116A8(void) {
 }
 
-void func_800116B0(Actor *arg0, s32 *arg1) {
+void Text_PortraitInit(Actor *arg0, s32 *arg1) {
     ActorWork *w = arg0->work;
     w->field_0 = arg1[0];
     w->field_4 = arg1[1];
 }
 
-void func_800116CC(Actor *a0) {
+void Text_PortraitTask(Actor *a0) {
     Wk116CC *w = (Wk116CC *)a0->work;
     s32 v;
 
@@ -331,7 +331,7 @@ void func_800116CC(Actor *a0) {
     }
 }
 
-void func_80011854(Actor *a0) {
+void Text_PortraitDraw(Actor *a0) {
     ActorWork *w = a0->work;
     Part11854 *e;
     Part11854 *q;
@@ -399,7 +399,7 @@ void func_80011854(Actor *a0) {
     D_8005F770.packet.addr = (s32)p;
 }
 
-void func_80011B58(Actor *arg0, s32 arg1) {
+void Text_PortraitSetImage(Actor *arg0, s32 arg1) {
     arg0->work->field_0 = arg1;
 }
 
@@ -478,7 +478,7 @@ found:
     clut->y = i % 16 + 0xF0;
 }
 
-void func_80011F04(void) {
+void Bug_CompactMemBugs(void) {
     s32 i;
     s32 j;
     s32 v;
@@ -536,7 +536,7 @@ s32 Item_GetUseKind(s32 arg0) {
     return r;
 }
 
-s32 func_8001204C(s32 a0, s32 a1, s32 a2, s32 a3) {
+s32 Item_UseOnBeetle(s32 a0, s32 a1, s32 a2, s32 a3) {
     ItemEffect *rec;
     s32 r;
     s16 *p;
@@ -581,8 +581,8 @@ s32 func_8001204C(s32 a0, s32 a1, s32 a2, s32 a3) {
         r = 1;
         break;
     case 0xB:
-        if (func_80022518(a2) < 0) {
-            func_8002254C(a2, 0);
+        if (Beetle_GetPart(a2) < 0) {
+            Beetle_SetPartBroken(a2, 0);
             r = 1;
         }
     case 0xC:
@@ -617,7 +617,7 @@ s32 func_8001204C(s32 a0, s32 a1, s32 a2, s32 a3) {
             }
             D_8005071C->field_BA8--;
             D_8005071C->field_BA9[best] = 0;
-            func_80011F04();
+            Bug_CompactMemBugs();
             D_80050760 = max;
             break;
         }
@@ -640,7 +640,7 @@ s32 func_8001204C(s32 a0, s32 a1, s32 a2, s32 a3) {
                     cnt++;
                 }
             }
-            func_80011F04();
+            Bug_CompactMemBugs();
             r = 1;
             if (cnt == 0) {
             none:
@@ -660,7 +660,7 @@ s32 Item_ApplyToDigi(s32 a0, s32 a1, s32 a2, s32 a3) {
     s16 *lim;
     s16 step;
 
-    if (r->useType == 3 && r->amount != ((s32 (*)(s32))func_8001D934)(o->digiId)) {
+    if (r->useType == 3 && r->amount != ((s32 (*)(s32))Digi_GetType)(o->digiId)) {
         return 0;
     }
     if (r->effectType == 3) {
@@ -807,7 +807,7 @@ s32 Item_Use(s32 a0, s32 a1, s32 a2, s32 a3) {
     if (p != NULL) {
         switch (*p) {
         case 5:
-            r = func_8001204C(a0, a1, a2, a3);
+            r = Item_UseOnBeetle(a0, a1, a2, a3);
             break;
         case 1:
         case 3:

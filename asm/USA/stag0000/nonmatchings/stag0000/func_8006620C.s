@@ -9,7 +9,7 @@ glabel func_8006620C
     /* 2EC0 80066220 1000B0AF */  sw         $s0, 0x10($sp)
     /* 2EC4 80066224 2C00908C */  lw         $s0, 0x2C($a0)
   .L80066228:
-    /* 2EC8 80066228 3D7A000C */  jal        func_8001E8F4
+    /* 2EC8 80066228 3D7A000C */  jal        Digi_GetModelListId
     /* 2ECC 8006622C 21204002 */   addu      $a0, $s2, $zero
     /* 2ED0 80066230 21884000 */  addu       $s1, $v0, $zero
     /* 2ED4 80066234 2D01222A */  slti       $v0, $s1, 0x12D

@@ -618,7 +618,7 @@ void Menu_DigiListTask(Actor *a0) {
             }
             break;
         case 5:
-            r = func_800136A4(w->promptText);
+            r = Text_WaitYesNo(w->promptText);
             if (r == 0) {
                 break;
             }
@@ -676,7 +676,7 @@ void Menu_DigiListTask(Actor *a0) {
 }
 
 
-void func_800188BC(Actor *actor) {
+void Menu_DigiListDraw(Actor *actor) {
     MenuDigiListDrawView *w = (MenuDigiListDrawView *)actor->work;
     s32 *p;
     void *obj;
@@ -840,9 +840,9 @@ void Menu_DigiStatusTask(Actor *a) {
             r = w->digimon;
             Text_OpenPacked(&w->nameText, (s32)r->name, 0x81, h[0]);
             w->speciesName = Digi_GetDefaultName(r->speciesId);
-            w->field_8C = Cd_GetFileEntry(((s32 (*)(s32))func_8001D934)(r->speciesId) + 0x1FD00C3);
-            w->field_90 = Cd_GetFileEntry(((s32 (*)(s32))func_8001D958)(r->speciesId) + 0x1FD00C6);
-            w->field_94 = Cd_GetFileEntry(((s32 (*)(s32))func_8001D980)(r->speciesId) + 0x1FD00CA);
+            w->field_8C = Cd_GetFileEntry(((s32 (*)(s32))Digi_GetType)(r->speciesId) + 0x1FD00C3);
+            w->field_90 = Cd_GetFileEntry(((s32 (*)(s32))Digi_GetRank)(r->speciesId) + 0x1FD00C6);
+            w->field_94 = Cd_GetFileEntry(((s32 (*)(s32))Digi_GetSpecialty)(r->speciesId) + 0x1FD00CA);
             q = w->field_98;
             for (i = 0; i < 2; i++) {
                 if (r->field_47[i] != 0) {
@@ -986,7 +986,7 @@ Ltail:
     Gfx_DrawTexModel(actor, 0);
 }
 
-void func_800194C8(a)
+void Menu_SkillListBuildTabs(a)
 Actor194C8 *a;
 {
     u8 *tbl;
@@ -1004,7 +1004,7 @@ Actor194C8 *a;
     for (i = 0; i < 0xC; i++) {
         q = tbl + i;
         if (q[0x22] == 0) continue;
-        r = func_8001EE34(q[0x22]);
+        r = Skill_GetType(q[0x22]);
         c = a->records[r].count;
         a->records[r].arr[c] = q[0x22];
         a->records[r].count = (u16)a->records[r].count + 1;
@@ -1019,7 +1019,7 @@ Actor194C8 *a;
     }
 }
 
-void func_80019614(Actor194C8 *w, s32 arg1)
+void Menu_SkillListOpenNames(Actor194C8 *w, s32 arg1)
 {
   int new_var;
   TextDescHalves st;
@@ -1068,7 +1068,7 @@ void func_80019614(Actor194C8 *w, s32 arg1)
       }
       new_var = 11;
       st.color = f;
-      st.text = func_8001ED84(w->records[ch].arr[j + i]);
+      st.text = Skill_GetNameText(w->records[ch].arr[j + i]);
       m = j + 6;
       Text_OpenDesc(&w->textBoxes[(ch * 3) + m], (TextDesc *) (&st));
       st.pos.hi += new_var;
@@ -1080,11 +1080,11 @@ void func_80019614(Actor194C8 *w, s32 arg1)
 }
 
 
-void func_800197FC(Actor *arg0, s16 arg1) {
+void Menu_SkillListInit(Actor *arg0, s16 arg1) {
     arg0->work->field_A4 = arg1;
 }
 
-void func_80019808(Actor *a0) {
+void Menu_SkillListTask(Actor *a0) {
     Actor194C8 *w = (Actor194C8 *)a0->work;
     Halves h;
     TextDescHalves st;
@@ -1099,7 +1099,7 @@ void func_80019808(Actor *a0) {
     case 0:
     default:
         w->selRecord = Menu_Ctx->selRecord;
-        func_800194C8(w);
+        Menu_SkillListBuildTabs(w);
         w->curTab = 0;
         Mem_FillWordsNeg1(&w->textBoxes, 0x15);
         Task_NextState0(a0);
@@ -1112,7 +1112,7 @@ void func_80019808(Actor *a0) {
                 break;
             }
             Text_PrintIdList(&w->textBoxes, (TextIdListEntry *)Cd_GetFileEntrySubPtr(0x5130024, 0), 1);
-            func_80019614(w, 1);
+            Menu_SkillListOpenNames(w, 1);
             h.lo = 0x13;
             h.hi = 0x32;
             Text_OpenPacked(&w->nameText, (s32)&w->selRecord[0x4C], 1, h);
@@ -1128,11 +1128,11 @@ void func_80019808(Actor *a0) {
                 st.pos = D_80050714;
                 st.packedStyle = 0x80;
                 st.color = 0;
-                st.text = func_8001EDD4(id);
+                st.text = Skill_GetDescText(id);
                 Text_OpenDesc(&w->descText, (TextDesc *)&st);
                 st.pos.hi = 0xCA;
                 st.text = (s32)Cd_GetFileEntry(0x1FD0150);
-                Text_FormatNumber(w->numBuf, func_8001EE80(id), -4);
+                Text_FormatNumber(w->numBuf, Skill_GetMpCost(id), -4);
                 st.strArg0 = (s32)w->numBuf;
                 Text_OpenDesc(&w->numberText, (TextDesc *)&st);
             }
@@ -1149,13 +1149,13 @@ void func_80019808(Actor *a0) {
                 }
                 w->curTab = n & 3;
                 Snd_PlayById(0xD, 0);
-                func_80019614(w, 0);
+                Menu_SkillListOpenNames(w, 0);
                 Task_SetState1(a0, 1);
             } else {
                 j = w->curTab;
                 if (Menu_MoveGridCursorP1((s32)&w->slot54[j], (s32)&w->block64[j]) != 0) {
                     Menu_ScrollToShow(&w->scrollTop[j], w->slot54[j].row, 3);
-                    func_80019614(w, 0);
+                    Menu_SkillListOpenNames(w, 0);
                     Snd_PlayById(0xD, 0);
                     Task_SetState1(a0, 1);
                 } else if (D_8005F6F0[0].triangle > 0 || D_8005F6F0[0].circle > 0) {
@@ -1190,7 +1190,7 @@ void func_80019808(Actor *a0) {
 }
 
 
-void func_80019BF4(Actor *actor) {
+void Menu_SkillListDraw(Actor *actor) {
     Wk19BF4 *w = (Wk19BF4 *)actor->work;
     s32 *p;
     s32 *list;
@@ -1254,7 +1254,7 @@ void func_80019BF4(Actor *actor) {
 }
 
 
-void func_80019E40(Actor *arg0, s32 *arg1) {
+void Task_SpawnListInit(Actor *arg0, s32 *arg1) {
     arg0->work->field_0 = *arg1;
 }
 
@@ -1283,11 +1283,11 @@ done:
 }
 
 
-void func_80019EE0(Actor *arg0, s32 arg1) {
+void Text_WinFrameInit(Actor *arg0, s32 arg1) {
     arg0->field_8 = arg1;
 }
 
-void func_80019EE8(Actor *a0) {
+void Text_WinFrameTask(Actor *a0) {
     s32 v1 = a0->stateLevel0;
     u16 *a1 = (u16 *)&a0->work->field_0;
     switch (v1) {
@@ -1316,7 +1316,7 @@ void func_80019EE8(Actor *a0) {
     }
 }
 
-void func_80019FB4(Actor *arg0) {
+void Text_WinFrameDraw(Actor *arg0) {
     ActorWork *w = arg0->work;
     void *e = Cd_GetFileEntry(D_80040FD0[arg0->field_8]);
     Gfx_SetPartsScale(e, 0x1000, *(s16 *)w);
@@ -1583,7 +1583,7 @@ s32 Text_PopReturn(void) {
 extern GfxTexSlot *Gfx_FindOrLoadTexSlot(s32);
 extern void Task_Create(u32, s32 *, s32);
 
-void func_8001A958(Actor *a0) {
+void Text_LoadFontsTask(Actor *a0) {
     if (a0->stateLevel0 != 0) {
         return;
     }
@@ -1829,7 +1829,7 @@ void Text_UpdateAllBoxes(Actor *a0) {
                         num[0] += *s++ * 10;
                         num[0] += *s;
                         if (slots->num[num[1]] != 0) {
-                            func_80011B58(slots->num[num[1]], num[0]);
+                            Text_PortraitSetImage(slots->num[num[1]], num[0]);
                         } else {
                             Task_Create(5, (s32 *)&slots->num[num[1]], (s32)num);
                         }
@@ -2319,7 +2319,7 @@ void Text_OpenById(void *a0, s32 a1, s32 a2, Halves a3) {
     Text_Open(a0, &local);
 }
 
-void func_8001C038(void *arg0, s32 arg1) {
+void Text_OpenMsgClearChoice(void *arg0, s32 arg1) {
     TextOpenArgs local;
     local.bigFont = 1;
     local.color = 0;
@@ -2561,7 +2561,7 @@ void Gpu_SetLayerOtPtrs(void) {
     }
 }
 
-void func_8001C800(s32 arg0) {
+void Gpu_SetOtLayout(s32 arg0) {
     Gpu_OtBufs[2].entries[0] = arg0;
 }
 
@@ -3049,7 +3049,7 @@ void func_8001D8A4(s32 arg0) {
     Gfx_DrawPartsEx(arg0, 0);
 }
 
-EntD8C4 *func_8001D8C4(id) s32 id; {
+EntD8C4 *Digi_FindBaseData(id) s32 id; {
     EntD8C4 *p = (EntD8C4 *)Cd_GetFileOrNull(0xC6C);
     s16 v;
 
@@ -3068,37 +3068,37 @@ fail:
 }
 
 u8 func_8001D910(void) {
-    return func_8001D8C4()->field_3;
+    return Digi_FindBaseData()->field_3;
 }
 
-u8 func_8001D934(void) {
-    return func_8001D8C4()->u4.field_4 & 0xF;
+u8 Digi_GetType(void) {
+    return Digi_FindBaseData()->u4.field_4 & 0xF;
 }
 
-s32 func_8001D958(void) {
-    return (func_8001D8C4()->u4.field_4h >> 4) & 0xF;
+s32 Digi_GetRank(void) {
+    return (Digi_FindBaseData()->u4.field_4h >> 4) & 0xF;
 }
 
-s32 func_8001D980(void) {
-    return (func_8001D8C4()->u4.field_4h >> 8) & 0xF;
+s32 Digi_GetSpecialty(void) {
+    return (Digi_FindBaseData()->u4.field_4h >> 8) & 0xF;
 }
 
-u8 func_8001D9A8(void) {
-    return func_8001D8C4()->field_2;
+u8 Digi_GetLearnedSkill(void) {
+    return Digi_FindBaseData()->field_2;
 }
 
-s32 func_8001D9CC(s32 id, s32 k) {
+s32 Digi_GetStatGrowth(s32 id, s32 k) {
     switch (k) {
     default:
     case 0:
-        return func_8001D8C4(id)->u4.field_4h >> 12;
+        return Digi_FindBaseData(id)->u4.field_4h >> 12;
     case 1:
-        return func_8001D8C4(id)->u6.field_6 & 0xF;
+        return Digi_FindBaseData(id)->u6.field_6 & 0xF;
     case 2:
-        return (func_8001D8C4(id)->u6.field_6h >> 4) & 0xF;
+        return (Digi_FindBaseData(id)->u6.field_6h >> 4) & 0xF;
     case 3:
-        return (func_8001D8C4(id)->u6.field_6h >> 8) & 0xF;
+        return (Digi_FindBaseData(id)->u6.field_6h >> 8) & 0xF;
     case 4:
-        return func_8001D8C4(id)->u6.field_6h >> 12;
+        return Digi_FindBaseData(id)->u6.field_6h >> 12;
     }
 }

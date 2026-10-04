@@ -694,14 +694,14 @@ extern void Gfx_ReleaseTexSlot(s32 *arg0);
 extern void Mem_Free(ActorWork *arg0);
 extern void Text_Close(s32 *);
 extern s32 Text_IsFinished(s32 id);
-extern s32 func_800136A4(s32 arg0);
+extern s32 Text_WaitYesNo(s32 arg0);
 extern void Task_SetState1(Actor *arg0, u32 arg1);
 extern void Task_DefaultDestroy(Actor *arg0);
 extern void Task_SetState0(Actor *arg0, u32 arg1);
 extern s32 Rand_Next(void);
 extern s32 Mem_Alloc(s32 arg0, s32 arg1);
-extern s32 func_80022518(s32 i);
-extern s32 func_8001E0E4(s32 item); /* main defines it (void); the overlay passes an item id */
+extern s32 Beetle_GetPart(s32 i);
+extern s32 Item_GetLevel(s32 item); /* main defines it (void); the overlay passes an item id */
 extern void Task_NextState0(Actor *arg0);
 extern void Gfx_SetPartsNumber(GfxPart *, s32, s32, s32);
 extern void Gfx_SetPartsScale(GfxPartScaleView *, s32, s32);
@@ -723,8 +723,8 @@ extern u16 D_8005F72C;
 extern void Snd_PlayById(s32, s32);
 extern void Task_NextState2(Actor *arg0);
 extern s32 Cd_GetFileOrNull(s32 arg0);
-extern void func_8001E28C(s32 arg0);
-extern s32 func_8001E480(void); /* main defines it void; its tail call leaves Flag_NextPassingEntry's result in v0 */
+extern void Flag_SetTableFile(s32 arg0);
+extern s32 Flag_FirstPassingEntry(void); /* main defines it void; its tail call leaves Flag_NextPassingEntry's result in v0 */
 extern Blk12 *func_8001E5E8(); /* main defines it (void); the overlay passes the entry index */
 extern s32 Flag_NextPassingEntry(void);
 extern PadState D_8005F6F0[];
@@ -854,7 +854,7 @@ s32 func_8006E2B8(Stg40Ent48 *a, Stg40Ent48 *b);
 void func_80066DF0(); /* K&R definition: func_8006AD10 passes ints unconverted */
 s32 *func_80066E18(void);
 extern s32 Item_GetDescText(s32 arg0);
-extern s32 func_8001E0C0(s32 id);
+extern s32 Item_GetCategory(s32 id);
 extern s32 ratan2(s32 y, s32 x);
 extern s32 rsin(s32 a);
 extern s32 rcos(s32 a);
@@ -962,7 +962,7 @@ void func_80065278(Actor *a0);
 extern s32 *Gfx_ReserveTexSlot(void);
 extern u16 D_80072948[];
 extern s32 Flag_SelectBranch(s32 arg0);
-extern void func_8001C038(void *arg0, s32 arg1);
+extern void Text_OpenMsgClearChoice(void *arg0, s32 arg1);
 
 /* p36 agent d */
 s32 func_80071294(void);
@@ -1058,8 +1058,8 @@ typedef struct {
 extern Actor *D_80072B78;
 extern u16 D_80072720[];
 extern u8 *Digi_GetDefaultName(s32);
-extern s32 func_8001D934(s32);
-extern s32 func_8001D958(s32);
+extern s32 Digi_GetType(s32);
+extern s32 Digi_GetRank(s32);
 
 /* Four model ids copied from D_8006362C (func_8006DB68). */
 typedef struct {
@@ -1130,7 +1130,7 @@ void func_800651C0(Stg40Loc *loc, s32 a1);
 void func_8006AE74(void);
 
 /* p36 agent g */
-extern void func_8001DB68(s32 id, Out1DB68 *out);
+extern void Enemy_GetSetSummary(s32 id, Out1DB68 *out);
 extern u8 D_800728F4[];
 extern u8 D_80072904[];
 s32 func_80065230(void);
@@ -1140,7 +1140,7 @@ void func_80067894(Actor *a0, u8 on, u8 r, u8 g, u8 b);
 extern u8 D_8007278C[];
 extern Stg40Col D_8007279C[];
 s32 func_80071608(void);
-void func_8002254C(s32 i, s32 v);
+void Beetle_SetPartBroken(s32 i, s32 v);
 extern s32 Digi_CountByState(s32 mode);
 extern u8 func_80022578(void);
 

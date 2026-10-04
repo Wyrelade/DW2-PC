@@ -12,7 +12,7 @@ glabel func_80068D34
     /* 59F4 80068D54 07004010 */  beqz       $v0, .L80068D74
     /* 59F8 80068D58 21200002 */   addu      $a0, $s0, $zero
     /* 59FC 80068D5C 2C00508C */  lw         $s0, 0x2C($v0)
-    /* 5A00 80068D60 757B000C */  jal        func_8001EDD4
+    /* 5A00 80068D60 757B000C */  jal        Skill_GetDescText
     /* 5A04 80068D64 00000000 */   nop
     /* 5A08 80068D68 040002AE */  sw         $v0, 0x4($s0)
     /* 5A0C 80068D6C 01000224 */  addiu      $v0, $zero, 0x1

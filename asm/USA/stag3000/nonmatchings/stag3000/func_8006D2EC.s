@@ -16,10 +16,10 @@ glabel func_8006D2EC
     /* 9FBC 8006D31C 2000B4AF */  sw         $s4, 0x20($sp)
     /* 9FC0 8006D320 1C00B3AF */  sw         $s3, 0x1C($sp)
     /* 9FC4 8006D324 1800B2AF */  sw         $s2, 0x18($sp)
-    /* 9FC8 8006D328 D97B000C */  jal        func_8001EF64
+    /* 9FC8 8006D328 D97B000C */  jal        Skill_GetPower
     /* 9FCC 8006D32C 1400B1AF */   sw        $s1, 0x14($sp)
     /* 9FD0 8006D330 21884000 */  addu       $s1, $v0, $zero
-    /* 9FD4 8006D334 E27B000C */  jal        func_8001EF88
+    /* 9FD4 8006D334 E27B000C */  jal        Skill_GetSpecialty
     /* 9FD8 8006D338 21200002 */   addu      $a0, $s0, $zero
     /* 9FDC 8006D33C 0780103C */  lui        $s0, %hi(D_80073CC0)
     /* 9FE0 8006D340 C03C1026 */  addiu      $s0, $s0, %lo(D_80073CC0)
@@ -31,7 +31,7 @@ glabel func_8006D2EC
     /* 9FF8 8006D358 21187000 */  addu       $v1, $v1, $s0
     /* 9FFC 8006D35C 19006490 */  lbu        $a0, 0x19($v1)
     /* A000 8006D360 36007284 */  lh         $s2, 0x36($v1)
-    /* A004 8006D364 6076000C */  jal        func_8001D980
+    /* A004 8006D364 6076000C */  jal        Digi_GetSpecialty
     /* A008 8006D368 21A04000 */   addu      $s4, $v0, $zero
     /* A00C 8006D36C 21984000 */  addu       $s3, $v0, $zero
     /* A010 8006D370 00111500 */  sll        $v0, $s5, 4

@@ -298,7 +298,7 @@ void func_80066C48(Actor *arg0) {
                 Task_NextState2(arg0);
                 break;
             case 1:
-                r3 = func_800136A4(w->field_0[0x10]);
+                r3 = Text_WaitYesNo(w->field_0[0x10]);
                 if (r3 != 0) {
                     if (r3 == 1) {
                         Task_SetState1(arg0, 5);
@@ -318,7 +318,7 @@ void func_80066C48(Actor *arg0) {
                 Task_NextState2(arg0);
                 break;
             case 1:
-                r = func_800136A4(w->field_0[0x10]);
+                r = Text_WaitYesNo(w->field_0[0x10]);
                 if (r != 0) {
                     if (r == 1) {
                         D_80050780 = r;

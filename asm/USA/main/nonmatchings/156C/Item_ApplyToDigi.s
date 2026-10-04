@@ -15,7 +15,7 @@ glabel Item_ApplyToDigi
     /* 2B98 80012398 00000000 */   nop
     /* 2B9C 8001239C 01002492 */  lbu        $a0, 0x1($s1)
     /* 2BA0 800123A0 02005086 */  lh         $s0, 0x2($s2)
-    /* 2BA4 800123A4 4D76000C */  jal        func_8001D934
+    /* 2BA4 800123A4 4D76000C */  jal        Digi_GetType
     /* 2BA8 800123A8 00000000 */   nop
     /* 2BAC 800123AC 32000216 */  bne        $s0, $v0, .L80012478
     /* 2BB0 800123B0 21100000 */   addu      $v0, $zero, $zero

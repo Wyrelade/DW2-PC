@@ -95,10 +95,10 @@ void Item_BuildMenuList(MenuItemWork *w) {
         for (i = 1; i < 0x118; i++) {
             id = Item_GetIdAtIndex(i - 1);
             if (w->menuMode == 4) {
-                if (func_8001E0C0(id) == 0x1F) {
+                if (Item_GetCategory(id) == 0x1F) {
                     continue;
                 }
-            } else if (func_8001E0C0(id) != 0x1F) {
+            } else if (Item_GetCategory(id) != 0x1F) {
                 continue;
             }
             if (D_80050720->storageCounts[id] != 0) {
@@ -295,7 +295,7 @@ void Menu_ShowSelItemText(Actor *a0, MenuItemPickWork *o) {
     }
 }
 
-void func_800169D0(Actor *arg0, s16 arg1) {
+void Menu_ItemInit(Actor *arg0, s16 arg1) {
     arg0->work->field_64 = arg1;
 }
 
@@ -422,7 +422,7 @@ void Menu_ItemTask(Actor *a0) {
                 Task_NextState2(a0);
                 break;
             case 1:
-                r = func_800136A4(w->descText);
+                r = Text_WaitYesNo(w->descText);
                 switch (r) {
                 case 1:
                     Item_RemoveFromBag(Menu_Ctx->bagSlot);

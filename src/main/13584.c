@@ -322,7 +322,7 @@ void Sys_Main(void) {
     D_8005F770.vsyncWait = 0;
     D_8005F770.bufIndex = 1;
     Gpu_FreePrimBufs();
-    func_8001C800(0);
+    Gpu_SetOtLayout(0);
     Gpu_SetLayerOtPtrs();
     Rand_Seed(0);
     ((void (*)(s32))MemCardInit)(0);
@@ -758,11 +758,11 @@ void Cd_ReadFileAsync(s32 arg0, s32 arg1) {
     CdControlF(2, sp10);
 }
 
-void func_80024310(Actor *arg0, Block1C *arg1) {
+void Fx_ModelInit(Actor *arg0, Block1C *arg1) {
     *(Block1C *)arg0->work = *arg1;
 }
 
-void func_80024350(Actor *arg0) {
+void Fx_ModelTask(Actor *arg0) {
     ActorWork *work = arg0->work;
 
     switch (arg0->stateLevel0) {
@@ -784,7 +784,7 @@ void func_80024350(Actor *arg0) {
     }
 }
 
-void func_80024410(Actor *arg0) {
+void Fx_ModelDraw(Actor *arg0) {
     ActorWork *w = arg0->work;
     if (arg0->stateLevel0 == 1) {
         Gfx_AttachModel(arg0, w->field_0);

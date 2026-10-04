@@ -50,7 +50,7 @@ glabel func_8006E920
     /* B664 8006E9C4 00000000 */  nop
     /* B668 8006E9C8 11004010 */  beqz       $v0, .L8006EA10
     /* B66C 8006E9CC 00000000 */   nop
-    /* B670 8006E9D0 3078000C */  jal        func_8001E0C0
+    /* B670 8006E9D0 3078000C */  jal        Item_GetCategory
     /* B674 8006E9D4 21204000 */   addu      $a0, $v0, $zero
     /* B678 8006E9D8 0D004216 */  bne        $s2, $v0, .L8006EA10
     /* B67C 8006E9DC 00000000 */   nop

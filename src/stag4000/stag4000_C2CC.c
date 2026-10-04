@@ -182,7 +182,7 @@ void func_8006FE5C(Actor *a0) {
 void func_8006FE90(Actor *a0) {
     ActorWork *w = a0->work;
 
-    if (func_80022518(0x12) <= 0) {
+    if (Beetle_GetPart(0x12) <= 0) {
         D_80072B60->field_7E = 0;
     }
     func_8006FC54(w);
@@ -766,7 +766,7 @@ s32 func_80071608(void) {
     u32 i;
 
     for (i = 0; i < 12; i++) {
-        if (func_80022518(D_80072A4C[i]) > 0) {
+        if (Beetle_GetPart(D_80072A4C[i]) > 0) {
             buf[n++] = D_80072A4C[i];
         }
     }
@@ -827,7 +827,7 @@ s32 func_800716EC(Actor *a0) {
                 D_80050720->field_8 = v;
                 sfx = 4;
             } else {
-                func_8002254C(slot, 1);
+                Beetle_SetPartBroken(slot, 1);
                 stack[(*count)++] = 6;
                 sfx = 3;
                 D_80072B60->field_78 = Item_GetNameText(D_80050720->slotItems[slot]);

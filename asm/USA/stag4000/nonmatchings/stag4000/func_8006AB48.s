@@ -51,7 +51,7 @@ glabel func_8006AB48
     /* 7898 8006ABF8 602BA28E */  lw         $v0, %lo(D_80072B60)($s5)
     /* 789C 8006ABFC 00000000 */  nop
     /* 78A0 8006AC00 E0004490 */  lbu        $a0, 0xE0($v0)
-    /* 78A4 8006AC04 3978000C */  jal        func_8001E0E4
+    /* 78A4 8006AC04 3978000C */  jal        Item_GetLevel
     /* 78A8 8006AC08 00000000 */   nop
     /* 78AC 8006AC0C 1000038E */  lw         $v1, 0x10($s0)
     /* 78B0 8006AC10 00000000 */  nop

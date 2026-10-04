@@ -5,7 +5,7 @@ glabel func_800657F0
     /* 2494 800657F4 1000B0AF */  sw         $s0, 0x10($sp)
     /* 2498 800657F8 21808000 */  addu       $s0, $a0, $zero
     /* 249C 800657FC 1400BFAF */  sw         $ra, 0x14($sp)
-    /* 24A0 80065800 617B000C */  jal        func_8001ED84
+    /* 24A0 80065800 617B000C */  jal        Skill_GetNameText
     /* 24A4 80065804 2120A000 */   addu      $a0, $a1, $zero
     /* 24A8 80065808 0000038E */  lw         $v1, 0x0($s0)
     /* 24AC 8006580C 00000000 */  nop

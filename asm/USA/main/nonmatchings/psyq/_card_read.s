@@ -28,7 +28,7 @@ glabel _card_read
     /* 31544 80040D44 800F0480 */  lb         $a0, 0xF80($zero)
     /* 31548 80040D48 800F0480 */  lb         $a0, 0xF80($zero)
     /* 3154C 80040D4C 500E0480 */  lb         $a0, 0xE50($zero)
-  alabel D_80040D50
+  alabel Task_DescTable
     /* 31550 80040D50 F40C0480 */  lb         $a0, 0xCF4($zero)
     /* 31554 80040D54 688F0680 */  lb         $a2, -0x7098($zero)
     /* 31558 80040D58 0C290780 */  lb         $a3, 0x290C($zero)

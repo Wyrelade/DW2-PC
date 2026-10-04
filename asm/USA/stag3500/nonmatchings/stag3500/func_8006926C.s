@@ -25,7 +25,7 @@ glabel func_8006926C
     /* 5F60 800692C0 3800A9A7 */  sh         $t1, 0x38($sp)
     /* 5F64 800692C4 08004486 */  lh         $a0, 0x8($s2)
     /* 5F68 800692C8 08005E96 */  lhu        $fp, 0x8($s2)
-    /* 5F6C 800692CC D97B000C */  jal        func_8001EF64
+    /* 5F6C 800692CC D97B000C */  jal        Skill_GetPower
     /* 5F70 800692D0 21880000 */   addu      $s1, $zero, $zero
     /* 5F74 800692D4 2AB82202 */  slt        $s7, $s1, $v0
     /* 5F78 800692D8 0780023C */  lui        $v0, %hi(D_8006ADE0)

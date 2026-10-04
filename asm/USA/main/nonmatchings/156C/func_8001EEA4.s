@@ -8,7 +8,7 @@ glabel func_8001EEA4
     /* F6B4 8001EEB4 2190C000 */  addu       $s2, $a2, $zero
     /* F6B8 8001EEB8 1400B1AF */  sw         $s1, 0x14($sp)
     /* F6BC 8001EEBC 1C00BFAF */  sw         $ra, 0x1C($sp)
-    /* F6C0 8001EEC0 507B000C */  jal        func_8001ED40
+    /* F6C0 8001EEC0 507B000C */  jal        Skill_FindById
     /* F6C4 8001EEC4 2188E000 */   addu      $s1, $a3, $zero
     /* F6C8 8001EEC8 21384000 */  addu       $a3, $v0, $zero
     /* F6CC 8001EECC 40801000 */  sll        $s0, $s0, 1

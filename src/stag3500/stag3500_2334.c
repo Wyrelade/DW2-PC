@@ -44,7 +44,7 @@ void func_800657B8(Stg35TextHandle *arg0, s32 arg1) {
 }
 
 void func_800657F0(Stg35TextHandle *arg0, s32 arg1) {
-    arg0->text->field_4 = func_8001ED84(arg1);
+    arg0->text->field_4 = Skill_GetNameText(arg1);
 }
 
 void func_80065824(Stg35TextHandle *arg0) {
@@ -181,9 +181,9 @@ s32 func_80065BE0(s32 arg0, s32 arg1, s32 arg2) {
     s32 denom;
     s32 result;
 
-    b = func_8001EF64(arg2);
+    b = Skill_GetPower(arg2);
     a = rec0->field_1C;
-    func_8001EF88(arg2);
+    Skill_GetSpecialty(arg2);
     c = rec1->field_1E;
     idx = func_80068CA0(arg1 >= 3);
     d = D_8006A540[idx];
@@ -663,8 +663,8 @@ void func_80066C00(Actor *arg0, s32 arg1) {
     if (arg0->stateLevel3 == 0 && arg0->stateLevel4 == 0) {
         Actor_StopAxisMotion(arg0, 1);
     } else {
-        func_80020D54(arg0, 1);
-        func_80020E00(arg0, 2);
+        Actor_ApplyAxisMotion(arg0, 1);
+        Actor_ApplyAxisMotionRev(arg0, 2);
     }
     switch (arg0->stateLevel3) {
     case 0:
@@ -1784,7 +1784,7 @@ void func_80068D34(Actor *arg0) {
                 switch (arg0->stateLevel1) {
                 case 0:
                 default:
-                    q = func_8001EFF0(w->script[1]);
+                    q = Skill_GetShotXa(w->script[1]);
                     a3.field_0 = q[0];
                     a3.field_4 = q[1];
                     a3.field_8 = w->script[2];

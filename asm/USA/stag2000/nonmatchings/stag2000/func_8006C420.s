@@ -5,7 +5,7 @@ glabel func_8006C420
     /* 90C4 8006C424 1800B0AF */  sw         $s0, 0x18($sp)
     /* 90C8 8006C428 21808000 */  addu       $s0, $a0, $zero
     /* 90CC 8006C42C 1C00BFAF */  sw         $ra, 0x1C($sp)
-    /* 90D0 8006C430 6078000C */  jal        func_8001E180
+    /* 90D0 8006C430 6078000C */  jal        Item_GetPrice
     /* 90D4 8006C434 2120A000 */   addu      $a0, $a1, $zero
     /* 90D8 8006C438 0780033C */  lui        $v1, %hi(D_80070A04)
     /* 90DC 8006C43C 040A638C */  lw         $v1, %lo(D_80070A04)($v1)

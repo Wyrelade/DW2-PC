@@ -698,7 +698,7 @@ void func_80071538(DigiRosterEntry *e) {
             p = &e->maxMp;
         }
         r = Rand_Next() & 3;
-        c = func_8001D9CC(e->digiId, k);
+        c = Digi_GetStatGrowth(e->digiId, k);
         if (lv < 12) {
             *p += D_80073510[0][c][r] + 10;
         } else if (lv < 22) {
@@ -719,7 +719,7 @@ void func_80071538(DigiRosterEntry *e) {
         *p = t;
     }
     k = 1;
-    lv = e->level - (func_8001D958(e->digiId) * 10 + k);
+    lv = e->level - (Digi_GetRank(e->digiId) * 10 + k);
     for (k = 0; k < 2; k++) {
         if (k == 0) {
             p = (u16 *)&e->field_1C;
@@ -727,7 +727,7 @@ void func_80071538(DigiRosterEntry *e) {
             p = &e->field_1E;
         }
         r = Rand_Next() & 3;
-        c = func_8001D9CC(e->digiId, k + 2);
+        c = Digi_GetStatGrowth(e->digiId, k + 2);
         if (lv == 1) {
             *p += D_800735A0[0][c][r] + 4;
         } else if (lv < 4) {
@@ -748,7 +748,7 @@ void func_80071538(DigiRosterEntry *e) {
     lv = e->field_20;
     p = (u16 *)&e->field_20;
     r = Rand_Next() & 3;
-    c = func_8001D9CC(e->digiId, 4);
+    c = Digi_GetStatGrowth(e->digiId, 4);
     if (lv < 21) {
         *p += D_80073618[0][c][r] + 3;
     } else if (lv < 51) {
@@ -906,15 +906,15 @@ void func_80071DC4(Actor *a0) {
             Text_Close(slot);
             item = w->field_74[row][col + scroll];
             if (item != 0) {
-                Text_OpenPacked(slot, func_8001ED84(item), 0, D_80073730[k + 4]);
+                Text_OpenPacked(slot, Skill_GetNameText(item), 0, D_80073730[k + 4]);
             }
         }
     }
     Text_Close(&w->field_70);
     id = w->field_74[w->field_A4][w->field_B0[w->field_A4] + w->field_A8[w->field_A4]];
     if (id != 0 && w->field_C8 == 0) {
-        Text_OpenPacked(&w->field_70, func_8001EDD4(id), 0, D_80073730[27]);
-        w->field_C0 = func_8001EE80(id);
+        Text_OpenPacked(&w->field_70, Skill_GetDescText(id), 0, D_80073730[27]);
+        w->field_C0 = Skill_GetMpCost(id);
     } else {
         w->field_C0 = 0;
     }

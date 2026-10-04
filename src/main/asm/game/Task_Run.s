@@ -8,10 +8,10 @@ glabel Task_Run
     addiu      $sp, $sp, -0x18
     sw         $s0, 0x10($sp)
     addu       $s0, $a0, $zero
-    lui        $a0, %hi(D_80040D50)
+    lui        $a0, %hi(Task_DescTable)
     sw         $ra, 0x14($sp)
     lw         $v1, 0x0($s0)
-    addiu      $a0, $a0, %lo(D_80040D50)
+    addiu      $a0, $a0, %lo(Task_DescTable)
     sra        $v0, $v1, 8
     sll        $v0, $v0, 2
     addu       $v0, $v0, $a0

@@ -138,7 +138,7 @@ glabel func_80063C44
     /* AB4 80063E14 00140600 */   sll       $v0, $a2, 16
   .L80063E18:
     /* AB8 80063E18 1C03248E */  lw         $a0, 0x31C($s1)
-    /* ABC 80063E1C 977B000C */  jal        func_8001EE5C
+    /* ABC 80063E1C 977B000C */  jal        Skill_GetPartsEntry
     /* AC0 80063E20 00000000 */   nop
     /* AC4 80063E24 FD8E000C */  jal        Cd_QueueFile
     /* AC8 80063E28 03240200 */   sra       $a0, $v0, 16
@@ -385,7 +385,7 @@ glabel func_80063C44
     /* E4C 800641AC 25004014 */  bnez       $v0, .L80064244
     /* E50 800641B0 00000000 */   nop
     /* E54 800641B4 1C03248E */  lw         $a0, 0x31C($s1)
-    /* E58 800641B8 977B000C */  jal        func_8001EE5C
+    /* E58 800641B8 977B000C */  jal        Skill_GetPartsEntry
     /* E5C 800641BC 00000000 */   nop
     /* E60 800641C0 DC8E000C */  jal        Cd_GetFileState
     /* E64 800641C4 03240200 */   sra       $a0, $v0, 16
@@ -399,7 +399,7 @@ glabel func_80063C44
     /* E84 800641E4 E80143AC */  sw         $v1, 0x1E8($v0)
     /* E88 800641E8 1C03248E */  lw         $a0, 0x31C($s1)
     /* E8C 800641EC 0100A524 */  addiu      $a1, $a1, 0x1
-    /* E90 800641F0 977B000C */  jal        func_8001EE5C
+    /* E90 800641F0 977B000C */  jal        Skill_GetPartsEntry
     /* E94 800641F4 DC0225AE */   sw        $a1, 0x2DC($s1)
     /* E98 800641F8 688E000C */  jal        Cd_GetFileEntry
     /* E9C 800641FC 21204000 */   addu      $a0, $v0, $zero

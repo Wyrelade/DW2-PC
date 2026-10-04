@@ -64,7 +64,7 @@ s32 func_8006767C(Stg30IdSet *a0, s16 *a1, u8 id) {
 }
 
 s32 func_800676C4(s32 a0, u8 a1) {
-    return a0 >= func_8001F0C0(a1);
+    return a0 >= Skill_GetRank(a1);
 }
 
 void func_800676F4(Actor *a0) {
@@ -183,7 +183,7 @@ void func_800676F4(Actor *a0) {
                     e->field_46 = 0;
                 }
                 do {
-                    stage = func_8001D958(e->digiId);
+                    stage = Digi_GetRank(e->digiId);
                     j = 0;
                     n = 0;
                     for (; j < 0x18; j++) {
@@ -236,7 +236,7 @@ void func_800676F4(Actor *a0) {
         }
         st = D_8005E5E0;
         if (st != 0) {
-            stage2 = func_8001D958(D_80073CC0.entries[D_80073CC0.field_3D8].field_19);
+            stage2 = Digi_GetRank(D_80073CC0.entries[D_80073CC0.field_3D8].field_19);
             if ((Rand_Next() & 0x7F) < D_80073188[stage2][st - 1]) {
                 arg = D_80073CC0.field_3D8;
                 Task_Create(0x513, &l->field_28, (s32)&arg);
@@ -406,7 +406,7 @@ void func_80067F2C(Actor *a0) {
             }
             for (i = 3; i < 6; i++) {
                 Mem_Zero(&((Stg30StateDigis *)&D_80073CC0)->digis[i], 0x5C);
-                func_8001DDA8(D_8005F770.field_24, i - 3, &((Stg30StateDigis *)&D_80073CC0)->digis[i],
+                Enemy_InitRosterEntry(D_8005F770.field_24, i - 3, &((Stg30StateDigis *)&D_80073CC0)->digis[i],
                               (Out1DDA8 *)&D_80073CC0.field_240[i]);
                 if (D_80073CC0.entries[i].field_19 != 0) {
                     args[1] = i;
@@ -414,7 +414,7 @@ void func_80067F2C(Actor *a0) {
                     Task_Create(0x509, (s32 *)&l->actors[i], (s32)args);
                 }
             }
-            func_8001DB68((void *)D_8005F794, &out);
+            Enemy_GetSetSummary((void *)D_8005F794, &out);
             D_80073CC0.field_3DC = out.field_14;
             for (n1 = 0; n1 < 6; n1++) {
                 D_80073CC0.field_37A[n1] = D_80073CC0.field_356[n1] = D_80073CC0.entries[n1].field_34;

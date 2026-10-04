@@ -204,9 +204,9 @@ void func_80063D28(Stg11MenuRow *arg0, Stg11CardRec *arg1) {
     Stg11SpeciesRec *t = (Stg11SpeciesRec *)Cd_GetFileEntry(0xD280010);
     s32 i;
 
-    t += func_8001D958(arg0->field_0);
+    t += Digi_GetRank(arg0->field_0);
     arg0->level = t->level;
-    arg0->field_F = func_8001EB58(arg0->level);
+    arg0->field_F = Digi_CalcMaxLevel(arg0->level);
     arg0->exp = t->exp;
     arg0->hp = t->base + arg1->field_92 / 20;
     if (t->hpMax < arg0->hp) {
@@ -245,7 +245,7 @@ void func_80063D28(Stg11MenuRow *arg0, Stg11CardRec *arg1) {
         }
     }
     if (arg0->skillCount == 0) {
-        arg0->skills[0] = func_8001D9A8(arg0->field_0);
+        arg0->skills[0] = Digi_GetLearnedSkill(arg0->field_0);
         arg0->skillCount = 1;
     }
 }
@@ -268,8 +268,8 @@ void func_80064000(Actor *arg0, Stg11MenuWork *arg1) {
         if (D_80050720->elems[i].state == 1) {
             arg1->field_138--;
         }
-        if (D_80050720->elems[i].state != 0 && maxLv < func_8001D958(D_80050720->elems[i].digiId)) {
-            maxLv = func_8001D958(D_80050720->elems[i].digiId);
+        if (D_80050720->elems[i].state != 0 && maxLv < Digi_GetRank(D_80050720->elems[i].digiId)) {
+            maxLv = Digi_GetRank(D_80050720->elems[i].digiId);
         }
     }
     n = 0;
@@ -294,7 +294,7 @@ void func_80064000(Actor *arg0, Stg11MenuWork *arg1) {
                         c->field_2 = 1;
                     }
                 }
-                if (maxLv < func_8001D958(c->field_0)) {
+                if (maxLv < Digi_GetRank(c->field_0)) {
                     c->field_2 = 2;
                 }
                 if (c->field_2 == 0) {
@@ -640,7 +640,7 @@ void func_80064EF0(Actor *arg0, Stg11MenuWork *arg1) {
             Task_NextState2(arg0);
             break;
         case 1:
-            r = func_800136A4(arg1->field_4);
+            r = Text_WaitYesNo(arg1->field_4);
             if (r != -1) {
                 if (r == 1) {
                     Task_SetState0(arg0, 2);
@@ -698,7 +698,7 @@ void func_800650A8(Actor *arg0, Stg11MenuWork *arg1) {
             Task_NextState2(arg0);
             break;
         case 1:
-            r = func_800136A4(arg1->field_4);
+            r = Text_WaitYesNo(arg1->field_4);
             if (r != -1) {
                 if (r == 1) {
                     Task_SetState1(arg0, 5);
@@ -916,7 +916,7 @@ void func_800654E4(Actor *arg0, Stg11MenuWork *arg1) {
         }
         break;
     case 2:
-        r = func_800136A4(arg1->field_4);
+        r = Text_WaitYesNo(arg1->field_4);
         if (r != -1) {
             if (r == 1) {
                 idx2 = Menu_GridIndexColMajor(arg1->cursor, arg1->u6C.gridSize);
@@ -1080,7 +1080,7 @@ void func_80065E64(Actor *arg0, Stg11MenuWork *arg1) {
         }
         break;
     case 3:
-        r = func_800136A4(arg1->field_4);
+        r = Text_WaitYesNo(arg1->field_4);
         if (r != -1) {
             if (r == 1) {
                 Task_SetState0(arg0, 2);

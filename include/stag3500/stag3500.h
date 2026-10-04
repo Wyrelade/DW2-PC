@@ -422,7 +422,7 @@ extern void func_800661B0(Stg35LoadHandle *arg0);
 extern void func_8006926C(s32 arg0);
 extern s32 Mem_Alloc(s32, s32);
 extern void Mem_Free(void *);
-extern s32 func_8001ED84(s32 arg0);
+extern s32 Skill_GetNameText(s32 arg0);
 extern s32 func_8001E8D0(s32 id);
 extern s32 CdControlF(s32, s32);
 extern void Snd_PlayById(s32, s32);
@@ -548,10 +548,10 @@ extern s32 func_8001E7C0(s32 id);           /* main: s16 */
 extern void func_8001E7E4(s32 a0, Row6 *a1);
 extern void func_8001EEA4(s32 id, s32 n, s16 *a, s16 *b);
 extern s32 func_8001EE10(s32 id);
-extern s32 func_8001EE5C(s32 id);
-extern s32 *func_8001EFF0(s32 id);
-extern s32 func_8001EF64(s32 id);           /* main: s16 */
-extern u16 func_8001EF88(s32 id);
+extern s32 Skill_GetPartsEntry(s32 id);
+extern s32 *Skill_GetShotXa(s32 id);
+extern s32 Skill_GetPower(s32 id);           /* main: s16 */
+extern u16 Skill_GetSpecialty(s32 id);
 
 extern SysState D_8005F770;
 extern PadState D_8005F6F0[];

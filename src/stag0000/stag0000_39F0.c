@@ -107,8 +107,8 @@ void func_80067120(Actor *arg0, s32 arg1, s32 arg2) {
     if (arg0->stateLevel3 == 0 && arg0->stateLevel4 == 0) {
         Actor_StopAxisMotion(arg0, 1);
     } else {
-        func_80020D54(arg0, 1);
-        func_80020E00(arg0, 2);
+        Actor_ApplyAxisMotion(arg0, 1);
+        Actor_ApplyAxisMotionRev(arg0, 2);
     }
     switch (arg0->stateLevel3) {
     case 0:
@@ -362,7 +362,7 @@ void func_80067428(Actor *arg0) {
                 default:
                     w->field_2C = arg0->stateLevel4;
                     func_800673FC(arg0);
-                    p = func_8001EFF0(w->field_2C);
+                    p = Skill_GetShotXa(w->field_2C);
                     a3.field_0 = p[0];
                     a3.field_4 = p[1];
                     a3.field_8 = 1;
@@ -404,7 +404,7 @@ void func_80067428(Actor *arg0) {
                 }
                 func_80066FE8(arg0);
                 Task_NextState2(arg0);
-                if (func_8001EF64(w->field_2C) == 0) {
+                if (Skill_GetPower(w->field_2C) == 0) {
                     Task_NextState2(arg0);
                     break;
                 }

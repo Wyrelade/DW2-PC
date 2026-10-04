@@ -95,7 +95,7 @@ glabel Sys_Main
     /* 13EBC 800236BC 040000AE */  sw         $zero, 0x4($s0)
     /* 13EC0 800236C0 4D72000C */  jal        Gpu_FreePrimBufs
     /* 13EC4 800236C4 280002AE */   sw        $v0, 0x28($s0)
-    /* 13EC8 800236C8 0072000C */  jal        func_8001C800
+    /* 13EC8 800236C8 0072000C */  jal        Gpu_SetOtLayout
     /* 13ECC 800236CC 21200000 */   addu      $a0, $zero, $zero
     /* 13ED0 800236D0 D871000C */  jal        Gpu_SetLayerOtPtrs
     /* 13ED4 800236D4 00000000 */   nop

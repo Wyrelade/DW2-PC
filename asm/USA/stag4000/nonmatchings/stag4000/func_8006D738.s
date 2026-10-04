@@ -73,7 +73,7 @@ glabel func_8006D738
     /* A4D4 8006D834 21106200 */  addu       $v0, $v1, $v0
     /* A4D8 8006D838 2F005090 */  lbu        $s0, 0x2F($v0)
     /* A4DC 8006D83C 1800A527 */  addiu      $a1, $sp, 0x18
-    /* A4E0 8006D840 DA76000C */  jal        func_8001DB68
+    /* A4E0 8006D840 DA76000C */  jal        Enemy_GetSetSummary
     /* A4E4 8006D844 21200002 */   addu      $a0, $s0, $zero
     /* A4E8 8006D848 01000424 */  addiu      $a0, $zero, 0x1
     /* A4EC 8006D84C 1800A68F */  lw         $a2, 0x18($sp)

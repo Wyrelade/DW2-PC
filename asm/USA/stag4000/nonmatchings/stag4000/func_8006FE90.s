@@ -5,7 +5,7 @@ glabel func_8006FE90
     /* CB34 8006FE94 1400BFAF */  sw         $ra, 0x14($sp)
     /* CB38 8006FE98 1000B0AF */  sw         $s0, 0x10($sp)
     /* CB3C 8006FE9C 2C00908C */  lw         $s0, 0x2C($a0)
-    /* CB40 8006FEA0 4689000C */  jal        func_80022518
+    /* CB40 8006FEA0 4689000C */  jal        Beetle_GetPart
     /* CB44 8006FEA4 12000424 */   addiu     $a0, $zero, 0x12
     /* CB48 8006FEA8 0400401C */  bgtz       $v0, .L8006FEBC
     /* CB4C 8006FEAC 0780023C */   lui       $v0, %hi(D_80072B60)

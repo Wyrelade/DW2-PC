@@ -25,7 +25,7 @@ glabel func_8006D4D8
     /* A1CC 8006D52C 1800B2AF */  sw         $s2, 0x18($sp)
     /* A1D0 8006D530 1400B1AF */  sw         $s1, 0x14($sp)
     /* A1D4 8006D534 01000492 */  lbu        $a0, 0x1($s0)
-    /* A1D8 8006D538 4D76000C */  jal        func_8001D934
+    /* A1D8 8006D538 4D76000C */  jal        Digi_GetType
     /* A1DC 8006D53C 21904300 */   addu      $s2, $v0, $v1
     /* A1E0 8006D540 21884000 */  addu       $s1, $v0, $zero
     /* A1E4 8006D544 03FFC326 */  addiu      $v1, $s6, -0xFD

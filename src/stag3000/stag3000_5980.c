@@ -23,7 +23,7 @@ s32 func_80068DA4(s32 idx, s32 i, Stg30ByteLists *p) {
     case 1:
     case 2:
     case 3:
-        if (D_80073CC0.entries[idx].field_32 >= func_8001EE80(p->field_2[i])) {
+        if (D_80073CC0.entries[idx].field_32 >= Skill_GetMpCost(p->field_2[i])) {
             return 1;
         }
     case 4:
@@ -121,7 +121,7 @@ s32 func_80068E34(s32 cond, s32 self) {
     case 15:
         ret = 0;
         for (i = 0; i < 3; i++) {
-            if (D_80073CC0.entries[i].field_19 != 0 && func_8001D934(D_80073CC0.entries[i].field_19) == 0) {
+            if (D_80073CC0.entries[i].field_19 != 0 && Digi_GetType(D_80073CC0.entries[i].field_19) == 0) {
                 ret = 1;
             }
         }
@@ -129,7 +129,7 @@ s32 func_80068E34(s32 cond, s32 self) {
     case 16:
         ret = 0;
         for (i = 0; i < 3; i++) {
-            if (D_80073CC0.entries[i].field_19 != 0 && func_8001D934(D_80073CC0.entries[i].field_19) == 1) {
+            if (D_80073CC0.entries[i].field_19 != 0 && Digi_GetType(D_80073CC0.entries[i].field_19) == 1) {
                 ret = 1;
             }
         }
@@ -137,7 +137,7 @@ s32 func_80068E34(s32 cond, s32 self) {
     case 17:
         ret = 0;
         for (i = 0; i < 3; i++) {
-            if (D_80073CC0.entries[i].field_19 != 0 && func_8001D934(D_80073CC0.entries[i].field_19) == 2) {
+            if (D_80073CC0.entries[i].field_19 != 0 && Digi_GetType(D_80073CC0.entries[i].field_19) == 2) {
                 ret = 1;
             }
         }
@@ -155,7 +155,7 @@ s32 func_800692A4(s32 id, s32 kind, s32 def) {
 
     switch (kind) {
     case 0:
-        x = func_8001EF3C(id);
+        x = Skill_GetTarget(id);
         if (x == 2) goto r8;
         if (x < 3) return def;
         if (x == 6) goto r7;
@@ -250,7 +250,7 @@ void func_80069594(void) {
                         v = (&d->b21[0])[p->field_9[i]];
                         out->field_6 = v;
                         out->field_4 = func_800692A4(v, p->field_D[i], col);
-                        out->field_0 = func_8001EE34(out->field_6) + 1;
+                        out->field_0 = Skill_GetType(out->field_6) + 1;
                         out->field_8 = func_8006E2BC(out->field_6);
                         break;
                     }
@@ -387,7 +387,7 @@ s32 func_80069A44(s32 idx) {
             return 0;
         }
         tech = buf[(u16)Rand_Next() % n];
-        n = func_8001EF3C(tech);
+        n = Skill_GetTarget(tech);
         do {
             switch (n) {
             case 0:

@@ -140,7 +140,7 @@ glabel func_8006ADF8
     /* 7C94 8006AFF4 4579000C */  jal        Flag_SelectBranch
     /* 7C98 8006AFF8 00000000 */   nop
     /* 7C9C 8006AFFC 6C006426 */  addiu      $a0, $s3, 0x6C
-    /* 7CA0 8006B000 0E70000C */  jal        func_8001C038
+    /* 7CA0 8006B000 0E70000C */  jal        Text_OpenMsgClearChoice
     /* 7CA4 8006B004 21284000 */   addu      $a1, $v0, $zero
     /* 7CA8 8006B008 21200002 */  addu       $a0, $s0, $zero
     /* 7CAC 8006B00C 63AB010C */  jal        func_8006AD8C
@@ -154,7 +154,7 @@ glabel func_8006ADF8
     /* 7CCC 8006B02C EAAD0108 */  j          .L8006B7A8
     /* 7CD0 8006B030 B40951AC */   sw        $s1, %lo(D_800709B4)($v0)
   .L8006B034:
-    /* 7CD4 8006B034 7079000C */  jal        func_8001E5C0
+    /* 7CD4 8006B034 7079000C */  jal        Flag_GetTableBase
     /* 7CD8 8006B038 00000000 */   nop
     /* 7CDC 8006B03C 6C00648E */  lw         $a0, 0x6C($s3)
     /* 7CE0 8006B040 826F000C */  jal        Text_IsFinished
@@ -171,7 +171,7 @@ glabel func_8006ADF8
     /* 7D0C 8006B06C 4579000C */  jal        Flag_SelectBranch
     /* 7D10 8006B070 00000000 */   nop
     /* 7D14 8006B074 21200002 */  addu       $a0, $s0, $zero
-    /* 7D18 8006B078 0E70000C */  jal        func_8001C038
+    /* 7D18 8006B078 0E70000C */  jal        Text_OpenMsgClearChoice
     /* 7D1C 8006B07C 21284000 */   addu      $a1, $v0, $zero
     /* 7D20 8006B080 EAAD0108 */  j          .L8006B7A8
     /* 7D24 8006B084 00000000 */   nop
@@ -417,14 +417,14 @@ glabel func_8006ADF8
     /* 8098 8006B3F8 4579000C */  jal        Flag_SelectBranch
     /* 809C 8006B3FC 00000000 */   nop
     /* 80A0 8006B400 6C006426 */  addiu      $a0, $s3, 0x6C
-    /* 80A4 8006B404 0E70000C */  jal        func_8001C038
+    /* 80A4 8006B404 0E70000C */  jal        Text_OpenMsgClearChoice
     /* 80A8 8006B408 21284000 */   addu      $a1, $v0, $zero
     /* 80AC 8006B40C 6645000C */  jal        Task_NextState3
     /* 80B0 8006B410 21204002 */   addu      $a0, $s2, $zero
     /* 80B4 8006B414 26AD0108 */  j          .L8006B498
     /* 80B8 8006B418 00000000 */   nop
   .L8006B41C:
-    /* 80BC 8006B41C 7079000C */  jal        func_8001E5C0
+    /* 80BC 8006B41C 7079000C */  jal        Flag_GetTableBase
     /* 80C0 8006B420 00000000 */   nop
     /* 80C4 8006B424 6C00648E */  lw         $a0, 0x6C($s3)
     /* 80C8 8006B428 826F000C */  jal        Text_IsFinished
@@ -613,7 +613,7 @@ glabel func_8006ADF8
     /* 8360 8006B6C0 600060AE */  sw         $zero, 0x60($s3)
     /* 8364 8006B6C4 21204002 */  addu       $a0, $s2, $zero
   .L8006B6C8:
-    /* 8368 8006B6C8 5583000C */  jal        func_80020D54
+    /* 8368 8006B6C8 5583000C */  jal        Actor_ApplyAxisMotion
     /* 836C 8006B6CC 02000524 */   addiu     $a1, $zero, 0x2
     /* 8370 8006B6D0 21204002 */  addu       $a0, $s2, $zero
     /* 8374 8006B6D4 34006526 */  addiu      $a1, $s3, 0x34

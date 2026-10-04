@@ -544,7 +544,7 @@ void func_80064008(Actor *a) {
             }
             p = (Stg20Digi *)&D_8005E704[D_800709B0.field_34];
             q = (Stg20Digi *)&D_8005E704[D_800709B0.field_38];
-            t = func_8001D958(D_800709B0.field_2C);
+            t = Digi_GetRank(D_800709B0.field_2C);
             w->field_C = 0;
             Snd_PlayById(0x101, 1);
             Mem_Zero(&nd, 0x5C);
@@ -647,22 +647,22 @@ void func_80064008(Actor *a) {
             best = 0;
             bestv = 0;
             for (i = 0; i < 12; i++) {
-                if (p->skills[i] != 0 && t >= func_8001F0C0(p->skills[i])) {
-                    v = func_8001EF64(p->skills[i]);
+                if (p->skills[i] != 0 && t >= Skill_GetRank(p->skills[i])) {
+                    v = Skill_GetPower(p->skills[i]);
                     if (bestv < v) {
                         bestv = v;
                         best = p->skills[i];
                     }
                 }
-                if (q->skills[i] != 0 && t >= func_8001F0C0(q->skills[i])) {
-                    v = func_8001EF64(q->skills[i]);
+                if (q->skills[i] != 0 && t >= Skill_GetRank(q->skills[i])) {
+                    v = Skill_GetPower(q->skills[i]);
                     if (bestv < v) {
                         bestv = v;
                         best = q->skills[i];
                     }
                 }
             }
-            nd.skills[0] = func_8001D9A8(nd.digiId);
+            nd.skills[0] = Digi_GetLearnedSkill(nd.digiId);
             if (best != 0 && nd.skills[0] != best) {
                 nd.skills[1] = best;
             }
@@ -932,7 +932,7 @@ void func_800650BC(Actor *a) {
                 }
                 e->maxMp = v;
                 e->mp = v;
-                e->field_46 = func_8001D9A8(e->digiId);
+                e->field_46 = Digi_GetLearnedSkill(e->digiId);
                 Task_NextState2(a);
             }
             break;
@@ -1282,7 +1282,7 @@ void func_80065FB8(Actor *a) {
         Gpu_ClearScreens();
         Gfx_FadeInFromBlack(0x1E);
         Task_Create(9, &slot[0], 0);
-        func_8001E28C(func_80066714()->field_20);
+        Flag_SetTableFile(func_80066714()->field_20);
         Task_Create(0x308, &slot[5], 0);
         if (D_8005F770.gameMode < 0x32A) {
             st = &((Stg20Start *)func_80066714()->field_8)[D_8005F770.field_24];
@@ -1295,7 +1295,7 @@ void func_80065FB8(Actor *a) {
             Task_Create(0x302, &slot[4], (s32)&sp);
             if (func_80066714()->field_20 != 0) {
                 n = 0;
-                for (id = func_8001E480(); id != -1; id = Flag_NextPassingEntry()) {
+                for (id = Flag_FirstPassingEntry(); id != -1; id = Flag_NextPassingEntry()) {
                     src = (Stg20BytePair *)func_8001E5E8(id);
                     sp.id = func_8001E634(id);
                     sp.field_2 = func_8001E658(id);
@@ -2221,7 +2221,7 @@ void func_80068420(Actor *a, s32 i) {
             Text_OpenById(&w->texts[i * 4 + 0], 0x81, 0, pos[0]);
             Text_OpenPacked(&w->texts[i * 4 + 1], (s32)D_8005E750[s->slot].name, 0, pos[1]);
             Text_OpenPacked(&w->texts[i * 4 + 2], (s32)Digi_GetDefaultName(digi), 0, pos[2]);
-            Text_OpenById(&w->texts[i * 4 + 3], func_8001D958(digi) + 0xC6, 0, pos[3]);
+            Text_OpenById(&w->texts[i * 4 + 3], Digi_GetRank(digi) + 0xC6, 0, pos[3]);
         }
     }
 }
@@ -2436,7 +2436,7 @@ void func_80068D34(s32 id) {
     if (e != NULL) {
         Stg20TextWork *w = (Stg20TextWork *)e->work;
 
-        w->field_4 = func_8001EDD4(id);
+        w->field_4 = Skill_GetDescText(id);
         w->field_18 = 1;
     }
 }
@@ -2547,9 +2547,9 @@ void func_80069068(Actor *a) {
         default:
             func_80067480(&w->texts[0], (s32)w->digi->name, 0, &D_80070040[0], 0);
             func_80067480(&w->texts[1], (s32)Digi_GetDefaultName(w->digi->digiId), 0, &D_80070040[1], 0);
-            func_80067480(&w->texts[2], 0, func_8001D934(w->digi->digiId) + 0xC3, &D_80070040[2], 0);
-            func_80067480(&w->texts[3], 0, func_8001D958(w->digi->digiId) + 0xC6, &D_80070040[3], 0);
-            func_80067480(&w->texts[4], 0, func_8001D980(w->digi->digiId) + 0xCA, &D_80070040[4], 0);
+            func_80067480(&w->texts[2], 0, Digi_GetType(w->digi->digiId) + 0xC3, &D_80070040[2], 0);
+            func_80067480(&w->texts[3], 0, Digi_GetRank(w->digi->digiId) + 0xC6, &D_80070040[3], 0);
+            func_80067480(&w->texts[4], 0, Digi_GetSpecialty(w->digi->digiId) + 0xCA, &D_80070040[4], 0);
             if (w->digi->attr[0x25] != 0) {
                 func_80067480(&w->texts[5], (s32)Digi_GetDefaultName(w->digi->attr[0x25]), 0, &D_80070040[5], 0);
             }
@@ -2564,7 +2564,7 @@ void func_80069068(Actor *a) {
             func_80067480(&w->texts[12], 0, 0x9D, &D_80070040[12], 0);
             switch (D_800709D4) {
             case 0:
-                t = func_8001D958(w->digi->digiId);
+                t = Digi_GetRank(w->digi->digiId);
                 d = w->digi;
                 lv = (d->level - 1) / 10;
                 if (lv >= 4) {
@@ -2575,7 +2575,7 @@ void func_80069068(Actor *a) {
                     func_80068D84(0x118);
                     break;
                 case 1:
-                    p = func_8001DA80(d->digiId, d->field_E);
+                    p = Digi_GetEvolutionTarget(d->digiId, d->field_E);
                     D_800709DC = p;
                     if (p == 0) {
                 case 2:
@@ -2590,7 +2590,7 @@ void func_80069068(Actor *a) {
                 func_80068DD8(0x126, D_800709DC);
                 break;
             case 2:
-                if (func_8001D958(w->digi->digiId) != 0) {
+                if (Digi_GetRank(w->digi->digiId) != 0) {
                     func_80068D84(0x11B);
                 } else {
                     func_80068D84(0x11A);
@@ -2600,8 +2600,8 @@ void func_80069068(Actor *a) {
                 ok = 0;
                 id0 = D_8005E620.elems[D_800709E4].digiId;
                 id1 = w->digi->digiId;
-                x = func_8001D934(id0);
-                y = func_8001D934(id1);
+                x = Digi_GetType(id0);
+                y = Digi_GetType(id1);
                 switch (D_8005F790) {
                 case 0x305:
                     if (x != 0 && y != 0) {
@@ -2623,7 +2623,7 @@ void func_80069068(Actor *a) {
                     break;
                 }
                 if (ok != 0) {
-                    if (func_8001D958(w->digi->digiId) == 0) {
+                    if (Digi_GetRank(w->digi->digiId) == 0) {
                         func_80068D84(0x11A);
                     } else {
                         D_800709DC = func_8006A190(id0, id1);
@@ -2713,7 +2713,7 @@ void func_800697AC(Actor *a) {
     for (i = 0; i < 12; i++) {
         s = e->skills[i];
         if (s != 0) {
-            k = func_8001EE34(s);
+            k = Skill_GetType(s);
             w->groups[k].list[cnt[k]] = s;
             cnt[k]++;
         }
@@ -2737,7 +2737,7 @@ void func_800698F4(Actor *a) {
         top = w->top[i];
         for (j = 0; j < 3; j++) {
             if (list[j + top] != 0) {
-                args.text = func_8001ED84(list[j + top]);
+                args.text = Skill_GetNameText(list[j + top]);
                 args.bigFont = 0;
                 args.color = w->col != i;
                 args.pos.x = D_8007009C[i + 8].lo;
@@ -2923,15 +2923,15 @@ void func_8006A118(void) {
 }
 
 s32 func_8006A144(s32 a, s32 b) {
-    a = func_8001D934(a);
-    b = func_8001D934(b);
+    a = Digi_GetType(a);
+    b = Digi_GetType(b);
     return D_8007012C[a][b];
 }
 
 u8 func_8006A190(s32 a, s32 b) {
     s32 s4 = func_8006A144(a, b);
-    s32 r1 = func_8001D958(a);
-    s32 r2 = func_8001D958(b);
+    s32 r1 = Digi_GetRank(a);
+    s32 r2 = Digi_GetRank(b);
     s32 m = (r1 < r2 ? r1 : r2) - 1;
     s32 r3 = func_8001D910(a);
     s32 r4 = func_8001D910(b);
@@ -3346,7 +3346,7 @@ void func_8006ADF8(Actor *a) {
                 }
                 c = *func_80067504(p);
                 if (w->blk[0].x == c.x && w->blk[0].y == c.y && func_80067568(p) != 0) {
-                    func_8001C038(&w->text, Flag_SelectBranch(w->field_1C));
+                    Text_OpenMsgClearChoice(&w->text, Flag_SelectBranch(w->field_1C));
                     w->target = p;
                     func_8006AD8C(p);
                     Task_SetState1(p, 0);
@@ -3355,11 +3355,11 @@ void func_8006ADF8(Actor *a) {
                 }
                 break;
             case 1:
-                func_8001E5C0();
+                Flag_GetTableBase();
                 if (Text_IsFinished(w->text) != 0) {
                     Text_Close(&w->text);
                     if (Flag_Test(0x10) != 0) {
-                        func_8001C038(&w->text, Flag_SelectBranch(w->field_1C));
+                        Text_OpenMsgClearChoice(&w->text, Flag_SelectBranch(w->field_1C));
                         break;
                     }
                     if (((Stg20ModelTask *)a)->field_4 == -2) {
@@ -3446,11 +3446,11 @@ void func_8006ADF8(Actor *a) {
                     case 0:
                     default:
                         func_8006AA0C(a, 0x20);
-                        func_8001C038(&w->text, Flag_SelectBranch(w->field_1C));
+                        Text_OpenMsgClearChoice(&w->text, Flag_SelectBranch(w->field_1C));
                         Task_NextState3(a);
                         break;
                     case 1:
-                        func_8001E5C0();
+                        Flag_GetTableBase();
                         if (Text_IsFinished(w->text) != 0) {
                             Text_Close(&w->text);
                             if (Flag_Test(0x10) != 0) {
@@ -3524,7 +3524,7 @@ void func_8006ADF8(Actor *a) {
                         w->counter = 0;
                     }
                 }
-                func_80020D54(a, 2);
+                Actor_ApplyAxisMotion(a, 2);
                 func_800677C8(a, &w->marks, -1, 5);
                 if (func_80067568(a) != 0) {
                     if ((w->input & 0xF000) && func_80067770(a, func_8006AD14(a)) == 0) {

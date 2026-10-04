@@ -79,7 +79,7 @@ void func_80067BAC(Actor *arg0) {
     switch (w->field_0) {
     case 0:
     default:
-        e = Cd_GetFileEntry(func_8001EE5C(w->field_4));
+        e = Cd_GetFileEntry(Skill_GetPartsEntry(w->field_4));
         break;
     case 4:
     case 5:

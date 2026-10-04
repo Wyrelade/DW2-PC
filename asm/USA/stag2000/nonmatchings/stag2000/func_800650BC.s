@@ -369,7 +369,7 @@ glabel func_800650BC
   .L80065604:
     /* 22A4 80065604 01000492 */  lbu        $a0, 0x1($s0)
     /* 22A8 80065608 180003A6 */  sh         $v1, 0x18($s0)
-    /* 22AC 8006560C 6A76000C */  jal        func_8001D9A8
+    /* 22AC 8006560C 6A76000C */  jal        Digi_GetLearnedSkill
     /* 22B0 80065610 1A0003A6 */   sh        $v1, 0x1A($s0)
     /* 22B4 80065614 21206002 */  addu       $a0, $s3, $zero
     /* 22B8 80065618 6045000C */  jal        Task_NextState2

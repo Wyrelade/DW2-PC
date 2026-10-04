@@ -17,8 +17,8 @@ glabel Task_Create
     /* 18B0 800110B0 B543000C */  jal        Task_Destroy
     /* 18B4 800110B4 21206002 */   addu      $a0, $s3, $zero
   .L800110B8:
-    /* 18B8 800110B8 0480033C */  lui        $v1, %hi(D_80040D50)
-    /* 18BC 800110BC 500D6324 */  addiu      $v1, $v1, %lo(D_80040D50)
+    /* 18B8 800110B8 0480033C */  lui        $v1, %hi(Task_DescTable)
+    /* 18BC 800110BC 500D6324 */  addiu      $v1, $v1, %lo(Task_DescTable)
     /* 18C0 800110C0 02121200 */  srl        $v0, $s2, 8
     /* 18C4 800110C4 80100200 */  sll        $v0, $v0, 2
     /* 18C8 800110C8 21104300 */  addu       $v0, $v0, $v1

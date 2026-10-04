@@ -289,7 +289,7 @@ glabel func_80067428
     /* 44C4 80067824 FF9C010C */  jal        func_800673FC
     /* 44C8 80067828 2C0002AE */   sw        $v0, 0x2C($s0)
     /* 44CC 8006782C 2C00048E */  lw         $a0, 0x2C($s0)
-    /* 44D0 80067830 FC7B000C */  jal        func_8001EFF0
+    /* 44D0 80067830 FC7B000C */  jal        Skill_GetShotXa
     /* 44D4 80067834 00000000 */   nop
     /* 44D8 80067838 0C010424 */  addiu      $a0, $zero, 0x10C
     /* 44DC 8006783C 14004526 */  addiu      $a1, $s2, 0x14
@@ -361,7 +361,7 @@ glabel func_80067428
     /* 45CC 8006792C 6045000C */  jal        Task_NextState2
     /* 45D0 80067930 21202002 */   addu      $a0, $s1, $zero
     /* 45D4 80067934 2C00048E */  lw         $a0, 0x2C($s0)
-    /* 45D8 80067938 D97B000C */  jal        func_8001EF64
+    /* 45D8 80067938 D97B000C */  jal        Skill_GetPower
     /* 45DC 8006793C 00000000 */   nop
     /* 45E0 80067940 06004014 */  bnez       $v0, .L8006795C
     /* 45E4 80067944 0680023C */   lui       $v0, %hi(D_8005F778)

@@ -8,11 +8,11 @@
 
 /* Small data this unit defines (retail reaches it with %gp_rel here). The bytes
  * live in the data asm; these tentative definitions are COMMON and bind to it. */
-s32 D_80050778;
+s32 Skill_ShotXaFile;
 s32 D_8005077C;
 
-u8 func_8001DA80(s32 id, s32 val) {
-    EntD8C4 *e = func_8001D8C4(id);
+u8 Digi_GetEvolutionTarget(s32 id, s32 val) {
+    EntD8C4 *e = Digi_FindBaseData(id);
     s32 i;
 
     if (e->rangeValues[0] == 0) {
@@ -29,7 +29,7 @@ u8 func_8001DA80(s32 id, s32 val) {
     return e->rangeValues[i];
 }
 
-Ent1DB18 *func_8001DB18(s32 id) {
+Ent1DB18 *Enemy_FindSetById(s32 id) {
     Rec1DB18 *p = (Rec1DB18 *)Cd_GetFileOrNull(0xC6F);
 
     while (1) {
@@ -44,8 +44,8 @@ Ent1DB18 *func_8001DB18(s32 id) {
     return 0;
 }
 
-void func_8001DB68(void *a0, Out1DB68 *out) {
-    Ent1DB18 *src = func_8001DB18(a0);
+void Enemy_GetSetSummary(void *a0, Out1DB68 *out) {
+    Ent1DB18 *src = Enemy_FindSetById(a0);
     Ent1DB18 *p;
     s32 i;
     out->field_0 = src->u0.h.field_2;
@@ -66,7 +66,7 @@ void func_8001DB68(void *a0, Out1DB68 *out) {
 }
 
 void Digi_InitFromTable(s32 a0, s32 a1, DigiRosterEntry *e) {
-    DigiInitRow *r = (DigiInitRow *)func_8001DB18(a0);
+    DigiInitRow *r = (DigiInitRow *)Enemy_FindSetById(a0);
     u8 *name;
     s32 i;
 
@@ -99,7 +99,7 @@ void Digi_InitFromTable(s32 a0, s32 a1, DigiRosterEntry *e) {
         e->attr[1] = row->field_18;
         e->attr[2] = row->field_19;
     }
-    e->maxLevel = func_8001EB58(e->level);
+    e->maxLevel = Digi_CalcMaxLevel(e->level);
     if (e->level == 1) {
         e->exp = 0;
     } else {
@@ -107,8 +107,8 @@ void Digi_InitFromTable(s32 a0, s32 a1, DigiRosterEntry *e) {
     }
 }
 
-void func_8001DDA8(s32 a0, s32 a1, DigiRosterEntry *e, Out1DDA8 *o) {
-    Tbl1DDA8 *t = (Tbl1DDA8 *)func_8001DB18(a0);
+void Enemy_InitRosterEntry(s32 a0, s32 a1, DigiRosterEntry *e, Out1DDA8 *o) {
+    Tbl1DDA8 *t = (Tbl1DDA8 *)Enemy_FindSetById(a0);
     u8 *name;
     s32 i;
 
@@ -182,11 +182,11 @@ s32 Item_GetDescText(s32 arg0) {
     return Item_FindById(arg0)->descOffset + base;
 }
 
-s32 func_8001E0C0(s32 id) {
+s32 Item_GetCategory(s32 id) {
     return Item_FindById(id)->u0.b0.field_2;
 }
 
-s32 func_8001E0E4(void) {
+s32 Item_GetLevel(void) {
     return Item_FindById()->u0.b0.field_3 & 0xF;
 }
 
@@ -202,11 +202,11 @@ s32 func_8001E158(void) {
     return (Item_FindById()->u0.field_0 >> 28) & 3;
 }
 
-s32 func_8001E180(void) {
+s32 Item_GetPrice(void) {
     return Item_FindById()->u4.field_4 & 0xFFFFFF;
 }
 
-u8 func_8001E1AC(void) {
+u8 Item_GetBodyMask(void) {
     return Item_FindById()->u4.b4.field_7;
 }
 
@@ -239,54 +239,54 @@ s32 Item_GetIdAtIndex(s32 a0) {
     return r;
 }
 
-void func_8001E28C(s32 arg0) {
-    D_8005D560.fileId = arg0;
+void Flag_SetTableFile(s32 arg0) {
+    Flag_EntryIter.fileId = arg0;
 }
 
-Blk18 *func_8001E298(FlagEntryIdx *arg0) {
-    Blk18 *base = (Blk18 *)Cd_GetFileEntry((D_8005D560.fileId << 16) | 2);
+Blk18 *Flag_GetEntryCondBlock(FlagEntryIdx *arg0) {
+    Blk18 *base = (Blk18 *)Cd_GetFileEntry((Flag_EntryIter.fileId << 16) | 2);
     return &base[arg0->condIdx];
 }
 
-Blk18 *func_8001E2E0(FlagEntryIdx *arg0, s32 arg1) {
-    Blk18 *base = (Blk18 *)Cd_GetFileEntry((D_8005D560.fileId << 16) | 2);
+Blk18 *Flag_GetBranchCondBlock(FlagEntryIdx *arg0, s32 arg1) {
+    Blk18 *base = (Blk18 *)Cd_GetFileEntry((Flag_EntryIter.fileId << 16) | 2);
     return &base[((FlagEntryIdx *)((u8 *)arg0 + arg1))->altCondIdx];
 }
 
-Blk18 *func_8001E338(FlagEntryIdx *arg0, s32 arg1) {
-    Blk18 *base = (Blk18 *)Cd_GetFileEntry((D_8005D560.fileId << 16) | 2);
+Blk18 *Flag_GetBranchSetBlock(FlagEntryIdx *arg0, s32 arg1) {
+    Blk18 *base = (Blk18 *)Cd_GetFileEntry((Flag_EntryIter.fileId << 16) | 2);
     return &base[((FlagEntryIdx *)((u8 *)arg0 + arg1))->altSetIdx];
 }
 
 s32 Flag_NextPassingEntry(void) {
-    while (D_8005D560.cursor->field_0 != 0) {
-        if (Flag_TestConds(func_8001E298((FlagEntryIdx *)D_8005D560.cursor)) != 0) {
-            D_8005D560.match = *D_8005D560.cursor;
+    while (Flag_EntryIter.cursor->field_0 != 0) {
+        if (Flag_TestConds(Flag_GetEntryCondBlock((FlagEntryIdx *)Flag_EntryIter.cursor)) != 0) {
+            Flag_EntryIter.match = *Flag_EntryIter.cursor;
             {
-                s32 r = D_8005D560.entryIndex;
+                s32 r = Flag_EntryIter.entryIndex;
 
-                D_8005D560.cursor++;
-                D_8005D560.entryIndex = r + 1;
+                Flag_EntryIter.cursor++;
+                Flag_EntryIter.entryIndex = r + 1;
                 return r;
             }
         }
-        D_8005D560.cursor++;
-        D_8005D560.entryIndex++;
+        Flag_EntryIter.cursor++;
+        Flag_EntryIter.entryIndex++;
     }
     return -1;
 }
 
-void func_8001E480(void) {
-    D_8005D560.fileBase = Cd_GetFileOrNull(D_8005D560.fileId);
-    D_8005D560.cursor = Cd_GetFileEntry(D_8005D560.fileId << 16);
-    D_8005D560.entryIndex = 0;
+void Flag_FirstPassingEntry(void) {
+    Flag_EntryIter.fileBase = Cd_GetFileOrNull(Flag_EntryIter.fileId);
+    Flag_EntryIter.cursor = Cd_GetFileEntry(Flag_EntryIter.fileId << 16);
+    Flag_EntryIter.entryIndex = 0;
     Flag_NextPassingEntry();
 }
 
-FlagBranchEntry *func_8001E4CC(arg0)
+FlagBranchEntry *Flag_GetEntry(arg0)
 s32 arg0;
 {
-    FlagBranchEntry *base = (FlagBranchEntry *)Cd_GetFileEntry(D_8005D560.fileId << 16);
+    FlagBranchEntry *base = (FlagBranchEntry *)Cd_GetFileEntry(Flag_EntryIter.fileId << 16);
     return &base[arg0];
 }
 
@@ -297,36 +297,36 @@ s32 Flag_SelectBranch(s32 arg0) {
     FlagBranchEntry *base;
     s32 r;
     s32 i;
-    r = Cd_GetFileOrNull(D_8005D560.fileId);
-    base = func_8001E4CC(arg0);
+    r = Cd_GetFileOrNull(Flag_EntryIter.fileId);
+    base = Flag_GetEntry(arg0);
     for (i = 0; i < 6; i++) {
-        if (Flag_TestConds(func_8001E2E0((FlagEntryIdx *)base, i)) != 0) {
+        if (Flag_TestConds(Flag_GetBranchCondBlock((FlagEntryIdx *)base, i)) != 0) {
             break;
         }
     }
     if (i == 6) {
         i = 0;
     }
-    Flag_ApplySets(func_8001E338((FlagEntryIdx *)base, i));
+    Flag_ApplySets(Flag_GetBranchSetBlock((FlagEntryIdx *)base, i));
     return base->branchOffsets[i] + r;
 }
 
-s32 func_8001E5C0(void) {
-    return Cd_GetFileOrNull(D_8005D560.fileId);
+s32 Flag_GetTableBase(void) {
+    return Cd_GetFileOrNull(Flag_EntryIter.fileId);
 }
 
 Blk12 *func_8001E5E8(void) {
-    FlagBranchEntry *e = func_8001E4CC();
-    Blk12 *base = (Blk12 *)Cd_GetFileEntry((D_8005D560.fileId << 16) | 1);
+    FlagBranchEntry *e = Flag_GetEntry();
+    Blk12 *base = (Blk12 *)Cd_GetFileEntry((Flag_EntryIter.fileId << 16) | 1);
     return &base[e->blockIndex];
 }
 
 s16 func_8001E634(void) {
-    return func_8001E4CC()->field_0;
+    return Flag_GetEntry()->field_0;
 }
 
 s16 func_8001E658(void) {
-    return func_8001E4CC()->field_2;
+    return Flag_GetEntry()->field_2;
 }
 
 s32 Digi_GetDataFileId(s32 arg0) {
@@ -396,12 +396,12 @@ s32 func_8001E8D0(s32 id) {
     return Digi_FindDataById(id)->u4.packedId & 1;
 }
 
-u16 func_8001E8F4(s32 idx) {
+u16 Digi_GetModelListId(s32 idx) {
     EntA0 *p = Cd_GetFileEntry(0x1F80000) + idx;
     return (p->packedId >> 1) & 0x7FFF;
 }
 
-s32 func_8001E938(void) {
+s32 Digi_GetModelListCount(void) {
     EntA0 *p = Cd_GetFileEntry(0x1F80000);
     s32 i = 0;
     while ((p->packedId >> 1) & 0x7FFF) {
@@ -440,7 +440,7 @@ s32 Digi_GetExpToNextLevel(s32 lv, s32 max, s32 cur) {
     return exp - cur;
 }
 
-s32 func_8001EB58(s32 x) {
+s32 Digi_CalcMaxLevel(s32 x) {
     s32 h = x / 2;
 
     if (x < 6) {
@@ -504,7 +504,7 @@ void func_8001ECE4(Actor *arg0) {
     }
 }
 
-EntED40 *func_8001ED40(s32 id) {
+EntED40 *Skill_FindById(s32 id) {
     EntED40 *p = (EntED40 *)Cd_GetFileEntry(0x25B0000);
 
     do {
@@ -515,38 +515,38 @@ EntED40 *func_8001ED40(s32 id) {
     return 0;
 }
 
-s32 func_8001ED84(s32 arg0) {
+s32 Skill_GetNameText(s32 arg0) {
     s32 base = Cd_GetFileOrNull(0x25B);
-    EntED40 *p = func_8001ED40(arg0);
+    EntED40 *p = Skill_FindById(arg0);
     if (p != 0) {
         return p->nameOffset + base;
     }
     return 0;
 }
 
-s32 func_8001EDD4(s32 arg0) {
+s32 Skill_GetDescText(s32 arg0) {
     s32 base = Cd_GetFileOrNull(0x25B);
-    return func_8001ED40(arg0)->descOffset + base;
+    return Skill_FindById(arg0)->descOffset + base;
 }
 
 s32 func_8001EE10(s32 id) {
-    return func_8001ED40(id)->u0.h0.field_2 & 3;
+    return Skill_FindById(id)->u0.h0.field_2 & 3;
 }
 
-s32 func_8001EE34(s32 id) {
-    return (func_8001ED40(id)->u0.field_0 >> 18) & 3;
+s32 Skill_GetType(s32 id) {
+    return (Skill_FindById(id)->u0.field_0 >> 18) & 3;
 }
 
-s32 func_8001EE5C(s32 id) {
-    return func_8001ED40(id)->field_C;
+s32 Skill_GetPartsEntry(s32 id) {
+    return Skill_FindById(id)->field_C;
 }
 
-u8 func_8001EE80(s32 id) {
-    return func_8001ED40(id)->field_4;
+u8 Skill_GetMpCost(s32 id) {
+    return Skill_FindById(id)->field_4;
 }
 
 void func_8001EEA4(s32 id, s32 n, s16 *a, s16 *b) {
-    EntED40 *p = func_8001ED40(id);
+    EntED40 *p = Skill_FindById(id);
     s32 i;
 
     n *= 2;
@@ -557,16 +557,16 @@ void func_8001EEA4(s32 id, s32 n, s16 *a, s16 *b) {
 }
 
 
-s32 func_8001EF3C(s32 id) {
-    return (func_8001ED40(id)->u0.field_0 >> 20) & 0xF;
+s32 Skill_GetTarget(s32 id) {
+    return (Skill_FindById(id)->u0.field_0 >> 20) & 0xF;
 }
 
-s16 func_8001EF64(s32 id) {
-    return func_8001ED40(id)->field_8;
+s16 Skill_GetPower(s32 id) {
+    return Skill_FindById(id)->field_8;
 }
 
-u16 func_8001EF88(s32 id) {
-    u16 v = func_8001ED40(id)->u0.b0.field_3 & 0xF;
+u16 Skill_GetSpecialty(s32 id) {
+    u16 v = Skill_FindById(id)->u0.b0.field_3 & 0xF;
 
     if (v == 6) {
         return (u16)Rand_Next() % 5;
@@ -574,52 +574,52 @@ u16 func_8001EF88(s32 id) {
     return v;
 }
 
-s32 *func_8001EFF0(s32 id) {
-    EntED40 *e = func_8001ED40(id);
-    D_80050778 = e->field_6;
+s32 *Skill_GetShotXa(s32 id) {
+    EntED40 *e = Skill_FindById(id);
+    Skill_ShotXaFile = e->field_6;
     D_8005077C = e->field_5;
-    return &D_80050778;
+    return &Skill_ShotXaFile;
 }
 
 
 u8 func_8001F020(s32 id) {
-    return func_8001ED40(id)->u10.field_10b;
+    return Skill_FindById(id)->u10.field_10b;
 }
 
 s32 func_8001F044(s32 id) {
-    return func_8001ED40(id)->field_20 & 0xF;
+    return Skill_FindById(id)->field_20 & 0xF;
 }
 
-s32 func_8001F068(s32 id) {
-    return func_8001ED40(id)->field_18 & 0x3FFFFFF;
+s32 Skill_GetStatusFlags(s32 id) {
+    return Skill_FindById(id)->field_18 & 0x3FFFFFF;
 }
 
-s32 func_8001F094(s32 id) {
-    return func_8001ED40(id)->field_1C & 0x3FFFF;
+s32 Skill_GetCureFlags(s32 id) {
+    return Skill_FindById(id)->field_1C & 0x3FFFF;
 }
 
-s32 func_8001F0C0(s32 id) {
-    return func_8001ED40(id)->u0.field_0 >> 28;
+s32 Skill_GetRank(s32 id) {
+    return Skill_FindById(id)->u0.field_0 >> 28;
 }
 
 s32 func_8001F0E4(s32 id) {
-    return (func_8001ED40(id)->u10.field_10 >> 8) & 0x7FFF;
+    return (Skill_FindById(id)->u10.field_10 >> 8) & 0x7FFF;
 }
 
 s32 func_8001F10C(s32 id) {
-    return func_8001ED40(id)->field_14 & 0x3FF;
+    return Skill_FindById(id)->field_14 & 0x3FF;
 }
 
-s32 func_8001F130(s32 id) {
-    return (func_8001ED40(id)->field_14 >> 10) & 0x1FFF;
+s32 Skill_GetBuffFlags(s32 id) {
+    return (Skill_FindById(id)->field_14 >> 10) & 0x1FFF;
 }
 
 s32 func_8001F158(s32 id) {
-    return (func_8001ED40(id)->field_1C >> 18) & 0x1F;
+    return (Skill_FindById(id)->field_1C >> 18) & 0x1F;
 }
 
 s32 func_8001F180(s32 id) {
-    return (func_8001ED40(id)->field_1C >> 23) & 0xFF;
+    return (Skill_FindById(id)->field_1C >> 23) & 0xFF;
 }
 
 void Anim_SetModelAnim(Actor *a, s32 n) {
@@ -810,7 +810,7 @@ void Gfx_InitLights(void) {
     GsSetLightMode(0);
 }
 
-s32 func_8001F970(s32 arg0) {
+s32 Gfx_AnimAllowsBlink(s32 arg0) {
     if (arg0 == 0x64 || arg0 == 0xA || arg0 == 0x14) {
         return 0;
     }
@@ -836,7 +836,7 @@ void Gfx_AnimateModelTex(Actor *a0) {
     u8 n;
 
     if (r->dstX != 0xFF) {
-        if (func_8001F970(w->animId) != 0) {
+        if (Gfx_AnimAllowsBlink(w->animId) != 0) {
             switch (w->blinkTimer >> 1) {
             case 0:
                 w->blinkTimer = (Rand_Next() & 0x7F) + 0x3C;
@@ -1127,9 +1127,9 @@ void Gfx_DrawTexModel(Actor *a0, s32 mode) {
             r = (GfxModelTriGT3 *)((GfxModelTriSec *)p)->e;
             if (n != 0) {
                 if (s->field_34 == 1) {
-                    func_80020FD0(r, n, s, 2);
+                    Gfx_AddTrisGT3(r, n, s, 2);
                 } else {
-                    func_80020FD0(r, n, s, j);
+                    Gfx_AddTrisGT3(r, n, s, j);
                 }
                 r += n;
             }
@@ -1290,7 +1290,7 @@ void Actor_StepAxisMotion(AxisMotion *a0, s32 a1) {
     }
 }
 
-s32 func_80020D54(ContC40 *a0, s32 i) {
+s32 Actor_ApplyAxisMotion(ContC40 *a0, s32 i) {
     AllocC40 *p = a0->transform;
     AxisMotion *e = &p->axisMotion[i];
 
@@ -1307,7 +1307,7 @@ s32 func_80020D54(ContC40 *a0, s32 i) {
     return e->speed >> 8;
 }
 
-s32 func_80020E00(ContC40 *a0, s32 i) {
+s32 Actor_ApplyAxisMotionRev(ContC40 *a0, s32 i) {
     AllocC40 *p = a0->transform;
     AxisMotion *e = &p->axisMotion[i];
 
@@ -1367,7 +1367,7 @@ void Gfx_CalcNormalColors(Vert6Pmv *v, ModelProjView *o) {
     }
 }
 
-void func_80020FD0(GfxModelTriGT3 *t, s32 n, ActorModel *s, s32 mode) {
+void Gfx_AddTrisGT3(GfxModelTriGT3 *t, s32 n, ActorModel *s, s32 mode) {
     s32 sxy[3];
     s32 opz;
     s32 *xy;

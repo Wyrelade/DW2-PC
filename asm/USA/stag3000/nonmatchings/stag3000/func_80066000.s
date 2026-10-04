@@ -56,10 +56,10 @@ glabel func_80066000
     /* 2D64 800660C4 00000000 */  nop
     /* 2D68 800660C8 1C002012 */  beqz       $s1, .L8006613C
     /* 2D6C 800660CC 00000000 */   nop
-    /* 2D70 800660D0 8D7B000C */  jal        func_8001EE34
+    /* 2D70 800660D0 8D7B000C */  jal        Skill_GetType
     /* 2D74 800660D4 21202002 */   addu      $a0, $s1, $zero
     /* 2D78 800660D8 21202002 */  addu       $a0, $s1, $zero
-    /* 2D7C 800660DC A07B000C */  jal        func_8001EE80
+    /* 2D7C 800660DC A07B000C */  jal        Skill_GetMpCost
     /* 2D80 800660E0 21804000 */   addu      $s0, $v0, $zero
     /* 2D84 800660E4 80181000 */  sll        $v1, $s0, 2
     /* 2D88 800660E8 1000A627 */  addiu      $a2, $sp, 0x10
@@ -132,10 +132,10 @@ glabel func_80066000
     /* 2E84 800661E4 20382925 */  addiu      $t1, $t1, %lo(D_80073820)
     /* 2E88 800661E8 21104900 */  addu       $v0, $v0, $t1
     /* 2E8C 800661EC 0D005090 */  lbu        $s0, 0xD($v0)
-    /* 2E90 800661F0 D97B000C */  jal        func_8001EF64
+    /* 2E90 800661F0 D97B000C */  jal        Skill_GetPower
     /* 2E94 800661F4 21200002 */   addu      $a0, $s0, $zero
     /* 2E98 800661F8 21200002 */  addu       $a0, $s0, $zero
-    /* 2E9C 800661FC A07B000C */  jal        func_8001EE80
+    /* 2E9C 800661FC A07B000C */  jal        Skill_GetMpCost
     /* 2EA0 80066200 21804000 */   addu      $s0, $v0, $zero
     /* 2EA4 80066204 2000A38F */  lw         $v1, 0x20($sp)
     /* 2EA8 80066208 00000000 */  nop
@@ -244,7 +244,7 @@ glabel func_80066000
   .L80066380:
     /* 3020 80066380 21805700 */  addu       $s0, $v0, $s7
     /* 3024 80066384 0D000492 */  lbu        $a0, 0xD($s0)
-    /* 3028 80066388 CF7B000C */  jal        func_8001EF3C
+    /* 3028 80066388 CF7B000C */  jal        Skill_GetTarget
     /* 302C 8006638C 00000000 */   nop
     /* 3030 80066390 05000324 */  addiu      $v1, $zero, 0x5
     /* 3034 80066394 02004314 */  bne        $v0, $v1, .L800663A0

@@ -543,7 +543,7 @@ glabel func_8006DCCC
     /* B14C 8006E4AC 00000000 */  nop
     /* B150 8006E4B0 0A002012 */  beqz       $s1, .L8006E4DC
     /* B154 8006E4B4 FFFF1024 */   addiu     $s0, $zero, -0x1
-    /* B158 8006E4B8 3078000C */  jal        func_8001E0C0
+    /* B158 8006E4B8 3078000C */  jal        Item_GetCategory
     /* B15C 8006E4BC 21202002 */   addu      $a0, $s1, $zero
     /* B160 8006E4C0 37B90108 */  j          .L8006E4DC
     /* B164 8006E4C4 F9FF5024 */   addiu     $s0, $v0, -0x7

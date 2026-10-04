@@ -23,7 +23,7 @@ glabel func_80066DB0
     /* 3A9C 80066DFC 00110200 */  sll        $v0, $v0, 4
     /* 3AA0 80066E00 21105000 */  addu       $v0, $v0, $s0
     /* 3AA4 80066E04 B2024484 */  lh         $a0, 0x2B2($v0)
-    /* 3AA8 80066E08 CF7B000C */  jal        func_8001EF3C
+    /* 3AA8 80066E08 CF7B000C */  jal        Skill_GetTarget
     /* 3AAC 80066E0C 180024AE */   sw        $a0, 0x18($s1)
     /* 3AB0 80066E10 080022AE */  sw         $v0, 0x8($s1)
     /* 3AB4 80066E14 0800028E */  lw         $v0, 0x8($s0)

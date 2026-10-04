@@ -9,10 +9,10 @@
 
 s32 func_8006D2EC(s32 idx, s32 id, s32 lvl) {
     s32 k = (lvl + 1) * 20;
-    s32 pow = func_8001EF64(id);
-    s32 el = func_8001EF88(id);
+    s32 pow = Skill_GetPower(id);
+    s32 el = Skill_GetSpecialty(id);
     s32 def = D_80073CC0.entries[idx].field_36;
-    s32 el2 = func_8001D980(D_80073CC0.entries[idx].field_19);
+    s32 el2 = Digi_GetSpecialty(D_80073CC0.entries[idx].field_19);
     s32 r;
 
     if (D_80073CC0.field_2AC[idx].field_0 == 5) {
@@ -42,7 +42,7 @@ s32 func_8006D2EC(s32 idx, s32 id, s32 lvl) {
 s32 func_8006D4D8(s32 target, s32 tech, s16 *p3, s16 *p4) {
     Stg30DigiS *d = &D_80073CD8[target];
     s32 *st = &((Stg30CombatCD8 *)D_80073CD8)->status[target];
-    s32 type = func_8001D934(d->digiId);
+    s32 type = Digi_GetType(d->digiId);
     s32 dmg;
 
     switch (tech) {

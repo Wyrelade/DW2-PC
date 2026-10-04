@@ -40,7 +40,7 @@ glabel func_800650A8
     /* 1DD0 80065130 00000000 */   nop
   .L80065134:
     /* 1DD4 80065134 0400248E */  lw         $a0, 0x4($s1)
-    /* 1DD8 80065138 A94D000C */  jal        func_800136A4
+    /* 1DD8 80065138 A94D000C */  jal        Text_WaitYesNo
     /* 1DDC 8006513C 00000000 */   nop
     /* 1DE0 80065140 21184000 */  addu       $v1, $v0, $zero
     /* 1DE4 80065144 FFFF0224 */  addiu      $v0, $zero, -0x1

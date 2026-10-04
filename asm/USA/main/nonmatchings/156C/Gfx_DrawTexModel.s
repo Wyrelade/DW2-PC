@@ -133,7 +133,7 @@ glabel Gfx_DrawTexModel
     /* 10EF0 800206F0 21306002 */  addu       $a2, $s3, $zero
     /* 10EF4 800206F4 21384002 */  addu       $a3, $s2, $zero
   .L800206F8:
-    /* 10EF8 800206F8 F483000C */  jal        func_80020FD0
+    /* 10EF8 800206F8 F483000C */  jal        Gfx_AddTrisGT3
     /* 10EFC 800206FC 00000000 */   nop
     /* 10F00 80020700 00111000 */  sll        $v0, $s0, 4
     /* 10F04 80020704 21882202 */  addu       $s1, $s1, $v0

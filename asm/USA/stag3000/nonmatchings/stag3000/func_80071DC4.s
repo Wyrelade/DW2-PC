@@ -40,7 +40,7 @@ glabel func_80071DC4
     /* EAEC 80071E4C 00000000 */  nop
     /* EAF0 80071E50 10008010 */  beqz       $a0, .L80071E94
     /* EAF4 80071E54 00000000 */   nop
-    /* EAF8 80071E58 617B000C */  jal        func_8001ED84
+    /* EAF8 80071E58 617B000C */  jal        Skill_GetNameText
     /* EAFC 80071E5C 00000000 */   nop
     /* EB00 80071E60 21200002 */  addu       $a0, $s0, $zero
     /* EB04 80071E64 21284000 */  addu       $a1, $v0, $zero
@@ -93,7 +93,7 @@ glabel func_80071DC4
     /* EBBC 80071F1C 00000000 */  nop
     /* EBC0 80071F20 11004014 */  bnez       $v0, .L80071F68
     /* EBC4 80071F24 00000000 */   nop
-    /* EBC8 80071F28 757B000C */  jal        func_8001EDD4
+    /* EBC8 80071F28 757B000C */  jal        Skill_GetDescText
     /* EBCC 80071F2C 21200002 */   addu      $a0, $s0, $zero
     /* EBD0 80071F30 21202002 */  addu       $a0, $s1, $zero
     /* EBD4 80071F34 21284000 */  addu       $a1, $v0, $zero
@@ -105,7 +105,7 @@ glabel func_80071DC4
     /* EBEC 80071F4C 003C0700 */  sll        $a3, $a3, 16
     /* EBF0 80071F50 3E4D000C */  jal        Text_OpenPacked
     /* EBF4 80071F54 25384700 */   or        $a3, $v0, $a3
-    /* EBF8 80071F58 A07B000C */  jal        func_8001EE80
+    /* EBF8 80071F58 A07B000C */  jal        Skill_GetMpCost
     /* EBFC 80071F5C 21200002 */   addu      $a0, $s0, $zero
     /* EC00 80071F60 DBC70108 */  j          .L80071F6C
     /* EC04 80071F64 C00062AE */   sw        $v0, 0xC0($s3)

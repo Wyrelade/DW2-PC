@@ -5,7 +5,7 @@ glabel func_80022578
     /* 12D7C 8002257C 1000B0AF */  sw         $s0, 0x10($sp)
     /* 12D80 80022580 21800000 */  addu       $s0, $zero, $zero
     /* 12D84 80022584 1400BFAF */  sw         $ra, 0x14($sp)
-    /* 12D88 80022588 4689000C */  jal        func_80022518
+    /* 12D88 80022588 4689000C */  jal        Beetle_GetPart
     /* 12D8C 8002258C 02000424 */   addiu     $a0, $zero, 0x2
     /* 12D90 80022590 D1FF4324 */  addiu      $v1, $v0, -0x2F
     /* 12D94 80022594 0600622C */  sltiu      $v0, $v1, 0x6

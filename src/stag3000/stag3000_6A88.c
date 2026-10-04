@@ -124,7 +124,7 @@ s32 func_8006A140(s32 attacker, s32 target, s32 tech, s16 *p4, s16 *p5) {
     s32 hit;
 
     revived = 0;
-    flags = func_8001F068(tech);
+    flags = Skill_GetStatusFlags(tech);
     already = D_80073CC0.field_31C[target] & 1;
     if (flags & 1) {
         if ((u16)((u16)Rand_Next() % 3) == 0) {
@@ -254,7 +254,7 @@ s32 func_8006A140(s32 attacker, s32 target, s32 tech, s16 *p4, s16 *p5) {
         *p5 = 0x10C;
     }
     if (!(D_80073CC0.field_34F[target] & 4)) {
-        flags = func_8001F094(tech);
+        flags = Skill_GetCureFlags(tech);
         if (flags & 0x20000) {
             revived = 1;
             D_80073CC0.entries[target].field_2E = D_80073CC0.entries[target].field_2C;
@@ -331,12 +331,12 @@ s32 func_8006AAA8(s32 attacker, s32 target, s32 tech, s16 *p4, s16 *p5) {
 
     flags1 = func_8001F0E4(tech);
     flags2 = func_8001F10C(tech);
-    buff = func_8001F130(tech);
+    buff = Skill_GetBuffFlags(tech);
     prevent = func_8001F158(tech);
-    type[0] = func_8001D934(a->digiId);
+    type[0] = Digi_GetType(a->digiId);
     dmg = 0;
     revived = 0;
-    type[1] = func_8001D934(t->digiId);
+    type[1] = Digi_GetType(t->digiId);
     if (prevent & 2) {
         D_80073CC0.field_34F[target] |= 2;
         *p5 = 0xF;
@@ -454,7 +454,7 @@ s32 func_8006AAA8(s32 attacker, s32 target, s32 tech, s16 *p4, s16 *p5) {
             break;
         }
         revived = func_8006A140(attacker, target, tech, p4, p5);
-        atk = func_8001EF64(tech);
+        atk = Skill_GetPower(tech);
         if (atk == 0 || (D_80073CC0.field_34F[target] & 8)) {
             break;
         }
@@ -504,9 +504,9 @@ s32 func_8006AAA8(s32 attacker, s32 target, s32 tech, s16 *p4, s16 *p5) {
         }
         power = atk;
         aAtk = a->attack;
-        el = func_8001EF88(tech);
+        el = Skill_GetSpecialty(tech);
         def = t->defense;
-        tEl = func_8001D980(t->digiId);
+        tEl = Digi_GetSpecialty(t->digiId);
         st = D_80073CC0.field_31C[attacker];
         if (st & 0x400) {
             el = 0;
@@ -597,7 +597,7 @@ s32 func_8006AAA8(s32 attacker, s32 target, s32 tech, s16 *p4, s16 *p5) {
         *p5 = 0x201;
     }
     if (flags1 & 0x4000) {
-        gain = func_8001EE80(D_80073CC0.field_2AC[target].field_6);
+        gain = Skill_GetMpCost(D_80073CC0.field_2AC[target].field_6);
         a->mp = (a->mp + gain > a->maxMp) ? a->maxMp : a->mp + gain;
         *p5 = 0x201;
     }
@@ -732,7 +732,7 @@ void func_8006BBD8(s32 idx) {
                 targets[0] = rec->field_4;
                 num = 1;
             }
-        } else if (func_8001F094((s16)id) & 0x20000) {
+        } else if (Skill_GetCureFlags((s16)id) & 0x20000) {
             num = 1;
             targets[0] = rec->field_4;
         } else if (D_80073CC0.entries[rec->field_4].field_2E != 0) {
@@ -983,7 +983,7 @@ void func_8006BBD8(s32 idx) {
             D_80073CC0.field_2AC[tgt].field_C = results[i];
         }
     }
-    cost = func_8001EE80((s16)id);
+    cost = Skill_GetMpCost((s16)id);
     if (rec->field_0 == 2 && (func_8001F0E4((s16)id) & 0x1000)) {
         mp = &D_80073CC0.entries[targets[0]].field_32;
     } else {
@@ -1008,7 +1008,7 @@ void func_8006BBD8(s32 idx) {
                 break;
             }
         }
-        if ((s16)id == 0x68 && func_8001EE80(0x68) <= D_80073CC0.entries[idx].field_32) {
+        if ((s16)id == 0x68 && Skill_GetMpCost(0x68) <= D_80073CC0.entries[idx].field_32) {
             if (idx < 3) {
                 D_80073CC0.field_2AC[idx].field_4 = func_800692A4(0x4D, 1, idx);
             } else {
@@ -1024,7 +1024,7 @@ void func_8006BBD8(s32 idx) {
                 D_80073278 = (u16)((u16)Rand_Next() % 3) + 1;
             }
             if (--D_80073278 != 0) {
-                if (func_8001EE80(0xDC) <= D_80073CC0.entries[idx].field_32) {
+                if (Skill_GetMpCost(0xDC) <= D_80073CC0.entries[idx].field_32) {
                     if (idx < 3) {
                         D_80073CC0.field_2AC[idx].field_4 = func_800692A4(0x4D, 1, idx);
                     } else {

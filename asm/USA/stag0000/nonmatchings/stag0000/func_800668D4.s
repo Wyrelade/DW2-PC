@@ -30,17 +30,17 @@ glabel func_800668D4
   .L80066934:
     /* 35D4 80066934 448E000C */  jal        Rand_Next
     /* 35D8 80066938 00000000 */   nop
-    /* 35DC 8006693C 4E7A000C */  jal        func_8001E938
+    /* 35DC 8006693C 4E7A000C */  jal        Digi_GetModelListCount
     /* 35E0 80066940 21804000 */   addu      $s0, $v0, $zero
     /* 35E4 80066944 FFFF1032 */  andi       $s0, $s0, 0xFFFF
     /* 35E8 80066948 1A000202 */  div        $zero, $s0, $v0
     /* 35EC 8006694C 10880000 */  mfhi       $s1
-    /* 35F0 80066950 3D7A000C */  jal        func_8001E8F4
+    /* 35F0 80066950 3D7A000C */  jal        Digi_GetModelListId
     /* 35F4 80066954 21202002 */   addu      $a0, $s1, $zero
     /* 35F8 80066958 F0004228 */  slti       $v0, $v0, 0xF0
     /* 35FC 8006695C F5FF4010 */  beqz       $v0, .L80066934
     /* 3600 80066960 00000000 */   nop
-    /* 3604 80066964 3D7A000C */  jal        func_8001E8F4
+    /* 3604 80066964 3D7A000C */  jal        Digi_GetModelListId
     /* 3608 80066968 21202002 */   addu      $a0, $s1, $zero
     /* 360C 8006696C 05010424 */  addiu      $a0, $zero, 0x105
     /* 3610 80066970 80281200 */  sll        $a1, $s2, 2

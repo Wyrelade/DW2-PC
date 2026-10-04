@@ -104,7 +104,7 @@ glabel func_80065E64
     /* 2C70 80065FD0 00000000 */   nop
   .L80065FD4:
     /* 2C74 80065FD4 0400048E */  lw         $a0, 0x4($s0)
-    /* 2C78 80065FD8 A94D000C */  jal        func_800136A4
+    /* 2C78 80065FD8 A94D000C */  jal        Text_WaitYesNo
     /* 2C7C 80065FDC 00000000 */   nop
     /* 2C80 80065FE0 21184000 */  addu       $v1, $v0, $zero
     /* 2C84 80065FE4 FFFF0224 */  addiu      $v0, $zero, -0x1

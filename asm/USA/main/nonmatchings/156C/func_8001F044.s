@@ -3,7 +3,7 @@ nonmatching func_8001F044, 0x24
 glabel func_8001F044
     /* F844 8001F044 E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* F848 8001F048 1000BFAF */  sw         $ra, 0x10($sp)
-    /* F84C 8001F04C 507B000C */  jal        func_8001ED40
+    /* F84C 8001F04C 507B000C */  jal        Skill_FindById
     /* F850 8001F050 00000000 */   nop
     /* F854 8001F054 2000428C */  lw         $v0, 0x20($v0)
     /* F858 8001F058 1000BF8F */  lw         $ra, 0x10($sp)

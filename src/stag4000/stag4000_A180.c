@@ -117,7 +117,7 @@ void func_8006D738(void) {
         }
         if (k != 0) {
             id = k[((Stg40Map *)D_80072B60->field_10)->field_2F];
-            func_8001DB68(id, &out);
+            Enemy_GetSetSummary(id, &out);
             c = out.field_0;
             func_8006D4E0(1, 0, c, 0, r->x, r->y);
             s = (Stg40SlotInfo *)D_8005071C->field_BB8[D_8005071C->field_E - 1];
@@ -534,8 +534,8 @@ void func_8006E60C(s32 a0) {
 
     D_80072B60->field_16C = 0;
     if (a0 != 0) {
-        func_8001E28C(a0);
-        for (n = func_8001E480(); n != -1; n = Flag_NextPassingEntry()) {
+        Flag_SetTableFile(a0);
+        for (n = Flag_FirstPassingEntry(); n != -1; n = Flag_NextPassingEntry()) {
             e = func_8001E5E8(n);
             b = D_80072B60;
             b->field_144[b->field_16C].u0.pair.field_0 = e->data[0] - 1;
@@ -611,7 +611,7 @@ s32 func_8006E858(s32 slot) {
     if (gs->slotStatus[slot] == 1) {
         return -1;
     }
-    r = func_8001E0E4(gs->slotItems[slot]);
+    r = Item_GetLevel(gs->slotItems[slot]);
     r = r ? r : 1;
     return r;
 }
@@ -650,7 +650,7 @@ s32 func_8006E920(Stg40Shop *a) {
             items = D_80050720->bagItems;
             if (key != -1) {
                 for (i = 0, bag = items; i < 0x30; i++, bag++) {
-                    if (*bag != 0 && key == func_8001E0C0(*bag)) {
+                    if (*bag != 0 && key == Item_GetCategory(*bag)) {
                         D_80072B60->field_B0[D_80072B60->field_E1] = *bag;
                         D_80072B60->field_E1++;
                     }

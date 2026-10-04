@@ -5,7 +5,7 @@ glabel func_800676C4
     /* 4368 800676C8 1000B0AF */  sw         $s0, 0x10($sp)
     /* 436C 800676CC 21808000 */  addu       $s0, $a0, $zero
     /* 4370 800676D0 1400BFAF */  sw         $ra, 0x14($sp)
-    /* 4374 800676D4 307C000C */  jal        func_8001F0C0
+    /* 4374 800676D4 307C000C */  jal        Skill_GetRank
     /* 4378 800676D8 FF00A430 */   andi      $a0, $a1, 0xFF
     /* 437C 800676DC 2A800202 */  slt        $s0, $s0, $v0
     /* 4380 800676E0 0100023A */  xori       $v0, $s0, 0x1

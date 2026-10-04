@@ -9,9 +9,9 @@ glabel func_8006E60C
     /* B2C0 8006E620 1000B0AF */  sw         $s0, 0x10($sp)
     /* B2C4 8006E624 24008010 */  beqz       $a0, .L8006E6B8
     /* B2C8 8006E628 6C0140AC */   sw        $zero, 0x16C($v0)
-    /* B2CC 8006E62C A378000C */  jal        func_8001E28C
+    /* B2CC 8006E62C A378000C */  jal        Flag_SetTableFile
     /* B2D0 8006E630 00000000 */   nop
-    /* B2D4 8006E634 2079000C */  jal        func_8001E480
+    /* B2D4 8006E634 2079000C */  jal        Flag_FirstPassingEntry
     /* B2D8 8006E638 00000000 */   nop
     /* B2DC 8006E63C ABB90108 */  j          .L8006E6AC
     /* B2E0 8006E640 21804000 */   addu      $s0, $v0, $zero

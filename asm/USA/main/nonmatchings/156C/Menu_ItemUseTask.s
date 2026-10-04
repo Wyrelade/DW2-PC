@@ -83,7 +83,7 @@ glabel Menu_ItemUseTask
     /* 6244 80015A44 01004230 */  andi       $v0, $v0, 0x1
     /* 6248 80015A48 A8004010 */  beqz       $v0, .L80015CEC
     /* 624C 80015A4C 21202002 */   addu      $a0, $s1, $zero
-    /* 6250 80015A50 FD54000C */  jal        func_800153F4
+    /* 6250 80015A50 FD54000C */  jal        Menu_OpenBugTexts
     /* 6254 80015A54 01000524 */   addiu     $a1, $zero, 0x1
     /* 6258 80015A58 3B570008 */  j          .L80015CEC
     /* 625C 80015A5C 00000000 */   nop
@@ -104,26 +104,26 @@ glabel Menu_ItemUseTask
     /* 6294 80015A94 08004000 */  jr         $v0
     /* 6298 80015A98 00000000 */   nop
   jlabel .L80015A9C
-    /* 629C 80015A9C 3C55000C */  jal        func_800154F0
+    /* 629C 80015A9C 3C55000C */  jal        Menu_ShowPartSlotInfo
     /* 62A0 80015AA0 21202002 */   addu      $a0, $s1, $zero
     /* 62A4 80015AA4 3B570008 */  j          .L80015CEC
     /* 62A8 80015AA8 00000000 */   nop
   jlabel .L80015AAC
-    /* 62AC 80015AAC 9A55000C */  jal        func_80015668
+    /* 62AC 80015AAC 9A55000C */  jal        Menu_OpenUseItemTexts
     /* 62B0 80015AB0 21202002 */   addu      $a0, $s1, $zero
     /* 62B4 80015AB4 A953000C */  jal        Menu_UseItemDirect
     /* 62B8 80015AB8 21202002 */   addu      $a0, $s1, $zero
     /* 62BC 80015ABC BA560008 */  j          .L80015AE8
     /* 62C0 80015AC0 21202002 */   addu      $a0, $s1, $zero
   jlabel .L80015AC4
-    /* 62C4 80015AC4 9A55000C */  jal        func_80015668
+    /* 62C4 80015AC4 9A55000C */  jal        Menu_OpenUseItemTexts
     /* 62C8 80015AC8 21202002 */   addu      $a0, $s1, $zero
     /* 62CC 80015ACC 3B570008 */  j          .L80015CEC
     /* 62D0 80015AD0 00000000 */   nop
   jlabel .L80015AD4
-    /* 62D4 80015AD4 9A55000C */  jal        func_80015668
+    /* 62D4 80015AD4 9A55000C */  jal        Menu_OpenUseItemTexts
     /* 62D8 80015AD8 21202002 */   addu      $a0, $s1, $zero
-    /* 62DC 80015ADC DE53000C */  jal        func_80014F78
+    /* 62DC 80015ADC DE53000C */  jal        Menu_UseBugZapItem
     /* 62E0 80015AE0 21202002 */   addu      $a0, $s1, $zero
     /* 62E4 80015AE4 21202002 */  addu       $a0, $s1, $zero
   .L80015AE8:
@@ -132,7 +132,7 @@ glabel Menu_ItemUseTask
     /* 62F0 80015AF0 46570008 */  j          .L80015D18
     /* 62F4 80015AF4 00000000 */   nop
   jlabel .L80015AF8
-    /* 62F8 80015AF8 4689000C */  jal        func_80022518
+    /* 62F8 80015AF8 4689000C */  jal        Beetle_GetPart
     /* 62FC 80015AFC 10000424 */   addiu     $a0, $zero, 0x10
     /* 6300 80015B00 21184000 */  addu       $v1, $v0, $zero
     /* 6304 80015B04 FFFF0224 */  addiu      $v0, $zero, -0x1
@@ -240,7 +240,7 @@ glabel Menu_ItemUseTask
     /* 6474 80015C74 02000524 */   addiu     $a1, $zero, 0x2
   jlabel .L80015C78
     /* 6478 80015C78 5000048E */  lw         $a0, 0x50($s0)
-    /* 647C 80015C7C A94D000C */  jal        func_800136A4
+    /* 647C 80015C7C A94D000C */  jal        Text_WaitYesNo
     /* 6480 80015C80 00000000 */   nop
     /* 6484 80015C84 21804000 */  addu       $s0, $v0, $zero
     /* 6488 80015C88 FFFF0224 */  addiu      $v0, $zero, -0x1

@@ -23,7 +23,7 @@ glabel func_8006FA28
     /* C714 8006FA74 00000000 */   nop
   jlabel .L8006FA78
     /* C718 8006FA78 0400248E */  lw         $a0, 0x4($s1)
-    /* C71C 8006FA7C 977B000C */  jal        func_8001EE5C
+    /* C71C 8006FA7C 977B000C */  jal        Skill_GetPartsEntry
     /* C720 8006FA80 00000000 */   nop
     /* C724 8006FA84 688E000C */  jal        Cd_GetFileEntry
     /* C728 8006FA88 21204000 */   addu      $a0, $v0, $zero

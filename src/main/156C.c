@@ -7,7 +7,7 @@
  * functions behind Task_Run. Nothing here reads small data. */
 
 extern s32 Task_Run(s32);
-extern TaskDesc **D_80040D50[];
+extern TaskDesc **Task_DescTable[];
 
 ASM_SOURCE("src/main/asm/crt0", func_80010D6C);
 
@@ -50,7 +50,7 @@ void Task_Destroy(s32 *arg0) {
 extern s32 D_8005F784;
 extern s32 D_8005F778;
 
-/* Task_Run's view of a task: the type id (index into D_80040D50), the state set by
+/* Task_Run's view of a task: the type id (index into Task_DescTable), the state set by
  * Task_SetState0 (3 = being destroyed) and the two counters it advances. */
 typedef struct {
     /* 0x00 */ s32 id;
@@ -74,7 +74,7 @@ typedef struct {
  * The stack switch has no effect on behaviour, so C just calls the callbacks. */
 s32 Task_Run(s32 arg0) {
     TaskRunObj *t = (TaskRunObj *)arg0;
-    TaskRunDesc *d = (TaskRunDesc *)D_80040D50[t->id >> 8][t->id & 0xFF];
+    TaskRunDesc *d = (TaskRunDesc *)Task_DescTable[t->id >> 8][t->id & 0xFF];
 
     if (D_8005F784 == 0) {
         if (t->state == 3) {

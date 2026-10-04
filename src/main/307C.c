@@ -26,7 +26,7 @@ u8 Menu_NameEntryGetChar(Actor *a0) {
 }
 
 
-void func_8001291C(Actor *a, Pair1291C *v) {
+void Menu_NameEntryInit(Actor *a, Pair1291C *v) {
     ActorWork *w = a->work;
 
     *(Pair1291C *)w = *v;
@@ -454,7 +454,7 @@ void Text_PrintList(s32 *a0, Halves *a1, s32 *a2, u32 a3) {
     }
 }
 
-s32 func_800136A4() {
+s32 Text_WaitYesNo() {
     s32 result = Text_IsFinished();
     if (result != 0) {
         result = Flag_Test(0x11) == 0 ? 1 : -1;
@@ -652,7 +652,7 @@ void Text_FormatNumber(u8 *out, s32 val, s32 width) {
     *out = 0xFF;
 }
 
-void func_80013BF8(Actor *arg0, s16 arg1) {
+void Menu_TopMenuInit(Actor *arg0, s16 arg1) {
     arg0->work->field_30 = arg1;
 }
 

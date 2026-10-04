@@ -212,7 +212,7 @@ void func_800655FC(Actor *arg0) {
     Stg00TaskArgs5 args;
     TextOpenArgs t;
 
-    while ((id = func_8001E8F4(w->field_10)) == -1) {
+    while ((id = Digi_GetModelListId(w->field_10)) == -1) {
         w->field_10 = 0;
     }
     Task_Destroy(slot);
@@ -224,7 +224,7 @@ void func_800655FC(Actor *arg0) {
     Task_Create(0x105, slot, (s32)&args);
     Text_Close(&w->field_14);
     Text_Close(&w->field_18);
-    t.text = (s32)Digi_GetDefaultName(func_8001E8F4(w->field_10));
+    t.text = (s32)Digi_GetDefaultName(Digi_GetModelListId(w->field_10));
     t.bigFont = 1;
     t.color = 0;
     t.x = 0x10;
@@ -491,12 +491,12 @@ void func_8006571C(Actor *arg0)
             }
             else
             {
-              v0 = func_8001E938() - 1;
+              v0 = Digi_GetModelListCount() - 1;
             }
 
             goto storeAndUse;
             rangeThen:
-            v0 = func_8001E938() - 1;
+            v0 = Digi_GetModelListCount() - 1;
 
             v1 = work->field_10;
             if (v0 == v1)
@@ -509,7 +509,7 @@ void func_8006571C(Actor *arg0)
             work->field_10 = v0;
 
             useField10:
-            func_8001E8F4(work->field_10);
+            Digi_GetModelListId(work->field_10);
 
             j++;
           }
@@ -612,7 +612,7 @@ void func_80065E24(Actor *arg0) {
         mask = 1 << (w->field_0 + 1);
     }
     Gfx_HidePartsByMask(parts, mask);
-    Gfx_SetPartsNumber(parts, 0x20, 4, func_8001E8F4(w->field_10));
+    Gfx_SetPartsNumber(parts, 0x20, 4, Digi_GetModelListId(w->field_10));
     Gfx_DrawParts(parts);
     parts = Cd_GetFileEntry(D_80068DB8[w->field_C].field_0);
     parts2 = parts;
@@ -634,7 +634,7 @@ void func_80065E24(Actor *arg0) {
     for (s5 = 0, s7 = 0x10; s5 <= 0; s5++, s7 += 0x6E) {
         s32 y;
         for (col = 0, y = 0x3A; col < 0xE; col++, y += 9) {
-            args.text = func_8001ED84(D_80068CE8[s6++]);
+            args.text = Skill_GetNameText(D_80068CE8[s6++]);
             args.bigFont = 0;
             args.x = s7;
             args.y = y;
@@ -701,7 +701,7 @@ void func_8006620C(Actor *arg0) {
     s32 j;
     s32 k;
 
-    for (i = 0; (id = func_8001E8F4(i)) < 0x12D; i++) {
+    for (i = 0; (id = Digi_GetModelListId(i)) < 0x12D; i++) {
         v = func_8001E79C(id);
         j = 0;
         if (w->field_650 != 0) {
@@ -906,9 +906,9 @@ void func_800668D4(Actor *arg0) {
         for (c = 0, k = base, x = -0xA00; c < 3; k++, c++, x += 0xA00) {
             Task_Destroy(&slot[*&k]);
             do {
-                idx = (Rand_Next() & 0xFFFF) % func_8001E938();
-            } while (func_8001E8F4(idx) >= 0xF0);
-            args.field_0 = func_8001E8F4(idx);
+                idx = (Rand_Next() & 0xFFFF) % Digi_GetModelListCount();
+            } while (Digi_GetModelListId(idx) >= 0xF0);
+            args.field_0 = Digi_GetModelListId(idx);
             args.field_10 = y;
             args.field_4 = x;
             args.field_8 = 0;

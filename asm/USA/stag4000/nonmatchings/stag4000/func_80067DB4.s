@@ -52,7 +52,7 @@ glabel func_80067DB4
     /* 4B04 80067E64 4001022A */   slti      $v0, $s0, 0x140
     /* 4B08 80067E68 66004010 */  beqz       $v0, .L80068004
     /* 4B0C 80067E6C 01001124 */   addiu     $s1, $zero, 0x1
-    /* 4B10 80067E70 4689000C */  jal        func_80022518
+    /* 4B10 80067E70 4689000C */  jal        Beetle_GetPart
     /* 4B14 80067E74 11000424 */   addiu     $a0, $zero, 0x11
     /* 4B18 80067E78 21204000 */  addu       $a0, $v0, $zero
     /* 4B1C 80067E7C 09008018 */  blez       $a0, .L80067EA4

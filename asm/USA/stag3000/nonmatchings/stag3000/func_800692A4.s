@@ -19,7 +19,7 @@ glabel func_800692A4
     /* 5F80 800692E0 08004000 */  jr         $v0
     /* 5F84 800692E4 00000000 */   nop
   jlabel .L800692E8
-    /* 5F88 800692E8 CF7B000C */  jal        func_8001EF3C
+    /* 5F88 800692E8 CF7B000C */  jal        Skill_GetTarget
     /* 5F8C 800692EC 00000000 */   nop
     /* 5F90 800692F0 21184000 */  addu       $v1, $v0, $zero
     /* 5F94 800692F4 02000224 */  addiu      $v0, $zero, 0x2

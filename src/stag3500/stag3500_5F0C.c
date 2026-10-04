@@ -15,7 +15,7 @@ void func_8006926C(s32 arg0) {
     s32 c;
     s32 i;
 
-    hit = func_8001EF64((s16)b->field_8) > 0;
+    hit = Skill_GetPower((s16)b->field_8) > 0;
     p = D_8006ADE0;
     for (i = 0; i < 6; i++) {
         dmg[i] = 0;

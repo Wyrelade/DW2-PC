@@ -51,7 +51,7 @@ glabel func_80065E24
     /* 2B70 80065ED0 4175000C */  jal        Gfx_HidePartsByMask
     /* 2B74 80065ED4 21200002 */   addu      $a0, $s0, $zero
     /* 2B78 80065ED8 1000848E */  lw         $a0, 0x10($s4)
-    /* 2B7C 80065EDC 3D7A000C */  jal        func_8001E8F4
+    /* 2B7C 80065EDC 3D7A000C */  jal        Digi_GetModelListId
     /* 2B80 80065EE0 00000000 */   nop
     /* 2B84 80065EE4 21200002 */  addu       $a0, $s0, $zero
     /* 2B88 80065EE8 20000524 */  addiu      $a1, $zero, 0x20
@@ -110,7 +110,7 @@ glabel func_80065E24
     /* 2C4C 80065FAC E88C0825 */  addiu      $t0, $t0, %lo(D_80068CE8)
     /* 2C50 80065FB0 2110C802 */  addu       $v0, $s6, $t0
     /* 2C54 80065FB4 00004490 */  lbu        $a0, 0x0($v0)
-    /* 2C58 80065FB8 617B000C */  jal        func_8001ED84
+    /* 2C58 80065FB8 617B000C */  jal        Skill_GetNameText
     /* 2C5C 80065FBC 0100D626 */   addiu     $s6, $s6, 0x1
     /* 2C60 80065FC0 2400A2AF */  sw         $v0, 0x24($sp)
     /* 2C64 80065FC4 1000A0AF */  sw         $zero, 0x10($sp)

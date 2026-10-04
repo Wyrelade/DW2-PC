@@ -455,7 +455,7 @@ void func_80065100(Actor *a0) {
             if (id == 0) {
                 break;
             }
-            switch (func_8001E0C0(id)) {
+            switch (Item_GetCategory(id)) {
             case 0x14:
             case 0x1D:
             case 0x1E:
@@ -475,7 +475,7 @@ void func_80065100(Actor *a0) {
             if (id == 0) {
                 break;
             }
-            if (func_8001E0C0(id) == 0x1A) {
+            if (Item_GetCategory(id) == 0x1A) {
                 w->field_58[1][n++] = id;
             }
         }
@@ -491,7 +491,7 @@ void func_80065100(Actor *a0) {
             if (id == 0) {
                 break;
             }
-            if (func_8001E0C0(id) == 0x19) {
+            if (Item_GetCategory(id) == 0x19) {
                 w->field_58[2][n++] = id;
             }
         }
@@ -684,10 +684,10 @@ void func_80065594(Actor *a0) {
                 D_80073CC0.field_3AC = item;
                 D_80073CC0.entries[0].field_14 = 0;
                 D_80073CC0.field_3B2 = *pc;
-                D_80073CC0.field_2AC[D_80073CC0.entries[0].field_8].field_0 = func_8001EE34(id) + 1;
+                D_80073CC0.field_2AC[D_80073CC0.entries[0].field_8].field_0 = Skill_GetType(id) + 1;
                 D_80073CC0.field_2AC[D_80073CC0.entries[0].field_8].field_6 = id;
                 D_80073CC0.field_2AC[D_80073CC0.entries[0].field_8].field_8 = func_8006E2BC(id);
-                D_80073CC0.field_2AC[D_80073CC0.entries[0].field_8].field_4 = func_8001EF3C(id);
+                D_80073CC0.field_2AC[D_80073CC0.entries[0].field_8].field_4 = Skill_GetTarget(id);
                 Snd_PlayById(0xE, 0);
                 Task_NextState0(a0);
             } while (0);
@@ -879,8 +879,8 @@ void func_80066000(void) {
     for (i = 0; i < 12; i++) {
         j = d->ids[i];
         if (j != 0) {
-            k = func_8001EE34(j);
-            cost = func_8001EE80(j);
+            k = Skill_GetType(j);
+            cost = Skill_GetMpCost(j);
             D_80073820[k].field_D[cnt[k]] = j;
             D_80073820[k].field_0[cnt[k]] = (d->field_1A < cost) * 2;
             cnt[k]++;
@@ -897,8 +897,8 @@ void func_80066000(void) {
         for (i = 0; i < 4; i++) {
             for (j = 0; j < cnt[i]; j++) {
                 id = D_80073820[i].field_D[j];
-                m = func_8001EF64(id);
-                cost = func_8001EE80(id);
+                m = Skill_GetPower(id);
+                cost = Skill_GetMpCost(id);
                 if (a[0] < m) {
                     a[0] = m;
                     a[1] = i;
@@ -928,7 +928,7 @@ void func_80066000(void) {
     if (!flag) {
         for (i = 0; i < 4; i++) {
             for (j = 0; j < cnt[i]; j++) {
-                if (func_8001EF3C(D_80073820[i].field_D[j]) == 5) {
+                if (Skill_GetTarget(D_80073820[i].field_D[j]) == 5) {
                     D_80073820[i].field_0[j] = 2;
                 }
             }
@@ -940,9 +940,9 @@ void func_800663F8(void *a0, s32 id, s32 color, Stg30XY pos, s32 name, s32 delay
     TextOpenArgs args;
 
     if (name == 0) {
-        args.text = func_8001EDD4(id);
+        args.text = Skill_GetDescText(id);
     } else {
-        args.text = func_8001ED84(id);
+        args.text = Skill_GetNameText(id);
     }
     args.bigFont = 0;
     args.color = color;
@@ -981,7 +981,7 @@ void func_80066484(Actor *a0) {
             w->field_48 = item;
             func_800663F8(&w->texts[5], item, 0, D_800633F4, 0, 3);
         }
-        w->field_50 = func_8001EE80(item);
+        w->field_50 = Skill_GetMpCost(item);
     } else {
         w->field_48 = -1;
         Text_Close(&w->texts[5]);
@@ -1195,7 +1195,7 @@ void func_80066DB0(Actor *a0) {
     switch (a0->stateLevel0) {
     case 0:
         w->field_18 = D_80073CC0.field_2AC[D_80073CC0.entries[0].field_8].field_6;
-        w->field_8 = func_8001EF3C(w->field_18);
+        w->field_8 = Skill_GetTarget(w->field_18);
         w->field_14 = D_80073CC0.field_2AC[D_80073CC0.entries[0].field_8].field_8;
         switch (w->field_8) {
         case 0:

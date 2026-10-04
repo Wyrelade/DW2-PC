@@ -18,7 +18,7 @@ glabel func_8006A140
     /* 6E18 8006A178 3400BFAF */  sw         $ra, 0x34($sp)
     /* 6E1C 8006A17C 1C00B3AF */  sw         $s3, 0x1C($sp)
     /* 6E20 8006A180 1400B1AF */  sw         $s1, 0x14($sp)
-    /* 6E24 8006A184 1A7C000C */  jal        func_8001F068
+    /* 6E24 8006A184 1A7C000C */  jal        Skill_GetStatusFlags
     /* 6E28 8006A188 1000B0AF */   sw        $s0, 0x10($sp)
     /* 6E2C 8006A18C 0780033C */  lui        $v1, %hi(D_80073CC0)
     /* 6E30 8006A190 C03C6324 */  addiu      $v1, $v1, %lo(D_80073CC0)
@@ -503,7 +503,7 @@ glabel func_8006A140
     /* 7518 8006A878 04004230 */  andi       $v0, $v0, 0x4
     /* 751C 8006A87C 2E004014 */  bnez       $v0, .L8006A938
     /* 7520 8006A880 2110C002 */   addu      $v0, $s6, $zero
-    /* 7524 8006A884 257C000C */  jal        func_8001F094
+    /* 7524 8006A884 257C000C */  jal        Skill_GetCureFlags
     /* 7528 8006A888 2120E002 */   addu      $a0, $s7, $zero
     /* 752C 8006A88C 21884000 */  addu       $s1, $v0, $zero
     /* 7530 8006A890 24103302 */  and        $v0, $s1, $s3

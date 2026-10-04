@@ -178,7 +178,7 @@ glabel func_8006CB58
     /* 9A88 8006CDE8 00000000 */  nop
     /* 9A8C 8006CDEC B6008010 */  beqz       $a0, .L8006D0C8
     /* 9A90 8006CDF0 00000000 */   nop
-    /* 9A94 8006CDF4 6078000C */  jal        func_8001E180
+    /* 9A94 8006CDF4 6078000C */  jal        Item_GetPrice
     /* 9A98 8006CDF8 00000000 */   nop
     /* 9A9C 8006CDFC 0680033C */  lui        $v1, %hi(D_8005E628)
     /* 9AA0 8006CE00 28E6638C */  lw         $v1, %lo(D_8005E628)($v1)
@@ -202,7 +202,7 @@ glabel func_8006CB58
     /* 9AE4 8006CE44 00000000 */  nop
     /* 9AE8 8006CE48 9F008010 */  beqz       $a0, .L8006D0C8
     /* 9AEC 8006CE4C 00000000 */   nop
-    /* 9AF0 8006CE50 6078000C */  jal        func_8001E180
+    /* 9AF0 8006CE50 6078000C */  jal        Item_GetPrice
     /* 9AF4 8006CE54 00000000 */   nop
     /* 9AF8 8006CE58 5C004014 */  bnez       $v0, .L8006CFCC
     /* 9AFC 8006CE5C 10000424 */   addiu     $a0, $zero, 0x10
@@ -258,7 +258,7 @@ glabel func_8006CB58
     /* 9BB8 8006CF18 63000224 */  addiu      $v0, $zero, 0x63
   .L8006CF1C:
     /* 9BBC 8006CF1C 21204002 */  addu       $a0, $s2, $zero
-    /* 9BC0 8006CF20 6078000C */  jal        func_8001E180
+    /* 9BC0 8006CF20 6078000C */  jal        Item_GetPrice
     /* 9BC4 8006CF24 D40D62A4 */   sh        $v0, 0xDD4($v1)
     /* 9BC8 8006CF28 21206002 */  addu       $a0, $s3, $zero
     /* 9BCC 8006CF2C 0680063C */  lui        $a2, %hi(D_8005E620)
@@ -353,7 +353,7 @@ glabel func_8006CB58
     /* 9CFC 8006D05C 0F000424 */  addiu      $a0, $zero, 0xF
     /* 9D00 8006D060 A369000C */  jal        Snd_PlayById
     /* 9D04 8006D064 21280000 */   addu      $a1, $zero, $zero
-    /* 9D08 8006D068 6078000C */  jal        func_8001E180
+    /* 9D08 8006D068 6078000C */  jal        Item_GetPrice
     /* 9D0C 8006D06C 21204002 */   addu      $a0, $s2, $zero
     /* 9D10 8006D070 F505053C */  lui        $a1, (0x5F5E0FF >> 16)
     /* 9D14 8006D074 FFE0A534 */  ori        $a1, $a1, (0x5F5E0FF & 0xFFFF)

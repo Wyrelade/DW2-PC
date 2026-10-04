@@ -3,10 +3,10 @@ nonmatching func_8001E5E8, 0x4C
 glabel func_8001E5E8
     /* EDE8 8001E5E8 E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* EDEC 8001E5EC 1400BFAF */  sw         $ra, 0x14($sp)
-    /* EDF0 8001E5F0 3379000C */  jal        func_8001E4CC
+    /* EDF0 8001E5F0 3379000C */  jal        Flag_GetEntry
     /* EDF4 8001E5F4 1000B0AF */   sw        $s0, 0x10($sp)
-    /* EDF8 8001E5F8 0680033C */  lui        $v1, %hi(D_8005D560)
-    /* EDFC 8001E5FC 60D5648C */  lw         $a0, %lo(D_8005D560)($v1)
+    /* EDF8 8001E5F8 0680033C */  lui        $v1, %hi(Flag_EntryIter)
+    /* EDFC 8001E5FC 60D5648C */  lw         $a0, %lo(Flag_EntryIter)($v1)
     /* EE00 8001E600 21804000 */  addu       $s0, $v0, $zero
     /* EE04 8001E604 00240400 */  sll        $a0, $a0, 16
     /* EE08 8001E608 688E000C */  jal        Cd_GetFileEntry

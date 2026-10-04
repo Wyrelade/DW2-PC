@@ -23,7 +23,7 @@ glabel func_80067BAC
     /* 4898 80067BF8 00000000 */   nop
   jlabel .L80067BFC
     /* 489C 80067BFC 0400248E */  lw         $a0, 0x4($s1)
-    /* 48A0 80067C00 977B000C */  jal        func_8001EE5C
+    /* 48A0 80067C00 977B000C */  jal        Skill_GetPartsEntry
     /* 48A4 80067C04 00000000 */   nop
     /* 48A8 80067C08 688E000C */  jal        Cd_GetFileEntry
     /* 48AC 80067C0C 21204000 */   addu      $a0, $v0, $zero

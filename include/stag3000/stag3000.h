@@ -499,8 +499,8 @@ extern Elem12 D_800732AC;
 extern void Task_NextState4(Actor *arg0);
 extern void Actor_StopAxisMotion(Actor *arg0, s32 arg1);
 extern void Actor_SetAxisMotion(Actor *arg0, s32 arg1, Elem12 *arg2);
-extern s32 func_80020D54(Actor *a0, s32 i);
-extern s32 func_80020E00(Actor *a0, s32 i);
+extern s32 Actor_ApplyAxisMotion(Actor *a0, s32 i);
+extern s32 Actor_ApplyAxisMotionRev(Actor *a0, s32 i);
 extern s32 Anim_HasModelAnim(Actor *a0, s32 n);
 extern void func_8006E850(Actor *a0, s32 anim);
 extern void func_8006EC5C(Actor *a0);
@@ -670,7 +670,7 @@ extern void Text_CloseArray(s32 *arg0, s32 arg1);
 extern s32 CdControlF(s32, u8 *);
 extern void Anim_SetModelAnim(Actor *, s32);
 extern s32 func_8001E8D0(s32 id);
-extern s32 func_8001F0C0(s32 id);
+extern s32 Skill_GetRank(s32 id);
 extern void Snd_PlayById(s32, s32);
 extern void Gfx_DrawParts(EntA0 *);
 extern ActorModel *Gfx_AttachModel(Actor *, s32);
@@ -682,15 +682,15 @@ extern void Task_SetState01(Actor *, u32, u32);
 extern void Task_SetState1(Actor *, u32);
 extern void Task_NextState0(Actor *);
 extern void Digi_InitFromTable(s32, s32, DigiRosterEntry *);
-extern s32 func_8001EF64(s32 id);
-extern s32 func_8001F094(s32 id);
-extern s32 func_8001EE80(s32 id);
+extern s32 Skill_GetPower(s32 id);
+extern s32 Skill_GetCureFlags(s32 id);
+extern s32 Skill_GetMpCost(s32 id);
 extern void Cd_FreeFile(s32);
 extern EntA0 *Cd_GetFileEntry(u32);
 extern s32 Item_GetDescText(s32);
 extern s32 Item_GetNameText(s32);
-extern s32 func_8001EDD4(s32);
-extern s32 func_8001ED84(s32);
+extern s32 Skill_GetDescText(s32);
+extern s32 Skill_GetNameText(s32);
 extern void Text_Open(void *, TextOpenArgs *);
 extern void Mem_Zero(void *, s32);
 extern s32 Flag_Test(s32);
@@ -717,14 +717,14 @@ extern void Gfx_FadeOutToBlack(s32);
 extern void func_8001EEA4(s32 id, s32 n, s16 *a, s16 *b);
 extern s32 func_8001E79C(s32 id);  /* s16 in the main exe; used unextended here */
 extern s32 func_8001E7C0(s32 id);
-extern s32 func_8001EE34(s32 id);
+extern s32 Skill_GetType(s32 id);
 extern void Gfx_SetPartsNumber(GfxPart *, s32, s32, s32);
 extern void func_8001E7E4(s32 id, Row6 *out);
 extern s32 Math_PingPongRange(s32 v, s32 div, s32 lo, s32 hi);
-extern s32 func_8001E0C0(s32 id);
+extern s32 Item_GetCategory(s32 id);
 extern void Text_OpenPacked(void *, s32, u32, Halves);
-extern s32 func_8001EF88(s32 id);  /* u16 in the main exe; used unmasked here */
-extern s32 func_8001D980(s32 id);
+extern s32 Skill_GetSpecialty(s32 id);  /* u16 in the main exe; used unmasked here */
+extern s32 Digi_GetSpecialty(s32 id);
 extern s32 Cd_GetFileLba(s32);
 extern s32 CdControl(s32, u8 *, u8 *);
 extern s32 CdControlB(s32, u8 *, u8 *);
@@ -732,7 +732,7 @@ extern u8 *CdIntToPos(s32, u8 *);
 extern s32 CdSync(s32, u8 *);
 extern s32 CdLastCom(void);  /* u8 in the main exe; compared unmasked here */
 extern s32 CdPosToInt(u8 *);
-extern s32 func_8001EE5C(s32 id);
+extern s32 Skill_GetPartsEntry(s32 id);
 extern s32 func_8001F044(s32 id);
 extern s32 Rand_Next(void);
 
@@ -752,7 +752,7 @@ extern void func_800663F8(void *a0, s32 id, s32 color, Stg30XY pos, s32 name, s3
 extern void func_8006754C(Stg30ListOwner *a0);
 
 /* part 36 salvage */
-extern s32 func_8001EF3C(s32 id);
+extern s32 Skill_GetTarget(s32 id);
 extern void func_8006E530(void);
 extern void func_8006E55C(s32 idx, s32 v);
 extern void func_8006E5B4(s32 i);
@@ -766,9 +766,9 @@ extern s32 func_8001EE10(s32 id);
 extern u16 D_80073510[6][3][4];
 extern u16 D_800735A0[5][3][4];
 extern u16 D_80073618[4][3][4];
-extern s32 func_8001D958(s32 id);
-extern s32 func_8001D9CC(s32 id, s32 k);
-extern s32 func_8001D934(s32 id);
+extern s32 Digi_GetRank(s32 id);
+extern s32 Digi_GetStatGrowth(s32 id, s32 k);
+extern s32 Digi_GetType(s32 id);
 extern s16 D_80073E02;  /* D_80073CC0.entries[3].field_2E as a scalar reloc */
 extern s16 D_80073E5E;  /* D_80073CC0.entries[4].field_2E */
 extern s16 D_80073EBA;  /* D_80073CC0.entries[5].field_2E */
@@ -793,9 +793,9 @@ extern void func_80071DC4(Actor *a0);
 extern void func_80071F9C(Actor *a0);
 extern void func_80072080(Actor *a0, s32 row);
 extern s32 func_8006D2EC(s32 idx, s32 id, s32 lvl);
-extern s32 func_8001F068(s32 id);
+extern s32 Skill_GetStatusFlags(s32 id);
 extern s32 func_8001F10C(s32 id);
-extern s32 func_8001F130(s32 id);
+extern s32 Skill_GetBuffFlags(s32 id);
 extern s32 func_8001F158(s32 id);
 extern s32 func_800699F8(s32 a, s32 b);
 extern s32 func_8006A030(s32 a, s32 b);
@@ -880,7 +880,7 @@ typedef struct {
 } Stg30Slots;
 
 extern void func_80067530(Actor *a0, s32 a1, s32 a2);
-extern s32 *func_8001EFF0(s32 id);
+extern s32 *Skill_GetShotXa(s32 id);
 extern void Task_SetState4(Actor *, u32);
 
 /* Work of the battle main task D_800731A0 (update func_80067F2C). */
@@ -900,8 +900,8 @@ extern void Sys_SetFrameRate30(void);
 extern void Gpu_SetBgClearColor(s32 a0, s32 a1, s32 a2);
 extern void Gpu_ClearScreens(void);
 extern void Gfx_FadeInFromBlack(s32 arg0);
-extern void func_8001DDA8(s32 a0, s32 a1, DigiRosterEntry *e, Out1DDA8 *o);
-extern void func_8001DB68(void *a0, Out1DB68 *out);
+extern void Enemy_InitRosterEntry(s32 a0, s32 a1, DigiRosterEntry *e, Out1DDA8 *o);
+extern void Enemy_GetSetSummary(void *a0, Out1DB68 *out);
 extern void func_80067EC4(void);
 extern void Task_SetState3(Actor *arg0, u32 arg1);
 extern void func_80069594(void);

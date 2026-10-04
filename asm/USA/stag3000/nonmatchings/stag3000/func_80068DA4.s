@@ -26,7 +26,7 @@ glabel func_80068DA4
     /* 5A98 80068DF8 21186200 */  addu       $v1, $v1, $v0
     /* 5A9C 80068DFC 0200C490 */  lbu        $a0, 0x2($a2)
     /* 5AA0 80068E00 32007084 */  lh         $s0, 0x32($v1)
-    /* 5AA4 80068E04 A07B000C */  jal        func_8001EE80
+    /* 5AA4 80068E04 A07B000C */  jal        Skill_GetMpCost
     /* 5AA8 80068E08 00000000 */   nop
     /* 5AAC 80068E0C 2A800202 */  slt        $s0, $s0, $v0
     /* 5AB0 80068E10 04000012 */  beqz       $s0, .L80068E24

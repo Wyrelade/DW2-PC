@@ -17,7 +17,7 @@ glabel func_80063D28
     /* 9FC 80063D5C 688E000C */  jal        Cd_GetFileEntry
     /* A00 80063D60 21984000 */   addu      $s3, $v0, $zero
     /* A04 80063D64 00000486 */  lh         $a0, 0x0($s0)
-    /* A08 80063D68 5676000C */  jal        func_8001D958
+    /* A08 80063D68 5676000C */  jal        Digi_GetRank
     /* A0C 80063D6C 21884000 */   addu      $s1, $v0, $zero
     /* A10 80063D70 40180200 */  sll        $v1, $v0, 1
     /* A14 80063D74 21186200 */  addu       $v1, $v1, $v0
@@ -26,7 +26,7 @@ glabel func_80063D28
     /* A20 80063D80 00002292 */  lbu        $v0, 0x0($s1)
     /* A24 80063D84 00000000 */  nop
     /* A28 80063D88 0E0002A2 */  sb         $v0, 0xE($s0)
-    /* A2C 80063D8C D67A000C */  jal        func_8001EB58
+    /* A2C 80063D8C D67A000C */  jal        Digi_CalcMaxLevel
     /* A30 80063D90 FF004430 */   andi      $a0, $v0, 0xFF
     /* A34 80063D94 0F0002A2 */  sb         $v0, 0xF($s0)
     /* A38 80063D98 02002286 */  lh         $v0, 0x2($s1)
@@ -182,7 +182,7 @@ glabel func_80063D28
     /* C64 80063FC4 07004014 */  bnez       $v0, .L80063FE4
     /* C68 80063FC8 00000000 */   nop
     /* C6C 80063FCC 00000486 */  lh         $a0, 0x0($s0)
-    /* C70 80063FD0 6A76000C */  jal        func_8001D9A8
+    /* C70 80063FD0 6A76000C */  jal        Digi_GetLearnedSkill
     /* C74 80063FD4 00000000 */   nop
     /* C78 80063FD8 060002A2 */  sb         $v0, 0x6($s0)
     /* C7C 80063FDC 01000224 */  addiu      $v0, $zero, 0x1

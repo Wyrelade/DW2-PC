@@ -139,7 +139,7 @@ void func_80063758(Actor *arg0) {
                 break;
             }
         }
-        Cd_QueueFile(func_8001EE5C(w->field_31C) >> 16);
+        Cd_QueueFile(Skill_GetPartsEntry(w->field_31C) >> 16);
         Task_NextState1(arg0);
         break;
     case 1:
@@ -189,9 +189,9 @@ void func_80063758(Actor *arg0) {
         Task_NextState1(arg0);
         break;
     case 2:
-        if (Cd_GetFileState(func_8001EE5C(w->field_31C) >> 16) == 3) {
+        if (Cd_GetFileState(Skill_GetPartsEntry(w->field_31C) >> 16) == 3) {
             w->field_1E8[w->field_2DC++] = 0x1EF;
-            part = (GfxPart *)Cd_GetFileEntry(func_8001EE5C(w->field_31C));
+            part = (GfxPart *)Cd_GetFileEntry(Skill_GetPartsEntry(w->field_31C));
             while (part->fileId != 0) {
                 w->field_260[w->field_2E0++] = part->fileId >> 16;
                 part++;

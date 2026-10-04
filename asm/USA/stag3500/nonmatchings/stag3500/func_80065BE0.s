@@ -24,11 +24,11 @@ glabel func_80065BE0
     /* 28D0 80065C30 80100200 */  sll        $v0, $v0, 2
     /* 28D4 80065C34 1C00B3AF */  sw         $s3, 0x1C($sp)
     /* 28D8 80065C38 2000BFAF */  sw         $ra, 0x20($sp)
-    /* 28DC 80065C3C D97B000C */  jal        func_8001EF64
+    /* 28DC 80065C3C D97B000C */  jal        Skill_GetPower
     /* 28E0 80065C40 21984300 */   addu      $s3, $v0, $v1
     /* 28E4 80065C44 21204002 */  addu       $a0, $s2, $zero
     /* 28E8 80065C48 1C001086 */  lh         $s0, 0x1C($s0)
-    /* 28EC 80065C4C E27B000C */  jal        func_8001EF88
+    /* 28EC 80065C4C E27B000C */  jal        Skill_GetSpecialty
     /* 28F0 80065C50 21904000 */   addu      $s2, $v0, $zero
     /* 28F4 80065C54 0300312A */  slti       $s1, $s1, 0x3
     /* 28F8 80065C58 0100243A */  xori       $a0, $s1, 0x1

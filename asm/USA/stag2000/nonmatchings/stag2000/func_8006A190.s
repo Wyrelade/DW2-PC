@@ -12,10 +12,10 @@ glabel func_8006A190
     /* 6E50 8006A1B0 51A8010C */  jal        func_8006A144
     /* 6E54 8006A1B4 1000B0AF */   sw        $s0, 0x10($sp)
     /* 6E58 8006A1B8 21204002 */  addu       $a0, $s2, $zero
-    /* 6E5C 8006A1BC 5676000C */  jal        func_8001D958
+    /* 6E5C 8006A1BC 5676000C */  jal        Digi_GetRank
     /* 6E60 8006A1C0 21A04000 */   addu      $s4, $v0, $zero
     /* 6E64 8006A1C4 21206002 */  addu       $a0, $s3, $zero
-    /* 6E68 8006A1C8 5676000C */  jal        func_8001D958
+    /* 6E68 8006A1C8 5676000C */  jal        Digi_GetRank
     /* 6E6C 8006A1CC 21804000 */   addu      $s0, $v0, $zero
     /* 6E70 8006A1D0 21884000 */  addu       $s1, $v0, $zero
     /* 6E74 8006A1D4 2A101102 */  slt        $v0, $s0, $s1

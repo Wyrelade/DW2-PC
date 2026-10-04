@@ -21,10 +21,10 @@ glabel func_80066C00
     /* 38E4 80066C44 00000000 */   nop
   .L80066C48:
     /* 38E8 80066C48 21200002 */  addu       $a0, $s0, $zero
-    /* 38EC 80066C4C 5583000C */  jal        func_80020D54
+    /* 38EC 80066C4C 5583000C */  jal        Actor_ApplyAxisMotion
     /* 38F0 80066C50 01000524 */   addiu     $a1, $zero, 0x1
     /* 38F4 80066C54 21200002 */  addu       $a0, $s0, $zero
-    /* 38F8 80066C58 8083000C */  jal        func_80020E00
+    /* 38F8 80066C58 8083000C */  jal        Actor_ApplyAxisMotionRev
     /* 38FC 80066C5C 02000524 */   addiu     $a1, $zero, 0x2
   .L80066C60:
     /* 3900 80066C60 1C00038E */  lw         $v1, 0x1C($s0)

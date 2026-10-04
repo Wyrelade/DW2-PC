@@ -4,7 +4,7 @@ glabel func_8006E2BC
     /* AF5C 8006E2BC E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* AF60 8006E2C0 1000B0AF */  sw         $s0, 0x10($sp)
     /* AF64 8006E2C4 1400BFAF */  sw         $ra, 0x14($sp)
-    /* AF68 8006E2C8 D97B000C */  jal        func_8001EF64
+    /* AF68 8006E2C8 D97B000C */  jal        Skill_GetPower
     /* AF6C 8006E2CC 21808000 */   addu      $s0, $a0, $zero
     /* AF70 8006E2D0 03004018 */  blez       $v0, .L8006E2E0
     /* AF74 8006E2D4 00000000 */   nop
@@ -13,7 +13,7 @@ glabel func_8006E2BC
   .L8006E2E0:
     /* AF80 8006E2E0 09004004 */  bltz       $v0, .L8006E308
     /* AF84 8006E2E4 00000000 */   nop
-    /* AF88 8006E2E8 257C000C */  jal        func_8001F094
+    /* AF88 8006E2E8 257C000C */  jal        Skill_GetCureFlags
     /* AF8C 8006E2EC 21200002 */   addu      $a0, $s0, $zero
     /* AF90 8006E2F0 0200033C */  lui        $v1, (0x20000 >> 16)
     /* AF94 8006E2F4 24184300 */  and        $v1, $v0, $v1

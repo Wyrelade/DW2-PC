@@ -32,7 +32,7 @@ glabel Item_Use
     /* 2FE4 800127E4 21202002 */  addu       $a0, $s1, $zero
     /* 2FE8 800127E8 21288002 */  addu       $a1, $s4, $zero
     /* 2FEC 800127EC 21304002 */  addu       $a2, $s2, $zero
-    /* 2FF0 800127F0 1348000C */  jal        func_8001204C
+    /* 2FF0 800127F0 1348000C */  jal        Item_UseOnBeetle
     /* 2FF4 800127F4 21386002 */   addu      $a3, $s3, $zero
     /* 2FF8 800127F8 124A0008 */  j          .L80012848
     /* 2FFC 800127FC 21804000 */   addu      $s0, $v0, $zero

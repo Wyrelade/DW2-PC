@@ -21,7 +21,7 @@ glabel Gfx_AnimateModelTex
     /* 101F0 8001F9F0 28004310 */  beq        $v0, $v1, .L8001FA94
     /* 101F4 8001F9F4 21A80000 */   addu      $s5, $zero, $zero
     /* 101F8 8001F9F8 5400248E */  lw         $a0, 0x54($s1)
-    /* 101FC 8001F9FC 5C7E000C */  jal        func_8001F970
+    /* 101FC 8001F9FC 5C7E000C */  jal        Gfx_AnimAllowsBlink
     /* 10200 8001FA00 00000000 */   nop
     /* 10204 8001FA04 21004010 */  beqz       $v0, .L8001FA8C
     /* 10208 8001FA08 00000000 */   nop

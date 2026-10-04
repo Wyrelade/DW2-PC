@@ -290,7 +290,7 @@ glabel Menu_ItemTask
     /* 75F0 80016DF0 00000000 */   nop
   .L80016DF4:
     /* 75F4 80016DF4 4400048E */  lw         $a0, 0x44($s0)
-    /* 75F8 80016DF8 A94D000C */  jal        func_800136A4
+    /* 75F8 80016DF8 A94D000C */  jal        Text_WaitYesNo
     /* 75FC 80016DFC 00000000 */   nop
     /* 7600 80016E00 21184000 */  addu       $v1, $v0, $zero
     /* 7604 80016E04 FFFF0224 */  addiu      $v0, $zero, -0x1

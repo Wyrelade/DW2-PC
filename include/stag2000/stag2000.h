@@ -127,9 +127,9 @@ extern s32 D_80043704[];
 
 extern void Task_SetState1(Actor *arg0, u32 arg1);
 extern TaskEntry *Task_FindNext(void);
-extern s32 func_8001D934(s32);
+extern s32 Digi_GetType(s32);
 extern s32 func_8001D910(s32);
-extern s32 func_8001EDD4(s32);
+extern s32 Skill_GetDescText(s32);
 extern void Digi_SortRoster(void);
 extern void Anim_StepModelAnim(Actor *);
 extern void Gfx_DrawWireModel(Actor *a0, s32 mode, CVECTOR *col);
@@ -544,7 +544,7 @@ extern Stg20Roster D_8005E704[];
 extern Stg20RosterName D_8005E750[];
 extern Stg20Cell D_8007010C[2];
 extern SysState D_8005F770;
-extern s32 func_8001EE34(s32);
+extern s32 Skill_GetType(s32);
 extern void SetGeomOffset(s32, s32);
 extern void Task_NextState1(Actor *);
 extern void Gfx_FadeOutToBlack(s32);
@@ -553,7 +553,7 @@ extern s32 D_80070A04;
 extern s32 D_800709D0;
 extern Halves D_8007001C[3];
 extern Halves D_800706A4[];
-extern s32 func_8001E180(s32);
+extern s32 Item_GetPrice(s32);
 extern s32 Flag_Test(s32);
 extern void Flag_Set(s32, s32);
 extern s32 Math_CycleRange(s32, s32, s32, s32);
@@ -660,7 +660,7 @@ typedef struct {
     /* 0x58 */ s32 field_58;
 } Stg20ShopWork;
 extern Halves D_8006FF9C[4][4];
-extern s32 func_8001D958(s32);
+extern s32 Digi_GetRank(s32);
 
 /* ---- added by p36 agent b ---- */
 extern s32 func_80067928(Stg20Cell *c, s32 x, s32 y, s32 flag);
@@ -725,8 +725,8 @@ extern Stg20StartBlock D_8006FE44;
 extern u8 D_8006FF04[3][8];
 extern void Digi_InitFromTable(s32, s32, DigiRosterEntry *);
 
-extern s32 func_8001E0C0(s32 id);
-extern s32 func_8001E1AC(s32 id);
+extern s32 Item_GetCategory(s32 id);
+extern s32 Item_GetBodyMask(s32 id);
 extern void func_8006D4F4(s16 *list, s32 n, s32 v);
 
 /* ActorModel viewed with the three tint bytes at 0x38 (func_8006A434). */
@@ -806,7 +806,7 @@ typedef struct {
     /* 0x4C */ s32 field_4C;
 } Stg20MenuSub;
 extern Stg20MenuSub D_800709B8;
-extern s32 func_8001ED84(s32);
+extern s32 Skill_GetNameText(s32);
 extern Halves D_80063594;
 extern Halves D_80063598;
 extern s32 D_8005F70C; /* D_8005F6F0[0].triangle as a scalar reloc */
@@ -825,15 +825,15 @@ extern s32 D_800709D4;
 extern s32 D_800709D8;
 extern s32 D_800709DC;
 extern s32 D_800709E4;
-extern s32 func_8001D980(s32);
-extern s32 func_8001DA80(s32 id, s32 val);
+extern s32 Digi_GetSpecialty(s32);
+extern s32 Digi_GetEvolutionTarget(s32 id, s32 val);
 
 extern void Task_NextState3(Actor *);
 extern void Task_NextState4(Actor *);
 extern void Task_SetState2(Actor *, u32);
 extern void Task_SetState3(Actor *, u32);
 extern void Snd_StopById(s32);
-extern u8 func_8001D9A8(s32);
+extern u8 Digi_GetLearnedSkill(s32);
 
 /* Roster entry viewed with signed HP/MP words and the byte at 0x46 (func_800650BC). */
 typedef struct {
@@ -857,8 +857,8 @@ extern void Gpu_ClearScreens(void);
 extern void Gfx_FadeInFromBlack(s32 arg0);
 extern void Gfx_FadeSetBlack(void);
 extern void Gfx_InitLights(void);
-extern void func_8001E28C(s32 arg0);
-extern s32 func_8001E480(void); /* main defines it void; its tail call leaves Flag_NextPassingEntry's result in v0 */
+extern void Flag_SetTableFile(s32 arg0);
+extern s32 Flag_FirstPassingEntry(void); /* main defines it void; its tail call leaves Flag_NextPassingEntry's result in v0 */
 extern Blk12 *func_8001E5E8(s32 id);
 extern s16 func_8001E634(s32 id);
 extern s16 func_8001E658(s32 id);
@@ -903,11 +903,11 @@ extern s32 func_8006AD14(Actor *a);
 extern void func_8006AD6C(Actor *a, s32 i);
 
 extern s32 Flag_SelectBranch(s32 arg0);
-extern void func_8001C038(void *arg0, s32 arg1);
+extern void Text_OpenMsgClearChoice(void *arg0, s32 arg1);
 extern s32 Text_IsFinished(s32 id);
-extern s32 func_8001E5C0(void);
+extern s32 Flag_GetTableBase(void);
 extern void Actor_StopAxisMotion(Actor *a, s32 axis);
-extern s32 func_80020D54(Actor *a, s32 i);
+extern s32 Actor_ApplyAxisMotion(Actor *a, s32 i);
 
 /* Work of the map walker/NPC model task (func_8006ADF8). */
 typedef struct {
@@ -932,8 +932,8 @@ extern s32 D_8005F704; /* D_8005F6F0[0].cross as a scalar reloc */
 extern s32 D_80070624[10];
 extern s32 D_8007064C[10];
 
-extern s32 func_8001F0C0(s32 id);
-extern s32 func_8001EF64(s32 id);
+extern s32 Skill_GetRank(s32 id);
+extern s32 Skill_GetPower(s32 id);
 extern s32 D_800709FC;
 
 /* Roster entry as the jogress code builds and reads it (func_80064008). */

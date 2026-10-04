@@ -9,7 +9,7 @@
 #include "stag3000/stag3000_9F8C_funcs.h"
 
 s32 func_8006E2BC(s32 id) {
-    s32 r = func_8001EF64(id);
+    s32 r = Skill_GetPower(id);
 
     if (r > 0) {
         return 0;
@@ -17,7 +17,7 @@ s32 func_8006E2BC(s32 id) {
     if (r < 0) {
         return 1;
     }
-    if (func_8001F094(id) & 0x20000) {
+    if (Skill_GetCureFlags(id) & 0x20000) {
         return 3;
     }
     return 2;
@@ -260,8 +260,8 @@ void func_8006EC94(Actor *arg0, s32 arg1) {
     if (arg0->stateLevel3 == 0 && arg0->stateLevel4 == 0) {
         Actor_StopAxisMotion(arg0, 1);
     } else {
-        func_80020D54(arg0, 1);
-        func_80020E00(arg0, 2);
+        Actor_ApplyAxisMotion(arg0, 1);
+        Actor_ApplyAxisMotionRev(arg0, 2);
     }
     switch (arg0->stateLevel3) {
     case 0:
@@ -786,7 +786,7 @@ void func_8006FA28(Actor *a0) {
     switch (w->pos.x) {
     case 0:
     default:
-        p = (Stg30Part *)Cd_GetFileEntry(func_8001EE5C(w->pos.y));
+        p = (Stg30Part *)Cd_GetFileEntry(Skill_GetPartsEntry(w->pos.y));
         break;
     case 4:
     case 5:

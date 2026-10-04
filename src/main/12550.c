@@ -17,7 +17,7 @@ void func_80021D50(void) {
 void func_80021D58(void) {
 }
 
-s32 func_80021D60(void) {
+s32 Bug_GetMaxMemBugLevel(void) {
     s32 best = 0;
     s32 i;
     s32 v;

@@ -207,7 +207,7 @@ void Save_ResetGameState(void) {
 }
 
 
-void func_800224EC(s32 i, s32 v, s32 flag) {
+void Beetle_SetPart(s32 i, s32 v, s32 flag) {
     GameStateView *p = D_80050720;
 
     p->slotItems[i] = v;
@@ -215,7 +215,7 @@ void func_800224EC(s32 i, s32 v, s32 flag) {
 }
 
 
-s32 func_80022518(s32 i) {
+s32 Beetle_GetPart(s32 i) {
     GameStateView *p = D_80050720;
     if (p->slotStatus[i] == 1) {
         return -1;
@@ -224,7 +224,7 @@ s32 func_80022518(s32 i) {
 }
 
 
-void func_8002254C(s32 i, s32 v) {
+void Beetle_SetPartBroken(s32 i, s32 v) {
     GameStateView *p = D_80050720;
 
     p->slotStatus[i] = (p->slotItems[i] != 0) ? v : 0;
@@ -233,7 +233,7 @@ void func_8002254C(s32 i, s32 v) {
 
 u8 func_80022578(void) {
     u8 result = 0;
-    s32 v = func_80022518(2) - 0x2F;
+    s32 v = Beetle_GetPart(2) - 0x2F;
     if ((u32)v < 6) {
         result = D_800416FC[v];
     }

@@ -40,7 +40,7 @@ glabel func_80064EF0
     /* 1C18 80064F78 00000000 */   nop
   .L80064F7C:
     /* 1C1C 80064F7C 0400248E */  lw         $a0, 0x4($s1)
-    /* 1C20 80064F80 A94D000C */  jal        func_800136A4
+    /* 1C20 80064F80 A94D000C */  jal        Text_WaitYesNo
     /* 1C24 80064F84 00000000 */   nop
     /* 1C28 80064F88 21184000 */  addu       $v1, $v0, $zero
     /* 1C2C 80064F8C FFFF0224 */  addiu      $v0, $zero, -0x1

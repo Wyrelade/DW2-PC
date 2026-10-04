@@ -187,7 +187,7 @@ glabel func_80067F2C
     /* 4E80 800681E0 70F72925 */  addiu      $t1, $t1, %lo(D_8005F770)
     /* 4E84 800681E4 2802D727 */  addiu      $s7, $fp, 0x228
     /* 4E88 800681E8 2400248D */  lw         $a0, 0x24($t1)
-    /* 4E8C 800681EC 6A77000C */  jal        func_8001DDA8
+    /* 4E8C 800681EC 6A77000C */  jal        Enemy_InitRosterEntry
     /* 4E90 800681F0 21385702 */   addu      $a3, $s2, $s7
     /* 4E94 800681F4 19006292 */  lbu        $v0, 0x19($s3)
     /* 4E98 800681F8 00000000 */  nop
@@ -208,7 +208,7 @@ glabel func_80067F2C
     /* 4ED0 80068230 5C003126 */   addiu     $s1, $s1, 0x5C
     /* 4ED4 80068234 0680023C */  lui        $v0, %hi(D_8005F794)
     /* 4ED8 80068238 94F7448C */  lw         $a0, %lo(D_8005F794)($v0)
-    /* 4EDC 8006823C DA76000C */  jal        func_8001DB68
+    /* 4EDC 8006823C DA76000C */  jal        Enemy_GetSetSummary
     /* 4EE0 80068240 2000A527 */   addiu     $a1, $sp, 0x20
     /* 4EE4 80068244 21280000 */  addu       $a1, $zero, $zero
     /* 4EE8 80068248 C0FDE226 */  addiu      $v0, $s7, -0x240

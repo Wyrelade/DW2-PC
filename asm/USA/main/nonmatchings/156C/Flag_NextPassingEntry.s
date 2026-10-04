@@ -2,8 +2,8 @@ nonmatching Flag_NextPassingEntry, 0xF0
 
 glabel Flag_NextPassingEntry
     /* EB90 8001E390 E8FFBD27 */  addiu      $sp, $sp, -0x18
-    /* EB94 8001E394 0680023C */  lui        $v0, %hi(D_8005D560)
-    /* EB98 8001E398 60D54324 */  addiu      $v1, $v0, %lo(D_8005D560)
+    /* EB94 8001E394 0680023C */  lui        $v0, %hi(Flag_EntryIter)
+    /* EB98 8001E398 60D54324 */  addiu      $v1, $v0, %lo(Flag_EntryIter)
     /* EB9C 8001E39C 1400BFAF */  sw         $ra, 0x14($sp)
     /* EBA0 8001E3A0 1000B0AF */  sw         $s0, 0x10($sp)
     /* EBA4 8001E3A4 0C00628C */  lw         $v0, 0xC($v1)
@@ -14,7 +14,7 @@ glabel Flag_NextPassingEntry
     /* EBB8 8001E3B8 21806000 */   addu      $s0, $v1, $zero
   .L8001E3BC:
     /* EBBC 8001E3BC 0C00048E */  lw         $a0, 0xC($s0)
-    /* EBC0 8001E3C0 A678000C */  jal        func_8001E298
+    /* EBC0 8001E3C0 A678000C */  jal        Flag_GetEntryCondBlock
     /* EBC4 8001E3C4 00000000 */   nop
     /* EBC8 8001E3C8 0E88000C */  jal        Flag_TestConds
     /* EBCC 8001E3CC 21204000 */   addu      $a0, $v0, $zero

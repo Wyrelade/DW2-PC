@@ -12,7 +12,7 @@ glabel func_800655FC
     /* 22BC 8006561C 3400918C */  lw         $s1, 0x34($a0)
   .L80065620:
     /* 22C0 80065620 1000448E */  lw         $a0, 0x10($s2)
-    /* 22C4 80065624 3D7A000C */  jal        func_8001E8F4
+    /* 22C4 80065624 3D7A000C */  jal        Digi_GetModelListId
     /* 22C8 80065628 00000000 */   nop
     /* 22CC 8006562C 21804000 */  addu       $s0, $v0, $zero
     /* 22D0 80065630 03001316 */  bne        $s0, $s3, .L80065640
@@ -38,7 +38,7 @@ glabel func_800655FC
     /* 231C 8006567C E26E000C */  jal        Text_Close
     /* 2320 80065680 21202002 */   addu      $a0, $s1, $zero
     /* 2324 80065684 1000448E */  lw         $a0, 0x10($s2)
-    /* 2328 80065688 3D7A000C */  jal        func_8001E8F4
+    /* 2328 80065688 3D7A000C */  jal        Digi_GetModelListId
     /* 232C 8006568C 00000000 */   nop
     /* 2330 80065690 D679000C */  jal        Digi_GetDefaultName
     /* 2334 80065694 21204000 */   addu      $a0, $v0, $zero

@@ -155,7 +155,7 @@ glabel func_80069A44
     /* 6918 80069C78 10005590 */  lbu        $s5, 0x10($v0)
     /* 691C 80069C7C AAAA133C */  lui        $s3, (0xAAAAAAAB >> 16)
     /* 6920 80069C80 ABAA7336 */  ori        $s3, $s3, (0xAAAAAAAB & 0xFFFF)
-    /* 6924 80069C84 CF7B000C */  jal        func_8001EF3C
+    /* 6924 80069C84 CF7B000C */  jal        Skill_GetTarget
     /* 6928 80069C88 2120A002 */   addu      $a0, $s5, $zero
     /* 692C 80069C8C 21904000 */  addu       $s2, $v0, $zero
     /* 6930 80069C90 0680023C */  lui        $v0, %hi(jtbl_80063544)

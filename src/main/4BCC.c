@@ -9,7 +9,7 @@ Halves D_80050700;
 u8 *D_8005076C;
 u8 *D_80050770;
 
-void func_800143CC(Actor *arg0, s16 arg1) {
+void Menu_SubMenuInit(Actor *arg0, s16 arg1) {
     ActorWork *w = arg0->work;
 
     w->field_38 = arg1;
@@ -194,11 +194,11 @@ void Menu_SubMenuDraw(Actor *actor) {
     } while (*list != 0);
 }
 
-void func_80014978(Actor *arg0, s16 arg1) {
+void Menu_StatusInit(Actor *arg0, s16 arg1) {
     arg0->work->field_6C = arg1;
 }
 
-void func_80014984(Actor *a0) {
+void Menu_StatusTask(Actor *a0) {
     Wk14CBC *w = (Wk14CBC *)a0->work;
     s32 i;
     s32 v;
@@ -235,7 +235,7 @@ void func_80014984(Actor *a0) {
             if (Menu_Ctx->flags & 1) {
                 h = (Halves *)Cd_GetFileEntry(0x513000D);
                 for (i = 0; i < 4; i++) {
-                    v = (i == 3) ? func_80021D60() : D_8005071C->field_BA5[i];
+                    v = (i == 3) ? Bug_GetMaxMemBugLevel() : D_8005071C->field_BA5[i];
                     if (v != 0) {
                         id = v + 0x1FD00EC;
                         Text_OpenPacked(&w->field_58[i], (s32)Cd_GetFileEntry(i * 3 + id), 1, h[i]);
@@ -274,7 +274,7 @@ void func_80014984(Actor *a0) {
     }
 }
 
-void func_80014CBC(Actor *actor) {
+void Menu_StatusDraw(Actor *actor) {
     Wk14CBC *w = (Wk14CBC *)actor->work;
     s32 *p;
     s32 *list;
@@ -335,7 +335,7 @@ void Menu_UseItemDirect(Actor *a0) {
 }
 
 
-void func_80014F78(Actor *a0) {
+void Menu_UseBugZapItem(Actor *a0) {
     MenuItemUseWork *w = (MenuItemUseWork *)a0->work;
     Halves *pos;
     Sub17D84 *rec;
@@ -411,7 +411,7 @@ void func_80014F78(Actor *a0) {
         break;
     }
 end:
-    func_800153F4(a0, 0);
+    Menu_OpenBugTexts(a0, 0);
 }
 
 
@@ -441,7 +441,7 @@ void Menu_OpenItemNameTexts(Actor *a0, s32 a1) {
 }
 
 
-void func_800153F4(Actor *a0, s32 a1) {
+void Menu_OpenBugTexts(Actor *a0, s32 a1) {
     HudSlots153F4 *w = (HudSlots153F4 *)a0->work;
     Halves *h;
     s32 i;
@@ -451,7 +451,7 @@ void func_800153F4(Actor *a0, s32 a1) {
     h = (Halves *)Cd_GetFileEntry(0x5130016);
     for (i = 0; i < 4; i++) {
         if (i == 3) {
-            v = func_80021D60();
+            v = Bug_GetMaxMemBugLevel();
         } else {
             v = D_8005071C->field_BA5[i];
         }
@@ -465,7 +465,7 @@ void func_800153F4(Actor *a0, s32 a1) {
     }
 }
 
-void func_800154F0(Actor *a0) {
+void Menu_ShowPartSlotInfo(Actor *a0) {
     MenuItemUseWork *w = (MenuItemUseWork *)a0->work;
     s32 i;
     s32 id;
@@ -492,7 +492,7 @@ void func_800154F0(Actor *a0) {
 }
 
 
-void func_80015668(Actor *a0) {
+void Menu_OpenUseItemTexts(Actor *a0) {
     MenuItemUseWork *w = (MenuItemUseWork *)a0->work;
     Halves h;
 
@@ -586,32 +586,32 @@ void Menu_ItemUseTask(Actor *a0) {
             Text_PrintIdList(&w->field_70, (TextIdListEntry *)Cd_GetFileEntry(0x5130011), 2);
             Menu_OpenItemNameTexts(a0, 1);
             if (Menu_Ctx->flags & 1) {
-                func_800153F4(a0, 1);
+                Menu_OpenBugTexts(a0, 1);
             }
             Task_NextState1(a0);
             break;
         case 1:
             switch (w->useMode) {
             case 1:
-                func_800154F0(a0);
+                Menu_ShowPartSlotInfo(a0);
                 Task_NextState1(a0);
                 break;
             case 2:
-                func_80015668(a0);
+                Menu_OpenUseItemTexts(a0);
                 Menu_UseItemDirect(a0);
                 Task_SetState1(a0, 3);
                 break;
             case 3:
-                func_80015668(a0);
+                Menu_OpenUseItemTexts(a0);
                 Task_NextState1(a0);
                 break;
             case 4:
-                func_80015668(a0);
-                func_80014F78(a0);
+                Menu_OpenUseItemTexts(a0);
+                Menu_UseBugZapItem(a0);
                 Task_SetState1(a0, 3);
                 break;
             case 5:
-switch (func_80022518(0x10)) {
+switch (Beetle_GetPart(0x10)) {
 case -1:
 id = 0x154;
  next = 3;
@@ -658,7 +658,7 @@ break;
             }
             break;
         case 4:
-            r = func_800136A4(w->msgText);
+            r = Text_WaitYesNo(w->msgText);
             switch (r) {
             case 1:
                 Gfx_FadeOutToBlack(0x20);

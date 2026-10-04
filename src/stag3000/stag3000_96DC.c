@@ -250,7 +250,7 @@ void func_8006CB8C(Actor *a0) {
                 switch (a0->stateLevel1) {
                 case 0:
                 default:
-                    q = func_8001EFF0(w->pc[1]);
+                    q = Skill_GetShotXa(w->pc[1]);
                     g[0] = q[0];
                     g[1] = q[1];
                     g[2] = w->pc[2];

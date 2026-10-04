@@ -130,7 +130,7 @@ void func_8006C420(u8 *out, s32 v) {
     s32 i;
     s32 lead;
 
-    n = func_8001E180(v);
+    n = Item_GetPrice(v);
     if (D_80070A04 != 0) {
         n /= 2;
     }
@@ -376,7 +376,7 @@ void func_8006CB58(Actor *a) {
                 if (m->field_4C == 0) {
                     item = D_80070A08.items[w->cursor + w->page * 8];
                     if (item != 0) {
-                        if (func_8001E180(item) > D_8005E628) {
+                        if (Item_GetPrice(item) > D_8005E628) {
                             w->field_5C = 0x139;
                             w->dirty = 1;
                             Snd_PlayById(0x10, 0);
@@ -387,7 +387,7 @@ void func_8006CB58(Actor *a) {
                 } else {
                     item = D_80070A08.items[w->cursor + w->page * 8];
                     if (item != 0) {
-                        if (func_8001E180(item) != 0) {
+                        if (Item_GetPrice(item) != 0) {
                             goto sell;
                         }
                         Snd_PlayById(0x10, 0);
@@ -412,7 +412,7 @@ void func_8006CB58(Actor *a) {
                 Snd_PlayById(0xF, 0);
                 g = (Stg20GameState *)&D_8005E620;
                 g->field_DD4[id] = g->field_DD4[id] == 99 ? 99 : g->field_DD4[id] + 1;
-                D_8005E620.field_8 -= func_8001E180(id);
+                D_8005E620.field_8 -= Item_GetPrice(id);
                 Task_SetState1(a, 0);
             } else if (D_8005F70C > 0 || Flag_Test(0x10) != 0) {
                 Snd_PlayById(0xB, 0);
@@ -456,7 +456,7 @@ void func_8006CB58(Actor *a) {
             if (Flag_Test(0x10) != 0) {
                 if (Flag_Test(0x11) == 0) {
                     Snd_PlayById(0xF, 0);
-                    D_8005E620.field_8 += func_8001E180(id) / 2;
+                    D_8005E620.field_8 += Item_GetPrice(id) / 2;
                     if (D_8005E620.field_8 > 99999999) {
                         D_8005E620.field_8 = 99999999;
                     }
@@ -627,24 +627,24 @@ void func_8006D53C(Actor *a, s32 mode) {
             continue;
         }
         if (mode != 0x63) {
-            if (func_8001E0C0(id) != mode) {
+            if (Item_GetCategory(id) != mode) {
                 continue;
             }
         } else {
             ok = 0;
             if (g->field_2C[8] == 0) {
-                ok = func_8001E0C0(id) == 7;
+                ok = Item_GetCategory(id) == 7;
             }
-            if (g->field_2C[9] == 0 && func_8001E0C0(id) == 8) {
+            if (g->field_2C[9] == 0 && Item_GetCategory(id) == 8) {
                 ok = 1;
             }
-            if (g->field_2C[10] == 0 && func_8001E0C0(id) == 9) {
+            if (g->field_2C[10] == 0 && Item_GetCategory(id) == 9) {
                 ok = 1;
             }
-            if (g->field_2C[11] == 0 && func_8001E0C0(id) == 10) {
+            if (g->field_2C[11] == 0 && Item_GetCategory(id) == 10) {
                 ok = 1;
             }
-            if (g->field_2C[12] == 0 && func_8001E0C0(id) == 11) {
+            if (g->field_2C[12] == 0 && Item_GetCategory(id) == 11) {
                 ok = 1;
             }
             if (ok == 0) {
@@ -659,7 +659,7 @@ void func_8006D53C(Actor *a, s32 mode) {
     cnt = 0;
     for (i = 0; i < 0x43; i++) {
         if (w->items[i] != 0) {
-            if (func_8001E1AC(w->items[i]) & mask) {
+            if (Item_GetBodyMask(w->items[i]) & mask) {
                 w->colors[i] = 0;
                 cnt++;
             } else {
@@ -673,7 +673,7 @@ void func_8006D53C(Actor *a, s32 mode) {
     cnt = 0;
     if (mode == 1 || mode == 3) {
         for (i = 0; i < 0x43; i++) {
-            if (cnt == 0 && w->items[i] != 0 && (func_8001E1AC(w->items[i]) & mask)) {
+            if (cnt == 0 && w->items[i] != 0 && (Item_GetBodyMask(w->items[i]) & mask)) {
                 w->colors[i] = 0;
                 cnt = 1;
             } else {
@@ -1016,7 +1016,7 @@ void func_8006DCCC(Actor *a) {
                 item = w->items[w->cursor + w->top];
                 k = -1;
                 if (item != 0) {
-                    k = func_8001E0C0(item) - 7;
+                    k = Item_GetCategory(item) - 7;
                 }
                 goto blink;
             deny:
@@ -1198,7 +1198,7 @@ void func_8006EA90(Actor *a) {
                 w->recs[i].name[j++] = *name++;
             }
             if (func_8006E9E8(id) != 0) {
-                w->recs[i].price = func_8001E180(id + 1) - func_8001E180(id);
+                w->recs[i].price = Item_GetPrice(id + 1) - Item_GetPrice(id);
             } else {
                 w->recs[i].price = 0;
             }

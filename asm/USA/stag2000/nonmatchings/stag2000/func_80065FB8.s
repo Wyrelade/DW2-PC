@@ -55,7 +55,7 @@ glabel func_80065FB8
     /* 2D1C 8006607C C599010C */  jal        func_80066714
     /* 2D20 80066080 00000000 */   nop
     /* 2D24 80066084 2000448C */  lw         $a0, 0x20($v0)
-    /* 2D28 80066088 A378000C */  jal        func_8001E28C
+    /* 2D28 80066088 A378000C */  jal        Flag_SetTableFile
     /* 2D2C 8006608C 00000000 */   nop
     /* 2D30 80066090 08030424 */  addiu      $a0, $zero, 0x308
     /* 2D34 80066094 14006526 */  addiu      $a1, $s3, 0x14
@@ -94,7 +94,7 @@ glabel func_80065FB8
     /* 2DB8 80066118 00000000 */  nop
     /* 2DBC 8006611C 33004010 */  beqz       $v0, .L800661EC
     /* 2DC0 80066120 04030424 */   addiu     $a0, $zero, 0x304
-    /* 2DC4 80066124 2079000C */  jal        func_8001E480
+    /* 2DC4 80066124 2079000C */  jal        Flag_FirstPassingEntry
     /* 2DC8 80066128 21900000 */   addu      $s2, $zero, $zero
     /* 2DCC 8006612C 21884000 */  addu       $s1, $v0, $zero
     /* 2DD0 80066130 FFFF0224 */  addiu      $v0, $zero, -0x1

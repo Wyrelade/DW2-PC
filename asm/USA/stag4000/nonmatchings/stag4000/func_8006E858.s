@@ -19,7 +19,7 @@ glabel func_8006E858
     /* B530 8006E890 08006210 */  beq        $v1, $v0, .L8006E8B4
     /* B534 8006E894 FFFF0224 */   addiu     $v0, $zero, -0x1
     /* B538 8006E898 2C00A494 */  lhu        $a0, 0x2C($a1)
-    /* B53C 8006E89C 3978000C */  jal        func_8001E0E4
+    /* B53C 8006E89C 3978000C */  jal        Item_GetLevel
     /* B540 8006E8A0 00000000 */   nop
     /* B544 8006E8A4 02004014 */  bnez       $v0, .L8006E8B0
     /* B548 8006E8A8 21184000 */   addu      $v1, $v0, $zero
