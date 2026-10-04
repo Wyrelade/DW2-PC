@@ -15,19 +15,19 @@ enddlabel D_800725B0
 nonmatching D_800725BC
 
 dlabel D_800725BC
-    /* F25C 800725BC F83E0680 */ .word func_80063EF8
-    /* F260 800725C0 4C420680 */ .word func_8006424C
-    /* F264 800725C4 38480680 */ .word func_80064838
-    /* F268 800725C8 30480680 */ .word func_80064830
+    /* F25C 800725BC F83E0680 */ .word Stg40_RootInit
+    /* F260 800725C0 4C420680 */ .word Stg40_RootUpdate
+    /* F264 800725C4 38480680 */ .word Stg40_RootDestroy
+    /* F268 800725C8 30480680 */ .word Stg40_RootDraw
     /* F26C 800725CC 14000000 */ .word 0x00000014
     /* F270 800725D0 E0000000 */ .word 0x000000E0
     /* F274 800725D4 A82A0780 */ .word D_80072AA8
     /* F278 800725D8 C02A0780 */ .word D_80072AC0
 enddlabel D_800725BC
 
-nonmatching D_800725DC
+nonmatching Stg40_LinkedModelTable
 
-dlabel D_800725DC
+dlabel Stg40_LinkedModelTable
     /* F27C 800725DC 7E020000 */ .word 0x0000027E
     /* F280 800725E0 7F020000 */ .word 0x0000027F
     /* F284 800725E4 80020000 */ .word 0x00000280
@@ -39,22 +39,22 @@ dlabel D_800725DC
     /* F29C 800725FC 7D020100 */ .word 0x0001027D
     /* F2A0 80072600 7C020100 */ .word 0x0001027C
     /* F2A4 80072604 7B020100 */ .word 0x0001027B
-enddlabel D_800725DC
+enddlabel Stg40_LinkedModelTable
 
 nonmatching D_80072608
 
 dlabel D_80072608
-    /* F2A8 80072608 70490680 */ .word func_80064970
-    /* F2AC 8007260C 8C490680 */ .word func_8006498C
+    /* F2A8 80072608 70490680 */ .word Stg40_LinkedModelInit
+    /* F2AC 8007260C 8C490680 */ .word Stg40_LinkedModelUpdate
     /* F2B0 80072610 70110180 */ .word Task_DefaultDestroy
-    /* F2B4 80072614 FC4A0680 */ .word func_80064AFC
+    /* F2B4 80072614 FC4A0680 */ .word Stg40_LinkedModelDraw
     /* F2B8 80072618 2C000000 */ .word 0x0000002C
     /* F2BC 8007261C 00000000 */ .word 0x00000000
 enddlabel D_80072608
 
-nonmatching D_80072620
+nonmatching Stg40_FloorPrimIdx
 
-dlabel D_80072620
+dlabel Stg40_FloorPrimIdx
     /* F2C0 80072620 04020603 */ .word 0x03060204
     /* F2C4 80072624 05000100 */ .word 0x00010005
     /* F2C8 80072628 0B090D0A */ .word 0x0A0D090B
@@ -70,28 +70,28 @@ dlabel D_80072620
     /* F2F0 80072650 16191517 */ .word 0x17151916
     /* F2F4 80072654 183D3E3F */ .word 0x3F3E3D18
     /* F2F8 80072658 */ .short 0x4140
-enddlabel D_80072620
+enddlabel Stg40_FloorPrimIdx
 
-nonmatching D_8007265A
+nonmatching Stg40_ShadowPrimIdx
 
-dlabel D_8007265A
+dlabel Stg40_ShadowPrimIdx
     /* F2FA 8007265A */ .byte 0x1A
     /* F2FB 8007265B */ .byte 0x00
-enddlabel D_8007265A
+enddlabel Stg40_ShadowPrimIdx
 
-nonmatching D_8007265C
+nonmatching Stg40_WallPrimIdx
 
-dlabel D_8007265C
+dlabel Stg40_WallPrimIdx
     /* F2FC 8007265C 1B1E1C1F */ .word 0x1F1C1E1B
     /* F300 80072660 1D252826 */ .word 0x2628251D
     /* F304 80072664 29272023 */ .word 0x23202729
     /* F308 80072668 2124222A */ .word 0x2A222421
     /* F30C 8007266C 2D2B2E2C */ .word 0x2C2E2B2D
-enddlabel D_8007265C
+enddlabel Stg40_WallPrimIdx
 
-nonmatching D_80072670
+nonmatching Stg40_WallSides
 
-dlabel D_80072670
+dlabel Stg40_WallSides
     /* F310 80072670 00080000 */ .word 0x00000800
     /* F314 80072674 00010000 */ .word 0x00000100
     /* F318 80072678 00400004 */ .word 0x04004000
@@ -102,85 +102,85 @@ dlabel D_80072670
     /* F32C 8007268C 00400001 */ .word 0x01004000
     /* F330 80072690 06010001 */ .word 0x01000106
     /* F334 80072694 0101007F */ .word 0x7F000101
-enddlabel D_80072670
+enddlabel Stg40_WallSides
 
 nonmatching D_80072698
 
 dlabel D_80072698
-    /* F338 80072698 18630680 */ .word func_80066318
-    /* F33C 8007269C E0650680 */ .word func_800665E0
+    /* F338 80072698 18630680 */ .word Stg40_FloorInit
+    /* F33C 8007269C E0650680 */ .word Stg40_FloorUpdate
     /* F340 800726A0 70110180 */ .word Task_DefaultDestroy
-    /* F344 800726A4 7C660680 */ .word func_8006667C
+    /* F344 800726A4 7C660680 */ .word Stg40_FloorDraw
     /* F348 800726A8 A41E0000 */ .word 0x00001EA4
     /* F34C 800726AC 00000000 */ .word 0x00000000
 enddlabel D_80072698
 
-nonmatching D_800726B0
+nonmatching Stg40_HudLabels
 
-dlabel D_800726B0
+dlabel Stg40_HudLabels
     /* F350 800726B0 76000000 */ .word 0x00000076
     /* F354 800726B4 C4001600 */ .word 0x001600C4
     /* F358 800726B8 77000000 */ .word 0x00000077
     /* F35C 800726BC C4002200 */ .word 0x002200C4
-enddlabel D_800726B0
+enddlabel Stg40_HudLabels
 
-nonmatching D_800726C0
+nonmatching Stg40_HudParts
 
-dlabel D_800726C0
+dlabel Stg40_HudParts
     /* F360 800726C0 0000D407 */ .word 0x07D40000
     /* F364 800726C4 0100D407 */ .word 0x07D40001
-enddlabel D_800726C0
+enddlabel Stg40_HudParts
 
 nonmatching D_800726C8
 
 dlabel D_800726C8
     /* F368 800726C8 00000000 */ .word 0x00000000
-    /* F36C 800726CC 20670680 */ .word func_80066720
+    /* F36C 800726CC 20670680 */ .word Stg40_HudUpdate
     /* F370 800726D0 70110180 */ .word Task_DefaultDestroy
-    /* F374 800726D4 D06A0680 */ .word func_80066AD0
+    /* F374 800726D4 D06A0680 */ .word Stg40_HudDraw
     /* F378 800726D8 18000000 */ .word 0x00000018
     /* F37C 800726DC 04000000 */ .word 0x00000004
 enddlabel D_800726C8
 
-nonmatching D_800726E0
+nonmatching Stg40_BitsLabelText
 
-dlabel D_800726E0
+dlabel Stg40_BitsLabelText
     /* F380 800726E0 80000000 */ .word 0x00000080
     /* F384 800726E4 C4003A00 */ .word 0x003A00C4
-enddlabel D_800726E0
+enddlabel Stg40_BitsLabelText
 
 nonmatching D_800726E8
 
 dlabel D_800726E8
     /* F388 800726E8 00000000 */ .word 0x00000000
-    /* F38C 800726EC E46B0680 */ .word func_80066BE4
+    /* F38C 800726EC E46B0680 */ .word Stg40_BitsWinUpdate
     /* F390 800726F0 70110180 */ .word Task_DefaultDestroy
-    /* F394 800726F4 786D0680 */ .word func_80066D78
+    /* F394 800726F4 786D0680 */ .word Stg40_BitsWinDraw
     /* F398 800726F8 0C000000 */ .word 0x0000000C
     /* F39C 800726FC 00000000 */ .word 0x00000000
 enddlabel D_800726E8
 
-nonmatching D_80072700
+nonmatching Stg40_ItemMenuParts
 
-dlabel D_80072700
+dlabel Stg40_ItemMenuParts
     /* F3A0 80072700 0300D407 */ .word 0x07D40003
     /* F3A4 80072704 0700D407 */ .word 0x07D40007
-enddlabel D_80072700
+enddlabel Stg40_ItemMenuParts
 
 nonmatching D_80072708
 
 dlabel D_80072708
-    /* F3A8 80072708 306E0680 */ .word func_80066E30
-    /* F3AC 8007270C 486E0680 */ .word func_80066E48
+    /* F3A8 80072708 306E0680 */ .word Stg40_ItemMenuInit
+    /* F3AC 8007270C 486E0680 */ .word Stg40_ItemMenuUpdate
     /* F3B0 80072710 70110180 */ .word Task_DefaultDestroy
-    /* F3B4 80072714 44700680 */ .word func_80067044
+    /* F3B4 80072714 44700680 */ .word Stg40_ItemMenuDraw
     /* F3B8 80072718 48000000 */ .word 0x00000048
     /* F3BC 8007271C 00000000 */ .word 0x00000000
 enddlabel D_80072708
 
-nonmatching D_80072720
+nonmatching Stg40_EnemyInfoTextPos
 
-dlabel D_80072720
+dlabel Stg40_EnemyInfoTextPos
     /* F3C0 80072720 0F00C500 */ .word 0x00C5000F
     /* F3C4 80072724 0F00B600 */ .word 0x00B6000F
     /* F3C8 80072728 3700C500 */ .word 0x00C50037
@@ -193,23 +193,23 @@ dlabel D_80072720
     /* F3E4 80072744 D700B600 */ .word 0x00B600D7
     /* F3E8 80072748 FF00C500 */ .word 0x00C500FF
     /* F3EC 8007274C D700D100 */ .word 0x00D100D7
-enddlabel D_80072720
+enddlabel Stg40_EnemyInfoTextPos
 
-nonmatching D_80072750
+nonmatching Stg40_EnemyInfoParts
 
-dlabel D_80072750
+dlabel Stg40_EnemyInfoParts
     /* F3F0 80072750 0400D407 */ .word 0x07D40004
     /* F3F4 80072754 0500D407 */ .word 0x07D40005
     /* F3F8 80072758 0600D407 */ .word 0x07D40006
-enddlabel D_80072750
+enddlabel Stg40_EnemyInfoParts
 
 nonmatching D_8007275C
 
 dlabel D_8007275C
-    /* F3FC 8007275C E8710680 */ .word func_800671E8
-    /* F400 80072760 F0710680 */ .word func_800671F0
+    /* F3FC 8007275C E8710680 */ .word Stg40_EnemyInfoInit
+    /* F400 80072760 F0710680 */ .word Stg40_EnemyInfoUpdate
     /* F404 80072764 70110180 */ .word Task_DefaultDestroy
-    /* F408 80072768 54740680 */ .word func_80067454
+    /* F408 80072768 54740680 */ .word Stg40_EnemyInfoDraw
     /* F40C 8007276C 38000000 */ .word 0x00000038
     /* F410 80072770 00000000 */ .word 0x00000000
 enddlabel D_8007275C
@@ -217,45 +217,45 @@ enddlabel D_8007275C
 nonmatching D_80072774
 
 dlabel D_80072774
-    /* F414 80072774 84770680 */ .word func_80067784
-    /* F418 80072778 8C770680 */ .word func_8006778C
+    /* F414 80072774 84770680 */ .word Stg40_MsgWinInit
+    /* F418 80072778 8C770680 */ .word Stg40_MsgWinUpdate
     /* F41C 8007277C 70110180 */ .word Task_DefaultDestroy
-    /* F420 80072780 F4770680 */ .word func_800677F4
+    /* F420 80072780 F4770680 */ .word Stg40_MsgWinDraw
     /* F424 80072784 28000000 */ .word 0x00000028
     /* F428 80072788 00000000 */ .word 0x00000000
 enddlabel D_80072774
 
-nonmatching D_8007278C
+nonmatching Stg40_FlashPattern
 
-dlabel D_8007278C
+dlabel Stg40_FlashPattern
     /* F42C 8007278C 01010001 */ .word 0x01000101
     /* F430 80072790 00010000 */ .word 0x00000100
     /* F434 80072794 01000000 */ .word 0x00000001
     /* F438 80072798 0100FF00 */ .word 0x00FF0001
-enddlabel D_8007278C
+enddlabel Stg40_FlashPattern
 
-nonmatching D_8007279C
+nonmatching Stg40_FlashColors
 
-dlabel D_8007279C
+dlabel Stg40_FlashColors
     /* F43C 8007279C FFFFFF00 */ .word 0x00FFFFFF
     /* F440 800727A0 FF000000 */ .word 0x000000FF
     /* F444 800727A4 FF00FF00 */ .word 0x00FF00FF
-enddlabel D_8007279C
+enddlabel Stg40_FlashColors
 
 nonmatching D_800727A8
 
 dlabel D_800727A8
-    /* F448 800727A8 807A0680 */ .word func_80067A80
-    /* F44C 800727AC A87B0680 */ .word func_80067BA8
+    /* F448 800727A8 807A0680 */ .word Stg40_ObjInit
+    /* F44C 800727AC A87B0680 */ .word Stg40_ObjUpdate
     /* F450 800727B0 70110180 */ .word Task_DefaultDestroy
-    /* F454 800727B4 B47D0680 */ .word func_80067DB4
+    /* F454 800727B4 B47D0680 */ .word Stg40_ObjDraw
     /* F458 800727B8 3C000000 */ .word 0x0000003C
     /* F45C 800727BC 04000000 */ .word 0x00000004
 enddlabel D_800727A8
 
-nonmatching D_800727C0
+nonmatching Stg40_DirOffsets
 
-dlabel D_800727C0
+dlabel Stg40_DirOffsets
     /* F460 800727C0 01000100 */ .word 0x00010001
     /* F464 800727C4 00000100 */ .word 0x00010000
     /* F468 800727C8 FFFF0100 */ .word 0x0001FFFF
@@ -266,7 +266,7 @@ dlabel D_800727C0
     /* F47C 800727DC 01000000 */ .word 0x00000001
     /* F480 800727E0 01000100 */ .word 0x00010001
     /* F484 800727E4 00000100 */ .word 0x00010000
-enddlabel D_800727C0
+enddlabel Stg40_DirOffsets
 
 nonmatching D_800727E8
 
@@ -301,18 +301,18 @@ dlabel D_800727E8
     /* F4F4 80072854 3D00FD01 */ .word 0x01FD003D
 enddlabel D_800727E8
 
-nonmatching D_80072858
+nonmatching Stg40_GiftGunReq
 
-dlabel D_80072858
+dlabel Stg40_GiftGunReq
     /* F4F8 80072858 08002200 */ .word 0x00220008
     /* F4FC 8007285C 23002400 */ .word 0x00240023
     /* F500 80072860 1B000000 */ .word 0x0000001B
     /* F504 80072864 5100FD01 */ .word 0x01FD0051
-enddlabel D_80072858
+enddlabel Stg40_GiftGunReq
 
-nonmatching D_80072868
+nonmatching Stg40_StatusMsgIds
 
-dlabel D_80072868
+dlabel Stg40_StatusMsgIds
     /* F508 80072868 1E00FD01 */ .word 0x01FD001E
     /* F50C 8007286C 1C00FD01 */ .word 0x01FD001C
     /* F510 80072870 2F00FD01 */ .word 0x01FD002F
@@ -321,27 +321,27 @@ dlabel D_80072868
     /* F51C 8007287C 3200FD01 */ .word 0x01FD0032
     /* F520 80072880 3300FD01 */ .word 0x01FD0033
     /* F524 80072884 3400FD01 */ .word 0x01FD0034
-enddlabel D_80072868
+enddlabel Stg40_StatusMsgIds
 
 .align 2
-nonmatching D_80072888
+nonmatching Stg40_GiftTakeChance
 
-dlabel D_80072888
+dlabel Stg40_GiftTakeChance
     /* F528 80072888 */ .asciz "`\\XTPLHD@"
     /* 605C5854504C484440000000 */
 .align 2
-enddlabel D_80072888
+enddlabel Stg40_GiftTakeChance
 
-nonmatching D_80072894
+nonmatching Stg40_GiftPointsByLevel
 
-dlabel D_80072894
+dlabel Stg40_GiftPointsByLevel
     /* F534 80072894 0A142850 */ .word 0x5028140A
     /* F538 80072898 A0000000 */ .word 0x000000A0
-enddlabel D_80072894
+enddlabel Stg40_GiftPointsByLevel
 
-nonmatching D_8007289C
+nonmatching Stg40_ShootMsgIds
 
-dlabel D_8007289C
+dlabel Stg40_ShootMsgIds
     /* F53C 8007289C 2000FD01 */ .word 0x01FD0020
     /* F540 800728A0 2100FD01 */ .word 0x01FD0021
     /* F544 800728A4 2200FD01 */ .word 0x01FD0022
@@ -356,11 +356,11 @@ dlabel D_8007289C
     /* F568 800728C8 3B00FD01 */ .word 0x01FD003B
     /* F56C 800728CC 3800FD01 */ .word 0x01FD0038
     /* F570 800728D0 3C00FD01 */ .word 0x01FD003C
-enddlabel D_8007289C
+enddlabel Stg40_ShootMsgIds
 
-nonmatching D_800728D4
+nonmatching Stg40_PadDirTable
 
-dlabel D_800728D4
+dlabel Stg40_PadDirTable
     /* F574 800728D4 FFFF0000 */ .word 0x0000FFFF
     /* F578 800728D8 0400FFFF */ .word 0xFFFF0004
     /* F57C 800728DC 06000700 */ .word 0x00070006
@@ -369,20 +369,20 @@ dlabel D_800728D4
     /* F588 800728E8 0300FFFF */ .word 0xFFFF0003
     /* F58C 800728EC FFFFFFFF */ .word 0xFFFFFFFF
     /* F590 800728F0 FFFFFFFF */ .word 0xFFFFFFFF
-enddlabel D_800728D4
+enddlabel Stg40_PadDirTable
 
-nonmatching D_800728F4
+nonmatching Stg40_EnemyAiTable
 
-dlabel D_800728F4
+dlabel Stg40_EnemyAiTable
     /* F594 800728F4 02000201 */ .word 0x01020002
     /* F598 800728F8 04020302 */ .word 0x02030204
     /* F59C 800728FC 07020602 */ .word 0x02060207
     /* F5A0 80072900 05020203 */ .word 0x03020205
-enddlabel D_800728F4
+enddlabel Stg40_EnemyAiTable
 
-nonmatching D_80072904
+nonmatching Stg40_EnemyPaceTable
 
-dlabel D_80072904
+dlabel Stg40_EnemyPaceTable
     /* F5A4 80072904 01000200 */ .word 0x00020001
     /* F5A8 80072908 00010100 */ .word 0x00010100
     /* F5AC 8007290C BC250780 */ .word D_800725BC
@@ -399,7 +399,7 @@ dlabel D_80072904
     /* F5D8 80072938 08270780 */ .word D_80072708
     /* F5DC 8007293C 5C270780 */ .word D_8007275C
     /* F5E0 80072940 C8260780 */ .word D_800726C8
-enddlabel D_80072904
+enddlabel Stg40_EnemyPaceTable
 
 nonmatching D_80072944
 
@@ -407,9 +407,9 @@ dlabel D_80072944
     /* F5E4 80072944 00000000 */ .word 0x00000000
 enddlabel D_80072944
 
-nonmatching D_80072948
+nonmatching Stg40_AutomapClut
 
-dlabel D_80072948
+dlabel Stg40_AutomapClut
     /* F5E8 80072948 009CE08C */ .word 0x8CE09C00
     /* F5EC 8007294C 0080E79C */ .word 0x9CE78000
     /* F5F0 80072950 E79CE79C */ .word 0x9CE79CE7
@@ -426,28 +426,28 @@ dlabel D_80072948
     /* F61C 8007297C 18E318E3 */ .word 0xE318E318
     /* F620 80072980 18E318E3 */ .word 0xE318E318
     /* F624 80072984 18E318E3 */ .word 0xE318E318
-enddlabel D_80072948
+enddlabel Stg40_AutomapClut
 
 nonmatching D_80072988
 
 dlabel D_80072988
-    /* F628 80072988 ACFD0680 */ .word func_8006FDAC
-    /* F62C 8007298C B4FD0680 */ .word func_8006FDB4
-    /* F630 80072990 5CFE0680 */ .word func_8006FE5C
-    /* F634 80072994 90FE0680 */ .word func_8006FE90
+    /* F628 80072988 ACFD0680 */ .word Stg40_AutomapInit
+    /* F62C 8007298C B4FD0680 */ .word Stg40_AutomapUpdate
+    /* F630 80072990 5CFE0680 */ .word Stg40_AutomapDestroy
+    /* F634 80072994 90FE0680 */ .word Stg40_AutomapDraw
     /* F638 80072998 700B0000 */ .word 0x00000B70
     /* F63C 8007299C 04000000 */ .word 0x00000004
 enddlabel D_80072988
 
-nonmatching D_800729A0
+nonmatching Stg40_FloorBitsPal
 
-dlabel D_800729A0
+dlabel Stg40_FloorBitsPal
     /* F640 800729A0 02000100 */ .word 0x00010002
     /* F644 800729A4 04000300 */ .word 0x00030004
     /* F648 800729A8 07000600 */ .word 0x00060007
     /* F64C 800729AC 05000000 */ .word 0x00000005
     /* F650 800729B0 00000000 */ .word 0x00000000
-enddlabel D_800729A0
+enddlabel Stg40_FloorBitsPal
 
 nonmatching D_800729B4
 
@@ -457,9 +457,9 @@ dlabel D_800729B4
     /* F65C 800729BC 05000200 */ .word 0x00020005
 enddlabel D_800729B4
 
-nonmatching D_800729C0
+nonmatching Stg40_FillNeighbours
 
-dlabel D_800729C0
+dlabel Stg40_FillNeighbours
     /* F660 800729C0 00000000 */ .word 0x00000000
     /* F664 800729C4 FFFFFFFF */ .word 0xFFFFFFFF
     /* F668 800729C8 00000000 */ .word 0x00000000
@@ -468,22 +468,22 @@ dlabel D_800729C0
     /* F674 800729D4 00000000 */ .word 0x00000000
     /* F678 800729D8 01000000 */ .word 0x00000001
     /* F67C 800729DC 00000000 */ .word 0x00000000
-enddlabel D_800729C0
+enddlabel Stg40_FillNeighbours
 
-nonmatching D_800729E0
+nonmatching Stg40_TrapPartSlots
 
-dlabel D_800729E0
+dlabel Stg40_TrapPartSlots
     /* F680 800729E0 0D000E00 */ .word 0x000E000D
     /* F684 800729E4 0B000C00 */ .word 0x000C000B
     /* F688 800729E8 08000A00 */ .word 0x000A0008
     /* F68C 800729EC 09001100 */ .word 0x00110009
     /* F690 800729F0 12000500 */ .word 0x00050012
     /* F694 800729F4 06000F00 */ .word 0x000F0006
-enddlabel D_800729E0
+enddlabel Stg40_TrapPartSlots
 
-nonmatching D_800729F8
+nonmatching Stg40_TrapDisarmRanks
 
-dlabel D_800729F8
+dlabel Stg40_TrapDisarmRanks
     /* F698 800729F8 04040404 */ .word 0x04040404
     /* F69C 800729FC 04040001 */ .word 0x01000404
     /* F6A0 80072A00 02030404 */ .word 0x04040302
@@ -493,12 +493,12 @@ dlabel D_800729F8
     /* F6B0 80072A10 00000000 */ .word 0x00000000
     /* F6B4 80072A14 01020000 */ .word 0x00000201
     /* F6B8 80072A18 00000001 */ .word 0x01000000
-enddlabel D_800729F8
+enddlabel Stg40_TrapDisarmRanks
 
 .align 2
-nonmatching D_80072A1C
+nonmatching Stg40_TrapDisarmChance
 
-dlabel D_80072A1C
+dlabel Stg40_TrapDisarmChance
     /* F6BC 80072A1C */ .asciz "d"
     /* 64000000 */
 .align 2
@@ -512,11 +512,11 @@ dlabel D_80072A1C
 .align 2
     /* F6C8 80072A28 19000000 */ .word 0x00000019
     /* F6CC 80072A2C 00000000 */ .word 0x00000000
-enddlabel D_80072A1C
+enddlabel Stg40_TrapDisarmChance
 
-nonmatching D_80072A30
+nonmatching Stg40_TrapEffectTable
 
-dlabel D_80072A30
+dlabel Stg40_TrapEffectTable
     /* F6D0 80072A30 00000001 */ .word 0x01000000
     /* F6D4 80072A34 01010202 */ .word 0x02020101
     /* F6D8 80072A38 02030303 */ .word 0x03030302
@@ -524,15 +524,15 @@ dlabel D_80072A30
     /* F6E0 80072A40 08090A0B */ .word 0x0B0A0908
     /* F6E4 80072A44 0C0D0E0F */ .word 0x0F0E0D0C
     /* F6E8 80072A48 10000000 */ .word 0x00000010
-enddlabel D_80072A30
+enddlabel Stg40_TrapEffectTable
 
-nonmatching D_80072A4C
+nonmatching Stg40_RandomPartSlots
 
-dlabel D_80072A4C
+dlabel Stg40_RandomPartSlots
     /* F6EC 80072A4C 05060809 */ .word 0x09080605
     /* F6F0 80072A50 0A0B0C0D */ .word 0x0D0C0B0A
     /* F6F4 80072A54 0E0F1112 */ .word 0x12110F0E
-enddlabel D_80072A4C
+enddlabel Stg40_RandomPartSlots
 
 nonmatching D_80072A58
 
@@ -558,26 +558,26 @@ enddlabel D_80072A78
 nonmatching D_80072A84
 
 dlabel D_80072A84
-    /* F724 80072A84 18240780 */ .word func_80072418
-    /* F728 80072A88 68240780 */ .word func_80072468
+    /* F724 80072A84 18240780 */ .word Stg40_CameraInit
+    /* F728 80072A88 68240780 */ .word Stg40_CameraUpdate
     /* F72C 80072A8C 70110180 */ .word Task_DefaultDestroy
-    /* F730 80072A90 A8250780 */ .word func_800725A8
+    /* F730 80072A90 A8250780 */ .word Stg40_CameraDraw
     /* F734 80072A94 74020000 */ .word 0x00000274
     /* F738 80072A98 00000000 */ .word 0x00000000
     /* F73C 80072A9C 00000000 */ .word 0x00000000
 enddlabel D_80072A84
 
-nonmatching D_80072AA0
+nonmatching Stg40_RootTask
 
-dlabel D_80072AA0
+dlabel Stg40_RootTask
     /* F740 80072AA0 00000000 */ .word 0x00000000
-enddlabel D_80072AA0
+enddlabel Stg40_RootTask
 
-nonmatching D_80072AA4
+nonmatching Stg40_RootChildren
 
-dlabel D_80072AA4
+dlabel Stg40_RootChildren
     /* F744 80072AA4 00000000 */ .word 0x00000000
-enddlabel D_80072AA4
+enddlabel Stg40_RootChildren
 
 nonmatching D_80072AA8
 
@@ -642,49 +642,49 @@ dlabel D_80072B60
     /* F804 80072B64 00000000 */ .word 0x00000000
 enddlabel D_80072B60
 
-nonmatching D_80072B68
+nonmatching Stg40_FloorTask
 
-dlabel D_80072B68
+dlabel Stg40_FloorTask
     /* F808 80072B68 00000000 */ .word 0x00000000
-enddlabel D_80072B68
+enddlabel Stg40_FloorTask
 
-nonmatching D_80072B6C
+nonmatching Stg40_FloorWork
 
-dlabel D_80072B6C
+dlabel Stg40_FloorWork
     /* F80C 80072B6C 00000000 */ .word 0x00000000
-enddlabel D_80072B6C
+enddlabel Stg40_FloorWork
 
-nonmatching D_80072B70
+nonmatching Stg40_ItemMenuTask
 
-dlabel D_80072B70
+dlabel Stg40_ItemMenuTask
     /* F810 80072B70 00000000 */ .word 0x00000000
     /* F814 80072B74 00000000 */ .word 0x00000000
-enddlabel D_80072B70
+enddlabel Stg40_ItemMenuTask
 
-nonmatching D_80072B78
+nonmatching Stg40_EnemyInfoTask
 
-dlabel D_80072B78
+dlabel Stg40_EnemyInfoTask
     /* F818 80072B78 00000000 */ .word 0x00000000
     /* F81C 80072B7C 00000000 */ .word 0x00000000
-enddlabel D_80072B78
+enddlabel Stg40_EnemyInfoTask
 
-nonmatching D_80072B80
+nonmatching Stg40_MsgWinTask
 
-dlabel D_80072B80
+dlabel Stg40_MsgWinTask
     /* F820 80072B80 00000000 */ .word 0x00000000
-enddlabel D_80072B80
+enddlabel Stg40_MsgWinTask
 
-nonmatching D_80072B84
+nonmatching Stg40_MsgWinTexts
 
-dlabel D_80072B84
+dlabel Stg40_MsgWinTexts
     /* F824 80072B84 00000000 */ .word 0x00000000
     /* F828 80072B88 00000000 */ .word 0x00000000
     /* F82C 80072B8C 00000000 */ .word 0x00000000
-enddlabel D_80072B84
+enddlabel Stg40_MsgWinTexts
 
-nonmatching D_80072B90
+nonmatching Stg40_DigitBufs
 
-dlabel D_80072B90
+dlabel Stg40_DigitBufs
     /* F830 80072B90 00000000 */ .word 0x00000000
     /* F834 80072B94 00000000 */ .word 0x00000000
     /* F838 80072B98 00000000 */ .word 0x00000000
@@ -693,14 +693,14 @@ dlabel D_80072B90
     /* F844 80072BA4 00000000 */ .word 0x00000000
     /* F848 80072BA8 00000000 */ .word 0x00000000
     /* F84C 80072BAC 00000000 */ .word 0x00000000
-enddlabel D_80072B90
+enddlabel Stg40_DigitBufs
 
-nonmatching D_80072BB0
+nonmatching Stg40_AutomapWork
 
-dlabel D_80072BB0
+dlabel Stg40_AutomapWork
     /* F850 80072BB0 00000000 */ .word 0x00000000
     /* F854 80072BB4 00000000 */ .word 0x00000000
-enddlabel D_80072BB0
+enddlabel Stg40_AutomapWork
 
 nonmatching D_80072BB8
 
@@ -709,8 +709,8 @@ dlabel D_80072BB8
     /* F85C 80072BBC 00000000 */ .word 0x00000000
 enddlabel D_80072BB8
 
-nonmatching D_80072BC0
+nonmatching Stg40_CameraTask
 
-dlabel D_80072BC0
+dlabel Stg40_CameraTask
     /* F860 80072BC0 00000000 */ .word 0x00000000
-enddlabel D_80072BC0
+enddlabel Stg40_CameraTask

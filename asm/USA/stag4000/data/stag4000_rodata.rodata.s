@@ -303,15 +303,15 @@ dlabel jtbl_800635F8
     /* 2C8 80063628 A8D60680 */ .word .L8006D6A8
 enddlabel jtbl_800635F8
 
-nonmatching D_8006362C
+nonmatching Stg40_BugModelIds
 
-dlabel D_8006362C
+dlabel Stg40_BugModelIds
     /* 2CC 8006362C 65020000 */ .word 0x00000265
     /* 2D0 80063630 68020000 */ .word 0x00000268
     /* 2D4 80063634 6B020000 */ .word 0x0000026B
     /* 2D8 80063638 6E020000 */ .word 0x0000026E
     /* 2DC 8006363C 00000000 */ .word 0x00000000
-enddlabel D_8006362C
+enddlabel Stg40_BugModelIds
 
 .align 3
 nonmatching jtbl_80063640
@@ -328,15 +328,15 @@ dlabel jtbl_80063640
     /* 300 80063660 40DC0680 */ .word .L8006DC40
 enddlabel jtbl_80063640
 
-nonmatching D_80063664
+nonmatching Stg40_RandomHazardKinds
 
-dlabel D_80063664
+dlabel Stg40_RandomHazardKinds
     /* 304 80063664 04000000 */ .word 0x00000004
     /* 308 80063668 05000000 */ .word 0x00000005
     /* 30C 8006366C 06000000 */ .word 0x00000006
     /* 310 80063670 07000000 */ .word 0x00000007
     /* 314 80063674 08000000 */ .word 0x00000008
-enddlabel D_80063664
+enddlabel Stg40_RandomHazardKinds
 
 .align 3
 nonmatching jtbl_80063678

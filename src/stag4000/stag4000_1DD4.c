@@ -2,13 +2,13 @@
 #include "stag4000/stag4000.h"
 #include "stag4000/stag4000_funcs.h"
 
-void func_80065134(Stg40Loc *loc) {
+void Stg40_ScrollFollow(Stg40Loc *loc) {
     D_8005071C->field_1064 = loc;
-    Task_SetState1(D_80072B68, 0);
+    Task_SetState1(Stg40_FloorTask, 0);
 }
 
-void func_80065168(s32 a0, s32 a1, s32 a2) {
-    Actor *t = D_80072B68;
+void Stg40_ScrollTo(s32 a0, s32 a1, s32 a2) {
+    Actor *t = Stg40_FloorTask;
     Stg40B60 *b = D_80072B60;
     Stg40B68Work *w = (Stg40B68Work *)t->work;
 
@@ -20,8 +20,8 @@ void func_80065168(s32 a0, s32 a1, s32 a2) {
     Task_SetState1(t, 1);
 }
 
-void func_800651C0(Stg40Loc *loc, s32 a1) {
-    Actor *t = D_80072B68;
+void Stg40_ScrollToFollow(Stg40Loc *loc, s32 a1) {
+    Actor *t = Stg40_FloorTask;
     Stg40B68Work *w = (Stg40B68Work *)t->work;
     Stg40B60 *b;
 
@@ -35,8 +35,8 @@ void func_800651C0(Stg40Loc *loc, s32 a1) {
     Task_SetState1(t, 2);
 }
 
-s32 func_80065230(void) {
-    Stg40B68Work *w = (Stg40B68Work *)D_80072B68->work;
+s32 Stg40_IsScrollDone(void) {
+    Stg40B68Work *w = (Stg40B68Work *)Stg40_FloorTask->work;
     s32 r = 0;
 
     if (D_80072B60->field_2C == w->field_1E90 && D_80072B60->field_30 == w->field_1E94) {
@@ -45,7 +45,7 @@ s32 func_80065230(void) {
     return r;
 }
 
-void func_80065278(Actor *a0) {
+void Stg40_ScrollStep(Actor *a0) {
     Stg40B68Work *w = (Stg40B68Work *)a0->work;
     s32 x0 = w->field_1E90;
     s32 y0 = w->field_1E94;
@@ -60,7 +60,7 @@ void func_80065278(Actor *a0) {
     a0->stateLevel2++;
 }
 
-void func_80065300(Actor *a0) {
+void Stg40_ScrollUpdate(Actor *a0) {
     Stg40B68Work *w = (Stg40B68Work *)a0->work;
 
     switch (a0->stateLevel1) {
@@ -71,7 +71,7 @@ void func_80065300(Actor *a0) {
         break;
     case 1:
         if (a0->stateLevel2 < w->field_1EA0) {
-            func_80065278(a0);
+            Stg40_ScrollStep(a0);
         } else {
             D_80072B60->field_2C = w->field_1E90;
             D_80072B60->field_30 = w->field_1E94;
@@ -79,7 +79,7 @@ void func_80065300(Actor *a0) {
         break;
     case 2:
         if (a0->stateLevel2 < w->field_1EA0) {
-            func_80065278(a0);
+            Stg40_ScrollStep(a0);
         } else {
             D_80072B60->field_2C = w->field_1E90;
             D_80072B60->field_30 = w->field_1E94;
@@ -89,7 +89,7 @@ void func_80065300(Actor *a0) {
     }
 }
 
-s32 func_800653EC(s32 a, s32 b, s32 c, s32 d) {
+s32 Stg40_Max4(s32 a, s32 b, s32 c, s32 d) {
     if (a >= b) {
         b = a;
     }
@@ -104,7 +104,7 @@ s32 func_800653EC(s32 a, s32 b, s32 c, s32 d) {
     return d;
 }
 
-s32 func_80065424(s32 a, s32 b, s32 c, s32 d) {
+s32 Stg40_Min4(s32 a, s32 b, s32 c, s32 d) {
     if (b >= a) {
         b = a;
     }
@@ -119,7 +119,7 @@ s32 func_80065424(s32 a, s32 b, s32 c, s32 d) {
     return d;
 }
 
-void func_8006545C(Stg40W667C *w) {
+void Stg40_ProjectGrid(Stg40W667C *w) {
     Stg40Vec3 vec;
     Mat1F668 mtx;
     s32 centerX = Sys_State.centerX.s;
@@ -202,10 +202,10 @@ void func_8006545C(Stg40W667C *w) {
         below = w->field_0[row + 1];
         for (col = 0; col < cols; col++) {
             if (col != cols - 1) {
-                p->field_18 = func_800653EC(p->s[0].field_4, p->s[1].field_4, p[1].s[0].field_4, p[1].s[1].field_4);
+                p->field_18 = Stg40_Max4(p->s[0].field_4, p->s[1].field_4, p[1].s[0].field_4, p[1].s[1].field_4);
             }
             if (row != rows - 1) {
-                p->field_1C = func_800653EC(p->s[0].field_4, p->s[1].field_4, below->s[0].field_4, below->s[1].field_4);
+                p->field_1C = Stg40_Max4(p->s[0].field_4, p->s[1].field_4, below->s[0].field_4, below->s[1].field_4);
             }
             p++;
             below++;
@@ -214,7 +214,7 @@ void func_8006545C(Stg40W667C *w) {
     PopMatrix();
 }
 
-void func_80065890(ActorWork *arg0)
+void Stg40_FillTileCache(ActorWork *arg0)
 {
     Stg40Cell *grid;
     s32 rowCount;
@@ -254,8 +254,8 @@ void func_80065890(ActorWork *arg0)
         v1p = ((Stg40W667C *)arg0)->field_0[row + 1];
         mapCol = D_80072B60->field_2C / 64 - 4;
         for (col = 0; col < colCount; col++) {
-            tp->field_4 = func_800653EC(v0p[0].s[0].field_4, v0p[1].s[0].field_4, v1p[0].s[0].field_4, v1p[1].s[0].field_4);
-            tp->field_8 = func_80065424(v0p[0].s[1].field_4, v0p[1].s[1].field_4, v1p[0].s[1].field_4, v1p[1].s[1].field_4);
+            tp->field_4 = Stg40_Max4(v0p[0].s[0].field_4, v0p[1].s[0].field_4, v1p[0].s[0].field_4, v1p[1].s[0].field_4);
+            tp->field_8 = Stg40_Min4(v0p[0].s[1].field_4, v0p[1].s[1].field_4, v1p[0].s[1].field_4, v1p[1].s[1].field_4);
             if (mapCol < 0 || mapRow < 0 || mapCol >= gridCols || mapRow >= gridRows) {
                 tp->field_0 = 0;
                 tp->field_2 = 0;
@@ -323,7 +323,7 @@ void func_80065890(ActorWork *arg0)
     }
 }
 
-void func_80065BF8(s32 x, s32 z, s32 y, Stg40Vec3 *out) {
+void Stg40_MapPosToWorld(s32 x, s32 z, s32 y, Stg40Vec3 *out) {
     Stg40B60 *b = D_80072B60;
     s32 t;
 
@@ -333,7 +333,7 @@ void func_80065BF8(s32 x, s32 z, s32 y, Stg40Vec3 *out) {
     out->field_0 = t * 40;
 }
 
-s32 func_80065C50(Stg40W667C *w, s32 pkt, s32 x, s32 y)
+s32 Stg40_DrawTileWalls(Stg40W667C *w, s32 pkt, s32 x, s32 y)
 {
     Stg40Tile *tile = &w->field_F20[y][x];
     Stg40Rec10 *rec;
@@ -349,10 +349,10 @@ s32 func_80065C50(Stg40W667C *w, s32 pkt, s32 x, s32 y)
     s32 m;
     Stg40FT4 *src;
 
-    base = &D_8007265C[(u16)D_8005071C->field_E54->field_A * 5];
+    base = &Stg40_WallPrimIdx[(u16)D_8005071C->field_E54->field_A * 5];
 
     for (i = 0; i < 4; i++) {
-        rec = &D_80072670[i];
+        rec = &Stg40_WallSides[i];
         if ((tile->field_0 & rec->field_0) == 0) {
             continue;
         }
@@ -393,7 +393,7 @@ s32 func_80065C50(Stg40W667C *w, s32 pkt, s32 x, s32 y)
     return pkt;
 }
 
-s32 func_80065F94(Stg40W667C *w, s32 pkt, s32 x, s32 y) {
+s32 Stg40_DrawTileTop(Stg40W667C *w, s32 pkt, s32 x, s32 y) {
     Stg40Vtx *a = &w->field_0[y][x];
     Stg40Vtx *b = &w->field_0[y + 1][x];
     Stg40Tile *t = &w->field_F20[y][x];
@@ -405,7 +405,7 @@ s32 func_80065F94(Stg40W667C *w, s32 pkt, s32 x, s32 y) {
     }
     if (t->field_0 != 0) {
         ot = D_8005F8C0;
-        *(Stg40FT4 *)pkt = w->field_143C[D_80072620[t->field_3 & 0x7F]];
+        *(Stg40FT4 *)pkt = w->field_143C[Stg40_FloorPrimIdx[t->field_3 & 0x7F]];
         ((Stg40FT4 *)pkt)->x0 = a[0].s[0].x;
         ((Stg40FT4 *)pkt)->y0 = a[0].s[0].y;
         ((Stg40FT4 *)pkt)->x1 = a[1].s[0].x;
@@ -439,7 +439,7 @@ s32 func_80065F94(Stg40W667C *w, s32 pkt, s32 x, s32 y) {
     return pkt;
 }
 
-void func_8006620C(Stg40W667C *w) {
+void Stg40_DrawFloorTiles(Stg40W667C *w) {
     s32 rows;
     s32 cols;
     s32 y;
@@ -451,16 +451,16 @@ void func_8006620C(Stg40W667C *w) {
     pkt = Sys_PacketCursor;
     for (y = 0; y < rows; y++) {
         for (x = 0; x < cols; x++) {
-            pkt = func_80065F94(w, pkt, x, y);
+            pkt = Stg40_DrawTileTop(w, pkt, x, y);
             if (w->field_F20[y][x].field_0 & 0xF00) {
-                pkt = func_80065C50(w, pkt, x, y);
+                pkt = Stg40_DrawTileWalls(w, pkt, x, y);
             }
         }
     }
     Sys_PacketCursor = pkt;
 }
 
-void func_80066318(Actor *a0, s32 *ids) {
+void Stg40_FloorInit(Actor *a0, s32 *ids) {
     Stg40W667C *w = (Stg40W667C *)a0->work;
     GfxTexSlot *slot;
     Stg40TexRec *e;
@@ -468,8 +468,8 @@ void func_80066318(Actor *a0, s32 *ids) {
     Stg40FT4 *q;
     s32 i;
 
-    D_80072B68 = a0;
-    D_80072B6C = w;
+    Stg40_FloorTask = a0;
+    Stg40_FloorWork = w;
     w->field_1414 = 0;
     w->field_1438 = 0;
     for (i = 0; i < 2; i++) {
@@ -511,7 +511,7 @@ void func_80066318(Actor *a0, s32 *ids) {
     q->code |= 2;
 }
 
-void func_800665E0(Actor *a0) {
+void Stg40_FloorUpdate(Actor *a0) {
     ActorWork *w = a0->work;
 
     switch (a0->stateLevel0) {
@@ -522,16 +522,16 @@ void func_800665E0(Actor *a0) {
         Task_NextState0(a0);
         break;
     case 1:
-        func_80065300(a0);
-        func_8006545C((Stg40W667C *)w);
-        func_80065890(w);
+        Stg40_ScrollUpdate(a0);
+        Stg40_ProjectGrid((Stg40W667C *)w);
+        Stg40_FillTileCache(w);
         break;
     case 2:
         break;
     }
 }
 
-void func_8006667C(Actor *a0) {
+void Stg40_FloorDraw(Actor *a0) {
     Stg40W667C *w = (Stg40W667C *)a0->work;
     s32 f = 1;
     s32 n = Beetle_GetPart(0x11);
@@ -541,14 +541,14 @@ void func_8006667C(Actor *a0) {
         f = 0;
     }
     if (f) {
-        func_8006620C(w);
+        Stg40_DrawFloorTiles(w);
     }
     for (p = w->field_1418; *p != -1; p++) {
         Gfx_FindOrLoadTexSlot(*p);
     }
 }
 
-void func_80066720(Actor *a0) {
+void Stg40_HudUpdate(Actor *a0) {
     Stg40W6720 *w = (Stg40W6720 *)a0->work;
     Stg40Slot34 *s3 = (Stg40Slot34 *)a0->u34.children;
     TextOpenArgs args;
@@ -591,8 +591,8 @@ void func_80066720(Actor *a0) {
                 args.text = (s32)fe->field_E;
                 Text_Open(&w->field_8, &args);
                 Text_SetOtLayer(w->field_8, 2);
-                Text_OpenById(&w->field_0, D_800726B0[0].id, 0, D_800726B0[0].pos);
-                Text_OpenById(&w->field_4, D_800726B0[1].id, 0, D_800726B0[1].pos);
+                Text_OpenById(&w->field_0, Stg40_HudLabels[0].id, 0, Stg40_HudLabels[0].pos);
+                Text_OpenById(&w->field_4, Stg40_HudLabels[1].id, 0, Stg40_HudLabels[1].pos);
                 Text_SetOtLayer(w->field_0, 2);
                 Text_SetOtLayer(w->field_4, 2);
                 Task_NextState1(a0);
@@ -650,14 +650,14 @@ void func_80066720(Actor *a0) {
     }
 }
 
-void func_80066AD0(Actor *a0) {
+void Stg40_HudDraw(Actor *a0) {
     Stg40W6AD0 *w = (Stg40W6AD0 *)a0->work;
     EntA0 *p;
     s32 i;
 
     if (w->field_C != 0) {
         for (i = 0; i < 2; i++) {
-            p = Cd_GetFileEntry(D_800726C0[i]);
+            p = Cd_GetFileEntry(Stg40_HudParts[i]);
             switch (i) {
             case 0:
             default:
@@ -676,7 +676,7 @@ void func_80066AD0(Actor *a0) {
     }
 }
 
-void func_80066BE4(Actor *a0) {
+void Stg40_BitsWinUpdate(Actor *a0) {
     Stg40W6BE4 *w = (Stg40W6BE4 *)a0->work;
 
     switch (a0->stateLevel0) {
@@ -692,7 +692,7 @@ void func_80066BE4(Actor *a0) {
         case 0:
         default:
             if (Math_RampToOne(a0, &w->field_4) == 0) {
-                Text_OpenById(w, D_800726E0.id, 0, D_800726E0.pos);
+                Text_OpenById(w, Stg40_BitsLabelText.id, 0, Stg40_BitsLabelText.pos);
                 Text_SetOtLayer(w->field_0, 2);
                 Task_NextState1(a0);
             }
@@ -724,7 +724,7 @@ void func_80066BE4(Actor *a0) {
     }
 }
 
-void func_80066D78(Actor *a0) {
+void Stg40_BitsWinDraw(Actor *a0) {
     ActorWork *w = a0->work;
     EntA0 *p;
 
@@ -736,12 +736,12 @@ void func_80066D78(Actor *a0) {
     }
 }
 
-void func_80066DF0(a0, a1, a2)
+void Stg40_ItemMenuSetCursor(a0, a1, a2)
     u8 a0;
     u8 a1;
     u8 a2;
 {
-    Stg40ObjWork *w = (Stg40ObjWork *)D_80072B70->work;
+    Stg40ObjWork *w = (Stg40ObjWork *)Stg40_ItemMenuTask->work;
 
     w->field_46 = a0;
     w->field_44 = a1;
@@ -749,18 +749,18 @@ void func_80066DF0(a0, a1, a2)
     w->field_24 = -1;
 }
 
-s32 *func_80066E18(void) {
-    return ((Stg40ObjWork *)D_80072B70->work)->field_28;
+s32 *Stg40_ItemMenuGetTextIds(void) {
+    return ((Stg40ObjWork *)Stg40_ItemMenuTask->work)->field_28;
 }
 
-void func_80066E30(Actor *a0, s32 *a1) {
+void Stg40_ItemMenuInit(Actor *a0, s32 *a1) {
     Stg40ObjWork *w = (Stg40ObjWork *)a0->work;
 
-    D_80072B70 = a0;
+    Stg40_ItemMenuTask = a0;
     w->field_20 = *a1;
 }
 
-void func_80066E48(Actor *a0) {
+void Stg40_ItemMenuUpdate(Actor *a0) {
     Stg40ObjWork *w = (Stg40ObjWork *)a0->work;
     TextOpenArgs args;
     s32 n;
@@ -775,7 +775,7 @@ void func_80066E48(Actor *a0) {
     default:
         Mem_FillWordsNeg1(w->field_0, n);
         w->field_1C = 0;
-        D_80072B70 = a0;
+        Stg40_ItemMenuTask = a0;
         Task_NextState0(a0);
         break;
     case 1:
@@ -834,7 +834,7 @@ void func_80066E48(Actor *a0) {
     }
 }
 
-void func_80067044(Actor *a0) {
+void Stg40_ItemMenuDraw(Actor *a0) {
     Stg40ObjWork *w = (Stg40ObjWork *)a0->work;
     GfxPart *p;
     GfxPart *q;
@@ -848,7 +848,7 @@ void func_80067044(Actor *a0) {
             n = 2;
         }
         for (i = 0; i < n; i++) {
-            p = (GfxPart *)Cd_GetFileEntry(D_80072700[i]);
+            p = (GfxPart *)Cd_GetFileEntry(Stg40_ItemMenuParts[i]);
             switch (i) {
             case 0:
             default:
@@ -878,10 +878,10 @@ void func_80067044(Actor *a0) {
     }
 }
 
-void func_800671E8(void) {
+void Stg40_EnemyInfoInit(void) {
 }
 
-void func_800671F0(Actor *a0) {
+void Stg40_EnemyInfoUpdate(Actor *a0) {
     Stg40W71F0 *w = (Stg40W71F0 *)a0->work;
     Stg40SlotInfo *info;
     TextOpenArgs args;
@@ -892,7 +892,7 @@ void func_800671F0(Actor *a0) {
     switch (a0->stateLevel0) {
     case 0:
     default:
-        D_80072B78 = a0;
+        Stg40_EnemyInfoTask = a0;
         Mem_FillWordsNeg1(w->field_8, 12);
         Task_NextState0(a0);
         break;
@@ -901,7 +901,7 @@ void func_800671F0(Actor *a0) {
         case 0:
         default:
             if (Math_RampToOne(a0, &w->field_0) == 0) {
-                pos = D_80072720;
+                pos = Stg40_EnemyInfoTextPos;
                 info = (Stg40SlotInfo *)D_80072B60->field_80[D_80072B60->field_AC]->field_10;
                 args.bigFont = 0;
                 args.color = 0;
@@ -958,7 +958,7 @@ void func_800671F0(Actor *a0) {
     }
 }
 
-void func_80067454(Actor *a0) {
+void Stg40_EnemyInfoDraw(Actor *a0) {
     ActorWork *w = a0->work;
     Stg40SlotInfo *info;
     EntA0 *p;
@@ -967,7 +967,7 @@ void func_80067454(Actor *a0) {
     if (w->field_0 != 0) {
         info = (Stg40SlotInfo *)D_80072B60->field_80[D_80072B60->field_AC]->field_10;
         for (i = 0; i < 3; i++) {
-            p = Cd_GetFileEntry(D_80072750[i]);
+            p = Cd_GetFileEntry(Stg40_EnemyInfoParts[i]);
             if (i >= info->field_B) {
                 Gfx_HidePartsByMask((GfxPartMaskView *)p, -1);
             } else {
@@ -980,10 +980,10 @@ void func_80067454(Actor *a0) {
     }
 }
 
-u8 *func_8006755C(s32 i, s32 v) {
+u8 *Stg40_NumToDigits(s32 i, s32 v) {
     s32 d = 10000;
     s32 nz = 0;
-    u8 *p = D_80072B90[i];
+    u8 *p = Stg40_DigitBufs[i];
     s32 k;
     s32 q;
 
@@ -1000,11 +1000,11 @@ u8 *func_8006755C(s32 i, s32 v) {
     }
     p[1] = 0xFF;
     p[0] = v;
-    p = D_80072B90[i];
+    p = Stg40_DigitBufs[i];
     return p;
 }
 
-void func_80067610(s32 i, s32 file, s32 a2, s32 a3) {
+void Stg40_MsgWinOpen(s32 i, s32 file, s32 a2, s32 a3) {
     TextOpenArgs arg;
     s32 *p;
 
@@ -1016,43 +1016,43 @@ void func_80067610(s32 i, s32 file, s32 a2, s32 a3) {
     arg.lineAdvance = 0xF;
     arg.text = (s32)Cd_GetFileEntry(file);
     arg.charDelay = 1;
-    p = &D_80072B84[i];
+    p = &Stg40_MsgWinTexts[i];
     p[5] = 0;
     arg.strArg0 = a2;
     arg.strArg1 = a3;
     Text_Open(p, &arg);
 }
 
-void func_800676A4(s32 i) {
-    Text_Close(&D_80072B84[i]);
+void Stg40_MsgWinClose(s32 i) {
+    Text_Close(&Stg40_MsgWinTexts[i]);
 }
 
-s32 func_800676D0(s32 i) {
-    s32 *p = &D_80072B84[i];
+s32 Stg40_MsgWinIsFinished(s32 i) {
+    s32 *p = &Stg40_MsgWinTexts[i];
 
     return Text_IsFinished(*p);
 }
 
-s32 func_80067704(s32 i) {
+s32 Stg40_MsgWinCloseIfDone(s32 i) {
     s32 r = 0;
 
-    if (func_800676D0(i) == 1) {
-        func_800676A4(i);
+    if (Stg40_MsgWinIsFinished(i) == 1) {
+        Stg40_MsgWinClose(i);
         r = 1;
     }
     return r;
 }
 
-s32 func_80067750(s32 i) {
-    s32 *p = &D_80072B84[i];
+s32 Stg40_MsgWinGetChoice(s32 i) {
+    s32 *p = &Stg40_MsgWinTexts[i];
 
     return Text_WaitYesNo(*p);
 }
 
-void func_80067784(void) {
+void Stg40_MsgWinInit(void) {
 }
 
-void func_8006778C(Actor *a0) {
+void Stg40_MsgWinUpdate(Actor *a0) {
     s32 *w = (s32 *)a0->work;
     s32 i;
     s32 m;
@@ -1064,8 +1064,8 @@ void func_8006778C(Actor *a0) {
     case 0:
     default:
         m = -1;
-        D_80072B80 = a0;
-        D_80072B84 = w;
+        Stg40_MsgWinTask = a0;
+        Stg40_MsgWinTexts = w;
         for (i = 4; i >= 0; i--) {
             w[i] = m;
         }
@@ -1074,10 +1074,10 @@ void func_8006778C(Actor *a0) {
     }
 }
 
-void func_800677F4(void) {
+void Stg40_MsgWinDraw(void) {
 }
 
-void func_800677FC(Blk16 *l, s32 r, s32 g, s32 b) {
+void Stg40_SetLights(Blk16 *l, s32 r, s32 g, s32 b) {
     s32 i;
     Blk16 *p;
 
@@ -1088,14 +1088,14 @@ void func_800677FC(Blk16 *l, s32 r, s32 g, s32 b) {
     GsSetLightMode(0);
 }
 
-void func_80067880(Actor *a0, u8 a1) {
+void Stg40_ObjStartFlash(Actor *a0, u8 a1) {
     Stg40ActWork *w = (Stg40ActWork *)a0->work;
 
     w->field_26 = a1;
     w->field_27 = 0;
 }
 
-void func_80067894(Actor *a0, u8 on, u8 r, u8 g, u8 b) {
+void Stg40_SetModelTint(Actor *a0, u8 on, u8 r, u8 g, u8 b) {
     Stg40ModelView *m = (Stg40ModelView *)a0->model;
 
     if (on == 0) {
@@ -1108,11 +1108,11 @@ void func_80067894(Actor *a0, u8 on, u8 r, u8 g, u8 b) {
     m->field_3A = b;
 }
 
-s32 func_800678C4(Actor *a0) {
+s32 Stg40_ObjAnimDone(Actor *a0) {
     return a0->model->animDone < 0;
 }
 
-s32 func_800678D8(Stg40Ent48 *e) {
+s32 Stg40_ObjStepMove(Stg40Ent48 *e) {
     s32 d;
     Stg40Loc *loc = &e->field_18;
     s32 x;
@@ -1144,11 +1144,11 @@ s32 func_800678D8(Stg40Ent48 *e) {
     dy = ((y - (loc->field_4.field_2 << 6)) * loc->field_8) / loc->field_A;
     loc->field_C = x - dx;
     loc->field_10 = y - dy;
-    e->field_A = func_80070438(loc->u0.pair.field_0, loc->u0.pair.field_2)->field_2;
+    e->field_A = Stg40_GetCell(loc->u0.pair.field_0, loc->u0.pair.field_2)->field_2;
     return loc->field_8 != 0;
 }
 
-void func_80067A80(Actor *a0, Stg40Ent48 *e)
+void Stg40_ObjInit(Actor *a0, Stg40Ent48 *e)
 {
   Stg40ActWork *w = (Stg40ActWork *) a0->work;
   Stg40Ent48 *new_var;
@@ -1185,12 +1185,12 @@ void func_80067A80(Actor *a0, Stg40Ent48 *e)
     new_var = w->field_2C;
     D_80072B60->field_8 = a0;
     D_80072B60->field_4 = new_var;
-    func_80070B2C(e->field_7);
+    Stg40_TurnQueueAdd(e->field_7);
   }
   w->field_34 = 0;
 }
 
-void func_80067BA8(Actor *a0) {
+void Stg40_ObjUpdate(Actor *a0) {
     Stg40ActWork *w = (Stg40ActWork *)a0->work;
     Stg40Arg207 arg;
     s32 *slot;
@@ -1223,15 +1223,15 @@ void func_80067BA8(Actor *a0) {
         w->field_38 = -1;
         break;
     case 1:
-        func_800678D8(w->field_2C);
+        Stg40_ObjStepMove(w->field_2C);
         if (w->field_2C->field_0 & 1) {
-            func_8006B420(a0);
+            Stg40_PlayerUpdate(a0);
         }
         if (w->field_2C->field_0 & 2) {
-            func_8006BFB0(a0);
+            Stg40_EnemyUpdate(a0);
         }
         if (w->field_2C->field_0 & 4) {
-            func_8006D418(a0);
+            Stg40_FixtureUpdate(a0);
         }
         if (w->field_36 != -1) {
             slot = (s32 *)a0->u34.children;
@@ -1251,7 +1251,7 @@ void func_80067BA8(Actor *a0) {
     }
 }
 
-void func_80067DB4(Actor *a0) {
+void Stg40_ObjDraw(Actor *a0) {
     Stg40ActWork *w = (Stg40ActWork *)a0->work;
     Stg40Ent48 *e = w->field_2C;
     Stg40Xform *x;
@@ -1302,7 +1302,7 @@ void func_80067DB4(Actor *a0) {
         x->field_60 = e->field_40;
         if ((e->field_0 & 0x4000) && vis) {
             if (!(e->field_0 & 0x80)) {
-                func_80064BD8(&e->field_18);
+                Stg40_DrawEntityShadow(&e->field_18);
             }
             if (!(e->field_0 & 0x400)) {
                 Anim_StepModelAnim(a0);
@@ -1314,20 +1314,20 @@ void func_80067DB4(Actor *a0) {
         w->field_34 = 1;
     }
     if (w->field_26 != 0) {
-        k = D_8007278C[w->field_27];
+        k = Stg40_FlashPattern[w->field_27];
         if (k == 0xFF) {
             w->field_26 = 0;
-            func_80067894(a0, 0, 0, 0, 0);
+            Stg40_SetModelTint(a0, 0, 0, 0, 0);
         } else {
-            func_80067894(a0, k, D_8007279C[w->field_26 - 1].r, D_8007279C[w->field_26 - 1].g,
-                          D_8007279C[w->field_26 - 1].b);
+            Stg40_SetModelTint(a0, k, Stg40_FlashColors[w->field_26 - 1].r, Stg40_FlashColors[w->field_26 - 1].g,
+                          Stg40_FlashColors[w->field_26 - 1].b);
             w->field_27++;
         }
     }
 }
 
-void func_800680B0(Actor *a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6) {
-    func_8006E4DC(a0, a1);
+void Stg40_PlayerAnimThenMsg(Actor *a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6) {
+    Stg40_ObjSetAnim(a0, a1);
     Task_SetState1(a0, 9);
     D_80072B60->field_34 = a2;
     D_80072B60->field_38 = a3;
@@ -1336,14 +1336,14 @@ void func_800680B0(Actor *a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6) {
     D_80072B60->field_4C = a6;
 }
 
-void func_8006813C(Actor *a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) {
-    func_8006E4DC(a0, a1);
+void Stg40_PlayerShowMsg(Actor *a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) {
+    Stg40_ObjSetAnim(a0, a1);
     Task_SetState1(a0, 0xB);
     D_80072B60->field_38 = a2;
-    func_80067610(1, a3, a4, a5);
+    Stg40_MsgWinOpen(1, a3, a4, a5);
 }
 
-s32 func_800681BC(Actor *a0) {
+s32 Stg40_PlayerCheckEnemyInfo(Actor *a0) {
     Stg40Ent48 *self = ((Stg40ActWork *)a0->work)->field_2C;
     Stg40Ent48 *e;
     s32 i;
@@ -1366,7 +1366,7 @@ s32 func_800681BC(Actor *a0) {
     return 0;
 }
 
-s32 func_800682DC(Actor *a0)
+s32 Stg40_PlayerInteract(Actor *a0)
 {
     Stg40Ent48 *e;
     Stg40Ent48 *found;
@@ -1383,17 +1383,17 @@ s32 func_800682DC(Actor *a0)
     if (D_8005F704 <= 0) {
         return 0;
     }
-    found = func_8006E200(e->field_18.u0.pair.field_0 + ((s16 *)D_800727C0)[(e->field_B + 1) << 1],
-                          e->field_18.u0.pair.field_2 + ((s16 *)D_800727C0)[((e->field_B + 1) << 1) | 1]);
+    found = Stg40_FindEntAt(e->field_18.u0.pair.field_0 + ((s16 *)Stg40_DirOffsets)[(e->field_B + 1) << 1],
+                          e->field_18.u0.pair.field_2 + ((s16 *)Stg40_DirOffsets)[((e->field_B + 1) << 1) | 1]);
     if (found == 0) {
         snd2 = 0x1FD000F;
-        r2 = func_800703E0(e->field_18.u0.pair.field_0 + ((s16 *)D_800727C0)[(e->field_B + 1) << 1],
-                          e->field_18.u0.pair.field_2 + ((s16 *)D_800727C0)[((e->field_B + 1) << 1) | 1]) & 0xF;
+        r2 = Stg40_GetCellFlags(e->field_18.u0.pair.field_0 + ((s16 *)Stg40_DirOffsets)[(e->field_B + 1) << 1],
+                          e->field_18.u0.pair.field_2 + ((s16 *)Stg40_DirOffsets)[((e->field_B + 1) << 1) | 1]) & 0xF;
         if (r2 >= 3) {
             snd2 = r2 + 0x1FD0194;
         }
         Snd_PlayById(0x2E, 0);
-        func_800680B0(a0, 0x2D, 0x28, 6, snd2, 0, 0);
+        Stg40_PlayerAnimThenMsg(a0, 0x2D, 0x28, 6, snd2, 0, 0);
         goto end;
     }
     child = found->field_14;
@@ -1402,12 +1402,12 @@ s32 func_800682DC(Actor *a0)
     switch (found->field_8) {
     default:
         Snd_PlayById(0x2E, 0);
-        func_800680B0(a0, 0x2D, 0x28, 6, 0x1FD000F, 0, 0);
+        Stg40_PlayerAnimThenMsg(a0, 0x2D, 0x28, 6, 0x1FD000F, 0, 0);
         return -1;
     case 2:
     case 3:
         Snd_PlayById(0x2E, 0);
-        func_800680B0(a0, 0x2D, 0x28, 6, (found->field_8 == 2) ? 0x1FD0195 : 0x1FD0196, 0, 0);
+        Stg40_PlayerAnimThenMsg(a0, 0x2D, 0x28, 6, (found->field_8 == 2) ? 0x1FD0195 : 0x1FD0196, 0, 0);
         return -1;
     case 4:
         Task_SetState1(a0, 0x13);
@@ -1417,19 +1417,19 @@ s32 func_800682DC(Actor *a0)
         if (!(found->field_0 & 0x1000)) {
             break;
         }
-        r = func_8006E820(6);
+        r = Stg40_GetBeetlePart(6);
         if (r == -1) {
             snd = 0x1FD0019;
         } else if (r == 0) {
             snd = 0x1FD001A;
         } else {
             lim = found->field_10[1];
-            if (func_8006E858(6) < lim) {
+            if (Stg40_GetPartLevel(6) < lim) {
                 snd = 0x1FD0018;
             }
         }
         if (snd != -1) {
-            func_8006813C(a0, 0x28, 1, snd, 0, 0);
+            Stg40_PlayerShowMsg(a0, 0x28, 1, snd, 0, 0);
             goto end;
         }
         Task_SetState1(a0, 0xE);
@@ -1445,9 +1445,9 @@ s32 func_800682DC(Actor *a0)
             break;
         }
         Item_CheckId(0);
-        r3 = func_8006E920(&D_800727E8[idx]);
+        r3 = Stg40_ListUsableItems(&D_800727E8[idx]);
         if (r3 != 0) {
-            func_8006813C(a0, 0x28, 1, r3, 0, 0);
+            Stg40_PlayerShowMsg(a0, 0x28, 1, r3, 0, 0);
             goto end;
         }
         Task_SetState1(a0, 0x11);
@@ -1461,7 +1461,7 @@ end:
     return -1;
 }
 
-s32 func_80068604(Stg40Ent48 *e) {
+s32 Stg40_PlayerTryMove(Stg40Ent48 *e) {
     Stg40Loc *loc = &e->field_18;
     s32 bits;
     s32 idx;
@@ -1489,7 +1489,7 @@ s32 func_80068604(Stg40Ent48 *e) {
         dir |= 2;
     }
     idx = dir | (Pad_State[0].down != 0);
-    k = D_800728D4[idx];
+    k = Stg40_PadDirTable[idx];
     oct = (s16)k;
     if (k < 0) {
         return 0;
@@ -1514,9 +1514,9 @@ s32 func_80068604(Stg40Ent48 *e) {
     loc->field_1E &= 0xFFFE;
     d = dir;
     {
-        s16 *p = (s16 *)D_800727C0;
+        s16 *p = (s16 *)Stg40_DirOffsets;
 
-        f = func_800703E0(loc->u0.pair.field_0 + p[d << 1], loc->u0.pair.field_2 + p[(d << 1) | 1]);
+        f = Stg40_GetCellFlags(loc->u0.pair.field_0 + p[d << 1], loc->u0.pair.field_2 + p[(d << 1) | 1]);
     }
     if (!(f & 0x8000) || (f & 0x30) == 0x20) {
         return 0;
@@ -1524,33 +1524,33 @@ s32 func_80068604(Stg40Ent48 *e) {
     if (f & 0x10) {
         loc->field_1E |= 1;
         dir = loc->u0.pair.field_0;
-        nx = dir + ((s16 *)D_800727C0)[d << 1];
-        ny = loc->u0.pair.field_2 + ((s16 *)D_800727C0)[(d << 1) | 1];
+        nx = dir + ((s16 *)Stg40_DirOffsets)[d << 1];
+        ny = loc->u0.pair.field_2 + ((s16 *)Stg40_DirOffsets)[(d << 1) | 1];
     }
     if ((oct & 1) == 0) {
-        pl = &((s16 *)D_800727C0)[(d - 1) << 1];
-        fl = func_800703E0(loc->u0.pair.field_0 + pl[0],
-                           loc->u0.pair.field_2 + ((s16 *)D_800727C0)[((d - 1) << 1) | 1]);
-        fr = func_800703E0(loc->u0.pair.field_0 + ((s16 *)D_800727C0)[(d + 1) << 1],
-                           loc->u0.pair.field_2 + ((s16 *)D_800727C0)[((d + 1) << 1) | 1]);
+        pl = &((s16 *)Stg40_DirOffsets)[(d - 1) << 1];
+        fl = Stg40_GetCellFlags(loc->u0.pair.field_0 + pl[0],
+                           loc->u0.pair.field_2 + ((s16 *)Stg40_DirOffsets)[((d - 1) << 1) | 1]);
+        fr = Stg40_GetCellFlags(loc->u0.pair.field_0 + ((s16 *)Stg40_DirOffsets)[(d + 1) << 1],
+                           loc->u0.pair.field_2 + ((s16 *)Stg40_DirOffsets)[((d + 1) << 1) | 1]);
         if (!(fl & 0x8000) || (fl & 0x30) == 0x20 || !(fr & 0x8000) || (fr & 0x30) == 0x20) {
             return 0;
         }
         if (fl & 0x10) {
             loc->field_1E |= 1;
             nx = loc->u0.pair.field_0 + pl[0];
-            ny = loc->u0.pair.field_2 + ((s16 *)D_800727C0)[((d - 1) << 1) | 1];
+            ny = loc->u0.pair.field_2 + ((s16 *)Stg40_DirOffsets)[((d - 1) << 1) | 1];
         } else if (fr & 0x10) {
             loc->field_1E |= 1;
-            nx = loc->u0.pair.field_0 + ((s16 *)D_800727C0)[(d + 1) << 1];
-            ny = loc->u0.pair.field_2 + ((s16 *)D_800727C0)[((d + 1) << 1) | 1];
+            nx = loc->u0.pair.field_0 + ((s16 *)Stg40_DirOffsets)[(d + 1) << 1];
+            ny = loc->u0.pair.field_2 + ((s16 *)Stg40_DirOffsets)[((d + 1) << 1) | 1];
         }
     }
     if (D_8005071C->field_BA0 & 1) {
         return 1;
     }
     if (nx != -1) {
-        Stg40Ent48 *te = func_8006E200(nx, ny);
+        Stg40Ent48 *te = Stg40_FindEntAt(nx, ny);
         Stg40B60 *b = D_80072B60;
 
         b->field_40 = te;
@@ -1558,19 +1558,19 @@ s32 func_80068604(Stg40Ent48 *e) {
     }
     loc->field_4.field_0 = loc->u0.pair.field_0;
     loc->field_4.field_2 = loc->u0.pair.field_2;
-    tbl = (s16 *)D_800727C0;
+    tbl = (s16 *)Stg40_DirOffsets;
     loc->u0.pair.field_0 += tbl[(s16)oct << 1];
     loc->u0.pair.field_2 += tbl[((s16)oct << 1) | 1];
     loc->field_A = 0xC;
     loc->field_8 = 0xC;
     dir = loc->field_4.field_2;
-    func_80070974(loc->field_4.field_0, dir);
-    func_800708FC(loc->u0.pair.field_0, loc->u0.pair.field_2, 1);
+    Stg40_ClearCellOccupied(loc->field_4.field_0, dir);
+    Stg40_SetCellOccupied(loc->u0.pair.field_0, loc->u0.pair.field_2, 1);
     loc->field_1C = 1;
     return 1;
 }
 
-Stg40Ent48 *func_800689E0(Stg40Ent48 *a0) {
+Stg40Ent48 *Stg40_FindObjAtSameTile(Stg40Ent48 *a0) {
     Stg40Blk5071C *b = D_8005071C;
     Stg40Ent48 *e = b->field_18;
     Stg40Ent48 *r = NULL;
@@ -1585,7 +1585,7 @@ Stg40Ent48 *func_800689E0(Stg40Ent48 *a0) {
     return r;
 }
 
-s32 func_80068A54(Actor *task) {
+s32 Stg40_PlayerCheckStepHazard(Actor *task) {
     Stg40ActWork *w = (Stg40ActWork *)task->work;
     Stg40Ent48 *ent = w->field_2C;
     Stg40Ent48 *other;
@@ -1598,9 +1598,9 @@ s32 func_80068A54(Actor *task) {
     Actor *child;
 
     ret = 0;
-    if ((u32)((dir = func_800703E0(ent->field_18.u0.pair.field_0, ent->field_18.u0.pair.field_2) & 0xF) - 8) < 5) {
+    if ((u32)((dir = Stg40_GetCellFlags(ent->field_18.u0.pair.field_0, ent->field_18.u0.pair.field_2) & 0xF) - 8) < 5) {
         n = dir - 7;
-        if (func_8006E858(5) < n) {
+        if (Stg40_GetPartLevel(5) < n) {
             n *= 50;
             gs = Save_GameStatePtr;
             hp = gs->hp - n;
@@ -1612,7 +1612,7 @@ s32 func_80068A54(Actor *task) {
             return 1;
         }
     }
-    other = func_800689E0(ent);
+    other = Stg40_FindObjAtSameTile(ent);
     if (other != NULL) {
         child = other->field_14;
         D_80072B60->field_3C = child;
@@ -1636,18 +1636,18 @@ s32 func_80068A54(Actor *task) {
     return ret;
 }
 
-s32 func_80068B8C(Actor *a0) {
+s32 Stg40_PlayerCheckTileEvent(Actor *a0) {
     Stg40Ent48 *e = ((Stg40ActWork *)a0->work)->field_2C;
     s32 r = 0;
     Stg40Ent48 *f;
     Stg40B60 *b;
     Actor *t;
 
-    if (func_8006E6CC()) {
+    if (Stg40_CheckEventTile()) {
         Task_SetState1(a0, 0x1E);
         return 1;
     }
-    f = func_800689E0(e);
+    f = Stg40_FindObjAtSameTile(e);
     if (f == NULL) {
         return 0;
     }
@@ -1666,14 +1666,14 @@ s32 func_80068B8C(Actor *a0) {
     return r;
 }
 
-s32 func_80068C60(Actor *a0) {
+s32 Stg40_PlayerCheckSporeBounce(Actor *a0) {
     Stg40Ent48 *e = ((Stg40ActWork *)a0->work)->field_2C;
     Stg40Loc *l = &e->field_18;
     s32 r = 0;
     s16 t;
 
     if (l->field_8 == l->field_A / 2 && (l->field_1E & 1)) {
-        func_80070974(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2);
+        Stg40_ClearCellOccupied(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2);
         t = e->field_18.u0.pair.field_0;
         e->field_18.u0.pair.field_0 = e->field_18.field_4.field_0;
         e->field_18.field_4.field_0 = t;
@@ -1682,20 +1682,20 @@ s32 func_80068C60(Actor *a0) {
         e->field_18.field_4.field_2 = t;
         e->field_18.field_8 = 0xC;
         e->field_18.field_A = 0x18;
-        func_800708FC(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2, 1);
+        Stg40_SetCellOccupied(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2, 1);
         Task_SetState1(a0, 0xF);
         r = -1;
     }
     return r;
 }
 
-void func_80068D3C(Actor *a0) {
+void Stg40_PlayerWaitTurn(Actor *a0) {
     Stg40Ent48 *e = ((Stg40ActWork *)a0->work)->field_2C;
 
-    func_8006E4E8(a0, 0x28);
-    if (func_80070C94() == e->field_7) {
-        func_80065134(&e->field_18);
-        if (func_8006E330()) {
+    Stg40_ObjSetAnimIfNew(a0, 0x28);
+    if (Stg40_TurnQueueCurrent() == e->field_7) {
+        Stg40_ScrollFollow(&e->field_18);
+        if (Stg40_CheckEncounter()) {
             Task_SetState1(a0, 4);
         } else {
             Task_SetState1(a0, 1);
@@ -1703,25 +1703,25 @@ void func_80068D3C(Actor *a0) {
     }
 }
 
-void func_80068DC0(Actor *a0) {
+void Stg40_PlayerMoveStep(Actor *a0) {
     Stg40ActWork *w = (Stg40ActWork *)a0->work;
     Stg40Ent48 *e = w->field_2C;
 
-    func_8006E4E8(a0, 0x29);
+    Stg40_ObjSetAnimIfNew(a0, 0x29);
     if (e->field_18.field_8 == 0xB) {
         Snd_PlayById(0x2C, 0);
     }
-    if (func_80068C60(a0) != 0) {
+    if (Stg40_PlayerCheckSporeBounce(a0) != 0) {
         return;
     }
     if (w->field_2C->field_18.field_8 >= 2) {
         return;
     }
     Save_GameStatePtr->mp = (Save_GameStatePtr->mp - 1 < 0) ? 0 : (u16)Save_GameStatePtr->mp - 1;
-    if (func_80068A54(a0) != 0) {
+    if (Stg40_PlayerCheckStepHazard(a0) != 0) {
         return;
     }
-    if (func_800716EC(a0)) {
+    if (Stg40_TickStatusEffects(a0)) {
         Task_SetState1(a0, 8);
         return;
     }
@@ -1730,52 +1730,52 @@ void func_80068DC0(Actor *a0) {
     }
     if (Save_GameStatePtr->mp == 0 || Save_GameStatePtr->hp == 0) {
         Task_SetState1(a0, 0x1C);
-    } else if (func_80068B8C(a0) == 0) {
+    } else if (Stg40_PlayerCheckTileEvent(a0) == 0) {
         Task_SetState1(a0, 3);
     }
 }
 
-void func_80068F20(Actor *a0) {
+void Stg40_PlayerMoveEnd(Actor *a0) {
     Stg40ActWork *w = (Stg40ActWork *)a0->work;
     Stg40Ent48 *e = w->field_2C;
 
-    if (func_80070C48() == e->field_7) {
-        if (func_80068604(w->field_2C) == 1) {
+    if (Stg40_TurnQueueNext() == e->field_7) {
+        if (Stg40_PlayerTryMove(w->field_2C) == 1) {
             Task_SetState1(a0, 2);
         } else {
             Task_SetState1(a0, 0);
         }
-    } else if (func_8006E330()) {
+    } else if (Stg40_CheckEncounter()) {
         Task_SetState1(a0, 4);
     } else {
         Task_SetState1(a0, 0);
     }
 }
 
-void func_80068FBC(Actor *a0) {
-    if (func_800716EC(a0)) {
+void Stg40_PlayerAfterAction(Actor *a0) {
+    if (Stg40_TickStatusEffects(a0)) {
         Task_SetState1(a0, 8);
     } else {
         Task_SetState1(a0, 7);
     }
 }
 
-void func_80068FFC(Actor *a0) {
+void Stg40_PlayerEndTurn(Actor *a0) {
     if (Flag_Test(0x68) && Save_GameStatePtr->mp == 0) {
         Save_GameStatePtr->mp = 1;
     }
     if (Save_GameStatePtr->mp == 0 || Save_GameStatePtr->hp == 0) {
         Task_SetState1(a0, 0x1C);
-    } else if (func_80068B8C(a0) == 0) {
-        func_80070C48();
+    } else if (Stg40_PlayerCheckTileEvent(a0) == 0) {
+        Stg40_TurnQueueNext();
         Task_SetState1(a0, 0);
-        if (func_8006E330()) {
+        if (Stg40_CheckEncounter()) {
             Task_SetState1(a0, 4);
         }
     }
 }
 
-void func_800690CC(Actor *a0) {
+void Stg40_PlayerShowStatusMsgs(Actor *a0) {
     Stg40B60 *b = D_80072B60;
     s32 arg = 0;
     s32 k;
@@ -1795,32 +1795,32 @@ void func_800690CC(Actor *a0) {
     if (k == 7) {
         arg = (s32)b->field_6A;
     }
-    func_8006813C(a0, 0x28, 8, D_80072868[k], arg, 0);
+    Stg40_PlayerShowMsg(a0, 0x28, 8, Stg40_StatusMsgIds[k], arg, 0);
 }
 
-void func_80069188(Actor *a0) {
+void Stg40_PlayerInput(Actor *a0) {
     Stg40ActWork *w = (Stg40ActWork *)a0->work;
     s32 v;
     s32 n;
 
-    func_8006E4E8(a0, 0x28);
+    Stg40_ObjSetAnimIfNew(a0, 0x28);
     if (D_8005071C->field_2 != 0) {
         return;
     }
-    if (Pad_Circle > 0 && D_80072AA0->stateLevel0 == 1 && D_80072AA0->stateLevel1 == 1 && D_80072AA0->stateLevel2 == 1) {
-        Task_SetState1(D_80072AA0, 4);
+    if (Pad_Circle > 0 && Stg40_RootTask->stateLevel0 == 1 && Stg40_RootTask->stateLevel1 == 1 && Stg40_RootTask->stateLevel2 == 1) {
+        Task_SetState1(Stg40_RootTask, 4);
         D_8005071C->field_2 = 1;
         return;
     }
-    if (func_80068604(w->field_2C) == 1) {
+    if (Stg40_PlayerTryMove(w->field_2C) == 1) {
         if (D_8005071C->field_BA0 & 1) {
-            func_8006813C(a0, 0x28, 6, 0x1FD001D, 0, 0);
+            Stg40_PlayerShowMsg(a0, 0x28, 6, 0x1FD001D, 0, 0);
         } else {
             Task_SetState1(a0, 2);
         }
         return;
     }
-    if (func_800682DC(a0) == 0 && func_800681BC(a0) == 0 && Beetle_GetPart(0x12) > 0 && Pad_Select > 0) {
+    if (Stg40_PlayerInteract(a0) == 0 && Stg40_PlayerCheckEnemyInfo(a0) == 0 && Beetle_GetPart(0x12) > 0 && Pad_Select > 0) {
         v = Save_GameStatePtr->field_0 + 1;
         n = (v < 3) ? v : 0;
         Save_GameStatePtr->field_0 = n;
@@ -1828,23 +1828,23 @@ void func_80069188(Actor *a0) {
     }
 }
 
-void func_8006932C(Actor *a0) {
+void Stg40_PlayerResumeAfterBattle(Actor *a0) {
     Stg40Ent48 *e = ((Stg40ActWork *)a0->work)->field_2C;
 
     switch (a0->stateLevel2) {
     case 0:
     default:
-        func_8006E4DC(a0, 0x2D);
+        Stg40_ObjSetAnim(a0, 0x2D);
         Task_SetState2(a0, 1);
         break;
     case 1:
-        if (func_800678C4(a0) == 1) {
+        if (Stg40_ObjAnimDone(a0) == 1) {
             Task_SetState2(a0, 2);
         }
         break;
     case 2:
         if (D_8005071C->field_2 == 0) {
-            if (func_80070C94() == e->field_7) {
+            if (Stg40_TurnQueueCurrent() == e->field_7) {
                 Task_SetState1(a0, 1);
             } else {
                 Task_SetState1(a0, 0);
@@ -1854,39 +1854,39 @@ void func_8006932C(Actor *a0) {
     }
 }
 
-void func_8006940C(Actor *a0) {
+void Stg40_PlayerAnimThenMsgUpdate(Actor *a0) {
     switch (a0->stateLevel2) {
     case 0:
     default:
-        if (func_8006E588(a0) == 1) {
+        if (Stg40_ObjWaitAnimOrSkip(a0) == 1) {
             if (D_80072B60->field_34 != -1) {
-                func_8006E4DC(a0, D_80072B60->field_34);
+                Stg40_ObjSetAnim(a0, D_80072B60->field_34);
             }
-            func_80067610(1, D_80072B60->field_44, D_80072B60->field_48, D_80072B60->field_4C);
+            Stg40_MsgWinOpen(1, D_80072B60->field_44, D_80072B60->field_48, D_80072B60->field_4C);
             Task_NextState2(a0);
         }
         break;
     case 1:
-        if (func_80067704(1) == 1) {
+        if (Stg40_MsgWinCloseIfDone(1) == 1) {
             Task_SetState1(a0, (u8)D_80072B60->field_38);
         }
         break;
     }
 }
 
-void func_800694D0(Actor *a0) {
-    if (func_8006E588(a0) == 1) {
+void Stg40_PlayerWaitAnim(Actor *a0) {
+    if (Stg40_ObjWaitAnimOrSkip(a0) == 1) {
         Task_SetState1(a0, (u8)D_80072B60->field_38);
     }
 }
 
-void func_80069514(Actor *a0) {
-    if (func_80067704(1) == 1) {
+void Stg40_PlayerWaitMsg(Actor *a0) {
+    if (Stg40_MsgWinCloseIfDone(1) == 1) {
         Task_SetState1(a0, (u8)D_80072B60->field_38);
     }
 }
 
-void func_8006955C(Actor *a0) {
+void Stg40_PlayerFoundObject(Actor *a0) {
     Stg40B60 *b = D_80072B60;
     Stg40Ent48 *e = b->field_40;
     Actor *t = b->field_3C;
@@ -1895,44 +1895,44 @@ void func_8006955C(Actor *a0) {
     case 0:
     default:
         Snd_PlayById(0x2E, 0);
-        func_8006E4DC(a0, 0x2D);
+        Stg40_ObjSetAnim(a0, 0x2D);
         Task_NextState2(a0);
         break;
     case 1:
-        if (func_8006E588(a0) == 1) {
-            func_8006E4DC(a0, 0x28);
+        if (Stg40_ObjWaitAnimOrSkip(a0) == 1) {
+            Stg40_ObjSetAnim(a0, 0x28);
             Task_SetState1(t, 5);
-            func_80067610(1, 0x1FD0010, (s32)Cd_GetFileEntry(e->field_8 + 0x1FD0064), 0);
+            Stg40_MsgWinOpen(1, 0x1FD0010, (s32)Cd_GetFileEntry(e->field_8 + 0x1FD0064), 0);
             Task_NextState2(a0);
         }
         break;
     case 2:
-        if (func_80067704(1) == 1) {
+        if (Stg40_MsgWinCloseIfDone(1) == 1) {
             Task_SetState1(a0, 6);
         }
         break;
     }
 }
 
-void func_8006965C(Actor *a0) {
+void Stg40_PlayerHurtAnim(Actor *a0) {
     switch (a0->stateLevel2) {
     case 0:
     default:
         Snd_PlayById(0x2F, 0);
-        func_8006E4DC(a0, 0x2C);
-        func_80067880(a0, 1);
+        Stg40_ObjSetAnim(a0, 0x2C);
+        Stg40_ObjStartFlash(a0, 1);
         Task_NextState2(a0);
         break;
     case 1:
-        if (func_800678C4(a0) == 1 || a0->stateLevel4++ >= 11) {
-            func_8006E4DC(a0, 0x28);
+        if (Stg40_ObjAnimDone(a0) == 1 || a0->stateLevel4++ >= 11) {
+            Stg40_ObjSetAnim(a0, 0x28);
             Task_SetState1(a0, 6);
         }
         break;
     }
 }
 
-void func_80069714(Actor *a0) {
+void Stg40_PlayerDestroyMine(Actor *a0) {
     Stg40Ent48 *e = D_80072B60->field_40;
     Actor *t = D_80072B60->field_3C;
     s32 msg;
@@ -1942,13 +1942,13 @@ void func_80069714(Actor *a0) {
     switch (a0->stateLevel2) {
     case 0:
     default:
-        func_8006E4DC(a0, 0x2A);
+        Stg40_ObjSetAnim(a0, 0x2A);
         Snd_PlayById(0x2E, 0);
         Task_NextState2(a0);
         break;
     case 1:
-        if (func_8006E588(a0) == 1) {
-            func_8006E4DC(a0, 0x28);
+        if (Stg40_ObjWaitAnimOrSkip(a0) == 1) {
+            Stg40_ObjSetAnim(a0, 0x28);
             r = Beetle_GetPart(6);
             n = e->field_10[1];
             if (Item_GetLevel(r) >= n) {
@@ -1957,49 +1957,49 @@ void func_80069714(Actor *a0) {
             } else {
                 msg = 0x1FD0018;
             }
-            func_80067610(1, msg, 0, 0);
+            Stg40_MsgWinOpen(1, msg, 0, 0);
             Task_NextState2(a0);
         }
         break;
     case 2:
-        if (func_80067704(1) == 1) {
+        if (Stg40_MsgWinCloseIfDone(1) == 1) {
             Task_SetState1(a0, 6);
         }
         break;
     }
 }
 
-void func_80069830(Actor *a0) {
+void Stg40_PlayerSporeDamage(Actor *a0) {
     Stg40Ent48 *e = D_80072B60->field_40;
     Actor *t = D_80072B60->field_3C;
 
     switch (a0->stateLevel2) {
     case 0:
     default:
-        func_8006E4DC(a0, 0x2C);
-        func_80067880(a0, 2);
+        Stg40_ObjSetAnim(a0, 0x2C);
+        Stg40_ObjStartFlash(a0, 2);
         Task_SetState1(t, 4);
         D_80072B60->field_58 = e->field_10[1] * 200;
-        func_8006E8F4(D_80072B60->field_58);
+        Stg40_DamageBeetle(D_80072B60->field_58);
         Snd_PlayById(0x33, 0);
         Task_NextState2(a0);
         break;
     case 1:
-        if (func_8006E588(a0) == 1) {
-            func_8006E4DC(a0, 0x28);
-            func_80067610(1, 0x1FD001F, (s32)Save_GameStatePtr->field_D1, (s32)func_8006755C(0, D_80072B60->field_58));
+        if (Stg40_ObjWaitAnimOrSkip(a0) == 1) {
+            Stg40_ObjSetAnim(a0, 0x28);
+            Stg40_MsgWinOpen(1, 0x1FD001F, (s32)Save_GameStatePtr->field_D1, (s32)Stg40_NumToDigits(0, D_80072B60->field_58));
             Task_NextState2(a0);
         }
         break;
     case 2:
-        if (func_80067704(1) == 1) {
+        if (Stg40_MsgWinCloseIfDone(1) == 1) {
             Task_SetState1(a0, 6);
         }
         break;
     }
 }
 
-void func_8006997C(Actor *arg0)
+void Stg40_PlayerBugInvade(Actor *arg0)
 {
     Stg40Ent48 *e;
     Actor *t;
@@ -2015,7 +2015,7 @@ void func_8006997C(Actor *arg0)
     switch (arg0->stateLevel2) {
     case 0:
     default:
-        func_8006E4DC(arg0, 0x28);
+        Stg40_ObjSetAnim(arg0, 0x28);
         Task_SetState1(t, 4);
         Task_NextState2(arg0);
         break;
@@ -2033,14 +2033,14 @@ void func_8006997C(Actor *arg0)
             break;
         case 9:
             if (D_8005071C->field_BA5 == 0) {
-                if (Save_GameStatePtr->bits != 0 || func_80071608() != -1) {
+                if (Save_GameStatePtr->bits != 0 || Stg40_PickRandomPart() != -1) {
                     r = -1;
                     ((Stg40BA5View *)D_8005071C)->field_BA5[e->field_8 - 9] = e->field_10[1];
                 }
             }
             break;
         case 0xB:
-            if (D_8005071C->field_BA7 != 0 || ((s32 (*)(s32))func_8006EA84)(1) < 2 || Digi_CountByState(1) >= 0x18) {
+            if (D_8005071C->field_BA7 != 0 || ((s32 (*)(s32))Stg40_ListPartyDigi)(1) < 2 || Digi_CountByState(1) >= 0x18) {
                 r = 0;
             } else {
                 r = -1;
@@ -2049,7 +2049,7 @@ void func_8006997C(Actor *arg0)
             break;
         case 0xC:
             n = ((s32 (*)(void))Beetle_GetDigiCapacity)();
-            n -= ((s32 (*)(s32))func_8006EA84)(0);
+            n -= ((s32 (*)(s32))Stg40_ListPartyDigi)(0);
             if (n != D_8005071C->field_BA8) {
                 D_8005071C->field_BA9[D_8005071C->field_BA8] = e->field_10[1];
                 r = -1;
@@ -2058,32 +2058,32 @@ void func_8006997C(Actor *arg0)
             break;
         }
         if (r == 0) {
-            func_80067610(1, e->field_8 + 0x1FD0022, (s32)Save_GameStatePtr + 0xD1, 0);
+            Stg40_MsgWinOpen(1, e->field_8 + 0x1FD0022, (s32)Save_GameStatePtr + 0xD1, 0);
             Task_SetState2(arg0, 3);
         } else {
             D_8005071C->field_BA0 &= ~bit;
-            func_8006E4DC(arg0, 0x2A);
-            func_80067880(arg0, 2);
+            Stg40_ObjSetAnim(arg0, 0x2A);
+            Stg40_ObjStartFlash(arg0, 2);
             Task_NextState2(arg0);
             Snd_PlayById(0x2F, 0);
         }
         break;
     case 2:
-        if (func_8006E588(arg0) == 1) {
-            func_8006E4DC(arg0, 0x28);
-            func_80067610(1, e->field_8 + 0x1FD001E, 0, 0);
+        if (Stg40_ObjWaitAnimOrSkip(arg0) == 1) {
+            Stg40_ObjSetAnim(arg0, 0x28);
+            Stg40_MsgWinOpen(1, e->field_8 + 0x1FD001E, 0, 0);
             Task_NextState2(arg0);
         }
         break;
     case 3:
-        if (func_80067704(1) == 1) {
+        if (Stg40_MsgWinCloseIfDone(1) == 1) {
             Task_SetState1(arg0, 6);
         }
         break;
     }
 }
 
-void func_80069C94(Actor *a0) {
+void Stg40_PlayerEnemyInfo(Actor *a0) {
     Stg40Ent48 *e = ((Stg40ActWork *)a0->work)->field_2C;
     Stg40B60 *g = D_80072B60;
     Stg40Ent48 *t;
@@ -2093,22 +2093,22 @@ void func_80069C94(Actor *a0) {
     switch (a0->stateLevel2) {
     case 0:
     default:
-        Task_Create(0x20C, &D_80072AA4->field_14, 0);
-        func_8006E4DC(a0, 0x28);
+        Task_Create(0x20C, &Stg40_RootChildren->field_14, 0);
+        Stg40_ObjSetAnim(a0, 0x28);
         Task_NextState2(a0);
         break;
     case 1:
         t = g->field_80[g->field_AC];
         g->field_3C = t->field_14;
         g->field_40 = t;
-        func_800651C0(&t->field_18, 0x10);
-        Task_SetState0((Actor *)D_80072AA4->field_14, 2);
-        Task_SetState1((Actor *)D_80072AA4->field_14, 0x64);
+        Stg40_ScrollToFollow(&t->field_18, 0x10);
+        Task_SetState0((Actor *)Stg40_RootChildren->field_14, 2);
+        Task_SetState1((Actor *)Stg40_RootChildren->field_14, 0x64);
         Task_NextState2(a0);
         break;
     case 2:
         if (a0->stateLevel3 == 0) {
-            if (func_80065230() != 0) {
+            if (Stg40_IsScrollDone() != 0) {
                 Snd_PlayById(0x12, 0);
                 Task_SetState3(a0, 1);
             }
@@ -2121,9 +2121,9 @@ void func_80069C94(Actor *a0) {
             D_80072B60->field_AC = (n < D_80072B60->field_A8) ? n : 0;
             Task_SetState2(a0, 1);
         } else if (D_8005F704 > 0) {
-            r = func_8006E920(&D_80072858);
+            r = Stg40_ListUsableItems(&Stg40_GiftGunReq);
             if (r != 0) {
-                func_80067610(1, r, 0, 0);
+                Stg40_MsgWinOpen(1, r, 0, 0);
                 Task_SetState2(a0, 0x3C);
             } else {
                 Task_SetState1(a0, 0x11);
@@ -2133,18 +2133,18 @@ void func_80069C94(Actor *a0) {
         }
         break;
     case 0x3C:
-        if (func_80067704(1) == 1) {
+        if (Stg40_MsgWinCloseIfDone(1) == 1) {
             Task_SetState2(a0, 2);
             Task_SetState3(a0, 1);
         }
         break;
     case 0x64:
-        func_80065134(&e->field_18);
-        Task_SetState0((Actor *)D_80072AA4->field_14, 2);
+        Stg40_ScrollFollow(&e->field_18);
+        Task_SetState0((Actor *)Stg40_RootChildren->field_14, 2);
         Task_NextState2(a0);
         break;
     case 0x65:
-        if (D_80072AA4->field_14 == 0) {
+        if (Stg40_RootChildren->field_14 == 0) {
             g->field_7E = Save_GameStatePtr->field_0;
             Task_SetState1(a0, 1);
         }
@@ -2152,7 +2152,7 @@ void func_80069C94(Actor *a0) {
     }
 }
 
-void func_80069F84(Actor *actor) {
+void Stg40_PlayerShootGift(Actor *actor) {
     s32 state = actor->stateLevel2;
     Stg40Ent48 *self = ((Stg40ActWork *)actor->work)->field_2C;
     Stg40Ent48 *target = D_80072B60->field_40;
@@ -2163,7 +2163,7 @@ void func_80069F84(Actor *actor) {
     default: {
         s32 angle;
 
-        func_8006E4DC(actor, 0x29);
+        Stg40_ObjSetAnim(actor, 0x29);
         angle = ratan2(self->field_18.field_C - target->field_18.field_C,
                        target->field_18.field_10 - self->field_18.field_10);
         D_80072B60->field_E8 = angle & 0xFFF;
@@ -2199,7 +2199,7 @@ void func_80069F84(Actor *actor) {
             }
             self->field_C = self->field_E;
         } else {
-            func_8006E4DC(actor, 0x28);
+            Stg40_ObjSetAnim(actor, 0x28);
             goto next;
         }
         break;
@@ -2208,7 +2208,7 @@ void func_80069F84(Actor *actor) {
             break;
         }
         Snd_PlayById(0x2D, 0);
-        func_8006E4DC(actor, 0x2A);
+        Stg40_ObjSetAnim(actor, 0x2A);
         goto next;
     case 3:
         if (actor->stateLevel4++ < 6) {
@@ -2223,7 +2223,7 @@ void func_80069F84(Actor *actor) {
         D_80072B60->field_F8 += D_80072B60->field_F0;
         loc->field_C = D_80072B60->field_F4 >> 8;
         loc->field_10 = D_80072B60->field_F8 >> 8;
-        func_80065134(loc);
+        Stg40_ScrollFollow(loc);
         ax = D_80072B60->field_EC;
         ax = (ax >= 0) ? ax : -ax;
         if ((D_80072B60->field_FC - D_80072B60->field_F4 >= 0)
@@ -2234,7 +2234,7 @@ void func_80069F84(Actor *actor) {
             if ((D_80072B60->field_100 - D_80072B60->field_F8 >= 0)
                     ? (ay >= D_80072B60->field_100 - D_80072B60->field_F8)
                     : (ay >= D_80072B60->field_F8 - D_80072B60->field_100)) {
-                func_80065134(&target->field_18);
+                Stg40_ScrollFollow(&target->field_18);
                 Task_NextState2(actor);
                 Snd_PlayById(0x1B, 0);
             }
@@ -2263,31 +2263,31 @@ void func_80069F84(Actor *actor) {
                 kind = 3;
             }
             if (kind == 3 || kind == info->field_3) {
-                if (func_80071180() < D_80072888[info->field_A]) {
+                if (Stg40_RandPercent() < Stg40_GiftTakeChance[info->field_A]) {
                     s32 idx;
 
                     info->field_A++;
                     idx = Item_GetLevel(D_80072B60->field_E0);
                     msg = 0x1FD004F;
-                    info->field_C += D_80072894[idx - 1];
+                    info->field_C += Stg40_GiftPointsByLevel[idx - 1];
                 }
             }
         }
-        func_80067610(1, msg, Digi_GetDefaultName(info->field_10[0]),
+        Stg40_MsgWinOpen(1, msg, Digi_GetDefaultName(info->field_10[0]),
                       Item_GetNameText(D_80072B60->field_E0));
         goto next;
     }
     case 6:
-        if (func_80067704(1) != 1) {
+        if (Stg40_MsgWinCloseIfDone(1) != 1) {
             break;
         }
-        func_800651C0(&self->field_18, 8);
-        Task_SetState0((Actor *)D_80072AA4->field_14, 2);
+        Stg40_ScrollToFollow(&self->field_18, 8);
+        Task_SetState0((Actor *)Stg40_RootChildren->field_14, 2);
     next:
         Task_NextState2(actor);
         break;
     case 7:
-        if (D_80072AA4->field_14 == 0) {
+        if (Stg40_RootChildren->field_14 == 0) {
             break;
         }
         Task_SetState1(actor, 6);
@@ -2296,7 +2296,7 @@ void func_80069F84(Actor *actor) {
     }
 }
 
-void func_8006A498(Actor *a0) {
+void Stg40_PlayerChestTrapPrompt(Actor *a0) {
     u8 *d = D_80072B60->field_40->field_10;
     s32 r;
     s32 msg;
@@ -2305,12 +2305,12 @@ void func_8006A498(Actor *a0) {
     case 0:
     default:
         Snd_PlayById(0x2E, 0);
-        func_8006E4DC(a0, 0x2D);
+        Stg40_ObjSetAnim(a0, 0x2D);
         Task_NextState2(a0);
         break;
     case 1:
-        if (func_8006E588(a0) == 1) {
-            func_8006E4DC(a0, 0x28);
+        if (Stg40_ObjWaitAnimOrSkip(a0) == 1) {
+            Stg40_ObjSetAnim(a0, 0x28);
             Task_NextState2(a0);
         }
         break;
@@ -2320,8 +2320,8 @@ void func_8006A498(Actor *a0) {
         } else if (d[1] == 0) {
             Task_SetState1(a0, 0x14);
         } else {
-            D_80072B60->field_50 = func_80071204(d[1]);
-            r = func_800715DC(7);
+            D_80072B60->field_50 = Stg40_GetTrapDisarmRank(d[1]);
+            r = Stg40_GetPartState(7);
             msg = D_80072B60->field_50 + 0x1FD0040;
             if (r == -1) {
                 msg = 0x1FD0045;
@@ -2329,12 +2329,12 @@ void func_8006A498(Actor *a0) {
             if (r == 0) {
                 msg = 0x1FD0046;
             }
-            func_80067610(1, msg, 0, 0);
+            Stg40_MsgWinOpen(1, msg, 0, 0);
             Task_NextState2(a0);
         }
         break;
     case 3:
-        switch (func_80067750(1)) {
+        switch (Stg40_MsgWinGetChoice(1)) {
         case -1:
             Task_SetState1(a0, 6);
             break;
@@ -2346,7 +2346,7 @@ void func_8006A498(Actor *a0) {
     }
 }
 
-void func_8006A614(Actor *a0) {
+void Stg40_PlayerOpenChest(Actor *a0) {
     Stg40B60 *b = D_80072B60;
     Actor *t = b->field_3C;
     u8 *d = b->field_40->field_10;
@@ -2365,7 +2365,7 @@ void func_8006A614(Actor *a0) {
     case 2:
         if (d[1] == 0 || d[1] == 0xFF) {
             Task_SetState1(a0, 0x15);
-        } else if (func_80071258(b->field_50) == 1) {
+        } else if (Stg40_RollTrapDisarm(b->field_50) == 1) {
             Task_SetState1(a0, 0x15);
         } else {
             Task_SetState1(a0, 0x16);
@@ -2374,7 +2374,7 @@ void func_8006A614(Actor *a0) {
     }
 }
 
-void func_8006A6EC(Actor *a0) {
+void Stg40_PlayerTakeChestItem(Actor *a0) {
     Actor *t = D_80072B60->field_3C;
     u8 *d = D_80072B60->field_40->field_10;
 
@@ -2382,14 +2382,14 @@ void func_8006A6EC(Actor *a0) {
     case 0:
     default:
         if (d[0] == 0) {
-            func_80067610(1, 0x1FD004E, 0, 0);
+            Stg40_MsgWinOpen(1, 0x1FD004E, 0, 0);
             Task_SetState1(t, 5);
         } else if (Item_AddToBag(d[0]) == -1) {
-            func_80067610(1, 0x1FD0055, Item_GetNameText(d[0]), 0);
+            Stg40_MsgWinOpen(1, 0x1FD0055, Item_GetNameText(d[0]), 0);
             d[1] = 0xFF;
             Snd_PlayById(0x1C, 0);
         } else {
-            func_80067610(1, 0x1FD004D, Item_GetNameText(d[0]), 0);
+            Stg40_MsgWinOpen(1, 0x1FD004D, Item_GetNameText(d[0]), 0);
             Task_SetState1(t, 5);
             Snd_PlayById(0x19, 0);
             Item_SortList();
@@ -2397,14 +2397,14 @@ void func_8006A6EC(Actor *a0) {
         Task_NextState2(a0);
         break;
     case 1:
-        if (func_80067704(1) == 1) {
+        if (Stg40_MsgWinCloseIfDone(1) == 1) {
             Task_SetState1(a0, 6);
         }
         break;
     }
 }
 
-void func_8006A848(Actor *a0) {
+void Stg40_PlayerTriggerTrap(Actor *a0) {
     Stg40Ent48 *e = D_80072B60->field_40;
     Actor *t = D_80072B60->field_3C;
     s32 nc = e->field_8 != 4;
@@ -2413,11 +2413,11 @@ void func_8006A848(Actor *a0) {
     switch (a0->stateLevel2) {
     case 0:
     default:
-        D_80072B60->field_54 = func_80071294();
+        D_80072B60->field_54 = Stg40_RollTrapEffect();
         if (D_80072B60->field_54 != 0x10) {
-            func_8006E4DC(a0, 0x2C);
-            func_80067880(a0, 1);
-            func_8007142C(D_80072B60->field_54, d[1]);
+            Stg40_ObjSetAnim(a0, 0x2C);
+            Stg40_ObjStartFlash(a0, 1);
+            Stg40_ApplyTrapEffect(D_80072B60->field_54, d[1]);
         }
         if (nc) {
             Task_SetState1(t, 4);
@@ -2427,14 +2427,14 @@ void func_8006A848(Actor *a0) {
         Task_NextState2(a0);
         break;
     case 1:
-        if (func_8006E588(a0) == 1) {
-            func_8006E4DC(a0, 0x28);
-            func_80071310(nc, D_80072B60->field_54);
+        if (Stg40_ObjWaitAnimOrSkip(a0) == 1) {
+            Stg40_ObjSetAnim(a0, 0x28);
+            Stg40_ShowTrapEffectMsg(nc, D_80072B60->field_54);
             Task_NextState2(a0);
         }
         break;
     case 2:
-        if (func_80067704(1) == 1) {
+        if (Stg40_MsgWinCloseIfDone(1) == 1) {
             Task_NextState2(a0);
         }
         break;
@@ -2452,7 +2452,7 @@ void func_8006A848(Actor *a0) {
 }
 
 INCLUDE_RODATA("asm/USA/stag4000/rodata", D_80063438);
-void func_8006A9CC(Actor *a0) {
+void Stg40_PlayerExitFloor(Actor *a0) {
     Stg40ActWork *w = (Stg40ActWork *)a0->work;
     Stg40Ent48 *e = w->field_2C;
     Stg40ModelFade *m = (Stg40ModelFade *)a0->model;
@@ -2475,7 +2475,7 @@ void func_8006A9CC(Actor *a0) {
             m->field_34 = 1;
             m->field_36 = 0x20;
             m->field_38 = D_80063438;
-            func_8006E4DC(a0, 0x28);
+            Stg40_ObjSetAnim(a0, 0x28);
             e->field_0 |= 0x80;
             w->field_26 = 0;
             Task_NextState2(a0);
@@ -2504,7 +2504,7 @@ void func_8006A9CC(Actor *a0) {
     }
 }
 
-void func_8006AB48(Actor *a0) {
+void Stg40_PlayerShootObstacle(Actor *a0) {
     Stg40Ent48 *e = D_80072B60->field_40;
     Actor *t = D_80072B60->field_3C;
     s32 k = e->field_8 - 6;
@@ -2513,32 +2513,32 @@ void func_8006AB48(Actor *a0) {
     switch (a0->stateLevel2) {
     case 0:
     default:
-        func_8006E4DC(a0, 0x2A);
+        Stg40_ObjSetAnim(a0, 0x2A);
         Snd_PlayById(k < 3 ? 0x2D : 0x1E, 0);
         Task_NextState2(a0);
         break;
     case 1:
-        if (func_8006E588(a0) == 1) {
-            func_8006E4DC(a0, 0x28);
+        if (Stg40_ObjWaitAnimOrSkip(a0) == 1) {
+            Stg40_ObjSetAnim(a0, 0x28);
             if (Item_GetLevel(D_80072B60->field_E0) >= e->field_10[1]) {
                 Task_SetState1(t, 6);
-                msg = D_8007289C[k * 2];
+                msg = Stg40_ShootMsgIds[k * 2];
                 Task_SetState2(a0, 3);
             } else {
-                msg = D_8007289C[k * 2 + 1];
+                msg = Stg40_ShootMsgIds[k * 2 + 1];
                 Task_NextState2(a0);
             }
-            func_80067610(1, msg, 0, 0);
+            Stg40_MsgWinOpen(1, msg, 0, 0);
         }
         break;
     case 2:
-        if (func_80067704(1) == 1) {
+        if (Stg40_MsgWinCloseIfDone(1) == 1) {
             Task_SetState1(a0, 6);
             D_80072B60->field_7E = Save_GameStatePtr->field_0;
         }
         break;
     case 3:
-        if (func_80067704(1) == 1 && e->field_0 == 0) {
+        if (Stg40_MsgWinCloseIfDone(1) == 1 && e->field_0 == 0) {
             Task_SetState1(a0, 6);
             D_80072B60->field_7E = Save_GameStatePtr->field_0;
         }
@@ -2546,7 +2546,7 @@ void func_8006AB48(Actor *a0) {
     }
 }
 
-void func_8006AD10(void) {
+void Stg40_ItemMenuRefresh(void) {
     s32 s3;
     s32 s0;
     s32 s1;
@@ -2558,7 +2558,7 @@ void func_8006AD10(void) {
 
     s3 = 0;
     s0 = D_80072B60->field_E2 - D_80072B60->field_E3;
-    dst = func_80066E18();
+    dst = Stg40_ItemMenuGetTextIds();
     p = dst;
     if (s0 >= 6) {
         D_80072B60->field_E3 = D_80072B60->field_E2 - 5;
@@ -2583,12 +2583,12 @@ void func_8006AD10(void) {
     if (s1 < D_80072B60->field_E1) {
         s3 |= 2;
     }
-    func_80066DF0(D_80072B60->field_E2 - D_80072B60->field_E3, s1 - D_80072B60->field_E3, s3);
+    Stg40_ItemMenuSetCursor(D_80072B60->field_E2 - D_80072B60->field_E3, s1 - D_80072B60->field_E3, s3);
     dst[6] = Item_GetDescText(D_80072B60->field_B0[D_80072B60->field_E2]);
     s1 = e1;
 }
 
-void func_8006AE74(void) {
+void Stg40_ItemMenuMoveCursor(void) {
     s32 old = D_80072B60->field_E2;
     s32 n;
 
@@ -2605,11 +2605,11 @@ void func_8006AE74(void) {
     }
     if (old != D_80072B60->field_E2) {
         Snd_PlayById(D_80072B60->field_E4 ? 0xD : 0xC, 0);
-        func_8006AD10();
+        Stg40_ItemMenuRefresh();
     }
 }
 
-void func_8006AF34(Actor *a0) {
+void Stg40_PlayerItemMenu(Actor *a0) {
     s32 arg;
     s32 i;
     u16 *bag;
@@ -2619,11 +2619,11 @@ void func_8006AF34(Actor *a0) {
     default:
         D_80072B60->field_E2 = 0;
         D_80072B60->field_E3 = 0;
-        func_8006E4DC(a0, 0x28);
+        Stg40_ObjSetAnim(a0, 0x28);
         arg = D_80072B60->field_E4 != 0;
-        Task_Create(0x20B, &D_80072AA4->field_10, (s32)&arg);
+        Task_Create(0x20B, &Stg40_RootChildren->field_10, (s32)&arg);
         Snd_PlayById(0x37, 0);
-        func_8006AD10();
+        Stg40_ItemMenuRefresh();
         Task_NextState2(a0);
         break;
     case 1:
@@ -2632,7 +2632,7 @@ void func_8006AF34(Actor *a0) {
         }
         break;
     case 2:
-        func_8006AE74();
+        Stg40_ItemMenuMoveCursor();
         if (Pad_State[0].triangle > 0) {
             Snd_PlayById(0xB, 0);
             Task_SetState2(a0, 4);
@@ -2646,7 +2646,7 @@ void func_8006AF34(Actor *a0) {
                 }
             }
             if (D_80072B60->field_E4 != 0) {
-                func_800651C0(&((Stg40ActWork *)a0->work)->field_2C->field_18, 8);
+                Stg40_ScrollToFollow(&((Stg40ActWork *)a0->work)->field_2C->field_18, 8);
                 Snd_PlayById(0xE, 0);
             } else {
                 Snd_PlayById(0xA, 0);
@@ -2654,11 +2654,11 @@ void func_8006AF34(Actor *a0) {
             Task_NextState2(a0);
         }
         if (a0->stateLevel2 != 2) {
-            Task_SetState0((Actor *)D_80072AA4->field_10, 2);
+            Task_SetState0((Actor *)Stg40_RootChildren->field_10, 2);
         }
         break;
     case 3:
-        if (D_80072AA4->field_10 == 0) {
+        if (Stg40_RootChildren->field_10 == 0) {
             if (D_80072B60->field_E4 == 0) {
                 Task_SetState1(a0, 0x12);
             } else {
@@ -2667,7 +2667,7 @@ void func_8006AF34(Actor *a0) {
         }
         break;
     case 4:
-        if (D_80072AA4->field_10 == 0) {
+        if (Stg40_RootChildren->field_10 == 0) {
             if (D_80072B60->field_E4 == 0) {
                 Task_SetState1(a0, 1);
                 D_80072B60->field_7E = Save_GameStatePtr->field_0;
@@ -2681,23 +2681,23 @@ void func_8006AF34(Actor *a0) {
     }
 }
 
-void func_8006B20C(Actor *a0) {
+void Stg40_PlayerBeetleDown(Actor *a0) {
     s32 r;
 
     switch (a0->stateLevel2) {
     case 0:
     default:
         Snd_PlayById(0x30, 1);
-        func_8006E4DC(a0, 0x2B);
+        Stg40_ObjSetAnim(a0, 0x2B);
         break;
     case 1:
-        if (func_8006E588(a0) != 1) {
+        if (Stg40_ObjWaitAnimOrSkip(a0) != 1) {
             return;
         }
-        func_80067610(1, 0x1FD0054, (s32)Save_GameStatePtr->field_D1, 0);
+        Stg40_MsgWinOpen(1, 0x1FD0054, (s32)Save_GameStatePtr->field_D1, 0);
         break;
     case 2:
-        r = func_80067704(1);
+        r = Stg40_MsgWinCloseIfDone(1);
         if (r != 1) {
             return;
         }
@@ -2717,11 +2717,11 @@ void func_8006B20C(Actor *a0) {
     Task_NextState2(a0);
 }
 
-void func_8006B320(Actor *a0) {
+void Stg40_PlayerRunEvent(Actor *a0) {
     switch (a0->stateLevel2) {
     case 0:
     default:
-        func_8006E4DC(a0, 0x28);
+        Stg40_ObjSetAnim(a0, 0x28);
         D_80072B60->field_178 = 0;
         D_80072B60->field_174 = -1;
         Text_OpenMsgClearChoice(&D_80072B60->field_174, Flag_SelectBranch(D_80072B60->field_170));
@@ -2733,9 +2733,9 @@ void func_8006B320(Actor *a0) {
         }
         break;
     case 2:
-        func_80070C48();
+        Stg40_TurnQueueNext();
         Task_SetState1(a0, 0);
-        if (func_8006E330()) {
+        if (Stg40_CheckEncounter()) {
             Task_SetState1(a0, 4);
         } else {
             D_8005071C->field_2 = 0;
@@ -2744,34 +2744,34 @@ void func_8006B320(Actor *a0) {
     }
 }
 
-void func_8006B420(Actor *a0) {
+void Stg40_PlayerUpdate(Actor *a0) {
     Stg40Ent48 *e;
 
-    func_800708FC(((Stg40ActWork *)a0->work)->field_2C->field_18.u0.pair.field_0, ((Stg40ActWork *)a0->work)->field_2C->field_18.u0.pair.field_2, 1);
+    Stg40_SetCellOccupied(((Stg40ActWork *)a0->work)->field_2C->field_18.u0.pair.field_0, ((Stg40ActWork *)a0->work)->field_2C->field_18.u0.pair.field_2, 1);
     switch (a0->stateLevel1) {
     case 0:
     case 24:
     case 25:
     default:
-        func_80068D3C(a0);
+        Stg40_PlayerWaitTurn(a0);
         break;
     case 1:
-        func_80069188(a0);
+        Stg40_PlayerInput(a0);
         break;
     case 2:
-        func_80068DC0(a0);
+        Stg40_PlayerMoveStep(a0);
         break;
     case 3:
-        func_80068F20(a0);
+        Stg40_PlayerMoveEnd(a0);
         break;
     case 6:
-        func_80068FBC(a0);
+        Stg40_PlayerAfterAction(a0);
         break;
     case 7:
-        func_80068FFC(a0);
+        Stg40_PlayerEndTurn(a0);
         break;
     case 8:
-        func_800690CC(a0);
+        Stg40_PlayerShowStatusMsgs(a0);
         break;
     case 4:
         if (a0->stateLevel2 != 1) {
@@ -2781,68 +2781,68 @@ void func_8006B420(Actor *a0) {
         }
         break;
     case 5:
-        func_8006932C(a0);
+        Stg40_PlayerResumeAfterBattle(a0);
         break;
     case 9:
-        func_8006940C(a0);
+        Stg40_PlayerAnimThenMsgUpdate(a0);
         break;
     case 10:
-        func_800694D0(a0);
+        Stg40_PlayerWaitAnim(a0);
         break;
     case 11:
-        func_80069514(a0);
+        Stg40_PlayerWaitMsg(a0);
         break;
     case 12:
-        func_8006955C(a0);
+        Stg40_PlayerFoundObject(a0);
         break;
     case 13:
-        func_8006965C(a0);
+        Stg40_PlayerHurtAnim(a0);
         break;
     case 14:
-        func_80069714(a0);
+        Stg40_PlayerDestroyMine(a0);
         break;
     case 15:
-        func_80069830(a0);
+        Stg40_PlayerSporeDamage(a0);
         break;
     case 16:
-        func_8006997C(a0);
+        Stg40_PlayerBugInvade(a0);
         break;
     case 19:
-        func_8006A498(a0);
+        Stg40_PlayerChestTrapPrompt(a0);
         break;
     case 20:
-        func_8006A614(a0);
+        Stg40_PlayerOpenChest(a0);
         break;
     case 21:
-        func_8006A6EC(a0);
+        Stg40_PlayerTakeChestItem(a0);
         break;
     case 22:
-        func_8006A848(a0);
+        Stg40_PlayerTriggerTrap(a0);
         break;
     case 23:
-        func_8006A9CC(a0);
+        Stg40_PlayerExitFloor(a0);
         break;
     case 18:
-        func_8006AB48(a0);
+        Stg40_PlayerShootObstacle(a0);
         break;
     case 17:
-        func_8006AF34(a0);
+        Stg40_PlayerItemMenu(a0);
         break;
     case 26:
-        func_80069C94(a0);
+        Stg40_PlayerEnemyInfo(a0);
         break;
     case 27:
-        func_80069F84(a0);
+        Stg40_PlayerShootGift(a0);
         break;
     case 28:
-        func_8006B20C(a0);
+        Stg40_PlayerBeetleDown(a0);
         break;
     case 30:
-        func_8006B320(a0);
+        Stg40_PlayerRunEvent(a0);
         break;
     case 29:
         break;
     }
     e = ((Stg40ActWork *)a0->work)->field_2C;
-    func_8006EBF4(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2, e->field_18.field_4.field_0, e->field_18.field_4.field_2, e->field_8);
+    Stg40_AutomapMoveMarker(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2, e->field_18.field_4.field_0, e->field_18.field_4.field_2, e->field_8);
 }

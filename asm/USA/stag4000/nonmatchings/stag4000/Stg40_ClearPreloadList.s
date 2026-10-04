@@ -1,0 +1,16 @@
+nonmatching Stg40_ClearPreloadList, 0x2C
+
+glabel Stg40_ClearPreloadList
+    /* 1520 80064880 3F000324 */  addiu      $v1, $zero, 0x3F
+    /* 1524 80064884 0580023C */  lui        $v0, %hi(Cd_PreloadIds)
+    /* 1528 80064888 48094224 */  addiu      $v0, $v0, %lo(Cd_PreloadIds)
+    /* 152C 8006488C FC004224 */  addiu      $v0, $v0, 0xFC
+  .L80064890:
+    /* 1530 80064890 000040AC */  sw         $zero, 0x0($v0)
+    /* 1534 80064894 FFFF6324 */  addiu      $v1, $v1, -0x1
+    /* 1538 80064898 FDFF6104 */  bgez       $v1, .L80064890
+    /* 153C 8006489C FCFF4224 */   addiu     $v0, $v0, -0x4
+    /* 1540 800648A0 0580023C */  lui        $v0, %hi(Cd_PreloadCount)
+    /* 1544 800648A4 0800E003 */  jr         $ra
+    /* 1548 800648A8 5C0740AC */   sw        $zero, %lo(Cd_PreloadCount)($v0)
+endlabel Stg40_ClearPreloadList

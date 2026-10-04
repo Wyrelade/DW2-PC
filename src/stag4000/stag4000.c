@@ -1,7 +1,7 @@
 #include "common.h"
 #include "stag4000/stag4000.h"
 
-void func_80063758(void) {
+void Stg40_InitDisplay(void) {
     Blk16 *l;
     Stg40Rgb *c;
 
@@ -13,10 +13,10 @@ void func_80063758(void) {
     Gpu_AllocPacketBufs(0x19000);
     l = (Blk16 *)Cd_GetFileEntry(0xE200001);
     c = (Stg40Rgb *)Cd_GetFileEntry(0xE200002);
-    func_800677FC(l, c->r, c->g, c->b);
+    Stg40_SetLights(l, c->r, c->g, c->b);
 }
 
-void func_800637E8(void) {
+void Stg40_InitFloorHeader(void) {
     Stg40Blk5071C *b = D_8005071C;
 
     b->field_E54 = &b->field_E34;
@@ -24,7 +24,7 @@ void func_800637E8(void) {
     b->field_E54->field_2 = 0x30;
 }
 
-void func_80063814() { /* K&R: func_80063A34 passes its work pointer */
+void Stg40_InitDungeonEntry() { /* K&R: Stg40_SetupStage passes its work pointer */
     Stg40Stage14 *tbl;
     s32 i;
     Stg40Ent48 *e;
@@ -64,15 +64,15 @@ void func_80063814() { /* K&R: func_80063A34 passes its work pointer */
     }
 }
 
-void func_800639FC(void) {
-    func_80070DC0();
-    func_8006FED4();
-    func_8006FFCC();
-    func_800707D0();
+void Stg40_BuildFloorMap(void) {
+    Stg40_ApplyFloorLayout();
+    Stg40_AllocCellGrid();
+    Stg40_FillCellGrid();
+    Stg40_LabelRooms();
 }
 
 INCLUDE_RODATA("asm/USA/stag4000/rodata", D_80063360);
-void func_80063A34(Actor *a0) {
+void Stg40_SetupStage(Actor *a0) {
     ActorWork *work = a0->work;
     s32 *slots = (s32 *)a0->u34.children;
     s32 reset = 0;
@@ -82,9 +82,9 @@ void func_80063A34(Actor *a0) {
     Stg40Blk5071C *blk;
     s32 mode;
 
-    func_80063758();
-    func_800637E8();
-    func_80064880();
+    Stg40_InitDisplay();
+    Stg40_InitFloorHeader();
+    Stg40_ClearPreloadList();
     mode = D_8005F790 / 256;
     switch (mode) {
     default:
@@ -98,10 +98,10 @@ void func_80063A34(Actor *a0) {
         break;
     }
     if (D_8005071C->field_0 == 0) {
-        func_80063814(work);
+        Stg40_InitDungeonEntry(work);
     }
-    func_80070CC0(D_8005071C->field_8);
-    func_8006E60C(((Stg40Map *)D_80072B60->field_10)->field_4);
+    Stg40_LoadDungFile(D_8005071C->field_8);
+    Stg40_LoadEventTiles(((Stg40Map *)D_80072B60->field_10)->field_4);
     if (D_8005071C->field_0 == 1) {
         Stg40Ent48 *p;
         s32 i;
@@ -122,9 +122,9 @@ void func_80063A34(Actor *a0) {
             p++;
         }
         reset = -1;
-        func_80070D74(blk, p);
-        func_800639FC();
-        func_8007107C();
+        Stg40_PickFloorLayout(blk, p);
+        Stg40_BuildFloorMap();
+        Stg40_PickSpawnPoints();
         buf = D_80063360;
         level = Save_GameStatePtr->slotItems[0];
         level = (level != 0) ? (level - 0xEA) * 6 : 0;
@@ -139,29 +139,29 @@ void func_80063A34(Actor *a0) {
         if (Flag_Test(0x68) != 0) {
             level = 0x20B;
         }
-        func_8006D4E0(0, 0, level, 0, D_80072B60->field_20.field_0, D_80072B60->field_20.field_2);
+        Stg40_AddEntity(0, 0, level, 0, D_80072B60->field_20.field_0, D_80072B60->field_20.field_2);
         if (D_80072B60->field_24.field_0 != -1) {
-            func_8006D4E0(2, 0, 0x258, 0, D_80072B60->field_24.field_0, D_80072B60->field_24.field_2);
+            Stg40_AddEntity(2, 0, 0x258, 0, D_80072B60->field_24.field_0, D_80072B60->field_24.field_2);
         }
         if (D_80072B60->field_28.field_0 != -1) {
-            func_8006D4E0(3, 0, 0x259, 0, D_80072B60->field_28.field_0, D_80072B60->field_28.field_2);
+            Stg40_AddEntity(3, 0, 0x259, 0, D_80072B60->field_28.field_0, D_80072B60->field_28.field_2);
         }
-        func_8006D738();
-        func_8006DA18();
-        func_8006DDDC();
-        func_800709DC();
-        func_8006E024();
-        func_80071DB4();
-        func_8006ED5C();
-        func_80070A7C();
+        Stg40_SpawnEnemyParties();
+        Stg40_SpawnChests();
+        Stg40_SpawnFixedHazards();
+        Stg40_ApplyTrapCells();
+        Stg40_SpawnRandomHazards();
+        Stg40_RollObjectReveal();
+        Stg40_ClearVisitedBits();
+        Stg40_TurnQueueReset();
     }
     D_8005071C->field_2 = 0;
     D_8005071C->field_1 = 0;
     if (reset != -1) {
-        func_800639FC();
-        func_800709DC();
+        Stg40_BuildFloorMap();
+        Stg40_ApplyTrapCells();
     }
-    func_8006ED88(1);
+    Stg40_SyncVisitedBits(1);
     Task_Create(9, slots, 0);
     cur = slots + 6;
     Task_Create(0x203, cur, (s32)Cd_GetFileEntry(0xE200000));
@@ -191,11 +191,11 @@ void func_80063A34(Actor *a0) {
     D_8005071C->field_E54->field_4 = 1;
 }
 
-void func_80063EF8(void) {
+void Stg40_RootInit(void) {
 }
 
 INCLUDE_RODATA("asm/USA/stag4000/rodata", D_80063384);
-s32 func_80063F00(Actor *arg0) {
+s32 Stg40_BeginTransition(Actor *arg0) {
     Blk13 sp10;
     Stg40Ent48 *e;
     ActorWork *w = arg0->work;
@@ -211,12 +211,12 @@ s32 func_80063F00(Actor *arg0) {
     switch (D_8005071C->field_1) {
     case 1:
     default:
-        func_800721A8(Cd_GetFileEntry(0xE200003));
+        Stg40_CamLoadScript(Cd_GetFileEntry(0xE200003));
         D_8005071C->field_2 = 1;
         w->field_0 = 0x500;
         e = D_8005071C->field_1018.field_0[0];
         sp10 = D_80063384;
-        D_8005071C->field_103D = sp10.b[func_800703E0(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2) & 0xF];
+        D_8005071C->field_103D = sp10.b[Stg40_GetCellFlags(e->field_18.u0.pair.field_0, e->field_18.u0.pair.field_2) & 0xF];
         slot = &e->field_10;
         D_8005071C->field_103E = ((Stg40SlotInfo *)e->field_10)->field_E;
         q = ((Stg40SlotInfo *)*slot)->field_C / (s16)((Stg40SlotInfo *)*slot)->field_E;
@@ -247,7 +247,7 @@ s32 func_80063F00(Actor *arg0) {
         break;
 
     case 2:
-        func_800721A8(Cd_GetFileEntry(0xE200004));
+        Stg40_CamLoadScript(Cd_GetFileEntry(0xE200004));
         w->field_0 = Sys_GameMode;
         Task_SetState1(arg0, 3);
         ret = 1;
@@ -267,9 +267,9 @@ s32 func_80063F00(Actor *arg0) {
             Sys_State.modeArg = D_8005071C->field_7 ? 2 : 3;
         }
         if (D_8005071C->field_7 != 0) {
-            func_800721A8(Cd_GetFileEntry(0xE200009));
+            Stg40_CamLoadScript(Cd_GetFileEntry(0xE200009));
         } else {
-            func_800721A8(Cd_GetFileEntry(0xE200004));
+            Stg40_CamLoadScript(Cd_GetFileEntry(0xE200004));
         }
         ret = 1;
         Task_SetState1(arg0, 3);
@@ -278,7 +278,7 @@ s32 func_80063F00(Actor *arg0) {
     return ret;
 }
 
-void func_8006424C(Actor *arg0) {
+void Stg40_RootUpdate(Actor *arg0) {
     ActorWork *work = arg0->work;
     s32 st;
     Stg40AA4 *ctx = (Stg40AA4 *)arg0->u34.children;
@@ -287,10 +287,10 @@ void func_8006424C(Actor *arg0) {
     switch (arg0->stateLevel0) {
     default:
     case 0:
-        D_80072AA0 = arg0;
-        D_80072AA4 = ctx;
+        Stg40_RootTask = arg0;
+        Stg40_RootChildren = ctx;
         D_80072B60 = (Stg40B60 *)Mem_Alloc(0x190, 2);
-        func_80063A34(arg0);
+        Stg40_SetupStage(arg0);
         Task_NextState0(arg0);
         D_80072B60->field_7E = 0;
         Snd_SetSlotContent(1, D_8005071C->field_1044.field_2);
@@ -321,9 +321,9 @@ void func_8006424C(Actor *arg0) {
                 goto done0;
             load:
                 if (a0v == 1) {
-                    func_800721A8(Cd_GetFileEntry(0xE200006));
+                    Stg40_CamLoadScript(Cd_GetFileEntry(0xE200006));
                 } else {
-                    func_800721A8(Cd_GetFileEntry(0xE200005));
+                    Stg40_CamLoadScript(Cd_GetFileEntry(0xE200005));
                 }
 
                 Task_NextState2(arg0);
@@ -333,16 +333,16 @@ void func_8006424C(Actor *arg0) {
                 D_80072B60->field_7E = 0;
                 break;
             case 1:
-                if (func_80072114() == 0) {
+                if (Stg40_CamIsMoving() == 0) {
                     bt = D_80072B60->field_8;
-                    if (func_8006E6CC() != 0) {
+                    if (Stg40_CheckEventTile() != 0) {
                         Task_SetState1(bt, 0x1E);
                         Task_SetState1(arg0, 2);
-                    } else if (func_8006E330() != 0) {
+                    } else if (Stg40_CheckEncounter() != 0) {
                         Task_SetState1(bt, 4);
                         D_8005071C->field_1 = st;
                         D_8005071C->field_2 = st;
-                        func_80063F00(arg0);
+                        Stg40_BeginTransition(arg0);
                     } else {
                         Task_SetState1(arg0, 1);
                     }
@@ -376,7 +376,7 @@ void func_8006424C(Actor *arg0) {
                     Task_SetState0((Actor *)ctx->field_8, 2);
                     D_80072B60->field_7E = 0;
                     Task_SetState1(arg0, 2);
-                } else if (func_80063F00(arg0) == st) {
+                } else if (Stg40_BeginTransition(arg0) == st) {
                     D_80072B60->field_7E = 0;
                 }
                 break;
@@ -386,7 +386,7 @@ void func_8006424C(Actor *arg0) {
             if (D_8005071C->field_2 != 2) {
                 if (D_8005071C->field_2 == 0) {
                     Task_SetState1(arg0, 1);
-                } else if (func_80063F00(arg0) != 1) {
+                } else if (Stg40_BeginTransition(arg0) != 1) {
                     Task_SetState1(arg0, 1);
                 }
             }
@@ -434,7 +434,7 @@ void func_8006424C(Actor *arg0) {
                 if (arg0->stateLevel4++ >= 8) {
                     D_8005071C->field_1 = 4;
                     Task_SetState1(D_80072B60->field_8, 0x17);
-                    func_80063F00(arg0);
+                    Stg40_BeginTransition(arg0);
                 }
                 break;
             }
@@ -448,7 +448,7 @@ void func_8006424C(Actor *arg0) {
                 Task_NextState2(arg0);
                 break;
             case 1:
-                if (func_80072114() == 0) {
+                if (Stg40_CamIsMoving() == 0) {
                     Sys_NextGameMode = work->field_0;
                     Task_NextState2(arg0);
                 }
@@ -464,17 +464,17 @@ void func_8006424C(Actor *arg0) {
     }
 }
 
-void func_80064830(void) {
+void Stg40_RootDraw(void) {
 }
 
-void func_80064838(Actor *a0) {
-    func_8006ED88(0);
-    func_8006FF28();
+void Stg40_RootDestroy(Actor *a0) {
+    Stg40_SyncVisitedBits(0);
+    Stg40_FreeCellGrid();
     Mem_Free((ActorWork *)D_80072B60);
     Task_DefaultDestroy(a0);
 }
 
-void func_80064880(void) {
+void Stg40_ClearPreloadList(void) {
     s32 i;
 
     for (i = 0x3F; i >= 0; i--) {
@@ -483,7 +483,7 @@ void func_80064880(void) {
     Cd_PreloadCount = 0;
 }
 
-s32 func_800648AC(s32 val) {
+s32 Stg40_AddPreloadId(s32 val) {
     s32 i;
     s32 *p;
     s32 *list;
@@ -520,14 +520,14 @@ void func_80064930(Actor *a0, s32 a1) {
     Task_SetState1(a0, (u8)a1);
 }
 
-void func_80064970(Actor *a0, Stg40InitArg *a1) {
+void Stg40_LinkedModelInit(Actor *a0, Stg40InitArg *a1) {
     Stg40InitWork *w = (Stg40InitWork *)a0->work;
 
     w->field_20 = a1->field_0;
     w->field_24 = a1->field_4;
 }
 
-void func_8006498C(Actor *a0) {
+void Stg40_LinkedModelUpdate(Actor *a0) {
     Stg40InitWork *w = (Stg40InitWork *)a0->work;
     Stg40Model25DC *ent;
     ActorModel *m;
@@ -535,7 +535,7 @@ void func_8006498C(Actor *a0) {
     switch (a0->stateLevel0) {
     case 0:
     default:
-        ent = &D_800725DC[(s16)w->field_24];
+        ent = &Stg40_LinkedModelTable[(s16)w->field_24];
         Actor_InitTransform(a0, w->field_4, w->field_10);
         w->field_4[2] = 0;
         w->field_4[1] = 0;
@@ -579,7 +579,7 @@ void func_8006498C(Actor *a0) {
     }
 }
 
-void func_80064AFC(Actor *a0) {
+void Stg40_LinkedModelDraw(Actor *a0) {
     Stg40ChildWork *w = (Stg40ChildWork *)a0->work;
     Actor *p = w->field_20;
     Stg40Xform *x;
@@ -600,7 +600,7 @@ void func_80064AFC(Actor *a0) {
 }
 
 INCLUDE_RODATA("asm/USA/stag4000/rodata", D_800633C4);
-void func_80064BD8(Stg40Loc *loc) {
+void Stg40_DrawEntityShadow(Stg40Loc *loc) {
     struct {
         s16 x;
         s16 y;
@@ -630,12 +630,12 @@ void func_80064BD8(Stg40Loc *loc) {
     if ((loc->field_C & 0x3F) == 0 && (loc->field_10 & 0x3F) == 0) {
         col = loc->field_C / 64 - D_80072B60->field_2C / 64 + 4;
         row = loc->field_10 / 64 - D_80072B60->field_30 / 64 + 4;
-        if (col >= 0 && col < D_80072B6C->field_13D0 - 1 && row >= 0 && row < D_80072B6C->field_13D2 - 1) {
-            w = D_80072B6C;
+        if (col >= 0 && col < Stg40_FloorWork->field_13D0 - 1 && row >= 0 && row < Stg40_FloorWork->field_13D2 - 1) {
+            w = Stg40_FloorWork;
             a = &w->field_0[row][col];
             b = &w->field_0[row + 1][col];
             pkt = (Stg40FT4 *)Sys_PacketCursor;
-            *pkt = w->field_143C[D_8007265A];
+            *pkt = w->field_143C[Stg40_ShadowPrimIdx];
             pkt->x0 = a[0].s[0].x;
             pkt->y0 = a[0].s[0].y;
             pkt->x1 = a[1].s[0].x;
@@ -686,7 +686,7 @@ void func_80064BD8(Stg40Loc *loc) {
     }
     if (count != 0) {
         pkt = (Stg40FT4 *)Sys_PacketCursor;
-        *pkt = D_80072B6C->field_143C[D_8007265A];
+        *pkt = Stg40_FloorWork->field_143C[Stg40_ShadowPrimIdx];
         pkt->x0 = out[0].x;
         pkt->y0 = out[0].y;
         pkt->x1 = out[1].x;

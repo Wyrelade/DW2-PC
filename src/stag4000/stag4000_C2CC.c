@@ -6,14 +6,14 @@
 #include "stag4000/stag4000_9364_funcs.h"
 #include "stag4000/stag4000_A180_funcs.h"
 
-void func_8006F62C(Stg40TileWork *a0, s32 x, s32 y) {
-    if (func_800703E0(x, y) & 0x8000) {
+void Stg40_RevealCell(Stg40TileWork *a0, s32 x, s32 y) {
+    if (Stg40_GetCellFlags(x, y) & 0x8000) {
         ((Stg40Cell *)D_8005071C->field_E58)[a0->field_766 * y + x].field_0 |= 0x2000;
-        func_8006EB84(x, y, 1);
+        Stg40_AutomapSetCell(x, y, 1);
     }
 }
 
-void func_8006F6BC(Stg40TileWork *w) {
+void Stg40_AutomapRevealAround(Stg40TileWork *w) {
     s32 x = D_8005071C->field_1068->u0.pair.field_0;
     s32 y = D_8005071C->field_1068->u0.pair.field_2;
     s32 dx = w->field_76C - x;
@@ -22,33 +22,33 @@ void func_8006F6BC(Stg40TileWork *w) {
     if (dx == 0 && dy == 0) {
         return;
     }
-    func_8006F3F4(w, x, y);
+    Stg40_RevealRoom(w, x, y);
     if (dx > 0) {
-        func_8006F62C(w, x - 1, y - 1);
-        func_8006F62C(w, x - 1, y);
-        func_8006F62C(w, x - 1, y + 1);
+        Stg40_RevealCell(w, x - 1, y - 1);
+        Stg40_RevealCell(w, x - 1, y);
+        Stg40_RevealCell(w, x - 1, y + 1);
     }
     if (dx < 0) {
-        func_8006F62C(w, x + 1, y - 1);
-        func_8006F62C(w, x + 1, y);
-        func_8006F62C(w, x + 1, y + 1);
+        Stg40_RevealCell(w, x + 1, y - 1);
+        Stg40_RevealCell(w, x + 1, y);
+        Stg40_RevealCell(w, x + 1, y + 1);
     }
     if (dy > 0) {
-        func_8006F62C(w, x - 1, y - 1);
-        func_8006F62C(w, x, y - 1);
-        func_8006F62C(w, x + 1, y - 1);
+        Stg40_RevealCell(w, x - 1, y - 1);
+        Stg40_RevealCell(w, x, y - 1);
+        Stg40_RevealCell(w, x + 1, y - 1);
     }
     if (dy < 0) {
-        func_8006F62C(w, x - 1, y + 1);
-        func_8006F62C(w, x, y + 1);
-        func_8006F62C(w, x + 1, y + 1);
+        Stg40_RevealCell(w, x - 1, y + 1);
+        Stg40_RevealCell(w, x, y + 1);
+        Stg40_RevealCell(w, x + 1, y + 1);
     }
-    func_8006F62C(w, x, y);
+    Stg40_RevealCell(w, x, y);
     w->field_76C = D_8005071C->field_1068->u0.pair.field_0;
     w->field_76E = D_8005071C->field_1068->u0.pair.field_2;
 }
 
-void func_8006F86C(Stg40TileWork *w, s32 x, s32 y, s32 cx, s32 cy, s32 cw, s32 ch, s32 scale, s32 shade) {
+void Stg40_AutomapDrawWindow(Stg40TileWork *w, s32 x, s32 y, s32 cx, s32 cy, s32 cw, s32 ch, s32 scale, s32 shade) {
     Stg40FT4 a;
     Stg40FT4 b;
     Stg40FT4 *p = (Stg40FT4 *)Sys_State.packet.addr;
@@ -122,7 +122,7 @@ void func_8006F86C(Stg40TileWork *w, s32 x, s32 y, s32 cx, s32 cy, s32 cw, s32 c
     Sys_PacketCursor = (s32)p;
 }
 
-void func_8006FC54(ActorWork *w) {
+void Stg40_AutomapDrawModes(ActorWork *w) {
     Stg40TileWork *t = (Stg40TileWork *)w;
     Stg40Loc *loc;
     s32 i;
@@ -137,74 +137,74 @@ void func_8006FC54(ActorWork *w) {
             switch (i) {
             case 0:
                 loc = D_8005071C->field_1068;
-                func_8006F86C(t, 0x50, 0, loc->u0.pair.field_0, loc->u0.pair.field_2, 0x11, 0x11, 3, t->field_762[0]);
+                Stg40_AutomapDrawWindow(t, 0x50, 0, loc->u0.pair.field_0, loc->u0.pair.field_2, 0x11, 0x11, 3, t->field_762[0]);
                 break;
             case 1:
-                func_8006F86C(t, 0, 0, 0x20, 0x18, 0x41, 0x31, 4, t->field_762[1]);
+                Stg40_AutomapDrawWindow(t, 0, 0, 0x20, 0x18, 0x41, 0x31, 4, t->field_762[1]);
                 break;
             }
         }
     }
 }
 
-void func_8006FDAC(void) {
+void Stg40_AutomapInit(void) {
 }
 
-void func_8006FDB4(Actor *a0) {
+void Stg40_AutomapUpdate(Actor *a0) {
     Stg40TileWork *w = (Stg40TileWork *)a0->work;
 
     switch (a0->stateLevel0) {
     case 0:
     default:
-        D_80072BB0 = (Stg40TileGrid *)w;
-        func_8006F3B0(w);
-        func_8006F290(w);
-        func_8006ECD0(w);
-        func_8006F18C(w);
+        Stg40_AutomapWork = (Stg40TileGrid *)w;
+        Stg40_AutomapInitDims(w);
+        Stg40_AutomapInitTex(w);
+        Stg40_AutomapRedraw(w);
+        Stg40_AutomapFlush(w);
         D_80072B60->field_7E = 0;
         Task_NextState0(a0);
         break;
     case 1:
-        func_8006F6BC(w);
-        func_8006F18C(w);
-        func_8006F1C8((Stg40ImgWork *)w);
+        Stg40_AutomapRevealAround(w);
+        Stg40_AutomapFlush(w);
+        Stg40_AutomapCycleClut((Stg40ImgWork *)w);
         break;
     case 2:
         break;
     }
 }
 
-void func_8006FE5C(Actor *a0) {
-    func_8006F38C((Stg40ImgWork *)a0->work);
+void Stg40_AutomapDestroy(Actor *a0) {
+    Stg40_AutomapReleaseTex((Stg40ImgWork *)a0->work);
     Task_DefaultDestroy(a0);
 }
 
-void func_8006FE90(Actor *a0) {
+void Stg40_AutomapDraw(Actor *a0) {
     ActorWork *w = a0->work;
 
     if (Beetle_GetPart(0x12) <= 0) {
         D_80072B60->field_7E = 0;
     }
-    func_8006FC54(w);
+    Stg40_AutomapDrawModes(w);
 }
 
-void func_8006FED4(void) {
+void Stg40_AllocCellGrid(void) {
     Stg40E34 *d = D_8005071C->field_E54;
 
     D_8005071C->field_E58 = (ActorWork *)Mem_Alloc(d->field_0 * (d->field_2 << 2), 2);
 }
 
-void func_8006FF28(void) {
+void Stg40_FreeCellGrid(void) {
     Mem_Free(D_8005071C->field_E58);
 }
 
-u16 func_8006FF54(u16 *pal, u32 *bits, s32 x, s32 y) {
+u16 Stg40_ReadFloorBits(u16 *pal, u32 *bits, s32 x, s32 y) {
     s32 w = D_8005071C->field_E54->field_0 / 8;
 
     return pal[(bits[w * y + x / 8] >> ((x % 8) * 4)) & 0xF];
 }
 
-void func_8006FFCC(void) {
+void Stg40_FillCellGrid(void) {
     Stg40Blk5071C *g = D_8005071C;
     Stg40Cell *cell;
     Stg40E34 *dims;
@@ -229,10 +229,10 @@ void func_8006FFCC(void) {
     rows = dims->field_2;
     room = D_80072B60->field_14;
     bits = room->field_0;
-    D_800729A0[7] = D_800729B4[map->field_2C];
+    Stg40_FloorBitsPal[7] = D_800729B4[map->field_2C];
     for (y = 0; y < rows; y++) {
         for (x = 0; x < cols; x++) {
-            v = func_8006FF54(D_800729A0, bits, x, y);
+            v = Stg40_ReadFloorBits(Stg40_FloorBitsPal, bits, x, y);
             if (v == 0) {
                 cell->field_0 = 0;
                 cell->field_2 = 0xFF;
@@ -240,17 +240,17 @@ void func_8006FFCC(void) {
             } else {
                 cell->field_0 = v | 0x8000;
                 cell->field_0 |= (v != 1) ? 0x4000 : 0;
-                if (y == 0 || (y > 0 && !func_8006FF54(D_800729A0, bits, x, y - 1))) {
+                if (y == 0 || (y > 0 && !Stg40_ReadFloorBits(Stg40_FloorBitsPal, bits, x, y - 1))) {
                     cell->field_0 |= 0x800;
                 }
-                if (y == rows - 1 || (y < rows - 1 && !func_8006FF54(D_800729A0, bits, x, y + 1))) {
+                if (y == rows - 1 || (y < rows - 1 && !Stg40_ReadFloorBits(Stg40_FloorBitsPal, bits, x, y + 1))) {
                     cell->field_0 |= 0x400;
                 }
-                if (x == 0 || (x > 0 && !func_8006FF54(D_800729A0, bits, x - 1, y))) {
+                if (x == 0 || (x > 0 && !Stg40_ReadFloorBits(Stg40_FloorBitsPal, bits, x - 1, y))) {
                     cell->field_0 |= 0x200;
                 }
                 lastX = cols - 1;
-                if (x == lastX || (x < lastX && !func_8006FF54(D_800729A0, bits, x + 1, y))) {
+                if (x == lastX || (x < lastX && !Stg40_ReadFloorBits(Stg40_FloorBitsPal, bits, x + 1, y))) {
                     cell->field_0 |= 0x100;
                 }
             }
@@ -264,10 +264,10 @@ void func_8006FFCC(void) {
     for (y = 0; y < rows; y++) {
         for (x = 0; x < cols; x++) {
             if (cell->field_0 & 0xF) {
-                up = func_800703E0(x, y - 1);
-                down = func_800703E0(x, y + 1);
-                left = func_800703E0(x - 1, y);
-                right = func_800703E0(x + 1, y);
+                up = Stg40_GetCellFlags(x, y - 1);
+                down = Stg40_GetCellFlags(x, y + 1);
+                left = Stg40_GetCellFlags(x - 1, y);
+                right = Stg40_GetCellFlags(x + 1, y);
                 if (cell->field_0 & 0x800) {
                     cell->field_3 |= (left & 0x800) ? 0 : 1;
                     cell->field_3 |= (right & 0x800) ? 0 : 2;
@@ -284,7 +284,7 @@ void func_8006FFCC(void) {
                     cell->field_3 |= (up & 0x100) ? 0 : 0x40;
                     cell->field_3 |= (down & 0x100) ? 0 : 0x80;
                 }
-                if (!(func_800703E0(x - 1, y - 1) & 0xF)) {
+                if (!(Stg40_GetCellFlags(x - 1, y - 1) & 0xF)) {
                     cell->field_0 |= 0x80;
                 }
             }
@@ -293,7 +293,7 @@ void func_8006FFCC(void) {
     }
 }
 
-u16 func_800703E0(s32 x, s32 y) {
+u16 Stg40_GetCellFlags(s32 x, s32 y) {
     Stg40Blk5071C *b = D_8005071C;
     Stg40E34 *d = b->field_E54;
     Stg40Cell *cells = (Stg40Cell *)b->field_E58;
@@ -307,7 +307,7 @@ u16 func_800703E0(s32 x, s32 y) {
     return r;
 }
 
-Stg40Cell *func_80070438(s32 x, s32 y) {
+Stg40Cell *Stg40_GetCell(s32 x, s32 y) {
     Stg40Blk5071C *b = D_8005071C;
     Stg40E34 *d = b->field_E54;
     s32 w = d->field_0;
@@ -320,7 +320,7 @@ Stg40Cell *func_80070438(s32 x, s32 y) {
     return r;
 }
 
-void func_80070490(s32 buf, s32 p1, s32 x, s32 y, s32 fill)
+void Stg40_FloodFillRoom(s32 buf, s32 p1, s32 x, s32 y, s32 fill)
 {
     Stg40Cell *grid = (Stg40Cell *)D_8005071C->field_E58;
     s32 width = D_8005071C->field_E54->field_0;
@@ -331,7 +331,7 @@ void func_80070490(s32 buf, s32 p1, s32 x, s32 y, s32 fill)
     s32 ny;
     s32 r;
 
-    if (!(func_800703E0(x, y) & 0x4000)) {
+    if (!(Stg40_GetCellFlags(x, y) & 0x4000)) {
         return;
     }
     count = 1;
@@ -346,9 +346,9 @@ void func_80070490(s32 buf, s32 p1, s32 x, s32 y, s32 fill)
         x = ((Stg40FillPt *)buf)[count].x;
         y = ((Stg40FillPt *)buf)[count].y;
         for (k = 0; k < 4; k++) {
-            nx = D_800729C0[k * 2] + x;
-            ny = D_800729C0[k * 2 + 1] + y;
-            r = func_800703E0(nx, ny);
+            nx = Stg40_FillNeighbours[k * 2] + x;
+            ny = Stg40_FillNeighbours[k * 2 + 1] + y;
+            r = Stg40_GetCellFlags(nx, ny);
             if ((r & (fill | 0x8000)) != 0x8000) {
                 continue;
             }
@@ -366,7 +366,7 @@ void func_80070490(s32 buf, s32 p1, s32 x, s32 y, s32 fill)
     } while (count != 0);
 }
 
-s32 func_800706C8(void) {
+s32 Stg40_FindUnlabeledRoom(void) {
     Stg40Blk5071C *b = D_8005071C;
     Stg40Cell *c = (Stg40Cell *)b->field_E58;
     s32 h = b->field_E54->field_2;
@@ -384,7 +384,7 @@ s32 func_800706C8(void) {
     return -1;
 }
 
-void func_80070754(void) {
+void Stg40_LabelFilledCells(void) {
     Stg40Blk5071C *b = D_8005071C;
     s32 n = b->field_E54->field_0 * b->field_E54->field_2;
     u8 v = D_80072B60->field_0;
@@ -399,21 +399,21 @@ void func_80070754(void) {
     }
 }
 
-void func_800707D0(void) {
+void Stg40_LabelRooms(void) {
     s32 w = D_8005071C->field_E54->field_0;
     s32 buf = Mem_Alloc(0x3FF8, 2);
     s32 i;
 
     D_80072B60->field_0 = 0;
-    while ((D_80072BB8 = i = func_800706C8()) != -1) {
-        func_80070490(buf, 0, i % w, i / w, 0x2000);
-        func_80070754();
+    while ((D_80072BB8 = i = Stg40_FindUnlabeledRoom()) != -1) {
+        Stg40_FloodFillRoom(buf, 0, i % w, i / w, 0x2000);
+        Stg40_LabelFilledCells();
         D_80072B60->field_0++;
     }
     Mem_Free((ActorWork *)buf);
 }
 
-Stg40Cell *func_800708A4(s32 x, s32 y) {
+Stg40Cell *Stg40_GetCell2(s32 x, s32 y) {
     Stg40Blk5071C *b = D_8005071C;
     Stg40E34 *d = b->field_E54;
     s32 w = d->field_0;
@@ -426,7 +426,7 @@ Stg40Cell *func_800708A4(s32 x, s32 y) {
     return r;
 }
 
-void func_800708FC(s32 x, s32 y, s32 flag) {
+void Stg40_SetCellOccupied(s32 x, s32 y, s32 flag) {
     Stg40Blk5071C *b = D_8005071C;
     Stg40E34 *d = b->field_E54;
     s32 w = d->field_0;
@@ -439,7 +439,7 @@ void func_800708FC(s32 x, s32 y, s32 flag) {
     }
 }
 
-void func_80070974(s32 x, s32 y) {
+void Stg40_ClearCellOccupied(s32 x, s32 y) {
     Stg40Blk5071C *b = D_8005071C;
     Stg40E34 *d = b->field_E54;
     s32 w = d->field_0;
@@ -452,19 +452,19 @@ void func_80070974(s32 x, s32 y) {
     }
 }
 
-void func_800709DC(void) {
+void Stg40_ApplyTrapCells(void) {
     Stg40Rec3 *r = D_8005071C->field_D08;
     Stg40Cell *c;
     s32 i;
 
     for (i = 0; i < D_8005071C->field_14; r++, i++) {
-        c = func_800708A4(r->field_0, r->field_1);
+        c = Stg40_GetCell2(r->field_0, r->field_1);
         c->field_0 &= 0xFFF0;
         c->field_0 |= r->field_2 + 7;
     }
 }
 
-void func_80070A7C(void) {
+void Stg40_TurnQueueReset(void) {
     Stg40FFC *p = &D_8005071C->field_FFC;
     s16 *q = p->field_0;
     s32 i;
@@ -478,7 +478,7 @@ void func_80070A7C(void) {
     *q = -2;
 }
 
-s16 *func_80070AD0(s16 v) {
+s16 *Stg40_TurnQueueFind(s16 v) {
     Stg40FFC *f = &D_8005071C->field_FFC;
     s16 *p = f->field_0;
 
@@ -491,18 +491,18 @@ s16 *func_80070AD0(s16 v) {
     return NULL;
 }
 
-void func_80070B2C(s32 v) {
+void Stg40_TurnQueueAdd(s32 v) {
     Stg40FFC *f = &D_8005071C->field_FFC;
 
-    if (func_80070AD0(v) == NULL && f->field_16 < f->field_18) {
+    if (Stg40_TurnQueueFind(v) == NULL && f->field_16 < f->field_18) {
         f->field_0[f->field_16] = v;
         f->field_16++;
     }
 }
 
-void func_80070BA4(s16 v) {
+void Stg40_TurnQueueRemove(s16 v) {
     Stg40FFC *f = &D_8005071C->field_FFC;
-    s16 *p = func_80070AD0(v);
+    s16 *p = Stg40_TurnQueueFind(v);
     s16 *q;
 
     if (p != NULL) {
@@ -517,24 +517,24 @@ void func_80070BA4(s16 v) {
     }
 }
 
-s16 func_80070C48(void) {
+s16 Stg40_TurnQueueNext(void) {
     Stg40FFC *p = &D_8005071C->field_FFC;
 
     p->field_1A = (p->field_1A + 1 < p->field_16) ? p->field_1A + 1 : 0;
     return p->field_0[p->field_1A];
 }
 
-s16 func_80070C94(void) {
+s16 Stg40_TurnQueueCurrent(void) {
     Stg40FFC *p = &D_8005071C->field_FFC;
 
     return p->field_0[p->field_1A];
 }
 
-void func_80070CC0(s32 id) {
+void Stg40_LoadDungFile(s32 id) {
     s32 *p;
 
     p = (s32 *)Cd_GetFileOrNull(id);
-    func_80070EE0(p);
+    Stg40_RelocDungFile(p);
     D_80072B60->field_1C = id;
     D_80072B60->field_C = p;
     D_80072B60->field_10 = p[D_8005071C->field_3];
@@ -544,16 +544,16 @@ void func_80070CC0(s32 id) {
     }
 }
 
-void func_80070D74(void) {
+void Stg40_PickFloorLayout(void) {
     s32 i;
 
-    D_8005071C->field_4 = func_800711C4(8);
+    D_8005071C->field_4 = Stg40_RandInt(8);
     for (i = 7; i >= 0; i--) {
         D_8005071C->field_E5C[i] = 0;
     }
 }
 
-void func_80070DC0(void) {
+void Stg40_ApplyFloorLayout(void) {
     Stg40B60 *b = D_80072B60;
     Stg40Blk5071C *g = D_8005071C;
     Stg40Map *m = (Stg40Map *)b->field_10;
@@ -576,13 +576,13 @@ void func_80070DC0(void) {
     }
 }
 
-void func_80070EC0(u32 *p, u32 n) {
+void Stg40_RelocPtr(u32 *p, u32 n) {
     if (*p < n) {
         *p += n;
     }
 }
 
-s32 func_80070EE0(s32 *p) {
+s32 Stg40_RelocDungFile(s32 *p) {
     u32 *tbl = (u32 *)p;
     u32 base = (u32)p;
     s32 n = 0;
@@ -600,11 +600,11 @@ s32 func_80070EE0(s32 *p) {
                 q = &m->field_8[i];
                 *q += base;
                 r = (Stg40MapRoomRel *)*q;
-                func_80070EC0(&r->field_0[0], base);
-                func_80070EC0(&r->field_0[1], base);
-                func_80070EC0(&r->field_0[2], base);
-                func_80070EC0(&r->field_0[3], base);
-                func_80070EC0(&r->field_0[4], base);
+                Stg40_RelocPtr(&r->field_0[0], base);
+                Stg40_RelocPtr(&r->field_0[1], base);
+                Stg40_RelocPtr(&r->field_0[2], base);
+                Stg40_RelocPtr(&r->field_0[3], base);
+                Stg40_RelocPtr(&r->field_0[4], base);
             }
         }
         tbl++;
@@ -613,7 +613,7 @@ s32 func_80070EE0(s32 *p) {
     return n;
 }
 
-s32 func_80070FEC(Stg40Pick *out, Stg40Rec3 *e, u8 key) {
+s32 Stg40_PickRandomPoint(Stg40Pick *out, Stg40Rec3 *e, u8 key) {
     s32 r = -1;
     s32 n = 0;
 
@@ -626,27 +626,27 @@ s32 func_80070FEC(Stg40Pick *out, Stg40Rec3 *e, u8 key) {
         }
     }
     if (n != 0) {
-        r = func_800711C4(n);
+        r = Stg40_RandInt(n);
     }
     return r;
 }
 
-void func_8007107C(void) {
+void Stg40_PickSpawnPoints(void) {
     Stg40Pick buf[20];
     Stg40Rec3 *list = D_80072B60->field_14->field_4;
     s32 r;
 
-    r = func_80070FEC(buf, list, 0);
+    r = Stg40_PickRandomPoint(buf, list, 0);
     D_80072B60->field_20.field_0 = buf[r].field_0;
     D_80072B60->field_20.field_2 = buf[r].field_2;
-    r = func_80070FEC(buf, list, 1);
+    r = Stg40_PickRandomPoint(buf, list, 1);
     D_80072B60->field_24.field_2 = -1;
     D_80072B60->field_24.field_0 = -1;
     if (r != -1) {
         D_80072B60->field_24.field_0 = buf[r].field_0;
         D_80072B60->field_24.field_2 = buf[r].field_2;
     }
-    r = func_80070FEC(buf, list, 2);
+    r = Stg40_PickRandomPoint(buf, list, 2);
     D_80072B60->field_28.field_2 = -1;
     D_80072B60->field_28.field_0 = -1;
     if (r != -1) {
@@ -655,36 +655,36 @@ void func_8007107C(void) {
     }
 }
 
-s32 func_80071180(void) {
+s32 Stg40_RandPercent(void) {
     return (Rand_Next() & 0xFFF) * 100 / 4096;
 }
 
-s32 func_800711C4(s32 n) {
+s32 Stg40_RandInt(s32 n) {
     return (Rand_Next() & 0xFFF) * n / 4096;
 }
 
-s32 func_80071204(s32 i) {
-    s32 r = func_8006E858(7);
+s32 Stg40_GetTrapDisarmRank(s32 i) {
+    s32 r = Stg40_GetPartLevel(7);
     r = r < 0 ? 0 : r;
-    return D_800729F8[r][i];
+    return Stg40_TrapDisarmRanks[r][i];
 }
 
-s32 func_80071258(s32 i) {
-    return func_80071180() < D_80072A1C[i];
+s32 Stg40_RollTrapDisarm(s32 i) {
+    return Stg40_RandPercent() < Stg40_TrapDisarmChance[i];
 }
 
-s32 func_80071294(void) {
-    s32 r = D_80072A30[func_80071180() / 4];
+s32 Stg40_RollTrapEffect(void) {
+    s32 r = Stg40_TrapEffectTable[Stg40_RandPercent() / 4];
 
     if (r >= 4 && r < 16) {
-        if (func_8006E820(D_800729E0[r - 4]) <= 0) {
+        if (Stg40_GetBeetlePart(Stg40_TrapPartSlots[r - 4]) <= 0) {
             r = 16;
         }
     }
     return r;
 }
 
-void func_80071310(s32 a0, s32 a1) {
+void Stg40_ShowTrapEffectMsg(s32 a0, s32 a1) {
     s32 base = 0x1FD0011;
 
     if (a0 == 0) {
@@ -692,28 +692,28 @@ void func_80071310(s32 a0, s32 a1) {
     }
     switch (a1) {
     case 0:
-        func_80067610(1, base, (s32)Save_GameStatePtr->field_D1, (s32)func_8006755C(0, D_80072B60->field_58));
+        Stg40_MsgWinOpen(1, base, (s32)Save_GameStatePtr->field_D1, (s32)Stg40_NumToDigits(0, D_80072B60->field_58));
         break;
     case 1:
-        func_80067610(1, base + 1, (s32)func_8006755C(0, D_80072B60->field_58), 0);
+        Stg40_MsgWinOpen(1, base + 1, (s32)Stg40_NumToDigits(0, D_80072B60->field_58), 0);
         break;
     case 2:
     case 3:
-        func_80067610(1, base + a1, 0, 0);
+        Stg40_MsgWinOpen(1, base + a1, 0, 0);
         break;
     case 16:
-        func_80067610(1, base + 5, 0, 0);
+        Stg40_MsgWinOpen(1, base + 5, 0, 0);
         break;
     default:
         {
-            s32 k = D_800729E0[a1 - 4];
-            func_80067610(1, base + 4, Item_GetNameText(Save_GameStatePtr->slotItems[k]), 0);
+            s32 k = Stg40_TrapPartSlots[a1 - 4];
+            Stg40_MsgWinOpen(1, base + 4, Item_GetNameText(Save_GameStatePtr->slotItems[k]), 0);
         }
         break;
     }
 }
 
-void func_8007142C(s32 a0, s32 a1) {
+void Stg40_ApplyTrapEffect(s32 a0, s32 a1) {
     s32 i;
     s32 k;
     DigiRosterEntry *r;
@@ -722,11 +722,11 @@ void func_8007142C(s32 a0, s32 a1) {
     switch (a0) {
     case 0:
         D_80072B60->field_58 = a1 * 400;
-        func_8006E8F4(D_80072B60->field_58);
+        Stg40_DamageBeetle(D_80072B60->field_58);
         break;
     case 1:
         D_80072B60->field_58 = a1 * 10;
-        func_8006EA84(3);
+        Stg40_ListPartyDigi(3);
         for (i = 0; i < D_80072B60->field_140; i++) {
             r = &Save_GameStatePtr->elems[D_80072B60->field_128[i]];
             r->hp = ((s16)r->hp - D_80072B60->field_58 > 0) ? (u16)r->hp - (u16)D_80072B60->field_58 : 1;
@@ -734,7 +734,7 @@ void func_8007142C(s32 a0, s32 a1) {
         break;
     case 2:
         D_8005071C->field_BA0 = (D_8005071C->field_BA0 | 2) & ~0x80;
-        D_8005071C->field_BA4 = func_800711C4(4) + 1;
+        D_8005071C->field_BA4 = Stg40_RandInt(4) + 1;
         break;
     case 3:
         g = D_8005071C;
@@ -742,7 +742,7 @@ void func_8007142C(s32 a0, s32 a1) {
         g->field_BA0 = (g->field_BA0 | 1) & ~0x40;
         break;
     default:
-        k = D_800729E0[a0 - 4];
+        k = Stg40_TrapPartSlots[a0 - 4];
         Save_GameStatePtr->slotStatus[k] = 1;
         break;
     case 16:
@@ -750,8 +750,8 @@ void func_8007142C(s32 a0, s32 a1) {
     }
 }
 
-s32 func_800715DC(void) {
-    s32 r = func_8006E820();
+s32 Stg40_GetPartState(void) {
+    s32 r = Stg40_GetBeetlePart();
 
     if (r > 0) {
         r = 1;
@@ -759,25 +759,25 @@ s32 func_800715DC(void) {
     return r;
 }
 
-s32 func_80071608(void) {
+s32 Stg40_PickRandomPart(void) {
     u8 buf[16];
     s32 n = 0;
     s32 r = -1;
     u32 i;
 
     for (i = 0; i < 12; i++) {
-        if (Beetle_GetPart(D_80072A4C[i]) > 0) {
-            buf[n++] = D_80072A4C[i];
+        if (Beetle_GetPart(Stg40_RandomPartSlots[i]) > 0) {
+            buf[n++] = Stg40_RandomPartSlots[i];
         }
     }
     if (n != 0) {
-        r = func_80071180() / (100 / n);
+        r = Stg40_RandPercent() / (100 / n);
         r = buf[r > n - 1 ? n - 1 : r];
     }
     return r;
 }
 
-s32 func_800716EC(Actor *a0) {
+s32 Stg40_TickStatusEffects(Actor *a0) {
     Stg40BA0View *st;
     u8 *stack;
     u8 *p;
@@ -799,22 +799,22 @@ s32 func_800716EC(Actor *a0) {
     }
     *count = 0;
     if (st->field_0 & 1) {
-        if (++st->field_15 >= 3 || (func_80071180() < 50 && (st->field_0 & 0x40))) {
+        if (++st->field_15 >= 3 || (Stg40_RandPercent() < 50 && (st->field_0 & 0x40))) {
             st->field_0 &= ~1;
             stack[(*count)++] = 0;
         }
         st->field_0 |= 0x40;
     }
     if (st->field_0 & 2) {
-        if (func_80071180() < 10 && (st->field_0 & 0x80)) {
+        if (Stg40_RandPercent() < 10 && (st->field_0 & 0x80)) {
             st->field_0 &= ~2;
             stack[(*count)++] = 1;
         }
         st->field_0 |= 0x80;
     }
     if (D_8005071C->field_BA5 != 0) {
-        slot = func_80071608();
-        if ((func_80071180() < 5 && (st->field_0 & 0x100)) || (Save_GameStatePtr->bits == 0 && slot == -1)) {
+        slot = Stg40_PickRandomPart();
+        if ((Stg40_RandPercent() < 5 && (st->field_0 & 0x100)) || (Save_GameStatePtr->bits == 0 && slot == -1)) {
             stack[(*count)++] = 2;
             D_8005071C->field_BA5 = 0;
         } else {
@@ -832,12 +832,12 @@ s32 func_800716EC(Actor *a0) {
                 sfx = 3;
                 D_80072B60->field_78 = Item_GetNameText(Save_GameStatePtr->slotItems[slot]);
             }
-            func_80067880(a0, 2);
+            Stg40_ObjStartFlash(a0, 2);
         }
         st->field_0 |= 0x100;
     }
     if (D_8005071C->field_BA6 != 0) {
-        if (func_80071180() < 2 && (st->field_0 & 0x200)) {
+        if (Stg40_RandPercent() < 2 && (st->field_0 & 0x200)) {
             stack[(*count)++] = 3;
             D_8005071C->field_BA6 = 0;
         } else {
@@ -848,21 +848,21 @@ s32 func_800716EC(Actor *a0) {
                 v = 0;
             }
             Save_GameStatePtr->mp = v;
-            func_80067880(a0, 2);
+            Stg40_ObjStartFlash(a0, 2);
             sfx = 2;
         }
         st->field_0 |= 0x200;
     }
     if (D_8005071C->field_BA7 != 0) {
         s32 chance[4] = { 0, 50, 40, 30 };
-        n = ((s32 (*)(s32))func_8006EA84)(1);
-        if ((func_80071180() < chance[st->field_7] && (st->field_0 & 0x400)) || n < 2 ||
+        n = ((s32 (*)(s32))Stg40_ListPartyDigi)(1);
+        if ((Stg40_RandPercent() < chance[st->field_7] && (st->field_0 & 0x400)) || n < 2 ||
             Digi_CountByState(1) >= 24) {
             stack[(*count)++] = 4;
             D_8005071C->field_BA7 = 0;
         } else {
-            n = ((s32 (*)(s32))func_8006EA84)(0);
-            r = func_80071180() / (100 / n);
+            n = ((s32 (*)(s32))Stg40_ListPartyDigi)(0);
+            r = Stg40_RandPercent() / (100 / n);
             if (r > n - 1) {
                 r = n - 1;
             }
@@ -877,7 +877,7 @@ s32 func_800716EC(Actor *a0) {
                 Save_GameStatePtr->elems[i].state = i + 3;
             }
             stack[(*count)++] = 7;
-            func_80067880(a0, 2);
+            Stg40_ObjStartFlash(a0, 2);
             sfx = 1;
         }
         st->field_0 |= 0x400;
@@ -902,16 +902,16 @@ s32 func_800716EC(Actor *a0) {
     return D_80072B60->field_68;
 }
 
-void func_80071DB4(void) {
+void Stg40_RollObjectReveal(void) {
     Stg40Ent48 *e = D_8005071C->field_18;
     s32 a;
     s32 b;
     s32 i;
     s32 v;
 
-    a = func_8006E858(13);
+    a = Stg40_GetPartLevel(13);
     a = a < 0 ? 0 : a;
-    b = func_8006E858(14);
+    b = Stg40_GetPartLevel(14);
     b = b < 0 ? 0 : b;
     for (i = 0; i < D_8005071C->field_C; e++, i++) {
         if (e->field_0 & 0x8000) {
@@ -919,7 +919,7 @@ void func_80071DB4(void) {
             case 6:
             case 8:
                 v = D_80072A58[e->field_10[1] - 1 + a * 5];
-                if (func_80071180() < v) {
+                if (Stg40_RandPercent() < v) {
                     e->field_0 |= 0x1000;
                 }
                 break;
@@ -928,7 +928,7 @@ void func_80071DB4(void) {
             case 11:
             case 12:
                 v = D_80072A78[e->field_10[1] - 1 + b * 3];
-                if (func_80071180() < v) {
+                if (Stg40_RandPercent() < v) {
                     e->field_0 |= 0x1000;
                 }
                 break;
@@ -937,7 +937,7 @@ void func_80071DB4(void) {
     }
 }
 
-Stg40Ent48 *func_80071F50(s32 id) {
+Stg40Ent48 *Stg40_FindEntByDigiId(s32 id) {
     Stg40Ent48 *e;
     s32 i;
 
@@ -951,7 +951,7 @@ Stg40Ent48 *func_80071F50(s32 id) {
     return NULL;
 }
 
-void func_80071FBC(s32 *arg) {
+void Stg40_TextObjCommand(s32 *arg) {
     Stg40Ent48 *e;
     Actor *t;
     s32 st;
@@ -962,7 +962,7 @@ void func_80071FBC(s32 *arg) {
     D_80072B60->field_17C.field_2 = arg[1] - 1;
     D_80072B60->field_180 = 0;
     D_80072B60->field_184 = NULL;
-    e = func_80071F50(D_80072B60->field_178);
+    e = Stg40_FindEntByDigiId(D_80072B60->field_178);
     if (e != NULL) {
         t = e->field_14;
         D_80072B60->field_180 = 1;
@@ -994,20 +994,20 @@ void func_80071FBC(s32 *arg) {
     }
 }
 
-void func_800720EC(void) {
+void Stg40_EndTextObjCmd(void) {
     D_80072B60->field_180 = 0;
 }
 
-s16 func_800720FC(void) {
+s16 Stg40_IsTextObjCmdBusy(void) {
     return D_80072B60->field_180;
 }
 
-s32 func_80072114(void) {
-    return D_80072BC0->stateLevel1;
+s32 Stg40_CamIsMoving(void) {
+    return Stg40_CameraTask->stateLevel1;
 }
 
-void func_8007212C(Stg40Blk20 *blk, s32 a1, s32 a2, s32 a3) {
-    Actor *t = D_80072BC0;
+void Stg40_CamStartMove(Stg40Blk20 *blk, s32 a1, s32 a2, s32 a3) {
+    Actor *t = Stg40_CameraTask;
     Stg40BC0Work *w = (Stg40BC0Work *)t->work;
 
     w->field_88 = *blk;
@@ -1017,8 +1017,8 @@ void func_8007212C(Stg40Blk20 *blk, s32 a1, s32 a2, s32 a3) {
     Task_SetState1(t, 1);
 }
 
-void func_800721A8(Stg40Cmd *src) {
-    Stg40BC0Work *w = (Stg40BC0Work *)D_80072BC0->work;
+void Stg40_CamLoadScript(Stg40Cmd *src) {
+    Stg40BC0Work *w = (Stg40BC0Work *)Stg40_CameraTask->work;
     s32 i;
 
     w->field_B4 = w->field_BC;
@@ -1029,19 +1029,19 @@ void func_800721A8(Stg40Cmd *src) {
     }
 }
 
-void func_80072250(Actor *a0) {
+void Stg40_CamNextCommand(Actor *a0) {
     Stg40BC0Work *w = (Stg40BC0Work *)a0->work;
     Stg40Cmd *c;
 
     if (w->field_B8 != 0) {
         c = w->field_B4;
-        func_8007212C(&c->field_C, c->field_0, c->field_4, c->field_8);
+        Stg40_CamStartMove(&c->field_C, c->field_0, c->field_4, c->field_8);
         w->field_B8--;
         w->field_B4++;
     }
 }
 
-void func_800722B8(Actor *task) {
+void Stg40_CamMoveStep(Actor *task) {
     Stg40BC0Work *w = (Stg40BC0Work *)task->work;
     s32 dx;
     s32 x0;
@@ -1055,7 +1055,7 @@ void func_800722B8(Actor *task) {
             w->field_0.words[2] = w->field_88.words[6];
             w->field_7C[1] = (u16)w->field_AC;
             if (w->field_B8 != 0) {
-                func_80072250(task);
+                Stg40_CamNextCommand(task);
             } else {
                 Task_SetState1(task, 0);
             }
@@ -1074,16 +1074,16 @@ void func_800722B8(Actor *task) {
     task->stateLevel2 = task->stateLevel2 + 1;
 }
 
-void func_80072418(Actor *a0, Block1C *a1) {
+void Stg40_CameraInit(Actor *a0, Block1C *a1) {
     Stg40BC0Work *w = (Stg40BC0Work *)a0->work;
 
-    D_80072BC0 = a0;
+    Stg40_CameraTask = a0;
     w->field_0 = *a1;
     w->field_B4 = 0;
     w->field_B8 = 0;
 }
 
-void func_80072468(Actor *a0) {
+void Stg40_CameraUpdate(Actor *a0) {
     Stg40BC0Work *w = (Stg40BC0Work *)a0->work;
     Stg40RView v;
 
@@ -1099,11 +1099,11 @@ void func_80072468(Actor *a0) {
         case 0:
         default:
             if (w->field_B8 != 0) {
-                func_80072250(a0);
+                Stg40_CamNextCommand(a0);
             }
             break;
         case 1:
-            func_800722B8(a0);
+            Stg40_CamMoveStep(a0);
             break;
         }
         w->field_84 = 0;
@@ -1128,5 +1128,5 @@ void func_80072468(Actor *a0) {
     }
 }
 
-void func_800725A8(void) {
+void Stg40_CameraDraw(void) {
 }
