@@ -4,7 +4,7 @@
 #include "stag0000/stag0000_1AE4_funcs.h"
 #include "stag0000/stag0000_39F0_funcs.h"
 
-void func_800679C8(Actor *arg0) {
+void Stg00_DigiModelDraw(Actor *arg0) {
     Stg00ModelWork *w = (Stg00ModelWork *)arg0->work;
 
     Gfx_AttachModel(arg0, w->field_14);
@@ -19,11 +19,11 @@ void func_800679C8(Actor *arg0) {
     }
 }
 
-void func_80067A50(Actor *arg0, Stg00Vec3 *arg1) {
+void Stg00_PopupInit(Actor *arg0, Stg00Vec3 *arg1) {
     *(Stg00Vec3 *)arg0->work = *arg1;
 }
 
-void func_80067A70(Actor *arg0) {
+void Stg00_PopupTask(Actor *arg0) {
     Stg00FadeWork *w = (Stg00FadeWork *)arg0->work;
     s32 v;
 
@@ -69,7 +69,7 @@ void func_80067A70(Actor *arg0) {
     }
 }
 
-void func_80067BAC(Actor *arg0) {
+void Stg00_PopupDraw(Actor *arg0) {
     Stg00PanelWork *w = (Stg00PanelWork *)arg0->work;
     EntA0 *e = NULL;
     s32 draw = 1;
@@ -86,14 +86,14 @@ void func_80067BAC(Actor *arg0) {
     case 6:
     case 7:
         e = Cd_GetFileEntry(0xD2D0000);
-        Gfx_HidePartsByMask(e, D_80068F28[w->field_0 - 4]);
+        Gfx_HidePartsByMask(e, Stg00_PopupItemMasks[w->field_0 - 4]);
         break;
     case 1:
     case 2:
     case 3:
         e = Cd_GetFileEntry(0x1A10000);
-        Gfx_SetPartsNumber(e, D_80068F44[w->field_0 - 1], 3, w->field_4);
-        Gfx_HidePartsByMask(e, D_80068F38[w->field_0 - 1]);
+        Gfx_SetPartsNumber(e, Stg00_PopupNumParts[w->field_0 - 1], 3, w->field_4);
+        Gfx_HidePartsByMask(e, Stg00_PopupNumMasks[w->field_0 - 1]);
         break;
     case 8:
         draw = 0;
@@ -140,11 +140,11 @@ void func_80067BAC(Actor *arg0) {
 }
 INCLUDE_RODATA("asm/USA/stag0000/rodata", D_800634A8);
 
-void func_80067DFC(Actor *arg0, Stg00Vec3 *arg1) {
+void Stg00_XaPlayInit(Actor *arg0, Stg00Vec3 *arg1) {
     *(Stg00Vec3 *)arg0->work = *arg1;
 }
 
-void func_80067E1C(Actor *arg0) {
+void Stg00_XaPlayTask(Actor *arg0) {
     Stg00CdWork *w = (Stg00CdWork *)arg0->work;
     u8 param[8];
     u8 mode[8];
@@ -158,8 +158,8 @@ void func_80067E1C(Actor *arg0) {
         switch (arg0->stateLevel1) {
         case 0:
         default:
-            w->field_C = Cd_GetFileLba(w->field_0) + D_80068FA0[w->field_8 - 1];
-            w->field_10 = w->field_C + D_80068FB8[w->field_8 - 1];
+            w->field_C = Cd_GetFileLba(w->field_0) + Stg00_XaTrackStart[w->field_8 - 1];
+            w->field_10 = w->field_C + Stg00_XaTrackLength[w->field_8 - 1];
             param[0] = 1;
             param[1] = w->field_4;
             CdControl(0xD, param, 0);
@@ -213,48 +213,48 @@ void func_80067E1C(Actor *arg0) {
     }
 }
 
-void func_80068050(Actor *arg0) {
+void Stg00_XaPlayDestroy(Actor *arg0) {
     CdControlF(9, 0);
     Task_DefaultDestroy(arg0);
 }
 
-u8 *func_80068084(s32 arg0, s32 arg1) {
-    u8 *s = D_8006925C[arg0][arg1];
+u8 *Stg00_GetSoundLabel(s32 arg0, s32 arg1) {
+    u8 *s = Stg00_SoundBanks[arg0][arg1];
     s32 i = 0;
     s32 row = (arg1 != 0);
 
     for (; s[i] != 0; i++) {
         u8 c = s[i];
         if (c < 0x3A) {
-            D_80069364[row][i] = c - 0x30;
+            Stg00_SoundLabelBuf[row][i] = c - 0x30;
         } else if (c == 0x5F) {
-            D_80069364[row][i] = 0x24;
+            Stg00_SoundLabelBuf[row][i] = 0x24;
         } else {
-            D_80069364[row][i] = c + 0xC9;
+            Stg00_SoundLabelBuf[row][i] = c + 0xC9;
         }
     }
-    D_80069364[row][i] = 0xFF;
-    return D_80069364[row];
+    Stg00_SoundLabelBuf[row][i] = 0xFF;
+    return Stg00_SoundLabelBuf[row];
 }
 
-u8 *func_80068150(s32 arg0) {
-    return func_80068084(arg0, 0);
+u8 *Stg00_GetBankLabel(s32 arg0) {
+    return Stg00_GetSoundLabel(arg0, 0);
 }
 
-u8 *func_80068170(s32 arg0, s32 arg1) {
-    return func_80068084(arg0, arg1 + 1);
+u8 *Stg00_GetSoundIdLabel(s32 arg0, s32 arg1) {
+    return Stg00_GetSoundLabel(arg0, arg1 + 1);
 }
 
-s32 func_80068190(void) {
+s32 Stg00_CountSoundBanks(void) {
     s32 i;
 
-    for (i = 0; D_8006925C[i] != NULL; i++) {
+    for (i = 0; Stg00_SoundBanks[i] != NULL; i++) {
     }
     return i;
 }
 
-s32 func_800681C4(s32 arg0) {
-    u8 **p = D_8006925C[arg0];
+s32 Stg00_CountBankSounds(s32 arg0) {
+    u8 **p = Stg00_SoundBanks[arg0];
     s32 i;
 
     for (i = 0; p[i] != NULL; i++) {
@@ -262,7 +262,7 @@ s32 func_800681C4(s32 arg0) {
     return i - 1;
 }
 
-void func_80068208(Actor *arg0) {
+void Stg00_WindowTestTask(Actor *arg0) {
     Stg00CountWork *w = (Stg00CountWork *)arg0->work;
     s32 i;
     s32 n;
@@ -309,15 +309,15 @@ void func_80068208(Actor *arg0) {
     }
 }
 
-void func_8006835C(Actor *arg0) {
+void Stg00_WindowTestDraw(Actor *arg0) {
     Stg00CountWork *w = (Stg00CountWork *)arg0->work;
     EntA0 *e = Cd_GetFileEntry(0x770000);
     Stg00Part *p;
 
-    Gfx_HidePartsByMask(e, D_800692C4[w->field_0]);
+    Gfx_HidePartsByMask(e, Stg00_WindowTestMasks[w->field_0]);
     p = (Stg00Part *)e;
     while (p->fileId != 0) {
-        if (p->partMask & D_800692D0[w->field_0].field_8) {
+        if (p->partMask & Stg00_WindowTestParts[w->field_0].field_8) {
             p->field_E = 0;
             if (w->field_4 != 0) {
                 w->field_4--;
@@ -325,17 +325,17 @@ void func_8006835C(Actor *arg0) {
                 p->field_20 += 0x20;
             }
         }
-        if (p->partMask & D_800692D0[w->field_0].field_0) {
+        if (p->partMask & Stg00_WindowTestParts[w->field_0].field_0) {
             if ((p->field_20 + 0x400) & 0x800) {
                 p->field_F = 0;
             }
         }
-        if (p->partMask & D_800692D0[w->field_0].field_4) {
+        if (p->partMask & Stg00_WindowTestParts[w->field_0].field_4) {
             if ((p->field_20 - 0x418) & 0x800) {
                 p->field_F = 0;
             }
         }
-        if (p->partMask & D_800692D0[w->field_0].field_C) {
+        if (p->partMask & Stg00_WindowTestParts[w->field_0].field_C) {
             p->field_E = 1;
             p->field_20 = 0;
         }
@@ -344,7 +344,7 @@ void func_8006835C(Actor *arg0) {
     Gfx_DrawParts(e);
 }
 
-void func_800684E4(Actor *arg0) {
+void Stg00_SoundTestTask(Actor *arg0) {
     Stg00SndWork *w = (Stg00SndWork *)arg0->work;
     TextOpenArgs t;
 
@@ -368,25 +368,25 @@ void func_800684E4(Actor *arg0) {
         default:
             if (D_8005F6F0[0].right > 0) {
                 w->field_C++;
-                if (w->field_C == func_80068190()) {
+                if (w->field_C == Stg00_CountSoundBanks()) {
                     w->field_C = 0;
                 }
                 w->field_10 = 0;
             } else if (D_8005F6F0[0].left > 0) {
                 if (w->field_C == 0) {
-                    w->field_C = func_80068190() - 1;
+                    w->field_C = Stg00_CountSoundBanks() - 1;
                 } else {
                     w->field_C--;
                 }
                 w->field_10 = 0;
             } else if (D_8005F6F0[0].up > 0) {
                 w->field_10++;
-                if (w->field_10 == func_800681C4(w->field_C)) {
+                if (w->field_10 == Stg00_CountBankSounds(w->field_C)) {
                     w->field_10 = 0;
                 }
             } else if (D_8005F6F0[0].down > 0) {
                 if (w->field_10 == 0) {
-                    w->field_10 = func_800681C4(w->field_C) - 1;
+                    w->field_10 = Stg00_CountBankSounds(w->field_C) - 1;
                 } else {
                     w->field_10--;
                 }
@@ -400,7 +400,7 @@ void func_800684E4(Actor *arg0) {
                 Snd_StopAll();
             }
         text:
-            t.text = (s32)D_80069318;
+            t.text = (s32)Stg00_SoundTestTitle;
             t.bigFont = 1;
             t.color = 0;
             t.x = 0x28;
@@ -409,7 +409,7 @@ void func_800684E4(Actor *arg0) {
             t.charAdvance = 0xE;
             t.lineAdvance = 0x14;
             Text_Open(&w->field_0, &t);
-            t.text = (s32)func_80068150(w->field_C);
+            t.text = (s32)Stg00_GetBankLabel(w->field_C);
             t.bigFont = 1;
             t.color = 0;
             t.x = 0x78;
@@ -418,7 +418,7 @@ void func_800684E4(Actor *arg0) {
             t.charAdvance = 0xE;
             t.lineAdvance = 0x14;
             Text_Open(&w->field_4, &t);
-            t.text = (s32)func_80068170(w->field_C, w->field_10);
+            t.text = (s32)Stg00_GetSoundIdLabel(w->field_C, w->field_10);
             t.bigFont = 1;
             t.color = 0;
             t.x = 0x78;
@@ -441,14 +441,14 @@ void func_800684E4(Actor *arg0) {
     }
 }
 
-void func_800687E8(void) {
+void Stg00_SoundTestDraw(void) {
 }
 
-void func_800687F0(Actor *arg0, Stg00Blk1C *arg1) {
+void Stg00_CameraInit(Actor *arg0, Stg00Blk1C *arg1) {
     *(Stg00Blk1C *)arg0->work = *arg1;
 }
 
-void func_80068830(Actor *arg0) {
+void Stg00_CameraTask(Actor *arg0) {
     if (arg0->stateLevel0 == 0) {
         Stg00ObjWork *w = (Stg00ObjWork *)arg0->work;
         GsInitCoordinate2(NULL, &w->field_1C);
@@ -457,7 +457,7 @@ void func_80068830(Actor *arg0) {
     }
 }
 
-void func_80068884(Actor *arg0) {
+void Stg00_CameraDraw(Actor *arg0) {
     Stg00ObjWork *w = (Stg00ObjWork *)arg0->work;
     Stg00RefView rv;
 
@@ -478,11 +478,11 @@ void func_80068884(Actor *arg0) {
     GsSetRefView2(&rv);
 }
 
-TaskEntry *func_80068930(void) {
+TaskEntry *Stg00_FindCamera(void) {
     return Task_FindFirst(0x109, -1, -1);
 }
 
-void func_80068958(Actor *arg0, s32 arg1, s32 arg2, s32 arg3) {
+void Stg00_CamMoveViewPoint(Actor *arg0, s32 arg1, s32 arg2, s32 arg3) {
     if (arg0 != NULL) {
         Stg00ObjWork *w = (Stg00ObjWork *)arg0->work;
         w->field_84 = 1;
@@ -492,7 +492,7 @@ void func_80068958(Actor *arg0, s32 arg1, s32 arg2, s32 arg3) {
     }
 }
 
-void func_8006899C(Actor *arg0, s32 arg1, s32 arg2, s32 arg3) {
+void Stg00_CamMoveRefPoint(Actor *arg0, s32 arg1, s32 arg2, s32 arg3) {
     if (arg0 != NULL) {
         Stg00ObjWork *w = (Stg00ObjWork *)arg0->work;
         w->field_84 = 1;
@@ -502,7 +502,7 @@ void func_8006899C(Actor *arg0, s32 arg1, s32 arg2, s32 arg3) {
     }
 }
 
-void func_800689E0(Actor *arg0, s32 arg1) {
+void Stg00_CamSetProjection(Actor *arg0, s32 arg1) {
     if (arg0 != NULL) {
         Stg00ObjWork *w = (Stg00ObjWork *)arg0->work;
         w->field_18 = arg1;
@@ -510,7 +510,7 @@ void func_800689E0(Actor *arg0, s32 arg1) {
     }
 }
 
-void func_80068A00(Actor *arg0, s32 arg1, s32 arg2, s32 arg3) {
+void Stg00_CamMoveOrigin(Actor *arg0, s32 arg1, s32 arg2, s32 arg3) {
     if (arg0 != NULL) {
         Stg00ObjWork *w = (Stg00ObjWork *)arg0->work;
         w->field_84 = 1;
@@ -520,7 +520,7 @@ void func_80068A00(Actor *arg0, s32 arg1, s32 arg2, s32 arg3) {
     }
 }
 
-void func_80068A44(Actor *arg0, s32 arg1, s32 arg2, s32 arg3) {
+void Stg00_CamRotate(Actor *arg0, s32 arg1, s32 arg2, s32 arg3) {
     if (arg0 != NULL) {
         Stg00ObjWork *w = (Stg00ObjWork *)arg0->work;
         w->field_84 = 1;

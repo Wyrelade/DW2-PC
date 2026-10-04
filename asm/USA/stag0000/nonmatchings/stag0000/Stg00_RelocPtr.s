@@ -1,0 +1,13 @@
+nonmatching Stg00_RelocPtr, 0x20
+
+glabel Stg00_RelocPtr
+    /* D04 80064064 0000838C */  lw         $v1, 0x0($a0)
+    /* D08 80064068 00000000 */  nop
+    /* D0C 8006406C 2B106500 */  sltu       $v0, $v1, $a1
+    /* D10 80064070 02004010 */  beqz       $v0, .L8006407C
+    /* D14 80064074 21106500 */   addu      $v0, $v1, $a1
+    /* D18 80064078 000082AC */  sw         $v0, 0x0($a0)
+  .L8006407C:
+    /* D1C 8006407C 0800E003 */  jr         $ra
+    /* D20 80064080 00000000 */   nop
+endlabel Stg00_RelocPtr

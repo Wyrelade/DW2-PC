@@ -3,13 +3,13 @@
 #include "stag0000/stag0000_funcs.h"
 #include "stag0000/stag0000_1AE4_funcs.h"
 
-void func_80066D50(Actor *arg0) {
+void Stg00_GroupViewDraw(Actor *arg0) {
     EntA0 *e = Cd_GetFileEntry(0x1890000);
-    Gfx_HidePartsByMask(e, D_80068EC4[((Stg00PartsWork *)arg0->work)->field_C]);
+    Gfx_HidePartsByMask(e, Stg00_GroupWinMasks[((Stg00PartsWork *)arg0->work)->field_C]);
     Gfx_DrawParts(e);
 }
 
-void func_80066DB0(Actor *arg0, Stg00ModelArg *arg1) {
+void Stg00_DigiModelInit(Actor *arg0, Stg00ModelArg *arg1) {
     Stg00ModelWork *w;
 
     arg0->digiId = arg1->field_0;
@@ -19,7 +19,7 @@ void func_80066DB0(Actor *arg0, Stg00ModelArg *arg1) {
     w->field_10 = arg1->field_10;
 }
 
-void func_80066E1C(Actor *arg0, s32 arg1) {
+void Stg00_SpawnSkillCastFx(Actor *arg0, s32 arg1) {
     Stg00SpawnWork *w = (Stg00SpawnWork *)arg0->work;
     s32 *slot = (s32 *)arg0->u34.children;
     Stg00TaskArgs args;
@@ -211,7 +211,7 @@ void func_80067120(Actor *arg0, s32 arg1, s32 arg2) {
     }
 }
 
-void func_800673FC(Actor *arg0) {
+void Stg00_ResetToHomePos(Actor *arg0) {
     Stg00Work73FC *w = (Stg00Work73FC *)arg0->work;
     ActorTransformView *t = arg0->u38.ptr38;
     t->posX = w->field_4;
@@ -219,7 +219,7 @@ void func_800673FC(Actor *arg0) {
     t->posZ = w->field_C;
 }
 
-void func_80067428(Actor *arg0) {
+void Stg00_DigiModelTask(Actor *arg0) {
     Stg00ModelWorkX *w = (Stg00ModelWorkX *)arg0->work;
     s32 *slot = (s32 *)arg0->u34.children;
     Stg00ModelFade *m;
@@ -255,28 +255,28 @@ void func_80067428(Actor *arg0) {
                 arg0->stateLevel2++;
                 break;
             case 0x28:
-                func_800673FC(arg0);
+                Stg00_ResetToHomePos(arg0);
                 Task_SetState0(arg0, 1);
                 break;
             }
             break;
         case 1:
-            func_800673FC(arg0);
+            Stg00_ResetToHomePos(arg0);
             Anim_SetModelAnim(arg0, 0x32);
             Task_SetState0(arg0, 1);
             break;
         case 2:
-            func_800673FC(arg0);
+            Stg00_ResetToHomePos(arg0);
             Anim_SetModelAnim(arg0, 0x3C);
             Task_SetState0(arg0, 1);
             break;
         case 3:
-            func_800673FC(arg0);
+            Stg00_ResetToHomePos(arg0);
             Anim_SetModelAnim(arg0, 0x46);
             Task_SetState0(arg0, 1);
             break;
         case 4:
-            func_800673FC(arg0);
+            Stg00_ResetToHomePos(arg0);
             Anim_SetModelAnim(arg0, 0x50);
             Task_SetState0(arg0, 1);
             break;
@@ -361,7 +361,7 @@ void func_80067428(Actor *arg0) {
                 case 0:
                 default:
                     w->field_2C = arg0->stateLevel4;
-                    func_800673FC(arg0);
+                    Stg00_ResetToHomePos(arg0);
                     p = Skill_GetShotXa(w->field_2C);
                     a3.field_0 = p[0];
                     a3.field_4 = p[1];
@@ -372,7 +372,7 @@ void func_80067428(Actor *arg0) {
                     if (((Actor *)slot[5])->stateLevel0 == 1) {
                         Task_NextState0((Actor *)slot[5]);
                         k = func_8001EE10(w->field_2C);
-                        func_80066E1C(arg0, k);
+                        Stg00_SpawnSkillCastFx(arg0, k);
                         switch (k) {
                         case 0:
                         default:

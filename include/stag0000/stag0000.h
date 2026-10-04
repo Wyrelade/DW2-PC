@@ -6,7 +6,7 @@
 
 /* STAG0000 (Ovl_FileIds id 0, gameMode 0x1xx). */
 
-/* Work area pointed to by D_80069360. */
+/* Work area pointed to by Stg00_FontWork. */
 typedef struct {
     /* 0x000 */ u16 clut[0x60];
     /* 0x0C0 */ u16 buf[0x400];
@@ -17,7 +17,7 @@ typedef struct {
     /* 0x8C8 */ RECT rectBig;
     /* 0x8D0 */ s32 *field_8D0;
     /* 0x8D4 */ s16 field_8D4;
-    /* 0x8D6 */ u8 field_8D6[0x102]; /* D_8006935C points here */
+    /* 0x8D6 */ u8 field_8D6[0x102]; /* Stg00_FontTextBuf points here */
 } Stg00Work; /* size 0x9D8 */
 
 typedef struct {
@@ -38,10 +38,10 @@ typedef struct {
 } Stg00Work73FC;
 
 extern SysState D_8005F770;
-extern u8 **D_8006925C[];
-extern u8 *D_8006935C;
-extern Stg00Work *D_80069360;
-extern u8 D_80068AD0[];       /* 1bpp font bits unpacked by func_80064E78 */
+extern u8 **Stg00_SoundBanks[];
+extern u8 *Stg00_FontTextBuf;
+extern Stg00Work *Stg00_FontWork;
+extern u8 Stg00_FontGlyphs[];       /* 1bpp font bits unpacked by Stg00_FontInit */
 
 extern void Task_DefaultDestroy(Actor *arg0);
 extern TaskEntry *Task_FindFirst(s32 arg0, s32 arg1, s32 arg2);
@@ -53,12 +53,12 @@ extern void Actor_UpdateTransform(Actor *);
 extern void Gfx_CalcModelBoneMatrices(Actor *);
 extern void Gfx_DrawTexModel(Actor *, s32);
 
-void func_80065114(void);
-void func_80065150(s32 arg0, s32 arg1, u8 *arg2);
+void Stg00_FontFree(void);
+void Stg00_FontDrawStr(s32 arg0, s32 arg1, u8 *arg2);
 
 
 
-/* Actor.work of the objects moved by func_80068958 family (0x1C now a GsCOORDINATE2). */
+/* Actor.work of the objects moved by Stg00_CamMoveViewPoint family (0x1C now a GsCOORDINATE2). */
 typedef struct {
     /* 0x00 */ s32 field_0;
     /* 0x04 */ s32 field_4;
@@ -97,7 +97,7 @@ typedef struct {
     /* 0x12 */ s16 h;
 } Stg00Sprt;
 
-/* Actor.work of the parts-drawing tasks (func_80066618 / func_80066D50). */
+/* Actor.work of the parts-drawing tasks (Stg00_LineupDraw / Stg00_GroupViewDraw). */
 typedef struct {
     u8 _pad00[0x0C];
     /* 0x0C */ s32 field_C;
@@ -115,7 +115,7 @@ typedef struct {
     /* 0x1C */ Coord1F668 *field_1C;
 } Stg00RefView;
 
-/* Init arg of the model task (func_80066DB0). */
+/* Init arg of the model task (Stg00_DigiModelInit). */
 typedef struct {
     /* 0x00 */ s32 field_0;
     /* 0x04 */ Vec3 field_4;
@@ -138,7 +138,7 @@ typedef struct {
     /* 0x00 */ s32 field_0;
 } Stg00ModeWork;
 
-/* File-relative pointer tables fixed up by func_80064084. */
+/* File-relative pointer tables fixed up by Stg00_RelocDungFile. */
 typedef struct {
     /* 0x00 */ u32 field_0;
     /* 0x04 */ u32 field_4;
@@ -183,7 +183,7 @@ typedef struct {
 } Stg00BitTbl; /* size 0x78 */
 extern Stg00BitTbl D_80063378;
 
-/* Actor.work of the select task (func_800649D8 and its states). */
+/* Actor.work of the select task (Stg00_DungSelTask and its states). */
 typedef struct {
     /* 0x00 */ s16 field_0;
     /* 0x02 */ s16 field_2;
@@ -232,7 +232,7 @@ typedef struct {
     /* 0x2 */ s16 field_2;
 } Stg00Pos;
 
-/* Sorted list work (func_8006620C / func_80066130). */
+/* Sorted list work (Stg00_LineupBuildList / Stg00_LineupSpawnModels). */
 typedef struct {
     u8 _pad000[0x10];
     /* 0x010 */ s32 field_10[200];
@@ -272,9 +272,9 @@ extern PadState D_8005F6F0[];
 extern s32 D_8005F78C;
 extern Stg00Blk5071C *D_8005071C;
 extern s32 D_80068E84[];
-extern s32 D_80068EC4[];
-extern Stg00Pos D_80068E18[][9];
-extern u8 D_80069364[2][10];
+extern s32 Stg00_GroupWinMasks[];
+extern Stg00Pos Stg00_LineupLayouts[][9];
+extern u8 Stg00_SoundLabelBuf[2][10];
 
 extern void Gfx_HidePartsByMask(EntA0 *, s32);
 extern void Gfx_DrawParts(EntA0 *);
@@ -307,16 +307,16 @@ extern void Text_Close(s32 *);
 extern void Text_Open(void *, TextOpenArgs *);
 extern u8 *Digi_GetDefaultName(s32);
 extern s32 Skill_GetNameText(s32);
-extern u8 D_80068CE8[];
+extern u8 Stg00_DigiViewSkills[];
 
-/* D_80068DB8 record: parts file id at 0 (func_80065E24). */
+/* Stg00_DigiViewPages record: parts file id at 0 (Stg00_DigiViewDraw). */
 typedef struct {
     /* 0x0 */ s32 field_0;
     /* 0x4 */ s32 field_4;
 } Ent68DB8; /* size 8 */
-extern Ent68DB8 D_80068DB8[];
+extern Ent68DB8 Stg00_DigiViewPages[];
 
-/* Actor.work of func_80065E24 (also func_8006571C: the same dialog-cursor state). */
+/* Actor.work of Stg00_DigiViewDraw (also Stg00_DigiViewTask: the same dialog-cursor state). */
 typedef struct {
     /* 0x00 */ s32 field_0;
     /* 0x04 */ s32 field_4;
@@ -334,30 +334,30 @@ typedef struct {
 } Work65E24;
 
 /* Work65E24's leading 4 words (field_0..field_C) viewed as a slot array,
- * indexed by field_8 (func_8006571C). */
+ * indexed by field_8 (Stg00_DigiViewTask). */
 typedef union {
     /* 0x00 */ s32 words[4];
     /* 0x00 */ u8 bytes[16];
 } Work65E24Slots;
 
 extern void Text_CloseArray(s32 *arg0, s32 arg1);
-extern void func_800655FC(Actor *arg0);
+extern void Stg00_DigiViewSpawnModel(Actor *arg0);
 extern void Task_SetState2(Actor *arg0, u32 arg1);
 extern void Task_SetState4(Actor *arg0, u32 arg1);
 extern u8 D_80068DD8[][4];
 extern u8 D_80068DF4[][4];
 
-void func_80064064(u32 *arg0, u32 arg1);
-void func_800642BC(Actor *arg0, Stg00SelWork *arg1);
+void Stg00_RelocPtr(u32 *arg0, u32 arg1);
+void Stg00_DungSelPickFloor(Actor *arg0, Stg00SelWork *arg1);
 void func_80064E44(void);
-void func_80064E78(void);
-void func_80064E4C(s16 arg0);
-u8 *func_80068084(s32 arg0, s32 arg1);
+void Stg00_FontInit(void);
+void Stg00_FontSetColor(s16 arg0);
+u8 *Stg00_GetSoundLabel(s32 arg0, s32 arg1);
 
 /* ---- functions ---- */
 
 
-/* Actor.work of the fade task (func_80067A70). */
+/* Actor.work of the fade task (Stg00_PopupTask). */
 typedef struct {
     /* 0x00 */ s32 field_0;
     u8 _pad04[0x08];
@@ -365,7 +365,7 @@ typedef struct {
     /* 0x10 */ s32 field_10;
 } Stg00FadeWork;
 
-/* Actor.work of the counter task (func_80068208) and parts task (func_8006835C). */
+/* Actor.work of the counter task (Stg00_WindowTestTask) and parts task (Stg00_WindowTestDraw). */
 typedef struct {
     /* 0x00 */ s32 field_0;
     /* 0x04 */ s32 field_4;
@@ -453,7 +453,7 @@ typedef struct {
     u8 _pad14[0x14];
 } Stg00PartScale; /* size 0x28 */
 
-/* Actor.work of the panel task (func_80067BAC). */
+/* Actor.work of the panel task (Stg00_PopupDraw). */
 typedef struct {
     /* 0x00 */ s32 field_0;
     /* 0x04 */ s32 field_4;
@@ -472,7 +472,7 @@ typedef struct {
     /* 0x00 */ s32 field_0;
 } Stg00TaskArg1;
 
-/* Actor.work of the CD stream task (func_80067E1C). */
+/* Actor.work of the CD stream task (Stg00_XaPlayTask). */
 typedef struct {
     /* 0x00 */ s32 field_0;
     /* 0x04 */ u8 field_4;
@@ -496,7 +496,7 @@ typedef struct {
     /* 0x4C */ s32 field_4C;
 } Stg00Xform;
 
-/* Actor.work of the sound test task (func_800684E4). */
+/* Actor.work of the sound test task (Stg00_SoundTestTask). */
 typedef struct {
     /* 0x00 */ s32 field_0;
     /* 0x04 */ s32 field_4;
@@ -522,7 +522,7 @@ typedef struct {
     /* 0x44 */ u8 field_44[8][10];
 } Stg00SelWorkX;
 
-/* Actor.work of the random-pose viewer (func_800669F4). */
+/* Actor.work of the random-pose viewer (Stg00_GroupViewTask). */
 typedef struct {
     /* 0x00 */ s32 field_0;
     /* 0x04 */ s32 field_4;
@@ -530,7 +530,7 @@ typedef struct {
     /* 0x0C */ s32 field_C;
 } Stg00ViewWork;
 
-/* Stg00ModelWork with the fields func_80067428 touches. */
+/* Stg00ModelWork with the fields Stg00_DigiModelTask touches. */
 typedef struct {
     /* 0x00 */ s32 field_0;
     /* 0x04 */ Vec3 field_4;
@@ -563,17 +563,17 @@ extern s32 D_8005F778;
 extern s32 D_8005F788;
 extern s32 D_8005F79C;
 extern s32 D_80068AA0[];
-extern s32 D_800692C4[];
-extern Stg00PartMasks D_800692D0[];
-extern s32 D_80068F28[];
-extern s32 D_80068F38[];
-extern s32 D_80068F44[];
-extern s32 D_80068FA0[];
-extern s32 D_80068FB8[];
+extern s32 Stg00_WindowTestMasks[];
+extern Stg00PartMasks Stg00_WindowTestParts[];
+extern s32 Stg00_PopupItemMasks[];
+extern s32 Stg00_PopupNumMasks[];
+extern s32 Stg00_PopupNumParts[];
+extern s32 Stg00_XaTrackStart[];
+extern s32 Stg00_XaTrackLength[];
 extern Elem12 D_80068EEC;
 extern Elem12 D_80068EF8;
 extern Elem12 D_80068F04;
-extern u8 D_80069318[];
+extern u8 Stg00_SoundTestTitle[];
 
 extern void Sys_SetFrameRate60(void);
 extern void Task_NextState1(Actor *arg0);
@@ -611,26 +611,26 @@ extern void Snd_PlayById(s32 id, s32 set);
 extern void Snd_StopAll(void);
 extern s32 Snd_AnySlotLoading(void);
 
-void func_80063E34(Stg00Sprt *arg0, GfxPartTexSlot *arg1, s32 arg2, s32 arg3);
+void Stg00_InitTileSprt(Stg00Sprt *arg0, GfxPartTexSlot *arg1, s32 arg2, s32 arg3);
 s32 func_80064B08(Stg00RelocHdr *arg0, s32 arg1);
-void func_80066084(Actor *arg0);
-void func_8006620C(Actor *arg0);
-void func_80066130(Actor *arg0);
-void func_80066828(Actor *arg0);
-void func_800668D4(Actor *arg0);
-void func_80066E1C(Actor *arg0, s32 arg1);
+void Stg00_LineupSetVideoMode(Actor *arg0);
+void Stg00_LineupBuildList(Actor *arg0);
+void Stg00_LineupSpawnModels(Actor *arg0);
+void Stg00_GroupViewSetVideoMode(Actor *arg0);
+void Stg00_SpawnRandomGroup(Actor *arg0);
+void Stg00_SpawnSkillCastFx(Actor *arg0, s32 arg1);
 void func_80066FE8(Actor *arg0);
 void func_80067120(Actor *arg0, s32 arg1, s32 arg2);
-void func_800673FC(Actor *arg0);
-u8 *func_80068150(s32 arg0);
-u8 *func_80068170(s32 arg0, s32 arg1);
-s32 func_80068190(void);
-s32 func_800681C4(s32 arg0);
-TaskEntry *func_80068930(void);
-void func_80068958(Actor *arg0, s32 arg1, s32 arg2, s32 arg3);
-void func_8006899C(Actor *arg0, s32 arg1, s32 arg2, s32 arg3);
-void func_80068A00(Actor *arg0, s32 arg1, s32 arg2, s32 arg3);
-void func_80068A44(Actor *arg0, s32 arg1, s32 arg2, s32 arg3);
+void Stg00_ResetToHomePos(Actor *arg0);
+u8 *Stg00_GetBankLabel(s32 arg0);
+u8 *Stg00_GetSoundIdLabel(s32 arg0, s32 arg1);
+s32 Stg00_CountSoundBanks(void);
+s32 Stg00_CountBankSounds(s32 arg0);
+TaskEntry *Stg00_FindCamera(void);
+void Stg00_CamMoveViewPoint(Actor *arg0, s32 arg1, s32 arg2, s32 arg3);
+void Stg00_CamMoveRefPoint(Actor *arg0, s32 arg1, s32 arg2, s32 arg3);
+void Stg00_CamMoveOrigin(Actor *arg0, s32 arg1, s32 arg2, s32 arg3);
+void Stg00_CamRotate(Actor *arg0, s32 arg1, s32 arg2, s32 arg3);
 
 /* ---- functions ---- */
 

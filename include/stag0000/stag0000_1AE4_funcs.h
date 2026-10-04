@@ -3,27 +3,27 @@
 
 /* Functions src/stag0000/stag0000_1AE4.c defines or declares, for the units after it
  * (in the single file the definition was the prototype for later code). */
-void func_80064E78(void);
-void func_8006571C(Actor *arg0);
-void func_80065E24(Actor *arg0);
-void func_800668D4(Actor *arg0);
+void Stg00_FontInit(void);
+void Stg00_DigiViewTask(Actor *arg0);
+void Stg00_DigiViewDraw(Actor *arg0);
+void Stg00_SpawnRandomGroup(Actor *arg0);
 void func_80064E44(void);
-void func_80064E4C(s16 arg0);
-void func_80065114(void);
-void func_80065150(s32 arg0, s32 arg1, u8 *arg2);
-void func_80065374(void);
-void func_800654F4(s32 arg0, s32 arg1);
-void func_8006551C(s32 arg0, s32 arg1);
-void func_80065558(Actor *arg0);
-void func_800655B8(Actor *arg0);
-void func_800655FC(Actor *arg0);
-void func_80066084(Actor *arg0);
-void func_80066130(Actor *arg0);
-void func_8006620C(Actor *arg0);
-void func_80066318(Actor *arg0);
-void func_80066618(Actor *arg0);
-void func_80066678(Actor *arg0);
-void func_80066828(Actor *arg0);
-void func_800669F4(Actor *arg0);
+void Stg00_FontSetColor(s16 arg0);
+void Stg00_FontFree(void);
+void Stg00_FontDrawStr(s32 arg0, s32 arg1, u8 *arg2);
+void Stg00_FontDrawSheet(void);
+void Stg00_FontPrintBuf(s32 arg0, s32 arg1);
+void Stg00_FontPrintBufCentered(s32 arg0, s32 arg1);
+void Stg00_FightBgTask(Actor *arg0);
+void Stg00_FightBgDraw(Actor *arg0);
+void Stg00_DigiViewSpawnModel(Actor *arg0);
+void Stg00_LineupSetVideoMode(Actor *arg0);
+void Stg00_LineupSpawnModels(Actor *arg0);
+void Stg00_LineupBuildList(Actor *arg0);
+void Stg00_LineupTask(Actor *arg0);
+void Stg00_LineupDraw(Actor *arg0);
+void Stg00_VideoModeTask(Actor *arg0);
+void Stg00_GroupViewSetVideoMode(Actor *arg0);
+void Stg00_GroupViewTask(Actor *arg0);
 
 #endif /* STAG0000_1AE4_FUNCS_H */

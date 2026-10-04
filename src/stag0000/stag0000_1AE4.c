@@ -5,8 +5,8 @@
 void func_80064E44(void) {
 }
 
-void func_80064E4C(s16 arg0) {
-    Stg00Work *w = D_80069360;
+void Stg00_FontSetColor(s16 arg0) {
+    Stg00Work *w = Stg00_FontWork;
     if (arg0 < 6) {
         w->field_8D4 = arg0;
     } else {
@@ -14,7 +14,7 @@ void func_80064E4C(s16 arg0) {
     }
 }
 
-void func_80064E78(void) {
+void Stg00_FontInit(void) {
     s32 i;
     s32 n;
     s32 fill;
@@ -22,22 +22,22 @@ void func_80064E78(void) {
     u16 *p;
     RECT *r;
 
-    D_80069360 = (Stg00Work *)Mem_Alloc(0x9D8, 2);
-    D_8006935C = D_80069360->field_8D6;
-    D_80069360->field_8D0 = Gfx_ReserveTexSlot();
+    Stg00_FontWork = (Stg00Work *)Mem_Alloc(0x9D8, 2);
+    Stg00_FontTextBuf = Stg00_FontWork->field_8D6;
+    Stg00_FontWork->field_8D0 = Gfx_ReserveTexSlot();
     n = 0x200;
-    src = D_80068AD0;
-    r = &D_80069360->rectBig;
-    r->x = ((Stg00TexSlot *)D_80069360->field_8D0)->x;
-    r->y = ((Stg00TexSlot *)D_80069360->field_8D0)->y;
+    src = Stg00_FontGlyphs;
+    r = &Stg00_FontWork->rectBig;
+    r->x = ((Stg00TexSlot *)Stg00_FontWork->field_8D0)->x;
+    r->y = ((Stg00TexSlot *)Stg00_FontWork->field_8D0)->y;
     r->w = 0x10;
     r->h = 0x40;
-    r = (RECT *)&D_80069360->field_8C0;
-    r->x = ((Stg00TexSlot *)D_80069360->field_8D0)->x;
-    r->y = ((Stg00TexSlot *)D_80069360->field_8D0)->y + 0xF9;
+    r = (RECT *)&Stg00_FontWork->field_8C0;
+    r->x = ((Stg00TexSlot *)Stg00_FontWork->field_8D0)->x;
+    r->y = ((Stg00TexSlot *)Stg00_FontWork->field_8D0)->y + 0xF9;
     r->w = 0x10;
     r->h = 6;
-    p = D_80069360->buf;
+    p = Stg00_FontWork->buf;
     fill = 0x2222;
     for (i = 0x3FF; i >= 0; i--) {
         p[i] = fill;
@@ -58,14 +58,14 @@ void func_80064E78(void) {
         p[k + 1] |= (*src & 0x02) ? 0x100 : 0;
         p[k + 1] |= (*src & 0x01) ? 0x1000 : 0;
     }
-    p = D_80069360->clut;
+    p = Stg00_FontWork->clut;
     for (i = 0; i < 0x18; i++) {
         *p++ = 0;
         *p++ = 0;
         *p++ = 0;
         *p++ = 0;
     }
-    p = D_80069360->clut;
+    p = Stg00_FontWork->clut;
     p[0x00] = 0x8000;
     p[0x10] = 0x8000;
     p[0x20] = 0x8000;
@@ -75,21 +75,21 @@ void func_80064E78(void) {
     p[0x41] = 0x0F;
     p[0x21] = 0x3C00;
     p[0x51] = 0x3C00;
-    LoadImage((RECT *)&D_80069360->field_8C0, (u32 *)D_80069360->clut);
-    LoadImage(&D_80069360->rectBig, (u32 *)D_80069360->buf);
-    func_80064E4C(0);
+    LoadImage((RECT *)&Stg00_FontWork->field_8C0, (u32 *)Stg00_FontWork->clut);
+    LoadImage(&Stg00_FontWork->rectBig, (u32 *)Stg00_FontWork->buf);
+    Stg00_FontSetColor(0);
 }
 
-void func_80065114(void) {
-    Gfx_ReleaseTexSlot(D_80069360->field_8D0);
-    Mem_Free((ActorWork *)D_80069360);
+void Stg00_FontFree(void) {
+    Gfx_ReleaseTexSlot(Stg00_FontWork->field_8D0);
+    Mem_Free((ActorWork *)Stg00_FontWork);
 }
 
-void func_80065150(s32 arg0, s32 arg1, u8 *arg2)
+void Stg00_FontDrawStr(s32 arg0, s32 arg1, u8 *arg2)
 {
     Stg00PolyFT4 *poly = (Stg00PolyFT4 *) D_8005F770.packet.addr;
     Stg00OTag *ot = (Stg00OTag *) D_8005F770.otLayers.s[0];
-    Stg00Work *work = D_80069360;
+    Stg00Work *work = Stg00_FontWork;
     u8 ch;
     s32 x;
     s32 y = arg1 - D_8005F770.centerY.s;
@@ -116,13 +116,13 @@ void func_80065150(s32 arg0, s32 arg1, u8 *arg2)
             poly->b0 = 0xFF;
             poly->tpage = tpage;
             poly->clut = clut;
-            poly->u0 = c % 8 * 8 + ((Stg00TexSlot *) D_80069360->field_8D0)->u;
+            poly->u0 = c % 8 * 8 + ((Stg00TexSlot *) Stg00_FontWork->field_8D0)->u;
             poly->v0 = c / 8 * 8;
-            poly->u1 = ((Stg00TexSlot *) D_80069360->field_8D0)->u + c % 8 * 8 + 8;
+            poly->u1 = ((Stg00TexSlot *) Stg00_FontWork->field_8D0)->u + c % 8 * 8 + 8;
             poly->v1 = c / 8 * 8;
-            poly->u2 = ((Stg00TexSlot *) D_80069360->field_8D0)->u + c % 8 * 8;
+            poly->u2 = ((Stg00TexSlot *) Stg00_FontWork->field_8D0)->u + c % 8 * 8;
             poly->v2 = c / 8 * 8 + 8;
-            poly->u3 = ((Stg00TexSlot *) D_80069360->field_8D0)->u + c % 8 * 8 + 8;
+            poly->u3 = ((Stg00TexSlot *) Stg00_FontWork->field_8D0)->u + c % 8 * 8 + 8;
             poly->v3 = c / 8 * 8 + 8;
             poly->x0 = x;
             poly->y0 = y;
@@ -142,7 +142,7 @@ void func_80065150(s32 arg0, s32 arg1, u8 *arg2)
     D_8005F79C = (s32) poly;
 }
 
-void func_80065374(void) {
+void Stg00_FontDrawSheet(void) {
     Stg00PolyFT4 *p = (Stg00PolyFT4 *)D_8005F770.packet.work;
     u32 *ot = D_8005F770.otLayers.u[0];
     Stg00Work *w;
@@ -154,17 +154,17 @@ void func_80065374(void) {
     p->r0 = 0xFF;
     p->g0 = 0xFF;
     p->b0 = 0xFF;
-    w = D_80069360;
+    w = Stg00_FontWork;
     t = (Stg00TexSlot *)w->field_8D0;
     p->tpage = (0 << 7) | (1 << 5) | ((t->y & 0x100) >> 4) | ((t->x & 0x3FF) >> 6) | ((t->y & 0x200) << 2);
     p->clut = (w->field_8C2 << 6) | ((w->field_8C0 >> 4) & 0x3F);
     p->u0 = ((Stg00TexSlot *)w->field_8D0)->u;
     p->v0 = 0;
-    p->u1 = ((Stg00TexSlot *)D_80069360->field_8D0)->u + 0x40;
+    p->u1 = ((Stg00TexSlot *)Stg00_FontWork->field_8D0)->u + 0x40;
     p->v1 = 0;
-    p->u2 = ((Stg00TexSlot *)D_80069360->field_8D0)->u;
+    p->u2 = ((Stg00TexSlot *)Stg00_FontWork->field_8D0)->u;
     p->v2 = h = 0x40;
-    p->u3 = ((Stg00TexSlot *)D_80069360->field_8D0)->u + h;
+    p->u3 = ((Stg00TexSlot *)Stg00_FontWork->field_8D0)->u + h;
     p->v3 = h;
     p->x0 = -0x20;
     p->y0 = -0x20;
@@ -181,15 +181,15 @@ void func_80065374(void) {
     D_8005F770.packet.work = (ActorWork *)p;
 }
 
-void func_800654F4(s32 arg0, s32 arg1) {
-    func_80065150(arg0, arg1, D_8006935C);
+void Stg00_FontPrintBuf(s32 arg0, s32 arg1) {
+    Stg00_FontDrawStr(arg0, arg1, Stg00_FontTextBuf);
 }
 
-void func_8006551C(s32 arg0, s32 arg1) {
-    func_80065150(arg0 + D_8005F770.centerX.s, arg1 + D_8005F770.centerY.s, D_8006935C);
+void Stg00_FontPrintBufCentered(s32 arg0, s32 arg1) {
+    Stg00_FontDrawStr(arg0 + D_8005F770.centerX.s, arg1 + D_8005F770.centerY.s, Stg00_FontTextBuf);
 }
 
-void func_80065558(Actor *arg0) {
+void Stg00_FightBgTask(Actor *arg0) {
     if (arg0->stateLevel0 == 0) {
         Actor_InitTransform(arg0, D_80043704, 0);
         Gfx_AttachModel(arg0, 0x78)->otIndex = 5;
@@ -198,14 +198,14 @@ void func_80065558(Actor *arg0) {
     }
 }
 
-void func_800655B8(Actor *arg0) {
+void Stg00_FightBgDraw(Actor *arg0) {
     Gfx_AttachModel(arg0, 0x78);
     Actor_UpdateTransform(arg0);
     Gfx_CalcModelBoneMatrices(arg0);
     Gfx_DrawTexModel(arg0, 1);
 }
 
-void func_800655FC(Actor *arg0) {
+void Stg00_DigiViewSpawnModel(Actor *arg0) {
     Stg00NameWork *w = (Stg00NameWork *)arg0->work;
     s32 *slot = (s32 *)arg0->u34.children;
     s32 id;
@@ -240,7 +240,7 @@ void func_800655FC(Actor *arg0) {
     Text_Open(&w->field_18, &t);
 }
 
-void func_8006571C(Actor *arg0)
+void Stg00_DigiViewTask(Actor *arg0)
 {
   Work65E24 *work;
   Actor *cam;
@@ -270,7 +270,7 @@ void func_8006571C(Actor *arg0)
   work->field_C = 0;
   work->field_54 = 1;
   Mem_FillWordsNeg1(&work->field_14, 0x10);
-  func_800655FC(arg0);
+  Stg00_DigiViewSpawnModel(arg0);
   Task_NextState0(arg0);
   return;
   state1:
@@ -280,44 +280,44 @@ void func_8006571C(Actor *arg0)
       case 0:
 
       default:
-        cam = (Actor *) func_80068930();
+        cam = (Actor *) Stg00_FindCamera();
         for (i = 0; i < D_8005F770.frameDelta; i++)
       {
         if (D_8005F6F0[0].right)
         {
-          func_80068A44(cam, 0, 0x20, 0);
+          Stg00_CamRotate(cam, 0, 0x20, 0);
         }
         else
           if (D_8005F6F0[0].left)
         {
-          func_80068A44(cam, 0, -0x20, 0);
+          Stg00_CamRotate(cam, 0, -0x20, 0);
         }
         if (D_8005F6F0[0].up)
         {
-          func_80068958(cam, 0, 0, -0x20);
+          Stg00_CamMoveViewPoint(cam, 0, 0, -0x20);
         }
         else
           if (D_8005F6F0[0].down)
         {
-          func_80068958(cam, 0, 0, 0x20);
+          Stg00_CamMoveViewPoint(cam, 0, 0, 0x20);
         }
         if (D_8005F6F0[0].triangle)
         {
-          func_80068958(cam, 0, -0x20, 0);
+          Stg00_CamMoveViewPoint(cam, 0, -0x20, 0);
         }
         else
           if (D_8005F6F0[0].cross)
         {
-          func_80068958(cam, 0, 0x20, 0);
+          Stg00_CamMoveViewPoint(cam, 0, 0x20, 0);
         }
         if (D_8005F6F0[0].r1)
         {
-          func_8006899C(cam, 0, -0x20, 0);
+          Stg00_CamMoveRefPoint(cam, 0, -0x20, 0);
         }
         else
           if (D_8005F6F0[0].l1)
         {
-          func_8006899C(cam, 0, 0x20, 0);
+          Stg00_CamMoveRefPoint(cam, 0, 0x20, 0);
         }
       }
 
@@ -352,7 +352,7 @@ void func_8006571C(Actor *arg0)
             work->field_64 += 1;
           }
           else
-            if (D_80068CE8[work->field_5C + 0xE] != 0)
+            if (Stg00_DigiViewSkills[work->field_5C + 0xE] != 0)
           {
             work->field_5C += 1;
           }
@@ -379,7 +379,7 @@ void func_8006571C(Actor *arg0)
               work->field_64 += 1;
             }
             else
-              if (D_80068CE8[work->field_5C + 0xE] != 0)
+              if (Stg00_DigiViewSkills[work->field_5C + 0xE] != 0)
             {
               work->field_5C += 1;
             }
@@ -408,7 +408,7 @@ void func_8006571C(Actor *arg0)
         }
         else
         {
-          Ent68DB8 *e = &D_80068DB8[work->field_C];
+          Ent68DB8 *e = &Stg00_DigiViewPages[work->field_C];
           if (work->field_4 != e->field_4)
           {
             work->field_4 += 1;
@@ -517,7 +517,7 @@ void func_8006571C(Actor *arg0)
         }
         do
         {
-          func_800655FC(arg0);
+          Stg00_DigiViewSpawnModel(arg0);
           goto afterD700;
         }
         while (0);
@@ -535,7 +535,7 @@ void func_8006571C(Actor *arg0)
             case 1:
               Text_CloseArray(work->field_1C, 0xE);
               Task_SetState01(s1, 2, 0xA);
-              Task_SetState4(s1, D_80068CE8[work->field_5C + work->field_64]);
+              Task_SetState4(s1, Stg00_DigiViewSkills[work->field_5C + work->field_64]);
               break;
 
             case 2:
@@ -579,7 +579,7 @@ void func_8006571C(Actor *arg0)
 
 }
 
-void func_80065E24(Actor *arg0) {
+void Stg00_DigiViewDraw(Actor *arg0) {
     s32 period;
     Work65E24 *w = (Work65E24 *)arg0->work;
     EntA0 *parts;
@@ -614,7 +614,7 @@ void func_80065E24(Actor *arg0) {
     Gfx_HidePartsByMask(parts, mask);
     Gfx_SetPartsNumber(parts, 0x20, 4, Digi_GetModelListId(w->field_10));
     Gfx_DrawParts(parts);
-    parts = Cd_GetFileEntry(D_80068DB8[w->field_C].field_0);
+    parts = Cd_GetFileEntry(Stg00_DigiViewPages[w->field_C].field_0);
     parts2 = parts;
     mask = 0;
     if (fp && w->field_8 == 1) {
@@ -634,7 +634,7 @@ void func_80065E24(Actor *arg0) {
     for (s5 = 0, s7 = 0x10; s5 <= 0; s5++, s7 += 0x6E) {
         s32 y;
         for (col = 0, y = 0x3A; col < 0xE; col++, y += 9) {
-            args.text = Skill_GetNameText(D_80068CE8[s6++]);
+            args.text = Skill_GetNameText(Stg00_DigiViewSkills[s6++]);
             args.bigFont = 0;
             args.x = s7;
             args.y = y;
@@ -655,7 +655,7 @@ void func_80065E24(Actor *arg0) {
     }
 }
 
-void func_80066084(Actor *arg0) {
+void Stg00_LineupSetVideoMode(Actor *arg0) {
     switch (((Stg00ModeWork *)arg0->work)->field_0) {
     default:
         Gpu_InitDoubleBuffer(0x140, 0xF0, 0, 0);
@@ -675,7 +675,7 @@ void func_80066084(Actor *arg0) {
     Gfx_FadeInFromBlack(0x100);
 }
 
-void func_80066130(Actor *arg0) {
+void Stg00_LineupSpawnModels(Actor *arg0) {
     Stg00ListWork *w = (Stg00ListWork *)arg0->work;
     s32 *slot = (s32 *)arg0->u34.children;
     Stg00TaskArgs5 args;
@@ -685,15 +685,15 @@ void func_80066130(Actor *arg0) {
         Task_Destroy(slot);
         args.field_0 = w->field_330[i + w->field_654];
         args.field_10 = 0x400;
-        args.field_4 = D_80068E18[w->field_658][i].field_0;
+        args.field_4 = Stg00_LineupLayouts[w->field_658][i].field_0;
         args.field_8 = 0;
-        args.field_C = D_80068E18[w->field_658][i].field_2;
+        args.field_C = Stg00_LineupLayouts[w->field_658][i].field_2;
         Task_Create(0x105, slot, (s32)&args);
         slot++;
     }
 }
 
-void func_8006620C(Actor *arg0) {
+void Stg00_LineupBuildList(Actor *arg0) {
     Stg00ListWork *w = (Stg00ListWork *)arg0->work;
     s32 i;
     s32 id;
@@ -722,7 +722,7 @@ void func_8006620C(Actor *arg0) {
     }
 }
 
-void func_80066318(Actor *arg0) {
+void Stg00_LineupTask(Actor *arg0) {
     Stg00ListWork *w;
     Actor *cam;
     s32 i;
@@ -733,36 +733,36 @@ void func_80066318(Actor *arg0) {
         ((Stg00ModeWork *)arg0->work)->field_0 = 2;
         Gpu_AllocPacketBufs(0x25800);
         Gfx_InitLights();
-        func_80066084(arg0);
-        func_8006620C(arg0);
-        func_80066130(arg0);
+        Stg00_LineupSetVideoMode(arg0);
+        Stg00_LineupBuildList(arg0);
+        Stg00_LineupSpawnModels(arg0);
         Task_NextState0(arg0);
         break;
     case 1:
         w = (Stg00ListWork *)arg0->work;
-        cam = (Actor *)func_80068930();
+        cam = (Actor *)Stg00_FindCamera();
         for (i = 0; i < D_8005F770.frameDelta; i++) {
             if (D_8005F6F0[0].right) {
-                func_80068A44(cam, 0, 0x20, 0);
+                Stg00_CamRotate(cam, 0, 0x20, 0);
             } else if (D_8005F6F0[0].left) {
-                func_80068A44(cam, 0, -0x20, 0);
+                Stg00_CamRotate(cam, 0, -0x20, 0);
             }
             if (D_8005F6F0[0].up) {
-                func_80068958(cam, 0, 0, -0x20);
-                func_8006899C(cam, 0, 0, -0x20);
+                Stg00_CamMoveViewPoint(cam, 0, 0, -0x20);
+                Stg00_CamMoveRefPoint(cam, 0, 0, -0x20);
             } else if (D_8005F6F0[0].down) {
-                func_80068958(cam, 0, 0, 0x20);
-                func_8006899C(cam, 0, 0, 0x20);
+                Stg00_CamMoveViewPoint(cam, 0, 0, 0x20);
+                Stg00_CamMoveRefPoint(cam, 0, 0, 0x20);
             }
             if (D_8005F6F0[0].triangle) {
-                func_80068958(cam, 0, -0x20, 0);
+                Stg00_CamMoveViewPoint(cam, 0, -0x20, 0);
             } else if (D_8005F6F0[0].cross) {
-                func_80068958(cam, 0, 0x20, 0);
+                Stg00_CamMoveViewPoint(cam, 0, 0x20, 0);
             }
             if (D_8005F6F0[0].r1) {
-                func_8006899C(cam, 0, -0x20, 0);
+                Stg00_CamMoveRefPoint(cam, 0, -0x20, 0);
             } else if (D_8005F6F0[0].l1) {
-                func_8006899C(cam, 0, 0x20, 0);
+                Stg00_CamMoveRefPoint(cam, 0, 0x20, 0);
             }
         }
         if (D_8005F720 > 0) {
@@ -771,7 +771,7 @@ void func_80066318(Actor *arg0) {
             } else {
                 ((Stg00ModeWork *)w)->field_0 = 0;
             }
-            func_80066084(arg0);
+            Stg00_LineupSetVideoMode(arg0);
         }
         redraw = 0;
         if (D_8005F724 > 0) {
@@ -793,7 +793,7 @@ void func_80066318(Actor *arg0) {
             }
         }
         if (redraw) {
-            func_80066130(arg0);
+            Stg00_LineupSpawnModels(arg0);
         }
         if (D_8005F714 > 0) {
             D_8005F78C = 0x102;
@@ -804,13 +804,13 @@ void func_80066318(Actor *arg0) {
     }
 }
 
-void func_80066618(Actor *arg0) {
+void Stg00_LineupDraw(Actor *arg0) {
     EntA0 *e = Cd_GetFileEntry(0x1890000);
     Gfx_HidePartsByMask(e, D_80068E84[((Stg00PartsWork *)arg0->work)->field_C]);
     Gfx_DrawParts(e);
 }
 
-void func_80066678(Actor *arg0) {
+void Stg00_VideoModeTask(Actor *arg0) {
     Stg00ModeWork *w;
     Stg00ModeWork *w2;
 
@@ -870,7 +870,7 @@ void func_80066678(Actor *arg0) {
     }
 }
 
-void func_80066828(Actor *arg0) {
+void Stg00_GroupViewSetVideoMode(Actor *arg0) {
     switch (((Stg00ModeWork *)arg0->work)->field_0) {
     default:
         Gpu_InitDoubleBuffer(0x140, 0xF0, 0, 0);
@@ -890,7 +890,7 @@ void func_80066828(Actor *arg0) {
     Gfx_FadeInFromBlack(0x100);
 }
 
-void func_800668D4(Actor *arg0) {
+void Stg00_SpawnRandomGroup(Actor *arg0) {
     s32 *slot = (s32 *)arg0->u34.children;
     Stg00TaskArgs5 args;
     s32 r;
@@ -920,7 +920,7 @@ void func_800668D4(Actor *arg0) {
     }
 }
 
-void func_800669F4(Actor *arg0) {
+void Stg00_GroupViewTask(Actor *arg0) {
     Stg00ViewWork *w;
     Actor *cam;
     s32 i;
@@ -929,35 +929,35 @@ void func_800669F4(Actor *arg0) {
     case 0:
         ((Stg00ViewWork *)arg0->work)->field_0 = 2;
         Gpu_AllocPacketBufs(0x25800);
-        func_80066828(arg0);
-        func_800668D4(arg0);
+        Stg00_GroupViewSetVideoMode(arg0);
+        Stg00_SpawnRandomGroup(arg0);
         Task_NextState0(arg0);
         break;
     case 1:
         w = (Stg00ViewWork *)arg0->work;
-        cam = (Actor *)func_80068930();
+        cam = (Actor *)Stg00_FindCamera();
         for (i = 0; i < D_8005F770.frameDelta; i++) {
             if (D_8005F6F0[0].right) {
-                func_80068A44(cam, 0, 0x20, 0);
+                Stg00_CamRotate(cam, 0, 0x20, 0);
             } else if (D_8005F6F0[0].left) {
-                func_80068A44(cam, 0, -0x20, 0);
+                Stg00_CamRotate(cam, 0, -0x20, 0);
             }
             if (D_8005F6F0[0].up) {
-                func_80068958(cam, 0, 0, -0x20);
-                func_8006899C(cam, 0, 0, -0x20);
+                Stg00_CamMoveViewPoint(cam, 0, 0, -0x20);
+                Stg00_CamMoveRefPoint(cam, 0, 0, -0x20);
             } else if (D_8005F6F0[0].down) {
-                func_80068958(cam, 0, 0, 0x20);
-                func_8006899C(cam, 0, 0, 0x20);
+                Stg00_CamMoveViewPoint(cam, 0, 0, 0x20);
+                Stg00_CamMoveRefPoint(cam, 0, 0, 0x20);
             }
             if (D_8005F6F0[0].triangle) {
-                func_80068958(cam, 0, -0x20, 0);
+                Stg00_CamMoveViewPoint(cam, 0, -0x20, 0);
             } else if (D_8005F6F0[0].cross) {
-                func_80068958(cam, 0, 0x20, 0);
+                Stg00_CamMoveViewPoint(cam, 0, 0x20, 0);
             }
             if (D_8005F6F0[0].r1) {
-                func_8006899C(cam, 0, -0x20, 0);
+                Stg00_CamMoveRefPoint(cam, 0, -0x20, 0);
             } else if (D_8005F6F0[0].l1) {
-                func_8006899C(cam, 0, 0x20, 0);
+                Stg00_CamMoveRefPoint(cam, 0, 0x20, 0);
             }
         }
         if (D_8005F708 > 0) {
@@ -967,23 +967,23 @@ void func_800669F4(Actor *arg0) {
             switch (w->field_8) {
             case 0:
             default:
-                func_80068A00(cam, 0xA00, 0, -0x1400);
+                Stg00_CamMoveOrigin(cam, 0xA00, 0, -0x1400);
                 break;
             case 1:
-                func_80068A00(cam, -0xA00, 0, -0x1400);
+                Stg00_CamMoveOrigin(cam, -0xA00, 0, -0x1400);
                 break;
             case 2:
-                func_80068A00(cam, 0xA00, 0, 0);
+                Stg00_CamMoveOrigin(cam, 0xA00, 0, 0);
                 break;
             case 3:
-                func_80068A00(cam, 0xA00, 0, 0);
+                Stg00_CamMoveOrigin(cam, 0xA00, 0, 0);
                 break;
             case 4:
-                func_80068A00(cam, 0, 0, 0x2800);
+                Stg00_CamMoveOrigin(cam, 0, 0, 0x2800);
                 break;
             case 5:
             case 6:
-                func_80068A00(cam, -0xA00, 0, 0);
+                Stg00_CamMoveOrigin(cam, -0xA00, 0, 0);
                 break;
             }
         }
@@ -993,10 +993,10 @@ void func_800669F4(Actor *arg0) {
             } else {
                 w->field_0 = 0;
             }
-            func_80066828(arg0);
+            Stg00_GroupViewSetVideoMode(arg0);
         }
         if (D_8005F6F0[0].start > 0) {
-            func_800668D4(arg0);
+            Stg00_SpawnRandomGroup(arg0);
         }
         if (D_8005F6F0[0].circle > 0) {
             if (++w->field_C == 4) {

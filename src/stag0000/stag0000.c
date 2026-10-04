@@ -1,7 +1,7 @@
 #include "common.h"
 #include "stag0000/stag0000.h"
 
-void func_80063A74(Actor *arg0) {
+void Stg00_StageSetup(Actor *arg0) {
     s32 *slot = (s32 *)arg0->u34.children;
     Stg00TaskArgs a1;
     Stg00TaskArgs a2;
@@ -80,7 +80,7 @@ void func_80063A74(Actor *arg0) {
     }
 }
 
-void func_80063D04(Actor *arg0) {
+void Stg00_ScrollViewTask(Actor *arg0) {
     Stg00ScrollWork *w = (Stg00ScrollWork *)arg0->work;
 
     switch (arg0->stateLevel0) {
@@ -120,7 +120,7 @@ void func_80063D04(Actor *arg0) {
     }
 }
 
-void func_80063E34(Stg00Sprt *arg0, GfxPartTexSlot *arg1, s32 arg2, s32 arg3) {
+void Stg00_InitTileSprt(Stg00Sprt *arg0, GfxPartTexSlot *arg1, s32 arg2, s32 arg3) {
     arg0->c = *(Col1A9C8 *)&D_8005074C;
     arg0->tag.len = 4;
     arg0->c.code = 0x64;
@@ -133,7 +133,7 @@ void func_80063E34(Stg00Sprt *arg0, GfxPartTexSlot *arg1, s32 arg2, s32 arg3) {
     arg0->clut = (arg1->index + 0x1E0) << 6;
 }
 
-void func_80063E9C(Actor *arg0) {
+void Stg00_ScrollViewDraw(Actor *arg0) {
     Stg00ScrollWork *w = (Stg00ScrollWork *)arg0->work;
     GfxPartOTag *ot = (GfxPartOTag *)D_8005F770.otLayers.addr[6];
     GfxPartPkt *p = (GfxPartPkt *)D_8005F770.packet.addr;
@@ -148,7 +148,7 @@ void func_80063E9C(Actor *arg0) {
             t = (GfxPartTexSlot *)Gfx_FindOrLoadTexSlot(D_80068AA0[j % 10 + (i % 2) * 10]);
             x = w->field_0 - 0xA0;
             y = w->field_4 - 0x78;
-            func_80063E34((Stg00Sprt *)&p->s, t, j * 64 + x, i * 256 + y);
+            Stg00_InitTileSprt((Stg00Sprt *)&p->s, t, j * 64 + x, i * 256 + y);
             p->s.tag.addr = ot->addr;
             ot->addr = (u32)p;
             p = (GfxPartPkt *)(&p->s + 1);
@@ -162,13 +162,13 @@ void func_80063E9C(Actor *arg0) {
     D_8005F79C = (s32)p;
 }
 
-void func_80064064(u32 *arg0, u32 arg1) {
+void Stg00_RelocPtr(u32 *arg0, u32 arg1) {
     if (*arg0 < arg1) {
         *arg0 += arg1;
     }
 }
 
-s32 func_80064084(u32 *arg0) {
+s32 Stg00_RelocDungFile(u32 *arg0) {
     u32 base = (u32)arg0;
     s32 n = 0;
 
@@ -184,11 +184,11 @@ s32 func_80064084(u32 *arg0) {
                 Stg00RelocEnt **pe = &h->field_8[i];
                 Stg00RelocEnt *e = (Stg00RelocEnt *)((u32)*pe + base);
                 *pe = e;
-                func_80064064(&e->field_0, base);
-                func_80064064(&e->field_4, base);
-                func_80064064(&e->field_8, base);
-                func_80064064(&e->field_C, base);
-                func_80064064(&e->field_10, base);
+                Stg00_RelocPtr(&e->field_0, base);
+                Stg00_RelocPtr(&e->field_4, base);
+                Stg00_RelocPtr(&e->field_8, base);
+                Stg00_RelocPtr(&e->field_C, base);
+                Stg00_RelocPtr(&e->field_10, base);
             }
         }
         arg0++;
@@ -197,15 +197,15 @@ s32 func_80064084(u32 *arg0) {
     return n;
 }
 
-void func_80064190(Actor *arg0, Stg00SelWork *arg1, s32 arg2) {
+void Stg00_LoadDungFile(Actor *arg0, Stg00SelWork *arg1, s32 arg2) {
     u32 *f = (u32 *)Cd_GetFileOrNull(arg2);
 
-    arg1->field_6 = func_80064084(f);
+    arg1->field_6 = Stg00_RelocDungFile(f);
     arg1->field_C = f;
     arg1->field_10 = f[0];
 }
 
-void func_800641E0(Actor *arg0, Stg00SelWork *arg1) {
+void Stg00_DungSelPickDungeon(Actor *arg0, Stg00SelWork *arg1) {
     Stg00SelEnt *e;
 
     if (D_8005F72C & 0x8000) {
@@ -222,12 +222,12 @@ void func_800641E0(Actor *arg0, Stg00SelWork *arg1) {
         arg1->field_2 = 0;
         arg1->field_4 = -1;
         e = (Stg00SelEnt *)Cd_GetFileEntry(0xE20000A);
-        func_80064190(arg0, arg1, e[arg1->field_0].field_0);
+        Stg00_LoadDungFile(arg0, arg1, e[arg1->field_0].field_0);
         Task_SetState1(arg0, 1);
     }
 }
 
-void func_800642BC(Actor *arg0, Stg00SelWork *arg1_) {
+void Stg00_DungSelPickFloor(Actor *arg0, Stg00SelWork *arg1_) {
     Stg00SelWorkX *arg1 = (Stg00SelWorkX *)arg1_;
     s32 i;
     s32 j;
@@ -369,7 +369,7 @@ void func_800642BC(Actor *arg0, Stg00SelWork *arg1_) {
     arg1->field_4 = arg1->field_2;
 }
 
-void func_800648BC(Actor *arg0, Stg00SelWork *arg1) {
+void Stg00_DungSelPickFlag(Actor *arg0, Stg00SelWork *arg1) {
     if (D_8005F72C & 0x8000) {
         if (arg1->field_A > 0) {
             arg1->field_A--;
@@ -392,10 +392,10 @@ void func_800648BC(Actor *arg0, Stg00SelWork *arg1) {
     }
 }
 
-void func_800649D0(void) {
+void Stg00_DungSelInit(void) {
 }
 
-void func_800649D8(Actor *arg0) {
+void Stg00_DungSelTask(Actor *arg0) {
     Stg00SelWork *w = (Stg00SelWork *)arg0->work;
 
     switch (arg0->stateLevel0) {
@@ -405,8 +405,8 @@ void func_800649D8(Actor *arg0) {
         Gpu_SetBgClearColor(0, 0, 0);
         Gpu_ClearScreens();
         Gfx_FadeInFromBlack(0x20);
-        func_80064E78();
-        func_80064E4C(0);
+        Stg00_FontInit();
+        Stg00_FontSetColor(0);
         w->field_0 = 0;
         w->field_2 = 0;
         w->field_6 = 0;
@@ -416,13 +416,13 @@ void func_800649D8(Actor *arg0) {
         switch (arg0->stateLevel1) {
         case 0:
         default:
-            func_800641E0(arg0, w);
+            Stg00_DungSelPickDungeon(arg0, w);
             break;
         case 1:
-            func_800642BC(arg0, w);
+            Stg00_DungSelPickFloor(arg0, w);
             break;
         case 2:
-            func_800648BC(arg0, w);
+            Stg00_DungSelPickFlag(arg0, w);
             break;
         }
         break;
@@ -431,11 +431,11 @@ void func_800649D8(Actor *arg0) {
     }
 }
 
-void func_80064AD4(void) {
+void Stg00_DungSelDraw(void) {
 }
 
-void func_80064ADC(Actor *arg0) {
-    func_80065114();
+void Stg00_DungSelDestroy(Actor *arg0) {
+    Stg00_FontFree();
     Task_DefaultDestroy(arg0);
 }
 

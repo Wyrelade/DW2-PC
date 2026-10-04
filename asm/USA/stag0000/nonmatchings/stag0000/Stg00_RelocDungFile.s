@@ -1,0 +1,75 @@
+nonmatching Stg00_RelocDungFile, 0x10C
+
+glabel Stg00_RelocDungFile
+    /* D24 80064084 D0FFBD27 */  addiu      $sp, $sp, -0x30
+    /* D28 80064088 2400B5AF */  sw         $s5, 0x24($sp)
+    /* D2C 8006408C 21A88000 */  addu       $s5, $a0, $zero
+    /* D30 80064090 2800B6AF */  sw         $s6, 0x28($sp)
+    /* D34 80064094 21B00000 */  addu       $s6, $zero, $zero
+    /* D38 80064098 2C00BFAF */  sw         $ra, 0x2C($sp)
+    /* D3C 8006409C 2000B4AF */  sw         $s4, 0x20($sp)
+    /* D40 800640A0 1C00B3AF */  sw         $s3, 0x1C($sp)
+    /* D44 800640A4 1800B2AF */  sw         $s2, 0x18($sp)
+    /* D48 800640A8 1400B1AF */  sw         $s1, 0x14($sp)
+    /* D4C 800640AC 1000B0AF */  sw         $s0, 0x10($sp)
+    /* D50 800640B0 0000A28E */  lw         $v0, 0x0($s5)
+    /* D54 800640B4 00000000 */  nop
+    /* D58 800640B8 2A004010 */  beqz       $v0, .L80064164
+    /* D5C 800640BC 2188A002 */   addu      $s1, $s5, $zero
+  .L800640C0:
+    /* D60 800640C0 0000A38E */  lw         $v1, 0x0($s5)
+    /* D64 800640C4 00000000 */  nop
+    /* D68 800640C8 2B107100 */  sltu       $v0, $v1, $s1
+    /* D6C 800640CC 20004010 */  beqz       $v0, .L80064150
+    /* D70 800640D0 21107100 */   addu      $v0, $v1, $s1
+    /* D74 800640D4 21980000 */  addu       $s3, $zero, $zero
+    /* D78 800640D8 21A04000 */  addu       $s4, $v0, $zero
+    /* D7C 800640DC 0000A2AE */  sw         $v0, 0x0($s5)
+    /* D80 800640E0 0000828E */  lw         $v0, 0x0($s4)
+    /* D84 800640E4 08001224 */  addiu      $s2, $zero, 0x8
+    /* D88 800640E8 21105100 */  addu       $v0, $v0, $s1
+    /* D8C 800640EC 000082AE */  sw         $v0, 0x0($s4)
+  .L800640F0:
+    /* D90 800640F0 21282002 */  addu       $a1, $s1, $zero
+    /* D94 800640F4 21109202 */  addu       $v0, $s4, $s2
+    /* D98 800640F8 04005226 */  addiu      $s2, $s2, 0x4
+    /* D9C 800640FC 0000508C */  lw         $s0, 0x0($v0)
+    /* DA0 80064100 01007326 */  addiu      $s3, $s3, 0x1
+    /* DA4 80064104 21801102 */  addu       $s0, $s0, $s1
+    /* DA8 80064108 21200002 */  addu       $a0, $s0, $zero
+    /* DAC 8006410C 1990010C */  jal        Stg00_RelocPtr
+    /* DB0 80064110 000050AC */   sw        $s0, 0x0($v0)
+    /* DB4 80064114 04000426 */  addiu      $a0, $s0, 0x4
+    /* DB8 80064118 1990010C */  jal        Stg00_RelocPtr
+    /* DBC 8006411C 21282002 */   addu      $a1, $s1, $zero
+    /* DC0 80064120 08000426 */  addiu      $a0, $s0, 0x8
+    /* DC4 80064124 1990010C */  jal        Stg00_RelocPtr
+    /* DC8 80064128 21282002 */   addu      $a1, $s1, $zero
+    /* DCC 8006412C 0C000426 */  addiu      $a0, $s0, 0xC
+    /* DD0 80064130 1990010C */  jal        Stg00_RelocPtr
+    /* DD4 80064134 21282002 */   addu      $a1, $s1, $zero
+    /* DD8 80064138 10000426 */  addiu      $a0, $s0, 0x10
+    /* DDC 8006413C 1990010C */  jal        Stg00_RelocPtr
+    /* DE0 80064140 21282002 */   addu      $a1, $s1, $zero
+    /* DE4 80064144 0800622A */  slti       $v0, $s3, 0x8
+    /* DE8 80064148 E9FF4014 */  bnez       $v0, .L800640F0
+    /* DEC 8006414C 00000000 */   nop
+  .L80064150:
+    /* DF0 80064150 0400B526 */  addiu      $s5, $s5, 0x4
+    /* DF4 80064154 0000A28E */  lw         $v0, 0x0($s5)
+    /* DF8 80064158 00000000 */  nop
+    /* DFC 8006415C D8FF4014 */  bnez       $v0, .L800640C0
+    /* E00 80064160 0100D626 */   addiu     $s6, $s6, 0x1
+  .L80064164:
+    /* E04 80064164 2110C002 */  addu       $v0, $s6, $zero
+    /* E08 80064168 2C00BF8F */  lw         $ra, 0x2C($sp)
+    /* E0C 8006416C 2800B68F */  lw         $s6, 0x28($sp)
+    /* E10 80064170 2400B58F */  lw         $s5, 0x24($sp)
+    /* E14 80064174 2000B48F */  lw         $s4, 0x20($sp)
+    /* E18 80064178 1C00B38F */  lw         $s3, 0x1C($sp)
+    /* E1C 8006417C 1800B28F */  lw         $s2, 0x18($sp)
+    /* E20 80064180 1400B18F */  lw         $s1, 0x14($sp)
+    /* E24 80064184 1000B08F */  lw         $s0, 0x10($sp)
+    /* E28 80064188 0800E003 */  jr         $ra
+    /* E2C 8006418C 3000BD27 */   addiu     $sp, $sp, 0x30
+endlabel Stg00_RelocDungFile

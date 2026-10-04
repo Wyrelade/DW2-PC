@@ -8,7 +8,7 @@ nonmatching D_80068A88
 
 dlabel D_80068A88
     /* 5728 80068A88 00000000 */ .word 0x00000000
-    /* 572C 80068A8C 743A0680 */ .word func_80063A74
+    /* 572C 80068A8C 743A0680 */ .word Stg00_StageSetup
     /* 5730 80068A90 70110180 */ .word Task_DefaultDestroy
     /* 5734 80068A94 00000000 */ .word 0x00000000
     /* 5738 80068A98 04000000 */ .word 0x00000004
@@ -19,9 +19,9 @@ nonmatching D_80068AA0
 
 dlabel D_80068AA0
     /* 5740 80068AA0 00000000 */ .word 0x00000000
-    /* 5744 80068AA4 043D0680 */ .word func_80063D04
+    /* 5744 80068AA4 043D0680 */ .word Stg00_ScrollViewTask
     /* 5748 80068AA8 70110180 */ .word Task_DefaultDestroy
-    /* 574C 80068AAC 9C3E0680 */ .word func_80063E9C
+    /* 574C 80068AAC 9C3E0680 */ .word Stg00_ScrollViewDraw
     /* 5750 80068AB0 08000000 */ .word 0x00000008
     /* 5754 80068AB4 00000000 */ .word 0x00000000
 enddlabel D_80068AA0
@@ -29,17 +29,17 @@ enddlabel D_80068AA0
 nonmatching D_80068AB8
 
 dlabel D_80068AB8
-    /* 5758 80068AB8 D0490680 */ .word func_800649D0
-    /* 575C 80068ABC D8490680 */ .word func_800649D8
-    /* 5760 80068AC0 DC4A0680 */ .word func_80064ADC
-    /* 5764 80068AC4 D44A0680 */ .word func_80064AD4
+    /* 5758 80068AB8 D0490680 */ .word Stg00_DungSelInit
+    /* 575C 80068ABC D8490680 */ .word Stg00_DungSelTask
+    /* 5760 80068AC0 DC4A0680 */ .word Stg00_DungSelDestroy
+    /* 5764 80068AC4 D44A0680 */ .word Stg00_DungSelDraw
     /* 5768 80068AC8 94000000 */ .word 0x00000094
     /* 576C 80068ACC 00000000 */ .word 0x00000000
 enddlabel D_80068AB8
 
-nonmatching D_80068AD0
+nonmatching Stg00_FontGlyphs
 
-dlabel D_80068AD0
+dlabel Stg00_FontGlyphs
     /* 5770 80068AD0 00000000 */ .word 0x00000000
     /* 5774 80068AD4 00000000 */ .word 0x00000000
     /* 5778 80068AD8 18181818 */ .word 0x18181818
@@ -168,22 +168,22 @@ dlabel D_80068AD0
     /* 5964 80068CC4 00000000 */ .word 0x00000000
     /* 5968 80068CC8 00000000 */ .word 0x00000000
     /* 596C 80068CCC 0000FE00 */ .word 0x00FE0000
-enddlabel D_80068AD0
+enddlabel Stg00_FontGlyphs
 
 nonmatching D_80068CD0
 
 dlabel D_80068CD0
     /* 5970 80068CD0 00000000 */ .word 0x00000000
-    /* 5974 80068CD4 58550680 */ .word func_80065558
+    /* 5974 80068CD4 58550680 */ .word Stg00_FightBgTask
     /* 5978 80068CD8 70110180 */ .word Task_DefaultDestroy
-    /* 597C 80068CDC B8550680 */ .word func_800655B8
+    /* 597C 80068CDC B8550680 */ .word Stg00_FightBgDraw
     /* 5980 80068CE0 00000000 */ .word 0x00000000
     /* 5984 80068CE4 00000000 */ .word 0x00000000
 enddlabel D_80068CD0
 
-nonmatching D_80068CE8
+nonmatching Stg00_DigiViewSkills
 
-dlabel D_80068CE8
+dlabel Stg00_DigiViewSkills
     /* 5988 80068CE8 66A6315B */ .word 0x5B31A666
     /* 598C 80068CEC 2C481B02 */ .word 0x021B482C
     /* 5990 80068CF0 06CAC8C9 */ .word 0xC9C8CA06
@@ -236,11 +236,11 @@ dlabel D_80068CE8
     /* 5A4C 80068DAC 3EF9C409 */ .word 0x09C4F93E
     /* 5A50 80068DB0 A8A7EEE8 */ .word 0xE8EEA7A8
     /* 5A54 80068DB4 135F0000 */ .word 0x00005F13
-enddlabel D_80068CE8
+enddlabel Stg00_DigiViewSkills
 
-nonmatching D_80068DB8
+nonmatching Stg00_DigiViewPages
 
-dlabel D_80068DB8
+dlabel Stg00_DigiViewPages
     /* 5A58 80068DB8 01000B01 */ .word 0x010B0001
     /* 5A5C 80068DBC 07000000 */ .word 0x00000007
     /* 5A60 80068DC0 02000B01 */ .word 0x010B0002
@@ -249,7 +249,7 @@ dlabel D_80068DB8
     /* 5A6C 80068DCC 06000000 */ .word 0x00000006
     /* 5A70 80068DD0 04000B01 */ .word 0x010B0004
     /* 5A74 80068DD4 02000000 */ .word 0x00000002
-enddlabel D_80068DB8
+enddlabel Stg00_DigiViewPages
 
 .align 2
 nonmatching D_80068DD8
@@ -296,16 +296,16 @@ nonmatching D_80068E00
 
 dlabel D_80068E00
     /* 5AA0 80068E00 00000000 */ .word 0x00000000
-    /* 5AA4 80068E04 1C570680 */ .word func_8006571C
+    /* 5AA4 80068E04 1C570680 */ .word Stg00_DigiViewTask
     /* 5AA8 80068E08 70110180 */ .word Task_DefaultDestroy
-    /* 5AAC 80068E0C 245E0680 */ .word func_80065E24
+    /* 5AAC 80068E0C 245E0680 */ .word Stg00_DigiViewDraw
     /* 5AB0 80068E10 68000000 */ .word 0x00000068
     /* 5AB4 80068E14 18000000 */ .word 0x00000018
 enddlabel D_80068E00
 
-nonmatching D_80068E18
+nonmatching Stg00_LineupLayouts
 
-dlabel D_80068E18
+dlabel Stg00_LineupLayouts
     /* 5AB8 80068E18 000000D8 */ .word 0xD8000000
     /* 5ABC 80068E1C 000000E2 */ .word 0xE2000000
     /* 5AC0 80068E20 000000EC */ .word 0xEC000000
@@ -333,7 +333,7 @@ dlabel D_80068E18
     /* 5B18 80068E78 000F00F1 */ .word 0xF1000F00
     /* 5B1C 80068E7C 000F0000 */ .word 0x00000F00
     /* 5B20 80068E80 000F000F */ .word 0x0F000F00
-enddlabel D_80068E18
+enddlabel Stg00_LineupLayouts
 
 nonmatching D_80068E84
 
@@ -348,9 +348,9 @@ nonmatching D_80068E94
 
 dlabel D_80068E94
     /* 5B34 80068E94 00000000 */ .word 0x00000000
-    /* 5B38 80068E98 18630680 */ .word func_80066318
+    /* 5B38 80068E98 18630680 */ .word Stg00_LineupTask
     /* 5B3C 80068E9C 70110180 */ .word Task_DefaultDestroy
-    /* 5B40 80068EA0 18660680 */ .word func_80066618
+    /* 5B40 80068EA0 18660680 */ .word Stg00_LineupDraw
     /* 5B44 80068EA4 5C060000 */ .word 0x0000065C
     /* 5B48 80068EA8 24000000 */ .word 0x00000024
 enddlabel D_80068E94
@@ -359,29 +359,29 @@ nonmatching D_80068EAC
 
 dlabel D_80068EAC
     /* 5B4C 80068EAC 00000000 */ .word 0x00000000
-    /* 5B50 80068EB0 78660680 */ .word func_80066678
+    /* 5B50 80068EB0 78660680 */ .word Stg00_VideoModeTask
     /* 5B54 80068EB4 70110180 */ .word Task_DefaultDestroy
     /* 5B58 80068EB8 00000000 */ .word 0x00000000
     /* 5B5C 80068EBC 08000000 */ .word 0x00000008
     /* 5B60 80068EC0 18000000 */ .word 0x00000018
 enddlabel D_80068EAC
 
-nonmatching D_80068EC4
+nonmatching Stg00_GroupWinMasks
 
-dlabel D_80068EC4
+dlabel Stg00_GroupWinMasks
     /* 5B64 80068EC4 06000000 */ .word 0x00000006
     /* 5B68 80068EC8 02000000 */ .word 0x00000002
     /* 5B6C 80068ECC 04000000 */ .word 0x00000004
     /* 5B70 80068ED0 00000000 */ .word 0x00000000
-enddlabel D_80068EC4
+enddlabel Stg00_GroupWinMasks
 
 nonmatching D_80068ED4
 
 dlabel D_80068ED4
     /* 5B74 80068ED4 00000000 */ .word 0x00000000
-    /* 5B78 80068ED8 F4690680 */ .word func_800669F4
+    /* 5B78 80068ED8 F4690680 */ .word Stg00_GroupViewTask
     /* 5B7C 80068EDC 70110180 */ .word Task_DefaultDestroy
-    /* 5B80 80068EE0 506D0680 */ .word func_80066D50
+    /* 5B80 80068EE0 506D0680 */ .word Stg00_GroupViewDraw
     /* 5B84 80068EE4 10000000 */ .word 0x00000010
     /* 5B88 80068EE8 18000000 */ .word 0x00000018
 enddlabel D_80068ED4
@@ -413,46 +413,46 @@ enddlabel D_80068F04
 nonmatching D_80068F10
 
 dlabel D_80068F10
-    /* 5BB0 80068F10 B06D0680 */ .word func_80066DB0
-    /* 5BB4 80068F14 28740680 */ .word func_80067428
+    /* 5BB0 80068F10 B06D0680 */ .word Stg00_DigiModelInit
+    /* 5BB4 80068F14 28740680 */ .word Stg00_DigiModelTask
     /* 5BB8 80068F18 70110180 */ .word Task_DefaultDestroy
-    /* 5BBC 80068F1C C8790680 */ .word func_800679C8
+    /* 5BBC 80068F1C C8790680 */ .word Stg00_DigiModelDraw
     /* 5BC0 80068F20 30000000 */ .word 0x00000030
     /* 5BC4 80068F24 18000000 */ .word 0x00000018
 enddlabel D_80068F10
 
-nonmatching D_80068F28
+nonmatching Stg00_PopupItemMasks
 
-dlabel D_80068F28
+dlabel Stg00_PopupItemMasks
     /* 5BC8 80068F28 0B000000 */ .word 0x0000000B
     /* 5BCC 80068F2C 0D000000 */ .word 0x0000000D
     /* 5BD0 80068F30 0E000000 */ .word 0x0000000E
     /* 5BD4 80068F34 07000000 */ .word 0x00000007
-enddlabel D_80068F28
+enddlabel Stg00_PopupItemMasks
 
-nonmatching D_80068F38
+nonmatching Stg00_PopupNumMasks
 
-dlabel D_80068F38
+dlabel Stg00_PopupNumMasks
     /* 5BD8 80068F38 16000000 */ .word 0x00000016
     /* 5BDC 80068F3C 0D000000 */ .word 0x0000000D
     /* 5BE0 80068F40 0B000000 */ .word 0x0000000B
-enddlabel D_80068F38
+enddlabel Stg00_PopupNumMasks
 
-nonmatching D_80068F44
+nonmatching Stg00_PopupNumParts
 
-dlabel D_80068F44
+dlabel Stg00_PopupNumParts
     /* 5BE4 80068F44 08000000 */ .word 0x00000008
     /* 5BE8 80068F48 10000000 */ .word 0x00000010
     /* 5BEC 80068F4C 10000000 */ .word 0x00000010
-enddlabel D_80068F44
+enddlabel Stg00_PopupNumParts
 
 nonmatching D_80068F50
 
 dlabel D_80068F50
-    /* 5BF0 80068F50 507A0680 */ .word func_80067A50
-    /* 5BF4 80068F54 707A0680 */ .word func_80067A70
+    /* 5BF0 80068F50 507A0680 */ .word Stg00_PopupInit
+    /* 5BF4 80068F54 707A0680 */ .word Stg00_PopupTask
     /* 5BF8 80068F58 70110180 */ .word Task_DefaultDestroy
-    /* 5BFC 80068F5C AC7B0680 */ .word func_80067BAC
+    /* 5BFC 80068F5C AC7B0680 */ .word Stg00_PopupDraw
     /* 5C00 80068F60 14000000 */ .word 0x00000014
     /* 5C04 80068F64 00000000 */ .word 0x00000000
     /* 5C08 80068F68 888A0680 */ .word D_80068A88
@@ -471,34 +471,34 @@ dlabel D_80068F50
     /* 5C3C 80068F9C A08A0680 */ .word D_80068AA0
 enddlabel D_80068F50
 
-nonmatching D_80068FA0
+nonmatching Stg00_XaTrackStart
 
-dlabel D_80068FA0
+dlabel Stg00_XaTrackStart
     /* 5C40 80068FA0 00000000 */ .word 0x00000000
     /* 5C44 80068FA4 46050000 */ .word 0x00000546
     /* 5C48 80068FA8 220B0000 */ .word 0x00000B22
     /* 5C4C 80068FAC FE100000 */ .word 0x000010FE
     /* 5C50 80068FB0 70170000 */ .word 0x00001770
     /* 5C54 80068FB4 0E1F0000 */ .word 0x00001F0E
-enddlabel D_80068FA0
+enddlabel Stg00_XaTrackStart
 
-nonmatching D_80068FB8
+nonmatching Stg00_XaTrackLength
 
-dlabel D_80068FB8
+dlabel Stg00_XaTrackLength
     /* 5C58 80068FB8 EE020000 */ .word 0x000002EE
     /* 5C5C 80068FBC A2030000 */ .word 0x000003A2
     /* 5C60 80068FC0 56040000 */ .word 0x00000456
     /* 5C64 80068FC4 74040000 */ .word 0x00000474
     /* 5C68 80068FC8 28050000 */ .word 0x00000528
     /* 5C6C 80068FCC 72060000 */ .word 0x00000672
-enddlabel D_80068FB8
+enddlabel Stg00_XaTrackLength
 
 nonmatching D_80068FD0
 
 dlabel D_80068FD0
-    /* 5C70 80068FD0 FC7D0680 */ .word func_80067DFC
-    /* 5C74 80068FD4 1C7E0680 */ .word func_80067E1C
-    /* 5C78 80068FD8 50800680 */ .word func_80068050
+    /* 5C70 80068FD0 FC7D0680 */ .word Stg00_XaPlayInit
+    /* 5C74 80068FD4 1C7E0680 */ .word Stg00_XaPlayTask
+    /* 5C78 80068FD8 50800680 */ .word Stg00_XaPlayDestroy
     /* 5C7C 80068FDC 00000000 */ .word 0x00000000
     /* 5C80 80068FE0 14000000 */ .word 0x00000014
     /* 5C84 80068FE4 00000000 */ .word 0x00000000
@@ -786,9 +786,9 @@ dlabel D_80069238
     /* 5EF8 80069258 00000000 */ .word 0x00000000
 enddlabel D_80069238
 
-nonmatching D_8006925C
+nonmatching Stg00_SoundBanks
 
-dlabel D_8006925C
+dlabel Stg00_SoundBanks
     /* 5EFC 8006925C E88F0680 */ .word D_80068FE8
     /* 5F00 80069260 DC900680 */ .word D_800690DC
     /* 5F04 80069264 E8900680 */ .word D_800690E8
@@ -815,22 +815,22 @@ dlabel D_8006925C
     /* 5F58 800692B8 20920680 */ .word D_80069220
     /* 5F5C 800692BC 38920680 */ .word D_80069238
     /* 5F60 800692C0 00000000 */ .word 0x00000000
-enddlabel D_8006925C
+enddlabel Stg00_SoundBanks
 
 .align 2
-nonmatching D_800692C4
+nonmatching Stg00_WindowTestMasks
 
-dlabel D_800692C4
+dlabel Stg00_WindowTestMasks
     /* 5F64 800692C4 */ .asciz ",\n"
     /* 2C0A0000 */
 .align 2
     /* 5F68 800692C8 B2080000 */ .word 0x000008B2
     /* 5F6C 800692CC CA020000 */ .word 0x000002CA
-enddlabel D_800692C4
+enddlabel Stg00_WindowTestMasks
 
-nonmatching D_800692D0
+nonmatching Stg00_WindowTestParts
 
-dlabel D_800692D0
+dlabel Stg00_WindowTestParts
     /* 5F70 800692D0 80000000 */ .word 0x00000080
     /* 5F74 800692D4 00010000 */ .word 0x00000100
     /* 5F78 800692D8 80010000 */ .word 0x00000180
@@ -843,36 +843,36 @@ dlabel D_800692D0
     /* 5F94 800692F4 00100000 */ .word 0x00001000
     /* 5F98 800692F8 00180000 */ .word 0x00001800
     /* 5F9C 800692FC 80070000 */ .word 0x00000780
-enddlabel D_800692D0
+enddlabel Stg00_WindowTestParts
 
 nonmatching D_80069300
 
 dlabel D_80069300
     /* 5FA0 80069300 00000000 */ .word 0x00000000
-    /* 5FA4 80069304 08820680 */ .word func_80068208
+    /* 5FA4 80069304 08820680 */ .word Stg00_WindowTestTask
     /* 5FA8 80069308 70110180 */ .word Task_DefaultDestroy
-    /* 5FAC 8006930C 5C830680 */ .word func_8006835C
+    /* 5FAC 8006930C 5C830680 */ .word Stg00_WindowTestDraw
     /* 5FB0 80069310 10000000 */ .word 0x00000010
     /* 5FB4 80069314 00000000 */ .word 0x00000000
 enddlabel D_80069300
 
-nonmatching D_80069318
+nonmatching Stg00_SoundTestTitle
 
-dlabel D_80069318
+dlabel Stg00_SoundTestTitle
     /* 5FB8 80069318 1C181E17 */ .word 0x171E181C
     /* 5FBC 8006931C 0D1D0E1C */ .word 0x1C0E1D0D
     /* 5FC0 80069320 1DFEFE1F */ .word 0x1FFEFE1D
     /* 5FC4 80069324 0A0BFE1C */ .word 0x1CFE0B0A
     /* 5FC8 80069328 0E1AFF00 */ .word 0x00FF1A0E
-enddlabel D_80069318
+enddlabel Stg00_SoundTestTitle
 
 nonmatching D_8006932C
 
 dlabel D_8006932C
     /* 5FCC 8006932C 00000000 */ .word 0x00000000
-    /* 5FD0 80069330 E4840680 */ .word func_800684E4
+    /* 5FD0 80069330 E4840680 */ .word Stg00_SoundTestTask
     /* 5FD4 80069334 70110180 */ .word Task_DefaultDestroy
-    /* 5FD8 80069338 E8870680 */ .word func_800687E8
+    /* 5FD8 80069338 E8870680 */ .word Stg00_SoundTestDraw
     /* 5FDC 8006933C 1C000000 */ .word 0x0000001C
     /* 5FE0 80069340 00000000 */ .word 0x00000000
 enddlabel D_8006932C
@@ -880,32 +880,32 @@ enddlabel D_8006932C
 nonmatching D_80069344
 
 dlabel D_80069344
-    /* 5FE4 80069344 F0870680 */ .word func_800687F0
-    /* 5FE8 80069348 30880680 */ .word func_80068830
+    /* 5FE4 80069344 F0870680 */ .word Stg00_CameraInit
+    /* 5FE8 80069348 30880680 */ .word Stg00_CameraTask
     /* 5FEC 8006934C 70110180 */ .word Task_DefaultDestroy
-    /* 5FF0 80069350 84880680 */ .word func_80068884
+    /* 5FF0 80069350 84880680 */ .word Stg00_CameraDraw
     /* 5FF4 80069354 88000000 */ .word 0x00000088
     /* 5FF8 80069358 00000000 */ .word 0x00000000
 enddlabel D_80069344
 
-nonmatching D_8006935C
+nonmatching Stg00_FontTextBuf
 
-dlabel D_8006935C
+dlabel Stg00_FontTextBuf
     /* 5FFC 8006935C 00000000 */ .word 0x00000000
-enddlabel D_8006935C
+enddlabel Stg00_FontTextBuf
 
-nonmatching D_80069360
+nonmatching Stg00_FontWork
 
-dlabel D_80069360
+dlabel Stg00_FontWork
     /* 6000 80069360 00000000 */ .word 0x00000000
-enddlabel D_80069360
+enddlabel Stg00_FontWork
 
-nonmatching D_80069364
+nonmatching Stg00_SoundLabelBuf
 
-dlabel D_80069364
+dlabel Stg00_SoundLabelBuf
     /* 6004 80069364 00000000 */ .word 0x00000000
     /* 6008 80069368 00000000 */ .word 0x00000000
     /* 600C 8006936C 00000000 */ .word 0x00000000
     /* 6010 80069370 00000000 */ .word 0x00000000
     /* 6014 80069374 00000000 */ .word 0x00000000
-enddlabel D_80069364
+enddlabel Stg00_SoundLabelBuf
