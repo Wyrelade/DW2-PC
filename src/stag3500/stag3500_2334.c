@@ -1009,7 +1009,7 @@ void Stg35_RoundBannerInit(Actor *arg0, s32 arg1) {
     arg0->param = arg1;
 }
 
-INCLUDE_RODATA("asm/USA/stag3500/rodata", Stg35_RoundBannerMasks);
+const Stg35Masks Stg35_RoundBannerMasks = { { 1, 2, 0x10 } };
 void Stg35_RoundBannerTask(Actor *arg0) {
     Stg35RoundBannerWork *w = (Stg35RoundBannerWork *)arg0->work;
 

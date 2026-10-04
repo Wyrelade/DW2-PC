@@ -583,6 +583,6 @@ extern s32 Stg35_CamShotVariant;
 typedef struct {
     /* 0x0 */ s32 v[3];
 } Stg35Masks;
-extern Stg35Masks Stg35_RoundBannerMasks;
+extern const Stg35Masks Stg35_RoundBannerMasks;
 
 #endif
