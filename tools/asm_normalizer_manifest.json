@@ -6,13 +6,6 @@
       "padnop"
     ]
   },
-  "Menu_NameEntryTask": {
-    "passes": [
-      "zero_cmp",
-      "web_realloc",
-      "redundant_skip"
-    ]
-  },
   "Anim_HasModelAnim": {
     "passes": [
       "nodb",

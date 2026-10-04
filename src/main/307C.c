@@ -47,12 +47,12 @@ extern u8 Menu_NameEntryGetChar(Actor *);
 extern void Snd_SaveCurrentId(void);
 extern void Snd_RestoreSavedId(void);
 
-#ifdef NORMALIZED
 void Menu_NameEntryTask(Actor *a0) {
     Wk12974 *w = (Wk12974 *)a0->work;
     u8 *p;
     u8 *src;
     s32 i;
+    s32 j;
     u16 k;
     TextOpenArgs arg;
     TextOpenArgs arg2;
@@ -72,10 +72,13 @@ void Menu_NameEntryTask(Actor *a0) {
     switch (a0->stateLevel0) {
     case 0:
         Mem_FillWordsNeg1(&w->field_10, 5);
-        for (i = 0; i < w->field_8; i++) {
-            p[i] = 0xFD;
+        {
+            s32 j;
+            for (j = 0; j < w->field_8; j++) {
+                p[j] = 0xFD;
+            }
+            p[j] = 0xFF;
         }
-        p[i] = 0xFF;
         switch (w->field_0) {
         default:
         case 0:
@@ -205,10 +208,14 @@ void Menu_NameEntryTask(Actor *a0) {
                     Snd_PlayById(0x12, 0);
                 }
             } else if (D_8005F6F0[0].triangle > 0) {
-                if (w->field_24 != 0) {
-                    w->field_24--;
-                    p[w->field_24] = 0xFD;
-                    Snd_PlayById(0xB, 0);
+                i = w->field_24;
+                if (i != 0) {
+                    do {
+                        s32 n = i - 1;
+                        w->field_24 = n;
+                        p[n] = 0xFD;
+                        Snd_PlayById(0xB, 0);
+                    } while (0);
                 }
             } else if (D_8005F6F0[0].start > 0) {
                 goto L34;
@@ -225,12 +232,13 @@ void Menu_NameEntryTask(Actor *a0) {
                             break;
                         }
                     }
+                    j = w->field_8 - 1;
                     if (i != w->field_8) {
-                        for (i = w->field_8 - 1; i >= 0; i--) {
-                            if (p[i] != 0xFD) {
+                        for (; j >= 0; j--) {
+                            if (p[j] != 0xFD) {
                                 break;
                             }
-                            p[i] = 0xFF;
+                            p[j] = 0xFF;
                         }
                         Task_NextState0(a0);
                         Snd_PlayById(0xE, 0);
@@ -259,10 +267,6 @@ void Menu_NameEntryTask(Actor *a0) {
         break;
     }
 }
-#else
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Menu_NameEntryTask);
-void Menu_NameEntryTask(Actor *a0);
-#endif
 
 
 void Menu_NameEntryDrawParts(Actor *a) {
