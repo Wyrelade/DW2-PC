@@ -60,12 +60,6 @@
       "web_realloc"
     ]
   },
-  "func_80066720": {
-    "passes": [
-      "decouple_reg",
-      "reorder_indep_nops"
-    ]
-  },
   "func_8006CB58": {
     "passes": [
       "reorder_deep",

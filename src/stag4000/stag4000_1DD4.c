@@ -455,13 +455,14 @@ void func_8006667C(Actor *a0) {
     }
 }
 
-#ifdef NORMALIZED
 void func_80066720(Actor *a0) {
     Stg40W6720 *w = (Stg40W6720 *)a0->work;
     Stg40Slot34 *s3 = (Stg40Slot34 *)a0->u34.children;
     TextOpenArgs args;
     Stg40E34 *fe;
     s32 n;
+    s32 x = 0x12;
+    s32 sh;
 
     switch (a0->stateLevel0) {
     case 0:
@@ -470,7 +471,13 @@ void func_80066720(Actor *a0) {
         w->field_C = 0;
         s3->field_0 = 0;
         n = D_8005071C->field_E54->field_D - 6;
-        w->field_10 = ~(1 << ((n < 7) ? n : 6));
+        sh = n;
+        do {
+            if (n >= 7) {
+                sh = 6;
+            }
+        } while (0);
+        w->field_10 = ~(1 << sh);
         w->field_12 = D_80050720->hp;
         w->field_14 = D_80050720->mp;
         Task_NextState0(a0);
@@ -481,7 +488,7 @@ void func_80066720(Actor *a0) {
         default:
             if (Math_RampToOne(a0, &w->field_C) == 0) {
                 fe = D_8005071C->field_E54;
-                args.x = 0x12;
+                args.x = x;
                 args.y = 0x16;
                 args.bigFont = 0;
                 args.color = 0;
@@ -533,7 +540,8 @@ void func_80066720(Actor *a0) {
         switch (a0->stateLevel1) {
         case 0:
         default:
-            Text_CloseArray(&w->field_0, 3);
+            n = 3;
+            Text_CloseArray(&w->field_0, n);
             if (s3->field_0 != 0) {
                 Task_SetState0(s3->field_0, 2);
             }
@@ -548,10 +556,6 @@ void func_80066720(Actor *a0) {
         break;
     }
 }
-#else
-INCLUDE_ASM("asm/USA/stag4000/nonmatchings/stag4000_1DD4", func_80066720);
-void func_80066720(Actor *a0);
-#endif
 
 void func_80066AD0(Actor *a0) {
     Stg40W6AD0 *w = (Stg40W6AD0 *)a0->work;
