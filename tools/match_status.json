@@ -8,7 +8,7 @@
  "Actor_UpdateTransform": "natural",
  "AddPrim": "asm",
  "Anim_GetModelAnimFile": "natural",
- "Anim_HasModelAnim": "normalized",
+ "Anim_HasModelAnim": "natural",
  "Anim_SetModelAnim": "natural",
  "Anim_SetModelAnimFile": "natural",
  "Anim_StepModelAnim": "natural",
