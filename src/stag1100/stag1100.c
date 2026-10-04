@@ -1093,8 +1093,9 @@ void Stg11_StateTransferList(Actor *arg0, Stg11MenuWork *arg1) {
     }
 }
 
-INCLUDE_RODATA("asm/USA/stag1100/rodata", Stg11_TransferFileName);
-INCLUDE_RODATA("asm/USA/stag1100/rodata", Stg11_SaveFileName);
+/* Memory card file names: Japanese data-transfer file, USA save file. */
+const u8 Stg11_TransferFileName[] = "BISLPSP028001";
+const u8 Stg11_SaveFileName[] = "BASLUS-01193 DMW2";
 void Stg11_CardMenuInit(Actor *arg0, s16 arg1) {
     Stg11MenuWork *w = (Stg11MenuWork *)arg0->work;
 

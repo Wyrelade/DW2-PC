@@ -449,7 +449,9 @@ void Stg11_VsPartyDraw(Actor *arg0) {
     }
 }
 
-INCLUDE_RODATA("asm/USA/stag1100/rodata", Stg11_CardTitle);
+/* Memory card title: "Digimon World 2" in Shift-JIS full-width letters. */
+const u8 Stg11_CardTitle[32] = "‚c‚‰‚‡‚‰‚‚‚Ž"
+                               "‚v‚‚’‚Œ‚„‚Q";
 void Stg11_CardInitHeader(void) {
     Stg11SaveWork *w = (Stg11SaveWork *)Stg11_CardTask->work;
     struct Stg11CardBlock *h = &w->u34.s;
@@ -478,7 +480,7 @@ u8 *Stg11_CardGetTransferBuf(void) {
     return ((Stg11SaveWork *)Stg11_CardTask->work)->transferBuf;
 }
 
-void Stg11_CardSetTitle(u8 *arg0) {
+void Stg11_CardSetTitle(const u8 *arg0) {
     s32 i = 0;
     u8 *d = ((Stg11SaveWork *)Stg11_CardTask->work)->u34.s.title;
     u8 c;
@@ -510,7 +512,7 @@ s32 Stg11_CardGetResult(void) {
     return ((Stg11SaveWork *)Stg11_CardTask->work)->result;
 }
 
-void Stg11_CardSetFileName(u8 *arg0, u8 arg1) {
+void Stg11_CardSetFileName(const u8 *arg0, u8 arg1) {
     Stg11SaveWork *w = (Stg11SaveWork *)Stg11_CardTask->work;
     strcpy(w->fileName, arg0);
     w->isTransferFile = arg1;
