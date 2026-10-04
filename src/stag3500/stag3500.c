@@ -2,7 +2,7 @@
 #include "stag3500/stag3500.h"
 
 void Stg35_BgUpdate(Actor *arg0) {
-    Stg35LoadHandle *w = (Stg35LoadHandle *)arg0->work;
+    Stg35PartsHandle *w = (Stg35PartsHandle *)arg0->work;
 
     if (arg0->stateLevel0 == 0) {
         Stg35_PartsAlloc(w);
@@ -12,12 +12,12 @@ void Stg35_BgUpdate(Actor *arg0) {
 }
 
 void Stg35_BgDestroy(Actor *arg0) {
-    Stg35_PartsFree((Stg35LoadHandle *)arg0->work);
+    Stg35_PartsFree((Stg35PartsHandle *)arg0->work);
     Task_DefaultDestroy(arg0);
 }
 
 void Stg35_BgDraw(Actor *arg0) {
-    Stg35LoadHandle *w = (Stg35LoadHandle *)arg0->work;
+    Stg35PartsHandle *w = (Stg35PartsHandle *)arg0->work;
 
     Stg35_PartsSetPalette(w, 2, Math_CycleRange(arg0->elapsed, 6, 0, 7));
     Stg35_PartsDraw(w);
@@ -41,34 +41,34 @@ void Stg35_FightBgDraw(Actor *arg0) {
 }
 
 void Stg35_ActionLoadInit(Actor *arg0, s32 *arg1) {
-    ((Stg35Work *)arg0->work)->field_0 = *arg1;
+    ((Stg35FighterWork *)arg0->work)->field_0 = *arg1;
 }
 
 void Stg35_ActionLoadAddSorted(Actor *arg0, s32 arg1, s32 arg2) {
-    Stg35ListWork *w = (Stg35ListWork *)arg0->work;
+    Stg35ActionLoadWork *w = (Stg35ActionLoadWork *)arg0->work;
     s32 found = 0;
     s32 i;
     s32 j;
 
-    for (i = 0; i < w->field_2D8; i++) {
-        if (arg2 < w->field_F8[i]) {
+    for (i = 0; i < w->sortedCount; i++) {
+        if (arg2 < w->sortedLbas[i]) {
             found = 1;
             break;
         }
     }
     if (found) {
-        for (j = w->field_2D8; i < j; j--) {
-            w->field_8[j] = w->field_8[j - 1];
-            w->field_F8[j] = w->field_F8[j - 1];
+        for (j = w->sortedCount; i < j; j--) {
+            w->sortedFileIds[j] = w->sortedFileIds[j - 1];
+            w->sortedLbas[j] = w->sortedLbas[j - 1];
         }
     }
-    w->field_8[i] = arg1;
-    w->field_F8[i] = arg2;
-    w->field_2D8++;
+    w->sortedFileIds[i] = arg1;
+    w->sortedLbas[i] = arg2;
+    w->sortedCount++;
 }
 
 void Stg35_ActionLoadUpdate(Actor *arg0) {
-    Stg35ListWork *w = (Stg35ListWork *)arg0->work;
+    Stg35ActionLoadWork *w = (Stg35ActionLoadWork *)arg0->work;
     s16 *p;
     GfxPart *part;
     s16 a[4];
@@ -83,7 +83,7 @@ void Stg35_ActionLoadUpdate(Actor *arg0) {
     switch (arg0->stateLevel1) {
     case 0:
     default:
-        p = w->field_0;
+        p = w->script;
         k = 0;
         while (*p != 0x14) {
             switch (*p) {
@@ -109,109 +109,109 @@ void Stg35_ActionLoadUpdate(Actor *arg0) {
                 p += 1;
                 break;
             case 8:
-                w->field_2E8 = Stg35_Battle.rec[p[1]].digiId;
-                w->field_31C = p[2];
+                w->casterDigiId = Stg35_Battle.rec[p[1]].digiId;
+                w->skillId = p[2];
                 p += 3;
                 break;
             case 9:
-                w->field_304[k] = 1;
-                w->field_2EC[k] = Stg35_Battle.rec[p[1]].digiId;
+                w->targetReactKinds[k] = 1;
+                w->targetDigiIds[k] = Stg35_Battle.rec[p[1]].digiId;
                 p += 3;
                 k++;
                 break;
             case 10:
-                w->field_304[k] = 2;
-                w->field_2EC[k] = Stg35_Battle.rec[p[1]].digiId;
+                w->targetReactKinds[k] = 2;
+                w->targetDigiIds[k] = Stg35_Battle.rec[p[1]].digiId;
                 p += 3;
                 k++;
                 break;
             case 11:
-                w->field_304[k] = 3;
-                w->field_2EC[k] = Stg35_Battle.rec[p[1]].digiId;
+                w->targetReactKinds[k] = 3;
+                w->targetDigiIds[k] = Stg35_Battle.rec[p[1]].digiId;
                 p += 3;
                 k++;
                 break;
             case 12:
-                w->field_304[k] = 0;
-                w->field_2EC[k] = Stg35_Battle.rec[p[1]].digiId;
+                w->targetReactKinds[k] = 0;
+                w->targetDigiIds[k] = Stg35_Battle.rec[p[1]].digiId;
                 p += 3;
                 k++;
                 break;
             }
         }
-        Cd_QueueFile(Skill_GetPartsEntry(w->field_31C) >> 16);
+        Cd_QueueFile(Skill_GetPartsEntry(w->skillId) >> 16);
         Task_NextState1(arg0);
         break;
     case 1:
-        w->field_2DC = 0;
-        w->field_2E0 = 0;
-        w->field_1E8[w->field_2DC++] = Digi_GetModelFile(w->field_2E8);
-        w->field_1E8[w->field_2DC++] = Anim_GetModelAnimFile(w->field_2E8, 0);
-        w->field_260[w->field_2E0++] = Anim_GetModelAnimFile(w->field_2E8, Skill_GetCastAnim(w->field_31C) + 5);
+        w->keptCount = 0;
+        w->tempCount = 0;
+        w->keptFiles[w->keptCount++] = Digi_GetModelFile(w->casterDigiId);
+        w->keptFiles[w->keptCount++] = Anim_GetModelAnimFile(w->casterDigiId, 0);
+        w->tempFiles[w->tempCount++] = Anim_GetModelAnimFile(w->casterDigiId, Skill_GetCastAnim(w->skillId) + 5);
         for (i = 0; i < 6; i++) {
-            if (w->field_2EC[i] != 0) {
-                w->field_1E8[w->field_2DC++] = Digi_GetModelFile(w->field_2EC[i]);
-                w->field_1E8[w->field_2DC++] = Anim_GetModelAnimFile(w->field_2EC[i], 0);
-                switch (w->field_304[i]) {
+            if (w->targetDigiIds[i] != 0) {
+                w->keptFiles[w->keptCount++] = Digi_GetModelFile(w->targetDigiIds[i]);
+                w->keptFiles[w->keptCount++] = Anim_GetModelAnimFile(w->targetDigiIds[i], 0);
+                switch (w->targetReactKinds[i]) {
                 case 0:
                 default:
                     break;
                 case 1:
-                    w->field_260[w->field_2E0++] = Anim_GetModelAnimFile(w->field_2EC[i], 1);
+                    w->tempFiles[w->tempCount++] = Anim_GetModelAnimFile(w->targetDigiIds[i], 1);
                     break;
                 case 3:
-                    w->field_1E8[w->field_2DC++] = Anim_GetModelAnimFile(w->field_2EC[i], 0xA);
+                    w->keptFiles[w->keptCount++] = Anim_GetModelAnimFile(w->targetDigiIds[i], 0xA);
                 case 2:
-                    w->field_260[w->field_2E0++] = Anim_GetModelAnimFile(w->field_2EC[i], 2);
-                    w->field_260[w->field_2E0++] = Anim_GetModelAnimFile(w->field_2EC[i], 9);
+                    w->tempFiles[w->tempCount++] = Anim_GetModelAnimFile(w->targetDigiIds[i], 2);
+                    w->tempFiles[w->tempCount++] = Anim_GetModelAnimFile(w->targetDigiIds[i], 9);
                     break;
                 }
             }
         }
-        if (w->field_31C != 0) {
+        if (w->skillId != 0) {
             for (k = 0; k < 2; k++) {
-                Skill_GetFxSet(w->field_31C, k, a, b);
+                Skill_GetFxSet(w->skillId, k, a, b);
                 for (j = 0; j < 3; j++) {
                     if (a[j] != 0) {
-                        w->field_260[w->field_2E0++] = a[j];
+                        w->tempFiles[w->tempCount++] = a[j];
                     }
                     if (b[j] != 0) {
-                        w->field_260[w->field_2E0++] = b[j];
+                        w->tempFiles[w->tempCount++] = b[j];
                     }
                 }
             }
         }
-        w->field_1E8[w->field_2DC++] = 0x1A1;
-        w->field_1E8[w->field_2DC++] = 0x13B;
-        w->field_1E8[w->field_2DC++] = 0x1A0;
-        w->field_1E8[w->field_2DC++] = 0x22B;
-        w->field_1E8[w->field_2DC++] = 0xCB9;
+        w->keptFiles[w->keptCount++] = 0x1A1;
+        w->keptFiles[w->keptCount++] = 0x13B;
+        w->keptFiles[w->keptCount++] = 0x1A0;
+        w->keptFiles[w->keptCount++] = 0x22B;
+        w->keptFiles[w->keptCount++] = 0xCB9;
         Task_NextState1(arg0);
         break;
     case 2:
-        if (Cd_GetFileState(Skill_GetPartsEntry(w->field_31C) >> 16) == 3) {
-            w->field_1E8[w->field_2DC++] = 0x1EF;
-            part = (GfxPart *)Cd_GetFileEntry(Skill_GetPartsEntry(w->field_31C));
+        if (Cd_GetFileState(Skill_GetPartsEntry(w->skillId) >> 16) == 3) {
+            w->keptFiles[w->keptCount++] = 0x1EF;
+            part = (GfxPart *)Cd_GetFileEntry(Skill_GetPartsEntry(w->skillId));
             while (part->fileId != 0) {
-                w->field_260[w->field_2E0++] = part->fileId >> 16;
+                w->tempFiles[w->tempCount++] = part->fileId >> 16;
                 part++;
             }
-            w->field_2D8 = 0;
-            for (i = 0; i < w->field_2DC; i++) {
-                Stg35_ActionLoadAddSorted(arg0, w->field_1E8[i], Cd_GetFileLba(w->field_1E8[i]));
+            w->sortedCount = 0;
+            for (i = 0; i < w->keptCount; i++) {
+                Stg35_ActionLoadAddSorted(arg0, w->keptFiles[i], Cd_GetFileLba(w->keptFiles[i]));
             }
-            for (i = 0; i < w->field_2E0; i++) {
-                Stg35_ActionLoadAddSorted(arg0, w->field_260[i], Cd_GetFileLba(w->field_260[i]));
+            for (i = 0; i < w->tempCount; i++) {
+                Stg35_ActionLoadAddSorted(arg0, w->tempFiles[i], Cd_GetFileLba(w->tempFiles[i]));
             }
             Task_NextState1(arg0);
-            w->field_4 = 0;
+            w->loadTimer = 0;
         }
         break;
     case 3:
-        if (++w->field_4 < 300) {
-            for (i = 0; i < w->field_2D8; i++) {
-                Cd_QueueFile(w->field_8[i]);
-                if (Cd_GetFileState(w->field_8[i]) != 3) {
+        if (++w->loadTimer < 300) {
+            for (i = 0; i < w->sortedCount; i++) {
+                Cd_QueueFile(w->sortedFileIds[i]);
+                if (Cd_GetFileState(w->sortedFileIds[i]) != 3) {
                     return;
                 }
             }
@@ -222,12 +222,12 @@ void Stg35_ActionLoadUpdate(Actor *arg0) {
 }
 
 void Stg35_ActionLoadDestroy(Actor *arg0) {
-    Stg35ListWork *w = (Stg35ListWork *)arg0->work;
+    Stg35ActionLoadWork *w = (Stg35ActionLoadWork *)arg0->work;
     s32 i;
 
-    for (i = 0; i < w->field_2E0; i++) {
-        if (w->field_260[i] != 0) {
-            Cd_FreeFile(w->field_260[i]);
+    for (i = 0; i < w->tempCount; i++) {
+        if (w->tempFiles[i] != 0) {
+            Cd_FreeFile(w->tempFiles[i]);
         }
     }
 }
@@ -273,7 +273,7 @@ void Stg35_RootUpdate(Actor *arg0) {
 }
 
 void Stg35_VsMenuUpdate(Actor *arg0) {
-    Stg35Work4 *w = (Stg35Work4 *)arg0->work;
+    Stg35VsMenuWork *w = (Stg35VsMenuWork *)arg0->work;
     s32 *slot = (s32 *)arg0->u34.children;
     s32 i;
     u16 pad;
@@ -287,20 +287,20 @@ void Stg35_VsMenuUpdate(Actor *arg0) {
             for (i = 4; i >= 0; i--) {
                 Save_GameState.elems[i].state = 0;
             }
-            w->field_2C = 0;
+            w->phase = 0;
             break;
         case 1:
-            w->field_2C = 2;
+            w->phase = 2;
             break;
         case 2:
-            w->field_2C = 1;
+            w->phase = 1;
             break;
         }
         if (Save_GameState.elems[0].state != 0) {
-            w->field_34 = 1;
+            w->p1Loaded = 1;
         }
         if (Save_GameState.elems[3].state != 0) {
-            w->field_38 = 1;
+            w->p2Loaded = 1;
         }
         Gpu_AllocPacketBufs(0x32000);
         Sys_SetFrameRate30();
@@ -321,8 +321,8 @@ void Stg35_VsMenuUpdate(Actor *arg0) {
         Task_NextState0(arg0);
         break;
     case 1:
-        if (w->field_40 == 0 && Snd_AnySlotLoading() == 0) {
-            w->field_40 = 1;
+        if (w->musicStarted == 0 && Snd_AnySlotLoading() == 0) {
+            w->musicStarted = 1;
             Snd_PlayById(0x103, 1);
             Snd_SetSlotContent(2, 0x19);
         }
@@ -333,7 +333,7 @@ void Stg35_VsMenuUpdate(Actor *arg0) {
             Stg35_PartsStartOpen(&w->load[0]);
             Stg35_PartsSetFile(&w->load[1], 0x3120003);
             Stg35_PartsStartOpen(&w->load[1]);
-            if (w->field_34 != 0) {
+            if (w->p1Loaded != 0) {
                 Stg35_PartsSetFile(&w->load[2], 0xD3F0003);
                 Stg35_PartsStartOpen(&w->load[2]);
                 Stg35_PartsSetNumber(&w->load[2], 2, 3, (s16)Save_GameState.elems[0].maxHp);
@@ -343,7 +343,7 @@ void Stg35_VsMenuUpdate(Actor *arg0) {
                 Stg35_PartsSetNumber(&w->load[2], 8, 3, (s16)Save_GameState.elems[2].maxHp);
                 Stg35_PartsSetNumber(&w->load[2], 0x40, 3, (s16)Save_GameState.elems[2].maxMp);
             }
-            if (w->field_38 != 0) {
+            if (w->p2Loaded != 0) {
                 Stg35_PartsSetFile(&w->load[3], 0xD3F0004);
                 Stg35_PartsStartOpen(&w->load[3]);
                 Stg35_PartsSetNumber(&w->load[3], 2, 3, (s16)Save_GameState.elems[3].maxHp);
@@ -354,25 +354,25 @@ void Stg35_VsMenuUpdate(Actor *arg0) {
                 Stg35_PartsSetNumber(&w->load[3], 0x40, 3, (s16)Save_GameState.elems[5].maxMp);
             }
             Stg35_TextSetLayout(&w->text[0], 0x101, 0x10, 0xBA);
-            if (w->field_34 != 0) {
+            if (w->p1Loaded != 0) {
                 for (i = 0; i < 3; i++) {
                     Stg35_TextSetLayout(&w->text[i + 1], 0, 0x15, i * 0x22 + 0x4E);
-                    Stg35_TextSetString((Stg35LoadHandle *)&w->text[i + 1], (s32)Save_GameState.elems[i].name);
+                    Stg35_TextSetString((Stg35PartsHandle *)&w->text[i + 1], (s32)Save_GameState.elems[i].name);
                     Stg35_TextOpen(&w->text[i + 1]);
                 }
             }
-            if (w->field_38 != 0) {
+            if (w->p2Loaded != 0) {
                 for (i = 0; i < 3; i++) {
                     Stg35_TextSetLayout(&w->text[i + 4], 0, 0xC9, i * 0x22 + 0x4E);
-                    Stg35_TextSetString((Stg35LoadHandle *)&w->text[i + 4], (s32)Save_GameState.elems[i + 3].name);
+                    Stg35_TextSetString((Stg35PartsHandle *)&w->text[i + 4], (s32)Save_GameState.elems[i + 3].name);
                     Stg35_TextOpen(&w->text[i + 4]);
                 }
             }
-            w->field_30 = 1;
+            w->promptDirty = 1;
             Task_NextState1(arg0);
         case 1:
             do {
-                switch (w->field_2C) {
+                switch (w->phase) {
                 case 0:
                 default:
                     pad = Pad_State[0].pressed;
@@ -386,22 +386,22 @@ void Stg35_VsMenuUpdate(Actor *arg0) {
                 }
                 if (pad & 0x10) {
                     Snd_PlayById(0xB, 0);
-                    w->field_3C = 1;
+                    w->backPressed = 1;
                     Task_NextState0(arg0);
                     break;
                 }
                 if (pad & 0x40) {
                     Snd_PlayById(0xE, 0);
-                    w->field_3C = 0;
+                    w->backPressed = 0;
                     Task_NextState0(arg0);
                 }
             } while (0);
-            if (w->field_30 != 0) {
-                w->field_30 = 0;
-                Stg35_TextSetSysMsg(&w->text[0], Stg35_VsMenuPromptMsgs[w->field_2C]);
+            if (w->promptDirty != 0) {
+                w->promptDirty = 0;
+                Stg35_TextSetSysMsg(&w->text[0], Stg35_VsMenuPromptMsgs[w->phase]);
                 Stg35_TextOpen(&w->text[0]);
             }
-            Stg35_PartsHideByMask(&w->load[0], Stg35_VsMenuPhaseMasks[w->field_2C]);
+            Stg35_PartsHideByMask(&w->load[0], Stg35_VsMenuPhaseMasks[w->phase]);
             break;
         }
         break;
@@ -424,16 +424,16 @@ void Stg35_VsMenuUpdate(Actor *arg0) {
         if (g->fadeLevel == 0xFF) {
             s32 v;
 
-            switch (w->field_2C) {
+            switch (w->phase) {
             case 0:
             default:
-                v = w->field_3C == 0 ? 0x603 : 0x401;
+                v = w->backPressed == 0 ? 0x603 : 0x401;
                 break;
             case 1:
-                v = w->field_3C == 0 ? 0x702 : 0x701;
+                v = w->backPressed == 0 ? 0x702 : 0x701;
                 break;
             case 2:
-                v = w->field_3C == 0 ? 0x604 : 0x701;
+                v = w->backPressed == 0 ? 0x604 : 0x701;
                 break;
             }
             g->nextGameMode = v;
@@ -443,7 +443,7 @@ void Stg35_VsMenuUpdate(Actor *arg0) {
 }
 
 void Stg35_VsMenuDestroy(Actor *arg0) {
-    Stg35Work4 *w = (Stg35Work4 *)arg0->work;
+    Stg35VsMenuWork *w = (Stg35VsMenuWork *)arg0->work;
     s32 i;
 
     for (i = 0; i < 4; i++) {
@@ -456,15 +456,15 @@ void Stg35_VsMenuDestroy(Actor *arg0) {
 }
 
 void Stg35_VsMenuDraw(Actor *arg0) {
-    Stg35Work4 *w = (Stg35Work4 *)arg0->work;
+    Stg35VsMenuWork *w = (Stg35VsMenuWork *)arg0->work;
 
     Stg35_PartsSetPalette(&w->load[0], 0x2A, Math_CycleRange(arg0->elapsed, 6, 0, 7));
     Stg35_PartsDraw(&w->load[0]);
     Stg35_PartsDraw(&w->load[1]);
-    if (w->field_34 != 0) {
+    if (w->p1Loaded != 0) {
         Stg35_PartsDraw(&w->load[2]);
     }
-    if (w->field_38 != 0) {
+    if (w->p2Loaded != 0) {
         Stg35_PartsDraw(&w->load[3]);
     }
 }
@@ -518,12 +518,12 @@ void Stg35_MatchupUpdate(Actor *arg0) {
                     }
                     for (k = 0; k < 6; k++) {
                         Stg35_TextSetLayout(&w->text[k + 6], 1, Stg35_MatchupPartyPos[k / 3].x, Stg35_MatchupPartyPos[k / 3].y + (k % 3) * 12);
-                        Stg35_TextSetString((Stg35LoadHandle *)&w->text[k + 6], (s32)Digi_GetDefaultName(Save_GameState.elems[k].digiId));
+                        Stg35_TextSetString((Stg35PartsHandle *)&w->text[k + 6], (s32)Digi_GetDefaultName(Save_GameState.elems[k].digiId));
                         Stg35_TextOpen(&w->text[k + 6]);
                     }
                     for (l = 0; l < 2; l++) {
                         Stg35_TextSetLayout(&w->text[l + 12], 1, Stg35_MatchupTamerPos[l].x, Stg35_MatchupTamerPos[l].y);
-                        Stg35_TextSetString((Stg35LoadHandle *)&w->text[l + 12], (s32)Save_GameState.elems[l + 6].name);
+                        Stg35_TextSetString((Stg35PartsHandle *)&w->text[l + 12], (s32)Save_GameState.elems[l + 6].name);
                         Stg35_TextOpen(&w->text[l + 12]);
                     }
                 }
@@ -578,7 +578,7 @@ void Stg35_MatchupDestroy(Actor *arg0) {
 }
 
 void Stg35_MatchupDraw(Actor *arg0) {
-    Stg35_PartsDraw((Stg35LoadHandle *)arg0->work);
+    Stg35_PartsDraw((Stg35PartsHandle *)arg0->work);
 }
 
 void Stg35_SetDigiAction(Actor *arg0, s32 arg1, s32 arg2) {
@@ -590,24 +590,24 @@ void Stg35_SetDigiAction(Actor *arg0, s32 arg1, s32 arg2) {
 }
 
 void Stg35_ShowWinnerSide(Stg35ChildOwner *arg0, s32 arg1) {
-    Stg35ChildList *l = arg0->field_34;
+    Stg35BattleChildren *l = arg0->children;
     s32 i;
 
     for (i = 0; i < 6; i++) {
-        Actor *a = l->field_2C[i];
+        Actor *a = l->fighters[i];
 
         if (a != NULL) {
             if (arg1 == 0) {
                 if (i < 3) {
                     Stg35_FighterSetVisible(a, 1);
-                    Stg35_FighterQueueHomeReset(l->field_2C[i]);
+                    Stg35_FighterQueueHomeReset(l->fighters[i]);
                 } else {
                     Stg35_FighterSetVisible(a, 0);
                 }
             } else {
                 if (i >= 3) {
                     Stg35_FighterSetVisible(a, 1);
-                    Stg35_FighterQueueHomeReset(l->field_2C[i]);
+                    Stg35_FighterQueueHomeReset(l->fighters[i]);
                 } else {
                     Stg35_FighterSetVisible(a, 0);
                 }
@@ -617,13 +617,13 @@ void Stg35_ShowWinnerSide(Stg35ChildOwner *arg0, s32 arg1) {
 }
 
 void Stg35_ShowAllDigi(Stg35ChildOwner *arg0) {
-    Stg35ChildList *l = arg0->field_34;
+    Stg35BattleChildren *l = arg0->children;
     s32 i;
 
     for (i = 0; i < 6; i++) {
-        if (l->field_2C[i] != NULL) {
-            Stg35_FighterSetVisible(l->field_2C[i], 1);
-            Stg35_FighterQueueHomeReset(l->field_2C[i]);
+        if (l->fighters[i] != NULL) {
+            Stg35_FighterSetVisible(l->fighters[i], 1);
+            Stg35_FighterQueueHomeReset(l->fighters[i]);
         }
     }
 }
@@ -702,7 +702,7 @@ void Stg35_BattleUpdate(Actor *arg0) {
                 }
                 Task_NextState2(arg0);
             case 2:
-                Task_Create(0x70C, (s32 *)&c[17], w->field_4);
+                Task_Create(0x70C, (s32 *)&c[17], w->round);
                 Task_NextState2(arg0);
             case 3:
                 if (c[17] == NULL) {
@@ -734,7 +734,7 @@ void Stg35_BattleUpdate(Actor *arg0) {
                         }
                     }
                     for (m = 0; m < 6; m++) {
-                        buf[5 - m] = Stg35_Battle.field_238[Stg35_TurnOrderGet(0)].field_C[m];
+                        buf[5 - m] = Stg35_Battle.actions[Stg35_TurnOrderGet(0)].skills[m];
                     }
                     Stg35_HudStartGauge(Stg35_TurnOrderGet(0) >= 3, buf);
                     Task_NextState3(arg0);
@@ -768,7 +768,7 @@ void Stg35_BattleUpdate(Actor *arg0) {
         lose:
             Task_SetState1(arg0, 3);
             r = 1;
-            w->field_C = r;
+            w->winnerSide = r;
             goto chk;
         case 3:
             r = 0;
@@ -786,13 +786,13 @@ void Stg35_BattleUpdate(Actor *arg0) {
             if (sum == 0) {
                 Task_SetState1(arg0, 4);
                 r = 1;
-                w->field_C = 0;
+                w->winnerSide = 0;
             }
         chk:
             if (r == 0) {
                 Stg35_TurnOrderRemove(0);
                 if (Stg35_TurnOrderGet(0) == -1) {
-                if (++w->field_4 == 3) {
+                if (++w->round == 3) {
                 memset((u8 *)cnt, 0, 8);
                 for (n = 0; n < 3; n++) {
                     if (Stg35_Battle.rec[n].hp != 0) {
@@ -819,9 +819,9 @@ void Stg35_BattleUpdate(Actor *arg0) {
                     }
                 }
                 if (cnt[0] >= cnt[1]) {
-                    w->field_C = 0;
+                    w->winnerSide = 0;
                 } else {
-                    w->field_C = 1;
+                    w->winnerSide = 1;
                 }
                 } else {
                     Task_SetState1(arg0, 1);
@@ -844,13 +844,13 @@ void Stg35_BattleUpdate(Actor *arg0) {
         case 0:
         default:
             Snd_PlayById(0x202, 1);
-            Stg35_SetCameraShot(w->field_C + 0x19);
-            Stg35_ShowWinnerSide((Stg35ChildOwner *)arg0, w->field_C);
+            Stg35_SetCameraShot(w->winnerSide + 0x19);
+            Stg35_ShowWinnerSide((Stg35ChildOwner *)arg0, w->winnerSide);
             arg0->elapsed = 0;
             Task_NextState1(arg0);
         case 1:
             wait = 0;
-            for (i = w->field_C * 3; i < w->field_C * 3 + 3; i++) {
+            for (i = w->winnerSide * 3; i < w->winnerSide * 3 + 3; i++) {
                 if (Stg35_Battle.rec[i].hp != 0) {
                     f = Anim_GetModelAnimFile(Stg35_Battle.rec[i].digiId, 8);
                     Cd_QueueFile(f);
@@ -866,7 +866,7 @@ void Stg35_BattleUpdate(Actor *arg0) {
             if (arg0->elapsed < 0x3C) {
                 break;
             }
-            for (j = w->field_C * 3; j < w->field_C * 3 + 3; j++) {
+            for (j = w->winnerSide * 3; j < w->winnerSide * 3 + 3; j++) {
                 if (Stg35_Battle.rec[j].hp != 0) {
                     Task_SetState01(c[11 + j], 2, 2);
                 }
@@ -877,7 +877,7 @@ void Stg35_BattleUpdate(Actor *arg0) {
             if (arg0->elapsed < 0x78) {
                 break;
             }
-            Task_Create(0x70D, (s32 *)&c[10], w->field_C);
+            Task_Create(0x70D, (s32 *)&c[10], w->winnerSide);
             Task_NextState1(arg0);
         case 3:
             if (arg0->elapsed < 0x78) {

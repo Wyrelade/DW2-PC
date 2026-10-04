@@ -4,29 +4,29 @@
 #include "stag3500/stag3500_2334_funcs.h"
 
 void Stg35_BuildSkillScript(s32 arg0) {
-    Stg35Rec2C *b = &Stg35_Battle.field_238[arg0];
+    Stg35Action *b = &Stg35_Battle.actions[arg0];
     s16 *p;
     s16 targets[6];
     s32 dmg[6];
     s16 kind = 1;
-    s16 skill = (s16)b->field_8;
+    s16 skill = (s16)b->skillId;
     s32 hit;
     s32 n;
     s32 c;
     s32 i;
 
-    hit = Skill_GetPower((s16)b->field_8) > 0;
+    hit = Skill_GetPower((s16)b->skillId) > 0;
     p = Stg35_BattleScript;
     for (i = 0; i < 6; i++) {
         dmg[i] = 0;
         targets[i] = -1;
     }
     n = 0;
-    switch (b->field_4) {
+    switch (b->target) {
     default:
-        if (Stg35_Battle.rec[b->field_4].hp != 0) {
+        if (Stg35_Battle.rec[b->target].hp != 0) {
             n = 1;
-            targets[0] = b->field_4;
+            targets[0] = b->target;
         }
         break;
     case 7:
@@ -84,7 +84,7 @@ void Stg35_BuildSkillScript(s32 arg0) {
     *p++ = arg0;
     *p++ = 0x11;
     *p++ = 0xD;
-    *p++ = Stg35_Battle.field_238[arg0].field_0 - 1;
+    *p++ = Stg35_Battle.actions[arg0].actionState - 1;
     *p++ = 1;
     *p++ = 0x12;
     *p++ = 0xE;
@@ -110,7 +110,7 @@ void Stg35_BuildSkillScript(s32 arg0) {
         *p++ = dmg[i];
         if (hit) {
             if (Stg35_Battle.rec[targets[i]].hp != 0) {
-                *p++ = Stg35_Battle.field_238[targets[i]].field_0 != 5 ? 0xA : 9;
+                *p++ = Stg35_Battle.actions[targets[i]].actionState != 5 ? 0xA : 9;
             } else {
                 *p++ = 0xB;
             }
@@ -143,7 +143,7 @@ void Stg35_BuildSkillScript(s32 arg0) {
     }
     *p = 0x14;
     for (i = 0; i < 6; i++) {
-        Stg35_Battle.field_340[i] = targets[i];
+        Stg35_Battle.scriptTargets[i] = targets[i];
     }
 }
 
@@ -178,13 +178,13 @@ void Stg35_CamEaseToward(Stg35CamWork *w, s32 *t) {
     s32 i;
 
     for (i = 0; i < Sys_State.frameDelta; i++) {
-        w->field_7E += Stg35_CamEaseStep(t[0], w->field_7E);
-        w->field_0 += Stg35_CamEaseStep(t[1], w->field_0);
-        w->field_4 += Stg35_CamEaseStep(t[2], w->field_4);
-        w->field_8 += Stg35_CamEaseStep(t[3], w->field_8);
-        w->field_10 += Stg35_CamEaseStep(t[4], w->field_10);
-        w->field_6C += Stg35_CamEaseStep(t[5], w->field_6C);
-        w->field_74 += Stg35_CamEaseStep(t[6], w->field_74);
+        w->rotY += Stg35_CamEaseStep(t[0], w->rotY);
+        w->vpx += Stg35_CamEaseStep(t[1], w->vpx);
+        w->vpy += Stg35_CamEaseStep(t[2], w->vpy);
+        w->vpz += Stg35_CamEaseStep(t[3], w->vpz);
+        w->vry += Stg35_CamEaseStep(t[4], w->vry);
+        w->originX += Stg35_CamEaseStep(t[5], w->originX);
+        w->originZ += Stg35_CamEaseStep(t[6], w->originZ);
     }
 }
 
@@ -195,10 +195,10 @@ void Stg35_CameraUpdate(Actor *arg0) {
 
     switch (arg0->stateLevel0) {
     case 0:
-        GsInitCoordinate2(0, &w->field_1C);
-        w->field_4 = -0x4E20;
-        w->field_10 = 0x12C;
-        w->field_18 = 0x5DC;
+        GsInitCoordinate2(0, &w->coord);
+        w->vpy = -0x4E20;
+        w->vry = 0x12C;
+        w->projection = 0x5DC;
         Task_NextState0(arg0);
         break;
     case 1:
@@ -208,18 +208,18 @@ void Stg35_CameraUpdate(Actor *arg0) {
             switch (arg0->stateLevel2) {
             case 0:
             default:
-                w->field_4 += 0xE9;
-                w->field_8 -= 0x15E;
-                w->field_7E += 0x44;
-                if (w->field_7E > 0x1000) {
-                    w->field_7E = 0;
+                w->vpy += 0xE9;
+                w->vpz -= 0x15E;
+                w->rotY += 0x44;
+                if (w->rotY > 0x1000) {
+                    w->rotY = 0;
                     Task_NextState2(arg0);
                 }
                 break;
             case 1:
-                w->field_10 -= 0x21;
+                w->vry -= 0x21;
                 if (++arg0->stateLevel3 == 0x1E) {
-                    w->field_10 = -0x2BC;
+                    w->vry = -0x2BC;
                     Task_NextState1(arg0);
                 }
                 break;
@@ -291,26 +291,26 @@ void Stg35_CameraUpdate(Actor *arg0) {
             }
             break;
         case 22:
-            w->field_74 = -0x1E00;
-            w->field_4 = -0x1F40;
-            w->field_6C = 0;
-            w->field_7E = 0;
-            w->field_0 = 0;
-            w->field_8 = 0x4E20;
-            w->field_C = 0;
-            w->field_10 = 0;
-            w->field_14 = 0;
+            w->originZ = -0x1E00;
+            w->vpy = -0x1F40;
+            w->originX = 0;
+            w->rotY = 0;
+            w->vpx = 0;
+            w->vpz = 0x4E20;
+            w->vrx = 0;
+            w->vry = 0;
+            w->vrz = 0;
             break;
         case 23:
-            w->field_74 = 0x1E00;
-            w->field_7E = 0x800;
-            w->field_4 = -0x1F40;
-            w->field_6C = 0;
-            w->field_0 = 0;
-            w->field_8 = 0x4E20;
-            w->field_C = 0;
-            w->field_10 = 0;
-            w->field_14 = 0;
+            w->originZ = 0x1E00;
+            w->rotY = 0x800;
+            w->vpy = -0x1F40;
+            w->originX = 0;
+            w->vpx = 0;
+            w->vpz = 0x4E20;
+            w->vrx = 0;
+            w->vry = 0;
+            w->vrz = 0;
             break;
         case 24:
             {
@@ -340,32 +340,32 @@ void Stg35_CameraUpdate(Actor *arg0) {
             case 1:
                 break;
             }
-            w->field_4 = -0x514;
-            w->field_8 = 0x2EE0;
-            w->field_10 = -0x578;
-            w->field_0 = 0;
-            w->field_C = 0;
-            w->field_14 = 0;
-            w->field_7E = 0xAA;
-            w->field_6C = (arg0->stateLevel1 - 10) * 0xA00 - 0xC80;
-            w->field_74 = -0x1400;
+            w->vpy = -0x514;
+            w->vpz = 0x2EE0;
+            w->vry = -0x578;
+            w->vpx = 0;
+            w->vrx = 0;
+            w->vrz = 0;
+            w->rotY = 0xAA;
+            w->originX = (arg0->stateLevel1 - 10) * 0xA00 - 0xC80;
+            w->originZ = -0x1400;
             switch (Stg35_CamShotVariant) {
             case 1:
-                w->field_7E = 0x38;
-                w->field_6C = (arg0->stateLevel1 - 10) * 0xA00 - 0xA00;
-                w->field_8 = 0x34BC;
+                w->rotY = 0x38;
+                w->originX = (arg0->stateLevel1 - 10) * 0xA00 - 0xA00;
+                w->vpz = 0x34BC;
                 break;
             case 2:
-                w->field_4 = -0x1914;
-                w->field_6C = (arg0->stateLevel1 - 10) * 0xA00 - 0xA00;
-                w->field_74 = -0xF00;
-                w->field_8 = 0x34BC;
+                w->vpy = -0x1914;
+                w->originX = (arg0->stateLevel1 - 10) * 0xA00 - 0xA00;
+                w->originZ = -0xF00;
+                w->vpz = 0x34BC;
                 break;
             }
             if (arg0->stateLevel1 >= 13) {
-                w->field_7E = 0x800 - w->field_7E;
-                w->field_6C -= 0x1E00;
-                w->field_74 = -w->field_74;
+                w->rotY = 0x800 - w->rotY;
+                w->originX -= 0x1E00;
+                w->originZ = -w->originZ;
             }
             break;
         case 16:
@@ -374,45 +374,45 @@ void Stg35_CameraUpdate(Actor *arg0) {
         case 19:
         case 20:
         case 21:
-            w->field_4 = -0x5DC;
-            w->field_8 = 0x2EE0;
-            w->field_0 = 0;
-            w->field_C = 0;
-            w->field_10 = -0x640;
-            w->field_14 = 0;
+            w->vpy = -0x5DC;
+            w->vpz = 0x2EE0;
+            w->vpx = 0;
+            w->vrx = 0;
+            w->vry = -0x640;
+            w->vrz = 0;
             if (arg0->stateLevel1 < 19) {
-                w->field_7E = 0xAA;
-                w->field_6C = (arg0->stateLevel1 - 16) * 0xA00 - 0xA00;
-                w->field_74 = -0x1400;
+                w->rotY = 0xAA;
+                w->originX = (arg0->stateLevel1 - 16) * 0xA00 - 0xA00;
+                w->originZ = -0x1400;
             } else {
-                w->field_7E = 0x755;
-                w->field_6C = (arg0->stateLevel1 - 19) * 0xA00 - 0xA00;
-                w->field_74 = 0x1400;
+                w->rotY = 0x755;
+                w->originX = (arg0->stateLevel1 - 19) * 0xA00 - 0xA00;
+                w->originZ = 0x1400;
             }
             break;
         case 25:
-            w->field_74 = -0x1400;
-            w->field_4 = -0x1388;
-            w->field_8 = 0x3A98;
-            w->field_6C = 0;
-            w->field_70 = 0;
-            w->field_7E = 0;
-            w->field_0 = 0;
-            w->field_C = 0;
-            w->field_10 = -0x3E8;
-            w->field_14 = 0;
+            w->originZ = -0x1400;
+            w->vpy = -0x1388;
+            w->vpz = 0x3A98;
+            w->originX = 0;
+            w->originY = 0;
+            w->rotY = 0;
+            w->vpx = 0;
+            w->vrx = 0;
+            w->vry = -0x3E8;
+            w->vrz = 0;
             break;
         case 26:
-            w->field_74 = 0x1400;
-            w->field_7E = 0x800;
-            w->field_4 = -0x1388;
-            w->field_8 = 0x3A98;
-            w->field_6C = 0;
-            w->field_70 = 0;
-            w->field_0 = 0;
-            w->field_C = 0;
-            w->field_10 = -0x3E8;
-            w->field_14 = 0;
+            w->originZ = 0x1400;
+            w->rotY = 0x800;
+            w->vpy = -0x1388;
+            w->vpz = 0x3A98;
+            w->originX = 0;
+            w->originY = 0;
+            w->vpx = 0;
+            w->vrx = 0;
+            w->vry = -0x3E8;
+            w->vrz = 0;
             break;
         }
         break;
@@ -426,20 +426,20 @@ void Stg35_CameraDraw(Actor *arg0) {
     Stg35CamWork *w = (Stg35CamWork *)arg0->work;
     Stg35RefView rv;
 
-    RotMatrixYXZ(&w->field_7C, &w->field_1C.coord);
-    w->field_1C.coord.t[0] = w->field_6C;
-    w->field_1C.coord.t[1] = w->field_70;
-    w->field_1C.coord.t[2] = w->field_74;
-    w->field_1C.flg = 0;
-    rv.field_0 = w->field_0;
-    rv.field_4 = w->field_4;
-    rv.field_8 = w->field_8;
-    rv.field_C = w->field_C;
-    rv.field_10 = w->field_10;
-    rv.field_14 = w->field_14;
-    rv.field_18 = 0;
-    rv.field_1C = &w->field_1C;
-    GsSetProjection(w->field_18);
+    RotMatrixYXZ(&w->rotX, &w->coord.coord);
+    w->coord.coord.t[0] = w->originX;
+    w->coord.coord.t[1] = w->originY;
+    w->coord.coord.t[2] = w->originZ;
+    w->coord.flg = 0;
+    rv.vpx = w->vpx;
+    rv.vpy = w->vpy;
+    rv.vpz = w->vpz;
+    rv.vrx = w->vrx;
+    rv.vry = w->vry;
+    rv.vrz = w->vrz;
+    rv.rz = 0;
+    rv.super = &w->coord;
+    GsSetProjection(w->projection);
     GsSetRefView2(&rv);
 }
 
@@ -452,15 +452,15 @@ void Stg35_SetCameraShot(s32 arg0) {
 }
 
 void Stg35_FindSkillGroup(u8 arg0, s32 *arg1, s32 *arg2, s32 *arg3, s32 *arg4) {
-    Stg35Rec6 *p;
+    Stg35SkillGroupEntry *p;
     s32 i;
     s32 j;
 
     for (i = 0; i < 6; i++) {
         p = Stg35_SkillGroups[i];
         j = 0;
-        while (p->field_0 != 0) {
-            if (p->field_0 == arg0) {
+        while (p->skillId != 0) {
+            if (p->skillId == arg0) {
                 goto found;
             }
             p++;
@@ -470,7 +470,7 @@ void Stg35_FindSkillGroup(u8 arg0, s32 *arg1, s32 *arg2, s32 *arg3, s32 *arg4) {
     found:
         *arg1 = i;
         *arg2 = j;
-        *arg3 = p->field_4;
+        *arg3 = p->targetType;
         *arg4 = p->field_2;
         return;
     }
@@ -479,8 +479,8 @@ void Stg35_FindSkillGroup(u8 arg0, s32 *arg1, s32 *arg2, s32 *arg3, s32 *arg4) {
 }
 
 void Stg35_BuildCommandList(s32 arg0) {
-    u8 *ids = Stg35_Battle.rec[arg0].field_22;
-    Stg35Rec2C *b = &Stg35_Battle.field_238[arg0];
+    u8 *ids = Stg35_Battle.rec[arg0].skillIds;
+    Stg35Action *b = &Stg35_Battle.actions[arg0];
     s32 best[6];
     s32 grp;
     s32 idx;
@@ -490,7 +490,7 @@ void Stg35_BuildCommandList(s32 arg0) {
     s32 i;
 
     for (i = 0; i < 6; i++) {
-        b->field_C[i] = 0;
+        b->skills[i] = 0;
         best[i] = 100;
     }
     found = 0;
@@ -500,16 +500,16 @@ void Stg35_BuildCommandList(s32 arg0) {
             if (grp != -1 && best[grp] > idx) {
                 best[grp] = idx;
                 found = 1;
-                b->field_C[grp] = ids[i];
+                b->skills[grp] = ids[i];
                 b->field_1E[grp] = v2;
-                b->field_12[grp] = v4;
+                b->targetTypes[grp] = v4;
             }
         }
     }
     if (!found) {
-        b->field_C[0] = Stg35_SkillGroup0[1].field_0;
+        b->skills[0] = Stg35_SkillGroup0[1].skillId;
         b->field_1E[0] = Stg35_SkillGroup0[1].field_2;
-        b->field_12[0] = Stg35_SkillGroup0[1].field_4;
+        b->targetTypes[0] = Stg35_SkillGroup0[1].targetType;
     }
 }
 
@@ -518,7 +518,7 @@ void Stg35_WinBannerInit(Actor *arg0, s32 arg1) {
 }
 
 void Stg35_WinBannerUpdate(Actor *arg0) {
-    Stg35LoadHandle *w = (Stg35LoadHandle *)arg0->work;
+    Stg35PartsHandle *w = (Stg35PartsHandle *)arg0->work;
     s32 masks[2];
     s32 i;
 
@@ -542,7 +542,7 @@ void Stg35_WinBannerUpdate(Actor *arg0) {
 }
 
 void Stg35_WinBannerDestroy(Actor *arg0) {
-    Stg35LoadHandle *w = (Stg35LoadHandle *)arg0->work;
+    Stg35PartsHandle *w = (Stg35PartsHandle *)arg0->work;
     s32 i;
 
     for (i = 0; i < 1; i++) {
@@ -552,7 +552,7 @@ void Stg35_WinBannerDestroy(Actor *arg0) {
 }
 
 void Stg35_WinBannerDraw(Actor *arg0) {
-    Stg35LoadHandle *w = (Stg35LoadHandle *)arg0->work;
+    Stg35PartsHandle *w = (Stg35PartsHandle *)arg0->work;
     s32 i;
 
     for (i = 0; i < 1; i++) {

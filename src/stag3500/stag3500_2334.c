@@ -12,7 +12,7 @@ void Stg35_TextAlloc(Stg35TextHandle *arg0) {
 
     arg0->text = p;
     Mem_Zero(p, 0x1C);
-    arg0->text->field_0 = -1;
+    arg0->text->slot = -1;
 }
 
 void Stg35_TextFree(Stg35TextHandle *arg0) {
@@ -24,41 +24,41 @@ void Stg35_TextFree(Stg35TextHandle *arg0) {
 }
 
 void Stg35_TextSetLayout(Stg35TextHandle *arg0, s32 arg1, s32 arg2, s32 arg3) {
-    arg0->text->field_8 = arg1 >> 8;
-    arg0->text->field_C = 0;
-    arg0->text->field_10 = arg2;
-    arg0->text->field_14 = arg3;
-    arg0->text->field_18 = arg1 & 0xFF;
+    arg0->text->bigFont = arg1 >> 8;
+    arg0->text->color = 0;
+    arg0->text->x = arg2;
+    arg0->text->y = arg3;
+    arg0->text->charDelay = arg1 & 0xFF;
 }
 
-void Stg35_TextSetString(Stg35LoadHandle *arg0, s32 arg1) {
+void Stg35_TextSetString(Stg35PartsHandle *arg0, s32 arg1) {
     arg0->load->mode = arg1;
 }
 
-void Stg35_TextSetColor(Stg35LoadHandle *arg0, s32 arg1) {
-    arg0->load->u.field_C = arg1;
+void Stg35_TextSetColor(Stg35PartsHandle *arg0, s32 arg1) {
+    arg0->load->u.color = arg1;
 }
 
 void Stg35_TextSetSysMsg(Stg35TextHandle *arg0, s32 arg1) {
-    arg0->text->field_4 = (s32)Cd_GetFileEntry(arg1 + 0x1FD0000);
+    arg0->text->text = (s32)Cd_GetFileEntry(arg1 + 0x1FD0000);
 }
 
 void Stg35_TextSetSkillName(Stg35TextHandle *arg0, s32 arg1) {
-    arg0->text->field_4 = Skill_GetNameText(arg1);
+    arg0->text->text = Skill_GetNameText(arg1);
 }
 
 void Stg35_TextOpen(Stg35TextHandle *arg0) {
     Stg35TextObj *t = arg0->text;
     TextOpenArgs a;
 
-    a.text = t->field_4;
-    a.bigFont = t->field_8;
-    a.color = t->field_C;
-    a.x = t->field_10;
-    a.y = t->field_14;
+    a.text = t->text;
+    a.bigFont = t->bigFont;
+    a.color = t->color;
+    a.x = t->x;
+    a.y = t->y;
     a.charAdvance = 0;
     a.lineAdvance = 0;
-    a.charDelay = t->field_18;
+    a.charDelay = t->charDelay;
     Text_Open(t, &a);
 }
 
@@ -84,28 +84,28 @@ void Stg35_RectDraw(Stg35SpriteHandle *arg0) {
     Stg35PolyG4 *p;
     u32 *ot;
 
-    if (s->field_1C != 0 && s->field_1E != 0) {
+    if (s->w != 0 && s->h != 0) {
         g = &Sys_State;
         p = (Stg35PolyG4 *)g->packet.work;
-        ot = g->otLayers.u[s->field_0];
-        p->c0 = s->field_4[0];
-        p->c1 = s->field_4[1];
-        p->c2 = s->field_4[2];
-        p->c3 = s->field_4[3];
+        ot = g->otLayers.u[s->otLayer];
+        p->c0 = s->colors[0];
+        p->c1 = s->colors[1];
+        p->c2 = s->colors[2];
+        p->c3 = s->colors[3];
         p->tag.b.len = 8;
         p->c0.code = 0x38;
-        if (s->field_14 != 0) {
+        if (s->semiTrans != 0) {
             p->c0.code = 0x3A;
         }
-        p->x0 = p->x2 = s->field_18;
-        p->x1 = p->x3 = s->field_18 + s->field_1C;
-        p->y0 = p->y1 = s->field_1A;
-        p->y2 = p->y3 = s->field_1A + s->field_1E;
+        p->x0 = p->x2 = s->x;
+        p->x1 = p->x3 = s->x + s->w;
+        p->y0 = p->y1 = s->y;
+        p->y2 = p->y3 = s->y + s->h;
         p->tag.word = (p->tag.word & 0xFF000000) | (*ot & 0xFFFFFF);
         *ot = (*ot & 0xFF000000) | ((u32)p & 0xFFFFFF);
         p++;
-        if (s->field_14 != 0) {
-            SetDrawMode((Stg35DrMode *)p, 0, 0, (s->field_16 & 3) << 5, 0);
+        if (s->semiTrans != 0) {
+            SetDrawMode((Stg35DrMode *)p, 0, 0, (s->abr & 3) << 5, 0);
             ((Stg35DrMode *)p)->tag = (((Stg35DrMode *)p)->tag & 0xFF000000) | (*ot & 0xFFFFFF);
             *ot = (*ot & 0xFF000000) | ((u32)p & 0xFFFFFF);
             p = (Stg35PolyG4 *)((Stg35DrMode *)p + 1);
@@ -116,40 +116,40 @@ void Stg35_RectDraw(Stg35SpriteHandle *arg0) {
 
 void Stg35_RectSetDrawMode(Stg35SpriteHandle *arg0, s32 arg1, s16 arg2, s16 arg3) {
     Stg35Sprite *s = arg0->sprite;
-    s->field_0 = arg1;
-    s->field_14 = arg2;
-    s->field_16 = arg3;
+    s->otLayer = arg1;
+    s->semiTrans = arg2;
+    s->abr = arg3;
 }
 
 void Stg35_RectSetColor(Stg35SpriteHandle *arg0, s32 arg1, u8 arg2, u8 arg3, u8 arg4) {
     Stg35Sprite *s = arg0->sprite;
-    s->field_4[arg1].r = arg2;
-    s->field_4[arg1].g = arg3;
-    s->field_4[arg1].b = arg4;
+    s->colors[arg1].r = arg2;
+    s->colors[arg1].g = arg3;
+    s->colors[arg1].b = arg4;
 }
 
 void Stg35_RectSetWidth(Stg35SpriteHandle *arg0, s32 arg1) {
-    arg0->sprite->field_1C = arg1;
+    arg0->sprite->w = arg1;
 }
 
 void Stg35_RectSetHeight(Stg35SpriteHandle *arg0, s32 arg1) {
-    arg0->sprite->field_1E = arg1;
+    arg0->sprite->h = arg1;
 }
 
 void Stg35_RectSetX(Stg35SpriteHandle *arg0, s32 arg1) {
-    arg0->sprite->field_18 = arg1;
+    arg0->sprite->x = arg1;
 }
 
 void Stg35_RectSetY(Stg35SpriteHandle *arg0, s32 arg1) {
-    arg0->sprite->field_1A = arg1;
+    arg0->sprite->y = arg1;
 }
 
 void Stg35_RectSetBounds(Stg35SpriteHandle *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
     Stg35Sprite *s = arg0->sprite;
-    s->field_18 = arg1;
-    s->field_1A = arg2;
-    s->field_1C = arg3;
-    s->field_1E = arg4;
+    s->x = arg1;
+    s->y = arg2;
+    s->w = arg3;
+    s->h = arg4;
 }
 
 s32 Stg35_ScaleBarLen(s32 arg0, s32 arg1, s32 arg2) {
@@ -169,8 +169,8 @@ s32 Stg35_ScaleBarLen(s32 arg0, s32 arg1, s32 arg2) {
 }
 
 s32 Stg35_ApplySkillDamage(s32 arg0, s32 arg1, s32 arg2) {
-    Stg35Rec5C *rec0 = &D_8006AA98[arg0];
-    Stg35Rec5C *rec1 = &D_8006AA98[arg1];
+    Stg35BattleDigi *rec0 = &D_8006AA98[arg0];
+    Stg35BattleDigi *rec1 = &D_8006AA98[arg1];
     s32 a;
     s32 b;
     s32 prod;
@@ -182,9 +182,9 @@ s32 Stg35_ApplySkillDamage(s32 arg0, s32 arg1, s32 arg2) {
     s32 result;
 
     b = Skill_GetPower(arg2);
-    a = rec0->field_1C;
+    a = rec0->attack;
     Skill_GetSpecialty(arg2);
-    c = rec1->field_1E;
+    c = rec1->defense;
     idx = Stg35_HudPeekGaugeLevel(arg1 >= 3);
     d = Stg35_GaugeDefPercent[idx];
     num = a * b;
@@ -259,7 +259,7 @@ void Stg35_BuildTurnOrder(void) {
 
     for (i = 0; i < 6; i++) {
         if (Stg35_Battle.rec[i].hp != 0) {
-            v[i] = Stg35_Battle.rec[i].field_20 + (u16)((u16)Rand_Next() % 11);
+            v[i] = Stg35_Battle.rec[i].speed + (u16)((u16)Rand_Next() % 11);
         } else {
             v[i] = 0;
         }
@@ -283,19 +283,19 @@ void Stg35_BuildTurnOrder(void) {
 }
 
 void Stg35_SetChosenAction(s32 arg0, s32 arg1) {
-    Stg35Rec2C *b = &Stg35_Battle.field_238[arg0];
+    Stg35Action *b = &Stg35_Battle.actions[arg0];
     s32 t;
     s32 base;
     s32 n;
 
-    b->field_0 = 1;
-    b->field_8 = b->field_C[arg1];
-    switch (b->field_12[arg1]) {
+    b->actionState = 1;
+    b->skillId = b->skills[arg1];
+    switch (b->targetTypes[arg1]) {
     case 0:
     default:
         t = Stg35_DefaultTargets[arg0];
         if (Stg35_Battle.rec[t].hp != 0) {
-            b->field_4 = t;
+            b->target = t;
             break;
         }
     case 1:
@@ -313,39 +313,39 @@ void Stg35_SetChosenAction(s32 arg0, s32 arg1) {
         if (n == 100) {
             t = arg0;
         }
-        b->field_4 = t;
+        b->target = t;
         break;
     case 2:
         if (arg0 < 3) {
-            b->field_4 = 8;
+            b->target = 8;
         } else {
-            b->field_4 = 7;
+            b->target = 7;
         }
         break;
     }
 }
 
-void Stg35_PartsAlloc(Stg35LoadHandle *arg0) {
-    Stg35Load *p = (Stg35Load *)Mem_Alloc(0x24, 2);
+void Stg35_PartsAlloc(Stg35PartsHandle *arg0) {
+    Stg35PartsLayout *p = (Stg35PartsLayout *)Mem_Alloc(0x24, 2);
 
     arg0->load = p;
     Mem_Zero(p, 0x24);
-    arg0->load->field_8 = 0x1000;
+    arg0->load->scaleY = 0x1000;
 }
 
-void Stg35_PartsFree(Stg35LoadHandle *arg0) {
+void Stg35_PartsFree(Stg35PartsHandle *arg0) {
     if (arg0->load != NULL) {
         Mem_Free(arg0->load);
         arg0->load = NULL;
     }
 }
 
-void Stg35_PartsSetFile(Stg35LoadHandle *arg0, s32 arg1) {
+void Stg35_PartsSetFile(Stg35PartsHandle *arg0, s32 arg1) {
     arg0->load->fileId = arg1;
 }
 
-void Stg35_PartsDraw(Stg35LoadHandle *arg0) {
-    Stg35Load *l = arg0->load;
+void Stg35_PartsDraw(Stg35PartsHandle *arg0) {
+    Stg35PartsLayout *l = arg0->load;
     Stg35Part *p = (Stg35Part *)Cd_GetFileEntry(l->fileId);
     Stg35Part *q;
     Stg35Part *r;
@@ -357,14 +357,14 @@ void Stg35_PartsDraw(Stg35LoadHandle *arg0) {
 
     switch (l->mode) {
     case 1:
-        l->field_8 += 0x200;
-        f = l->field_8 >= 0x1000;
+        l->scaleY += 0x200;
+        f = l->scaleY >= 0x1000;
         q = p;
         if (q->fileId != 0) {
             r = q;
             do {
-                r->field_E = f;
-                r->field_14 = l->field_8;
+                r->unscaled = f;
+                r->scaleY = l->scaleY;
                 q++;
                 r++;
             } while (q->fileId != 0);
@@ -374,18 +374,18 @@ void Stg35_PartsDraw(Stg35LoadHandle *arg0) {
         }
         break;
     case 2:
-        l->field_8 -= 0x200;
+        l->scaleY -= 0x200;
         q = p;
         if (q->fileId != 0) {
             r = q;
             do {
-                r->field_E = 0;
-                r->field_14 = l->field_8;
+                r->unscaled = 0;
+                r->scaleY = l->scaleY;
                 q++;
                 r++;
             } while (q->fileId != 0);
         }
-        if (l->field_8 == 0) {
+        if (l->scaleY == 0) {
             l->mode = 0;
         }
         break;
@@ -423,11 +423,11 @@ void Stg35_PartsDraw(Stg35LoadHandle *arg0) {
     Gfx_DrawParts((s32)p);
 }
 
-void Stg35_PartsHideByMask(Stg35LoadHandle *arg0, s32 arg1) {
+void Stg35_PartsHideByMask(Stg35PartsHandle *arg0, s32 arg1) {
     Gfx_HidePartsByMask((GfxPartMaskView *)Cd_GetFileEntry(arg0->load->fileId), arg1);
 }
 
-void Stg35_PartsShowGroup(Stg35LoadHandle *arg0, s32 mask) {
+void Stg35_PartsShowGroup(Stg35PartsHandle *arg0, s32 mask) {
     GfxPart *p = (GfxPart *)Cd_GetFileEntry(arg0->load->fileId);
     GfxPart *q = p;
 
@@ -442,7 +442,7 @@ void Stg35_PartsShowGroup(Stg35LoadHandle *arg0, s32 mask) {
     }
 }
 
-void Stg35_PartsHideGroup(Stg35LoadHandle *arg0, s32 mask) {
+void Stg35_PartsHideGroup(Stg35PartsHandle *arg0, s32 mask) {
     GfxPart *p = (GfxPart *)Cd_GetFileEntry(arg0->load->fileId);
     GfxPart *q = p;
 
@@ -457,19 +457,19 @@ void Stg35_PartsHideGroup(Stg35LoadHandle *arg0, s32 mask) {
     }
 }
 
-void Stg35_PartsStartOpen(Stg35LoadHandle *arg0) {
-    Stg35Load *l = arg0->load;
+void Stg35_PartsStartOpen(Stg35PartsHandle *arg0) {
+    Stg35PartsLayout *l = arg0->load;
     l->mode = 1;
-    l->field_8 = 0;
+    l->scaleY = 0;
 }
 
-void Stg35_PartsStartScaleOut(Stg35LoadHandle *arg0) {
-    Stg35Load *l = arg0->load;
+void Stg35_PartsStartScaleOut(Stg35PartsHandle *arg0) {
+    Stg35PartsLayout *l = arg0->load;
     l->mode = 2;
-    l->field_8 = 0x1000;
+    l->scaleY = 0x1000;
 }
 
-void Stg35_PartsSetPalette(Stg35LoadHandle *arg0, s32 mask, s32 v) {
+void Stg35_PartsSetPalette(Stg35PartsHandle *arg0, s32 mask, s32 v) {
     GfxPart *p = (GfxPart *)Cd_GetFileEntry(arg0->load->fileId);
     GfxPart *q = p;
 
@@ -484,7 +484,7 @@ void Stg35_PartsSetPalette(Stg35LoadHandle *arg0, s32 mask, s32 v) {
     }
 }
 
-void Stg35_PartsSetX(Stg35LoadHandle *arg0, s32 mask, s32 v) {
+void Stg35_PartsSetX(Stg35PartsHandle *arg0, s32 mask, s32 v) {
     GfxPart *p = (GfxPart *)Cd_GetFileEntry(arg0->load->fileId);
     GfxPart *q = p;
 
@@ -499,7 +499,7 @@ void Stg35_PartsSetX(Stg35LoadHandle *arg0, s32 mask, s32 v) {
     }
 }
 
-void Stg35_PartsSetY(Stg35LoadHandle *arg0, s32 mask, s32 v) {
+void Stg35_PartsSetY(Stg35PartsHandle *arg0, s32 mask, s32 v) {
     GfxPart *p = (GfxPart *)Cd_GetFileEntry(arg0->load->fileId);
     GfxPart *q = p;
 
@@ -514,8 +514,8 @@ void Stg35_PartsSetY(Stg35LoadHandle *arg0, s32 mask, s32 v) {
     }
 }
 
-void Stg35_PartsStartSlideX(Stg35LoadHandle *arg0, s32 idx, s32 mask, s32 v, s32 target, s32 speed) {
-    Stg35Load *l = arg0->load;
+void Stg35_PartsStartSlideX(Stg35PartsHandle *arg0, s32 idx, s32 mask, s32 v, s32 target, s32 speed) {
+    Stg35PartsLayout *l = arg0->load;
     GfxPart *p = (GfxPart *)Cd_GetFileEntry(l->fileId);
     GfxPart *q;
 
@@ -541,41 +541,41 @@ void Stg35_PartsStartSlideX(Stg35LoadHandle *arg0, s32 idx, s32 mask, s32 v, s32
     }
 }
 
-void Stg35_PartsSetNumber(Stg35LoadHandle *arg0, s32 arg1, s32 arg2, s32 arg3) {
+void Stg35_PartsSetNumber(Stg35PartsHandle *arg0, s32 arg1, s32 arg2, s32 arg3) {
     Gfx_SetPartsNumber((GfxPart *)Cd_GetFileEntry(arg0->load->fileId), arg1, arg2, arg3);
 }
 
 void Stg35_FighterSetAnim(Actor *arg0, s32 arg1) {
-    Stg35Work *w = (Stg35Work *)arg0->work;
+    Stg35FighterWork *w = (Stg35FighterWork *)arg0->work;
 
-    if (w->field_34 != arg1) {
-        w->field_34 = arg1;
+    if (w->curAnim != arg1) {
+        w->curAnim = arg1;
         Anim_SetModelAnim(arg0, arg1);
     }
 }
 
 void Stg35_FighterInit(Actor *arg0, Stg35Vec3 *arg1) {
     s32 i = arg1->field_4;
-    Stg35Work *w = (Stg35Work *)arg0->work;
+    Stg35FighterWork *w = (Stg35FighterWork *)arg0->work;
     s32 n;
 
     arg0->param = i;
     arg0->digiId = Stg35_Battle.rec[i].digiId;
-    w->field_14 = Digi_GetModelFile(arg0->digiId);
+    w->modelFile = Digi_GetModelFile(arg0->digiId);
     if (arg0->param < 3) {
-        w->field_10 = 0x800;
+        w->facing = 0x800;
     } else {
-        w->field_10 = 0;
+        w->facing = 0;
     }
     n = arg0->param;
-    w->field_8 = 0;
-    w->field_4 = (n % 3) * 0xA00 - 0xA00;
-    w->field_C = (n / 3) * 0x2800 - 0x1400;
+    w->homeY = 0;
+    w->homeX = (n % 3) * 0xA00 - 0xA00;
+    w->homeZ = (n / 3) * 0x2800 - 0x1400;
     w->field_38 = arg1->field_8;
 }
 
 void Stg35_SpawnSkillCastFx(Actor *arg0, s32 arg1) {
-    Stg35Work *w = (Stg35Work *)arg0->work;
+    Stg35FighterWork *w = (Stg35FighterWork *)arg0->work;
     s32 *slot = (s32 *)arg0->u34.children;
     Stg35SpawnArgs args;
     s16 a[4];
@@ -584,30 +584,30 @@ void Stg35_SpawnSkillCastFx(Actor *arg0, s32 arg1) {
     Row6 *o;
     s32 i;
 
-    Skill_GetFxSet(w->field_2C, 0, a, b);
+    Skill_GetFxSet(w->skillId, 0, a, b);
     Digi_GetCastFxOffsets(arg0->digiId, ofs);
     o = &ofs[arg1];
     for (i = 0; i < 3; i++) {
         if (a[i] != 0) {
             args.field_0 = a[i];
             args.field_4 = b[i];
-            args.field_14 = w->field_10;
-            args.field_8 = w->field_4;
-            args.field_C = w->field_8;
-            args.field_10 = w->field_C;
+            args.facing = w->facing;
+            args.posX = w->homeX;
+            args.posY = w->homeY;
+            args.posZ = w->homeZ;
             args.field_18 = 0x78;
             switch (i) {
             case 0:
-                args.field_C -= func_8001E79C(arg0->digiId) + 0x280;
+                args.posY -= func_8001E79C(arg0->digiId) + 0x280;
                 break;
             case 1:
-                args.field_C -= o->data[1];
-                if (args.field_14 == 0) {
-                    args.field_8 += o->data[0];
-                    args.field_10 -= 0x100 + o->data[2];
+                args.posY -= o->data[1];
+                if (args.facing == 0) {
+                    args.posX += o->data[0];
+                    args.posZ -= 0x100 + o->data[2];
                 } else {
-                    args.field_8 -= o->data[0];
-                    args.field_10 += 0x100 + o->data[2];
+                    args.posX -= o->data[0];
+                    args.posZ += 0x100 + o->data[2];
                 }
                 break;
             case 2:
@@ -620,29 +620,29 @@ void Stg35_SpawnSkillCastFx(Actor *arg0, s32 arg1) {
 }
 
 void Stg35_SpawnSkillHitFx(Actor *arg0) {
-    Stg35Work *w = (Stg35Work *)arg0->work;
+    Stg35FighterWork *w = (Stg35FighterWork *)arg0->work;
     s32 *slot = (s32 *)arg0->u34.children;
     Stg35SpawnArgs args;
     s16 a[4];
     s16 b[4];
     s32 i;
 
-    Skill_GetFxSet(w->field_2C, 1, a, b);
+    Skill_GetFxSet(w->skillId, 1, a, b);
     for (i = 0; i < 3; i++) {
         if (a[i] != 0) {
             args.field_0 = a[i];
             args.field_4 = b[i];
-            args.field_14 = w->field_10;
-            args.field_8 = w->field_4;
-            args.field_C = w->field_8;
-            args.field_10 = w->field_C;
+            args.facing = w->facing;
+            args.posX = w->homeX;
+            args.posY = w->homeY;
+            args.posZ = w->homeZ;
             args.field_18 = 0x3C;
             switch (i) {
             case 0:
-                args.field_C -= func_8001E79C(arg0->digiId) + 0x280;
+                args.posY -= func_8001E79C(arg0->digiId) + 0x280;
                 break;
             case 1:
-                args.field_C -= func_8001E7C0(arg0->digiId);
+                args.posY -= func_8001E7C0(arg0->digiId);
                 break;
             case 2:
             default:
@@ -682,10 +682,10 @@ void Stg35_HitReactUpdate(Actor *arg0, s32 arg1) {
             Task_NextState4(arg0);
             return;
         case 1:
-            if (t->field_34 > 0) {
+            if (t->posY > 0) {
                 Actor_StopAxisMotion(arg0, 1);
-                t->field_34 = 0;
-                t->field_4C = 0;
+                t->posY = 0;
+                t->moveDeltaY = 0;
                 Task_NextState3(arg0);
             }
             return;
@@ -704,10 +704,10 @@ void Stg35_HitReactUpdate(Actor *arg0, s32 arg1) {
             Task_NextState4(arg0);
             return;
         case 1:
-            if (t->field_34 > 0) {
+            if (t->posY > 0) {
                 Actor_StopAxisMotion(arg0, 1);
-                t->field_34 = 0;
-                t->field_4C = 0;
+                t->posY = 0;
+                t->moveDeltaY = 0;
                 Task_NextState3(arg0);
             }
             return;
@@ -762,7 +762,7 @@ void Stg35_HitReactUpdate(Actor *arg0, s32 arg1) {
 }
 
 void Stg35_FighterTask(Actor *arg0) {
-    Stg35Work *w = (Stg35Work *)arg0->work;
+    Stg35FighterWork *w = (Stg35FighterWork *)arg0->work;
     Stg35ModelFade *m = (Stg35ModelFade *)arg0->model;
     Stg35Arg1 a1;
     Stg35Xform *t;
@@ -771,18 +771,18 @@ void Stg35_FighterTask(Actor *arg0) {
 
     switch (arg0->stateLevel0) {
     case 0:
-        Actor_InitTransform(arg0, &w->field_4, (u16)w->field_10);
-        Gfx_AttachModel(arg0, w->field_14)->otIndex = 3;
-        w->field_34 = -1;
+        Actor_InitTransform(arg0, &w->homeX, (u16)w->facing);
+        Gfx_AttachModel(arg0, w->modelFile)->otIndex = 3;
+        w->curAnim = -1;
         Stg35_FighterSetAnim(arg0, 0);
         a1.field_0 = (s32)arg0;
         Task_Create(6, &((s32 *)arg0->u34.children)[3], (s32)&a1);
         m0 = (Stg35ModelFade *)arg0->model;
-        w->field_18 = 1;
-        w->field_1C = 0;
-        m0->field_38 = m0->field_39 = m0->field_3A = 0x80;
-        w->field_20.r = w->field_20.g = w->field_20.b = 0;
-        w->field_28 = 1;
+        w->drawTex = 1;
+        w->drawWire = 0;
+        m0->flatR = m0->flatG = m0->flatB = 0x80;
+        w->wireColor.r = w->wireColor.g = w->wireColor.b = 0;
+        w->visible = 1;
         if (w->field_38 != 0) {
             Stg35_FighterSetAnim(arg0, 0x64);
         }
@@ -801,7 +801,7 @@ void Stg35_FighterTask(Actor *arg0) {
             switch (arg0->stateLevel2) {
             case 0:
             default:
-                w->field_2C = arg0->stateLevel4;
+                w->skillId = arg0->stateLevel4;
                 Stg35_SpawnSkillHitFx(arg0);
                 arg0->elapsed = 0;
                 Task_NextState2(arg0);
@@ -814,8 +814,8 @@ void Stg35_FighterTask(Actor *arg0) {
             }
             break;
         case 1:
-            w->field_2C = arg0->stateLevel4;
-            k = Skill_GetCastAnim(w->field_2C);
+            w->skillId = arg0->stateLevel4;
+            k = Skill_GetCastAnim(w->skillId);
             Stg35_SpawnSkillCastFx(arg0, k);
             switch (k) {
             case 0:
@@ -839,7 +839,7 @@ void Stg35_FighterTask(Actor *arg0) {
             switch (arg0->stateLevel2) {
             case 0:
             default:
-                w->field_2C = arg0->stateLevel4;
+                w->skillId = arg0->stateLevel4;
                 Stg35_SpawnSkillHitFx(arg0);
                 Stg35_FighterSetAnim(arg0, 0xA);
                 Task_NextState2(arg0);
@@ -856,7 +856,7 @@ void Stg35_FighterTask(Actor *arg0) {
             switch (arg0->stateLevel2) {
             case 0:
             default:
-                w->field_2C = arg0->stateLevel4;
+                w->skillId = arg0->stateLevel4;
                 Stg35_SpawnSkillHitFx(arg0);
                 Task_NextState2(arg0);
             case 1:
@@ -879,7 +879,7 @@ void Stg35_FighterTask(Actor *arg0) {
             }
             break;
         case 12:
-            w->field_2C = arg0->stateLevel4;
+            w->skillId = arg0->stateLevel4;
             Stg35_SpawnSkillHitFx(arg0);
             if (arg0->model->animId != 0) {
                 Stg35_FighterSetAnim(arg0, 0);
@@ -887,77 +887,77 @@ void Stg35_FighterTask(Actor *arg0) {
             Task_SetState0(arg0, 1);
             break;
         case 7:
-            w->field_18 = 1;
-            w->field_1C = 1;
+            w->drawTex = 1;
+            w->drawWire = 1;
             m->field_34 = 1;
-            m->field_36 = 0x20;
-            if (m->field_38 > 8) {
-                m->field_38 -= 8;
+            m->tpageBits = 0x20;
+            if (m->flatR > 8) {
+                m->flatR -= 8;
             } else {
-                m->field_38 = 0;
+                m->flatR = 0;
             }
-            m->field_39 = m->field_3A = m->field_38;
-            if (w->field_20.g < 0xEF) {
-                w->field_20.g += 0x10;
+            m->flatG = m->flatB = m->flatR;
+            if (w->wireColor.g < 0xEF) {
+                w->wireColor.g += 0x10;
             } else {
-                w->field_20.g = 0xFF;
+                w->wireColor.g = 0xFF;
             }
-            if (m->field_38 == 0 && w->field_20.g == 0xFF) {
+            if (m->flatR == 0 && w->wireColor.g == 0xFF) {
                 m->field_34 = 0;
-                m->field_36 = 0;
-                w->field_18 = 0;
+                m->tpageBits = 0;
+                w->drawTex = 0;
                 Task_SetState0(arg0, 1);
             }
             break;
         case 8:
-            w->field_18 = 1;
-            w->field_1C = 1;
+            w->drawTex = 1;
+            w->drawWire = 1;
             m->field_34 = 1;
-            m->field_36 = 0x20;
-            if (m->field_38 < 0x78) {
-                m->field_38 += 8;
+            m->tpageBits = 0x20;
+            if (m->flatR < 0x78) {
+                m->flatR += 8;
             } else {
-                m->field_38 = 0x80;
+                m->flatR = 0x80;
             }
-            m->field_39 = m->field_3A = m->field_38;
-            if (w->field_20.g > 0x10) {
-                w->field_20.g -= 0x10;
+            m->flatG = m->flatB = m->flatR;
+            if (w->wireColor.g > 0x10) {
+                w->wireColor.g -= 0x10;
             } else {
-                w->field_20.g = 0;
+                w->wireColor.g = 0;
             }
-            if (m->field_38 == 0x80 && w->field_20.g == 0) {
+            if (m->flatR == 0x80 && w->wireColor.g == 0) {
                 m->field_34 = 0;
-                m->field_36 = 0;
-                w->field_1C = 0;
+                m->tpageBits = 0;
+                w->drawWire = 0;
                 Task_SetState0(arg0, 1);
             }
             break;
         case 10:
-            w->field_28 = 0;
+            w->visible = 0;
             break;
         case 9:
-            m->field_38 = m->field_39 = m->field_3A = 0x80;
+            m->flatR = m->flatG = m->flatB = 0x80;
             m->field_34 = 0;
-            m->field_36 = 0;
-            w->field_18 = 1;
-            w->field_1C = 0;
-            w->field_28 = 1;
+            m->tpageBits = 0;
+            w->drawTex = 1;
+            w->drawWire = 0;
+            w->visible = 1;
             Task_SetState0(arg0, 1);
             break;
         }
         break;
     }
-    if (w->field_28 != 0) {
+    if (w->visible != 0) {
         arg0->childCount = 4;
     } else {
         arg0->childCount = 3;
     }
-    if (w->field_30 != 0 && --w->field_30 == 1) {
+    if (w->homeResetTimer != 0 && --w->homeResetTimer == 1) {
         t = (Stg35Xform *)arg0->u38.ptr38;
-        t->field_30 = w->field_4;
-        t->field_38 = w->field_C;
-        t->field_50 = 0;
-        t->field_48 = 0;
+        t->posX = w->homeX;
+        t->posZ = w->homeZ;
+        t->moveDeltaZ = 0;
+        t->moveDeltaX = 0;
         Actor_StopAxisMotion(arg0, 2);
     }
 }
@@ -968,24 +968,24 @@ void Stg35_FighterDestroy(Actor *arg0) {
 }
 
 void Stg35_FighterDraw(Actor *arg0) {
-    Stg35Work *w = (Stg35Work *)arg0->work;
+    Stg35FighterWork *w = (Stg35FighterWork *)arg0->work;
     CVECTOR c;
 
-    if (w->field_28 != 0) {
-        Gfx_AttachModel(arg0, w->field_14);
+    if (w->visible != 0) {
+        Gfx_AttachModel(arg0, w->modelFile);
         Anim_StepModelAnim(arg0);
         Actor_UpdateTransform(arg0);
         Gfx_CalcModelBoneMatrices(arg0);
-        if (w->field_18 != 0) {
+        if (w->drawTex != 0) {
             Gfx_DrawTexModel(arg0, 0);
         }
-        if (w->field_1C != 0) {
+        if (w->drawWire != 0) {
             if (arg0->param < 3) {
-                c = w->field_20;
+                c = w->wireColor;
             } else {
-                c.r = w->field_20.g;
-                c.g = w->field_20.r;
-                c.b = w->field_20.b;
+                c.r = w->wireColor.g;
+                c.g = w->wireColor.r;
+                c.b = w->wireColor.b;
             }
             Gfx_DrawWireModel(arg0, 0, &c);
         }
@@ -993,7 +993,7 @@ void Stg35_FighterDraw(Actor *arg0) {
 }
 
 void Stg35_FighterSetVisible(Actor *arg0, s32 arg1) {
-    ((Stg35Work *)arg0->work)->field_28 = arg1;
+    ((Stg35FighterWork *)arg0->work)->visible = arg1;
     if (arg1 != 0) {
         arg0->childCount = 4;
     } else {
@@ -1002,7 +1002,7 @@ void Stg35_FighterSetVisible(Actor *arg0, s32 arg1) {
 }
 
 void Stg35_FighterQueueHomeReset(Actor *arg0) {
-    ((Stg35Work *)arg0->work)->field_30 = 2;
+    ((Stg35FighterWork *)arg0->work)->homeResetTimer = 2;
 }
 
 void Stg35_RoundBannerInit(Actor *arg0, s32 arg1) {
@@ -1011,7 +1011,7 @@ void Stg35_RoundBannerInit(Actor *arg0, s32 arg1) {
 
 INCLUDE_RODATA("asm/USA/stag3500/rodata", Stg35_RoundBannerMasks);
 void Stg35_RoundBannerTask(Actor *arg0) {
-    Stg35FadeWork *w = (Stg35FadeWork *)arg0->work;
+    Stg35RoundBannerWork *w = (Stg35RoundBannerWork *)arg0->work;
 
     s32 i;
 
@@ -1032,9 +1032,9 @@ void Stg35_RoundBannerTask(Actor *arg0) {
         switch (arg0->stateLevel1) {
         case 0:
         default:
-            w->field_4++;
-            Stg35_PartsSetPalette(w->load, 0x1F, w->field_4 >> 1);
-            if (w->field_4 != 14) {
+            w->fade++;
+            Stg35_PartsSetPalette(w->load, 0x1F, w->fade >> 1);
+            if (w->fade != 14) {
                 break;
             }
             Task_NextState1(arg0);
@@ -1044,9 +1044,9 @@ void Stg35_RoundBannerTask(Actor *arg0) {
             }
             Task_NextState1(arg0);
         case 2:
-            w->field_4--;
-            Stg35_PartsSetPalette(w->load, 0x1F, w->field_4 >> 1);
-            if (w->field_4 == 0) {
+            w->fade--;
+            Stg35_PartsSetPalette(w->load, 0x1F, w->fade >> 1);
+            if (w->fade == 0) {
                 Task_SetState0(arg0, 3);
             }
             break;
@@ -1059,7 +1059,7 @@ void Stg35_RoundBannerTask(Actor *arg0) {
 }
 
 void Stg35_RoundBannerDestroy(Actor *arg0) {
-    Stg35LoadHandle *w = (Stg35LoadHandle *)arg0->work;
+    Stg35PartsHandle *w = (Stg35PartsHandle *)arg0->work;
     s32 i;
 
     for (i = 0; i < 1; i++) {
@@ -1069,7 +1069,7 @@ void Stg35_RoundBannerDestroy(Actor *arg0) {
 }
 
 void Stg35_RoundBannerDraw(Actor *arg0) {
-    Stg35LoadHandle *w = (Stg35LoadHandle *)arg0->work;
+    Stg35PartsHandle *w = (Stg35PartsHandle *)arg0->work;
     s32 i;
 
     for (i = 0; i < 1; i++) {
@@ -1161,8 +1161,8 @@ void Stg35_XaPlayDestroy(Actor *arg0) {
 }
 
 void Stg35_HudUpdateSkillList(Actor *arg0) {
-    Stg35Work708 *w = (Stg35Work708 *)arg0->work;
-    s32 sel = 6 - w->field_54[arg0->param] / 4096;
+    Stg35HudWork *w = (Stg35HudWork *)arg0->work;
+    s32 sel = 6 - w->gauge[arg0->param] / 4096;
     Stg35TextHandle *t;
     s32 i;
 
@@ -1175,23 +1175,23 @@ void Stg35_HudUpdateSkillList(Actor *arg0) {
         }
         if (i == 0) {
             Stg35_TextSetSysMsg(t, 1);
-        } else if (w->field_5C[i - 1] != 0) {
-            Stg35_TextSetSkillName(t, w->field_5C[i - 1]);
+        } else if (w->gaugeSkills[i - 1] != 0) {
+            Stg35_TextSetSkillName(t, w->gaugeSkills[i - 1]);
         } else {
             Stg35_TextSetSysMsg(t, 0x1C3);
         }
         if (i == sel) {
-            Stg35_TextSetColor((Stg35LoadHandle *)t, 4);
+            Stg35_TextSetColor((Stg35PartsHandle *)t, 4);
         } else {
-            Stg35_TextSetColor((Stg35LoadHandle *)t, 1);
+            Stg35_TextSetColor((Stg35PartsHandle *)t, 1);
         }
         Stg35_TextOpen(t);
     }
 }
 
 void Stg35_HudUpdateGaugeColumn(Actor *arg0, s32 arg1) {
-    Stg35Work708 *w = (Stg35Work708 *)arg0->work;
-    s32 s = Stg35_ScaleBarLen(0xC4, 0x7000, w->field_54[arg0->param]);
+    Stg35HudWork *w = (Stg35HudWork *)arg0->work;
+    s32 s = Stg35_ScaleBarLen(0xC4, 0x7000, w->gauge[arg0->param]);
     Stg35SpriteHandle *sp;
 
     if (arg0->param == 0) {
@@ -1201,7 +1201,7 @@ void Stg35_HudUpdateGaugeColumn(Actor *arg0, s32 arg1) {
     }
     Stg35_RectSetHeight(sp, s);
     Stg35_RectSetY(sp, 0x60 - s);
-    if (w->field_54[arg0->param] >= 0x6000) {
+    if (w->gauge[arg0->param] >= 0x6000) {
         Stg35_RectSetColor(sp, 0, 0xA4, 0x19, 2);
         Stg35_RectSetColor(sp, 1, 0xA4, 0x19, 2);
         Stg35_RectSetColor(sp, 2, 0xA4, 0x19, 2);
@@ -1215,8 +1215,8 @@ void Stg35_HudUpdateGaugeColumn(Actor *arg0, s32 arg1) {
 }
 
 void Stg35_HudUpdateGaugeBar(Actor *arg0, s32 arg1) {
-    Stg35Work708 *w = (Stg35Work708 *)arg0->work;
-    s32 s = Stg35_ScaleBarLen(0x70, 0x6000, w->field_54[arg0->param]);
+    Stg35HudWork *w = (Stg35HudWork *)arg0->work;
+    s32 s = Stg35_ScaleBarLen(0x70, 0x6000, w->gauge[arg0->param]);
     Stg35SpriteHandle *sp;
 
     if (arg0->param == 0) {
@@ -1249,7 +1249,7 @@ void Stg35_HudUpdateGaugeBar(Actor *arg0, s32 arg1) {
 }
 
 void Stg35_BattleHudTask(Actor *arg0) {
-    Stg35Work708 *w = (Stg35Work708 *)arg0->work;
+    Stg35HudWork *w = (Stg35HudWork *)arg0->work;
     s32 i;
     s32 j;
     s32 order[6];
@@ -1335,9 +1335,9 @@ void Stg35_BattleHudTask(Actor *arg0) {
             Stg35_PartsSetNumber(&w->load[2], 0x80, 1, order[5]);
             break;
         case 2: {
-            s32 *gauge = &w->field_54[arg0->param];
-            Stg35LoadHandle *load = &w->load[arg0->param + 1];
-            Stg35LoadHandle *base = w->load;
+            s32 *gauge = &w->gauge[arg0->param];
+            Stg35PartsHandle *load = &w->load[arg0->param + 1];
+            Stg35PartsHandle *base = w->load;
             s32 pressed = Pad_State[arg0->param].pressed & 0xFFFF;
             s32 r;
 
@@ -1348,7 +1348,7 @@ void Stg35_BattleHudTask(Actor *arg0) {
                 default:
                 case 0:
                     Snd_PlayById(0x25, 0);
-                    w->field_78 = 0;
+                    w->gaugeDone = 0;
                     Stg35_PartsShowGroup(load, 2);
                     Task_NextState3(arg0);
                     arg0->elapsed = 0;
@@ -1382,7 +1382,7 @@ void Stg35_BattleHudTask(Actor *arg0) {
                 switch (arg0->stateLevel3) {
                 case 0:
                     arg0->elapsed = 0;
-                    w->field_54[arg0->param] = 0;
+                    w->gauge[arg0->param] = 0;
                     Stg35_PartsHideGroup(load, 2);
                     Stg35_PartsShowGroup(base, 2);
                     if (arg0->param == 0) {
@@ -1406,10 +1406,10 @@ void Stg35_BattleHudTask(Actor *arg0) {
                     Stg35_HudUpdateSkillList(arg0);
                     if (arg0->param == 0) {
                         Stg35_PartsSetX(&w->load[0], 0x20, 0x4F);
-                        Stg35_PartsSetY(&w->load[0], 0x20, 0x2B - (w->field_54[0] / 0x1000) * 14);
+                        Stg35_PartsSetY(&w->load[0], 0x20, 0x2B - (w->gauge[0] / 0x1000) * 14);
                     } else {
                         Stg35_PartsSetX(&w->load[0], 0x10, -0x4D);
-                        Stg35_PartsSetY(&w->load[0], 0x10, 0x2B - (w->field_54[1] / 0x1000) * 14);
+                        Stg35_PartsSetY(&w->load[0], 0x10, 0x2B - (w->gauge[1] / 0x1000) * 14);
                     }
                     if (((ActorAllocView *)arg0)->frameCount & 4) {
                         Stg35_PartsShowGroup(load, 4);
@@ -1450,9 +1450,9 @@ void Stg35_BattleHudTask(Actor *arg0) {
                         break;
                     case 2:
                         if (arg0->elapsed >= 0x3C) {
-                            s32 level = w->field_54[arg0->param] / 0x1000;
-                            w->field_74 = level;
-                            w->field_7C = w->field_5C[5 - level];
+                            s32 level = w->gauge[arg0->param] / 0x1000;
+                            w->gaugeLevel = level;
+                            w->gaugeSkill = w->gaugeSkills[5 - level];
                             Task_NextState3(arg0);
                         }
                         break;
@@ -1465,14 +1465,14 @@ void Stg35_BattleHudTask(Actor *arg0) {
                     Stg35_RectSetHeight(&w->sprite[arg0->param + 2], 0);
                     Stg35_PartsHideGroup(load, 6);
                     Stg35_PartsHideGroup(base, 0x3E);
-                    if (w->field_74 == 6) {
-                        w->field_78 = 1;
+                    if (w->gaugeLevel == 6) {
+                        w->gaugeDone = 1;
                         Task_NextState3(arg0);
                         arg0->elapsed = 0;
-                    } else if (w->field_5C[5 - w->field_74] != 0) {
+                    } else if (w->gaugeSkills[5 - w->gaugeLevel] != 0) {
                         goto done;
                     } else {
-                        w->field_78 = 1;
+                        w->gaugeDone = 1;
                         Task_NextState3(arg0);
                         Task_NextState3(arg0);
                         arg0->elapsed = 0;
@@ -1518,20 +1518,20 @@ void Stg35_BattleHudTask(Actor *arg0) {
         }
         }
         for (i = 0; i < 6; i++) {
-            if (w->field_80[i].field_4 != w->field_80[i].field_0) {
-                if (w->field_80[i].field_4 < w->field_80[i].field_0) {
-                    w->field_80[i].field_4 += arg0->elapsed;
-                    if (w->field_80[i].field_0 < w->field_80[i].field_4) {
-                        w->field_80[i].field_4 = w->field_80[i].field_0;
+            if (w->hpBars[i].hpShown != w->hpBars[i].hpTarget) {
+                if (w->hpBars[i].hpShown < w->hpBars[i].hpTarget) {
+                    w->hpBars[i].hpShown += arg0->elapsed;
+                    if (w->hpBars[i].hpTarget < w->hpBars[i].hpShown) {
+                        w->hpBars[i].hpShown = w->hpBars[i].hpTarget;
                     }
                 } else {
-                    w->field_80[i].field_4 -= arg0->elapsed;
-                    if (w->field_80[i].field_4 < w->field_80[i].field_0) {
-                        w->field_80[i].field_4 = w->field_80[i].field_0;
+                    w->hpBars[i].hpShown -= arg0->elapsed;
+                    if (w->hpBars[i].hpShown < w->hpBars[i].hpTarget) {
+                        w->hpBars[i].hpShown = w->hpBars[i].hpTarget;
                     }
                 }
             }
-            Stg35_RectSetWidth(&w->sprite[4 + i], Stg35_ScaleBarLen(0x70, w->field_80[i].field_8, w->field_80[i].field_4));
+            Stg35_RectSetWidth(&w->sprite[4 + i], Stg35_ScaleBarLen(0x70, w->hpBars[i].maxHp, w->hpBars[i].hpShown));
         }
         break;
     case 2:
@@ -1578,15 +1578,15 @@ void Stg35_BattleHudDraw(Actor *arg0) {
 
 void Stg35_HudStartGauge(s32 arg0, s32 *arg1) {
     Actor *e = (Actor *)Task_FindFirst(0x708, -1, -1);
-    Stg35Work708 *w;
+    Stg35HudWork *w;
     s32 i;
 
     if (e != NULL) {
-        w = (Stg35Work708 *)e->work;
+        w = (Stg35HudWork *)e->work;
         Task_SetState1(e, 2);
         e->param = arg0;
         for (i = 0; i < 6; i++) {
-            w->field_5C[i] = arg1[i];
+            w->gaugeSkills[i] = arg1[i];
         }
     }
 }
@@ -1597,19 +1597,19 @@ s32 Stg35_HudGetGaugeStatus(void) {
     if (e != NULL && e->stateLevel1 == 2) {
         return 1;
     }
-    return (((Stg35Work708 *)e->work)->field_78 != 0) * 2;
+    return (((Stg35HudWork *)e->work)->gaugeDone != 0) * 2;
 }
 
 void Stg35_HudSyncHp(void) {
     Actor *e = (Actor *)Task_FindFirst(0x708, -1, -1);
-    Stg35Work708 *w;
+    Stg35HudWork *w;
     s32 i;
 
     if (e != NULL) {
-        w = (Stg35Work708 *)e->work;
+        w = (Stg35HudWork *)e->work;
         for (i = 0; i < 6; i++) {
-            w->field_80[i].field_0 = Stg35_Battle.rec[i].hp;
-            w->field_80[i].field_8 = Stg35_Battle.rec[i].maxHp;
+            w->hpBars[i].hpTarget = Stg35_Battle.rec[i].hp;
+            w->hpBars[i].maxHp = Stg35_Battle.rec[i].maxHp;
         }
     }
 }
@@ -1618,20 +1618,20 @@ s32 Stg35_HudGetGaugeLevel(void) {
     TaskEntry *e = Task_FindFirst(0x708, -1, -1);
 
     if (e != NULL) {
-        return ((Stg35Work708 *)e->work)->field_74;
+        return ((Stg35HudWork *)e->work)->gaugeLevel;
     }
     return 1;
 }
 
 s32 Stg35_HudPeekGaugeLevel(s32 arg0) {
     Actor *e = (Actor *)Task_FindFirst(0x708, -1, -1);
-    Stg35Work708 *w;
+    Stg35HudWork *w;
     s32 n;
 
     if (e != NULL) {
-        w = (Stg35Work708 *)e->work;
-        n = w->field_54[arg0] / 4096;
-        if (w->field_5C[5 - n] != 0) {
+        w = (Stg35HudWork *)e->work;
+        n = w->gauge[arg0] / 4096;
+        if (w->gaugeSkills[5 - n] != 0) {
             if (n == 6) {
                 return 6;
             }
