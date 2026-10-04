@@ -1527,8 +1527,6 @@ s32 func_80066B48(s32 id) {
     return 0;
 }
 
-INCLUDE_RODATA("asm/USA/stag2000/rodata", jtbl_80063488);
-#ifdef NORMALIZED
 void func_80066F34(s32 id, s32 on) {
     s32 i;
     s32 j;
@@ -1670,7 +1668,7 @@ void func_80066F34(s32 id, s32 on) {
     case 0x23B4:
         ((Stg20GameState *)&D_8005E620)->field_28 = ((Stg20GameState *)&D_8005E620)->field_2A;
         ((Stg20GameState *)&D_8005E620)->field_24 = ((Stg20GameState *)&D_8005E620)->field_26;
-        for (i = 0x12; i >= 0; i--) {
+        for (i = 0; i < 0x13; i++) {
             ((Stg20GameState *)&D_8005E620)->field_52[i] = 0;
         }
         for (i = 0; i < 0x24; i++) {
@@ -1726,10 +1724,6 @@ void func_80066F34(s32 id, s32 on) {
         break;
     }
 }
-#else
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000", func_80066F34);
-void func_80066F34(s32 id, s32 on);
-#endif
 
 void func_80067480(void *t, s32 text, s32 id, Stg20Cell *pos, s32 color) {
     Stg20TextArgs args;

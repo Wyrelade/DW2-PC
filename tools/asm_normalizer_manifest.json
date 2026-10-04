@@ -41,12 +41,5 @@
     "passes": [
       "slot_migrate"
     ]
-  },
-  "func_80066F34": {
-    "passes": [
-      "reg_realloc",
-      "web_realloc",
-      "iv_ptr_reduce"
-    ]
   }
 }
