@@ -1,6 +1,6 @@
-nonmatching func_80064454, 0x26C
+nonmatching Stg10_MovieUpdate, 0x26C
 
-glabel func_80064454
+glabel Stg10_MovieUpdate
     /* 10F4 80064454 D0FFBD27 */  addiu      $sp, $sp, -0x30
     /* 10F8 80064458 2000B2AF */  sw         $s2, 0x20($sp)
     /* 10FC 8006445C 21908000 */  addu       $s2, $a0, $zero
@@ -13,7 +13,7 @@ glabel func_80064454
     /* 1118 80064478 05006010 */  beqz       $v1, .L80064490
     /* 111C 8006447C 01000224 */   addiu     $v0, $zero, 0x1
     /* 1120 80064480 42006210 */  beq        $v1, $v0, .L8006458C
-    /* 1124 80064484 0680103C */   lui       $s0, %hi(D_80066208)
+    /* 1124 80064484 0680103C */   lui       $s0, %hi(Stg10_DecEnv)
     /* 1128 80064488 A9910108 */  j          .L800646A4
     /* 112C 8006448C 00000000 */   nop
   .L80064490:
@@ -26,62 +26,62 @@ glabel func_80064454
     /* 1148 800644A8 0200043C */  lui        $a0, (0x28000 >> 16)
     /* 114C 800644AC 00808434 */  ori        $a0, $a0, (0x28000 & 0xFFFF)
     /* 1150 800644B0 02000524 */  addiu      $a1, $zero, 0x2
-    /* 1154 800644B4 0680033C */  lui        $v1, %hi(D_800661E8)
+    /* 1154 800644B4 0680033C */  lui        $v1, %hi(Stg10_StrRingBuf)
     /* 1158 800644B8 CF8B000C */  jal        Mem_Alloc
-    /* 115C 800644BC E86162AC */   sw        $v0, %lo(D_800661E8)($v1)
+    /* 115C 800644BC E86162AC */   sw        $v0, %lo(Stg10_StrRingBuf)($v1)
     /* 1160 800644C0 0200043C */  lui        $a0, (0x28000 >> 16)
     /* 1164 800644C4 00808434 */  ori        $a0, $a0, (0x28000 & 0xFFFF)
     /* 1168 800644C8 02000524 */  addiu      $a1, $zero, 0x2
-    /* 116C 800644CC 0680033C */  lui        $v1, %hi(D_800661EC)
+    /* 116C 800644CC 0680033C */  lui        $v1, %hi(Stg10_VlcBuf0)
     /* 1170 800644D0 CF8B000C */  jal        Mem_Alloc
-    /* 1174 800644D4 EC6162AC */   sw        $v0, %lo(D_800661EC)($v1)
+    /* 1174 800644D4 EC6162AC */   sw        $v0, %lo(Stg10_VlcBuf0)($v1)
     /* 1178 800644D8 004E0424 */  addiu      $a0, $zero, 0x4E00
     /* 117C 800644DC 02000524 */  addiu      $a1, $zero, 0x2
-    /* 1180 800644E0 0680033C */  lui        $v1, %hi(D_800661F0)
+    /* 1180 800644E0 0680033C */  lui        $v1, %hi(Stg10_VlcBuf1)
     /* 1184 800644E4 CF8B000C */  jal        Mem_Alloc
-    /* 1188 800644E8 F06162AC */   sw        $v0, %lo(D_800661F0)($v1)
+    /* 1188 800644E8 F06162AC */   sw        $v0, %lo(Stg10_VlcBuf1)($v1)
     /* 118C 800644EC 004E0424 */  addiu      $a0, $zero, 0x4E00
     /* 1190 800644F0 02000524 */  addiu      $a1, $zero, 0x2
-    /* 1194 800644F4 0680033C */  lui        $v1, %hi(D_800661F4)
+    /* 1194 800644F4 0680033C */  lui        $v1, %hi(Stg10_ImgBuf0)
     /* 1198 800644F8 CF8B000C */  jal        Mem_Alloc
-    /* 119C 800644FC F46162AC */   sw        $v0, %lo(D_800661F4)($v1)
+    /* 119C 800644FC F46162AC */   sw        $v0, %lo(Stg10_ImgBuf0)($v1)
     /* 11A0 80064500 0100043C */  lui        $a0, (0x11000 >> 16)
     /* 11A4 80064504 00108434 */  ori        $a0, $a0, (0x11000 & 0xFFFF)
     /* 11A8 80064508 02000524 */  addiu      $a1, $zero, 0x2
-    /* 11AC 8006450C 0680033C */  lui        $v1, %hi(D_800661F8)
+    /* 11AC 8006450C 0680033C */  lui        $v1, %hi(Stg10_ImgBuf1)
     /* 11B0 80064510 CF8B000C */  jal        Mem_Alloc
-    /* 11B4 80064514 F86162AC */   sw        $v0, %lo(D_800661F8)($v1)
-    /* 11B8 80064518 0680103C */  lui        $s0, %hi(D_80066208)
-    /* 11BC 8006451C 08621026 */  addiu      $s0, $s0, %lo(D_80066208)
+    /* 11B4 80064514 F86162AC */   sw        $v0, %lo(Stg10_ImgBuf1)($v1)
+    /* 11B8 80064518 0680103C */  lui        $s0, %hi(Stg10_DecEnv)
+    /* 11BC 8006451C 08621026 */  addiu      $s0, $s0, %lo(Stg10_DecEnv)
     /* 11C0 80064520 21200002 */  addu       $a0, $s0, $zero
     /* 11C4 80064524 21280000 */  addu       $a1, $zero, $zero
-    /* 11C8 80064528 0680113C */  lui        $s1, %hi(D_80066240)
-    /* 11CC 8006452C 406222AE */  sw         $v0, %lo(D_80066240)($s1)
+    /* 11C8 80064528 0680113C */  lui        $s1, %hi(Stg10_VlcTable)
+    /* 11CC 8006452C 406222AE */  sw         $v0, %lo(Stg10_VlcTable)($s1)
     /* 11D0 80064530 A0010224 */  addiu      $v0, $zero, 0x1A0
     /* 11D4 80064534 2130A000 */  addu       $a2, $a1, $zero
     /* 11D8 80064538 2138A000 */  addu       $a3, $a1, $zero
-    /* 11DC 8006453C AC8F010C */  jal        func_80063EB0
+    /* 11DC 8006453C AC8F010C */  jal        Stg10_StrSetDefDecEnv
     /* 11E0 80064540 1000A2AF */   sw        $v0, 0x10($sp)
-    /* 11E4 80064544 0680023C */  lui        $v0, %hi(D_80066200)
-    /* 11E8 80064548 0062448C */  lw         $a0, %lo(D_80066200)($v0)
+    /* 11E4 80064544 0680023C */  lui        $v0, %hi(Stg10_MovieFileId)
+    /* 11E8 80064548 0062448C */  lw         $a0, %lo(Stg10_MovieFileId)($v0)
     /* 11EC 8006454C F28F000C */  jal        Cd_GetFilePos
     /* 11F0 80064550 21286002 */   addu      $a1, $s3, $zero
     /* 11F4 80064554 21206002 */  addu       $a0, $s3, $zero
-    /* 11F8 80064558 0680053C */  lui        $a1, %hi(func_80064198)
-    /* 11FC 8006455C E88F010C */  jal        func_80063FA0
-    /* 1200 80064560 9841A524 */   addiu     $a1, $a1, %lo(func_80064198)
-    /* 1204 80064564 4062248E */  lw         $a0, %lo(D_80066240)($s1)
-    /* 1208 80064568 3494010C */  jal        func_800650D0
+    /* 11F8 80064558 0680053C */  lui        $a1, %hi(Stg10_StrCallback)
+    /* 11FC 8006455C E88F010C */  jal        Stg10_StrInit
+    /* 1200 80064560 9841A524 */   addiu     $a1, $a1, %lo(Stg10_StrCallback)
+    /* 1204 80064564 4062248E */  lw         $a0, %lo(Stg10_VlcTable)($s1)
+    /* 1208 80064568 3494010C */  jal        Stg10_BuildVlcTable
     /* 120C 8006456C 00000000 */   nop
-    /* 1210 80064570 4490010C */  jal        func_80064110
+    /* 1210 80064570 4490010C */  jal        Stg10_StrNextVlc
     /* 1214 80064574 21200002 */   addu      $a0, $s0, $zero
     /* 1218 80064578 21204002 */  addu       $a0, $s2, $zero
-    /* 121C 8006457C 0680023C */  lui        $v0, %hi(D_800661FC)
+    /* 121C 8006457C 0680023C */  lui        $v0, %hi(Stg10_StrEndFlag)
     /* 1220 80064580 5145000C */  jal        Task_NextState0
-    /* 1224 80064584 FC6140AC */   sw        $zero, %lo(D_800661FC)($v0)
-    /* 1228 80064588 0680103C */  lui        $s0, %hi(D_80066208)
+    /* 1224 80064584 FC6140AC */   sw        $zero, %lo(Stg10_StrEndFlag)($v0)
+    /* 1228 80064588 0680103C */  lui        $s0, %hi(Stg10_DecEnv)
   .L8006458C:
-    /* 122C 8006458C 08621026 */  addiu      $s0, $s0, %lo(D_80066208)
+    /* 122C 8006458C 08621026 */  addiu      $s0, $s0, %lo(Stg10_DecEnv)
     /* 1230 80064590 0800028E */  lw         $v0, 0x8($s0)
     /* 1234 80064594 00000000 */  nop
     /* 1238 80064598 80100200 */  sll        $v0, $v0, 2
@@ -103,13 +103,13 @@ glabel func_80064454
     /* 1278 800645D8 2128A200 */  addu       $a1, $a1, $v0
     /* 127C 800645DC 2592010C */  jal        func_80064894
     /* 1280 800645E0 43280500 */   sra       $a1, $a1, 1
-    /* 1284 800645E4 4490010C */  jal        func_80064110
+    /* 1284 800645E4 4490010C */  jal        Stg10_StrNextVlc
     /* 1288 800645E8 21200002 */   addu      $a0, $s0, $zero
     /* 128C 800645EC 21200002 */  addu       $a0, $s0, $zero
-    /* 1290 800645F0 BA90010C */  jal        func_800642E8
+    /* 1290 800645F0 BA90010C */  jal        Stg10_StrSync
     /* 1294 800645F4 21280000 */   addu      $a1, $zero, $zero
-    /* 1298 800645F8 0680023C */  lui        $v0, %hi(D_800661FC)
-    /* 129C 800645FC FC61438C */  lw         $v1, %lo(D_800661FC)($v0)
+    /* 1298 800645F8 0680023C */  lui        $v0, %hi(Stg10_StrEndFlag)
+    /* 129C 800645FC FC61438C */  lw         $v1, %lo(Stg10_StrEndFlag)($v0)
     /* 12A0 80064600 01000224 */  addiu      $v0, $zero, 0x1
     /* 12A4 80064604 05006210 */  beq        $v1, $v0, .L8006461C
     /* 12A8 80064608 0680023C */   lui       $v0, %hi(D_8005F724)
@@ -167,4 +167,4 @@ glabel func_80064454
     /* 1354 800646B4 1800B08F */  lw         $s0, 0x18($sp)
     /* 1358 800646B8 0800E003 */  jr         $ra
     /* 135C 800646BC 3000BD27 */   addiu     $sp, $sp, 0x30
-endlabel func_80064454
+endlabel Stg10_MovieUpdate

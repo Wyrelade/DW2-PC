@@ -1,6 +1,6 @@
-nonmatching func_800635A4, 0x330
+nonmatching Stg10_TitleUpdate, 0x330
 
-glabel func_800635A4
+glabel Stg10_TitleUpdate
     /* 244 800635A4 D8FFBD27 */  addiu      $sp, $sp, -0x28
     /* 248 800635A8 1800B2AF */  sw         $s2, 0x18($sp)
     /* 24C 800635AC 21908000 */  addu       $s2, $a0, $zero
@@ -67,8 +67,8 @@ glabel func_800635A4
     /* 328 80063688 00000000 */  nop
     /* 32C 8006368C 58024228 */  slti       $v0, $v0, 0x258
     /* 330 80063690 89004014 */  bnez       $v0, .L800638B8
-    /* 334 80063694 0680023C */   lui       $v0, %hi(D_800651EC)
-    /* 338 80063698 EC51428C */  lw         $v0, %lo(D_800651EC)($v0)
+    /* 334 80063694 0680023C */   lui       $v0, %hi(Stg10_AttractCount)
+    /* 338 80063698 EC51428C */  lw         $v0, %lo(Stg10_AttractCount)($v0)
     /* 33C 8006369C 00000000 */  nop
     /* 340 800636A0 03004014 */  bnez       $v0, .L800636B0
     /* 344 800636A4 0680033C */   lui       $v1, %hi(D_8005F78C)
@@ -78,14 +78,14 @@ glabel func_800635A4
     /* 350 800636B0 02040224 */  addiu      $v0, $zero, 0x402
   .L800636B4:
     /* 354 800636B4 8CF762AC */  sw         $v0, %lo(D_8005F78C)($v1)
-    /* 358 800636B8 0680043C */  lui        $a0, %hi(D_800651EC)
-    /* 35C 800636BC EC51828C */  lw         $v0, %lo(D_800651EC)($a0)
+    /* 358 800636B8 0680043C */  lui        $a0, %hi(Stg10_AttractCount)
+    /* 35C 800636BC EC51828C */  lw         $v0, %lo(Stg10_AttractCount)($a0)
     /* 360 800636C0 14000324 */  addiu      $v1, $zero, 0x14
     /* 364 800636C4 01004224 */  addiu      $v0, $v0, 0x1
     /* 368 800636C8 79004314 */  bne        $v0, $v1, .L800638B0
-    /* 36C 800636CC EC5182AC */   sw        $v0, %lo(D_800651EC)($a0)
+    /* 36C 800636CC EC5182AC */   sw        $v0, %lo(Stg10_AttractCount)($a0)
     /* 370 800636D0 2C8E0108 */  j          .L800638B0
-    /* 374 800636D4 EC5180AC */   sw        $zero, %lo(D_800651EC)($a0)
+    /* 374 800636D4 EC5180AC */   sw        $zero, %lo(Stg10_AttractCount)($a0)
   .L800636D8:
     /* 378 800636D8 080011AE */  sw         $s1, 0x8($s0)
     /* 37C 800636DC 0680023C */  lui        $v0, %hi(D_8005F6F0)
@@ -231,4 +231,4 @@ glabel func_800635A4
     /* 568 800638C8 1000B08F */  lw         $s0, 0x10($sp)
     /* 56C 800638CC 0800E003 */  jr         $ra
     /* 570 800638D0 2800BD27 */   addiu     $sp, $sp, 0x28
-endlabel func_800635A4
+endlabel Stg10_TitleUpdate

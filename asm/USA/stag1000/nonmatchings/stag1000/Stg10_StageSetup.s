@@ -1,6 +1,6 @@
-nonmatching func_800633B0, 0x1EC
+nonmatching Stg10_StageSetup, 0x1EC
 
-glabel func_800633B0
+glabel Stg10_StageSetup
     /* 50 800633B0 D8FFBD27 */  addiu      $sp, $sp, -0x28
     /* 54 800633B4 2000B2AF */  sw         $s2, 0x20($sp)
     /* 58 800633B8 21908000 */  addu       $s2, $a0, $zero
@@ -87,8 +87,8 @@ glabel func_800633B0
     /* 18C 800634EC 01000724 */   addiu     $a3, $zero, 0x1
     /* 190 800634F0 419C000C */  jal        ResetGraph
     /* 194 800634F4 01000424 */   addiu     $a0, $zero, 0x1
-    /* 198 800634F8 0680043C */  lui        $a0, %hi(D_800651C0)
-    /* 19C 800634FC C0518424 */  addiu      $a0, $a0, %lo(D_800651C0)
+    /* 198 800634F8 0680043C */  lui        $a0, %hi(Stg10_VramClearRect)
+    /* 19C 800634FC C0518424 */  addiu      $a0, $a0, %lo(Stg10_VramClearRect)
     /* 1A0 80063500 21280000 */  addu       $a1, $zero, $zero
     /* 1A4 80063504 2130A000 */  addu       $a2, $a1, $zero
     /* 1A8 80063508 A59D000C */  jal        ClearImage2
@@ -97,9 +97,9 @@ glabel func_800633B0
     /* 1B4 80063514 21200000 */   addu      $a0, $zero, $zero
     /* 1B8 80063518 D068000C */  jal        Snd_StopAll
     /* 1BC 8006351C 280000AE */   sw        $zero, 0x28($s0)
-    /* 1C0 80063520 0680033C */  lui        $v1, %hi(D_800651C8)
+    /* 1C0 80063520 0680033C */  lui        $v1, %hi(Stg10_MovieFileIds)
     /* 1C4 80063524 1800028E */  lw         $v0, 0x18($s0)
-    /* 1C8 80063528 C8516324 */  addiu      $v1, $v1, %lo(D_800651C8)
+    /* 1C8 80063528 C8516324 */  addiu      $v1, $v1, %lo(Stg10_MovieFileIds)
     /* 1CC 8006352C FEFB4224 */  addiu      $v0, $v0, -0x402
     /* 1D0 80063530 40100200 */  sll        $v0, $v0, 1
     /* 1D4 80063534 21104300 */  addu       $v0, $v0, $v1
@@ -131,4 +131,4 @@ glabel func_800633B0
     /* 230 80063590 1800B08F */  lw         $s0, 0x18($sp)
     /* 234 80063594 0800E003 */  jr         $ra
     /* 238 80063598 2800BD27 */   addiu     $sp, $sp, 0x28
-endlabel func_800633B0
+endlabel Stg10_StageSetup

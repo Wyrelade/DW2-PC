@@ -42,7 +42,7 @@ typedef struct {
     /* 0x80 */ s16 dct[64];
 } DecDCTEnv; /* size 0x100 */
 
-/* Work of the title menu task (func_800635A4, func_800638D4). */
+/* Work of the title menu task (Stg10_TitleUpdate, Stg10_TitleDraw). */
 typedef struct {
     /* 0x00 */ s32 field_0;
     u8 _pad04[0x04];
@@ -125,14 +125,14 @@ extern void func_8001D8A4(s32);
 extern void func_8002E2C4(void);
 
 /* this overlay */
-extern s32 D_800651EC;
+extern s32 Stg10_AttractCount;
 extern void func_8006359C(void);
 extern char D_80063360[];
 extern char D_8006337C[];
 extern char D_8006338C[];
 extern char D_8006339C[];
-extern RECT D_800651C0;
-extern s16 D_800651C8[];
+extern RECT Stg10_VramClearRect;
+extern s16 Stg10_MovieFileIds[];
 extern u32 D_80065258;
 extern u32 D_8006525C[16];
 extern u32 D_8006529C[16];
@@ -146,23 +146,23 @@ extern volatile u32 *D_80065378;
 extern volatile u32 *D_8006537C;
 extern volatile u32 *D_80065398;
 extern volatile u32 *D_800653A0;
-extern u8 D_800653D8[];
-extern s32 D_80065220;
-extern s32 D_80065224;
-extern s32 D_80065228;
+extern u8 Stg10_VlcTablePacked[];
+extern s32 Stg10_StrWidth;
+extern s32 Stg10_StrHeight;
+extern s32 Stg10_VramClearRect2;
 extern volatile u32 *D_8006539C;
-extern u32 *D_800661E8;
-extern u32 *D_800661EC;
-extern u32 *D_800661F0;
-extern u32 *D_800661F4;
-extern u32 *D_800661F8;
-extern s32 D_800661FC;
-extern s32 D_80066200;
-extern s32 D_80066204;
-extern StrDecEnv D_80066208;
-extern u32 *D_80066240;
+extern u32 *Stg10_StrRingBuf;
+extern u32 *Stg10_VlcBuf0;
+extern u32 *Stg10_VlcBuf1;
+extern u32 *Stg10_ImgBuf0;
+extern u32 *Stg10_ImgBuf1;
+extern s32 Stg10_StrEndFlag;
+extern s32 Stg10_MovieFileId;
+extern s32 Stg10_MovieEndFrame;
+extern StrDecEnv Stg10_DecEnv;
+extern u32 *Stg10_VlcTable;
 
-u32 *func_8006400C(StrDecEnv *dec);
+u32 *Stg10_StrNext(StrDecEnv *dec);
 void func_800646C0(s32 arg0);
 void func_80064894(u32 *buf, s32 size);
 void func_8006495C(void (*func)());
@@ -173,13 +173,13 @@ s32 func_80064B8C(void);
 s32 func_80064C20(void);
 s32 func_80064CB4(void);
 s32 func_80064CCC(char *msg);
-void func_80063EB0(StrDecEnv *dec, s16 x0, s16 y0, s16 x1, s16 y1);
-void func_80063FA0(u8 *arg0, void (*arg1)());
-s32 func_80064110(StrDecEnv *dec);
-void func_80064198(void);
-void func_800642E8(StrDecEnv *dec, s32 mode);
+void Stg10_StrSetDefDecEnv(StrDecEnv *dec, s16 x0, s16 y0, s16 x1, s16 y1);
+void Stg10_StrInit(u8 *arg0, void (*arg1)());
+s32 Stg10_StrNextVlc(StrDecEnv *dec);
+void Stg10_StrCallback(void);
+void Stg10_StrSync(StrDecEnv *dec, s32 mode);
 void func_80064818(u32 *buf, s32 mode);
-void func_800650D0(u8 *dst);
+void Stg10_BuildVlcTable(u8 *dst);
 void func_80064D80(u32 *, u32 *, u32 *);
 
 #endif

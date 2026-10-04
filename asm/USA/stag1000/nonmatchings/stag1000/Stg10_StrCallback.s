@@ -1,6 +1,6 @@
-nonmatching func_80064198, 0x150
+nonmatching Stg10_StrCallback, 0x150
 
-glabel func_80064198
+glabel Stg10_StrCallback
     /* E38 80064198 E0FFBD27 */  addiu      $sp, $sp, -0x20
     /* E3C 8006419C 1800B0AF */  sw         $s0, 0x18($sp)
     /* E40 800641A0 0680103C */  lui        $s0, %hi(D_80061B04)
@@ -12,8 +12,8 @@ glabel func_80064198
     /* E58 800641B8 00000000 */   nop
     /* E5C 800641BC 041B00A2 */  sb         $zero, %lo(D_80061B04)($s0)
   .L800641C0:
-    /* E60 800641C0 0680023C */  lui        $v0, %hi(D_80066208)
-    /* E64 800641C4 08624624 */  addiu      $a2, $v0, %lo(D_80066208)
+    /* E60 800641C0 0680023C */  lui        $v0, %hi(Stg10_DecEnv)
+    /* E64 800641C4 08624624 */  addiu      $a2, $v0, %lo(Stg10_DecEnv)
     /* E68 800641C8 2F00C988 */  lwl        $t1, 0x2F($a2)
     /* E6C 800641CC 2C00C998 */  lwr        $t1, 0x2C($a2)
     /* E70 800641D0 3300CA88 */  lwl        $t2, 0x33($a2)
@@ -78,8 +78,8 @@ glabel func_80064198
   .L800642B4:
     /* F54 800642B4 209D000C */  jal        DrawSync
     /* F58 800642B8 21200000 */   addu      $a0, $zero, $zero
-    /* F5C 800642BC 0680033C */  lui        $v1, %hi(D_80066208)
-    /* F60 800642C0 08626324 */  addiu      $v1, $v1, %lo(D_80066208)
+    /* F5C 800642BC 0680033C */  lui        $v1, %hi(Stg10_DecEnv)
+    /* F60 800642C0 08626324 */  addiu      $v1, $v1, %lo(Stg10_DecEnv)
     /* F64 800642C4 80101000 */  sll        $v0, $s0, 2
     /* F68 800642C8 21104300 */  addu       $v0, $v0, $v1
     /* F6C 800642CC 0C00458C */  lw         $a1, 0xC($v0)
@@ -89,4 +89,4 @@ glabel func_80064198
     /* F7C 800642DC 1800B08F */  lw         $s0, 0x18($sp)
     /* F80 800642E0 0800E003 */  jr         $ra
     /* F84 800642E4 2000BD27 */   addiu     $sp, $sp, 0x20
-endlabel func_80064198
+endlabel Stg10_StrCallback

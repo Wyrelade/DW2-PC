@@ -1,6 +1,6 @@
-nonmatching func_80063F38, 0x68
+nonmatching Stg10_StrKickCd, 0x68
 
-glabel func_80063F38
+glabel Stg10_StrKickCd
     /* BD8 80063F38 E0FFBD27 */  addiu      $sp, $sp, -0x20
     /* BDC 80063F3C 1800B0AF */  sw         $s0, 0x18($sp)
     /* BE0 80063F40 21808000 */  addu       $s0, $a0, $zero
@@ -30,4 +30,4 @@ glabel func_80063F38
     /* C34 80063F94 1800B08F */  lw         $s0, 0x18($sp)
     /* C38 80063F98 0800E003 */  jr         $ra
     /* C3C 80063F9C 2000BD27 */   addiu     $sp, $sp, 0x20
-endlabel func_80063F38
+endlabel Stg10_StrKickCd

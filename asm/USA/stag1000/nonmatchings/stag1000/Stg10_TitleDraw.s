@@ -1,6 +1,6 @@
-nonmatching func_800638D4, 0x460
+nonmatching Stg10_TitleDraw, 0x460
 
-glabel func_800638D4
+glabel Stg10_TitleDraw
     /* 574 800638D4 D0FFBD27 */  addiu      $sp, $sp, -0x30
     /* 578 800638D8 1800B2AF */  sw         $s2, 0x18($sp)
     /* 57C 800638DC 21908000 */  addu       $s2, $a0, $zero
@@ -320,4 +320,4 @@ glabel func_800638D4
     /* 9C8 80063D28 1000B08F */  lw         $s0, 0x10($sp)
     /* 9CC 80063D2C 0800E003 */  jr         $ra
     /* 9D0 80063D30 3000BD27 */   addiu     $sp, $sp, 0x30
-endlabel func_800638D4
+endlabel Stg10_TitleDraw

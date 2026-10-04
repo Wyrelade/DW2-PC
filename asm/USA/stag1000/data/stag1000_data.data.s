@@ -12,45 +12,45 @@ dlabel D_800651B4
     /* 1E5C 800651BC 00000000 */ .word 0x00000000
 enddlabel D_800651B4
 
-nonmatching D_800651C0
+nonmatching Stg10_VramClearRect
 
-dlabel D_800651C0
+dlabel Stg10_VramClearRect
     /* 1E60 800651C0 00000000 */ .word 0x00000000
     /* 1E64 800651C4 00040002 */ .word 0x02000400
-enddlabel D_800651C0
+enddlabel Stg10_VramClearRect
 
-nonmatching D_800651C8
+nonmatching Stg10_MovieFileIds
 
-dlabel D_800651C8
+dlabel Stg10_MovieFileIds
     /* 1E68 800651C8 82022F0E */ .word 0x0E2F0282
     /* 1E6C 800651CC 10051105 */ .word 0x05110510
     /* 1E70 800651D0 280E4E0D */ .word 0x0D4E0E28
-enddlabel D_800651C8
+enddlabel Stg10_MovieFileIds
 
 nonmatching D_800651D4
 
 dlabel D_800651D4
     /* 1E74 800651D4 00000000 */ .word 0x00000000
-    /* 1E78 800651D8 B0330680 */ .word func_800633B0
+    /* 1E78 800651D8 B0330680 */ .word Stg10_StageSetup
     /* 1E7C 800651DC 70110180 */ .word Task_DefaultDestroy
     /* 1E80 800651E0 00000000 */ .word 0x00000000
     /* 1E84 800651E4 00000000 */ .word 0x00000000
     /* 1E88 800651E8 0C000000 */ .word 0x0000000C
 enddlabel D_800651D4
 
-nonmatching D_800651EC
+nonmatching Stg10_AttractCount
 
-dlabel D_800651EC
+dlabel Stg10_AttractCount
     /* 1E8C 800651EC 00000000 */ .word 0x00000000
-enddlabel D_800651EC
+enddlabel Stg10_AttractCount
 
 nonmatching D_800651F0
 
 dlabel D_800651F0
     /* 1E90 800651F0 00000000 */ .word 0x00000000
-    /* 1E94 800651F4 A4350680 */ .word func_800635A4
+    /* 1E94 800651F4 A4350680 */ .word Stg10_TitleUpdate
     /* 1E98 800651F8 70110180 */ .word Task_DefaultDestroy
-    /* 1E9C 800651FC D4380680 */ .word func_800638D4
+    /* 1E9C 800651FC D4380680 */ .word Stg10_TitleDraw
     /* 1EA0 80065200 14000000 */ .word 0x00000014
     /* 1EA4 80065204 00000000 */ .word 0x00000000
 enddlabel D_800651F0
@@ -59,38 +59,38 @@ nonmatching D_80065208
 
 dlabel D_80065208
     /* 1EA8 80065208 00000000 */ .word 0x00000000
-    /* 1EAC 8006520C 343D0680 */ .word func_80063D34
+    /* 1EAC 8006520C 343D0680 */ .word Stg10_EndScreenUpdate
     /* 1EB0 80065210 70110180 */ .word Task_DefaultDestroy
-    /* 1EB4 80065214 243E0680 */ .word func_80063E24
+    /* 1EB4 80065214 243E0680 */ .word Stg10_EndScreenDraw
     /* 1EB8 80065218 04000000 */ .word 0x00000004
     /* 1EBC 8006521C 00000000 */ .word 0x00000000
 enddlabel D_80065208
 
-nonmatching D_80065220
+nonmatching Stg10_StrWidth
 
-dlabel D_80065220
+dlabel Stg10_StrWidth
     /* 1EC0 80065220 00000000 */ .word 0x00000000
-enddlabel D_80065220
+enddlabel Stg10_StrWidth
 
-nonmatching D_80065224
+nonmatching Stg10_StrHeight
 
-dlabel D_80065224
+dlabel Stg10_StrHeight
     /* 1EC4 80065224 00000000 */ .word 0x00000000
-enddlabel D_80065224
+enddlabel Stg10_StrHeight
 
-nonmatching D_80065228
+nonmatching Stg10_VramClearRect2
 
-dlabel D_80065228
+dlabel Stg10_VramClearRect2
     /* 1EC8 80065228 00000000 */ .word 0x00000000
     /* 1ECC 8006522C 00040002 */ .word 0x02000400
-enddlabel D_80065228
+enddlabel Stg10_VramClearRect2
 
 nonmatching D_80065230
 
 dlabel D_80065230
-    /* 1ED0 80065230 883E0680 */ .word func_80063E88
-    /* 1ED4 80065234 54440680 */ .word func_80064454
-    /* 1ED8 80065238 7C430680 */ .word func_8006437C
+    /* 1ED0 80065230 883E0680 */ .word Stg10_MovieInit
+    /* 1ED4 80065234 54440680 */ .word Stg10_MovieUpdate
+    /* 1ED8 80065238 7C430680 */ .word Stg10_MovieDestroy
     /* 1EDC 8006523C 00000000 */ .word 0x00000000
     /* 1EE0 80065240 0C000000 */ .word 0x0000000C
     /* 1EE4 80065244 00000000 */ .word 0x00000000
@@ -281,9 +281,9 @@ dlabel D_800653D0
     /* 2074 800653D4 00000000 */ .word 0x00000000
 enddlabel D_800653D0
 
-nonmatching D_800653D8
+nonmatching Stg10_VlcTablePacked
 
-dlabel D_800653D8
+dlabel Stg10_VlcTablePacked
     /* 2078 800653D8 07020001 */ .word 0x01000207
     /* 207C 800653DC 00020001 */ .word 0x01000200
     /* 2080 800653E0 00F100EF */ .word 0xEF00F100
@@ -1184,59 +1184,59 @@ dlabel D_800653D8
     /* 2E7C 800661DC 3FF10305 */ .word 0x0503F13F
     /* 2E80 800661E0 F17F75FF */ .word 0xFF757FF1
     /* 2E84 800661E4 FF000000 */ .word 0x000000FF
-enddlabel D_800653D8
+enddlabel Stg10_VlcTablePacked
 
-nonmatching D_800661E8
+nonmatching Stg10_StrRingBuf
 
-dlabel D_800661E8
+dlabel Stg10_StrRingBuf
     /* 2E88 800661E8 00000000 */ .word 0x00000000
-enddlabel D_800661E8
+enddlabel Stg10_StrRingBuf
 
-nonmatching D_800661EC
+nonmatching Stg10_VlcBuf0
 
-dlabel D_800661EC
+dlabel Stg10_VlcBuf0
     /* 2E8C 800661EC 00000000 */ .word 0x00000000
-enddlabel D_800661EC
+enddlabel Stg10_VlcBuf0
 
-nonmatching D_800661F0
+nonmatching Stg10_VlcBuf1
 
-dlabel D_800661F0
+dlabel Stg10_VlcBuf1
     /* 2E90 800661F0 00000000 */ .word 0x00000000
-enddlabel D_800661F0
+enddlabel Stg10_VlcBuf1
 
-nonmatching D_800661F4
+nonmatching Stg10_ImgBuf0
 
-dlabel D_800661F4
+dlabel Stg10_ImgBuf0
     /* 2E94 800661F4 00000000 */ .word 0x00000000
-enddlabel D_800661F4
+enddlabel Stg10_ImgBuf0
 
-nonmatching D_800661F8
+nonmatching Stg10_ImgBuf1
 
-dlabel D_800661F8
+dlabel Stg10_ImgBuf1
     /* 2E98 800661F8 00000000 */ .word 0x00000000
-enddlabel D_800661F8
+enddlabel Stg10_ImgBuf1
 
-nonmatching D_800661FC
+nonmatching Stg10_StrEndFlag
 
-dlabel D_800661FC
+dlabel Stg10_StrEndFlag
     /* 2E9C 800661FC 00000000 */ .word 0x00000000
-enddlabel D_800661FC
+enddlabel Stg10_StrEndFlag
 
-nonmatching D_80066200
+nonmatching Stg10_MovieFileId
 
-dlabel D_80066200
+dlabel Stg10_MovieFileId
     /* 2EA0 80066200 00000000 */ .word 0x00000000
-enddlabel D_80066200
+enddlabel Stg10_MovieFileId
 
-nonmatching D_80066204
+nonmatching Stg10_MovieEndFrame
 
-dlabel D_80066204
+dlabel Stg10_MovieEndFrame
     /* 2EA4 80066204 00000000 */ .word 0x00000000
-enddlabel D_80066204
+enddlabel Stg10_MovieEndFrame
 
-nonmatching D_80066208
+nonmatching Stg10_DecEnv
 
-dlabel D_80066208
+dlabel Stg10_DecEnv
     /* 2EA8 80066208 00000000 */ .word 0x00000000
     /* 2EAC 8006620C 00000000 */ .word 0x00000000
     /* 2EB0 80066210 00000000 */ .word 0x00000000
@@ -1251,10 +1251,10 @@ dlabel D_80066208
     /* 2ED4 80066234 00000000 */ .word 0x00000000
     /* 2ED8 80066238 00000000 */ .word 0x00000000
     /* 2EDC 8006623C 00000000 */ .word 0x00000000
-enddlabel D_80066208
+enddlabel Stg10_DecEnv
 
-nonmatching D_80066240
+nonmatching Stg10_VlcTable
 
-dlabel D_80066240
+dlabel Stg10_VlcTable
     /* 2EE0 80066240 00000000 */ .word 0x00000000
-enddlabel D_80066240
+enddlabel Stg10_VlcTable

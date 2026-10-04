@@ -1,6 +1,6 @@
-nonmatching func_80064110, 0x88
+nonmatching Stg10_StrNextVlc, 0x88
 
-glabel func_80064110
+glabel Stg10_StrNextVlc
     /* DB0 80064110 E0FFBD27 */  addiu      $sp, $sp, -0x20
     /* DB4 80064114 1800B2AF */  sw         $s2, 0x18($sp)
     /* DB8 80064118 21908000 */  addu       $s2, $a0, $zero
@@ -9,13 +9,13 @@ glabel func_80064110
     /* DC4 80064124 1C00BFAF */  sw         $ra, 0x1C($sp)
     /* DC8 80064128 1000B0AF */  sw         $s0, 0x10($sp)
   .L8006412C:
-    /* DCC 8006412C 0390010C */  jal        func_8006400C
+    /* DCC 8006412C 0390010C */  jal        Stg10_StrNext
     /* DD0 80064130 21204002 */   addu      $a0, $s2, $zero
     /* DD4 80064134 21804000 */  addu       $s0, $v0, $zero
     /* DD8 80064138 0E000012 */  beqz       $s0, .L80064174
-    /* DDC 8006413C 0680033C */   lui       $v1, %hi(D_80066240)
+    /* DDC 8006413C 0680033C */   lui       $v1, %hi(Stg10_VlcTable)
     /* DE0 80064140 0800428E */  lw         $v0, 0x8($s2)
-    /* DE4 80064144 4062668C */  lw         $a2, %lo(D_80066240)($v1)
+    /* DE4 80064144 4062668C */  lw         $a2, %lo(Stg10_VlcTable)($v1)
     /* DE8 80064148 0100422C */  sltiu      $v0, $v0, 0x1
     /* DEC 8006414C 080042AE */  sw         $v0, 0x8($s2)
     /* DF0 80064150 80100200 */  sll        $v0, $v0, 2
@@ -38,4 +38,4 @@ glabel func_80064110
     /* E2C 8006418C 1000B08F */  lw         $s0, 0x10($sp)
     /* E30 80064190 0800E003 */  jr         $ra
     /* E34 80064194 2000BD27 */   addiu     $sp, $sp, 0x20
-endlabel func_80064110
+endlabel Stg10_StrNextVlc

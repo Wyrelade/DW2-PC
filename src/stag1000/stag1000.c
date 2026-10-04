@@ -1,7 +1,7 @@
 #include "common.h"
 #include "stag1000/stag1000.h"
 
-void func_800633B0(Actor *a0) {
+void Stg10_StageSetup(Actor *a0) {
     s32 args[2];
     s32 *slot = (s32 *)a0->u34.children;
 
@@ -40,11 +40,11 @@ void func_800633B0(Actor *a0) {
         Sys_SetFrameRate60();
         Gpu_InitDoubleBuffer(0x140, 0x1E0, 2, 1);
         ResetGraph(1);
-        ClearImage2((s32)&D_800651C0, 0, 0, 0);
+        ClearImage2((s32)&Stg10_VramClearRect, 0, 0, 0);
         DrawSync(0);
         D_8005F770.bufIndex = 0;
         Snd_StopAll();
-        args[0] = D_800651C8[D_8005F770.gameMode - 0x402];
+        args[0] = Stg10_MovieFileIds[D_8005F770.gameMode - 0x402];
         args[1] = Cd_GetFileSectors(args[0]) / 10 - 10;
         Task_Create(0x402, slot + 2, (s32)args);
         break;
@@ -55,7 +55,7 @@ void func_800633B0(Actor *a0) {
 void func_8006359C(void) {
 }
 
-void func_800635A4(Actor *a0) {
+void Stg10_TitleUpdate(Actor *a0) {
     Stag1000Menu *w = (Stag1000Menu *)a0->work;
     s32 v;
 
@@ -81,13 +81,13 @@ void func_800635A4(Actor *a0) {
             case 0:
             default:
                 if (a0->elapsed >= 600) {
-                    if (D_800651EC == 0) {
+                    if (Stg10_AttractCount == 0) {
                         D_8005F78C = 0x403;
                     } else {
                         D_8005F78C = 0x402;
                     }
-                    if (++D_800651EC == 20) {
-                        D_800651EC = 0;
+                    if (++Stg10_AttractCount == 20) {
+                        Stg10_AttractCount = 0;
                     }
                     Task_NextState2(a0);
                 }
@@ -177,7 +177,7 @@ void func_800635A4(Actor *a0) {
     }
 }
 
-void func_800638D4(Actor *a0) {
+void Stg10_TitleDraw(Actor *a0) {
     Stag1000Menu *w = (Stag1000Menu *)a0->work;
     Stag1000Part *list = (Stag1000Part *)Cd_GetFileEntry(0x1840000);
     Stag1000Part *p = list;
@@ -300,7 +300,7 @@ void func_800638D4(Actor *a0) {
     func_8001D8A4((s32)list);
 }
 
-void func_80063D34(Actor *arg0) {
+void Stg10_EndScreenUpdate(Actor *arg0) {
     StgWork *w = (StgWork *)arg0->work;
 
     switch (arg0->stateLevel0) {
@@ -335,7 +335,7 @@ void func_80063D34(Actor *arg0) {
     }
 }
 
-void func_80063E24(Actor *arg0) {
+void Stg10_EndScreenDraw(Actor *arg0) {
     StgWork *w = (StgWork *)arg0->work;
     StgFileEntry *e = (StgFileEntry *)Cd_GetFileEntry(0xD760000);
     StgFileEntry *p;
@@ -346,18 +346,18 @@ void func_80063E24(Actor *arg0) {
     func_8001D8A4((s32)e);
 }
 
-void func_80063E88(s32 arg0, s32 *arg1) {
+void Stg10_MovieInit(s32 arg0, s32 *arg1) {
     D_80050741 = 1;
-    D_80066200 = arg1[0];
-    D_80066204 = arg1[1];
+    Stg10_MovieFileId = arg1[0];
+    Stg10_MovieEndFrame = arg1[1];
 }
 
-void func_80063EB0(StrDecEnv *dec, s16 x0, s16 y0, s16 x1, s16 y1) {
-    dec->vlcbuf[0] = D_800661EC;
-    dec->vlcbuf[1] = D_800661F0;
+void Stg10_StrSetDefDecEnv(StrDecEnv *dec, s16 x0, s16 y0, s16 x1, s16 y1) {
+    dec->vlcbuf[0] = Stg10_VlcBuf0;
+    dec->vlcbuf[1] = Stg10_VlcBuf1;
     dec->vlcid = D_8005F770.bufIndex ^ 1;
-    dec->imgbuf[0] = D_800661F4;
-    dec->imgbuf[1] = D_800661F8;
+    dec->imgbuf[0] = Stg10_ImgBuf0;
+    dec->imgbuf[1] = Stg10_ImgBuf1;
     dec->imgid = D_8005F770.bufIndex ^ 1;
     dec->rect[0].x = x0;
     dec->rect[0].y = y0;
@@ -370,7 +370,7 @@ void func_80063EB0(StrDecEnv *dec, s16 x0, s16 y0, s16 x1, s16 y1) {
     dec->isdone = 0;
 }
 
-void func_80063F38(u8 *arg0) {
+void Stg10_StrKickCd(u8 *arg0) {
     u8 mode = 0x80;
 
     do {
@@ -381,15 +381,15 @@ void func_80063F38(u8 *arg0) {
     } while (CdRead2(0x1E0) == 0);
 }
 
-void func_80063FA0(u8 *arg0, void (*arg1)()) {
+void Stg10_StrInit(u8 *arg0, void (*arg1)()) {
     func_800646C0(0);
     func_8006495C(arg1);
-    StSetRing((s32)D_800661E8, 0x20);
+    StSetRing((s32)Stg10_StrRingBuf, 0x20);
     StSetStream(1, 1, -1, 0, 0);
-    func_80063F38(arg0);
+    Stg10_StrKickCd(arg0);
 }
 
-u32 *func_8006400C(StrDecEnv *dec) {
+u32 *Stg10_StrNext(StrDecEnv *dec) {
     u32 *addr;
     StrHeader *sector;
     s32 cnt = 2000;
@@ -399,36 +399,36 @@ u32 *func_8006400C(StrDecEnv *dec) {
             return 0;
         }
     }
-    if (sector->frameCount >= D_80066204) {
-        D_800661FC = 1;
+    if (sector->frameCount >= Stg10_MovieEndFrame) {
+        Stg10_StrEndFlag = 1;
     }
-    if (D_80065220 != sector->width || D_80065224 != sector->height) {
+    if (Stg10_StrWidth != sector->width || Stg10_StrHeight != sector->height) {
         Gpu_ClearScreens();
-        D_80065220 = sector->width;
-        D_80065224 = sector->height;
+        Stg10_StrWidth = sector->width;
+        Stg10_StrHeight = sector->height;
     }
-    dec->rect[0].w = dec->rect[1].w = D_80065220 * 3 / 2;
-    dec->rect[0].h = dec->rect[1].h = D_80065224;
-    dec->slice.h = D_80065224;
+    dec->rect[0].w = dec->rect[1].w = Stg10_StrWidth * 3 / 2;
+    dec->rect[0].h = dec->rect[1].h = Stg10_StrHeight;
+    dec->slice.h = Stg10_StrHeight;
     return addr;
 }
 
-s32 func_80064110(StrDecEnv *dec) {
+s32 Stg10_StrNextVlc(StrDecEnv *dec) {
     s32 cnt = 2000;
     u32 *next;
 
-    while ((next = func_8006400C(dec)) == 0) {
+    while ((next = Stg10_StrNext(dec)) == 0) {
         if (--cnt == 0) {
             return -1;
         }
     }
     dec->vlcid = dec->vlcid == 0;
-    func_80064D80(next, dec->vlcbuf[dec->vlcid], D_80066240);
+    func_80064D80(next, dec->vlcbuf[dec->vlcid], Stg10_VlcTable);
     StFreeRing(next);
     return 0;
 }
 
-void func_80064198(void) {
+void Stg10_StrCallback(void) {
     RECT snap;
     s32 id;
 
@@ -436,27 +436,27 @@ void func_80064198(void) {
         func_8002E2C4();
         D_80061B04 = 0;
     }
-    id = D_80066208.imgid;
-    snap = D_80066208.slice;
-    D_80066208.imgid = D_80066208.imgid ? 0 : 1;
-    D_80066208.slice.x += D_80066208.slice.w;
-    if (D_80066208.rectid) {
+    id = Stg10_DecEnv.imgid;
+    snap = Stg10_DecEnv.slice;
+    Stg10_DecEnv.imgid = Stg10_DecEnv.imgid ? 0 : 1;
+    Stg10_DecEnv.slice.x += Stg10_DecEnv.slice.w;
+    if (Stg10_DecEnv.rectid) {
         snap.x += 0x1E0;
     }
     snap.y = 0x24;
-    if (D_80066208.slice.x < D_80066208.rect[D_80066208.rectid].x + D_80066208.rect[D_80066208.rectid].w) {
-        func_80064894(D_80066208.imgbuf[D_80066208.imgid], D_80066208.slice.w * D_80066208.slice.h / 2);
+    if (Stg10_DecEnv.slice.x < Stg10_DecEnv.rect[Stg10_DecEnv.rectid].x + Stg10_DecEnv.rect[Stg10_DecEnv.rectid].w) {
+        func_80064894(Stg10_DecEnv.imgbuf[Stg10_DecEnv.imgid], Stg10_DecEnv.slice.w * Stg10_DecEnv.slice.h / 2);
     } else {
-        D_80066208.isdone = 1;
-        D_80066208.rectid = D_80066208.rectid == 0;
-        D_80066208.slice.x = D_80066208.rect[D_80066208.rectid].x;
-        D_80066208.slice.y = D_80066208.rect[D_80066208.rectid].y;
+        Stg10_DecEnv.isdone = 1;
+        Stg10_DecEnv.rectid = Stg10_DecEnv.rectid == 0;
+        Stg10_DecEnv.slice.x = Stg10_DecEnv.rect[Stg10_DecEnv.rectid].x;
+        Stg10_DecEnv.slice.y = Stg10_DecEnv.rect[Stg10_DecEnv.rectid].y;
     }
     DrawSync(0);
-    LoadImage(&snap, D_80066208.imgbuf[id]);
+    LoadImage(&snap, Stg10_DecEnv.imgbuf[id]);
 }
 
-void func_800642E8(StrDecEnv *dec, s32 mode) {
+void Stg10_StrSync(StrDecEnv *dec, s32 mode) {
     volatile s32 cnt = 0x800000;
 
     while (dec->isdone == 0) {
@@ -470,24 +470,24 @@ void func_800642E8(StrDecEnv *dec, s32 mode) {
     dec->isdone = 0;
 }
 
-void func_8006437C(Actor *arg0) {
+void Stg10_MovieDestroy(Actor *arg0) {
     CdControlB(9, 0, 0);
     func_8006495C(0);
     StUnSetRing();
-    Mem_Free(D_800661E8);
-    Mem_Free(D_800661EC);
-    Mem_Free(D_800661F0);
-    Mem_Free(D_800661F4);
-    Mem_Free(D_800661F8);
-    Mem_Free(D_80066240);
+    Mem_Free(Stg10_StrRingBuf);
+    Mem_Free(Stg10_VlcBuf0);
+    Mem_Free(Stg10_VlcBuf1);
+    Mem_Free(Stg10_ImgBuf0);
+    Mem_Free(Stg10_ImgBuf1);
+    Mem_Free(Stg10_VlcTable);
     D_80050741 = 0;
     Task_DefaultDestroy(arg0);
     ResetGraph(1);
-    ClearImage2(&D_80065228, 0, 0, 0);
+    ClearImage2(&Stg10_VramClearRect2, 0, 0, 0);
     DrawSync(0);
 }
 
-void func_80064454(Actor *a0) {
+void Stg10_MovieUpdate(Actor *a0) {
     s32 st = a0->stateLevel0;
     ActorWork *work = a0->work;
 
@@ -495,26 +495,26 @@ void func_80064454(Actor *a0) {
     case 0:
         while (Cd_PollRead() != 0) {
         }
-        D_800661E8 = (u32 *)Mem_Alloc(0x10000, 2);
-        D_800661EC = (u32 *)Mem_Alloc(0x28000, 2);
-        D_800661F0 = (u32 *)Mem_Alloc(0x28000, 2);
-        D_800661F4 = (u32 *)Mem_Alloc(0x4E00, 2);
-        D_800661F8 = (u32 *)Mem_Alloc(0x4E00, 2);
-        D_80066240 = (u32 *)Mem_Alloc(0x11000, 2);
-        func_80063EB0(&D_80066208, 0, 0, 0, 0x1A0);
-        Cd_GetFilePos(D_80066200, work);
-        func_80063FA0(work, func_80064198);
-        func_800650D0(D_80066240);
-        func_80064110(&D_80066208);
-        D_800661FC = 0;
+        Stg10_StrRingBuf = (u32 *)Mem_Alloc(0x10000, 2);
+        Stg10_VlcBuf0 = (u32 *)Mem_Alloc(0x28000, 2);
+        Stg10_VlcBuf1 = (u32 *)Mem_Alloc(0x28000, 2);
+        Stg10_ImgBuf0 = (u32 *)Mem_Alloc(0x4E00, 2);
+        Stg10_ImgBuf1 = (u32 *)Mem_Alloc(0x4E00, 2);
+        Stg10_VlcTable = (u32 *)Mem_Alloc(0x11000, 2);
+        Stg10_StrSetDefDecEnv(&Stg10_DecEnv, 0, 0, 0, 0x1A0);
+        Cd_GetFilePos(Stg10_MovieFileId, work);
+        Stg10_StrInit(work, Stg10_StrCallback);
+        Stg10_BuildVlcTable(Stg10_VlcTable);
+        Stg10_StrNextVlc(&Stg10_DecEnv);
+        Stg10_StrEndFlag = 0;
         Task_NextState0(a0);
     case 1:
-        func_80064818(D_80066208.vlcbuf[D_80066208.vlcid], 3);
-        func_80064894(D_80066208.imgbuf[D_80066208.imgid],
-                      D_80066208.slice.w * D_80066208.slice.h / 2);
-        func_80064110(&D_80066208);
-        func_800642E8(&D_80066208, 0);
-        if (D_800661FC == 1 || D_8005F724 > 0) {
+        func_80064818(Stg10_DecEnv.vlcbuf[Stg10_DecEnv.vlcid], 3);
+        func_80064894(Stg10_DecEnv.imgbuf[Stg10_DecEnv.imgid],
+                      Stg10_DecEnv.slice.w * Stg10_DecEnv.slice.h / 2);
+        Stg10_StrNextVlc(&Stg10_DecEnv);
+        Stg10_StrSync(&Stg10_DecEnv, 0);
+        if (Stg10_StrEndFlag == 1 || D_8005F724 > 0) {
             switch (D_8005F770.gameMode) {
             case 0x404:
                 D_8005F770.nextGameMode = 0x325;

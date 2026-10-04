@@ -1,6 +1,6 @@
-nonmatching func_80063E24, 0x64
+nonmatching Stg10_EndScreenDraw, 0x64
 
-glabel func_80063E24
+glabel Stg10_EndScreenDraw
     /* AC4 80063E24 E8FFBD27 */  addiu      $sp, $sp, -0x18
     /* AC8 80063E28 1400BFAF */  sw         $ra, 0x14($sp)
     /* ACC 80063E2C 1000B0AF */  sw         $s0, 0x10($sp)
@@ -28,4 +28,4 @@ glabel func_80063E24
     /* B1C 80063E7C 1000B08F */  lw         $s0, 0x10($sp)
     /* B20 80063E80 0800E003 */  jr         $ra
     /* B24 80063E84 1800BD27 */   addiu     $sp, $sp, 0x18
-endlabel func_80063E24
+endlabel Stg10_EndScreenDraw

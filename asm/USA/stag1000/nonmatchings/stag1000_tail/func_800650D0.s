@@ -1,9 +1,9 @@
-nonmatching func_800650D0, 0xE4
+nonmatching Stg10_BuildVlcTable, 0xE4
 
-glabel func_800650D0
+glabel Stg10_BuildVlcTable
     /* 1D70 800650D0 21180000 */  addu       $v1, $zero, $zero
-    /* 1D74 800650D4 0680073C */  lui        $a3, %hi(D_800653D8)
-    /* 1D78 800650D8 D853E724 */  addiu      $a3, $a3, %lo(D_800653D8)
+    /* 1D74 800650D4 0680073C */  lui        $a3, %hi(Stg10_VlcTablePacked)
+    /* 1D78 800650D8 D853E724 */  addiu      $a3, $a3, %lo(Stg10_VlcTablePacked)
     /* 1D7C 800650DC 21308000 */  addu       $a2, $a0, $zero
     /* 1D80 800650E0 F0000A24 */  addiu      $t2, $zero, 0xF0
     /* 1D84 800650E4 FFFF083C */  lui        $t0, (0xFFFF0F01 >> 16)
@@ -65,4 +65,4 @@ glabel func_800650D0
     /* 1E48 800651A8 02008424 */   addiu     $a0, $a0, 0x2
     /* 1E4C 800651AC 0800E003 */  jr         $ra
     /* 1E50 800651B0 00000000 */   nop
-endlabel func_800650D0
+endlabel Stg10_BuildVlcTable

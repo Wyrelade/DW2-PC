@@ -1,6 +1,6 @@
-nonmatching func_800642E8, 0x94
+nonmatching Stg10_StrSync, 0x94
 
-glabel func_800642E8
+glabel Stg10_StrSync
     /* F88 800642E8 F8FFBD27 */  addiu      $sp, $sp, -0x8
     /* F8C 800642EC 3400838C */  lw         $v1, 0x34($a0)
     /* F90 800642F0 8000023C */  lui        $v0, (0x800000 >> 16)
@@ -41,4 +41,4 @@ glabel func_800642E8
     /* 1010 80064370 340080AC */  sw         $zero, 0x34($a0)
     /* 1014 80064374 0800E003 */  jr         $ra
     /* 1018 80064378 0800BD27 */   addiu     $sp, $sp, 0x8
-endlabel func_800642E8
+endlabel Stg10_StrSync

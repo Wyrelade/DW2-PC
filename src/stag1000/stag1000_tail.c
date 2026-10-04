@@ -1,7 +1,7 @@
 #include "common.h"
 #include "stag1000/stag1000.h"
 
-void func_800650D0(u8 *dst) {
+void Stg10_BuildVlcTable(u8 *dst) {
     u8 *src;
     u8 *p;
     s32 back;
@@ -9,7 +9,7 @@ void func_800650D0(u8 *dst) {
     s32 i;
 
     back = 0;
-    src = D_800653D8;
+    src = Stg10_VlcTablePacked;
     p = dst;
     do {
         b = *src++; c = b;
