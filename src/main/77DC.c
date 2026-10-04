@@ -2792,10 +2792,7 @@ void Gfx_ReleaseTexSlot(s32 *arg0) {
     }
 }
 
-#ifdef NORMALIZED
-void Gfx_DrawPartSprites(void *arg0, s32 arg1) {
-    GfxPartSprite *s = arg0;
-    GfxPartOTag *ot = (GfxPartOTag *)arg1;
+void Gfx_DrawPartSprites(GfxPartSprite *s, GfxPartOTag *ot) {
     GfxPartCell *e;
     GfxPartTexSlot *t;
     GfxPartPkt *p;
@@ -2845,10 +2842,6 @@ void Gfx_DrawPartSprites(void *arg0, s32 arg1) {
     }
     D_8005F770.packet.addr = (s32)p;
 }
-#else
-INCLUDE_ASM("asm/USA/main/nonmatchings/156C", Gfx_DrawPartSprites);
-void Gfx_DrawPartSprites(void *arg0, s32 arg1);
-#endif
 
 
 void Gfx_DrawPartQuadsRot(void *arg0, void *arg1, s32 arg2, s32 arg3) {
@@ -3000,7 +2993,7 @@ void Gfx_SetPartsNumber(GfxPart *p, s32 mask, s32 n, s32 val) {
         } while (p->fileId != 0);
     }
 } /* identity matrix */
-extern void Gfx_DrawPartSprites(void *, s32);
+extern void Gfx_DrawPartSprites(GfxPartSprite *, GfxPartOTag *);
 extern void Gfx_DrawPartQuadsRot(void *, void *, s32, s32);
 extern void ScaleMatrix(Obj209 *, s32 *);
 
@@ -3031,7 +3024,7 @@ void Gfx_DrawPartsEx(void *arg0, s32 arg1) {
                     s2->field_10 = 0x1000;
                     s2->field_14 = 0x1000;
                 } else {
-                    Gfx_DrawPartSprites(s2, s4);
+                    Gfx_DrawPartSprites((GfxPartSprite *)s2, (GfxPartOTag *)s4);
                     goto Ladv;
                 }
             }

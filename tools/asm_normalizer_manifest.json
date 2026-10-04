@@ -6,14 +6,6 @@
       "padnop"
     ]
   },
-  "Gfx_DrawPartSprites": {
-    "passes": [
-      "reg_realloc",
-      "web_realloc",
-      "save_slot",
-      "sched_match"
-    ]
-  },
   "Menu_NameEntryTask": {
     "passes": [
       "zero_cmp",
