@@ -804,8 +804,295 @@ void func_8006D93C(Actor *a) {
     }
 }
 
-INCLUDE_RODATA("asm/USA/stag2000/rodata", jtbl_8006359C);
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000_8CE0", func_8006DCCC);
+void func_8006DCCC(Actor *a) {
+    Stg20ItemListWork *w = (Stg20ItemListWork *)a->work;
+    s32 *slot = (s32 *)a->u34.children;
+    Stg20GameState *g;
+    s32 item;
+    s32 i;
+    s32 v;
+    s32 u;
+    s32 k;
+
+    switch (a->stateLevel0) {
+    case 0:
+        Mem_FillWordsNeg1(w->hdr, 0x12);
+        Text_OpenPacked(&w->hdr[0], (s32)&D_8005E620.field_D1, 0, D_800705DC[0]);
+        Task_Create(0x30D, slot, 1);
+        if (((Stg20GameState *)&D_8005E620)->field_2C[0] == 0xEA) {
+            w->field_48 = 0;
+        } else if (((Stg20GameState *)&D_8005E620)->field_2C[0] == 0xEB) {
+            w->field_48 = 1;
+        } else {
+            w->field_48 = 2;
+        }
+        func_8006D3CC(a);
+        w->field_54 = 0x7FFFFFF;
+        w->field_58 = 0x7FFFFE;
+        w->field_4C = w->field_48 + 3;
+        Task_NextState0(a);
+        break;
+    case 2:
+        break;
+    case 1:
+        switch (a->stateLevel1) {
+        case 0:
+        default:
+            switch (a->stateLevel2) {
+            case 0:
+            default:
+                Text_OpenById(&w->hdr[1], 0x13E, 0, D_800705DC[1]);
+                Text_OpenById(&w->hdr[2], w->field_48 + 0x13F, 0, D_800705DC[2]);
+                func_8006D2C0(&w->descText, w->field_48 + 0x13B, D_800705DC[7], 0);
+                w->field_50 = 1;
+                Task_NextState2(a);
+            case 1:
+                break;
+            }
+            if (D_8005F704 > 0) {
+                Snd_PlayById(0x13, 0);
+                Text_Close(&w->hdr[1]);
+                Text_Close(&w->hdr[2]);
+                Text_Close(&w->descText);
+                Task_NextState1(a);
+            }
+            break;
+        case 1:
+            switch (a->stateLevel2) {
+            case 0:
+            default:
+                Text_OpenById(&w->hdr[1], 0x142, 0, D_800705DC[1]);
+                Text_OpenPacked(&w->hdr[2], Item_GetNameText(func_8006D484(a, 0x75) != 0 ? 0x75 : 0x76), 0, D_800705DC[2]);
+                Text_OpenPacked(&w->hdr[3], Item_GetNameText(0x77), 0, D_800705DC[3]);
+                Text_OpenPacked(&w->hdr[4], Item_GetNameText(func_8006D484(a, 0x73) != 0 ? 0x73 : 0x74), 0, D_800705DC[4]);
+                func_8006D2C0(&w->descText, 0x143, D_800705DC[7], 0);
+                w->field_50 = 3;
+                Task_NextState2(a);
+            case 1:
+                break;
+            }
+            g = (Stg20GameState *)&D_8005E620;
+            if (a->elapsed & 0x10) {
+                v = func_8006D484(a, 0x75) != 0 ? 0x75 : 0x76;
+            } else {
+                v = 0;
+            }
+            g->field_2C[17] = v;
+            u = 0;
+            g = (Stg20GameState *)&D_8005E620;
+            if (a->elapsed & 0x10) {
+                u = 0x77;
+            }
+            g->field_2C[18] = u;
+            if (D_8005F704 > 0) {
+                Snd_PlayById(0x14, 0);
+                Text_Close(&w->hdr[1]);
+                Text_Close(&w->hdr[2]);
+                Text_Close(&w->hdr[3]);
+                Text_Close(&w->hdr[4]);
+                Text_Close(&w->descText);
+                g->field_2C[17] = func_8006D484(a, 0x75) != 0 ? 0x75 : 0x76;
+                g->field_2C[18] = 0x77;
+                g->field_2C[16] = func_8006D484(a, 0x73) != 0 ? 0x73 : 0x74;
+                func_8006D4BC(a, g->field_2C[17]);
+                func_8006D4BC(a, g->field_2C[18]);
+                func_8006D4BC(a, g->field_2C[16]);
+                Task_NextState1(a);
+            }
+            break;
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+        case 9:
+        case 10:
+        case 11: {
+            s32 st = a->stateLevel1;
+            s32 idx = st - 2;
+
+            switch (a->stateLevel2) {
+            case 0:
+            default:
+                func_8006D53C(a, D_80070624[idx]);
+                if (w->count == 0) {
+                    Task_NextState1(a);
+                    break;
+                }
+                Text_OpenById(&w->hdr[1], st + 0x158, 0, D_800705DC[1]);
+                Text_OpenById(&w->hdr[2], 0x14F, 0, D_800705DC[2]);
+                func_8006D2C0(&w->descText, st + 0x142, D_800705DC[7], 0);
+                w->field_50 = 1;
+                w->field_1B8 = 1;
+                w->dirty = 1;
+                w->top = 0;
+                w->cursor = 0;
+                w->field_1BC = 0;
+                Task_NextState2(a);
+            case 1:
+                if (D_8005F704 > 0) {
+                    Snd_PlayById(0x13, 0);
+                    w->dirty = 1;
+                    w->field_1BC = 1;
+                    Task_NextState2(a);
+                }
+                break;
+            case 2:
+                ((Stg20GameState *)&D_8005E620)->field_2C[D_8007064C[idx]] = (a->elapsed & 0x10) ? w->items[w->cursor + w->top] : 0;
+                if (D_8005F6F0[0].repeat & 0x1000) {
+                    if (w->cursor != 0) {
+                        w->cursor--;
+                    } else if (w->top != 0) {
+                        w->top--;
+                    } else {
+                        w->dirty = 1;
+                        break;
+                    }
+                    Snd_PlayById(0xD, 0);
+                    w->dirty = 1;
+                } else if (D_8005F6F0[0].repeat & 0x4000) {
+                    if (w->cursor != 9) {
+                        w->cursor++;
+                    } else if (w->top + 9 < w->count - 1) {
+                        w->top++;
+                    } else {
+                        w->dirty = 1;
+                        break;
+                    }
+                    Snd_PlayById(0xD, 0);
+                    w->dirty = 1;
+                } else if (D_8005F6F0[0].cross > 0) {
+                    if (w->colors[w->top + w->cursor] != 0) {
+                        Snd_PlayById(0x10, 0);
+                        break;
+                    }
+                    Snd_PlayById(0x14, 0);
+                    ((Stg20GameState *)&D_8005E620)->field_2C[D_8007064C[idx]] = w->items[w->cursor + w->top];
+                    func_8006D4BC(a, ((Stg20GameState *)&D_8005E620)->field_2C[D_8007064C[idx]]);
+                    Task_NextState1(a);
+                }
+                break;
+            }
+            func_8006D7DC(a);
+            break;
+        }
+        case 12:
+        case 13:
+        case 14:
+        case 15:
+        case 16: {
+            s32 m = a->stateLevel1 - 12;
+
+            switch (a->stateLevel2) {
+            case 0:
+            default:
+                if (w->field_48 == 0 && m >= 3) {
+                    Task_NextState1(a);
+                    break;
+                }
+                if (w->field_48 == 1 && m >= 4) {
+                    Task_NextState1(a);
+                    break;
+                }
+                func_8006D53C(a, 0x63);
+                if (w->count == 0) {
+                    Task_NextState1(a);
+                    break;
+                }
+                Text_OpenById(&w->hdr[1], m + 0x164, 0, D_800705DC[1]);
+                Text_OpenById(&w->hdr[2], 0x14F, 0, D_800705DC[2]);
+                func_8006D2C0(&w->descText, m + 0x155, D_800705DC[7], 0);
+                w->field_50 = 1;
+                w->field_1B8 = 1;
+                w->dirty = 1;
+                w->top = 0;
+                w->cursor = 0;
+                w->field_1BC = 0;
+                Task_NextState2(a);
+            case 1:
+                if (D_8005F704 > 0) {
+                    Snd_PlayById(0x13, 0);
+                    w->dirty = 1;
+                    w->field_1BC = 1;
+                    Task_NextState2(a);
+                }
+                break;
+            case 2:
+                item = w->items[w->cursor + w->top];
+                k = -1;
+                if (item != 0) {
+                    k = func_8001E0C0(item) - 7;
+                }
+                goto blink;
+            deny:
+                Snd_PlayById(0x10, 0);
+                break;
+            blink:
+                if (k != -1) {
+                    ((Stg20GameState *)&D_8005E620)->field_2C[k + 8] = (a->elapsed & 0x10) ? item : 0;
+                }
+                if (D_8005F6F0[0].repeat & 0x1000) {
+                    if (w->cursor != 0) {
+                        w->cursor--;
+                        Snd_PlayById(0xD, 0);
+                    } else if (w->top != 0) {
+                        w->top--;
+                        Snd_PlayById(0xD, 0);
+                    }
+                    w->dirty = 1;
+                    if (k != -1) {
+                        ((Stg20GameState *)&D_8005E620)->field_2C[k + 8] = 0;
+                    }
+                } else if (D_8005F6F0[0].repeat & 0x4000) {
+                    if (w->cursor != 9) {
+                        w->cursor++;
+                        Snd_PlayById(0xD, 0);
+                    } else if (w->top + 9 < w->count - 1) {
+                        w->top++;
+                        Snd_PlayById(0xD, 0);
+                    }
+                    if (k != -1) {
+                        ((Stg20GameState *)&D_8005E620)->field_2C[k + 8] = 0;
+                    }
+                    w->dirty = 1;
+                } else if (D_8005F6F0[0].cross > 0) {
+                    if (k == -1) {
+                        goto deny;
+                    }
+                    Snd_PlayById(0x14, 0);
+                    ((Stg20GameState *)&D_8005E620)->field_2C[k + 8] = item;
+                    func_8006D4BC(a, item);
+                    Task_NextState1(a);
+                }
+                break;
+            }
+            func_8006D7DC(a);
+            break;
+        }
+        case 17:
+            switch (a->stateLevel2) {
+            case 0:
+            default:
+                for (i = 0; i < 10; i++) {
+                    Text_Close(&w->texts[i]);
+                }
+                w->field_1B8 = 0;
+                func_8006D2C0(&w->descText, 0x14E, D_800705DC[7], 0);
+                Task_NextState2(a);
+            case 1:
+                break;
+            }
+            if (D_8005F704 > 0) {
+                func_8006D350(a);
+                Task_SetState0(a, 3);
+            }
+            break;
+        }
+        break;
+    }
+}
 
 void func_8006E720(Actor *a) {
     Text_CloseArray((s32 *)a->work, 0x12);
