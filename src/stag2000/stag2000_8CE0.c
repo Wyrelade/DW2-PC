@@ -309,7 +309,6 @@ void func_8006C8BC(Actor *a) {
     }
 }
 
-#ifdef NORMALIZED
 void func_8006CB58(Actor *a) {
     Stg20ShopListWork *w = (Stg20ShopListWork *)a->work;
     s32 *slot = (s32 *)a->u34.children;
@@ -351,29 +350,31 @@ void func_8006CB58(Actor *a) {
             case 1:
                 break;
             }
-            w->field_5C = 0x138;
-            w->field_60 = 0;
-            pad = D_8005F6F0;
+            do {
+                w->field_5C = 0x138;
+                w->field_60 = 0;
+            } while (0);
             m = &D_800709B8;
-            if ((pad->repeat & 0x1000) && w->cursor != 0) {
+            if ((D_8005F6F0->repeat & 0x1000) && w->cursor != 0) {
                 goto up;
             }
-            if ((pad->repeat & 0x4000) && w->cursor != 7) {
+            if ((D_8005F6F0->repeat & 0x4000) && w->cursor != 7) {
                 goto down;
             }
+            pad = D_8005F6F0;
             if (pad->right > 0) {
                 if (w->page != w->pages) {
                     w->page++;
                     w->dirty = 1;
                     Snd_PlayById(0xD, 0);
                 }
-            } else if (pad->left > 0) {
+            } else if (D_8005F6F0->left > 0) {
                 if (w->page != 0) {
                     w->page--;
                     w->dirty = 1;
                     Snd_PlayById(0xD, 0);
                 }
-            } else if (pad->triangle > 0) {
+            } else if (D_8005F6F0->triangle > 0) {
                 goto cancel;
             } else if (pad->cross > 0) {
                 if (m->field_4C == 0) {
@@ -474,10 +475,6 @@ void func_8006CB58(Actor *a) {
         break;
     }
 }
-#else
-INCLUDE_ASM("asm/USA/stag2000/nonmatchings/stag2000_8CE0", func_8006CB58);
-void func_8006CB58(Actor *a);
-#endif
 
 void func_8006D0F0(Actor *a) {
     Text_CloseArray((s32 *)a->work, 0xF);

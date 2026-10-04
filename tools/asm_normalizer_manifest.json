@@ -54,12 +54,6 @@
       "web_realloc"
     ]
   },
-  "func_8006CB58": {
-    "passes": [
-      "reorder_deep",
-      "delay_decouple"
-    ]
-  },
   "stag2000:func_80065FB8": {
     "passes": [
       "slot_migrate"
