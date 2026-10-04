@@ -57,16 +57,16 @@ typedef struct {
     u8 _pad04[0x0C];
     /* 0x10 */ s32 state;
     u8 _pad14[0x10];
-    /* 0x24 */ s32 field_24;
-    /* 0x28 */ s32 field_28;
+    /* 0x24 */ s32 frameCount;
+    /* 0x28 */ s32 elapsed;
 } TaskRunObj;
 
 /* Task_Run's view of an TaskDesc: the callbacks after Task_Create's init. */
 typedef struct {
     /* 0x00 */ void (*init)(ActorAllocView *, s32);
-    /* 0x04 */ void (*field_4)(TaskRunObj *);
-    /* 0x08 */ void (*field_8)(TaskRunObj *);
-    /* 0x0C */ void (*field_C)(TaskRunObj *);
+    /* 0x04 */ void (*update)(TaskRunObj *);
+    /* 0x08 */ void (*destroy)(TaskRunObj *);
+    /* 0x0C */ void (*draw)(TaskRunObj *);
 } TaskRunDesc;
 
 /* The original switches sp to the scratchpad (old sp saved at 0x1F8003FC, callback
@@ -78,17 +78,17 @@ s32 Task_Run(s32 arg0) {
 
     if (Sys_DrawPass == 0) {
         if (t->state == 3) {
-            d->field_8(t);
+            d->destroy(t);
             return 0;
         }
-        d->field_4(t);                      /* on the scratchpad stack */
+        d->update(t);                      /* on the scratchpad stack */
     } else {
-        if (d->field_C != 0 && t->field_24 != 0 && t->state != 0 && t->state != 3) {
-            d->field_C(t);                  /* on the scratchpad stack */
+        if (d->draw != 0 && t->frameCount != 0 && t->state != 0 && t->state != 3) {
+            d->draw(t);                  /* on the scratchpad stack */
         }
         if (t->state != 0) {
-            t->field_24++;
-            t->field_28 += Sys_FrameDelta;
+            t->frameCount++;
+            t->elapsed += Sys_FrameDelta;
         }
     }
     Task_RunChildren((TaskChildrenView *)t);

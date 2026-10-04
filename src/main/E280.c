@@ -12,7 +12,7 @@ s32 Skill_ShotXaFile;
 s32 D_8005077C;
 
 u8 Digi_GetEvolutionTarget(s32 id, s32 val) {
-    EntD8C4 *e = Digi_FindBaseData(id);
+    DigiBaseData *e = Digi_FindBaseData(id);
     s32 i;
 
     if (e->rangeValues[0] == 0) {
@@ -183,7 +183,7 @@ s32 Item_GetDescText(s32 arg0) {
 }
 
 s32 Item_GetCategory(s32 id) {
-    return Item_FindById(id)->u0.b0.field_2;
+    return Item_FindById(id)->u0.b0.category;
 }
 
 s32 Item_GetLevel(void) {
@@ -207,7 +207,7 @@ s32 Item_GetPrice(void) {
 }
 
 u8 Item_GetBodyMask(void) {
-    return Item_FindById()->u4.b4.field_7;
+    return Item_FindById()->u4.b4.bodyMask;
 }
 
 s32 Item_GetTableIndex(s32 id) {
@@ -1346,7 +1346,7 @@ void Gfx_CalcNormalColors(Vert6Pmv *v, ModelProjView *o) {
     n = v->vx;
     c = o->vertColors;
     v++;
-    if (o->field_34 != 0) {
+    if (o->clutRow != 0) {
         for (i = 0; i < n; i++) {
             *c = o->flatColor;
             c++;

@@ -183,7 +183,7 @@ typedef struct {
  * s16 array at 0x1A0, plus a stride-8 element array reached at offset 0x6C. */
 typedef struct {
     u8 _pad0[0x02];
-    /* 0x2 */ u8 field_2;
+    /* 0x2 */ u8 pickState;
     u8 _pad3[0x05];
 } WorkElem8; /* size 0x8 */
 
@@ -383,20 +383,20 @@ typedef struct {
  * fields only. */
 typedef struct {
     /* 0x00 */ s16 id;
-    /* 0x02 */ u8 field_2;
+    /* 0x02 */ u8 learnedSkill;
     /* 0x03 */ u8 field_3;
     union {
-        /* 0x04 */ u8 field_4;
+        /* 0x04 */ u8 attrsLo;
         /* 0x04 */ u16 field_4h;
     } u4;
     union {
-        /* 0x06 */ u8 field_6;
+        /* 0x06 */ u8 growthLo;
         /* 0x06 */ u16 field_6h;
     } u6;
     /* 0x08 */ u8 rangeBounds[5];
     /* 0x0D */ u8 rangeValues[4];
     u8 _pad11;
-} EntD8C4;
+} DigiBaseData;
 
 /* Record returned by Enemy_FindSetById; Enemy_GetSetSummary unpacks it. field_0 is read as
    a word (nibble fields at bits 8-11 / 12-15) and as an s16 at 0x2; field_4 as a
@@ -512,7 +512,7 @@ typedef struct {
         /* 0x00 */ s16 id;
         struct {
             u8 _b0[2];
-            /* 0x02 */ u8 field_2;
+            /* 0x02 */ u8 category;
             /* 0x03 */ u8 field_3;
         } b0;
     } u0;
@@ -520,14 +520,14 @@ typedef struct {
         /* 0x04 */ u32 field_4;
         struct {
             u8 _b4[3];
-            /* 0x07 */ u8 field_7;
+            /* 0x07 */ u8 bodyMask;
         } b4;
     } u4;
     /* 0x08 */ s32 nameOffset;
     /* 0x0C */ s32 descOffset;
 } ItemTableEntry;
 
-EntD8C4 *Digi_FindBaseData();
+DigiBaseData *Digi_FindBaseData();
 FlagBranchEntry *Flag_GetEntry();
 DigiData *Digi_FindDataById();
 
@@ -1336,9 +1336,9 @@ typedef struct {
 
 /* Two-word state Menu_NameEntryInit copies into the head of an ActorWork. */
 typedef struct {
-    /* 0x0 */ s32 field_0;
-    /* 0x4 */ s32 field_4;
-} Pair1291C;
+    /* 0x0 */ s32 mode;
+    /* 0x4 */ s32 rosterIndex;
+} MenuNameEntryArg;
 
 /* SetDrawMove builds a GPU move-image packet (PsyQ SetDrawMove shape):
  * RECT is the 16-bit source rectangle, DR_MOVE the tagged packet. */
@@ -1812,7 +1812,7 @@ typedef struct {
     /* 0x04 */ s32 mask;
 } Flags506C0;
 
-/* Record listed in Wk14CBC.field_A0 (Menu_StatusDraw). */
+/* Record listed in MenuStatusWork.field_A0 (Menu_StatusDraw). */
 typedef struct {
     u8 _pad00[0x0D];
     /* 0x0D */ u8 level;
@@ -1837,19 +1837,19 @@ typedef struct {
     /* 0x00 */ s32 labelTexts[7];
     /* 0x1C */ Trip14984 digiTexts[3];
     /* 0x40 */ s32 listTexts[6];
-    /* 0x58 */ s32 field_58[4];
+    /* 0x58 */ s32 bugTexts[4];
     u8 _pad68[0x08];
     /* 0x70 */ s32 scale;
     /* 0x74 */ s32 textArgs[11];
     /* 0xA0 */ DigiRosterHudView *digiList[3];
     /* 0xAC */ s16 digiCount;
-} Wk14CBC;
+} MenuStatusWork;
 
 /* Object behind the Save_GameStatePtr pointer (Menu_StatusDraw). */
 typedef struct {
     /* 0x00 */ u8 field_0;
     u8 _pad01[0x07];
-    /* 0x08 */ s32 field_8;
+    /* 0x08 */ s32 bits;
     u8 _pad0C[0x05];
     /* 0x11 */ u8 field_11;
     /* 0x12 */ u8 field_12;
@@ -1882,7 +1882,7 @@ typedef struct {
 /* 8-byte row of the list page Menu_DigiListDrawRows draws. */
 typedef struct {
     /* 0x00 */ u8 kind;
-    /* 0x01 */ u8 field_1;
+    /* 0x01 */ u8 memBugLevel;
     u8 _pad02[0x02];
     /* 0x04 */ Sub17D84 *digi;
 } MenuDigiListRow;
@@ -1905,7 +1905,7 @@ typedef struct {
 
 /* 0x1A-byte record in the Menu_SkillListDraw work view; only the leading s16 is read. */
 typedef struct {
-    /* 0x00 */ s16 field_0;
+    /* 0x00 */ s16 count;
     u8 _pad2[0x18];
 } Slot19BF4;
 
@@ -1917,7 +1917,7 @@ typedef struct {
     /* 0x94 */ s32 scroll[4];
     u8 _padA4[0x4];
     /* 0xA8 */ s32 ramp;
-    /* 0xAC */ Slot19BF4 field_AC[4];
+    /* 0xAC */ Slot19BF4 records[4];
     /* 0x114 */ s32 activePane;
 } Wk19BF4;
 
@@ -2135,7 +2135,7 @@ typedef struct {
     /* 0x018 */ s32 gameMode;
     /* 0x01C */ s32 nextGameMode;
     /* 0x020 */ s32 prevGameMode;
-    /* 0x024 */ s32 field_24;
+    /* 0x024 */ s32 modeArg;
     /* 0x028 */ s32 bufIndex;             /* double-buffer index (0/1) */
     /* 0x02C */ union {
         ActorWork *work;
@@ -2407,7 +2407,7 @@ typedef struct {
     u8 _pad00[0x1];
     /* 0x01 */ u8 speciesId;
     u8 _pad02[0x45];
-    /* 0x47 */ u8 field_47[2];
+    /* 0x47 */ u8 parentIds[2];
     u8 _pad49[0x3];
     /* 0x4C */ u8 name[4];
 } MenuDigiStatusEntry;
@@ -2423,10 +2423,10 @@ typedef struct {
     /* 0x80 */ s32 ramp;
     /* 0x84 */ MenuDigiStatusEntry *digimon;
     /* 0x88 */ u8 *speciesName;
-    /* 0x8C */ void *field_8C;
-    /* 0x90 */ void *field_90;
-    /* 0x94 */ void *field_94;
-    /* 0x98 */ u8 *field_98[3];
+    /* 0x8C */ void *typeName;
+    /* 0x90 */ void *rankName;
+    /* 0x94 */ void *specialtyName;
+    /* 0x98 */ u8 *parentNames[3];
     u8 _padA4[0x24];
     /* 0xC8 */ s32 modelPhase;
     u8 _padCC[0x6C];
@@ -2517,8 +2517,8 @@ typedef struct {
  * 0x6C, mode at 0x60, flag at 0x1A6); field_50 is the (col, row) cursor pair. */
 typedef struct {
     /* 0x0 */ u8 kind;
-    /* 0x1 */ u8 field_1;
-    /* 0x2 */ u8 field_2;
+    /* 0x1 */ u8 memBugLevel;
+    /* 0x2 */ u8 pickState;
     u8 _pad3;
     /* 0x4 */ void *digi;
 } MenuDigiListDrawRow;
@@ -3181,7 +3181,7 @@ typedef struct {
 /* Model view Gfx_DrawWireQuads reads: OT slot at 0x3C, projected xy / z tables at 0x6C / 0x70. */
 typedef struct {
     u8 _pad00[0x34];
-    /* 0x34 */ s16 field_34;
+    /* 0x34 */ s16 clutRow;
     u8 _pad36[0x02];
     /* 0x38 */ CVECTOR flatColor;
     /* 0x3C */ s32 otIndex;
@@ -3220,13 +3220,13 @@ typedef struct {
 typedef struct {
     /* 0x000 */ s32 texts[16];
     /* 0x040 */ s32 promptText;
-    /* 0x044 */ s32 field_44;
-    /* 0x048 */ s32 field_48;
+    /* 0x044 */ s32 titleText;
+    /* 0x048 */ s32 cursorText;
     u8 _pad4C[0x4];
     /* 0x050 */ s16 cursor[2];
     /* 0x054 */ MenuGridLayout grid;
     /* 0x060 */ s16 mode;
-    /* 0x062 */ s16 field_62;
+    /* 0x062 */ s16 subTask;
     /* 0x064 */ s32 scale;
     /* 0x068 */ s16 scrollTop;
     /* 0x06A */ s16 showCursor;
@@ -3247,7 +3247,7 @@ typedef struct {
 typedef struct {
     /* 0x000 */ TextBox rec[50];
     /* 0xA28 */ s32 blinkTimer;
-    /* 0xA2C */ void *field_A2C;
+    /* 0xA2C */ void *moveActor;
     /* 0xA30 */ s32 waitTimer;
 } TextBoxWork;
 

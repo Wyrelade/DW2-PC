@@ -10,7 +10,7 @@ extern void Snd_RestoreSavedId(void);
 extern void Ovl_Load(s32);
 extern s32 Snd_AnySlotLoading(void);
 u8 Menu_NameEntryGetChar(Actor *a0);
-void Menu_NameEntryInit(Actor *a, Pair1291C *v);
+void Menu_NameEntryInit(Actor *a, MenuNameEntryArg *v);
 void Menu_NameEntryTask(Actor *a0);
 void Menu_NameEntryDrawParts(Actor *a);
 void Ovl_Load(s32 id);

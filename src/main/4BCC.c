@@ -199,7 +199,7 @@ void Menu_StatusInit(Actor *arg0, s16 arg1) {
 }
 
 void Menu_StatusTask(Actor *a0) {
-    Wk14CBC *w = (Wk14CBC *)a0->work;
+    MenuStatusWork *w = (MenuStatusWork *)a0->work;
     s32 i;
     s32 v;
     s32 id;
@@ -238,7 +238,7 @@ void Menu_StatusTask(Actor *a0) {
                     v = (i == 3) ? Bug_GetMaxMemBugLevel() : D_8005071C->bugLevels[i];
                     if (v != 0) {
                         id = v + 0x1FD00EC;
-                        Text_OpenPacked(&w->field_58[i], (s32)Cd_GetFileEntry(i * 3 + id), 1, h[i]);
+                        Text_OpenPacked(&w->bugTexts[i], (s32)Cd_GetFileEntry(i * 3 + id), 1, h[i]);
                     }
                 }
             }
@@ -275,7 +275,7 @@ void Menu_StatusTask(Actor *a0) {
 }
 
 void Menu_StatusDraw(Actor *actor) {
-    Wk14CBC *w = (Wk14CBC *)actor->work;
+    MenuStatusWork *w = (MenuStatusWork *)actor->work;
     s32 *p;
     s32 *list;
     s32 i;
@@ -294,7 +294,7 @@ void Menu_StatusDraw(Actor *actor) {
     do {
         obj = (GfxPart *)Cd_GetFileEntry(*list);
         if (i == 0) {
-            Gfx_SetPartsNumber(obj, 2, 8, Save_GameStatePtr->field_8);
+            Gfx_SetPartsNumber(obj, 2, 8, Save_GameStatePtr->bits);
             Gfx_SetPartsNumber(obj, 4, 4, Save_GameStatePtr->maxHp);
             Gfx_SetPartsNumber(obj, 8, 4, Save_GameStatePtr->hp);
             Gfx_SetPartsNumber(obj, 0x10, 4, Save_GameStatePtr->maxMp);

@@ -195,7 +195,7 @@ void Menu_UndoLastPick(Actor *s0) {
         s16 v;
         w->pickCount = idx;
         v = w->picks[idx];
-        ((WorkElem8 *)((u8 *)w + 0x6C))[v].field_2 = 2;
+        ((WorkElem8 *)((u8 *)w + 0x6C))[v].pickState = 2;
         w->picks[w->pickCount] = 0;
         Snd_PlayById(0xB, 0);
         Task_SetState1(s0, 1);
@@ -402,7 +402,7 @@ void Menu_DigiListDrawRows(MenuDigiListRowsView *a0, s32 a1) {
         case 2:
             st.x = 109;
             st.y = i * 33 + 50;
-            st.text = (s32)Cd_GetFileEntry(rec->field_1 + 0x1FD00F5);
+            st.text = (s32)Cd_GetFileEntry(rec->memBugLevel + 0x1FD00F5);
             Text_OpenDesc(&a0->textBoxes[i * 4 + 2], &st);
             break;
         case 3:
@@ -497,12 +497,12 @@ void Menu_DigiListTask(Actor *a0) {
                 if (w->parity != 0) {
                     id = 0x1FD009A;
                 }
-                Text_OpenPacked(&w->field_44, (s32)Cd_GetFileEntry(id), 0, Menu_DigiListTitlePos[w->parity]);
+                Text_OpenPacked(&w->titleText, (s32)Cd_GetFileEntry(id), 0, Menu_DigiListTitlePos[w->parity]);
                 Task_NextState1(a0);
                 break;
             }
             if (w->showCursor != 0) {
-                Text_OpenPacked(&w->field_48, (s32)Cd_GetFileEntry(0x1FD00FA), 0, Menu_DigiListCursorTextPos);
+                Text_OpenPacked(&w->cursorText, (s32)Cd_GetFileEntry(0x1FD00FA), 0, Menu_DigiListCursorTextPos);
             }
             break;
         case 2:
@@ -561,7 +561,7 @@ void Menu_DigiListTask(Actor *a0) {
                 Task_NextState2(a0);
                 break;
             case 2:
-                Task_Create(Menu_DigiListSubTasks[w->field_62].field_0, slot, Menu_DigiListSubTasks[w->field_62].field_2);
+                Task_Create(Menu_DigiListSubTasks[w->subTask].field_0, slot, Menu_DigiListSubTasks[w->subTask].field_2);
                 Task_NextState2(a0);
                 break;
             case 3:
@@ -578,7 +578,7 @@ void Menu_DigiListTask(Actor *a0) {
                         Task_SetState1(a0, 0);
                         Menu_Ctx->pickResult = 2;
                     } else {
-                        w->field_62 ^= 1;
+                        w->subTask ^= 1;
                         Task_SetState2(a0, 2);
                     }
                     break;
@@ -736,7 +736,7 @@ void Menu_DigiListDraw(Actor *actor) {
                 break;
             case 1:
                 e = (DigiRosterListView *)r->digi;
-                Gfx_HidePartsByMask(obj, f | Menu_DigiListRowMasks[r->field_2 - 1]);
+                Gfx_HidePartsByMask(obj, f | Menu_DigiListRowMasks[r->pickState - 1]);
                 Gfx_SetPartsNumber(obj, 0x20, 3, e->maxHp);
                 Gfx_SetPartsNumber(obj, 0x40, 3, e->hp);
                 Gfx_SetPartsNumber(obj, 0x80, 3, e->maxMp);
@@ -840,13 +840,13 @@ void Menu_DigiStatusTask(Actor *a) {
             r = w->digimon;
             Text_OpenPacked(&w->nameText, (s32)r->name, 0x81, h[0]);
             w->speciesName = Digi_GetDefaultName(r->speciesId);
-            w->field_8C = Cd_GetFileEntry(((s32 (*)(s32))Digi_GetType)(r->speciesId) + 0x1FD00C3);
-            w->field_90 = Cd_GetFileEntry(((s32 (*)(s32))Digi_GetRank)(r->speciesId) + 0x1FD00C6);
-            w->field_94 = Cd_GetFileEntry(((s32 (*)(s32))Digi_GetSpecialty)(r->speciesId) + 0x1FD00CA);
-            q = w->field_98;
+            w->typeName = Cd_GetFileEntry(((s32 (*)(s32))Digi_GetType)(r->speciesId) + 0x1FD00C3);
+            w->rankName = Cd_GetFileEntry(((s32 (*)(s32))Digi_GetRank)(r->speciesId) + 0x1FD00C6);
+            w->specialtyName = Cd_GetFileEntry(((s32 (*)(s32))Digi_GetSpecialty)(r->speciesId) + 0x1FD00CA);
+            q = w->parentNames;
             for (i = 0; i < 2; i++) {
-                if (r->field_47[i] != 0) {
-                    *q++ = Digi_GetDefaultName(r->field_47[i]);
+                if (r->parentIds[i] != 0) {
+                    *q++ = Digi_GetDefaultName(r->parentIds[i]);
                 }
             }
             *q = 0;
@@ -976,9 +976,9 @@ Ltail:
         work->modelPhase = work->modelPhase + 1;
     }
     node = (Nd19214 *)actor->u38.ptr38;
-    node->field_58 = work->modelScale;
-    node->field_5C = work->modelScale;
-    node->field_60 = work->modelScale;
+    node->scaleX = work->modelScale;
+    node->scaleY = work->modelScale;
+    node->scaleZ = work->modelScale;
     Gfx_AttachModel(actor, work->modelFile);
     Anim_StepModelAnim(actor);
     Actor_UpdateTransform(actor);
@@ -1216,7 +1216,7 @@ void Menu_SkillListDraw(Actor *actor) {
         case 0:
             k = w->activePane;
             v = Menu_SkillPaneMasks[k];
-            if (w->field_AC[k].field_0 != 0) {
+            if (w->records[k].count != 0) {
                 tmp = w->cursors[k];
                 tmp.field_2 = w->cursors[k].field_2 - w->scroll[k];
                 Menu_SetPartsGridPos(obj, 0x4000, (s32 *)&tmp, &w->grids[k].cols);
@@ -1907,7 +1907,7 @@ void Text_UpdateAllBoxes(Actor *a0) {
                                 func_80071FBC(nums);
                             } else {
                                 h = func_8006A8C0(nums[0]);
-                                wk->field_A2C = h;
+                                wk->moveActor = h;
                                 func_8006A920(h, &nums[1]);
                             }
                             r->waitingInput = 1;
@@ -1917,7 +1917,7 @@ void Text_UpdateAllBoxes(Actor *a0) {
                             break;
                         }
                         if (mode2 == 0) {
-                            if (isF6 == 0 || func_8006A9F8(wk->field_A2C) != 0) {
+                            if (isF6 == 0 || func_8006A9F8(wk->moveActor) != 0) {
                                 goto advF6;
                             }
                             goto nextF6;
@@ -2051,7 +2051,7 @@ void Text_UpdateAllBoxes(Actor *a0) {
                             Sys_State.nextGameMode = *s + 0x300;
                         }
                         s++;
-                        Sys_State.field_24 = *s;
+                        Sys_State.modeArg = *s;
                     }
                     break;
                 case 0xF2:
@@ -3049,8 +3049,8 @@ void func_8001D8A4(s32 arg0) {
     Gfx_DrawPartsEx(arg0, 0);
 }
 
-EntD8C4 *Digi_FindBaseData(id) s32 id; {
-    EntD8C4 *p = (EntD8C4 *)Cd_GetFileOrNull(0xC6C);
+DigiBaseData *Digi_FindBaseData(id) s32 id; {
+    DigiBaseData *p = (DigiBaseData *)Cd_GetFileOrNull(0xC6C);
     s16 v;
 
 loop:
@@ -3072,7 +3072,7 @@ u8 func_8001D910(void) {
 }
 
 u8 Digi_GetType(void) {
-    return Digi_FindBaseData()->u4.field_4 & 0xF;
+    return Digi_FindBaseData()->u4.attrsLo & 0xF;
 }
 
 s32 Digi_GetRank(void) {
@@ -3084,7 +3084,7 @@ s32 Digi_GetSpecialty(void) {
 }
 
 u8 Digi_GetLearnedSkill(void) {
-    return Digi_FindBaseData()->field_2;
+    return Digi_FindBaseData()->learnedSkill;
 }
 
 s32 Digi_GetStatGrowth(s32 id, s32 k) {
@@ -3093,7 +3093,7 @@ s32 Digi_GetStatGrowth(s32 id, s32 k) {
     case 0:
         return Digi_FindBaseData(id)->u4.field_4h >> 12;
     case 1:
-        return Digi_FindBaseData(id)->u6.field_6 & 0xF;
+        return Digi_FindBaseData(id)->u6.growthLo & 0xF;
     case 2:
         return (Digi_FindBaseData(id)->u6.field_6h >> 4) & 0xF;
     case 3:

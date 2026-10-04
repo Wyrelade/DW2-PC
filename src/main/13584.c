@@ -340,7 +340,7 @@ void Sys_Main(void) {
     Sys_State.frameCount = 1;
     Sys_State.gameMode = 0x402;
     Sys_State.nextGameMode = 0x402;
-    Sys_State.field_24 = 0;
+    Sys_State.modeArg = 0;
     Sys_State.field_C = 0;
     Save_ResetGameState();
     D_8005071C->field_0 = 0;

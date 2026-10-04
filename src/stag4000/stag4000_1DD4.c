@@ -684,7 +684,7 @@ void func_80066BE4(Actor *a0) {
     default:
         Mem_FillWordsNeg1(&w->field_0, 1);
         w->field_4 = 0;
-        w->field_8 = Save_GameStatePtr->field_8;
+        w->field_8 = Save_GameStatePtr->bits;
         Task_NextState0(a0);
         break;
     case 1:
@@ -698,11 +698,11 @@ void func_80066BE4(Actor *a0) {
             }
             break;
         case 1:
-            if (Save_GameStatePtr->field_8 < w->field_8) {
-                w->field_8 = (w->field_8 - 10 < Save_GameStatePtr->field_8) ? Save_GameStatePtr->field_8 : w->field_8 - 10;
+            if (Save_GameStatePtr->bits < w->field_8) {
+                w->field_8 = (w->field_8 - 10 < Save_GameStatePtr->bits) ? Save_GameStatePtr->bits : w->field_8 - 10;
             }
-            if (w->field_8 < Save_GameStatePtr->field_8) {
-                w->field_8 = (w->field_8 + 10 > Save_GameStatePtr->field_8) ? Save_GameStatePtr->field_8 : w->field_8 + 10;
+            if (w->field_8 < Save_GameStatePtr->bits) {
+                w->field_8 = (w->field_8 + 10 > Save_GameStatePtr->bits) ? Save_GameStatePtr->bits : w->field_8 + 10;
             }
             break;
         }
@@ -2033,7 +2033,7 @@ void func_8006997C(Actor *arg0)
             break;
         case 9:
             if (D_8005071C->field_BA5 == 0) {
-                if (Save_GameStatePtr->field_8 != 0 || func_80071608() != -1) {
+                if (Save_GameStatePtr->bits != 0 || func_80071608() != -1) {
                     r = -1;
                     ((Stg40BA5View *)D_8005071C)->field_BA5[e->field_8 - 9] = e->field_10[1];
                 }

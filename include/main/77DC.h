@@ -119,7 +119,7 @@ void Gfx_SetPartsNumber(GfxPart *p, s32 mask, s32 n, s32 val);
 void Gfx_DrawPartsEx(void *arg0, s32 arg1);
 void Gfx_DrawParts(s32 arg0);
 void func_8001D8A4(s32 arg0);
-EntD8C4 *Digi_FindBaseData();
+DigiBaseData *Digi_FindBaseData();
 u8 func_8001D910(void);
 u8 Digi_GetType(void);
 s32 Digi_GetRank(void);

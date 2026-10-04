@@ -326,7 +326,7 @@ void func_8006CB58(Actor *a) {
             Text_OpenById(&w->hdr[3], 0x12E, 0, *(Halves *)&D_800704E4[3]);
         }
         if (D_800709B0.field_54 == 0) {
-            func_8006C514(a, Sys_State.field_24);
+            func_8006C514(a, Sys_State.modeArg);
         } else {
             func_8006C6F0(a);
         }
@@ -1498,7 +1498,7 @@ void func_8006F3E0(Actor *a) {
         case 2:
             if (++a->stateLevel2 >= 0x19) {
                 Sys_State.nextGameMode = D_80070704[a->param].nextMode;
-                Sys_State.field_24 = D_80070704[a->param].field_8;
+                Sys_State.modeArg = D_80070704[a->param].field_8;
             }
             break;
         }

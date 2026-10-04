@@ -83,8 +83,8 @@ void func_800701FC(void) {
         D_8005D5A0.field_1040 = 0;
         D_80073CC0.entries[0].field_0 = 1;
     }
-    if (Sys_State.field_24 == 0x97 && Flag_Test(0x88)) {
-        Sys_State.field_24++;
+    if (Sys_State.modeArg == 0x97 && Flag_Test(0x88)) {
+        Sys_State.modeArg++;
     }
     D_80074098 = 4;
 }

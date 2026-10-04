@@ -266,7 +266,7 @@ void func_800676F4(Actor *a0) {
                 Flag_Set(0x2DD, 0);
                 D_8005F78C = 0x406;
             } else {
-                Sys_State.field_24 = 2;
+                Sys_State.modeArg = 2;
                 Sys_State.nextGameMode = Sys_State.prevGameMode;
             }
             Task_NextState3(a0);
@@ -303,7 +303,7 @@ void func_80067DB4(Stg30ListOwner *a0) {
         case 1:
             if (Sys_State.fadeLevel == 0xFF) {
                 if (D_80073CC0.entries[0].field_0 != 0) {
-                    Sys_State.field_24 = 2;
+                    Sys_State.modeArg = 2;
                     Sys_State.nextGameMode = Sys_State.prevGameMode;
                 } else {
                     Sys_State.nextGameMode = 0x401;
@@ -406,7 +406,7 @@ void func_80067F2C(Actor *a0) {
             }
             for (i = 3; i < 6; i++) {
                 Mem_Zero(&((Stg30StateDigis *)&D_80073CC0)->digis[i], 0x5C);
-                Enemy_InitRosterEntry(Sys_State.field_24, i - 3, &((Stg30StateDigis *)&D_80073CC0)->digis[i],
+                Enemy_InitRosterEntry(Sys_State.modeArg, i - 3, &((Stg30StateDigis *)&D_80073CC0)->digis[i],
                               (Out1DDA8 *)&D_80073CC0.field_240[i]);
                 if (D_80073CC0.entries[i].field_19 != 0) {
                     args[1] = i;

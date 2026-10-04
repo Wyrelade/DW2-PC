@@ -26,10 +26,10 @@ u8 Menu_NameEntryGetChar(Actor *a0) {
 }
 
 
-void Menu_NameEntryInit(Actor *a, Pair1291C *v) {
+void Menu_NameEntryInit(Actor *a, MenuNameEntryArg *v) {
     ActorWork *w = a->work;
 
-    *(Pair1291C *)w = *v;
+    *(MenuNameEntryArg *)w = *v;
     switch (w->field_0) {
     case 0:
     default:
@@ -560,25 +560,25 @@ s32 Menu_MoveGridCursor(s32 a0, s32 a1, s32 a2) {
     changed = 0;
     saved = *(Copy138C0 *)p0;
 
-    if (((ElmFlags138C0 *)Pad_State)[a2].field_3C & 0x8000) {
+    if (((PadRepeatView *)Pad_State)[a2].repeat & 0x8000) {
         if (p0->x > 0) {
             p0->x = p0->x - 1;
             goto tail;
         }
     }
-    if (((ElmFlags138C0 *)Pad_State)[a2].field_3C & 0x2000) {
+    if (((PadRepeatView *)Pad_State)[a2].repeat & 0x2000) {
         if (p0->x < p1->x - 1) {
             p0->x = p0->x + 1;
             goto tail;
         }
     }
-    if (((ElmFlags138C0 *)Pad_State)[a2].field_3C & 0x1000) {
+    if (((PadRepeatView *)Pad_State)[a2].repeat & 0x1000) {
         if (p0->y > 0) {
             p0->y = p0->y - 1;
             goto tail;
         }
     }
-    if (((ElmFlags138C0 *)Pad_State)[a2].field_3C & 0x4000) {
+    if (((PadRepeatView *)Pad_State)[a2].repeat & 0x4000) {
         if (p0->y < p1->y - 1) {
             p0->y = p0->y + 1;
         }
@@ -833,7 +833,7 @@ void Menu_TopMenuDraw(Actor *actor) {
                     Gfx_SetPartsPalette(obj, 2, (actor->elapsed >> 2) & 3);
                     break;
                 case 1:
-                    Gfx_SetPartsNumber(obj, 2, 8, Save_GameStatePtr->field_8);
+                    Gfx_SetPartsNumber(obj, 2, 8, Save_GameStatePtr->bits);
                     break;
                 }
                 Gfx_SetPartsScale(obj, 0x1000, w->ramp);

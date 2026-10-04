@@ -37,7 +37,7 @@ void Stg11_RootUpdate(Actor *arg0) {
             if (slot[1] == 0) {
                 Sys_State.nextGameMode = Sys_State.prevGameMode;
                 if (Sys_State.gameMode == 0x605) {
-                    Sys_State.field_24 = 1;
+                    Sys_State.modeArg = 1;
                 }
                 Task_NextState1(arg0);
             }

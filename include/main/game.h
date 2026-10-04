@@ -891,9 +891,9 @@ typedef struct {
 /* view of PadState that reads the 0x3C flag word unsigned */
 typedef struct {
     u8 _p[0x3C];
-    u16 field_3C;
+    u16 repeat;
     u8 _p2[0x40 - 0x3E];
-} ElmFlags138C0;
+} PadRepeatView;
 
 
 /* View of Actor.work used by Menu_DigiStatusDraw (fields 0x80..0x14C). */
@@ -948,9 +948,9 @@ typedef struct {
 /* Node reached through Actor.u38.ptr38. */
 typedef struct {
     u8 _pad00[0x58];
-    /* 0x58 */ s32 field_58;
-    /* 0x5C */ s32 field_5C;
-    /* 0x60 */ s32 field_60;
+    /* 0x58 */ s32 scaleX;
+    /* 0x5C */ s32 scaleY;
+    /* 0x60 */ s32 scaleZ;
 } Nd19214;
 
 /* Stack context passed to GsSetRefView2. */

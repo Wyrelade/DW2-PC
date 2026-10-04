@@ -248,15 +248,15 @@ void func_80063E74(Actor *arg0) {
         t = s;
         switch (t->prevGameMode) {
         case 0x603:
-            t->field_24 = D_80050780 != 0;
+            t->modeArg = D_80050780 != 0;
             break;
             do {
             } while (0);
         case 0x604:
-            s->field_24 = (D_80050780 != 0) ? 2 : 1;
+            s->modeArg = (D_80050780 != 0) ? 2 : 1;
             break;
         default:
-            t->field_24 = 0;
+            t->modeArg = 0;
             break;
         }
         id = 0x701;
@@ -281,7 +281,7 @@ void func_80063F38(Actor *arg0) {
 
     switch (arg0->stateLevel0) {
     case 0:
-        switch (Sys_State.field_24) {
+        switch (Sys_State.modeArg) {
         case 0:
         default:
             for (i = 4; i >= 0; i--) {

@@ -40,7 +40,7 @@ void func_80063814() { /* K&R: func_80063A34 passes its work pointer */
     if (Sys_State.gameMode != 0x200) {
         D_8005071C->field_1058 = (u16)Sys_State.gameMode - 0x201;
     } else {
-        D_8005071C->field_1058 = Sys_State.field_24;
+        D_8005071C->field_1058 = Sys_State.modeArg;
     }
     tbl = (Stg40Stage14 *)Cd_GetFileEntry(0xE20000A);
     D_8005071C->field_1044 = tbl[D_8005071C->field_1058];
@@ -258,13 +258,13 @@ s32 func_80063F00(Actor *arg0) {
     case 4:
         if (D_8005071C->field_6 == 0) {
             w->field_0 = 0x301;
-            Sys_State.field_24 = D_8005071C->field_7 ? 3 : 4;
+            Sys_State.modeArg = D_8005071C->field_7 ? 3 : 4;
         } else if (!Flag_Test(0x81)) {
             w->field_0 = 0x301;
-            Sys_State.field_24 = D_8005071C->field_7 ? 3 : 4;
+            Sys_State.modeArg = D_8005071C->field_7 ? 3 : 4;
         } else {
             w->field_0 = 0x321;
-            Sys_State.field_24 = D_8005071C->field_7 ? 2 : 3;
+            Sys_State.modeArg = D_8005071C->field_7 ? 2 : 3;
         }
         if (D_8005071C->field_7 != 0) {
             func_800721A8(Cd_GetFileEntry(0xE200009));

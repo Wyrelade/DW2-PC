@@ -149,15 +149,15 @@ void Stg10_TitleUpdate(Actor *a0) {
                 default:
                     Save_ResetGameState();
                     Sys_State.nextGameMode = 0x307;
-                    Sys_State.field_24 = 4;
+                    Sys_State.modeArg = 4;
                     break;
                 case 1:
                     Sys_State.nextGameMode = 0x602;
-                    Sys_State.field_24 = 0;
+                    Sys_State.modeArg = 0;
                     break;
                 case 2:
                     Sys_State.nextGameMode = 0x701;
-                    Sys_State.field_24 = 0;
+                    Sys_State.modeArg = 0;
                     break;
                 snd:
                     w->cursor = v;
@@ -518,22 +518,22 @@ void Stg10_MovieUpdate(Actor *a0) {
             switch (Sys_State.gameMode) {
             case 0x404:
                 Sys_State.nextGameMode = 0x325;
-                Sys_State.field_24 = 2;
+                Sys_State.modeArg = 2;
                 break;
             case 0x405:
                 Sys_State.nextGameMode = 0x327;
-                Sys_State.field_24 = 2;
+                Sys_State.modeArg = 2;
                 break;
             case 0x406:
                 Sys_State.nextGameMode = 0x408;
                 break;
             case 0x407:
                 Sys_State.nextGameMode = 0x301;
-                Sys_State.field_24 = 2;
+                Sys_State.modeArg = 2;
                 break;
             default:
                 Sys_State.nextGameMode = 0x401;
-                Sys_State.field_24 = 0;
+                Sys_State.modeArg = 0;
                 break;
             }
         }

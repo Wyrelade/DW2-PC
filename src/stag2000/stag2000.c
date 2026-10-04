@@ -230,7 +230,7 @@ void func_80063CDC(Actor *a) {
                 case 0:
                 default:
                     Sys_State.nextGameMode = 0x303;
-                    Sys_State.field_24 = 3;
+                    Sys_State.modeArg = 3;
                     break;
                 case 1:
                     Sys_State.nextGameMode = 0x200;
@@ -1036,7 +1036,7 @@ void func_80065774(Actor *a) {
             Task_NextState1(a);
         case 1:
             if (++a->stateLevel2 >= 0x19) {
-                Sys_State.field_24 = 1;
+                Sys_State.modeArg = 1;
                 Sys_State.nextGameMode = Sys_State.prevGameMode;
             }
             break;
@@ -1161,7 +1161,7 @@ void func_80065AF4(Actor *a) {
         case 1:
             if (++a->stateLevel2 >= 0x19) {
                 Sys_State.nextGameMode = Sys_State.prevGameMode;
-                Sys_State.field_24 = Sys_State.gameMode == 0x330 ? 5 : 6;
+                Sys_State.modeArg = Sys_State.gameMode == 0x330 ? 5 : 6;
             }
             break;
         }
@@ -1249,7 +1249,7 @@ void func_80065D74(Actor *a) {
             Task_NextState1(a);
         case 1:
             if (++a->stateLevel2 >= 0x19) {
-                Sys_State.field_24 = 7;
+                Sys_State.modeArg = 7;
                 Sys_State.nextGameMode = Sys_State.prevGameMode;
             }
             break;
@@ -1285,7 +1285,7 @@ void func_80065FB8(Actor *a) {
         Flag_SetTableFile(func_80066714()->field_20);
         Task_Create(0x308, &slot[5], 0);
         if (Sys_State.gameMode < 0x32A) {
-            st = &((Stg20Start *)func_80066714()->field_8)[Sys_State.field_24];
+            st = &((Stg20Start *)func_80066714()->field_8)[Sys_State.modeArg];
             sp.id = 0x1F4;
             sp.blk[0].x = st->x;
             sp.blk[0].y = st->y;
@@ -1551,18 +1551,18 @@ s32 func_80066B48(s32 id) {
     case 9034:
         return D_8005F790 == 0x32B;
     case 9013:
-        if (Sys_State.gameMode == 0x301 && Sys_State.field_24 == 3) {
+        if (Sys_State.gameMode == 0x301 && Sys_State.modeArg == 3) {
             return 1;
         }
-        if (Sys_State.gameMode == 0x321 && Sys_State.field_24 == 2) {
+        if (Sys_State.gameMode == 0x321 && Sys_State.modeArg == 2) {
             return 1;
         }
         return 0;
     case 9014:
-        if (Sys_State.gameMode == 0x301 && Sys_State.field_24 == 4) {
+        if (Sys_State.gameMode == 0x301 && Sys_State.modeArg == 4) {
             return 1;
         }
-        if (Sys_State.gameMode == 0x321 && Sys_State.field_24 == 3) {
+        if (Sys_State.gameMode == 0x321 && Sys_State.modeArg == 3) {
             return 1;
         }
         return 0;
@@ -2029,13 +2029,13 @@ void func_80067B20(Actor *a) {
     switch (a->stateLevel0) {
     case 0:
         if (Sys_State.prevGameMode == 0x602) {
-            Sys_State.field_24 = ((Stg20GameState *)&Save_GameState)->field_1;
+            Sys_State.modeArg = ((Stg20GameState *)&Save_GameState)->field_1;
         }
         Mem_FillWordsNeg1(&w->text, 1);
         w->index = 0;
         for (i = 0, n = 0; ; i++) {
             r = (Stg20PickRec *)func_8006F360(i);
-            if (i == Sys_State.field_24) {
+            if (i == Sys_State.modeArg) {
                 w->index = n;
             }
             if (r->id == -1) {
@@ -2064,7 +2064,7 @@ void func_80067B20(Actor *a) {
         case 1:
             if (++a->stateLevel2 >= 0x19) {
                 Sys_State.nextGameMode = w->recs[w->index].mode;
-                Sys_State.field_24 = w->recs[w->index].arg;
+                Sys_State.modeArg = w->recs[w->index].arg;
                 Text_CloseArray(&w->text, 1);
             }
             break;
@@ -3134,7 +3134,7 @@ void func_8006A744(Actor *a) {
         case 1:
             if (++a->stateLevel2 >= 0x19) {
                 Sys_State.nextGameMode = w->mode;
-                Sys_State.field_24 = w->arg;
+                Sys_State.modeArg = w->arg;
             }
             break;
         }

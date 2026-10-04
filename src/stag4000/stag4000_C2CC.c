@@ -814,17 +814,17 @@ s32 func_800716EC(Actor *a0) {
     }
     if (D_8005071C->field_BA5 != 0) {
         slot = func_80071608();
-        if ((func_80071180() < 5 && (st->field_0 & 0x100)) || (Save_GameStatePtr->field_8 == 0 && slot == -1)) {
+        if ((func_80071180() < 5 && (st->field_0 & 0x100)) || (Save_GameStatePtr->bits == 0 && slot == -1)) {
             stack[(*count)++] = 2;
             D_8005071C->field_BA5 = 0;
         } else {
-            if (Save_GameStatePtr->field_8 != 0) {
+            if (Save_GameStatePtr->bits != 0) {
                 s32 cost[4] = { 0, 20, 50, 100 };
-                s32 v = Save_GameStatePtr->field_8 -= cost[st->field_5];
+                s32 v = Save_GameStatePtr->bits -= cost[st->field_5];
                 if (v < 0) {
                     v = 0;
                 }
-                Save_GameStatePtr->field_8 = v;
+                Save_GameStatePtr->bits = v;
                 sfx = 4;
             } else {
                 Beetle_SetPartBroken(slot, 1);
