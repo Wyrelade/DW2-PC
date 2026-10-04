@@ -273,14 +273,11 @@ void func_800644D4(Actor *a0) {
 }
 
 INCLUDE_RODATA("asm/USA/stag3000/rodata", D_800633E8);
-#ifdef NORMALIZED
 void func_80064B30(Actor *a0) {
     Stg30Work73078 *w = (Stg30Work73078 *)a0->work;
     Halves pos;
     TextOpenArgs args;
     s32 i;
-    s32 id;
-    s32 y;
     s32 j;
     s32 k;
 
@@ -349,19 +346,28 @@ void func_80064B30(Actor *a0) {
             } while (0);
             if (D_80073CC0.entries[0].field_8 == 6) {
                 Text_OpenPacked(w->text, (s32)D_8005E634, 0x10, D_800633E8);
-                for (k = 0, y = 0x3C; k < 3; y += 11, k++) {
+                for (k = 0; k < 3; k++) {
                     if (D_80073CC0.entries[0].field_0 != 0 && k != 0) {
+                        s32 *text = &w->text[k + 1];
+                        s32 id = k + 2;
+
                         pos.lo = 0x16;
-                        pos.hi = y;
-                        Text_OpenById(&w->text[k + 1], k + 2, 3, pos);
+                        pos.hi = k * 11 + 0x3C;
+                        Text_OpenById(text, id, 3, pos);
                     } else if (D_800737E0 == k) {
+                        s32 *text = &w->text[k + 1];
+                        s32 id = k + 2;
+
                         pos.lo = 0x16;
-                        pos.hi = y;
-                        Text_OpenById(&w->text[k + 1], k + 2, 0, pos);
+                        pos.hi = k * 11 + 0x3C;
+                        Text_OpenById(text, id, 0, pos);
                     } else {
+                        s32 *text = &w->text[k + 1];
+                        s32 id = k + 2;
+
                         pos.lo = 0x16;
-                        pos.hi = y;
-                        Text_OpenById(&w->text[k + 1], k + 2, 1, pos);
+                        pos.hi = k * 11 + 0x3C;
+                        Text_OpenById(text, id, 1, pos);
                     }
                 }
             } else {
@@ -377,9 +383,11 @@ void func_80064B30(Actor *a0) {
                     Text_Open(w->text, &args);
                 }
                 for (i = 0; i < 2; i++) {
+                    s32 *text = &w->text[i + 1];
+
                     pos.hi = i * 11 + 0x3C;
                     pos.lo = 0x16;
-                    Text_OpenById(&w->text[i + 1], i + 5, D_800737E0 != i, pos);
+                    Text_OpenById(text, i + 5, D_800737E0 != i, pos);
                 }
             }
             break;
@@ -406,10 +414,6 @@ void func_80064B30(Actor *a0) {
         break;
     }
 }
-#else
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000_100C", func_80064B30);
-void func_80064B30(Actor *a0);
-#endif
 
 void func_80064FBC(Actor *a0) {
     Text_CloseArray(((Stg30Work73078 *)a0->work)->text, 4);

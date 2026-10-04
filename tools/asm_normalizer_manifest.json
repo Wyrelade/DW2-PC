@@ -49,12 +49,6 @@
       "sched_match"
     ]
   },
-  "stag3000:func_80064B30": {
-    "passes": [
-      "web_realloc",
-      "sched_match"
-    ]
-  },
   "stag3000:func_80065594": {
     "passes": [
       "web_realloc"
