@@ -198,6 +198,7 @@ s32 func_8001E134(void) {
     return Item_FindById()->u0.field_0 >> 30;
 }
 
+/* Unnamed: ITEMDATA word0 bits 28-29, values 0/2/3, no callers. */
 s32 func_8001E158(void) {
     return (Item_FindById()->u0.field_0 >> 28) & 3;
 }
@@ -372,10 +373,14 @@ u8 *Digi_GetDefaultName(s32 id) {
     return (u8 *)v;
 }
 
+/* Unnamed: DigiData field_1E (MODELDTx), subtracted with +0x280 from fx Y, lineup sort key,
+ * battle height bucket; values do not track model size (Monzaemon 857, Biyomon 1280), meaning
+ * unproven. */
 s16 func_8001E79C(s32 id) {
     return Digi_FindDataById(id)->field_1E;
 }
 
+/* Unnamed: DigiData field_20, Y offset for hit-fx slot 1 only; meaning unproven. */
 s16 func_8001E7C0(s32 id) {
     return Digi_FindDataById(id)->field_20;
 }
@@ -392,6 +397,8 @@ void Digi_GetCastFxOffsets(s32 a0, void *a1) {
     *(Row6 *)((u8 *)a1 + 12) = *(Row6 *)(base + e->field_26 * 6);
 }
 
+/* Unnamed: DigiData packedId bit 0 (set on e.g. Overlord GAIA, C-Seadramon) picks sound 0x204 vs
+ * 0x205 in the hit reaction; what the bit means is unproven. */
 s32 func_8001E8D0(s32 id) {
     return Digi_FindDataById(id)->u4.packedId & 1;
 }
@@ -458,10 +465,13 @@ s32 Digi_CalcMaxLevel(s32 x) {
     }
 }
 
+/* Unnamed: stores *arg1 into actor work field_0, no callers, no table ref. */
 void func_8001EC00(Actor *arg0, s32 *arg1) {
     arg0->work->field_0 = *arg1;
 }
 
+/* Unnamed: actor update for model 0x5B following another actor's root bone XZ, no callers, no
+ * table ref (dead task body). */
 void func_8001EC10(Actor *arg0) {
     s32 state = arg0->stateLevel0;
 
@@ -495,6 +505,7 @@ void func_8001EC10(Actor *arg0) {
     }
 }
 
+/* Unnamed: draw for the same model-0x5B actor when work field_4 set, no callers, no table ref. */
 void func_8001ECE4(Actor *arg0) {
     if (arg0->work->field_4 != 0) {
         Gfx_AttachModel(arg0, 0x5B);
@@ -582,10 +593,14 @@ s32 *Skill_GetShotXa(s32 id) {
 }
 
 
+/* Unnamed: WAZADATA byte 0x10 bit set (8/0x10/0x20/1/2 tested for different battle effects), no
+ * single meaning. */
 u8 func_8001F020(s32 id) {
     return Skill_FindById(id)->u10.field_10b;
 }
 
+/* Unnamed: WAZADATA field_20 low nibble, bit 8 retargets in battle target selection; other bits
+ * unproven. */
 s32 func_8001F044(s32 id) {
     return Skill_FindById(id)->field_20 & 0xF;
 }
@@ -602,10 +617,14 @@ s32 Skill_GetRank(s32 id) {
     return Skill_FindById(id)->u0.field_0 >> 28;
 }
 
+/* Unnamed: WAZADATA (field_10>>8)&0x7FFF mixed effect flag set (bits 4, 0x2000 tested), no
+ * single meaning. */
 s32 func_8001F0E4(s32 id) {
     return (Skill_FindById(id)->u10.field_10 >> 8) & 0x7FFF;
 }
 
+/* Unnamed: WAZADATA field_14 &0x3FF effect flags read once in battle damage calc, meaning
+ * unproven. */
 s32 func_8001F10C(s32 id) {
     return Skill_FindById(id)->field_14 & 0x3FF;
 }
@@ -614,10 +633,13 @@ s32 Skill_GetBuffFlags(s32 id) {
     return (Skill_FindById(id)->field_14 >> 10) & 0x1FFF;
 }
 
+/* Unnamed: WAZADATA (field_1C>>18)&0x1F flags read once in battle damage calc, meaning unproven
+ * (issue #4 calls it "prevent", unconfirmed). */
 s32 func_8001F158(s32 id) {
     return (Skill_FindById(id)->field_1C >> 18) & 0x1F;
 }
 
+/* Unnamed: WAZADATA (field_1C>>23)&0xFF flags read once in battle turn code, meaning unproven. */
 s32 func_8001F180(s32 id) {
     return (Skill_FindById(id)->field_1C >> 23) & 0xFF;
 }

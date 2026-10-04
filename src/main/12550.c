@@ -11,9 +11,11 @@
  * live in the data asm; these tentative definitions are COMMON and bind to it. */
 Blk5071C *D_8005071C;
 
+/* Unnamed: empty stub, no callers, no table ref. */
 void func_80021D50(void) {
 }
 
+/* Unnamed: empty stub, no callers, no table ref. */
 void func_80021D58(void) {
 }
 

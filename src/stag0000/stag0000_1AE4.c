@@ -2,6 +2,7 @@
 #include "stag0000/stag0000.h"
 #include "stag0000/stag0000_funcs.h"
 
+/* Unnamed: empty stub, called once by Stg00_DungSelPickFlag before the warp, no other ref. */
 void func_80064E44(void) {
 }
 

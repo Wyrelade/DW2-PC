@@ -23,13 +23,16 @@ void Task_Create(u32 id, s32 *slot, s32 arg) {
     *slot = (s32)o;
 }
 
+/* Unnamed: calls Task_NextState0() with no argument, no callers, no table ref (dead). */
 void func_80011140(void) {
     Task_NextState0();
 }
 
+/* Unnamed: empty stub, no callers, no table ref. */
 void func_80011160(void) {
 }
 
+/* Unnamed: empty stub, no callers, no table ref. */
 void func_80011168(void) {
 }
 
@@ -252,6 +255,7 @@ void Cd_QueueStag4000Files(void) {
 }
 
 
+/* Unnamed: empty stub, no callers, no table ref. */
 void func_800116A8(void) {
 }
 
@@ -520,6 +524,8 @@ end:
 
 s32 Item_GetUseKind(s32 arg0) {
     s32 r = 0;
+/* Unnamed: ITEMDATA word0 bits 30-31, gates Item_GetUseKind; set/clear pattern across items
+ * (disks/chips set, antidotes/gifts/parts clear) does not prove "usable". */
     if (func_8001E134() != 0) {
         u8 *p = Item_GetEffectRec(arg0);
         if (p != 0) {

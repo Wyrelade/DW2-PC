@@ -52,6 +52,7 @@ void Stg10_StageSetup(Actor *a0) {
     Task_NextState0(a0);
 }
 
+/* Unnamed: empty stub, called only from Stg10_TitleUpdate cursor case 3, no other ref. */
 void func_8006359C(void) {
 }
 

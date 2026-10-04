@@ -12,6 +12,8 @@ extern TaskDesc **Task_DescTable[];
 ASM_SOURCE("src/main/asm/crt0", func_80010D6C);
 
 INCLUDE_RODATA("asm/USA/main/rodata", Ovl_LoadAddr);
+/* Unnamed: empty stub, only caller Sys_Main (first call, before ResetCallback), no table ref;
+ * role unknown. */
 void func_80010D74(void) {
 }
 

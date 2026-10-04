@@ -196,6 +196,7 @@ void Stg11_ModeMenuDraw(Actor *arg0) {
     }
 }
 
+/* Unnamed: empty stub, no callers, no table ref. */
 void func_80063D20(void) {
 }
 

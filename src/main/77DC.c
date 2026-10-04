@@ -2595,6 +2595,7 @@ void Gpu_SkipEmptyOtEntries(s32 arg0) {
     }
 }
 
+/* Unnamed: returns 0, no callers, no table ref. */
 s32 func_8001C92C(void) {
     return 0;
 }
@@ -3067,6 +3068,8 @@ fail:
     return 0;
 }
 
+/* Unnamed: DIGIMNDT byte +3 (0..8), not rank/type/specialty (checked vs MetalKid RankId); only
+ * use is an index in stag2000 func_8006A190's table, meaning unproven. */
 u8 func_8001D910(s32 digiId) {
     return Digi_FindBaseData(digiId)->field_3;
 }
