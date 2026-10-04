@@ -9,12 +9,12 @@
 # Digimon World 2 Decompilation
 
 <!-- PROGRESS:BADGE -->
-![matched](https://img.shields.io/badge/matched-1086%2F1088%20(99.82%25)-1f6feb)
+![matched](https://img.shields.io/badge/matched-1089%2F1089%20(100.00%25)-1f6feb)
 <!-- /PROGRESS:BADGE -->
 ![build](https://img.shields.io/badge/build-byte--identical-2ea043)
 ![platform](https://img.shields.io/badge/platform-PS1%20(SLUS--01193)-8957e5)
 
-A work-in-progress **matching decompilation** of *Digimon World 2* for the Sony PlayStation.
+A **matching decompilation** of *Digimon World 2* for the Sony PlayStation.
 
 The goal is to recover readable C that, when compiled with a period-correct toolchain,
 produces a binary **byte-identical** to the original executable, then a moddable full-source
@@ -37,11 +37,19 @@ tree.
 
 ## Status
 
-The split relinks **byte-identical** to the retail executable and all 7 stage overlays.
-The default build compiles matched C and includes the retail asm for every function that is
-not matched yet (its C draft sits under `#ifdef NORMALIZED`). `build_dw2.py --strict off`
-builds that C too, through a per-function asm post-processing step
-(`tools/asm_normalizer.py`); that byte-identical C build is for modding, it does not count.
+**All 1089 game functions are matched C.** The C rebuilds the retail executable and all 7
+stage overlays byte-identical. The work now is naming and cleanup (most of the main exe and
+the small overlays have real names; the battle, dungeon, city and VS overlays are next), then
+a non-matching build for modding and ports.
+
+The last two functions:
+
+- `Task_Run` (the task scheduler) runs every update and draw callback on a stack in the
+  scratchpad RAM. C cannot move the stack pointer, so the switch is two small `__asm__`
+  statements around the calls, the rest is plain C. The original most likely did the same.
+- `stag4000:func_8006D418` returns the same field on both sides of a flag test. The test does
+  nothing, but GCC 2.8.1 only merges the two arms after register allocation, and retail's
+  code has exactly that allocation. No form without the test produces it.
 
 A function counts as **matched** only when its C reproduces the retail bytes with the compiler
 setup of its translation unit and no asm rewrites: GCC 2.8.1-psx `-O2`, main game `-G8` with
@@ -58,16 +66,16 @@ function with and without the post-processing and compares it against the target
 <!-- PROGRESS:TABLE -->
 | Component | Functions | Matched | Progress | Flags per function | Asm rewrites | Asm |
 |---|---:|---:|---|---:|---:|---:|
-| **Main executable** (`SLUS_011.93`, game code) | 368 | 367 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 99.73% | 0 | 0 | 1 |
-| **Stage overlays** (`AAA/3.PRO`) | 720 | 719 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 99.86% | 0 | 1 | 0 |
+| **Main executable** (`SLUS_011.93`, game code) | 369 | 369 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 100.00% | 0 | 0 | 0 |
+| **Stage overlays** (`AAA/3.PRO`) | 720 | 720 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 100.00% | 0 | 0 | 0 |
 | &nbsp;&nbsp;└ `STAG0000.PRO` | 69 | 69 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 100.00% | 0 | 0 | 0 |
 | &nbsp;&nbsp;└ `STAG1000.PRO` | 17 | 17 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 100.00% | 0 | 0 | 0 |
 | &nbsp;&nbsp;└ `STAG1100.PRO` | 55 | 55 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 100.00% | 0 | 0 | 0 |
 | &nbsp;&nbsp;└ `STAG2000.PRO` | 133 | 133 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 100.00% | 0 | 0 | 0 |
 | &nbsp;&nbsp;└ `STAG3000.PRO` | 123 | 123 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 100.00% | 0 | 0 | 0 |
 | &nbsp;&nbsp;└ `STAG3500.PRO` | 108 | 108 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 100.00% | 0 | 0 | 0 |
-| &nbsp;&nbsp;└ `STAG4000.PRO` | 215 | 214 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 99.53% | 0 | 1 | 0 |
-| **Total (game code)** | 1088 | 1086 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 99.82% | 0 | 1 | 1 |
+| &nbsp;&nbsp;└ `STAG4000.PRO` | 215 | 215 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 100.00% | 0 | 0 | 0 |
+| **Total (game code)** | 1089 | 1089 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 100.00% | 0 | 0 | 0 |
 | PsyQ libraries (not counted) | 558 | | | | | |
 <!-- /PROGRESS:TABLE -->
 
@@ -80,10 +88,8 @@ The `AAA` directory is left out of the disc's root directory record, so a plain 
 only shows `SLUS_011.93` and `SYSTEM.CNF`. `dumpsxiso -pt` (path table walk) extracts the full
 tree.
 
-Some functions cannot yet be reproduced byte-for-byte by the current toolchain (gp-relative
-accesses under `-G0`, `$at` high-scratch stores, BIOS syscall thunks, and a handful of GCC
-reassociation / delay-slot codegen choices); those keep their `INCLUDE_ASM` stub until the
-toolchain covers them.
+PsyQ library code stays as split asm, as in other PS1 decomps. The crt0 startup is the PsyQ
+`SNMAIN` hand asm.
 
 ## Layout
 
@@ -113,15 +119,14 @@ auto-detected hardware and kernel symbols, then checks the SHA-1 against your di
 overlay is then linked with its own script and checked the same way
 (`build/USA/out/STAGxxxx.PRO: OK`); `--overlays-only` builds just the overlays.
 
-## Contributing a match
+## Contributing names
 
-1. `python3 tools/score_functions.py --exhaustive asm/USA/main/nonmatchings` ranks the
-   easiest unmatched functions.
-2. Replace a function's `INCLUDE_ASM` in `src/main/156C.c` or `src/stagXXXX/stagXXXX.c` with C. Prefer proper structs
-   over pointer arithmetic (`field_[offset]` names are fine) defined in the module header
-   (see `include/main/156C.h`).
+1. `python3 tools/rename.py func_XXXXXXXX Module_VerbNoun` renames a main exe function or
+   global everywhere (`--unit stagXXXX` for an overlay, `--batch file` for many).
+   `python3 tools/rename_field.py --batch file` renames struct fields with the compiler as
+   the checker.
+2. Only name what the code proves. A wrong name is worse than `func_`.
 3. Verify with `python3 tools/build_dw2.py`. Only `OK` for every file counts as done.
-4. One matched function is one commit.
 
 ## Credits
 
