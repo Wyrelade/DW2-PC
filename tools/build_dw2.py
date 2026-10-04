@@ -449,6 +449,8 @@ def main():
     # one fails to launch under Windows CreateProcess.
     as_abs = os.path.abspath(as_bin)
 
+    if extract_bins(args.skip_verify or args.objects_only) != 0:
+        return 1
     n_asm = assemble_asm(as_bin, units)
     if n_asm < 0:
         return 1
@@ -636,6 +638,44 @@ def assemble_bins(ld_script, as_bin):
         if run([as_bin] + AS_FLAGS + ["-o", os.path.join(ROOT, obj), stub]) != 0:
             print("BUILD FAILED: assembling %s" % os.path.relpath(stub, ROOT))
             return 1
+    return 0
+
+
+def extract_bins(allow_missing):
+    """Write the INCLUDE_BIN assets that configs/USA/include_bin.txt lists.
+
+    Each line is `asset source offset size`: the bytes come from the user's disc files
+    (not committed). When a source file is absent and allow_missing is set (a build
+    without a disc, e.g. the progress CI, which does not link), the asset is zero-filled
+    so the objects still assemble."""
+    listing = os.path.join(ROOT, "configs/USA/include_bin.txt")
+    if not os.path.exists(listing):
+        return 0
+    for line in open(listing):
+        line = line.split("#", 1)[0].split()
+        if not line:
+            continue
+        asset, source, offset, size = line[0], line[1], int(line[2], 0), int(line[3], 0)
+        src = os.path.join(ROOT, source)
+        if os.path.exists(src):
+            with open(src, "rb") as f:
+                f.seek(offset)
+                data = f.read(size)
+            if len(data) != size:
+                print("BUILD FAILED: %s is too short for %s" % (source, asset))
+                return 1
+        elif allow_missing:
+            print("  warning: %s missing, %s zero-filled" % (source, asset))
+            data = bytes(size)
+        else:
+            print("BUILD FAILED: %s missing (needed for %s)" % (source, asset))
+            return 1
+        dst = os.path.join(ROOT, asset)
+        if os.path.exists(dst) and open(dst, "rb").read() == data:
+            continue
+        os.makedirs(os.path.dirname(dst), exist_ok=True)
+        with open(dst, "wb") as f:
+            f.write(data)
     return 0
 
 

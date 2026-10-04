@@ -249,7 +249,10 @@ typedef struct {
     u8 _pad118[0x08];
 } Stg11Party;
 
-/* Memory card icon image: CLUT then the first icon frame. */
+/* Memory card icon image: CLUT then the first icon frame. The three icon frames are
+   TIM files (16x16 4bpp with CLUT, 0xC0 bytes each) linked into .data with INCLUDE_BIN;
+   the code refers to the CLUT block of the first (from its CLUT data on, this struct)
+   and to the pixels of the other two (BIN_LABEL in stag1100_301C.c). */
 typedef struct {
     /* 0x00 */ Stg11Clut clut;
     u8 _pad20[0xC];
@@ -386,6 +389,13 @@ extern s32 Digi_GetRank(s32 id);
 extern u8 Digi_GetLearnedSkill(s32 id);
 extern s32 Digi_CalcMaxLevel(s32 x);
 extern u16 Stg11_VsRowMasks[];
+extern TaskDesc Stg11_RootDesc;
+extern TaskDesc Stg11_BgDesc;
+extern TaskDesc Stg11_ModeMenuDesc;
+extern TaskDesc Stg11_CardMenuDesc;
+extern TaskDesc Stg11_VsPartyDesc;
+extern TaskDesc Stg11_CardTaskDesc;
+extern TaskDesc *Stg11_TaskDescs[];
 extern Stg11IconImage Stg11_CardIconImage;
 extern Stg11Icon Stg11_CardIcon2;
 extern Stg11Icon Stg11_CardIcon3;

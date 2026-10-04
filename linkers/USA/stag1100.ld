@@ -24,7 +24,6 @@ SECTIONS
         build/USA/asm/USA/stag1100/data/stag1100_rodata.rodata.s.o(.data);
         build/USA/src/stag1100/stag1100.c.o(.data);
         build/USA/src/stag1100/stag1100_301C.c.o(.data);
-        build/USA/asm/USA/stag1100/data/stag1100_data.data.s.o(.data);
         . = ALIGN(., 4);
         stag1100_DATA_END = .;
         stag1100_DATA_SIZE = ABSOLUTE(stag1100_DATA_END - stag1100_DATA_START);

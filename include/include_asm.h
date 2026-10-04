@@ -81,6 +81,29 @@ __asm__(".include \"include/labels.inc\"\n");
 #define SHIFT_TEST_PAD(N)
 #endif
 
+/* INCLUDE_BIN: opaque game content (bitmaps, CLUTs, text, sound) inside a unit's .data, at
+ * this spot in definition order (-G0 units: cc1 writes data in source order). The bytes are
+ * not in the repo: tools/build_dw2.py extracts them from the disc files into assets/ as
+ * configs/USA/include_bin.txt lists. NAME is a global label at the first byte. */
+#if !defined(M2CTX) && !defined(PERMUTER)
+#define INCLUDE_BIN(NAME, PATH) \
+    __asm__( \
+        ".section .data\n" \
+        "    .align 2\n" \
+        "    .global " #NAME "\n" \
+        #NAME ":\n" \
+        "    .incbin \"" PATH "\"\n" \
+        ".previous" \
+    )
+/* BIN_LABEL: a global label OFFSET bytes into an INCLUDE_BIN (code that refers to a part
+ * of the content, e.g. the CLUT of a TIM, by its own symbol). */
+#define BIN_LABEL(NAME, BIN, OFFSET) \
+    __asm__(".global " #NAME "\n.set " #NAME ", " #BIN " + " #OFFSET)
+#else
+#define INCLUDE_BIN(NAME, PATH)
+#define BIN_LABEL(NAME, BIN, OFFSET)
+#endif
+
 /* ASM_SOURCE: a function that was hand-written assembly in the original build, restored as
  * readable source under src/ (tools/asm_restore.py). Included in place like INCLUDE_ASM, but it
  * is part of the decompiled object (not skipped under SKIP_ASM) and carries no NON_MATCHING mark. */

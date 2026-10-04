@@ -933,11 +933,18 @@ typedef struct {
     /* 0x34 */ s32 children;
 } ActorAllocView;
 
+/* Task callbacks. Init gets Task_Create's argument; many callbacks are declared with
+   other argument types (s16, none), so rows cast them to these. */
+typedef void (*TaskInitFn)(ActorAllocView *, s32);
+typedef void (*TaskFn)(Actor *);
+
 /* Object type descriptor from the Task_DescTable[id >> 8][id & 0xFF] table
-   (Task_Create): optional init callback and the two buffer sizes. */
+   (Task_Create, Task_Run): callbacks and the two buffer sizes. */
 typedef struct {
-    /* 0x00 */ void (*init)(ActorAllocView *, s32);
-    u8 _pad04[0x0C];
+    /* 0x00 */ TaskInitFn init;
+    /* 0x04 */ TaskFn update;
+    /* 0x08 */ TaskFn destroy;
+    /* 0x0C */ TaskFn draw;
     /* 0x10 */ s32 workSize;
     /* 0x14 */ s32 auxSize;
 } TaskDesc;

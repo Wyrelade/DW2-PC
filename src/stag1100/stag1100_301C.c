@@ -1,6 +1,40 @@
 #include "common.h"
 #include "stag1100/stag1100.h"
 #include "stag1100/stag1100_funcs.h"
+#include "stag1100/stag1100_301C_funcs.h"
+
+Layout8C Stg11_VsPartyLayout = { { 1, 1, -60, -66, 0, 0x21 } };
+Halves Stg11_VsPromptPos = { 0x10, 0xBA };
+Halves D_80068208 = { 0x21, 0x9E };
+u16 Stg11_VsRowMasks[] = { 0x0E04, 0x0E04, 0x0C04, 0x0A04, 0x0604 };
+TaskDesc Stg11_VsPartyDesc = {
+    (TaskInitFn)Stg11_VsPartyInit, Stg11_VsPartyUpdate, Task_DefaultDestroy, Stg11_VsPartyDraw, 0x1A8, 4,
+};
+/* Memory card icon frames (TIM files). */
+INCLUDE_BIN(Stg11_CardIconTim1, "assets/stag1100/card_icon1.tim");
+INCLUDE_BIN(Stg11_CardIconTim2, "assets/stag1100/card_icon2.tim");
+INCLUDE_BIN(Stg11_CardIconTim3, "assets/stag1100/card_icon3.tim");
+BIN_LABEL(Stg11_CardIconImage, Stg11_CardIconTim1, 0x14);
+BIN_LABEL(Stg11_CardIcon2, Stg11_CardIconTim2, 0x40);
+BIN_LABEL(Stg11_CardIcon3, Stg11_CardIconTim3, 0x40);
+TaskDesc Stg11_CardTaskDesc = {
+    (TaskInitFn)Stg11_CardTaskInit, Stg11_CardTaskUpdate, Stg11_CardTaskDestroy, (TaskFn)Stg11_CardTaskDraw,
+    0x22044, 0,
+};
+/* Task_DescTable[6]: task ids 0x600-0x606. */
+TaskDesc *Stg11_TaskDescs[] = {
+    &Stg11_RootDesc, &Stg11_CardTaskDesc, &Stg11_BgDesc, &Stg11_ModeMenuDesc,
+    &Stg11_CardMenuDesc, &Stg11_VsPartyDesc, &Stg11_ModeMenuDesc,
+};
+/* Unreferenced. */
+u8 D_800684A4[4] = "AAA\\";
+Stg11Party Stg11_VsParty = { 0 };
+s16 Stg11_LoadDone = 0;
+/* Unreferenced. */
+s16 D_800685CA = 0;
+s32 D_800685CC = 0;
+Actor *Stg11_CardTask = 0;
+Stg11SaveWork *Stg11_CardWork = 0;
 
 void Stg11_CardMenuDraw(Actor *arg0) {
     Stg11MenuWork *w = (Stg11MenuWork *)arg0->work;

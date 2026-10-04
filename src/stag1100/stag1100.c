@@ -1,5 +1,20 @@
 #include "common.h"
 #include "stag1100/stag1100.h"
+#include "stag1100/stag1100_funcs.h"
+#include "stag1100/stag1100_301C_funcs.h"
+
+TaskDesc Stg11_RootDesc = { 0, Stg11_RootUpdate, Task_DefaultDestroy, 0, 4, 0x10 };
+TaskDesc Stg11_BgDesc = { 0, Stg11_BgUpdate, Task_DefaultDestroy, Stg11_BgDraw, 0, 0 };
+Halves Stg11_ModeHelpPos = { 0x10, 0xBA };
+TaskDesc Stg11_ModeMenuDesc = {
+    (TaskInitFn)Stg11_ModeMenuInit, Stg11_ModeMenuUpdate, Task_DefaultDestroy, Stg11_ModeMenuDraw, 0x2C, 4,
+};
+Halves Stg11_PromptPos = { 0x10, 0xBA };
+Halves Stg11_StatusPos = { 0x56, 0x4E };
+Halves Stg11_TransferCountPos = { 0x61, 0xA4 };
+TaskDesc Stg11_CardMenuDesc = {
+    (TaskInitFn)Stg11_CardMenuInit, Stg11_CardMenuUpdate, Task_DefaultDestroy, Stg11_CardMenuDraw, 0x13C, 4,
+};
 
 void Stg11_RootUpdate(Actor *arg0) {
     Stg11MainWork *w = (Stg11MainWork *)arg0->work;

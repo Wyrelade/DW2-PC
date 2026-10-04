@@ -58,5 +58,6 @@ segments:
       - [0x0, rodata, stag1100_rodata]
       - [0x22C, c, stag1100]
       - [0x301C, c, stag1100_301C]
-      - [0x4E28, data, stag1100_data]
+      - [0x4E28, .data, stag1100]
+      - [0x4E98, .data, stag1100_301C]
   - [0x5278]
