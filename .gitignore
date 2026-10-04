@@ -31,3 +31,6 @@ venv*/
 configs/USA/generated/
 .bulk_m2c/
 .promote-logs/
+
+# Per-item rodata splits: tools/rodata_own.py --split rewrites them on every build.
+asm/USA/*/rodata/

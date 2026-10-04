@@ -1,9 +1,0 @@
-
-.align 2
-nonmatching D_80010CE8
-
-dlabel D_80010CE8
-    /* 14E8 80010CE8 */ .asciz "Access Denied. : invalid offset value align\n"
-    /* 4163636573732044656E6965642E203A20696E76616C6964206F66667365742076616C756520616C69676E0A00000000 */
-.align 2
-enddlabel D_80010CE8

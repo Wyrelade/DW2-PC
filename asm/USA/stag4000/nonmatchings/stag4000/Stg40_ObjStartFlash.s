@@ -1,9 +1,0 @@
-nonmatching Stg40_ObjStartFlash, 0x14
-
-glabel Stg40_ObjStartFlash
-    /* 4520 80067880 2C00828C */  lw         $v0, 0x2C($a0)
-    /* 4524 80067884 00000000 */  nop
-    /* 4528 80067888 260045A0 */  sb         $a1, 0x26($v0)
-    /* 452C 8006788C 0800E003 */  jr         $ra
-    /* 4530 80067890 270040A0 */   sb        $zero, 0x27($v0)
-endlabel Stg40_ObjStartFlash

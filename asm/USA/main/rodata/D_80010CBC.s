@@ -1,9 +1,0 @@
-
-.align 2
-nonmatching D_80010CBC
-
-dlabel D_80010CBC
-    /* 14BC 80010CBC */ .asciz "Access Denied. : invalid data size align\n"
-    /* 4163636573732044656E6965642E203A20696E76616C696420646174612073697A6520616C69676E0A000000 */
-.align 2
-enddlabel D_80010CBC
