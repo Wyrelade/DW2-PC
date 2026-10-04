@@ -30,6 +30,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Game code is C (no INCLUDE_ASM / INCLUDE_RODATA outside PsyQ)
+        run: python3 tools/check_asm_guard.py
+
       - name: Install toolchain
         run: |
           sudo dpkg --add-architecture i386
