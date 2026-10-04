@@ -515,6 +515,7 @@ s32 Stg40_AddPreloadId(s32 val) {
     return ret;
 }
 
+/* Unnamed: dead code, no callers, no table ref; sets state0 = 2 and state1 = a1. */
 void func_80064930(Actor *a0, s32 a1) {
     Task_SetState0(a0, 2);
     Task_SetState1(a0, (u8)a1);
