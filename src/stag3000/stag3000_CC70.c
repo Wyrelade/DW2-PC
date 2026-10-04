@@ -953,7 +953,161 @@ void func_80072080(Actor *a0, s32 row) {
     w->field_B8[row] = n;
 }
 
-INCLUDE_ASM("asm/USA/stag3000/nonmatchings/stag3000_CC70", func_800720E4);
+void func_800720E4(Actor *a0) {
+    Stg30Work737A0 *w = (Stg30Work737A0 *)a0->work;
+    s32 *cur;
+    s32 *scr;
+    s32 *cnt;
+    s32 row;
+    s32 other;
+    s16 v;
+    s32 i;
+    s32 j;
+    s32 k;
+    s32 n;
+
+    switch (a0->stateLevel0) {
+    case 0:
+        Mem_FillWordsNeg1(w->field_4, 0x1C);
+        a0->digiId = D_80073CC0.entries[w->field_0].field_19;
+        for (i = 0; i < 12; i++) {
+            w->field_74[1][i] = D_80073CC0.entries[w->field_0].field_3A[i];
+        }
+        w->field_B8[0] = 0;
+        w->field_B8[1] = 0;
+        for (i = 0; i < 12; i++) {
+            if (w->field_74[0][i] != 0) {
+                w->field_B8[0]++;
+            }
+            if (w->field_74[1][i] != 0) {
+                w->field_B8[1]++;
+            }
+        }
+        Text_OpenPacked(&w->field_4[0], (s32)D_80073D24[w->field_0].name, 0x10, D_80073730[0]);
+        Text_OpenPacked(&w->field_4[1], (s32)Cd_GetFileEntry(0x1FD0187), 0x80, D_80073730[1]);
+        Text_OpenById(&w->field_4[2], 0x18B, 4, D_80073730[2]);
+        Text_OpenById(&w->field_4[3], 0x18C, 4, D_80073730[3]);
+        ((void (*)(s32))func_80070D14)(w->field_0 + 2);
+        Task_NextState0(a0);
+        break;
+    case 1:
+        switch (a0->stateLevel1) {
+        case 0:
+        default:
+            w->field_C8 = 1;
+            do {
+                if (D_8005F6F0[0].right > 0) {
+                    if (w->field_C4 != 2) {
+                        w->field_C4++;
+                        Snd_PlayById(0xC, 0);
+                    }
+                } else if (D_8005F6F0[0].left > 0) {
+                    if (w->field_C4 != 0) {
+                        w->field_C4--;
+                        Snd_PlayById(0xC, 0);
+                    }
+                } else if (D_8005F6F0[0].cross > 0) {
+                    switch (w->field_C4) {
+                    case 0:
+                        for (n = 0; n < 12; n++) {
+                            if (w->field_74[1][n] == 0) {
+                                break;
+                            }
+                        }
+                        if (n < 12) {
+                            for (j = 0; n < 12; n++) {
+                                if (w->field_74[0][j] == 0) {
+                                    break;
+                                }
+                                w->field_74[1][n] = w->field_74[0][j];
+                                w->field_74[0][j++] = 0;
+                            }
+                        }
+                        func_80072080(a0, 0);
+                        func_80072080(a0, 1);
+                        Snd_PlayById(0xA, 0);
+                        break;
+                    case 1:
+                        Task_NextState1(a0);
+                        Snd_PlayById(0xA, 0);
+                        break;
+                    case 2:
+                        Task_NextState0(a0);
+                        Snd_PlayById(0xA, 0);
+                        break;
+                    default:
+                        Snd_PlayById(0xA, 0);
+                        break;
+                    }
+                }
+            } while (0);
+            break;
+        case 1:
+            w->field_C8 = 0;
+            do {
+                row = w->field_A4;
+                cur = &w->field_A8[row];
+                scr = &w->field_B0[row];
+                cnt = &w->field_B8[row];
+                if (D_8005F6F0[0].right > 0) {
+                    if (row == 0) {
+                        w->field_A4 = 1;
+                        Snd_PlayById(0xD, 0);
+                    }
+                } else if (D_8005F6F0[0].left > 0) {
+                    if (row != 0) {
+                        w->field_A4 = 0;
+                        Snd_PlayById(0xD, 0);
+                    }
+                } else if (D_8005F6F0[0].repeat & 0x1000) {
+                    if (*cur != 0) {
+                        *cur -= 1;
+                        Snd_PlayById(0xD, 0);
+                    } else if (*scr != 0) {
+                        *scr -= 1;
+                        Snd_PlayById(0xD, 0);
+                    }
+                } else if (D_8005F6F0[0].repeat & 0x4000) {
+                    if (*cur != 9) {
+                        *cur += 1;
+                        Snd_PlayById(0xD, 0);
+                    } else if (*scr + 10 < *cnt) {
+                        *scr += 1;
+                        Snd_PlayById(0xD, 0);
+                    }
+                } else if (D_8005F6F0[0].triangle > 0) {
+                    Task_SetState1(a0, 0);
+                    Snd_PlayById(0xB, 0);
+                } else if (D_8005F6F0[0].cross > 0) {
+                    v = w->field_74[row][*cur + *scr];
+                    other = row ^ 1;
+                    if (v == 0 || w->field_B8[other] == 12) {
+                        Snd_PlayById(0x10, 0);
+                    } else if (row != 0 && w->field_B8[row] == 1) {
+                        Snd_PlayById(0x10, 0);
+                    } else {
+                        w->field_74[other][w->field_B8[other]] = v;
+                        w->field_74[w->field_A4][*cur + *scr] = 0;
+                        func_80072080(a0, 0);
+                        func_80072080(a0, 1);
+                        Snd_PlayById(0xE, 0);
+                    }
+                }
+            } while (0);
+            break;
+        }
+        func_80071DC4(a0);
+        func_80071F9C(a0);
+        break;
+    case 2:
+        Text_CloseArray(w->field_4, 0x1C);
+        for (k = 0; k < 12; k++) {
+            D_80073CC0.entries[w->field_0].field_3A[k] = w->field_74[1][k];
+        }
+        Task_NextState0(a0);
+        break;
+    }
+}
 
 void func_800726E8(Actor *a0) {
     Stg30Work737A0 *w = (Stg30Work737A0 *)a0->work;
