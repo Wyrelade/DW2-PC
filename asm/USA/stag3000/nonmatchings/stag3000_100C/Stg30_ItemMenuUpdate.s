@@ -34,10 +34,10 @@ glabel Stg30_ItemMenuUpdate
     /* 22A4 80065604 21200002 */  addu       $a0, $s0, $zero
     /* 22A8 80065608 78010524 */  addiu      $a1, $zero, 0x178
     /* 22AC 8006560C 21300000 */  addu       $a2, $zero, $zero
-    /* 22B0 80065610 0680033C */  lui        $v1, %hi(D_800633F0)
-    /* 22B4 80065614 F0336224 */  addiu      $v0, $v1, %lo(D_800633F0)
+    /* 22B0 80065610 0680033C */  lui        $v1, %hi(Stg30_ItemMenuTitlePos)
+    /* 22B4 80065614 F0336224 */  addiu      $v0, $v1, %lo(Stg30_ItemMenuTitlePos)
     /* 22B8 80065618 02004794 */  lhu        $a3, 0x2($v0)
-    /* 22BC 8006561C F0336294 */  lhu        $v0, %lo(D_800633F0)($v1)
+    /* 22BC 8006561C F0336294 */  lhu        $v0, %lo(Stg30_ItemMenuTitlePos)($v1)
     /* 22C0 80065620 003C0700 */  sll        $a3, $a3, 16
     /* 22C4 80065624 F26F000C */  jal        Text_OpenById
     /* 22C8 80065628 25384700 */   or        $a3, $v0, $a3
@@ -294,8 +294,8 @@ glabel Stg30_ItemMenuUpdate
   .L800659C0:
     /* 2660 800659C0 21800000 */  addu       $s0, $zero, $zero
   .L800659C4:
-    /* 2664 800659C4 0780023C */  lui        $v0, %hi(D_8007309C)
-    /* 2668 800659C8 9C305124 */  addiu      $s1, $v0, %lo(D_8007309C)
+    /* 2664 800659C4 0780023C */  lui        $v0, %hi(Stg30_ItemColumnLabelPos)
+    /* 2668 800659C8 9C305124 */  addiu      $s1, $v0, %lo(Stg30_ItemColumnLabelPos)
     /* 266C 800659CC 0C001224 */  addiu      $s2, $zero, 0xC
     /* 2670 800659D0 0780023C */  lui        $v0, %hi(Stg30_ItemMenuColumn)
   .L800659D4:

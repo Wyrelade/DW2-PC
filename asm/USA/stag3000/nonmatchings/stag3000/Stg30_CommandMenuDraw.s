@@ -22,8 +22,8 @@ glabel Stg30_CommandMenuDraw
     /* 1CDC 8006503C 21284002 */   addu      $a1, $s2, $zero
     /* 1CE0 80065040 6EFF0824 */  addiu      $t0, $zero, -0x92
     /* 1CE4 80065044 0780073C */  lui        $a3, %hi(Stg30_CommandMenuCursor)
-    /* 1CE8 80065048 0780023C */  lui        $v0, %hi(D_80073070)
-    /* 1CEC 8006504C 70304624 */  addiu      $a2, $v0, %lo(D_80073070)
+    /* 1CE8 80065048 0780023C */  lui        $v0, %hi(Stg30_CursorBlinkPalettes)
+    /* 1CEC 8006504C 70304624 */  addiu      $a2, $v0, %lo(Stg30_CursorBlinkPalettes)
     /* 1CF0 80065050 0C004426 */  addiu      $a0, $s2, 0xC
   .L80065054:
     /* 1CF4 80065054 1000828C */  lw         $v0, 0x10($a0)

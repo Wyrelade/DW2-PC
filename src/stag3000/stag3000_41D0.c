@@ -237,7 +237,7 @@ void Stg30_BattleWonUpdate(Actor *a0) {
         st = D_8005E5E0;
         if (st != 0) {
             stage2 = Digi_GetRank(Stg30_Battle.entries[Stg30_Battle.field_3D8].field_19);
-            if ((Rand_Next() & 0x7F) < D_80073188[stage2][st - 1]) {
+            if ((Rand_Next() & 0x7F) < Stg30_JoinChance[stage2][st - 1]) {
                 arg = Stg30_Battle.field_3D8;
                 Task_Create(0x513, &l->field_28, (s32)&arg);
             }

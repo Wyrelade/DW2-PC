@@ -55,40 +55,40 @@ dlabel jtbl_800633D4
     /* 84 800633E4 644A0680 */ .word .L80064A64
 enddlabel jtbl_800633D4
 
-nonmatching D_800633E8
+nonmatching Stg30_TamerNameTextPos
 
-dlabel D_800633E8
+dlabel Stg30_TamerNameTextPos
     /* 88 800633E8 */ .short 0x0016
     /* 8A 800633EA */ .short 0x0030
-enddlabel D_800633E8
+enddlabel Stg30_TamerNameTextPos
 
-nonmatching D_800633EC
+nonmatching Stg30_ItemDescTextPos
 
-dlabel D_800633EC
+dlabel Stg30_ItemDescTextPos
     /* 8C 800633EC */ .short 0x005D
     /* 8E 800633EE */ .short 0x0096
-enddlabel D_800633EC
+enddlabel Stg30_ItemDescTextPos
 
-nonmatching D_800633F0
+nonmatching Stg30_ItemMenuTitlePos
 
-dlabel D_800633F0
+dlabel Stg30_ItemMenuTitlePos
     /* 90 800633F0 */ .short 0x0014
     /* 92 800633F2 */ .short 0x0096
-enddlabel D_800633F0
+enddlabel Stg30_ItemMenuTitlePos
 
-nonmatching D_800633F4
+nonmatching Stg30_SkillDescTextPos
 
-dlabel D_800633F4
+dlabel Stg30_SkillDescTextPos
     /* 94 800633F4 */ .short 0x0045
     /* 96 800633F6 */ .short 0x0096
-enddlabel D_800633F4
+enddlabel Stg30_SkillDescTextPos
 
-nonmatching D_800633F8
+nonmatching Stg30_SkillMenuTitlePos
 
-dlabel D_800633F8
+dlabel Stg30_SkillMenuTitlePos
     /* 98 800633F8 */ .short 0x0014
     /* 9A 800633FA */ .short 0x0096
-enddlabel D_800633F8
+enddlabel Stg30_SkillMenuTitlePos
 
 nonmatching jtbl_800633FC
 

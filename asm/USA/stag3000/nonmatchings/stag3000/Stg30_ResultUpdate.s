@@ -89,12 +89,12 @@ glabel Stg30_ResultUpdate
     /* E6F8 80071A58 03004010 */  beqz       $v0, .L80071A68
     /* E6FC 80071A5C 21880000 */   addu      $s1, $zero, $zero
     /* E700 80071A60 4E004310 */  beq        $v0, $v1, .L80071B9C
-    /* E704 80071A64 0680023C */   lui       $v0, %hi(D_8005F704)
+    /* E704 80071A64 0680023C */   lui       $v0, %hi(Pad_Cross)
   .L80071A68:
     /* E708 80071A68 0780023C */  lui        $v0, %hi(Stg30_Battle)
     /* E70C 80071A6C C03C5324 */  addiu      $s3, $v0, %lo(Stg30_Battle)
-    /* E710 80071A70 0780023C */  lui        $v0, %hi(D_80073690)
-    /* E714 80071A74 90365024 */  addiu      $s0, $v0, %lo(D_80073690)
+    /* E710 80071A70 0780023C */  lui        $v0, %hi(Stg30_ResultTextLayout)
+    /* E714 80071A74 90365024 */  addiu      $s0, $v0, %lo(Stg30_ResultTextLayout)
   .L80071A78:
     /* E718 80071A78 00000392 */  lbu        $v1, 0x0($s0)
     /* E71C 80071A7C 09000224 */  addiu      $v0, $zero, 0x9
@@ -174,9 +174,9 @@ glabel Stg30_ResultUpdate
     /* E82C 80071B8C 08001026 */   addiu     $s0, $s0, 0x8
     /* E830 80071B90 5945000C */  jal        Task_NextState1
     /* E834 80071B94 2120C002 */   addu      $a0, $s6, $zero
-    /* E838 80071B98 0680023C */  lui        $v0, %hi(D_8005F704)
+    /* E838 80071B98 0680023C */  lui        $v0, %hi(Pad_Cross)
   .L80071B9C:
-    /* E83C 80071B9C 04F7428C */  lw         $v0, %lo(D_8005F704)($v0)
+    /* E83C 80071B9C 04F7428C */  lw         $v0, %lo(Pad_Cross)($v0)
     /* E840 80071BA0 00000000 */  nop
     /* E844 80071BA4 03004018 */  blez       $v0, .L80071BB4
     /* E848 80071BA8 2120C002 */   addu      $a0, $s6, $zero

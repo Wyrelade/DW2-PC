@@ -85,7 +85,7 @@ glabel Stg20_BeetlePartsUpdate
     /* AA9C 8006DDFC 03006010 */  beqz       $v1, .L8006DE0C
     /* AAA0 8006DE00 01000224 */   addiu     $v0, $zero, 0x1
     /* AAA4 8006DE04 22006210 */  beq        $v1, $v0, .L8006DE90
-    /* AAA8 8006DE08 0680023C */   lui       $v0, %hi(D_8005F704)
+    /* AAA8 8006DE08 0680023C */   lui       $v0, %hi(Pad_Cross)
   .L8006DE0C:
     /* AAAC 8006DE0C 04004426 */  addiu      $a0, $s2, 0x4
     /* AAB0 8006DE10 3E010524 */  addiu      $a1, $zero, 0x13E
@@ -119,9 +119,9 @@ glabel Stg20_BeetlePartsUpdate
     /* AB20 8006DE80 01000224 */  addiu      $v0, $zero, 0x1
     /* AB24 8006DE84 6045000C */  jal        Task_NextState2
     /* AB28 8006DE88 500042AE */   sw        $v0, 0x50($s2)
-    /* AB2C 8006DE8C 0680023C */  lui        $v0, %hi(D_8005F704)
+    /* AB2C 8006DE8C 0680023C */  lui        $v0, %hi(Pad_Cross)
   .L8006DE90:
-    /* AB30 8006DE90 04F7428C */  lw         $v0, %lo(D_8005F704)($v0)
+    /* AB30 8006DE90 04F7428C */  lw         $v0, %lo(Pad_Cross)($v0)
     /* AB34 8006DE94 00000000 */  nop
     /* AB38 8006DE98 19024018 */  blez       $v0, .L8006E700
     /* AB3C 8006DE9C 13000424 */   addiu     $a0, $zero, 0x13
@@ -236,8 +236,8 @@ glabel Stg20_BeetlePartsUpdate
     /* ACD4 8006E034 20E67024 */   addiu     $s0, $v1, %lo(Save_GameState)
     /* ACD8 8006E038 77000424 */  addiu      $a0, $zero, 0x77
   .L8006E03C:
-    /* ACDC 8006E03C 0680023C */  lui        $v0, %hi(D_8005F704)
-    /* ACE0 8006E040 04F7428C */  lw         $v0, %lo(D_8005F704)($v0)
+    /* ACDC 8006E03C 0680023C */  lui        $v0, %hi(Pad_Cross)
+    /* ACE0 8006E040 04F7428C */  lw         $v0, %lo(Pad_Cross)($v0)
     /* ACE4 8006E044 00000000 */  nop
     /* ACE8 8006E048 AD014018 */  blez       $v0, .L8006E700
     /* ACEC 8006E04C 500004A6 */   sh        $a0, 0x50($s0)
@@ -518,8 +518,8 @@ glabel Stg20_BeetlePartsUpdate
     /* B0F0 8006E450 6045000C */  jal        Task_NextState2
     /* B0F4 8006E454 BC0140AE */   sw        $zero, 0x1BC($s2)
   .L8006E458:
-    /* B0F8 8006E458 0680023C */  lui        $v0, %hi(D_8005F704)
-    /* B0FC 8006E45C 04F7428C */  lw         $v0, %lo(D_8005F704)($v0)
+    /* B0F8 8006E458 0680023C */  lui        $v0, %hi(Pad_Cross)
+    /* B0FC 8006E45C 04F7428C */  lw         $v0, %lo(Pad_Cross)($v0)
     /* B100 8006E460 00000000 */  nop
     /* B104 8006E464 7D004018 */  blez       $v0, .L8006E65C
     /* B108 8006E468 13000424 */   addiu     $a0, $zero, 0x13
@@ -675,7 +675,7 @@ glabel Stg20_BeetlePartsUpdate
     /* B314 8006E674 03006010 */  beqz       $v1, .L8006E684
     /* B318 8006E678 01000224 */   addiu     $v0, $zero, 0x1
     /* B31C 8006E67C 17006210 */  beq        $v1, $v0, .L8006E6DC
-    /* B320 8006E680 0680023C */   lui       $v0, %hi(D_8005F704)
+    /* B320 8006E680 0680023C */   lui       $v0, %hi(Pad_Cross)
   .L8006E684:
     /* B324 8006E684 21880000 */  addu       $s1, $zero, $zero
     /* B328 8006E688 20001024 */  addiu      $s0, $zero, 0x20
@@ -699,9 +699,9 @@ glabel Stg20_BeetlePartsUpdate
     /* B36C 8006E6CC 25304600 */   or        $a2, $v0, $a2
     /* B370 8006E6D0 6045000C */  jal        Task_NextState2
     /* B374 8006E6D4 21206002 */   addu      $a0, $s3, $zero
-    /* B378 8006E6D8 0680023C */  lui        $v0, %hi(D_8005F704)
+    /* B378 8006E6D8 0680023C */  lui        $v0, %hi(Pad_Cross)
   .L8006E6DC:
-    /* B37C 8006E6DC 04F7428C */  lw         $v0, %lo(D_8005F704)($v0)
+    /* B37C 8006E6DC 04F7428C */  lw         $v0, %lo(Pad_Cross)($v0)
     /* B380 8006E6E0 00000000 */  nop
     /* B384 8006E6E4 06004018 */  blez       $v0, .L8006E700
     /* B388 8006E6E8 00000000 */   nop

@@ -24,20 +24,20 @@ glabel Stg30_TargetSelectDraw
     /* 3FA0 80067300 08004000 */  jr         $v0
     /* 3FA4 80067304 00000000 */   nop
   jlabel .L80067308
-    /* 3FA8 80067308 0780033C */  lui        $v1, %hi(D_80073150)
+    /* 3FA8 80067308 0780033C */  lui        $v1, %hi(Stg30_TargetCursorMasks)
     /* 3FAC 8006730C 0400028E */  lw         $v0, 0x4($s0)
-    /* 3FB0 80067310 50316324 */  addiu      $v1, $v1, %lo(D_80073150)
+    /* 3FB0 80067310 50316324 */  addiu      $v1, $v1, %lo(Stg30_TargetCursorMasks)
     /* 3FB4 80067314 80100200 */  sll        $v0, $v0, 2
     /* 3FB8 80067318 21104300 */  addu       $v0, $v0, $v1
     /* 3FBC 8006731C 0000458C */  lw         $a1, 0x0($v0)
     /* 3FC0 80067320 339D0108 */  j          .L800674CC
     /* 3FC4 80067324 21202002 */   addu      $a0, $s1, $zero
   jlabel .L80067328
-    /* 3FC8 80067328 0780023C */  lui        $v0, %hi(D_8007316C)
+    /* 3FC8 80067328 0780023C */  lui        $v0, %hi(Stg30_TargetAllAlliesMask)
     /* 3FCC 8006732C 0780033C */  lui        $v1, %hi(Stg30_Battle)
     /* 3FD0 80067330 C03C6424 */  addiu      $a0, $v1, %lo(Stg30_Battle)
     /* 3FD4 80067334 E6008384 */  lh         $v1, 0xE6($a0)
-    /* 3FD8 80067338 6C31508C */  lw         $s0, %lo(D_8007316C)($v0)
+    /* 3FD8 80067338 6C31508C */  lw         $s0, %lo(Stg30_TargetAllAlliesMask)($v0)
     /* 3FDC 8006733C 02006014 */  bnez       $v1, .L80067348
     /* 3FE0 80067340 00000000 */   nop
     /* 3FE4 80067344 08001036 */  ori        $s0, $s0, 0x8
@@ -55,11 +55,11 @@ glabel Stg30_TargetSelectDraw
     /* 400C 8006736C 329D0108 */  j          .L800674C8
     /* 4010 80067370 02001036 */   ori       $s0, $s0, 0x2
   jlabel .L80067374
-    /* 4014 80067374 0780023C */  lui        $v0, %hi(D_80073168)
+    /* 4014 80067374 0780023C */  lui        $v0, %hi(Stg30_TargetAllEnemiesMask)
     /* 4018 80067378 0780033C */  lui        $v1, %hi(Stg30_Battle)
     /* 401C 8006737C C03C6424 */  addiu      $a0, $v1, %lo(Stg30_Battle)
     /* 4020 80067380 FA018384 */  lh         $v1, 0x1FA($a0)
-    /* 4024 80067384 6831508C */  lw         $s0, %lo(D_80073168)($v0)
+    /* 4024 80067384 6831508C */  lw         $s0, %lo(Stg30_TargetAllEnemiesMask)($v0)
     /* 4028 80067388 02006014 */  bnez       $v1, .L80067394
     /* 402C 8006738C 00000000 */   nop
     /* 4030 80067390 40001036 */  ori        $s0, $s0, 0x40

@@ -268,7 +268,7 @@ s32 Stg30_ApplySkillStatus(s32 attacker, s32 target, s32 tech, s16 *p4, s16 *p5)
             if (flags & cure) {
                 Stg30_Battle.field_31C[target] = old & ~mask;
                 if (hit) {
-                    *p5 = D_80073254[i];
+                    *p5 = Stg30_CureStatusLabels[i];
                 }
             }
         }
@@ -1020,10 +1020,10 @@ void Stg30_BuildSkillScript(s32 idx) {
             break;
         }
         if ((s16)id == 0xDC) {
-            if (D_80073278 == 0) {
-                D_80073278 = (u16)((u16)Rand_Next() % 3) + 1;
+            if (Stg30_RepeatSkillCount == 0) {
+                Stg30_RepeatSkillCount = (u16)((u16)Rand_Next() % 3) + 1;
             }
-            if (--D_80073278 != 0) {
+            if (--Stg30_RepeatSkillCount != 0) {
                 if (Skill_GetMpCost(0xDC) <= Stg30_Battle.entries[idx].field_32) {
                     if (idx < 3) {
                         Stg30_Battle.field_2AC[idx].field_4 = Stg30_PickTarget(0x4D, 1, idx);
@@ -1034,7 +1034,7 @@ void Stg30_BuildSkillScript(s32 idx) {
                         Stg30_TurnOrderInsert(1, idx);
                     }
                 } else {
-                    D_80073278 = 0;
+                    Stg30_RepeatSkillCount = 0;
                 }
             }
         }

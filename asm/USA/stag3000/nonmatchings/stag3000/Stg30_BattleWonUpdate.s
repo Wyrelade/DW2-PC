@@ -376,8 +376,8 @@ glabel Stg30_BattleWonUpdate
     /* 48E8 80067C48 00000000 */   nop
     /* 48EC 80067C4C 448E000C */  jal        Rand_Next
     /* 48F0 80067C50 21804000 */   addu      $s0, $v0, $zero
-    /* 48F4 80067C54 0780043C */  lui        $a0, %hi(D_80073188)
-    /* 48F8 80067C58 88318424 */  addiu      $a0, $a0, %lo(D_80073188)
+    /* 48F4 80067C54 0780043C */  lui        $a0, %hi(Stg30_JoinChance)
+    /* 48F8 80067C58 88318424 */  addiu      $a0, $a0, %lo(Stg30_JoinChance)
     /* 48FC 80067C5C FFFF2526 */  addiu      $a1, $s1, -0x1
     /* 4900 80067C60 40181000 */  sll        $v1, $s0, 1
     /* 4904 80067C64 21187000 */  addu       $v1, $v1, $s0

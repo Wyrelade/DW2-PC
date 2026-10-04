@@ -14,8 +14,8 @@ glabel Menu_ConfirmMultiPick
     /* 7DBC 800175BC 21304000 */  addu       $a2, $v0, $zero
     /* 7DC0 800175C0 C0100600 */  sll        $v0, $a2, 3
     /* 7DC4 800175C4 6C004224 */  addiu      $v0, $v0, 0x6C
-    /* 7DC8 800175C8 0680033C */  lui        $v1, %hi(D_8005F704)
-    /* 7DCC 800175CC 04F7638C */  lw         $v1, %lo(D_8005F704)($v1)
+    /* 7DC8 800175C8 0680033C */  lui        $v1, %hi(Pad_Cross)
+    /* 7DCC 800175CC 04F7638C */  lw         $v1, %lo(Pad_Cross)($v1)
     /* 7DD0 800175D0 00000000 */  nop
     /* 7DD4 800175D4 3B006018 */  blez       $v1, .L800176C4
     /* 7DD8 800175D8 21280202 */   addu      $a1, $s0, $v0

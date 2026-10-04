@@ -1,8 +1,8 @@
 nonmatching Menu_UseItemOnTarget, 0x11C
 
 glabel Menu_UseItemOnTarget
-    /* 5F70 80015770 0680023C */  lui        $v0, %hi(D_8005F704)
-    /* 5F74 80015774 04F7428C */  lw         $v0, %lo(D_8005F704)($v0)
+    /* 5F70 80015770 0680023C */  lui        $v0, %hi(Pad_Cross)
+    /* 5F74 80015774 04F7428C */  lw         $v0, %lo(Pad_Cross)($v0)
     /* 5F78 80015778 C8FFBD27 */  addiu      $sp, $sp, -0x38
     /* 5F7C 8001577C 3000B2AF */  sw         $s2, 0x30($sp)
     /* 5F80 80015780 21908000 */  addu       $s2, $a0, $zero

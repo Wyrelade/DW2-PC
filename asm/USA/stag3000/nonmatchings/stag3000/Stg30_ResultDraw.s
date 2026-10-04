@@ -12,9 +12,9 @@ glabel Stg30_ResultDraw
     /* E8D4 80071C34 C03C5624 */  addiu      $s6, $v0, %lo(Stg30_Battle)
     /* E8D8 80071C38 1800B2AF */  sw         $s2, 0x18($sp)
     /* E8DC 80071C3C 2190C002 */  addu       $s2, $s6, $zero
-    /* E8E0 80071C40 0780023C */  lui        $v0, %hi(D_80073700)
+    /* E8E0 80071C40 0780023C */  lui        $v0, %hi(Stg30_ResultParts)
     /* E8E4 80071C44 2000B4AF */  sw         $s4, 0x20($sp)
-    /* E8E8 80071C48 00375424 */  addiu      $s4, $v0, %lo(D_80073700)
+    /* E8E8 80071C48 00375424 */  addiu      $s4, $v0, %lo(Stg30_ResultParts)
     /* E8EC 80071C4C 3000BFAF */  sw         $ra, 0x30($sp)
     /* E8F0 80071C50 2400B5AF */  sw         $s5, 0x24($sp)
     /* E8F4 80071C54 1C00B3AF */  sw         $s3, 0x1C($sp)

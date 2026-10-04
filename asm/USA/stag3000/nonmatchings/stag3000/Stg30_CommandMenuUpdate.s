@@ -175,10 +175,10 @@ glabel Stg30_CommandMenuUpdate
     /* 1A34 80064D94 3C001224 */  addiu      $s2, $zero, 0x3C
     /* 1A38 80064D98 02001124 */  addiu      $s1, $zero, 0x2
     /* 1A3C 80064D9C 08001024 */  addiu      $s0, $zero, 0x8
-    /* 1A40 80064DA0 0680033C */  lui        $v1, %hi(D_800633E8)
-    /* 1A44 80064DA4 E8336224 */  addiu      $v0, $v1, %lo(D_800633E8)
+    /* 1A40 80064DA0 0680033C */  lui        $v1, %hi(Stg30_TamerNameTextPos)
+    /* 1A44 80064DA4 E8336224 */  addiu      $v0, $v1, %lo(Stg30_TamerNameTextPos)
     /* 1A48 80064DA8 02004794 */  lhu        $a3, 0x2($v0)
-    /* 1A4C 80064DAC E8336294 */  lhu        $v0, %lo(D_800633E8)($v1)
+    /* 1A4C 80064DAC E8336294 */  lhu        $v0, %lo(Stg30_TamerNameTextPos)($v1)
     /* 1A50 80064DB0 0438C700 */  sllv       $a3, $a3, $a2
     /* 1A54 80064DB4 3E4D000C */  jal        Text_OpenPacked
     /* 1A58 80064DB8 25384700 */   or        $a3, $v0, $a3

@@ -1,8 +1,8 @@
 nonmatching Menu_ConfirmSinglePick, 0xA8
 
 glabel Menu_ConfirmSinglePick
-    /* 8144 80017944 0680023C */  lui        $v0, %hi(D_8005F704)
-    /* 8148 80017948 04F7428C */  lw         $v0, %lo(D_8005F704)($v0)
+    /* 8144 80017944 0680023C */  lui        $v0, %hi(Pad_Cross)
+    /* 8148 80017948 04F7428C */  lw         $v0, %lo(Pad_Cross)($v0)
     /* 814C 8001794C E0FFBD27 */  addiu      $sp, $sp, -0x20
     /* 8150 80017950 1800B2AF */  sw         $s2, 0x18($sp)
     /* 8154 80017954 21908000 */  addu       $s2, $a0, $zero

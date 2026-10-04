@@ -22,8 +22,8 @@ glabel Stg30_SkillMenuRefreshText
   .L800664CC:
     /* 316C 800664CC 21800000 */  addu       $s0, $zero, $zero
     /* 3170 800664D0 21F0A002 */  addu       $fp, $s5, $zero
-    /* 3174 800664D4 0780023C */  lui        $v0, %hi(D_800730E8)
-    /* 3178 800664D8 E8304824 */  addiu      $t0, $v0, %lo(D_800730E8)
+    /* 3174 800664D4 0780023C */  lui        $v0, %hi(Stg30_SkillListTextPos)
+    /* 3178 800664D8 E8304824 */  addiu      $t0, $v0, %lo(Stg30_SkillListTextPos)
     /* 317C 800664DC 21B0E002 */  addu       $s6, $s7, $zero
     /* 3180 800664E0 21880002 */  addu       $s1, $s0, $zero
   .L800664E4:
@@ -106,12 +106,12 @@ glabel Stg30_SkillMenuRefreshText
     /* 32B0 80066610 14008426 */   addiu     $a0, $s4, 0x14
     /* 32B4 80066614 21280002 */  addu       $a1, $s0, $zero
     /* 32B8 80066618 03000224 */  addiu      $v0, $zero, 0x3
-    /* 32BC 8006661C 0680033C */  lui        $v1, %hi(D_800633F4)
+    /* 32BC 8006661C 0680033C */  lui        $v1, %hi(Stg30_SkillDescTextPos)
     /* 32C0 80066620 480090AE */  sw         $s0, 0x48($s4)
     /* 32C4 80066624 1400A2AF */  sw         $v0, 0x14($sp)
-    /* 32C8 80066628 F4336224 */  addiu      $v0, $v1, %lo(D_800633F4)
+    /* 32C8 80066628 F4336224 */  addiu      $v0, $v1, %lo(Stg30_SkillDescTextPos)
     /* 32CC 8006662C 02004794 */  lhu        $a3, 0x2($v0)
-    /* 32D0 80066630 F4336294 */  lhu        $v0, %lo(D_800633F4)($v1)
+    /* 32D0 80066630 F4336294 */  lhu        $v0, %lo(Stg30_SkillDescTextPos)($v1)
     /* 32D4 80066634 21300000 */  addu       $a2, $zero, $zero
     /* 32D8 80066638 1000A0AF */  sw         $zero, 0x10($sp)
     /* 32DC 8006663C 003C0700 */  sll        $a3, $a3, 16

@@ -267,10 +267,10 @@ glabel Stg30_ItemMenuDraw
     /* 2AD8 80065E38 21280002 */   addu      $a1, $s0, $zero
     /* 2ADC 80065E3C 21888002 */  addu       $s1, $s4, $zero
     /* 2AE0 80065E40 27201000 */  nor        $a0, $zero, $s0
-    /* 2AE4 80065E44 0780033C */  lui        $v1, %hi(D_800730A8)
+    /* 2AE4 80065E44 0780033C */  lui        $v1, %hi(Stg30_ItemMenuArrowBlinkMasks)
     /* 2AE8 80065E48 0780023C */  lui        $v0, %hi(Stg30_ItemMenuColumn)
     /* 2AEC 80065E4C E8374284 */  lh         $v0, %lo(Stg30_ItemMenuColumn)($v0)
-    /* 2AF0 80065E50 A8306324 */  addiu      $v1, $v1, %lo(D_800730A8)
+    /* 2AF0 80065E50 A8306324 */  addiu      $v1, $v1, %lo(Stg30_ItemMenuArrowBlinkMasks)
     /* 2AF4 80065E54 80100200 */  sll        $v0, $v0, 2
     /* 2AF8 80065E58 21104300 */  addu       $v0, $v0, $v1
     /* 2AFC 80065E5C 0000428C */  lw         $v0, 0x0($v0)
@@ -308,10 +308,10 @@ glabel Stg30_ItemMenuDraw
     /* 2B6C 80065ECC 3C00468E */  lw         $a2, 0x3C($s2)
     /* 2B70 80065ED0 5475000C */  jal        Gfx_SetPartsScale
     /* 2B74 80065ED4 00100524 */   addiu     $a1, $zero, 0x1000
-    /* 2B78 80065ED8 0780033C */  lui        $v1, %hi(D_800730B8)
+    /* 2B78 80065ED8 0780033C */  lui        $v1, %hi(Stg30_ItemMenuColHideMasks)
     /* 2B7C 80065EDC 0780023C */  lui        $v0, %hi(Stg30_ItemMenuColumn)
     /* 2B80 80065EE0 E8374284 */  lh         $v0, %lo(Stg30_ItemMenuColumn)($v0)
-    /* 2B84 80065EE4 B8306324 */  addiu      $v1, $v1, %lo(D_800730B8)
+    /* 2B84 80065EE4 B8306324 */  addiu      $v1, $v1, %lo(Stg30_ItemMenuColHideMasks)
     /* 2B88 80065EE8 80100200 */  sll        $v0, $v0, 2
     /* 2B8C 80065EEC 21104300 */  addu       $v0, $v0, $v1
     /* 2B90 80065EF0 0000458C */  lw         $a1, 0x0($v0)
@@ -321,8 +321,8 @@ glabel Stg30_ItemMenuDraw
     /* 2BA0 80065F00 00000000 */  nop
     /* 2BA4 80065F04 32004010 */  beqz       $v0, .L80065FD0
     /* 2BA8 80065F08 21886002 */   addu      $s1, $s3, $zero
-    /* 2BAC 80065F0C 0780023C */  lui        $v0, %hi(D_800730C4)
-    /* 2BB0 80065F10 C4305524 */  addiu      $s5, $v0, %lo(D_800730C4)
+    /* 2BAC 80065F0C 0780023C */  lui        $v0, %hi(Stg30_ItemMenuCursorPos)
+    /* 2BB0 80065F10 C4305524 */  addiu      $s5, $v0, %lo(Stg30_ItemMenuCursorPos)
     /* 2BB4 80065F14 0780023C */  lui        $v0, %hi(Stg30_ItemMenuRow)
     /* 2BB8 80065F18 F0375424 */  addiu      $s4, $v0, %lo(Stg30_ItemMenuRow)
     /* 2BBC 80065F1C 0F007026 */  addiu      $s0, $s3, 0xF

@@ -47,8 +47,8 @@ glabel Stg30_SkillLearnRefreshList
     /* EB08 80071E68 21300000 */  addu       $a2, $zero, $zero
     /* EB0C 80071E6C 04004226 */  addiu      $v0, $s2, 0x4
     /* EB10 80071E70 80100200 */  sll        $v0, $v0, 2
-    /* EB14 80071E74 0780083C */  lui        $t0, %hi(D_80073730)
-    /* EB18 80071E78 30370825 */  addiu      $t0, $t0, %lo(D_80073730)
+    /* EB14 80071E74 0780083C */  lui        $t0, %hi(Stg30_SkillLearnTextPos)
+    /* EB18 80071E78 30370825 */  addiu      $t0, $t0, %lo(Stg30_SkillLearnTextPos)
     /* EB1C 80071E7C 21104800 */  addu       $v0, $v0, $t0
     /* EB20 80071E80 02004794 */  lhu        $a3, 0x2($v0)
     /* EB24 80071E84 00004294 */  lhu        $v0, 0x0($v0)
@@ -98,8 +98,8 @@ glabel Stg30_SkillLearnRefreshList
     /* EBD0 80071F30 21202002 */  addu       $a0, $s1, $zero
     /* EBD4 80071F34 21284000 */  addu       $a1, $v0, $zero
     /* EBD8 80071F38 21300000 */  addu       $a2, $zero, $zero
-    /* EBDC 80071F3C 0780023C */  lui        $v0, %hi(D_80073730)
-    /* EBE0 80071F40 30374224 */  addiu      $v0, $v0, %lo(D_80073730)
+    /* EBDC 80071F3C 0780023C */  lui        $v0, %hi(Stg30_SkillLearnTextPos)
+    /* EBE0 80071F40 30374224 */  addiu      $v0, $v0, %lo(Stg30_SkillLearnTextPos)
     /* EBE4 80071F44 6E004794 */  lhu        $a3, 0x6E($v0)
     /* EBE8 80071F48 6C004294 */  lhu        $v0, 0x6C($v0)
     /* EBEC 80071F4C 003C0700 */  sll        $a3, $a3, 16

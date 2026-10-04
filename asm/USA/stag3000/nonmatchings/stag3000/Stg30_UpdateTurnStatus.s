@@ -5,8 +5,8 @@ glabel Stg30_UpdateTurnStatus
     /* 66E8 80069A48 3000B4AF */  sw         $s4, 0x30($sp)
     /* 66EC 80069A4C 21A08000 */  addu       $s4, $a0, $zero
     /* 66F0 80069A50 0780023C */  lui        $v0, %hi(Stg30_Battle)
-    /* 66F4 80069A54 0780043C */  lui        $a0, %hi(D_800731B8)
-    /* 66F8 80069A58 B831838C */  lw         $v1, %lo(D_800731B8)($a0)
+    /* 66F4 80069A54 0780043C */  lui        $a0, %hi(Stg30_StatusWearOff4Masks)
+    /* 66F8 80069A58 B831838C */  lw         $v1, %lo(Stg30_StatusWearOff4Masks)($a0)
     /* 66FC 80069A5C C03C4224 */  addiu      $v0, $v0, %lo(Stg30_Battle)
     /* 6700 80069A60 3C00BFAF */  sw         $ra, 0x3C($sp)
     /* 6704 80069A64 3800B6AF */  sw         $s6, 0x38($sp)
@@ -20,9 +20,9 @@ glabel Stg30_UpdateTurnStatus
     /* 6724 80069A84 21984000 */  addu       $s3, $v0, $zero
     /* 6728 80069A88 80101400 */  sll        $v0, $s4, 2
     /* 672C 80069A8C 21905300 */  addu       $s2, $v0, $s3
-    /* 6730 80069A90 B8319024 */  addiu      $s0, $a0, %lo(D_800731B8)
-    /* 6734 80069A94 0780023C */  lui        $v0, %hi(D_800731C8)
-    /* 6738 80069A98 C8315124 */  addiu      $s1, $v0, %lo(D_800731C8)
+    /* 6730 80069A90 B8319024 */  addiu      $s0, $a0, %lo(Stg30_StatusWearOff4Masks)
+    /* 6734 80069A94 0780023C */  lui        $v0, %hi(Stg30_StatusWearOff4Labels)
+    /* 6738 80069A98 C8315124 */  addiu      $s1, $v0, %lo(Stg30_StatusWearOff4Labels)
   .L80069A9C:
     /* 673C 80069A9C 1C03428E */  lw         $v0, 0x31C($s2)
     /* 6740 80069AA0 0000038E */  lw         $v1, 0x0($s0)
@@ -50,17 +50,17 @@ glabel Stg30_UpdateTurnStatus
     /* 6794 80069AF4 E9FF4014 */  bnez       $v0, .L80069A9C
     /* 6798 80069AF8 02003126 */   addiu     $s1, $s1, 0x2
   .L80069AFC:
-    /* 679C 80069AFC 0780033C */  lui        $v1, %hi(D_800731D0)
-    /* 67A0 80069B00 D031628C */  lw         $v0, %lo(D_800731D0)($v1)
+    /* 679C 80069AFC 0780033C */  lui        $v1, %hi(Stg30_StatusWearOff3Masks)
+    /* 67A0 80069B00 D031628C */  lw         $v0, %lo(Stg30_StatusWearOff3Masks)($v1)
     /* 67A4 80069B04 00000000 */  nop
     /* 67A8 80069B08 28004010 */  beqz       $v0, .L80069BAC
     /* 67AC 80069B0C 0780023C */   lui       $v0, %hi(Stg30_Battle)
     /* 67B0 80069B10 C03C5324 */  addiu      $s3, $v0, %lo(Stg30_Battle)
     /* 67B4 80069B14 80101400 */  sll        $v0, $s4, 2
     /* 67B8 80069B18 21805300 */  addu       $s0, $v0, $s3
-    /* 67BC 80069B1C D0317124 */  addiu      $s1, $v1, %lo(D_800731D0)
-    /* 67C0 80069B20 0780023C */  lui        $v0, %hi(D_800731FC)
-    /* 67C4 80069B24 FC315224 */  addiu      $s2, $v0, %lo(D_800731FC)
+    /* 67BC 80069B1C D0317124 */  addiu      $s1, $v1, %lo(Stg30_StatusWearOff3Masks)
+    /* 67C0 80069B20 0780023C */  lui        $v0, %hi(Stg30_StatusWearOff3Labels)
+    /* 67C4 80069B24 FC315224 */  addiu      $s2, $v0, %lo(Stg30_StatusWearOff3Labels)
   .L80069B28:
     /* 67C8 80069B28 1C03028E */  lw         $v0, 0x31C($s0)
     /* 67CC 80069B2C 0000238E */  lw         $v1, 0x0($s1)

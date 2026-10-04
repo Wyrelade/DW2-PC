@@ -125,8 +125,8 @@ glabel Stg30_InterruptSelectDraw
     /* CE1C 8007017C 00000000 */  nop
     /* CE20 80070180 17004010 */  beqz       $v0, .L800701E0
     /* CE24 80070184 21308000 */   addu      $a2, $a0, $zero
-    /* CE28 80070188 0780023C */  lui        $v0, %hi(D_80073340)
-    /* CE2C 8007018C 40334224 */  addiu      $v0, $v0, %lo(D_80073340)
+    /* CE28 80070188 0780023C */  lui        $v0, %hi(Stg30_InterruptCursorMasks)
+    /* CE2C 8007018C 40334224 */  addiu      $v0, $v0, %lo(Stg30_InterruptCursorMasks)
     /* CE30 80070190 80180500 */  sll        $v1, $a1, 2
     /* CE34 80070194 21386200 */  addu       $a3, $v1, $v0
     /* CE38 80070198 01000824 */  addiu      $t0, $zero, 0x1

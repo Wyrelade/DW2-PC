@@ -12,16 +12,16 @@ glabel Stg30_FightBgUpdate
     /* 72C 80063A8C C03C428C */  lw         $v0, %lo(Stg30_Battle)($v0)
     /* 730 80063A90 00000000 */  nop
     /* 734 80063A94 04004010 */  beqz       $v0, .L80063AA8
-    /* 738 80063A98 0780023C */   lui       $v0, %hi(D_80073008)
-    /* 73C 80063A9C 0830428C */  lw         $v0, %lo(D_80073008)($v0)
+    /* 738 80063A98 0780023C */   lui       $v0, %hi(Stg30_SpecialFightBgModel)
+    /* 73C 80063A9C 0830428C */  lw         $v0, %lo(Stg30_SpecialFightBgModel)($v0)
     /* 740 80063AA0 B88E0108 */  j          .L80063AE0
     /* 744 80063AA4 0C0002AE */   sw        $v0, 0xC($s0)
   .L80063AA8:
     /* 748 80063AA8 0780043C */  lui        $a0, %hi(Stg30_FightBgModels)
-    /* 74C 80063AAC 0780033C */  lui        $v1, %hi(D_8007300C)
+    /* 74C 80063AAC 0780033C */  lui        $v1, %hi(Stg30_FightBgByFloorElem)
     /* 750 80063AB0 0680023C */  lui        $v0, %hi(D_8005E5DD)
     /* 754 80063AB4 DDE54290 */  lbu        $v0, %lo(D_8005E5DD)($v0)
-    /* 758 80063AB8 0C306324 */  addiu      $v1, $v1, %lo(D_8007300C)
+    /* 758 80063AB8 0C306324 */  addiu      $v1, $v1, %lo(Stg30_FightBgByFloorElem)
     /* 75C 80063ABC 80100200 */  sll        $v0, $v0, 2
     /* 760 80063AC0 21104300 */  addu       $v0, $v0, $v1
     /* 764 80063AC4 0000428C */  lw         $v0, 0x0($v0)

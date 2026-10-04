@@ -939,3 +939,4 @@ Flag_GetEntryPosList = 0x8001E5E8; // type:func
 Flag_GetEntryDigiId = 0x8001E634; // type:func
 Flag_GetEntryDir = 0x8001E658; // type:func
 Save_PlayerName = 0x8005E634;
+Pad_Cross = 0x8005F704;

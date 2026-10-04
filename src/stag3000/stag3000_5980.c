@@ -357,16 +357,16 @@ s32 Stg30_UpdateTurnStatus(s32 idx) {
     s32 t;
 
     Stg30_Battle.field_3B0 = 0;
-    for (i = 0; D_800731B8[i] != 0; i++) {
-        if ((Stg30_Battle.field_31C[idx] & D_800731B8[i]) && (Rand_Next() & 3) == 0) {
-            Stg30_Battle.field_31C[idx] -= D_800731B8[i];
-            Stg30_Battle.field_3B0 = D_800731C8[i];
+    for (i = 0; Stg30_StatusWearOff4Masks[i] != 0; i++) {
+        if ((Stg30_Battle.field_31C[idx] & Stg30_StatusWearOff4Masks[i]) && (Rand_Next() & 3) == 0) {
+            Stg30_Battle.field_31C[idx] -= Stg30_StatusWearOff4Masks[i];
+            Stg30_Battle.field_3B0 = Stg30_StatusWearOff4Labels[i];
         }
     }
-    for (i = 0; D_800731D0[i] != 0; i++) {
-        if ((Stg30_Battle.field_31C[idx] & D_800731D0[i]) && (u16)((u16)Rand_Next() % 3) == 0) {
-            Stg30_Battle.field_31C[idx] -= D_800731D0[i];
-            Stg30_Battle.field_3B0 = D_800731FC[i];
+    for (i = 0; Stg30_StatusWearOff3Masks[i] != 0; i++) {
+        if ((Stg30_Battle.field_31C[idx] & Stg30_StatusWearOff3Masks[i]) && (u16)((u16)Rand_Next() % 3) == 0) {
+            Stg30_Battle.field_31C[idx] -= Stg30_StatusWearOff3Masks[i];
+            Stg30_Battle.field_3B0 = Stg30_StatusWearOff3Labels[i];
         }
     }
     if (Stg30_Battle.field_31C[idx] & 4) {

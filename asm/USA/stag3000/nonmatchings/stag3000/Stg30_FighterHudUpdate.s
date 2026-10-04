@@ -41,9 +41,9 @@ glabel Stg30_FighterHudUpdate
     /* DAB4 80070E14 3A006210 */  beq        $v1, $v0, .L80070F00
     /* DAB8 80070E18 0780033C */   lui       $v1, %hi(Stg30_Battle)
   .L80070E1C:
-    /* DABC 80070E1C 0780033C */  lui        $v1, %hi(D_80073454)
+    /* DABC 80070E1C 0780033C */  lui        $v1, %hi(Stg30_FighterHudFadeDelay)
     /* DAC0 80070E20 0800028E */  lw         $v0, 0x8($s0)
-    /* DAC4 80070E24 54346324 */  addiu      $v1, $v1, %lo(D_80073454)
+    /* DAC4 80070E24 54346324 */  addiu      $v1, $v1, %lo(Stg30_FighterHudFadeDelay)
     /* DAC8 80070E28 80100200 */  sll        $v0, $v0, 2
     /* DACC 80070E2C 21104300 */  addu       $v0, $v0, $v1
     /* DAD0 80070E30 2400038E */  lw         $v1, 0x24($s0)
@@ -76,10 +76,10 @@ glabel Stg30_FighterHudUpdate
     /* DB34 80070E94 0780033C */  lui        $v1, %hi(D_80073D24)
     /* DB38 80070E98 243D6324 */  addiu      $v1, $v1, %lo(D_80073D24)
     /* DB3C 80070E9C 21104300 */  addu       $v0, $v0, $v1
-    /* DB40 80070EA0 0780033C */  lui        $v1, %hi(D_8007346C)
+    /* DB40 80070EA0 0780033C */  lui        $v1, %hi(Stg30_FighterHudNamePos)
     /* DB44 80070EA4 2400A2AF */  sw         $v0, 0x24($sp)
     /* DB48 80070EA8 0800028E */  lw         $v0, 0x8($s0)
-    /* DB4C 80070EAC 6C346324 */  addiu      $v1, $v1, %lo(D_8007346C)
+    /* DB4C 80070EAC 6C346324 */  addiu      $v1, $v1, %lo(Stg30_FighterHudNamePos)
     /* DB50 80070EB0 80100200 */  sll        $v0, $v0, 2
     /* DB54 80070EB4 21104300 */  addu       $v0, $v0, $v1
     /* DB58 80070EB8 00004294 */  lhu        $v0, 0x0($v0)
@@ -122,8 +122,8 @@ glabel Stg30_FighterHudUpdate
     /* DBE0 80070F40 0780023C */  lui        $v0, %hi(Stg30_OrderLabelMsgs)
     /* DBE4 80070F44 84344224 */  addiu      $v0, $v0, %lo(Stg30_OrderLabelMsgs)
     /* DBE8 80070F48 21106200 */  addu       $v0, $v1, $v0
-    /* DBEC 80070F4C 0780033C */  lui        $v1, %hi(D_8007348C)
-    /* DBF0 80070F50 8C346324 */  addiu      $v1, $v1, %lo(D_8007348C)
+    /* DBEC 80070F4C 0780033C */  lui        $v1, %hi(Stg30_OrderLabelPos)
+    /* DBF0 80070F50 8C346324 */  addiu      $v1, $v1, %lo(Stg30_OrderLabelPos)
     /* DBF4 80070F54 FFFF4590 */  lbu        $a1, -0x1($v0)
     /* DBF8 80070F58 80100700 */  sll        $v0, $a3, 2
     /* DBFC 80070F5C 21104300 */  addu       $v0, $v0, $v1

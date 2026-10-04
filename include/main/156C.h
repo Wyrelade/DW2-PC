@@ -3205,7 +3205,7 @@ typedef struct {
     u8 _pad1[0x3];
     s32 _pad4[0x16];
 } DigiRosterSwapRec;
-/* Non-small views of Menu_Ctx / D_8005F704 for Menu_DigiTransferPlace. */
+/* Non-small views of Menu_Ctx / Pad_Cross for Menu_DigiTransferPlace. */
 typedef struct {
     MenuCtx *p;
     s32 _r[3];

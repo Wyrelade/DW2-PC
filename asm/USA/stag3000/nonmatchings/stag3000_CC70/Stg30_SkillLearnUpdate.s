@@ -95,10 +95,10 @@ glabel Stg30_SkillLearnUpdate
     /* EED8 80072238 0780023C */  lui        $v0, %hi(D_80073D24)
     /* EEDC 8007223C 243D4224 */  addiu      $v0, $v0, %lo(D_80073D24)
     /* EEE0 80072240 2128A200 */  addu       $a1, $a1, $v0
-    /* EEE4 80072244 0780023C */  lui        $v0, %hi(D_80073730)
-    /* EEE8 80072248 30375024 */  addiu      $s0, $v0, %lo(D_80073730)
+    /* EEE4 80072244 0780023C */  lui        $v0, %hi(Stg30_SkillLearnTextPos)
+    /* EEE8 80072248 30375024 */  addiu      $s0, $v0, %lo(Stg30_SkillLearnTextPos)
     /* EEEC 8007224C 02000796 */  lhu        $a3, 0x2($s0)
-    /* EEF0 80072250 30374294 */  lhu        $v0, %lo(D_80073730)($v0)
+    /* EEF0 80072250 30374294 */  lhu        $v0, %lo(Stg30_SkillLearnTextPos)($v0)
     /* EEF4 80072254 0438C700 */  sllv       $a3, $a3, $a2
     /* EEF8 80072258 3E4D000C */  jal        Text_OpenPacked
     /* EEFC 8007225C 25384700 */   or        $a3, $v0, $a3

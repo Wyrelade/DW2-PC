@@ -6,9 +6,9 @@ glabel Stg30_SkillLearnRefreshButtons
     /* EC44 80071FA4 21A08000 */  addu       $s4, $a0, $zero
     /* EC48 80071FA8 1000B0AF */  sw         $s0, 0x10($sp)
     /* EC4C 80071FAC 21800000 */  addu       $s0, $zero, $zero
-    /* EC50 80071FB0 0780023C */  lui        $v0, %hi(D_80073730)
+    /* EC50 80071FB0 0780023C */  lui        $v0, %hi(Stg30_SkillLearnTextPos)
     /* EC54 80071FB4 2400B5AF */  sw         $s5, 0x24($sp)
-    /* EC58 80071FB8 30375524 */  addiu      $s5, $v0, %lo(D_80073730)
+    /* EC58 80071FB8 30375524 */  addiu      $s5, $v0, %lo(Stg30_SkillLearnTextPos)
     /* EC5C 80071FBC 1C00B3AF */  sw         $s3, 0x1C($sp)
     /* EC60 80071FC0 60001324 */  addiu      $s3, $zero, 0x60
     /* EC64 80071FC4 1800B2AF */  sw         $s2, 0x18($sp)

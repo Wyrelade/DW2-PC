@@ -526,8 +526,8 @@ glabel Stg30_ApplySkillStatus
     /* 7570 8006A8D0 21400000 */  addu       $t0, $zero, $zero
     /* 7574 8006A8D4 80101200 */  sll        $v0, $s2, 2
     /* 7578 8006A8D8 21505000 */  addu       $t2, $v0, $s0
-    /* 757C 8006A8DC 0780023C */  lui        $v0, %hi(D_80073254)
-    /* 7580 8006A8E0 54324724 */  addiu      $a3, $v0, %lo(D_80073254)
+    /* 757C 8006A8DC 0780023C */  lui        $v0, %hi(Stg30_CureStatusLabels)
+    /* 7580 8006A8E0 54324724 */  addiu      $a3, $v0, %lo(Stg30_CureStatusLabels)
     /* 7584 8006A8E4 0780023C */  lui        $v0, %hi(Stg30_CureStatusMasks)
     /* 7588 8006A8E8 10324624 */  addiu      $a2, $v0, %lo(Stg30_CureStatusMasks)
   .L8006A8EC:

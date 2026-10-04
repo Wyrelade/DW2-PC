@@ -688,7 +688,7 @@ extern s32 D_8005F794;
 extern GameStateView *Save_GameStatePtr;
 extern s32 Cd_PreloadIds[];
 extern s32 Cd_PreloadCount;
-extern s32 D_8005F704;
+extern s32 Pad_Cross;
 extern void LoadImage(RECT *rect, u32 *p);
 extern void Gfx_ReleaseTexSlot(s32 *arg0);
 extern void Mem_Free(ActorWork *arg0);

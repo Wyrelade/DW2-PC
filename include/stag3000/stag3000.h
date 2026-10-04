@@ -519,7 +519,7 @@ typedef struct {
     u8 _pad24[0x8];
 } Stg30TextArgs;
 
-/* 8-byte text layout records of D_80073690 (Stg30_ResultUpdate). */
+/* 8-byte text layout records of Stg30_ResultTextLayout (Stg30_ResultUpdate). */
 typedef struct {
     /* 0x00 */ u8 slot;
     /* 0x01 */ u8 src;
@@ -528,8 +528,8 @@ typedef struct {
     /* 0x04 */ Stg30XY pos;
 } Stg30TextRec;
 
-extern Stg30TextRec D_80073690[];
-extern s32 D_8005F704;
+extern Stg30TextRec Stg30_ResultTextLayout[];
+extern s32 Pad_Cross;
 extern s32 Digi_GetExpToNextLevel(s32, s32, s32);
 extern u8 *Stg30_NumToDigits(u8 *out, s32 n);
 extern void Stg30_LevelUpStats(DigiRosterEntry *);
@@ -593,18 +593,18 @@ typedef struct {
 
 extern Stg30DigiS D_80073CD8[];
 extern s32 Stg30_FighterHudParts[];
-extern s32 D_800734B0[];
-extern s32 D_800734C8[];
-extern Stg30XY D_800734E0[];
+extern s32 Stg30_StatusIconGroups[];
+extern s32 Stg30_StatusIconFlags[];
+extern Stg30XY Stg30_StatusIconPos[];
 extern void Stg30_SetGaugeParts(Stg30Part *p, s32 unit, s32 num, s32 den);
 
-extern s32 D_80073108[];
-extern Stg30XY D_80073118[];
-extern s32 D_80073128[];
+extern s32 Stg30_SkillMenuArrowBlinkMasks[];
+extern Stg30XY Stg30_SkillMenuCursorPos[];
+extern s32 Stg30_SkillMenuColHideMasks[];
 
-extern s32 D_80073150[];
-extern s32 D_80073168;
-extern s32 D_8007316C;
+extern s32 Stg30_TargetCursorMasks[];
+extern s32 Stg30_TargetAllEnemiesMask;
+extern s32 Stg30_TargetAllAlliesMask;
 extern s32 func_8001F0E4(s32 id);
 extern s32 func_8001F020(s32 id);  /* u8 in the main exe; used unmasked here */
 /* Stg30_Battle roster names: Stg30StateDigis.digis[i].name as a scalar reloc (0x64 = 0x18 + 0x4C). */
@@ -613,28 +613,28 @@ typedef struct {
     u8 _pad0E[0x4E];
 } Stg30Name5C; /* size 0x5C */
 extern Stg30Name5C D_80073D24[];
-extern s32 D_80073454[];
-extern Stg30XY D_8007346C[];
+extern s32 Stg30_FighterHudFadeDelay[];
+extern Stg30XY Stg30_FighterHudNamePos[];
 extern u8 Stg30_OrderLabelMsgs[];
-extern Halves D_8007348C[];
+extern Halves Stg30_OrderLabelPos[];
 extern void Mem_FillWordsNeg1(s32 *arg0, s32 arg1);
 
 extern Stg30Save73A50 Stg30_FighterStateBackup;
 extern s32 Stg30_CommandMenuCursor;
-extern u8 D_80073070[];
-extern s32 D_80073700[];
-extern Stg30XY D_80073090[];
+extern u8 Stg30_CursorBlinkPalettes[];
+extern s32 Stg30_ResultParts[];
+extern Stg30XY Stg30_ItemListTextPos[];
 extern s16 Stg30_ItemMenuColumn;
 extern s16 Stg30_ItemMenuRow[];
 extern s16 Stg30_ItemMenuScroll[];
-extern const Stg30XY D_800633EC;
-extern Stg30XY D_800730E8[];
+extern const Stg30XY Stg30_ItemDescTextPos;
+extern Stg30XY Stg30_SkillListTextPos[];
 extern s16 Stg30_SkillMenuColumn;
 extern s16 Stg30_SkillMenuRow[];
 extern s16 Stg30_SkillMenuScroll[];
 extern Stg30Rec1B Stg30_SkillMenuLists[];
-extern const Stg30XY D_800633F4;
-extern s32 D_80073340[];
+extern const Stg30XY Stg30_SkillDescTextPos;
+extern s32 Stg30_InterruptCursorMasks[];
 extern s32 Stg30_XaTrackStart[];
 extern s32 Stg30_XaTrackLength[];
 extern s32 Stg30_PopupItemMasks[];
@@ -642,19 +642,19 @@ extern s32 Stg30_PopupNumMasks[];
 extern s32 Stg30_PopupNumParts[];
 extern Stg30Rec73F6C D_80073F6C[];
 extern s32 Stg30_BannerParts[];
-extern Halves D_80073730[];
+extern Halves Stg30_SkillLearnTextPos[];
 extern s16 Stg30_BattleScript[];
 extern u16 D_8005F72A;  /* Pad_State[0].pressed as a scalar reloc */
 extern Stg30Glob5D5A0 D_8005D5A0;
 extern s32 Stg30_TurnOrder[12];
 extern Stg30State Stg30_Battle;
-extern s16 D_80073408[];  /* camera goal x per party slot (Stg30_CameraUpdate) */
-extern s16 D_80073414[];  /* camera goal tables indexed by digimon height step */
-extern s16 D_80073428[];
+extern s16 Stg30_CloseUpRotY[];  /* camera goal x per party slot (Stg30_CameraUpdate) */
+extern s16 Stg30_CloseUpVpz[];  /* camera goal tables indexed by digimon height step */
+extern s16 Stg30_CloseUpVry[];
 extern s32 Stg30_CamShotVariant;    /* random camera variant (0..3) */
 extern s32 Stg30_FightBgModels[];
-extern s32 D_80073008;
-extern s32 D_8007300C[];
+extern s32 Stg30_SpecialFightBgModel;
+extern s32 Stg30_FightBgByFloorElem[];
 extern s32 Stg30_FightMsgParts[];
 extern s32 D_80074098;
 extern DigiRosterEntry D_8005F398;  /* Save_GameState.elems[35] as a scalar reloc */
@@ -758,10 +758,10 @@ extern void Stg30_TurnOrderInsert(s32 idx, s32 v);
 extern void Stg30_TurnOrderRemove(s32 i);
 extern s32 Stg30_TurnOrderFind(s32 v);
 extern s32 Stg30_TurnOrderFreeIndex(void);
-extern s32 D_800731B8[];
-extern u16 D_800731C8[];
-extern s32 D_800731D0[];
-extern u16 D_800731FC[];
+extern s32 Stg30_StatusWearOff4Masks[];
+extern u16 Stg30_StatusWearOff4Labels[];
+extern s32 Stg30_StatusWearOff3Masks[];
+extern u16 Stg30_StatusWearOff3Labels[];
 extern s32 Skill_GetCastAnim(s32 id);
 extern u16 Stg30_HpMpGrowth[6][3][4];
 extern u16 Stg30_AtkDefGrowth[5][3][4];
@@ -773,8 +773,8 @@ extern s16 D_80073E02;  /* Stg30_Battle.entries[3].field_2E as a scalar reloc */
 extern s16 D_80073E5E;  /* Stg30_Battle.entries[4].field_2E */
 extern s16 D_80073EBA;  /* Stg30_Battle.entries[5].field_2E */
 extern PadState Pad_State[];
-extern Halves D_800633F8;
-extern Halves D_800730F8[];
+extern Halves Stg30_SkillMenuTitlePos;
+extern Halves Stg30_SkillColumnLabelPos[];
 extern s32 D_80073CD4;  /* Stg30_Battle.entries[0].field_14 as a scalar reloc */
 extern void Stg30_SkillMenuRefreshText(Actor *a0);
 extern void Stg30_ItemMenuRefreshText(Actor *a0);
@@ -784,11 +784,11 @@ extern s32 Stg30_TargetFirst(s32 team, s32 flag, s32 mode);
 extern s32 Stg30_TargetPrev(s32 team, s32 cur, s32 flag, s32 mode);
 extern s32 Stg30_TargetNext(s32 team, s32 cur, s32 flag, s32 mode);
 extern s32 Stg30_ItemToSkillId(s32 c);
-extern Halves D_800633F0;
-extern Halves D_8007309C[];
-extern s32 D_800730A8[];
-extern s32 D_800730B8[];
-extern Stg30XY D_800730C4[];
+extern Halves Stg30_ItemMenuTitlePos;
+extern Halves Stg30_ItemColumnLabelPos[];
+extern s32 Stg30_ItemMenuArrowBlinkMasks[];
+extern s32 Stg30_ItemMenuColHideMasks[];
+extern Stg30XY Stg30_ItemMenuCursorPos[];
 extern void Stg30_SkillLearnRefreshList(Actor *a0);
 extern void Stg30_SkillLearnRefreshButtons(Actor *a0);
 extern void Stg30_SkillLearnCompact(Actor *a0, s32 row);
@@ -804,7 +804,7 @@ extern void Stg30_StatDebuff(s16 *max, s16 *b, s16 *c);
 extern void Stg30_StatBuff(s16 *max, s16 *b, s16 *c);
 extern s32 Stg30_ApplySkillStatus(s32 attacker, s32 target, s32 tech, s16 *p4, s16 *p5);
 extern s32 Stg30_CureStatusMasks[];
-extern s16 D_80073254[];
+extern s16 Stg30_CureStatusLabels[];
 extern u16 D_8005E65E;  /* Save_GameState halfword at 0x3E as a scalar reloc (Z-cannon level) */
 
 /* Save_GameState viewed with the item-menu enable words/bytes Stg30_ItemMenuUpdate reads. */
@@ -821,7 +821,7 @@ typedef struct {
 
 
 extern u8 Save_PlayerName[];
-extern Halves D_800633E8;
+extern Halves Stg30_TamerNameTextPos;
 
 /* Save_GameState viewed with the words Stg30_JoinPromptUpdate reads (0x30 map id, 0x4A, 0x61). */
 typedef struct {
@@ -835,8 +835,8 @@ typedef struct {
     /* 0xE4 */ DigiRosterEntry elems[0x24];
 } Stg30GameRoster;
 
-extern Halves D_800737B8[];
-extern u8 D_800737C0[];
+extern Halves Stg30_JoinPromptTextPos[];
+extern u8 Stg30_MemoryCapacity[];
 extern u16 D_8005E650;  /* Save_GameState halfword at 0x30 as a scalar reloc (map id) */
 extern Blk5071C *D_8005071C;
 extern u8 *Digi_GetDefaultName(s32);
@@ -849,7 +849,7 @@ extern s32 D_80073CC4;  /* Stg30_Battle.entries[0].field_4 as a scalar reloc */
 extern void Stg30_DimFightersExcept(s32 sel, s32 from, s32 to);
 extern void Stg30_UndimPartyFighters(void);
 extern s32 D_8007409C;
-extern s16 D_80073188[][3];
+extern s16 Stg30_JoinChance[][3];
 extern s16 D_8005E5E0;  /* D_8005D5A0.field_1040 as a scalar reloc */
 extern s32 Sys_NextGameMode;  /* Sys_State.nextGameMode as a scalar reloc */
 extern s32 D_8005F790;  /* Sys_State.prevGameMode as a scalar reloc */
@@ -922,6 +922,6 @@ extern s32 Stg30_ApplySkillDamage(s32 attacker, s32 target, s32 tech, s16 *p4, s
 extern s32 Stg30_SkillHitCheck(s32 idx, s16 *tgt, s32 n, s32 id);
 extern s16 D_80074070;
 extern s16 D_80074074;
-extern s32 D_80073278;
+extern s32 Stg30_RepeatSkillCount;
 
 #endif

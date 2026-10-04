@@ -928,7 +928,7 @@ typedef struct {
     /* 0x70 */ s32 timer;
 } Stg20NpcWork;
 
-extern s32 D_8005F704; /* Pad_State[0].cross as a scalar reloc */
+extern s32 Pad_Cross; /* Pad_State[0].cross as a scalar reloc */
 extern s32 Stg20_PartsPageCategory[10];
 extern s32 Stg20_PartsPageSlot[10];
 

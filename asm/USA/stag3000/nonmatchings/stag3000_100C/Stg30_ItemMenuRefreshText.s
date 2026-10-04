@@ -4,9 +4,9 @@ glabel Stg30_ItemMenuRefreshText
     /* 1FF4 80065354 B0FFBD27 */  addiu      $sp, $sp, -0x50
     /* 1FF8 80065358 3400B3AF */  sw         $s3, 0x34($sp)
     /* 1FFC 8006535C 21980000 */  addu       $s3, $zero, $zero
-    /* 2000 80065360 0780023C */  lui        $v0, %hi(D_80073090)
+    /* 2000 80065360 0780023C */  lui        $v0, %hi(Stg30_ItemListTextPos)
     /* 2004 80065364 3800B4AF */  sw         $s4, 0x38($sp)
-    /* 2008 80065368 90305424 */  addiu      $s4, $v0, %lo(D_80073090)
+    /* 2008 80065368 90305424 */  addiu      $s4, $v0, %lo(Stg30_ItemListTextPos)
     /* 200C 8006536C 18000824 */  addiu      $t0, $zero, 0x18
     /* 2010 80065370 0780023C */  lui        $v0, %hi(Stg30_ItemMenuScroll)
     /* 2014 80065374 4400B7AF */  sw         $s7, 0x44($sp)
@@ -98,12 +98,12 @@ glabel Stg30_ItemMenuRefreshText
     /* 2160 800654C0 00000000 */  nop
     /* 2164 800654C4 12004510 */  beq        $v0, $a1, .L80065510
     /* 2168 800654C8 03000224 */   addiu     $v0, $zero, 0x3
-    /* 216C 800654CC 0680033C */  lui        $v1, %hi(D_800633EC)
+    /* 216C 800654CC 0680033C */  lui        $v1, %hi(Stg30_ItemDescTextPos)
     /* 2170 800654D0 F400A5AE */  sw         $a1, 0xF4($s5)
     /* 2174 800654D4 1400A2AF */  sw         $v0, 0x14($sp)
-    /* 2178 800654D8 EC336224 */  addiu      $v0, $v1, %lo(D_800633EC)
+    /* 2178 800654D8 EC336224 */  addiu      $v0, $v1, %lo(Stg30_ItemDescTextPos)
     /* 217C 800654DC 02004794 */  lhu        $a3, 0x2($v0)
-    /* 2180 800654E0 EC336294 */  lhu        $v0, %lo(D_800633EC)($v1)
+    /* 2180 800654E0 EC336294 */  lhu        $v0, %lo(Stg30_ItemDescTextPos)($v1)
     /* 2184 800654E4 21300000 */  addu       $a2, $zero, $zero
     /* 2188 800654E8 1000A0AF */  sw         $zero, 0x10($sp)
     /* 218C 800654EC 003C0700 */  sll        $a3, $a3, 16

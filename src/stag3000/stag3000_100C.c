@@ -272,7 +272,7 @@ void Stg30_CommandInputTask(Actor *a0) {
     }
 }
 
-INCLUDE_RODATA("asm/USA/stag3000/rodata", D_800633E8);
+INCLUDE_RODATA("asm/USA/stag3000/rodata", Stg30_TamerNameTextPos);
 void Stg30_CommandMenuUpdate(Actor *a0) {
     Stg30Work73078 *w = (Stg30Work73078 *)a0->work;
     Halves pos;
@@ -345,7 +345,7 @@ void Stg30_CommandMenuUpdate(Actor *a0) {
                 }
             } while (0);
             if (Stg30_Battle.entries[0].field_8 == 6) {
-                Text_OpenPacked(w->text, (s32)Save_PlayerName, 0x10, D_800633E8);
+                Text_OpenPacked(w->text, (s32)Save_PlayerName, 0x10, Stg30_TamerNameTextPos);
                 for (k = 0; k < 3; k++) {
                     if (Stg30_Battle.entries[0].field_0 != 0 && k != 0) {
                         s32 *text = &w->text[k + 1];
@@ -435,7 +435,7 @@ void Stg30_CommandMenuDraw(Actor *a0) {
                 if (a0->elapsed < 0x18) break;
                 a0->elapsed = a0->elapsed - 0x18;
             }
-            q->palette = D_80073070[a0->elapsed / 4];
+            q->palette = Stg30_CursorBlinkPalettes[a0->elapsed / 4];
         }
     }
     Gfx_DrawParts((EntA0 *)p);
@@ -519,7 +519,7 @@ void Stg30_OpenItemText(void *a0, s32 id, s32 color, Stg30XY pos, s32 name, s32 
     Text_Open(a0, &args);
 }
 
-INCLUDE_RODATA("asm/USA/stag3000/rodata", D_800633EC);
+INCLUDE_RODATA("asm/USA/stag3000/rodata", Stg30_ItemDescTextPos);
 void Stg30_ItemMenuRefreshText(Actor *a0) {
     Stg30Work730D0 *w = (Stg30Work730D0 *)a0->work;
     s32 i;
@@ -532,7 +532,7 @@ void Stg30_ItemMenuRefreshText(Actor *a0) {
         for (j = 0; j < 3; j++) {
             u8 *p = &row[j + Stg30_ItemMenuScroll[i]];
             if (*p != 0) {
-                Stg30XY pos = D_80073090[i];
+                Stg30XY pos = Stg30_ItemListTextPos[i];
                 pos.y += j * 0xB;
                 Stg30_OpenItemText(&w->texts[i][j], *p, (Stg30_ItemMenuColumn ^ i) != 0, pos, 1, 0);
             }
@@ -543,7 +543,7 @@ void Stg30_ItemMenuRefreshText(Actor *a0) {
     if (item != 0) {
         if (w->field_F4 != item) {
             w->field_F4 = item;
-            Stg30_OpenItemText(&w->field_8, item, 0, D_800633EC, 0, 3);
+            Stg30_OpenItemText(&w->field_8, item, 0, Stg30_ItemDescTextPos, 0, 3);
         }
     } else {
         w->field_F4 = -1;
@@ -572,7 +572,7 @@ void Stg30_ItemMenuInit(Actor *a0, s32 *args) {
     ((Stg30WorkWord *)a0->work)->field_0 = args[0];
 }
 
-INCLUDE_RODATA("asm/USA/stag3000/rodata", D_800633F0);
+INCLUDE_RODATA("asm/USA/stag3000/rodata", Stg30_ItemMenuTitlePos);
 void Stg30_ItemMenuUpdate(Actor *a0) {
     Stg30Work730D0 *w = (Stg30Work730D0 *)a0->work;
     Stg30GameFlags *g;
@@ -584,7 +584,7 @@ void Stg30_ItemMenuUpdate(Actor *a0) {
     switch (a0->stateLevel0) {
     case 0:
         Mem_FillWordsNeg1(&w->field_4, 0xE);
-        Text_OpenById(&w->field_4, 0x178, 0, D_800633F0);
+        Text_OpenById(&w->field_4, 0x178, 0, Stg30_ItemMenuTitlePos);
         g = (Stg30GameFlags *)&Save_GameState;
         if (g->field_3C != 0) {
             w->field_40[0] = 1;
@@ -697,7 +697,7 @@ void Stg30_ItemMenuUpdate(Actor *a0) {
                 } else {
                     c = 5;
                 }
-                Text_OpenById(&w->field_C[i], i + 7, c, D_8007309C[i]);
+                Text_OpenById(&w->field_C[i], i + 7, c, Stg30_ItemColumnLabelPos[i]);
             }
             Stg30_ItemMenuRefreshText(a0);
             break;
@@ -829,7 +829,7 @@ void Stg30_ItemMenuDraw(Actor *a0) {
             }
         }
         Gfx_HidePartsByMask((GfxPartMaskView *)p2, m);
-        m2 = ~m & D_800730A8[Stg30_ItemMenuColumn];
+        m2 = ~m & Stg30_ItemMenuArrowBlinkMasks[Stg30_ItemMenuColumn];
         for (q = p2; q->fileId != 0; q++) {
             if (q->groupMask & m2) {
                 q->palette = Math_PingPongRange(a0->elapsed, 4, 0, 3);
@@ -839,12 +839,12 @@ void Stg30_ItemMenuDraw(Actor *a0) {
     }
     p3 = (Stg30Part *)Cd_GetFileEntry(0x1A10014);
     Gfx_SetPartsScale((GfxPartScaleView *)p3, 0x1000, w->field_3C);
-    Gfx_HidePartsByMask((GfxPartMaskView *)p3, D_800730B8[Stg30_ItemMenuColumn]);
+    Gfx_HidePartsByMask((GfxPartMaskView *)p3, Stg30_ItemMenuColHideMasks[Stg30_ItemMenuColumn]);
     for (s = p3; s->fileId != 0; s++) {
         if (s->groupMask & 0x4000) {
             if (w->field_40[Stg30_ItemMenuColumn] != 0 && w->field_4C[Stg30_ItemMenuColumn] == 0) {
-                s->x = D_800730C4[Stg30_ItemMenuColumn].x;
-                s->y = D_800730C4[Stg30_ItemMenuColumn].y + Stg30_ItemMenuRow[Stg30_ItemMenuColumn] * 11;
+                s->x = Stg30_ItemMenuCursorPos[Stg30_ItemMenuColumn].x;
+                s->y = Stg30_ItemMenuCursorPos[Stg30_ItemMenuColumn].y + Stg30_ItemMenuRow[Stg30_ItemMenuColumn] * 11;
                 s->palette = Math_PingPongRange(a0->elapsed, 4, 0, 3);
                 s->visible = 1;
             } else {
@@ -954,7 +954,7 @@ void Stg30_OpenSkillText(void *a0, s32 id, s32 color, Stg30XY pos, s32 name, s32
     Text_Open(a0, &args);
 }
 
-INCLUDE_RODATA("asm/USA/stag3000/rodata", D_800633F4);
+INCLUDE_RODATA("asm/USA/stag3000/rodata", Stg30_SkillDescTextPos);
 void Stg30_SkillMenuRefreshText(Actor *a0) {
     Stg30Work73138 *w = (Stg30Work73138 *)a0->work;
     s32 i;
@@ -968,7 +968,7 @@ void Stg30_SkillMenuRefreshText(Actor *a0) {
             if (rec->field_D[off] != 0) {
                 s32 k = j + 6;
                 s32 color;
-                Stg30XY pos = D_800730E8[i];
+                Stg30XY pos = Stg30_SkillListTextPos[i];
                 pos.y += j * 0xB;
                 color = (Stg30_SkillMenuColumn ^ i) != 0;
                 Stg30_OpenSkillText(&w->texts[i * 3 + k], rec->field_D[off], color + rec->field_0[off], pos, 1, 0);
@@ -979,7 +979,7 @@ void Stg30_SkillMenuRefreshText(Actor *a0) {
     if (item != 0) {
         if (w->field_48 != item) {
             w->field_48 = item;
-            Stg30_OpenSkillText(&w->texts[5], item, 0, D_800633F4, 0, 3);
+            Stg30_OpenSkillText(&w->texts[5], item, 0, Stg30_SkillDescTextPos, 0, 3);
         }
         w->field_50 = Skill_GetMpCost(item);
     } else {
@@ -989,7 +989,7 @@ void Stg30_SkillMenuRefreshText(Actor *a0) {
     }
 }
 
-INCLUDE_RODATA("asm/USA/stag3000/rodata", D_800633F8);
+INCLUDE_RODATA("asm/USA/stag3000/rodata", Stg30_SkillMenuTitlePos);
 void Stg30_SkillMenuUpdate(Actor *a0) {
     Stg30Work73138 *w = (Stg30Work73138 *)a0->work;
     s16 *row;
@@ -1084,14 +1084,14 @@ void Stg30_SkillMenuUpdate(Actor *a0) {
                 }
             } while (0);
             Stg30_SkillMenuRefreshText(a0);
-            Text_OpenById(w, 0x179, 4, D_800633F8);
+            Text_OpenById(w, 0x179, 4, Stg30_SkillMenuTitlePos);
             for (i = 0; i < 4; i++) {
                 if (Stg30_SkillMenuColumn == i) {
                     c = 4;
                 } else {
                     c = 5;
                 }
-                Text_OpenById(&w->texts[i + 1], i + 10, c, D_800730F8[i]);
+                Text_OpenById(&w->texts[i + 1], i + 10, c, Stg30_SkillColumnLabelPos[i]);
             }
             break;
         }
@@ -1162,7 +1162,7 @@ void Stg30_SkillMenuDraw(Actor *a0) {
             }
         }
         Gfx_HidePartsByMask((GfxPartMaskView *)p, m);
-        m2 = ~m & D_80073108[Stg30_SkillMenuColumn];
+        m2 = ~m & Stg30_SkillMenuArrowBlinkMasks[Stg30_SkillMenuColumn];
         for (q = p; q->fileId != 0; q++) {
             if (q->groupMask & m2) {
                 q->palette = Math_PingPongRange(a0->elapsed, 4, 0, 3);
@@ -1175,12 +1175,12 @@ void Stg30_SkillMenuDraw(Actor *a0) {
     Gfx_SetPartsNumber(p2, 0x1000, 3, w->field_50);
     for (q2 = p2; q2->fileId != 0; q2++) {
         if (q2->groupMask & 0x4000) {
-            q2->x = D_80073118[Stg30_SkillMenuColumn].x;
-            q2->y = D_80073118[Stg30_SkillMenuColumn].y + Stg30_SkillMenuRow[Stg30_SkillMenuColumn] * 11;
+            q2->x = Stg30_SkillMenuCursorPos[Stg30_SkillMenuColumn].x;
+            q2->y = Stg30_SkillMenuCursorPos[Stg30_SkillMenuColumn].y + Stg30_SkillMenuRow[Stg30_SkillMenuColumn] * 11;
             q2->palette = Math_PingPongRange(a0->elapsed, 4, 0, 3);
         }
     }
-    Gfx_HidePartsByMask((GfxPartMaskView *)p2, D_80073128[Stg30_SkillMenuColumn]);
+    Gfx_HidePartsByMask((GfxPartMaskView *)p2, Stg30_SkillMenuColHideMasks[Stg30_SkillMenuColumn]);
     Gfx_DrawParts((EntA0 *)p2);
 }
 
@@ -1367,17 +1367,17 @@ void Stg30_TargetSelectDraw(Actor *a0) {
     case 0:
     case 1:
     case 5:
-        Gfx_HidePartsByMask((GfxPartMaskView *)p, D_80073150[w->field_4]);
+        Gfx_HidePartsByMask((GfxPartMaskView *)p, Stg30_TargetCursorMasks[w->field_4]);
         break;
     case 2:
-        m = D_8007316C;
+        m = Stg30_TargetAllAlliesMask;
         if (Stg30_Battle.entries[2].field_2E == 0) m |= 8;
         if (Stg30_Battle.entries[1].field_2E == 0) m |= 4;
         if (Stg30_Battle.entries[0].field_2E == 0) m |= 2;
         Gfx_HidePartsByMask((GfxPartMaskView *)p, m);
         break;
     case 6:
-        m = D_80073168;
+        m = Stg30_TargetAllEnemiesMask;
         if (Stg30_Battle.entries[5].field_2E == 0) m |= 0x40;
         if (Stg30_Battle.entries[4].field_2E == 0) m |= 0x20;
         if (Stg30_Battle.entries[3].field_2E == 0) m |= 0x10;

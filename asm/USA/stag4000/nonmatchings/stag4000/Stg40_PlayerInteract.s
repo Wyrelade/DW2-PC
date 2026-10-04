@@ -4,13 +4,13 @@ glabel Stg40_PlayerInteract
     /* 4F7C 800682DC C8FFBD27 */  addiu      $sp, $sp, -0x38
     /* 4F80 800682E0 2C00B3AF */  sw         $s3, 0x2C($sp)
     /* 4F84 800682E4 21988000 */  addu       $s3, $a0, $zero
-    /* 4F88 800682E8 0680023C */  lui        $v0, %hi(D_8005F704)
+    /* 4F88 800682E8 0680023C */  lui        $v0, %hi(Pad_Cross)
     /* 4F8C 800682EC 3000BFAF */  sw         $ra, 0x30($sp)
     /* 4F90 800682F0 2800B2AF */  sw         $s2, 0x28($sp)
     /* 4F94 800682F4 2400B1AF */  sw         $s1, 0x24($sp)
     /* 4F98 800682F8 2000B0AF */  sw         $s0, 0x20($sp)
     /* 4F9C 800682FC 2C00638E */  lw         $v1, 0x2C($s3)
-    /* 4FA0 80068300 04F7428C */  lw         $v0, %lo(D_8005F704)($v0)
+    /* 4FA0 80068300 04F7428C */  lw         $v0, %lo(Pad_Cross)($v0)
     /* 4FA4 80068304 2C00718C */  lw         $s1, 0x2C($v1)
     /* 4FA8 80068308 0300401C */  bgtz       $v0, .L80068318
     /* 4FAC 8006830C 0780023C */   lui       $v0, %hi(Stg40_DirOffsets)

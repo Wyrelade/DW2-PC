@@ -127,10 +127,10 @@ glabel Stg30_JoinPromptUpdate
     /* F78C 80072AEC 04002426 */  addiu      $a0, $s1, 0x4
     /* F790 80072AF0 21284000 */  addu       $a1, $v0, $zero
     /* F794 80072AF4 21300000 */  addu       $a2, $zero, $zero
-    /* F798 80072AF8 0780023C */  lui        $v0, %hi(D_800737B8)
-    /* F79C 80072AFC B8375024 */  addiu      $s0, $v0, %lo(D_800737B8)
+    /* F798 80072AF8 0780023C */  lui        $v0, %hi(Stg30_JoinPromptTextPos)
+    /* F79C 80072AFC B8375024 */  addiu      $s0, $v0, %lo(Stg30_JoinPromptTextPos)
     /* F7A0 80072B00 02000796 */  lhu        $a3, 0x2($s0)
-    /* F7A4 80072B04 B8374294 */  lhu        $v0, %lo(D_800737B8)($v0)
+    /* F7A4 80072B04 B8374294 */  lhu        $v0, %lo(Stg30_JoinPromptTextPos)($v0)
     /* F7A8 80072B08 003C0700 */  sll        $a3, $a3, 16
     /* F7AC 80072B0C 3E4D000C */  jal        Text_OpenPacked
     /* F7B0 80072B10 25384700 */   or        $a3, $v0, $a3
@@ -172,7 +172,7 @@ glabel Stg30_JoinPromptUpdate
     /* F838 80072B98 21280000 */   addu      $a1, $zero, $zero
     /* F83C 80072B9C 02000224 */  addiu      $v0, $zero, 0x2
     /* F840 80072BA0 C6006210 */  beq        $v1, $v0, .L80072EBC
-    /* F844 80072BA4 0680023C */   lui       $v0, %hi(D_8005F704)
+    /* F844 80072BA4 0680023C */   lui       $v0, %hi(Pad_Cross)
   .L80072BA8:
     /* F848 80072BA8 2120A000 */  addu       $a0, $a1, $zero
     /* F84C 80072BAC 0680023C */  lui        $v0, %hi(Save_GameState)
@@ -189,10 +189,10 @@ glabel Stg30_JoinPromptUpdate
     /* F870 80072BD0 24008228 */  slti       $v0, $a0, 0x24
     /* F874 80072BD4 F7FF4014 */  bnez       $v0, .L80072BB4
     /* F878 80072BD8 5C006324 */   addiu     $v1, $v1, 0x5C
-    /* F87C 80072BDC 0780023C */  lui        $v0, %hi(D_800737C0)
+    /* F87C 80072BDC 0780023C */  lui        $v0, %hi(Stg30_MemoryCapacity)
     /* F880 80072BE0 0680033C */  lui        $v1, %hi(D_8005E650)
     /* F884 80072BE4 50E66394 */  lhu        $v1, %lo(D_8005E650)($v1)
-    /* F888 80072BE8 C0374224 */  addiu      $v0, $v0, %lo(D_800737C0)
+    /* F888 80072BE8 C0374224 */  addiu      $v0, $v0, %lo(Stg30_MemoryCapacity)
     /* F88C 80072BEC 21186200 */  addu       $v1, $v1, $v0
     /* F890 80072BF0 0580023C */  lui        $v0, %hi(D_8005071C)
     /* F894 80072BF4 1C07428C */  lw         $v0, %lo(D_8005071C)($v0)
@@ -215,8 +215,8 @@ glabel Stg30_JoinPromptUpdate
     /* F8D0 80072C30 9FCB0108 */  j          .L80072E7C
     /* F8D4 80072C34 8E018434 */   ori       $a0, $a0, (0x1FD018E & 0xFFFF)
   .L80072C38:
-    /* F8D8 80072C38 0680023C */  lui        $v0, %hi(D_8005F704)
-    /* F8DC 80072C3C 04F7428C */  lw         $v0, %lo(D_8005F704)($v0)
+    /* F8D8 80072C38 0680023C */  lui        $v0, %hi(Pad_Cross)
+    /* F8DC 80072C3C 04F7428C */  lw         $v0, %lo(Pad_Cross)($v0)
     /* F8E0 80072C40 00000000 */  nop
     /* F8E4 80072C44 C9004018 */  blez       $v0, .L80072F6C
     /* F8E8 80072C48 0680023C */   lui       $v0, %hi(Save_GameState)
@@ -315,8 +315,8 @@ glabel Stg30_JoinPromptUpdate
     /* FA34 80072D94 08002426 */  addiu      $a0, $s1, 0x8
     /* FA38 80072D98 21284000 */  addu       $a1, $v0, $zero
     /* FA3C 80072D9C 81000624 */  addiu      $a2, $zero, 0x81
-    /* FA40 80072DA0 0780023C */  lui        $v0, %hi(D_800737B8)
-    /* FA44 80072DA4 B8374224 */  addiu      $v0, $v0, %lo(D_800737B8)
+    /* FA40 80072DA0 0780023C */  lui        $v0, %hi(Stg30_JoinPromptTextPos)
+    /* FA44 80072DA4 B8374224 */  addiu      $v0, $v0, %lo(Stg30_JoinPromptTextPos)
     /* FA48 80072DA8 06004794 */  lhu        $a3, 0x6($v0)
     /* FA4C 80072DAC 04004294 */  lhu        $v0, 0x4($v0)
     /* FA50 80072DB0 003C0700 */  sll        $a3, $a3, 16
@@ -371,7 +371,7 @@ glabel Stg30_JoinPromptUpdate
     /* FB04 80072E64 03006010 */  beqz       $v1, .L80072E74
     /* FB08 80072E68 01000224 */   addiu     $v0, $zero, 0x1
     /* FB0C 80072E6C 13006210 */  beq        $v1, $v0, .L80072EBC
-    /* FB10 80072E70 0680023C */   lui       $v0, %hi(D_8005F704)
+    /* FB10 80072E70 0680023C */   lui       $v0, %hi(Pad_Cross)
   .L80072E74:
     /* FB14 80072E74 FD01043C */  lui        $a0, (0x1FD0191 >> 16)
     /* FB18 80072E78 91018434 */  ori        $a0, $a0, (0x1FD0191 & 0xFFFF)
@@ -381,8 +381,8 @@ glabel Stg30_JoinPromptUpdate
     /* FB24 80072E84 08002426 */  addiu      $a0, $s1, 0x8
     /* FB28 80072E88 21284000 */  addu       $a1, $v0, $zero
     /* FB2C 80072E8C 81000624 */  addiu      $a2, $zero, 0x81
-    /* FB30 80072E90 0780023C */  lui        $v0, %hi(D_800737B8)
-    /* FB34 80072E94 B8374224 */  addiu      $v0, $v0, %lo(D_800737B8)
+    /* FB30 80072E90 0780023C */  lui        $v0, %hi(Stg30_JoinPromptTextPos)
+    /* FB34 80072E94 B8374224 */  addiu      $v0, $v0, %lo(Stg30_JoinPromptTextPos)
     /* FB38 80072E98 06004794 */  lhu        $a3, 0x6($v0)
     /* FB3C 80072E9C 04004294 */  lhu        $v0, 0x4($v0)
     /* FB40 80072EA0 003C0700 */  sll        $a3, $a3, 16
@@ -394,7 +394,7 @@ glabel Stg30_JoinPromptUpdate
     /* FB54 80072EB4 DBCB0108 */  j          .L80072F6C
     /* FB58 80072EB8 00000000 */   nop
   .L80072EBC:
-    /* FB5C 80072EBC 04F7428C */  lw         $v0, %lo(D_8005F704)($v0)
+    /* FB5C 80072EBC 04F7428C */  lw         $v0, %lo(Pad_Cross)($v0)
     /* FB60 80072EC0 00000000 */  nop
     /* FB64 80072EC4 29004018 */  blez       $v0, .L80072F6C
     /* FB68 80072EC8 21204002 */   addu      $a0, $s2, $zero
@@ -409,7 +409,7 @@ glabel Stg30_JoinPromptUpdate
     /* FB84 80072EE4 03006010 */  beqz       $v1, .L80072EF4
     /* FB88 80072EE8 01000224 */   addiu     $v0, $zero, 0x1
     /* FB8C 80072EEC 14006210 */  beq        $v1, $v0, .L80072F40
-    /* FB90 80072EF0 0680023C */   lui       $v0, %hi(D_8005F704)
+    /* FB90 80072EF0 0680023C */   lui       $v0, %hi(Pad_Cross)
   .L80072EF4:
     /* FB94 80072EF4 1C000424 */  addiu      $a0, $zero, 0x1C
     /* FB98 80072EF8 A369000C */  jal        Snd_PlayById
@@ -420,8 +420,8 @@ glabel Stg30_JoinPromptUpdate
     /* FBAC 80072F0C 08002426 */  addiu      $a0, $s1, 0x8
     /* FBB0 80072F10 21284000 */  addu       $a1, $v0, $zero
     /* FBB4 80072F14 81000624 */  addiu      $a2, $zero, 0x81
-    /* FBB8 80072F18 0780023C */  lui        $v0, %hi(D_800737B8)
-    /* FBBC 80072F1C B8374224 */  addiu      $v0, $v0, %lo(D_800737B8)
+    /* FBB8 80072F18 0780023C */  lui        $v0, %hi(Stg30_JoinPromptTextPos)
+    /* FBBC 80072F1C B8374224 */  addiu      $v0, $v0, %lo(Stg30_JoinPromptTextPos)
     /* FBC0 80072F20 06004794 */  lhu        $a3, 0x6($v0)
     /* FBC4 80072F24 04004294 */  lhu        $v0, 0x4($v0)
     /* FBC8 80072F28 003C0700 */  sll        $a3, $a3, 16
@@ -429,9 +429,9 @@ glabel Stg30_JoinPromptUpdate
     /* FBD0 80072F30 25384700 */   or        $a3, $v0, $a3
     /* FBD4 80072F34 6045000C */  jal        Task_NextState2
     /* FBD8 80072F38 21204002 */   addu      $a0, $s2, $zero
-    /* FBDC 80072F3C 0680023C */  lui        $v0, %hi(D_8005F704)
+    /* FBDC 80072F3C 0680023C */  lui        $v0, %hi(Pad_Cross)
   .L80072F40:
-    /* FBE0 80072F40 04F7428C */  lw         $v0, %lo(D_8005F704)($v0)
+    /* FBE0 80072F40 04F7428C */  lw         $v0, %lo(Pad_Cross)($v0)
     /* FBE4 80072F44 00000000 */  nop
     /* FBE8 80072F48 08004018 */  blez       $v0, .L80072F6C
     /* FBEC 80072F4C 21204002 */   addu      $a0, $s2, $zero

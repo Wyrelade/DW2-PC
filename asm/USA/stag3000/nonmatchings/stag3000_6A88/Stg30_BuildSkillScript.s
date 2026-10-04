@@ -942,8 +942,8 @@ glabel Stg30_BuildSkillScript
     /* 95A8 8006C908 03140200 */  sra        $v0, $v0, 16
     /* 95AC 8006C90C DC000324 */  addiu      $v1, $zero, 0xDC
     /* 95B0 8006C910 3E004314 */  bne        $v0, $v1, .L8006CA0C
-    /* 95B4 8006C914 0780103C */   lui       $s0, %hi(D_80073278)
-    /* 95B8 8006C918 7832028E */  lw         $v0, %lo(D_80073278)($s0)
+    /* 95B4 8006C914 0780103C */   lui       $s0, %hi(Stg30_RepeatSkillCount)
+    /* 95B8 8006C918 7832028E */  lw         $v0, %lo(Stg30_RepeatSkillCount)($s0)
     /* 95BC 8006C91C 00000000 */  nop
     /* 95C0 8006C920 12004014 */  bnez       $v0, .L8006C96C
     /* 95C4 8006C924 FFFF4224 */   addiu     $v0, $v0, -0x1
@@ -960,13 +960,13 @@ glabel Stg30_BuildSkillScript
     /* 95F0 8006C950 23104300 */  subu       $v0, $v0, $v1
     /* 95F4 8006C954 FFFF4230 */  andi       $v0, $v0, 0xFFFF
     /* 95F8 8006C958 01004224 */  addiu      $v0, $v0, 0x1
-    /* 95FC 8006C95C 783202AE */  sw         $v0, %lo(D_80073278)($s0)
-    /* 9600 8006C960 7832028E */  lw         $v0, %lo(D_80073278)($s0)
+    /* 95FC 8006C95C 783202AE */  sw         $v0, %lo(Stg30_RepeatSkillCount)($s0)
+    /* 9600 8006C960 7832028E */  lw         $v0, %lo(Stg30_RepeatSkillCount)($s0)
     /* 9604 8006C964 00000000 */  nop
     /* 9608 8006C968 FFFF4224 */  addiu      $v0, $v0, -0x1
   .L8006C96C:
     /* 960C 8006C96C 27004010 */  beqz       $v0, .L8006CA0C
-    /* 9610 8006C970 783202AE */   sw        $v0, %lo(D_80073278)($s0)
+    /* 9610 8006C970 783202AE */   sw        $v0, %lo(Stg30_RepeatSkillCount)($s0)
     /* 9614 8006C974 A07B000C */  jal        Skill_GetMpCost
     /* 9618 8006C978 DC000424 */   addiu     $a0, $zero, 0xDC
     /* 961C 8006C97C 0780033C */  lui        $v1, %hi(Stg30_Battle)
@@ -1009,7 +1009,7 @@ glabel Stg30_BuildSkillScript
     /* 96A0 8006CA00 83B20108 */  j          .L8006CA0C
     /* 96A4 8006CA04 00000000 */   nop
   .L8006CA08:
-    /* 96A8 8006CA08 783200AE */  sw         $zero, %lo(D_80073278)($s0)
+    /* 96A8 8006CA08 783200AE */  sw         $zero, %lo(Stg30_RepeatSkillCount)($s0)
   .L8006CA0C:
     /* 96AC 8006CA0C 8400BF8F */  lw         $ra, 0x84($sp)
     /* 96B0 8006CA10 8000BE8F */  lw         $fp, 0x80($sp)

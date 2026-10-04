@@ -89,10 +89,10 @@ glabel Stg30_SkillMenuDraw
     /* 38AC 80066C0C 21280002 */   addu      $a1, $s0, $zero
     /* 38B0 80066C10 21886002 */  addu       $s1, $s3, $zero
     /* 38B4 80066C14 27201000 */  nor        $a0, $zero, $s0
-    /* 38B8 80066C18 0780033C */  lui        $v1, %hi(D_80073108)
+    /* 38B8 80066C18 0780033C */  lui        $v1, %hi(Stg30_SkillMenuArrowBlinkMasks)
     /* 38BC 80066C1C 0780023C */  lui        $v0, %hi(Stg30_SkillMenuColumn)
     /* 38C0 80066C20 00384284 */  lh         $v0, %lo(Stg30_SkillMenuColumn)($v0)
-    /* 38C4 80066C24 08316324 */  addiu      $v1, $v1, %lo(D_80073108)
+    /* 38C4 80066C24 08316324 */  addiu      $v1, $v1, %lo(Stg30_SkillMenuArrowBlinkMasks)
     /* 38C8 80066C28 80100200 */  sll        $v0, $v0, 2
     /* 38CC 80066C2C 21104300 */  addu       $v0, $v0, $v1
     /* 38D0 80066C30 0000428C */  lw         $v0, 0x0($v0)
@@ -139,8 +139,8 @@ glabel Stg30_SkillMenuDraw
     /* 3964 80066CC4 00000000 */  nop
     /* 3968 80066CC8 25004010 */  beqz       $v0, .L80066D60
     /* 396C 80066CCC 21902002 */   addu      $s2, $s1, $zero
-    /* 3970 80066CD0 0780023C */  lui        $v0, %hi(D_80073118)
-    /* 3974 80066CD4 18315524 */  addiu      $s5, $v0, %lo(D_80073118)
+    /* 3970 80066CD0 0780023C */  lui        $v0, %hi(Stg30_SkillMenuCursorPos)
+    /* 3974 80066CD4 18315524 */  addiu      $s5, $v0, %lo(Stg30_SkillMenuCursorPos)
     /* 3978 80066CD8 0780023C */  lui        $v0, %hi(Stg30_SkillMenuRow)
     /* 397C 80066CDC 08385324 */  addiu      $s3, $v0, %lo(Stg30_SkillMenuRow)
     /* 3980 80066CE0 0C003026 */  addiu      $s0, $s1, 0xC
@@ -178,10 +178,10 @@ glabel Stg30_SkillMenuDraw
     /* 39F8 80066D58 E2FF4014 */  bnez       $v0, .L80066CE4
     /* 39FC 80066D5C 28001026 */   addiu     $s0, $s0, 0x28
   .L80066D60:
-    /* 3A00 80066D60 0780033C */  lui        $v1, %hi(D_80073128)
+    /* 3A00 80066D60 0780033C */  lui        $v1, %hi(Stg30_SkillMenuColHideMasks)
     /* 3A04 80066D64 0780023C */  lui        $v0, %hi(Stg30_SkillMenuColumn)
     /* 3A08 80066D68 00384284 */  lh         $v0, %lo(Stg30_SkillMenuColumn)($v0)
-    /* 3A0C 80066D6C 28316324 */  addiu      $v1, $v1, %lo(D_80073128)
+    /* 3A0C 80066D6C 28316324 */  addiu      $v1, $v1, %lo(Stg30_SkillMenuColHideMasks)
     /* 3A10 80066D70 80100200 */  sll        $v0, $v0, 2
     /* 3A14 80066D74 21104300 */  addu       $v0, $v0, $v1
     /* 3A18 80066D78 0000458C */  lw         $a1, 0x0($v0)

@@ -13,8 +13,8 @@ glabel Menu_UseItemOnDigi
     /* 7FA0 800177A0 54000526 */   addiu     $a1, $s0, 0x54
     /* 7FA4 800177A4 C0100200 */  sll        $v0, $v0, 3
     /* 7FA8 800177A8 6C004224 */  addiu      $v0, $v0, 0x6C
-    /* 7FAC 800177AC 0680033C */  lui        $v1, %hi(D_8005F704)
-    /* 7FB0 800177B0 04F7638C */  lw         $v1, %lo(D_8005F704)($v1)
+    /* 7FAC 800177AC 0680033C */  lui        $v1, %hi(Pad_Cross)
+    /* 7FB0 800177B0 04F7638C */  lw         $v1, %lo(Pad_Cross)($v1)
     /* 7FB4 800177B4 00000000 */  nop
     /* 7FB8 800177B8 2D006018 */  blez       $v1, .L80017870
     /* 7FBC 800177BC 21300202 */   addu      $a2, $s0, $v0

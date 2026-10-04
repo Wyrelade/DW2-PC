@@ -235,15 +235,15 @@ glabel Stg30_SkillMenuUpdate
     /* 3690 800669F0 04000624 */  addiu      $a2, $zero, 0x4
     /* 3694 800669F4 21880000 */  addu       $s1, $zero, $zero
     /* 3698 800669F8 2190C000 */  addu       $s2, $a2, $zero
-    /* 369C 800669FC 0680033C */  lui        $v1, %hi(D_800633F8)
-    /* 36A0 80066A00 F8336224 */  addiu      $v0, $v1, %lo(D_800633F8)
+    /* 369C 800669FC 0680033C */  lui        $v1, %hi(Stg30_SkillMenuTitlePos)
+    /* 36A0 80066A00 F8336224 */  addiu      $v0, $v1, %lo(Stg30_SkillMenuTitlePos)
     /* 36A4 80066A04 02004794 */  lhu        $a3, 0x2($v0)
-    /* 36A8 80066A08 F8336294 */  lhu        $v0, %lo(D_800633F8)($v1)
+    /* 36A8 80066A08 F8336294 */  lhu        $v0, %lo(Stg30_SkillMenuTitlePos)($v1)
     /* 36AC 80066A0C 003C0700 */  sll        $a3, $a3, 16
     /* 36B0 80066A10 F26F000C */  jal        Text_OpenById
     /* 36B4 80066A14 25384700 */   or        $a3, $v0, $a3
-    /* 36B8 80066A18 0780023C */  lui        $v0, %hi(D_800730F8)
-    /* 36BC 80066A1C F8305024 */  addiu      $s0, $v0, %lo(D_800730F8)
+    /* 36B8 80066A18 0780023C */  lui        $v0, %hi(Stg30_SkillColumnLabelPos)
+    /* 36BC 80066A1C F8305024 */  addiu      $s0, $v0, %lo(Stg30_SkillColumnLabelPos)
     /* 36C0 80066A20 0780023C */  lui        $v0, %hi(Stg30_SkillMenuColumn)
   .L80066A24:
     /* 36C4 80066A24 00384284 */  lh         $v0, %lo(Stg30_SkillMenuColumn)($v0)

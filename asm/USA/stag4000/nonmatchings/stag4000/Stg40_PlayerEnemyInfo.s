@@ -113,7 +113,7 @@ glabel Stg40_PlayerEnemyInfo
     /* 6AC4 80069E24 00000000 */  nop
     /* 6AC8 80069E28 0200C228 */  slti       $v0, $a2, 0x2
     /* 6ACC 80069E2C 0F004014 */  bnez       $v0, .L80069E6C
-    /* 6AD0 80069E30 0680023C */   lui       $v0, %hi(D_8005F704)
+    /* 6AD0 80069E30 0680023C */   lui       $v0, %hi(Pad_Cross)
     /* 6AD4 80069E34 AC00828C */  lw         $v0, 0xAC($a0)
     /* 6AD8 80069E38 00000000 */  nop
     /* 6ADC 80069E3C 01004324 */  addiu      $v1, $v0, 0x1
@@ -129,9 +129,9 @@ glabel Stg40_PlayerEnemyInfo
     /* 6B00 80069E60 DCA70108 */  j          .L80069F70
     /* 6B04 80069E64 00000000 */   nop
   .L80069E68:
-    /* 6B08 80069E68 0680023C */  lui        $v0, %hi(D_8005F704)
+    /* 6B08 80069E68 0680023C */  lui        $v0, %hi(Pad_Cross)
   .L80069E6C:
-    /* 6B0C 80069E6C 04F7428C */  lw         $v0, %lo(D_8005F704)($v0)
+    /* 6B0C 80069E6C 04F7428C */  lw         $v0, %lo(Pad_Cross)($v0)
     /* 6B10 80069E70 00000000 */  nop
     /* 6B14 80069E74 3E004018 */  blez       $v0, .L80069F70
     /* 6B18 80069E78 0780043C */   lui       $a0, %hi(Stg40_GiftGunReq)

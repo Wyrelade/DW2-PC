@@ -171,7 +171,7 @@ glabel Stg20_PartsUpgradeUpdate
     /* BD30 8006F090 03004014 */  bnez       $v0, .L8006F0A0
     /* BD34 8006F094 02000224 */   addiu     $v0, $zero, 0x2
     /* BD38 8006F098 4C000212 */  beq        $s0, $v0, .L8006F1CC
-    /* BD3C 8006F09C 0680023C */   lui       $v0, %hi(D_8005F704)
+    /* BD3C 8006F09C 0680023C */   lui       $v0, %hi(Pad_Cross)
   .L8006F0A0:
     /* BD40 8006F0A0 3000228E */  lw         $v0, 0x30($s1)
     /* BD44 8006F0A4 00000000 */  nop
@@ -253,7 +253,7 @@ glabel Stg20_PartsUpgradeUpdate
     /* BE64 8006F1C4 7ABC0108 */  j          .L8006F1E8
     /* BE68 8006F1C8 00000000 */   nop
   .L8006F1CC:
-    /* BE6C 8006F1CC 04F7428C */  lw         $v0, %lo(D_8005F704)($v0)
+    /* BE6C 8006F1CC 04F7428C */  lw         $v0, %lo(Pad_Cross)($v0)
     /* BE70 8006F1D0 00000000 */  nop
     /* BE74 8006F1D4 04004018 */  blez       $v0, .L8006F1E8
     /* BE78 8006F1D8 21204002 */   addu      $a0, $s2, $zero

@@ -25,18 +25,18 @@ glabel Stg30_FighterHudDraw
     /* DE80 800711E0 00000000 */  nop
     /* DE84 800711E4 5A004010 */  beqz       $v0, .L80071350
     /* DE88 800711E8 21502002 */   addu      $t2, $s1, $zero
-    /* DE8C 800711EC 0780023C */  lui        $v0, %hi(D_800734B0)
-    /* DE90 800711F0 B0344E24 */  addiu      $t6, $v0, %lo(D_800734B0)
+    /* DE8C 800711EC 0780023C */  lui        $v0, %hi(Stg30_StatusIconGroups)
+    /* DE90 800711F0 B0344E24 */  addiu      $t6, $v0, %lo(Stg30_StatusIconGroups)
     /* DE94 800711F4 0780023C */  lui        $v0, %hi(Stg30_Battle)
     /* DE98 800711F8 C03C4D24 */  addiu      $t5, $v0, %lo(Stg30_Battle)
     /* DE9C 800711FC 0F002526 */  addiu      $a1, $s1, 0xF
   .L80071200:
     /* DEA0 80071200 21400000 */  addu       $t0, $zero, $zero
     /* DEA4 80071204 0D00AC8C */  lw         $t4, 0xD($a1)
-    /* DEA8 80071208 0780023C */  lui        $v0, %hi(D_800734E0)
-    /* DEAC 8007120C E0344B24 */  addiu      $t3, $v0, %lo(D_800734E0)
-    /* DEB0 80071210 0780023C */  lui        $v0, %hi(D_800734C8)
-    /* DEB4 80071214 C8344724 */  addiu      $a3, $v0, %lo(D_800734C8)
+    /* DEA8 80071208 0780023C */  lui        $v0, %hi(Stg30_StatusIconPos)
+    /* DEAC 8007120C E0344B24 */  addiu      $t3, $v0, %lo(Stg30_StatusIconPos)
+    /* DEB0 80071210 0780023C */  lui        $v0, %hi(Stg30_StatusIconFlags)
+    /* DEB4 80071214 C8344724 */  addiu      $a3, $v0, %lo(Stg30_StatusIconFlags)
     /* DEB8 80071218 2130C001 */  addu       $a2, $t6, $zero
   .L8007121C:
     /* DEBC 8007121C 0000C28C */  lw         $v0, 0x0($a2)

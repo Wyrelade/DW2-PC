@@ -1380,7 +1380,7 @@ s32 Stg40_PlayerInteract(Actor *a0)
     s32 r3;
 
     e = ((Stg40ActWork *)a0->work)->field_2C;
-    if (D_8005F704 <= 0) {
+    if (Pad_Cross <= 0) {
         return 0;
     }
     found = Stg40_FindEntAt(e->field_18.u0.pair.field_0 + ((s16 *)Stg40_DirOffsets)[(e->field_B + 1) << 1],
@@ -2120,7 +2120,7 @@ void Stg40_PlayerEnemyInfo(Actor *a0) {
             n = D_80072B60->field_AC + 1;
             D_80072B60->field_AC = (n < D_80072B60->field_A8) ? n : 0;
             Task_SetState2(a0, 1);
-        } else if (D_8005F704 > 0) {
+        } else if (Pad_Cross > 0) {
             r = Stg40_ListUsableItems(&Stg40_GiftGunReq);
             if (r != 0) {
                 Stg40_MsgWinOpen(1, r, 0, 0);

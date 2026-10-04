@@ -64,7 +64,7 @@ void Stg30_InterruptSelectDraw(Actor *a0) {
             k += 3;
         }
         for (r = p; r->fileId != 0; r++) {
-            if (r->groupMask & D_80073340[k]) {
+            if (r->groupMask & Stg30_InterruptCursorMasks[k]) {
                 r->visible = 1;
                 r->palette = w->field_8;
             } else {
@@ -272,11 +272,11 @@ void Stg30_CameraUpdate(Actor *arg0) {
                 h /= 256;
                 g.field_14 = (i % 3) * 0xA00 - 0xA00;
                 g.field_18 = (i / 3) * 0x2800 - 0x1400;
-                g.field_0 = D_80073408[i];
+                g.field_0 = Stg30_CloseUpRotY[i];
                 g.field_4 = 0;
                 g.field_8 = -0xC30;
-                g.field_C = D_80073414[h];
-                g.field_10 = D_80073428[h];
+                g.field_C = Stg30_CloseUpVpz[h];
+                g.field_10 = Stg30_CloseUpVry[h];
                 Stg30_CamEaseToward(w, &g);
             }
             break;
@@ -477,7 +477,7 @@ void Stg30_FighterHudUpdate(Stg30TaskHead *a0) {
         switch (a0->stateLevel1) {
         case 0:
         default:
-            if (a0->field_24 > D_80073454[a0->field_8] && w->field_4 != 0x1000) {
+            if (a0->field_24 > Stg30_FighterHudFadeDelay[a0->field_8] && w->field_4 != 0x1000) {
                 w->field_4 += 0x100;
             }
             if (w->field_4 == 0x1000) {
@@ -488,8 +488,8 @@ void Stg30_FighterHudUpdate(Stg30TaskHead *a0) {
             args.text = (s32)D_80073D24[a0->field_8].name;
             args.bigFont = 0;
             args.color = 0;
-            args.x = D_8007346C[a0->field_8].x;
-            args.y = D_8007346C[a0->field_8].y;
+            args.x = Stg30_FighterHudNamePos[a0->field_8].x;
+            args.y = Stg30_FighterHudNamePos[a0->field_8].y;
             args.charDelay = 8;
             args.charAdvance = 0;
             args.lineAdvance = 0;
@@ -502,7 +502,7 @@ void Stg30_FighterHudUpdate(Stg30TaskHead *a0) {
                 if (w->field_8 != 0) {
                     w->field_8 -= 4;
                 } else {
-                    Text_OpenById(&w->text[1], Stg30_OrderLabelMsgs[v - 1], 0, D_8007348C[a0->field_8]);
+                    Text_OpenById(&w->text[1], Stg30_OrderLabelMsgs[v - 1], 0, Stg30_OrderLabelPos[a0->field_8]);
                 }
             } else if (w->field_8 != 12) {
                 w->field_8 += 4;
@@ -604,11 +604,11 @@ void Stg30_FighterHudDraw(Actor *a0) {
             j = 0;
             m = q->groupMask;
             for (; j < 6; j++) {
-                if (m & D_800734B0[j]) {
-                    if (Stg30_Battle.field_31C[a0->param] & D_800734C8[j]) {
-                        q->x = D_800734E0[a0->param].x + off;
+                if (m & Stg30_StatusIconGroups[j]) {
+                    if (Stg30_Battle.field_31C[a0->param] & Stg30_StatusIconFlags[j]) {
+                        q->x = Stg30_StatusIconPos[a0->param].x + off;
                         off += 10;
-                        q->y = D_800734E0[a0->param].y;
+                        q->y = Stg30_StatusIconPos[a0->param].y;
                         q->visible = 1;
                     } else {
                         q->visible = 0;
@@ -801,7 +801,7 @@ void Stg30_ResultUpdate(Actor *a0) {
         case 0:
         default:
             for (j = 0; j < 14; j++) {
-                r = &D_80073690[j];
+                r = &Stg30_ResultTextLayout[j];
                 if (r->slot == 9 || Stg30_Battle.entries[r->slot].field_19 != 0) {
                     if (r->src < 3) {
                         args.text = (s32)D_80073D24[r->src].name;
@@ -825,7 +825,7 @@ void Stg30_ResultUpdate(Actor *a0) {
             }
             Task_NextState1(a0);
         case 1:
-            if (D_8005F704 > 0) {
+            if (Pad_Cross > 0) {
                 Task_SetState0(a0, 3);
             }
             break;
@@ -849,7 +849,7 @@ void Stg30_ResultDraw(Actor *a0) {
 
     for (i = 0; i < 6; i++) {
         draw = 1;
-        p = (GfxPart *)Cd_GetFileEntry(D_80073700[i]);
+        p = (GfxPart *)Cd_GetFileEntry(Stg30_ResultParts[i]);
         switch (i) {
         case 0:
         case 1:
@@ -906,14 +906,14 @@ void Stg30_SkillLearnRefreshList(Actor *a0) {
             Text_Close(slot);
             item = w->field_74[row][col + scroll];
             if (item != 0) {
-                Text_OpenPacked(slot, Skill_GetNameText(item), 0, D_80073730[k + 4]);
+                Text_OpenPacked(slot, Skill_GetNameText(item), 0, Stg30_SkillLearnTextPos[k + 4]);
             }
         }
     }
     Text_Close(&w->field_70);
     id = w->field_74[w->field_A4][w->field_B0[w->field_A4] + w->field_A8[w->field_A4]];
     if (id != 0 && w->field_C8 == 0) {
-        Text_OpenPacked(&w->field_70, Skill_GetDescText(id), 0, D_80073730[27]);
+        Text_OpenPacked(&w->field_70, Skill_GetDescText(id), 0, Stg30_SkillLearnTextPos[27]);
         w->field_C0 = Skill_GetMpCost(id);
     } else {
         w->field_C0 = 0;
@@ -929,7 +929,7 @@ void Stg30_SkillLearnRefreshButtons(Actor *a0) {
         if (w->field_C8 == 0 || w->field_C4 != i || !(a0->elapsed & 0x10)) {
             s32 c;
             if (w->field_C4 == i) c = 4; else c = 5;
-            Text_OpenById(&w->text[i], i + 0x188, c, D_80073730[i + 24]);
+            Text_OpenById(&w->text[i], i + 0x188, c, Stg30_SkillLearnTextPos[i + 24]);
         }
     }
 }
@@ -983,10 +983,10 @@ void Stg30_SkillLearnUpdate(Actor *a0) {
                 w->field_B8[1]++;
             }
         }
-        Text_OpenPacked(&w->field_4[0], (s32)D_80073D24[w->field_0].name, 0x10, D_80073730[0]);
-        Text_OpenPacked(&w->field_4[1], (s32)Cd_GetFileEntry(0x1FD0187), 0x80, D_80073730[1]);
-        Text_OpenById(&w->field_4[2], 0x18B, 4, D_80073730[2]);
-        Text_OpenById(&w->field_4[3], 0x18C, 4, D_80073730[3]);
+        Text_OpenPacked(&w->field_4[0], (s32)D_80073D24[w->field_0].name, 0x10, Stg30_SkillLearnTextPos[0]);
+        Text_OpenPacked(&w->field_4[1], (s32)Cd_GetFileEntry(0x1FD0187), 0x80, Stg30_SkillLearnTextPos[1]);
+        Text_OpenById(&w->field_4[2], 0x18B, 4, Stg30_SkillLearnTextPos[2]);
+        Text_OpenById(&w->field_4[3], 0x18C, 4, Stg30_SkillLearnTextPos[3]);
         ((void (*)(s32))Stg30_SetCameraShot)(w->field_0 + 2);
         Task_NextState0(a0);
         break;
@@ -1222,8 +1222,8 @@ void Stg30_JoinPromptUpdate(Actor *a0) {
             case 0:
             default:
                 w->field_10 = 1;
-                Text_OpenPacked(&w->text[0], (s32)Digi_GetDefaultName(a0->digiId), 0, D_800737B8[0]);
-                Text_OpenPacked(&w->text[1], (s32)Cd_GetFileEntry(0x1FD018D), 0x81, D_800737B8[1]);
+                Text_OpenPacked(&w->text[0], (s32)Digi_GetDefaultName(a0->digiId), 0, Stg30_JoinPromptTextPos[0]);
+                Text_OpenPacked(&w->text[1], (s32)Cd_GetFileEntry(0x1FD018D), 0x81, Stg30_JoinPromptTextPos[1]);
                 Flag_Set(0x10, 0);
                 Task_NextState2(a0);
                 break;
@@ -1249,16 +1249,16 @@ void Stg30_JoinPromptUpdate(Actor *a0) {
                         cnt++;
                     }
                 }
-                n = D_800737C0[D_8005E650 - 0x2F] - D_8005071C->memBugCount;
+                n = Stg30_MemoryCapacity[D_8005E650 - 0x2F] - D_8005071C->memBugCount;
                 if (n > 0 && cnt < n) {
                     Task_SetState1(a0, 4);
                     break;
                 }
-                Text_OpenPacked(&w->text[1], (s32)Cd_GetFileEntry(0x1FD018E), 0x81, D_800737B8[1]);
+                Text_OpenPacked(&w->text[1], (s32)Cd_GetFileEntry(0x1FD018E), 0x81, Stg30_JoinPromptTextPos[1]);
                 Task_NextState2(a0);
                 break;
             case 1:
-                if (D_8005F704 <= 0) {
+                if (Pad_Cross <= 0) {
                     break;
                 }
                 g = (Stg30GameRoster *)&Save_GameState;
@@ -1280,11 +1280,11 @@ void Stg30_JoinPromptUpdate(Actor *a0) {
                     Task_SetState1(a0, 5);
                     break;
                 }
-                Text_OpenPacked(&w->text[1], (s32)Cd_GetFileEntry(0x1FD0190), 0x81, D_800737B8[1]);
+                Text_OpenPacked(&w->text[1], (s32)Cd_GetFileEntry(0x1FD0190), 0x81, Stg30_JoinPromptTextPos[1]);
                 Task_NextState2(a0);
                 break;
             case 2:
-                if (D_8005F704 > 0) {
+                if (Pad_Cross > 0) {
                     Task_SetState1(a0, 8);
                 }
                 break;
@@ -1319,7 +1319,7 @@ void Stg30_JoinPromptUpdate(Actor *a0) {
             switch (a0->stateLevel2) {
             case 0:
             default:
-                Text_OpenPacked(&w->text[1], (s32)Cd_GetFileEntry(0x1FD018F), 0x81, D_800737B8[1]);
+                Text_OpenPacked(&w->text[1], (s32)Cd_GetFileEntry(0x1FD018F), 0x81, Stg30_JoinPromptTextPos[1]);
                 Flag_Set(0x10, 0);
                 Task_NextState2(a0);
                 break;
@@ -1356,11 +1356,11 @@ void Stg30_JoinPromptUpdate(Actor *a0) {
             switch (a0->stateLevel2) {
             case 0:
             default:
-                Text_OpenPacked(&w->text[1], (s32)Cd_GetFileEntry(0x1FD0191), 0x81, D_800737B8[1]);
+                Text_OpenPacked(&w->text[1], (s32)Cd_GetFileEntry(0x1FD0191), 0x81, Stg30_JoinPromptTextPos[1]);
                 Task_NextState2(a0);
                 break;
             case 1:
-                if (D_8005F704 > 0) {
+                if (Pad_Cross > 0) {
                     Task_SetState1(a0, 8);
                 }
                 break;
@@ -1372,10 +1372,10 @@ void Stg30_JoinPromptUpdate(Actor *a0) {
             case 0:
             default:
                 Snd_PlayById(0x1C, 0);
-                Text_OpenPacked(&w->text[1], (s32)Cd_GetFileEntry(0x1FD0192), 0x81, D_800737B8[1]);
+                Text_OpenPacked(&w->text[1], (s32)Cd_GetFileEntry(0x1FD0192), 0x81, Stg30_JoinPromptTextPos[1]);
                 Task_NextState2(a0);
             case 1:
-                if (D_8005F704 > 0) {
+                if (Pad_Cross > 0) {
                     Task_NextState0(a0);
                 }
                 break;

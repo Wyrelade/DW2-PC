@@ -36158,12 +36158,12 @@ dlabel D_8005F6FC
     /* 4FF00 8005F700 00000000 */ .word 0x00000000
 enddlabel D_8005F6FC
 
-nonmatching D_8005F704
+nonmatching Pad_Cross
 
-dlabel D_8005F704
+dlabel Pad_Cross
     /* 4FF04 8005F704 00000000 */ .word 0x00000000
     /* 4FF08 8005F708 00000000 */ .word 0x00000000
-enddlabel D_8005F704
+enddlabel Pad_Cross
 
 nonmatching D_8005F70C
 

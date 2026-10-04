@@ -22,8 +22,8 @@ glabel Stg40_ObjWaitAnimOrSkip
     /* B270 8006E5D0 0B008228 */   slti      $v0, $a0, 0xB
     /* B274 8006E5D4 08004014 */  bnez       $v0, .L8006E5F8
     /* B278 8006E5D8 21102002 */   addu      $v0, $s1, $zero
-    /* B27C 8006E5DC 0680023C */  lui        $v0, %hi(D_8005F704)
-    /* B280 8006E5E0 04F7428C */  lw         $v0, %lo(D_8005F704)($v0)
+    /* B27C 8006E5DC 0680023C */  lui        $v0, %hi(Pad_Cross)
+    /* B280 8006E5E0 04F7428C */  lw         $v0, %lo(Pad_Cross)($v0)
     /* B284 8006E5E4 00000000 */  nop
     /* B288 8006E5E8 03004010 */  beqz       $v0, .L8006E5F8
     /* B28C 8006E5EC 21102002 */   addu      $v0, $s1, $zero
