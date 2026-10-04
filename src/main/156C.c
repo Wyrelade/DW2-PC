@@ -8,6 +8,8 @@
 extern s32 Task_Run(s32);
 extern TaskDesc **Task_DescTable[];
 
+SHIFT_TEST_PAD(0x100);
+
 ASM_SOURCE("src/main/asm/crt0", func_80010D6C);
 
 /* Overlay load address: every STAGxxxx.PRO is read to and runs from here. Ovl_LoadArea

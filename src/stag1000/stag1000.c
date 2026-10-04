@@ -1,6 +1,9 @@
 #include "common.h"
 #include "stag1000/stag1000.h"
 
+/* small: STAG1000.PRO has 0x11C bytes free in its last disc sector */
+SHIFT_TEST_PAD(0x10);
+
 void Stg10_StageSetup(Actor *a0) {
     s32 args[2];
     s32 *slot = (s32 *)a0->u34.children;

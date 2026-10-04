@@ -404,7 +404,13 @@ def main():
     ap.add_argument("--tu-flags", action="append", default=[],
                     help="UNIT[/FILE.c]=FLAGS: extra cc1 flags for one unit or file (experiments)")
     ap.add_argument("--as-g", help="-G value cc1/maspsx/as use for every unit instead of UNIT_G")
+    ap.add_argument("--shift-test", action="store_true",
+                    help="define SHIFT_TEST: SHIFT_TEST_PAD() pads main and STAG1000 so every "
+                         "address moves (no SHA check; boot it to prove the build is shiftable)")
     args = ap.parse_args()
+    if args.shift_test:
+        CPP_FLAGS.append("-DSHIFT_TEST")
+        args.skip_verify = True
     if args.build_dir:
         CONFIG["build_dir"] = args.build_dir
     if args.cc1_extra:
@@ -466,8 +472,9 @@ def main():
     if not args.overlays_only and link_main(ld_bin, objcopy_bin, True, quiet=True) != 0:
         return 1
     main_syms = main_exports()
+    base = main_ovl_base()
     for unit, want in OVERLAYS:
-        if link_overlay(unit, want, ld_bin, objcopy_bin, args.skip_verify, main_syms) != 0:
+        if link_overlay(unit, want, ld_bin, objcopy_bin, args.skip_verify, main_syms, base) != 0:
             rc = 1
     if not args.overlays_only and link_main(ld_bin, objcopy_bin, args.skip_verify,
                                             ovl_syms=overlay_exports()) != 0:
@@ -527,15 +534,20 @@ def main_exports():
                 if not SEGMENT_SYM.match(n) and not base <= v < 0x80200000)
 
 
+def main_ovl_base():
+    """Ovl_LoadArea (where Ovl_Load reads the overlays) in this build's main.elf, or None."""
+    elf = os.path.join(ROOT, CONFIG["elf"])
+    return elf_globals(elf).get("Ovl_LoadArea") if os.path.exists(elf) else None
+
+
 def overlay_exports():
     """Values of the overlay symbols main refers to (Task_DescTable rows, overlay functions
     main calls), taken from the overlay ELFs of this build."""
     want = set()
-    for p in auto_scripts("main", ()):
-        for line in open(os.path.join(ROOT, p)):
-            m = re.match(r"\s*(\w+)\s*=", line)
-            if m:
-                want.add(m.group(1))
+    for kind in ("syms", "funcs"):
+        p = os.path.join(ROOT, "linkers/USA/undefined_%s_auto.main.txt" % kind)
+        if os.path.exists(p):
+            want.update(m.group(1) for m in re.finditer(r"^\s*(\w+)\s*=", open(p).read(), re.M))
     got = {}
     for unit, _sha in OVERLAYS:
         elf = os.path.join(ROOT, CONFIG["build_dir"], unit + ".elf")
@@ -546,12 +558,19 @@ def overlay_exports():
     return got
 
 
-def link_overlay(unit, want, ld_bin, objcopy_bin, skip_verify, main_syms=None):
+def link_overlay(unit, want, ld_bin, objcopy_bin, skip_verify, main_syms=None, base=None):
     """Link one stage overlay with its own splat script; skipped when not split yet.
-    main_syms: main's symbols from this build's main.elf (instead of the retail numbers)."""
+    main_syms: main's symbols from this build's main.elf (instead of the retail numbers).
+    base: main's Ovl_LoadArea in this build; the overlay is linked to run from there."""
     ld_script = "linkers/USA/%s.ld" % unit
     if not os.path.exists(os.path.join(ROOT, ld_script)):
         return 0
+    if base is not None:
+        text, n = re.subn(r"(\.%s )0x[0-9A-Fa-f]+( :)" % unit, r"\g<1>0x%08X\g<2>" % base,
+                          open(os.path.join(ROOT, ld_script)).read())
+        assert n == 1, "%s: overlay section address not found" % ld_script
+        ld_script = os.path.join(CONFIG["build_dir"], "%s.link.ld" % unit)
+        open(os.path.join(ROOT, ld_script), "w").write(text)
     elf = os.path.join(CONFIG["build_dir"], unit + ".elf")
     out = os.path.join(os.path.dirname(CONFIG["out"]), unit.upper() + ".PRO").replace("\\", "/")
     cmd = [ld_bin, "-EL"]

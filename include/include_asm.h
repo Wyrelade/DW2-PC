@@ -67,6 +67,20 @@ __asm__(".include \"include/labels.inc\"\n");
 
 #endif /* !defined(M2CTX) && !defined(PERMUTER) */
 
+/* SHIFT_TEST_PAD: shift test (tools/build_dw2.py --shift-test). Pads the start of the unit's
+ * .rodata, .data and .text by N bytes, so every address behind it moves. That image does not
+ * match retail; it has to run, which shows no code or data holds a fixed address. */
+#if defined(SHIFT_TEST) && !defined(M2CTX) && !defined(PERMUTER)
+#define SHIFT_TEST_PAD(N) \
+    __asm__( \
+        ".section .rodata\n.space " #N "\n" \
+        ".section .data\n.space " #N "\n" \
+        ".section .text\n.space " #N "\n" \
+    )
+#else
+#define SHIFT_TEST_PAD(N)
+#endif
+
 /* ASM_SOURCE: a function that was hand-written assembly in the original build, restored as
  * readable source under src/ (tools/asm_restore.py). Included in place like INCLUDE_ASM, but it
  * is part of the decompiled object (not skipped under SKIP_ASM) and carries no NON_MATCHING mark. */
