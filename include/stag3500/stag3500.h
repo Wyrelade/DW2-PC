@@ -6,7 +6,7 @@
 
 /* STAG3500 (Ovl_FileIds id 6, gameMode 0x7xx). */
 
-/* Part-slide slot (func_80066694 sets, func_800661B0 steps): parts matching mask
+/* Part-slide slot (Stg35_PartsStartSlideX sets, Stg35_PartsDraw steps): parts matching mask
    move by speed (8.8 fixed, accum carries the fraction) towards target. */
 typedef struct {
     /* 0x00 */ u8 active;
@@ -17,9 +17,9 @@ typedef struct {
     /* 0x08 */ s32 mask;
 } Stg35Slide;
 
-/* File-load request: field_0 is a Cd file id (func_800661B0 passes it to Cd_GetFileEntry),
-   field_4 the load mode (1 or 2, switched on by func_800661B0), field_C the two
-   part-slide slots (func_800657AC writes the first word directly). */
+/* File-load request: field_0 is a Cd file id (Stg35_PartsDraw passes it to Cd_GetFileEntry),
+   field_4 the load mode (1 or 2, switched on by Stg35_PartsDraw), field_C the two
+   part-slide slots (Stg35_TextSetColor writes the first word directly). */
 typedef struct {
     /* 0x00 */ s32 fileId;
     /* 0x04 */ s32 mode;
@@ -28,9 +28,9 @@ typedef struct {
         s32 field_C;
         Stg35Slide slide[2];
     } u;
-} Stg35Load; /* size 0x24 (func_80066120 allocates 0x24) */
+} Stg35Load; /* size 0x24 (Stg35_PartsAlloc allocates 0x24) */
 
-/* Handle whose first word points at a Stg35Load (func_800661B0 argument). */
+/* Handle whose first word points at a Stg35Load (Stg35_PartsDraw argument). */
 typedef struct {
     /* 0x00 */ Stg35Load *load;
 } Stg35LoadHandle;
@@ -43,7 +43,7 @@ typedef struct {
     /* 0x03 */ u8 code;
 } Stg35Rgb;
 
-/* Gouraud quad packet (PsyQ POLY_G4 shape) built by func_80065930. */
+/* Gouraud quad packet (PsyQ POLY_G4 shape) built by Stg35_RectDraw. */
 typedef struct {
     /* 0x00 */ union {
         u32 word;
@@ -87,7 +87,7 @@ typedef struct {
     /* 0x00 */ Stg35Sprite *sprite;
 } Stg35SpriteHandle;
 
-/* 0x1C-byte object allocated by func_800656D0 (field_0 = -1), closed by Text_Close. */
+/* 0x1C-byte object allocated by Stg35_TextAlloc (field_0 = -1), closed by Text_Close. */
 typedef struct {
     /* 0x00 */ s32 field_0;
     /* 0x04 */ s32 field_4;
@@ -127,13 +127,13 @@ typedef struct {
     /* 0x38 */ s32 field_38;
 } Stg35Work;
 
-/* Actor.work of the task at func_80067748: a 12-byte vector at 0. */
+/* Actor.work of the task at Stg35_XaPlayInit: a 12-byte vector at 0. */
 typedef struct {
     /* 0x00 */ Stg35Vec3 field_0;
 } Stg35VecWork;
 
 
-/* Work of the task 0x708 read by func_80068B10 .. func_80068CA0. */
+/* Work of the task 0x708 read by Stg35_HudStartGauge .. Stg35_HudPeekGaugeLevel. */
 typedef struct {
     /* 0x00 */ s32 field_0;           /* target */
     /* 0x04 */ s32 field_4;           /* shown value */
@@ -154,15 +154,15 @@ typedef struct {
 } Stg35Work708;
 
 /* Work with 3 load handles, 7 text handles and 10 sprite handles
-   (func_800689FC destroy, func_80068AA0 draw). */
+   (Stg35_BattleHudDestroy destroy, Stg35_BattleHudDraw draw). */
 typedef struct {
     /* 0x00 */ Stg35LoadHandle load[3];
     /* 0x0C */ Stg35TextHandle text[7];
     /* 0x28 */ Stg35SpriteHandle sprite[10];
 } Stg35Work3;
 
-/* Work with 4 load handles and 7 text handles (func_800645B4 destroy,
-   func_80064638 draw). */
+/* Work with 4 load handles and 7 text handles (Stg35_VsMenuDestroy destroy,
+   Stg35_VsMenuDraw draw). */
 typedef struct {
     /* 0x00 */ Stg35LoadHandle load[4];
     /* 0x10 */ Stg35TextHandle text[7];
@@ -174,14 +174,14 @@ typedef struct {
     /* 0x40 */ s32 field_40;
 } Stg35Work4;
 
-/* Work with 1 load handle and 14 text handles (func_80064AF0 destroy). */
+/* Work with 1 load handle and 14 text handles (Stg35_MatchupDestroy destroy). */
 typedef struct {
     /* 0x00 */ Stg35LoadHandle load[1];
     /* 0x04 */ Stg35TextHandle text[14];
 } Stg35Work1;
 
-/* Sorted list work (func_80063694 inserts, func_80063E00 frees files).
-   func_80063758 fills it from the battle script: field_1E8/field_2DC and
+/* Sorted list work (Stg35_ActionLoadAddSorted inserts, Stg35_ActionLoadDestroy frees files).
+   Stg35_ActionLoadUpdate fills it from the battle script: field_1E8/field_2DC and
    field_260/field_2E0 are the two file-id lists, field_8/field_F8 the
    (file id, LBA) list sorted by LBA. */
 typedef struct {
@@ -201,7 +201,7 @@ typedef struct {
     /* 0x31C */ s32 field_31C;
 } Stg35ListWork;
 
-/* Object holding six child actors at 0x2C (func_80064BB0, func_80064C54). */
+/* Object holding six child actors at 0x2C (Stg35_ShowWinnerSide, Stg35_ShowAllDigi). */
 typedef struct {
     u8 _pad00[0x2C];
     /* 0x2C */ Actor *field_2C[6];
@@ -212,7 +212,7 @@ typedef struct {
     /* 0x34 */ Stg35ChildList *field_34;
 } Stg35ChildOwner;
 
-/* 0x5C-byte battle copy of a party digimon (D_8006AA88.rec[6], at 0x8006AA98);
+/* 0x5C-byte battle copy of a party digimon (Stg35_Battle.rec[6], at 0x8006AA98);
    shares the leading fields of the main-exe DigiRosterEntry. */
 typedef struct {
     /* 0x00 */ u8 state;
@@ -240,14 +240,14 @@ typedef struct {
 
 extern Stg35GameState Save_GameState;
 
-/* 6-byte entries of the lists pointed to by D_8006AA24 (end at field_0 == 0). */
+/* 6-byte entries of the lists pointed to by Stg35_SkillGroups (end at field_0 == 0). */
 typedef struct {
     /* 0x00 */ s16 field_0;
     /* 0x02 */ s16 field_2;
     /* 0x04 */ s16 field_4;
 } Stg35Rec6;
 
-/* Per-party-slot pick table filled by func_8006A168. */
+/* Per-party-slot pick table filled by Stg35_BuildCommandList. */
 typedef struct {
     /* 0x00 */ s32 field_0;
     /* 0x04 */ s32 field_4;
@@ -258,7 +258,7 @@ typedef struct {
     u8 _pad2A[0x02];
 } Stg35Rec2C;
 
-/* D_8006AA88 (func_80067720 zeroes all 0x358 bytes). */
+/* Stg35_Battle (Stg35_ClearBattle zeroes all 0x358 bytes). */
 typedef struct {
     u8 _pad000[0x10];
     /* 0x010 */ Stg35Rec5C rec[6];
@@ -266,7 +266,7 @@ typedef struct {
     /* 0x340 */ s32 field_340[6];
 } Stg35Battle; /* size 0x358 */
 
-/* Camera work (func_80069FD4), same layout as STAG0000 Stg00CameraWork. */
+/* Camera work (Stg35_CameraDraw), same layout as STAG0000 Stg00CameraWork. */
 typedef struct {
     /* 0x00 */ s32 field_0;
     /* 0x04 */ s32 field_4;
@@ -298,7 +298,7 @@ typedef struct {
     /* 0x1C */ Coord1F668 *field_1C;
 } Stg35RefView;
 
-/* 7-word argument block passed to Task_Create(7, ...) (func_80066A9C, func_800668F8). */
+/* 7-word argument block passed to Task_Create(7, ...) (Stg35_SpawnSkillHitFx, Stg35_SpawnSkillCastFx). */
 typedef struct {
     /* 0x00 */ s32 field_0;
     /* 0x04 */ s32 field_4;
@@ -320,17 +320,17 @@ typedef struct {
     /* 0x08 */ s32 field_8;
 } Stg35Arg3;
 
-/* Actor.work of func_80067510: one load handle and a fade counter. */
+/* Actor.work of Stg35_RoundBannerTask: one load handle and a fade counter. */
 typedef struct {
     /* 0x00 */ Stg35LoadHandle load[1];
     /* 0x04 */ s32 field_4;
 } Stg35FadeWork;
 
-/* Actor.work of the CD stream task func_80067768. */
+/* Actor.work of the CD stream task Stg35_XaPlayTask. */
 typedef struct {
     /* 0x00 */ s32 fileId;
     /* 0x04 */ s32 channel;
-    /* 0x08 */ s32 track;             /* 1-based index into D_8006A600/D_8006A618 */
+    /* 0x08 */ s32 track;             /* 1-based index into Stg35_XaTrackStart/Stg35_XaTrackLength */
     /* 0x0C */ s32 start;             /* start sector */
     /* 0x10 */ s32 end;               /* end sector */
 } Stg35CdWork;
@@ -357,12 +357,12 @@ typedef struct {
     /* 0x3A */ u8 field_3A;
 } Stg35ModelFade;
 
-/* Actor.work of the battle script runner func_80068D34. */
+/* Actor.work of the battle script runner Stg35_BattleScriptTask. */
 typedef struct {
     /* 0x00 */ s16 *script;
 } Stg35ScriptWork;
 
-/* Actor.work of the battle main task func_80064CB8. */
+/* Actor.work of the battle main task Stg35_BattleUpdate. */
 typedef struct {
     /* 0x00 */ s32 field_0;
     /* 0x04 */ s32 field_4;           /* turn count */
@@ -370,7 +370,7 @@ typedef struct {
     /* 0x0C */ s32 field_C;           /* winning side */
 } Stg35BattleWork;
 
-/* GfxPart with the fade fields func_800661B0 writes (0x0E, 0x14). */
+/* GfxPart with the fade fields Stg35_PartsDraw writes (0x0E, 0x14). */
 typedef struct {
     /* 0x00 */ s32 fileId;
     /* 0x04 */ s16 x;
@@ -387,17 +387,17 @@ typedef struct {
     u8 _pad20[8];
 } Stg35Part; /* size 0x28 */
 
-/* s16 screen position pairs (D_8006A4DC, D_8006A500, D_8006A508, D_8006A648, D_8006A654). */
+/* s16 screen position pairs (Stg35_MatchupLabelPos, Stg35_MatchupPartyPos, Stg35_MatchupTamerPos, Stg35_HpBarPosP1, Stg35_HpBarPosP2). */
 typedef struct {
     /* 0x00 */ s16 x;
     /* 0x02 */ s16 y;
 } Stg35XY;
 
-extern s32 D_8006AA58[];
-extern Stg35Battle D_8006AA88;
+extern s32 Stg35_TurnOrder[];
+extern Stg35Battle Stg35_Battle;
 extern Stg35Rec6 D_8006A6DC[];
-extern s32 D_8006A55C[];
-extern Stg35Rec6 *D_8006AA24[6];
+extern s32 Stg35_DefaultTargets[];
+extern Stg35Rec6 *Stg35_SkillGroups[6];
 extern s32 Gfx_ZeroVector[];
 
 extern void Actor_InitTransform(ContC40 *a0, s32 *a1, u16 a2);
@@ -409,17 +409,17 @@ extern void Gfx_SetPartsNumber(GfxPart *, s32, s32, s32);
 extern void RotMatrixYXZ(s16 *, Mat1F668 *);
 extern void GsSetProjection(s32);
 extern s32 GsSetRefView2(Stg35RefView *);
-extern void func_80065718(Stg35TextHandle *arg0);
-extern void func_800658F4(Stg35SpriteHandle *arg0);
-extern void func_80065930(Stg35SpriteHandle *arg0);
-extern void func_800674D4(Actor *arg0, s32 arg1);
-extern void func_800674F8(Actor *arg0);
+extern void Stg35_TextFree(Stg35TextHandle *arg0);
+extern void Stg35_RectFree(Stg35SpriteHandle *arg0);
+extern void Stg35_RectDraw(Stg35SpriteHandle *arg0);
+extern void Stg35_FighterSetVisible(Actor *arg0, s32 arg1);
+extern void Stg35_FighterQueueHomeReset(Actor *arg0);
 
 extern void Text_Close(s32 *slot);
 extern void Mem_Zero(void *a0, s32 a1);
 extern void Task_DefaultDestroy(Actor *arg0);
-extern void func_800661B0(Stg35LoadHandle *arg0);
-extern void func_8006926C(s32 arg0);
+extern void Stg35_PartsDraw(Stg35LoadHandle *arg0);
+extern void Stg35_BuildSkillScript(s32 arg0);
 extern s32 Mem_Alloc(s32, s32);
 extern void Mem_Free(ActorWork *arg0);
 extern s32 Skill_GetNameText(s32 arg0);
@@ -436,68 +436,68 @@ extern void Gfx_DrawTexModel(Actor *, s32);
 extern s32 Math_CycleRange(s32, s32, s32, s32);
 extern void Task_NextState0(Actor *arg0);
 extern TaskEntry *Task_FindFirst(s32 arg0, s32 arg1, s32 arg2);
-extern void func_80066120(Stg35LoadHandle *arg0);
-extern void func_80066168(Stg35LoadHandle *arg0);
-extern void func_800661A4(Stg35LoadHandle *arg0, s32 arg1);
-extern void func_80066520(Stg35LoadHandle *arg0, s32 arg1, s32 arg2);
-extern void func_800663CC(Stg35LoadHandle *arg0, s32 arg1);
-extern void func_80065760(Stg35TextHandle *arg0, s32 arg1, s32 arg2, s32 arg3);
-extern void func_800657AC(Stg35LoadHandle *arg0, s32 arg1);
-extern void func_800657B8(Stg35TextHandle *arg0, s32 arg1);
-extern void func_800657F0(Stg35TextHandle *arg0, s32 arg1);
-extern void func_80065824(Stg35TextHandle *arg0);
-extern s32 func_80069870(s32 arg0, s32 arg1);
-extern void func_80065B1C(Stg35SpriteHandle *arg0, s32 arg1, u8 arg2, u8 arg3, u8 arg4);
-extern void func_80065B3C(Stg35SpriteHandle *arg0, s32 arg1);
-extern void func_80065B48(Stg35SpriteHandle *arg0, s32 arg1);
-extern void func_80065B54(Stg35SpriteHandle *arg0, s32 arg1);
-extern void func_80065B60(Stg35SpriteHandle *arg0, s32 arg1);
-extern void func_80065B04(Stg35SpriteHandle *arg0, s32 arg1, s16 arg2, s16 arg3);
-extern void func_80065B6C(Stg35SpriteHandle *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4);
-extern s32 func_80065B88(s32 arg0, s32 arg1, s32 arg2);
-extern s32 func_80065BE0(s32 arg0, s32 arg1, s32 arg2);
-extern void func_8006A0D4(u8 arg0, s32 *arg1, s32 *arg2, s32 *arg3, s32 *arg4);
-extern void func_800656D0(Stg35TextHandle *arg0);
-extern void func_800657A0(Stg35LoadHandle *arg0, s32 arg1);
-extern void func_80065894(Stg35TextHandle *arg0);
-extern void func_800658B8(Stg35SpriteHandle *arg0);
-extern void func_80065D00(void);
-extern void func_80065D2C(s32 arg0, s32 arg1);
-extern void func_80065D84(s32 arg0);
-extern s32 func_80065E04(void);
-extern s32 func_80065E44(s32 arg0);
-extern void func_80065E60(void);
-extern void func_80065F8C(s32 arg0, s32 arg1);
-extern void func_80066408(Stg35LoadHandle *arg0, s32 mask);
-extern void func_80066480(Stg35LoadHandle *arg0, s32 mask);
-extern void func_800664F4(Stg35LoadHandle *arg0);
-extern void func_80066508(Stg35LoadHandle *arg0);
-extern void func_8006659C(Stg35LoadHandle *arg0, s32 mask, s32 v);
-extern void func_80066618(Stg35LoadHandle *arg0, s32 mask, s32 v);
-extern void func_80066694(Stg35LoadHandle *arg0, s32 idx, s32 mask, s32 v, s32 target, s32 speed);
-extern void func_80066778(Stg35LoadHandle *arg0, s32 arg1, s32 arg2, s32 arg3);
-extern void func_800667D0(Actor *arg0, s32 arg1);
-extern void func_800668F8(Actor *arg0, s32 arg1);
-extern void func_80066A9C(Actor *arg0);
-extern void func_80066BC8(Actor *arg0);
-extern void func_80066C00(Actor *arg0, s32 arg1);
-extern void func_80067720(void);
-extern void func_800679D0(Actor *arg0);
-extern void func_80067B18(Actor *arg0, s32 arg1);
-extern void func_80067C74(Actor *arg0, s32 arg1);
-extern void func_80068B10(s32 arg0, s32 *arg1);
-extern s32 func_80068B9C(void);
-extern void func_80068BF8(void);
-extern s32 func_80068C5C(void);
-extern s32 func_80068CA0(s32 arg0);
-extern s32 func_80069850(s32 arg0);
-extern void func_800698C8(Stg35CamWork *arg0, s32 *arg1);
-extern void func_8006A080(s32 arg0);
-extern void func_8006A168(s32 arg0);
-extern void func_80063694(Actor *arg0, s32 arg1, s32 arg2);
-extern void func_80064B94(Actor *arg0, s32 arg1, s32 arg2);
-extern void func_80064BB0(Stg35ChildOwner *arg0, s32 arg1);
-extern void func_80064C54(Stg35ChildOwner *arg0);
+extern void Stg35_PartsAlloc(Stg35LoadHandle *arg0);
+extern void Stg35_PartsFree(Stg35LoadHandle *arg0);
+extern void Stg35_PartsSetFile(Stg35LoadHandle *arg0, s32 arg1);
+extern void Stg35_PartsSetPalette(Stg35LoadHandle *arg0, s32 arg1, s32 arg2);
+extern void Stg35_PartsHideByMask(Stg35LoadHandle *arg0, s32 arg1);
+extern void Stg35_TextSetLayout(Stg35TextHandle *arg0, s32 arg1, s32 arg2, s32 arg3);
+extern void Stg35_TextSetColor(Stg35LoadHandle *arg0, s32 arg1);
+extern void Stg35_TextSetSysMsg(Stg35TextHandle *arg0, s32 arg1);
+extern void Stg35_TextSetSkillName(Stg35TextHandle *arg0, s32 arg1);
+extern void Stg35_TextOpen(Stg35TextHandle *arg0);
+extern s32 Stg35_CamEaseStep(s32 arg0, s32 arg1);
+extern void Stg35_RectSetColor(Stg35SpriteHandle *arg0, s32 arg1, u8 arg2, u8 arg3, u8 arg4);
+extern void Stg35_RectSetWidth(Stg35SpriteHandle *arg0, s32 arg1);
+extern void Stg35_RectSetHeight(Stg35SpriteHandle *arg0, s32 arg1);
+extern void Stg35_RectSetX(Stg35SpriteHandle *arg0, s32 arg1);
+extern void Stg35_RectSetY(Stg35SpriteHandle *arg0, s32 arg1);
+extern void Stg35_RectSetDrawMode(Stg35SpriteHandle *arg0, s32 arg1, s16 arg2, s16 arg3);
+extern void Stg35_RectSetBounds(Stg35SpriteHandle *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4);
+extern s32 Stg35_ScaleBarLen(s32 arg0, s32 arg1, s32 arg2);
+extern s32 Stg35_ApplySkillDamage(s32 arg0, s32 arg1, s32 arg2);
+extern void Stg35_FindSkillGroup(u8 arg0, s32 *arg1, s32 *arg2, s32 *arg3, s32 *arg4);
+extern void Stg35_TextAlloc(Stg35TextHandle *arg0);
+extern void Stg35_TextSetString(Stg35LoadHandle *arg0, s32 arg1);
+extern void Stg35_TextClose(Stg35TextHandle *arg0);
+extern void Stg35_RectAlloc(Stg35SpriteHandle *arg0);
+extern void Stg35_TurnOrderClear(void);
+extern void Stg35_TurnOrderInsert(s32 arg0, s32 arg1);
+extern void Stg35_TurnOrderRemove(s32 arg0);
+extern s32 Stg35_TurnOrderFreeIndex(void);
+extern s32 Stg35_TurnOrderGet(s32 arg0);
+extern void Stg35_BuildTurnOrder(void);
+extern void Stg35_SetChosenAction(s32 arg0, s32 arg1);
+extern void Stg35_PartsShowGroup(Stg35LoadHandle *arg0, s32 mask);
+extern void Stg35_PartsHideGroup(Stg35LoadHandle *arg0, s32 mask);
+extern void Stg35_PartsStartOpen(Stg35LoadHandle *arg0);
+extern void Stg35_PartsStartScaleOut(Stg35LoadHandle *arg0);
+extern void Stg35_PartsSetX(Stg35LoadHandle *arg0, s32 mask, s32 v);
+extern void Stg35_PartsSetY(Stg35LoadHandle *arg0, s32 mask, s32 v);
+extern void Stg35_PartsStartSlideX(Stg35LoadHandle *arg0, s32 idx, s32 mask, s32 v, s32 target, s32 speed);
+extern void Stg35_PartsSetNumber(Stg35LoadHandle *arg0, s32 arg1, s32 arg2, s32 arg3);
+extern void Stg35_FighterSetAnim(Actor *arg0, s32 arg1);
+extern void Stg35_SpawnSkillCastFx(Actor *arg0, s32 arg1);
+extern void Stg35_SpawnSkillHitFx(Actor *arg0);
+extern void Stg35_PlayHitReactSound(Actor *arg0);
+extern void Stg35_HitReactUpdate(Actor *arg0, s32 arg1);
+extern void Stg35_ClearBattle(void);
+extern void Stg35_HudUpdateSkillList(Actor *arg0);
+extern void Stg35_HudUpdateGaugeColumn(Actor *arg0, s32 arg1);
+extern void Stg35_HudUpdateGaugeBar(Actor *arg0, s32 arg1);
+extern void Stg35_HudStartGauge(s32 arg0, s32 *arg1);
+extern s32 Stg35_HudGetGaugeStatus(void);
+extern void Stg35_HudSyncHp(void);
+extern s32 Stg35_HudGetGaugeLevel(void);
+extern s32 Stg35_HudPeekGaugeLevel(s32 arg0);
+extern s32 Stg35_PrepareAction(s32 arg0);
+extern void Stg35_CamEaseToward(Stg35CamWork *arg0, s32 *arg1);
+extern void Stg35_SetCameraShot(s32 arg0);
+extern void Stg35_BuildCommandList(s32 arg0);
+extern void Stg35_ActionLoadAddSorted(Actor *arg0, s32 arg1, s32 arg2);
+extern void Stg35_SetDigiAction(Actor *arg0, s32 arg1, s32 arg2);
+extern void Stg35_ShowWinnerSide(Stg35ChildOwner *arg0, s32 arg1);
+extern void Stg35_ShowAllDigi(Stg35ChildOwner *arg0);
 
 /* Main-exe functions, declared the way this overlay calls them. */
 extern void Task_Create(u32 id, s32 *slot, s32 arg);
@@ -557,32 +557,32 @@ extern SysState Sys_State;
 extern PadState Pad_State[];
 extern s16 D_80050780;
 
-extern s32 D_8006A4AC[];
-extern s32 D_8006A4B8[];
-extern Stg35XY D_8006A4DC[];
-extern s16 D_8006A4F4[];
-extern Stg35XY D_8006A500[];
-extern Stg35XY D_8006A508[];
+extern s32 Stg35_VsMenuPromptMsgs[];
+extern s32 Stg35_VsMenuPhaseMasks[];
+extern Stg35XY Stg35_MatchupLabelPos[];
+extern s16 Stg35_MatchupLabelMsgs[];
+extern Stg35XY Stg35_MatchupPartyPos[];
+extern Stg35XY Stg35_MatchupTamerPos[];
 extern s32 D_8006A540[];
 extern Stg35Rec5C D_8006AA98[];
-extern Elem12 D_8006A574;
-extern Elem12 D_8006A580;
-extern Elem12 D_8006A58C;
-extern s32 D_8006A600[];
-extern s32 D_8006A618[];
-extern Stg35XY D_8006A648[];
-extern Stg35XY D_8006A654[];
+extern Elem12 Stg35_HitReactHop1Motion;
+extern Elem12 Stg35_HitReactHop2Motion;
+extern Elem12 Stg35_HitReactPushMotion;
+extern s32 Stg35_XaTrackStart[];
+extern s32 Stg35_XaTrackLength[];
+extern Stg35XY Stg35_HpBarPosP1[];
+extern Stg35XY Stg35_HpBarPosP2[];
 extern s16 D_8006A690[];
 extern s16 D_8006A69C[];
 extern s16 D_8006A6B0[];
-extern s16 D_8006ADE0[];              /* battle script buffer (bss) */
-extern s32 D_8006AF70;
+extern s16 Stg35_BattleScript[];              /* battle script buffer (bss) */
+extern s32 Stg35_CamShotVariant;
 
 
-/* rodata {1, 2, 0x10}: func_80067510 copies it to the stack as a whole (the local's initializer) */
+/* rodata {1, 2, 0x10}: Stg35_RoundBannerTask copies it to the stack as a whole (the local's initializer) */
 typedef struct {
     /* 0x0 */ s32 v[3];
 } Stg35Masks;
-extern Stg35Masks D_80063418;
+extern Stg35Masks Stg35_RoundBannerMasks;
 
 #endif

@@ -1,0 +1,817 @@
+nonmatching Stg35_BattleHudTask, 0xBB4
+
+glabel Stg35_BattleHudTask
+    /* 4AE8 80067E48 A8FFBD27 */  addiu      $sp, $sp, -0x58
+    /* 4AEC 80067E4C 4400B5AF */  sw         $s5, 0x44($sp)
+    /* 4AF0 80067E50 21A88000 */  addu       $s5, $a0, $zero
+    /* 4AF4 80067E54 01000424 */  addiu      $a0, $zero, 0x1
+    /* 4AF8 80067E58 5000BFAF */  sw         $ra, 0x50($sp)
+    /* 4AFC 80067E5C 4C00B7AF */  sw         $s7, 0x4C($sp)
+    /* 4B00 80067E60 4800B6AF */  sw         $s6, 0x48($sp)
+    /* 4B04 80067E64 4000B4AF */  sw         $s4, 0x40($sp)
+    /* 4B08 80067E68 3C00B3AF */  sw         $s3, 0x3C($sp)
+    /* 4B0C 80067E6C 3800B2AF */  sw         $s2, 0x38($sp)
+    /* 4B10 80067E70 3400B1AF */  sw         $s1, 0x34($sp)
+    /* 4B14 80067E74 3000B0AF */  sw         $s0, 0x30($sp)
+    /* 4B18 80067E78 1000A38E */  lw         $v1, 0x10($s5)
+    /* 4B1C 80067E7C 2C00B38E */  lw         $s3, 0x2C($s5)
+    /* 4B20 80067E80 C5006410 */  beq        $v1, $a0, .L80068198
+    /* 4B24 80067E84 02006228 */   slti      $v0, $v1, 0x2
+    /* 4B28 80067E88 05004010 */  beqz       $v0, .L80067EA0
+    /* 4B2C 80067E8C 00000000 */   nop
+    /* 4B30 80067E90 08006010 */  beqz       $v1, .L80067EB4
+    /* 4B34 80067E94 21900000 */   addu      $s2, $zero, $zero
+    /* 4B38 80067E98 74A20108 */  j          .L800689D0
+    /* 4B3C 80067E9C 00000000 */   nop
+  .L80067EA0:
+    /* 4B40 80067EA0 02000224 */  addiu      $v0, $zero, 0x2
+    /* 4B44 80067EA4 C0026210 */  beq        $v1, $v0, .L800689A8
+    /* 4B48 80067EA8 00000000 */   nop
+    /* 4B4C 80067EAC 74A20108 */  j          .L800689D0
+    /* 4B50 80067EB0 00000000 */   nop
+  .L80067EB4:
+    /* 4B54 80067EB4 21806002 */  addu       $s0, $s3, $zero
+  .L80067EB8:
+    /* 4B58 80067EB8 4898010C */  jal        Stg35_PartsAlloc
+    /* 4B5C 80067EBC 21200002 */   addu      $a0, $s0, $zero
+    /* 4B60 80067EC0 01005226 */  addiu      $s2, $s2, 0x1
+    /* 4B64 80067EC4 0300422A */  slti       $v0, $s2, 0x3
+    /* 4B68 80067EC8 FBFF4014 */  bnez       $v0, .L80067EB8
+    /* 4B6C 80067ECC 04001026 */   addiu     $s0, $s0, 0x4
+    /* 4B70 80067ED0 21900000 */  addu       $s2, $zero, $zero
+    /* 4B74 80067ED4 0C001024 */  addiu      $s0, $zero, 0xC
+  .L80067ED8:
+    /* 4B78 80067ED8 B495010C */  jal        Stg35_TextAlloc
+    /* 4B7C 80067EDC 21207002 */   addu      $a0, $s3, $s0
+    /* 4B80 80067EE0 01005226 */  addiu      $s2, $s2, 0x1
+    /* 4B84 80067EE4 0700422A */  slti       $v0, $s2, 0x7
+    /* 4B88 80067EE8 FBFF4014 */  bnez       $v0, .L80067ED8
+    /* 4B8C 80067EEC 04001026 */   addiu     $s0, $s0, 0x4
+    /* 4B90 80067EF0 21900000 */  addu       $s2, $zero, $zero
+    /* 4B94 80067EF4 28001024 */  addiu      $s0, $zero, 0x28
+  .L80067EF8:
+    /* 4B98 80067EF8 2E96010C */  jal        Stg35_RectAlloc
+    /* 4B9C 80067EFC 21207002 */   addu      $a0, $s3, $s0
+    /* 4BA0 80067F00 01005226 */  addiu      $s2, $s2, 0x1
+    /* 4BA4 80067F04 0A00422A */  slti       $v0, $s2, 0xA
+    /* 4BA8 80067F08 FBFF4014 */  bnez       $v0, .L80067EF8
+    /* 4BAC 80067F0C 04001026 */   addiu     $s0, $s0, 0x4
+    /* 4BB0 80067F10 21206002 */  addu       $a0, $s3, $zero
+    /* 4BB4 80067F14 3F0D053C */  lui        $a1, (0xD3F0005 >> 16)
+    /* 4BB8 80067F18 6998010C */  jal        Stg35_PartsSetFile
+    /* 4BBC 80067F1C 0500A534 */   ori       $a1, $a1, (0xD3F0005 & 0xFFFF)
+    /* 4BC0 80067F20 04006426 */  addiu      $a0, $s3, 0x4
+    /* 4BC4 80067F24 3F0D053C */  lui        $a1, (0xD3F0006 >> 16)
+    /* 4BC8 80067F28 6998010C */  jal        Stg35_PartsSetFile
+    /* 4BCC 80067F2C 0600A534 */   ori       $a1, $a1, (0xD3F0006 & 0xFFFF)
+    /* 4BD0 80067F30 08006426 */  addiu      $a0, $s3, 0x8
+    /* 4BD4 80067F34 3F0D053C */  lui        $a1, (0xD3F0007 >> 16)
+    /* 4BD8 80067F38 6998010C */  jal        Stg35_PartsSetFile
+    /* 4BDC 80067F3C 0700A534 */   ori       $a1, $a1, (0xD3F0007 & 0xFFFF)
+    /* 4BE0 80067F40 28007126 */  addiu      $s1, $s3, 0x28
+    /* 4BE4 80067F44 21202002 */  addu       $a0, $s1, $zero
+    /* 4BE8 80067F48 21280000 */  addu       $a1, $zero, $zero
+    /* 4BEC 80067F4C 2130A000 */  addu       $a2, $a1, $zero
+    /* 4BF0 80067F50 C196010C */  jal        Stg35_RectSetDrawMode
+    /* 4BF4 80067F54 2138A000 */   addu      $a3, $a1, $zero
+    /* 4BF8 80067F58 21202002 */  addu       $a0, $s1, $zero
+    /* 4BFC 80067F5C 7AFF0524 */  addiu      $a1, $zero, -0x86
+    /* 4C00 80067F60 3CFF0624 */  addiu      $a2, $zero, -0xC4
+    /* 4C04 80067F64 70000724 */  addiu      $a3, $zero, 0x70
+    /* 4C08 80067F68 12001024 */  addiu      $s0, $zero, 0x12
+    /* 4C0C 80067F6C DB96010C */  jal        Stg35_RectSetBounds
+    /* 4C10 80067F70 1000B0AF */   sw        $s0, 0x10($sp)
+    /* 4C14 80067F74 2C007126 */  addiu      $s1, $s3, 0x2C
+    /* 4C18 80067F78 21202002 */  addu       $a0, $s1, $zero
+    /* 4C1C 80067F7C 21280000 */  addu       $a1, $zero, $zero
+    /* 4C20 80067F80 2130A000 */  addu       $a2, $a1, $zero
+    /* 4C24 80067F84 C196010C */  jal        Stg35_RectSetDrawMode
+    /* 4C28 80067F88 2138A000 */   addu      $a3, $a1, $zero
+    /* 4C2C 80067F8C 21202002 */  addu       $a0, $s1, $zero
+    /* 4C30 80067F90 15000524 */  addiu      $a1, $zero, 0x15
+    /* 4C34 80067F94 3CFF0624 */  addiu      $a2, $zero, -0xC4
+    /* 4C38 80067F98 70000724 */  addiu      $a3, $zero, 0x70
+    /* 4C3C 80067F9C DB96010C */  jal        Stg35_RectSetBounds
+    /* 4C40 80067FA0 1000B0AF */   sw        $s0, 0x10($sp)
+    /* 4C44 80067FA4 34007126 */  addiu      $s1, $s3, 0x34
+    /* 4C48 80067FA8 21202002 */  addu       $a0, $s1, $zero
+    /* 4C4C 80067FAC 21280000 */  addu       $a1, $zero, $zero
+    /* 4C50 80067FB0 2130A000 */  addu       $a2, $a1, $zero
+    /* 4C54 80067FB4 C196010C */  jal        Stg35_RectSetDrawMode
+    /* 4C58 80067FB8 2138A000 */   addu      $a3, $a1, $zero
+    /* 4C5C 80067FBC 21202002 */  addu       $a0, $s1, $zero
+    /* 4C60 80067FC0 7CFF0524 */  addiu      $a1, $zero, -0x84
+    /* 4C64 80067FC4 9CFF0624 */  addiu      $a2, $zero, -0x64
+    /* 4C68 80067FC8 6B000724 */  addiu      $a3, $zero, 0x6B
+    /* 4C6C 80067FCC C4001024 */  addiu      $s0, $zero, 0xC4
+    /* 4C70 80067FD0 DB96010C */  jal        Stg35_RectSetBounds
+    /* 4C74 80067FD4 1000B0AF */   sw        $s0, 0x10($sp)
+    /* 4C78 80067FD8 30007126 */  addiu      $s1, $s3, 0x30
+    /* 4C7C 80067FDC 21202002 */  addu       $a0, $s1, $zero
+    /* 4C80 80067FE0 21280000 */  addu       $a1, $zero, $zero
+    /* 4C84 80067FE4 2130A000 */  addu       $a2, $a1, $zero
+    /* 4C88 80067FE8 C196010C */  jal        Stg35_RectSetDrawMode
+    /* 4C8C 80067FEC 2138A000 */   addu      $a3, $a1, $zero
+    /* 4C90 80067FF0 21202002 */  addu       $a0, $s1, $zero
+    /* 4C94 80067FF4 18000524 */  addiu      $a1, $zero, 0x18
+    /* 4C98 80067FF8 9CFF0624 */  addiu      $a2, $zero, -0x64
+    /* 4C9C 80067FFC 6B000724 */  addiu      $a3, $zero, 0x6B
+    /* 4CA0 80068000 DB96010C */  jal        Stg35_RectSetBounds
+    /* 4CA4 80068004 1000B0AF */   sw        $s0, 0x10($sp)
+    /* 4CA8 80068008 21900000 */  addu       $s2, $zero, $zero
+    /* 4CAC 8006800C 16001724 */  addiu      $s7, $zero, 0x16
+    /* 4CB0 80068010 06001624 */  addiu      $s6, $zero, 0x6
+    /* 4CB4 80068014 0780023C */  lui        $v0, %hi(Stg35_HpBarPosP1)
+    /* 4CB8 80068018 48A65024 */  addiu      $s0, $v0, %lo(Stg35_HpBarPosP1)
+    /* 4CBC 8006801C 38001424 */  addiu      $s4, $zero, 0x38
+    /* 4CC0 80068020 21887402 */  addu       $s1, $s3, $s4
+  .L80068024:
+    /* 4CC4 80068024 21202002 */  addu       $a0, $s1, $zero
+    /* 4CC8 80068028 21280000 */  addu       $a1, $zero, $zero
+    /* 4CCC 8006802C 2130A000 */  addu       $a2, $a1, $zero
+    /* 4CD0 80068030 C196010C */  jal        Stg35_RectSetDrawMode
+    /* 4CD4 80068034 2138A000 */   addu      $a3, $a1, $zero
+    /* 4CD8 80068038 21202002 */  addu       $a0, $s1, $zero
+    /* 4CDC 8006803C 21280000 */  addu       $a1, $zero, $zero
+    /* 4CE0 80068040 B6000624 */  addiu      $a2, $zero, 0xB6
+    /* 4CE4 80068044 92000724 */  addiu      $a3, $zero, 0x92
+    /* 4CE8 80068048 C796010C */  jal        Stg35_RectSetColor
+    /* 4CEC 8006804C 1000B7AF */   sw        $s7, 0x10($sp)
+    /* 4CF0 80068050 21202002 */  addu       $a0, $s1, $zero
+    /* 4CF4 80068054 02000524 */  addiu      $a1, $zero, 0x2
+    /* 4CF8 80068058 B6000624 */  addiu      $a2, $zero, 0xB6
+    /* 4CFC 8006805C 92000724 */  addiu      $a3, $zero, 0x92
+    /* 4D00 80068060 C796010C */  jal        Stg35_RectSetColor
+    /* 4D04 80068064 1000B7AF */   sw        $s7, 0x10($sp)
+    /* 4D08 80068068 21202002 */  addu       $a0, $s1, $zero
+    /* 4D0C 8006806C 01000524 */  addiu      $a1, $zero, 0x1
+    /* 4D10 80068070 EB000624 */  addiu      $a2, $zero, 0xEB
+    /* 4D14 80068074 EE000724 */  addiu      $a3, $zero, 0xEE
+    /* 4D18 80068078 C796010C */  jal        Stg35_RectSetColor
+    /* 4D1C 8006807C 1000B6AF */   sw        $s6, 0x10($sp)
+    /* 4D20 80068080 21202002 */  addu       $a0, $s1, $zero
+    /* 4D24 80068084 03000524 */  addiu      $a1, $zero, 0x3
+    /* 4D28 80068088 EB000624 */  addiu      $a2, $zero, 0xEB
+    /* 4D2C 8006808C EE000724 */  addiu      $a3, $zero, 0xEE
+    /* 4D30 80068090 C796010C */  jal        Stg35_RectSetColor
+    /* 4D34 80068094 1000B6AF */   sw        $s6, 0x10($sp)
+    /* 4D38 80068098 21202002 */  addu       $a0, $s1, $zero
+    /* 4D3C 8006809C 70000724 */  addiu      $a3, $zero, 0x70
+    /* 4D40 800680A0 00000586 */  lh         $a1, 0x0($s0)
+    /* 4D44 800680A4 02000686 */  lh         $a2, 0x2($s0)
+    /* 4D48 800680A8 04001026 */  addiu      $s0, $s0, 0x4
+    /* 4D4C 800680AC 04009426 */  addiu      $s4, $s4, 0x4
+    /* 4D50 800680B0 01005226 */  addiu      $s2, $s2, 0x1
+    /* 4D54 800680B4 0C000224 */  addiu      $v0, $zero, 0xC
+    /* 4D58 800680B8 DB96010C */  jal        Stg35_RectSetBounds
+    /* 4D5C 800680BC 1000A2AF */   sw        $v0, 0x10($sp)
+    /* 4D60 800680C0 0300422A */  slti       $v0, $s2, 0x3
+    /* 4D64 800680C4 D7FF4014 */  bnez       $v0, .L80068024
+    /* 4D68 800680C8 21887402 */   addu      $s1, $s3, $s4
+    /* 4D6C 800680CC 21900000 */  addu       $s2, $zero, $zero
+    /* 4D70 800680D0 16001724 */  addiu      $s7, $zero, 0x16
+    /* 4D74 800680D4 06001624 */  addiu      $s6, $zero, 0x6
+    /* 4D78 800680D8 0780023C */  lui        $v0, %hi(Stg35_HpBarPosP2)
+    /* 4D7C 800680DC 54A65024 */  addiu      $s0, $v0, %lo(Stg35_HpBarPosP2)
+    /* 4D80 800680E0 44001424 */  addiu      $s4, $zero, 0x44
+    /* 4D84 800680E4 21887402 */  addu       $s1, $s3, $s4
+  .L800680E8:
+    /* 4D88 800680E8 21202002 */  addu       $a0, $s1, $zero
+    /* 4D8C 800680EC 21280000 */  addu       $a1, $zero, $zero
+    /* 4D90 800680F0 2130A000 */  addu       $a2, $a1, $zero
+    /* 4D94 800680F4 C196010C */  jal        Stg35_RectSetDrawMode
+    /* 4D98 800680F8 2138A000 */   addu      $a3, $a1, $zero
+    /* 4D9C 800680FC 21202002 */  addu       $a0, $s1, $zero
+    /* 4DA0 80068100 01000524 */  addiu      $a1, $zero, 0x1
+    /* 4DA4 80068104 B6000624 */  addiu      $a2, $zero, 0xB6
+    /* 4DA8 80068108 92000724 */  addiu      $a3, $zero, 0x92
+    /* 4DAC 8006810C C796010C */  jal        Stg35_RectSetColor
+    /* 4DB0 80068110 1000B7AF */   sw        $s7, 0x10($sp)
+    /* 4DB4 80068114 21202002 */  addu       $a0, $s1, $zero
+    /* 4DB8 80068118 03000524 */  addiu      $a1, $zero, 0x3
+    /* 4DBC 8006811C B6000624 */  addiu      $a2, $zero, 0xB6
+    /* 4DC0 80068120 92000724 */  addiu      $a3, $zero, 0x92
+    /* 4DC4 80068124 C796010C */  jal        Stg35_RectSetColor
+    /* 4DC8 80068128 1000B7AF */   sw        $s7, 0x10($sp)
+    /* 4DCC 8006812C 21202002 */  addu       $a0, $s1, $zero
+    /* 4DD0 80068130 21280000 */  addu       $a1, $zero, $zero
+    /* 4DD4 80068134 EB000624 */  addiu      $a2, $zero, 0xEB
+    /* 4DD8 80068138 EE000724 */  addiu      $a3, $zero, 0xEE
+    /* 4DDC 8006813C C796010C */  jal        Stg35_RectSetColor
+    /* 4DE0 80068140 1000B6AF */   sw        $s6, 0x10($sp)
+    /* 4DE4 80068144 21202002 */  addu       $a0, $s1, $zero
+    /* 4DE8 80068148 02000524 */  addiu      $a1, $zero, 0x2
+    /* 4DEC 8006814C EB000624 */  addiu      $a2, $zero, 0xEB
+    /* 4DF0 80068150 EE000724 */  addiu      $a3, $zero, 0xEE
+    /* 4DF4 80068154 C796010C */  jal        Stg35_RectSetColor
+    /* 4DF8 80068158 1000B6AF */   sw        $s6, 0x10($sp)
+    /* 4DFC 8006815C 21202002 */  addu       $a0, $s1, $zero
+    /* 4E00 80068160 70000724 */  addiu      $a3, $zero, 0x70
+    /* 4E04 80068164 00000586 */  lh         $a1, 0x0($s0)
+    /* 4E08 80068168 02000686 */  lh         $a2, 0x2($s0)
+    /* 4E0C 8006816C 04001026 */  addiu      $s0, $s0, 0x4
+    /* 4E10 80068170 04009426 */  addiu      $s4, $s4, 0x4
+    /* 4E14 80068174 01005226 */  addiu      $s2, $s2, 0x1
+    /* 4E18 80068178 0C000224 */  addiu      $v0, $zero, 0xC
+    /* 4E1C 8006817C DB96010C */  jal        Stg35_RectSetBounds
+    /* 4E20 80068180 1000A2AF */   sw        $v0, 0x10($sp)
+    /* 4E24 80068184 0300422A */  slti       $v0, $s2, 0x3
+    /* 4E28 80068188 D7FF4014 */  bnez       $v0, .L800680E8
+    /* 4E2C 8006818C 21887402 */   addu      $s1, $s3, $s4
+    /* 4E30 80068190 5145000C */  jal        Task_NextState0
+    /* 4E34 80068194 2120A002 */   addu      $a0, $s5, $zero
+  .L80068198:
+    /* 4E38 80068198 1400A58E */  lw         $a1, 0x14($s5)
+    /* 4E3C 8006819C 01000624 */  addiu      $a2, $zero, 0x1
+    /* 4E40 800681A0 1D00A610 */  beq        $a1, $a2, .L80068218
+    /* 4E44 800681A4 2C00A227 */   addiu     $v0, $sp, 0x2C
+    /* 4E48 800681A8 0200A228 */  slti       $v0, $a1, 0x2
+    /* 4E4C 800681AC 03004014 */  bnez       $v0, .L800681BC
+    /* 4E50 800681B0 02000224 */   addiu     $v0, $zero, 0x2
+    /* 4E54 800681B4 4C00A210 */  beq        $a1, $v0, .L800682E8
+    /* 4E58 800681B8 21886002 */   addu      $s1, $s3, $zero
+  .L800681BC:
+    /* 4E5C 800681BC 1800A28E */  lw         $v0, 0x18($s5)
+    /* 4E60 800681C0 00000000 */  nop
+    /* 4E64 800681C4 03004010 */  beqz       $v0, .L800681D4
+    /* 4E68 800681C8 00000000 */   nop
+    /* 4E6C 800681CC D1014610 */  beq        $v0, $a2, .L80068914
+    /* 4E70 800681D0 21900000 */   addu      $s2, $zero, $zero
+  .L800681D4:
+    /* 4E74 800681D4 21206002 */  addu       $a0, $s3, $zero
+    /* 4E78 800681D8 F398010C */  jal        Stg35_PartsHideByMask
+    /* 4E7C 800681DC FEFF0524 */   addiu     $a1, $zero, -0x2
+    /* 4E80 800681E0 04006426 */  addiu      $a0, $s3, 0x4
+    /* 4E84 800681E4 F398010C */  jal        Stg35_PartsHideByMask
+    /* 4E88 800681E8 1FFF0524 */   addiu     $a1, $zero, -0xE1
+    /* 4E8C 800681EC 08006426 */  addiu      $a0, $s3, 0x8
+    /* 4E90 800681F0 F398010C */  jal        Stg35_PartsHideByMask
+    /* 4E94 800681F4 1FFF0524 */   addiu     $a1, $zero, -0xE1
+    /* 4E98 800681F8 34006426 */  addiu      $a0, $s3, 0x34
+    /* 4E9C 800681FC D296010C */  jal        Stg35_RectSetHeight
+    /* 4EA0 80068200 21280000 */   addu      $a1, $zero, $zero
+    /* 4EA4 80068204 30006426 */  addiu      $a0, $s3, 0x30
+    /* 4EA8 80068208 D296010C */  jal        Stg35_RectSetHeight
+    /* 4EAC 8006820C 21280000 */   addu      $a1, $zero, $zero
+    /* 4EB0 80068210 45A20108 */  j          .L80068914
+    /* 4EB4 80068214 21900000 */   addu      $s2, $zero, $zero
+  .L80068218:
+    /* 4EB8 80068218 05001024 */  addiu      $s0, $zero, 0x5
+  .L8006821C:
+    /* 4EBC 8006821C 000040AC */  sw         $zero, 0x0($v0)
+    /* 4EC0 80068220 FFFF1026 */  addiu      $s0, $s0, -0x1
+    /* 4EC4 80068224 FDFF0106 */  bgez       $s0, .L8006821C
+    /* 4EC8 80068228 FCFF4224 */   addiu     $v0, $v0, -0x4
+    /* 4ECC 8006822C 21800000 */  addu       $s0, $zero, $zero
+    /* 4ED0 80068230 FFFF1224 */  addiu      $s2, $zero, -0x1
+    /* 4ED4 80068234 1800B127 */  addiu      $s1, $sp, 0x18
+  .L80068238:
+    /* 4ED8 80068238 9197010C */  jal        Stg35_TurnOrderGet
+    /* 4EDC 8006823C 21200002 */   addu      $a0, $s0, $zero
+    /* 4EE0 80068240 04005210 */  beq        $v0, $s2, .L80068254
+    /* 4EE4 80068244 80100200 */   sll       $v0, $v0, 2
+    /* 4EE8 80068248 21102202 */  addu       $v0, $s1, $v0
+    /* 4EEC 8006824C 01000326 */  addiu      $v1, $s0, 0x1
+    /* 4EF0 80068250 000043AC */  sw         $v1, 0x0($v0)
+  .L80068254:
+    /* 4EF4 80068254 01001026 */  addiu      $s0, $s0, 0x1
+    /* 4EF8 80068258 0600022A */  slti       $v0, $s0, 0x6
+    /* 4EFC 8006825C F6FF4014 */  bnez       $v0, .L80068238
+    /* 4F00 80068260 20000524 */   addiu     $a1, $zero, 0x20
+    /* 4F04 80068264 04007026 */  addiu      $s0, $s3, 0x4
+    /* 4F08 80068268 21200002 */  addu       $a0, $s0, $zero
+    /* 4F0C 8006826C 1800A78F */  lw         $a3, 0x18($sp)
+    /* 4F10 80068270 DE99010C */  jal        Stg35_PartsSetNumber
+    /* 4F14 80068274 01000624 */   addiu     $a2, $zero, 0x1
+    /* 4F18 80068278 21200002 */  addu       $a0, $s0, $zero
+    /* 4F1C 8006827C 40000524 */  addiu      $a1, $zero, 0x40
+    /* 4F20 80068280 1C00A78F */  lw         $a3, 0x1C($sp)
+    /* 4F24 80068284 DE99010C */  jal        Stg35_PartsSetNumber
+    /* 4F28 80068288 01000624 */   addiu     $a2, $zero, 0x1
+    /* 4F2C 8006828C 21200002 */  addu       $a0, $s0, $zero
+    /* 4F30 80068290 80000524 */  addiu      $a1, $zero, 0x80
+    /* 4F34 80068294 2000A78F */  lw         $a3, 0x20($sp)
+    /* 4F38 80068298 DE99010C */  jal        Stg35_PartsSetNumber
+    /* 4F3C 8006829C 01000624 */   addiu     $a2, $zero, 0x1
+    /* 4F40 800682A0 08007026 */  addiu      $s0, $s3, 0x8
+    /* 4F44 800682A4 21200002 */  addu       $a0, $s0, $zero
+    /* 4F48 800682A8 20000524 */  addiu      $a1, $zero, 0x20
+    /* 4F4C 800682AC 2400A78F */  lw         $a3, 0x24($sp)
+    /* 4F50 800682B0 DE99010C */  jal        Stg35_PartsSetNumber
+    /* 4F54 800682B4 01000624 */   addiu     $a2, $zero, 0x1
+    /* 4F58 800682B8 21200002 */  addu       $a0, $s0, $zero
+    /* 4F5C 800682BC 40000524 */  addiu      $a1, $zero, 0x40
+    /* 4F60 800682C0 2800A78F */  lw         $a3, 0x28($sp)
+    /* 4F64 800682C4 DE99010C */  jal        Stg35_PartsSetNumber
+    /* 4F68 800682C8 01000624 */   addiu     $a2, $zero, 0x1
+    /* 4F6C 800682CC 21200002 */  addu       $a0, $s0, $zero
+    /* 4F70 800682D0 80000524 */  addiu      $a1, $zero, 0x80
+    /* 4F74 800682D4 2C00A78F */  lw         $a3, 0x2C($sp)
+    /* 4F78 800682D8 DE99010C */  jal        Stg35_PartsSetNumber
+    /* 4F7C 800682DC 01000624 */   addiu     $a2, $zero, 0x1
+    /* 4F80 800682E0 45A20108 */  j          .L80068914
+    /* 4F84 800682E4 21900000 */   addu      $s2, $zero, $zero
+  .L800682E8:
+    /* 4F88 800682E8 0800A48E */  lw         $a0, 0x8($s5)
+    /* 4F8C 800682EC 00000000 */  nop
+    /* 4F90 800682F0 80100400 */  sll        $v0, $a0, 2
+    /* 4F94 800682F4 54004324 */  addiu      $v1, $v0, 0x54
+    /* 4F98 800682F8 04004224 */  addiu      $v0, $v0, 0x4
+    /* 4F9C 800682FC 21A06202 */  addu       $s4, $s3, $v0
+    /* 4FA0 80068300 0680023C */  lui        $v0, %hi(Pad_State)
+    /* 4FA4 80068304 F0F64224 */  addiu      $v0, $v0, %lo(Pad_State)
+    /* 4FA8 80068308 80210400 */  sll        $a0, $a0, 6
+    /* 4FAC 8006830C 21208200 */  addu       $a0, $a0, $v0
+    /* 4FB0 80068310 1800A28E */  lw         $v0, 0x18($s5)
+    /* 4FB4 80068314 3A009294 */  lhu        $s2, 0x3A($a0)
+    /* 4FB8 80068318 03004010 */  beqz       $v0, .L80068328
+    /* 4FBC 8006831C 21806302 */   addu      $s0, $s3, $v1
+    /* 4FC0 80068320 3F004610 */  beq        $v0, $a2, .L80068420
+    /* 4FC4 80068324 00000000 */   nop
+  .L80068328:
+    /* 4FC8 80068328 1C00A38E */  lw         $v1, 0x1C($s5)
+    /* 4FCC 8006832C 00000000 */  nop
+    /* 4FD0 80068330 10006610 */  beq        $v1, $a2, .L80068374
+    /* 4FD4 80068334 02006228 */   slti      $v0, $v1, 0x2
+    /* 4FD8 80068338 05004014 */  bnez       $v0, .L80068350
+    /* 4FDC 8006833C 25000424 */   addiu     $a0, $zero, 0x25
+    /* 4FE0 80068340 1E006510 */  beq        $v1, $a1, .L800683BC
+    /* 4FE4 80068344 03000224 */   addiu     $v0, $zero, 0x3
+    /* 4FE8 80068348 24006210 */  beq        $v1, $v0, .L800683DC
+    /* 4FEC 8006834C 00000000 */   nop
+  .L80068350:
+    /* 4FF0 80068350 A369000C */  jal        Snd_PlayById
+    /* 4FF4 80068354 21280000 */   addu      $a1, $zero, $zero
+    /* 4FF8 80068358 21208002 */  addu       $a0, $s4, $zero
+    /* 4FFC 8006835C 02000524 */  addiu      $a1, $zero, 0x2
+    /* 5000 80068360 0299010C */  jal        Stg35_PartsShowGroup
+    /* 5004 80068364 780060AE */   sw        $zero, 0x78($s3)
+    /* 5008 80068368 6645000C */  jal        Task_NextState3
+    /* 500C 8006836C 2120A002 */   addu      $a0, $s5, $zero
+    /* 5010 80068370 2800A0AE */  sw         $zero, 0x28($s5)
+  .L80068374:
+    /* 5014 80068374 2800A48E */  lw         $a0, 0x28($s5)
+    /* 5018 80068378 02000524 */  addiu      $a1, $zero, 0x2
+    /* 501C 8006837C 21300000 */  addu       $a2, $zero, $zero
+    /* 5020 80068380 FB88000C */  jal        Math_CycleRange
+    /* 5024 80068384 07000724 */   addiu     $a3, $zero, 0x7
+    /* 5028 80068388 21208002 */  addu       $a0, $s4, $zero
+    /* 502C 8006838C 02000524 */  addiu      $a1, $zero, 0x2
+    /* 5030 80068390 21804000 */  addu       $s0, $v0, $zero
+    /* 5034 80068394 4899010C */  jal        Stg35_PartsSetPalette
+    /* 5038 80068398 21300002 */   addu      $a2, $s0, $zero
+    /* 503C 8006839C 07000224 */  addiu      $v0, $zero, 0x7
+    /* 5040 800683A0 5C010216 */  bne        $s0, $v0, .L80068914
+    /* 5044 800683A4 21900000 */   addu      $s2, $zero, $zero
+    /* 5048 800683A8 2800A0AE */  sw         $zero, 0x28($s5)
+    /* 504C 800683AC 6645000C */  jal        Task_NextState3
+    /* 5050 800683B0 2120A002 */   addu      $a0, $s5, $zero
+    /* 5054 800683B4 45A20108 */  j          .L80068914
+    /* 5058 800683B8 21900000 */   addu      $s2, $zero, $zero
+  .L800683BC:
+    /* 505C 800683BC 2800A28E */  lw         $v0, 0x28($s5)
+    /* 5060 800683C0 00000000 */  nop
+    /* 5064 800683C4 78004228 */  slti       $v0, $v0, 0x78
+    /* 5068 800683C8 52014014 */  bnez       $v0, .L80068914
+    /* 506C 800683CC 21900000 */   addu      $s2, $zero, $zero
+    /* 5070 800683D0 6645000C */  jal        Task_NextState3
+    /* 5074 800683D4 2120A002 */   addu      $a0, $s5, $zero
+    /* 5078 800683D8 2800A0AE */  sw         $zero, 0x28($s5)
+  .L800683DC:
+    /* 507C 800683DC 2800A48E */  lw         $a0, 0x28($s5)
+    /* 5080 800683E0 02000524 */  addiu      $a1, $zero, 0x2
+    /* 5084 800683E4 07000624 */  addiu      $a2, $zero, 0x7
+    /* 5088 800683E8 FB88000C */  jal        Math_CycleRange
+    /* 508C 800683EC 21380000 */   addu      $a3, $zero, $zero
+    /* 5090 800683F0 21208002 */  addu       $a0, $s4, $zero
+    /* 5094 800683F4 02000524 */  addiu      $a1, $zero, 0x2
+    /* 5098 800683F8 21804000 */  addu       $s0, $v0, $zero
+    /* 509C 800683FC 4899010C */  jal        Stg35_PartsSetPalette
+    /* 50A0 80068400 21300002 */   addu      $a2, $s0, $zero
+    /* 50A4 80068404 43010016 */  bnez       $s0, .L80068914
+    /* 50A8 80068408 21900000 */   addu      $s2, $zero, $zero
+    /* 50AC 8006840C 2800A0AE */  sw         $zero, 0x28($s5)
+    /* 50B0 80068410 6045000C */  jal        Task_NextState2
+    /* 50B4 80068414 2120A002 */   addu      $a0, $s5, $zero
+    /* 50B8 80068418 45A20108 */  j          .L80068914
+    /* 50BC 8006841C 21900000 */   addu      $s2, $zero, $zero
+  .L80068420:
+    /* 50C0 80068420 1C00A38E */  lw         $v1, 0x1C($s5)
+    /* 50C4 80068424 00000000 */  nop
+    /* 50C8 80068428 0600622C */  sltiu      $v0, $v1, 0x6
+    /* 50CC 8006842C 38014010 */  beqz       $v0, .L80068910
+    /* 50D0 80068430 0680023C */   lui       $v0, %hi(jtbl_80063424)
+    /* 50D4 80068434 24344224 */  addiu      $v0, $v0, %lo(jtbl_80063424)
+    /* 50D8 80068438 80180300 */  sll        $v1, $v1, 2
+    /* 50DC 8006843C 21186200 */  addu       $v1, $v1, $v0
+    /* 50E0 80068440 0000628C */  lw         $v0, 0x0($v1)
+    /* 50E4 80068444 00000000 */  nop
+    /* 50E8 80068448 08004000 */  jr         $v0
+    /* 50EC 8006844C 00000000 */   nop
+  jlabel .L80068450
+    /* 50F0 80068450 21208002 */  addu       $a0, $s4, $zero
+    /* 50F4 80068454 0800A28E */  lw         $v0, 0x8($s5)
+    /* 50F8 80068458 02000524 */  addiu      $a1, $zero, 0x2
+    /* 50FC 8006845C 2800A0AE */  sw         $zero, 0x28($s5)
+    /* 5100 80068460 0410A200 */  sllv       $v0, $v0, $a1
+    /* 5104 80068464 21106202 */  addu       $v0, $s3, $v0
+    /* 5108 80068468 2099010C */  jal        Stg35_PartsHideGroup
+    /* 510C 8006846C 540040AC */   sw        $zero, 0x54($v0)
+    /* 5110 80068470 21202002 */  addu       $a0, $s1, $zero
+    /* 5114 80068474 0299010C */  jal        Stg35_PartsShowGroup
+    /* 5118 80068478 02000524 */   addiu     $a1, $zero, 0x2
+    /* 511C 8006847C 0800A28E */  lw         $v0, 0x8($s5)
+    /* 5120 80068480 00000000 */  nop
+    /* 5124 80068484 07004014 */  bnez       $v0, .L800684A4
+    /* 5128 80068488 00000000 */   nop
+    /* 512C 8006848C 21202002 */  addu       $a0, $s1, $zero
+    /* 5130 80068490 0299010C */  jal        Stg35_PartsShowGroup
+    /* 5134 80068494 08000524 */   addiu     $a1, $zero, 0x8
+    /* 5138 80068498 21202002 */  addu       $a0, $s1, $zero
+    /* 513C 8006849C 2EA10108 */  j          .L800684B8
+    /* 5140 800684A0 20000524 */   addiu     $a1, $zero, 0x20
+  .L800684A4:
+    /* 5144 800684A4 21202002 */  addu       $a0, $s1, $zero
+    /* 5148 800684A8 0299010C */  jal        Stg35_PartsShowGroup
+    /* 514C 800684AC 04000524 */   addiu     $a1, $zero, 0x4
+    /* 5150 800684B0 21202002 */  addu       $a0, $s1, $zero
+    /* 5154 800684B4 10000524 */  addiu      $a1, $zero, 0x10
+  .L800684B8:
+    /* 5158 800684B8 0299010C */  jal        Stg35_PartsShowGroup
+    /* 515C 800684BC 00000000 */   nop
+    /* 5160 800684C0 6645000C */  jal        Task_NextState3
+    /* 5164 800684C4 2120A002 */   addu      $a0, $s5, $zero
+  jlabel .L800684C8
+    /* 5168 800684C8 40004232 */  andi       $v0, $s2, 0x40
+    /* 516C 800684CC 08004010 */  beqz       $v0, .L800684F0
+    /* 5170 800684D0 00010424 */   addiu     $a0, $zero, 0x100
+    /* 5174 800684D4 0000028E */  lw         $v0, 0x0($s0)
+    /* 5178 800684D8 21280000 */  addu       $a1, $zero, $zero
+    /* 517C 800684DC 000D4224 */  addiu      $v0, $v0, 0xD00
+    /* 5180 800684E0 A369000C */  jal        Snd_PlayById
+    /* 5184 800684E4 000002AE */   sw        $v0, 0x0($s0)
+    /* 5188 800684E8 43A10108 */  j          .L8006850C
+    /* 518C 800684EC 00000000 */   nop
+  .L800684F0:
+    /* 5190 800684F0 0000048E */  lw         $a0, 0x0($s0)
+    /* 5194 800684F4 00000000 */  nop
+    /* 5198 800684F8 F9018228 */  slti       $v0, $a0, 0x1F9
+    /* 519C 800684FC 02004014 */  bnez       $v0, .L80068508
+    /* 51A0 80068500 21180000 */   addu      $v1, $zero, $zero
+    /* 51A4 80068504 08FE8324 */  addiu      $v1, $a0, -0x1F8
+  .L80068508:
+    /* 51A8 80068508 000003AE */  sw         $v1, 0x0($s0)
+  .L8006850C:
+    /* 51AC 8006850C 0000038E */  lw         $v1, 0x0($s0)
+    /* 51B0 80068510 00000000 */  nop
+    /* 51B4 80068514 00706228 */  slti       $v0, $v1, 0x7000
+    /* 51B8 80068518 02004010 */  beqz       $v0, .L80068524
+    /* 51BC 8006851C FF6F0624 */   addiu     $a2, $zero, 0x6FFF
+    /* 51C0 80068520 21306000 */  addu       $a2, $v1, $zero
+  .L80068524:
+    /* 51C4 80068524 2120A002 */  addu       $a0, $s5, $zero
+    /* 51C8 80068528 21280000 */  addu       $a1, $zero, $zero
+    /* 51CC 8006852C C69E010C */  jal        Stg35_HudUpdateGaugeColumn
+    /* 51D0 80068530 000006AE */   sw        $a2, 0x0($s0)
+    /* 51D4 80068534 2120A002 */  addu       $a0, $s5, $zero
+    /* 51D8 80068538 1D9F010C */  jal        Stg35_HudUpdateGaugeBar
+    /* 51DC 8006853C 21280000 */   addu      $a1, $zero, $zero
+    /* 51E0 80068540 749E010C */  jal        Stg35_HudUpdateSkillList
+    /* 51E4 80068544 2120A002 */   addu      $a0, $s5, $zero
+    /* 51E8 80068548 0800A28E */  lw         $v0, 0x8($s5)
+    /* 51EC 8006854C 00000000 */  nop
+    /* 51F0 80068550 0B004014 */  bnez       $v0, .L80068580
+    /* 51F4 80068554 21206002 */   addu      $a0, $s3, $zero
+    /* 51F8 80068558 20000524 */  addiu      $a1, $zero, 0x20
+    /* 51FC 8006855C 6799010C */  jal        Stg35_PartsSetX
+    /* 5200 80068560 4F000624 */   addiu     $a2, $zero, 0x4F
+    /* 5204 80068564 5400628E */  lw         $v0, 0x54($s3)
+    /* 5208 80068568 00000000 */  nop
+    /* 520C 8006856C 02004104 */  bgez       $v0, .L80068578
+    /* 5210 80068570 21206002 */   addu      $a0, $s3, $zero
+    /* 5214 80068574 FF0F4224 */  addiu      $v0, $v0, 0xFFF
+  .L80068578:
+    /* 5218 80068578 69A10108 */  j          .L800685A4
+    /* 521C 8006857C 20000524 */   addiu     $a1, $zero, 0x20
+  .L80068580:
+    /* 5220 80068580 10000524 */  addiu      $a1, $zero, 0x10
+    /* 5224 80068584 6799010C */  jal        Stg35_PartsSetX
+    /* 5228 80068588 B3FF0624 */   addiu     $a2, $zero, -0x4D
+    /* 522C 8006858C 5800628E */  lw         $v0, 0x58($s3)
+    /* 5230 80068590 00000000 */  nop
+    /* 5234 80068594 02004104 */  bgez       $v0, .L800685A0
+    /* 5238 80068598 21206002 */   addu      $a0, $s3, $zero
+    /* 523C 8006859C FF0F4224 */  addiu      $v0, $v0, 0xFFF
+  .L800685A0:
+    /* 5240 800685A0 10000524 */  addiu      $a1, $zero, 0x10
+  .L800685A4:
+    /* 5244 800685A4 03130200 */  sra        $v0, $v0, 12
+    /* 5248 800685A8 C0300200 */  sll        $a2, $v0, 3
+    /* 524C 800685AC 2330C200 */  subu       $a2, $a2, $v0
+    /* 5250 800685B0 40300600 */  sll        $a2, $a2, 1
+    /* 5254 800685B4 2B000224 */  addiu      $v0, $zero, 0x2B
+    /* 5258 800685B8 8699010C */  jal        Stg35_PartsSetY
+    /* 525C 800685BC 23304600 */   subu      $a2, $v0, $a2
+    /* 5260 800685C0 2400A28E */  lw         $v0, 0x24($s5)
+    /* 5264 800685C4 00000000 */  nop
+    /* 5268 800685C8 04004230 */  andi       $v0, $v0, 0x4
+    /* 526C 800685CC 05004010 */  beqz       $v0, .L800685E4
+    /* 5270 800685D0 21208002 */   addu      $a0, $s4, $zero
+    /* 5274 800685D4 0299010C */  jal        Stg35_PartsShowGroup
+    /* 5278 800685D8 04000524 */   addiu     $a1, $zero, 0x4
+    /* 527C 800685DC 7CA10108 */  j          .L800685F0
+    /* 5280 800685E0 5555043C */   lui       $a0, (0x55555556 >> 16)
+  .L800685E4:
+    /* 5284 800685E4 2099010C */  jal        Stg35_PartsHideGroup
+    /* 5288 800685E8 04000524 */   addiu     $a1, $zero, 0x4
+    /* 528C 800685EC 5555043C */  lui        $a0, (0x55555556 >> 16)
+  .L800685F0:
+    /* 5290 800685F0 56558434 */  ori        $a0, $a0, (0x55555556 & 0xFFFF)
+    /* 5294 800685F4 2800A38E */  lw         $v1, 0x28($s5)
+    /* 5298 800685F8 2C010224 */  addiu      $v0, $zero, 0x12C
+    /* 529C 800685FC 23104300 */  subu       $v0, $v0, $v1
+    /* 52A0 80068600 18004400 */  mult       $v0, $a0
+    /* 52A4 80068604 C3170200 */  sra        $v0, $v0, 31
+    /* 52A8 80068608 10400000 */  mfhi       $t0
+    /* 52AC 8006860C 23380201 */  subu       $a3, $t0, $v0
+    /* 52B0 80068610 64000224 */  addiu      $v0, $zero, 0x64
+    /* 52B4 80068614 0200E214 */  bne        $a3, $v0, .L80068620
+    /* 52B8 80068618 21202002 */   addu      $a0, $s1, $zero
+    /* 52BC 8006861C 63000724 */  addiu      $a3, $zero, 0x63
+  .L80068620:
+    /* 52C0 80068620 02000524 */  addiu      $a1, $zero, 0x2
+    /* 52C4 80068624 DE99010C */  jal        Stg35_PartsSetNumber
+    /* 52C8 80068628 2130A000 */   addu      $a2, $a1, $zero
+    /* 52CC 8006862C 2800A28E */  lw         $v0, 0x28($s5)
+    /* 52D0 80068630 00000000 */  nop
+    /* 52D4 80068634 2C014228 */  slti       $v0, $v0, 0x12C
+    /* 52D8 80068638 B6004014 */  bnez       $v0, .L80068914
+    /* 52DC 8006863C 21900000 */   addu      $s2, $zero, $zero
+    /* 52E0 80068640 FEA10108 */  j          .L800687F8
+    /* 52E4 80068644 2120A002 */   addu      $a0, $s5, $zero
+  jlabel .L80068648
+    /* 52E8 80068648 2000A38E */  lw         $v1, 0x20($s5)
+    /* 52EC 8006864C 01000224 */  addiu      $v0, $zero, 0x1
+    /* 52F0 80068650 11006210 */  beq        $v1, $v0, .L80068698
+    /* 52F4 80068654 02006228 */   slti      $v0, $v1, 0x2
+    /* 52F8 80068658 04004014 */  bnez       $v0, .L8006866C
+    /* 52FC 8006865C 0E000424 */   addiu     $a0, $zero, 0xE
+    /* 5300 80068660 02000224 */  addiu      $v0, $zero, 0x2
+    /* 5304 80068664 23006210 */  beq        $v1, $v0, .L800686F4
+    /* 5308 80068668 00000000 */   nop
+  .L8006866C:
+    /* 530C 8006866C A369000C */  jal        Snd_PlayById
+    /* 5310 80068670 21280000 */   addu      $a1, $zero, $zero
+    /* 5314 80068674 2120A002 */  addu       $a0, $s5, $zero
+    /* 5318 80068678 1D9F010C */  jal        Stg35_HudUpdateGaugeBar
+    /* 531C 8006867C 01000524 */   addiu     $a1, $zero, 0x1
+    /* 5320 80068680 2120A002 */  addu       $a0, $s5, $zero
+    /* 5324 80068684 C69E010C */  jal        Stg35_HudUpdateGaugeColumn
+    /* 5328 80068688 01000524 */   addiu     $a1, $zero, 0x1
+    /* 532C 8006868C 2800A0AE */  sw         $zero, 0x28($s5)
+    /* 5330 80068690 6B45000C */  jal        Task_NextState4
+    /* 5334 80068694 2120A002 */   addu      $a0, $s5, $zero
+  .L80068698:
+    /* 5338 80068698 02000524 */  addiu      $a1, $zero, 0x2
+    /* 533C 8006869C 21300000 */  addu       $a2, $zero, $zero
+    /* 5340 800686A0 2800A48E */  lw         $a0, 0x28($s5)
+    /* 5344 800686A4 FB88000C */  jal        Math_CycleRange
+    /* 5348 800686A8 07000724 */   addiu     $a3, $zero, 0x7
+    /* 534C 800686AC 0800A38E */  lw         $v1, 0x8($s5)
+    /* 5350 800686B0 00000000 */  nop
+    /* 5354 800686B4 04006014 */  bnez       $v1, .L800686C8
+    /* 5358 800686B8 21804000 */   addu      $s0, $v0, $zero
+    /* 535C 800686BC 21206002 */  addu       $a0, $s3, $zero
+    /* 5360 800686C0 B4A10108 */  j          .L800686D0
+    /* 5364 800686C4 20000524 */   addiu     $a1, $zero, 0x20
+  .L800686C8:
+    /* 5368 800686C8 21206002 */  addu       $a0, $s3, $zero
+    /* 536C 800686CC 10000524 */  addiu      $a1, $zero, 0x10
+  .L800686D0:
+    /* 5370 800686D0 4899010C */  jal        Stg35_PartsSetPalette
+    /* 5374 800686D4 21300002 */   addu      $a2, $s0, $zero
+    /* 5378 800686D8 07000224 */  addiu      $v0, $zero, 0x7
+    /* 537C 800686DC 8D000216 */  bne        $s0, $v0, .L80068914
+    /* 5380 800686E0 21900000 */   addu      $s2, $zero, $zero
+    /* 5384 800686E4 6B45000C */  jal        Task_NextState4
+    /* 5388 800686E8 2120A002 */   addu      $a0, $s5, $zero
+    /* 538C 800686EC 45A20108 */  j          .L80068914
+    /* 5390 800686F0 21900000 */   addu      $s2, $zero, $zero
+  .L800686F4:
+    /* 5394 800686F4 2800A28E */  lw         $v0, 0x28($s5)
+    /* 5398 800686F8 00000000 */  nop
+    /* 539C 800686FC 3C004228 */  slti       $v0, $v0, 0x3C
+    /* 53A0 80068700 84004014 */  bnez       $v0, .L80068914
+    /* 53A4 80068704 21900000 */   addu      $s2, $zero, $zero
+    /* 53A8 80068708 0800A28E */  lw         $v0, 0x8($s5)
+    /* 53AC 8006870C 00000000 */  nop
+    /* 53B0 80068710 80100200 */  sll        $v0, $v0, 2
+    /* 53B4 80068714 21106202 */  addu       $v0, $s3, $v0
+    /* 53B8 80068718 5400428C */  lw         $v0, 0x54($v0)
+    /* 53BC 8006871C 00000000 */  nop
+    /* 53C0 80068720 02004104 */  bgez       $v0, .L8006872C
+    /* 53C4 80068724 00000000 */   nop
+    /* 53C8 80068728 FF0F4224 */  addiu      $v0, $v0, 0xFFF
+  .L8006872C:
+    /* 53CC 8006872C 03130200 */  sra        $v0, $v0, 12
+    /* 53D0 80068730 05000324 */  addiu      $v1, $zero, 0x5
+    /* 53D4 80068734 23186200 */  subu       $v1, $v1, $v0
+    /* 53D8 80068738 80180300 */  sll        $v1, $v1, 2
+    /* 53DC 8006873C 21186302 */  addu       $v1, $s3, $v1
+    /* 53E0 80068740 740062AE */  sw         $v0, 0x74($s3)
+    /* 53E4 80068744 5C00628C */  lw         $v0, 0x5C($v1)
+    /* 53E8 80068748 2120A002 */  addu       $a0, $s5, $zero
+    /* 53EC 8006874C 6645000C */  jal        Task_NextState3
+    /* 53F0 80068750 7C0062AE */   sw        $v0, 0x7C($s3)
+    /* 53F4 80068754 45A20108 */  j          .L80068914
+    /* 53F8 80068758 21900000 */   addu      $s2, $zero, $zero
+  jlabel .L8006875C
+    /* 53FC 8006875C 21900000 */  addu       $s2, $zero, $zero
+    /* 5400 80068760 0C001024 */  addiu      $s0, $zero, 0xC
+  .L80068764:
+    /* 5404 80068764 2596010C */  jal        Stg35_TextClose
+    /* 5408 80068768 21207002 */   addu      $a0, $s3, $s0
+    /* 540C 8006876C 01005226 */  addiu      $s2, $s2, 0x1
+    /* 5410 80068770 0700422A */  slti       $v0, $s2, 0x7
+    /* 5414 80068774 FBFF4014 */  bnez       $v0, .L80068764
+    /* 5418 80068778 04001026 */   addiu     $s0, $s0, 0x4
+    /* 541C 8006877C 0800A48E */  lw         $a0, 0x8($s5)
+    /* 5420 80068780 21280000 */  addu       $a1, $zero, $zero
+    /* 5424 80068784 80200400 */  sll        $a0, $a0, 2
+    /* 5428 80068788 30008424 */  addiu      $a0, $a0, 0x30
+    /* 542C 8006878C D296010C */  jal        Stg35_RectSetHeight
+    /* 5430 80068790 21206402 */   addu      $a0, $s3, $a0
+    /* 5434 80068794 21208002 */  addu       $a0, $s4, $zero
+    /* 5438 80068798 2099010C */  jal        Stg35_PartsHideGroup
+    /* 543C 8006879C 06000524 */   addiu     $a1, $zero, 0x6
+    /* 5440 800687A0 21202002 */  addu       $a0, $s1, $zero
+    /* 5444 800687A4 2099010C */  jal        Stg35_PartsHideGroup
+    /* 5448 800687A8 3E000524 */   addiu     $a1, $zero, 0x3E
+    /* 544C 800687AC 7400638E */  lw         $v1, 0x74($s3)
+    /* 5450 800687B0 06000224 */  addiu      $v0, $zero, 0x6
+    /* 5454 800687B4 05006214 */  bne        $v1, $v0, .L800687CC
+    /* 5458 800687B8 05000224 */   addiu     $v0, $zero, 0x5
+    /* 545C 800687BC 2120A002 */  addu       $a0, $s5, $zero
+    /* 5460 800687C0 01000224 */  addiu      $v0, $zero, 0x1
+    /* 5464 800687C4 FEA10108 */  j          .L800687F8
+    /* 5468 800687C8 780062AE */   sw        $v0, 0x78($s3)
+  .L800687CC:
+    /* 546C 800687CC 23104300 */  subu       $v0, $v0, $v1
+    /* 5470 800687D0 80100200 */  sll        $v0, $v0, 2
+    /* 5474 800687D4 21106202 */  addu       $v0, $s3, $v0
+    /* 5478 800687D8 5C00428C */  lw         $v0, 0x5C($v0)
+    /* 547C 800687DC 00000000 */  nop
+    /* 5480 800687E0 49004014 */  bnez       $v0, .L80068908
+    /* 5484 800687E4 2120A002 */   addu      $a0, $s5, $zero
+    /* 5488 800687E8 01000224 */  addiu      $v0, $zero, 0x1
+    /* 548C 800687EC 6645000C */  jal        Task_NextState3
+    /* 5490 800687F0 780062AE */   sw        $v0, 0x78($s3)
+    /* 5494 800687F4 2120A002 */  addu       $a0, $s5, $zero
+  .L800687F8:
+    /* 5498 800687F8 6645000C */  jal        Task_NextState3
+    /* 549C 800687FC 21900000 */   addu      $s2, $zero, $zero
+    /* 54A0 80068800 45A20108 */  j          .L80068914
+    /* 54A4 80068804 2800A0AE */   sw        $zero, 0x28($s5)
+  jlabel .L80068808
+    /* 54A8 80068808 2000A38E */  lw         $v1, 0x20($s5)
+    /* 54AC 8006880C 00000000 */  nop
+    /* 54B0 80068810 03006010 */  beqz       $v1, .L80068820
+    /* 54B4 80068814 01000224 */   addiu     $v0, $zero, 0x1
+    /* 54B8 80068818 06006210 */  beq        $v1, $v0, .L80068834
+    /* 54BC 8006881C 00000000 */   nop
+  .L80068820:
+    /* 54C0 80068820 07000424 */  addiu      $a0, $zero, 0x7
+    /* 54C4 80068824 A369000C */  jal        Snd_PlayById
+    /* 54C8 80068828 21280000 */   addu      $a1, $zero, $zero
+    /* 54CC 8006882C 6B45000C */  jal        Task_NextState4
+    /* 54D0 80068830 2120A002 */   addu      $a0, $s5, $zero
+  .L80068834:
+    /* 54D4 80068834 21202002 */  addu       $a0, $s1, $zero
+    /* 54D8 80068838 0299010C */  jal        Stg35_PartsShowGroup
+    /* 54DC 8006883C 40000524 */   addiu     $a1, $zero, 0x40
+    /* 54E0 80068840 04000524 */  addiu      $a1, $zero, 0x4
+    /* 54E4 80068844 21300000 */  addu       $a2, $zero, $zero
+    /* 54E8 80068848 2800A48E */  lw         $a0, 0x28($s5)
+    /* 54EC 8006884C 0C89000C */  jal        Math_PingPongRange
+    /* 54F0 80068850 07000724 */   addiu     $a3, $zero, 0x7
+    /* 54F4 80068854 21202002 */  addu       $a0, $s1, $zero
+    /* 54F8 80068858 40000524 */  addiu      $a1, $zero, 0x40
+    /* 54FC 8006885C 4899010C */  jal        Stg35_PartsSetPalette
+    /* 5500 80068860 21304000 */   addu      $a2, $v0, $zero
+    /* 5504 80068864 2800A28E */  lw         $v0, 0x28($s5)
+    /* 5508 80068868 00000000 */  nop
+    /* 550C 8006886C B4004228 */  slti       $v0, $v0, 0xB4
+    /* 5510 80068870 28004014 */  bnez       $v0, .L80068914
+    /* 5514 80068874 21900000 */   addu      $s2, $zero, $zero
+    /* 5518 80068878 21202002 */  addu       $a0, $s1, $zero
+    /* 551C 8006887C 3FA20108 */  j          .L800688FC
+    /* 5520 80068880 40000524 */   addiu     $a1, $zero, 0x40
+  jlabel .L80068884
+    /* 5524 80068884 2000A38E */  lw         $v1, 0x20($s5)
+    /* 5528 80068888 00000000 */  nop
+    /* 552C 8006888C 03006010 */  beqz       $v1, .L8006889C
+    /* 5530 80068890 01000224 */   addiu     $v0, $zero, 0x1
+    /* 5534 80068894 06006210 */  beq        $v1, $v0, .L800688B0
+    /* 5538 80068898 00000000 */   nop
+  .L8006889C:
+    /* 553C 8006889C 1C000424 */  addiu      $a0, $zero, 0x1C
+    /* 5540 800688A0 A369000C */  jal        Snd_PlayById
+    /* 5544 800688A4 21280000 */   addu      $a1, $zero, $zero
+    /* 5548 800688A8 6B45000C */  jal        Task_NextState4
+    /* 554C 800688AC 2120A002 */   addu      $a0, $s5, $zero
+  .L800688B0:
+    /* 5550 800688B0 21202002 */  addu       $a0, $s1, $zero
+    /* 5554 800688B4 0299010C */  jal        Stg35_PartsShowGroup
+    /* 5558 800688B8 80000524 */   addiu     $a1, $zero, 0x80
+    /* 555C 800688BC 04000524 */  addiu      $a1, $zero, 0x4
+    /* 5560 800688C0 21300000 */  addu       $a2, $zero, $zero
+    /* 5564 800688C4 2800A48E */  lw         $a0, 0x28($s5)
+    /* 5568 800688C8 0C89000C */  jal        Math_PingPongRange
+    /* 556C 800688CC 07000724 */   addiu     $a3, $zero, 0x7
+    /* 5570 800688D0 21202002 */  addu       $a0, $s1, $zero
+    /* 5574 800688D4 80000524 */  addiu      $a1, $zero, 0x80
+    /* 5578 800688D8 4899010C */  jal        Stg35_PartsSetPalette
+    /* 557C 800688DC 21304000 */   addu      $a2, $v0, $zero
+    /* 5580 800688E0 2800A28E */  lw         $v0, 0x28($s5)
+    /* 5584 800688E4 00000000 */  nop
+    /* 5588 800688E8 B4004228 */  slti       $v0, $v0, 0xB4
+    /* 558C 800688EC 09004014 */  bnez       $v0, .L80068914
+    /* 5590 800688F0 21900000 */   addu      $s2, $zero, $zero
+    /* 5594 800688F4 21202002 */  addu       $a0, $s1, $zero
+    /* 5598 800688F8 80000524 */  addiu      $a1, $zero, 0x80
+  .L800688FC:
+    /* 559C 800688FC 2099010C */  jal        Stg35_PartsHideGroup
+    /* 55A0 80068900 00000000 */   nop
+    /* 55A4 80068904 2120A002 */  addu       $a0, $s5, $zero
+  .L80068908:
+    /* 55A8 80068908 7745000C */  jal        Task_SetState1
+    /* 55AC 8006890C 01000524 */   addiu     $a1, $zero, 0x1
+  .L80068910:
+    /* 55B0 80068910 21900000 */  addu       $s2, $zero, $zero
+  .L80068914:
+    /* 55B4 80068914 38001124 */  addiu      $s1, $zero, 0x38
+    /* 55B8 80068918 21806002 */  addu       $s0, $s3, $zero
+  .L8006891C:
+    /* 55BC 8006891C 8400038E */  lw         $v1, 0x84($s0)
+    /* 55C0 80068920 8000028E */  lw         $v0, 0x80($s0)
+    /* 55C4 80068924 00000000 */  nop
+    /* 55C8 80068928 11006210 */  beq        $v1, $v0, .L80068970
+    /* 55CC 8006892C 2A106200 */   slt       $v0, $v1, $v0
+    /* 55D0 80068930 07004010 */  beqz       $v0, .L80068950
+    /* 55D4 80068934 00000000 */   nop
+    /* 55D8 80068938 2800A28E */  lw         $v0, 0x28($s5)
+    /* 55DC 8006893C 8000048E */  lw         $a0, 0x80($s0)
+    /* 55E0 80068940 21106200 */  addu       $v0, $v1, $v0
+    /* 55E4 80068944 840002AE */  sw         $v0, 0x84($s0)
+    /* 55E8 80068948 59A20108 */  j          .L80068964
+    /* 55EC 8006894C 2A108200 */   slt       $v0, $a0, $v0
+  .L80068950:
+    /* 55F0 80068950 2800A28E */  lw         $v0, 0x28($s5)
+    /* 55F4 80068954 8000048E */  lw         $a0, 0x80($s0)
+    /* 55F8 80068958 23106200 */  subu       $v0, $v1, $v0
+    /* 55FC 8006895C 840002AE */  sw         $v0, 0x84($s0)
+    /* 5600 80068960 2A104400 */  slt        $v0, $v0, $a0
+  .L80068964:
+    /* 5604 80068964 02004010 */  beqz       $v0, .L80068970
+    /* 5608 80068968 00000000 */   nop
+    /* 560C 8006896C 840004AE */  sw         $a0, 0x84($s0)
+  .L80068970:
+    /* 5610 80068970 70000424 */  addiu      $a0, $zero, 0x70
+    /* 5614 80068974 8800058E */  lw         $a1, 0x88($s0)
+    /* 5618 80068978 8400068E */  lw         $a2, 0x84($s0)
+    /* 561C 8006897C 0C001026 */  addiu      $s0, $s0, 0xC
+    /* 5620 80068980 E296010C */  jal        Stg35_ScaleBarLen
+    /* 5624 80068984 01005226 */   addiu     $s2, $s2, 0x1
+    /* 5628 80068988 21207102 */  addu       $a0, $s3, $s1
+    /* 562C 8006898C CF96010C */  jal        Stg35_RectSetWidth
+    /* 5630 80068990 21284000 */   addu      $a1, $v0, $zero
+    /* 5634 80068994 0600422A */  slti       $v0, $s2, 0x6
+    /* 5638 80068998 E0FF4014 */  bnez       $v0, .L8006891C
+    /* 563C 8006899C 04003126 */   addiu     $s1, $s1, 0x4
+    /* 5640 800689A0 74A20108 */  j          .L800689D0
+    /* 5644 800689A4 00000000 */   nop
+  .L800689A8:
+    /* 5648 800689A8 1800A28E */  lw         $v0, 0x18($s5)
+    /* 564C 800689AC 00000000 */  nop
+    /* 5650 800689B0 03004010 */  beqz       $v0, .L800689C0
+    /* 5654 800689B4 00000000 */   nop
+    /* 5658 800689B8 05004410 */  beq        $v0, $a0, .L800689D0
+    /* 565C 800689BC 00000000 */   nop
+  .L800689C0:
+    /* 5660 800689C0 3C71000C */  jal        Gfx_FadeOutToBlack
+    /* 5664 800689C4 10000424 */   addiu     $a0, $zero, 0x10
+    /* 5668 800689C8 6045000C */  jal        Task_NextState2
+    /* 566C 800689CC 2120A002 */   addu      $a0, $s5, $zero
+  .L800689D0:
+    /* 5670 800689D0 5000BF8F */  lw         $ra, 0x50($sp)
+    /* 5674 800689D4 4C00B78F */  lw         $s7, 0x4C($sp)
+    /* 5678 800689D8 4800B68F */  lw         $s6, 0x48($sp)
+    /* 567C 800689DC 4400B58F */  lw         $s5, 0x44($sp)
+    /* 5680 800689E0 4000B48F */  lw         $s4, 0x40($sp)
+    /* 5684 800689E4 3C00B38F */  lw         $s3, 0x3C($sp)
+    /* 5688 800689E8 3800B28F */  lw         $s2, 0x38($sp)
+    /* 568C 800689EC 3400B18F */  lw         $s1, 0x34($sp)
+    /* 5690 800689F0 3000B08F */  lw         $s0, 0x30($sp)
+    /* 5694 800689F4 0800E003 */  jr         $ra
+    /* 5698 800689F8 5800BD27 */   addiu     $sp, $sp, 0x58
+endlabel Stg35_BattleHudTask

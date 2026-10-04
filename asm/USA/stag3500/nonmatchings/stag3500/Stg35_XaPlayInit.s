@@ -1,0 +1,12 @@
+nonmatching Stg35_XaPlayInit, 0x20
+
+glabel Stg35_XaPlayInit
+    /* 43E8 80067748 2C00828C */  lw         $v0, 0x2C($a0)
+    /* 43EC 8006774C 0000A38C */  lw         $v1, 0x0($a1)
+    /* 43F0 80067750 0400A68C */  lw         $a2, 0x4($a1)
+    /* 43F4 80067754 0800A78C */  lw         $a3, 0x8($a1)
+    /* 43F8 80067758 000043AC */  sw         $v1, 0x0($v0)
+    /* 43FC 8006775C 040046AC */  sw         $a2, 0x4($v0)
+    /* 4400 80067760 0800E003 */  jr         $ra
+    /* 4404 80067764 080047AC */   sw        $a3, 0x8($v0)
+endlabel Stg35_XaPlayInit

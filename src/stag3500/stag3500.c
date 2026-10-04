@@ -1,29 +1,29 @@
 #include "common.h"
 #include "stag3500/stag3500.h"
 
-void func_800634FC(Actor *arg0) {
+void Stg35_BgUpdate(Actor *arg0) {
     Stg35LoadHandle *w = (Stg35LoadHandle *)arg0->work;
 
     if (arg0->stateLevel0 == 0) {
-        func_80066120(w);
-        func_800661A4(w, 0xD3F0000);
+        Stg35_PartsAlloc(w);
+        Stg35_PartsSetFile(w, 0xD3F0000);
         Task_NextState0(arg0);
     }
 }
 
-void func_80063550(Actor *arg0) {
-    func_80066168((Stg35LoadHandle *)arg0->work);
+void Stg35_BgDestroy(Actor *arg0) {
+    Stg35_PartsFree((Stg35LoadHandle *)arg0->work);
     Task_DefaultDestroy(arg0);
 }
 
-void func_80063584(Actor *arg0) {
+void Stg35_BgDraw(Actor *arg0) {
     Stg35LoadHandle *w = (Stg35LoadHandle *)arg0->work;
 
-    func_80066520(w, 2, Math_CycleRange(arg0->elapsed, 6, 0, 7));
-    func_800661B0(w);
+    Stg35_PartsSetPalette(w, 2, Math_CycleRange(arg0->elapsed, 6, 0, 7));
+    Stg35_PartsDraw(w);
 }
 
-void func_800635D4(Actor *arg0) {
+void Stg35_FightBgUpdate(Actor *arg0) {
     if (arg0->stateLevel0 == 0) {
         arg0->digiId = 0xD77;
         Actor_InitTransform(arg0, Gfx_ZeroVector, 0);
@@ -33,18 +33,18 @@ void func_800635D4(Actor *arg0) {
     }
 }
 
-void func_8006363C(Actor *arg0) {
+void Stg35_FightBgDraw(Actor *arg0) {
     Gfx_AttachModel(arg0, arg0->digiId);
     Actor_UpdateTransform(arg0);
     Gfx_CalcModelBoneMatrices(arg0);
     Gfx_DrawTexModel(arg0, 1);
 }
 
-void func_80063684(Actor *arg0, s32 *arg1) {
+void Stg35_ActionLoadInit(Actor *arg0, s32 *arg1) {
     ((Stg35Work *)arg0->work)->field_0 = *arg1;
 }
 
-void func_80063694(Actor *arg0, s32 arg1, s32 arg2) {
+void Stg35_ActionLoadAddSorted(Actor *arg0, s32 arg1, s32 arg2) {
     Stg35ListWork *w = (Stg35ListWork *)arg0->work;
     s32 found = 0;
     s32 i;
@@ -67,7 +67,7 @@ void func_80063694(Actor *arg0, s32 arg1, s32 arg2) {
     w->field_2D8++;
 }
 
-void func_80063758(Actor *arg0) {
+void Stg35_ActionLoadUpdate(Actor *arg0) {
     Stg35ListWork *w = (Stg35ListWork *)arg0->work;
     s16 *p;
     GfxPart *part;
@@ -109,31 +109,31 @@ void func_80063758(Actor *arg0) {
                 p += 1;
                 break;
             case 8:
-                w->field_2E8 = D_8006AA88.rec[p[1]].digiId;
+                w->field_2E8 = Stg35_Battle.rec[p[1]].digiId;
                 w->field_31C = p[2];
                 p += 3;
                 break;
             case 9:
                 w->field_304[k] = 1;
-                w->field_2EC[k] = D_8006AA88.rec[p[1]].digiId;
+                w->field_2EC[k] = Stg35_Battle.rec[p[1]].digiId;
                 p += 3;
                 k++;
                 break;
             case 10:
                 w->field_304[k] = 2;
-                w->field_2EC[k] = D_8006AA88.rec[p[1]].digiId;
+                w->field_2EC[k] = Stg35_Battle.rec[p[1]].digiId;
                 p += 3;
                 k++;
                 break;
             case 11:
                 w->field_304[k] = 3;
-                w->field_2EC[k] = D_8006AA88.rec[p[1]].digiId;
+                w->field_2EC[k] = Stg35_Battle.rec[p[1]].digiId;
                 p += 3;
                 k++;
                 break;
             case 12:
                 w->field_304[k] = 0;
-                w->field_2EC[k] = D_8006AA88.rec[p[1]].digiId;
+                w->field_2EC[k] = Stg35_Battle.rec[p[1]].digiId;
                 p += 3;
                 k++;
                 break;
@@ -198,10 +198,10 @@ void func_80063758(Actor *arg0) {
             }
             w->field_2D8 = 0;
             for (i = 0; i < w->field_2DC; i++) {
-                func_80063694(arg0, w->field_1E8[i], Cd_GetFileLba(w->field_1E8[i]));
+                Stg35_ActionLoadAddSorted(arg0, w->field_1E8[i], Cd_GetFileLba(w->field_1E8[i]));
             }
             for (i = 0; i < w->field_2E0; i++) {
-                func_80063694(arg0, w->field_260[i], Cd_GetFileLba(w->field_260[i]));
+                Stg35_ActionLoadAddSorted(arg0, w->field_260[i], Cd_GetFileLba(w->field_260[i]));
             }
             Task_NextState1(arg0);
             w->field_4 = 0;
@@ -221,7 +221,7 @@ void func_80063758(Actor *arg0) {
     }
 }
 
-void func_80063E00(Actor *arg0) {
+void Stg35_ActionLoadDestroy(Actor *arg0) {
     Stg35ListWork *w = (Stg35ListWork *)arg0->work;
     s32 i;
 
@@ -232,7 +232,7 @@ void func_80063E00(Actor *arg0) {
     }
 }
 
-void func_80063E74(Actor *arg0) {
+void Stg35_RootUpdate(Actor *arg0) {
     s32 *slot = (s32 *)arg0->u34.children;
     s32 id;
     SysState *s;
@@ -272,7 +272,7 @@ void func_80063E74(Actor *arg0) {
     Task_NextState0(arg0);
 }
 
-void func_80063F38(Actor *arg0) {
+void Stg35_VsMenuUpdate(Actor *arg0) {
     Stg35Work4 *w = (Stg35Work4 *)arg0->work;
     s32 *slot = (s32 *)arg0->u34.children;
     s32 i;
@@ -311,10 +311,10 @@ void func_80063F38(Actor *arg0) {
         Task_Create(9, &slot[0], 0);
         Task_Create(0x702, &slot[1], 0);
         for (i = 0; i < 4; i++) {
-            func_80066120(&w->load[i]);
+            Stg35_PartsAlloc(&w->load[i]);
         }
         for (i = 0; i < 7; i++) {
-            func_800656D0(&w->text[i]);
+            Stg35_TextAlloc(&w->text[i]);
         }
         Snd_UnloadSlot(2);
         Snd_SetSlotContent(1, 0x18);
@@ -329,43 +329,43 @@ void func_80063F38(Actor *arg0) {
         switch (arg0->stateLevel1) {
         case 0:
         default:
-            func_800661A4(&w->load[0], 0xD3F0001);
-            func_800664F4(&w->load[0]);
-            func_800661A4(&w->load[1], 0x3120003);
-            func_800664F4(&w->load[1]);
+            Stg35_PartsSetFile(&w->load[0], 0xD3F0001);
+            Stg35_PartsStartOpen(&w->load[0]);
+            Stg35_PartsSetFile(&w->load[1], 0x3120003);
+            Stg35_PartsStartOpen(&w->load[1]);
             if (w->field_34 != 0) {
-                func_800661A4(&w->load[2], 0xD3F0003);
-                func_800664F4(&w->load[2]);
-                func_80066778(&w->load[2], 2, 3, (s16)Save_GameState.elems[0].maxHp);
-                func_80066778(&w->load[2], 0x10, 3, (s16)Save_GameState.elems[0].maxMp);
-                func_80066778(&w->load[2], 4, 3, (s16)Save_GameState.elems[1].maxHp);
-                func_80066778(&w->load[2], 0x20, 3, (s16)Save_GameState.elems[1].maxMp);
-                func_80066778(&w->load[2], 8, 3, (s16)Save_GameState.elems[2].maxHp);
-                func_80066778(&w->load[2], 0x40, 3, (s16)Save_GameState.elems[2].maxMp);
+                Stg35_PartsSetFile(&w->load[2], 0xD3F0003);
+                Stg35_PartsStartOpen(&w->load[2]);
+                Stg35_PartsSetNumber(&w->load[2], 2, 3, (s16)Save_GameState.elems[0].maxHp);
+                Stg35_PartsSetNumber(&w->load[2], 0x10, 3, (s16)Save_GameState.elems[0].maxMp);
+                Stg35_PartsSetNumber(&w->load[2], 4, 3, (s16)Save_GameState.elems[1].maxHp);
+                Stg35_PartsSetNumber(&w->load[2], 0x20, 3, (s16)Save_GameState.elems[1].maxMp);
+                Stg35_PartsSetNumber(&w->load[2], 8, 3, (s16)Save_GameState.elems[2].maxHp);
+                Stg35_PartsSetNumber(&w->load[2], 0x40, 3, (s16)Save_GameState.elems[2].maxMp);
             }
             if (w->field_38 != 0) {
-                func_800661A4(&w->load[3], 0xD3F0004);
-                func_800664F4(&w->load[3]);
-                func_80066778(&w->load[3], 2, 3, (s16)Save_GameState.elems[3].maxHp);
-                func_80066778(&w->load[3], 0x10, 3, (s16)Save_GameState.elems[3].maxMp);
-                func_80066778(&w->load[3], 4, 3, (s16)Save_GameState.elems[4].maxHp);
-                func_80066778(&w->load[3], 0x20, 3, (s16)Save_GameState.elems[4].maxMp);
-                func_80066778(&w->load[3], 8, 3, (s16)Save_GameState.elems[5].maxHp);
-                func_80066778(&w->load[3], 0x40, 3, (s16)Save_GameState.elems[5].maxMp);
+                Stg35_PartsSetFile(&w->load[3], 0xD3F0004);
+                Stg35_PartsStartOpen(&w->load[3]);
+                Stg35_PartsSetNumber(&w->load[3], 2, 3, (s16)Save_GameState.elems[3].maxHp);
+                Stg35_PartsSetNumber(&w->load[3], 0x10, 3, (s16)Save_GameState.elems[3].maxMp);
+                Stg35_PartsSetNumber(&w->load[3], 4, 3, (s16)Save_GameState.elems[4].maxHp);
+                Stg35_PartsSetNumber(&w->load[3], 0x20, 3, (s16)Save_GameState.elems[4].maxMp);
+                Stg35_PartsSetNumber(&w->load[3], 8, 3, (s16)Save_GameState.elems[5].maxHp);
+                Stg35_PartsSetNumber(&w->load[3], 0x40, 3, (s16)Save_GameState.elems[5].maxMp);
             }
-            func_80065760(&w->text[0], 0x101, 0x10, 0xBA);
+            Stg35_TextSetLayout(&w->text[0], 0x101, 0x10, 0xBA);
             if (w->field_34 != 0) {
                 for (i = 0; i < 3; i++) {
-                    func_80065760(&w->text[i + 1], 0, 0x15, i * 0x22 + 0x4E);
-                    func_800657A0((Stg35LoadHandle *)&w->text[i + 1], (s32)Save_GameState.elems[i].name);
-                    func_80065824(&w->text[i + 1]);
+                    Stg35_TextSetLayout(&w->text[i + 1], 0, 0x15, i * 0x22 + 0x4E);
+                    Stg35_TextSetString((Stg35LoadHandle *)&w->text[i + 1], (s32)Save_GameState.elems[i].name);
+                    Stg35_TextOpen(&w->text[i + 1]);
                 }
             }
             if (w->field_38 != 0) {
                 for (i = 0; i < 3; i++) {
-                    func_80065760(&w->text[i + 4], 0, 0xC9, i * 0x22 + 0x4E);
-                    func_800657A0((Stg35LoadHandle *)&w->text[i + 4], (s32)Save_GameState.elems[i + 3].name);
-                    func_80065824(&w->text[i + 4]);
+                    Stg35_TextSetLayout(&w->text[i + 4], 0, 0xC9, i * 0x22 + 0x4E);
+                    Stg35_TextSetString((Stg35LoadHandle *)&w->text[i + 4], (s32)Save_GameState.elems[i + 3].name);
+                    Stg35_TextOpen(&w->text[i + 4]);
                 }
             }
             w->field_30 = 1;
@@ -398,10 +398,10 @@ void func_80063F38(Actor *arg0) {
             } while (0);
             if (w->field_30 != 0) {
                 w->field_30 = 0;
-                func_800657B8(&w->text[0], D_8006A4AC[w->field_2C]);
-                func_80065824(&w->text[0]);
+                Stg35_TextSetSysMsg(&w->text[0], Stg35_VsMenuPromptMsgs[w->field_2C]);
+                Stg35_TextOpen(&w->text[0]);
             }
-            func_800663CC(&w->load[0], D_8006A4B8[w->field_2C]);
+            Stg35_PartsHideByMask(&w->load[0], Stg35_VsMenuPhaseMasks[w->field_2C]);
             break;
         }
         break;
@@ -410,10 +410,10 @@ void func_80063F38(Actor *arg0) {
         case 0:
         default:
             for (i = 0; i < 4; i++) {
-                func_80066508(&w->load[i]);
+                Stg35_PartsStartScaleOut(&w->load[i]);
             }
             for (i = 0; i < 7; i++) {
-                func_80065894(&w->text[i]);
+                Stg35_TextClose(&w->text[i]);
             }
             Gfx_FadeOutToBlack(0x10);
             Task_NextState2(arg0);
@@ -442,34 +442,34 @@ void func_80063F38(Actor *arg0) {
     }
 }
 
-void func_800645B4(Actor *arg0) {
+void Stg35_VsMenuDestroy(Actor *arg0) {
     Stg35Work4 *w = (Stg35Work4 *)arg0->work;
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        func_80066168(&w->load[i]);
+        Stg35_PartsFree(&w->load[i]);
     }
     for (i = 0; i < 7; i++) {
-        func_80065718(&w->text[i]);
+        Stg35_TextFree(&w->text[i]);
     }
     Task_DefaultDestroy(arg0);
 }
 
-void func_80064638(Actor *arg0) {
+void Stg35_VsMenuDraw(Actor *arg0) {
     Stg35Work4 *w = (Stg35Work4 *)arg0->work;
 
-    func_80066520(&w->load[0], 0x2A, Math_CycleRange(arg0->elapsed, 6, 0, 7));
-    func_800661B0(&w->load[0]);
-    func_800661B0(&w->load[1]);
+    Stg35_PartsSetPalette(&w->load[0], 0x2A, Math_CycleRange(arg0->elapsed, 6, 0, 7));
+    Stg35_PartsDraw(&w->load[0]);
+    Stg35_PartsDraw(&w->load[1]);
     if (w->field_34 != 0) {
-        func_800661B0(&w->load[2]);
+        Stg35_PartsDraw(&w->load[2]);
     }
     if (w->field_38 != 0) {
-        func_800661B0(&w->load[3]);
+        Stg35_PartsDraw(&w->load[3]);
     }
 }
 
-void func_800646C0(Actor *arg0) {
+void Stg35_MatchupUpdate(Actor *arg0) {
     Stg35Work1 *w = (Stg35Work1 *)arg0->work;
     s32 *slot = (s32 *)arg0->u34.children;
     s32 i;
@@ -488,10 +488,10 @@ void func_800646C0(Actor *arg0) {
         Gfx_FadeInFromBlack(0x40);
         Task_Create(9, slot, 0);
         for (i = 0; i < 1; i++) {
-            func_80066120(&w->load[i]);
+            Stg35_PartsAlloc(&w->load[i]);
         }
         for (i = 0; i < 14; i++) {
-            func_800656D0(&w->text[i]);
+            Stg35_TextAlloc(&w->text[i]);
         }
         Task_NextState0(arg0);
         break;
@@ -502,29 +502,29 @@ void func_800646C0(Actor *arg0) {
             switch (arg0->stateLevel2) {
             case 0:
             default:
-                func_800661A4(w->load, 0xD3F0002);
-                func_80066694(w->load, 0, 2, 0x140, 0, -0x1400);
-                func_80066694(w->load, 1, 4, -0x140, 0, 0x1400);
-                func_800663CC(w->load, 0x18);
+                Stg35_PartsSetFile(w->load, 0xD3F0002);
+                Stg35_PartsStartSlideX(w->load, 0, 2, 0x140, 0, -0x1400);
+                Stg35_PartsStartSlideX(w->load, 1, 4, -0x140, 0, 0x1400);
+                Stg35_PartsHideByMask(w->load, 0x18);
                 Task_NextState2(arg0);
             case 1:
                 if (++arg0->stateLevel3 == 0x14) {
                     Snd_PlayById(0x101, 1);
-                    func_800663CC(w->load, 0x10);
+                    Stg35_PartsHideByMask(w->load, 0x10);
                     for (j = 0; j < 6; j++) {
-                        func_80065760(&w->text[j], 1, D_8006A4DC[j].x, D_8006A4DC[j].y);
-                        func_800657B8(&w->text[j], D_8006A4F4[j]);
-                        func_80065824(&w->text[j]);
+                        Stg35_TextSetLayout(&w->text[j], 1, Stg35_MatchupLabelPos[j].x, Stg35_MatchupLabelPos[j].y);
+                        Stg35_TextSetSysMsg(&w->text[j], Stg35_MatchupLabelMsgs[j]);
+                        Stg35_TextOpen(&w->text[j]);
                     }
                     for (k = 0; k < 6; k++) {
-                        func_80065760(&w->text[k + 6], 1, D_8006A500[k / 3].x, D_8006A500[k / 3].y + (k % 3) * 12);
-                        func_800657A0((Stg35LoadHandle *)&w->text[k + 6], (s32)Digi_GetDefaultName(Save_GameState.elems[k].digiId));
-                        func_80065824(&w->text[k + 6]);
+                        Stg35_TextSetLayout(&w->text[k + 6], 1, Stg35_MatchupPartyPos[k / 3].x, Stg35_MatchupPartyPos[k / 3].y + (k % 3) * 12);
+                        Stg35_TextSetString((Stg35LoadHandle *)&w->text[k + 6], (s32)Digi_GetDefaultName(Save_GameState.elems[k].digiId));
+                        Stg35_TextOpen(&w->text[k + 6]);
                     }
                     for (l = 0; l < 2; l++) {
-                        func_80065760(&w->text[l + 12], 1, D_8006A508[l].x, D_8006A508[l].y);
-                        func_800657A0((Stg35LoadHandle *)&w->text[l + 12], (s32)Save_GameState.elems[l + 6].name);
-                        func_80065824(&w->text[l + 12]);
+                        Stg35_TextSetLayout(&w->text[l + 12], 1, Stg35_MatchupTamerPos[l].x, Stg35_MatchupTamerPos[l].y);
+                        Stg35_TextSetString((Stg35LoadHandle *)&w->text[l + 12], (s32)Save_GameState.elems[l + 6].name);
+                        Stg35_TextOpen(&w->text[l + 12]);
                     }
                 }
                 if (arg0->stateLevel3 == 0x1E) {
@@ -533,8 +533,8 @@ void func_800646C0(Actor *arg0) {
                 break;
             case 2:
                 v = Math_CycleRange(arg0->elapsed, 6, 0, 7);
-                func_800663CC(w->load, 0);
-                func_80066520(w->load, 0x10, v);
+                Stg35_PartsHideByMask(w->load, 0);
+                Stg35_PartsSetPalette(w->load, 0x10, v);
                 if (v == 7) {
                     Task_NextState1(arg0);
                 }
@@ -564,24 +564,24 @@ void func_800646C0(Actor *arg0) {
     }
 }
 
-void func_80064AF0(Actor *arg0) {
+void Stg35_MatchupDestroy(Actor *arg0) {
     Stg35Work1 *w = (Stg35Work1 *)arg0->work;
     s32 i;
 
     for (i = 0; i < 1; i++) {
-        func_80066168(&w->load[i]);
+        Stg35_PartsFree(&w->load[i]);
     }
     for (i = 0; i < 14; i++) {
-        func_80065718(&w->text[i]);
+        Stg35_TextFree(&w->text[i]);
     }
     Task_DefaultDestroy(arg0);
 }
 
-void func_80064B70(Actor *arg0) {
-    func_800661B0((Stg35LoadHandle *)arg0->work);
+void Stg35_MatchupDraw(Actor *arg0) {
+    Stg35_PartsDraw((Stg35LoadHandle *)arg0->work);
 }
 
-void func_80064B94(Actor *arg0, s32 arg1, s32 arg2) {
+void Stg35_SetDigiAction(Actor *arg0, s32 arg1, s32 arg2) {
     arg0->stateLevel0 = 2;
     arg0->stateLevel1 = arg1;
     arg0->stateLevel2 = 0;
@@ -589,7 +589,7 @@ void func_80064B94(Actor *arg0, s32 arg1, s32 arg2) {
     arg0->stateLevel4 = arg2;
 }
 
-void func_80064BB0(Stg35ChildOwner *arg0, s32 arg1) {
+void Stg35_ShowWinnerSide(Stg35ChildOwner *arg0, s32 arg1) {
     Stg35ChildList *l = arg0->field_34;
     s32 i;
 
@@ -599,36 +599,36 @@ void func_80064BB0(Stg35ChildOwner *arg0, s32 arg1) {
         if (a != NULL) {
             if (arg1 == 0) {
                 if (i < 3) {
-                    func_800674D4(a, 1);
-                    func_800674F8(l->field_2C[i]);
+                    Stg35_FighterSetVisible(a, 1);
+                    Stg35_FighterQueueHomeReset(l->field_2C[i]);
                 } else {
-                    func_800674D4(a, 0);
+                    Stg35_FighterSetVisible(a, 0);
                 }
             } else {
                 if (i >= 3) {
-                    func_800674D4(a, 1);
-                    func_800674F8(l->field_2C[i]);
+                    Stg35_FighterSetVisible(a, 1);
+                    Stg35_FighterQueueHomeReset(l->field_2C[i]);
                 } else {
-                    func_800674D4(a, 0);
+                    Stg35_FighterSetVisible(a, 0);
                 }
             }
         }
     }
 }
 
-void func_80064C54(Stg35ChildOwner *arg0) {
+void Stg35_ShowAllDigi(Stg35ChildOwner *arg0) {
     Stg35ChildList *l = arg0->field_34;
     s32 i;
 
     for (i = 0; i < 6; i++) {
         if (l->field_2C[i] != NULL) {
-            func_800674D4(l->field_2C[i], 1);
-            func_800674F8(l->field_2C[i]);
+            Stg35_FighterSetVisible(l->field_2C[i], 1);
+            Stg35_FighterQueueHomeReset(l->field_2C[i]);
         }
     }
 }
 
-void func_80064CB8(Actor *arg0) {
+void Stg35_BattleUpdate(Actor *arg0) {
     Stg35BattleWork *w = (Stg35BattleWork *)arg0->work;
     Actor **c = (Actor **)arg0->u34.children;
     Stg35Arg3 a;
@@ -649,7 +649,7 @@ void func_80064CB8(Actor *arg0) {
     switch (arg0->stateLevel0) {
     case 0:
         Snd_PlayById(0x102, 1);
-        func_80067720();
+        Stg35_ClearBattle();
         Cd_FreeUnlockedFiles();
         Gpu_AllocPacketBufs(0x32000);
         Gfx_InitLights();
@@ -667,16 +667,16 @@ void func_80064CB8(Actor *arg0) {
         Cd_QueueFile(0xD41);
         Cd_QueueFile(0xD93);
         for (k = 0; k < 6; k++) {
-            D_8006AA88.rec[k] = Save_GameState.elems[k];
+            Stg35_Battle.rec[k] = Save_GameState.elems[k];
         }
         for (j = 0; j < 6; j++) {
             a.field_8 = 0;
-            a.field_0 = D_8006AA88.rec[j].digiId;
+            a.field_0 = Stg35_Battle.rec[j].digiId;
             a.field_4 = j;
             Task_Create(0x707, (s32 *)&c[11 + j], (s32)&a);
         }
         for (j = 0; j < 6; j++) {
-            func_8006A168(j);
+            Stg35_BuildCommandList(j);
         }
         Task_NextState0(arg0);
         break;
@@ -693,9 +693,9 @@ void func_80064CB8(Actor *arg0) {
             switch (arg0->stateLevel2) {
             case 0:
             default:
-                func_80064C54((Stg35ChildOwner *)arg0);
-                func_8006A080(0x18);
-                func_80065E60();
+                Stg35_ShowAllDigi((Stg35ChildOwner *)arg0);
+                Stg35_SetCameraShot(0x18);
+                Stg35_BuildTurnOrder();
                 e2 = (Actor *)Task_FindFirst(0x708, -1, -1);
                 if (e2 != NULL) {
                     Task_SetState1(e2, 1);
@@ -715,7 +715,7 @@ void func_80064CB8(Actor *arg0) {
             switch (arg0->stateLevel2) {
             case 0:
             default:
-                if (D_8006AA88.rec[func_80065E44(0)].hp == 0) {
+                if (Stg35_Battle.rec[Stg35_TurnOrderGet(0)].hp == 0) {
                     Task_NextState1(arg0);
                     break;
                 }
@@ -724,37 +724,37 @@ void func_80064CB8(Actor *arg0) {
                 switch (arg0->stateLevel3) {
                 case 0:
                 default:
-                    func_8006A080(func_80065E44(0) + 0xA);
+                    Stg35_SetCameraShot(Stg35_TurnOrderGet(0) + 0xA);
                     for (e = (Actor *)Task_FindFirst(0x707, -1, -1); e != NULL; e = (Actor *)Task_FindNext()) {
-                        if (e->param == func_80065E44(0)) {
-                            func_800674D4(e, 1);
-                            func_800674F8(e);
+                        if (e->param == Stg35_TurnOrderGet(0)) {
+                            Stg35_FighterSetVisible(e, 1);
+                            Stg35_FighterQueueHomeReset(e);
                         } else {
-                            func_800674D4(e, 0);
+                            Stg35_FighterSetVisible(e, 0);
                         }
                     }
                     for (m = 0; m < 6; m++) {
-                        buf[5 - m] = D_8006AA88.field_238[func_80065E44(0)].field_C[m];
+                        buf[5 - m] = Stg35_Battle.field_238[Stg35_TurnOrderGet(0)].field_C[m];
                     }
-                    func_80068B10(func_80065E44(0) >= 3, buf);
+                    Stg35_HudStartGauge(Stg35_TurnOrderGet(0) >= 3, buf);
                     Task_NextState3(arg0);
                     break;
                 case 1:
-                    if (func_80068B9C() == 1) {
+                    if (Stg35_HudGetGaugeStatus() == 1) {
                         break;
                     }
-                    if (func_80068B9C() == 2) {
+                    if (Stg35_HudGetGaugeStatus() == 2) {
                         Task_SetState1(arg0, 3);
                         break;
                     }
-                    f = func_80065E44(0);
-                    func_80065F8C(f, func_80068C5C());
+                    f = Stg35_TurnOrderGet(0);
+                    Stg35_SetChosenAction(f, Stg35_HudGetGaugeLevel());
                     Task_NextState2(arg0);
                     break;
                 }
                 break;
             case 2:
-                if (func_80069850(func_80065E44(0)) != 0) {
+                if (Stg35_PrepareAction(Stg35_TurnOrderGet(0)) != 0) {
                     Task_Create(0x709, (s32 *)&c[18], 1);
                 }
                 Task_NextState2(arg0);
@@ -774,14 +774,14 @@ void func_80064CB8(Actor *arg0) {
             r = 0;
             sum = 0;
             for (n = 0; n < 3; n++) {
-                sum += D_8006AA88.rec[n].hp;
+                sum += Stg35_Battle.rec[n].hp;
             }
             if (sum == 0) {
                 goto lose;
             }
             sum = 0;
             for (n = 3; n < 6; n++) {
-                sum += D_8006AA88.rec[n].hp;
+                sum += Stg35_Battle.rec[n].hp;
             }
             if (sum == 0) {
                 Task_SetState1(arg0, 4);
@@ -790,17 +790,17 @@ void func_80064CB8(Actor *arg0) {
             }
         chk:
             if (r == 0) {
-                func_80065D84(0);
-                if (func_80065E44(0) == -1) {
+                Stg35_TurnOrderRemove(0);
+                if (Stg35_TurnOrderGet(0) == -1) {
                 if (++w->field_4 == 3) {
                 memset((u8 *)cnt, 0, 8);
                 for (n = 0; n < 3; n++) {
-                    if (D_8006AA88.rec[n].hp != 0) {
+                    if (Stg35_Battle.rec[n].hp != 0) {
                         cnt[0]++;
                     }
                 }
                 for (n = 3; n < 6; n++) {
-                    if (D_8006AA88.rec[n].hp != 0) {
+                    if (Stg35_Battle.rec[n].hp != 0) {
                         cnt[1]++;
                     }
                 }
@@ -808,13 +808,13 @@ void func_80064CB8(Actor *arg0) {
                     cnt[0] = 0;
                     cnt[1] = 0;
                     for (n = 0; n < 3; n++) {
-                        if (D_8006AA88.rec[n].hp != 0) {
-                            cnt[0] += D_8006AA88.rec[n].hp;
+                        if (Stg35_Battle.rec[n].hp != 0) {
+                            cnt[0] += Stg35_Battle.rec[n].hp;
                         }
                     }
                     for (n = 3; n < 6; n++) {
-                        if (D_8006AA88.rec[n].hp != 0) {
-                            cnt[1] += D_8006AA88.rec[n].hp;
+                        if (Stg35_Battle.rec[n].hp != 0) {
+                            cnt[1] += Stg35_Battle.rec[n].hp;
                         }
                     }
                 }
@@ -844,15 +844,15 @@ void func_80064CB8(Actor *arg0) {
         case 0:
         default:
             Snd_PlayById(0x202, 1);
-            func_8006A080(w->field_C + 0x19);
-            func_80064BB0((Stg35ChildOwner *)arg0, w->field_C);
+            Stg35_SetCameraShot(w->field_C + 0x19);
+            Stg35_ShowWinnerSide((Stg35ChildOwner *)arg0, w->field_C);
             arg0->elapsed = 0;
             Task_NextState1(arg0);
         case 1:
             wait = 0;
             for (i = w->field_C * 3; i < w->field_C * 3 + 3; i++) {
-                if (D_8006AA88.rec[i].hp != 0) {
-                    f = Anim_GetModelAnimFile(D_8006AA88.rec[i].digiId, 8);
+                if (Stg35_Battle.rec[i].hp != 0) {
+                    f = Anim_GetModelAnimFile(Stg35_Battle.rec[i].digiId, 8);
                     Cd_QueueFile(f);
                     if (Cd_GetFileState(f) != 3) {
                         goto nf;
@@ -867,7 +867,7 @@ void func_80064CB8(Actor *arg0) {
                 break;
             }
             for (j = w->field_C * 3; j < w->field_C * 3 + 3; j++) {
-                if (D_8006AA88.rec[j].hp != 0) {
+                if (Stg35_Battle.rec[j].hp != 0) {
                     Task_SetState01(c[11 + j], 2, 2);
                 }
             }

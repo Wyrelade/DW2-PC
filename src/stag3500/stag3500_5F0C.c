@@ -3,8 +3,8 @@
 #include "stag3500/stag3500_funcs.h"
 #include "stag3500/stag3500_2334_funcs.h"
 
-void func_8006926C(s32 arg0) {
-    Stg35Rec2C *b = &D_8006AA88.field_238[arg0];
+void Stg35_BuildSkillScript(s32 arg0) {
+    Stg35Rec2C *b = &Stg35_Battle.field_238[arg0];
     s16 *p;
     s16 targets[6];
     s32 dmg[6];
@@ -16,7 +16,7 @@ void func_8006926C(s32 arg0) {
     s32 i;
 
     hit = Skill_GetPower((s16)b->field_8) > 0;
-    p = D_8006ADE0;
+    p = Stg35_BattleScript;
     for (i = 0; i < 6; i++) {
         dmg[i] = 0;
         targets[i] = -1;
@@ -24,7 +24,7 @@ void func_8006926C(s32 arg0) {
     n = 0;
     switch (b->field_4) {
     default:
-        if (D_8006AA88.rec[b->field_4].hp != 0) {
+        if (Stg35_Battle.rec[b->field_4].hp != 0) {
             n = 1;
             targets[0] = b->field_4;
         }
@@ -32,7 +32,7 @@ void func_8006926C(s32 arg0) {
     case 7:
         if (hit) {
             for (i = 0, c = 0; i < 3; i++) {
-                if (D_8006AA88.rec[i].hp != 0) {
+                if (Stg35_Battle.rec[i].hp != 0) {
                     targets[c++] = i;
                 }
             }
@@ -47,7 +47,7 @@ void func_8006926C(s32 arg0) {
     case 8:
         if (hit) {
             for (c = 0, i = 3; i < 6; i++) {
-                if (D_8006AA88.rec[i].hp != 0) {
+                if (Stg35_Battle.rec[i].hp != 0) {
                     targets[c++] = i;
                 }
             }
@@ -62,7 +62,7 @@ void func_8006926C(s32 arg0) {
     case 9:
         if (hit) {
             for (c = 0, i = 0; i < 6; i++) {
-                if (D_8006AA88.rec[i].hp != 0) {
+                if (Stg35_Battle.rec[i].hp != 0) {
                     targets[c++] = i;
                 }
             }
@@ -76,7 +76,7 @@ void func_8006926C(s32 arg0) {
         break;
     }
     for (i = 0; i < n; i++) {
-        dmg[i] = func_80065BE0(arg0, targets[i], skill);
+        dmg[i] = Stg35_ApplySkillDamage(arg0, targets[i], skill);
     }
     *p++ = 2;
     *p++ = arg0 + 10;
@@ -84,7 +84,7 @@ void func_8006926C(s32 arg0) {
     *p++ = arg0;
     *p++ = 0x11;
     *p++ = 0xD;
-    *p++ = D_8006AA88.field_238[arg0].field_0 - 1;
+    *p++ = Stg35_Battle.field_238[arg0].field_0 - 1;
     *p++ = 1;
     *p++ = 0x12;
     *p++ = 0xE;
@@ -109,8 +109,8 @@ void func_8006926C(s32 arg0) {
         *p++ = 0xF;
         *p++ = dmg[i];
         if (hit) {
-            if (D_8006AA88.rec[targets[i]].hp != 0) {
-                *p++ = D_8006AA88.field_238[targets[i]].field_0 != 5 ? 0xA : 9;
+            if (Stg35_Battle.rec[targets[i]].hp != 0) {
+                *p++ = Stg35_Battle.field_238[targets[i]].field_0 != 5 ? 0xA : 9;
             } else {
                 *p++ = 0xB;
             }
@@ -143,16 +143,16 @@ void func_8006926C(s32 arg0) {
     }
     *p = 0x14;
     for (i = 0; i < 6; i++) {
-        D_8006AA88.field_340[i] = targets[i];
+        Stg35_Battle.field_340[i] = targets[i];
     }
 }
 
-s32 func_80069850(s32 arg0) {
-    func_8006926C(arg0);
+s32 Stg35_PrepareAction(s32 arg0) {
+    Stg35_BuildSkillScript(arg0);
     return 1;
 }
 
-s32 func_80069870(s32 arg0, s32 arg1) {
+s32 Stg35_CamEaseStep(s32 arg0, s32 arg1) {
     s32 neg = 0;
     s32 r;
 
@@ -174,21 +174,21 @@ s32 func_80069870(s32 arg0, s32 arg1) {
     return r;
 }
 
-void func_800698C8(Stg35CamWork *w, s32 *t) {
+void Stg35_CamEaseToward(Stg35CamWork *w, s32 *t) {
     s32 i;
 
     for (i = 0; i < Sys_State.frameDelta; i++) {
-        w->field_7E += func_80069870(t[0], w->field_7E);
-        w->field_0 += func_80069870(t[1], w->field_0);
-        w->field_4 += func_80069870(t[2], w->field_4);
-        w->field_8 += func_80069870(t[3], w->field_8);
-        w->field_10 += func_80069870(t[4], w->field_10);
-        w->field_6C += func_80069870(t[5], w->field_6C);
-        w->field_74 += func_80069870(t[6], w->field_74);
+        w->field_7E += Stg35_CamEaseStep(t[0], w->field_7E);
+        w->field_0 += Stg35_CamEaseStep(t[1], w->field_0);
+        w->field_4 += Stg35_CamEaseStep(t[2], w->field_4);
+        w->field_8 += Stg35_CamEaseStep(t[3], w->field_8);
+        w->field_10 += Stg35_CamEaseStep(t[4], w->field_10);
+        w->field_6C += Stg35_CamEaseStep(t[5], w->field_6C);
+        w->field_74 += Stg35_CamEaseStep(t[6], w->field_74);
     }
 }
 
-void func_800699FC(Actor *arg0) {
+void Stg35_CameraUpdate(Actor *arg0) {
     Stg35CamWork *w = (Stg35CamWork *)arg0->work;
     s32 i;
     s32 h;
@@ -236,7 +236,7 @@ void func_800699FC(Actor *arg0) {
                 t[0] = 0;
                 t[1] = 0;
                 t[4] = -0x2BC;
-                func_800698C8(w, t);
+                Stg35_CamEaseToward(w, t);
             }
             break;
         case 2:
@@ -249,7 +249,7 @@ void func_800699FC(Actor *arg0) {
                 s32 t[7];
 
                 i = arg0->stateLevel1 - 2;
-                h = func_8001E79C(D_8006AA88.rec[i].digiId);
+                h = func_8001E79C(Stg35_Battle.rec[i].digiId);
                 h = h < 0x300 ? 0 : h - 0x300;
                 h /= 256;
                 t[5] = (i % 3) * 0xA00 - 0xA00;
@@ -259,7 +259,7 @@ void func_800699FC(Actor *arg0) {
                 t[2] = -0xC30;
                 t[3] = D_8006A69C[h];
                 t[4] = D_8006A6B0[h];
-                func_800698C8(w, t);
+                Stg35_CamEaseToward(w, t);
             }
             break;
         case 8:
@@ -273,7 +273,7 @@ void func_800699FC(Actor *arg0) {
                 t[5] = 0;
                 t[1] = 0;
                 t[4] = -0x36C;
-                func_800698C8(w, t);
+                Stg35_CamEaseToward(w, t);
             }
             break;
         case 9:
@@ -287,7 +287,7 @@ void func_800699FC(Actor *arg0) {
                 t[5] = 0;
                 t[1] = 0;
                 t[4] = -0x36C;
-                func_800698C8(w, t);
+                Stg35_CamEaseToward(w, t);
             }
             break;
         case 22:
@@ -323,7 +323,7 @@ void func_800699FC(Actor *arg0) {
                 t[6] = 0;
                 t[1] = 0;
                 t[4] = -0x29C;
-                func_800698C8(w, t);
+                Stg35_CamEaseToward(w, t);
             }
             break;
         case 10:
@@ -335,7 +335,7 @@ void func_800699FC(Actor *arg0) {
             switch (arg0->stateLevel2) {
             case 0:
             default:
-                D_8006AF70 = Rand_Next() & 3;
+                Stg35_CamShotVariant = Rand_Next() & 3;
                 Task_NextState2(arg0);
             case 1:
                 break;
@@ -349,7 +349,7 @@ void func_800699FC(Actor *arg0) {
             w->field_7E = 0xAA;
             w->field_6C = (arg0->stateLevel1 - 10) * 0xA00 - 0xC80;
             w->field_74 = -0x1400;
-            switch (D_8006AF70) {
+            switch (Stg35_CamShotVariant) {
             case 1:
                 w->field_7E = 0x38;
                 w->field_6C = (arg0->stateLevel1 - 10) * 0xA00 - 0xA00;
@@ -422,7 +422,7 @@ void func_800699FC(Actor *arg0) {
     }
 }
 
-void func_80069FD4(Actor *arg0) {
+void Stg35_CameraDraw(Actor *arg0) {
     Stg35CamWork *w = (Stg35CamWork *)arg0->work;
     Stg35RefView rv;
 
@@ -443,7 +443,7 @@ void func_80069FD4(Actor *arg0) {
     GsSetRefView2(&rv);
 }
 
-void func_8006A080(s32 arg0) {
+void Stg35_SetCameraShot(s32 arg0) {
     Actor *e = (Actor *)Task_FindFirst(0x706, -1, -1);
 
     if (e != NULL && e->stateLevel0 == 1) {
@@ -451,13 +451,13 @@ void func_8006A080(s32 arg0) {
     }
 }
 
-void func_8006A0D4(u8 arg0, s32 *arg1, s32 *arg2, s32 *arg3, s32 *arg4) {
+void Stg35_FindSkillGroup(u8 arg0, s32 *arg1, s32 *arg2, s32 *arg3, s32 *arg4) {
     Stg35Rec6 *p;
     s32 i;
     s32 j;
 
     for (i = 0; i < 6; i++) {
-        p = D_8006AA24[i];
+        p = Stg35_SkillGroups[i];
         j = 0;
         while (p->field_0 != 0) {
             if (p->field_0 == arg0) {
@@ -478,9 +478,9 @@ void func_8006A0D4(u8 arg0, s32 *arg1, s32 *arg2, s32 *arg3, s32 *arg4) {
     *arg2 = 100;
 }
 
-void func_8006A168(s32 arg0) {
-    u8 *ids = D_8006AA88.rec[arg0].field_22;
-    Stg35Rec2C *b = &D_8006AA88.field_238[arg0];
+void Stg35_BuildCommandList(s32 arg0) {
+    u8 *ids = Stg35_Battle.rec[arg0].field_22;
+    Stg35Rec2C *b = &Stg35_Battle.field_238[arg0];
     s32 best[6];
     s32 grp;
     s32 idx;
@@ -496,7 +496,7 @@ void func_8006A168(s32 arg0) {
     found = 0;
     for (i = 0; i < 12; i++) {
         if (ids[i] != 0) {
-            func_8006A0D4(ids[i], &grp, &idx, &v4, &v2);
+            Stg35_FindSkillGroup(ids[i], &grp, &idx, &v4, &v2);
             if (grp != -1 && best[grp] > idx) {
                 best[grp] = idx;
                 found = 1;
@@ -513,11 +513,11 @@ void func_8006A168(s32 arg0) {
     }
 }
 
-void func_8006A2D0(Actor *arg0, s32 arg1) {
+void Stg35_WinBannerInit(Actor *arg0, s32 arg1) {
     arg0->param = arg1;
 }
 
-void func_8006A2D8(Actor *arg0) {
+void Stg35_WinBannerUpdate(Actor *arg0) {
     Stg35LoadHandle *w = (Stg35LoadHandle *)arg0->work;
     s32 masks[2];
     s32 i;
@@ -525,15 +525,15 @@ void func_8006A2D8(Actor *arg0) {
     switch (arg0->stateLevel0) {
     case 0:
         for (i = 0; i < 1; i++) {
-            func_80066120(&w[i]);
+            Stg35_PartsAlloc(&w[i]);
         }
-        func_800661A4(w, 0xD3F0008);
+        Stg35_PartsSetFile(w, 0xD3F0008);
         masks[0] = 2;
         masks[1] = 4;
-        func_800663CC(w, ~masks[arg0->param]);
+        Stg35_PartsHideByMask(w, ~masks[arg0->param]);
         Task_NextState0(arg0);
     case 1:
-        func_80066520(w, 6, Math_PingPongRange(arg0->elapsed, 4, 0, 7));
+        Stg35_PartsSetPalette(w, 6, Math_PingPongRange(arg0->elapsed, 4, 0, 7));
         break;
     case 2:
     default:
@@ -541,21 +541,21 @@ void func_8006A2D8(Actor *arg0) {
     }
 }
 
-void func_8006A3B8(Actor *arg0) {
+void Stg35_WinBannerDestroy(Actor *arg0) {
     Stg35LoadHandle *w = (Stg35LoadHandle *)arg0->work;
     s32 i;
 
     for (i = 0; i < 1; i++) {
-        func_80066168(&w[i]);
+        Stg35_PartsFree(&w[i]);
     }
     Task_DefaultDestroy(arg0);
 }
 
-void func_8006A40C(Actor *arg0) {
+void Stg35_WinBannerDraw(Actor *arg0) {
     Stg35LoadHandle *w = (Stg35LoadHandle *)arg0->work;
     s32 i;
 
     for (i = 0; i < 1; i++) {
-        func_800661B0(&w[i]);
+        Stg35_PartsDraw(&w[i]);
     }
 }

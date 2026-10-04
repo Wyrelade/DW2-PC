@@ -72,13 +72,13 @@ dlabel jtbl_800633E4
     /* B4 80063414 AC710680 */ .word .L800671AC
 enddlabel jtbl_800633E4
 
-nonmatching D_80063418
+nonmatching Stg35_RoundBannerMasks
 
-dlabel D_80063418
+dlabel Stg35_RoundBannerMasks
     /* B8 80063418 01000000 */ .word 0x00000001
     /* BC 8006341C 02000000 */ .word 0x00000002
     /* C0 80063420 10000000 */ .word 0x00000010
-enddlabel D_80063418
+enddlabel Stg35_RoundBannerMasks
 
 nonmatching jtbl_80063424
 

@@ -8,9 +8,9 @@ nonmatching D_8006A44C
 
 dlabel D_8006A44C
     /* 70EC 8006A44C 00000000 */ .word 0x00000000
-    /* 70F0 8006A450 FC340680 */ .word func_800634FC
-    /* 70F4 8006A454 50350680 */ .word func_80063550
-    /* 70F8 8006A458 84350680 */ .word func_80063584
+    /* 70F0 8006A450 FC340680 */ .word Stg35_BgUpdate
+    /* 70F4 8006A454 50350680 */ .word Stg35_BgDestroy
+    /* 70F8 8006A458 84350680 */ .word Stg35_BgDraw
     /* 70FC 8006A45C 04000000 */ .word 0x00000004
     /* 7100 8006A460 00000000 */ .word 0x00000000
 enddlabel D_8006A44C
@@ -19,9 +19,9 @@ nonmatching D_8006A464
 
 dlabel D_8006A464
     /* 7104 8006A464 00000000 */ .word 0x00000000
-    /* 7108 8006A468 D4350680 */ .word func_800635D4
+    /* 7108 8006A468 D4350680 */ .word Stg35_FightBgUpdate
     /* 710C 8006A46C 70110180 */ .word Task_DefaultDestroy
-    /* 7110 8006A470 3C360680 */ .word func_8006363C
+    /* 7110 8006A470 3C360680 */ .word Stg35_FightBgDraw
     /* 7114 8006A474 00000000 */ .word 0x00000000
     /* 7118 8006A478 00000000 */ .word 0x00000000
 enddlabel D_8006A464
@@ -29,9 +29,9 @@ enddlabel D_8006A464
 nonmatching D_8006A47C
 
 dlabel D_8006A47C
-    /* 711C 8006A47C 84360680 */ .word func_80063684
-    /* 7120 8006A480 58370680 */ .word func_80063758
-    /* 7124 8006A484 003E0680 */ .word func_80063E00
+    /* 711C 8006A47C 84360680 */ .word Stg35_ActionLoadInit
+    /* 7120 8006A480 58370680 */ .word Stg35_ActionLoadUpdate
+    /* 7124 8006A484 003E0680 */ .word Stg35_ActionLoadDestroy
     /* 7128 8006A488 00000000 */ .word 0x00000000
     /* 712C 8006A48C 20030000 */ .word 0x00000320
     /* 7130 8006A490 00000000 */ .word 0x00000000
@@ -41,25 +41,25 @@ nonmatching D_8006A494
 
 dlabel D_8006A494
     /* 7134 8006A494 00000000 */ .word 0x00000000
-    /* 7138 8006A498 743E0680 */ .word func_80063E74
+    /* 7138 8006A498 743E0680 */ .word Stg35_RootUpdate
     /* 713C 8006A49C 70110180 */ .word Task_DefaultDestroy
     /* 7140 8006A4A0 00000000 */ .word 0x00000000
     /* 7144 8006A4A4 00000000 */ .word 0x00000000
     /* 7148 8006A4A8 04000000 */ .word 0x00000004
 enddlabel D_8006A494
 
-nonmatching D_8006A4AC
+nonmatching Stg35_VsMenuPromptMsgs
 
-dlabel D_8006A4AC
+dlabel Stg35_VsMenuPromptMsgs
     /* 714C 8006A4AC B3010000 */ .word 0x000001B3
     /* 7150 8006A4B0 C4010000 */ .word 0x000001C4
     /* 7154 8006A4B4 B4010000 */ .word 0x000001B4
-enddlabel D_8006A4AC
+enddlabel Stg35_VsMenuPromptMsgs
 
 .align 2
-nonmatching D_8006A4B8
+nonmatching Stg35_VsMenuPhaseMasks
 
-dlabel D_8006A4B8
+dlabel Stg35_VsMenuPhaseMasks
     /* 7158 8006A4B8 */ .asciz ","
     /* 2C000000 */
 .align 2
@@ -71,59 +71,59 @@ dlabel D_8006A4B8
     /* 7160 8006A4C0 */ .asciz "2"
     /* 32000000 */
 .align 2
-enddlabel D_8006A4B8
+enddlabel Stg35_VsMenuPhaseMasks
 
 nonmatching D_8006A4C4
 
 dlabel D_8006A4C4
     /* 7164 8006A4C4 00000000 */ .word 0x00000000
-    /* 7168 8006A4C8 383F0680 */ .word func_80063F38
-    /* 716C 8006A4CC B4450680 */ .word func_800645B4
-    /* 7170 8006A4D0 38460680 */ .word func_80064638
+    /* 7168 8006A4C8 383F0680 */ .word Stg35_VsMenuUpdate
+    /* 716C 8006A4CC B4450680 */ .word Stg35_VsMenuDestroy
+    /* 7170 8006A4D0 38460680 */ .word Stg35_VsMenuDraw
     /* 7174 8006A4D4 44000000 */ .word 0x00000044
     /* 7178 8006A4D8 08000000 */ .word 0x00000008
 enddlabel D_8006A4C4
 
-nonmatching D_8006A4DC
+nonmatching Stg35_MatchupLabelPos
 
-dlabel D_8006A4DC
+dlabel Stg35_MatchupLabelPos
     /* 717C 8006A4DC B1001C00 */ .word 0x001C00B1
     /* 7180 8006A4E0 12008900 */ .word 0x00890012
     /* 7184 8006A4E4 B1002D00 */ .word 0x002D00B1
     /* 7188 8006A4E8 12009A00 */ .word 0x009A0012
     /* 718C 8006A4EC B1004200 */ .word 0x004200B1
     /* 7190 8006A4F0 1200AF00 */ .word 0x00AF0012
-enddlabel D_8006A4DC
+enddlabel Stg35_MatchupLabelPos
 
-nonmatching D_8006A4F4
+nonmatching Stg35_MatchupLabelMsgs
 
-dlabel D_8006A4F4
+dlabel Stg35_MatchupLabelMsgs
     /* 7194 8006A4F4 B901BA01 */ .word 0x01BA01B9
     /* 7198 8006A4F8 BB01BB01 */ .word 0x01BB01BB
     /* 719C 8006A4FC BC01BC01 */ .word 0x01BC01BC
-enddlabel D_8006A4F4
+enddlabel Stg35_MatchupLabelMsgs
 
-nonmatching D_8006A500
+nonmatching Stg35_MatchupPartyPos
 
-dlabel D_8006A500
+dlabel Stg35_MatchupPartyPos
     /* 71A0 8006A500 D5004E00 */ .word 0x004E00D5
     /* 71A4 8006A504 3600BB00 */ .word 0x00BB0036
-enddlabel D_8006A500
+enddlabel Stg35_MatchupPartyPos
 
-nonmatching D_8006A508
+nonmatching Stg35_MatchupTamerPos
 
-dlabel D_8006A508
+dlabel Stg35_MatchupTamerPos
     /* 71A8 8006A508 DE002D00 */ .word 0x002D00DE
     /* 71AC 8006A50C 3F009A00 */ .word 0x009A003F
-enddlabel D_8006A508
+enddlabel Stg35_MatchupTamerPos
 
 nonmatching D_8006A510
 
 dlabel D_8006A510
     /* 71B0 8006A510 00000000 */ .word 0x00000000
-    /* 71B4 8006A514 C0460680 */ .word func_800646C0
-    /* 71B8 8006A518 F04A0680 */ .word func_80064AF0
-    /* 71BC 8006A51C 704B0680 */ .word func_80064B70
+    /* 71B4 8006A514 C0460680 */ .word Stg35_MatchupUpdate
+    /* 71B8 8006A518 F04A0680 */ .word Stg35_MatchupDestroy
+    /* 71BC 8006A51C 704B0680 */ .word Stg35_MatchupDraw
     /* 71C0 8006A520 3C000000 */ .word 0x0000003C
     /* 71C4 8006A524 04000000 */ .word 0x00000004
 enddlabel D_8006A510
@@ -132,8 +132,8 @@ nonmatching D_8006A528
 
 dlabel D_8006A528
     /* 71C8 8006A528 00000000 */ .word 0x00000000
-    /* 71CC 8006A52C B84C0680 */ .word func_80064CB8
-    /* 71D0 8006A530 94560680 */ .word func_80065694
+    /* 71CC 8006A52C B84C0680 */ .word Stg35_BattleUpdate
+    /* 71D0 8006A530 94560680 */ .word Stg35_BattleDestroy
     /* 71D4 8006A534 00000000 */ .word 0x00000000
     /* 71D8 8006A538 10000000 */ .word 0x00000010
     /* 71DC 8006A53C 50000000 */ .word 0x00000050
@@ -151,48 +151,48 @@ dlabel D_8006A540
     /* 71F8 8006A558 0E000000 */ .word 0x0000000E
 enddlabel D_8006A540
 
-nonmatching D_8006A55C
+nonmatching Stg35_DefaultTargets
 
-dlabel D_8006A55C
+dlabel Stg35_DefaultTargets
     /* 71FC 8006A55C 03000000 */ .word 0x00000003
     /* 7200 8006A560 04000000 */ .word 0x00000004
     /* 7204 8006A564 05000000 */ .word 0x00000005
     /* 7208 8006A568 00000000 */ .word 0x00000000
     /* 720C 8006A56C 01000000 */ .word 0x00000001
     /* 7210 8006A570 02000000 */ .word 0x00000002
-enddlabel D_8006A55C
+enddlabel Stg35_DefaultTargets
 
-nonmatching D_8006A574
+nonmatching Stg35_HitReactHop1Motion
 
-dlabel D_8006A574
+dlabel Stg35_HitReactHop1Motion
     /* 7214 8006A574 0080FEFF */ .word 0xFFFE8000
     /* 7218 8006A578 66260000 */ .word 0x00002666
     /* 721C 8006A57C 00003200 */ .word 0x00320000
-enddlabel D_8006A574
+enddlabel Stg35_HitReactHop1Motion
 
-nonmatching D_8006A580
+nonmatching Stg35_HitReactHop2Motion
 
-dlabel D_8006A580
+dlabel Stg35_HitReactHop2Motion
     /* 7220 8006A580 00C0FEFF */ .word 0xFFFEC000
     /* 7224 8006A584 66260000 */ .word 0x00002666
     /* 7228 8006A588 00003200 */ .word 0x00320000
-enddlabel D_8006A580
+enddlabel Stg35_HitReactHop2Motion
 
-nonmatching D_8006A58C
+nonmatching Stg35_HitReactPushMotion
 
-dlabel D_8006A58C
+dlabel Stg35_HitReactPushMotion
     /* 722C 8006A58C 00800100 */ .word 0x00018000
     /* 7230 8006A590 00E0FFFF */ .word 0xFFFFE000
     /* 7234 8006A594 00003200 */ .word 0x00320000
-enddlabel D_8006A58C
+enddlabel Stg35_HitReactPushMotion
 
 nonmatching D_8006A598
 
 dlabel D_8006A598
-    /* 7238 8006A598 08680680 */ .word func_80066808
-    /* 723C 8006A59C BC6E0680 */ .word func_80066EBC
-    /* 7240 8006A5A0 C4730680 */ .word func_800673C4
-    /* 7244 8006A5A4 E8730680 */ .word func_800673E8
+    /* 7238 8006A598 08680680 */ .word Stg35_FighterInit
+    /* 723C 8006A59C BC6E0680 */ .word Stg35_FighterTask
+    /* 7240 8006A5A0 C4730680 */ .word Stg35_FighterDestroy
+    /* 7244 8006A5A4 E8730680 */ .word Stg35_FighterDraw
     /* 7248 8006A5A8 3C000000 */ .word 0x0000003C
     /* 724C 8006A5AC 10000000 */ .word 0x00000010
 enddlabel D_8006A598
@@ -200,10 +200,10 @@ enddlabel D_8006A598
 nonmatching D_8006A5B0
 
 dlabel D_8006A5B0
-    /* 7250 8006A5B0 08750680 */ .word func_80067508
-    /* 7254 8006A5B4 10750680 */ .word func_80067510
-    /* 7258 8006A5B8 8C760680 */ .word func_8006768C
-    /* 725C 8006A5BC E0760680 */ .word func_800676E0
+    /* 7250 8006A5B0 08750680 */ .word Stg35_RoundBannerInit
+    /* 7254 8006A5B4 10750680 */ .word Stg35_RoundBannerTask
+    /* 7258 8006A5B8 8C760680 */ .word Stg35_RoundBannerDestroy
+    /* 725C 8006A5BC E0760680 */ .word Stg35_RoundBannerDraw
     /* 7260 8006A5C0 08000000 */ .word 0x00000008
     /* 7264 8006A5C4 00000000 */ .word 0x00000000
     /* 7268 8006A5C8 94A40680 */ .word D_8006A494
@@ -222,62 +222,62 @@ dlabel D_8006A5B0
     /* 729C 8006A5FC 3CAA0680 */ .word D_8006AA3C
 enddlabel D_8006A5B0
 
-nonmatching D_8006A600
+nonmatching Stg35_XaTrackStart
 
-dlabel D_8006A600
+dlabel Stg35_XaTrackStart
     /* 72A0 8006A600 00000000 */ .word 0x00000000
     /* 72A4 8006A604 46050000 */ .word 0x00000546
     /* 72A8 8006A608 220B0000 */ .word 0x00000B22
     /* 72AC 8006A60C FE100000 */ .word 0x000010FE
     /* 72B0 8006A610 70170000 */ .word 0x00001770
     /* 72B4 8006A614 0E1F0000 */ .word 0x00001F0E
-enddlabel D_8006A600
+enddlabel Stg35_XaTrackStart
 
-nonmatching D_8006A618
+nonmatching Stg35_XaTrackLength
 
-dlabel D_8006A618
+dlabel Stg35_XaTrackLength
     /* 72B8 8006A618 EE020000 */ .word 0x000002EE
     /* 72BC 8006A61C A2030000 */ .word 0x000003A2
     /* 72C0 8006A620 56040000 */ .word 0x00000456
     /* 72C4 8006A624 0A050000 */ .word 0x0000050A
     /* 72C8 8006A628 BE050000 */ .word 0x000005BE
     /* 72CC 8006A62C 72060000 */ .word 0x00000672
-enddlabel D_8006A618
+enddlabel Stg35_XaTrackLength
 
 nonmatching D_8006A630
 
 dlabel D_8006A630
-    /* 72D0 8006A630 48770680 */ .word func_80067748
-    /* 72D4 8006A634 68770680 */ .word func_80067768
-    /* 72D8 8006A638 9C790680 */ .word func_8006799C
+    /* 72D0 8006A630 48770680 */ .word Stg35_XaPlayInit
+    /* 72D4 8006A634 68770680 */ .word Stg35_XaPlayTask
+    /* 72D8 8006A638 9C790680 */ .word Stg35_XaPlayDestroy
     /* 72DC 8006A63C 00000000 */ .word 0x00000000
     /* 72E0 8006A640 14000000 */ .word 0x00000014
     /* 72E4 8006A644 00000000 */ .word 0x00000000
 enddlabel D_8006A630
 
-nonmatching D_8006A648
+nonmatching Stg35_HpBarPosP1
 
-dlabel D_8006A648
+dlabel Stg35_HpBarPosP1
     /* 72E8 8006A648 7FFF9600 */ .word 0x0096FF7F
     /* 72EC 8006A64C 7FFFAC00 */ .word 0x00ACFF7F
     /* 72F0 8006A650 7FFFC200 */ .word 0x00C2FF7F
-enddlabel D_8006A648
+enddlabel Stg35_HpBarPosP1
 
-nonmatching D_8006A654
+nonmatching Stg35_HpBarPosP2
 
-dlabel D_8006A654
+dlabel Stg35_HpBarPosP2
     /* 72F4 8006A654 11009600 */ .word 0x00960011
     /* 72F8 8006A658 1100AC00 */ .word 0x00AC0011
     /* 72FC 8006A65C 1100C200 */ .word 0x00C20011
-enddlabel D_8006A654
+enddlabel Stg35_HpBarPosP2
 
 nonmatching D_8006A660
 
 dlabel D_8006A660
     /* 7300 8006A660 00000000 */ .word 0x00000000
-    /* 7304 8006A664 487E0680 */ .word func_80067E48
-    /* 7308 8006A668 FC890680 */ .word func_800689FC
-    /* 730C 8006A66C A08A0680 */ .word func_80068AA0
+    /* 7304 8006A664 487E0680 */ .word Stg35_BattleHudTask
+    /* 7308 8006A668 FC890680 */ .word Stg35_BattleHudDestroy
+    /* 730C 8006A66C A08A0680 */ .word Stg35_BattleHudDraw
     /* 7310 8006A670 C8000000 */ .word 0x000000C8
     /* 7314 8006A674 00000000 */ .word 0x00000000
 enddlabel D_8006A660
@@ -286,7 +286,7 @@ nonmatching D_8006A678
 
 dlabel D_8006A678
     /* 7318 8006A678 00000000 */ .word 0x00000000
-    /* 731C 8006A67C 348D0680 */ .word func_80068D34
+    /* 731C 8006A67C 348D0680 */ .word Stg35_BattleScriptTask
     /* 7320 8006A680 70110180 */ .word Task_DefaultDestroy
     /* 7324 8006A684 00000000 */ .word 0x00000000
     /* 7328 8006A688 04000000 */ .word 0x00000004
@@ -325,9 +325,9 @@ nonmatching D_8006A6C4
 
 dlabel D_8006A6C4
     /* 7364 8006A6C4 00000000 */ .word 0x00000000
-    /* 7368 8006A6C8 FC990680 */ .word func_800699FC
+    /* 7368 8006A6C8 FC990680 */ .word Stg35_CameraUpdate
     /* 736C 8006A6CC 70110180 */ .word Task_DefaultDestroy
-    /* 7370 8006A6D0 D49F0680 */ .word func_80069FD4
+    /* 7370 8006A6D0 D49F0680 */ .word Stg35_CameraDraw
     /* 7374 8006A6D4 84000000 */ .word 0x00000084
     /* 7378 8006A6D8 00000000 */ .word 0x00000000
 enddlabel D_8006A6C4
@@ -572,32 +572,32 @@ dlabel D_8006A9DC
     /* 76C0 8006AA20 00000000 */ .word 0x00000000
 enddlabel D_8006A9DC
 
-nonmatching D_8006AA24
+nonmatching Stg35_SkillGroups
 
-dlabel D_8006AA24
+dlabel Stg35_SkillGroups
     /* 76C4 8006AA24 DCA60680 */ .word D_8006A6DC
     /* 76C8 8006AA28 6CA70680 */ .word D_8006A76C
     /* 76CC 8006AA2C 1CA80680 */ .word D_8006A81C
     /* 76D0 8006AA30 ACA80680 */ .word D_8006A8AC
     /* 76D4 8006AA34 44A90680 */ .word D_8006A944
     /* 76D8 8006AA38 DCA90680 */ .word D_8006A9DC
-enddlabel D_8006AA24
+enddlabel Stg35_SkillGroups
 
 nonmatching D_8006AA3C
 
 dlabel D_8006AA3C
-    /* 76DC 8006AA3C D0A20680 */ .word func_8006A2D0
-    /* 76E0 8006AA40 D8A20680 */ .word func_8006A2D8
-    /* 76E4 8006AA44 B8A30680 */ .word func_8006A3B8
-    /* 76E8 8006AA48 0CA40680 */ .word func_8006A40C
+    /* 76DC 8006AA3C D0A20680 */ .word Stg35_WinBannerInit
+    /* 76E0 8006AA40 D8A20680 */ .word Stg35_WinBannerUpdate
+    /* 76E4 8006AA44 B8A30680 */ .word Stg35_WinBannerDestroy
+    /* 76E8 8006AA48 0CA40680 */ .word Stg35_WinBannerDraw
     /* 76EC 8006AA4C 08000000 */ .word 0x00000008
     /* 76F0 8006AA50 00000000 */ .word 0x00000000
     /* 76F4 8006AA54 00000000 */ .word 0x00000000
 enddlabel D_8006AA3C
 
-nonmatching D_8006AA58
+nonmatching Stg35_TurnOrder
 
-dlabel D_8006AA58
+dlabel Stg35_TurnOrder
     /* 76F8 8006AA58 00000000 */ .word 0x00000000
     /* 76FC 8006AA5C 00000000 */ .word 0x00000000
     /* 7700 8006AA60 00000000 */ .word 0x00000000
@@ -610,16 +610,16 @@ dlabel D_8006AA58
     /* 771C 8006AA7C 00000000 */ .word 0x00000000
     /* 7720 8006AA80 00000000 */ .word 0x00000000
     /* 7724 8006AA84 00000000 */ .word 0x00000000
-enddlabel D_8006AA58
+enddlabel Stg35_TurnOrder
 
-nonmatching D_8006AA88
+nonmatching Stg35_Battle
 
-dlabel D_8006AA88
+dlabel Stg35_Battle
     /* 7728 8006AA88 00000000 */ .word 0x00000000
     /* 772C 8006AA8C 00000000 */ .word 0x00000000
     /* 7730 8006AA90 00000000 */ .word 0x00000000
     /* 7734 8006AA94 00000000 */ .word 0x00000000
-enddlabel D_8006AA88
+enddlabel Stg35_Battle
 
 nonmatching D_8006AA98
 
@@ -847,9 +847,9 @@ dlabel D_8006ACC0
     /* 7A7C 8006ADDC 00000000 */ .word 0x00000000
 enddlabel D_8006ACC0
 
-nonmatching D_8006ADE0
+nonmatching Stg35_BattleScript
 
-dlabel D_8006ADE0
+dlabel Stg35_BattleScript
     /* 7A80 8006ADE0 00000000 */ .word 0x00000000
     /* 7A84 8006ADE4 00000000 */ .word 0x00000000
     /* 7A88 8006ADE8 00000000 */ .word 0x00000000
@@ -950,10 +950,10 @@ dlabel D_8006ADE0
     /* 7C04 8006AF64 00000000 */ .word 0x00000000
     /* 7C08 8006AF68 00000000 */ .word 0x00000000
     /* 7C0C 8006AF6C 00000000 */ .word 0x00000000
-enddlabel D_8006ADE0
+enddlabel Stg35_BattleScript
 
-nonmatching D_8006AF70
+nonmatching Stg35_CamShotVariant
 
-dlabel D_8006AF70
+dlabel Stg35_CamShotVariant
     /* 7C10 8006AF70 00000000 */ .word 0x00000000
-enddlabel D_8006AF70
+enddlabel Stg35_CamShotVariant
