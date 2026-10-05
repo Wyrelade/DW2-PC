@@ -16,7 +16,8 @@
 #include "main/E280.h"
 #include "main/105BC.h"
 #include "main/12550.h"
-#include "main/12654.h"
+#include "main/flags.h"
+#include "main/savedata.h"
 
 /* Small data this unit defines: initialised ones go to .sdata, the rest to .sbss in
  * game.h's order. Retail reaches the ones this unit uses with %gp_rel. The others sit here

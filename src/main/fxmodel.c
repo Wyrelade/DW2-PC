@@ -16,7 +16,8 @@
 #include "main/E280.h"
 #include "main/105BC.h"
 #include "main/12550.h"
-#include "main/12654.h"
+#include "main/flags.h"
+#include "main/savedata.h"
 #include "main/13584.h"
 #include "main/cdread.h"
 

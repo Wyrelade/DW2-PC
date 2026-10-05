@@ -40,7 +40,8 @@ SECTIONS
         build/USA/src/main/E280.c.o(.rodata);
         build/USA/src/main/105BC.c.o(.rodata);
         build/USA/src/main/12550.c.o(.rodata);
-        build/USA/src/main/12654.c.o(.rodata);
+        build/USA/src/main/flags.c.o(.rodata);
+        build/USA/src/main/savedata.c.o(.rodata);
         build/USA/src/main/13584.c.o(.rodata);
         build/USA/src/main/cdread.c.o(.rodata);
         build/USA/src/main/fxmodel.c.o(.rodata);
@@ -66,7 +67,8 @@ SECTIONS
         build/USA/src/main/E280.c.o(.text);
         build/USA/src/main/105BC.c.o(.text);
         build/USA/src/main/12550.c.o(.text);
-        build/USA/src/main/12654.c.o(.text);
+        build/USA/src/main/flags.c.o(.text);
+        build/USA/src/main/savedata.c.o(.text);
         build/USA/src/main/13584.c.o(.text);
         build/USA/src/main/cdread.c.o(.text);
         build/USA/src/main/fxmodel.c.o(.text);
@@ -93,7 +95,8 @@ SECTIONS
         build/USA/src/main/E280.c.o(.data);
         build/USA/src/main/105BC.c.o(.data);
         build/USA/src/main/12550.c.o(.data);
-        build/USA/src/main/12654.c.o(.data);
+        build/USA/src/main/flags.c.o(.data);
+        build/USA/src/main/savedata.c.o(.data);
         build/USA/src/main/13584.c.o(.data);
         build/USA/asm/USA/main/data/38110.data.s.o(.data);
         build/USA/src/main/cdread.c.o(.data);
@@ -110,7 +113,7 @@ SECTIONS
         build/USA/src/main/itemmenu.c.o(.sdata);
         build/USA/src/main/77DC.c.o(.sdata);
         build/USA/src/main/12550.c.o(.sdata);
-        build/USA/src/main/12654.c.o(.sdata);
+        build/USA/src/main/savedata.c.o(.sdata);
         build/USA/src/main/13584.c.o(.sdata);
         . = ALIGN(., 4);
         main_SDATA_END = .;
@@ -146,7 +149,8 @@ SECTIONS
         build/USA/src/main/E280.c.o(.bss);
         build/USA/src/main/105BC.c.o(.bss);
         build/USA/src/main/12550.c.o(.bss);
-        build/USA/src/main/12654.c.o(.bss);
+        build/USA/src/main/flags.c.o(.bss);
+        build/USA/src/main/savedata.c.o(.bss);
         build/USA/src/main/13584.c.o(.bss);
         build/USA/src/main/cdread.c.o(.bss);
         build/USA/src/main/fxmodel.c.o(.bss);

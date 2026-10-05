@@ -80,7 +80,8 @@ segments:
       - [0xE280, c, E280]
       - [0x105BC, c, 105BC]      # from Gfx_AttachModel: sys.c (rcsid D_800101E4)
       - [0x12550, c, 12550]      # from func_80021D50: event flag reset (defines D_8005071C)
-      - [0x12654, c, 12654]      # from Mem_TestBit: flags, save, item bag, roster
+      - [0x12654, c, flags]
+      - [0x12C68, c, savedata]
       - [0x13584, c, 13584]      # from Mem_Free: heap, pad, vsync, Sys_Main, rand, cd cache
       - [0x147FC, c, cdread]     # from Cd_CheckNextSector: async CD read (data after the PsyQ sin tables)
       - [0x14B10, c, fxmodel]    # from Fx_ModelInit: Fx model task
@@ -97,7 +98,7 @@ segments:
       - [0x316FC, .data, itemmenu]
       - [0x3171C, .data, 77DC]
       - [0x31EB4, .data, E280]
-      - [0x31EFC, .data, 12654]
+      - [0x31EFC, .data, savedata]
       - [0x31F04, .data, 13584]
       - [0x38110, data, 38110]   # PsyQ data-only object (rcos/sin_1 tables)
       - [0x395B8, .data, cdread]
@@ -109,7 +110,7 @@ segments:
       - [0x40F04, .sdata, itemmenu]
       - [0x40F0C, .sdata, 77DC]
       - [0x40F1C, .sdata, 12550]
-      - [0x40F20, .sdata, 12654]
+      - [0x40F20, .sdata, savedata]
       - [0x40F24, .sdata, 13584]
       - [0x40F58, .sbss, task]
       - [0x40F5C, .sbss, cdpreload]
@@ -124,7 +125,7 @@ segments:
       - [0x41248, .bss, 77DC]
       - [0x4DD60, .bss, E280]
       - [0x4DDA0, .bss, 12550]
-      - [0x4EE20, .bss, 12654]
+      - [0x4EE20, .bss, savedata]
       - [0x4FE78, .bss, 13584]
       - [0x505C8, .bss, cdread]
       # PsyQ .bss from 0x8005FDD8, still data asm
