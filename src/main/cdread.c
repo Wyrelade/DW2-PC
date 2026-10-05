@@ -11,18 +11,12 @@
 #include "main/12654.h"
 #include "main/13584.h"
 
-/* From Cd_CheckNextSector: the asynchronous CD file read and the Fx model task. Retail links
- * a PsyQ data-only object (the rcos/sin tables) between 13584.c's .data and this unit's. */
-
-/* Task callbacks the descriptor below names (defined further down). */
-void Fx_ModelInit(Actor *arg0, Block1C *arg1);
-void Fx_ModelTask(Actor *arg0);
-void Fx_ModelDraw(Actor *arg0);
+/* The asynchronous CD file read. Retail links a PsyQ data-only object (the rcos/sin tables)
+ * between 13584.c's .data and this file's. */
 
 /* .bss: the header of the sector being read (Cd_CheckNextSector). */
 u8 Cd_SectorHeader[0x10];
 CdReadState Cd_ReadState = { 0 };
-TaskDesc D_80048DD8 = { (TaskInitFn)Fx_ModelInit, Fx_ModelTask, Task_DefaultDestroy, Fx_ModelDraw, 0x1C, 0 };
 
 s32 Cd_CheckNextSector(void) {
     s32 x;
@@ -117,41 +111,4 @@ void Cd_ReadFileAsync(s32 arg0, s32 arg1) {
     Cd_ReadState.state += 1;
     CdSyncCallback(Cd_ReadSyncCallback);
     CdControlF(2, sp10);
-}
-
-void Fx_ModelInit(Actor *arg0, Block1C *arg1) {
-    *(Block1C *)arg0->work = *arg1;
-}
-
-void Fx_ModelTask(Actor *arg0) {
-    ActorWork *work = arg0->work;
-
-    switch (arg0->stateLevel0) {
-    case 0:
-        Actor_InitTransform((ContC40 *)arg0, &work->field_8, work->field_14);
-        Gfx_AttachModel(arg0, work->field_0)->otIndex = 3;
-        Anim_SetModelAnimFile(arg0, 0, work->field_4);
-        Task_NextState0(arg0);
-        break;
-    case 1: {
-        ActorModel *s = arg0->model;
-        if (arg0->elapsed < work->duration && s->animDone >= 0)
-            break;
-        Task_SetState0(arg0, 3);
-        break;
-    }
-    case 2:
-        break;
-    }
-}
-
-void Fx_ModelDraw(Actor *arg0) {
-    ActorWork *w = arg0->work;
-    if (arg0->stateLevel0 == 1) {
-        Gfx_AttachModel(arg0, w->field_0);
-        Anim_StepModelAnim(arg0);
-        Actor_UpdateTransform(arg0);
-        Gfx_CalcModelBoneMatrices(arg0);
-        Gfx_DrawTexModel(arg0, 0);
-    }
 }

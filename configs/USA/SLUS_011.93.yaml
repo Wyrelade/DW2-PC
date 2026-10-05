@@ -74,7 +74,8 @@ segments:
       - [0x12550, c, 12550]      # from func_80021D50: event flag reset (defines D_8005071C)
       - [0x12654, c, 12654]      # from Mem_TestBit: flags, save, item bag, roster
       - [0x13584, c, 13584]      # from Mem_Free: heap, pad, vsync, Sys_Main, rand, cd cache
-      - [0x147FC, c, 147FC]      # from Cd_CheckNextSector: async CD read, Fx model task (data after the PsyQ sin tables)
+      - [0x147FC, c, cdread]     # from Cd_CheckNextSector: async CD read (data after the PsyQ sin tables)
+      - [0x14B10, c, fxmodel]    # from Fx_ModelInit: Fx model task
       - [0x14C74, c, psyq]      # PsyQ 4.7 libraries (PadGetState ..), asm only, not counted
       - [0x314F0, .data, 156C]   # .data starts after _card_read (main task row, Task_DescTable)
       - [0x31570, .data, 187C]
@@ -86,7 +87,8 @@ segments:
       - [0x31EFC, .data, 12654]
       - [0x31F04, .data, 13584]
       - [0x38110, data, 38110]   # PsyQ data-only object (rcos/sin_1 tables)
-      - [0x395B8, .data, 147FC]
+      - [0x395B8, .data, cdread]
+      - [0x395D8, .data, fxmodel]
       - [0x395F0, data, 395F0]   # PsyQ .data
       - [0x40EF8, .sdata, 187C]  # .sdata from 0x800506F8 (= _gp)
       - [0x40EFC, .sdata, 307C]
@@ -108,7 +110,7 @@ segments:
       - [0x4DDA0, .bss, 12550]
       - [0x4EE20, .bss, 12654]
       - [0x4FE78, .bss, 13584]
-      - [0x505C8, .bss, 147FC]
+      - [0x505C8, .bss, cdread]
       # PsyQ .bss from 0x8005FDD8, still data asm
       - {start: 0x505D8, type: data, name: 505D8, linker_section_order: .bss}
       # 0x80063360: overlay load area; the image holds leftover bytes here
