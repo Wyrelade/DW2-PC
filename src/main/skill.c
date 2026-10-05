@@ -12,7 +12,20 @@
 #include "main/status.h"
 #include "main/itemuse.h"
 #include "main/itemmenu.h"
-#include "main/77DC.h"
+#include "main/digilist.h"
+#include "main/digistatus.h"
+#include "main/skilllist.h"
+#include "main/spawnlist.h"
+#include "main/winframe.h"
+#include "main/sound.h"
+#include "main/text.h"
+#include "main/gpu.h"
+#include "main/fade.h"
+#include "main/ot.h"
+#include "main/primbuf.h"
+#include "main/texslot.h"
+#include "main/parts.h"
+#include "main/digibase.h"
 
 /* Small data this unit defines (.sbss in game.h's order). Retail reaches the first two
  * with %gp_rel here; D_80050780 is only used by overlays. */

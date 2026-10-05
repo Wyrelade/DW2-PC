@@ -105,10 +105,13 @@ MASPSX_AS_FLAGS = [
 # unit or a unit/file.c; the file entry wins. psyq.c stays -G0: it is INCLUDE_ASM
 # library code, and with -G > 0 cc1 writes C function text after the top-level asm,
 # which would move its one C stub.
-UNIT_G = {"main": "8", "main/psyq.c": "0", "main/156C.c": "0",
-          # -G4: retail .bss holds an 8-byte 77DC object (the OT layout word after
-          # Gpu_OtBufs[2]); under -G8 it would be .sbss. Code is identical with -G4.
-          "main/77DC.c": "4"}
+UNIT_G = {"main": "8", "main/psyq.c": "0", "main/156C.c": "0"}
+# -G4: retail .bss holds an 8-byte object of the old 77DC.c unit (the OT layout word after
+# Gpu_OtBufs[2], ot.c); under -G8 it would be .sbss. Code is identical with -G4, and every
+# file split off 77DC.c keeps that unit's flag.
+UNIT_G.update({"main/%s.c" % f: "4" for f in (
+    "digilist", "digistatus", "skilllist", "spawnlist", "winframe", "sound", "text", "gpu",
+    "fade", "ot", "primbuf", "texslot", "parts", "digibase")})
 UNIT_ASPSX = {"main": "2.81"}
 # Extra cc1 flags per unit or unit/file (one flag set per translation unit).
 UNIT_CC1 = {
