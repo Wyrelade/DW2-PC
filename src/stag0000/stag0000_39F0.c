@@ -1,6 +1,8 @@
 #include "common.h"
 #include "stag0000/stag0000.h"
 #include "stag0000/stag0000_funcs.h"
+#include "stag0000/scrollview.h"
+#include "stag0000/dungsel.h"
 #include "stag0000/stag0000_1AE4_funcs.h"
 
 /* Task callbacks of this unit (defined further down) and Stg00_DigiModelDraw (stag0000_4668.c). */

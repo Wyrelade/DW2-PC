@@ -1,6 +1,8 @@
 #include "common.h"
 #include "stag0000/stag0000.h"
 #include "stag0000/stag0000_funcs.h"
+#include "stag0000/scrollview.h"
+#include "stag0000/dungsel.h"
 
 /* Task callbacks this unit defines further down (the descriptors come first). */
 void Stg00_FightBgTask(Actor *arg0);

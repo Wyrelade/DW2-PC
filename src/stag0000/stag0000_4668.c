@@ -1,6 +1,8 @@
 #include "common.h"
 #include "stag0000/stag0000.h"
 #include "stag0000/stag0000_funcs.h"
+#include "stag0000/scrollview.h"
+#include "stag0000/dungsel.h"
 #include "stag0000/stag0000_1AE4_funcs.h"
 #include "stag0000/stag0000_39F0_funcs.h"
 

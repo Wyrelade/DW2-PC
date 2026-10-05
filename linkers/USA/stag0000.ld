@@ -10,6 +10,8 @@ SECTIONS
         stag0000_RODATA_START = .;
         build/USA/asm/USA/stag0000/data/stag0000_rodata.rodata.s.o(.rodata);
         build/USA/src/stag0000/stag0000.c.o(.rodata);
+        build/USA/src/stag0000/scrollview.c.o(.rodata);
+        build/USA/src/stag0000/dungsel.c.o(.rodata);
         build/USA/src/stag0000/stag0000_1AE4.c.o(.rodata);
         build/USA/src/stag0000/stag0000_39F0.c.o(.rodata);
         build/USA/src/stag0000/stag0000_4668.c.o(.rodata);
@@ -18,6 +20,8 @@ SECTIONS
         stag0000_RODATA_SIZE = ABSOLUTE(stag0000_RODATA_END - stag0000_RODATA_START);
         stag0000_TEXT_START = .;
         build/USA/src/stag0000/stag0000.c.o(.text);
+        build/USA/src/stag0000/scrollview.c.o(.text);
+        build/USA/src/stag0000/dungsel.c.o(.text);
         build/USA/src/stag0000/stag0000_1AE4.c.o(.text);
         build/USA/src/stag0000/stag0000_39F0.c.o(.text);
         build/USA/src/stag0000/stag0000_4668.c.o(.text);
@@ -27,6 +31,8 @@ SECTIONS
         stag0000_DATA_START = .;
         build/USA/asm/USA/stag0000/data/stag0000_rodata.rodata.s.o(.data);
         build/USA/src/stag0000/stag0000.c.o(.data);
+        build/USA/src/stag0000/scrollview.c.o(.data);
+        build/USA/src/stag0000/dungsel.c.o(.data);
         build/USA/src/stag0000/stag0000_1AE4.c.o(.data);
         build/USA/src/stag0000/stag0000_39F0.c.o(.data);
         build/USA/src/stag0000/stag0000_4668.c.o(.data);
@@ -36,6 +42,8 @@ SECTIONS
         stag0000_BSS_START = .;
         build/USA/asm/USA/stag0000/data/stag0000_rodata.rodata.s.o(.bss);
         build/USA/src/stag0000/stag0000.c.o(.bss);
+        build/USA/src/stag0000/scrollview.c.o(.bss);
+        build/USA/src/stag0000/dungsel.c.o(.bss);
         build/USA/src/stag0000/stag0000_1AE4.c.o(.bss);
         build/USA/src/stag0000/stag0000_39F0.c.o(.bss);
         build/USA/src/stag0000/stag0000_4668.c.o(.bss);
