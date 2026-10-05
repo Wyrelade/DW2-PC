@@ -5,7 +5,7 @@
 #include "main/submenu.h"
 #include "main/status.h"
 #include "main/itemuse.h"
-#include "main/6530.h"
+#include "main/itemmenu.h"
 #include "main/77DC.h"
 
 /* Small data this unit defines (.sbss in game.h's order). Retail reaches the first two

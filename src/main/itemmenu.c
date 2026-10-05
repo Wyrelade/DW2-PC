@@ -10,7 +10,7 @@
 Halves Menu_ItemMsgPos = { 0x10, 0xBA };
 Halves Menu_ItemNamePos = { 0x67, 0x32 };
 
-/* Task callbacks the descriptor below names (the item draw is the first function of 77DC.c). */
+/* Task callbacks the descriptor below names (defined further down). */
 void Task_DefaultDestroy(Actor *arg0);
 void Menu_ItemInit(Actor *arg0, s16 arg1);
 void Menu_ItemTask(Actor *a0);
@@ -74,7 +74,6 @@ void Item_BuildMenuList(MenuItemWork *w) {
     }
     w->hasItems = w->itemCount != 0;
 }
-
 
 void Menu_DrawItemGrid(MenuItemWork *a0, s32 a1) {
     s32 n;
@@ -195,7 +194,6 @@ void Item_TakeFromStorage(Actor *a0, MenuItemWork *w) {
     }
     Snd_PlayById(snd, 0);
 }
-
 
 void Menu_PickItemToUse(Actor *a0, MenuItemPickWork *o) {
     s16 *pos = o->cursor;
@@ -438,4 +436,65 @@ void Menu_ItemTask(Actor *a0) {
         }
         break;
     }
+}
+
+void Menu_ItemDraw(Actor *actor) {
+    ActorWork *w = actor->work;
+    s32 *p;
+    void *obj;
+    s32 i;
+    s32 k;
+    s32 f;
+    u16 m;
+    Pair54 tmp;
+
+    if (w->fade == 0) {
+        return;
+    }
+    p = (s32 *)Cd_GetFileEntry(0x5130019);
+    if (*p == 0) {
+        return;
+    }
+    i = 0;
+    do {
+        obj = Cd_GetFileEntry(p[i]);
+        switch (i) {
+        case 0:
+            tmp = w->itemCursor;
+            f = w->itemCursor.field_0 + 1;
+            Gfx_SetPartsNumber(obj, 0x10, 2, f ? f : 1);
+            Gfx_SetPartsNumber(obj, 0x20, 2, w->itemGridSize ? w->itemGridSize : 1);
+            tmp.field_0 = w->itemCursor.field_0 - w->scrollRow;
+            Menu_SetPartsGridPos(obj, 2, (s32 *)&tmp, &w->itemGridSize);
+            Gfx_SetPartsPalette(obj, 2, (actor->elapsed >> 2) & 3);
+            k = Menu_BlinkOrHideParts(obj, 8, w->scrollRow);
+            k |= Menu_BlinkOrHideParts(obj, 4, w->itemGridSize - w->scrollRow - 2);
+            if (w->hasItems == 0) {
+                k |= 0xE;
+            }
+            Gfx_HidePartsByMask(obj, k);
+            break;
+        case 1:
+            f = w->menuMode;
+            if (f < 3) {
+                m = 2;
+            } else {
+                m = 0xFFFF;
+            }
+            Gfx_HidePartsByMask(obj, m);
+            break;
+        case 3:
+            m = 0xFFFF;
+            if (w->menuMode == 3 || w->menuMode == 5) {
+                m = 1;
+            } else if (w->menuMode == 4) {
+                m = 2;
+            }
+            Gfx_HidePartsByMask(obj, m);
+            break;
+        }
+        Gfx_SetPartsScale(obj, 0x1000, w->fade);
+        Gfx_DrawParts((s32)obj);
+        i++;
+    } while (p[i] != 0);
 }

@@ -33,7 +33,6 @@ extern void Gfx_DrawPartQuadsRot(void *, void *, s32, s32);
 extern void ScaleMatrix(Obj209 *, s32 *);
 extern void RotMatrixYXZ(void *, Obj209 *);
 extern void ScaleMatrix(Obj209 *, s32 *);
-void Menu_ItemDraw(Actor *actor);
 void Menu_DigiTransferPlace(Actor *a0);
 void Menu_DigiTransferPickSrc(Actor *a0);
 void Menu_ConfirmMultiPick(Actor *a0);

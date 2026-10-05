@@ -69,8 +69,8 @@ segments:
       - [0x4BCC, c, submenu]
       - [0x5178, c, status]
       - [0x56A4, c, itemuse]
-      - [0x6768, c, 6530]
-      - [0x77DC, c, 77DC]
+      - [0x6768, c, itemmenu]
+      - [0x7A14, c, 77DC]
       - [0xE280, c, E280]
       - [0x105BC, c, 105BC]      # from Gfx_AttachModel: sys.c (rcsid D_800101E4)
       - [0x12550, c, 12550]      # from func_80021D50: event flag reset (defines D_8005071C)
@@ -85,7 +85,7 @@ segments:
       - [0x316B4, .data, submenu]
       - [0x316CC, .data, status]
       - [0x316E4, .data, itemuse]
-      - [0x316FC, .data, 6530]
+      - [0x316FC, .data, itemmenu]
       - [0x3171C, .data, 77DC]
       - [0x31EB4, .data, E280]
       - [0x31EFC, .data, 12654]
@@ -97,7 +97,7 @@ segments:
       - [0x40EF8, .sdata, 187C]  # .sdata from 0x800506F8 (= _gp)
       - [0x40EFC, .sdata, 307C]
       - [0x40F00, .sdata, itemuse]
-      - [0x40F04, .sdata, 6530]
+      - [0x40F04, .sdata, itemmenu]
       - [0x40F0C, .sdata, 77DC]
       - [0x40F1C, .sdata, 12550]
       - [0x40F20, .sdata, 12654]

@@ -29,7 +29,7 @@ SECTIONS
         build/USA/src/main/submenu.c.o(.rodata);
         build/USA/src/main/status.c.o(.rodata);
         build/USA/src/main/itemuse.c.o(.rodata);
-        build/USA/src/main/6530.c.o(.rodata);
+        build/USA/src/main/itemmenu.c.o(.rodata);
         build/USA/src/main/77DC.c.o(.rodata);
         build/USA/src/main/E280.c.o(.rodata);
         build/USA/src/main/105BC.c.o(.rodata);
@@ -49,7 +49,7 @@ SECTIONS
         build/USA/src/main/submenu.c.o(.text);
         build/USA/src/main/status.c.o(.text);
         build/USA/src/main/itemuse.c.o(.text);
-        build/USA/src/main/6530.c.o(.text);
+        build/USA/src/main/itemmenu.c.o(.text);
         build/USA/src/main/77DC.c.o(.text);
         build/USA/src/main/E280.c.o(.text);
         build/USA/src/main/105BC.c.o(.text);
@@ -70,7 +70,7 @@ SECTIONS
         build/USA/src/main/submenu.c.o(.data);
         build/USA/src/main/status.c.o(.data);
         build/USA/src/main/itemuse.c.o(.data);
-        build/USA/src/main/6530.c.o(.data);
+        build/USA/src/main/itemmenu.c.o(.data);
         build/USA/src/main/77DC.c.o(.data);
         build/USA/src/main/E280.c.o(.data);
         build/USA/src/main/105BC.c.o(.data);
@@ -89,7 +89,7 @@ SECTIONS
         build/USA/src/main/187C.c.o(.sdata);
         build/USA/src/main/307C.c.o(.sdata);
         build/USA/src/main/itemuse.c.o(.sdata);
-        build/USA/src/main/6530.c.o(.sdata);
+        build/USA/src/main/itemmenu.c.o(.sdata);
         build/USA/src/main/77DC.c.o(.sdata);
         build/USA/src/main/12550.c.o(.sdata);
         build/USA/src/main/12654.c.o(.sdata);
@@ -115,7 +115,7 @@ SECTIONS
         build/USA/src/main/submenu.c.o(.bss);
         build/USA/src/main/status.c.o(.bss);
         build/USA/src/main/itemuse.c.o(.bss);
-        build/USA/src/main/6530.c.o(.bss);
+        build/USA/src/main/itemmenu.c.o(.bss);
         build/USA/src/main/77DC.c.o(.bss);
         build/USA/src/main/E280.c.o(.bss);
         build/USA/src/main/105BC.c.o(.bss);

@@ -5,7 +5,7 @@
 #include "main/submenu.h"
 #include "main/status.h"
 #include "main/itemuse.h"
-#include "main/6530.h"
+#include "main/itemmenu.h"
 #include "main/77DC.h"
 #include "main/E280.h"
 #include "main/105BC.h"
