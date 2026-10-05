@@ -1,22 +1,9 @@
-#ifndef MAIN_307C_H
-#define MAIN_307C_H
+#ifndef MAIN_TOPMENU_H
+#define MAIN_TOPMENU_H
 
 #include "main/game.h"
 
-/* Functions src/main/307C.c defines or declares, for the units after it. */
-extern u8 Menu_NameEntryGetChar(Actor *);
-extern void Snd_SaveCurrentId(void);
-extern void Snd_RestoreSavedId(void);
-extern void Ovl_Load(s32);
-extern s32 Snd_AnySlotLoading(void);
-u8 Menu_NameEntryGetChar(Actor *a0);
-void Menu_NameEntryInit(Actor *a, MenuNameEntryArg *v);
-void Menu_NameEntryTask(Actor *a0);
-void Menu_NameEntryDrawParts(Actor *a);
-void Ovl_Load(s32 id);
-s32 Ovl_GetCurrentId(void);
-void Sys_GameModeTask(Actor *a0);
-void Task_DefaultDestroy2(void);
+/* Functions src/main/topmenu.c defines. */
 void Text_OpenDesc(void *arg0, TextDesc *arg1);
 void Text_OpenPacked(void *arg0, s32 arg1, u32 arg2, Halves arg3);
 s32 Text_PrintIdList(s32 *a0, TextIdListEntry *a1, u32 a2);
@@ -39,4 +26,4 @@ void Menu_TopMenuInit(Actor *arg0, s16 arg1);
 void Menu_TopMenuTask(Actor *a0);
 void Menu_TopMenuDraw(Actor *actor);
 
-#endif /* MAIN_307C_H */
+#endif /* MAIN_TOPMENU_H */

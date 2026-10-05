@@ -1,7 +1,9 @@
 #include "common.h"
 #include "main/game.h"
 #include "main/187C.h"
-#include "main/307C.h"
+#include "main/nameentry.h"
+#include "main/gamemode.h"
+#include "main/topmenu.h"
 
 /* Task callbacks the descriptor below names (defined further down). */
 void Task_DefaultDestroy(Actor *arg0);

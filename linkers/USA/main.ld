@@ -25,7 +25,9 @@ SECTIONS
         build/USA/asm/USA/main/data/800.rodata.s.o(.rodata);
         build/USA/src/main/156C.c.o(.rodata);
         build/USA/src/main/187C.c.o(.rodata);
-        build/USA/src/main/307C.c.o(.rodata);
+        build/USA/src/main/nameentry.c.o(.rodata);
+        build/USA/src/main/gamemode.c.o(.rodata);
+        build/USA/src/main/topmenu.c.o(.rodata);
         build/USA/src/main/submenu.c.o(.rodata);
         build/USA/src/main/status.c.o(.rodata);
         build/USA/src/main/itemuse.c.o(.rodata);
@@ -45,7 +47,9 @@ SECTIONS
         main_TEXT_START = .;
         build/USA/src/main/156C.c.o(.text);
         build/USA/src/main/187C.c.o(.text);
-        build/USA/src/main/307C.c.o(.text);
+        build/USA/src/main/nameentry.c.o(.text);
+        build/USA/src/main/gamemode.c.o(.text);
+        build/USA/src/main/topmenu.c.o(.text);
         build/USA/src/main/submenu.c.o(.text);
         build/USA/src/main/status.c.o(.text);
         build/USA/src/main/itemuse.c.o(.text);
@@ -66,7 +70,9 @@ SECTIONS
         build/USA/asm/USA/main/data/800.rodata.s.o(.data);
         build/USA/src/main/156C.c.o(.data);
         build/USA/src/main/187C.c.o(.data);
-        build/USA/src/main/307C.c.o(.data);
+        build/USA/src/main/nameentry.c.o(.data);
+        build/USA/src/main/gamemode.c.o(.data);
+        build/USA/src/main/topmenu.c.o(.data);
         build/USA/src/main/submenu.c.o(.data);
         build/USA/src/main/status.c.o(.data);
         build/USA/src/main/itemuse.c.o(.data);
@@ -87,7 +93,7 @@ SECTIONS
         main_DATA_SIZE = ABSOLUTE(main_DATA_END - main_DATA_START);
         main_SDATA_START = .;
         build/USA/src/main/187C.c.o(.sdata);
-        build/USA/src/main/307C.c.o(.sdata);
+        build/USA/src/main/gamemode.c.o(.sdata);
         build/USA/src/main/itemuse.c.o(.sdata);
         build/USA/src/main/itemmenu.c.o(.sdata);
         build/USA/src/main/77DC.c.o(.sdata);
@@ -99,7 +105,7 @@ SECTIONS
         main_SDATA_SIZE = ABSOLUTE(main_SDATA_END - main_SDATA_START);
         main_SBSS_START = .;
         build/USA/src/main/187C.c.o(.sbss);
-        build/USA/src/main/307C.c.o(.sbss);
+        build/USA/src/main/topmenu.c.o(.sbss);
         build/USA/src/main/itemuse.c.o(.sbss);
         build/USA/src/main/77DC.c.o(.sbss);
         build/USA/src/main/E280.c.o(.sbss);
@@ -111,7 +117,9 @@ SECTIONS
         build/USA/asm/USA/main/data/800.rodata.s.o(.bss);
         build/USA/src/main/156C.c.o(.bss);
         build/USA/src/main/187C.c.o(.bss);
-        build/USA/src/main/307C.c.o(.bss);
+        build/USA/src/main/nameentry.c.o(.bss);
+        build/USA/src/main/gamemode.c.o(.bss);
+        build/USA/src/main/topmenu.c.o(.bss);
         build/USA/src/main/submenu.c.o(.bss);
         build/USA/src/main/status.c.o(.bss);
         build/USA/src/main/itemuse.c.o(.bss);

@@ -65,7 +65,9 @@ segments:
       - [0x800, rodata, 800]
       - [0x156C, c, 156C]        # crt0, task runner, Task_Run (asm); -G0
       - [0x187C, c, 187C]        # main game code from Task_Create (-G8); defines Menu_Ctx
-      - [0x307C, c, 307C]
+      - [0x307C, c, nameentry]
+      - [0x3B08, c, gamemode]
+      - [0x3C70, c, topmenu]
       - [0x4BCC, c, submenu]
       - [0x5178, c, status]
       - [0x56A4, c, itemuse]
@@ -81,7 +83,9 @@ segments:
       - [0x14C74, c, psyq]      # PsyQ 4.7 libraries (PadGetState ..), asm only, not counted
       - [0x314F0, .data, 156C]   # .data starts after _card_read (main task row, Task_DescTable)
       - [0x31570, .data, 187C]
-      - [0x31638, .data, 307C]
+      - [0x31638, .data, nameentry]
+      - [0x31668, .data, gamemode]
+      - [0x3169C, .data, topmenu]
       - [0x316B4, .data, submenu]
       - [0x316CC, .data, status]
       - [0x316E4, .data, itemuse]
@@ -95,7 +99,7 @@ segments:
       - [0x395D8, .data, fxmodel]
       - [0x395F0, data, 395F0]   # PsyQ .data
       - [0x40EF8, .sdata, 187C]  # .sdata from 0x800506F8 (= _gp)
-      - [0x40EFC, .sdata, 307C]
+      - [0x40EFC, .sdata, gamemode]
       - [0x40F00, .sdata, itemuse]
       - [0x40F04, .sdata, itemmenu]
       - [0x40F0C, .sdata, 77DC]
@@ -103,7 +107,7 @@ segments:
       - [0x40F20, .sdata, 12654]
       - [0x40F24, .sdata, 13584]
       - [0x40F58, .sbss, 187C]   # .sbss from 0x80050758 (crt0 clears from here)
-      - [0x40F64, .sbss, 307C]
+      - [0x40F64, .sbss, topmenu]
       - [0x40F6C, .sbss, itemuse]
       - [0x40F74, .sbss, 77DC]
       - [0x40F78, .sbss, E280]
