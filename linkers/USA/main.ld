@@ -26,7 +26,9 @@ SECTIONS
         build/USA/src/main/156C.c.o(.rodata);
         build/USA/src/main/187C.c.o(.rodata);
         build/USA/src/main/307C.c.o(.rodata);
-        build/USA/src/main/4BCC.c.o(.rodata);
+        build/USA/src/main/submenu.c.o(.rodata);
+        build/USA/src/main/status.c.o(.rodata);
+        build/USA/src/main/itemuse.c.o(.rodata);
         build/USA/src/main/6530.c.o(.rodata);
         build/USA/src/main/77DC.c.o(.rodata);
         build/USA/src/main/E280.c.o(.rodata);
@@ -44,7 +46,9 @@ SECTIONS
         build/USA/src/main/156C.c.o(.text);
         build/USA/src/main/187C.c.o(.text);
         build/USA/src/main/307C.c.o(.text);
-        build/USA/src/main/4BCC.c.o(.text);
+        build/USA/src/main/submenu.c.o(.text);
+        build/USA/src/main/status.c.o(.text);
+        build/USA/src/main/itemuse.c.o(.text);
         build/USA/src/main/6530.c.o(.text);
         build/USA/src/main/77DC.c.o(.text);
         build/USA/src/main/E280.c.o(.text);
@@ -63,7 +67,9 @@ SECTIONS
         build/USA/src/main/156C.c.o(.data);
         build/USA/src/main/187C.c.o(.data);
         build/USA/src/main/307C.c.o(.data);
-        build/USA/src/main/4BCC.c.o(.data);
+        build/USA/src/main/submenu.c.o(.data);
+        build/USA/src/main/status.c.o(.data);
+        build/USA/src/main/itemuse.c.o(.data);
         build/USA/src/main/6530.c.o(.data);
         build/USA/src/main/77DC.c.o(.data);
         build/USA/src/main/E280.c.o(.data);
@@ -82,7 +88,7 @@ SECTIONS
         main_SDATA_START = .;
         build/USA/src/main/187C.c.o(.sdata);
         build/USA/src/main/307C.c.o(.sdata);
-        build/USA/src/main/4BCC.c.o(.sdata);
+        build/USA/src/main/itemuse.c.o(.sdata);
         build/USA/src/main/6530.c.o(.sdata);
         build/USA/src/main/77DC.c.o(.sdata);
         build/USA/src/main/12550.c.o(.sdata);
@@ -94,7 +100,7 @@ SECTIONS
         main_SBSS_START = .;
         build/USA/src/main/187C.c.o(.sbss);
         build/USA/src/main/307C.c.o(.sbss);
-        build/USA/src/main/4BCC.c.o(.sbss);
+        build/USA/src/main/itemuse.c.o(.sbss);
         build/USA/src/main/77DC.c.o(.sbss);
         build/USA/src/main/E280.c.o(.sbss);
         build/USA/src/main/13584.c.o(.sbss);
@@ -106,7 +112,9 @@ SECTIONS
         build/USA/src/main/156C.c.o(.bss);
         build/USA/src/main/187C.c.o(.bss);
         build/USA/src/main/307C.c.o(.bss);
-        build/USA/src/main/4BCC.c.o(.bss);
+        build/USA/src/main/submenu.c.o(.bss);
+        build/USA/src/main/status.c.o(.bss);
+        build/USA/src/main/itemuse.c.o(.bss);
         build/USA/src/main/6530.c.o(.bss);
         build/USA/src/main/77DC.c.o(.bss);
         build/USA/src/main/E280.c.o(.bss);

@@ -2,6 +2,12 @@
 #include "main/game.h"
 #include "main/187C.h"
 #include "main/307C.h"
+#include "main/submenu.h"
+
+/* Declarations the original file made before this code. */
+extern void Menu_SetPartsGridPos(void *, s32, s32 *, s16 *);
+extern void Gfx_SetPartsPalette(GfxPart *, s32, s32);
+extern void Gfx_HidePartsByMask(GfxPartMaskView *, s32);
 
 /* Small data this unit defines: initialised ones go to .sdata, the rest to .sbss in
  * game.h's order. Retail reaches them with %gp_rel here. */
@@ -9,336 +15,15 @@ Halves Menu_ItemUseMsgPos = { 0x10, 0xBA };
 u8 *Menu_PartGridSlots;
 u8 *Menu_PartGridLabels;
 
-/* Task callbacks the descriptors below name (defined further down; the item use draw is
- * the first function of 6530.c). */
+/* Task callbacks the descriptor below names (defined further down). */
 void Task_DefaultDestroy(Actor *arg0);
-void Menu_SubMenuInit(Actor *arg0, s16 arg1);
-void Menu_SubMenuTask(Actor *a);
-void Menu_SubMenuDraw(Actor *actor);
-void Menu_StatusInit(Actor *arg0, s16 arg1);
-void Menu_StatusTask(Actor *a0);
-void Menu_StatusDraw(Actor *actor);
 void Menu_SetItemUseMode(Actor *a, s16 arg);
 void Menu_ItemUseTask(Actor *a0);
 void Menu_ItemUseDraw(Actor *actor);
 
-TaskDesc D_80040EB4 = {
-    (TaskInitFn)Menu_SubMenuInit, Menu_SubMenuTask, Task_DefaultDestroy, Menu_SubMenuDraw, 0x44, 4,
-};
-TaskDesc D_80040ECC = {
-    (TaskInitFn)Menu_StatusInit, Menu_StatusTask, Task_DefaultDestroy, Menu_StatusDraw, 0xB0, 4,
-};
 TaskDesc D_80040EE4 = {
     (TaskInitFn)Menu_SetItemUseMode, Menu_ItemUseTask, Task_DefaultDestroy, Menu_ItemUseDraw, 0xA0, 4,
 };
-
-void Menu_SubMenuInit(Actor *arg0, s16 arg1) {
-    ActorWork *w = arg0->work;
-
-    w->menuId = arg1;
-    if (arg1 == 3) {
-        Menu_Ctx->pickResult = 0;
-    }
-    w->optionsHidden = 0;
-}
-
-void Menu_SubMenuTask(Actor *a) {
-    MenuSubMenuWork *w = (MenuSubMenuWork *)a->work;
-    s32 *p = (s32 *)a->u34.children;
-    Pair54 *tbl;
-    s32 idx;
-
-    switch (a->stateLevel0) {
-    default:
-    case 0:
-        w->u2C.blk = ((MenuSubMenuLayout *)Cd_GetFileEntry(0x5130007))[w->menuId - 1];
-        Mem_FillWordsNeg1(w, 0xA);
-        Task_NextState0(a);
-        break;
-    case 1:
-        tbl = (Pair54 *)Cd_GetFileEntrySubPtr(0x513000A, w->menuId - 1);
-        switch (a->stateLevel1) {
-        default:
-        case 0:
-            if (Math_RampToOne((s32)a, &w->ramp) == 0) {
-                Text_PrintIdList((s32 *)w, (TextIdListEntry *)Cd_GetFileEntrySubPtr(0x5130008, w->menuId - 1), 2);
-                switch (w->menuId) {
-                case 5:
-                case 6:
-                    Task_SetState1(a, 2);
-                    break;
-                default:
-                    Task_NextState1(a);
-                    break;
-                }
-            }
-            break;
-        case 1:
-            if (((s32 (*)(s16 *, s16 *))Menu_MoveGridCursorP1)(w->cursor, w->u2C.gridSize) == 0) {
-            if (Pad_State[0].cross > 0) {
-                idx = Menu_GridIndexColMajor(w->cursor, w->u2C.gridSize);
-                if (tbl[idx].field_0 == -1) {
-                    break;
-                }
-                w->selection = idx;
-                Snd_PlayById(0xA, 0);
-                switch (w->menuId) {
-                case 7:
-                case 8:
-                    Menu_Ctx->subMenuCursor = w->cursor[0];
-                    Task_NextState1(a);
-                    break;
-                case 4:
-                    Task_SetState1(a, 3);
-                    break;
-                default:
-                    Task_NextState1(a);
-                    break;
-                }
-            } else if (Pad_State[0].triangle > 0) {
-                Snd_PlayById(0xB, 0);
-                Task_SetState0(a, 2);
-            }
-            } else {
-                Snd_PlayById(0xC, 0);
-            }
-            break;
-        case 2:
-            switch (a->stateLevel2) {
-            default:
-            case 0:
-                Task_Create(tbl[w->selection].field_0, p, tbl[w->selection].field_2);
-                Task_NextState2(a);
-                break;
-            case 1:
-                if (w->menuId == 3) {
-                    switch (Menu_Ctx->pickResult) {
-                    case 1:
-                        Text_CloseArray(w->optionTexts, 9);
-                        w->optionsHidden = 1;
-                        break;
-                    case 2:
-                        Text_CloseArray(w, 0xA);
-                        Text_PrintIdList((s32 *)w, (TextIdListEntry *)Cd_GetFileEntrySubPtr(0x5130008, w->menuId - 1), 0);
-                        w->optionsHidden = 0;
-                        break;
-                    }
-                    Menu_Ctx->pickResult = 0;
-                }
-                if (*p == 0) {
-                    switch (w->menuId) {
-                    default:
-                        Task_SetState1(a, 1);
-                        break;
-                    case 5:
-                    case 6:
-                        Task_SetState0(a, 2);
-                        break;
-                    }
-                }
-                break;
-            }
-            break;
-        case 3: {
-            s32 *q = (s32 *)a->u34.children;
-            switch (a->stateLevel2) {
-            default:
-            case 0:
-                Text_CloseArray(w, 0xA);
-                Task_NextState2(a);
-                break;
-            case 1:
-                if (Math_RampToZero((s32)a, &w->ramp) == 0) {
-                    Task_NextState2(a);
-                }
-                break;
-            case 2:
-                Task_Create(tbl[w->selection].field_0, q, tbl[w->selection].field_2);
-                Task_NextState2(a);
-                break;
-            case 3:
-                if (*q == 0) {
-                    Task_SetState1(a, 0);
-                }
-                break;
-            }
-            break;
-        }
-        }
-        break;
-    case 2:
-        switch (a->stateLevel1) {
-        default:
-        case 0:
-            Text_CloseArray(w, 0xA);
-            Task_NextState1(a);
-            break;
-        case 1:
-            if (Math_RampToZero((s32)a, &w->ramp) == 0) {
-                Task_SetState0(a, 3);
-            }
-            break;
-        }
-        break;
-    }
-}
-
-
-extern void Menu_SetPartsGridPos(void *, s32, s32 *, s16 *);
-extern void Gfx_SetPartsPalette(GfxPart *, s32, s32);
-extern void Gfx_HidePartsByMask(GfxPartMaskView *, s32);
-
-void Menu_SubMenuDraw(Actor *actor) {
-    ActorWork *w = actor->work;
-    s32 *p;
-    s32 *list;
-    void *obj;
-
-    if (w->subMenuRamp == 0) {
-        return;
-    }
-    p = (s32 *)Cd_GetFileEntry(0x5130009);
-    if (*p == 0) {
-        return;
-    }
-    list = p;
-    do {
-        obj = Cd_GetFileEntry(*list);
-        if (w->field_2C != 0 && w->optionsHidden == 0) {
-            Menu_SetPartsGridPos(obj, 2, &w->field_28, &w->field_2C);
-            Gfx_SetPartsPalette(obj, 2, (actor->elapsed >> 2) & 3);
-            Gfx_HidePartsByMask(obj, 0);
-        } else {
-            Gfx_HidePartsByMask(obj, 2);
-        }
-        list++;
-        Gfx_SetPartsScale(obj, 0x1000, w->subMenuRamp);
-        Gfx_DrawParts((s32)obj);
-    } while (*list != 0);
-}
-
-void Menu_StatusInit(Actor *arg0, s16 arg1) {
-    arg0->work->field_6C = arg1;
-}
-
-void Menu_StatusTask(Actor *a0) {
-    MenuStatusWork *w = (MenuStatusWork *)a0->work;
-    s32 i;
-    s32 v;
-    s32 id;
-    s32 *p;
-    s16 *tbl;
-    Halves *h;
-
-    switch (a0->stateLevel0) {
-    case 0:
-    default:
-        w->digiCount = Digi_ListByState(3, (DigiRosterEntry **)w->digiList);
-        Mem_FillWordsNeg1(w, 0x1A);
-        Task_NextState0(a0);
-        break;
-    case 1:
-        switch (a0->stateLevel1) {
-        case 0:
-        default:
-            if (Math_RampToOne((s32)a0, &w->scale) != 0) {
-                break;
-            }
-            Text_PrintIdList(w->labelTexts, (TextIdListEntry *)Cd_GetFileEntry(0x513000B), 2);
-            w->textArgs[0] = (s32)Save_GameStatePtr->field_14;
-            tbl = (s16 *)Cd_GetFileEntry(0x513000F);
-            w->textArgs[1] = (s32)Cd_GetFileEntry(tbl[Save_GameStatePtr->field_11 * 11 + Save_GameStatePtr->field_12] + 0x1FD0000);
-            w->textArgs[2] = (s32)Save_GameStatePtr->field_D1;
-            p = &w->textArgs[3];
-            for (i = 0; i < w->digiCount; i++) {
-                *p++ = (s32)w->digiList[i]->name;
-            }
-            *p = 0;
-            Text_PrintList(w->listTexts, (Halves *)Cd_GetFileEntry(0x513000C), w->textArgs, 2);
-            if (Menu_Ctx->flags & 1) {
-                h = (Halves *)Cd_GetFileEntry(0x513000D);
-                for (i = 0; i < 4; i++) {
-                    v = (i == 3) ? Bug_GetMaxMemBugLevel() : Dung_StatePtr->bugLevels[i];
-                    if (v != 0) {
-                        id = v + 0x1FD00EC;
-                        Text_OpenPacked(&w->bugTexts[i], (s32)Cd_GetFileEntry(i * 3 + id), 1, h[i]);
-                    }
-                }
-            }
-            for (i = w->digiCount; i < 3; i++) {
-                Text_Close(&w->labelTexts[i * 3 + 7]);
-                Text_Close(&w->labelTexts[i * 3 + 8]);
-                Text_Close(&w->labelTexts[i * 3 + 9]);
-            }
-            Task_NextState1(a0);
-            break;
-        case 1:
-            if (Pad_State[0].triangle > 0) {
-                Snd_PlayById(0xB, 0);
-                Task_SetState0(a0, 2);
-            }
-            break;
-        }
-        break;
-    case 2:
-        switch (a0->stateLevel1) {
-        case 0:
-        default:
-            Text_CloseArray(w, 0x1A);
-            Task_NextState1(a0);
-            break;
-        case 1:
-            if (Math_RampToZero((s32)a0, &w->scale) == 0) {
-                Task_SetState0(a0, 3);
-            }
-            break;
-        }
-        break;
-    }
-}
-
-void Menu_StatusDraw(Actor *actor) {
-    MenuStatusWork *w = (MenuStatusWork *)actor->work;
-    s32 *p;
-    s32 *list;
-    s32 i;
-    GfxPart *obj;
-    DigiRosterHudView *rec;
-
-    if (w->scale == 0) {
-        return;
-    }
-    p = (s32 *)Cd_GetFileEntry(0x513000E);
-    if (*p == 0) {
-        return;
-    }
-    i = 0;
-    list = p;
-    do {
-        obj = (GfxPart *)Cd_GetFileEntry(*list);
-        if (i == 0) {
-            Gfx_SetPartsNumber(obj, 2, 8, Save_GameStatePtr->bits);
-            Gfx_SetPartsNumber(obj, 4, 4, Save_GameStatePtr->maxHp);
-            Gfx_SetPartsNumber(obj, 8, 4, Save_GameStatePtr->hp);
-            Gfx_SetPartsNumber(obj, 0x10, 4, Save_GameStatePtr->maxMp);
-            Gfx_SetPartsNumber(obj, 0x20, 4, Save_GameStatePtr->mp);
-        } else if (i - 1 < w->digiCount) {
-            rec = w->digiList[i - 1];
-            Gfx_SetPartsNumber(obj, 2, 3, rec->maxHp);
-            Gfx_SetPartsNumber(obj, 4, 3, rec->hp);
-            Gfx_SetPartsNumber(obj, 8, 3, rec->maxMp);
-            Gfx_SetPartsNumber(obj, 0x10, 3, rec->mp);
-            Gfx_SetPartsNumber(obj, 0x20, 2, rec->level);
-            Gfx_HidePartsByMask(obj, 0);
-        } else {
-            Gfx_HidePartsByMask(obj, 0xFFFF);
-        }
-        Gfx_SetPartsScale((GfxPartScaleView *)obj, 0x1000, w->scale);
-        list++;
-        Gfx_DrawParts((s32)obj);
-        i++;
-    } while (*list != 0);
-}
 
 void Menu_UseItemDirect(Actor *a0) {
     MenuItemUseWork *w = (MenuItemUseWork *)a0->work;
@@ -356,7 +41,6 @@ void Menu_UseItemDirect(Actor *a0) {
         Text_OpenPacked(&w->msgText, (s32)Cd_GetFileEntry(0x1FD00A0), 0x81, Menu_ItemUseMsgPos);
     }
 }
-
 
 void Menu_UseBugZapItem(Actor *a0) {
     MenuItemUseWork *w = (MenuItemUseWork *)a0->work;
@@ -437,7 +121,6 @@ end:
     Menu_OpenBugTexts(a0, 0);
 }
 
-
 void Menu_OpenItemNameTexts(Actor *a0, s32 a1) {
     MenuItemUseWork *w = (MenuItemUseWork *)a0->work;
     s32 i;
@@ -462,7 +145,6 @@ void Menu_OpenItemNameTexts(Actor *a0, s32 a1) {
         Text_SetColor(w->itemTexts[i], k);
     }
 }
-
 
 void Menu_OpenBugTexts(Actor *a0, s32 a1) {
     HudSlots153F4 *w = (HudSlots153F4 *)a0->work;
@@ -514,7 +196,6 @@ void Menu_ShowPartSlotInfo(Actor *a0) {
     }
 }
 
-
 void Menu_OpenUseItemTexts(Actor *a0) {
     MenuItemUseWork *w = (MenuItemUseWork *)a0->work;
     Halves h;
@@ -531,7 +212,6 @@ void Menu_OpenUseItemTexts(Actor *a0) {
         Text_OpenPacked(&w->msgText, (s32)Cd_GetFileEntry(0x1FD00FB), 0x80, Menu_ItemUseMsgPos);
     }
 }
-
 
 void Menu_UseItemOnTarget(Actor *a0) {
     MenuItemUseWork *w = (MenuItemUseWork *)a0->work;
@@ -555,7 +235,6 @@ void Menu_UseItemOnTarget(Actor *a0) {
         }
     }
 }
-
 
 void Menu_SetItemUseMode(Actor *a, s16 arg) {
     ActorWork *w = a->work;
@@ -710,4 +389,59 @@ break;
         }
         break;
     }
+}
+
+void Menu_ItemUseDraw(Actor *actor) {
+    ActorWork *w = actor->work;
+    s32 *p;
+    void *obj;
+    s32 i;
+    s32 k;
+    s32 mask;
+
+    if (w->useRamp == 0) {
+        return;
+    }
+    p = (s32 *)Cd_GetFileEntry(0x5130012);
+    if (*p == 0) {
+        return;
+    }
+    i = 0;
+    do {
+        obj = Cd_GetFileEntry(p[i]);
+        mask = 1 << i;
+        if (((s32 *)Cd_GetFileEntry(0x5130013))[w->useMode - 1] & mask) {
+            switch (i) {
+            case 0:
+            if (w->useMode == 1 || w->useMode == 3) {
+                Menu_SetPartsGridPos(obj, 2, &w->useCursor, &w->useGridSize);
+                Gfx_SetPartsPalette(obj, 2, (actor->elapsed >> 2) & 3);
+                Gfx_HidePartsByMask(obj, 0);
+            } else {
+                Gfx_HidePartsByMask(obj, 2);
+            }
+            Gfx_SetPartsNumber(obj, 4, 4, Save_GameStatePtr->maxHp);
+            Gfx_SetPartsNumber(obj, 8, 4, Save_GameStatePtr->hp);
+            Gfx_SetPartsNumber(obj, 0x10, 4, Save_GameStatePtr->maxMp);
+            Gfx_SetPartsNumber(obj, 0x20, 4, Save_GameStatePtr->mp);
+                break;
+            case 1:
+            case 3:
+                k = 0;
+                if (w->useMode == 5) {
+                    k = -1;
+                } else if (i == 3) {
+                    k = 4;
+                }
+                Gfx_HidePartsByMask(obj, k);
+                break;
+            default:
+                Gfx_HidePartsByMask(obj, 0);
+                break;
+            }
+            Gfx_SetPartsScale(obj, 0x1000, w->useRamp);
+            Gfx_DrawParts((s32)obj);
+        }
+        i++;
+    } while (p[i] != 0);
 }

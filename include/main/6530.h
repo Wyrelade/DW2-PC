@@ -4,7 +4,6 @@
 #include "main/game.h"
 
 /* Functions src/main/6530.c defines or declares, for the units after it. */
-void Menu_ItemUseDraw(Actor *actor);
 void Item_BuildMenuList(MenuItemWork *w);
 void Menu_DrawItemGrid(MenuItemWork *a0, s32 a1);
 void Item_MoveToStorage(Actor *a0, MenuItemWork *w);

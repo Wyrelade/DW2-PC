@@ -2,7 +2,9 @@
 #include "main/game.h"
 #include "main/187C.h"
 #include "main/307C.h"
-#include "main/4BCC.h"
+#include "main/submenu.h"
+#include "main/status.h"
+#include "main/itemuse.h"
 
 /* Small data this unit defines (.sdata). Retail reaches it with %gp_rel here. */
 Halves Menu_ItemMsgPos = { 0x10, 0xBA };
@@ -19,62 +21,6 @@ Pair61900 Menu_ItemSubTasks[] = { { 0x0E, 2 }, { 0x10, 3 } };
 TaskDesc D_80040F04 = {
     (TaskInitFn)Menu_ItemInit, Menu_ItemTask, Task_DefaultDestroy, Menu_ItemDraw, 0x744, 4,
 };
-
-void Menu_ItemUseDraw(Actor *actor) {
-    ActorWork *w = actor->work;
-    s32 *p;
-    void *obj;
-    s32 i;
-    s32 k;
-    s32 mask;
-
-    if (w->useRamp == 0) {
-        return;
-    }
-    p = (s32 *)Cd_GetFileEntry(0x5130012);
-    if (*p == 0) {
-        return;
-    }
-    i = 0;
-    do {
-        obj = Cd_GetFileEntry(p[i]);
-        mask = 1 << i;
-        if (((s32 *)Cd_GetFileEntry(0x5130013))[w->useMode - 1] & mask) {
-            switch (i) {
-            case 0:
-            if (w->useMode == 1 || w->useMode == 3) {
-                Menu_SetPartsGridPos(obj, 2, &w->useCursor, &w->useGridSize);
-                Gfx_SetPartsPalette(obj, 2, (actor->elapsed >> 2) & 3);
-                Gfx_HidePartsByMask(obj, 0);
-            } else {
-                Gfx_HidePartsByMask(obj, 2);
-            }
-            Gfx_SetPartsNumber(obj, 4, 4, Save_GameStatePtr->maxHp);
-            Gfx_SetPartsNumber(obj, 8, 4, Save_GameStatePtr->hp);
-            Gfx_SetPartsNumber(obj, 0x10, 4, Save_GameStatePtr->maxMp);
-            Gfx_SetPartsNumber(obj, 0x20, 4, Save_GameStatePtr->mp);
-                break;
-            case 1:
-            case 3:
-                k = 0;
-                if (w->useMode == 5) {
-                    k = -1;
-                } else if (i == 3) {
-                    k = 4;
-                }
-                Gfx_HidePartsByMask(obj, k);
-                break;
-            default:
-                Gfx_HidePartsByMask(obj, 0);
-                break;
-            }
-            Gfx_SetPartsScale(obj, 0x1000, w->useRamp);
-            Gfx_DrawParts((s32)obj);
-        }
-        i++;
-    } while (p[i] != 0);
-}
-
 
 void Item_BuildMenuList(MenuItemWork *w) {
     MenuItemCell *c = w->cells;
