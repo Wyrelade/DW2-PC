@@ -13,7 +13,12 @@
 #include "main/itemuse.h"
 #include "main/itemmenu.h"
 #include "main/77DC.h"
-#include "main/E280.h"
+#include "main/gamedata.h"
+#include "main/flagtable.h"
+#include "main/digidata.h"
+#include "main/F400.h"
+#include "main/skill.h"
+#include "main/anim.h"
 
 /* RCS id of the original sys.c. */
 const char D_800101E4[] = "$Id: sys.c,v 1.140 1998/01/12 07:52:27 noda Exp yos $";

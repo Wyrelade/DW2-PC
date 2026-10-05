@@ -13,7 +13,12 @@
 #include "main/itemuse.h"
 #include "main/itemmenu.h"
 #include "main/77DC.h"
-#include "main/E280.h"
+#include "main/gamedata.h"
+#include "main/flagtable.h"
+#include "main/digidata.h"
+#include "main/F400.h"
+#include "main/skill.h"
+#include "main/anim.h"
 #include "main/105BC.h"
 
 /* Small data this unit defines (.sdata). Retail reaches it with %gp_rel here. */
