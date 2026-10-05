@@ -64,7 +64,11 @@ segments:
     subsegments:
       - [0x800, rodata, 800]
       - [0x156C, c, 156C]        # crt0, task runner, Task_Run (asm); -G0
-      - [0x187C, c, 187C]        # main game code from Task_Create (-G8); defines Menu_Ctx
+      - [0x187C, c, task]
+      - [0x1E44, c, cdpreload]
+      - [0x1EB0, c, portrait]
+      - [0x2364, c, faceslot]
+      - [0x2704, c, itemeffect]
       - [0x307C, c, nameentry]
       - [0x3B08, c, gamemode]
       - [0x3C70, c, topmenu]
@@ -82,7 +86,8 @@ segments:
       - [0x14B10, c, fxmodel]    # from Fx_ModelInit: Fx model task
       - [0x14C74, c, psyq]      # PsyQ 4.7 libraries (PadGetState ..), asm only, not counted
       - [0x314F0, .data, 156C]   # .data starts after _card_read (main task row, Task_DescTable)
-      - [0x31570, .data, 187C]
+      - [0x31570, .data, portrait]
+      - [0x315AC, .data, faceslot]
       - [0x31638, .data, nameentry]
       - [0x31668, .data, gamemode]
       - [0x3169C, .data, topmenu]
@@ -98,7 +103,7 @@ segments:
       - [0x395B8, .data, cdread]
       - [0x395D8, .data, fxmodel]
       - [0x395F0, data, 395F0]   # PsyQ .data
-      - [0x40EF8, .sdata, 187C]  # .sdata from 0x800506F8 (= _gp)
+      - [0x40EF8, .sdata, task]
       - [0x40EFC, .sdata, gamemode]
       - [0x40F00, .sdata, itemuse]
       - [0x40F04, .sdata, itemmenu]
@@ -106,13 +111,16 @@ segments:
       - [0x40F1C, .sdata, 12550]
       - [0x40F20, .sdata, 12654]
       - [0x40F24, .sdata, 13584]
-      - [0x40F58, .sbss, 187C]   # .sbss from 0x80050758 (crt0 clears from here)
+      - [0x40F58, .sbss, task]
+      - [0x40F5C, .sbss, cdpreload]
+      - [0x40F60, .sbss, itemeffect]
       - [0x40F64, .sbss, topmenu]
       - [0x40F6C, .sbss, itemuse]
       - [0x40F74, .sbss, 77DC]
       - [0x40F78, .sbss, E280]
       - [0x40F84, .sbss, 13584]
-      - [0x40F98, .bss, 187C]    # .bss from 0x80050798: zeros in the image, objects 8-aligned
+      - [0x40F98, .bss, task]
+      - [0x41148, .bss, cdpreload]
       - [0x41248, .bss, 77DC]
       - [0x4DD60, .bss, E280]
       - [0x4DDA0, .bss, 12550]

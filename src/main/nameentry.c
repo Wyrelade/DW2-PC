@@ -1,6 +1,10 @@
 #include "common.h"
 #include "main/game.h"
-#include "main/187C.h"
+#include "main/task.h"
+#include "main/cdpreload.h"
+#include "main/portrait.h"
+#include "main/faceslot.h"
+#include "main/itemeffect.h"
 
 /* Task callbacks the descriptors below name (defined further down). */
 void Task_DefaultDestroy(Actor *arg0);

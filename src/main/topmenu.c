@@ -1,6 +1,10 @@
 #include "common.h"
 #include "main/game.h"
-#include "main/187C.h"
+#include "main/task.h"
+#include "main/cdpreload.h"
+#include "main/portrait.h"
+#include "main/faceslot.h"
+#include "main/itemeffect.h"
 
 /* Declarations the original file made before this code. */
 extern void Task_Create(u32, s32 *, s32);

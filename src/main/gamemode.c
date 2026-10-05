@@ -1,6 +1,10 @@
 #include "common.h"
 #include "main/game.h"
-#include "main/187C.h"
+#include "main/task.h"
+#include "main/cdpreload.h"
+#include "main/portrait.h"
+#include "main/faceslot.h"
+#include "main/itemeffect.h"
 #include "main/nameentry.h"
 
 /* Small data this file defines (.sdata). Retail reaches it with %gp_rel here. */
