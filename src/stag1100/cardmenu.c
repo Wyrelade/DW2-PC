@@ -1,7 +1,8 @@
 #include "common.h"
 #include "stag1100/stag1100.h"
 #include "stag1100/cardmenu.h"
-#include "stag1100/stag1100_301C_funcs.h"
+#include "stag1100/vsparty.h"
+#include "stag1100/card.h"
 
 Halves Stg11_PromptPos = { 0x10, 0xBA };
 Halves Stg11_StatusPos = { 0x56, 0x4E };

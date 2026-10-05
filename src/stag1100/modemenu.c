@@ -1,7 +1,8 @@
 #include "common.h"
 #include "stag1100/stag1100.h"
 #include "stag1100/modemenu.h"
-#include "stag1100/stag1100_301C_funcs.h"
+#include "stag1100/vsparty.h"
+#include "stag1100/card.h"
 
 Halves Stg11_ModeHelpPos = { 0x10, 0xBA };
 TaskDesc Stg11_ModeMenuDesc = {

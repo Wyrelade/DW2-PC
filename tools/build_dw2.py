@@ -121,6 +121,10 @@ UNIT_CC1 = {
     "main/12550.c": ["-fno-cse-skip-blocks", "-fno-strength-reduce"],
 }
 AS_G_OVERRIDE = None    # --as-g: one -G for every unit (flag experiments)
+# -G0 overlays whose files follow retail aspsx's .bss layout: objects of 8 bytes or more on
+# 8, every file's .bss padded to 8 (maspsx --bss-align, as for main). The 4-byte holes at
+# the module ends are that padding, not variables.
+BSS_ALIGN_UNITS = {"stag1100"}
 
 
 def unit_flags(unit, name=None):
@@ -130,7 +134,8 @@ def unit_flags(unit, name=None):
         g = AS_G_OVERRIDE
     extra = UNIT_CC1.get("%s/%s" % (unit, name), UNIT_CC1.get(unit, []))
     if g == "0":
-        return CC1_FLAGS + extra, MASPSX_FLAGS, MASPSX_AS_FLAGS
+        mflags = MASPSX_FLAGS + (["--bss-align"] if unit in BSS_ALIGN_UNITS else [])
+        return CC1_FLAGS + extra, mflags, MASPSX_AS_FLAGS
     cc1 = CC1_FLAGS[:CC1_FLAGS.index("-G0")] + ["-G" + g] + CC1_FLAGS[CC1_FLAGS.index("-G0") + 1:] + extra
     as_flags = [("-G" + g) if f == "-G0" else f for f in MASPSX_AS_FLAGS]
     # maspsx decides gp-relative access like aspsx: only for symbols this file defines

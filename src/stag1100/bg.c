@@ -1,7 +1,8 @@
 #include "common.h"
 #include "stag1100/stag1100.h"
 #include "stag1100/bg.h"
-#include "stag1100/stag1100_301C_funcs.h"
+#include "stag1100/vsparty.h"
+#include "stag1100/card.h"
 
 TaskDesc Stg11_BgDesc = { 0, Stg11_BgUpdate, Task_DefaultDestroy, Stg11_BgDraw, 0, 0 };
 

@@ -309,10 +309,12 @@ extern u8 *strcpy(u8 *dst, const u8 *src);
 
 extern Halves Stg11_PromptPos;
 extern Halves Stg11_StatusPos;
+/* .bss of each file, in retail order (cc1 lays tentative definitions out in the order of
+ * their first declaration). STAG1100.PRO carries its .bss in the file, after all .data. */
+extern Stg11Party Stg11_VsParty;
 extern s16 Stg11_LoadDone;
 extern Actor *Stg11_CardTask;
 extern Stg11SaveWork *Stg11_CardWork;
-extern Stg11Party Stg11_VsParty;
 
 s32 Stg11_CardGetResult(void);
 void Stg11_CardStartOp(u8 arg0, s32 arg1);

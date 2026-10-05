@@ -1,7 +1,8 @@
 #include "common.h"
 #include "stag1100/stag1100.h"
 #include "stag1100/stag1100_funcs.h"
-#include "stag1100/stag1100_301C_funcs.h"
+#include "stag1100/vsparty.h"
+#include "stag1100/card.h"
 
 TaskDesc Stg11_RootDesc = { 0, Stg11_RootUpdate, Task_DefaultDestroy, 0, 4, 0x10 };
 
