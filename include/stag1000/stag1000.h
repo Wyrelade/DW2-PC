@@ -182,4 +182,9 @@ void DecDCTin(u32 *buf, s32 mode);
 void Stg10_BuildVlcTable(u8 *dst);
 void DecDCTvlc2(u32 *, u32 *, u32 *);
 
+/* Data one module defines and another uses (R3a split of stag1000.c). */
+extern TaskDesc Stg10_EndScreenDesc;
+extern TaskDesc Stg10_StageSetupDesc;
+extern TaskDesc Stg10_TitleDesc;
+
 #endif

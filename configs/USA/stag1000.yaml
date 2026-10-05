@@ -57,10 +57,16 @@ segments:
     subsegments:
       - [0x0, rodata, stag1000_rodata]
       - [0x50, c, stag1000]
+      - [0x244, c, title]
+      - [0x9D4, c, endscreen]
+      - [0xB28, c, movie]
       - [0x1360, c, stag1000_libpress]   # PsyQ libpress 4.6 (DecDCT/MDEC), asm only, not counted
       - [0x1D70, c, stag1000_tail]
       - [0x1E54, .data, stag1000]
+      - [0x1E8C, .data, title]
+      - [0x1EA8, .data, endscreen]
+      - [0x1EC0, .data, movie]
       - [0x1EF8, data, stag1000_libpress]   # PsyQ libpress .data, asm
       - [0x2078, .data, stag1000_tail]
-      - [0x2E88, .bss, stag1000]
+      - [0x2E88, .bss, movie]
   - [0x2EE4]
