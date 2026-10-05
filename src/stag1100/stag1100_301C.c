@@ -1,6 +1,9 @@
 #include "common.h"
 #include "stag1100/stag1100.h"
 #include "stag1100/stag1100_funcs.h"
+#include "stag1100/bg.h"
+#include "stag1100/modemenu.h"
+#include "stag1100/cardmenu.h"
 #include "stag1100/stag1100_301C_funcs.h"
 
 Layout8C Stg11_VsPartyLayout = { { 1, 1, -60, -66, 0, 0x21 } };
@@ -35,107 +38,6 @@ s16 D_800685CA = 0;
 s32 D_800685CC = 0;
 Actor *Stg11_CardTask = 0;
 Stg11SaveWork *Stg11_CardWork = 0;
-
-void Stg11_CardMenuDraw(Actor *arg0) {
-    Stg11MenuWork *w = (Stg11MenuWork *)arg0->work;
-    s32 *ids;
-    GfxPart *parts;
-    s32 *tbl;
-    s32 *tblA;
-    Stg11SaveSlot *slot;
-    Stg11PolyG4 *p;
-    u32 *ot;
-    s32 i;
-    s32 mask;
-    s32 m1;
-    s32 bit;
-    Stg11SaveList *list;
-    u32 t;
-    s32 h;
-
-    if (w->fade != 0) {
-        ids = (s32 *)Cd_GetFileEntry(0xD280007);
-        for (i = 0; ids[i] != 0; i++) {
-            parts = (GfxPart *)Cd_GetFileEntry(ids[i]);
-            switch (i) {
-            case 0:
-                tbl = (s32 *)Cd_GetFileEntry(0xD280008);
-                bit = (w->listMode == 2) << 4;
-                Gfx_HidePartsByMask((GfxPartMaskView *)parts, tbl[w->menuKind - 1] & ~bit);
-                break;
-            case 1:
-                tbl = (s32 *)Cd_GetFileEntry(0xD280009);
-                m1 = tbl[w->listMode];
-                if (w->progressMode == 0) {
-                    m1 |= 0x20;
-                }
-                Gfx_HidePartsByMask((GfxPartMaskView *)parts, m1);
-                if (w->listMode == 1) {
-                    Menu_SetPartsGridPos(parts, 2, (s32 *)w->cursor, w->u6C.gridSize);
-                    Gfx_SetPartsPalette(parts, 2, (arg0->elapsed >> 2) & 3);
-                }
-                if (w->listMode == 2) {
-                    Menu_SetPartsGridPos(parts, 0x10, (s32 *)w->cursor, w->u6C.gridSize);
-                }
-                break;
-            default:
-                tblA = (s32 *)Cd_GetFileEntry(0xD28000A);
-                list = w->saveList;
-                mask = -1;
-                if (w->listMode == 1) {
-                    mask = tblA[1];
-                    slot = &list->slots[i - 2];
-                    if (list->used[i - 2] != 0) {
-                        t = slot->u.hdr.playTime;
-                        if (t > 0x14996FF) {
-                            t = 0x14996FF;
-                        }
-                        Gfx_SetPartsNumber(parts, 0x10, 8, slot->u.hdr.money);
-                        h = t / 216000;
-                        Gfx_SetPartsNumber(parts, 0x20, -4, h * 100 + (t / 3600 - h * 60));
-                    } else {
-                        Gfx_SetPartsNumber(parts, 0x10, 8, 0);
-                        Gfx_SetPartsNumber(parts, 0x20, -4, 0);
-                    }
-                }
-                Gfx_HidePartsByMask((GfxPartMaskView *)parts, mask);
-                break;
-            }
-            Gfx_SetPartsScale((GfxPartScaleView *)parts, 0x1000, w->fade);
-            Gfx_DrawParts(parts);
-        }
-    }
-    if (w->progressMode != 0) {
-        p = (Stg11PolyG4 *)Sys_State.packet.addr;
-        ot = Sys_State.otLayers.u[0];
-        p->tag.b.len = 8;
-        p->code = 0x38;
-        p->r0 = 0xD;
-        p->g0 = 0x66;
-        p->b0 = 0x11;
-        p->r1 = 0xFF;
-        p->g1 = 0x96;
-        p->b1 = 0;
-        p->r2 = 0xD;
-        p->g2 = 0x66;
-        p->b2 = 0x11;
-        p->r3 = 0xFF;
-        p->g3 = 0x96;
-        p->b3 = 0;
-        p->code &= ~2;
-        p->x0 = 0x12;
-        p->y0 = 0x2A;
-        p->x1 = w->progress + 0x12;
-        p->y1 = 0x2A;
-        p->x2 = 0x12;
-        p->y2 = 0x35;
-        p->x3 = w->progress + 0x12;
-        p->y3 = 0x35;
-        p->tag.word = (p->tag.word & 0xFF000000) | (*ot & 0xFFFFFF);
-        *ot = (*ot & 0xFF000000) | ((u32)p & 0xFFFFFF);
-        Sys_State.packet.addr = (s32)(p + 1);
-    }
-}
 
 void Stg11_VsPartyBuildList(Stg11VsPartyWork *arg0) {
     Stg11Slot *s = arg0->rows;
