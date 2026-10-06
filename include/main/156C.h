@@ -103,8 +103,8 @@ CdLruEntry *Cd_FindLruCachedFile();
 
 /* Entry returned by the Flag_GetEntry table lookup (0x2C stride). */
 typedef struct {
-    /* 0x00 */ s16 field_0;
-    /* 0x02 */ s16 field_2;
+    /* 0x00 */ s16 digiId;
+    /* 0x02 */ s16 dir;
     /* 0x04 */ u8 blockIndex;
     u8 _pad05[0x0F];
     /* 0x14 */ s32 branchOffsets[6];
@@ -384,7 +384,7 @@ typedef struct {
 typedef struct {
     /* 0x00 */ s16 id;
     /* 0x02 */ u8 learnedSkill;
-    /* 0x03 */ u8 field_3;
+    /* 0x03 */ u8 dnaGroup;
     union {
         /* 0x04 */ u8 attrsLo;
         /* 0x04 */ u16 field_4h;
@@ -404,12 +404,12 @@ typedef struct {
 typedef struct {
     union {
         /* 0x00 */ s32 field_0;
-        struct { u8 _b[2]; s16 field_2; } h;
+        struct { u8 _b[2]; s16 mapDigiId; } h;
     } u0;
     union {
         /* 0x04 */ u32 field_4;
-        u8 field_4b;
-        struct { u8 _b[2]; s16 field_6; } h;
+        u8 likedGift;
+        struct { u8 _b[2]; s16 pointsPerLevel; } h;
     } u4;
     /* 0x08 */ u16 digiId;
     u8 _pad0A[0x8];
@@ -438,13 +438,13 @@ typedef struct {
 
 /* Record Enemy_GetSetSummary fills from an Ent1DB18. */
 typedef struct {
-    /* 0x00 */ s32 field_0;
-    /* 0x04 */ s32 field_4;
-    /* 0x08 */ s32 field_8;
-    /* 0x0C */ s32 field_C;
-    /* 0x10 */ s32 field_10;
-    /* 0x14 */ s32 field_14;
-    /* 0x18 */ s32 field_18;
+    /* 0x00 */ s32 mapDigiId;
+    /* 0x04 */ s32 aiType;
+    /* 0x08 */ s32 paceType;
+    /* 0x0C */ s32 likedGift;
+    /* 0x10 */ s32 useDungeonBgm;
+    /* 0x14 */ s32 isBossFight;
+    /* 0x18 */ s32 pointsPerLevel;
     /* 0x1C */ u16 digiIds[3];
     /* 0x22 */ u16 levels[3];
 } Out1DB68;
@@ -464,10 +464,10 @@ typedef struct {
     } u4;
     /* 0x08 */ s16 animFiles[11];
     /* 0x1E */ s16 field_1E;
-    /* 0x20 */ s16 field_20;
-    /* 0x22 */ s16 field_22;
-    /* 0x24 */ s16 field_24;
-    /* 0x26 */ s16 field_26;
+    /* 0x20 */ s16 hitFxOffsetY;
+    /* 0x22 */ s16 castFxRow0;
+    /* 0x24 */ s16 castFxRow1;
+    /* 0x26 */ s16 castFxRow2;
 } DigiData;
 
 /* Packed record returned by the Skill_FindById lookup. Several 32-bit words hold
@@ -501,7 +501,7 @@ typedef struct {
     /* 0x20 */ u32 field_20;
     /* 0x24 */ u32 nameOffset;
     /* 0x28 */ u32 descOffset;
-    /* 0x2C */ s16 field_2C[4][3]; /* -> size 0x44 (table stride) */
+    /* 0x2C */ s16 fxFiles[4][3]; /* -> size 0x44 (table stride) */
 } EntED40;
 
 /* Record returned by the Item_FindById lookup; two 32-bit words read at both
@@ -831,16 +831,16 @@ typedef struct {
     /* 0x04 */ s32 playTime;
     /* 0x08 */ s32 bits;
     u8 _pad0C[0x05];
-    /* 0x11 */ u8 field_11;
-    /* 0x12 */ u8 field_12;
+    /* 0x11 */ u8 rankTitleSet;
+    /* 0x12 */ u8 rank;
     u8 _pad13[0x01];
     /* 0x14 */ u8 playerName[0x10];
     u8 _pad24[0x08];
     /* 0x2C */ u16 itemCounts[0x4C];   /* indexed by item slot (stag2000 shop) */
-    /* 0xC4 */ s16 field_C4;           /* Flag_Set ids 2000..2236 store id - 2000 */
+    /* 0xC4 */ s16 bagLastItem;           /* Flag_Set ids 2000..2236 store id - 2000 */
     u8 _padC6[0x06];
     u8 _padCC[0x05];
-    /* 0xD1 */ u8 field_D1[0x13];   /* a second name buffer (text escape F0 05) */
+    /* 0xD1 */ u8 beetleName[0x13];   /* a second name buffer (text escape F0 05) */
     /* 0xE4 */ DigiRosterEntry elems[0x24];
     u8 _padDD4[0x1004 - 0xDD4];
     /* 0x1004 */ EventFlags eventFlags;
@@ -1205,8 +1205,8 @@ typedef struct {
     /* 0x120 */ s16 pickCount;
     /* 0x122 */ s16 pickConfirmed;
     /* 0x124 */ s16 subMenuCursor;
-    /* 0x126 */ s16 field_126;
-    /* 0x128 */ s32 field_128;
+    /* 0x126 */ s16 transferDone;
+    /* 0x128 */ s32 transferRecord;
     u8 _pad12C[0x230];
     /* 0x35C */ s16 pickResult;
     /* 0x35E */ s16 confirmed;
@@ -1620,7 +1620,7 @@ typedef struct {
     /* 0x50 */ s16 cursor[2];
     /* 0x54 */ s16 gridSize[2];
     u8 _pad58[0x0A];
-    /* 0x62 */ s16 field_62;
+    /* 0x62 */ s16 subTask;
     u8 _pad64[0x08];
     /* 0x6C */ MenuDigiPickRow rows[38];
     /* 0x19C */ s16 pickMax;
@@ -1869,26 +1869,26 @@ typedef struct {
 
 /* Object behind the Save_GameStatePtr pointer (Menu_StatusDraw). */
 typedef struct {
-    /* 0x00 */ u8 field_0;
+    /* 0x00 */ u8 automapMode;
     u8 _pad01[0x07];
     /* 0x08 */ s32 bits;
     u8 _pad0C[0x05];
-    /* 0x11 */ u8 field_11;
-    /* 0x12 */ u8 field_12;
+    /* 0x11 */ u8 rankTitleSet;
+    /* 0x12 */ u8 rank;
     u8 _pad13[0x01];
-    /* 0x14 */ u8 field_14[0x10];
+    /* 0x14 */ u8 playerName[0x10];
     /* 0x24 */ s16 hp;
     /* 0x26 */ s16 maxHp;
     /* 0x28 */ s16 mp;
     /* 0x2A */ s16 maxMp;
     /* 0x2C */ u16 slotItems[4];
     /* 0x34 */ u16 slot4Item;
-    /* 0x36 */ u16 field_36;
+    /* 0x36 */ u16 tiresItem;
     u8 _pad38[0x1A];
     /* 0x52 */ u8 slotStatus[0x14];
     /* 0x66 */ u16 bagItems[0x30];
     u8 _padC6[0x0B];
-    /* 0xD1 */ u8 field_D1[0x13];
+    /* 0xD1 */ u8 beetleName[0x13];
     /* 0xE4 */ DigiRosterEntry elems[0x24];
     /* 0xDD4 */ u16 storageCounts[0x100];
 } GameStateView;
@@ -1950,15 +1950,15 @@ typedef struct {
     /* 0x02 */ u16 hp;
     /* 0x04 */ u16 mp;
     /* 0x06 */ s16 exp;
-    /* 0x08 */ u16 field_8;
+    /* 0x08 */ u16 bits;
     /* 0x0A */ u8 level;
-    /* 0x0B */ u8 field_B;
-    /* 0x0C */ u16 field_C;
-    /* 0x0E */ u8 field_E;
+    /* 0x0B */ u8 attack;
+    /* 0x0C */ u16 defense;
+    /* 0x0E */ u8 speed;
     /* 0x0F */ u8 attr0;
     /* 0x10 */ u8 attr1;
     /* 0x11 */ u8 attr2;
-    /* 0x12 */ u8 field_12[4][3];
+    /* 0x12 */ u8 aiRules[4][3];
 } EnemySetDigiRow; /* 0x1E */
 
 typedef struct {
@@ -1968,13 +1968,13 @@ typedef struct {
 
 /* Second output record of Enemy_InitRosterEntry. */
 typedef struct {
-    /* 0x00 */ u16 field_0;
+    /* 0x00 */ u16 bits;
     /* 0x02 */ u8 skill0;
     /* 0x03 */ u8 skill1;
     /* 0x04 */ u8 skill2;
-    /* 0x05 */ u8 field_5[4];
-    /* 0x09 */ u8 field_9[4];
-    /* 0x0D */ u8 field_D[4];
+    /* 0x05 */ u8 conditions[4];
+    /* 0x09 */ u8 actionKinds[4];
+    /* 0x0D */ u8 targetModes[4];
 } Out1DDA8;
 
 /* Gfx_DrawPartSprites: sprite-list record (arg0), its 0x10-stride part list, the
@@ -2208,7 +2208,7 @@ typedef struct {
 typedef struct {
     /* 0x00 */ s32 itemTexts[20];
     /* 0x50 */ s32 msgText;
-    /* 0x54 */ s32 field_54;
+    /* 0x54 */ s32 brokenText;
     /* 0x58 */ s32 labelText;
     /* 0x5C */ s32 itemNameText;
     u8 _pad60[0x10];
@@ -2470,7 +2470,7 @@ typedef struct {
 typedef struct {
     /* 0x0 */ u8 kind;
     /* 0x1 */ u8 bugLevel;
-    /* 0x2 */ u8 field_2;
+    /* 0x2 */ u8 pickState;
     u8 _pad3;
     /* 0x4 */ void *entry;
 } MenuDigiListBuildRow;

@@ -50,10 +50,10 @@ void Menu_StatusTask(Actor *a0) {
                 break;
             }
             Text_PrintIdList(w->labelTexts, (TextIdListEntry *)Cd_GetFileEntry(0x513000B), 2);
-            w->textArgs[0] = (s32)Save_GameStatePtr->field_14;
+            w->textArgs[0] = (s32)Save_GameStatePtr->playerName;
             tbl = (s16 *)Cd_GetFileEntry(0x513000F);
-            w->textArgs[1] = (s32)Cd_GetFileEntry(tbl[Save_GameStatePtr->field_11 * 11 + Save_GameStatePtr->field_12] + 0x1FD0000);
-            w->textArgs[2] = (s32)Save_GameStatePtr->field_D1;
+            w->textArgs[1] = (s32)Cd_GetFileEntry(tbl[Save_GameStatePtr->rankTitleSet * 11 + Save_GameStatePtr->rank] + 0x1FD0000);
+            w->textArgs[2] = (s32)Save_GameStatePtr->beetleName;
             p = &w->textArgs[3];
             for (i = 0; i < w->digiCount; i++) {
                 *p++ = (s32)w->digiList[i]->name;

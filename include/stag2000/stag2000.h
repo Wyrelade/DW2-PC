@@ -125,7 +125,7 @@ extern s32 Gfx_ZeroVector[];
 extern void Task_SetState1(Actor *arg0, u32 arg1);
 extern TaskEntry *Task_FindNext(void);
 extern s32 Digi_GetType(s32);
-extern s32 func_8001D910(s32);
+extern s32 Digi_GetDnaGroup(s32);
 extern s32 Skill_GetDescText(s32);
 extern void Digi_SortRoster(void);
 extern void Anim_StepModelAnim(Actor *);

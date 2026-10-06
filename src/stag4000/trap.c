@@ -59,7 +59,7 @@ void Stg40_ShowTrapEffectMsg(s32 a0, s32 a1) {
     }
     switch (a1) {
     case 0:
-        Stg40_MsgWinOpen(1, base, (s32)Save_GameStatePtr->field_D1, (s32)Stg40_NumToDigits(0, Stg40_RootState->damage));
+        Stg40_MsgWinOpen(1, base, (s32)Save_GameStatePtr->beetleName, (s32)Stg40_NumToDigits(0, Stg40_RootState->damage));
         break;
     case 1:
         Stg40_MsgWinOpen(1, base + 1, (s32)Stg40_NumToDigits(0, Stg40_RootState->damage), 0);

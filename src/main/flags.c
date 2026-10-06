@@ -152,7 +152,7 @@ void Flag_Set(s32 id, s32 val) {
     } else if (id < 2000) {
         Save_GameState.eventFlags.progress = id - 1900;
     } else if (id < 0x8BD) {
-        Save_GameState.field_C4 = id - 2000;
+        Save_GameState.bagLastItem = id - 2000;
         Item_SortList();
     } else if (id < 3000) {
         ((VDD4_21E78 *)&Save_GameState)->a[id - 2000]++;

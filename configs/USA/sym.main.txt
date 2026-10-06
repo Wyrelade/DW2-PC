@@ -1117,3 +1117,5 @@ Gfx_ShadowInit = 0x8001EC00; // type:func
 Gfx_ShadowUpdate = 0x8001EC10; // type:func
 Gfx_ShadowDraw = 0x8001ECE4; // type:func
 Gfx_ShadowDesc = 0x800416B4;
+Digi_GetHitFxOffsetY = 0x8001E7C0; // type:func
+Digi_GetDnaGroup = 0x8001D910; // type:func

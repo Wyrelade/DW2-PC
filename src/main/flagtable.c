@@ -51,7 +51,7 @@ Blk18 *Flag_GetBranchSetBlock(FlagEntryIdx *arg0, s32 arg1) {
 }
 
 s32 Flag_NextPassingEntry(void) {
-    while (Flag_EntryIter.cursor->field_0 != 0) {
+    while (Flag_EntryIter.cursor->digiId != 0) {
         if (Flag_TestConds(Flag_GetEntryCondBlock((FlagEntryIdx *)Flag_EntryIter.cursor)) != 0) {
             Flag_EntryIter.match = *Flag_EntryIter.cursor;
             {
@@ -114,9 +114,9 @@ Blk12 *Flag_GetEntryPosList(s32 index) {
 }
 
 s16 Flag_GetEntryDigiId(s32 index) {
-    return Flag_GetEntry(index)->field_0;
+    return Flag_GetEntry(index)->digiId;
 }
 
 s16 Flag_GetEntryDir(s32 index) {
-    return Flag_GetEntry(index)->field_2;
+    return Flag_GetEntry(index)->dir;
 }

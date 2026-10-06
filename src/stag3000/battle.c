@@ -428,7 +428,7 @@ void Stg30_BattleUpdate(Actor *a0) {
                 }
             }
             Enemy_GetSetSummary((void *)Sys_State.modeArg, &out);
-            Stg30_Battle.isBossFight = out.field_14;
+            Stg30_Battle.isBossFight = out.isBossFight;
             for (n1 = 0; n1 < 6; n1++) {
                 Stg30_Battle.attackBase[n1] = Stg30_Battle.attackCur[n1] = Stg30_Battle.entries[n1].attack;
                 Stg30_Battle.defenseBase[n1] = Stg30_Battle.defenseCur[n1] = Stg30_Battle.entries[n1].defense;
@@ -480,8 +480,8 @@ void Stg30_BattleUpdate(Actor *a0) {
                     switch (a0->stateLevel3) {
                     case 0:
                     default:
-                        out.field_0 = 5;
-                        out.field_4 = 1;
+                        out.mapDigiId = 5;
+                        out.aiType = 1;
                         Task_Create(0x50C, &l->bannerTask, (s32)&out);
                         Task_NextState3(a0);
                     case 1:
@@ -504,8 +504,8 @@ void Stg30_BattleUpdate(Actor *a0) {
                     switch (a0->stateLevel3) {
                     case 0:
                     default:
-                        out.field_0 = 5;
-                        out.field_4 = 0;
+                        out.mapDigiId = 5;
+                        out.aiType = 0;
                         Task_Create(0x50C, &l->bannerTask, (s32)&out);
                         Task_NextState3(a0);
                     case 1:

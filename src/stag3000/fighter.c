@@ -125,7 +125,7 @@ void Stg30_SpawnSkillHitFx(Actor *a0) {
                 args.posY += -0x280 - func_8001E79C(a0->digiId);
                 break;
             case 1:
-                args.posY -= func_8001E7C0(a0->digiId);
+                args.posY -= Digi_GetHitFxOffsetY(a0->digiId);
                 break;
             case 2:
                 break;

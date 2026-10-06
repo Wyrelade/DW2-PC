@@ -82,8 +82,8 @@ void Skill_GetFxSet(s32 id, s32 n, s16 *a, s16 *b) {
 
     n *= 2;
     for (i = 0; i < 3; i++) {
-        a[i] = p->field_2C[n][i];
-        b[i] = p->field_2C[n + 1][i];
+        a[i] = p->fxFiles[n][i];
+        b[i] = p->fxFiles[n + 1][i];
     }
 }
 

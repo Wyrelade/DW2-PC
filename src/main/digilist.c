@@ -45,7 +45,7 @@ void Menu_DigiTransferPlace(Actor *a0) {
 
     e = &w->rows[Menu_GridIndexColMajor(w->cursor, w->gridSize)];
     n = Pad_State[0].cross;
-    g = (DigiRosterSwapRec *)Menu_Ctx->field_128;
+    g = (DigiRosterSwapRec *)Menu_Ctx->transferRecord;
     if (n > 0) {
         switch (e->kind) {
         case 0:
@@ -62,7 +62,7 @@ void Menu_DigiTransferPlace(Actor *a0) {
             d->record = (s32)g;
             d->pickState = g->state;
             Text_OpenPacked(w->msgText, Cd_GetFileEntry(0x1FD0110), 0x81, Menu_DigiMsgPos);
-            Menu_Ctx->field_126 = -1;
+            Menu_Ctx->transferDone = -1;
             Menu_DigiListDrawRows((MenuDigiListRowsView *)w, 0);
             Snd_PlayById(0xE, 0);
             Task_SetState1(a0, 4);
@@ -75,7 +75,7 @@ void Menu_DigiTransferPlace(Actor *a0) {
             *(DigiRosterSwapRec *)e->record = *g;
             *g = tmp;
             Text_OpenPacked(w->msgText, Cd_GetFileEntry(0x1FD0112), 0x81, Menu_DigiMsgPos);
-            Menu_Ctx->field_126 = -1;
+            Menu_Ctx->transferDone = -1;
             Menu_DigiListDrawRows((MenuDigiListRowsView *)w, 0);
             Snd_PlayById(0xE, 0);
             Task_SetState1(a0, 4);
@@ -103,9 +103,9 @@ void Menu_DigiTransferPickSrc(Actor *a0) {
     if (Pad_State[0].cross > 0) {
         k = 0x10;
         if (e->kind == 1) {
-            Menu_Ctx->field_128 = e->record;
-            Menu_Ctx->field_126 = 0;
-            w->field_62 = 3;
+            Menu_Ctx->transferRecord = e->record;
+            Menu_Ctx->transferDone = 0;
+            w->subTask = 3;
             Task_SetState1(a0, 3);
             k = 0xE;
         }
@@ -136,7 +136,7 @@ void Menu_ConfirmMultiPick(Actor *a0) {
                 e = &w->rows[w->pickedIndices[i]];
                 d->pickedRecords[i] = e->record;
             }
-            w->field_62 = 2;
+            w->subTask = 2;
             Task_SetState1(a0, 3);
         }
     }
@@ -208,7 +208,7 @@ void Menu_ConfirmSinglePick(Actor *a0) {
         k = Menu_GridIndexColMajor(w->cursor, w->gridSize);
         if ((c = w->rows[k].kind) == 1) {
             Menu_Ctx->selRecord = (u8 *)w->rows[k].record;
-            w->field_62 = 0;
+            w->subTask = 0;
             Task_SetState1(a0, 3);
             Menu_Ctx->pickResult = c;
             Snd_PlayById(0xE, 0);
@@ -227,7 +227,7 @@ void Menu_BuildDigiList(MenuDigiListBuildWork *w) {
     MenuDigiListBuildRow *t;
 
     for (i = 0, t = r; i < 0x26; i++) {
-        t->field_2 = 0;
+        t->pickState = 0;
         t->kind = 0;
         t++;
     }
@@ -251,7 +251,7 @@ void Menu_BuildDigiList(MenuDigiListBuildWork *w) {
             n++;
             r->kind = 3;
             r->entry = 0;
-            r->field_2 = 0;
+            r->pickState = 0;
             r++;
             w->cursorRow++;
         }
@@ -261,7 +261,7 @@ void Menu_BuildDigiList(MenuDigiListBuildWork *w) {
         for (i = 0; i < Menu_Ctx->pickCount; i++) {
             r->kind = 1;
             r->entry = Menu_Ctx->pickedRecords[i];
-            r->field_2 = i + 3;
+            r->pickState = i + 3;
             r++;
         }
         return;
@@ -287,7 +287,7 @@ void Menu_BuildDigiList(MenuDigiListBuildWork *w) {
             if (ok) {
                 r->kind = 1;
                 r->entry = el;
-                r->field_2 = (w->mode == 5) ? 2 : el->state;
+                r->pickState = (w->mode == 5) ? 2 : el->state;
                 r++;
                 n++;
             }
@@ -548,7 +548,7 @@ void Menu_DigiListTask(Actor *a0) {
                     Task_SetState1(a0, 0);
                     break;
                 case 7:
-                    if (Menu_Ctx->field_126 != 0) {
+                    if (Menu_Ctx->transferDone != 0) {
                         Digi_SortRoster();
                         Task_SetState0(a0, 0);
                         break;
@@ -600,10 +600,10 @@ void Menu_DigiListTask(Actor *a0) {
                 break;
             case 8:
                 if (r == 1) {
-                    p = (u8 *)Menu_Ctx->field_128;
+                    p = (u8 *)Menu_Ctx->transferRecord;
                     Text_OpenPacked(&w->promptText, (s32)Cd_GetFileEntry(0x1FD0113), 0x81, Menu_DigiMsgPos);
                     *p = 0;
-                    Menu_Ctx->field_126 = -1;
+                    Menu_Ctx->transferDone = -1;
                     Snd_PlayById(0xE, 0);
                     Task_SetState1(a0, 4);
                 } else {

@@ -5,7 +5,7 @@
 
 /* Functions src/main/digibase.c defines. */
 DigiBaseData *Digi_FindBaseData();
-u8 func_8001D910(s32);
+u8 Digi_GetDnaGroup(s32);
 u8 Digi_GetType(s32);
 s32 Digi_GetRank(s32);
 s32 Digi_GetSpecialty(s32);

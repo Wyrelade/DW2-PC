@@ -137,13 +137,13 @@ void Stg40_SpawnEnemyParties(void) {
         if (k != 0) {
             id = k[((Stg40DungFloor *)Stg40_RootState->floorMap)->enemySets];
             Enemy_GetSetSummary(id, &out);
-            c = out.field_0;
+            c = out.mapDigiId;
             Stg40_AddEntity(1, 0, c, 0, r->x, r->y);
             s = (Stg40EnemyParty *)Dung_StatePtr->parties[Dung_StatePtr->partyCount - 1];
             s->setId = id;
-            s->useDungeonBgm = out.field_10 != 0;
-            s->likedGift = out.field_C;
-            s->pointsPerLevel = out.field_18;
+            s->useDungeonBgm = out.useDungeonBgm != 0;
+            s->likedGift = out.likedGift;
+            s->pointsPerLevel = out.pointsPerLevel;
             t = s->pointsPerLevel;
             if (t == 0) {
                 t = 1;
@@ -151,10 +151,10 @@ void Stg40_SpawnEnemyParties(void) {
             s->pointsPerLevel = t;
             s->giftsTaken = 0;
             s->giftPoints = 0;
-            s->stepsPerBurst = Stg40_EnemyPaceTable[out.field_8 * 2];
-            s->idleTicks = Stg40_EnemyPaceTable[out.field_8 * 2 + 1];
-            s->floorValue = Stg40_EnemyAiTable[out.field_4 * 2];
-            m = s->pathMode = Stg40_EnemyAiTable[out.field_4 * 2 + 1];
+            s->stepsPerBurst = Stg40_EnemyPaceTable[out.paceType * 2];
+            s->idleTicks = Stg40_EnemyPaceTable[out.paceType * 2 + 1];
+            s->floorValue = Stg40_EnemyAiTable[out.aiType * 2];
+            m = s->pathMode = Stg40_EnemyAiTable[out.aiType * 2 + 1];
             if (m == 2) {
                 if (s->floorValue != (Stg40_GetCellFlags(r->x, r->y) & 0xF)) {
                     s->floorValue = m;

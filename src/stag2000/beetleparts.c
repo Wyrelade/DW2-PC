@@ -346,7 +346,7 @@ void Stg20_BeetlePartsUpdate(Actor *a) {
     switch (a->stateLevel0) {
     case 0:
         Mem_FillWordsNeg1(w->hdr, 0x12);
-        Text_OpenPacked(&w->hdr[0], (s32)&Save_GameState.field_D1, 0, Stg20_BeetlePartsTextPos[0]);
+        Text_OpenPacked(&w->hdr[0], (s32)&Save_GameState.beetleName, 0, Stg20_BeetlePartsTextPos[0]);
         Task_Create(0x30D, slot, 1);
         if (((Stg20GameState *)&Save_GameState)->slotItems[0] == 0xEA) {
             w->bodyType = 0;

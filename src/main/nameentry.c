@@ -76,7 +76,7 @@ void Menu_NameEntryTask(Actor *a0) {
         p = Save_GameState.playerName;
         break;
     case 2:
-        p = Save_GameState.field_D1;
+        p = Save_GameState.beetleName;
         break;
     }
     switch (a0->stateLevel0) {

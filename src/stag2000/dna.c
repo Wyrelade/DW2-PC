@@ -113,7 +113,7 @@ u8 Stg20_GetDnaResult(s32 a, s32 b) {
     s32 r1 = Digi_GetRank(a);
     s32 r2 = Digi_GetRank(b);
     s32 m = (r1 < r2 ? r1 : r2) - 1;
-    s32 r3 = func_8001D910(a);
-    s32 r4 = func_8001D910(b);
+    s32 r3 = Digi_GetDnaGroup(a);
+    s32 r4 = Digi_GetDnaGroup(b);
     return Stg20_DnaResultTbl[s4][m][r3][r4];
 }

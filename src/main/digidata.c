@@ -77,9 +77,9 @@ s16 func_8001E79C(s32 id) {
     return Digi_FindDataById(id)->field_1E;
 }
 
-/* Unnamed: DigiData field_20, Y offset for hit-fx slot 1 only; meaning unproven. */
-s16 func_8001E7C0(s32 id) {
-    return Digi_FindDataById(id)->field_20;
+/* Y offset of hit-fx slot 1 (the *_SpawnSkillHitFx of stag0000/3000/3500). */
+s16 Digi_GetHitFxOffsetY(s32 id) {
+    return Digi_FindDataById(id)->hitFxOffsetY;
 }
 
 void Digi_GetCastFxOffsets(s32 a0, void *a1) {
@@ -87,11 +87,11 @@ void Digi_GetCastFxOffsets(s32 a0, void *a1) {
     DigiData *e;
     base = (u8 *)Cd_GetFileEntry((Digi_GetDataFileId(a0) << 16) | 1);
     e = Digi_FindDataById(a0);
-    *(Row6 *)((u8 *)a1 + 0) = *(Row6 *)(base + e->field_22 * 6);
+    *(Row6 *)((u8 *)a1 + 0) = *(Row6 *)(base + e->castFxRow0 * 6);
     e = Digi_FindDataById(a0);
-    *(Row6 *)((u8 *)a1 + 6) = *(Row6 *)(base + e->field_24 * 6);
+    *(Row6 *)((u8 *)a1 + 6) = *(Row6 *)(base + e->castFxRow1 * 6);
     e = Digi_FindDataById(a0);
-    *(Row6 *)((u8 *)a1 + 12) = *(Row6 *)(base + e->field_26 * 6);
+    *(Row6 *)((u8 *)a1 + 12) = *(Row6 *)(base + e->castFxRow2 * 6);
 }
 
 /* Unnamed: DigiData packedId bit 0 (set on e.g. Overlord GAIA, C-Seadramon) picks sound 0x204 vs

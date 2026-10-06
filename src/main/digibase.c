@@ -31,10 +31,9 @@ fail:
     return 0;
 }
 
-/* Unnamed: DIGIMNDT byte +3 (0..8), not rank/type/specialty (checked vs MetalKid RankId); only
- * use is an index in stag2000 func_8006A190's table, meaning unproven. */
-u8 func_8001D910(s32 digiId) {
-    return Digi_FindBaseData(digiId)->field_3;
+/* DIGIMNDT byte +3 (0..8): the parent's index into Stg20_DnaResultTbl (Stg20_GetDnaResult). */
+u8 Digi_GetDnaGroup(s32 digiId) {
+    return Digi_FindBaseData(digiId)->dnaGroup;
 }
 
 u8 Digi_GetType(s32 digiId) {

@@ -46,17 +46,17 @@ u8 Beetle_PartDigiCapacity[] = { 4, 5, 6, 7, 8, 12 };
 
 void Save_ResetGameState(void) {
     Mem_Zero(Save_GameStatePtr, 0x1058);
-    Save_GameStatePtr->field_0 = 1;
+    Save_GameStatePtr->automapMode = 1;
     Save_ClearEventFlags();
     Save_GameState.playerName[0] = 0x8F;
     Save_GameState.playerName[1] = 0x95;
     Save_GameState.playerName[2] = 0xB7;
     Save_GameState.playerName[3] = 0xFF;
     Save_GameState.bits = 0x1F4;
-    Save_GameState.field_D1[0] = 0x9E;
-    Save_GameState.field_D1[1] = 0xD5;
-    Save_GameState.field_D1[2] = 0x96;
-    Save_GameState.field_D1[3] = 0xFF;
+    Save_GameState.beetleName[0] = 0x9E;
+    Save_GameState.beetleName[1] = 0xD5;
+    Save_GameState.beetleName[2] = 0x96;
+    Save_GameState.beetleName[3] = 0xFF;
     Save_GameState.playTime = 0;
 }
 

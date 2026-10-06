@@ -296,7 +296,7 @@ extern s32 GsSetRefView2(Stg00RefView *);
 extern void Flag_Set(s32, s32);
 extern s32 Digi_GetModelListId(s32 idx);
 extern s32 func_8001E79C(s32 id);
-extern s32 func_8001E7C0(s32 id);
+extern s32 Digi_GetHitFxOffsetY(s32 id);
 extern s32 Digi_GetModelListCount(void);
 extern void Skill_GetFxSet(s32 id, s32 n, s16 *a, s16 *b);
 extern s32 Rand_Next();

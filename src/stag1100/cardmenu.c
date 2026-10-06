@@ -222,10 +222,10 @@ void Stg11_OpenSlotText(Actor *arg0, Stg11MenuWork *arg1) {
         if (list->used[i] != 0) {
             st.pos = *pos++;
             slot = &list->slots[i];
-            st.text = (s32)slot->u.gs.field_14;
+            st.text = (s32)slot->u.gs.playerName;
             Text_OpenDesc(&arg1->slotTexts[i * 3], (TextDesc *)&st);
             st.pos = *pos++;
-            st.text = (s32)Cd_GetFileEntry(((s16 *)Cd_GetFileEntry(0x513000F))[slot->u.gs.field_11 * 11 + slot->u.gs.field_12] + 0x1FD0000);
+            st.text = (s32)Cd_GetFileEntry(((s16 *)Cd_GetFileEntry(0x513000F))[slot->u.gs.rankTitleSet * 11 + slot->u.gs.rank] + 0x1FD0000);
             Text_OpenDesc(&arg1->slotTexts[i * 3 + 1], (TextDesc *)&st);
         } else {
             st.pos = *pos++;
@@ -624,8 +624,8 @@ void Stg11_StateReadFile(Actor *arg0, Stg11MenuWork *arg1) {
                             slot->u.gs.elems[j].name[13] = 0xFF;
                         }
                     }
-                    slot->u.gs.field_14[5] = 0xFF;
-                    slot->u.gs.field_D1[7] = 0xFF;
+                    slot->u.gs.playerName[5] = 0xFF;
+                    slot->u.gs.beetleName[7] = 0xFF;
                 }
             }
             Task_SetState1(arg0, 7);
@@ -836,7 +836,7 @@ void Stg11_StateVsPartySelect(Actor *arg0, Stg11MenuWork *arg1) {
                     }
                     d++;
                 }
-                src = Stg11_VsParty.gameState->field_14;
+                src = Stg11_VsParty.gameState->playerName;
                 dst = Save_GameStatePtr->elems[arg1->padIndex + 6].name;
                 while (*src != 0xFF) {
                     *dst++ = *src++;

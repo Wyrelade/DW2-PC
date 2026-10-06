@@ -493,7 +493,7 @@ void Stg40_PlayerShowStatusMsgs(Actor *a0) {
     b->statusCount--;
     k = b->statusCodes[b->statusCount];
     if (k >= 2 && k < 6) {
-        arg = (s32)Save_GameStatePtr->field_D1;
+        arg = (s32)Save_GameStatePtr->beetleName;
     }
     if (k == 6) {
         arg = b->brokenPartText;
@@ -527,10 +527,10 @@ void Stg40_PlayerInput(Actor *a0) {
         return;
     }
     if (Stg40_PlayerInteract(a0) == 0 && Stg40_PlayerCheckEnemyInfo(a0) == 0 && Beetle_GetPart(0x12) > 0 && Pad_State[0].select > 0) {
-        v = Save_GameStatePtr->field_0 + 1;
+        v = Save_GameStatePtr->automapMode + 1;
         n = (v < 3) ? v : 0;
-        Save_GameStatePtr->field_0 = n;
-        Stg40_RootState->automapMode = Save_GameStatePtr->field_0;
+        Save_GameStatePtr->automapMode = n;
+        Stg40_RootState->automapMode = Save_GameStatePtr->automapMode;
     }
 }
 
@@ -693,7 +693,7 @@ void Stg40_PlayerSporeDamage(Actor *a0) {
     case 1:
         if (Stg40_ObjWaitAnimOrSkip(a0) == 1) {
             Stg40_ObjSetAnim(a0, 0x28);
-            Stg40_MsgWinOpen(1, 0x1FD001F, (s32)Save_GameStatePtr->field_D1, (s32)Stg40_NumToDigits(0, Stg40_RootState->damage));
+            Stg40_MsgWinOpen(1, 0x1FD001F, (s32)Save_GameStatePtr->beetleName, (s32)Stg40_NumToDigits(0, Stg40_RootState->damage));
             Task_NextState2(a0);
         }
         break;
@@ -851,7 +851,7 @@ void Stg40_PlayerEnemyInfo(Actor *a0) {
         break;
     case 0x65:
         if (Stg40_RootChildren->enemyInfoTask == 0) {
-            g->automapMode = Save_GameStatePtr->field_0;
+            g->automapMode = Save_GameStatePtr->automapMode;
             Task_SetState1(a0, 1);
         }
         break;
@@ -997,7 +997,7 @@ void Stg40_PlayerShootGift(Actor *actor) {
             break;
         }
         Task_SetState1(actor, 6);
-        Stg40_RootState->automapMode = Save_GameStatePtr->field_0;
+        Stg40_RootState->automapMode = Save_GameStatePtr->automapMode;
         break;
     }
 }
@@ -1240,13 +1240,13 @@ void Stg40_PlayerShootObstacle(Actor *a0) {
     case 2:
         if (Stg40_MsgWinCloseIfDone(1) == 1) {
             Task_SetState1(a0, 6);
-            Stg40_RootState->automapMode = Save_GameStatePtr->field_0;
+            Stg40_RootState->automapMode = Save_GameStatePtr->automapMode;
         }
         break;
     case 3:
         if (Stg40_MsgWinCloseIfDone(1) == 1 && e->flags == 0) {
             Task_SetState1(a0, 6);
-            Stg40_RootState->automapMode = Save_GameStatePtr->field_0;
+            Stg40_RootState->automapMode = Save_GameStatePtr->automapMode;
         }
         break;
     }
@@ -1376,7 +1376,7 @@ void Stg40_PlayerItemMenu(Actor *a0) {
         if (Stg40_RootChildren->itemMenuTask == 0) {
             if (Stg40_RootState->giftMenu == 0) {
                 Task_SetState1(a0, 1);
-                Stg40_RootState->automapMode = Save_GameStatePtr->field_0;
+                Stg40_RootState->automapMode = Save_GameStatePtr->automapMode;
             } else {
                 Task_SetState1(a0, 0x1A);
                 Task_SetState2(a0, 2);
@@ -1400,7 +1400,7 @@ void Stg40_PlayerBeetleDown(Actor *a0) {
         if (Stg40_ObjWaitAnimOrSkip(a0) != 1) {
             return;
         }
-        Stg40_MsgWinOpen(1, 0x1FD0054, (s32)Save_GameStatePtr->field_D1, 0);
+        Stg40_MsgWinOpen(1, 0x1FD0054, (s32)Save_GameStatePtr->beetleName, 0);
         break;
     case 2:
         r = Stg40_MsgWinCloseIfDone(1);

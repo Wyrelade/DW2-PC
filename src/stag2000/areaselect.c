@@ -186,25 +186,25 @@ s32 Stg20_TestSpecialFlag(s32 id) {
     case 9022:
         return Save_GameState.bits >= 4000;
     case 9024:
-        return Save_GameState.field_12 < 2;
+        return Save_GameState.rank < 2;
     case 9025:
-        return Save_GameState.field_12 < 3;
+        return Save_GameState.rank < 3;
     case 9026:
-        return Save_GameState.field_12 < 4;
+        return Save_GameState.rank < 4;
     case 9027:
-        return Save_GameState.field_12 < 5;
+        return Save_GameState.rank < 5;
     case 9028:
-        return Save_GameState.field_12 < 6;
+        return Save_GameState.rank < 6;
     case 9029:
-        return Save_GameState.field_12 < 7;
+        return Save_GameState.rank < 7;
     case 9030:
-        return Save_GameState.field_12 < 8;
+        return Save_GameState.rank < 8;
     case 9031:
-        return Save_GameState.field_12 < 9;
+        return Save_GameState.rank < 9;
     case 9032:
-        return Save_GameState.field_12 < 10;
+        return Save_GameState.rank < 10;
     case 9033:
-        return Save_GameState.field_12 < 11;
+        return Save_GameState.rank < 11;
     case 9035:
         if (Flag_Test(0x2C6) == 0) {
             return 0;
@@ -307,43 +307,43 @@ void Stg20_SetSpecialFlag(s32 id, s32 on) {
         Stg20_AddBits(-4000);
         break;
     case 0x239C:
-        Save_GameState.field_12 = 1;
+        Save_GameState.rank = 1;
         break;
     case 0x239D:
-        Save_GameState.field_12 = 2;
+        Save_GameState.rank = 2;
         break;
     case 0x239E:
-        Save_GameState.field_12 = 3;
+        Save_GameState.rank = 3;
         break;
     case 0x239F:
-        Save_GameState.field_12 = 4;
+        Save_GameState.rank = 4;
         break;
     case 0x23A0:
-        Save_GameState.field_12 = 5;
+        Save_GameState.rank = 5;
         break;
     case 0x23A1:
-        Save_GameState.field_12 = 6;
+        Save_GameState.rank = 6;
         break;
     case 0x23A2:
-        Save_GameState.field_12 = 7;
+        Save_GameState.rank = 7;
         break;
     case 0x23A3:
-        Save_GameState.field_12 = 8;
+        Save_GameState.rank = 8;
         break;
     case 0x23A4:
-        Save_GameState.field_12 = 9;
+        Save_GameState.rank = 9;
         break;
     case 0x23A5:
-        Save_GameState.field_12 = 10;
+        Save_GameState.rank = 10;
         break;
     case 0x23A6:
-        Save_GameState.field_11 = 0;
+        Save_GameState.rankTitleSet = 0;
         break;
     case 0x23A7:
-        Save_GameState.field_11 = 1;
+        Save_GameState.rankTitleSet = 1;
         break;
     case 0x23A8:
-        Save_GameState.field_11 = 2;
+        Save_GameState.rankTitleSet = 2;
         break;
     case 0x23B3:
         for (j = 0; j < Item_GetBagCapacity(); j++) {

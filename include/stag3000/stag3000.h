@@ -687,7 +687,7 @@ extern void Task_NextState3(Actor *);
 extern void Gfx_FadeOutToBlack(s32);
 extern void Skill_GetFxSet(s32 id, s32 n, s16 *a, s16 *b);
 extern s32 func_8001E79C(s32 id);  /* s16 in the main exe; used unextended here */
-extern s32 func_8001E7C0(s32 id);
+extern s32 Digi_GetHitFxOffsetY(s32 id);
 extern s32 Skill_GetType(s32 id);
 extern void Gfx_SetPartsNumber(GfxPart *, s32, s32, s32);
 extern void Digi_GetCastFxOffsets(s32 a0, void *a1);

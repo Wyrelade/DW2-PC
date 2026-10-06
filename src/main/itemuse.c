@@ -184,7 +184,7 @@ void Menu_ShowPartSlotInfo(Actor *a0) {
 
     i = Menu_GridIndexColMajor(w->cursor, w->gridSize);
     Text_Close(&w->msgText);
-    Text_Close(&w->field_54);
+    Text_Close(&w->brokenText);
     Text_Close(&w->labelText);
     id = Menu_PartGridSlots[i];
     if (id != 0xFF) {
@@ -196,7 +196,7 @@ void Menu_ShowPartSlotInfo(Actor *a0) {
             if (Save_GameStatePtr->slotStatus[id] != 0) {
                 h.lo = 0x10;
                 h.hi = 0xCA;
-                Text_OpenPacked(&w->field_54, (s32)Cd_GetFileEntry(0x1FD0097), 0x80, h);
+                Text_OpenPacked(&w->brokenText, (s32)Cd_GetFileEntry(0x1FD0097), 0x80, h);
             }
         }
     }

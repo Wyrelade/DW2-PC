@@ -10,7 +10,7 @@ s32 Digi_GetModelFile(s32 id);
 s32 Anim_GetModelAnimFile(s32 arg0, s32 arg1);
 u8 *Digi_GetDefaultName(s32 id);
 s16 func_8001E79C(s32 id);
-s16 func_8001E7C0(s32 id);
+s16 Digi_GetHitFxOffsetY(s32 id);
 void Digi_GetCastFxOffsets(s32 a0, void *a1);
 s32 func_8001E8D0(s32 id);
 u16 Digi_GetModelListId(s32 idx);

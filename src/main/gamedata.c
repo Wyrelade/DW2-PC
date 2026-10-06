@@ -64,14 +64,14 @@ void Enemy_GetSetSummary(void *a0, Out1DB68 *out) {
     Ent1DB18 *src = Enemy_FindSetById(a0);
     Ent1DB18 *p;
     s32 i;
-    out->field_0 = src->u0.h.field_2;
-    out->field_4 = ((s32)src->u0.field_0 << 20) >> 28;
-    out->field_8 = ((s32)src->u0.field_0 << 16) >> 28;
-    out->field_C = src->u4.field_4b;
-    out->field_10 = (src->u4.field_4 >> 8) & 0xF;
-    out->field_14 = (src->u4.field_4 >> 12) & 0xF;
+    out->mapDigiId = src->u0.h.mapDigiId;
+    out->aiType = ((s32)src->u0.field_0 << 20) >> 28;
+    out->paceType = ((s32)src->u0.field_0 << 16) >> 28;
+    out->likedGift = src->u4.likedGift;
+    out->useDungeonBgm = (src->u4.field_4 >> 8) & 0xF;
+    out->isBossFight = (src->u4.field_4 >> 12) & 0xF;
     p = src;
-    out->field_18 = p->u4.h.field_6;
+    out->pointsPerLevel = p->u4.h.pointsPerLevel;
     {
         DigiInitRow *row = (DigiInitRow *)p;
         for (i = 0; i < 3; i++) {
@@ -146,9 +146,9 @@ void Enemy_InitRosterEntry(s32 a0, s32 a1, DigiRosterEntry *e, Out1DDA8 *o) {
         }
         e->level = t->rows[a1].level;
         e->exp = t->rows[a1].exp;
-        e->attack = t->rows[a1].field_B;
-        e->defense = t->rows[a1].field_C;
-        e->speed = t->rows[a1].field_E;
+        e->attack = t->rows[a1].attack;
+        e->defense = t->rows[a1].defense;
+        e->speed = t->rows[a1].speed;
         e->attr[0] = t->rows[a1].attr0;
         e->attr[1] = t->rows[a1].attr1;
         e->attr[2] = t->rows[a1].attr2;
@@ -158,19 +158,19 @@ void Enemy_InitRosterEntry(s32 a0, s32 a1, DigiRosterEntry *e, Out1DDA8 *o) {
         o->skill0 = t->rows[a1].attr0;
         o->skill1 = t->rows[a1].attr1;
         o->skill2 = t->rows[a1].attr2;
-        o->field_9[0] = t->rows[a1].field_12[0][1];
-        o->field_9[1] = t->rows[a1].field_12[1][1];
-        o->field_9[2] = t->rows[a1].field_12[2][1];
-        o->field_9[3] = t->rows[a1].field_12[3][1];
-        o->field_0 = t->rows[a1].field_8;
-        o->field_D[0] = t->rows[a1].field_12[0][2];
-        o->field_D[1] = t->rows[a1].field_12[1][2];
-        o->field_D[2] = t->rows[a1].field_12[2][2];
-        o->field_D[3] = t->rows[a1].field_12[3][2];
-        o->field_5[0] = t->rows[a1].field_12[0][0];
-        o->field_5[1] = t->rows[a1].field_12[1][0];
-        o->field_5[2] = t->rows[a1].field_12[2][0];
-        o->field_5[3] = t->rows[a1].field_12[3][0];
+        o->actionKinds[0] = t->rows[a1].aiRules[0][1];
+        o->actionKinds[1] = t->rows[a1].aiRules[1][1];
+        o->actionKinds[2] = t->rows[a1].aiRules[2][1];
+        o->actionKinds[3] = t->rows[a1].aiRules[3][1];
+        o->bits = t->rows[a1].bits;
+        o->targetModes[0] = t->rows[a1].aiRules[0][2];
+        o->targetModes[1] = t->rows[a1].aiRules[1][2];
+        o->targetModes[2] = t->rows[a1].aiRules[2][2];
+        o->targetModes[3] = t->rows[a1].aiRules[3][2];
+        o->conditions[0] = t->rows[a1].aiRules[0][0];
+        o->conditions[1] = t->rows[a1].aiRules[1][0];
+        o->conditions[2] = t->rows[a1].aiRules[2][0];
+        o->conditions[3] = t->rows[a1].aiRules[3][0];
     }
 }
 

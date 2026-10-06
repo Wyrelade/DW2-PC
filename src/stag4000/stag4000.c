@@ -148,8 +148,8 @@ void Stg40_SetupStage(Actor *a0) {
         buf = Stg40_BeetleDigiIds;
         level = Save_GameStatePtr->slotItems[0];
         level = (level != 0) ? (level - 0xEA) * 6 : 0;
-        if (Save_GameStatePtr->field_36 != 0) {
-            level += Save_GameStatePtr->field_36 - 0x4F;
+        if (Save_GameStatePtr->tiresItem != 0) {
+            level += Save_GameStatePtr->tiresItem - 0x4F;
         }
         if (level < 0x12) {
             level = buf.digiIds[level];
@@ -388,7 +388,7 @@ void Stg40_RootUpdate(Actor *arg0) {
             case 0:
                 Task_Create(0x209, &ctx->hudTask, 0);
                 Dung_StatePtr->freeze = 0;
-                Stg40_RootState->automapMode = Save_GameStatePtr->field_0;
+                Stg40_RootState->automapMode = Save_GameStatePtr->automapMode;
                 Task_NextState2(arg0);
                 break;
             case 1:
@@ -438,7 +438,7 @@ void Stg40_RootUpdate(Actor *arg0) {
                         Task_SetState2(arg0, 4);
                     } else {
                         Task_Create(0x209, &ctx->hudTask, 0);
-                        Stg40_RootState->automapMode = Save_GameStatePtr->field_0;
+                        Stg40_RootState->automapMode = Save_GameStatePtr->automapMode;
                         Task_NextState2(arg0);
                     }
                 }
