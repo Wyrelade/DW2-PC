@@ -715,7 +715,7 @@ typedef struct {
 } Stg20ModelTint;
 
 extern s32 Digi_GetModelFile(s32 id);
-extern s32 Anim_GetModelAnimFile(s32 arg0, s32 arg1);
+extern s32 Digi_GetAnimFile(s32 arg0, s32 arg1);
 extern void Cd_QueueFile(s32);
 extern s32 Cd_GetFileState(s32 arg0);
 

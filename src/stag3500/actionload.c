@@ -116,24 +116,24 @@ void Stg35_ActionLoadUpdate(Actor *arg0) {
         w->keptCount = 0;
         w->tempCount = 0;
         w->keptFiles[w->keptCount++] = Digi_GetModelFile(w->casterDigiId);
-        w->keptFiles[w->keptCount++] = Anim_GetModelAnimFile(w->casterDigiId, 0);
-        w->tempFiles[w->tempCount++] = Anim_GetModelAnimFile(w->casterDigiId, Skill_GetCastAnim(w->skillId) + 5);
+        w->keptFiles[w->keptCount++] = Digi_GetAnimFile(w->casterDigiId, 0);
+        w->tempFiles[w->tempCount++] = Digi_GetAnimFile(w->casterDigiId, Skill_GetCastAnim(w->skillId) + 5);
         for (i = 0; i < 6; i++) {
             if (w->targetDigiIds[i] != 0) {
                 w->keptFiles[w->keptCount++] = Digi_GetModelFile(w->targetDigiIds[i]);
-                w->keptFiles[w->keptCount++] = Anim_GetModelAnimFile(w->targetDigiIds[i], 0);
+                w->keptFiles[w->keptCount++] = Digi_GetAnimFile(w->targetDigiIds[i], 0);
                 switch (w->targetReactKinds[i]) {
                 case 0:
                 default:
                     break;
                 case 1:
-                    w->tempFiles[w->tempCount++] = Anim_GetModelAnimFile(w->targetDigiIds[i], 1);
+                    w->tempFiles[w->tempCount++] = Digi_GetAnimFile(w->targetDigiIds[i], 1);
                     break;
                 case 3:
-                    w->keptFiles[w->keptCount++] = Anim_GetModelAnimFile(w->targetDigiIds[i], 0xA);
+                    w->keptFiles[w->keptCount++] = Digi_GetAnimFile(w->targetDigiIds[i], 0xA);
                 case 2:
-                    w->tempFiles[w->tempCount++] = Anim_GetModelAnimFile(w->targetDigiIds[i], 2);
-                    w->tempFiles[w->tempCount++] = Anim_GetModelAnimFile(w->targetDigiIds[i], 9);
+                    w->tempFiles[w->tempCount++] = Digi_GetAnimFile(w->targetDigiIds[i], 2);
+                    w->tempFiles[w->tempCount++] = Digi_GetAnimFile(w->targetDigiIds[i], 9);
                     break;
                 }
             }

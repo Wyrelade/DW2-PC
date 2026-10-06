@@ -39,7 +39,7 @@ void Stg40_LinkedModelUpdate(Actor *a0) {
         w->rotY = 0;
         a0->digiId = w->digiId = ent->digiId;
         w->modelFile = Digi_GetModelFile(a0->digiId);
-        w->animFile = Anim_GetModelAnimFile(a0->digiId, 4);
+        w->animFile = Digi_GetAnimFile(a0->digiId, 4);
         Gfx_AttachModel(a0, w->modelFile)->otIndex = 3;
         Task_NextState0(a0);
         if (ent->field_2 != 1) {

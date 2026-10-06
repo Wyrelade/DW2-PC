@@ -119,7 +119,7 @@ void Stg30_BattleWonUpdate(Actor *a0) {
         done = 0;
         for (i = 0; i < 3; i++) {
             if (Stg30_Battle.entries[i].hp != 0) {
-                f = Anim_GetModelAnimFile(Stg30_Battle.entries[i].digiId, 8);
+                f = Digi_GetAnimFile(Stg30_Battle.entries[i].digiId, 8);
                 Cd_QueueFile(f);
                 if (Cd_GetFileState(f) != 3) {
                     done = 1;

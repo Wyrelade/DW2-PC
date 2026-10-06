@@ -198,7 +198,7 @@ void Stg20_LabDnaDigivolve(Actor *a) {
         default:
             ok = 1;
             buf[0] = Digi_GetModelFile(Stg20_MenuState.evoTargetId);
-            buf[1] = Anim_GetModelAnimFile(Stg20_MenuState.evoTargetId, 0);
+            buf[1] = Digi_GetAnimFile(Stg20_MenuState.evoTargetId, 0);
             buf[2] = 0xDD8;
             buf[3] = 0xDD7;
             buf[4] = 0x25B;
@@ -580,7 +580,7 @@ void Stg20_LabDigivolve(Actor *a) {
         default:
             ok = 1;
             buf[0] = Digi_GetModelFile(Stg20_MenuState.evoTargetId);
-            buf[1] = Anim_GetModelAnimFile(Stg20_MenuState.evoTargetId, 0);
+            buf[1] = Digi_GetAnimFile(Stg20_MenuState.evoTargetId, 0);
             buf[2] = 0xDDB;
             buf[3] = 0xDD9;
             buf[4] = 0x3D0;

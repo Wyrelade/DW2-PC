@@ -97,7 +97,7 @@ void Stg40_ObjInit(Actor *a0, Stg40Ent48 *e)
   {
     a0->digiId = e->digiId;
     w->modelFile = Digi_GetModelFile(a0->digiId);
-    w->animFile = Anim_GetModelAnimFile(a0->digiId, 4);
+    w->animFile = Digi_GetAnimFile(a0->digiId, 4);
     w->posZ = 0;
     w->posY = 0;
     w->posX = 0;

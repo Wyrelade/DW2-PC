@@ -278,7 +278,7 @@ void Stg35_BattleUpdate(Actor *arg0) {
             wait = 0;
             for (i = w->winnerSide * 3; i < w->winnerSide * 3 + 3; i++) {
                 if (Stg35_Battle.rec[i].hp != 0) {
-                    f = Anim_GetModelAnimFile(Stg35_Battle.rec[i].digiId, 8);
+                    f = Digi_GetAnimFile(Stg35_Battle.rec[i].digiId, 8);
                     Cd_QueueFile(f);
                     if (Cd_GetFileState(f) != 3) {
                         goto nf;

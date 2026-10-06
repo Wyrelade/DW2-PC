@@ -423,7 +423,7 @@ extern s32 *D_80049030;
 extern s32 *D_80049034;
 extern Prm1C Menu_DigiStatusView;
 extern s32 Digi_GetModelFile(s32 id);
-extern s32 Anim_GetModelAnimFile(s32 arg0, s32 arg1);
+extern s32 Digi_GetAnimFile(s32 arg0, s32 arg1);
 extern void Actor_InitTransform(ContC40 *a0, s32 *a1, u16 a2);
 extern void GsInitCoordinate2(Coord1F668 *, Coord1F668 *);
 

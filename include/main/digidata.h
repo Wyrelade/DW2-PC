@@ -7,7 +7,7 @@
 s32 Digi_GetDataFileId(s32 arg0);
 DigiData *Digi_FindDataById(s32 id);
 s32 Digi_GetModelFile(s32 id);
-s32 Anim_GetModelAnimFile(s32 arg0, s32 arg1);
+s32 Digi_GetAnimFile(s32 arg0, s32 arg1);
 u8 *Digi_GetDefaultName(s32 id);
 s16 func_8001E79C(s32 id);
 s16 Digi_GetHitFxOffsetY(s32 id);

@@ -748,7 +748,7 @@ extern s32 Item_GetNameText(s32 arg0);
 extern s32 Item_AddToBag(s32 id);
 extern void Item_SortList(void);
 extern s32 Digi_GetModelFile(s32 id);
-extern s32 Anim_GetModelAnimFile(s32 arg0, s32 arg1);
+extern s32 Digi_GetAnimFile(s32 arg0, s32 arg1);
 void Stg40_TurnQueueAdd(s32 a0);
 Stg40Ent48 *Stg40_FindEntByDigiId(s32 id);
 extern void RotMatrixYXZ(void *, Mat1F668 *);

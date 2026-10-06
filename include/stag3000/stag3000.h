@@ -810,7 +810,7 @@ extern void Task_SetState2(Actor *, u32);
 extern void Stg30_DimFightersExcept(s32 sel, s32 from, s32 to);
 extern void Stg30_UndimPartyFighters(void);
 extern s16 Stg30_JoinChance[][3];
-extern s32 Anim_GetModelAnimFile(s32 arg0, s32 arg1);
+extern s32 Digi_GetAnimFile(s32 arg0, s32 arg1);
 extern void Cd_QueueFile(s32);
 extern s32 Cd_GetFileState(s32 arg0);
 extern void Cd_QueueStag4000Files(void);

@@ -36,7 +36,7 @@ void Stg20_LabDigiModelUpdate(Actor *a) {
             if (st != 3) {
                 break;
             }
-            f = Anim_GetModelAnimFile(a->digiId, 0);
+            f = Digi_GetAnimFile(a->digiId, 0);
             Cd_QueueFile(f);
             if (Cd_GetFileState(f) != st) {
                 break;

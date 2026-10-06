@@ -58,7 +58,7 @@ s32 Digi_GetModelFile(s32 id) {
     return Digi_FindDataById(id)->u4.h4.modelFile;
 }
 
-s32 Anim_GetModelAnimFile(s32 arg0, s32 arg1) {
+s32 Digi_GetAnimFile(s32 arg0, s32 arg1) {
     return Digi_FindDataById(arg0)->animFiles[arg1];
 }
 

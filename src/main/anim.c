@@ -45,7 +45,7 @@ void Anim_SetModelAnim(Actor *a, s32 n) {
     s->animData = 0;
     for (i = 10; i < 0x6F; i += 10) {
         if (n < i) {
-            s->animFileId = Anim_GetModelAnimFile(a->digiId, i / 10 - 1);
+            s->animFileId = Digi_GetAnimFile(a->digiId, i / 10 - 1);
             k = i - 10;
             s->animIndex = n - k;
             break;
@@ -73,13 +73,13 @@ s32 Anim_HasModelAnim(Actor *a0, s32 n) {
     s32 *p;
 
     if (n < 10) {
-        id = Anim_GetModelAnimFile(a0->digiId, 0);
+        id = Digi_GetAnimFile(a0->digiId, 0);
         k = 0;
     } else if (n < 20) {
-        id = Anim_GetModelAnimFile(a0->digiId, 1);
+        id = Digi_GetAnimFile(a0->digiId, 1);
         k = n - 10;
     } else {
-        id = Anim_GetModelAnimFile(a0->digiId, 2);
+        id = Digi_GetAnimFile(a0->digiId, 2);
         k = n - 20;
     }
     p = (s32 *)(Cd_GetFileOrNull(id) + ((sub->boneCount + 1) << 2));

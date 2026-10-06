@@ -39,7 +39,7 @@ void Menu_DigiStatusInit(Actor *a0, s16 a1) {
     a0->digiId = p[1];
     Actor_InitTransform((ContC40 *)a0, w->pos, w->initRotY);
     w->modelFile = Digi_GetModelFile(a0->digiId);
-    w->animFile = Anim_GetModelAnimFile(a0->digiId, 0);
+    w->animFile = Digi_GetAnimFile(a0->digiId, 0);
     Gfx_AttachModel(a0, w->modelFile)->otIndex = 3;
     Cd_QueueFile(w->modelFile);
     Cd_QueueFile(w->animFile);

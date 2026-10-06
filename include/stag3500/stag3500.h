@@ -521,7 +521,7 @@ extern void Gfx_DrawWireModel(Actor *a0, s32 mode, CVECTOR *col);
 extern void SetDrawMode(Stg35DrMode *p, s32 dfe, s32 dtd, s32 tpage, s32 tw);
 extern void GsInitCoordinate2(Coord1F668 *, Coord1F668 *);
 extern void Anim_StepModelAnim(Actor *);
-extern s32 Anim_GetModelAnimFile(s32 arg0, s32 arg1);
+extern s32 Digi_GetAnimFile(s32 arg0, s32 arg1);
 extern s32 Anim_HasModelAnim(Actor *a0, s32 n);
 extern void Actor_StopAxisMotion(Ctx38 *arg0, s32 arg1);
 extern void Actor_SetAxisMotion(Ctx38 *arg0, s32 arg1, Elem12 *arg2);
