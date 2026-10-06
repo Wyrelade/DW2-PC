@@ -228,7 +228,7 @@ typedef struct {
     /* 0x80 */ s32 keyIndex;
 } ModelBone; /* size 0x84 */
 
-/* Object reached through Actor at 0x38 (overlaps the u8 field_38); func_8001EC10
+/* Object reached through Actor at 0x38 (overlaps the u8 field_38); Gfx_ShadowUpdate
  * writes three words at 0x30/0x34/0x38. */
 typedef struct {
     /* 0x00 */ Blk20 matrix;
@@ -360,7 +360,7 @@ typedef struct {
             /* 0x37 */ u8 field_37;
         } b;
     } u34;
-    /* 0x38 read as a byte (field_38) or as an ActorTransformView* (ptr38) by func_8001EC10. */
+    /* 0x38 read as a byte (field_38) or as an ActorTransformView* (ptr38) by Gfx_ShadowUpdate. */
     union {
         /* 0x38 */ u8 field_38;
         ActorTransformView *ptr38;

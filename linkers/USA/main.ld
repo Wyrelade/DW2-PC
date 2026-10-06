@@ -53,7 +53,7 @@ SECTIONS
         build/USA/src/main/gamedata.c.o(.rodata);
         build/USA/src/main/flagtable.c.o(.rodata);
         build/USA/src/main/digidata.c.o(.rodata);
-        build/USA/src/main/F400.c.o(.rodata);
+        build/USA/src/main/shadow.c.o(.rodata);
         build/USA/src/main/skill.c.o(.rodata);
         build/USA/src/main/anim.c.o(.rodata);
         build/USA/src/main/model.c.o(.rodata);
@@ -101,7 +101,7 @@ SECTIONS
         build/USA/src/main/gamedata.c.o(.text);
         build/USA/src/main/flagtable.c.o(.text);
         build/USA/src/main/digidata.c.o(.text);
-        build/USA/src/main/F400.c.o(.text);
+        build/USA/src/main/shadow.c.o(.text);
         build/USA/src/main/skill.c.o(.text);
         build/USA/src/main/anim.c.o(.text);
         build/USA/src/main/model.c.o(.text);
@@ -150,7 +150,7 @@ SECTIONS
         build/USA/src/main/gamedata.c.o(.data);
         build/USA/src/main/flagtable.c.o(.data);
         build/USA/src/main/digidata.c.o(.data);
-        build/USA/src/main/F400.c.o(.data);
+        build/USA/src/main/shadow.c.o(.data);
         build/USA/src/main/skill.c.o(.data);
         build/USA/src/main/anim.c.o(.data);
         build/USA/src/main/model.c.o(.data);
@@ -231,7 +231,7 @@ SECTIONS
         build/USA/src/main/gamedata.c.o(.bss);
         build/USA/src/main/flagtable.c.o(.bss);
         build/USA/src/main/digidata.c.o(.bss);
-        build/USA/src/main/F400.c.o(.bss);
+        build/USA/src/main/shadow.c.o(.bss);
         build/USA/src/main/skill.c.o(.bss);
         build/USA/src/main/anim.c.o(.bss);
         build/USA/src/main/model.c.o(.bss);

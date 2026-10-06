@@ -1113,3 +1113,7 @@ Gfx_MatrixScaleXY2 = 0x80043774;
 Cd_FileCount = 0x80050754;
 Gpu_OtLayoutMode = 0x8005CD58;
 Skill_ShotXaChannel = 0x8005077C;
+Gfx_ShadowInit = 0x8001EC00; // type:func
+Gfx_ShadowUpdate = 0x8001EC10; // type:func
+Gfx_ShadowDraw = 0x8001ECE4; // type:func
+Gfx_ShadowDesc = 0x800416B4;

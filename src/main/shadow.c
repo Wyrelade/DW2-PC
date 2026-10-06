@@ -27,21 +27,23 @@
 #include "main/parts.h"
 #include "main/digibase.h"
 
-/* Task callbacks the descriptor below names (defined further down). */
-void func_8001EC00(Actor *arg0, s32 *arg1);
-void func_8001EC10(Actor *arg0);
-void func_8001ECE4(Actor *arg0);
+/* Shadow task (main task id 6): model 0x5B on the ground (y 0) under the root bone of the actor
+ * given at create time; drawn while that actor lives. Created by the digimon status menu and the
+ * stag0000 / stag3000 / stag3500 fighters; stag2000 has its own copy (Stg20_ShadowDesc).
+ * Task callbacks the descriptor below names (defined further down). */
+void Gfx_ShadowInit(Actor *arg0, s32 *arg1);
+void Gfx_ShadowUpdate(Actor *arg0);
+void Gfx_ShadowDraw(Actor *arg0);
 
-TaskDesc D_800416B4 = { (TaskInitFn)func_8001EC00, func_8001EC10, Task_DefaultDestroy, func_8001ECE4, 8, 0 };
+TaskDesc Gfx_ShadowDesc = { (TaskInitFn)Gfx_ShadowInit, Gfx_ShadowUpdate, Task_DefaultDestroy, Gfx_ShadowDraw, 8, 0 };
 
-/* Unnamed: stores *arg1 into actor work field_0, no callers, no table ref. */
-void func_8001EC00(Actor *arg0, s32 *arg1) {
+/* work field_0 = the actor to follow. */
+void Gfx_ShadowInit(Actor *arg0, s32 *arg1) {
     arg0->work->field_0 = *arg1;
 }
 
-/* Unnamed: actor update for model 0x5B following another actor's root bone XZ, no callers, no
- * table ref (dead task body). */
-void func_8001EC10(Actor *arg0) {
+/* Follow the target's root bone XZ at y 0; work field_4 = 1 while the target is alive. */
+void Gfx_ShadowUpdate(Actor *arg0) {
     s32 state = arg0->stateLevel0;
 
     switch (state) {
@@ -74,8 +76,8 @@ void func_8001EC10(Actor *arg0) {
     }
 }
 
-/* Unnamed: draw for the same model-0x5B actor when work field_4 set, no callers, no table ref. */
-void func_8001ECE4(Actor *arg0) {
+/* Draw the shadow model while work field_4 is set. */
+void Gfx_ShadowDraw(Actor *arg0) {
     if (arg0->work->field_4 != 0) {
         Gfx_AttachModel(arg0, 0x5B);
         Actor_UpdateTransform(arg0);

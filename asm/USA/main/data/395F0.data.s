@@ -221,7 +221,7 @@ enddlabel D_80048EA0
 nonmatching D_80048EC8
 
 dlabel D_80048EC8
-    /* 396C8 80048EC8 E4010180 */ .word D_800101E4
+    /* 396C8 80048EC8 E4010180 */ .word Sys_RcsId
     /* 396CC 80048ECC D8910280 */ .word _addque
     /* 396D0 80048ED0 FC910280 */ .word _addque2
     /* 396D4 80048ED4 188A0280 */ .word _clr

@@ -209,13 +209,13 @@ dlabel jtbl_800101C8
 enddlabel jtbl_800101C8
 
 .align 2
-nonmatching D_800101E4
+nonmatching Sys_RcsId
 
-dlabel D_800101E4
+dlabel Sys_RcsId
     /* 9E4 800101E4 */ .asciz "$Id: sys.c,v 1.140 1998/01/12 07:52:27 noda Exp yos $"
     /* 2449643A207379732E632C7620312E31343020313939382F30312F31322030373A35323A3237206E6F64612045787020796F732024000000 */
 .align 2
-enddlabel D_800101E4
+enddlabel Sys_RcsId
 
 .align 2
 nonmatching D_8001021C

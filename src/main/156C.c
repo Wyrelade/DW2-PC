@@ -10,7 +10,7 @@ extern s32 Task_Run(s32);
 /* Main's own task descriptors (defined by their modules) and the overlays' rows. */
 extern TaskDesc Text_PortraitDesc, Gfx_TexSlotDesc, Menu_NameEntryDesc, Sys_GameModeDesc, Menu_TopMenuDesc, Menu_SubMenuDesc;
 extern TaskDesc Menu_StatusDesc, Menu_ItemUseDesc, Menu_ItemDesc, Menu_DigiListDesc, Menu_DigiStatusDesc, Menu_SkillListDesc;
-extern TaskDesc Task_SpawnListDesc, Text_WinFrameDesc, Text_BoxDesc, D_800416B4, Fx_ModelDesc;
+extern TaskDesc Task_SpawnListDesc, Text_WinFrameDesc, Text_BoxDesc, Gfx_ShadowDesc, Fx_ModelDesc;
 extern TaskDesc *Stg00_TaskDescs[], *Stg10_TaskDescs[], *Stg11_TaskDescs[], *Stg20_TaskDescs[];
 extern TaskDesc *Stg30_TaskDescs[], *Stg35_TaskDescs[], *Stg40_TaskDescs[];
 
@@ -20,7 +20,7 @@ SHIFT_TEST_PAD(0x100);
 s32 D_80040CF0 = 0;
 /* Task_DescTable[0]: main's task ids 0x000-0x016. */
 TaskDesc *Task_MainDescs[] = {
-    0, &Sys_GameModeDesc, 0, &Task_SpawnListDesc, &Text_WinFrameDesc, &Text_PortraitDesc, &D_800416B4, &Fx_ModelDesc,
+    0, &Sys_GameModeDesc, 0, &Task_SpawnListDesc, &Text_WinFrameDesc, &Text_PortraitDesc, &Gfx_ShadowDesc, &Fx_ModelDesc,
     0, &Text_BoxDesc, &Gfx_TexSlotDesc, &Menu_TopMenuDesc, &Menu_SubMenuDesc, &Menu_StatusDesc, &Menu_ItemUseDesc, &Menu_ItemDesc,
     &Menu_DigiListDesc, &Menu_DigiStatusDesc, &Menu_SkillListDesc, &Menu_DigiStatusDesc, &Menu_DigiStatusDesc, &Menu_DigiStatusDesc, &Menu_NameEntryDesc,
 };

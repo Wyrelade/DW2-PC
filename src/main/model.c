@@ -29,7 +29,7 @@
 #include "main/gamedata.h"
 #include "main/flagtable.h"
 #include "main/digidata.h"
-#include "main/F400.h"
+#include "main/shadow.h"
 #include "main/skill.h"
 #include "main/anim.h"
 

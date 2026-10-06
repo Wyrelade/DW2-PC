@@ -93,7 +93,7 @@ segments:
       - [0xE280, c, gamedata]
       - [0xEA8C, c, flagtable]
       - [0xEE7C, c, digidata]
-      - [0xF400, c, F400]
+      - [0xF400, c, shadow]
       - [0xF540, c, skill]
       - [0xF9A8, c, anim]
       - [0x105BC, c, model]      # from Gfx_AttachModel: model drawing, actor transform
@@ -128,7 +128,7 @@ segments:
       - [0x31D70, .data, ot]
       - [0x31E70, .data, primbuf]
       - [0x31E7C, .data, parts]
-      - [0x31EB4, .data, F400]
+      - [0x31EB4, .data, shadow]
       - [0x31ECC, .data, anim]
       - [0x31EFC, .data, savedata]
       - [0x31F04, .data, sys]
