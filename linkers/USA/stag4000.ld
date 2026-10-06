@@ -19,8 +19,8 @@ SECTIONS
         build/USA/src/stag4000/msgwin.c.o(.rodata);
         build/USA/src/stag4000/obj.c.o(.rodata);
         build/USA/src/stag4000/player.c.o(.rodata);
-        build/USA/src/stag4000/stag4000_8338.c.o(.rodata);
-        build/USA/src/stag4000/stag4000_9364.c.o(.rodata);
+        build/USA/src/stag4000/enemy.c.o(.rodata);
+        build/USA/src/stag4000/entity.c.o(.rodata);
         build/USA/src/stag4000/stag4000_A180.c.o(.rodata);
         build/USA/src/stag4000/stag4000_C2CC.c.o(.rodata);
         . = ALIGN(., 4);
@@ -37,8 +37,8 @@ SECTIONS
         build/USA/src/stag4000/msgwin.c.o(.text);
         build/USA/src/stag4000/obj.c.o(.text);
         build/USA/src/stag4000/player.c.o(.text);
-        build/USA/src/stag4000/stag4000_8338.c.o(.text);
-        build/USA/src/stag4000/stag4000_9364.c.o(.text);
+        build/USA/src/stag4000/enemy.c.o(.text);
+        build/USA/src/stag4000/entity.c.o(.text);
         build/USA/src/stag4000/stag4000_A180.c.o(.text);
         build/USA/src/stag4000/stag4000_C2CC.c.o(.text);
         . = ALIGN(., 4);
@@ -56,8 +56,8 @@ SECTIONS
         build/USA/src/stag4000/msgwin.c.o(.data);
         build/USA/src/stag4000/obj.c.o(.data);
         build/USA/src/stag4000/player.c.o(.data);
-        build/USA/src/stag4000/stag4000_8338.c.o(.data);
-        build/USA/src/stag4000/stag4000_9364.c.o(.data);
+        build/USA/src/stag4000/enemy.c.o(.data);
+        build/USA/src/stag4000/entity.c.o(.data);
         build/USA/src/stag4000/stag4000_A180.c.o(.data);
         build/USA/src/stag4000/stag4000_C2CC.c.o(.data);
         . = ALIGN(., 4);
@@ -75,8 +75,8 @@ SECTIONS
         build/USA/src/stag4000/msgwin.c.o(.bss);
         build/USA/src/stag4000/obj.c.o(.bss);
         build/USA/src/stag4000/player.c.o(.bss);
-        build/USA/src/stag4000/stag4000_8338.c.o(.bss);
-        build/USA/src/stag4000/stag4000_9364.c.o(.bss);
+        build/USA/src/stag4000/enemy.c.o(.bss);
+        build/USA/src/stag4000/entity.c.o(.bss);
         build/USA/src/stag4000/stag4000_A180.c.o(.bss);
         build/USA/src/stag4000/stag4000_C2CC.c.o(.bss);
         . = ALIGN(., 4);

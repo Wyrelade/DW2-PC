@@ -10,7 +10,7 @@
 #include "stag4000/msgwin.h"
 #include "stag4000/obj.h"
 #include "stag4000/player.h"
-#include "stag4000/stag4000_8338_funcs.h"
+#include "stag4000/enemy.h"
 
 void Stg40_GateUpdate(Actor *a0) {
     Stg40ActWork *w = (Stg40ActWork *)a0->work;

@@ -10,8 +10,8 @@
 #include "stag4000/msgwin.h"
 #include "stag4000/obj.h"
 #include "stag4000/player.h"
-#include "stag4000/stag4000_8338_funcs.h"
-#include "stag4000/stag4000_9364_funcs.h"
+#include "stag4000/enemy.h"
+#include "stag4000/entity.h"
 
 u8 Stg40_EnemyAiTable[] = {
     0x02, 0x00, 0x02, 0x01, 0x04, 0x02, 0x03, 0x02, 0x07, 0x02, 0x06, 0x02, 0x05, 0x02, 0x02, 0x03,

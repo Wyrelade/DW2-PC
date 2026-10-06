@@ -10,8 +10,8 @@
 #include "stag4000/msgwin.h"
 #include "stag4000/obj.h"
 #include "stag4000/player.h"
-#include "stag4000/stag4000_8338_funcs.h"
-#include "stag4000/stag4000_9364_funcs.h"
+#include "stag4000/enemy.h"
+#include "stag4000/entity.h"
 #include "stag4000/stag4000_A180_funcs.h"
 #include "stag4000/stag4000_C2CC_funcs.h"
 
