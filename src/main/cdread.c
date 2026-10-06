@@ -42,7 +42,7 @@
 #include "main/cd.h"
 
 /* The asynchronous CD file read. Retail links a PsyQ data-only object (the rcos/sin tables)
- * between 13584.c's .data and this file's. */
+ * between cd.c's .data and this file's. */
 
 /* .bss: the header of the sector being read (Cd_CheckNextSector). */
 u8 Cd_SectorHeader[0x10];
