@@ -2181,21 +2181,6 @@ typedef struct {
         s32 addr[8];
     } otLayers;                          /* &Gpu_OtBufs[bufIndex] + Gpu_OtLayerOffsets[mode][i] */
 } SysState; /* size 0x158 */
-/* GsIMAGE as GsGetTimInfo fills it (Sys_Main reads paddr only), plus 4 unused stack bytes. */
-typedef struct {
-    /* 0x00 */ s32 mode;
-    /* 0x04 */ s16 px;
-    /* 0x06 */ s16 py;
-    /* 0x08 */ u16 pw;
-    /* 0x0A */ u16 ph;
-    /* 0x0C */ s32 paddr;
-    /* 0x10 */ s16 cx;
-    /* 0x12 */ s16 cy;
-    /* 0x14 */ u16 cw;
-    /* 0x16 */ u16 ch;
-    /* 0x18 */ u32 *clut;
-    u8 _pad1C[4];
-} SysTimImage;
 /* Clear rectangle for ClearImage. */
 typedef struct {
     s16 x;
@@ -2799,11 +2784,6 @@ static inline u32 gpu_draw_mode(u32 base, u32 dither, s32 tpage) {
     return (base | (dither << 10)) | (tpage & 0x7FF);
 }
 
-/* 0x20-byte slot of the table D_80061B38 points at (word view of StRingSlotRec, set by StSetRing). */
-typedef struct {
-    /* 0x00 */ s32 field_0;
-    u8 _pad4[0x1C];
-} StRingSlotWord;
 
 /* Stream sector ring (StSetRing sets base D_80061B38 and count D_80061B3C):
    `count` 0x20-byte slot headers, then `count` 0x7E0-byte sector payloads. */
@@ -3006,27 +2986,6 @@ typedef struct {
     /* 0x4 */ u8 *data;
 } PadCombEntry;
 
-/* Pad_ParseTableReply view of PadPort: the three table pointers typed for the record parser. */
-typedef struct {
-    /* 0x00 */ u16 *modeTable;
-    /* 0x04 */ PadActInfo *actTable;
-    /* 0x08 */ PadCombEntry *combTable;
-    u8 _pad0C[0x30];
-    /* 0x3C */ volatile u8 *rxBuf;
-    u8 _pad40[0x6];
-    /* 0x46 */ u8 infoStep;
-    /* 0x47 */ u8 queryIndex;
-    /* 0x48 */ u8 combRemain;
-    /* 0x49 */ u8 padState;
-    u8 _pad4A[0x99];
-    /* 0xE3 */ u8 modeCount;
-    u8 _padE4[0x5];
-    /* 0xE9 */ u8 actCount;
-    /* 0xEA */ u8 combCount;
-    /* 0xEB */ u8 field_EB;
-    u8 _padEC[0x2];
-    /* 0xEE */ u16 field_EE;
-} PadPortTableView;
 
 typedef struct {
     /* 0x00 */ s32 field_0[10];
@@ -3146,11 +3105,6 @@ typedef struct {
     /* 0x1C */ CdSectorHdr loc;
 } CdStHeader;
 
-typedef struct {
-    /* 0x0 */ u16 field_0;
-    /* 0x2 */ u16 stat;
-    /* 0x4 */ u16 intr;
-} Res2E2C4;
 
 #define VA_ARG(ap, T) (((T *)((ap) += sizeof(T)))[-1])
 
@@ -3336,13 +3290,6 @@ typedef struct {
     s16 vz;
 } Vert6Pmv; /* size 0x6 */
 
-/* Vertex list Gfx_ProjectModelVerts walks: count, then packed vertices at 0x6. */
-typedef struct {
-    /* 0x00 */ s16 count;
-    /* 0x02 */ s16 unk2;
-    /* 0x04 */ s16 unk4;
-    /* 0x06 */ Vert6Pmv v[1];
-} VertListPmv;
 
 /* Projected screen xy (PsyQ DVECTOR shape). */
 typedef struct {

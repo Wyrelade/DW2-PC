@@ -907,11 +907,6 @@ extern Stg40ItemReq Stg40_ObstacleItemReqs[];
 extern s32 Item_CheckId(s32 arg0);
 extern Stg40Ent48 *Stg40_FindEntAt(s16 x, s16 y);
 
-/* Byte views of the status block Stg40_PlayerBugInvade indexes. */
-typedef struct {
-    u8 _pad000[0xB9C];
-    u8 field_B9C[13];
-} Stg40StatusView;
 typedef struct {
     u8 _pad000[0xBA5];
     u8 bugLevels[3];
