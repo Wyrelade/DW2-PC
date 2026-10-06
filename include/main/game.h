@@ -914,9 +914,6 @@ typedef struct {
     /* 0x00 */ u8 name[0x5C];
 } Nm12974;
 
-extern u8 Save_PlayerName[];
-extern u8 D_8005E6F1[];
-extern Nm12974 Save_RosterNames[];
 
 /* file-local views for Menu_MoveGridCursor */
 typedef struct {

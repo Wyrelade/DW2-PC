@@ -30,7 +30,7 @@ void Stg20_LabInfoUpdate(Actor *a) {
     switch (a->stateLevel0) {
     case 0:
         Mem_FillWordsNeg1(w->texts, 0xD);
-        w->digi = (DigiRosterEntry *)&D_8005E704[D_800709D8];
+        w->digi = (DigiRosterEntry *)&Save_GameState.elems[D_800709D8];
         Task_NextState0(a);
         break;
     case 1:

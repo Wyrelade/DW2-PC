@@ -27,7 +27,7 @@ void Stg20_LabRosterSetText(Actor *a, s32 i) {
         }
         if (s->used != 0) {
             Text_OpenById(&w->texts[i * 4 + 0], 0x81, 0, pos[0]);
-            Text_OpenPacked(&w->texts[i * 4 + 1], (s32)Save_RosterNames[s->slot].name, 0, pos[1]);
+            Text_OpenPacked(&w->texts[i * 4 + 1], (s32)Save_GameState.elems[s->slot].name, 0, pos[1]);
             Text_OpenPacked(&w->texts[i * 4 + 2], (s32)Digi_GetDefaultName(digi), 0, pos[2]);
             Text_OpenById(&w->texts[i * 4 + 3], Digi_GetRank(digi) + 0xC6, 0, pos[3]);
         }
@@ -149,7 +149,7 @@ void Stg20_LabRosterDraw(Actor *a) {
         }
         Gfx_DrawParts((s32)p);
         for (i = 0; i < 4; i++) {
-            ros = D_8005E704;
+            ros = (Stg20Roster *)Save_GameState.elems;
             r = (GfxPart *)Cd_GetFileEntry(Stg20_LabRosterPanelIds[i]);
             for (s = r; s->fileId != 0; s++) {
                 do {

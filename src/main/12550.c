@@ -91,5 +91,5 @@ void Save_ClearEventFlags(void) {
         p->d[0] = 0;
         p = (SaveEventFlags *)((u8 *)p - 1);
     } while (--i >= 0);
-    Flag_Bits.progress = 0;
+    Save_GameState.eventFlags.progress = 0;
 }

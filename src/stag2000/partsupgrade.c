@@ -156,7 +156,7 @@ void Stg20_PartsUpgradeUpdate(Actor *task) {
         Text_OpenById(&w->hdr[0], 0x17A, 4, Stg20_UpgradeTextPos[0]);
         Text_OpenById(&w->hdr[1], 0x17B, 4, Stg20_UpgradeTextPos[1]);
         Text_OpenById(&w->hdr[2], 0xDE, 0, Stg20_UpgradeTextPos[2]);
-        Text_OpenPacked(&w->hdr[3], (s32) &D_8005E6F1, 0, Stg20_UpgradeTextPos[3]);
+        Text_OpenPacked(&w->hdr[3], (s32) &Save_GameState.field_D1, 0, Stg20_UpgradeTextPos[3]);
         Task_Create(0x30D, (s32 *) children, 0);
         Stg20_BuildUpgradeList(task);
         w->dirty = 1;
@@ -213,7 +213,7 @@ void Stg20_PartsUpgradeUpdate(Actor *task) {
         if (w->recs[w->index].price == 0) {
             goto noPrice;
         }
-        if (D_8005E628 < w->recs[w->index].price) {
+        if (Save_GameState.bits < w->recs[w->index].price) {
             goto tooHigh;
         }
         Snd_PlayById(0xE, 0);

@@ -90,7 +90,7 @@ void Stg30_CommandMenuUpdate(Actor *a0) {
                 }
             } while (0);
             if (Stg30_Battle.entries[0].inputSlot == 6) {
-                Text_OpenPacked(w->text, (s32)Save_PlayerName, 0x10, Stg30_TamerNameTextPos);
+                Text_OpenPacked(w->text, (s32)Save_GameState.playerName, 0x10, Stg30_TamerNameTextPos);
                 for (k = 0; k < 3; k++) {
                     if (Stg30_Battle.entries[0].fromCity != 0 && k != 0) {
                         s32 *text = &w->text[k + 1];

@@ -70,13 +70,13 @@ void Menu_NameEntryTask(Actor *a0) {
     switch (w->mode) {
     default:
     case 0:
-        p = Save_RosterNames[w->rosterIndex].name;
+        p = Save_GameState.elems[w->rosterIndex].name;
         break;
     case 1:
-        p = Save_PlayerName;
+        p = Save_GameState.playerName;
         break;
     case 2:
-        p = D_8005E6F1;
+        p = Save_GameState.field_D1;
         break;
     }
     switch (a0->stateLevel0) {

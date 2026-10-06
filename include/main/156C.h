@@ -792,6 +792,16 @@ typedef struct {
     /* 0x0000 */ s32 entries[0x100C];
 } GpuOtBuf;
 
+/* Event flags at Save_GameState.eventFlags (Save_GameState + 0x1004). Flag_Set / Flag_Test map flag
+ * ids onto bit arrays by range (ids 0..599 run past flags0 into the next arrays). */
+typedef struct {
+    /* 0x00 */ u8 flags0[0x20];     /* ids 0..599 */
+    /* 0x20 */ u8 flags600[0x8];    /* ids 600..699 */
+    /* 0x28 */ u8 flags700[0x8];    /* ids 700..799 */
+    /* 0x30 */ u8 flags800[0x10];   /* ids 800..999 */
+    /* 0x40 */ s32 progress;        /* ids 1000..1999: value id - 1900 */
+} EventFlags; /* size 0x44 */
+
 /* Element of the Save_GameState.elems[] array (stride 0x5C); only the leading
    status byte is touched by Digi_AddNew. */
 typedef struct {
@@ -820,24 +830,20 @@ typedef struct {
     u8 _pad00[0x04];
     /* 0x04 */ s32 playTime;
     /* 0x08 */ s32 bits;
-    u8 _pad0C[0x08];
-    /* 0x14 */ u8 field_14;
-    /* 0x15 */ u8 field_15;
-    /* 0x16 */ u8 field_16;
-    /* 0x17 */ u8 field_17;
-    u8 _pad18[0x14];
+    u8 _pad0C[0x05];
+    /* 0x11 */ u8 field_11;
+    /* 0x12 */ u8 field_12;
+    u8 _pad13[0x01];
+    /* 0x14 */ u8 playerName[0x10];
+    u8 _pad24[0x08];
     /* 0x2C */ u16 itemCounts[0x4C];   /* indexed by item slot (stag2000 shop) */
     /* 0xC4 */ s16 field_C4;           /* Flag_Set ids 2000..2236 store id - 2000 */
     u8 _padC6[0x06];
     u8 _padCC[0x05];
-    /* 0xD1 */ u8 field_D1;
-    /* 0xD2 */ u8 field_D2;
-    /* 0xD3 */ u8 field_D3;
-    /* 0xD4 */ u8 field_D4;
-    u8 _padD5[0x0F];
+    /* 0xD1 */ u8 field_D1[0x13];   /* a second name buffer (text escape F0 05) */
     /* 0xE4 */ DigiRosterEntry elems[0x24];
     u8 _padDD4[0x1004 - 0xDD4];
-    /* 0x1004 */ u8 eventFlags[0x44]; /* the EventFlags block, also the symbol Flag_Bits */
+    /* 0x1004 */ EventFlags eventFlags;
     u8 _pad1048[0x10];
 } GameState; /* size 0x1058: the whole block Save_ResetGameState zeroes */
 
@@ -2684,16 +2690,6 @@ typedef struct {
     /* 0x1034 */ u8 d[0x10];
 } SaveEventFlags;
 
-/* Event flags at Flag_Bits (Save_GameState + 0x1004). Flag_Set / Flag_Test map flag
- * ids onto bit arrays by range (ids 0..599 run past flags0 into the next arrays). */
-typedef struct {
-    /* 0x00 */ u8 flags0[0x20];     /* ids 0..599 */
-    /* 0x20 */ u8 flags600[0x8];    /* ids 600..699 */
-    /* 0x28 */ u8 flags700[0x8];    /* ids 700..799 */
-    /* 0x30 */ u8 flags800[0x10];   /* ids 800..999 */
-    /* 0x40 */ s32 progress;        /* ids 1000..1999: value id - 1900 */
-} EventFlags; /* size 0x44 */
-extern EventFlags Flag_Bits;
 
 
 /* 4-byte unaligned tag and the 0x20-byte records at D_80061B38 (func_8002DF74). */

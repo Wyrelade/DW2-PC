@@ -15,8 +15,8 @@ void Stg20_LabPairUpdate(Actor *a) {
     switch (a->stateLevel0) {
     case 0:
         Mem_FillWordsNeg1(w, 2);
-        Stg20_OpenText(w, (s32)Save_RosterNames[Stg20_MenuState.dnaParent0].name, 0, &Stg20_LabPairNamePos[0], 0);
-        Stg20_OpenText(&w[1], (s32)Save_RosterNames[Stg20_MenuState.dnaParent1].name, 0, &Stg20_LabPairNamePos[1], 0);
+        Stg20_OpenText(w, (s32)Save_GameState.elems[Stg20_MenuState.dnaParent0].name, 0, &Stg20_LabPairNamePos[0], 0);
+        Stg20_OpenText(&w[1], (s32)Save_GameState.elems[Stg20_MenuState.dnaParent1].name, 0, &Stg20_LabPairNamePos[1], 0);
         Task_NextState0(a);
         break;
     case 1:

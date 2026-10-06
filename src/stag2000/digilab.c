@@ -270,8 +270,8 @@ void Stg20_LabDnaDigivolve(Actor *a) {
             if (((Actor *)w->menu)->stateLevel1 != 0) {
                 break;
             }
-            p = (Stg20Digi *)&D_8005E704[Stg20_MenuState.dnaParent0];
-            q = (Stg20Digi *)&D_8005E704[Stg20_MenuState.dnaParent1];
+            p = (Stg20Digi *)&Save_GameState.elems[Stg20_MenuState.dnaParent0];
+            q = (Stg20Digi *)&Save_GameState.elems[Stg20_MenuState.dnaParent1];
             t = Digi_GetRank(Stg20_MenuState.evoTargetId);
             w->busy = 0;
             Snd_PlayById(0x101, 1);
@@ -644,7 +644,7 @@ void Stg20_LabDigivolve(Actor *a) {
             if (((Actor *)w->menu)->stateLevel1 == 0) {
                 w->busy = 0;
                 Snd_PlayById(0x101, 1);
-                e = (Stg20DigiBoost *)&D_8005E704[Stg20_MenuState.infoRosterIndex];
+                e = (Stg20DigiBoost *)&Save_GameState.elems[Stg20_MenuState.infoRosterIndex];
                 e->digiId = Stg20_MenuState.evoTargetId;
                 e->maxHp += 30;
                 v = e->maxHp;

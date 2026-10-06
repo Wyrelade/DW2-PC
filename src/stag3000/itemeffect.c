@@ -128,7 +128,7 @@ s32 Stg30_ApplyItemEffect(s32 target, s32 tech, s16 *p3, s16 *p4) {
     case 0x12B:
     case 0x12C:
     case 0x12D:
-        dmg = Stg30_CalcCannonDamage(target, tech, D_8005E65E - 0x60);
+        dmg = Stg30_CalcCannonDamage(target, tech, Save_GameState.itemCounts[9] - 0x60);
         break;
     default:
         dmg = 0;

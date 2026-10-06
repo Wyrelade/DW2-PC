@@ -40,24 +40,6 @@ GameStateView *Save_GameStatePtr = (GameStateView *)&Save_GameState;
 /* .bss: the game state (save data). Code and overlays reach parts of it by their own
  * symbols. */
 GameState Save_GameState;
-DATA_LABEL(D_8005E628, Save_GameState, 0x8);
-DATA_LABEL(D_8005E631, Save_GameState, 0x11);
-DATA_LABEL(D_8005E632, Save_GameState, 0x12);
-DATA_LABEL(Save_PlayerName, Save_GameState, 0x14);
-DATA_LABEL(D_8005E64C, Save_GameState, 0x2C);
-DATA_LABEL(D_8005E64E, Save_GameState, 0x2E);
-DATA_LABEL(D_8005E650, Save_GameState, 0x30);
-DATA_LABEL(D_8005E65C, Save_GameState, 0x3C);
-DATA_LABEL(D_8005E65E, Save_GameState, 0x3E);
-DATA_LABEL(D_8005E660, Save_GameState, 0x40);
-DATA_LABEL(D_8005E662, Save_GameState, 0x42);
-DATA_LABEL(D_8005E66E, Save_GameState, 0x4E);
-DATA_LABEL(D_8005E686, Save_GameState, 0x66);
-DATA_LABEL(D_8005E6F1, Save_GameState, 0xD1);
-DATA_LABEL(D_8005E704, Save_GameState, 0xE4);
-DATA_LABEL(Save_RosterNames, Save_GameState, 0x130);
-DATA_LABEL(D_8005F398, Save_GameState, 0xD78);
-DATA_LABEL(Flag_Bits, Save_GameState, 0x1004);
 
 /* Digimon a Digi-Beetle can carry, by its part 2 item id - 0x2F (Beetle_GetDigiCapacity). */
 u8 Beetle_PartDigiCapacity[] = { 4, 5, 6, 7, 8, 12 };
@@ -66,15 +48,15 @@ void Save_ResetGameState(void) {
     Mem_Zero(Save_GameStatePtr, 0x1058);
     Save_GameStatePtr->field_0 = 1;
     Save_ClearEventFlags();
-    Save_GameState.field_14 = 0x8F;
-    Save_GameState.field_15 = 0x95;
-    Save_GameState.field_16 = 0xB7;
-    Save_GameState.field_17 = 0xFF;
+    Save_GameState.playerName[0] = 0x8F;
+    Save_GameState.playerName[1] = 0x95;
+    Save_GameState.playerName[2] = 0xB7;
+    Save_GameState.playerName[3] = 0xFF;
     Save_GameState.bits = 0x1F4;
-    Save_GameState.field_D1 = 0x9E;
-    Save_GameState.field_D2 = 0xD5;
-    Save_GameState.field_D3 = 0x96;
-    Save_GameState.field_D4 = 0xFF;
+    Save_GameState.field_D1[0] = 0x9E;
+    Save_GameState.field_D1[1] = 0xD5;
+    Save_GameState.field_D1[2] = 0x96;
+    Save_GameState.field_D1[3] = 0xFF;
     Save_GameState.playTime = 0;
 }
 

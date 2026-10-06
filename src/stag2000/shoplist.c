@@ -88,55 +88,55 @@ s32 Stg20_GetPartFitMsg(s32 id) {
         return 0x131;
     }
     if (Stg20_ByteListHas(Stg20_ShooterGunAmmo, id)) {
-        if (D_8005E65C != 0) {
+        if (Save_GameState.itemCounts[8] != 0) {
             return 0x12F;
         }
         return 0x130;
     }
     if (Stg20_ByteListHas(Stg20_ZCannonAmmo, id)) {
-        if (D_8005E65E != 0) {
+        if (Save_GameState.itemCounts[9] != 0) {
             return 0x12F;
         }
         return 0x133;
     }
     if (Stg20_ByteListHas(Stg20_MissileGunAmmo, id)) {
-        if (D_8005E662 != 0) {
+        if (Save_GameState.itemCounts[11] != 0) {
             return 0x12F;
         }
         return 0x135;
     }
     if (Stg20_ByteListHas(Stg20_RCannonAmmo, id)) {
-        if (D_8005E660 != 0) {
+        if (Save_GameState.itemCounts[10] != 0) {
             return 0x12F;
         }
         return 0x136;
     }
     if (Stg20_ByteListHas(Stg20_PartsAdmantOnly, id)) {
-        if (D_8005E64C == 0xEC) {
+        if (Save_GameState.itemCounts[0] == 0xEC) {
             return 0x131;
         }
         return 0x134;
     }
     if (Stg20_ByteListHas(Stg20_PartsSteelOnly, id)) {
-        if (D_8005E64C == 0xEA) {
+        if (Save_GameState.itemCounts[0] == 0xEA) {
             return 0x131;
         }
         return 0x134;
     }
     if (Stg20_ByteListHas(Stg20_PartsTitanOnly, id)) {
-        if (D_8005E64C == 0xEB) {
+        if (Save_GameState.itemCounts[0] == 0xEB) {
             return 0x131;
         }
         return 0x134;
     }
     if (Stg20_ByteListHas(Stg20_PartsNotAdmant, id)) {
-        if (D_8005E64C != 0xEC) {
+        if (Save_GameState.itemCounts[0] != 0xEC) {
             return 0x131;
         }
         return 0x134;
     }
     if (Stg20_ByteListHas(Stg20_PartsNotSteel, id)) {
-        if (D_8005E64C != 0xEA) {
+        if (Save_GameState.itemCounts[0] != 0xEA) {
             return 0x131;
         }
         return 0x134;
@@ -229,7 +229,7 @@ void Stg20_LoadShopSellList(Actor *a) {
     s32 i;
     s32 j;
     u8 *name;
-    u16 *list = D_8005E686;
+    u16 *list = &Save_GameState.itemCounts[29];
     s32 k;
 
     w->count = 0;
@@ -415,7 +415,7 @@ void Stg20_ShopListUpdate(Actor *a) {
                 if (m->sellMode == 0) {
                     item = Stg20_ShopItems.items[w->cursor + w->page * 8];
                     if (item != 0) {
-                        if (Item_GetPrice(item) > D_8005E628) {
+                        if (Item_GetPrice(item) > Save_GameState.bits) {
                             w->msgId = 0x139;
                             w->dirty = 1;
                             Snd_PlayById(0x10, 0);

@@ -642,7 +642,6 @@ extern s32 Stg30_SpecialFightBgModel;
 extern s32 Stg30_FightBgByFloorElem[];
 extern s32 Stg30_FightMsgParts[];
 extern s32 D_80074098;
-extern DigiRosterEntry D_8005F398;  /* Save_GameState.elems[35] as a scalar reloc */
 extern SysState Sys_State;
 extern u8 D_8005E5DD;  /* Dung_State.field_103D as a scalar reloc */
 extern GameState Save_GameState;
@@ -788,7 +787,6 @@ extern void Stg30_StatBuff(s16 *max, s16 *b, s16 *c);
 extern s32 Stg30_ApplySkillStatus(s32 attacker, s32 target, s32 tech, s16 *p4, s16 *p5);
 extern s32 Stg30_CureStatusMasks[];
 extern s16 Stg30_CureStatusLabels[];
-extern u16 D_8005E65E;  /* Save_GameState halfword at 0x3E as a scalar reloc (Z-cannon level) */
 
 /* Save_GameState viewed with the item-menu enable words/bytes Stg30_ItemMenuUpdate reads. */
 typedef struct {
@@ -803,7 +801,6 @@ typedef struct {
 } Stg30BeetleWeapons;
 
 
-extern u8 Save_PlayerName[];
 extern const Halves Stg30_TamerNameTextPos;
 
 /* Save_GameState viewed with the words Stg30_JoinPromptUpdate reads (0x30 map id, 0x4A, 0x61). */
@@ -820,7 +817,6 @@ typedef struct {
 
 extern Halves Stg30_JoinPromptTextPos[];
 extern u8 Stg30_MemoryCapacity[];
-extern u16 D_8005E650;  /* Save_GameState halfword at 0x30 as a scalar reloc (map id) */
 extern DungState *Dung_StatePtr;
 extern u8 *Digi_GetDefaultName(s32);
 extern void Digi_SortRoster(void);

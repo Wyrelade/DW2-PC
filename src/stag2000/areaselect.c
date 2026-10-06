@@ -161,9 +161,9 @@ s32 Stg20_TestSpecialFlag(s32 id) {
         }
         return 1;
     case 9009:
-        return D_8005E64E >= 0x10;
+        return Save_GameState.itemCounts[1] >= 0x10;
     case 9010:
-        return D_8005E64E >= 0x1F;
+        return Save_GameState.itemCounts[1] >= 0x1F;
     case 9012:
         return Sys_State.prevGameMode == 0x32A;
     case 9034:
@@ -185,41 +185,41 @@ s32 Stg20_TestSpecialFlag(s32 id) {
         }
         return 0;
     case 9015:
-        return D_8005E628 >= 500;
+        return Save_GameState.bits >= 500;
     case 9016:
-        return D_8005E628 >= 1000;
+        return Save_GameState.bits >= 1000;
     case 9017:
-        return D_8005E628 >= 1500;
+        return Save_GameState.bits >= 1500;
     case 9018:
-        return D_8005E628 >= 2000;
+        return Save_GameState.bits >= 2000;
     case 9019:
-        return D_8005E628 >= 2500;
+        return Save_GameState.bits >= 2500;
     case 9020:
-        return D_8005E628 >= 3000;
+        return Save_GameState.bits >= 3000;
     case 9021:
-        return D_8005E628 >= 3500;
+        return Save_GameState.bits >= 3500;
     case 9022:
-        return D_8005E628 >= 4000;
+        return Save_GameState.bits >= 4000;
     case 9024:
-        return D_8005E632 < 2;
+        return Save_GameState.field_12 < 2;
     case 9025:
-        return D_8005E632 < 3;
+        return Save_GameState.field_12 < 3;
     case 9026:
-        return D_8005E632 < 4;
+        return Save_GameState.field_12 < 4;
     case 9027:
-        return D_8005E632 < 5;
+        return Save_GameState.field_12 < 5;
     case 9028:
-        return D_8005E632 < 6;
+        return Save_GameState.field_12 < 6;
     case 9029:
-        return D_8005E632 < 7;
+        return Save_GameState.field_12 < 7;
     case 9030:
-        return D_8005E632 < 8;
+        return Save_GameState.field_12 < 8;
     case 9031:
-        return D_8005E632 < 9;
+        return Save_GameState.field_12 < 9;
     case 9032:
-        return D_8005E632 < 10;
+        return Save_GameState.field_12 < 10;
     case 9033:
-        return D_8005E632 < 11;
+        return Save_GameState.field_12 < 11;
     case 9035:
         if (Flag_Test(0x2C6) == 0) {
             return 0;
@@ -241,13 +241,13 @@ void Stg20_SetSpecialFlag(s32 id, s32 on) {
     }
     switch (id) {
     case 0x238C:
-        D_8005E64C = 0xEB;
+        Save_GameState.itemCounts[0] = 0xEB;
         break;
     case 0x23B5:
-        D_8005E64C = 0xEC;
+        Save_GameState.itemCounts[0] = 0xEC;
         break;
     case 0x238D:
-        D_8005E66E = 0x76;
+        Save_GameState.itemCounts[17] = 0x76;
         break;
     case 0x238E:
         Stg20_ApplyStartPreset(0);
@@ -322,43 +322,43 @@ void Stg20_SetSpecialFlag(s32 id, s32 on) {
         Stg20_AddBits(-4000);
         break;
     case 0x239C:
-        D_8005E632 = 1;
+        Save_GameState.field_12 = 1;
         break;
     case 0x239D:
-        D_8005E632 = 2;
+        Save_GameState.field_12 = 2;
         break;
     case 0x239E:
-        D_8005E632 = 3;
+        Save_GameState.field_12 = 3;
         break;
     case 0x239F:
-        D_8005E632 = 4;
+        Save_GameState.field_12 = 4;
         break;
     case 0x23A0:
-        D_8005E632 = 5;
+        Save_GameState.field_12 = 5;
         break;
     case 0x23A1:
-        D_8005E632 = 6;
+        Save_GameState.field_12 = 6;
         break;
     case 0x23A2:
-        D_8005E632 = 7;
+        Save_GameState.field_12 = 7;
         break;
     case 0x23A3:
-        D_8005E632 = 8;
+        Save_GameState.field_12 = 8;
         break;
     case 0x23A4:
-        D_8005E632 = 9;
+        Save_GameState.field_12 = 9;
         break;
     case 0x23A5:
-        D_8005E632 = 10;
+        Save_GameState.field_12 = 10;
         break;
     case 0x23A6:
-        D_8005E631 = 0;
+        Save_GameState.field_11 = 0;
         break;
     case 0x23A7:
-        D_8005E631 = 1;
+        Save_GameState.field_11 = 1;
         break;
     case 0x23A8:
-        D_8005E631 = 2;
+        Save_GameState.field_11 = 2;
         break;
     case 0x23B3:
         for (j = 0; j < Item_GetBagCapacity(); j++) {

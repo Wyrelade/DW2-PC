@@ -39,7 +39,7 @@ void Stg30_JoinPromptInit(Actor *a0, s32 *args) {
 }
 
 void Stg30_JoinCreateDigi(Actor *a0, s32 a1) {
-    DigiRosterEntry *e = &D_8005F398;
+    DigiRosterEntry *e = &Save_GameState.elems[35];
 
     Digi_InitFromTable(Sys_State.modeArg, ((Stg30WorkWord *)a0->work)->field_0 - 3, e);
     if (a1 != 0) {
@@ -131,7 +131,7 @@ void Stg30_JoinPromptUpdate(Actor *a0) {
                         cnt++;
                     }
                 }
-                n = Stg30_MemoryCapacity[D_8005E650 - 0x2F] - Dung_StatePtr->memBugCount;
+                n = Stg30_MemoryCapacity[Save_GameState.itemCounts[2] - 0x2F] - Dung_StatePtr->memBugCount;
                 if (n > 0 && cnt < n) {
                     Task_SetState1(a0, 4);
                     break;

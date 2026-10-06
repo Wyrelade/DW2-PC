@@ -18,7 +18,7 @@ TaskDesc Stg20_LabSkillsDesc = { 0, Stg20_LabSkillsUpdate, Task_DefaultDestroy, 
 
 void Stg20_LabSkillsGroup(Actor *a) {
     Stg20SkillWork *w = (Stg20SkillWork *)a->work;
-    Stg20Roster *e = &D_8005E704[a->param];
+    Stg20Roster *e = (Stg20Roster *)&Save_GameState.elems[a->param];
     s32 cnt[4];
     s32 i;
     s32 j;
@@ -104,7 +104,7 @@ void Stg20_LabSkillsUpdate(Actor *a) {
             Stg20_OpenText(&w->texts[1], 0, 0xB, &Stg20_LabSkillsTextPos[1], 4);
             Stg20_OpenText(&w->texts[2], 0, 0xC, &Stg20_LabSkillsTextPos[2], 4);
             Stg20_OpenText(&w->texts[3], 0, 0xD, &Stg20_LabSkillsTextPos[3], 4);
-            Stg20_OpenText(&w->texts[4], (s32)Save_RosterNames[D_800709E0].name, 0, &Stg20_LabSkillsTextPos[8], 0);
+            Stg20_OpenText(&w->texts[4], (s32)Save_GameState.elems[D_800709E0].name, 0, &Stg20_LabSkillsTextPos[8], 0);
             Stg20_OpenText(&w->texts[5], 0, 0xD1, &Stg20_LabSkillsTextPos[9], 0);
             Task_NextState1(a);
         }

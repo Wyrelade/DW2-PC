@@ -626,10 +626,10 @@ void Text_UpdateAllBoxes(Actor *a0) {
                     Text_PushReturn((s32)(s + 1));
                     switch (k) {
                     case 0:
-                        s = &Save_GameState.field_14 - 1; /* text before the player name */
+                        s = Save_GameState.playerName - 1; /* text before the player name */
                         break;
                     case 5:
-                        s = &Save_GameState.field_D1 - 1; /* text before the name at 0xD1 */
+                        s = Save_GameState.field_D1 - 1; /* text before the name at 0xD1 */
                         break;
                     case 1:
                     case 2:

@@ -93,8 +93,6 @@ extern u8 Stg20_MapGrid[24][24];
 
 /* main exe */
 extern GameState Save_GameState;
-extern s32 D_8005E628;             /* Save_GameState.field_8 as a scalar reloc */
-extern u8 D_8005E6F1;
 extern void Task_DefaultDestroy(Actor *);
 extern void Task_NextState0(Actor *);
 extern TaskEntry *Task_FindFirst(s32, s32, s32);
@@ -540,8 +538,6 @@ extern void Snd_PlayById(s32, s32);
 extern void Task_SetState0(Actor *, u32);
 extern void Task_NextState2(Actor *);
 
-extern Stg20Roster D_8005E704[];
-extern Stg20RosterName Save_RosterNames[];
 extern Stg20Cell Stg20_LabPairNamePos[2];
 extern SysState Sys_State;
 extern s32 Skill_GetType(s32);
@@ -584,7 +580,6 @@ typedef struct {
     /* 0x60 */ s32 promptId;
 } Stg20ShopListWork;
 extern Stg20ShopList Stg20_ShopItems;
-extern u16 D_8005E686[0x30];
 /* Save_GameState.field_66 as a scalar reloc */
 extern void Stg20_FormatPrice(u8 *out, s32 v);
 extern void Task_Create(u32, s32 *, s32);
@@ -609,15 +604,10 @@ extern u8 Stg20_PartsTitanOnly[];
 extern u8 Stg20_PartsNotSteel[];
 extern u8 Stg20_MissileGunAmmo[];
 extern u8 Stg20_RCannonAmmo[];
-extern u16 D_8005E64C;
 /* Save_GameState.field_2C[0] as a scalar reloc */
-extern u16 D_8005E65C;
 /* Save_GameState.field_2C[8] */
-extern u16 D_8005E65E;
 /* Save_GameState.field_2C[9] */
-extern u16 D_8005E660;
 /* Save_GameState.field_2C[10] */
-extern u16 D_8005E662;
 extern s32 Cd_GetFileLba(s32 arg0);
 extern s32 CdControl(s32, u8 *, u8 *);
 extern s32 CdControlB(s32, u8 *, u8 *);
@@ -779,8 +769,6 @@ typedef struct {
     /* 0xE4 */ Stg20RosterHp elems[0x24];
 } Stg20GameRoster;
 
-extern u16 D_8005E64E; /* Save_GameState.field_2C[1] as a scalar reloc */
-extern u8 D_8005E632;  /* Save_GameState byte 0x12 as a scalar reloc */
 extern s32 Item_GetBagCapacity(void);
 extern s32 Stg20_OwnsDigi(s32 id);
 
@@ -791,8 +779,6 @@ extern void Gfx_FadeInFromWhite(s32);
 extern s32 Stg20_LabIsDna[];
 
 extern void Digi_AddNew(s32);
-extern u16 D_8005E66E; /* Save_GameState.field_66[4] as a scalar reloc */
-extern u8 D_8005E631;  /* Save_GameState byte 0x11 as a scalar reloc */
 
 
 /* Stg20_MenuState viewed from its field_8 (Stg20_ShopListUpdate addresses Stg20_MenuState.field_54 as 0x4C from it). */

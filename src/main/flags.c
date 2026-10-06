@@ -49,22 +49,22 @@ s32 Flag_Test(s32 arg0) {
     s32 i;
 
     if (arg0 < 0x258) {
-        return Mem_TestBit(Flag_Bits.flags0, arg0);
+        return Mem_TestBit(Save_GameState.eventFlags.flags0, arg0);
     }
     if (arg0 < 0x2BC) {
-        return Mem_TestBit(Flag_Bits.flags600, arg0 - 0x258);
+        return Mem_TestBit(Save_GameState.eventFlags.flags600, arg0 - 0x258);
     }
     if (arg0 < 0x320) {
-        return Mem_TestBit(Flag_Bits.flags700, arg0 - 0x2BC);
+        return Mem_TestBit(Save_GameState.eventFlags.flags700, arg0 - 0x2BC);
     }
     if (arg0 < 0x3E8) {
-        return Mem_TestBit(Flag_Bits.flags800, arg0 - 0x320);
+        return Mem_TestBit(Save_GameState.eventFlags.flags800, arg0 - 0x320);
     }
     if (arg0 < 0x44C) {
-        return Flag_Bits.progress >= arg0 - 0x3E8;
+        return Save_GameState.eventFlags.progress >= arg0 - 0x3E8;
     }
     if (arg0 < 0x640) {
-        return Flag_Bits.progress < arg0 - 0x5DC;
+        return Save_GameState.eventFlags.progress < arg0 - 0x5DC;
     }
     if (arg0 < 0x8BD) {
         for (i = 0; i < 0x30; i++) {
@@ -140,17 +140,17 @@ void Digi_AddNew(s32 arg0) {
 void Flag_Set(s32 id, s32 val) {
     if (id < 600) {
         if (id == 0x10 && val == 0) {
-            Mem_WriteBit(Flag_Bits.flags0, 0x11, 0);
+            Mem_WriteBit(Save_GameState.eventFlags.flags0, 0x11, 0);
         }
-        Mem_WriteBit(Flag_Bits.flags0, id, val);
+        Mem_WriteBit(Save_GameState.eventFlags.flags0, id, val);
     } else if (id < 700) {
-        Mem_WriteBit(Flag_Bits.flags600, id - 600, val);
+        Mem_WriteBit(Save_GameState.eventFlags.flags600, id - 600, val);
     } else if (id < 800) {
-        Mem_WriteBit(Flag_Bits.flags700, id - 700, val);
+        Mem_WriteBit(Save_GameState.eventFlags.flags700, id - 700, val);
     } else if (id < 1000) {
-        Mem_WriteBit(Flag_Bits.flags800, id - 800, val);
+        Mem_WriteBit(Save_GameState.eventFlags.flags800, id - 800, val);
     } else if (id < 2000) {
-        Flag_Bits.progress = id - 1900;
+        Save_GameState.eventFlags.progress = id - 1900;
     } else if (id < 0x8BD) {
         Save_GameState.field_C4 = id - 2000;
         Item_SortList();
