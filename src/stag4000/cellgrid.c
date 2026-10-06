@@ -20,7 +20,8 @@ u16 Stg40_FloorBitsPal[10] = { 2, 1, 4, 3, 7, 6, 5 };
 u16 Stg40_SpecialFloorValues[6] = { 4, 3, 7, 6, 5, 2 };
 s32 Stg40_FillNeighbours[8] = { 0, -1, 0, 1, -1, 0, 1, 0 };
 
-s32 D_80072BB8;
+/* Room Stg40_LabelRooms is labeling (written only). */
+s32 Stg40_LabelRoomsCur;
 
 void Stg40_AllocCellGrid(void) {
     Stg40FloorHeader *d = Dung_StatePtr->floorHdr;
@@ -239,7 +240,7 @@ void Stg40_LabelRooms(void) {
     s32 i;
 
     Stg40_RootState->roomCount = 0;
-    while ((D_80072BB8 = i = Stg40_FindUnlabeledRoom()) != -1) {
+    while ((Stg40_LabelRoomsCur = i = Stg40_FindUnlabeledRoom()) != -1) {
         Stg40_FloodFillRoom(buf, 0, i % w, i / w, 0x2000);
         Stg40_LabelFilledCells();
         Stg40_RootState->roomCount++;

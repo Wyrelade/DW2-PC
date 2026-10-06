@@ -92,7 +92,7 @@ extern void Cd_GetFilePos(s32 arg0, void *arg1);
 extern s32 Math_CycleRange(s32, s32, s32, s32);
 extern void Gfx_HidePartsByMask(GfxPartMaskView *, s32);
 extern void ResetCallback(void);
-extern u8 D_80050741;
+extern u8 Sys_MovieActive;
 extern PadState Pad_State[];
 extern SysState Sys_State;
 extern u8 StCdIntrFlag;              /* s32 in the main exe; read as a byte here (StCdIntrFlag) */

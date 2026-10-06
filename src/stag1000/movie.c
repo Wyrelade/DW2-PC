@@ -27,7 +27,7 @@ StrDecEnv Stg10_DecEnv;
 u32 *Stg10_VlcTable;
 
 void Stg10_MovieInit(s32 arg0, s32 *arg1) {
-    D_80050741 = 1;
+    Sys_MovieActive = 1;
     Stg10_MovieFileId = arg1[0];
     Stg10_MovieEndFrame = arg1[1];
 }
@@ -160,7 +160,7 @@ void Stg10_MovieDestroy(Actor *arg0) {
     Mem_Free(Stg10_ImgBuf0);
     Mem_Free(Stg10_ImgBuf1);
     Mem_Free(Stg10_VlcTable);
-    D_80050741 = 0;
+    Sys_MovieActive = 0;
     Task_DefaultDestroy(arg0);
     ResetGraph(1);
     ClearImage2(&Stg10_VramClearRect2, 0, 0, 0);

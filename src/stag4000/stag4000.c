@@ -8,8 +8,8 @@ void Stg40_RootUpdate(Actor *arg0);
 void Stg40_RootDestroy(Actor *a0);
 void Stg40_RootDraw(void);
 
-/* Unreferenced. */
-s32 D_800725B0[] = { 0x020E0000, 0x020F0000, -1 };
+/* Unreferenced: CD file ids of DGFL0001.BIN and DGFL0002.BIN, -1 ends. */
+s32 Stg40_FloorFileIds[] = { 0x020E0000, 0x020F0000, -1 };
 TaskDesc Stg40_RootDesc = {
     (TaskInitFn)Stg40_RootInit, Stg40_RootUpdate, Stg40_RootDestroy, (TaskFn)Stg40_RootDraw, 0x14, 0xE0,
 };

@@ -40,7 +40,7 @@
 
 s32 Cd_QueueActive = 0;
 /* Unreferenced: the number of CD files (Cd_FileLba entries). */
-s32 D_80050754 = 0xE5B;
+s32 Cd_FileCount = 0xE5B;
 /* Unreferenced: pads .sbss to the start of .bss. */
 s32 D_80050794;
 CdCacheEntry Cd_FileCache[0x50];

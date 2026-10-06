@@ -16,7 +16,7 @@
 /* The two ordering tables (Gpu_OtBufs[i + 1] is the end of table i). */
 GpuOtBuf Gpu_OtBufs[2];
 /* OT layout mode (index into Gpu_OtLayerLens); code reads it as Gpu_OtBufs[2].entries[0]. */
-s32 D_8005CD58[2];
+s32 Gpu_OtLayoutMode[2];
 /* Ordering table layout per mode: layer lengths and offsets (8 layers). */
 s32 Gpu_OtLayerLens[][8] = {
     { 15, 15, 15, 4, 15, 15, 15, 0 },

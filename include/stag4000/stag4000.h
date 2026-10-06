@@ -1157,7 +1157,7 @@ extern u8 Stg40_DigitBufs[4][8];
 /* automap.c */
 extern Stg40TileGrid *Stg40_AutomapWork;
 /* cellgrid.c */
-extern s32 D_80072BB8;
+extern s32 Stg40_LabelRoomsCur;
 /* camera.c */
 extern Actor *Stg40_CameraTask;
 

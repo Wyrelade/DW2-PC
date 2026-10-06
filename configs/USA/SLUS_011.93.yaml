@@ -102,7 +102,7 @@ segments:
       - [0x12C68, c, savedata]
       - [0x13584, c, mem]
       - [0x138AC, c, pad]
-      - [0x13C84, c, sys]        # from Sys_VSyncHandler: sys.c (rcsid D_800101E4), Sys_Main, rand, frame rate
+      - [0x13C84, c, sys]        # from Sys_VSyncHandler: sys.c (rcsid Sys_RcsId), Sys_Main, rand, frame rate
       - [0x141A0, c, cd]
       - [0x147FC, c, cdread]     # from Cd_CheckNextSector: async CD read (data after the PsyQ sin tables)
       - [0x14B10, c, fxmodel]    # from Fx_ModelInit: Fx model task

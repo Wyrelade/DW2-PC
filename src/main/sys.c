@@ -40,17 +40,19 @@
 #include "main/pad.h"
 
 /* RCS id of the original sys.c. */
-const char D_800101E4[] = "$Id: sys.c,v 1.140 1998/01/12 07:52:27 noda Exp yos $";
+const char Sys_RcsId[] = "$Id: sys.c,v 1.140 1998/01/12 07:52:27 noda Exp yos $";
 
 /* Small data in retail order. Retail reaches the Sys_ ones with %gp_rel; the others are read
- * elsewhere (model.c Gfx_ZeroSVector, 187C/77DC Gfx_NeutralRgb, STAG1000 D_80050741). */
+ * elsewhere (model.c Gfx_ZeroSVector, 187C/77DC Gfx_NeutralRgb, STAG1000 Sys_MovieActive). */
 s32 Sys_VSyncsSinceFlip = 0;
 RECT Sys_BootImageRect = { 0, 0, 320, 480 };
 s32 Sys_LastVSyncTime = 0;
 /* Unreferenced. */
 s32 D_8005073C = 0x10000;
 u8 D_80050740 = 0;
-u8 D_80050741 = 0;
+/* 1 while the stag1000 movie task runs (written only). */
+u8 Sys_MovieActive = 0;
+/* Unreferenced. */
 s16 D_80050742 = 0;
 GfxQuadVert Gfx_ZeroSVector[1] = { 0 };
 Halves Gfx_NeutralRgb = { 0x8080, 0x80 };
@@ -69,9 +71,9 @@ INCLUDE_BIN(Rand_Table, "assets/main/rand_table.bin");
 s32 Gfx_ZeroVector[4] = { 0 };
 Blk20 Gfx_IdentityMatrix = { { { { 0x1000, 0, 0 }, { 0, 0x1000, 0 }, { 0, 0, 0x1000 } } }, { 0 }, { 0, 0, 0 } };
 /* Unreferenced: the same with x, y, then x and y scaled by 2. */
-Blk20 D_80043734 = { { { { 0x2000, 0, 0 }, { 0, 0x1000, 0 }, { 0, 0, 0x1000 } } }, { 0 }, { 0, 0, 0 } };
-Blk20 D_80043754 = { { { { 0x1000, 0, 0 }, { 0, 0x2000, 0 }, { 0, 0, 0x1000 } } }, { 0 }, { 0, 0, 0 } };
-Blk20 D_80043774 = { { { { 0x2000, 0, 0 }, { 0, 0x2000, 0 }, { 0, 0, 0x1000 } } }, { 0 }, { 0, 0, 0 } };
+Blk20 Gfx_MatrixScaleX2 = { { { { 0x2000, 0, 0 }, { 0, 0x1000, 0 }, { 0, 0, 0x1000 } } }, { 0 }, { 0, 0, 0 } };
+Blk20 Gfx_MatrixScaleY2 = { { { { 0x1000, 0, 0 }, { 0, 0x2000, 0 }, { 0, 0, 0x1000 } } }, { 0 }, { 0, 0, 0 } };
+Blk20 Gfx_MatrixScaleXY2 = { { { { 0x2000, 0, 0 }, { 0, 0x2000, 0 }, { 0, 0, 0x1000 } } }, { 0 }, { 0, 0, 0 } };
 
 void Sys_VSyncHandler(void) {
     s32 t = Sys_State.vsyncWait - (Sys_State.vsyncWait != 0);

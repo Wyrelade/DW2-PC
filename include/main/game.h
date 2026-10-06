@@ -35,7 +35,7 @@ extern u8 Snd_SeqAttrTable[176 * 6 * 16];
 extern SndSlot Snd_Slots[3];
 extern TextStack Text_ReturnStack;
 extern GpuOtBuf Gpu_OtBufs[];
-extern s32 D_8005CD58[2];
+extern s32 Gpu_OtLayoutMode[2];
 extern GfxTexSlot Gfx_TexSlots[];
 extern FlagEntryState Flag_EntryIter;
 extern DungState Dung_State;

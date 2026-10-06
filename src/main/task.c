@@ -5,6 +5,7 @@
  * game.h's order. Retail reaches the ones this unit uses with %gp_rel. */
 /* Heap start: the fixed end of the overlay load area (memory map). */
 MemBlock *Mem_HeapStart = (MemBlock *)0x80075000;
+/* Unreferenced: the first .sbss word (crt0 clears .sbss/.bss from here). */
 s32 D_80050758;
 /* .bss (game.h order) */
 TaskList Task_List;

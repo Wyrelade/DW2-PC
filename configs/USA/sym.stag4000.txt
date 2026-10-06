@@ -278,3 +278,5 @@ Stg40_MsgWinDesc = 0x80072774;
 Stg40_ObjDesc = 0x800727A8;
 Stg40_AutomapDesc = 0x80072988;
 Stg40_CameraDesc = 0x80072A84;
+Stg40_FloorFileIds = 0x800725B0;
+Stg40_LabelRoomsCur = 0x80072BB8;
