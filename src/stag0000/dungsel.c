@@ -233,7 +233,7 @@ void Stg00_DungSelPickFlag(Actor *arg0, Stg00SelWork *arg1) {
         Task_SetState1(arg0, 1);
     } else if (Pad_State[0].circle > 0) {
         func_80064E44();
-        Sys_NextGameMode = arg1->dungeonIdx + 0x201;
+        Sys_State.nextGameMode = arg1->dungeonIdx + 0x201;
         Dung_StatePtr->floor = arg1->floor;
         Dung_StatePtr->floorLayout = arg1->layout;
         Flag_Set(arg1->flagIdx + 0x76C, 1);

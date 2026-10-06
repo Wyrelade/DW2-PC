@@ -130,7 +130,7 @@ void Text_LoadFontsTask(Actor *a0) {
         return;
     }
     Gfx_FindOrLoadTexSlot(0x13A0000);
-    if ((Sys_GameMode[0] & 0xF00) != 0x500) {
+    if ((Sys_State.gameMode & 0xF00) != 0x500) {
         Gfx_FindOrLoadTexSlot(0x1100000);
         Task_Create(0xA, a0->u34.children, 0);
     }

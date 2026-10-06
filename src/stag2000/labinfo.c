@@ -94,7 +94,7 @@ void Stg20_LabInfoUpdate(Actor *a) {
                 id1 = w->digi->digiId;
                 x = Digi_GetType(id0);
                 y = Digi_GetType(id1);
-                switch (D_8005F790) {
+                switch (Sys_State.prevGameMode) {
                 case 0x305:
                     if (x != 0 && y != 0) {
                         ok = 1;

@@ -72,8 +72,7 @@ void Task_Destroy(s32 *arg0) {
     }
 }
 
-extern s32 Sys_DrawPass;
-extern s32 Sys_FrameDelta;
+extern SysState Sys_State;
 
 /* Task_Run's view of a task: the type id (index into Task_DescTable), the state set by
  * Task_SetState0 (3 = being destroyed) and the two counters it advances. */
@@ -112,7 +111,7 @@ s32 Task_Run(s32 arg0) {
     TaskRunObj *t = (TaskRunObj *)arg0;
     TaskRunDesc *d = (TaskRunDesc *)Task_DescTable[t->id >> 8][t->id & 0xFF];
 
-    if (Sys_DrawPass != 0) {
+    if (Sys_State.drawPass != 0) {
         if (d->draw != 0 && t->frameCount != 0) {
             if (t->state == 0) {
                 goto children;
@@ -127,7 +126,7 @@ s32 Task_Run(s32 arg0) {
             s32 *c = &t->frameCount;
             *c += 1;
             c = &t->elapsed;
-            *c += Sys_FrameDelta;
+            *c += Sys_State.frameDelta;
         }
     } else {
         if (t->state == 3) {

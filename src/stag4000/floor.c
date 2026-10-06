@@ -63,7 +63,7 @@ void Stg40_DrawEntityShadow(Stg40Loc *loc) {
             w = Stg40_FloorWork;
             a = &w->verts[row][col];
             b = &w->verts[row + 1][col];
-            pkt = (Stg40FT4 *)Sys_PacketCursor;
+            pkt = (Stg40FT4 *)Sys_State.packet.addr;
             *pkt = w->prims[Stg40_ShadowPrimIdx];
             pkt->x0 = a[0].s[0].x;
             pkt->y0 = a[0].s[0].y;
@@ -114,7 +114,7 @@ void Stg40_DrawEntityShadow(Stg40Loc *loc) {
         count += ((out[i].x < 0 ? -out[i].x : out[i].x) < centerX) && ((out[i].y < 0 ? -out[i].y : out[i].y) < centerY);
     }
     if (count != 0) {
-        pkt = (Stg40FT4 *)Sys_PacketCursor;
+        pkt = (Stg40FT4 *)Sys_State.packet.addr;
         *pkt = Stg40_FloorWork->prims[Stg40_ShadowPrimIdx];
         pkt->x0 = out[0].x;
         pkt->y0 = out[0].y;
@@ -534,7 +534,7 @@ s32 Stg40_DrawTileTop(Stg40FloorWork *w, s32 pkt, s32 x, s32 y) {
         return pkt;
     }
     if (t->flags != 0) {
-        ot = D_8005F8C0;
+        ot = Sys_State.otLayers.u[6];
         *(Stg40FT4 *)pkt = w->prims[Stg40_FloorPrimIdx[t->primIdx & 0x7F]];
         ((Stg40FT4 *)pkt)->x0 = a[0].s[0].x;
         ((Stg40FT4 *)pkt)->y0 = a[0].s[0].y;
@@ -548,7 +548,7 @@ s32 Stg40_DrawTileTop(Stg40FloorWork *w, s32 pkt, s32 x, s32 y) {
         *ot = (*ot & 0xFF000000) | ((u32)pkt & 0xFFFFFF);
         pkt += sizeof(Stg40FT4);
     } else {
-        ot = &D_8005F8B4[w->tiles[y][x].otz];
+        ot = &Sys_State.otLayers.u[3][w->tiles[y][x].otz];
         ((Stg40F4 *)pkt)->tag.b.len = 5;
         ((Stg40F4 *)pkt)->code = 0x28;
         ((Stg40F4 *)pkt)->r0 = 0;
@@ -578,7 +578,7 @@ void Stg40_DrawFloorTiles(Stg40FloorWork *w) {
 
     rows = (Stg40_RootState->viewY & 0x3F) ? 10 : 9;
     cols = (Stg40_RootState->viewX & 0x3F) ? 10 : 9;
-    pkt = Sys_PacketCursor;
+    pkt = Sys_State.packet.addr;
     for (y = 0; y < rows; y++) {
         for (x = 0; x < cols; x++) {
             pkt = Stg40_DrawTileTop(w, pkt, x, y);
@@ -587,7 +587,7 @@ void Stg40_DrawFloorTiles(Stg40FloorWork *w) {
             }
         }
     }
-    Sys_PacketCursor = pkt;
+    Sys_State.packet.addr = pkt;
 }
 
 void Stg40_FloorInit(Actor *a0, s32 *ids) {

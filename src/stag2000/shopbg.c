@@ -17,7 +17,7 @@ void Stg20_ShopBgDraw(Actor *a) {
     GfxPart *p;
     GfxPart *q;
 
-    if (Sys_GameMode[0] < 0x333) {
+    if (Sys_State.gameMode < 0x333) {
         p = (GfxPart *)Cd_GetFileEntry(0xDD60001);
     } else {
         p = (GfxPart *)Cd_GetFileEntry(0xC930001);

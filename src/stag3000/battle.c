@@ -261,7 +261,7 @@ void Stg30_BattleWonUpdate(Actor *a0) {
         if (l->resultTask != 0) {
             break;
         }
-        if ((D_8005F790 & 0xFF00) == 0x200) {
+        if ((Sys_State.prevGameMode & 0xFF00) == 0x200) {
             Cd_QueueStag4000Files();
         }
         Task_NextState2(a0);
@@ -277,7 +277,7 @@ void Stg30_BattleWonUpdate(Actor *a0) {
             }
             if (Flag_Test(0x2DD)) {
                 Flag_Set(0x2DD, 0);
-                Sys_NextGameMode = 0x406;
+                Sys_State.nextGameMode = 0x406;
             } else {
                 Sys_State.modeArg = 2;
                 Sys_State.nextGameMode = Sys_State.prevGameMode;
@@ -427,7 +427,7 @@ void Stg30_BattleUpdate(Actor *a0) {
                     Task_Create(0x509, (s32 *)&l->actors[i], (s32)args);
                 }
             }
-            Enemy_GetSetSummary((void *)D_8005F794, &out);
+            Enemy_GetSetSummary((void *)Sys_State.modeArg, &out);
             Stg30_Battle.isBossFight = out.field_14;
             for (n1 = 0; n1 < 6; n1++) {
                 Stg30_Battle.attackBase[n1] = Stg30_Battle.attackCur[n1] = Stg30_Battle.entries[n1].attack;

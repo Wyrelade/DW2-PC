@@ -309,7 +309,6 @@ typedef struct {
 
 extern const Halves Stg20_BitsLabelPos;
 extern Stg20MenuState Stg20_MenuState;
-extern s32 Sys_GameMode[];
 
 /* Stg20_LabModeSelUpdate yes/no prompt */
 typedef struct {
@@ -344,7 +343,7 @@ extern void Text_Open(void *arg0, TextOpenArgs *arg1);
 extern void Stg20_MarkGridOccupant(Stg20Cell *c, s32 set, s32 flag);
 
 /* ---- added by p35 agent v ---- */
-/* Sys_GameMode (game mode word) viewed as its low byte (Stg20_GetMapInfo). */
+/* Sys_State.gameMode (game mode word) viewed as its low byte (Stg20_GetMapInfo). */
 typedef struct {
     /* 0x00 */ u8 lo;
 } Stg20Mode;
@@ -534,6 +533,7 @@ extern Stg20Pos2 Stg20_ShakeOffsets[4];
 extern const Halves Stg20_ShopMenuBuyPos;
 extern const Halves Stg20_ShopMenuSellPos;
 extern PadState Pad_State[];
+extern s32 Sys_GameMode[]; /* Sys_State.gameMode as a scalar, see main sys.c */
 extern s32 Pad_Cross; /* Pad_State[0].cross as a scalar, see main pad.c */
 extern s32 Digi_GetExpToNextLevel(s32, s32, s32);
 extern void Snd_PlayById(s32, s32);
@@ -687,7 +687,6 @@ typedef struct {
 
 extern GfxTexSlot *Gfx_FindOrLoadTexSlot(s32);
 extern Halves Gfx_NeutralRgb;
-extern s32 Sys_PacketCursor;
 
 extern s32 Stg20_LabRosterPanelIds[4];
 
@@ -764,7 +763,6 @@ typedef struct {
 extern Stg20Warp Stg20_WarpPads[];
 extern void Stg20_WalkerHalt(Actor *a);
 
-extern u8 D_8005F794; /* Sys_State.field_24 low byte as a scalar reloc */
 extern Stg20FileRec *Stg20_GetMapDest(s32 i);
 
 /* Roster entry viewed with a signed word at 0x16 (Stg20_TestSpecialFlag). */
@@ -783,7 +781,6 @@ typedef struct {
 
 extern u16 D_8005E64E; /* Save_GameState.field_2C[1] as a scalar reloc */
 extern u8 D_8005E632;  /* Save_GameState byte 0x12 as a scalar reloc */
-extern s32 D_8005F790; /* Sys_State.prevGameMode as a scalar reloc */
 extern s32 Item_GetBagCapacity(void);
 extern s32 Stg20_OwnsDigi(s32 id);
 

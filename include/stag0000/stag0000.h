@@ -267,7 +267,6 @@ typedef struct {
 extern Halves Gfx_NeutralRgb;
 extern s32 Gfx_ZeroVector[];
 extern PadState Pad_State[];
-extern s32 Sys_NextGameMode;
 extern Stg00DungState *Dung_StatePtr;
 extern s32 Stg00_LineupWinMasks[];
 extern s32 Stg00_GroupWinMasks[];
@@ -553,9 +552,6 @@ typedef struct {
 } Stg00ModelFade;
 
 /* ---- externs ---- */
-extern s32 Sys_FrameDelta;
-extern s32 Sys_GameMode;
-extern s32 Sys_PacketCursor;
 extern TaskDesc Stg00_ScrollViewDesc;
 extern s32 Stg00_ScrollTileTex[];
 extern s32 Stg00_WindowTestMasks[];

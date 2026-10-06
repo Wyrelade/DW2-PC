@@ -683,8 +683,6 @@ extern Stg40DungState *Dung_StatePtr;
 /* 13-byte const table copied to a stack local (Stg40_BeginTransition). */
 typedef struct { u8 b[13]; } Blk13;
 extern const Blk13 Stg40_FloorSpecialtyByCell;
-extern s32 Sys_GameMode;
-extern s32 D_8005F794;
 extern GameStateView *Save_GameStatePtr;
 extern s32 Cd_PreloadIds[];
 extern s32 Cd_PreloadCount;
@@ -743,7 +741,6 @@ extern u8 *memset(u8 *s, s32 c, s32 n);
 extern void Gfx_HidePartsByMask(GfxPartMaskView *, s32);
 extern s32 Stg40_EnemyInfoParts[];
 void Stg40_AutomapMoveMarker(s32 x, s32 y, s32 ox, s32 oy, s32 dir);
-extern s32 Sys_PacketCursor;
 extern GameStateView Save_GameState;
 extern s32 Stg40_HudParts[];
 extern void Gfx_FadeOutToBlack(s32 arg0);
@@ -1051,8 +1048,6 @@ typedef struct {
 
 extern const Stg40Ids4 Stg40_BugModelIds;
 
-extern u32 *D_8005F8C0;
-extern u32 *D_8005F8B4;
 extern u8 Stg40_FloorPrimIdx[];
 
 void Stg40_PlayerWaitTurn(Actor *a0);
@@ -1094,10 +1089,8 @@ typedef struct {
     /* 0x14 */ s32 enemyInfoTask;       /* child task (Actor *) (Stg40_PlayerEnemyInfo) */
 } Stg40RootTasks;
 
-extern s32 Sys_NextGameMode;  /* Sys_State.nextGameMode as a scalar reloc */
 extern u16 Stg40_FloorBitsPal[10];
 extern u16 Stg40_SpecialFloorValues[6];
-extern s32 D_8005F790;  /* Sys_State.prevGameMode as a scalar reloc */
 
 /* Base levels by slot item (Stg40_BeetleDigiIds, Stg40_SetupStage). */
 typedef struct {

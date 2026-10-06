@@ -35,9 +35,9 @@ void Stg10_TitleUpdate(Actor *a0) {
             default:
                 if (a0->elapsed >= 600) {
                     if (Stg10_AttractCount == 0) {
-                        Sys_NextGameMode = 0x403;
+                        Sys_State.nextGameMode = 0x403;
                     } else {
-                        Sys_NextGameMode = 0x402;
+                        Sys_State.nextGameMode = 0x402;
                     }
                     if (++Stg10_AttractCount == 20) {
                         Stg10_AttractCount = 0;

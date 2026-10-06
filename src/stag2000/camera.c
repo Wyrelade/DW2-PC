@@ -38,7 +38,7 @@ void Stg20_CameraUpdate(Actor *a) {
     switch (a->stateLevel0) {
     case 0:
         GsInitCoordinate2(0, &w->coord);
-        if (Sys_GameMode[0] < 0x32F) {
+        if (Sys_State.gameMode < 0x32F) {
             w->proj = 0x5A0;
             w->view.vpy = -0x5D00;
             w->view.vpx = 0;
@@ -65,7 +65,7 @@ void Stg20_CameraUpdate(Actor *a) {
     case 2:
         break;
     case 1:
-        if (Sys_GameMode[0] < 0x32F) {
+        if (Sys_State.gameMode < 0x32F) {
             break;
         }
         switch (a->stateLevel1) {

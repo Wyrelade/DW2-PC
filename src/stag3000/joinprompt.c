@@ -41,7 +41,7 @@ void Stg30_JoinPromptInit(Actor *a0, s32 *args) {
 void Stg30_JoinCreateDigi(Actor *a0, s32 a1) {
     DigiRosterEntry *e = &D_8005F398;
 
-    Digi_InitFromTable(D_8005F794, ((Stg30WorkWord *)a0->work)->field_0 - 3, e);
+    Digi_InitFromTable(Sys_State.modeArg, ((Stg30WorkWord *)a0->work)->field_0 - 3, e);
     if (a1 != 0) {
         e->state = 1;
     }

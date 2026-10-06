@@ -541,7 +541,6 @@ extern Halves Menu_DigiMsgPos;
 extern void Menu_UseBugZapItem(Actor *);
 extern void Menu_OpenBugTexts(Actor *, s32);
 extern s32 Menu_TopMenuResult;
-extern s32 Sys_GameMode[];
 extern s32 Digi_CountByState(s32 mode);
 extern void Gfx_FadeInFromBlack(s32 arg0);
 extern void Text_SetColor(s32 a0, s32 a1);

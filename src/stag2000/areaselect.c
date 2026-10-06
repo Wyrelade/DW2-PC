@@ -165,9 +165,9 @@ s32 Stg20_TestSpecialFlag(s32 id) {
     case 9010:
         return D_8005E64E >= 0x1F;
     case 9012:
-        return D_8005F790 == 0x32A;
+        return Sys_State.prevGameMode == 0x32A;
     case 9034:
-        return D_8005F790 == 0x32B;
+        return Sys_State.prevGameMode == 0x32B;
     case 9013:
         if (Sys_State.gameMode == 0x301 && Sys_State.modeArg == 3) {
             return 1;
@@ -666,7 +666,7 @@ void Stg20_AreaSelectUpdate(Actor *a) {
         }
         w->recs[n].id = -1;
         w->redraw = 1;
-        ((Stg20GameState *)&Save_GameState)->areaSelectArg = D_8005F794;
+        ((Stg20GameState *)&Save_GameState)->areaSelectArg = Sys_State.modeArg;
         Task_NextState0(a);
         break;
     case 1:

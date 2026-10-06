@@ -643,7 +643,6 @@ extern s32 Stg30_FightBgByFloorElem[];
 extern s32 Stg30_FightMsgParts[];
 extern s32 D_80074098;
 extern DigiRosterEntry D_8005F398;  /* Save_GameState.elems[35] as a scalar reloc */
-extern s32 D_8005F794;
 extern SysState Sys_State;
 extern u8 D_8005E5DD;  /* Dung_State.field_103D as a scalar reloc */
 extern GameState Save_GameState;
@@ -835,8 +834,6 @@ extern void Stg30_UndimPartyFighters(void);
 extern s32 D_8007409C;
 extern s16 Stg30_JoinChance[][3];
 extern s16 D_8005E5E0;  /* Dung_State.field_1040 as a scalar reloc */
-extern s32 Sys_NextGameMode;  /* Sys_State.nextGameMode as a scalar reloc */
-extern s32 D_8005F790;  /* Sys_State.prevGameMode as a scalar reloc */
 extern s32 Anim_GetModelAnimFile(s32 arg0, s32 arg1);
 extern void Cd_QueueFile(s32);
 extern s32 Cd_GetFileState(s32 arg0);

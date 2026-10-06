@@ -194,7 +194,7 @@ void Stg20_WalkerUpdate(Actor *a) {
             Stg20_WalkerSetAnim(a, 0x1E);
             Task_Create(0x303, (s32 *)a->u34.children, (s32)a);
             r = (Stg20Rot *)a->u38.ptr38;
-            switch (Sys_GameMode[0]) {
+            switch (Sys_State.gameMode) {
             case 0x30F:
                 v = 0;
                 if (a->digiId == 0x2E) {

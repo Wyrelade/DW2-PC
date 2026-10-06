@@ -89,5 +89,5 @@ void Stg00_ScrollViewDraw(Actor *arg0) {
             p = (GfxPartPkt *)(&p->t + 1);
         }
     }
-    Sys_PacketCursor = (s32)p;
+    Sys_State.packet.addr = (s32)p;
 }

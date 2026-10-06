@@ -310,7 +310,7 @@ void Stg00_DigiModelTask(Actor *arg0) {
         case 6:
         case 7:
             w = (Stg00ModelWorkX *)arg0->work;
-            w->subFrame += Sys_FrameDelta;
+            w->subFrame += Sys_State.frameDelta;
             while (w->subFrame >= 2) {
                 w->subFrame -= 2;
                 Stg00_HitReactUpdate(arg0, arg0->stateLevel1 - 6, 0);
@@ -423,7 +423,7 @@ void Stg00_DigiModelTask(Actor *arg0) {
                 }
             case 3:
                 w = (Stg00ModelWorkX *)arg0->work;
-                w->subFrame += Sys_FrameDelta;
+                w->subFrame += Sys_State.frameDelta;
                 while (w->subFrame >= 2) {
                     w->subFrame -= 2;
                     Stg00_HitReactUpdate(arg0, 0, 1);

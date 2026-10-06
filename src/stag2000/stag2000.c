@@ -171,7 +171,7 @@ void Stg20_StageMain(Actor *a) {
 }
 
 Stg20MapFile *Stg20_GetMapInfo(void) {
-    Stg20MapFile *f = (Stg20MapFile *)Cd_GetFileEntry(((Stg20Mode *)Sys_GameMode)->lo + 0x308FFFF);
+    Stg20MapFile *f = (Stg20MapFile *)Cd_GetFileEntry(((Stg20Mode *)&Sys_State.gameMode)->lo + 0x308FFFF);
     s32 base;
 
     if (f->loaded == 0) {

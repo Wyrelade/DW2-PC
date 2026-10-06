@@ -105,7 +105,7 @@ void Stg40_SetupStage(Actor *a0) {
     Stg40_InitDisplay();
     Stg40_InitFloorHeader();
     Stg40_ClearPreloadList();
-    mode = D_8005F790 / 256;
+    mode = Sys_State.prevGameMode / 256;
     switch (mode) {
     default:
         Dung_StatePtr->entryMode = 0;
@@ -245,7 +245,7 @@ s32 Stg40_BeginTransition(Actor *arg0) {
             q = 3;
         }
         Dung_StatePtr->giftLevel = q;
-        D_8005F794 = ((Stg40EnemyParty *)*slot)->setId;
+        Sys_State.modeArg = ((Stg40EnemyParty *)*slot)->setId;
         if (((Stg40EnemyParty *)*slot)->useDungeonBgm != 0) {
             if (Flag_Test(0x88) != 0 && Dung_StatePtr->dungeon.battleBgmId == 0x100) {
                 a0v = 0x101;
@@ -268,7 +268,7 @@ s32 Stg40_BeginTransition(Actor *arg0) {
 
     case 2:
         Stg40_CamLoadScript(Cd_GetFileEntry(0xE200004));
-        w->field_0 = Sys_GameMode;
+        w->field_0 = Sys_State.gameMode;
         Task_SetState1(arg0, 3);
         ret = 1;
         Dung_StatePtr->floor = Dung_StatePtr->floor + ret;
@@ -469,7 +469,7 @@ void Stg40_RootUpdate(Actor *arg0) {
                 break;
             case 1:
                 if (Stg40_CamIsMoving() == 0) {
-                    Sys_NextGameMode = work->field_0;
+                    Sys_State.nextGameMode = work->field_0;
                     Task_NextState2(arg0);
                 }
                 break;

@@ -422,7 +422,7 @@ void Stg40_AutomapDrawWindow(Stg40AutomapWork *w, s32 x, s32 y, s32 cx, s32 cy, 
     p->tag.word = (p->tag.word & 0xFF000000) | (*ot & 0xFFFFFF);
     *ot = (*ot & 0xFF000000) | ((s32)p & 0xFFFFFF);
     p++;
-    Sys_PacketCursor = (s32)p;
+    Sys_State.packet.addr = (s32)p;
 }
 
 void Stg40_AutomapDrawModes(ActorWork *w) {

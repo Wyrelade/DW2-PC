@@ -56,17 +56,11 @@ GfxQuadVert Gfx_ZeroSVector[1] = { 0 };
 Halves Gfx_NeutralRgb = { 0x8080, 0x80 };
 s32 Sys_FlipPending;
 s32 Rand_Index;
-/* Code and overlays reach fields of Sys_State by their own symbols. */
+/* .bss */
 SysState Sys_State;
-DATA_LABEL(Sys_FrameDelta, Sys_State, 0x8);
-DATA_LABEL(Sys_DrawPass, Sys_State, 0x14);
+/* Scalar view of Sys_State.gameMode for Stg20_StageMain: its other Sys_State reads share one base
+ * register, these 7 reads do not (retail code). */
 DATA_LABEL(Sys_GameMode, Sys_State, 0x18);
-DATA_LABEL(Sys_NextGameMode, Sys_State, 0x1C);
-DATA_LABEL(D_8005F790, Sys_State, 0x20);
-DATA_LABEL(D_8005F794, Sys_State, 0x24);
-DATA_LABEL(Sys_PacketCursor, Sys_State, 0x2C);
-DATA_LABEL(D_8005F8B4, Sys_State, 0x144);
-DATA_LABEL(D_8005F8C0, Sys_State, 0x150);
 
 /* Rand_Next's table of 0x1000 random halfwords. */
 INCLUDE_BIN(Rand_Table, "assets/main/rand_table.bin");

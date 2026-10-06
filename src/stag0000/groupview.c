@@ -145,7 +145,7 @@ void Stg00_GroupViewTask(Actor *arg0) {
             }
         }
         if (Pad_State[0].r2 > 0) {
-            Sys_NextGameMode = 0x102;
+            Sys_State.nextGameMode = 0x102;
         }
         break;
     case 2:

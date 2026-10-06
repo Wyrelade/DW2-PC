@@ -269,7 +269,7 @@ void Menu_NameEntryTask(Actor *a0) {
         }
         break;
     case 2:
-        if (Sys_GameMode[0] != 0x500) {
+        if (Sys_State.gameMode != 0x500) {
             Snd_RestoreSavedId();
         }
         Text_CloseArray(&w->gridText0, 5);

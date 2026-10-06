@@ -92,5 +92,5 @@ void Stg20_StaticBgDraw(Actor *a)
     i++;
   }
 
-  Sys_PacketCursor = (s32) p;
+  Sys_State.packet.addr = (s32) p;
 }

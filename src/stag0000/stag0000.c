@@ -14,7 +14,7 @@ void Stg00_StageSetup(Actor *arg0) {
 
     if (arg0->stateLevel0 == 0) {
         Task_Create(9, &slot[5], 0);
-        switch (Sys_GameMode) {
+        switch (Sys_State.gameMode) {
         case 0x101:
         default:
             a1.field_0 = 0;

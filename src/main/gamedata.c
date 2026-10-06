@@ -86,7 +86,7 @@ void Digi_InitFromTable(s32 a0, s32 a1, DigiRosterEntry *e) {
     u8 *name;
     s32 i;
 
-    if ((Sys_GameMode[0] & 0xFF00) == 0x500) {
+    if ((Sys_State.gameMode & 0xFF00) == 0x500) {
         if (a1 == 0) {
             a1 = 1;
         } else if (a1 == 1) {
@@ -128,7 +128,7 @@ void Enemy_InitRosterEntry(s32 a0, s32 a1, DigiRosterEntry *e, Out1DDA8 *o) {
     u8 *name;
     s32 i;
 
-    if ((Sys_GameMode[0] & 0xFF00) == 0x500) {
+    if ((Sys_State.gameMode & 0xFF00) == 0x500) {
         if (a1 == 0) {
             a1 = 1;
         } else if (a1 == 1) {

@@ -29,7 +29,7 @@ void Stg10_EndScreenUpdate(Actor *arg0) {
             break;
         case 2:
             if (--w->count == 0) {
-                Sys_NextGameMode = 0x407;
+                Sys_State.nextGameMode = 0x407;
                 Task_NextState1(arg0);
             }
             break;

@@ -36,7 +36,7 @@ Stg20Warp Stg20_WarpPads[] = {
 TaskDesc Stg20_WarpPadDesc = { (TaskInitFn)Stg20_WarpPadInit, Stg20_WarpPadUpdate, Task_DefaultDestroy, 0, 4, 4 };
 
 Stg20FileRec *Stg20_GetMapDest(s32 i) {
-    Stg20FileRec *r = (Stg20FileRec *)Cd_GetFileEntry(Sys_GameMode[0] + 0xD28FCD6);
+    Stg20FileRec *r = (Stg20FileRec *)Cd_GetFileEntry(Sys_State.gameMode + 0xD28FCD6);
 
     if (r[i].relocated == 0) {
         s32 base = Cd_GetFileOrNull(0xD29);

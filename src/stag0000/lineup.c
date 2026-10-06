@@ -157,7 +157,7 @@ void Stg00_LineupTask(Actor *arg0) {
             Stg00_LineupSpawnModels(arg0);
         }
         if (Pad_State[0].r2 > 0) {
-            Sys_NextGameMode = 0x102;
+            Sys_State.nextGameMode = 0x102;
         }
         break;
     case 2:
