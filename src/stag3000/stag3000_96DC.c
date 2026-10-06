@@ -10,7 +10,7 @@
 #include "stag3000/targetselect.h"
 #include "stag3000/battle.h"
 #include "stag3000/turn.h"
-#include "stag3000/stag3000_6A88_funcs.h"
+#include "stag3000/skilleffect.h"
 
 void Stg30_BattleScriptTask(Actor *a0);
 

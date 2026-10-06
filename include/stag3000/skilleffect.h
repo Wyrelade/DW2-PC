@@ -1,8 +1,7 @@
-#ifndef STAG3000_6A88_FUNCS_H
-#define STAG3000_6A88_FUNCS_H
+#ifndef STAG3000_SKILLEFFECT_H
+#define STAG3000_SKILLEFFECT_H
 
-/* Functions src/stag3000/stag3000_6A88.c defines or declares, for the units after it
- * (in the single file the definition was the prototype for later code). */
+/* Functions src/stag3000/skilleffect.c defines. */
 void Stg30_RetargetAction(void);
 s32 Stg30_CompareSpecialty(s32 a, s32 b);
 s32 Stg30_GetFloorSpecialty(void);
@@ -11,4 +10,4 @@ void Stg30_StatDebuff(s16 *max, s16 *b, s16 *c);
 void Stg30_StatBuff(s16 *max, s16 *b, s16 *c);
 s32 Stg30_SkillHitCheck(s32 idx, s16 *tgt, s32 n, s32 id);
 
-#endif /* STAG3000_6A88_FUNCS_H */
+#endif /* STAG3000_SKILLEFFECT_H */
