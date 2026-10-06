@@ -24,7 +24,9 @@ SECTIONS
         build/USA/src/stag3500/xaplay.c.o(.rodata);
         build/USA/src/stag3500/hud.c.o(.rodata);
         build/USA/src/stag3500/battlescript.c.o(.rodata);
-        build/USA/src/stag3500/stag3500_5F0C.c.o(.rodata);
+        build/USA/src/stag3500/camera.c.o(.rodata);
+        build/USA/src/stag3500/cmdlist.c.o(.rodata);
+        build/USA/src/stag3500/winbanner.c.o(.rodata);
         . = ALIGN(., 4);
         stag3500_RODATA_END = .;
         stag3500_RODATA_SIZE = ABSOLUTE(stag3500_RODATA_END - stag3500_RODATA_START);
@@ -44,7 +46,9 @@ SECTIONS
         build/USA/src/stag3500/xaplay.c.o(.text);
         build/USA/src/stag3500/hud.c.o(.text);
         build/USA/src/stag3500/battlescript.c.o(.text);
-        build/USA/src/stag3500/stag3500_5F0C.c.o(.text);
+        build/USA/src/stag3500/camera.c.o(.text);
+        build/USA/src/stag3500/cmdlist.c.o(.text);
+        build/USA/src/stag3500/winbanner.c.o(.text);
         . = ALIGN(., 4);
         stag3500_TEXT_END = .;
         stag3500_TEXT_SIZE = ABSOLUTE(stag3500_TEXT_END - stag3500_TEXT_START);
@@ -65,7 +69,9 @@ SECTIONS
         build/USA/src/stag3500/xaplay.c.o(.data);
         build/USA/src/stag3500/hud.c.o(.data);
         build/USA/src/stag3500/battlescript.c.o(.data);
-        build/USA/src/stag3500/stag3500_5F0C.c.o(.data);
+        build/USA/src/stag3500/camera.c.o(.data);
+        build/USA/src/stag3500/cmdlist.c.o(.data);
+        build/USA/src/stag3500/winbanner.c.o(.data);
         . = ALIGN(., 4);
         stag3500_DATA_END = .;
         stag3500_DATA_SIZE = ABSOLUTE(stag3500_DATA_END - stag3500_DATA_START);
@@ -86,7 +92,9 @@ SECTIONS
         build/USA/src/stag3500/xaplay.c.o(.bss);
         build/USA/src/stag3500/hud.c.o(.bss);
         build/USA/src/stag3500/battlescript.c.o(.bss);
-        build/USA/src/stag3500/stag3500_5F0C.c.o(.bss);
+        build/USA/src/stag3500/camera.c.o(.bss);
+        build/USA/src/stag3500/cmdlist.c.o(.bss);
+        build/USA/src/stag3500/winbanner.c.o(.bss);
         . = ALIGN(., 4);
         stag3500_BSS_END = .;
         stag3500_BSS_SIZE = ABSOLUTE(stag3500_BSS_END - stag3500_BSS_START);
