@@ -21,7 +21,7 @@ SECTIONS
         build/USA/src/stag3000/turn.c.o(.rodata);
         build/USA/src/stag3000/skilleffect.c.o(.rodata);
         build/USA/src/stag3000/battlescript.c.o(.rodata);
-        build/USA/src/stag3000/stag3000_9F8C.c.o(.rodata);
+        build/USA/src/stag3000/itemeffect.c.o(.rodata);
         build/USA/src/stag3000/stag3000_AF5C.c.o(.rodata);
         build/USA/src/stag3000/stag3000_C918.c.o(.rodata);
         build/USA/src/stag3000/stag3000_CC70.c.o(.rodata);
@@ -41,7 +41,7 @@ SECTIONS
         build/USA/src/stag3000/turn.c.o(.text);
         build/USA/src/stag3000/skilleffect.c.o(.text);
         build/USA/src/stag3000/battlescript.c.o(.text);
-        build/USA/src/stag3000/stag3000_9F8C.c.o(.text);
+        build/USA/src/stag3000/itemeffect.c.o(.text);
         build/USA/src/stag3000/stag3000_AF5C.c.o(.text);
         build/USA/src/stag3000/stag3000_C918.c.o(.text);
         build/USA/src/stag3000/stag3000_CC70.c.o(.text);
@@ -62,7 +62,7 @@ SECTIONS
         build/USA/src/stag3000/turn.c.o(.data);
         build/USA/src/stag3000/skilleffect.c.o(.data);
         build/USA/src/stag3000/battlescript.c.o(.data);
-        build/USA/src/stag3000/stag3000_9F8C.c.o(.data);
+        build/USA/src/stag3000/itemeffect.c.o(.data);
         build/USA/src/stag3000/stag3000_AF5C.c.o(.data);
         build/USA/src/stag3000/stag3000_C918.c.o(.data);
         build/USA/src/stag3000/stag3000_CC70.c.o(.data);
@@ -83,7 +83,7 @@ SECTIONS
         build/USA/src/stag3000/turn.c.o(.bss);
         build/USA/src/stag3000/skilleffect.c.o(.bss);
         build/USA/src/stag3000/battlescript.c.o(.bss);
-        build/USA/src/stag3000/stag3000_9F8C.c.o(.bss);
+        build/USA/src/stag3000/itemeffect.c.o(.bss);
         build/USA/src/stag3000/stag3000_AF5C.c.o(.bss);
         build/USA/src/stag3000/stag3000_C918.c.o(.bss);
         build/USA/src/stag3000/stag3000_CC70.c.o(.bss);

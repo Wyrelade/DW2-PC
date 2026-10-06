@@ -68,7 +68,7 @@ segments:
       - [0x5A40, c, turn]
       - [0x6A88, c, skilleffect]
       - [0x96DC, c, battlescript]
-      - [0x9F8C, c, stag3000_9F8C]
+      - [0x9F8C, c, itemeffect]
       - [0xAF5C, c, stag3000_AF5C]
       - [0xC918, c, stag3000_C918]
       - [0xCC70, c, stag3000_CC70]

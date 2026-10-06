@@ -12,7 +12,7 @@
 #include "stag3000/turn.h"
 #include "stag3000/skilleffect.h"
 #include "stag3000/battlescript.h"
-#include "stag3000/stag3000_9F8C_funcs.h"
+#include "stag3000/itemeffect.h"
 #include "stag3000/stag3000_AF5C_funcs.h"
 #include "stag3000/stag3000_C918_funcs.h"
 
