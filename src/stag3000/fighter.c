@@ -53,7 +53,7 @@ void Stg30_FighterInit(Actor *a0, s32 *args) {
     w->homeY = 0;
     w->homeX = (n % 3) * 0xA00 - 0xA00;
     w->homeZ = (n / 3) * 0x2800 - 0x1400;
-    w->field_38 = args[2];
+    w->startDowned = args[2];
 }
 
 void Stg30_SpawnSkillCastFx(Actor *a0, s32 k) {
@@ -72,13 +72,13 @@ void Stg30_SpawnSkillCastFx(Actor *a0, s32 k) {
     r = &rows[k];
     for (i = 0; i < 3; i++) {
         if (a[i] != 0) {
-            args.field_0 = a[i];
-            args.field_4 = b[i];
+            args.modelFile = a[i];
+            args.animFile = b[i];
             args.facing = w->facing;
             args.posX = w->homeX;
             args.posY = w->homeY;
             args.posZ = w->homeZ;
-            args.field_18 = 0x78;
+            args.duration = 0x78;
             switch (i) {
             case 0:
                 args.posY += -0x280 - func_8001E79C(a0->digiId);
@@ -113,13 +113,13 @@ void Stg30_SpawnSkillHitFx(Actor *a0) {
     Skill_GetFxSet(w->skillId, 1, a, b);
     for (i = 0; i < 3; i++) {
         if (a[i] != 0) {
-            args.field_0 = a[i];
-            args.field_4 = b[i];
+            args.modelFile = a[i];
+            args.animFile = b[i];
             args.facing = w->facing;
             args.posX = w->homeX;
             args.posY = w->homeY;
             args.posZ = w->homeZ;
-            args.field_18 = 0x3C;
+            args.duration = 0x3C;
             switch (i) {
             case 0:
                 args.posY += -0x280 - func_8001E79C(a0->digiId);
@@ -269,7 +269,7 @@ void Stg30_FighterTask(Actor *arg0) {
         m0->flatR = m0->flatG = m0->flatB = 0x80;
         w->color.r = w->color.g = w->color.b = 0;
         w->visible = 1;
-        if (w->field_38 != 0) {
+        if (w->startDowned != 0) {
             Stg30_FighterSetAnim(arg0, 0x64);
         }
         Task_NextState0(arg0);
@@ -395,7 +395,7 @@ void Stg30_FighterTask(Actor *arg0) {
         case 7:
             w->drawTex = 1;
             w->drawWire = 1;
-            m->field_34 = 1;
+            m->clutRow = 1;
             m->tpageBits = 0x20;
             if (m->flatR > 8) {
                 m->flatR -= 8;
@@ -409,7 +409,7 @@ void Stg30_FighterTask(Actor *arg0) {
                 w->color.g = 0xFF;
             }
             if (m->flatR == 0 && w->color.g == 0xFF) {
-                m->field_34 = 0;
+                m->clutRow = 0;
                 m->tpageBits = 0;
                 w->drawTex = 0;
                 Task_SetState0(arg0, 1);
@@ -418,7 +418,7 @@ void Stg30_FighterTask(Actor *arg0) {
         case 8:
             w->drawTex = 1;
             w->drawWire = 1;
-            m->field_34 = 1;
+            m->clutRow = 1;
             m->tpageBits = 0x20;
             if (m->flatR < 0x78) {
                 m->flatR += 8;
@@ -432,7 +432,7 @@ void Stg30_FighterTask(Actor *arg0) {
                 w->color.g = 0;
             }
             if (m->flatR == 0x80 && w->color.g == 0) {
-                m->field_34 = 0;
+                m->clutRow = 0;
                 m->tpageBits = 0;
                 w->drawWire = 0;
                 Task_SetState0(arg0, 1);
@@ -443,7 +443,7 @@ void Stg30_FighterTask(Actor *arg0) {
             break;
         case 9:
             m->flatR = m->flatG = m->flatB = 0x80;
-            m->field_34 = 0;
+            m->clutRow = 0;
             m->tpageBits = 0;
             w->drawTex = 1;
             w->drawWire = 0;

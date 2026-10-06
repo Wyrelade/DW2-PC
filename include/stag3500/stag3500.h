@@ -124,7 +124,7 @@ typedef struct {
     /* 0x2C */ s32 skillId;
     /* 0x30 */ s32 homeResetTimer;
     /* 0x34 */ s32 curAnim;
-    /* 0x38 */ s32 field_38;
+    /* 0x38 */ s32 startDowned;
 } Stg35FighterWork;
 
 /* Actor.work of the task at Stg35_XaPlayInit: a 12-byte vector at 0. */
@@ -300,13 +300,13 @@ typedef struct {
 
 /* 7-word argument block passed to Task_Create(7, ...) (Stg35_SpawnSkillHitFx, Stg35_SpawnSkillCastFx). */
 typedef struct {
-    /* 0x00 */ s32 field_0;
-    /* 0x04 */ s32 field_4;
+    /* 0x00 */ s32 modelFile;
+    /* 0x04 */ s32 animFile;
     /* 0x08 */ s32 posX;
     /* 0x0C */ s32 posY;
     /* 0x10 */ s32 posZ;
     /* 0x14 */ s32 facing;
-    /* 0x18 */ s32 field_18;
+    /* 0x18 */ s32 duration;
 } Stg35SpawnArgs;
 
 /* One- and three-word Task_Create argument blocks. */
@@ -350,7 +350,7 @@ typedef struct {
 /* ActorModel viewed with the fade colour bytes at 0x38 (as STAG0000 Stg00ModelFade). */
 typedef struct {
     u8 _pad00[0x34];
-    /* 0x34 */ s16 field_34;
+    /* 0x34 */ s16 clutRow;
     /* 0x36 */ s16 tpageBits;
     /* 0x38 */ u8 flatR;
     /* 0x39 */ u8 flatG;

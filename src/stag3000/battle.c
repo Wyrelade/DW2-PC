@@ -398,7 +398,7 @@ void Stg30_BattleUpdate(Actor *a0) {
             Gpu_SetBgClearColor(0, 0, 0);
             Gpu_ClearScreens();
             Gfx_FadeInFromBlack(0x40);
-            Task_Create(9, &l->field_0, 0);
+            Task_Create(9, &l->textBoxTask, 0);
             Task_Create(0x503, &l->cameraTask, 0);
             Task_Create(0x50A, &l->fightBgTask, 0);
             Task_Create(0x505, &l->bannerTask, 0);

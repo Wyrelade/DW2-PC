@@ -153,11 +153,11 @@ void Stg40_SpawnEnemyParties(void) {
             s->giftPoints = 0;
             s->stepsPerBurst = Stg40_EnemyPaceTable[out.paceType * 2];
             s->idleTicks = Stg40_EnemyPaceTable[out.paceType * 2 + 1];
-            s->floorValue = Stg40_EnemyAiTable[out.aiType * 2];
+            s->cellCode = Stg40_EnemyAiTable[out.aiType * 2];
             m = s->pathMode = Stg40_EnemyAiTable[out.aiType * 2 + 1];
             if (m == 2) {
-                if (s->floorValue != (Stg40_GetCellFlags(r->x, r->y) & 0xF)) {
-                    s->floorValue = m;
+                if (s->cellCode != (Stg40_GetCellFlags(r->x, r->y) & 0xF)) {
+                    s->cellCode = m;
                     s->pathMode = 0;
                 }
             }

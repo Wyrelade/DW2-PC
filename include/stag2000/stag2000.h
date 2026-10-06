@@ -160,12 +160,10 @@ typedef struct {
     /* 0x14 */ u16 rot;
     u8 _pad16[0x02];
     /* 0x18 */ s32 modelId;
-    /* 0x1C */ s32 field_1C;
-    /* 0x20 */ s32 field_20;
-    /* 0x24 */ u8 field_24;
-    /* 0x25 */ u8 field_25;
-    /* 0x26 */ u8 field_26;
-    u8 _pad27[0x05];
+    /* 0x1C */ s32 drawTex;
+    /* 0x20 */ s32 drawWire;
+    /* 0x24 */ CVECTOR wireColor;
+    u8 _pad28[0x04];
     /* 0x2C */ s32 visible;
 } Stg20DrawWork;
 
@@ -224,7 +222,7 @@ typedef struct {
 typedef struct {
     /* 0x00 */ s32 fileId;
     u8 _pad04[0x0A];
-    /* 0x0E */ u8 field_E;
+    /* 0x0E */ u8 unscaled;
     u8 _pad0F[0x19];
 } Stg20Part; /* size 0x28 */
 

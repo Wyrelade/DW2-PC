@@ -126,7 +126,7 @@ typedef struct {
     /* 0x2C */ s32 skillId;
     /* 0x30 */ s32 homeResetTimer;
     /* 0x34 */ s32 anim;
-    /* 0x38 */ s32 field_38;
+    /* 0x38 */ s32 startDowned;
 } Stg30FighterWork; /* size 0x3C */
 
 /* Work of task D_80073358 (Stg30_InterruptSelectTask, Stg30_InterruptSelectDraw). */
@@ -293,7 +293,7 @@ typedef struct {
 /* arg0 of Stg30_ShowAllFighters / Stg30_ResetAllFightersHome / Stg30_ShowPartyFighters: a pointer at 0x34 to a
    six-actor list at 0x2C. */
 typedef struct {
-    /* 0x00 */ s32 field_0;
+    /* 0x00 */ s32 textBoxTask;
     u8 _pad04[0x08];
     /* 0x0C */ s32 commandTask;
     /* 0x10 */ s32 cameraTask;
@@ -335,7 +335,7 @@ typedef struct {
 /* Work of task D_800730D0 (init Stg30_ItemMenuInit; Stg30_ItemMenuBuildLists fills three id lists). */
 typedef struct {
     /* 0x00 */ s32 field_0;
-    /* 0x04 */ s32 field_4;  /* first of 14 text words cleared by Stg30_ItemMenuUpdate */
+    /* 0x04 */ s32 titleText;  /* first of 14 text words cleared by Stg30_ItemMenuUpdate */
     /* 0x08 */ s32 descText;
     /* 0x0C */ s32 columnTitles[3];
     /* 0x18 */ s32 texts[3][3];
@@ -435,13 +435,13 @@ typedef struct {
 
 /* Init arg of task 7 as Stg30_SpawnSkillHitFx builds it on the stack. */
 typedef struct {
-    /* 0x00 */ s32 field_0;
-    /* 0x04 */ s32 field_4;
+    /* 0x00 */ s32 modelFile;
+    /* 0x04 */ s32 animFile;
     /* 0x08 */ s32 posX;
     /* 0x0C */ s32 posY;
     /* 0x10 */ s32 posZ;
     /* 0x14 */ s32 facing;
-    /* 0x18 */ s32 field_18;
+    /* 0x18 */ s32 duration;
 } Stg30SpawnArgs;
 
 /* Work of task D_80073170 (update Stg30_TargetSelectUpdate, draw Stg30_TargetSelectDraw). */
@@ -471,7 +471,7 @@ typedef struct {
 /* ActorModel viewed with the three tint bytes at 0x38..0x3A (Stg30_FighterTask). */
 typedef struct {
     u8 _pad00[0x34];
-    /* 0x34 */ s16 field_34;
+    /* 0x34 */ s16 clutRow;
     /* 0x36 */ s16 tpageBits;
     /* 0x38 */ u8 flatR;
     /* 0x39 */ u8 flatG;

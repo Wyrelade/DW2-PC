@@ -124,7 +124,7 @@ typedef struct {
     /* 0x00 */ s16 setId;
     /* 0x02 */ u8 useDungeonBgm;
     /* 0x03 */ u8 likedGift;
-    /* 0x04 */ u8 floorValue;
+    /* 0x04 */ u8 cellCode;
     /* 0x05 */ u8 pathMode;
     /* 0x06 */ u8 idleTicks;
     /* 0x07 */ u8 stepsPerBurst;

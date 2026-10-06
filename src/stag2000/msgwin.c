@@ -66,7 +66,7 @@ void Stg20_MsgWinDraw(Actor *a) {
     }
     p = (Stg20Part *)Cd_GetFileEntry(id);
     for (q = p; q->fileId != 0; q++) {
-        q->field_E = 1;
+        q->unscaled = 1;
     }
     Gfx_DrawParts((s32)p);
 }

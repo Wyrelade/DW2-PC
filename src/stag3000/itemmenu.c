@@ -166,8 +166,8 @@ void Stg30_ItemMenuUpdate(Actor *a0) {
 
     switch (a0->stateLevel0) {
     case 0:
-        Mem_FillWordsNeg1(&w->field_4, 0xE);
-        Text_OpenById(&w->field_4, 0x178, 0, Stg30_ItemMenuTitlePos);
+        Mem_FillWordsNeg1(&w->titleText, 0xE);
+        Text_OpenById(&w->titleText, 0x178, 0, Stg30_ItemMenuTitlePos);
         g = (Stg30BeetleWeapons *)&Save_GameState;
         if (g->gunPart != 0) {
             w->columnEnabled[0] = 1;
@@ -290,7 +290,7 @@ void Stg30_ItemMenuUpdate(Actor *a0) {
         switch (a0->stateLevel1) {
         case 0:
         default:
-            Text_CloseArray(&w->field_4, 0xE);
+            Text_CloseArray(&w->titleText, 0xE);
             Task_NextState1(a0);
         case 1:
             w->openScale -= 0x555;

@@ -48,14 +48,14 @@ void Stg20_LabDigiModelUpdate(Actor *a) {
             Gfx_AttachModel(a, w->modelId)->otIndex = 3;
             Anim_SetModelAnim(a, 0);
             t = (Stg20ModelTint *)a->model;
-            w->field_1C = 1;
-            w->field_20 = 0;
+            w->drawTex = 1;
+            w->drawWire = 0;
             t->b = 0x80;
             t->g = 0x80;
             t->r = 0x80;
-            w->field_26 = 0;
-            w->field_25 = 0;
-            w->field_24 = 0;
+            w->wireColor.b = 0;
+            w->wireColor.g = 0;
+            w->wireColor.r = 0;
             if (Stg20_MenuState.modelNoGrow == 0) {
                 o->scaleZ = 0;
                 o->scaleY = 0;
