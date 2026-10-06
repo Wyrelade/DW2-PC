@@ -247,7 +247,7 @@ void Stg30_BattleWonUpdate(Actor *a0) {
         if (l->resultTask != 0) {
             break;
         }
-        st = D_8005E5E0;
+        st = Dung_State.giftLevel;
         if (st != 0) {
             stage2 = Digi_GetRank(Stg30_Battle.entries[Stg30_Battle.joinCandidate].digiId);
             if ((Rand_Next() & 0x7F) < Stg30_JoinChance[stage2][st - 1]) {

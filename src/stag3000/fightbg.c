@@ -15,7 +15,7 @@ void Stg30_FightBgUpdate(Actor *a0) {
         if (Stg30_Battle.entries[0].fromCity != 0) {
             a0->digiId = Stg30_SpecialFightBgModel;
         } else {
-            a0->digiId = Stg30_FightBgModels[Stg30_FightBgByFloorElem[D_8005E5DD]];
+            a0->digiId = Stg30_FightBgModels[Stg30_FightBgByFloorElem[Dung_State.floorSpecialty]];
         }
         Actor_InitTransform(a0, Gfx_ZeroVector, 0);
         Gfx_AttachModel(a0, a0->digiId)->otIndex = 5;

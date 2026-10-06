@@ -13,10 +13,8 @@
 #include "main/itemuse.h"
 #include "main/itemmenu.h"
 
-/* The two ordering tables. Gpu_OtBufEnds is the symbol for the second one (code reads
- * Gpu_OtBufEnds[i] as the end of table i). */
+/* The two ordering tables (Gpu_OtBufs[i + 1] is the end of table i). */
 GpuOtBuf Gpu_OtBufs[2];
-DATA_LABEL(Gpu_OtBufEnds, Gpu_OtBufs, 0x4030);
 /* OT layout mode (index into Gpu_OtLayerLens); code reads it as Gpu_OtBufs[2].entries[0]. */
 s32 D_8005CD58[2];
 /* Ordering table layout per mode: layer lengths and offsets (8 layers). */
@@ -51,13 +49,13 @@ void Gpu_ClearOt(s32 arg0) {
 }
 
 s32 Gpu_DrawOt(s32 arg0) {
-    s32 *p = (s32 *)&Gpu_OtBufEnds[arg0];
+    s32 *p = (s32 *)&Gpu_OtBufs[arg0 + 1];
     return DrawOTag(&p[-1]);
 }
 
 void Gpu_SkipEmptyOtEntries(s32 arg0) {
-    u32 *ot = (u32 *)&Gpu_OtBufEnds[arg0];
-    u32 *end = (u32 *)&Gpu_OtBufEnds[arg0 - 1];
+    u32 *ot = (u32 *)&Gpu_OtBufs[arg0 + 1];
+    u32 *end = (u32 *)&Gpu_OtBufs[arg0];
     u32 *p;
     u32 *q;
     u32 m;

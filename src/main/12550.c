@@ -38,8 +38,6 @@
 DungState *Dung_StatePtr = &Dung_State;
 /* .bss */
 DungState Dung_State;
-DATA_LABEL(D_8005E5DD, Dung_State, 0x103D);
-DATA_LABEL(D_8005E5E0, Dung_State, 0x1040);
 
 /* Unnamed: empty stub, no callers, no table ref. */
 void func_80021D50(void) {

@@ -88,7 +88,6 @@ extern void (*Sys_VSyncCallbacks[])(void);
 extern TextStack Text_ReturnStack;
 extern TaskList Task_List;
 extern GpuOtBuf Gpu_OtBufs[];
-extern GpuOtBuf Gpu_OtBufEnds[];
 extern GameState Save_GameState;
 extern s32 D_80062FD8;
 extern void Digi_InitFromTable(s32, s32, DigiRosterEntry *);
@@ -1042,7 +1041,7 @@ typedef struct {
     /* 0x0C */ s32 scaleY;
     /* 0x10 */ s32 scaleZ; /* scaleX..scaleZ: the VECTOR ScaleMatrix reads */
     u8 _pad14[4];
-    /* 0x18 */ Mat1F668 matrix; /* also reached as the symbol Gfx_PartRotMatrix */
+    /* 0x18 */ Mat1F668 matrix;
 } GfxPartRotCache;
 
 /* 2-byte-aligned aggregate forcing the lwl/lwr + swl/swr block copy. */
@@ -1051,7 +1050,6 @@ typedef struct {
 } Agg1D6B4;
 
 extern GfxPartRotCache Gfx_PartRotCache;
-extern Mat1F668 Gfx_PartRotMatrix;
 
 
 extern Blk20 Gfx_IdentityMatrix;

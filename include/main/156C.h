@@ -1298,9 +1298,9 @@ typedef struct {
     /* 0xBA8 */ u8 memBugCount;
     /* 0xBA9 */ u8 memBugLevels[12];
     u8 _padBB5[0x103D - 0xBB5];
-    /* 0x103D */ u8 field_103D; /* STAG3000 reads it as the symbol D_8005E5DD */
+    /* 0x103D */ u8 floorSpecialty;
     u8 _pad103E[0x2];
-    /* 0x1040 */ s16 field_1040; /* STAG3000 reads it as the symbol D_8005E5E0 */
+    /* 0x1040 */ s16 giftLevel;
     u8 _pad1042[0x1080 - 0x1042];
 } DungState; /* size 0x1080: Save_GameState follows, 8-aligned */
 

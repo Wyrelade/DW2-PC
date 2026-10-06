@@ -20,7 +20,6 @@ GfxPartRotCache Gfx_PartRotCache = {
     0, 0, { 0 }, 0x1000, 0x1000, 0x1000, { 0 },
     { { { 0x1000, 0, 0 }, { 0, 0x1000, 0 }, { 0, 0, 0x1000 } }, { 0, 0, 0 } },
 };
-DATA_LABEL(Gfx_PartRotMatrix, Gfx_PartRotCache, 0x18);
 
 void Gfx_DrawPartSprites(GfxPartSprite *s, GfxPartOTag *ot) {
     GfxPartCell *e;
@@ -267,7 +266,7 @@ void Gfx_DrawPartsEx(void *arg0, s32 arg1) {
                 RotMatrixYXZ(&Gfx_PartRotCache, (Obj209 *)&Gfx_PartRotCache.matrix);
                 ScaleMatrix((Obj209 *)&Gfx_PartRotCache.matrix, &Gfx_PartRotCache.scaleX);
             }
-            Gfx_DrawPartQuadsRot(s2, &Gfx_PartRotMatrix, s4, s3);
+            Gfx_DrawPartQuadsRot(s2, &Gfx_PartRotCache.matrix, s4, s3);
         }
     Ladv:
         s2 = (Rec1D6B4 *)((u8 *)s2 + 0x28);
