@@ -217,7 +217,7 @@ void Stg30_ResultUpdate(Actor *a0) {
                 r = &Stg30_ResultTextLayout[j];
                 if (r->slot == 9 || Stg30_Battle.entries[r->slot].digiId != 0) {
                     if (r->src < 3) {
-                        args.text = (s32)D_80073D24[r->src].name;
+                        args.text = (s32)Stg30_BattleDigiNames[r->src].name;
                     } else {
                         args.text = (s32)Cd_GetFileEntry(r->src | 0x1FD0000);
                     }

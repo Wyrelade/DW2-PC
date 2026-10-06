@@ -105,7 +105,7 @@ void Stg30_BattleWonUpdate(Actor *a0) {
     switch (a0->stateLevel2) {
     case 0:
     default:
-        if (D_8007409C != 0) {
+        if (Stg30_Battle.isBossFight != 0) {
             Snd_PlayById(0x202, 1);
         } else {
             Snd_PlayById(0x201, 1);
@@ -476,7 +476,7 @@ void Stg30_BattleUpdate(Actor *a0) {
                 if (l->commandTask != 0) {
                     break;
                 }
-                if (D_80073CC4 == 1) {
+                if (Stg30_Battle.entries[0].escapeResult == 1) {
                     switch (a0->stateLevel3) {
                     case 0:
                     default:
@@ -500,7 +500,7 @@ void Stg30_BattleUpdate(Actor *a0) {
                     }
                     break;
                 }
-                if (D_80073CC4 == 2) {
+                if (Stg30_Battle.entries[0].escapeResult == 2) {
                     switch (a0->stateLevel3) {
                     case 0:
                     default:
@@ -517,7 +517,7 @@ void Stg30_BattleUpdate(Actor *a0) {
                             Stg30_Battle.turns[n4].target = 0;
                             Stg30_Battle.turns[n4].turnType = 0;
                         }
-                        D_80073CC4 = 0;
+                        Stg30_Battle.entries[0].escapeResult = 0;
                         break;
                     }
                     break;

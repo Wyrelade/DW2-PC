@@ -141,7 +141,7 @@ void Stg30_SkillLearnUpdate(Actor *a0) {
                 w->count[1]++;
             }
         }
-        Text_OpenPacked(&w->labelTexts[0], (s32)D_80073D24[w->slot].name, 0x10, Stg30_SkillLearnTextPos[0]);
+        Text_OpenPacked(&w->labelTexts[0], (s32)Stg30_BattleDigiNames[w->slot].name, 0x10, Stg30_SkillLearnTextPos[0]);
         Text_OpenPacked(&w->labelTexts[1], (s32)Cd_GetFileEntry(0x1FD0187), 0x80, Stg30_SkillLearnTextPos[1]);
         Text_OpenById(&w->labelTexts[2], 0x18B, 4, Stg30_SkillLearnTextPos[2]);
         Text_OpenById(&w->labelTexts[3], 0x18C, 4, Stg30_SkillLearnTextPos[3]);

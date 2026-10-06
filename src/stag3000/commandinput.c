@@ -50,7 +50,7 @@ void Stg30_CommandInputTask(Actor *a0) {
 
     switch (a0->stateLevel0) {
     case 0:
-        D_80073CC4 = 0;
+        Stg30_Battle.entries[0].escapeResult = 0;
         Task_NextState0(a0);
         break;
     case 2:
@@ -110,9 +110,9 @@ void Stg30_CommandInputTask(Actor *a0) {
                         b /= n;
                         n = a * 100 / b;
                         if ((Rand_Next() & 0x7F) < n) {
-                            D_80073CC4 = 1;
+                            Stg30_Battle.entries[0].escapeResult = 1;
                         } else {
-                            D_80073CC4 = 2;
+                            Stg30_Battle.entries[0].escapeResult = 2;
                         }
                     }
                     Task_SetState0(a0, 3);
@@ -132,7 +132,7 @@ void Stg30_CommandInputTask(Actor *a0) {
                 if (*p != 0) {
                     break;
                 }
-                if (D_80073CD4 != 0) {
+                if (Stg30_Battle.entries[0].cancelled != 0) {
                     Task_SetState1(a0, 0);
                 } else {
                     Task_NextState2(a0);
@@ -169,7 +169,7 @@ void Stg30_CommandInputTask(Actor *a0) {
             default:
                 Stg30_DimFightersExcept(w->field_0, 0, 2);
                 ((void (*)(s32))Stg30_SetCameraShot)(w->field_0 + 2);
-                D_80073CC8 = w->field_0;
+                Stg30_Battle.entries[0].inputSlot = w->field_0;
                 Task_Create(0x504, p, 0);
                 Task_NextState2(a0);
             case 1:
@@ -199,14 +199,14 @@ void Stg30_CommandInputTask(Actor *a0) {
                 case 0:
                 default:
                     ((void (*)(s32))Stg30_SetCameraShot)(w->field_0 + 2);
-                    D_80073CC8 = w->field_0;
+                    Stg30_Battle.entries[0].inputSlot = w->field_0;
                     Task_Create(0x507, p, 0);
                     Task_NextState3(a0);
                 case 1:
                     if (*p != 0) {
                         break;
                     }
-                    if (D_80073CD4 != 0) {
+                    if (Stg30_Battle.entries[0].cancelled != 0) {
                         Task_SetState1(a0, 2);
                     } else {
                         Task_NextState2(a0);

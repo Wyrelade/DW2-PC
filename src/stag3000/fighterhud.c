@@ -66,7 +66,7 @@ void Stg30_FighterHudUpdate(Stg30TaskHead *a0) {
             }
             break;
         case 1:
-            args.text = (s32)D_80073D24[a0->param].name;
+            args.text = (s32)Stg30_BattleDigiNames[a0->param].name;
             args.bigFont = 0;
             args.color = 0;
             args.x = Stg30_FighterHudNamePos[a0->param].x;
@@ -217,7 +217,7 @@ void Stg30_FighterHudDraw(Actor *a0) {
         }
         k = a0->param;
         if (k < 3) {
-            Stg30DigiS *s = &D_80073CD8[k];
+            Stg30DigiS *s = &Stg30_BattleDigis[k];
 
             Gfx_SetPartsNumber((GfxPart *)p, 0x20, 3, s->maxHp);
             Gfx_SetPartsNumber((GfxPart *)p, 0x40, 3, s->hp);
@@ -225,7 +225,7 @@ void Stg30_FighterHudDraw(Actor *a0) {
             Gfx_SetPartsNumber((GfxPart *)p, 0x100, 3, s->mp);
             Gfx_SetPartsNumber((GfxPart *)p, 0x200, 2, s->level);
         }
-        d = &D_80073CD8[a0->param];
+        d = &Stg30_BattleDigis[a0->param];
         if (a0->param < 3) {
             Stg30_SetGaugeParts(p, 0x400, d->hp, d->maxHp);
             Stg30_SetGaugeParts(p, 0x4000, d->mp, d->maxMp);

@@ -21,7 +21,7 @@ s16 Stg30_BattleScript[0xC8];
 
 void Stg30_RetargetAction(void) {
     s32 idx = Stg30_TurnOrderGet(0);
-    Stg30Rec73F6C *e = &D_80073F6C[idx];
+    Stg30Turn *e = &Stg30_Battle.turns[idx];
     s32 fl = func_8001F044(e->skillId);
     s32 lo;
     s32 n;
@@ -433,10 +433,10 @@ s32 Stg30_ApplySkillDamage(s32 attacker, s32 target, s32 tech, s16 *p4, s16 *p5)
         Stg30_Battle.debuffed[target] = 1;
     }
     if ((buff & 0x1000) && type[1] == 0) {
-        Stg30_StatDebuff(&((Stg30CombatCD8 *)D_80073CD8)->attackBase[target], &t->attack, &((Stg30CombatCD8 *)D_80073CD8)->attackCur[target]);
-        Stg30_StatDebuff(&((Stg30CombatCD8 *)D_80073CD8)->defenseBase[target], &t->defense, &((Stg30CombatCD8 *)D_80073CD8)->defenseCur[target]);
+        Stg30_StatDebuff(&((Stg30CombatCD8 *)Stg30_BattleDigis)->attackBase[target], &t->attack, &((Stg30CombatCD8 *)Stg30_BattleDigis)->attackCur[target]);
+        Stg30_StatDebuff(&((Stg30CombatCD8 *)Stg30_BattleDigis)->defenseBase[target], &t->defense, &((Stg30CombatCD8 *)Stg30_BattleDigis)->defenseCur[target]);
         *p5 = 0x14;
-        ((Stg30CombatCD8 *)D_80073CD8)->debuffed[target] = 1;
+        ((Stg30CombatCD8 *)Stg30_BattleDigis)->debuffed[target] = 1;
     }
     do {
         if (Stg30_Battle.turns[attacker].turnType == 2 && (flags1 & 1)) {
@@ -832,7 +832,7 @@ void Stg30_BuildSkillScript(s32 idx) {
         break;
     }
     if (num == 0 || (rec->effectKind == 0 && Stg30_SkillHitCheck(idx, targets, num, (s16)id) == 0)) {
-        D_80074074 = 0;
+        Stg30_Battle.actionTaken = 0;
     }
     if (Stg30_Battle.actionTaken != 0) {
         if (rec->turnType == 3) {

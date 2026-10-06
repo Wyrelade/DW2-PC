@@ -67,7 +67,7 @@ void Stg30_InterruptSelectTask(Actor *a0)
         case 0:
 
         default:
-          D_80074094 = 0;
+          Stg30_Battle.interruptActive = 0;
           w->palette = 7;
           w->scaleX = 0;
           w->scaleY = 0x334;
@@ -279,5 +279,5 @@ void Stg30_InitBattle(void) {
     if (Sys_State.modeArg == 0x97 && Flag_Test(0x88)) {
         Sys_State.modeArg++;
     }
-    D_80074098 = 4;
+    Stg30_Battle.joinCandidate = 4;
 }

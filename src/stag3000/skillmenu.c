@@ -245,7 +245,7 @@ void Stg30_SkillMenuUpdate(Actor *a0) {
                     break;
                 }
                 if (Pad_State[0].triangle > 0) {
-                    D_80073CD4 = 1;
+                    Stg30_Battle.entries[0].cancelled = 1;
                     Snd_PlayById(0xB, 0);
                     Task_NextState0(a0);
                 }

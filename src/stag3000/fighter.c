@@ -458,9 +458,9 @@ void Stg30_FighterTask(Actor *arg0) {
     } else {
         arg0->childCount = 4;
     }
-    if (w->lastHudFlag != D_80074094) {
+    if (w->lastHudFlag != Stg30_Battle.interruptActive) {
         ch = (Actor **)arg0->u34.children;
-        if (D_80074094 != 0) {
+        if (Stg30_Battle.interruptActive != 0) {
             if (ch[0]->stateLevel0 == 2) {
                 Task_SetState1(ch[0], 1);
             }
@@ -469,7 +469,7 @@ void Stg30_FighterTask(Actor *arg0) {
                 Task_SetState0(ch[0], 2);
             }
         }
-        w->lastHudFlag = D_80074094;
+        w->lastHudFlag = Stg30_Battle.interruptActive;
     }
     if (w->homeResetTimer != 0 && --w->homeResetTimer == 1) {
         t = (Stg30Xform *)arg0->u38.ptr38;

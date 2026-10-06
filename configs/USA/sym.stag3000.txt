@@ -215,3 +215,5 @@ Stg30_FighterHudDesc = 0x800734F8;
 Stg30_ResultDesc = 0x80073718;
 Stg30_SkillLearnDesc = 0x800737A0;
 Stg30_JoinPromptDesc = 0x800737C8;
+Stg30_BattleDigis = 0x80073CD8;
+Stg30_BattleDigiNames = 0x80073D24;

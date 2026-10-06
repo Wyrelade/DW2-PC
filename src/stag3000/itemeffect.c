@@ -46,8 +46,8 @@ s32 Stg30_CalcCannonDamage(s32 idx, s32 id, s32 lvl) {
 }
 
 s32 Stg30_ApplyItemEffect(s32 target, s32 tech, s16 *p3, s16 *p4) {
-    Stg30DigiS *d = &D_80073CD8[target];
-    s32 *st = &((Stg30CombatCD8 *)D_80073CD8)->status[target];
+    Stg30DigiS *d = &Stg30_BattleDigis[target];
+    s32 *st = &((Stg30CombatCD8 *)Stg30_BattleDigis)->status[target];
     s32 type = Digi_GetType(d->digiId);
     s32 dmg;
 

@@ -34,7 +34,7 @@ void Stg30_TargetSelectUpdate(Actor *a0) {
         case 4:
         case 7:
         default:
-            v = D_80073CC8;
+            v = Stg30_Battle.entries[0].inputSlot;
             w->target = v;
             w->lastSlot = v;
             w->firstSlot = v;
@@ -114,7 +114,7 @@ void Stg30_TargetSelectUpdate(Actor *a0) {
                 break;
             }
             if (Pad_State[0].triangle > 0) {
-                D_80073CD4 = 1;
+                Stg30_Battle.entries[0].cancelled = 1;
                 Snd_PlayById(0xB, 0);
                 Task_SetState0(a0, 3);
             }

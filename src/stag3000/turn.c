@@ -50,11 +50,11 @@ s32 Stg30_AiCheckCondition(s32 cond, s32 self) {
     case 3:
         return (r & 7) == 0;
     case 5:
-        return D_80073E02 != 0;
+        return Stg30_Battle.entries[3].hp != 0;
     case 4:
-        return D_80073E5E != 0;
+        return Stg30_Battle.entries[4].hp != 0;
     case 6:
-        return D_80073EBA != 0;
+        return Stg30_Battle.entries[5].hp != 0;
     case 7:
         ret = 1;
         for (i = 3; i < 6; i++) {
@@ -228,9 +228,9 @@ void Stg30_AiChooseEnemyTurns(void) {
     s32 col;
 
     for (col = 3; col < 6; col++) {
-        Stg30DigiB21 *d = &((Stg30SlotBlk *)D_80073CD8)->digis[col];
-        Stg30EnemyAi *p = &((Stg30SlotBlk *)D_80073CD8)->lists[col];
-        Stg30Turn *out = &((Stg30SlotBlk *)D_80073CD8)->sub[col];
+        Stg30DigiB21 *d = &((Stg30SlotBlk *)Stg30_BattleDigis)->digis[col];
+        Stg30EnemyAi *p = &((Stg30SlotBlk *)Stg30_BattleDigis)->lists[col];
+        Stg30Turn *out = &((Stg30SlotBlk *)Stg30_BattleDigis)->sub[col];
         s32 i;
 
         if (d->hp != 0) {
