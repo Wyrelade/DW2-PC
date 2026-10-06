@@ -33,9 +33,6 @@
 #include "main/skill.h"
 #include "main/anim.h"
 
-/* RCS id of the original sys.c. */
-const char D_800101E4[] = "$Id: sys.c,v 1.140 1998/01/12 07:52:27 noda Exp yos $";
-
 ActorModel *Gfx_AttachModel(Actor *a0, s32 id) {
     s32 fresh = 0;
     GfxModelFile *m = (GfxModelFile *)Cd_GetFileOrNull(id);

@@ -36,7 +36,10 @@
 #include "main/12550.h"
 #include "main/flags.h"
 #include "main/savedata.h"
-#include "main/13584.h"
+#include "main/mem.h"
+#include "main/pad.h"
+#include "main/sys.h"
+#include "main/cd.h"
 #include "main/cdread.h"
 
 /* The Fx model task: a model played for a fixed time with one animation. */

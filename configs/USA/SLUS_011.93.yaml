@@ -96,11 +96,14 @@ segments:
       - [0xF400, c, F400]
       - [0xF540, c, skill]
       - [0xF9A8, c, anim]
-      - [0x105BC, c, 105BC]      # from Gfx_AttachModel: sys.c (rcsid D_800101E4)
+      - [0x105BC, c, 105BC]      # from Gfx_AttachModel: model drawing, actor transform
       - [0x12550, c, 12550]      # from func_80021D50: event flag reset (defines D_8005071C)
       - [0x12654, c, flags]
       - [0x12C68, c, savedata]
-      - [0x13584, c, 13584]      # from Mem_Free: heap, pad, vsync, Sys_Main, rand, cd cache
+      - [0x13584, c, mem]
+      - [0x138AC, c, pad]
+      - [0x13C84, c, sys]        # from Sys_VSyncHandler: sys.c (rcsid D_800101E4), Sys_Main, rand, frame rate
+      - [0x141A0, c, cd]
       - [0x147FC, c, cdread]     # from Cd_CheckNextSector: async CD read (data after the PsyQ sin tables)
       - [0x14B10, c, fxmodel]    # from Fx_ModelInit: Fx model task
       - [0x14C74, c, psyq]      # PsyQ 4.7 libraries (PadGetState ..), asm only, not counted
@@ -128,7 +131,8 @@ segments:
       - [0x31EB4, .data, F400]
       - [0x31ECC, .data, anim]
       - [0x31EFC, .data, savedata]
-      - [0x31F04, .data, 13584]
+      - [0x31F04, .data, sys]
+      - [0x33F94, .data, cd]
       - [0x38110, data, 38110]   # PsyQ data-only object (rcos/sin_1 tables)
       - [0x395B8, .data, cdread]
       - [0x395D8, .data, fxmodel]
@@ -142,7 +146,9 @@ segments:
       - [0x40F18, .sdata, sound]
       - [0x40F1C, .sdata, 12550]
       - [0x40F20, .sdata, savedata]
-      - [0x40F24, .sdata, 13584]
+      - [0x40F24, .sdata, mem]
+      - [0x40F2C, .sdata, sys]
+      - [0x40F50, .sdata, cd]
       - [0x40F58, .sbss, task]
       - [0x40F5C, .sbss, cdpreload]
       - [0x40F60, .sbss, itemeffect]
@@ -150,7 +156,9 @@ segments:
       - [0x40F6C, .sbss, itemuse]
       - [0x40F74, .sbss, sound]
       - [0x40F78, .sbss, skill]
-      - [0x40F84, .sbss, 13584]
+      - [0x40F84, .sbss, mem]
+      - [0x40F8C, .sbss, sys]
+      - [0x40F94, .sbss, cd]
       - [0x40F98, .bss, task]
       - [0x41148, .bss, cdpreload]
       - [0x41248, .bss, sound]
@@ -160,7 +168,9 @@ segments:
       - [0x4DD60, .bss, flagtable]
       - [0x4DDA0, .bss, 12550]
       - [0x4EE20, .bss, savedata]
-      - [0x4FE78, .bss, 13584]
+      - [0x4FE78, .bss, pad]
+      - [0x4FF70, .bss, sys]
+      - [0x500C8, .bss, cd]
       - [0x505C8, .bss, cdread]
       # PsyQ .bss from 0x8005FDD8, still data asm
       - {start: 0x505D8, type: data, name: 505D8, linker_section_order: .bss}
