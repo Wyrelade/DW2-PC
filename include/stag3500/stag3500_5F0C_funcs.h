@@ -3,8 +3,6 @@
 
 /* Functions src/stag3500/stag3500_5F0C.c defines or declares, for the units after it
  * (in the single file the definition was the prototype for later code). */
-void Stg35_BuildSkillScript(s32 arg0);
-s32 Stg35_PrepareAction(s32 arg0);
 s32 Stg35_CamEaseStep(s32 arg0, s32 arg1);
 void Stg35_CamEaseToward(Stg35CamWork *w, s32 *t);
 void Stg35_CameraUpdate(Actor *arg0);

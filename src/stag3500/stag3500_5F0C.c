@@ -7,7 +7,14 @@
 #include "stag3500/vsmenu.h"
 #include "stag3500/matchup.h"
 #include "stag3500/battle.h"
-#include "stag3500/stag3500_2334_funcs.h"
+#include "stag3500/textrect.h"
+#include "stag3500/turn.h"
+#include "stag3500/parts.h"
+#include "stag3500/fighter.h"
+#include "stag3500/roundbanner.h"
+#include "stag3500/xaplay.h"
+#include "stag3500/hud.h"
+#include "stag3500/battlescript.h"
 
 /* Task callbacks this unit defines further down (the descriptors come first). */
 void Stg35_CameraUpdate(Actor *arg0);
@@ -73,155 +80,6 @@ TaskDesc Stg35_WinBannerDesc = {
 s32 D_8006AA54 = 0;
 
 s32 Stg35_CamShotVariant;
-
-void Stg35_BuildSkillScript(s32 arg0) {
-    Stg35Action *b = &Stg35_Battle.actions[arg0];
-    s16 *p;
-    s16 targets[6];
-    s32 dmg[6];
-    s16 kind = 1;
-    s16 skill = (s16)b->skillId;
-    s32 hit;
-    s32 n;
-    s32 c;
-    s32 i;
-
-    hit = Skill_GetPower((s16)b->skillId) > 0;
-    p = Stg35_BattleScript;
-    for (i = 0; i < 6; i++) {
-        dmg[i] = 0;
-        targets[i] = -1;
-    }
-    n = 0;
-    switch (b->target) {
-    default:
-        if (Stg35_Battle.rec[b->target].hp != 0) {
-            n = 1;
-            targets[0] = b->target;
-        }
-        break;
-    case 7:
-        if (hit) {
-            for (i = 0, c = 0; i < 3; i++) {
-                if (Stg35_Battle.rec[i].hp != 0) {
-                    targets[c++] = i;
-                }
-            }
-        } else {
-            for (i = 0, c = 0; i < 3; i++) {
-                targets[c++] = i;
-            }
-        }
-        n = c;
-        kind = 0;
-        break;
-    case 8:
-        if (hit) {
-            for (c = 0, i = 3; i < 6; i++) {
-                if (Stg35_Battle.rec[i].hp != 0) {
-                    targets[c++] = i;
-                }
-            }
-        } else {
-            for (c = 0, i = 3; i < 6; i++) {
-                targets[c++] = i;
-            }
-        }
-        n = c;
-        kind = 1;
-        break;
-    case 9:
-        if (hit) {
-            for (c = 0, i = 0; i < 6; i++) {
-                if (Stg35_Battle.rec[i].hp != 0) {
-                    targets[c++] = i;
-                }
-            }
-        } else {
-            for (c = 0, i = 0; i < 6; i++) {
-                targets[c++] = i;
-            }
-        }
-        n = c;
-        kind = 2;
-        break;
-    }
-    for (i = 0; i < n; i++) {
-        dmg[i] = Stg35_ApplySkillDamage(arg0, targets[i], skill);
-    }
-    *p++ = 2;
-    *p++ = arg0 + 10;
-    *p++ = 3;
-    *p++ = arg0;
-    *p++ = 0x11;
-    *p++ = 0xD;
-    *p++ = Stg35_Battle.actions[arg0].actionState - 1;
-    *p++ = 1;
-    *p++ = 0x12;
-    *p++ = 0xE;
-    *p++ = skill;
-    *p++ = 0x13;
-    *p++ = skill;
-    *p++ = n;
-    *p++ = 8;
-    *p++ = arg0;
-    *p++ = skill;
-    *p++ = 0;
-    *p++ = 0x96;
-    *p++ = 7;
-    *p++ = arg0;
-    for (i = 0; i < n; i++) {
-        *p++ = 2;
-        *p++ = targets[i] + 0x10;
-        *p++ = 3;
-        *p++ = targets[i];
-        *p++ = 0;
-        *p++ = i == 0 ? 0x1E : 0xC;
-        *p++ = 0xF;
-        *p++ = dmg[i];
-        if (hit) {
-            if (Stg35_Battle.rec[targets[i]].hp != 0) {
-                *p++ = Stg35_Battle.actions[targets[i]].actionState != 5 ? 0xA : 9;
-            } else {
-                *p++ = 0xB;
-            }
-        } else {
-            *p++ = 0xC;
-        }
-        *p++ = targets[i];
-        *p++ = skill;
-        if (n == 1) {
-            if (hit) {
-                *p++ = 1;
-                *p++ = targets[i];
-                *p++ = 0;
-                *p++ = 0x1E;
-            } else {
-                *p++ = 0;
-                *p++ = 0x78;
-            }
-        } else {
-            *p++ = 0;
-            *p++ = 0x3C;
-        }
-    }
-    if (n != 1) {
-        *p++ = 2;
-        *p++ = kind + 0x16;
-        *p++ = kind + 4;
-        *p++ = 0;
-        *p++ = 0xB4;
-    }
-    *p = 0x14;
-    for (i = 0; i < 6; i++) {
-        Stg35_Battle.scriptTargets[i] = targets[i];
-    }
-}
-
-s32 Stg35_PrepareAction(s32 arg0) {
-    Stg35_BuildSkillScript(arg0);
-    return 1;
-}
 
 s32 Stg35_CamEaseStep(s32 arg0, s32 arg1) {
     s32 neg = 0;
