@@ -85,6 +85,10 @@ def unit_has(name):
     for p in glob.glob(os.path.join(root, "**", "*.s"), recursive=True):
         if pat.search(open(p, encoding="latin1").read()):
             return True
+    # data that only exists as a C definition now (overlay .data/.bss in C)
+    for p in glob.glob(os.path.join(ROOT, "src", UNIT, "*.c")):
+        if pat.search(open(p, encoding="latin1").read()):
+            return True
     return False
 
 

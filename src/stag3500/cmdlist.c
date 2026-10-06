@@ -24,7 +24,7 @@ Stg35SkillGroupEntry Stg35_SkillGroup0[] = {
     { 0x69, 30, 0 }, { 0x8B, 30, 0 }, { 0x21, 25, 1 }, { 0x3, 25, 0 }, { 0x20, 25, 0 },
     { 0x8, 20, 0 }, { 0x22, 20, 0 }, { 0x65, 20, 0 }, { 0 },
 };
-Stg35SkillGroupEntry D_8006A76C[] = {
+Stg35SkillGroupEntry Stg35_SkillGroup1[] = {
     { 0x84, 45, 1 }, { 0x25, 45, 0 }, { 0x26, 45, 0 }, { 0x41, 45, 0 }, { 0x60, 45, 0 },
     { 0x6C, 45, 0 }, { 0x6E, 45, 0 }, { 0x82, 45, 0 }, { 0x8A, 45, 0 }, { 0x8C, 45, 0 },
     { 0x6, 40, 0 }, { 0xB, 40, 0 }, { 0xF, 40, 0 }, { 0x11, 40, 0 }, { 0x29, 40, 0 },
@@ -32,34 +32,34 @@ Stg35SkillGroupEntry D_8006A76C[] = {
     { 0x45, 40, 0 }, { 0x46, 40, 0 }, { 0x47, 40, 0 }, { 0x59, 40, 0 }, { 0x66, 40, 0 },
     { 0x6B, 40, 0 }, { 0x83, 40, 0 }, { 0xD8, 40, 0 }, { 0 },
 };
-Stg35SkillGroupEntry D_8006A81C[] = {
+Stg35SkillGroupEntry Stg35_SkillGroup2[] = {
     { 0xA, 60, 0 }, { 0xD, 60, 0 }, { 0x53, 60, 0 }, { 0x73, 60, 0 }, { 0x85, 60, 0 },
     { 0x87, 60, 0 }, { 0x89, 60, 0 }, { 0xD9, 60, 0 }, { 0x24, 55, 0 }, { 0x28, 55, 0 },
     { 0x2A, 55, 0 }, { 0x49, 55, 0 }, { 0x9, 50, 0 }, { 0xC, 50, 0 }, { 0xE, 50, 0 },
     { 0x10, 50, 0 }, { 0x2C, 50, 0 }, { 0x2E, 50, 0 }, { 0x44, 50, 0 }, { 0x5C, 50, 0 },
     { 0x5D, 50, 0 }, { 0x61, 50, 0 }, { 0x2D, 20, 2 }, { 0 },
 };
-Stg35SkillGroupEntry D_8006A8AC[] = {
+Stg35SkillGroupEntry Stg35_SkillGroup3[] = {
     { 0x50, 75, 1 }, { 0x19, 75, 0 }, { 0x30, 75, 0 }, { 0x48, 75, 0 }, { 0x4D, 75, 0 },
     { 0x72, 75, 0 }, { 0x3A, 70, 1 }, { 0x12, 70, 0 }, { 0x17, 70, 0 }, { 0x18, 70, 0 },
     { 0x2B, 70, 0 }, { 0x4F, 70, 0 }, { 0x62, 70, 0 }, { 0x70, 70, 0 }, { 0x13, 65, 0 },
     { 0x31, 65, 0 }, { 0x34, 65, 0 }, { 0x4B, 65, 0 }, { 0x67, 65, 0 }, { 0x86, 65, 0 },
     { 0x27, 30, 2 }, { 0x5B, 30, 2 }, { 0x6D, 30, 2 }, { 0x33, 25, 2 }, { 0 },
 };
-Stg35SkillGroupEntry D_8006A944[] = {
+Stg35SkillGroupEntry Stg35_SkillGroup4[] = {
     { 0x38, 120, 0 }, { 0xFC, 120, 0 }, { 0x56, 110, 0 }, { 0x57, 100, 0 }, { 0xE4, 100, 0 },
     { 0x1C, 90, 0 }, { 0x54, 90, 0 }, { 0x4A, 80, 1 }, { 0x88, 80, 0 }, { 0xDA, 80, 0 },
     { 0x15, 60, 2 }, { 0x37, 60, 2 }, { 0x4C, 60, 2 }, { 0x52, 55, 2 }, { 0x16, 50, 2 },
     { 0x68, 50, 1 }, { 0x35, 45, 2 }, { 0x71, 45, 2 }, { 0x32, 40, 2 }, { 0x36, 40, 2 },
     { 0x4E, 40, 2 }, { 0x51, 40, 2 }, { 0x14, 40, 1 }, { 0x6F, 35, 2 }, { 0 },
 };
-Stg35SkillGroupEntry D_8006A9DC[] = {
+Stg35SkillGroupEntry Stg35_SkillGroup5[] = {
     { 0x5E, 90, 2 }, { 0x63, 90, 2 }, { 0xEB, 90, 2 }, { 0x55, 85, 2 }, { 0xDB, 85, 2 },
     { 0x1D, 80, 2 }, { 0x39, 80, 2 }, { 0x1A, 75, 2 }, { 0x1B, 75, 2 }, { 0x1E, 75, 2 },
     { 0x5F, 70, 2 }, { 0 },
 };
 Stg35SkillGroupEntry *Stg35_SkillGroups[6] = {
-    Stg35_SkillGroup0, D_8006A76C, D_8006A81C, D_8006A8AC, D_8006A944, D_8006A9DC,
+    Stg35_SkillGroup0, Stg35_SkillGroup1, Stg35_SkillGroup2, Stg35_SkillGroup3, Stg35_SkillGroup4, Stg35_SkillGroup5,
 };
 
 void Stg35_FindSkillGroup(u8 arg0, s32 *arg1, s32 *arg2, s32 *arg3, s32 *arg4) {
