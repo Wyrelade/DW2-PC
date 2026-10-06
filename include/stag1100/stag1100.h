@@ -353,7 +353,7 @@ extern void Snd_SetSlotContent(s32, s32);
 extern s32 Snd_AnySlotLoading(void);
 extern void Task_NextState1(Actor *arg0);
 extern SysState Sys_State;
-extern s16 D_80050780;
+extern s16 Sys_VsPartyConfirmed;
 extern Halves Stg11_TransferCountPos;
 s32 Stg11_CardAsyncOp(Stg11SaveWork *arg0, s32 arg1, s32 arg2);
 s32 Stg11_CardFileOp(Stg11SaveWork *arg0, s32 arg1, s32 arg2);

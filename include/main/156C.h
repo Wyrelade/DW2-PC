@@ -486,7 +486,7 @@ typedef struct {
         } b0;
     } u0;
     /* 0x04 */ u8 mpCost;
-    /* 0x05 */ u8 field_5;
+    /* 0x05 */ u8 shotXaChannel;
     /* 0x06 */ s16 shotXaFile;
     /* 0x08 */ s16 power;
     u8 _pad0A[0x02];

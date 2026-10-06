@@ -236,7 +236,7 @@ void Stg11_VsPartyUpdate(Actor *arg0) {
                 r = Text_WaitYesNo(w->texts[0x10]);
                 if (r != 0) {
                     if (r == 1) {
-                        D_80050780 = r;
+                        Sys_VsPartyConfirmed = r;
                         Stg11_LoadDone = r;
                     }
                     Task_SetState0(arg0, 2);

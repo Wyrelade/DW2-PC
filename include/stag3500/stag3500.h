@@ -555,7 +555,7 @@ extern u16 Skill_GetSpecialty(s32 id);
 
 extern SysState Sys_State;
 extern PadState Pad_State[];
-extern s16 D_80050780;
+extern s16 Sys_VsPartyConfirmed;
 
 extern s32 Stg35_VsMenuPromptMsgs[];
 extern s32 Stg35_VsMenuPhaseMasks[];

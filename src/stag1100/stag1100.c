@@ -21,7 +21,7 @@ void Stg11_RootUpdate(Actor *arg0) {
         Task_Create(9, slot, 0);
         Task_Create(0x601, slot + 2, 0);
         Task_Create(0x602, slot + 3, 0);
-        D_80050780 = 0;
+        Sys_VsPartyConfirmed = 0;
         Task_Create(0x603, slot + 1, Sys_State.gameMode - 0x600);
         if (Sys_State.gameMode != 0x603 && Sys_State.gameMode != 0x604) {
             Snd_StopAll();

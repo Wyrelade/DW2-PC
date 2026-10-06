@@ -821,13 +821,13 @@ void Stg11_StateVsPartySelect(Actor *arg0, Stg11MenuWork *arg1) {
     case 1:
         if (Math_RampToZero(arg0, &arg1->fade) == 0) {
             Task_Create(0x605, slot, arg1->padIndex + 1);
-            D_80050780 = 0;
+            Sys_VsPartyConfirmed = 0;
             Task_NextState2(arg0);
         }
         break;
     case 2:
         if (*slot == 0) {
-            if (D_80050780 != 0) {
+            if (Sys_VsPartyConfirmed != 0) {
                 d = &Save_GameStatePtr->elems[arg1->padIndex * 3];
                 for (i = 0; i < 3; i++) {
                     *d = Stg11_VsParty.members[i];

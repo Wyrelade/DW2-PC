@@ -28,10 +28,12 @@
 #include "main/digibase.h"
 
 /* Small data this unit defines (.sbss in game.h's order). Retail reaches the first two
- * with %gp_rel here; D_80050780 is only used by overlays. */
+ * with %gp_rel here; Sys_VsPartyConfirmed is only used by overlays. */
 s32 Skill_ShotXaFile;
-s32 D_8005077C;
-s32 D_80050780;
+s32 Skill_ShotXaChannel;    /* CdlSetfilter channel for Skill_ShotXaFile */
+/* 1 after YES to the stag1100 VS "Digi-Line OK?" prompt: the VS party is copied into the
+ * roster, and stag3500 reads it for its mode argument. */
+s32 Sys_VsPartyConfirmed;
 
 EntED40 *Skill_FindById(s32 id) {
     EntED40 *p = (EntED40 *)Cd_GetFileEntry(0x25B0000);
@@ -105,7 +107,7 @@ u16 Skill_GetSpecialty(s32 id) {
 s32 *Skill_GetShotXa(s32 id) {
     EntED40 *e = Skill_FindById(id);
     Skill_ShotXaFile = e->shotXaFile;
-    D_8005077C = e->field_5;
+    Skill_ShotXaChannel = e->shotXaChannel;
     return &Skill_ShotXaFile;
 }
 

@@ -22,12 +22,12 @@ void Stg35_RootUpdate(Actor *arg0) {
         t = s;
         switch (t->prevGameMode) {
         case 0x603:
-            t->modeArg = D_80050780 != 0;
+            t->modeArg = Sys_VsPartyConfirmed != 0;
             break;
             do {
             } while (0);
         case 0x604:
-            s->modeArg = (D_80050780 != 0) ? 2 : 1;
+            s->modeArg = (Sys_VsPartyConfirmed != 0) ? 2 : 1;
             break;
         default:
             t->modeArg = 0;
