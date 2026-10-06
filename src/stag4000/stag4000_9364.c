@@ -1,7 +1,14 @@
 #include "common.h"
 #include "stag4000/stag4000.h"
 #include "stag4000/stag4000_funcs.h"
-#include "stag4000/stag4000_1DD4_funcs.h"
+#include "stag4000/floor.h"
+#include "stag4000/hud.h"
+#include "stag4000/bitswin.h"
+#include "stag4000/itemmenu.h"
+#include "stag4000/enemyinfo.h"
+#include "stag4000/msgwin.h"
+#include "stag4000/obj.h"
+#include "stag4000/player.h"
 #include "stag4000/stag4000_8338_funcs.h"
 
 void Stg40_GateUpdate(Actor *a0) {

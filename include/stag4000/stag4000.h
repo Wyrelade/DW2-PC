@@ -1147,8 +1147,8 @@ extern TaskDesc *Stg40_TaskDescs[];
 
 /* .bss of each unit, in retail order. STAG4000.PRO carries its .bss in the file, after all
  * .data. cc1 writes a unit's uninitialised globals in first-declaration order, so this list
- * sets the layout. D_ entries are unreferenced: retail started each module's sections on an
- * 8-byte boundary, these fill those gaps. */
+ * sets the layout. Retail aspsx padded each file's .bss to 8 (maspsx --bss-align does it for
+ * the split files); the 4-byte unreferenced D_ entries fill that pad in files not split yet. */
 /* stag4000.c */
 extern Actor *Stg40_RootTask;
 extern Stg40RootTasks *Stg40_RootChildren;
@@ -1156,13 +1156,14 @@ extern u8 D_80072AA8[0x18];
 extern u8 D_80072AC0[0xA0];
 extern Stg40B60 *Stg40_RootState;
 extern s32 D_80072B64;
-/* stag4000_1DD4.c */
+/* floor.c */
 extern Actor *Stg40_FloorTask;
 extern Stg40FloorWork *Stg40_FloorWork;
+/* itemmenu.c */
 extern Actor *Stg40_ItemMenuTask;
-extern s32 D_80072B74;
+/* enemyinfo.c */
 extern Actor *Stg40_EnemyInfoTask;
-extern s32 D_80072B7C;
+/* msgwin.c */
 extern Actor *Stg40_MsgWinTask;
 extern s32 *Stg40_MsgWinTexts;
 extern s32 D_80072B88[2];

@@ -62,7 +62,7 @@ OVERLAY_DIRS = [u for u, _ in OVERLAYS]
 # file is then assembled empty and no jump table is bound by the normalizer.
 RODATA_IN_C = {"main", "stag0000", "stag1100", "stag2000", "stag3000", "stag3500", "stag4000"}
 # Retail sizes that are not a multiple of 4 (the linker pads the image).
-OVERLAY_SIZES = {"stag2000": 0xDBEE}
+OVERLAY_SIZES = {"stag2000": 0xDBEE, "stag4000": 0xF864}
 
 
 def _in_units(path, root, units):
@@ -124,7 +124,7 @@ AS_G_OVERRIDE = None    # --as-g: one -G for every unit (flag experiments)
 # -G0 overlays whose files follow retail aspsx's .bss layout: objects of 8 bytes or more on
 # 8, every file's .bss padded to 8 (maspsx --bss-align, as for main). The 4-byte holes at
 # the module ends are that padding, not variables.
-BSS_ALIGN_UNITS = {"stag1100"}
+BSS_ALIGN_UNITS = {"stag1100", "stag4000"}
 
 
 def unit_flags(unit, name=None):
