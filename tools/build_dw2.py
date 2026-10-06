@@ -124,7 +124,7 @@ AS_G_OVERRIDE = None    # --as-g: one -G for every unit (flag experiments)
 # -G0 overlays whose files follow retail aspsx's .bss layout: objects of 8 bytes or more on
 # 8, every file's .bss padded to 8 (maspsx --bss-align, as for main). The 4-byte holes at
 # the module ends are that padding, not variables.
-BSS_ALIGN_UNITS = {"stag1100", "stag4000"}
+BSS_ALIGN_UNITS = {"stag1100", "stag2000", "stag4000"}
 
 
 def unit_flags(unit, name=None):

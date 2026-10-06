@@ -1,6 +1,30 @@
 #include "common.h"
 #include "stag2000/stag2000.h"
+#include "stag2000/mapbg.h"
+#include "stag2000/staticbg.h"
+#include "stag2000/digilab.h"
+#include "stag2000/itemshop.h"
+#include "stag2000/beetleshop.h"
 #include "stag2000/stag2000_funcs.h"
+#include "stag2000/areaselect.h"
+#include "stag2000/labmodesel.h"
+#include "stag2000/labroster.h"
+#include "stag2000/msgwin.h"
+#include "stag2000/labcaption.h"
+#include "stag2000/labinfo.h"
+#include "stag2000/labskills.h"
+#include "stag2000/labpair.h"
+#include "stag2000/dna.h"
+#include "stag2000/shadow.h"
+#include "stag2000/labjogbg.h"
+#include "stag2000/labdigimodel.h"
+#include "stag2000/mapexit.h"
+#include "stag2000/walker.h"
+#include "stag2000/xastream.h"
+#include "stag2000/shopbg.h"
+#include "stag2000/shopbits.h"
+#include "stag2000/itemshopmenu.h"
+#include "stag2000/beetleshopmenu.h"
 #include "stag2000/stag2000_8CE0_funcs.h"
 
 /* Task callback the descriptors below need that stag2000_8CE0_funcs.h does not declare. */
@@ -70,25 +94,6 @@ TaskDesc Stg20_CameraDesc = { 0, Stg20_CameraUpdate, Task_DefaultDestroy, Stg20_
 u8 D_80070764[4] = "1660";
 
 Stg20ShopList Stg20_ShopItems;
-
-void Stg20_BeetleShopMenuDestroy(Actor *a) {
-    Text_CloseArray((s32 *)a->work, 2);
-    Task_DefaultDestroy(a);
-}
-
-void Stg20_BeetleShopMenuDraw(Actor *a) {
-    GfxPart *p = (GfxPart *)Cd_GetFileEntry(0xC930008);
-    GfxPart *q;
-
-    for (q = p; q->fileId != 0; q++) {
-        if (q->groupMask & 2) {
-            q->palette = Math_CycleRange(a->elapsed, 4, 0, 3);
-            q->x = Stg20_MenuState.menuChoice != 0 ? -0x57 : -0x90;
-            q->y = -0x62;
-        }
-    }
-    Gfx_DrawParts((s32)p);
-}
 
 s32 Stg20_ByteListHas(u8 *s, s32 c) {
     for (; *s != 0; s++) {

@@ -8,8 +8,6 @@ void Stg20_ShopListUpdate(Actor *a);
 void Stg20_FilterPartsList(Actor *a, s32 mode);
 void Stg20_BuildUpgradeList(Actor *a);
 void Stg20_WarpPadUpdate(Actor *a);
-void Stg20_BeetleShopMenuDestroy(Actor *a);
-void Stg20_BeetleShopMenuDraw(Actor *a);
 s32 Stg20_ByteListHas(u8 *s, s32 c);
 s32 Stg20_IsPartInstalled(s32 id);
 s32 Stg20_GetPartFitMsg(s32 id);

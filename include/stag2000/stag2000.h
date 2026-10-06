@@ -119,7 +119,6 @@ extern u16 Stg20_EngineHpTbl[];
 extern u16 Stg20_BatteryEpTbl[];
 extern s32 Stg20_TalkActive;
 extern Stg20Cell Stg20_CellTmp;
-extern s32 D_800709AC; /* unreferenced, between Stg20_CellTmp and Stg20_MenuState in .bss */
 extern Stg20Cell Stg20_DirCellDelta[4];
 extern Stg20Vec3 Stg20_MoveParams[];
 extern const CVECTOR Stg20_JogBgWireColor;
