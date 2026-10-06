@@ -13,7 +13,10 @@
 #include "stag3000/skilleffect.h"
 #include "stag3000/battlescript.h"
 #include "stag3000/itemeffect.h"
-#include "stag3000/stag3000_AF5C_funcs.h"
+#include "stag3000/battlestate.h"
+#include "stag3000/fighter.h"
+#include "stag3000/fightmsg.h"
+#include "stag3000/popup.h"
 
 void Stg30_InterruptSelectTask(Actor *a0)
 {

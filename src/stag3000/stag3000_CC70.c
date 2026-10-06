@@ -13,7 +13,10 @@
 #include "stag3000/skilleffect.h"
 #include "stag3000/battlescript.h"
 #include "stag3000/itemeffect.h"
-#include "stag3000/stag3000_AF5C_funcs.h"
+#include "stag3000/battlestate.h"
+#include "stag3000/fighter.h"
+#include "stag3000/fightmsg.h"
+#include "stag3000/popup.h"
 #include "stag3000/stag3000_C918_funcs.h"
 
 /* Task callbacks the descriptors below need (defined further down; the first in
