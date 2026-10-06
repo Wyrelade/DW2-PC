@@ -2181,13 +2181,20 @@ typedef struct {
         s32 addr[8];
     } otLayers;                          /* &Gpu_OtBufs[bufIndex] + Gpu_OtLayerOffsets[mode][i] */
 } SysState; /* size 0x158 */
-/* Load header filled by GsGetTimInfo (Sys_Main reads field_C). */
+/* GsIMAGE as GsGetTimInfo fills it (Sys_Main reads paddr only), plus 4 unused stack bytes. */
 typedef struct {
-    s32 mode;
-    s32 field_4;
-    s32 field_8;
+    /* 0x00 */ s32 mode;
+    /* 0x04 */ s16 px;
+    /* 0x06 */ s16 py;
+    /* 0x08 */ u16 pw;
+    /* 0x0A */ u16 ph;
     /* 0x0C */ s32 paddr;
-    s32 field_10[4];
+    /* 0x10 */ s16 cx;
+    /* 0x12 */ s16 cy;
+    /* 0x14 */ u16 cw;
+    /* 0x16 */ u16 ch;
+    /* 0x18 */ u32 *clut;
+    u8 _pad1C[4];
 } SysTimImage;
 /* Clear rectangle for ClearImage. */
 typedef struct {
