@@ -189,7 +189,6 @@ void Gfx_CalcModelBoneMatrices(Actor *a0) {
     }
 }
 
-
 void Gfx_DrawTexModel(Actor *a0, s32 mode) {
     ActorModel *s;
     ModelBone *e;
@@ -247,7 +246,6 @@ void Gfx_DrawTexModel(Actor *a0, s32 mode) {
     Gfx_AnimateModelTex(a0);
 }
 
-
 void Gfx_DrawWireModel(Actor *a0, s32 mode, CVECTOR *col) {
     ActorModel *s;
     ModelBone *e;
@@ -292,7 +290,6 @@ void Gfx_DrawWireModel(Actor *a0, s32 mode, CVECTOR *col) {
         }
     }
 }
-
 
 extern void RotMatrixYXZ(void *, Obj209 *);
 extern void ScaleMatrix(Obj209 *, s32 *);
@@ -352,7 +349,6 @@ s32 Actor_ProjectToScreen(ContC40 *a0) {
     if (p->screenY < -y) return 1;
     return p->screenY > y;
 }
-
 
 void Actor_RefreshTransform(s32 arg0) {
     Actor_UpdateTransform(arg0);
@@ -548,7 +544,6 @@ void Gfx_AddTrisGT3(GfxModelTriGT3 *t, s32 n, ActorModel *s, s32 mode) {
     Sys_State.packet.addr = (s32)p;
 }
 
-
 void Gfx_AddQuadsGT4(ModelQuadGT4 *t, s32 n, ActorModel *s, s32 mode) {
     s32 sxy[4];
     s32 opz;
@@ -625,7 +620,6 @@ void Gfx_AddQuadsGT4(ModelQuadGT4 *t, s32 n, ActorModel *s, s32 mode) {
     }
     Sys_State.packet.addr = (s32)p;
 }
-
 
 s32 Gfx_ProjectModelVerts(Vert6Pmv *v, ModelProjView *o, s32 noCheck) {
     s32 otz;

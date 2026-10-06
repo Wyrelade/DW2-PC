@@ -96,7 +96,7 @@ segments:
       - [0xF400, c, F400]
       - [0xF540, c, skill]
       - [0xF9A8, c, anim]
-      - [0x105BC, c, 105BC]      # from Gfx_AttachModel: model drawing, actor transform
+      - [0x105BC, c, model]      # from Gfx_AttachModel: model drawing, actor transform
       - [0x12550, c, 12550]      # from func_80021D50: event flag reset (defines D_8005071C)
       - [0x12654, c, flags]
       - [0x12C68, c, savedata]

@@ -1,9 +1,9 @@
-#ifndef MAIN_105BC_H
-#define MAIN_105BC_H
+#ifndef MAIN_MODEL_H
+#define MAIN_MODEL_H
 
 #include "main/game.h"
 
-/* Functions src/main/105BC.c defines, for the units after it. */
+/* Functions src/main/model.c defines. */
 ActorModel *Gfx_AttachModel(Actor *a0, s32 id);
 void Gfx_CalcModelBoneMatrices(Actor *a0);
 void Gfx_DrawTexModel(Actor *a0, s32 mode);
@@ -25,4 +25,4 @@ s32 Gfx_IsOriginOffscreen(void);
 void Gfx_DrawWireTris(ModelWireTri *t, s32 n, ModelProjView *o, CVECTOR *col);
 void Gfx_DrawWireQuads(GfxModelQuad *q, s32 n, ModelProjView *o, CVECTOR *col);
 
-#endif /* MAIN_105BC_H */
+#endif /* MAIN_MODEL_H */

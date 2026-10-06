@@ -32,7 +32,7 @@
 #include "main/F400.h"
 #include "main/skill.h"
 #include "main/anim.h"
-#include "main/105BC.h"
+#include "main/model.h"
 #include "main/12550.h"
 
 /* Small data this unit defines (.sdata). Retail reaches it with %gp_rel here. */

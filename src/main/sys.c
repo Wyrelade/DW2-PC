@@ -32,7 +32,7 @@
 #include "main/F400.h"
 #include "main/skill.h"
 #include "main/anim.h"
-#include "main/105BC.h"
+#include "main/model.h"
 #include "main/12550.h"
 #include "main/flags.h"
 #include "main/savedata.h"
@@ -43,7 +43,7 @@
 const char D_800101E4[] = "$Id: sys.c,v 1.140 1998/01/12 07:52:27 noda Exp yos $";
 
 /* Small data in retail order. Retail reaches the Sys_ ones with %gp_rel; the others are read
- * elsewhere (105BC Gfx_ZeroSVector, 187C/77DC Gfx_NeutralRgb, STAG1000 D_80050741). */
+ * elsewhere (model.c Gfx_ZeroSVector, 187C/77DC Gfx_NeutralRgb, STAG1000 D_80050741). */
 s32 Sys_VSyncsSinceFlip = 0;
 RECT Sys_BootImageRect = { 0, 0, 320, 480 };
 s32 Sys_LastVSyncTime = 0;
@@ -70,7 +70,7 @@ DATA_LABEL(D_8005F8C0, Sys_State, 0x150);
 
 /* Rand_Next's table of 0x1000 random halfwords. */
 INCLUDE_BIN(Rand_Table, "assets/main/rand_table.bin");
-/* Gfx_ZeroVector and the matrices sit in this unit's data in retail order (E280 and 105BC
+/* Gfx_ZeroVector and the matrices sit in this unit's data in retail order (E280 and model.c
  * use them). */
 s32 Gfx_ZeroVector[4] = { 0 };
 Blk20 Gfx_IdentityMatrix = { { { { 0x1000, 0, 0 }, { 0, 0x1000, 0 }, { 0, 0, 0x1000 } } }, { 0 }, { 0, 0, 0 } };

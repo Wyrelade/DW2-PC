@@ -32,7 +32,7 @@
 #include "main/F400.h"
 #include "main/skill.h"
 #include "main/anim.h"
-#include "main/105BC.h"
+#include "main/model.h"
 #include "main/12550.h"
 #include "main/flags.h"
 #include "main/savedata.h"
