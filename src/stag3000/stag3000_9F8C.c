@@ -11,7 +11,7 @@
 #include "stag3000/battle.h"
 #include "stag3000/turn.h"
 #include "stag3000/skilleffect.h"
-#include "stag3000/stag3000_96DC_funcs.h"
+#include "stag3000/battlescript.h"
 
 s32 Stg30_CalcCannonDamage(s32 idx, s32 id, s32 lvl) {
     s32 k = (lvl + 1) * 20;
