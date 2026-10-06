@@ -194,7 +194,7 @@ void Stg10_MovieUpdate(Actor *a0) {
                       Stg10_DecEnv.slice.w * Stg10_DecEnv.slice.h / 2);
         Stg10_StrNextVlc(&Stg10_DecEnv);
         Stg10_StrSync(&Stg10_DecEnv, 0);
-        if (Stg10_StrEndFlag == 1 || D_8005F724 > 0) {
+        if (Stg10_StrEndFlag == 1 || Pad_State[0].start > 0) {
             switch (Sys_State.gameMode) {
             case 0x404:
                 Sys_State.nextGameMode = 0x325;

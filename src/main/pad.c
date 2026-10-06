@@ -37,22 +37,14 @@
 #include "main/flags.h"
 #include "main/savedata.h"
 
-/* .bss (game.h order). Code and overlays reach fields of Pad_State by their own symbols. */
+/* .bss (game.h order). */
 Elm678 Pad_PortButtons[2];
 u8 Pad_RecvBufs[0x48];
 PadState Pad_State[2];
-DATA_LABEL(Pad_Left, Pad_State, 0x4);
-DATA_LABEL(Pad_Circle, Pad_State, 0x10);
+/* Scalar view of Pad_State[0].cross for one read in Stg20_BeetlePartsUpdate: cc1 schedules the
+ * store through the Save_GameState pointer before it below the read only when the read is not a
+ * struct member (retail order). */
 DATA_LABEL(Pad_Cross, Pad_State, 0x14);
-DATA_LABEL(Pad_Square, Pad_State, 0x18);
-DATA_LABEL(Pad_Triangle, Pad_State, 0x1C);
-DATA_LABEL(Pad_R1, Pad_State, 0x20);
-DATA_LABEL(Pad_R2, Pad_State, 0x24);
-DATA_LABEL(Pad_Select, Pad_State, 0x30);
-DATA_LABEL(D_8005F724, Pad_State, 0x34);
-DATA_LABEL(Pad_Held, Pad_State, 0x38);
-DATA_LABEL(Pad_Pressed, Pad_State, 0x3A);
-DATA_LABEL(Pad_Repeat, Pad_State, 0x3C);
 
 void Pad_Init(void) {
     PadInitDirect(Pad_RecvBufs, Pad_RecvBufs + 0x22);

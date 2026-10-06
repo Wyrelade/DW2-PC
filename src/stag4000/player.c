@@ -54,7 +54,7 @@ s32 Stg40_PlayerCheckEnemyInfo(Actor *a0) {
     Stg40Ent48 *e;
     s32 i;
 
-    if (Pad_Square > 0 && self->roomId != 0xFF) {
+    if (Pad_State[0].square > 0 && self->roomId != 0xFF) {
         e = Dung_StatePtr->ents;
         Stg40_RootState->enemyCount = 0;
         Stg40_RootState->enemyIndex = 0;
@@ -86,7 +86,7 @@ s32 Stg40_PlayerInteract(Actor *a0)
     s32 r3;
 
     e = ((Stg40ActWork *)a0->work)->ent;
-    if (Pad_Cross <= 0) {
+    if (Pad_State[0].cross <= 0) {
         return 0;
     }
     found = Stg40_FindEntAt(e->loc.u0.pair.field_0 + ((s16 *)Stg40_DirOffsets)[(e->octant + 1) << 1],
@@ -208,7 +208,7 @@ s32 Stg40_PlayerTryMove(Stg40Ent48 *e) {
     if (Pad_State[0].l1 != 0 && (oct & 1) == 0) {
         return 0;
     }
-    if (Pad_R1 != 0) {
+    if (Pad_State[0].r1 != 0) {
         return 0;
     }
     dir = oct + 1;
@@ -513,7 +513,7 @@ void Stg40_PlayerInput(Actor *a0) {
     if (Dung_StatePtr->freeze != 0) {
         return;
     }
-    if (Pad_Circle > 0 && Stg40_RootTask->stateLevel0 == 1 && Stg40_RootTask->stateLevel1 == 1 && Stg40_RootTask->stateLevel2 == 1) {
+    if (Pad_State[0].circle > 0 && Stg40_RootTask->stateLevel0 == 1 && Stg40_RootTask->stateLevel1 == 1 && Stg40_RootTask->stateLevel2 == 1) {
         Task_SetState1(Stg40_RootTask, 4);
         Dung_StatePtr->freeze = 1;
         return;
@@ -526,7 +526,7 @@ void Stg40_PlayerInput(Actor *a0) {
         }
         return;
     }
-    if (Stg40_PlayerInteract(a0) == 0 && Stg40_PlayerCheckEnemyInfo(a0) == 0 && Beetle_GetPart(0x12) > 0 && Pad_Select > 0) {
+    if (Stg40_PlayerInteract(a0) == 0 && Stg40_PlayerCheckEnemyInfo(a0) == 0 && Beetle_GetPart(0x12) > 0 && Pad_State[0].select > 0) {
         v = Save_GameStatePtr->field_0 + 1;
         n = (v < 3) ? v : 0;
         Save_GameStatePtr->field_0 = n;
@@ -826,7 +826,7 @@ void Stg40_PlayerEnemyInfo(Actor *a0) {
             n = Stg40_RootState->enemyIndex + 1;
             Stg40_RootState->enemyIndex = (n < Stg40_RootState->enemyCount) ? n : 0;
             Task_SetState2(a0, 1);
-        } else if (Pad_Cross > 0) {
+        } else if (Pad_State[0].cross > 0) {
             r = Stg40_ListUsableItems(&Stg40_GiftGunReq);
             if (r != 0) {
                 Stg40_MsgWinOpen(1, r, 0, 0);
@@ -1298,12 +1298,12 @@ void Stg40_ItemMenuMoveCursor(void) {
     s32 old = Stg40_RootState->cursor;
     s32 n;
 
-    if (Pad_Repeat & 0x1000) {
+    if (Pad_State[0].repeat & 0x1000) {
         if (old != 0) {
             Stg40_RootState->cursor = old - 1;
         }
     }
-    if (Pad_Repeat & 0x4000) {
+    if (Pad_State[0].repeat & 0x4000) {
         n = Stg40_RootState->cursor + 1;
         if (n < Stg40_RootState->itemCount) {
             Stg40_RootState->cursor = n;

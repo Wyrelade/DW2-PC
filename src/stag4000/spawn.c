@@ -540,7 +540,7 @@ s32 Stg40_ObjWaitAnimOrSkip(Actor *a0) {
     s32 r = 0;
 
     a0->stateLevel4++;
-    if (Stg40_ObjAnimDone(a0) == 1 || a0->stateLevel4 >= 31 || (a0->stateLevel4 >= 11 && Pad_Cross != 0)) {
+    if (Stg40_ObjAnimDone(a0) == 1 || a0->stateLevel4 >= 31 || (a0->stateLevel4 >= 11 && Pad_State[0].cross != 0)) {
         r = 1;
     }
     return r;

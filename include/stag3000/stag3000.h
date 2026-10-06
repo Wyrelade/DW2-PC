@@ -529,7 +529,6 @@ typedef struct {
 } Stg30TextRec;
 
 extern Stg30TextRec Stg30_ResultTextLayout[];
-extern s32 Pad_Cross;
 extern s32 Digi_GetExpToNextLevel(s32, s32, s32);
 extern u8 *Stg30_NumToDigits(u8 *out, s32 n);
 extern void Stg30_LevelUpStats(DigiRosterEntry *);
@@ -634,7 +633,6 @@ extern s32 Stg30_PopupNumParts[];
 extern Stg30Rec73F6C D_80073F6C[];
 extern s32 Stg30_BannerParts[];
 extern Halves Stg30_SkillLearnTextPos[];
-extern u16 Pad_Pressed;  /* Pad_State[0].pressed as a scalar reloc */
 extern Stg30DungState Dung_State;
 extern s16 Stg30_CloseUpRotY[];  /* camera goal x per party slot (Stg30_CameraUpdate) */
 extern s16 Stg30_CloseUpVpz[];  /* camera goal tables indexed by digimon height step */
@@ -765,7 +763,6 @@ extern Halves Stg30_SkillColumnLabelPos[];
 extern s32 D_80073CD4;  /* Stg30_Battle.entries[0].field_14 as a scalar reloc */
 extern void Stg30_SkillMenuRefreshText(Actor *a0);
 extern void Stg30_ItemMenuRefreshText(Actor *a0);
-extern s32 Pad_Left;  /* Pad_State[0].left as a scalar reloc */
 extern s32 D_80073CC8;  /* Stg30_Battle.entries[0].field_8 as a scalar reloc */
 extern s32 Stg30_TargetFirst(s32 team, s32 flag, s32 mode);
 extern s32 Stg30_TargetPrev(s32 team, s32 cur, s32 flag, s32 mode);

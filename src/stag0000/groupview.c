@@ -101,7 +101,7 @@ void Stg00_GroupViewTask(Actor *arg0) {
                 Stg00_CamMoveRefPoint(cam, 0, 0x20, 0);
             }
         }
-        if (Pad_Square > 0) {
+        if (Pad_State[0].square > 0) {
             if (++w->camPreset == 7) {
                 w->camPreset = 0;
             }
@@ -128,7 +128,7 @@ void Stg00_GroupViewTask(Actor *arg0) {
                 break;
             }
         }
-        if (Pad_Select > 0) {
+        if (Pad_State[0].select > 0) {
             if (w->videoMode != 3) {
                 w->videoMode++;
             } else {
@@ -144,7 +144,7 @@ void Stg00_GroupViewTask(Actor *arg0) {
                 w->winVariant = 0;
             }
         }
-        if (Pad_R2 > 0) {
+        if (Pad_State[0].r2 > 0) {
             Sys_NextGameMode = 0x102;
         }
         break;

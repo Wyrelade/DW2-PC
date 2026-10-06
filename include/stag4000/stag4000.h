@@ -688,7 +688,6 @@ extern s32 D_8005F794;
 extern GameStateView *Save_GameStatePtr;
 extern s32 Cd_PreloadIds[];
 extern s32 Cd_PreloadCount;
-extern s32 Pad_Cross;
 extern void LoadImage(RECT *rect, u32 *p);
 extern void Gfx_ReleaseTexSlot(s32 *arg0);
 extern void Mem_Free(ActorWork *arg0);
@@ -719,7 +718,6 @@ extern void Gfx_FadeInFromBlack(s32 arg0);
 extern void Gpu_AllocPacketBufs(s32 a0);
 extern void Text_Open(void *, TextOpenArgs *);
 extern GfxTexSlot *Gfx_FindOrLoadTexSlot(s32);
-extern u16 Pad_Repeat;
 extern void Snd_PlayById(s32, s32);
 extern void Task_NextState2(Actor *arg0);
 extern s32 Cd_GetFileOrNull(s32 arg0);
@@ -752,7 +750,6 @@ extern void Gfx_FadeOutToBlack(s32 arg0);
 extern s32 Item_GetNameText(s32 arg0);
 extern s32 Item_AddToBag(s32 id);
 extern void Item_SortList(void);
-extern s32 Pad_Square;
 extern s32 Digi_GetModelFile(s32 id);
 extern s32 Anim_GetModelAnimFile(s32 arg0, s32 arg1);
 void Stg40_TurnQueueAdd(s32 a0);
@@ -999,9 +996,6 @@ extern void Text_SetOtLayer(s32 a0, s32 a1);
 
 extern s32 Stg40_ItemMenuParts[];
 
-extern s32 Pad_Circle; /* Pad_State[0].circle as a scalar reloc */
-extern s32 Pad_R1; /* Pad_State[0].r1 as a scalar reloc */
-extern s32 Pad_Select; /* Pad_State[0].select as a scalar reloc */
 s32 Stg40_PlayerInteract(Actor *a0);
 s32 Stg40_PlayerCheckEnemyInfo(Actor *a0);
 

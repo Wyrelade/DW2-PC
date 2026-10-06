@@ -1049,8 +1049,8 @@ typedef struct {
     /* 0x2C */ s32 l2;
     /* 0x30 */ s32 select;
     /* 0x34 */ s32 start;
-    /* 0x38 */ s16 held;
-    /* 0x3A */ s16 pressed;
+    /* 0x38 */ u16 held;
+    /* 0x3A */ u16 pressed;
     /* 0x3C */ u16 repeat;
     /* 0x3E */ s16 connected;
 } PadState; /* size 0x40 */
@@ -3221,7 +3221,7 @@ typedef struct {
     u8 _pad1[0x3];
     s32 _pad4[0x16];
 } DigiRosterSwapRec;
-/* Non-small views of Menu_Ctx / Pad_Cross for Menu_DigiTransferPlace. */
+/* Non-small views of Menu_Ctx / Pad_State[0].cross for Menu_DigiTransferPlace. */
 typedef struct {
     MenuCtx *p;
     s32 _r[3];

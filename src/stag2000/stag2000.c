@@ -139,7 +139,7 @@ void Stg20_StageMain(Actor *a) {
                 Cd_QueueFile(0x314);
                 Cd_QueueFile(0x25C);
             }
-            if (Pad_Circle > 0 && Stg20_MenuState.talkActive == 0 && Sys_GameMode[0] < 0x32F
+            if (Pad_State[0].circle > 0 && Stg20_MenuState.talkActive == 0 && Sys_GameMode[0] < 0x32F
                 && Stg20_MenuState.menuAllowed != 0 && Snd_AnySlotLoading() == 0) {
                 Task_Create(0xB, &slot[1], 0);
                 a->childCount = 2;

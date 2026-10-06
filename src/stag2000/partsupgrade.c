@@ -239,7 +239,7 @@ void Stg20_PartsUpgradeUpdate(Actor *task) {
                 goto f144;
             }
         }
-        if (Pad_Triangle > 0) {
+        if (Pad_State[0].triangle > 0) {
             goto f124;
         }
         if (Flag_Test(0x10) == 0) {
@@ -261,7 +261,7 @@ void Stg20_PartsUpgradeUpdate(Actor *task) {
         Task_NextState2(task);
         goto text_update;
         case 2:
-        if (Pad_Cross > 0) {
+        if (Pad_State[0].cross > 0) {
             Task_SetState1(task, 0);
         }
         }

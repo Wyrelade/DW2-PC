@@ -453,7 +453,7 @@ void Stg20_ShopListUpdate(Actor *a) {
                 g->storageCounts[id] = g->storageCounts[id] == 99 ? 99 : g->storageCounts[id] + 1;
                 Save_GameState.bits -= Item_GetPrice(id);
                 Task_SetState1(a, 0);
-            } else if (Pad_Triangle > 0 || Flag_Test(0x10) != 0) {
+            } else if (Pad_State[0].triangle > 0 || Flag_Test(0x10) != 0) {
                 Snd_PlayById(0xB, 0);
                 Task_SetState1(a, 0);
             }

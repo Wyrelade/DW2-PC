@@ -57,17 +57,17 @@ void Stg00_LoadDungFile(Actor *arg0, Stg00SelWork *arg1, s32 arg2) {
 void Stg00_DungSelPickDungeon(Actor *arg0, Stg00SelWork *arg1) {
     Stg00DungEntry *e;
 
-    if (Pad_Repeat & 0x8000) {
+    if (Pad_State[0].repeat & 0x8000) {
         if (arg1->dungeonIdx > 0) {
             arg1->dungeonIdx--;
         }
     }
-    if (Pad_Repeat & 0x2000) {
+    if (Pad_State[0].repeat & 0x2000) {
         if (arg1->dungeonIdx + 1 < 0x23) {
             arg1->dungeonIdx++;
         }
     }
-    if (Pad_Circle > 0) {
+    if (Pad_State[0].circle > 0) {
         arg1->floor = 0;
         arg1->lastFloor = -1;
         e = (Stg00DungEntry *)Cd_GetFileEntry(0xE20000A);
@@ -82,22 +82,22 @@ void Stg00_DungSelPickFloor(Actor *arg0, Stg00SelWork *arg1_) {
     s32 j;
     s32 bit;
 
-    if (Pad_Repeat & 0x8000) {
+    if (Pad_State[0].repeat & 0x8000) {
         if (arg1->floor > 0) {
             arg1->floor--;
         }
     }
-    if (Pad_Repeat & 0x2000) {
+    if (Pad_State[0].repeat & 0x2000) {
         if (arg1->floor + 1 < arg1->floorCount) {
             arg1->floor++;
         }
     }
-    if (Pad_Repeat & 0x1000) {
+    if (Pad_State[0].repeat & 0x1000) {
         if (arg1->layout > 0) {
             arg1->layout--;
         }
     }
-    if (Pad_Repeat & 0x4000) {
+    if (Pad_State[0].repeat & 0x4000) {
         if (arg1->layout + 1 < 8) {
             arg1->layout++;
         }
@@ -219,12 +219,12 @@ void Stg00_DungSelPickFloor(Actor *arg0, Stg00SelWork *arg1_) {
 }
 
 void Stg00_DungSelPickFlag(Actor *arg0, Stg00SelWork *arg1) {
-    if (Pad_Repeat & 0x8000) {
+    if (Pad_State[0].repeat & 0x8000) {
         if (arg1->flagIdx > 0) {
             arg1->flagIdx--;
         }
     }
-    if (Pad_Repeat & 0x2000) {
+    if (Pad_State[0].repeat & 0x2000) {
         if (arg1->flagIdx + 1 < 0x1E) {
             arg1->flagIdx++;
         }

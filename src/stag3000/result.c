@@ -238,7 +238,7 @@ void Stg30_ResultUpdate(Actor *a0) {
             }
             Task_NextState1(a0);
         case 1:
-            if (Pad_Cross > 0) {
+            if (Pad_State[0].cross > 0) {
                 Task_SetState0(a0, 3);
             }
             break;

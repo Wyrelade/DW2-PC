@@ -150,7 +150,7 @@ void Stg00_DigiViewTask(Actor *arg0)
         }
       }
 
-        if (Pad_Circle > 0)
+        if (Pad_State[0].circle > 0)
       {
         ((Stg00ActorTimer *) arg0)->frameCount = 0;
         Task_NextState1(arg0);
@@ -160,7 +160,7 @@ void Stg00_DigiViewTask(Actor *arg0)
       case 1:
         if ((work->page == 1) && (work->panel == 1))
       {
-        if (Pad_Repeat & 0x1000)
+        if (Pad_State[0].repeat & 0x1000)
         {
           work->lastDirUp = work->panel;
           if (work->skillRow != 0)
@@ -173,7 +173,7 @@ void Stg00_DigiViewTask(Actor *arg0)
             work->skillScroll -= 1;
           }
         }
-        if (Pad_Repeat & 0x4000)
+        if (Pad_State[0].repeat & 0x4000)
         {
           work->lastDirUp = 0;
           if (work->skillRow != 0xD)
@@ -186,7 +186,7 @@ void Stg00_DigiViewTask(Actor *arg0)
             work->skillScroll += 1;
           }
         }
-        if (Pad_Repeat & 0x8000)
+        if (Pad_State[0].repeat & 0x8000)
         {
           for (k = 0; k < 0xE; k++)
           {
@@ -271,7 +271,7 @@ void Stg00_DigiViewTask(Actor *arg0)
         }
         while (0);
       }
-        if (Pad_Square > 0)
+        if (Pad_State[0].square > 0)
       {
         work->page += 1;
         if (work->page == 4)
@@ -280,7 +280,7 @@ void Stg00_DigiViewTask(Actor *arg0)
         }
         work->pageCursor = 0;
       }
-        if (Pad_Circle > 0)
+        if (Pad_State[0].circle > 0)
       {
         if (work->panel != 0)
         {
@@ -390,7 +390,7 @@ void Stg00_DigiViewTask(Actor *arg0)
 
     }
 
-    if (D_8005F724 > 0)
+    if (Pad_State[0].start > 0)
     {
       s32 *ch;
       work = (Stg00DigiViewWork *) arg0->work;

@@ -103,7 +103,7 @@ void Stg20_WalkerGetInput(Actor *a)
       case 0:
 
       default:
-        w->input = (w->held = Pad_Held);
+        w->input = (w->held = Pad_State[0].held);
         break;
 
       case 1:

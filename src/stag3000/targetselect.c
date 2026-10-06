@@ -81,7 +81,7 @@ void Stg30_TargetSelectUpdate(Actor *a0) {
         changed = 0;
         do {
         if (w->targetMode == 1 || w->targetMode == 5) {
-            if (Pad_Left > 0) {
+            if (Pad_State[0].left > 0) {
                 old = w->target;
                 if (w->team != 0) {
                     w->target = Stg30_TargetPrev(w->team, old, 1, w->effectKind);

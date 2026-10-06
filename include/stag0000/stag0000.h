@@ -266,8 +266,6 @@ typedef struct {
 
 extern Halves Gfx_NeutralRgb;
 extern s32 Gfx_ZeroVector[];
-extern u16 Pad_Repeat;
-extern s32 Pad_Circle;
 extern PadState Pad_State[];
 extern s32 Sys_NextGameMode;
 extern Stg00DungState *Dung_StatePtr;
@@ -555,10 +553,6 @@ typedef struct {
 } Stg00ModelFade;
 
 /* ---- externs ---- */
-extern s32 Pad_Square;
-extern s32 Pad_R2;
-extern s32 Pad_Select;
-extern s32 D_8005F724;
 extern s32 Sys_FrameDelta;
 extern s32 Sys_GameMode;
 extern s32 Sys_PacketCursor;

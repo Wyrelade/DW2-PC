@@ -75,7 +75,6 @@ typedef union {
 /* main exe */
 extern void DMACallback();
 extern void printf();
-extern s32 D_8005F724;             /* Pad_State[0].start as a scalar reloc */
 extern void Gpu_AllocPacketBufs(s32 a0);
 extern void Sys_SetFrameRate30(void);
 extern void Sys_SetFrameRate60(void);

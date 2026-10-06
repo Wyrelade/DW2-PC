@@ -333,7 +333,6 @@ typedef struct {
     u8 _pad60[0x14];
     s32 done;
 } Stg20WalkWork;
-extern u16 Pad_Held; /* Pad_State[0].held as a scalar reloc */
 extern s32 Rand_Next();
 
 extern void Mem_FillWordsNeg1(s32 *arg0, s32 arg1);
@@ -535,6 +534,7 @@ extern Stg20Pos2 Stg20_ShakeOffsets[4];
 extern const Halves Stg20_ShopMenuBuyPos;
 extern const Halves Stg20_ShopMenuSellPos;
 extern PadState Pad_State[];
+extern s32 Pad_Cross; /* Pad_State[0].cross as a scalar, see main pad.c */
 extern s32 Digi_GetExpToNextLevel(s32, s32, s32);
 extern void Snd_PlayById(s32, s32);
 extern void Task_SetState0(Actor *, u32);
@@ -809,7 +809,6 @@ extern Stg20MenuSub D_800709B8;
 extern s32 Skill_GetNameText(s32);
 extern const Halves Stg20_BeetleMenuPartsPos;
 extern const Halves Stg20_BeetleMenuUpgradePos;
-extern s32 Pad_Triangle; /* Pad_State[0].triangle as a scalar reloc */
 extern void Item_RemoveFromBag(s32 i);
 
 /* Digimon info page work: 13 texts and the roster entry shown (Stg20_LabInfoUpdate). */
@@ -868,7 +867,6 @@ extern void Snd_SetSlotContent(s32 idx, s32 v);
 extern void Mem_Zero(void *a0, s32 a1);
 extern s32 Snd_AnySlotLoading(void);
 extern s32 Menu_TopMenuResult;
-extern s32 Pad_Circle; /* Pad_State[0].circle as a scalar reloc */
 
 /* Work of the stage main task (Stg20_StageMain). */
 typedef struct {
@@ -928,7 +926,6 @@ typedef struct {
     /* 0x70 */ s32 timer;
 } Stg20NpcWork;
 
-extern s32 Pad_Cross; /* Pad_State[0].cross as a scalar reloc */
 extern s32 Stg20_PartsPageCategory[10];
 extern s32 Stg20_PartsPageSlot[10];
 

@@ -126,7 +126,7 @@ void Stg00_LineupTask(Actor *arg0) {
                 Stg00_CamMoveRefPoint(cam, 0, 0x20, 0);
             }
         }
-        if (Pad_Select > 0) {
+        if (Pad_State[0].select > 0) {
             if (((Stg00ModeWork *)w)->videoMode != 3) {
                 ((Stg00ModeWork *)w)->videoMode++;
             } else {
@@ -135,19 +135,19 @@ void Stg00_LineupTask(Actor *arg0) {
             Stg00_LineupSetVideoMode(arg0);
         }
         redraw = 0;
-        if (D_8005F724 > 0) {
+        if (Pad_State[0].start > 0) {
             if (++w->layout == 3) {
                 w->layout = 0;
             }
             redraw = 1;
         }
-        if (Pad_Repeat & 0x20) {
+        if (Pad_State[0].repeat & 0x20) {
             if (w->scrollTop != 0) {
                 w->scrollTop--;
                 redraw = 1;
             }
         }
-        if (Pad_Repeat & 0x80) {
+        if (Pad_State[0].repeat & 0x80) {
             if (w->scrollTop + 9 != w->count) {
                 w->scrollTop++;
                 redraw = 1;
@@ -156,7 +156,7 @@ void Stg00_LineupTask(Actor *arg0) {
         if (redraw) {
             Stg00_LineupSpawnModels(arg0);
         }
-        if (Pad_R2 > 0) {
+        if (Pad_State[0].r2 > 0) {
             Sys_NextGameMode = 0x102;
         }
         break;

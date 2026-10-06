@@ -140,7 +140,7 @@ void Stg30_JoinPromptUpdate(Actor *a0) {
                 Task_NextState2(a0);
                 break;
             case 1:
-                if (Pad_Cross <= 0) {
+                if (Pad_State[0].cross <= 0) {
                     break;
                 }
                 g = (Stg30GameRoster *)&Save_GameState;
@@ -166,7 +166,7 @@ void Stg30_JoinPromptUpdate(Actor *a0) {
                 Task_NextState2(a0);
                 break;
             case 2:
-                if (Pad_Cross > 0) {
+                if (Pad_State[0].cross > 0) {
                     Task_SetState1(a0, 8);
                 }
                 break;
@@ -242,7 +242,7 @@ void Stg30_JoinPromptUpdate(Actor *a0) {
                 Task_NextState2(a0);
                 break;
             case 1:
-                if (Pad_Cross > 0) {
+                if (Pad_State[0].cross > 0) {
                     Task_SetState1(a0, 8);
                 }
                 break;
@@ -257,7 +257,7 @@ void Stg30_JoinPromptUpdate(Actor *a0) {
                 Text_OpenPacked(&w->text[1], (s32)Cd_GetFileEntry(0x1FD0192), 0x81, Stg30_JoinPromptTextPos[1]);
                 Task_NextState2(a0);
             case 1:
-                if (Pad_Cross > 0) {
+                if (Pad_State[0].cross > 0) {
                     Task_NextState0(a0);
                 }
                 break;

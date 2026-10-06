@@ -54,7 +54,7 @@ void Stg00_VideoModeTask(Actor *arg0) {
             break;
         }
         w2 = (Stg00ModeWork *)arg0->work;
-        if (Pad_Select > 0) {
+        if (Pad_State[0].select > 0) {
             if (w2->videoMode != 3) {
                 w2->videoMode++;
             } else {

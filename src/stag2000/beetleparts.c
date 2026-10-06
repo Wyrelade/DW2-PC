@@ -378,7 +378,7 @@ void Stg20_BeetlePartsUpdate(Actor *a) {
             case 1:
                 break;
             }
-            if (Pad_Cross > 0) {
+            if (Pad_State[0].cross > 0) {
                 Snd_PlayById(0x13, 0);
                 Text_Close(&w->hdr[1]);
                 Text_Close(&w->hdr[2]);
@@ -461,7 +461,7 @@ void Stg20_BeetlePartsUpdate(Actor *a) {
                 w->cursorShown = 0;
                 Task_NextState2(a);
             case 1:
-                if (Pad_Cross > 0) {
+                if (Pad_State[0].cross > 0) {
                     Snd_PlayById(0x13, 0);
                     w->dirty = 1;
                     w->cursorShown = 1;
@@ -541,7 +541,7 @@ void Stg20_BeetlePartsUpdate(Actor *a) {
                 w->cursorShown = 0;
                 Task_NextState2(a);
             case 1:
-                if (Pad_Cross > 0) {
+                if (Pad_State[0].cross > 0) {
                     Snd_PlayById(0x13, 0);
                     w->dirty = 1;
                     w->cursorShown = 1;
@@ -613,7 +613,7 @@ void Stg20_BeetlePartsUpdate(Actor *a) {
             case 1:
                 break;
             }
-            if (Pad_Cross > 0) {
+            if (Pad_State[0].cross > 0) {
                 Stg20_PartsListToBag(a);
                 Task_SetState0(a, 3);
             }
