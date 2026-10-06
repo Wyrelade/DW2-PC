@@ -80,8 +80,8 @@ s32 Flag_Test(s32 arg0) {
     if (arg0 < 0xFA0) {
         s32 key = arg0 - 0xBB8;
         for (i = 0; i < 0x24; i++) {
-            if (((EntV_21E78 *)&Save_GameState)->elems[i].field_1 == key) {
-                if (((EntV_21E78 *)&Save_GameState)->elems[i].field_0 >= 2) {
+            if (Save_GameState.elems[i].digiId == key) {
+                if (Save_GameState.elems[i].state >= 2) {
                     return 1;
                 }
             }

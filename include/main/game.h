@@ -1029,7 +1029,7 @@ typedef struct {
     /* 0x20 */ s16 rotX;
     /* 0x22 */ s16 rotY;
     /* 0x24 */ s16 rotZ;
-    /* 0x26 */ s16 field_26;
+    /* 0x26 */ s16 _pad26;
 } Rec1D6B4; /* 0x28 */
 
 
@@ -1057,7 +1057,7 @@ extern Blk20 Gfx_IdentityMatrix;
 /* file-local views over Save_GameState for Flag_Test */
 typedef struct { u8 _p[0x66]; u16 a[1]; } V66_21E78;
 typedef struct { u8 _p[0xDD4]; u16 a[1]; } VDD4_21E78;
-typedef struct { u8 field_0; u8 field_1; u8 _p[0x5A]; } ElmV_21E78; /* 0x5C */
+typedef struct { u8 state; u8 digiId; u8 _p[0x5A]; } ElmV_21E78; /* 0x5C, as DigiRosterEntry */
 typedef struct { u8 _p[0xE4]; ElmV_21E78 elems[0x24]; } EntV_21E78;
 
 typedef struct {

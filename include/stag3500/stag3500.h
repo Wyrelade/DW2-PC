@@ -144,7 +144,7 @@ typedef struct {
     /* 0x00 */ Stg35PartsHandle load[3];
     /* 0x0C */ Stg35TextHandle text[7];
     /* 0x28 */ Stg35SpriteHandle sprite[10];
-    /* 0x50 */ s32 field_50;
+    /* 0x50 */ s32 _pad50;
     /* 0x54 */ s32 gauge[2];
     /* 0x5C */ s32 gaugeSkills[6];
     /* 0x74 */ s32 gaugeLevel;
@@ -364,9 +364,9 @@ typedef struct {
 
 /* Actor.work of the battle main task Stg35_BattleUpdate. */
 typedef struct {
-    /* 0x00 */ s32 field_0;
+    /* 0x00 */ s32 _pad0;
     /* 0x04 */ s32 round;           /* turn count */
-    /* 0x08 */ s32 field_8;
+    /* 0x08 */ s32 _pad8;
     /* 0x0C */ s32 winnerSide;           /* winning side */
 } Stg35BattleWork;
 

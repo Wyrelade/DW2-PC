@@ -838,7 +838,7 @@ extern s32 Menu_TopMenuResult;
 typedef struct {
     /* 0x00 */ s32 field_0;
     /* 0x04 */ s32 bgmOn;
-    /* 0x08 */ s32 field_8;
+    /* 0x08 */ s32 _pad8;
     /* 0x0C */ s32 areaSelect;
 } Stg20MainWork;
 

@@ -123,7 +123,7 @@ typedef struct {
 } Stg00ModelArg;
 
 typedef struct {
-    /* 0x00 */ s32 field_0;
+    /* 0x00 */ s32 _pad0;
     /* 0x04 */ Vec3 homePos;
     /* 0x10 */ s32 facing;
     /* 0x14 */ s32 modelFile;
@@ -522,14 +522,14 @@ typedef struct {
 /* Actor.work of the random-pose viewer (Stg00_GroupViewTask). */
 typedef struct {
     /* 0x00 */ s32 videoMode;
-    /* 0x04 */ s32 field_4;
+    /* 0x04 */ s32 _pad4;
     /* 0x08 */ s32 camPreset;
     /* 0x0C */ s32 winVariant;
 } Stg00ViewWork;
 
 /* Stg00ModelWork with the fields Stg00_DigiModelTask touches. */
 typedef struct {
-    /* 0x00 */ s32 field_0;
+    /* 0x00 */ s32 _pad0;
     /* 0x04 */ Vec3 homePos;
     /* 0x10 */ s32 facing;
     /* 0x14 */ s32 modelFile;

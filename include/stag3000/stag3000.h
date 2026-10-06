@@ -789,7 +789,7 @@ extern const Halves Stg30_TamerNameTextPos;
 /* Save_GameState viewed with the words Stg30_JoinPromptUpdate reads (0x30 map id, 0x4A, 0x61). */
 typedef struct {
     u8 _pad00[0x30];
-    /* 0x30 */ u16 field_30;
+    /* 0x30 */ u16 _pad30;
     u8 _pad32[0x18];
     /* 0x4A */ u16 field_4A;
     u8 _pad4C[0x15];

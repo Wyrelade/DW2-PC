@@ -356,27 +356,27 @@ typedef struct {
         /* 0x34 */ s32 children;
         struct {
             u8 _b34[0x02];
-            /* 0x36 */ u8 field_36;
-            /* 0x37 */ u8 field_37;
+            /* 0x36 */ u8 _pad36;
+            /* 0x37 */ u8 _pad37;
         } b;
     } u34;
     /* 0x38 read as a byte (field_38) or as an ActorTransformView* (ptr38) by Gfx_ShadowUpdate. */
     union {
-        /* 0x38 */ u8 field_38;
+        /* 0x38 */ u8 _pad38;
         ActorTransformView *ptr38;
     } u38;
     /* 0x3C */ ActorModel *model;
     u8 _pad40[0x06];
     /* 0x46 */ u8 infoStep;
     /* 0x47 */ u8 infoIndex;
-    /* 0x48 */ ActorSub5C field_48[2];
+    /* 0x48 */ ActorSub5C _pad48[2];
     u8 _pad100[0x10];
-    /* 0x110 */ u16 field_110;
+    /* 0x110 */ u16 _pad110;
     u8 _pad112[0x02];
-    /* 0x114 */ u16 field_114;
+    /* 0x114 */ u16 _pad114;
     u8 _pad116[0x02];
-    /* 0x118 */ s32 field_118[8];
-    /* 0x138 */ s32 *field_138[8];
+    /* 0x118 */ s32 _pad118[8];
+    /* 0x138 */ s32 *_pad138[8];
 } Actor;
 
 /* Entry returned by the Digi_FindBaseData table lookup (0x12 stride); accessed
@@ -1588,7 +1588,7 @@ typedef struct {
     /* 0x00 */ u8 syncIntr;
     /* 0x01 */ u8 readyIntr;
     /* 0x02 */ u8 endIntr;
-    /* 0x03 */ u8 field_3[6];
+    /* 0x03 */ u8 _pad3[6];
 } CdIntrStatus;
 
 /* Word pair at *D_80048DF0: PadStartCom writes -2 to 0x0 and sets bit 0 of 0x4. */
@@ -3265,7 +3265,7 @@ typedef struct {
 
 /* Text_UpdateAllBoxes's child task slots (Actor u34.children). */
 typedef struct {
-    /* 0x00 */ Actor *unk0;
+    /* 0x00 */ Actor *_pad0;
     /* 0x04 */ Actor *box[0x32];  /* one per text box row */
     /* 0xCC */ Actor *num[2];     /* number display tasks */
     /* 0xD4 */ Actor *task;
