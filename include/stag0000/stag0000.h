@@ -27,7 +27,7 @@ typedef struct {
 } Stg00Vec3;
 
 typedef struct {
-    /* 0x00 */ s32 field_0[7];
+    /* 0x00 */ s32 view[7];
 } Stg00CameraArg;
 
 typedef struct {
@@ -140,11 +140,11 @@ typedef struct {
 
 /* File-relative pointer tables fixed up by Stg00_RelocDungFile. */
 typedef struct {
-    /* 0x00 */ u32 field_0;
-    /* 0x04 */ u32 field_4;
-    /* 0x08 */ u32 field_8;
+    /* 0x00 */ u32 cellBits;
+    /* 0x04 */ u32 spawnPoints;
+    /* 0x08 */ u32 chests;
     /* 0x0C */ u32 cmdList;
-    /* 0x10 */ u32 field_10;
+    /* 0x10 */ u32 enemyParties;
 } Stg00DungLayout;
 
 /* 8-byte record of the list at Stg00DungLayout.field_C (tag 0xFF ends it). */
@@ -152,12 +152,12 @@ typedef struct {
     /* 0x00 */ union {
         u8 tag;
         u32 bits;
-    } field_0;
-    /* 0x04 */ u32 field_4;
+    } posPicks01;
+    /* 0x04 */ u32 picks23;
 } Stg00RelocCmd;
 
 typedef struct {
-    /* 0x00 */ u8 field_0;
+    /* 0x00 */ u8 itemId;
     u8 _pad01[0x03];
 } Stg00RelocFlag;
 
@@ -167,14 +167,14 @@ typedef struct {
 } Stg00RelocPair;
 
 typedef struct {
-    /* 0x00 */ u32 field_0;
+    /* 0x00 */ u32 name;
     u8 _pad04[0x04];
     /* 0x08 */ Stg00DungLayout *layouts[8];
     u8 _pad28[0x06];
-    /* 0x2E */ s16 field_2E;
+    /* 0x2E */ s16 hazardLevel;
     u8 _pad30[0x04];
-    /* 0x34 */ Stg00RelocFlag field_34[8];
-    /* 0x54 */ Stg00RelocPair field_54[5];
+    /* 0x34 */ Stg00RelocFlag chests[8];
+    /* 0x54 */ Stg00RelocPair hazardGroups[5];
 } Stg00DungFloor;
 
 /* Bit table copied to the stack by Stg00_CalcLayoutMask (5 groups of 6 words). */
@@ -326,7 +326,7 @@ typedef struct {
     /* 0x54 */ s32 drawTex;
     /* 0x58 */ s32 lastDirUp;
     /* 0x5C */ s32 skillScroll;
-    /* 0x60 */ s32 field_60;
+    /* 0x60 */ s32 skillCol;
     /* 0x64 */ s32 skillRow;
 } Stg00DigiViewWork;
 
@@ -432,8 +432,8 @@ typedef struct {
 } Stg00Part; /* size 0x28 */
 
 typedef struct {
-    /* 0x00 */ s32 field_0;
-    /* 0x04 */ s32 field_4;
+    /* 0x00 */ s32 frontMask;
+    /* 0x04 */ s32 backMask;
     /* 0x08 */ s32 spinMask;
     /* 0x0C */ s32 resetMask;
 } Stg00PartMasks;
@@ -544,7 +544,7 @@ typedef struct {
 /* ActorModel viewed with the fade colour bytes at 0x38. */
 typedef struct {
     u8 _pad00[0x34];
-    /* 0x34 */ s16 field_34;
+    /* 0x34 */ s16 clutRow;
     /* 0x36 */ s16 tpageBits;
     /* 0x38 */ u8 flatR;
     /* 0x39 */ u8 flatG;

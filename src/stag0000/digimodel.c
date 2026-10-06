@@ -322,7 +322,7 @@ void Stg00_DigiModelTask(Actor *arg0) {
             case 0:
             default:
                 w->drawWire = 1;
-                m->field_34 = 1;
+                m->clutRow = 1;
                 m->tpageBits = 0x20;
                 m->flatR = m->flatG = m->flatB = 0x7C;
                 w->wireColor.r = w->wireColor.g = w->wireColor.b = 0;
@@ -330,7 +330,7 @@ void Stg00_DigiModelTask(Actor *arg0) {
                 break;
             case 1:
                 if (m->flatR == 0) {
-                    m->field_34 = 0;
+                    m->clutRow = 0;
                     m->tpageBits = 0;
                     w->drawTex = 0;
                     w->wireColor.g = 0xFF;
@@ -348,14 +348,14 @@ void Stg00_DigiModelTask(Actor *arg0) {
             case 0:
             default:
                 w->drawTex = 1;
-                m->field_34 = 1;
+                m->clutRow = 1;
                 m->tpageBits = 0x20;
                 m->flatR = m->flatG = m->flatB = 0;
                 Task_NextState2(arg0);
                 break;
             case 1:
                 if (m->flatR == 0x7C) {
-                    m->field_34 = 0;
+                    m->clutRow = 0;
                     m->tpageBits = 0;
                     w->drawWire = 0;
                     Task_SetState0(arg0, 1);

@@ -86,12 +86,12 @@ void Stg00_WindowTestDraw(Actor *arg0) {
                 p->rotX += 0x20;
             }
         }
-        if (p->partMask & Stg00_WindowTestParts[w->cursor].field_0) {
+        if (p->partMask & Stg00_WindowTestParts[w->cursor].frontMask) {
             if ((p->rotX + 0x400) & 0x800) {
                 p->visible = 0;
             }
         }
-        if (p->partMask & Stg00_WindowTestParts[w->cursor].field_4) {
+        if (p->partMask & Stg00_WindowTestParts[w->cursor].backMask) {
             if ((p->rotX - 0x418) & 0x800) {
                 p->visible = 0;
             }

@@ -28,16 +28,16 @@ s32 Stg00_RelocDungFile(u32 *arg0) {
 
             *arg0 += base;
             h = (Stg00DungFloor *)*arg0;
-            h->field_0 += base;
+            h->name += base;
             for (i = 0; i < 8; i++) {
                 Stg00DungLayout **pe = &h->layouts[i];
                 Stg00DungLayout *e = (Stg00DungLayout *)((u32)*pe + base);
                 *pe = e;
-                Stg00_RelocPtr(&e->field_0, base);
-                Stg00_RelocPtr(&e->field_4, base);
-                Stg00_RelocPtr(&e->field_8, base);
+                Stg00_RelocPtr(&e->cellBits, base);
+                Stg00_RelocPtr(&e->spawnPoints, base);
+                Stg00_RelocPtr(&e->chests, base);
                 Stg00_RelocPtr(&e->cmdList, base);
-                Stg00_RelocPtr(&e->field_10, base);
+                Stg00_RelocPtr(&e->enemyParties, base);
             }
         }
         arg0++;
@@ -305,16 +305,16 @@ s32 Stg00_CalcLayoutMask(Stg00DungFloor *arg0, s32 arg1) {
     Stg00RelocCmd *cmd;
 
     for (i = 0; i < 8; i++) {
-        code = arg0->field_34[i].field_0;
+        code = arg0->chests[i].itemId;
         if (code != 0) {
             result |= 1;
         }
     }
     for (i = 0; i < 5; i++) {
-        u32 chk = arg0->field_54[i].chk;
+        u32 chk = arg0->hazardGroups[i].chk;
         code = (chk & 0xF) + ((chk >> 4) & 0xF) + ((chk >> 8) & 0xF) + ((chk >> 12) & 0xF);
         if (code != 0) {
-            u32 sel = arg0->field_54[i].sel;
+            u32 sel = arg0->hazardGroups[i].sel;
             val = sel & 0xF;
             result |= tbl.bits[i][val];
             val = (sel >> 4) & 0xF;
@@ -326,34 +326,34 @@ s32 Stg00_CalcLayoutMask(Stg00DungFloor *arg0, s32 arg1) {
         }
     }
     cmd = (Stg00RelocCmd *)arg0->layouts[arg1]->cmdList;
-    while (cmd->field_0.tag != 0xFF) {
+    while (cmd->posPicks01.tag != 0xFF) {
         for (i = 0; i < 4; i++) {
             switch (i) {
             case 0:
             default:
-                code = cmd->field_0.bits >> 16;
+                code = cmd->posPicks01.bits >> 16;
                 code &= 0xF;
-                val = cmd->field_0.bits >> 20;
+                val = cmd->posPicks01.bits >> 20;
                 val &= 0xF;
                 break;
             case 1:
-                code = cmd->field_0.bits >> 24;
+                code = cmd->posPicks01.bits >> 24;
                 code &= 0xF;
-                val = cmd->field_0.bits >> 28;
+                val = cmd->posPicks01.bits >> 28;
                 break;
             case 2:
-                code = cmd->field_4 & 0xF;
-                val = cmd->field_4 >> 4;
+                code = cmd->picks23 & 0xF;
+                val = cmd->picks23 >> 4;
                 val &= 0xF;
                 break;
             case 3:
-                code = cmd->field_4 >> 8;
+                code = cmd->picks23 >> 8;
                 code &= 0xF;
-                val = cmd->field_4 >> 12;
+                val = cmd->picks23 >> 12;
                 val &= 0xF;
                 break;
             }
-            val += arg0->field_2E;
+            val += arg0->hazardLevel;
             switch (code - 2) {
             case 0:
                 n = val >= 5 ? 5 : val;

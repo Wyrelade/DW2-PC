@@ -470,7 +470,7 @@ void Stg00_DigiViewDraw(Actor *arg0) {
             args.charDelay = 0;
             args.charAdvance = 0;
             args.lineAdvance = 0;
-            if (w->field_60 == s5 && w->skillRow == col) {
+            if (w->skillCol == s5 && w->skillRow == col) {
                 if (fp && w->panel == 1) {
                     continue;
                 }
