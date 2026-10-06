@@ -1,6 +1,12 @@
 #include "common.h"
 #include "stag3500/stag3500.h"
+#include "stag3500/bg.h"
+#include "stag3500/fightbg.h"
+#include "stag3500/actionload.h"
 #include "stag3500/stag3500_funcs.h"
+#include "stag3500/vsmenu.h"
+#include "stag3500/matchup.h"
+#include "stag3500/battle.h"
 #include "stag3500/stag3500_2334_funcs.h"
 
 /* Task callbacks this unit defines further down (the descriptors come first). */

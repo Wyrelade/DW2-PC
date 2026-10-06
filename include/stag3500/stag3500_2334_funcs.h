@@ -3,7 +3,6 @@
 
 /* Functions src/stag3500/stag3500_2334.c defines or declares, for the units after it
  * (in the single file the definition was the prototype for later code). */
-void Stg35_BattleDestroy(Actor *arg0);
 void Stg35_TextAlloc(Stg35TextHandle *arg0);
 void Stg35_TextFree(Stg35TextHandle *arg0);
 void Stg35_TextSetLayout(Stg35TextHandle *arg0, s32 arg1, s32 arg2, s32 arg3);

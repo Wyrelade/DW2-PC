@@ -1,6 +1,12 @@
 #include "common.h"
 #include "stag3500/stag3500.h"
+#include "stag3500/bg.h"
+#include "stag3500/fightbg.h"
+#include "stag3500/actionload.h"
 #include "stag3500/stag3500_funcs.h"
+#include "stag3500/vsmenu.h"
+#include "stag3500/matchup.h"
+#include "stag3500/battle.h"
 
 /* Task callbacks this unit defines further down (the descriptors come first). */
 void Stg35_FighterInit(Actor *arg0, Stg35Vec3 *arg1);
@@ -52,11 +58,6 @@ TaskDesc Stg35_BattleScriptDesc = { 0, Stg35_BattleScriptTask, Task_DefaultDestr
 s32 Stg35_TurnOrder[12];
 Stg35Battle Stg35_Battle;
 s16 Stg35_BattleScript[0xC8];
-
-void Stg35_BattleDestroy(Actor *arg0) {
-    Gpu_InitDoubleBuffer(0x140, 0xF0, 0, 0);
-    Task_DefaultDestroy(arg0);
-}
 
 void Stg35_TextAlloc(Stg35TextHandle *arg0) {
     Stg35TextObj *p = (Stg35TextObj *)Mem_Alloc(0x1C, 2);
