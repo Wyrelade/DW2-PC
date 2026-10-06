@@ -94,7 +94,7 @@ void Stg20_LabSkillsUpdate(Actor *a) {
     switch (a->stateLevel0) {
     case 0:
         Mem_FillWordsNeg1(w->texts, 0x13);
-        a->param = D_800709E0;
+        a->param = Stg20_MenuState.skillRosterIndex;
         Stg20_LabSkillsGroup(a);
         Task_NextState0(a);
         break;
@@ -104,7 +104,7 @@ void Stg20_LabSkillsUpdate(Actor *a) {
             Stg20_OpenText(&w->texts[1], 0, 0xB, &Stg20_LabSkillsTextPos[1], 4);
             Stg20_OpenText(&w->texts[2], 0, 0xC, &Stg20_LabSkillsTextPos[2], 4);
             Stg20_OpenText(&w->texts[3], 0, 0xD, &Stg20_LabSkillsTextPos[3], 4);
-            Stg20_OpenText(&w->texts[4], (s32)Save_GameState.elems[D_800709E0].name, 0, &Stg20_LabSkillsTextPos[8], 0);
+            Stg20_OpenText(&w->texts[4], (s32)Save_GameState.elems[Stg20_MenuState.skillRosterIndex].name, 0, &Stg20_LabSkillsTextPos[8], 0);
             Stg20_OpenText(&w->texts[5], 0, 0xD1, &Stg20_LabSkillsTextPos[9], 0);
             Task_NextState1(a);
         }

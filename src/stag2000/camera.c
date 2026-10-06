@@ -181,7 +181,7 @@ void Stg20_CameraUpdate(Actor *a) {
             }
             break;
         }
-        if (Stg20_LabIsDna[0] == 0) {
+        if (Stg20_MenuState.labIsDna == 0) {
             e = (Actor *)Task_FindFirst(7, -1, -1);
             if (e != NULL) {
                 ((Stg20Rot *)e->u38.ptr38)->rotY = w->rot[1];

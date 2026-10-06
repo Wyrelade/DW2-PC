@@ -96,7 +96,7 @@ void Stg20_WalkerGetInput(Actor *a)
   Stg20Cell *c;
   Stg20Cell *p;
   s32 r;
-  if ((((Stg20ModelTask *) a)->walkerKind == 0) && (Stg20_TalkActive == 0))
+  if ((((Stg20ModelTask *) a)->walkerKind == 0) && (Stg20_MenuState.talkActive == 0))
   {
     switch (a->param)
     {
@@ -232,7 +232,7 @@ void Stg20_WalkerUpdate(Actor *a) {
                     Stg20_WalkerHalt(p);
                     Task_SetState1(p, 0);
                     Task_NextState1(a);
-                    Stg20_TalkActive = 1;
+                    Stg20_MenuState.talkActive = 1;
                 }
                 break;
             case 1:
@@ -249,7 +249,7 @@ void Stg20_WalkerUpdate(Actor *a) {
                         Task_SetState1(a, 0);
                     }
                     Task_SetState1(w->target, 0);
-                    Stg20_TalkActive = 0;
+                    Stg20_MenuState.talkActive = 0;
                 }
                 break;
             }
@@ -340,7 +340,7 @@ void Stg20_WalkerUpdate(Actor *a) {
                                 ((Stg20NpcWork *)w->target->work)->timer = Sys_State.frameCount + 0x1E;
                                 Task_SetState1(w->target, 0);
                                 Task_SetState2(a, 0);
-                                Stg20_TalkActive = 0;
+                                Stg20_MenuState.talkActive = 0;
                             }
                         }
                         break;
@@ -374,7 +374,7 @@ void Stg20_WalkerUpdate(Actor *a) {
                 Stg20_AddOccupantMark(a, &w->marks, w->dir, 0x14);
                 Task_NextState2(a);
             case 1:
-                if ((w->input & 0x10) || Stg20_TalkActive != 0 || ((Stg20ModelTask *)a)->walkerKind != 0) {
+                if ((w->input & 0x10) || Stg20_MenuState.talkActive != 0 || ((Stg20ModelTask *)a)->walkerKind != 0) {
                     Stg20_WalkerSetAnim(a, 0x1F);
                     Stg20_SetMoveParams(a, 0);
                 } else {
@@ -384,7 +384,7 @@ void Stg20_WalkerUpdate(Actor *a) {
                 if (((Stg20ModelTask *)a)->walkerKind == 0) {
                     ok = 0;
                     w->counter++;
-                    if ((w->input & 0x10) || Stg20_TalkActive != 0) {
+                    if ((w->input & 0x10) || Stg20_MenuState.talkActive != 0) {
                         if (w->counter >= 13) {
                             ok = 1;
                         }

@@ -26,7 +26,7 @@ void Stg20_ItemShopMenuUpdate(Actor *a) {
 
     case 1:
         do {
-            s32 *p = &D_800709B8.menuChoice;
+            s32 *p = &Stg20_MenuState.menuChoice;
 
             if (Pad_State[0].right > 0) {
                 if (*p != 0) {

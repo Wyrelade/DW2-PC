@@ -81,7 +81,7 @@ void Stg20_WarpPadUpdate(Actor *a) {
         if (c.x == Stg20_WarpPads[a->param].cell.x && c.y == Stg20_WarpPads[a->param].cell.y
             && Stg20_IsOnCellCenter(w->target) != 0) {
             Stg20_WalkerHalt(w->target);
-            Stg20_TalkActive = 1;
+            Stg20_MenuState.talkActive = 1;
             Task_NextState0(a);
         }
         break;

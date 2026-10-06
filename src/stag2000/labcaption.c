@@ -16,7 +16,7 @@ void Stg20_LabCaptionUpdate(Actor *a) {
     switch (a->stateLevel0) {
     case 0:
         Mem_FillWordsNeg1(w, 2);
-        if (D_800709D0 == 0) {
+        if (Stg20_MenuState.pickStep == 0) {
             Text_OpenById(w, 0x102, 0, Stg20_LabCaptionPos[0]);
         } else {
             Text_OpenById(w, 0x103, 0, Stg20_LabCaptionPos[1]);

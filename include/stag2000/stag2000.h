@@ -115,7 +115,6 @@ extern u8 Stg20_DnaTypeIndexTbl[3][3];
 extern u8 Stg20_DnaResultTbl[][3][8][8];
 extern u16 Stg20_EngineHpTbl[];
 extern u16 Stg20_BatteryEpTbl[];
-extern s32 Stg20_TalkActive;
 extern Stg20Cell Stg20_CellTmp;
 extern Stg20Cell Stg20_DirCellDelta[4];
 extern Stg20Vec3 Stg20_MoveParams[];
@@ -267,7 +266,7 @@ typedef struct {
     /* 0x30 */ s32 skillRosterIndex;
     /* 0x34 */ s32 dnaParent0;
     /* 0x38 */ s32 dnaParent1;
-    u8 _pad3C[0x04];
+    /* 0x3C */ s32 labIsDna;
     /* 0x40 */ s32 modelDigiId;
     /* 0x44 */ s32 modelNoGrow;
     /* 0x48 */ s32 modelSlide;
@@ -313,7 +312,6 @@ typedef struct {
     /* 0x00 */ s32 sel;
     /* 0x04 */ s32 texts[2];
 } Stg20YesNoWork;
-extern s32 D_800709BC; /* Stg20_MenuState.field_C as a scalar reloc */
 extern const Halves Stg20_LabDigivolveTextPos;
 extern const Halves Stg20_LabDnaTextPos;
 
@@ -545,8 +543,6 @@ extern void SetGeomOffset(s32, s32);
 extern void Task_NextState1(Actor *);
 extern void Gfx_FadeOutToBlack(s32);
 extern void Stg20_OpenText(void *t, s32 text, s32 id, Stg20Cell *pos, s32 color);
-extern s32 Stg20_ShopSellMode;
-extern s32 D_800709D0;
 extern Halves Stg20_LabCaptionPos[3];
 extern Halves Stg20_UpgradeTextPos[];
 extern s32 Item_GetPrice(s32);
@@ -580,7 +576,6 @@ typedef struct {
     /* 0x60 */ s32 promptId;
 } Stg20ShopListWork;
 extern Stg20ShopList Stg20_ShopItems;
-/* Save_GameState.field_66 as a scalar reloc */
 extern void Stg20_FormatPrice(u8 *out, s32 v);
 extern void Task_Create(u32, s32 *, s32);
 extern void Stg20_MsgWinShowSysMsg(s32 id);
@@ -604,10 +599,6 @@ extern u8 Stg20_PartsTitanOnly[];
 extern u8 Stg20_PartsNotSteel[];
 extern u8 Stg20_MissileGunAmmo[];
 extern u8 Stg20_RCannonAmmo[];
-/* Save_GameState.field_2C[0] as a scalar reloc */
-/* Save_GameState.field_2C[8] */
-/* Save_GameState.field_2C[9] */
-/* Save_GameState.field_2C[10] */
 extern s32 Cd_GetFileLba(s32 arg0);
 extern s32 CdControl(s32, u8 *, u8 *);
 extern s32 CdControlB(s32, u8 *, u8 *);
@@ -623,7 +614,6 @@ typedef struct {
     /* 0x0C */ s32 start;
     /* 0x10 */ s32 end;
 } Stg20XaWork;
-extern s32 D_80070A00;
 typedef struct {
     /* 0x00 */ u8 x;
     /* 0x01 */ u8 y;
@@ -726,7 +716,6 @@ typedef struct {
     /* 0x3A */ u8 b;
 } Stg20ModelTint;
 
-extern s32 D_800709F4;
 extern s32 Digi_GetModelFile(s32 id);
 extern s32 Anim_GetModelAnimFile(s32 arg0, s32 arg1);
 extern void Cd_QueueFile(s32);
@@ -776,19 +765,17 @@ extern s32 Stg20_OwnsDigi(s32 id);
 extern void GsInitCoordinate2(Coord1F668 *, Coord1F668 *);
 extern void Gfx_FadeOutToWhite(s32);
 extern void Gfx_FadeInFromWhite(s32);
-extern s32 Stg20_LabIsDna[];
 
 extern void Digi_AddNew(s32);
 
 
-/* Stg20_MenuState viewed from its field_8 (Stg20_ShopListUpdate addresses Stg20_MenuState.field_54 as 0x4C from it). */
+/* Stg20_MenuState viewed from .result (0x08): Stg20_ShopListUpdate reaches .sellMode as 0x4C from it. */
 typedef struct {
     /* 0x00 */ s32 result;
     u8 _pad04[0x44];
-    /* 0x48 */ s32 menuChoice; /* = D_80070A00 (Stg20_BeetleShopMenuUpdate addresses result as -0x48 from it) */
+    /* 0x48 */ s32 menuChoice; /* Stg20_BeetleShopMenuUpdate reaches .result as -0x48 from it */
     /* 0x4C */ s32 sellMode;
 } Stg20MenuSub;
-extern Stg20MenuSub D_800709B8;
 extern s32 Skill_GetNameText(s32);
 extern const Halves Stg20_BeetleMenuPartsPos;
 extern const Halves Stg20_BeetleMenuUpgradePos;
@@ -803,10 +790,6 @@ typedef struct {
 
 extern Stg20Cell Stg20_LabInfoTextPos[13];
 extern u8 Stg20_DigivolveRuleTbl[4][4];
-extern s32 D_800709D4;
-extern s32 D_800709D8;
-extern s32 Stg20_EvoTargetId;
-extern s32 D_800709E4;
 extern s32 Digi_GetSpecialty(s32);
 extern s32 Digi_GetEvolutionTarget(s32 id, s32 val);
 
@@ -914,7 +897,6 @@ extern s32 Stg20_PartsPageSlot[10];
 
 extern s32 Skill_GetRank(s32 id);
 extern s32 Skill_GetPower(s32 id);
-extern s32 Stg20_DnaNewSlot;
 
 /* Roster entry as the jogress code builds and reads it (Stg20_LabDnaDigivolve). */
 typedef struct {
@@ -941,7 +923,6 @@ typedef struct {
 
 extern void Stg20_MsgWinShowDigiMsg(s32 text, s32 digi);
 
-extern s32 D_800709E0;
 extern Stg20Cell Stg20_LabSkillsTextPos[10];
 extern void Stg20_LabSkillsSetText(Actor *a);
 

@@ -56,7 +56,7 @@ void Stg20_LabDigiModelUpdate(Actor *a) {
             w->field_26 = 0;
             w->field_25 = 0;
             w->field_24 = 0;
-            if (D_800709F4 == 0) {
+            if (Stg20_MenuState.modelNoGrow == 0) {
                 o->scaleZ = 0;
                 o->scaleY = 0;
                 o->scaleX = 0;

@@ -39,21 +39,6 @@ s32 Stg20_AreaScreenPartsIds[] = { 0x03D80002, 0x0DF50002, 0x0DF70002, 0x0CD9000
 TaskDesc Stg20_AreaSelectDesc = { 0, Stg20_AreaSelectUpdate, Task_DefaultDestroy, Stg20_AreaSelectDraw, 0x2DC, 0 };
 Stg20Cell Stg20_CellTmp;
 Stg20MenuState Stg20_MenuState;
-/* Code that reads single Stg20_MenuState fields through symbols of their own. */
-DATA_LABEL(Stg20_TalkActive, Stg20_MenuState, 0x04);
-DATA_LABEL(D_800709B8, Stg20_MenuState, 0x08);
-DATA_LABEL(D_800709BC, Stg20_MenuState, 0x0C);
-DATA_LABEL(D_800709D0, Stg20_MenuState, 0x20);
-DATA_LABEL(D_800709D4, Stg20_MenuState, 0x24);
-DATA_LABEL(D_800709D8, Stg20_MenuState, 0x28);
-DATA_LABEL(Stg20_EvoTargetId, Stg20_MenuState, 0x2C);
-DATA_LABEL(D_800709E0, Stg20_MenuState, 0x30);
-DATA_LABEL(D_800709E4, Stg20_MenuState, 0x34);
-DATA_LABEL(Stg20_LabIsDna, Stg20_MenuState, 0x3C);
-DATA_LABEL(D_800709F4, Stg20_MenuState, 0x44);
-DATA_LABEL(Stg20_DnaNewSlot, Stg20_MenuState, 0x4C);
-DATA_LABEL(D_80070A00, Stg20_MenuState, 0x50);
-DATA_LABEL(Stg20_ShopSellMode, Stg20_MenuState, 0x54);
 
 void Stg20_ApplyStartPreset(s32 arg0) {
     s32 i;
@@ -508,7 +493,7 @@ Stg20Cell *Stg20_GetCellInDir(Actor *a, s32 dir) {
 s32 Stg20_IsCellBlocked(Actor *a, s32 dir) {
     s32 mask;
 
-    if (Stg20_TalkActive != 0) {
+    if (Stg20_MenuState.talkActive != 0) {
         return 0;
     }
     mask = 0xBF;

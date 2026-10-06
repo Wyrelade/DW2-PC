@@ -30,7 +30,7 @@ void Stg20_LabDnaDigivolve(Actor *a) {
     s32 k;
     s32 f;
 
-    Stg20_LabIsDna[0] = 1;
+    Stg20_MenuState.labIsDna = 1;
     switch (a->stateLevel2) {
     case 0:
     default:
@@ -49,7 +49,7 @@ void Stg20_LabDnaDigivolve(Actor *a) {
         case 1:
             if (((Actor *)slot[3])->stateLevel0 == 2) {
                 Task_SetState0((Actor *)slot[4], 2);
-                if (D_800709B8.result != 0) {
+                if (Stg20_MenuState.result != 0) {
                     Task_SetState1(a, 0);
                 } else {
                     Task_NextState2(a);
@@ -160,7 +160,7 @@ void Stg20_LabDnaDigivolve(Actor *a) {
             break;
         case 2:
             if (((Actor *)slot[3])->stateLevel0 == 2) {
-                switch (D_800709B8.result) {
+                switch (Stg20_MenuState.result) {
                 case 0:
                     Task_NextState2(a);
                     break;
@@ -413,7 +413,7 @@ void Stg20_LabDnaDigivolve(Actor *a) {
                 }
             }
             Save_GameState.elems[k] = *(DigiRosterEntry *)&nd;
-            Stg20_DnaNewSlot = k;
+            Stg20_MenuState.dnaNewSlot = k;
             Task_NextState2(a);
             break;
         }
@@ -423,7 +423,7 @@ void Stg20_LabDnaDigivolve(Actor *a) {
         case 0:
         default:
             buf[4] = 0;
-            buf[5] = Stg20_DnaNewSlot;
+            buf[5] = Stg20_MenuState.dnaNewSlot;
             Task_Create(0x16, &slot[7], (s32)&buf[4]);
             Task_NextState3(a);
             break;
@@ -449,7 +449,7 @@ void Stg20_LabDnaDigivolve(Actor *a) {
             break;
         case 2:
             if (((Actor *)slot[3])->stateLevel0 == 2) {
-                switch (D_800709B8.result) {
+                switch (Stg20_MenuState.result) {
                 case 1:
                 case 2:
                 case 3:
@@ -494,7 +494,7 @@ void Stg20_LabDigivolve(Actor *a) {
     Stg20DigiBoost *e;
     s16 v;
 
-    Stg20_LabIsDna[0] = 0;
+    Stg20_MenuState.labIsDna = 0;
     switch (a->stateLevel2) {
     case 0:
     default:
@@ -513,7 +513,7 @@ void Stg20_LabDigivolve(Actor *a) {
         case 1:
             if (((Actor *)slot[3])->stateLevel0 == 2) {
                 Task_SetState0((Actor *)slot[4], 2);
-                if (D_800709B8.result != 0) {
+                if (Stg20_MenuState.result != 0) {
                     Task_SetState1(a, 0);
                 } else {
                     Task_NextState2(a);
@@ -542,7 +542,7 @@ void Stg20_LabDigivolve(Actor *a) {
             break;
         case 2:
             if (((Actor *)slot[3])->stateLevel0 == 2) {
-                switch (D_800709B8.result) {
+                switch (Stg20_MenuState.result) {
                 case 0:
                     Task_NextState2(a);
                     break;
@@ -680,7 +680,7 @@ void Stg20_LabDigivolve(Actor *a) {
             break;
         case 2:
             if (((Actor *)slot[3])->stateLevel0 == 2) {
-                switch (D_800709B8.result) {
+                switch (Stg20_MenuState.result) {
                 case 1:
                 case 2:
                 case 3:

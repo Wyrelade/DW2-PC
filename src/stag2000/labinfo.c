@@ -30,7 +30,7 @@ void Stg20_LabInfoUpdate(Actor *a) {
     switch (a->stateLevel0) {
     case 0:
         Mem_FillWordsNeg1(w->texts, 0xD);
-        w->digi = (DigiRosterEntry *)&Save_GameState.elems[D_800709D8];
+        w->digi = (DigiRosterEntry *)&Save_GameState.elems[Stg20_MenuState.infoRosterIndex];
         Task_NextState0(a);
         break;
     case 1:
@@ -54,7 +54,7 @@ void Stg20_LabInfoUpdate(Actor *a) {
             Stg20_OpenText(&w->texts[10], 0, 0xBF, &Stg20_LabInfoTextPos[10], 0);
             Stg20_OpenText(&w->texts[11], 0, 0xD0, &Stg20_LabInfoTextPos[11], 0);
             Stg20_OpenText(&w->texts[12], 0, 0x9D, &Stg20_LabInfoTextPos[12], 0);
-            switch (D_800709D4) {
+            switch (Stg20_MenuState.infoMode) {
             case 0:
                 t = Digi_GetRank(w->digi->digiId);
                 d = w->digi;
@@ -68,7 +68,7 @@ void Stg20_LabInfoUpdate(Actor *a) {
                     break;
                 case 1:
                     p = Digi_GetEvolutionTarget(d->digiId, d->dp);
-                    Stg20_EvoTargetId = p;
+                    Stg20_MenuState.evoTargetId = p;
                     if (p == 0) {
                 case 2:
                         Stg20_MsgWinShowSysMsg(0x11D);
@@ -79,7 +79,7 @@ void Stg20_LabInfoUpdate(Actor *a) {
                 }
                 break;
             case 1:
-                Stg20_MsgWinShowDigiMsg(0x126, Stg20_EvoTargetId);
+                Stg20_MsgWinShowDigiMsg(0x126, Stg20_MenuState.evoTargetId);
                 break;
             case 2:
                 if (Digi_GetRank(w->digi->digiId) != 0) {
@@ -90,7 +90,7 @@ void Stg20_LabInfoUpdate(Actor *a) {
                 break;
             case 3:
                 ok = 0;
-                id0 = Save_GameState.elems[D_800709E4].digiId;
+                id0 = Save_GameState.elems[Stg20_MenuState.dnaParent0].digiId;
                 id1 = w->digi->digiId;
                 x = Digi_GetType(id0);
                 y = Digi_GetType(id1);
@@ -118,15 +118,15 @@ void Stg20_LabInfoUpdate(Actor *a) {
                     if (Digi_GetRank(w->digi->digiId) == 0) {
                         Stg20_MsgWinShowSysMsg(0x11A);
                     } else {
-                        Stg20_EvoTargetId = Stg20_GetDnaResult(id0, id1);
-                        Stg20_MsgWinShowDigiMsg(0x128, Stg20_EvoTargetId);
+                        Stg20_MenuState.evoTargetId = Stg20_GetDnaResult(id0, id1);
+                        Stg20_MsgWinShowDigiMsg(0x128, Stg20_MenuState.evoTargetId);
                     }
                 } else {
                     Stg20_MsgWinShowSysMsg(0x12A);
                 }
                 break;
             case 4:
-                Stg20_MsgWinShowDigiMsg(0x129, Stg20_EvoTargetId);
+                Stg20_MsgWinShowDigiMsg(0x129, Stg20_MenuState.evoTargetId);
                 break;
             }
             Task_NextState1(a);
@@ -134,13 +134,13 @@ void Stg20_LabInfoUpdate(Actor *a) {
         case 1:
             do {
                 if (Pad_State[0].circle > 0) {
-                    D_800709B8.result = 0;
+                    Stg20_MenuState.result = 0;
                     Task_NextState0(a);
                     break;
                 }
                 if (Pad_State[0].triangle > 0) {
                     Snd_PlayById(0xB, 0);
-                    D_800709B8.result = 1;
+                    Stg20_MenuState.result = 1;
                     Task_NextState0(a);
                     break;
                 }

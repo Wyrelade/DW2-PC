@@ -26,8 +26,8 @@ void Stg20_BeetleShopMenuUpdate(Actor *a) {
 
     case 1:
         do {
-            /* D_80070A00 reached as D_800709B8.field_48; field_0 is p[-18] */
-            s32 *p = &D_800709B8.menuChoice;
+            /* p[-18] is Stg20_MenuState.result */
+            s32 *p = &Stg20_MenuState.menuChoice;
 
             if (Pad_State[0].right > 0) {
                 if (*p != 0) {

@@ -15,7 +15,7 @@ void Stg20_LabModeSelUpdate(Actor *a)
   switch (a->stateLevel0)
   {
     case 0:
-      w->sel = D_800709BC != 0;
+      w->sel = Stg20_MenuState.labMode != 0;
       Mem_FillWordsNeg1(w->texts, 2);
       Text_OpenById(&w->texts[0], 0x102, 0, Stg20_LabDigivolveTextPos);
       Text_OpenById(&w->texts[1], 0x103, 0, Stg20_LabDnaTextPos);

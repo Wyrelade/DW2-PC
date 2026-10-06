@@ -13,7 +13,7 @@ void Stg20_ItemShopUpdate(Actor *a) {
     case 0:
         Task_Create(0x312, &slot[0], 0);
         Task_Create(0x315, &slot[1], 0);
-        D_80070A00 = 0;
+        Stg20_MenuState.menuChoice = 0;
         Task_NextState0(a);
         break;
     case 1:
@@ -42,7 +42,7 @@ void Stg20_ItemShopUpdate(Actor *a) {
             switch (a->stateLevel2) {
             case 0:
             default:
-                Stg20_ShopSellMode = 0;
+                Stg20_MenuState.sellMode = 0;
                 Task_Create(0x317, &slot[3], 0);
                 Task_NextState2(a);
             case 1:
@@ -56,7 +56,7 @@ void Stg20_ItemShopUpdate(Actor *a) {
             switch (a->stateLevel2) {
             case 0:
             default:
-                Stg20_ShopSellMode = 1;
+                Stg20_MenuState.sellMode = 1;
                 Task_Create(0x317, &slot[3], 0);
                 Task_NextState2(a);
             case 1:

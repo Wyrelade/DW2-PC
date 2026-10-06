@@ -170,7 +170,7 @@ void Stg20_FormatPrice(u8 *out, s32 v) {
     s32 lead;
 
     n = Item_GetPrice(v);
-    if (Stg20_ShopSellMode != 0) {
+    if (Stg20_MenuState.sellMode != 0) {
         n /= 2;
     }
     n = n < 0 ? 0 : n;
@@ -309,7 +309,7 @@ void Stg20_ShopListRefresh(Actor *a) {
             args.charDelay = 0;
             Text_Open(&w->descText, &args);
         }
-        if (Stg20_ShopSellMode == 0) {
+        if (Stg20_MenuState.sellMode == 0) {
             if (id != 0) {
                 w->ownedCount = Stg20_CountOwnedItem(id);
             } else {
@@ -389,7 +389,7 @@ void Stg20_ShopListUpdate(Actor *a) {
                 w->msgId = 0x138;
                 w->promptId = 0;
             } while (0);
-            m = &D_800709B8;
+            m = (Stg20MenuSub *)&Stg20_MenuState.result;
             if ((Pad_State->repeat & 0x1000) && w->cursor != 0) {
                 goto up;
             }
@@ -541,7 +541,7 @@ void Stg20_ShopListDraw(Actor *a) {
     Gfx_SetPartsNumber(p, 4, 2, w->page + 1);
     Gfx_SetPartsNumber(p, 8, 2, w->pages + 1);
     Gfx_DrawParts((s32)p);
-    if (Stg20_ShopSellMode == 0) {
+    if (Stg20_MenuState.sellMode == 0) {
         p = (GfxPart *)Cd_GetFileEntry(0xDD60003);
         Gfx_SetPartsNumber(p, 2, 2, w->ownedCount);
         Gfx_DrawParts((s32)p);

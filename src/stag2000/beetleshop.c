@@ -29,7 +29,7 @@ void Stg20_BeetleShopUpdate(Actor *a) {
 
     switch (a->stateLevel0) {
     case 0:
-        D_80070A00 = 0;
+        Stg20_MenuState.menuChoice = 0;
         Task_Create(0x312, &slot[0], 0);
         Task_Create(0x315, &slot[1], 0);
         Task_NextState0(a);
