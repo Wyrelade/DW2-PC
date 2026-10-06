@@ -18,6 +18,23 @@
 #include "stag3000/fightmsg.h"
 #include "stag3000/popup.h"
 
+/* Task callbacks the descriptor below needs (defined further down). */
+void Stg30_InterruptSelectTask(Actor *a0);
+void Stg30_InterruptSelectDraw(Actor *a0);
+
+s32 Stg30_InterruptCursorMasks[] = { 2, 4, 8, 0x10, 0x20, 0x40 };
+TaskDesc Stg30_InterruptSelectDesc = {
+    0, Stg30_InterruptSelectTask, Task_DefaultDestroy, Stg30_InterruptSelectDraw, 0x14, 0,
+};
+/* Task_DescTable[5]: task ids 0x500-0x513. */
+TaskDesc *Stg30_TaskDescs[] = {
+    &Stg30_BattleDesc, &Stg30_FighterHudDesc, &Stg30_ResultDesc, &Stg30_CameraDesc, &Stg30_CommandMenuDesc,
+    &Stg30_BannerDesc, &Stg30_ItemMenuDesc, &Stg30_SkillMenuDesc, &Stg30_TargetSelectDesc, &Stg30_FighterDesc,
+    &Stg30_FightBgDesc, &Stg30_CommandInputDesc, &Stg30_FightMsgDesc, &Stg30_PopupDesc,
+    &Stg30_ActionLoadDesc, &Stg30_BattleScriptDesc, &Stg30_InterruptSelectDesc, &Stg30_XaPlayDesc,
+    &Stg30_SkillLearnDesc, &Stg30_JoinPromptDesc,
+};
+
 void Stg30_InterruptSelectTask(Actor *a0)
 {
   Stg30Work73358W *w = (Stg30Work73358W *) a0->work;
@@ -184,4 +201,83 @@ void Stg30_InterruptSelectTask(Actor *a0)
 
   }
 
+}
+
+void Stg30_InterruptSelectDraw(Actor *a0) {
+    Stg30InterruptSelectWork *w = (Stg30InterruptSelectWork *)a0->work;
+    Stg30Part *p;
+    Stg30Part *q;
+    Stg30Part *r;
+    s32 k;
+
+    if (a0->stateLevel0 == 1 && a0->stateLevel1 == 0) {
+        p = (Stg30Part *)Cd_GetFileEntry(0x1A10008);
+        for (q = p; q->fileId != 0; q++) {
+            q->scaleX = w->scaleX;
+            q->scaleY = w->scaleY;
+            q->palette = w->palette;
+            if (w->choice == 0) {
+                switch (q->groupMask) {
+                case 0x10:
+                    q->visible = 0;
+                    break;
+                case 4:
+                    q->visible = ((u32)Sys_State.frameCount >> 1) & 1;
+                    break;
+                case 8:
+                    q->visible = (((u32)Sys_State.frameCount >> 1) ^ 1) & 1;
+                    break;
+                default:
+                    q->visible = 1;
+                    break;
+                }
+            } else {
+                switch (q->groupMask) {
+                case 4:
+                    q->visible = 0;
+                    break;
+                case 0x10:
+                    q->visible = ((u32)Sys_State.frameCount >> 1) & 1;
+                    break;
+                case 0x20:
+                    q->visible = (((u32)Sys_State.frameCount >> 1) ^ 1) & 1;
+                    break;
+                default:
+                    q->visible = 1;
+                    break;
+                }
+            }
+        }
+        Gfx_DrawParts((EntA0 *)p);
+    }
+    if (Stg30_Battle.interruptActive != 0) {
+        p = (Stg30Part *)Cd_GetFileEntry(0x1A1000B);
+        k = w->slot;
+        if (Stg30_Battle.turns[k].turnType != 3) {
+            k += 3;
+        }
+        for (r = p; r->fileId != 0; r++) {
+            if (r->groupMask & Stg30_InterruptCursorMasks[k]) {
+                r->visible = 1;
+                r->palette = w->cursorPalette;
+            } else {
+                r->visible = 0;
+            }
+        }
+        Gfx_DrawParts((EntA0 *)p);
+    }
+}
+
+void Stg30_InitBattle(void) {
+    Mem_Zero(&Stg30_Battle, 0x3E0);
+    Stg30_Battle.interruptActive = 1;
+    if ((Sys_State.prevGameMode & 0xFF00) == 0x300) {
+        Dung_State.floorSpecialty = 0;
+        Dung_State.giftLevel = 0;
+        Stg30_Battle.entries[0].fromCity = 1;
+    }
+    if (Sys_State.modeArg == 0x97 && Flag_Test(0x88)) {
+        Sys_State.modeArg++;
+    }
+    D_80074098 = 4;
 }

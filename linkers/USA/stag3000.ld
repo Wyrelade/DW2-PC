@@ -26,7 +26,7 @@ SECTIONS
         build/USA/src/stag3000/fighter.c.o(.rodata);
         build/USA/src/stag3000/fightmsg.c.o(.rodata);
         build/USA/src/stag3000/popup.c.o(.rodata);
-        build/USA/src/stag3000/stag3000_C918.c.o(.rodata);
+        build/USA/src/stag3000/interruptselect.c.o(.rodata);
         build/USA/src/stag3000/stag3000_CC70.c.o(.rodata);
         . = ALIGN(., 4);
         stag3000_RODATA_END = .;
@@ -49,7 +49,7 @@ SECTIONS
         build/USA/src/stag3000/fighter.c.o(.text);
         build/USA/src/stag3000/fightmsg.c.o(.text);
         build/USA/src/stag3000/popup.c.o(.text);
-        build/USA/src/stag3000/stag3000_C918.c.o(.text);
+        build/USA/src/stag3000/interruptselect.c.o(.text);
         build/USA/src/stag3000/stag3000_CC70.c.o(.text);
         . = ALIGN(., 4);
         stag3000_TEXT_END = .;
@@ -73,7 +73,7 @@ SECTIONS
         build/USA/src/stag3000/fighter.c.o(.data);
         build/USA/src/stag3000/fightmsg.c.o(.data);
         build/USA/src/stag3000/popup.c.o(.data);
-        build/USA/src/stag3000/stag3000_C918.c.o(.data);
+        build/USA/src/stag3000/interruptselect.c.o(.data);
         build/USA/src/stag3000/stag3000_CC70.c.o(.data);
         . = ALIGN(., 4);
         stag3000_DATA_END = .;
@@ -97,7 +97,7 @@ SECTIONS
         build/USA/src/stag3000/fighter.c.o(.bss);
         build/USA/src/stag3000/fightmsg.c.o(.bss);
         build/USA/src/stag3000/popup.c.o(.bss);
-        build/USA/src/stag3000/stag3000_C918.c.o(.bss);
+        build/USA/src/stag3000/interruptselect.c.o(.bss);
         build/USA/src/stag3000/stag3000_CC70.c.o(.bss);
         . = ALIGN(., 4);
         stag3000_BSS_END = .;

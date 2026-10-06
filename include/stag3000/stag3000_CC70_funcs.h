@@ -3,10 +3,8 @@
 
 /* Functions src/stag3000/stag3000_CC70.c defines or declares, for the units after it
  * (in the single file the definition was the prototype for later code). */
-void Stg30_InterruptSelectDraw(Actor *a0);
 void Stg30_SetGaugeParts(Stg30Part *p, s32 unit, s32 num, s32 den);
 void Stg30_JoinPromptUpdate(Actor *a0);
-void Stg30_InitBattle(void);
 void Stg30_XaPlayInit(Actor *a0, Vec3 *args);
 void Stg30_XaPlayTask(Stg30TaskHead *a0);
 void Stg30_XaPlayDestroy(Actor *a0);
