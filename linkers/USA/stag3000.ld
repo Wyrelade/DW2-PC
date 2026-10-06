@@ -9,7 +9,9 @@ SECTIONS
         FILL(0x00000000);
         stag3000_RODATA_START = .;
         build/USA/asm/USA/stag3000/data/stag3000_rodata.rodata.s.o(.rodata);
-        build/USA/src/stag3000/stag3000.c.o(.rodata);
+        build/USA/src/stag3000/banner.c.o(.rodata);
+        build/USA/src/stag3000/fightbg.c.o(.rodata);
+        build/USA/src/stag3000/actionload.c.o(.rodata);
         build/USA/src/stag3000/stag3000_100C.c.o(.rodata);
         build/USA/src/stag3000/stag3000_41D0.c.o(.rodata);
         build/USA/src/stag3000/stag3000_5980.c.o(.rodata);
@@ -23,7 +25,9 @@ SECTIONS
         stag3000_RODATA_END = .;
         stag3000_RODATA_SIZE = ABSOLUTE(stag3000_RODATA_END - stag3000_RODATA_START);
         stag3000_TEXT_START = .;
-        build/USA/src/stag3000/stag3000.c.o(.text);
+        build/USA/src/stag3000/banner.c.o(.text);
+        build/USA/src/stag3000/fightbg.c.o(.text);
+        build/USA/src/stag3000/actionload.c.o(.text);
         build/USA/src/stag3000/stag3000_100C.c.o(.text);
         build/USA/src/stag3000/stag3000_41D0.c.o(.text);
         build/USA/src/stag3000/stag3000_5980.c.o(.text);
@@ -38,7 +42,9 @@ SECTIONS
         stag3000_TEXT_SIZE = ABSOLUTE(stag3000_TEXT_END - stag3000_TEXT_START);
         stag3000_DATA_START = .;
         build/USA/asm/USA/stag3000/data/stag3000_rodata.rodata.s.o(.data);
-        build/USA/src/stag3000/stag3000.c.o(.data);
+        build/USA/src/stag3000/banner.c.o(.data);
+        build/USA/src/stag3000/fightbg.c.o(.data);
+        build/USA/src/stag3000/actionload.c.o(.data);
         build/USA/src/stag3000/stag3000_100C.c.o(.data);
         build/USA/src/stag3000/stag3000_41D0.c.o(.data);
         build/USA/src/stag3000/stag3000_5980.c.o(.data);
@@ -53,7 +59,9 @@ SECTIONS
         stag3000_DATA_SIZE = ABSOLUTE(stag3000_DATA_END - stag3000_DATA_START);
         stag3000_BSS_START = .;
         build/USA/asm/USA/stag3000/data/stag3000_rodata.rodata.s.o(.bss);
-        build/USA/src/stag3000/stag3000.c.o(.bss);
+        build/USA/src/stag3000/banner.c.o(.bss);
+        build/USA/src/stag3000/fightbg.c.o(.bss);
+        build/USA/src/stag3000/actionload.c.o(.bss);
         build/USA/src/stag3000/stag3000_100C.c.o(.bss);
         build/USA/src/stag3000/stag3000_41D0.c.o(.bss);
         build/USA/src/stag3000/stag3000_5980.c.o(.bss);

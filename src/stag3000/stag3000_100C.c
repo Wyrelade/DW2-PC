@@ -1,6 +1,8 @@
 #include "common.h"
 #include "stag3000/stag3000.h"
-#include "stag3000/stag3000_funcs.h"
+#include "stag3000/banner.h"
+#include "stag3000/fightbg.h"
+#include "stag3000/actionload.h"
 
 /* Task callbacks the descriptors below need (defined further down). */
 void Stg30_CommandInputTask(Actor *a0);
@@ -56,17 +58,6 @@ s16 Stg30_SkillMenuScroll[4];
 u8 D_80073818[8];
 Stg30SkillList Stg30_SkillMenuLists[4];
 u8 D_8007388C[4];
-
-void Stg30_ActionLoadDestroy(Actor *a0) {
-    Stg30ActionLoadWork *w = (Stg30ActionLoadWork *)a0->work;
-    s32 i;
-
-    for (i = 0; i < w->tempCount; i++) {
-        if (w->tempFiles[i] != 0) {
-            Cd_FreeFile(w->tempFiles[i]);
-        }
-    }
-}
 
 void Stg30_DimFightersExcept(s32 sel, s32 from, s32 to) {
     s32 i;

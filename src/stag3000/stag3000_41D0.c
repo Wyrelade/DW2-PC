@@ -1,6 +1,8 @@
 #include "common.h"
 #include "stag3000/stag3000.h"
-#include "stag3000/stag3000_funcs.h"
+#include "stag3000/banner.h"
+#include "stag3000/fightbg.h"
+#include "stag3000/actionload.h"
 #include "stag3000/stag3000_100C_funcs.h"
 
 /* Task callbacks of the battle descriptor (the second in stag3000_5980.c). */

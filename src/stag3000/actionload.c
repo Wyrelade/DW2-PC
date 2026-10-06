@@ -1,95 +1,14 @@
 #include "common.h"
 #include "stag3000/stag3000.h"
 
-/* Task callbacks the descriptors below need (defined further down; the last one in
- * stag3000_100C.c). */
-void Stg30_BannerInit(Actor *a0, s32 a1);
-void Stg30_BannerUpdate(Actor *a0);
-void Stg30_BannerDraw(Actor *a0);
-void Stg30_FightBgUpdate(Actor *a0);
-void Stg30_FightBgDraw(Actor *a0);
+/* Task callbacks the descriptors below need (defined further down). */
 void Stg30_ActionLoadInit(Actor *a0, s32 *args);
 void Stg30_ActionLoadUpdate(Actor *a0);
 void Stg30_ActionLoadDestroy(Actor *a0);
 
-s32 Stg30_BannerParts[] = { 0x01A10001, 0x01A10012, 0x01A1001F, 0x01A10013 };
-TaskDesc Stg30_BannerDesc = {
-    (TaskInitFn)Stg30_BannerInit, Stg30_BannerUpdate, Task_DefaultDestroy, Stg30_BannerDraw, 0, 0,
-};
-s32 Stg30_FightBgModels[] = { 0xE2D, 0xE2A, 0xE2C, 0xE29, 0xE2E, 0xE2B };
-s32 Stg30_SpecialFightBgModel = 0xD77;
-s32 Stg30_FightBgByFloorElem[] = { 5, 5, 0, 1, 2, 3, 4 };
-TaskDesc Stg30_FightBgDesc = { 0, Stg30_FightBgUpdate, Task_DefaultDestroy, Stg30_FightBgDraw, 0, 0 };
 TaskDesc Stg30_ActionLoadDesc = {
     (TaskInitFn)Stg30_ActionLoadInit, Stg30_ActionLoadUpdate, Stg30_ActionLoadDestroy, 0, 0x324, 0,
 };
-
-void Stg30_BannerInit(Actor *a0, s32 a1) {
-    a0->param = a1;
-}
-
-void Stg30_BannerUpdate(Actor *a0) {
-    switch (a0->stateLevel0) {
-    case 0:
-        if (a0->param == 1) Snd_PlayById(0x24, 0);
-        Task_NextState0(a0);
-        break;
-    case 1:
-        switch (a0->param) {
-        case 0:
-        default:
-            if (a0->elapsed >= 0x100) Task_SetState0(a0, 3);
-            break;
-        case 1:
-        case 2:
-            if (a0->elapsed >= 0x80) Task_SetState0(a0, 3);
-            break;
-        case 3:
-            if (a0->elapsed >= 0x12D && (Pad_Pressed & 0x840)) Task_SetState0(a0, 3);
-            break;
-        }
-        break;
-case 2: break;
-    }
-}
-
-void Stg30_BannerDraw(Actor *a0) {
-    Stg30Part *p = (Stg30Part *)Cd_GetFileEntry(Stg30_BannerParts[a0->param]);
-    Stg30Part *q;
-
-    for (q = p; q->fileId != 0; q++) {
-        q->palette = Math_CycleRange(a0->elapsed, 4, 0, 7);
-    }
-    if (a0->param == 3) {
-        if (Stg30_Battle.entries[0].fromCity != 0) {
-            Gfx_HidePartsByMask((GfxPartMaskView *)p, 1);
-        } else {
-            Gfx_HidePartsByMask((GfxPartMaskView *)p, 2);
-        }
-    }
-    Gfx_DrawParts((EntA0 *)p);
-}
-
-void Stg30_FightBgUpdate(Actor *a0) {
-    if (a0->stateLevel0 == 0) {
-        if (Stg30_Battle.entries[0].fromCity != 0) {
-            a0->digiId = Stg30_SpecialFightBgModel;
-        } else {
-            a0->digiId = Stg30_FightBgModels[Stg30_FightBgByFloorElem[D_8005E5DD]];
-        }
-        Actor_InitTransform(a0, Gfx_ZeroVector, 0);
-        Gfx_AttachModel(a0, a0->digiId)->otIndex = 5;
-        Gfx_ResetModelBones(a0);
-        Task_NextState0(a0);
-    }
-}
-
-void Stg30_FightBgDraw(Actor *a0) {
-    Gfx_AttachModel(a0, a0->digiId);
-    Actor_UpdateTransform(a0);
-    Gfx_CalcModelBoneMatrices(a0);
-    Gfx_DrawTexModel(a0, 1);
-}
 
 void Stg30_ActionLoadInit(Actor *a0, s32 *args) {
     ((Stg30WorkWord *)a0->work)->field_0 = args[0];
@@ -294,5 +213,16 @@ void Stg30_ActionLoadUpdate(Actor *a0) {
         }
         Task_NextState0(a0);
         break;
+    }
+}
+
+void Stg30_ActionLoadDestroy(Actor *a0) {
+    Stg30ActionLoadWork *w = (Stg30ActionLoadWork *)a0->work;
+    s32 i;
+
+    for (i = 0; i < w->tempCount; i++) {
+        if (w->tempFiles[i] != 0) {
+            Cd_FreeFile(w->tempFiles[i]);
+        }
     }
 }

@@ -5,7 +5,6 @@
  * (in the single file the definition was the prototype for later code). */
 void Stg30_CommandMenuUpdate(Actor *a0);
 void Stg30_ItemMenuUpdate(Actor *a0);
-void Stg30_ActionLoadDestroy(Actor *a0);
 void Stg30_DimFightersExcept(s32 sel, s32 from, s32 to);
 void Stg30_UndimPartyFighters(void);
 void Stg30_CommandInputTask(Actor *a0);
