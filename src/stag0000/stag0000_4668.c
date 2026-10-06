@@ -9,7 +9,7 @@
 #include "stag0000/lineup.h"
 #include "stag0000/videomode.h"
 #include "stag0000/groupview.h"
-#include "stag0000/stag0000_39F0_funcs.h"
+#include "stag0000/digimodel.h"
 
 /* Task callbacks this unit defines further down (the descriptors come first). */
 void Stg00_PopupInit(Actor *arg0, Stg00Vec3 *arg1);
@@ -44,21 +44,6 @@ s32 Stg00_XaTrackLength[] = { 0x2EE, 0x3A2, 0x456, 0x474, 0x528, 0x672 };
 TaskDesc Stg00_XaPlayDesc = {
     (TaskInitFn)Stg00_XaPlayInit, Stg00_XaPlayTask, Stg00_XaPlayDestroy, 0, 0x14, 0,
 };
-
-void Stg00_DigiModelDraw(Actor *arg0) {
-    Stg00ModelWork *w = (Stg00ModelWork *)arg0->work;
-
-    Gfx_AttachModel(arg0, w->modelFile);
-    Anim_StepModelAnim(arg0);
-    Actor_UpdateTransform(arg0);
-    Gfx_CalcModelBoneMatrices(arg0);
-    if (w->drawTex != 0) {
-        Gfx_DrawTexModel(arg0, 0);
-    }
-    if (w->drawWire != 0) {
-        Gfx_DrawWireModel(arg0, 0, &w->wireColor);
-    }
-}
 
 void Stg00_PopupInit(Actor *arg0, Stg00Vec3 *arg1) {
     *(Stg00Vec3 *)arg0->work = *arg1;

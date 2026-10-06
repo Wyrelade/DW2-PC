@@ -18,7 +18,7 @@ SECTIONS
         build/USA/src/stag0000/lineup.c.o(.rodata);
         build/USA/src/stag0000/videomode.c.o(.rodata);
         build/USA/src/stag0000/groupview.c.o(.rodata);
-        build/USA/src/stag0000/stag0000_39F0.c.o(.rodata);
+        build/USA/src/stag0000/digimodel.c.o(.rodata);
         build/USA/src/stag0000/stag0000_4668.c.o(.rodata);
         . = ALIGN(., 4);
         stag0000_RODATA_END = .;
@@ -33,7 +33,7 @@ SECTIONS
         build/USA/src/stag0000/lineup.c.o(.text);
         build/USA/src/stag0000/videomode.c.o(.text);
         build/USA/src/stag0000/groupview.c.o(.text);
-        build/USA/src/stag0000/stag0000_39F0.c.o(.text);
+        build/USA/src/stag0000/digimodel.c.o(.text);
         build/USA/src/stag0000/stag0000_4668.c.o(.text);
         . = ALIGN(., 4);
         stag0000_TEXT_END = .;
@@ -49,7 +49,7 @@ SECTIONS
         build/USA/src/stag0000/lineup.c.o(.data);
         build/USA/src/stag0000/videomode.c.o(.data);
         build/USA/src/stag0000/groupview.c.o(.data);
-        build/USA/src/stag0000/stag0000_39F0.c.o(.data);
+        build/USA/src/stag0000/digimodel.c.o(.data);
         build/USA/src/stag0000/stag0000_4668.c.o(.data);
         . = ALIGN(., 4);
         stag0000_DATA_END = .;
@@ -65,7 +65,7 @@ SECTIONS
         build/USA/src/stag0000/lineup.c.o(.bss);
         build/USA/src/stag0000/videomode.c.o(.bss);
         build/USA/src/stag0000/groupview.c.o(.bss);
-        build/USA/src/stag0000/stag0000_39F0.c.o(.bss);
+        build/USA/src/stag0000/digimodel.c.o(.bss);
         build/USA/src/stag0000/stag0000_4668.c.o(.bss);
         . = ALIGN(., 4);
         stag0000_BSS_END = .;

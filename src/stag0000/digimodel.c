@@ -10,7 +10,7 @@
 #include "stag0000/videomode.h"
 #include "stag0000/groupview.h"
 
-/* Task callbacks of this unit (defined further down) and Stg00_DigiModelDraw (stag0000_4668.c). */
+/* Task callbacks of this unit (defined further down; the descriptor comes first). */
 void Stg00_DigiModelInit(Actor *arg0, Stg00ModelArg *arg1);
 void Stg00_DigiModelTask(Actor *arg0);
 void Stg00_DigiModelDraw(Actor *arg0);
@@ -435,5 +435,20 @@ void Stg00_DigiModelTask(Actor *arg0) {
             break;
         }
         break;
+    }
+}
+
+void Stg00_DigiModelDraw(Actor *arg0) {
+    Stg00ModelWork *w = (Stg00ModelWork *)arg0->work;
+
+    Gfx_AttachModel(arg0, w->modelFile);
+    Anim_StepModelAnim(arg0);
+    Actor_UpdateTransform(arg0);
+    Gfx_CalcModelBoneMatrices(arg0);
+    if (w->drawTex != 0) {
+        Gfx_DrawTexModel(arg0, 0);
+    }
+    if (w->drawWire != 0) {
+        Gfx_DrawWireModel(arg0, 0, &w->wireColor);
     }
 }
