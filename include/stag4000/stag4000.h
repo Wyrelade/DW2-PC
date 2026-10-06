@@ -1167,9 +1167,8 @@ extern Actor *Stg40_MsgWinTask;
 extern s32 *Stg40_MsgWinTexts;
 extern s32 D_80072B88[2];
 extern u8 Stg40_DigitBufs[4][8];
-/* stag4000_A180.c */
+/* automap.c */
 extern Stg40TileGrid *Stg40_AutomapWork;
-extern s32 D_80072BB4;
 /* stag4000_C2CC.c */
 extern s32 D_80072BB8;
 extern s32 D_80072BBC;

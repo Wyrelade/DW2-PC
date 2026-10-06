@@ -21,7 +21,8 @@ SECTIONS
         build/USA/src/stag4000/player.c.o(.rodata);
         build/USA/src/stag4000/enemy.c.o(.rodata);
         build/USA/src/stag4000/entity.c.o(.rodata);
-        build/USA/src/stag4000/stag4000_A180.c.o(.rodata);
+        build/USA/src/stag4000/spawn.c.o(.rodata);
+        build/USA/src/stag4000/automap.c.o(.rodata);
         build/USA/src/stag4000/stag4000_C2CC.c.o(.rodata);
         . = ALIGN(., 4);
         stag4000_RODATA_END = .;
@@ -39,7 +40,8 @@ SECTIONS
         build/USA/src/stag4000/player.c.o(.text);
         build/USA/src/stag4000/enemy.c.o(.text);
         build/USA/src/stag4000/entity.c.o(.text);
-        build/USA/src/stag4000/stag4000_A180.c.o(.text);
+        build/USA/src/stag4000/spawn.c.o(.text);
+        build/USA/src/stag4000/automap.c.o(.text);
         build/USA/src/stag4000/stag4000_C2CC.c.o(.text);
         . = ALIGN(., 4);
         stag4000_TEXT_END = .;
@@ -58,7 +60,8 @@ SECTIONS
         build/USA/src/stag4000/player.c.o(.data);
         build/USA/src/stag4000/enemy.c.o(.data);
         build/USA/src/stag4000/entity.c.o(.data);
-        build/USA/src/stag4000/stag4000_A180.c.o(.data);
+        build/USA/src/stag4000/spawn.c.o(.data);
+        build/USA/src/stag4000/automap.c.o(.data);
         build/USA/src/stag4000/stag4000_C2CC.c.o(.data);
         . = ALIGN(., 4);
         stag4000_DATA_END = .;
@@ -77,7 +80,8 @@ SECTIONS
         build/USA/src/stag4000/player.c.o(.bss);
         build/USA/src/stag4000/enemy.c.o(.bss);
         build/USA/src/stag4000/entity.c.o(.bss);
-        build/USA/src/stag4000/stag4000_A180.c.o(.bss);
+        build/USA/src/stag4000/spawn.c.o(.bss);
+        build/USA/src/stag4000/automap.c.o(.bss);
         build/USA/src/stag4000/stag4000_C2CC.c.o(.bss);
         . = ALIGN(., 4);
         stag4000_BSS_END = .;

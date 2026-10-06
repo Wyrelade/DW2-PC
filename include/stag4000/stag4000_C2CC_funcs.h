@@ -3,13 +3,6 @@
 
 /* Functions src/stag4000/stag4000_C2CC.c defines or declares, for the units after it
  * (in the single file the definition was the prototype for later code). */
-void Stg40_RevealCell(Stg40AutomapWork *a0, s32 x, s32 y);
-void Stg40_AutomapRevealAround(Stg40AutomapWork *w);
-void Stg40_AutomapDrawModes(ActorWork *w);
-void Stg40_AutomapInit(void);
-void Stg40_AutomapUpdate(Actor *a0);
-void Stg40_AutomapDestroy(Actor *a0);
-void Stg40_AutomapDraw(Actor *a0);
 void Stg40_AllocCellGrid(void);
 void Stg40_FreeCellGrid(void);
 u16 Stg40_ReadFloorBits(u16 *pal, u32 *bits, s32 x, s32 y);
