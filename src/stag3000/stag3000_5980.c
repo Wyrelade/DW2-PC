@@ -8,7 +8,7 @@
 #include "stag3000/itemmenu.h"
 #include "stag3000/skillmenu.h"
 #include "stag3000/targetselect.h"
-#include "stag3000/stag3000_41D0_funcs.h"
+#include "stag3000/battle.h"
 
 s32 Stg30_StatusWearOff4Masks[] = { 2, 4, 0x40, 0 };
 u16 Stg30_StatusWearOff4Labels[] = { 4, 6, 0x203, 0 };
@@ -16,18 +16,6 @@ s32 Stg30_StatusWearOff3Masks[] = {
     8, 0x10000, 0x80, 0x100, 0x200, 0x400, 0x800, 0x1000, 0x2000, 0x4000, 0,
 };
 u16 Stg30_StatusWearOff3Labels[] = { 0xD, 0x10D, 0x1C, 0x1E, 0x20, 0x102, 0x104, 0x106, 0x108, 0x10A };
-
-void Stg30_BattleDestroy(Actor *a0) {
-    s32 i;
-
-    for (i = 0; i < 3; i++) {
-        if (((Stg30StateDigis *)&Stg30_Battle)->digis[i].state >= 3) {
-            Save_GameState.elems[i] = ((Stg30StateDigis *)&Stg30_Battle)->digis[i];
-        }
-    }
-    Gpu_InitDoubleBuffer(0x140, 0xF0, 0, 0);
-    Task_DefaultDestroy(a0);
-}
 
 s32 Stg30_AiCanUseAction(s32 idx, s32 i, Stg30EnemyAi *p) {
     s32 v = p->actionKinds[i];

@@ -17,7 +17,7 @@ SECTIONS
         build/USA/src/stag3000/itemmenu.c.o(.rodata);
         build/USA/src/stag3000/skillmenu.c.o(.rodata);
         build/USA/src/stag3000/targetselect.c.o(.rodata);
-        build/USA/src/stag3000/stag3000_41D0.c.o(.rodata);
+        build/USA/src/stag3000/battle.c.o(.rodata);
         build/USA/src/stag3000/stag3000_5980.c.o(.rodata);
         build/USA/src/stag3000/stag3000_6A88.c.o(.rodata);
         build/USA/src/stag3000/stag3000_96DC.c.o(.rodata);
@@ -37,7 +37,7 @@ SECTIONS
         build/USA/src/stag3000/itemmenu.c.o(.text);
         build/USA/src/stag3000/skillmenu.c.o(.text);
         build/USA/src/stag3000/targetselect.c.o(.text);
-        build/USA/src/stag3000/stag3000_41D0.c.o(.text);
+        build/USA/src/stag3000/battle.c.o(.text);
         build/USA/src/stag3000/stag3000_5980.c.o(.text);
         build/USA/src/stag3000/stag3000_6A88.c.o(.text);
         build/USA/src/stag3000/stag3000_96DC.c.o(.text);
@@ -58,7 +58,7 @@ SECTIONS
         build/USA/src/stag3000/itemmenu.c.o(.data);
         build/USA/src/stag3000/skillmenu.c.o(.data);
         build/USA/src/stag3000/targetselect.c.o(.data);
-        build/USA/src/stag3000/stag3000_41D0.c.o(.data);
+        build/USA/src/stag3000/battle.c.o(.data);
         build/USA/src/stag3000/stag3000_5980.c.o(.data);
         build/USA/src/stag3000/stag3000_6A88.c.o(.data);
         build/USA/src/stag3000/stag3000_96DC.c.o(.data);
@@ -79,7 +79,7 @@ SECTIONS
         build/USA/src/stag3000/itemmenu.c.o(.bss);
         build/USA/src/stag3000/skillmenu.c.o(.bss);
         build/USA/src/stag3000/targetselect.c.o(.bss);
-        build/USA/src/stag3000/stag3000_41D0.c.o(.bss);
+        build/USA/src/stag3000/battle.c.o(.bss);
         build/USA/src/stag3000/stag3000_5980.c.o(.bss);
         build/USA/src/stag3000/stag3000_6A88.c.o(.bss);
         build/USA/src/stag3000/stag3000_96DC.c.o(.bss);

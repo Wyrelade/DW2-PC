@@ -9,7 +9,7 @@
 #include "stag3000/skillmenu.h"
 #include "stag3000/targetselect.h"
 
-/* Task callbacks of the battle descriptor (the second in stag3000_5980.c). */
+/* Task callbacks of the battle descriptor (defined further down). */
 void Stg30_BattleUpdate(Actor *a0);
 void Stg30_BattleDestroy(Actor *a0);
 
@@ -751,4 +751,16 @@ void Stg30_BattleUpdate(Actor *a0) {
         }
         break;
     }
+}
+
+void Stg30_BattleDestroy(Actor *a0) {
+    s32 i;
+
+    for (i = 0; i < 3; i++) {
+        if (((Stg30StateDigis *)&Stg30_Battle)->digis[i].state >= 3) {
+            Save_GameState.elems[i] = ((Stg30StateDigis *)&Stg30_Battle)->digis[i];
+        }
+    }
+    Gpu_InitDoubleBuffer(0x140, 0xF0, 0, 0);
+    Task_DefaultDestroy(a0);
 }
