@@ -1,6 +1,7 @@
 #include "common.h"
 #include "stag4000/stag4000.h"
 #include "stag4000/stag4000_funcs.h"
+#include "stag4000/linkedmodel.h"
 #include "stag4000/itemmenu.h"
 
 s32 Stg40_ItemMenuParts[] = { 0x07D40003, 0x07D40007 };

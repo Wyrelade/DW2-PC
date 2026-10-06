@@ -1,6 +1,7 @@
 #include "common.h"
 #include "stag4000/stag4000.h"
 #include "stag4000/stag4000_funcs.h"
+#include "stag4000/linkedmodel.h"
 #include "stag4000/bitswin.h"
 
 Stg40TextPos Stg40_BitsLabelText = { 0x80, { 0xC4, 0x3A } };

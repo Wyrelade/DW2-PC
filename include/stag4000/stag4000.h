@@ -1155,7 +1155,6 @@ extern Stg40RootTasks *Stg40_RootChildren;
 extern u8 D_80072AA8[0x18];
 extern u8 D_80072AC0[0xA0];
 extern Stg40B60 *Stg40_RootState;
-extern s32 D_80072B64;
 /* floor.c */
 extern Actor *Stg40_FloorTask;
 extern Stg40FloorWork *Stg40_FloorWork;

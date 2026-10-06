@@ -1,6 +1,7 @@
 #include "common.h"
 #include "stag4000/stag4000.h"
 #include "stag4000/stag4000_funcs.h"
+#include "stag4000/linkedmodel.h"
 #include "stag4000/floor.h"
 
 u8 Stg40_FloorPrimIdx[] = {

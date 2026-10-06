@@ -10,6 +10,7 @@ SECTIONS
         stag4000_RODATA_START = .;
         build/USA/asm/USA/stag4000/data/stag4000_rodata.rodata.s.o(.rodata);
         build/USA/src/stag4000/stag4000.c.o(.rodata);
+        build/USA/src/stag4000/linkedmodel.c.o(.rodata);
         build/USA/src/stag4000/floor.c.o(.rodata);
         build/USA/src/stag4000/hud.c.o(.rodata);
         build/USA/src/stag4000/bitswin.c.o(.rodata);
@@ -27,6 +28,7 @@ SECTIONS
         stag4000_RODATA_SIZE = ABSOLUTE(stag4000_RODATA_END - stag4000_RODATA_START);
         stag4000_TEXT_START = .;
         build/USA/src/stag4000/stag4000.c.o(.text);
+        build/USA/src/stag4000/linkedmodel.c.o(.text);
         build/USA/src/stag4000/floor.c.o(.text);
         build/USA/src/stag4000/hud.c.o(.text);
         build/USA/src/stag4000/bitswin.c.o(.text);
@@ -45,6 +47,7 @@ SECTIONS
         stag4000_DATA_START = .;
         build/USA/asm/USA/stag4000/data/stag4000_rodata.rodata.s.o(.data);
         build/USA/src/stag4000/stag4000.c.o(.data);
+        build/USA/src/stag4000/linkedmodel.c.o(.data);
         build/USA/src/stag4000/floor.c.o(.data);
         build/USA/src/stag4000/hud.c.o(.data);
         build/USA/src/stag4000/bitswin.c.o(.data);
@@ -63,6 +66,7 @@ SECTIONS
         stag4000_BSS_START = .;
         build/USA/asm/USA/stag4000/data/stag4000_rodata.rodata.s.o(.bss);
         build/USA/src/stag4000/stag4000.c.o(.bss);
+        build/USA/src/stag4000/linkedmodel.c.o(.bss);
         build/USA/src/stag4000/floor.c.o(.bss);
         build/USA/src/stag4000/hud.c.o(.bss);
         build/USA/src/stag4000/bitswin.c.o(.bss);

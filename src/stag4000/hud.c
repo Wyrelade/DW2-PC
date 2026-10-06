@@ -1,6 +1,7 @@
 #include "common.h"
 #include "stag4000/stag4000.h"
 #include "stag4000/stag4000_funcs.h"
+#include "stag4000/linkedmodel.h"
 #include "stag4000/hud.h"
 
 Stg40TextPos Stg40_HudLabels[] = {

@@ -57,6 +57,7 @@ segments:
     subsegments:
       - [0x0, rodata, stag4000_rodata]
       - [0x3F8, c, stag4000]
+      - [0x1610, c, linkedmodel]
       - [0x1878, c, floor]
       - [0x33C0, c, hud]
       - [0x3884, c, bitswin]
@@ -70,6 +71,7 @@ segments:
       - [0xA180, c, stag4000_A180]
       - [0xC2CC, c, stag4000_C2CC]
       - [0xF250, .data, stag4000]
+      - [0xF274, .data, linkedmodel]
       - [0xF2C0, .data, floor]
       - [0xF350, .data, hud]
       - [0xF380, .data, bitswin]
