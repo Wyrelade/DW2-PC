@@ -9,7 +9,7 @@
 #include "stag3000/skillmenu.h"
 #include "stag3000/targetselect.h"
 #include "stag3000/battle.h"
-#include "stag3000/stag3000_5980_funcs.h"
+#include "stag3000/turn.h"
 
 s32 Stg30_CureStatusMasks[] = {
     1, 2, 4, 8, 0x10, 0x20, 0x40, 0x80, 0x800, 0x400, 0x100, 0x200, 0x1000, 0x2000, 0x4000, 0x8000, 0x10000,
