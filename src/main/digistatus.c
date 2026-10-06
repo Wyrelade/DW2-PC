@@ -21,7 +21,7 @@ void Menu_DigiStatusTask(Actor *a);
 void Menu_DigiStatusDraw(Actor *actor);
 
 Prm1C Menu_DigiStatusView = { { 0, -0x180, -0x1E00, 0, 0, 0, 0x230 } };
-TaskDesc D_80040F80 = {
+TaskDesc Menu_DigiStatusDesc = {
     (TaskInitFn)Menu_DigiStatusInit, Menu_DigiStatusTask, Task_DefaultDestroy, Menu_DigiStatusDraw, 0x150, 4,
 };
 

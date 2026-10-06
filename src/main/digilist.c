@@ -29,7 +29,7 @@ MenuGridLayout Menu_DigiListGrid = { { 1, 1 }, { -60, -66, 0, 0x21 } };
 Pair61900 Menu_DigiListSubTasks[] = { { 0x11, 1 }, { 0x12, 1 }, { 0x10, 6 }, { 0x10, 8 } };
 Halves Menu_DigiListTitlePos[] = { { 0x0E, 0x32 }, { 0x15, 0x32 } };
 u16 Menu_DigiListRowMasks[] = { 0x0E04, 0x0E04, 0x0C04, 0x0A04, 0x0604 };
-TaskDesc D_80040F4C = {
+TaskDesc Menu_DigiListDesc = {
     (TaskInitFn)Menu_SetDigiListMode, Menu_DigiListTask, Task_DefaultDestroy, Menu_DigiListDraw, 0x1A8, 4,
 };
 

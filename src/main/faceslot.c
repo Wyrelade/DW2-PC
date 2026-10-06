@@ -13,7 +13,7 @@ s16 Gfx_FaceImageIds[] = {
     0x1AD, 0x1AE, 0x1AF, 0x1B0, 0x1B1, 0x1B2, 0x1B3, 0x1B4, 0x1B5, 0x1B6, 0x1B7, 0x1B8,
     0x1BC, 0x1BD, 0x1C2, 0x1F4, 0x212, 0x192, 0x191, 0x190, -1,
 };
-TaskDesc D_80040E20 = { 0, Gfx_TexSlotTaskInit, Gfx_TexSlotTaskKill, 0, 0x94, 0 };
+TaskDesc Gfx_TexSlotDesc = { 0, Gfx_TexSlotTaskInit, Gfx_TexSlotTaskKill, 0, 0x94, 0 };
 
 void Gfx_TexSlotTaskInit(Actor *arg0) {
     ActorWork *w = arg0->work;

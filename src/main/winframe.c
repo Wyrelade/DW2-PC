@@ -20,7 +20,7 @@ void Text_WinFrameTask(Actor *a0);
 void Text_WinFrameDraw(Actor *arg0);
 /* Window frame part resources (Cd_GetFileEntry ids). */
 s32 Text_WinFrameParts[] = { 0x03120001, 0x03120003, 0x03120000, 0x03120004 };
-TaskDesc D_80040FE0 = {
+TaskDesc Text_WinFrameDesc = {
     (TaskInitFn)Text_WinFrameInit, Text_WinFrameTask, Task_DefaultDestroy, Text_WinFrameDraw, 2, 0,
 };
 

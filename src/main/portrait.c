@@ -13,7 +13,7 @@ Pair54 Text_PortraitQuadGrid[3][3] = {
     { { 0x3A, -55 }, { 0x5C, -56 }, { 0x87, -57 } },
     { { 0x44, -26 }, { 0x65, -21 }, { 0x95, -13 } },
 };
-TaskDesc D_80040D94 = {
+TaskDesc Text_PortraitDesc = {
     (TaskInitFn)Text_PortraitInit, Text_PortraitTask, Task_DefaultDestroy, Text_PortraitDraw, 0x18, 0,
 };
 

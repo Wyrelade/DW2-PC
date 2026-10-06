@@ -23,7 +23,7 @@ void Menu_SkillListTask(Actor *a0);
 void Menu_SkillListDraw(Actor *actor);
 
 u16 Menu_SkillPaneMasks[] = { 0xAC, 0xCA, 0xB2, 0x12A };
-TaskDesc D_80040FA0 = {
+TaskDesc Menu_SkillListDesc = {
     (TaskInitFn)Menu_SkillListInit, Menu_SkillListTask, Task_DefaultDestroy, Menu_SkillListDraw, 0x128, 4,
 };
 

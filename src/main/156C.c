@@ -8,9 +8,9 @@
 extern s32 Task_Run(s32);
 
 /* Main's own task descriptors (defined by their modules) and the overlays' rows. */
-extern TaskDesc D_80040D94, D_80040E20, D_80040E50, D_80040E84, D_80040E9C, D_80040EB4;
-extern TaskDesc D_80040ECC, D_80040EE4, D_80040F04, D_80040F4C, D_80040F80, D_80040FA0;
-extern TaskDesc D_80040FB8, D_80040FE0, D_8004154C, D_800416B4, D_80048DD8;
+extern TaskDesc Text_PortraitDesc, Gfx_TexSlotDesc, Menu_NameEntryDesc, Sys_GameModeDesc, Menu_TopMenuDesc, Menu_SubMenuDesc;
+extern TaskDesc Menu_StatusDesc, Menu_ItemUseDesc, Menu_ItemDesc, Menu_DigiListDesc, Menu_DigiStatusDesc, Menu_SkillListDesc;
+extern TaskDesc Task_SpawnListDesc, Text_WinFrameDesc, Text_BoxDesc, D_800416B4, Fx_ModelDesc;
 extern TaskDesc *Stg00_TaskDescs[], *Stg10_TaskDescs[], *Stg11_TaskDescs[], *Stg20_TaskDescs[];
 extern TaskDesc *Stg30_TaskDescs[], *Stg35_TaskDescs[], *Stg40_TaskDescs[];
 
@@ -19,14 +19,14 @@ SHIFT_TEST_PAD(0x100);
 /* Unreferenced. */
 s32 D_80040CF0 = 0;
 /* Task_DescTable[0]: main's task ids 0x000-0x016. */
-TaskDesc *D_80040CF4[] = {
-    0, &D_80040E84, 0, &D_80040FB8, &D_80040FE0, &D_80040D94, &D_800416B4, &D_80048DD8,
-    0, &D_8004154C, &D_80040E20, &D_80040E9C, &D_80040EB4, &D_80040ECC, &D_80040EE4, &D_80040F04,
-    &D_80040F4C, &D_80040F80, &D_80040FA0, &D_80040F80, &D_80040F80, &D_80040F80, &D_80040E50,
+TaskDesc *Task_MainDescs[] = {
+    0, &Sys_GameModeDesc, 0, &Task_SpawnListDesc, &Text_WinFrameDesc, &Text_PortraitDesc, &D_800416B4, &Fx_ModelDesc,
+    0, &Text_BoxDesc, &Gfx_TexSlotDesc, &Menu_TopMenuDesc, &Menu_SubMenuDesc, &Menu_StatusDesc, &Menu_ItemUseDesc, &Menu_ItemDesc,
+    &Menu_DigiListDesc, &Menu_DigiStatusDesc, &Menu_SkillListDesc, &Menu_DigiStatusDesc, &Menu_DigiStatusDesc, &Menu_DigiStatusDesc, &Menu_NameEntryDesc,
 };
 /* Task ids are (row << 8) | index; row 0 is main, rows 1-7 the overlay that is loaded. */
 TaskDesc **Task_DescTable[] = {
-    D_80040CF4, Stg00_TaskDescs, Stg40_TaskDescs, Stg20_TaskDescs,
+    Task_MainDescs, Stg00_TaskDescs, Stg40_TaskDescs, Stg20_TaskDescs,
     Stg10_TaskDescs, Stg30_TaskDescs, Stg11_TaskDescs, Stg35_TaskDescs,
 };
 

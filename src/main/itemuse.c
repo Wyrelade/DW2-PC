@@ -27,7 +27,7 @@ void Menu_SetItemUseMode(Actor *a, s16 arg);
 void Menu_ItemUseTask(Actor *a0);
 void Menu_ItemUseDraw(Actor *actor);
 
-TaskDesc D_80040EE4 = {
+TaskDesc Menu_ItemUseDesc = {
     (TaskInitFn)Menu_SetItemUseMode, Menu_ItemUseTask, Task_DefaultDestroy, Menu_ItemUseDraw, 0xA0, 4,
 };
 

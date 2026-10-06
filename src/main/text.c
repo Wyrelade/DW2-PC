@@ -107,7 +107,7 @@ u8 *Text_BuiltinStrings[] = {
     D_800413F8, D_80041400, D_80041408, D_80041410, D_80041414, D_8004141C,
     D_80041424,
 };
-TaskDesc D_8004154C = { 0, Text_LoadFontsTask, Task_DefaultDestroy, Text_UpdateAllBoxes, 0xA34, 0xD8 };
+TaskDesc Text_BoxDesc = { 0, Text_LoadFontsTask, Task_DefaultDestroy, Text_UpdateAllBoxes, 0xA34, 0xD8 };
 
 void Text_PushReturn(s32 arg0) {
     Text_ReturnStack.data[Text_ReturnStack.count] = arg0;

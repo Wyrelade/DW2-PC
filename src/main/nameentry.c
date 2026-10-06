@@ -15,7 +15,7 @@ void Menu_NameEntryDrawParts(Actor *a);
 /* Name entry character grid: row stride and first column of each of the 3 pages. */
 s32 Menu_NameEntryRowStride[] = { 6, 6, 3 };
 s32 Menu_NameEntryPageCol[] = { 0, 5, 10 };
-TaskDesc D_80040E50 = {
+TaskDesc Menu_NameEntryDesc = {
     (TaskInitFn)Menu_NameEntryInit, Menu_NameEntryTask, Task_DefaultDestroy, Menu_NameEntryDrawParts, 0x30, 0,
 };
 

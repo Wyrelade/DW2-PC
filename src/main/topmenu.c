@@ -20,7 +20,7 @@ void Menu_TopMenuInit(Actor *arg0, s16 arg1);
 void Menu_TopMenuTask(Actor *a0);
 void Menu_TopMenuDraw(Actor *actor);
 
-TaskDesc D_80040E9C = {
+TaskDesc Menu_TopMenuDesc = {
     (TaskInitFn)Menu_TopMenuInit, Menu_TopMenuTask, Task_DefaultDestroy, Menu_TopMenuDraw, 0x38, 4,
 };
 

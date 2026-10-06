@@ -18,7 +18,7 @@ void Task_DefaultDestroy(Actor *arg0);
 void Task_SpawnListInit(Actor *arg0, s32 *arg1);
 void Task_SpawnListFromFile(Actor *a0);
 
-TaskDesc D_80040FB8 = {
+TaskDesc Task_SpawnListDesc = {
     (TaskInitFn)Task_SpawnListInit, Task_SpawnListFromFile, Task_DefaultDestroy, 0, 4, 0xA0,
 };
 

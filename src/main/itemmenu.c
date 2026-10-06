@@ -24,7 +24,7 @@ void Menu_ItemDraw(Actor *actor);
 
 /* Sub tasks the item menu opens: { task id, Task_Create argument }. */
 Pair61900 Menu_ItemSubTasks[] = { { 0x0E, 2 }, { 0x10, 3 } };
-TaskDesc D_80040F04 = {
+TaskDesc Menu_ItemDesc = {
     (TaskInitFn)Menu_ItemInit, Menu_ItemTask, Task_DefaultDestroy, Menu_ItemDraw, 0x744, 4,
 };
 

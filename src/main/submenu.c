@@ -15,7 +15,7 @@ void Menu_SubMenuInit(Actor *arg0, s16 arg1);
 void Menu_SubMenuTask(Actor *a);
 void Menu_SubMenuDraw(Actor *actor);
 
-TaskDesc D_80040EB4 = {
+TaskDesc Menu_SubMenuDesc = {
     (TaskInitFn)Menu_SubMenuInit, Menu_SubMenuTask, Task_DefaultDestroy, Menu_SubMenuDraw, 0x44, 4,
 };
 

@@ -18,7 +18,7 @@ void Menu_StatusInit(Actor *arg0, s16 arg1);
 void Menu_StatusTask(Actor *a0);
 void Menu_StatusDraw(Actor *actor);
 
-TaskDesc D_80040ECC = {
+TaskDesc Menu_StatusDesc = {
     (TaskInitFn)Menu_StatusInit, Menu_StatusTask, Task_DefaultDestroy, Menu_StatusDraw, 0xB0, 4,
 };
 

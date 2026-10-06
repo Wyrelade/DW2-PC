@@ -15,7 +15,7 @@ void Sys_GameModeTask(Actor *a0);
 void Task_DefaultDestroy2(void);
 /* CD file id of each overlay (Ovl_Load), indexed by overlay id. */
 s32 Ovl_FileIds[] = { 0x190, 0x19A, 0x192, 0x191, 0x193, 0xD1E, 0xD4D };
-TaskDesc D_80040E84 = { 0, Sys_GameModeTask, (TaskFn)Task_DefaultDestroy2, 0, 0, 4 };
+TaskDesc Sys_GameModeDesc = { 0, Sys_GameModeTask, (TaskFn)Task_DefaultDestroy2, 0, 0, 4 };
 
 /* Ovl_FileIds[id] (Cd file ids, matched by LBA + sector count):
  * 0 STAG0000, 1 STAG4000, 2 STAG2000, 3 STAG1000, 4 STAG3000, 5 STAG1100, 6 STAG3500.
