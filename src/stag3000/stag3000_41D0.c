@@ -3,7 +3,11 @@
 #include "stag3000/banner.h"
 #include "stag3000/fightbg.h"
 #include "stag3000/actionload.h"
-#include "stag3000/stag3000_100C_funcs.h"
+#include "stag3000/commandinput.h"
+#include "stag3000/commandmenu.h"
+#include "stag3000/itemmenu.h"
+#include "stag3000/skillmenu.h"
+#include "stag3000/targetselect.h"
 
 /* Task callbacks of the battle descriptor (the second in stag3000_5980.c). */
 void Stg30_BattleUpdate(Actor *a0);

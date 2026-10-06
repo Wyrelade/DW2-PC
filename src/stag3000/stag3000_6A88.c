@@ -3,7 +3,11 @@
 #include "stag3000/banner.h"
 #include "stag3000/fightbg.h"
 #include "stag3000/actionload.h"
-#include "stag3000/stag3000_100C_funcs.h"
+#include "stag3000/commandinput.h"
+#include "stag3000/commandmenu.h"
+#include "stag3000/itemmenu.h"
+#include "stag3000/skillmenu.h"
+#include "stag3000/targetselect.h"
 #include "stag3000/stag3000_41D0_funcs.h"
 #include "stag3000/stag3000_5980_funcs.h"
 
