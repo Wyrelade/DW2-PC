@@ -3,7 +3,12 @@
 #include "stag0000/stag0000_funcs.h"
 #include "stag0000/scrollview.h"
 #include "stag0000/dungsel.h"
-#include "stag0000/stag0000_1AE4_funcs.h"
+#include "stag0000/font.h"
+#include "stag0000/fightbg.h"
+#include "stag0000/digiview.h"
+#include "stag0000/lineup.h"
+#include "stag0000/videomode.h"
+#include "stag0000/groupview.h"
 #include "stag0000/stag0000_39F0_funcs.h"
 
 /* Task callbacks this unit defines further down (the descriptors come first). */

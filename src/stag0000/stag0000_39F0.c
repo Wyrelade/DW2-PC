@@ -3,28 +3,24 @@
 #include "stag0000/stag0000_funcs.h"
 #include "stag0000/scrollview.h"
 #include "stag0000/dungsel.h"
-#include "stag0000/stag0000_1AE4_funcs.h"
+#include "stag0000/font.h"
+#include "stag0000/fightbg.h"
+#include "stag0000/digiview.h"
+#include "stag0000/lineup.h"
+#include "stag0000/videomode.h"
+#include "stag0000/groupview.h"
 
 /* Task callbacks of this unit (defined further down) and Stg00_DigiModelDraw (stag0000_4668.c). */
-void Stg00_GroupViewDraw(Actor *arg0);
 void Stg00_DigiModelInit(Actor *arg0, Stg00ModelArg *arg1);
 void Stg00_DigiModelTask(Actor *arg0);
 void Stg00_DigiModelDraw(Actor *arg0);
 
-s32 Stg00_GroupWinMasks[] = { 6, 2, 4, 0 };
-TaskDesc Stg00_GroupViewDesc = { 0, Stg00_GroupViewTask, Task_DefaultDestroy, Stg00_GroupViewDraw, 0x10, 0x18 };
 Elem12 Stg00_HitReactHop1Motion = { -0x18000, 0x2666, 0x320000 };
 Elem12 Stg00_HitReactHop2Motion = { -0x14000, 0x2666, 0x320000 };
 Elem12 Stg00_HitReactPushMotion = { 0x18000, -0x2000, 0x320000 };
 TaskDesc Stg00_DigiModelDesc = {
     (TaskInitFn)Stg00_DigiModelInit, Stg00_DigiModelTask, Task_DefaultDestroy, Stg00_DigiModelDraw, 0x30, 0x18,
 };
-
-void Stg00_GroupViewDraw(Actor *arg0) {
-    EntA0 *e = Cd_GetFileEntry(0x1890000);
-    Gfx_HidePartsByMask(e, Stg00_GroupWinMasks[((Stg00PartsWork *)arg0->work)->winVariant]);
-    Gfx_DrawParts(e);
-}
 
 void Stg00_DigiModelInit(Actor *arg0, Stg00ModelArg *arg1) {
     Stg00ModelWork *w;
