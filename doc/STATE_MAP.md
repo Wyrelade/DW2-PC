@@ -38,6 +38,28 @@ Overlay end addresses: STAG0000 0x80069378, STAG1000 0x80066244, STAG1100 0x8006
 The main exe file image runs to 0x800AE800: the bytes after 0x80063360 are an opaque blob (`Ovl_LoadArea`)
 that overlays and the heap overwrite. A port gives each overlay its own memory and allocates the heap.
 
+## Scene table (game mode to overlay)
+
+`Sys_GameModeTask` (main/gamemode.c) runs the scene switch. For game mode `m`, it calls
+`Ovl_Load((m >> 8) - 1)`, which reads the overlay file `Ovl_FileIds[id]` over `Ovl_LoadArea`, then
+`Task_Create(m & 0xFF00)`, which starts row 0 of `Task_DescTable[m >> 8]` (the overlay's root task).
+When `Sys_State.nextGameMode` is set, it waits until no sound slot is loading (`Snd_AnySlotLoading`).
+
+| m >> 8 | Overlay id | File | Cd file id | Task table | Root task (row 0) | Scene |
+|---|---|---|---|---|---|---|
+| 1 | 0 | STAG0000.PRO | 0x190 | `Stg00_TaskDescs` | `Stg00_StageSetupDesc` | test menu (debug) |
+| 2 | 1 | STAG4000.PRO | 0x19A | `Stg40_TaskDescs` | `Stg40_RootDesc` | dungeon |
+| 3 | 2 | STAG2000.PRO | 0x192 | `Stg20_TaskDescs` | `Stg20_StageMainDesc` | city |
+| 4 | 3 | STAG1000.PRO | 0x191 | `Stg10_TaskDescs` | `Stg10_StageSetupDesc` | title / movies |
+| 5 | 4 | STAG3000.PRO | 0x193 | `Stg30_TaskDescs` | `Stg30_BattleDesc` | battle |
+| 6 | 5 | STAG1100.PRO | 0xD1E | `Stg11_TaskDescs` | `Stg11_RootDesc` | memory card / VS party |
+| 7 | 6 | STAG3500.PRO | 0xD4D | `Stg35_TaskDescs` | `Stg35_RootDesc` | VS battle |
+
+Table 0 is `Task_MainDescs` (main). A task id is table << 8 | row, so every overlay task is reached
+through this table. All 7 overlays link at the same address, and the linked ELFs have no global
+name defined twice (checked 2026-10-07 over the 8 ELFs), so a port can link them all into one program and
+use this table as its scene list.
+
 ## Per player vs world (multiplayer split)
 
 | State | Globals | Class | Note for a split |

@@ -46,9 +46,24 @@ tree.
 ## Status
 
 **All 1088 game functions are matched C.** The C rebuilds the retail executable and all 7
-stage overlays byte-identical. The work now is naming and cleanup (most of the main exe and
-the small overlays have real names; the battle, dungeon, city and VS overlays are next), then
-a non-matching build for modding and ports.
+stage overlays byte-identical.
+
+Naming is done. Functions, globals and struct fields have real names where the code proves
+them. A few keep their `func_` / `D_` names on purpose (empty stubs, unreferenced filler
+words). The source is split into one file per module, along the retail file boundaries
+(`src/main/sys.c`, `src/main/savedata.c`, `src/stag3000/battle.c`, `src/stag4000/floor.c` ...).
+
+Every global has one layout and a documented owner: [`doc/STATE_MAP.md`](doc/STATE_MAP.md)
+lists each global of the exe and the overlays as player, world, engine, constant or debug
+state, with its writers and readers, the memory map and the game mode to overlay table.
+
+The build is shiftable, and that is the modding build. No code or data holds a fixed address:
+every pointer is a symbol, and the exe and the overlays link against each other by name.
+`python3 tools/build_dw2.py --shift-test` pads main and `STAG1000.PRO` so every address
+moves, and that image boots. So you can change the C, add code or data and relink; the SHA-1
+check then no longer applies. The one fixed limit on growth: the heap starts at `0x80075000`
+(`Mem_HeapStart`), right after the largest overlay (`STAG3000.PRO`), so move it if main and
+that overlay together grow by more than `0xF5C` bytes.
 
 The last two functions:
 
@@ -105,6 +120,7 @@ PsyQ library code stays as split asm, as in other PS1 decomps. The crt0 startup 
 |------|------|
 | `src/` / `include/` | decompiled C and headers |
 | `configs/` | splat config + symbol maps |
+| `doc/` | `STATE_MAP.md`: global state map, memory map, scene table |
 | `tools/` | gcc-psx, maspsx, m2c, decomp-permuter, asm-differ, mkpsxiso, build scripts |
 
 ## Quick start
