@@ -212,7 +212,7 @@ void Stg11_OpenSlotText(Actor *arg0, Stg11MenuWork *arg1) {
     Stg11SaveList *list = arg1->saveList;
     Halves *pos = (Halves *)Cd_GetFileEntry(0xD28000B);
     TextDescHalves st;
-    Stg11SaveSlot *slot;
+    GameState *slot;
     s32 i;
 
     st.strArg0 = 0;
@@ -222,10 +222,10 @@ void Stg11_OpenSlotText(Actor *arg0, Stg11MenuWork *arg1) {
         if (list->used[i] != 0) {
             st.pos = *pos++;
             slot = &list->slots[i];
-            st.text = (s32)slot->u.gs.playerName;
+            st.text = (s32)slot->playerName;
             Text_OpenDesc(&arg1->slotTexts[i * 3], (TextDesc *)&st);
             st.pos = *pos++;
-            st.text = (s32)Cd_GetFileEntry(((s16 *)Cd_GetFileEntry(0x513000F))[slot->u.gs.rankTitleSet * 11 + slot->u.gs.rank] + 0x1FD0000);
+            st.text = (s32)Cd_GetFileEntry(((s16 *)Cd_GetFileEntry(0x513000F))[slot->rankTitleSet * 11 + slot->rank] + 0x1FD0000);
             Text_OpenDesc(&arg1->slotTexts[i * 3 + 1], (TextDesc *)&st);
         } else {
             st.pos = *pos++;
@@ -579,7 +579,7 @@ void Stg11_StateCreateFile(Actor *arg0, Stg11MenuWork *arg1) {
 
 void Stg11_StateReadFile(Actor *arg0, Stg11MenuWork *arg1) {
     Stg11SaveList *list;
-    Stg11SaveSlot *slot;
+    GameState *slot;
     s32 i;
     s32 j;
 
@@ -620,12 +620,12 @@ void Stg11_StateReadFile(Actor *arg0, Stg11MenuWork *arg1) {
                 slot = &list->slots[i];
                 if (list->used[i] != 0) {
                     for (j = 0; j < 0x24; j++) {
-                        if (slot->u.gs.elems[j].state != 0) {
-                            slot->u.gs.elems[j].name[13] = 0xFF;
+                        if (slot->elems[j].state != 0) {
+                            slot->elems[j].name[13] = 0xFF;
                         }
                     }
-                    slot->u.gs.playerName[5] = 0xFF;
-                    slot->u.gs.beetleName[7] = 0xFF;
+                    slot->playerName[5] = 0xFF;
+                    slot->beetleName[7] = 0xFF;
                 }
             }
             Task_SetState1(arg0, 7);
@@ -637,7 +637,7 @@ void Stg11_StateReadFile(Actor *arg0, Stg11MenuWork *arg1) {
 
 void Stg11_StateSelectSlot(Actor *arg0, Stg11MenuWork *arg1) {
     Stg11SaveList *list = arg1->saveList;
-    Stg11SaveSlot *slot;
+    GameState *slot;
     DigiRosterEntry *e;
     s32 idx;
     s32 idx2;
@@ -675,7 +675,7 @@ void Stg11_StateSelectSlot(Actor *arg0, Stg11MenuWork *arg1) {
                 if (arg1->isLoad == 0) {
                     if (list->used[idx] == 0) {
                         list->used[idx] = Sys_State.prevGameMode;
-                        *(list->slots + idx) = *(Stg11SaveSlot *)Save_GameStatePtr;
+                        *(list->slots + idx) = *Save_GameStatePtr;
                         Stg11_OpenSlotText(arg0, arg1);
                         Task_SetState1(arg0, 8);
                         Snd_PlayById(0xE, 0);
@@ -689,15 +689,15 @@ void Stg11_StateSelectSlot(Actor *arg0, Stg11MenuWork *arg1) {
                         Snd_PlayById(0x10, 0);
                     } else {
                         if (arg1->isVsLoad == 0) {
-                            *(Stg11SaveSlot *)Save_GameStatePtr = *(list->slots + idx);
+                            *Save_GameStatePtr = *(list->slots + idx);
                             Stg11_LoadDone = 1;
                             Sys_State.prevGameMode = list->used[idx];
                             Task_SetState0(arg0, 2);
                             Snd_PlayById(0xE, 0);
                         } else {
                             slot = &list->slots[idx];
-                            e = slot->u.gs.elems;
-                            Stg11_VsParty.gameState = &slot->u.gs;
+                            e = slot->elems;
+                            Stg11_VsParty.gameState = slot;
                             for (n = i = 0; i < 3; i++, e++) {
                                 Stg11_VsParty.members[i].state = 0;
                                 if (e->state >= 3) {
@@ -737,7 +737,7 @@ void Stg11_StateSelectSlot(Actor *arg0, Stg11MenuWork *arg1) {
             if (r == 1) {
                 idx2 = Menu_GridIndexColMajor(arg1->cursor, arg1->u6C.gridSize);
                 list->used[idx2] = Sys_State.prevGameMode;
-                *(list->slots + idx2) = *(Stg11SaveSlot *)Save_GameStatePtr;
+                *(list->slots + idx2) = *Save_GameStatePtr;
                 Stg11_OpenSlotText(arg0, arg1);
                 Task_SetState1(arg0, 8);
             }
@@ -1011,7 +1011,7 @@ void Stg11_CardMenuDraw(Actor *arg0) {
     GfxPart *parts;
     s32 *tbl;
     s32 *tblA;
-    Stg11SaveSlot *slot;
+    GameState *slot;
     Stg11PolyG4 *p;
     u32 *ot;
     s32 i;
@@ -1055,11 +1055,11 @@ void Stg11_CardMenuDraw(Actor *arg0) {
                     mask = tblA[1];
                     slot = &list->slots[i - 2];
                     if (list->used[i - 2] != 0) {
-                        t = slot->u.hdr.playTime;
+                        t = slot->playTime;
                         if (t > 0x14996FF) {
                             t = 0x14996FF;
                         }
-                        Gfx_SetPartsNumber(parts, 0x10, 8, slot->u.hdr.money);
+                        Gfx_SetPartsNumber(parts, 0x10, 8, slot->bits);
                         h = t / 216000;
                         Gfx_SetPartsNumber(parts, 0x20, -4, h * 100 + (t / 3600 - h * 60));
                     } else {

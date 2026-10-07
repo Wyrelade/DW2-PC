@@ -18,7 +18,7 @@ u16 Stg20_BatteryEpTbl[] = {
 TaskDesc Stg20_BeetleShopDesc = { 0, Stg20_BeetleShopUpdate, Task_DefaultDestroy, 0, 0, 0xC };
 
 void Stg20_RefillBeetleHpEp(void) {
-    Stg20GameState *g = (Stg20GameState *)&Save_GameState;
+    GameState *g = &Save_GameState;
 
     g->maxHp = g->hp = Stg20_EngineHpTbl[g->slotItems[1] - 1];
     g->maxMp = g->mp = Stg20_BatteryEpTbl[g->slotItems[3] - 0x35];

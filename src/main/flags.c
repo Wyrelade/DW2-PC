@@ -68,14 +68,14 @@ s32 Flag_Test(s32 arg0) {
     }
     if (arg0 < 0x8BD) {
         for (i = 0; i < 0x30; i++) {
-            if (((V66_21E78 *)&Save_GameState)->a[i] == arg0 - 0x7D0) {
+            if (Save_GameState.bagItems[i] == arg0 - 0x7D0) {
                 return 1;
             }
         }
         return 0;
     }
     if (arg0 < 0xBB8) {
-        return ((VDD4_21E78 *)&Save_GameState)->a[arg0 - 0x7D0] != 0;
+        return Save_GameState.storageCounts[arg0 - 0x7D0] != 0;
     }
     if (arg0 < 0xFA0) {
         s32 key = arg0 - 0xBB8;
@@ -152,10 +152,10 @@ void Flag_Set(s32 id, s32 val) {
     } else if (id < 2000) {
         Save_GameState.eventFlags.progress = id - 1900;
     } else if (id < 0x8BD) {
-        Save_GameState.bagLastItem = id - 2000;
+        Save_GameState.bagItems[0x2F] = id - 2000;
         Item_SortList();
     } else if (id < 3000) {
-        ((VDD4_21E78 *)&Save_GameState)->a[id - 2000]++;
+        Save_GameState.storageCounts[id - 2000]++;
     } else if (id < 4000) {
         switch (id - 3000) {
         case 3:

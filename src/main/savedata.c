@@ -36,7 +36,7 @@
 #include "main/12550.h"
 
 /* Small data this unit defines (.sdata). Retail reaches it with %gp_rel here. */
-GameStateView *Save_GameStatePtr = (GameStateView *)&Save_GameState;
+GameState *Save_GameStatePtr = (GameState *)&Save_GameState;
 /* .bss: the game state (save data). Code and overlays reach parts of it by their own
  * symbols. */
 GameState Save_GameState;
@@ -61,14 +61,14 @@ void Save_ResetGameState(void) {
 }
 
 void Beetle_SetPart(s32 i, s32 v, s32 flag) {
-    GameStateView *p = Save_GameStatePtr;
+    GameState *p = Save_GameStatePtr;
 
     p->slotItems[i] = v;
     p->slotStatus[i] = (v != 0) ? flag : 1;
 }
 
 s32 Beetle_GetPart(s32 i) {
-    GameStateView *p = Save_GameStatePtr;
+    GameState *p = Save_GameStatePtr;
     if (p->slotStatus[i] == 1) {
         return -1;
     }
@@ -76,7 +76,7 @@ s32 Beetle_GetPart(s32 i) {
 }
 
 void Beetle_SetPartBroken(s32 i, s32 v) {
-    GameStateView *p = Save_GameStatePtr;
+    GameState *p = Save_GameStatePtr;
 
     p->slotStatus[i] = (p->slotItems[i] != 0) ? v : 0;
 }
@@ -177,7 +177,7 @@ void Item_RemoveFromBag(s32 i) {
 }
 
 s32 Item_GetBagCapacity(void) {
-    u16 v = Save_GameStatePtr->slot4Item;
+    u16 v = Save_GameStatePtr->slotItems[4];
     s32 r = v - 0x49;
     s32 ret = 8;
     if ((u32)(v - 0x4B) < 5) {

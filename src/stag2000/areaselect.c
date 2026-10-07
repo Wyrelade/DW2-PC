@@ -111,7 +111,7 @@ s32 Stg20_TestSpecialFlag(s32 id) {
     case 9000:
         n = Item_GetBagCapacity();
         for (j = 0; j < n; j++) {
-            if (((Stg20GameState *)&Save_GameState)->bagItems[j] == 0) {
+            if (Save_GameState.bagItems[j] == 0) {
                 return 1;
             }
         }
@@ -146,9 +146,9 @@ s32 Stg20_TestSpecialFlag(s32 id) {
         }
         return 1;
     case 9009:
-        return Save_GameState.itemCounts[1] >= 0x10;
+        return Save_GameState.slotItems[1] >= 0x10;
     case 9010:
-        return Save_GameState.itemCounts[1] >= 0x1F;
+        return Save_GameState.slotItems[1] >= 0x1F;
     case 9012:
         return Sys_State.prevGameMode == 0x32A;
     case 9034:
@@ -226,13 +226,13 @@ void Stg20_SetSpecialFlag(s32 id, s32 on) {
     }
     switch (id) {
     case 0x238C:
-        Save_GameState.itemCounts[0] = 0xEB;
+        Save_GameState.slotItems[0] = 0xEB;
         break;
     case 0x23B5:
-        Save_GameState.itemCounts[0] = 0xEC;
+        Save_GameState.slotItems[0] = 0xEC;
         break;
     case 0x238D:
-        Save_GameState.itemCounts[17] = 0x76;
+        Save_GameState.slotItems[17] = 0x76;
         break;
     case 0x238E:
         Stg20_ApplyStartPreset(0);
@@ -347,8 +347,8 @@ void Stg20_SetSpecialFlag(s32 id, s32 on) {
         break;
     case 0x23B3:
         for (j = 0; j < Item_GetBagCapacity(); j++) {
-            if (((Stg20GameState *)&Save_GameState)->bagItems[j] == 0xC2) {
-                ((Stg20GameState *)&Save_GameState)->bagItems[j] = 0;
+            if (Save_GameState.bagItems[j] == 0xC2) {
+                Save_GameState.bagItems[j] = 0;
                 Item_SortList();
                 break;
             }
@@ -356,10 +356,10 @@ void Stg20_SetSpecialFlag(s32 id, s32 on) {
         break;
     case 0x23B2:
     case 0x23B4:
-        ((Stg20GameState *)&Save_GameState)->mp = ((Stg20GameState *)&Save_GameState)->maxMp;
-        ((Stg20GameState *)&Save_GameState)->hp = ((Stg20GameState *)&Save_GameState)->maxHp;
+        Save_GameState.mp = Save_GameState.maxMp;
+        Save_GameState.hp = Save_GameState.maxHp;
         for (i = 0; i < 0x13; i++) {
-            ((Stg20GameState *)&Save_GameState)->slotStatus[i] = 0;
+            Save_GameState.slotStatus[i] = 0;
         }
         for (i = 0; i < 0x24; i++) {
             if (Save_GameState.elems[i].state != 0) {
@@ -377,40 +377,40 @@ void Stg20_SetSpecialFlag(s32 id, s32 on) {
         Flag_Set(0x264, 1);
         break;
     case 0x23B7:
-        ((Stg20GameState *)&Save_GameState)->storageCounts[0xDA]++;
+        Save_GameState.storageCounts[0xDA]++;
         break;
     case 0x23B8:
-        ((Stg20GameState *)&Save_GameState)->storageCounts[0xBF]++;
+        Save_GameState.storageCounts[0xBF]++;
         break;
     case 0x23B9:
-        ((Stg20GameState *)&Save_GameState)->storageCounts[0xD6]++;
+        Save_GameState.storageCounts[0xD6]++;
         break;
     case 0x23BA:
-        ((Stg20GameState *)&Save_GameState)->storageCounts[0xC0]++;
+        Save_GameState.storageCounts[0xC0]++;
         break;
     case 0x23BB:
-        ((Stg20GameState *)&Save_GameState)->storageCounts[0xDF]++;
+        Save_GameState.storageCounts[0xDF]++;
         break;
     case 0x23BC:
-        ((Stg20GameState *)&Save_GameState)->storageCounts[0xE0]++;
+        Save_GameState.storageCounts[0xE0]++;
         break;
     case 0x23BD:
-        ((Stg20GameState *)&Save_GameState)->storageCounts[0xD3]++;
+        Save_GameState.storageCounts[0xD3]++;
         break;
     case 0x23BE:
-        ((Stg20GameState *)&Save_GameState)->storageCounts[0xD8]++;
+        Save_GameState.storageCounts[0xD8]++;
         break;
     case 0x23BF:
-        ((Stg20GameState *)&Save_GameState)->storageCounts[0x49]++;
+        Save_GameState.storageCounts[0x49]++;
         break;
     case 0x23C0:
-        ((Stg20GameState *)&Save_GameState)->storageCounts[0x4F]++;
+        Save_GameState.storageCounts[0x4F]++;
         break;
     case 0x23C1:
-        ((Stg20GameState *)&Save_GameState)->storageCounts[0x2E]++;
+        Save_GameState.storageCounts[0x2E]++;
         break;
     case 0x23C2:
-        ((Stg20GameState *)&Save_GameState)->storageCounts[0x34]++;
+        Save_GameState.storageCounts[0x34]++;
         break;
     }
 }
@@ -632,7 +632,7 @@ void Stg20_AreaSelectUpdate(Actor *a) {
     switch (a->stateLevel0) {
     case 0:
         if (Sys_State.prevGameMode == 0x602) {
-            Sys_State.modeArg = ((Stg20GameState *)&Save_GameState)->areaSelectArg;
+            Sys_State.modeArg = Save_GameState.areaSelectArg;
         }
         Mem_FillWordsNeg1(&w->text, 1);
         w->index = 0;
@@ -651,7 +651,7 @@ void Stg20_AreaSelectUpdate(Actor *a) {
         }
         w->recs[n].id = -1;
         w->redraw = 1;
-        ((Stg20GameState *)&Save_GameState)->areaSelectArg = Sys_State.modeArg;
+        Save_GameState.areaSelectArg = Sys_State.modeArg;
         Task_NextState0(a);
         break;
     case 1:

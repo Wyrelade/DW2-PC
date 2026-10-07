@@ -683,7 +683,7 @@ extern Stg40DungState *Dung_StatePtr;
 /* 13-byte const table copied to a stack local (Stg40_BeginTransition). */
 typedef struct { u8 b[13]; } Blk13;
 extern const Blk13 Stg40_FloorSpecialtyByCell;
-extern GameStateView *Save_GameStatePtr;
+extern GameState *Save_GameStatePtr;
 extern s32 Cd_PreloadIds[];
 extern s32 Cd_PreloadCount;
 extern void LoadImage(RECT *rect, u32 *p);
@@ -741,7 +741,7 @@ extern u8 *memset(u8 *s, s32 c, s32 n);
 extern void Gfx_HidePartsByMask(GfxPartMaskView *, s32);
 extern s32 Stg40_EnemyInfoParts[];
 void Stg40_AutomapMoveMarker(s32 x, s32 y, s32 ox, s32 oy, s32 dir);
-extern GameStateView Save_GameState;
+extern GameState Save_GameState;
 extern s32 Stg40_HudParts[];
 extern void Gfx_FadeOutToBlack(s32 arg0);
 extern s32 Item_GetNameText(s32 arg0);

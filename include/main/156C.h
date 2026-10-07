@@ -824,10 +824,13 @@ typedef struct {
     u8 _pad5A[0x2];
 } DigiRosterEntry; /* size 0x5C */
 
-/* Global at Save_GameState: a 0xE4-byte header followed by an array of 0x24
-   DigiRosterEntry slots (Digi_AddNew scans and updates their status bytes). */
+/* Save_GameState: the save data, one block of 0x1058 bytes (Save_ResetGameState zeroes it, the
+   memory card code copies it whole). Everything one tamer owns: name, rank, bits, the DigiBeetle
+   (hp/mp, part slots), the item bag, the 0x24-slot digimon roster, item storage and the event flags. */
 typedef struct {
-    u8 _pad00[0x04];
+    /* 0x00 */ u8 automapMode;
+    /* 0x01 */ u8 areaSelectArg;
+    u8 _pad02[0x02];
     /* 0x04 */ s32 playTime;
     /* 0x08 */ s32 bits;
     u8 _pad0C[0x05];
@@ -835,17 +838,22 @@ typedef struct {
     /* 0x12 */ u8 rank;
     u8 _pad13[0x01];
     /* 0x14 */ u8 playerName[0x10];
-    u8 _pad24[0x08];
-    /* 0x2C */ u16 itemCounts[0x4C];   /* indexed by item slot (stag2000 shop) */
-    /* 0xC4 */ s16 bagLastItem;           /* Flag_Set ids 2000..2236 store id - 2000 */
-    u8 _padC6[0x06];
-    u8 _padCC[0x05];
-    /* 0xD1 */ u8 beetleName[0x13];   /* a second name buffer (text escape F0 05) */
+    /* 0x24 */ s16 hp;                  /* DigiBeetle */
+    /* 0x26 */ s16 maxHp;
+    /* 0x28 */ s16 mp;
+    /* 0x2A */ s16 maxMp;
+    /* 0x2C */ u16 slotItems[0x13];     /* DigiBeetle part item id per slot: 0 body, 5 tires, 8 gun,
+                                           9 Z cannon, 10 R cannon, 11 missile gun */
+    /* 0x52 */ u8 slotStatus[0x14];     /* per part slot, nonzero = broken */
+    /* 0x66 */ u16 bagItems[0x30];      /* Flag_Set ids 2000..2236 store id - 2000 in the last one */
+    u8 _padC6[0x0B];
+    /* 0xD1 */ u8 beetleName[0x13];     /* a second name buffer (text escape F0 05) */
     /* 0xE4 */ DigiRosterEntry elems[0x24];
-    u8 _padDD4[0x1004 - 0xDD4];
+    /* 0xDD4 */ u16 storageCounts[0x100]; /* item storage, count per item id */
+    u8 _padFD4[0x1004 - 0xFD4];
     /* 0x1004 */ EventFlags eventFlags;
     u8 _pad1048[0x10];
-} GameState; /* size 0x1058: the whole block Save_ResetGameState zeroes */
+} GameState; /* size 0x1058 */
 
 /* Table cleared by Task_ClearList: a count word followed by 100 entries. */
 typedef struct {
@@ -1867,32 +1875,6 @@ typedef struct {
     /* 0xAC */ s16 digiCount;
 } MenuStatusWork;
 
-/* Object behind the Save_GameStatePtr pointer (Menu_StatusDraw). */
-typedef struct {
-    /* 0x00 */ u8 automapMode;
-    u8 _pad01[0x07];
-    /* 0x08 */ s32 bits;
-    u8 _pad0C[0x05];
-    /* 0x11 */ u8 rankTitleSet;
-    /* 0x12 */ u8 rank;
-    u8 _pad13[0x01];
-    /* 0x14 */ u8 playerName[0x10];
-    /* 0x24 */ s16 hp;
-    /* 0x26 */ s16 maxHp;
-    /* 0x28 */ s16 mp;
-    /* 0x2A */ s16 maxMp;
-    /* 0x2C */ u16 slotItems[4];
-    /* 0x34 */ u16 slot4Item;
-    /* 0x36 */ u16 tiresItem;
-    u8 _pad38[0x1A];
-    /* 0x52 */ u8 slotStatus[0x14];
-    /* 0x66 */ u16 bagItems[0x30];
-    u8 _padC6[0x0B];
-    /* 0xD1 */ u8 beetleName[0x13];
-    /* 0xE4 */ DigiRosterEntry elems[0x24];
-    /* 0xDD4 */ u16 storageCounts[0x100];
-} GameStateView;
-
 /* Record behind MenuDigiListRow.field_4: an id byte at 0x01, a name at 0x4C. */
 typedef struct {
     u8 _pad00[0x01];
@@ -2671,17 +2653,6 @@ typedef struct {
     /* 0x34 */ void (*firstfile)(s32 *, s32, s32);
     u8 _pad38[0x18];
 } BiosDcb;
-
-
-/* file-local view over Save_GameState for Save_ClearEventFlags */
-typedef struct {
-    u8 _p[0x1004];
-    /* 0x1004 */ u8 a[0x20];
-    /* 0x1024 */ u8 b[0x8];
-    /* 0x102C */ u8 c[0x8];
-    /* 0x1034 */ u8 d[0x10];
-} SaveEventFlags;
-
 
 
 /* 4-byte unaligned tag and the 0x20-byte records at D_80061B38 (func_8002DF74). */

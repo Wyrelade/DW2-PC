@@ -47,23 +47,10 @@ typedef struct {
     /* 0x22040 */ s32 opStarted;
 } Stg11SaveWork;
 
-/* One save slot image (stride 0x1058): a GameStateView copy plus trailer. */
-typedef struct {
-    union {
-        /* 0x000 */ GameStateView gs;
-        struct {
-            u8 _pad0[0x4];
-            /* 0x004 */ u32 playTime;
-            /* 0x008 */ s32 money;
-        } hdr;
-    } u;
-    u8 _padFD4[0x84];
-} Stg11SaveSlot; /* size 0x1058 */
-
 /* Save slot list pointed to by Stg11MenuWork.field_90. */
 typedef struct {
     /* 0x00 */ s32 used[3];
-    /* 0x0C */ Stg11SaveSlot slots[3];
+    /* 0x0C */ GameState slots[3];
 } Stg11SaveList;
 
 /* Roster entry view (DigiRosterEntry layout) with the skill bytes at 0x22
@@ -244,7 +231,7 @@ typedef struct {
 
 /* Stg11_VsParty: a save's GameState pointer followed by the three chosen party entries. */
 typedef struct {
-    /* 0x00 */ GameStateView *gameState;
+    /* 0x00 */ GameState *gameState;
     /* 0x04 */ DigiRosterEntry members[3];
     u8 _pad118[0x08];
 } Stg11Party;
@@ -379,7 +366,7 @@ extern s32 MemCardAccept(s32 arg0);
 extern s32 MemCardReadFile(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4);
 extern s32 MemCardWriteFile(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4);
 extern void Card_CloseFile(void);
-extern GameStateView *Save_GameStatePtr;
+extern GameState *Save_GameStatePtr;
 extern void Mem_FillWordsNeg1(s32 *arg0, s32 arg1);
 extern s32 Math_RampToOne(s32 arg0, s32 *arg1);
 extern s32 Math_RampToZero(s32 arg0, s32 *arg1);

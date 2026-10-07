@@ -295,7 +295,7 @@ s32 Stg40_PlayerCheckStepHazard(Actor *task) {
     Stg40ActWork *w = (Stg40ActWork *)task->work;
     Stg40Ent48 *ent = w->ent;
     Stg40Ent48 *other;
-    GameStateView *gs;
+    GameState *gs;
     u16 dir;
     s32 n;
     s32 hp;

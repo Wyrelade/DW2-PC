@@ -362,12 +362,6 @@ typedef struct {
     /* 0x0D */ u8 skillIds[0x0E];
 } Stg30SkillList;
 
-/* Save_GameState viewed through the u16 id list at 0x66 (Stg30_ItemMenuBuildLists). */
-typedef struct {
-    u8 _pad00[0x66];
-    /* 0x66 */ u16 bagItems[0x30];
-} Stg30GameIds;
-
 /* Init arg of task D_800737A0. */
 typedef struct {
     /* 0x00 */ s32 slot;
@@ -771,32 +765,7 @@ extern s32 Stg30_ApplySkillStatus(s32 attacker, s32 target, s32 tech, s16 *p4, s
 extern s32 Stg30_CureStatusMasks[];
 extern s16 Stg30_CureStatusLabels[];
 
-/* Save_GameState viewed with the item-menu enable words/bytes Stg30_ItemMenuUpdate reads. */
-typedef struct {
-    u8 _pad00[0x3C];
-    /* 0x3C */ u16 gunPart;
-    /* 0x3E */ u16 zCannonPart;
-    /* 0x40 */ u16 rCannonPart;
-    u8 _pad42[0x18];
-    /* 0x5A */ u8 gunBroken;
-    /* 0x5B */ u8 zCannonBroken;
-    /* 0x5C */ u8 rCannonBroken;
-} Stg30BeetleWeapons;
-
-
 extern const Halves Stg30_TamerNameTextPos;
-
-/* Save_GameState viewed with the words Stg30_JoinPromptUpdate reads (0x30 map id, 0x4A, 0x61). */
-typedef struct {
-    u8 _pad00[0x30];
-    /* 0x30 */ u16 _pad30;
-    u8 _pad32[0x18];
-    /* 0x4A */ u16 field_4A;
-    u8 _pad4C[0x15];
-    /* 0x61 */ u8 dmTransferBroken;
-    u8 _pad62[0x82];
-    /* 0xE4 */ DigiRosterEntry elems[0x24];
-} Stg30GameRoster;
 
 extern Halves Stg30_JoinPromptTextPos[];
 extern u8 Stg30_MemoryCapacity[];

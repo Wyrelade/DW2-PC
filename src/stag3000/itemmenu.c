@@ -34,7 +34,7 @@ void Stg30_ItemMenuBuildLists(Actor *a0) {
         i = 0;
         n = i;
         for (; i < 0x30; i++) {
-            id = ((Stg30GameIds *)&Save_GameState)->bagItems[i];
+            id = Save_GameState.bagItems[i];
             if (id == 0) {
                 break;
             }
@@ -54,7 +54,7 @@ void Stg30_ItemMenuBuildLists(Actor *a0) {
         i = 0;
         n = i;
         for (; i < 0x30; i++) {
-            id = ((Stg30GameIds *)&Save_GameState)->bagItems[i];
+            id = Save_GameState.bagItems[i];
             if (id == 0) {
                 break;
             }
@@ -70,7 +70,7 @@ void Stg30_ItemMenuBuildLists(Actor *a0) {
         i = 0;
         n = i;
         for (; i < 0x30; i++) {
-            id = ((Stg30GameIds *)&Save_GameState)->bagItems[i];
+            id = Save_GameState.bagItems[i];
             if (id == 0) {
                 break;
             }
@@ -158,7 +158,7 @@ void Stg30_ItemMenuInit(Actor *a0, s32 *args) {
 const Halves Stg30_ItemMenuTitlePos = { 0x14, 0x96 };
 void Stg30_ItemMenuUpdate(Actor *a0) {
     Stg30ItemMenuWork *w = (Stg30ItemMenuWork *)a0->work;
-    Stg30BeetleWeapons *g;
+    GameState *g;
     s32 item;
     s32 id;
     s32 i;
@@ -168,23 +168,23 @@ void Stg30_ItemMenuUpdate(Actor *a0) {
     case 0:
         Mem_FillWordsNeg1(&w->titleText, 0xE);
         Text_OpenById(&w->titleText, 0x178, 0, Stg30_ItemMenuTitlePos);
-        g = (Stg30BeetleWeapons *)&Save_GameState;
-        if (g->gunPart != 0) {
+        g = &Save_GameState;
+        if (g->slotItems[8] != 0) {
             w->columnEnabled[0] = 1;
         }
-        if (g->rCannonPart != 0) {
+        if (g->slotItems[10] != 0) {
             w->columnEnabled[1] = 1;
         }
-        if (g->zCannonPart != 0) {
+        if (g->slotItems[9] != 0) {
             w->columnEnabled[2] = 1;
         }
-        if (g->gunBroken != 0) {
+        if (g->slotStatus[8] != 0) {
             w->columnBroken[0] = 1;
         }
-        if (g->rCannonBroken != 0) {
+        if (g->slotStatus[10] != 0) {
             w->columnBroken[1] = 1;
         }
-        if (g->zCannonBroken != 0) {
+        if (g->slotStatus[9] != 0) {
             w->columnBroken[2] = 1;
         }
         Stg30_ItemMenuColumn = 0;

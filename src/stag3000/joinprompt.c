@@ -49,7 +49,7 @@ void Stg30_JoinCreateDigi(Actor *a0, s32 a1) {
 
 void Stg30_JoinPromptUpdate(Actor *a0) {
     Stg30JoinPromptWork *w = (Stg30JoinPromptWork *)a0->work;
-    Stg30GameRoster *g;
+    GameState *g;
     TaskEntry *t;
     Stg30Pair args;
     s32 i;
@@ -131,7 +131,7 @@ void Stg30_JoinPromptUpdate(Actor *a0) {
                         cnt++;
                     }
                 }
-                n = Stg30_MemoryCapacity[Save_GameState.itemCounts[2] - 0x2F] - Dung_StatePtr->memBugCount;
+                n = Stg30_MemoryCapacity[Save_GameState.slotItems[2] - 0x2F] - Dung_StatePtr->memBugCount;
                 if (n > 0 && cnt < n) {
                     Task_SetState1(a0, 4);
                     break;
@@ -143,12 +143,12 @@ void Stg30_JoinPromptUpdate(Actor *a0) {
                 if (Pad_State[0].cross <= 0) {
                     break;
                 }
-                g = (Stg30GameRoster *)&Save_GameState;
-                if (g->field_4A == 0) {
+                g = &Save_GameState;
+                if (g->slotItems[15] == 0) {
                     Task_SetState1(a0, 6);
                     break;
                 }
-                if (g->dmTransferBroken != 0) {
+                if (g->slotStatus[15] != 0) {
                     Task_SetState1(a0, 7);
                     break;
                 }

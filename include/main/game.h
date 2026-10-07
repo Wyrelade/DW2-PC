@@ -467,7 +467,7 @@ extern void Pad_CmdConfigMode(Actor *arg0, u8 arg1);
 extern void (*D_80048E1C)(PadPort *);
 extern Flags506C0 *D_800506C0;
 extern s32 D_800506DC;
-extern GameStateView *Save_GameStatePtr;
+extern GameState *Save_GameStatePtr;
 extern char D_8001021C[];
 extern char D_8001023C[];
 extern char D_80048EC8[];
@@ -504,7 +504,7 @@ extern s32 Math_CycleRange(s32, s32, s32, s32);
 extern s32 Rand_Index;
 extern s32 Snd_CurrentId;
 extern s32 Snd_SavedId;
-extern GameStateView *Save_GameStatePtr;
+extern GameState *Save_GameStatePtr;
 extern s32 Ovl_CurrentId;
 extern s32 Skill_ShotXaFile;
 extern s32 Skill_ShotXaChannel;
@@ -552,7 +552,7 @@ extern s32 Item_UseRecoverAll(s32, s32);
 extern Cd4FC48 D_8004FC48;
 extern s32 Snd_TicksPerSec;
 extern s16 Gfx_FaceImageIds[];
-extern GameStateView *Save_GameStatePtr;
+extern GameState *Save_GameStatePtr;
 extern SndBankDesc *Snd_BankDescs[];
 extern s32 Snd_SlotBufSizes[3];
 extern s32 Cd_GetFileState(s32 arg0);
@@ -1053,10 +1053,6 @@ extern GfxPartRotCache Gfx_PartRotCache;
 
 
 extern Blk20 Gfx_IdentityMatrix;
-
-/* file-local views over Save_GameState for Flag_Test */
-typedef struct { u8 _p[0x66]; u16 a[1]; } V66_21E78;
-typedef struct { u8 _p[0xDD4]; u16 a[1]; } VDD4_21E78;
 
 typedef struct {
     s16 id;

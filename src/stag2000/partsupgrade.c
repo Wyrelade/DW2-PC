@@ -79,7 +79,7 @@ void Stg20_BuildUpgradeList(Actor *a) {
         w->recs[i].name[0x17] = 0xFF;
     }
     for (i = 0; i < 6; i++) {
-        id = ((Stg20GameState *)&Save_GameState)->slotItems[Stg20_UpgradeSlots[i]];
+        id = Save_GameState.slotItems[Stg20_UpgradeSlots[i]];
         w->recs[i].item = id;
         if (id != 0) {
             name = (u8 *)Item_GetNameText(id);
@@ -254,7 +254,7 @@ void Stg20_PartsUpgradeUpdate(Actor *task) {
     f144:
         Snd_PlayById(0x14, 0);
         Save_GameState.bits -= w->recs[w->index].price;
-        Save_GameState.itemCounts[Stg20_UpgradeSlots[w->index]]++;
+        Save_GameState.slotItems[Stg20_UpgradeSlots[w->index]]++;
         Stg20_BuildUpgradeList(task);
         w->dirty = st2;
         w->msg = 0x17F;

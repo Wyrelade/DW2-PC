@@ -128,7 +128,7 @@ s32 Stg30_ApplyItemEffect(s32 target, s32 tech, s16 *p3, s16 *p4) {
     case 0x12B:
     case 0x12C:
     case 0x12D:
-        dmg = Stg30_CalcCannonDamage(target, tech, Save_GameState.itemCounts[9] - 0x60);
+        dmg = Stg30_CalcCannonDamage(target, tech, Save_GameState.slotItems[9] - 0x60);
         break;
     default:
         dmg = 0;
@@ -344,8 +344,8 @@ void Stg30_BuildItemScript(void) {
     mode = 1;
     out = Stg30_BattleScript;
     for (i = 0; i < Item_GetBagCapacity(); i++) {
-        if (((Stg30GameIds *)&Save_GameState)->bagItems[i] == Stg30_Battle.itemId) {
-            ((Stg30GameIds *)&Save_GameState)->bagItems[i] = 0;
+        if (Save_GameState.bagItems[i] == Stg30_Battle.itemId) {
+            Save_GameState.bagItems[i] = 0;
             Item_SortList();
             break;
         }

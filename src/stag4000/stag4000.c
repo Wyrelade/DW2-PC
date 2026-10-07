@@ -148,8 +148,8 @@ void Stg40_SetupStage(Actor *a0) {
         buf = Stg40_BeetleDigiIds;
         level = Save_GameStatePtr->slotItems[0];
         level = (level != 0) ? (level - 0xEA) * 6 : 0;
-        if (Save_GameStatePtr->tiresItem != 0) {
-            level += Save_GameStatePtr->tiresItem - 0x4F;
+        if (Save_GameStatePtr->slotItems[5] != 0) {
+            level += Save_GameStatePtr->slotItems[5] - 0x4F;
         }
         if (level < 0x12) {
             level = buf.digiIds[level];

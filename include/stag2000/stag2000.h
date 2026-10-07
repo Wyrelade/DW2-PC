@@ -71,22 +71,6 @@ typedef struct {
     /* 0x02 */ s16 y;
 } Stg20Cell;
 
-/* Save_GameState viewed with the u16 list at 0x2C scanned by Stg20_IsPartInstalled. */
-typedef struct {
-    u8 _pad00[0x01];
-    /* 0x01 */ u8 areaSelectArg;
-    u8 _pad02[0x22];
-    /* 0x24 */ u16 hp;
-    /* 0x26 */ u16 maxHp;
-    /* 0x28 */ u16 mp;
-    /* 0x2A */ u16 maxMp;
-    /* 0x2C */ u16 slotItems[0x13];
-    /* 0x52 */ u8 slotStatus[0x14];
-    /* 0x66 */ u16 bagItems[0x30];
-    u8 _padC6[0xD0E];
-    /* 0xDD4 */ u16 storageCounts[1];
-} Stg20GameState;
-
 /* overlay data */
 extern s16 Stg20_DirAngles[4];
 extern u8 Stg20_MapGrid[24][24];
@@ -686,16 +670,18 @@ extern s32 Stg20_AreaScreenPartsIds[];
 extern Stg20Cell Stg20_ShopListTextPos[6];
 extern s32 Stg20_CountOwnedItem(s32 id);
 
-/* 0xBE-byte new-game block copied to Save_GameState+0x24 (Stg20_ApplyStartPreset). */
+/* 0xBE-byte new-game block copied over Save_GameState.hp .. beetleName (Stg20_ApplyStartPreset). */
 typedef struct {
     /* 0x00 */ u16 data[0x5F];
 } Stg20StartBlock;
 
-/* Save_GameState viewed with the start block at 0x24. */
+/* Save_GameState viewed with the start block at 0x24 (hp). Kept as a view: the copy through a cast of
+   &Save_GameState.hp gets other registers in Stg20_ApplyStartPreset. */
 typedef struct {
     u8 _pad00[0x24];
     /* 0x24 */ Stg20StartBlock start;
 } Stg20GameInit;
+
 
 extern Stg20StartBlock Stg20_StartPreset0;
 extern Stg20StartBlock Stg20_StartPreset1;

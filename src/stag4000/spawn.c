@@ -603,7 +603,7 @@ void Stg40_ObjQueueFiles(Stg40ObjQueueView *a0, s32 a1, s32 a2) {
 }
 
 void Stg40_SetBeetlePart(s32 i, s32 item, u8 status) {
-    GameStateView *g = Save_GameStatePtr;
+    GameState *g = Save_GameStatePtr;
 
     g->slotItems[i] = item;
     g->slotStatus[i] = item ? status : 1;
@@ -612,7 +612,7 @@ void Stg40_SetBeetlePart(s32 i, s32 item, u8 status) {
 s32 Stg40_GetBeetlePart(i)
     s32 i;
 {
-    GameStateView *g = Save_GameStatePtr;
+    GameState *g = Save_GameStatePtr;
 
     if (g->slotStatus[i] == 1) {
         return -1;
@@ -621,7 +621,7 @@ s32 Stg40_GetBeetlePart(i)
 }
 
 s32 Stg40_GetPartLevel(s32 slot) {
-    GameStateView *gs = Save_GameStatePtr;
+    GameState *gs = Save_GameStatePtr;
     s32 r;
 
     if (gs->slotItems[slot] == 0) {
@@ -636,13 +636,13 @@ s32 Stg40_GetPartLevel(s32 slot) {
 }
 
 void Stg40_SetPartBroken(s32 i, u8 status) {
-    GameStateView *g = Save_GameStatePtr;
+    GameState *g = Save_GameStatePtr;
 
     g->slotStatus[i] = g->slotItems[i] ? status : 0;
 }
 
 void Stg40_DamageBeetle(s32 n) {
-    GameStateView *g = Save_GameStatePtr;
+    GameState *g = Save_GameStatePtr;
 
     g->hp = (g->hp - n < 0) ? 0 : g->hp - n;
 }

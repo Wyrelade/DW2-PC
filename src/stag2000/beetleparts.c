@@ -70,12 +70,12 @@ void Stg20_PartsListToBag(Actor *a) {
     s32 n;
 
     for (i = 0x2F; i >= 0; i--) {
-        ((Stg20GameState *)&Save_GameState)->bagItems[i] = 0;
+        Save_GameState.bagItems[i] = 0;
     }
     n = 0;
     for (i = 0; i < 0x43; i++) {
         if (w->inv[i] != 0) {
-            ((Stg20GameState *)&Save_GameState)->bagItems[n++] = w->inv[i];
+            Save_GameState.bagItems[n++] = w->inv[i];
         }
     }
     Item_SortList();
@@ -88,18 +88,18 @@ void Stg20_GatherPartsList(Actor *a) {
 
     n = 0;
     for (i = 0; i < 0x30; i++) {
-        if (((Stg20GameState *)&Save_GameState)->bagItems[i] != 0) {
-            w->inv[n++] = ((Stg20GameState *)&Save_GameState)->bagItems[i];
+        if (Save_GameState.bagItems[i] != 0) {
+            w->inv[n++] = Save_GameState.bagItems[i];
         }
     }
     for (i = 1; i < 0x13; i++) {
-        if (((Stg20GameState *)&Save_GameState)->slotItems[i] != 0) {
-            w->inv[n++] = ((Stg20GameState *)&Save_GameState)->slotItems[i];
+        if (Save_GameState.slotItems[i] != 0) {
+            w->inv[n++] = Save_GameState.slotItems[i];
         }
     }
     for (i = 1; i < 0x13; i++) {
-        ((Stg20GameState *)&Save_GameState)->slotItems[i] = 0;
-        ((Stg20GameState *)&Save_GameState)->slotStatus[i] = 0;
+        Save_GameState.slotItems[i] = 0;
+        Save_GameState.slotStatus[i] = 0;
     }
 }
 
@@ -143,7 +143,7 @@ void Stg20_InsertDescS16(s16 *list, s32 n, s32 v) {
 
 void Stg20_FilterPartsList(Actor *a, s32 mode) {
     Stg20ItemListWork *w = (Stg20ItemListWork *)a->work;
-    Stg20GameState *g;
+    GameState *g;
     s32 i;
     s32 n;
     s32 id;
@@ -156,7 +156,7 @@ void Stg20_FilterPartsList(Actor *a, s32 mode) {
         w->colors[i] = 1;
     }
     i = n = 0;
-    g = (Stg20GameState *)&Save_GameState;
+    g = &Save_GameState;
     for (; i < 0x43; i++) {
         id = w->inv[i];
         if (id == 0) {
@@ -253,82 +253,82 @@ void Stg20_CalcBeetleHideMasks(Actor *a) {
     w->hideMask0 = 0;
     w->hideMask1 = 0;
     mask = 0x3FF;
-    if (((Stg20GameState *)&Save_GameState)->slotItems[1] != 0) {
-        shift = (((Stg20GameState *)&Save_GameState)->slotItems[1] - 1) / 5;
+    if (Save_GameState.slotItems[1] != 0) {
+        shift = (Save_GameState.slotItems[1] - 1) / 5;
         w->hideMask0 |= mask - (1 << shift);
     } else {
         w->hideMask0 |= mask;
     }
     mask = 0x1F8000;
-    if (((Stg20GameState *)&Save_GameState)->slotItems[2] != 0) {
-        shift = ((Stg20GameState *)&Save_GameState)->slotItems[2] - 0x2F;
+    if (Save_GameState.slotItems[2] != 0) {
+        shift = Save_GameState.slotItems[2] - 0x2F;
         w->hideMask0 |= mask - (0x8000 << shift);
     } else {
         w->hideMask0 |= mask;
     }
     mask = 0x7C00;
-    if (((Stg20GameState *)&Save_GameState)->slotItems[3] != 0) {
-        shift = (((Stg20GameState *)&Save_GameState)->slotItems[3] - 0x35) / 5;
+    if (Save_GameState.slotItems[3] != 0) {
+        shift = (Save_GameState.slotItems[3] - 0x35) / 5;
         w->hideMask0 |= mask - (0x400 << shift);
     } else {
         w->hideMask0 |= mask;
     }
     mask = 0x7E00000;
-    if (((Stg20GameState *)&Save_GameState)->slotItems[4] != 0) {
-        shift = ((Stg20GameState *)&Save_GameState)->slotItems[4] - 0x4A;
+    if (Save_GameState.slotItems[4] != 0) {
+        shift = Save_GameState.slotItems[4] - 0x4A;
         w->hideMask0 |= mask - (0x200000 << shift);
     } else {
         w->hideMask0 |= mask;
     }
     mask = 0x3E;
-    if (((Stg20GameState *)&Save_GameState)->slotItems[5] != 0) {
-        shift = ((Stg20GameState *)&Save_GameState)->slotItems[5] - 0x50;
+    if (Save_GameState.slotItems[5] != 0) {
+        shift = Save_GameState.slotItems[5] - 0x50;
         w->hideMask1 |= mask - (2 << shift);
     } else {
         w->hideMask1 |= mask;
     }
     mask = 0x7C0;
-    if (((Stg20GameState *)&Save_GameState)->slotItems[6] != 0) {
-        shift = ((Stg20GameState *)&Save_GameState)->slotItems[6] - 0x55;
+    if (Save_GameState.slotItems[6] != 0) {
+        shift = Save_GameState.slotItems[6] - 0x55;
         w->hideMask1 |= mask - (0x40 << shift);
     } else {
         w->hideMask1 |= mask;
     }
     mask = 0x1F0000;
-    if (((Stg20GameState *)&Save_GameState)->slotItems[7] != 0) {
-        shift = ((Stg20GameState *)&Save_GameState)->slotItems[7] - 0x5A;
+    if (Save_GameState.slotItems[7] != 0) {
+        shift = Save_GameState.slotItems[7] - 0x5A;
         w->hideMask1 |= mask - (0x10000 << shift);
     } else {
         w->hideMask1 |= mask;
     }
-    if (((Stg20GameState *)&Save_GameState)->slotItems[8] == 0) {
+    if (Save_GameState.slotItems[8] == 0) {
         w->hideMask1 |= 0x800;
     }
-    if (((Stg20GameState *)&Save_GameState)->slotItems[9] == 0) {
+    if (Save_GameState.slotItems[9] == 0) {
         w->hideMask1 |= 0x8000;
     }
-    if (((Stg20GameState *)&Save_GameState)->slotItems[10] == 0) {
+    if (Save_GameState.slotItems[10] == 0) {
         w->hideMask1 |= 0x4000;
     }
-    if (((Stg20GameState *)&Save_GameState)->slotItems[11] == 0) {
+    if (Save_GameState.slotItems[11] == 0) {
         w->hideMask1 |= 0x1000;
     }
-    if (((Stg20GameState *)&Save_GameState)->slotItems[12] == 0) {
+    if (Save_GameState.slotItems[12] == 0) {
         w->hideMask1 |= 0x2000;
     }
-    if (((Stg20GameState *)&Save_GameState)->slotItems[13] == 0) {
+    if (Save_GameState.slotItems[13] == 0) {
         w->hideMask1 |= 0x2000000;
     }
-    if (((Stg20GameState *)&Save_GameState)->slotItems[14] == 0) {
+    if (Save_GameState.slotItems[14] == 0) {
         w->hideMask1 |= 0x4000000;
     }
-    if (((Stg20GameState *)&Save_GameState)->slotItems[15] == 0) {
+    if (Save_GameState.slotItems[15] == 0) {
         w->hideMask1 |= 0x8000000;
     }
-    if (((Stg20GameState *)&Save_GameState)->slotItems[17] == 0) {
+    if (Save_GameState.slotItems[17] == 0) {
         w->hideMask1 |= 0x200000;
     }
-    if (((Stg20GameState *)&Save_GameState)->slotItems[18] == 0) {
+    if (Save_GameState.slotItems[18] == 0) {
         w->hideMask1 |= 0x400000;
     }
 }
@@ -336,7 +336,7 @@ void Stg20_CalcBeetleHideMasks(Actor *a) {
 void Stg20_BeetlePartsUpdate(Actor *a) {
     Stg20ItemListWork *w = (Stg20ItemListWork *)a->work;
     s32 *slot = (s32 *)a->u34.children;
-    Stg20GameState *g;
+    GameState *g;
     s32 item;
     s32 i;
     s32 v;
@@ -348,9 +348,9 @@ void Stg20_BeetlePartsUpdate(Actor *a) {
         Mem_FillWordsNeg1(w->hdr, 0x12);
         Text_OpenPacked(&w->hdr[0], (s32)&Save_GameState.beetleName, 0, Stg20_BeetlePartsTextPos[0]);
         Task_Create(0x30D, slot, 1);
-        if (((Stg20GameState *)&Save_GameState)->slotItems[0] == 0xEA) {
+        if (Save_GameState.slotItems[0] == 0xEA) {
             w->bodyType = 0;
-        } else if (((Stg20GameState *)&Save_GameState)->slotItems[0] == 0xEB) {
+        } else if (Save_GameState.slotItems[0] == 0xEB) {
             w->bodyType = 1;
         } else {
             w->bodyType = 2;
@@ -400,7 +400,7 @@ void Stg20_BeetlePartsUpdate(Actor *a) {
             case 1:
                 break;
             }
-            g = (Stg20GameState *)&Save_GameState;
+            g = &Save_GameState;
             if (a->elapsed & 0x10) {
                 v = Stg20_PartsListHas(a, 0x75) != 0 ? 0x75 : 0x76;
             } else {
@@ -408,7 +408,7 @@ void Stg20_BeetlePartsUpdate(Actor *a) {
             }
             g->slotItems[17] = v;
             u = 0;
-            g = (Stg20GameState *)&Save_GameState;
+            g = &Save_GameState;
             if (a->elapsed & 0x10) {
                 u = 0x77;
             }
@@ -469,7 +469,7 @@ void Stg20_BeetlePartsUpdate(Actor *a) {
                 }
                 break;
             case 2:
-                ((Stg20GameState *)&Save_GameState)->slotItems[Stg20_PartsPageSlot[idx]] = (a->elapsed & 0x10) ? w->items[w->cursor + w->top] : 0;
+                Save_GameState.slotItems[Stg20_PartsPageSlot[idx]] = (a->elapsed & 0x10) ? w->items[w->cursor + w->top] : 0;
                 if (Pad_State[0].repeat & 0x1000) {
                     if (w->cursor != 0) {
                         w->cursor--;
@@ -498,8 +498,8 @@ void Stg20_BeetlePartsUpdate(Actor *a) {
                         break;
                     }
                     Snd_PlayById(0x14, 0);
-                    ((Stg20GameState *)&Save_GameState)->slotItems[Stg20_PartsPageSlot[idx]] = w->items[w->cursor + w->top];
-                    Stg20_PartsListRemove(a, ((Stg20GameState *)&Save_GameState)->slotItems[Stg20_PartsPageSlot[idx]]);
+                    Save_GameState.slotItems[Stg20_PartsPageSlot[idx]] = w->items[w->cursor + w->top];
+                    Stg20_PartsListRemove(a, Save_GameState.slotItems[Stg20_PartsPageSlot[idx]]);
                     Task_NextState1(a);
                 }
                 break;
@@ -560,7 +560,7 @@ void Stg20_BeetlePartsUpdate(Actor *a) {
                 break;
             blink:
                 if (k != -1) {
-                    ((Stg20GameState *)&Save_GameState)->slotItems[k + 8] = (a->elapsed & 0x10) ? item : 0;
+                    Save_GameState.slotItems[k + 8] = (a->elapsed & 0x10) ? item : 0;
                 }
                 if (Pad_State[0].repeat & 0x1000) {
                     if (w->cursor != 0) {
@@ -572,7 +572,7 @@ void Stg20_BeetlePartsUpdate(Actor *a) {
                     }
                     w->dirty = 1;
                     if (k != -1) {
-                        ((Stg20GameState *)&Save_GameState)->slotItems[k + 8] = 0;
+                        Save_GameState.slotItems[k + 8] = 0;
                     }
                 } else if (Pad_State[0].repeat & 0x4000) {
                     if (w->cursor != 9) {
@@ -583,7 +583,7 @@ void Stg20_BeetlePartsUpdate(Actor *a) {
                         Snd_PlayById(0xD, 0);
                     }
                     if (k != -1) {
-                        ((Stg20GameState *)&Save_GameState)->slotItems[k + 8] = 0;
+                        Save_GameState.slotItems[k + 8] = 0;
                     }
                     w->dirty = 1;
                 } else if (Pad_State[0].cross > 0) {
@@ -591,7 +591,7 @@ void Stg20_BeetlePartsUpdate(Actor *a) {
                         goto deny;
                     }
                     Snd_PlayById(0x14, 0);
-                    ((Stg20GameState *)&Save_GameState)->slotItems[k + 8] = item;
+                    Save_GameState.slotItems[k + 8] = item;
                     Stg20_PartsListRemove(a, item);
                     Task_NextState1(a);
                 }

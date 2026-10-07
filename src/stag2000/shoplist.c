@@ -73,7 +73,7 @@ s32 Stg20_IsPartInstalled(s32 id) {
     s32 i;
 
     for (i = 0; i < 0x13; i++) {
-        if (((Stg20GameState *)&Save_GameState)->slotItems[i] == id) {
+        if (Save_GameState.slotItems[i] == id) {
             return 1;
         }
     }
@@ -88,55 +88,55 @@ s32 Stg20_GetPartFitMsg(s32 id) {
         return 0x131;
     }
     if (Stg20_ByteListHas(Stg20_ShooterGunAmmo, id)) {
-        if (Save_GameState.itemCounts[8] != 0) {
+        if (Save_GameState.slotItems[8] != 0) {
             return 0x12F;
         }
         return 0x130;
     }
     if (Stg20_ByteListHas(Stg20_ZCannonAmmo, id)) {
-        if (Save_GameState.itemCounts[9] != 0) {
+        if (Save_GameState.slotItems[9] != 0) {
             return 0x12F;
         }
         return 0x133;
     }
     if (Stg20_ByteListHas(Stg20_MissileGunAmmo, id)) {
-        if (Save_GameState.itemCounts[11] != 0) {
+        if (Save_GameState.slotItems[11] != 0) {
             return 0x12F;
         }
         return 0x135;
     }
     if (Stg20_ByteListHas(Stg20_RCannonAmmo, id)) {
-        if (Save_GameState.itemCounts[10] != 0) {
+        if (Save_GameState.slotItems[10] != 0) {
             return 0x12F;
         }
         return 0x136;
     }
     if (Stg20_ByteListHas(Stg20_PartsAdmantOnly, id)) {
-        if (Save_GameState.itemCounts[0] == 0xEC) {
+        if (Save_GameState.slotItems[0] == 0xEC) {
             return 0x131;
         }
         return 0x134;
     }
     if (Stg20_ByteListHas(Stg20_PartsSteelOnly, id)) {
-        if (Save_GameState.itemCounts[0] == 0xEA) {
+        if (Save_GameState.slotItems[0] == 0xEA) {
             return 0x131;
         }
         return 0x134;
     }
     if (Stg20_ByteListHas(Stg20_PartsTitanOnly, id)) {
-        if (Save_GameState.itemCounts[0] == 0xEB) {
+        if (Save_GameState.slotItems[0] == 0xEB) {
             return 0x131;
         }
         return 0x134;
     }
     if (Stg20_ByteListHas(Stg20_PartsNotAdmant, id)) {
-        if (Save_GameState.itemCounts[0] != 0xEC) {
+        if (Save_GameState.slotItems[0] != 0xEC) {
             return 0x131;
         }
         return 0x134;
     }
     if (Stg20_ByteListHas(Stg20_PartsNotSteel, id)) {
-        if (Save_GameState.itemCounts[0] != 0xEA) {
+        if (Save_GameState.slotItems[0] != 0xEA) {
             return 0x131;
         }
         return 0x134;
@@ -151,11 +151,11 @@ s32 Stg20_CountOwnedItem(s32 id) {
 
     n = 0;
     for (i = 0; i < 0x30; i++) {
-        if (((Stg20GameState *)&Save_GameState)->bagItems[i] == id) {
+        if (Save_GameState.bagItems[i] == id) {
             n++;
         }
     }
-    n += ((Stg20GameState *)&Save_GameState)->storageCounts[id];
+    n += Save_GameState.storageCounts[id];
     r = 99;
     if (n < 100) {
         r = n;
@@ -229,7 +229,7 @@ void Stg20_LoadShopSellList(Actor *a) {
     s32 i;
     s32 j;
     u8 *name;
-    u16 *list = &Save_GameState.itemCounts[29];
+    u16 *list = &Save_GameState.slotItems[29];
     s32 k;
 
     w->count = 0;
@@ -349,7 +349,7 @@ void Stg20_ShopListUpdate(Actor *a) {
     s32 *slot = (s32 *)a->u34.children;
     s32 id;
     s32 idx;
-    Stg20GameState *g;
+    GameState *g;
     PadState *pad;
     s32 item;
     Stg20MenuSub *m;
@@ -449,7 +449,7 @@ void Stg20_ShopListUpdate(Actor *a) {
             }
             if (Flag_Test(0x10) != 0 && Flag_Test(0x11) == 0) {
                 Snd_PlayById(0xF, 0);
-                g = (Stg20GameState *)&Save_GameState;
+                g = &Save_GameState;
                 g->storageCounts[id] = g->storageCounts[id] == 99 ? 99 : g->storageCounts[id] + 1;
                 Save_GameState.bits -= Item_GetPrice(id);
                 Task_SetState1(a, 0);
