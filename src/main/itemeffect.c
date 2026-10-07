@@ -48,7 +48,12 @@ s32 Item_GetUseKind(s32 arg0) {
     s32 r = 0;
 /* Unnamed: ITEMDATA word0 bits 30-31, gates Item_GetUseKind; set/clear pattern across items
  * (disks/chips set, antidotes/gifts/parts clear) does not prove "usable". */
+#ifdef DW2_NATIVE
+    if (func_8001E134(arg0) != 0) {
+#else
+    /* No argument: a0 still holds arg0 for func_8001E134's Item_FindById. */
     if (func_8001E134() != 0) {
+#endif
         u8 *p = Item_GetEffectRec(arg0);
         if (p != 0) {
             u8 b = *p;

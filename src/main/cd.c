@@ -234,7 +234,12 @@ void Cd_FreeFile(s32 fileId) {
 }
 
 void Cd_LockFile(s32 a0) {
+#ifdef DW2_NATIVE
+    CdCacheEntry *p = Cd_FindCachedFile(a0);
+#else
+    /* No argument: a0 still holds the file id for Cd_FindCachedFile. */
     CdCacheEntry *p = Cd_FindCachedFile();
+#endif
     if (p != 0) {
         if (p->state == 3) {
             p->locked = 1;
@@ -243,7 +248,12 @@ void Cd_LockFile(s32 a0) {
 }
 
 void Cd_UnlockFile(s32 a0) {
+#ifdef DW2_NATIVE
+    CdCacheEntry *p = Cd_FindCachedFile(a0);
+#else
+    /* No argument: a0 still holds the file id for Cd_FindCachedFile. */
     CdCacheEntry *p = Cd_FindCachedFile();
+#endif
     if (p != 0) {
         if (p->state == 3) {
             p->locked = 0;

@@ -117,8 +117,15 @@ void Stg40_ApplyTrapEffect(s32 a0, s32 a1) {
     }
 }
 
+#ifdef DW2_NATIVE
+/* Retail takes no parameter and calls Stg40_GetBeetlePart() with none: a0 still holds the
+ * caller's part index. Native code passes it. */
+s32 Stg40_GetPartState(s32 part) {
+    s32 r = Stg40_GetBeetlePart(part);
+#else
 s32 Stg40_GetPartState(void) {
     s32 r = Stg40_GetBeetlePart();
+#endif
 
     if (r > 0) {
         r = 1;

@@ -209,9 +209,17 @@ s32 Item_CheckId(s32 itemId) {
     return Item_FindById(itemId) != 0 ? 0 : -1;
 }
 
+#ifdef DW2_NATIVE
+/* Retail takes no parameter and calls Item_FindById() with none: a0 still holds the caller's
+ * item id (Item_GetUseKind). Native code passes it. */
+s32 func_8001E134(s32 itemId) {
+    return Item_FindById(itemId)->u0.field_0 >> 30;
+}
+#else
 s32 func_8001E134(void) {
     return Item_FindById()->u0.field_0 >> 30;
 }
+#endif
 
 /* Unnamed: ITEMDATA word0 bits 28-29, values 0/2/3, no callers. */
 s32 func_8001E158(void) {

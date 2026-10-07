@@ -131,7 +131,11 @@ extern s32 GsSetFlatLight(s32, Blk16 *);
 extern void GsSetAmbient(s32, s32, s32);
 extern void GsSetLightMode(s32);
 #endif
+#ifdef DW2_NATIVE
+extern s32 func_8001E134(s32 itemId);
+#else
 extern s32 func_8001E134(void);
+#endif
 extern s32 *Item_GetEffectRec(s32);
 extern s32 Text_WinFrameParts[];
 extern void Gfx_SetPartsScale(GfxPartScaleView *, s32, s32);

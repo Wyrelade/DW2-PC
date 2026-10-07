@@ -12,7 +12,11 @@ s32 Ovl_CurrentId = -1;
 
 /* Task callbacks the descriptors below name (defined further down). */
 void Sys_GameModeTask(Actor *a0);
+#ifdef DW2_NATIVE
+void Sys_GameModeDestroy(Actor *a0);
+#else
 void Sys_GameModeDestroy(void);
+#endif
 /* CD file id of each overlay (Ovl_Load), indexed by overlay id. */
 s32 Ovl_FileIds[] = { 0x190, 0x19A, 0x192, 0x191, 0x193, 0xD1E, 0xD4D };
 TaskDesc Sys_GameModeDesc = { 0, Sys_GameModeTask, (TaskFn)Sys_GameModeDestroy, 0, 0, 4 };
@@ -78,6 +82,14 @@ void Sys_GameModeTask(Actor *a0) {
     }
 }
 
+#ifdef DW2_NATIVE
+/* Retail takes no parameter and calls Task_Free() with none: a0 still holds the task pointer
+ * from the destroy callback. Native code passes it. */
+void Sys_GameModeDestroy(Actor *a0) {
+    Task_Free(a0);
+}
+#else
 void Sys_GameModeDestroy(void) {
     Task_Free();
 }
+#endif

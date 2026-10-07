@@ -18,7 +18,11 @@ s32 Item_GetDescText(s32 arg0);
 s32 Item_GetCategory(s32 id);
 s32 Item_GetLevel(s32);
 s32 Item_CheckId(s32);
+#ifdef DW2_NATIVE
+s32 func_8001E134(s32 itemId);
+#else
 s32 func_8001E134(void);
+#endif
 s32 func_8001E158(void);
 s32 Item_GetPrice(s32);
 u8 Item_GetBodyMask(s32);

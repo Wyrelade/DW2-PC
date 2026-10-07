@@ -54,7 +54,12 @@ void func_80011168(void) {
 }
 
 void Task_DefaultDestroy(Actor *arg0) {
+#ifdef DW2_NATIVE
+    Task_Free(arg0);
+#else
+    /* No argument: a0 still holds arg0 for Task_Free. */
     Task_Free();
+#endif
 }
 
 void Task_ClearList(void) {
