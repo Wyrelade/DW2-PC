@@ -9,5 +9,7 @@ int Psyq_VBlankCount(void);
 void Psyq_PadVBlank(void);
 /* libmcrd: the card driver's VBlank step (async card operations finish on VBlanks). */
 void Psyq_CardVBlank(void);
+/* libsnd / libspu hardware: DMA channel 4 completion delivered (psyq/snd_hw.c). */
+void Snd_HwVBlank(void);
 
 #endif /* PSYQ_VBLANK_H */

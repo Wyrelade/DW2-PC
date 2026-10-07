@@ -9,3 +9,8 @@ assets/main/cd_file_sectors_full.bin     dumps/disc/SLUS_011.93   0x37900  0x1CB
 #
 # libgte ratan_tbl (psyq/libgte.c): 0x401 s16 at 0x8004DDC0, in the main 38110 data block.
 assets/main/ratan_tbl.bin                dumps/disc/SLUS_011.93   0x3E5C0  0x802
+#
+# libsnd / libspu (psyq/snd_hw.c): the retail rodata 0x80010000..0x80011000 and the data / bss
+# block 0x80038000..0x80063360, loaded into Ps1_Ram at their PS1 addresses (library globals).
+assets/main/retail_rodata.bin            dumps/disc/SLUS_011.93   0x800    0x1000
+assets/main/retail_data.bin              dumps/disc/SLUS_011.93   0x28800  0x2B360

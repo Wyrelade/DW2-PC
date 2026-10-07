@@ -99,6 +99,9 @@ set_source_files_properties(${CMAKE_SOURCE_DIR}/host/pak.c PROPERTIES
 # psyq/libgte.c pulls in the retail ratan_tbl (.incbin, configs/USA/include_bin_native.txt).
 set_source_files_properties(${CMAKE_SOURCE_DIR}/psyq/libgte.c PROPERTIES
     OBJECT_DEPENDS ${CMAKE_SOURCE_DIR}/assets/main/ratan_tbl.bin)
+# psyq/snd_hw.c pulls in the retail rodata / data image for the libsnd / libspu globals.
+set_source_files_properties(${CMAKE_SOURCE_DIR}/psyq/snd_hw.c PROPERTIES
+    OBJECT_DEPENDS "${CMAKE_SOURCE_DIR}/assets/main/retail_rodata.bin;${CMAKE_SOURCE_DIR}/assets/main/retail_data.bin")
 
 # GTE model test (tests/gte_test.c): build/native/gte_test.exe, run from the repo root.
 add_executable(gte_test ${CMAKE_SOURCE_DIR}/tests/gte_test.c ${CMAKE_SOURCE_DIR}/psyq/gte.c

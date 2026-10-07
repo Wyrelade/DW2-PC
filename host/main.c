@@ -31,6 +31,7 @@
 
 extern void Sys_Main(void);
 extern void Host_OvlSnapshot(void);
+extern void Snd_NativeInit(void);
 extern u8 Ovl_LoadArea[];
 extern s32 Sys_FlipPending;
 
@@ -183,6 +184,7 @@ int main(int argc, char **argv) {
     check_window();
     Host_PakOpen(pak, no_window);
     Host_OvlSnapshot();
+    Snd_NativeInit();
     Host_Init(no_window);
     printf("[host] Sys_Main\n");
     fflush(stdout);
