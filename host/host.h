@@ -30,4 +30,12 @@ void Host_LogRate(const char *what);
  * Not written to Pad_RecvBufs yet (P1.7). */
 unsigned short Host_PadButtons(int port);
 
+/* host/pak.c: the game's disc files from dw2.pak (doc/PACK_FORMAT.md). Host_PakOpen opens the
+ * pack (path, or NULL = dw2.pak next to the exe, then build/native/dw2.pak), checks it against
+ * the compiled-in manifest and exits with a message on any problem. Host_PakSector fills body
+ * with disc sector `lba` after its 4-byte header: subheader (8) + 2328 bytes (Form 1: the 2048
+ * data bytes, then zeros) and returns the file id, or -1 (no file there; body is zero). */
+void Host_PakOpen(const char *path, int no_window);
+int Host_PakSector(int lba, unsigned char *body);
+
 #endif /* HOST_HOST_H */

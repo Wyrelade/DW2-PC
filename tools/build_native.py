@@ -85,7 +85,15 @@ def main():
         sys.exit("BUILD FAILED: assets/Ovl_LoadArea.bin missing (run splat on configs/USA/main.yaml)")
 
     if args.rebuild and os.path.isdir(BUILD):
-        shutil.rmtree(BUILD)
+        # Keep dw2.pak (tools/dw2pack.py output, slow to rebuild and not a build product).
+        for name in os.listdir(BUILD):
+            path = os.path.join(BUILD, name)
+            if name.endswith(".pak"):
+                continue
+            if os.path.isdir(path):
+                shutil.rmtree(path)
+            else:
+                os.remove(path)
     env = dict(os.environ)
     env["PATH"] = os.path.join(mingw, "bin") + os.pathsep + env.get("PATH", "")
     if not os.path.exists(os.path.join(BUILD, "build.ninja")):

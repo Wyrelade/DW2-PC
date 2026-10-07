@@ -91,3 +91,6 @@ add_custom_command(TARGET dw2 POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:SDL3::SDL3-shared> $<TARGET_FILE_DIR:dw2>)
 target_link_options(dw2 PRIVATE -m32 -Wl,--image-base=0x01000000 -Wl,--disable-dynamicbase
     -Wl,-Map=${CMAKE_BINARY_DIR}/dw2.map)
+# host/pak.c compiles in configs/USA/pack_manifest.txt (.incbin): rebuild it when the manifest changes.
+set_source_files_properties(${CMAKE_SOURCE_DIR}/host/pak.c PROPERTIES
+    OBJECT_DEPENDS ${CMAKE_SOURCE_DIR}/configs/USA/pack_manifest.txt)

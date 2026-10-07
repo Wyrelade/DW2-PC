@@ -34,3 +34,7 @@ configs/USA/generated/
 
 # Per-item rodata splits: tools/rodata_own.py --split rewrites them on every build.
 asm/USA/*/rodata/
+
+# dw2.pak: built from the player's own disc image (tools/dw2pack.py), never committed.
+*.pak
+*.pak.tmp

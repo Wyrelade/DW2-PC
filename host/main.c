@@ -11,7 +11,9 @@
  * initial data, starts the SDL3 host, then runs the game's Sys_Main (it never returns; the host
  * quits on window close or Esc).
  *
- *   dw2 [--vblanks N] [--no-window]
+ *   dw2 [--pak PATH] [--vblanks N] [--no-window]
+ *     --pak PATH    the data pack (default dw2.pak next to the exe, then build/native/dw2.pak;
+ *                   doc/PACK_FORMAT.md), checked before anything else runs
  *     --vblanks N   quit after N VBlank waits in the Sys_FlipPending spin (0 = run on)
  *     --no-window   SDL dummy video and audio drivers (headless test runs) */
 
@@ -55,21 +57,25 @@ void Host_WaitVBlank(void) {
 }
 
 int main(int argc, char **argv) {
+    const char *pak = NULL;
     int no_window = 0;
     int i;
 
     for (i = 1; i < argc; i++) {
         if (strcmp(argv[i], "--vblanks") == 0 && i + 1 < argc) {
             max_vblanks = (unsigned int)strtoul(argv[++i], NULL, 0);
+        } else if (strcmp(argv[i], "--pak") == 0 && i + 1 < argc) {
+            pak = argv[++i];
         } else if (strcmp(argv[i], "--no-window") == 0) {
             no_window = 1;
         } else {
-            fprintf(stderr, "usage: %s [--vblanks N] [--no-window]\n", argv[0]);
+            fprintf(stderr, "usage: %s [--pak PATH] [--vblanks N] [--no-window]\n", argv[0]);
             return 2;
         }
     }
     setvbuf(stdout, NULL, _IOLBF, 1 << 16);
     check_window();
+    Host_PakOpen(pak, no_window);
     Host_OvlSnapshot();
     Host_Init(no_window);
     printf("[host] Sys_Main\n");

@@ -1,5 +1,7 @@
+#include <stdio.h>
 #include <string.h>
 
+#include "host/host.h"
 #include "libcd.h"
 #include "psyq_log.h"
 
@@ -9,7 +11,9 @@
  * 0xA0) whose header holds the sector's MSF and whose data is zero. The callbacks run after the
  * outermost CdControlF has done its work (a small event queue), so a whole file read finishes
  * inside the CdControlF(Setloc) that Cd_ReadFileAsync ends with; the game's Cd_PollRead spins
- * never wait. P1.3 puts the disc sectors behind the same protocol. */
+ * never wait. P1.3: the sector data comes from dw2.pak (Host_PakSector: LBA -> file -> pack
+ * offset); the header MSF and mode stay synthesized from the LBA. Each read logs one line
+ * ("[cd] file 0x...") when it ends. */
 
 u_long StCdIntrFlag;
 
@@ -23,6 +27,8 @@ static u_char queue[16];    /* pending sync callback events */
 static int q_head, q_tail;
 static u_char sector[2340]; /* MSF + mode, subheader, 2048 data bytes, (EDC/ECC not used) */
 static int sector_pos;
+static int log_file = -2;   /* file of the read in progress (-2 none, -1 no file at the LBA) */
+static int log_lba, log_count;
 
 static int bcd(int v) {
     return (v / 10) * 16 + v % 10;
@@ -36,15 +42,32 @@ static void enqueue(u_char ev) {
     queue[q_tail++ & 15] = ev;
 }
 
+/* One line per read: the file, its first sector and how many sectors were delivered. */
+static void log_read_end(void) {
+    if (log_file == -1) {
+        printf("[cd] lba %d: %d sectors outside every file (zeros)\n", log_lba, log_count);
+    } else if (log_file >= 0) {
+        printf("[cd] file 0x%03X: %d sectors from lba %d\n", log_file, log_count, log_lba);
+    }
+    log_file = -2;
+}
+
 static void load_sector(int lba) {
     int i = lba + 150;
+    int id;
 
-    memset(sector, 0, sizeof(sector));
     sector[0] = (u_char)bcd(i / (60 * 75));
     sector[1] = (u_char)bcd(i / 75 % 60);
     sector[2] = (u_char)bcd(i % 75);
     sector[3] = 2; /* mode 2 */
+    id = Host_PakSector(lba, sector + 4);
     sector_pos = 0;
+    if (log_file == -2) {
+        log_file = id;
+        log_lba = lba;
+        log_count = 0;
+    }
+    log_count++;
 }
 
 /* Runs queued command completions, then one DataReady per sector while reading. */
@@ -134,6 +157,7 @@ int CdControlF(u_char com, u_char *param) {
         break;
     case CdlPause:
         reading = 0;
+        log_read_end();
         break;
     }
     enqueue(CdlComplete);
