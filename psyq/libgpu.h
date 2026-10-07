@@ -3,7 +3,7 @@
 
 #include "psyq_types.h"
 
-/* Psy-Q 4.7 libgpu: the types and the 17 functions the game calls. */
+/* Psy-Q 4.7 libgpu: the types and the 17 functions the game calls (+ StoreImage, MoveImage). */
 
 typedef struct {
     short x, y;
@@ -67,6 +67,9 @@ int DrawSync(int mode);
 int ClearImage(RECT *rect, u_char r, u_char g, u_char b);
 int ClearImage2(RECT *rect, u_char r, u_char g, u_char b);
 int LoadImage(RECT *rect, u_long *p);
+/* Not called by the game; for tools and tests. */
+int StoreImage(RECT *rect, u_long *p);
+int MoveImage(RECT *rect, int x, int y);
 u_long *ClearOTagR(u_long *ot, int n);
 void DrawOTag(u_long *p);
 DRAWENV *PutDrawEnv(DRAWENV *env);

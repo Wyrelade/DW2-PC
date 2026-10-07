@@ -19,11 +19,20 @@ void Host_Shutdown(void);
 void Host_Quit(const char *why);
 
 /* host/vblank.c: the 59.94 Hz VBlank clock. Sleeps to the next deadline, then runs each due
- * VBlank (Psyq_VBlank: VSync(-1) counter + Sys_VSyncHandler), presents after a buffer flip,
+ * VBlank (Psyq_VBlank: VSync(-1) counter + Sys_VSyncHandler), presents the display area,
  * pumps events and feeds audio. libetc's VSync waits and Host_WaitVBlank use it. */
 void Host_VBlank(void);
 /* VBlanks run so far and the measured rate since the clock started. */
 void Host_LogRate(const char *what);
+
+/* host/main.c: libgpu's SetDispMask(1). The first time (the boot image is in VRAM): saves the
+ * "boot" screenshot when screenshots are on and holds the picture --hold-boot N VBlanks (dev
+ * option; on the PS1 the CD loads after it take that long, here they are instant). */
+void Host_DisplayOn(void);
+/* F12: one screenshot pair into the --shot-dir directory (default scratchpad/shots). */
+void Host_ShotKey(void);
+/* host/shot.c: <dir>/<tag>_display.png (the display area) and <tag>_vram.png (1024x512). */
+void Host_SaveShot(const char *dir, const char *tag);
 
 /* host/input.c: PS1 digital pad buttons held on `port` (0 or 1), active high, in the pad reply
  * bit order (PAD_* in host/host_sdl.h). Keyboard is port 0; gamepads take ports 0, 1 in order.
@@ -37,5 +46,7 @@ unsigned short Host_PadButtons(int port);
  * data bytes, then zeros) and returns the file id, or -1 (no file there; body is zero). */
 void Host_PakOpen(const char *path, int no_window);
 int Host_PakSector(int lba, unsigned char *body);
+/* The file holding sector `lba` and its size in sectors, or -1 (and 0 sectors). */
+int Host_PakFileAt(int lba, int *sectors);
 
 #endif /* HOST_HOST_H */

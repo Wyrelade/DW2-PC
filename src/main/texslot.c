@@ -35,9 +35,17 @@ void Gfx_InitTexSlots(void) {
     }
 }
 
+#ifdef DW2_NATIVE
+/* Retail takes no parameter and calls Cd_GetFileEntry() with none: a0 still holds the caller's
+ * file id. Native code passes it. */
+s32 Gfx_GetTimPixelMode(s32 id) {
+    return Cd_GetFileEntry(id)->packedId & 7;
+}
+#else
 s32 Gfx_GetTimPixelMode() {
     return Cd_GetFileEntry()->packedId & 7;
 }
+#endif
 
 void Gfx_LoadTexSlotImage(GfxTexSlot *a0) {
     u32 *p;

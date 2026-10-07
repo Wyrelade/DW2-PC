@@ -29,6 +29,8 @@ static u_char sector[2340]; /* MSF + mode, subheader, 2048 data bytes, (EDC/ECC 
 static int sector_pos;
 static int log_file = -2;   /* file of the read in progress (-2 none, -1 no file at the LBA) */
 static int log_lba, log_count;
+static int st_lba = -1;     /* Setloc of the STR stream (CdControl before CdRead2) */
+static int st_end = -1;     /* frame number StGetNext reports (-1: not computed yet) */
 
 static int bcd(int v) {
     return (v / 10) * 16 + v % 10;
@@ -142,6 +144,9 @@ CdlCB CdReadyCallback(CdlCB func) {
 
 int CdControl(u_char com, u_char *param, u_char *result) {
     PSYQ_LOG("0x%02X, %p, %p", com, (void *)param, (void *)result);
+    if (com == CdlSetloc && param != 0) {
+        st_lba = (unbcd(param[0]) * 60 + unbcd(param[1])) * 75 + unbcd(param[2]) - 150;
+    }
     return 1;
 }
 
@@ -191,12 +196,19 @@ int CdRead2(int mode) {
     return 1;
 }
 
+/* STR streaming, P1.10 prototype stub: no stream is read and no frame is decoded. StGetNext
+ * hands out one frame whose header frame number lies past the end of the movie (file sectors /
+ * 10, the game's own end test is sectors / 10 - 10) with width and height 0, so stag1000's
+ * movie task ends on its first frame and the next game mode starts. The real STR / MDEC path
+ * (raw Form 2 sectors from dw2.pak) is the rest of P1.10. */
 void StSetRing(u_long *ring_addr, u_long ring_size) {
     PSYQ_LOG("%p, %u", (void *)ring_addr, ring_size);
+    st_end = -1;
 }
 
 void StUnSetRing(void) {
     PSYQ_LOG("");
+    st_end = -1;
 }
 
 void StSetStream(u_long mode, u_long start_frame, u_long end_frame, void (*func1)(), void (*func2)()) {
@@ -209,8 +221,26 @@ u_long StFreeRing(u_long *base) {
 }
 
 u_long StGetNext(u_long **addr, u_long **header) {
+    /* STR sector header: 0x0160 0x8001, sector number / count, frame number (word 2), frame
+     * size, width / height (word 4: 0 x 0, so the game uploads no slice). */
+    static u_long frame_header[8];
+    static u_long frame_data[64];
+
     PSYQ_LOG("%p, %p", (void *)addr, (void *)header);
-    return 1; /* no frame ready */
+    if (st_end < 0) {
+        int sectors;
+        int id = Host_PakFileAt(st_lba, &sectors);
+
+        st_end = sectors / 10 + 1;
+        printf("[movie] stub: file 0x%03X (%d sectors, lba %d), StGetNext reports frame %d (past the end), "
+               "no decode\n", id, sectors, st_lba, st_end);
+    }
+    memset(frame_header, 0, sizeof(frame_header));
+    frame_header[0] = 0x80010160;
+    frame_header[2] = (u_long)st_end;
+    *addr = frame_data;
+    *header = frame_header;
+    return 0;
 }
 
 void StCdInterrupt(void) {

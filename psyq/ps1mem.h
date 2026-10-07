@@ -1,6 +1,8 @@
 #ifndef PSYQ_PS1MEM_H
 #define PSYQ_PS1MEM_H
 
+#include <stdint.h>
+
 #include "psyq_types.h"
 
 /* PS1 memory map on PC. The game C names a few fixed PS1 addresses (heap 0x80075000 up to
@@ -19,6 +21,9 @@ extern u_char Ps1_Scratchpad[PS1_SCRATCHPAD_SIZE];
 
 /* A PS1 RAM address (KSEG0 / KUSEG / KSEG1 alike) inside the arena. */
 #define PS1_RAM(addr) ((void *)(Ps1_Ram + ((u_long)(addr) & (PS1_RAM_SIZE - 1))))
+/* A 24-bit GPU packet link (OT tag) back to a pointer in the 16 MB window of Ps1_Ram. */
+#define PS1_LINK_PTR(link) \
+    ((u_long *)(((uintptr_t)Ps1_Ram & ~(uintptr_t)0xFFFFFF) | ((uintptr_t)(link) & 0xFFFFFF)))
 /* The 1 KB data cache used as fast RAM (0x1F800000). */
 #define PS1_SCRATCHPAD ((void *)Ps1_Scratchpad)
 

@@ -50,7 +50,6 @@ static void run_vblank(void) {
     fired++;
     if (flip_pending && !Sys_FlipPending) {
         flips++;
-        Host_Present();
     }
     if (fired - window_fired >= RATE_LOG_EVERY) {
         Uint64 now = SDL_GetTicksNS();
@@ -83,6 +82,8 @@ void Host_VBlank(void) {
         t0 = now;
         next = 1;
     }
+    /* The PS1 scans the display area out of VRAM all the time: show it once per call. */
+    Host_Present();
     Host_PumpEvents();
     Host_AudioFeed();
 }

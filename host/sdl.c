@@ -1,17 +1,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "backend/psxgpu.h"
 #include "host/host.h"
 #include "host/host_sdl.h"
 
-/* SDL3 host: one window (320x240 logical, letterboxed, resizable), black until the emulated GPU
- * (P1.4) has a frame to show. Display vsync is off; the VBlank clock paces and presents once per
- * buffer flip. */
+/* SDL3 host: one window (320x240 logical, letterboxed, resizable) showing the emulated GPU's
+ * display area (P1.4), stretched to the 4:3 picture: 240-line modes scale by whole pixels
+ * (nearest), 480-line modes linear. Black while the display is off. Display vsync is off; the
+ * VBlank clock paces and presents once per VBlank wait. */
 
 #define WINDOW_SCALE 3
 
 static SDL_Window *window;
 static SDL_Renderer *renderer;
+static SDL_Texture *texture; /* 640x480 streaming, the display area in its top-left corner */
+static Uint32 frame[640 * 480];
 static int initialized;
 
 static void fail(const char *what) {
@@ -42,6 +46,10 @@ void Host_Init(int no_window) {
     }
     SDL_SetRenderVSync(renderer, 0);
     SDL_SetRenderLogicalPresentation(renderer, 320, 240, SDL_LOGICAL_PRESENTATION_LETTERBOX);
+    texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_XRGB8888, SDL_TEXTUREACCESS_STREAMING, 640, 480);
+    if (texture == NULL) {
+        fail("SDL_CreateTexture");
+    }
     printf("[host] window %dx%d (320x240 logical), renderer %s, vsync off\n", 320 * WINDOW_SCALE,
            240 * WINDOW_SCALE, SDL_GetRendererName(renderer));
     Host_Present();
@@ -51,8 +59,19 @@ void Host_Init(int no_window) {
 }
 
 void Host_Present(void) {
+    int w, h;
+
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
+    if (PsxGpu_ReadDisplay(frame, &w, &h)) {
+        SDL_Rect r = { 0, 0, w, h };
+        SDL_FRect src = { 0, 0, (float)w, (float)h };
+        SDL_FRect dst = { 0, 0, 320, 240 };
+
+        SDL_UpdateTexture(texture, &r, frame, w * 4);
+        SDL_SetTextureScaleMode(texture, h > 256 ? SDL_SCALEMODE_LINEAR : SDL_SCALEMODE_NEAREST);
+        SDL_RenderTexture(renderer, texture, &src, &dst);
+    }
     SDL_RenderPresent(renderer);
 }
 
@@ -68,6 +87,9 @@ void Host_PumpEvents(void) {
         case SDL_EVENT_KEY_DOWN:
             if (e.key.scancode == SDL_SCANCODE_ESCAPE) {
                 Host_Quit("Esc");
+            }
+            if (e.key.scancode == SDL_SCANCODE_F12 && !e.key.repeat) {
+                Host_ShotKey();
             }
             Host_InputPress(&e);
             break;
@@ -92,6 +114,10 @@ void Host_Shutdown(void) {
     initialized = 0;
     Host_AudioClose();
     Host_InputClose();
+    if (texture != NULL) {
+        SDL_DestroyTexture(texture);
+        texture = NULL;
+    }
     if (renderer != NULL) {
         SDL_DestroyRenderer(renderer);
         renderer = NULL;

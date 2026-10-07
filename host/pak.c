@@ -268,27 +268,39 @@ void Host_PakOpen(const char *path, int no_win) {
     refuse(exe_dir_pak != NULL ? exe_dir_pak : "dw2.pak", "not found (also looked for build/native/dw2.pak)");
 }
 
-int Host_PakSector(int lba, unsigned char *body) {
-    static const unsigned char form1_subheader[8] = { 0, 0, 0x08, 0, 0, 0, 0x08, 0 };
+/* The file holding sector `lba` (binary search over the LBA-sorted index), or -1. */
+static int file_at(int lba) {
     int lo = 0;
     int hi = PAK_FILES - 1;
-    int id = -1;
-    const PakFile *f;
-    Uint64 at;
 
-    memset(body, 0, 2336);
     while (lo <= hi) {
         int mid = (lo + hi) / 2;
-        f = &files[by_lba[mid]];
+        const PakFile *f = &files[by_lba[mid]];
         if (lba < f->lba) {
             hi = mid - 1;
         } else if (lba >= f->lba + f->sectors) {
             lo = mid + 1;
         } else {
-            id = by_lba[mid];
-            break;
+            return by_lba[mid];
         }
     }
+    return -1;
+}
+
+int Host_PakFileAt(int lba, int *sectors) {
+    int id = file_at(lba);
+
+    *sectors = id < 0 ? 0 : files[id].sectors;
+    return id;
+}
+
+int Host_PakSector(int lba, unsigned char *body) {
+    static const unsigned char form1_subheader[8] = { 0, 0, 0x08, 0, 0, 0, 0x08, 0 };
+    int id = file_at(lba);
+    const PakFile *f;
+    Uint64 at;
+
+    memset(body, 0, 2336);
     if (id < 0) {
         return -1;
     }

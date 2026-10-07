@@ -75,11 +75,13 @@ set(DW2_SDL3 "D:/tools/SDL3" CACHE PATH "SDL3 MinGW development release root")
 find_package(SDL3 3.2 REQUIRED CONFIG COMPONENTS SDL3-shared
     PATHS ${DW2_SDL3}/i686-w64-mingw32 ${DW2_SDL3} NO_DEFAULT_PATH)
 
-# Psy-Q layer and host.
+# Psy-Q layer, host and backend.
 file(GLOB PSYQ_SRC CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/psyq/*.c)
 file(GLOB HOST_SRC CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/host/*.c)
+# Emulated PS1 hardware (backend/psxgpu.c: the GPU).
+file(GLOB BACKEND_SRC CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/backend/*.c)
 
-add_executable(dw2 ${PSYQ_SRC} ${HOST_SRC} $<TARGET_OBJECTS:dw2_main> ${OVL_OBJECTS})
+add_executable(dw2 ${PSYQ_SRC} ${HOST_SRC} ${BACKEND_SRC} $<TARGET_OBJECTS:dw2_main> ${OVL_OBJECTS})
 target_compile_options(dw2 PRIVATE -m32 -funsigned-char -fno-strict-aliasing -fwrapv -fno-common -Wall
     "-Wa,-I${CMAKE_SOURCE_DIR}")
 target_compile_definitions(dw2 PRIVATE DW2_NATIVE)
