@@ -1001,7 +1001,7 @@ typedef struct {
 typedef struct {
     u8 _pad00[0x80];
     /* 0x80 */ s32 ramp;
-    /* 0x84 */ s32 *digimon;
+    /* 0x84 */ PTR32(s32) digimon;
     u8 _pad88[0xB0 - 0x88];
     /* 0xB0 */ s32 posX;
     /* 0xB4 */ s32 posY;

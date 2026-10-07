@@ -35,7 +35,7 @@ void Menu_DigiStatusInit(Actor *a0, s16 a1) {
     w = (MenuDigiStatusInitWork *)a0->work;
     w->field_7C = a1;
     p = Menu_Ctx->selRecord;
-    w->digimon = p;
+    w->digimon = P32_SET(p);
     a0->digiId = p[1];
     Actor_InitTransform((ContC40 *)a0, w->pos, w->initRotY);
     w->modelFile = Digi_GetModelFile(a0->digiId);
@@ -65,7 +65,7 @@ void Menu_DigiStatusTask(Actor *a) {
     MenuDigiStatusWork *w = (MenuDigiStatusWork *)a->work;
     Halves *h;
     MenuDigiStatusEntry *r;
-    u8 **q;
+    PTR32(u8) *q;
     s32 i;
     Actor *t[1];
     s16 *p;
@@ -88,21 +88,32 @@ void Menu_DigiStatusTask(Actor *a) {
         default:
         case 0:
             h = (Halves *)Cd_GetFileEntry(0x513001E);
+#ifdef DW2_NATIVE
+            {
+                /* retail stores through the child's model before it is attached (NULL + offset:
+                 * PS1 RAM, harmless there; P1.25) */
+                Actor *c = P32(Actor, *(PTR32(Actor) *)a->u34.children);
+                if (c != NULL && c->model != NULL) {
+                    c->model->otIndex = 4;
+                }
+            }
+#else
             P32(Actor, *(PTR32(Actor) *)a->u34.children)->model->otIndex = 4;
+#endif
             if (Math_RampToOne((s32)a, &w->ramp) != 0) {
                 break;
             }
             Text_PrintIdList((s32 *)w, (TextIdListEntry *)Cd_GetFileEntrySubPtr(0x513001D, 0), 1);
-            r = w->digimon;
+            r = P32(MenuDigiStatusEntry, w->digimon);
             Text_OpenPacked(&w->nameText, (s32)r->name, 0x81, h[0]);
-            w->speciesName = Digi_GetDefaultName(r->speciesId);
-            w->typeName = Cd_GetFileEntry(((s32 (*)(s32))Digi_GetType)(r->speciesId) + 0x1FD00C3);
-            w->rankName = Cd_GetFileEntry(((s32 (*)(s32))Digi_GetRank)(r->speciesId) + 0x1FD00C6);
-            w->specialtyName = Cd_GetFileEntry(((s32 (*)(s32))Digi_GetSpecialty)(r->speciesId) + 0x1FD00CA);
+            w->speciesName = P32_SET(Digi_GetDefaultName(r->speciesId));
+            w->typeName = P32_SET(Cd_GetFileEntry(((s32 (*)(s32))Digi_GetType)(r->speciesId) + 0x1FD00C3));
+            w->rankName = P32_SET(Cd_GetFileEntry(((s32 (*)(s32))Digi_GetRank)(r->speciesId) + 0x1FD00C6));
+            w->specialtyName = P32_SET(Cd_GetFileEntry(((s32 (*)(s32))Digi_GetSpecialty)(r->speciesId) + 0x1FD00CA));
             q = w->parentNames;
             for (i = 0; i < 2; i++) {
                 if (r->parentIds[i] != 0) {
-                    *q++ = Digi_GetDefaultName(r->parentIds[i]);
+                    *q++ = P32_SET(Digi_GetDefaultName(r->parentIds[i]));
                 }
             }
             *q = 0;
@@ -184,7 +195,7 @@ void Menu_DigiStatusDraw(Actor *actor) {
         goto Ltail;
     }
     p = (s32 *)Cd_GetFileEntry(0x5130021);
-    rec = (Rec19214 *)work->digimon;
+    rec = P32(Rec19214, work->digimon);
     if (*p == 0) {
         goto Ltail;
     }
@@ -220,7 +231,22 @@ Ltail:
     ls.vry = work->vry;
     ls.vrz = work->vrz;
     ls.rz = 0;
+#ifdef DW2_NATIVE
+    {
+        /* The work block holds a GsCOORDINATE2 at retail offsets (0xE8); in 64-bit its pointers
+         * are wider and super would overlap rot (0x138). The view gets a native copy of the
+         * coordinate instead (P1.25): same matrix, no parent. */
+        static GsCOORDINATE2 coord;
+
+        coord.coord = *(MATRIX *)&work->coordMatrix;
+        coord.flg = 0;
+        coord.super = NULL;
+        coord.sub = NULL;
+        ls.super = &coord;
+    }
+#else
     ls.super = &work->coord;
+#endif
     GsSetProjection(work->projection);
     GsSetRefView2(&ls);
     if (work->modelPhase == 0) {

@@ -1880,7 +1880,7 @@ typedef struct {
     u8 _pad00[0x7C];
     /* 0x7C */ s16 field_7C;
     u8 _pad7E[0x6];
-    /* 0x84 */ u8 *digimon;
+    /* 0x84 */ PTR32(u8) digimon; /* 32-bit: the other views keep the retail offsets */
     u8 _pad88[0x28];
     /* 0xB0 */ s32 pos[3];
     /* 0xBC */ u16 initRotY;
@@ -2539,12 +2539,14 @@ typedef struct {
     /* 0x70 */ MenuGridLayout blk;
     u8 _pad7C[0x4];
     /* 0x80 */ s32 ramp;
-    /* 0x84 */ MenuDigiStatusEntry *digimon;
-    /* 0x88 */ u8 *speciesName;
-    /* 0x8C */ void *typeName;
-    /* 0x90 */ void *rankName;
-    /* 0x94 */ void *specialtyName;
-    /* 0x98 */ u8 *parentNames[3];
+    /* 32-bit words (P1.25): Text_PrintList reads speciesName.. as a list of 32-bit words and
+     * Menu_DigiStatusDraw's view keeps the retail offsets */
+    /* 0x84 */ PTR32(MenuDigiStatusEntry) digimon;
+    /* 0x88 */ PTR32(u8) speciesName;
+    /* 0x8C */ PTR32(void) typeName;
+    /* 0x90 */ PTR32(void) rankName;
+    /* 0x94 */ PTR32(void) specialtyName;
+    /* 0x98 */ PTR32(u8) parentNames[3];
     u8 _padA4[0x24];
     /* 0xC8 */ s32 modelPhase;
     u8 _padCC[0x6C];
