@@ -33,5 +33,9 @@ void PsxGpu_SetDisplayEnable(int on);
 /* The visible picture: w x h pixels of 0x00RRGGBB written to `out` (at least 640 x 480 words).
  * Returns 0 when the display is off (out untouched). */
 int PsxGpu_ReadDisplay(uint32_t *out, int *w, int *h);
+/* The same picture from the HD surface (PG.1, backend/psxgpu_hd.h): w*S x h*S pixels, out NULL
+ * = size only. Returns 0 when HD is off, the display is off or 24-bit, or no surface holds it
+ * (the caller shows the 1x picture then). */
+int PsxGpu_ReadDisplayHd(uint32_t *out, int *w, int *h);
 
 #endif /* BACKEND_PSXGPU_H */

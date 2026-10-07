@@ -7,7 +7,7 @@
 #include "host/host.h"
 
 /* Screenshots for checks (P1.4): the display area as shown and the whole VRAM (1024x512, 15-bit
- * colour, mask bit ignored), each as an RGB PNG. No library: the zlib stream uses stored
+ * colour, mask bit ignored), each as an RGB PNG; with HD output on (PG.1) also <tag>_hd.png. No library: the zlib stream uses stored
  * (uncompressed) deflate blocks. */
 
 static uint32_t crc_table[256];
@@ -160,6 +160,19 @@ void Host_SaveShot(const char *dir, const char *tag) {
         printf("[shot] %s (1024x512)\n", path);
     } else {
         printf("[shot] cannot write %s\n", path);
+    }
+    /* HD output (PG.1): the display area as the window shows it at --scale N */
+    if (PsxGpu_ReadDisplayHd(NULL, &w, &h)) {
+        uint32_t *hd = malloc((size_t)w * h * sizeof(uint32_t));
+        if (hd != NULL && PsxGpu_ReadDisplayHd(hd, &w, &h)) {
+            snprintf(path, sizeof(path), "%s/%s_hd.png", dir, tag);
+            if (write_png(path, hd, w, h)) {
+                printf("[shot] %s (%dx%d)\n", path, w, h);
+            } else {
+                printf("[shot] cannot write %s\n", path);
+            }
+        }
+        free(hd);
     }
     fflush(stdout);
 }

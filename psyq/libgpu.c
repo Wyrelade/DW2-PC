@@ -1,6 +1,7 @@
 #include <stdio.h>
 
 #include "backend/psxgpu.h"
+#include "backend/psxgpu_hd.h"
 #include "host/host.h"
 #include "libgpu.h"
 #include "ps1mem.h"
@@ -140,6 +141,7 @@ DRAWENV *PutDrawEnv(DRAWENV *env) {
     cmd[4] = tex_window(&env->tw);
     cmd[5] = 0xE6000000;
     PsxGpu_Gp0((const uint32_t *)cmd, 6);
+    PsxHd_Register(x0, y0, x1 - x0 + 1, y1 - y0 + 1);
     if (env->isbg) {
         PsxGpu_Fill(x0, y0, x1 - x0 + 1, y1 - y0 + 1, env->r0 | (env->g0 << 8) | (env->b0 << 16));
     }

@@ -2,6 +2,7 @@
 #include <string.h>
 
 #include "backend/psxgpu.h"
+#include "backend/psxgpu_hd.h"
 
 /* Emulated PS1 GPU (P1.4, title subset). Implemented: VRAM fill (GP0 02), polygons (GP0 20-3F:
  * flat / Gouraud, textured 4 / 8 / 15 bit with CLUT, modulated or raw, semi-transparent),
@@ -14,34 +15,21 @@
  * included, right and bottom excluded; quads are triangles (v0 v1 v2) and (v1 v2 v3); polygons
  * wider than 1023 or taller than 511 are dropped; texel 0 is transparent; semi-transparency
  * applies to untextured polygons with the semi bit and to textured ones only where the texel's
- * bit 15 is set; modulation is texel * colour / 128 per channel, clamped. */
+ * bit 15 is set; modulation is texel * colour / 128 per channel, clamped.
+ *
+ * HD (PG.1, backend/psxgpu_hd.c): when on, every primitive and every VRAM write that reaches a
+ * draw / display buffer is passed on after the 1x work, which stays unchanged. */
 
 uint16_t PsxGpu_Vram[PSXGPU_VRAM_H][PSXGPU_VRAM_W];
 
-static struct {
-    int clip_x0, clip_y0, clip_x1, clip_y1; /* draw area, inclusive */
-    int ofs_x, ofs_y;
-    uint32_t tpage;                         /* E1 bits 0-8 and 11 */
-    int dither, draw_disp, flip_x, flip_y;
-    int tw_mask_x, tw_mask_y, tw_off_x, tw_off_y;
-    int set_mask, check_mask;
-} st;
+static PsxGpuState st;
 
 static struct {
     int x, y, w, h, rgb24, on;
 } disp;
 
-typedef struct {
-    int x, y;
-    int r, g, b;
-    int u, v;
-} Vtx;
-
-typedef struct {
-    int mode; /* 0 4-bit, 1 8-bit, 2 15-bit */
-    int tx, ty, cx, cy;
-    int raw;
-} Tex;
+typedef PsxVtx Vtx;
+typedef PsxTex Tex;
 
 static void log_once(int op, const char *what) {
     static unsigned char seen[256];
@@ -302,6 +290,12 @@ static void polygon(const uint32_t *w, int op) {
     if (quad) {
         triangle(&v[1], &v[2], &v[3], gouraud, textured ? &tex : NULL, semi, (tpage >> 5) & 3);
     }
+    if (PsxHd_On()) {
+        PsxHd_Triangle(&st, &v[0], &v[1], &v[2], gouraud, textured ? &tex : NULL, semi, (tpage >> 5) & 3);
+        if (quad) {
+            PsxHd_Triangle(&st, &v[1], &v[2], &v[3], gouraud, textured ? &tex : NULL, semi, (tpage >> 5) & 3);
+        }
+    }
 }
 
 static void rectangle(const uint32_t *w, int op) {
@@ -344,6 +338,9 @@ static void rectangle(const uint32_t *w, int op) {
                   semi, (st.tpage >> 5) & 3, 0);
         }
     }
+    if (PsxHd_On()) {
+        PsxHd_Rect(&st, x0, y0, rw, rh, textured ? &tex : NULL, u0, v0, r, g, b, semi, (st.tpage >> 5) & 3);
+    }
 }
 
 /* ---- transfers ---- */
@@ -358,6 +355,9 @@ void PsxGpu_Fill(int x, int y, int w, int h, uint32_t rgb24) {
             row[(x + i) & (PSXGPU_VRAM_W - 1)] = c;
         }
     }
+    if (PsxHd_On()) {
+        PsxHd_Fill(x, y, w, h, c);
+    }
 }
 
 void PsxGpu_LoadImage(int x, int y, int w, int h, const uint16_t *src) {
@@ -368,6 +368,9 @@ void PsxGpu_LoadImage(int x, int y, int w, int h, const uint16_t *src) {
         for (i = 0; i < w; i++) {
             row[(x + i) & (PSXGPU_VRAM_W - 1)] = *src++;
         }
+    }
+    if (PsxHd_On()) {
+        PsxHd_Refresh(x, y, w, h);
     }
 }
 
@@ -400,6 +403,9 @@ void PsxGpu_MoveImage(int sx, int sy, int dx, int dy, int w, int h) {
         for (i = 0; i < w; i++) {
             d[(dx + i) & (PSXGPU_VRAM_W - 1)] = line[i];
         }
+    }
+    if (PsxHd_On()) {
+        PsxHd_Refresh(dx, dy, w, h);
     }
 }
 
@@ -469,6 +475,9 @@ static void line(const uint32_t *w, int op) {
         i++;
         if (k > 0) {
             line_seg(&v[(k - 1) & 1], p, gouraud, semi, abr);
+            if (PsxHd_On()) {
+                PsxHd_Line(&st, &v[(k - 1) & 1], p, gouraud, semi, abr);
+            }
         }
         k++;
         if (!(op & 0x08) && k == 2) {
@@ -604,6 +613,9 @@ void PsxGpu_Gp0(const uint32_t *words, int count) {
 /* ---- display ---- */
 
 void PsxGpu_SetDisplay(int x, int y, int w, int h, int rgb24) {
+    if (!rgb24) {
+        PsxHd_Register(x, y, w, h > 480 ? 480 : h);
+    }
     disp.x = x;
     disp.y = y;
     disp.w = w;
@@ -644,4 +656,14 @@ int PsxGpu_ReadDisplay(uint32_t *out, int *pw, int *ph) {
     *pw = w;
     *ph = h;
     return 1;
+}
+
+int PsxGpu_ReadDisplayHd(uint32_t *out, int *pw, int *ph) {
+    int w = disp.w < 1 ? 1 : disp.w > 640 ? 640 : disp.w;
+    int h = disp.h < 1 ? 1 : disp.h > 480 ? 480 : disp.h;
+
+    if (!disp.on || disp.rgb24) {
+        return 0;
+    }
+    return PsxHd_ReadDisplay(disp.x, disp.y, w, h, out, pw, ph);
 }
