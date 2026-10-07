@@ -20,20 +20,33 @@
  * any transfer, surface change or display read. A flush splits the surface rows between worker
  * threads (row Y goes to part Y % parts), every part walks the whole queue in order, so each
  * pixel sees the primitives in packet order and the result does not depend on the thread
- * count. */
+ * count.
+ *
+ * 16:9 (PG.3): with wide on, every surface has M = PsxHd_Margin(w) more VRAM pixels on each side
+ * (surface pixel X samples x - M + X / S). A primitive whose draw area is the whole buffer may
+ * draw into them (the game's 3D just continues: the projection centre stays); fills of the whole
+ * buffer cover them. Frames marked for the pillarbox (PsxHd_PillarboxFrame) keep the draw area
+ * at the buffer, so the margins stay black there. The 1x VRAM never sees any of it. */
 
 #define MAX_SURF 4
 #define SUB 4
 
 typedef struct {
     int x, y, w, h; /* VRAM rect */
-    uint16_t *px;   /* w*S x h*S, NULL until used */
+    int m;          /* 16:9 margin on each side, VRAM pixels */
+    uint16_t *px;   /* (w + 2m)*S x h*S, NULL until used */
 } Surf;
+
+#define OX(s) ((s)->x - (s)->m)                      /* VRAM x of surface column 0 */
+#define PITCH(s) (((s)->w + 2 * (s)->m) * scale)
 
 static Surf surf[MAX_SURF];
 static int nsurf;
 static int scale = 1;
+static int wide;                    /* 16:9 on */
+static int frame_wide, pillar_next; /* this frame draws into the margins / next frame does not */
 static unsigned serial;
+static int last_margin; /* margin of the last ReadDisplay picture, output pixels */
 
 /* PS1 dither offsets by (y & 3, x & 3), as in backend/psxgpu.c. */
 static const int dither_tbl[4][4] = {
@@ -62,7 +75,7 @@ static void release_all(void) {
 
 /* Surface pixels from the 1x VRAM (nearest) for the VRAM rect x, y, w, h inside s. */
 static void copy_from_vram(Surf *s, int x, int y, int w, int h) {
-    int pitch = s->w * scale;
+    int pitch = PITCH(s);
     int i, j, k;
 
     for (j = y; j < y + h; j++) {
@@ -70,13 +83,13 @@ static void copy_from_vram(Surf *s, int x, int y, int w, int h) {
         uint16_t *row = s->px + (size_t)(j - s->y) * scale * pitch;
         for (i = x; i < x + w; i++) {
             uint16_t c = src[i & (PSXGPU_VRAM_W - 1)];
-            uint16_t *d = row + (size_t)(i - s->x) * scale;
+            uint16_t *d = row + (size_t)(i - OX(s)) * scale;
             for (k = 0; k < scale; k++) {
                 d[k] = c;
             }
         }
         for (k = 1; k < scale; k++) {
-            memcpy(row + (size_t)k * pitch + (size_t)(x - s->x) * scale, row + (size_t)(x - s->x) * scale,
+            memcpy(row + (size_t)k * pitch + (size_t)(x - OX(s)) * scale, row + (size_t)(x - OX(s)) * scale,
                    (size_t)w * scale * sizeof(uint16_t));
         }
     }
@@ -84,7 +97,8 @@ static void copy_from_vram(Surf *s, int x, int y, int w, int h) {
 
 static int ensure(Surf *s) {
     if (s->px == NULL) {
-        s->px = malloc((size_t)s->w * scale * s->h * scale * sizeof(uint16_t));
+        s->m = PsxHd_Margin(s->w);
+        s->px = calloc((size_t)PITCH(s) * s->h * scale, sizeof(uint16_t));
         if (s->px == NULL) {
             printf("[gpu] HD surface %dx%d at %dx: out of memory\n", s->w, s->h, scale);
             return 0;
@@ -105,6 +119,7 @@ typedef struct {
     PsxVtx v[3];
     PsxTex tex;
     int textured, gouraud, semi, abr, precise;
+    int wide; /* may draw into the 16:9 margins */
     int x0, y0, w, h, u0, v0, r, g, b; /* rectangles */
 } Cmd;
 
@@ -225,6 +240,7 @@ static Cmd *push(int type, Surf *s, const PsxGpuState *st) {
     c->type = type;
     c->s = s;
     c->st = *st;
+    c->wide = frame_wide;
     return c;
 }
 
@@ -255,7 +271,34 @@ int PsxHd_Scale(void) {
 }
 
 int PsxHd_On(void) {
-    return scale > 1;
+    return scale > 1 || wide;
+}
+
+void PsxHd_SetWide(int on) {
+    on = on != 0;
+    if (on != wide) {
+        flush();
+        release_all();
+        wide = on;
+        serial++;
+    }
+}
+
+int PsxHd_Wide(void) {
+    return wide;
+}
+
+int PsxHd_Margin(int w) {
+    return wide ? (w + 3) / 6 : 0;
+}
+
+void PsxHd_PillarboxFrame(void) {
+    pillar_next = 1;
+}
+
+void PsxHd_BeginFrame(void) {
+    frame_wide = wide && !pillar_next;
+    pillar_next = 0;
 }
 
 static int contains(const Surf *s, int x, int y, int w, int h) {
@@ -288,6 +331,7 @@ void PsxHd_Register(int x, int y, int w, int h) {
     surf[nsurf].y = y;
     surf[nsurf].w = w;
     surf[nsurf].h = h;
+    surf[nsurf].m = 0;
     surf[nsurf].px = NULL;
     nsurf++;
     serial++;
@@ -314,11 +358,15 @@ static Surf *target(const PsxGpuState *st) {
 }
 
 /* Clip rect of the current draw area in surface pixels, inclusive. */
-static void hd_clip(const PsxGpuState *st, const Surf *s, int *x0, int *y0, int *x1, int *y1) {
-    *x0 = (st->clip_x0 - s->x) * scale;
+static void hd_clip(const PsxGpuState *st, const Surf *s, int wide_draw, int *x0, int *y0, int *x1, int *y1) {
+    *x0 = (st->clip_x0 - OX(s)) * scale;
     *y0 = (st->clip_y0 - s->y) * scale;
-    *x1 = (st->clip_x1 + 1 - s->x) * scale - 1;
+    *x1 = (st->clip_x1 + 1 - OX(s)) * scale - 1;
     *y1 = (st->clip_y1 + 1 - s->y) * scale - 1;
+    if (wide_draw && st->clip_x0 == s->x && st->clip_x1 == s->x + s->w - 1) {
+        *x0 = 0;
+        *x1 = PITCH(s) - 1;
+    }
 }
 
 /* ---- pixels ---- */
@@ -519,10 +567,10 @@ static void draw_tri(const Cmd *c, int part, int parts) {
     v[2] = v2;
     for (i = 0; i < 3; i++) {
         if (c->precise) {
-            px[i] = (int64_t)floor(((double)v[i]->px - s->x) * scale * (1 << SUB) + 0.5);
+            px[i] = (int64_t)floor(((double)v[i]->px - OX(s)) * scale * (1 << SUB) + 0.5);
             py[i] = (int64_t)floor(((double)v[i]->py - s->y) * scale * (1 << SUB) + 0.5);
         } else {
-            px[i] = (int64_t)(v[i]->x - s->x) * scale << SUB;
+            px[i] = (int64_t)(v[i]->x - OX(s)) * scale << SUB;
             py[i] = (int64_t)(v[i]->y - s->y) * scale << SUB;
         }
     }
@@ -582,8 +630,8 @@ static void draw_tri(const Cmd *c, int part, int parts) {
     }
     natt = gouraud ? 3 : 0;
 
-    pitch = s->w * scale;
-    hd_clip(st, s, &cx0, &cy0, &cx1, &cy1);
+    pitch = PITCH(s);
+    hd_clip(st, s, c->wide, &cx0, &cy0, &cx1, &cy1);
     if (cx0 < 0) cx0 = 0;
     if (cy0 < 0) cy0 = 0;
     if (cx1 > pitch - 1) cx1 = pitch - 1;
@@ -744,14 +792,14 @@ static void draw_rect(const Cmd *c, int part, int parts) {
     int pitch, cx0, cy0, cx1, cy1;
     int X, Y, xs, xe, ys, ye;
 
-    pitch = s->w * scale;
-    hd_clip(st, s, &cx0, &cy0, &cx1, &cy1);
+    pitch = PITCH(s);
+    hd_clip(st, s, c->wide, &cx0, &cy0, &cx1, &cy1);
     if (cx0 < 0) cx0 = 0;
     if (cy0 < 0) cy0 = 0;
     if (cx1 > pitch - 1) cx1 = pitch - 1;
     if (cy1 > s->h * scale - 1) cy1 = s->h * scale - 1;
-    xs = (x0 - s->x) * scale;
-    xe = (x0 + w - s->x) * scale - 1;
+    xs = (x0 - OX(s)) * scale;
+    xe = (x0 + w - OX(s)) * scale - 1;
     ys = (y0 - s->y) * scale;
     ye = (y0 + h - s->y) * scale - 1;
     if (xs < cx0) xs = cx0;
@@ -767,7 +815,7 @@ static void draw_rect(const Cmd *c, int part, int parts) {
         int tv = st->flip_y ? v0 - yy : v0 + yy;
 
         for (X = xs; X <= xe; X++) {
-            int xx = X / scale + s->x - x0;
+            int xx = X / scale + OX(s) - x0;
             hshade(st, row + X, t, st->flip_x ? u0 - xx : u0 + xx, tv, r, g, b, semi, abr, 0);
         }
     }
@@ -811,23 +859,23 @@ static void draw_line(const Cmd *c, int part, int parts) {
     int64_t ac, bc, aw, bw, len;
     int m, m0, m1, j;
 
-    pitch = s->w * scale;
-    hd_clip(st, s, &cx0, &cy0, &cx1, &cy1);
+    pitch = PITCH(s);
+    hd_clip(st, s, c->wide, &cx0, &cy0, &cx1, &cy1);
     if (cx0 < 0) cx0 = 0;
     if (cy0 < 0) cy0 = 0;
     if (cx1 > pitch - 1) cx1 = pitch - 1;
     if (cy1 > s->h * scale - 1) cy1 = s->h * scale - 1;
     /* major axis centres ac -> bc, minor axis centres aw -> bw (surface pixels) */
     if (xmajor) {
-        ac = (int64_t)(a->x - s->x) * scale + scale / 2;
-        bc = (int64_t)(b->x - s->x) * scale + scale / 2;
+        ac = (int64_t)(a->x - OX(s)) * scale + scale / 2;
+        bc = (int64_t)(b->x - OX(s)) * scale + scale / 2;
         aw = (int64_t)(a->y - s->y) * scale + scale / 2;
         bw = (int64_t)(b->y - s->y) * scale + scale / 2;
     } else {
         ac = (int64_t)(a->y - s->y) * scale + scale / 2;
         bc = (int64_t)(b->y - s->y) * scale + scale / 2;
-        aw = (int64_t)(a->x - s->x) * scale + scale / 2;
-        bw = (int64_t)(b->x - s->x) * scale + scale / 2;
+        aw = (int64_t)(a->x - OX(s)) * scale + scale / 2;
+        bw = (int64_t)(b->x - OX(s)) * scale + scale / 2;
     }
     len = bc - ac;
     m0 = (int)((ac < bc ? ac : bc) - scale / 2);
@@ -895,15 +943,22 @@ void PsxHd_Fill(int x, int y, int w, int h, uint16_t c) {
     flush();
     for (i = 0; i < nsurf; i++) {
         Surf *s = &surf[i];
-        int fx = x, fy = y, fw = w, fh = h, j, k;
-        int pitch = s->w * scale;
+        int fx = x, fy = y, fw = w, fh = h, j, k, k0, k1;
+        int pitch = PITCH(s);
 
         if (s->px == NULL || !clip_rect(s, &fx, &fy, &fw, &fh)) {
             continue;
         }
+        k0 = (fx - OX(s)) * scale;
+        k1 = (fx + fw - OX(s)) * scale;
+        if (fx == s->x && fw == s->w) {
+            /* the whole buffer: the margins too */
+            k0 = 0;
+            k1 = pitch;
+        }
         for (j = (fy - s->y) * scale; j < (fy + fh - s->y) * scale; j++) {
             uint16_t *row = s->px + (size_t)j * pitch;
-            for (k = (fx - s->x) * scale; k < (fx + fw - s->x) * scale; k++) {
+            for (k = k0; k < k1; k++) {
                 row[k] = c;
             }
         }
@@ -938,20 +993,25 @@ int PsxHd_ReadDisplay(int x, int y, int w, int h, uint32_t *out, int *ow, int *o
     flush();
     for (i = 0; i < nsurf; i++) {
         Surf *s = &surf[i];
-        int pitch = s->w * scale;
+        int pitch, x0, ww;
 
         if (!contains(s, x, y, w, h) || !ensure(s)) {
             continue;
         }
-        *ow = w * scale;
+        pitch = PITCH(s);
+        /* the whole buffer width is shown with its margins */
+        x0 = x == s->x && w == s->w ? 0 : (x - OX(s)) * scale;
+        ww = x == s->x && w == s->w ? pitch : w * scale;
+        *ow = ww;
         *oh = h * scale;
+        last_margin = x == s->x && w == s->w ? s->m * scale : 0;
         if (out == NULL) {
             return 1;
         }
         for (Y = 0; Y < h * scale; Y++) {
-            const uint16_t *row = s->px + (size_t)((y - s->y) * scale + Y) * pitch + (size_t)(x - s->x) * scale;
-            uint32_t *o = out + (size_t)Y * w * scale;
-            for (X = 0; X < w * scale; X++) {
+            const uint16_t *row = s->px + (size_t)((y - s->y) * scale + Y) * pitch + x0;
+            uint32_t *o = out + (size_t)Y * ww;
+            for (X = 0; X < ww; X++) {
                 uint16_t c = row[X];
                 uint32_t r = c & 31, g = (c >> 5) & 31, b = (c >> 10) & 31;
                 o[X] = (((r << 3) | (r >> 2)) << 16) | (((g << 3) | (g >> 2)) << 8) | ((b << 3) | (b >> 2));
@@ -960,6 +1020,10 @@ int PsxHd_ReadDisplay(int x, int y, int w, int h, uint32_t *out, int *ow, int *o
         return 1;
     }
     return 0;
+}
+
+int PsxHd_LastMargin(void) {
+    return last_margin;
 }
 
 unsigned PsxHd_Serial(void) {

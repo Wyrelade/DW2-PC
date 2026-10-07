@@ -107,6 +107,7 @@ void DrawOTag(u_long *p) {
     unsigned int n = 0;
 
     PSYQ_LOG("%p", (void *)p);
+    PsxHd_BeginFrame();
     for (;;) {
         u_long tag = *p;
         int len = tag >> 24;

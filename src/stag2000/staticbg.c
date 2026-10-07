@@ -70,6 +70,9 @@ void Stg20_StaticBgDraw(Actor *a)
   GfxPartTexSlot *t;
   s32 i;
   s16 x;
+#ifdef DW2_NATIVE
+  Host_PillarboxFrame(); /* PG.3 16:9: a 320-wide room picture keeps black sides */
+#endif
   i = 0;
   while (i < 10)
   {

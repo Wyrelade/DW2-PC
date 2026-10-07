@@ -26,6 +26,8 @@ void Host_VBlank(void);
 void Host_ClockFast(void);
 /* host/trace.c: logs game mode changes at VBlank wait `wait` (dev log). */
 void Host_TraceTick(unsigned int wait);
+/* host/trace.c: PG.3 per-scene 16:9 rule (pillarbox for 2D-only scenes), at each VBlank wait. */
+void Host_SceneTick(void);
 /* VBlanks run so far (the PS1 VSync count; a 30 fps scene runs two per wait). */
 unsigned long long Host_VBlankCount(void);
 /* VBlanks run so far and the measured rate since the clock started. */
@@ -42,6 +44,13 @@ void Host_SaveShot(const char *dir, const char *tag);
 
 /* host/sdl.c: PG.2 no-wobble HD geometry on / off (the GTE's precise hook and the HD path). */
 void Host_SetPgxp(int on);
+/* host/sdl.c: PG.3 16:9 on / off (wide HD surfaces, 16:9 window picture). */
+void Host_SetWide(int on);
+/* PG.3, for the game C (DW2_NATIVE): extra screen pixels on each side of a picture `width` wide
+ * in 16:9 (0 in 4:3), so culls can let objects into the sides; and a mark that the frame being
+ * built is a 2D picture that keeps black sides (pillarbox). */
+int Host_WideMargin(int width);
+void Host_PillarboxFrame(void);
 
 /* host/input.c: PS1 digital pad buttons held on `port` (0 or 1), active high, in the pad reply
  * bit order (PAD_* in host/host_sdl.h). Keyboard is port 0; gamepads take ports 0, 1 in order.

@@ -114,6 +114,10 @@ extern s32 Gfx_ZeroVector[];
 extern void Actor_UpdateTransform(Actor *);
 extern void Gfx_CalcModelBoneMatrices(Actor *);
 extern void Gfx_DrawTexModel(Actor *, s32);
+#ifdef DW2_NATIVE
+extern s32 Gfx_WideOnly; /* PG.3, model.c */
+extern s32 Gfx_NoTexAnim;
+#endif
 extern CdReadState Cd_ReadState;
 extern u8 Cd_SectorHeader[];
 #ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */

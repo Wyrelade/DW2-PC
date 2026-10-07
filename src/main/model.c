@@ -247,6 +247,11 @@ void Gfx_DrawTexModel(Actor *a0, s32 mode) {
             p = (ModelQuadSection *)r;
         }
     }
+#ifdef DW2_NATIVE
+    if (Gfx_NoTexAnim) {
+        return;
+    }
+#endif
     Gfx_AnimateModelTex(a0);
 }
 
@@ -350,11 +355,24 @@ s32 Actor_ProjectToScreen(ContC40 *a0) {
     gte_stsxy(&p->screenX);
     x = 0x160;
     y = 0x110;
+#ifdef DW2_NATIVE
+    /* PG.3 16:9: objects may stand in the wider sides (raw x is in 640-wide units) */
+    Gfx_WideOnly = p->screenX < -x || p->screenX > x;
+    x += Host_WideMargin(Sys_State.centerX.s * 2) << (Sys_State.centerX.s != 320);
+#endif
     if (p->screenX < -x) return 1;
     if (p->screenX > x) return 1;
     if (p->screenY < -y) return 1;
     return p->screenY > y;
 }
+
+#ifdef DW2_NATIVE
+/* PG.3 16:9: Actor_ProjectToScreen saw the actor only in the wider sides; while Gfx_NoTexAnim is
+ * set, Gfx_DrawTexModel draws without the texture animation (eye blinks call Rand_Next, and the
+ * game's one RNG stream must not depend on the picture width). */
+s32 Gfx_WideOnly;
+s32 Gfx_NoTexAnim;
+#endif
 
 void Actor_RefreshTransform(s32 arg0) {
     Actor_UpdateTransform(arg0);
@@ -688,12 +706,23 @@ s32 Gfx_IsOriginOffscreen(void) {
         return 1;
     }
     gte_stsxy(&sxy);
+#ifdef DW2_NATIVE
+    {
+        /* PG.3 16:9: see Actor_ProjectToScreen */
+        s32 lim = 0x160 + (Host_WideMargin(Sys_State.centerX.s * 2) << (Sys_State.centerX.s != 320));
+
+        if (sxy.vx < -lim || sxy.vx > lim) {
+            return 1;
+        }
+    }
+#else
     if (sxy.vx < -0x160) {
         return 1;
     }
     if (sxy.vx > 0x160) {
         return 1;
     }
+#endif
     if (sxy.vy < -0x110) {
         return 1;
     }

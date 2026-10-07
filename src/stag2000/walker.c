@@ -2,6 +2,10 @@
 #include "stag2000/stag2000.h"
 #include "stag2000/stag2000_funcs.h"
 #include "stag2000/areaselect.h"
+#ifdef DW2_NATIVE
+extern s32 Gfx_WideOnly; /* PG.3, main/model.c */
+extern s32 Gfx_NoTexAnim;
+#endif
 
 /* Task callbacks the descriptors below need (defined further down). */
 void Stg20_WalkerInit(Actor *a, Stg20Spawn *s);
@@ -441,8 +445,14 @@ void Stg20_WalkerDraw(Actor *a) {
         Anim_StepModelAnim(a);
         Actor_UpdateTransform(a);
         if (Actor_ProjectToScreen(a) == 0) {
+#ifdef DW2_NATIVE
+            Gfx_NoTexAnim = Gfx_WideOnly; /* PG.3: seen only in the 16:9 sides */
+#endif
             Gfx_CalcModelBoneMatrices(a);
             Gfx_DrawTexModel(a, 0);
+#ifdef DW2_NATIVE
+            Gfx_NoTexAnim = 0;
+#endif
         }
     }
 }

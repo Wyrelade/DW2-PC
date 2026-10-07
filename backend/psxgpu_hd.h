@@ -35,13 +35,22 @@ typedef struct {
     int raw;
 } PsxTex;
 
-/* Scale 1..8 (1 = HD off). Surfaces are rebuilt from the 1x VRAM at the next use. */
+/* Scale 1..8. The HD path is on with a scale above 1 or 16:9. Surfaces are rebuilt from the 1x
+ * VRAM at the next use. */
 void PsxHd_SetScale(int scale);
 int PsxHd_Scale(void);
 int PsxHd_On(void);
 /* Drawing threads for the HD surfaces (0 = one per logical core, at most 8). Takes effect when
  * the first HD frame is drawn. */
 void PsxHd_SetThreads(int n);
+/* PG.3 16:9: wide surfaces (margins of PsxHd_Margin(w) VRAM pixels per side, 0 when off).
+ * PsxHd_PillarboxFrame: the frame being built keeps black sides (2D-only pictures);
+ * PsxHd_BeginFrame (libgpu DrawOTag) starts drawing a frame and takes that mark. */
+void PsxHd_SetWide(int on);
+int PsxHd_Wide(void);
+int PsxHd_Margin(int w);
+void PsxHd_PillarboxFrame(void);
+void PsxHd_BeginFrame(void);
 /* PG.2 no-wobble geometry: polygons whose vertices all have a precise GTE position
  * (backend/pgxp.c) are drawn there, with perspective-correct texture mapping. */
 void PsxHd_SetPgxp(int on);
@@ -64,8 +73,11 @@ void PsxHd_Fill(int x, int y, int w, int h, uint16_t c);
 void PsxHd_Refresh(int x, int y, int w, int h);
 
 /* The display area (x, y, w, h in VRAM) from a surface: w*S x h*S pixels of 0x00RRGGBB into out
- * (NULL: size only). Returns 0 when HD is off or no surface holds the area. */
+ * (NULL: size only), (w + 2 M)*S wide with the 16:9 margins when it is a whole buffer. Returns 0
+ * when HD is off or no surface holds the area. */
 int PsxHd_ReadDisplay(int x, int y, int w, int h, uint32_t *out, int *ow, int *oh);
+/* Margin on each side of the last PsxHd_ReadDisplay picture, in its pixels (0: plain 4:3). */
+int PsxHd_LastMargin(void);
 /* Changes on every surface write or display change (the host skips unchanged frames). */
 unsigned PsxHd_Serial(void);
 

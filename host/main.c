@@ -23,7 +23,7 @@
  *
  *   dw2 [--pak PATH] [--vblanks N] [--no-window] [--shot-dir DIR] [--shot-at N]... [--shot-vb N]...
  *       [--hold-boot N] [--press N:BUTTONS[:LEN]]... [--press2 N:BUTTONS[:LEN]]... [--save-dir DIR]
- *       [--fast] [--pad2-keys] [--scale N] [--hd-threads N] [--pgxp]
+ *       [--fast] [--pad2-keys] [--scale N] [--hd-threads N] [--pgxp] [--wide]
  *     --pak PATH     the data pack (default dw2.pak next to the exe, then build/native/dw2.pak;
  *                    doc/PACK_FORMAT.md), checked before anything else runs
  *     --vblanks N    quit after N VBlank waits in the Sys_FlipPending spin (0 = run on)
@@ -50,7 +50,8 @@
  *                    backend/psxgpu_hd.c); F5 in the window steps through 1..8
  *     --hd-threads N drawing threads for the HD output (default 0 = one per core, at most 8)
  *     --pgxp         no-wobble geometry for the HD output (PG.2: precise GTE vertices,
- *                    perspective-correct textures); F6 toggles it in the window */
+ *                    perspective-correct textures); F6 toggles it in the window
+ *     --wide         16:9 picture (PG.3: wider view, 2D pictures pillarboxed); F7 toggles it */
 
 extern void Sys_Main(void);
 extern void Host_OvlSnapshot(void);
@@ -143,6 +144,7 @@ void Host_WaitVBlank(void) {
     }
     vblanks++;
     Host_TraceTick(vblanks);
+    Host_SceneTick();
     Host_InputScriptTick(vblanks);
     for (i = 0; i < shot_count; i++) {
         if (shot_at[i] == vblanks) {
@@ -266,11 +268,13 @@ int main(int argc, char **argv) {
             PsxHd_SetThreads((int)strtol(argv[++i], NULL, 0));
         } else if (strcmp(argv[i], "--pgxp") == 0) {
             Host_SetPgxp(1);
+        } else if (strcmp(argv[i], "--wide") == 0) {
+            Host_SetWide(1);
         } else {
             fprintf(stderr,
                     "usage: %s [--pak PATH] [--vblanks N] [--no-window] [--shot-dir DIR] [--shot-at N]... "
                     "[--shot-vb N]... [--hold-boot N] [--press N:BUTTONS[:LEN]]... [--press2 N:BUTTONS[:LEN]]... "
-                    "[--save-dir DIR] [--fast] [--pad2-keys] [--scale N] [--hd-threads N] [--pgxp]\n",
+                    "[--save-dir DIR] [--fast] [--pad2-keys] [--scale N] [--hd-threads N] [--pgxp] [--wide]\n",
                     argv[0]);
             return 2;
         }

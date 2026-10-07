@@ -106,6 +106,9 @@ draw:
     p->b = c;
     p->r = c;
     w = Sys_State.centerX.lo;
+#ifdef DW2_NATIVE
+    w += Host_WideMargin(Sys_State.centerX.s * 2); /* PG.3 16:9: the sides fade too */
+#endif
     p->x0 = p->x2 = -w;
     p->x1 = p->x3 = w;
     h = Sys_State.centerY.lo;

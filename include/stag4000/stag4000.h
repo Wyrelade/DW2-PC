@@ -528,10 +528,18 @@ typedef struct {
     u8 _pad6[0x02];
 } Stg40TexRec;
 
+/* PG.3 16:9 (native build): the floor window can have STG40_WIDE_COLS more columns on each side,
+ * used while the host's 16:9 is on (floor.c Stg40_WideCols). Offsets below are the retail ones. */
+#ifdef DW2_NATIVE
+#define STG40_WIDE_COLS 2
+#else
+#define STG40_WIDE_COLS 0
+#endif
+
 /* Actor.work of the task driven by Stg40_FloorDraw. */
 typedef struct {
-    /* 0x0000 */ Stg40Vtx verts[11][11];
-    /* 0x0F20 */ Stg40Tile tiles[10][10];
+    /* 0x0000 */ Stg40Vtx verts[11][11 + 2 * STG40_WIDE_COLS];
+    /* 0x0F20 */ Stg40Tile tiles[10][10 + 2 * STG40_WIDE_COLS];
     /* 0x13D0 */ s16 gridCols;   /* columns built by Stg40_ProjectGrid */
     /* 0x13D2 */ s16 gridRows;   /* rows */
     /* 0x13D4 */ GfxTexSlot *texSlots[8]; /* texture slots (Stg40_FloorInit) */

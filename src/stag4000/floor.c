@@ -22,11 +22,24 @@ Stg40WallSide Stg40_WallSides[] = {
     { 0x0100, 6, 1, 0, 1, 1, 1, 0, 127 },
 };
 TaskDesc Stg40_FloorDesc = {
-    (TaskInitFn)Stg40_FloorInit, Stg40_FloorUpdate, Task_DefaultDestroy, Stg40_FloorDraw, 0x1EA4, 0,
+    (TaskInitFn)Stg40_FloorInit, Stg40_FloorUpdate, Task_DefaultDestroy, Stg40_FloorDraw,
+    /* retail 0x1EA4 (prims[] runs past the 27 declared); native: plus the wider window (PG.3) */
+    0x1EA4 + (11 * sizeof(Stg40Vtx) + 10 * sizeof(Stg40Tile)) * 2 * STG40_WIDE_COLS, 0,
 };
 
 Actor *Stg40_FloorTask;
 Stg40FloorWork *Stg40_FloorWork;
+#ifdef DW2_NATIVE
+/* PG.3 16:9: extra floor columns on each side this frame (0 or STG40_WIDE_COLS), set by
+ * Stg40_ProjectGrid so the tile cache and the draw use the same window; and the wider
+ * on-screen test for vertices. */
+static s32 Stg40_WideCols;
+#define STG40_WIDE (Stg40_WideCols)
+#define STG40_HALF_W(cx) ((cx) + Host_WideMargin((cx) * 2))
+#else
+#define STG40_WIDE 0
+#define STG40_HALF_W(cx) (cx)
+#endif
 
 const Stg40Quad Stg40_ShadowCorners = { { -0x500, -0x400, 0x500, -0x400, -0x500, 0x400, 0x500, 0x400 } };
 void Stg40_DrawEntityShadow(Stg40Loc *loc) {
@@ -57,7 +70,7 @@ void Stg40_DrawEntityShadow(Stg40Loc *loc) {
     s32 centerY;
 
     if ((loc->posX & 0x3F) == 0 && (loc->posY & 0x3F) == 0) {
-        col = loc->posX / 64 - Stg40_RootState->viewX / 64 + 4;
+        col = loc->posX / 64 - Stg40_RootState->viewX / 64 + 4 + STG40_WIDE;
         row = loc->posY / 64 - Stg40_RootState->viewY / 64 + 4;
         if (col >= 0 && col < Stg40_FloorWork->gridCols - 1 && row >= 0 && row < Stg40_FloorWork->gridRows - 1) {
             w = Stg40_FloorWork;
@@ -111,7 +124,8 @@ void Stg40_DrawEntityShadow(Stg40Loc *loc) {
             }
             out[i].y = y;
         }
-        count += ((out[i].x < 0 ? -out[i].x : out[i].x) < centerX) && ((out[i].y < 0 ? -out[i].y : out[i].y) < centerY);
+        count += ((out[i].x < 0 ? -out[i].x : out[i].x) < STG40_HALF_W(centerX)) &&
+                 ((out[i].y < 0 ? -out[i].y : out[i].y) < centerY);
     }
     if (count != 0) {
         pkt = (Stg40FT4 *)Sys_State.packet.addr;
@@ -286,6 +300,10 @@ void Stg40_ProjectGrid(Stg40FloorWork *w) {
     if (Stg40_RootState->viewX & 0x3F) {
         cols = 0xB;
     }
+#ifdef DW2_NATIVE
+    Stg40_WideCols = Host_WideMargin(centerX * 2) != 0 ? STG40_WIDE_COLS : 0;
+    cols += 2 * Stg40_WideCols;
+#endif
     n.lo = rows;
     w->gridCols = cols;
     w->gridRows = n.lo;
@@ -304,14 +322,14 @@ void Stg40_ProjectGrid(Stg40FloorWork *w) {
         if (t < 0) {
             t += 0x3F;
         }
-        vec.vx = -(t >> 6) - 0x2D00;
+        vec.vx = -(t >> 6) - 0x2D00 - STG40_WIDE * 0xA00;
         v = w->verts[row];
         for (col = 0; col < cols; col++) {
             v->s[0].otz = RotTransPers(&vec, &v->s[0].x, 0, 0);
             v->s[0].x = v->s[0].x >> shiftX;
             v->s[0].y = v->s[0].y >> shiftY;
             v->s[0].otz = v->s[0].otz >> shiftZ;
-            v->s[0].flag = ((v->s[0].x < 0 ? -v->s[0].x : v->s[0].x) < centerX)
+            v->s[0].flag = ((v->s[0].x < 0 ? -v->s[0].x : v->s[0].x) < STG40_HALF_W(centerX))
                 && ((v->s[0].y < 0 ? -v->s[0].y : v->s[0].y) < centerY);
             vec.vy += step;
             v->s[1].otz = RotTransPers(&vec, &v->s[1].x, 0, 0);
@@ -319,7 +337,7 @@ void Stg40_ProjectGrid(Stg40FloorWork *w) {
             v->s[1].y = v->s[1].y >> shiftY;
             v->s[1].otz = v->s[1].otz >> shiftZ;
             vec.vy -= step;
-            v->s[1].flag = ((v->s[1].x < 0 ? -v->s[1].x : v->s[1].x) < centerX)
+            v->s[1].flag = ((v->s[1].x < 0 ? -v->s[1].x : v->s[1].x) < STG40_HALF_W(centerX))
                 && ((v->s[1].y < 0 ? -v->s[1].y : v->s[1].y) < centerY);
             vec.vx += 0xA00;
             v++;
@@ -377,12 +395,13 @@ void Stg40_FillTileCache(ActorWork *arg0)
     if (Stg40_RootState->viewX & 0x3F) {
         colCount = 0xA;
     }
+    colCount += 2 * STG40_WIDE;
     mapRow = Stg40_RootState->viewY / 64 - 4;
     for (row = 0; row < rowCount; row++) {
         tp = ((Stg40FloorWork *)arg0)->tiles[row];
         v0p = ((Stg40FloorWork *)arg0)->verts[row];
         v1p = ((Stg40FloorWork *)arg0)->verts[row + 1];
-        mapCol = Stg40_RootState->viewX / 64 - 4;
+        mapCol = Stg40_RootState->viewX / 64 - 4 - STG40_WIDE;
         for (col = 0; col < colCount; col++) {
             tp->texOtz = Stg40_Max4(v0p[0].s[0].otz, v0p[1].s[0].otz, v1p[0].s[0].otz, v1p[1].s[0].otz);
             tp->otz = Stg40_Min4(v0p[0].s[1].otz, v0p[1].s[1].otz, v1p[0].s[1].otz, v1p[1].s[1].otz);
@@ -577,7 +596,7 @@ void Stg40_DrawFloorTiles(Stg40FloorWork *w) {
     s32 pkt;
 
     rows = (Stg40_RootState->viewY & 0x3F) ? 10 : 9;
-    cols = (Stg40_RootState->viewX & 0x3F) ? 10 : 9;
+    cols = ((Stg40_RootState->viewX & 0x3F) ? 10 : 9) + 2 * STG40_WIDE;
     pkt = Sys_State.packet.addr;
     for (y = 0; y < rows; y++) {
         for (x = 0; x < cols; x++) {

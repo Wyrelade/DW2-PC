@@ -13,7 +13,8 @@
  * (nearest), 480-line modes linear. Black while the display is off. Display vsync is off; the
  * VBlank clock paces and presents once per VBlank wait. HD output (PG.1, --scale N, F5): the
  * display area from the HD surface, w*S x h*S, filtered linear to the window; uploaded only when
- * the surfaces changed. PG.2 (--pgxp, F6): precise GTE vertices for the HD output. */
+ * the surfaces changed. PG.2 (--pgxp, F6): precise GTE vertices for the HD output. PG.3 (--wide,
+ * F7): 16:9 picture (427x240 logical), the 4:3 one pillarboxed in it. */
 
 #define WINDOW_SCALE 3
 
@@ -26,6 +27,7 @@ static Uint32 *hd_frame;
 static int hd_w, hd_h;
 static unsigned hd_serial;
 static int headless;
+static int logical_w = 320; /* 427 in 16:9 */
 static int initialized;
 
 static void fail(const char *what) {
@@ -47,7 +49,7 @@ void Host_Init(int no_window) {
     initialized = 1;
     printf("[host] SDL %d.%d.%d, video driver %s\n", SDL_VERSIONNUM_MAJOR(v), SDL_VERSIONNUM_MINOR(v),
            SDL_VERSIONNUM_MICRO(v), SDL_GetCurrentVideoDriver());
-    window = SDL_CreateWindow("DW2-Online", 320 * WINDOW_SCALE, 240 * WINDOW_SCALE, SDL_WINDOW_RESIZABLE);
+    window = SDL_CreateWindow("DW2-Online", logical_w * WINDOW_SCALE, 240 * WINDOW_SCALE, SDL_WINDOW_RESIZABLE);
     if (window == NULL) {
         fail("SDL_CreateWindow");
     }
@@ -56,13 +58,13 @@ void Host_Init(int no_window) {
         fail("SDL_CreateRenderer");
     }
     SDL_SetRenderVSync(renderer, 0);
-    SDL_SetRenderLogicalPresentation(renderer, 320, 240, SDL_LOGICAL_PRESENTATION_LETTERBOX);
+    SDL_SetRenderLogicalPresentation(renderer, logical_w, 240, SDL_LOGICAL_PRESENTATION_LETTERBOX);
     texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_XRGB8888, SDL_TEXTUREACCESS_STREAMING, 640, 480);
     if (texture == NULL) {
         fail("SDL_CreateTexture");
     }
-    printf("[host] window %dx%d (320x240 logical), renderer %s, vsync off\n", 320 * WINDOW_SCALE,
-           240 * WINDOW_SCALE, SDL_GetRendererName(renderer));
+    printf("[host] window %dx%d (%dx240 logical), renderer %s, vsync off\n", logical_w * WINDOW_SCALE,
+           240 * WINDOW_SCALE, logical_w, SDL_GetRendererName(renderer));
     Host_Present();
     Host_AudioOpen();
     Host_ClockStart();
@@ -72,6 +74,22 @@ void Host_Init(int no_window) {
 void Host_SetPgxp(int on) {
     PsxHd_SetPgxp(on);
     Gte_PreciseHook = on ? Pgxp_Record : NULL;
+}
+
+void Host_SetWide(int on) {
+    PsxHd_SetWide(on);
+    logical_w = on ? 427 : 320;
+    if (renderer != NULL) {
+        SDL_SetRenderLogicalPresentation(renderer, logical_w, 240, SDL_LOGICAL_PRESENTATION_LETTERBOX);
+    }
+}
+
+int Host_WideMargin(int width) {
+    return PsxHd_Margin(width);
+}
+
+void Host_PillarboxFrame(void) {
+    PsxHd_PillarboxFrame();
 }
 
 /* HD picture into hd_texture; 0 when there is none (the 1x picture is shown then). */
@@ -105,7 +123,9 @@ static int present_hd(void) {
         SDL_UpdateTexture(hd_texture, NULL, hd_frame, w * 4);
     }
     {
-        SDL_FRect dst = { 0, 0, 320, 240 };
+        /* the 4:3 part of the picture is 320 logical pixels wide, the margins beside it */
+        float k = 320.0f / (float)(w - 2 * PsxHd_LastMargin());
+        SDL_FRect dst = { ((float)logical_w - w * k) / 2, 0, w * k, 240 };
         SDL_RenderTexture(renderer, hd_texture, NULL, &dst);
     }
     return 1;
@@ -120,7 +140,7 @@ void Host_Present(void) {
     } else if (PsxGpu_ReadDisplay(frame, &w, &h)) {
         SDL_Rect r = { 0, 0, w, h };
         SDL_FRect src = { 0, 0, (float)w, (float)h };
-        SDL_FRect dst = { 0, 0, 320, 240 };
+        SDL_FRect dst = { (float)(logical_w - 320) / 2, 0, 320, 240 };
 
         SDL_UpdateTexture(texture, &r, frame, w * 4);
         SDL_SetTextureScaleMode(texture, h > 256 ? SDL_SCALEMODE_LINEAR : SDL_SCALEMODE_NEAREST);
@@ -148,6 +168,11 @@ void Host_PumpEvents(void) {
             if (e.key.scancode == SDL_SCANCODE_F5 && !e.key.repeat) {
                 PsxHd_SetScale(PsxHd_Scale() % 8 + 1);
                 printf("[gpu] scale %dx (F5)\n", PsxHd_Scale());
+                fflush(stdout);
+            }
+            if (e.key.scancode == SDL_SCANCODE_F7 && !e.key.repeat) {
+                Host_SetWide(!PsxHd_Wide());
+                printf("[gpu] 16:9 %s (F7)\n", PsxHd_Wide() ? "on" : "off");
                 fflush(stdout);
             }
             if (e.key.scancode == SDL_SCANCODE_F6 && !e.key.repeat) {

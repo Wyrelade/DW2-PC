@@ -164,12 +164,19 @@ void Stg20_MapBgDraw(Actor *a) {
                 p->s.c.code = 0x64;
                 x = sx + i * 64;
                 p->s.x0 = x;
+#ifdef DW2_NATIVE
+                /* PG.3 16:9: strips that reach into the wider sides */
+                if (p->s.x0 < -0xE0 - Host_WideMargin(320) || p->s.x0 > 0xA0 + Host_WideMargin(320)) {
+                    break;
+                }
+#else
                 if (p->s.x0 < -0xE0) {
                     break;
                 }
                 if (p->s.x0 > 0xA0) {
                     break;
                 }
+#endif
                 p->s.u0 = tex->u;
                 p->s.w = 0x40;
                 p->s.y0 = gy - 0x80;
