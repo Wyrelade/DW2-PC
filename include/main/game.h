@@ -117,6 +117,7 @@ extern void Gfx_DrawTexModel(Actor *, s32);
 #ifdef DW2_NATIVE
 extern s32 Gfx_WideOnly; /* PG.3, model.c */
 extern s32 Gfx_NoTexAnim;
+extern void (*Gfx_LateDraw)(void); /* PG.8a, model.c */
 #endif
 extern CdReadState Cd_ReadState;
 extern u8 Cd_SectorHeader[];

@@ -372,6 +372,9 @@ s32 Actor_ProjectToScreen(ContC40 *a0) {
  * game's one RNG stream must not depend on the picture width). */
 s32 Gfx_WideOnly;
 s32 Gfx_NoTexAnim;
+/* PG.8a: set during the draw pass by code that has draw-only work for this frame (16:9 side
+ * models); Sys_Main calls it once after the draw pass and clears it. NULL in classic. */
+void (*Gfx_LateDraw)(void);
 #endif
 
 void Actor_RefreshTransform(s32 arg0) {

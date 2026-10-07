@@ -191,6 +191,14 @@ void Sys_Main(void) {
         slot = Task_TryRun((void *)slot);
         Sys_State.drawPass = 1;
         slot = Task_TryRun((void *)slot);
+#ifdef DW2_NATIVE
+        if (Gfx_LateDraw != NULL) { /* PG.8a: draw-only extras after every retail draw */
+            void (*late)(void) = Gfx_LateDraw;
+
+            Gfx_LateDraw = NULL;
+            late();
+        }
+#endif
         Gpu_SkipEmptyOtEntries(Sys_State.bufIndex);
         DrawSync(0);
         Sys_FlipPending = 1;
