@@ -207,31 +207,6 @@ typedef struct {
     /* 0x10 */ s32 windowVisible;
 } Stg30JoinPromptWork;
 
-/* 0x5C-stride entries at the head of Stg30_Battle (index = Stg30JoinPromptWork.index). */
-typedef struct {
-    /* 0x00 */ s32 fromCity;
-    /* 0x04 */ s32 escapeResult;
-    /* 0x08 */ s32 inputSlot;
-    /* 0x0C */ s32 chosenTarget;
-    /* 0x10 */ s32 menuChoice;
-    /* 0x14 */ s32 cancelled;
-    /* 0x18 */ u8 state;
-    /* 0x19 */ u8 digiId;
-    u8 _pad1A[0x0B];
-    /* 0x25 */ u8 level;
-    u8 _pad26[0x01];
-    /* 0x27 */ u8 maxLevel;
-    /* 0x28 */ s32 exp;
-    /* 0x2C */ s16 maxHp;
-    /* 0x2E */ s16 hp;
-    /* 0x30 */ s16 maxMp;
-    /* 0x32 */ s16 mp;
-    /* 0x34 */ s16 attack;
-    /* 0x36 */ s16 defense;
-    /* 0x38 */ s16 speed;
-    /* 0x3A */ u8 skillIds[12];
-    u8 _pad46[0x16];
-} Stg30BattleEntry; /* size 0x5C */
 
 /* 0x12-byte record of Stg30_Battle.field_240 (arg2 of Stg30_AiCanUseAction): byte lists
    indexed by the same slot i at 0x02, 0x05, 0x09 and 0x0D. */
@@ -258,8 +233,13 @@ typedef struct {
 
 /* Stg30_Battle: overlay state block (Stg30_InitBattle clears 0x3E0 bytes from here). */
 typedef struct {
-    /* 0x000 */ Stg30BattleEntry entries[6];
-    u8 _pad228[0x18];
+    /* 0x000 */ s32 fromCity;
+    /* 0x004 */ s32 escapeResult;
+    /* 0x008 */ s32 inputSlot;
+    /* 0x00C */ s32 chosenTarget;
+    /* 0x010 */ s32 menuChoice;
+    /* 0x014 */ s32 cancelled;
+    /* 0x018 */ DigiRosterEntry digis[6];  /* 0..2 the tamer's party (copies of Save_GameState.elems), 3..5 enemies */
     /* 0x240 */ Stg30EnemyAi enemyAi[6];
     /* 0x2AC */ Stg30Turn turns[7];
     /* 0x31C */ s32 statusFlags[6];
@@ -375,20 +355,6 @@ typedef struct {
 } Stg30XY;
 
 
-/* Struct passed as arg0 of Stg30_HasSkillOrNew: 12 byte ids at 0x22 (a roster entry:
-   Stg30_BattleWonUpdate also reads digiId, level, the 24 bytes at 0x2E and the byte at 0x46). */
-typedef struct {
-    u8 _pad00[0x01];
-    /* 0x01 */ u8 digiId;
-    u8 _pad02[0x0B];
-    /* 0x0D */ u8 level;
-    u8 _pad0E[0x0C];
-    /* 0x1A */ s16 mp;
-    u8 _pad1C[0x06];
-    /* 0x22 */ u8 ids[12];
-    /* 0x2E */ u8 learnableSkills[0x18];
-    /* 0x46 */ u8 pendingSkill;
-} Stg30IdSet;
 
 /* Main-exe global read at 0x103D by Stg30_GetFloorSpecialty. */
 typedef struct {
@@ -398,12 +364,6 @@ typedef struct {
     /* 0x1040 */ s16 giftLevel;
 } Stg30DungState;
 
-/* Stg30_Battle viewed as a 0x18-byte head followed by six DigiRosterEntry (the same
-   bytes Stg30BattleEntry reads at 0x18..: field_18 = state, field_19 = digiId, ...). */
-typedef struct {
-    u8 _pad000[0x18];
-    /* 0x018 */ DigiRosterEntry digis[6];
-} Stg30StateDigis;
 
 /* Stg30_FighterStateBackup: saved copy of the Stg30_Battle roster (Stg30_SaveFighterStates / Stg30_RestoreFighterStates). */
 typedef struct {
@@ -518,36 +478,14 @@ extern s32 Digi_GetExpToNextLevel(s32, s32, s32);
 extern u8 *Stg30_NumToDigits(u8 *out, s32 n);
 extern void Stg30_LevelUpStats(DigiRosterEntry *);
 
-/* Stg30_BattleDigis: the Stg30_Battle roster at 0x18 (Stg30StateDigis.digis), with the
-   stat halfwords read signed. */
-typedef struct {
-    u8 _pad00[0x01];
-    /* 0x01 */ u8 digiId;
-    u8 _pad02[0x0B];
-    /* 0x0D */ u8 level;
-    u8 _pad0E[0x06];
-    /* 0x14 */ s16 maxHp;
-    /* 0x16 */ s16 hp;
-    /* 0x18 */ s16 maxMp;
-    /* 0x1A */ s16 mp;
-    /* 0x1C */ s16 attack;
-    /* 0x1E */ s16 defense;
-    /* 0x20 */ s16 speed;
-    u8 _pad22[0x3A];
-} Stg30DigiS; /* size 0x5C */
 
-/* Stg30_Battle viewed with its roster as Stg30DigiS (signed stat reads). */
-typedef struct {
-    u8 _pad000[0x18];
-    /* 0x018 */ Stg30DigiS digis[6];
-} Stg30StateS;
 
 /* Stg30_BattleDigis viewed as the battle block from 0x18 of Stg30_Battle: the roster
    then the status words (Stg30_Battle.field_31C) at 0x304. The stat arrays after
    it keep their Stg30_Battle names (Stg30_ApplySkillDamage uses this view in one block,
    where retail relocates against a separate symbol, not Stg30_Battle). */
 typedef struct {
-    /* 0x000 */ Stg30DigiS digis[6];
+    /* 0x000 */ DigiRosterEntry digis[6];
     u8 _pad228[0xDC];
     /* 0x304 */ s32 status[6];
     u8 _pad31C[0x0C];
@@ -560,22 +498,15 @@ typedef struct {
     /* 0x36E */ s16 defenseBase[6];  /* Stg30_Battle.defenseBase */
 } Stg30CombatCD8;
 
-/* Roster entry viewed as the byte table at 0x21 indexed by Stg30EnemyAi.field_9. */
-typedef struct {
-    u8 _pad00[0x16];
-    /* 0x16 */ s16 hp;
-    u8 _pad18[0x9];
-    /* 0x21 */ u8 b21[0x3B];
-} Stg30DigiB21; /* size 0x5C */
 
 /* Stg30_BattleDigis battle block: roster, then the byte lists and Sub10 records. */
 typedef struct {
-    /* 0x000 */ Stg30DigiB21 digis[6];
+    /* 0x000 */ DigiRosterEntry digis[6];
     /* 0x228 */ Stg30EnemyAi lists[6];
     /* 0x294 */ Stg30Turn sub[7];
 } Stg30SlotBlk;
 
-extern Stg30DigiS Stg30_BattleDigis[];
+extern DigiRosterEntry Stg30_BattleDigis[];
 extern s32 Stg30_FighterHudParts[];
 extern s32 Stg30_StatusIconGroups[];
 extern s32 Stg30_StatusIconFlags[];
@@ -591,7 +522,7 @@ extern s32 Stg30_TargetAllEnemiesMask;
 extern s32 Stg30_TargetAllAlliesMask;
 extern s32 func_8001F0E4(s32 id);
 extern s32 func_8001F020(s32 id);  /* u8 in the main exe; used unmasked here */
-/* Stg30_BattleDigiNames: Stg30StateDigis.digis[i].name (0x64 = 0x18 + 0x4C). */
+/* Stg30_BattleDigiNames: Stg30_Battle.digis[i].name (0x64 = 0x18 + 0x4C). */
 typedef struct {
     /* 0x00 */ u8 name[14];
     u8 _pad0E[0x4E];
@@ -783,7 +714,7 @@ extern s32 Digi_GetAnimFile(s32 arg0, s32 arg1);
 extern void Cd_QueueFile(s32);
 extern s32 Cd_GetFileState(s32 arg0);
 extern void Cd_QueueStag4000Files(void);
-extern s32 Stg30_HasSkillOrNew(Stg30IdSet *a0, s16 *a1, u8 id);
+extern s32 Stg30_HasSkillOrNew(DigiRosterEntry *a0, s16 *a1, u8 id);
 extern s32 Stg30_RankCanLearnSkill(s32 a0, u8 a1);
 extern void Stg30_ActionLoadAddSorted(Actor *a0, s32 file, s32 lba);
 extern s32 Item_GetBagCapacity(void);

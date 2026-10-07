@@ -422,14 +422,6 @@ typedef struct {
     /* 0x100 */ s32 msgArg;
 } Stg20ItemWork;
 
-/* Save_GameState.elems[] viewed from its own symbol with the 12 skill bytes at 0x22 (Stg20_LabSkillsGroup). */
-typedef struct {
-    u8 _pad00[0x0D];
-    /* 0x0D */ u8 level;
-    u8 _pad0E[0x14];
-    /* 0x22 */ u8 skills[12];
-    u8 _pad2E[0x2E];
-} Stg20Roster; /* size 0x5C */
 
 /* Save_GameState.elems[].name viewed from its own symbol (stride 0x5C, Stg20_LabPairUpdate). */
 typedef struct {
@@ -728,19 +720,7 @@ extern void Stg20_WalkerHalt(Actor *a);
 
 extern Stg20FileRec *Stg20_GetMapDest(s32 i);
 
-/* Roster entry viewed with a signed word at 0x16 (Stg20_TestSpecialFlag). */
-typedef struct {
-    /* 0x00 */ u8 state;
-    u8 _pad01[0x15];
-    /* 0x16 */ s16 hp;
-    u8 _pad18[0x44];
-} Stg20RosterHp; /* size 0x5C */
 
-/* Save_GameState viewed with the roster at 0xE4 as Stg20RosterHp (Stg20_TestSpecialFlag). */
-typedef struct {
-    u8 _pad00[0xE4];
-    /* 0xE4 */ Stg20RosterHp elems[0x24];
-} Stg20GameRoster;
 
 extern s32 Item_GetBagCapacity(void);
 extern s32 Stg20_OwnsDigi(s32 id);
@@ -784,19 +764,6 @@ extern void Task_SetState3(Actor *, u32);
 extern void Snd_StopById(s32);
 extern u8 Digi_GetLearnedSkill(s32);
 
-/* Roster entry viewed with signed HP/MP words and the byte at 0x46 (Stg20_LabDigivolve). */
-typedef struct {
-    /* 0x00 */ u8 state;
-    /* 0x01 */ u8 digiId;
-    u8 _pad02[0x12];
-    /* 0x14 */ s16 maxHp;
-    /* 0x16 */ s16 hp;
-    /* 0x18 */ s16 maxMp;
-    /* 0x1A */ s16 mp;
-    u8 _pad1C[0x2A];
-    /* 0x46 */ u8 field_46;
-    u8 _pad47[0x15];
-} Stg20DigiBoost; /* size 0x5C */
 
 extern void Gpu_AllocPacketBufs(s32 a0);
 extern void Sys_SetFrameRate30(void);
@@ -882,28 +849,6 @@ extern s32 Stg20_PartsPageSlot[10];
 extern s32 Skill_GetRank(s32 id);
 extern s32 Skill_GetPower(s32 id);
 
-/* Roster entry as the jogress code builds and reads it (Stg20_LabDnaDigivolve). */
-typedef struct {
-    /* 0x00 */ u8 state;
-    /* 0x01 */ u8 digiId;
-    u8 _pad02[0x0B];
-    /* 0x0D */ u8 level;
-    /* 0x0E */ u8 dp;
-    /* 0x0F */ u8 maxLevel;
-    /* 0x10 */ s32 exp;
-    /* 0x14 */ s16 maxHp;
-    /* 0x16 */ s16 hp;
-    /* 0x18 */ s16 maxMp;
-    /* 0x1A */ s16 mp;
-    /* 0x1C */ s16 attack;
-    /* 0x1E */ s16 defense;
-    /* 0x20 */ s16 speed;
-    /* 0x22 */ u8 skills[12];
-    /* 0x2E */ u8 learned[0x19];
-    /* 0x47 */ u8 parent0;
-    /* 0x48 */ u8 parent1;
-    u8 _pad49[0x13];
-} Stg20Digi; /* size 0x5C */
 
 extern void Stg20_MsgWinShowDigiMsg(s32 text, s32 digi);
 

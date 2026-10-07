@@ -63,9 +63,9 @@ void Stg30_CommandMenuUpdate(Actor *a0) {
                     break;
                 }
                 if (Pad_State[0].down > 0) {
-                    if (Stg30_Battle.entries[0].inputSlot == 6) {
+                    if (Stg30_Battle.inputSlot == 6) {
                         if (Stg30_CommandMenuCursor == 2) break;
-                        if (Stg30_Battle.entries[0].fromCity != 0) break;
+                        if (Stg30_Battle.fromCity != 0) break;
                         Stg30_CommandMenuCursor++;
                         Snd_PlayById(0xC, 0);
                         break;
@@ -76,23 +76,23 @@ void Stg30_CommandMenuUpdate(Actor *a0) {
                     break;
                 }
                 if (Pad_State[0].cross > 0) {
-                    Stg30_Battle.entries[0].cancelled = 0;
-                    Stg30_Battle.entries[0].menuChoice = Stg30_CommandMenuCursor;
+                    Stg30_Battle.cancelled = 0;
+                    Stg30_Battle.menuChoice = Stg30_CommandMenuCursor;
                     Snd_PlayById(0xA, 0);
                     Task_NextState0(a0);
                     break;
                 }
-                if (Stg30_Battle.entries[0].inputSlot == 6) break;
+                if (Stg30_Battle.inputSlot == 6) break;
                 if (Pad_State[0].triangle > 0) {
-                    Stg30_Battle.entries[0].cancelled = 1;
+                    Stg30_Battle.cancelled = 1;
                     Snd_PlayById(0xB, 0);
                     Task_NextState0(a0);
                 }
             } while (0);
-            if (Stg30_Battle.entries[0].inputSlot == 6) {
+            if (Stg30_Battle.inputSlot == 6) {
                 Text_OpenPacked(w->text, (s32)Save_GameState.playerName, 0x10, Stg30_TamerNameTextPos);
                 for (k = 0; k < 3; k++) {
-                    if (Stg30_Battle.entries[0].fromCity != 0 && k != 0) {
+                    if (Stg30_Battle.fromCity != 0 && k != 0) {
                         s32 *text = &w->text[k + 1];
                         s32 id = k + 2;
 
@@ -117,7 +117,7 @@ void Stg30_CommandMenuUpdate(Actor *a0) {
                 }
             } else {
                 if (w->text[0] == -1) {
-                    args.text = (s32)((Stg30StateDigis *)&Stg30_Battle)->digis[Stg30_Battle.entries[0].inputSlot].name;
+                    args.text = (s32)Stg30_Battle.digis[Stg30_Battle.inputSlot].name;
                     args.color = 4;
                     args.x = 0x16;
                     args.bigFont = 0;

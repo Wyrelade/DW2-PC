@@ -24,7 +24,7 @@ s32 Stg30_AiCanUseAction(s32 idx, s32 i, Stg30EnemyAi *p) {
     case 1:
     case 2:
     case 3:
-        if (Stg30_Battle.entries[idx].mp >= Skill_GetMpCost(p->skillIds[i])) {
+        if (Stg30_Battle.digis[idx].mp >= Skill_GetMpCost(p->skillIds[i])) {
             return 1;
         }
     case 4:
@@ -50,15 +50,15 @@ s32 Stg30_AiCheckCondition(s32 cond, s32 self) {
     case 3:
         return (r & 7) == 0;
     case 5:
-        return Stg30_Battle.entries[3].hp != 0;
+        return Stg30_Battle.digis[3].hp != 0;
     case 4:
-        return Stg30_Battle.entries[4].hp != 0;
+        return Stg30_Battle.digis[4].hp != 0;
     case 6:
-        return Stg30_Battle.entries[5].hp != 0;
+        return Stg30_Battle.digis[5].hp != 0;
     case 7:
         ret = 1;
         for (i = 3; i < 6; i++) {
-            if (i != self && Stg30_Battle.entries[i].hp != 0) {
+            if (i != self && Stg30_Battle.digis[i].hp != 0) {
                 ret = 0;
             }
         }
@@ -66,7 +66,7 @@ s32 Stg30_AiCheckCondition(s32 cond, s32 self) {
     case 8:
         ret = 1;
         for (i = 3; i < 6; i++) {
-            if (Stg30_Battle.entries[i].digiId != 0 && Stg30_Battle.entries[i].hp != Stg30_Battle.entries[i].maxHp) {
+            if (Stg30_Battle.digis[i].digiId != 0 && Stg30_Battle.digis[i].hp != Stg30_Battle.digis[i].maxHp) {
                 ret = 0;
             }
         }
@@ -74,7 +74,7 @@ s32 Stg30_AiCheckCondition(s32 cond, s32 self) {
     case 9:
         ret = 0;
         for (i = 3; i < 6; i++) {
-            if (Stg30_Battle.entries[i].digiId != 0 && Stg30_Battle.entries[i].hp < (s16)(Stg30_Battle.entries[i].maxHp / 10)) {
+            if (Stg30_Battle.digis[i].digiId != 0 && Stg30_Battle.digis[i].hp < (s16)(Stg30_Battle.digis[i].maxHp / 10)) {
                 ret = 1;
             }
         }
@@ -82,7 +82,7 @@ s32 Stg30_AiCheckCondition(s32 cond, s32 self) {
     case 10:
         ret = 0;
         for (i = 3; i < 6; i++) {
-            if (Stg30_Battle.entries[i].digiId != 0 && (Stg30_Battle.statusFlags[i] & 7)) {
+            if (Stg30_Battle.digis[i].digiId != 0 && (Stg30_Battle.statusFlags[i] & 7)) {
                 ret = 1;
             }
         }
@@ -90,7 +90,7 @@ s32 Stg30_AiCheckCondition(s32 cond, s32 self) {
     case 11:
         ret = 0;
         for (i = 3; i < 6; i++) {
-            if (Stg30_Battle.entries[i].digiId != 0 && Stg30_Battle.debuffed[i] != 0) {
+            if (Stg30_Battle.digis[i].digiId != 0 && Stg30_Battle.debuffed[i] != 0) {
                 ret = 1;
             }
         }
@@ -98,7 +98,7 @@ s32 Stg30_AiCheckCondition(s32 cond, s32 self) {
     case 12:
         ret = 0;
         for (i = 3; i < 6; i++) {
-            if (Stg30_Battle.entries[i].digiId != 0 && Stg30_Battle.entries[i].hp == 0) {
+            if (Stg30_Battle.digis[i].digiId != 0 && Stg30_Battle.digis[i].hp == 0) {
                 ret = 1;
             }
         }
@@ -106,7 +106,7 @@ s32 Stg30_AiCheckCondition(s32 cond, s32 self) {
     case 13:
         ret = 0;
         for (i = 0; i < 6; i++) {
-            if (Stg30_Battle.entries[i].digiId != 0 && Stg30_Battle.entries[i].hp == 0) {
+            if (Stg30_Battle.digis[i].digiId != 0 && Stg30_Battle.digis[i].hp == 0) {
                 ret = 1;
             }
         }
@@ -114,7 +114,7 @@ s32 Stg30_AiCheckCondition(s32 cond, s32 self) {
     case 14:
         ret = 0;
         for (i = 0; i < 3; i++) {
-            if (Stg30_Battle.entries[i].digiId != 0 && Stg30_Battle.buffed[i] != 0) {
+            if (Stg30_Battle.digis[i].digiId != 0 && Stg30_Battle.buffed[i] != 0) {
                 ret = 1;
             }
         }
@@ -122,7 +122,7 @@ s32 Stg30_AiCheckCondition(s32 cond, s32 self) {
     case 15:
         ret = 0;
         for (i = 0; i < 3; i++) {
-            if (Stg30_Battle.entries[i].digiId != 0 && Digi_GetType(Stg30_Battle.entries[i].digiId) == 0) {
+            if (Stg30_Battle.digis[i].digiId != 0 && Digi_GetType(Stg30_Battle.digis[i].digiId) == 0) {
                 ret = 1;
             }
         }
@@ -130,7 +130,7 @@ s32 Stg30_AiCheckCondition(s32 cond, s32 self) {
     case 16:
         ret = 0;
         for (i = 0; i < 3; i++) {
-            if (Stg30_Battle.entries[i].digiId != 0 && Digi_GetType(Stg30_Battle.entries[i].digiId) == 1) {
+            if (Stg30_Battle.digis[i].digiId != 0 && Digi_GetType(Stg30_Battle.digis[i].digiId) == 1) {
                 ret = 1;
             }
         }
@@ -138,7 +138,7 @@ s32 Stg30_AiCheckCondition(s32 cond, s32 self) {
     case 17:
         ret = 0;
         for (i = 0; i < 3; i++) {
-            if (Stg30_Battle.entries[i].digiId != 0 && Digi_GetType(Stg30_Battle.entries[i].digiId) == 2) {
+            if (Stg30_Battle.digis[i].digiId != 0 && Digi_GetType(Stg30_Battle.digis[i].digiId) == 2) {
                 ret = 1;
             }
         }
@@ -171,7 +171,7 @@ s32 Stg30_PickTarget(s32 id, s32 kind, s32 def) {
     case 1:
         for (i = 0; i < 100; i++) {
             x = (u16)((u16)Rand_Next() % 3) + 3;
-            if (Stg30_Battle.entries[x].hp != 0) {
+            if (Stg30_Battle.digis[x].hp != 0) {
                 return x;
             }
         }
@@ -179,7 +179,7 @@ s32 Stg30_PickTarget(s32 id, s32 kind, s32 def) {
     case 7:
         for (i = 0; i < 100; i++) {
             x = (u16)((u16)Rand_Next() % 3);
-            if (Stg30_Battle.entries[x].hp != 0) {
+            if (Stg30_Battle.digis[x].hp != 0) {
                 return x;
             }
         }
@@ -194,7 +194,7 @@ s32 Stg30_PickTarget(s32 id, s32 kind, s32 def) {
         j = def;
         min = 9999;
         for (i = 3; i < 6; i++) {
-            v = Stg30_Battle.entries[i].hp;
+            v = Stg30_Battle.digis[i].hp;
             if (v != 0 && v < min) {
                 j = i;
                 min = v;
@@ -205,7 +205,7 @@ s32 Stg30_PickTarget(s32 id, s32 kind, s32 def) {
         j = 0;
         min = 9999;
         for (i = 0; i < 3; i++) {
-            v = Stg30_Battle.entries[i].hp;
+            v = Stg30_Battle.digis[i].hp;
             if (v != 0 && v < min) {
                 j = i;
                 min = v;
@@ -215,7 +215,7 @@ s32 Stg30_PickTarget(s32 id, s32 kind, s32 def) {
     case 6:
         for (i = 0; i < 100; i++) {
             x = (u16)((u16)Rand_Next() % 3) + 3;
-            if (Stg30_Battle.entries[x].digiId != 0 && Stg30_Battle.entries[x].hp == 0) {
+            if (Stg30_Battle.digis[x].digiId != 0 && Stg30_Battle.digis[x].hp == 0) {
                 return x;
             }
         }
@@ -228,7 +228,7 @@ void Stg30_AiChooseEnemyTurns(void) {
     s32 col;
 
     for (col = 3; col < 6; col++) {
-        Stg30DigiB21 *d = &((Stg30SlotBlk *)Stg30_BattleDigis)->digis[col];
+        DigiRosterEntry *d = &((Stg30SlotBlk *)Stg30_BattleDigis)->digis[col];
         Stg30EnemyAi *p = &((Stg30SlotBlk *)Stg30_BattleDigis)->lists[col];
         Stg30Turn *out = &((Stg30SlotBlk *)Stg30_BattleDigis)->sub[col];
         s32 i;
@@ -248,7 +248,7 @@ void Stg30_AiChooseEnemyTurns(void) {
                             out->turnType = 5;
                             break;
                         }
-                        v = (&d->b21[0])[p->actionKinds[i]];
+                        v = d->skills[p->actionKinds[i] - 1];
                         out->skillId = v;
                         out->target = Stg30_PickTarget(v, p->targetModes[i], col);
                         out->turnType = Skill_GetType(out->skillId) + 1;
@@ -273,12 +273,12 @@ void Stg30_BuildTurnOrder(void) {
     s32 j;
 
     for (i = 0; i < 6; i++) {
-        if (Stg30_Battle.entries[i].hp != 0 && Stg30_Battle.turns[i].turnType != 0) {
+        if (Stg30_Battle.digis[i].hp != 0 && Stg30_Battle.turns[i].turnType != 0) {
             bonus = 0;
             if (Stg30_Battle.turns[i].turnType == 1 && (func_8001F020(Stg30_Battle.turns[i].skillId) & 8)) {
-                bonus = Stg30_Battle.entries[i].speed;
+                bonus = Stg30_Battle.digis[i].speed;
             }
-            spd[i] = Stg30_Battle.entries[i].speed + bonus + (u16)((u16)Rand_Next() % 11);
+            spd[i] = Stg30_Battle.digis[i].speed + bonus + (u16)((u16)Rand_Next() % 11);
         } else {
             spd[i] = 0;
         }
@@ -320,7 +320,7 @@ void Stg30_BuildTurnOrder(void) {
         }
     }
     for (i = 0; i < 6; i++) {
-        if (Stg30_Battle.entries[i].digiId != 0 && Stg30_Battle.turns[i].skillId != 0 &&
+        if (Stg30_Battle.digis[i].digiId != 0 && Stg30_Battle.turns[i].skillId != 0 &&
             (func_8001F020(Stg30_Battle.turns[i].skillId) & 0x20)) {
             slot2 = Stg30_TurnOrderFind(i);
             if (slot2 != -1) {
@@ -373,11 +373,11 @@ s32 Stg30_UpdateTurnStatus(s32 idx) {
     if (Stg30_Battle.statusFlags[idx] & 4) {
         n = 0;
         for (i = 0; i < 12; i++) {
-            if (Stg30_Battle.entries[idx].skillIds[i] == 0) {
+            if (Stg30_Battle.digis[idx].skills[i] == 0) {
                 break;
             }
-            if (Skill_GetCastAnim(Stg30_Battle.entries[idx].skillIds[i]) == 0) {
-                buf[n++] = Stg30_Battle.entries[idx].skillIds[i];
+            if (Skill_GetCastAnim(Stg30_Battle.digis[idx].skills[i]) == 0) {
+                buf[n++] = Stg30_Battle.digis[idx].skills[i];
             }
         }
         if (n == 0) {
@@ -424,7 +424,7 @@ s32 Stg30_UpdateTurnStatus(s32 idx) {
                 t = 9;
                 break;
             }
-        } while ((n == 1 || n == 5) && Stg30_Battle.entries[t].hp == 0);
+        } while ((n == 1 || n == 5) && Stg30_Battle.digis[t].hp == 0);
         Stg30_Battle.turns[idx].turnType = 1;
         Stg30_Battle.turns[idx].skillId = tech;
         Stg30_Battle.turns[idx].target = t;

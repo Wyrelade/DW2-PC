@@ -127,9 +127,9 @@ void Stg30_SkillLearnUpdate(Actor *a0) {
     switch (a0->stateLevel0) {
     case 0:
         Mem_FillWordsNeg1(w->labelTexts, 0x1C);
-        a0->digiId = Stg30_Battle.entries[w->slot].digiId;
+        a0->digiId = Stg30_Battle.digis[w->slot].digiId;
         for (i = 0; i < 12; i++) {
-            w->skillLists[1][i] = Stg30_Battle.entries[w->slot].skillIds[i];
+            w->skillLists[1][i] = Stg30_Battle.digis[w->slot].skills[i];
         }
         w->count[0] = 0;
         w->count[1] = 0;
@@ -260,7 +260,7 @@ void Stg30_SkillLearnUpdate(Actor *a0) {
     case 2:
         Text_CloseArray(w->labelTexts, 0x1C);
         for (k = 0; k < 12; k++) {
-            Stg30_Battle.entries[w->slot].skillIds[k] = w->skillLists[1][k];
+            Stg30_Battle.digis[w->slot].skills[k] = w->skillLists[1][k];
         }
         Task_NextState0(a0);
         break;

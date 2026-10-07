@@ -25,16 +25,16 @@ void Stg30_TargetSelectUpdate(Actor *a0) {
 
     switch (a0->stateLevel0) {
     case 0:
-        w->skillId = Stg30_Battle.turns[Stg30_Battle.entries[0].inputSlot].skillId;
+        w->skillId = Stg30_Battle.turns[Stg30_Battle.inputSlot].skillId;
         w->targetMode = Skill_GetTarget(w->skillId);
-        w->effectKind = Stg30_Battle.turns[Stg30_Battle.entries[0].inputSlot].effectKind;
+        w->effectKind = Stg30_Battle.turns[Stg30_Battle.inputSlot].effectKind;
         switch (w->targetMode) {
         case 0:
         case 3:
         case 4:
         case 7:
         default:
-            v = Stg30_Battle.entries[0].inputSlot;
+            v = Stg30_Battle.inputSlot;
             w->target = v;
             w->lastSlot = v;
             w->firstSlot = v;
@@ -70,8 +70,8 @@ void Stg30_TargetSelectUpdate(Actor *a0) {
             w->firstSlot = v;
             break;
         case 9:
-            Stg30_Battle.entries[0].chosenTarget = 0;
-            Stg30_Battle.entries[0].cancelled = 0;
+            Stg30_Battle.chosenTarget = 0;
+            Stg30_Battle.cancelled = 0;
             Task_SetState0(a0, 3);
             return;
         }
@@ -107,14 +107,14 @@ void Stg30_TargetSelectUpdate(Actor *a0) {
             }
         }
             if (Pad_State[0].cross > 0) {
-                Stg30_Battle.entries[0].chosenTarget = w->target;
-                Stg30_Battle.entries[0].cancelled = 0;
+                Stg30_Battle.chosenTarget = w->target;
+                Stg30_Battle.cancelled = 0;
                 Snd_PlayById(0xE, 0);
                 Task_SetState0(a0, 3);
                 break;
             }
             if (Pad_State[0].triangle > 0) {
-                Stg30_Battle.entries[0].cancelled = 1;
+                Stg30_Battle.cancelled = 1;
                 Snd_PlayById(0xB, 0);
                 Task_SetState0(a0, 3);
             }
@@ -138,7 +138,7 @@ void Stg30_TargetSelectUpdate(Actor *a0) {
             case 2:
                 for (i = 0; i < 3; i++) {
                     t = Task_FindFirst(0x509, -1, i);
-                    if (t != NULL && Stg30_Battle.entries[i].hp != 0) {
+                    if (t != NULL && Stg30_Battle.digis[i].hp != 0) {
                         Task_SetState01((Actor *)t, 2, 8);
                     } else {
                         Task_SetState01((Actor *)t, 2, 7);
@@ -148,7 +148,7 @@ void Stg30_TargetSelectUpdate(Actor *a0) {
             case 6:
                 for (i = 3; i < 6; i++) {
                     t = Task_FindFirst(0x509, -1, i);
-                    if (t != NULL && Stg30_Battle.entries[i].hp != 0) {
+                    if (t != NULL && Stg30_Battle.digis[i].hp != 0) {
                         Task_SetState01((Actor *)t, 2, 8);
                     } else {
                         Task_SetState01((Actor *)t, 2, 7);
@@ -158,7 +158,7 @@ void Stg30_TargetSelectUpdate(Actor *a0) {
             case 8:
                 for (i = 0; i < 6; i++) {
                     t = Task_FindFirst(0x509, -1, i);
-                    if (t != NULL && Stg30_Battle.entries[i].hp != 0) {
+                    if (t != NULL && Stg30_Battle.digis[i].hp != 0) {
                         Task_SetState01((Actor *)t, 2, 8);
                     } else {
                         Task_SetState01((Actor *)t, 2, 7);
@@ -202,34 +202,34 @@ void Stg30_TargetSelectDraw(Actor *a0) {
         break;
     case 2:
         m = Stg30_TargetAllAlliesMask;
-        if (Stg30_Battle.entries[2].hp == 0) m |= 8;
-        if (Stg30_Battle.entries[1].hp == 0) m |= 4;
-        if (Stg30_Battle.entries[0].hp == 0) m |= 2;
+        if (Stg30_Battle.digis[2].hp == 0) m |= 8;
+        if (Stg30_Battle.digis[1].hp == 0) m |= 4;
+        if (Stg30_Battle.digis[0].hp == 0) m |= 2;
         Gfx_HidePartsByMask((GfxPartMaskView *)p, m);
         break;
     case 6:
         m = Stg30_TargetAllEnemiesMask;
-        if (Stg30_Battle.entries[5].hp == 0) m |= 0x40;
-        if (Stg30_Battle.entries[4].hp == 0) m |= 0x20;
-        if (Stg30_Battle.entries[3].hp == 0) m |= 0x10;
+        if (Stg30_Battle.digis[5].hp == 0) m |= 0x40;
+        if (Stg30_Battle.digis[4].hp == 0) m |= 0x20;
+        if (Stg30_Battle.digis[3].hp == 0) m |= 0x10;
         Gfx_HidePartsByMask((GfxPartMaskView *)p, m);
         break;
     case 8:
         m = -0x7F;
         if (func_8001F0E4(w->skillId) & 0x2000) {
-            if (Stg30_Battle.entries[0].digiId == 0) m = -0x7D;
-            if (Stg30_Battle.entries[1].digiId == 0) m |= 4;
-            if (Stg30_Battle.entries[2].digiId == 0) m |= 8;
-            if (Stg30_Battle.entries[3].digiId == 0) m |= 0x10;
-            if (Stg30_Battle.entries[4].digiId == 0) m |= 0x20;
-            if (Stg30_Battle.entries[5].digiId == 0) m |= 0x40;
+            if (Stg30_Battle.digis[0].digiId == 0) m = -0x7D;
+            if (Stg30_Battle.digis[1].digiId == 0) m |= 4;
+            if (Stg30_Battle.digis[2].digiId == 0) m |= 8;
+            if (Stg30_Battle.digis[3].digiId == 0) m |= 0x10;
+            if (Stg30_Battle.digis[4].digiId == 0) m |= 0x20;
+            if (Stg30_Battle.digis[5].digiId == 0) m |= 0x40;
         } else {
-            if (Stg30_Battle.entries[0].hp == 0) m = -0x7D;
-            if (Stg30_Battle.entries[1].hp == 0) m |= 4;
-            if (Stg30_Battle.entries[2].hp == 0) m |= 8;
-            if (Stg30_Battle.entries[3].hp == 0) m |= 0x10;
-            if (Stg30_Battle.entries[4].hp == 0) m |= 0x20;
-            if (Stg30_Battle.entries[5].hp == 0) m |= 0x40;
+            if (Stg30_Battle.digis[0].hp == 0) m = -0x7D;
+            if (Stg30_Battle.digis[1].hp == 0) m |= 4;
+            if (Stg30_Battle.digis[2].hp == 0) m |= 8;
+            if (Stg30_Battle.digis[3].hp == 0) m |= 0x10;
+            if (Stg30_Battle.digis[4].hp == 0) m |= 0x20;
+            if (Stg30_Battle.digis[5].hp == 0) m |= 0x40;
         }
         Gfx_HidePartsByMask((GfxPartMaskView *)p, m);
         break;

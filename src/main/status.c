@@ -108,7 +108,7 @@ void Menu_StatusDraw(Actor *actor) {
     s32 *list;
     s32 i;
     GfxPart *obj;
-    DigiRosterHudView *rec;
+    DigiRosterEntry *rec;
 
     if (w->scale == 0) {
         return;

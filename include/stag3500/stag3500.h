@@ -212,33 +212,8 @@ typedef struct {
     /* 0x34 */ Stg35BattleChildren *children;
 } Stg35ChildOwner;
 
-/* 0x5C-byte battle copy of a party digimon (Stg35_Battle.rec[6], at 0x8006AA98);
-   shares the leading fields of the main-exe DigiRosterEntry. */
-typedef struct {
-    /* 0x00 */ u8 state;
-    /* 0x01 */ u8 digiId;
-    u8 _pad02[0x0E];
-    /* 0x10 */ s32 exp;
-    /* 0x14 */ s16 maxHp;
-    /* 0x16 */ s16 hp;
-    /* 0x18 */ s16 maxMp;
-    u8 _pad1A[0x02];
-    /* 0x1C */ s16 attack;
-    /* 0x1E */ s16 defense;
-    /* 0x20 */ s16 speed;
-    /* 0x22 */ u8 skillIds[12];
-    u8 _pad2E[0x1E];
-    /* 0x4C */ u8 name[14];
-    u8 _pad5A[0x02];
-} Stg35BattleDigi; /* size 0x5C */
 
-/* Save_GameState (main GameState) viewed with the party slots as Stg35BattleDigi. */
-typedef struct {
-    u8 _pad00[0xE4];
-    /* 0xE4 */ Stg35BattleDigi elems[0x24];
-} Stg35GameState;
-
-extern Stg35GameState Save_GameState;
+extern GameState Save_GameState;
 
 /* 6-byte entries of the lists pointed to by Stg35_SkillGroups (end at field_0 == 0). */
 typedef struct {
@@ -261,7 +236,7 @@ typedef struct {
 /* Stg35_Battle (Stg35_ClearBattle zeroes all 0x358 bytes). */
 typedef struct {
     u8 _pad000[0x10];
-    /* 0x010 */ Stg35BattleDigi rec[6];
+    /* 0x010 */ DigiRosterEntry rec[6];
     /* 0x238 */ Stg35Action actions[6];
     /* 0x340 */ s32 scriptTargets[6];
 } Stg35Battle; /* size 0x358 */

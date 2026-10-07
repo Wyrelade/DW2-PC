@@ -15,8 +15,8 @@ s32 Stg35_TurnOrder[12];
 Stg35Battle Stg35_Battle;
 
 s32 Stg35_ApplySkillDamage(s32 arg0, s32 arg1, s32 arg2) {
-    Stg35BattleDigi *rec0 = &Stg35_Battle.rec[arg0];
-    Stg35BattleDigi *rec1 = &Stg35_Battle.rec[arg1];
+    DigiRosterEntry *rec0 = &Stg35_Battle.rec[arg0];
+    DigiRosterEntry *rec1 = &Stg35_Battle.rec[arg1];
     s32 a;
     s32 b;
     s32 prod;

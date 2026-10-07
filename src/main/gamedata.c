@@ -111,9 +111,9 @@ void Digi_InitFromTable(s32 a0, s32 a1, DigiRosterEntry *e) {
         e->attack = row->attack;
         e->defense = row->defense;
         e->speed = row->speed;
-        e->attr[0] = row->skill0;
-        e->attr[1] = row->skill1;
-        e->attr[2] = row->skill2;
+        e->skills[0] = row->skill0;
+        e->skills[1] = row->skill1;
+        e->skills[2] = row->skill2;
     }
     e->maxLevel = Digi_CalcMaxLevel(e->level);
     if (e->level == 1) {
@@ -149,11 +149,11 @@ void Enemy_InitRosterEntry(s32 a0, s32 a1, DigiRosterEntry *e, Out1DDA8 *o) {
         e->attack = t->rows[a1].attack;
         e->defense = t->rows[a1].defense;
         e->speed = t->rows[a1].speed;
-        e->attr[0] = t->rows[a1].attr0;
-        e->attr[1] = t->rows[a1].attr1;
-        e->attr[2] = t->rows[a1].attr2;
+        e->skills[0] = t->rows[a1].attr0;
+        e->skills[1] = t->rows[a1].attr1;
+        e->skills[2] = t->rows[a1].attr2;
         for (i = 3; i < 12; i++) {
-            e->attr[i] = 0;
+            e->skills[i] = 0;
         }
         o->skill0 = t->rows[a1].attr0;
         o->skill1 = t->rows[a1].attr1;

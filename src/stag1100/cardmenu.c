@@ -106,7 +106,7 @@ void Stg11_ScanTransferCards(Actor *arg0, Stg11MenuWork *arg1) {
             if (j == i) {
                 c->digiId = tbl[rec->speciesId];
                 for (j = 0; j < 0x24; j++) {
-                    if (((Stg11GameState *)Save_GameStatePtr)->elems[j].state != 0 && ((Stg11GameState *)Save_GameStatePtr)->elems[j].isTransferred != 0 && ((Stg11GameState *)Save_GameStatePtr)->elems[j].transferUid == rec->uid) {
+                    if (Save_GameStatePtr->elems[j].state != 0 && Save_GameStatePtr->elems[j].isTransferred != 0 && Save_GameStatePtr->elems[j].transferUid == rec->uid) {
                         c->transferState = 1;
                     }
                 }
@@ -157,7 +157,7 @@ void Stg11_OpenTransferText(Actor *arg0, Stg11MenuWork *arg1) {
 
 void Stg11_TransferSelected(Actor *arg0, Stg11MenuWork *arg1) {
     Stg11MenuRow *c = &arg1->transferRows[Menu_GridIndexColMajor(arg1->cursor, arg1->u6C.gridSize)];
-    Stg11DigiEntry *e = (Stg11DigiEntry *)Save_GameStatePtr->elems;
+    DigiRosterEntry *e = Save_GameStatePtr->elems;
     u8 *src;
     u8 *dst;
     s32 i;

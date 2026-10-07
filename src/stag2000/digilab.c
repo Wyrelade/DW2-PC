@@ -12,9 +12,9 @@ void Stg20_LabDnaDigivolve(Actor *a) {
     s32 *slot = (s32 *)a->u34.children;
     s32 buf[9];
     Stg20WarpFx args;
-    Stg20Digi nd;
-    Stg20Digi *p;
-    Stg20Digi *q;
+    DigiRosterEntry nd;
+    DigiRosterEntry *p;
+    DigiRosterEntry *q;
     s32 t;
     s32 i;
     s32 ok;
@@ -270,8 +270,8 @@ void Stg20_LabDnaDigivolve(Actor *a) {
             if (((Actor *)w->menu)->stateLevel1 != 0) {
                 break;
             }
-            p = (Stg20Digi *)&Save_GameState.elems[Stg20_MenuState.dnaParent0];
-            q = (Stg20Digi *)&Save_GameState.elems[Stg20_MenuState.dnaParent1];
+            p = &Save_GameState.elems[Stg20_MenuState.dnaParent0];
+            q = &Save_GameState.elems[Stg20_MenuState.dnaParent1];
             t = Digi_GetRank(Stg20_MenuState.evoTargetId);
             w->busy = 0;
             Snd_PlayById(0x101, 1);
@@ -396,10 +396,10 @@ void Stg20_LabDnaDigivolve(Actor *a) {
             }
             for (j = 0, n = 0; j < 12; j++) {
                 if (p->skills[j] != nd.skills[0] && p->skills[j] != nd.skills[1]) {
-                    nd.learned[n++] = p->skills[j];
+                    nd.learnableSkills[n++] = p->skills[j];
                 }
                 if (q->skills[j] != nd.skills[0] && q->skills[j] != nd.skills[1]) {
-                    nd.learned[n++] = q->skills[j];
+                    nd.learnableSkills[n++] = q->skills[j];
                 }
             }
             nd.parent0 = p->digiId;
@@ -491,7 +491,7 @@ void Stg20_LabDigivolve(Actor *a) {
     Stg20WarpFx args;
     s32 i;
     s32 ok;
-    Stg20DigiBoost *e;
+    DigiRosterEntry *e;
     s16 v;
 
     Stg20_MenuState.labIsDna = 0;
@@ -644,7 +644,7 @@ void Stg20_LabDigivolve(Actor *a) {
             if (((Actor *)w->menu)->stateLevel1 == 0) {
                 w->busy = 0;
                 Snd_PlayById(0x101, 1);
-                e = (Stg20DigiBoost *)&Save_GameState.elems[Stg20_MenuState.infoRosterIndex];
+                e = &Save_GameState.elems[Stg20_MenuState.infoRosterIndex];
                 e->digiId = Stg20_MenuState.evoTargetId;
                 e->maxHp += 30;
                 v = e->maxHp;
@@ -660,7 +660,7 @@ void Stg20_LabDigivolve(Actor *a) {
                 }
                 e->maxMp = v;
                 e->mp = v;
-                e->field_46 = Digi_GetLearnedSkill(e->digiId);
+                e->pendingSkill = Digi_GetLearnedSkill(e->digiId);
                 Task_NextState2(a);
             }
             break;

@@ -297,7 +297,7 @@ s32 Item_UseRecoverAll(s32 a0, s32 a1) {
         if (c->effectType == 0 || c->effectType == 2) {
             s32 m;
 
-            max = m = e->maxHp;
+            max = m = (u16)e->maxHp;
             if (cur != max) {
                 if (c->amount == 0) {
                     e->hp = max;

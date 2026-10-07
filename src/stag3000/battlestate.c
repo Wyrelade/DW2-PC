@@ -17,9 +17,8 @@
 s32 Stg30_TurnOrder[12];
 Stg30FighterBackup Stg30_FighterStateBackup;
 Stg30Battle Stg30_Battle;
-/* The six fighters' roster records start at 0x18 (stride 0x5C, as DigiRosterEntry); code reaches
- * them and their names through these two symbols. Stg30BattleEntry still models the block as
- * 0x5C entries from 0 (R9: header[0x18] + digis[6]). */
+/* Stg30_Battle.digis (0x18) and their names (0x18 + 0x4C) under their own symbols: retail code
+ * reaches the fighter block from 0x18 through these (Stg30CombatCD8 / Stg30SlotBlk views). */
 DATA_LABEL(Stg30_BattleDigis, Stg30_Battle, 0x018);
 DATA_LABEL(Stg30_BattleDigiNames, Stg30_Battle, 0x064);
 
@@ -43,7 +42,7 @@ s32 Stg30_TargetFirst(s32 team, s32 flag, s32 mode) {
     s32 lo = team * 3;
 
     for (i = lo; i < lo + 3; i++) {
-        if (Stg30_Battle.entries[i].digiId != 0 && (mode == 3 || Stg30_Battle.entries[i].hp != 0)) {
+        if (Stg30_Battle.digis[i].digiId != 0 && (mode == 3 || Stg30_Battle.digis[i].hp != 0)) {
             if (flag == 0 || !(Stg30_Battle.statusFlags[i] & 0x10000)) {
                 return i;
             }
@@ -57,7 +56,7 @@ s32 Stg30_TargetPrev(s32 team, s32 cur, s32 flag, s32 mode) {
     s32 lo = team * 3;
 
     for (i = cur - 1; i >= lo; i--) {
-        if (Stg30_Battle.entries[i].digiId != 0 && (mode == 3 || Stg30_Battle.entries[i].hp != 0)) {
+        if (Stg30_Battle.digis[i].digiId != 0 && (mode == 3 || Stg30_Battle.digis[i].hp != 0)) {
             if (flag == 0 || !(Stg30_Battle.statusFlags[i] & 0x10000)) {
                 return i;
             }
@@ -70,7 +69,7 @@ s32 Stg30_TargetNext(s32 team, s32 cur, s32 flag, s32 mode) {
     s32 i;
 
     for (i = cur + 1; i < team * 3 + 3; i++) {
-        if (Stg30_Battle.entries[i].digiId != 0 && (mode == 3 || Stg30_Battle.entries[i].hp != 0)) {
+        if (Stg30_Battle.digis[i].digiId != 0 && (mode == 3 || Stg30_Battle.digis[i].hp != 0)) {
             if (flag == 0 || !(Stg30_Battle.statusFlags[i] & 0x10000)) {
                 return i;
             }
@@ -133,7 +132,7 @@ void Stg30_SaveFighterStates(void) {
     s32 i;
 
     for (i = 0; i < 6; i++) {
-        Stg30_FighterStateBackup.digis[i] = ((Stg30StateDigis *)&Stg30_Battle)->digis[i];
+        Stg30_FighterStateBackup.digis[i] = Stg30_Battle.digis[i];
         Stg30_FighterStateBackup.statusFlags[i] = Stg30_Battle.statusFlags[i];
         Stg30_FighterStateBackup.debuffed[i] = Stg30_Battle.debuffed[i];
         Stg30_FighterStateBackup.buffed[i] = Stg30_Battle.buffed[i];
@@ -147,7 +146,7 @@ void Stg30_RestoreFighterStates(void) {
     s32 i;
 
     for (i = 0; i < 6; i++) {
-        ((Stg30StateDigis *)&Stg30_Battle)->digis[i] = Stg30_FighterStateBackup.digis[i];
+        Stg30_Battle.digis[i] = Stg30_FighterStateBackup.digis[i];
         Stg30_Battle.statusFlags[i] = Stg30_FighterStateBackup.statusFlags[i];
         Stg30_Battle.debuffed[i] = Stg30_FighterStateBackup.debuffed[i];
         Stg30_Battle.buffed[i] = Stg30_FighterStateBackup.buffed[i];

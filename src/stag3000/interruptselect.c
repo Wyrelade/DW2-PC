@@ -274,7 +274,7 @@ void Stg30_InitBattle(void) {
     if ((Sys_State.prevGameMode & 0xFF00) == 0x300) {
         Dung_State.floorSpecialty = 0;
         Dung_State.giftLevel = 0;
-        Stg30_Battle.entries[0].fromCity = 1;
+        Stg30_Battle.fromCity = 1;
     }
     if (Sys_State.modeArg == 0x97 && Flag_Test(0x88)) {
         Sys_State.modeArg++;

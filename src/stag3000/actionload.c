@@ -85,7 +85,7 @@ void Stg30_ActionLoadUpdate(Actor *a0) {
                 break;
             case 9:
                 if (p[1] != 6) {
-                    w->casterDigiId = Stg30_Battle.entries[p[1]].digiId;
+                    w->casterDigiId = Stg30_Battle.digis[p[1]].digiId;
                     w->itemAction = 0;
                 } else {
                     w->itemAction = 1;
@@ -95,31 +95,31 @@ void Stg30_ActionLoadUpdate(Actor *a0) {
                 break;
             case 10:
                 w->targetReactKinds[k] = 1;
-                w->targetDigiIds[k] = Stg30_Battle.entries[p[1]].digiId;
+                w->targetDigiIds[k] = Stg30_Battle.digis[p[1]].digiId;
                 p += 3;
                 k++;
                 break;
             case 11:
                 w->targetReactKinds[k] = 2;
-                w->targetDigiIds[k] = Stg30_Battle.entries[p[1]].digiId;
+                w->targetDigiIds[k] = Stg30_Battle.digis[p[1]].digiId;
                 p += 3;
                 k++;
                 break;
             case 12:
                 w->targetReactKinds[k] = 3;
-                w->targetDigiIds[k] = Stg30_Battle.entries[p[1]].digiId;
+                w->targetDigiIds[k] = Stg30_Battle.digis[p[1]].digiId;
                 p += 3;
                 k++;
                 break;
             case 13:
                 w->targetReactKinds[k] = 0;
-                w->targetDigiIds[k] = Stg30_Battle.entries[p[1]].digiId;
+                w->targetDigiIds[k] = Stg30_Battle.digis[p[1]].digiId;
                 p += 3;
                 k++;
                 break;
             case 8:
                 w->targetReactKinds[k] = 4;
-                w->targetDigiIds[k] = Stg30_Battle.entries[p[1]].digiId;
+                w->targetDigiIds[k] = Stg30_Battle.digis[p[1]].digiId;
                 p += 3;
                 k++;
                 break;

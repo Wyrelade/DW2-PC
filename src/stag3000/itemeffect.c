@@ -17,8 +17,8 @@ s32 Stg30_CalcCannonDamage(s32 idx, s32 id, s32 lvl) {
     s32 k = (lvl + 1) * 20;
     s32 pow = Skill_GetPower(id);
     s32 el = Skill_GetSpecialty(id);
-    s32 def = Stg30_Battle.entries[idx].defense;
-    s32 el2 = Digi_GetSpecialty(Stg30_Battle.entries[idx].digiId);
+    s32 def = Stg30_Battle.digis[idx].defense;
+    s32 el2 = Digi_GetSpecialty(Stg30_Battle.digis[idx].digiId);
     s32 r;
 
     if (Stg30_Battle.turns[idx].turnType == 5) {
@@ -46,7 +46,7 @@ s32 Stg30_CalcCannonDamage(s32 idx, s32 id, s32 lvl) {
 }
 
 s32 Stg30_ApplyItemEffect(s32 target, s32 tech, s16 *p3, s16 *p4) {
-    Stg30DigiS *d = &Stg30_BattleDigis[target];
+    DigiRosterEntry *d = &Stg30_BattleDigis[target];
     s32 *st = &((Stg30CombatCD8 *)Stg30_BattleDigis)->status[target];
     s32 type = Digi_GetType(d->digiId);
     s32 dmg;
@@ -370,7 +370,7 @@ void Stg30_BuildItemScript(void) {
             i = 0;
             cnt = 0;
             for (; i < 3; i++) {
-                if (Stg30_Battle.entries[i].hp != 0) {
+                if (Stg30_Battle.digis[i].hp != 0) {
                     tgt[cnt++] = i;
                 }
             }
@@ -380,7 +380,7 @@ void Stg30_BuildItemScript(void) {
             i = 0;
             cnt = 0;
             for (; i < 3; i++) {
-                if (Stg30_Battle.entries[i].digiId != 0 && Stg30_Battle.entries[i].hp == 0) {
+                if (Stg30_Battle.digis[i].digiId != 0 && Stg30_Battle.digis[i].hp == 0) {
                     tgt[cnt++] = i;
                 }
             }
@@ -397,7 +397,7 @@ void Stg30_BuildItemScript(void) {
         default:
             cnt = 0;
             for (i = 3; i < 6; i++) {
-                if (Stg30_Battle.entries[i].hp != 0) {
+                if (Stg30_Battle.digis[i].hp != 0) {
                     tgt[cnt++] = i;
                 }
             }
@@ -406,7 +406,7 @@ void Stg30_BuildItemScript(void) {
         case 3:
             cnt = 0;
             for (i = 3; i < 6; i++) {
-                if (Stg30_Battle.entries[i].digiId != 0 && Stg30_Battle.entries[i].hp == 0) {
+                if (Stg30_Battle.digis[i].digiId != 0 && Stg30_Battle.digis[i].hp == 0) {
                     tgt[cnt++] = i;
                 }
             }
@@ -423,7 +423,7 @@ void Stg30_BuildItemScript(void) {
         default:
             cnt = 0;
             for (i = 0; i < 6; i++) {
-                if (Stg30_Battle.entries[i].hp != 0) {
+                if (Stg30_Battle.digis[i].hp != 0) {
                     tgt[cnt++] = i;
                 }
             }
@@ -432,7 +432,7 @@ void Stg30_BuildItemScript(void) {
         case 3:
             cnt = 0;
             for (i = 0; i < 6; i++) {
-                if (Stg30_Battle.entries[i].digiId != 0 && Stg30_Battle.entries[i].hp == 0) {
+                if (Stg30_Battle.digis[i].digiId != 0 && Stg30_Battle.digis[i].hp == 0) {
                     tgt[cnt++] = i;
                 }
             }
@@ -476,7 +476,7 @@ void Stg30_BuildItemScript(void) {
         *out++ = z[i];
         switch (kind[i]) {
         case 0:
-            if (Stg30_Battle.entries[tgt[i]].hp != 0) {
+            if (Stg30_Battle.digis[tgt[i]].hp != 0) {
                 *out++ = (Stg30_Battle.turns[tgt[i]].turnType != 5) ? 11 : 10;
             } else {
                 *out++ = 0xC;

@@ -123,7 +123,7 @@ void Stg20_LabRosterUpdate(Actor *a) {
 }
 
 void Stg20_LabRosterDraw(Actor *a) {
-    Stg20Roster *ros;
+    DigiRosterEntry *ros;
     Stg20SlotWork *w = (Stg20SlotWork *)a->work;
     GfxPart *p;
     GfxPart *r;
@@ -149,7 +149,7 @@ void Stg20_LabRosterDraw(Actor *a) {
         }
         Gfx_DrawParts((s32)p);
         for (i = 0; i < 4; i++) {
-            ros = (Stg20Roster *)Save_GameState.elems;
+            ros = Save_GameState.elems;
             r = (GfxPart *)Cd_GetFileEntry(Stg20_LabRosterPanelIds[i]);
             for (s = r; s->fileId != 0; s++) {
                 do {

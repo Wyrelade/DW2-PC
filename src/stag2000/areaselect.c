@@ -139,8 +139,8 @@ s32 Stg20_TestSpecialFlag(s32 id) {
         return Stg20_OwnsDigi(0x43);
     case 9023:
         for (n = 0; n < 3; n++) {
-            if (((Stg20GameRoster *)&Save_GameState)->elems[n].state == n + 3
-                && ((Stg20GameRoster *)&Save_GameState)->elems[n].hp != 0) {
+            if (Save_GameState.elems[n].state == n + 3
+                && Save_GameState.elems[n].hp != 0) {
                 return 0;
             }
         }

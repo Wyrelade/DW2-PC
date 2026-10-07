@@ -252,7 +252,7 @@ void Stg30_ItemMenuUpdate(Actor *a0) {
                     }
                 }
                 if (Pad_State[0].triangle > 0) {
-                    Stg30_Battle.entries[0].cancelled = 1;
+                    Stg30_Battle.cancelled = 1;
                     Snd_PlayById(0xB, 0);
                     Task_NextState0(a0);
                     break;
@@ -265,12 +265,12 @@ void Stg30_ItemMenuUpdate(Actor *a0) {
                 }
                 id = Stg30_ItemToSkillId(item);
                 Stg30_Battle.itemId = item;
-                Stg30_Battle.entries[0].cancelled = 0;
+                Stg30_Battle.cancelled = 0;
                 Stg30_Battle.itemColumn = *pc;
-                Stg30_Battle.turns[Stg30_Battle.entries[0].inputSlot].turnType = Skill_GetType(id) + 1;
-                Stg30_Battle.turns[Stg30_Battle.entries[0].inputSlot].skillId = id;
-                Stg30_Battle.turns[Stg30_Battle.entries[0].inputSlot].effectKind = Stg30_GetSkillEffectKind(id);
-                Stg30_Battle.turns[Stg30_Battle.entries[0].inputSlot].target = Skill_GetTarget(id);
+                Stg30_Battle.turns[Stg30_Battle.inputSlot].turnType = Skill_GetType(id) + 1;
+                Stg30_Battle.turns[Stg30_Battle.inputSlot].skillId = id;
+                Stg30_Battle.turns[Stg30_Battle.inputSlot].effectKind = Stg30_GetSkillEffectKind(id);
+                Stg30_Battle.turns[Stg30_Battle.inputSlot].target = Skill_GetTarget(id);
                 Snd_PlayById(0xE, 0);
                 Task_NextState0(a0);
             } while (0);

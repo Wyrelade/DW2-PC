@@ -29,9 +29,9 @@ void Stg30_BuildGuardScript(s32 idx) {
     *p++ = 0;
     p[0] = 0x78;
     p[1] = 0x18;
-    Stg30_Battle.entries[idx].mp += Stg30_Battle.entries[idx].maxMp / 10;
-    if (Stg30_Battle.entries[idx].maxMp < Stg30_Battle.entries[idx].mp) {
-        Stg30_Battle.entries[idx].mp = Stg30_Battle.entries[idx].maxMp;
+    Stg30_Battle.digis[idx].mp += Stg30_Battle.digis[idx].maxMp / 10;
+    if (Stg30_Battle.digis[idx].maxMp < Stg30_Battle.digis[idx].mp) {
+        Stg30_Battle.digis[idx].mp = Stg30_Battle.digis[idx].maxMp;
     }
 }
 

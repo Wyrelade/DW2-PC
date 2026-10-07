@@ -26,7 +26,7 @@ void Stg30_SkillMenuBuildLists(void) {
     s32 cnt[4];
     s32 a[3];
     s32 b[3];
-    Stg30IdSet *d;
+    DigiRosterEntry *d;
     s32 i;
     s32 j;
     s32 id;
@@ -35,7 +35,7 @@ void Stg30_SkillMenuBuildLists(void) {
     s32 flag;
     s32 m;
 
-    d = (Stg30IdSet *)&((Stg30StateDigis *)&Stg30_Battle)->digis[Stg30_Battle.entries[0].inputSlot];
+    d = &Stg30_Battle.digis[Stg30_Battle.inputSlot];
     for (i = 0; i < 4; i++) {
         cnt[i] = 0;
         Stg30_SkillMenuLists[i].skillIds[13] = 0;
@@ -44,7 +44,7 @@ void Stg30_SkillMenuBuildLists(void) {
         }
     }
     for (i = 0; i < 12; i++) {
-        j = d->ids[i];
+        j = d->skills[i];
         if (j != 0) {
             k = Skill_GetType(j);
             cost = Skill_GetMpCost(j);
@@ -56,7 +56,7 @@ void Stg30_SkillMenuBuildLists(void) {
     for (i = 0; i < 4; i++) {
         Stg30_SkillMenuLists[i].skillIds[13] = cnt[i];
     }
-    if (Stg30_Battle.statusFlags[Stg30_Battle.entries[0].inputSlot] & 8) {
+    if (Stg30_Battle.statusFlags[Stg30_Battle.inputSlot] & 8) {
         b[1] = 0;
         b[0] = 0;
         a[1] = 0;
@@ -87,7 +87,7 @@ void Stg30_SkillMenuBuildLists(void) {
     }
     flag = 0;
     for (i = 3; i < 6; i++) {
-        if (Stg30_Battle.entries[i].hp != 0 && !(Stg30_Battle.statusFlags[i] & 0x10000)) {
+        if (Stg30_Battle.digis[i].hp != 0 && !(Stg30_Battle.statusFlags[i] & 0x10000)) {
             flag = 1;
             break;
         }
@@ -233,10 +233,10 @@ void Stg30_SkillMenuUpdate(Actor *a0) {
                 }
                 if (Pad_State[0].cross > 0) {
                     if (Stg30_SkillMenuLists[cat].skillIds[*row + *top] != 0 && Stg30_SkillMenuLists[cat].disabled[*row + *top] == 0) {
-                        Stg30_Battle.entries[0].cancelled = 0;
-                        Stg30_Battle.turns[Stg30_Battle.entries[0].inputSlot].turnType = cat + 1;
-                        Stg30_Battle.turns[Stg30_Battle.entries[0].inputSlot].skillId = Stg30_SkillMenuLists[cat].skillIds[*row + *top];
-                        Stg30_Battle.turns[Stg30_Battle.entries[0].inputSlot].effectKind = Stg30_GetSkillEffectKind(Stg30_SkillMenuLists[cat].skillIds[*row + *top]);
+                        Stg30_Battle.cancelled = 0;
+                        Stg30_Battle.turns[Stg30_Battle.inputSlot].turnType = cat + 1;
+                        Stg30_Battle.turns[Stg30_Battle.inputSlot].skillId = Stg30_SkillMenuLists[cat].skillIds[*row + *top];
+                        Stg30_Battle.turns[Stg30_Battle.inputSlot].effectKind = Stg30_GetSkillEffectKind(Stg30_SkillMenuLists[cat].skillIds[*row + *top]);
                         Snd_PlayById(0xE, 0);
                         Task_NextState0(a0);
                         break;
@@ -245,7 +245,7 @@ void Stg30_SkillMenuUpdate(Actor *a0) {
                     break;
                 }
                 if (Pad_State[0].triangle > 0) {
-                    Stg30_Battle.entries[0].cancelled = 1;
+                    Stg30_Battle.cancelled = 1;
                     Snd_PlayById(0xB, 0);
                     Task_NextState0(a0);
                 }

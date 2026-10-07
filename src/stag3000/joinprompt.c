@@ -35,7 +35,7 @@ void Stg30_JoinPromptInit(Actor *a0, s32 *args) {
     s32 idx = args[0];
 
     ((Stg30JoinPromptWork *)a0->work)->index = idx;
-    a0->digiId = Stg30_Battle.entries[idx].digiId;
+    a0->digiId = Stg30_Battle.digis[idx].digiId;
 }
 
 void Stg30_JoinCreateDigi(Actor *a0, s32 a1) {

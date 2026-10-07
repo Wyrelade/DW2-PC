@@ -48,7 +48,7 @@ void Stg30_BannerDraw(Actor *a0) {
         q->palette = Math_CycleRange(a0->elapsed, 4, 0, 7);
     }
     if (a0->param == 3) {
-        if (Stg30_Battle.entries[0].fromCity != 0) {
+        if (Stg30_Battle.fromCity != 0) {
             Gfx_HidePartsByMask((GfxPartMaskView *)p, 1);
         } else {
             Gfx_HidePartsByMask((GfxPartMaskView *)p, 2);

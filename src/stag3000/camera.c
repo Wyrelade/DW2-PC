@@ -126,7 +126,7 @@ void Stg30_CameraUpdate(Actor *arg0) {
                 Stg30CamGoal g;
 
                 i = arg0->stateLevel1 - 2;
-                h = func_8001E79C(Stg30_Battle.entries[i].digiId);
+                h = func_8001E79C(Stg30_Battle.digis[i].digiId);
                 h = h < 0x300 ? 0 : h - 0x300;
                 h /= 256;
                 g.originX = (i % 3) * 0xA00 - 0xA00;

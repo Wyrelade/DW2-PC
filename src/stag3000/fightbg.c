@@ -12,7 +12,7 @@ TaskDesc Stg30_FightBgDesc = { 0, Stg30_FightBgUpdate, Task_DefaultDestroy, Stg3
 
 void Stg30_FightBgUpdate(Actor *a0) {
     if (a0->stateLevel0 == 0) {
-        if (Stg30_Battle.entries[0].fromCity != 0) {
+        if (Stg30_Battle.fromCity != 0) {
             a0->digiId = Stg30_SpecialFightBgModel;
         } else {
             a0->digiId = Stg30_FightBgModels[Stg30_FightBgByFloorElem[Dung_State.floorSpecialty]];

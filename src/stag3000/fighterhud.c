@@ -171,7 +171,7 @@ void Stg30_FighterHudDraw(Actor *a0) {
     Stg30FighterHudWork *w = (Stg30FighterHudWork *)a0->work;
     Stg30Part *p;
     Stg30Part *q;
-    Stg30DigiS *d;
+    DigiRosterEntry *d;
     s32 off;
     s32 j;
     s32 m;
@@ -217,7 +217,7 @@ void Stg30_FighterHudDraw(Actor *a0) {
         }
         k = a0->param;
         if (k < 3) {
-            Stg30DigiS *s = &Stg30_BattleDigis[k];
+            DigiRosterEntry *s = &Stg30_BattleDigis[k];
 
             Gfx_SetPartsNumber((GfxPart *)p, 0x20, 3, s->maxHp);
             Gfx_SetPartsNumber((GfxPart *)p, 0x40, 3, s->hp);

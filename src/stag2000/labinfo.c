@@ -42,11 +42,11 @@ void Stg20_LabInfoUpdate(Actor *a) {
             Stg20_OpenText(&w->texts[2], 0, Digi_GetType(w->digi->digiId) + 0xC3, &Stg20_LabInfoTextPos[2], 0);
             Stg20_OpenText(&w->texts[3], 0, Digi_GetRank(w->digi->digiId) + 0xC6, &Stg20_LabInfoTextPos[3], 0);
             Stg20_OpenText(&w->texts[4], 0, Digi_GetSpecialty(w->digi->digiId) + 0xCA, &Stg20_LabInfoTextPos[4], 0);
-            if (w->digi->attr[0x25] != 0) {
-                Stg20_OpenText(&w->texts[5], (s32)Digi_GetDefaultName(w->digi->attr[0x25]), 0, &Stg20_LabInfoTextPos[5], 0);
+            if (w->digi->parent0 != 0) {
+                Stg20_OpenText(&w->texts[5], (s32)Digi_GetDefaultName(w->digi->parent0), 0, &Stg20_LabInfoTextPos[5], 0);
             }
-            if (w->digi->attr[0x26] != 0) {
-                Stg20_OpenText(&w->texts[6], (s32)Digi_GetDefaultName(w->digi->attr[0x26]), 0, &Stg20_LabInfoTextPos[6], 0);
+            if (w->digi->parent1 != 0) {
+                Stg20_OpenText(&w->texts[6], (s32)Digi_GetDefaultName(w->digi->parent1), 0, &Stg20_LabInfoTextPos[6], 0);
             }
             Stg20_OpenText(&w->texts[7], 0, 0x105, &Stg20_LabInfoTextPos[7], 0);
             Stg20_OpenText(&w->texts[8], 0, 0x106, &Stg20_LabInfoTextPos[8], 0);

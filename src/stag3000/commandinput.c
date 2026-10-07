@@ -50,7 +50,7 @@ void Stg30_CommandInputTask(Actor *a0) {
 
     switch (a0->stateLevel0) {
     case 0:
-        Stg30_Battle.entries[0].escapeResult = 0;
+        Stg30_Battle.escapeResult = 0;
         Task_NextState0(a0);
         break;
     case 2:
@@ -63,7 +63,7 @@ void Stg30_CommandInputTask(Actor *a0) {
             case 0:
             default:
                 Stg30_SetCameraShot(1);
-                Stg30_Battle.entries[0].inputSlot = 6;
+                Stg30_Battle.inputSlot = 6;
                 Task_Create(0x504, p, 0);
                 Stg30_Battle.turns[6].turnType = 0;
                 for (i = 0; i < 6; i++) {
@@ -77,7 +77,7 @@ void Stg30_CommandInputTask(Actor *a0) {
                 if (*p != 0) {
                     break;
                 }
-                switch (Stg30_Battle.entries[0].menuChoice) {
+                switch (Stg30_Battle.menuChoice) {
                 case 0:
                 default:
                     Task_SetState1(a0, 2);
@@ -88,31 +88,31 @@ void Stg30_CommandInputTask(Actor *a0) {
                     break;
                 case 2:
                     if (Stg30_Battle.isBossFight != 0) {
-                        Stg30_Battle.entries[0].escapeResult = 2;
+                        Stg30_Battle.escapeResult = 2;
                     } else {
                         a = 0;
                         b = 0;
                         n = 0;
                         for (j = 0; j < 3; j++) {
-                            if (Stg30_Battle.entries[j].hp != 0) {
+                            if (Stg30_Battle.digis[j].hp != 0) {
                                 n++;
-                                a += Stg30_Battle.entries[j].speed;
+                                a += Stg30_Battle.digis[j].speed;
                             }
                         }
                         a /= n;
                         n = 0;
                         for (j = 3; j < 6; j++) {
-                            if (Stg30_Battle.entries[j].hp != 0) {
+                            if (Stg30_Battle.digis[j].hp != 0) {
                                 n++;
-                                b += Stg30_Battle.entries[j].speed;
+                                b += Stg30_Battle.digis[j].speed;
                             }
                         }
                         b /= n;
                         n = a * 100 / b;
                         if ((Rand_Next() & 0x7F) < n) {
-                            Stg30_Battle.entries[0].escapeResult = 1;
+                            Stg30_Battle.escapeResult = 1;
                         } else {
-                            Stg30_Battle.entries[0].escapeResult = 2;
+                            Stg30_Battle.escapeResult = 2;
                         }
                     }
                     Task_SetState0(a0, 3);
@@ -132,7 +132,7 @@ void Stg30_CommandInputTask(Actor *a0) {
                 if (*p != 0) {
                     break;
                 }
-                if (Stg30_Battle.entries[0].cancelled != 0) {
+                if (Stg30_Battle.cancelled != 0) {
                     Task_SetState1(a0, 0);
                 } else {
                     Task_NextState2(a0);
@@ -149,13 +149,13 @@ void Stg30_CommandInputTask(Actor *a0) {
                     if (*p != 0) {
                         break;
                     }
-                    if (Stg30_Battle.entries[0].cancelled != 0) {
+                    if (Stg30_Battle.cancelled != 0) {
                         Stg30_UndimPartyFighters();
                         Stg30_Battle.turns[6].turnType = 0;
                         Task_SetState2(a0, 0);
                         break;
                     }
-                    Stg30_Battle.turns[6].target = Stg30_Battle.entries[0].chosenTarget;
+                    Stg30_Battle.turns[6].target = Stg30_Battle.chosenTarget;
                     w->field_0 = Stg30_TargetFirst(0, 0, 0);
                     Task_SetState1(a0, 2);
                     break;
@@ -169,14 +169,14 @@ void Stg30_CommandInputTask(Actor *a0) {
             default:
                 Stg30_DimFightersExcept(w->field_0, 0, 2);
                 ((void (*)(s32))Stg30_SetCameraShot)(w->field_0 + 2);
-                Stg30_Battle.entries[0].inputSlot = w->field_0;
+                Stg30_Battle.inputSlot = w->field_0;
                 Task_Create(0x504, p, 0);
                 Task_NextState2(a0);
             case 1:
                 if (*p != 0) {
                     break;
                 }
-                if (Stg30_Battle.entries[0].cancelled != 0) {
+                if (Stg30_Battle.cancelled != 0) {
                     if (w->field_0 != Stg30_TargetFirst(0, 0, 0)) {
                         r = Stg30_TargetPrev(0, w->field_0, 0, 0);
                         w->field_0 = r;
@@ -187,7 +187,7 @@ void Stg30_CommandInputTask(Actor *a0) {
                     Task_SetState1(a0, 0);
                     break;
                 }
-                if (Stg30_Battle.entries[0].menuChoice == 0) {
+                if (Stg30_Battle.menuChoice == 0) {
                     Task_NextState2(a0);
                     break;
                 }
@@ -199,14 +199,14 @@ void Stg30_CommandInputTask(Actor *a0) {
                 case 0:
                 default:
                     ((void (*)(s32))Stg30_SetCameraShot)(w->field_0 + 2);
-                    Stg30_Battle.entries[0].inputSlot = w->field_0;
+                    Stg30_Battle.inputSlot = w->field_0;
                     Task_Create(0x507, p, 0);
                     Task_NextState3(a0);
                 case 1:
                     if (*p != 0) {
                         break;
                     }
-                    if (Stg30_Battle.entries[0].cancelled != 0) {
+                    if (Stg30_Battle.cancelled != 0) {
                         Task_SetState1(a0, 2);
                     } else {
                         Task_NextState2(a0);
@@ -225,12 +225,12 @@ void Stg30_CommandInputTask(Actor *a0) {
                     if (*p != 0) {
                         break;
                     }
-                    if (Stg30_Battle.entries[0].cancelled != 0) {
+                    if (Stg30_Battle.cancelled != 0) {
                         Stg30_DimFightersExcept(w->field_0, 0, 2);
                         Task_SetState2(a0, 2);
                         break;
                     }
-                    Stg30_Battle.turns[w->field_0].target = Stg30_Battle.entries[0].chosenTarget;
+                    Stg30_Battle.turns[w->field_0].target = Stg30_Battle.chosenTarget;
                     Task_NextState2(a0);
                     break;
                 }

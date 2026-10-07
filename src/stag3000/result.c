@@ -191,14 +191,14 @@ void Stg30_ResultUpdate(Actor *a0) {
     case 0:
         Mem_FillWordsNeg1(w->text, 14);
         for (i = 0; i < 3; i++) {
-            if (Stg30_Battle.entries[i].hp != 0) {
-                Stg30_Battle.entries[i].exp += w->pair.field_0;
+            if (Stg30_Battle.digis[i].hp != 0) {
+                Stg30_Battle.digis[i].exp += w->pair.field_0;
             }
-            w->expToNext[i] = Digi_GetExpToNextLevel(Stg30_Battle.entries[i].level, Stg30_Battle.entries[i].maxLevel,
-                                                   Stg30_Battle.entries[i].exp);
-            if (w->expToNext[i] == 0 && Stg30_Battle.entries[i].hp != 0) {
+            w->expToNext[i] = Digi_GetExpToNextLevel(Stg30_Battle.digis[i].level, Stg30_Battle.digis[i].maxLevel,
+                                                   Stg30_Battle.digis[i].exp);
+            if (w->expToNext[i] == 0 && Stg30_Battle.digis[i].hp != 0) {
                 Stg30_Battle.leveledUp[i] = 1;
-                Stg30_LevelUpStats(&((Stg30StateDigis *)&Stg30_Battle)->digis[i]);
+                Stg30_LevelUpStats(&Stg30_Battle.digis[i]);
             } else {
                 Stg30_Battle.leveledUp[i] = 0;
             }
@@ -215,7 +215,7 @@ void Stg30_ResultUpdate(Actor *a0) {
         default:
             for (j = 0; j < 14; j++) {
                 r = &Stg30_ResultTextLayout[j];
-                if (r->slot == 9 || Stg30_Battle.entries[r->slot].digiId != 0) {
+                if (r->slot == 9 || Stg30_Battle.digis[r->slot].digiId != 0) {
                     if (r->src < 3) {
                         args.text = (s32)Stg30_BattleDigiNames[r->src].name;
                     } else {
@@ -267,7 +267,7 @@ void Stg30_ResultDraw(Actor *a0) {
         case 0:
         case 1:
         case 2:
-            if (Stg30_Battle.entries[i].digiId == 0) {
+            if (Stg30_Battle.digis[i].digiId == 0) {
                 draw = 0;
                 break;
             }
@@ -276,9 +276,9 @@ void Stg30_ResultDraw(Actor *a0) {
             } else {
                 Gfx_HidePartsByMask((GfxPartMaskView *)p, 0x10);
             }
-            Gfx_SetPartsNumber(p, 1, 8, Stg30_Battle.entries[i].exp);
+            Gfx_SetPartsNumber(p, 1, 8, Stg30_Battle.digis[i].exp);
             Gfx_SetPartsNumber(p, 4, 8, w->expToNext[i]);
-            Gfx_SetPartsNumber(p, 8, 2, Stg30_Battle.entries[i].level);
+            Gfx_SetPartsNumber(p, 8, 2, Stg30_Battle.digis[i].level);
             break;
         case 4:
             Gfx_SetPartsNumber(p, 1, 8, Save_GameState.bits);

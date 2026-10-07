@@ -802,24 +802,30 @@ typedef struct {
     /* 0x40 */ s32 progress;        /* ids 1000..1999: value id - 1900 */
 } EventFlags; /* size 0x44 */
 
-/* Element of the Save_GameState.elems[] array (stride 0x5C); only the leading
-   status byte is touched by Digi_AddNew. */
+/* One digimon: Save_GameState.elems[] (the tamer's 0x24 roster slots) and the battle copies
+   (Stg30_Battle digis, Stg30_FighterStateBackup). */
 typedef struct {
-    /* 0x00 */ u8 state;
+    /* 0x00 */ u8 state;                /* 0 = empty slot */
     /* 0x01 */ u8 digiId;
     u8 _pad02[0xB];
     /* 0x0D */ u8 level;
     /* 0x0E */ u8 dp;
     /* 0x0F */ u8 maxLevel;
     /* 0x10 */ s32 exp;
-    /* 0x14 */ u16 maxHp;
-    /* 0x16 */ u16 hp;
-    /* 0x18 */ u16 maxMp;
-    /* 0x1A */ u16 mp;
+    /* 0x14 */ s16 maxHp;
+    /* 0x16 */ s16 hp;
+    /* 0x18 */ s16 maxMp;
+    /* 0x1A */ s16 mp;
     /* 0x1C */ s16 attack;
-    /* 0x1E */ u16 defense;
+    /* 0x1E */ s16 defense;
     /* 0x20 */ s16 speed;
-    /* 0x22 */ u8 attr[0x2A]; /* 0..2 copied from the init row, 3..11 cleared */
+    /* 0x22 */ u8 skills[12];           /* skill ids; 0..2 from the init row */
+    /* 0x2E */ u8 learnableSkills[0x18]; /* DNA digivolve: the parents' other skills, learnable by rank */
+    /* 0x46 */ u8 pendingSkill;         /* digivolve: the new form's skill, offered after a won battle */
+    /* 0x47 */ u8 parent0;              /* DNA digivolve parents (digimon ids) */
+    /* 0x48 */ u8 parent1;
+    /* 0x49 */ u8 isTransferred;        /* came from a memory card transfer */
+    /* 0x4A */ u16 transferUid;
     /* 0x4C */ u8 name[14];
     u8 _pad5A[0x2];
 } DigiRosterEntry; /* size 0x5C */
@@ -1842,18 +1848,6 @@ typedef struct {
     /* 0x04 */ s32 mask;
 } Flags506C0;
 
-/* Record listed in MenuStatusWork.field_A0 (Menu_StatusDraw). */
-typedef struct {
-    u8 _pad00[0x0D];
-    /* 0x0D */ u8 level;
-    u8 _pad0E[0x06];
-    /* 0x14 */ s16 maxHp;
-    /* 0x16 */ s16 hp;
-    /* 0x18 */ s16 maxMp;
-    /* 0x1A */ s16 mp;
-    u8 _pad1C[0x30];
-    /* 0x4C */ u8 name[14];
-} DigiRosterHudView;
 
 /* Three sprite slots cleared together by Menu_StatusTask. */
 typedef struct {
@@ -1871,7 +1865,7 @@ typedef struct {
     u8 _pad68[0x08];
     /* 0x70 */ s32 scale;
     /* 0x74 */ s32 textArgs[11];
-    /* 0xA0 */ DigiRosterHudView *digiList[3];
+    /* 0xA0 */ DigiRosterEntry *digiList[3];
     /* 0xAC */ s16 digiCount;
 } MenuStatusWork;
 

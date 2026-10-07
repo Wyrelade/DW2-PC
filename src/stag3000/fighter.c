@@ -42,7 +42,7 @@ void Stg30_FighterInit(Actor *a0, s32 *args) {
     s32 n;
 
     a0->param = idx;
-    a0->digiId = Stg30_Battle.entries[idx].digiId;
+    a0->digiId = Stg30_Battle.digis[idx].digiId;
     w->modelFile = Digi_GetModelFile(a0->digiId);
     if (a0->param < 3) {
         w->facing = 0x800;

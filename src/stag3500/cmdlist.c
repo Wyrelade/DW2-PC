@@ -90,7 +90,7 @@ void Stg35_FindSkillGroup(u8 arg0, s32 *arg1, s32 *arg2, s32 *arg3, s32 *arg4) {
 }
 
 void Stg35_BuildCommandList(s32 arg0) {
-    u8 *ids = Stg35_Battle.rec[arg0].skillIds;
+    u8 *ids = Stg35_Battle.rec[arg0].skills;
     Stg35Action *b = &Stg35_Battle.actions[arg0];
     s32 best[6];
     s32 grp;

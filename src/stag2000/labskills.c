@@ -18,7 +18,7 @@ TaskDesc Stg20_LabSkillsDesc = { 0, Stg20_LabSkillsUpdate, Task_DefaultDestroy, 
 
 void Stg20_LabSkillsGroup(Actor *a) {
     Stg20SkillWork *w = (Stg20SkillWork *)a->work;
-    Stg20Roster *e = (Stg20Roster *)&Save_GameState.elems[a->param];
+    DigiRosterEntry *e = &Save_GameState.elems[a->param];
     s32 cnt[4];
     s32 i;
     s32 j;

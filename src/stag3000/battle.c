@@ -62,11 +62,11 @@ void Stg30_ResetAllFightersHome(Stg30ListOwner *a0) {
     }
 }
 
-s32 Stg30_HasSkillOrNew(Stg30IdSet *a0, s16 *a1, u8 id) {
+s32 Stg30_HasSkillOrNew(DigiRosterEntry *a0, s16 *a1, u8 id) {
     s32 i;
 
     for (i = 0; i < 12; i++) {
-        if (a0->ids[i] == id) {
+        if (a0->skills[i] == id) {
             return 1;
         }
         if (a1[i] == id) {
@@ -88,7 +88,7 @@ void Stg30_BattleWonUpdate(Actor *a0) {
     u8 idx[24];
     s32 arg;
     s32 cnt;
-    Stg30IdSet *e;
+    DigiRosterEntry *e;
     s32 flag;
     s32 i;
     s32 n;
@@ -118,8 +118,8 @@ void Stg30_BattleWonUpdate(Actor *a0) {
     case 1:
         done = 0;
         for (i = 0; i < 3; i++) {
-            if (Stg30_Battle.entries[i].hp != 0) {
-                f = Digi_GetAnimFile(Stg30_Battle.entries[i].digiId, 8);
+            if (Stg30_Battle.digis[i].hp != 0) {
+                f = Digi_GetAnimFile(Stg30_Battle.digis[i].digiId, 8);
                 Cd_QueueFile(f);
                 if (Cd_GetFileState(f) != 3) {
                     done = 1;
@@ -134,7 +134,7 @@ void Stg30_BattleWonUpdate(Actor *a0) {
             break;
         }
         for (i = 0; i < 3; i++) {
-            if (Stg30_Battle.entries[i].hp != 0) {
+            if (Stg30_Battle.digis[i].hp != 0) {
                 Task_SetState01(l->actors[i], 2, 2);
             }
         }
@@ -150,13 +150,13 @@ void Stg30_BattleWonUpdate(Actor *a0) {
         if (a0->elapsed < 0xF0) {
             break;
         }
-        if (Stg30_Battle.entries[0].fromCity == 0) {
+        if (Stg30_Battle.fromCity == 0) {
             sum.field_4 = 0;
             sum.field_0 = 0;
             for (t = 3; t < 6; t++) {
-                if (Stg30_Battle.entries[t].digiId != 0) {
+                if (Stg30_Battle.digis[t].digiId != 0) {
                     sum.field_4 += Stg30_Battle.enemyAi[t].bits;
-                    sum.field_0 += Stg30_Battle.entries[t].exp;
+                    sum.field_0 += Stg30_Battle.digis[t].exp;
                 }
             }
             Task_Create(0x502, &l->resultTask, (s32)&sum);
@@ -183,7 +183,7 @@ void Stg30_BattleWonUpdate(Actor *a0) {
             switch (a0->stateLevel4) {
             case 0:
             default:
-                e = (Stg30IdSet *)&((Stg30StateDigis *)&Stg30_Battle)->digis[a0->stateLevel3 - 1];
+                e = &Stg30_Battle.digis[a0->stateLevel3 - 1];
                 Mem_Zero(&args, 0x1C);
                 args.slot = a0->stateLevel3 - 1;
                 flag = 0;
@@ -249,7 +249,7 @@ void Stg30_BattleWonUpdate(Actor *a0) {
         }
         st = Dung_State.giftLevel;
         if (st != 0) {
-            stage2 = Digi_GetRank(Stg30_Battle.entries[Stg30_Battle.joinCandidate].digiId);
+            stage2 = Digi_GetRank(Stg30_Battle.digis[Stg30_Battle.joinCandidate].digiId);
             if ((Rand_Next() & 0x7F) < Stg30_JoinChance[stage2][st - 1]) {
                 arg = Stg30_Battle.joinCandidate;
                 Task_Create(0x513, &l->resultTask, (s32)&arg);
@@ -315,7 +315,7 @@ void Stg30_BattleLostUpdate(Stg30ListOwner *a0) {
             Task_NextState3((Actor *)a0);
         case 1:
             if (Sys_State.fadeLevel == 0xFF) {
-                if (Stg30_Battle.entries[0].fromCity != 0) {
+                if (Stg30_Battle.fromCity != 0) {
                     Sys_State.modeArg = 2;
                     Sys_State.nextGameMode = Sys_State.prevGameMode;
                 } else {
@@ -334,10 +334,10 @@ void Stg30_ResetPartyStats(void) {
     s32 i;
 
     for (i = 0; i < 3; i++) {
-        if (Stg30_Battle.entries[i].state >= 3) {
-            Stg30_Battle.entries[i].attack = Save_GameState.elems[i].attack;
-            Stg30_Battle.entries[i].defense = Save_GameState.elems[i].defense;
-            Stg30_Battle.entries[i].speed = Save_GameState.elems[i].speed;
+        if (Stg30_Battle.digis[i].state >= 3) {
+            Stg30_Battle.digis[i].attack = Save_GameState.elems[i].attack;
+            Stg30_Battle.digis[i].defense = Save_GameState.elems[i].defense;
+            Stg30_Battle.digis[i].speed = Save_GameState.elems[i].speed;
         }
     }
 }
@@ -372,7 +372,7 @@ void Stg30_BattleUpdate(Actor *a0) {
             Stg30_InitBattle();
             Task_NextState1(a0);
         case 1:
-            if (Stg30_Battle.entries[0].fromCity != 0) {
+            if (Stg30_Battle.fromCity != 0) {
                 switch (a0->stateLevel2) {
                 case 0:
                 default:
@@ -409,19 +409,19 @@ void Stg30_BattleUpdate(Actor *a0) {
             Cd_QueueFile(0x22B);
             Cd_QueueFile(0x45E);
             for (i = 0; i < 3; i++) {
-                Mem_Zero(&((Stg30StateDigis *)&Stg30_Battle)->digis[i], 0x5C);
+                Mem_Zero(&Stg30_Battle.digis[i], 0x5C);
                 if (Save_GameState.elems[i].state >= 3) {
-                    ((Stg30StateDigis *)&Stg30_Battle)->digis[i] = Save_GameState.elems[i];
+                    Stg30_Battle.digis[i] = Save_GameState.elems[i];
                     args[1] = i;
-                    args[2] = Stg30_Battle.entries[i].hp == 0;
+                    args[2] = Stg30_Battle.digis[i].hp == 0;
                     Task_Create(0x509, (s32 *)&l->actors[i], (s32)args);
                 }
             }
             for (i = 3; i < 6; i++) {
-                Mem_Zero(&((Stg30StateDigis *)&Stg30_Battle)->digis[i], 0x5C);
-                Enemy_InitRosterEntry(Sys_State.modeArg, i - 3, &((Stg30StateDigis *)&Stg30_Battle)->digis[i],
+                Mem_Zero(&Stg30_Battle.digis[i], 0x5C);
+                Enemy_InitRosterEntry(Sys_State.modeArg, i - 3, &Stg30_Battle.digis[i],
                               (Out1DDA8 *)&Stg30_Battle.enemyAi[i]);
-                if (Stg30_Battle.entries[i].digiId != 0) {
+                if (Stg30_Battle.digis[i].digiId != 0) {
                     args[1] = i;
                     args[2] = 0;
                     Task_Create(0x509, (s32 *)&l->actors[i], (s32)args);
@@ -430,9 +430,9 @@ void Stg30_BattleUpdate(Actor *a0) {
             Enemy_GetSetSummary((void *)Sys_State.modeArg, &out);
             Stg30_Battle.isBossFight = out.isBossFight;
             for (n1 = 0; n1 < 6; n1++) {
-                Stg30_Battle.attackBase[n1] = Stg30_Battle.attackCur[n1] = Stg30_Battle.entries[n1].attack;
-                Stg30_Battle.defenseBase[n1] = Stg30_Battle.defenseCur[n1] = Stg30_Battle.entries[n1].defense;
-                Stg30_Battle.speedBase[n1] = Stg30_Battle.speedCur[n1] = Stg30_Battle.entries[n1].speed;
+                Stg30_Battle.attackBase[n1] = Stg30_Battle.attackCur[n1] = Stg30_Battle.digis[n1].attack;
+                Stg30_Battle.defenseBase[n1] = Stg30_Battle.defenseCur[n1] = Stg30_Battle.digis[n1].defense;
+                Stg30_Battle.speedBase[n1] = Stg30_Battle.speedCur[n1] = Stg30_Battle.digis[n1].speed;
             }
             w->field_0 = 0;
             Task_NextState0(a0);
@@ -462,9 +462,9 @@ void Stg30_BattleUpdate(Actor *a0) {
                     Stg30_Battle.turns[n2].turnType = 0;
                 }
                 for (n3 = 0; n3 < 6; n3++) {
-                    Stg30_Battle.entries[n3].attack = Stg30_Battle.attackCur[n3];
-                    Stg30_Battle.entries[n3].defense = Stg30_Battle.defenseCur[n3];
-                    Stg30_Battle.entries[n3].speed = Stg30_Battle.speedCur[n3];
+                    Stg30_Battle.digis[n3].attack = Stg30_Battle.attackCur[n3];
+                    Stg30_Battle.digis[n3].defense = Stg30_Battle.defenseCur[n3];
+                    Stg30_Battle.digis[n3].speed = Stg30_Battle.speedCur[n3];
                 }
                 Stg30_ResetAllFightersHome((Stg30ListOwner *)a0);
                 Stg30_ShowAllFighters((Stg30ListOwner *)a0);
@@ -476,7 +476,7 @@ void Stg30_BattleUpdate(Actor *a0) {
                 if (l->commandTask != 0) {
                     break;
                 }
-                if (Stg30_Battle.entries[0].escapeResult == 1) {
+                if (Stg30_Battle.escapeResult == 1) {
                     switch (a0->stateLevel3) {
                     case 0:
                     default:
@@ -500,7 +500,7 @@ void Stg30_BattleUpdate(Actor *a0) {
                     }
                     break;
                 }
-                if (Stg30_Battle.entries[0].escapeResult == 2) {
+                if (Stg30_Battle.escapeResult == 2) {
                     switch (a0->stateLevel3) {
                     case 0:
                     default:
@@ -517,7 +517,7 @@ void Stg30_BattleUpdate(Actor *a0) {
                             Stg30_Battle.turns[n4].target = 0;
                             Stg30_Battle.turns[n4].turnType = 0;
                         }
-                        Stg30_Battle.entries[0].escapeResult = 0;
+                        Stg30_Battle.escapeResult = 0;
                         break;
                     }
                     break;
@@ -550,7 +550,7 @@ void Stg30_BattleUpdate(Actor *a0) {
                     }
                     sum = 0;
                     for (n5 = 3; n5 < 6; n5++) {
-                        sum += Stg30_Battle.entries[n5].hp;
+                        sum += Stg30_Battle.digis[n5].hp;
                     }
                     if (sum == 0) {
                         Stg30_ResetPartyStats();
@@ -592,7 +592,7 @@ void Stg30_BattleUpdate(Actor *a0) {
                 w->field_4 = 0;
                 Task_NextState2(a0);
             case 1:
-                if (Stg30_Battle.entries[Stg30_TurnOrderGet(0)].hp == 0) {
+                if (Stg30_Battle.digis[Stg30_TurnOrderGet(0)].hp == 0) {
                     Task_SetState2(a0, 4);
                     break;
                 }
@@ -628,7 +628,7 @@ void Stg30_BattleUpdate(Actor *a0) {
                         }
                         Stg30_Battle.turns[Stg30_TurnOrderGet(0)].turnType = 0;
                         Stg30_TurnOrderRemove(0);
-                        if (Stg30_Battle.entries[Stg30_TurnOrderGet(0)].hp == 0) {
+                        if (Stg30_Battle.digis[Stg30_TurnOrderGet(0)].hp == 0) {
                             Task_NextState2(a0);
                             Task_NextState2(a0);
                             break;
@@ -660,7 +660,7 @@ void Stg30_BattleUpdate(Actor *a0) {
                         if (Stg30_Battle.lastTargets[i] == -1) {
                             continue;
                         }
-                        if (Stg30_Battle.entries[Stg30_Battle.lastTargets[i]].hp == 0) {
+                        if (Stg30_Battle.digis[Stg30_Battle.lastTargets[i]].hp == 0) {
                             continue;
                         }
                         j = Stg30_TurnOrderFind(Stg30_Battle.lastTargets[i]);
@@ -695,7 +695,7 @@ void Stg30_BattleUpdate(Actor *a0) {
                 do {
                     alive = 0;
                     for (n7 = 0; n7 < 3; n7++) {
-                        if (Stg30_Battle.entries[n7].hp != 0) {
+                        if (Stg30_Battle.digis[n7].hp != 0) {
                             alive = 1;
                         } else {
                             Stg30_Battle.statusFlags[n7] = 0;
@@ -708,7 +708,7 @@ void Stg30_BattleUpdate(Actor *a0) {
                     }
                     alive = 0;
                     for (n7 = 3; n7 < 6; n7++) {
-                        if (Stg30_Battle.entries[n7].hp != 0) {
+                        if (Stg30_Battle.digis[n7].hp != 0) {
                             alive = 1;
                         } else {
                             Stg30_Battle.statusFlags[n7] = 0;
@@ -757,8 +757,8 @@ void Stg30_BattleDestroy(Actor *a0) {
     s32 i;
 
     for (i = 0; i < 3; i++) {
-        if (((Stg30StateDigis *)&Stg30_Battle)->digis[i].state >= 3) {
-            Save_GameState.elems[i] = ((Stg30StateDigis *)&Stg30_Battle)->digis[i];
+        if (Stg30_Battle.digis[i].state >= 3) {
+            Save_GameState.elems[i] = Stg30_Battle.digis[i];
         }
     }
     Gpu_InitDoubleBuffer(0x140, 0xF0, 0, 0);

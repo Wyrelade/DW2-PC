@@ -53,35 +53,7 @@ typedef struct {
     /* 0x0C */ GameState slots[3];
 } Stg11SaveList;
 
-/* Roster entry view (DigiRosterEntry layout) with the skill bytes at 0x22
-   and the 0x49/0x4A fields spelled out. */
-typedef struct {
-    /* 0x00 */ u8 state;
-    /* 0x01 */ u8 digiId;
-    u8 _pad02[0xB];
-    /* 0x0D */ u8 level;
-    /* 0x0E */ u8 dp;
-    /* 0x0F */ u8 maxLevel;
-    /* 0x10 */ s32 exp;
-    /* 0x14 */ u16 maxHp;
-    /* 0x16 */ u16 hp;
-    /* 0x18 */ u16 maxMp;
-    /* 0x1A */ u16 mp;
-    /* 0x1C */ s16 attack;
-    /* 0x1E */ u16 defense;
-    /* 0x20 */ s16 speed;
-    /* 0x22 */ u8 skills[0x27];
-    /* 0x49 */ u8 isTransferred;
-    /* 0x4A */ u16 transferUid;
-    /* 0x4C */ u8 name[14];
-    u8 _pad5A[0x2];
-} Stg11DigiEntry; /* size 0x5C */
 
-/* Save_GameStatePtr viewed with Stg11DigiEntry roster entries. */
-typedef struct {
-    u8 _pad00[0xE4];
-    /* 0xE4 */ Stg11DigiEntry elems[0x24];
-} Stg11GameState;
 
 /* Task work passed as the second argument of the menu handlers (Actor.work of the menu task). */
 /* Five 0x20-byte party rows in Stg11MenuWork at 0x98, built from a
