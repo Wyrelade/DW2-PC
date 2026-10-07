@@ -26,6 +26,11 @@ static Uint64 fired;    /* VBlanks run */
 static Uint64 flips;    /* buffer flips presented */
 static Uint64 window_ns, window_fired;
 static unsigned int restarts;
+static int fast;
+
+void Host_ClockFast(void) {
+    fast = 1;
+}
 
 static Uint64 deadline(Uint64 k) {
     return t0 + k * VBLANK_PERIOD_NUM / VBLANK_PERIOD_DEN;
@@ -67,6 +72,13 @@ void Host_VBlank(void) {
     Uint64 now = SDL_GetTicksNS();
     int n;
 
+    if (fast) {
+        run_vblank();
+        Host_Present();
+        Host_PumpEvents();
+        Host_AudioFeed();
+        return;
+    }
     while (now < deadline(next)) {
         SDL_DelayPrecise(deadline(next) - now);
         now = SDL_GetTicksNS();
@@ -86,6 +98,10 @@ void Host_VBlank(void) {
     Host_Present();
     Host_PumpEvents();
     Host_AudioFeed();
+}
+
+unsigned long long Host_VBlankCount(void) {
+    return fired;
 }
 
 void Host_LogRate(const char *what) {

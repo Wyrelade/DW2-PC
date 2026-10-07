@@ -13,8 +13,8 @@
  * initial data, starts the SDL3 host, then runs the game's Sys_Main (it never returns; the host
  * quits on window close or Esc).
  *
- *   dw2 [--pak PATH] [--vblanks N] [--no-window] [--shot-dir DIR] [--shot-at N]... [--hold-boot N]
- *       [--press N:BUTTONS[:LEN]]... [--save-dir DIR]
+ *   dw2 [--pak PATH] [--vblanks N] [--no-window] [--shot-dir DIR] [--shot-at N]... [--shot-vb N]...
+ *       [--hold-boot N] [--press N:BUTTONS[:LEN]]... [--save-dir DIR] [--fast]
  *     --pak PATH     the data pack (default dw2.pak next to the exe, then build/native/dw2.pak;
  *                    doc/PACK_FORMAT.md), checked before anything else runs
  *     --vblanks N    quit after N VBlank waits in the Sys_FlipPending spin (0 = run on)
@@ -22,12 +22,16 @@
  *     --shot-dir DIR screenshots go to DIR (default scratchpad/shots): the boot image when the
  *                    display turns on (if any screenshot option is given), each --shot-at, F12
  *     --shot-at N    screenshot pair at VBlank wait N (repeatable, up to 16)
+ *     --shot-vb N    screenshot pair at the first wait with N VBlanks run (repeatable, up to 16,
+ *                    ascending; an emulator probe counts the same frames)
  *     --hold-boot N  keep the boot image on screen N VBlanks (dev option, Host_DisplayOn)
  *     --press N:BUTTONS[:LEN]  hold BUTTONS ("Start", "Down+Cross", names as in the [input]
  *                    log) on port 0 from VBlank wait N for LEN waits (default 4); repeatable,
  *                    for headless input tests
  *     --save-dir DIR memory card images card1.mcd / card2.mcd in DIR instead of the user data
- *                    folder (%APPDATA%\DW2-Online\saves\ on Windows) */
+ *                    folder (%APPDATA%\DW2-Online\saves\ on Windows)
+ *     --fast         no 59.94 Hz pacing: one VBlank per wait, as fast as the host runs (headless
+ *                    test runs; same frame sequence as a paced run without catch-up VBlanks) */
 
 extern void Sys_Main(void);
 extern void Host_OvlSnapshot(void);
@@ -40,6 +44,8 @@ static unsigned int vblanks;
 static const char *shot_dir;
 static unsigned int shot_at[16];
 static int shot_count;
+static unsigned long long shot_vb[16];
+static int shot_vb_count, shot_vb_done;
 static int hold_boot;
 
 static const char *shots(void) {
@@ -108,6 +114,7 @@ void Host_WaitVBlank(void) {
         fflush(stdout);
     }
     vblanks++;
+    Host_TraceTick(vblanks);
     Host_InputScriptTick(vblanks);
     for (i = 0; i < shot_count; i++) {
         if (shot_at[i] == vblanks) {
@@ -116,6 +123,13 @@ void Host_WaitVBlank(void) {
             snprintf(tag, sizeof(tag), "wait%u", vblanks);
             Host_SaveShot(shots(), tag);
         }
+    }
+    /* --shot-vb: by VBlank count, the frame count an emulator probe sees (the shots come in order) */
+    while (shot_vb_done < shot_vb_count && Host_VBlankCount() >= shot_vb[shot_vb_done]) {
+        char tag[32];
+
+        snprintf(tag, sizeof(tag), "vb%llu", shot_vb[shot_vb_done++]);
+        Host_SaveShot(shots(), tag);
     }
     if (max_vblanks != 0 && vblanks > max_vblanks) {
         printf("[host] stop after %u VBlank waits (%u Psy-Q calls)\n", max_vblanks, Psyq_CallCount);
@@ -167,15 +181,19 @@ int main(int argc, char **argv) {
             shot_dir = argv[++i];
         } else if (strcmp(argv[i], "--shot-at") == 0 && i + 1 < argc && shot_count < 16) {
             shot_at[shot_count++] = (unsigned int)strtoul(argv[++i], NULL, 0);
+        } else if (strcmp(argv[i], "--shot-vb") == 0 && i + 1 < argc && shot_vb_count < 16) {
+            shot_vb[shot_vb_count++] = strtoull(argv[++i], NULL, 0);
         } else if (strcmp(argv[i], "--hold-boot") == 0 && i + 1 < argc) {
             hold_boot = (int)strtol(argv[++i], NULL, 0);
         } else if (strcmp(argv[i], "--press") == 0 && i + 1 < argc && parse_press(argv[++i])) {
+        } else if (strcmp(argv[i], "--fast") == 0) {
+            Host_ClockFast();
         } else if (strcmp(argv[i], "--save-dir") == 0 && i + 1 < argc) {
             Host_CardSetDir(argv[++i]);
         } else {
             fprintf(stderr,
                     "usage: %s [--pak PATH] [--vblanks N] [--no-window] [--shot-dir DIR] [--shot-at N]... "
-                    "[--hold-boot N] [--press N:BUTTONS[:LEN]]... [--save-dir DIR]\n",
+                    "[--shot-vb N]... [--hold-boot N] [--press N:BUTTONS[:LEN]]... [--save-dir DIR] [--fast]\n",
                     argv[0]);
             return 2;
         }

@@ -7,7 +7,7 @@
  * flat / Gouraud, textured 4 / 8 / 15 bit with CLUT, modulated or raw, semi-transparent),
  * rectangles / sprites (60-7F), VRAM to VRAM copy (80), CPU to VRAM in a packet (A0), draw mode,
  * texture window, draw area, offset, mask bits (E1-E6), dithering (E1 bit 9), rectangle texture
- * flip (E1 bits 12 / 13). Not yet: lines (40-5F, skipped with a log line), VRAM to CPU in a
+ * flip (E1 bits 12 / 13), lines and polylines (40-5F). Not yet: VRAM to CPU in a
  * packet (C0). Every unhandled command logs once.
  *
  * Rasterization rules followed: pixel centers on integer coordinates, top and left polygon edges
@@ -403,6 +403,80 @@ void PsxGpu_MoveImage(int sx, int sy, int dx, int dy, int w, int h) {
     }
 }
 
+/* Line from a to b (psx-spx "Line Drawing"): both end points drawn, colour interpolated along the
+ * longer axis, dithered when Gouraud (E1 bit 9), clipped to the draw area per pixel. A segment
+ * of 1024 or more columns or 512 or more rows is not drawn. */
+static void line_seg(const Vtx *a, const Vtx *b, int gouraud, int semi, int abr) {
+    int dx = b->x - a->x;
+    int dy = b->y - a->y;
+    int adx = dx < 0 ? -dx : dx;
+    int ady = dy < 0 ? -dy : dy;
+    int n = adx > ady ? adx : ady;
+    int dith = st.dither && gouraud;
+    int i;
+
+    if (adx >= 1024 || ady >= 512) {
+        return;
+    }
+    for (i = 0; i <= n; i++) {
+        /* 16.16 fixed point, rounded to the nearest pixel */
+        int x = n == 0 ? a->x : a->x + (int)(((long long)dx * i * 65536 / n + 32768) >> 16);
+        int y = n == 0 ? a->y : a->y + (int)(((long long)dy * i * 65536 / n + 32768) >> 16);
+        int r = a->r, g = a->g, bl = a->b;
+        int d;
+
+        if (x < st.clip_x0 || x > st.clip_x1 || y < st.clip_y0 || y > st.clip_y1) {
+            continue;
+        }
+        if (gouraud && n != 0) {
+            r = a->r + (b->r - a->r) * i / n;
+            g = a->g + (b->g - a->g) * i / n;
+            bl = a->b + (b->b - a->b) * i / n;
+        }
+        d = dith ? dither_tbl[y & 3][x & 3] : 0;
+        put(x, y, to5(r, d), to5(g, d), to5(bl, d), semi, abr, 0);
+    }
+}
+
+/* GP0 40-5F: single lines (3 words, Gouraud 4) and polylines (vertices up to the 0x5xxx5xxx
+ * terminator). Lines are never textured. */
+static void line(const uint32_t *w, int op) {
+    int gouraud = op & 0x10;
+    int semi = op & 0x02;
+    int abr = (st.tpage >> 5) & 3;
+    uint32_t col = w[0];
+    Vtx v[2];
+    int i = 1, k = 0;
+
+    for (;;) {
+        Vtx *p = &v[k & 1];
+
+        if (k > 0 && gouraud) {
+            if ((w[i] & 0xF000F000) == 0x50005000 && (op & 0x08)) {
+                break;
+            }
+            col = w[i++];
+        }
+        if (k > 0 && (op & 0x08) && (w[i] & 0xF000F000) == 0x50005000) {
+            break;
+        }
+        p->r = col & 0xFF;
+        p->g = (col >> 8) & 0xFF;
+        p->b = (col >> 16) & 0xFF;
+        p->x = sign11(w[i] & 0xFFFF) + st.ofs_x;
+        p->y = sign11(w[i] >> 16) + st.ofs_y;
+        p->u = p->v = 0;
+        i++;
+        if (k > 0) {
+            line_seg(&v[(k - 1) & 1], p, gouraud, semi, abr);
+        }
+        k++;
+        if (!(op & 0x08) && k == 2) {
+            break;
+        }
+    }
+}
+
 /* ---- GP0 ---- */
 
 /* Words of the command starting at w[0] (n words available), or 0 when it is cut off. */
@@ -458,7 +532,7 @@ static void command(const uint32_t *w) {
     } else if (op >= 0x60 && op < 0x80) {
         rectangle(w, op);
     } else if (op >= 0x40 && op < 0x60) {
-        log_once(op, "line, not drawn yet");
+        line(w, op);
     } else if (op >= 0x80 && op < 0xA0) {
         PsxGpu_MoveImage(w[1] & 0x3FF, (w[1] >> 16) & 0x1FF, w[2] & 0x3FF, (w[2] >> 16) & 0x1FF,
                          (((w[3] & 0xFFFF) - 1) & 0x3FF) + 1, (((w[3] >> 16) - 1) & 0x1FF) + 1);

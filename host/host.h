@@ -22,6 +22,12 @@ void Host_Quit(const char *why);
  * VBlank (Psyq_VBlank: VSync(-1) counter + Sys_VSyncHandler), presents the display area,
  * pumps events and feeds audio. libetc's VSync waits and Host_WaitVBlank use it. */
 void Host_VBlank(void);
+/* --fast: no pacing, each Host_VBlank runs exactly one VBlank at once. */
+void Host_ClockFast(void);
+/* host/trace.c: logs game mode changes at VBlank wait `wait` (dev log). */
+void Host_TraceTick(unsigned int wait);
+/* VBlanks run so far (the PS1 VSync count; a 30 fps scene runs two per wait). */
+unsigned long long Host_VBlankCount(void);
 /* VBlanks run so far and the measured rate since the clock started. */
 void Host_LogRate(const char *what);
 

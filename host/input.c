@@ -49,7 +49,7 @@ static unsigned short pressed[PORTS]; /* pressed since the last update: a tap sh
                                        * VBlank still shows for one update */
 
 /* --press: scripted button holds on port 0 by VBlank wait. */
-#define SCRIPT_MAX 32
+#define SCRIPT_MAX 512
 static struct {
     unsigned int at, len;
     unsigned short bits;

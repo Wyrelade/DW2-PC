@@ -234,7 +234,18 @@ void SetGeomOffset(int ofx, int ofy) {
     Gte_Ctc2(GTE_OFY, (unsigned int)ofy << 16);
 }
 
+/* The game passes NULL for outputs it does not want (stag4000 Stg40_ProjectGrid: p and flag).
+ * Retail stores there anyway: address 0 is PS1 RAM word 0 (kernel low memory, never read back by
+ * the game). Here such stores go to this word. */
+static int null_store;
+
 int RotTransPers(SVECTOR *v0, int *sxy, int *p, int *flag) {
+    if (p == NULL) {
+        p = &null_store;
+    }
+    if (flag == NULL) {
+        flag = &null_store;
+    }
     Gte_Lwc2(GTE_VXY0, &v0->vx);
     Gte_Lwc2(GTE_VZ0, &v0->vz);
     Gte_Command(GTE_CMD_RTPS);

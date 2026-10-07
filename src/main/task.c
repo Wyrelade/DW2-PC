@@ -196,7 +196,18 @@ TaskEntry *Task_FindFirst(s32 arg0, s32 arg1, s32 arg2) {
     return Task_FindNext();
 }
 
+#ifdef DW2_NATIVE
+/* Retail callers sometimes pass a NULL task (a child task already gone: stag3000
+ * Stg30_TargetSelectUpdate for an empty enemy slot, stag4000 Stg40_RootUpdate closing the HUD after
+ * the top menu closed it). On the PS1 the state bytes land in RAM low words (address 0 is RAM) and
+ * are never read back; here the store is skipped. */
+#define TASK_NULL_GUARD(t) if ((t) == NULL) return;
+#else
+#define TASK_NULL_GUARD(t)
+#endif
+
 void Task_NextState0(Actor *arg0) {
+    TASK_NULL_GUARD(arg0)
     arg0->stateLevel4 = 0;
     arg0->stateLevel3 = 0;
     arg0->stateLevel2 = 0;
@@ -205,6 +216,7 @@ void Task_NextState0(Actor *arg0) {
 }
 
 void Task_NextState1(Actor *arg0) {
+    TASK_NULL_GUARD(arg0)
     arg0->stateLevel4 = 0;
     arg0->stateLevel3 = 0;
     arg0->stateLevel2 = 0;
@@ -212,21 +224,25 @@ void Task_NextState1(Actor *arg0) {
 }
 
 void Task_NextState2(Actor *arg0) {
+    TASK_NULL_GUARD(arg0)
     arg0->stateLevel4 = 0;
     arg0->stateLevel3 = 0;
     arg0->stateLevel2++;
 }
 
 void Task_NextState3(Actor *arg0) {
+    TASK_NULL_GUARD(arg0)
     arg0->stateLevel4 = 0;
     arg0->stateLevel3++;
 }
 
 void Task_NextState4(Actor *arg0) {
+    TASK_NULL_GUARD(arg0)
     arg0->stateLevel4++;
 }
 
 void Task_SetState0(Actor *arg0, u32 arg1) {
+    TASK_NULL_GUARD(arg0)
     arg0->stateLevel0 = arg1 & 0xFF;
     arg0->stateLevel4 = 0;
     arg0->stateLevel3 = 0;
@@ -235,6 +251,7 @@ void Task_SetState0(Actor *arg0, u32 arg1) {
 }
 
 void Task_SetState1(Actor *arg0, u32 arg1) {
+    TASK_NULL_GUARD(arg0)
     arg0->stateLevel1 = arg1 & 0xFF;
     arg0->stateLevel4 = 0;
     arg0->stateLevel3 = 0;
@@ -242,6 +259,7 @@ void Task_SetState1(Actor *arg0, u32 arg1) {
 }
 
 void Task_SetState01(Actor *arg0, u32 arg1, u32 arg2) {
+    TASK_NULL_GUARD(arg0)
     arg0->stateLevel0 = arg1 & 0xFF;
     arg0->stateLevel1 = arg2 & 0xFF;
     arg0->stateLevel4 = 0;
@@ -250,16 +268,19 @@ void Task_SetState01(Actor *arg0, u32 arg1, u32 arg2) {
 }
 
 void Task_SetState2(Actor *arg0, u32 arg1) {
+    TASK_NULL_GUARD(arg0)
     arg0->stateLevel2 = arg1 & 0xFF;
     arg0->stateLevel4 = 0;
     arg0->stateLevel3 = 0;
 }
 
 void Task_SetState3(Actor *arg0, u32 arg1) {
+    TASK_NULL_GUARD(arg0)
     arg0->stateLevel3 = arg1 & 0xFF;
     arg0->stateLevel4 = 0;
 }
 
 void Task_SetState4(Actor *arg0, u32 arg1) {
+    TASK_NULL_GUARD(arg0)
     arg0->stateLevel4 = arg1 & 0xFF;
 }
