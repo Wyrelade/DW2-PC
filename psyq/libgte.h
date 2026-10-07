@@ -28,7 +28,7 @@ void InitGeom(void);
 VECTOR *ApplyMatrixLV(MATRIX *m, VECTOR *v0, VECTOR *v1);
 void PushMatrix(void);
 void PopMatrix(void);
-VECTOR *ApplyMatrixSV(MATRIX *m, SVECTOR *v0, VECTOR *v1);
+SVECTOR *ApplyMatrixSV(MATRIX *m, SVECTOR *v0, SVECTOR *v1);
 MATRIX *ScaleMatrix(MATRIX *m, VECTOR *v);
 void SetRotMatrix(MATRIX *m);
 void SetTransMatrix(MATRIX *m);

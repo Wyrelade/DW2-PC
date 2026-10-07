@@ -96,3 +96,13 @@ target_link_options(dw2 PRIVATE -m32 -Wl,--image-base=0x01000000 -Wl,--disable-d
 # host/pak.c compiles in configs/USA/pack_manifest.txt (.incbin): rebuild it when the manifest changes.
 set_source_files_properties(${CMAKE_SOURCE_DIR}/host/pak.c PROPERTIES
     OBJECT_DEPENDS ${CMAKE_SOURCE_DIR}/configs/USA/pack_manifest.txt)
+# psyq/libgte.c pulls in the retail ratan_tbl (.incbin, configs/USA/include_bin_native.txt).
+set_source_files_properties(${CMAKE_SOURCE_DIR}/psyq/libgte.c PROPERTIES
+    OBJECT_DEPENDS ${CMAKE_SOURCE_DIR}/assets/main/ratan_tbl.bin)
+
+# GTE model test (tests/gte_test.c): build/native/gte_test.exe, run from the repo root.
+add_executable(gte_test ${CMAKE_SOURCE_DIR}/tests/gte_test.c ${CMAKE_SOURCE_DIR}/psyq/gte.c
+    ${CMAKE_SOURCE_DIR}/psyq/libgte.c ${CMAKE_SOURCE_DIR}/psyq/psyq_log.c)
+target_compile_options(gte_test PRIVATE -m32 -fno-strict-aliasing -fwrapv -Wall "-Wa,-I${CMAKE_SOURCE_DIR}")
+target_include_directories(gte_test PRIVATE ${CMAKE_SOURCE_DIR}/psyq)
+target_link_options(gte_test PRIVATE -m32)

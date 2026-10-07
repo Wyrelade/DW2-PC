@@ -5,6 +5,7 @@ build build/native/dw2.exe, count the compiler warnings.
     venv/Scripts/python.exe tools/build_native.py            # configure if needed, build
     venv/Scripts/python.exe tools/build_native.py --rebuild  # clean build (full warning count)
     venv/Scripts/python.exe tools/build_native.py --run [--vblanks N] [--no-window]
+    venv/Scripts/python.exe tools/build_native.py --test     # also run build/native/gte_test
 
 Toolchain: DW2_MINGW = the MinGW-w64 root holding bin/gcc.exe (default
 D:/tools/winlibs-i686/mingw32); Ninja from the venv (pip install ninja) or PATH; DW2_SDL3 = the
@@ -64,6 +65,7 @@ def main():
     ap.add_argument("--run", action="store_true", help="run build/native/dw2 after the build")
     ap.add_argument("--vblanks", type=int, default=0, help="with --run: stop after N VBlank waits")
     ap.add_argument("--no-window", action="store_true", help="with --run: SDL dummy video / audio")
+    ap.add_argument("--test", action="store_true", help="run build/native/gte_test (GTE model test)")
     args = ap.parse_args()
 
     mingw = os.environ.get("DW2_MINGW", "D:/tools/winlibs-i686/mingw32")
@@ -130,6 +132,10 @@ def main():
     print("%d warnings in %d files (build/native/warnings.txt)" % (len(warnings), len(by_file)))
     for flag, n in by_flag.most_common(12):
         print("  %6d %s" % (n, flag))
+
+    if args.test:
+        if subprocess.call([os.path.join(BUILD, "gte_test.exe" if os.name == "nt" else "gte_test")], cwd=ROOT) != 0:
+            sys.exit("TEST FAILED: gte_test")
 
     if args.run:
         cmd = [os.path.join(BUILD, "dw2.exe" if os.name == "nt" else "dw2")]

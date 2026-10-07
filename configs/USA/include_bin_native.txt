@@ -6,3 +6,6 @@
 #
 # asset                                  source file              offset   size
 assets/main/cd_file_sectors_full.bin     dumps/disc/SLUS_011.93   0x37900  0x1CB6
+#
+# libgte ratan_tbl (psyq/libgte.c): 0x401 s16 at 0x8004DDC0, in the main 38110 data block.
+assets/main/ratan_tbl.bin                dumps/disc/SLUS_011.93   0x3E5C0  0x802

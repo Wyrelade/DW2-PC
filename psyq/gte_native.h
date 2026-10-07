@@ -1,8 +1,8 @@
 #ifndef PSYQ_GTE_NATIVE_H
 #define PSYQ_GTE_NATIVE_H
 
-/* Native build: the 20 gte.h macros (main/model.c) as C calls into psyq/gte.c. P1.1 has stubs
- * (log the first call, no GTE state); P1.5 gives them the C fixed-point GTE shared with libgte. */
+/* Native build: the 20 gte.h macros (main/model.c) as C calls into psyq/gte.c, on the C GTE
+ * model (psyq/gte_core.h) that libgte shares. */
 
 void GteC_ldv0(const void *r0);
 void GteC_ldv0u(const void *r0);

@@ -129,6 +129,8 @@ PC plan: C reimplementation on top of the libgte C math (GsWSMATRIX, light matri
 
 PC plan: C fixed-point GTE (one gte_state struct: control / data registers, RTPS, MVMVA, NCLIP, NCS ...) with the same results as the hardware; the gte.h macros and these functions share it. Sin / atan tables from the Psy-Q data (build-time extraction) or regenerated and checked.
 
+Done (P1.5): `psyq/gte_core.h` + `psyq/gte.c` (register file, RTPS, NCLIP, MVMVA, NCS, GPF; checked against the PCSX-Redux GTE by `tests/gte_test.c` and `tools/gte_probe.py`), `psyq/libgte.c` (the 14 functions, following the retail register sequences). Tables in the retail exe: `rsin_tbl` 0x80049110 (0x401 s16), `rcossin_tbl` 0x80049DC0 (0x1000 sin / cos pairs), `ratan_tbl` 0x8004DDC0 (0x401 s16), all inside the main 38110 block after `Cd_FileSectors`. The first two are `round(sin * 4096)` and are generated; `ratan_tbl` is extracted at build time.
+
 | Function | Prototype | Calls | Callers | Use | Touches | T/M |
 |---|---|---|---|---|---|---|
 | `rsin` | `int rsin(int a)` | 1 | stag4000/player Stg40_PlayerShootGift | Stg40_PlayerShootGift: shot direction. | sin table (main 38110 data) | - |
@@ -137,7 +139,7 @@ PC plan: C fixed-point GTE (one gte_state struct: control / data registers, RTPS
 | `ApplyMatrixLV` | `VECTOR *ApplyMatrixLV(MATRIX *m, VECTOR *v0, VECTOR *v1)` | 1 | main/model Actor_UpdateTransform | Actor_UpdateTransform: local move vector to world. | GTE MVMVA | - |
 | `PushMatrix` | `void PushMatrix(void)` | 2 | stag4000/floor Stg40_DrawEntityShadow<br>stag4000/floor Stg40_ProjectGrid | Same: saves GTE rotation and translation. | libgte matrix stack (RAM) | - |
 | `PopMatrix` | `void PopMatrix(void)` | 2 | stag4000/floor Stg40_DrawEntityShadow<br>stag4000/floor Stg40_ProjectGrid | Same. | libgte matrix stack | - |
-| `ApplyMatrixSV` | `VECTOR *ApplyMatrixSV(MATRIX *m, SVECTOR *v0, SVECTOR *v1)` | 1 | main/parts Gfx_DrawPartQuadsRot | Gfx_DrawPartQuadsRot: rotated 2D part corners. | GTE MVMVA | T |
+| `ApplyMatrixSV` | `SVECTOR *ApplyMatrixSV(MATRIX *m, SVECTOR *v0, SVECTOR *v1)` | 1 | main/parts Gfx_DrawPartQuadsRot | Gfx_DrawPartQuadsRot: rotated 2D part corners. | GTE MVMVA | T |
 | `ScaleMatrix` | `MATRIX *ScaleMatrix(MATRIX *m, VECTOR *v)` | 2 | main/model Actor_UpdateTransform<br>main/parts Gfx_DrawPartsEx | Actor_UpdateTransform, Gfx_DrawPartsEx. | none | T |
 | `SetRotMatrix` | `void SetRotMatrix(MATRIX *m)` | 2 | stag4000/floor Stg40_DrawEntityShadow<br>stag4000/floor Stg40_ProjectGrid | Stg40 floor grid and entity shadows. | GTE rotation | - |
 | `SetTransMatrix` | `void SetTransMatrix(MATRIX *m)` | 2 | stag4000/floor Stg40_DrawEntityShadow<br>stag4000/floor Stg40_ProjectGrid | Same. | GTE translation | - |
