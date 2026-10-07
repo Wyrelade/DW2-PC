@@ -1,0 +1,30 @@
+{
+  "$schema": "https://recomp.fyi/schema/v1.json",
+  "game": "Digimon World 2",
+  "wikidata": "Q3027795",
+  "system": "PS1",
+  "type": "decomp",
+  "original": {
+    "region": "USA",
+    "serial": "SLUS-01193",
+    "sha1": "e55ed5bf354def07f0cbf4e1fb7fb5f99204f220"
+  },
+  "project": "Digimon World 2 decompilation",
+  "status": "complete",
+  "targets": ["PS1"],
+  "toolchain": "Splat",
+  "approach": "Matching decompilation with GCC 2.8.1, splat and maspsx, byte-identical main executable and 7 stage overlays",
+  "maintainers": [
+    { "name": "Wyrelade", "link": "https://github.com/Wyrelade" }
+  ],
+  "links": [
+    { "label": "decomp.dev", "url": "https://decomp.dev/Wyrelade/Digimon-World-2-Decomp" }
+  ],
+  "help": [
+    "Moving the remaining data out of asm/",
+    "Readability of the matched C",
+    "Documentation"
+  ],
+  "tags": ["matching", "gcc", "maspsx", "psyq"],
+  "notes": "All 1,088 game functions are matched C: the main executable SLUS_011.93 and the 7 stage overlays (STAG0000 to STAG4000.PRO) rebuild byte for byte, checked against the SHA-1 of each retail file. Functions, globals and struct fields are named where the code proves them, and doc/STATE_MAP.md maps every global. The build is shiftable, so the C can be changed and relinked. The PsyQ libraries are Sony's code, not the game's, and stay as split asm outside the progress."
+}
