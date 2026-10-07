@@ -31,6 +31,8 @@ static int32_t c_[32]; /* control registers, as stored */
 
 static uint32_t flag_;
 
+void (*Gte_PreciseHook)(int32_t sxy, double x, double y, double z);
+
 static int16_t lo16(int32_t v) { return (int16_t)(uint16_t)v; }
 static int16_t hi16(int32_t v) { return (int16_t)(uint16_t)((uint32_t)v >> 16); }
 
@@ -187,6 +189,16 @@ static void op_rtps(int sf, int lm) {
         s = (s64)q * (int16_t)d_[GTE_IR2] + c_[GTE_OFY];
         set_mac0(s);
         push_sxy(x, sat_sxy((int32_t)(s >> 16), F_SY2));
+    }
+    if (Gte_PreciseHook != NULL) {
+        double z = (double)m[2] / 4096.0;
+        double h = (uint16_t)c_[GTE_H];
+        double div = sf ? 4096.0 : 1.0;
+
+        if (2.0 * z > h) {
+            Gte_PreciseHook(d_[GTE_SXY2], (double)m[0] / div * h / z + c_[GTE_OFX] / 65536.0,
+                            (double)m[1] / div * h / z + c_[GTE_OFY] / 65536.0, z);
+        }
     }
     s = (s64)q * (int16_t)c_[GTE_DQA] + c_[GTE_DQB];
     set_mac0(s);

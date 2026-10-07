@@ -1,5 +1,6 @@
 #include <stdio.h>
 
+#include "backend/pgxp.h"
 #include "backend/psxgpu.h"
 #include "backend/psxgpu_hd.h"
 #include "host/host.h"
@@ -122,6 +123,7 @@ void DrawOTag(u_long *p) {
             break;
         }
     }
+    Pgxp_EndFrame();
 }
 
 DRAWENV *PutDrawEnv(DRAWENV *env) {

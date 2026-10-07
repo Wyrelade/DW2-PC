@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <math.h>
+
 #include <SDL3/SDL.h>
 
 #include "backend/psxgpu.h"
@@ -102,13 +104,14 @@ typedef struct {
     PsxGpuState st;
     PsxVtx v[3];
     PsxTex tex;
-    int textured, gouraud, semi, abr;
+    int textured, gouraud, semi, abr, precise;
     int x0, y0, w, h, u0, v0, r, g, b; /* rectangles */
 } Cmd;
 
 static Cmd *queue;
 static int queued, queue_cap;
 static int threads_wanted; /* 0 = automatic */
+static int pgxp;
 static int parts = 1;      /* worker threads + the calling thread */
 
 typedef struct {
@@ -227,6 +230,14 @@ static Cmd *push(int type, Surf *s, const PsxGpuState *st) {
 
 void PsxHd_SetThreads(int n) {
     threads_wanted = n;
+}
+
+void PsxHd_SetPgxp(int on) {
+    pgxp = on != 0;
+}
+
+int PsxHd_Pgxp(void) {
+    return pgxp;
 }
 
 void PsxHd_SetScale(int s) {
@@ -438,7 +449,7 @@ static int64_t edge_step(const Edge *e) {
 }
 
 void PsxHd_Triangle(const PsxGpuState *st, const PsxVtx *v0, const PsxVtx *v1, const PsxVtx *v2, int gouraud,
-                    const PsxTex *t, int semi, int abr) {
+                    const PsxTex *t, int semi, int abr, int precise) {
     int minx1, maxx1, miny1, maxy1;
     Surf *s;
     Cmd *c;
@@ -462,6 +473,14 @@ void PsxHd_Triangle(const PsxGpuState *st, const PsxVtx *v0, const PsxVtx *v1, c
     if (s == NULL) {
         return;
     }
+    if (precise && t != NULL) {
+        /* a 2D sprite-like mapping (no cross terms) keeps its integer corners */
+        int64_t dudy = (int64_t)v0->u * (v2->x - v1->x) + (int64_t)v1->u * (v0->x - v2->x) +
+                       (int64_t)v2->u * (v1->x - v0->x);
+        int64_t dvdx = (int64_t)v0->v * (v2->y - v1->y) + (int64_t)v1->v * (v0->y - v2->y) +
+                       (int64_t)v2->v * (v1->y - v0->y);
+        precise = dudy != 0 || dvdx != 0;
+    }
     c = push(CMD_TRI, s, st);
     c->v[0] = *v0;
     c->v[1] = *v1;
@@ -473,6 +492,7 @@ void PsxHd_Triangle(const PsxGpuState *st, const PsxVtx *v0, const PsxVtx *v1, c
     c->gouraud = gouraud;
     c->semi = semi;
     c->abr = abr;
+    c->precise = precise;
 }
 
 static void draw_tri(const Cmd *c, int part, int parts) {
@@ -490,19 +510,34 @@ static void draw_tri(const Cmd *c, int part, int parts) {
     int dith = st->dither && (gouraud || (t != NULL && !t->raw));
     int block = 0;
     int umin = 0, umax = 0;
+    int persp = 0;
+    double pw[3] = { 0 }, puw[3] = { 0 }, pvw[3] = { 0 };
 
-    a1 = (int64_t)(v1->x - v0->x) * (v2->y - v0->y) - (int64_t)(v1->y - v0->y) * (v2->x - v0->x);
+    /* fixed-point positions; the orientation from them (the integer one without PGXP) */
     v[0] = v0;
+    v[1] = v1;
+    v[2] = v2;
+    for (i = 0; i < 3; i++) {
+        if (c->precise) {
+            px[i] = (int64_t)floor(((double)v[i]->px - s->x) * scale * (1 << SUB) + 0.5);
+            py[i] = (int64_t)floor(((double)v[i]->py - s->y) * scale * (1 << SUB) + 0.5);
+        } else {
+            px[i] = (int64_t)(v[i]->x - s->x) * scale << SUB;
+            py[i] = (int64_t)(v[i]->y - s->y) * scale << SUB;
+        }
+    }
+    a1 = (px[1] - px[0]) * (py[2] - py[0]) - (py[1] - py[0]) * (px[2] - px[0]);
+    if (a1 == 0) {
+        return;
+    }
     if (a1 < 0) {
+        int64_t tx = px[1], ty = py[1];
         v[1] = v2;
         v[2] = v1;
-    } else {
-        v[1] = v1;
-        v[2] = v2;
-    }
-    for (i = 0; i < 3; i++) {
-        px[i] = (int64_t)(v[i]->x - s->x) * scale << SUB;
-        py[i] = (int64_t)(v[i]->y - s->y) * scale << SUB;
+        px[1] = px[2];
+        py[1] = py[2];
+        px[2] = tx;
+        py[2] = ty;
     }
     make_edge(&e[0], px[1], py[1], px[2], py[2]);
     make_edge(&e[1], px[2], py[2], px[0], py[0]);
@@ -531,7 +566,15 @@ static void draw_tri(const Cmd *c, int part, int parts) {
         /* No cross terms (du / dy = dv / dx = 0): a 2D sprite-like mapping. Its texels are read
          * at the 1x pixel's position so pixel art stays exact at any scale. */
         int64_t dudy = att[3][0] * e[0].dx + att[3][1] * e[1].dx + att[3][2] * e[2].dx;
-        block = dudy == 0 && dn[4] == 0;
+        block = !c->precise && dudy == 0 && dn[4] == 0;
+        /* PG.2: perspective-correct mapping from the precise depths (1 / z interpolates
+         * linearly on screen, so do u / z, v / z) */
+        persp = c->precise && v[0]->pz > 0 && v[1]->pz > 0 && v[2]->pz > 0;
+        for (i = 0; i < 3 && persp; i++) {
+            pw[i] = 1.0 / v[i]->pz;
+            puw[i] = v[i]->u * pw[i];
+            pvw[i] = v[i]->v * pw[i];
+        }
         umin = v[0]->u < v[1]->u ? v[0]->u : v[1]->u;
         umin = v[2]->u < umin ? v[2]->u : umin;
         umax = v[0]->u > v[1]->u ? v[0]->u : v[1]->u;
@@ -561,6 +604,7 @@ static void draw_tri(const Cmd *c, int part, int parts) {
         int X, bx, sub, dy;
         int r = v[0]->r, g = v[0]->g, b = v[0]->b, u = 0, vv = 0;
         int64_t u24 = 0, v24 = 0, du24 = 0, dv24 = 0;
+        double qw = 0, qu = 0, qv = 0, dqw = 0, dqu = 0, dqv = 0;
 
         for (i = 0; i < 3; i++) {
             nr[i] = edge_row(&e[i], Y);
@@ -585,7 +629,16 @@ static void draw_tri(const Cmd *c, int part, int parts) {
             c24[k] = (fdiv(n << 16, area) << 8) + 0x80;
             d24[k] = fdiv(dn[k] << 24, area);
         }
-        if (t != NULL && !block) {
+        if (persp) {
+            double e0 = (double)(nr[0] + step[0] * xl), e1 = (double)(nr[1] + step[1] * xl);
+            double e2 = (double)(nr[2] + step[2] * xl), a = (double)area;
+            qw = (pw[0] * e0 + pw[1] * e1 + pw[2] * e2) / a;
+            qu = (puw[0] * e0 + puw[1] * e1 + puw[2] * e2) / a;
+            qv = (pvw[0] * e0 + pvw[1] * e1 + pvw[2] * e2) / a;
+            dqw = (pw[0] * step[0] + pw[1] * step[1] + pw[2] * step[2]) / a;
+            dqu = (puw[0] * step[0] + puw[1] * step[1] + puw[2] * step[2]) / a;
+            dqv = (pvw[0] * step[0] + pvw[1] * step[1] + pvw[2] * step[2]) / a;
+        } else if (t != NULL && !block) {
             int64_t nu = att[3][0] * (nr[0] + step[0] * xl) + att[3][1] * (nr[1] + step[1] * xl) +
                          att[3][2] * (nr[2] + step[2] * xl);
             int64_t nv = att[4][0] * (nr[0] + step[0] * xl) + att[4][1] * (nr[1] + step[1] * xl) +
@@ -628,6 +681,10 @@ static void draw_tri(const Cmd *c, int part, int parts) {
                         u = (int)fdiv(n, area);
                         u = u < umin ? umin : u > umax ? umax : u;
                     }
+                } else if (persp) {
+                    double iw = 1.0 / qw;
+                    u = (int)floor(qu * iw + 1.0 / 512);
+                    vv = (int)floor(qv * iw + 1.0 / 512);
                 } else {
                     u = (int)(u24 >> 24);
                     vv = (int)(v24 >> 24);
@@ -639,6 +696,9 @@ static void draw_tri(const Cmd *c, int part, int parts) {
             }
             u24 += du24;
             v24 += dv24;
+            qw += dqw;
+            qu += dqu;
+            qv += dqv;
             if (++sub == scale) {
                 sub = 0;
                 bx++;

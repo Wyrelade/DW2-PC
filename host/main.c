@@ -23,7 +23,7 @@
  *
  *   dw2 [--pak PATH] [--vblanks N] [--no-window] [--shot-dir DIR] [--shot-at N]... [--shot-vb N]...
  *       [--hold-boot N] [--press N:BUTTONS[:LEN]]... [--press2 N:BUTTONS[:LEN]]... [--save-dir DIR]
- *       [--fast] [--pad2-keys] [--scale N] [--hd-threads N]
+ *       [--fast] [--pad2-keys] [--scale N] [--hd-threads N] [--pgxp]
  *     --pak PATH     the data pack (default dw2.pak next to the exe, then build/native/dw2.pak;
  *                    doc/PACK_FORMAT.md), checked before anything else runs
  *     --vblanks N    quit after N VBlank waits in the Sys_FlipPending spin (0 = run on)
@@ -48,7 +48,9 @@
  *                    test runs; same frame sequence as a paced run without catch-up VBlanks)
  *     --scale N      HD output at N x the PS1 resolution (1..8, default 1 = classic; PG.1,
  *                    backend/psxgpu_hd.c); F5 in the window steps through 1..8
- *     --hd-threads N drawing threads for the HD output (default 0 = one per core, at most 8) */
+ *     --hd-threads N drawing threads for the HD output (default 0 = one per core, at most 8)
+ *     --pgxp         no-wobble geometry for the HD output (PG.2: precise GTE vertices,
+ *                    perspective-correct textures); F6 toggles it in the window */
 
 extern void Sys_Main(void);
 extern void Host_OvlSnapshot(void);
@@ -262,11 +264,13 @@ int main(int argc, char **argv) {
             PsxHd_SetScale((int)strtol(argv[++i], NULL, 0));
         } else if (strcmp(argv[i], "--hd-threads") == 0 && i + 1 < argc) {
             PsxHd_SetThreads((int)strtol(argv[++i], NULL, 0));
+        } else if (strcmp(argv[i], "--pgxp") == 0) {
+            Host_SetPgxp(1);
         } else {
             fprintf(stderr,
                     "usage: %s [--pak PATH] [--vblanks N] [--no-window] [--shot-dir DIR] [--shot-at N]... "
                     "[--shot-vb N]... [--hold-boot N] [--press N:BUTTONS[:LEN]]... [--press2 N:BUTTONS[:LEN]]... "
-                    "[--save-dir DIR] [--fast] [--pad2-keys] [--scale N] [--hd-threads N]\n",
+                    "[--save-dir DIR] [--fast] [--pad2-keys] [--scale N] [--hd-threads N] [--pgxp]\n",
                     argv[0]);
             return 2;
         }

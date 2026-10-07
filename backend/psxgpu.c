@@ -2,6 +2,7 @@
 #include <string.h>
 
 #include "backend/psxgpu.h"
+#include "backend/pgxp.h"
 #include "backend/psxgpu_hd.h"
 
 /* Emulated PS1 GPU (P1.4, title subset). Implemented: VRAM fill (GP0 02), polygons (GP0 20-3F:
@@ -291,9 +292,25 @@ static void polygon(const uint32_t *w, int op) {
         triangle(&v[1], &v[2], &v[3], gouraud, textured ? &tex : NULL, semi, (tpage >> 5) & 3);
     }
     if (PsxHd_On()) {
-        PsxHd_Triangle(&st, &v[0], &v[1], &v[2], gouraud, textured ? &tex : NULL, semi, (tpage >> 5) & 3);
+        /* PG.2: the precise position of each vertex the GTE projected this frame, the integer
+         * one (no depth) for the others. A vertex shared by two polygons gets the same answer
+         * in both, so edges stay closed. */
+        int precise = 0;
+        for (k = 0; k < nv && PsxHd_Pgxp(); k++) {
+            if (Pgxp_Lookup(v[k].x - st.ofs_x, v[k].y - st.ofs_y, &v[k].px, &v[k].py, &v[k].pz)) {
+                v[k].px += (float)st.ofs_x;
+                v[k].py += (float)st.ofs_y;
+                precise = 1;
+            } else {
+                v[k].px = (float)v[k].x;
+                v[k].py = (float)v[k].y;
+                v[k].pz = 0;
+            }
+        }
+        PsxHd_Triangle(&st, &v[0], &v[1], &v[2], gouraud, textured ? &tex : NULL, semi, (tpage >> 5) & 3, precise);
         if (quad) {
-            PsxHd_Triangle(&st, &v[1], &v[2], &v[3], gouraud, textured ? &tex : NULL, semi, (tpage >> 5) & 3);
+            PsxHd_Triangle(&st, &v[1], &v[2], &v[3], gouraud, textured ? &tex : NULL, semi, (tpage >> 5) & 3,
+                           precise);
         }
     }
 }
@@ -656,6 +673,11 @@ int PsxGpu_ReadDisplay(uint32_t *out, int *pw, int *ph) {
     *pw = w;
     *ph = h;
     return 1;
+}
+
+void PsxGpu_DrawAreaSize(int *w, int *h) {
+    *w = st.clip_x1 - st.clip_x0 + 1;
+    *h = st.clip_y1 - st.clip_y0 + 1;
 }
 
 int PsxGpu_ReadDisplayHd(uint32_t *out, int *pw, int *ph) {

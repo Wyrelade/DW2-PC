@@ -2,16 +2,18 @@
 #include <stdlib.h>
 
 #include "backend/psxgpu.h"
+#include "backend/pgxp.h"
 #include "backend/psxgpu_hd.h"
 #include "host/host.h"
 #include "host/host_sdl.h"
+#include "psyq/gte_core.h"
 
 /* SDL3 host: one window (320x240 logical, letterboxed, resizable) showing the emulated GPU's
  * display area (P1.4), stretched to the 4:3 picture: 240-line modes scale by whole pixels
  * (nearest), 480-line modes linear. Black while the display is off. Display vsync is off; the
  * VBlank clock paces and presents once per VBlank wait. HD output (PG.1, --scale N, F5): the
  * display area from the HD surface, w*S x h*S, filtered linear to the window; uploaded only when
- * the surfaces changed. */
+ * the surfaces changed. PG.2 (--pgxp, F6): precise GTE vertices for the HD output. */
 
 #define WINDOW_SCALE 3
 
@@ -65,6 +67,11 @@ void Host_Init(int no_window) {
     Host_AudioOpen();
     Host_ClockStart();
     fflush(stdout);
+}
+
+void Host_SetPgxp(int on) {
+    PsxHd_SetPgxp(on);
+    Gte_PreciseHook = on ? Pgxp_Record : NULL;
 }
 
 /* HD picture into hd_texture; 0 when there is none (the 1x picture is shown then). */
@@ -141,6 +148,11 @@ void Host_PumpEvents(void) {
             if (e.key.scancode == SDL_SCANCODE_F5 && !e.key.repeat) {
                 PsxHd_SetScale(PsxHd_Scale() % 8 + 1);
                 printf("[gpu] scale %dx (F5)\n", PsxHd_Scale());
+                fflush(stdout);
+            }
+            if (e.key.scancode == SDL_SCANCODE_F6 && !e.key.repeat) {
+                Host_SetPgxp(!PsxHd_Pgxp());
+                printf("[gpu] no wobble (PGXP) %s (F6)\n", PsxHd_Pgxp() ? "on" : "off");
                 fflush(stdout);
             }
             Host_InputPress(&e);

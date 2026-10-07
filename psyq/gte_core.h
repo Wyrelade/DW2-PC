@@ -45,4 +45,10 @@ void Gte_Lwc2(int reg, const void *addr);
 void Gte_Swc2(int reg, void *addr);
 void Gte_Command(uint32_t op);
 
+/* PG.2 (no-wobble HD output): called after every RTPS with the integer SXY2 word and a float
+ * projection of the same point from the unshifted MAC1..3 (x = view x * H / z + OFX, y the same,
+ * before the 11-bit cut; z = view depth). Skipped when H >= 2 * z (the UNR divide saturates).
+ * NULL by default (gte_test): the hardware view is never changed by it. */
+extern void (*Gte_PreciseHook)(int32_t sxy, double x, double y, double z);
+
 #endif /* PSYQ_GTE_CORE_H */

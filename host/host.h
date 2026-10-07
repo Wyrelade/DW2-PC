@@ -40,6 +40,9 @@ void Host_ShotKey(void);
 /* host/shot.c: <dir>/<tag>_display.png (the display area) and <tag>_vram.png (1024x512). */
 void Host_SaveShot(const char *dir, const char *tag);
 
+/* host/sdl.c: PG.2 no-wobble HD geometry on / off (the GTE's precise hook and the HD path). */
+void Host_SetPgxp(int on);
+
 /* host/input.c: PS1 digital pad buttons held on `port` (0 or 1), active high, in the pad reply
  * bit order (PAD_* in host/host_sdl.h). Keyboard is port 0; gamepads take ports 0, 1 in order.
  * psyq/libpad.c writes them into the pad receive buffers each VBlank (P1.7). */

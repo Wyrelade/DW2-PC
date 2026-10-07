@@ -26,6 +26,9 @@ void PsxGpu_LoadImage(int x, int y, int w, int h, const uint16_t *src);
 void PsxGpu_StoreImage(int x, int y, int w, int h, uint16_t *dst);
 void PsxGpu_MoveImage(int sx, int sy, int dx, int dy, int w, int h);
 
+/* Size of the current draw area (E3 / E4), for the PGXP key (backend/pgxp.c). */
+void PsxGpu_DrawAreaSize(int *w, int *h);
+
 /* Display (GP1 05 / 06 / 07 / 08 / 03 in one call). */
 void PsxGpu_SetDisplay(int x, int y, int w, int h, int rgb24);
 void PsxGpu_SetDisplayEnable(int on);
