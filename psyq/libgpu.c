@@ -148,6 +148,12 @@ DRAWENV *PutDrawEnv(DRAWENV *env) {
 
 DISPENV *PutDispEnv(DISPENV *env) {
     PSYQ_LOG("%p", (void *)env);
+    if (env->screen.x != 0 || env->screen.y != 0 || env->screen.w != 0 || env->screen.h != 0 || env->isinter) {
+        /* screen = TV fine position / visible range, isinter = interlace fields: the host shows
+         * the display area as one progressive picture (P1.19 note). */
+        PSYQ_LOG("PutDispEnv: screen %d %d %d %d, isinter %d not applied", env->screen.x, env->screen.y,
+                 env->screen.w, env->screen.h, env->isinter);
+    }
     PsxGpu_SetDisplay(env->disp.x, env->disp.y, env->disp.w, env->disp.h, env->isrgb24);
     return env;
 }

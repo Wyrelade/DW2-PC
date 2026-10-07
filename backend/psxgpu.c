@@ -6,9 +6,9 @@
 /* Emulated PS1 GPU (P1.4, title subset). Implemented: VRAM fill (GP0 02), polygons (GP0 20-3F:
  * flat / Gouraud, textured 4 / 8 / 15 bit with CLUT, modulated or raw, semi-transparent),
  * rectangles / sprites (60-7F), VRAM to VRAM copy (80), CPU to VRAM in a packet (A0), draw mode,
- * texture window, draw area, offset, mask bits (E1-E6). Not yet: lines (40-5F, skipped with a log
- * line), dithering (E1 bit 9 is kept, not applied), sprite flip bits, VRAM to CPU in a packet
- * (C0). Every unhandled command logs once.
+ * texture window, draw area, offset, mask bits (E1-E6), dithering (E1 bit 9), rectangle texture
+ * flip (E1 bits 12 / 13). Not yet: lines (40-5F, skipped with a log line), VRAM to CPU in a
+ * packet (C0). Every unhandled command logs once.
  *
  * Rasterization rules followed: pixel centers on integer coordinates, top and left polygon edges
  * included, right and bottom excluded; quads are triangles (v0 v1 v2) and (v1 v2 v3); polygons
@@ -22,7 +22,7 @@ static struct {
     int clip_x0, clip_y0, clip_x1, clip_y1; /* draw area, inclusive */
     int ofs_x, ofs_y;
     uint32_t tpage;                         /* E1 bits 0-8 and 11 */
-    int dither, draw_disp;
+    int dither, draw_disp, flip_x, flip_y;
     int tw_mask_x, tw_mask_y, tw_off_x, tw_off_y;
     int set_mask, check_mask;
 } st;
@@ -127,8 +127,26 @@ static uint16_t texel(const Tex *t, int u, int v) {
     }
 }
 
-/* One pixel of a primitive: colour r, g, b in 8 bits per channel (vertex colour). */
-static void shade(int x, int y, const Tex *t, int u, int v, int r, int g, int b, int semi, int abr) {
+/* PS1 dither offsets by (y & 3, x & 3), added to the 8-bit colour before the cut to 5 bits. */
+static const int dither_tbl[4][4] = {
+    { -4, 0, -3, 1 },
+    { 2, -2, 3, -1 },
+    { -3, 1, -4, 0 },
+    { 3, -1, 2, -2 },
+};
+
+static int to5(int c8, int d) {
+    c8 += d;
+    c8 = c8 < 0 ? 0 : c8 > 255 ? 255 : c8;
+    return c8 >> 3;
+}
+
+/* One pixel of a primitive: colour r, g, b in 8 bits per channel (vertex colour). dith: the
+ * primitive is dithered (E1 bit 9 on a Gouraud or texture-modulated polygon; never rectangles
+ * or raw textures). */
+static void shade(int x, int y, const Tex *t, int u, int v, int r, int g, int b, int semi, int abr, int dith) {
+    int d = dith ? dither_tbl[y & 3][x & 3] : 0;
+
     if (t != NULL) {
         uint16_t c = texel(t, u, v);
         int tr, tg, tb;
@@ -140,16 +158,14 @@ static void shade(int x, int y, const Tex *t, int u, int v, int r, int g, int b,
         tg = (c >> 5) & 31;
         tb = (c >> 10) & 31;
         if (!t->raw) {
-            tr = (tr * r) >> 7;
-            tg = (tg * g) >> 7;
-            tb = (tb * b) >> 7;
-            tr = tr > 31 ? 31 : tr;
-            tg = tg > 31 ? 31 : tg;
-            tb = tb > 31 ? 31 : tb;
+            /* texel (5 bit) * colour (8 bit) / 16 = 8-bit result, 0x80 = unchanged */
+            tr = to5((tr * r) >> 4, d);
+            tg = to5((tg * g) >> 4, d);
+            tb = to5((tb * b) >> 4, d);
         }
         put(x, y, tr, tg, tb, semi && (c & 0x8000), abr, c & 0x8000);
     } else {
-        put(x, y, r >> 3, g >> 3, b >> 3, semi, abr, 0);
+        put(x, y, to5(r, d), to5(g, d), to5(b, d), semi, abr, 0);
     }
 }
 
@@ -168,6 +184,7 @@ static int top_left(const Vtx *a, const Vtx *b) {
 }
 
 static void triangle(const Vtx *v0, const Vtx *v1, const Vtx *v2, int gouraud, const Tex *t, int semi, int abr) {
+    int dith = st.dither && (gouraud || (t != NULL && !t->raw));
     long long area;
     int minx, maxx, miny, maxy;
     int tl0, tl1, tl2;
@@ -223,7 +240,7 @@ static void triangle(const Vtx *v0, const Vtx *v1, const Vtx *v2, int gouraud, c
                 u = (int)((v0->u * w0 + v1->u * w1 + v2->u * w2) / area);
                 v = (int)((v0->v * w0 + v1->v * w1 + v2->v * w2) / area);
             }
-            shade(x, y, t, u, v, r, g, b, semi, abr);
+            shade(x, y, t, u, v, r, g, b, semi, abr, dith);
         }
     }
 }
@@ -322,7 +339,9 @@ static void rectangle(const uint32_t *w, int op) {
             if (px < st.clip_x0 || px > st.clip_x1) {
                 continue;
             }
-            shade(px, py, textured ? &tex : NULL, u0 + x, v0 + y, r, g, b, semi, (st.tpage >> 5) & 3);
+            /* E1 bits 12 / 13: texture x / y flip for rectangles */
+            shade(px, py, textured ? &tex : NULL, st.flip_x ? u0 - x : u0 + x, st.flip_y ? v0 - y : v0 + y, r, g, b,
+                  semi, (st.tpage >> 5) & 3, 0);
         }
     }
 }
@@ -461,6 +480,8 @@ static void command(const uint32_t *w) {
             st.tpage = c & 0x9FF;
             st.dither = (c >> 9) & 1;
             st.draw_disp = (c >> 10) & 1;
+            st.flip_x = (c >> 12) & 1;
+            st.flip_y = (c >> 13) & 1;
             break;
         case 0xE2:
             st.tw_mask_x = (c & 31) * 8;

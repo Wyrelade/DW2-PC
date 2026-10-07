@@ -110,6 +110,8 @@ PC plan: Emulated PS1 GPU (backend/): 1024x512 16-bit VRAM, GP0 packet rasterize
 
 PC plan: C reimplementation on top of the libgte C math (GsWSMATRIX, light matrices, projection). Small: 12 functions, all math or struct setup.
 
+Done (P1.19): `psyq/libgs.c`, the 12 functions and the libgs internals they call (MulMatrix, MulMatrix2, TransposeMatrix, GsMulCoord2 / 3, GsGetLw, SquareRoot0 / SquareRoot12, the axis rotation matrices) as C on the P1.5 GTE, following the retail asm. `GsWSMATRIX`, `GsLIGHTWSMATRIX` (`D_800619A8`), the light colour matrix (`D_800619C8`) and `GsIDMATRIX2` are byte-identical to retail in a city room (PCSX-Redux probe). The SquareRoot0 table (0x80049930) is `floor(sqrt(i / 64) * 4096)` and is generated.
+
 | Function | Prototype | Calls | Callers | Use | Touches | T/M |
 |---|---|---|---|---|---|---|
 | `GsInitGraph` | `void GsInitGraph(u_short w, u_short h, u_short intmode, u_short dith, u_short vram)` | 1 | main/sys Sys_Main | Boot: 320x240, GsOFSGPU, dither on. | libgs globals, GPU | T |
