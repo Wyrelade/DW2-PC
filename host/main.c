@@ -14,7 +14,7 @@
  * quits on window close or Esc).
  *
  *   dw2 [--pak PATH] [--vblanks N] [--no-window] [--shot-dir DIR] [--shot-at N]... [--hold-boot N]
- *       [--press N:BUTTONS[:LEN]]...
+ *       [--press N:BUTTONS[:LEN]]... [--save-dir DIR]
  *     --pak PATH     the data pack (default dw2.pak next to the exe, then build/native/dw2.pak;
  *                    doc/PACK_FORMAT.md), checked before anything else runs
  *     --vblanks N    quit after N VBlank waits in the Sys_FlipPending spin (0 = run on)
@@ -25,7 +25,9 @@
  *     --hold-boot N  keep the boot image on screen N VBlanks (dev option, Host_DisplayOn)
  *     --press N:BUTTONS[:LEN]  hold BUTTONS ("Start", "Down+Cross", names as in the [input]
  *                    log) on port 0 from VBlank wait N for LEN waits (default 4); repeatable,
- *                    for headless input tests */
+ *                    for headless input tests
+ *     --save-dir DIR memory card images card1.mcd / card2.mcd in DIR instead of the user data
+ *                    folder (%APPDATA%\DW2-Online\saves\ on Windows) */
 
 extern void Sys_Main(void);
 extern void Host_OvlSnapshot(void);
@@ -167,10 +169,12 @@ int main(int argc, char **argv) {
         } else if (strcmp(argv[i], "--hold-boot") == 0 && i + 1 < argc) {
             hold_boot = (int)strtol(argv[++i], NULL, 0);
         } else if (strcmp(argv[i], "--press") == 0 && i + 1 < argc && parse_press(argv[++i])) {
+        } else if (strcmp(argv[i], "--save-dir") == 0 && i + 1 < argc) {
+            Host_CardSetDir(argv[++i]);
         } else {
             fprintf(stderr,
                     "usage: %s [--pak PATH] [--vblanks N] [--no-window] [--shot-dir DIR] [--shot-at N]... "
-                    "[--hold-boot N] [--press N:BUTTONS[:LEN]]...\n",
+                    "[--hold-boot N] [--press N:BUTTONS[:LEN]]... [--save-dir DIR]\n",
                     argv[0]);
             return 2;
         }

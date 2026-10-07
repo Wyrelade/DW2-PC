@@ -216,6 +216,8 @@ PC plan: Either SPU emulation + the real libsnd behaviour reimplemented in C (VA
 
 PC plan: Save files on disk: one file per card slot / name; the 0x4000 save block (0x1058 GameState inside) and the 0x1E000 DM transfer data; PS1 card image import (.mcr / .mcd). Async API kept (MemCardSync returns done at once).
 
+Done (P1.9): `psyq/libmcrd.c` runs the BIOS card file system on raw 128 KB card images (`host/card.c`: `card1.mcd` / `card2.mcd` in the user data folder, raw `.mcd` / `.mcr` format, so emulator cards import as is). Async calls finish on VBlanks (one 128-byte sector per VBlank), `MemCardSync(1)` returns -1 idle, 0 busy, 1 once when done.
+
 | Function | Prototype | Calls | Callers | Use | Touches | T/M |
 |---|---|---|---|---|---|---|
 | `MemCardInit` | `void MemCardInit(long val)` | 1 | main/sys Sys_Main | Boot (called through a cast, arg 0). | card events, Card_* task stack | T |

@@ -57,4 +57,11 @@ int Host_PakSector(int lba, unsigned char *body);
 /* The file holding sector `lba` and its size in sectors, or -1 (and 0 sectors). */
 int Host_PakFileAt(int lba, int *sectors);
 
+/* host/card.c: memory card image files (raw 128 KB PS1 card images card1.mcd / card2.mcd in
+ * the user data folder, or --save-dir). Host_CardLoad reads card `port` (0, 1) into buf: 1 read,
+ * 0 no file, -1 wrong size or read error. Host_CardStore writes it (temp file + rename): 1 ok. */
+void Host_CardSetDir(const char *dir);
+int Host_CardLoad(int port, unsigned char *buf, int size);
+int Host_CardStore(int port, const unsigned char *buf, int size);
+
 #endif /* HOST_HOST_H */

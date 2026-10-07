@@ -7,5 +7,7 @@ void Psyq_VBlank(void);
 int Psyq_VBlankCount(void);
 /* libpad: the VBlank controller read into the PadInitDirect buffers (after PadStartCom). */
 void Psyq_PadVBlank(void);
+/* libmcrd: the card driver's VBlank step (async card operations finish on VBlanks). */
+void Psyq_CardVBlank(void);
 
 #endif /* PSYQ_VBLANK_H */
