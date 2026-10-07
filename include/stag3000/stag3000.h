@@ -499,7 +499,12 @@ typedef struct {
     /* 0x294 */ Stg30Turn sub[7];
 } Stg30SlotBlk;
 
+#ifdef DW2_NATIVE
+/* DATA_LABEL alias (battlestate.c) as a field access. */
+#define Stg30_BattleDigis (Stg30_Battle.digis)
+#else
 extern DigiRosterEntry Stg30_BattleDigis[];
+#endif
 extern s32 Stg30_FighterHudParts[];
 extern s32 Stg30_StatusIconGroups[];
 extern s32 Stg30_StatusIconFlags[];
@@ -520,7 +525,12 @@ typedef struct {
     /* 0x00 */ u8 name[14];
     u8 _pad0E[0x4E];
 } Stg30Name5C; /* size 0x5C */
+#ifdef DW2_NATIVE
+/* DATA_LABEL alias (battlestate.c): [i].name is Stg30_Battle.digis[i].name. */
+#define Stg30_BattleDigiNames ((Stg30Name5C *)Stg30_Battle.digis[0].name)
+#else
 extern Stg30Name5C Stg30_BattleDigiNames[];
+#endif
 extern s32 Stg30_FighterHudFadeDelay[];
 extern Stg30XY Stg30_FighterHudNamePos[];
 extern u8 Stg30_OrderLabelMsgs[];
@@ -556,7 +566,9 @@ extern s32 Gfx_ZeroVector[];
 /* main exe */
 extern void Task_DefaultDestroy(Actor *);
 extern void Text_CloseArray(s32 *arg0, s32 arg1);
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern s32 CdControlF(s32, u8 *);
+#endif
 extern void Anim_SetModelAnim(Actor *, s32);
 extern s32 func_8001E8D0(s32 id);
 extern s32 Skill_GetRank(s32 id);
@@ -585,9 +597,11 @@ extern void Mem_Zero(void *, s32);
 extern s32 Flag_Test(s32);
 extern void Actor_InitTransform(ContC40 *a0, s32 *a1, u16 a2);
 extern void Gfx_ResetModelBones(Actor *);
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern void RotMatrixYXZ(s16 *, Mat1F668 *);
 extern void GsSetProjection(s32);
 extern s32 GsSetRefView2(Stg30RefView *);
+#endif
 extern void Gpu_InitDoubleBuffer(s32, s32, s32, s32);
 extern s32 Math_CycleRange(s32, s32, s32, s32);
 extern void Gfx_HidePartsByMask(GfxPartMaskView *, s32);
@@ -615,12 +629,14 @@ extern void Text_OpenPacked(void *, s32, u32, Halves);
 extern s32 Skill_GetSpecialty(s32 id);  /* u16 in the main exe; used unmasked here */
 extern s32 Digi_GetSpecialty(s32 id);
 extern s32 Cd_GetFileLba(s32);
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern s32 CdControl(s32, u8 *, u8 *);
 extern s32 CdControlB(s32, u8 *, u8 *);
 extern u8 *CdIntToPos(s32, u8 *);
 extern s32 CdSync(s32, u8 *);
 extern s32 CdLastCom(void);  /* u8 in the main exe; compared unmasked here */
 extern s32 CdPosToInt(u8 *);
+#endif
 extern s32 Skill_GetPartsEntry(s32 id);
 extern s32 func_8001F044(s32 id);
 extern s32 Rand_Next(void);

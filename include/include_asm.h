@@ -1,6 +1,36 @@
 #ifndef INCLUDE_ASM_H
 #define INCLUDE_ASM_H
 
+#ifdef DW2_NATIVE
+/* Native build (DW2_NATIVE, CMakeLists.txt): no MIPS asm. What each macro means there:
+ * - INCLUDE_ASM / INCLUDE_RODATA: nothing (no game C uses them; only main/psyq.c and
+ *   stag1000_libpress.c, which the native build leaves out).
+ * - ASM_SOURCE: nothing (crt0, replaced by host/main.c).
+ * - SHIFT_TEST_PAD: nothing.
+ * - INCLUDE_BIN: the same build-time extracted blob (assets/, configs/USA/include_bin.txt)
+ *   pulled in by .incbin into the unit's .data under the C name. GCC writes top-level asm
+ *   first, while in .text (default -ftoplevel-reorder), so the asm returns to .text.
+ * - DATA_LABEL: nothing. Each alias name is a macro in the header that declares it, a real
+ *   access to the object (a field, or a typed view at the offset of a blob). */
+#define INCLUDE_ASM(FOLDER, NAME)
+#define INCLUDE_RODATA(FOLDER, NAME)
+#define ASM_SOURCE(FOLDER, NAME)
+#define SHIFT_TEST_PAD(N)
+#define DATA_LABEL(NAME, OBJECT, OFFSET)
+#define NATIVE_ASM_STR_(x) #x
+#define NATIVE_ASM_XSTR_(x) NATIVE_ASM_STR_(x)
+#define NATIVE_ASM_NAME_(NAME) NATIVE_ASM_XSTR_(__USER_LABEL_PREFIX__) #NAME
+#define INCLUDE_BIN(NAME, PATH) \
+    __asm__( \
+        ".data\n" \
+        "    .balign 16\n" \
+        "    .globl " NATIVE_ASM_NAME_(NAME) "\n" \
+        NATIVE_ASM_NAME_(NAME) ":\n" \
+        "    .incbin \"" PATH "\"\n" \
+        ".text" \
+    )
+#else /* !DW2_NATIVE */
+
 #if !defined(M2CTX) && !defined(PERMUTER) && !defined(SKIP_ASM)
 
 #if !defined(INCLUDE_ASM) && defined(INCLUDE_ASM_IN_FUNC)
@@ -129,5 +159,7 @@ __asm__(".include \"include/labels.inc\"\n");
 #define ASM_SOURCE(FOLDER, NAME)
 #endif
 #endif
+
+#endif /* DW2_NATIVE */
 
 #endif /* INCLUDE_ASM_H */

@@ -4,6 +4,7 @@
 #include "main/game.h"
 
 /* Functions src/main/digilist.c defines. */
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern s32 GsSetRefView2(GsRVIEW2 *);
 extern void SsSetTableSize(void *, s16, s16);
 extern void SsSetTickMode(s32);
@@ -14,6 +15,7 @@ extern void SsSetSerialVol(s8, s16, s16);
 extern s16 SsUtSetReverbType(s16);
 extern void SsUtSetReverbDepth(s16, s16);
 extern void SsUtReverbOn();
+#endif
 extern s32 Mem_Alloc(s32, s32);
 extern void Cd_ServiceQueue();
 extern Obj6A8C0 *Stg20_FindWalkerByDigiId(s32);
@@ -24,9 +26,11 @@ extern void Stg40_TextObjCommand(s32 *);
 extern s32 Stg40_IsTextObjCmdBusy(void);
 extern void Stg20_StartBgShake(void);
 extern s32 Mem_Alloc(s32, s32);
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern void ScaleMatrix(Obj209 *, s32 *);
 extern void RotMatrixYXZ(void *, Obj209 *);
 extern void ScaleMatrix(Obj209 *, s32 *);
+#endif
 void Menu_DigiTransferPlace(Actor *a0);
 void Menu_DigiTransferPickSrc(Actor *a0);
 void Menu_ConfirmMultiPick(Actor *a0);

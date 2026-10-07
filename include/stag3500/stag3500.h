@@ -381,9 +381,11 @@ extern void Task_SetState1(Actor *arg0, u32 arg1);
 extern void Cd_FreeFile(s32 fileId);
 extern void Text_Open(void *, TextOpenArgs *);
 extern void Gfx_SetPartsNumber(GfxPart *, s32, s32, s32);
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern void RotMatrixYXZ(s16 *, Mat1F668 *);
 extern void GsSetProjection(s32);
 extern s32 GsSetRefView2(Stg35RefView *);
+#endif
 extern void Stg35_TextFree(Stg35TextHandle *arg0);
 extern void Stg35_RectFree(Stg35SpriteHandle *arg0);
 extern void Stg35_RectDraw(Stg35SpriteHandle *arg0);
@@ -399,7 +401,9 @@ extern s32 Mem_Alloc(s32, s32);
 extern void Mem_Free(ActorWork *arg0);
 extern s32 Skill_GetNameText(s32 arg0);
 extern s32 func_8001E8D0(s32 id);
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern s32 CdControlF(s32, s32);
+#endif
 extern void Snd_PlayById(s32, s32);
 extern void Gpu_InitDoubleBuffer(s32 w, s32 h, s32 mode, s32 inter);
 extern void Gfx_HidePartsByMask(GfxPartMaskView *, s32);
@@ -493,8 +497,10 @@ extern void Gfx_FadeOutToBlack(s32 arg0);
 extern void Gfx_InitLights(void);
 extern void Gfx_DrawParts(s32);
 extern void Gfx_DrawWireModel(Actor *a0, s32 mode, CVECTOR *col);
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern void SetDrawMode(Stg35DrMode *p, s32 dfe, s32 dtd, s32 tpage, s32 tw);
 extern void GsInitCoordinate2(Coord1F668 *, Coord1F668 *);
+#endif
 extern void Anim_StepModelAnim(Actor *);
 extern s32 Digi_GetAnimFile(s32 arg0, s32 arg1);
 extern s32 Anim_HasModelAnim(Actor *a0, s32 n);
@@ -504,7 +510,9 @@ extern s32 Digi_GetModelFile(s32 id);
 extern u8 *Digi_GetDefaultName(s32);
 extern s32 Math_PingPongRange(s32 v, s32 div, s32 lo, s32 hi);
 extern s32 Rand_Next();
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern u8 *memset(u8 *s, s32 c, s32 n);
+#endif
 extern s32 Snd_AnySlotLoading(void);
 extern void Snd_UnloadSlot(s32 idx);
 extern void Snd_SetSlotContent(s32 idx, s32 v);
@@ -512,12 +520,14 @@ extern void Cd_FreeUnlockedFiles(void);
 extern void Cd_QueueFile(s32);
 extern s32 Cd_GetFileState(s32 arg0);
 extern s32 Cd_GetFileLba(s32 arg0);
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern s32 CdControl(s32, u8 *, u8 *);
 extern s32 CdControlB(u8 com, u8 *param, u8 *result);
 extern u8 *CdIntToPos(s32 i, u8 *p);
 extern s32 CdPosToInt(void *);
 extern s32 CdSync(s32 mode, u8 *result);    /* the main C stub is void(void) */
 extern s32 CdLastCom(void);                 /* main: u8 */
+#endif
 extern s32 func_8001E79C(s32 id);           /* main: s16 */
 extern s32 Digi_GetHitFxOffsetY(s32 id);           /* main: s16 */
 extern void Digi_GetCastFxOffsets(s32 a0, void *a1);

@@ -47,7 +47,9 @@ extern void Task_DefaultDestroy(Actor *arg0);
 extern TaskEntry *Task_FindFirst(s32 arg0, s32 arg1, s32 arg2);
 extern void Gfx_ReleaseTexSlot(s32 *arg0);
 extern void Mem_Free(ActorWork *arg0);
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern s32 CdControlF(s32, s32);
+#endif
 extern ActorModel *Gfx_AttachModel(Actor *, s32);
 extern void Actor_UpdateTransform(Actor *);
 extern void Gfx_CalcModelBoneMatrices(Actor *);
@@ -276,7 +278,9 @@ extern void Task_SetState0(Actor *arg0, u32 arg1);
 extern void Task_SetState1(Actor *arg0, u32 arg1);
 extern void Task_Destroy(s32 *arg0);
 extern void Task_Create(u32, s32 *, s32);
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern void GsInitCoordinate2(Coord1F668 *, Coord1F668 *);
+#endif
 extern s32 Digi_GetModelFile(s32 id);
 extern void Anim_StepModelAnim(Actor *);
 extern void Gfx_DrawWireModel(Actor *a0, s32 mode, CVECTOR *col);
@@ -284,9 +288,11 @@ extern void Gpu_InitDoubleBuffer(s32 w, s32 h, s32 mode, s32 inter);
 extern void Gpu_SetBgClearColor(s32 a0, s32 a1, s32 a2);
 extern void Gpu_ClearScreens(void);
 extern void Gfx_FadeInFromBlack(s32 arg0);
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern void RotMatrixYXZ(s16 *, Mat1F668 *);
 extern void GsSetProjection(s32);
 extern s32 GsSetRefView2(Stg00RefView *);
+#endif
 extern void Flag_Set(s32, s32);
 extern s32 Digi_GetModelListId(s32 idx);
 extern s32 func_8001E79C(s32 id);
@@ -547,7 +553,13 @@ typedef struct {
 
 /* ---- externs ---- */
 extern TaskDesc Stg00_ScrollViewDesc;
+#ifdef DW2_NATIVE
+/* DATA_LABEL alias (scrollview.c): Stg00_ScrollViewDesc read as s32[]. Retail reads up to 20
+ * words, past the 24-byte TaskDesc (debug view bug); the native layout behind it differs. */
+#define Stg00_ScrollTileTex ((s32 *)&Stg00_ScrollViewDesc)
+#else
 extern s32 Stg00_ScrollTileTex[];
+#endif
 extern s32 Stg00_WindowTestMasks[];
 extern Stg00PartMasks Stg00_WindowTestParts[];
 extern s32 Stg00_PopupItemMasks[];
@@ -577,12 +589,14 @@ extern s32 Skill_GetCastAnim(s32 id);
 extern s32 Skill_GetPower(s32 id);
 extern s32 *Skill_GetShotXa(s32 id);
 extern s32 Cd_GetFileLba(s32 arg0);
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern s32 CdControl(s32, u8 *, u8 *);
 extern s32 CdControlB(s32, u8 *, u8 *);
 extern void CdIntToPos(s32, u8 *);
 extern s32 CdPosToInt(void *);
 extern s32 CdSync(s32, u8 *);
 extern s32 CdLastCom(void);
+#endif
 extern void Actor_StopAxisMotion(Ctx38 *arg0, s32 arg1);
 extern void Actor_SetAxisMotion(Ctx38 *arg0, s32 arg1, Elem12 *arg2);
 extern s32 Actor_ApplyAxisMotion(ContC40 *a0, s32 i);

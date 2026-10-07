@@ -166,7 +166,9 @@ void Menu_DigiStatusTask(Actor *a) {
     }
 }
 
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern s32 GsSetRefView2(GsRVIEW2 *);
+#endif
 
 void Menu_DigiStatusDraw(Actor *actor) {
     Wk19214 *work;

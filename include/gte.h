@@ -8,6 +8,9 @@
  * include/gte_macros.inc mnemonics. $12-$15 are the macros' scratch registers.
  */
 
+#ifdef DW2_NATIVE
+#include "psyq/gte_native.h"
+#else
 #define gte_ldv0(r0) __asm__ volatile ("lwc2 $0, 0(%0);" "lwc2 $1, 4(%0)" : : "r"(r0))
 #define gte_rtps() __asm__ volatile ("nop;" "nop;" "rtps")
 #define gte_stflg(r0) __asm__ volatile ("cfc2 $12, $31;" "nop;" "sw $12, 0(%0)" : : "r"(r0) : "$12", "memory")
@@ -28,5 +31,6 @@
 #define gte_ldsxy3(r0, r1, r2) __asm__ volatile ("mtc2 %0, $12;" "mtc2 %2, $14;" "mtc2 %1, $13" : : "r"(r0), "r"(r1), "r"(r2))
 #define gte_nclip() __asm__ volatile ("nop;" "nop;" "nclip")
 #define gte_stopz(r0) __asm__ volatile ("swc2 $24, 0(%0)" : : "r"(r0) : "memory")
+#endif /* DW2_NATIVE */
 
 #endif /* GTE_H */

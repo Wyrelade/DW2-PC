@@ -557,7 +557,9 @@ extern const Blk13 Stg40_FloorSpecialtyByCell;
 extern GameState *Save_GameStatePtr;
 extern s32 Cd_PreloadIds[];
 extern s32 Cd_PreloadCount;
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern void LoadImage(RECT *rect, u32 *p);
+#endif
 extern void Gfx_ReleaseTexSlot(s32 *arg0);
 extern void Mem_Free(ActorWork *arg0);
 extern void Text_Close(s32 *);
@@ -574,9 +576,11 @@ extern void Task_NextState0(Actor *arg0);
 extern void Gfx_SetPartsNumber(GfxPart *, s32, s32, s32);
 extern void Gfx_SetPartsScale(GfxPartScaleView *, s32, s32);
 extern void Gfx_DrawParts(s32);
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern s32 GsSetFlatLight(s32, Blk16 *);
 extern void GsSetAmbient(s32, s32, s32);
 extern void GsSetLightMode(s32);
+#endif
 
 extern void Cd_QueueFile(s32);
 extern void Sys_SetFrameRate30(void);
@@ -608,7 +612,9 @@ extern s32 Stg40_StatusMsgIds[];
 extern u8 Stg40_RandomPartSlots[];
 extern u8 Stg40_HazardRevealChance[];
 extern u8 Stg40_BugNestRevealChance[];
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern u8 *memset(u8 *s, s32 c, s32 n);
+#endif
 extern void Gfx_HidePartsByMask(GfxPartMaskView *, s32);
 extern s32 Stg40_EnemyInfoParts[];
 void Stg40_AutomapMoveMarker(s32 x, s32 y, s32 ox, s32 oy, s32 dir);
@@ -622,13 +628,22 @@ extern s32 Digi_GetModelFile(s32 id);
 extern s32 Digi_GetAnimFile(s32 arg0, s32 arg1);
 void Stg40_TurnQueueAdd(s32 a0);
 Stg40Ent48 *Stg40_FindEntByDigiId(s32 id);
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern void RotMatrixYXZ(void *, Mat1F668 *);
+#endif
+#ifdef DW2_NATIVE
+/* stag4000's view of the libgs MATRIX GsWSMATRIX (psyq/libgs.h). */
+#define GsWSMATRIX (*(Mat1F668 *)&GsWSMATRIX)
+#else
 extern Mat1F668 GsWSMATRIX;
+#endif
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern void PushMatrix(void);
 extern void SetRotMatrix(Mat1F668 *m);
 extern void SetTransMatrix(Mat1F668 *m);
 extern s32 RotTransPers(Stg40Vec3 *v, s16 *out, s32 *dtz, s32 *flag);
 extern void PopMatrix(void);
+#endif
 
 /* Four ground-quad corner offsets (x, z) read by Stg40_DrawEntityShadow. */
 typedef struct {
@@ -637,9 +652,11 @@ typedef struct {
 
 extern u8 Stg40_ShadowPrimIdx;          /* tile template index into Stg40FloorWork.field_143C */
 extern const Stg40Quad Stg40_ShadowCorners;
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern void GsSetProjection(s32);
 extern void GsInitCoordinate2(Coord1F668 *, Coord1F668 *);
 extern s32 GsSetRefView2(Stg40RView *);
+#endif
 void Stg40_CamNextCommand(Actor *a0);
 void Stg40_CamMoveStep(Actor *a0);
 void Stg40_DamageBeetle(s32 n);
@@ -711,9 +728,11 @@ void Stg40_ItemMenuSetCursor(); /* K&R definition: Stg40_ItemMenuRefresh passes 
 s32 *Stg40_ItemMenuGetTextIds(void);
 extern s32 Item_GetDescText(s32 arg0);
 extern s32 Item_GetCategory(s32 id);
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern s32 ratan2(s32 y, s32 x);
 extern s32 rsin(s32 a);
 extern s32 rcos(s32 a);
+#endif
 extern u8 Stg40_GiftTakeChance[];
 extern u8 Stg40_GiftPointsByLevel[];
 extern void Actor_InitTransform(Actor *a0, s32 *a1, u16 a2); /* main: ContC40 * */

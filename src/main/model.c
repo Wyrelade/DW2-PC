@@ -122,7 +122,11 @@ void Gfx_CalcModelBoneMatrices(Actor *a0) {
     d = s->bones;
     cam = GsWSMATRIX;
     light = D_800619A8;
+#ifdef DW2_NATIVE
+    sp = (GfxBoneScratchNode *)PS1_SCRATCHPAD;
+#else
     sp = (GfxBoneScratchNode *)0x1F800000;
+#endif
     sp[0].parent = 0;
     sp[0].local = o->matrix;
     sp[0].local.t[0] = o->posX;
@@ -291,8 +295,10 @@ void Gfx_DrawWireModel(Actor *a0, s32 mode, CVECTOR *col) {
     }
 }
 
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern void RotMatrixYXZ(void *, Obj209 *);
 extern void ScaleMatrix(Obj209 *, s32 *);
+#endif
 
 void Actor_UpdateTransform(Actor *arg0) {
     Obj209 *obj = (Obj209 *)arg0->u38.ptr38;

@@ -3,6 +3,12 @@
 
 #include "include_asm.h"
 
+#ifdef DW2_NATIVE
+/* Native build: the real Psy-Q prototypes and types (psyq/). */
+#include "psyq/psyq.h"
+#include "host/host.h"
+#endif
+
 typedef signed char s8;
 typedef unsigned char u8;
 typedef signed short s16;

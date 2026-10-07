@@ -1,0 +1,8 @@
+# Native build only (tools/build_native.py): INCLUDE_BIN assets whose retail extent differs from
+# configs/USA/include_bin.txt. Same format; the bytes come from the user's disc dump.
+#
+# Cd_FileSectors: 0xE5B u16 entries (0x1CB6 bytes). The matching build's blob holds the first
+# 0x810; the rest is the start of the main 38110 data block that follows it in the exe.
+#
+# asset                                  source file              offset   size
+assets/main/cd_file_sectors_full.bin     dumps/disc/SLUS_011.93   0x37900  0x1CB6

@@ -130,7 +130,11 @@ void Sys_Main(void) {
     CdInit();
     CdSetDebug(0);
     SetGraphDebug(0);
+#ifdef DW2_NATIVE
+    Mem_InitHeap(Mem_HeapStart, (s32)PS1_RAM(0x801FF000) - (s32)Mem_HeapStart);
+#else
     Mem_InitHeap(Mem_HeapStart, 0x801FF000 - (s32)Mem_HeapStart);
+#endif
     Cd_ClearFileCache();
     Snd_Init();
     Sys_State.frameCount = 0;
@@ -191,6 +195,9 @@ void Sys_Main(void) {
         DrawSync(0);
         Sys_FlipPending = 1;
         while (*(volatile s32 *)&Sys_FlipPending != 0) {
+#ifdef DW2_NATIVE
+            Host_WaitVBlank(); /* no VBlank interrupt: the host runs Sys_VSyncHandler */
+#endif
         }
         Gpu_ResetPrimBuf();
         Gpu_SetLayerOtPtrs();

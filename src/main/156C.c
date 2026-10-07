@@ -98,7 +98,7 @@ typedef struct {
  * switch is two small asm statements (the original did the same). They do nothing for
  * behaviour, so a non-matching build drops them. */
 #define SCRATCH_STACK_TOP 0x1F8003FC
-#ifdef NON_MATCHING
+#if defined(NON_MATCHING) || defined(DW2_NATIVE)
 #define SCRATCH_STACK_ENTER(top)
 #define SCRATCH_STACK_LEAVE()
 #else

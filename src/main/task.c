@@ -1,10 +1,19 @@
 #include "common.h"
 #include "main/game.h"
 
+#ifdef DW2_NATIVE
+/* Called before its definition (an implicit int declaration in retail C). */
+ActorAllocView *Task_AllocWithBuffers(s32 a0, s32 a1);
+#endif
+
 /* Small data this unit defines: initialised ones go to .sdata, the rest to .sbss in
  * game.h's order. Retail reaches the ones this unit uses with %gp_rel. */
 /* Heap start: the fixed end of the overlay load area (memory map). */
+#ifdef DW2_NATIVE
+MemBlock *Mem_HeapStart = (MemBlock *)PS1_RAM(0x80075000);
+#else
 MemBlock *Mem_HeapStart = (MemBlock *)0x80075000;
+#endif
 /* Unreferenced: the first .sbss word (crt0 clears .sbss/.bss from here). */
 s32 D_80050758;
 /* .bss (game.h order) */

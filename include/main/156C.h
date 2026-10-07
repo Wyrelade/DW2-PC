@@ -1505,7 +1505,9 @@ typedef struct {
 } MenuNameEntryArg;
 
 /* SetDrawMove builds a GPU move-image packet (PsyQ SetDrawMove shape):
- * RECT is the 16-bit source rectangle, DR_MOVE the tagged packet. */
+ * RECT is the 16-bit source rectangle, DR_MOVE the tagged packet. The native build has the
+ * Psy-Q ones (psyq/libgpu.h, same layout). */
+#ifndef DW2_NATIVE
 typedef struct {
     /* 0x0 */ s16 x;
     /* 0x2 */ s16 y;
@@ -1517,6 +1519,7 @@ typedef struct {
     /* 0x03 */ u8 len;
     /* 0x04 */ u32 code[5];
 } DR_MOVE;
+#endif
 
 /* Status words behind Pad_IntrRegs; Pad_VBlankIrqVerify checks bit 0 of both. */
 typedef struct {
@@ -2411,7 +2414,11 @@ typedef struct {
     u16 lo;
     u16 hi;
 } TimHalves;
-/* TIM info filled by GsGetTimInfo: pixel rect/data then CLUT rect/data. */
+/* TIM info filled by GsGetTimInfo: pixel rect/data then CLUT rect/data. The native build keeps
+ * this view (field names prect, paddr ...) under another name; GsIMAGE is psyq/libgs.h's. */
+#ifdef DW2_NATIVE
+#define GsIMAGE GameGsImage
+#endif
 typedef struct {
     /* 0x00 */ u32 mode;
     /* 0x04 */ SysClearRect prect;
@@ -3199,7 +3206,11 @@ typedef struct {
     u32 len : 8;
 } GfxModelOTag;
 
-/* Byte colour + GPU code, copied as a 4-byte unaligned struct. */
+/* Byte colour + GPU code, copied as a 4-byte unaligned struct. The native build keeps this view
+ * (fourth byte named code) under another name; CVECTOR is psyq/libgte.h's (cd). */
+#ifdef DW2_NATIVE
+#define CVECTOR GameCVector
+#endif
 typedef struct {
     u8 r;
     u8 g;

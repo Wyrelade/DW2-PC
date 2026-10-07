@@ -92,9 +92,15 @@ void Snd_ServiceSlotLoads(void) {
                 src = (s32 *)Cd_GetFileSync(e->vhFileId);
                 n = Snd_SlotBufSizes[i];
                 dst = e->headerBuf;
+#ifdef DW2_NATIVE
+                if ((u32)src + n > (u32)PS1_RAM(0x801FFFFF)) {
+                    n = (u32)PS1_RAM(0x801FFFFC) - (u32)src;
+                }
+#else
                 if ((u32)src + n > 0x801FFFFF) {
                     n = 0x801FFFFC - (u32)src;
                 }
+#endif
                 n >>= 2;
                 for (k = 0; k < n; k++) {
                     *dst++ = *src++;
@@ -240,6 +246,7 @@ void Snd_PlayById(s32 id, s32 set) {
     }
 } /* libsnd sequence table: SS_SEQ_TABSIZ * 6 seqs * 16 */
 
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern void SsSetTableSize(void *, s16, s16);
 extern void SsSetTickMode(s32);
 extern void SsStart2();
@@ -249,6 +256,7 @@ extern void SsSetSerialVol(s8, s16, s16);
 extern s16 SsUtSetReverbType(s16);
 extern void SsUtSetReverbDepth(s16, s16);
 extern void SsUtReverbOn();
+#endif
 extern s32 Mem_Alloc(s32, s32);
 extern void Snd_SetSlotContent(s32, s32);
 extern void Cd_ServiceQueue();

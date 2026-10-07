@@ -92,9 +92,13 @@ extern GameState Save_GameState;
 extern s32 D_80062FD8;
 extern void Digi_InitFromTable(s32, s32, DigiRosterEntry *);
 extern void Digi_SortRoster(void);
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern GpuOtBuf *ClearOTagR(GpuOtBuf *, s32);
+#endif
 extern void Snd_PlayById(s32, s32);
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern s32 DrawOTag(void *);
+#endif
 extern s32 EnterCriticalSection(void);
 extern void ExitCriticalSection(void);
 extern s32 StartCARD(void);
@@ -112,17 +116,21 @@ extern void Gfx_CalcModelBoneMatrices(Actor *);
 extern void Gfx_DrawTexModel(Actor *, s32);
 extern CdReadState Cd_ReadState;
 extern u8 Cd_SectorHeader[];
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern s32 CdPosToInt(void *);
 extern s32 CdGetSector(void *, s32);
 extern s32 CdReadyCallback(s32);
 extern s32 CdControlF(s32, s32);
 extern void *CdSyncCallback(void *);
+#endif
 extern void Cd_ReadSyncCallback();
 extern void Anim_StepModelAnim(Actor *);
 extern Blk16 Gfx_FlatLights[];
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern s32 GsSetFlatLight(s32, Blk16 *);
 extern void GsSetAmbient(s32, s32, s32);
 extern void GsSetLightMode(s32);
+#endif
 extern s32 func_8001E134(void);
 extern s32 *Item_GetEffectRec(s32);
 extern s32 Text_WinFrameParts[];
@@ -132,8 +140,10 @@ extern void Text_Open(void *, TextOpenArgs *);
 extern void Flag_Set(s32, s32);
 extern void Gfx_SetPartsNumber(GfxPart *, s32, s32, s32);
 extern s32 Digi_GetExpToNextLevel(s32, s32, s32);
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern void RotMatrixYXZ(void *, Obj209 *);
 extern void GsSetProjection(s32);
+#endif
 extern void Anim_SetModelAnim(Actor *, s32);
 extern s32 D_8004E6D0;
 extern s32 D_8004E6CC;
@@ -155,7 +165,9 @@ extern u8 D_8005FDD8[];
 extern s32 *D_80049014;
 extern s32 D_8004904C;
 extern s32 D_80049050;
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern s32 VSync(s32);
+#endif
 extern s32 D_80061B38;
 extern s32 D_80061B3C;
 extern void StClearRing();
@@ -183,7 +195,9 @@ extern s32 write(s32, u8 *, s32);
 extern s32 D_8004E6D8;
 extern s32 D_8004E6D4;
 extern void Cd_IntrCallback();
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern void ResetCallback(void);
+#endif
 extern void InterruptCallback(s32 arg0, void (*arg1)());
 extern s32 Sys_DmaCallbacks[];
 extern s32 *Sys_DicrPtr;
@@ -205,11 +219,17 @@ extern s32 (*Card_TaskFuncs[4])(s32 *);
 extern char D_80010D44[];
 extern void printf();
 extern s32 SpuSetReverb(s32);
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern s32 CdControl(s32, u8 *, u8 *);
+#endif
 extern void func_8002DF74(void);
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern void InitGeom(void);
+#endif
 extern void SetFarColor(s32, s32, s32);
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern void SetGeomOffset(s32, s32);
+#endif
 extern s16 D_8006197E;
 extern s16 D_8006197C;
 extern DungState *Dung_StatePtr;
@@ -255,7 +275,12 @@ extern s32 D_80061B24;
 extern s32 D_80061B20;
 extern s32 D_80061B1C;
 extern s32 D_80061B14;
+#ifdef DW2_NATIVE
+/* main's view of the libcd stream flag (psyq/libcd.h). */
+#define StCdIntrFlag (*(s32 *)&StCdIntrFlag)
+#else
 extern s32 StCdIntrFlag;
+#endif
 extern s16 D_80061AFC;
 extern s32 D_80061AF8;
 extern void Cd_ClearStreamSlots(s32, s32);
@@ -398,16 +423,20 @@ extern volatile s32 *D_8004EA70;
 extern volatile s32 *D_8004EA74;
 extern volatile s32 *D_8004EA78;
 extern volatile s32 *D_8004EA7C;
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern s32 ResetGraph(s32);
 extern DispEnv *PutDispEnv(DispEnv *);
+#endif
 extern DispEnv D_80061968;
 extern s32 D_80049060;
 extern s8 D_80049071[];
 extern BlkFill618D0 D_800618D0[];
 extern void Cd_ReadFileAsync(s32, s32);
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern void SsSepStop(s16, s16);
 extern void SsSepClose(s16);
 extern void SsVabClose(s16);
+#endif
 extern char D_800103F8[];
 extern void Gpu_RestoreExequeCb(void);
 extern void Gpu_RestoreExequeCb(void);
@@ -425,7 +454,9 @@ extern Prm1C Menu_DigiStatusView;
 extern s32 Digi_GetModelFile(s32 id);
 extern s32 Digi_GetAnimFile(s32 arg0, s32 arg1);
 extern void Actor_InitTransform(ContC40 *a0, s32 *a1, u16 a2);
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern void GsInitCoordinate2(Coord1F668 *, Coord1F668 *);
+#endif
 
 extern void Item_SortList(void);
 extern void Stg20_SetSpecialFlag(s32, s32);
@@ -457,9 +488,13 @@ extern int Card_OnHwNewCard(void);
 extern void Card_ClearEvents(void);
 extern char D_80010C70[];
 extern void Card_MakeDevName(s32, u8 *);
+#ifndef DW2_NATIVE /* libc: <string.h> in the native build */
 extern s8 *strcat(s8 *, s8 *);
+#endif
 extern s32 open(u8 *, s32);
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern s32 MemCardSync(s32 wait, s32 *a1, s32 *a2);
+#endif
 extern void Card_ClearEvents(void);
 extern s32 D_80062F90;
 extern void Pad_SendInfoCmd(PadPort *a0);
@@ -516,9 +551,11 @@ extern s32 Ovl_FileIds[];
 extern u8 *const Ovl_LoadAddr; /* overlay load address (0x80063360) */
 extern void Snd_StopById(s32);
 extern void Snd_StopById(s32);
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern void SsSepSetVol(s16 a0, s16 a1, s16 a2, s16 a3);
 extern void SsSepPlay(s16, s16, s8, s16);
 extern void SsUtAllKeyOff(s32);
+#endif
 extern Halves Menu_ItemMsgPos;
 extern Halves Menu_ItemNamePos;
 extern s32 Cd_QueueActive;
@@ -560,10 +597,12 @@ extern s32 Cd_GetFileSync(s32 arg0);
 extern void Cd_LockFile(s32 a0);
 extern void Cd_UnlockFile(s32 a0);
 extern s32 Mem_GetOffsetEntry(s32 arg0, s32 *arg1);
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern s16 SsVabOpenHead(s32 arg0, s16 arg1);
 extern s16 SsVabTransBody(s32 a0, s16 id);
 extern s16 SsVabTransCompleted(s16 a0);
 extern s16 SsSepOpen(s32, s16, s32);
+#endif
 extern s16 D_80062D2C[];
 extern u16 D_8004FC24[];
 extern void _SsVmInit(s32);
@@ -574,7 +613,9 @@ extern SndProgAtr *D_80062C30[];
 extern s32 D_80062D04;
 extern void Mem_Zero(void *a0, s32 a1);
 extern s32 get_alarm(void);
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern void ApplyMatrixSV(void *, SVec1D104 *, GfxPartRotXY *);
+#endif
 extern s32 D_80062F58;
 extern s32 D_80062F5C;
 extern s32 D_80062F60;
@@ -592,7 +633,9 @@ extern void Mem_FillWordsNeg1(s32 *arg0, s32 arg1);
 extern void Text_CloseArray(s32 *arg0, s32 arg1);
 extern void Mem_FillWordsNeg1(s32 *arg0, s32 arg1);
 extern void Text_CloseArray(s32 *arg0, s32 arg1);
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern void GsSetOffset(s32, s32);
+#endif
 extern u8 Digi_GetType(s32);
 extern s32 Digi_GetRank(s32);
 extern s32 Digi_GetSpecialty(s32);
@@ -661,7 +704,9 @@ extern void def_cbready(void);
 extern void def_cbread(void);
 extern void (*D_80062FE0)(s32 *, s32, s32);
 extern s8 D_80062FE8[];
+#ifndef DW2_NATIVE /* libc: <string.h> in the native build */
 extern s32 strlen(s8 *);
+#endif
 extern s32 _SsVmKeyOn(s16 a0, s16 a1, s16 a2, u16 a3, u16 arg4, u16 arg5);
 extern s8 D_80062D1F;
 extern u16 D_80062EE8[];
@@ -669,7 +714,9 @@ extern u16 D_80050298[];
 extern u16 D_800502B0[];
 extern void func_8003F760(s32 *a0, s32 a1, s32 a2);
 s32 firstfile();
+#ifndef DW2_NATIVE /* libc: <string.h> in the native build */
 extern s32 strcmp(s8 *a, s8 *b);
+#endif
 extern SioRegs *D_80048E00;
 extern s32 D_80048E70[];
 extern s32 Debug_VPrintf(s32, char *, char *);
@@ -806,7 +853,12 @@ extern char D_800108F4[];
 extern char D_80010904[];
 extern u8 D_8004E6E0[];
 extern CdComTables D_8004E80C;
+#ifdef DW2_NATIVE
+/* libgs light matrix (GsLIGHTWSMATRIX in psyq/libgs.h) under its decomp name. */
+#define D_800619A8 (*(Mat1F668 *)&GsLIGHTWSMATRIX)
+#else
 extern Mat1F668 D_800619A8;
+#endif
 extern s32 SquareRoot0(s32);
 extern void _spu_gcSPU(void);
 extern s8 D_80010A64[];
@@ -842,9 +894,16 @@ extern MemBlock *Mem_HeapStart;
 extern RECT Sys_BootImageRect;
 extern s32 Sys_LastVSyncTime;
 extern void Sys_VSyncHandler(void);
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern void MemCardInit(void);
+#endif
 extern Pair61900 Menu_ItemSubTasks[];
+#ifdef DW2_NATIVE
+/* main's view of the libgs MATRIX GsWSMATRIX (psyq/libgs.h). */
+#define GsWSMATRIX (*(CoordMatrix *)&GsWSMATRIX)
+#else
 extern CoordMatrix GsWSMATRIX;
+#endif
 extern CoordMatrix D_80061A48;
 extern CoordMatrix D_800619E8;
 extern void GsGetLw();
@@ -989,7 +1048,9 @@ typedef struct {
     /* 0x60 */ s32 scaleZ;
 } Nd19214;
 
-/* Stack context passed to GsSetRefView2. */
+/* Stack context passed to GsSetRefView2. The native build has the Psy-Q GsRVIEW2
+ * (psyq/libgs.h, same layout, super typed GsCOORDINATE2 *). */
+#ifndef DW2_NATIVE
 typedef struct {
     /* 0x00 */ s32 vpx;
     /* 0x04 */ s32 vpy;
@@ -1000,6 +1061,7 @@ typedef struct {
     /* 0x18 */ s32 rz;
     /* 0x1C */ s32 *super;
 } GsRVIEW2;
+#endif
 
 /* File-local view of an SndSlot element with the fields Snd_Init stamps. */
 typedef struct {

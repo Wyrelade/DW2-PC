@@ -91,11 +91,19 @@ extern s32 Mem_Alloc(s32, s32);
 extern void Cd_GetFilePos(s32 arg0, void *arg1);
 extern s32 Math_CycleRange(s32, s32, s32, s32);
 extern void Gfx_HidePartsByMask(GfxPartMaskView *, s32);
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern void ResetCallback(void);
+#endif
 extern u8 Sys_MovieActive;
 extern PadState Pad_State[];
 extern SysState Sys_State;
+#ifdef DW2_NATIVE
+/* stag1000 reads the libcd stream flag (psyq/libcd.h) as a byte. */
+#define StCdIntrFlag (*(u8 *)&StCdIntrFlag)
+#else
 extern u8 StCdIntrFlag;              /* s32 in the main exe; read as a byte here (StCdIntrFlag) */
+#endif
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern s32 CdControl(s32, u8 *, u8 *);
 extern s32 CdRead2(s32);           /* void in the main exe; returns CdControl's result */
 extern void StSetRing(s32, s32);
@@ -104,6 +112,7 @@ extern s32 StFreeRing(u32 *);
 extern s32 StGetNext(u32 **, StrHeader **);
 extern s32 CdControlB(u8, u8 *, u8 *);
 extern void StUnSetRing(void);
+#endif
 extern void Mem_Free(ActorWork *arg0);
 extern void Task_DefaultDestroy(Actor *arg0);
 extern void Task_NextState0(Actor *arg0);
@@ -114,13 +123,17 @@ extern void Snd_PlayById(s32 id, s32 set);
 extern void Snd_StopById(s32 id);
 extern void Gfx_FadeOutToBlack(s32 arg0);
 extern void Save_ResetGameState(void);
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern s32 ResetGraph(s32);
 extern void ClearImage2();
 extern void DrawSync();
 extern void LoadImage();
+#endif
 extern void Gpu_ClearScreens(void);
 extern void Gfx_DrawPartsNoResScale(s32);
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern void StCdInterrupt(void);
+#endif
 
 /* this overlay */
 extern s32 Stg10_AttractCount;
@@ -161,9 +174,11 @@ extern StrDecEnv Stg10_DecEnv;
 extern u32 *Stg10_VlcTable;
 
 u32 *Stg10_StrNext(StrDecEnv *dec);
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 void DecDCTReset(s32 arg0);
 void DecDCTout(u32 *buf, s32 size);
 void DecDCToutCallback(void (*func)());
+#endif
 void MDEC_reset(s32 arg0);
 void MDEC_in(u32 *buf, u32 size);
 void MDEC_out(u32 *buf, u32 size);
@@ -176,9 +191,13 @@ void Stg10_StrInit(u8 *arg0, void (*arg1)());
 s32 Stg10_StrNextVlc(StrDecEnv *dec);
 void Stg10_StrCallback(void);
 void Stg10_StrSync(StrDecEnv *dec, s32 mode);
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 void DecDCTin(u32 *buf, s32 mode);
+#endif
 void Stg10_BuildVlcTable(u8 *dst);
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 void DecDCTvlc2(u32 *, u32 *, u32 *);
+#endif
 
 /* Data one module defines and another uses (R3a split of stag1000.c). */
 extern TaskDesc Stg10_EndScreenDesc;

@@ -82,7 +82,9 @@ extern void Task_NextState0(Actor *);
 extern TaskEntry *Task_FindFirst(s32, s32, s32);
 extern void Text_Close(s32 *);
 extern void Text_CloseArray(s32 *arg0, s32 arg1);
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern s32 CdControlF(s32, s32);
+#endif
 extern void Gfx_DrawParts(s32);
 extern void Gfx_SetPartsNumber(GfxPart *, s32, s32, s32);
 extern void Anim_SetModelAnim(Actor *, s32);
@@ -183,9 +185,11 @@ typedef struct {
     /* 0x90 */ s32 speed;
 } Stg20CamWork;
 
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern void RotMatrixYXZ(s16 *, Mat1F668 *);
 extern void GsSetProjection(s32);
 extern s32 GsSetRefView2(Stg20RefView *);
+#endif
 
 /* Work of the cursor/marker task (Stg20_WalkerHalt). */
 typedef struct {
@@ -503,8 +507,14 @@ extern Stg20Pos2 Stg20_ShakeOffsets[4];
 extern const Halves Stg20_ShopMenuBuyPos;
 extern const Halves Stg20_ShopMenuSellPos;
 extern PadState Pad_State[];
+#ifdef DW2_NATIVE
+/* DATA_LABEL aliases (main sys.c, pad.c) as field accesses. */
+#define Sys_GameMode (&Sys_State.gameMode)
+#define Pad_Cross (Pad_State[0].cross)
+#else
 extern s32 Sys_GameMode[]; /* Sys_State.gameMode as a scalar, see main sys.c */
 extern s32 Pad_Cross; /* Pad_State[0].cross as a scalar, see main pad.c */
+#endif
 extern s32 Digi_GetExpToNextLevel(s32, s32, s32);
 extern void Snd_PlayById(s32, s32);
 extern void Task_SetState0(Actor *, u32);
@@ -513,7 +523,9 @@ extern void Task_NextState2(Actor *);
 extern Stg20Cell Stg20_LabPairNamePos[2];
 extern SysState Sys_State;
 extern s32 Skill_GetType(s32);
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern void SetGeomOffset(s32, s32);
+#endif
 extern void Task_NextState1(Actor *);
 extern void Gfx_FadeOutToBlack(s32);
 extern void Stg20_OpenText(void *t, s32 text, s32 id, Stg20Cell *pos, s32 color);
@@ -574,12 +586,14 @@ extern u8 Stg20_PartsNotSteel[];
 extern u8 Stg20_MissileGunAmmo[];
 extern u8 Stg20_RCannonAmmo[];
 extern s32 Cd_GetFileLba(s32 arg0);
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern s32 CdControl(s32, u8 *, u8 *);
 extern s32 CdControlB(s32, u8 *, u8 *);
 extern void CdIntToPos(s32, u8 *);
 extern s32 CdPosToInt(void *);
 extern s32 CdSync(s32, u8 *);
 extern s32 CdLastCom(void);
+#endif
 typedef struct {
     /* 0x00 */ s32 fileId;
     /* 0x04 */ u8 channel;
@@ -726,7 +740,9 @@ extern s32 Item_GetBagCapacity(void);
 extern s32 Stg20_OwnsDigi(s32 id);
 
 /* ---- added by p36 agent e ---- */
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern void GsInitCoordinate2(Coord1F668 *, Coord1F668 *);
+#endif
 extern void Gfx_FadeOutToWhite(s32);
 extern void Gfx_FadeInFromWhite(s32);
 

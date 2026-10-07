@@ -222,7 +222,9 @@ void Gfx_SetPartsNumber(GfxPart *p, s32 mask, s32 n, s32 val) {
 } /* identity matrix */
 extern void Gfx_DrawPartSprites(GfxPartSprite *, GfxPartOTag *);
 extern void Gfx_DrawPartQuadsRot(void *, void *, s32, s32);
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern void ScaleMatrix(Obj209 *, s32 *);
+#endif
 
 void Gfx_DrawPartsEx(void *arg0, s32 arg1) {
     Rec1D6B4 *s2 = (Rec1D6B4 *)arg0;

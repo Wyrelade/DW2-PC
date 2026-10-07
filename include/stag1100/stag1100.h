@@ -263,8 +263,10 @@ extern void Task_DefaultDestroy(Actor *arg0);
 extern void Task_NextState0(Actor *arg0);
 extern void Task_SetState0(Actor *arg0, u32 arg1);
 extern void Task_SetState1(Actor *arg0, u32 arg1);
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern u8 *memset(u8 *s, s32 c, s32 n);
 extern u8 *strcpy(u8 *dst, const u8 *src);
+#endif
 
 extern Halves Stg11_PromptPos;
 extern Halves Stg11_StatusPos;
@@ -329,6 +331,7 @@ typedef struct {
     /* 0x0 */ s32 bgmStarted;
 } Stg11MainWork;
 
+#ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
 extern s32 MemCardSync(s32 wait, s32 *a1, s32 *a2);
 extern s32 MemCardOpen(s32 a0, s32 a1, s32 a2);
 extern s32 MemCardCreateFile(s32 a0, s32 a1, s32 a2);
@@ -338,6 +341,7 @@ extern s32 MemCardAccept(s32 arg0);
 extern s32 MemCardReadFile(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4);
 extern s32 MemCardWriteFile(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4);
 extern void Card_CloseFile(void);
+#endif
 extern GameState *Save_GameStatePtr;
 extern void Mem_FillWordsNeg1(s32 *arg0, s32 arg1);
 extern s32 Math_RampToOne(s32 arg0, s32 *arg1);
@@ -357,9 +361,17 @@ extern TaskDesc Stg11_CardMenuDesc;
 extern TaskDesc Stg11_VsPartyDesc;
 extern TaskDesc Stg11_CardTaskDesc;
 extern TaskDesc *Stg11_TaskDescs[];
+#ifdef DW2_NATIVE
+/* DATA_LABEL aliases (card.c) as typed views into the INCLUDE_BIN icon TIMs. */
+extern u8 Stg11_CardIconTim1[], Stg11_CardIconTim2[], Stg11_CardIconTim3[];
+#define Stg11_CardIconImage (*(Stg11IconImage *)(Stg11_CardIconTim1 + 0x14))
+#define Stg11_CardIcon2 (*(Stg11Icon *)(Stg11_CardIconTim2 + 0x40))
+#define Stg11_CardIcon3 (*(Stg11Icon *)(Stg11_CardIconTim3 + 0x40))
+#else
 extern Stg11IconImage Stg11_CardIconImage;
 extern Stg11Icon Stg11_CardIcon2;
 extern Stg11Icon Stg11_CardIcon3;
+#endif
 extern const u8 Stg11_CardTitle[32];
 extern Halves Stg11_ModeHelpPos;
 extern MenuGridLayout Stg11_VsPartyLayout;

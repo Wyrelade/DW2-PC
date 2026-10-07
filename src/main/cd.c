@@ -46,7 +46,12 @@ s32 D_80050794;
 CdCacheEntry Cd_FileCache[0x50];
 /* CD file table: start LBA and size in sectors per file id (disc layout). */
 INCLUDE_BIN(Cd_FileLba, "assets/main/cd_file_lba.bin");
+#ifdef DW2_NATIVE
+/* All 0xE5B entries: the retail table runs past this blob into the next data block. */
+INCLUDE_BIN(Cd_FileSectors, "assets/main/cd_file_sectors_full.bin");
+#else
 INCLUDE_BIN(Cd_FileSectors, "assets/main/cd_file_sectors.bin");
+#endif
 
 EntA0 *Cd_GetFileEntry(u32 arg0) {
     u32 index;
@@ -272,5 +277,10 @@ s32 Cd_GetFileLba(s32 arg0) {
 }
 
 void Cd_GetFilePos(s32 arg0, void *arg1) {
+#ifdef DW2_NATIVE
+    CdIntToPos(Cd_FileLba[arg0], arg1);
+#else
+    /* One argument: arg1 is still in a1 for CdIntToPos's second parameter. */
     CdIntToPos(Cd_FileLba[arg0]);
+#endif
 }

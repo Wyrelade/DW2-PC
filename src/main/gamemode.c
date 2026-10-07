@@ -20,6 +20,16 @@ TaskDesc Sys_GameModeDesc = { 0, Sys_GameModeTask, (TaskFn)Sys_GameModeDestroy, 
 /* Ovl_FileIds[id] (Cd file ids, matched by LBA + sector count):
  * 0 STAG0000, 1 STAG4000, 2 STAG2000, 3 STAG1000, 4 STAG3000, 5 STAG1100, 6 STAG3500.
  * Sys_GameModeTask loads id (gameMode >> 8) - 1. */
+#ifdef DW2_NATIVE
+/* All overlays are linked into the program: no file read, the overlay's .data and .bss go back to
+ * their initial values (what the retail copy over the overlay area did). */
+void Ovl_Load(s32 id) {
+    if (Ovl_CurrentId != id) {
+        Ovl_CurrentId = id;
+        Host_OvlReset(id);
+    }
+}
+#else
 void Ovl_Load(s32 id) {
     s32 *ids;
     s32 *p;
@@ -35,6 +45,7 @@ void Ovl_Load(s32 id) {
         memcpy(dst, src, Cd_GetFileSectors(*p) << 11);
     }
 }
+#endif
 
 s32 Ovl_GetCurrentId(void) {
     return Ovl_CurrentId;

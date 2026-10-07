@@ -14,7 +14,14 @@
 #include "main/itemmenu.h"
 
 /* The two ordering tables (Gpu_OtBufs[i + 1] is the end of table i). */
+#ifdef DW2_NATIVE
+/* Code reads the layout mode as Gpu_OtBufs[2].entries[0] (retail .bss has Gpu_OtLayoutMode right
+ * behind the tables). C keeps no such order, so the native array has a third table whose first
+ * word is the layout mode; Gpu_OtLayoutMode below stays unused. */
+GpuOtBuf Gpu_OtBufs[3];
+#else
 GpuOtBuf Gpu_OtBufs[2];
+#endif
 /* OT layout mode (index into Gpu_OtLayerLens); code reads it as Gpu_OtBufs[2].entries[0]. */
 s32 Gpu_OtLayoutMode[2];
 /* Ordering table layout per mode: layer lengths and offsets (8 layers). */
@@ -50,7 +57,13 @@ void Gpu_ClearOt(s32 arg0) {
 
 s32 Gpu_DrawOt(s32 arg0) {
     s32 *p = (s32 *)&Gpu_OtBufs[arg0 + 1];
+#ifdef DW2_NATIVE
+    /* DrawOTag is void; retail returns what v0 held (no caller reads it). */
+    DrawOTag((u_long *)&p[-1]);
+    return 0;
+#else
     return DrawOTag(&p[-1]);
+#endif
 }
 
 void Gpu_SkipEmptyOtEntries(s32 arg0) {
