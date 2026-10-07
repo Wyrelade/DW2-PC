@@ -250,7 +250,7 @@ void Stg30_FighterTask(Actor *arg0) {
     s32 a2;
     Stg30Xform *t;
     Stg30ModelTint *m0;
-    Actor **ch;
+    PTR32(Actor) *ch;
     s32 k;
 
     switch (arg0->stateLevel0) {
@@ -459,14 +459,14 @@ void Stg30_FighterTask(Actor *arg0) {
         arg0->childCount = 4;
     }
     if (w->lastHudFlag != Stg30_Battle.interruptActive) {
-        ch = (Actor **)arg0->u34.children;
+        ch = (PTR32(Actor) *)arg0->u34.children;
         if (Stg30_Battle.interruptActive != 0) {
-            if (ch[0]->stateLevel0 == 2) {
-                Task_SetState1(ch[0], 1);
+            if (P32(Actor, ch[0])->stateLevel0 == 2) {
+                Task_SetState1(P32(Actor, ch[0]), 1);
             }
         } else {
-            if (ch[0]->stateLevel0 == 1) {
-                Task_SetState0(ch[0], 2);
+            if (P32(Actor, ch[0])->stateLevel0 == 1) {
+                Task_SetState0(P32(Actor, ch[0]), 2);
             }
         }
         w->lastHudFlag = Stg30_Battle.interruptActive;

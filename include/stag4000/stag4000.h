@@ -51,11 +51,12 @@ typedef struct {
 
 /* Element picked from Stg40DungFloor.field_8 into Stg40B60.field_14 (Stg40_PickSpawnPoints). */
 typedef struct {
-    /* 0x00 */ u32 *cellBits;      /* 4-bit cell codes, 8 per word (Stg40_ReadFloorBits) */
-    /* 0x04 */ Stg40CellPoint *spawnPoints;  /* 0xFF-terminated, passed to Stg40_PickRandomPoint */
-    /* 0x08 */ Stg40Drop *chests;  /* 0xFF-terminated (Stg40_SpawnChests) */
-    /* 0x0C */ Stg40Spawn *hazards; /* 0xFF-terminated (Stg40_SpawnFixedHazards) */
-    /* 0x10 */ Stg40Drop *enemyParties; /* 0xFF-terminated (Stg40_SpawnEnemyParties) */
+    /* File words relocated in place (Stg40_RelocDungFile): 32-bit in every build. */
+    /* 0x00 */ PTR32(u32) cellBits;      /* 4-bit cell codes, 8 per word (Stg40_ReadFloorBits) */
+    /* 0x04 */ PTR32(Stg40CellPoint) spawnPoints;  /* 0xFF-terminated, passed to Stg40_PickRandomPoint */
+    /* 0x08 */ PTR32(Stg40Drop) chests;  /* 0xFF-terminated (Stg40_SpawnChests) */
+    /* 0x0C */ PTR32(Stg40Spawn) hazards; /* 0xFF-terminated (Stg40_SpawnFixedHazards) */
+    /* 0x10 */ PTR32(Stg40Drop) enemyParties; /* 0xFF-terminated (Stg40_SpawnEnemyParties) */
 } Stg40DungLayout;
 
 /* Stg40Ent48.field_10 viewed as the info block Stg40_EnemyInfoDraw draws. */
@@ -118,9 +119,10 @@ typedef struct {
 
 /* Map header behind Stg40B60.field_10 (Stg40_ApplyFloorLayout). */
 typedef struct {
-    /* 0x00 */ u8 *name;       /* 0xFF-terminated byte list */
+    /* File words relocated in place (Stg40_RelocDungFile): 32-bit in every build. */
+    /* 0x00 */ PTR32(u8) name;       /* 0xFF-terminated byte list */
     /* 0x04 */ s32 eventTable;       /* flag script (Stg40_LoadEventTiles) */
-    /* 0x08 */ Stg40DungLayout *layouts[8];
+    /* 0x08 */ PTR32(Stg40DungLayout) layouts[8];
     /* 0x28 */ u16 wallStyle;
     u8 _pad2A[0x02];
     /* 0x2C */ s16 paletteIdx;      /* index into Stg40_SpecialFloorValues */
@@ -236,7 +238,7 @@ typedef struct {
 
 /* Actor.model viewed with the bytes Stg40_SetModelTint sets. */
 typedef struct {
-    u8 _pad00[0x34];
+    u8 _pad00[NATIVE_OFS(ActorModel, clutRow, 0x34)];
     /* 0x34 */ s16 clutRow;
     u8 _pad36[0x02];
     /* 0x38 */ u8 fadeR;
@@ -254,7 +256,7 @@ typedef struct {
 
 /* Actor.model viewed with the fade fields Stg40_PlayerExitFloor sets. */
 typedef struct {
-    u8 _pad00[0x34];
+    u8 _pad00[NATIVE_OFS(ActorModel, clutRow, 0x34)];
     /* 0x34 */ s16 clutRow;
     /* 0x36 */ s16 tpageFlags;
     /* 0x38 */ Stg40Col fadeColor;
@@ -265,7 +267,7 @@ typedef struct {
     /* 0x000 */ u32 data[0x748 / 4];
     /* 0x748 */ RECT rect;
     u8 _pad750[0x08];
-    /* 0x758 */ s32 *slot;
+    /* 0x758 */ PTR32(s32) slot; /* Stg40AutomapWork.slot */
     /* 0x75C */ s32 clutTimer;
 } Stg40ImgWork;
 
@@ -291,7 +293,7 @@ typedef struct {
     /* 0x040 */ u32 data[(0x748 - 0x40) / 4];
     /* 0x748 */ RECT clut;
     /* 0x750 */ RECT rect;
-    /* 0x758 */ GfxTexSlot *slot;
+    /* 0x758 */ PTR32(GfxTexSlot) slot; /* 32-bit: Stg40TileGrid / Stg40ImgClut views */
     u8 _pad75C[0x04];
     /* 0x760 */ s16 texDirty;
     /* 0x762 */ s16 modeFade[2];
@@ -544,7 +546,7 @@ typedef struct {
 typedef struct {
     u8 _pad00[0x28];
     /* 0x28 */ u8 requeueTimer;
-    u8 _pad29[0x0B];
+    u8 _pad29[NATIVE_OFS(Stg40ActWork, drawn, 0x34) - 0x29];
     /* 0x34 */ s16 drawn;
 } Stg40ObjQueueView;
 
@@ -851,7 +853,7 @@ typedef struct {
 
 /* Actor.u34.children container of Stg40_HudUpdate: a child task handle at 0. */
 typedef struct {
-    /* 0x0 */ Actor *bitsWinTask;
+    /* 0x0 */ PTR32(Actor) bitsWinTask; /* 32-bit task slot */
 } Stg40HudChildren;
 
 extern void Mem_FillWordsNeg1(s32 *arg0, s32 arg1);

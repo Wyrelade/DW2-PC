@@ -250,7 +250,7 @@ void Stg30_BattleScriptTask(Actor *a0) {
                 w->pc += 1;
                 break;
             case 22:
-                if (sl->actionLoadTask->stateLevel0 != 1) {
+                if (P32(Actor, sl->actionLoadTask)->stateLevel0 != 1) {
                     cont = 0;
                 } else {
                     w->pc += 1;
@@ -267,11 +267,11 @@ void Stg30_BattleScriptTask(Actor *a0) {
                     Task_Create(0x511, (s32 *)&sl->xaTask, (s32)g);
                     Task_NextState1(a0);
                 case 1:
-                    if (sl->xaTask->stateLevel0 != 1) {
+                    if (P32(Actor, sl->xaTask)->stateLevel0 != 1) {
                         cont = 0;
                         break;
                     }
-                    Task_SetState0(sl->xaTask, 2);
+                    Task_SetState0(P32(Actor, sl->xaTask), 2);
                     w->pc += 3;
                     Task_SetState1(a0, 0);
                     break;

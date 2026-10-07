@@ -29,12 +29,12 @@ void Stg30_ShowPartyFighters(Stg30ListOwner *a0) {
     Stg30BattleChildren *l = a0->list;
 
     for (i = 0; i < 6; i++) {
-        if (l->actors[i] != NULL) {
+        if (P32(Actor, l->actors[i]) != NULL) {
             if (i < 3) {
-                Stg30_FighterSetVisible(l->actors[i], 1);
-                Stg30_FighterQueueHomeReset(l->actors[i]);
+                Stg30_FighterSetVisible(P32(Actor, l->actors[i]), 1);
+                Stg30_FighterQueueHomeReset(P32(Actor, l->actors[i]));
             } else {
-                Stg30_FighterSetVisible(l->actors[i], 0);
+                Stg30_FighterSetVisible(P32(Actor, l->actors[i]), 0);
             }
         }
     }
@@ -45,8 +45,8 @@ void Stg30_ShowAllFighters(Stg30ListOwner *a0) {
     Stg30BattleChildren *l = a0->list;
 
     for (i = 0; i < 6; i++) {
-        if (l->actors[i] != NULL) {
-            Stg30_FighterSetVisible(l->actors[i], 1);
+        if (P32(Actor, l->actors[i]) != NULL) {
+            Stg30_FighterSetVisible(P32(Actor, l->actors[i]), 1);
         }
     }
 }
@@ -56,8 +56,8 @@ void Stg30_ResetAllFightersHome(Stg30ListOwner *a0) {
     Stg30BattleChildren *l = a0->list;
 
     for (i = 0; i < 6; i++) {
-        if (l->actors[i] != NULL) {
-            Stg30_FighterQueueHomeReset(l->actors[i]);
+        if (P32(Actor, l->actors[i]) != NULL) {
+            Stg30_FighterQueueHomeReset(P32(Actor, l->actors[i]));
         }
     }
 }
@@ -135,7 +135,7 @@ void Stg30_BattleWonUpdate(Actor *a0) {
         }
         for (i = 0; i < 3; i++) {
             if (Stg30_Battle.digis[i].hp != 0) {
-                Task_SetState01(l->actors[i], 2, 2);
+                Task_SetState01(P32(Actor, l->actors[i]), 2, 2);
             }
         }
         Cd_QueueFile(0x13A);

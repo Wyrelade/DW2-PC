@@ -82,9 +82,9 @@ void Stg40_HudUpdate(Actor *a0) {
             }
             break;
         }
-        if (s3->bitsWinTask != 0) {
-            if (Dung_StatePtr->status.bugLevels[0] == 0 && s3->bitsWinTask->stateLevel0 != 2) {
-                Task_SetState0(s3->bitsWinTask, 2);
+        if (P32(Actor, s3->bitsWinTask) != 0) {
+            if (Dung_StatePtr->status.bugLevels[0] == 0 && P32(Actor, s3->bitsWinTask)->stateLevel0 != 2) {
+                Task_SetState0(P32(Actor, s3->bitsWinTask), 2);
             }
         } else {
             if (Dung_StatePtr->status.bugLevels[0] != 0) {
@@ -98,8 +98,8 @@ void Stg40_HudUpdate(Actor *a0) {
         default:
             n = 3;
             Text_CloseArray(&w->labelText0, n);
-            if (s3->bitsWinTask != 0) {
-                Task_SetState0(s3->bitsWinTask, 2);
+            if (P32(Actor, s3->bitsWinTask) != 0) {
+                Task_SetState0(P32(Actor, s3->bitsWinTask), 2);
             }
             Task_NextState1(a0);
             break;

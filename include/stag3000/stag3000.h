@@ -281,7 +281,7 @@ typedef struct {
     u8 _pad18[0x0C];
     /* 0x24 */ s32 bannerTask;
     /* 0x28 */ s32 resultTask;
-    /* 0x2C */ Actor *actors[6];
+    /* 0x2C */ PTR32(Actor) actors[6]; /* 32-bit task slots */
     u8 _pad44[0x04];
     /* 0x48 */ s32 scriptTask;
 } Stg30BattleChildren;
@@ -291,7 +291,7 @@ typedef struct {
     u8 _pad00[0x18];
     /* 0x18 */ s32 stateLevel2;
     /* 0x1C */ s32 stateLevel3;
-    u8 _pad20[0x14];
+    u8 _pad20[NATIVE_OFS(Actor, u34, 0x34) - 0x20];
     /* 0x34 */ Stg30BattleChildren *list;
 } Stg30ListOwner;
 
@@ -417,7 +417,7 @@ typedef struct {
 
 /* ActorModel viewed with the three tint bytes at 0x38..0x3A (Stg30_FighterTask). */
 typedef struct {
-    u8 _pad00[0x34];
+    u8 _pad00[NATIVE_OFS(ActorModel, clutRow, 0x34)];
     /* 0x34 */ s16 clutRow;
     /* 0x36 */ s16 tpageBits;
     /* 0x38 */ u8 flatR;
@@ -425,7 +425,7 @@ typedef struct {
     /* 0x3A */ u8 flatB;
     u8 _pad3B[0x01];
     /* 0x3C */ s32 otIndex;
-    u8 _pad40[0x14];
+    u8 _pad40[NATIVE_OFS(ActorModel, animId, 0x54) - NATIVE_OFS(ActorModel, otzShift, 0x40)];
     /* 0x54 */ s32 animId;
     u8 _pad58[0x08];
     /* 0x60 */ s32 animDone;
@@ -741,8 +741,8 @@ typedef struct {
     /* 0x04 */ s32 field_4;
     /* 0x08 */ s32 field_8;
     /* 0x0C */ s32 interruptTask;
-    /* 0x10 */ Actor *actionLoadTask;
-    /* 0x14 */ Actor *xaTask;
+    /* 0x10 */ PTR32(Actor) actionLoadTask; /* 32-bit task slots */
+    /* 0x14 */ PTR32(Actor) xaTask;
 } Stg30Slots;
 
 extern void Stg30_SetDigiAction(Actor *a0, s32 a1, s32 a2);

@@ -67,23 +67,23 @@ load:
     p = (s32 *)Cd_GetFileEntry(k + 0x3250000);
     p++;
     if (*p++ & 8) {
-        r.x = t->sheet->vramX + i / 16 * 16;
-        r.y = t->sheet->vramY + 0xF0;
+        r.x = P32(GfxImageInfo, t->sheet)->vramX + i / 16 * 16;
+        r.y = P32(GfxImageInfo, t->sheet)->vramY + 0xF0;
         r.y += i % 16;
         r.w = 16;
         r.h = 1;
         LoadImage(&r, ((TimBlkData *)p)->data);
     }
     p = (s32 *)((u8 *)p + *p);
-    r2.x = t->sheet->vramX + i % 3 * 10;
-    r2.y = t->sheet->vramY + i / 3 * 40;
+    r2.x = P32(GfxImageInfo, t->sheet)->vramX + i % 3 * 10;
+    r2.y = P32(GfxImageInfo, t->sheet)->vramY + i / 3 * 40;
     r2.w = ((TimBlkData *)p)->w;
     r2.h = ((TimBlkData *)p)->h;
     LoadImage(&r2, ((TimBlkData *)p)->data);
     t->slot[i].id = Gfx_FaceImageIds[k];
 found:
     t->slot[i].t = Sys_State.vsyncWait;
-    *out = *t->sheet;
+    *out = *P32(GfxImageInfo, t->sheet);
     pos->x = i % 3 * 40;
     pos->y = i / 3 * 40;
     clut->x = i / 16 * 16;

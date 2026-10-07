@@ -20,7 +20,7 @@
 #include "stag3000/interruptselect.h"
 
 /* Task callbacks the descriptors below need (defined further down). */
-void Stg30_FighterHudInit(Actor *a0, Stg30Ref **args);
+void Stg30_FighterHudInit(Actor *a0, PTR32(Stg30Ref) *args);
 void Stg30_FighterHudUpdate(Stg30TaskHead *a0);
 void Stg30_FighterHudDestroy(Actor *a0);
 void Stg30_FighterHudDraw(Actor *a0);
@@ -38,9 +38,9 @@ TaskDesc Stg30_FighterHudDesc = {
     Stg30_FighterHudDraw, 0x14, 0,
 };
 
-void Stg30_FighterHudInit(Actor *a0, Stg30Ref **args) {
-    ((Stg30FighterHudWork *)a0->work)->ref = args[0];
-    a0->param = args[0]->param;
+void Stg30_FighterHudInit(Actor *a0, PTR32(Stg30Ref) *args) {
+    ((Stg30FighterHudWork *)a0->work)->ref = P32(Stg30Ref, args[0]); /* args: 32-bit words (Stg30_FighterTask) */
+    a0->param = P32(Stg30Ref, args[0])->param;
 }
 
 void Stg30_FighterHudUpdate(Stg30TaskHead *a0) {

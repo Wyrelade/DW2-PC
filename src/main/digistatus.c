@@ -88,7 +88,7 @@ void Menu_DigiStatusTask(Actor *a) {
         default:
         case 0:
             h = (Halves *)Cd_GetFileEntry(0x513001E);
-            (*(Actor **)a->u34.children)->model->otIndex = 4;
+            P32(Actor, *(PTR32(Actor) *)a->u34.children)->model->otIndex = 4;
             if (Math_RampToOne((s32)a, &w->ramp) != 0) {
                 break;
             }

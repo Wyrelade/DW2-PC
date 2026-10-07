@@ -44,8 +44,20 @@ DigiSortRank Digi_StateSortRank[1] = { { 0, 5, 4, 1, 2, 3 } };
 s32 Mem_HeapSize;
 MemBlock *Mem_HeapHead;
 
+#ifdef DW2_NATIVE
+/* Heap block header: 0xC bytes on the PS1 (two pointers and the tag), sizeof(MemBlock) natively
+ * (0x18 in 64-bit). Block sizes are rounded to the pointer size, so 64-bit headers and the
+ * pointers in heap structs stay aligned. */
+#define MEM_HDR ((s32)sizeof(MemBlock))
+#define MEM_ROUND(n) (((u32)(n) + sizeof(void *) - 1) & ~(u32)(sizeof(void *) - 1))
+#endif
+
 void Mem_Free(ActorWork *arg0) {
+#ifdef DW2_NATIVE
+    MemFreeBlock *n = (MemFreeBlock *)((u8 *)arg0 - MEM_HDR);
+#else
     MemFreeBlock *n = (MemFreeBlock *)((u8 *)arg0 - 0xC);
+#endif
     MemFreeBlock *m = n->prev;
     MemFreeBlock *nx = n->next;
     n->tag = 0;
@@ -87,19 +99,35 @@ void Mem_InitHeap(MemBlock *heap, s32 size) {
 }
 
 s32 Mem_TryAlloc(s32 arg0, s32 tag) {
+#ifdef DW2_NATIVE
+    u32 size = MEM_ROUND(arg0);
+    MemBlock *b = Mem_HeapHead;
+    MemBlock *n;
+    u32 avail;
+    u32 lim = size + MEM_HDR + 8;
+#else
     u32 size = ((u32)(arg0 + 3) >> 2) << 2;
     MemBlock *b = Mem_HeapHead;
     MemBlock *n;
     u32 avail;
     u32 lim = size + 0x14;
+#endif
 
     if (b->tag != 1) {
         do {
             if (b->tag == 0) {
+#ifdef DW2_NATIVE
+                avail = (s32)b->next - (s32)b - MEM_HDR;
+#else
                 avail = (s32)b->next - (s32)b - 0xC;
+#endif
                 if (avail >= size) {
                     if (lim < avail) {
+#ifdef DW2_NATIVE
+                        n = (MemBlock *)((u8 *)b + size + MEM_HDR);
+#else
                         n = (MemBlock *)((u8 *)b + size + 0xC);
+#endif
                         n->prev = b;
                         n->next = b->next;
                         n->tag = 0;

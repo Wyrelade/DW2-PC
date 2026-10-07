@@ -46,11 +46,11 @@ void Stg40_ApplyFloorLayout(void) {
     u8 *src;
     u8 *dst;
 
-    b->layout = m->layouts[g->floorLayout];
+    b->layout = P32(Stg40DungLayout, m->layouts[g->floorLayout]);
     g->floorHdr->wallStyle = m->wallStyle;
     g->floorHdr->field_4 = 1;
     g->floorHdr->hazardLevel = m->hazardLevel;
-    src = m->name;
+    src = P32(u8, m->name);
     dst = Dung_StatePtr->floorHdr->name;
     memset(dst, 0xFF, 16);
     Dung_StatePtr->floorHdr->nameLen = 0;
@@ -119,7 +119,7 @@ s32 Stg40_PickRandomPoint(Stg40CellPos *out, Stg40CellPoint *e, u8 key) {
 
 void Stg40_PickSpawnPoints(void) {
     Stg40CellPos buf[20];
-    Stg40CellPoint *list = Stg40_RootState->layout->spawnPoints;
+    Stg40CellPoint *list = P32(Stg40CellPoint, Stg40_RootState->layout->spawnPoints);
     s32 r;
 
     r = Stg40_PickRandomPoint(buf, list, 0);

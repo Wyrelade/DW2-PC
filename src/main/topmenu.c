@@ -286,7 +286,7 @@ void Menu_TopMenuTask(Actor *a0) {
     switch (a0->stateLevel0) {
     case 0:
     default:
-        Menu_Ctx = (MenuCtx *)Mem_Alloc(0x364, 2);
+        Menu_Ctx = (MenuCtx *)Mem_Alloc(NATIVE_SIZE(MenuCtx, 0x364), 2);
         Menu_Ctx->topMenuResult = 0;
         Menu_TopMenuResult = 0;
         *(MenuGridLayout *)w->gridSize = *(MenuGridLayout *)Cd_GetFileEntry(0x5130005);

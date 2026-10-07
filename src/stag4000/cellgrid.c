@@ -63,7 +63,7 @@ void Stg40_FillCellGrid(void) {
     cols = dims->cols;
     rows = dims->rows;
     room = Stg40_RootState->layout;
-    bits = room->cellBits;
+    bits = P32(u32, room->cellBits);
     Stg40_FloorBitsPal[7] = Stg40_SpecialFloorValues[map->paletteIdx];
     for (y = 0; y < rows; y++) {
         for (x = 0; x < cols; x++) {

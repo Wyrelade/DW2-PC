@@ -326,8 +326,8 @@ void Text_UpdateAllBoxes(Actor *a0) {
                             case 3:
                             case 5:
                             case 7:
-                                if (slots->box[row] != 0) {
-                                    Task_SetState0(slots->box[row], 2);
+                                if (P32(Actor, slots->box[row]) != 0) {
+                                    Task_SetState0(P32(Actor, slots->box[row]), 2);
                                 }
                                 Task_NextState1(a0);
                                 break;
@@ -336,14 +336,14 @@ void Text_UpdateAllBoxes(Actor *a0) {
                             Task_NextState1(a0);
                             break;
                         case 1:
-                            if (slots->box[row]->stateLevel1 == 1) {
+                            if (P32(Actor, slots->box[row])->stateLevel1 == 1) {
                                 r->waitingInput = 0;
                                 r->cmdFADone++;
                                 Task_SetState1(a0, 0);
                             }
                             break;
                         case 2:
-                            if (slots->box[row] == 0) {
+                            if (P32(Actor, slots->box[row]) == 0) {
                                 r->waitingInput = 0;
                                 r->cmdFADone++;
                                 Task_SetState1(a0, 0);
@@ -358,8 +358,8 @@ void Text_UpdateAllBoxes(Actor *a0) {
                     k9 = *s;
                     if (k9 & 1) {
                         if (r->cmdF9Done == nF9) {
-                            if (slots->num[(k9 >> 1) & 1] != 0) {
-                                Task_SetState0(slots->num[(k9 >> 1) & 1], 2);
+                            if (P32(Actor, slots->num[(k9 >> 1) & 1]) != 0) {
+                                Task_SetState0(P32(Actor, slots->num[(k9 >> 1) & 1]), 2);
                             }
                             r->cmdF9Done++;
                             Snd_PlayById(0x3A, 0);
@@ -370,8 +370,8 @@ void Text_UpdateAllBoxes(Actor *a0) {
                         num[0] = *s++ * 100;
                         num[0] += *s++ * 10;
                         num[0] += *s;
-                        if (slots->num[num[1]] != 0) {
-                            Text_PortraitSetImage(slots->num[num[1]], num[0]);
+                        if (P32(Actor, slots->num[num[1]]) != 0) {
+                            Text_PortraitSetImage(P32(Actor, slots->num[num[1]]), num[0]);
                         } else {
                             Task_Create(5, (s32 *)&slots->num[num[1]], (s32)num);
                         }
@@ -539,7 +539,7 @@ void Text_UpdateAllBoxes(Actor *a0) {
                                 break;
                             case 1:
                                 s += 2;
-                                if (slots->task == 0) {
+                                if (P32(Actor, slots->task) == 0) {
                                     a0->stateLevel1 = 0;
                                     r->waitingInput = 0;
                                     r->cmdF4TaskDone++;
@@ -715,7 +715,7 @@ void Text_Close(s32 *slot) {
     Actor *a;
     s32 i;
     TextBox *r;
-    Actor **q;
+    PTR32(Actor) *q;
 
     if (*slot == -1) {
         return;
@@ -726,7 +726,7 @@ void Text_Close(s32 *slot) {
         r = &e->work[i];
         q = &e->children[i];
         r->inUse = 0;
-        a = q[1];
+        a = P32(Actor, q[1]);
         if (a != 0) {
             Task_SetState0(a, 3);
         }

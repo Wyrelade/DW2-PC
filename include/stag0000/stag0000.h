@@ -171,7 +171,7 @@ typedef struct {
 typedef struct {
     /* 0x00 */ u32 name;
     u8 _pad04[0x04];
-    /* 0x08 */ Stg00DungLayout *layouts[8];
+    /* 0x08 */ PTR32(Stg00DungLayout) layouts[8]; /* file words relocated in place */
     u8 _pad28[0x06];
     /* 0x2E */ s16 hazardLevel;
     u8 _pad30[0x04];
@@ -543,7 +543,7 @@ typedef struct {
 
 /* ActorModel viewed with the fade colour bytes at 0x38. */
 typedef struct {
-    u8 _pad00[0x34];
+    u8 _pad00[NATIVE_OFS(ActorModel, clutRow, 0x34)];
     /* 0x34 */ s16 clutRow;
     /* 0x36 */ s16 tpageBits;
     /* 0x38 */ u8 flatR;

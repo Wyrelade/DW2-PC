@@ -207,8 +207,8 @@ void Stg40_AutomapInitTex(Stg40AutomapWork *w) {
     s32 j;
     s32 k;
 
-    ((Stg40ImgWork *)w)->slot = Gfx_ReserveTexSlot();
-    s = (GfxTexSlot *)((Stg40ImgWork *)w)->slot;
+    ((Stg40ImgWork *)w)->slot = P32_SET(Gfx_ReserveTexSlot());
+    s = P32(GfxTexSlot, ((Stg40ImgWork *)w)->slot);
     r = &((Stg40ImgWork *)w)->rect;
     r->x = s->vramX;
     r->y = s->vramY + 0xFE;
@@ -238,7 +238,7 @@ void Stg40_AutomapInitTex(Stg40AutomapWork *w) {
 }
 
 void Stg40_AutomapReleaseTex(Stg40ImgWork *a0) {
-    Gfx_ReleaseTexSlot(a0->slot);
+    Gfx_ReleaseTexSlot(P32(s32, a0->slot));
 }
 
 s16 Stg40_AutomapInitDims(Stg40AutomapWork *a0) {
@@ -390,18 +390,18 @@ void Stg40_AutomapDrawWindow(Stg40AutomapWork *w, s32 x, s32 y, s32 cx, s32 cy, 
     a.r0 = shade;
     a.g0 = shade;
     a.b0 = shade;
-    a.tpage = 0x20 | ((w->slot->vramY & 0x100) >> 4) | ((w->slot->vramX & 0x3FF) >> 6) | (((u16)w->slot->vramY & 0x200) << 2);
+    a.tpage = 0x20 | ((P32(GfxTexSlot, w->slot)->vramY & 0x100) >> 4) | ((P32(GfxTexSlot, w->slot)->vramX & 0x3FF) >> 6) | (((u16)P32(GfxTexSlot, w->slot)->vramY & 0x200) << 2);
     a.clut = ((u16)w->clut.y << 6) | (((u16)w->clut.x >> 4) & 0x3F);
     a.code = 0x2E;
     width = right - left;
     height = bottom - top;
-    a.u0 = w->slot->uOffset + left + 3;
+    a.u0 = P32(GfxTexSlot, w->slot)->uOffset + left + 3;
     a.v0 = top;
-    a.u1 = w->slot->uOffset + left + 3 + width;
+    a.u1 = P32(GfxTexSlot, w->slot)->uOffset + left + 3 + width;
     a.v1 = top;
-    a.u2 = w->slot->uOffset + left + 3;
+    a.u2 = P32(GfxTexSlot, w->slot)->uOffset + left + 3;
     a.v2 = top + height;
-    a.u3 = w->slot->uOffset + left + 3 + width;
+    a.u3 = P32(GfxTexSlot, w->slot)->uOffset + left + 3 + width;
     a.v3 = top + height;
     a.x0 = x + (left - cx) * scale;
     a.y0 = y + (top - cy) * scale;
@@ -412,7 +412,7 @@ void Stg40_AutomapDrawWindow(Stg40AutomapWork *w, s32 x, s32 y, s32 cx, s32 cy, 
     a.x3 = x + (right - cx) * scale;
     a.y3 = y + ((top + height) - cy) * scale;
     b = a;
-    b.tpage = 0x40 | ((w->slot->vramY & 0x100) >> 4) | ((w->slot->vramX & 0x3FF) >> 6) | (((u16)w->slot->vramY & 0x200) << 2);
+    b.tpage = 0x40 | ((P32(GfxTexSlot, w->slot)->vramY & 0x100) >> 4) | ((P32(GfxTexSlot, w->slot)->vramX & 0x3FF) >> 6) | (((u16)P32(GfxTexSlot, w->slot)->vramY & 0x200) << 2);
     b.clut = (((u16)w->clut.y + 1) << 6) | (((u16)w->clut.x >> 4) & 0x3F);
     *p = a;
     p->tag.word = (p->tag.word & 0xFF000000) | (*ot & 0xFFFFFF);

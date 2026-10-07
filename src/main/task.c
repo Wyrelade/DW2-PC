@@ -71,9 +71,17 @@ void Task_ClearList(void) {
 }
 
 ActorAllocView *Task_Alloc(void) {
+#ifdef DW2_NATIVE
+    /* The task header: 0x40 bytes on the PS1, Actor up to its model pointer natively (0x58 in
+     * 64-bit, P1.12). */
+    ActorAllocView *s0 = (ActorAllocView *)Mem_Alloc(offsetof(Actor, _pad40), 2);
+    s32 i;
+    Mem_Zero(s0, offsetof(Actor, _pad40));
+#else
     ActorAllocView *s0 = (ActorAllocView *)Mem_Alloc(0x40, 2);
     s32 i;
     Mem_Zero(s0, 0x40);
+#endif
     for (i = 0; i < 0x64; i++) {
         if (Task_List.entries[i] == 0) {
             Task_List.entries[i] = (s32)s0;
@@ -145,6 +153,12 @@ TaskFreeView *arg0;
 
 ActorAllocView *Task_AllocWithBuffers(s32 a0, s32 a1) {
     ActorAllocView *s0 = Task_Alloc();
+#ifdef DW2_PTR64
+    /* TaskDesc.workSize is the PS1 size of the work struct; one with pointers is larger in
+     * 64-bit, at most twice (every field and alignment at most doubles). The aux block holds
+     * 32-bit task slots and keeps its size. */
+    a0 *= 2;
+#endif
     if (a0 != 0) {
         s32 x = Mem_Alloc(a0, 2);
         s0->work = x;

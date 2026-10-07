@@ -30,7 +30,7 @@ void Stg00_FontInit(void) {
     u16 *p;
     RECT *r;
 
-    Stg00_FontWork = (Stg00Work *)Mem_Alloc(0x9D8, 2);
+    Stg00_FontWork = (Stg00Work *)Mem_Alloc(NATIVE_SIZE(Stg00Work, 0x9D8), 2);
     Stg00_FontTextBuf = Stg00_FontWork->textBuf;
     Stg00_FontWork->texSlot = Gfx_ReserveTexSlot();
     n = 0x200;

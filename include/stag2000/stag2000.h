@@ -336,7 +336,7 @@ typedef struct {
     /* 0x04 */ s32 bgFileId;
     /* 0x08 */ s32 startRecs;
     /* 0x0C */ s32 exits;
-    /* 0x10 */ u8 *bits;
+    /* 0x10 */ PTR32(u8) bits; /* file word */
     /* 0x14 */ s16 sndSlotContent;
     /* 0x16 */ s16 bgmId;
     /* 0x18 */ s32 stepSndBits;
@@ -700,7 +700,7 @@ extern void Stg20_InsertDescS16(s16 *list, s32 n, s32 v);
 
 /* ActorModel viewed with the three tint bytes at 0x38 (Stg20_LabDigiModelUpdate). */
 typedef struct {
-    u8 _pad00[0x38];
+    u8 _pad00[NATIVE_OFS(ActorModel, _pad38, 0x38)];
     /* 0x38 */ u8 r;
     /* 0x39 */ u8 g;
     /* 0x3A */ u8 b;

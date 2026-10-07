@@ -19,7 +19,7 @@ s16 Stg35_BattleScript[0xC8];
 
 void Stg35_BattleScriptTask(Actor *arg0) {
     Stg35ScriptWork *w = (Stg35ScriptWork *)arg0->work;
-    Actor **children = (Actor **)arg0->u34.children;
+    PTR32(Actor) *children = (PTR32(Actor) *)arg0->u34.children;
     Actor *e;
     s32 *q;
     s32 cont;
@@ -150,7 +150,7 @@ void Stg35_BattleScriptTask(Actor *arg0) {
                 w->script += 1;
                 break;
             case 18:
-                if (children[3]->stateLevel0 == 1) {
+                if (P32(Actor, children[3])->stateLevel0 == 1) {
                     w->script += 1;
                 } else {
                     cont = 0;
@@ -169,8 +169,8 @@ void Stg35_BattleScriptTask(Actor *arg0) {
                 case 1:
                     break;
                 }
-                if (children[4]->stateLevel0 == 1) {
-                    Task_SetState0(children[4], 2);
+                if (P32(Actor, children[4])->stateLevel0 == 1) {
+                    Task_SetState0(P32(Actor, children[4]), 2);
                     w->script += 3;
                     Task_SetState1(arg0, 0);
                 } else {

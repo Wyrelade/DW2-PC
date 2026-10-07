@@ -30,9 +30,9 @@ s32 Stg00_RelocDungFile(u32 *arg0) {
             h = (Stg00DungFloor *)*arg0;
             h->name += base;
             for (i = 0; i < 8; i++) {
-                Stg00DungLayout **pe = &h->layouts[i];
-                Stg00DungLayout *e = (Stg00DungLayout *)((u32)*pe + base);
-                *pe = e;
+                PTR32(Stg00DungLayout) *pe = &h->layouts[i];
+                Stg00DungLayout *e = P32(Stg00DungLayout, (u32)*pe + base);
+                *pe = P32_SET(e);
                 Stg00_RelocPtr(&e->cellBits, base);
                 Stg00_RelocPtr(&e->spawnPoints, base);
                 Stg00_RelocPtr(&e->chests, base);
@@ -325,7 +325,7 @@ s32 Stg00_CalcLayoutMask(Stg00DungFloor *arg0, s32 arg1) {
             result |= tbl.bits[i][val];
         }
     }
-    cmd = (Stg00RelocCmd *)arg0->layouts[arg1]->cmdList;
+    cmd = (Stg00RelocCmd *)P32(Stg00DungLayout, arg0->layouts[arg1])->cmdList;
     while (cmd->posPicks01.tag != 0xFF) {
         for (i = 0; i < 4; i++) {
             switch (i) {

@@ -47,8 +47,8 @@ ActorModel *Gfx_AttachModel(Actor *a0, s32 id) {
     Ent1FDBC20 *e;
 
     if (t == NULL) {
-        a0->model = (ActorModel *)Mem_Alloc(0x7C, 2);
-        Mem_Zero(a0->model, 0x7C);
+        a0->model = (ActorModel *)Mem_Alloc(NATIVE_SIZE(ActorModel, 0x7C), 2);
+        Mem_Zero(a0->model, NATIVE_SIZE(ActorModel, 0x7C));
         fresh = 1;
     } else if (t->file == m && m->relocated != 0) {
         return t;
@@ -57,16 +57,16 @@ ActorModel *Gfx_AttachModel(Actor *a0, s32 id) {
     s->fileId = id;
     s->file = base;
     s->boneCount = m->count;
-    s->boneVerts = (s16 **)base->tables;
+    s->boneVerts = (PTR32(s16) *)base->tables;
     s->boneNormals = s->boneVerts + s->boneCount;
-    s->bonePolys = (ModelQuadSection **)(s->boneNormals + s->boneCount);
+    s->bonePolys = (PTR32(ModelQuadSection) *)(s->boneNormals + s->boneCount);
     s->boneDepths = (s32 *)(s->bonePolys + s->boneCount);
     s->texAnimParts = s->boneDepths + s->boneCount;
     if (m->relocated == 0) {
         for (i = 0; i < s->boneCount; i++) {
-            s->boneVerts[i] = (s16 *)((s32)s->boneVerts[i] + (s32)base);
-            s->boneNormals[i] = (s16 *)((s32)s->boneNormals[i] + (s32)base);
-            s->bonePolys[i] = (ModelQuadSection *)((s32)s->bonePolys[i] + (s32)base);
+            s->boneVerts[i] = P32_SET((s16 *)((s32)s->boneVerts[i] + (s32)base));
+            s->boneNormals[i] = P32_SET((s16 *)((s32)s->boneNormals[i] + (s32)base));
+            s->bonePolys[i] = P32_SET((ModelQuadSection *)((s32)s->bonePolys[i] + (s32)base));
         }
         m->relocated = 1;
     }
@@ -74,16 +74,16 @@ ActorModel *Gfx_AttachModel(Actor *a0, s32 id) {
         s->maxVerts = 0;
         s->maxNormals = 0;
         for (i = 0; i < s->boneCount; i++) {
-            if (s->maxVerts < *s->boneVerts[i]) {
-                s->maxVerts = *s->boneVerts[i];
+            if (s->maxVerts < *P32(s16, s->boneVerts[i])) {
+                s->maxVerts = *P32(s16, s->boneVerts[i]);
             }
-            if (s->maxNormals < *s->boneNormals[i]) {
-                s->maxNormals = *s->boneNormals[i];
+            if (s->maxNormals < *P32(s16, s->boneNormals[i])) {
+                s->maxNormals = *P32(s16, s->boneNormals[i]);
             }
         }
         s->field_28 = 0;
         for (i = 0; i < s->boneCount; i++) {
-            p = s->bonePolys[i];
+            p = P32(ModelQuadSection, s->bonePolys[i]);
             e = p->e;
             q = (ModelQuadSection *)(e + p->n);
             e = q->e;
@@ -209,17 +209,17 @@ void Gfx_DrawTexModel(Actor *a0, s32 mode) {
     s->texSlot = (struct GfxModelTexSlot *)Gfx_FindOrLoadTexSlot(s->fileId << 16);
     s->otzShift = Sys_State.otLayerLen[s->otIndex] - 2;
     for (; i < s->boneCount; i++, e++) {
-        p = s->bonePolys[i];
+        p = P32(ModelQuadSection, s->bonePolys[i]);
         gte_SetRotMatrix(&e->viewMat);
         gte_SetTransMatrix(&e->viewMat);
         if (mode == 0 && Gfx_IsOriginOffscreen() != 0) {
             continue;
         }
-        if (Gfx_ProjectModelVerts((Vert6Pmv *)s->boneVerts[i], (ModelProjView *)s, mode) != 0) {
+        if (Gfx_ProjectModelVerts((Vert6Pmv *)P32(s16, s->boneVerts[i]), (ModelProjView *)s, mode) != 0) {
             continue;
         }
         gte_SetLightMatrix(&e->lightMat);
-        Gfx_CalcNormalColors((Vert6Pmv *)s->boneNormals[i], (ModelProjView *)s);
+        Gfx_CalcNormalColors((Vert6Pmv *)P32(s16, s->boneNormals[i]), (ModelProjView *)s);
         for (j = 0; j < 2; j++) {
             n = p->n;
             q = (ModelQuadGT4 *)p->e;
@@ -265,13 +265,13 @@ void Gfx_DrawWireModel(Actor *a0, s32 mode, CVECTOR *col) {
     e = s->bones;
     s->otzShift = Sys_State.otLayerLen[s->otIndex] - 2;
     for (; i < s->boneCount; i++, e++) {
-        p = s->bonePolys[i];
+        p = P32(ModelQuadSection, s->bonePolys[i]);
         gte_SetRotMatrix(&e->viewMat);
         gte_SetTransMatrix(&e->viewMat);
         if (mode == 0 && Gfx_IsOriginOffscreen() != 0) {
             continue;
         }
-        if (Gfx_ProjectModelVerts((Vert6Pmv *)s->boneVerts[i], (ModelProjView *)s, mode) != 0) {
+        if (Gfx_ProjectModelVerts((Vert6Pmv *)P32(s16, s->boneVerts[i]), (ModelProjView *)s, mode) != 0) {
             continue;
         }
         for (j = 0; j < 2; j++) {

@@ -115,7 +115,7 @@ void Stg40_SpawnEnemyParties(void) {
     s32 c;
     Stg40DungFloor *map;
 
-    for (r = Stg40_RootState->layout->enemyParties; r->x != 0xFF; r++) {
+    for (r = P32(Stg40Drop, Stg40_RootState->layout->enemyParties); r->x != 0xFF; r++) {
         if (Dung_StatePtr->partyCount >= 10) {
             break;
         }
@@ -180,7 +180,7 @@ void Stg40_SpawnChests(void) {
     s32 k;
     u8 *d;
 
-    for (r = Stg40_RootState->layout->chests; r->x != 0xFF; r++) {
+    for (r = P32(Stg40Drop, Stg40_RootState->layout->chests); r->x != 0xFF; r++) {
         if (Dung_StatePtr->chestCount >= 12) {
             break;
         }
@@ -313,7 +313,7 @@ void Stg40_SpawnFixedHazards(void) {
     s32 kind;
     s32 val;
 
-    for (e = Stg40_RootState->layout->hazards; e->x != 0xFF; e++) {
+    for (e = P32(Stg40Spawn, Stg40_RootState->layout->hazards); e->x != 0xFF; e++) {
         switch (Stg40_RandInt(4)) {
         case 0:
         default:

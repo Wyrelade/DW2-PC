@@ -204,11 +204,11 @@ typedef struct {
 /* Object holding six child actors at 0x2C (Stg35_ShowWinnerSide, Stg35_ShowAllDigi). */
 typedef struct {
     u8 _pad00[0x2C];
-    /* 0x2C */ Actor *fighters[6];
+    /* 0x2C */ PTR32(Actor) fighters[6]; /* 32-bit task slots */
 } Stg35BattleChildren;
 
 typedef struct {
-    u8 _pad00[0x34];
+    u8 _pad00[NATIVE_OFS(Actor, u34, 0x34)];
     /* 0x34 */ Stg35BattleChildren *children;
 } Stg35ChildOwner;
 
@@ -324,7 +324,7 @@ typedef struct {
 
 /* ActorModel viewed with the fade colour bytes at 0x38 (as STAG0000 Stg00ModelFade). */
 typedef struct {
-    u8 _pad00[0x34];
+    u8 _pad00[NATIVE_OFS(ActorModel, clutRow, 0x34)];
     /* 0x34 */ s16 clutRow;
     /* 0x36 */ s16 tpageBits;
     /* 0x38 */ u8 flatR;

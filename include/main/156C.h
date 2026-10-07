@@ -175,7 +175,7 @@ typedef struct {
 /* Container whose field at 0x38 points to a Buf38. Distinct from Actor (whose
  * 0x38 is a byte), so kept as its own type. */
 typedef struct {
-    u8 _pad00[0x38];
+    u8 _pad00[PTRW(0x38, 0x48)]; /* Actor.u38 */
     /* 0x38 */ Buf38 *buf;
 } Ctx38;
 
@@ -271,9 +271,10 @@ typedef struct {
     /* 0x00 */ s32 fileId;
     /* 0x04 */ struct GfxModelFile *file;
     /* 0x08 */ s32 boneCount;
-    /* 0x0C */ s16 **boneVerts;
-    /* 0x10 */ s16 **boneNormals;
-    /* 0x14 */ struct ModelQuadSection **bonePolys;
+    /* Tables of 32-bit file words in the model file (Gfx_AttachModel relocates them). */
+    /* 0x0C */ PTR32(s16) *boneVerts;
+    /* 0x10 */ PTR32(s16) *boneNormals;
+    /* 0x14 */ PTR32(struct ModelQuadSection) *bonePolys;
     /* 0x18 */ s32 *boneDepths;
     /* 0x1C */ s32 *texAnimParts;
     /* 0x20 */ s32 maxVerts;
@@ -305,7 +306,7 @@ typedef struct {
 /* Sub-object reached through the TaskFreeView container at 0x3C; Task_Free frees
    the four owned pointers at 0x6C..0x78. */
 typedef struct {
-    u8 _pad00[0x6C];
+    u8 _pad00[NATIVE_OFS(ActorModel, screenXY, 0x6C)];
     /* 0x6C */ ActorWork *screenXY;
     /* 0x70 */ ActorWork *vertOtz;
     /* 0x74 */ ActorWork *vertColors;
@@ -353,7 +354,7 @@ typedef struct {
     /* 0x30 */ s32 childCount;
     /* 0x34 read as a word by Text_LoadFontsTask, or as the two bytes 0x36/0x37 elsewhere. */
     union {
-        /* 0x34 */ s32 children;
+        /* 0x34 */ sptr children;
         struct {
             u8 _b34[0x02];
             /* 0x36 */ u8 _pad36;
@@ -378,6 +379,8 @@ typedef struct {
     /* 0x118 */ s32 _pad118[8];
     /* 0x138 */ s32 *_pad138[8];
 } Actor;
+NATIVE_ASSERT(offsetof(Actor, u38) == PTRW(0x38, 0x48))
+NATIVE_ASSERT(offsetof(Actor, _pad40) == PTRW(0x40, 0x58))
 
 /* Entry returned by the Digi_FindBaseData table lookup (0x12 stride); accessed
  * fields only. */
@@ -708,7 +711,7 @@ typedef struct {
     u8 _pad0C[0x20];
     /* 0x2C */ TextBox *work;
     u8 _pad30[4];
-    /* 0x34 */ Actor **children;
+    /* 0x34 */ PTR32(Actor) *children; /* 32-bit task slots (Task_Create) */
 } TaskEntry;
 
 /* 0x10-stride record; Gfx_FlatLights array, per-slot init by Gfx_InitLights. */
@@ -941,7 +944,7 @@ typedef struct {
 
 /* Container whose field_38 holds an AllocC40* (Actor_InitTransform's arg0). */
 typedef struct {
-    u8 _pad00[0x38];
+    u8 _pad00[NATIVE_OFS(Actor, u38, 0x38)];
     /* 0x38 */ AllocC40 *transform;
 } ContC40;
 
@@ -952,9 +955,9 @@ typedef struct {
     u8 _pad04[0x20];
     /* 0x24 */ s32 frameCount;
     u8 _pad28[0x04];
-    /* 0x2C */ s32 work;
+    /* 0x2C */ sptr work;
     /* 0x30 */ s32 childCount;
-    /* 0x34 */ s32 children;
+    /* 0x34 */ sptr children;
 } ActorAllocView;
 
 /* Task callbacks. Init gets Task_Create's argument; many callbacks are declared with
@@ -1604,7 +1607,7 @@ typedef struct {
 /* Object whose handle array (count at 0x30, array at 0x34) Task_RunChildren
  * walks through Task_Run. */
 typedef struct {
-    u8 _pad00[0x30];
+    u8 _pad00[NATIVE_OFS(Actor, childCount, 0x30)];
     /* 0x30 */ s32 childCount;
     /* 0x34 */ s32 *children;
 } TaskChildrenView;
@@ -1962,7 +1965,7 @@ typedef struct {
 typedef struct {
     /* 0x00 */ s32 text;
     /* 0x04 */ s32 strArg0;
-    /* 0x08 */ u8 *strArg1;
+    /* 0x08 */ PTR32(u8) strArg1; /* TextDesc.strArg1 (s32) */
     /* 0x0C */ Halves pos;
     /* 0x10 */ u8 packedStyle;
     /* 0x11 */ u8 color;
@@ -2015,7 +2018,7 @@ typedef struct {
     /* 0x00 */ u8 kind;
     /* 0x01 */ u8 memBugLevel;
     u8 _pad02[0x02];
-    /* 0x04 */ Sub17D84 *digi;
+    /* 0x04 */ PTR32(Sub17D84) digi; /* 8-byte rows in every view */
 } MenuDigiListRow;
 
 /* List page: 16 sprite slots, first visible row at 0x68, rows from 0x6C. */
@@ -2224,7 +2227,7 @@ typedef struct Coord1F668 {
     /* 0x00 */ s32 flg;
     /* 0x04 */ Mat1F668 coord;
     /* 0x24 */ Mat1F668 workm;
-    /* 0x44 */ s32 param;
+    /* 0x44 */ sptr param; /* GsCOORDINATE2.param (pointer) */
     /* 0x48 */ struct Coord1F668 *super;
     /* 0x4C */ struct Coord1F668 *sub;
 } Coord1F668; /* size 0x50 */
@@ -2270,7 +2273,7 @@ typedef struct {
     /* 0x028 */ s32 bufIndex;             /* double-buffer index (0/1) */
     /* 0x02C */ union {
         ActorWork *work;
-        s32 addr;
+        sptr addr;
         DR_MOVE *drMove;
     } packet;                            /* primitive packet cursor */
     /* 0x030 */ DrawEnv draw[2];          /* isbg/r0/g0/b0 set by Gpu_SetBgClearColor */
@@ -2287,7 +2290,7 @@ typedef struct {
     /* 0x138 */ union {
         s32 *s[8];
         u32 *u[8];
-        s32 addr[8];
+        sptr addr[8];
     } otLayers;                          /* &Gpu_OtBufs[bufIndex] + Gpu_OtLayerOffsets[mode][i] */
 } SysState; /* size 0x158 */
 /* Clear rectangle for ClearImage. */
@@ -2379,7 +2382,7 @@ typedef struct {
 
 /* Icon cache (work of the type-10 actor): layout plus 18 VRAM slots. */
 typedef struct {
-    /* 0x00 */ GfxImageInfo *sheet;
+    /* 0x00 */ PTR32(GfxImageInfo) sheet; /* written as ActorWork.field_0 (s32) */
     /* 0x04 */ GfxImageCacheSlot slot[18];
 } GfxImageCache;
 
@@ -2558,7 +2561,7 @@ typedef struct {
     /* 0x1 */ u8 bugLevel;
     /* 0x2 */ u8 pickState;
     u8 _pad3;
-    /* 0x4 */ void *entry;
+    /* 0x4 */ PTR32(void) entry;
 } MenuDigiListBuildRow;
 
 /* Work block of the list page built by Menu_BuildDigiList. */
@@ -2635,7 +2638,7 @@ typedef struct {
     /* 0x1 */ u8 memBugLevel;
     /* 0x2 */ u8 pickState;
     u8 _pad3;
-    /* 0x4 */ void *digi;
+    /* 0x4 */ PTR32(void) digi;
 } MenuDigiListDrawRow;
 
 typedef struct {
@@ -3247,13 +3250,13 @@ typedef struct {
 
 /* Model view Gfx_DrawWireQuads reads: OT slot at 0x3C, projected xy / z tables at 0x6C / 0x70. */
 typedef struct {
-    u8 _pad00[0x34];
+    u8 _pad00[NATIVE_OFS(ActorModel, clutRow, 0x34)];
     /* 0x34 */ s16 clutRow;
     u8 _pad36[0x02];
     /* 0x38 */ CVECTOR flatColor;
     /* 0x3C */ s32 otIndex;
     /* 0x40 */ s32 otzShift;
-    u8 _pad44[0x28];
+    u8 _pad44[NATIVE_OFS(ActorModel, screenXY, 0x6C) - NATIVE_OFS(ActorModel, otzShift, 0x40) - 4];
     /* 0x6C */ s32 *screenXY;
     /* 0x70 */ s32 *vertOtz;
     /* 0x74 */ CVECTOR *vertColors;
@@ -3320,10 +3323,10 @@ typedef struct {
 
 /* Text_UpdateAllBoxes's child task slots (Actor u34.children). */
 typedef struct {
-    /* 0x00 */ Actor *_pad0;
-    /* 0x04 */ Actor *box[0x32];  /* one per text box row */
-    /* 0xCC */ Actor *num[2];     /* number display tasks */
-    /* 0xD4 */ Actor *task;
+    /* 0x00 */ PTR32(Actor) _pad0;
+    /* 0x04 */ PTR32(Actor) box[0x32];  /* one per text box row (32-bit task slots) */
+    /* 0xCC */ PTR32(Actor) num[2];     /* number display tasks */
+    /* 0xD4 */ PTR32(Actor) task;
 } TextBoxKids;
 
 
@@ -3365,7 +3368,7 @@ typedef struct {
 } Sub6A8C0;
 
 typedef struct {
-    u8 _pad0[0x38];
+    u8 _pad0[NATIVE_OFS(Actor, u38, 0x38)];
     /* 0x38 */ Sub6A8C0 *transform;
 } Obj6A8C0;
 

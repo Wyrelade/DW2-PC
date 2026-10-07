@@ -17,7 +17,7 @@ void Stg20_BuildMapGrid(Actor *a) {
     s32 x, y;
     u8 *p;
     s32 bit = 0;
-    p = Stg20_GetMapInfo()->bits;
+    p = P32(u8, Stg20_GetMapInfo()->bits);
     p--;
     for (x = 0; x < 0x18; x++) {
         for (y = 0; y < 0x18; y++) {

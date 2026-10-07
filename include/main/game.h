@@ -1074,7 +1074,7 @@ typedef struct {
     /* 0x08 */ s16 vabId;
     /* 0x0A */ s16 sepCount;
     u8 _padC[0x28 - 0xC];
-    /* 0x28 */ s32 headerBuf;
+    /* 0x28 */ sptr headerBuf; /* SndSlot.headerBuf (s32 *) */
 } Ew54C48; /* 0x2C */
 
 extern u8 Snd_SeqAttrTable[176 * 6 * 16];

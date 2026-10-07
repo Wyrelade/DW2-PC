@@ -109,7 +109,7 @@ void Menu_DrawItemGrid(MenuItemWork *a0, s32 a1) {
             st.color = 0;
             st.text = (s32)Cd_GetFileEntry(0x1FD0125);
             st.strArg0 = img;
-            st.strArg1 = a0->countText[i];
+            st.strArg1 = P32_SET(a0->countText[i]);
             Text_FormatNumber(a0->countText[i], a0->cells[base + i].count, -2);
             Text_OpenDesc(&a0->cellTextSlots[i], (TextDesc *)&st);
         } else {

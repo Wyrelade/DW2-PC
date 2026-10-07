@@ -309,7 +309,7 @@ void Stg40_RootUpdate(Actor *arg0) {
     case 0:
         Stg40_RootTask = arg0;
         Stg40_RootChildren = ctx;
-        Stg40_RootState = (Stg40B60 *)Mem_Alloc(0x190, 2);
+        Stg40_RootState = (Stg40B60 *)Mem_Alloc(NATIVE_SIZE(Stg40B60, 0x190), 2);
         Stg40_SetupStage(arg0);
         Task_NextState0(arg0);
         Stg40_RootState->automapMode = 0;

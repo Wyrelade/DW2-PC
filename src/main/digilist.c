@@ -260,7 +260,7 @@ void Menu_BuildDigiList(MenuDigiListBuildWork *w) {
         w->rowCount = Menu_Ctx->pickCount;
         for (i = 0; i < Menu_Ctx->pickCount; i++) {
             r->kind = 1;
-            r->entry = Menu_Ctx->pickedRecords[i];
+            r->entry = P32_SET(Menu_Ctx->pickedRecords[i]);
             r->pickState = i + 3;
             r++;
         }
@@ -286,7 +286,7 @@ void Menu_BuildDigiList(MenuDigiListBuildWork *w) {
             }
             if (ok) {
                 r->kind = 1;
-                r->entry = el;
+                r->entry = P32_SET(el);
                 r->pickState = (w->mode == 5) ? 2 : el->state;
                 r++;
                 n++;
@@ -348,11 +348,11 @@ void Menu_DigiListDrawRows(MenuDigiListRowsView *a0, s32 a1) {
             Text_OpenDesc(&a0->textBoxes[i * 4 + 1], &st);
             st.x = 109;
             st.y = i * 33 + 50;
-            st.text = (s32)rec->digi->name;
+            st.text = (s32)P32(Sub17D84, rec->digi)->name;
             Text_OpenDesc(&a0->textBoxes[i * 4 + 2], &st);
             st.x = 208;
             st.y = i * 33 + 50;
-            st.text = (s32)Digi_GetDefaultName(rec->digi->digiId);
+            st.text = (s32)Digi_GetDefaultName(P32(Sub17D84, rec->digi)->digiId);
             Text_OpenDesc(&a0->textBoxes[i * 4 + 3], &st);
             break;
         case 2:
@@ -690,7 +690,7 @@ void Menu_DigiListDraw(Actor *actor) {
                 Gfx_HidePartsByMask(obj, f | 0xFE4);
                 break;
             case 1:
-                e = (DigiRosterListView *)r->digi;
+                e = P32(DigiRosterListView, r->digi);
                 Gfx_HidePartsByMask(obj, f | Menu_DigiListRowMasks[r->pickState - 1]);
                 Gfx_SetPartsNumber(obj, 0x20, 3, e->maxHp);
                 Gfx_SetPartsNumber(obj, 0x40, 3, e->hp);
