@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 #include "host/host.h"
 #include "host/host_sdl.h"
@@ -47,8 +48,68 @@ static unsigned short buttons[PORTS];
 static unsigned short pressed[PORTS]; /* pressed since the last update: a tap shorter than one
                                        * VBlank still shows for one update */
 
+/* --press: scripted button holds on port 0 by VBlank wait. */
+#define SCRIPT_MAX 32
+static struct {
+    unsigned int at, len;
+    unsigned short bits;
+} script[SCRIPT_MAX];
+static int script_count;
+static unsigned short script_bits;
+
 unsigned short Host_PadButtons(int port) {
     return port >= 0 && port < PORTS ? buttons[port] : 0;
+}
+
+int Host_PadConnected(int port) {
+    return port == 0 || (port == 1 && pads[1] != NULL);
+}
+
+int Host_InputScriptAdd(unsigned int at, unsigned short bits, unsigned int len) {
+    if (script_count == SCRIPT_MAX) {
+        return 0;
+    }
+    script[script_count].at = at;
+    script[script_count].len = len;
+    script[script_count].bits = bits;
+    script_count++;
+    return 1;
+}
+
+void Host_InputScriptTick(unsigned int wait) {
+    int i;
+
+    script_bits = 0;
+    for (i = 0; i < script_count; i++) {
+        if (wait >= script[i].at && wait < script[i].at + script[i].len) {
+            script_bits |= script[i].bits;
+        }
+    }
+}
+
+unsigned short Host_PadParseButtons(const char *names) {
+    unsigned short m = 0;
+    const char *s = names;
+
+    while (*s != 0) {
+        size_t n = strcspn(s, "+");
+        int i;
+
+        for (i = 0; i < 16; i++) {
+            if (strlen(bit_names[i]) == n && SDL_strncasecmp(s, bit_names[i], n) == 0) {
+                break;
+            }
+        }
+        if (i == 16) {
+            return 0;
+        }
+        m |= (unsigned short)(1 << i);
+        s += n;
+        if (*s == '+') {
+            s++;
+        }
+    }
+    return m;
 }
 
 void Host_InputDevice(const SDL_Event *e) {
@@ -150,6 +211,7 @@ void Host_InputUpdate(void) {
             b[p] |= PAD_R2;
         }
     }
+    b[0] |= script_bits;
     for (p = 0; p < PORTS; p++) {
         b[p] |= pressed[p];
         pressed[p] = 0;

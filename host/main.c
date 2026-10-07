@@ -14,6 +14,7 @@
  * quits on window close or Esc).
  *
  *   dw2 [--pak PATH] [--vblanks N] [--no-window] [--shot-dir DIR] [--shot-at N]... [--hold-boot N]
+ *       [--press N:BUTTONS[:LEN]]...
  *     --pak PATH     the data pack (default dw2.pak next to the exe, then build/native/dw2.pak;
  *                    doc/PACK_FORMAT.md), checked before anything else runs
  *     --vblanks N    quit after N VBlank waits in the Sys_FlipPending spin (0 = run on)
@@ -21,7 +22,10 @@
  *     --shot-dir DIR screenshots go to DIR (default scratchpad/shots): the boot image when the
  *                    display turns on (if any screenshot option is given), each --shot-at, F12
  *     --shot-at N    screenshot pair at VBlank wait N (repeatable, up to 16)
- *     --hold-boot N  keep the boot image on screen N VBlanks (dev option, Host_DisplayOn) */
+ *     --hold-boot N  keep the boot image on screen N VBlanks (dev option, Host_DisplayOn)
+ *     --press N:BUTTONS[:LEN]  hold BUTTONS ("Start", "Down+Cross", names as in the [input]
+ *                    log) on port 0 from VBlank wait N for LEN waits (default 4); repeatable,
+ *                    for headless input tests */
 
 extern void Sys_Main(void);
 extern void Host_OvlSnapshot(void);
@@ -101,6 +105,7 @@ void Host_WaitVBlank(void) {
         fflush(stdout);
     }
     vblanks++;
+    Host_InputScriptTick(vblanks);
     for (i = 0; i < shot_count; i++) {
         if (shot_at[i] == vblanks) {
             char tag[32];
@@ -114,6 +119,33 @@ void Host_WaitVBlank(void) {
         Host_Quit("--vblanks");
     }
     Host_VBlank();
+}
+
+/* --press N:BUTTONS[:LEN] */
+static int parse_press(const char *arg) {
+    char names[64];
+    unsigned int at, len = 4;
+    const char *c1 = strchr(arg, ':');
+    const char *c2;
+    size_t n;
+    unsigned short bits;
+
+    if (c1 == NULL) {
+        return 0;
+    }
+    at = (unsigned int)strtoul(arg, NULL, 0);
+    c2 = strchr(c1 + 1, ':');
+    n = c2 != NULL ? (size_t)(c2 - (c1 + 1)) : strlen(c1 + 1);
+    if (n == 0 || n >= sizeof(names)) {
+        return 0;
+    }
+    memcpy(names, c1 + 1, n);
+    names[n] = '\0';
+    if (c2 != NULL) {
+        len = (unsigned int)strtoul(c2 + 1, NULL, 0);
+    }
+    bits = Host_PadParseButtons(names);
+    return bits != 0 && len != 0 && Host_InputScriptAdd(at, bits, len);
 }
 
 int main(int argc, char **argv) {
@@ -134,10 +166,11 @@ int main(int argc, char **argv) {
             shot_at[shot_count++] = (unsigned int)strtoul(argv[++i], NULL, 0);
         } else if (strcmp(argv[i], "--hold-boot") == 0 && i + 1 < argc) {
             hold_boot = (int)strtol(argv[++i], NULL, 0);
+        } else if (strcmp(argv[i], "--press") == 0 && i + 1 < argc && parse_press(argv[++i])) {
         } else {
             fprintf(stderr,
                     "usage: %s [--pak PATH] [--vblanks N] [--no-window] [--shot-dir DIR] [--shot-at N]... "
-                    "[--hold-boot N]\n",
+                    "[--hold-boot N] [--press N:BUTTONS[:LEN]]...\n",
                     argv[0]);
             return 2;
         }

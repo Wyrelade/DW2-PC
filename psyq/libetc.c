@@ -13,6 +13,7 @@ static int last_vsync; /* counter when the last VSync(0 / n) returned */
 
 void Psyq_VBlank(void) {
     vblank_count++;
+    Psyq_PadVBlank();
     if (vsync_cb != 0) {
         vsync_cb();
     }

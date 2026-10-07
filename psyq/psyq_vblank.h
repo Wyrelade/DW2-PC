@@ -5,5 +5,7 @@
  * (Sys_VSyncHandler). Called by the host's 59.94 Hz clock (host/vblank.c). */
 void Psyq_VBlank(void);
 int Psyq_VBlankCount(void);
+/* libpad: the VBlank controller read into the PadInitDirect buffers (after PadStartCom). */
+void Psyq_PadVBlank(void);
 
 #endif /* PSYQ_VBLANK_H */

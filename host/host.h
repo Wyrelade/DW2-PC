@@ -36,8 +36,16 @@ void Host_SaveShot(const char *dir, const char *tag);
 
 /* host/input.c: PS1 digital pad buttons held on `port` (0 or 1), active high, in the pad reply
  * bit order (PAD_* in host/host_sdl.h). Keyboard is port 0; gamepads take ports 0, 1 in order.
- * Not written to Pad_RecvBufs yet (P1.7). */
+ * psyq/libpad.c writes them into the pad receive buffers each VBlank (P1.7). */
 unsigned short Host_PadButtons(int port);
+/* A controller on `port`: port 0 always (keyboard), port 1 while a gamepad is on it. */
+int Host_PadConnected(int port);
+/* --press dev option: hold `bits` on port 0 from VBlank wait `at` for `len` waits (headless
+ * input tests). Host_InputScriptTick runs at each VBlank wait. Returns 0 when the table is full. */
+int Host_InputScriptAdd(unsigned int at, unsigned short bits, unsigned int len);
+void Host_InputScriptTick(unsigned int wait);
+/* "Start", "Down+Cross" ... (bit names as logged) -> mask, 0 if a name is unknown. */
+unsigned short Host_PadParseButtons(const char *names);
 
 /* host/pak.c: the game's disc files from dw2.pak (doc/PACK_FORMAT.md). Host_PakOpen opens the
  * pack (path, or NULL = dw2.pak next to the exe, then build/native/dw2.pak), checks it against
