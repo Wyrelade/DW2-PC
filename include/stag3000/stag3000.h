@@ -356,13 +356,6 @@ typedef struct {
 
 
 
-/* Main-exe global read at 0x103D by Stg30_GetFloorSpecialty. */
-typedef struct {
-    u8 _pad0000[0x103D];
-    /* 0x103D */ u8 floorSpecialty;
-    u8 _pad103E[0x02];
-    /* 0x1040 */ s16 giftLevel;
-} Stg30DungState;
 
 
 /* Stg30_FighterStateBackup: saved copy of the Stg30_Battle roster (Stg30_SaveFighterStates / Stg30_RestoreFighterStates). */
@@ -548,7 +541,7 @@ extern s32 Stg30_PopupNumMasks[];
 extern s32 Stg30_PopupNumParts[];
 extern s32 Stg30_BannerParts[];
 extern Halves Stg30_SkillLearnTextPos[];
-extern Stg30DungState Dung_State;
+extern DungState Dung_State;
 extern s16 Stg30_CloseUpRotY[];  /* camera goal x per party slot (Stg30_CameraUpdate) */
 extern s16 Stg30_CloseUpVpz[];  /* camera goal tables indexed by digimon height step */
 extern s16 Stg30_CloseUpVry[];

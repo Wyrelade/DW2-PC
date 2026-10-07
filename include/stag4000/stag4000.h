@@ -6,71 +6,10 @@
 
 /* STAG4000 (Ovl_FileIds id 1, gameMode 0x2xx). */
 
-/* View of *Dung_StatePtr (main DungState) as this overlay uses it. */
-typedef struct {
-    /* 0x00 */ s16 cols;
-    /* 0x02 */ s16 rows;
-    /* 0x04 */ s16 field_4;
-    u8 _pad06[0x04];
-    /* 0x0A */ s16 wallStyle;
-    /* 0x0C */ u8 hazardLevel;
-    /* 0x0D */ u8 nameLen;      /* count of name bytes (Stg40_ApplyFloorLayout) */
-    /* 0x0E */ u8 name[16];
-    u8 _pad1E[0x02];
-} Stg40FloorHeader;
 
-typedef struct {
-    /* 0x00 */ s16 ids[11];
-    /* 0x16 */ s16 count;       /* count used by Stg40_TurnQueueNext */
-    /* 0x18 */ s16 capacity;
-    /* 0x1A */ s16 cursor;       /* index into ids */
-} Stg40TurnQueue;
 
-/* Map position block inside Stg40Ent48 (at 0x18); the x/y pair is also compared as one word
- * (Stg40_FindObjAtSameTile). Passed to Stg40_ScrollFollow / Stg40_ScrollToFollow. */
-typedef struct {
-    union {
-        /* 0x00 */ s32 tileXY;
-        /* 0x00 */ Pair54 pair;
-    } u0;
-    /* 0x04 */ Pair54 prevTile;
-    /* 0x08 */ s16 moveFramesLeft;
-    /* 0x0A */ s16 moveFrames;
-    /* 0x0C */ s32 posX;
-    /* 0x10 */ s32 posY;
-    /* 0x14 */ s32 height;
-    /* 0x18 */ s32 fallSpeed;
-    /* 0x1C */ s16 moving;
-    /* 0x1E */ u16 moveFlags;
-} Stg40Loc;
 
-/* Element of Stg40DungState.field_18 (stride 0x48, 41 entries; Stg40_RevealAllEnts). */
-typedef struct {
-    /* 0x00 */ s32 flags;
-    /* 0x04 */ s16 digiId;
-    /* 0x06 */ u8 field_6;
-    /* 0x07 */ u8 turnId;
-    /* 0x08 */ u8 kind;         /* kind, switched on by Stg40_FixtureUpdate */
-    /* 0x09 */ u8 spawnKind;
-    /* 0x0A */ u8 roomId;
-    /* 0x0B */ u8 octant;         /* heading octant (Stg40_ObjStepMove) */
-    /* 0x0C */ s16 heading;        /* current heading, turns toward targetHeading */
-    /* 0x0E */ u16 targetHeading;
-    /* 0x10 */ u8 *params;
-    /* 0x14 */ Actor *actor;
-    /* 0x18 */ Stg40Loc loc;
-    /* 0x38 */ s32 scaleX;
-    /* 0x3C */ s32 scaleY;
-    /* 0x40 */ s32 scaleZ;
-    u8 _pad44[0x04];
-} Stg40Ent48;
 
-/* x, y, value byte triple (Stg40DungState.field_D08; Stg40_ApplyTrapCells, Stg40_PickRandomPoint). */
-typedef struct {
-    /* 0x0 */ u8 x;
-    /* 0x1 */ u8 y;
-    /* 0x2 */ u8 kind;
-} Stg40CellPoint;
 
 /* Output pair written by Stg40_PickRandomPoint. */
 typedef struct {
@@ -191,83 +130,15 @@ typedef struct {
     /* 0x54 */ Stg40MapGen hazardGroups[5];
 } Stg40DungFloor;
 
-/* Entries collected by Stg40_CheckEncounter (Stg40DungState.field_1018). */
-typedef struct {
-    /* 0x00 */ Stg40Ent48 *ents[8];
-    /* 0x20 */ s16 count;       /* count */
-} Stg40EncounterList;
 
-/* 0x14-byte row of file 0xE20000A (Stg40_InitDungeonEntry). */
-typedef struct {
-    /* 0x00 */ s16 dungFileId;
-    /* 0x02 */ s16 sndSlotContent;
-    /* 0x04 */ s16 bgmId;
-    /* 0x06 */ s16 bgmSet;
-    /* 0x08 */ s16 battleBgmId;      /* sound id (Stg40_BeginTransition) */
-    /* 0x0A */ s16 battleBgmSet;      /* sound arg (Stg40_BeginTransition) */
-    /* 0x0C */ s32 floorTexId0;
-    /* 0x10 */ s32 floorTexId1;
-} Stg40DungEntry;
 
-/* Element of the grid behind Stg40DungState.field_E58 (field_E54 dims; Stg40_GetCellFlags). */
+/* Element of the grid behind DungState.field_E58 (field_E54 dims; Stg40_GetCellFlags). */
 typedef struct {
     /* 0x00 */ u16 flags;
     /* 0x02 */ u8 roomId;
     /* 0x03 */ u8 wallBits;
 } Stg40Cell;
 
-typedef struct {
-    /* 0x000 */ u8 entryMode;
-    /* 0x001 */ u8 transitionReq;
-    /* 0x002 */ u8 freeze;
-    /* 0x003 */ u8 floor;
-    /* 0x004 */ u8 floorLayout;
-    /* 0x005 */ u8 field_5;
-    /* 0x006 */ u8 fromMode32B;
-    /* 0x007 */ u8 beetleDown;
-    /* 0x008 */ s32 dungFileId;
-    /* 0x00C */ s16 entCount;       /* count of live ents entries (Stg40_FindObjAtSameTile) */
-    /* 0x00E */ s16 partyCount;       /* count of parties records (Stg40_AddEntity) */
-    /* 0x010 */ s16 chestCount;      /* count of chests pairs (Stg40_SpawnChests) */
-    /* 0x012 */ s16 hazardCount;      /* count of hazards pairs (Stg40_AddEntity) */
-    /* 0x014 */ s16 trapCount;      /* count of live trapCells entries (Stg40_ApplyTrapCells) */
-    u8 _pad016[0x02];
-    /* 0x018 */ Stg40Ent48 ents[41];
-    /* 0xBA0 */ s32 statusFlags;     /* bit 0 tested by Stg40_PlayerInput */
-    /* 0xBA4 */ u8 confusionTurn;
-    /* 0xBA5 */ u8 bitBugLevel;
-    /* 0xBA6 */ u8 energyBugLevel;
-    /* 0xBA7 */ u8 returnBugLevel;
-    /* 0xBA8 */ u8 memBugCount;      /* count of memBugLevels */
-    /* 0xBA9 */ u8 memBugLevels[12];
-    /* 0xBB5 */ u8 bindTurns;
-    u8 _padBB6[0x02];
-    /* 0xBB8 */ u8 parties[9][0x1C]; /* per-entry data of kind 1 (Stg40_AddEntity) */
-    u8 _padCB4[0xCCE - 0xCB4];
-    /* 0xCCE */ u8 chests[12][2];
-    u8 _padCE6[0x02];
-    /* 0xCE8 */ u8 hazards[16][2]; /* per-entry data of kinds 5..12 (Stg40_AddEntity) */
-    /* 0xD08 */ Stg40CellPoint trapCells[100];
-    /* 0xE34 */ Stg40FloorHeader defaultFloorHdr;
-    /* 0xE54 */ Stg40FloorHeader *floorHdr;
-    /* 0xE58 */ ActorWork *cells;
-    /* 0xE5C */ s32 revealedRooms[8];
-    /* 0xE7C */ u8 visitedBits[0x180];
-    /* 0xFFC */ Stg40TurnQueue turnQueue;
-    /* 0x1018 */ Stg40EncounterList encounterList;
-    u8 _pad103C[0x01];
-    /* 0x103D */ u8 floorSpecialty;
-    /* 0x103E */ u16 partyPointsPerLevel;
-    /* 0x1040 */ s16 giftLevel;
-    u8 _pad1042[0x02];
-    /* 0x1044 */ Stg40DungEntry dungeon; /* row of file 0xE20000A picked by dungeonIdx */
-    /* 0x1058 */ s16 dungeonIdx;
-    u8 _pad105A[0x02];
-    /* 0x105C */ s32 floorTexId0;
-    /* 0x1060 */ s32 floorTexId1;
-    /* 0x1064 */ Stg40Loc *scrollTarget;
-    /* 0x1068 */ Stg40Loc *playerLoc;
-} Stg40DungState;
 
 /* Work of the task behind Stg40_ItemMenuTask (init Stg40_ItemMenuInit). */
 typedef struct {
@@ -678,7 +549,7 @@ typedef struct {
 } Stg40ObjQueueView;
 
 /* main exe */
-extern Stg40DungState *Dung_StatePtr;
+extern DungState *Dung_StatePtr;
 
 /* 13-byte const table copied to a stack local (Stg40_BeginTransition). */
 typedef struct { u8 b[13]; } Blk13;
@@ -907,21 +778,6 @@ extern Stg40ItemReq Stg40_ObstacleItemReqs[];
 extern s32 Item_CheckId(s32 arg0);
 extern Stg40Ent48 *Stg40_FindEntAt(s16 x, s16 y);
 
-typedef struct {
-    u8 _pad000[0xBA5];
-    u8 bugLevels[3];
-} Stg40BA5View;
-/* Status flags at Stg40DungState.field_BA0 and the bytes after them, through one pointer
- * (Stg40_TickStatusEffects). */
-typedef struct {
-    /* 0x00 */ s32 statusFlags;
-    /* 0x04 */ u8 confusionTurn;
-    /* 0x05 */ u8 bitBugLevel;
-    /* 0x06 */ u8 energyBugLevel;
-    /* 0x07 */ u8 returnBugLevel;
-    u8 _pad08[0x0D];
-    /* 0x15 */ u8 bindTurns;
-} Stg40BA0View;
 /* 14-byte, 2-aligned record copied whole (DigiRosterEntry.name -> Stg40B60.field_6A). */
 typedef struct {
     /* 0x0 */ s16 chars[7];

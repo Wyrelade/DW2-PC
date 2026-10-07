@@ -200,8 +200,8 @@ s32 Stg40_PlayerTryMove(Stg40Ent48 *e) {
     if (k < 0) {
         return 0;
     }
-    if (Dung_StatePtr->statusFlags & 2) {
-        oct = (oct + Dung_StatePtr->confusionTurn) & 7;
+    if (Dung_StatePtr->status.statusFlags & 2) {
+        oct = (oct + Dung_StatePtr->status.confusionTurn) & 7;
     }
     e->targetHeading = (oct << 16) >> 7;
     e->octant = oct;
@@ -252,7 +252,7 @@ s32 Stg40_PlayerTryMove(Stg40Ent48 *e) {
             ny = loc->u0.pair.field_2 + ((s16 *)Stg40_DirOffsets)[((d + 1) << 1) | 1];
         }
     }
-    if (Dung_StatePtr->statusFlags & 1) {
+    if (Dung_StatePtr->status.statusFlags & 1) {
         return 1;
     }
     if (nx != -1) {
@@ -277,7 +277,7 @@ s32 Stg40_PlayerTryMove(Stg40Ent48 *e) {
 }
 
 Stg40Ent48 *Stg40_FindObjAtSameTile(Stg40Ent48 *a0) {
-    Stg40DungState *b = Dung_StatePtr;
+    DungState *b = Dung_StatePtr;
     Stg40Ent48 *e = b->ents;
     Stg40Ent48 *r = NULL;
     s32 i;
@@ -519,7 +519,7 @@ void Stg40_PlayerInput(Actor *a0) {
         return;
     }
     if (Stg40_PlayerTryMove(w->ent) == 1) {
-        if (Dung_StatePtr->statusFlags & 1) {
+        if (Dung_StatePtr->status.statusFlags & 1) {
             Stg40_PlayerShowMsg(a0, 0x28, 6, 0x1FD001D, 0, 0);
         } else {
             Task_SetState1(a0, 2);
@@ -732,34 +732,34 @@ void Stg40_PlayerBugInvade(Actor *arg0)
         r = 0;
         switch (e->kind) {
         default:
-            if (((Stg40BA5View *)Dung_StatePtr)->bugLevels[idx] == 0) {
-                ((Stg40BA5View *)Dung_StatePtr)->bugLevels[idx] = e->params[1];
+            if (Dung_StatePtr->status.bugLevels[idx] == 0) {
+                Dung_StatePtr->status.bugLevels[idx] = e->params[1];
                 r = -1;
             }
             break;
         case 9:
-            if (Dung_StatePtr->bitBugLevel == 0) {
+            if (Dung_StatePtr->status.bugLevels[0] == 0) {
                 if (Save_GameStatePtr->bits != 0 || Stg40_PickRandomPart() != -1) {
                     r = -1;
-                    ((Stg40BA5View *)Dung_StatePtr)->bugLevels[e->kind - 9] = e->params[1];
+                    Dung_StatePtr->status.bugLevels[e->kind - 9] = e->params[1];
                 }
             }
             break;
         case 0xB:
-            if (Dung_StatePtr->returnBugLevel != 0 || ((s32 (*)(s32))Stg40_ListPartyDigi)(1) < 2 || Digi_CountByState(1) >= 0x18) {
+            if (Dung_StatePtr->status.bugLevels[2] != 0 || ((s32 (*)(s32))Stg40_ListPartyDigi)(1) < 2 || Digi_CountByState(1) >= 0x18) {
                 r = 0;
             } else {
                 r = -1;
-                ((Stg40BA5View *)Dung_StatePtr)->bugLevels[e->kind - 9] = e->params[1];
+                Dung_StatePtr->status.bugLevels[e->kind - 9] = e->params[1];
             }
             break;
         case 0xC:
             n = ((s32 (*)(void))Beetle_GetDigiCapacity)();
             n -= ((s32 (*)(s32))Stg40_ListPartyDigi)(0);
-            if (n != Dung_StatePtr->memBugCount) {
-                Dung_StatePtr->memBugLevels[Dung_StatePtr->memBugCount] = e->params[1];
+            if (n != Dung_StatePtr->status.memBugCount) {
+                Dung_StatePtr->status.memBugLevels[Dung_StatePtr->status.memBugCount] = e->params[1];
                 r = -1;
-                Dung_StatePtr->memBugCount++;
+                Dung_StatePtr->status.memBugCount++;
             }
             break;
         }
@@ -767,7 +767,7 @@ void Stg40_PlayerBugInvade(Actor *arg0)
             Stg40_MsgWinOpen(1, e->kind + 0x1FD0022, (s32)Save_GameStatePtr + 0xD1, 0);
             Task_SetState2(arg0, 3);
         } else {
-            Dung_StatePtr->statusFlags &= ~bit;
+            Dung_StatePtr->status.statusFlags &= ~bit;
             Stg40_ObjSetAnim(arg0, 0x2A);
             Stg40_ObjStartFlash(arg0, 2);
             Task_NextState2(arg0);

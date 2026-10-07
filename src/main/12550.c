@@ -52,9 +52,9 @@ s32 Bug_GetMaxMemBugLevel(void) {
     s32 i;
     s32 v;
 
-    if (Dung_StatePtr->memBugCount != 0) {
-        for (i = 0; i < Dung_StatePtr->memBugCount; i++) {
-            best = (best < (v = Dung_StatePtr->memBugLevels[i])) ? v : best;
+    if (Dung_StatePtr->status.memBugCount != 0) {
+        for (i = 0; i < Dung_StatePtr->status.memBugCount; i++) {
+            best = (best < (v = Dung_StatePtr->status.memBugLevels[i])) ? v : best;
         }
     }
     return best;

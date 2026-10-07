@@ -36,7 +36,7 @@ void Stg40_InitDisplay(void) {
 }
 
 void Stg40_InitFloorHeader(void) {
-    Stg40DungState *b = Dung_StatePtr;
+    DungState *b = Dung_StatePtr;
 
     b->floorHdr = &b->defaultFloorHdr;
     b->defaultFloorHdr.cols = 0x40;
@@ -69,9 +69,9 @@ void Stg40_InitDungeonEntry() { /* K&R: Stg40_SetupStage passes its work pointer
     for (i = 0; i < 41; i++, e++) {
         e->flags = 0;
     }
-    Dung_StatePtr->bitBugLevel = Dung_StatePtr->energyBugLevel = Dung_StatePtr->returnBugLevel = Dung_StatePtr->memBugCount = 0;
+    Dung_StatePtr->status.bugLevels[0] = Dung_StatePtr->status.bugLevels[1] = Dung_StatePtr->status.bugLevels[2] = Dung_StatePtr->status.memBugCount = 0;
     for (i = 0; i < 12; i++) {
-        Dung_StatePtr->memBugLevels[i] = 0;
+        Dung_StatePtr->status.memBugLevels[i] = 0;
     }
     Dung_StatePtr->dungFileId = Dung_StatePtr->dungeon.dungFileId;
     Digi_SortRoster();
@@ -99,7 +99,7 @@ void Stg40_SetupStage(Actor *a0) {
     s32 *cur;
     s32 j;
     Stg40Ent48 *e;
-    Stg40DungState *blk;
+    DungState *blk;
     s32 mode;
 
     Stg40_InitDisplay();

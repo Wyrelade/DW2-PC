@@ -12,10 +12,10 @@ void Bug_CompactMemBugs(void) {
     i = 0;
     j = i;
     do {
-        v = Dung_StatePtr->memBugLevels[i];
-        Dung_StatePtr->memBugLevels[i] = 0;
+        v = Dung_StatePtr->status.memBugLevels[i];
+        Dung_StatePtr->status.memBugLevels[i] = 0;
         if (v != 0) {
-            Dung_StatePtr->memBugLevels[j++] = v;
+            Dung_StatePtr->status.memBugLevels[j++] = v;
         }
         i++;
     } while (i < 12);
@@ -118,22 +118,22 @@ s32 Item_UseOnBeetle(s32 a0, s32 a1, s32 a2, s32 a3) {
     case 0xE:
         k = rec->effectType - 0xC;
         b = Dung_StatePtr;
-        c = b->bugLevels[k];
+        c = b->status.bugLevels[k];
         v = c;
         if (c != 0) {
             r = 2;
             if (rec->amount >= v) {
-                b->bugLevels[k] = 0;
+                b->status.bugLevels[k] = 0;
                 r = 1;
             }
         }
         break;
     case 0xF:
-        if (Dung_StatePtr->memBugCount != 0) {
+        if (Dung_StatePtr->status.memBugCount != 0) {
             best = -1;
             max = 0;
-            for (j = 0; j < Dung_StatePtr->memBugCount; j++) {
-                v = Dung_StatePtr->memBugLevels[j];
+            for (j = 0; j < Dung_StatePtr->status.memBugCount; j++) {
+                v = Dung_StatePtr->status.memBugLevels[j];
                 if (rec->amount >= v && max < v) {
                     best = j;
                     max = v;
@@ -143,28 +143,28 @@ s32 Item_UseOnBeetle(s32 a0, s32 a1, s32 a2, s32 a3) {
             if (best == -1) {
                 goto none;
             }
-            Dung_StatePtr->memBugCount--;
-            Dung_StatePtr->memBugLevels[best] = 0;
+            Dung_StatePtr->status.memBugCount--;
+            Dung_StatePtr->status.memBugLevels[best] = 0;
             Bug_CompactMemBugs();
             Bug_LastZappedLevel = max;
             break;
         }
         break;
     case 0x10:
-        if (Dung_StatePtr->bugLevels[0] + Dung_StatePtr->bugLevels[1] + Dung_StatePtr->bugLevels[2] + Dung_StatePtr->memBugCount != 0) {
+        if (Dung_StatePtr->status.bugLevels[0] + Dung_StatePtr->status.bugLevels[1] + Dung_StatePtr->status.bugLevels[2] + Dung_StatePtr->status.memBugCount != 0) {
             cnt = 0;
             for (i = 0; i < 3; i++) {
-                if (Dung_StatePtr->bugLevels[i] != 0 && rec->amount >= Dung_StatePtr->bugLevels[i]) {
-                    Dung_StatePtr->bugLevels[i] = 0;
+                if (Dung_StatePtr->status.bugLevels[i] != 0 && rec->amount >= Dung_StatePtr->status.bugLevels[i]) {
+                    Dung_StatePtr->status.bugLevels[i] = 0;
                     cnt++;
                 }
             }
-            n = Dung_StatePtr->memBugCount;
+            n = Dung_StatePtr->status.memBugCount;
             for (i = 0; i < n; i++) {
-                if (rec->amount >= Dung_StatePtr->memBugLevels[i]) {
-                    Dung_StatePtr->memBugLevels[i] = 0;
+                if (rec->amount >= Dung_StatePtr->status.memBugLevels[i]) {
+                    Dung_StatePtr->status.memBugLevels[i] = 0;
                     b = Dung_StatePtr;
-                    b->memBugCount--;
+                    b->status.memBugCount--;
                     cnt++;
                 }
             }

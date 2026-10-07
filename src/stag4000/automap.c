@@ -242,7 +242,7 @@ void Stg40_AutomapReleaseTex(Stg40ImgWork *a0) {
 }
 
 s16 Stg40_AutomapInitDims(Stg40AutomapWork *a0) {
-    Stg40DungState *b = Dung_StatePtr;
+    DungState *b = Dung_StatePtr;
 
     a0->cols = b->floorHdr->cols;
     a0->rows = b->floorHdr->rows;

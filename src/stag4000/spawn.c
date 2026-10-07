@@ -63,10 +63,10 @@ s32 Stg40_AddEntity(kind, a1, a2, a3, x, y)
     case 0:
         flag = 1;
         e->flags |= flag;
-        e->params = (u8 *)&Dung_StatePtr->statusFlags;
+        e->params = (u8 *)&Dung_StatePtr->status.statusFlags;
         Stg40_RootState->playerEnt = e;
-        Dung_StatePtr->statusFlags = 0;
-        Dung_StatePtr->confusionTurn = 0;
+        Dung_StatePtr->status.statusFlags = 0;
+        Dung_StatePtr->status.confusionTurn = 0;
         break;
     case 1:
         flag = 1;
@@ -340,7 +340,7 @@ void Stg40_SpawnFixedHazards(void) {
 }
 
 s32 Stg40_GetRegionCells(u8 (*tbl)[2], s32 v) {
-    Stg40DungState *b = Dung_StatePtr;
+    DungState *b = Dung_StatePtr;
     Stg40Cell *cells = (Stg40Cell *)b->cells;
     s32 h = b->floorHdr->rows;
     s32 w = b->floorHdr->cols;

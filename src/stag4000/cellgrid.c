@@ -40,7 +40,7 @@ u16 Stg40_ReadFloorBits(u16 *pal, u32 *bits, s32 x, s32 y) {
 }
 
 void Stg40_FillCellGrid(void) {
-    Stg40DungState *g = Dung_StatePtr;
+    DungState *g = Dung_StatePtr;
     Stg40Cell *cell;
     Stg40FloorHeader *dims;
     Stg40DungFloor *map;
@@ -129,7 +129,7 @@ void Stg40_FillCellGrid(void) {
 }
 
 u16 Stg40_GetCellFlags(s32 x, s32 y) {
-    Stg40DungState *b = Dung_StatePtr;
+    DungState *b = Dung_StatePtr;
     Stg40FloorHeader *d = b->floorHdr;
     Stg40Cell *cells = (Stg40Cell *)b->cells;
     s32 w = d->cols;
@@ -143,7 +143,7 @@ u16 Stg40_GetCellFlags(s32 x, s32 y) {
 }
 
 Stg40Cell *Stg40_GetCell(s32 x, s32 y) {
-    Stg40DungState *b = Dung_StatePtr;
+    DungState *b = Dung_StatePtr;
     Stg40FloorHeader *d = b->floorHdr;
     s32 w = d->cols;
     s32 h = d->rows;
@@ -202,7 +202,7 @@ void Stg40_FloodFillRoom(s32 buf, s32 p1, s32 x, s32 y, s32 fill)
 }
 
 s32 Stg40_FindUnlabeledRoom(void) {
-    Stg40DungState *b = Dung_StatePtr;
+    DungState *b = Dung_StatePtr;
     Stg40Cell *c = (Stg40Cell *)b->cells;
     s32 h = b->floorHdr->rows;
     s32 w = b->floorHdr->cols;
@@ -220,7 +220,7 @@ s32 Stg40_FindUnlabeledRoom(void) {
 }
 
 void Stg40_LabelFilledCells(void) {
-    Stg40DungState *b = Dung_StatePtr;
+    DungState *b = Dung_StatePtr;
     s32 n = b->floorHdr->cols * b->floorHdr->rows;
     u8 v = Stg40_RootState->roomCount;
     Stg40Cell *c = (Stg40Cell *)b->cells;
@@ -249,7 +249,7 @@ void Stg40_LabelRooms(void) {
 }
 
 Stg40Cell *Stg40_GetCell2(s32 x, s32 y) {
-    Stg40DungState *b = Dung_StatePtr;
+    DungState *b = Dung_StatePtr;
     Stg40FloorHeader *d = b->floorHdr;
     s32 w = d->cols;
     s32 h = d->rows;
@@ -262,7 +262,7 @@ Stg40Cell *Stg40_GetCell2(s32 x, s32 y) {
 }
 
 void Stg40_SetCellOccupied(s32 x, s32 y, s32 flag) {
-    Stg40DungState *b = Dung_StatePtr;
+    DungState *b = Dung_StatePtr;
     Stg40FloorHeader *d = b->floorHdr;
     s32 w = d->cols;
     s32 h = d->rows;
@@ -275,7 +275,7 @@ void Stg40_SetCellOccupied(s32 x, s32 y, s32 flag) {
 }
 
 void Stg40_ClearCellOccupied(s32 x, s32 y) {
-    Stg40DungState *b = Dung_StatePtr;
+    DungState *b = Dung_StatePtr;
     Stg40FloorHeader *d = b->floorHdr;
     s32 w = d->cols;
     s32 h = d->rows;

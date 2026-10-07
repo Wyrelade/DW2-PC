@@ -29,7 +29,7 @@ u8 Stg40_HazardRevealChance[] = {
 u8 Stg40_BugNestRevealChance[] = { 0, 0, 0, 80, 50, 0, 100, 80, 50, 100, 100, 80 };
 
 s32 Stg40_TickStatusEffects(Actor *a0) {
-    Stg40BA0View *st;
+    DungStatus *st;
     u8 *stack;
     u8 *p;
     s16 *count;
@@ -41,7 +41,7 @@ s32 Stg40_TickStatusEffects(Actor *a0) {
     DigiRosterEntry *ent;
 
     sfx = 0;
-    st = (Stg40BA0View *)&Dung_StatePtr->statusFlags;
+    st = &Dung_StatePtr->status;
     stack = Stg40_RootState->statusCodes;
     count = &Stg40_RootState->statusCount;
     p = &stack[7];
@@ -63,15 +63,15 @@ s32 Stg40_TickStatusEffects(Actor *a0) {
         }
         st->statusFlags |= 0x80;
     }
-    if (Dung_StatePtr->bitBugLevel != 0) {
+    if (Dung_StatePtr->status.bugLevels[0] != 0) {
         slot = Stg40_PickRandomPart();
         if ((Stg40_RandPercent() < 5 && (st->statusFlags & 0x100)) || (Save_GameStatePtr->bits == 0 && slot == -1)) {
             stack[(*count)++] = 2;
-            Dung_StatePtr->bitBugLevel = 0;
+            Dung_StatePtr->status.bugLevels[0] = 0;
         } else {
             if (Save_GameStatePtr->bits != 0) {
                 s32 cost[4] = { 0, 20, 50, 100 };
-                s32 v = Save_GameStatePtr->bits -= cost[st->bitBugLevel];
+                s32 v = Save_GameStatePtr->bits -= cost[st->bugLevels[0]];
                 if (v < 0) {
                     v = 0;
                 }
@@ -87,13 +87,13 @@ s32 Stg40_TickStatusEffects(Actor *a0) {
         }
         st->statusFlags |= 0x100;
     }
-    if (Dung_StatePtr->energyBugLevel != 0) {
+    if (Dung_StatePtr->status.bugLevels[1] != 0) {
         if (Stg40_RandPercent() < 2 && (st->statusFlags & 0x200)) {
             stack[(*count)++] = 3;
-            Dung_StatePtr->energyBugLevel = 0;
+            Dung_StatePtr->status.bugLevels[1] = 0;
         } else {
             s32 cost[4] = { 0, 2, 4, 6 };
-            s16 v = Save_GameStatePtr->mp - cost[st->energyBugLevel];
+            s16 v = Save_GameStatePtr->mp - cost[st->bugLevels[1]];
             Save_GameStatePtr->mp = v;
             if (v < 0) {
                 v = 0;
@@ -104,13 +104,13 @@ s32 Stg40_TickStatusEffects(Actor *a0) {
         }
         st->statusFlags |= 0x200;
     }
-    if (Dung_StatePtr->returnBugLevel != 0) {
+    if (Dung_StatePtr->status.bugLevels[2] != 0) {
         s32 chance[4] = { 0, 50, 40, 30 };
         n = ((s32 (*)(s32))Stg40_ListPartyDigi)(1);
-        if ((Stg40_RandPercent() < chance[st->returnBugLevel] && (st->statusFlags & 0x400)) || n < 2 ||
+        if ((Stg40_RandPercent() < chance[st->bugLevels[2]] && (st->statusFlags & 0x400)) || n < 2 ||
             Digi_CountByState(1) >= 24) {
             stack[(*count)++] = 4;
-            Dung_StatePtr->returnBugLevel = 0;
+            Dung_StatePtr->status.bugLevels[2] = 0;
         } else {
             n = ((s32 (*)(s32))Stg40_ListPartyDigi)(0);
             r = Stg40_RandPercent() / (100 / n);
@@ -133,7 +133,7 @@ s32 Stg40_TickStatusEffects(Actor *a0) {
         }
         st->statusFlags |= 0x400;
     }
-    if (Dung_StatePtr->memBugCount != 0) {
+    if (Dung_StatePtr->status.memBugCount != 0) {
         st->statusFlags |= 0x800;
     }
     switch (sfx) {

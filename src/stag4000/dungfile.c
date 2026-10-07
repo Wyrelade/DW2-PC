@@ -41,7 +41,7 @@ void Stg40_PickFloorLayout(void) {
 
 void Stg40_ApplyFloorLayout(void) {
     Stg40B60 *b = Stg40_RootState;
-    Stg40DungState *g = Dung_StatePtr;
+    DungState *g = Dung_StatePtr;
     Stg40DungFloor *m = (Stg40DungFloor *)b->floorMap;
     u8 *src;
     u8 *dst;

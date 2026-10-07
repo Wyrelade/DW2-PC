@@ -201,12 +201,6 @@ typedef struct {
     u8 _pad02[0x12];
 } Stg00DungEntry; /* size 0x14 */
 
-/* View of *Dung_StatePtr (main DungState) at bytes 3/4. */
-typedef struct {
-    u8 _pad0[0x03];
-    /* 0x3 */ u8 floor;
-    /* 0x4 */ u8 floorLayout;
-} Stg00DungState;
 
 /* Task_Create arg blocks. */
 typedef struct {
@@ -267,7 +261,7 @@ typedef struct {
 extern Halves Gfx_NeutralRgb;
 extern s32 Gfx_ZeroVector[];
 extern PadState Pad_State[];
-extern Stg00DungState *Dung_StatePtr;
+extern DungState *Dung_StatePtr;
 extern s32 Stg00_LineupWinMasks[];
 extern s32 Stg00_GroupWinMasks[];
 extern Stg00Pos Stg00_LineupLayouts[][9];

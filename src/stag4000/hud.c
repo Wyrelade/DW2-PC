@@ -83,11 +83,11 @@ void Stg40_HudUpdate(Actor *a0) {
             break;
         }
         if (s3->bitsWinTask != 0) {
-            if (Dung_StatePtr->bitBugLevel == 0 && s3->bitsWinTask->stateLevel0 != 2) {
+            if (Dung_StatePtr->status.bugLevels[0] == 0 && s3->bitsWinTask->stateLevel0 != 2) {
                 Task_SetState0(s3->bitsWinTask, 2);
             }
         } else {
-            if (Dung_StatePtr->bitBugLevel != 0) {
+            if (Dung_StatePtr->status.bugLevels[0] != 0) {
                 Task_Create(0x20A, (s32 *)s3, 0);
             }
         }

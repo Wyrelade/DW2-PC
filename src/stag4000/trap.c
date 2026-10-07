@@ -84,7 +84,7 @@ void Stg40_ApplyTrapEffect(s32 a0, s32 a1) {
     s32 i;
     s32 k;
     DigiRosterEntry *r;
-    Stg40DungState *g;
+    DungState *g;
 
     switch (a0) {
     case 0:
@@ -100,13 +100,13 @@ void Stg40_ApplyTrapEffect(s32 a0, s32 a1) {
         }
         break;
     case 2:
-        Dung_StatePtr->statusFlags = (Dung_StatePtr->statusFlags | 2) & ~0x80;
-        Dung_StatePtr->confusionTurn = Stg40_RandInt(4) + 1;
+        Dung_StatePtr->status.statusFlags = (Dung_StatePtr->status.statusFlags | 2) & ~0x80;
+        Dung_StatePtr->status.confusionTurn = Stg40_RandInt(4) + 1;
         break;
     case 3:
         g = Dung_StatePtr;
-        g->bindTurns = 0;
-        g->statusFlags = (g->statusFlags | 1) & ~0x40;
+        g->status.bindTurns = 0;
+        g->status.statusFlags = (g->status.statusFlags | 1) & ~0x40;
         break;
     default:
         k = Stg40_TrapPartSlots[a0 - 4];

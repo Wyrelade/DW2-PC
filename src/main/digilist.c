@@ -300,9 +300,9 @@ void Menu_BuildDigiList(MenuDigiListBuildWork *w) {
             break;
         default:
             r = &w->rows[w->rowCount - 1];
-            for (i = 0; i < Dung_StatePtr->memBugCount; i++, r--) {
+            for (i = 0; i < Dung_StatePtr->status.memBugCount; i++, r--) {
                 r->kind = 2;
-                r->bugLevel = Dung_StatePtr->memBugLevels[i];
+                r->bugLevel = Dung_StatePtr->status.memBugLevels[i];
             }
             break;
         }

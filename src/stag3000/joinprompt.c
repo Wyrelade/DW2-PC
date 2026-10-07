@@ -131,7 +131,7 @@ void Stg30_JoinPromptUpdate(Actor *a0) {
                         cnt++;
                     }
                 }
-                n = Stg30_MemoryCapacity[Save_GameState.slotItems[2] - 0x2F] - Dung_StatePtr->memBugCount;
+                n = Stg30_MemoryCapacity[Save_GameState.slotItems[2] - 0x2F] - Dung_StatePtr->status.memBugCount;
                 if (n > 0 && cnt < n) {
                     Task_SetState1(a0, 4);
                     break;

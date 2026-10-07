@@ -63,7 +63,7 @@ void Menu_StatusTask(Actor *a0) {
             if (Menu_Ctx->flags & 1) {
                 h = (Halves *)Cd_GetFileEntry(0x513000D);
                 for (i = 0; i < 4; i++) {
-                    v = (i == 3) ? Bug_GetMaxMemBugLevel() : Dung_StatePtr->bugLevels[i];
+                    v = (i == 3) ? Bug_GetMaxMemBugLevel() : Dung_StatePtr->status.bugLevels[i];
                     if (v != 0) {
                         id = v + 0x1FD00EC;
                         Text_OpenPacked(&w->bugTexts[i], (s32)Cd_GetFileEntry(i * 3 + id), 1, h[i]);
