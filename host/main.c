@@ -94,11 +94,15 @@ void Host_DisplayOn(void) {
 }
 
 /* The image (globals, Ps1_Ram with the heap) must sit in one 16 MB window for the 24-bit OT links
- * (psyq/ps1mem.h): linked at a 16 MB-aligned base (CMakeLists.txt) and smaller than 16 MB. */
+ * (psyq/ps1mem.h): linked at a 16 MB-aligned base (CMakeLists.txt) and smaller than 16 MB.
+ * The game C also keeps pointers in 32-bit ints (P1.12): every address it can see, the window
+ * and the stack it runs on, must be below 2 GB so that the int gives the pointer back (zero or
+ * sign extended alike). */
 static void check_window(void) {
     uintptr_t base = (uintptr_t)Ps1_Ram & ~(uintptr_t)0xFFFFFF;
     const void *probes[] = { Ps1_Ram, Ps1_Ram + PS1_RAM_SIZE - 1, Ps1_Scratchpad, Ovl_LoadArea, &Sys_FlipPending,
                              (const void *)Sys_Main };
+    volatile int stack_probe = 0;
     size_t i;
 
     for (i = 0; i < sizeof(probes) / sizeof(probes[0]); i++) {
@@ -106,6 +110,11 @@ static void check_window(void) {
             fprintf(stderr, "[host] %p is outside the 16 MB window at 0x%08lX\n", probes[i], (unsigned long)base);
             exit(1);
         }
+    }
+    if (base >= 0x80000000u || (uintptr_t)&stack_probe >= 0x80000000u) {
+        fprintf(stderr, "[host] window 0x%08lX or stack %p is not below 2 GB\n", (unsigned long)base,
+                (void *)&stack_probe);
+        exit(1);
     }
     printf("[host] 16 MB window 0x%08lX: Ps1_Ram %p, heap %p..%p\n", (unsigned long)base, (void *)Ps1_Ram,
            PS1_RAM(0x80075000), PS1_RAM(0x801FF000));

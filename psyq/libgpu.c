@@ -94,7 +94,7 @@ u_long *ClearOTagR(u_long *ot, int n) {
 
     PSYQ_LOG("%p, %d", (void *)ot, n);
     for (i = n - 1; i > 0; i--) {
-        ot[i] = (u_long)(unsigned int)&ot[i - 1] & 0xFFFFFF;
+        ot[i] = (u_long)(uintptr_t)&ot[i - 1] & 0xFFFFFF;
     }
     ot[0] = 0xFFFFFF;
     return ot;
@@ -193,7 +193,7 @@ void AddPrim(void *ot, void *p) {
 
     PSYQ_LOG("%p, %p", ot, p);
     *t = (*t & 0xFF000000) | (*o & 0xFFFFFF);
-    *o = (*o & 0xFF000000) | ((u_long)(unsigned int)t & 0xFFFFFF);
+    *o = (*o & 0xFF000000) | ((u_long)(uintptr_t)t & 0xFFFFFF);
 }
 
 void SetPolyF4(POLY_F4 *p) {

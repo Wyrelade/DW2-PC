@@ -11,8 +11,29 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS ON)
 
-if(NOT CMAKE_SIZEOF_VOID_P EQUAL 4)
-    message(FATAL_ERROR "32-bit target only for now (P1.12 moves to 64-bit)")
+# Target: 32-bit (-m32, MinGW i686) or 64-bit (-m64, MinGW x86_64 or Linux gcc), picked by the
+# compiler tools/build_native.py configures (--arch). Every build keeps the "low window" layout:
+# the image, its globals, Ps1_Ram and the heap lie in one 16 MB window below 2 GB (fixed base,
+# no ASLR), so the 24-bit OT links resolve and a pointer kept in a 32-bit game int round-trips.
+if(CMAKE_SIZEOF_VOID_P EQUAL 4)
+    set(DW2_ARCH_FLAG -m32)
+elseif(CMAKE_SIZEOF_VOID_P EQUAL 8)
+    set(DW2_ARCH_FLAG -m64)
+else()
+    message(FATAL_ERROR "unsupported pointer size ${CMAKE_SIZEOF_VOID_P}")
+endif()
+if(WIN32)
+    if(CMAKE_SIZEOF_VOID_P EQUAL 4)
+        set(DW2_PE_FORMAT pe-i386)
+        set(DW2_MINGW_TRIPLET i686-w64-mingw32)
+    else()
+        set(DW2_PE_FORMAT pe-x86-64)
+        set(DW2_MINGW_TRIPLET x86_64-w64-mingw32)
+    endif()
+    set(DW2_PIE_FLAGS)
+else()
+    # ELF: a position-dependent executable, so the fixed base below holds.
+    set(DW2_PIE_FLAGS -fno-pie)
 endif()
 
 set(OVERLAYS stag0000 stag1000 stag1100 stag2000 stag3000 stag3500 stag4000)
@@ -21,7 +42,7 @@ set(OVERLAYS stag0000 stag1000 stag1100 stag2000 stag3000 stag3500 stag4000)
 # implicit declarations, int <-> pointer conversions and pointer type mismatches errors; the
 # decomp C has many (cast-heavy matching code), so they stay warnings and are counted.
 set(DW2_GAME_FLAGS
-    -m32 -funsigned-char -fno-strict-aliasing -fwrapv -fno-common -fpermissive
+    ${DW2_ARCH_FLAG} ${DW2_PIE_FLAGS} -funsigned-char -fno-strict-aliasing -fwrapv -fno-common -fpermissive
     -Wall
     "-Wa,-I${CMAKE_SOURCE_DIR}"   # INCLUDE_BIN .incbin paths are relative to the repo root
 )
@@ -52,12 +73,30 @@ foreach(unit ${OVERLAYS})
     dw2_game_objects(dw2_${unit} ${OVL_SRC})
 
     set(script ${CMAKE_BINARY_DIR}/ovl_${unit}.ld)
-    file(WRITE ${script}
-        "OUTPUT_FORMAT(pe-i386)\n"   # ld -r with -T would otherwise write a PE image (pei-i386)
-        "SECTIONS {\n"
-        "  .data$dw2ovl_${unit}_1 : { *(.data) *(.data$*) }\n"
-        "  .data$dw2ovl_${unit}_2 : { *(.bss) *(.bss$*) *(COMMON) }\n"
-        "}\n")
+    if(WIN32)
+        file(WRITE ${script}
+            "OUTPUT_FORMAT(${DW2_PE_FORMAT})
+"   # ld -r with -T would otherwise write a PE image
+            "SECTIONS {
+"
+            "  .data$dw2ovl_${unit}_1 : { *(.data) *(.data$*) }
+"
+            "  .data$dw2ovl_${unit}_2 : { *(.bss) *(.bss$*) *(COMMON) }
+"
+            "}
+")
+    else()
+        # ELF: one section per overlay with a C-identifier name, so the final link defines
+        # __start_dw2ovl_<unit> / __stop_dw2ovl_<unit> (host/overlay.c). The .bss goes in with
+        # the .data (stored as zero bytes in the file).
+        file(WRITE ${script}
+            "SECTIONS {
+"
+            "  dw2ovl_${unit} : { *(.data) *(.data.*) *(.bss) *(.bss.*) *(COMMON) }
+"
+            "}
+")
+    endif()
     set(out ${CMAKE_BINARY_DIR}/ovl_${unit}.o)
     add_custom_command(
         OUTPUT ${out}
@@ -69,11 +108,16 @@ foreach(unit ${OVERLAYS})
 endforeach()
 set_source_files_properties(${OVL_OBJECTS} PROPERTIES EXTERNAL_OBJECT TRUE GENERATED TRUE)
 
-# SDL3 (host/): the prebuilt MinGW development release, unpacked at DW2_SDL3 (holds
-# i686-w64-mingw32/lib/cmake/SDL3). SDL3.dll is copied next to dw2.exe.
-set(DW2_SDL3 "D:/tools/SDL3" CACHE PATH "SDL3 MinGW development release root")
-find_package(SDL3 3.2 REQUIRED CONFIG COMPONENTS SDL3-shared
-    PATHS ${DW2_SDL3}/i686-w64-mingw32 ${DW2_SDL3} NO_DEFAULT_PATH)
+# SDL3 (host/). Windows: the prebuilt MinGW development release, unpacked at DW2_SDL3 (holds
+# i686-w64-mingw32 and x86_64-w64-mingw32 lib/cmake/SDL3); SDL3.dll is copied next to dw2.exe.
+# Linux: the system package (libsdl3-dev).
+if(WIN32)
+    set(DW2_SDL3 "D:/tools/SDL3" CACHE PATH "SDL3 MinGW development release root")
+    find_package(SDL3 3.2 REQUIRED CONFIG COMPONENTS SDL3-shared
+        PATHS ${DW2_SDL3}/${DW2_MINGW_TRIPLET} NO_DEFAULT_PATH)
+else()
+    find_package(SDL3 3.2 REQUIRED CONFIG COMPONENTS SDL3-shared)
+endif()
 
 # Psy-Q layer, host and backend.
 file(GLOB PSYQ_SRC CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/psyq/*.c)
@@ -82,17 +126,26 @@ file(GLOB HOST_SRC CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/host/*.c)
 file(GLOB BACKEND_SRC CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/backend/*.c)
 
 add_executable(dw2 ${PSYQ_SRC} ${HOST_SRC} ${BACKEND_SRC} $<TARGET_OBJECTS:dw2_main> ${OVL_OBJECTS})
-target_compile_options(dw2 PRIVATE -m32 -funsigned-char -fno-strict-aliasing -fwrapv -fno-common -Wall
+target_compile_options(dw2 PRIVATE ${DW2_ARCH_FLAG} ${DW2_PIE_FLAGS} -funsigned-char -fno-strict-aliasing -fwrapv -fno-common -Wall
     "-Wa,-I${CMAKE_SOURCE_DIR}")
 target_compile_definitions(dw2 PRIVATE DW2_NATIVE)
 target_include_directories(dw2 PRIVATE ${DW2_INCLUDES})
 # 16 MB-aligned fixed image base: the whole image (globals, Ps1_Ram, the heap) lies in one
 # 16 MB window, which the 24-bit OT links need (psyq/ps1mem.h, host/main.c checks it).
 target_link_libraries(dw2 PRIVATE SDL3::SDL3-shared)
-add_custom_command(TARGET dw2 POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:SDL3::SDL3-shared> $<TARGET_FILE_DIR:dw2>)
-target_link_options(dw2 PRIVATE -m32 -Wl,--image-base=0x01000000 -Wl,--disable-dynamicbase
-    -Wl,-Map=${CMAKE_BINARY_DIR}/dw2.map)
+if(WIN32)
+    add_custom_command(TARGET dw2 POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:SDL3::SDL3-shared> $<TARGET_FILE_DIR:dw2>)
+    # 64-bit PE: also no high-entropy ASLR, so the stack stays low as well.
+    target_link_options(dw2 PRIVATE ${DW2_ARCH_FLAG} -Wl,--image-base=0x01000000 -Wl,--disable-dynamicbase
+        $<$<EQUAL:${CMAKE_SIZEOF_VOID_P},8>:-Wl,--disable-high-entropy-va>
+        -Wl,-Map=${CMAKE_BINARY_DIR}/dw2.map)
+else()
+    # ELF: no PIE, first segment at 0x01000000 (same window as the PE builds).
+    target_link_libraries(dw2 PRIVATE m)
+    target_link_options(dw2 PRIVATE ${DW2_ARCH_FLAG} -no-pie -Wl,-Ttext-segment=0x01000000
+        -Wl,-Map=${CMAKE_BINARY_DIR}/dw2.map)
+endif()
 # host/pak.c compiles in configs/USA/pack_manifest.txt (.incbin): rebuild it when the manifest changes.
 set_source_files_properties(${CMAKE_SOURCE_DIR}/host/pak.c PROPERTIES
     OBJECT_DEPENDS ${CMAKE_SOURCE_DIR}/configs/USA/pack_manifest.txt)
@@ -106,6 +159,9 @@ set_source_files_properties(${CMAKE_SOURCE_DIR}/psyq/snd_hw.c PROPERTIES
 # GTE model test (tests/gte_test.c): build/native/gte_test.exe, run from the repo root.
 add_executable(gte_test ${CMAKE_SOURCE_DIR}/tests/gte_test.c ${CMAKE_SOURCE_DIR}/psyq/gte.c
     ${CMAKE_SOURCE_DIR}/psyq/libgte.c ${CMAKE_SOURCE_DIR}/psyq/psyq_log.c)
-target_compile_options(gte_test PRIVATE -m32 -fno-strict-aliasing -fwrapv -Wall "-Wa,-I${CMAKE_SOURCE_DIR}")
+target_compile_options(gte_test PRIVATE ${DW2_ARCH_FLAG} -fno-strict-aliasing -fwrapv -Wall "-Wa,-I${CMAKE_SOURCE_DIR}")
 target_include_directories(gte_test PRIVATE ${CMAKE_SOURCE_DIR}/psyq)
-target_link_options(gte_test PRIVATE -m32)
+target_link_options(gte_test PRIVATE ${DW2_ARCH_FLAG})
+if(NOT WIN32)
+    target_link_libraries(gte_test PRIVATE m)
+endif()
