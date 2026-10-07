@@ -1,5 +1,8 @@
 #include "common.h"
 #include "stag2000/stag2000.h"
+#ifdef DW2_NATIVE
+#include "stag2000/walker.h" /* Stg20_FindWalkerByDigiId returns a pointer: no implicit int (P1.12) */
+#endif
 
 /* Task callbacks the descriptors below need (defined further down). */
 void Stg20_MapBgInit(Actor *a, s32 v);
