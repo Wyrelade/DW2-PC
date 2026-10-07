@@ -69,6 +69,12 @@ foreach(unit ${OVERLAYS})
 endforeach()
 set_source_files_properties(${OVL_OBJECTS} PROPERTIES EXTERNAL_OBJECT TRUE GENERATED TRUE)
 
+# SDL3 (host/): the prebuilt MinGW development release, unpacked at DW2_SDL3 (holds
+# i686-w64-mingw32/lib/cmake/SDL3). SDL3.dll is copied next to dw2.exe.
+set(DW2_SDL3 "D:/tools/SDL3" CACHE PATH "SDL3 MinGW development release root")
+find_package(SDL3 3.2 REQUIRED CONFIG COMPONENTS SDL3-shared
+    PATHS ${DW2_SDL3}/i686-w64-mingw32 ${DW2_SDL3} NO_DEFAULT_PATH)
+
 # Psy-Q layer and host.
 file(GLOB PSYQ_SRC CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/psyq/*.c)
 file(GLOB HOST_SRC CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/host/*.c)
@@ -80,5 +86,8 @@ target_compile_definitions(dw2 PRIVATE DW2_NATIVE)
 target_include_directories(dw2 PRIVATE ${DW2_INCLUDES})
 # 16 MB-aligned fixed image base: the whole image (globals, Ps1_Ram, the heap) lies in one
 # 16 MB window, which the 24-bit OT links need (psyq/ps1mem.h, host/main.c checks it).
+target_link_libraries(dw2 PRIVATE SDL3::SDL3-shared)
+add_custom_command(TARGET dw2 POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:SDL3::SDL3-shared> $<TARGET_FILE_DIR:dw2>)
 target_link_options(dw2 PRIVATE -m32 -Wl,--image-base=0x01000000 -Wl,--disable-dynamicbase
     -Wl,-Map=${CMAKE_BINARY_DIR}/dw2.map)

@@ -1,0 +1,172 @@
+#include <stdio.h>
+
+#include "host/host.h"
+#include "host/host_sdl.h"
+
+/* Host input state: keyboard and SDL gamepads as PS1 digital pad button masks, per port. Read
+ * after each event pump; changes are logged. P1.7 turns them into pad replies in Pad_RecvBufs. */
+
+#define PORTS 2
+#define TRIGGER_ON 16384 /* trigger axis 0..32767: L2 / R2 held past half */
+
+typedef struct {
+    int key; /* SDL_Scancode or SDL_GamepadButton */
+    unsigned short bit;
+} ButtonMap;
+
+/* Keyboard (port 0). Esc quits (host/sdl.c). */
+static const ButtonMap key_map[] = {
+    { SDL_SCANCODE_UP, PAD_UP },         { SDL_SCANCODE_DOWN, PAD_DOWN },
+    { SDL_SCANCODE_LEFT, PAD_LEFT },     { SDL_SCANCODE_RIGHT, PAD_RIGHT },
+    { SDL_SCANCODE_Z, PAD_CROSS },       { SDL_SCANCODE_X, PAD_CIRCLE },
+    { SDL_SCANCODE_A, PAD_SQUARE },      { SDL_SCANCODE_S, PAD_TRIANGLE },
+    { SDL_SCANCODE_Q, PAD_L1 },          { SDL_SCANCODE_W, PAD_R1 },
+    { SDL_SCANCODE_E, PAD_L2 },          { SDL_SCANCODE_R, PAD_R2 },
+    { SDL_SCANCODE_RETURN, PAD_START },  { SDL_SCANCODE_BACKSPACE, PAD_SELECT },
+    { SDL_SCANCODE_RSHIFT, PAD_SELECT },
+};
+
+/* Gamepad, by position (south = Cross). Triggers are axes (L2 / R2 below). */
+static const ButtonMap pad_map[] = {
+    { SDL_GAMEPAD_BUTTON_SOUTH, PAD_CROSS },        { SDL_GAMEPAD_BUTTON_EAST, PAD_CIRCLE },
+    { SDL_GAMEPAD_BUTTON_WEST, PAD_SQUARE },        { SDL_GAMEPAD_BUTTON_NORTH, PAD_TRIANGLE },
+    { SDL_GAMEPAD_BUTTON_LEFT_SHOULDER, PAD_L1 },   { SDL_GAMEPAD_BUTTON_RIGHT_SHOULDER, PAD_R1 },
+    { SDL_GAMEPAD_BUTTON_BACK, PAD_SELECT },        { SDL_GAMEPAD_BUTTON_START, PAD_START },
+    { SDL_GAMEPAD_BUTTON_LEFT_STICK, PAD_L3 },      { SDL_GAMEPAD_BUTTON_RIGHT_STICK, PAD_R3 },
+    { SDL_GAMEPAD_BUTTON_DPAD_UP, PAD_UP },         { SDL_GAMEPAD_BUTTON_DPAD_DOWN, PAD_DOWN },
+    { SDL_GAMEPAD_BUTTON_DPAD_LEFT, PAD_LEFT },     { SDL_GAMEPAD_BUTTON_DPAD_RIGHT, PAD_RIGHT },
+};
+
+static const char *const bit_names[16] = {
+    "Select", "L3", "R3", "Start", "Up", "Right", "Down", "Left",
+    "L2", "R2", "L1", "R1", "Triangle", "Circle", "Cross", "Square",
+};
+
+static SDL_Gamepad *pads[PORTS];
+static unsigned short buttons[PORTS];
+static unsigned short pressed[PORTS]; /* pressed since the last update: a tap shorter than one
+                                       * VBlank still shows for one update */
+
+unsigned short Host_PadButtons(int port) {
+    return port >= 0 && port < PORTS ? buttons[port] : 0;
+}
+
+void Host_InputDevice(const SDL_Event *e) {
+    SDL_JoystickID id = e->gdevice.which;
+    int p;
+
+    if (e->type == SDL_EVENT_GAMEPAD_ADDED) {
+        for (p = 0; p < PORTS; p++) {
+            if (pads[p] != NULL && SDL_GetGamepadID(pads[p]) == id) {
+                return;
+            }
+        }
+        for (p = 0; p < PORTS && pads[p] != NULL; p++) {
+        }
+        if (p == PORTS) {
+            printf("[input] gamepad %u ignored (both ports taken)\n", (unsigned)id);
+            return;
+        }
+        pads[p] = SDL_OpenGamepad(id);
+        if (pads[p] == NULL) {
+            printf("[input] gamepad %u open failed: %s\n", (unsigned)id, SDL_GetError());
+            return;
+        }
+        printf("[input] gamepad %u on port %d: %s\n", (unsigned)id, p, SDL_GetGamepadName(pads[p]));
+    } else {
+        for (p = 0; p < PORTS; p++) {
+            if (pads[p] != NULL && SDL_GetGamepadID(pads[p]) == id) {
+                SDL_CloseGamepad(pads[p]);
+                pads[p] = NULL;
+                printf("[input] gamepad %u removed from port %d\n", (unsigned)id, p);
+            }
+        }
+    }
+    fflush(stdout);
+}
+
+static unsigned short map_bit(const ButtonMap *map, size_t n, int key) {
+    size_t i;
+
+    for (i = 0; i < n; i++) {
+        if (map[i].key == key) {
+            return map[i].bit;
+        }
+    }
+    return 0;
+}
+
+void Host_InputPress(const SDL_Event *e) {
+    int p;
+
+    if (e->type == SDL_EVENT_KEY_DOWN) {
+        pressed[0] |= map_bit(key_map, sizeof(key_map) / sizeof(key_map[0]), e->key.scancode);
+        return;
+    }
+    for (p = 0; p < PORTS; p++) {
+        if (pads[p] != NULL && SDL_GetGamepadID(pads[p]) == e->gbutton.which) {
+            pressed[p] |= map_bit(pad_map, sizeof(pad_map) / sizeof(pad_map[0]), e->gbutton.button);
+        }
+    }
+}
+
+static void log_buttons(int port, unsigned short b) {
+    int i;
+
+    printf("[input] port %d: %04X", port, b);
+    for (i = 0; i < 16; i++) {
+        if (b & (1 << i)) {
+            printf(" %s", bit_names[i]);
+        }
+    }
+    printf("\n");
+    fflush(stdout);
+}
+
+void Host_InputUpdate(void) {
+    const bool *keys = SDL_GetKeyboardState(NULL);
+    unsigned short b[PORTS] = { 0, 0 };
+    size_t i;
+    int p;
+
+    for (i = 0; i < sizeof(key_map) / sizeof(key_map[0]); i++) {
+        if (keys[key_map[i].key]) {
+            b[0] |= key_map[i].bit;
+        }
+    }
+    for (p = 0; p < PORTS; p++) {
+        if (pads[p] == NULL) {
+            continue;
+        }
+        for (i = 0; i < sizeof(pad_map) / sizeof(pad_map[0]); i++) {
+            if (SDL_GetGamepadButton(pads[p], (SDL_GamepadButton)pad_map[i].key)) {
+                b[p] |= pad_map[i].bit;
+            }
+        }
+        if (SDL_GetGamepadAxis(pads[p], SDL_GAMEPAD_AXIS_LEFT_TRIGGER) >= TRIGGER_ON) {
+            b[p] |= PAD_L2;
+        }
+        if (SDL_GetGamepadAxis(pads[p], SDL_GAMEPAD_AXIS_RIGHT_TRIGGER) >= TRIGGER_ON) {
+            b[p] |= PAD_R2;
+        }
+    }
+    for (p = 0; p < PORTS; p++) {
+        b[p] |= pressed[p];
+        pressed[p] = 0;
+        if (b[p] != buttons[p]) {
+            buttons[p] = b[p];
+            log_buttons(p, b[p]);
+        }
+    }
+}
+
+void Host_InputClose(void) {
+    int p;
+
+    for (p = 0; p < PORTS; p++) {
+        if (pads[p] != NULL) {
+            SDL_CloseGamepad(pads[p]);
+            pads[p] = NULL;
+        }
+    }
+}

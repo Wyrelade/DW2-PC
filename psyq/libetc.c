@@ -1,13 +1,15 @@
 #include "libetc.h"
 #include "psyq_log.h"
 #include "psyq_vblank.h"
+#include "host/host.h"
 
-/* libetc (P1.1): a VBlank counter and the VSyncCallback handler. There is no timer yet: each
- * Psyq_VBlank() call is one VBlank (VSync waits and the host's Sys_FlipPending pump call it).
- * P1.2 paces it at 59.94 Hz from the SDL3 host. */
+/* libetc on host time (P1.2). Psyq_VBlank() is the VBlank "interrupt": it advances the VSync(-1)
+ * counter and runs the VSyncCallback handler. The host's 59.94 Hz clock (host/vblank.c) calls
+ * it at each deadline; VSync(0 / n) sleeps on that clock, like Sys_Main's Sys_FlipPending spin. */
 
 static void (*vsync_cb)(void);
 static volatile int vblank_count;
+static int last_vsync; /* counter when the last VSync(0 / n) returned */
 
 void Psyq_VBlank(void) {
     vblank_count++;
@@ -17,7 +19,7 @@ void Psyq_VBlank(void) {
 }
 
 int VSync(int mode) {
-    int start = vblank_count;
+    int target;
 
     PSYQ_LOG("%d", mode);
     if (mode < 0) {
@@ -26,10 +28,15 @@ int VSync(int mode) {
     if (mode == 1) {
         return 0; /* horizontal blank count since the last VSync */
     }
-    /* 0: next VBlank; n > 1: n VBlanks after the last one. */
-    do {
-        Psyq_VBlank();
-    } while (vblank_count - start < (mode > 1 ? mode : 1));
+    /* 0: the next VBlank; n > 1: n VBlanks after the last VSync, at least the next one. */
+    target = vblank_count + 1;
+    if (mode > 1 && last_vsync + mode > target) {
+        target = last_vsync + mode;
+    }
+    while (vblank_count - target < 0) {
+        Host_VBlank();
+    }
+    last_vsync = vblank_count;
     return 0;
 }
 

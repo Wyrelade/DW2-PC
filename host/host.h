@@ -1,13 +1,33 @@
 #ifndef HOST_HOST_H
 #define HOST_HOST_H
 
-/* Host layer hooks the game C calls in the native build (DW2_NATIVE). */
+/* Host layer (SDL3, one thread). The game C and the Psy-Q layer call the hooks below in the
+ * native build (DW2_NATIVE); SDL types stay in host/host_sdl.h. */
 
 /* Ovl_Load: all overlays are linked; restore overlay `id`'s initial .data and zero its .bss
  * (what the retail file copy over the overlay area did). id = Ovl_FileIds index. */
 void Host_OvlReset(int id);
 
-/* Sys_Main's spin on Sys_FlipPending: one host VBlank per call (P1.1 pump, P1.2 paces it). */
+/* Sys_Main's spin on Sys_FlipPending: one paced host VBlank per call (host/main.c). */
 void Host_WaitVBlank(void);
+
+/* host/sdl.c: SDL init (window, renderer, gamepads, audio), event pump, present, shutdown.
+ * no_window: SDL dummy video and audio drivers (headless test runs). */
+void Host_Init(int no_window);
+void Host_Shutdown(void);
+/* Clean shutdown from anywhere (window closed, Esc, --vblanks reached), then exit(0). */
+void Host_Quit(const char *why);
+
+/* host/vblank.c: the 59.94 Hz VBlank clock. Sleeps to the next deadline, then runs each due
+ * VBlank (Psyq_VBlank: VSync(-1) counter + Sys_VSyncHandler), presents after a buffer flip,
+ * pumps events and feeds audio. libetc's VSync waits and Host_WaitVBlank use it. */
+void Host_VBlank(void);
+/* VBlanks run so far and the measured rate since the clock started. */
+void Host_LogRate(const char *what);
+
+/* host/input.c: PS1 digital pad buttons held on `port` (0 or 1), active high, in the pad reply
+ * bit order (PAD_* in host/host_sdl.h). Keyboard is port 0; gamepads take ports 0, 1 in order.
+ * Not written to Pad_RecvBufs yet (P1.7). */
+unsigned short Host_PadButtons(int port);
 
 #endif /* HOST_HOST_H */

@@ -4,10 +4,11 @@ build build/native/dw2.exe, count the compiler warnings.
 
     venv/Scripts/python.exe tools/build_native.py            # configure if needed, build
     venv/Scripts/python.exe tools/build_native.py --rebuild  # clean build (full warning count)
-    venv/Scripts/python.exe tools/build_native.py --run [--vblanks N]
+    venv/Scripts/python.exe tools/build_native.py --run [--vblanks N] [--no-window]
 
 Toolchain: DW2_MINGW = the MinGW-w64 root holding bin/gcc.exe (default
-D:/tools/winlibs-i686/mingw32); Ninja from the venv (pip install ninja) or PATH. The INCLUDE_BIN
+D:/tools/winlibs-i686/mingw32); Ninja from the venv (pip install ninja) or PATH; DW2_SDL3 = the
+SDL3 MinGW development release root (default D:/tools/SDL3, SDL3-devel-3.x-mingw unpacked). The INCLUDE_BIN
 assets come from the user's disc dump like in tools/build_dw2.py (configs/USA/include_bin.txt);
 assets/Ovl_LoadArea.bin comes from splat."""
 
@@ -61,7 +62,8 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--rebuild", action="store_true", help="delete build/native first")
     ap.add_argument("--run", action="store_true", help="run build/native/dw2 after the build")
-    ap.add_argument("--vblanks", type=int, default=0, help="with --run: stop after N VBlanks")
+    ap.add_argument("--vblanks", type=int, default=0, help="with --run: stop after N VBlank waits")
+    ap.add_argument("--no-window", action="store_true", help="with --run: SDL dummy video / audio")
     args = ap.parse_args()
 
     mingw = os.environ.get("DW2_MINGW", "D:/tools/winlibs-i686/mingw32")
@@ -72,6 +74,9 @@ def main():
         sys.exit("BUILD FAILED: no gcc at %s (set DW2_MINGW)" % gcc)
     if ninja is None:
         sys.exit("BUILD FAILED: no ninja (venv/Scripts/python.exe -m pip install ninja)")
+    sdl3 = os.environ.get("DW2_SDL3", "D:/tools/SDL3")
+    if not os.path.exists(os.path.join(sdl3, "i686-w64-mingw32", "lib", "cmake", "SDL3", "SDL3Config.cmake")):
+        sys.exit("BUILD FAILED: no SDL3 MinGW release at %s (set DW2_SDL3)" % sdl3)
 
     import build_dw2
     if build_dw2.extract_bins(allow_missing=False) != 0 or extract_native_bins() != 0:
@@ -88,7 +93,8 @@ def main():
                "-DCMAKE_BUILD_TYPE=RelWithDebInfo",
                "-DCMAKE_C_COMPILER=" + gcc.replace("\\", "/"),
                "-DCMAKE_LINKER=" + ld.replace("\\", "/"),
-               "-DCMAKE_MAKE_PROGRAM=" + ninja.replace("\\", "/")]
+               "-DCMAKE_MAKE_PROGRAM=" + ninja.replace("\\", "/"),
+               "-DDW2_SDL3=" + sdl3.replace("\\", "/")]
         if subprocess.call(cmd, env=env) != 0:
             sys.exit("BUILD FAILED: cmake configure")
 
@@ -121,6 +127,8 @@ def main():
         cmd = [os.path.join(BUILD, "dw2.exe" if os.name == "nt" else "dw2")]
         if args.vblanks:
             cmd += ["--vblanks", str(args.vblanks)]
+        if args.no_window:
+            cmd += ["--no-window"]
         sys.exit(subprocess.call(cmd, cwd=ROOT, env=env))
 
 

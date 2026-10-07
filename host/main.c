@@ -6,12 +6,14 @@
 #include "common.h"
 #include "host/host.h"
 #include "psyq/psyq_log.h"
-#include "psyq/psyq_vblank.h"
 
 /* Native entry point: replaces crt0 (Sys_Start). Checks the memory layout, keeps the overlays'
- * initial data, then runs the game's Sys_Main.
+ * initial data, starts the SDL3 host, then runs the game's Sys_Main (it never returns; the host
+ * quits on window close or Esc).
  *
- *   dw2 [--vblanks N]   stop after N host VBlanks (0 = run on) */
+ *   dw2 [--vblanks N] [--no-window]
+ *     --vblanks N   quit after N VBlank waits in the Sys_FlipPending spin (0 = run on)
+ *     --no-window   SDL dummy video and audio drivers (headless test runs) */
 
 extern void Sys_Main(void);
 extern void Host_OvlSnapshot(void);
@@ -46,29 +48,33 @@ void Host_WaitVBlank(void) {
     }
     vblanks++;
     if (max_vblanks != 0 && vblanks > max_vblanks) {
-        printf("[host] stop after %u VBlanks (%u Psy-Q calls)\n", max_vblanks, Psyq_CallCount);
-        fflush(stdout);
-        exit(0);
+        printf("[host] stop after %u VBlank waits (%u Psy-Q calls)\n", max_vblanks, Psyq_CallCount);
+        Host_Quit("--vblanks");
     }
-    Psyq_VBlank();
+    Host_VBlank();
 }
 
 int main(int argc, char **argv) {
+    int no_window = 0;
     int i;
 
     for (i = 1; i < argc; i++) {
         if (strcmp(argv[i], "--vblanks") == 0 && i + 1 < argc) {
             max_vblanks = (unsigned int)strtoul(argv[++i], NULL, 0);
+        } else if (strcmp(argv[i], "--no-window") == 0) {
+            no_window = 1;
         } else {
-            fprintf(stderr, "usage: %s [--vblanks N]\n", argv[0]);
+            fprintf(stderr, "usage: %s [--vblanks N] [--no-window]\n", argv[0]);
             return 2;
         }
     }
     setvbuf(stdout, NULL, _IOLBF, 1 << 16);
     check_window();
     Host_OvlSnapshot();
+    Host_Init(no_window);
     printf("[host] Sys_Main\n");
     fflush(stdout);
     Sys_Main();
+    Host_Quit("Sys_Main returned");
     return 0;
 }
