@@ -44,11 +44,13 @@ void Host_SaveShot(const char *dir, const char *tag);
  * bit order (PAD_* in host/host_sdl.h). Keyboard is port 0; gamepads take ports 0, 1 in order.
  * psyq/libpad.c writes them into the pad receive buffers each VBlank (P1.7). */
 unsigned short Host_PadButtons(int port);
-/* A controller on `port`: port 0 always (keyboard), port 1 while a gamepad is on it. */
+/* A controller on `port`: port 0 always (keyboard), port 1 while a gamepad is on it or a
+ * --press2 script exists (a scripted pad). */
 int Host_PadConnected(int port);
-/* --press dev option: hold `bits` on port 0 from VBlank wait `at` for `len` waits (headless
- * input tests). Host_InputScriptTick runs at each VBlank wait. Returns 0 when the table is full. */
-int Host_InputScriptAdd(unsigned int at, unsigned short bits, unsigned int len);
+/* --press / --press2 dev options: hold `bits` on `port` from VBlank wait `at` for `len` waits
+ * (headless input tests). Host_InputScriptTick runs at each VBlank wait. Returns 0 when the table
+ * is full. */
+int Host_InputScriptAdd(int port, unsigned int at, unsigned short bits, unsigned int len);
 void Host_InputScriptTick(unsigned int wait);
 /* "Start", "Down+Cross" ... (bit names as logged) -> mask, 0 if a name is unknown. */
 unsigned short Host_PadParseButtons(const char *names);

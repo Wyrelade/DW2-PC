@@ -14,7 +14,8 @@
  * quits on window close or Esc).
  *
  *   dw2 [--pak PATH] [--vblanks N] [--no-window] [--shot-dir DIR] [--shot-at N]... [--shot-vb N]...
- *       [--hold-boot N] [--press N:BUTTONS[:LEN]]... [--save-dir DIR] [--fast]
+ *       [--hold-boot N] [--press N:BUTTONS[:LEN]]... [--press2 N:BUTTONS[:LEN]]... [--save-dir DIR]
+ *       [--fast]
  *     --pak PATH     the data pack (default dw2.pak next to the exe, then build/native/dw2.pak;
  *                    doc/PACK_FORMAT.md), checked before anything else runs
  *     --vblanks N    quit after N VBlank waits in the Sys_FlipPending spin (0 = run on)
@@ -28,6 +29,8 @@
  *     --press N:BUTTONS[:LEN]  hold BUTTONS ("Start", "Down+Cross", names as in the [input]
  *                    log) on port 0 from VBlank wait N for LEN waits (default 4); repeatable,
  *                    for headless input tests
+ *     --press2 N:BUTTONS[:LEN]  the same on port 1; any --press2 makes port 1 a connected pad
+ *                    (VS mode with one keyboard, headless)
  *     --save-dir DIR memory card images card1.mcd / card2.mcd in DIR instead of the user data
  *                    folder (%APPDATA%\DW2-Online\saves\ on Windows)
  *     --fast         no 59.94 Hz pacing: one VBlank per wait, as fast as the host runs (headless
@@ -138,8 +141,8 @@ void Host_WaitVBlank(void) {
     Host_VBlank();
 }
 
-/* --press N:BUTTONS[:LEN] */
-static int parse_press(const char *arg) {
+/* --press / --press2 N:BUTTONS[:LEN] */
+static int parse_press(int port, const char *arg) {
     char names[64];
     unsigned int at, len = 4;
     const char *c1 = strchr(arg, ':');
@@ -162,7 +165,7 @@ static int parse_press(const char *arg) {
         len = (unsigned int)strtoul(c2 + 1, NULL, 0);
     }
     bits = Host_PadParseButtons(names);
-    return bits != 0 && len != 0 && Host_InputScriptAdd(at, bits, len);
+    return bits != 0 && len != 0 && Host_InputScriptAdd(port, at, bits, len);
 }
 
 int main(int argc, char **argv) {
@@ -185,7 +188,8 @@ int main(int argc, char **argv) {
             shot_vb[shot_vb_count++] = strtoull(argv[++i], NULL, 0);
         } else if (strcmp(argv[i], "--hold-boot") == 0 && i + 1 < argc) {
             hold_boot = (int)strtol(argv[++i], NULL, 0);
-        } else if (strcmp(argv[i], "--press") == 0 && i + 1 < argc && parse_press(argv[++i])) {
+        } else if (strcmp(argv[i], "--press") == 0 && i + 1 < argc && parse_press(0, argv[++i])) {
+        } else if (strcmp(argv[i], "--press2") == 0 && i + 1 < argc && parse_press(1, argv[++i])) {
         } else if (strcmp(argv[i], "--fast") == 0) {
             Host_ClockFast();
         } else if (strcmp(argv[i], "--save-dir") == 0 && i + 1 < argc) {
@@ -193,7 +197,8 @@ int main(int argc, char **argv) {
         } else {
             fprintf(stderr,
                     "usage: %s [--pak PATH] [--vblanks N] [--no-window] [--shot-dir DIR] [--shot-at N]... "
-                    "[--shot-vb N]... [--hold-boot N] [--press N:BUTTONS[:LEN]]... [--save-dir DIR] [--fast]\n",
+                    "[--shot-vb N]... [--hold-boot N] [--press N:BUTTONS[:LEN]]... [--press2 N:BUTTONS[:LEN]]... "
+                    "[--save-dir DIR] [--fast]\n",
                     argv[0]);
             return 2;
         }

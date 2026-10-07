@@ -48,27 +48,33 @@ static unsigned short buttons[PORTS];
 static unsigned short pressed[PORTS]; /* pressed since the last update: a tap shorter than one
                                        * VBlank still shows for one update */
 
-/* --press: scripted button holds on port 0 by VBlank wait. */
-#define SCRIPT_MAX 512
+/* --press / --press2: scripted button holds on port 0 / 1 by VBlank wait. */
+#define SCRIPT_MAX 4096
 static struct {
     unsigned int at, len;
     unsigned short bits;
+    int port;
 } script[SCRIPT_MAX];
 static int script_count;
-static unsigned short script_bits;
+static unsigned short script_bits[PORTS];
+static int script_port1; /* a --press2 entry exists: port 1 is a scripted pad */
 
 unsigned short Host_PadButtons(int port) {
     return port >= 0 && port < PORTS ? buttons[port] : 0;
 }
 
 int Host_PadConnected(int port) {
-    return port == 0 || (port == 1 && pads[1] != NULL);
+    return port == 0 || (port == 1 && (pads[1] != NULL || script_port1));
 }
 
-int Host_InputScriptAdd(unsigned int at, unsigned short bits, unsigned int len) {
-    if (script_count == SCRIPT_MAX) {
+int Host_InputScriptAdd(int port, unsigned int at, unsigned short bits, unsigned int len) {
+    if (script_count == SCRIPT_MAX || port < 0 || port >= PORTS) {
         return 0;
     }
+    if (port == 1) {
+        script_port1 = 1;
+    }
+    script[script_count].port = port;
     script[script_count].at = at;
     script[script_count].len = len;
     script[script_count].bits = bits;
@@ -79,10 +85,10 @@ int Host_InputScriptAdd(unsigned int at, unsigned short bits, unsigned int len) 
 void Host_InputScriptTick(unsigned int wait) {
     int i;
 
-    script_bits = 0;
+    script_bits[0] = script_bits[1] = 0;
     for (i = 0; i < script_count; i++) {
         if (wait >= script[i].at && wait < script[i].at + script[i].len) {
-            script_bits |= script[i].bits;
+            script_bits[script[i].port] |= script[i].bits;
         }
     }
 }
@@ -211,9 +217,8 @@ void Host_InputUpdate(void) {
             b[p] |= PAD_R2;
         }
     }
-    b[0] |= script_bits;
     for (p = 0; p < PORTS; p++) {
-        b[p] |= pressed[p];
+        b[p] |= script_bits[p] | pressed[p];
         pressed[p] = 0;
         if (b[p] != buttons[p]) {
             buttons[p] = b[p];
