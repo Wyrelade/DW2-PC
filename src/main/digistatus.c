@@ -75,7 +75,7 @@ void Menu_DigiStatusTask(Actor *a) {
     switch (a->stateLevel0) {
     default:
     case 0:
-        w->blk = *(MenuDigiStatusLayout *)Cd_GetFileEntry(0x513001C);
+        w->blk = *(MenuGridLayout *)Cd_GetFileEntry(0x513001C);
         Mem_FillWordsNeg1(w, 0x1B);
         GsSetOffset(-0xA0, 0xB4);
         t[0] = a;

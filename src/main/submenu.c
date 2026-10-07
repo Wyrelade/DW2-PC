@@ -38,7 +38,7 @@ void Menu_SubMenuTask(Actor *a) {
     switch (a->stateLevel0) {
     default:
     case 0:
-        w->u2C.blk = ((MenuSubMenuLayout *)Cd_GetFileEntry(0x5130007))[w->menuId - 1];
+        w->u2C.blk = ((MenuGridLayout *)Cd_GetFileEntry(0x5130007))[w->menuId - 1];
         Mem_FillWordsNeg1(w, 0xA);
         Task_NextState0(a);
         break;

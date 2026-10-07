@@ -25,7 +25,7 @@ void Stg11_ModeMenuUpdate(Actor *arg0) {
     switch (arg0->stateLevel0) {
     case 0:
     default:
-        w->menu.layout = ((Layout8C *)Cd_GetFileEntry(0xD280000))[w->mode - 1];
+        w->menu.layout = ((MenuGridLayout *)Cd_GetFileEntry(0xD280000))[w->mode - 1];
         Mem_FillWordsNeg1(w->texts, 4);
         Task_NextState0(arg0);
         break;

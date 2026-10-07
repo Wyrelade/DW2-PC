@@ -1926,10 +1926,12 @@ typedef struct {
     /* 0x4 */ s16 bagSlot;
 } MenuItemCell;
 
-/* Grid size pair plus the rest of the 12-byte layout record copied from resource 0x5130017. */
+/* 12-byte menu grid layout (the menu layout files 0x513xxxx / 0xD28xxxx hold arrays of these): grid
+   size, screen origin of cell 0 and the step per cell (Menu_SetPartsGridPos: x = origin + cursor * step). */
 typedef struct {
     /* 0x0 */ s16 gridSize[2];
-    /* 0x4 */ s16 field_4[4];
+    /* 0x4 */ s16 origin[2];
+    /* 0x8 */ s16 cellStep[2];
 } MenuGridLayout;
 
 /* Icon grid page: 16 sprite slots, item count/page at 0x6C/0x6E, 6-byte
@@ -2311,10 +2313,6 @@ typedef struct {
     /* 0x9C */ s32 ramp;
 } MenuItemUseWork;
 
-/* 12-byte menu layout record (Cd_GetFileEntry(0x5130010)) copied over MenuItemUseWork 0x8C..0x97. */
-typedef struct {
-    s16 field_0[6];
-} Layout8C;
 
 /* Ordering-table entry (PsyQ P_TAG shape): 24-bit next address + length. */
 typedef struct {
@@ -2492,10 +2490,6 @@ typedef struct {
 } GfxPartRotXY;
 
 
-/* Menu_SubMenuTask: 12-byte window rect record copied into MenuSubMenuWork.blk. */
-typedef struct {
-    s16 field_0[6];
-} MenuSubMenuLayout;
 
 /* Menu_SubMenuTask view of Actor.work: cursor/dims pairs at 0x28/0x2C (the dims
  * pair heads the 12-byte block), selection state at 0x38..0x40. */
@@ -2505,7 +2499,7 @@ typedef struct {
     /* 0x28 */ s16 cursor[2];
     union {
         /* 0x2C */ s16 gridSize[2];
-        MenuSubMenuLayout blk;
+        MenuGridLayout blk;
     } u2C;
     /* 0x38 */ s16 menuId;
     /* 0x3A */ s16 selection;
@@ -2515,10 +2509,6 @@ typedef struct {
 } MenuSubMenuWork;
 
 
-/* Menu_DigiStatusTask: 12-byte window rect record (same shape as MenuSubMenuLayout). */
-typedef struct {
-    s16 field_0[6];
-} MenuDigiStatusLayout;
 
 /* Partner record reached through MenuDigiStatusWork.field_84 (Menu_Ctx->field_110). */
 typedef struct {
@@ -2536,7 +2526,7 @@ typedef struct {
     /* 0x50 */ s32 nameText;
     /* 0x54 */ s32 infoTexts;
     u8 _pad58[0x18];
-    /* 0x70 */ MenuDigiStatusLayout blk;
+    /* 0x70 */ MenuGridLayout blk;
     u8 _pad7C[0x4];
     /* 0x80 */ s32 ramp;
     /* 0x84 */ MenuDigiStatusEntry *digimon;

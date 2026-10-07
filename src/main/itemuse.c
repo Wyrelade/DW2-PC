@@ -280,7 +280,7 @@ void Menu_ItemUseTask(Actor *a0) {
     switch (a0->stateLevel0) {
     case 0:
     default:
-        *(Layout8C *)w->gridSize = *(Layout8C *)Cd_GetFileEntry(0x5130010);
+        *(MenuGridLayout *)w->gridSize = *(MenuGridLayout *)Cd_GetFileEntry(0x5130010);
         Mem_FillWordsNeg1(w->itemTexts, 0x22);
         Task_NextState0(a0);
         break;

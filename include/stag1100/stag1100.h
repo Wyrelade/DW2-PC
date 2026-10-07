@@ -125,7 +125,7 @@ typedef struct {
     u8 _pad64[0x04];
     /* 0x68 */ s16 cursor[2];
     /* 0x6C */ union {
-        Layout8C layout;
+        MenuGridLayout layout;
         s16 gridSize[2];
     } u6C;
     /* 0x78 */ s16 menuKind;
@@ -151,7 +151,7 @@ typedef struct {
     /* 0x00 */ s32 texts[4];
     /* 0x10 */ s16 cursor[2];
     /* 0x14 */ union {
-        Layout8C layout;
+        MenuGridLayout layout;
         s16 gridSize[2];
     } menu;
     /* 0x20 */ s16 mode;
@@ -186,7 +186,7 @@ typedef struct {
     /* 0x00 */ s32 texts[0x14];
     /* 0x50 */ Stg11Pos cursor;
     /* 0x54 */ union {
-        Layout8C layout;
+        MenuGridLayout layout;
         s16 grid[6];
     } menu;
     /* 0x60 */ s16 kind;
@@ -362,7 +362,7 @@ extern Stg11Icon Stg11_CardIcon2;
 extern Stg11Icon Stg11_CardIcon3;
 extern const u8 Stg11_CardTitle[32];
 extern Halves Stg11_ModeHelpPos;
-extern Layout8C Stg11_VsPartyLayout;
+extern MenuGridLayout Stg11_VsPartyLayout;
 extern Halves Stg11_VsPromptPos;
 extern Halves D_80068208;
 

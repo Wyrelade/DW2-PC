@@ -24,7 +24,7 @@ void Menu_SetDigiListMode(Actor *a, s16 mode);
 void Menu_DigiListTask(Actor *a0);
 void Menu_DigiListDraw(Actor *actor);
 
-MenuGridLayout Menu_DigiListGrid = { { 1, 1 }, { -60, -66, 0, 0x21 } };
+MenuGridLayout Menu_DigiListGrid = { { 1, 1 }, { -60, -66 }, { 0, 0x21 } };
 /* Sub tasks the digimon list opens: { task id, Task_Create argument }. */
 Pair61900 Menu_DigiListSubTasks[] = { { 0x11, 1 }, { 0x12, 1 }, { 0x10, 6 }, { 0x10, 8 } };
 Halves Menu_DigiListTitlePos[] = { { 0x0E, 0x32 }, { 0x15, 0x32 } };

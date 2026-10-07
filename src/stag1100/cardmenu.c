@@ -935,7 +935,7 @@ void Stg11_CardMenuUpdate(Actor *arg0) {
     switch (arg0->stateLevel0) {
     case 0:
     default:
-        w->u6C.layout = ((Layout8C *)Cd_GetFileEntry(0xD280005))[w->menuKind - 1];
+        w->u6C.layout = ((MenuGridLayout *)Cd_GetFileEntry(0xD280005))[w->menuKind - 1];
         Mem_FillWordsNeg1((s32 *)w, 0x1A);
         Task_NextState0(arg0);
         break;

@@ -289,7 +289,7 @@ void Menu_TopMenuTask(Actor *a0) {
         Menu_Ctx = (MenuCtx *)Mem_Alloc(0x364, 2);
         Menu_Ctx->topMenuResult = 0;
         Menu_TopMenuResult = 0;
-        *(Layout8C *)w->gridSize = *(Layout8C *)Cd_GetFileEntry(0x5130005);
+        *(MenuGridLayout *)w->gridSize = *(MenuGridLayout *)Cd_GetFileEntry(0x5130005);
         Menu_Ctx->flags = 0;
         v = Sys_State.gameMode;
         if (v / 256 != 2) {

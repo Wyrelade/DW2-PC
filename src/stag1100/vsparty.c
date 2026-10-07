@@ -6,7 +6,7 @@
 #include "stag1100/cardmenu.h"
 #include "stag1100/vsparty.h"
 
-Layout8C Stg11_VsPartyLayout = { { 1, 1, -60, -66, 0, 0x21 } };
+MenuGridLayout Stg11_VsPartyLayout = { { 1, 1 }, { -60, -66 }, { 0, 0x21 } };
 Halves Stg11_VsPromptPos = { 0x10, 0xBA };
 Halves D_80068208 = { 0x21, 0x9E };
 u16 Stg11_VsRowMasks[] = { 0x0E04, 0x0E04, 0x0C04, 0x0A04, 0x0604 };
