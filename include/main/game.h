@@ -777,7 +777,9 @@ extern char D_80010AD8[];
 extern char D_80010D18[];
 extern s32 Card_Format();
 extern s32 Card_EventToMcErr(s32 a0);
+#ifndef DW2_NATIVE /* Psy-Q libc (no game C call); the host libc declares its own */
 extern u8 *bzero(u8 *s, s32 n);
+#endif
 extern char D_80010D18[];
 extern s32 D_8004E9E0[];
 extern s32 CD_cw();

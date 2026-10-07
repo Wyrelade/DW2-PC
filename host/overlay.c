@@ -5,12 +5,22 @@
 #include "common.h"
 #include "host/host.h"
 
-/* Overlay data ranges. CMakeLists.txt relinks each overlay so its .data and .bss are the grouped
+#ifdef _WIN32
+/* Overlay data ranges (PE). CMakeLists.txt relinks each overlay so its .data and .bss are the grouped
  * sections .data$dw2ovl_<unit>_1 and _2; the markers below are _0 and _3. The linker sorts
  * .data$* by name, so [start, end) holds exactly that overlay's .data and .bss. */
 #define OVL_MARKERS(unit)                                                                \
     __attribute__((section(".data$dw2ovl_" #unit "_0"), aligned(16))) u8 Ovl_DataStart_##unit[1] = { 0 }; \
     __attribute__((section(".data$dw2ovl_" #unit "_3"))) u8 Ovl_DataEnd_##unit[1] = { 0 };
+#define OVL_START(unit) Ovl_DataStart_##unit
+#define OVL_END(unit) Ovl_DataEnd_##unit
+#else
+/* Overlay data ranges (ELF). CMakeLists.txt relinks each overlay so its .data and .bss are one
+ * section dw2ovl_<unit>; the linker defines __start_ / __stop_ around a section with a C name. */
+#define OVL_MARKERS(unit) extern u8 __start_dw2ovl_##unit[], __stop_dw2ovl_##unit[];
+#define OVL_START(unit) __start_dw2ovl_##unit
+#define OVL_END(unit) __stop_dw2ovl_##unit
+#endif
 
 OVL_MARKERS(stag0000)
 OVL_MARKERS(stag1000)
@@ -32,7 +42,7 @@ typedef struct {
 } OvlRange;
 
 /* Indexed by overlay id (Ovl_FileIds order). */
-#define OVL_RANGE(unit) { #unit, Ovl_DataStart_##unit, Ovl_DataEnd_##unit, 0 }
+#define OVL_RANGE(unit) { #unit, OVL_START(unit), OVL_END(unit), 0 }
 static OvlRange ovl_ranges[7] = {
     OVL_RANGE(stag0000), OVL_RANGE(stag4000), OVL_RANGE(stag2000), OVL_RANGE(stag1000),
     OVL_RANGE(stag3000), OVL_RANGE(stag1100), OVL_RANGE(stag3500),

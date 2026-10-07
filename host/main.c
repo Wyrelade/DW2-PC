@@ -1,7 +1,14 @@
+#ifndef _WIN32
+#define _GNU_SOURCE /* MAP_32BIT */
+#endif
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#ifndef _WIN32
+#include <sys/mman.h>
+#include <ucontext.h>
+#endif
 
 #include "common.h"
 #include <SDL3/SDL.h>
@@ -34,7 +41,8 @@
  *     --pad2-keys    port 1 counts as connected; Tab moves the keyboard between port 0 and port 1
  *                    (VS mode with one keyboard in the window)
  *     --save-dir DIR memory card images card1.mcd / card2.mcd in DIR instead of the user data
- *                    folder (%APPDATA%\DW2-Online\saves\ on Windows)
+ *                    folder (%APPDATA%\DW2-Online\saves\ on Windows,
+ *                    ~/.local/share/DW2-Online/saves/ on Linux)
  *     --fast         no 59.94 Hz pacing: one VBlank per wait, as fast as the host runs (headless
  *                    test runs; same frame sequence as a paced run without catch-up VBlanks) */
 
@@ -179,9 +187,48 @@ static int parse_press(int port, const char *arg) {
     return bits != 0 && len != 0 && Host_InputScriptAdd(port, at, bits, len);
 }
 
+static const char *pak = NULL;
+static int no_window = 0;
+
+/* Everything from the layout check on: the game's own call stack. */
+static void game_main(void) {
+    check_window();
+    Host_PakOpen(pak, no_window);
+    Host_OvlSnapshot();
+    Snd_NativeInit();
+    Host_Init(no_window);
+    printf("[host] Sys_Main\n");
+    fflush(stdout);
+    Sys_Main();
+    Host_Quit("Sys_Main returned");
+}
+
+#ifndef _WIN32
+/* Linux: the main thread's stack lies far above 4 GB, but the game keeps stack addresses in
+ * 32-bit ints (Task_Create(id, slot, (s32)&local), P1.12). The game runs on a stack mapped below
+ * 2 GB (MAP_32BIT), entered with a context switch on the same thread. */
+#define GAME_STACK_SIZE (8u << 20)
+
+static ucontext_t main_ctx, game_ctx;
+
+static void run_on_low_stack(void) {
+    void *stack = mmap(NULL, GAME_STACK_SIZE, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS | MAP_32BIT,
+                       -1, 0);
+
+    if (stack == MAP_FAILED) {
+        perror("[host] mmap game stack");
+        exit(1);
+    }
+    getcontext(&game_ctx);
+    game_ctx.uc_stack.ss_sp = stack;
+    game_ctx.uc_stack.ss_size = GAME_STACK_SIZE;
+    game_ctx.uc_link = &main_ctx;
+    makecontext(&game_ctx, game_main, 0);
+    swapcontext(&main_ctx, &game_ctx);
+}
+#endif
+
 int main(int argc, char **argv) {
-    const char *pak = NULL;
-    int no_window = 0;
     int i;
 
     for (i = 1; i < argc; i++) {
@@ -217,14 +264,10 @@ int main(int argc, char **argv) {
         }
     }
     setvbuf(stdout, NULL, _IOLBF, 1 << 16);
-    check_window();
-    Host_PakOpen(pak, no_window);
-    Host_OvlSnapshot();
-    Snd_NativeInit();
-    Host_Init(no_window);
-    printf("[host] Sys_Main\n");
-    fflush(stdout);
-    Sys_Main();
-    Host_Quit("Sys_Main returned");
+#ifdef _WIN32
+    game_main();
+#else
+    run_on_low_stack();
+#endif
     return 0;
 }

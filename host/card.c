@@ -7,7 +7,8 @@
 /* Memory card files (P1.9, user decisions 2026-10-07): one raw 128 KB PS1 card image per port,
  * card1.mcd and card2.mcd (the raw format of DuckStation / PCSX-Redux .mcd and ePSXe .mcr, so an
  * emulator card copied in is imported as is), in the user data folder: SDL_GetPrefPath ->
- * %APPDATA%\DW2-Online\saves\ on Windows. --save-dir DIR overrides the folder (dev / tests).
+ * %APPDATA%\DW2-Online\saves\ on Windows, ~/.local/share/DW2-Online/saves/ on Linux.
+ * --save-dir DIR overrides the folder (dev / tests).
  * The card file system itself (directory, blocks, libmcrd) is psyq/libmcrd.c. */
 
 static char *dir_;
