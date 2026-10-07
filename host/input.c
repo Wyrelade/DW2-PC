@@ -58,13 +58,19 @@ static struct {
 static int script_count;
 static unsigned short script_bits[PORTS];
 static int script_port1; /* a --press2 entry exists: port 1 is a scripted pad */
+static int pad2_keys;    /* --pad2-keys: port 1 connected, Tab moves the keyboard between ports */
+static int kbd_port;     /* port the keyboard drives */
 
 unsigned short Host_PadButtons(int port) {
     return port >= 0 && port < PORTS ? buttons[port] : 0;
 }
 
 int Host_PadConnected(int port) {
-    return port == 0 || (port == 1 && (pads[1] != NULL || script_port1));
+    return port == 0 || (port == 1 && (pads[1] != NULL || script_port1 || pad2_keys));
+}
+
+void Host_InputPad2Keys(void) {
+    pad2_keys = 1;
 }
 
 int Host_InputScriptAdd(int port, unsigned int at, unsigned short bits, unsigned int len) {
@@ -167,7 +173,13 @@ void Host_InputPress(const SDL_Event *e) {
     int p;
 
     if (e->type == SDL_EVENT_KEY_DOWN) {
-        pressed[0] |= map_bit(key_map, sizeof(key_map) / sizeof(key_map[0]), e->key.scancode);
+        if (e->key.scancode == SDL_SCANCODE_TAB && pad2_keys && !e->key.repeat) {
+            kbd_port ^= 1;
+            printf("[input] keyboard on port %d\n", kbd_port);
+            fflush(stdout);
+            return;
+        }
+        pressed[kbd_port] |= map_bit(key_map, sizeof(key_map) / sizeof(key_map[0]), e->key.scancode);
         return;
     }
     for (p = 0; p < PORTS; p++) {
@@ -198,7 +210,7 @@ void Host_InputUpdate(void) {
 
     for (i = 0; i < sizeof(key_map) / sizeof(key_map[0]); i++) {
         if (keys[key_map[i].key]) {
-            b[0] |= key_map[i].bit;
+            b[kbd_port] |= key_map[i].bit;
         }
     }
     for (p = 0; p < PORTS; p++) {

@@ -44,9 +44,12 @@ void Host_SaveShot(const char *dir, const char *tag);
  * bit order (PAD_* in host/host_sdl.h). Keyboard is port 0; gamepads take ports 0, 1 in order.
  * psyq/libpad.c writes them into the pad receive buffers each VBlank (P1.7). */
 unsigned short Host_PadButtons(int port);
-/* A controller on `port`: port 0 always (keyboard), port 1 while a gamepad is on it or a
- * --press2 script exists (a scripted pad). */
+/* A controller on `port`: port 0 always (keyboard), port 1 while a gamepad is on it, a --press2
+ * script exists (a scripted pad) or --pad2-keys is given. */
 int Host_PadConnected(int port);
+/* --pad2-keys dev option: port 1 counts as connected and Tab moves the keyboard between port 0
+ * and port 1 (VS mode with one keyboard, P1.20). */
+void Host_InputPad2Keys(void);
 /* --press / --press2 dev options: hold `bits` on `port` from VBlank wait `at` for `len` waits
  * (headless input tests). Host_InputScriptTick runs at each VBlank wait. Returns 0 when the table
  * is full. */

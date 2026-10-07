@@ -15,7 +15,7 @@
  *
  *   dw2 [--pak PATH] [--vblanks N] [--no-window] [--shot-dir DIR] [--shot-at N]... [--shot-vb N]...
  *       [--hold-boot N] [--press N:BUTTONS[:LEN]]... [--press2 N:BUTTONS[:LEN]]... [--save-dir DIR]
- *       [--fast]
+ *       [--fast] [--pad2-keys]
  *     --pak PATH     the data pack (default dw2.pak next to the exe, then build/native/dw2.pak;
  *                    doc/PACK_FORMAT.md), checked before anything else runs
  *     --vblanks N    quit after N VBlank waits in the Sys_FlipPending spin (0 = run on)
@@ -31,6 +31,8 @@
  *                    for headless input tests
  *     --press2 N:BUTTONS[:LEN]  the same on port 1; any --press2 makes port 1 a connected pad
  *                    (VS mode with one keyboard, headless)
+ *     --pad2-keys    port 1 counts as connected; Tab moves the keyboard between port 0 and port 1
+ *                    (VS mode with one keyboard in the window)
  *     --save-dir DIR memory card images card1.mcd / card2.mcd in DIR instead of the user data
  *                    folder (%APPDATA%\DW2-Online\saves\ on Windows)
  *     --fast         no 59.94 Hz pacing: one VBlank per wait, as fast as the host runs (headless
@@ -190,6 +192,8 @@ int main(int argc, char **argv) {
             hold_boot = (int)strtol(argv[++i], NULL, 0);
         } else if (strcmp(argv[i], "--press") == 0 && i + 1 < argc && parse_press(0, argv[++i])) {
         } else if (strcmp(argv[i], "--press2") == 0 && i + 1 < argc && parse_press(1, argv[++i])) {
+        } else if (strcmp(argv[i], "--pad2-keys") == 0) {
+            Host_InputPad2Keys();
         } else if (strcmp(argv[i], "--fast") == 0) {
             Host_ClockFast();
         } else if (strcmp(argv[i], "--save-dir") == 0 && i + 1 < argc) {
@@ -198,7 +202,7 @@ int main(int argc, char **argv) {
             fprintf(stderr,
                     "usage: %s [--pak PATH] [--vblanks N] [--no-window] [--shot-dir DIR] [--shot-at N]... "
                     "[--shot-vb N]... [--hold-boot N] [--press N:BUTTONS[:LEN]]... [--press2 N:BUTTONS[:LEN]]... "
-                    "[--save-dir DIR] [--fast]\n",
+                    "[--save-dir DIR] [--fast] [--pad2-keys]\n",
                     argv[0]);
             return 2;
         }
