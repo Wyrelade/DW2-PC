@@ -231,7 +231,7 @@ typedef struct {
     u8 _pad00[0x14];
     /* 0x14 */ s32 modelFile;       /* model file */
     u8 _pad18[0x08];
-    /* 0x20 */ Actor *parent;    /* parent */
+    /* 0x20 */ PTR32(Actor) parent; /* parent (Stg40LinkedModelWork.parent) */
     u8 _pad24[0x04];
     /* 0x28 */ s32 offsetY;
 } Stg40ChildWork;
@@ -897,7 +897,7 @@ extern void Digi_SortRoster(void);
 
 /* Task_Create arg block of task 0x207 (Stg40_ObjUpdate). */
 typedef struct {
-    /* 0x0 */ Actor *parent;
+    /* 0x0 */ PTR32(Actor) parent; /* read as Stg40LinkedModelArg */
     /* 0x4 */ s16 tableIndex;
 } Stg40Arg207;
 

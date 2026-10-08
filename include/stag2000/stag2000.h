@@ -569,7 +569,7 @@ extern void Stg20_LabDigivolve(Actor *a);
 extern void Stg20_LabDnaDigivolve(Actor *a);
 typedef struct {
     u8 _pad00[0x04];
-    /* 0x04 */ TaskEntry *menu;
+    /* 0x04 */ PTR32(TaskEntry) menu; /* the draw reads this work as Stg20ScrollWork */
     /* 0x08 */ s32 timer;
     /* 0x0C */ s32 busy;
 } Stg20CtrlWork;

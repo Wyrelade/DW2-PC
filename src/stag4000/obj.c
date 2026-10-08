@@ -176,7 +176,7 @@ void Stg40_ObjUpdate(Actor *a0) {
             if (*slot != 0) {
                 Task_SetState0((Actor *)*slot, 3);
             } else {
-                arg.parent = a0;
+                arg.parent = P32_SET(a0);
                 arg.tableIndex = w->pendingLinkedModel;
                 Task_Create(0x207, slot, (s32)&arg);
                 w->linkedModel = w->pendingLinkedModel;

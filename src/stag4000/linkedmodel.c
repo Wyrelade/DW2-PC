@@ -77,7 +77,7 @@ void Stg40_LinkedModelUpdate(Actor *a0) {
 
 void Stg40_LinkedModelDraw(Actor *a0) {
     Stg40ChildWork *w = (Stg40ChildWork *)a0->work;
-    Actor *p = w->parent;
+    Actor *p = P32(Actor, w->parent);
     Stg40Xform *x;
 
     if (((Stg40ActWork *)p->work)->drawn != 0) {
