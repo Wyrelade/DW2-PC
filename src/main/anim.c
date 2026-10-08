@@ -40,6 +40,14 @@ void Anim_SetModelAnim(Actor *a, s32 n) {
     s32 i;
     s32 k;
 
+#ifdef DW2_NATIVE
+    if (s == NULL) {
+        /* An invisible city walker never gets a model, but its update still sets an animation
+         * (Stg20_WalkerUpdate, Tamers Club). The PS1 writes the fields at address 0 (low RAM,
+         * unused by the game); do the same in the emulated RAM. */
+        s = (ActorModel *)PS1_RAM(0x80000000);
+    }
+#endif
     s->animId = n;
     s->animPos = 0;
     s->animData = 0;
