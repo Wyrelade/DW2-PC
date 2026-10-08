@@ -48,7 +48,9 @@ void Gte_Command(uint32_t op);
 /* PG.2 (no-wobble HD output): called after every RTPS with the integer SXY2 word and a float
  * projection of the same point from the unshifted MAC1..3 (x = view x * H / z + OFX, y the same,
  * before the 11-bit cut; z = view depth). Skipped when H >= 2 * z (the UNR divide saturates).
+ * clamped: IR1 / IR2 or SX2 / SY2 saturated for this point, so the integer result is not the
+ * float rounded (a vertex far off screen, e.g. a battle wall near the camera).
  * NULL by default (gte_test): the hardware view is never changed by it. */
-extern void (*Gte_PreciseHook)(int32_t sxy, double x, double y, double z);
+extern void (*Gte_PreciseHook)(int32_t sxy, double x, double y, double z, int clamped);
 
 #endif /* PSYQ_GTE_CORE_H */

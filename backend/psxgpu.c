@@ -246,6 +246,16 @@ static void make_tex(Tex *t, uint32_t tpage, uint32_t clut, int raw) {
     t->raw = raw;
 }
 
+/* A 2D sprite-like texture mapping on the integer corners: no cross terms (du / dy = dv / dx = 0). */
+static int sprite_like(const Vtx *v0, const Vtx *v1, const Vtx *v2) {
+    int64_t dudy = (int64_t)v0->u * (v2->x - v1->x) + (int64_t)v1->u * (v0->x - v2->x) +
+                   (int64_t)v2->u * (v1->x - v0->x);
+    int64_t dvdx = (int64_t)v0->v * (v2->y - v1->y) + (int64_t)v1->v * (v0->y - v2->y) +
+                   (int64_t)v2->v * (v1->y - v0->y);
+
+    return dudy == 0 && dvdx == 0;
+}
+
 static void polygon(const uint32_t *w, int op) {
     int quad = op & 0x08;
     int textured = op & 0x04;
@@ -293,19 +303,34 @@ static void polygon(const uint32_t *w, int op) {
     }
     if (PsxHd_On()) {
         /* PG.2: the precise position of each vertex the GTE projected this frame, the integer
-         * one (no depth) for the others. A vertex shared by two polygons gets the same answer
-         * in both, so edges stay closed. */
-        int precise = 0;
-        for (k = 0; k < nv && PsxHd_Pgxp(); k++) {
-            if (Pgxp_Lookup(v[k].x - st.ofs_x, v[k].y - st.ofs_y, &v[k].px, &v[k].py, &v[k].pz)) {
-                v[k].px += (float)st.ofs_x;
-                v[k].py += (float)st.ofs_y;
-                precise = 1;
+         * one (no depth) for the others. A vertex shared by two polygons normally gets the same
+         * answer in both (same point, or the same depth picks it), so edges stay closed. */
+        int px[4], py[4], hit = 0, precise;
+        float fx[4], fy[4], fz[4];
+        for (k = 0; k < nv; k++) {
+            px[k] = v[k].x - st.ofs_x;
+            py[k] = v[k].y - st.ofs_y;
+        }
+        if (PsxHd_Pgxp()) {
+            hit = Pgxp_LookupPoly(nv, px, py, fx, fy, fz);
+        }
+        for (k = 0; k < nv; k++) {
+            if (hit & (1 << k)) {
+                v[k].px = fx[k] + (float)st.ofs_x;
+                v[k].py = fy[k] + (float)st.ofs_y;
+                v[k].pz = fz[k];
             } else {
                 v[k].px = (float)v[k].x;
                 v[k].py = (float)v[k].y;
                 v[k].pz = 0;
             }
+        }
+        precise = hit != 0;
+        if (precise && textured && sprite_like(&v[0], &v[1], &v[2]) && (!quad || sprite_like(&v[1], &v[2], &v[3]))) {
+            /* a 2D sprite-like mapping keeps its integer corners. Decided for the whole quad: a
+             * floor tile whose side is vertical on screen has one sprite-like triangle, and that
+             * half drawn on integer corners left a gap along the diagonal (PG.10). */
+            precise = 0;
         }
         PsxHd_Triangle(&st, &v[0], &v[1], &v[2], gouraud, textured ? &tex : NULL, semi, (tpage >> 5) & 3, precise);
         if (quad) {

@@ -514,20 +514,15 @@ void PsxHd_Triangle(const PsxGpuState *st, const PsxVtx *v0, const PsxVtx *v1, c
     if (maxx1 - minx1 >= 1024 || maxy1 - miny1 >= 512) {
         return;
     }
-    if ((int64_t)(v1->x - v0->x) * (v2->y - v0->y) - (int64_t)(v1->y - v0->y) * (v2->x - v0->x) == 0) {
+    /* a triangle flat on its integer corners is not flat on its precise ones: draw_tri checks
+     * those (PG.10: far floor rows lost such halves, a gap along the tile diagonal) */
+    if (!precise &&
+        (int64_t)(v1->x - v0->x) * (v2->y - v0->y) - (int64_t)(v1->y - v0->y) * (v2->x - v0->x) == 0) {
         return;
     }
     s = target(st);
     if (s == NULL) {
         return;
-    }
-    if (precise && t != NULL) {
-        /* a 2D sprite-like mapping (no cross terms) keeps its integer corners */
-        int64_t dudy = (int64_t)v0->u * (v2->x - v1->x) + (int64_t)v1->u * (v0->x - v2->x) +
-                       (int64_t)v2->u * (v1->x - v0->x);
-        int64_t dvdx = (int64_t)v0->v * (v2->y - v1->y) + (int64_t)v1->v * (v0->y - v2->y) +
-                       (int64_t)v2->v * (v1->y - v0->y);
-        precise = dudy != 0 || dvdx != 0;
     }
     c = push(CMD_TRI, s, st);
     c->v[0] = *v0;

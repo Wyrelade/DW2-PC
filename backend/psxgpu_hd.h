@@ -60,7 +60,8 @@ int PsxHd_Pgxp(void);
  * surface holds it; otherwise the surfaces it overlaps are dropped and it becomes one. */
 void PsxHd_Register(int x, int y, int w, int h);
 
-/* Primitives, drawn into the surface that holds the current draw area. */
+/* Primitives, drawn into the surface that holds the current draw area. precise: use px / py /
+ * pz (decided per polygon by the caller, so both triangles of a quad agree). */
 void PsxHd_Triangle(const PsxGpuState *st, const PsxVtx *v0, const PsxVtx *v1, const PsxVtx *v2, int gouraud,
                     const PsxTex *t, int semi, int abr, int precise);
 void PsxHd_Rect(const PsxGpuState *st, int x0, int y0, int w, int h, const PsxTex *t, int u0, int v0, int r, int g,
