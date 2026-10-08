@@ -114,14 +114,12 @@ void Stg35_PartsShowGroup(Stg35PartsHandle *arg0, s32 mask) {
     GfxPart *p = (GfxPart *)Cd_GetFileEntry(arg0->load->fileId);
     GfxPart *q = p;
 
-    if (p->fileId != 0) {
-        do {
-            if (q->groupMask & mask) {
-                q->visible = 1;
-            }
-            p++;
-            q++;
-        } while (p->fileId != 0);
+    while (p->fileId != 0) {
+        if (q->groupMask & mask) {
+            q->visible = 1;
+        }
+        p++;
+        q++;
     }
 }
 
@@ -129,14 +127,12 @@ void Stg35_PartsHideGroup(Stg35PartsHandle *arg0, s32 mask) {
     GfxPart *p = (GfxPart *)Cd_GetFileEntry(arg0->load->fileId);
     GfxPart *q = p;
 
-    if (p->fileId != 0) {
-        do {
-            if (q->groupMask & mask) {
-                q->visible = 0;
-            }
-            p++;
-            q++;
-        } while (p->fileId != 0);
+    while (p->fileId != 0) {
+        if (q->groupMask & mask) {
+            q->visible = 0;
+        }
+        p++;
+        q++;
     }
 }
 
@@ -156,14 +152,12 @@ void Stg35_PartsSetPalette(Stg35PartsHandle *arg0, s32 mask, s32 v) {
     GfxPart *p = (GfxPart *)Cd_GetFileEntry(arg0->load->fileId);
     GfxPart *q = p;
 
-    if (p->fileId != 0) {
-        do {
-            if (q->groupMask & mask) {
-                q->palette = v;
-            }
-            p++;
-            q++;
-        } while (p->fileId != 0);
+    while (p->fileId != 0) {
+        if (q->groupMask & mask) {
+            q->palette = v;
+        }
+        p++;
+        q++;
     }
 }
 
@@ -171,14 +165,12 @@ void Stg35_PartsSetX(Stg35PartsHandle *arg0, s32 mask, s32 v) {
     GfxPart *p = (GfxPart *)Cd_GetFileEntry(arg0->load->fileId);
     GfxPart *q = p;
 
-    if (p->fileId != 0) {
-        do {
-            if (q->groupMask & mask) {
-                q->x = v;
-            }
-            p++;
-            q++;
-        } while (p->fileId != 0);
+    while (p->fileId != 0) {
+        if (q->groupMask & mask) {
+            q->x = v;
+        }
+        p++;
+        q++;
     }
 }
 
@@ -186,14 +178,12 @@ void Stg35_PartsSetY(Stg35PartsHandle *arg0, s32 mask, s32 v) {
     GfxPart *p = (GfxPart *)Cd_GetFileEntry(arg0->load->fileId);
     GfxPart *q = p;
 
-    if (p->fileId != 0) {
-        do {
-            if (q->groupMask & mask) {
-                q->y = v;
-            }
-            p++;
-            q++;
-        } while (p->fileId != 0);
+    while (p->fileId != 0) {
+        if (q->groupMask & mask) {
+            q->y = v;
+        }
+        p++;
+        q++;
     }
 }
 

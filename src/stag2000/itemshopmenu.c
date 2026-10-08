@@ -13,10 +13,9 @@ TaskDesc Stg20_ItemShopMenuDesc = {
 const Halves Stg20_ShopMenuBuyPos = { 0x1B, 0x17 };
 const Halves Stg20_ShopMenuSellPos = { 0x3F, 0x17 };
 void Stg20_ItemShopMenuUpdate(Actor *a) {
-    s32 state = a->stateLevel0;
     s32 *w = (s32 *)a->work;
 
-    switch (state) {
+    switch (a->stateLevel0) {
     case 0:
         Mem_FillWordsNeg1(w, 2);
         Text_OpenById(w, 0x12B, 0, Stg20_ShopMenuBuyPos);
@@ -29,19 +28,17 @@ void Stg20_ItemShopMenuUpdate(Actor *a) {
             s32 *p = &Stg20_MenuState.menuChoice;
 
             if (Pad_State[0].right > 0) {
-                if (*p != 0) {
-                    break;
-                }
-                *p = state;
-                Snd_PlayById(0xC, 0);
-            } else if (Pad_State[0].left > 0) {
                 if (*p == 0) {
-                    break;
+                    *p = a->stateLevel0;
+                    Snd_PlayById(0xC, 0);
                 }
-                *p -= 1;
-                Snd_PlayById(0xC, 0);
+            } else if (Pad_State[0].left > 0) {
+                if (*p != 0) {
+                    *p -= 1;
+                    Snd_PlayById(0xC, 0);
+                }
             } else if (Pad_State[0].triangle > 0) {
-                p[-18] = state;
+                p[-18] = a->stateLevel0;
                 Snd_PlayById(0xB, 0);
                 Task_SetState0(a, 3);
             } else if (Pad_State[0].cross > 0) {

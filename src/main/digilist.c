@@ -647,11 +647,7 @@ void Menu_DigiListDraw(Actor *actor) {
         return;
     }
     p = (s32 *)Cd_GetFileEntry(0x513001B);
-    if (*p == 0) {
-        return;
-    }
-    i = 0;
-    do {
+    for (i = 0; p[i] != 0; i++) {
         obj = Cd_GetFileEntry(p[i]);
         switch (i) {
         case 0:
@@ -718,6 +714,5 @@ void Menu_DigiListDraw(Actor *actor) {
         }
         Gfx_SetPartsScale(obj, 0x1000, w->scale);
         Gfx_DrawParts((s32)obj);
-        i++;
-    } while (p[i] != 0);
+    }
 }
