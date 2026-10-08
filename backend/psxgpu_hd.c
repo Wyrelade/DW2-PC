@@ -545,6 +545,25 @@ static int64_t edge_step(const Edge *e) {
     return -(e->dy << SUB);
 }
 
+/* PG.10 b2: the GPU drops triangles 1024 or more columns wide or 512 or more rows tall. Battle
+ * walls next to the camera (interlaced 480-row screen) have such triangles, with GTE-saturated
+ * corners; retail loses them too, but only a small corner of them is inside the 4:3 picture,
+ * while the 16:9 sides show the holes. An HD surface draws such a triangle when all three corners
+ * are precise (true positions, saturated ones included) and the triangle is still of a sane size;
+ * the 1x VRAM keeps the hardware rule. */
+static int precise_fits(const PsxVtx *v0, const PsxVtx *v1, const PsxVtx *v2) {
+    float minx, maxx, miny, maxy;
+
+    if (v0->pz <= 0 || v1->pz <= 0 || v2->pz <= 0) {
+        return 0;
+    }
+    minx = fminf(v0->px, fminf(v1->px, v2->px));
+    maxx = fmaxf(v0->px, fmaxf(v1->px, v2->px));
+    miny = fminf(v0->py, fminf(v1->py, v2->py));
+    maxy = fmaxf(v0->py, fmaxf(v1->py, v2->py));
+    return maxx - minx < 16384.0f && maxy - miny < 16384.0f;
+}
+
 void PsxHd_Triangle(const PsxGpuState *st, const PsxVtx *v0, const PsxVtx *v1, const PsxVtx *v2, int gouraud,
                     const PsxTex *t, int semi, int abr, int precise) {
     int minx1, maxx1, miny1, maxy1;
@@ -560,7 +579,7 @@ void PsxHd_Triangle(const PsxGpuState *st, const PsxVtx *v0, const PsxVtx *v1, c
     miny1 = v2->y < miny1 ? v2->y : miny1;
     maxy1 = v0->y > v1->y ? v0->y : v1->y;
     maxy1 = v2->y > maxy1 ? v2->y : maxy1;
-    if (maxx1 - minx1 >= 1024 || maxy1 - miny1 >= 512) {
+    if ((maxx1 - minx1 >= 1024 || maxy1 - miny1 >= 512) && !(precise && precise_fits(v0, v1, v2))) {
         return;
     }
     /* a triangle flat on its integer corners is not flat on its precise ones: draw_tri checks
