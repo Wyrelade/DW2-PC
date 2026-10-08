@@ -332,7 +332,7 @@ void Stg35_BattleHudTask(Actor *arg0) {
                         Task_NextState3(arg0);
                         arg0->elapsed = 0;
                     } else if (w->gaugeSkills[5 - w->gaugeLevel] != 0) {
-                        goto done;
+                        Task_SetState1(arg0, 1);
                     } else {
                         w->gaugeDone = 1;
                         Task_NextState3(arg0);
@@ -351,7 +351,7 @@ void Stg35_BattleHudTask(Actor *arg0) {
                         Stg35_PartsSetPalette(base, 0x40, Math_PingPongRange(arg0->elapsed, 4, 0, 7));
                         if (arg0->elapsed >= 0xB4) {
                             Stg35_PartsHideGroup(base, 0x40);
-                            goto done;
+                            Task_SetState1(arg0, 1);
                         }
                         break;
                     }
@@ -367,7 +367,6 @@ void Stg35_BattleHudTask(Actor *arg0) {
                         Stg35_PartsSetPalette(base, 0x80, Math_PingPongRange(arg0->elapsed, 4, 0, 7));
                         if (arg0->elapsed >= 0xB4) {
                             Stg35_PartsHideGroup(base, 0x80);
-                        done:
                             Task_SetState1(arg0, 1);
                         }
                         break;

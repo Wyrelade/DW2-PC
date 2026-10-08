@@ -177,19 +177,15 @@ extern void Gfx_HidePartsByMask(GfxPartMaskView *, s32);
 void Menu_SubMenuDraw(Actor *actor) {
     ActorWork *w = actor->work;
     s32 *p;
-    s32 *list;
+    s32 i;
     void *obj;
 
     if (w->subMenuRamp == 0) {
         return;
     }
     p = (s32 *)Cd_GetFileEntry(0x5130009);
-    if (*p == 0) {
-        return;
-    }
-    list = p;
-    do {
-        obj = Cd_GetFileEntry(*list);
+    for (i = 0; p[i] != 0; i++) {
+        obj = Cd_GetFileEntry(p[i]);
         if (w->field_2C != 0 && w->optionsHidden == 0) {
             Menu_SetPartsGridPos(obj, 2, &w->field_28, &w->field_2C);
             Gfx_SetPartsPalette(obj, 2, (actor->elapsed >> 2) & 3);
@@ -197,8 +193,7 @@ void Menu_SubMenuDraw(Actor *actor) {
         } else {
             Gfx_HidePartsByMask(obj, 2);
         }
-        list++;
         Gfx_SetPartsScale(obj, 0x1000, w->subMenuRamp);
         Gfx_DrawParts((s32)obj);
-    } while (*list != 0);
+    }
 }

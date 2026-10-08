@@ -344,12 +344,8 @@ void Stg00_DigiViewTask(Actor *arg0)
           }
           while (j < count);
         }
-        do
-        {
-          Stg00_DigiViewSpawnModel(arg0);
-          goto afterD700;
-        }
-        while (0);
+        Stg00_DigiViewSpawnModel(arg0);
+        goto afterD700;
         findFirstSection:
         s1 = (Actor *) Task_FindFirst(0x105, -1, -1);
 
@@ -382,8 +378,6 @@ void Stg00_DigiViewTask(Actor *arg0)
           Task_SetState1(arg0, 0);
         }
         afterD700:
-        ;
-
         ;
       }
         break;

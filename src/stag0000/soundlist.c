@@ -94,10 +94,9 @@ s32 Stg00_CountSoundBanks(void) {
 }
 
 s32 Stg00_CountBankSounds(s32 arg0) {
-    u8 **p = Stg00_SoundBanks[arg0];
     s32 i;
 
-    for (i = 0; p[i] != NULL; i++) {
+    for (i = 0; Stg00_SoundBanks[arg0][i] != NULL; i++) {
     }
     return i - 1;
 }

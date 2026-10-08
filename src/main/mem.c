@@ -62,14 +62,12 @@ void Mem_Free(ActorWork *arg0) {
 void Mem_FreeTag(s32 tag) {
     MemBlock *b = Mem_HeapHead;
 
-    if (b->tag != 1) {
-        do {
+        while (b->tag != 1) {
             if (b->tag == tag) {
                 Mem_Free((ActorWork *)(b + 1));
             }
             b = b->next;
-        } while (b->tag != 1);
-    }
+        } 
 }
 
 void Mem_InitHeap(MemBlock *heap, s32 size) {
@@ -93,25 +91,23 @@ s32 Mem_TryAlloc(s32 arg0, s32 tag) {
     u32 avail;
     u32 lim = size + 0x14;
 
-    if (b->tag != 1) {
-        do {
-            if (b->tag == 0) {
-                avail = (s32)b->next - (s32)b - 0xC;
-                if (avail >= size) {
-                    if (lim < avail) {
-                        n = (MemBlock *)((u8 *)b + size + 0xC);
-                        n->prev = b;
-                        n->next = b->next;
-                        n->tag = 0;
-                        b->next->prev = n;
-                        b->next = n;
-                    }
-                    b->tag = tag;
-                    return (s32)(b + 1);
+    while (b->tag != 1) {
+        if (b->tag == 0) {
+            avail = (s32)b->next - (s32)b - 0xC;
+            if (avail >= size) {
+                if (lim < avail) {
+                    n = (MemBlock *)((u8 *)b + size + 0xC);
+                    n->prev = b;
+                    n->next = b->next;
+                    n->tag = 0;
+                    b->next->prev = n;
+                    b->next = n;
                 }
+                b->tag = tag;
+                return (s32)(b + 1);
             }
-            b = b->next;
-        } while (b->tag != 1);
+        }
+        b = b->next;
     }
     return 0;
 }
@@ -139,11 +135,9 @@ void Mem_Zero(void *a0, s32 a1) {
 void Mem_SumSizesByTag(s32 *tbl) {
     MemBlock *b = Mem_HeapHead;
 
-    if (b->tag != 1) {
-        do {
-            tbl[b->tag] += (s32)b->next - (s32)b;
-            b = b->next;
-        } while (b->tag != 1);
+    while (b->tag != 1) {
+        tbl[b->tag] += (s32)b->next - (s32)b;
+        b = b->next;
     }
 }
 
