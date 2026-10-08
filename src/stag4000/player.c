@@ -100,69 +100,71 @@ s32 Stg40_PlayerInteract(Actor *a0)
         }
         Snd_PlayById(0x2E, 0);
         Stg40_PlayerAnimThenMsg(a0, 0x2D, 0x28, 6, snd2, 0, 0);
-        goto end;
-    }
-    child = found->actor;
-    Stg40_RootState->targetActor = child;
-    Stg40_RootState->targetEnt = found;
-    switch (found->kind) {
-    default:
-        Snd_PlayById(0x2E, 0);
-        Stg40_PlayerAnimThenMsg(a0, 0x2D, 0x28, 6, 0x1FD000F, 0, 0);
-        return -1;
-    case 2:
-    case 3:
-        Snd_PlayById(0x2E, 0);
-        Stg40_PlayerAnimThenMsg(a0, 0x2D, 0x28, 6, (found->kind == 2) ? 0x1FD0195 : 0x1FD0196, 0, 0);
-        return -1;
-    case 4:
-        Task_SetState1(a0, 0x13);
-        return -1;
-    case 8:
-        snd = -1;
-        if (!(found->flags & 0x1000)) {
-            break;
-        }
-        r = Stg40_GetBeetlePart(6);
-        if (r == -1) {
-            snd = 0x1FD0019;
-        } else if (r == 0) {
-            snd = 0x1FD001A;
-        } else {
-            lim = found->params[1];
-            if (Stg40_GetPartLevel(6) < lim) {
-                snd = 0x1FD0018;
+    } else {
+        child = found->actor;
+        Stg40_RootState->targetActor = child;
+        Stg40_RootState->targetEnt = found;
+        switch (found->kind) {
+        default:
+            Snd_PlayById(0x2E, 0);
+            Stg40_PlayerAnimThenMsg(a0, 0x2D, 0x28, 6, 0x1FD000F, 0, 0);
+            return -1;
+        case 2:
+        case 3:
+            Snd_PlayById(0x2E, 0);
+            Stg40_PlayerAnimThenMsg(a0, 0x2D, 0x28, 6, (found->kind == 2) ? 0x1FD0195 : 0x1FD0196, 0, 0);
+            return -1;
+        case 4:
+            Task_SetState1(a0, 0x13);
+            return -1;
+        case 8:
+            snd = -1;
+            if (!(found->flags & 0x1000)) {
+                break;
             }
-        }
-        if (snd != -1) {
-            Stg40_PlayerShowMsg(a0, 0x28, 1, snd, 0, 0);
+            r = Stg40_GetBeetlePart(6);
+            if (r == -1) {
+                snd = 0x1FD0019;
+            } else if (r == 0) {
+                snd = 0x1FD001A;
+            } else {
+                lim = found->params[1];
+                if (Stg40_GetPartLevel(6) < lim) {
+                    snd = 0x1FD0018;
+                }
+            }
+            if (snd != -1) {
+                Stg40_PlayerShowMsg(a0, 0x28, 1, snd, 0, 0);
+            } else {
+                Task_SetState1(a0, 0xE);
+            }
+            return -1;
+        case 6:
+        case 7:
+        case 9:
+        case 10:
+        case 11:
+        case 12:
+            idx = found->kind - 6;
+            if (!(found->flags & 0x1000)) {
+                Task_SetState1(a0, 0xC);
+                goto end;
+            } else {
+                Item_CheckId(0);
+                r3 = Stg40_ListUsableItems(&Stg40_ObstacleItemReqs[idx]);
+                if (r3 != 0) {
+                    Stg40_PlayerShowMsg(a0, 0x28, 1, r3, 0, 0);
+                } else {
+                    Task_SetState1(a0, 0x11);
+                    Stg40_RootState->automapMode = 0;
+                    Stg40_RootState->giftMenu = 0;
+                    Stg40_RootState->selItem = Stg40_RootState->itemIds[0];
+                }
+            }
             goto end;
-        }
-        Task_SetState1(a0, 0xE);
-        return -1;
-    case 6:
-    case 7:
-    case 9:
-    case 10:
-    case 11:
-    case 12:
-        idx = found->kind - 6;
-        if (!(found->flags & 0x1000)) {
-            break;
-        }
-        Item_CheckId(0);
-        r3 = Stg40_ListUsableItems(&Stg40_ObstacleItemReqs[idx]);
-        if (r3 != 0) {
-            Stg40_PlayerShowMsg(a0, 0x28, 1, r3, 0, 0);
-            goto end;
-        }
-        Task_SetState1(a0, 0x11);
-        Stg40_RootState->automapMode = 0;
-        Stg40_RootState->giftMenu = 0;
-        Stg40_RootState->selItem = Stg40_RootState->itemIds[0];
-        goto end;
+        } 
+        Task_SetState1(a0, 0xC);
     }
-    Task_SetState1(a0, 0xC);
 end:
     return -1;
 }
@@ -906,21 +908,22 @@ void Stg40_PlayerShootGift(Actor *actor) {
             self->heading = self->targetHeading;
         } else {
             Stg40_ObjSetAnim(actor, 0x28);
-            goto next;
+            Task_NextState2(actor);
         }
         break;
     case 2:
-        if (actor->stateLevel4++ < 0x10) {
-            break;
+        if (actor->stateLevel4++ > 15) {
+            Snd_PlayById(0x2D, 0);
+            Stg40_ObjSetAnim(actor, 0x2A);
+            Task_NextState2(actor);
         }
-        Snd_PlayById(0x2D, 0);
-        Stg40_ObjSetAnim(actor, 0x2A);
-        goto next;
+        break;
     case 3:
-        if (actor->stateLevel4++ < 6) {
-            break;
+        if (actor->stateLevel4++ >= 6) {
+            Task_NextState2(actor);
         }
-        goto next;
+        
+        break;
     case 4: {
         s32 ax;
         s32 ay;
@@ -981,16 +984,15 @@ void Stg40_PlayerShootGift(Actor *actor) {
         }
         Stg40_MsgWinOpen(1, msg, Digi_GetDefaultName(info->digiIds[0]),
                       Item_GetNameText(Stg40_RootState->selItem));
-        goto next;
+        Task_NextState2(actor);
+        break;
     }
     case 6:
-        if (Stg40_MsgWinCloseIfDone(1) != 1) {
-            break;
+        if (Stg40_MsgWinCloseIfDone(1) == 1) {
+            Stg40_ScrollToFollow(&self->loc, 8);
+            Task_SetState0((Actor *)Stg40_RootChildren->enemyInfoTask, 2);
+            Task_NextState2(actor);
         }
-        Stg40_ScrollToFollow(&self->loc, 8);
-        Task_SetState0((Actor *)Stg40_RootChildren->enemyInfoTask, 2);
-    next:
-        Task_NextState2(actor);
         break;
     case 7:
         if (Stg40_RootChildren->enemyInfoTask == 0) {

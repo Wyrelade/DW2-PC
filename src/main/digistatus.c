@@ -184,40 +184,32 @@ extern s32 GsSetRefView2(GsRVIEW2 *);
 void Menu_DigiStatusDraw(Actor *actor) {
     Wk19214 *work;
     Rec19214 *rec;
-    s32 *list;
+    int i;
     s32 *p;
     void *obj;
     Nd19214 *node;
     GsRVIEW2 ls;
 
     work = (Wk19214 *)actor->work;
-    if (work->ramp == 0) {
-        goto Ltail;
+    if (work->ramp) {
+        p = (s32 *)Cd_GetFileEntry(0x5130021);
+        rec = P32(Rec19214, work->digimon);
+        for (i = 0; p[i] != 0; i++) {
+            obj = Cd_GetFileEntry(p[i]);
+            Gfx_SetPartsNumber(obj, 0x2, 3, rec->maxHp);
+            Gfx_SetPartsNumber(obj, 0x4, 3, rec->hp);
+            Gfx_SetPartsNumber(obj, 0x8, 3, rec->maxMp);
+            Gfx_SetPartsNumber(obj, 0x10, 3, rec->mp);
+            Gfx_SetPartsNumber(obj, 0x20, 2, rec->level);
+            Gfx_SetPartsNumber(obj, 0x40, 3, rec->attack);
+            Gfx_SetPartsNumber(obj, 0x80, 3, rec->defense);
+            Gfx_SetPartsNumber(obj, 0x100, 3, rec->speed);
+            Gfx_SetPartsNumber(obj, 0x200, 8, rec->exp);
+            Gfx_SetPartsNumber(obj, 0x400, 8, Digi_GetExpToNextLevel(rec->level, rec->maxLevel, rec->exp));
+            Gfx_SetPartsScale((GfxPartScaleView *)obj, 0x1000, work->ramp);
+            Gfx_DrawParts((s32)obj);
+        }
     }
-    p = (s32 *)Cd_GetFileEntry(0x5130021);
-    rec = P32(Rec19214, work->digimon);
-    if (*p == 0) {
-        goto Ltail;
-    }
-    list = p;
-    do {
-        obj = Cd_GetFileEntry(*list);
-        list++;
-        Gfx_SetPartsNumber(obj, 0x2, 3, rec->maxHp);
-        Gfx_SetPartsNumber(obj, 0x4, 3, rec->hp);
-        Gfx_SetPartsNumber(obj, 0x8, 3, rec->maxMp);
-        Gfx_SetPartsNumber(obj, 0x10, 3, rec->mp);
-        Gfx_SetPartsNumber(obj, 0x20, 2, rec->level);
-        Gfx_SetPartsNumber(obj, 0x40, 3, rec->attack);
-        Gfx_SetPartsNumber(obj, 0x80, 3, rec->defense);
-        Gfx_SetPartsNumber(obj, 0x100, 3, rec->speed);
-        Gfx_SetPartsNumber(obj, 0x200, 8, rec->exp);
-        Gfx_SetPartsNumber(obj, 0x400, 8, Digi_GetExpToNextLevel(rec->level, rec->maxLevel, rec->exp));
-        Gfx_SetPartsScale((GfxPartScaleView *)obj, 0x1000, work->ramp);
-        Gfx_DrawParts((s32)obj);
-    } while (*list != 0);
-
-Ltail:
     work->field_148 = 0;
     RotMatrixYXZ(&work->rot, &work->coordMatrix);
     work->coordTx = work->posX;

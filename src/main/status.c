@@ -105,7 +105,6 @@ void Menu_StatusTask(Actor *a0) {
 void Menu_StatusDraw(Actor *actor) {
     MenuStatusWork *w = (MenuStatusWork *)actor->work;
     s32 *p;
-    s32 *list;
     s32 i;
     GfxPart *obj;
     DigiRosterEntry *rec;
@@ -114,13 +113,8 @@ void Menu_StatusDraw(Actor *actor) {
         return;
     }
     p = (s32 *)Cd_GetFileEntry(0x513000E);
-    if (*p == 0) {
-        return;
-    }
-    i = 0;
-    list = p;
-    do {
-        obj = (GfxPart *)Cd_GetFileEntry(*list);
+    for (i = 0; p[i] != 0; i++) {
+        obj = (GfxPart *)Cd_GetFileEntry(p[i]);
         if (i == 0) {
             Gfx_SetPartsNumber(obj, 2, 8, Save_GameStatePtr->bits);
             Gfx_SetPartsNumber(obj, 4, 4, Save_GameStatePtr->maxHp);
@@ -139,8 +133,6 @@ void Menu_StatusDraw(Actor *actor) {
             Gfx_HidePartsByMask(obj, 0xFFFF);
         }
         Gfx_SetPartsScale((GfxPartScaleView *)obj, 0x1000, w->scale);
-        list++;
         Gfx_DrawParts((s32)obj);
-        i++;
-    } while (*list != 0);
+    }
 }

@@ -108,44 +108,38 @@ void Menu_SetPartsGridPos(void *arg0, s32 mask, s32 *arg2, s16 *arg3) {
     s32 x = arg3[2] + ((s16 *)arg2)[0] * arg3[4];
     s32 y = arg3[3] + ((s16 *)arg2)[1] * arg3[5];
 
-    if (p->fileId != 0) {
-        do {
-            if (q->groupMask & mask) {
-                q->x = x;
-                q->y = y;
-            }
-            p++;
-            q++;
-        } while (p->fileId != 0);
+    while (p->fileId != 0) {
+        if (q->groupMask & mask) {
+            q->x = x;
+            q->y = y;
+        }
+        p++;
+        q++;
     }
 }
 
 void Gfx_SetPartsPalette(GfxPart *p, s32 mask, s32 v) {
     GfxPart *q = p;
 
-    if (p->fileId != 0) {
-        do {
-            if (q->groupMask & mask) {
-                q->palette = v;
-            }
-            p++;
-            q++;
-        } while (p->fileId != 0);
+    while (p->fileId != 0) {
+        if (q->groupMask & mask) {
+            q->palette = v;
+        }
+        p++;
+        q++;
     }
 }
 
 void Menu_SetPartsPos(GfxPart *p, s32 mask, u16 *xy) {
     GfxPart *q = p;
 
-    if (p->fileId != 0) {
-        do {
-            if (q->groupMask & mask) {
-                q->x = xy[0];
-                q->y = xy[1];
-            }
-            p++;
-            q++;
-        } while (p->fileId != 0);
+    while (p->fileId != 0) {
+        if (q->groupMask & mask) {
+            q->x = xy[0];
+            q->y = xy[1];
+        }
+        p++;
+        q++;
     }
 }
 
@@ -157,14 +151,12 @@ s32 Menu_BlinkOrHideParts(GfxPart *p, s32 mask, s32 n) {
         r = mask;
     } else {
         q = p;
-        if (p->fileId != 0) {
-            do {
-                if (q->groupMask & mask) {
-                    q->palette = (Menu_Ctx->elapsed >> 2) & 3;
-                }
-                p++;
-                q++;
-            } while (p->fileId != 0);
+        while (p->fileId != 0) {
+            if (q->groupMask & mask) {
+                q->palette = (Menu_Ctx->elapsed >> 2) & 3;
+            }
+            p++;
+            q++;
         }
     }
     return r;

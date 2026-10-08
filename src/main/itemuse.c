@@ -405,49 +405,43 @@ void Menu_ItemUseDraw(Actor *actor) {
     s32 k;
     s32 mask;
 
-    if (w->useRamp == 0) {
-        return;
-    }
-    p = (s32 *)Cd_GetFileEntry(0x5130012);
-    if (*p == 0) {
-        return;
-    }
-    i = 0;
-    do {
-        obj = Cd_GetFileEntry(p[i]);
-        mask = 1 << i;
-        if (((s32 *)Cd_GetFileEntry(0x5130013))[w->useMode - 1] & mask) {
-            switch (i) {
-            case 0:
-            if (w->useMode == 1 || w->useMode == 3) {
-                Menu_SetPartsGridPos(obj, 2, &w->useCursor, &w->useGridSize);
-                Gfx_SetPartsPalette(obj, 2, (actor->elapsed >> 2) & 3);
-                Gfx_HidePartsByMask(obj, 0);
-            } else {
-                Gfx_HidePartsByMask(obj, 2);
-            }
-            Gfx_SetPartsNumber(obj, 4, 4, Save_GameStatePtr->maxHp);
-            Gfx_SetPartsNumber(obj, 8, 4, Save_GameStatePtr->hp);
-            Gfx_SetPartsNumber(obj, 0x10, 4, Save_GameStatePtr->maxMp);
-            Gfx_SetPartsNumber(obj, 0x20, 4, Save_GameStatePtr->mp);
-                break;
-            case 1:
-            case 3:
-                k = 0;
-                if (w->useMode == 5) {
-                    k = -1;
-                } else if (i == 3) {
-                    k = 4;
+    if (w->useRamp) {
+        p = (s32 *)Cd_GetFileEntry(0x5130012);
+        for (i = 0; p[i] != 0; i++) {
+            obj = Cd_GetFileEntry(p[i]);
+            mask = 1 << i;
+            if (((s32 *)Cd_GetFileEntry(0x5130013))[w->useMode - 1] & mask) {
+                switch (i) {
+                case 0:
+                    if (w->useMode == 1 || w->useMode == 3) {
+                        Menu_SetPartsGridPos(obj, 2, &w->useCursor, &w->useGridSize);
+                        Gfx_SetPartsPalette(obj, 2, (actor->elapsed >> 2) & 3);
+                        Gfx_HidePartsByMask(obj, 0);
+                    } else {
+                        Gfx_HidePartsByMask(obj, 2);
+                    }
+                    Gfx_SetPartsNumber(obj, 4, 4, Save_GameStatePtr->maxHp);
+                    Gfx_SetPartsNumber(obj, 8, 4, Save_GameStatePtr->hp);
+                    Gfx_SetPartsNumber(obj, 0x10, 4, Save_GameStatePtr->maxMp);
+                    Gfx_SetPartsNumber(obj, 0x20, 4, Save_GameStatePtr->mp);
+                    break;
+                case 1:
+                case 3:
+                    k = 0;
+                    if (w->useMode == 5) {
+                        k = -1;
+                    } else if (i == 3) {
+                        k = 4;
+                    }
+                    Gfx_HidePartsByMask(obj, k);
+                    break;
+                default:
+                    Gfx_HidePartsByMask(obj, 0);
+                    break;
                 }
-                Gfx_HidePartsByMask(obj, k);
-                break;
-            default:
-                Gfx_HidePartsByMask(obj, 0);
-                break;
+                Gfx_SetPartsScale(obj, 0x1000, w->useRamp);
+                Gfx_DrawParts((s32)obj);
             }
-            Gfx_SetPartsScale(obj, 0x1000, w->useRamp);
-            Gfx_DrawParts((s32)obj);
         }
-        i++;
-    } while (p[i] != 0);
+    }
 }

@@ -9,16 +9,13 @@ void Bug_CompactMemBugs(void) {
     s32 j;
     s32 v;
 
-    i = 0;
-    j = i;
-    do {
+    for (i = 0, j = 0; i < 12; i++) {
         v = Dung_StatePtr->status.memBugLevels[i];
         Dung_StatePtr->status.memBugLevels[i] = 0;
         if (v != 0) {
             Dung_StatePtr->status.memBugLevels[j++] = v;
         }
-        i++;
-    } while (i < 12);
+    }
 }
 
 s32 *Item_GetEffectRec(s32 id) {

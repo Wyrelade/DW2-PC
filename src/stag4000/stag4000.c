@@ -188,15 +188,13 @@ void Stg40_SetupStage(Actor *a0) {
     cur = slots + 7;
     j = 0;
     e = Dung_StatePtr->ents;
-    if (Dung_StatePtr->entCount > 0) {
-        do {
-            if (e->flags & 0x8000) {
-                Task_Create(0x204, cur, (s32)e);
-                cur++;
+    while (j < Dung_StatePtr->entCount) {
+        if (e->flags & 0x8000) {
+            Task_Create(0x204, cur, (s32)e);
+            cur++;
             }
-            e++;
-            j++;
-        } while (j < Dung_StatePtr->entCount);
+        e++;
+        j++;
     }
     Task_Create(0x202, cur, (s32)&Dung_StatePtr->floorTexId0);
     cur++;
