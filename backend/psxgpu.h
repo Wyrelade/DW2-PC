@@ -41,4 +41,8 @@ int PsxGpu_ReadDisplay(uint32_t *out, int *w, int *h);
  * (the caller shows the 1x picture then). */
 int PsxGpu_ReadDisplayHd(uint32_t *out, int *w, int *h);
 
+/* GPU renderer (PG.10b): the display area's HD surface texture and the picture's rect in it
+ * (backend/psxgpu_hd.h PsxHd_DisplayTexture); 0 as for PsxGpu_ReadDisplayHd. */
+int PsxGpu_DisplayTexture(void **tex, int *tw, int *th, int *sx, int *sy, int *sw, int *sh);
+
 #endif /* BACKEND_PSXGPU_H */

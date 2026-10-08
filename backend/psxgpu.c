@@ -391,6 +391,9 @@ void PsxGpu_Fill(int x, int y, int w, int h, uint32_t rgb24) {
     uint16_t c = (uint16_t)(((rgb24 >> 3) & 31) | (((rgb24 >> 11) & 31) << 5) | (((rgb24 >> 19) & 31) << 10));
     int i, j;
 
+    if (PsxHd_On()) {
+        PsxHd_Sync();
+    }
     for (j = 0; j < h; j++) {
         uint16_t *row = PsxGpu_Vram[(y + j) & (PSXGPU_VRAM_H - 1)];
         for (i = 0; i < w; i++) {
@@ -405,6 +408,9 @@ void PsxGpu_Fill(int x, int y, int w, int h, uint32_t rgb24) {
 void PsxGpu_LoadImage(int x, int y, int w, int h, const uint16_t *src) {
     int i, j;
 
+    if (PsxHd_On()) {
+        PsxHd_Sync();
+    }
     for (j = 0; j < h; j++) {
         uint16_t *row = PsxGpu_Vram[(y + j) & (PSXGPU_VRAM_H - 1)];
         for (i = 0; i < w; i++) {
@@ -433,6 +439,9 @@ void PsxGpu_MoveImage(int sx, int sy, int dx, int dy, int w, int h) {
 
     if (w > PSXGPU_VRAM_W) {
         w = PSXGPU_VRAM_W;
+    }
+    if (PsxHd_On()) {
+        PsxHd_Sync();
     }
     /* Row order chosen so an overlapping copy reads each row before it is overwritten. */
     for (j = 0; j < h; j++) {
@@ -713,4 +722,14 @@ int PsxGpu_ReadDisplayHd(uint32_t *out, int *pw, int *ph) {
         return 0;
     }
     return PsxHd_ReadDisplay(disp.x, disp.y, w, h, out, pw, ph);
+}
+
+int PsxGpu_DisplayTexture(void **tex, int *tw, int *th, int *sx, int *sy, int *sw, int *sh) {
+    int w = disp.w < 1 ? 1 : disp.w > 640 ? 640 : disp.w;
+    int h = disp.h < 1 ? 1 : disp.h > 480 ? 480 : disp.h;
+
+    if (!disp.on || disp.rgb24) {
+        return 0;
+    }
+    return PsxHd_DisplayTexture(disp.x, disp.y, w, h, tex, tw, th, sx, sy, sw, sh);
 }

@@ -8,6 +8,7 @@
 
 #include "backend/psxgpu.h"
 #include "backend/psxgpu_hd.h"
+#include "backend/psxgpu_hd_int.h"
 
 /* HD surfaces (PG.1). A surface is one draw / display buffer rect of VRAM kept at S x S pixels
  * per VRAM pixel in the PS1 format (15-bit BGR + mask bit). Primitives are drawn into it at
@@ -31,11 +32,8 @@
 #define MAX_SURF 4
 #define SUB 4
 
-typedef struct {
-    int x, y, w, h; /* VRAM rect */
-    int m;          /* 16:9 margin on each side, VRAM pixels */
-    uint16_t *px;   /* (w + 2m)*S x h*S, NULL until used */
-} Surf;
+typedef PsxHdSurf Surf;
+typedef PsxHdCmd Cmd;
 
 #define OX(s) ((s)->x - (s)->m)                      /* VRAM x of surface column 0 */
 #define PITCH(s) (((s)->w + 2 * (s)->m) * scale)
@@ -43,6 +41,7 @@ typedef struct {
 static Surf surf[MAX_SURF];
 static int nsurf;
 static int scale = 1;
+static int gpu; /* PG.10b: surfaces and drawing on the GPU (backend/psxgpu_hw.c) */
 static int wide;                    /* 16:9 on */
 static int frame_wide, pillar_next; /* this frame draws into the margins / next frame does not */
 static unsigned serial;
@@ -58,8 +57,17 @@ static const int dither_tbl[4][4] = {
 
 /* ---- surfaces ---- */
 
+static void free_surf(Surf *s) {
+    free(s->px);
+    s->px = NULL;
+    if (s->tex != NULL) {
+        PsxHw_Release(s->tex);
+        s->tex = NULL;
+    }
+}
+
 static void drop(int i) {
-    free(surf[i].px);
+    free_surf(&surf[i]);
     memmove(&surf[i], &surf[i + 1], (size_t)(nsurf - i - 1) * sizeof(Surf));
     nsurf--;
 }
@@ -68,8 +76,7 @@ static void release_all(void) {
     int i;
 
     for (i = 0; i < nsurf; i++) {
-        free(surf[i].px);
-        surf[i].px = NULL;
+        free_surf(&surf[i]);
     }
 }
 
@@ -95,7 +102,26 @@ static void copy_from_vram(Surf *s, int x, int y, int w, int h) {
     }
 }
 
+static Cmd *push(int type, Surf *s, const PsxGpuState *st);
+static void gpu_fill(Surf *s, int x, int y, int w, int h, uint16_t c);
+static void gpu_copy(Surf *s, int x, int y, int w, int h);
+
 static int ensure(Surf *s) {
+    if (gpu) {
+        if (s->tex == NULL) {
+            s->m = PsxHd_Margin(s->w);
+            s->tex = PsxHw_Create(PITCH(s), s->h * scale);
+            if (s->tex == NULL) {
+                printf("[gpu] HD surface %dx%d at %dx: no GPU texture\n", s->w, s->h, scale);
+                return 0;
+            }
+            /* margins black, the buffer from the 1x VRAM (which holds everything drawn so far) */
+            PsxHw_MarkDirty(s->y, s->h);
+            gpu_fill(s, s->x, s->y, s->w, s->h, 0);
+            gpu_copy(s, s->x, s->y, s->w, s->h);
+        }
+        return 1;
+    }
     if (s->px == NULL) {
         s->m = PsxHd_Margin(s->w);
         s->px = calloc((size_t)PITCH(s) * s->h * scale, sizeof(uint16_t));
@@ -110,18 +136,7 @@ static int ensure(Surf *s) {
 
 /* ---- queue and worker threads ---- */
 
-enum { CMD_TRI, CMD_RECT, CMD_LINE };
-
-typedef struct {
-    int type;
-    Surf *s;
-    PsxGpuState st;
-    PsxVtx v[3];
-    PsxTex tex;
-    int textured, gouraud, semi, abr, precise;
-    int wide; /* may draw into the 16:9 margins */
-    int x0, y0, w, h, u0, v0, r, g, b; /* rectangles */
-} Cmd;
+enum { CMD_TRI = PSXHD_TRI, CMD_RECT = PSXHD_RECT, CMD_LINE = PSXHD_LINE };
 
 static Cmd *queue;
 static int queued, queue_cap;
@@ -210,6 +225,11 @@ static void flush(void) {
     if (queued == 0) {
         return;
     }
+    if (gpu) {
+        PsxHw_Flush(queue, queued, scale);
+        queued = 0;
+        return;
+    }
     if (done == NULL) {
         start_workers();
     }
@@ -254,6 +274,24 @@ void PsxHd_SetPgxp(int on) {
 
 int PsxHd_Pgxp(void) {
     return pgxp;
+}
+
+void PsxHd_SetGpu(int on) {
+    on = on != 0 && PsxHw_Active();
+    if (on != gpu) {
+        flush();
+        release_all();
+        gpu = on;
+        serial++;
+    }
+}
+
+int PsxHd_Gpu(void) {
+    return gpu;
+}
+
+void PsxHd_Sync(void) {
+    flush();
 }
 
 void PsxHd_SetScale(int s) {
@@ -333,6 +371,7 @@ void PsxHd_Register(int x, int y, int w, int h) {
     surf[nsurf].h = h;
     surf[nsurf].m = 0;
     surf[nsurf].px = NULL;
+    surf[nsurf].tex = NULL;
     nsurf++;
     serial++;
 }
@@ -367,6 +406,16 @@ static void hd_clip(const PsxGpuState *st, const Surf *s, int wide_draw, int *x0
         *x0 = 0;
         *x1 = PITCH(s) - 1;
     }
+}
+
+void PsxHd_CmdClip(const PsxHdCmd *c, int *x0, int *y0, int *x1, int *y1) {
+    const Surf *s = c->s;
+
+    hd_clip(&c->st, s, c->wide, x0, y0, x1, y1);
+    if (*x0 < 0) *x0 = 0;
+    if (*y0 < 0) *y0 = 0;
+    if (*x1 > PITCH(s) - 1) *x1 = PITCH(s) - 1;
+    if (*y1 > s->h * scale - 1) *y1 = s->h * scale - 1;
 }
 
 /* ---- pixels ---- */
@@ -932,10 +981,46 @@ static int clip_rect(const Surf *s, int *x, int *y, int *w, int *h) {
     return 1;
 }
 
+/* GPU: queued fill / copy of the VRAM rect x, y, w, h (inside s) in surface pixels; a fill of
+ * the whole buffer width covers the margins too. */
+static void gpu_fill(Surf *s, int x, int y, int w, int h, uint16_t c) {
+    static const PsxGpuState none;
+    Cmd *q = push(PSXHD_FILL, s, &none);
+
+    q->x0 = x == s->x && w == s->w ? 0 : (x - OX(s)) * scale;
+    q->w = x == s->x && w == s->w ? PITCH(s) : w * scale;
+    q->y0 = (y - s->y) * scale;
+    q->h = h * scale;
+    q->r = c;
+}
+
+static void gpu_copy(Surf *s, int x, int y, int w, int h) {
+    static const PsxGpuState none;
+    Cmd *q = push(PSXHD_COPY, s, &none);
+
+    q->x0 = (x - OX(s)) * scale;
+    q->y0 = (y - s->y) * scale;
+    q->w = w * scale;
+    q->h = h * scale;
+    q->u0 = x;
+    q->v0 = y;
+}
+
 void PsxHd_Fill(int x, int y, int w, int h, uint16_t c) {
     int i;
 
     flush();
+    if (gpu) {
+        PsxHw_MarkDirty(y, h);
+        for (i = 0; i < nsurf; i++) {
+            int fx = x, fy = y, fw = w, fh = h;
+            if (surf[i].tex != NULL && clip_rect(&surf[i], &fx, &fy, &fw, &fh)) {
+                gpu_fill(&surf[i], fx, fy, fw, fh, c);
+                serial++;
+            }
+        }
+        return;
+    }
     for (i = 0; i < nsurf; i++) {
         Surf *s = &surf[i];
         int fx = x, fy = y, fw = w, fh = h, j, k, k0, k1;
@@ -965,14 +1050,21 @@ void PsxHd_Refresh(int x, int y, int w, int h) {
     int i;
 
     flush();
+    if (gpu) {
+        PsxHw_MarkDirty(y, h);
+    }
     for (i = 0; i < nsurf; i++) {
         Surf *s = &surf[i];
         int fx = x, fy = y, fw = w, fh = h;
 
-        if (s->px == NULL || !clip_rect(s, &fx, &fy, &fw, &fh)) {
+        if ((gpu ? s->tex == NULL : s->px == NULL) || !clip_rect(s, &fx, &fy, &fw, &fh)) {
             continue;
         }
-        copy_from_vram(s, fx, fy, fw, fh);
+        if (gpu) {
+            gpu_copy(s, fx, fy, fw, fh);
+        } else {
+            copy_from_vram(s, fx, fy, fw, fh);
+        }
         serial++;
     }
 }
@@ -1003,6 +1095,10 @@ int PsxHd_ReadDisplay(int x, int y, int w, int h, uint32_t *out, int *ow, int *o
         if (out == NULL) {
             return 1;
         }
+        if (gpu) {
+            flush();
+            return PsxHw_Read(s->tex, x0, (y - s->y) * scale, ww, h * scale, out);
+        }
         for (Y = 0; Y < h * scale; Y++) {
             const uint16_t *row = s->px + (size_t)((y - s->y) * scale + Y) * pitch + x0;
             uint32_t *o = out + (size_t)Y * ww;
@@ -1012,6 +1108,34 @@ int PsxHd_ReadDisplay(int x, int y, int w, int h, uint32_t *out, int *ow, int *o
                 o[X] = (((r << 3) | (r >> 2)) << 16) | (((g << 3) | (g >> 2)) << 8) | ((b << 3) | (b >> 2));
             }
         }
+        return 1;
+    }
+    return 0;
+}
+
+int PsxHd_DisplayTexture(int x, int y, int w, int h, void **tex, int *tw, int *th, int *sx, int *sy, int *sw,
+                         int *sh) {
+    int i;
+
+    if (!PsxHd_On() || !gpu) {
+        return 0;
+    }
+    for (i = 0; i < nsurf; i++) {
+        Surf *s = &surf[i];
+        int whole = x == s->x && w == s->w;
+
+        if (!contains(s, x, y, w, h) || !ensure(s)) {
+            continue;
+        }
+        flush();
+        *tex = s->tex;
+        *tw = PITCH(s);
+        *th = s->h * scale;
+        *sx = whole ? 0 : (x - OX(s)) * scale;
+        *sy = (y - s->y) * scale;
+        *sw = whole ? PITCH(s) : w * scale;
+        *sh = h * scale;
+        last_margin = whole ? s->m * scale : 0;
         return 1;
     }
     return 0;

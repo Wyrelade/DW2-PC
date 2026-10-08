@@ -42,6 +42,9 @@ void Host_ShotKey(void);
 /* host/shot.c: <dir>/<tag>_display.png (the display area) and <tag>_vram.png (1024x512). */
 void Host_SaveShot(const char *dir, const char *tag);
 
+/* host/sdl.c: PG.10b HD renderer before Host_Init: 0 automatic (GPU with a window, software
+ * headless), 1 software, 2 GPU (also headless: hidden window). */
+void Host_SetRenderer(int choice);
 /* host/sdl.c: PG.2 no-wobble HD geometry on / off (the GTE's precise hook and the HD path). */
 void Host_SetPgxp(int on);
 /* host/sdl.c: PG.3 16:9 on / off (wide HD surfaces, 16:9 window picture). */

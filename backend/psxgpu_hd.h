@@ -56,6 +56,18 @@ void PsxHd_BeginFrame(void);
 void PsxHd_SetPgxp(int on);
 int PsxHd_Pgxp(void);
 
+/* PG.10b GPU renderer (backend/psxgpu_hw.c, needs PsxHw_Init first): surfaces drawn on the GPU
+ * instead of the software rasterizer; surfaces are rebuilt from the 1x VRAM on a switch. */
+void PsxHd_SetGpu(int on);
+/* backend/psxgpu_hw.c: GPU renderer on an SDL_GPUDevice made for SPIR-V (1 = ready); shutdown
+ * after PsxHd_SetGpu(0), before the device goes. */
+int PsxHw_Init(void *device);
+void PsxHw_Shutdown(void);
+int PsxHd_Gpu(void);
+/* Draws everything queued (before the 1x VRAM changes by a transfer: queued primitives see the
+ * textures as they were when the packet was sent). */
+void PsxHd_Sync(void);
+
 /* A draw or display buffer rect (PutDrawEnv clip, PutDispEnv area). Kept when an existing
  * surface holds it; otherwise the surfaces it overlaps are dropped and it becomes one. */
 void PsxHd_Register(int x, int y, int w, int h);
@@ -77,6 +89,11 @@ void PsxHd_Refresh(int x, int y, int w, int h);
  * (NULL: size only), (w + 2 M)*S wide with the 16:9 margins when it is a whole buffer. Returns 0
  * when HD is off or no surface holds the area. */
 int PsxHd_ReadDisplay(int x, int y, int w, int h, uint32_t *out, int *ow, int *oh);
+/* GPU renderer: the display area's surface texture (an SDL_GPUTexture, tw x th) and the source
+ * rect of the picture in it (with the margins when it is a whole buffer), everything queued
+ * submitted. Returns 0 when the GPU renderer is off or no surface holds the area. */
+int PsxHd_DisplayTexture(int x, int y, int w, int h, void **tex, int *tw, int *th, int *sx, int *sy, int *sw,
+                         int *sh);
 /* Margin on each side of the last PsxHd_ReadDisplay picture, in its pixels (0: plain 4:3). */
 int PsxHd_LastMargin(void);
 /* Changes on every surface write or display change (the host skips unchanged frames). */

@@ -23,7 +23,7 @@
  *
  *   dw2 [--pak PATH] [--vblanks N] [--no-window] [--shot-dir DIR] [--shot-at N]... [--shot-vb N]...
  *       [--hold-boot N] [--press N:BUTTONS[:LEN]]... [--press2 N:BUTTONS[:LEN]]... [--save-dir DIR]
- *       [--fast] [--pad2-keys] [--scale N] [--hd-threads N] [--pgxp] [--wide]
+ *       [--fast] [--pad2-keys] [--scale N] [--hd-threads N] [--pgxp] [--wide] [--renderer gpu|soft]
  *     --pak PATH     the data pack (default dw2.pak next to the exe, then build/native/dw2.pak;
  *                    doc/PACK_FORMAT.md), checked before anything else runs
  *     --vblanks N    quit after N VBlank waits in the Sys_FlipPending spin (0 = run on)
@@ -51,7 +51,9 @@
  *     --hd-threads N drawing threads for the HD output (default 0 = one per core, at most 8)
  *     --pgxp         no-wobble geometry for the HD output (PG.2: precise GTE vertices,
  *                    perspective-correct textures); F6 toggles it in the window
- *     --wide         16:9 picture (PG.3: wider view, 2D pictures pillarboxed); F7 toggles it */
+ *     --wide         16:9 picture (PG.3: wider view, 2D pictures pillarboxed); F7 toggles it
+ *     --renderer R   HD output drawn by the GPU (gpu, PG.10b: SDL_GPU / Vulkan; the default with
+ *                    a window) or the software rasterizer (soft; the default with --no-window) */
 
 extern void Sys_Main(void);
 extern void Host_OvlSnapshot(void);
@@ -270,11 +272,15 @@ int main(int argc, char **argv) {
             Host_SetPgxp(1);
         } else if (strcmp(argv[i], "--wide") == 0) {
             Host_SetWide(1);
+        } else if (strcmp(argv[i], "--renderer") == 0 && i + 1 < argc &&
+                   (strcmp(argv[i + 1], "gpu") == 0 || strcmp(argv[i + 1], "soft") == 0)) {
+            Host_SetRenderer(strcmp(argv[++i], "gpu") == 0 ? 2 : 1);
         } else {
             fprintf(stderr,
                     "usage: %s [--pak PATH] [--vblanks N] [--no-window] [--shot-dir DIR] [--shot-at N]... "
                     "[--shot-vb N]... [--hold-boot N] [--press N:BUTTONS[:LEN]]... [--press2 N:BUTTONS[:LEN]]... "
-                    "[--save-dir DIR] [--fast] [--pad2-keys] [--scale N] [--hd-threads N] [--pgxp] [--wide]\n",
+                    "[--save-dir DIR] [--fast] [--pad2-keys] [--scale N] [--hd-threads N] [--pgxp] [--wide] "
+                    "[--renderer gpu|soft]\n",
                     argv[0]);
             return 2;
         }
