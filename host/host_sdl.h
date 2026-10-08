@@ -24,9 +24,17 @@
 #define PAD_CROSS    0x4000
 #define PAD_SQUARE   0x8000
 
-/* host/sdl.c */
+/* host/sdl.c. PG.10 b3: with a visible window the game runs on its own thread; the window side
+ * (Host_InitWindow, Host_PumpEvents, Host_Present, Host_WindowLoop, Host_Shutdown) stays on the
+ * main thread, Host_Publish and Host_GameEvents run on the game thread at each VBlank wait. */
+void Host_SetThreaded(int on);
+int Host_Threaded(void);
+void Host_InitWindow(int no_window);
+void Host_WindowLoop(void);
 void Host_PumpEvents(void);
 void Host_Present(void);
+void Host_Publish(void);
+void Host_GameEvents(void);
 
 /* host/vblank.c */
 void Host_ClockStart(void);
@@ -34,7 +42,9 @@ void Host_ClockStart(void);
 /* host/input.c */
 void Host_InputDevice(const SDL_Event *e);
 void Host_InputPress(const SDL_Event *e);
-void Host_InputUpdate(void);
+void Host_InputInit(void);  /* main thread, before the game thread reads input */
+void Host_InputPoll(void);  /* main thread: keyboard / gamepad state after the event pump */
+void Host_InputLatch(void); /* game thread, once per VBlank: the buttons the pad replies use */
 void Host_InputClose(void);
 
 /* host/audio.c */

@@ -5,7 +5,10 @@
 #include "host/host_sdl.h"
 
 /* Host input state: keyboard and SDL gamepads as PS1 digital pad button masks, per port. Read
- * after each event pump; changes are logged. P1.7 turns them into pad replies in Pad_RecvBufs. */
+ * after each event pump; changes are logged. P1.7 turns them into pad replies in Pad_RecvBufs.
+ * PG.10 b3: the window side (events, device state: Host_InputDevice / Press / Poll) runs on the
+ * main thread, the game's view (Host_InputLatch, Host_PadButtons, scripts) on the game thread;
+ * held and tapped buttons pass between them under a lock, latched once per VBlank. */
 
 #define PORTS 2
 #define TRIGGER_ON 16384 /* trigger axis 0..32767: L2 / R2 held past half */
@@ -44,9 +47,12 @@ static const char *const bit_names[16] = {
 };
 
 static SDL_Gamepad *pads[PORTS];
-static unsigned short buttons[PORTS];
-static unsigned short pressed[PORTS]; /* pressed since the last update: a tap shorter than one
-                                       * VBlank still shows for one update */
+static SDL_AtomicInt pad_on[PORTS]; /* pads[p] != NULL, for the game thread */
+static unsigned short buttons[PORTS]; /* the game's view, latched per VBlank */
+static SDL_Mutex *lock;
+static unsigned short held[PORTS];    /* keyboard + gamepads at the last poll (under lock) */
+static unsigned short pressed[PORTS]; /* pressed since the last latch: a tap shorter than one
+                                       * VBlank still shows for one latch (under lock) */
 
 /* --press / --press2: scripted button holds on port 0 / 1 by VBlank wait. */
 #define SCRIPT_MAX 4096
@@ -66,7 +72,7 @@ unsigned short Host_PadButtons(int port) {
 }
 
 int Host_PadConnected(int port) {
-    return port == 0 || (port == 1 && (pads[1] != NULL || script_port1 || pad2_keys));
+    return port == 0 || (port == 1 && (SDL_GetAtomicInt(&pad_on[1]) || script_port1 || pad2_keys));
 }
 
 void Host_InputPad2Keys(void) {
@@ -145,12 +151,14 @@ void Host_InputDevice(const SDL_Event *e) {
             printf("[input] gamepad %u open failed: %s\n", (unsigned)id, SDL_GetError());
             return;
         }
+        SDL_SetAtomicInt(&pad_on[p], 1);
         printf("[input] gamepad %u on port %d: %s\n", (unsigned)id, p, SDL_GetGamepadName(pads[p]));
     } else {
         for (p = 0; p < PORTS; p++) {
             if (pads[p] != NULL && SDL_GetGamepadID(pads[p]) == id) {
                 SDL_CloseGamepad(pads[p]);
                 pads[p] = NULL;
+                SDL_SetAtomicInt(&pad_on[p], 0);
                 printf("[input] gamepad %u removed from port %d\n", (unsigned)id, p);
             }
         }
@@ -169,7 +177,18 @@ static unsigned short map_bit(const ButtonMap *map, size_t n, int key) {
     return 0;
 }
 
+static void lock_init(void) {
+    if (lock == NULL) {
+        lock = SDL_CreateMutex();
+    }
+}
+
+void Host_InputInit(void) {
+    lock_init();
+}
+
 void Host_InputPress(const SDL_Event *e) {
+    unsigned short bits[PORTS] = { 0, 0 };
     int p;
 
     if (e->type == SDL_EVENT_KEY_DOWN) {
@@ -179,14 +198,20 @@ void Host_InputPress(const SDL_Event *e) {
             fflush(stdout);
             return;
         }
-        pressed[kbd_port] |= map_bit(key_map, sizeof(key_map) / sizeof(key_map[0]), e->key.scancode);
-        return;
-    }
-    for (p = 0; p < PORTS; p++) {
-        if (pads[p] != NULL && SDL_GetGamepadID(pads[p]) == e->gbutton.which) {
-            pressed[p] |= map_bit(pad_map, sizeof(pad_map) / sizeof(pad_map[0]), e->gbutton.button);
+        bits[kbd_port] = map_bit(key_map, sizeof(key_map) / sizeof(key_map[0]), e->key.scancode);
+    } else {
+        for (p = 0; p < PORTS; p++) {
+            if (pads[p] != NULL && SDL_GetGamepadID(pads[p]) == e->gbutton.which) {
+                bits[p] = map_bit(pad_map, sizeof(pad_map) / sizeof(pad_map[0]), e->gbutton.button);
+            }
         }
     }
+    lock_init();
+    SDL_LockMutex(lock);
+    for (p = 0; p < PORTS; p++) {
+        pressed[p] |= bits[p];
+    }
+    SDL_UnlockMutex(lock);
 }
 
 static void log_buttons(int port, unsigned short b) {
@@ -202,7 +227,7 @@ static void log_buttons(int port, unsigned short b) {
     fflush(stdout);
 }
 
-void Host_InputUpdate(void) {
+void Host_InputPoll(void) {
     const bool *keys = SDL_GetKeyboardState(NULL);
     unsigned short b[PORTS] = { 0, 0 };
     size_t i;
@@ -229,9 +254,27 @@ void Host_InputUpdate(void) {
             b[p] |= PAD_R2;
         }
     }
+    lock_init();
+    SDL_LockMutex(lock);
     for (p = 0; p < PORTS; p++) {
-        b[p] |= script_bits[p] | pressed[p];
+        held[p] = b[p];
+    }
+    SDL_UnlockMutex(lock);
+}
+
+void Host_InputLatch(void) {
+    unsigned short b[PORTS];
+    int p;
+
+    lock_init();
+    SDL_LockMutex(lock);
+    for (p = 0; p < PORTS; p++) {
+        b[p] = held[p] | pressed[p];
         pressed[p] = 0;
+    }
+    SDL_UnlockMutex(lock);
+    for (p = 0; p < PORTS; p++) {
+        b[p] |= script_bits[p];
         if (b[p] != buttons[p]) {
             buttons[p] = b[p];
             log_buttons(p, b[p]);

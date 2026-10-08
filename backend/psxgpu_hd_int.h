@@ -37,8 +37,6 @@ void PsxHd_CmdClip(const PsxHdCmd *c, int *x0, int *y0, int *x1, int *y1);
  * (uploading the VRAM rows marked dirty first); surfaces get their texture from PsxHw_Create.
  * PsxHw_Read downloads the surface pixels x, y, w, h (surface pixels) as 0x00RRGGBB. */
 int PsxHw_Active(void);
-void *PsxHw_Create(int w, int h);
-void PsxHw_Release(void *tex);
 void PsxHw_MarkDirty(int y, int h);
 void PsxHw_Flush(const PsxHdCmd *q, int n, int scale);
 int PsxHw_Read(void *tex, int x, int y, int w, int h, uint32_t *out);

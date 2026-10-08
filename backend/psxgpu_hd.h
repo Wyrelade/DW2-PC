@@ -63,6 +63,12 @@ void PsxHd_SetGpu(int on);
  * after PsxHd_SetGpu(0), before the device goes. */
 int PsxHw_Init(void *device);
 void PsxHw_Shutdown(void);
+/* PG.10 b3: pictures for the host's present (another thread): a GPU texture w x h (render target
+ * + sampler), its release (deferred by SDL_GPU until the GPU is done with it), and a copy of the
+ * texture rect x, y, w, h of src to the top-left corner of dst, submitted on the calling thread. */
+void *PsxHw_Create(int w, int h);
+void PsxHw_Release(void *tex);
+void PsxHw_Copy(void *src, int x, int y, int w, int h, void *dst);
 int PsxHd_Gpu(void);
 /* Draws everything queued (before the 1x VRAM changes by a transfer: queued primitives see the
  * textures as they were when the packet was sent). */

@@ -15,6 +15,7 @@
 
 #include "backend/psxgpu_hd.h"
 #include "host/host.h"
+#include "host/host_sdl.h"
 #include "psyq/psyq_log.h"
 
 /* Native entry point: replaces crt0 (Sys_Start). Checks the memory layout, keeps the overlays'
@@ -200,6 +201,19 @@ static int parse_press(int port, const char *arg) {
 static const char *pak = NULL;
 static int no_window = 0;
 
+/* PG.10 b3: with a game thread, the main thread does the SDL / window init for it. */
+static SDL_Semaphore *init_req, *init_done;
+
+void Host_Init(int no_win) {
+    if (init_req != NULL) {
+        SDL_SignalSemaphore(init_req);
+        SDL_WaitSemaphore(init_done);
+    } else {
+        Host_InitWindow(no_win);
+    }
+    Host_ClockStart();
+}
+
 /* Everything from the layout check on: the game's own call stack. */
 static void game_main(void) {
     check_window();
@@ -237,6 +251,42 @@ static void run_on_low_stack(void) {
     swapcontext(&main_ctx, &game_ctx);
 }
 #endif
+
+/* PG.10 b3: the game thread; check_window checks its stack too (Windows: the low range, as for
+ * the main thread; Linux: the same switch to the MAP_32BIT stack). */
+static int game_thread(void *arg) {
+    (void)arg;
+#ifdef _WIN32
+    game_main();
+#else
+    run_on_low_stack();
+#endif
+    return 0;
+}
+
+/* With a visible window the game gets its own thread; the main thread keeps the window. */
+static void run_threaded(void) {
+    SDL_PropertiesID props = SDL_CreateProperties();
+    SDL_Thread *t;
+
+    Host_SetThreaded(1);
+    init_req = SDL_CreateSemaphore(0);
+    init_done = SDL_CreateSemaphore(0);
+    SDL_SetPointerProperty(props, SDL_PROP_THREAD_CREATE_ENTRY_FUNCTION_POINTER, (void *)game_thread);
+    SDL_SetStringProperty(props, SDL_PROP_THREAD_CREATE_NAME_STRING, "game");
+    SDL_SetNumberProperty(props, SDL_PROP_THREAD_CREATE_STACKSIZE_NUMBER, 16 << 20);
+    t = init_req != NULL && init_done != NULL ? SDL_CreateThreadWithProperties(props) : NULL;
+    SDL_DestroyProperties(props);
+    if (t == NULL) {
+        fprintf(stderr, "[host] game thread: %s\n", SDL_GetError());
+        exit(1);
+    }
+    SDL_DetachThread(t);
+    SDL_WaitSemaphore(init_req);
+    Host_InitWindow(0);
+    SDL_SignalSemaphore(init_done);
+    Host_WindowLoop();
+}
 
 int main(int argc, char **argv) {
     int i;
@@ -286,6 +336,9 @@ int main(int argc, char **argv) {
         }
     }
     setvbuf(stdout, NULL, _IOLBF, 1 << 16);
+    if (!no_window) {
+        run_threaded();
+    }
 #ifdef _WIN32
     game_main();
 #else

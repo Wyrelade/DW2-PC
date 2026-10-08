@@ -50,6 +50,7 @@ static SDL_GPUTransferBuffer *vtb;
 static Uint32 vcap; /* bytes of vbuf / vtb */
 static SDL_GPUTransferBuffer *read_tb;
 static Uint32 read_cap;
+static SDL_GPUFence *last_fence;
 static int dirty_y0, dirty_y1 = PSXGPU_VRAM_H; /* VRAM rows to upload before the next batch */
 
 static Vert *verts;
@@ -166,6 +167,11 @@ void PsxHw_Shutdown(void) {
 
     if (dev == NULL) {
         return;
+    }
+    if (last_fence != NULL) {
+        SDL_WaitForGPUFences(dev, true, &last_fence, 1);
+        SDL_ReleaseGPUFence(dev, last_fence);
+        last_fence = NULL;
     }
     for (i = 0; i < 5; i++) {
         SDL_ReleaseGPUGraphicsPipeline(dev, pipes[i]);
@@ -496,6 +502,20 @@ static void transfer(const PsxHdCmd *c, int scale) {
 
 /* ---- batch ---- */
 
+/* PG.10 b3: submits cmd, then waits for the previous submission (normally done long ago). The
+ * wait lets SDL_GPU recycle finished command buffers and cycled transfer buffers; without it they
+ * piled up whenever the SDL renderer did not present (headless runs, a window held by a drag):
+ * about 115 MB per second at 2x. */
+static void submit(SDL_GPUCommandBuffer *cmd) {
+    SDL_GPUFence *fence = SDL_SubmitGPUCommandBufferAndAcquireFence(cmd);
+
+    if (last_fence != NULL) {
+        SDL_WaitForGPUFences(dev, true, &last_fence, 1);
+        SDL_ReleaseGPUFence(dev, last_fence);
+    }
+    last_fence = fence;
+}
+
 static int upload(SDL_GPUCopyPass *copy) {
     if (dirty_y0 < dirty_y1) {
         Uint8 *m = SDL_MapGPUTransferBuffer(dev, vram_tb, true);
@@ -649,7 +669,31 @@ void PsxHw_Flush(const PsxHdCmd *q, int n, int scale) {
     if (pass != NULL) {
         SDL_EndGPURenderPass(pass);
     }
-    SDL_SubmitGPUCommandBuffer(cmd);
+    submit(cmd);
+}
+
+void PsxHw_Copy(void *src, int x, int y, int w, int h, void *dst) {
+    SDL_GPUCommandBuffer *cmd;
+    SDL_GPUCopyPass *copy;
+    SDL_GPUTextureLocation from, to;
+
+    if (dev == NULL || src == NULL || dst == NULL) {
+        return;
+    }
+    cmd = SDL_AcquireGPUCommandBuffer(dev);
+    if (cmd == NULL) {
+        return;
+    }
+    copy = SDL_BeginGPUCopyPass(cmd);
+    SDL_zero(from);
+    from.texture = src;
+    from.x = (Uint32)x;
+    from.y = (Uint32)y;
+    SDL_zero(to);
+    to.texture = dst;
+    SDL_CopyGPUTextureToTexture(copy, &from, &to, (Uint32)w, (Uint32)h, 1, false);
+    SDL_EndGPUCopyPass(copy);
+    submit(cmd);
 }
 
 int PsxHw_Read(void *tex, int x, int y, int w, int h, uint32_t *out) {

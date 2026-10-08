@@ -5,12 +5,23 @@
 #include "psyq/psyq_vblank.h"
 
 /* VBlank clock: NTSC 60000/1001 Hz, one VBlank every 1001/60000 s = 50050000/3 ns. Deadline k
- * is t0 + k * period, computed from k, so rounding never accumulates (no drift). One thread: the
- * caller (a VSync wait or the Sys_FlipPending spin) sleeps here until the next deadline.
+ * is t0 + k * period, computed from k, so rounding never accumulates (no drift). The game thread
+ * (a VSync wait or the Sys_FlipPending spin) sleeps here until the next deadline.
  *
  * VBlanks that came due while the game was busy all run on the next call, like the PS1
  * interrupt firing during a long frame (VSync(-1) then advances by the real elapsed count). After
- * a longer stall (debugger, window drag) the clock restarts from now instead of bursting. */
+ * a longer stall (debugger) the clock restarts from now instead of bursting. The window has its
+ * own thread (PG.10 b3), so a window drag no longer stalls it. */
+
+/* The display area for the window, its requests and input, then audio. */
+static void host_side(void) {
+    Host_Publish();
+    if (!Host_Threaded()) {
+        Host_PumpEvents();
+    }
+    Host_GameEvents();
+    Host_AudioFeed();
+}
 
 #define VBLANK_PERIOD_NUM 50050000ULL /* ns * 3 */
 #define VBLANK_PERIOD_DEN 3ULL
@@ -74,9 +85,7 @@ void Host_VBlank(void) {
 
     if (fast) {
         run_vblank();
-        Host_Present();
-        Host_PumpEvents();
-        Host_AudioFeed();
+        host_side();
         return;
     }
     while (now < deadline(next)) {
@@ -94,10 +103,8 @@ void Host_VBlank(void) {
         t0 = now;
         next = 1;
     }
-    /* The PS1 scans the display area out of VRAM all the time: show it once per call. */
-    Host_Present();
-    Host_PumpEvents();
-    Host_AudioFeed();
+    /* The PS1 scans the display area out of VRAM all the time: publish it once per call. */
+    host_side();
 }
 
 unsigned long long Host_VBlankCount(void) {
