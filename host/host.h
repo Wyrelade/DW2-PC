@@ -35,6 +35,8 @@ unsigned long long Host_VBlankCount(void);
 /* VBlanks run so far and the measured rate since the clock started. */
 void Host_LogRate(const char *what);
 
+/* host/main.c: dev option --start-mode N, the game mode Sys_Main starts in (0: the title, 0x402). */
+int Host_StartMode(void);
 /* host/main.c: libgpu's SetDispMask(1). The first time (the boot image is in VRAM): saves the
  * "boot" screenshot when screenshots are on and holds the picture --hold-boot N VBlanks (dev
  * option; on the PS1 the CD loads after it take that long, here they are instant). */

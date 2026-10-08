@@ -6,9 +6,18 @@ void Stg00_DungSelInit(void);
 void Stg00_DungSelTask(Actor *arg0);
 void Stg00_DungSelDestroy(Actor *arg0);
 void Stg00_DungSelDraw(void);
+#ifdef DW2_NATIVE
+static void Stg00_DungSelDrawDev(Actor *arg0);
+#endif
 
 TaskDesc Stg00_DungSelDesc = {
+#ifdef DW2_NATIVE
+    /* dev start (--start-mode 0x105): the retail draw is empty (its debug text was removed),
+     * this one shows the selection */
+    (TaskInitFn)Stg00_DungSelInit, Stg00_DungSelTask, Stg00_DungSelDestroy, (TaskFn)Stg00_DungSelDrawDev, 0x94, 0,
+#else
     (TaskInitFn)Stg00_DungSelInit, Stg00_DungSelTask, Stg00_DungSelDestroy, (TaskFn)Stg00_DungSelDraw, 0x94, 0,
+#endif
 };
 
 void Stg00_RelocPtr(u32 *arg0, u32 arg1) {
@@ -282,6 +291,72 @@ void Stg00_DungSelTask(Actor *arg0) {
 
 void Stg00_DungSelDraw(void) {
 }
+
+#ifdef DW2_NATIVE
+/* text: decimal number appended at d */
+static u8 *Stg00_DevNum(u8 *d, s32 v) {
+    u8 tmp[12];
+    s32 n = 0;
+
+    if (v < 0) {
+        *d++ = '-';
+        v = -v;
+    }
+    do {
+        tmp[n++] = (u8)('0' + v % 10);
+        v /= 10;
+    } while (v != 0);
+    while (n > 0) {
+        *d++ = tmp[--n];
+    }
+    *d = 0;
+    return d;
+}
+
+static u8 *Stg00_DevStr(u8 *d, const char *s) {
+    while (*s != 0) {
+        *d++ = (u8)*s++;
+    }
+    *d = 0;
+    return d;
+}
+
+/* Draw only: the select state as text (domain, floor, layout, flag; '>' marks the step). */
+static void Stg00_DungSelDrawDev(Actor *arg0) {
+    Stg00SelWorkX *w = (Stg00SelWorkX *)arg0->work;
+    s32 step = arg0->stateLevel1;
+    u8 line[48];
+    u8 *d;
+
+    if (arg0->stateLevel0 != 1 || Stg00_FontWork == 0) {
+        return;
+    }
+    Stg00_FontDrawStr(24, 24, (u8 *)"DOMAIN SELECT (DEV)");
+    d = Stg00_DevStr(line, step == 0 ? "> DOMAIN " : "  DOMAIN ");
+    d = Stg00_DevNum(d, w->dungeonIdx);
+    Stg00_DevStr(d, " / 34");
+    Stg00_FontDrawStr(24, 56, line);
+    if (step >= 1) {
+        d = Stg00_DevStr(line, step == 1 ? "> FLOOR " : "  FLOOR ");
+        d = Stg00_DevNum(d, w->floor);
+        d = Stg00_DevStr(d, " / ");
+        d = Stg00_DevNum(d, w->floorCount - 1);
+        d = Stg00_DevStr(d, "  LAYOUT ");
+        Stg00_DevNum(d, w->layout);
+        Stg00_FontDrawStr(24, 72, line);
+    }
+    if (step >= 2) {
+        d = Stg00_DevStr(line, "> FLAG ");
+        Stg00_DevNum(d, w->flagIdx);
+        Stg00_FontDrawStr(24, 88, line);
+    }
+    Stg00_FontDrawStr(24, 184, (u8 *)"LEFT RIGHT: CHOOSE");
+    if (step == 1) {
+        Stg00_FontDrawStr(24, 196, (u8 *)"UP DOWN: LAYOUT");
+    }
+    Stg00_FontDrawStr(24, 208, (u8 *)(step == 2 ? "CIRCLE: WARP  CROSS: BACK" : "CIRCLE: NEXT  CROSS: BACK"));
+}
+#endif
 
 void Stg00_DungSelDestroy(Actor *arg0) {
     Stg00_FontFree();

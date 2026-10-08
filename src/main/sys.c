@@ -159,6 +159,14 @@ void Sys_Main(void) {
     Sys_State.frameCount = 1;
     Sys_State.gameMode = 0x402;
     Sys_State.nextGameMode = 0x402;
+#ifdef DW2_NATIVE
+    /* dev option --start-mode: start in another game mode (the stag0000 debug menus 0x101..0x106
+     * are not reachable from the retail title) */
+    if (Host_StartMode() != 0) {
+        Sys_State.gameMode = Host_StartMode();
+        Sys_State.nextGameMode = Host_StartMode();
+    }
+#endif
     Sys_State.modeArg = 0;
     Sys_State.field_C = 0;
     Save_ResetGameState();

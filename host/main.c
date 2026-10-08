@@ -50,6 +50,8 @@
  *     --scale N      HD output at N x the PS1 resolution (1..8, default 1 = classic; PG.1,
  *                    backend/psxgpu_hd.c); F5 in the window steps through 1..8
  *     --hd-threads N drawing threads for the HD output (default 0 = one per core, at most 8)
+ *     --start-mode N dev: start in game mode N instead of the title (0x402), e.g. the stag0000
+ *                    debug menus 0x101..0x106 (0x105: domain select)
  *     --pgxp         no-wobble geometry for the HD output (PG.2: precise GTE vertices,
  *                    perspective-correct textures); F6 toggles it in the window
  *     --wide         16:9 picture (PG.3: wider view, 2D pictures pillarboxed); F7 toggles it
@@ -70,6 +72,11 @@ static int shot_count;
 static unsigned long long shot_vb[16];
 static int shot_vb_count, shot_vb_done;
 static int hold_boot;
+static int start_mode;
+
+int Host_StartMode(void) {
+    return start_mode;
+}
 
 static const char *shots(void) {
     static int made;
@@ -304,6 +311,8 @@ int main(int argc, char **argv) {
             shot_at[shot_count++] = (unsigned int)strtoul(argv[++i], NULL, 0);
         } else if (strcmp(argv[i], "--shot-vb") == 0 && i + 1 < argc && shot_vb_count < 16) {
             shot_vb[shot_vb_count++] = strtoull(argv[++i], NULL, 0);
+        } else if (strcmp(argv[i], "--start-mode") == 0 && i + 1 < argc) {
+            start_mode = (int)strtol(argv[++i], NULL, 0);
         } else if (strcmp(argv[i], "--hold-boot") == 0 && i + 1 < argc) {
             hold_boot = (int)strtol(argv[++i], NULL, 0);
         } else if (strcmp(argv[i], "--press") == 0 && i + 1 < argc && parse_press(0, argv[++i])) {
@@ -330,7 +339,7 @@ int main(int argc, char **argv) {
                     "usage: %s [--pak PATH] [--vblanks N] [--no-window] [--shot-dir DIR] [--shot-at N]... "
                     "[--shot-vb N]... [--hold-boot N] [--press N:BUTTONS[:LEN]]... [--press2 N:BUTTONS[:LEN]]... "
                     "[--save-dir DIR] [--fast] [--pad2-keys] [--scale N] [--hd-threads N] [--pgxp] [--wide] "
-                    "[--renderer gpu|soft]\n",
+                    "[--renderer gpu|soft] [--start-mode N]\n",
                     argv[0]);
             return 2;
         }

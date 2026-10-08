@@ -1,6 +1,10 @@
 #include "common.h"
 #include "stag0000/stag0000.h"
 
+#ifdef DW2_NATIVE
+extern s32 Cd_GetFileSync(s32 arg0);
+#endif
+
 /* Task callbacks this unit defines further down (the descriptors come first). */
 void Stg00_StageSetup(Actor *arg0);
 
@@ -13,6 +17,14 @@ void Stg00_StageSetup(Actor *arg0) {
     Stg00TaskArgs a3;
 
     if (arg0->stateLevel0 == 0) {
+#ifdef DW2_NATIVE
+        /* dev start (--start-mode): the viewers read the Digimon data files and the model list, which the retail
+         * scenes load on demand before; load them here */
+        Cd_GetFileSync(0xCB9);
+        Cd_GetFileSync(0xCBA);
+        Cd_GetFileSync(0xCBB);
+        Cd_GetFileSync(0x1F8); /* the model list (Digi_GetModelListId) */
+#endif
         Task_Create(9, &slot[5], 0);
         switch (Sys_State.gameMode) {
         case 0x101:
