@@ -6,155 +6,106 @@
   <a href="https://nyen.cc/"><b>NYEN</b></a>
 </p>
 
-# Digimon World 2 Decompilation
+# Digimon World 2 PC Port
 
-<!-- PROGRESS:BADGE -->
-![matched](https://img.shields.io/badge/matched-1088%2F1088%20(100.00%25)-1f6feb)
-<!-- /PROGRESS:BADGE -->
-![build](https://img.shields.io/badge/build-byte--identical-2ea043)
-![platform](https://img.shields.io/badge/platform-PS1%20(SLUS--01193)-8957e5)
+![platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux-8957e5)
+![status](https://img.shields.io/badge/status-work%20in%20progress-d29922)
 
-A **matching decompilation** of *Digimon World 2* for the Sony PlayStation.
+A native PC port of *Digimon World 2* (PlayStation, USA, `SLUS-01193`). The game's own C code
+from the [matching decompilation](https://github.com/Wyrelade/Digimon-World-2-Decomp) is
+compiled for the PC; the PlayStation libraries are replaced by a PC layer on SDL3. It is not an
+emulator and not a remake: the game logic is the original code, so it plays like the PS1
+version.
 
-The goal is to recover readable C that, when compiled with a period-correct toolchain,
-produces a binary **byte-identical** to the original executable, then a moddable full-source
-tree.
-
-| Item | Value |
-|---|---|
-| Platform | PlayStation (PSX / PS1) |
-| Target | USA main executable `SLUS_011.93` + 7 stage overlays |
-| Disc (USA) | `SLUS-01193` |
-| Exe SHA-1 | `e55ed5bf354def07f0cbf4e1fb7fb5f99204f220` (651264 bytes) |
-| Overlays | `STAG0000/1000/1100/2000/3000/3500/4000.PRO`, loaded at `0x80063360` |
-| Compiler | GCC 2.8.1 (PSX `cc1`) + maspsx |
-| Structure | main exe + 7 stage overlays (`AAA/3.PRO/STAG*.PRO`) |
-| License (project code) | CC0 1.0 |
-
-> **You must own the game.** This repository contains no ROMs, disc images, or copyrighted
-> assets. `rom/ assets/ build/` are made from *your own* disc and are gitignored. Obtain a
-> legal dump of your own disc.
->
-> `asm/` and `linkers/` are splat output. They are still committed today so the progress CI
-> can build without a disc. That covers only the PsyQ library asm (code and data); the game's
-> data in the exe and the overlays is C. Opaque content inside C units (bitmaps, CLUTs, tables
-> such as the CD file table, a few padding bytes) is copied from your disc at build time
-> (`configs/USA/include_bin.txt`,
-> `configs/USA/image_bytes.txt`). They will move out of the repo (see
-> [issue #6](https://github.com/Wyrelade/Digimon-World-2-Decomp/issues/6)).
+> **You need your own copy of the game.** This repository and its builds contain no disc
+> image, no game data and no copyrighted assets. The port reads its data from a pack file
+> that is built on your PC from your own disc image and checked against a list of file
+> hashes. A disc that does not match is rejected.
 
 ## Status
 
-**All 1088 game functions are matched C.** The C rebuilds the retail executable and all 7
-stage overlays byte-identical.
+Work in progress. The game boots, the title, city, domains, battles, menus, saving and
+loading run, and the VS mode works with two pads.
 
-Naming is done. Functions, globals and struct fields have real names where the code proves
-them. A few keep their `func_` / `D_` names on purpose (empty stubs, unreferenced filler
-words). The source is split into one file per module, along the retail file boundaries
-(`src/main/sys.c`, `src/main/savedata.c`, `src/stag3000/battle.c`, `src/stag4000/floor.c` ...).
+| Part | State |
+|---|---|
+| Game logic (all 1088 game functions, all 7 stage overlays) | compiled from the decomp C |
+| Graphics | software PS1 GPU, plus an HD path: render scale 1x to 8x, 16:9, no wobble (precise vertices, perspective-correct textures), GPU renderer (SDL_GPU) |
+| Sound | SPU (music and effects) |
+| Saves | memory card images `card1.mcd` / `card2.mcd` (raw `.mcd` / `.mcr` from emulators load as is) |
+| Input | keyboard and SDL gamepads, two ports |
+| Builds | Windows x86 / x64 (MinGW-w64), Linux x64 |
 
-Every global has one layout and a documented owner: [`doc/STATE_MAP.md`](doc/STATE_MAP.md)
-lists each global of the exe and the overlays as player, world, engine, constant or debug
-state, with its writers and readers, the memory map and the game mode to overlay table.
+Still to do for the first release:
 
-The build is shiftable, and that is the modding build. No code or data holds a fixed address:
-every pointer is a symbol, and the exe and the overlays link against each other by name.
-`python3 tools/build_dw2.py --shift-test` pads main and `STAG1000.PRO` so every address
-moves, and that image boots. So you can change the C, add code or data and relink; the SHA-1
-check then no longer applies. The one fixed limit on growth: the heap starts at `0x80075000`
-(`Mem_HeapStart`), right after the largest overlay (`STAG3000.PRO`), so move it if main and
-that overlay together grow by more than `0xF5C` bytes.
+- start with no setup: the exe finds your disc image (`.cue` / `.bin` / `.iso` / `.img`) and
+  builds its data pack on the first start
+- F1 settings window: key and pad remap, render scale, 16:9, no wobble, sharpening, renderer,
+  window mode (windowed, borderless, fullscreen), saved to a settings file
+- intro and ending movies (skipped today)
+- streamed CD audio (XA)
+- a full playthrough check from start to ending, every scene on 64-bit
 
-The last two functions:
+## Running it (today)
 
-- `Task_Run` (the task scheduler) runs every update and draw callback on a stack in the
-  scratchpad RAM. C cannot move the stack pointer, so the switch is two small `__asm__`
-  statements around the calls, the rest is plain C. The original most likely did the same.
-- `stag4000:func_8006D418` returns the same field on both sides of a flag test. The test does
-  nothing, but GCC 2.8.1 only merges the two arms after register allocation, and retail's
-  code has exactly that allocation. No form without the test produces it.
+Until the first-start setup is done, the data pack is built with a script:
 
-A function counts as **matched** only when its C reproduces the retail bytes with the compiler
-setup of its translation unit and no asm rewrites: GCC 2.8.1-psx `-O2`, main game `-G8` with
-maspsx `--aspsx-version=2.81`, overlays `-G0` with 2.77, plus a few per-unit flags in
-`tools/build_dw2.py`. Functions that still need a per-function flag set or asm rewrites are
-listed separately and are not counted. PsyQ library code (PsyQ 4.7 in the exe, libpress 4.6 in
-`STAG1000.PRO`) is not game code and is excluded from progress
-(`configs/USA/psyq_funcs.txt`). Counts come from `tools/strict_report.py`, which builds each
-function with and without the post-processing and compares it against the target. See
-[issue #5](https://github.com/Wyrelade/Digimon-World-2-Decomp/issues/5).
+```
+python3 tools/dw2pack.py "path/to/Digimon World 2.img" -o dw2.pak
+dw2.exe --pak dw2.pak
+```
 
-### Progress by component
+The image must be a raw 2352-byte-sector dump of the USA disc (a CloneCD `.img` or a
+single-track `.bin`). Saves go to `%APPDATA%\DW2-Online\saves\` on Windows and
+`~/.local/share/DW2-Online/saves/` on Linux.
 
-<!-- PROGRESS:TABLE -->
-| Component | Functions | Matched | Progress | Flags per function | Asm rewrites | Asm |
-|---|---:|---:|---|---:|---:|---:|
-| **Main executable** (`SLUS_011.93`, game code) | 368 | 368 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 100.00% | 0 | 0 | 0 |
-| **Stage overlays** (`AAA/3.PRO`) | 720 | 720 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 100.00% | 0 | 0 | 0 |
-| &nbsp;&nbsp;└ `STAG0000.PRO` | 69 | 69 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 100.00% | 0 | 0 | 0 |
-| &nbsp;&nbsp;└ `STAG1000.PRO` | 17 | 17 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 100.00% | 0 | 0 | 0 |
-| &nbsp;&nbsp;└ `STAG1100.PRO` | 55 | 55 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 100.00% | 0 | 0 | 0 |
-| &nbsp;&nbsp;└ `STAG2000.PRO` | 133 | 133 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 100.00% | 0 | 0 | 0 |
-| &nbsp;&nbsp;└ `STAG3000.PRO` | 123 | 123 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 100.00% | 0 | 0 | 0 |
-| &nbsp;&nbsp;└ `STAG3500.PRO` | 108 | 108 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 100.00% | 0 | 0 | 0 |
-| &nbsp;&nbsp;└ `STAG4000.PRO` | 215 | 215 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 100.00% | 0 | 0 | 0 |
-| **Total (game code)** | 1088 | 1088 | `▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰` 100.00% | 0 | 0 | 0 |
-| PsyQ libraries (not counted) | 558 | | | | | |
-<!-- /PROGRESS:TABLE -->
+Keyboard: arrows = D-pad, Z = Cross, X = Circle, A = Square, S = Triangle, Q / W = L1 / R1,
+E / R = L2 / R2, Enter = Start, Backspace = Select, Esc = quit. F5 render scale, F6 no wobble,
+F7 16:9, F12 screenshot. Gamepads map by button position (south = Cross).
 
-DW2 has the main exe plus 7 stage overlays on the disc, `AAA/3.PRO/STAG0000.PRO` to
-`STAG4000.PRO`. The main exe loads one at a time to `0x80063360` (`func_80013308`, indexed by
-the game mode), so they share one address range. Each overlay is split into its own unit
-(`src/stagXXXX`, `asm/USA/stagXXXX`) and relinks byte-identical to the retail file.
+Command line options: `dw2 --help` lists them (`--scale N`, `--wide`, `--pgxp`,
+`--renderer gpu|soft`, `--save-dir DIR`, ...).
 
-The `AAA` directory is left out of the disc's root directory record, so a plain ISO extract
-only shows `SLUS_011.93` and `SYSTEM.CNF`. `dumpsxiso -pt` (path table walk) extracts the full
-tree.
+## Building
 
-PsyQ library code stays as split asm, as in other PS1 decomps. The crt0 startup is the PsyQ
-`SNMAIN` hand asm.
+Windows (Git Bash or any shell):
+
+- MinGW-w64 GCC (WinLibs, x86_64 or i686), set `DW2_MINGW` to its root
+- SDL3 MinGW development release, set `DW2_SDL3` to its root
+- Python 3 with `pip install -r requirements.txt` (Ninja comes from there)
+
+```
+python tools/build_native.py --arch x64 --release   # build/native64_rel/dw2.exe
+```
+
+Linux: gcc, CMake, Ninja and `libsdl3-dev`, then `python3 tools/build_native.py --release`.
+
+A few data tables are copied from your disc at build time (`configs/USA/include_bin.txt`), so
+the build also needs your disc's files extracted to `dumps/disc/` (`dumpsxiso -pt`). Builds
+without `--release` add developer tools (an ImGui overlay on F2).
+
+The matching PS1 build (byte-identical to the retail disc) is still here:
+`python3 tools/build_dw2.py`. See the decomp repository for how that works.
 
 ## Layout
 
 | Path | What |
 |------|------|
-| `src/` / `include/` | decompiled C and headers |
-| `configs/` | splat config + symbol maps |
-| `doc/` | `STATE_MAP.md`: global state map, memory map, scene table |
-| `tools/` | gcc-psx, maspsx, m2c, decomp-permuter, asm-differ, mkpsxiso, build scripts |
-
-## Quick start
-
-Supply your own Digimon World 2 (SLUS-01193) disc and extract it with `dumpsxiso -pt` to
-`dumps/disc/` (`SLUS_011.93` plus `AAA/3.PRO/STAG*.PRO`). Then:
-
-```
-python3 -m venv venv                                # venv\Scripts on Windows
-pip install -r requirements.txt
-python3 -m splat split configs/USA/SLUS_011.93.yaml # regenerate asm/ and linkers/
-python3 -m splat split configs/USA/stag1000.yaml    # same for each stagXXXX.yaml
-python3 tools/build_dw2.py                          # expect: SLUS_011.93: OK + 7x STAGxxxx.PRO: OK
-```
-
-`tools/build_dw2.py` preprocesses and compiles `src/**/*.c` through the PSX `cc1` + maspsx
-pipeline, assembles the remaining split asm, links with the splat linker script plus the
-auto-detected hardware and kernel symbols, then checks the SHA-1 against your disc's exe.
-`build/USA/out/SLUS_011.93: OK` means the whole exe still reproduces byte-for-byte. Each
-overlay is then linked with its own script and checked the same way
-(`build/USA/out/STAGxxxx.PRO: OK`); `--overlays-only` builds just the overlays.
-
-## Contributing names
-
-1. `python3 tools/rename.py func_XXXXXXXX Module_VerbNoun` renames a main exe function or
-   global everywhere (`--unit stagXXXX` for an overlay, `--batch file` for many).
-   `python3 tools/rename_field.py --batch file` renames struct fields with the compiler as
-   the checker.
-2. Only name what the code proves. A wrong name is worse than `func_`.
-3. Verify with `python3 tools/build_dw2.py`. Only `OK` for every file counts as done.
+| `src/` / `include/` | the game's C (from the decomp) and headers |
+| `psyq/` | PC replacements for the PlayStation libraries |
+| `backend/` | emulated PS1 GPU and SPU, HD renderer |
+| `host/` | SDL3 window, input, audio, saves, data pack |
+| `tools/` | build scripts, `dw2pack.py`, decomp tools |
+| `doc/` | state map, pack format, Psy-Q API notes |
 
 ## Credits
 
-Workflow and toolchain derived from the Parasite Eve 2 decomp. DW2 file-format
-documentation by RmBeastbow. Thanks to ThirstyWraith for pointing out the stage overlays
-(issue #3) and for their STAG3000 battle notes and decomp.me scratches (issue #4), which
-seeded the matches of the battle status and item functions.
+Built on the [Digimon World 2 decompilation](https://github.com/Wyrelade/Digimon-World-2-Decomp).
+Workflow and toolchain derived from the Parasite Eve 2 decomp. DW2 file-format documentation
+by RmBeastbow. Thanks to ThirstyWraith for the stage overlay and battle notes. Uses SDL3
+(zlib license) and Dear ImGui (MIT license, `host/imgui/LICENSE.txt`).
+
+## License
+
+The project code is CC0 1.0 (`LICENSE`). Digimon World 2 and its data belong to their owners;
+none of it is in this repository.
