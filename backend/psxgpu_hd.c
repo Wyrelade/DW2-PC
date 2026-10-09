@@ -190,7 +190,7 @@ static void run_part(int part) {
     }
 }
 
-static int worker_main(void *arg) {
+static PSXHD_ENTRY int worker_main(void *arg) {
     Worker *w = arg;
 
     for (;;) {

@@ -191,23 +191,59 @@ int CdGetSector(void *madr, int size) {
     return 1;
 }
 
+/* STR streaming (PR.4). CdRead2 after CdControl(Setloc) starts the stream on that file (2x speed,
+ * mode 0x80). StGetNext delivers the next whole video frame once the CD would have read its last
+ * chunk: 150 sectors per second from the start, on the VBlank clock (VBlanks * 150 * 1001 /
+ * 60000). It copies each video chunk's 2016 data bytes into the ring (StSetRing memory, the frame
+ * at its start; the game frees it before asking again) and keeps the first chunk's 32-byte STR
+ * header for *header. XA audio sectors are skipped (PR.5). While the next frame is not in yet one
+ * host VBlank passes (the PS1 keeps taking VBlank interrupts while the game polls), then 1 = no
+ * frame; the game's loop asks again. So a movie runs at 15 fps (10 sectors a frame).
+ *
+ * Headless runs without --movies keep the P1.10 stub: no stream is read; StGetNext hands out one
+ * frame whose header frame number lies past the end of the movie (file sectors / 10, the game's
+ * own end test is sectors / 10 - 10) with width and height 0, so stag1000's movie task ends on
+ * its first frame and the next game mode starts (classic baselines unchanged). */
+
+#define STR_CHUNK 2016 /* video data bytes per sector after the 32-byte STR header */
+
+static u_long *st_ring;
+static int st_ring_bytes;
+static int st_on;               /* a stream is running */
+static int st_file, st_secs;    /* its file and size in sectors */
+static int st_pos;              /* next sector to read, from the stream start */
+static int st_frames;           /* frames delivered */
+static unsigned long long st_t0; /* VBlank count at CdRead2 */
+static u_long st_header[8];
+
 int CdRead2(int mode) {
     PSYQ_LOG("0x%X", mode);
+    if (Host_MoviesOn() && st_ring != 0) {
+        st_file = Host_PakFileAt(st_lba, &st_secs);
+        st_on = st_file >= 0;
+        st_pos = 0;
+        st_frames = 0;
+        st_t0 = Host_VBlankCount();
+        printf("[movie] file 0x%03X (%d sectors, lba %d): playing\n", st_file, st_secs, st_lba);
+    }
     return 1;
 }
 
-/* STR streaming, P1.10 prototype stub: no stream is read and no frame is decoded. StGetNext
- * hands out one frame whose header frame number lies past the end of the movie (file sectors /
- * 10, the game's own end test is sectors / 10 - 10) with width and height 0, so stag1000's
- * movie task ends on its first frame and the next game mode starts. The real STR / MDEC path
- * (raw Form 2 sectors from dw2.pak) is the rest of P1.10. */
 void StSetRing(u_long *ring_addr, u_long ring_size) {
     PSYQ_LOG("%p, %u", (void *)ring_addr, ring_size);
+    st_ring = ring_addr;
+    st_ring_bytes = (int)ring_size * 2048;
     st_end = -1;
 }
 
 void StUnSetRing(void) {
     PSYQ_LOG("");
+    if (st_on) {
+        printf("[movie] file 0x%03X stopped after %d frames, %llu VBlanks\n", st_file, st_frames,
+               Host_VBlankCount() - st_t0);
+    }
+    st_ring = 0;
+    st_on = 0;
     st_end = -1;
 }
 
@@ -220,13 +256,64 @@ u_long StFreeRing(u_long *base) {
     return 0;
 }
 
+/* The next frame from the stream into the ring: 0 when one is complete, 1 when the CD has not
+ * read that far yet, 2 at the end of the file. */
+static int stream_frame(void) {
+    unsigned long long due = (Host_VBlankCount() - st_t0) * 150 * 1001 / 60000;
+    static u_char body[2336];
+
+    while (st_pos < st_secs && (unsigned long long)st_pos < due) {
+        const u_char *d = body + 8;
+        int cn, cc;
+
+        Host_PakSector(st_lba + st_pos++, body);
+        if (body[2] & 0x04) {
+            continue; /* XA audio sector (PR.5) */
+        }
+        if (d[0] != 0x60 || d[1] != 0x01 || d[2] != 0x01 || d[3] != 0x80) {
+            continue; /* not an STR video sector */
+        }
+        cn = d[4] | d[5] << 8;
+        cc = d[6] | d[7] << 8;
+        if ((cn + 1) * STR_CHUNK > st_ring_bytes) {
+            continue;
+        }
+        memcpy((u_char *)st_ring + cn * STR_CHUNK, d + 32, STR_CHUNK);
+        if (cn == 0) {
+            memcpy(st_header, d, sizeof(st_header));
+        }
+        if (cn == cc - 1) {
+            st_frames++;
+            return 0;
+        }
+    }
+    return st_pos >= st_secs ? 2 : 1;
+}
+
 u_long StGetNext(u_long **addr, u_long **header) {
     /* STR sector header: 0x0160 0x8001, sector number / count, frame number (word 2), frame
-     * size, width / height (word 4: 0 x 0, so the game uploads no slice). */
+     * size, width / height (word 4). */
     static u_long frame_header[8];
     static u_long frame_data[64];
 
     PSYQ_LOG("%p, %p", (void *)addr, (void *)header);
+    if (st_on) {
+        switch (stream_frame()) {
+        case 0:
+            *addr = st_ring;
+            *header = st_header;
+            return 0;
+        case 1:
+            Host_VBlank();
+            return 1;
+        default:
+            /* past the file end: a frame number past the end, so the game stops the movie */
+            st_header[2] = 0x7FFFFFFF;
+            *addr = st_ring;
+            *header = st_header;
+            return 0;
+        }
+    }
     if (st_end < 0) {
         int sectors;
         int id = Host_PakFileAt(st_lba, &sectors);

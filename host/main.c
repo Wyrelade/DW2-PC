@@ -32,7 +32,7 @@
  *       [--hold-boot N] [--press N:BUTTONS[:LEN]]... [--press2 N:BUTTONS[:LEN]]... [--save-dir DIR]
  *       [--fast] [--pad2-keys] [--scale N] [--sharpen N] [--hd-threads N] [--pgxp] [--wide] [--renderer gpu|soft]
  *       [--settings PATH] [--settings-set KEY=VALUE]... [--settings-ui] [--settings-tab T] [--ui-shots] [--quit-dialog]
- *       [--window-mode M] [--fullscreen] [--windowed]
+ *       [--movies] [--window-mode M] [--fullscreen] [--windowed]
  *     --pak PATH     the data pack (default dw2.pak next to the exe, in the user data folder,
  *                    then build/native/dw2.pak; doc/PACK_FORMAT.md), checked before anything else
  *                    runs; missing or failing, it is built from the disc image (host/pakbuild.c)
@@ -67,6 +67,8 @@
  *     --ui-shots     with --no-window: the window picture is rendered headless (F1 closed) and
  *                    each shot adds <tag>_ui.png (title hint check)
  *     --quit-dialog  the Esc quit question open at start (PR.15; headless shot with --ui-shots)
+ *     --movies       with --no-window: play the STR movies too (PR.4 movie checks); headless runs
+ *                    otherwise end each movie on its first frame (P1.10 stub), windows play them
  *     --hd-threads N drawing threads for the HD output (default 0 = one per core, at most 8)
  *     --pgxp         no-wobble geometry for the HD output (PG.2: precise GTE vertices,
  *                    perspective-correct textures); F6 toggles it in the window
@@ -252,6 +254,11 @@ static int parse_press(int port, const char *arg) {
 static const char *pak = NULL;
 static const char *disc = NULL;
 static int no_window = 0;
+static int movies = 0; /* --movies */
+
+int Host_MoviesOn(void) {
+    return !no_window || movies;
+}
 
 /* PG.10 b3: with a game thread, the main thread does the SDL / window init for it. */
 static SDL_Semaphore *init_req, *init_done;
@@ -305,7 +312,7 @@ static void run_on_low_stack(void) {
 
 /* PG.10 b3: the game thread; check_window checks its stack too (Windows: the low range, as for
  * the main thread; Linux: the same switch to the MAP_32BIT stack). */
-static int game_thread(void *arg) {
+static HOST_ENTRY int game_thread(void *arg) {
     (void)arg;
 #ifdef _WIN32
     game_main();
@@ -339,7 +346,7 @@ static void run_threaded(void) {
     Host_WindowLoop();
 }
 
-int main(int argc, char **argv) {
+HOST_ENTRY int main(int argc, char **argv) {
     int i;
     int cl_scale = 0, cl_wide = 0, cl_pgxp = 0, cl_renderer = 0, cl_window = -1, cl_sharpen = -1;
 
@@ -392,6 +399,8 @@ int main(int argc, char **argv) {
             Ui_SetShots(1);
         } else if (strcmp(argv[i], "--quit-dialog") == 0) {
             Ui_SetQuitAtStart(1);
+        } else if (strcmp(argv[i], "--movies") == 0) {
+            movies = 1;
         } else if (strcmp(argv[i], "--hd-threads") == 0 && i + 1 < argc) {
             PsxHd_SetThreads((int)strtol(argv[++i], NULL, 0));
         } else if (strcmp(argv[i], "--pgxp") == 0) {
@@ -425,7 +434,7 @@ int main(int argc, char **argv) {
                     "[--shot-vb N]... [--hold-boot N] [--press N:BUTTONS[:LEN]]... [--press2 N:BUTTONS[:LEN]]... "
                     "[--save-dir DIR] [--fast] [--pad2-keys] [--scale N] [--sharpen N] [--hd-threads N] [--pgxp] [--wide] "
                     "[--renderer gpu|soft] [--settings PATH] [--settings-set KEY=VALUE]... [--settings-ui] [--settings-tab T] [--ui-shots] [--quit-dialog] "
-                    "[--window-mode windowed|borderless|exclusive] [--fullscreen] [--windowed]%s\n",
+                    "[--movies] [--window-mode windowed|borderless|exclusive] [--fullscreen] [--windowed]%s\n",
                     argv[0], DW2_DEV ? " [--start-mode N] [--devui] [--devui-tab T] [--window-size W H] [--devedit N:KIND=ARGS]..." : "");
             return 2;
         }

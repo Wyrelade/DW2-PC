@@ -27,7 +27,9 @@ endif()
 # the image, its globals, Ps1_Ram and the heap lie in one 16 MB window below 2 GB (fixed base,
 # no ASLR), so the 24-bit OT links resolve and a pointer kept in a 32-bit game int round-trips.
 if(CMAKE_SIZEOF_VOID_P EQUAL 4)
-    set(DW2_ARCH_FLAG -m32)
+    # The i686 GCC keeps only a 4-byte aligned stack by default; SDL3.dll's SSE code needs 16 at
+    # every call into it (PR.14). Keep 16 everywhere; the entry points realign (HOST_ENTRY).
+    set(DW2_ARCH_FLAG -m32 -mpreferred-stack-boundary=4)
 elseif(CMAKE_SIZEOF_VOID_P EQUAL 8)
     set(DW2_ARCH_FLAG -m64)
 else()

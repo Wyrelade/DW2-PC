@@ -37,6 +37,9 @@ unsigned long long Host_VBlankCount(void);
 /* VBlanks run so far and the measured rate since the clock started. */
 void Host_LogRate(const char *what);
 
+/* host/main.c, PR.4: 1 when the STR movies play (a window, or --movies); 0 for headless test
+ * runs, where libcd's P1.10 stub ends each movie on its first frame. */
+int Host_MoviesOn(void);
 /* host/main.c: dev option --start-mode N, the game mode Sys_Main starts in (0: the title, 0x402). */
 int Host_StartMode(void);
 /* host/main.c: libgpu's SetDispMask(1). The first time (the boot image is in VRAM): saves the

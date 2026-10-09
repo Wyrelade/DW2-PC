@@ -6,6 +6,13 @@
 
 #include <stdint.h>
 
+/* Thread entries realign the stack on 32-bit x86 (as HOST_ENTRY in host/host_sdl.h, PR.14). */
+#if defined(__i386__)
+#define PSXHD_ENTRY __attribute__((force_align_arg_pointer))
+#else
+#define PSXHD_ENTRY
+#endif
+
 #include "backend/psxgpu_hd.h"
 
 typedef struct {

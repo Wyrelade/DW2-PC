@@ -554,7 +554,7 @@ static SDL_AtomicInt dlg_state; /* 0 open, 1 picked, 2 cancelled, 3 failed */
 static char dlg_path[1024];
 static char dlg_error[256];
 
-static void SDLCALL dialog_done(void *userdata, const char *const *list, int filter) {
+static HOST_ENTRY void SDLCALL dialog_done(void *userdata, const char *const *list, int filter) {
     (void)userdata;
     (void)filter;
     if (list == NULL) {

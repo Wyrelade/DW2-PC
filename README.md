@@ -71,6 +71,7 @@ that are plain files.
 | **GPU renderer** | Drawing runs on the graphics card through SDL_GPU (Vulkan). A software renderer stays as a fallback. |
 | **Exact frame timing** | The game runs at the PS1's 59.94 Hz, paced to the real clock, on its own thread, so dragging or resizing the window does not stall it. |
 | **Window modes** | Windowed, borderless fullscreen at the desktop resolution, or exclusive fullscreen at a resolution and refresh rate you pick. F11 switches between windowed and fullscreen; a short notice in the top left names the mode. The window's size and place are remembered. |
+| **Movies** | The intro, the story scenes and the ending play from your disc's movie files, decoded like the PS1's movie decoder chip at the original 15 frames per second. Start skips them, as on the PS1. They are silent for now (their sound comes with streamed CD audio). |
 | **Classic picture** | At 1x with the extras off, the picture is the PS1 picture: automated runs compare it with reference screenshots frame by frame. |
 
 ### Play
@@ -186,13 +187,14 @@ Planned for the first release:
       saved with the window's size and place.
 - [x] **Sharpening filter** for the scaled picture (GPU and software), in F1 and on F8.
 - [x] **"Press F1 for settings"** hint on the title screen.
-- [ ] **Movies:** the intro and the endings (skipped today).
+- [x] **Movies:** the intro, the story scenes and the endings, Start skips (silent until
+      streamed CD audio is in).
 - [ ] **Streamed CD audio** (XA).
 - [ ] **Full playthrough check** from the start to the ending, every scene on 64-bit.
 
 Done so far: the whole game code compiles and runs (title, city, domains, battles, menus,
-saves, VS mode), render scale, no wobble, 16:9, sharpening, GPU renderer, F1 settings, window modes, 64-bit and Linux
-builds.
+saves, VS mode), movies, render scale, no wobble, 16:9, sharpening, GPU renderer, F1 settings, window modes,
+64-bit and Linux builds.
 
 ## Building
 
@@ -225,7 +227,7 @@ executable and all 7 stage overlays byte-identical. The decomp repository explai
 ```
 src/       the game's C from the decomp (original logic; 64-bit fixes marked DW2_NATIVE)
 psyq/      PC versions of the PlayStation libraries the game calls (graphics, sound, CD, pad, card)
-backend/   emulated PS1 GPU and sound chip, the HD renderer (scale, no wobble, 16:9, SDL_GPU)
+backend/   emulated PS1 GPU, sound chip and movie decoder, the HD renderer (scale, no wobble, 16:9, SDL_GPU)
 host/      SDL3 window, input, audio output, memory card files, the data pack
 tools/     build scripts, dw2pack.py (pack builder), decomp tools
 doc/       game state map, pack format, notes on the PlayStation library calls

@@ -5,6 +5,16 @@
 
 #include <SDL3/SDL.h>
 
+/* PR.14: 32-bit Windows only promises a 4-byte aligned stack, and main() does not realign it,
+ * but SDL3.dll's SSE code (e.g. the software renderer's linear stretch, scale_mat_SSE) keeps
+ * 16-byte locals on the stack and faulted. Functions entered from outside our code (main, thread
+ * entries, SDL callbacks) realign to 16 so every call into SDL gets an aligned stack. */
+#if defined(__i386__)
+#define HOST_ENTRY __attribute__((force_align_arg_pointer))
+#else
+#define HOST_ENTRY
+#endif
+
 /* PS1 digital pad buttons, bit order of the pad reply's two button bytes (the reply sends them
  * active low; these masks are active high). */
 #define PAD_SELECT   0x0001
