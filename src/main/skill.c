@@ -29,8 +29,16 @@
 
 /* Small data this unit defines (.sbss in game.h's order). Retail reaches the first two
  * with %gp_rel here; Sys_VsPartyConfirmed is only used by overlays. */
+#ifdef DW2_NATIVE
+/* Skill_GetShotXa returns &Skill_ShotXaFile and the xaplay callers read the channel as the next
+ * word (q[1]): retail's .sbss puts the two side by side, a native build does not. One block. */
+s32 Skill_ShotXa[2];
+#define Skill_ShotXaFile Skill_ShotXa[0]
+#define Skill_ShotXaChannel Skill_ShotXa[1]
+#else
 s32 Skill_ShotXaFile;
 s32 Skill_ShotXaChannel;    /* CdlSetfilter channel for Skill_ShotXaFile */
+#endif
 /* 1 after YES to the stag1100 VS "Digi-Line OK?" prompt: the VS party is copied into the
  * roster, and stag3500 reads it for its mode argument. */
 s32 Sys_VsPartyConfirmed;
