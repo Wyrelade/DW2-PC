@@ -62,8 +62,15 @@ void Stg20_LabSkillsSetText(Actor *a) {
                 args.text = Skill_GetNameText(list[j + top]);
                 args.bigFont = 0;
                 args.color = w->col != i;
+#ifdef DW2_NATIVE
+                /* Retail reads past the 4 cursor positions into the next array: [i + 8] is
+                 * Stg20_LabSkillsTextPos[i + 4] there. A native build does not keep them adjacent. */
+                args.pos.x = Stg20_LabSkillsTextPos[i + 4].x;
+                args.pos.y = Stg20_LabSkillsTextPos[i + 4].y + j * 11;
+#else
                 args.pos.x = Stg20_LabSkillsCursorPos[i + 8].lo;
                 args.pos.y = Stg20_LabSkillsCursorPos[i + 8].hi + j * 11;
+#endif
                 args.charAdvance = 0;
                 args.lineAdvance = 0;
                 args.charDelay = 0;
