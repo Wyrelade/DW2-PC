@@ -28,6 +28,24 @@
 </sub></p>
 
 <p align="center">
+  <img src="misc/screenshots/title.jpg" alt="Title screen" width="32%">
+  <img src="misc/screenshots/city.jpg" alt="Digital City" width="32%">
+  <img src="misc/screenshots/digilab.jpg" alt="Digi-Lab" width="32%">
+  <br>
+  <img src="misc/screenshots/new-gaia.jpg" alt="Main Gate" width="32%">
+  <img src="misc/screenshots/battle.jpg" alt="Battle" width="32%">
+  <img src="misc/screenshots/terra-force.jpg" alt="Terra Force" width="32%">
+  <br>
+  <img src="misc/screenshots/metalgarurumon.jpg" alt="Battle" width="32%">
+  <img src="misc/screenshots/battle-2.jpg" alt="Battle" width="32%">
+  <img src="misc/screenshots/status.jpg" alt="Digimon status" width="32%">
+</p>
+
+<p align="center"><sub>
+  Screenshots from the PC port in 16:9 at 1920x1080. F12 saves your own.
+</sub></p>
+
+<p align="center">
   <a href="#features">Features</a> &middot;
   <a href="#getting-started">Getting started</a> &middot;
   <a href="#controls">Controls</a> &middot;
