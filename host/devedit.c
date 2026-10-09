@@ -751,6 +751,14 @@ static void apply(const DevEdit *e) {
                 refuse(e, "domain 0..32");
                 return;
             }
+        } else if (e->a >= 0x32F && e->a <= 0x334) {
+            /* PR.6: Digi-Lab 0x32F, item shops 0x330..0x332, beetle shops 0x333..0x334, as the
+             * text event (F3 code, text.c) opens them; they return to prevGameMode, so only from
+             * a walkable area */
+            if (from < 0x301 || from > 0x329) {
+                refuse(e, "lab / shops are opened from a walkable city area (0x301..0x329)");
+                return;
+            }
         } else if (!need_tables(&why) || !DevData_IsDest(e->a, e->b)) {
             refuse(e, *why ? why : "not a city destination of the game (area select record or map exit)");
             return;
@@ -758,7 +766,10 @@ static void apply(const DevEdit *e) {
         Sys_State.nextGameMode = e->a;
         Sys_State.modeArg = e->b;
         LOG("warp: mode 0x%X arg %d -> mode 0x%X arg %d (%s)\n", vb, from, from_arg, e->a, e->b,
-            DevData_DestName(e->a, e->b));
+            e->a == 0x32F ? "Digi-Lab"
+            : e->a >= 0x330 && e->a <= 0x332 ? "item shop"
+            : e->a >= 0x333 && e->a <= 0x334 ? "beetle shop"
+                                             : DevData_DestName(e->a, e->b));
         return;
     }
     case DEVEDIT_FLOOR: {
