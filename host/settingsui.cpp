@@ -305,6 +305,26 @@ void controls_tab(void) {
     }
 }
 
+/* PR.28: speed-up multiplier; F3 switches the speed-up on and off in play */
+void game_tab(void) {
+    static const int values[] = { 2, 3, 4, 5, 6, 8, 0 };
+    static const char *const names[] = { "2x", "3x", "4x", "5x", "6x", "8x", "No limit" };
+    int cur = Settings_Get(SET_SPEED);
+    int sel = 1;
+
+    for (int i = 0; i < (int)(sizeof(values) / sizeof(values[0])); i++) {
+        if (values[i] == cur) {
+            sel = i;
+        }
+    }
+    ImGui::SeparatorText("Speed-up");
+    if (ImGui::Combo("Speed when unlocked", &sel, names, (int)(sizeof(names) / sizeof(names[0])))) {
+        Settings_Set(SET_SPEED, values[sel]);
+    }
+    ImGui::TextWrapped("F3 unlocks and locks the speed in play: battles, walking in the domains, menus. "
+                       "Voice lines and movies always play at normal speed. Music plays faster too.");
+}
+
 void sound_tab(void) {
     int v = Settings_Get(SET_VOLUME);
 
@@ -409,6 +429,10 @@ void SettingsUi_Draw(void) {
             }
             if (ImGui::BeginTabItem("Controls", NULL, tab_flags("Controls"))) {
                 controls_tab();
+                ImGui::EndTabItem();
+            }
+            if (ImGui::BeginTabItem("Game", NULL, tab_flags("Game"))) {
+                game_tab();
                 ImGui::EndTabItem();
             }
             if (ImGui::BeginTabItem("Sound", NULL, tab_flags("Sound"))) {

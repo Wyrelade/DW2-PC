@@ -62,6 +62,8 @@
  *                    ~/.local/share/DW2-Online/saves/ on Linux)
  *     --fast         no 59.94 Hz pacing: one VBlank per wait, as fast as the host runs (headless
  *                    test runs; same frame sequence as a paced run without catch-up VBlanks)
+ *     --speed-up     start with the speed-up on (PR.28; F3 in the window, multiplier "speed" in
+ *                    the settings file / F1 Game tab)
  *     --scale N      HD output at N x the PS1 resolution (1..8, default 1 = classic; PG.1,
  *                    backend/psxgpu_hd.c); F5 in the window steps through 1..8
  *     --sharpen N    sharpening of the HD picture, 0..100 (PR.2b; 0 = off; needs --scale 2 or
@@ -411,6 +413,8 @@ HOST_ENTRY int main(int argc, char **argv) {
             Host_InputPad2Keys();
         } else if (strcmp(argv[i], "--fast") == 0) {
             Host_ClockFast();
+        } else if (strcmp(argv[i], "--speed-up") == 0) {
+            Host_SpeedSet(1);
         } else if (strcmp(argv[i], "--save-dir") == 0 && i + 1 < argc) {
             Host_CardSetDir(argv[++i]);
         } else if (strcmp(argv[i], "--scale") == 0 && i + 1 < argc) {
@@ -456,7 +460,7 @@ HOST_ENTRY int main(int argc, char **argv) {
             fprintf(stderr,
                     "usage: %s [IMAGE] [--disc IMAGE] [--pak PATH] [--vblanks N] [--no-window] [--shot-dir DIR] [--shot-at N]... "
                     "[--shot-vb N]... [--hold-boot N] [--press N:BUTTONS[:LEN]]... [--press2 N:BUTTONS[:LEN]]... "
-                    "[--save-dir DIR] [--fast] [--pad2-keys] [--scale N] [--sharpen N] [--hd-threads N] [--pgxp] [--wide] "
+                    "[--save-dir DIR] [--fast] [--speed-up] [--pad2-keys] [--scale N] [--sharpen N] [--hd-threads N] [--pgxp] [--wide] "
                     "[--renderer gpu|soft] [--settings PATH] [--settings-set KEY=VALUE]... [--settings-ui] [--settings-tab T] [--ui-shots] [--quit-dialog] "
                     "[--movies] [--window-mode windowed|borderless|exclusive] [--fullscreen] [--windowed]%s\n",
                     argv[0], DW2_DEV ? " [--start-mode N] [--devui] [--devui-tab T] [--window-size W H] [--devedit N:KIND=ARGS]..." : "");

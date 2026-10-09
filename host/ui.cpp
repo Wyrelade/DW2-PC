@@ -202,7 +202,7 @@ void write_shot(void) {
 }
 
 bool is_hotkey(SDL_Scancode sc) {
-    return sc == SDL_SCANCODE_F5 || sc == SDL_SCANCODE_F6 || sc == SDL_SCANCODE_F7 || sc == SDL_SCANCODE_F8 ||
+    return sc == SDL_SCANCODE_F3 || sc == SDL_SCANCODE_F5 || sc == SDL_SCANCODE_F6 || sc == SDL_SCANCODE_F7 || sc == SDL_SCANCODE_F8 ||
            sc == SDL_SCANCODE_F11 || sc == SDL_SCANCODE_F12;
 }
 

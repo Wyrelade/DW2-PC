@@ -190,6 +190,10 @@ void Psyq_CdVBlank(void) {
     }
 }
 
+int Psyq_CdStreaming(void) {
+    return xs_on;
+}
+
 static int loc_lba(const u_char *p) {
     return (unbcd(p[0]) * 60 + unbcd(p[1])) * 75 + unbcd(p[2]) - 150;
 }

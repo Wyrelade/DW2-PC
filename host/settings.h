@@ -22,6 +22,7 @@ enum {
     SET_WIN_MAX,    /* 0 / 1: the window was maximized */
     SET_SHARPEN,    /* 0..100 (PR.2b, 0 = off) */
     SET_TITLE_HINT, /* 0 / 1: "Press F1 for settings" on the title (PR.10) */
+    SET_SPEED,      /* PR.28 speed-up while unlocked (F3): 2..8 x, 0 = no limit */
     SET_COUNT
 };
 enum { SET_RENDERER_GPU, SET_RENDERER_SOFT };

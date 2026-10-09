@@ -56,7 +56,8 @@
 #define WINDOW_SCALE 3
 #define SLOTS 3
 
-enum { REQ_SCALE = 1, REQ_WIDE = 2, REQ_PGXP = 4, REQ_SHOT = 8, REQ_QUIT = 16, REQ_SETTING = 32, REQ_SHARPEN = 64 };
+enum { REQ_SCALE = 1, REQ_WIDE = 2, REQ_PGXP = 4, REQ_SHOT = 8, REQ_QUIT = 16, REQ_SETTING = 32, REQ_SHARPEN = 64,
+       REQ_SPEED = 128 };
 
 typedef struct {
     int kind;      /* 0 black, 1 1x picture, 2 software HD picture, 3 GPU texture */
@@ -853,6 +854,9 @@ void Host_PumpEvents(void) {
                 if (e.key.scancode == SDL_SCANCODE_F8) {
                     request(REQ_SHARPEN);
                 }
+                if (e.key.scancode == SDL_SCANCODE_F3) {
+                    request(REQ_SPEED);
+                }
                 if (e.key.scancode == SDL_SCANCODE_F11) {
                     toggle_fullscreen();
                 }
@@ -937,6 +941,20 @@ void Host_GameEvents(void) {
             notice("Sharpening %d (F8)%s", PsxHd_Sharpen(), PsxHd_Scale() > 1 ? "" : ", needs scale 2x or more");
         }
         Settings_Set(SET_SHARPEN, PsxHd_Sharpen());
+        fflush(stdout);
+    }
+    if (r & REQ_SPEED) {
+        Host_SpeedSet(!Host_SpeedOn());
+        if (!Host_SpeedOn()) {
+            printf("[host] speed-up off (F3)\n");
+            notice("Speed locked (F3)");
+        } else if (Settings_Get(SET_SPEED) == 0) {
+            printf("[host] speed-up on, no limit (F3)\n");
+            notice("Speed unlocked: no limit (F3)");
+        } else {
+            printf("[host] speed-up on, %dx (F3)\n", Settings_Get(SET_SPEED));
+            notice("Speed unlocked: %dx (F3)", Settings_Get(SET_SPEED));
+        }
         fflush(stdout);
     }
     if (r & REQ_SCALE) {

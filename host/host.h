@@ -26,6 +26,11 @@ void Host_Quit(const char *why);
 void Host_VBlank(void);
 /* --fast: no pacing, each Host_VBlank runs exactly one VBlank at once. */
 void Host_ClockFast(void);
+/* PR.28 speed-up (game thread): F3 toggles it, --speed-up starts with it on. While on, VBlanks run
+ * at the F1 multiplier (settings "speed": 2..8 x, 0 = no limit), except during XA audio and
+ * movies (their sectors follow the VBlank clock, sped up they would overrun the decoder). */
+void Host_SpeedSet(int on);
+int Host_SpeedOn(void);
 /* host/trace.c: logs game mode changes at VBlank wait `wait` (dev log). */
 void Host_TraceTick(unsigned int wait);
 /* PR.10, game thread: 1 while the title / main menu scene runs (game mode 0x401, stag1000). */

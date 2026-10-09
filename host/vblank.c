@@ -2,6 +2,7 @@
 
 #include "host/host.h"
 #include "host/host_sdl.h"
+#include "host/settings.h"
 #include "psyq/psyq_vblank.h"
 
 /* VBlank clock: NTSC 60000/1001 Hz, one VBlank every 1001/60000 s = 50050000/3 ns. Deadline k
@@ -38,13 +39,31 @@ static Uint64 flips;    /* buffer flips presented */
 static Uint64 window_ns, window_fired;
 static unsigned int restarts;
 static int fast;
+static int speed_on;     /* PR.28: F3 */
+static int cur_mult = 1; /* VBlank rate multiplier the deadlines use; 0 = no limit */
 
 void Host_ClockFast(void) {
     fast = 1;
 }
 
+void Host_SpeedSet(int on) {
+    speed_on = on != 0;
+}
+
+int Host_SpeedOn(void) {
+    return speed_on;
+}
+
 static Uint64 deadline(Uint64 k) {
-    return t0 + k * VBLANK_PERIOD_NUM / VBLANK_PERIOD_DEN;
+    return t0 + k * VBLANK_PERIOD_NUM / (VBLANK_PERIOD_DEN * (Uint64)cur_mult);
+}
+
+/* The multiplier for now: 1 while off or while a CD stream plays. */
+static int want_mult(void) {
+    if (!speed_on || Psyq_CdStreaming()) {
+        return 1;
+    }
+    return Settings_Get(SET_SPEED);
 }
 
 void Host_ClockStart(void) {
@@ -83,7 +102,20 @@ void Host_VBlank(void) {
     Uint64 now = SDL_GetTicksNS();
     int n;
 
-    if (fast) {
+    int mult = want_mult();
+
+    if (mult != cur_mult) {
+        /* new rate: the deadlines restart from now, so a change neither bursts nor stalls */
+        if (mult == 0) {
+            printf("[host] speed: no limit\n");
+        } else {
+            printf("[host] speed: %dx\n", mult);
+        }
+        cur_mult = mult;
+        t0 = now;
+        next = 1;
+    }
+    if (fast || cur_mult == 0) {
         run_vblank();
         host_side();
         return;

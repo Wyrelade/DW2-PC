@@ -89,6 +89,7 @@ that are plain files.
 | **Sharpening** | Optional contrast adaptive sharpening of the scaled picture (strength 0 to 100, off by default), on the graphics card or on the CPU with the software renderer. Edges get crisper without halos. F8 turns it on and off. |
 | **GPU renderer** | Drawing runs on the graphics card through SDL_GPU (Vulkan). A software renderer stays as a fallback. |
 | **Exact frame timing** | The game runs at the PS1's 59.94 Hz, paced to the real clock, on its own thread, so dragging or resizing the window does not stall it. |
+| **Speed-up** | F3 unlocks the speed: battles, walking in the domains and menus run 2x to 8x faster, or with no limit (pick it in F1, Game tab; 3x by default). F3 again locks it to normal speed. Voice lines and movies always play at normal speed. |
 | **Window modes** | Windowed, borderless fullscreen at the desktop resolution, or exclusive fullscreen at a resolution and refresh rate you pick. F11 switches between windowed and fullscreen; a short notice in the top left names the mode. The window's size and place are remembered. |
 | **Movies** | The intro, the story scenes and the ending play from your disc's movie files, decoded like the PS1's movie decoder chip at the original 15 frames per second. Start skips them, as on the PS1. Their sound plays with them (streamed CD audio). |
 | **Streamed CD audio** | The sound the PS1 streams from the disc (XA): the skill voice lines in battle and VS, the DigiLab DNA scene and the movie sound. Decoded like the PS1's CD controller (same ADPCM decode and the same resampling to 44.1 kHz) and mixed into the emulated sound chip at the game's CD volume. |
@@ -152,6 +153,7 @@ Default bindings (change them in the F1 settings window):
 | Key | Does |
 |---|---|
 | F1 | Settings window (Esc closes it) |
+| F3 | Speed-up on / off ("Speed unlocked" / "Speed locked") |
 | F5 | Render scale 1x .. 8x |
 | F6 | No wobble on / off |
 | F7 | 16:9 on / off |
@@ -166,6 +168,7 @@ Command line options (`dw2 --help` lists all of them):
 |---|---|
 | `--scale N` | start at render scale N (1 to 8) |
 | `--wide` | start in 16:9 |
+| `--speed-up` | start with the speed-up on |
 | `--pgxp` | start with no wobble on |
 | `--sharpen N` | sharpening strength 0 to 100 (needs scale 2 or more) |
 | `--renderer gpu\|soft` | GPU (default) or software drawing |
@@ -190,6 +193,7 @@ does not see your input while it is open.
 - **Controls:** two keys and one gamepad button per PS1 button. Click a slot and press the key
   or button; right click clears it; Esc cancels. Esc, Tab and the F keys are reserved. Left
   stick as D-pad on / off. Reset restores the defaults.
+- **Game:** the speed-up multiplier for F3 (2x, 3x, 4x, 5x, 6x, 8x or no limit).
 - **Sound:** volume.
 
 Settings are saved in `settings.ini` in the user data folder (`%APPDATA%\DW2-Online\` on
