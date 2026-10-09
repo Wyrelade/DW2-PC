@@ -12,6 +12,9 @@
 #include "host/settings.h"
 #include "host/ui.h"
 
+/* Community server (PC port and DW2 Online); also at the top of README.md. */
+#define DISCORD_URL "https://discord.gg/nHXAq2fdCJ"
+
 extern "C" void Host_RequestSetting(int id, int value);
 extern "C" void Host_AudioSetVolume(int volume);
 extern "C" const char *Host_RendererName(void);
@@ -424,6 +427,24 @@ void SettingsUi_Draw(void) {
         }
         if (ImGui::Button("Close (F1 / Esc)")) {
             open = false;
+        }
+        /* Community link, right of Close in Discord's colour. The system opens it: the Discord
+           app when it handles discord.gg links, else the browser. */
+        const char *discord = "Join Discord";
+        float bw = ImGui::CalcTextSize(discord).x + ImGui::GetStyle().FramePadding.x * 2.0f;
+        ImGui::SameLine(ImGui::GetContentRegionMax().x - bw);
+        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.345f, 0.396f, 0.949f, 1.0f));
+        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.420f, 0.467f, 1.0f, 1.0f));
+        ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.278f, 0.322f, 0.769f, 1.0f));
+        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
+        if (ImGui::Button(discord)) {
+            if (!SDL_OpenURL(DISCORD_URL)) {
+                fprintf(stderr, "[ui] could not open %s: %s\n", DISCORD_URL, SDL_GetError());
+            }
+        }
+        ImGui::PopStyleColor(4);
+        if (ImGui::IsItemHovered()) {
+            ImGui::SetTooltip("%s", DISCORD_URL);
         }
     }
     ImGui::End();

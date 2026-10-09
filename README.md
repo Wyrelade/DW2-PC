@@ -1,4 +1,10 @@
 <p align="center">
+  <a href="https://discord.gg/nHXAq2fdCJ"><img src="https://img.shields.io/badge/Join%20Discord!-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Join Discord!"></a>
+  <br>
+  <sub>Community for the PC port and DW2 Online.</sub>
+</p>
+
+<p align="center">
   <img src="misc/banner.png" alt="Digimon World 2 PC Port" width="100%">
 </p>
 
@@ -21,11 +27,6 @@
   <img src="https://img.shields.io/badge/game%20code-1088%2F1088%20functions-1f6feb" alt="1088 of 1088 game functions">
   <img src="https://img.shields.io/badge/license-CC0%201.0-lightgrey" alt="license CC0 1.0">
 </p>
-
-<p align="center"><sub>
-  No release yet. The download buttons start working with the first release; until then you can
-  <a href="#building">build it yourself</a>.
-</sub></p>
 
 <p align="center">
   <img src="misc/screenshots/title.jpg" alt="Title screen" width="32%">
@@ -201,7 +202,7 @@ are not saved. The window's size, place and maximized state are saved when you c
 
 ## Roadmap
 
-Planned for the first release:
+In the first release (v0.1.0):
 
 - [x] **No setup:** put the program next to your disc image (`.cue` / `.bin` / `.iso` / `.img`)
       or pick it once; the game checks it, builds its pack and starts.
