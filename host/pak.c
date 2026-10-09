@@ -47,6 +47,9 @@ static SDL_IOStream *pak;
 static PakFile files[PAK_FILES];
 static unsigned short by_lba[PAK_FILES]; /* file ids sorted by LBA */
 static int no_window;
+#if DW2_DEV
+static char pak_path[1024]; /* Host_PakReadFile opens its own stream on it */
+#endif
 
 static Uint32 rd32(const Uint8 *p) {
     return p[0] | p[1] << 8 | p[2] << 16 | (Uint32)p[3] << 24;
@@ -228,6 +231,9 @@ static void open_pak(const char *path) {
     }
     free(buf);
     qsort(by_lba, PAK_FILES, sizeof(by_lba[0]), cmp_lba);
+#if DW2_DEV
+    SDL_strlcpy(pak_path, path, sizeof(pak_path));
+#endif
     printf("[pak] %s: %d files, %.1f MB, all match the manifest (checked in %.2f s)\n", path, PAK_FILES,
            total / 1e6, (SDL_GetTicksNS() - t0) / 1e9);
 }
@@ -317,3 +323,36 @@ int Host_PakSector(int lba, unsigned char *body) {
     }
     return id;
 }
+
+#if DW2_DEV
+/* Dev tools (PD.7), main thread: the whole Form 1 file `id` in a malloc'd buffer (*size bytes),
+ * read through a stream of its own, so the game thread's sector reads are not disturbed. NULL
+ * before Host_PakOpen, for Form 2 files and on read errors. The pack was checked at open. */
+void *Host_PakReadFile(int id, int *size) {
+    SDL_IOStream *io;
+    const PakFile *f;
+    void *buf;
+
+    *size = 0;
+    if (pak_path[0] == 0 || id < 0 || id >= PAK_FILES || files[id].format != FORMAT_DATA) {
+        return NULL;
+    }
+    f = &files[id];
+    io = SDL_IOFromFile(pak_path, "rb");
+    if (io == NULL) {
+        return NULL;
+    }
+    buf = malloc((size_t)f->size + 1);
+    if (buf != NULL && (SDL_SeekIO(io, (Sint64)f->offset, SDL_IO_SEEK_SET) < 0 ||
+                        SDL_ReadIO(io, buf, (size_t)f->size) != (size_t)f->size)) {
+        free(buf);
+        buf = NULL;
+    }
+    SDL_CloseIO(io);
+    if (buf != NULL) {
+        ((Uint8 *)buf)[f->size] = 0xFF; /* a text walk off the end stops here */
+        *size = (int)f->size;
+    }
+    return buf;
+}
+#endif

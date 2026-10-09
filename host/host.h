@@ -86,6 +86,10 @@ void Host_PakOpen(const char *path, int no_window);
 int Host_PakSector(int lba, unsigned char *body);
 /* The file holding sector `lba` and its size in sectors, or -1 (and 0 sectors). */
 int Host_PakFileAt(int lba, int *sectors);
+#if DW2_DEV
+/* Dev tools, main thread: file `id` (Form 1) whole, malloc'd (free it); NULL if not readable. */
+void *Host_PakReadFile(int id, int *size);
+#endif
 
 /* host/card.c: memory card image files (raw 128 KB PS1 card images card1.mcd / card2.mcd in
  * the user data folder, or --save-dir). Host_CardLoad reads card `port` (0, 1) into buf: 1 read,

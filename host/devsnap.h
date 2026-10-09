@@ -17,6 +17,7 @@ extern "C" {
 #define DEVSNAP_ROSTER 0x24
 #define DEVSNAP_BAG 0x30
 #define DEVSNAP_PARTS 0x13
+#define DEVSNAP_STORAGE 0x100 /* storageCounts: count per item id */
 #define DEVSNAP_GAME_SIZE 0x1058 /* sizeof(GameState) */
 #define DEVSNAP_FLIPS 240       /* frame intervals kept for the timing plot */
 
@@ -40,7 +41,10 @@ typedef struct {
     uint8_t state, digiId, level, maxLevel, dp;
     int32_t exp;
     int16_t hp, maxHp, mp, maxMp, attack, defense, speed;
-    uint8_t name[14];
+    uint8_t name[14];       /* nickname, game text (0xFF ends) */
+    uint8_t skills[12];     /* skill ids, 0 none */
+    uint8_t learnable[0x18]; /* learnableSkills (DNA parents' skills, learnable by rank) */
+    uint8_t pendingSkill, parent0, parent1, isTransferred;
 } DevSnapDigi;
 
 typedef struct {
@@ -82,6 +86,8 @@ typedef struct {
     uint16_t partItems[DEVSNAP_PARTS];
     uint8_t partBroken[DEVSNAP_PARTS];
     uint16_t bag[DEVSNAP_BAG];
+    uint16_t storage[DEVSNAP_STORAGE];
+    uint8_t beetleName[0x13];
     DevSnapDigi roster[DEVSNAP_ROSTER];
     int32_t progress;          /* eventFlags.progress */
     uint8_t game[DEVSNAP_GAME_SIZE]; /* the whole block, for DevSnap_FlagTest */

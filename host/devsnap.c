@@ -186,6 +186,10 @@ static void capture_save(DevSnap *s) {
     for (i = 0; i < DEVSNAP_BAG; i++) {
         s->bag[i] = g->bagItems[i];
     }
+    for (i = 0; i < DEVSNAP_STORAGE; i++) {
+        s->storage[i] = g->storageCounts[i];
+    }
+    memcpy(s->beetleName, g->beetleName, sizeof(s->beetleName));
     for (i = 0; i < DEVSNAP_ROSTER; i++) {
         const DigiRosterEntry *e = &g->elems[i];
         DevSnapDigi *d = &s->roster[i];
@@ -204,6 +208,12 @@ static void capture_save(DevSnap *s) {
         d->defense = e->defense;
         d->speed = e->speed;
         memcpy(d->name, e->name, sizeof(d->name));
+        memcpy(d->skills, e->skills, sizeof(d->skills));
+        memcpy(d->learnable, e->learnableSkills, sizeof(d->learnable));
+        d->pendingSkill = e->pendingSkill;
+        d->parent0 = e->parent0;
+        d->parent1 = e->parent1;
+        d->isTransferred = e->isTransferred;
     }
     s->progress = g->eventFlags.progress;
     memcpy(s->game, g, sizeof(s->game));
