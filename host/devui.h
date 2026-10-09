@@ -19,19 +19,15 @@ int DevUi_Headless(void); /* --devui with --no-window */
 void DevUi_SetWindowSize(int w, int h);
 void DevUi_WindowSize(int *w, int *h); /* unchanged when not set */
 
-/* Main thread (Host_InitWindow): ImGui context and backends on the window's renderer. */
+/* Main thread (Ui_Init, host/ui.cpp, after it made the ImGui context): snapshot, map, tables. */
 void DevUi_Init(SDL_Window *window, SDL_Renderer *renderer, int headless);
-/* Main thread, each event before the host sees it: F2 toggles; with the overlay open the event
- * goes to ImGui too. 1 = consumed (F2, or a key while an ImGui text field has the keyboard). */
+/* Main thread (Ui_Event): F2 toggles the overlay. 1 = consumed. */
 int DevUi_Event(const SDL_Event *e);
 /* Main thread: an ImGui text field has the keyboard (the game's keyboard buttons read as up). */
 int DevUi_WantsKeyboard(void);
 int DevUi_IsOpen(void);
-/* Main thread, in Host_Present before SDL_RenderPresent: the overlay on top of the picture. */
-void DevUi_Render(void);
-/* Any thread (Host_SaveShot): with --devui headless, the next render also writes
- * <dir>/<tag>_devui.png (the window picture with the overlay). */
-void DevUi_Shot(const char *dir, const char *tag);
+/* Main thread, inside host/ui.cpp's ImGui frame: the overlay window. */
+void DevUi_Draw(void);
 void DevUi_Shutdown(void);
 
 #ifdef __cplusplus

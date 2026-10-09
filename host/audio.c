@@ -4,11 +4,13 @@
 #include "host/host.h"
 #include "host/host_sdl.h"
 #include "backend/psxspu.h"
+#include "host/settings.h"
 
 /* Audio device: 44.1 kHz stereo s16 (the SPU's own rate), fed from the VBlank tick on the main
  * thread with frames of the emulated SPU (backend/psxspu.c). Keeps about 4 VBlanks queued, so
  * the SPU advances as fast as the device plays. No device is not an error: the game runs
- * without sound (the SPU then still runs, one VBlank of samples per tick). */
+ * without sound (the SPU then still runs, one VBlank of samples per tick). PR.2 volume setting:
+ * the stream gain, (v / 100)^2, on the device side only (the SPU output and DW2_WAV unchanged). */
 
 #define AUDIO_RATE 44100
 #define FRAME_BYTES 4                                  /* s16 stereo */
@@ -62,10 +64,20 @@ void Host_AudioOpen(void) {
         printf("[audio] no audio device: %s\n", SDL_GetError());
         return;
     }
+    Host_AudioSetVolume(Settings_Get(SET_VOLUME));
     Host_AudioFeed();
     SDL_ResumeAudioStreamDevice(stream);
     printf("[audio] driver %s, device \"%s\", 44100 Hz stereo s16, SPU output\n", SDL_GetCurrentAudioDriver(),
            SDL_GetAudioDeviceName(SDL_GetAudioStreamDevice(stream)));
+}
+
+/* Main thread: 0..100. */
+void Host_AudioSetVolume(int volume) {
+    float v = (float)volume / 100.0f;
+
+    if (stream != NULL) {
+        SDL_SetAudioStreamGain(stream, v * v);
+    }
 }
 
 void Host_AudioFeed(void) {

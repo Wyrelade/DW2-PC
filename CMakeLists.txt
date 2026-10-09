@@ -11,12 +11,12 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS ON)
 
-# Dev build (PD): the ImGui dev overlay (F2, host/devui.cpp with Dear ImGui in host/imgui/) and
-# every PD dev tool. OFF is the release client: no C++, no ImGui, no dev tool compiled in
-# (tools/build_native.py --release). C and C++ test #if DW2_DEV.
+# Dev build (PD): the ImGui dev overlay (F2, host/devui.cpp) and every PD dev tool. OFF is the
+# release client (tools/build_native.py --release): no dev tool compiled in; it keeps C++ and
+# Dear ImGui (host/imgui/) for the F1 settings window only (PR.2). C and C++ test #if DW2_DEV.
 option(DW2_DEV "dev build: ImGui dev overlay and PD dev tools" ON)
+enable_language(CXX)
 if(DW2_DEV)
-    enable_language(CXX)
     set(DW2_DEV_VALUE 1)
 else()
     set(DW2_DEV_VALUE 0)
@@ -136,23 +136,29 @@ file(GLOB HOST_SRC CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/host/*.c)
 # Emulated PS1 hardware (backend/psxgpu.c: the GPU).
 file(GLOB BACKEND_SRC CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/backend/*.c)
 
-# Dev overlay (DW2_DEV): host/*.cpp and Dear ImGui (pinned, host/imgui/README.txt) with its SDL3
-# platform and SDL_Renderer backends. No exceptions, RTTI or thread-safe statics: ImGui needs none,
-# so nothing of the C++ runtime but what g++ links by itself.
-set(DEV_SRC)
+# ImGui layer (PR.2, release and dev): host/ui.cpp + host/settingsui.cpp (the F1 settings window)
+# on Dear ImGui (pinned, host/imgui/README.txt) with its SDL3 platform and SDL_Renderer backends.
+# Dev builds add host/devui.cpp (the PD.1 overlay, F2) and imgui_demo.cpp. No exceptions, RTTI or
+# thread-safe statics: ImGui needs none, so nothing of the C++ runtime but what g++ links by itself.
+set(UI_SRC ${CMAKE_SOURCE_DIR}/host/ui.cpp ${CMAKE_SOURCE_DIR}/host/settingsui.cpp)
+set(IMGUI_DIR ${CMAKE_SOURCE_DIR}/host/imgui)
+set(IMGUI_SRC
+    ${IMGUI_DIR}/imgui.cpp ${IMGUI_DIR}/imgui_draw.cpp ${IMGUI_DIR}/imgui_tables.cpp
+    ${IMGUI_DIR}/imgui_widgets.cpp
+    ${IMGUI_DIR}/backends/imgui_impl_sdl3.cpp ${IMGUI_DIR}/backends/imgui_impl_sdlrenderer3.cpp)
 if(DW2_DEV)
-    file(GLOB DEV_SRC CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/host/*.cpp)
-    set(IMGUI_DIR ${CMAKE_SOURCE_DIR}/host/imgui)
-    add_library(dw2_imgui OBJECT
-        ${IMGUI_DIR}/imgui.cpp ${IMGUI_DIR}/imgui_draw.cpp ${IMGUI_DIR}/imgui_tables.cpp
-        ${IMGUI_DIR}/imgui_widgets.cpp ${IMGUI_DIR}/imgui_demo.cpp
-        ${IMGUI_DIR}/backends/imgui_impl_sdl3.cpp ${IMGUI_DIR}/backends/imgui_impl_sdlrenderer3.cpp)
-    target_compile_options(dw2_imgui PRIVATE ${DW2_ARCH_FLAG} ${DW2_PIE_FLAGS} -fno-exceptions -fno-rtti
-        -fno-threadsafe-statics)
-    target_include_directories(dw2_imgui PRIVATE ${IMGUI_DIR})
-    target_link_libraries(dw2_imgui PRIVATE SDL3::SDL3-shared)
-    list(APPEND DEV_SRC $<TARGET_OBJECTS:dw2_imgui>)
+    list(APPEND UI_SRC ${CMAKE_SOURCE_DIR}/host/devui.cpp)
+    list(APPEND IMGUI_SRC ${IMGUI_DIR}/imgui_demo.cpp)
 endif()
+add_library(dw2_imgui OBJECT ${IMGUI_SRC})
+target_compile_options(dw2_imgui PRIVATE ${DW2_ARCH_FLAG} ${DW2_PIE_FLAGS} -fno-exceptions -fno-rtti
+    -fno-threadsafe-statics)
+if(NOT DW2_DEV)
+    target_compile_definitions(dw2_imgui PRIVATE IMGUI_DISABLE_DEMO_WINDOWS)
+endif()
+target_include_directories(dw2_imgui PRIVATE ${IMGUI_DIR})
+target_link_libraries(dw2_imgui PRIVATE SDL3::SDL3-shared)
+set(DEV_SRC ${UI_SRC} $<TARGET_OBJECTS:dw2_imgui>)
 
 add_executable(dw2 ${PSYQ_SRC} ${HOST_SRC} ${BACKEND_SRC} ${DEV_SRC} $<TARGET_OBJECTS:dw2_main> ${OVL_OBJECTS})
 target_compile_options(dw2 PRIVATE ${DW2_ARCH_FLAG} ${DW2_PIE_FLAGS} -fno-strict-aliasing -fwrapv -fno-common -Wall
@@ -160,9 +166,7 @@ target_compile_options(dw2 PRIVATE ${DW2_ARCH_FLAG} ${DW2_PIE_FLAGS} -fno-strict
     $<$<COMPILE_LANGUAGE:C>:-funsigned-char>
     $<$<COMPILE_LANGUAGE:CXX>:-fno-exceptions -fno-rtti -fno-threadsafe-statics>)
 target_compile_definitions(dw2 PRIVATE DW2_NATIVE DW2_DEV=${DW2_DEV_VALUE})
-if(DW2_DEV)
-    target_include_directories(dw2 PRIVATE ${CMAKE_SOURCE_DIR}/host/imgui)
-endif()
+target_include_directories(dw2 PRIVATE ${CMAKE_SOURCE_DIR}/host/imgui)
 target_include_directories(dw2 PRIVATE ${DW2_INCLUDES})
 # 16 MB-aligned fixed image base: the whole image (globals, Ps1_Ram, the heap) lies in one
 # 16 MB window, which the 24-bit OT links need (psyq/ps1mem.h, host/main.c checks it).
@@ -171,10 +175,8 @@ if(WIN32)
     add_custom_command(TARGET dw2 POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:SDL3::SDL3-shared> $<TARGET_FILE_DIR:dw2>)
     # 64-bit PE: also no high-entropy ASLR, so the stack stays low as well.
-    # Dev build: the C++ runtime parts g++ links come in statically (no libstdc++ DLL to ship).
-    if(DW2_DEV)
-        target_link_options(dw2 PRIVATE -static-libstdc++ -static-libgcc)
-    endif()
+    # The C++ runtime parts g++ links come in statically (no libstdc++ DLL to ship).
+    target_link_options(dw2 PRIVATE -static-libstdc++ -static-libgcc)
     target_link_options(dw2 PRIVATE ${DW2_ARCH_FLAG} -Wl,--image-base=0x01000000 -Wl,--disable-dynamicbase
         $<$<EQUAL:${CMAKE_SIZEOF_VOID_P},8>:-Wl,--disable-high-entropy-va>
         -Wl,-Map=${CMAKE_BINARY_DIR}/dw2.map)

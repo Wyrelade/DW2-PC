@@ -16,6 +16,8 @@
 #include "backend/psxgpu_hd.h"
 #include "host/host.h"
 #include "host/host_sdl.h"
+#include "host/settings.h"
+#include "host/ui.h"
 #include "psyq/psyq_log.h"
 #if DW2_DEV
 #include "host/devedit.h"
@@ -29,6 +31,7 @@
  *   dw2 [IMAGE] [--disc IMAGE] [--pak PATH] [--vblanks N] [--no-window] [--shot-dir DIR] [--shot-at N]... [--shot-vb N]...
  *       [--hold-boot N] [--press N:BUTTONS[:LEN]]... [--press2 N:BUTTONS[:LEN]]... [--save-dir DIR]
  *       [--fast] [--pad2-keys] [--scale N] [--hd-threads N] [--pgxp] [--wide] [--renderer gpu|soft]
+ *       [--settings PATH] [--settings-set KEY=VALUE]... [--settings-ui] [--settings-tab T]
  *     --pak PATH     the data pack (default dw2.pak next to the exe, in the user data folder,
  *                    then build/native/dw2.pak; doc/PACK_FORMAT.md), checked before anything else
  *                    runs; missing or failing, it is built from the disc image (host/pakbuild.c)
@@ -64,6 +67,13 @@
  *     --wide         16:9 picture (PG.3: wider view, 2D pictures pillarboxed); F7 toggles it
  *     --renderer R   HD output drawn by the GPU (gpu, PG.10b: SDL_GPU / Vulkan; the default with
  *                    a window) or the software rasterizer (soft; the default with --no-window)
+ *     --settings PATH  the settings file (PR.2, host/settings.c; default settings.ini in the user
+ *                    data folder with a window, none with --no-window). --scale, --wide, --pgxp
+ *                    and --renderer override it for this run and are not saved
+ *     --settings-set KEY=VALUE  set a value as the F1 window does (saved; repeatable; tests)
+ *     --settings-ui  the F1 settings window open at start; with --no-window it renders headless
+ *                    and each shot adds <tag>_ui.png
+ *     --settings-tab T the F1 tab shown first (Display, Controls, Sound; headless checks)
  *
  *   Dev builds only (DW2_DEV, PD; the release client has none of these):
  *     --start-mode N dev: start in game mode N instead of the title (0x402), e.g. the stag0000
@@ -320,6 +330,7 @@ static void run_threaded(void) {
 
 int main(int argc, char **argv) {
     int i;
+    int cl_scale = 0, cl_wide = 0, cl_pgxp = 0, cl_renderer = 0;
 
     for (i = 1; i < argc; i++) {
         if (strcmp(argv[i], "--vblanks") == 0 && i + 1 < argc) {
@@ -362,15 +373,26 @@ int main(int argc, char **argv) {
             Host_CardSetDir(argv[++i]);
         } else if (strcmp(argv[i], "--scale") == 0 && i + 1 < argc) {
             PsxHd_SetScale((int)strtol(argv[++i], NULL, 0));
+            cl_scale = 1;
         } else if (strcmp(argv[i], "--hd-threads") == 0 && i + 1 < argc) {
             PsxHd_SetThreads((int)strtol(argv[++i], NULL, 0));
         } else if (strcmp(argv[i], "--pgxp") == 0) {
             Host_SetPgxp(1);
+            cl_pgxp = 1;
         } else if (strcmp(argv[i], "--wide") == 0) {
             Host_SetWide(1);
+            cl_wide = 1;
         } else if (strcmp(argv[i], "--renderer") == 0 && i + 1 < argc &&
                    (strcmp(argv[i + 1], "gpu") == 0 || strcmp(argv[i + 1], "soft") == 0)) {
             Host_SetRenderer(strcmp(argv[++i], "gpu") == 0 ? 2 : 1);
+            cl_renderer = strcmp(argv[i], "gpu") == 0 ? 1 : 2;
+        } else if (strcmp(argv[i], "--settings") == 0 && i + 1 < argc) {
+            Settings_SetPath(argv[++i]);
+        } else if (strcmp(argv[i], "--settings-set") == 0 && i + 1 < argc && Settings_AddSet(argv[++i])) {
+        } else if (strcmp(argv[i], "--settings-ui") == 0) {
+            Ui_SetSettingsAtStart(1);
+        } else if (strcmp(argv[i], "--settings-tab") == 0 && i + 1 < argc) {
+            SettingsUi_SetTab(argv[++i]);
         } else if (argv[i][0] != '-' && disc == NULL) {
             disc = argv[i];
         } else {
@@ -378,12 +400,38 @@ int main(int argc, char **argv) {
                     "usage: %s [IMAGE] [--disc IMAGE] [--pak PATH] [--vblanks N] [--no-window] [--shot-dir DIR] [--shot-at N]... "
                     "[--shot-vb N]... [--hold-boot N] [--press N:BUTTONS[:LEN]]... [--press2 N:BUTTONS[:LEN]]... "
                     "[--save-dir DIR] [--fast] [--pad2-keys] [--scale N] [--hd-threads N] [--pgxp] [--wide] "
-                    "[--renderer gpu|soft]%s\n",
+                    "[--renderer gpu|soft] [--settings PATH] [--settings-set KEY=VALUE]... [--settings-ui] [--settings-tab T]%s\n",
                     argv[0], DW2_DEV ? " [--start-mode N] [--devui] [--devui-tab T] [--window-size W H] [--devedit N:KIND=ARGS]..." : "");
             return 2;
         }
     }
     setvbuf(stdout, NULL, _IOLBF, 1 << 16);
+    /* PR.2: the settings file; command line options win for this run and are not saved */
+    if (cl_scale) {
+        Settings_Override(SET_SCALE, PsxHd_Scale());
+    }
+    if (cl_wide) {
+        Settings_Override(SET_WIDE, 1);
+    }
+    if (cl_pgxp) {
+        Settings_Override(SET_PGXP, 1);
+    }
+    if (cl_renderer) {
+        Settings_Override(SET_RENDERER, cl_renderer == 2 ? SET_RENDERER_SOFT : SET_RENDERER_GPU);
+    }
+    Settings_Load(no_window);
+    if (!cl_scale) {
+        PsxHd_SetScale(Settings_Get(SET_SCALE));
+    }
+    if (!cl_wide && Settings_Get(SET_WIDE)) {
+        Host_SetWide(1);
+    }
+    if (!cl_pgxp && Settings_Get(SET_PGXP)) {
+        Host_SetPgxp(1);
+    }
+    if (!cl_renderer && Settings_Get(SET_RENDERER) == SET_RENDERER_SOFT) {
+        Host_SetRenderer(1);
+    }
     /* Main thread, before the game thread and window: the pack build may show its own progress
      * window and a file dialog. */
     Host_PakOpen(pak, disc, no_window);

@@ -6,6 +6,8 @@
 #include "backend/psxgpu_hd.h"
 #include "host/host.h"
 #include "host/host_sdl.h"
+#include "host/settings.h"
+#include "host/ui.h"
 #include "psyq/gte_core.h"
 #if DW2_DEV
 #include "host/devsnap.h"
@@ -30,15 +32,17 @@
  * one being written (3 slots: newest, shown, written). Hotkeys and quit go to the game thread as
  * requests (Host_GameEvents at its next VBlank wait). Headless runs keep one thread, no present.
  *
- * PD.1 (DW2_DEV builds only): the ImGui dev overlay (host/devui.cpp) draws last in Host_Present
- * and takes F2; the game thread fills its snapshot in Host_GameEvents (host/devsnap.c). With the
- * overlay closed nothing of this runs. --devui with --no-window: the overlay also runs headless
- * (publish and present into the hidden window, shots add the overlay picture). */
+ * PR.2: the ImGui layer (host/ui.cpp: the F1 settings window, in dev builds also the PD.1 dev
+ * overlay, F2) draws last in Host_Present; the game thread fills the dev snapshot in
+ * Host_GameEvents (host/devsnap.c). With both windows closed nothing of this runs.
+ * --settings-ui (or dev --devui) with --no-window: the UI also runs headless (publish and present
+ * into the hidden window, shots add the UI picture). Display settings changed in F1 reach the game
+ * thread as requests (Host_RequestSetting), like F5 / F6 / F7; both update the settings file. */
 
 #define WINDOW_SCALE 3
 #define SLOTS 3
 
-enum { REQ_SCALE = 1, REQ_WIDE = 2, REQ_PGXP = 4, REQ_SHOT = 8, REQ_QUIT = 16 };
+enum { REQ_SCALE = 1, REQ_WIDE = 2, REQ_PGXP = 4, REQ_SHOT = 8, REQ_QUIT = 16, REQ_SETTING = 32 };
 
 typedef struct {
     int kind;      /* 0 black, 1 1x picture, 2 software HD picture, 3 GPU texture */
@@ -77,16 +81,13 @@ static SDL_Texture *wraps[SLOTS]; /* main thread: the slot textures as renderer 
 static unsigned wrap_gen[SLOTS];
 static unsigned shown_seq[SLOTS];
 static SDL_AtomicInt requests;
+static SDL_AtomicInt wanted[SET_COUNT]; /* REQ_SETTING: F1's values (+1) for scale, wide, pgxp */
 static SDL_AtomicInt game_done;
 static const char *volatile quit_why = "window closed";
 
-/* Headless runs publish and present only for the --devui headless check (DW2_DEV). */
+/* Headless runs publish and present only for the headless UI checks (--settings-ui, --devui). */
 static int no_present(void) {
-#if DW2_DEV
-    return headless && !DevUi_Headless();
-#else
-    return headless;
-#endif
+    return headless && !Ui_Headless();
 }
 
 static void fail(const char *what) {
@@ -96,6 +97,10 @@ static void fail(const char *what) {
 
 void Host_SetRenderer(int choice) {
     renderer_choice = choice;
+}
+
+const char *Host_RendererName(void) {
+    return gpudev != NULL ? "GPU (Vulkan)" : "Software";
 }
 
 void Host_SetThreaded(int on) {
@@ -177,9 +182,7 @@ void Host_InitWindow(int no_window) {
     Host_InputInit();
     printf("[host] window %dx%d (%dx240 logical), renderer %s, vsync off%s\n", win_w, win_h, logical_w,
            SDL_GetRendererName(renderer), threaded ? ", game thread" : "");
-#if DW2_DEV
-    DevUi_Init(window, renderer, no_window);
-#endif
+    Ui_Init(window, renderer, no_window);
     Host_AudioOpen();
     fflush(stdout);
 }
@@ -370,9 +373,7 @@ void Host_Present(void) {
         SDL_SetTextureScaleMode(texture, f->h > 256 ? SDL_SCALEMODE_LINEAR : SDL_SCALEMODE_NEAREST);
         SDL_RenderTexture(renderer, texture, &src, &dst);
     }
-#if DW2_DEV
-    DevUi_Render();
-#endif
+    Ui_Render();
     SDL_RenderPresent(renderer);
 }
 
@@ -384,16 +385,20 @@ static void request(int bits) {
     } while (!SDL_CompareAndSwapAtomicInt(&requests, old, old | bits));
 }
 
+/* Main thread (F1 window): a display setting for the game thread (scale, wide, pgxp). */
+void Host_RequestSetting(int id, int value) {
+    SDL_SetAtomicInt(&wanted[id], value + 1); /* 0 = nothing wanted */
+    request(REQ_SETTING);
+}
+
 /* Main thread (the one thread when headless): window and device events, then the input state. */
 void Host_PumpEvents(void) {
     SDL_Event e;
 
     while (SDL_PollEvent(&e)) {
-#if DW2_DEV
-        if (DevUi_Event(&e)) {
-            continue; /* F2, or a key for an ImGui text field */
+        if (Ui_Event(&e)) {
+            continue; /* F1 / F2, a remap key, or a key for an ImGui field */
         }
-#endif
         switch (e.type) {
         case SDL_EVENT_QUIT:
         case SDL_EVENT_WINDOW_CLOSE_REQUESTED:
@@ -433,6 +438,7 @@ void Host_PumpEvents(void) {
         }
     }
     Host_InputPoll();
+    Settings_SaveIfDirty();
 }
 
 /* Game thread, once per VBlank wait: the window's requests, then the pad state. A key hit twice
@@ -443,19 +449,42 @@ void Host_GameEvents(void) {
     if (r & REQ_SHOT) {
         Host_ShotKey();
     }
+    if (r & REQ_SETTING) {
+        int v;
+
+        if ((v = SDL_SetAtomicInt(&wanted[SET_SCALE], 0)) != 0 && v - 1 != PsxHd_Scale()) {
+            PsxHd_SetScale(v - 1);
+            printf("[gpu] scale %dx (F1)\n", PsxHd_Scale());
+            Settings_Set(SET_SCALE, PsxHd_Scale());
+        }
+        if ((v = SDL_SetAtomicInt(&wanted[SET_WIDE], 0)) != 0 && v - 1 != PsxHd_Wide()) {
+            Host_SetWide(v - 1);
+            printf("[gpu] 16:9 %s (F1)\n", PsxHd_Wide() ? "on" : "off");
+            Settings_Set(SET_WIDE, PsxHd_Wide());
+        }
+        if ((v = SDL_SetAtomicInt(&wanted[SET_PGXP], 0)) != 0 && v - 1 != PsxHd_Pgxp()) {
+            Host_SetPgxp(v - 1);
+            printf("[gpu] no wobble (PGXP) %s (F1)\n", PsxHd_Pgxp() ? "on" : "off");
+            Settings_Set(SET_PGXP, PsxHd_Pgxp());
+        }
+        fflush(stdout);
+    }
     if (r & REQ_SCALE) {
         PsxHd_SetScale(PsxHd_Scale() % 8 + 1);
         printf("[gpu] scale %dx (F5)\n", PsxHd_Scale());
+        Settings_Set(SET_SCALE, PsxHd_Scale());
         fflush(stdout);
     }
     if (r & REQ_WIDE) {
         Host_SetWide(!PsxHd_Wide());
         printf("[gpu] 16:9 %s (F7)\n", PsxHd_Wide() ? "on" : "off");
+        Settings_Set(SET_WIDE, PsxHd_Wide());
         fflush(stdout);
     }
     if (r & REQ_PGXP) {
         Host_SetPgxp(!PsxHd_Pgxp());
         printf("[gpu] no wobble (PGXP) %s (F6)\n", PsxHd_Pgxp() ? "on" : "off");
+        Settings_Set(SET_PGXP, PsxHd_Pgxp());
         fflush(stdout);
     }
     if (r & REQ_QUIT) {
@@ -464,10 +493,10 @@ void Host_GameEvents(void) {
     Host_InputLatch();
 #if DW2_DEV
     DevSnap_Capture();
-    if (!threaded && DevUi_Headless()) {
-        Host_Present(); /* --devui headless: the overlay into the hidden window */
-    }
 #endif
+    if (!threaded && Ui_Headless()) {
+        Host_Present(); /* --settings-ui / --devui headless: the UI into the hidden window */
+    }
 }
 
 /* Main thread while the game thread runs: events and present until the game has quit. */
@@ -477,11 +506,9 @@ void Host_WindowLoop(void) {
         if (SDL_WaitSemaphoreTimeout(frame_sem, 4)) {
             Host_Present();
         }
-#if DW2_DEV
-        else if (DevUi_IsOpen()) {
+        else if (Ui_Active()) {
             Host_Present(); /* ImGui needs frames while the game picture stays the same */
         }
-#endif
     }
     Host_Shutdown();
     exit(0);
@@ -494,9 +521,8 @@ void Host_Shutdown(void) {
         return;
     }
     initialized = 0;
-#if DW2_DEV
-    DevUi_Shutdown();
-#endif
+    Settings_Flush();
+    Ui_Shutdown();
     Host_AudioClose();
     Host_InputClose();
     for (i = 0; i < SLOTS; i++) {

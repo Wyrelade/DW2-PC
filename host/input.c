@@ -3,9 +3,8 @@
 
 #include "host/host.h"
 #include "host/host_sdl.h"
-#if DW2_DEV
-#include "host/devui.h"
-#endif
+#include "host/settings.h"
+#include "host/ui.h"
 
 /* Host input state: keyboard and SDL gamepads as PS1 digital pad button masks, per port. Read
  * after each event pump; changes are logged. P1.7 turns them into pad replies in Pad_RecvBufs.
@@ -16,33 +15,12 @@
 #define PORTS 2
 #define TRIGGER_ON 16384 /* trigger axis 0..32767: L2 / R2 held past half */
 
-typedef struct {
-    int key; /* SDL_Scancode or SDL_GamepadButton */
-    unsigned short bit;
-} ButtonMap;
+#define STICK_ON 16384   /* left stick past half: D-pad (stick_dpad setting) */
 
-/* Keyboard (port 0). Esc quits (host/sdl.c). */
-static const ButtonMap key_map[] = {
-    { SDL_SCANCODE_UP, PAD_UP },         { SDL_SCANCODE_DOWN, PAD_DOWN },
-    { SDL_SCANCODE_LEFT, PAD_LEFT },     { SDL_SCANCODE_RIGHT, PAD_RIGHT },
-    { SDL_SCANCODE_Z, PAD_CROSS },       { SDL_SCANCODE_X, PAD_CIRCLE },
-    { SDL_SCANCODE_A, PAD_SQUARE },      { SDL_SCANCODE_S, PAD_TRIANGLE },
-    { SDL_SCANCODE_Q, PAD_L1 },          { SDL_SCANCODE_W, PAD_R1 },
-    { SDL_SCANCODE_E, PAD_L2 },          { SDL_SCANCODE_R, PAD_R2 },
-    { SDL_SCANCODE_RETURN, PAD_START },  { SDL_SCANCODE_BACKSPACE, PAD_SELECT },
-    { SDL_SCANCODE_RSHIFT, PAD_SELECT },
-};
-
-/* Gamepad, by position (south = Cross). Triggers are axes (L2 / R2 below). */
-static const ButtonMap pad_map[] = {
-    { SDL_GAMEPAD_BUTTON_SOUTH, PAD_CROSS },        { SDL_GAMEPAD_BUTTON_EAST, PAD_CIRCLE },
-    { SDL_GAMEPAD_BUTTON_WEST, PAD_SQUARE },        { SDL_GAMEPAD_BUTTON_NORTH, PAD_TRIANGLE },
-    { SDL_GAMEPAD_BUTTON_LEFT_SHOULDER, PAD_L1 },   { SDL_GAMEPAD_BUTTON_RIGHT_SHOULDER, PAD_R1 },
-    { SDL_GAMEPAD_BUTTON_BACK, PAD_SELECT },        { SDL_GAMEPAD_BUTTON_START, PAD_START },
-    { SDL_GAMEPAD_BUTTON_LEFT_STICK, PAD_L3 },      { SDL_GAMEPAD_BUTTON_RIGHT_STICK, PAD_R3 },
-    { SDL_GAMEPAD_BUTTON_DPAD_UP, PAD_UP },         { SDL_GAMEPAD_BUTTON_DPAD_DOWN, PAD_DOWN },
-    { SDL_GAMEPAD_BUTTON_DPAD_LEFT, PAD_LEFT },     { SDL_GAMEPAD_BUTTON_DPAD_RIGHT, PAD_RIGHT },
-};
+/* PR.2: the key and gamepad bindings come from the settings (host/settings.c; defaults = the
+ * tables this file had before: arrows, Z X A S, Q W E R, Return, Backspace / Right Shift; the
+ * gamepad by position, south = Cross, triggers = L2 / R2). Esc quits (host/sdl.c). While the F1
+ * settings window is open the game sees no keyboard or gamepad (scripted input still runs). */
 
 static const char *const bit_names[16] = {
     "Select", "L3", "R3", "Start", "Up", "Right", "Down", "Left",
@@ -169,15 +147,31 @@ void Host_InputDevice(const SDL_Event *e) {
     fflush(stdout);
 }
 
-static unsigned short map_bit(const ButtonMap *map, size_t n, int key) {
-    size_t i;
+/* The pad bits bound to scancode `sc` (keyboard) or gamepad button `b`. */
+static unsigned short key_bits(int sc) {
+    unsigned short m = 0;
+    int bit, slot;
 
-    for (i = 0; i < n; i++) {
-        if (map[i].key == key) {
-            return map[i].bit;
+    for (bit = 0; bit < 16; bit++) {
+        for (slot = 0; slot < SET_KEY_SLOTS; slot++) {
+            if (Settings_Key(bit, slot) == sc) {
+                m |= (unsigned short)(1 << bit);
+            }
         }
     }
-    return 0;
+    return m;
+}
+
+static unsigned short pad_bits(int b) {
+    unsigned short m = 0;
+    int bit;
+
+    for (bit = 0; bit < 16; bit++) {
+        if (Settings_Pad(bit) == b) {
+            m |= (unsigned short)(1 << bit);
+        }
+    }
+    return m;
 }
 
 static void lock_init(void) {
@@ -201,13 +195,16 @@ void Host_InputPress(const SDL_Event *e) {
             fflush(stdout);
             return;
         }
-        bits[kbd_port] = map_bit(key_map, sizeof(key_map) / sizeof(key_map[0]), e->key.scancode);
+        bits[kbd_port] = key_bits(e->key.scancode);
     } else {
         for (p = 0; p < PORTS; p++) {
             if (pads[p] != NULL && SDL_GetGamepadID(pads[p]) == e->gbutton.which) {
-                bits[p] = map_bit(pad_map, sizeof(pad_map) / sizeof(pad_map[0]), e->gbutton.button);
+                bits[p] = pad_bits(e->gbutton.button);
             }
         }
+    }
+    if (Ui_BlocksGameInput()) {
+        return;
     }
     lock_init();
     SDL_LockMutex(lock);
@@ -233,35 +230,42 @@ static void log_buttons(int port, unsigned short b) {
 void Host_InputPoll(void) {
     const bool *keys = SDL_GetKeyboardState(NULL);
     unsigned short b[PORTS] = { 0, 0 };
-    size_t i;
-    int p;
+    int bit, slot, p;
 
-    for (i = 0; i < sizeof(key_map) / sizeof(key_map[0]); i++) {
-#if DW2_DEV
-        if (DevUi_WantsKeyboard()) {
-            break; /* PD.1: the keyboard types into an ImGui field, the game sees no keys */
-        }
-#endif
-        if (keys[key_map[i].key]) {
-            b[kbd_port] |= key_map[i].bit;
+    if (Ui_BlocksGameInput()) {
+        goto store; /* F1 open, or an ImGui text field types (dev overlay) */
+    }
+    for (bit = 0; bit < 16; bit++) {
+        for (slot = 0; slot < SET_KEY_SLOTS; slot++) {
+            int sc = Settings_Key(bit, slot);
+
+            if (sc > 0 && sc < SDL_SCANCODE_COUNT && keys[sc]) {
+                b[kbd_port] |= (unsigned short)(1 << bit);
+            }
         }
     }
     for (p = 0; p < PORTS; p++) {
         if (pads[p] == NULL) {
             continue;
         }
-        for (i = 0; i < sizeof(pad_map) / sizeof(pad_map[0]); i++) {
-            if (SDL_GetGamepadButton(pads[p], (SDL_GamepadButton)pad_map[i].key)) {
-                b[p] |= pad_map[i].bit;
+        for (bit = 0; bit < 16; bit++) {
+            int c = Settings_Pad(bit);
+
+            if ((c >= 0 && c < SDL_GAMEPAD_BUTTON_COUNT && SDL_GetGamepadButton(pads[p], (SDL_GamepadButton)c)) ||
+                (c == SET_PAD_LTRIGGER && SDL_GetGamepadAxis(pads[p], SDL_GAMEPAD_AXIS_LEFT_TRIGGER) >= TRIGGER_ON) ||
+                (c == SET_PAD_RTRIGGER && SDL_GetGamepadAxis(pads[p], SDL_GAMEPAD_AXIS_RIGHT_TRIGGER) >= TRIGGER_ON)) {
+                b[p] |= (unsigned short)(1 << bit);
             }
         }
-        if (SDL_GetGamepadAxis(pads[p], SDL_GAMEPAD_AXIS_LEFT_TRIGGER) >= TRIGGER_ON) {
-            b[p] |= PAD_L2;
-        }
-        if (SDL_GetGamepadAxis(pads[p], SDL_GAMEPAD_AXIS_RIGHT_TRIGGER) >= TRIGGER_ON) {
-            b[p] |= PAD_R2;
+        if (Settings_Get(SET_STICK_DPAD)) {
+            int x = SDL_GetGamepadAxis(pads[p], SDL_GAMEPAD_AXIS_LEFTX);
+            int y = SDL_GetGamepadAxis(pads[p], SDL_GAMEPAD_AXIS_LEFTY);
+
+            b[p] |= (x <= -STICK_ON ? PAD_LEFT : 0) | (x >= STICK_ON ? PAD_RIGHT : 0) | (y <= -STICK_ON ? PAD_UP : 0) |
+                    (y >= STICK_ON ? PAD_DOWN : 0);
         }
     }
+store:
     lock_init();
     SDL_LockMutex(lock);
     for (p = 0; p < PORTS; p++) {

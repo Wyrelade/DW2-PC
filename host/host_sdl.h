@@ -71,6 +71,11 @@ void Host_InputClose(void);
 /* host/audio.c */
 void Host_AudioOpen(void);
 void Host_AudioFeed(void);
+void Host_AudioSetVolume(int volume); /* 0..100, main thread (PR.2) */
 void Host_AudioClose(void);
+
+/* host/sdl.c (PR.2): F1 window helpers, main thread */
+void Host_RequestSetting(int id, int value);
+const char *Host_RendererName(void);
 
 #endif /* HOST_HOST_SDL_H */

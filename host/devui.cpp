@@ -5,9 +5,9 @@
  * Every panel draws from a DevSnap copy (host/devsnap.c fills it on the game thread at its VBlank
  * wait while the overlay is open). Nothing here calls the game or writes game memory: the Save
  * tab's Edit controls (PD.4) queue DevEdit records that the game thread applies (host/devedit.c).
- * ImGui draws in window pixels over the picture: the renderer's logical presentation (320 or 427 x
- * 240, letterboxed) is switched off around it, so the overlay keeps its size at any window size
- * and in 16:9; the font follows the display scale and the window height (View tab). Names and the
+ * PR.2: the ImGui context, backends, frame and headless shots are host/ui.cpp's (shared with the F1
+ * settings window); this file draws the overlay window in that frame. The font follows the display
+ * scale and the window height (View tab). Names and the
  * Data tab come from the game tables in dw2.pak (host/devdata.c, PD.7). */
 
 #include <SDL3/SDL.h>
@@ -16,15 +16,11 @@
 #include <string.h>
 
 #include "imgui.h"
-#include "backends/imgui_impl_sdl3.h"
-#include "backends/imgui_impl_sdlrenderer3.h"
 
 #include "host/devdata.h"
 #include "host/devedit.h"
 #include "host/devsnap.h"
 #include "host/devui.h"
-
-extern "C" int Host_WritePng(const char *path, const uint32_t *pixels, int w, int h);
 
 namespace {
 
@@ -51,10 +47,6 @@ char g_edit_msg[96];  /* the last queue result */
 uint64_t g_rate_ns, g_rate_vb, g_rate_flips;
 int32_t g_rate_frames;
 double g_vb_hz, g_flip_hz, g_frame_hz;
-
-/* --devui headless shots: requested on the game side, written at the next render */
-SDL_AtomicInt g_shot_pending;
-char g_shot_path[1024];
 
 /* symbols from the linker map next to the exe (task descriptor and callback names) */
 struct Sym {
@@ -1644,36 +1636,6 @@ void draw_overlay(void) {
     }
 }
 
-void write_shot(void) {
-    SDL_Surface *s = SDL_RenderReadPixels(g_renderer, NULL);
-    SDL_Surface *c;
-
-    if (s == NULL) {
-        printf("[devui] shot: read failed (%s)\n", SDL_GetError());
-        return;
-    }
-    c = SDL_ConvertSurface(s, SDL_PIXELFORMAT_XRGB8888);
-    SDL_DestroySurface(s);
-    if (c == NULL) {
-        return;
-    }
-    /* rows into one block (pitch may be padded) */
-    uint32_t *px = (uint32_t *)malloc((size_t)c->w * c->h * 4);
-    if (px != NULL) {
-        for (int y = 0; y < c->h; y++) {
-            memcpy(px + (size_t)y * c->w, (const uint8_t *)c->pixels + (size_t)y * c->pitch, (size_t)c->w * 4);
-        }
-        if (Host_WritePng(g_shot_path, px, c->w, c->h)) {
-            printf("[shot] %s (%dx%d)\n", g_shot_path, c->w, c->h);
-        } else {
-            printf("[shot] cannot write %s\n", g_shot_path);
-        }
-        free(px);
-    }
-    SDL_DestroySurface(c);
-    fflush(stdout);
-}
-
 } // namespace
 
 extern "C" {
@@ -1714,21 +1676,10 @@ void DevUi_Init(SDL_Window *window, SDL_Renderer *renderer, int headless) {
     g_renderer = renderer;
     g_headless = headless != 0;
     DevSnap_Init();
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO &io = ImGui::GetIO();
-    io.IniFilename = NULL; /* no imgui.ini in the working folder */
-    io.LogFilename = NULL;
-    ImGui::StyleColorsDark();
+    /* the ImGui context, style and backends are host/ui.cpp's (PR.2) */
     g_dpi = SDL_GetDisplayContentScale(SDL_GetDisplayForWindow(window));
     if (!(g_dpi > 0.5f && g_dpi < 8.0f)) {
         g_dpi = 1.0f;
-    }
-    ImGui::GetStyle().ScaleAllSizes(g_dpi);
-    ImGui::GetStyle().FontScaleDpi = g_dpi;
-    if (!ImGui_ImplSDL3_InitForSDLRenderer(window, renderer) || !ImGui_ImplSDLRenderer3_Init(renderer)) {
-        printf("[devui] ImGui backend init failed: overlay off\n");
-        return;
     }
     load_map();
     DevData_InitConst(); /* before the game thread runs */
@@ -1736,8 +1687,7 @@ void DevUi_Init(SDL_Window *window, SDL_Renderer *renderer, int headless) {
     if (g_open_at_start) {
         DevSnap_SetOpen(1);
     }
-    printf("[devui] Dear ImGui %s ready (F2), display scale %.2f%s\n", IMGUI_VERSION, g_dpi,
-           g_open_at_start ? ", open" : "");
+    printf("[devui] dev overlay ready (F2)%s\n", g_open_at_start ? ", open" : "");
     fflush(stdout);
 }
 
@@ -1761,51 +1711,16 @@ int DevUi_Event(const SDL_Event *e) {
         }
         return 1;
     }
-    if (!DevSnap_Open()) {
-        return 0;
-    }
-    ImGui_ImplSDL3_ProcessEvent(e);
-    if ((e->type == SDL_EVENT_KEY_DOWN || e->type == SDL_EVENT_KEY_UP || e->type == SDL_EVENT_TEXT_INPUT) &&
-        ImGui::GetIO().WantCaptureKeyboard) {
-        return 1;
-    }
     return 0;
 }
 
-void DevUi_Render(void) {
-    int lw, lh;
-    SDL_RendererLogicalPresentation mode;
-
-    if (!DevUi_IsOpen()) {
-        return;
-    }
+void DevUi_Draw(void) {
     DevData_Load(); /* once, when the pack is open: the tables for the names */
     if (DevSnap_Get(&g_snap)) {
         g_have_snap = true;
         update_rates(g_snap);
     }
-    ImGui_ImplSDLRenderer3_NewFrame();
-    ImGui_ImplSDL3_NewFrame();
-    ImGui::NewFrame();
     draw_overlay();
-    ImGui::Render();
-    /* window pixels for ImGui: the logical presentation off around it */
-    SDL_GetRenderLogicalPresentation(g_renderer, &lw, &lh, &mode);
-    SDL_SetRenderLogicalPresentation(g_renderer, 0, 0, SDL_LOGICAL_PRESENTATION_DISABLED);
-    ImGui_ImplSDLRenderer3_RenderDrawData(ImGui::GetDrawData(), g_renderer);
-    if (SDL_GetAtomicInt(&g_shot_pending)) {
-        write_shot();
-        SDL_SetAtomicInt(&g_shot_pending, 0);
-    }
-    SDL_SetRenderLogicalPresentation(g_renderer, lw, lh, mode);
-}
-
-void DevUi_Shot(const char *dir, const char *tag) {
-    if (!DevUi_Headless() || SDL_GetAtomicInt(&g_shot_pending)) {
-        return;
-    }
-    snprintf(g_shot_path, sizeof(g_shot_path), "%s/%s_devui.png", dir, tag);
-    SDL_SetAtomicInt(&g_shot_pending, 1);
 }
 
 void DevUi_Shutdown(void) {
@@ -1814,9 +1729,6 @@ void DevUi_Shutdown(void) {
     }
     g_ready = false;
     DevSnap_SetOpen(0);
-    ImGui_ImplSDLRenderer3_Shutdown();
-    ImGui_ImplSDL3_Shutdown();
-    ImGui::DestroyContext();
 }
 
 } // extern "C"

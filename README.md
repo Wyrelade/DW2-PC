@@ -75,8 +75,9 @@ that are plain files.
 
 | | |
 |---|---|
-| **Gamepads** | Any controller SDL3 knows (Xbox, PlayStation, Switch Pro and others), mapped by button position, and it can be plugged in while the game runs. |
-| **Keyboard** | Full keyboard play out of the box. |
+| **Settings window** | F1 opens the settings: render scale, 16:9, no wobble, renderer, key and gamepad remap, left stick as D-pad, volume. Changes apply at once and are saved to `settings.ini`. |
+| **Gamepads** | Any controller SDL3 knows (Xbox, PlayStation, Switch Pro and others), mapped by button position, and it can be plugged in while the game runs. The left stick moves like the D-pad. |
+| **Keyboard** | Full keyboard play out of the box, every key can be changed in F1. |
 | **Two players** | VS mode with two gamepads, or on one keyboard by switching the port with Tab (`--pad2-keys`). |
 | **Saves as files** | Memory cards are files (`card1.mcd`, `card2.mcd`) in your user folder. Raw card images from DuckStation, PCSX-Redux or ePSXe load as they are, so a save from an emulator carries over. |
 | **Screenshots** | F12 saves the current picture as PNG. |
@@ -106,9 +107,11 @@ on Linux. To bring a save from an emulator, copy its memory card file there as `
 
 ## Controls
 
+Default bindings (change them in the F1 settings window):
+
 | PS1 | Keyboard | Gamepad |
 |---|---|---|
-| D-pad | Arrow keys | D-pad |
+| D-pad | Arrow keys | D-pad, left stick |
 | Cross | Z | South button (A on Xbox) |
 | Circle | X | East button |
 | Square | A | West button |
@@ -116,10 +119,11 @@ on Linux. To bring a save from an emulator, copy its memory card file there as `
 | L1 / R1 | Q / W | Shoulder buttons |
 | L2 / R2 | E / R | Triggers |
 | Start | Enter | Start |
-| Select | Backspace | Back / Select |
+| Select | Backspace, Right Shift | Back / Select |
 
 | Key | Does |
 |---|---|
+| F1 | Settings window (Esc closes it) |
 | F5 | Render scale 1x .. 8x |
 | F6 | No wobble on / off |
 | F7 | 16:9 on / off |
@@ -138,6 +142,25 @@ Command line options (`dw2 --help` lists all of them):
 | `--pak PATH` | use a pack from another place |
 | `--save-dir DIR` | keep the memory cards in DIR |
 | `--pad2-keys` | two players on one keyboard (Tab switches the port) |
+| `--settings PATH` | use another settings file |
+
+## Settings
+
+F1 opens the settings window over the running game (mouse, keyboard or gamepad). The game
+does not see your input while it is open.
+
+- **Display:** render scale, 16:9, no wobble (the same as F5 / F7 / F6, which stay in sync with
+  it), renderer (GPU or software, used from the next start).
+- **Controls:** two keys and one gamepad button per PS1 button. Click a slot and press the key
+  or button; right click clears it; Esc cancels. Esc, Tab and the F keys are reserved. Left
+  stick as D-pad on / off. Reset restores the defaults.
+- **Sound:** volume.
+
+Settings are saved in `settings.ini` in the user data folder (`%APPDATA%\DW2-Online\` on
+Windows, `~/.local/share/DW2-Online/` on Linux) when you change something. It is a plain text
+file (`key = value` lines) you can edit by hand; lines the game does not know are kept, and a
+bad value falls back to its default. Without the file the game starts with the defaults.
+Command line options such as `--scale 4` win over the file for that run and are not saved.
 
 ## Roadmap
 
@@ -145,9 +168,10 @@ Planned for the first release:
 
 - [x] **No setup:** put the program next to your disc image (`.cue` / `.bin` / `.iso` / `.img`)
       or pick it once; the game checks it, builds its pack and starts.
-- [ ] **F1 settings window:** key and gamepad remap, render scale, 16:9, no wobble, sharpening,
-      renderer, window mode, saved to a settings file. A "Press F1 for settings" hint on the
-      title screen.
+- [x] **F1 settings window:** key and gamepad remap, left stick as D-pad, render scale, 16:9,
+      no wobble, renderer, volume, saved to a settings file.
+- [ ] **More settings:** sharpening and window mode in F1, a "Press F1 for settings" hint on
+      the title screen.
 - [ ] **Window modes:** windowed, borderless fullscreen, exclusive fullscreen.
 - [ ] **Sharpening filter** for the scaled picture.
 - [ ] **Movies:** the intro and the endings (skipped today).
@@ -155,7 +179,8 @@ Planned for the first release:
 - [ ] **Full playthrough check** from the start to the ending, every scene on 64-bit.
 
 Done so far: the whole game code compiles and runs (title, city, domains, battles, menus,
-saves, VS mode), render scale, no wobble, 16:9, GPU renderer, 64-bit and Linux builds.
+saves, VS mode), render scale, no wobble, 16:9, GPU renderer, F1 settings, 64-bit and Linux
+builds.
 
 ## Building
 

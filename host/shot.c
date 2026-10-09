@@ -5,9 +5,7 @@
 
 #include "backend/psxgpu.h"
 #include "host/host.h"
-#if DW2_DEV
-#include "host/devui.h"
-#endif
+#include "host/ui.h"
 
 /* Screenshots for checks (P1.4): the display area as shown and the whole VRAM (1024x512, 15-bit
  * colour, mask bit ignored), each as an RGB PNG; with HD output on (PG.1) also <tag>_hd.png. No library: the zlib stream uses stored
@@ -177,18 +175,14 @@ void Host_SaveShot(const char *dir, const char *tag) {
         }
         free(hd);
     }
-#if DW2_DEV
-    DevUi_Shot(dir, tag); /* --devui headless: the window picture with the overlay */
-#endif
+    Ui_Shot(dir, tag); /* --settings-ui / --devui headless: the window picture with the UI */
     fflush(stdout);
 }
 
-#if DW2_DEV
-/* PD.1 dev overlay shots (host/devui.cpp): pixels w * h words 0x00RRGGBB. */
+/* UI shots (host/ui.cpp): pixels w * h words 0x00RRGGBB. */
 int Host_WritePng(const char *path, const uint32_t *pixels, int w, int h) {
     if (crc_table[1] == 0) {
         crc_init();
     }
     return write_png(path, pixels, w, h);
 }
-#endif
