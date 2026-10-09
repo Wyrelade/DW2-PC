@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="misc/banner.png" alt="Digimon World 2 PC Port" width="100%">
+</p>
+
 <h1 align="center">Digimon World 2 PC Port</h1>
 
 <p align="center">
@@ -49,7 +53,7 @@ that are plain files.
 
 > [!IMPORTANT]
 > **You need your own copy of the game.** This repository and its downloads contain no disc
-> image, no game data and no copyrighted assets. The port reads its data from a pack file that
+> image and no game data (graphics, models, sound, text or code from the disc). The port reads its data from a pack file that
 > is built on your PC from your own disc image (USA, `SLUS-01193`) and checked file by file
 > against a list of hashes. A disc that does not match is rejected.
 
@@ -207,8 +211,9 @@ doc/       game state map, pack format, notes on the PlayStation library calls
 
 ## License
 
-The project code is [CC0 1.0](LICENSE). Digimon World 2, its data and its characters belong to
-their owners; none of it is in this repository or its downloads.
+The project code is [CC0 1.0](LICENSE). Digimon World 2, its data, its characters and its logo
+belong to their owners. No game data is in this repository or its downloads; the banner
+(`misc/banner.png`) is fan art and uses the game's logo only to name the game.
 
 ---
 
