@@ -187,6 +187,8 @@ else()
     target_link_libraries(dw2 PRIVATE m)
     target_link_options(dw2 PRIVATE ${DW2_ARCH_FLAG} -no-pie -Wl,-Ttext-segment=0x01000000
         -Wl,-Map=${CMAKE_BINARY_DIR}/dw2.map)
+    # A libSDL3.so.0 next to dw2 is found before the system one (player zip, PR.8).
+    set_target_properties(dw2 PROPERTIES BUILD_RPATH "$ORIGIN")
 endif()
 # host/pak.c compiles in configs/USA/pack_manifest.txt (.incbin): rebuild it when the manifest changes.
 set_source_files_properties(${CMAKE_SOURCE_DIR}/host/pak.c PROPERTIES

@@ -126,6 +126,10 @@ You can also drop the image onto `dw2.exe`, or pass it with `--disc PATH`. The i
 sit in the user data folder (`%APPDATA%\DW2-Online\` on Windows, `~/.local/share/DW2-Online/`
 on Linux); the pack goes there too when the exe's folder is not writable.
 
+The Linux build needs SDL3 3.4 or newer from your distribution and glibc 2.43 or newer (it is
+built on Ubuntu 26.04). A `libSDL3.so.0` next to `dw2` is used before the system one. On older
+systems, [build it yourself](#building).
+
 Saves are in `%APPDATA%\DW2-Online\saves\` on Windows and `~/.local/share/DW2-Online/saves/`
 on Linux. To bring a save from an emulator, copy its memory card file there as `card1.mcd`.
 
