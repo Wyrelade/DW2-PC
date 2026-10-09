@@ -196,7 +196,9 @@ doc/       game state map, pack format, notes on the PlayStation library calls
 
 ## Credits
 
-- Built on the [Digimon World 2 decompilation](https://github.com/Wyrelade/Digimon-World-2-Decomp).
+- **[Wyrelade](https://github.com/Wyrelade)**: founder and lead of the project; the
+  [Digimon World 2 decompilation](https://github.com/Wyrelade/Digimon-World-2-Decomp) and this
+  PC port.
 - Decomp workflow and toolchain derived from the Parasite Eve 2 decomp.
 - DW2 file-format documentation by RmBeastbow.
 - Thanks to ThirstyWraith for the stage overlay and battle notes.
