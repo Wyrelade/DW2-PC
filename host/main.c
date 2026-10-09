@@ -26,11 +26,16 @@
  * initial data, starts the SDL3 host, then runs the game's Sys_Main (it never returns; the host
  * quits on window close or Esc).
  *
- *   dw2 [--pak PATH] [--vblanks N] [--no-window] [--shot-dir DIR] [--shot-at N]... [--shot-vb N]...
+ *   dw2 [IMAGE] [--disc IMAGE] [--pak PATH] [--vblanks N] [--no-window] [--shot-dir DIR] [--shot-at N]... [--shot-vb N]...
  *       [--hold-boot N] [--press N:BUTTONS[:LEN]]... [--press2 N:BUTTONS[:LEN]]... [--save-dir DIR]
  *       [--fast] [--pad2-keys] [--scale N] [--hd-threads N] [--pgxp] [--wide] [--renderer gpu|soft]
- *     --pak PATH     the data pack (default dw2.pak next to the exe, then build/native/dw2.pak;
- *                    doc/PACK_FORMAT.md), checked before anything else runs
+ *     --pak PATH     the data pack (default dw2.pak next to the exe, in the user data folder,
+ *                    then build/native/dw2.pak; doc/PACK_FORMAT.md), checked before anything else
+ *                    runs; missing or failing, it is built from the disc image (host/pakbuild.c)
+ *     --disc IMAGE   the disc image to build the pack from (.cue, .img, .bin, raw .iso); a bare
+ *                    IMAGE argument (drag and drop onto the exe) is the same. Default: the first
+ *                    Digimon World 2 USA image next to the exe, then in the user data folder;
+ *                    with a window and none found, a file dialog
  *     --vblanks N    quit after N VBlank waits in the Sys_FlipPending spin (0 = run on)
  *     --no-window    SDL dummy video and audio drivers (headless test runs)
  *     --shot-dir DIR screenshots go to DIR (default scratchpad/shots): the boot image when the
@@ -224,6 +229,7 @@ static int parse_press(int port, const char *arg) {
 }
 
 static const char *pak = NULL;
+static const char *disc = NULL;
 static int no_window = 0;
 
 /* PG.10 b3: with a game thread, the main thread does the SDL / window init for it. */
@@ -242,7 +248,6 @@ void Host_Init(int no_win) {
 /* Everything from the layout check on: the game's own call stack. */
 static void game_main(void) {
     check_window();
-    Host_PakOpen(pak, no_window);
     Host_OvlSnapshot();
     Snd_NativeInit();
     Host_Init(no_window);
@@ -321,6 +326,8 @@ int main(int argc, char **argv) {
             max_vblanks = (unsigned int)strtoul(argv[++i], NULL, 0);
         } else if (strcmp(argv[i], "--pak") == 0 && i + 1 < argc) {
             pak = argv[++i];
+        } else if (strcmp(argv[i], "--disc") == 0 && i + 1 < argc) {
+            disc = argv[++i];
         } else if (strcmp(argv[i], "--no-window") == 0) {
             no_window = 1;
         } else if (strcmp(argv[i], "--shot-dir") == 0 && i + 1 < argc) {
@@ -364,9 +371,11 @@ int main(int argc, char **argv) {
         } else if (strcmp(argv[i], "--renderer") == 0 && i + 1 < argc &&
                    (strcmp(argv[i + 1], "gpu") == 0 || strcmp(argv[i + 1], "soft") == 0)) {
             Host_SetRenderer(strcmp(argv[++i], "gpu") == 0 ? 2 : 1);
+        } else if (argv[i][0] != '-' && disc == NULL) {
+            disc = argv[i];
         } else {
             fprintf(stderr,
-                    "usage: %s [--pak PATH] [--vblanks N] [--no-window] [--shot-dir DIR] [--shot-at N]... "
+                    "usage: %s [IMAGE] [--disc IMAGE] [--pak PATH] [--vblanks N] [--no-window] [--shot-dir DIR] [--shot-at N]... "
                     "[--shot-vb N]... [--hold-boot N] [--press N:BUTTONS[:LEN]]... [--press2 N:BUTTONS[:LEN]]... "
                     "[--save-dir DIR] [--fast] [--pad2-keys] [--scale N] [--hd-threads N] [--pgxp] [--wide] "
                     "[--renderer gpu|soft]%s\n",
@@ -375,6 +384,9 @@ int main(int argc, char **argv) {
         }
     }
     setvbuf(stdout, NULL, _IOLBF, 1 << 16);
+    /* Main thread, before the game thread and window: the pack build may show its own progress
+     * window and a file dialog. */
+    Host_PakOpen(pak, disc, no_window);
 #if DW2_DEV
     DevEdit_Init();
 #endif

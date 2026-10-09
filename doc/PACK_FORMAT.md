@@ -1,13 +1,15 @@
 # dw2.pak format (version 1)
 
-The native build reads the game's disc files from `dw2.pak`, never from a disc image. Players
-build the pack from their own Digimon World 2 USA (SLUS-01193) disc image:
+The native build reads the game's disc files from `dw2.pak`, never from a disc image. The pack
+is built from the player's own Digimon World 2 USA (SLUS-01193) disc image. `dw2.exe` does it
+on the first start (`host/pakbuild.c`, see "Game side"); `tools/dw2pack.py` is the reference
+and dev tool and writes the same bytes:
 
 ```
 venv/Scripts/python.exe tools/dw2pack.py "<path to image>.img" [-o build/native/dw2.pak]
 ```
 
-`tools/dw2pack.py` reads the raw image (2352-byte sectors), takes SLUS_011.93 from the ISO9660
+Both read the raw image (2352-byte sectors), takes SLUS_011.93 from the ISO9660
 root, reads the game's file table from it (`Cd_FileLba` s32[0xE5B] at file offset 0x33F94,
 `Cd_FileSectors` u16[0xE5B] at 0x37900) and extracts every file id by LBA and sector count. The
 game data is outside the ISO9660 tree, so a file-system extract cannot replace this. Nothing
@@ -65,7 +67,18 @@ identifies the pack contents independent of the layout (online: sent at login, P
 
 ## Game side
 
-`dw2.exe [--pak <path>]` (default: `dw2.pak` next to the exe, then `build/native/dw2.pak`).
+`dw2.exe [--pak <path>] [--disc <image>]` (default: `dw2.pak` next to the exe, in the user data
+folder (`%APPDATA%\DW2-Online\`, `~/.local/share/DW2-Online/`), then `build/native/dw2.pak`).
+
+When no pack is found or the pack fails the check below, the exe builds it: from `--disc` (or
+an image path given as the only argument), else from the first image next to the exe or in the
+user data folder whose SLUS_011.93 matches the manifest (`.cue`, `.img`, `.bin`, `.iso`; a
+`.cue` names a `BINARY` file whose `TRACK 01` is `MODE2/2352` at its start). With a window and
+no image found it opens a file dialog. A 2048-byte ISO is refused with an explanation (it has no
+Form 2 sectors). The steps and checks are those of dw2pack.py; the pack is written as
+`dw2.pak.tmp`, every file is read back and hashed, then it is renamed. A rejected image leaves
+no file behind. The pack goes where the failed pack was, else next to the exe, else (folder not
+writable) into the user data folder.
 At start it checks magic, version, count, and for each entry: id, LBA and sectors against the
 game's own table, size against the format, the SHA-256 against the manifest, then hashes all
 file data. libcd serves sectors from the pack: a read at an LBA maps to the file holding it and

@@ -90,13 +90,16 @@ Game rules, battle formulas, random numbers, enemy behaviour, text, music and so
 ## Getting started
 
 1. Download the zip for your system and unpack it anywhere.
-2. Make a data pack from your disc image (this step goes away soon, see [Roadmap](#roadmap)):
-   ```
-   python3 tools/dw2pack.py "Digimon World 2.img" -o dw2.pak
-   ```
-   The image must be a raw dump with 2352-byte sectors: a CloneCD `.img` or a single-track
-   `.bin`. Put `dw2.pak` next to `dw2.exe`.
-3. Start `dw2.exe` (Windows) or `./dw2` (Linux).
+2. Put your disc image in the same folder as `dw2.exe`. It must be a raw dump with 2352-byte
+   sectors: `.bin` + `.cue`, a CloneCD `.img`, or a raw `.iso`. A 2048-byte `.iso` does not
+   work (it has lost the audio and movie sectors); the game tells you if you have one.
+3. Start `dw2.exe` (Windows) or `./dw2` (Linux). On the first start the game checks your image
+   file by file, writes its data pack `dw2.pak` next to the exe (a few seconds) and starts. If
+   it finds no image, it asks for one. After that the image is not needed any more.
+
+You can also drop the image onto `dw2.exe`, or pass it with `--disc PATH`. The image may also
+sit in the user data folder (`%APPDATA%\DW2-Online\` on Windows, `~/.local/share/DW2-Online/`
+on Linux); the pack goes there too when the exe's folder is not writable.
 
 Saves are in `%APPDATA%\DW2-Online\saves\` on Windows and `~/.local/share/DW2-Online/saves/`
 on Linux. To bring a save from an emulator, copy its memory card file there as `card1.mcd`.
@@ -131,6 +134,7 @@ Command line options (`dw2 --help` lists all of them):
 | `--wide` | start in 16:9 |
 | `--pgxp` | start with no wobble on |
 | `--renderer gpu\|soft` | GPU (default) or software drawing |
+| `--disc PATH` | build the pack from this disc image |
 | `--pak PATH` | use a pack from another place |
 | `--save-dir DIR` | keep the memory cards in DIR |
 | `--pad2-keys` | two players on one keyboard (Tab switches the port) |
@@ -139,7 +143,7 @@ Command line options (`dw2 --help` lists all of them):
 
 Planned for the first release:
 
-- [ ] **No setup:** put the program next to your disc image (`.cue` / `.bin` / `.iso` / `.img`)
+- [x] **No setup:** put the program next to your disc image (`.cue` / `.bin` / `.iso` / `.img`)
       or pick it once; the game checks it, builds its pack and starts.
 - [ ] **F1 settings window:** key and gamepad remap, render scale, 16:9, no wobble, sharpening,
       renderer, window mode, saved to a settings file. A "Press F1 for settings" hint on the
@@ -195,9 +199,10 @@ doc/       game state map, pack format, notes on the PlayStation library calls
   program, and a scene switch resets an overlay's data the way the original reload did.
 - Game memory stays below 2 GB, so the original 32-bit structures work unchanged in the 64-bit
   build.
-- The data pack (`doc/PACK_FORMAT.md`) holds the disc's files as the game reads them. It is
-  built from your image, and every file is checked against `configs/USA/pack_manifest.txt`,
-  which holds hashes only, no game data.
+- The data pack (`doc/PACK_FORMAT.md`) holds the disc's files as the game reads them. The game
+  builds it from your image on the first start (`host/pakbuild.c`; `tools/dw2pack.py` writes
+  the same file), and every file is checked against `configs/USA/pack_manifest.txt`, which
+  holds hashes only, no game data.
 
 ## Credits
 

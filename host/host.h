@@ -78,11 +78,13 @@ void Host_InputScriptTick(unsigned int wait);
 unsigned short Host_PadParseButtons(const char *names);
 
 /* host/pak.c: the game's disc files from dw2.pak (doc/PACK_FORMAT.md). Host_PakOpen opens the
- * pack (path, or NULL = dw2.pak next to the exe, then build/native/dw2.pak), checks it against
- * the compiled-in manifest and exits with a message on any problem. Host_PakSector fills body
+ * pack (path, or NULL = dw2.pak next to the exe, in the user data folder, then
+ * build/native/dw2.pak) and checks it against the compiled-in manifest; when there is none or it
+ * fails, it builds one from the disc image (disc, or one found next to the exe / in the user data
+ * folder, host/pakbuild.c) and exits with a message if that fails too. Host_PakSector fills body
  * with disc sector `lba` after its 4-byte header: subheader (8) + 2328 bytes (Form 1: the 2048
  * data bytes, then zeros) and returns the file id, or -1 (no file there; body is zero). */
-void Host_PakOpen(const char *path, int no_window);
+void Host_PakOpen(const char *path, const char *disc, int no_window);
 int Host_PakSector(int lba, unsigned char *body);
 /* The file holding sector `lba` and its size in sectors, or -1 (and 0 sectors). */
 int Host_PakFileAt(int lba, int *sectors);
