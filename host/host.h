@@ -46,8 +46,12 @@ int Host_StartMode(void);
  * "boot" screenshot when screenshots are on and holds the picture --hold-boot N VBlanks (dev
  * option; on the PS1 the CD loads after it take that long, here they are instant). */
 void Host_DisplayOn(void);
-/* F12: one screenshot pair into the --shot-dir directory (default scratchpad/shots). */
+/* F12 (PR.22): the picture the window shows, one PNG <dir>/dw2_<date>_<time>_N.png in
+ * screenshots/ next to the exe (or --shot-dir). */
 void Host_ShotKey(void);
+/* host/sdl.c, any thread: the next Host_Present writes the game picture as the window shows it
+ * (scale, 16:9, sharpening, letterbox bars cropped, no UI layer) to path, then a notice. */
+void Host_WindowShot(const char *path);
 /* host/shot.c: <dir>/<tag>_display.png (the display area) and <tag>_vram.png (1024x512). */
 void Host_SaveShot(const char *dir, const char *tag);
 

@@ -590,6 +590,65 @@ static void wrap_slot(int slot, const Frame *f) {
     wrap_gen[slot] = f->gen;
 }
 
+/* host/shot.c: pixels w * h words 0x00RRGGBB as a PNG; 0 on failure. */
+int Host_WritePng(const char *path, const uint32_t *pixels, int w, int h);
+
+/* PR.22 F12: requested from the game thread, written by the next Host_Present */
+static SDL_AtomicInt shot_wanted;
+static char shot_path[1200];
+
+void Host_WindowShot(const char *path) {
+    if (SDL_GetAtomicInt(&shot_wanted)) {
+        return;
+    }
+    SDL_strlcpy(shot_path, path, sizeof(shot_path));
+    SDL_SetAtomicInt(&shot_wanted, 1);
+}
+
+/* the game picture in output pixels (the logical presentation's letterbox rect), before the UI
+ * layer draws; read with the logical presentation off so the rect is in window pixels */
+static void window_shot(void) {
+    SDL_FRect fr;
+    SDL_Rect r;
+    SDL_Surface *s, *c = NULL;
+    int lw, lh, ok = 0, y;
+    SDL_RendererLogicalPresentation mode;
+    char text[1300];
+
+    if (!SDL_GetRenderLogicalPresentationRect(renderer, &fr)) {
+        return;
+    }
+    r.x = (int)(fr.x + 0.5f);
+    r.y = (int)(fr.y + 0.5f);
+    r.w = (int)(fr.w + 0.5f);
+    r.h = (int)(fr.h + 0.5f);
+    SDL_GetRenderLogicalPresentation(renderer, &lw, &lh, &mode);
+    SDL_SetRenderLogicalPresentation(renderer, 0, 0, SDL_LOGICAL_PRESENTATION_DISABLED);
+    s = SDL_RenderReadPixels(renderer, r.w > 0 && r.h > 0 ? &r : NULL);
+    SDL_SetRenderLogicalPresentation(renderer, lw, lh, mode);
+    if (s != NULL) {
+        c = SDL_ConvertSurface(s, SDL_PIXELFORMAT_XRGB8888);
+        SDL_DestroySurface(s);
+    }
+    if (c != NULL) {
+        uint32_t *px = (uint32_t *)SDL_malloc((size_t)c->w * c->h * 4);
+
+        if (px != NULL) {
+            for (y = 0; y < c->h; y++) {
+                SDL_memcpy(px + (size_t)y * c->w, (const Uint8 *)c->pixels + (size_t)y * c->pitch, (size_t)c->w * 4);
+            }
+            ok = Host_WritePng(shot_path, px, c->w, c->h);
+            SDL_free(px);
+        }
+        printf("[shot] %s %s (%dx%d)\n", ok ? "F12" : "cannot write", shot_path, c->w, c->h);
+        SDL_DestroySurface(c);
+    } else {
+        printf("[shot] F12 read failed: %s\n", SDL_GetError());
+    }
+    SDL_snprintf(text, sizeof(text), ok ? "Screenshot saved: %s" : "Screenshot failed: %s", shot_path);
+    Ui_Notice(text);
+}
+
 void Host_Present(void) {
     const Frame *f = NULL;
     int slot;
@@ -643,6 +702,10 @@ void Host_Present(void) {
         SDL_UpdateTexture(texture, &r, f->px, f->w * 4);
         SDL_SetTextureScaleMode(texture, f->h > 256 ? SDL_SCALEMODE_LINEAR : SDL_SCALEMODE_NEAREST);
         SDL_RenderTexture(renderer, texture, &src, &dst);
+    }
+    if (SDL_GetAtomicInt(&shot_wanted)) {
+        window_shot();
+        SDL_SetAtomicInt(&shot_wanted, 0);
     }
     Ui_Render();
     SDL_RenderPresent(renderer);

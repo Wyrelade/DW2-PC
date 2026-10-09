@@ -44,7 +44,8 @@
  *     --no-window    SDL dummy video and audio drivers (headless test runs)
  *     --shot-dir DIR screenshots go to DIR (default screenshots/ next to the exe, else in the user
  *                    data folder): the boot image when the display turns on (if any screenshot
- *                    option is given), each --shot-at, F12
+ *                    option is given), each --shot-at (display + VRAM PNGs); F12 writes one PNG
+ *                    of the picture as the window shows it
  *     --shot-at N    screenshot pair at VBlank wait N (repeatable, up to 16)
  *     --shot-vb N    screenshot pair at the first wait with N VBlanks run (repeatable, up to 16,
  *                    ascending; an emulator probe counts the same frames)
@@ -146,7 +147,7 @@ static const char *shots(void) {
 
 void Host_ShotKey(void) {
     static int n;
-    char tag[64], text[1100];
+    char tag[64], path[1200];
     SDL_Time now;
     SDL_DateTime t;
 
@@ -157,9 +158,8 @@ void Host_ShotKey(void) {
     } else {
         snprintf(tag, sizeof(tag), "f12_%d_wait%u", n++, vblanks);
     }
-    Host_SaveShot(shots(), tag);
-    snprintf(text, sizeof(text), "Screenshot saved: %s", shot_dir);
-    Ui_Notice(text);
+    snprintf(path, sizeof(path), "%s/%s.png", shots(), tag);
+    Host_WindowShot(path);
 }
 
 void Host_DisplayOn(void) {
