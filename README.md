@@ -1,26 +1,41 @@
+<h1 align="center">Digimon World 2 PC Port</h1>
+
 <p align="center">
-  <a href="https://nyen.cc/"><img src="https://nyen.cc/favicon.svg" alt="NYEN logo" width="56" height="56"></a>
-  <br>
-  <sub>Powered by</sub>
-  <br>
-  <a href="https://nyen.cc/"><b>NYEN</b></a>
+  A native Windows and Linux port of <i>Digimon World 2</i> (PlayStation, USA, <code>SLUS-01193</code>),
+  built from the game's own decompiled C code.
 </p>
 
-# Digimon World 2 PC Port
+<p align="center">
+  <a href="https://github.com/Wyrelade/DW2-PC/releases/latest/download/DW2-PC-windows-x64.zip"><img src="https://img.shields.io/badge/Download-Windows%20x64-0078D6?style=for-the-badge&logo=windows&logoColor=white" alt="Download for Windows x64"></a>
+  &nbsp;
+  <a href="https://github.com/Wyrelade/DW2-PC/releases/latest/download/DW2-PC-linux-x64.zip"><img src="https://img.shields.io/badge/Download-Linux%20x64-FCC624?style=for-the-badge&logo=linux&logoColor=black" alt="Download for Linux x64"></a>
+</p>
 
-![platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux-8957e5)
-![status](https://img.shields.io/badge/status-work%20in%20progress-d29922)
+<p align="center">
+  <a href="https://github.com/Wyrelade/DW2-PC/releases"><img src="https://img.shields.io/github/v/release/Wyrelade/DW2-PC?include_prereleases&label=release&color=2ea043" alt="latest release"></a>
+  <img src="https://img.shields.io/badge/status-work%20in%20progress-d29922" alt="status: work in progress">
+  <img src="https://img.shields.io/badge/license-CC0%201.0-lightgrey" alt="license CC0 1.0">
+</p>
 
-A native PC port of *Digimon World 2* (PlayStation, USA, `SLUS-01193`). The game's own C code
-from the [matching decompilation](https://github.com/Wyrelade/Digimon-World-2-Decomp) is
-compiled for the PC; the PlayStation libraries are replaced by a PC layer on SDL3. It is not an
-emulator and not a remake: the game logic is the original code, so it plays like the PS1
-version.
+<p align="center"><sub>
+  No release yet: the buttons start working with the first release. Until then, build it
+  yourself (see <a href="#building">Building</a>).
+</sub></p>
 
-> **You need your own copy of the game.** This repository and its builds contain no disc
-> image, no game data and no copyrighted assets. The port reads its data from a pack file
-> that is built on your PC from your own disc image and checked against a list of file
-> hashes. A disc that does not match is rejected.
+## What it is
+
+The game's C code from the [matching decompilation](https://github.com/Wyrelade/Digimon-World-2-Decomp)
+is compiled for the PC, and the PlayStation libraries are replaced by a PC layer on SDL3. It is
+not an emulator and not a remake: the game logic is the original code, so it plays like the
+PS1 version, with optional extras such as a higher render scale, 16:9 and no polygon wobble.
+
+Each download is a zip with the game program and its libraries. Unpack it anywhere and run
+`dw2.exe` (Windows) or `dw2` (Linux).
+
+> **You need your own copy of the game.** This repository and its downloads contain no disc
+> image, no game data and no copyrighted assets. The port reads its data from a pack file that
+> is built on your PC from your own disc image and checked against a list of file hashes. A
+> disc that does not match is rejected.
 
 ## Status
 
@@ -109,3 +124,11 @@ by RmBeastbow. Thanks to ThirstyWraith for the stage overlay and battle notes. U
 
 The project code is CC0 1.0 (`LICENSE`). Digimon World 2 and its data belong to their owners;
 none of it is in this repository.
+
+---
+
+<p align="center">
+  <a href="https://nyen.cc/"><img src="https://nyen.cc/favicon.svg" alt="NYEN logo" width="32" height="32"></a>
+  <br>
+  <sub>Powered by <a href="https://nyen.cc/"><b>NYEN</b></a></sub>
+</p>
