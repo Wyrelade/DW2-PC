@@ -6,6 +6,7 @@
 #include <string.h>
 #include <SDL3/SDL.h>
 
+#include "host/devedit.h"
 #include "host/devsnap.h"
 #include "host/host.h"
 #include "host/host_sdl.h"
@@ -27,6 +28,8 @@ extern s32 Mem_HeapSize;
 extern s32 Rand_Index;
 extern u16 Rand_Table[];
 extern s32 Ovl_CurrentId;
+extern DungState *Dung_StatePtr;
+extern int DevEdit_FloorCount(void);
 
 static SDL_Mutex *lock;
 static SDL_AtomicInt open_flag;
@@ -219,6 +222,22 @@ static void capture_save(DevSnap *s) {
     memcpy(s->game, g, sizeof(s->game));
 }
 
+/* PD.4: what the Save tab's edit controls may offer now (plain reads, as above) */
+static void capture_edit(DevSnap *s) {
+    unsigned box = Save_GameState.slotItems[4];
+
+    s->bagCapacity = box - 0x4B < 5 ? (int32_t)(box - 0x49) * 8 : 8; /* Item_GetBagCapacity */
+    s->warpWhy = s->floorWhy = "";
+    s->canWarp = DevEdit_CanWarp(&s->warpWhy);
+    s->canFloor = DevEdit_CanFloor(&s->floorWhy);
+    s->editsAllowed = DevEdit_Allowed();
+    if ((Sys_State.gameMode >> 8) == 2 && Ovl_CurrentId == 1) {
+        s->dungeonIdx = Dung_StatePtr->dungeonIdx;
+        s->floor = Dung_StatePtr->floor;
+        s->floorCount = DevEdit_FloorCount();
+    }
+}
+
 void DevSnap_Capture(void) {
     DevSnap *s = &work;
     uint64_t t0;
@@ -266,6 +285,7 @@ void DevSnap_Capture(void) {
     capture_heap(s);
     capture_tasks(s);
     capture_save(s);
+    capture_edit(s);
     s->seq = ++seq;
     s->captureNs = SDL_GetTicksNS() - t0;
     if (SDL_TryLockMutex(lock)) {

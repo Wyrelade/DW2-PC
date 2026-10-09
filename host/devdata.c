@@ -5,14 +5,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <SDL3/SDL.h>
 
 #include "host/devdata.h"
 #include "host/host.h"
 
-/* PD.7 / PD.3 dev overlay data, main thread only (host/devdata.h). The tables are read whole from
- * dw2.pak through Host_PakReadFile (a stream of its own, so the game thread's CD reads go on
- * untouched) and decoded here; the game's loaders (Digi_FindBaseData, Item_FindById,
- * Skill_FindById, Cd_GetFileEntry) are not called and no game variable is read except the two
+/* PD.7 / PD.3 dev overlay data (host/devdata.h), loaded once; the PD.4 edit checks read it on the
+ * game thread too. The tables are read whole from dw2.pak through Host_PakReadFile (a stream of
+ * its own, so the game thread's CD reads go on untouched) and decoded here; the game's loaders
+ * (Digi_FindBaseData, Item_FindById, Skill_FindById, Cd_GetFileEntry) are not called and no game variable is read except the two
  * constant tables DevData_InitConst copies before the game thread starts. Record layouts:
  * PLAN.md PD Findings "PD.7 table formats". */
 
@@ -49,6 +50,10 @@ static DevSkill *skills;
 static int skill_count;
 static short skill_at[DEVDATA_SKILL_IDS];
 static char type_names[3][16], rank_names[4][16], spec_names[6][16];
+static DevDest *dests;
+static int dest_count;
+static SDL_InitState load_state;
+static SDL_AtomicInt ready, failed;
 
 static uint32_t rd32(const File *f, int o) {
     const uint8_t *p = f->data + o;
@@ -194,6 +199,16 @@ static void file_text(const File *f, uint32_t off, char *out, int n) {
     }
 }
 
+/* game text bytes up to 0xFF, cut to n - 1 glyphs (0xFF always ends) */
+static void raw_text(const File *f, uint32_t off, uint8_t *out, int n) {
+    int i;
+
+    memset(out, 0xFF, (size_t)n);
+    for (i = 0; i < n - 1 && off + (uint32_t)i < (uint32_t)f->size && f->data[off + i] != 0xFF; i++) {
+        out[i] = f->data[off + i];
+    }
+}
+
 void DevData_InitConst(void) {
     int i;
 
@@ -240,6 +255,7 @@ static void load_names(const File *f) {
         d->id = (int16_t)id;
         d->modelFile = (int16_t)rd16(f, (int)p + 6);
         file_text(f, rd32(f, (int)p), d->name, (int)sizeof(d->name));
+        raw_text(f, rd32(f, (int)p), d->rawName, (int)sizeof(d->rawName));
         digi_at[id] = (short)digi_count;
     }
 }
@@ -412,33 +428,167 @@ static int load_labels(void) {
     return 1;
 }
 
-int DevData_Load(void) {
-    static int failed;
+#define FILE_AREASEL 0xD29 /* area select records, entry gameMode - 0x32A (Stg20_GetMapDest) */
+#define FILE_MAPS 0x309    /* city map headers, entry area - 0x301 (Stg20_GetMapInfo) */
+#define AREASEL_TABLES 5   /* modes 0x32A..0x32E (stag2000.c: below 0x32F is area select) */
+#define CITY_AREAS 40      /* 0x301..0x328 have map exits */
+#define DESTS 512
 
-    if (loaded || failed) {
-        return loaded;
+static void add_dest(int mode, int arg, int named, const char *name) {
+    int i;
+
+    for (i = 0; i < dest_count; i++) {
+        if (dests[i].mode == mode && dests[i].arg == arg) {
+            return;
+        }
+    }
+    if (dest_count < DESTS) {
+        dests[dest_count].mode = (int16_t)mode;
+        dests[dest_count].arg = (uint8_t)arg;
+        dests[dest_count].named = (uint8_t)named;
+        snprintf(dests[dest_count].name, sizeof(dests[dest_count].name), "%s", name);
+        dest_count++;
+    }
+}
+
+static int dest_cmp(const void *a, const void *b) {
+    const DevDest *x = (const DevDest *)a, *y = (const DevDest *)b;
+
+    return x->mode != y->mode ? x->mode - y->mode : x->arg - y->arg;
+}
+
+/* the name an area select record gives a mode (any arg), or NULL */
+static const char *area_name(int mode) {
+    int i;
+
+    for (i = 0; i < dest_count; i++) {
+        if (dests[i].named && dests[i].mode == mode) {
+            return dests[i].name;
+        }
+    }
+    return NULL;
+}
+
+/* PD.4 warp destinations (PLAN.md PD Findings "PD.4 warp"): the area select records with their
+ * names, then every map exit's target (mode, start record) that no record names. */
+static int load_dests(void) {
+    File f, m;
+    int t, i, k, named;
+
+    dests = (DevDest *)calloc(DESTS, sizeof(DevDest));
+    if (dests == NULL || !read_file(FILE_AREASEL, &f)) {
+        return 0;
+    }
+    if (!read_file(FILE_MAPS, &m)) {
+        free(f.data);
+        return 0;
+    }
+    /* Stg20PickRec, 0x18 bytes: +0 s16 flag id (-1 ends), +4 text, +0x10 s16 mode, +0x12 u8 arg */
+    for (t = 0; t < AREASEL_TABLES; t++) {
+        uint32_t o = rd32(&f, t * 4);
+
+        for (i = 0; i < 64 && o + (uint32_t)(i + 1) * 0x18 <= (uint32_t)f.size; i++) {
+            uint32_t r = o + (uint32_t)i * 0x18;
+            char name[40];
+
+            if (rd16(&f, (int)r) == -1) {
+                break;
+            }
+            file_text(&f, rd32(&f, (int)r + 4), name, (int)sizeof(name));
+            add_dest(rd16(&f, (int)r + 0x10), f.data[r + 0x12], 1, name);
+        }
+    }
+    named = dest_count;
+    /* Stg20MapFile +0xC: exits of 4 bytes x, y, mode - 0x300, arg; x 0 ends */
+    for (k = 0; k < CITY_AREAS; k++) {
+        uint32_t h = rd32(&m, k * 4), e;
+
+        if (h + 0x24 > (uint32_t)m.size) {
+            continue;
+        }
+        for (e = rd32(&m, (int)h + 0xC); e != 0 && e + 4 <= (uint32_t)m.size && m.data[e] != 0; e += 4) {
+            int mode = m.data[e + 2] + 0x300, arg = m.data[e + 3];
+            const char *an = area_name(mode);
+            char name[64];
+
+            if (mode >= 0x32A && mode <= 0x32E) {
+                snprintf(name, sizeof(name), "area select 0x%03X, cursor %d", mode, arg);
+            } else if (an != NULL) {
+                snprintf(name, sizeof(name), "%s, start %d", an, arg);
+            } else {
+                snprintf(name, sizeof(name), "area 0x%03X, start %d", mode, arg);
+            }
+            add_dest(mode, arg, 0, name);
+        }
+    }
+    qsort(dests, (size_t)dest_count, sizeof(DevDest), dest_cmp);
+    free(f.data);
+    free(m.data);
+    printf("[devdata] %d warp destinations (%d named, %d from map exits)\n", dest_count, named, dest_count - named);
+    return 1;
+}
+
+int DevData_Load(void) {
+    if (SDL_GetAtomicInt(&ready) || SDL_GetAtomicInt(&failed)) {
+        return SDL_GetAtomicInt(&ready);
+    }
+    if (!SDL_ShouldInit(&load_state)) {
+        return SDL_GetAtomicInt(&ready); /* the other thread loaded (or tried) meanwhile */
     }
     {
         int size;
         void *probe = Host_PakReadFile(FILE_SYSTEXT, &size);
 
         if (probe == NULL) {
+            SDL_SetInitialized(&load_state, false);
             return 0; /* pack not open yet */
         }
         free(probe);
     }
-    if (!load_labels() || !load_digis() || !load_items() || !load_skills()) {
+    if (!load_labels() || !load_digis() || !load_items() || !load_skills() || !load_dests()) {
         printf("[devdata] tables not loaded: names off\n");
-        failed = 1;
+        SDL_SetAtomicInt(&failed, 1);
+        SDL_SetInitialized(&load_state, false);
         return 0;
     }
     loaded = 1;
+    SDL_SetAtomicInt(&ready, 1); /* after the tables: a thread that sees it sees them */
+    SDL_SetInitialized(&load_state, true);
     fflush(stdout);
     return 1;
 }
 
 int DevData_Ready(void) {
-    return loaded;
+    return SDL_GetAtomicInt(&ready);
+}
+
+int DevData_DestCount(void) {
+    return SDL_GetAtomicInt(&ready) ? dest_count : 0;
+}
+
+const DevDest *DevData_DestAt(int i) {
+    return i >= 0 && i < DevData_DestCount() ? &dests[i] : NULL;
+}
+
+static const DevDest *find_dest(int mode, int arg) {
+    int i;
+
+    for (i = 0; i < DevData_DestCount(); i++) {
+        if (dests[i].mode == mode && dests[i].arg == arg) {
+            return &dests[i];
+        }
+    }
+    return NULL;
+}
+
+int DevData_IsDest(int mode, int arg) {
+    return find_dest(mode, arg) != NULL;
+}
+
+const char *DevData_DestName(int mode, int arg) {
+    const DevDest *d = find_dest(mode, arg);
+
+    return d != NULL ? d->name : "?";
 }
 
 int DevData_DigiCount(void) {

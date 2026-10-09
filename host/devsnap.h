@@ -90,6 +90,13 @@ typedef struct {
     uint8_t beetleName[0x13];
     DevSnapDigi roster[DEVSNAP_ROSTER];
     int32_t progress;          /* eventFlags.progress */
+    /* PD.4 edit state */
+    int32_t bagCapacity;       /* Item_GetBagCapacity (tool box part) */
+    int32_t canWarp, canFloor; /* DevEdit_CanWarp / CanFloor now */
+    const char *warpWhy;       /* why not (static text) */
+    const char *floorWhy;
+    int32_t dungeonIdx, floor, floorCount; /* in a domain (gameMode 0x2xx) */
+    int32_t editsAllowed;      /* DevEdit_Allowed (off in online mode, P3.14) */
     uint8_t game[DEVSNAP_GAME_SIZE]; /* the whole block, for DevSnap_FlagTest */
 } DevSnap;
 

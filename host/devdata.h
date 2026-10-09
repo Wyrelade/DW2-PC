@@ -27,7 +27,17 @@ typedef struct {
     uint8_t dpTargets[4]; /* ... and the digivolve target per range (0 none) */
     int16_t modelFile;
     char name[32];        /* UTF-8 */
+    uint8_t rawName[14];  /* the default name in game text (0xFF ends), as Digi_GetDefaultName */
 } DevDigi;
+
+/* A scene the PD.4 warp may switch to (city areas and domains), from the game's own lists:
+ * area select records (file 0xD29) and map exits (file 0x309). PLAN.md PD Findings "PD.4 warp". */
+typedef struct {
+    int16_t mode;  /* game mode: 0x301..0x32E city, 0x200 domain */
+    uint8_t arg;   /* modeArg: start record, cursor or domain index */
+    uint8_t named; /* 1: from an area select record (its name), 0: a map exit */
+    char name[40];
+} DevDest;
 
 typedef struct {
     int16_t id;
@@ -47,8 +57,10 @@ typedef struct {
 /* Main thread, before the game thread starts (DevUi_Init): copies the game's constant tables the
  * overlay needs from game C data (text dictionary, DNA tables). */
 void DevData_InitConst(void);
-/* Main thread: read and decode the tables from the pack once. 1 = loaded (now or before), 0 = not
- * (pack not open yet: try again later, or a file did not parse). */
+/* Read and decode the tables from the pack once. 1 = loaded (now or before), 0 = not (pack not
+ * open yet: try again later, or a file did not parse). Any thread: one load runs at a time
+ * (SDL_InitState); the tables are read only afterwards, so the game thread may use them too
+ * (PD.4 checks) once DevData_Ready says so. */
 int DevData_Load(void);
 int DevData_Ready(void);
 
@@ -62,6 +74,12 @@ const DevItem *DevData_Item(int id);
 int DevData_SkillCount(void);
 const DevSkill *DevData_SkillAt(int i);
 const DevSkill *DevData_Skill(int id);
+
+/* Warp destinations, sorted by mode and arg. */
+int DevData_DestCount(void);
+const DevDest *DevData_DestAt(int i);
+int DevData_IsDest(int mode, int arg);
+const char *DevData_DestName(int mode, int arg); /* "?" when unknown */
 
 /* Name of an id, or a fallback "?" (never NULL). */
 const char *DevData_DigiName(int id);

@@ -2,8 +2,9 @@
  * platform backend and the SDL_Renderer backend, on the renderer host/sdl.c presents with (the
  * SDL_GPU renderer or the default one: both paths, one backend). Main thread only. F2 toggles it.
  *
- * Read only: every panel draws from a DevSnap copy (host/devsnap.c fills it on the game thread at
- * its VBlank wait while the overlay is open). Nothing here calls the game or writes game memory.
+ * Every panel draws from a DevSnap copy (host/devsnap.c fills it on the game thread at its VBlank
+ * wait while the overlay is open). Nothing here calls the game or writes game memory: the Save
+ * tab's Edit controls (PD.4) queue DevEdit records that the game thread applies (host/devedit.c).
  * ImGui draws in window pixels over the picture: the renderer's logical presentation (320 or 427 x
  * 240, letterboxed) is switched off around it, so the overlay keeps its size at any window size
  * and in 16:9; the font follows the display scale and the window height (View tab). Names and the
@@ -19,6 +20,7 @@
 #include "backends/imgui_impl_sdlrenderer3.h"
 
 #include "host/devdata.h"
+#include "host/devedit.h"
 #include "host/devsnap.h"
 #include "host/devui.h"
 
@@ -36,10 +38,14 @@ float g_dpi = 1.0f;
 float g_user_scale = 0.0f; /* 0 = automatic (window height) */
 bool g_show_metrics;
 char g_start_tab[16]; /* --devui-tab NAME[:SUB]: selected in the first frame */
-char g_start_sub[16];
+char g_start_sub[24];
+char g_scroll_to[16]; /* --devui-tab Save:Edit+Bag: the Save section opened and scrolled to (headless shots) */
+int g_scroll_frames;
 
 DevSnap g_snap;       /* the overlay's copy */
 bool g_have_snap;
+bool g_edit;          /* Save tab: Edit controls shown (PD.4) */
+char g_edit_msg[96];  /* the last queue result */
 
 /* rates from snapshot deltas, over about one second */
 uint64_t g_rate_ns, g_rate_vb, g_rate_flips;
@@ -253,6 +259,20 @@ void panel_timing(const DevSnap &s) {
     ImGui::Text("Snapshot #%llu, capture %.1f us on the game thread", (unsigned long long)s.seq, s.captureNs / 1000.0);
 }
 
+/* PD.4 edit controls, defined below the Data tab pickers */
+void edit_log(void);
+void edit_tamer(const DevSnap &s);
+void edit_digi(const DevSnap &s, int slot);
+void edit_add_digi(void);
+void edit_beetle(const DevSnap &s);
+void edit_part(const DevSnap &s, int slot);
+void edit_bag_add(const DevSnap &s);
+void edit_storage(const DevSnap &s);
+void edit_flag(const DevSnap &s, int id);
+void panel_warp(const DevSnap &s);
+DevEdit edit_rec(int kind, int a = 0, int b = 0, int c = 0);
+void push(const DevEdit &e);
+
 void panel_game(const DevSnap &s) {
     ImGui::Text("Game mode   0x%03X  (%s, row %d)", s.gameMode, table_name(s.gameMode >> 8), s.gameMode & 0xFF);
     ImGui::Text("Next mode   0x%03X   prev 0x%03X   modeArg %d", s.nextGameMode, s.prevGameMode, s.modeArg);
@@ -263,6 +283,15 @@ void panel_game(const DevSnap &s) {
     }
     ImGui::Separator();
     ImGui::Text("Rand_Index  %d (0x%03X)   Rand_Table value 0x%04X", s.randIndex, s.randIndex, s.randValue);
+    ImGui::SeparatorText("Warp (PD.4)");
+    if (!s.editsAllowed) {
+        ImGui::TextDisabled("edits off (online mode)");
+    } else if (!DevData_Ready()) {
+        ImGui::TextDisabled("tables not loaded (dw2.pak)");
+    } else {
+        panel_warp(s);
+        edit_log();
+    }
 }
 
 void task_row(const DevSnap &s, int i, int depth) {
@@ -469,18 +498,63 @@ void digi_detail(const DevSnap &s, int slot) {
     skill_list("Learnable skills", d.learnable, (int)sizeof(d.learnable));
 }
 
+/* a Save section header; the --devui-tab scroll target opens and scrolls to it (headless: every
+ * frame, the save loads long after the first one; with a window: the first 30 frames) */
+bool section(const char *name, ImGuiTreeNodeFlags flags = 0) {
+    bool target = g_scroll_frames > 0 && SDL_strncasecmp(name, g_scroll_to, SDL_strlen(g_scroll_to)) == 0;
+
+    if (target) {
+        ImGui::SetNextItemOpen(true, ImGuiCond_Always);
+    }
+    bool open = ImGui::CollapsingHeader(name, flags);
+    if (target) {
+        ImGui::SetScrollHereY(0.0f);
+        if (!g_headless) {
+            g_scroll_frames--;
+        }
+    }
+    return open;
+}
+
 void panel_save(const DevSnap &s) {
     char t[32];
     static int flag_id = 0;
     static int sel_digi = 0;
 
+    if (g_start_sub[0] != 0) {
+        /* --devui-tab Save:Edit[+SECTION] (headless checks): edit mode, a section scrolled to */
+        const char *plus = SDL_strchr(g_start_sub, '+');
+
+        g_edit = SDL_strncasecmp(g_start_sub, "Edit", 4) == 0;
+        if (plus != NULL) {
+            SDL_strlcpy(g_scroll_to, plus + 1, sizeof(g_scroll_to));
+            g_scroll_frames = 30;
+        }
+        g_start_sub[0] = 0;
+    }
+    ImGui::BeginDisabled(!s.editsAllowed || !DevData_Ready());
+    ImGui::Checkbox("Edit", &g_edit);
+    ImGui::EndDisabled();
+    ImGui::SameLine();
+    if (!s.editsAllowed) {
+        ImGui::TextDisabled("edits off (online mode)");
+        g_edit = false;
+    } else {
+        ImGui::TextDisabled("applied by the game thread at its next VBlank wait, logged as [devedit]");
+    }
+    if (g_edit) {
+        edit_log();
+    }
     play_time(s.playTime, t, sizeof(t));
     game_text("Tamer  ", s.playerName, (int)sizeof(s.playerName));
     ImGui::Text("Rank %d (title set %d)   Bits %d   Play time %s", s.rank, s.rankTitleSet, s.bits, t);
+    if (g_edit) {
+        edit_tamer(s);
+    }
     if (!DevData_Ready()) {
         ImGui::TextDisabled("tables not loaded (dw2.pak): names show as ?");
     }
-    if (ImGui::CollapsingHeader("Party", ImGuiTreeNodeFlags_DefaultOpen)) {
+    if (section("Party", ImGuiTreeNodeFlags_DefaultOpen)) {
         if (ImGui::BeginTable("party", 7, ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_RowBg | ImGuiTableFlags_SizingFixedFit)) {
             ImGui::TableSetupColumn("slot");
             ImGui::TableSetupColumn("Digimon (species / name)");
@@ -530,26 +604,39 @@ void panel_save(const DevSnap &s) {
         }
         if (sel_digi >= 0 && sel_digi < DEVSNAP_ROSTER && s.roster[sel_digi].state != 0) {
             digi_detail(s, sel_digi);
+            if (g_edit) {
+                edit_digi(s, sel_digi);
+            }
         } else {
             ImGui::TextDisabled("click a Digimon for its stats and skills");
         }
+        if (g_edit) {
+            edit_add_digi();
+        }
     }
-    if (ImGui::CollapsingHeader("Digi-Beetle", ImGuiTreeNodeFlags_DefaultOpen)) {
+    if (section("Digi-Beetle", ImGuiTreeNodeFlags_DefaultOpen)) {
         game_text("Name   ", s.beetleName, (int)sizeof(s.beetleName), s.playerName);
         ImGui::Text("HP %d / %d   EP %d / %d", s.beetleHp, s.beetleMaxHp, s.beetleMp, s.beetleMaxMp);
+        if (g_edit) {
+            edit_beetle(s);
+        }
         if (ImGui::BeginTable("parts", 3, ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_RowBg | ImGuiTableFlags_SizingFixedFit)) {
             ImGui::TableSetupColumn("slot");
             ImGui::TableSetupColumn("part (item)");
             ImGui::TableSetupColumn("status");
             ImGui::TableHeadersRow();
             for (int i = 0; i < DEVSNAP_PARTS; i++) {
-                if (s.partItems[i] == 0 && s.partBroken[i] == 0) {
+                if (s.partItems[i] == 0 && s.partBroken[i] == 0 && !g_edit) {
                     continue;
                 }
                 ImGui::TableNextRow();
                 ImGui::TableNextColumn();
                 ImGui::Text("%2d %s", i, DevData_SlotName(i));
                 ImGui::TableNextColumn();
+                if (g_edit) {
+                    edit_part(s, i); /* item picker of the slot's category + broken box */
+                    continue;
+                }
                 if (s.partItems[i] != 0) {
                     const DevItem *it = DevData_Item(s.partItems[i]);
 
@@ -570,9 +657,12 @@ void panel_save(const DevSnap &s) {
             ImGui::EndTable();
         }
     }
-    if (ImGui::CollapsingHeader("Bag")) {
+    if (section("Bag")) {
         int n = 0;
 
+        if (g_edit) {
+            edit_bag_add(s);
+        }
         if (ImGui::BeginTable("bag", 2, ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_RowBg | ImGuiTableFlags_SizingFixedFit)) {
             ImGui::TableSetupColumn("slot");
             ImGui::TableSetupColumn("item");
@@ -585,6 +675,14 @@ void panel_save(const DevSnap &s) {
                 ImGui::TableNextColumn();
                 ImGui::Text("%2d", i);
                 ImGui::TableNextColumn();
+                if (g_edit) {
+                    ImGui::PushID(i);
+                    if (ImGui::SmallButton("x")) {
+                        push(edit_rec(DEVEDIT_BAG, i, 0, 0));
+                    }
+                    ImGui::PopID();
+                    ImGui::SameLine();
+                }
                 id_name(s.bag[i], DevData_ItemName(s.bag[i]));
                 n++;
             }
@@ -594,9 +692,12 @@ void panel_save(const DevSnap &s) {
             ImGui::TextDisabled("empty");
         }
     }
-    if (ImGui::CollapsingHeader("Storage")) {
+    if (section("Storage")) {
         int n = 0;
 
+        if (g_edit) {
+            edit_storage(s);
+        }
         if (ImGui::BeginTable("storage", 2, ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_RowBg | ImGuiTableFlags_SizingFixedFit)) {
             ImGui::TableSetupColumn("item");
             ImGui::TableSetupColumn("count");
@@ -618,7 +719,7 @@ void panel_save(const DevSnap &s) {
             ImGui::TextDisabled("empty");
         }
     }
-    if (ImGui::CollapsingHeader("Flags", ImGuiTreeNodeFlags_DefaultOpen)) {
+    if (section("Flags", ImGuiTreeNodeFlags_DefaultOpen)) {
         const char *what = "";
         int r;
 
@@ -639,6 +740,9 @@ void panel_save(const DevSnap &s) {
             ImGui::TextDisabled("item 0x%03X %s", flag_id - 0x7D0, DevData_ItemName(flag_id - 0x7D0));
         } else if (flag_id >= 0xBB8 && flag_id < 0xFA0) {
             ImGui::TextDisabled("Digimon 0x%03X %s", flag_id - 0xBB8, DevData_DigiName(flag_id - 0xBB8));
+        }
+        if (g_edit) {
+            edit_flag(s, flag_id);
         }
     }
 }
@@ -913,7 +1017,7 @@ void data_skills(void) {
 }
 
 /* Digimon picker: a combo with its own search field, DIGIMNDT Digimon only */
-void digi_combo(const char *label, int *id, ImGuiTextFilter &f) {
+void digi_combo(const char *label, int *id, ImGuiTextFilter &f, int max_id = 0x3FF) {
     char preview[48];
 
     snprintf(preview, sizeof(preview), "0x%03X %s", *id, DevData_DigiName(*id));
@@ -927,7 +1031,7 @@ void digi_combo(const char *label, int *id, ImGuiTextFilter &f) {
             const DevDigi *d = DevData_DigiAt(i);
             char item[48];
 
-            if (!d->hasBase || !pass(f, d->id, d->name, DevData_RankName(d->rank))) {
+            if (!d->hasBase || d->id > max_id || !pass(f, d->id, d->name, DevData_RankName(d->rank))) {
                 continue;
             }
             snprintf(item, sizeof(item), "0x%03X %s (%s)", d->id, d->name, DevData_RankName(d->rank));
@@ -937,6 +1041,421 @@ void digi_combo(const char *label, int *id, ImGuiTextFilter &f) {
         }
         ImGui::EndCombo();
     }
+}
+
+/* ---- PD.4 state edit (host/devedit.h): the Save tab's Edit controls ----
+ * Each control queues a DevEdit record; the game thread applies it at its next VBlank wait and
+ * logs it ([devedit] line, the last ones shown under "Edit log"). Nothing here writes game memory.
+ * Fields follow the game value until the user types into them. */
+
+DevEdit edit_rec(int kind, int a, int b, int c) {
+    DevEdit e;
+
+    memset(&e, 0, sizeof(e));
+    memset(e.text, 0xFF, sizeof(e.text));
+    e.kind = kind;
+    e.a = a;
+    e.b = b;
+    e.c = c;
+    return e;
+}
+
+void push(const DevEdit &e) {
+    if (DevEdit_Push(&e)) {
+        snprintf(g_edit_msg, sizeof(g_edit_msg), "queued: %s %d %d %d", DevEdit_KindName(e.kind), e.a, e.b, e.c);
+    } else {
+        snprintf(g_edit_msg, sizeof(g_edit_msg), "not queued: queue full or edits off");
+    }
+}
+
+/* an input that shows the game value until edited */
+struct Field {
+    int buf = 0, last = 0;
+    bool init = false;
+
+    void follow(int cur) {
+        if (!init || last != cur) {
+            buf = cur;
+            last = cur;
+            init = true;
+        }
+    }
+};
+
+bool int_input(const char *label, int *v, int chars = 8) {
+    ImGui::SetNextItemWidth(ImGui::CalcTextSize("0").x * (float)chars + ImGui::GetFrameHeight() * 2);
+    return ImGui::InputInt(label, v);
+}
+
+/* InputInt + Set: true when Set is pressed */
+bool int_set(const char *label, Field &f, int cur, int chars = 8) {
+    f.follow(cur);
+    ImGui::PushID(label);
+    int_input(label, &f.buf, chars);
+    ImGui::SameLine();
+    bool r = ImGui::SmallButton("Set");
+    ImGui::PopID();
+    return r;
+}
+
+/* item picker; category < 0 = any item, max_id caps the id (storage: 0xFF). *id 0 = none. */
+bool item_combo(const char *label, int *id, ImGuiTextFilter &f, int category, bool none, int max_id = 0x1FF) {
+    char preview[48];
+    bool picked = false;
+
+    if (*id != 0) {
+        snprintf(preview, sizeof(preview), "0x%03X %s", *id, DevData_ItemName(*id));
+    } else {
+        snprintf(preview, sizeof(preview), "- none -");
+    }
+    ImGui::SetNextItemWidth(ImGui::CalcTextSize("0x000 MMMMMMMMMMMMMM").x);
+    if (ImGui::BeginCombo(label, preview, ImGuiComboFlags_HeightLarge)) {
+        if (ImGui::IsWindowAppearing()) {
+            ImGui::SetKeyboardFocusHere();
+        }
+        f.Draw("##find");
+        if (none && ImGui::Selectable("- none -", *id == 0)) {
+            *id = 0;
+            picked = true;
+        }
+        for (int i = 0; i < DevData_ItemCount(); i++) {
+            const DevItem *it = DevData_ItemAt(i);
+            char item[64];
+
+            if ((category >= 0 && it->category != category) || it->id > max_id ||
+                !pass(f, it->id, it->name, DevData_CategoryName(it->category))) {
+                continue;
+            }
+            snprintf(item, sizeof(item), "0x%03X %s (%s)", it->id, it->name, DevData_CategoryName(it->category));
+            if (ImGui::Selectable(item, it->id == *id)) {
+                *id = it->id;
+                picked = true;
+            }
+        }
+        ImGui::EndCombo();
+    }
+    return picked;
+}
+
+bool skill_combo(const char *label, int *id, ImGuiTextFilter &f) {
+    char preview[48];
+    bool picked = false;
+
+    snprintf(preview, sizeof(preview), *id ? "0x%02X %s" : "- none -", *id, DevData_SkillName(*id));
+    ImGui::SetNextItemWidth(ImGui::CalcTextSize("0x00 MMMMMMMMMMMMMMMM").x);
+    if (ImGui::BeginCombo(label, preview, ImGuiComboFlags_HeightLarge)) {
+        if (ImGui::IsWindowAppearing()) {
+            ImGui::SetKeyboardFocusHere();
+        }
+        f.Draw("##find");
+        if (ImGui::Selectable("- none -", *id == 0)) {
+            *id = 0;
+            picked = true;
+        }
+        for (int i = 0; i < DevData_SkillCount(); i++) {
+            const DevSkill *k = DevData_SkillAt(i);
+            char item[64];
+
+            if (k->id > 0xFF || !pass(f, k->id, k->name, DevData_SpecialtyName(k->specialty))) {
+                continue;
+            }
+            snprintf(item, sizeof(item), "0x%02X %s (MP %d)", k->id, k->name, k->mp);
+            if (ImGui::Selectable(item, k->id == *id)) {
+                *id = k->id;
+                picked = true;
+            }
+        }
+        ImGui::EndCombo();
+    }
+    return picked;
+}
+
+void edit_log(void) {
+    char lines[8][DEVEDIT_RESULT_LEN];
+    int n = DevEdit_Results(lines, 8);
+
+    if (g_edit_msg[0] != 0) {
+        ImGui::TextDisabled("%s", g_edit_msg);
+    }
+    if (n > 0 && ImGui::TreeNode("Edit log (newest first)")) {
+        for (int i = 0; i < n; i++) {
+            const char *l = lines[i];
+
+            if (strstr(l, "refused") != NULL) {
+                ImGui::TextColored(k_bad, "%s", l);
+            } else {
+                ImGui::TextUnformatted(l);
+            }
+        }
+        ImGui::TreePop();
+    }
+}
+
+void edit_tamer(const DevSnap &s) {
+    static Field bits, rank, progress;
+
+    if (int_set("bits", bits, s.bits, 9)) {
+        push(edit_rec(DEVEDIT_BITS, bits.buf));
+    }
+    ImGui::SameLine();
+    if (int_set("rank", rank, s.rank, 4)) {
+        push(edit_rec(DEVEDIT_RANK, rank.buf));
+    }
+    ImGui::SameLine();
+    if (int_set("progress", progress, s.progress, 4)) {
+        push(edit_rec(DEVEDIT_PROGRESS, progress.buf));
+    }
+}
+
+void edit_digi(const DevSnap &s, int slot) {
+    static int shown_slot = -1;
+    static Field fields[DEVDIGI_FIELDS];
+    static ImGuiTextFilter fsp, fsk[12];
+    static char nick[16];
+    static char nick_err[64];
+    const DevSnapDigi &d = s.roster[slot];
+    int cur[DEVDIGI_FIELDS] = { d.digiId, d.level, d.maxLevel, d.exp, d.dp, d.hp, d.maxHp, d.mp, d.maxMp,
+                                d.attack, d.defense, d.speed };
+
+    if (shown_slot != slot) {
+        shown_slot = slot;
+        for (Field &f : fields) {
+            f.init = false;
+        }
+        nick[0] = 0;
+        nick_err[0] = 0;
+    }
+    ImGui::SeparatorText("Edit Digimon");
+    if (slot < 3 && (s.gameMode >> 8 == 5 || s.gameMode >> 8 == 7)) {
+        ImGui::TextColored(k_bad, "party slot in battle: edits are refused (the battle copies the party back)");
+    }
+    fields[DEVDIGI_SPECIES].follow(d.digiId);
+    digi_combo("species##edit", &fields[DEVDIGI_SPECIES].buf, fsp, 0xFF);
+    ImGui::SameLine();
+    if (ImGui::SmallButton("Set species")) {
+        push(edit_rec(DEVEDIT_DIGI, slot, DEVDIGI_SPECIES, fields[DEVDIGI_SPECIES].buf));
+    }
+    if (ImGui::BeginTable("digiedit", 4, ImGuiTableFlags_SizingFixedFit)) {
+        for (int f = DEVDIGI_LEVEL; f < DEVDIGI_FIELDS; f++) {
+            fields[f].follow(cur[f]);
+            ImGui::TableNextColumn();
+            ImGui::PushID(f);
+            int_input(DevEdit_DigiFieldName(f), &fields[f].buf, f == DEVDIGI_EXP ? 9 : 5);
+            ImGui::PopID();
+        }
+        ImGui::EndTable();
+    }
+    if (ImGui::SmallButton("Apply changed fields")) {
+        /* level first: it also sets exp, an exp typed in comes after it */
+        for (int f = DEVDIGI_LEVEL; f < DEVDIGI_FIELDS; f++) {
+            if (fields[f].buf != cur[f]) {
+                push(edit_rec(DEVEDIT_DIGI, slot, f, fields[f].buf));
+            }
+        }
+    }
+    ImGui::SameLine();
+    ImGui::TextDisabled("level also sets exp (a fresh Digimon at that level)");
+    ImGui::SetNextItemWidth(ImGui::CalcTextSize("MMMMMMMMMMMMMM").x);
+    ImGui::InputText("nickname (A-Z a-z 0-9 space & ? ! / - , . ' \" ; : % + = #)", nick, sizeof(nick));
+    ImGui::SameLine();
+    if (ImGui::SmallButton("Set name")) {
+        DevEdit e = edit_rec(DEVEDIT_NAME, slot);
+
+        if (DevEdit_EncodeText(nick, e.text, (int)sizeof(e.text)) > 0) {
+            push(e);
+            nick_err[0] = 0;
+        } else {
+            snprintf(nick_err, sizeof(nick_err), "1..13 characters the game font has");
+        }
+    }
+    if (nick_err[0] != 0) {
+        ImGui::TextColored(k_bad, "%s", nick_err);
+    }
+    if (ImGui::TreeNode("Skills (pick to set)")) {
+        for (int k = 0; k < 12; k++) {
+            int id = d.skills[k];
+            char label[16];
+
+            snprintf(label, sizeof(label), "%2d##sk%d", k, k);
+            if (skill_combo(label, &id, fsk[k])) {
+                push(edit_rec(DEVEDIT_SKILL, slot, k, id));
+            }
+            if (k % 2 == 0) {
+                ImGui::SameLine();
+            }
+        }
+        ImGui::TreePop();
+    }
+}
+
+void edit_add_digi(void) {
+    static ImGuiTextFilter f;
+    static int species = 0x29, level = 10;
+
+    ImGui::SeparatorText("Add Digimon (to the Digimon server)");
+    digi_combo("##addsp", &species, f, 0xFF);
+    ImGui::SameLine();
+    int_input("level##add", &level, 3);
+    ImGui::SameLine();
+    if (ImGui::SmallButton("Add")) {
+        DevEdit e = edit_rec(DEVEDIT_ADD_DIGI, species, level, level < 28 ? level + 10 : level + 2);
+        static const int16_t stats[5] = { 100, 50, 30, 30, 30 };
+
+        memcpy(e.v, stats, sizeof(e.v));
+        e.d = -1; /* the species' own skill */
+        push(e);
+    }
+    ImGui::TextDisabled("stats HP 100 MP 50 A / D / S 30, max level +10 (edit them after)");
+}
+
+void edit_beetle(const DevSnap &s) {
+    static Field f[4];
+    const int cur[4] = { s.beetleHp, s.beetleMaxHp, s.beetleMp, s.beetleMaxMp };
+    static const char *const names[4] = { "HP", "max HP", "EP", "max EP" };
+
+    for (int i = 0; i < 4; i++) {
+        if (int_set(names[i], f[i], cur[i], 6)) {
+            push(edit_rec(DEVEDIT_BEETLE, i, f[i].buf));
+        }
+        if (i != 3) {
+            ImGui::SameLine();
+        }
+    }
+}
+
+/* one part row: item picker of the slot's category, broken checkbox */
+void edit_part(const DevSnap &s, int slot) {
+    static ImGuiTextFilter f[DEVSNAP_PARTS];
+    int id = s.partItems[slot];
+    bool broken = s.partBroken[slot] != 0;
+    char label[16];
+
+    snprintf(label, sizeof(label), "##part%d", slot);
+    if (item_combo(label, &id, f[slot], slot == 0 ? 19 : slot - 1, true)) {
+        push(edit_rec(DEVEDIT_PART, slot, id));
+    }
+    ImGui::TableNextColumn();
+    ImGui::BeginDisabled(s.partItems[slot] == 0);
+    snprintf(label, sizeof(label), "broken##b%d", slot);
+    if (ImGui::Checkbox(label, &broken)) {
+        push(edit_rec(DEVEDIT_BROKEN, slot, broken ? 1 : 0));
+    }
+    ImGui::EndDisabled();
+}
+
+void edit_bag_add(const DevSnap &s) {
+    static ImGuiTextFilter f;
+    static int id = 0x78;
+
+    item_combo("##bagadd", &id, f, -1, false);
+    ImGui::SameLine();
+    if (ImGui::SmallButton("Add to bag")) {
+        push(edit_rec(DEVEDIT_BAG_ADD, id));
+    }
+    ImGui::SameLine();
+    ImGui::TextDisabled("bag size %d (tool box part)", s.bagCapacity);
+}
+
+void edit_storage(const DevSnap &s) {
+    static ImGuiTextFilter f;
+    static int id = 0x78;
+    static Field count;
+    static int shown = -1;
+
+    if (shown != id) {
+        shown = id;
+        count.init = false;
+    }
+    item_combo("##storage", &id, f, -1, false, 0xFF);
+    ImGui::SameLine();
+    if (int_set("count##st", count, s.storage[id & 0xFF], 4)) {
+        push(edit_rec(DEVEDIT_STORAGE, id, count.buf));
+    }
+}
+
+void edit_flag(const DevSnap &s, int id) {
+    if (id < 1000) {
+        if (ImGui::SmallButton("Set flag")) {
+            push(edit_rec(DEVEDIT_FLAG, id, 1));
+        }
+        ImGui::SameLine();
+        if (ImGui::SmallButton("Clear flag")) {
+            push(edit_rec(DEVEDIT_FLAG, id, 0));
+        }
+    } else if (id < 1600) {
+        ImGui::TextDisabled("ids 1000..1599 follow progress (%d): set it in the Tamer line", s.progress);
+    } else if (id < 3000) {
+        ImGui::TextDisabled("ids 1600..2999 test the bag / storage: edit those");
+    } else if (id < 4000) {
+        ImGui::TextDisabled("ids 3000..3999 test the roster: add or change a Digimon");
+    } else {
+        ImGui::TextDisabled("ids 4000 up: city scripts' one-shot actions, not editable");
+    }
+}
+
+void panel_warp(const DevSnap &s) {
+    static ImGuiTextFilter f;
+    static int sel = -1;
+    static Field floor;
+    const DevDest *d = DevData_DestAt(sel);
+    bool city = s.gameMode >> 8 == 3;
+
+    ImGui::Text("Now: game mode 0x%03X, arg %d (%s)", s.gameMode, s.modeArg,
+                s.gameMode >> 8 == 2 ? DevData_DestName(0x200, s.dungeonIdx) : DevData_DestName(s.gameMode, s.modeArg));
+    if (s.canWarp) {
+        ImGui::TextColored(ImVec4(0.4f, 1, 0.4f, 1), "warp possible");
+    } else {
+        ImGui::TextColored(k_bad, "no warp now: %s", s.warpWhy != NULL ? s.warpWhy : "?");
+    }
+    char preview[64];
+    if (d != NULL) {
+        snprintf(preview, sizeof(preview), "0x%03X / %d %s", d->mode, d->arg, d->name);
+    } else {
+        snprintf(preview, sizeof(preview), "pick a destination");
+    }
+    ImGui::SetNextItemWidth(ImGui::CalcTextSize("0x000 / 00 MMMMMMMMMMMMMMMMMMMMMMMM").x);
+    if (ImGui::BeginCombo("##dest", preview, ImGuiComboFlags_HeightLarge)) {
+        if (ImGui::IsWindowAppearing()) {
+            ImGui::SetKeyboardFocusHere();
+        }
+        f.Draw("##find");
+        for (int i = 0; i < DevData_DestCount(); i++) {
+            const DevDest *x = DevData_DestAt(i);
+            char item[80];
+
+            if (!pass(f, x->mode, x->name, x->mode == 0x200 ? "domain" : "city")) {
+                continue;
+            }
+            snprintf(item, sizeof(item), "0x%03X / %2d %s%s", x->mode, x->arg, x->name, x->named ? "" : " (map exit)");
+            if (ImGui::Selectable(item, i == sel)) {
+                sel = i;
+            }
+        }
+        ImGui::EndCombo();
+    }
+    ImGui::SameLine();
+    bool domain_from_city_only = d != NULL && d->mode == 0x200 && !city;
+    ImGui::BeginDisabled(d == NULL || !s.canWarp || domain_from_city_only);
+    if (ImGui::SmallButton("Warp")) {
+        push(edit_rec(DEVEDIT_WARP, d->mode, d->arg));
+    }
+    ImGui::EndDisabled();
+    if (domain_from_city_only) {
+        ImGui::TextDisabled("domains are entered from the city only");
+    }
+    if (s.gameMode >> 8 == 2) {
+        ImGui::Text("%s, floor %d (%dF) of %d", DevData_DestName(0x200, s.dungeonIdx), s.floor, s.floor + 1,
+                    s.floorCount);
+        ImGui::BeginDisabled(!s.canFloor);
+        if (int_set("floor (0 = 1F)", floor, s.floor, 3)) {
+            push(edit_rec(DEVEDIT_FLOOR, floor.buf));
+        }
+        ImGui::EndDisabled();
+        if (!s.canFloor) {
+            ImGui::TextDisabled("%s", s.floorWhy != NULL ? s.floorWhy : "");
+        }
+    }
+    ImGui::TextDisabled("a cut, no fade out; the new scene fades in. Battles, title, card and VS screens: no warp.");
 }
 
 void data_dna(void) {

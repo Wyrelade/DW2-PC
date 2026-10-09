@@ -18,6 +18,7 @@
 #include "host/host_sdl.h"
 #include "psyq/psyq_log.h"
 #if DW2_DEV
+#include "host/devedit.h"
 #include "host/devui.h"
 #endif
 
@@ -64,8 +65,12 @@
  *                    debug menus 0x101..0x106 (0x105: domain select)
  *     --devui        the dev overlay (F2, PD.1) open at start; with --no-window it also runs
  *                    headless into the hidden window and each shot adds <tag>_devui.png
- *     --devui-tab T  the overlay tab shown first (Timing, Game, Tasks, Heap, Input, Save, View)
- *     --window-size W H  window size in pixels (default 960x720, 1281x720 with --wide) */
+ *     --devui-tab T  the overlay tab shown first (Timing, Game, Tasks, Heap, Input, Save, View);
+ *                    Data:SUB a Data sub tab, Save:Edit[+SECTION] the Save tab with its Edit
+ *                    controls on, SECTION (Party, Digi-Beetle, Bag, Storage, Flags) scrolled to
+ *     --window-size W H  window size in pixels (default 960x720, 1281x720 with --wide)
+ *     --devedit N:KIND=ARGS  PD.4 state edit at VBlank wait N (repeatable; kinds and arguments in
+ *                    host/devedit.c DevEdit_Script, e.g. 900:bits=12345, 900:warp=0x200,0) */
 
 extern void Sys_Main(void);
 extern void Host_OvlSnapshot(void);
@@ -165,6 +170,10 @@ void Host_WaitVBlank(void) {
     Host_TraceTick(vblanks);
     Host_SceneTick();
     Host_InputScriptTick(vblanks);
+#if DW2_DEV
+    DevEdit_ScriptTick(vblanks);
+    DevEdit_Apply(); /* PD.4: between frames, before Sys_Main reads nextGameMode */
+#endif
     for (i = 0; i < shot_count; i++) {
         if (shot_at[i] == vblanks) {
             char tag[32];
@@ -332,6 +341,7 @@ int main(int argc, char **argv) {
 
             i += 2;
             DevUi_SetWindowSize(w, h);
+        } else if (strcmp(argv[i], "--devedit") == 0 && i + 1 < argc && DevEdit_Script(argv[++i])) {
 #endif
         } else if (strcmp(argv[i], "--hold-boot") == 0 && i + 1 < argc) {
             hold_boot = (int)strtol(argv[++i], NULL, 0);
@@ -360,11 +370,14 @@ int main(int argc, char **argv) {
                     "[--shot-vb N]... [--hold-boot N] [--press N:BUTTONS[:LEN]]... [--press2 N:BUTTONS[:LEN]]... "
                     "[--save-dir DIR] [--fast] [--pad2-keys] [--scale N] [--hd-threads N] [--pgxp] [--wide] "
                     "[--renderer gpu|soft]%s\n",
-                    argv[0], DW2_DEV ? " [--start-mode N] [--devui] [--devui-tab T] [--window-size W H]" : "");
+                    argv[0], DW2_DEV ? " [--start-mode N] [--devui] [--devui-tab T] [--window-size W H] [--devedit N:KIND=ARGS]..." : "");
             return 2;
         }
     }
     setvbuf(stdout, NULL, _IOLBF, 1 << 16);
+#if DW2_DEV
+    DevEdit_Init();
+#endif
     if (!no_window) {
         run_threaded();
     }
