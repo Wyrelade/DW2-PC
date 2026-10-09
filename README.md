@@ -53,9 +53,10 @@ that are plain files.
 
 > [!IMPORTANT]
 > **You need your own copy of the game.** This repository and its downloads contain no disc
-> image and no game data (graphics, models, sound, text or code from the disc). The port reads its data from a pack file that
-> is built on your PC from your own disc image (USA, `SLUS-01193`) and checked file by file
-> against a list of hashes. A disc that does not match is rejected.
+> image and no game data (graphics, models, sound, text or code from the disc). The port reads
+> its data from a pack file that is built on your PC from your own disc image (USA,
+> `SLUS-01193`) and checked file by file against a list of hashes. A disc that does not match
+> is rejected.
 
 ## Features
 
