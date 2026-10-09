@@ -38,6 +38,9 @@ void Host_GameEvents(void);
 
 /* host/vblank.c */
 void Host_ClockStart(void);
+#if DW2_DEV
+void Host_ClockStats(uint64_t *vblanks, uint64_t *flip_count, unsigned int *restart_count);
+#endif
 
 /* host/input.c */
 void Host_InputDevice(const SDL_Event *e);

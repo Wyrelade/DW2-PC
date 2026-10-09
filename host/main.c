@@ -17,6 +17,9 @@
 #include "host/host.h"
 #include "host/host_sdl.h"
 #include "psyq/psyq_log.h"
+#if DW2_DEV
+#include "host/devui.h"
+#endif
 
 /* Native entry point: replaces crt0 (Sys_Start). Checks the memory layout, keeps the overlays'
  * initial data, starts the SDL3 host, then runs the game's Sys_Main (it never returns; the host
@@ -50,13 +53,19 @@
  *     --scale N      HD output at N x the PS1 resolution (1..8, default 1 = classic; PG.1,
  *                    backend/psxgpu_hd.c); F5 in the window steps through 1..8
  *     --hd-threads N drawing threads for the HD output (default 0 = one per core, at most 8)
- *     --start-mode N dev: start in game mode N instead of the title (0x402), e.g. the stag0000
- *                    debug menus 0x101..0x106 (0x105: domain select)
  *     --pgxp         no-wobble geometry for the HD output (PG.2: precise GTE vertices,
  *                    perspective-correct textures); F6 toggles it in the window
  *     --wide         16:9 picture (PG.3: wider view, 2D pictures pillarboxed); F7 toggles it
  *     --renderer R   HD output drawn by the GPU (gpu, PG.10b: SDL_GPU / Vulkan; the default with
- *                    a window) or the software rasterizer (soft; the default with --no-window) */
+ *                    a window) or the software rasterizer (soft; the default with --no-window)
+ *
+ *   Dev builds only (DW2_DEV, PD; the release client has none of these):
+ *     --start-mode N dev: start in game mode N instead of the title (0x402), e.g. the stag0000
+ *                    debug menus 0x101..0x106 (0x105: domain select)
+ *     --devui        the dev overlay (F2, PD.1) open at start; with --no-window it also runs
+ *                    headless into the hidden window and each shot adds <tag>_devui.png
+ *     --devui-tab T  the overlay tab shown first (Timing, Game, Tasks, Heap, Input, Save, View)
+ *     --window-size W H  window size in pixels (default 960x720, 1281x720 with --wide) */
 
 extern void Sys_Main(void);
 extern void Host_OvlSnapshot(void);
@@ -311,8 +320,19 @@ int main(int argc, char **argv) {
             shot_at[shot_count++] = (unsigned int)strtoul(argv[++i], NULL, 0);
         } else if (strcmp(argv[i], "--shot-vb") == 0 && i + 1 < argc && shot_vb_count < 16) {
             shot_vb[shot_vb_count++] = strtoull(argv[++i], NULL, 0);
+#if DW2_DEV
         } else if (strcmp(argv[i], "--start-mode") == 0 && i + 1 < argc) {
             start_mode = (int)strtol(argv[++i], NULL, 0);
+        } else if (strcmp(argv[i], "--devui") == 0) {
+            DevUi_SetOpenAtStart(1);
+        } else if (strcmp(argv[i], "--devui-tab") == 0 && i + 1 < argc) {
+            DevUi_SetTab(argv[++i]);
+        } else if (strcmp(argv[i], "--window-size") == 0 && i + 2 < argc) {
+            int w = (int)strtol(argv[i + 1], NULL, 0), h = (int)strtol(argv[i + 2], NULL, 0);
+
+            i += 2;
+            DevUi_SetWindowSize(w, h);
+#endif
         } else if (strcmp(argv[i], "--hold-boot") == 0 && i + 1 < argc) {
             hold_boot = (int)strtol(argv[++i], NULL, 0);
         } else if (strcmp(argv[i], "--press") == 0 && i + 1 < argc && parse_press(0, argv[++i])) {
@@ -339,8 +359,8 @@ int main(int argc, char **argv) {
                     "usage: %s [--pak PATH] [--vblanks N] [--no-window] [--shot-dir DIR] [--shot-at N]... "
                     "[--shot-vb N]... [--hold-boot N] [--press N:BUTTONS[:LEN]]... [--press2 N:BUTTONS[:LEN]]... "
                     "[--save-dir DIR] [--fast] [--pad2-keys] [--scale N] [--hd-threads N] [--pgxp] [--wide] "
-                    "[--renderer gpu|soft] [--start-mode N]\n",
-                    argv[0]);
+                    "[--renderer gpu|soft]%s\n",
+                    argv[0], DW2_DEV ? " [--start-mode N] [--devui] [--devui-tab T] [--window-size W H]" : "");
             return 2;
         }
     }

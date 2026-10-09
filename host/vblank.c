@@ -111,6 +111,15 @@ unsigned long long Host_VBlankCount(void) {
     return fired;
 }
 
+#if DW2_DEV
+/* PD.1 dev overlay (game thread): VBlanks run, buffer flips, clock restarts. */
+void Host_ClockStats(uint64_t *vblanks, uint64_t *flip_count, unsigned int *restart_count) {
+    *vblanks = fired;
+    *flip_count = flips;
+    *restart_count = restarts;
+}
+#endif
+
 void Host_LogRate(const char *what) {
     Uint64 ns = last_ns - first_ns;
 

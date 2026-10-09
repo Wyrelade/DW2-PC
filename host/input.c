@@ -3,6 +3,9 @@
 
 #include "host/host.h"
 #include "host/host_sdl.h"
+#if DW2_DEV
+#include "host/devui.h"
+#endif
 
 /* Host input state: keyboard and SDL gamepads as PS1 digital pad button masks, per port. Read
  * after each event pump; changes are logged. P1.7 turns them into pad replies in Pad_RecvBufs.
@@ -234,6 +237,11 @@ void Host_InputPoll(void) {
     int p;
 
     for (i = 0; i < sizeof(key_map) / sizeof(key_map[0]); i++) {
+#if DW2_DEV
+        if (DevUi_WantsKeyboard()) {
+            break; /* PD.1: the keyboard types into an ImGui field, the game sees no keys */
+        }
+#endif
         if (keys[key_map[i].key]) {
             b[kbd_port] |= key_map[i].bit;
         }

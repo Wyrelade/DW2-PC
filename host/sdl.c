@@ -7,6 +7,10 @@
 #include "host/host.h"
 #include "host/host_sdl.h"
 #include "psyq/gte_core.h"
+#if DW2_DEV
+#include "host/devsnap.h"
+#include "host/devui.h"
+#endif
 
 /* SDL3 host: one window (320x240 logical, letterboxed, resizable) showing the emulated GPU's
  * display area (P1.4), stretched to the 4:3 picture: 240-line modes scale by whole pixels
@@ -24,7 +28,12 @@
  * VBlank wait (Host_Publish: GPU: a copy of the display area into a slot texture; soft: the 1x or
  * HD picture into a slot buffer); the main thread shows the newest one (Host_Present), never the
  * one being written (3 slots: newest, shown, written). Hotkeys and quit go to the game thread as
- * requests (Host_GameEvents at its next VBlank wait). Headless runs keep one thread, no present. */
+ * requests (Host_GameEvents at its next VBlank wait). Headless runs keep one thread, no present.
+ *
+ * PD.1 (DW2_DEV builds only): the ImGui dev overlay (host/devui.cpp) draws last in Host_Present
+ * and takes F2; the game thread fills its snapshot in Host_GameEvents (host/devsnap.c). With the
+ * overlay closed nothing of this runs. --devui with --no-window: the overlay also runs headless
+ * (publish and present into the hidden window, shots add the overlay picture). */
 
 #define WINDOW_SCALE 3
 #define SLOTS 3
@@ -71,6 +80,15 @@ static SDL_AtomicInt requests;
 static SDL_AtomicInt game_done;
 static const char *volatile quit_why = "window closed";
 
+/* Headless runs publish and present only for the --devui headless check (DW2_DEV). */
+static int no_present(void) {
+#if DW2_DEV
+    return headless && !DevUi_Headless();
+#else
+    return headless;
+#endif
+}
+
 static void fail(const char *what) {
     fprintf(stderr, "[host] %s failed: %s\n", what, SDL_GetError());
     exit(1);
@@ -116,6 +134,7 @@ static int init_gpu(void) {
 void Host_InitWindow(int no_window) {
     int v = SDL_GetVersion();
     int want_gpu = renderer_choice == 2 || (renderer_choice == 0 && !no_window);
+    int win_w = logical_w * WINDOW_SCALE, win_h = 240 * WINDOW_SCALE;
 
     if (no_window) {
         headless = 1;
@@ -130,8 +149,10 @@ void Host_InitWindow(int no_window) {
     initialized = 1;
     printf("[host] SDL %d.%d.%d, video driver %s\n", SDL_VERSIONNUM_MAJOR(v), SDL_VERSIONNUM_MINOR(v),
            SDL_VERSIONNUM_MICRO(v), SDL_GetCurrentVideoDriver());
-    window = SDL_CreateWindow("DW2-Online", logical_w * WINDOW_SCALE, 240 * WINDOW_SCALE,
-                              SDL_WINDOW_RESIZABLE | (no_window ? SDL_WINDOW_HIDDEN : 0));
+#if DW2_DEV
+    DevUi_WindowSize(&win_w, &win_h);
+#endif
+    window = SDL_CreateWindow("DW2-Online", win_w, win_h, SDL_WINDOW_RESIZABLE | (no_window ? SDL_WINDOW_HIDDEN : 0));
     if (window == NULL) {
         fail("SDL_CreateWindow");
     }
@@ -154,8 +175,11 @@ void Host_InitWindow(int no_window) {
         fail("SDL_CreateMutex");
     }
     Host_InputInit();
-    printf("[host] window %dx%d (%dx240 logical), renderer %s, vsync off%s\n", logical_w * WINDOW_SCALE,
-           240 * WINDOW_SCALE, logical_w, SDL_GetRendererName(renderer), threaded ? ", game thread" : "");
+    printf("[host] window %dx%d (%dx240 logical), renderer %s, vsync off%s\n", win_w, win_h, logical_w,
+           SDL_GetRendererName(renderer), threaded ? ", game thread" : "");
+#if DW2_DEV
+    DevUi_Init(window, renderer, no_window);
+#endif
     Host_AudioOpen();
     fflush(stdout);
 }
@@ -199,7 +223,7 @@ void Host_Publish(void) {
     void *tex;
     int tw, th, sx, sy, sw, sh, w, h, i;
 
-    if (headless) {
+    if (no_present()) {
         /* no window: only what showing the picture does to the HD side (the queue drawn, the
          * display surface made), as before PG.10 b3; the queue must not grow between transfers */
         if (PsxHd_Gpu()) {
@@ -296,7 +320,7 @@ void Host_Present(void) {
     const Frame *f = NULL;
     int slot;
 
-    if (headless) {
+    if (no_present()) {
         return;
     }
     SDL_LockMutex(frame_lock);
@@ -346,6 +370,9 @@ void Host_Present(void) {
         SDL_SetTextureScaleMode(texture, f->h > 256 ? SDL_SCALEMODE_LINEAR : SDL_SCALEMODE_NEAREST);
         SDL_RenderTexture(renderer, texture, &src, &dst);
     }
+#if DW2_DEV
+    DevUi_Render();
+#endif
     SDL_RenderPresent(renderer);
 }
 
@@ -362,6 +389,11 @@ void Host_PumpEvents(void) {
     SDL_Event e;
 
     while (SDL_PollEvent(&e)) {
+#if DW2_DEV
+        if (DevUi_Event(&e)) {
+            continue; /* F2, or a key for an ImGui text field */
+        }
+#endif
         switch (e.type) {
         case SDL_EVENT_QUIT:
         case SDL_EVENT_WINDOW_CLOSE_REQUESTED:
@@ -430,6 +462,12 @@ void Host_GameEvents(void) {
         Host_Quit(quit_why);
     }
     Host_InputLatch();
+#if DW2_DEV
+    DevSnap_Capture();
+    if (!threaded && DevUi_Headless()) {
+        Host_Present(); /* --devui headless: the overlay into the hidden window */
+    }
+#endif
 }
 
 /* Main thread while the game thread runs: events and present until the game has quit. */
@@ -439,6 +477,11 @@ void Host_WindowLoop(void) {
         if (SDL_WaitSemaphoreTimeout(frame_sem, 4)) {
             Host_Present();
         }
+#if DW2_DEV
+        else if (DevUi_IsOpen()) {
+            Host_Present(); /* ImGui needs frames while the game picture stays the same */
+        }
+#endif
     }
     Host_Shutdown();
     exit(0);
@@ -451,6 +494,9 @@ void Host_Shutdown(void) {
         return;
     }
     initialized = 0;
+#if DW2_DEV
+    DevUi_Shutdown();
+#endif
     Host_AudioClose();
     Host_InputClose();
     for (i = 0; i < SLOTS; i++) {

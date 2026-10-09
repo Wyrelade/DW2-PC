@@ -7,6 +7,10 @@ the compiler warnings.
     venv/Scripts/python.exe tools/build_native.py --run [--vblanks N] [--no-window]
     venv/Scripts/python.exe tools/build_native.py --test     # also run gte_test
     venv/Scripts/python.exe tools/build_native.py --arch x64 # 64-bit Windows build
+    venv/Scripts/python.exe tools/build_native.py --release  # release client (DW2_DEV=OFF)
+
+Dev builds (the default) have the ImGui dev overlay and the PD dev tools (C++ with g++ from the
+same toolchain); --release builds the client without them into build/<dir>_rel.
 
 Targets (--arch): on Windows x86 (default; MinGW-w64 i686, build/native/dw2.exe) or x64
 (MinGW-w64 x86_64, build/native64/dw2.exe); on Linux x64 only (system gcc, build/linux64/dw2),
@@ -77,13 +81,16 @@ def main():
     ap.add_argument("--vblanks", type=int, default=0, help="with --run: stop after N VBlank waits")
     ap.add_argument("--no-window", action="store_true", help="with --run: SDL dummy video / audio")
     ap.add_argument("--test", action="store_true", help="run build/native/gte_test (GTE model test)")
+    ap.add_argument("--release", action="store_true",
+                    help="release client: DW2_DEV=OFF (no ImGui, no dev tools), build/<dir>_rel")
     args = ap.parse_args()
 
-    build = os.path.join(ROOT, "build", BUILD_DIRS[args.arch])
+    build = os.path.join(ROOT, "build", BUILD_DIRS[args.arch] + ("_rel" if args.release else ""))
     rel_build = os.path.relpath(build, ROOT).replace("\\", "/")
     if WINDOWS:
         mingw = os.environ.get("DW2_MINGW", MINGW_DEFAULT[args.arch])
         gcc = os.path.join(mingw, "bin", "gcc.exe")
+        gxx = os.path.join(mingw, "bin", "g++.exe")
         ld = os.path.join(mingw, "bin", "ld.exe")
         if not os.path.exists(gcc):
             sys.exit("BUILD FAILED: no gcc at %s (set DW2_MINGW)" % gcc)
@@ -93,9 +100,12 @@ def main():
     else:
         mingw = None
         gcc = shutil.which("gcc")
+        gxx = shutil.which("g++")
         ld = shutil.which("ld")
         if gcc is None or ld is None:
             sys.exit("BUILD FAILED: no gcc / ld in PATH")
+    if not args.release and (gxx is None or not os.path.exists(gxx)):
+        sys.exit("BUILD FAILED: no g++ next to gcc (the dev build has C++; --release has none)")
     ninja = find_ninja()
     if ninja is None:
         sys.exit("BUILD FAILED: no ninja (venv/Scripts/python.exe -m pip install ninja)")
@@ -124,7 +134,10 @@ def main():
                "-DCMAKE_BUILD_TYPE=RelWithDebInfo",
                "-DCMAKE_C_COMPILER=" + gcc.replace("\\", "/"),
                "-DCMAKE_LINKER=" + ld.replace("\\", "/"),
-               "-DCMAKE_MAKE_PROGRAM=" + ninja.replace("\\", "/")]
+               "-DCMAKE_MAKE_PROGRAM=" + ninja.replace("\\", "/"),
+               "-DDW2_DEV=" + ("OFF" if args.release else "ON")]
+        if not args.release:
+            cmd.append("-DCMAKE_CXX_COMPILER=" + gxx.replace("\\", "/"))
         if WINDOWS:
             cmd.append("-DDW2_SDL3=" + sdl3.replace("\\", "/"))
         if subprocess.call(cmd, env=env) != 0:
