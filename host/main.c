@@ -42,8 +42,9 @@
  *                    with a window and none found, a file dialog
  *     --vblanks N    quit after N VBlank waits in the Sys_FlipPending spin (0 = run on)
  *     --no-window    SDL dummy video and audio drivers (headless test runs)
- *     --shot-dir DIR screenshots go to DIR (default scratchpad/shots): the boot image when the
- *                    display turns on (if any screenshot option is given), each --shot-at, F12
+ *     --shot-dir DIR screenshots go to DIR (default screenshots/ next to the exe, else in the user
+ *                    data folder): the boot image when the display turns on (if any screenshot
+ *                    option is given), each --shot-at, F12
  *     --shot-at N    screenshot pair at VBlank wait N (repeatable, up to 16)
  *     --shot-vb N    screenshot pair at the first wait with N VBlanks run (repeatable, up to 16,
  *                    ascending; an emulator probe counts the same frames)
@@ -122,9 +123,19 @@ int Host_StartMode(void) {
 
 static const char *shots(void) {
     static int made;
+    static char dir[1024];
 
     if (shot_dir == NULL) {
-        shot_dir = "scratchpad/shots";
+        /* PR.22: screenshots/ next to the exe; the user data folder when that is not writable */
+        const char *base = SDL_GetBasePath();
+        char *pref;
+
+        snprintf(dir, sizeof(dir), "%sscreenshots", base != NULL ? base : "");
+        if (!SDL_CreateDirectory(dir) && (pref = SDL_GetPrefPath("", "DW2-Online")) != NULL) {
+            snprintf(dir, sizeof(dir), "%sscreenshots", pref);
+            SDL_free(pref);
+        }
+        shot_dir = dir;
     }
     if (!made) {
         made = 1;
@@ -135,10 +146,20 @@ static const char *shots(void) {
 
 void Host_ShotKey(void) {
     static int n;
-    char tag[32];
+    char tag[64], text[1100];
+    SDL_Time now;
+    SDL_DateTime t;
 
-    snprintf(tag, sizeof(tag), "f12_%d_wait%u", n++, vblanks);
+    /* date and time in the name: a new run does not overwrite older shots */
+    if (SDL_GetCurrentTime(&now) && SDL_TimeToDateTime(now, &t, true)) {
+        snprintf(tag, sizeof(tag), "dw2_%04d%02d%02d_%02d%02d%02d_%d", t.year, t.month, t.day, t.hour,
+                 t.minute, t.second, n++);
+    } else {
+        snprintf(tag, sizeof(tag), "f12_%d_wait%u", n++, vblanks);
+    }
     Host_SaveShot(shots(), tag);
+    snprintf(text, sizeof(text), "Screenshot saved: %s", shot_dir);
+    Ui_Notice(text);
 }
 
 void Host_DisplayOn(void) {

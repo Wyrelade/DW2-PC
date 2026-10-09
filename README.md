@@ -85,7 +85,7 @@ that are plain files.
 | **Keyboard** | Full keyboard play out of the box, every key can be changed in F1. |
 | **Two players** | VS mode with two gamepads, or on one keyboard by switching the port with Tab (`--pad2-keys`). |
 | **Saves as files** | Memory cards are files (`card1.mcd`, `card2.mcd`) in your user folder. Raw card images from DuckStation, PCSX-Redux or ePSXe load as they are, so a save from an emulator carries over. |
-| **Screenshots** | F12 saves the current picture as PNG. |
+| **Screenshots** | F12 saves the current picture as PNG in a `screenshots` folder next to the program. |
 | **Safe quit** | Esc asks before quitting, so a stray key press does not lose progress. |
 | **64-bit and Linux** | Native Windows x64 and Linux x64 builds (32-bit Windows too). |
 
@@ -211,7 +211,7 @@ graphics or sound glitches, wrong text, controls. The port is updated as reports
 to include:
 
 - what you did right before it happened, and where in the game (domain and floor, city area, menu)
-- a screenshot (F12) and your save file (`card1.mcd`, see [Getting started](#getting-started))
+- a screenshot (F12, in the `screenshots` folder next to the program) and your save file (`card1.mcd`, see [Getting started](#getting-started))
 - Windows or Linux, GPU or software renderer, and your F1 settings (scale, 16:9, no wobble)
 
 ## Building
