@@ -16,6 +16,7 @@ void Psyq_VBlank(void) {
     Psyq_PadVBlank();
     Psyq_CardVBlank();
     Snd_HwVBlank();
+    Psyq_CdVBlank();
     if (vsync_cb != 0) {
         vsync_cb();
     }

@@ -2,13 +2,15 @@
 #include <string.h>
 
 #include "backend/psxspu.h"
+#include "backend/xadec.h"
 
 /* Emulated PS1 SPU (P1.8), after psx-spx "Sound Processing Unit (SPU)": SPU-ADPCM decode (5
  * filters, flag bits loop start / end / repeat), pitch counter with PMON, the 4-point
  * interpolation table, the ADSR / sweep envelope steps (counter increment, exponential
  * rules), voice and main volumes, noise generator, KON / KOFF / ENDX, manual and DMA sound RAM
  * transfers, ATTR / STATX, reverb (22050 Hz, FIR resampled). Everything runs per 44.1 kHz
- * sample in PsxSpu_Render. Not mixed yet: the CD / external inputs (logged once). */
+ * sample in PsxSpu_Render. The CD input takes the XA decoder's 44.1 kHz frames (PR.5,
+ * backend/xadec.c); the external input is not mixed. */
 
 uint8_t PsxSpu_Ram[PSXSPU_RAM_SIZE];
 
@@ -451,8 +453,10 @@ void PsxSpu_Render(int16_t *out, int n) {
         uint32_t pmon = regs[0x190 >> 1] | (uint32_t)regs[0x192 >> 1] << 16;
         uint32_t non = regs[0x194 >> 1] | (uint32_t)regs[0x196 >> 1] << 16;
         int l = 0, r = 0, prev_out = 0, sl = 0, sr = 0, rl, rr;
+        int16_t cd_l, cd_r;
         uint32_t eon = regs[0x198 >> 1] | (uint32_t)regs[0x19A >> 1] << 16;
 
+        XaDec_Pop(&cd_l, &cd_r);
         noise_tick();
         for (i = 0; i < 24; i++) {
             Voice *v = &voices[i];
@@ -490,6 +494,14 @@ void PsxSpu_Render(int16_t *out, int n) {
             adsr_step(v, i);
             prev_out = sample;
         }
+        /* CD input (XA through the CD controller, PR.5): ATTR bit 0 mixes it, bit 2 also into the
+         * reverb, at the CD volume (0x1B0 / 0x1B2). The CD keeps flowing either way. */
+        if (attr & 1) {
+            int vl = (cd_l * (int16_t)regs[0x1B0 >> 1]) >> 15, vr = (cd_r * (int16_t)regs[0x1B2 >> 1]) >> 15;
+            l += vl;
+            r += vr;
+            if (attr & 4) { sl += vl; sr += vr; }
+        }
         main_level[0] = volume_step(regs[0x180 >> 1], &main_env[0], main_level[0]);
         main_level[1] = volume_step(regs[0x182 >> 1], &main_env[1], main_level[1]);
         reverb_step(sl, sr, &rl, &rr);
@@ -497,8 +509,6 @@ void PsxSpu_Render(int16_t *out, int n) {
         r = (clamp16(r) * main_level[1]) >> 15;
         l += (rl * (int16_t)regs[0x184 >> 1]) >> 15;
         r += (rr * (int16_t)regs[0x186 >> 1]) >> 15;
-        if ((attr & 1) && (regs[0x1B0 >> 1] || regs[0x1B2 >> 1]))
-            log_once(3, "CD audio input enabled (XA / CD-DA), not mixed yet");
         if (!(attr & 0x8000) || !(attr & 0x4000)) l = r = 0;
         out[f * 2] = (int16_t)clamp16(l);
         out[f * 2 + 1] = (int16_t)clamp16(r);

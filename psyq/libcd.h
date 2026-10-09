@@ -19,11 +19,14 @@ typedef void (*CdlCB)(u_char status, u_char *result);
 #define CdlNop 0x01
 #define CdlSetloc 0x02
 #define CdlReadN 0x06
+#define CdlStop 0x08
 #define CdlPause 0x09
+#define CdlInit 0x0A
 #define CdlSetfilter 0x0D
 #define CdlSetmode 0x0E
 #define CdlGetlocP 0x11
 #define CdlSeekL 0x15
+#define CdlSeekP 0x16
 #define CdlReadS 0x1B
 
 /* Interrupt / sync status. */

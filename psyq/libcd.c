@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "backend/xadec.h"
 #include "host/host.h"
 #include "libcd.h"
 #include "psyq_log.h"
+#include "psyq_vblank.h"
 
 /* libcd stubs (P1.1). CdIntToPos / CdPosToInt are real (BCD conversion). CdControlF drives the
  * read protocol main/cdread.c expects, with no disc behind it: every command completes, ReadN
@@ -13,7 +15,18 @@
  * inside the CdControlF(Setloc) that Cd_ReadFileAsync ends with; the game's Cd_PollRead spins
  * never wait. P1.3: the sector data comes from dw2.pak (Host_PakSector: LBA -> file -> pack
  * offset); the header MSF and mode stay synthesized from the LBA. Each read logs one line
- * ("[cd] file 0x...") when it ends. */
+ * ("[cd] file 0x...") when it ends.
+ *
+ * PR.5 drive model: every CdControl* call goes through drive_cmd, which keeps the state the XA
+ * tasks poll: the last command (CdLastCom), mode, filter, location and the last result (CdSync
+ * copies it; GetlocP = track, index, relative and absolute MSF of the position when issued).
+ * Commands still complete at once (CdSync returns CdlComplete). ReadS with XA on (mode bit 6) and
+ * no ready callback, or CdRead2 with movies on, starts a timed stream: the position moves at 150
+ * (2x, mode bit 7) or 75 sectors per second on the VBlank clock. Psyq_CdVBlank sends the audio
+ * sectors the drive passes to the XA decoder (backend/xadec.c), two interleave periods (16
+ * sectors) ahead: the decoder FIFO then holds one spare sector, so the device's pulls in chunks
+ * never find it empty (no added delay, output starts with the first sector). Pause, a seek or a
+ * data read (ReadN) stops the stream. */
 
 u_long StCdIntrFlag;
 
@@ -30,6 +43,21 @@ static int sector_pos;
 static int log_file = -2;   /* file of the read in progress (-2 none, -1 no file at the LBA) */
 static int log_lba, log_count;
 static int st_lba = -1;     /* Setloc of the STR stream (CdControl before CdRead2) */
+
+/* drive model (PR.5) */
+#define XA_AHEAD 16         /* sectors decoded ahead of the position: two 1/8 interleave periods */
+static u_char d_mode;       /* Setmode */
+static u_char d_file, d_chan; /* Setfilter */
+static int d_loc;           /* Setloc / the location of a seek or read */
+static int d_pos;           /* position while no stream runs */
+static u_char d_last;       /* last command (CdLastCom) */
+static u_char d_result[8];  /* result of the last command (CdSync) */
+static int xs_on;           /* a timed stream runs (XA ReadS or a movie) */
+static int xs_lba0;         /* its first sector */
+static int xs_next;         /* next sector to look at for audio */
+static int xs_audio;        /* audio sectors sent to the decoder */
+static int xs_movie;        /* the stream is a movie (CdRead2) */
+static unsigned long long xs_t0; /* VBlank count at the start */
 static int st_end = -1;     /* frame number StGetNext reports (-1: not computed yet) */
 
 static int bcd(int v) {
@@ -92,6 +120,140 @@ static void run_events(void) {
     }
 }
 
+/* Sectors the drive has passed since the stream start (2x: 150 per second, else 75). */
+static int xs_pos(void) {
+    unsigned long long rate = (d_mode & 0x80) ? 150 : 75;
+    return xs_lba0 + (int)((Host_VBlankCount() - xs_t0) * rate * 1001 / 60000);
+}
+
+static int drive_pos(void) {
+    return xs_on ? xs_pos() : d_pos;
+}
+
+/* Audio sectors up to the position + XA_AHEAD into the decoder (psx-spx delivery rules: XA on,
+ * submode audio + realtime, with the filter on only the selected file / channel). */
+static void xa_advance(void) {
+    static u_char body[2336];
+    int end = xs_pos() + XA_AHEAD;
+
+    if (!(d_mode & 0x40)) {
+        xs_next = end;
+        return;
+    }
+    while (xs_next < end) {
+        Host_PakSector(xs_next++, body);
+        if ((body[2] & 0x44) != 0x44) {
+            continue;
+        }
+        if ((d_mode & 0x08) && (body[0] != d_file || body[1] != d_chan)) {
+            continue;
+        }
+        XaDec_Sector(body);
+        xs_audio++;
+    }
+}
+
+static void xs_start(int lba, int movie) {
+    int secs;
+    int id = Host_PakFileAt(lba, &secs);
+
+    xs_on = 1;
+    xs_movie = movie;
+    xs_lba0 = lba;
+    xs_next = lba;
+    xs_audio = 0;
+    xs_t0 = Host_VBlankCount();
+    XaDec_Reset();
+    if (!movie) {
+        printf("[xa] file 0x%03X lba %d, channel %d (filter %s, mode 0x%02X): playing\n", id, lba, d_chan,
+               (d_mode & 0x08) ? "on" : "off", d_mode);
+    }
+    xa_advance();
+}
+
+static void xs_stop(const char *why) {
+    if (!xs_on) {
+        return;
+    }
+    d_pos = xs_pos();
+    xs_on = 0;
+    printf("[xa] %s stream stopped (%s) at lba %d: %d sectors, %d audio, %llu VBlanks, %d underruns\n",
+           xs_movie ? "movie" : "XA", why, d_pos, d_pos - xs_lba0, xs_audio, Host_VBlankCount() - xs_t0,
+           XaDec_Underruns());
+    XaDec_Stop();
+}
+
+/* The CD's VBlank step (game thread): audio of the running stream. */
+void Psyq_CdVBlank(void) {
+    if (xs_on) {
+        xa_advance();
+    }
+}
+
+static int loc_lba(const u_char *p) {
+    return (unbcd(p[0]) * 60 + unbcd(p[1])) * 75 + unbcd(p[2]) - 150;
+}
+
+static void set_msf(u_char *p, int lba) {
+    p[0] = (u_char)bcd(lba / (60 * 75));
+    p[1] = (u_char)bcd(lba / 75 % 60);
+    p[2] = (u_char)bcd(lba % 75);
+}
+
+/* State side of every command (libcd sends Setloc first when ReadN / ReadS / SeekL / SeekP get a
+ * location). The data read path (cur_lba, reading, callbacks) stays in CdControlF. */
+static void drive_cmd(u_char com, const u_char *param) {
+    memset(d_result, 0, sizeof(d_result));
+    switch (com) {
+    case CdlSetloc:
+        if (param != 0) {
+            d_loc = loc_lba(param);
+        }
+        break;
+    case CdlSetmode:
+        if (param != 0) {
+            d_mode = param[0];
+        }
+        break;
+    case CdlSetfilter:
+        if (param != 0) {
+            d_file = param[0];
+            d_chan = param[1];
+        }
+        break;
+    case CdlReadN:
+    case CdlReadS:
+    case CdlSeekL:
+    case CdlSeekP:
+        if (param != 0) {
+            d_loc = loc_lba(param);
+        }
+        xs_stop(com == CdlReadN ? "data read" : com == CdlReadS ? "new read" : "seek");
+        d_pos = d_loc;
+        if (com == CdlReadS && (d_mode & 0x40) && ready_cb == 0) {
+            xs_start(d_loc, 0);
+        }
+        break;
+    case CdlPause:
+    case CdlStop:
+    case CdlInit:
+        xs_stop("pause");
+        break;
+    case CdlGetlocP: {
+        int pos = drive_pos();
+        d_result[0] = 1; /* track */
+        d_result[1] = 1; /* index */
+        set_msf(d_result + 2, pos);
+        set_msf(d_result + 5, pos + 150);
+        break;
+    }
+    }
+    if (com != CdlGetlocP) {
+        d_result[0] = xs_on ? 0x22 : 0x02; /* status: motor on, reading */
+    }
+    d_last = com;
+}
+
 int CdInit(void) {
     PSYQ_LOG("");
     return 1;
@@ -118,11 +280,14 @@ CdlLOC *CdIntToPos(int i, CdlLOC *p) {
 
 int CdLastCom(void) {
     PSYQ_LOG("");
-    return 0;
+    return d_last;
 }
 
 int CdSync(int mode, u_char *result) {
     PSYQ_LOG("%d, %p", mode, (void *)result);
+    if (result != 0) {
+        memcpy(result, d_result, sizeof(d_result));
+    }
     return CdlComplete;
 }
 
@@ -145,7 +310,11 @@ CdlCB CdReadyCallback(CdlCB func) {
 int CdControl(u_char com, u_char *param, u_char *result) {
     PSYQ_LOG("0x%02X, %p, %p", com, (void *)param, (void *)result);
     if (com == CdlSetloc && param != 0) {
-        st_lba = (unbcd(param[0]) * 60 + unbcd(param[1])) * 75 + unbcd(param[2]) - 150;
+        st_lba = loc_lba(param);
+    }
+    drive_cmd(com, param);
+    if (result != 0) {
+        memcpy(result, d_result, sizeof(d_result));
     }
     return 1;
 }
@@ -154,17 +323,21 @@ int CdControlF(u_char com, u_char *param) {
     PSYQ_LOG("0x%02X, %p", com, (void *)param);
     switch (com) {
     case CdlSetloc:
-        cur_lba = (unbcd(param[0]) * 60 + unbcd(param[1])) * 75 + unbcd(param[2]) - 150;
+        cur_lba = loc_lba(param);
         break;
     case CdlReadN:
     case CdlReadS:
         reading = 1;
         break;
     case CdlPause:
+        if (reading) {
+            d_pos = cur_lba; /* a data read ends where it stopped */
+        }
         reading = 0;
         log_read_end();
         break;
     }
+    drive_cmd(com, param);
     enqueue(CdlComplete);
     if (depth == 0) {
         depth++;
@@ -176,6 +349,10 @@ int CdControlF(u_char com, u_char *param) {
 
 int CdControlB(u_char com, u_char *param, u_char *result) {
     PSYQ_LOG("0x%02X, %p, %p", com, (void *)param, (void *)result);
+    drive_cmd(com, param);
+    if (result != 0) {
+        memcpy(result, d_result, sizeof(d_result));
+    }
     return 1;
 }
 
@@ -225,6 +402,11 @@ int CdRead2(int mode) {
         st_frames = 0;
         st_t0 = Host_VBlankCount();
         printf("[movie] file 0x%03X (%d sectors, lba %d): playing\n", st_file, st_secs, st_lba);
+        /* CdRead2 = Setmode(mode) + ReadS: the movie's audio sectors go to the XA decoder */
+        d_mode = (u_char)mode;
+        xs_stop("new read");
+        xs_start(st_lba, 1);
+        d_last = CdlReadS;
     }
     return 1;
 }
@@ -245,6 +427,9 @@ void StUnSetRing(void) {
     st_ring = 0;
     st_on = 0;
     st_end = -1;
+    if (xs_movie) {
+        xs_stop("movie end");
+    }
 }
 
 void StSetStream(u_long mode, u_long start_frame, u_long end_frame, void (*func1)(), void (*func2)()) {

@@ -71,7 +71,8 @@ that are plain files.
 | **GPU renderer** | Drawing runs on the graphics card through SDL_GPU (Vulkan). A software renderer stays as a fallback. |
 | **Exact frame timing** | The game runs at the PS1's 59.94 Hz, paced to the real clock, on its own thread, so dragging or resizing the window does not stall it. |
 | **Window modes** | Windowed, borderless fullscreen at the desktop resolution, or exclusive fullscreen at a resolution and refresh rate you pick. F11 switches between windowed and fullscreen; a short notice in the top left names the mode. The window's size and place are remembered. |
-| **Movies** | The intro, the story scenes and the ending play from your disc's movie files, decoded like the PS1's movie decoder chip at the original 15 frames per second. Start skips them, as on the PS1. They are silent for now (their sound comes with streamed CD audio). |
+| **Movies** | The intro, the story scenes and the ending play from your disc's movie files, decoded like the PS1's movie decoder chip at the original 15 frames per second. Start skips them, as on the PS1. Their sound plays with them (streamed CD audio). |
+| **Streamed CD audio** | The sound the PS1 streams from the disc (XA): the skill voice lines in battle and VS, the DigiLab DNA scene and the movie sound. Decoded like the PS1's CD controller (same ADPCM decode and the same resampling to 44.1 kHz) and mixed into the emulated sound chip at the game's CD volume. |
 | **Classic picture** | At 1x with the extras off, the picture is the PS1 picture: automated runs compare it with reference screenshots frame by frame. |
 
 ### Play
@@ -187,13 +188,12 @@ Planned for the first release:
       saved with the window's size and place.
 - [x] **Sharpening filter** for the scaled picture (GPU and software), in F1 and on F8.
 - [x] **"Press F1 for settings"** hint on the title screen.
-- [x] **Movies:** the intro, the story scenes and the endings, Start skips (silent until
-      streamed CD audio is in).
-- [ ] **Streamed CD audio** (XA).
+- [x] **Movies:** the intro, the story scenes and the endings, Start skips.
+- [x] **Streamed CD audio** (XA): battle voice lines, the DigiLab DNA scene, movie sound.
 - [ ] **Full playthrough check** from the start to the ending, every scene on 64-bit.
 
 Done so far: the whole game code compiles and runs (title, city, domains, battles, menus,
-saves, VS mode), movies, render scale, no wobble, 16:9, sharpening, GPU renderer, F1 settings, window modes,
+saves, VS mode), movies, streamed CD audio, render scale, no wobble, 16:9, sharpening, GPU renderer, F1 settings, window modes,
 64-bit and Linux builds.
 
 ## Building
@@ -227,7 +227,7 @@ executable and all 7 stage overlays byte-identical. The decomp repository explai
 ```
 src/       the game's C from the decomp (original logic; 64-bit fixes marked DW2_NATIVE)
 psyq/      PC versions of the PlayStation libraries the game calls (graphics, sound, CD, pad, card)
-backend/   emulated PS1 GPU, sound chip and movie decoder, the HD renderer (scale, no wobble, 16:9, SDL_GPU)
+backend/   emulated PS1 GPU, sound chip, CD audio decoder and movie decoder, the HD renderer (scale, no wobble, 16:9, SDL_GPU)
 host/      SDL3 window, input, audio output, memory card files, the data pack
 tools/     build scripts, dw2pack.py (pack builder), decomp tools
 doc/       game state map, pack format, notes on the PlayStation library calls

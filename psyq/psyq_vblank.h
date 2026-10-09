@@ -11,5 +11,7 @@ void Psyq_PadVBlank(void);
 void Psyq_CardVBlank(void);
 /* libsnd / libspu hardware: DMA channel 4 completion delivered (psyq/snd_hw.c). */
 void Snd_HwVBlank(void);
+/* libcd: the timed CD stream's VBlank step (XA audio sectors into the decoder, PR.5). */
+void Psyq_CdVBlank(void);
 
 #endif /* PSYQ_VBLANK_H */

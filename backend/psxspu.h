@@ -7,8 +7,8 @@
  * ADPCM voices with pitch counter, 4-point interpolation, ADSR envelope, voice / main volume,
  * pitch modulation, noise. Output at 44100 Hz stereo, the SPU's own rate. The Psy-Q libspu
  * code (psyq/libspu.c) programs it through PsxSpu_Write16 / PsxSpu_Read16; DMA channel 4 lands
- * in PsxSpu_DmaWrite / PsxSpu_DmaRead. Reverb is mixed; the CD audio input is not yet
- * (logged once when enabled with a nonzero volume). */
+ * in PsxSpu_DmaWrite / PsxSpu_DmaRead. Reverb is mixed, and the CD audio input (XA from
+ * backend/xadec.c, PR.5) at the CD volume. */
 
 #define PSXSPU_RAM_SIZE 0x80000
 
