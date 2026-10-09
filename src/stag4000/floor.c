@@ -29,8 +29,15 @@ Stg40WallSide Stg40_WallSides[] = {
 };
 TaskDesc Stg40_FloorDesc = {
     (TaskInitFn)Stg40_FloorInit, Stg40_FloorUpdate, Task_DefaultDestroy, Stg40_FloorDraw,
-    /* retail 0x1EA4 (prims[] runs past the 27 declared); native: plus the wider window (PG.3) */
-    0x1EA4 + (11 * sizeof(Stg40Vtx) + 10 * sizeof(Stg40Tile)) * 2 * STG40_WIDE_COLS, 0,
+#ifdef DW2_NATIVE
+    /* retail 0x1EA4: prims[] at 0x143C runs past the 27 declared (up to 66 templates, 0xA68 bytes).
+     * Native: measured from where prims[] really starts (the wider window of PG.3 and the 8-byte
+     * pointers of x64 move it); the old "0x1EA4 + window" sum left the last templates outside the
+     * block on x64 (PR.19: a tile drew black once its neighbour block overwrote them). */
+    __builtin_offsetof(Stg40FloorWork, prims) + (0x1EA4 - 0x143C), 0,
+#else
+    0x1EA4, 0,
+#endif
 };
 
 Actor *Stg40_FloorTask;
