@@ -30,8 +30,8 @@
  *
  *   dw2 [IMAGE] [--disc IMAGE] [--pak PATH] [--vblanks N] [--no-window] [--shot-dir DIR] [--shot-at N]... [--shot-vb N]...
  *       [--hold-boot N] [--press N:BUTTONS[:LEN]]... [--press2 N:BUTTONS[:LEN]]... [--save-dir DIR]
- *       [--fast] [--pad2-keys] [--scale N] [--hd-threads N] [--pgxp] [--wide] [--renderer gpu|soft]
- *       [--settings PATH] [--settings-set KEY=VALUE]... [--settings-ui] [--settings-tab T]
+ *       [--fast] [--pad2-keys] [--scale N] [--sharpen N] [--hd-threads N] [--pgxp] [--wide] [--renderer gpu|soft]
+ *       [--settings PATH] [--settings-set KEY=VALUE]... [--settings-ui] [--settings-tab T] [--ui-shots] [--quit-dialog]
  *       [--window-mode M] [--fullscreen] [--windowed]
  *     --pak PATH     the data pack (default dw2.pak next to the exe, in the user data folder,
  *                    then build/native/dw2.pak; doc/PACK_FORMAT.md), checked before anything else
@@ -62,6 +62,11 @@
  *                    test runs; same frame sequence as a paced run without catch-up VBlanks)
  *     --scale N      HD output at N x the PS1 resolution (1..8, default 1 = classic; PG.1,
  *                    backend/psxgpu_hd.c); F5 in the window steps through 1..8
+ *     --sharpen N    sharpening of the HD picture, 0..100 (PR.2b; 0 = off; needs --scale 2 or
+ *                    more); F8 toggles it in the window. Overrides the settings file, not saved
+ *     --ui-shots     with --no-window: the window picture is rendered headless (F1 closed) and
+ *                    each shot adds <tag>_ui.png (title hint check)
+ *     --quit-dialog  the Esc quit question open at start (PR.15; headless shot with --ui-shots)
  *     --hd-threads N drawing threads for the HD output (default 0 = one per core, at most 8)
  *     --pgxp         no-wobble geometry for the HD output (PG.2: precise GTE vertices,
  *                    perspective-correct textures); F6 toggles it in the window
@@ -336,7 +341,7 @@ static void run_threaded(void) {
 
 int main(int argc, char **argv) {
     int i;
-    int cl_scale = 0, cl_wide = 0, cl_pgxp = 0, cl_renderer = 0, cl_window = -1;
+    int cl_scale = 0, cl_wide = 0, cl_pgxp = 0, cl_renderer = 0, cl_window = -1, cl_sharpen = -1;
 
     for (i = 1; i < argc; i++) {
         if (strcmp(argv[i], "--vblanks") == 0 && i + 1 < argc) {
@@ -380,6 +385,13 @@ int main(int argc, char **argv) {
         } else if (strcmp(argv[i], "--scale") == 0 && i + 1 < argc) {
             PsxHd_SetScale((int)strtol(argv[++i], NULL, 0));
             cl_scale = 1;
+        } else if (strcmp(argv[i], "--sharpen") == 0 && i + 1 < argc) {
+            cl_sharpen = (int)strtol(argv[++i], NULL, 0);
+            cl_sharpen = cl_sharpen < 0 ? 0 : cl_sharpen > 100 ? 100 : cl_sharpen;
+        } else if (strcmp(argv[i], "--ui-shots") == 0) {
+            Ui_SetShots(1);
+        } else if (strcmp(argv[i], "--quit-dialog") == 0) {
+            Ui_SetQuitAtStart(1);
         } else if (strcmp(argv[i], "--hd-threads") == 0 && i + 1 < argc) {
             PsxHd_SetThreads((int)strtol(argv[++i], NULL, 0));
         } else if (strcmp(argv[i], "--pgxp") == 0) {
@@ -411,8 +423,8 @@ int main(int argc, char **argv) {
             fprintf(stderr,
                     "usage: %s [IMAGE] [--disc IMAGE] [--pak PATH] [--vblanks N] [--no-window] [--shot-dir DIR] [--shot-at N]... "
                     "[--shot-vb N]... [--hold-boot N] [--press N:BUTTONS[:LEN]]... [--press2 N:BUTTONS[:LEN]]... "
-                    "[--save-dir DIR] [--fast] [--pad2-keys] [--scale N] [--hd-threads N] [--pgxp] [--wide] "
-                    "[--renderer gpu|soft] [--settings PATH] [--settings-set KEY=VALUE]... [--settings-ui] [--settings-tab T] "
+                    "[--save-dir DIR] [--fast] [--pad2-keys] [--scale N] [--sharpen N] [--hd-threads N] [--pgxp] [--wide] "
+                    "[--renderer gpu|soft] [--settings PATH] [--settings-set KEY=VALUE]... [--settings-ui] [--settings-tab T] [--ui-shots] [--quit-dialog] "
                     "[--window-mode windowed|borderless|exclusive] [--fullscreen] [--windowed]%s\n",
                     argv[0], DW2_DEV ? " [--start-mode N] [--devui] [--devui-tab T] [--window-size W H] [--devedit N:KIND=ARGS]..." : "");
             return 2;
@@ -435,6 +447,9 @@ int main(int argc, char **argv) {
     if (cl_window >= 0) {
         Settings_Override(SET_WINDOW_MODE, cl_window);
     }
+    if (cl_sharpen >= 0) {
+        Settings_Override(SET_SHARPEN, cl_sharpen);
+    }
     Settings_Load(no_window);
     if (!cl_scale) {
         PsxHd_SetScale(Settings_Get(SET_SCALE));
@@ -445,6 +460,7 @@ int main(int argc, char **argv) {
     if (!cl_pgxp && Settings_Get(SET_PGXP)) {
         Host_SetPgxp(1);
     }
+    Host_SetSharpen(Settings_Get(SET_SHARPEN)); /* the override's value with --sharpen */
     if (!cl_renderer && Settings_Get(SET_RENDERER) == SET_RENDERER_SOFT) {
         Host_SetRenderer(1);
     }

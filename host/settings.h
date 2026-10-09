@@ -20,6 +20,8 @@ enum {
     SET_WINDOW_MODE, /* SET_WINDOW_* (PR.3) */
     SET_FS_DISPLAY, /* 0 = the display the window is on, N = the Nth display */
     SET_WIN_MAX,    /* 0 / 1: the window was maximized */
+    SET_SHARPEN,    /* 0..100 (PR.2b, 0 = off) */
+    SET_TITLE_HINT, /* 0 / 1: "Press F1 for settings" on the title (PR.10) */
     SET_COUNT
 };
 enum { SET_RENDERER_GPU, SET_RENDERER_SOFT };
@@ -61,7 +63,7 @@ void Settings_SetKey(int bit, int slot, int scancode);
 int Settings_Pad(int bit);
 void Settings_SetPad(int bit, int code);
 void Settings_ResetControls(void);
-int Settings_KeyReserved(int scancode); /* Esc, Tab, F1, F2, F5, F6, F7, F11, F12 */
+int Settings_KeyReserved(int scancode); /* Esc, Tab, F1, F2, F5, F6, F7, F8, F11, F12 */
 const char *Settings_ButtonName(int bit); /* "Cross", ... */
 const char *Settings_PadName(int code);   /* "a", "lefttrigger", "none" */
 /* The UI's button order (up, down, left, right, cross, ...): bit numbers, 16 entries. */

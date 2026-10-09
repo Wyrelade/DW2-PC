@@ -28,6 +28,8 @@ void Host_VBlank(void);
 void Host_ClockFast(void);
 /* host/trace.c: logs game mode changes at VBlank wait `wait` (dev log). */
 void Host_TraceTick(unsigned int wait);
+/* PR.10, game thread: 1 while the title / main menu scene runs (game mode 0x401, stag1000). */
+int Host_OnTitle(void);
 /* host/trace.c: PG.3 per-scene 16:9 rule (pillarbox for 2D-only scenes), at each VBlank wait. */
 void Host_SceneTick(void);
 /* VBlanks run so far (the PS1 VSync count; a 30 fps scene runs two per wait). */
@@ -51,6 +53,8 @@ void Host_SaveShot(const char *dir, const char *tag);
 void Host_SetRenderer(int choice);
 /* host/sdl.c: PG.2 no-wobble HD geometry on / off (the GTE's precise hook and the HD path). */
 void Host_SetPgxp(int on);
+/* host/sdl.c: PR.2b sharpening of the HD picture, 0..100 (0 off; F8 toggles back to the last). */
+void Host_SetSharpen(int strength);
 /* host/sdl.c: PG.3 16:9 on / off (wide HD surfaces, 16:9 window picture). */
 void Host_SetWide(int on);
 /* PG.3, for the game C (DW2_NATIVE): extra screen pixels on each side of a picture `width` wide

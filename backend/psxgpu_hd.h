@@ -56,6 +56,19 @@ void PsxHd_BeginFrame(void);
 void PsxHd_SetPgxp(int on);
 int PsxHd_Pgxp(void);
 
+/* PR.2b sharpening of the HD picture (contrast adaptive, strength 0..100, 0 = off): applied by
+ * PsxHd_ReadDisplay and by the host's GPU publish (PsxHw_Sharpen), only with a scale above 1
+ * (PsxHd_SharpenActive is 0 at scale 1: the 1x picture is never sharpened). A change bumps
+ * PsxHd_Serial. Game thread. */
+void PsxHd_SetSharpen(int strength);
+int PsxHd_Sharpen(void);
+int PsxHd_SharpenActive(void);
+/* fn(part, parts, arg) for every part on the HD drawing threads and the calling thread (after a
+ * flush); returns when all parts are done. */
+void PsxHd_Parallel(void (*fn)(int part, int parts, void *arg), void *arg);
+/* backend/sharpen.c: in (w x h, 0xAARRGGBB, alpha kept) sharpened into out, rows in parallel. */
+void PsxSharpen_Cpu(const uint32_t *in, uint32_t *out, int w, int h, int strength);
+
 /* PG.10b GPU renderer (backend/psxgpu_hw.c, needs PsxHw_Init first): surfaces drawn on the GPU
  * instead of the software rasterizer; surfaces are rebuilt from the 1x VRAM on a switch. */
 void PsxHd_SetGpu(int on);
@@ -69,6 +82,8 @@ void PsxHw_Shutdown(void);
 void *PsxHw_Create(int w, int h);
 void PsxHw_Release(void *tex);
 void PsxHw_Copy(void *src, int x, int y, int w, int h, void *dst);
+/* PR.2b: as PsxHw_Copy, sharpened (strength 1..100, backend/shaders/sharpen.frag). */
+void PsxHw_Sharpen(void *src, int x, int y, int w, int h, void *dst, int strength);
 int PsxHd_Gpu(void);
 /* Draws everything queued (before the 1x VRAM changes by a transfer: queued primitives see the
  * textures as they were when the packet was sent). */

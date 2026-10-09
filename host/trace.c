@@ -6,6 +6,7 @@
 #include "main/156C.h"
 
 extern SysState Sys_State;
+extern s32 Ovl_CurrentId;
 
 /* Dev log: one line per game mode change (Sys_State.gameMode, scene table index << 8 | row) with
  * the VBlank wait it was seen at, so --press scripts can be lined up with the scenes. */
@@ -29,4 +30,11 @@ void Host_SceneTick(void) {
     if (PsxHd_Wide() && (table == 1 || table == 4 || table == 6)) {
         PsxHd_PillarboxFrame();
     }
+}
+
+/* PR.10: the title scene (stag1000 Stg10_StageSetup: game mode 0x401 = title and main menu,
+ * 0x402..0x407 movies, 0x408 the end screen) with its overlay loaded. A plain read of the game
+ * state on the game thread; the host shows its "Press F1 for settings" hint there. */
+int Host_OnTitle(void) {
+    return Sys_State.gameMode == 0x401 && Ovl_CurrentId == 3;
 }

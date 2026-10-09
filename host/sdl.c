@@ -44,12 +44,16 @@
  * window_mode / fullscreen_display / fullscreen_mode): main thread only, the game thread never
  * sees a mode change (the logical presentation letterboxes the picture into any window size, the
  * GPU renderer's swapchain follows the window). The windowed size, position and maximized state
- * are saved when the player changes them. Headless runs keep the hidden window windowed. */
+ * are saved when the player changes them. Headless runs keep the hidden window windowed.
+ *
+ * PR.2b sharpening (F8, F1, settings sharpen): the game thread sharpens the HD picture when it
+ * publishes it (GPU: PsxHw_Sharpen instead of the copy; soft: PsxHd_ReadDisplay). PR.10: the game
+ * thread notes at each VBlank wait whether the title runs, for the host's F1 hint (host/ui.cpp). */
 
 #define WINDOW_SCALE 3
 #define SLOTS 3
 
-enum { REQ_SCALE = 1, REQ_WIDE = 2, REQ_PGXP = 4, REQ_SHOT = 8, REQ_QUIT = 16, REQ_SETTING = 32 };
+enum { REQ_SCALE = 1, REQ_WIDE = 2, REQ_PGXP = 4, REQ_SHOT = 8, REQ_QUIT = 16, REQ_SETTING = 32, REQ_SHARPEN = 64 };
 
 typedef struct {
     int kind;      /* 0 black, 1 1x picture, 2 software HD picture, 3 GPU texture */
@@ -88,8 +92,10 @@ static SDL_Texture *wraps[SLOTS]; /* main thread: the slot textures as renderer 
 static unsigned wrap_gen[SLOTS];
 static unsigned shown_seq[SLOTS];
 static SDL_AtomicInt requests;
-static SDL_AtomicInt wanted[SET_COUNT]; /* REQ_SETTING: F1's values (+1) for scale, wide, pgxp */
+static SDL_AtomicInt wanted[SET_COUNT]; /* REQ_SETTING: F1's values (+1) for scale, wide, pgxp, sharpen */
 static SDL_AtomicInt game_done;
+static SDL_AtomicInt on_title; /* PR.10: the game thread saw the title scene at its last VBlank wait */
+static int last_sharpen = 50;  /* F8 turns sharpening back on at this strength */
 static const char *volatile quit_why = "window closed";
 
 /* PR.3, main thread */
@@ -440,6 +446,19 @@ void Host_SetPgxp(int on) {
     Gte_PreciseHook = on ? Pgxp_Record : NULL;
 }
 
+/* PR.2b, game side (or before the game runs). */
+void Host_SetSharpen(int strength) {
+    PsxHd_SetSharpen(strength);
+    if (PsxHd_Sharpen() != 0) {
+        last_sharpen = PsxHd_Sharpen();
+    }
+}
+
+/* PR.10, main thread: the title hint may show. */
+int Host_TitleHint(void) {
+    return SDL_GetAtomicInt(&on_title);
+}
+
 /* Game side (or before the window exists); the window follows with the next picture. */
 void Host_SetWide(int on) {
     PsxHd_SetWide(on);
@@ -503,8 +522,12 @@ void Host_Publish(void) {
             f->tex_h = sh;
             f->gen++;
         }
-        if (f->tex != NULL) {
+        if (f->tex != NULL && PsxHd_SharpenActive()) {
+            PsxHw_Sharpen(tex, sx, sy, sw, sh, f->tex, PsxHd_SharpenActive());
+        } else if (f->tex != NULL) {
             PsxHw_Copy(tex, sx, sy, sw, sh, f->tex);
+        }
+        if (f->tex != NULL) {
             f->kind = 3;
             f->w = sw;
             f->h = sh;
@@ -633,6 +656,12 @@ static void request(int bits) {
     } while (!SDL_CompareAndSwapAtomicInt(&requests, old, old | bits));
 }
 
+/* Main thread (PR.15 quit box): quit at the game thread's next VBlank wait. */
+void Host_RequestQuit(const char *why) {
+    quit_why = why;
+    request(REQ_QUIT);
+}
+
 /* Main thread (F1 window): a display setting for the game thread (scale, wide, pgxp). */
 void Host_RequestSetting(int id, int value) {
     SDL_SetAtomicInt(&wanted[id], value + 1); /* 0 = nothing wanted */
@@ -656,6 +685,7 @@ void Host_PumpEvents(void) {
         case SDL_EVENT_KEY_DOWN:
             if (!e.key.repeat) {
                 if (e.key.scancode == SDL_SCANCODE_ESCAPE) {
+                    /* only without the ImGui layer: it asks first (PR.15) */
                     quit_why = "Esc";
                     request(REQ_QUIT);
                 }
@@ -670,6 +700,9 @@ void Host_PumpEvents(void) {
                 }
                 if (e.key.scancode == SDL_SCANCODE_F6) {
                     request(REQ_PGXP);
+                }
+                if (e.key.scancode == SDL_SCANCODE_F8) {
+                    request(REQ_SHARPEN);
                 }
                 if (e.key.scancode == SDL_SCANCODE_F11) {
                     toggle_fullscreen();
@@ -739,6 +772,22 @@ void Host_GameEvents(void) {
             printf("[gpu] no wobble (PGXP) %s (F1)\n", PsxHd_Pgxp() ? "on" : "off");
             Settings_Set(SET_PGXP, PsxHd_Pgxp());
         }
+        if ((v = SDL_SetAtomicInt(&wanted[SET_SHARPEN], 0)) != 0 && v - 1 != PsxHd_Sharpen()) {
+            Host_SetSharpen(v - 1);
+            printf("[gpu] sharpen %d (F1)\n", PsxHd_Sharpen());
+            Settings_Set(SET_SHARPEN, PsxHd_Sharpen());
+        }
+        fflush(stdout);
+    }
+    if (r & REQ_SHARPEN) {
+        Host_SetSharpen(PsxHd_Sharpen() != 0 ? 0 : last_sharpen);
+        printf("[gpu] sharpen %d (F8)\n", PsxHd_Sharpen());
+        if (PsxHd_Sharpen() == 0) {
+            notice("Sharpening off (F8)");
+        } else {
+            notice("Sharpening %d (F8)%s", PsxHd_Sharpen(), PsxHd_Scale() > 1 ? "" : ", needs scale 2x or more");
+        }
+        Settings_Set(SET_SHARPEN, PsxHd_Sharpen());
         fflush(stdout);
     }
     if (r & REQ_SCALE) {
@@ -765,6 +814,7 @@ void Host_GameEvents(void) {
     if (r & REQ_QUIT) {
         Host_Quit(quit_why);
     }
+    SDL_SetAtomicInt(&on_title, Host_OnTitle());
     Host_InputLatch();
 #if DW2_DEV
     DevSnap_Capture();

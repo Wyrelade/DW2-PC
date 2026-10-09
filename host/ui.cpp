@@ -5,7 +5,9 @@
  * both are windows in this one context and can be open together. ImGui draws in window pixels
  * over the picture: the renderer's logical presentation is switched off around it.
  * PR.3: a short notice top left (Ui_Notice: window mode after F11 / F1, F5 / F6 / F7 values),
- * drawn by the same layer for 2 s, with or without the windows open. */
+ * drawn by the same layer for 2 s, with or without the windows open.
+ * PR.10: "Press F1 for settings" at the bottom left of the picture while the title runs.
+ * PR.15: Esc opens a "Quit?" box (Quit / Cancel) instead of quitting at once. */
 
 #include <SDL3/SDL.h>
 #include <stdio.h>
@@ -16,12 +18,15 @@
 #include "backends/imgui_impl_sdl3.h"
 #include "backends/imgui_impl_sdlrenderer3.h"
 
+#include "host/settings.h"
 #include "host/ui.h"
 #if DW2_DEV
 #include "host/devui.h"
 #endif
 
 extern "C" int Host_WritePng(const char *path, const uint32_t *pixels, int w, int h);
+extern "C" int Host_TitleHint(void);
+extern "C" void Host_RequestQuit(const char *why);
 
 namespace {
 
@@ -29,6 +34,9 @@ SDL_Renderer *g_renderer;
 bool g_ready;
 bool g_headless;
 bool g_settings_at_start;
+bool g_shots; /* --ui-shots */
+/* PR.15 quit question: wanted (Esc toggles it), shown (the ImGui popup is open) */
+bool g_quit_want, g_quit_shown;
 
 /* PR.3 notice: any thread posts, the main thread draws */
 SDL_Mutex *g_notice_lock;
@@ -67,6 +75,75 @@ void draw_notice(void) {
     ImGui::TextUnformatted(text);
     ImGui::End();
     ImGui::PopStyleVar();
+}
+
+/* PR.15: Esc asks before quitting (a modal box in the window centre; Cancel has the focus, so
+ * Enter or the gamepad's confirm button on a stray press does not quit). The game keeps running
+ * behind it without input, as with F1 open. */
+void draw_quit(void) {
+    static const char id[] = "Quit##quit";
+    float k = ImGui::GetStyle().FontScaleDpi;
+
+    if (g_quit_want && !ImGui::IsPopupOpen(id)) {
+        ImGui::OpenPopup(id);
+    }
+    ImGui::SetNextWindowPos(ImGui::GetMainViewport()->GetCenter(), ImGuiCond_Always, ImVec2(0.5f, 0.5f));
+    if (ImGui::BeginPopupModal(id, NULL,
+                               ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove |
+                                   ImGuiWindowFlags_NoSavedSettings)) {
+        g_quit_shown = true;
+        ImGui::TextUnformatted("Quit Digimon World 2?");
+        ImGui::TextDisabled("Progress since your last save will be lost.");
+        ImGui::Spacing();
+        if (ImGui::Button("Quit", ImVec2(110.0f * k, 0))) {
+            Host_RequestQuit("Esc, confirmed");
+            g_quit_want = false;
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("Cancel", ImVec2(110.0f * k, 0))) {
+            g_quit_want = false;
+        }
+        if (ImGui::IsWindowAppearing()) {
+            ImGui::SetKeyboardFocusHere(-1); /* Cancel */
+        }
+        if (!g_quit_want) {
+            ImGui::CloseCurrentPopup();
+            g_quit_shown = false;
+        }
+        ImGui::EndPopup();
+    } else {
+        g_quit_shown = false;
+    }
+}
+
+/* PR.10: "Press F1 for settings" at the bottom left of the picture while the title runs (the
+ * game thread's flag), unless switched off or the F1 window is open. Drawn with each presented
+ * picture only: it does not keep the window loop presenting. */
+bool title_hint_shown(void) {
+    return g_ready && Host_TitleHint() && Settings_Get(SET_TITLE_HINT) && !SettingsUi_IsOpen() && !g_quit_want &&
+           !g_quit_shown;
+}
+
+void draw_title_hint(void) {
+    static const char text[] = "Press F1 for settings";
+    SDL_FRect r;
+
+    if (!SDL_GetRenderLogicalPresentationRect(g_renderer, &r) || r.h <= 0) {
+        return;
+    }
+    /* about 1/32 of the picture height, never below the UI's own text size */
+    float size = r.h / 32.0f;
+    float min = 13.0f * ImGui::GetStyle().FontScaleDpi;
+    size = size < min ? min : size;
+    float pad = r.h / 60.0f, in = size * 0.35f;
+    ImVec2 ts = ImGui::GetFont()->CalcTextSizeA(size, FLT_MAX, 0.0f, text);
+    ImVec2 pos(r.x + pad + in, r.y + r.h - pad - in - ts.y);
+    ImDrawList *dl = ImGui::GetForegroundDrawList();
+
+    /* a dark box behind it: the title background is busy */
+    dl->AddRectFilled(ImVec2(pos.x - in, pos.y - in * 0.6f), ImVec2(pos.x + ts.x + in, pos.y + ts.y + in * 0.6f),
+                      IM_COL32(0, 0, 0, 150), in * 0.6f);
+    dl->AddText(ImGui::GetFont(), size, pos, IM_COL32(255, 255, 255, 220), text);
 }
 
 /* the style for the display's content scale (again when the window moves to another display) */
@@ -125,8 +202,8 @@ void write_shot(void) {
 }
 
 bool is_hotkey(SDL_Scancode sc) {
-    return sc == SDL_SCANCODE_F5 || sc == SDL_SCANCODE_F6 || sc == SDL_SCANCODE_F7 || sc == SDL_SCANCODE_F11 ||
-           sc == SDL_SCANCODE_F12;
+    return sc == SDL_SCANCODE_F5 || sc == SDL_SCANCODE_F6 || sc == SDL_SCANCODE_F7 || sc == SDL_SCANCODE_F8 ||
+           sc == SDL_SCANCODE_F11 || sc == SDL_SCANCODE_F12;
 }
 
 } // namespace
@@ -143,7 +220,11 @@ int Ui_Headless(void) {
         return 1;
     }
 #endif
-    return g_headless && g_settings_at_start;
+    return g_headless && (g_settings_at_start || g_shots);
+}
+
+void Ui_SetShots(int on) {
+    g_shots = on != 0;
 }
 
 void Ui_Notice(const char *text) {
@@ -190,11 +271,15 @@ void Ui_Init(SDL_Window *window, SDL_Renderer *renderer, int headless) {
 }
 
 int Ui_Active(void) {
-    return g_ready && (SettingsUi_IsOpen() || dev_open());
+    return g_ready && (SettingsUi_IsOpen() || dev_open() || g_quit_want || g_quit_shown);
+}
+
+void Ui_SetQuitAtStart(int on) {
+    g_quit_want = on != 0;
 }
 
 int Ui_BlocksGameInput(void) {
-    if (g_ready && SettingsUi_IsOpen()) {
+    if (g_ready && (SettingsUi_IsOpen() || g_quit_want || g_quit_shown)) {
         return 1;
     }
 #if DW2_DEV
@@ -232,14 +317,18 @@ int Ui_Event(const SDL_Event *e) {
         return 1; /* F2 */
     }
 #endif
-    if (!Ui_Active()) {
-        return 0;
-    }
-    if (SettingsUi_IsOpen() && e->type == SDL_EVENT_KEY_DOWN && e->key.scancode == SDL_SCANCODE_ESCAPE) {
+    if (e->type == SDL_EVENT_KEY_DOWN && e->key.scancode == SDL_SCANCODE_ESCAPE) {
         if (!e->key.repeat) {
-            SettingsUi_SetOpen(0); /* Esc closes the settings window instead of quitting */
+            if (SettingsUi_IsOpen()) {
+                SettingsUi_SetOpen(0); /* Esc closes the settings window instead of quitting */
+            } else {
+                g_quit_want = !g_quit_want; /* PR.15: Esc asks first, Esc again cancels */
+            }
         }
         return 1;
+    }
+    if (!Ui_Active()) {
+        return 0;
     }
     ImGui_ImplSDL3_ProcessEvent(e);
     if (key && e->type != SDL_EVENT_TEXT_INPUT && is_hotkey(e->key.scancode)) {
@@ -255,13 +344,15 @@ void Ui_Render(void) {
     int lw, lh;
     SDL_RendererLogicalPresentation mode;
 
-    if (!Ui_Drawing()) {
+    bool hint = title_hint_shown();
+
+    if (!Ui_Drawing() && !hint && !SDL_GetAtomicInt(&g_shot_pending)) {
         return;
     }
     ImGuiIO &io = ImGui::GetIO();
     /* the F1 window is driven by keyboard and gamepad too; the dev overlay alone is not */
     io.ConfigFlags &= ~(ImGuiConfigFlags_NavEnableKeyboard | ImGuiConfigFlags_NavEnableGamepad);
-    if (SettingsUi_IsOpen()) {
+    if (SettingsUi_IsOpen() || g_quit_want || g_quit_shown) {
         io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
         if (SettingsUi_PadNavOk()) {
             io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
@@ -277,6 +368,12 @@ void Ui_Render(void) {
 #endif
     if (SettingsUi_IsOpen()) {
         SettingsUi_Draw();
+    }
+    if (hint) {
+        draw_title_hint();
+    }
+    if (g_quit_want || g_quit_shown) {
+        draw_quit();
     }
     draw_notice();
     ImGui::Render();

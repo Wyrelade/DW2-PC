@@ -51,6 +51,8 @@ static Uint32 vcap; /* bytes of vbuf / vtb */
 static SDL_GPUTransferBuffer *read_tb;
 static Uint32 read_cap;
 static SDL_GPUFence *last_fence;
+static SDL_GPUGraphicsPipeline *sharpen_pipe; /* PR.2b */
+static SDL_GPUSampler *sharpen_sampler;
 static int dirty_y0, dirty_y1 = PSXGPU_VRAM_H; /* VRAM rows to upload before the next batch */
 
 static Vert *verts;
@@ -70,6 +72,59 @@ static SDL_GPUShader *make_shader(const uint32_t *code, size_t size, SDL_GPUShad
     si.num_storage_buffers = (Uint32)storage;
     si.num_uniform_buffers = 1;
     return SDL_CreateGPUShader(dev, &si);
+}
+
+/* PR.2b: the sharpen pipeline (full-screen triangle, the source texture through a sampler). */
+static int init_sharpen(void) {
+    SDL_GPUShaderCreateInfo si;
+    SDL_GPUShader *vs, *fs;
+    SDL_GPUColorTargetDescription ctd;
+    SDL_GPUGraphicsPipelineCreateInfo pi;
+    SDL_GPUSamplerCreateInfo smp;
+
+    SDL_zero(si);
+    si.code = (const Uint8 *)spv_sharpen_vert;
+    si.code_size = sizeof(spv_sharpen_vert);
+    si.entrypoint = "main";
+    si.format = SDL_GPU_SHADERFORMAT_SPIRV;
+    si.stage = SDL_GPU_SHADERSTAGE_VERTEX;
+    vs = SDL_CreateGPUShader(dev, &si);
+    si.code = (const Uint8 *)spv_sharpen_frag;
+    si.code_size = sizeof(spv_sharpen_frag);
+    si.stage = SDL_GPU_SHADERSTAGE_FRAGMENT;
+    si.num_samplers = 1;
+    si.num_uniform_buffers = 1;
+    fs = SDL_CreateGPUShader(dev, &si);
+    if (vs == NULL || fs == NULL) {
+        printf("[gpu] GPU renderer: sharpen shaders failed: %s\n", SDL_GetError());
+        return 0;
+    }
+    SDL_zero(ctd);
+    ctd.format = SDL_GPU_TEXTUREFORMAT_R8G8B8A8_UNORM;
+    SDL_zero(pi);
+    pi.vertex_shader = vs;
+    pi.fragment_shader = fs;
+    pi.primitive_type = SDL_GPU_PRIMITIVETYPE_TRIANGLELIST;
+    pi.rasterizer_state.fill_mode = SDL_GPU_FILLMODE_FILL;
+    pi.rasterizer_state.cull_mode = SDL_GPU_CULLMODE_NONE;
+    pi.target_info.color_target_descriptions = &ctd;
+    pi.target_info.num_color_targets = 1;
+    sharpen_pipe = SDL_CreateGPUGraphicsPipeline(dev, &pi);
+    SDL_ReleaseGPUShader(dev, vs);
+    SDL_ReleaseGPUShader(dev, fs);
+    SDL_zero(smp);
+    smp.min_filter = SDL_GPU_FILTER_NEAREST;
+    smp.mag_filter = SDL_GPU_FILTER_NEAREST;
+    smp.mipmap_mode = SDL_GPU_SAMPLERMIPMAPMODE_NEAREST;
+    smp.address_mode_u = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
+    smp.address_mode_v = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
+    smp.address_mode_w = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
+    sharpen_sampler = SDL_CreateGPUSampler(dev, &smp);
+    if (sharpen_pipe == NULL || sharpen_sampler == NULL) {
+        printf("[gpu] GPU renderer: sharpen pipeline failed: %s\n", SDL_GetError());
+        return 0;
+    }
+    return 1;
 }
 
 int PsxHw_Init(void *device) {
@@ -156,6 +211,10 @@ int PsxHw_Init(void *device) {
         dev = NULL;
         return 0;
     }
+    if (!init_sharpen()) {
+        dev = NULL;
+        return 0;
+    }
     dirty_y0 = 0;
     dirty_y1 = PSXGPU_VRAM_H;
     printf("[gpu] GPU renderer: SDL_GPU %s\n", SDL_GetGPUDeviceDriver(dev));
@@ -176,6 +235,10 @@ void PsxHw_Shutdown(void) {
     for (i = 0; i < 5; i++) {
         SDL_ReleaseGPUGraphicsPipeline(dev, pipes[i]);
     }
+    SDL_ReleaseGPUGraphicsPipeline(dev, sharpen_pipe);
+    SDL_ReleaseGPUSampler(dev, sharpen_sampler);
+    sharpen_pipe = NULL;
+    sharpen_sampler = NULL;
     SDL_ReleaseGPUBuffer(dev, vram_buf);
     SDL_ReleaseGPUTransferBuffer(dev, vram_tb);
     if (vbuf != NULL) {
@@ -693,6 +756,49 @@ void PsxHw_Copy(void *src, int x, int y, int w, int h, void *dst) {
     to.texture = dst;
     SDL_CopyGPUTextureToTexture(copy, &from, &to, (Uint32)w, (Uint32)h, 1, false);
     SDL_EndGPUCopyPass(copy);
+    submit(cmd);
+}
+
+/* PR.2b: the rect x, y, w, h of src sharpened (strength 1..100) into the top-left corner of dst. */
+void PsxHw_Sharpen(void *src, int x, int y, int w, int h, void *dst, int strength) {
+    SDL_GPUCommandBuffer *cmd;
+    SDL_GPURenderPass *pass;
+    SDL_GPUColorTargetInfo ct;
+    SDL_GPUTextureSamplerBinding tsb;
+    SDL_GPUViewport vp;
+    SDL_Rect sc = { 0, 0, w, h };
+    struct {
+        int32_t origin[2], size[2];
+        float sharpness, pad[3];
+    } par = { { x, y }, { w, h }, strength / 100.0f, { 0, 0, 0 } };
+
+    if (dev == NULL || src == NULL || dst == NULL) {
+        return;
+    }
+    cmd = SDL_AcquireGPUCommandBuffer(dev);
+    if (cmd == NULL) {
+        return;
+    }
+    SDL_zero(ct);
+    ct.texture = dst;
+    ct.load_op = SDL_GPU_LOADOP_LOAD;
+    ct.store_op = SDL_GPU_STOREOP_STORE;
+    pass = SDL_BeginGPURenderPass(cmd, &ct, 1, NULL);
+    vp.x = 0;
+    vp.y = 0;
+    vp.w = (float)w;
+    vp.h = (float)h;
+    vp.min_depth = 0;
+    vp.max_depth = 1;
+    SDL_SetGPUViewport(pass, &vp);
+    SDL_SetGPUScissor(pass, &sc);
+    SDL_BindGPUGraphicsPipeline(pass, sharpen_pipe);
+    tsb.texture = src;
+    tsb.sampler = sharpen_sampler;
+    SDL_BindGPUFragmentSamplers(pass, 0, &tsb, 1);
+    SDL_PushGPUFragmentUniformData(cmd, 0, &par, sizeof(par));
+    SDL_DrawGPUPrimitives(pass, 3, 1, 0, 0);
+    SDL_EndGPURenderPass(pass);
     submit(cmd);
 }
 

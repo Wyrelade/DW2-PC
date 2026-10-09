@@ -195,6 +195,8 @@ void display_tab(void) {
     bool wide = Settings_Get(SET_WIDE) != 0;
     bool pgxp = Settings_Get(SET_PGXP) != 0;
     int renderer = Settings_Get(SET_RENDERER);
+    int sharpen = Settings_Get(SET_SHARPEN);
+    bool hint = Settings_Get(SET_TITLE_HINT) != 0;
 
     ImGui::SeparatorText("Picture");
     if (ImGui::SliderInt("Resolution scale (F5)", &scale, 1, 8, "%dx")) {
@@ -208,6 +210,17 @@ void display_tab(void) {
         Host_RequestSetting(SET_PGXP, pgxp);
     }
     ImGui::TextDisabled("Removes the PS1 vertex jitter and texture warp (PGXP).");
+    if (ImGui::SliderInt("Sharpening (F8)", &sharpen, 0, 100, sharpen == 0 ? "off" : "%d")) {
+        Host_RequestSetting(SET_SHARPEN, sharpen);
+    }
+    if (scale == 1) {
+        ImGui::TextDisabled("Sharpens the scaled picture: needs a resolution scale of 2x or more.");
+    } else {
+        ImGui::TextDisabled("Contrast adaptive sharpening of the scaled picture.");
+    }
+    if (ImGui::Checkbox("Show \"Press F1 for settings\" on the title", &hint)) {
+        Settings_Set(SET_TITLE_HINT, hint);
+    }
 
     ImGui::SeparatorText("Renderer");
     const char *names[] = { "GPU (Vulkan)", "Software" };
@@ -216,7 +229,7 @@ void display_tab(void) {
     }
     ImGui::TextDisabled("Takes effect at the next start. Running now: %s.", Host_RendererName());
     window_section();
-    for (int id = SET_SCALE; id <= SET_WINDOW_MODE; id++) {
+    for (int id = SET_SCALE; id < SET_COUNT; id++) {
         if (Settings_Overridden(id)) {
             ImGui::TextColored(ImVec4(1.0f, 0.8f, 0.3f, 1.0f),
                                "Some values come from the command line for this run and are not saved.");
@@ -259,7 +272,7 @@ void controls_tab(void) {
         ImGui::TextColored(ImVec4(0.5f, 0.9f, 1.0f, 1.0f), "%s: press a %s (Esc cancels)",
                            Settings_ButtonName(g_cap_bit), g_cap_slot < 2 ? "key" : "gamepad button");
     } else {
-        ImGui::TextDisabled("Esc, Tab, F1, F2, F5, F6, F7, F11 and F12 are reserved.");
+        ImGui::TextDisabled("Esc, Tab, F1, F2, F5, F6, F7, F8, F11 and F12 are reserved.");
     }
     if (ImGui::BeginTable("binds", 4, ImGuiTableFlags_BordersInnerH | ImGuiTableFlags_RowBg)) {
         ImGui::TableSetupColumn("PS1 button", ImGuiTableColumnFlags_WidthStretch, 1.0f);

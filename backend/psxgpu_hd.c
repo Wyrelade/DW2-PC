@@ -46,6 +46,11 @@ static int wide;                    /* 16:9 on */
 static int frame_wide, pillar_next; /* this frame draws into the margins / next frame does not */
 static unsigned serial;
 static int last_margin; /* margin of the last ReadDisplay picture, output pixels */
+static int sharpen;     /* PR.2b strength 0..100 */
+static uint32_t *sharp_buf; /* PR.2b: the picture before sharpening (soft) */
+static size_t sharp_cap;
+static void *sharp_tex; /* PR.2b: the sharpened picture of a read (GPU) */
+static int sharp_tex_w, sharp_tex_h;
 
 /* PS1 dither offsets by (y & 3, x & 3), as in backend/psxgpu.c. */
 static const int dither_tbl[4][4] = {
@@ -158,9 +163,17 @@ static void draw_tri(const Cmd *c, int part, int parts);
 static void draw_rect(const Cmd *c, int part, int parts);
 static void draw_line(const Cmd *c, int part, int parts);
 
+/* PsxHd_Parallel's function for the workers, NULL while they draw the queue */
+static void (*job)(int part, int parts, void *arg);
+static void *job_arg;
+
 static void run_part(int part) {
     int i;
 
+    if (job != NULL) {
+        job(part, parts, job_arg);
+        return;
+    }
     for (i = 0; i < queued; i++) {
         const Cmd *c = &queue[i];
         switch (c->type) {
@@ -218,18 +231,10 @@ static void start_workers(void) {
     printf("[gpu] HD: %d drawing thread%s\n", parts, parts == 1 ? "" : "s");
 }
 
-/* Draws the queue into the surfaces. */
-static void flush(void) {
+/* Every part of the current work (the queue, or job) on the workers and the calling thread. */
+static void run_parts(void) {
     int i;
 
-    if (queued == 0) {
-        return;
-    }
-    if (gpu) {
-        PsxHw_Flush(queue, queued, scale);
-        queued = 0;
-        return;
-    }
     if (done == NULL) {
         start_workers();
     }
@@ -240,7 +245,29 @@ static void flush(void) {
     for (i = 0; i < nworkers; i++) {
         SDL_WaitSemaphore(done);
     }
+}
+
+/* Draws the queue into the surfaces. */
+static void flush(void) {
+    if (queued == 0) {
+        return;
+    }
+    if (gpu) {
+        PsxHw_Flush(queue, queued, scale);
+        queued = 0;
+        return;
+    }
+    run_parts();
     queued = 0;
+}
+
+void PsxHd_Parallel(void (*fn)(int part, int parts, void *arg), void *arg) {
+    flush();
+    job = fn;
+    job_arg = arg;
+    run_parts();
+    job = NULL;
+    job_arg = NULL;
 }
 
 static Cmd *push(int type, Surf *s, const PsxGpuState *st) {
@@ -281,6 +308,10 @@ void PsxHd_SetGpu(int on) {
     if (on != gpu) {
         flush();
         release_all();
+        if (sharp_tex != NULL) {
+            PsxHw_Release(sharp_tex);
+            sharp_tex = NULL;
+        }
         gpu = on;
         serial++;
     }
@@ -310,6 +341,22 @@ int PsxHd_Scale(void) {
 
 int PsxHd_On(void) {
     return scale > 1 || wide;
+}
+
+void PsxHd_SetSharpen(int strength) {
+    strength = strength < 0 ? 0 : strength > 100 ? 100 : strength;
+    if (strength != sharpen) {
+        sharpen = strength;
+        serial++; /* the host publishes the picture again */
+    }
+}
+
+int PsxHd_Sharpen(void) {
+    return sharpen;
+}
+
+int PsxHd_SharpenActive(void) {
+    return scale > 1 ? sharpen : 0;
 }
 
 void PsxHd_SetWide(int on) {
@@ -1114,18 +1161,46 @@ int PsxHd_ReadDisplay(int x, int y, int w, int h, uint32_t *out, int *ow, int *o
         if (out == NULL) {
             return 1;
         }
+        if (gpu && PsxHd_SharpenActive()) {
+            flush();
+            if (sharp_tex == NULL || sharp_tex_w != ww || sharp_tex_h != h * scale) {
+                if (sharp_tex != NULL) {
+                    PsxHw_Release(sharp_tex);
+                }
+                sharp_tex = PsxHw_Create(ww, h * scale);
+                sharp_tex_w = ww;
+                sharp_tex_h = h * scale;
+            }
+            if (sharp_tex == NULL) {
+                return 0;
+            }
+            PsxHw_Sharpen(s->tex, x0, (y - s->y) * scale, ww, h * scale, sharp_tex, sharpen);
+            return PsxHw_Read(sharp_tex, 0, 0, ww, h * scale, out);
+        }
         if (gpu) {
             flush();
             return PsxHw_Read(s->tex, x0, (y - s->y) * scale, ww, h * scale, out);
         }
+        if (PsxHd_SharpenActive() && sharp_cap < (size_t)ww * h * scale) {
+            uint32_t *b = realloc(sharp_buf, (size_t)ww * h * scale * sizeof(uint32_t));
+
+            if (b == NULL) {
+                return 0;
+            }
+            sharp_buf = b;
+            sharp_cap = (size_t)ww * h * scale;
+        }
         for (Y = 0; Y < h * scale; Y++) {
             const uint16_t *row = s->px + (size_t)((y - s->y) * scale + Y) * pitch + x0;
-            uint32_t *o = out + (size_t)Y * ww;
+            uint32_t *o = (PsxHd_SharpenActive() ? sharp_buf : out) + (size_t)Y * ww;
             for (X = 0; X < ww; X++) {
                 uint16_t c = row[X];
                 uint32_t r = c & 31, g = (c >> 5) & 31, b = (c >> 10) & 31;
                 o[X] = (((r << 3) | (r >> 2)) << 16) | (((g << 3) | (g >> 2)) << 8) | ((b << 3) | (b >> 2));
             }
+        }
+        if (PsxHd_SharpenActive()) {
+            PsxSharpen_Cpu(sharp_buf, out, ww, h * scale, sharpen);
         }
         return 1;
     }

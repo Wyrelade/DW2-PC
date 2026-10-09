@@ -14,7 +14,12 @@ extern "C" {
 /* --settings-ui: the F1 window open at start; with --no-window it renders into the hidden
  * window and each shot adds <tag>_ui.png. */
 void Ui_SetSettingsAtStart(int on);
-/* A UI renders headless (--settings-ui or dev --devui with --no-window). */
+/* --ui-shots: with --no-window the window picture is rendered headless (F1 closed) and each shot
+ * adds <tag>_ui.png (PR.10 hint and PR.2b checks). */
+void Ui_SetShots(int on);
+/* --quit-dialog: the PR.15 quit question open at start (headless shot with --ui-shots). */
+void Ui_SetQuitAtStart(int on);
+/* A UI renders headless (--settings-ui, --ui-shots or dev --devui with --no-window). */
 int Ui_Headless(void);
 void Ui_Init(SDL_Window *window, SDL_Renderer *renderer, int headless);
 /* Each event before the host sees it: F1 / F2, key capture, ImGui. 1 = consumed. */
