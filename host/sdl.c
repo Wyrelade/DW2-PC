@@ -7,6 +7,9 @@
 #include "backend/psxgpu_hd.h"
 #include "host/host.h"
 #include "host/host_sdl.h"
+#ifndef _WIN32
+#include "host/icon_rgba.h"
+#endif
 #include "host/settings.h"
 #include "host/ui.h"
 #include "psyq/gte_core.h"
@@ -200,6 +203,17 @@ void Host_InitWindow(int no_window) {
         fail("SDL_CreateWindow");
     }
     remember_geometry();
+#ifndef _WIN32
+    /* Windows takes the icon from the exe (host/dw2.rc); elsewhere it comes from here. */
+    {
+        SDL_Surface *icon = SDL_CreateSurfaceFrom(DW2_ICON_W, DW2_ICON_H, SDL_PIXELFORMAT_RGBA32,
+                                                  (void *)dw2_icon_rgba, DW2_ICON_W * 4);
+        if (icon != NULL) {
+            SDL_SetWindowIcon(window, icon);
+            SDL_DestroySurface(icon);
+        }
+    }
+#endif
     if (!want_gpu || !init_gpu()) {
         renderer = SDL_CreateRenderer(window, NULL);
     }

@@ -162,7 +162,22 @@ target_include_directories(dw2_imgui PRIVATE ${IMGUI_DIR})
 target_link_libraries(dw2_imgui PRIVATE SDL3::SDL3-shared)
 set(DEV_SRC ${UI_SRC} $<TARGET_OBJECTS:dw2_imgui>)
 
-add_executable(dw2 ${PSYQ_SRC} ${HOST_SRC} ${BACKEND_SRC} ${DEV_SRC} $<TARGET_OBJECTS:dw2_main> ${OVL_OBJECTS})
+# Windows: the program icon (host/dw2.rc -> misc/icon/dw2.ico) through windres. A custom command
+# run from the repo root with relative paths: windres hands -I paths unquoted to its preprocessor,
+# so the usual RC language support breaks on a source path with spaces.
+set(ICON_SRC)
+if(WIN32)
+    get_filename_component(DW2_TOOLBIN ${CMAKE_C_COMPILER} DIRECTORY)
+    find_program(DW2_WINDRES windres HINTS ${DW2_TOOLBIN} REQUIRED)
+    set(ICON_SRC ${CMAKE_BINARY_DIR}/dw2_icon.o)
+    add_custom_command(OUTPUT ${ICON_SRC}
+        COMMAND ${DW2_WINDRES} -O coff host/dw2.rc ${ICON_SRC}
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        DEPENDS ${CMAKE_SOURCE_DIR}/host/dw2.rc ${CMAKE_SOURCE_DIR}/misc/icon/dw2.ico
+        VERBATIM)
+    set_source_files_properties(${ICON_SRC} PROPERTIES EXTERNAL_OBJECT TRUE GENERATED TRUE)
+endif()
+add_executable(dw2 ${PSYQ_SRC} ${HOST_SRC} ${BACKEND_SRC} ${DEV_SRC} ${ICON_SRC} $<TARGET_OBJECTS:dw2_main> ${OVL_OBJECTS})
 target_compile_options(dw2 PRIVATE ${DW2_ARCH_FLAG} ${DW2_PIE_FLAGS} -fno-strict-aliasing -fwrapv -fno-common -Wall
     "-Wa,-I${CMAKE_SOURCE_DIR}"
     $<$<COMPILE_LANGUAGE:C>:-funsigned-char>

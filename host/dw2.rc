@@ -1,0 +1,3 @@
+/* Windows: the program icon (misc/icon/dw2.ico, made by misc/icon/make_icon.py). SDL3 uses
+   the first icon in the exe for its windows too. */
+1 ICON "misc/icon/dw2.ico"
