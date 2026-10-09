@@ -117,7 +117,14 @@ static int no_present(void) {
 }
 
 static void fail(const char *what) {
-    fprintf(stderr, "[host] %s failed: %s\n", what, SDL_GetError());
+    char msg[512];
+
+    snprintf(msg, sizeof(msg), "%s failed: %s", what, SDL_GetError());
+    fprintf(stderr, "[host] %s\n", msg);
+    /* Windows release builds have no console (host/winconsole.c): say it in a box too */
+    if (!headless) {
+        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Digimon World 2", msg, NULL);
+    }
     exit(1);
 }
 

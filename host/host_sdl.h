@@ -58,6 +58,9 @@ int Host_PakBuild(const char *image, const char *out, const char *fallback, int 
 void Host_SetThreaded(int on);
 int Host_Threaded(void);
 void Host_InitWindow(int no_window);
+#ifdef _WIN32
+void Host_AttachParentConsole(void); /* host/winconsole.c */
+#endif
 void Host_WindowLoop(void);
 void Host_PumpEvents(void);
 void Host_Present(void);

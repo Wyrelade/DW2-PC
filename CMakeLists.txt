@@ -194,6 +194,11 @@ if(WIN32)
     # 64-bit PE: also no high-entropy ASLR, so the stack stays low as well.
     # The C++ runtime parts g++ links come in statically (no libstdc++ DLL to ship).
     target_link_options(dw2 PRIVATE -static-libstdc++ -static-libgcc)
+    # Release: a GUI program, no console window next to the game (host/winconsole.c). Dev builds
+    # keep the console for the logs.
+    if(NOT DW2_DEV)
+        target_link_options(dw2 PRIVATE -mwindows)
+    endif()
     target_link_options(dw2 PRIVATE ${DW2_ARCH_FLAG} -Wl,--image-base=0x01000000 -Wl,--disable-dynamicbase
         $<$<EQUAL:${CMAKE_SIZEOF_VOID_P},8>:-Wl,--disable-high-entropy-va>
         -Wl,-Map=${CMAKE_BINARY_DIR}/dw2.map)

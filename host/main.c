@@ -371,6 +371,9 @@ HOST_ENTRY int main(int argc, char **argv) {
     int i;
     int cl_scale = 0, cl_wide = 0, cl_pgxp = 0, cl_renderer = 0, cl_window = -1, cl_sharpen = -1;
 
+#ifdef _WIN32
+    Host_AttachParentConsole();
+#endif
     for (i = 1; i < argc; i++) {
         if (strcmp(argv[i], "--vblanks") == 0 && i + 1 < argc) {
             max_vblanks = (unsigned int)strtoul(argv[++i], NULL, 0);
