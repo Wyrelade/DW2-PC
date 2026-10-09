@@ -32,6 +32,7 @@
   <a href="#getting-started">Getting started</a> &middot;
   <a href="#controls">Controls</a> &middot;
   <a href="#roadmap">Roadmap</a> &middot;
+  <a href="#help-wanted">Help wanted</a> &middot;
   <a href="#building">Building</a> &middot;
   <a href="#how-it-works">How it works</a>
 </p>
@@ -190,11 +191,28 @@ Planned for the first release:
 - [x] **"Press F1 for settings"** hint on the title screen.
 - [x] **Movies:** the intro, the story scenes and the endings, Start skips.
 - [x] **Streamed CD audio** (XA): battle voice lines, the DigiLab DNA scene, movie sound.
-- [ ] **Full playthrough check** from the start to the ending, every scene on 64-bit.
+- [x] **64-bit check:** every scene (title, movies, city, Digi-Lab, shops, domains, battles,
+      VS, memory card, ending) runs the same as the 32-bit build.
+- [ ] **Full playthrough** from the start to the ending: see [Help wanted](#help-wanted).
 
 Done so far: the whole game code compiles and runs (title, city, domains, battles, menus,
 saves, VS mode), movies, streamed CD audio, render scale, no wobble, 16:9, sharpening, GPU renderer, F1 settings, window modes,
 64-bit and Linux builds.
+
+## Help wanted
+
+The scenes are tested one by one, but nobody has played the whole game from the start to the
+ending on this port yet. If you do, please tell us how it went, even if everything worked: open
+an issue with how far you got and anything that looked, sounded or played different from the
+PlayStation version.
+
+Problems of any size are welcome as [issues](https://github.com/Wyrelade/DW2-PC/issues): crashes,
+graphics or sound glitches, wrong text, controls. The port is updated as reports come in. Helpful
+to include:
+
+- what you did right before it happened, and where in the game (domain and floor, city area, menu)
+- a screenshot (F12) and your save file (`card1.mcd`, see [Getting started](#getting-started))
+- Windows or Linux, GPU or software renderer, and your F1 settings (scale, 16:9, no wobble)
 
 ## Building
 
