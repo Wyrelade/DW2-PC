@@ -10,7 +10,8 @@ the compiler warnings.
     venv/Scripts/python.exe tools/build_native.py --release  # release client (DW2_DEV=OFF)
 
 Dev builds (the default) have the ImGui dev overlay and the PD dev tools; --release builds the
-client without them into build/<dir>_rel. Both have C++ (g++ from the same toolchain) for the
+client without them into build/<dir>_rel. A Windows x64 release build also refreshes build/play/
+(dw2.exe, SDL3.dll, dw2.pak): the one folder to play from. Both have C++ (g++ from the same toolchain) for the
 ImGui F1 settings window.
 
 Targets (--arch): on Windows x86 (default; MinGW-w64 i686, build/native/dw2.exe) or x64
@@ -71,6 +72,26 @@ def extract_native_bins():
         with open(dst, "wb") as f:
             f.write(data)
     return 0
+
+
+def update_play(build):
+    """build/play/: one fixed folder with the newest Windows x64 release (what players get) for
+    playing and window checks: dw2.exe and SDL3.dll copied, the pack hard-linked from
+    build/native/dw2.pak when there is one (no 400 MB copy). Settings and saves are the user's own
+    (user data folder), as for a downloaded build."""
+    play = os.path.join(ROOT, "build", "play")
+    os.makedirs(play, exist_ok=True)
+    for name in ("dw2.exe", "SDL3.dll"):
+        src = os.path.join(build, name)
+        if os.path.exists(src):
+            shutil.copy2(src, os.path.join(play, name))
+    pak, dst = os.path.join(ROOT, "build", "native", "dw2.pak"), os.path.join(play, "dw2.pak")
+    if os.path.exists(pak) and not os.path.exists(dst):
+        try:
+            os.link(pak, dst)
+        except OSError:
+            shutil.copy2(pak, dst)
+    print("play folder updated: build/play/dw2.exe")
 
 
 def main():
@@ -168,6 +189,9 @@ def main():
     print("%d warnings in %d files (%s/warnings.txt)" % (len(warnings), len(by_file), rel_build))
     for flag, n in by_flag.most_common(12):
         print("  %6d %s" % (n, flag))
+
+    if WINDOWS and args.arch == "x64" and args.release:
+        update_play(build)
 
     if args.test:
         if subprocess.call([os.path.join(build, "gte_test.exe" if WINDOWS else "gte_test")], cwd=ROOT) != 0:
