@@ -13,7 +13,7 @@ void Psyq_CardVBlank(void);
 void Snd_HwVBlank(void);
 /* libcd: the timed CD stream's VBlank step (XA audio sectors into the decoder, PR.5). */
 void Psyq_CdVBlank(void);
-/* libcd: 1 while a timed stream runs (XA audio or a movie): the speed-up waits for it (PR.28). */
+/* libcd: 1 while XA audio streams, 2 while a movie plays, else 0 (PR.28: movies hold the speed-up). */
 int Psyq_CdStreaming(void);
 
 #endif /* PSYQ_VBLANK_H */

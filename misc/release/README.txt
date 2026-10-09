@@ -30,8 +30,8 @@ E / R = L2 / R2, Enter = Start, Backspace = Select. Gamepads work out of the box
 
 F1   settings (render scale, 16:9, no wobble, sharpening, window mode, key and gamepad
      remap, speed-up multiplier, volume)
-F3   speed-up on / off (battles, domains and menus 2x to 8x faster; voice lines and
-     movies stay at normal speed)
+F3   speed-up on / off (battles, domains and menus 2x to 8x faster; movies stay at
+     normal speed)
 F5   render scale 1x .. 8x
 F6   no wobble on / off
 F7   16:9 on / off

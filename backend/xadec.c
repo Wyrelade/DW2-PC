@@ -50,6 +50,8 @@ static int16_t raw[18 * 224][2]; /* last sector before the resampler */
 static int raw_frames;
 static int counting;  /* a stream runs and has sent its first sector */
 static int underruns;
+static int speed = 1;  /* PR.28: frames per kept frame, 0 = drop all */
+static int sum_l, sum_r, summed;
 
 void XaDec_Reset(void) {
     memset(hist, 0, sizeof(hist));
@@ -61,6 +63,14 @@ void XaDec_Reset(void) {
     raw_frames = 0;
     counting = 0;
     underruns = 0;
+    sum_l = sum_r = summed = 0;
+}
+
+void XaDec_SetSpeed(int n) {
+    if (n != speed) {
+        speed = n;
+        sum_l = sum_r = summed = 0;
+    }
 }
 
 static int clamp16(int x) {
@@ -70,6 +80,19 @@ static int clamp16(int x) {
 static void fifo_put(int l, int r) {
     int i;
 
+    if (speed != 1) {
+        if (speed == 0) {
+            return;
+        }
+        sum_l += l;
+        sum_r += r;
+        if (++summed < speed) {
+            return;
+        }
+        l = sum_l / speed;
+        r = sum_r / speed;
+        sum_l = sum_r = summed = 0;
+    }
     if (fifo_count == FIFO_FRAMES) { /* consumer stalled: drop the oldest frame */
         fifo_head = (fifo_head + 1) % FIFO_FRAMES;
         fifo_count--;

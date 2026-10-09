@@ -191,7 +191,7 @@ void Psyq_CdVBlank(void) {
 }
 
 int Psyq_CdStreaming(void) {
-    return xs_on;
+    return !xs_on ? 0 : xs_movie ? 2 : 1;
 }
 
 static int loc_lba(const u_char *p) {

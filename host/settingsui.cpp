@@ -322,7 +322,8 @@ void game_tab(void) {
         Settings_Set(SET_SPEED, values[sel]);
     }
     ImGui::TextWrapped("F3 unlocks and locks the speed in play: battles, walking in the domains, menus. "
-                       "Voice lines and movies always play at normal speed. Music plays faster too.");
+                       "Music and voice lines play faster too (voices are silent with no limit). "
+                       "Movies always play at normal speed.");
 }
 
 void sound_tab(void) {

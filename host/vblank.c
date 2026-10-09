@@ -3,6 +3,7 @@
 #include "host/host.h"
 #include "host/host_sdl.h"
 #include "host/settings.h"
+#include "backend/xadec.h"
 #include "psyq/psyq_vblank.h"
 
 /* VBlank clock: NTSC 60000/1001 Hz, one VBlank every 1001/60000 s = 50050000/3 ns. Deadline k
@@ -58,9 +59,10 @@ static Uint64 deadline(Uint64 k) {
     return t0 + k * VBLANK_PERIOD_NUM / (VBLANK_PERIOD_DEN * (Uint64)cur_mult);
 }
 
-/* The multiplier for now: 1 while off or while a CD stream plays. */
+/* The multiplier for now: 1 while off or while a movie plays. XA audio follows it: its sectors
+ * come on the VBlank clock, so the decoder keeps one frame of every mult (no limit: silent). */
 static int want_mult(void) {
-    if (!speed_on || Psyq_CdStreaming()) {
+    if (!speed_on || Psyq_CdStreaming() == 2) {
         return 1;
     }
     return Settings_Get(SET_SPEED);
@@ -114,6 +116,7 @@ void Host_VBlank(void) {
         cur_mult = mult;
         t0 = now;
         next = 1;
+        XaDec_SetSpeed(mult);
     }
     if (fast || cur_mult == 0) {
         run_vblank();

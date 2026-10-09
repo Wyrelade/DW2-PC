@@ -15,6 +15,11 @@ void XaDec_Reset(void);
 /* Decodes one audio sector into the FIFO (body = subheader at byte 0). */
 void XaDec_Sector(const uint8_t *body);
 
+/* PR.28 speed-up: the game runs n times faster, so the sectors come n times faster. n >= 2 keeps
+ * one averaged frame of every n (the voice plays in 1/n of the time, higher, like an emulator's
+ * fast forward); 0 (no limit) drops the sound; 1 = normal. */
+void XaDec_SetSpeed(int n);
+
 /* Next 44.1 kHz stereo frame for the SPU CD input; zeros when the FIFO is empty. */
 void XaDec_Pop(int16_t *l, int16_t *r);
 
