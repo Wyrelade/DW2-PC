@@ -16,8 +16,18 @@
 #include "stag4000/automap.h"
 #include "stag4000/cellgrid.h"
 
+#ifdef DW2_NATIVE
+/* Stg40_ReadFloorBits indexes the palette with a 4-bit value: 10..15 read Stg40_SpecialFloorValues,
+ * which follows the 10 entries in retail memory (0x800729A0 + 0x14 = 0x800729B4). A native build
+ * does not keep them adjacent (10..15 read padding: those cells became void), so both live in one
+ * block. */
+static u16 Stg40_FloorPalBlock[16] = { 2, 1, 4, 3, 7, 6, 5, 0, 0, 0, 4, 3, 7, 6, 5, 2 };
+#define Stg40_FloorBitsPal Stg40_FloorPalBlock
+#define Stg40_SpecialFloorValues (Stg40_FloorPalBlock + 10)
+#else
 u16 Stg40_FloorBitsPal[10] = { 2, 1, 4, 3, 7, 6, 5 };
 u16 Stg40_SpecialFloorValues[6] = { 4, 3, 7, 6, 5, 2 };
+#endif
 s32 Stg40_FillNeighbours[8] = { 0, -1, 0, 1, -1, 0, 1, 0 };
 
 /* Room Stg40_LabelRooms is labeling (written only). */
