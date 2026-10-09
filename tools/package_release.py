@@ -5,8 +5,8 @@ Takes the release builds as they are (build them first):
   Windows: tools/build_native.py --arch x64 --release  -> build/native64_rel/dw2.exe
   Linux:   tools/build_native.py --release (in WSL)    -> build/linux64_rel/dw2
 Each zip holds the program (debug info stripped from a copy), SDL3.dll on Windows,
-README.txt (misc/release/README.txt), LICENSE.txt (CC0) and licenses/ (SDL3 zlib,
-Dear ImGui MIT). No game data. The zips stay in build/ (never in git).
+README.txt (misc/release/README.txt, with the Dear ImGui MIT notice) and LICENSE.txt
+(CC0). No licenses/ folder (user 2026-10-09). No game data. The zips stay in build/ (never in git).
 """
 
 import argparse
@@ -28,8 +28,6 @@ def common_files():
     return [
         (os.path.join(ROOT, "misc", "release", "README.txt"), "README.txt"),
         (os.path.join(ROOT, "LICENSE"), "LICENSE.txt"),
-        (os.path.join(SDL_WIN, "..", "LICENSE.txt"), "licenses/SDL3.txt"),
-        (os.path.join(ROOT, "host", "imgui", "LICENSE.txt"), "licenses/DearImGui.txt"),
     ]
 
 
