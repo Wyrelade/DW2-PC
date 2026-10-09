@@ -13,7 +13,10 @@
  * the file lacks are added at the end. A bad value logs and keeps the default. The file is
  * written only when a setting changes (temp file + rename), on the main thread.
  *
- * Command line options (--scale, --wide, --pgxp, --renderer) override a value for this run
+ * PR.3 adds the window keys (window_mode, fullscreen_display, fullscreen_mode, window_size,
+ * window_pos, window_maximized; PLAN.md PR Findings "PR.3 design").
+ *
+ * Command line options (--scale, --wide, --pgxp, --renderer, --window-mode) override a value for this run
  * only: the file keeps its own value for those keys until the setting is changed in F1 or by
  * hotkey. Headless runs (--no-window) read and write a file only when --settings names it. */
 
@@ -40,15 +43,28 @@ const int Settings_ButtonOrder[16] = {
     B_L1, B_R1, B_L2, B_R2, B_START, B_SELECT, B_L3, B_R3,
 };
 
-static const char *const int_keys[SET_COUNT] = { "scale", "wide", "pgxp", "renderer", "volume", "stick_dpad" };
-static const int int_default[SET_COUNT] = { 1, 0, 0, SET_RENDERER_GPU, 100, 1 };
-static const int int_min[SET_COUNT] = { 1, 0, 0, 0, 0, 0 };
-static const int int_max[SET_COUNT] = { 8, 1, 1, 1, 100, 1 };
+static const char *const int_keys[SET_COUNT] = {
+    "scale", "wide", "pgxp", "renderer", "volume", "stick_dpad", "window_mode", "fullscreen_display", "window_maximized",
+};
+static const int int_default[SET_COUNT] = { 1, 0, 0, SET_RENDERER_GPU, 100, 1, SET_WINDOW_WINDOWED, 0, 0 };
+static const int int_min[SET_COUNT] = { 1, 0, 0, 0, 0, 0, 0, 0, 0 };
+static const int int_max[SET_COUNT] = { 8, 1, 1, 1, 100, 1, 2, 16, 1 };
+static const char *const renderer_names[] = { "gpu", "soft", NULL };
+static const char *const window_names[] = { "windowed", "borderless", "exclusive", NULL };
+/* values written as names instead of numbers */
+static const char *const *const int_names[SET_COUNT] = {
+    [SET_RENDERER] = renderer_names, [SET_WINDOW_MODE] = window_names,
+};
 
-/* Known keys: 0..SET_COUNT-1 the values, then key.<button> (16), then pad.<button> (16). */
-#define K_KEY SET_COUNT
-#define K_PAD (SET_COUNT + 16)
-#define K_COUNT (SET_COUNT + 32)
+/* Known keys: 0..SET_COUNT-1 the values, then the PR.3 window keys with two or three numbers,
+ * then key.<button> (16), then pad.<button> (16). */
+#define K_FSMODE SET_COUNT
+#define K_WINSIZE (SET_COUNT + 1)
+#define K_WINPOS (SET_COUNT + 2)
+#define K_KEY (SET_COUNT + 3)
+#define K_PAD (K_KEY + 16)
+#define K_COUNT (K_KEY + 32)
+static const char *const window_keys[3] = { "fullscreen_mode", "window_size", "window_pos" };
 
 /* Defaults = the tables host/input.c had before PR.2. */
 static const int key_default[16][SET_KEY_SLOTS] = {
@@ -78,6 +94,9 @@ static SDL_AtomicInt dirty;
 static SDL_AtomicInt dirty_at; /* SDL_GetTicks of the last change (low 31 bits) */
 static int keys[16][SET_KEY_SLOTS];
 static int pads[16];
+static int fs_w, fs_h, fs_hz;     /* fullscreen_mode, fs_w 0 = desktop, fs_hz = Hz x 100 */
+static int win_w, win_h;          /* window_size, 0 = auto */
+static int win_pos, win_x, win_y; /* window_pos, win_pos 0 = center */
 
 static char *path_; /* NULL: no file */
 static char *lines[MAX_LINES];
@@ -137,6 +156,72 @@ void Settings_Set(int id, int v) {
     }
 }
 
+void Settings_FsMode(int *w, int *h, int *hz100) {
+    *w = fs_w;
+    *h = fs_h;
+    *hz100 = fs_hz;
+}
+
+void Settings_SetFsMode(int w, int h, int hz100) {
+    if (w <= 0 || h <= 0) {
+        w = h = hz100 = 0;
+    }
+    if (w != fs_w || h != fs_h || hz100 != fs_hz) {
+        fs_w = w;
+        fs_h = h;
+        fs_hz = hz100;
+        mark_dirty();
+    }
+}
+
+int Settings_WindowSize(int *w, int *h) {
+    *w = win_w;
+    *h = win_h;
+    return win_w != 0;
+}
+
+void Settings_SetWindowSize(int w, int h) {
+    if (w != win_w || h != win_h) {
+        win_w = w;
+        win_h = h;
+        mark_dirty();
+    }
+}
+
+int Settings_WindowPos(int *x, int *y) {
+    *x = win_x;
+    *y = win_y;
+    return win_pos;
+}
+
+void Settings_SetWindowPos(int x, int y) {
+    if (!win_pos || x != win_x || y != win_y) {
+        win_pos = 1;
+        win_x = x;
+        win_y = y;
+        mark_dirty();
+    }
+}
+
+const char *Settings_WindowModeName(int mode) {
+    return mode >= 0 && mode <= SET_WINDOW_EXCLUSIVE ? window_names[mode] : "?";
+}
+
+static int find_name(const char *const *names, const char *s) {
+    int i;
+
+    for (i = 0; names[i] != NULL; i++) {
+        if (SDL_strcasecmp(s, names[i]) == 0) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+int Settings_ParseWindowMode(const char *s) {
+    return find_name(window_names, s);
+}
+
 int Settings_Key(int bit, int slot) {
     return keys[bit][slot];
 }
@@ -178,7 +263,8 @@ void Settings_SetPad(int bit, int code) {
 
 int Settings_KeyReserved(int sc) {
     return sc == SDL_SCANCODE_ESCAPE || sc == SDL_SCANCODE_TAB || sc == SDL_SCANCODE_F1 || sc == SDL_SCANCODE_F2 ||
-           sc == SDL_SCANCODE_F5 || sc == SDL_SCANCODE_F6 || sc == SDL_SCANCODE_F7 || sc == SDL_SCANCODE_F12;
+           sc == SDL_SCANCODE_F5 || sc == SDL_SCANCODE_F6 || sc == SDL_SCANCODE_F7 || sc == SDL_SCANCODE_F11 ||
+           sc == SDL_SCANCODE_F12;
 }
 
 const char *Settings_ButtonName(int bit) {
@@ -202,6 +288,8 @@ const char *Settings_FilePath(void) {
     return path_;
 }
 
+static void format_value(int k, char *out, size_t len);
+
 /* ---- parsing ---- */
 
 static char *trim(char *s) {
@@ -223,6 +311,11 @@ static int find_key(const char *k) {
     for (i = 0; i < SET_COUNT; i++) {
         if (SDL_strcasecmp(k, int_keys[i]) == 0) {
             return i;
+        }
+    }
+    for (i = 0; i < 3; i++) {
+        if (SDL_strcasecmp(k, window_keys[i]) == 0) {
+            return K_FSMODE + i;
         }
     }
     for (i = 0; i < 16; i++) {
@@ -272,15 +365,17 @@ static int apply_kv(int k, char *v, int as_change, char *why, size_t whylen) {
         long n;
         char *end;
 
-        if (k == SET_RENDERER) {
-            n = SDL_strcasecmp(v, "gpu") == 0 ? SET_RENDERER_GPU : SDL_strcasecmp(v, "soft") == 0 ? SET_RENDERER_SOFT : -1;
+        if (int_names[k] != NULL) {
+            n = find_name(int_names[k], v);
             end = v + strlen(v);
         } else {
             n = strtol(v, &end, 10);
         }
         if (*v == 0 || *end != 0 || n < int_min[k] || n > int_max[k]) {
             snprintf(why, whylen, "%s: \"%s\" is not %s", int_keys[k], v,
-                     k == SET_RENDERER ? "gpu or soft" : "a number in range");
+                     k == SET_RENDERER        ? "gpu or soft"
+                     : k == SET_WINDOW_MODE ? "windowed, borderless or exclusive"
+                                            : "a number in range");
             return 0;
         }
         if (as_change) {
@@ -290,6 +385,72 @@ static int apply_kv(int k, char *v, int as_change, char *why, size_t whylen) {
             if (!SDL_GetAtomicInt(&overridden[k])) {
                 SDL_SetAtomicInt(&value[k], (int)n);
             }
+        }
+        return 1;
+    }
+    if (k < K_KEY) {
+        /* fullscreen_mode = desktop | WxH@HZ, window_size = auto | WxH, window_pos = center | X,Y */
+        long a = 0, b = 0;
+        double hz = 0;
+        char *end = v;
+        int ok;
+
+        if (k == K_WINPOS) {
+            ok = SDL_strcasecmp(v, "center") == 0;
+            if (ok) {
+                win_pos = 0;
+            } else {
+                a = strtol(v, &end, 10);
+                ok = end != v && *end == ',';
+                if (ok) {
+                    char *p = end + 1;
+
+                    b = strtol(p, &end, 10);
+                    ok = end != p && *end == 0 && a > -100000 && a < 100000 && b > -100000 && b < 100000;
+                }
+                if (ok) {
+                    win_pos = 1;
+                    win_x = (int)a;
+                    win_y = (int)b;
+                }
+            }
+        } else {
+            ok = SDL_strcasecmp(v, k == K_FSMODE ? "desktop" : "auto") == 0;
+            if (!ok) {
+                a = strtol(v, &end, 10);
+                ok = end != v && (*end == 'x' || *end == 'X');
+                if (ok) {
+                    char *p = end + 1;
+
+                    b = strtol(p, &end, 10);
+                    ok = end != p && a >= 320 && b >= 240 && a <= 16384 && b <= 16384;
+                }
+                if (ok && k == K_FSMODE && *end == '@') {
+                    char *p = end + 1;
+
+                    hz = strtod(p, &end);
+                    ok = end != p && hz >= 1 && hz <= 1000;
+                }
+                ok = ok && *end == 0;
+            }
+            if (ok && k == K_FSMODE) {
+                fs_w = (int)a;
+                fs_h = (int)b;
+                fs_hz = (int)(hz * 100 + 0.5);
+            } else if (ok) {
+                win_w = (int)a;
+                win_h = (int)b;
+            }
+        }
+        if (!ok) {
+            snprintf(why, whylen, "%s: \"%s\" is not %s", window_keys[k - K_FSMODE], v,
+                     k == K_FSMODE    ? "desktop or WxH@HZ"
+                     : k == K_WINSIZE ? "auto or WxH (at least 320x240)"
+                                      : "center or X,Y");
+            return 0;
+        }
+        if (as_change) {
+            mark_dirty();
         }
         return 1;
     }
@@ -418,6 +579,7 @@ void Settings_Load(int no_window) {
         }
     }
     reset_controls();
+    fs_w = fs_h = fs_hz = win_w = win_h = win_pos = win_x = win_y = 0;
     if (path_ == NULL && !no_window) {
         char *pref = SDL_GetPrefPath("", "DW2-Online");
 
@@ -451,6 +613,17 @@ void Settings_Load(int no_window) {
     printf("[settings] scale %d, wide %d, pgxp %d, renderer %s, volume %d, stick_dpad %d%s\n", Settings_Get(SET_SCALE),
            Settings_Get(SET_WIDE), Settings_Get(SET_PGXP), Settings_Get(SET_RENDERER) == SET_RENDERER_SOFT ? "soft" : "gpu",
            Settings_Get(SET_VOLUME), Settings_Get(SET_STICK_DPAD), set_count != 0 ? " (with --settings-set)" : "");
+    {
+        char fm[32], ws[32], wp[32];
+
+        format_value(K_FSMODE, fm, sizeof(fm));
+        format_value(K_WINSIZE, ws, sizeof(ws));
+        format_value(K_WINPOS, wp, sizeof(wp));
+        printf("[settings] window_mode %s, fullscreen_display %d, fullscreen_mode %s, window_size %s, window_pos %s, "
+               "window_maximized %d\n",
+               Settings_WindowModeName(Settings_Get(SET_WINDOW_MODE)), Settings_Get(SET_FS_DISPLAY), fm, ws, wp,
+               Settings_Get(SET_WIN_MAX));
+    }
     fflush(stdout);
 }
 
@@ -460,10 +633,32 @@ static void format_value(int k, char *out, size_t len) {
     if (k < SET_COUNT) {
         int v = SDL_GetAtomicInt(&file_value[k]);
 
-        if (k == SET_RENDERER) {
-            SDL_strlcpy(out, v == SET_RENDERER_SOFT ? "soft" : "gpu", len);
+        if (int_names[k] != NULL) {
+            SDL_strlcpy(out, int_names[k][v], len);
         } else {
             snprintf(out, len, "%d", v);
+        }
+    } else if (k == K_FSMODE) {
+        if (fs_w == 0) {
+            SDL_strlcpy(out, "desktop", len);
+        } else if (fs_hz == 0) {
+            snprintf(out, len, "%dx%d", fs_w, fs_h);
+        } else if (fs_hz % 100 == 0) {
+            snprintf(out, len, "%dx%d@%d", fs_w, fs_h, fs_hz / 100);
+        } else {
+            snprintf(out, len, "%dx%d@%d.%02d", fs_w, fs_h, fs_hz / 100, fs_hz % 100);
+        }
+    } else if (k == K_WINSIZE) {
+        if (win_w == 0) {
+            SDL_strlcpy(out, "auto", len);
+        } else {
+            snprintf(out, len, "%dx%d", win_w, win_h);
+        }
+    } else if (k == K_WINPOS) {
+        if (!win_pos) {
+            SDL_strlcpy(out, "center", len);
+        } else {
+            snprintf(out, len, "%d,%d", win_x, win_y);
         }
     } else if (k < K_PAD) {
         int s, n = 0;
@@ -498,6 +693,8 @@ static void format_value(int k, char *out, size_t len) {
 static void key_name(int k, char *out, size_t len) {
     if (k < SET_COUNT) {
         SDL_strlcpy(out, int_keys[k], len);
+    } else if (k < K_KEY) {
+        SDL_strlcpy(out, window_keys[k - K_FSMODE], len);
     } else {
         snprintf(out, len, "%s.%s", k < K_PAD ? "key" : "pad", button_keys[(k - K_KEY) % 16]);
     }
@@ -510,7 +707,10 @@ static int write_line(SDL_IOStream *io, const char *s) {
 }
 
 static int save(void) {
-    static const int order[] = { SET_SCALE, SET_WIDE, SET_PGXP, SET_RENDERER, SET_VOLUME, SET_STICK_DPAD };
+    static const int order[K_KEY] = {
+        SET_SCALE, SET_WIDE, SET_PGXP, SET_RENDERER, SET_VOLUME, SET_STICK_DPAD,
+        SET_WINDOW_MODE, SET_FS_DISPLAY, K_FSMODE, K_WINSIZE, K_WINPOS, SET_WIN_MAX,
+    };
     char seen[K_COUNT] = { 0 };
     char *tmp = NULL;
     SDL_IOStream *io;
@@ -545,7 +745,7 @@ static int save(void) {
         }
     }
     for (i = 0; i < K_COUNT && ok; i++) {
-        int k = i < SET_COUNT ? order[i] : i;
+        int k = i < K_KEY ? order[i] : i;
 
         if (k >= K_KEY && k < K_COUNT) {
             /* key.* and pad.* in the UI's button order */

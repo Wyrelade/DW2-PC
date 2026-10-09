@@ -3,7 +3,9 @@
  * presents with (the SDL_GPU renderer or the default one). Main thread only. It draws the F1
  * settings window (host/settingsui.cpp) and, in dev builds, the F2 overlay (host/devui.cpp, PD.1);
  * both are windows in this one context and can be open together. ImGui draws in window pixels
- * over the picture: the renderer's logical presentation is switched off around it. */
+ * over the picture: the renderer's logical presentation is switched off around it.
+ * PR.3: a short notice top left (Ui_Notice: window mode after F11 / F1, F5 / F6 / F7 values),
+ * drawn by the same layer for 2 s, with or without the windows open. */
 
 #include <SDL3/SDL.h>
 #include <stdio.h>
@@ -27,6 +29,58 @@ SDL_Renderer *g_renderer;
 bool g_ready;
 bool g_headless;
 bool g_settings_at_start;
+
+/* PR.3 notice: any thread posts, the main thread draws */
+SDL_Mutex *g_notice_lock;
+char g_notice[128];
+Uint64 g_notice_until; /* SDL_GetTicks */
+#define NOTICE_MS 2000
+
+bool notice_live(void) {
+    Uint64 until;
+
+    SDL_LockMutex(g_notice_lock);
+    until = g_notice_until;
+    SDL_UnlockMutex(g_notice_lock);
+    return until != 0 && SDL_GetTicks() < until;
+}
+
+void draw_notice(void) {
+    char text[128];
+    Uint64 now = SDL_GetTicks(), until;
+
+    SDL_LockMutex(g_notice_lock);
+    SDL_strlcpy(text, g_notice, sizeof(text));
+    until = g_notice_until;
+    SDL_UnlockMutex(g_notice_lock);
+    if (until == 0 || now >= until) {
+        return;
+    }
+    float k = ImGui::GetStyle().FontScaleDpi;
+    float a = until - now < 400 ? (float)(until - now) / 400.0f : 1.0f; /* fade out */
+    ImGui::SetNextWindowPos(ImVec2(12.0f * k, 12.0f * k));
+    ImGui::SetNextWindowBgAlpha(0.7f * a);
+    ImGui::PushStyleVar(ImGuiStyleVar_Alpha, a);
+    ImGui::Begin("##notice", NULL,
+                 ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_AlwaysAutoResize |
+                     ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoSavedSettings);
+    ImGui::TextUnformatted(text);
+    ImGui::End();
+    ImGui::PopStyleVar();
+}
+
+/* the style for the display's content scale (again when the window moves to another display) */
+void apply_scale(SDL_Window *window) {
+    float dpi = SDL_GetDisplayContentScale(SDL_GetDisplayForWindow(window));
+
+    if (!(dpi > 0.5f && dpi < 8.0f)) {
+        dpi = 1.0f;
+    }
+    ImGui::GetStyle() = ImGuiStyle();
+    ImGui::StyleColorsDark();
+    ImGui::GetStyle().ScaleAllSizes(dpi);
+    ImGui::GetStyle().FontScaleDpi = dpi;
+}
 
 /* headless shots: requested on the game side, written at the next render */
 SDL_AtomicInt g_shot_pending;
@@ -71,7 +125,8 @@ void write_shot(void) {
 }
 
 bool is_hotkey(SDL_Scancode sc) {
-    return sc == SDL_SCANCODE_F5 || sc == SDL_SCANCODE_F6 || sc == SDL_SCANCODE_F7 || sc == SDL_SCANCODE_F12;
+    return sc == SDL_SCANCODE_F5 || sc == SDL_SCANCODE_F6 || sc == SDL_SCANCODE_F7 || sc == SDL_SCANCODE_F11 ||
+           sc == SDL_SCANCODE_F12;
 }
 
 } // namespace
@@ -91,23 +146,33 @@ int Ui_Headless(void) {
     return g_headless && g_settings_at_start;
 }
 
+void Ui_Notice(const char *text) {
+    if (g_notice_lock == NULL) {
+        return;
+    }
+    SDL_LockMutex(g_notice_lock);
+    SDL_strlcpy(g_notice, text, sizeof(g_notice));
+    g_notice_until = SDL_GetTicks() + NOTICE_MS;
+    SDL_UnlockMutex(g_notice_lock);
+}
+
+int Ui_Drawing(void) {
+    return Ui_Active() || (g_ready && notice_live());
+}
+
 void Ui_Init(SDL_Window *window, SDL_Renderer *renderer, int headless) {
     float dpi;
 
     g_renderer = renderer;
+    g_notice_lock = SDL_CreateMutex();
     g_headless = headless != 0;
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO &io = ImGui::GetIO();
     io.IniFilename = NULL; /* no imgui.ini in the working folder */
     io.LogFilename = NULL;
-    ImGui::StyleColorsDark();
-    dpi = SDL_GetDisplayContentScale(SDL_GetDisplayForWindow(window));
-    if (!(dpi > 0.5f && dpi < 8.0f)) {
-        dpi = 1.0f;
-    }
-    ImGui::GetStyle().ScaleAllSizes(dpi);
-    ImGui::GetStyle().FontScaleDpi = dpi;
+    apply_scale(window);
+    dpi = ImGui::GetStyle().FontScaleDpi;
     if (!ImGui_ImplSDL3_InitForSDLRenderer(window, renderer) || !ImGui_ImplSDLRenderer3_Init(renderer)) {
         printf("[ui] ImGui backend init failed: no settings window\n");
         return;
@@ -146,6 +211,13 @@ int Ui_Event(const SDL_Event *e) {
     if (!g_ready) {
         return 0;
     }
+    if (e->type == SDL_EVENT_WINDOW_DISPLAY_SCALE_CHANGED || e->type == SDL_EVENT_WINDOW_DISPLAY_CHANGED) {
+        SDL_Window *w = SDL_GetWindowFromID(e->window.windowID);
+
+        if (w != NULL) {
+            apply_scale(w);
+        }
+    }
     if (SettingsUi_Capture(e)) {
         return 1;
     }
@@ -183,7 +255,7 @@ void Ui_Render(void) {
     int lw, lh;
     SDL_RendererLogicalPresentation mode;
 
-    if (!Ui_Active()) {
+    if (!Ui_Drawing()) {
         return;
     }
     ImGuiIO &io = ImGui::GetIO();
@@ -206,6 +278,7 @@ void Ui_Render(void) {
     if (SettingsUi_IsOpen()) {
         SettingsUi_Draw();
     }
+    draw_notice();
     ImGui::Render();
     /* window pixels for ImGui: the logical presentation off around it */
     SDL_GetRenderLogicalPresentation(g_renderer, &lw, &lh, &mode);
@@ -238,6 +311,8 @@ void Ui_Shutdown(void) {
     DevUi_Shutdown();
 #endif
     g_ready = false;
+    SDL_DestroyMutex(g_notice_lock);
+    g_notice_lock = NULL;
     ImGui_ImplSDLRenderer3_Shutdown();
     ImGui_ImplSDL3_Shutdown();
     ImGui::DestroyContext();

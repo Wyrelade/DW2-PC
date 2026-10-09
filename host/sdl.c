@@ -1,3 +1,4 @@
+#include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -37,7 +38,13 @@
  * Host_GameEvents (host/devsnap.c). With both windows closed nothing of this runs.
  * --settings-ui (or dev --devui) with --no-window: the UI also runs headless (publish and present
  * into the hidden window, shots add the UI picture). Display settings changed in F1 reach the game
- * thread as requests (Host_RequestSetting), like F5 / F6 / F7; both update the settings file. */
+ * thread as requests (Host_RequestSetting), like F5 / F6 / F7; both update the settings file.
+ *
+ * PR.3 window modes (windowed, borderless fullscreen, exclusive fullscreen; F11, F1, settings
+ * window_mode / fullscreen_display / fullscreen_mode): main thread only, the game thread never
+ * sees a mode change (the logical presentation letterboxes the picture into any window size, the
+ * GPU renderer's swapchain follows the window). The windowed size, position and maximized state
+ * are saved when the player changes them. Headless runs keep the hidden window windowed. */
 
 #define WINDOW_SCALE 3
 #define SLOTS 3
@@ -84,6 +91,16 @@ static SDL_AtomicInt requests;
 static SDL_AtomicInt wanted[SET_COUNT]; /* REQ_SETTING: F1's values (+1) for scale, wide, pgxp */
 static SDL_AtomicInt game_done;
 static const char *volatile quit_why = "window closed";
+
+/* PR.3, main thread */
+static int win_mode;         /* the mode applied to the window */
+static int last_fs = SET_WINDOW_BORDERLESS; /* F11 from windowed goes here */
+static int geo_x, geo_y, geo_w, geo_h, geo_max; /* the windowed rect last seen */
+static int moved_for_display; /* the window was moved to fullscreen_display: */
+static int pre_x, pre_y;      /* where it was before */
+static int cursor_hidden;
+static void saved_geometry(int *w, int *h, int *x, int *y);
+static void remember_geometry(void);
 
 /* Headless runs publish and present only for the headless UI checks (--settings-ui, --devui). */
 static int no_present(void) {
@@ -140,6 +157,8 @@ void Host_InitWindow(int no_window) {
     int v = SDL_GetVersion();
     int want_gpu = renderer_choice == 2 || (renderer_choice == 0 && !no_window);
     int win_w = logical_w * WINDOW_SCALE, win_h = 240 * WINDOW_SCALE;
+    int win_x = SDL_WINDOWPOS_CENTERED, win_y = SDL_WINDOWPOS_CENTERED;
+    SDL_PropertiesID props;
 
     if (no_window) {
         headless = 1;
@@ -154,13 +173,27 @@ void Host_InitWindow(int no_window) {
     initialized = 1;
     printf("[host] SDL %d.%d.%d, video driver %s\n", SDL_VERSIONNUM_MAJOR(v), SDL_VERSIONNUM_MINOR(v),
            SDL_VERSIONNUM_MICRO(v), SDL_GetCurrentVideoDriver());
+    if (!no_window) {
+        saved_geometry(&win_w, &win_h, &win_x, &win_y);
+    }
 #if DW2_DEV
     DevUi_WindowSize(&win_w, &win_h);
 #endif
-    window = SDL_CreateWindow("DW2-Online", win_w, win_h, SDL_WINDOW_RESIZABLE | (no_window ? SDL_WINDOW_HIDDEN : 0));
+    props = SDL_CreateProperties();
+    SDL_SetStringProperty(props, SDL_PROP_WINDOW_CREATE_TITLE_STRING, "DW2-Online");
+    SDL_SetNumberProperty(props, SDL_PROP_WINDOW_CREATE_X_NUMBER, win_x);
+    SDL_SetNumberProperty(props, SDL_PROP_WINDOW_CREATE_Y_NUMBER, win_y);
+    SDL_SetNumberProperty(props, SDL_PROP_WINDOW_CREATE_WIDTH_NUMBER, win_w);
+    SDL_SetNumberProperty(props, SDL_PROP_WINDOW_CREATE_HEIGHT_NUMBER, win_h);
+    SDL_SetNumberProperty(props, SDL_PROP_WINDOW_CREATE_FLAGS_NUMBER,
+                          SDL_WINDOW_RESIZABLE | (no_window ? SDL_WINDOW_HIDDEN : 0) |
+                              (!no_window && Settings_Get(SET_WIN_MAX) ? SDL_WINDOW_MAXIMIZED : 0));
+    window = SDL_CreateWindowWithProperties(props);
+    SDL_DestroyProperties(props);
     if (window == NULL) {
         fail("SDL_CreateWindow");
     }
+    remember_geometry();
     if (!want_gpu || !init_gpu()) {
         renderer = SDL_CreateRenderer(window, NULL);
     }
@@ -184,7 +217,222 @@ void Host_InitWindow(int no_window) {
            SDL_GetRendererName(renderer), threaded ? ", game thread" : "");
     Ui_Init(window, renderer, no_window);
     Host_AudioOpen();
+    win_mode = SET_WINDOW_WINDOWED;
+    if (Settings_Get(SET_WINDOW_MODE) != SET_WINDOW_WINDOWED) {
+        last_fs = Settings_Get(SET_WINDOW_MODE);
+        Host_SetWindowMode(Settings_Get(SET_WINDOW_MODE));
+    }
     fflush(stdout);
+}
+
+/* ---- PR.3 window modes, main thread ---- */
+
+/* window_size / window_pos from the settings, if the saved rect still lies on a display. */
+static void saved_geometry(int *w, int *h, int *x, int *y) {
+    int sw, sh, sx, sy, n = 0, i, on = 0;
+    SDL_DisplayID *ids;
+
+    if (Settings_WindowSize(&sw, &sh)) {
+        *w = sw;
+        *h = sh;
+    }
+    if (!Settings_WindowPos(&sx, &sy)) {
+        return;
+    }
+    /* the title bar must be on a display (a monitor may be gone since) */
+    ids = SDL_GetDisplays(&n);
+    for (i = 0; i < n && !on; i++) {
+        SDL_Rect b, bar = { sx, sy, *w, 32 }, cut;
+
+        on = SDL_GetDisplayBounds(ids[i], &b) && SDL_GetRectIntersection(&b, &bar, &cut) && cut.w >= 64;
+    }
+    SDL_free(ids);
+    if (on) {
+        *x = sx;
+        *y = sy;
+    } else {
+        printf("[host] saved window position %d,%d is on no display: centred\n", sx, sy);
+    }
+}
+
+static void remember_geometry(void) {
+    SDL_GetWindowPosition(window, &geo_x, &geo_y);
+    SDL_GetWindowSize(window, &geo_w, &geo_h);
+    geo_max = (SDL_GetWindowFlags(window) & SDL_WINDOW_MAXIMIZED) != 0;
+}
+
+/* A move / resize / maximize while windowed: saved when it differs from what was seen last, so
+ * the events of the window's own creation or of a return from fullscreen save nothing. */
+static void geometry_event(void) {
+    SDL_WindowFlags fl;
+    int x, y, w, h, max;
+
+    if (headless || window == NULL) {
+        return;
+    }
+    fl = SDL_GetWindowFlags(window);
+    if (fl & (SDL_WINDOW_FULLSCREEN | SDL_WINDOW_MINIMIZED)) {
+        return;
+    }
+    max = (fl & SDL_WINDOW_MAXIMIZED) != 0;
+    if (max != geo_max) {
+        geo_max = max;
+        Settings_Set(SET_WIN_MAX, max);
+    }
+    if (max) {
+        return; /* the normal rect stays the saved one */
+    }
+    SDL_GetWindowPosition(window, &x, &y);
+    SDL_GetWindowSize(window, &w, &h);
+    if (x != geo_x || y != geo_y) {
+        geo_x = x;
+        geo_y = y;
+        Settings_SetWindowPos(x, y);
+    }
+    if (w != geo_w || h != geo_h) {
+        geo_w = w;
+        geo_h = h;
+        Settings_SetWindowSize(w, h);
+    }
+}
+
+/* fullscreen_display: 0 = the display the window is on, N = the Nth display. */
+static SDL_DisplayID fullscreen_display(void) {
+    int want = Settings_Get(SET_FS_DISPLAY), n = 0;
+    SDL_DisplayID *ids, id = 0;
+
+    if (want > 0) {
+        ids = SDL_GetDisplays(&n);
+        if (ids != NULL && want <= n) {
+            id = ids[want - 1];
+        } else {
+            printf("[host] fullscreen_display %d: only %d display(s), using the window's\n", want, n);
+        }
+        SDL_free(ids);
+    }
+    return id != 0 ? id : SDL_GetDisplayForWindow(window);
+}
+
+int Host_WindowMode(void) {
+    return win_mode;
+}
+
+int Host_WindowHeadless(void) {
+    return headless;
+}
+
+void Host_SetWindowMode(int mode) {
+    SDL_DisplayID id;
+    SDL_DisplayMode m;
+    const SDL_DisplayMode *dm;
+    int fw, fh, fhz;
+
+    if (headless || window == NULL) {
+        win_mode = mode;
+        printf("[host] window mode %s (headless: not applied)\n", Settings_WindowModeName(mode));
+        fflush(stdout);
+        return;
+    }
+    if (mode == SET_WINDOW_WINDOWED) {
+        SDL_SetWindowFullscreen(window, false);
+        SDL_SyncWindow(window);
+        if (moved_for_display) {
+            SDL_SetWindowPosition(window, pre_x, pre_y);
+            moved_for_display = 0;
+        }
+        win_mode = mode;
+        Ui_Notice("Windowed (F11)");
+        printf("[host] window mode windowed\n");
+        fflush(stdout);
+        return;
+    }
+    id = fullscreen_display();
+    if (id != SDL_GetDisplayForWindow(window)) {
+        /* to the chosen display first, out of fullscreen if needed */
+        if (SDL_GetWindowFlags(window) & SDL_WINDOW_FULLSCREEN) {
+            SDL_SetWindowFullscreen(window, false);
+            SDL_SyncWindow(window);
+        }
+        if (!moved_for_display) {
+            SDL_GetWindowPosition(window, &pre_x, &pre_y);
+            moved_for_display = 1;
+        }
+        SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED_DISPLAY(id), SDL_WINDOWPOS_CENTERED_DISPLAY(id));
+        SDL_SyncWindow(window);
+    }
+    if (mode == SET_WINDOW_EXCLUSIVE) {
+        Settings_FsMode(&fw, &fh, &fhz);
+        dm = SDL_GetDesktopDisplayMode(id);
+        if (fw != 0 && SDL_GetClosestFullscreenDisplayMode(id, fw, fh, fhz / 100.0f, false, &m)) {
+            dm = &m;
+        } else if (fw != 0) {
+            printf("[host] fullscreen_mode %dx%d not offered by the display: desktop mode\n", fw, fh);
+        }
+        if (dm == NULL || !SDL_SetWindowFullscreenMode(window, dm)) {
+            printf("[host] exclusive fullscreen: no display mode (%s), borderless\n", SDL_GetError());
+            SDL_SetWindowFullscreenMode(window, NULL);
+            mode = SET_WINDOW_BORDERLESS;
+        }
+    } else {
+        SDL_SetWindowFullscreenMode(window, NULL);
+    }
+    if (!SDL_SetWindowFullscreen(window, true)) {
+        printf("[host] fullscreen failed: %s\n", SDL_GetError());
+    }
+    SDL_SyncWindow(window);
+    win_mode = mode;
+    last_fs = mode;
+    dm = SDL_GetWindowFullscreenMode(window);
+    {
+        char note[128];
+
+        if (dm != NULL) {
+            snprintf(note, sizeof(note), "Exclusive fullscreen %dx%d @ %.0f Hz (F11)", dm->w, dm->h, dm->refresh_rate);
+        } else {
+            snprintf(note, sizeof(note), "Borderless fullscreen (F11)");
+        }
+        Ui_Notice(note);
+    }
+    if (dm != NULL) {
+        printf("[host] window mode exclusive, display %u \"%s\", %dx%d @ %.2f Hz\n", (unsigned)id,
+               SDL_GetDisplayName(id), dm->w, dm->h, dm->refresh_rate);
+    } else {
+        int w = 0, h = 0;
+
+        SDL_GetWindowSizeInPixels(window, &w, &h);
+        printf("[host] window mode %s, display %u \"%s\", %dx%d\n", Settings_WindowModeName(mode), (unsigned)id,
+               SDL_GetDisplayName(id), w, h);
+    }
+    fflush(stdout);
+}
+
+/* F1: the display or the exclusive mode changed: applied again if fullscreen. */
+void Host_WindowModeRefresh(void) {
+    if (win_mode != SET_WINDOW_WINDOWED) {
+        Host_SetWindowMode(win_mode);
+    }
+}
+
+/* F11: windowed <-> the last fullscreen kind; saved like an F1 change. */
+static void toggle_fullscreen(void) {
+    int mode = win_mode == SET_WINDOW_WINDOWED ? last_fs : SET_WINDOW_WINDOWED;
+
+    Settings_Set(SET_WINDOW_MODE, mode);
+    Host_SetWindowMode(mode);
+}
+
+/* Fullscreen: no cursor over the picture while F1 / F2 are closed. */
+static void update_cursor(void) {
+    int hide = !headless && win_mode != SET_WINDOW_WINDOWED && !Ui_Active();
+
+    if (hide != cursor_hidden) {
+        cursor_hidden = hide;
+        if (hide) {
+            SDL_HideCursor();
+        } else {
+            SDL_ShowCursor();
+        }
+    }
 }
 
 void Host_SetPgxp(int on) {
@@ -423,8 +671,17 @@ void Host_PumpEvents(void) {
                 if (e.key.scancode == SDL_SCANCODE_F6) {
                     request(REQ_PGXP);
                 }
+                if (e.key.scancode == SDL_SCANCODE_F11) {
+                    toggle_fullscreen();
+                }
             }
             Host_InputPress(&e);
+            break;
+        case SDL_EVENT_WINDOW_MOVED:
+        case SDL_EVENT_WINDOW_RESIZED:
+        case SDL_EVENT_WINDOW_MAXIMIZED:
+        case SDL_EVENT_WINDOW_RESTORED:
+            geometry_event();
             break;
         case SDL_EVENT_GAMEPAD_BUTTON_DOWN:
             Host_InputPress(&e);
@@ -438,7 +695,22 @@ void Host_PumpEvents(void) {
         }
     }
     Host_InputPoll();
+    update_cursor();
     Settings_SaveIfDirty();
+}
+
+/* A hotkey's new value as a notice (F5 / F6 / F7: game thread; the window shows it). */
+static void notice(const char *fmt, ...) {
+    char text[128];
+    va_list ap;
+
+    if (headless) {
+        return;
+    }
+    va_start(ap, fmt);
+    vsnprintf(text, sizeof(text), fmt, ap);
+    va_end(ap);
+    Ui_Notice(text);
 }
 
 /* Game thread, once per VBlank wait: the window's requests, then the pad state. A key hit twice
@@ -472,18 +744,21 @@ void Host_GameEvents(void) {
     if (r & REQ_SCALE) {
         PsxHd_SetScale(PsxHd_Scale() % 8 + 1);
         printf("[gpu] scale %dx (F5)\n", PsxHd_Scale());
+        notice("Resolution scale %dx (F5)", PsxHd_Scale());
         Settings_Set(SET_SCALE, PsxHd_Scale());
         fflush(stdout);
     }
     if (r & REQ_WIDE) {
         Host_SetWide(!PsxHd_Wide());
         printf("[gpu] 16:9 %s (F7)\n", PsxHd_Wide() ? "on" : "off");
+        notice("16:9 widescreen %s (F7)", PsxHd_Wide() ? "on" : "off");
         Settings_Set(SET_WIDE, PsxHd_Wide());
         fflush(stdout);
     }
     if (r & REQ_PGXP) {
         Host_SetPgxp(!PsxHd_Pgxp());
         printf("[gpu] no wobble (PGXP) %s (F6)\n", PsxHd_Pgxp() ? "on" : "off");
+        notice("No wobble %s (F6)", PsxHd_Pgxp() ? "on" : "off");
         Settings_Set(SET_PGXP, PsxHd_Pgxp());
         fflush(stdout);
     }
@@ -506,7 +781,7 @@ void Host_WindowLoop(void) {
         if (SDL_WaitSemaphoreTimeout(frame_sem, 4)) {
             Host_Present();
         }
-        else if (Ui_Active()) {
+        else if (Ui_Drawing()) {
             Host_Present(); /* ImGui needs frames while the game picture stays the same */
         }
     }

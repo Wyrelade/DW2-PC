@@ -15,6 +15,10 @@
 extern "C" void Host_RequestSetting(int id, int value);
 extern "C" void Host_AudioSetVolume(int volume);
 extern "C" const char *Host_RendererName(void);
+extern "C" int Host_WindowMode(void);
+extern "C" int Host_WindowHeadless(void);
+extern "C" void Host_SetWindowMode(int mode);
+extern "C" void Host_WindowModeRefresh(void);
 
 namespace {
 
@@ -79,6 +83,109 @@ void end_capture(void) {
     g_pad_quiet = true;
 }
 
+/* PR.3: the Window section. Changes apply at once (main thread) and are saved. */
+void window_section(void) {
+    int mode = Host_WindowMode();
+    int disp = Settings_Get(SET_FS_DISPLAY);
+    int n = 0;
+    SDL_DisplayID *ids = SDL_GetDisplays(&n);
+    const char *modes[] = { "Windowed", "Borderless fullscreen", "Exclusive fullscreen" };
+    char label[128];
+
+    ImGui::SeparatorText("Window");
+    if (ImGui::Combo("Window mode (F11)", &mode, modes, 3)) {
+        Settings_Set(SET_WINDOW_MODE, mode);
+        Host_SetWindowMode(mode);
+    }
+    /* display: 0 = the one the window is on */
+    if (disp > n) {
+        snprintf(label, sizeof(label), "Display %d (not connected)", disp);
+    } else if (disp > 0) {
+        snprintf(label, sizeof(label), "%d: %s", disp, SDL_GetDisplayName(ids[disp - 1]));
+    } else {
+        snprintf(label, sizeof(label), "Current display");
+    }
+    if (ImGui::BeginCombo("Fullscreen display", label)) {
+        for (int i = 0; i <= n; i++) {
+            char item[128];
+
+            if (i == 0) {
+                snprintf(item, sizeof(item), "Current display");
+            } else {
+                snprintf(item, sizeof(item), "%d: %s", i, SDL_GetDisplayName(ids[i - 1]));
+            }
+            ImGui::PushID(i);
+            if (ImGui::Selectable(item, i == disp)) {
+                Settings_Set(SET_FS_DISPLAY, i);
+                Host_WindowModeRefresh();
+            }
+            ImGui::PopID();
+        }
+        ImGui::EndCombo();
+    }
+    /* exclusive fullscreen resolution: the desktop mode or one of the display's modes */
+    SDL_DisplayID id = disp > 0 && disp <= n ? ids[disp - 1] : 0;
+    SDL_Window *win = SDL_GetKeyboardFocus();
+    if (id == 0) {
+        id = win != NULL ? SDL_GetDisplayForWindow(win) : SDL_GetPrimaryDisplay();
+    }
+    int fw, fh, fhz;
+    Settings_FsMode(&fw, &fh, &fhz);
+    const SDL_DisplayMode *desk = id != 0 ? SDL_GetDesktopDisplayMode(id) : NULL;
+    char desk_label[64];
+    if (desk != NULL) {
+        snprintf(desk_label, sizeof(desk_label), "Desktop (%dx%d @ %.0f Hz)", desk->w, desk->h, desk->refresh_rate);
+    } else {
+        snprintf(desk_label, sizeof(desk_label), "Desktop");
+    }
+    if (fw == 0) {
+        SDL_strlcpy(label, desk_label, sizeof(label));
+    } else if (fhz != 0) {
+        snprintf(label, sizeof(label), "%dx%d @ %.2f Hz", fw, fh, fhz / 100.0);
+    } else {
+        snprintf(label, sizeof(label), "%dx%d", fw, fh);
+    }
+    ImGui::BeginDisabled(mode != SET_WINDOW_EXCLUSIVE);
+    if (ImGui::BeginCombo("Fullscreen resolution", label)) {
+        if (ImGui::Selectable(desk_label, fw == 0)) {
+            Settings_SetFsMode(0, 0, 0);
+            Host_WindowModeRefresh();
+        }
+        int count = 0;
+        SDL_DisplayMode **list = id != 0 ? SDL_GetFullscreenDisplayModes(id, &count) : NULL;
+        for (int i = 0; i < count; i++) {
+            const SDL_DisplayMode *m = list[i];
+            int hz = (int)(m->refresh_rate * 100 + 0.5f);
+            bool dup = m->pixel_density != 1.0f;
+
+            for (int j = 0; j < i && !dup; j++) {
+                dup = list[j]->pixel_density == 1.0f && list[j]->w == m->w && list[j]->h == m->h &&
+                      (int)(list[j]->refresh_rate * 100 + 0.5f) == hz;
+            }
+            if (dup) {
+                continue;
+            }
+            char item[64];
+            snprintf(item, sizeof(item), "%dx%d @ %.2f Hz", m->w, m->h, m->refresh_rate);
+            ImGui::PushID(i);
+            if (ImGui::Selectable(item, fw == m->w && fh == m->h && fhz == hz)) {
+                Settings_SetFsMode(m->w, m->h, hz);
+                Host_WindowModeRefresh();
+            }
+            ImGui::PopID();
+        }
+        SDL_free(list);
+        ImGui::EndCombo();
+    }
+    ImGui::EndDisabled();
+    SDL_free(ids);
+    if (Host_WindowHeadless()) {
+        ImGui::TextDisabled("Headless run: the window mode is not applied.");
+    } else {
+        ImGui::TextDisabled("F11 switches between windowed and fullscreen.");
+    }
+}
+
 ImGuiTabItemFlags tab_flags(const char *name) {
     return SDL_strcasecmp(g_start_tab, name) == 0 ? ImGuiTabItemFlags_SetSelected : 0;
 }
@@ -108,7 +215,8 @@ void display_tab(void) {
         Settings_Set(SET_RENDERER, renderer);
     }
     ImGui::TextDisabled("Takes effect at the next start. Running now: %s.", Host_RendererName());
-    for (int id = SET_SCALE; id <= SET_RENDERER; id++) {
+    window_section();
+    for (int id = SET_SCALE; id <= SET_WINDOW_MODE; id++) {
         if (Settings_Overridden(id)) {
             ImGui::TextColored(ImVec4(1.0f, 0.8f, 0.3f, 1.0f),
                                "Some values come from the command line for this run and are not saved.");
@@ -151,7 +259,7 @@ void controls_tab(void) {
         ImGui::TextColored(ImVec4(0.5f, 0.9f, 1.0f, 1.0f), "%s: press a %s (Esc cancels)",
                            Settings_ButtonName(g_cap_bit), g_cap_slot < 2 ? "key" : "gamepad button");
     } else {
-        ImGui::TextDisabled("Esc, Tab, F1, F2, F5, F6, F7 and F12 are reserved.");
+        ImGui::TextDisabled("Esc, Tab, F1, F2, F5, F6, F7, F11 and F12 are reserved.");
     }
     if (ImGui::BeginTable("binds", 4, ImGuiTableFlags_BordersInnerH | ImGuiTableFlags_RowBg)) {
         ImGui::TableSetupColumn("PS1 button", ImGuiTableColumnFlags_WidthStretch, 1.0f);
@@ -269,7 +377,7 @@ void SettingsUi_Draw(void) {
     ImGuiIO &io = ImGui::GetIO();
     ImVec2 ds = io.DisplaySize;
     float k = ImGui::GetStyle().FontScaleMain * ImGui::GetStyle().FontScaleDpi;
-    float w = 520.0f * k, h = 560.0f * k;
+    float w = 520.0f * k, h = 640.0f * k;
     bool open = true;
 
     w = w < ds.x * 0.95f ? w : ds.x * 0.95f;

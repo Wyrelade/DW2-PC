@@ -456,11 +456,14 @@ static char reasons_[1536];   /* why candidates were skipped (for the error text
 static void note_skip(const char *path, const char *reason) {
     size_t n = strlen(reasons_);
     const char *nl = strchr(reason, '\n');
+    char line[512];
 
     printf("[pak] skipped %s: %s\n", path, reason);
-    if (n + 8 < sizeof(reasons_)) {
-        snprintf(reasons_ + n, sizeof(reasons_) - n, "\n  %s: %.*s", base_name(path),
-                 nl != NULL ? (int)(nl - reason) : (int)strlen(reason), reason);
+    snprintf(line, sizeof(line), "\n  %s: %.*s", base_name(path),
+             nl != NULL ? (int)(nl - reason) : (int)strlen(reason), reason);
+    /* an image found next to the exe and then picked in the dialog is listed once */
+    if (strstr(reasons_, line) == NULL && n + 8 < sizeof(reasons_)) {
+        SDL_strlcpy(reasons_ + n, line, sizeof(reasons_) - n);
     }
 }
 

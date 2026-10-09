@@ -69,13 +69,14 @@ that are plain files.
 | **Widescreen 16:9** | A wider view of the 3D world, made by widening the camera, not by stretching the picture. Menus, text boxes and the HUD keep their 4:3 layout. |
 | **GPU renderer** | Drawing runs on the graphics card through SDL_GPU (Vulkan). A software renderer stays as a fallback. |
 | **Exact frame timing** | The game runs at the PS1's 59.94 Hz, paced to the real clock, on its own thread, so dragging or resizing the window does not stall it. |
+| **Window modes** | Windowed, borderless fullscreen at the desktop resolution, or exclusive fullscreen at a resolution and refresh rate you pick. F11 switches between windowed and fullscreen; a short notice in the top left names the mode. The window's size and place are remembered. |
 | **Classic picture** | At 1x with the extras off, the picture is the PS1 picture: automated runs compare it with reference screenshots frame by frame. |
 
 ### Play
 
 | | |
 |---|---|
-| **Settings window** | F1 opens the settings: render scale, 16:9, no wobble, renderer, key and gamepad remap, left stick as D-pad, volume. Changes apply at once and are saved to `settings.ini`. |
+| **Settings window** | F1 opens the settings: render scale, 16:9, no wobble, renderer, window mode, key and gamepad remap, left stick as D-pad, volume. Changes apply at once and are saved to `settings.ini`. |
 | **Gamepads** | Any controller SDL3 knows (Xbox, PlayStation, Switch Pro and others), mapped by button position, and it can be plugged in while the game runs. The left stick moves like the D-pad. |
 | **Keyboard** | Full keyboard play out of the box, every key can be changed in F1. |
 | **Two players** | VS mode with two gamepads, or on one keyboard by switching the port with Tab (`--pad2-keys`). |
@@ -127,6 +128,7 @@ Default bindings (change them in the F1 settings window):
 | F5 | Render scale 1x .. 8x |
 | F6 | No wobble on / off |
 | F7 | 16:9 on / off |
+| F11 | Windowed / fullscreen |
 | F12 | Screenshot |
 | Esc | Quit |
 
@@ -143,6 +145,8 @@ Command line options (`dw2 --help` lists all of them):
 | `--save-dir DIR` | keep the memory cards in DIR |
 | `--pad2-keys` | two players on one keyboard (Tab switches the port) |
 | `--settings PATH` | use another settings file |
+| `--fullscreen` / `--windowed` | start in borderless fullscreen / in a window |
+| `--window-mode M` | start `windowed`, `borderless` or `exclusive` |
 
 ## Settings
 
@@ -150,7 +154,9 @@ F1 opens the settings window over the running game (mouse, keyboard or gamepad).
 does not see your input while it is open.
 
 - **Display:** render scale, 16:9, no wobble (the same as F5 / F7 / F6, which stay in sync with
-  it), renderer (GPU or software, used from the next start).
+  it), renderer (GPU or software, used from the next start), window mode (windowed,
+  borderless fullscreen, exclusive fullscreen; the same as F11), the display to go fullscreen
+  on, and the resolution for exclusive fullscreen.
 - **Controls:** two keys and one gamepad button per PS1 button. Click a slot and press the key
   or button; right click clears it; Esc cancels. Esc, Tab and the F keys are reserved. Left
   stick as D-pad on / off. Reset restores the defaults.
@@ -160,7 +166,8 @@ Settings are saved in `settings.ini` in the user data folder (`%APPDATA%\DW2-Onl
 Windows, `~/.local/share/DW2-Online/` on Linux) when you change something. It is a plain text
 file (`key = value` lines) you can edit by hand; lines the game does not know are kept, and a
 bad value falls back to its default. Without the file the game starts with the defaults.
-Command line options such as `--scale 4` win over the file for that run and are not saved.
+Command line options such as `--scale 4` or `--fullscreen` win over the file for that run and
+are not saved. The window's size, place and maximized state are saved when you change them.
 
 ## Roadmap
 
@@ -170,16 +177,16 @@ Planned for the first release:
       or pick it once; the game checks it, builds its pack and starts.
 - [x] **F1 settings window:** key and gamepad remap, left stick as D-pad, render scale, 16:9,
       no wobble, renderer, volume, saved to a settings file.
-- [ ] **More settings:** sharpening and window mode in F1, a "Press F1 for settings" hint on
-      the title screen.
-- [ ] **Window modes:** windowed, borderless fullscreen, exclusive fullscreen.
+- [x] **Window modes:** windowed, borderless fullscreen, exclusive fullscreen; F11 and F1,
+      saved with the window's size and place.
+- [ ] **More settings:** sharpening in F1, a "Press F1 for settings" hint on the title screen.
 - [ ] **Sharpening filter** for the scaled picture.
 - [ ] **Movies:** the intro and the endings (skipped today).
 - [ ] **Streamed CD audio** (XA).
 - [ ] **Full playthrough check** from the start to the ending, every scene on 64-bit.
 
 Done so far: the whole game code compiles and runs (title, city, domains, battles, menus,
-saves, VS mode), render scale, no wobble, 16:9, GPU renderer, F1 settings, 64-bit and Linux
+saves, VS mode), render scale, no wobble, 16:9, GPU renderer, F1 settings, window modes, 64-bit and Linux
 builds.
 
 ## Building

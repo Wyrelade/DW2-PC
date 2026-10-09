@@ -23,6 +23,10 @@ int Ui_Event(const SDL_Event *e);
 int Ui_BlocksGameInput(void);
 /* A UI window is open: the window loop presents while the game picture stays the same. */
 int Ui_Active(void);
+/* PR.3: a short notice top left for 2 s (window mode, F5 / F6 / F7). Any thread. */
+void Ui_Notice(const char *text);
+/* Something to draw: a window open or a notice showing (the window loop keeps presenting). */
+int Ui_Drawing(void);
 /* In Host_Present before SDL_RenderPresent. */
 void Ui_Render(void);
 /* Any thread (Host_SaveShot): with a headless UI, the next render writes the window picture. */

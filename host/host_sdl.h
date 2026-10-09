@@ -78,4 +78,10 @@ void Host_AudioClose(void);
 void Host_RequestSetting(int id, int value);
 const char *Host_RendererName(void);
 
+/* host/sdl.c (PR.3): window modes (SET_WINDOW_*), main thread */
+int Host_WindowMode(void);
+int Host_WindowHeadless(void);
+void Host_SetWindowMode(int mode);   /* applies it (the caller updates the setting) */
+void Host_WindowModeRefresh(void);   /* fullscreen display / mode changed: applied again */
+
 #endif /* HOST_HOST_SDL_H */

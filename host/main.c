@@ -32,6 +32,7 @@
  *       [--hold-boot N] [--press N:BUTTONS[:LEN]]... [--press2 N:BUTTONS[:LEN]]... [--save-dir DIR]
  *       [--fast] [--pad2-keys] [--scale N] [--hd-threads N] [--pgxp] [--wide] [--renderer gpu|soft]
  *       [--settings PATH] [--settings-set KEY=VALUE]... [--settings-ui] [--settings-tab T]
+ *       [--window-mode M] [--fullscreen] [--windowed]
  *     --pak PATH     the data pack (default dw2.pak next to the exe, in the user data folder,
  *                    then build/native/dw2.pak; doc/PACK_FORMAT.md), checked before anything else
  *                    runs; missing or failing, it is built from the disc image (host/pakbuild.c)
@@ -74,6 +75,11 @@
  *     --settings-ui  the F1 settings window open at start; with --no-window it renders headless
  *                    and each shot adds <tag>_ui.png
  *     --settings-tab T the F1 tab shown first (Display, Controls, Sound; headless checks)
+ *     --window-mode M windowed, borderless (fullscreen at the desktop resolution) or exclusive
+ *                    (fullscreen in the fullscreen_mode of settings.ini); PR.3, F11 toggles in the
+ *                    window; overrides the settings file for this run, not saved. Headless runs
+ *                    keep the hidden window windowed
+ *     --fullscreen   the same as --window-mode borderless; --windowed as --window-mode windowed
  *
  *   Dev builds only (DW2_DEV, PD; the release client has none of these):
  *     --start-mode N dev: start in game mode N instead of the title (0x402), e.g. the stag0000
@@ -330,7 +336,7 @@ static void run_threaded(void) {
 
 int main(int argc, char **argv) {
     int i;
-    int cl_scale = 0, cl_wide = 0, cl_pgxp = 0, cl_renderer = 0;
+    int cl_scale = 0, cl_wide = 0, cl_pgxp = 0, cl_renderer = 0, cl_window = -1;
 
     for (i = 1; i < argc; i++) {
         if (strcmp(argv[i], "--vblanks") == 0 && i + 1 < argc) {
@@ -393,6 +399,12 @@ int main(int argc, char **argv) {
             Ui_SetSettingsAtStart(1);
         } else if (strcmp(argv[i], "--settings-tab") == 0 && i + 1 < argc) {
             SettingsUi_SetTab(argv[++i]);
+        } else if (strcmp(argv[i], "--window-mode") == 0 && i + 1 < argc && Settings_ParseWindowMode(argv[i + 1]) >= 0) {
+            cl_window = Settings_ParseWindowMode(argv[++i]);
+        } else if (strcmp(argv[i], "--fullscreen") == 0) {
+            cl_window = SET_WINDOW_BORDERLESS;
+        } else if (strcmp(argv[i], "--windowed") == 0) {
+            cl_window = SET_WINDOW_WINDOWED;
         } else if (argv[i][0] != '-' && disc == NULL) {
             disc = argv[i];
         } else {
@@ -400,7 +412,8 @@ int main(int argc, char **argv) {
                     "usage: %s [IMAGE] [--disc IMAGE] [--pak PATH] [--vblanks N] [--no-window] [--shot-dir DIR] [--shot-at N]... "
                     "[--shot-vb N]... [--hold-boot N] [--press N:BUTTONS[:LEN]]... [--press2 N:BUTTONS[:LEN]]... "
                     "[--save-dir DIR] [--fast] [--pad2-keys] [--scale N] [--hd-threads N] [--pgxp] [--wide] "
-                    "[--renderer gpu|soft] [--settings PATH] [--settings-set KEY=VALUE]... [--settings-ui] [--settings-tab T]%s\n",
+                    "[--renderer gpu|soft] [--settings PATH] [--settings-set KEY=VALUE]... [--settings-ui] [--settings-tab T] "
+                    "[--window-mode windowed|borderless|exclusive] [--fullscreen] [--windowed]%s\n",
                     argv[0], DW2_DEV ? " [--start-mode N] [--devui] [--devui-tab T] [--window-size W H] [--devedit N:KIND=ARGS]..." : "");
             return 2;
         }
@@ -418,6 +431,9 @@ int main(int argc, char **argv) {
     }
     if (cl_renderer) {
         Settings_Override(SET_RENDERER, cl_renderer == 2 ? SET_RENDERER_SOFT : SET_RENDERER_GPU);
+    }
+    if (cl_window >= 0) {
+        Settings_Override(SET_WINDOW_MODE, cl_window);
     }
     Settings_Load(no_window);
     if (!cl_scale) {
