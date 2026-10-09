@@ -590,12 +590,23 @@ static void wrap_slot(int slot, const Frame *f) {
     wrap_gen[slot] = f->gen;
 }
 
-/* host/shot.c: pixels w * h words 0x00RRGGBB as a PNG; 0 on failure. */
-int Host_WritePng(const char *path, const uint32_t *pixels, int w, int h);
+/* host/shot.c: pixels w * h words 0x00RRGGBB as a compressed PNG; 0 on failure. */
+int Host_WritePngPacked(const char *path, const uint32_t *pixels, int w, int h);
 
-/* PR.22 F12: requested from the game thread, written by the next Host_Present */
+/* PR.22 F12: requested from the game thread, read back by the next Host_Present */
 static SDL_AtomicInt shot_wanted;
 static char shot_path[1200];
+/* PR.23: the PNG is converted, compressed and written by a thread per shot, so F12 costs the
+ * render thread only the read back; the result notice comes back through shot_note */
+static SDL_AtomicInt shots_busy;
+static SDL_SpinLock shot_lock;
+static char shot_note[1300];
+static int shot_note_set;
+
+typedef struct {
+    SDL_Surface *s;
+    char path[1200];
+} ShotJob;
 
 void Host_WindowShot(const char *path) {
     if (SDL_GetAtomicInt(&shot_wanted)) {
@@ -605,13 +616,53 @@ void Host_WindowShot(const char *path) {
     SDL_SetAtomicInt(&shot_wanted, 1);
 }
 
+static int SDLCALL shot_thread(void *data) {
+    ShotJob *job = (ShotJob *)data;
+    SDL_Surface *c = SDL_ConvertSurface(job->s, SDL_PIXELFORMAT_XRGB8888);
+    SDL_PathInfo info;
+    Uint64 t0 = SDL_GetTicksNS();
+    int ok = 0, w = 0, h = 0, y;
+
+    if (c != NULL) {
+        uint32_t *px = (uint32_t *)SDL_malloc((size_t)c->w * c->h * 4);
+
+        w = c->w;
+        h = c->h;
+        if (px != NULL) {
+            for (y = 0; y < c->h; y++) {
+                SDL_memcpy(px + (size_t)y * c->w, (const Uint8 *)c->pixels + (size_t)y * c->pitch, (size_t)c->w * 4);
+            }
+            ok = Host_WritePngPacked(job->path, px, c->w, c->h);
+            SDL_free(px);
+        }
+        SDL_DestroySurface(c);
+    }
+    if (ok && SDL_GetPathInfo(job->path, &info)) {
+        printf("[shot] F12 %s (%dx%d, %llu bytes, %.0f ms)\n", job->path, w, h,
+               (unsigned long long)info.size, (double)(SDL_GetTicksNS() - t0) / 1e6);
+    } else {
+        printf("[shot] cannot write %s (%dx%d)\n", job->path, w, h);
+    }
+    fflush(stdout);
+    SDL_LockSpinlock(&shot_lock);
+    SDL_snprintf(shot_note, sizeof(shot_note), ok ? "Screenshot saved: %s" : "Screenshot failed: %s", job->path);
+    shot_note_set = 1;
+    SDL_UnlockSpinlock(&shot_lock);
+    SDL_DestroySurface(job->s);
+    SDL_free(job);
+    SDL_AddAtomicInt(&shots_busy, -1);
+    return 0;
+}
+
 /* the game picture in output pixels (the logical presentation's letterbox rect), before the UI
  * layer draws; read with the logical presentation off so the rect is in window pixels */
 static void window_shot(void) {
     SDL_FRect fr;
     SDL_Rect r;
-    SDL_Surface *s, *c = NULL;
-    int lw, lh, ok = 0, y;
+    SDL_Surface *s;
+    SDL_Thread *t;
+    ShotJob *job;
+    int lw, lh;
     SDL_RendererLogicalPresentation mode;
     char text[1300];
 
@@ -626,27 +677,40 @@ static void window_shot(void) {
     SDL_SetRenderLogicalPresentation(renderer, 0, 0, SDL_LOGICAL_PRESENTATION_DISABLED);
     s = SDL_RenderReadPixels(renderer, r.w > 0 && r.h > 0 ? &r : NULL);
     SDL_SetRenderLogicalPresentation(renderer, lw, lh, mode);
-    if (s != NULL) {
-        c = SDL_ConvertSurface(s, SDL_PIXELFORMAT_XRGB8888);
-        SDL_DestroySurface(s);
-    }
-    if (c != NULL) {
-        uint32_t *px = (uint32_t *)SDL_malloc((size_t)c->w * c->h * 4);
-
-        if (px != NULL) {
-            for (y = 0; y < c->h; y++) {
-                SDL_memcpy(px + (size_t)y * c->w, (const Uint8 *)c->pixels + (size_t)y * c->pitch, (size_t)c->w * 4);
-            }
-            ok = Host_WritePng(shot_path, px, c->w, c->h);
-            SDL_free(px);
-        }
-        printf("[shot] %s %s (%dx%d)\n", ok ? "F12" : "cannot write", shot_path, c->w, c->h);
-        SDL_DestroySurface(c);
-    } else {
+    job = s != NULL ? (ShotJob *)SDL_malloc(sizeof(ShotJob)) : NULL;
+    if (job == NULL) {
         printf("[shot] F12 read failed: %s\n", SDL_GetError());
+        SDL_DestroySurface(s);
+        SDL_snprintf(text, sizeof(text), "Screenshot failed: %s", shot_path);
+        Ui_Notice(text);
+        return;
     }
-    SDL_snprintf(text, sizeof(text), ok ? "Screenshot saved: %s" : "Screenshot failed: %s", shot_path);
-    Ui_Notice(text);
+    job->s = s;
+    SDL_strlcpy(job->path, shot_path, sizeof(job->path));
+    SDL_AddAtomicInt(&shots_busy, 1);
+    t = SDL_CreateThread(shot_thread, "dw2 shot", job);
+    if (t != NULL) {
+        SDL_DetachThread(t);
+    } else {
+        shot_thread(job); /* no thread: write it here */
+    }
+}
+
+/* PR.23: the shot thread's notice, shown from the render thread */
+static void shot_notice(void) {
+    char text[1300];
+    int set;
+
+    SDL_LockSpinlock(&shot_lock);
+    set = shot_note_set;
+    if (set) {
+        SDL_strlcpy(text, shot_note, sizeof(text));
+        shot_note_set = 0;
+    }
+    SDL_UnlockSpinlock(&shot_lock);
+    if (set) {
+        Ui_Notice(text);
+    }
 }
 
 void Host_Present(void) {
@@ -707,6 +771,7 @@ void Host_Present(void) {
         window_shot();
         SDL_SetAtomicInt(&shot_wanted, 0);
     }
+    shot_notice();
     Ui_Render();
     SDL_RenderPresent(renderer);
 }
@@ -909,6 +974,9 @@ void Host_Shutdown(void) {
         return;
     }
     initialized = 0;
+    while (SDL_GetAtomicInt(&shots_busy) > 0) {
+        SDL_Delay(5); /* PR.23: let F12 shots finish writing */
+    }
     Settings_Flush();
     Ui_Shutdown();
     Host_AudioClose();
