@@ -23,8 +23,7 @@
 
 <p align="center">
   <a href="https://github.com/Wyrelade/DW2-PC/releases"><img src="https://img.shields.io/github/v/release/Wyrelade/DW2-PC?include_prereleases&label=release&color=2ea043" alt="latest release"></a>
-  <img src="https://img.shields.io/badge/status-work%20in%20progress-d29922" alt="status: work in progress">
-  <img src="https://img.shields.io/badge/game%20code-1088%2F1088%20functions-1f6feb" alt="1088 of 1088 game functions">
+  <img src="https://img.shields.io/badge/status-beta-d29922" alt="status: beta">
   <img src="https://img.shields.io/badge/license-CC0%201.0-lightgrey" alt="license CC0 1.0">
 </p>
 
