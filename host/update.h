@@ -13,15 +13,18 @@ extern "C" {
 #endif
 
 /* The version of this program, the release tag without "v". Bump it with each release. */
-#define DW2_VERSION "0.1.3"
+#define DW2_VERSION "0.1.4"
 #define DW2_RELEASES_URL "https://github.com/Wyrelade/DW2-PC/releases/latest"
 
 /* main(), after Settings_Load: starts the check thread when wanted. force = --update-check. */
 void Update_Start(int no_window, int force);
 /* main(), right after Update_Start, before the pack check and the window: waits up to 3 s for
- * the answer; with a newer release a message box asks "Update found, go to the download page?".
- * 1 = the player said yes (the page is open): quit. */
-int Update_AskAtStart(int no_window);
+ * the answer; with a newer release a message box offers Update now / Download page / Not now.
+ * Update now installs the release next to the program and starts it (argv: this run's arguments).
+ * 1 = quit (the new program runs, or the download page is open). */
+int Update_AskAtStart(int no_window, int argc, char **argv);
+/* --update-auto: with a newer release, update without asking (also headless; tests). */
+void Update_SetAuto(void);
 /* --no-update-check (this run only). */
 void Update_Disable(void);
 /* --update-as VERSION (dev builds): compare as if this program were VERSION. */

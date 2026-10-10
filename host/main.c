@@ -73,6 +73,9 @@
  *     --no-update-check  no update check in this run (PR.30; setting "update_check", F1 Game tab)
  *     --update-check ask GitHub for a newer release even with --no-window (PR.30 check; the
  *                    answer is logged as "[update] ...")
+ *     --update-as V  the update check compares as if this program were version V (tests)
+ *     --update-auto  with a newer release, install it without asking, also with --no-window
+ *                    (PR.31 tests; with --update-check)
  *     --version      print the version and quit
  *     --ui-shots     with --no-window: the window picture is rendered headless (F1 closed) and
  *                    each shot adds <tag>_ui.png (title hint check)
@@ -108,8 +111,7 @@
  *                    controls on, SECTION (Party, Digi-Beetle, Bag, Storage, Flags) scrolled to
  *     --window-size W H  window size in pixels (default 960x720, 1281x720 with --wide)
  *     --devedit N:KIND=ARGS  PD.4 state edit at VBlank wait N (repeatable; kinds and arguments in
- *                    host/devedit.c DevEdit_Script, e.g. 900:bits=12345, 900:warp=0x200,0)
- *     --update-as V  the update check compares as if this program were version V (PR.30 tests) */
+ *                    host/devedit.c DevEdit_Script, e.g. 900:bits=12345, 900:warp=0x200,0) */
 
 extern void Sys_Main(void);
 extern void Host_OvlSnapshot(void);
@@ -397,6 +399,10 @@ HOST_ENTRY int main(int argc, char **argv) {
             Update_Disable();
         } else if (strcmp(argv[i], "--update-check") == 0) {
             update_force = 1;
+        } else if (strcmp(argv[i], "--update-as") == 0 && i + 1 < argc) {
+            Update_SetLocalVersion(argv[++i]);
+        } else if (strcmp(argv[i], "--update-auto") == 0) {
+            Update_SetAuto();
         } else if (strcmp(argv[i], "--version") == 0) {
             printf("DW2-PC v%s\n", DW2_VERSION);
             return 0;
@@ -409,8 +415,6 @@ HOST_ENTRY int main(int argc, char **argv) {
 #if DW2_DEV
         } else if (strcmp(argv[i], "--start-mode") == 0 && i + 1 < argc) {
             start_mode = (int)strtol(argv[++i], NULL, 0);
-        } else if (strcmp(argv[i], "--update-as") == 0 && i + 1 < argc) {
-            Update_SetLocalVersion(argv[++i]);
         } else if (strcmp(argv[i], "--devui") == 0) {
             DevUi_SetOpenAtStart(1);
         } else if (strcmp(argv[i], "--devui-tab") == 0 && i + 1 < argc) {
@@ -478,7 +482,7 @@ HOST_ENTRY int main(int argc, char **argv) {
                     "usage: %s [IMAGE] [--disc IMAGE] [--pak PATH] [--vblanks N] [--no-window] [--shot-dir DIR] [--shot-at N]... "
                     "[--shot-vb N]... [--hold-boot N] [--press N:BUTTONS[:LEN]]... [--press2 N:BUTTONS[:LEN]]... "
                     "[--save-dir DIR] [--fast] [--speed-up] [--pad2-keys] [--scale N] [--sharpen N] [--hd-threads N] [--pgxp] [--wide] "
-                    "[--renderer gpu|soft] [--settings PATH] [--settings-set KEY=VALUE]... [--settings-ui] [--settings-tab T] [--ui-shots] [--quit-dialog] [--no-update-check] [--update-check] [--version] "
+                    "[--renderer gpu|soft] [--settings PATH] [--settings-set KEY=VALUE]... [--settings-ui] [--settings-tab T] [--ui-shots] [--quit-dialog] [--no-update-check] [--update-check] [--update-as V] [--update-auto] [--version] "
                     "[--movies] [--window-mode windowed|borderless|exclusive] [--fullscreen] [--windowed]%s\n",
                     argv[0], DW2_DEV ? " [--start-mode N] [--devui] [--devui-tab T] [--window-size W H] [--devedit N:KIND=ARGS]..." : "");
             return 2;
@@ -520,7 +524,7 @@ HOST_ENTRY int main(int argc, char **argv) {
     }
     /* PR.30: the update check first, so a newer release is offered before the pack is built */
     Update_Start(no_window, update_force);
-    if (Update_AskAtStart(no_window)) {
+    if (Update_AskAtStart(no_window, argc, argv)) {
         SDL_Quit();
         return 0;
     }

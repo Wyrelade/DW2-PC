@@ -107,7 +107,7 @@ that are plain files.
 | **Saves as files** | Memory cards are files (`card1.mcd`, `card2.mcd`) in your user folder. Raw card images from DuckStation, PCSX-Redux or ePSXe load as they are, so a save from an emulator carries over. |
 | **Screenshots** | F12 saves the current picture as PNG in a `screenshots` folder next to the program. |
 | **Safe quit** | Esc asks before quitting, so a stray key press does not lose progress. |
-| **Update check** | At start the game asks GitHub whether a newer version is out. If one is, it offers to open the download page before the game starts; the title screen and F1 show it too. Nothing is installed without you. Off in F1 (see [Update check](#update-check)). |
+| **Updates** | Checks for a new version at start and can update itself. Off in F1. |
 | **64-bit and Linux** | Native Windows x64 and Linux x64 builds (32-bit Windows too). |
 
 ### What stays original
@@ -206,30 +206,20 @@ bad value falls back to its default. Without the file the game starts with the d
 Command line options such as `--scale 4` or `--fullscreen` win over the file for that run and
 are not saved. The window's size, place and maximized state are saved when you change them.
 
-### Update check
+### Updates
 
-At start, before anything else, the game asks GitHub once whether a newer release exists (it
-waits at most 3 seconds). If there is one, a box asks "Update found": Yes opens the download page
-and closes the game so you can unpack the new version over the old folder (saves and settings
-stay); "No, play now" starts the game. Nothing is downloaded or installed by the game. The title
-screen and F1 also show the new version, with a button to the download page. The check sends GitHub the usual request of a web browser (your IP address,
-the program name and version) and nothing else. Switch it off in F1 > Game ("Check for updates
-at start") or with `--no-update-check`. On Linux it uses the system's libcurl when there is one.
+At start the game checks GitHub for a new version. If there is one, you can update now, open the
+download page, or skip it. Saves and settings stay. Turn it off in F1 > Game or with
+`--no-update-check`.
 
 ## Version history
 
-- **v0.1.3** (2026-10-10): update check. At start the game asks GitHub for the newest release;
-  if there is one, a box offers to open the download page (or play now), and the title screen
-  and F1 show it. Off in F1 > Game. `--version` prints the version.
-- **v0.1.2** (2026-10-10): fixes a crash when opening the item server (Transfer > Items >
-  Server, moving items between the Digi-Beetle and the server in the city) or the important
-  items (Status > Important), in the city and in the domains
+- **v0.1.4** (2026-10-10): the game can update itself.
+- **v0.1.3** (2026-10-10): update check at start.
+- **v0.1.2** (2026-10-10): fixed a crash in the item server and important items menus
   ([#1](https://github.com/Wyrelade/DW2-PC/issues/1)).
-- **v0.1.1** (2026-10-09): speed-up on F3 (2x to 8x or no limit, multiplier in F1), no console
-  window on Windows, program icon, Join Discord button in F1.
-- **v0.1.0** (2026-10-09): first release. Render scale, 16:9, no wobble, sharpening, GPU
-  renderer, window modes, movies, streamed CD audio, F1 settings, gamepads, memory card saves,
-  F12 screenshots.
+- **v0.1.1** (2026-10-09): speed-up (F3), program icon, no console window, Discord button.
+- **v0.1.0** (2026-10-09): first release.
 
 ## Roadmap
 
@@ -324,7 +314,9 @@ doc/       game state map, pack format, notes on the PlayStation library calls
 - DW2 file-format documentation by RmBeastbow.
 - Thanks to ThirstyWraith for the stage overlay and battle notes.
 - [SDL3](https://libsdl.org/) (zlib license), [Dear ImGui](https://github.com/ocornut/imgui)
-  (MIT license, `host/imgui/LICENSE.txt`).
+  (MIT license, `host/imgui/LICENSE.txt`), [miniz](https://github.com/richgel999/miniz) (MIT
+  license, `host/miniz/LICENSE`), [Monocypher](https://monocypher.org/) (CC0,
+  `host/monocypher/LICENCE.md`).
 
 ## License
 

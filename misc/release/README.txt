@@ -43,13 +43,11 @@ Esc  quit (asks first)
 dw2 --help lists the command line options.
 
 
-Update check
-------------
+Updates
+-------
 
-At start the game asks GitHub once whether a newer release exists (at most 3 seconds). If there
-is one, a box asks whether to open the download page (the game then closes so you can unpack the
-new version over this folder; saves and settings stay) or play now. Nothing is downloaded or
-installed by the game. Off in F1 > Game ("Check for updates at start") or with --no-update-check.
+At start the game checks GitHub for a new version. If there is one, you can update now, open the
+download page, or skip it. Saves and settings stay. Off in F1 > Game or with --no-update-check.
 
 
 Files and folders
@@ -86,18 +84,18 @@ the save (card1.mcd) from just before the problem.
 Version history
 ---------------
 
-v0.1.3  Update check: a newer release is offered at start (download page or play now).
-v0.1.2  Fixes a crash when opening the item server (Transfer > Items > Server) or the
-        important items (Status > Important), in the city and in the domains.
-v0.1.1  Speed-up on F3, no console window on Windows, program icon, Join Discord button.
+v0.1.4  The game can update itself.
+v0.1.3  Update check at start.
+v0.1.2  Fixed a crash in the item server and important items menus.
+v0.1.1  Speed-up (F3), program icon, no console window, Discord button.
 v0.1.0  First release.
 
 
 Licenses
 --------
 
-The port is released under CC0 1.0 (LICENSE.txt). It uses SDL3 (zlib license)
-and Dear ImGui (MIT license, notice below).
+The port is released under CC0 1.0 (LICENSE.txt). It uses SDL3 (zlib license),
+Dear ImGui and miniz (MIT license, notices below) and Monocypher (CC0).
 Digimon World 2 and its data belong to their owners.
 
 Dear ImGui:
@@ -121,3 +119,29 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+
+miniz:
+
+Copyright 2013-2014 RAD Game Tools and Valve Software
+Copyright 2010-2014 Rich Geldreich and Tenacious Software LLC
+
+All Rights Reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.

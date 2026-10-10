@@ -12,3 +12,4 @@ levenshtein
 cxxfilt
 toml
 pillow
+cryptography  # tools/package_release.py: signs the release zips

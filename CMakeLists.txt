@@ -135,6 +135,16 @@ endif()
 # Psy-Q layer, host and backend.
 file(GLOB PSYQ_SRC CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/psyq/*.c)
 file(GLOB HOST_SRC CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/host/*.c)
+# PR.31 updater: miniz (zip reading only, MIT, host/miniz/LICENSE) and Monocypher (Ed25519 check,
+# CC0, host/monocypher/LICENCE.md), as they come (no warnings for them).
+set(UPDATE_LIB_SRC ${CMAKE_SOURCE_DIR}/host/miniz/miniz.c ${CMAKE_SOURCE_DIR}/host/monocypher/monocypher.c
+    ${CMAKE_SOURCE_DIR}/host/monocypher/monocypher-ed25519.c)
+set(MINIZ_DEFS MINIZ_NO_STDIO MINIZ_NO_TIME MINIZ_NO_ARCHIVE_WRITING_APIS MINIZ_NO_DEFLATE_APIS
+    MINIZ_NO_ZLIB_COMPATIBLE_NAMES)
+set_source_files_properties(${UPDATE_LIB_SRC} PROPERTIES COMPILE_OPTIONS "-w")
+set_source_files_properties(${CMAKE_SOURCE_DIR}/host/miniz/miniz.c ${CMAKE_SOURCE_DIR}/host/update.c
+    PROPERTIES COMPILE_DEFINITIONS "${MINIZ_DEFS}")
+list(APPEND HOST_SRC ${UPDATE_LIB_SRC})
 # Emulated PS1 hardware (backend/psxgpu.c: the GPU).
 file(GLOB BACKEND_SRC CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/backend/*.c)
 
