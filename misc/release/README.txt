@@ -46,9 +46,10 @@ dw2 --help lists the command line options.
 Update check
 ------------
 
-At start the game asks GitHub once whether a newer release exists. Nothing is downloaded or
-installed; a newer version shows a line on the title and in F1 with a button to the download
-page. Off in F1 > Game ("Check for updates at start") or with --no-update-check.
+At start the game asks GitHub once whether a newer release exists (at most 3 seconds). If there
+is one, a box asks whether to open the download page (the game then closes so you can unpack the
+new version over this folder; saves and settings stay) or play now. Nothing is downloaded or
+installed by the game. Off in F1 > Game ("Check for updates at start") or with --no-update-check.
 
 
 Files and folders

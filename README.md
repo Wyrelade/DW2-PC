@@ -207,9 +207,11 @@ are not saved. The window's size, place and maximized state are saved when you c
 
 ### Update check
 
-At start the game asks GitHub once whether a newer release exists. Nothing is downloaded or
-installed: a newer version shows a line on the title screen and in F1, with a button that opens
-the download page. The check sends GitHub the usual request of a web browser (your IP address,
+At start, before anything else, the game asks GitHub once whether a newer release exists (it
+waits at most 3 seconds). If there is one, a box asks "Update found": Yes opens the download page
+and closes the game so you can unpack the new version over the old folder (saves and settings
+stay); "No, play now" starts the game. Nothing is downloaded or installed by the game. The title
+screen and F1 also show the new version, with a button to the download page. The check sends GitHub the usual request of a web browser (your IP address,
 the program name and version) and nothing else. Switch it off in F1 > Game ("Check for updates
 at start") or with `--no-update-check`. On Linux it uses the system's libcurl when there is one.
 

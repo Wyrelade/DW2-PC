@@ -1,8 +1,10 @@
 /* PR.30 update check: one HTTPS GET of the GitHub API's latest release on a background thread
  * at start, "tag_name" compared with DW2_VERSION. Windows asks through WinHTTP (system library);
  * Linux loads libcurl.so.4 at run time, so the program does not need it: without it there is no
- * check. Any failure (offline, timeout, rate limit, odd answer) only logs a line and shows
- * "Could not check" in F1; the game never waits for it. */
+ * check. The check starts before the pack check and the window; the start waits up to WAIT_MS
+ * for it and, with a newer release, asks "Update found" (download page and quit, or play). A
+ * later answer still shows on the title and in F1. Any failure (offline, timeout, rate limit, odd
+ * answer) only logs a line and shows "Could not check" in F1. */
 
 #include <SDL3/SDL.h>
 #include <stdio.h>
@@ -24,10 +26,12 @@
 #define USER_AGENT "DW2-PC/" DW2_VERSION
 #define REPLY_MAX (256 * 1024)
 #define TIMEOUT_MS 8000
+#define WAIT_MS 3000 /* how long the start waits for the answer before it goes on */
 
 enum { ST_OFF, ST_CHECKING, ST_CURRENT, ST_NEWER, ST_FAILED };
 
 static SDL_AtomicInt g_state; /* ST_*; g_tag is written before ST_NEWER */
+static SDL_Semaphore *g_done;  /* signalled when the check thread has its answer */
 static char g_tag[32];
 static int g_disabled;
 static const char *g_local = DW2_VERSION;
@@ -245,6 +249,9 @@ static int SDLCALL check_thread(void *unused) {
     }
     free(r.data);
     SDL_SetAtomicInt(&g_state, state);
+    if (g_done != NULL) {
+        SDL_SignalSemaphore(g_done);
+    }
     return 0;
 }
 
@@ -263,12 +270,58 @@ void Update_Start(int no_window, int force) {
         return;
     }
     SDL_SetAtomicInt(&g_state, ST_CHECKING);
+    g_done = SDL_CreateSemaphore(0);
     t = SDL_CreateThread(check_thread, "update", NULL);
     if (t == NULL) {
         SDL_SetAtomicInt(&g_state, ST_FAILED);
         return;
     }
     SDL_DetachThread(t);
+}
+
+int Update_AskAtStart(int no_window) {
+    static const SDL_MessageBoxButtonData buttons[] = {
+        { SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT, 1, "Yes" },
+        { SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT, 0, "No, play now" },
+    };
+    SDL_MessageBoxData box = { 0 };
+    char text[256];
+    int pick = 0;
+
+    if (g_done == NULL || no_window) {
+        return 0;
+    }
+    if (!SDL_WaitSemaphoreTimeout(g_done, WAIT_MS)) {
+        printf("[update] no answer within %d ms, starting (the result shows on the title and in F1)\n", WAIT_MS);
+        return 0;
+    }
+    if (Update_NewerTag() == NULL) {
+        return 0;
+    }
+    SDL_snprintf(text, sizeof(text),
+                 "DW2-PC %s is available (you have v%s).\n\n"
+                 "Go to the download page? The game closes so you can unpack the new version over this "
+                 "folder; your saves and settings stay.",
+                 g_tag, g_local);
+    box.flags = SDL_MESSAGEBOX_INFORMATION;
+    box.title = "Update found";
+    box.message = text;
+    box.numbuttons = 2;
+    box.buttons = buttons;
+    if (!SDL_ShowMessageBox(&box, &pick)) {
+        printf("[update] message box failed: %s\n", SDL_GetError());
+        return 0;
+    }
+    if (pick != 1) {
+        printf("[update] player chose to play now\n");
+        return 0;
+    }
+    printf("[update] opening %s and quitting\n", DW2_RELEASES_URL);
+    if (!SDL_OpenURL(DW2_RELEASES_URL)) {
+        printf("[update] could not open %s: %s\n", DW2_RELEASES_URL, SDL_GetError());
+        return 0;
+    }
+    return 1;
 }
 
 const char *Update_LocalVersion(void) {

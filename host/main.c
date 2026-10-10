@@ -518,10 +518,15 @@ HOST_ENTRY int main(int argc, char **argv) {
     if (!cl_renderer && Settings_Get(SET_RENDERER) == SET_RENDERER_SOFT) {
         Host_SetRenderer(1);
     }
+    /* PR.30: the update check first, so a newer release is offered before the pack is built */
+    Update_Start(no_window, update_force);
+    if (Update_AskAtStart(no_window)) {
+        SDL_Quit();
+        return 0;
+    }
     /* Main thread, before the game thread and window: the pack build may show its own progress
      * window and a file dialog. */
     Host_PakOpen(pak, disc, no_window);
-    Update_Start(no_window, update_force);
 #if DW2_DEV
     DevEdit_Init();
 #endif
