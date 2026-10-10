@@ -187,22 +187,37 @@ s32 arg0;
     return 0;
 }
 
+#ifdef DW2_NATIVE
+/* Retail reads the record through the NULL of an id ITEMDATA does not hold (id 0 past the
+ * end of the table, Item_BuildMenuList's storage scan in the transfer and important item
+ * menus). The PS1 reads low kernel RAM there and goes on; native code faults. Native reads
+ * an all-zero record instead. */
+static ItemTableEntry Item_NoEntry;
+
+static ItemTableEntry *Item_FindEntry(s32 id) {
+    ItemTableEntry *p = Item_FindById(id);
+    return p != 0 ? p : &Item_NoEntry;
+}
+#else
+#define Item_FindEntry Item_FindById
+#endif
+
 s32 Item_GetNameText(s32 arg0) {
     s32 base = Cd_GetFileOrNull(0x45E);
-    return Item_FindById(arg0)->nameOffset + base;
+    return Item_FindEntry(arg0)->nameOffset + base;
 }
 
 s32 Item_GetDescText(s32 arg0) {
     s32 base = Cd_GetFileOrNull(0x45E);
-    return Item_FindById(arg0)->descOffset + base;
+    return Item_FindEntry(arg0)->descOffset + base;
 }
 
 s32 Item_GetCategory(s32 id) {
-    return Item_FindById(id)->u0.b0.category;
+    return Item_FindEntry(id)->u0.b0.category;
 }
 
 s32 Item_GetLevel(s32 itemId) {
-    return Item_FindById(itemId)->u0.b0.field_3 & 0xF;
+    return Item_FindEntry(itemId)->u0.b0.field_3 & 0xF;
 }
 
 s32 Item_CheckId(s32 itemId) {
@@ -213,7 +228,7 @@ s32 Item_CheckId(s32 itemId) {
 /* Retail takes no parameter and calls Item_FindById() with none: a0 still holds the caller's
  * item id (Item_GetUseKind). Native code passes it. */
 s32 func_8001E134(s32 itemId) {
-    return Item_FindById(itemId)->u0.field_0 >> 30;
+    return Item_FindEntry(itemId)->u0.field_0 >> 30;
 }
 #else
 s32 func_8001E134(void) {
@@ -227,11 +242,11 @@ s32 func_8001E158(void) {
 }
 
 s32 Item_GetPrice(s32 itemId) {
-    return Item_FindById(itemId)->u4.field_4 & 0xFFFFFF;
+    return Item_FindEntry(itemId)->u4.field_4 & 0xFFFFFF;
 }
 
 u8 Item_GetBodyMask(s32 itemId) {
-    return Item_FindById(itemId)->u4.b4.bodyMask;
+    return Item_FindEntry(itemId)->u4.b4.bodyMask;
 }
 
 s32 Item_GetTableIndex(s32 id) {

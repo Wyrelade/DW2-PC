@@ -74,6 +74,15 @@ Say what you did, what happened and what you expected. A screenshot (F12) helps,
 the save (card1.mcd) from just before the problem.
 
 
+Version history
+---------------
+
+v0.1.2  Fixes a crash when opening the item server (Transfer > Items > Server) or the
+        important items (Status > Important), in the city and in the domains.
+v0.1.1  Speed-up on F3, no console window on Windows, program icon, Join Discord button.
+v0.1.0  First release.
+
+
 Licenses
 --------
 

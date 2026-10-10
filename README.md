@@ -49,6 +49,7 @@
   <a href="#features">Features</a> &middot;
   <a href="#getting-started">Getting started</a> &middot;
   <a href="#controls">Controls</a> &middot;
+  <a href="#version-history">Version history</a> &middot;
   <a href="#roadmap">Roadmap</a> &middot;
   <a href="#help-wanted">Help wanted</a> &middot;
   <a href="#building">Building</a> &middot;
@@ -202,6 +203,18 @@ file (`key = value` lines) you can edit by hand; lines the game does not know ar
 bad value falls back to its default. Without the file the game starts with the defaults.
 Command line options such as `--scale 4` or `--fullscreen` win over the file for that run and
 are not saved. The window's size, place and maximized state are saved when you change them.
+
+## Version history
+
+- **v0.1.2** (2026-10-10): fixes a crash when opening the item server (Transfer > Items >
+  Server, moving items between the Digi-Beetle and the server in the city) or the important
+  items (Status > Important), in the city and in the domains
+  ([#1](https://github.com/Wyrelade/DW2-PC/issues/1)).
+- **v0.1.1** (2026-10-09): speed-up on F3 (2x to 8x or no limit, multiplier in F1), no console
+  window on Windows, program icon, Join Discord button in F1.
+- **v0.1.0** (2026-10-09): first release. Render scale, 16:9, no wobble, sharpening, GPU
+  renderer, window modes, movies, streamed CD audio, F1 settings, gamepads, memory card saves,
+  F12 screenshots.
 
 ## Roadmap
 
