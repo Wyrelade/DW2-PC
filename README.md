@@ -107,6 +107,7 @@ that are plain files.
 | **Saves as files** | Memory cards are files (`card1.mcd`, `card2.mcd`) in your user folder. Raw card images from DuckStation, PCSX-Redux or ePSXe load as they are, so a save from an emulator carries over. |
 | **Screenshots** | F12 saves the current picture as PNG in a `screenshots` folder next to the program. |
 | **Safe quit** | Esc asks before quitting, so a stray key press does not lose progress. |
+| **Update check** | At start the game asks GitHub whether a newer version is out. If one is, it offers to open the download page before the game starts; the title screen and F1 show it too. Nothing is installed without you. Off in F1 (see [Update check](#update-check)). |
 | **64-bit and Linux** | Native Windows x64 and Linux x64 builds (32-bit Windows too). |
 
 ### What stays original
@@ -217,6 +218,9 @@ at start") or with `--no-update-check`. On Linux it uses the system's libcurl wh
 
 ## Version history
 
+- **v0.1.3** (2026-10-10): update check. At start the game asks GitHub for the newest release;
+  if there is one, a box offers to open the download page (or play now), and the title screen
+  and F1 show it. Off in F1 > Game. `--version` prints the version.
 - **v0.1.2** (2026-10-10): fixes a crash when opening the item server (Transfer > Items >
   Server, moving items between the Digi-Beetle and the server in the city) or the important
   items (Status > Important), in the city and in the domains
@@ -247,7 +251,7 @@ In the first release (v0.1.0):
 
 Done so far: the whole game code compiles and runs (title, city, domains, battles, menus,
 saves, VS mode), movies, streamed CD audio, render scale, no wobble, 16:9, sharpening, GPU renderer, F1 settings, window modes,
-64-bit and Linux builds.
+64-bit and Linux builds, speed-up, update check.
 
 ## Help wanted
 
