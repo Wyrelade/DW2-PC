@@ -18,6 +18,7 @@
 #include "host/host_sdl.h"
 #include "host/settings.h"
 #include "host/ui.h"
+#include "host/update.h"
 #include "psyq/psyq_log.h"
 #if DW2_DEV
 #include "host/devedit.h"
@@ -32,6 +33,7 @@
  *       [--hold-boot N] [--press N:BUTTONS[:LEN]]... [--press2 N:BUTTONS[:LEN]]... [--save-dir DIR]
  *       [--fast] [--pad2-keys] [--scale N] [--sharpen N] [--hd-threads N] [--pgxp] [--wide] [--renderer gpu|soft]
  *       [--settings PATH] [--settings-set KEY=VALUE]... [--settings-ui] [--settings-tab T] [--ui-shots] [--quit-dialog]
+ *       [--no-update-check] [--update-check] [--version]
  *       [--movies] [--window-mode M] [--fullscreen] [--windowed]
  *     --pak PATH     the data pack (default dw2.pak next to the exe, in the user data folder,
  *                    then build/native/dw2.pak; doc/PACK_FORMAT.md), checked before anything else
@@ -68,6 +70,10 @@
  *                    backend/psxgpu_hd.c); F5 in the window steps through 1..8
  *     --sharpen N    sharpening of the HD picture, 0..100 (PR.2b; 0 = off; needs --scale 2 or
  *                    more); F8 toggles it in the window. Overrides the settings file, not saved
+ *     --no-update-check  no update check in this run (PR.30; setting "update_check", F1 Game tab)
+ *     --update-check ask GitHub for a newer release even with --no-window (PR.30 check; the
+ *                    answer is logged as "[update] ...")
+ *     --version      print the version and quit
  *     --ui-shots     with --no-window: the window picture is rendered headless (F1 closed) and
  *                    each shot adds <tag>_ui.png (title hint check)
  *     --quit-dialog  the Esc quit question open at start (PR.15; headless shot with --ui-shots)
@@ -102,7 +108,8 @@
  *                    controls on, SECTION (Party, Digi-Beetle, Bag, Storage, Flags) scrolled to
  *     --window-size W H  window size in pixels (default 960x720, 1281x720 with --wide)
  *     --devedit N:KIND=ARGS  PD.4 state edit at VBlank wait N (repeatable; kinds and arguments in
- *                    host/devedit.c DevEdit_Script, e.g. 900:bits=12345, 900:warp=0x200,0) */
+ *                    host/devedit.c DevEdit_Script, e.g. 900:bits=12345, 900:warp=0x200,0)
+ *     --update-as V  the update check compares as if this program were version V (PR.30 tests) */
 
 extern void Sys_Main(void);
 extern void Host_OvlSnapshot(void);
@@ -372,6 +379,7 @@ static void run_threaded(void) {
 HOST_ENTRY int main(int argc, char **argv) {
     int i;
     int cl_scale = 0, cl_wide = 0, cl_pgxp = 0, cl_renderer = 0, cl_window = -1, cl_sharpen = -1;
+    int update_force = 0;
 
 #ifdef _WIN32
     Host_AttachParentConsole();
@@ -385,6 +393,13 @@ HOST_ENTRY int main(int argc, char **argv) {
             disc = argv[++i];
         } else if (strcmp(argv[i], "--no-window") == 0) {
             no_window = 1;
+        } else if (strcmp(argv[i], "--no-update-check") == 0) {
+            Update_Disable();
+        } else if (strcmp(argv[i], "--update-check") == 0) {
+            update_force = 1;
+        } else if (strcmp(argv[i], "--version") == 0) {
+            printf("DW2-PC v%s\n", DW2_VERSION);
+            return 0;
         } else if (strcmp(argv[i], "--shot-dir") == 0 && i + 1 < argc) {
             shot_dir = argv[++i];
         } else if (strcmp(argv[i], "--shot-at") == 0 && i + 1 < argc && shot_count < 16) {
@@ -394,6 +409,8 @@ HOST_ENTRY int main(int argc, char **argv) {
 #if DW2_DEV
         } else if (strcmp(argv[i], "--start-mode") == 0 && i + 1 < argc) {
             start_mode = (int)strtol(argv[++i], NULL, 0);
+        } else if (strcmp(argv[i], "--update-as") == 0 && i + 1 < argc) {
+            Update_SetLocalVersion(argv[++i]);
         } else if (strcmp(argv[i], "--devui") == 0) {
             DevUi_SetOpenAtStart(1);
         } else if (strcmp(argv[i], "--devui-tab") == 0 && i + 1 < argc) {
@@ -461,7 +478,7 @@ HOST_ENTRY int main(int argc, char **argv) {
                     "usage: %s [IMAGE] [--disc IMAGE] [--pak PATH] [--vblanks N] [--no-window] [--shot-dir DIR] [--shot-at N]... "
                     "[--shot-vb N]... [--hold-boot N] [--press N:BUTTONS[:LEN]]... [--press2 N:BUTTONS[:LEN]]... "
                     "[--save-dir DIR] [--fast] [--speed-up] [--pad2-keys] [--scale N] [--sharpen N] [--hd-threads N] [--pgxp] [--wide] "
-                    "[--renderer gpu|soft] [--settings PATH] [--settings-set KEY=VALUE]... [--settings-ui] [--settings-tab T] [--ui-shots] [--quit-dialog] "
+                    "[--renderer gpu|soft] [--settings PATH] [--settings-set KEY=VALUE]... [--settings-ui] [--settings-tab T] [--ui-shots] [--quit-dialog] [--no-update-check] [--update-check] [--version] "
                     "[--movies] [--window-mode windowed|borderless|exclusive] [--fullscreen] [--windowed]%s\n",
                     argv[0], DW2_DEV ? " [--start-mode N] [--devui] [--devui-tab T] [--window-size W H] [--devedit N:KIND=ARGS]..." : "");
             return 2;
@@ -504,6 +521,7 @@ HOST_ENTRY int main(int argc, char **argv) {
     /* Main thread, before the game thread and window: the pack build may show its own progress
      * window and a file dialog. */
     Host_PakOpen(pak, disc, no_window);
+    Update_Start(no_window, update_force);
 #if DW2_DEV
     DevEdit_Init();
 #endif

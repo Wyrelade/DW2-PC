@@ -10,6 +10,7 @@
 #include "imgui.h"
 
 #include "host/settings.h"
+#include "host/update.h"
 #include "host/ui.h"
 
 /* Community server (PC port and DW2 Online); also at the top of README.md. */
@@ -305,6 +306,8 @@ void controls_tab(void) {
     }
 }
 
+void open_releases(void);
+
 /* PR.28: speed-up multiplier; F3 switches the speed-up on and off in play */
 void game_tab(void) {
     static const int values[] = { 2, 3, 4, 5, 6, 8, 0 };
@@ -324,6 +327,42 @@ void game_tab(void) {
     ImGui::TextWrapped("F3 unlocks and locks the speed in play: battles, walking in the domains, menus. "
                        "Music and voice lines play faster too (voices are silent with no limit). "
                        "Movies always play at normal speed.");
+
+    /* PR.30 */
+    bool check = Settings_Get(SET_UPDATE_CHECK) != 0;
+    ImGui::SeparatorText("Updates");
+    if (ImGui::Checkbox("Check for updates at start", &check)) {
+        Settings_Set(SET_UPDATE_CHECK, check);
+    }
+    ImGui::TextWrapped("Asks GitHub once per start whether a newer DW2-PC release exists. Nothing is "
+                       "downloaded or installed; a new version is only shown here and on the title.");
+    ImGui::TextDisabled("This is DW2-PC v%s. %s", Update_LocalVersion(), Update_StatusText());
+    if (ImGui::Button("Open download page")) {
+        open_releases();
+    }
+}
+
+void open_releases(void) {
+    if (!SDL_OpenURL(DW2_RELEASES_URL)) {
+        fprintf(stderr, "[ui] could not open %s: %s\n", DW2_RELEASES_URL, SDL_GetError());
+    }
+}
+
+/* PR.30: a newer release found by the start check, above the tabs */
+void update_banner(void) {
+    const char *tag = Update_NewerTag();
+
+    if (tag == NULL) {
+        return;
+    }
+    ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.84f, 0.35f, 1.0f));
+    ImGui::Text("DW2-PC %s is available (this is v%s).", tag, Update_LocalVersion());
+    ImGui::PopStyleColor();
+    ImGui::SameLine();
+    if (ImGui::SmallButton("Open download page")) {
+        open_releases();
+    }
+    ImGui::Separator();
 }
 
 void sound_tab(void) {
@@ -423,6 +462,7 @@ void SettingsUi_Draw(void) {
     ImGui::SetNextWindowSize(ImVec2(w, h), ImGuiCond_Appearing);
     ImGui::SetNextWindowBgAlpha(0.94f);
     if (ImGui::Begin("Settings (F1)", &open, ImGuiWindowFlags_NoCollapse)) {
+        update_banner();
         if (ImGui::BeginTabBar("tabs")) {
             if (ImGui::BeginTabItem("Display", NULL, tab_flags("Display"))) {
                 display_tab();

@@ -194,7 +194,8 @@ does not see your input while it is open.
 - **Controls:** two keys and one gamepad button per PS1 button. Click a slot and press the key
   or button; right click clears it; Esc cancels. Esc, Tab and the F keys are reserved. Left
   stick as D-pad on / off. Reset restores the defaults.
-- **Game:** the speed-up multiplier for F3 (2x, 3x, 4x, 5x, 6x, 8x or no limit).
+- **Game:** the speed-up multiplier for F3 (2x, 3x, 4x, 5x, 6x, 8x or no limit), and the
+  update check.
 - **Sound:** volume.
 
 Settings are saved in `settings.ini` in the user data folder (`%APPDATA%\DW2-Online\` on
@@ -203,6 +204,14 @@ file (`key = value` lines) you can edit by hand; lines the game does not know ar
 bad value falls back to its default. Without the file the game starts with the defaults.
 Command line options such as `--scale 4` or `--fullscreen` win over the file for that run and
 are not saved. The window's size, place and maximized state are saved when you change them.
+
+### Update check
+
+At start the game asks GitHub once whether a newer release exists. Nothing is downloaded or
+installed: a newer version shows a line on the title screen and in F1, with a button that opens
+the download page. The check sends GitHub the usual request of a web browser (your IP address,
+the program name and version) and nothing else. Switch it off in F1 > Game ("Check for updates
+at start") or with `--no-update-check`. On Linux it uses the system's libcurl when there is one.
 
 ## Version history
 

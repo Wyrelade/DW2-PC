@@ -29,7 +29,7 @@ Arrow keys = D-pad, Z = Cross, X = Circle, A = Square, S = Triangle, Q / W = L1 
 E / R = L2 / R2, Enter = Start, Backspace = Select. Gamepads work out of the box.
 
 F1   settings (render scale, 16:9, no wobble, sharpening, window mode, key and gamepad
-     remap, speed-up multiplier, volume)
+     remap, speed-up multiplier, update check, volume)
 F3   speed-up on / off (battles, domains and menus 2x to 8x faster; movies stay at
      normal speed)
 F5   render scale 1x .. 8x
@@ -41,6 +41,14 @@ F12  screenshot
 Esc  quit (asks first)
 
 dw2 --help lists the command line options.
+
+
+Update check
+------------
+
+At start the game asks GitHub once whether a newer release exists. Nothing is downloaded or
+installed; a newer version shows a line on the title and in F1 with a button to the download
+page. Off in F1 > Game ("Check for updates at start") or with --no-update-check.
 
 
 Files and folders

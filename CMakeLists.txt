@@ -194,6 +194,8 @@ if(WIN32)
     # 64-bit PE: also no high-entropy ASLR, so the stack stays low as well.
     # The C++ runtime parts g++ links come in statically (no libstdc++ DLL to ship).
     target_link_options(dw2 PRIVATE -static-libstdc++ -static-libgcc)
+    # PR.30 update check (host/update.c): WinHTTP, a system library.
+    target_link_libraries(dw2 PRIVATE winhttp)
     # Release: a GUI program, no console window next to the game (host/winconsole.c). Dev builds
     # keep the console for the logs.
     if(NOT DW2_DEV)
@@ -204,7 +206,8 @@ if(WIN32)
         -Wl,-Map=${CMAKE_BINARY_DIR}/dw2.map)
 else()
     # ELF: no PIE, first segment at 0x01000000 (same window as the PE builds).
-    target_link_libraries(dw2 PRIVATE m)
+    # dl: PR.30 update check loads libcurl.so.4 at run time (no link-time dependency).
+    target_link_libraries(dw2 PRIVATE m ${CMAKE_DL_LIBS})
     target_link_options(dw2 PRIVATE ${DW2_ARCH_FLAG} -no-pie -Wl,-Ttext-segment=0x01000000
         -Wl,-Map=${CMAKE_BINARY_DIR}/dw2.map)
     # A libSDL3.so.0 next to dw2 is found before the system one (player zip, PR.8).

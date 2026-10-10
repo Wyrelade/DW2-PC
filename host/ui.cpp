@@ -20,6 +20,7 @@
 
 #include "host/settings.h"
 #include "host/ui.h"
+#include "host/update.h"
 #if DW2_DEV
 #include "host/devui.h"
 #endif
@@ -118,15 +119,23 @@ void draw_quit(void) {
 
 /* PR.10: "Press F1 for settings" at the bottom left of the picture while the title runs (the
  * game thread's flag), unless switched off or the F1 window is open. Drawn with each presented
- * picture only: it does not keep the window loop presenting. */
+ * picture only: it does not keep the window loop presenting. PR.30: with a newer release found,
+ * the line says so instead (also when the hint is switched off). */
 bool title_hint_shown(void) {
-    return g_ready && Host_TitleHint() && Settings_Get(SET_TITLE_HINT) && !SettingsUi_IsOpen() && !g_quit_want &&
-           !g_quit_shown;
+    return g_ready && Host_TitleHint() && (Settings_Get(SET_TITLE_HINT) || Update_NewerTag() != NULL) &&
+           !SettingsUi_IsOpen() && !g_quit_want && !g_quit_shown;
 }
 
 void draw_title_hint(void) {
-    static const char text[] = "Press F1 for settings";
+    const char *tag = Update_NewerTag();
+    char text[96];
     SDL_FRect r;
+
+    if (tag != NULL) {
+        SDL_snprintf(text, sizeof(text), "Update %s available: press F1", tag);
+    } else {
+        SDL_strlcpy(text, "Press F1 for settings", sizeof(text));
+    }
 
     if (!SDL_GetRenderLogicalPresentationRect(g_renderer, &r) || r.h <= 0) {
         return;
@@ -143,7 +152,8 @@ void draw_title_hint(void) {
     /* a dark box behind it: the title background is busy */
     dl->AddRectFilled(ImVec2(pos.x - in, pos.y - in * 0.6f), ImVec2(pos.x + ts.x + in, pos.y + ts.y + in * 0.6f),
                       IM_COL32(0, 0, 0, 150), in * 0.6f);
-    dl->AddText(ImGui::GetFont(), size, pos, IM_COL32(255, 255, 255, 220), text);
+    dl->AddText(ImGui::GetFont(), size, pos, tag != NULL ? IM_COL32(255, 214, 90, 235) : IM_COL32(255, 255, 255, 220),
+                text);
 }
 
 /* the style for the display's content scale (again when the window moves to another display) */

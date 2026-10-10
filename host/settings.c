@@ -45,11 +45,11 @@ const int Settings_ButtonOrder[16] = {
 
 static const char *const int_keys[SET_COUNT] = {
     "scale", "wide", "pgxp", "renderer", "volume", "stick_dpad", "window_mode", "fullscreen_display", "window_maximized",
-    "sharpen", "title_hint", "speed",
+    "sharpen", "title_hint", "speed", "update_check",
 };
-static const int int_default[SET_COUNT] = { 1, 0, 0, SET_RENDERER_GPU, 100, 1, SET_WINDOW_WINDOWED, 0, 0, 0, 1, 3 };
-static const int int_min[SET_COUNT] = { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-static const int int_max[SET_COUNT] = { 8, 1, 1, 1, 100, 1, 2, 16, 1, 100, 1, 8 };
+static const int int_default[SET_COUNT] = { 1, 0, 0, SET_RENDERER_GPU, 100, 1, SET_WINDOW_WINDOWED, 0, 0, 0, 1, 3, 1 };
+static const int int_min[SET_COUNT] = { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+static const int int_max[SET_COUNT] = { 8, 1, 1, 1, 100, 1, 2, 16, 1, 100, 1, 8, 1 };
 static const char *const renderer_names[] = { "gpu", "soft", NULL };
 static const char *const window_names[] = { "windowed", "borderless", "exclusive", NULL };
 /* values written as names instead of numbers */
@@ -614,8 +614,8 @@ void Settings_Load(int no_window) {
     printf("[settings] scale %d, wide %d, pgxp %d, renderer %s, volume %d, stick_dpad %d%s\n", Settings_Get(SET_SCALE),
            Settings_Get(SET_WIDE), Settings_Get(SET_PGXP), Settings_Get(SET_RENDERER) == SET_RENDERER_SOFT ? "soft" : "gpu",
            Settings_Get(SET_VOLUME), Settings_Get(SET_STICK_DPAD), set_count != 0 ? " (with --settings-set)" : "");
-    printf("[settings] sharpen %d, title_hint %d, speed %d\n", Settings_Get(SET_SHARPEN), Settings_Get(SET_TITLE_HINT),
-           Settings_Get(SET_SPEED));
+    printf("[settings] sharpen %d, title_hint %d, speed %d, update_check %d\n", Settings_Get(SET_SHARPEN),
+           Settings_Get(SET_TITLE_HINT), Settings_Get(SET_SPEED), Settings_Get(SET_UPDATE_CHECK));
     {
         char fm[32], ws[32], wp[32];
 
@@ -712,7 +712,7 @@ static int write_line(SDL_IOStream *io, const char *s) {
 static int save(void) {
     static const int order[K_KEY] = {
         SET_SCALE, SET_WIDE, SET_PGXP, SET_SHARPEN, SET_RENDERER, SET_VOLUME, SET_STICK_DPAD, SET_TITLE_HINT,
-        SET_SPEED, SET_WINDOW_MODE, SET_FS_DISPLAY, K_FSMODE, K_WINSIZE, K_WINPOS, SET_WIN_MAX,
+        SET_SPEED, SET_UPDATE_CHECK, SET_WINDOW_MODE, SET_FS_DISPLAY, K_FSMODE, K_WINSIZE, K_WINPOS, SET_WIN_MAX,
     };
     char seen[K_COUNT] = { 0 };
     char *tmp = NULL;
