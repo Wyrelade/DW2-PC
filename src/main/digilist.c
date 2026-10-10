@@ -12,6 +12,11 @@
 #include "main/status.h"
 #include "main/itemuse.h"
 #include "main/itemmenu.h"
+#ifdef DW2_NATIVE
+/* declared with its return type (an implicit int declaration reads the unextended high bits
+ * natively) */
+u8 Beetle_GetDigiCapacity(void);
+#endif
 
 /* Small data this unit defines: initialised ones go to .sdata, the rest to .sbss in
  * game.h's order. Retail reaches them with %gp_rel here. */

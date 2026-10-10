@@ -23,7 +23,11 @@ extern void Stg20_WalkerWarpToCell(void *, s32 *);
 extern s32 Stg20_WalkerIsPathDone(void *);
 extern void Stg20_WalkerSetAnim(Obj6A8C0 *, s32);
 extern void Stg40_TextObjCommand(s32 *);
+#ifdef DW2_NATIVE /* the definition's return type: no caller reads unextended high bits */
+extern s16 Stg40_IsTextObjCmdBusy(void);
+#else
 extern s32 Stg40_IsTextObjCmdBusy(void);
+#endif
 extern void Stg20_StartBgShake(void);
 extern s32 Mem_Alloc(s32, s32);
 #ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */

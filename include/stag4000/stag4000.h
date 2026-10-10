@@ -918,7 +918,11 @@ typedef struct {
 
 extern u16 Stg40_EnemyInfoTextPos[];
 extern u8 *Digi_GetDefaultName(s32);
+#ifdef DW2_NATIVE /* the definition's return type: no caller reads unextended high bits */
+extern u8 Digi_GetType(s32);
+#else
 extern s32 Digi_GetType(s32);
+#endif
 extern s32 Digi_GetRank(s32);
 
 /* Four model ids copied from Stg40_BugModelIds (Stg40_SpawnHazard). */

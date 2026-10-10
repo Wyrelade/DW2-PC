@@ -2,6 +2,11 @@
 #include "stag2000/stag2000.h"
 #include "stag2000/areaselect.h"
 #include "stag2000/msgwin.h"
+#ifdef DW2_NATIVE
+/* declared with its return type (an implicit int declaration reads the unextended high bits
+ * natively) */
+u8 Stg20_GetDnaResult(s32 a, s32 b);
+#endif
 
 /* Task callbacks the descriptors below need (defined further down). Stg20_GetDnaResult (dna.c) is
  * called with no prototype in scope: its u8 one would change that call. */

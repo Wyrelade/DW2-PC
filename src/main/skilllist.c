@@ -12,6 +12,11 @@
 #include "main/status.h"
 #include "main/itemuse.h"
 #include "main/itemmenu.h"
+#ifdef DW2_NATIVE
+/* declared with its return type (an implicit int declaration reads the unextended high bits
+ * natively) */
+u8 Skill_GetMpCost(s32 id);
+#endif
 
 /* Small data this file defines (.sdata). Retail reaches it with %gp_rel here. */
 Halves Menu_SkillMsgPos = { 0x10, 0xBA };

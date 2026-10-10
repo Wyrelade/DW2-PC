@@ -294,9 +294,21 @@ extern void GsSetProjection(s32);
 extern s32 GsSetRefView2(Stg00RefView *);
 #endif
 extern void Flag_Set(s32, s32);
+#ifdef DW2_NATIVE /* the definition's return type: no caller reads unextended high bits */
+extern u16 Digi_GetModelListId(s32 idx);
+#else
 extern s32 Digi_GetModelListId(s32 idx);
+#endif
+#ifdef DW2_NATIVE /* the definition's return type: no caller reads unextended high bits */
+extern s16 func_8001E79C(s32 id);
+#else
 extern s32 func_8001E79C(s32 id);
+#endif
+#ifdef DW2_NATIVE /* the definition's return type: no caller reads unextended high bits */
+extern s16 Digi_GetHitFxOffsetY(s32 id);
+#else
 extern s32 Digi_GetHitFxOffsetY(s32 id);
+#endif
 extern s32 Digi_GetModelListCount(void);
 extern void Skill_GetFxSet(s32 id, s32 n, s16 *a, s16 *b);
 extern s32 Rand_Next();
@@ -586,7 +598,11 @@ extern void Gfx_SetPartsNumber(GfxPart *p, s32 mask, s32 n, s32 val);
 extern void Digi_GetCastFxOffsets(s32 a0, void *a1);
 extern s32 Skill_GetPartsEntry(s32);
 extern s32 Skill_GetCastAnim(s32 id);
+#ifdef DW2_NATIVE /* the definition's return type: no caller reads unextended high bits */
+extern s16 Skill_GetPower(s32 id);
+#else
 extern s32 Skill_GetPower(s32 id);
+#endif
 extern s32 *Skill_GetShotXa(s32 id);
 extern s32 Cd_GetFileLba(s32 arg0);
 #ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */

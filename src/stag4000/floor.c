@@ -3,6 +3,11 @@
 #include "stag4000/stag4000_funcs.h"
 #include "stag4000/linkedmodel.h"
 #include "stag4000/floor.h"
+#ifdef DW2_NATIVE
+/* declared with its return type (an implicit int declaration reads the unextended high bits
+ * natively) */
+u16 Rand_GetAt(u32 arg0);
+#endif
 
 u8 Stg40_FloorPrimIdx[] = {
     0x04, 0x02, 0x06, 0x03, 0x05, 0x00, 0x01, 0x00, 0x0B, 0x09, 0x0D, 0x0A, 0x0C, 0x07, 0x08, 0x07,

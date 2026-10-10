@@ -528,14 +528,26 @@ extern s32 CdPosToInt(void *);
 extern s32 CdSync(s32 mode, u8 *result);    /* the main C stub is void(void) */
 extern s32 CdLastCom(void);                 /* main: u8 */
 #endif
+#ifdef DW2_NATIVE /* the definition's return type: no caller reads unextended high bits */
+extern s16 func_8001E79C(s32 id);           /* main: s16 */
+#else
 extern s32 func_8001E79C(s32 id);           /* main: s16 */
+#endif
+#ifdef DW2_NATIVE /* the definition's return type: no caller reads unextended high bits */
+extern s16 Digi_GetHitFxOffsetY(s32 id);           /* main: s16 */
+#else
 extern s32 Digi_GetHitFxOffsetY(s32 id);           /* main: s16 */
+#endif
 extern void Digi_GetCastFxOffsets(s32 a0, void *a1);
 extern void Skill_GetFxSet(s32 id, s32 n, s16 *a, s16 *b);
 extern s32 Skill_GetCastAnim(s32 id);
 extern s32 Skill_GetPartsEntry(s32 id);
 extern s32 *Skill_GetShotXa(s32 id);
+#ifdef DW2_NATIVE /* the definition's return type: no caller reads unextended high bits */
+extern s16 Skill_GetPower(s32 id);           /* main: s16 */
+#else
 extern s32 Skill_GetPower(s32 id);           /* main: s16 */
+#endif
 extern u16 Skill_GetSpecialty(s32 id);
 
 extern SysState Sys_State;

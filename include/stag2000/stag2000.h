@@ -110,8 +110,16 @@ extern s32 Gfx_ZeroVector[];
 
 extern void Task_SetState1(Actor *arg0, u32 arg1);
 extern TaskEntry *Task_FindNext(void);
+#ifdef DW2_NATIVE /* the definition's return type: no caller reads unextended high bits */
+extern u8 Digi_GetType(s32);
+#else
 extern s32 Digi_GetType(s32);
+#endif
+#ifdef DW2_NATIVE /* the definition's return type: no caller reads unextended high bits */
+extern u8 Digi_GetDnaGroup(s32);
+#else
 extern s32 Digi_GetDnaGroup(s32);
+#endif
 extern s32 Skill_GetDescText(s32);
 extern void Digi_SortRoster(void);
 extern void Anim_StepModelAnim(Actor *);
@@ -695,7 +703,11 @@ extern u8 Stg20_PresetDigiNames[3][8];
 extern void Digi_InitFromTable(s32, s32, DigiRosterEntry *);
 
 extern s32 Item_GetCategory(s32 id);
+#ifdef DW2_NATIVE /* the definition's return type: no caller reads unextended high bits */
+extern u8 Item_GetBodyMask(s32 id);
+#else
 extern s32 Item_GetBodyMask(s32 id);
+#endif
 extern void Stg20_InsertDescS16(s16 *list, s32 n, s32 v);
 
 /* ActorModel viewed with the three tint bytes at 0x38 (Stg20_LabDigiModelUpdate). */
@@ -771,7 +783,11 @@ typedef struct {
 extern Stg20Cell Stg20_LabInfoTextPos[13];
 extern u8 Stg20_DigivolveRuleTbl[4][4];
 extern s32 Digi_GetSpecialty(s32);
+#ifdef DW2_NATIVE /* the definition's return type: no caller reads unextended high bits */
+extern u8 Digi_GetEvolutionTarget(s32 id, s32 val);
+#else
 extern s32 Digi_GetEvolutionTarget(s32 id, s32 val);
+#endif
 
 extern void Task_NextState3(Actor *);
 extern void Task_NextState4(Actor *);
@@ -863,7 +879,11 @@ extern s32 Stg20_PartsPageCategory[10];
 extern s32 Stg20_PartsPageSlot[10];
 
 extern s32 Skill_GetRank(s32 id);
+#ifdef DW2_NATIVE /* the definition's return type: no caller reads unextended high bits */
+extern s16 Skill_GetPower(s32 id);
+#else
 extern s32 Skill_GetPower(s32 id);
+#endif
 
 
 extern void Stg20_MsgWinShowDigiMsg(s32 text, s32 digi);

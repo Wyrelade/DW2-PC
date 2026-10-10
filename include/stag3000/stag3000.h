@@ -519,7 +519,11 @@ extern s32 Stg30_TargetCursorMasks[];
 extern s32 Stg30_TargetAllEnemiesMask;
 extern s32 Stg30_TargetAllAlliesMask;
 extern s32 func_8001F0E4(s32 id);
+#ifdef DW2_NATIVE /* the definition's return type: no caller reads unextended high bits */
+extern u8 func_8001F020(s32 id);  /* u8 in the main exe; used unmasked here */
+#else
 extern s32 func_8001F020(s32 id);  /* u8 in the main exe; used unmasked here */
+#endif
 /* Stg30_BattleDigiNames: Stg30_Battle.digis[i].name (0x64 = 0x18 + 0x4C). */
 typedef struct {
     /* 0x00 */ u8 name[14];
@@ -583,9 +587,17 @@ extern void Task_SetState01(Actor *, u32, u32);
 extern void Task_SetState1(Actor *, u32);
 extern void Task_NextState0(Actor *);
 extern void Digi_InitFromTable(s32, s32, DigiRosterEntry *);
+#ifdef DW2_NATIVE /* the definition's return type: no caller reads unextended high bits */
+extern s16 Skill_GetPower(s32 id);
+#else
 extern s32 Skill_GetPower(s32 id);
+#endif
 extern s32 Skill_GetCureFlags(s32 id);
+#ifdef DW2_NATIVE /* the definition's return type: no caller reads unextended high bits */
+extern u8 Skill_GetMpCost(s32 id);
+#else
 extern s32 Skill_GetMpCost(s32 id);
+#endif
 extern void Cd_FreeFile(s32);
 extern EntA0 *Cd_GetFileEntry(u32);
 extern s32 Item_GetDescText(s32);
@@ -618,15 +630,27 @@ extern void Task_NextState2(Actor *);
 extern void Task_NextState3(Actor *);
 extern void Gfx_FadeOutToBlack(s32);
 extern void Skill_GetFxSet(s32 id, s32 n, s16 *a, s16 *b);
+#ifdef DW2_NATIVE /* the definition's return type: no caller reads unextended high bits */
+extern s16 func_8001E79C(s32 id);  /* s16 in the main exe; used unextended here */
+#else
 extern s32 func_8001E79C(s32 id);  /* s16 in the main exe; used unextended here */
+#endif
+#ifdef DW2_NATIVE /* the definition's return type: no caller reads unextended high bits */
+extern s16 Digi_GetHitFxOffsetY(s32 id);
+#else
 extern s32 Digi_GetHitFxOffsetY(s32 id);
+#endif
 extern s32 Skill_GetType(s32 id);
 extern void Gfx_SetPartsNumber(GfxPart *, s32, s32, s32);
 extern void Digi_GetCastFxOffsets(s32 a0, void *a1);
 extern s32 Math_PingPongRange(s32 v, s32 div, s32 lo, s32 hi);
 extern s32 Item_GetCategory(s32 id);
 extern void Text_OpenPacked(void *, s32, u32, Halves);
+#ifdef DW2_NATIVE /* the definition's return type: no caller reads unextended high bits */
+extern u16 Skill_GetSpecialty(s32 id);  /* u16 in the main exe; used unmasked here */
+#else
 extern s32 Skill_GetSpecialty(s32 id);  /* u16 in the main exe; used unmasked here */
+#endif
 extern s32 Digi_GetSpecialty(s32 id);
 extern s32 Cd_GetFileLba(s32);
 #ifndef DW2_NATIVE /* Psy-Q: psyq/ headers in the native build */
@@ -673,7 +697,11 @@ extern u16 Stg30_AtkDefGrowth[5][3][4];
 extern u16 Stg30_SpeedGrowth[5][3][4];
 extern s32 Digi_GetRank(s32 id);
 extern s32 Digi_GetStatGrowth(s32 id, s32 k);
+#ifdef DW2_NATIVE /* the definition's return type: no caller reads unextended high bits */
+extern u8 Digi_GetType(s32 id);
+#else
 extern s32 Digi_GetType(s32 id);
+#endif
 extern PadState Pad_State[];
 extern const Halves Stg30_SkillMenuTitlePos;
 extern Halves Stg30_SkillColumnLabelPos[];
