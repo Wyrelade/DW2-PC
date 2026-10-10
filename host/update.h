@@ -13,7 +13,7 @@ extern "C" {
 #endif
 
 /* The version of this program, the release tag without "v". Bump it with each release. */
-#define DW2_VERSION "0.1.4"
+#define DW2_VERSION "0.1.5"
 #define DW2_RELEASES_URL "https://github.com/Wyrelade/DW2-PC/releases/latest"
 
 /* main(), after Settings_Load: starts the check thread when wanted. force = --update-check. */
