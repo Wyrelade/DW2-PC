@@ -334,8 +334,9 @@ void game_tab(void) {
     if (ImGui::Checkbox("Check for updates at start", &check)) {
         Settings_Set(SET_UPDATE_CHECK, check);
     }
-    ImGui::TextWrapped("Asks GitHub once per start whether a newer DW2-PC release exists. Nothing is "
-                       "downloaded or installed; a new version is only shown here and on the title.");
+    ImGui::TextWrapped("Asks GitHub once per start whether a newer DW2-PC release exists. If one does, "
+                       "the start offers its download page; it also shows here and on the title. Nothing "
+                       "is downloaded or installed by the game.");
     ImGui::TextDisabled("This is DW2-PC v%s. %s", Update_LocalVersion(), Update_StatusText());
     if (ImGui::Button("Open download page")) {
         open_releases();
